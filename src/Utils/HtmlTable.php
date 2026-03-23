@@ -33,7 +33,7 @@ class HtmlTable {
 	 * @param string $content
 	 * @param array $attributes
 	 */
-	public function header( $content = '', $attributes = [] ) {
+	public function header( $content = '', $attributes = [] ): void {
 		if ( $content !== '' ) {
 			$this->headers[] = [ 'content' => $content, 'attributes' => $attributes ];
 		}
@@ -45,7 +45,7 @@ class HtmlTable {
 	 * @param string $content
 	 * @param array $attributes
 	 */
-	public function cell( $content = '', $attributes = [] ) {
+	public function cell( $content = '', $attributes = [] ): void {
 		if ( $content !== '' ) {
 			$this->cells[] = Html::rawElement( 'td', $attributes, $content );
 		}
@@ -58,7 +58,7 @@ class HtmlTable {
 	 *
 	 * @return void
 	 */
-	public function row( $attributes = [] ) {
+	public function row( $attributes = [] ): void {
 		if ( $this->cells !== [] ) {
 			$this->rows[] = [ 'cells' => $this->cells, 'attributes' => $attributes ];
 			$this->cells = [];
@@ -127,7 +127,7 @@ class HtmlTable {
 		return $this->concatenateRows( $rows, $htmlContext );
 	}
 
-	private function createRow( $content, $attributes, $count ) {
+	private function createRow( string $content, $attributes, int $count ) {
 		$alternate = $count % 2 == 0 ? 'row-odd' : 'row-even';
 
 		if ( isset( $attributes['class'] ) ) {
@@ -139,7 +139,7 @@ class HtmlTable {
 		return Html::rawElement( 'tr', $attributes, $content );
 	}
 
-	private function concatenateHeaders( $headers, $htmlContext ) {
+	private function concatenateHeaders( array $headers, $htmlContext ) {
 		if ( $htmlContext ) {
 			return Html::rawElement( 'thead', [], implode( '', $headers ) );
 		}
@@ -147,7 +147,7 @@ class HtmlTable {
 		return implode( '', $headers );
 	}
 
-	private function concatenateRows( $rows, $htmlContext ) {
+	private function concatenateRows( array $rows, $htmlContext ) {
 		if ( $htmlContext ) {
 			return Html::rawElement( 'tbody', [], implode( '', $rows ) );
 		}

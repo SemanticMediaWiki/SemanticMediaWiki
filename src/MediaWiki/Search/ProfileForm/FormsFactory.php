@@ -27,7 +27,7 @@ class FormsFactory {
 	 *
 	 * @return OpenForm
 	 */
-	public function newOpenForm( WebRequest $request ) {
+	public function newOpenForm( WebRequest $request ): OpenForm {
 		return new OpenForm( $request );
 	}
 
@@ -38,7 +38,7 @@ class FormsFactory {
 	 *
 	 * @return CustomForm
 	 */
-	public function newCustomForm( WebRequest $request ) {
+	public function newCustomForm( WebRequest $request ): CustomForm {
 		return new CustomForm( $request );
 	}
 
@@ -49,7 +49,7 @@ class FormsFactory {
 	 *
 	 * @return SortForm
 	 */
-	public function newSortForm( WebRequest $request ) {
+	public function newSortForm( WebRequest $request ): SortForm {
 		return new SortForm( $request );
 	}
 

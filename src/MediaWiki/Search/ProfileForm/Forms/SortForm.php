@@ -16,10 +16,7 @@ use SMW\Localizer\Message;
  */
 class SortForm {
 
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private Field $field;
 
 	/**
 	 * @var
@@ -93,7 +90,7 @@ class SortForm {
 		);
 	}
 
-	private function sortList( $features ) {
+	private function sortList( $features ): array {
 		$list = [];
 
 		if ( isset( $features['best'] ) && $features['best'] ) {

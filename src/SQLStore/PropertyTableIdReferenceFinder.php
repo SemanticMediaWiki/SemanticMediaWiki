@@ -2,9 +2,11 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\MediaWiki\Connection\Database;
+use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -44,20 +46,20 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @since 2.4
 	 *
-	 * @param booelan $isCapitalLinks
+	 * @param bool $isCapitalLinks
 	 */
-	public function isCapitalLinks( $isCapitalLinks ) {
+	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = $isCapitalLinks;
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return DataItem|false
 	 */
-	public function tryToFindAtLeastOneReferenceForProperty( DIProperty $property ) {
+	public function tryToFindAtLeastOneReferenceForProperty( Property $property ) {
 		$dataItem = $property->getDiWikiPage();
 
 		$sid = $this->store->getObjectIds()->getSMWPageID(
@@ -118,7 +120,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return array
 	 */
-	public function searchAllTablesToFindAtLeastOneReferenceById( $id ) {
+	public function searchAllTablesToFindAtLeastOneReferenceById( $id ): array {
 		$references = [];
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
@@ -169,11 +171,11 @@ class PropertyTableIdReferenceFinder {
 			}
 		}
 
-		if ( $secondary_ref && !isset( $reference->s_id ) ) {
+		if ( $secondary_ref && is_object( $reference ) && !isset( $reference->s_id ) ) {
 			$reference = $this->findQueryLinksTableReferenceById( $id );
 		}
 
-		if ( isset( $reference->s_id ) ) {
+		if ( is_object( $reference ) && isset( $reference->s_id ) ) {
 			$reference = $this->store->getObjectIds()->getDataItemById( $reference->s_id );
 		}
 

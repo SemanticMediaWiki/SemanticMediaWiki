@@ -2,8 +2,10 @@
 
 namespace SMW\Query;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
@@ -13,8 +15,6 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -28,24 +28,24 @@ class DescriptionFactory {
 	 * @since 2.4
 	 *
 	 * @param DataItem $dataItem
-	 * @param DIProperty|null $property = null
+	 * @param Property|null $property = null
 	 * @param int $comparator
 	 *
 	 * @return ValueDescription
 	 */
-	public function newValueDescription( DataItem $dataItem, ?DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
+	public function newValueDescription( DataItem $dataItem, ?Property $property = null, $comparator = SMW_CMP_EQ ): ValueDescription {
 		return new ValueDescription( $dataItem, $property, $comparator );
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param Description $description
 	 *
 	 * @return SomeProperty
 	 */
-	public function newSomeProperty( DIProperty $property, Description $description ) {
+	public function newSomeProperty( Property $property, Description $description ): SomeProperty {
 		return new SomeProperty( $property, $description );
 	}
 
@@ -54,7 +54,7 @@ class DescriptionFactory {
 	 *
 	 * @return ThingDescription
 	 */
-	public function newThingDescription() {
+	public function newThingDescription(): ThingDescription {
 		return new ThingDescription();
 	}
 
@@ -65,7 +65,7 @@ class DescriptionFactory {
 	 *
 	 * @return Disjunction
 	 */
-	public function newDisjunction( $descriptions = [] ) {
+	public function newDisjunction( $descriptions = [] ): Disjunction {
 		return new Disjunction( $descriptions );
 	}
 
@@ -76,7 +76,7 @@ class DescriptionFactory {
 	 *
 	 * @return Conjunction
 	 */
-	public function newConjunction( $descriptions = [] ) {
+	public function newConjunction( $descriptions = [] ): Conjunction {
 		return new Conjunction( $descriptions );
 	}
 
@@ -87,29 +87,29 @@ class DescriptionFactory {
 	 *
 	 * @return NamespaceDescription
 	 */
-	public function newNamespaceDescription( $ns ) {
+	public function newNamespaceDescription( $ns ): NamespaceDescription {
 		return new NamespaceDescription( $ns );
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage|[] $category
+	 * @param WikiPage|array $category
 	 *
 	 * @return ClassDescription
 	 */
-	public function newClassDescription( $category ) {
+	public function newClassDescription( $category ): ClassDescription {
 		return new ClassDescription( $category );
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $concept
+	 * @param WikiPage $concept
 	 *
 	 * @return ConceptDescription
 	 */
-	public function newConceptDescription( DIWikiPage $concept ) {
+	public function newConceptDescription( WikiPage $concept ): ConceptDescription {
 		return new ConceptDescription( $concept );
 	}
 

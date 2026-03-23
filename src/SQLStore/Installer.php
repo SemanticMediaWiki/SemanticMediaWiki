@@ -14,6 +14,7 @@ use SMW\Setup;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\Utils\CliMsgFormatter;
@@ -52,15 +53,9 @@ class Installer implements MessageReporter {
 	 */
 	const POPULATE_HASH_FIELD_COMPLETE = 'populate.smw_hash_field_complete';
 
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private Options $options;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private SetupFile $setupFile;
 
 	/**
 	 * @var CliMsgFormatter
@@ -86,7 +81,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param Options|array $options
 	 */
-	public function setOptions( $options ) {
+	public function setOptions( $options ): void {
 		if ( !$options instanceof Options ) {
 			$options = new Options( $options );
 		}
@@ -99,7 +94,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -163,7 +158,7 @@ class Installer implements MessageReporter {
 			$this->messageReporter
 		);
 
-		if ( $this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) === false ) {
+		if ( !$this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) ) {
 			return $this->printBottom();
 		}
 
@@ -261,7 +256,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param bool $verbose
 	 */
-	public function uninstall( $verbose = true ) {
+	public function uninstall( $verbose = true ): bool {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->initMessageReporter( $verbose );
@@ -311,7 +306,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		ob_start();
 		print $message;
 		ob_flush();
@@ -394,7 +389,7 @@ class Installer implements MessageReporter {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function outputReport( $timer ) {
+	private function outputReport( Timer $timer ): void {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$keys = $timer->keys;
 
@@ -417,7 +412,7 @@ class Installer implements MessageReporter {
 		}
 	}
 
-	private function printHead() {
+	private function printHead(): void {
 		if (
 			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
 			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
@@ -427,7 +422,7 @@ class Installer implements MessageReporter {
 		}
 	}
 
-	private function printBottom() {
+	private function printBottom(): bool {
 		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
 			$this->messageReporter->reportMessage( $this->cliMsgFormatter->section( '', 0, '=' ) );
 			$this->messageReporter->reportMessage( "\n" );

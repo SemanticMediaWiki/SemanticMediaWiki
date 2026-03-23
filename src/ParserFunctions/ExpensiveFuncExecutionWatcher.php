@@ -3,7 +3,7 @@
 namespace SMW\ParserFunctions;
 
 use SMW\ParserData;
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @private
@@ -41,7 +41,7 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @param int $expensiveThreshold
 	 */
-	public function setExpensiveThreshold( $expensiveThreshold ) {
+	public function setExpensiveThreshold( $expensiveThreshold ): void {
 		$this->expensiveThreshold = $expensiveThreshold;
 	}
 
@@ -50,7 +50,7 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @param int|bool $expensiveExecutionLimit
 	 */
-	public function setExpensiveExecutionLimit( $expensiveExecutionLimit ) {
+	public function setExpensiveExecutionLimit( $expensiveExecutionLimit ): void {
 		$this->expensiveExecutionLimit = $expensiveExecutionLimit;
 	}
 
@@ -61,7 +61,7 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @return bool
 	 */
-	public function hasReachedExpensiveLimit( Query $query ) {
+	public function hasReachedExpensiveLimit( Query $query ): bool {
 		if ( $this->expensiveExecutionLimit === false ) {
 			return false;
 		}
@@ -84,7 +84,7 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @return bool
 	 */
-	public function incrementExpensiveCount( Query $query ) {
+	public function incrementExpensiveCount( Query $query ): void {
 		if ( $this->expensiveExecutionLimit === false || $query->getLimit() == 0 || $query->getOption( Query::PROC_QUERY_TIME ) < $this->expensiveThreshold ) {
 			return;
 		}

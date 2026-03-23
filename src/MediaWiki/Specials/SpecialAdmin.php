@@ -39,7 +39,7 @@ class SpecialAdmin extends SpecialPage {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function doesWrites() {
+	public function doesWrites(): bool {
 		return true;
 	}
 
@@ -130,7 +130,7 @@ class SpecialAdmin extends SpecialPage {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group';
 	}
 
@@ -198,7 +198,7 @@ class SpecialAdmin extends SpecialPage {
 		return $html;
 	}
 
-	private function msg_text( $key, $type = Message::TEXT ) {
+	private function msg_text( string $key, $type = Message::TEXT ): string {
 		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 

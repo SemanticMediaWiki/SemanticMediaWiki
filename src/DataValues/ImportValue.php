@@ -2,12 +2,11 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\Services\ServicesFactory;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
@@ -110,12 +109,12 @@ class ImportValue extends DataValue {
 				$this->addErrorMsg( $message );
 			}
 
-			$this->m_dataitem = new DIBlob( 'ERROR' );
+			$this->m_dataitem = new Blob( 'ERROR' );
 			return;
 		}
 
 		// Encoded string for DB storage
-		$this->m_dataitem = new DIBlob(
+		$this->m_dataitem = new Blob(
 			$this->namespace . ' ' .
 			$this->term . ' ' .
 			$this->uri . ' ' .
@@ -135,8 +134,8 @@ class ImportValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 
@@ -199,7 +198,7 @@ class ImportValue extends DataValue {
 	/**
 	 * @see DataValue::getShortHTMLText
 	 */
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linker = null ): string {
 		return htmlspecialchars( $this->qname );
 	}
 
@@ -258,11 +257,11 @@ class ImportValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getImportReference() {
+	public function getImportReference(): string {
 		return $this->namespace . ':' . $this->term . '|' . $this->uri;
 	}
 
-	private function createCaption( $namespace, $qname, $uri, $declarativeName ) {
+	private function createCaption( $namespace, $qname, $uri, $declarativeName ): string {
 		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " . Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::TEXT );
 	}
 

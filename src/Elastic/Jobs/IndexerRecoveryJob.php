@@ -3,7 +3,7 @@
 namespace SMW\Elastic\Jobs;
 
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
@@ -53,9 +53,9 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @return string
 	 */
-	public static function makeCacheKey( $subject ) {
+	public static function makeCacheKey( $subject ): string {
 		if ( $subject instanceof Title ) {
-			$subject = DIWikiPage::newFromTitle( $subject );
+			$subject = WikiPage::newFromTitle( $subject );
 		}
 
 		return smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() );
@@ -66,7 +66,7 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @param Document $document
 	 */
-	public static function pushFromDocument( Document $document ) {
+	public static function pushFromDocument( Document $document ): void {
 		$cache = ApplicationFactory::getInstance()->getCache();
 		$subject = $document->getSubject();
 
@@ -90,7 +90,7 @@ class IndexerRecoveryJob extends Job {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	public static function pushFromParams( Title $title, array $params ) {
+	public static function pushFromParams( Title $title, array $params ): void {
 		$indexerRecoveryJob = new IndexerRecoveryJob(
 			$title,
 			$params
@@ -104,7 +104,7 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @since  3.0
 	 */
-	public function allowRetries() {
+	public function allowRetries(): bool {
 		return false;
 	}
 
@@ -182,17 +182,17 @@ class IndexerRecoveryJob extends Job {
 		$job->insert();
 	}
 
-	private function delete( array $idList ) {
+	private function delete( array $idList ): void {
 		$this->indexer->delete( $idList );
 	}
 
-	private function create( $hash ) {
-		$this->indexer->create( DIWikiPage::doUnserialize( $hash ) );
+	private function create( $hash ): void {
+		$this->indexer->create( WikiPage::doUnserialize( $hash ) );
 	}
 
-	private function index( $cache, $hash ) {
+	private function index( $cache, $hash ): void {
 		$key = self::makeCacheKey(
-			DIWikiPage::doUnserialize( $hash )
+			WikiPage::doUnserialize( $hash )
 		);
 
 		$document = null;

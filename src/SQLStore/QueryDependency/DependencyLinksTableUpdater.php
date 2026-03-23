@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -33,14 +33,14 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->store;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$updateList = [];
 	}
 
@@ -66,7 +66,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		foreach ( self::$updateList as $sid => $dependencyList ) {
 
 			if ( $dependencyList === [] ) {
@@ -83,7 +83,7 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @param array $deleteIdList
 	 */
-	public function deleteDependenciesFromList( array $deleteIdList ) {
+	public function deleteDependenciesFromList( array $deleteIdList ): void {
 		$this->logger->info(
 			[ 'QueryDependency', 'Delete dependencies: {list}' ],
 			[ 'method' => __METHOD__, 'role' => 'developer', 'list' => json_encode( $deleteIdList ) ]
@@ -138,14 +138,15 @@ class DependencyLinksTableUpdater {
 		);
 
 		if ( $sid == 0 ) {
-			return $connection->endAtomicTransaction( __METHOD__ );
+			$connection->endAtomicTransaction( __METHOD__ );
+			return;
 		}
 
 		$inserts = [];
 
 		foreach ( $dependencyList as $dependency ) {
 
-			if ( !$dependency instanceof DIWikiPage ) {
+			if ( !$dependency instanceof WikiPage ) {
 				continue;
 			}
 
@@ -167,7 +168,8 @@ class DependencyLinksTableUpdater {
 		}
 
 		if ( $inserts === [] ) {
-			return $connection->endAtomicTransaction( __METHOD__ );
+			$connection->endAtomicTransaction( __METHOD__ );
+			return;
 		}
 
 		// MW's multi-array insert needs a numeric dimensional array but the key
@@ -191,14 +193,14 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string $subobjectName
 	 *
 	 * @return int
 	 */
-	public function getId( DIWikiPage $subject, $subobjectName = '' ) {
+	public function getId( WikiPage $subject, $subobjectName = '' ) {
 		if ( $subobjectName !== '' ) {
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$subject->getDBkey(),
 				$subject->getNamespace(),
 				$subject->getInterwiki(),
@@ -216,10 +218,10 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string $subobjectName
 	 */
-	public function createId( DIWikiPage $subject, $subobjectName = '' ) {
+	public function createId( WikiPage $subject, $subobjectName = '' ) {
 		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),

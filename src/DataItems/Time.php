@@ -63,29 +63,24 @@ class Time extends DataItem implements CalendarModel {
 	protected $m_model;
 	/**
 	 * Number of year, possibly negative.
-	 * @var int
 	 */
-	protected $m_year;
+	protected int $m_year;
 	/**
 	 * Number of month.
-	 * @var int
 	 */
-	protected $m_month;
+	protected int $m_month;
 	/**
 	 * Number of day.
-	 * @var int
 	 */
-	protected $m_day;
+	protected int $m_day;
 	/**
 	 * Hours of the day.
-	 * @var int
 	 */
-	protected $m_hours;
+	protected int $m_hours;
 	/**
 	 * Minutes of the hour.
-	 * @var int
 	 */
-	protected $m_minutes;
+	protected int $m_minutes;
 	/**
 	 * Seconds of the minute.
 	 * @var int
@@ -97,10 +92,7 @@ class Time extends DataItem implements CalendarModel {
 	 */
 	protected $timezone;
 
-	/**
-	 * @var int|null
-	 */
-	protected $era = null;
+	protected int $era;
 
 	/**
 	 * @var int
@@ -162,7 +154,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_TIME;
 	}
 
@@ -205,7 +197,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getEra() {
+	public function getEra(): int {
 		return $this->era;
 	}
 
@@ -214,7 +206,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getYear() {
+	public function getYear(): int {
 		return $this->m_year;
 	}
 
@@ -223,7 +215,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getMonth() {
+	public function getMonth(): int {
 		return $this->m_month;
 	}
 
@@ -232,7 +224,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getDay() {
+	public function getDay(): int {
 		return $this->m_day;
 	}
 
@@ -241,7 +233,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getHour() {
+	public function getHour(): int {
 		return $this->m_hours;
 	}
 
@@ -250,7 +242,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getMinute() {
+	public function getMinute(): int {
 		return $this->m_minutes;
 	}
 
@@ -268,7 +260,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return string
 	 */
-	public function getCalendarModelLiteral() {
+	public function getCalendarModelLiteral(): string {
 		$literal = [
 			self::CM_GREGORIAN => '',
 			self::CM_JULIAN    => 'JL'
@@ -285,7 +277,7 @@ class Time extends DataItem implements CalendarModel {
 	 * @return self
 	 * @throws DataItemException
 	 */
-	public static function newFromDateTime( ExtendedDateTime $dateTime ) {
+	public static function newFromDateTime( ExtendedDateTime $dateTime ): Time {
 		$calendarModel = self::CM_JULIAN;
 
 		$year = $dateTime->format( 'Y' );
@@ -306,7 +298,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return ExtendedDateTime
 	 */
-	public function asDateTime() {
+	public function asDateTime(): ExtendedDateTime {
 		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
 
 		// Avoid "Failed to parse time string (-900-02-02 00:00:00) at
@@ -338,7 +330,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return self|false
 	 */
-	public static function newFromTimestamp( $timestamp ) {
+	public static function newFromTimestamp( $timestamp ): false|Time {
 		$timestamp = wfTimestamp( TS_MW, (string)$timestamp );
 
 		if ( $timestamp === false ) {
@@ -443,7 +435,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return string
 	 */
-	public function getSerialization() {
+	public function getSerialization(): string {
 		$result = strval( $this->m_model ) . '/' . ( $this->era > 0 ? '+' : '' ) . strval( $this->m_year );
 
 		if ( $this->m_precision >= self::PREC_YM ) {
@@ -466,7 +458,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return self
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): self {
 		$parts = explode( '/', $serialization, 8 );
 		$values = [];
 
@@ -513,7 +505,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return self
 	 */
-	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ) {
+	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ): self {
 		$hour = $minute = $second = false;
 		$year = $month = $day = false;
 		$jdValue = JulianDay::format( $jdValue );
@@ -545,7 +537,7 @@ class Time extends DataItem implements CalendarModel {
 	 * @param $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
 	 * @return bool
 	 */
-	public static function isLeapYear( $year, $calendarmodel ) {
+	public static function isLeapYear( $year, $calendarmodel ): bool {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
 		if ( $calendarmodel == self::CM_JULIAN ) {
 			return ( $astroyear % 4 ) == 0;
@@ -582,18 +574,18 @@ class Time extends DataItem implements CalendarModel {
 		return $di->getSortKey() === $this->getSortKey();
 	}
 
-	private function isOutOfBoundsBySome() {
+	private function isOutOfBoundsBySome(): bool {
 		return ( $this->m_hours < 0 ) || ( $this->m_hours > 23 ) ||
 		( $this->m_minutes < 0 ) || ( $this->m_minutes > 59 ) ||
 		( $this->m_seconds < 0 ) || ( $this->m_seconds > 59 ) ||
 		( $this->m_month < 1 ) || ( $this->m_month > 12 );
 	}
 
-	private function isOutOfBoundsByDayNumberOfMonth() {
+	private function isOutOfBoundsByDayNumberOfMonth(): bool {
 		return $this->m_day > self::getDayNumberForMonth( $this->m_month, $this->m_year, $this->m_model );
 	}
 
-	private function setPrecisionLevelBy( $month, $day, $hour ) {
+	private function setPrecisionLevelBy( $month, $day, $hour ): void {
 		if ( $month === false ) {
 			$this->m_precision = self::PREC_Y;
 		} elseif ( $day === false ) {

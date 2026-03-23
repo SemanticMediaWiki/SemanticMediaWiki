@@ -210,7 +210,7 @@ class FacetBuilder {
 		return $html;
 	}
 
-	private function createClearFilter( $name, $count = 1 ) {
+	private function createClearFilter( string $name, int $count = 1 ) {
 		return $this->templateParser->processTemplate(
 			'items.clear.button',
 			[

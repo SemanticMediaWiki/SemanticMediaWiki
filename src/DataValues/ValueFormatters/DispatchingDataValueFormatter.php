@@ -3,7 +3,7 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
-use SMWDataValue as DataValue;
+use SMW\DataValues\DataValue;
 
 /**
  * @private
@@ -30,7 +30,7 @@ class DispatchingDataValueFormatter {
 	 *
 	 * @param DataValueFormatter $dataValueFormatter
 	 */
-	public function addDataValueFormatter( DataValueFormatter $dataValueFormatter ) {
+	public function addDataValueFormatter( DataValueFormatter $dataValueFormatter ): void {
 		$this->dataValueFormatters[] = $dataValueFormatter;
 	}
 
@@ -44,7 +44,7 @@ class DispatchingDataValueFormatter {
 	 *
 	 * @param DataValueFormatter $dataValueFormatter
 	 */
-	public function addDefaultDataValueFormatter( DataValueFormatter $dataValueFormatter ) {
+	public function addDefaultDataValueFormatter( DataValueFormatter $dataValueFormatter ): void {
 		$this->defaultDataValueFormatters[] = $dataValueFormatter;
 	}
 

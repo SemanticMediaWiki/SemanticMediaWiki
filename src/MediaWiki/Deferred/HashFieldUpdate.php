@@ -44,7 +44,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	 * @param int $id
 	 * @param string $hash
 	 */
-	public static function addUpdate( Database $connection, $id, $hash ) {
+	public static function addUpdate( Database $connection, $id, $hash ): void {
 		$hashFieldUpdate = new self( $connection, $id, $hash );
 
 		$hashFieldUpdate->setLogger(
@@ -65,7 +65,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	 *
 	 * @since 3.1
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		$this->logger->info(
 			[ 'DeferrableUpdate', 'HashFieldUpdate', "ID: {id}, sha1:{hash}" ],
 			[ 'role' => 'user', 'id' => $this->id, 'hash' => $this->hash ]

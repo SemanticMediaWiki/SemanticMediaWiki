@@ -3,8 +3,8 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Html\Html;
-use SMW\DIProperty;
-use SMWDataItem;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 
 /**
  * @private
@@ -138,7 +138,7 @@ class ExternalIdentifierValue extends StringValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @return SMWDataItem
+	 * @return DataItem
 	 */
 	public function getUri() {
 		if ( !$this->isValid() ) {
@@ -169,7 +169,7 @@ class ExternalIdentifierValue extends StringValue {
 
 		$dataValue = $this->dataValueServiceFactory->getDataValueFactory()->newDataValueByItem(
 			$dataItem,
-			new DIProperty( '_PEFU' )
+			new Property( '_PEFU' )
 		);
 
 		if ( $dataValue->getErrors() !== [] ) {
@@ -198,7 +198,10 @@ class ExternalIdentifierValue extends StringValue {
 		return $this->uri;
 	}
 
-	private function filterParameters( &$value ) {
+	/**
+	 * @return string[]
+	 */
+	private function filterParameters( &$value ): array {
 		$parameters = [];
 		$matches = [];
 
@@ -224,7 +227,7 @@ class ExternalIdentifierValue extends StringValue {
 		return $parameters;
 	}
 
-	private function makeNonlinkedWikiText( $url ) {
+	private function makeNonlinkedWikiText( $url ): string|array {
 		return str_replace( ':', '&#58;', $url );
 	}
 

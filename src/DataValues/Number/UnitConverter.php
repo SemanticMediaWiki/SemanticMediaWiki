@@ -2,11 +2,11 @@
 
 namespace SMW\DataValues\Number;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataValues\NumberValue;
 use SMW\EntityCache;
 use SMW\Property\SpecificationLookup;
-use SMWDIBlob as DIBlob;
-use SMWNumberValue as NumberValue;
 
 /**
  * Returns conversion data from a cached instance to enable a responsive query
@@ -106,7 +106,7 @@ class UnitConverter {
 	 *
 	 * @param NumberValue $numberValue
 	 */
-	public function loadConversionData( NumberValue $numberValue ) {
+	public function loadConversionData( NumberValue $numberValue ): void {
 		$this->errors = [];
 		$property = $numberValue->getProperty();
 
@@ -131,7 +131,7 @@ class UnitConverter {
 	 *
 	 * @param NumberValue $numberValue
 	 */
-	public function fetchConversionData( NumberValue $numberValue ) {
+	public function fetchConversionData( NumberValue $numberValue ): void {
 		$property = $numberValue->getProperty();
 
 		$this->unitIds = [];
@@ -142,7 +142,7 @@ class UnitConverter {
 
 		$factors = $this->propertySpecificationLookup->getSpecification(
 			$property->getDiWikiPage(),
-			new DIProperty( '_CONV' )
+			new Property( '_CONV' )
 		);
 
 		$numberValue->setContextPage( $property->getDiWikiPage() );
@@ -159,7 +159,7 @@ class UnitConverter {
 		foreach ( $factors as $di ) {
 
 			// ignore corrupted data and bogus inputs
-			if ( !( $di instanceof DIBlob ) ||
+			if ( !( $di instanceof Blob ) ||
 				 ( $numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
 				 ( $number == 0 ) ) {
 				continue;
@@ -187,7 +187,7 @@ class UnitConverter {
 		$this->unitIds[''] = '';
 	}
 
-	private function initConversionData( $subject, $key, $numberValue ) {
+	private function initConversionData( $subject, string $key, NumberValue $numberValue ): void {
 		$this->fetchConversionData( $numberValue );
 
 		foreach ( $this->errors as $error ) {
@@ -212,7 +212,7 @@ class UnitConverter {
 		$this->entityCache->associate( $subject, $key );
 	}
 
-	private function matchUnitAliases( $numberValue, $number, $asPrefix, array $unitAliases ) {
+	private function matchUnitAliases( NumberValue $numberValue, $number, $asPrefix, array $unitAliases ): void {
 		$first = true;
 
 		foreach ( $unitAliases as $unit ) {

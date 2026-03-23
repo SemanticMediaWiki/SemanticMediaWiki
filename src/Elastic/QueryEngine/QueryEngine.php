@@ -4,17 +4,17 @@ namespace SMW\Elastic\QueryEngine;
 
 use MediaWiki\Html\Html;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Options;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\ScoreSet;
 use SMW\QueryEngine as IQueryEngine;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -31,15 +31,9 @@ class QueryEngine implements IQueryEngine {
 	 */
 	private $queryFactory;
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private FieldMapper $fieldMapper;
 
-	/**
-	 * @var SortBuilder
-	 */
-	private $sortBuilder;
+	private SortBuilder $sortBuilder;
 
 	/**
 	 * @var array
@@ -194,7 +188,7 @@ class QueryEngine implements IQueryEngine {
 		return $result;
 	}
 
-	private function newDebugQueryResult( $params ) {
+	private function newDebugQueryResult( array $params ) {
 		$params['explain'] = $this->options->dotGet( 'query.debug.explain', false );
 
 		$connection = $this->store->getConnection( 'elastic' );
@@ -231,7 +225,7 @@ class QueryEngine implements IQueryEngine {
 		return $html;
 	}
 
-	private function newCountQueryResult( $query, $params ) {
+	private function newCountQueryResult( Query $query, array $params ) {
 		$connection = $this->store->getConnection( 'elastic' );
 		$result = $connection->count( $params );
 
@@ -250,7 +244,7 @@ class QueryEngine implements IQueryEngine {
 		return $queryResult;
 	}
 
-	private function newInstanceQueryResult( $query, array $params ) {
+	private function newInstanceQueryResult( Query $query, array $params ) {
 		$connection = $this->store->getConnection( 'elastic' );
 		$scoreSet = new ScoreSet();
 		$excerpts = new Excerpts();
@@ -302,7 +296,7 @@ class QueryEngine implements IQueryEngine {
 				$dbKey[0] === '_' ) {
 
 				try {
-					$property = DIProperty::newFromUserLabel( $dbKey );
+					$property = Property::newFromUserLabel( $dbKey );
 				} catch ( PredefinedPropertyLabelMismatchException $e ) {
 					// Keep the dataItem as-is, this may hint to an outdated
 					// predefined property
@@ -339,7 +333,7 @@ class QueryEngine implements IQueryEngine {
 		return $queryResult;
 	}
 
-	private function addHighlight( &$body ) {
+	private function addHighlight( array &$body ): void {
 		if ( ( $type = $this->options->dotGet( 'query.highlight.fragment.type', false ) ) === false ) {
 			return;
 		}

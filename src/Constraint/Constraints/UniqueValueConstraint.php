@@ -5,10 +5,10 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\DataValues\DataValue;
 use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataValue as DataValue;
 
 /**
  * The `unique_value_constraint` implicitly requires a `GLOBAL_SCOPE` (instead
@@ -62,7 +62,7 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -71,7 +71,7 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraint, $dataValue ) {
+	public function checkConstraint( array $constraint, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -85,7 +85,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 	}
 
-	private function check( $dataValue ) {
+	private function check( DataValue $dataValue ): void {
 		$property = $dataValue->getProperty();
 		$contextPage = $dataValue->getContextPage();
 
@@ -156,7 +156,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 	}
 
-	private function isKnown( $dataValue ) {
+	private function isKnown( DataValue $dataValue ): bool {
 		$contextPage = $dataValue->getContextPage();
 		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
@@ -174,14 +174,14 @@ class UniqueValueConstraint implements Constraint {
 		return false;
 	}
 
-	private function hasAnnotation( $dataValue ) {
+	private function hasAnnotation( DataValue $dataValue ): bool {
 		$key = $dataValue->getProperty()->getKey();
 		$hash = $dataValue->getContextPage()->getHash();
 
 		return isset( $this->annotations[$hash][$key] );
 	}
 
-	private function reportError( $dataValue, $error ) {
+	private function reportError( DataValue $dataValue, array $error ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

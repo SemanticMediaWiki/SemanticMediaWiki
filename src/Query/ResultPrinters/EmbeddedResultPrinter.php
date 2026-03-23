@@ -3,8 +3,8 @@
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\MediaWikiServices;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
 
 /**
@@ -38,7 +38,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return true;
 	}
 
@@ -74,7 +74,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function getResultText( QueryResult $queryResult, $outputMode ) {
+	protected function getResultText( QueryResult $queryResult, $outputMode ): string {
 		/**
 		 * @see ResultPrinter::transcludeAnnotation
 		 *
@@ -93,7 +93,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		return $this->buildText( $queryResult, $outputMode );
 	}
 
-	private function buildText( $queryResult, $outputMode ) {
+	private function buildText( QueryResult $queryResult, $outputMode ): string {
 		// REMOVE the parser reference
 		// Use $queryResult->getQuery()->getContextPage()
 		// No page should embed itself, find out who we are:
@@ -132,7 +132,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 
 		// Print all result rows:
 		foreach ( $queryResult->getResults() as $diWikiPage ) {
-			if ( $diWikiPage instanceof DIWikiPage ) { // ensure that we deal with title-likes
+			if ( $diWikiPage instanceof WikiPage ) { // ensure that we deal with title-likes
 				$dvWikiPage = $dataValueFactory->newDataValueByItem( $diWikiPage, null );
 				$result .= $embstart;
 

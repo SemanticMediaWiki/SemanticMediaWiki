@@ -4,11 +4,11 @@ namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
 use SMW\DataValueFactory;
+use SMW\DataValues\RecordValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMWRecordValue as RecordValue;
 
 /**
  * @private
@@ -30,7 +30,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isBuilderFor( $serialization ) {
+	public function isBuilderFor( $serialization ): bool {
 		return $serialization instanceof RecordValue || $serialization instanceof ReferenceValue;
 	}
 
@@ -89,7 +89,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 		return $this->getDescriptionFor( $subdescriptions );
 	}
 
-	private function getDescriptionFor( $subdescriptions ) {
+	private function getDescriptionFor( array $subdescriptions ) {
 		switch ( count( $subdescriptions ) ) {
 			case 0:
 				return new ThingDescription();
@@ -100,7 +100,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 		}
 	}
 
-	private function getDescriptionForProperty( $diProperty, $values, &$valueIndex, $propertyIndex ) {
+	private function getDescriptionForProperty( $diProperty, array $values, int|string &$valueIndex, int $propertyIndex ): ?SomeProperty {
 		$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
 		$beforePrepareValue = $values[$valueIndex];
 

@@ -3,12 +3,12 @@
 namespace SMW\Exporter;
 
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Localizer\Localizer;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -37,7 +37,7 @@ class DataItemMatchFinder {
 	 *
 	 * @return DataItem|null
 	 */
-	public function matchExpElement( ExpElement $expElement ) {
+	public function matchExpElement( ExpElement $expElement ): ?WikiPage {
 		$dataItem = null;
 
 		if ( !$expElement instanceof ExpResource ) {
@@ -45,7 +45,7 @@ class DataItemMatchFinder {
 		}
 
 		$dataItem = $expElement->getDataItem();
-		if ( $dataItem !== null && $dataItem instanceof DIWikiPage ) {
+		if ( $dataItem !== null && $dataItem instanceof WikiPage ) {
 			// We already have a valid item
 			return $dataItem;
 		}
@@ -62,7 +62,7 @@ class DataItemMatchFinder {
 		return $dataItem;
 	}
 
-	private function matchToWikiNamespaceUri( $uri ) {
+	private function matchToWikiNamespaceUri( string $uri ): ?WikiPage {
 		$dataItem = null;
 		$localName = substr( $uri, strlen( $this->wikiNamespace ) );
 
@@ -80,25 +80,25 @@ class DataItemMatchFinder {
 
 		// No extra NS
 		if ( count( $parts ) == 1 ) {
-			return new DIWikiPage( $dbKey, NS_MAIN, '', $subobjectname );
+			return new WikiPage( $dbKey, NS_MAIN, '', $subobjectname );
 		}
 
 		$namespaceId = $this->matchToNamespaceName( $parts[0] );
 
 		if ( $namespaceId != -1 && $namespaceId !== false ) {
-			$dataItem = new DIWikiPage( $parts[1], $namespaceId, '', $subobjectname );
+			$dataItem = new WikiPage( $parts[1], $namespaceId, '', $subobjectname );
 		} else {
 			$title = Title::newFromDBkey( $dbKey );
 
 			if ( $title !== null ) {
-				$dataItem = new DIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), $subobjectname );
+				$dataItem = new WikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), $subobjectname );
 			}
 		}
 
 		return $dataItem;
 	}
 
-	private function matchToNamespaceName( $name ) {
+	private function matchToNamespaceName( string $name ) {
 		// try the by far most common cases directly before using Title
 		$namespaceName = str_replace( '_', ' ', $name );
 
@@ -116,7 +116,7 @@ class DataItemMatchFinder {
 		return $namespaceId;
 	}
 
-	private function matchToUnknownWikiNamespaceUri( $uri ) {
+	private function matchToUnknownWikiNamespaceUri( string $uri ): ?WikiPage {
 		$dataItem = null;
 
 		// Sesame: Not a valid (absolute) URI: _node1abjt1k9bx17
@@ -156,7 +156,7 @@ class DataItemMatchFinder {
 				$namespace = NS_MAIN;
 			}
 
-			$dataItem = new DIWikiPage(
+			$dataItem = new WikiPage(
 				$this->getFittingDBKey( $dbKey, $namespace ),
 				$namespace
 			);
@@ -165,7 +165,7 @@ class DataItemMatchFinder {
 		return $dataItem;
 	}
 
-	private function getFittingDBKey( $dbKey, $namespace ) {
+	private function getFittingDBKey( $dbKey, int|string $namespace ) {
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinks
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinkOverrides
 		if ( $GLOBALS['wgCapitalLinks'] || ( isset( $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) && $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) ) {

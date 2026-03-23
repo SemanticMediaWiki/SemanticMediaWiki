@@ -2,6 +2,7 @@
 
 namespace SMW\Localizer;
 
+use Exception;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Language\Language;
@@ -11,7 +12,7 @@ use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\LocalTime;
@@ -68,7 +69,7 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -77,7 +78,7 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public function getContentLanguage() {
+	public function getContentLanguage(): Language {
 		return $this->contentLanguage;
 	}
 
@@ -147,14 +148,14 @@ class Localizer {
 	 *
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage|Title|null $title
+	 * @param WikiPage|Title|null $title
 	 *
 	 * @return Language
 	 */
-	public function getPreferredContentLanguage( $title = null ) {
+	public function getPreferredContentLanguage( $title = null ): Language {
 		$language = '';
 
-		if ( $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage ) {
 			$title = $title->getTitle();
 		}
 
@@ -167,7 +168,7 @@ class Localizer {
 			// is not registered
 			try {
 				$language = $title->getPageLanguage();
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 
 			}
 		}
@@ -182,7 +183,7 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public function getLanguage( $languageCode = '' ) {
+	public function getLanguage( $languageCode = '' ): Language {
 		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
 			return $this->getContentLanguage();
 		}
@@ -219,7 +220,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function getNsText( $index ) {
+	public function getNsText( $index ): string {
 		return str_replace( '_', ' ', $this->contentLanguage->getNsText( $index ) );
 	}
 
@@ -276,7 +277,7 @@ class Localizer {
 	 *
 	 * @return bool
 	 */
-	public static function isKnownLanguageTag( $languageCode ) {
+	public static function isKnownLanguageTag( $languageCode ): bool {
 		$languageCode = mb_strtolower( $languageCode );
 		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
@@ -304,7 +305,7 @@ class Localizer {
 	 *
 	 * @return string|false
 	 */
-	public static function getLanguageCodeFrom( &$value ) {
+	public static function getLanguageCodeFrom( &$value ): string|false {
 		return self::getAnnotatedLanguageCodeFrom( $value );
 	}
 
@@ -316,7 +317,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function createTextWithNamespacePrefix( $index, $text ) {
+	public function createTextWithNamespacePrefix( $index, $text ): string {
 		return $this->getNsText( $index ) . ':' . $text;
 	}
 
@@ -328,7 +329,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function getCanonicalizedUrlByNamespace( $index, $url ) {
+	public function getCanonicalizedUrlByNamespace( $index, $url ): string {
 		$namespace = $this->getNsText( $index );
 
 		if ( strpos( $url, 'title=' ) !== false ) {
@@ -359,7 +360,7 @@ class Localizer {
 	 *
 	 * @return string|false
 	 */
-	public static function getAnnotatedLanguageCodeFrom( &$value ) {
+	public static function getAnnotatedLanguageCodeFrom( &$value ): false|string {
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
 		}
@@ -411,7 +412,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public static function convertDoubleWidth( $string ) {
+	public static function convertDoubleWidth( $string ): string {
 		static $full = null;
 		static $half = null;
 

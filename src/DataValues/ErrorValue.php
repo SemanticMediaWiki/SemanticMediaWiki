@@ -1,0 +1,85 @@
+<?php
+
+namespace SMW\DataValues;
+
+use SMW\DataItems\DataItem;
+
+/**
+ * This datavalue implements error datavalues, a kind of pseudo data value that
+ * is used in places where a data value is expected but no more meaningful
+ * value could be created. It is always invalid and never gets stored or
+ * exported, but it can help to transport an error message.
+ *
+ * @note DataValue will return a data item of type SMWDIError for invalid
+ * data values. Hence this is the DI type of this DV, even if not mentioned in
+ * this file.
+ *
+ * @author Markus Krötzsch
+ * @ingroup DataValues
+ */
+class ErrorValue extends DataValue {
+
+	public function __construct( $typeid, $errormsg = '', $uservalue = '', $caption = false ) {
+		parent::__construct( $typeid );
+		$this->m_caption = ( $caption !== false ) ? $caption : $uservalue;
+		if ( $errormsg !== '' ) {
+			$this->addErrorMsg( $errormsg );
+		}
+	}
+
+	protected function parseUserValue( $value ) {
+		if ( $this->m_caption === false ) {
+			$this->m_caption = $value;
+		}
+		$this->addErrorMsg( [ 'smw-datavalue-parse-error', $value ] );
+	}
+
+	/**
+	 * @see DataValue::loadDataItem()
+	 * @param $dataItem DataItem
+	 * @return bool
+	 */
+	protected function loadDataItem( DataItem $dataItem ): bool {
+		if ( $dataItem->getDIType() == DataItem::TYPE_ERROR ) {
+			$this->addError( $dataItem->getErrors() );
+			$this->m_caption = $this->getErrorText();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getShortWikiText( $linked = null ) {
+		return $this->m_caption;
+	}
+
+	public function getShortHTMLText( $linker = null ): string {
+		return htmlspecialchars( $this->getShortWikiText( $linker ) );
+	}
+
+	public function getLongWikiText( $linked = null ) {
+		return $this->getErrorText();
+	}
+
+	public function getLongHTMLText( $linker = null ) {
+		return $this->getErrorText();
+	}
+
+	public function getWikiValue() {
+		if ( $this->m_dataitem !== null ) {
+			return $this->m_dataitem->getString();
+		}
+
+		return $this->getErrorText();
+	}
+
+	public function isValid(): bool {
+		return false;
+	}
+
+}
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( ErrorValue::class, 'SMWErrorValue' );

@@ -35,7 +35,7 @@ class CountMapField {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -44,7 +44,7 @@ class CountMapField {
 	 *
 	 * @param array $log
 	 */
-	public function check( array $log = [] ) {
+	public function check( array $log = [] ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

@@ -3,17 +3,17 @@
 namespace SMW\Query\Result;
 
 use RuntimeException;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * Returns the result content (DI objects) for a single PrintRequest, representing
@@ -34,7 +34,7 @@ class FieldItemFinder {
 	private $queryToken;
 
 	/**
-	 * @var DIWikiPage[]
+	 * @var WikiPage[]
 	 */
 	private $dataItems = [];
 
@@ -66,7 +66,7 @@ class FieldItemFinder {
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function setPrintRequest( PrintRequest $printRequest ) {
+	public function setPrintRequest( PrintRequest $printRequest ): void {
 		$this->printRequest = $printRequest;
 		$this->itemFetcher->setPrintRequest( $this->printRequest );
 	}
@@ -76,7 +76,7 @@ class FieldItemFinder {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( ?QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ): void {
 		if ( $queryToken === null ) {
 			return;
 		}
@@ -120,7 +120,7 @@ class FieldItemFinder {
 			// Rely on the prefetch
 			self::$catCache = $this->itemFetcher->fetch(
 				[ $dataItem ],
-				new DIProperty( '_INST' ),
+				new Property( '_INST' ),
 				$options
 			);
 
@@ -137,7 +137,7 @@ class FieldItemFinder {
 			if ( self::$catCacheObj !== $dataItem->getHash() ) {
 				self::$catCache = $this->store->getPropertyValues(
 					$dataItem,
-					new DIProperty( '_INST' )
+					new Property( '_INST' )
 				);
 				self::$catCacheObj = $dataItem->getHash();
 			}
@@ -152,7 +152,7 @@ class FieldItemFinder {
 				}
 			}
 
-			return [ new DIBoolean( $found ) ];
+			return [ new Boolean( $found ) ];
 		}
 
 		// Request all property values of a certain attribute of the current element.
@@ -173,7 +173,7 @@ class FieldItemFinder {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function getRequestOptions( $useLimit = true ) {
+	public function getRequestOptions( $useLimit = true ): ?RequestOptions {
 		$limit = $useLimit ? $this->printRequest->getParameter( 'limit' ) : false;
 		$offset = $useLimit ? $this->printRequest->getParameter( 'offset' ) : false;
 		$order = trim( $this->printRequest->getParameter( 'order' ) );
@@ -210,7 +210,7 @@ class FieldItemFinder {
 		return $options;
 	}
 
-	private function getResultsForProperty( $dataItem ) {
+	private function getResultsForProperty( DataItem $dataItem ) {
 		$content = $this->fetchContent(
 			$dataItem
 		);
@@ -277,7 +277,7 @@ class FieldItemFinder {
 		return $content;
 	}
 
-	private function isMultiValueWithParameter( $parameter ) {
+	private function isMultiValueWithParameter( string $parameter ): bool {
 		return DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
 		$this->printRequest->getParameter( $parameter ) !== false;
 	}
@@ -302,10 +302,10 @@ class FieldItemFinder {
 		$requestOptions->isChain = false;
 		$requestOptions->isFirstChain = false;
 
-		// If it is a chain then try to find a connected DIWikiPage subject that
+		// If it is a chain then try to find a connected WikiPage subject that
 		// matches the property on the chained PrintRequest.
 		// For example, Number.Date.SomeThing will not return any meaningful results
-		// because Number will return a DINumber object and not a DIWikiPage.
+		// because Number will return a DINumber object and not a WikiPage.
 		// If on the other hand Has page.Number (with Number being the Last and
 		// `Has page` is of type Page) then the iteration will lookup on results
 		// for `Has page` and try to match a Number annotation on the results

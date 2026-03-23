@@ -7,9 +7,89 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
+### Bug fixes
+
+* Fixed incorrect timezone offset calculation for negative half-hour timezones such as Newfoundland (`-3:30`). The 30-minute component was always added positively, producing `-2.5` instead of the correct `-3.5`.
+
+### Deprecations
+
+* `enableSemantics()` is deprecated and now a no-op. `wfLoadExtension( 'SemanticMediaWiki' )` alone is sufficient to install SMW, aligning with standard MediaWiki extension conventions. The RDF namespace URI is now auto-derived from `Special:URIResolver` when not explicitly set. Users who set a custom `$smwgNamespace` in `LocalSettings.php` are unaffected.
+
+  If you used configuration preloading via `enableSemantics`:
+
+  ```php
+  // Before (deprecated)
+  enableSemantics( 'example.org' )->loadDefaultConfigFrom( 'media.php' );
+  ```
+
+  Replace with a direct `require`:
+
+  ```php
+  // After
+  wfLoadExtension( 'SemanticMediaWiki' );
+  require "$IP/extensions/SemanticMediaWiki/data/config/media.php";
+  ```
+
 * Replaced the vendored `Onoi\Tesa` text sanitizer library with PHP `intl` built-ins for fulltext search text processing. Users with `smwgEnabledFulltextSearch` enabled must run `rebuildFulltextSearchTable.php` after upgrading. Transliteration now uses ICU instead of a static mapping table, which produces minor differences for some characters (e.g., German ü→u instead of ü→ue). This does not affect search match quality.
 * Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
 * Removed the `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting. HTTP version negotiation is now handled by MediaWiki's HTTP layer. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped — SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory`.
+* Removed the deprecated root `DefaultSettings.php` shim (deprecated since 4.0.0). Code that loaded settings directly via `require .../DefaultSettings.php` should use `SemanticMediaWiki::getDefaultSettings()` instead.
+
+- The following class aliases are deprecated. They will be removed in a future update. Update any code referencing these to use the new namespaced class names.
+
+ | Deprecated alias | New class name |
+  |---|---|
+  | `SMWDIBlob` | `SMW\DataItems\Blob` |
+  | `SMWDIBoolean` | `SMW\DataItems\Boolean` |
+  | `SMW\DIConcept` | `SMW\DataItems\Concept` |
+  | `SMWDIContainer` | `SMW\DataItems\Container` |
+  | `SMWDataItem` | `SMW\DataItems\DataItem` |
+  | `SMWDIError` | `SMW\DataItems\Error` |
+  | `SMWDIGeoCoord` | `SMW\DataItems\GeoCoord` |
+  | `SMWDINumber` | `SMW\DataItems\Number` |
+  | `SMW\DIProperty` | `SMW\DataItems\Property` |
+  | `SMWDITime` | `SMW\DataItems\Time` |
+  | `SMWDIUri` | `SMW\DataItems\Uri` |
+  | `SMW\DIWikiPage` | `SMW\DataItems\WikiPage` |
+  | `SMWDataValue` | `SMW\DataValues\DataValue` |
+  | `SMWConceptValue` | `SMW\DataValues\ConceptValue` |
+  | `SMWErrorValue` | `SMW\DataValues\ErrorValue` |
+  | `SMWNumberValue` | `SMW\DataValues\NumberValue` |
+  | `SMWPropertyListValue` | `SMW\DataValues\PropertyListValue` |
+  | `SMWQuantityValue` | `SMW\DataValues\QuantityValue` |
+  | `SMWRecordValue` | `SMW\DataValues\RecordValue` |
+  | `SMWTimeValue` | `SMW\DataValues\TimeValue` |
+  | `SMWURIValue` | `SMW\DataValues\URIValue` |
+  | `SMWWikiPageValue` | `SMW\DataValues\WikiPageValue` |
+  | `SMWExpData` | `SMW\Export\ExpData` |
+  | `SMWExportController` | `SMW\Export\ExportController` |
+  | `SMWExporter` | `SMW\Export\Exporter` |
+  | `SMWQuery` | `SMW\Query\Query` |
+  | `SMWQueryProcessor` | `SMW\Query\QueryProcessor` |
+  | `SMW\QueryPrinterFactory` | `SMW\Query\QueryPrinterFactory` |
+  | `SMW\PropertiesQueryPage` | `SMW\QueryPages\PropertiesQueryPage` |
+  | `SMW\QueryPage` | `SMW\QueryPages\QueryPage` |
+  | `SMW\UnusedPropertiesQueryPage` | `SMW\QueryPages\UnusedPropertiesQueryPage` |
+  | `SMW\WantedPropertiesQueryPage` | `SMW\QueryPages\WantedPropertiesQueryPage` |
+  | `SMWSpecialOWLExport` | `SMW\MediaWiki\Specials\SpecialOWLExport` |
+  | `SMWSpecialTypes` | `SMW\MediaWiki\Specials\SpecialTypes` |
+  | `SMW\SpecialConcepts` | `SMW\MediaWiki\Specials\SpecialConcepts` |
+  | `SMW\SpecialPage` | `SMW\MediaWiki\Specials\SpecialPage` |
+  | `SMW\SpecialProperties` | `SMW\MediaWiki\Specials\SpecialProperties` |
+  | `SMW\SpecialUnusedProperties` | `SMW\MediaWiki\Specials\SpecialUnusedProperties` |
+  | `SMW\SpecialWantedProperties` | `SMW\MediaWiki\Specials\SpecialWantedProperties` |
+  | `SMW\MessageFormatter` | `SMW\Formatters\MessageFormatter` |
+  | `SMWInfolink` | `SMW\Formatters\Infolink` |
+  | `SMWPageLister` | `SMW\Formatters\PageLister` |
+  | `SMW\Highlighter` | `SMW\Formatters\Highlighter` |
+  | `SMW\RecurringEvents` | `SMW\Utils\RecurringEvents` |
+  | `SMW\SemanticData` | `SMW\DataModel\SemanticData` |
+  | `SMW\Subobject` | `SMW\DataModel\Subobject` |
+  | `SMWElasticStore` | `SMW\Elastic\ElasticStore` |
+  | `SMWSearch` | `SMW\MediaWiki\Search\ExtendedSearchEngine` |
+  | `SMWOutputs` | `SMW\MediaWiki\Outputs` |
+  | `SMWPageSchemas` | `SMW\MediaWiki\PageSchemas` |
+  | `SMW\ContentParser` | `SMW\Parser\ContentParser` |
 
 ## Upgrading
 

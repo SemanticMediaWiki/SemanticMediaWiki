@@ -2,9 +2,9 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\Query\ProfileAnnotator;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GPL-2.0-or-later
@@ -31,10 +31,10 @@ class FormatProfileAnnotator extends ProfileAnnotatorDecorator {
 		$this->addQueryFormat( $this->format );
 	}
 
-	private function addQueryFormat( $format ) {
+	private function addQueryFormat( $format ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKFO' ),
-			new DIBlob( $format )
+			new Property( '_ASKFO' ),
+			new Blob( $format )
 		);
 	}
 

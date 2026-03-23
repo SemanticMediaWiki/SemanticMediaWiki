@@ -5,8 +5,9 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\Indexer;
@@ -45,16 +46,16 @@ class FileAttachment {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 */
-	public function createAttachment( DIWikiPage $dataItem ) {
+	public function createAttachment( WikiPage $dataItem ) {
 		$time = -microtime( true );
 
 		if ( $dataItem->getId() == 0 ) {
@@ -144,7 +145,7 @@ class FileAttachment {
 			$attachmentAnnotator->getContainer()
 		);
 
-		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () use( $semanticData, $attachmentAnnotator ) {
+		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () use( $semanticData, $attachmentAnnotator ): void {
 			// Update the SQLStore with the annotated information which will NOT
 			// trigger another ES index update BUT ...
 			$this->store->updateData( $semanticData );
@@ -178,7 +179,7 @@ class FileAttachment {
 	 *
 	 * @param AttachmentAnnotator $attachmentAnnotator
 	 */
-	public function indexAttachmentInfo( AttachmentAnnotator $attachmentAnnotator ) {
+	public function indexAttachmentInfo( AttachmentAnnotator $attachmentAnnotator ): void {
 		$data = [];
 		$time = -microtime( true );
 
@@ -244,7 +245,7 @@ class FileAttachment {
 		$this->logger->info( $msg, $context );
 	}
 
-	private function upsertDoc( $baseDocId, $subject, $property ) {
+	private function upsertDoc( $baseDocId, WikiPage $subject, Property $property ) {
 		$params = [
 			'_index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA )
 		];
@@ -274,10 +275,10 @@ class FileAttachment {
 		return $this->bulk->execute();
 	}
 
-	private function newContainerSemanticData( $dataItem, $doc ) {
+	private function newContainerSemanticData( WikiPage $dataItem, $doc ): ContainerSemanticData {
 		$subobjectName = '_FILE' . $doc['_source']['file_sha1'];
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
 			$dataItem->getInterwiki(),

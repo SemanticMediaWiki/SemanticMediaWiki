@@ -4,9 +4,9 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
+use SMW\DataValues\DataValue;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
-use SMWDataValue;
 
 /**
  * Class ValueTextsBuilder
@@ -31,7 +31,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	public function getValuesText( ResultArray $field, $column = 0 ) {
+	public function getValuesText( ResultArray $field, $column = 0 ): string {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
 		return implode( $this->get( 'valuesep' ), $valueTexts );
@@ -43,7 +43,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string[]
 	 */
-	private function getValueTexts( ResultArray $field, $column ) {
+	private function getValueTexts( ResultArray $field, $column ): array {
 		$valueTexts = [];
 
 		$field->reset();
@@ -61,12 +61,12 @@ class ValueTextsBuilder {
 	}
 
 	/**
-	 * @param SMWDataValue $value
+	 * @param DataValue $value
 	 * @param int $column
 	 *
 	 * @return string
 	 */
-	private function getValueText( SMWDataValue $value, $column = 0 ) {
+	private function getValueText( DataValue $value, $column = 0 ) {
 		$isSubject = ( $column === 0 );
 		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
@@ -102,7 +102,7 @@ class ValueTextsBuilder {
 	/**
 	 * @param Linker $linker
 	 */
-	public function setLinker( Linker $linker ) {
+	public function setLinker( Linker $linker ): void {
 		$this->linker = $linker;
 	}
 
@@ -124,7 +124,7 @@ class ValueTextsBuilder {
 	/**
 	 * @return bool
 	 */
-	private function isSimpleList() {
+	private function isSimpleList(): bool {
 		$format = $this->get( 'format' );
 		return $format !== 'ul' && $format !== 'ol';
 	}

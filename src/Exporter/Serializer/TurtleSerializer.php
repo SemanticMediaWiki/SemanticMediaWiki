@@ -3,13 +3,13 @@
 namespace SMW\Exporter\Serializer;
 
 use InvalidArgumentException;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 use SMW\InMemoryPoolCache;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * Class for serializing exported data (encoded as ExpData object) in
@@ -52,7 +52,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->sparql_namespaces = [];
 	}
@@ -60,7 +60,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * @since 2.3
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'turtle.serializer' );
 	}
 
@@ -142,14 +142,14 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeDeclaration( $uri, $typename ) {
+	public function serializeDeclaration( $uri, $typename ): void {
 		$this->post_ns_buffer .= "<" . Exporter::getInstance()->expandURI( $uri ) . "> rdf:type $typename .\n";
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeExpData( ExpData $expData ) {
+	public function serializeExpData( ExpData $expData ): void {
 		$this->subExpData = [ $expData ];
 
 		while ( count( $this->subExpData ) > 0 ) {
@@ -298,7 +298,7 @@ class TurtleSerializer extends Serializer {
 	 *
 	 * @return string
 	 */
-	public static function getTurtleNameForExpElement( ExpElement $expElement ) {
+	public static function getTurtleNameForExpElement( ExpElement $expElement ): string {
 		if ( $expElement instanceof ExpResource ) {
 			if ( $expElement->isBlankNode() ) {
 				return '[]';
@@ -323,7 +323,7 @@ class TurtleSerializer extends Serializer {
 		throw new InvalidArgumentException( 'The method can only serialize atomic elements of type ExpResource or ExpLiteral.' );
 	}
 
-	private static function getCorrectLexicalForm( $expElement ) {
+	private static function getCorrectLexicalForm( ExpLiteral $expElement ): string {
 		$lexicalForm = str_replace( [ '\\', "\n", '"' ], [ '\\\\', "\\n", '\"' ], $expElement->getLexicalForm() );
 
 		if ( $expElement->getLang() !== '' && ( $expElement->getDatatype() === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString' ) ) {

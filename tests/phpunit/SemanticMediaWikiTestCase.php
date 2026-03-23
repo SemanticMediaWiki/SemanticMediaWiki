@@ -10,8 +10,8 @@ use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\DataItems\WikiPage;
 use SMW\DependencyContainer;
-use SMW\DIWikiPage;
 use SMW\Settings;
 use SMW\SimpleDependencyBuilder;
 use SMW\SQLStore\SQLStore;
@@ -164,10 +164,10 @@ abstract class SemanticMediaWikiTestCase extends TestCase {
 	 *
 	 * @param $namespace
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	protected function getSubject( $namespace = NS_MAIN ) {
-		return DIWikiPage::newFromTitle( $this->newTitle( $namespace ) );
+		return WikiPage::newFromTitle( $this->newTitle( $namespace ) );
 	}
 
 	/**
@@ -177,10 +177,10 @@ abstract class SemanticMediaWikiTestCase extends TestCase {
 	 *
 	 * @param Title|null $title
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	protected function newSubject( ?Title $title = null ) {
-		return DIWikiPage::newFromTitle( $title === null ? $this->newTitle() : $title );
+		return WikiPage::newFromTitle( $title === null ? $this->newTitle() : $title );
 	}
 
 	/**

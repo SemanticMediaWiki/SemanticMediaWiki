@@ -5,13 +5,14 @@ namespace SMW;
 use Deserializers\Deserializer;
 use OutOfBoundsException;
 use Serializers\Serializer;
+use SMW\DataModel\SemanticData;
 use SMW\Deserializers\ExpDataDeserializer;
 use SMW\Deserializers\SemanticDataDeserializer;
+use SMW\Export\ExpData;
 use SMW\Query\QueryResult;
 use SMW\Serializers\ExpDataSerializer;
 use SMW\Serializers\QueryResultSerializer;
 use SMW\Serializers\SemanticDataSerializer;
-use SMWExpData as ExpData;
 
 /**
  * @license GPL-2.0-or-later
@@ -30,7 +31,7 @@ class SerializerFactory {
 	 *
 	 * @return Serializer
 	 */
-	public function getSerializerFor( $object ) {
+	public function getSerializerFor( $object ): Serializer {
 		$serializer = null;
 
 		if ( $object instanceof SemanticData ) {
@@ -55,7 +56,7 @@ class SerializerFactory {
 	 *
 	 * @return Deserializer
 	 */
-	public function getDeserializerFor( array $serialization ) {
+	public function getDeserializerFor( array $serialization ): Deserializer {
 		$deserializer = null;
 
 		if ( isset( $serialization['serializer'] ) ) {
@@ -82,7 +83,7 @@ class SerializerFactory {
 	 *
 	 * @return SemanticDataSerializer
 	 */
-	public function newSemanticDataSerializer() {
+	public function newSemanticDataSerializer(): SemanticDataSerializer {
 		return new SemanticDataSerializer();
 	}
 
@@ -91,7 +92,7 @@ class SerializerFactory {
 	 *
 	 * @return SemanticDataDeserializer
 	 */
-	public function newSemanticDataDeserializer() {
+	public function newSemanticDataDeserializer(): SemanticDataDeserializer {
 		return new SemanticDataDeserializer();
 	}
 
@@ -100,7 +101,7 @@ class SerializerFactory {
 	 *
 	 * @return QueryResultSerializer
 	 */
-	public function newQueryResultSerializer() {
+	public function newQueryResultSerializer(): QueryResultSerializer {
 		return new QueryResultSerializer();
 	}
 
@@ -109,7 +110,7 @@ class SerializerFactory {
 	 *
 	 * @return ExpDataSerializer
 	 */
-	public function newExpDataSerializer() {
+	public function newExpDataSerializer(): ExpDataSerializer {
 		return new ExpDataSerializer();
 	}
 
@@ -118,7 +119,7 @@ class SerializerFactory {
 	 *
 	 * @return ExpDataDeserializer
 	 */
-	public function newExpDataDeserializer() {
+	public function newExpDataDeserializer(): ExpDataDeserializer {
 		return new ExpDataDeserializer();
 	}
 

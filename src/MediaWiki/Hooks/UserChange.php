@@ -40,7 +40,7 @@ class UserChange implements HookListener {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -49,7 +49,7 @@ class UserChange implements HookListener {
 	 *
 	 * @param UserIdentity|string|null $user
 	 */
-	public function process( $user ) {
+	public function process( $user ): bool {
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
 		}

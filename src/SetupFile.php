@@ -259,7 +259,7 @@ class SetupFile {
 	/**
 	 * FIXME: a bunch of callers are calling with a single array argument. These are likely broken.
 	 */
-	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ) {
+	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}

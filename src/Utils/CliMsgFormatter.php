@@ -145,7 +145,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $startTime
 	 */
-	public function setStartTime( int $startTime ) {
+	public function setStartTime( int $startTime ): void {
 		$this->startTime = $startTime;
 	}
 
@@ -332,7 +332,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $firstColLen
 	 */
-	public function setFirstColLen( int $firstColLen ) {
+	public function setFirstColLen( int $firstColLen ): void {
 		$this->firstColLen = $firstColLen;
 	}
 
@@ -341,7 +341,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $len
 	 */
-	public function incrFirstColLen( int $len ) {
+	public function incrFirstColLen( int $len ): void {
 		$this->firstColLen += $len;
 	}
 
@@ -418,7 +418,7 @@ class CliMsgFormatter {
 		return sprintf( "%'{$placeHolder}{$len}s%s", ' ', $value ) . "\n";
 	}
 
-	private function trimContent( $content, $maxLen = self::MAX_LEN ) {
+	private function trimContent( string $content, int $maxLen = self::MAX_LEN ): string {
 		$length = mb_strlen( $content ) - 1;
 		$startOff = (int)floor( ( $maxLen / 2 ) - 3 );
 		$endOff = (int)floor( ( $maxLen / 2 ) - 3 );

@@ -135,7 +135,7 @@ class Timezone {
 	 *
 	 * @return array
 	 */
-	public static function listShortAbbreviations() {
+	public static function listShortAbbreviations(): array {
 		return array_keys( self::$shortList );
 	}
 
@@ -146,7 +146,7 @@ class Timezone {
 	 *
 	 * @return bool
 	 */
-	public static function isValid( $identifer ) {
+	public static function isValid( $identifer ): bool {
 		$identifer = str_replace( ' ', '_', $identifer );
 
 		if ( isset( self::$shortList[strtoupper( $identifer )] ) ) {
@@ -262,7 +262,7 @@ class Timezone {
 	 *
 	 * @return string
 	 */
-	public static function getNameByAbbreviation( $abbreviation ) {
+	public static function getNameByAbbreviation( $abbreviation ): string|false {
 		$abbreviation = strtoupper( $abbreviation );
 
 		if ( isset( self::$shortList[$abbreviation] ) ) {
@@ -288,7 +288,7 @@ class Timezone {
 	 *
 	 * @return DateInterval
 	 */
-	public static function newDateIntervalWithOffsetFrom( $abbreviation ) {
+	public static function newDateIntervalWithOffsetFrom( $abbreviation ): DateInterval {
 		$minutes = 0;
 		$hour = 0;
 
@@ -306,7 +306,7 @@ class Timezone {
 	 *
 	 * @return false|DateTimeZone
 	 */
-	public static function newDateTimeZone( $abbreviation ) {
+	public static function newDateTimeZone( $abbreviation ): DateTimeZone|false {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
 		} catch ( Exception $e ) {

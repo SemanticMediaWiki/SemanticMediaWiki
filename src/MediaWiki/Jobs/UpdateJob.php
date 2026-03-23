@@ -5,12 +5,12 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -95,19 +95,19 @@ class UpdateJob extends Job {
 		}
 
 		$this->applicationFactory->getStore()->clearData(
-			DIWikiPage::newFromTitle( $this->getTitle() )
+			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
 		return true;
 	}
 
-	private function matchesLastModified( $title ) {
+	private function matchesLastModified( $title ): bool {
 		if ( !$this->getParameter( 'shallowUpdate' ) ) {
 			return false;
 		}
 
 		$lastModified = $this->getLastModifiedTimestamp(
-			DIWikiPage::newFromTitle( $title )
+			WikiPage::newFromTitle( $title )
 		);
 
 		$wikiPage = $this->applicationFactory->newPageCreator()->createPage( $title );
@@ -137,15 +137,15 @@ class UpdateJob extends Job {
 		return $this->parse_content();
 	}
 
-	private function change_propagation( $dataItem ) {
+	private function change_propagation( $dataItem ): void {
 		$this->setParameter( 'updateType', 'ChangePropagation' );
-		$subject = DIWikiPage::doUnserialize( $dataItem );
+		$subject = WikiPage::doUnserialize( $dataItem );
 
 		// Read the _CHGPRO property and fetch the serialized
 		// SemanticData object
 		$pv = $this->applicationFactory->getStore()->getPropertyValues(
 			$subject,
-			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
+			new Property( Property::TYPE_CHANGE_PROP )
 		);
 
 		if ( $pv === [] ) {
@@ -161,7 +161,7 @@ class UpdateJob extends Job {
 		);
 	}
 
-	private function set_data( $semanticData ) {
+	private function set_data( $semanticData ): bool {
 		$this->setParameter( 'updateType', 'SemanticData' );
 
 		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
@@ -169,7 +169,7 @@ class UpdateJob extends Job {
 		);
 
 		$semanticData->removeProperty(
-			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
+			new Property( Property::TYPE_CHANGE_PROP )
 		);
 
 		$parserData = $this->applicationFactory->newParserData(
@@ -213,7 +213,7 @@ class UpdateJob extends Job {
 		return $this->updateStore( $parserData );
 	}
 
-	private function updateStore( $parserData ) {
+	private function updateStore( $parserData ): bool {
 		$this->applicationFactory->getMediaWikiLogger()->info(
 			[
 				'Job',
@@ -305,10 +305,10 @@ class UpdateJob extends Job {
 	 * Convenience method to find last modified MW timestamp for a subject that
 	 * has been added using the storage-engine.
 	 */
-	private function getLastModifiedTimestamp( DIWikiPage $wikiPage ) {
+	private function getLastModifiedTimestamp( WikiPage $wikiPage ) {
 		$dataItems = $this->applicationFactory->getStore()->getPropertyValues(
 			$wikiPage,
-			new DIProperty( '_MDAT' )
+			new Property( '_MDAT' )
 		);
 
 		if ( $dataItems !== [] ) {

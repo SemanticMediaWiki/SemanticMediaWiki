@@ -3,12 +3,12 @@
 namespace SMW\Tests\Benchmark;
 
 use RuntimeException;
+use SMW\DataItems\Property;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
 use SMW\Query\Parser as QueryParser;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * @group semantic-mediawiki-benchmark
@@ -117,7 +117,7 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 		);
 
 		foreach ( $case['query']['printouts'] as $printout ) {
-			$property = DIProperty::newFromUserLabel( $printout );
+			$property = Property::newFromUserLabel( $printout );
 
 			$propertyValue = new PropertyValue( '__pro' );
 			$propertyValue->setDataItem( $property );

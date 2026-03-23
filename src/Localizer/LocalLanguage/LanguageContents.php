@@ -42,7 +42,7 @@ class LanguageContents {
 	 *
 	 * @return bool
 	 */
-	public function isLoaded( $languageCode ) {
+	public function isLoaded( $languageCode ): bool {
 		return isset( $this->contents[$languageCode] ) || array_key_exists( $languageCode, $this->contents );
 	}
 
@@ -53,7 +53,7 @@ class LanguageContents {
 	 *
 	 * @return bool
 	 */
-	public function load( $languageCode ) {
+	public function load( $languageCode ): void {
 		if ( !$this->isLoaded( $languageCode ) && !$this->jsonContentsFileReader->canReadByLanguageCode( $languageCode ) ) {
 			$languageCode = $this->fallbackFinder->getFallbackLanguageBy( $languageCode );
 		}

@@ -3,12 +3,12 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\Title\Title;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\WikiPageValue;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
-use SMWWikiPageValue;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -38,7 +38,7 @@ class ConceptCache {
 	 *
 	 * @param int $upperLimit
 	 */
-	public function setUpperLimit( $upperLimit ) {
+	public function setUpperLimit( $upperLimit ): void {
 		$this->upperLimit = (int)$upperLimit;
 	}
 
@@ -51,7 +51,7 @@ class ConceptCache {
 	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
-	public function refreshConceptCache( Title $concept ) {
+	public function refreshConceptCache( Title $concept ): array {
 		$errors = array_merge(
 			$this->conceptQuerySegmentBuilder->getErrors(),
 			$this->refresh( $concept )
@@ -67,7 +67,7 @@ class ConceptCache {
 	 *
 	 * @param $concept Title
 	 */
-	public function deleteConceptCache( $concept ) {
+	public function deleteConceptCache( $concept ): void {
 		$this->delete( $concept );
 	}
 
@@ -76,7 +76,7 @@ class ConceptCache {
 	 *
 	 * @return string[] array with error messages
 	 */
-	public function refresh( Title $concept ) {
+	public function refresh( Title $concept ): array {
 		$db = $this->store->getConnection();
 
 		$cid = $this->store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
@@ -153,12 +153,12 @@ class ConceptCache {
 	 */
 	public function getConceptCacheText( Title $concept ) {
 		$values = $this->store->getPropertyValues(
-			DIWikiPage::newFromTitle( $concept ),
-			new DIProperty( '_CONC' )
+			WikiPage::newFromTitle( $concept ),
+			new Property( '_CONC' )
 		);
 
 		/**
-		 * @var bool|DIConcept $di
+		 * @var bool|Concept $di
 		 */
 		$di = end( $values );
 		$conceptQueryText = $di === false ?: $di->getConceptQuery();
@@ -166,7 +166,7 @@ class ConceptCache {
 		return $conceptQueryText;
 	}
 
-	public function delete( Title $concept ) {
+	public function delete( Title $concept ): void {
 		$this->deleteConceptById( $this->getIdOfConcept( $concept ) );
 	}
 
@@ -188,7 +188,7 @@ class ConceptCache {
 	/**
 	 * @param int $conceptId
 	 */
-	private function deleteConceptById( $conceptId ) {
+	private function deleteConceptById( $conceptId ): void {
 		// TODO: exceptions should be caught
 
 		$db = $this->store->getConnection();
@@ -208,11 +208,11 @@ class ConceptCache {
 	}
 
 	/**
-	 * @param Title|SMWWikiPageValue|DIWikiPage $concept
+	 * @param Title|WikiPageValue|WikiPage $concept
 	 *
-	 * @return DIConcept|null
+	 * @return Concept|null
 	 */
-	public function getStatus( $concept ) {
+	public function getStatus( $concept ): ?Concept {
 		$db = $this->store->getConnection();
 
 		$cid = $this->store->smwIds->getSMWPageID(
@@ -236,7 +236,7 @@ class ConceptCache {
 			return null;
 		}
 
-		$dataItem = new DIConcept(
+		$dataItem = new Concept(
 			$concept,
 			null,
 			$row->concept_features,

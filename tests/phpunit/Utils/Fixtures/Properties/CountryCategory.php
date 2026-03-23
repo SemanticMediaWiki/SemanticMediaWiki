@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\DIWiKiPage;
 
 /**
@@ -15,7 +15,7 @@ use SMW\DIWiKiPage;
 class CountryCategory {
 
 	/**
-	 * @var DIProperty
+	 * @var Property
 	 */
 	private $property = null;
 
@@ -23,13 +23,13 @@ class CountryCategory {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = new DIProperty( '_INST' );
+		$this->property = new Property( '_INST' );
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getProperty() {
 		return $this->property;

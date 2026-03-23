@@ -4,13 +4,13 @@ namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\Message\Message;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIError as DIError;
 
 /**
  * @license GPL-2.0-or-later
@@ -33,10 +33,10 @@ class PropertyUsageListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]|Error[]|int[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
@@ -49,14 +49,14 @@ class PropertyUsageListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return string|false
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -67,7 +67,7 @@ class PropertyUsageListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 
@@ -109,18 +109,21 @@ class PropertyUsageListLookup implements ListLookup {
 		return $res;
 	}
 
-	private function getPropertyList( $res ) {
+	/**
+	 * @return Property[]|Error[]|int[]
+	 */
+	private function getPropertyList( $res ): array {
 		$result = [];
 
 		foreach ( $res as $row ) {
 
 			try {
-				$property = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
-			} catch ( PropertyLabelNotResolvedException $e ) {
-				$property = new DIError( new Message( 'smw_noproperty', [ $row->smw_title ] ) );
+				$property = new Property( str_replace( ' ', '_', $row->smw_title ) );
+			} catch ( PropertyLabelNotResolvedException ) {
+				$property = new Error( new Message( 'smw_noproperty', [ $row->smw_title ] ) );
 			}
 
-			$property->id = isset( $row->smw_id ) ? $row->smw_id : -1;
+			$property->id = $row->smw_id ?? -1;
 			$result[] = [ $property, (int)$row->usage_count ];
 		}
 

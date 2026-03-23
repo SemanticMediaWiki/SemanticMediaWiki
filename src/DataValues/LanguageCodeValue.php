@@ -3,8 +3,8 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Language\LanguageCode;
+use SMW\DataItems\Blob;
 use SMW\Localizer\Localizer;
-use SMWDIBlob as DIBlob;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
@@ -28,7 +28,7 @@ class LanguageCodeValue extends StringValue {
 	const TYPE_ID = '__lcode';
 
 	/**
-	 * nonstandardLanguageCodeMapping
+	 * @var array|null
 	 */
 	private $nonstandardLanguageCodeMapping;
 
@@ -68,7 +68,7 @@ class LanguageCodeValue extends StringValue {
 			return;
 		}
 
-		$this->m_dataitem = new DIBlob( $mappedLanguageCode );
+		$this->m_dataitem = new Blob( $mappedLanguageCode );
 	}
 
 }

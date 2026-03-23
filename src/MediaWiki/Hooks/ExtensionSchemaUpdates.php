@@ -23,10 +23,7 @@ use SMW\Store;
  */
 class ExtensionSchemaUpdates implements HookListener {
 
-	/**
-	 * @var DatabaseUpdater
-	 */
-	protected $updater = null;
+	protected ?DatabaseUpdater $updater;
 
 	/**
 	 * @since  2.0
@@ -42,7 +39,7 @@ class ExtensionSchemaUpdates implements HookListener {
 	 *
 	 * @param array &$params
 	 */
-	public static function addMaintenanceUpdateParams( &$params ) {
+	public static function addMaintenanceUpdateParams( &$params ): void {
 		// For details, see https://github.com/wikimedia/mediawiki/commit/a6facc8a0a4f9b54e0cfb1e5ef6f3991de752342
 		$params['skip-optimize'] = [
 			'desc' => 'SMW, allow to skip the table optimization during the Store setup'
@@ -56,7 +53,7 @@ class ExtensionSchemaUpdates implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( Store $store ) {
+	public function process( Store $store ): bool {
 		$verbose = true;
 
 		$options = new Options(
@@ -109,7 +106,7 @@ class ExtensionSchemaUpdates implements HookListener {
 		return true;
 	}
 
-	private function hasMaintenanceArg( $key ) {
+	private function hasMaintenanceArg( string $key ) {
 		$maintenance = null;
 
 		// We don't have access to the `update.php` internals due to lack

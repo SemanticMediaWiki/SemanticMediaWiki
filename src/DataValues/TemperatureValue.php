@@ -2,8 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMWDINumber as DINumber;
-use SMWNumberValue as NumberValue;
+use SMW\DataItems\Number;
 
 /**
  * This datavalue implements unit support for measuring temperatures. This is
@@ -32,14 +31,14 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::convertToMainUnit
 	 */
-	protected function convertToMainUnit( $number, $unit ) {
+	protected function convertToMainUnit( $number, $unit ): bool {
 		$this->m_unitin = $this->getUnitID( $unit );
 
 		if ( ( $value = $this->convertToKelvin( $number, $this->m_unitin ) ) === false ) {
 			return false;
 		}
 
-		$this->m_dataitem = new DINumber( $value );
+		$this->m_dataitem = new Number( $value );
 
 		return true;
 	}
@@ -146,14 +145,14 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::getUnitList
 	 */
-	public function getUnitList() {
+	public function getUnitList(): array {
 		return [ 'K', '°C', '°F', '°R' ];
 	}
 
 	/**
 	 * NumberValue::getUnit
 	 */
-	public function getUnit() {
+	public function getUnit(): string {
 		return 'K';
 	}
 

@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\QueryEngine;
 
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use stdClass;
 
 /**
@@ -31,7 +31,7 @@ class FieldMapper {
 	 *
 	 * @param bool $isCompatMode
 	 */
-	public function isCompatMode( $isCompatMode ) {
+	public function isCompatMode( $isCompatMode ): void {
 		$this->isCompatMode = $isCompatMode;
 	}
 
@@ -42,30 +42,30 @@ class FieldMapper {
 	 *
 	 * @return string
 	 */
-	public static function getPID( $id ) {
+	public static function getPID( $id ): string {
 		return "P:$id";
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 */
-	public static function getFieldType( DIProperty $property ) {
+	public static function getFieldType( Property $property ): string {
 		return str_replace( [ '_' ], [ '' ], DataTypeRegistry::getInstance()->getFieldType( $property->findPropertyValueType() ) );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param string $affix
 	 *
 	 * @return string
 	 */
-	public static function getField( DIProperty $property, $affix = 'Field' ) {
+	public static function getField( Property $property, $affix = 'Field' ): string {
 		return self::getFieldType( $property ) . $affix;
 	}
 
@@ -76,7 +76,7 @@ class FieldMapper {
 	 *
 	 * @return bool
 	 */
-	public static function isPhrase( $value = '' ) {
+	public static function isPhrase( $value = '' ): bool {
 		return $value[0] === '"' && substr( $value, -1 ) === '"';
 	}
 
@@ -87,7 +87,7 @@ class FieldMapper {
 	 *
 	 * @return bool
 	 */
-	public static function hasWildcard( $value = '' ) {
+	public static function hasWildcard( $value = '' ): bool {
 		return strpos( $value, '*' ) !== false && strpos( $value, '\*' ) === false;
 	}
 
@@ -98,7 +98,7 @@ class FieldMapper {
 	 *
 	 * @return bool
 	 */
-	public function containsReservedChar( $value ) {
+	public function containsReservedChar( $value ): bool {
 		$reservedChars = [
 			'+', '-', '=', '&&', '||', '>', '<', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '//'
 		];
@@ -123,7 +123,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function function_score_random( $query, $boost = 5 ) {
+	public function function_score_random( $query, $boost = 5 ): array {
 		return [
 			'function_score' => [
 				'query' => $query,
@@ -169,7 +169,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function bool( $type, $params ) {
+	public function bool( $type, $params ): array {
 		return [ 'bool' => [ $type => $params ] ];
 	}
 
@@ -183,7 +183,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function constant_score( $params ) {
+	public function constant_score( $params ): array {
 		return [ 'constant_score' => [ 'filter' => $params ] ];
 	}
 
@@ -200,7 +200,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function filter( $params ) {
+	public function filter( $params ): array {
 		return [ 'filter' => $params ];
 	}
 
@@ -215,7 +215,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function geo_distance( $field, $coordinates, $distance ) {
+	public function geo_distance( $field, $coordinates, $distance ): array {
 		return [ 'geo_distance' => [ 'distance' => $distance, $field => $coordinates ] ];
 	}
 
@@ -232,7 +232,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function geo_bounding_box( $field, $top, $left, $bottom, $right ) {
+	public function geo_bounding_box( $field, $top, $left, $bottom, $right ): array {
 		return [ 'geo_bounding_box' => [ $field => [ 'top' => $top, 'left' => $left, 'bottom' => $bottom, 'right' => $right ] ] ];
 	}
 
@@ -244,7 +244,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function range( $field, $value, $comp = '' ) {
+	public function range( $field, $value, $comp = '' ): array {
 		$comparators = [
 			SMW_CMP_LESS => 'lt',
 			SMW_CMP_GRTR => 'gt',
@@ -265,7 +265,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function match( $field, $value, $operator = 'or' ) {
+	public function match( $field, $value, $operator = 'or' ): array {
 		if ( is_array( $field ) ) {
 			return $this->multi_match( $field, $value );
 		}
@@ -308,7 +308,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function multi_match( $fields, $value, array $params = [] ) {
+	public function multi_match( $fields, $value, array $params = [] ): array {
 		// return $this->multi_match( $field, trim( $value, '"' ) , [ "type" => "phrase" ] );
 
 		if ( strpos( $value, '"' ) !== false ) {
@@ -335,7 +335,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function match_phrase( $field, $value, array $params = [] ) {
+	public function match_phrase( $field, $value, array $params = [] ): array {
 		if ( strpos( $value, '*' ) !== false ) {
 			return [
 				'match_phrase_prefix' => [ "$field" => trim( $value, '*' ) ]
@@ -365,7 +365,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function query_string_compat( $value, array $params = [] ) {
+	public function query_string_compat( $value, array $params = [] ): array {
 		$wildcard = '';
 	// $params = [];
 
@@ -460,7 +460,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function query_string( $fields, $value, array $params = [] ) {
+	public function query_string( $fields, $value, array $params = [] ): array {
 		if ( $this->isCompatMode ) {
 			[ $value, $params ] = $this->query_string_compat( $value, $params );
 		}
@@ -482,7 +482,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function ids( $value ) {
+	public function ids( $value ): array {
 		return [ 'ids' => [ "values" => $value ] ];
 	}
 
@@ -495,7 +495,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function term( $field, $value ) {
+	public function term( $field, $value ): array {
 		return [ 'term' => [ "$field" => $value ] ];
 	}
 
@@ -512,7 +512,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function terms( $field, $value ) {
+	public function terms( $field, $value ): array {
 		if ( !is_array( $value ) ) {
 			$value = [ $value ];
 		}
@@ -528,7 +528,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function wildcard( $field, $value ) {
+	public function wildcard( $field, $value ): array {
 		return [ 'wildcard' => [ "$field" => $value ] ];
 	}
 
@@ -539,7 +539,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function exists( $field ) {
+	public function exists( $field ): array {
 		return [ 'exists' => [ "field" => "$field" ] ];
 	}
 
@@ -553,7 +553,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function aggs( $name, $params ) {
+	public function aggs( $name, $params ): array {
 		return [ 'aggregations' => [ "$name" => $params ] ];
 	}
 
@@ -568,7 +568,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function aggs_terms( $key, $field, $params = [] ) {
+	public function aggs_terms( $key, $field, $params = [] ): array {
 		return [ $key => [ 'terms' => [ "field" => $field ] + $params ] ];
 	}
 
@@ -586,7 +586,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public function aggs_significant_terms( $key, $field, $params = [] ) {
+	public function aggs_significant_terms( $key, $field, $params = [] ): array {
 		return [ $key => [ 'significant_terms' => [ "field" => $field ] + $params ] ];
 	}
 
@@ -605,7 +605,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public static function aggs_histogram( $key, $field, $interval ) {
+	public static function aggs_histogram( $key, $field, $interval ): array {
 		return [ $key => [ 'histogram' => [ "field" => $field, 'interval' => $interval ] ] ];
 	}
 
@@ -623,7 +623,7 @@ class FieldMapper {
 	 *
 	 * @return array
 	 */
-	public static function aggs_date_histogram( $key, $field, $interval ) {
+	public static function aggs_date_histogram( $key, $field, $interval ): array {
 		return [ $key => [ 'date_histogram' => [ "field" => $field, 'interval' => $interval ] ] ];
 	}
 

@@ -6,7 +6,7 @@ use MediaWiki\Html\Html;
 use MediaWiki\Language\Language;
 use MediaWiki\Title\Title;
 use MediaWiki\Xml\Xml;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 
@@ -127,7 +127,7 @@ class Pager {
 	 *
 	 * @return string
 	 */
-	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ) {
+	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ): string {
 		$list = [];
 		$limit = (int)$limit;
 		$offset = (int)$offset;
@@ -195,7 +195,7 @@ class Pager {
 	 *
 	 * @return string HTML fragment
 	 */
-	private static function numLink( Title $title, $offset, $limit, array $query, $link, $tooltipMsg, $language, $active = false ) {
+	private static function numLink( Title $title, int $offset, int $limit, array $query, $link, string $tooltipMsg, $language, bool $active = false ) {
 		$query = [ 'limit' => $limit, 'offset' => $offset ] + $query;
 
 		$tooltip = wfMessage( $tooltipMsg )->inLanguage( $language )->title( $title )->numParams( $limit )->text();

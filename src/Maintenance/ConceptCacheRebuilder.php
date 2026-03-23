@@ -6,7 +6,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\DIConcept;
+use SMW\DataItems\Concept;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Settings;
 use SMW\Store;
@@ -53,7 +53,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @param MessageReporter $reporter
 	 */
-	public function setMessageReporter( MessageReporter $reporter ) {
+	public function setMessageReporter( MessageReporter $reporter ): void {
 		$this->reporter = $reporter;
 	}
 
@@ -62,7 +62,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @param array $parameters
 	 */
-	public function setParameters( array $parameters ) {
+	public function setParameters( array $parameters ): void {
 		$options = [ 'hard', 'update', 'old', 'quiet', 'status', 'verbose' ];
 
 		foreach ( $options as $option ) {
@@ -99,7 +99,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function rebuild() {
+	public function rebuild(): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -165,7 +165,7 @@ class ConceptCacheRebuilder {
 		return true;
 	}
 
-	private function workOnConcept( Title $title ) {
+	private function workOnConcept( Title $title ): int|float {
 		$concept = $this->store->getConceptCacheStatus( $title );
 
 		if ( $this->skipConcept( $title, $concept ) ) {
@@ -179,7 +179,7 @@ class ConceptCacheRebuilder {
 		return $this->lines;
 	}
 
-	private function skipConcept( $title, $concept = null ) {
+	private function skipConcept( Title $title, $concept = null ): false|string {
 		$skip = false;
 
 		if ( $concept === null ) {
@@ -203,7 +203,7 @@ class ConceptCacheRebuilder {
 		return $skip;
 	}
 
-	private function performAction( Title $title, DIConcept $concept ) {
+	private function performAction( Title $title, Concept $concept ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $this->action === 'create' ) {
@@ -246,7 +246,7 @@ class ConceptCacheRebuilder {
 		}
 	}
 
-	private function getConcepts() {
+	private function getConcepts(): array {
 		if ( $this->concept !== null ) {
 			return [ $this->createConcept() ];
 		}
@@ -254,11 +254,11 @@ class ConceptCacheRebuilder {
 		return $this->createMultipleConcepts();
 	}
 
-	private function createConcept() {
+	private function createConcept(): ?Title {
 		return MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $this->concept, SMW_NS_CONCEPT );
 	}
 
-	private function createMultipleConcepts() {
+	private function createMultipleConcepts(): array {
 		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
 		$titleLookup->setNamespace( SMW_NS_CONCEPT );
 
@@ -275,11 +275,11 @@ class ConceptCacheRebuilder {
 		return $titleLookup->selectByIdRange( $this->startId, $endId );
 	}
 
-	private function hasOption( $key ) {
+	private function hasOption( string $key ): bool {
 		return isset( $this->options[$key] );
 	}
 
-	private function reportMessage( $message, $output = true ) {
+	private function reportMessage( string $message, $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}
@@ -290,7 +290,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @since 4.0
 	 */
-	private function countDown( $seconds ) {
+	private function countDown( int $seconds ): void {
 		for ( $i = $seconds; $i >= 0; $i-- ) {
 			if ( $i != $seconds ) {
 				echo str_repeat( "\x08", strlen( $i + 1 ) );
@@ -304,7 +304,7 @@ class ConceptCacheRebuilder {
 		echo "\n";
 	}
 
-	private function getCacheDateInfo( $date ) {
+	private function getCacheDateInfo( $date ): string {
 		return date( 'Y-m-d H:i:s', $date ) . ' (' . floor( ( strtotime( 'now' ) - $date ) / 60 ) . ' minutes old)';
 	}
 

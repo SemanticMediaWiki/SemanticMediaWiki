@@ -38,7 +38,7 @@ class RedirectTargetFinder {
 	 *
 	 * @param Title|null
 	 */
-	public function setRedirectTarget( ?Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ): void {
 		$this->redirectTarget = $redirectTarget;
 	}
 
@@ -56,7 +56,7 @@ class RedirectTargetFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasRedirectTarget() {
+	public function hasRedirectTarget(): bool {
 		return $this->redirectTarget instanceof Title;
 	}
 
@@ -64,7 +64,7 @@ class RedirectTargetFinder {
 		return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
 	}
 
-	protected function hasContentHandler() {
+	protected function hasContentHandler(): bool {
 		return defined( 'CONTENT_MODEL_WIKITEXT' );
 	}
 

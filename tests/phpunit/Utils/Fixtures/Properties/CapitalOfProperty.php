@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\DIProperty;
-use SMW\SemanticData;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,7 +17,7 @@ class CapitalOfProperty extends FixtureProperty {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = DIProperty::newFromUserLabel( 'Capital of' );
+		$this->property = Property::newFromUserLabel( 'Capital of' );
 		$this->property->setPropertyTypeId( '_wpg' );
 	}
 
@@ -32,7 +32,7 @@ class CapitalOfProperty extends FixtureProperty {
 		$locatedInProperty = new LocatedInProperty();
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_SUBP' ),
+			new Property( '_SUBP' ),
 			$locatedInProperty->getProperty()->getDiWikiPage()
 		);
 

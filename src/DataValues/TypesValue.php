@@ -3,12 +3,11 @@
 namespace SMW\DataValues;
 
 use MediaWiki\MediaWikiServices;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Uri;
 use SMW\DataTypeRegistry;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIUri as DIUri;
 
 /**
  * This datavalue implements special processing suitable for defining types of
@@ -61,7 +60,7 @@ class TypesValue extends DataValue {
 	 *
 	 * @return TypesValue
 	 */
-	public static function newFromTypeId( $typeId ) {
+	public static function newFromTypeId( $typeId ): TypesValue {
 		$result = new TypesValue( self::TYPE_ID );
 
 		try {
@@ -80,10 +79,10 @@ class TypesValue extends DataValue {
 	 *
 	 * @param string $typeId
 	 *
-	 * @return DIUri
+	 * @return Uri
 	 */
-	public static function getTypeUriFromTypeId( $typeId ) {
-		return new DIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
+	public static function getTypeUriFromTypeId( $typeId ): Uri {
+		return new Uri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
 	}
 
 	/**
@@ -219,8 +218,8 @@ class TypesValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
-		if ( ( $dataItem instanceof DIUri ) && ( $dataItem->getScheme() == 'http' ) &&
+	protected function loadDataItem( DataItem $dataItem ): bool {
+		if ( ( $dataItem instanceof Uri ) && ( $dataItem->getScheme() == 'http' ) &&
 			( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
 			( $dataItem->getQuery() === '' ) ) {
 
@@ -235,7 +234,7 @@ class TypesValue extends DataValue {
 		return false;
 	}
 
-	private function getSpecialPageTitleText() {
+	private function getSpecialPageTitleText(): string {
 		return "Types/$this->typeLabel";
 	}
 

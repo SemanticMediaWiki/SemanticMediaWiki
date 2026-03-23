@@ -6,7 +6,7 @@ use File;
 use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
@@ -64,7 +64,7 @@ class FileIndexer {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -73,7 +73,7 @@ class FileIndexer {
 	 *
 	 * @param $versions
 	 */
-	public function setVersions( array $versions ) {
+	public function setVersions( array $versions ): void {
 		$this->versions = $versions;
 	}
 
@@ -99,7 +99,7 @@ class FileIndexer {
 	/**
 	 * @since 3.0
 	 */
-	public function noSha1Check() {
+	public function noSha1Check(): void {
 		$this->sha1Check = false;
 	}
 
@@ -133,10 +133,10 @@ class FileIndexer {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 * @param File|null $file
 	 */
-	public function index( DIWikiPage $dataItem, ?File $file = null ) {
+	public function index( WikiPage $dataItem, ?File $file = null ): void {
 		$title = $dataItem->getTitle();
 
 		// Allow any third-party extension to modify the file used as base for

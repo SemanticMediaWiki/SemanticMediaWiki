@@ -37,7 +37,7 @@ class TableOptimizer {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -46,7 +46,7 @@ class TableOptimizer {
 	 *
 	 * @param array $tables
 	 */
-	public function runForTables( array $tables ) {
+	public function runForTables( array $tables ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$text = [

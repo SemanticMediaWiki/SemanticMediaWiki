@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter;
 
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
 
 /**
  * @private
@@ -19,19 +19,19 @@ interface ResourceBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function isResourceBuilderFor( DIProperty $property );
+	public function isResourceBuilderFor( Property $property );
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param ExpData $expData
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param DataItem $dataItem
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem );
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem );
 
 }

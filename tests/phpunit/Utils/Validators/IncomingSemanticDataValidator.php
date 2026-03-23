@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils\Validators;
 
 use PHPUnit\Framework\Assert;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Store;
 
 /**
@@ -26,10 +26,10 @@ class IncomingSemanticDataValidator extends Assert {
 	 * @since 2.5
 	 *
 	 * @param array $incomingSemanticData [description]
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string $message
 	 */
-	public function assertThatIncomingDataAreSet( array $incomingSemanticData, DIWikiPage $subject, $message ) {
+	public function assertThatIncomingDataAreSet( array $incomingSemanticData, WikiPage $subject, $message ) {
 		if ( !isset( $incomingSemanticData['propertyKeys'] ) ) {
 			return;
 		}

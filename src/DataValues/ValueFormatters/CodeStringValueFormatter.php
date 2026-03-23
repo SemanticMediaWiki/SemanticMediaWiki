@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
-use SMWDataValue as DataValue;
-use SMWOutputs as Outputs;
+use SMW\MediaWiki\Outputs;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,7 +19,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue->getTypeID() === '_cod';
 	}
 
@@ -31,7 +31,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 * @return string
 	 * @see StringValueFormatter::doFormat
 	 */
-	protected function doFormat( $dataValue, $type, $linker ) {
+	protected function doFormat( $dataValue, $type, $linker ): string {
 		$abbreviate = $type === self::WIKI_LONG || $type === self::HTML_LONG;
 		$text = $dataValue->getDataItem()->getString();
 

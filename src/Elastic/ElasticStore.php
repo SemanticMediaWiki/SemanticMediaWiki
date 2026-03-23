@@ -5,14 +5,14 @@ namespace SMW\Elastic;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Options;
-use SMW\SemanticData;
+use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
-use SMWQuery as Query;
 
 /**
  * @private
@@ -41,10 +41,7 @@ class ElasticStore extends SQLStore {
 	const REBUILD_INDEX_RUN_COMPLETE = 'elastic.rebuild_index_run_complete';
 	const REBUILD_INDEX_RUN_INCOMPLETE = 'smw-elastic-rebuildelasticindex-run-incomplete';
 
-	/**
-	 * @var ElasticFactory
-	 */
-	private $elasticFactory;
+	private ElasticFactory $elasticFactory;
 
 	/**
 	 * @var Indexer
@@ -69,14 +66,14 @@ class ElasticStore extends SQLStore {
 	 *
 	 * @param ElasticFactory $elasticFactory
 	 */
-	public function setElasticFactory( ElasticFactory $elasticFactory ) {
+	public function setElasticFactory( ElasticFactory $elasticFactory ): void {
 		$this->elasticFactory = $elasticFactory;
 	}
 
 	/**
 	 * @return ElasticFactory
 	 */
-	public function getElasticFactory() {
+	public function getElasticFactory(): ElasticFactory {
 		return $this->elasticFactory;
 	}
 
@@ -171,7 +168,7 @@ class ElasticStore extends SQLStore {
 				false
 			);
 
-			$dataItem = DIWikiPage::newFromTitle( $newTitle );
+			$dataItem = WikiPage::newFromTitle( $newTitle );
 			$dataItem->setId( $id );
 
 			$this->indexer->create( $dataItem );
@@ -314,7 +311,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setup( $options = true ) {
+	public function setup( $options = true ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -389,7 +386,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -429,14 +426,14 @@ class ElasticStore extends SQLStore {
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		parent::drop( $verbose );
+		return parent::drop( $verbose );
 	}
 
 	/**
 	 * @see SQLStore::clear
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->indexer = null;
 		$this->queryEngine = null;
@@ -473,4 +470,7 @@ class ElasticStore extends SQLStore {
 
 }
 
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( ElasticStore::class, 'SMWElasticStore' );

@@ -26,9 +26,8 @@ class WikiPage extends DataItem {
 
 	/**
 	 * MediaWiki namespace integer.
-	 * @var int
 	 */
-	protected $m_namespace;
+	protected int $m_namespace;
 
 	/**
 	 * Name for subobjects of pages, or empty string if the given object is
@@ -89,7 +88,7 @@ class WikiPage extends DataItem {
 		$this->m_subobjectname = $subobjectname;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_WIKIPAGE;
 	}
 
@@ -97,7 +96,7 @@ class WikiPage extends DataItem {
 		return $this->m_dbkey;
 	}
 
-	public function getNamespace() {
+	public function getNamespace(): int {
 		return $this->m_namespace;
 	}
 
@@ -143,7 +142,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getSha1() {
+	public function getSha1(): string {
 		return sha1( json_encode( [ $this->m_dbkey, $this->m_namespace, $this->m_interwiki, $this->m_subobjectname ] ) );
 	}
 
@@ -152,7 +151,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @param string $sortkey
 	 */
-	public function setSortKey( $sortkey ) {
+	public function setSortKey( $sortkey ): void {
 		$this->sortkey = str_replace( '_', ' ', $sortkey ?? '' );
 	}
 
@@ -175,7 +174,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @param string $contextReference
 	 */
-	public function setContextReference( $contextReference ) {
+	public function setContextReference( $contextReference ): void {
 		$this->contextReference = $contextReference;
 	}
 
@@ -214,7 +213,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @param int $id
 	 */
-	public function setId( $id ) {
+	public function setId( $id ): void {
 		$this->id = (int)$id;
 	}
 
@@ -233,7 +232,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return Title|null
 	 */
-	public function getTitle() {
+	public function getTitle(): ?Title {
 		return MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
 			$this->m_namespace,
 			$this->m_dbkey,
@@ -249,7 +248,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return WikiPage
 	 */
-	public function asBase() {
+	public function asBase(): self {
 		return new self (
 			$this->m_dbkey,
 			$this->m_namespace,
@@ -262,7 +261,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getSerialization() {
+	public function getSerialization(): string {
 		$segments = [
 			$this->m_dbkey,
 			$this->m_namespace,
@@ -282,7 +281,7 @@ class WikiPage extends DataItem {
 	 * @return WikiPage
 	 * @throws DataItemDeserializationException
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): self {
 		$parts = explode( '#', $serialization, 4 );
 
 		if ( count( $parts ) == 3 ) {
@@ -300,7 +299,7 @@ class WikiPage extends DataItem {
 	 * @param Title $title
 	 * @return WikiPage
 	 */
-	public static function newFromTitle( Title $title ) {
+	public static function newFromTitle( Title $title ): self {
 		return new self(
 			$title->getDBkey(),
 			$title->getNamespace(),
@@ -317,7 +316,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return WikiPage
 	 */
-	public static function newFromText( $text, $namespace = NS_MAIN ) {
+	public static function newFromText( $text, $namespace = NS_MAIN ): self {
 		return new self( $text, $namespace );
 	}
 

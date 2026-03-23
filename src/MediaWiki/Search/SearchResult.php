@@ -4,9 +4,9 @@ namespace SMW\MediaWiki\Search;
 
 use File;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 
 /**
  * @ingroup SMW
@@ -73,7 +73,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::isBrokenTitle
 	 */
-	public function isBrokenTitle() {
+	public function isBrokenTitle(): bool {
 		return $this->mTitle === null;
 	}
 
@@ -86,7 +86,7 @@ class SearchResult extends \SearchResult {
 		}
 
 		if ( $this->mTitle->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $this->mTitle->getDBKey() );
+			$property = Property::newFromUserLabel( $this->mTitle->getDBKey() );
 
 			// Predefined properties do not necessarily have a page and hereby a
 			// a revision in MediaWiki, anyway the page exists so allow it
@@ -105,7 +105,7 @@ class SearchResult extends \SearchResult {
 	 * @param string|null $text
 	 * @param bool $hasHighlight
 	 */
-	public function setExcerpt( $text = null, $hasHighlight = false ) {
+	public function setExcerpt( $text = null, $hasHighlight = false ): void {
 		$this->mText = $text;
 		$this->hasHighlight = $hasHighlight;
 	}
@@ -126,7 +126,7 @@ class SearchResult extends \SearchResult {
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-			DIWikiPage::newFromTitle( $this->mTitle )
+			WikiPage::newFromTitle( $this->mTitle )
 		);
 
 		// Will return the DISPLAYTITLE, if available
@@ -136,7 +136,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return string
 	 */
-	public function getRedirectSnippet() {
+	public function getRedirectSnippet(): string {
 		return '';
 	}
 
@@ -150,56 +150,56 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return string
 	 */
-	public function getSectionSnippet() {
+	public function getSectionSnippet(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getCategorySnippet() {
+	public function getCategorySnippet(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getTimestamp() {
+	public function getTimestamp(): string {
 		return '';
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getWordCount() {
+	public function getWordCount(): int {
 		return 0;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getByteSize() {
+	public function getByteSize(): int {
 		return 0;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getInterwikiPrefix() {
+	public function getInterwikiPrefix(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getInterwikiNamespaceText() {
+	public function getInterwikiNamespaceText(): string {
 		return '';
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isFileMatch() {
+	public function isFileMatch(): bool {
 		return false;
 	}
 

@@ -17,7 +17,7 @@ class HtmlUtil {
 	 * @param array $attribs
 	 * @return string HTML
 	 */
-	public static function checkLabel( $label, $name, $id, $checked = false, $attribs = [] ) {
+	public static function checkLabel( $label, $name, $id, $checked = false, $attribs = [] ): string {
 		$labelAttr = array_intersect_key( $attribs, array_flip( [ 'class', 'title' ] ) );
 		return Html::check( $name, $checked, [ 'id' => $id ] + $attribs ) .
 			"\u{00A0}" .
@@ -34,7 +34,7 @@ class HtmlUtil {
 	 * @param array $attribs Any attributes to fieldset-element.
 	 * @return string
 	 */
-	public static function fieldset( $legend = false, $content = false, $attribs = [] ) {
+	public static function fieldset( $legend = false, $content = false, $attribs = [] ): string {
 		$s = Html::openElement( 'fieldset', $attribs ) . "\n";
 
 		if ( $legend ) {

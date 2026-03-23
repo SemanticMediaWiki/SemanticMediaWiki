@@ -59,7 +59,7 @@ class TestClient extends Client {
 	 *
 	 * @return array
 	 */
-	public function search( array $params ) {
+	public function search( array $params ): array {
 		if ( $params === [] ) {
 			return [];
 		}

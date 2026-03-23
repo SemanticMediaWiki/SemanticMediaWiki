@@ -2,20 +2,21 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Uri;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWDIBlob as DIBlob;
-use SMWDIUri as DIUri;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -43,7 +44,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ValueDescription;
 	}
 
@@ -111,7 +112,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $this->conditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
 	}
 
-	private function createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty ) {
+	private function createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty ): Condition {
 		$expElement = $this->exporter->newAuxiliaryExpElement( $dataItem );
 
 		if ( $expElement === null ) {
@@ -155,12 +156,12 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $condition;
 	}
 
-	private function createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
-		if ( !$dataItem instanceof DIBlob && !$dataItem instanceof DIWikiPage && !$dataItem instanceof DIUri ) {
+	private function createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, string $comparator ) {
+		if ( !$dataItem instanceof Blob && !$dataItem instanceof WikiPage && !$dataItem instanceof Uri ) {
 			return $this->conditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
 		}
 
-		if ( $dataItem instanceof DIBlob ) {
+		if ( $dataItem instanceof Blob ) {
 			$search = $dataItem->getString();
 		} else {
 			$search = $dataItem->getSortKey();
@@ -199,7 +200,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $condition;
 	}
 
-	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
+	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, string $comparator ) {
 		$result = new FilterCondition( '', [] );
 
 		$this->conditionBuilder->addOrderByData(
@@ -210,8 +211,8 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		$orderByVariable = '?' . $result->orderByVariable;
 
-		if ( $dataItem instanceof DIWikiPage ) {
-			$expElement = $this->exporter->newExpElement( new DIBlob( $dataItem->getSortKey() ) );
+		if ( $dataItem instanceof WikiPage ) {
+			$expElement = $this->exporter->newExpElement( new Blob( $dataItem->getSortKey() ) );
 		} else {
 			$expElement = $this->exporter->newAuxiliaryExpElement( $dataItem );
 			if ( $expElement === null ) {
@@ -233,14 +234,14 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function createFilterConditionToMatchRegexPattern( $dataItem, &$joinVariable, $comparator, $pattern ) {
+	private function createFilterConditionToMatchRegexPattern( Uri|WikiPage|Blob $dataItem, &$joinVariable, string $comparator, string $pattern ): Condition {
 		$flag = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE ) ? 'i' : 's';
 
-		if ( $dataItem instanceof DIBlob ) {
+		if ( $dataItem instanceof Blob ) {
 			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"$flag\")", [] );
 		}
 
-		if ( $dataItem instanceof DIUri ) {
+		if ( $dataItem instanceof Uri ) {
 			return new FilterCondition( "$comparator( str( ?$joinVariable ), \"$pattern\", \"i\")", [] );
 		}
 
@@ -263,8 +264,8 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $condition;
 	}
 
-	private function lcase( $dataItem, &$orderByVariable, &$valueName ) {
-		$isValidDataItem = $dataItem instanceof DIBlob || $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage;
+	private function lcase( $dataItem, string &$orderByVariable, string &$valueName ): void {
+		$isValidDataItem = $dataItem instanceof Blob || $dataItem instanceof Uri || $dataItem instanceof WikiPage;
 
 		// https://stackoverflow.com/questions/10660030/how-to-write-sparql-query-that-efficiently-matches-string-literals-while-ignorin
 		if ( $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE ) && $isValidDataItem ) {

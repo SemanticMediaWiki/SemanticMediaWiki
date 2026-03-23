@@ -5,6 +5,7 @@ namespace SMW\Iterators;
 use ArrayIterator;
 use InvalidArgumentException;
 use IteratorIterator;
+use ReturnTypeWillChange;
 use RuntimeException;
 use Traversable;
 
@@ -32,7 +33,7 @@ class ChunkedIterator extends IteratorIterator {
 	 * @param Traversable|array $iterable
 	 * @param int $chunkSize
 	 */
-	public function __construct( $iterable, $chunkSize = 500 ) {
+	public function __construct( Traversable|array $iterable, $chunkSize = 500 ) {
 		$chunkSize = (int)$chunkSize;
 
 		if ( is_array( $iterable ) ) {
@@ -56,8 +57,8 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function rewind() {
+	#[ReturnTypeWillChange]
+	public function rewind(): void {
 		parent::rewind();
 		$this->next();
 	}
@@ -67,8 +68,8 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function next() {
+	#[ReturnTypeWillChange]
+	public function next(): void {
 		$this->chunk = [];
 
 		for ( $i = 0; $i < $this->chunkSize && parent::valid(); $i++ ) {
@@ -82,7 +83,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		return $this->chunk;
 	}
@@ -92,7 +93,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function valid() {
 		return (bool)$this->chunk;
 	}

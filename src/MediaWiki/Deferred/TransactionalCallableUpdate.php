@@ -78,14 +78,14 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 *
 	 * @since 2.5
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function runAsAutoCommit() {
+	public function runAsAutoCommit(): void {
 		$this->autoCommit = true;
 	}
 
@@ -100,7 +100,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function commitWithTransactionTicket() {
+	public function commitWithTransactionTicket(): void {
 		if ( $this->isCommandLineMode === false && $this->isDeferrableUpdate === true ) {
 			$this->transactionTicket = $this->connection->getEmptyTransactionTicket( $this->getOrigin() );
 		}
@@ -115,7 +115,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param string $fname
 	 * @param Closure $callback
 	 */
-	public function addPreCommitableCallback( $fname, callable $callback ) {
+	public function addPreCommitableCallback( $fname, callable $callback ): void {
 		if ( is_callable( $callback ) ) {
 			$this->preCommitableCallbacks[$fname] = $callback;
 		}
@@ -130,7 +130,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param string $fname
 	 * @param Closure $callback
 	 */
-	public function addPostCommitableCallback( $fname, callable $callback ) {
+	public function addPostCommitableCallback( $fname, callable $callback ): void {
 		if ( is_callable( $callback ) ) {
 			$this->postCommitableCallbacks[$fname] = $callback;
 		}
@@ -141,9 +141,10 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		if ( $this->onTransactionIdle ) {
-			return $this->runOnTransactionIdle();
+			$this->runOnTransactionIdle();
+			return;
 		}
 
 		$this->runPreCommitCallbacks();
@@ -180,7 +181,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	/**
 	 * @since 3.0
 	 */
-	public function cancelOnRollback( $trigger ) {
+	public function cancelOnRollback( $trigger ): void {
 		if ( $trigger === Database::TRIGGER_ROLLBACK ) {
 			$this->callback = [ $this, 'emptyCancelCallback' ];
 		}
@@ -193,7 +194,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
 			);
 
-			return $this->connection->onTransactionCommitOrIdle( function () use( $update ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use( $update ): void {
 				$update->onTransactionIdle = false;
 				parent::registerUpdate( $update );
 			} );
@@ -202,15 +203,15 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		parent::registerUpdate( $update );
 	}
 
-	protected function loggableContext() {
+	protected function loggableContext(): array {
 		return parent::loggableContext() + [
 			'transactionTicket' => $this->transactionTicket
 		];
 	}
 
-	private function runOnTransactionIdle() {
+	private function runOnTransactionIdle(): void {
 		$fname = __METHOD__;
-		$this->connection->onTransactionCommitOrIdle( function () use ( $fname ) {
+		$this->connection->onTransactionCommitOrIdle( function () use ( $fname ): void {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (onTransactionIdle)' ],
 				[ 'method' => $fname, 'role' => 'developer', 'origin' => $this->getOrigin() ]
@@ -220,7 +221,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		} );
 	}
 
-	private function runPreCommitCallbacks() {
+	private function runPreCommitCallbacks(): void {
 		foreach ( $this->preCommitableCallbacks as $fname => $preCallback ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (pre-commitable callback: {fname})' ],
@@ -231,7 +232,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		}
 	}
 
-	private function runPostCommitCallbacks() {
+	private function runPostCommitCallbacks(): void {
 		foreach ( $this->postCommitableCallbacks as $fname => $postCallback ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (post-commitable callback: {fname})' ],

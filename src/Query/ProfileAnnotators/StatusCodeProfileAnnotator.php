@@ -2,9 +2,9 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
 use SMW\Query\ProfileAnnotator;
-use SMWDINumber as DINumber;
 
 /**
  * @license GPL-2.0-or-later
@@ -35,10 +35,10 @@ class StatusCodeProfileAnnotator extends ProfileAnnotatorDecorator {
 		}
 	}
 
-	private function addStatusCodeAnnotation( $statusCode ) {
+	private function addStatusCodeAnnotation( $statusCode ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKCO' ),
-			new DINumber( $statusCode )
+			new Property( '_ASKCO' ),
+			new Number( $statusCode )
 		);
 	}
 

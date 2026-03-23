@@ -3,8 +3,8 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\DataValues\DataValue;
 use SMW\Property\SpecificationLookup;
-use SMWDataValue as DataValue;
 
 /**
  * @private
@@ -51,7 +51,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$annotations = [];
 	}
 

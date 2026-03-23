@@ -2,11 +2,12 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,7 +21,7 @@ class IdEntityFinder {
 	 * @since 2.1
 	 */
 	public function __construct(
-		private readonly Store $store,
+		private readonly SQLStore $store,
 		private readonly IteratorFactory $iteratorFactory,
 		private readonly IdCacheManager $idCacheManager,
 	) {
@@ -32,9 +33,9 @@ class IdEntityFinder {
 	 * @param array $idList
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DIWikiPage[]
+	 * @return MappingIterator|array
 	 */
-	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ): array|MappingIterator {
 		if ( $idList === [] ) {
 			return [];
 		}
@@ -68,10 +69,10 @@ class IdEntityFinder {
 	 *
 	 * @param stdClass $row
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function newFromRow( $row ) {
-		$dataItem = new DIWikiPage(
+	public function newFromRow( $row ): WikiPage {
+		$dataItem = new WikiPage(
 			$row->smw_title,
 			$row->smw_namespace,
 			$row->smw_iw,
@@ -109,7 +110,7 @@ class IdEntityFinder {
 	 *
 	 * @param int $id
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public function getDataItemById( $id ) {
 		if ( ( $dataItem = $this->get( (int)$id ) ) !== false ) {
@@ -119,7 +120,7 @@ class IdEntityFinder {
 		return null;
 	}
 
-	private function get( $id ) {
+	private function get( int $id ) {
 		$cache = $this->idCacheManager->get( 'entity.lookup' );
 
 		if ( ( $dataItem = $cache->fetch( $id ) ) !== false ) {
@@ -141,7 +142,7 @@ class IdEntityFinder {
 		return $dataItem;
 	}
 
-	private function fetchFromTable( $conditions, $selectRow = false ) {
+	private function fetchFromTable( array $conditions, bool $selectRow = false ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$fields = [

@@ -3,15 +3,13 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Linker\Linker;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\ValueFormatter;
-use SMW\DIProperty;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Message;
-use SMWDataItem as DataItem;
-use SMWDataValue;
-use SMWWikiPageValue;
 
 /**
  * Objects of this class represent properties in SMW.
@@ -41,7 +39,7 @@ use SMWWikiPageValue;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class PropertyValue extends SMWDataValue {
+class PropertyValue extends DataValue {
 
 	/**
 	 * DV identifier
@@ -82,7 +80,7 @@ class PropertyValue extends SMWDataValue {
 	 * Cache for wiki page value object associated to this property, or
 	 * null if no such page exists. Use getWikiPageValue() to get the data.
 	 *
-	 * @var SMWWikiPageValue
+	 * @var WikiPageValue
 	 */
 	protected $m_wikipage = null;
 
@@ -97,7 +95,7 @@ class PropertyValue extends SMWDataValue {
 	private $preferredLabel = '';
 
 	/**
-	 * @var DIProperty
+	 * @var Property
 	 */
 	private $inceptiveProperty;
 
@@ -133,7 +131,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @since 2.4
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getInceptiveProperty() {
 		return $this->inceptiveProperty;
@@ -177,7 +175,7 @@ class PropertyValue extends SMWDataValue {
 			);
 		} catch ( DataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
 			$this->addErrorMsg( [ 'smw_noproperty', $value ] );
-			$this->m_dataitem = new DIProperty( 'ERROR', false ); // just to have something
+			$this->m_dataitem = new Property( 'ERROR', false ); // just to have something
 		}
 
 		// @see the SMW_DV_PROV_DTITLE explanation
@@ -210,13 +208,13 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
+	 * @see DataValue::loadDataItem()
 	 *
 	 * @param $dataItem DataItem
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
 		}
@@ -250,35 +248,35 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $linkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
 
-		if ( $this->getWikiPageValue() instanceof SMWDataValue ) {
+		if ( $this->getWikiPageValue() instanceof DataValue ) {
 			$this->m_wikipage->setLinkAttributes( $linkAttributes );
 		}
 	}
 
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		parent::setCaption( $caption );
-		if ( $this->getWikiPageValue() instanceof SMWDataValue ) { // pass caption to embedded datavalue (used for printout)
+		if ( $this->getWikiPageValue() instanceof DataValue ) { // pass caption to embedded datavalue (used for printout)
 			$this->m_wikipage->setCaption( $caption );
 		}
 	}
 
-	public function setOutputFormat( $formatstring ) {
+	public function setOutputFormat( $formatstring ): void {
 		if ( $formatstring === false || $formatstring === '' ) {
 			return;
 		}
 
 		$this->m_outformat = $formatstring;
 
-		if ( $this->getWikiPageValue() instanceof SMWDataValue ) {
+		if ( $this->getWikiPageValue() instanceof DataValue ) {
 			$this->m_wikipage->setOutputFormat( $formatstring );
 		}
 	}
 
 	public function setInverse( $isinverse ) {
-		$this->m_dataitem = new DIProperty( $this->m_dataitem->getKey(), ( $isinverse == true ) );
+		$this->m_dataitem = new Property( $this->m_dataitem->getKey(), ( $isinverse == true ) );
 		return $this->m_dataitem;
 	}
 
@@ -287,7 +285,7 @@ class PropertyValue extends SMWDataValue {
 	 * property, or null if no such wiki page exists (for predefined
 	 * properties without any label).
 	 *
-	 * @return SMWWikiPageValue or null
+	 * @return WikiPageValue or null
 	 */
 	public function getWikiPageValue() {
 		if ( isset( $this->m_wikipage ) ) {
@@ -315,7 +313,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @note Every user defined property is necessarily visible.
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isValid() && ( $this->m_dataitem->isUserDefined() || $this->m_dataitem->getCanonicalLabel() !== '' );
 	}
 
@@ -324,7 +322,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @return bool
 	 */
-	public function isRestricted() {
+	public function isRestricted(): bool {
 		if ( !$this->isValid() ) {
 			return true;
 		}
@@ -350,7 +348,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getShortWikiText
+	 * @see DataValue::getShortWikiText
 	 *
 	 * @return string
 	 */
@@ -363,7 +361,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getShortHTMLText
+	 * @see DataValue::getShortHTMLText
 	 *
 	 * @return string
 	 */
@@ -376,7 +374,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getLongWikiText
+	 * @see DataValue::getLongWikiText
 	 *
 	 * @return string
 	 */
@@ -389,7 +387,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getLongHTMLText
+	 * @see DataValue::getLongHTMLText
 	 *
 	 * @return string
 	 */
@@ -402,7 +400,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getWikiValue
+	 * @see DataValue::getWikiValue
 	 *
 	 * @return string
 	 */
@@ -455,7 +453,7 @@ class PropertyValue extends SMWDataValue {
 
 	/**
 	 * Convenience method to find the type id of this property. Most callers
-	 * should rather use DIProperty::findPropertyTypeId() directly. Note
+	 * should rather use Property::findPropertyTypeId() directly. Note
 	 * that this is not the same as getTypeID(), which returns the id of
 	 * this property datavalue.
 	 *
@@ -469,18 +467,18 @@ class PropertyValue extends SMWDataValue {
 		return $this->m_dataitem->findPropertyTypeId();
 	}
 
-	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ) {
+	private function createDataItemFrom( bool $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ): Property {
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 
 		// Probe on capitalizedFirstChar because we only want predefined
 		// properties (e.g. Has type vs. has type etc.) to adhere the rule while
 		// custom (user) defined properties can appear in any form
 		if ( $reqCapitalizedFirstChar ) {
-			$dataItem = DIProperty::newFromUserLabel( $capitalizedName, $inverse, $contentLanguage );
+			$dataItem = Property::newFromUserLabel( $capitalizedName, $inverse, $contentLanguage );
 			$propertyName = $dataItem->isUserDefined() ? $propertyName : $capitalizedName;
 		}
 
-		return DIProperty::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
+		return Property::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
 	}
 
 }

@@ -6,13 +6,13 @@ use RuntimeException;
 use SMW\Exporter\Element;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\RepositoryConnection;
-use SMWQuery as Query;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
@@ -59,12 +59,12 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	/**
-	 * @since  2.0
-	 * @param Query $query
-	 *
-	 * @return QueryResult|string
-	 */
-	public function getQueryResult( Query $query ) {
+     * @since  2.0
+     * @param Query $query
+     *
+     * @return QueryResult|string
+     */
+    public function getQueryResult( Query $query ): QueryResult|string|int {
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 			 $query->querymode != Query::MODE_DEBUG &&
 			 count( $query->getErrors() ) > 0 ) {
@@ -96,7 +96,7 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->getInstanceQueryResult( $query, $compoundCondition );
 	}
 
-	private function getCountQueryResult( Query $query, Condition $compoundCondition ) {
+	private function getCountQueryResult( Query $query, Condition $compoundCondition ): int|QueryResult {
 		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;
@@ -128,7 +128,7 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->queryResultFactory->newQueryResult( $repositoryResult, $query );
 	}
 
-	private function getInstanceQueryResult( Query $query, Condition $compoundCondition ) {
+	private function getInstanceQueryResult( Query $query, Condition $compoundCondition ): QueryResult {
 		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
 			$matchElement = $compoundCondition->matchElement;
 
@@ -164,7 +164,7 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->queryResultFactory->newQueryResult( $repositoryResult, $query );
 	}
 
-	private function getDebugQueryResult( Query $query, Condition $compoundCondition ) {
+	private function getDebugQueryResult( Query $query, Condition $compoundCondition ): string {
 		$entries = [];
 		$debugFormatter = new DebugFormatter();
 		$debugFormatter->setName( 'SPARQLStore' );
@@ -202,19 +202,19 @@ class QueryEngine implements QueryEngineInterface {
 		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function isSingletonConditionWithElementMatch( $condition ) {
+	private function isSingletonConditionWithElementMatch( Condition $condition ): bool {
 		return $condition instanceof SingletonCondition && $condition->matchElement instanceof Element;
 	}
 
 	/**
-	 * Get a SPARQL option array for the given query.
-	 *
-	 * @param Query $query
-	 * @param Condition $compoundCondition (storing order by variable names)
-	 *
-	 * @return array
-	 */
-	protected function getOptions( Query $query, Condition $compoundCondition ) {
+     * Get a SPARQL option array for the given query.
+     *
+     * @param Query $query
+     * @param Condition $compoundCondition (storing order by variable names)
+     *
+     * @return array
+     */
+    protected function getOptions( Query $query, Condition $compoundCondition ): array {
 		$options = [
 			'LIMIT' => $query->getLimit() + 1,
 			'OFFSET' => $query->getOffset()

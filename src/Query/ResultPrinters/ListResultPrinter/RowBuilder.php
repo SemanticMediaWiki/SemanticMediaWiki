@@ -37,7 +37,7 @@ abstract class RowBuilder {
 	/**
 	 * @param mixed $valueTextsBuilder
 	 */
-	public function setValueTextsBuilder( $valueTextsBuilder ) {
+	public function setValueTextsBuilder( $valueTextsBuilder ): void {
 		$this->valueTextsBuilder = $valueTextsBuilder;
 	}
 

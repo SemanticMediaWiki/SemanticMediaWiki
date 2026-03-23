@@ -2,7 +2,8 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\Export\Exporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
@@ -33,7 +34,7 @@ class RdfResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		if ( ( $this->params['syntax'] ?? '' ) === 'turtle' ) {
 			return 'application/x-turtle';
 		}
@@ -48,7 +49,7 @@ class RdfResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		return $this->params['syntax'] === 'turtle' ? 'result.ttl' : 'result.rdf';
 	}
 
@@ -101,7 +102,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function makeExport( QueryResult $res, $outputMode ) {
+	private function makeExport( QueryResult $res, $outputMode ): string {
 		$exporterFactory = new ExporterFactory();
 		$exporter = $exporterFactory->getExporter();
 
@@ -130,7 +131,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $serializer->flushContent();
 	}
 
-	private function makeExportData( $exporter, $row ) {
+	private function makeExportData( Exporter $exporter, $row ) {
 		$subject = reset( $row )->getResultSubject();
 		$expData = $exporter->makeExportDataForSubject( $subject );
 
@@ -143,7 +144,7 @@ class RdfResultPrinter extends FileExportPrinter {
 					$property = $printRequest->getData()->getDataItem();
 					break;
 				case PrintRequest::PRINT_CATS:
-					$property = new DIProperty( '_TYPE' );
+					$property = new Property( '_TYPE' );
 					break;
 				case PrintRequest::PRINT_CCAT:
 					// not serialised right now

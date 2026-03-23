@@ -4,7 +4,7 @@ namespace SMW\DataValues\ValueValidators;
 
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMWDataValue as DataValue;
+use SMW\DataValues\DataValue;
 
 /**
  * @private
@@ -40,7 +40,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * @param ConstraintValueValidator $constraintValueValidator
 	 */
-	public function registerConstraintValueValidator( ConstraintValueValidator $constraintValueValidator ) {
+	public function registerConstraintValueValidator( ConstraintValueValidator $constraintValueValidator ): void {
 		$this->constraintValueValidators[] = $constraintValueValidator;
 	}
 
@@ -58,7 +58,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function validate( $dataValue ) {
+	public function validate( $dataValue ): void {
 		$this->hasConstraintViolation = false;
 		$time = -microtime( true );
 

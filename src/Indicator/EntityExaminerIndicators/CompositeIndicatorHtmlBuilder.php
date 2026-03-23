@@ -139,7 +139,7 @@ class CompositeIndicatorHtmlBuilder {
 		return $this->templateEngine->code( 'tabpanel_tabset_template' );
 	}
 
-	private function highlighter( $content, $tabset, $options ) {
+	private function highlighter( string $content, string $tabset, array $options ) {
 		$this->templateEngine->load( '/indicator/comment.ms', 'comment_template' );
 
 		$this->templateEngine->compile(
@@ -181,7 +181,7 @@ class CompositeIndicatorHtmlBuilder {
 		return $this->templateEngine->code( 'highlighter_template' );
 	}
 
-	private function placeholder( $options ) {
+	private function placeholder( array $options ) {
 		$this->templateEngine->load( '/indicator/composite.placeholder.ms', 'placeholder_template' );
 
 		$this->templateEngine->compile(

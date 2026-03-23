@@ -29,7 +29,7 @@ class ArticleLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'ArticleLookup:' . self::VERSION;
 	}
 
@@ -40,7 +40,7 @@ class ArticleLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$limit = 50;
 		$offset = 0;
 		$namespace = null;
@@ -81,7 +81,7 @@ class ArticleLookup extends Lookup {
 		return $res;
 	}
 
-	private function search( $limit, $offset, $search, $namespace = null ) {
+	private function search( int $limit, int $offset, $search, $namespace = null ): array {
 		$search = $this->getSearchTerm( $search, $namespace );
 
 		$escapeChar = '`';

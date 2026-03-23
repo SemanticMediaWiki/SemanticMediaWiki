@@ -3,7 +3,7 @@
 namespace SMW\Schema\Filters;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Schema\ChainableFilter;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
@@ -20,7 +20,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $properties = [];
 
@@ -47,7 +47,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		return 'property';
 	}
 
-	private function match( Compartment $compartment ) {
+	private function match( Compartment $compartment ): void {
 		if ( $this->isLoaded === false ) {
 			$this->loadProperties();
 		}
@@ -140,7 +140,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			unset( $conditions['not'] );
 		}
 
-		if ( $matchedCondition === true && $compartment instanceof Rule ) {
+		if ( $matchedCondition && $compartment instanceof Rule ) {
 			$compartment->incrFilterScore();
 		}
 
@@ -160,17 +160,17 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 
 			// Increasing the score in case an extra `not` condition was applied
-			if ( $matchedCondition === true && $compartment instanceof Rule ) {
+			if ( $matchedCondition && $compartment instanceof Rule ) {
 				$compartment->incrFilterScore();
 			}
 		}
 
-		if ( $matchedCondition === true ) {
+		if ( $matchedCondition ) {
 			$this->matches[] = $compartment;
 		}
 	}
 
-	private function loadProperties() {
+	private function loadProperties(): void {
 		// Allow properties to be lazy loaded when for example those are
 		// fetched from the DB
 		if ( is_callable( $this->properties ) ) {
@@ -187,11 +187,11 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 
 		foreach ( $this->properties as $key => $property ) {
 
-			if ( $property === '' || $property instanceof DIProperty ) {
+			if ( $property === '' || $property instanceof Property ) {
 				continue;
 			}
 
-			$this->properties[$key] = DIProperty::newFromUserLabel( $property );
+			$this->properties[$key] = Property::newFromUserLabel( $property );
 		}
 
 		$this->isLoaded = true;
@@ -201,7 +201,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		$count = 0;
 
 		foreach ( $properties as $prop ) {
-			$prop = DIProperty::newFromUserLabel( $prop );
+			$prop = Property::newFromUserLabel( $prop );
 
 			foreach ( $this->properties as $property ) {
 				if ( $property->equals( $prop ) ) {
@@ -217,7 +217,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		$count = count( $properties );
 
 		foreach ( $properties as $prop ) {
-			$prop = DIProperty::newFromUserLabel( $prop );
+			$prop = Property::newFromUserLabel( $prop );
 
 			foreach ( $this->properties as $property ) {
 				if ( $property->equals( $prop ) ) {
@@ -231,7 +231,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 
 	private function matchAnyOf( array $properties ): bool {
 		foreach ( $properties as $prop ) {
-			$prop = DIProperty::newFromUserLabel( $prop );
+			$prop = Property::newFromUserLabel( $prop );
 
 			foreach ( $this->properties as $property ) {
 				if ( $property->equals( $prop ) ) {

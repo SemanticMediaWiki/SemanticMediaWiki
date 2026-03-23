@@ -22,9 +22,9 @@ class RedirectStore {
 	const TABLE_NAME = 'smw_fpt_redi';
 
 	/**
-	 * @var int
+	 * @var Flag
 	 */
-	private $equalitySupport = 0;
+	private $equalitySupport;
 
 	/**
 	 * @var bool
@@ -41,6 +41,7 @@ class RedirectStore {
 		if ( $this->cache === null ) {
 			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );
 		}
+		$this->equalitySupport = new Flag( 0 );
 	}
 
 	/**
@@ -48,7 +49,7 @@ class RedirectStore {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function setCommandLineMode( $isCommandLineMode ) {
+	public function setCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
@@ -57,7 +58,7 @@ class RedirectStore {
 	 *
 	 * @param int $equalitySupport
 	 */
-	public function setEqualitySupport( int $equalitySupport ) {
+	public function setEqualitySupport( int $equalitySupport ): void {
 		$this->equalitySupport = new Flag( $equalitySupport );
 	}
 
@@ -70,7 +71,7 @@ class RedirectStore {
 	 * @param string $key
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ): void {
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
@@ -84,7 +85,7 @@ class RedirectStore {
 	 *
 	 * @return bool
 	 */
-	public function isRedirect( $title, $namespace ) {
+	public function isRedirect( $title, $namespace ): bool {
 		return $this->findRedirect( $title, $namespace ) != 0;
 	}
 
@@ -122,7 +123,7 @@ class RedirectStore {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function addRedirect( $id, $title, $namespace ) {
+	public function addRedirect( $id, $title, $namespace ): void {
 		$this->insert( $id, $title, $namespace );
 
 		$hash = $this->makeHash(
@@ -140,7 +141,7 @@ class RedirectStore {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function updateRedirect( $id, $title, $namespace ) {
+	public function updateRedirect( $id, $title, $namespace ): void {
 		$this->deleteRedirect( $title, $namespace );
 
 		if ( !$this->canCreateUpdateJobs() || $this->equalitySupport->is( SMW_EQ_NONE ) ) {
@@ -223,7 +224,7 @@ class RedirectStore {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function deleteRedirect( $title, $namespace ) {
+	public function deleteRedirect( $title, $namespace ): void {
 		$this->delete( $title, $namespace );
 
 		$hash = $this->makeHash(
@@ -234,7 +235,7 @@ class RedirectStore {
 		$this->cache->delete( $hash );
 	}
 
-	private function select( $title, $namespace ) {
+	private function select( $title, $namespace ): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -250,7 +251,7 @@ class RedirectStore {
 		return $row !== false && isset( $row->o_id ) ? (int)$row->o_id : 0;
 	}
 
-	private function insert( $id, $title, $namespace ) {
+	private function insert( $id, $title, $namespace ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -285,7 +286,7 @@ class RedirectStore {
 		);
 	}
 
-	private function delete( $title, $namespace ) {
+	private function delete( $title, $namespace ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$connection->delete(
@@ -297,11 +298,11 @@ class RedirectStore {
 		);
 	}
 
-	private function canCreateUpdateJobs() {
+	private function canCreateUpdateJobs(): bool {
 		return $this->store->getOption( Store::OPT_CREATE_UPDATE_JOB, true ) && $this->store->getOption( 'smwgEnableUpdateJobs' );
 	}
 
-	private function findUpdateJobs( $connection, $query, &$jobs ) {
+	private function findUpdateJobs( $connection, array $query, &$jobs ): void {
 		$res = $connection->select(
 			$query['from'],
 			$query['fields'],
@@ -323,7 +324,7 @@ class RedirectStore {
 		$res->free();
 	}
 
-	private function makeHash( $title, $namespace ) {
+	private function makeHash( $title, $namespace ): string {
 		return "$title#$namespace";
 	}
 

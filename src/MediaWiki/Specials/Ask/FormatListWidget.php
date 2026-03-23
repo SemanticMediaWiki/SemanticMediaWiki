@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Ask;
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
-use SMWQueryProcessor as QueryProcessor;
+use SMW\Query\QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,7 +25,7 @@ class FormatListWidget {
 	 *
 	 * @param array $resultFormats
 	 */
-	public static function setResultFormats( array $resultFormats ) {
+	public static function setResultFormats( array $resultFormats ): void {
 		self::$resultFormats = $resultFormats;
 	}
 
@@ -79,7 +79,7 @@ class FormatListWidget {
 		return $result;
 	}
 
-	private static function formatList( $url, $selectedFormat, &$default, $defaultName, $defaultLocalizedName ) {
+	private static function formatList( $url, $selectedFormat, string &$default, $defaultName, string $defaultLocalizedName ) {
 		$formatList = Html::rawElement(
 			'option',
 			[

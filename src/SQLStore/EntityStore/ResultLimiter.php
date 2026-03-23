@@ -5,7 +5,7 @@ namespace SMW\SQLStore\EntityStore;
 use SMW\RequestOptions;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -18,7 +18,7 @@ class ResultLimiter {
 	private $size = -1;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $counter = [];
 
@@ -27,7 +27,7 @@ class ResultLimiter {
 	 *
 	 * @param RequestOptions $requestOptions
 	 */
-	public function calcSize( RequestOptions $requestOptions ) {
+	public function calcSize( RequestOptions $requestOptions ): void {
 		$this->size = -1;
 		$this->counter = [];
 
@@ -57,7 +57,7 @@ class ResultLimiter {
 	 *
 	 * @return bool
 	 */
-	public function canSkip( $id ) {
+	public function canSkip( $id ): bool {
 		if ( $this->size < 0 ) {
 			return false;
 		}

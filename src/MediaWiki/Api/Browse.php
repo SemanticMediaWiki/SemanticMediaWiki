@@ -31,7 +31,7 @@ class Browse extends ApiBase {
 	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 
 		$parameters = json_decode( $params['params'], true );
@@ -91,7 +91,7 @@ class Browse extends ApiBase {
 		}
 	}
 
-	private function callListLookup( $ns, $parameters ) {
+	private function callListLookup( $ns, array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -134,7 +134,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPValueLookup( $parameters ) {
+	private function callPValueLookup( array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -174,7 +174,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPSubjectLookup( $parameters ) {
+	private function callPSubjectLookup( array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -214,7 +214,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPageLookup( $parameters ) {
+	private function callPageLookup( array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -250,7 +250,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callSubjectLookup( $parameters ) {
+	private function callSubjectLookup( array $parameters ) {
 		$subjectLookup = new SubjectLookup(
 			ApplicationFactory::getInstance()->getStore()
 		);
@@ -272,7 +272,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'browse' => [
 				ParamValidator::PARAM_REQUIRED => true,
@@ -313,7 +313,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'browse' => 'Specifies the type of browse activity',
 			'params' => 'JSON encoded parameters containing required and optional fields and depend on the selected browse type'
@@ -326,7 +326,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module to support browse activties for different entity types in Semantic MediaWiki.'
 		];
@@ -338,7 +338,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }',
@@ -364,7 +364,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __CLASS__ . ':' . SMW_VERSION;
 	}
 
@@ -374,7 +374,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getHelpUrls() {
+	public function getHelpUrls(): string {
 		return 'https://www.semantic-mediawiki.org/wiki/Help:API';
 	}
 

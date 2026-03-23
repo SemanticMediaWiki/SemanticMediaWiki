@@ -6,7 +6,6 @@ use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
-use Wikimedia\Rdbms\Database as MWDatabase;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
@@ -71,7 +70,7 @@ class Database {
 	/**
 	 * @since 2.5
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		$this->connRef->releaseConnections();
 	}
 
@@ -80,7 +79,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return true;
 	}
 
@@ -89,7 +88,7 @@ class Database {
 	 *
 	 * @return Query
 	 */
-	public function newQuery() {
+	public function newQuery(): Query {
 		return new Query( $this );
 	}
 
@@ -100,7 +99,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}
@@ -115,7 +114,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function getInfo() {
+	public function getInfo(): array {
 		return [
 			$this->getType() => $this->connRef->getConnection( 'read' )->getServerInfo()
 		];
@@ -443,7 +442,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function makeSelectOptions( $options ) {
+	public function makeSelectOptions( $options ): array {
 		return OptionsBuilder::makeSelectOptions( $this, $options );
 	}
 
@@ -456,7 +455,7 @@ class Database {
 	 *
 	 * @return int|null
 	 */
-	public function nextSequenceValue( $seqName ) {
+	public function nextSequenceValue( $seqName ): ?int {
 		$this->insertId = null;
 
 		if ( !$this->isType( 'postgres' ) ) {
@@ -494,7 +493,7 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	public function clearFlag( $flag ) {
+	public function clearFlag( $flag ): void {
 		$this->connRef->getConnection( 'write' )->clearFlag( $flag );
 	}
 
@@ -512,7 +511,7 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	public function setFlag( $flag ) {
+	public function setFlag( $flag ): void {
 		if ( $flag === self::AUTO_COMMIT ) {
 			$this->flags = self::AUTO_COMMIT;
 			return;
@@ -681,15 +680,13 @@ class Database {
 	}
 
 	/**
-	 * @TransactionHandler::beginSectionTransaction
-	 *
 	 * @since 3.1
 	 *
 	 * @param string $fname
 	 *
 	 * @throws RuntimeException
 	 */
-	public function beginSectionTransaction( $fname = __METHOD__ ) {
+	public function beginSectionTransaction( $fname = __METHOD__ ): void {
 		$this->transactionHandler->markSectionTransaction(
 			$fname
 		);
@@ -702,7 +699,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 */
-	public function endSectionTransaction( $fname = __METHOD__ ) {
+	public function endSectionTransaction( $fname = __METHOD__ ): void {
 		$this->transactionHandler->detachSectionTransaction(
 			$fname
 		);
@@ -717,7 +714,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
+	public function inSectionTransaction( $fname = __METHOD__ ): bool {
 		return $this->transactionHandler->inSectionTransaction( $fname );
 	}
 
@@ -726,7 +723,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 */
-	public function beginAtomicTransaction( $fname = __METHOD__ ) {
+	public function beginAtomicTransaction( $fname = __METHOD__ ): void {
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
 		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
@@ -743,7 +740,7 @@ class Database {
 	 *
 	 * @return void
 	 */
-	public function endAtomicTransaction( $fname = __METHOD__ ) {
+	public function endAtomicTransaction( $fname = __METHOD__ ): void {
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
 		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
@@ -758,7 +755,7 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ) {
+	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ): void {
 		$connection = $this->connRef->getConnection( 'write' );
 
 		if ( $connection->trxLevel() ) {
@@ -771,7 +768,7 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionCommitOrIdle( callable $callback ) {
+	public function onTransactionCommitOrIdle( callable $callback ): void {
 		$connection = $this->connRef->getConnection( 'write' );
 		$connection->onTransactionCommitOrIdle( $callback );
 	}

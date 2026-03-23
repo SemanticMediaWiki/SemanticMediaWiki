@@ -21,10 +21,7 @@ class CachingLookup {
 	 */
 	private $store;
 
-	/**
-	 * @var int|bool
-	 */
-	private $cacheTTL;
+	private int|false $cacheTTL;
 
 	/**
 	 * @since 3.0
@@ -41,7 +38,7 @@ class CachingLookup {
 	 *
 	 * @param int|bool $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ) {
+	public function setCacheTTL( $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL;
 	}
 

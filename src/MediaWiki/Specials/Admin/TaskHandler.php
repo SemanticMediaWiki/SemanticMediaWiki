@@ -70,7 +70,7 @@ abstract class TaskHandler {
 	 *
 	 * @param integer $enabledFeatures
 	 */
-	public function setEnabledFeatures( $enabledFeatures ) {
+	public function setEnabledFeatures( $enabledFeatures ): void {
 		$this->setFeatureSet( $enabledFeatures );
 	}
 
@@ -79,7 +79,7 @@ abstract class TaskHandler {
 	 *
 	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
@@ -88,7 +88,7 @@ abstract class TaskHandler {
 	 *
 	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
 	}
 

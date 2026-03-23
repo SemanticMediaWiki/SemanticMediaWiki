@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\TelephoneUriValue;
 use SMW\Encoder;
-use SMWDataValue as DataValue;
-use SMWNumberValue as NumberValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,10 +17,7 @@ use SMWNumberValue as NumberValue;
  */
 class PageRequestOptions {
 
-	/**
-	 * @var Encoder
-	 */
-	private $urlEncoder;
+	private Encoder $urlEncoder;
 
 	/**
 	 * @var PropertyValue
@@ -70,7 +67,7 @@ class PageRequestOptions {
 	/**
 	 * @since 2.1
 	 */
-	public function initialize() {
+	public function initialize(): void {
 		$params = explode( '/', $this->queryString );
 		reset( $params );
 		$escaped = false;
@@ -105,7 +102,7 @@ class PageRequestOptions {
 		$this->setNearbySearch();
 	}
 
-	private function getValue( $value, $escaped ) {
+	private function getValue( string $value, bool $escaped ) {
 		$this->value = DataValueFactory::getInstance()->newDataValueByProperty(
 			$this->property->getDataItem()
 		);
@@ -116,7 +113,7 @@ class PageRequestOptions {
 		return $this->value->isValid() ? $this->value->getWikiValue() : $value;
 	}
 
-	private function unescape( $value, $escaped ) {
+	private function unescape( string $value, bool $escaped ) {
 		if ( $this->value instanceof NumberValue ) {
 			$value = $escaped ? str_replace( [ '-20', '-2D' ], [ ' ', '-' ], $value ) : $value;
 			// Do not try to decode things like 1.2e-13
@@ -133,13 +130,13 @@ class PageRequestOptions {
 		return $value;
 	}
 
-	private function setLimit() {
+	private function setLimit(): void {
 		if ( isset( $this->requestOptions['limit'] ) ) {
 			$this->limit = intval( $this->requestOptions['limit'] );
 		}
 	}
 
-	private function setOffset() {
+	private function setOffset(): void {
 		if ( isset( $this->requestOptions['offset'] ) ) {
 			$this->offset = intval( $this->requestOptions['offset'] );
 		}

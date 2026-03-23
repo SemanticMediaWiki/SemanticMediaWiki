@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use MediaWiki\Request\WebRequest;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 
 /**
@@ -16,10 +16,7 @@ use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
  */
 class CustomForm {
 
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private Field $field;
 
 	/**
 	 * @var bool
@@ -67,7 +64,7 @@ class CustomForm {
 	 *
 	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ) {
+	public function isActiveForm( $isActiveForm ): void {
 		$this->isActiveForm = (bool)$isActiveForm;
 	}
 
@@ -76,7 +73,7 @@ class CustomForm {
 	 *
 	 * @param array $definition
 	 */
-	public function makeFields( $definition ) {
+	public function makeFields( $definition ): string {
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];
@@ -126,7 +123,7 @@ class CustomForm {
 		return implode( '', $fields );
 	}
 
-	private function makeField( $name, $property, $value, $options ) {
+	private function makeField( string $name, $property, $value, $options ) {
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 		$options = !is_array( $options ) ? [] : $options;
 
@@ -145,7 +142,7 @@ class CustomForm {
 		if ( isset( $options['type'] ) ) {
 			$type = $options['type'];
 		} else {
-			$typeID = DIProperty::newFromUserLabel( $property )->findPropertyTypeID();
+			$typeID = Property::newFromUserLabel( $property )->findPropertyTypeID();
 			$type = 'text';
 
 			if ( isset( $this->html5TypeMap[$typeID] ) ) {

@@ -29,7 +29,7 @@ class ConstraintError implements ProcessingError {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return Message::getHash( $this->parameters, $this->type );
 	}
 
@@ -38,7 +38,7 @@ class ConstraintError implements ProcessingError {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		return self::ERROR_TYPE;
 	}
 

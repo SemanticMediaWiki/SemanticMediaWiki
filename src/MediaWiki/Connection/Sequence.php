@@ -40,7 +40,7 @@ class Sequence {
 	/**
 	 * @since 3.0
 	 */
-	public function tablePrefix( $tablePrefix = '' ) {
+	public function tablePrefix( $tablePrefix = '' ): void {
 		$this->tablePrefix = $tablePrefix;
 	}
 
@@ -52,7 +52,7 @@ class Sequence {
 	 *
 	 * @return string
 	 */
-	public static function makeSequence( $table, $field ) {
+	public static function makeSequence( $table, $field ): string {
 		return "{$table}_{$field}_seq";
 	}
 
@@ -80,7 +80,7 @@ class Sequence {
 
 		$sequence = self::makeSequence( $table, $field );
 
-		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num, $fname ) {
+		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num, $fname ): void {
 			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", $fname, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		} );
 

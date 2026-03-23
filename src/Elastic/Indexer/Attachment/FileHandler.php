@@ -39,7 +39,7 @@ class FileHandler {
 	 *
 	 * @param callable $readCallback
 	 */
-	public function setReadCallback( callable $readCallback ) {
+	public function setReadCallback( callable $readCallback ): void {
 		$this->readCallback = $readCallback;
 	}
 

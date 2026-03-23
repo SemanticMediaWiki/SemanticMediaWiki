@@ -2,8 +2,8 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Property\Annotator;
 
@@ -36,8 +36,8 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_REDI' ),
-			DIWikiPage::newFromTitle( $this->redirectTargetFinder->getRedirectTarget() )
+			new Property( '_REDI' ),
+			WikiPage::newFromTitle( $this->redirectTargetFinder->getRedirectTarget() )
 		);
 	}
 

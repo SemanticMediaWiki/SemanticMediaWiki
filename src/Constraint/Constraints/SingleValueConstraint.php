@@ -5,9 +5,9 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
-use SMW\SemanticData;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -41,7 +41,7 @@ class SingleValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -64,7 +64,7 @@ class SingleValueConstraint implements Constraint {
 		}
 	}
 
-	private function check( $single_value, $dataValue ) {
+	private function check( $single_value, DataValue $dataValue ): void {
 		if ( $single_value === false ) {
 			return;
 		}
@@ -82,7 +82,7 @@ class SingleValueConstraint implements Constraint {
 		}
 	}
 
-	private function reportError( $dataValue, $property ) {
+	private function reportError( DataValue $dataValue, $property ): void {
 		$this->hasViolation = true;
 
 		$error = [

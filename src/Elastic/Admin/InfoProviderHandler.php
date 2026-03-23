@@ -15,11 +15,7 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 abstract class InfoProviderHandler extends TaskHandler implements ActionableTask {
 
 	// ElasticsClientInfoTaskHandler
-
-	/**
-	 * @var OutputFormatter
-	 */
-	protected $outputFormatter;
+	protected OutputFormatter $outputFormatter;
 
 	/**
 	 * @since 3.0

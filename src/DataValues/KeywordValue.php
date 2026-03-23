@@ -2,11 +2,11 @@
 
 namespace SMW\DataValues;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWInfolink as Infolink;
 
 /**
  * @private
@@ -53,7 +53,7 @@ class KeywordValue extends StringValue {
 		}
 
 		if ( $this->getOption( self::OPT_QUERY_COMP_CONTEXT ) || $this->getOption( self::OPT_QUERY_CONTEXT ) ) {
-			$value = DIBlob::normalize( $value );
+			$value = Blob::normalize( $value );
 		}
 
 		if ( $this->m_caption === false ) {
@@ -70,7 +70,7 @@ class KeywordValue extends StringValue {
 	 */
 	public function getDataItem() {
 		if ( $this->isValid() && $this->getOption( 'is.search' ) ) {
-			return new DIBlob( DIBlob::normalize( $this->m_dataitem->getString() ) );
+			return new Blob( Blob::normalize( $this->m_dataitem->getString() ) );
 		}
 
 		return parent::getDataItem();
@@ -187,7 +187,7 @@ class KeywordValue extends StringValue {
 		// Formatter schema?
 		$dataItems = $propertySpecificationLookup->getSpecification(
 			$this->getProperty(),
-			new DIProperty( '_FORMAT_SCHEMA' )
+			new Property( '_FORMAT_SCHEMA' )
 		);
 
 		if ( $dataItems === [] ) {
@@ -198,7 +198,7 @@ class KeywordValue extends StringValue {
 
 		$dataItems = $propertySpecificationLookup->getSpecification(
 			$dataItem,
-			new DIProperty( '_SCHEMA_DEF' )
+			new Property( '_SCHEMA_DEF' )
 		);
 
 		if ( $dataItems === [] ) {
@@ -223,7 +223,7 @@ class KeywordValue extends StringValue {
 		return $this->uri;
 	}
 
-	private function getFormatLink( $dataItem, $value ) {
+	private function getFormatLink( $dataItem, $value ): string|Infolink {
 		$infolink = '';
 
 		$data = json_decode(

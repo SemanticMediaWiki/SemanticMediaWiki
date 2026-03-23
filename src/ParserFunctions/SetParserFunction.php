@@ -2,14 +2,14 @@
 
 namespace SMW\ParserFunctions;
 
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\Formatters\MessageFormatter;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\MediaWiki\StripMarkerDecoder;
-use SMW\MessageFormatter;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
-use SMW\SemanticData;
 
 /**
  * Class that provides the {{#set}} parser function
@@ -46,7 +46,7 @@ class SetParserFunction {
 	 *
 	 * @param StripMarkerDecoder $stripMarkerDecoder
 	 */
-	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ): void {
 		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
@@ -66,7 +66,7 @@ class SetParserFunction {
 	 *
 	 * @return string|null
 	 */
-	public function parse( ParserParameterProcessor $parameters ) {
+	public function parse( ParserParameterProcessor $parameters ): array {
 		$count = 0;
 		$template = '';
 		$subject = $this->parserData->getSemanticData()->getSubject();
@@ -128,7 +128,7 @@ class SetParserFunction {
 		return [ $html, 'noparse' => $template === '', 'isHTML' => false ];
 	}
 
-	private function addFieldsToTemplate( $template, $dataValue, $property, $value, $isLastElement, &$count ) {
+	private function addFieldsToTemplate( $template, $dataValue, $property, $value, bool $isLastElement, &$count ) {
 		if ( $template === '' || !$dataValue->isValid() ) {
 			return '';
 		}

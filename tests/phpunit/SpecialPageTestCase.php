@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use HttpStatus;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
@@ -94,7 +95,7 @@ abstract class SpecialPageTestCase extends TestCase {
 		$code = $response->getStatusCode();
 
 		if ( $code > 0 ) {
-			$response->header( "Status: " . $code . ' ' . \HttpStatus::getMessage( $code ) );
+			$response->header( "Status: " . $code . ' ' . HttpStatus::getMessage( $code ) );
 		}
 
 		$this->text = $text;

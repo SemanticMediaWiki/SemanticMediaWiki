@@ -4,7 +4,6 @@ namespace SMW\Query;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Parser\ParserOutput;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,7 +33,7 @@ class Deferred {
 	 *
 	 * @param ParserOutput $parserOutput
 	 */
-	public static function registerResources( ParserOutput $parserOutput ) {
+	public static function registerResources( ParserOutput $parserOutput ): void {
 		$parserOutput->addModuleStyles( [ 'ext.smw.deferred.styles' ] );
 		$parserOutput->addModules( [ 'ext.smw.deferred' ] );
 	}

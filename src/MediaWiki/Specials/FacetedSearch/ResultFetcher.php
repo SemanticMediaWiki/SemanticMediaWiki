@@ -4,13 +4,13 @@ namespace SMW\MediaWiki\Specials\FacetedSearch;
 
 use MediaWiki\Html\Html;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\FilterMap;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -208,7 +208,7 @@ class ResultFetcher {
 	 *
 	 * @param ParametersProcessor $parametersProcessor
 	 */
-	public function fetchQueryResult( ParametersProcessor $parametersProcessor ) {
+	public function fetchQueryResult( ParametersProcessor $parametersProcessor ): void {
 		[ $queryString, $parameters, $printRequests ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parametersProcessor->getParameters(),
 			false
@@ -339,7 +339,7 @@ class ResultFetcher {
 		$this->findValueFilters( $results, $valueFilterResult, $parametersProcessor->getPropertyFilters() );
 	}
 
-	private function findValueFilters( $results, $valueFilterResult, array $propertyFilters ) {
+	private function findValueFilters( $results, array $valueFilterResult, array $propertyFilters ): void {
 		if ( $propertyFilters === [] ) {
 			return;
 		}
@@ -358,7 +358,7 @@ class ResultFetcher {
 		foreach ( $propertyFilters as $label ) {
 			$list = $valueFilterResult[$label] ?? $subjects;
 
-			$property = DIProperty::newFromUserLabel( $label );
+			$property = Property::newFromUserLabel( $label );
 
 			$valuesGroup = $byGroupPropertyValuesLookup->findValueGroups(
 				$property,

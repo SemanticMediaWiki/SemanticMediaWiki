@@ -41,6 +41,8 @@ class RequestOptions {
 
 	/**
 	 * The maximum number of results that should be returned.
+	 *
+	 * @var int
 	 */
 	public $limit = -1;
 
@@ -49,6 +51,8 @@ class RequestOptions {
 	 * the whole set to be restricted on a bulk instead of only applied to a subset
 	 * therefore allow the exclude the limit and apply an restriction during the
 	 * post-processing.
+	 *
+	 * @var bool
 	 */
 	public $exclude_limit = false;
 
@@ -56,12 +60,16 @@ class RequestOptions {
 	 * A numerical offset. The first $offset results are skipped.
 	 * Note that this does not imply a defined order of results
 	 * (see RequestOptions->$sort below).
+	 *
+	 * @var int
 	 */
 	public $offset = 0;
 
 	/**
 	 * A numerical size to indicate a "look ahead" beyond the defined
 	 * limit.
+	 *
+	 * @var int
 	 */
 	public $lookahead = 0;
 
@@ -70,12 +78,16 @@ class RequestOptions {
 	 * by the type of result that are requested: wiki pages and strings
 	 * are ordered alphabetically, whereas other data is ordered
 	 * numerically. Usually, the order should be fairly "natural".
+	 *
+	 * @var string|false
 	 */
 	public $sort = false;
 
 	/**
 	 * If RequestOptions->$sort is true, this parameter defines whether
 	 * the results are ordered in ascending or descending order.
+	 *
+	 * @var bool
 	 */
 	public $ascending = true;
 
@@ -83,12 +95,16 @@ class RequestOptions {
 	 * Specifies a lower or upper bound for the values returned by the query.
 	 * Whether it is lower or upper is specified by the parameter "ascending"
 	 * (true->lower, false->upper).
+	 *
+	 * @var bool|null
 	 */
 	public $boundary = null;
 
 	/**
 	 * Specifies whether or not the requested boundary should be returned
 	 * as a result.
+	 *
+	 * @var bool
 	 */
 	public $include_boundary = true;
 
@@ -118,20 +134,20 @@ class RequestOptions {
 	 */
 	private $caller;
 
-	public bool $conditionConstraint;
+	public ?bool $conditionConstraint = null;
 
-	public bool $isChain;
+	public ?bool $isChain = null;
 
-	public bool $isFirstChain;
+	public ?bool $isFirstChain = null;
 
-	public bool $natural;
+	public ?bool $natural = null;
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param string $caller
 	 */
-	public function setCaller( $caller ) {
+	public function setCaller( $caller ): void {
 		$this->caller = $caller;
 	}
 
@@ -152,7 +168,7 @@ class RequestOptions {
 	 * @param bool $isOr
 	 * @param bool $isNot
 	 */
-	public function addStringCondition( $string, $condition, $isOr = false, $isNot = false ) {
+	public function addStringCondition( $string, $condition, $isOr = false, $isNot = false ): void {
 		$this->stringConditions[] = new StringCondition( $string, $condition, $isOr, $isNot );
 	}
 
@@ -172,7 +188,7 @@ class RequestOptions {
 	 *
 	 * @param mixed $extraCondition
 	 */
-	public function addExtraCondition( $extraCondition ) {
+	public function addExtraCondition( $extraCondition ): void {
 		$this->extraConditions[] = $extraCondition;
 	}
 
@@ -188,7 +204,7 @@ class RequestOptions {
 	/**
 	 * @since 3.1
 	 */
-	public function emptyExtraConditions() {
+	public function emptyExtraConditions(): void {
 		$this->extraConditions = [];
 	}
 
@@ -198,7 +214,7 @@ class RequestOptions {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -207,7 +223,7 @@ class RequestOptions {
 	 *
 	 * @param string $key
 	 */
-	public function deleteOption( $key ) {
+	public function deleteOption( $key ): void {
 		unset( $this->options[$key] );
 	}
 
@@ -232,7 +248,7 @@ class RequestOptions {
 	 *
 	 * @param int $limit
 	 */
-	public function setLimit( $limit ) {
+	public function setLimit( $limit ): void {
 		$this->limit = (int)$limit;
 	}
 
@@ -241,7 +257,7 @@ class RequestOptions {
 	 *
 	 * @return int
 	 */
-	public function getLimit() {
+	public function getLimit(): int {
 		return (int)$this->limit;
 	}
 
@@ -250,7 +266,7 @@ class RequestOptions {
 	 *
 	 * @param int $offset
 	 */
-	public function setOffset( $offset ) {
+	public function setOffset( $offset ): void {
 		$this->offset = (int)$offset;
 	}
 
@@ -259,7 +275,7 @@ class RequestOptions {
 	 *
 	 * @return int
 	 */
-	public function getOffset() {
+	public function getOffset(): int {
 		return (int)$this->offset;
 	}
 
@@ -268,7 +284,7 @@ class RequestOptions {
 	 *
 	 * @param int $lookahead
 	 */
-	public function setLookahead( int $lookahead ) {
+	public function setLookahead( int $lookahead ): void {
 		$this->lookahead = $lookahead;
 	}
 

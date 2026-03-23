@@ -2,13 +2,13 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlColumns;
-use SMWDataItem as DataItem;
 
 /**
  * Print query results in alphabetic groups displayed in columns, a la the
@@ -61,7 +61,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return true;
 	}
 
@@ -72,7 +72,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsRecursiveAnnotation() {
+	public function supportsRecursiveAnnotation(): bool {
 		return true;
 	}
 
@@ -176,7 +176,10 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $this->htmlColumns->getHtml();
 	}
 
-	private function getContents( QueryResult $res, $outputMode ) {
+	/**
+	 * @return non-empty-list[]
+	 */
+	private function getContents( QueryResult $res, $outputMode ): array {
 		$contents = [];
 
 		// Print all result rows:
@@ -250,7 +253,7 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $this->collator->getFirstLetter( $sortKey );
 	}
 
-	private function row_to_contents( $row, &$first_col ) {
+	private function row_to_contents( array $row, bool &$first_col ): string {
 		// has anything but the first column been printed?
 		$found_values = false;
 		$result = '';
@@ -299,7 +302,7 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $result;
 	}
 
-	private function row_to_template( $row, $res, &$first_col ) {
+	private function row_to_template( array $row, QueryResult $res, bool &$first_col ): void {
 		// explicitly number parameters for more robust parsing (values may contain "=")
 		$i = 0;
 

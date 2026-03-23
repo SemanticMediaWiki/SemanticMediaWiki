@@ -9,7 +9,7 @@ use SMW\Utils\HmacSerializer;
 /**
  * @private
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -17,7 +17,7 @@ use SMW\Utils\HmacSerializer;
 class SequenceMapFinder {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $preloaded = [];
 
@@ -38,7 +38,7 @@ class SequenceMapFinder {
 	 * @param int $sid
 	 * @param array|null $map
 	 */
-	public function setMap( $sid, ?array $map = null ) {
+	public function setMap( $sid, ?array $map = null ): void {
 		if ( $map === null ) {
 			return;
 		}
@@ -74,7 +74,8 @@ class SequenceMapFinder {
 		$omap = [];
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
-		if ( ( $map = $cache->fetch( $sid ) ) !== false ) {
+		$map = $cache->fetch( $sid );
+		if ( $map !== false ) {
 			return $map;
 		}
 
@@ -113,7 +114,7 @@ class SequenceMapFinder {
 	 *
 	 * @param array $ids
 	 */
-	public function prefetchSequenceMap( array $ids ) {
+	public function prefetchSequenceMap( array $ids ): void {
 		sort( $ids );
 		$hash = md5( json_encode( $ids ) );
 

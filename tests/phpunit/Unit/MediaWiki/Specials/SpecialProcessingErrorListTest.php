@@ -1,0 +1,78 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki\Specials;
+
+use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Specials\SpecialProcessingErrorList;
+use SMW\Store;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\MediaWiki\Specials\SpecialProcessingErrorList
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class SpecialProcessingErrorListTest extends TestCase {
+
+	private $testEnvironment;
+	private $stringValidator;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanExecute() {
+		$instance = new SpecialProcessingErrorList();
+
+		$instance->getContext()->setTitle(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialProcessingErrorList' )
+		);
+
+		$this->assertTrue(
+			$instance->execute( '' )
+		);
+	}
+
+	public function testGetLocalAskRedirectUrl() {
+		$instance = new SpecialProcessingErrorList();
+
+		$instance->getContext()->setTitle(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialProcessingErrorList' )
+		);
+
+		$expected = [
+			'%5B%5BHas+processing+error+text%3A%3A%2B%5D%5D',
+			'&po=%3FHas+improper+value+for%7C%3FHas+processing+error+text',
+			'&p=class%3Dsortable-20smwtable-2Dstriped-20smwtable-2Dclean%2Fsep%3Dul',
+			'&eq=no&limit=5',
+			'&bTitle=processingerrorlist',
+			'&bHelp=smw-processingerrorlist-helplink',
+			'&bMsg=smw-processingerrorlist-intro'
+		];
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$instance->getLocalAskRedirectUrl( 5 )
+		);
+	}
+
+}

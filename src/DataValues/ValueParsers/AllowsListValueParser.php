@@ -43,7 +43,7 @@ class AllowsListValueParser implements ValueParser {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$contents = [];
 		$this->errors = [];
 	}
@@ -70,7 +70,7 @@ class AllowsListValueParser implements ValueParser {
 		return self::$contents[$userValue];
 	}
 
-	private function parse_contents( $userValue, $contents ) {
+	private function parse_contents( $userValue, $contents ): array {
 		if ( $contents === '' ) {
 			$error = [ 'smw-datavalue-allows-value-list-unknown', $userValue ];
 			$this->errors[] = $error;
@@ -84,7 +84,10 @@ class AllowsListValueParser implements ValueParser {
 		return $this->parse_string( $userValue, $contents );
 	}
 
-	private function parse_string( $userValue, $contents ) {
+	/**
+	 * @return string[]
+	 */
+	private function parse_string( $userValue, $contents ): array {
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
 		$list = [];
 

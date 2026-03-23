@@ -35,7 +35,7 @@ class Table {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string
+	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
@@ -53,7 +53,7 @@ class Table {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string
+	 * @return string
 	 */
 	public function getHash() {
 		return json_encode( $this->attributes );
@@ -62,7 +62,7 @@ class Table {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array
+	 * @return array
 	 */
 	public function getAttributes() {
 		return $this->attributes;
@@ -73,7 +73,8 @@ class Table {
 	 *
 	 * @param string $key
 	 *
-	 * @param mixed
+	 * @return array
+	 * @throws RuntimeException
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->attributes[$key] ) ) {
@@ -89,7 +90,7 @@ class Table {
 	 * @param string $fieldName
 	 * @param string|array $fieldType
 	 */
-	public function addColumn( $fieldName, $fieldType ) {
+	public function addColumn( $fieldName, $fieldType ): void {
 		$this->attributes[self::TYPE_FIELDS][$fieldName] = $fieldType;
 	}
 
@@ -98,7 +99,7 @@ class Table {
 	 *
 	 * @param string $key
 	 */
-	public function setPrimaryKey( $key ) {
+	public function setPrimaryKey( $key ): void {
 		$this->addIndex( [ $key, "PRIMARY KEY" ], 'pri' );
 	}
 
@@ -108,7 +109,7 @@ class Table {
 	 * @param string|array $index
 	 * @param string|null $key
 	 */
-	public function addIndex( $index, $key = null ) {
+	public function addIndex( $index, $key = null ): void {
 		$val = is_array( $index ) ? $index[0] : $index;
 
 		if ( count( explode( ' ', $val ?? '' ) ) > 1 ) {
@@ -128,7 +129,7 @@ class Table {
 	 * @param string $fieldName
 	 * @param string|int $default
 	 */
-	public function addDefault( $fieldName, $default ) {
+	public function addDefault( $fieldName, $default ): void {
 		$this->attributes[self::TYPE_DEFAULTS][$fieldName] = $default;
 	}
 
@@ -140,7 +141,7 @@ class Table {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function addOption( $key, $option ) {
+	public function addOption( $key, $option ): void {
 		if ( in_array( $key, [ self::TYPE_FIELDS, self::TYPE_INDICES, self::TYPE_DEFAULTS ] ) ) {
 			throw new RuntimeException( "$key is a reserved option key." );
 		}

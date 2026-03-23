@@ -3,9 +3,9 @@
 namespace SMW\DataValues\Number;
 
 use InvalidArgumentException;
+use SMW\DataValues\NumberValue;
 use SMW\Localizer\Message;
 use SMW\Options;
-use SMWNumberValue as NumberValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -40,10 +40,7 @@ class IntlNumberFormatter {
 	 */
 	private static $instance = null;
 
-	/**
-	 * @var Options
-	 */
-	private $options = null;
+	private Options $options;
 
 	/**
 	 * @var int
@@ -75,14 +72,14 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.1
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$instance = null;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function reset() {
+	public function reset(): void {
 		$this->options->set( self::DECIMAL_SEPARATOR, false );
 		$this->options->set( self::THOUSANDS_SEPARATOR, false );
 		$this->options->set( self::USER_LANGUAGE, false );
@@ -98,7 +95,7 @@ class IntlNumberFormatter {
 	 *
 	 * @return void
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options->set( $key, $value );
 	}
 
@@ -163,7 +160,7 @@ class IntlNumberFormatter {
 	 * @param int|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
 	 */
-	private function doFormatByHeuristicRuleWith( $value, $precision = false ): string {
+	private function doFormatByHeuristicRuleWith( $value, bool $precision = false ): string {
 		// BC configuration to keep default behaviour
 		$precision = $this->defaultPrecision;
 
@@ -269,23 +266,23 @@ class IntlNumberFormatter {
 		);
 	}
 
-	private function isDecimal( $value ) {
+	private function isDecimal( $value ): bool {
 		return floor( $value ) !== $value;
 	}
 
-	private function isScientific( $value ) {
+	private function isScientific( $value ): bool {
 		return strpos( $value, 'E' ) !== false || strpos( $value, 'e' ) !== false;
 	}
 
-	private function applyDefaultPrecision( $value ) {
+	private function applyDefaultPrecision( $value ): float {
 		return round( $value, $this->defaultPrecision );
 	}
 
-	private function getPrecisionFrom( $value ) {
+	private function getPrecisionFrom( $value ): int {
 		return strlen( strrchr( $value, "." ) ) - 1;
 	}
 
-	private function doFormatExponentialNotation( $value ) {
+	private function doFormatExponentialNotation( $value ): string|array {
 		return str_replace(
 			[ '.', 'E' ],
 			[ $this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ],
@@ -359,7 +356,7 @@ class IntlNumberFormatter {
 		return $language;
 	}
 
-	private function getPreferredLocalizedSeparator( $custom, $standard, $language ) {
+	private function getPreferredLocalizedSeparator( string $custom, string $standard, $language ) {
 		if ( $this->options->has( $custom ) && ( $separator = $this->options->get( $custom ) ) !== false ) {
 			return $separator;
 		}

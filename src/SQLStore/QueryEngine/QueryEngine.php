@@ -5,17 +5,17 @@ namespace SMW\SQLStore\QueryEngine;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Iterators\ResultIterator;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -66,10 +66,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 */
 	private $errors = [];
 
-	/**
-	 * @var QueryFactory
-	 */
-	private $queryFactory;
+	private QueryFactory $queryFactory;
 
 	/**
 	 * @since 2.2
@@ -90,7 +87,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function setLogger( LoggerInterface $logger ) {
+	public function setLogger( LoggerInterface $logger ): void {
 		$this->logger = $logger;
 	}
 
@@ -186,7 +183,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		if ( $connection->isType( 'postgres' ) ) {
 			$this->engineOptions->set(
 				'smwgQSortFeatures',
-				$this->engineOptions->get( 'smwgQSortFeatures' ) & ~SMW_QSORT_RANDOM
+				(int)$this->engineOptions->get( 'smwgQSortFeatures' ) & ~SMW_QSORT_RANDOM
 			);
 		}
 
@@ -217,7 +214,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return string
 	 */
-	private function getDebugQueryResult( Query $query, $rootid ) {
+	private function getDebugQueryResult( Query $query, $rootid ): string {
 		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries = [];
 
@@ -252,8 +249,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, &$entries ) {
-		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
+	private function doExecuteDebugQueryResult( DebugFormatter $debugFormatter, $qobj, array $sqlOptions, array &$entries ) {
+		if ( !is_object( $qobj ) || !$qobj->joinfield ) {
 			$entries['SQL Query'] = 'Empty result, no SQL query created.';
 			return $entries['SQL Query'];
 		}
@@ -300,7 +297,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @param Query $query
 	 * @param int $rootid
 	 *
-	 * @return int
+	 * @return QueryResult
 	 */
 	private function getCountQueryResult( Query $query, $rootid ) {
 		$queryResult = $this->queryFactory->newQueryResult(
@@ -445,7 +442,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					$dataItem = '';
 				}
 
-				if ( $dataItem instanceof DIWikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
+				if ( $dataItem instanceof WikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
 					$count++;
 					$dataItemCache[$dataItem->getHash()] = true;
 					$results[] = $dataItem;
@@ -520,7 +517,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	private function getSQLOptions( Query $query, $rootId ) {
+	private function getSQLOptions( Query $query, $rootId ): array {
 		$result = [
 			'LIMIT' => $query->getLimit() + 5,
 			'OFFSET' => $query->getOffset()
@@ -557,7 +554,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $result;
 	}
 
-	private function log( $message, $context = [] ) {
+	private function log( string $message, $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

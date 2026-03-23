@@ -2,9 +2,9 @@
 
 namespace SMW\Property\Annotators;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\Annotator;
@@ -64,7 +64,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $showHiddenCategories
 	 */
-	public function showHiddenCategories( $showHiddenCategories ) {
+	public function showHiddenCategories( $showHiddenCategories ): void {
 		$this->showHiddenCategories = (bool)$showHiddenCategories;
 	}
 
@@ -73,7 +73,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryInstance
 	 */
-	public function useCategoryInstance( $useCategoryInstance ) {
+	public function useCategoryInstance( $useCategoryInstance ): void {
 		$this->useCategoryInstance = (bool)$useCategoryInstance;
 	}
 
@@ -82,7 +82,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryHierarchy
 	 */
-	public function useCategoryHierarchy( $useCategoryHierarchy ) {
+	public function useCategoryHierarchy( $useCategoryHierarchy ): void {
 		$this->useCategoryHierarchy = (bool)$useCategoryHierarchy;
 	}
 
@@ -91,7 +91,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryRedirect
 	 */
-	public function useCategoryRedirect( $useCategoryRedirect ) {
+	public function useCategoryRedirect( $useCategoryRedirect ): void {
 		$this->useCategoryRedirect = (bool)$useCategoryRedirect;
 	}
 
@@ -108,11 +108,11 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 
 		if ( $this->useCategoryInstance && ( $namespace !== NS_CATEGORY ) ) {
-			$property = new DIProperty( DIProperty::TYPE_CATEGORY );
+			$property = new Property( Property::TYPE_CATEGORY );
 		}
 
 		if ( $this->useCategoryHierarchy && ( $namespace === NS_CATEGORY ) ) {
-			$property = new DIProperty( DIProperty::TYPE_SUBCATEGORY );
+			$property = new Property( Property::TYPE_SUBCATEGORY );
 		}
 
 		$semanticData = $this->getSemanticData();
@@ -134,8 +134,8 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$annotationProcessor->release();
 	}
 
-	private function modifySemanticData( $semanticData, $annotationProcessor, $subject, $property, $catname ) {
-		$cat = new DIWikiPage( $catname, NS_CATEGORY );
+	private function modifySemanticData( $semanticData, AnnotationProcessor $annotationProcessor, $subject, Property $property, $catname ) {
+		$cat = new WikiPage( $catname, NS_CATEGORY );
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
 
@@ -172,7 +172,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 	}
 
-	private function isHiddenCategory( $catName ) {
+	private function isHiddenCategory( $catName ): bool {
 		if ( $this->hiddenCategories === null ) {
 
 			$wikipage = ApplicationFactory::getInstance()->newPageCreator()->createPage(
@@ -193,7 +193,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		return false;
 	}
 
-	private function getRedirectTarget( $subject ) {
+	private function getRedirectTarget( WikiPage $subject ) {
 		if ( $this->useCategoryRedirect ) {
 			return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $subject );
 		}

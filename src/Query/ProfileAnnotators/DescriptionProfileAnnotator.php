@@ -2,11 +2,11 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
 use SMW\Query\Language\Description;
 use SMW\Query\ProfileAnnotator;
-use SMWDIBlob as DIBlob;
-use SMWDINumber as DINumber;
 
 /**
  * @license GPL-2.0-or-later
@@ -35,24 +35,24 @@ class DescriptionProfileAnnotator extends ProfileAnnotatorDecorator {
 		$this->addQueryDepth( $this->description->getDepth() );
 	}
 
-	private function addQueryString( $queryString ) {
+	private function addQueryString( $queryString ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKST' ),
-			new DIBlob( $queryString )
+			new Property( '_ASKST' ),
+			new Blob( $queryString )
 		);
 	}
 
-	private function addQuerySize( $size ) {
+	private function addQuerySize( $size ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKSI' ),
-			new DINumber( $size )
+			new Property( '_ASKSI' ),
+			new Number( $size )
 		);
 	}
 
-	private function addQueryDepth( $depth ) {
+	private function addQueryDepth( $depth ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKDE' ),
-			new DINumber( $depth )
+			new Property( '_ASKDE' ),
+			new Number( $depth )
 		);
 	}
 

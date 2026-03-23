@@ -3,12 +3,12 @@
 namespace SMW\Tests\Integration\Query\ProfileAnnotators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Localizer\Localizer;
-use SMW\SemanticData;
+use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
-use SMWQueryProcessor;
 
 /**
  * @covers \SMWQueryProcessor
@@ -38,15 +38,15 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testCreateProfile( array $rawParams, array $expected ) {
-		[ $query, $formattedParams ] = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $formattedParams ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
+			QueryProcessor::INLINE_QUERY,
 			false
 		);
 
 		$query->setContextPage(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$profileAnnotatorFactory = ApplicationFactory::getInstance()->getQueryFactory()->newProfileAnnotatorFactory();

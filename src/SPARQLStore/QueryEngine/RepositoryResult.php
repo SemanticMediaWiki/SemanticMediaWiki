@@ -3,6 +3,7 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use Iterator;
+use ReturnTypeWillChange;
 use SMW\Exporter\Element\ExpLiteral;
 
 /**
@@ -34,7 +35,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @var array of integer
 	 */
-	protected $header;
+	protected array $header;
 
 	/**
 	 * List of result rows. Individual entries can be null if a cell in the
@@ -43,7 +44,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @var array of array of (ExpElement or null)
 	 */
-	protected $data;
+	protected array $data;
 
 	/**
 	 * List of comment strings found in the XML file (without surrounding
@@ -51,7 +52,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @var array of string
 	 */
-	protected $comments;
+	protected array $comments;
 
 	/**
 	 * Initialise a result set from a result string in SPARQL XML format.
@@ -73,7 +74,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return int number of result rows
 	 */
-	public function numRows() {
+	public function numRows(): int {
 		return count( $this->data );
 	}
 
@@ -95,7 +96,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @param $errorCode integer error code
 	 */
-	public function setErrorCode( $errorCode ) {
+	public function setErrorCode( $errorCode ): void {
 		if ( $errorCode != self::ERROR_NOERROR ) {
 			$this->errorCode = $errorCode;
 		}
@@ -108,7 +109,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of string
 	 */
-	public function getComments() {
+	public function getComments(): array {
 		return $this->comments;
 	}
 
@@ -120,7 +121,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return bool
 	 */
-	public function isBooleanTrue() {
+	public function isBooleanTrue(): bool {
 		if ( count( $this->data ) == 1 ) {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
@@ -141,7 +142,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return int
 	 */
-	public function getNumericValue() {
+	public function getNumericValue(): int {
 		if ( count( $this->data ) == 1 ) {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
@@ -165,7 +166,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (ExpElement or null), or false at end of data
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		return current( $this->data );
 	}
@@ -176,7 +177,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (ExpElement or null), or false at end of data
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function next() {
 		return next( $this->data );
 	}
@@ -187,7 +188,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (ExpElement or null), or false at end of data
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function key() {
 		return key( $this->data );
 	}

@@ -119,7 +119,7 @@ class FieldType {
 	 *
 	 * @return string
 	 */
-	public static function enum( array $enum ) {
+	public static function enum( array $enum ): string {
 		return "('" . implode( "','", $enum ) . "')";
 	}
 
@@ -129,7 +129,7 @@ class FieldType {
 	 * @param string|array $type
 	 * @param array $fieldTypes
 	 */
-	public static function mapType( $type, $fieldTypes = [] ) {
+	public static function mapType( $type, $fieldTypes = [] ): string {
 		$fieldType = $type;
 		$auxilary = '';
 

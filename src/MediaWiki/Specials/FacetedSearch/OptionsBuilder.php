@@ -61,7 +61,7 @@ class OptionsBuilder {
 	 *
 	 * @param string $format
 	 */
-	public function format( string $format ) {
+	public function format( string $format ): string {
 		$html = [];
 		$list = [
 			'table' => $this->msg( "smw-facetedsearch-format-table" )
@@ -90,7 +90,7 @@ class OptionsBuilder {
 	 *
 	 * @param int $size
 	 */
-	public function size( int $size ) {
+	public function size( int $size ): string {
 		$html = [];
 		$list = $this->profile->get( 'result.paging_limit' );
 
@@ -118,7 +118,7 @@ class OptionsBuilder {
 	 *
 	 * @param string $order
 	 */
-	public function order( string $order ) {
+	public function order( string $order ): string {
 		$html = [];
 
 		$list = [

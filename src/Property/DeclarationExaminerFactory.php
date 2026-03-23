@@ -2,12 +2,12 @@
 
 namespace SMW\Property;
 
+use SMW\DataModel\SemanticData;
 use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
 use SMW\Property\DeclarationExaminer\ProtectionExaminer;
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -24,7 +24,7 @@ class DeclarationExaminerFactory {
 	 *
 	 * @return DeclarationExaminerMsgBuilder
 	 */
-	public function newDeclarationExaminerMsgBuilder() {
+	public function newDeclarationExaminerMsgBuilder(): DeclarationExaminerMsgBuilder {
 		return new DeclarationExaminerMsgBuilder();
 	}
 
@@ -36,7 +36,7 @@ class DeclarationExaminerFactory {
 	 *
 	 * @return DeclarationExaminer
 	 */
-	public function newDeclarationExaminer( Store $store, ?SemanticData $semanticData = null ) {
+	public function newDeclarationExaminer( Store $store, ?SemanticData $semanticData = null ): UserdefinedPropertyExaminer {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

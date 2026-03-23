@@ -2,18 +2,19 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use Exception;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\Outputs;
 use SMW\Parser\RecursiveTextProcessor;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;
-use SMWInfolink;
-use SMWOutputs as ResourceManager;
-use SMWQuery;
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
@@ -76,12 +77,16 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * Text to print *before* the output in case it is *not* empty; assumed to be wikitext.
 	 * Normally this is handled in SMWResultPrinter and can be ignored by subclasses.
+	 *
+	 * @var string
 	 */
 	protected $mIntro = '';
 
 	/**
 	 * Text to print *after* the output in case it is *not* empty; assumed to be wikitext.
 	 * Normally this is handled in SMWResultPrinter and can be ignored by subclasses.
+	 *
+	 * @var string
 	 */
 	protected $mOutro = '';
 
@@ -90,18 +95,24 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * Unescaped! Use @see SMWResultPrinter::getSearchLabel()
 	 * and @see SMWResultPrinter::linkFurtherResults()
 	 * instead of accessing this directly.
+	 *
+	 * @var string|null
 	 */
 	protected $mSearchlabel = null;
 
-	/** Default return value for empty queries. Unescaped. Normally not used in sub-classes! */
+	/**
+	 * Default return value for empty queries. Unescaped. Normally not used in sub-classes!
+	 *
+	 * @var string
+	 */
 	protected $mDefault = '';
 	protected $mFormat; // a string identifier describing a valid format
-	protected $mLinkFirst; // should article names of the first column be linked?
-	protected $mLinkOthers; // should article names of other columns (besides the first) be linked?
+	protected bool $mLinkFirst; // should article names of the first column be linked?
+	protected bool $mLinkOthers; // should article names of other columns (besides the first) be linked?
 	protected $mShowHeaders = SMW_HEADERS_SHOW; // should the headers (property names) be printed?
 	protected $mInline; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
 	protected $mShowErrors = true;
-	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
+	protected Linker $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
 
 	/**
 	 * List of errors that occurred while processing the parameters.
@@ -118,6 +129,8 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @note HTML query results cannot be used as parameters for other templates or in any other way
 	 * in combination with other wiki text. The result will be inserted on the page literally.
+	 *
+	 * @var bool
 	 */
 	protected $isHTML = false;
 
@@ -129,14 +142,24 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @note This requires extra processing and may make the result less useful for being used as a
 	 * parameter for further parser functions. Use only if required.
+	 *
+	 * @var bool
 	 */
 	protected $hasTemplates = false;
 
-	/// Incremented while expanding templates inserted during printout; stop expansion at some point
+	/**
+	 * Incremented while expanding templates inserted during printout; stop expansion at some point
+	 *
+	 * @var int
+	 */
 	private static $mRecursionDepth = 0;
 
-	/// This public variable can be set to higher values to allow more recursion; do this at your own risk!
-	/// This can be set in LocalSettings.php, but only after enableSemantics().
+	/**
+	 * This public variable can be set to higher values to allow more recursion; do this at your own risk!
+	 * This can be set in LocalSettings.php, but only after wfLoadExtension.
+	 *
+	 * @var int
+	 */
 	public static $maxRecursionDepth = 2;
 
 	/**
@@ -196,7 +219,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param RecursiveTextProcessor $recursiveTextProcessor
 	 */
-	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ) {
+	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ): void {
 		$this->recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
@@ -230,13 +253,13 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param array $modules
 	 * @param array $styleModules
 	 */
-	public function registerResources( array $modules = [], array $styleModules = [] ) {
+	public function registerResources( array $modules = [], array $styleModules = [] ): void {
 		foreach ( $modules as $module ) {
-			ResourceManager::requireResource( $module );
+			Outputs::requireResource( $module );
 		}
 
 		foreach ( $styleModules as $styleModule ) {
-			ResourceManager::requireStyle( $styleModule );
+			Outputs::requireStyle( $styleModule );
 		}
 	}
 
@@ -290,7 +313,7 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		if ( $results instanceof StringResult ) {
 			$results->setOption( 'is.exportformat', $this->isExportFormat() );
-			return $results->getResults();
+			return $results->getFormattedResult();
 		}
 
 		return $this->buildResult( $results );
@@ -495,8 +518,8 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param $outputMode
 	 * @param string $classAffix
 	 *
-	 * @return SMWInfolink
-	 * @throws \Exception
+	 * @return Infolink
+	 * @throws Exception
 	 */
 	protected function getLink( QueryResult $res, $outputMode, $classAffix = '' ) {
 		$link = $res->getQueryLink( $this->getSearchLabel( $outputMode ) );
@@ -526,8 +549,8 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param QueryResult $res
 	 * @param $outputMode
 	 *
-	 * @return SMWInfolink
-	 * @throws \Exception
+	 * @return Infolink
+	 * @throws Exception
 	 */
 	protected function getFurtherResultsLink( QueryResult $res, $outputMode ) {
 		$link = $this->getLink( $res, $outputMode, 'furtherresults' );
@@ -545,7 +568,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	public function getQueryMode( $context ) {
 		// TODO: Now that we are using RequestContext object maybe
 		// $context is misleading
-		return SMWQuery::MODE_INSTANCES;
+		return Query::MODE_INSTANCES;
 	}
 
 	/**
@@ -575,7 +598,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param bool $show
 	 */
-	public function setShowErrors( $show ) {
+	public function setShowErrors( $show ): void {
 		$this->mShowErrors = $show;
 	}
 

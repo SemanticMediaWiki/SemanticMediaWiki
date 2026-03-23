@@ -27,7 +27,7 @@ class PreferenceExaminer {
 	 *
 	 * @return User $user
 	 */
-	public function setUser( User $user ) {
+	public function setUser( User $user ): void {
 		$this->user = $user;
 	}
 

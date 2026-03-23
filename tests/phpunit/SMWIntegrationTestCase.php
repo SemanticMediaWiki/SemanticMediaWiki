@@ -5,13 +5,13 @@ namespace SMW\Tests;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use SMW\DataValueFactory;
+use SMW\Export\Exporter;
 use SMW\MediaWiki\LinkBatch;
 use SMW\PropertyRegistry;
+use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\StoreFactory;
-use SMWExporter as Exporter;
-use SMWQueryProcessor;
 use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
@@ -67,6 +67,11 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		// (or the unit suite) are destroyed before we set up fresh ones.
 		$this->resetSMWServices();
 
+		// Release cached connections on the fresh ServicesFactory so the
+		// Store picks up the test DB connection (with unittest_ prefix)
+		// instead of stale boot connections.
+		ServicesFactory::getInstance()->getConnectionManager()->releaseConnections();
+
 		$this->clearGlobalCaches();
 
 		// Prepare test environment for SMW-specific requirements
@@ -83,7 +88,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		CachingSemanticDataLookup::clear();
 		StoreFactory::clear();
 		ServicesFactory::clear();
-		SMWQueryProcessor::setRecursiveTextProcessor();
+		QueryProcessor::setRecursiveTextProcessor();
 	}
 
 	/**
@@ -137,14 +142,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		MediaWikiServices::getInstance()
 			->getDBLoadBalancerFactory()
 			->commitPrimaryChanges( __METHOD__ );
-
-		// Release all SMW connection references so that when MW's
-		// restoreMwServices() destroys the test LBFactory, no stale
-		// Database objects survive. A stale reference can silently
-		// reconnect (via replaceLostConnection) and create an untracked
-		// MySQL connection whose implicit transaction blocks TRUNCATE
-		// in mediaWikiTearDownAfterClass().
-		ServicesFactory::getInstance()->getConnectionManager()->releaseConnections();
 
 		parent::tearDown();
 	}

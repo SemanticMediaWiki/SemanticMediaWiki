@@ -3,14 +3,14 @@
 namespace SMW\Elastic\Jobs;
 
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -39,7 +39,7 @@ class FileIngestJob extends Job {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	public static function pushIngestJob( Title $title, array $params = [] ) {
+	public static function pushIngestJob( Title $title, array $params = [] ): void {
 		if ( $title->getNamespace() !== NS_FILE ) {
 			return;
 		}
@@ -110,7 +110,7 @@ class FileIngestJob extends Job {
 			return $this->requeueRetry( $connection->getConfig() );
 		}
 
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$this->getTitle()
 		);
 

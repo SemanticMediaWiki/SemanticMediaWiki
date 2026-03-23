@@ -2,9 +2,8 @@
 
 namespace SMW\DataModel;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\DataItemException;
-use SMW\SemanticData;
 
 /**
  * Subclass of SemanticData that is used to store the data in SMWDIContainer
@@ -43,9 +42,9 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
-	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ) {
+	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ): ContainerSemanticData {
 		$containerSemanticData = new ContainerSemanticData(
-			new DIWikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' ),
+			new WikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' ),
 			$noDuplicates
 		);
 
@@ -82,7 +81,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @since 2.4
 	 */
-	public function skipAnonymousCheck() {
+	public function skipAnonymousCheck(): void {
 		$this->skipAnonymousCheck = true;
 	}
 
@@ -92,7 +91,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @return bool
 	 */
-	public function hasAnonymousSubject() {
+	public function hasAnonymousSubject(): bool {
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
 			 $this->mSubject->getDBkey() == 'SMWInternalObject' &&
 			 $this->mSubject->getInterwiki() === '' &&
@@ -108,10 +107,10 @@ class ContainerSemanticData extends SemanticData {
 	 * throw an exception if the subject is anonymous (if the data has not
 	 * been contextualized with setMasterPage() yet).
 	 *
-	 * @return DIWikiPage subject
+	 * @return WikiPage subject
 	 * @throws DataItemException
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		$error = "This container has been classified as anonymous and by trying to access" .
 		" its subject (that has not been given any) an exception is raised to inform about" .
 		" the incorrect usage. An anonymous container can only be used for a search pattern match.";
@@ -133,7 +132,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @param SemanticData|null $semanticData
 	 */
-	public function copyDataFrom( ?SemanticData $semanticData = null ) {
+	public function copyDataFrom( ?SemanticData $semanticData = null ): void {
 		if ( $semanticData === null ) {
 			return;
 		}

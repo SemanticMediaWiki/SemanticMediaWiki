@@ -27,7 +27,7 @@ class HtmlTemplateRenderer {
 	 * @param string $field
 	 * @param mixed $value
 	 */
-	public function addField( $field, $value ) {
+	public function addField( $field, $value ): void {
 		$this->wikitextTemplateRenderer->addField( $field, $value );
 	}
 
@@ -36,7 +36,7 @@ class HtmlTemplateRenderer {
 	 *
 	 * @param string $templateName
 	 */
-	public function packFieldsForTemplate( $templateName ) {
+	public function packFieldsForTemplate( $templateName ): void {
 		$this->wikitextTemplateRenderer->packFieldsForTemplate( $templateName );
 	}
 

@@ -63,26 +63,21 @@
 		"mediawiki/mediawiki-codesniffer": "48.0.0",
 		"mediawiki/mediawiki-phan-config": "0.20.0",
 		"mediawiki/minus-x": "1.1.3",
-		"phpmd/phpmd": "~2.1",
 		"php-parallel-lint/php-console-highlighter": "1.0.0",
 		"php-parallel-lint/php-parallel-lint": "1.4.0"
 	},
 	"suggest": {
 		"mediawiki/semantic-result-formats": "Provides additional result formats for queries of structured data"
 	},
+	"autoload": {
+		"files": [
+			"src/enableSemantics.php"
+		]
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "7.x-dev"
 		}
-	},
-	"autoload": {
-		"files": [
-			"includes/GlobalFunctions.php"
-		],
-		"classmap" : [
-			"includes/",
-			"tests/phpunit/includes/"
-		]
 	},
 	"config": {
 		"process-timeout": 0,
@@ -118,7 +113,7 @@
 			"cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 vendor/bin/phpunit -c extensions/SemanticMediaWiki/phpunit.xml.dist --bootstrap tests/phpunit/bootstrap.php"
 		],
 		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
-		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
+		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
 		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage.xml",
 		"minus-x": "minus-x check .",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",

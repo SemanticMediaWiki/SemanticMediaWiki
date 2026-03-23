@@ -17,10 +17,7 @@ class Logger extends AbstractLogger {
 	const ROLE_USER = 'user';
 	const ROLE_PRODUCTION = 'production';
 
-	/**
-	 * @var LoggerInterface
-	 */
-	protected $logger;
+	protected LoggerInterface $logger;
 
 	/**
 	 * @since 3.0
@@ -37,7 +34,7 @@ class Logger extends AbstractLogger {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function log( $level, $message, array $context = [] ) {
+	public function log( $level, $message, array $context = [] ): void {
 		$shouldLog = false;
 
 		// Everthings goes for the developer role!

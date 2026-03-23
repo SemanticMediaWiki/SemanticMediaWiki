@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -47,26 +47,26 @@ class SemanticDataCountMapIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData( __METHOD__ );
 
 		$subject = $semanticData->getSubject();
-		$property = new DIProperty( 'CountMap_1' );
+		$property = new Property( 'CountMap_1' );
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( 'Count1', NS_MAIN )
+			new WikiPage( 'Count1', NS_MAIN )
 		);
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( 'Count2', NS_MAIN )
+			new WikiPage( 'Count2', NS_MAIN )
 		);
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( 'CountMap_2' ),
-			new DIWikiPage( 'Count1', NS_MAIN )
+			new Property( 'CountMap_2' ),
+			new WikiPage( 'Count1', NS_MAIN )
 		);
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_INST' ),
-			new DIWikiPage( 'Count1', NS_CATEGORY )
+			new Property( '_INST' ),
+			new WikiPage( 'Count1', NS_CATEGORY )
 		);
 
 		$store->updateData( $semanticData );
@@ -90,7 +90,7 @@ class SemanticDataCountMapIntegrationTest extends SMWIntegrationTestCase {
 
 		$semanticData->removePropertyObjectValue(
 			$property,
-			new DIWikiPage( 'Count2', NS_MAIN )
+			new WikiPage( 'Count2', NS_MAIN )
 		);
 
 		$store->updateData( $semanticData );

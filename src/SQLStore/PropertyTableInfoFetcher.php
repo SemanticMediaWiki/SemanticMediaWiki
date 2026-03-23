@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use SMW\TypesRegistry;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,7 +19,7 @@ class PropertyTableInfoFetcher {
 	 * Array for keeping property table table data, indexed by table id.
 	 * Access this only by calling getPropertyTables().
 	 *
-	 * @var TableDefinition[]|null
+	 * @var PropertyTableDefinition[]|null
 	 */
 	private $propertyTableDefinitions = null;
 
@@ -69,7 +69,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @param array $customFixedProperties
 	 */
-	public function setCustomFixedPropertyList( array $customFixedProperties ) {
+	public function setCustomFixedPropertyList( array $customFixedProperties ): void {
 		$this->customFixedPropertyList = $customFixedProperties;
 	}
 
@@ -78,7 +78,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @param array $customSpecialProperties
 	 */
-	public function setCustomSpecialPropertyList( array $customSpecialProperties ) {
+	public function setCustomSpecialPropertyList( array $customSpecialProperties ): void {
 		$this->customSpecialPropertyList = $customSpecialProperties;
 	}
 
@@ -123,18 +123,18 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return array
 	 */
-	public function getDefaultDataItemTables() {
+	public function getDefaultDataItemTables(): array {
 		return array_values( self::$defaultDiTypeTableIdMap );
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function isFixedTableProperty( DIProperty $property ) {
+	public function isFixedTableProperty( Property $property ): bool {
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -148,11 +148,11 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @since 2.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 */
-	public function findTableIdForProperty( DIProperty $property ) {
+	public function findTableIdForProperty( Property $property ) {
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -176,7 +176,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @since 2.2
 	 *
-	 * @return TableDefinition[]
+	 * @return PropertyTableDefinition[]
 	 */
 	public function getPropertyTableDefinitions() {
 		if ( $this->propertyTableDefinitions === null ) {
@@ -189,12 +189,12 @@ class PropertyTableInfoFetcher {
 	/**
 	 * @since 2.2
 	 */
-	public function clearCache() {
+	public function clearCache(): void {
 		$this->propertyTableDefinitions = null;
 		$this->fixedPropertyTableIds = null;
 	}
 
-	private function buildDefinitionsForPropertyTables() {
+	private function buildDefinitionsForPropertyTables(): void {
 		$enabledSpecialProperties = TypesRegistry::getFixedProperties( 'default_fixed' );
 
 		$customFixedSpecialPropertyList = array_flip(

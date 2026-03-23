@@ -2,8 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\DIProperty;
-use SMW\SemanticData;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 
 /**
  * Truncate a SemanticData instance for the replication process
@@ -25,7 +25,7 @@ class ReplicationDataTruncator {
 	 *
 	 * @param array $propertyExemptionList
 	 */
-	public function setPropertyExemptionList( array $propertyExemptionList ) {
+	public function setPropertyExemptionList( array $propertyExemptionList ): void {
 		$this->propertyExemptionList = str_replace( ' ', '_', $propertyExemptionList );
 	}
 
@@ -42,7 +42,7 @@ class ReplicationDataTruncator {
 		}
 
 		foreach ( $this->propertyExemptionList as $property ) {
-			$semanticData->removeProperty( DIProperty::newFromUserLabel( $property ) );
+			$semanticData->removeProperty( Property::newFromUserLabel( $property ) );
 		}
 
 		return $semanticData;

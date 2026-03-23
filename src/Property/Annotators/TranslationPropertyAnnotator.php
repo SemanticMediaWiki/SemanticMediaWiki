@@ -3,6 +3,7 @@
 namespace SMW\Property\Annotators;
 
 use MediaWiki\Title\Title;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\Property\Annotator;
 
 /**
@@ -33,7 +34,7 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param array $predefinedPropertyList
 	 */
-	public function setPredefinedPropertyList( array $predefinedPropertyList ) {
+	public function setPredefinedPropertyList( array $predefinedPropertyList ): void {
 		$this->predefinedPropertyList = array_flip( $predefinedPropertyList );
 	}
 
@@ -91,7 +92,7 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 	}
 
-	private function newContainerSemanticData( $languageCode ) {
+	private function newContainerSemanticData( $languageCode ): ContainerSemanticData {
 		$dataItem = $this->getSemanticData()->getSubject();
 		$subobjectName = 'trans.' . $languageCode;
 

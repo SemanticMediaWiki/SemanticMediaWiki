@@ -16,23 +16,22 @@ class Blob extends DataItem {
 
 	/**
 	 * Internal value.
-	 * @var string
 	 */
-	protected $m_string;
+	protected string $m_string;
 
 	public function __construct( $string ) {
 		$this->m_string = trim( $string ?? '' );
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_BLOB;
 	}
 
-	public function getString() {
+	public function getString(): string {
 		return $this->m_string;
 	}
 
-	public static function normalize( $text ) {
+	public static function normalize( $text ): string {
 		$text = mb_strtolower( $text );
 
 		$transliterator = Transliterator::create( 'Any-Latin; Latin-ASCII' );
@@ -48,7 +47,7 @@ class Blob extends DataItem {
 		return mb_convert_kana( $text, 'a' );
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return $this->m_string;
 	}
 
@@ -60,7 +59,7 @@ class Blob extends DataItem {
 		return $this;
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return $this->m_string;
 	}
 
@@ -69,7 +68,7 @@ class Blob extends DataItem {
 	 * ID.
 	 * @return Blob
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): Blob {
 		return new Blob( $serialization );
 	}
 

@@ -3,14 +3,14 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
 
 /**
  * @group semantic-mediawiki
@@ -132,8 +132,8 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 		 * @query {{#ask: [[Has function hook test::PageCompleteMove]] }}
 		 */
 		$description = new SomeProperty(
-			DIProperty::newFromUserLabel( 'Has function hook test' ),
-			new ValueDescription( new DIWikiPage( 'PageCompleteMove', 0 ), null, SMW_CMP_EQ )
+			Property::newFromUserLabel( 'Has function hook test' ),
+			new ValueDescription( new WikiPage( 'PageCompleteMove', 0 ), null, SMW_CMP_EQ )
 		);
 
 		$query = new Query(
@@ -153,7 +153,7 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			[ DIWikiPage::newFromTitle( $expectedNewTitle ) ],
+			[ WikiPage::newFromTitle( $expectedNewTitle ) ],
 			$queryResult
 		);
 

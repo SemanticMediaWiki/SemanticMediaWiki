@@ -2,11 +2,11 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\Export\Exporter;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,7 +34,7 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ThingDescription;
 	}
 

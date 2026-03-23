@@ -12,7 +12,7 @@ use Onoi\CallbackContainer\CallbackContainerBuilder;
  * Services defined in this file SHOULD only be accessed either via the
  * ServicesFactory or a different factory instance.
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

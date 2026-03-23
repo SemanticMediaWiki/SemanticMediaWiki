@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\Runners;
 
+use Exception;
 use ImportReporter;
 use ImportStreamSource;
 use MediaWiki\Context\RequestContext;
@@ -104,7 +105,7 @@ class XmlImportRunner {
 
 		try {
 			$importer->doImport();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->exception = $e;
 		}
 

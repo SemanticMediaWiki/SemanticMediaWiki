@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\DIWiKiPage;
 
 /**
@@ -18,7 +18,7 @@ class CityCategory extends FixtureProperty {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = new DIProperty( '_INST' );
+		$this->property = new Property( '_INST' );
 	}
 
 	/**

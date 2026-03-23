@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMWDataValue as DataValue;
+use SMW\DataValues\DataValue;
 
 /**
  * @private
@@ -54,7 +54,7 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 		}
 	}
 
-	private function doValidateCodifiedPreferredPropertyLabelConstraints( $dataValue ) {
+	private function doValidateCodifiedPreferredPropertyLabelConstraints( DataValue $dataValue ) {
 		// Annotated but not enabled
 		if ( !$dataValue->isEnabledFeature( SMW_DV_PPLB ) ) {
 			return $dataValue->addErrorMsg(

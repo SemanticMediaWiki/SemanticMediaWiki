@@ -38,7 +38,7 @@ class TransactionHandler {
 	 *
 	 * @param TransactionProfiler $transactionProfiler
 	 */
-	public function setTransactionProfiler( $transactionProfiler ) {
+	public function setTransactionProfiler( $transactionProfiler ): void {
 		$this->transactionProfiler = $transactionProfiler;
 	}
 
@@ -68,7 +68,7 @@ class TransactionHandler {
 	 *
 	 * @return bool
 	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
+	public function inSectionTransaction( $fname = __METHOD__ ): bool {
 		return $this->sectionTransaction === $fname;
 	}
 
@@ -77,7 +77,7 @@ class TransactionHandler {
 	 *
 	 * @return bool
 	 */
-	public function hasActiveSectionTransaction() {
+	public function hasActiveSectionTransaction(): bool {
 		return $this->sectionTransaction !== null;
 	}
 
@@ -99,7 +99,7 @@ class TransactionHandler {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function markSectionTransaction( $fname = __METHOD__ ) {
+	public function markSectionTransaction( $fname = __METHOD__ ): void {
 		if ( $this->sectionTransaction !== null ) {
 			throw new RuntimeException(
 				"Trying to begin a new section transaction while {$this->sectionTransaction} is still active!"
@@ -114,7 +114,7 @@ class TransactionHandler {
 	 *
 	 * @param string $fname
 	 */
-	public function detachSectionTransaction( $fname = __METHOD__ ) {
+	public function detachSectionTransaction( $fname = __METHOD__ ): void {
 		if ( $this->sectionTransaction !== $fname ) {
 			throw new RuntimeException(
 				"Trying to end an invalid section transaction (registered: {$this->sectionTransaction}, requested: {$fname})"

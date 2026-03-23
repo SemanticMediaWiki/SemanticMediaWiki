@@ -12,8 +12,8 @@ use Onoi\EventDispatcher\EventDispatcher;
 use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
-use SMW\ContentParser;
 use SMW\DataItemFactory;
+use SMW\DataModel\SemanticData;
 use SMW\DataUpdater;
 use SMW\DataValueFactory;
 use SMW\EntityCache;
@@ -36,6 +36,7 @@ use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
+use SMW\Parser\ContentParser;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
@@ -43,10 +44,9 @@ use SMW\PostProcHandler;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
-use SMW\Query\Parser as QueryParser;
+use SMW\Query\Parser\LegacyParser;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
-use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Site;
@@ -110,7 +110,7 @@ class ServicesFactory {
 	/**
 	 * @since 2.0
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -120,7 +120,7 @@ class ServicesFactory {
 	 * @param string $objectName
 	 * @param callable|array $objectSignature
 	 */
-	public function registerObject( $objectName, $objectSignature ) {
+	public function registerObject( $objectName, $objectSignature ): void {
 		$this->callbackContainerBuilder->registerObject( $objectName, $objectSignature );
 	}
 
@@ -129,7 +129,7 @@ class ServicesFactory {
 	 *
 	 * @param string $file
 	 */
-	public function registerFromFile( $file ) {
+	public function registerFromFile( $file ): void {
 		$this->callbackContainerBuilder->registerFromFile( $file );
 	}
 
@@ -365,7 +365,7 @@ class ServicesFactory {
 	 *
 	 * @return InTextAnnotationParser
 	 */
-	public function newInTextAnnotationParser( ParserData $parserData ) {
+	public function newInTextAnnotationParser( ParserData $parserData ): InTextAnnotationParser {
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
 		$linksProcessor = $this->callbackContainerBuilder->create( 'LinksProcessor' );
@@ -424,7 +424,7 @@ class ServicesFactory {
 	 *
 	 * @return DataUpdater
 	 */
-	public function newDataUpdater( SemanticData $semanticData ) {
+	public function newDataUpdater( SemanticData $semanticData ): DataUpdater {
 		$settings = $this->getSettings();
 
 		$changePropagationNotifier = new ChangePropagationNotifier(
@@ -470,7 +470,7 @@ class ServicesFactory {
 	 *
 	 * @return MwCollaboratorFactory
 	 */
-	public function newMwCollaboratorFactory() {
+	public function newMwCollaboratorFactory(): MwCollaboratorFactory {
 		return new MwCollaboratorFactory( $this );
 	}
 
@@ -582,9 +582,11 @@ class ServicesFactory {
 	 * @deprecated since 2.5, use QueryFactory::newQueryParser
 	 * @since 2.1
 	 *
-	 * @return QueryParser
+	 * @param int|bool $queryFeatures
+	 *
+	 * @return LegacyParser
 	 */
-	public function newQueryParser( $queryFeatures = false ) {
+	public function newQueryParser( $queryFeatures = false ): LegacyParser {
 		return $this->getQueryFactory()->newQueryParser( $queryFeatures );
 	}
 

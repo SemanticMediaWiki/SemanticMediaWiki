@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Connection;
 
+use Profiler;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
@@ -41,7 +42,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 3.0
 	 */
-	public function setLocalConnectionConf( array $localConnectionConf ) {
+	public function setLocalConnectionConf( array $localConnectionConf ): void {
 		$this->localConnectionConf = $localConnectionConf;
 	}
 
@@ -76,7 +77,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 2.1
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		if ( $this->connection !== null ) {
 			$this->connection->releaseConnection();
 		}
@@ -116,7 +117,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return $connection;
 	}
 
-	private function newConnRef( $conf ) {
+	private function newConnRef( $conf ): ConnRef {
 		$read = $this->newLoadBalancerConnectionProvider( $conf['read'] );
 
 		if ( $conf['read'] !== $conf['write'] ) {
@@ -133,17 +134,17 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 	}
 
-	private function newLoadBalancerConnectionProvider( $id ) {
+	private function newLoadBalancerConnectionProvider( $id ): LoadBalancerConnectionProvider {
 		return new LoadBalancerConnectionProvider( $id );
 	}
 
-	private function newTransactionHandler() {
+	private function newTransactionHandler(): TransactionHandler {
 		$transactionHandler = new TransactionHandler(
 			ServicesFactory::getInstance()->create( 'DBLoadBalancerFactory' )
 		);
 
 		$transactionHandler->setTransactionProfiler(
-			\Profiler::instance()->getTransactionProfiler()
+			Profiler::instance()->getTransactionProfiler()
 		);
 
 		return $transactionHandler;

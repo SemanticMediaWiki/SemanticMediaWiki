@@ -2,10 +2,9 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Message;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
 
 /**
  * Handling of a language dependent error message encoded by Message::encode.
@@ -34,7 +33,7 @@ class ErrorMsgTextValue extends DataValue {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
 
-		$this->m_dataitem = new DIBlob( $value );
+		$this->m_dataitem = new Blob( $value );
 	}
 
 	/**
@@ -44,8 +43,8 @@ class ErrorMsgTextValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 

@@ -1,0 +1,83 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
+
+use MediaWiki\Html\TemplateParser;
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\MessageLocalizer;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter;
+use SMW\Schema\CompartmentIterator;
+use SMW\Utils\UrlArgs;
+
+/**
+ * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.2
+ *
+ * @author mwjames
+ */
+class RangeValueFilterTest extends TestCase {
+
+	private $templateParser;
+	private $urlArgs;
+	private $messageLocalizer;
+	private $compartmentIterator;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->urlArgs = $this->getMockBuilder( UrlArgs::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->compartmentIterator = $this->getMockBuilder( CompartmentIterator::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			RangeValueFilter::class,
+			new RangeValueFilter( $this->templateParser, $this->compartmentIterator, [] )
+		);
+	}
+
+	public function testCreate_NoFilter() {
+		$this->templateParser->expects( $this->any() )
+			->method( 'processTemplate' )
+			->willReturn( '' );
+
+		$params = [
+			'min_item' => 1
+		];
+
+		$instance = new RangeValueFilter(
+			$this->templateParser,
+			$this->compartmentIterator,
+			$params
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
+		);
+
+		$filters = [];
+		$raw = [];
+
+		$this->assertIsString(
+
+			$instance->create( $this->urlArgs, 'Foo', $filters, $raw )
+		);
+	}
+
+}

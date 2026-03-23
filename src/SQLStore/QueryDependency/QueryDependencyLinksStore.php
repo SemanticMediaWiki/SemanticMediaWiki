@@ -3,8 +3,10 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\NamespaceExaminer;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -12,7 +14,6 @@ use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\Timer;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,10 +25,7 @@ class QueryDependencyLinksStore {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
 	/**
 	 * @var NamespaceExaminer
@@ -70,7 +68,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
 	}
 
@@ -82,7 +80,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
@@ -100,7 +98,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param bool $isEnabled
 	 */
-	public function setEnabled( $isEnabled ) {
+	public function setEnabled( $isEnabled ): void {
 		$this->isEnabled = (bool)$isEnabled;
 	}
 
@@ -113,7 +111,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ) {
+	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ): ?bool {
 		if ( !$this->isEnabled() ) {
 			return null;
 		}
@@ -122,7 +120,7 @@ class QueryDependencyLinksStore {
 		$hash = null;
 
 		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
-			new DIProperty( '_ASK' )
+			new Property( '_ASK' )
 		);
 
 		$tableChangeOps = $changeOp->getTableChangeOps( $tableName );
@@ -165,17 +163,17 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
+	public function findEmbeddedQueryIdListBySubject( WikiPage $subject, ?RequestOptions $requestOptions = null ): array {
 		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
-			new DIProperty( '_ASK' ),
+			new Property( '_ASK' ),
 			$requestOptions
 		);
 
@@ -189,12 +187,12 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findDependencyTargetLinksForSubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
+	public function findDependencyTargetLinksForSubject( WikiPage $subject, RequestOptions $requestOptions ) {
 		return $this->findDependencyTargetLinks(
 			[ $this->dependencyLinksTableUpdater->getId( $subject ) ],
 			$requestOptions
@@ -208,7 +206,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return int
 	 */
-	public function countDependencies( $id ) {
+	public function countDependencies( $id ): int {
 		$count = 0;
 		$ids = !is_array( $id ) ? (array)$id : $id;
 
@@ -349,7 +347,7 @@ class QueryDependencyLinksStore {
 		}
 
 		// Executed as DeferredTransactionalUpdate
-		$callback = function () use( $queryResult, $subject, $sid, $hash ) {
+		$callback = function () use( $queryResult, $subject, $sid, $hash ): void {
 			$this->doUpdate( $queryResult, $subject, $sid, $hash );
 		};
 

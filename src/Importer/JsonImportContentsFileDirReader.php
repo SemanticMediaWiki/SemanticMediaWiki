@@ -57,7 +57,7 @@ class JsonImportContentsFileDirReader {
 	 *
 	 * @return ImportContents[]
 	 */
-	public function getContentList() {
+	public function getContentList(): array {
 		$contents = [];
 		sort( $this->importFileDirs );
 
@@ -109,7 +109,7 @@ class JsonImportContentsFileDirReader {
 		throw new JSONFileParseException( $file );
 	}
 
-	private function getFilesFromLocation( $path, $extension ) {
+	private function getFilesFromLocation( $path, string $extension ) {
 		if ( $path === '' ) {
 			return [];
 		}

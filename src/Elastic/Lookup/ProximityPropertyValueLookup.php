@@ -2,15 +2,15 @@
 
 namespace SMW\Elastic\Lookup;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDITime as DITime;
 
 /**
  * Experimental implementation to showcase how a Elasticsearch specific implementation
@@ -38,13 +38,13 @@ class ProximityPropertyValueLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param string $value
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
 	 */
-	public function lookup( DIProperty $property, $value, RequestOptions $opts ) {
+	public function lookup( Property $property, $value, RequestOptions $opts ) {
 		$connection = $this->store->getConnection( 'elastic' );
 		$continueOffset = 0;
 
@@ -149,9 +149,9 @@ class ProximityPropertyValueLookup {
 				foreach ( $list as $key => $value ) {
 
 					if ( strpos( $value, '/' ) !== false ) {
-						$dataItem = DITime::doUnserialize( $value );
+						$dataItem = Time::doUnserialize( $value );
 					} else {
-						$dataItem = DITime::newFromJD( $value );
+						$dataItem = Time::newFromJD( $value );
 					}
 
 					$list[$key] = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $property )->getWikiValue();
@@ -162,7 +162,7 @@ class ProximityPropertyValueLookup {
 		return $list;
 	}
 
-	private function aggs_filter( $diType, $pid, $field, $limit, $property, $value ) {
+	private function aggs_filter( $diType, string $pid, string $field, int $limit, Property $property, string $value ): array {
 		// A field on ES to a property can can all different kind of values and
 		// the request is only interested in those values that match a certain
 		// prefix or affix hence use `include` to only return aggregated values
@@ -220,7 +220,7 @@ class ProximityPropertyValueLookup {
 		];
 	}
 
-	private function match_aggregations( $res, $diType, $limit ) {
+	private function match_aggregations( $res, $diType, int $limit ): array {
 		$isNumeric = $diType === DataItem::TYPE_NUMBER;
 		$list = [];
 		$i = 0;
@@ -257,7 +257,7 @@ class ProximityPropertyValueLookup {
 		return [ $list, $i ];
 	}
 
-	private function match_hits( $res, $pid, $field, $limit ) {
+	private function match_hits( $res, string $pid, string $field, int $limit ): array {
 		$list = [];
 		$i = 0;
 

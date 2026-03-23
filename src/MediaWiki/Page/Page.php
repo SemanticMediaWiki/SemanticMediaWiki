@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Page;
 
 use Article;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Outputs;
 use SMW\Options;
 use SMW\Services\ServicesFactory;
-use SMWOutputs as Outputs;
 
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of
@@ -60,7 +60,7 @@ abstract class Page extends Article {
 	 *
 	 * @see Article::view
 	 */
-	public function view() {
+	public function view(): void {
 		$outputPage = $this->getContext()->getOutput();
 		$outputPage->addModuleStyles( [
 			'ext.smw.styles',
@@ -216,10 +216,10 @@ abstract class Page extends Article {
 	 *
 	 * @since 1.6
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	protected function getDataItem() {
-		return DIWikiPage::newFromTitle( $this->getTitle() );
+		return WikiPage::newFromTitle( $this->getTitle() );
 	}
 
 }

@@ -55,7 +55,7 @@ class TemplateRowBuilder extends RowBuilder {
 	 *
 	 * @return string
 	 */
-	private function getFieldLabel( ResultArray $field, $column ) {
+	private function getFieldLabel( ResultArray $field, int|string $column ) {
 		if ( $this->get( 'named args' ) === false ) {
 			return intval( $column + 1 );
 		}

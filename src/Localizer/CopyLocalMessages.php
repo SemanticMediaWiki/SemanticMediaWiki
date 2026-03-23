@@ -129,7 +129,7 @@ class CopyLocalMessages {
 		];
 	}
 
-	private function readJSONFile( $file ) {
+	private function readJSONFile( $file ): array {
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {
@@ -146,7 +146,7 @@ class CopyLocalMessages {
 		throw new JSONFileParseException( $file );
 	}
 
-	private function prettify( $json ) {
+	private function prettify( $json ): string|array {
 		// Change the four-space indent to a tab indent
 		$json = str_replace( "\n    ", "\n\t", $json );
 

@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
 use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Utils\UrlArgs;
 
@@ -60,7 +60,7 @@ class CheckboxValueFilter {
 		$valueFilters = $this->getValueFilters( $property );
 		$isClear = $this->urlArgs->find( "clear.$property", false );
 
-		$prop = DIProperty::newFromUserLabel( $property );
+		$prop = Property::newFromUserLabel( $property );
 
 		$isRecordType = DataTypeRegistry::getInstance()->isRecordType(
 			$prop->findPropertyTypeID()
@@ -124,7 +124,7 @@ class CheckboxValueFilter {
 		);
 	}
 
-	private function matchFilter( $property, $key, $label, $count, $valueFilters, &$list, $isClear ) {
+	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, &$list, $isClear ): void {
 		// Make sure characters like `"` are encoded otherwise those will be removed
 		// from the value representation
 		$key = htmlspecialchars( $key );
@@ -156,14 +156,14 @@ class CheckboxValueFilter {
 		}
 	}
 
-	private function getValueFilters( $property ) {
+	private function getValueFilters( string $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	private function createConditionField( $property ) {
+	private function createConditionField( string $property ) {
 		if ( $this->params['condition_field'] === false ) {
 			return '';
 		}
@@ -181,7 +181,7 @@ class CheckboxValueFilter {
 		);
 	}
 
-	private function createInputField( $property, array $values ) {
+	private function createInputField( string $property, array $values ) {
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}

@@ -93,7 +93,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		);
 	}
 
-	private function buildSection( $section, $deprecationNoticeList ) {
+	private function buildSection( int|string $section, $deprecationNoticeList ) {
 		$noticeConfigList = [];
 		$replacementConfigList = [];
 		$removedConfigList = [];
@@ -139,7 +139,10 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		);
 	}
 
-	private function buildList( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ) {
+	/**
+	 * @return list<mixed>
+	 */
+	private function buildList( int|string $section, $noticeConfigList, $replacementConfigList, $removedConfigList ): array {
 		$noticeList = [];
 		$list = [];
 
@@ -185,7 +188,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return $noticeList;
 	}
 
-	private function mergeList( $title, $section, &$list ) {
+	private function mergeList( string $title, int|string $section, &$list ) {
 		if ( $list === [] || ( $items = implode( '', $list ) ) === '' ) {
 			return;
 		}
@@ -207,7 +210,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return $html;
 	}
 
-	private function createItems( $message, $values ) {
+	private function createItems( string $message, $values ): string {
 		$list = [];
 
 		if ( !is_array( $values ) ) {
@@ -248,11 +251,11 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return implode( '', $list );
 	}
 
-	private function hasOption( $setting, $option ) {
+	private function hasOption( int|string $setting, int|string $option ): bool {
 		return isset( $GLOBALS[$setting][$option] ) || ( is_array( $GLOBALS[$setting] ) && array_search( $option, $GLOBALS[$setting] ) );
 	}
 
-	private function createItem( $message ) {
+	private function createItem( array $message ) {
 		return Html::rawElement( 'li', [], $this->msg( $message, Message::PARSE ) );
 	}
 

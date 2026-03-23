@@ -3,12 +3,14 @@
 namespace SMW\SQLStore\EntityStore;
 
 use InvalidArgumentException;
+use Iterator;
+use SMW\DataItems\DataItem;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,7 +36,7 @@ class DuplicateFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasDuplicate( DataItem $dataItem ) {
+	public function hasDuplicate( DataItem $dataItem ): bool {
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
@@ -79,9 +81,9 @@ class DuplicateFinder {
 	 *
 	 * @param string|null $table
 	 *
-	 * @return Iterator|[]
+	 * @return MappingIterator|array
 	 */
-	public function findDuplicates( $table = null ) {
+	public function findDuplicates( $table = null ): Iterator|array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -140,7 +142,7 @@ class DuplicateFinder {
 		return $mappingIterator;
 	}
 
-	private function id_table( $table, $query ) {
+	private function id_table( string $table, $query ): void {
 		$fields = self::fields( $table );
 
 		$query->table( $table );
@@ -157,7 +159,7 @@ class DuplicateFinder {
 		);
 	}
 
-	private function common_table( $table, $query ) {
+	private function common_table( string $table, $query ): void {
 		$fields = self::fields( $table );
 
 		$query->table( $table );
@@ -171,7 +173,7 @@ class DuplicateFinder {
 		);
 	}
 
-	private static function fields( $tableName ) {
+	private static function fields( string $tableName ) {
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {
@@ -181,7 +183,10 @@ class DuplicateFinder {
 		return $fieldsDef[$tableName];
 	}
 
-	private static function mapRow( $tableName, $row ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function mapRow( $tableName, $row ): array {
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {
@@ -197,7 +202,7 @@ class DuplicateFinder {
 		return $map;
 	}
 
-	private static function fieldsDef() {
+	private static function fieldsDef(): array {
 		return [
 			SQLStore::ID_TABLE => [
 				'smw_title',

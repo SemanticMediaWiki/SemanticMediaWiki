@@ -53,7 +53,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param array $invalidCharacterList
 	 */
-	public function setInvalidCharacterList( array $invalidCharacterList ) {
+	public function setInvalidCharacterList( array $invalidCharacterList ): void {
 		$this->invalidCharacterList = $invalidCharacterList;
 	}
 
@@ -64,7 +64,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $isCapitalLinks
 	 */
-	public function isCapitalLinks( $isCapitalLinks ) {
+	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = (bool)$isCapitalLinks;
 	}
 
@@ -76,7 +76,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $reqCapitalizedFirstChar
 	 */
-	public function reqCapitalizedFirstChar( $reqCapitalizedFirstChar ) {
+	public function reqCapitalizedFirstChar( $reqCapitalizedFirstChar ): void {
 		$this->reqCapitalizedFirstChar = (bool)$reqCapitalizedFirstChar;
 	}
 
@@ -88,7 +88,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $isQueryContext
 	 */
-	public function isQueryContext( $isQueryContext ) {
+	public function isQueryContext( $isQueryContext ): void {
 		$this->isQueryContext = (bool)$isQueryContext;
 	}
 
@@ -99,7 +99,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @return array
 	 */
-	public function parse( $userValue ) {
+	public function parse( $userValue ): array {
 		$this->errors = [];
 
 		// #1727 <Foo> or <Foo-<Bar> are not permitted but
@@ -115,7 +115,7 @@ class PropertyValueParser implements ValueParser {
 		return $this->getNormalizedValueFrom( $userValue );
 	}
 
-	private function hasValidCharacters( $value ) {
+	private function hasValidCharacters( string $value ): bool {
 		if ( trim( $value ) === '' ) {
 			$this->errors[] = [ 'smw_emptystring' ];
 			return false;
@@ -158,7 +158,7 @@ class PropertyValueParser implements ValueParser {
 		return true;
 	}
 
-	private function getNormalizedValueFrom( $value ) {
+	private function getNormalizedValueFrom( string $value ): array {
 		$inverse = false;
 		$capitalizedName = '';
 		$value = (string)$value;

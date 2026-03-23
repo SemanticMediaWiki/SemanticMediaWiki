@@ -5,8 +5,8 @@ namespace SMW\Tests\Utils;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use RuntimeException;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 
 /**
  * @license GPL-2.0-or-later
@@ -29,7 +29,7 @@ class SemanticDataFactory {
 		}
 
 		if ( $title instanceof Title ) {
-			return $this->setSubject( DIWikiPage::newFromTitle( $title ) );
+			return $this->setSubject( WikiPage::newFromTitle( $title ) );
 		}
 
 		throw new RuntimeException( "Something went wrong" );
@@ -38,9 +38,9 @@ class SemanticDataFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function setSubject( DIWikiPage $subject ) {
+	public function setSubject( WikiPage $subject ) {
 		$this->subject = $subject;
 		return $this;
 	}
@@ -54,7 +54,7 @@ class SemanticDataFactory {
 	 * @throws RuntimeException
 	 */
 	public function newEmptySemanticData( $title = null ) {
-		if ( $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage ) {
 			$this->setSubject( $title );
 		} elseif ( $title !== null ) {
 			$this->setTitle( $title );

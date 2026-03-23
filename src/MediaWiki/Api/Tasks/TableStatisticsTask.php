@@ -34,7 +34,7 @@ class TableStatisticsTask extends Task {
 	 *
 	 * @param array $cacheUsage
 	 */
-	public function setCacheUsage( array $cacheUsage ) {
+	public function setCacheUsage( array $cacheUsage ): void {
 		$this->cacheUsage = $cacheUsage;
 	}
 
@@ -45,7 +45,7 @@ class TableStatisticsTask extends Task {
 	 *
 	 * @return array
 	 */
-	public function process( array $parameters ) {
+	public function process( array $parameters ): array {
 		$cacheTTL = 3600;
 
 		if ( isset( $this->cacheUsage['api.table.statistics'] ) ) {

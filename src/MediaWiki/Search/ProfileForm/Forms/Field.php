@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use MediaWiki\Html\Html;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Message;
 
 /**
@@ -78,7 +78,7 @@ class Field {
 	 *
 	 * @return string
 	 */
-	public function select( $attributes = [] ) {
+	public function select( $attributes = [] ): string {
 		$list = [];
 		$html = [];
 		$selected = false;

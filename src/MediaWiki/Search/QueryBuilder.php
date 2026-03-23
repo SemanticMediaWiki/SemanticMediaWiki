@@ -10,9 +10,9 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\TermParser;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @private
@@ -76,7 +76,7 @@ class QueryBuilder {
 	 * @param Query|null $query
 	 * @param array $searchableNamespaces
 	 */
-	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ) {
+	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ): void {
 		if ( $query === null ) {
 			return;
 		}
@@ -104,7 +104,7 @@ class QueryBuilder {
 	 *
 	 * @param Query|null $query
 	 */
-	public function addSort( ?Query $query = null ) {
+	public function addSort( ?Query $query = null ): void {
 		if ( $query === null ) {
 			return;
 		}
@@ -194,9 +194,9 @@ class QueryBuilder {
 	 * @param string $form
 	 * @param array $data
 	 *
-	 * @return
+	 * @return mixed[]|\non-empty-list<array{mixed, mixed}>[]|\non-empty-list<array{mixed, 'and'}>[]
 	 */
-	public function fetchFieldValues( $form, array $data ) {
+	public function fetchFieldValues( $form, array $data ): array {
 		$fieldValues = [];
 
 		if ( !isset( $data['forms'] ) ) {

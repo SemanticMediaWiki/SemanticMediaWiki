@@ -7,11 +7,11 @@ use MediaWiki\Html\TemplateParser;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataValueFactory;
 use SMW\Encoder;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink as Infolink;
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it
@@ -35,7 +35,7 @@ class SpecialBrowse extends SpecialPage {
 	 *
 	 * @param string $query string
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$this->setHeaders();
 		$webRequest = $this->getRequest();
 
@@ -92,7 +92,7 @@ class SpecialBrowse extends SpecialPage {
 		$this->addExternalHelpLinks( $dataValue );
 	}
 
-	private function getTemplateData( $webRequest, $dataValue, $isEmptyRequest ): array {
+	private function getTemplateData( $webRequest, $dataValue, bool $isEmptyRequest ): array {
 		$data = [];
 		if ( $isEmptyRequest && !$this->including() ) {
 			$data['html-output'] = Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE );
@@ -146,7 +146,7 @@ class SpecialBrowse extends SpecialPage {
 		return $htmlBuilder->getPlaceholderData();
 	}
 
-	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ) {
+	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ): HtmlBuilder {
 		$htmlBuilder = new HtmlBuilder(
 			$store,
 			$dataItem
@@ -216,7 +216,7 @@ class SpecialBrowse extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 

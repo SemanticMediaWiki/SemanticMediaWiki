@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\Query\Parser as QueryParser;
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -33,7 +33,7 @@ class ConceptQuerySegmentBuilder {
 	 *
 	 * @param QueryParser $queryParser
 	 */
-	public function setQueryParser( QueryParser $queryParser ) {
+	public function setQueryParser( QueryParser $queryParser ): void {
 		$this->queryParser = $queryParser;
 	}
 
@@ -82,7 +82,7 @@ class ConceptQuerySegmentBuilder {
 	/**
 	 * @since 2.2
 	 */
-	public function cleanUp() {
+	public function cleanUp(): void {
 		$this->querySegmentListProcessor->setQueryMode( Query::MODE_INSTANCES );
 		$this->querySegmentListProcessor->cleanUp();
 	}

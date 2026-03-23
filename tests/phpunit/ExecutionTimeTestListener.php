@@ -14,9 +14,14 @@ class ExecutionTimeTestListener implements TestListener {
 
 	/**
 	 * Internal tracking for test suites
+	 *
+	 * @var int
 	 */
 	protected $suites = 0;
 
+	/**
+	 * @var array
+	 */
 	protected $slowTests = [];
 
 	/**

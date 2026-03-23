@@ -3,18 +3,18 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use MediaWiki\Html\Html;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
-use SMWDIError;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -53,14 +53,14 @@ class PageBuilder {
 	 *
 	 * @return string
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$this->pageRequestOptions->initialize();
 		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
 		[ $resultMessage, $resultList, $resultCount ] = $this->getResultHtml();
 
 		if ( ( $resultList === '' || $resultList === null ) &&
-			$this->pageRequestOptions->property->getDataItem() instanceof DIProperty &&
+			$this->pageRequestOptions->property->getDataItem() instanceof Property &&
 			$this->pageRequestOptions->valueString === '' ) {
 			[ $resultMessage, $resultList, $resultCount ] = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
 				$this->pageRequestOptions->property->getDataItem()
@@ -118,7 +118,10 @@ class PageBuilder {
 		return $html;
 	}
 
-	private function getResultHtml() {
+	/**
+	 * @return mixed[]
+	 */
+	private function getResultHtml(): array {
 		$resultList = '';
 		$resultMessage = '';
 
@@ -168,7 +171,10 @@ class PageBuilder {
 		return [ str_replace( '_', ' ', $resultMessage ?? '' ), $resultList, $exactCount ];
 	}
 
-	private function getNearbyResults( $exactResults, $exactCount ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getNearbyResults( array $exactResults, int $exactCount ): array {
 		$resultList = '';
 
 		$greaterResults = $this->queryResultLookup->doQueryForNearbyResults(
@@ -241,7 +247,7 @@ class PageBuilder {
 	 *
 	 * @return string HTML with the bullet list, including header
 	 */
-	private function makeResultList( $results, $number, $first, $highlight = false ) {
+	private function makeResultList( array $results, $number, bool $first, bool $highlight = false ): string {
 		if ( $number > 0 ) {
 			$results = $first ?
 				array_slice( $results, 0, $number ) :
@@ -284,7 +290,7 @@ class PageBuilder {
 			// or if the current results are to be highlighted:
 			if ( array_key_exists( 1, $result ) &&
 				( $result[1] instanceof DataValue ) &&
-				( !$result[1]->getDataItem() instanceof SMWDIError ) &&
+				( !$result[1]->getDataItem() instanceof Error ) &&
 				( !$this->pageRequestOptions->value->getDataItem()->equals( $result[1]->getDataItem() )
 					|| $highlight ) ) {
 
@@ -307,11 +313,11 @@ class PageBuilder {
 		return "<ul>$html</ul>";
 	}
 
-	private function canQueryNearbyResults( $exactCount ) {
+	private function canQueryNearbyResults( int $exactCount ): bool {
 		return $exactCount < ( $this->pageRequestOptions->limit / 3 ) && $this->pageRequestOptions->nearbySearch && $this->pageRequestOptions->valueString !== '';
 	}
 
-	private function canShowSearchByPropertyLink( DataValue $dataValue ) {
+	private function canShowSearchByPropertyLink( DataValue $dataValue ): bool {
 		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById(
 			$dataValue->getTypeID()
 		);
@@ -319,7 +325,7 @@ class PageBuilder {
 		return $this->pageRequestOptions->value instanceof $dataTypeClass && $this->pageRequestOptions->valueString === '';
 	}
 
-	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ) {
+	private function tryToFindAtLeastOnePropertyTableReferenceFor( Property $property ): array {
 		$resultList = '';
 		$resultMessage = '';
 		$resultCount = 0;
@@ -329,7 +335,7 @@ class PageBuilder {
 			$property
 		);
 
-		if ( !$dataItem instanceof DIWikiPage ) {
+		if ( !$dataItem instanceof WikiPage ) {
 			$resultMessage = 'No reference found.';
 			return [ $resultMessage, $resultList, $resultCount ];
 		}
@@ -338,7 +344,7 @@ class PageBuilder {
 		// for removal
 		if ( $dataItem->getInterWiki() === ':smw-delete' ) {
 			$resultMessage = 'Item reference "' . $dataItem->getSubobjectName() . '" has already been marked for removal.';
-			$dataItem = new DIWikiPage( $dataItem->getDBKey(), $dataItem->getNamespace() );
+			$dataItem = new WikiPage( $dataItem->getDBKey(), $dataItem->getNamespace() );
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -362,7 +368,7 @@ class PageBuilder {
 		return [ $resultMessage, $resultList, $resultCount ];
 	}
 
-	private function isAskQueryLinksRelatedRequest() {
+	private function isAskQueryLinksRelatedRequest(): bool {
 		return $this->pageRequestOptions->property !== '' &&
 			$this->pageRequestOptions->property->getDataItem()->getKey() === '_ASK' &&
 			$this->pageRequestOptions->value->isValid() &&

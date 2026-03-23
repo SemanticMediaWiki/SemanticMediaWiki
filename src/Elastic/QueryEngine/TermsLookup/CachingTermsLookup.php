@@ -36,7 +36,7 @@ class CachingTermsLookup extends TermsLookup {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->quick_cache = [];
 	}
 
@@ -45,7 +45,7 @@ class CachingTermsLookup extends TermsLookup {
 	 *
 	 * @return string
 	 */
-	public static function makeCacheKey() {
+	public static function makeCacheKey(): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, func_get_args() );
 	}
 

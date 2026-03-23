@@ -4,10 +4,9 @@ namespace SMW\DataModel;
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\SubSemanticDataException;
-use SMW\SemanticData;
 
 /**
  * @private
@@ -45,7 +44,7 @@ class SubSemanticData implements JsonUnserializable {
 	 * @since 2.5
 	 */
 	public function __construct(
-		private readonly DIWikiPage $subject,
+		private readonly WikiPage $subject,
 		private $noDuplicates = true,
 	) {
 		$this->clear();
@@ -71,9 +70,9 @@ class SubSemanticData implements JsonUnserializable {
 	/**
 	 * Return subject to which the stored semantic annotations refer to.
 	 *
-	 * @return DIWikiPage subject
+	 * @return WikiPage subject
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->subject;
 	}
 
@@ -83,7 +82,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @since 2.5
 	 */
-	public function copyDataFrom( array $subSemanticData ) {
+	public function copyDataFrom( array $subSemanticData ): void {
 		$this->subSemanticData = $subSemanticData;
 	}
 
@@ -100,7 +99,7 @@ class SubSemanticData implements JsonUnserializable {
 	/**
 	 * @since 2.5
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->subSemanticData = [];
 	}
 
@@ -150,7 +149,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @throws SubSemanticDataException if not adding data about a subobject of this data
 	 */
-	public function addSubSemanticData( SemanticData $semanticData ) {
+	public function addSubSemanticData( SemanticData $semanticData ): void {
 		if ( $semanticData->subContainerDepthCounter > $this->subContainerMaxDepth ) {
 			throw new SubSemanticDataException( "Cannot add further subdata with the depth of {$semanticData->subContainerDepthCounter}. You are trying to add data beyond the max depth of {$this->subContainerMaxDepth} to an SemanticData object." );
 		}
@@ -179,7 +178,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function removeSubSemanticData( SemanticData $semanticData ) {
+	public function removeSubSemanticData( SemanticData $semanticData ): void {
 		if ( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
 			return;
 		}
@@ -202,7 +201,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @param $property DIProperty
 	 */
-	public function removeProperty( DIProperty $property ) {
+	public function removeProperty( Property $property ): void {
 		// Inverse properties cannot be used for an annotation
 		if ( $property->isInverse() ) {
 			return;
@@ -213,7 +212,7 @@ class SubSemanticData implements JsonUnserializable {
 		}
 	}
 
-	private function appendSubSemanticData( $semanticData, $subobjectName ) {
+	private function appendSubSemanticData( SemanticData $semanticData, $subobjectName ): void {
 		if ( $this->hasSubSemanticData( $subobjectName ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
 

@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
 
 /**
  * @group SMW
@@ -55,7 +55,7 @@ class CategoryClassQueryDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testSubjects_onCategoryCondition() {
-		$property = new DIProperty( '_INST' );
+		$property = new Property( '_INST' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property, 'SomeCategory' );
 
@@ -105,10 +105,10 @@ class CategoryClassQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private function searchForResultsThatCompareEqualToClassOf( $categoryName ) {
 		$propertyValue = new PropertyValue( '__pro' );
-		$propertyValue->setDataItem( new DIProperty( '_INST' ) );
+		$propertyValue->setDataItem( new Property( '_INST' ) );
 
 		$description = new ClassDescription(
-			new DIWikiPage( $categoryName, NS_CATEGORY, '' )
+			new WikiPage( $categoryName, NS_CATEGORY, '' )
 		);
 
 		$description->addPrintRequest(

@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\DataItems\DataItem;
 use SMW\Query\QueryResult;
-use SMWDataItem as DataItem;
 
 /**
  * Abstract class that supports the aggregation and distributive calculation

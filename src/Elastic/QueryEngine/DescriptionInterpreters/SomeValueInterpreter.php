@@ -4,20 +4,20 @@ namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use Maps\Semantic\ValueDescriptions\AreaDescription;
 use RuntimeException;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\GeoCoord;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\Uri;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Query\Language\ValueDescription;
 use SMW\Utils\CharExaminer;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWDIGeoCoord as DIGeoCoord;
 use SMWDInumber as DINumber;
-use SMWDITime as DITime;
-use SMWDIUri as DIUri;
 
 /**
  * @license GPL-2.0-or-later
@@ -48,7 +48,7 @@ class SomeValueInterpreter {
 	 * @throws RuntimeException
 	 */
 	public function interpretDescription( ValueDescription $description, array &$options ) {
-		if ( !isset( $options['property'] ) || !$options['property'] instanceof DIProperty ) {
+		if ( !isset( $options['property'] ) || !$options['property'] instanceof Property ) {
 			throw new RuntimeException( "Missing a property" );
 		}
 
@@ -76,22 +76,22 @@ class SomeValueInterpreter {
 
 		$options['comparator'] = $comparator;
 
-		if ( $dataItem instanceof DIWikiPage ) {
+		if ( $dataItem instanceof WikiPage ) {
 			$params = $this->page( $dataItem, $options );
-		} elseif ( $dataItem instanceof DIBlob ) {
+		} elseif ( $dataItem instanceof Blob ) {
 			$params = $this->blob( $dataItem, $options );
-		} elseif ( $dataItem instanceof DIUri ) {
+		} elseif ( $dataItem instanceof Uri ) {
 			$params = $this->uri( $dataItem, $options );
-		} elseif ( $dataItem instanceof DIGeoCoord ) {
+		} elseif ( $dataItem instanceof GeoCoord ) {
 
 			if ( $description instanceof AreaDescription ) {
 				$options['bounding_box'] = $description->getBoundingBox();
 			}
 
 			$params = $this->geo( $dataItem, $options );
-		} elseif ( $dataItem instanceof DITime ) {
+		} elseif ( $dataItem instanceof Time ) {
 			$params = $this->plain( $dataItem->getJD(), $options );
-		} elseif ( $dataItem instanceof DIBoolean ) {
+		} elseif ( $dataItem instanceof Boolean ) {
 			$params = $this->plain( $dataItem->getBoolean(), $options );
 		} elseif ( $dataItem instanceof DINumber ) {
 			$params = $this->plain( $dataItem->getNumber(), $options );
@@ -113,11 +113,11 @@ class SomeValueInterpreter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return array
 	 */
-	public function page( DIWikiPage $dataItem, array &$options ) {
+	public function page( WikiPage $dataItem, array &$options ) {
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -251,12 +251,12 @@ class SomeValueInterpreter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIBlob $dataItem
+	 * @param Blob $dataItem
 	 * @param array &$options
 	 *
 	 * @return array
 	 */
-	public function blob( DIBlob $dataItem, array &$options ) {
+	public function blob( Blob $dataItem, array &$options ) {
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -326,12 +326,12 @@ class SomeValueInterpreter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIUri $dataItem
+	 * @param Uri $dataItem
 	 * @param array &$options
 	 *
 	 * @return array
 	 */
-	public function uri( DIUri $dataItem, array &$options ) {
+	public function uri( Uri $dataItem, array &$options ) {
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -379,12 +379,12 @@ class SomeValueInterpreter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIGeoCoord $dataItem
+	 * @param GeoCoord $dataItem
 	 * @param array &$options
 	 *
 	 * @return array
 	 */
-	public function geo( DIGeoCoord $dataItem, array &$options ) {
+	public function geo( GeoCoord $dataItem, array &$options ) {
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -523,11 +523,11 @@ class SomeValueInterpreter {
 		return $params;
 	}
 
-	private function isRange( $comparator ) {
+	private function isRange( $comparator ): bool {
 		return $comparator === SMW_CMP_GRTR || $comparator === SMW_CMP_GEQ || $comparator === SMW_CMP_LESS || $comparator === SMW_CMP_LEQ;
 	}
 
-	private function isNot( $comparator ) {
+	private function isNot( $comparator ): bool {
 		return $comparator === SMW_CMP_NLKE || $comparator === SMW_CMP_NEQ;
 	}
 

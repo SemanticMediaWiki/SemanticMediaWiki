@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues\ValueValidators;
 
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
 
 /**
  * To support regular expressions in connection with the `Allows pattern`
@@ -83,7 +83,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 		);
 	}
 
-	private function doPregMatch( $pattern, $dataValue, $reference ) {
+	private function doPregMatch( string|array $pattern, DataValue $dataValue, $reference ): void {
 		// Convert escaping as in /\d{4}
 		$pattern = str_replace( "/\\", "\\", (string)$pattern );
 

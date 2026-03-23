@@ -9,7 +9,7 @@ use SMW\Query\QueryResult;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:JSON_format
  *
- * @license GNU GPL v2 or later
+ * @license GPL-2.0-or-later
  * @since 1.5.3
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return 'application/json';
 	}
 
@@ -47,7 +47,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string|array {
 		if ( $this->params['filename'] === '' ) {
 			return 'result.json';
 		}
@@ -143,7 +143,10 @@ class JsonResultPrinter extends FileExportPrinter {
 		return json_encode( $result, $flags );
 	}
 
-	private function buildSimpleList( $res ) {
+	/**
+	 * @return list[][]
+	 */
+	private function buildSimpleList( QueryResult $res ): array {
 		$result = [];
 
 		$row = $res->getNext();

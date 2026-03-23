@@ -33,7 +33,7 @@ class MaintenanceLogger {
 	 *
 	 * @param int $maxNameChars
 	 */
-	public function setMaxNameChars( $maxNameChars ) {
+	public function setMaxNameChars( $maxNameChars ): void {
 		$this->maxNameChars = $maxNameChars;
 	}
 
@@ -43,7 +43,7 @@ class MaintenanceLogger {
 	 * @param array $message
 	 * @param string $target
 	 */
-	public function logFromArray( array $message, $target = '' ) {
+	public function logFromArray( array $message, $target = '' ): void {
 		if ( isset( $message['Options'] ) ) {
 			unset( $message['Options']['with-maintenance-log'] );
 			unset( $message['Options']['memory-limit'] );
@@ -65,7 +65,7 @@ class MaintenanceLogger {
 	 * @param string $message
 	 * @param string $target
 	 */
-	public function log( $message, $target = '' ) {
+	public function log( $message, $target = '' ): void {
 		if ( $target === '' ) {
 			$target = $this->performer;
 		}

@@ -5,15 +5,17 @@ namespace SMW\SQLStore;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Parameters;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\Status;
 use SMW\Store;
-use SMWDIBlob as DIBlob;
 
 /**
  * Class Handling all the write and update methods for SQLStore.
@@ -39,7 +41,7 @@ class SQLStoreUpdater {
 	private $propertyTableUpdater;
 
 	/**
-	 * @var SemanticDataLookup
+	 * @var CachingSemanticDataLookup
 	 */
 	private $semanticDataLookup;
 
@@ -53,10 +55,7 @@ class SQLStoreUpdater {
 	 */
 	private $redirectUpdater;
 
-	/**
-	 * @var HookContainer
-	 */
-	private $hookContainer;
+	private HookContainer $hookContainer;
 
 	/**
 	 * @since 1.8
@@ -79,7 +78,7 @@ class SQLStoreUpdater {
 	 *
 	 * @param Title $title
 	 */
-	public function deleteSubject( Title $title ) {
+	public function deleteSubject( Title $title ): Status {
 		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
 		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
 
@@ -93,7 +92,7 @@ class SQLStoreUpdater {
 		);
 
 		$deleteList = array_flip( $idList );
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$emptySemanticData = new SemanticData( $subject );
 		$emptySemanticData->setOption( SemanticData::PROC_DELETE, true );
@@ -136,7 +135,7 @@ class SQLStoreUpdater {
 		return $status;
 	}
 
-	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ) {
+	private function doDelete( $id, WikiPage $subject, $subobjectListFinder, &$extensionList ): void {
 		$this->semanticDataLookup->invalidateCache( $id );
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
@@ -175,7 +174,7 @@ class SQLStoreUpdater {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function doDataUpdate( SemanticData $semanticData ) {
+	public function doDataUpdate( SemanticData $semanticData ): Status {
 		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
 		$this->hookContainer->run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
 
@@ -292,7 +291,7 @@ class SQLStoreUpdater {
 		$subject = $data->getSubject();
 
 		// Take care of redirects
-		$redirects = $data->getPropertyValues( new DIProperty( '_REDI' ) );
+		$redirects = $data->getPropertyValues( new Property( '_REDI' ) );
 
 		// Redirects:
 		// * Generally, there is no support for annotations on redirect pages
@@ -383,19 +382,19 @@ class SQLStoreUpdater {
 		);
 	}
 
-	private function makeSortKey( $subject, $data ) {
+	private function makeSortKey( WikiPage $subject, SemanticData $data ): string|array {
 		// Don't mind the delete process
 		if ( $data->getOption( SemanticData::PROC_DELETE ) ) {
 			return '';
 		}
 
-		$property = new DIProperty( '_SKEY' );
+		$property = new Property( '_SKEY' );
 
 		// Take care of the sortkey
 		$pv = $data->getPropertyValues( $property );
 		$dataItem = end( $pv );
 
-		if ( $dataItem instanceof DIBlob ) {
+		if ( $dataItem instanceof Blob ) {
 			$sortkey = $dataItem->getString();
 		} elseif ( $data->getExtensionData( 'sort.extension' ) !== null ) {
 			$sortkey = $data->getExtensionData( 'sort.extension' );
@@ -405,7 +404,7 @@ class SQLStoreUpdater {
 
 		// Extend the subobject sortkey in case no @sortkey was given for an
 		// entity
-		if ( $subject->getSubobjectName() !== '' && !$dataItem instanceof DIBlob ) {
+		if ( $subject->getSubobjectName() !== '' && !$dataItem instanceof Blob ) {
 
 			// Add sort data from some dedicated containers (of a record or
 			// reference type etc.) otherwise use the sobj name as extension
@@ -424,15 +423,15 @@ class SQLStoreUpdater {
 		return $sortkey;
 	}
 
-	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
+	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ): Status {
 		$options = [
 			'page_id' => $pageId,
 			'redirect_id' => $redirectId
 		];
 
 		$this->redirectUpdater->doUpdate(
-			DIWikiPage::newFromTitle( $oldTitle ),
-			DIWikiPage::newFromTitle( $newTitle ),
+			WikiPage::newFromTitle( $oldTitle ),
+			WikiPage::newFromTitle( $newTitle ),
 			$options
 		);
 

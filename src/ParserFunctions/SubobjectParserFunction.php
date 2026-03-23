@@ -2,17 +2,17 @@
 
 namespace SMW\ParserFunctions;
 
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\Formatters\MessageFormatter;
 use SMW\HashBuilder;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\StripMarkerDecoder;
-use SMW\MessageFormatter;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
-use SMW\SemanticData;
-use SMW\Subobject;
 
 /**
  * @private This class should not be instantiated directly, please use
@@ -48,20 +48,11 @@ class SubobjectParserFunction {
 	 */
 	const PARAM_LINKWITH = '@linkWith';
 
-	/**
-	 * @var ParserData
-	 */
-	protected $parserData;
+	protected ParserData $parserData;
 
-	/**
-	 * @var Subobject
-	 */
-	protected $subobject;
+	protected Subobject $subobject;
 
-	/**
-	 * @var MessageFormatter
-	 */
-	protected $messageFormatter;
+	protected MessageFormatter $messageFormatter;
 
 	/**
 	 * @var StripMarkerDecoder
@@ -101,7 +92,7 @@ class SubobjectParserFunction {
 	 *
 	 * @param StripMarkerDecoder $stripMarkerDecoder
 	 */
-	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ): void {
 		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
@@ -112,7 +103,7 @@ class SubobjectParserFunction {
 	 *
 	 * @param bool $isCapitalLinks
 	 */
-	public function isCapitalLinks( $isCapitalLinks ) {
+	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = $isCapitalLinks;
 	}
 
@@ -125,7 +116,7 @@ class SubobjectParserFunction {
 	 *
 	 * @param bool $isComparableContent
 	 */
-	public function isComparableContent( $isComparableContent = true ) {
+	public function isComparableContent( $isComparableContent = true ): void {
 		$this->isComparableContent = (bool)$isComparableContent;
 	}
 
@@ -209,11 +200,11 @@ class SubobjectParserFunction {
 		foreach ( $parameters as $property => $values ) {
 
 			if ( $property === self::PARAM_SORTKEY ) {
-				$property = DIProperty::TYPE_SORTKEY;
+				$property = Property::TYPE_SORTKEY;
 			}
 
 			if ( $property === self::PARAM_CATEGORY ) {
-				$property = DIProperty::TYPE_CATEGORY;
+				$property = Property::TYPE_CATEGORY;
 			}
 
 			foreach ( $values as $value ) {
@@ -237,7 +228,7 @@ class SubobjectParserFunction {
 		return true;
 	}
 
-	private function getParameters( ParserParameterProcessor $parserParameterProcessor ) {
+	private function getParameters( ParserParameterProcessor $parserParameterProcessor ): array {
 		$id = $parserParameterProcessor->getFirst();
 		$isAnonymous = in_array( $id, [ null, '', '-' ] );
 
@@ -265,7 +256,7 @@ class SubobjectParserFunction {
 		return [ $parameters, $id ];
 	}
 
-	private function preprocess( ParserParameterProcessor $parserParameterProcessor, $useFirst ) {
+	private function preprocess( ParserParameterProcessor $parserParameterProcessor, bool $useFirst ) {
 		if ( $parserParameterProcessor->hasParameter( self::PARAM_LINKWITH ) ) {
 			$val = $parserParameterProcessor->getParameterValuesByKey( self::PARAM_LINKWITH );
 			$parserParameterProcessor->addParameter(
@@ -328,8 +319,8 @@ class SubobjectParserFunction {
 		// Data block created by a user
 		$semanticData->setOption( SemanticData::PROC_USER, true );
 
-		$sortkey = new DIProperty( DIProperty::TYPE_SORTKEY );
-		$displayTitle = new DIProperty( DIProperty::TYPE_DISPLAYTITLE );
+		$sortkey = new Property( Property::TYPE_SORTKEY );
+		$displayTitle = new Property( Property::TYPE_DISPLAYTITLE );
 
 		if ( $semanticData->hasProperty( $sortkey ) || !$semanticData->hasProperty( $displayTitle ) ) {
 			return null;

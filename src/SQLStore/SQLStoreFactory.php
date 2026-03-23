@@ -4,10 +4,13 @@ namespace SMW\SQLStore;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
-use SMW\DIWikiPage;
+use Psr\Log\LoggerInterface;
+use SMW\DataItems\WikiPage;
+use SMW\IteratorFactory;
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\RequestOptions;
 use SMW\Services\ServicesContainer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -52,6 +55,7 @@ use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
+use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\TableBuilder\TableBuilder;
@@ -68,10 +72,7 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
  */
 class SQLStoreFactory {
 
-	/**
-	 * @var QueryEngineFactory
-	 */
-	private $queryEngineFactory;
+	private QueryEngineFactory $queryEngineFactory;
 
 	/**
 	 * @since 2.2
@@ -92,7 +93,7 @@ class SQLStoreFactory {
 	 *
 	 * @return SQLStoreUpdater
 	 */
-	public function newUpdater() {
+	public function newUpdater(): SQLStoreUpdater {
 		return new SQLStoreUpdater( $this->store, $this );
 	}
 
@@ -101,7 +102,7 @@ class SQLStoreFactory {
 	 *
 	 * @return QueryEngine
 	 */
-	public function newMasterQueryEngine() {
+	public function newMasterQueryEngine(): QueryEngine {
 		return $this->queryEngineFactory->newQueryEngine();
 	}
 
@@ -110,7 +111,7 @@ class SQLStoreFactory {
 	 *
 	 * @return QueryEngine
 	 */
-	public function newSlaveQueryEngine() {
+	public function newSlaveQueryEngine(): QueryEngine {
 		return $this->newMasterQueryEngine();
 	}
 
@@ -119,7 +120,7 @@ class SQLStoreFactory {
 	 *
 	 * @return EntityIdManager
 	 */
-	public function newEntityIdManager() {
+	public function newEntityIdManager(): EntityIdManager {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$entityIdManager = new EntityIdManager(
@@ -147,7 +148,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyTableUpdater
 	 */
-	public function newPropertyTableUpdater() {
+	public function newPropertyTableUpdater(): PropertyTableUpdater {
 		return new PropertyTableUpdater( $this->store, $this->newPropertyStatisticsStore() );
 	}
 
@@ -156,7 +157,7 @@ class SQLStoreFactory {
 	 *
 	 * @return ConceptCache
 	 */
-	public function newMasterConceptCache() {
+	public function newMasterConceptCache(): ConceptCache {
 		$conceptCache = new ConceptCache(
 			$this->store,
 			$this->queryEngineFactory->newConceptQuerySegmentBuilder()
@@ -174,16 +175,16 @@ class SQLStoreFactory {
 	 *
 	 * @return ConceptCache
 	 */
-	public function newSlaveConceptCache() {
+	public function newSlaveConceptCache(): ConceptCache {
 		return $this->newMasterConceptCache();
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
-	public function newUsageStatisticsCachedListLookup() {
+	public function newUsageStatisticsCachedListLookup(): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$usageStatisticsListLookup = new UsageStatisticsListLookup(
@@ -205,7 +206,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newPropertyUsageCachedListLookup( ?RequestOptions $requestOptions = null ) {
+	public function newPropertyUsageCachedListLookup( ?RequestOptions $requestOptions = null ): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
@@ -228,7 +229,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newUnusedPropertyCachedListLookup( ?RequestOptions $requestOptions = null ) {
+	public function newUnusedPropertyCachedListLookup( ?RequestOptions $requestOptions = null ): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
@@ -251,7 +252,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newUndeclaredPropertyCachedListLookup( ?RequestOptions $requestOptions = null ) {
+	public function newUndeclaredPropertyCachedListLookup( ?RequestOptions $requestOptions = null ): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$undeclaredPropertyListLookup = new UndeclaredPropertyListLookup(
@@ -274,9 +275,9 @@ class SQLStoreFactory {
 	 * @param bool $useCache
 	 * @param int $cacheExpiry
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
-	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ) {
+	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ): CachedListLookup {
 		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
 
 		if ( is_int( $useCache ) ) {
@@ -302,10 +303,10 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return DeferredCallableUpdate
+	 * @return TransactionalCallableUpdate
 	 */
 	public function newDeferredCallableCachedListLookupUpdate() {
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () {
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function (): void {
 			$this->newPropertyUsageCachedListLookup()->deleteCache();
 			$this->newUnusedPropertyCachedListLookup()->deleteCache();
 			$this->newUndeclaredPropertyCachedListLookup()->deleteCache();
@@ -320,7 +321,7 @@ class SQLStoreFactory {
 	 *
 	 * @return Rebuilder
 	 */
-	public function newRebuilder() {
+	public function newRebuilder(): Rebuilder {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -356,7 +357,7 @@ class SQLStoreFactory {
 	 *
 	 * @return EntityLookup
 	 */
-	public function newEntityLookup() {
+	public function newEntityLookup(): EntityLookup {
 		return new EntityLookup( $this->store, $this );
 	}
 
@@ -365,7 +366,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyTableInfoFetcher
 	 */
-	public function newPropertyTableInfoFetcher() {
+	public function newPropertyTableInfoFetcher(): PropertyTableInfoFetcher {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyTableInfoFetcher = new PropertyTableInfoFetcher(
@@ -388,7 +389,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyTableIdReferenceFinder
 	 */
-	public function newPropertyTableIdReferenceFinder() {
+	public function newPropertyTableIdReferenceFinder(): PropertyTableIdReferenceFinder {
 		$propertyTableIdReferenceFinder = new PropertyTableIdReferenceFinder(
 			$this->store
 		);
@@ -407,7 +408,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyTableHashes
 	 */
-	public function newPropertyTableHashes( IdCacheManager $idCacheManager ) {
+	public function newPropertyTableHashes( IdCacheManager $idCacheManager ): PropertyTableHashes {
 		$propertyTableHashes = new PropertyTableHashes(
 			$this->store->getConnection( 'mw.db' ),
 			$idCacheManager
@@ -421,7 +422,7 @@ class SQLStoreFactory {
 	 *
 	 * @return Installer
 	 */
-	public function newInstaller() {
+	public function newInstaller(): Installer {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -501,7 +502,7 @@ class SQLStoreFactory {
 	 *
 	 * @return DataItemHandlerFactory
 	 */
-	public function newDataItemHandlerFactory() {
+	public function newDataItemHandlerFactory(): DataItemHandlerFactory {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$dataItemHandlerFactory = new DataItemHandlerFactory(
@@ -520,7 +521,7 @@ class SQLStoreFactory {
 	 *
 	 * @return LoggerInterface
 	 */
-	public function getLogger() {
+	public function getLogger(): LoggerInterface {
 		return ApplicationFactory::getInstance()->getMediaWikiLogger();
 	}
 
@@ -529,7 +530,7 @@ class SQLStoreFactory {
 	 *
 	 * @return TraversalPropertyLookup
 	 */
-	public function newTraversalPropertyLookup() {
+	public function newTraversalPropertyLookup(): TraversalPropertyLookup {
 		return new TraversalPropertyLookup( $this->store );
 	}
 
@@ -538,7 +539,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertySubjectsLookup
 	 */
-	public function newPropertySubjectsLookup() {
+	public function newPropertySubjectsLookup(): PropertySubjectsLookup {
 		return new PropertySubjectsLookup( $this->store );
 	}
 
@@ -547,7 +548,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertiesLookup
 	 */
-	public function newPropertiesLookup() {
+	public function newPropertiesLookup(): PropertiesLookup {
 		return new PropertiesLookup( $this->store );
 	}
 
@@ -556,7 +557,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyStatisticsStore
 	 */
-	public function newPropertyStatisticsStore() {
+	public function newPropertyStatisticsStore(): PropertyStatisticsStore {
 		$propertyStatisticsStore = new PropertyStatisticsStore(
 			$this->store->getConnection( 'mw.db' )
 		);
@@ -579,7 +580,7 @@ class SQLStoreFactory {
 	 *
 	 * @return IdCacheManager
 	 */
-	public function newIdCacheManager( $id, array $config ) {
+	public function newIdCacheManager( $id, array $config ): IdCacheManager {
 		$inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache();
 		$caches = [];
 
@@ -602,7 +603,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyTableRowDiffer
 	 */
-	public function newPropertyTableRowDiffer() {
+	public function newPropertyTableRowDiffer(): PropertyTableRowDiffer {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyTableRowMapper = new PropertyTableRowMapper(
@@ -628,7 +629,7 @@ class SQLStoreFactory {
 	 *
 	 * @return IdEntityFinder
 	 */
-	public function newIdEntityFinder( IdCacheManager $idCacheManager ) {
+	public function newIdEntityFinder( IdCacheManager $idCacheManager ): IdEntityFinder {
 		$idMatchFinder = new IdEntityFinder(
 			$this->store,
 			$this->getIteratorFactory(),
@@ -644,9 +645,9 @@ class SQLStoreFactory {
 	 * @param IdCacheManager $idCacheManager
 	 * @param PropertyTableHashes|null $propertyTableHashes
 	 *
-	 * @return IdEntityFinder
+	 * @return EntityIdFinder
 	 */
-	public function newEntityIdFinder( IdCacheManager $idCacheManager, ?PropertyTableHashes $propertyTableHashes = null ) {
+	public function newEntityIdFinder( IdCacheManager $idCacheManager, ?PropertyTableHashes $propertyTableHashes = null ): EntityIdFinder {
 		if ( $propertyTableHashes === null ) {
 			$propertyTableHashes = $this->newPropertyTableHashes( $idCacheManager );
 		}
@@ -667,7 +668,7 @@ class SQLStoreFactory {
 	 *
 	 * @return SequenceMapFinder
 	 */
-	public function newSequenceMapFinder( IdCacheManager $idCacheManager ) {
+	public function newSequenceMapFinder( IdCacheManager $idCacheManager ): SequenceMapFinder {
 		$sequenceMapFinder = new SequenceMapFinder(
 			$this->store->getConnection( 'mw.db' ),
 			$idCacheManager
@@ -699,7 +700,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CacheWarmer
 	 */
-	public function newCacheWarmer( IdCacheManager $idCacheManager ) {
+	public function newCacheWarmer( IdCacheManager $idCacheManager ): CacheWarmer {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheWarmer = new CacheWarmer(
@@ -737,7 +738,7 @@ class SQLStoreFactory {
 	 *
 	 * @return IdChanger
 	 */
-	public function newIdChanger() {
+	public function newIdChanger(): IdChanger {
 		$idChanger = new IdChanger(
 			$this->store
 		);
@@ -750,7 +751,7 @@ class SQLStoreFactory {
 	 *
 	 * @return RedirectUpdater
 	 */
-	public function newRedirectUpdater() {
+	public function newRedirectUpdater(): RedirectUpdater {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$redirectUpdater = new RedirectUpdater(
@@ -780,7 +781,7 @@ class SQLStoreFactory {
 	 *
 	 * @return DuplicateFinder
 	 */
-	public function newDuplicateFinder() {
+	public function newDuplicateFinder(): DuplicateFinder {
 		$duplicateFinder = new DuplicateFinder(
 			$this->store,
 			$this->getIteratorFactory()
@@ -794,7 +795,7 @@ class SQLStoreFactory {
 	 *
 	 * @return SubobjectListFinder
 	 */
-	public function newSubobjectListFinder() {
+	public function newSubobjectListFinder(): SubobjectListFinder {
 		$subobjectListFinder = new SubobjectListFinder(
 			$this->store,
 			$this->getIteratorFactory()
@@ -806,9 +807,9 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return SemanticDataLookup
+	 * @return CachingSemanticDataLookup
 	 */
-	public function newSemanticDataLookup() {
+	public function newSemanticDataLookup(): CachingSemanticDataLookup {
 		$semanticDataLookup = new SemanticDataLookup(
 			$this->store
 		);
@@ -830,7 +831,7 @@ class SQLStoreFactory {
 	 *
 	 * @return TableFieldUpdater
 	 */
-	public function newTableFieldUpdater() {
+	public function newTableFieldUpdater(): TableFieldUpdater {
 		$tableFieldUpdater = new TableFieldUpdater(
 			$this->store
 		);
@@ -843,7 +844,7 @@ class SQLStoreFactory {
 	 *
 	 * @return RedirectStore
 	 */
-	public function newRedirectStore() {
+	public function newRedirectStore(): RedirectStore {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$redirectStore = new RedirectStore(
@@ -874,7 +875,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyChangeListener
 	 */
-	public function newPropertyChangeListener() {
+	public function newPropertyChangeListener(): PropertyChangeListener {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$propertyChangeListener = new PropertyChangeListener(
@@ -917,11 +918,11 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return ChangeOp
 	 */
-	public function newChangeOp( DIWikiPage $subject ) {
+	public function newChangeOp( WikiPage $subject ): ChangeOp {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 		$changeOp = new ChangeOp( $subject );
 
@@ -937,7 +938,7 @@ class SQLStoreFactory {
 	 *
 	 * @return ProximityPropertyValueLookup
 	 */
-	public function newProximityPropertyValueLookup() {
+	public function newProximityPropertyValueLookup(): ProximityPropertyValueLookup {
 		return new ProximityPropertyValueLookup( $this->store );
 	}
 
@@ -946,7 +947,7 @@ class SQLStoreFactory {
 	 *
 	 * @return EntityUniquenessLookup
 	 */
-	public function newEntityUniquenessLookup() {
+	public function newEntityUniquenessLookup(): EntityUniquenessLookup {
 		return new EntityUniquenessLookup(
 			$this->store,
 			$this->getIteratorFactory()
@@ -958,7 +959,7 @@ class SQLStoreFactory {
 	 *
 	 * @return QueryDependencyLinksStoreFactory
 	 */
-	public function newQueryDependencyLinksStoreFactory() {
+	public function newQueryDependencyLinksStoreFactory(): QueryDependencyLinksStoreFactory {
 		return new QueryDependencyLinksStoreFactory();
 	}
 
@@ -967,7 +968,7 @@ class SQLStoreFactory {
 	 *
 	 * @return SortLetter
 	 */
-	public function newSortLetter() {
+	public function newSortLetter(): SortLetter {
 		return new SortLetter( $this->store, Collator::singleton() );
 	}
 
@@ -976,13 +977,12 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyTableIdReferenceDisposer
 	 */
-	public function newPropertyTableIdReferenceDisposer() {
+	public function newPropertyTableIdReferenceDisposer(): PropertyTableIdReferenceDisposer {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
 		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
-			$this->store,
-			$this->getIteratorFactory()
+			$this->store
 		);
 
 		$propertyTableIdReferenceDisposer->setEventDispatcher(
@@ -1005,7 +1005,7 @@ class SQLStoreFactory {
 	 *
 	 * @return MissingRedirectLookup
 	 */
-	public function newMissingRedirectLookup() {
+	public function newMissingRedirectLookup(): MissingRedirectLookup {
 		return new MissingRedirectLookup( $this->store );
 	}
 
@@ -1014,7 +1014,7 @@ class SQLStoreFactory {
 	 *
 	 * @return MonolingualTextLookup
 	 */
-	public function newMonolingualTextLookup() {
+	public function newMonolingualTextLookup(): MonolingualTextLookup {
 		return new MonolingualTextLookup( $this->store );
 	}
 
@@ -1023,7 +1023,7 @@ class SQLStoreFactory {
 	 *
 	 * @return DisplayTitleLookup
 	 */
-	public function newDisplayTitleLookup() {
+	public function newDisplayTitleLookup(): DisplayTitleLookup {
 		return new DisplayTitleLookup( $this->store );
 	}
 
@@ -1041,7 +1041,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PrefetchItemLookup
 	 */
-	public function newPrefetchItemLookup() {
+	public function newPrefetchItemLookup(): PrefetchItemLookup {
 		return new PrefetchItemLookup(
 			$this->store,
 			$this->newSemanticDataLookup(),
@@ -1054,7 +1054,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PrefetchCache
 	 */
-	public function newPrefetchCache() {
+	public function newPrefetchCache(): PrefetchCache {
 		return new PrefetchCache(
 			$this->store,
 			$this->newPrefetchItemLookup()
@@ -1066,7 +1066,7 @@ class SQLStoreFactory {
 	 *
 	 * @return PropertyTypeFinder
 	 */
-	public function newPropertyTypeFinder() {
+	public function newPropertyTypeFinder(): PropertyTypeFinder {
 		return new PropertyTypeFinder( $this->store->getConnection( 'mw.db' ) );
 	}
 
@@ -1075,7 +1075,7 @@ class SQLStoreFactory {
 	 *
 	 * @return TableStatisticsLookup
 	 */
-	public function newTableStatisticsLookup() {
+	public function newTableStatisticsLookup(): TableStatisticsLookup {
 		$tableStatisticsLookup = new TableStatisticsLookup(
 			$this->store
 		);
@@ -1088,7 +1088,7 @@ class SQLStoreFactory {
 	 *
 	 * @return SingleEntityQueryLookup
 	 */
-	public function newSingleEntityQueryLookup() {
+	public function newSingleEntityQueryLookup(): SingleEntityQueryLookup {
 		$singleEntityQueryLookup = new SingleEntityQueryLookup(
 			$this->store
 		);
@@ -1101,7 +1101,7 @@ class SQLStoreFactory {
 	 *
 	 * @return ErrorLookup
 	 */
-	public function newErrorLookup() {
+	public function newErrorLookup(): ErrorLookup {
 		$errorLookup = new ErrorLookup(
 			$this->store
 		);
@@ -1114,7 +1114,7 @@ class SQLStoreFactory {
 	 *
 	 * @return ServicesContainer
 	 */
-	public function newServicesContainer() {
+	public function newServicesContainer(): ServicesContainer {
 		$servicesContainer = new ServicesContainer(
 			[
 				'ProximityPropertyValueLookup' => [
@@ -1188,7 +1188,7 @@ class SQLStoreFactory {
 		return $servicesContainer;
 	}
 
-	private function getIteratorFactory() {
+	private function getIteratorFactory(): IteratorFactory {
 		return ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 

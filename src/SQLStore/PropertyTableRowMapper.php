@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Error;
+use SMW\DataModel\SemanticData;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDIError as DIError;
 
 /**
  * Builds a table row representation for a SemanticData object.
@@ -33,7 +33,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return ChangeOp
 	 */
-	public function newChangeOp( $id, SemanticData $semanticData ) {
+	public function newChangeOp( $id, SemanticData $semanticData ): ChangeOp {
 		[ $dataArray, $textItems, $propertyList, $fixedPropertyList ] = $this->mapToRows(
 			$id,
 			$semanticData
@@ -78,7 +78,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return array
 	 */
-	public function mapToRows( $sid, SemanticData $semanticData ) {
+	public function mapToRows( $sid, SemanticData $semanticData ): array {
 		[ $rows, $textItems, $propertyList, $fixedPropertyList ] = $this->mapData(
 			$sid,
 			$semanticData
@@ -99,7 +99,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return string
 	 */
-	public function makeHash( array $array ) {
+	public function makeHash( array $array ): string {
 		return md5( implode( '#', $array ) );
 	}
 
@@ -125,7 +125,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return array
 	 */
-	private function mapData( $sid, SemanticData $semanticData ) {
+	private function mapData( $sid, SemanticData $semanticData ): array {
 		$subject = $semanticData->getSubject();
 		$propertyTables = $this->store->getPropertyTables();
 
@@ -194,13 +194,13 @@ class PropertyTableRowMapper {
 			// available (i.e. an extension that defined that property was disabled)
 			try {
 				$propertyValues = $semanticData->getPropertyValues( $property );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				continue;
 			}
 
 			foreach ( $propertyValues as $dataItem ) {
 
-				if ( $dataItem instanceof DIError ) { // ignore error values
+				if ( $dataItem instanceof Error ) { // ignore error values
 					continue;
 				}
 
@@ -263,7 +263,7 @@ class PropertyTableRowMapper {
 	 * @param int $sid
 	 * @param array &$insertData
 	 */
-	private function mapConceptTable( $sid, &$insertData ) {
+	private function mapConceptTable( $sid, array &$insertData ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Make sure that there is exactly one row to be written:

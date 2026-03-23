@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\RequestOptions;
 use SMW\Store;
 use Traversable;
@@ -28,7 +28,7 @@ class PValueLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __METHOD__ . self::VERSION;
 	}
 
@@ -39,7 +39,7 @@ class PValueLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$limit = 20;
 		$offset = 0;
 
@@ -85,7 +85,7 @@ class PValueLookup extends Lookup {
 			$opts->offset = $offset;
 			$opts->sort = $sort;
 
-			$property = DIProperty::newFromUserLabel(
+			$property = Property::newFromUserLabel(
 				$property
 			);
 
@@ -124,7 +124,7 @@ class PValueLookup extends Lookup {
 		return $res;
 	}
 
-	private function is_iterable( $obj ) {
+	private function is_iterable( $obj ): bool {
 		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 

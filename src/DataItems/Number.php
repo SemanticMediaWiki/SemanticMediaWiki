@@ -27,7 +27,7 @@ class Number extends DataItem {
 		$this->m_number = $number;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_NUMBER;
 	}
 
@@ -47,7 +47,7 @@ class Number extends DataItem {
 		return $this;
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return strval( $this->m_number );
 	}
 
@@ -58,7 +58,7 @@ class Number extends DataItem {
 	 * validation here (because this would require less efficient parsing).
 	 * @return Number
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): Number {
 		return new Number( floatval( $serialization ) );
 	}
 

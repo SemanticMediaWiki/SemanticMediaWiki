@@ -6,15 +6,15 @@ use MediaWiki\Html\Html;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Skin\SkinComponentUtils;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMWDataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -80,7 +80,7 @@ class HtmlBuilder {
 	 */
 	private $language = 'en';
 
-	private SMWDataValue $dataValue;
+	private DataValue $dataValue;
 
 	private string $articletext;
 
@@ -89,7 +89,7 @@ class HtmlBuilder {
 	 */
 	public function __construct(
 		private readonly Store $store,
-		private readonly DIWikiPage $subject,
+		private readonly WikiPage $subject,
 	) {
 	}
 
@@ -98,7 +98,7 @@ class HtmlBuilder {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -117,7 +117,7 @@ class HtmlBuilder {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -217,7 +217,7 @@ class HtmlBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildHTML() {
+	public function buildHTML(): string {
 		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
 			$this->offset = $offset;
 		}
@@ -750,11 +750,11 @@ class HtmlBuilder {
 	 * Returns the Mustache data to build the HTML for message classes
 	 * in connection with categories linked to a property group.
 	 */
-	private function getGroupMessageClassLinksData( $groupFormatter, $semanticData ): array {
+	private function getGroupMessageClassLinksData( GroupFormatter $groupFormatter, SemanticData $semanticData ): array {
 		$data = [];
 		$contextPage = $semanticData->getSubject();
 
-		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new DIProperty( '_PPGR' ) ) ) {
+		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new Property( '_PPGR' ) ) ) {
 			return $data;
 		}
 

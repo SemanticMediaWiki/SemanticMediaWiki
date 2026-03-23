@@ -4,13 +4,13 @@ namespace SMW\Query;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest\Deserializer;
 use SMW\Query\PrintRequest\Formatter;
 use SMW\Query\PrintRequest\Serializer;
-use SMWDataValue;
 
 /**
  * Container class for request for printout, as used in queries to
@@ -66,11 +66,15 @@ class PrintRequest {
 	 * the original query where it was added.
 	 *
 	 * Mostly used in cases where QueryProcessor::addThisPrintout was executed.
+	 *
+	 * @var bool
 	 */
 	private $isDisconnected = false;
 
 	/**
 	 * Whether the label was marked with an extra `#` identifier.
+	 *
+	 * @var bool
 	 */
 	private $labelMarker = false;
 
@@ -115,7 +119,7 @@ class PrintRequest {
 	 *
 	 * @param bool $isDisconnected
 	 */
-	public function isDisconnected( $isDisconnected ) {
+	public function isDisconnected( $isDisconnected ): void {
 		$this->isDisconnected = (bool)$isDisconnected;
 	}
 
@@ -124,7 +128,7 @@ class PrintRequest {
 	 *
 	 * @param string $text
 	 */
-	public function markThisLabel( $text ) {
+	public function markThisLabel( $text ): void {
 		if ( $this->m_mode !== self::PRINT_THIS ) {
 			return;
 		}
@@ -150,7 +154,7 @@ class PrintRequest {
 	 *
 	 * @return bool
 	 */
-	public function isMode( $mode ) {
+	public function isMode( $mode ): bool {
 		return $this->m_mode === $mode;
 	}
 
@@ -256,7 +260,7 @@ class PrintRequest {
 
 		if ( $this->m_data instanceof Title ) {
 			$this->m_hash .= $this->m_data->getPrefixedText() . ':';
-		} elseif ( $this->m_data instanceof SMWDataValue ) {
+		} elseif ( $this->m_data instanceof DataValue ) {
 			$this->m_hash .= $this->m_data->getHash() . ':';
 		}
 
@@ -271,7 +275,7 @@ class PrintRequest {
 	 * @param $showParams boolean that sets if the serialization should
 	 *                include the extra print request parameters
 	 */
-	public function getSerialisation( $showParams = false ) {
+	public function getSerialisation( $showParams = false ): string {
 		// In case of  disconnected instance (QueryProcessor::addThisPrintout as
 		// part of a post-processing) return an empty serialization when the
 		// mainLabel is available to avoid an extra `?...`
@@ -308,7 +312,7 @@ class PrintRequest {
 	 * @param $key string Name of the parameter
 	 * @param $value string Value for the parameter
 	 */
-	public function setParameter( $key, $value ) {
+	public function setParameter( $key, $value ): void {
 		$this->m_params[$key] = $value;
 	}
 
@@ -319,7 +323,7 @@ class PrintRequest {
 	 *
 	 * @param string $key
 	 */
-	public function removeParameter( $key ) {
+	public function removeParameter( $key ): void {
 		unset( $this->m_params[$key] );
 	}
 
@@ -331,10 +335,10 @@ class PrintRequest {
 	 *
 	 * @param string $label
 	 */
-	public function setLabel( $label ) {
+	public function setLabel( $label ): void {
 		$this->m_label = $label;
 
-		if ( $this->m_data instanceof SMWDataValue ) {
+		if ( $this->m_data instanceof DataValue ) {
 			$this->m_data->setCaption( $label );
 		}
 	}
@@ -349,7 +353,7 @@ class PrintRequest {
 	 *
 	 * @return PrintRequest|null
 	 */
-	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false ) {
+	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false ): ?PrintRequest {
 		$options = [
 			'show_mode' => $showMode,
 			'canonical_label' => $useCanonicalLabel

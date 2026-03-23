@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
 
 /**
@@ -29,7 +29,7 @@ class TitleIsMovable implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( &$isMovable ) {
+	public function process( &$isMovable ): bool {
 		// We don't allow rule pages to be moved as we cannot track JSON content
 		// as redirects and therefore invalidate any rule assignment without a
 		// possibility to automatically reassign IDs
@@ -42,7 +42,7 @@ class TitleIsMovable implements HookListener {
 		}
 
 		// Predefined properties cannot be moved!
-		if ( !DIProperty::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
+		if ( !Property::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
 			$isMovable = false;
 		}
 

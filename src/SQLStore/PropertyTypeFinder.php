@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use Exception;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 
 /**
@@ -33,7 +33,7 @@ class PropertyTypeFinder {
 	 *
 	 * @param string $typeTableName
 	 */
-	public function setTypeTableName( $typeTableName ) {
+	public function setTypeTableName( $typeTableName ): void {
 		$this->typeTableName = $typeTableName;
 	}
 
@@ -44,8 +44,8 @@ class PropertyTypeFinder {
 	 *
 	 * @return int
 	 */
-	public function countByType( $type ) {
-		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
+	public function countByType( $type ): int {
+		if ( strpos( $type, 'http://semantic-mediawiki.org/swivt/1.0#' ) === false ) {
 			$type = 'http://semantic-mediawiki.org/swivt/1.0#' . $type;
 		}
 
@@ -64,12 +64,12 @@ class PropertyTypeFinder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function findTypeID( DIProperty $property ) {
+	public function findTypeID( Property $property ) {
 		try {
 			$row = $this->connection->selectRow(
 				SQLStore::ID_TABLE,
@@ -84,11 +84,11 @@ class PropertyTypeFinder {
 				],
 				__METHOD__
 			);
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			$row = false;
 		}
 
-		if ( !isset( $row->smw_id ) ) {
+		if ( !$row || !isset( $row->smw_id ) ) {
 			return $GLOBALS['smwgPDefaultType'];
 		}
 

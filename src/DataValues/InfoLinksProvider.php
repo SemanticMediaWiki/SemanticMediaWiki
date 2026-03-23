@@ -2,16 +2,15 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Linker\Linker;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Property\SpecificationLookup;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
-use SMWInfolink as Infolink;
-use SMWWikiPageValue as WikiPageValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -56,7 +55,7 @@ class InfoLinksProvider {
 	private $serviceLinkParameters = false;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $disabledLinksByKey = [ '_ERRT' ];
 
@@ -72,7 +71,7 @@ class InfoLinksProvider {
 	/**
 	 * @since 2.4
 	 */
-	public function init() {
+	public function init(): void {
 		$this->infoLinks = [];
 		$this->hasSearchLink = false;
 		$this->hasServiceLinks = false;
@@ -84,7 +83,7 @@ class InfoLinksProvider {
 	/**
 	 * @since 2.4
 	 */
-	public function disableServiceLinks() {
+	public function disableServiceLinks(): void {
 		$this->enabledServiceLinks = false;
 	}
 
@@ -93,7 +92,7 @@ class InfoLinksProvider {
 	 *
 	 * @param bool $compactLink
 	 */
-	public function setCompactLink( $compactLink ) {
+	public function setCompactLink( $compactLink ): void {
 		$this->compactLink = (bool)$compactLink;
 	}
 
@@ -104,7 +103,7 @@ class InfoLinksProvider {
 	 *
 	 * @param Infolink $infoLink
 	 */
-	public function addInfolink( Infolink $infoLink ) {
+	public function addInfolink( Infolink $infoLink ): void {
 		$this->infoLinks[] = $infoLink;
 	}
 
@@ -113,7 +112,7 @@ class InfoLinksProvider {
 	 *
 	 * @param array|false $serviceLinkParameters
 	 */
-	public function setServiceLinkParameters( $serviceLinkParameters ) {
+	public function setServiceLinkParameters( $serviceLinkParameters ): void {
 		$this->serviceLinkParameters = $serviceLinkParameters;
 	}
 
@@ -188,7 +187,7 @@ class InfoLinksProvider {
 	 *
 	 * @return string
 	 */
-	public function getInfolinkText( $outputformat, $linker = null ) {
+	public function getInfolinkText( $outputformat, $linker = null ): string {
 		$result = '';
 		$first = true;
 		$extralinks = [];
@@ -227,7 +226,7 @@ class InfoLinksProvider {
 	 * the datatype, and the service link message is usually crafted with a
 	 * particular datatype in mind.
 	 */
-	public function addServiceLinks() {
+	public function addServiceLinks(): void {
 		if ( $this->hasServiceLinks ) {
 			return;
 		}
@@ -254,7 +253,7 @@ class InfoLinksProvider {
 
 		$servicelinks = $this->propertySpecificationLookup->getSpecification(
 			$dataItem,
-			new DIProperty( '_SERV' )
+			new Property( '_SERV' )
 		);
 
 		foreach ( $servicelinks as $servicelink ) {
@@ -264,8 +263,8 @@ class InfoLinksProvider {
 		$this->hasServiceLinks = true;
 	}
 
-	private function makeLink( $dataItem, $args ) {
-		if ( !( $dataItem instanceof DIBlob ) ) {
+	private function makeLink( $dataItem, $args ): void {
+		if ( !( $dataItem instanceof Blob ) ) {
 			return;
 		}
 

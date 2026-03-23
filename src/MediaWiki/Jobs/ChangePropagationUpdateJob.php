@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Job;
 
 /**
@@ -47,9 +47,9 @@ class ChangePropagationUpdateJob extends Job {
 	 *
 	 * @since 3.0
 	 */
-	public function run() {
+	public function run(): bool {
 		ChangePropagationDispatchJob::cleanUp(
-			DIWikiPage::newFromTitle( $this->getTitle() )
+			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
 		$updateJob = new UpdateJob(

@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Uri;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDIUri as DIUri;
 
 /**
  * This class implements Store access to Uri data items.
@@ -23,7 +23,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_serialized' => $this->getCharFieldType()
@@ -35,7 +35,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_serialized' => $this->getCharFieldType()
@@ -47,7 +47,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 			'p_id,o_serialized',
 		];
@@ -58,7 +58,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
 		// FROM `smw_object_ids`
 		// INNER JOIN `smw_di_uri` AS t1
@@ -89,7 +89,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		$serialization = rawurldecode( $dataItem->getSerialization() );
 		return [ 'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ) ];
 	}
@@ -99,7 +99,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		$serialization = rawurldecode( $dataItem->getSerialization() );
 		$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
 
@@ -120,7 +120,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_serialized';
 	}
 
@@ -129,7 +129,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_serialized';
 	}
 
@@ -138,7 +138,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Uri {
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
@@ -148,10 +148,10 @@ class DIUriHandler extends DataItemHandler {
 			$dbkeys[0] = $connection->unescape_bytea( $dbkeys[0] ?? '' );
 		}
 
-		return DIUri::doUnserialize( $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0] );
+		return Uri::doUnserialize( $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0] );
 	}
 
-	private function getMaxLength() {
+	private function getMaxLength(): int {
 		$length = 255;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {
@@ -161,7 +161,7 @@ class DIUriHandler extends DataItemHandler {
 		return $length;
 	}
 
-	private function getCharFieldType() {
+	private function getCharFieldType(): string {
 		$fieldType = FieldType::FIELD_TITLE;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_NOCASE ) ) {

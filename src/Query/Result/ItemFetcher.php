@@ -3,16 +3,16 @@
 namespace SMW\Query\Result;
 
 use Iterator;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 use Traversable;
 
 /**
@@ -57,7 +57,7 @@ class ItemFetcher {
 	 *
 	 * @param int $features
 	 */
-	public function setPrefetchFlag( $features ) {
+	public function setPrefetchFlag( $features ): void {
 		$this->prefetch = ( (int)$features & SMW_QUERYRESULT_PREFETCH ) != 0;
 	}
 
@@ -66,7 +66,7 @@ class ItemFetcher {
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function setPrintRequest( PrintRequest $printRequest ) {
+	public function setPrintRequest( PrintRequest $printRequest ): void {
 		$this->printRequest = $printRequest;
 	}
 
@@ -75,7 +75,7 @@ class ItemFetcher {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( ?QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ): void {
 		$this->queryToken = $queryToken;
 	}
 
@@ -84,14 +84,14 @@ class ItemFetcher {
 	 *
 	 * @param DataItem|null|false $dataItem
 	 */
-	public function highlightTokens( $dataItem ) {
-		if ( !$dataItem instanceof DIBlob || !$this->printRequest instanceof PrintRequest ) {
+	public function highlightTokens( $dataItem ): DataItem|false|null|Blob {
+		if ( !$dataItem instanceof Blob || !$this->printRequest instanceof PrintRequest ) {
 			return $dataItem;
 		}
 
 		$type = $this->printRequest->getTypeID();
 
-		// Avoid `_cod`, `_eid` or similar types that use the DIBlob as storage
+		// Avoid `_cod`, `_eid` or similar types that use the Blob as storage
 		// object
 		if (
 			$type !== '_txt' &&
@@ -119,19 +119,19 @@ class ItemFetcher {
 			$string = $this->queryToken->highlight( $string );
 		}
 
-		return new DIBlob( $string );
+		return new Blob( $string );
 	}
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param array $dataItems
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return array
 	 */
-	public function fetch( array $dataItems, DIProperty $property, RequestOptions $requestOptions ) {
+	public function fetch( array $dataItems, Property $property, RequestOptions $requestOptions ): array {
 		if ( $this->prefetch === false ) {
 			return $this->legacyFetch( $dataItems, $property, $requestOptions );
 		}
@@ -166,7 +166,7 @@ class ItemFetcher {
 
 		foreach ( $dataItems as $subject ) {
 
-			if ( !$subject instanceof DIWikiPage ) {
+			if ( !$subject instanceof WikiPage ) {
 				continue;
 			}
 
@@ -188,21 +188,24 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function ( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ): void {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 
 		return $propertyValues;
 	}
 
-	private function legacyFetch( $dataItems, $property, $requestOptions ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function legacyFetch( array $dataItems, Property $property, RequestOptions $requestOptions ): array {
 		$propertyValues = [];
 		$requestOptions->setOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false );
 		$requestOptions->setCaller( __METHOD__ );
 
 		foreach ( $dataItems as $dataItem ) {
 
-			if ( !$dataItem instanceof DIWikiPage ) {
+			if ( !$dataItem instanceof WikiPage ) {
 				continue;
 			}
 
@@ -220,7 +223,7 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function ( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ): void {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 

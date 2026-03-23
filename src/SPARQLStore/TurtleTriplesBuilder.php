@@ -3,15 +3,15 @@
 namespace SMW\SPARQLStore;
 
 use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
-use SMW\SemanticData;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -66,7 +66,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @param int $triplesChunkSize
 	 */
-	public function setTriplesChunkSize( $triplesChunkSize ) {
+	public function setTriplesChunkSize( $triplesChunkSize ): void {
 		$this->triplesChunkSize = (int)$triplesChunkSize;
 	}
 
@@ -75,7 +75,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function doBuildTriplesFrom( SemanticData $semanticData ) {
+	public function doBuildTriplesFrom( SemanticData $semanticData ): void {
 		$this->hasTriplesForUpdate = false;
 		$this->triples = '';
 		$this->prefixes = [];
@@ -110,7 +110,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return array
 	 */
-	public function getChunkedTriples() {
+	public function getChunkedTriples(): array {
 		$chunkedTriples = [];
 
 		if ( $this->triples === null ) {
@@ -144,11 +144,11 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.0
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		TurtleSerializer::reset();
 	}
 
-	private function doSerialize( SemanticData $semanticData ) {
+	private function doSerialize( SemanticData $semanticData ): void {
 		$expDataArray = $this->prepareUpdateExpData( $semanticData );
 
 		if ( count( $expDataArray ) > 0 ) {
@@ -186,7 +186,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return array of SMWExpData
 	 */
-	private function prepareUpdateExpData( SemanticData $semanticData ) {
+	private function prepareUpdateExpData( SemanticData $semanticData ): array {
 		$result = [];
 
 		$expData = Exporter::getInstance()->makeExportData( $semanticData );
@@ -249,7 +249,7 @@ class TurtleTriplesBuilder {
 			$elementTarget = $expResource;
 		}
 
-		if ( !$exists && $elementTarget->getDataItem() instanceof DIWikiPage && $elementTarget->getDataItem()->getDBKey() !== '' ) {
+		if ( !$exists && $elementTarget->getDataItem() instanceof WikiPage && $elementTarget->getDataItem()->getDBKey() !== '' ) {
 
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();
@@ -280,7 +280,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return ExpData
 	 */
-	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
+	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, bool $expandSubject ) {
 		$subjectExpResource = $expData->getSubject();
 
 		if ( $expandSubject ) {
