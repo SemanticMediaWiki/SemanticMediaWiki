@@ -114,7 +114,7 @@ class Localizer {
 	 *
 	 * @return ExtendedDateTime
 	 */
-	public function getLocalTime( ExtendedDateTime $dateTime, $user = null ) {
+	public function getLocalTime( ExtendedDateTime $dateTime, $user = null ): ExtendedDateTime {
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}

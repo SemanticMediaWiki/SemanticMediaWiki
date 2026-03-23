@@ -72,7 +72,7 @@ class ParameterInput {
 	 *
 	 * @param string $name
 	 */
-	public function setInputName( $name ): void {
+	public function setInputName( string $name ): void {
 		$this->inputName = $name;
 	}
 

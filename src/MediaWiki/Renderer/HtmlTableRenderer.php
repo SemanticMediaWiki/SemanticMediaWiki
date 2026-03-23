@@ -72,7 +72,7 @@ class HtmlTableRenderer {
 	 *
 	 * @param bool $htmlContext
 	 */
-	public function setHtmlContext( $htmlContext ) {
+	public function setHtmlContext( bool $htmlContext ) {
 		$this->htmlContext = $htmlContext;
 		return $this;
 	}

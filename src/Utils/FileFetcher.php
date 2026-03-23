@@ -38,7 +38,7 @@ class FileFetcher {
 	 *
 	 * @param string $dir
 	 */
-	public function setDir( $dir ): void {
+	public function setDir( string $dir ): void {
 		$this->dir = $dir;
 	}
 

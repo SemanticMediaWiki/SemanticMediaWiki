@@ -38,7 +38,7 @@ class TransactionHandler {
 	 *
 	 * @param TransactionProfiler $transactionProfiler
 	 */
-	public function setTransactionProfiler( $transactionProfiler ): void {
+	public function setTransactionProfiler( TransactionProfiler $transactionProfiler ): void {
 		$this->transactionProfiler = $transactionProfiler;
 	}
 
