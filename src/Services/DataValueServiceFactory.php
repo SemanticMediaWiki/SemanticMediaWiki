@@ -82,7 +82,7 @@ class DataValueServiceFactory {
 	 *
 	 * @return DataValueFactory
 	 */
-	public function getDataValueFactory() {
+	public function getDataValueFactory(): DataValueFactory {
 		return DataValueFactory::getInstance();
 	}
 

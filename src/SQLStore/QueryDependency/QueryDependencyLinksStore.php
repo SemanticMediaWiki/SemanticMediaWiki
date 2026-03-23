@@ -27,10 +27,7 @@ class QueryDependencyLinksStore {
 
 	private Store $store;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private NamespaceExaminer $namespaceExaminer;
 
 	private bool $isEnabled = true;
 

@@ -444,7 +444,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * @return array
 	 */
-	public function getInfo( $type = null ) {
+	public function getInfo( $type = null ): string|array {
 		if ( $type === 'store' ) {
 			return 'SMWElasticStore';
 		}

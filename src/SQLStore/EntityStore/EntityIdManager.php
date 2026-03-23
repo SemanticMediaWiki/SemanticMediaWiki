@@ -97,15 +97,9 @@ class EntityIdManager {
 
 	private ?DuplicateFinder $duplicateFinder = null;
 
-	/**
-	 * @var PropertyTableHashes
-	 */
-	private $propertyTableHashes;
+	private PropertyTableHashes $propertyTableHashes;
 
-	/**
-	 * @var Flag
-	 */
-	private $equalitySupport;
+	private Flag $equalitySupport;
 
 	/**
 	 * @since 1.8

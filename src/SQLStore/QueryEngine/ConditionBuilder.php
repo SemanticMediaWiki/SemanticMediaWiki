@@ -22,10 +22,7 @@ use SMW\Utils\CircularReferenceGuard;
  */
 class ConditionBuilder {
 
-	/**
-	 * @var DispatchingDescriptionInterpreter
-	 */
-	private $dispatchingDescriptionInterpreter;
+	private DispatchingDescriptionInterpreter $dispatchingDescriptionInterpreter;
 
 	private bool $isFilterDuplicates = true;
 

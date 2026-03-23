@@ -214,19 +214,19 @@ class ImportValue extends DataValue {
 	/**
 	 * @see DataValue::getWikiValue
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->qname;
 	}
 
-	public function getNS() {
+	public function getNS(): string {
 		return $this->uri;
 	}
 
-	public function getNSID() {
+	public function getNSID(): string {
 		return $this->namespace;
 	}
 
-	public function getLocalName() {
+	public function getLocalName(): string {
 		return $this->term;
 	}
 
@@ -235,7 +235,7 @@ class ImportValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getTermType() {
+	public function getTermType(): string {
 		return $this->termType;
 	}
 
@@ -248,7 +248,7 @@ class ImportValue extends DataValue {
 		return $this->namespace . ':' . $this->term . '|' . $this->uri;
 	}
 
-	private function createCaption( $namespace, $qname, $uri, $declarativeName ): string {
+	private function createCaption( string $namespace, $qname, string $uri, string $declarativeName ): string {
 		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " . Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::TEXT );
 	}
 

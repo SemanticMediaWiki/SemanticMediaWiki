@@ -27,10 +27,7 @@ use SMWDInumber as DINumber;
  */
 class SomeValueInterpreter {
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private ?FieldMapper $fieldMapper = null;
 
 	/**
 	 * @since 3.0

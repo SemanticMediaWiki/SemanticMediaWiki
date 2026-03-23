@@ -361,7 +361,7 @@ class TermsLookup implements ITermsLookup {
 	/**
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.1/query-dsl-terms-query.html
 	 */
-	private function terms_index( $id, $results ) {
+	private function terms_index( $id, ?array $results ) {
 		$connection = $this->store->getConnection( 'elastic' );
 
 		$params = [

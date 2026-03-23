@@ -192,7 +192,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 2.0
 	 */
-	public function getSubSemanticData() {
+	public function getSubSemanticData(): array {
 		if ( $this->subSemanticDataInit ) {
 			return parent::getSubSemanticData();
 		}
@@ -369,7 +369,7 @@ class StubSemanticData extends SemanticData {
 		}
 	}
 
-	protected function isRedirect() {
+	protected function isRedirect(): bool {
 		return $this->store->getObjectIds()->isRedirect( $this->mSubject );
 	}
 

@@ -383,7 +383,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return SemanticData[]
 	 */
-	public function getSubSemanticData() {
+	public function getSubSemanticData(): array {
 		// Remove the check in 3.0
 		$subSemanticData = $this->subSemanticData;
 

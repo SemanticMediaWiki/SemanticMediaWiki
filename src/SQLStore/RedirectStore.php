@@ -21,10 +21,7 @@ class RedirectStore {
 
 	const TABLE_NAME = 'smw_fpt_redi';
 
-	/**
-	 * @var Flag
-	 */
-	private $equalitySupport;
+	private Flag $equalitySupport;
 
 	private bool $isCommandLineMode = false;
 

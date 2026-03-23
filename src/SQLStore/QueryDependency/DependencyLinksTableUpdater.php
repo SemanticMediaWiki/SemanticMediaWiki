@@ -108,7 +108,7 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @return void
 	 */
-	private function updateDependencyList( int|string $sid, array $dependencyList ) {
+	private function updateDependencyList( int|string $sid, array $dependencyList ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 

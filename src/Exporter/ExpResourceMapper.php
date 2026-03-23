@@ -27,15 +27,9 @@ class ExpResourceMapper {
 	 */
 	const AUX_MARKER = 'aux';
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
+	private DataValueFactory $dataValueFactory;
 
-	/**
-	 * @var InMemoryPoolCache
-	 */
-	private $inMemoryPoolCache;
+	private InMemoryPoolCache $inMemoryPoolCache;
 
 	/**
 	 * @note Legacy setting expected to vanish with 3.0

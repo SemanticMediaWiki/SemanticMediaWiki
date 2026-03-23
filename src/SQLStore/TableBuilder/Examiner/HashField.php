@@ -20,7 +20,7 @@ class HashField {
 	/**
 	 * @var ?PopulateHashField
 	 */
-	private $populateHashField;
+	private ?populateHashField $populateHashField;
 
 	/**
 	 * @since 3.1

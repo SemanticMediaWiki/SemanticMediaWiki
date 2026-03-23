@@ -28,10 +28,7 @@ use SMW\Utils\HtmlTabs;
  */
 class Factbox {
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
+	private DataValueFactory $dataValueFactory;
 
 	/**
 	 * @var int

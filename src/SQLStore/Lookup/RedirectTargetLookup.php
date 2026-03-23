@@ -25,10 +25,7 @@ class RedirectTargetLookup {
 	 */
 	const CACHE_ONLY = 'cache/only';
 
-	/**
-	 * @var IdCacheManager
-	 */
-	private $inMemoryCacheManager;
+	private IdCacheManager $inMemoryCacheManager;
 
 	/**
 	 * @since 2.5

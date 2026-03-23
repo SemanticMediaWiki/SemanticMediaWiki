@@ -27,10 +27,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
  */
 class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1

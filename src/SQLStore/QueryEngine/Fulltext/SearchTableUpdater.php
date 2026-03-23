@@ -37,7 +37,7 @@ class SearchTableUpdater {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->searchTable->isEnabled();
 	}
 

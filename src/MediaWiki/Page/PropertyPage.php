@@ -47,10 +47,7 @@ class PropertyPage extends Page {
 	 */
 	private $isLockedView = false;
 
-	/**
-	 * @var int
-	 */
-	private $filterCount = 0;
+	private int|string|null $filterCount = 0;
 
 	/**
 	 * @see 3.0

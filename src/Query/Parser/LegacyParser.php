@@ -156,7 +156,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->descriptionProcessor->getErrors();
 	}
 

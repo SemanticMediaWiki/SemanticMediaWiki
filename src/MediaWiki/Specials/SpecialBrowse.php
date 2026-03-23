@@ -12,6 +12,8 @@ use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\Store;
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it
@@ -146,7 +148,7 @@ class SpecialBrowse extends SpecialPage {
 		return $htmlBuilder->getPlaceholderData();
 	}
 
-	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ): HtmlBuilder {
+	private function newHtmlBuilder( $webRequest, $dataItem, Store $store, Settings $settings ): HtmlBuilder {
 		$htmlBuilder = new HtmlBuilder(
 			$store,
 			$dataItem

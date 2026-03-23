@@ -612,7 +612,7 @@ class SQLStore extends Store {
 	 *
 	 * @return array|string
 	 */
-	public function getInfo( $type = null ) {
+	public function getInfo( $type = null ): string|array {
 		if ( $type === 'store' ) {
 			return 'SMWSQLStore';
 		}
