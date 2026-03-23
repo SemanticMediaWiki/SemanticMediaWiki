@@ -364,14 +364,14 @@ class TypesRegistry {
 		];
 
 		if ( $key === 'id' ) {
-			array_walk( $fixedProperties, static function ( &$v, $k ): void { $v = $v[0];
+			array_walk( $fixedProperties, static function ( array &$v, $k ): void { $v = $v[0];
 			} );
 		}
 
 		// Default fixed property table for selected special properties
 		if ( $key === 'default_fixed' ) {
 			$fixedProperties = array_keys(
-				array_filter( $fixedProperties, static function ( $v ) { return $v[1];
+				array_filter( $fixedProperties, static function ( array $v ) { return $v[1];
 				} )
 			);
 		}
@@ -380,7 +380,7 @@ class TypesRegistry {
 		// special properties that can have their own fixed property table
 		if ( $key === 'custom_fixed' ) {
 			$fixedProperties = array_keys(
-				array_filter( $fixedProperties, static function ( $v ) { return $v[2];
+				array_filter( $fixedProperties, static function ( array $v ) { return $v[2];
 				} )
 			);
 		}

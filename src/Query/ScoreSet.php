@@ -109,7 +109,7 @@ class ScoreSet {
 			return;
 		}
 
-		usort( $this->scores, static function ( $a, $b ): int {
+		usort( $this->scores, static function ( array $a, array $b ): int {
 			if ( $a[1] == $b[1] ) {
 				return 0;
 			}
