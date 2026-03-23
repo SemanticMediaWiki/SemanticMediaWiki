@@ -28,15 +28,12 @@ use SMW\Store;
  */
 class FieldItemFinder {
 
-	/**
-	 * @var QueryToken
-	 */
-	private $queryToken;
+	private ?QueryToken $queryToken = null;
 
 	/**
 	 * @var WikiPage[]
 	 */
-	private $dataItems = [];
+	private array $dataItems = [];
 
 	/**
 	 * @var bool|array

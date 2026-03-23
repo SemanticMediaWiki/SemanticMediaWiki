@@ -756,7 +756,7 @@ class SemanticData implements JsonUnserializable {
 				if ( isset( $this->sequenceMap[$key] ) && SequenceMap::canMap( $property ) ) {
 					$sequenceMap = array_flip( $this->sequenceMap[$key] );
 
-					usort( $this->mPropVals[$key], static function ( $a, $b ) use( $sequenceMap ) {
+					usort( $this->mPropVals[$key], static function ( $a, $b ) use( $sequenceMap ): int {
 						$pos_a = $sequenceMap[md5( $a->getHash() )];
 						$pos_b = $sequenceMap[md5( $b->getHash() )];
 
@@ -875,12 +875,12 @@ class SemanticData implements JsonUnserializable {
 		# in the future.
 		$json = [
 			'stubObject' => $this->stubObject,
-			'mPropVals' => array_map( static function ( $x ) {
-					return array_map( static function ( $y ) {
+			'mPropVals' => array_map( static function ( array $x ): array {
+					return array_map( static function ( DataItem $y ): array {
 						return $y->jsonSerialize();
 					}, $x );
 			}, $this->mPropVals ),
-			'mProperties' => array_map( static function ( $x ) {
+			'mProperties' => array_map( static function ( Property $x ): array {
 					return $x->jsonSerialize();
 			}, $this->mProperties ),
 			'mHasVisibleProps' => $this->mHasVisibleProps,
@@ -935,7 +935,7 @@ class SemanticData implements JsonUnserializable {
 			$json['mNoDuplicates']
 		);
 		$obj->stubObject = $json['stubObject'];
-		$obj->mPropVals = array_map( static function ( $x ) use( $unserializer ) {
+		$obj->mPropVals = array_map( static function ( array $x ) use( $unserializer ): array {
 			return self::maybeUnserializeArray( $unserializer, $x );
 		}, $json['mPropVals'] );
 		$obj->mProperties = self::maybeUnserializeArray( $unserializer, $json['mProperties'] );

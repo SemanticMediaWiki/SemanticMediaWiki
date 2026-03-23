@@ -58,7 +58,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return false|string
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -125,7 +125,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	private function addPropertyFor( $title ): DataItem {
 		try {
 			$property = new Property( $title );
-		} catch ( PropertyLabelNotResolvedException $e ) {
+		} catch ( PropertyLabelNotResolvedException ) {
 			$property = new Error( new Message( 'smw_noproperty', [ $title ] ) );
 		}
 

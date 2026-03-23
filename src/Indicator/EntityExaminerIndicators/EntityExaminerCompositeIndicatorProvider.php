@@ -16,15 +16,12 @@ use SMW\MediaWiki\Permission\PermissionExaminerAware;
  */
 class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProvider, PermissionExaminerAware {
 
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
+	private ?PermissionExaminer $permissionExaminer = null;
 
 	/**
 	 * @var
 	 */
-	private $indicators = [];
+	private array $indicators = [];
 
 	/**
 	 * @var
@@ -55,7 +52,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 

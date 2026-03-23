@@ -25,7 +25,7 @@ return [
 	 *
 	 * @return InvalidateResultCacheEventListener
 	 */
-	'InvalidateResultCacheEventListener' => static function ( $containerBuilder ) {
+	'InvalidateResultCacheEventListener' => static function ( $containerBuilder ): InvalidateResultCacheEventListener {
 		$invalidateResultCacheEventListener = new InvalidateResultCacheEventListener(
 			$containerBuilder->singleton( 'ResultCache' )
 		);
@@ -38,7 +38,7 @@ return [
 	 *
 	 * @return InvalidateEntityCacheEventListener
 	 */
-	'InvalidateEntityCacheEventListener' => static function ( $containerBuilder ) {
+	'InvalidateEntityCacheEventListener' => static function ( $containerBuilder ): InvalidateEntityCacheEventListener {
 		$invalidateEntityCacheEventListener = new InvalidateEntityCacheEventListener(
 			$containerBuilder->singleton( 'EntityCache' )
 		);
@@ -51,7 +51,7 @@ return [
 	 *
 	 * @return InvalidatePropertySpecificationLookupCacheEventListener
 	 */
-	'InvalidatePropertySpecificationLookupCacheEventListener' => static function ( $containerBuilder ) {
+	'InvalidatePropertySpecificationLookupCacheEventListener' => static function ( $containerBuilder ): InvalidatePropertySpecificationLookupCacheEventListener {
 		$invalidatePropertySpecificationLookupCacheEventListener = new InvalidatePropertySpecificationLookupCacheEventListener(
 			$containerBuilder->singleton( 'PropertySpecificationLookup' )
 		);

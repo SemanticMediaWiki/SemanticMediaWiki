@@ -20,12 +20,9 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	/**
 	 * @var ResourceBuilder[]
 	 */
-	private $resourceBuilders = [];
+	private array $resourceBuilders = [];
 
-	/**
-	 * @var ResourceBuilder
-	 */
-	private $defaultResourceBuilder = null;
+	private ?ResourceBuilder $defaultResourceBuilder = null;
 
 	/**
 	 * @since 2.5

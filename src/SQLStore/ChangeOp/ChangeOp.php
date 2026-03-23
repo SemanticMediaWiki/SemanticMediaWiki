@@ -20,35 +20,17 @@ class ChangeOp implements IteratorAggregate {
 	const OP_INSERT = 'insert';
 	const OP_DELETE = 'delete';
 
-	/**
-	 * @var array
-	 */
-	private $data = [];
+	private array $data = [];
 
-	/**
-	 * @var array
-	 */
-	private $textItems = [];
+	private array $textItems = [];
 
-	/**
-	 * @var array
-	 */
-	private $orderedDiff = [];
+	private array $orderedDiff = [];
 
-	/**
-	 * @var array
-	 */
-	private $fixedPropertyRecords = [];
+	private array $fixedPropertyRecords = [];
 
-	/**
-	 * @var array
-	 */
-	private $propertyList = [];
+	private array $propertyList = [];
 
-	/**
-	 * @var bool
-	 */
-	private $textItemsFlag = false;
+	private bool $textItemsFlag = false;
 
 	/**
 	 * @since 2.3
@@ -71,7 +53,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 2.5
 	 *
-	 * @return WikiPage
+	 * @return ?WikiPage
 	 */
 	public function getSubject(): ?WikiPage {
 		return $this->subject;
@@ -110,14 +92,16 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getFixedPropertyRecords() {
+	public function getFixedPropertyRecords(): array {
 		return $this->fixedPropertyRecords;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return array
+	 * @param array $propertyList
+	 *
+	 * @return void
 	 */
 	public function addPropertyList( $propertyList ): void {
 		$this->propertyList = array_merge( $this->propertyList, $propertyList );
@@ -128,7 +112,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getPropertyList() {
+	public function getPropertyList(): array {
 		return $this->propertyList;
 	}
 
@@ -246,7 +230,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getOrderedDiffByTable( $table = null ) {
+	public function getOrderedDiffByTable( $table = null ): array {
 		if ( $table === null && $this->orderedDiff !== [] ) {
 			return $this->orderedDiff;
 		}

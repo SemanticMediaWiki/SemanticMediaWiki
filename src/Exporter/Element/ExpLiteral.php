@@ -20,17 +20,13 @@ class ExpLiteral extends ExpElement {
 
 	/**
 	 * Lexical form of the literal.
-	 *
-	 * @var string
 	 */
-	private $lexicalForm;
+	private string $lexicalForm;
 
 	/**
 	 * Datatype URI for the literal.
-	 *
-	 * @var string
 	 */
-	private $datatype;
+	private string $datatype;
 
 	/**
 	 * @var string
@@ -94,7 +90,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getDatatype() {
+	public function getDatatype(): string {
 		return $this->datatype;
 	}
 
@@ -105,7 +101,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getLexicalForm() {
+	public function getLexicalForm(): string {
 		return $this->lexicalForm;
 	}
 

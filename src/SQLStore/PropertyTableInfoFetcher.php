@@ -19,7 +19,7 @@ class PropertyTableInfoFetcher {
 	 * Array for keeping property table table data, indexed by table id.
 	 * Access this only by calling getPropertyTables().
 	 *
-	 * @var TableDefinition[]|null
+	 * @var PropertyTableDefinition[]|null
 	 */
 	private $propertyTableDefinitions = null;
 
@@ -32,22 +32,14 @@ class PropertyTableInfoFetcher {
 	 */
 	private $fixedPropertyTableIds = null;
 
-	/**
-	 * @var array
-	 */
-	private $customSpecialPropertyList = [];
+	private array $customSpecialPropertyList = [];
 
-	/**
-	 * @var array
-	 */
-	private $customFixedPropertyList = [];
+	private array $customFixedPropertyList = [];
 
 	/**
 	 * Default tables to use for storing data of certain types.
-	 *
-	 * @var array
 	 */
-	private static $defaultDiTypeTableIdMap = [
+	private static array $defaultDiTypeTableIdMap = [
 		DataItem::TYPE_NUMBER     => 'smw_di_number',
 		DataItem::TYPE_BLOB       => 'smw_di_blob',
 		DataItem::TYPE_BOOLEAN    => 'smw_di_bool',
@@ -176,7 +168,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @since 2.2
 	 *
-	 * @return TableDefinition[]
+	 * @return PropertyTableDefinition[]
 	 */
 	public function getPropertyTableDefinitions() {
 		if ( $this->propertyTableDefinitions === null ) {

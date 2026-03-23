@@ -22,12 +22,12 @@ class TermParser {
 	/**
 	 * @var
 	 */
-	private $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
+	private array $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
 
 	/**
 	 * @var
 	 */
-	private static $cache = [];
+	private static array $cache = [];
 
 	/**
 	 * @since 3.0

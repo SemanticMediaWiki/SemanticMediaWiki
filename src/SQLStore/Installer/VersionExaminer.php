@@ -20,15 +20,9 @@ class VersionExaminer {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var IDatabase
-	 */
-	private $connection;
+	private IDatabase $connection;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private ?SetupFile $setupFile = null;
 
 	/**
 	 * @since 3.2

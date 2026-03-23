@@ -49,7 +49,7 @@ class EntityIdFinder {
 	 *
 	 * @return int
 	 */
-	public function findIdByItem( WikiPage $dataItem ) {
+	public function findIdByItem( WikiPage $dataItem ): int {
 		if ( ( $id = $this->idCacheManager->getId( $dataItem ) ) !== false ) {
 			return $id;
 		}

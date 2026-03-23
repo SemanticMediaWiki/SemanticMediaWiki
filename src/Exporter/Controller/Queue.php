@@ -24,18 +24,14 @@ class Queue {
 	/**
 	 * An array that keeps track of the elements for which we still need to
 	 * write auxiliary definitions/declarations.
-	 *
-	 * @var array
 	 */
-	private $queue = [];
+	private array $queue = [];
 
 	/**
 	 * An array that keeps track of the recursion depth with which each object
 	 * has been serialised.
-	 *
-	 * @var array
 	 */
-	private $done = [];
+	private array $done = [];
 
 	/**
 	 * @since 3.2

@@ -18,10 +18,7 @@ use SMW\Exception\StoreNotFoundException;
  */
 class StoreFactory {
 
-	/**
-	 * @var array
-	 */
-	private static $instance = [];
+	private static array $instance = [];
 
 	/**
 	 * @since 1.9

@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use Iterator;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -45,7 +46,7 @@ interface EntityLookup {
 	 * @param WikiPage $subject
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DataItem[]|[]
+	 * @return DataItem[]|array
 	 */
 	public function getProperties( WikiPage $subject, ?RequestOptions $requestOptions = null );
 
@@ -62,13 +63,13 @@ interface EntityLookup {
 	 * @param Property $property
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DataItem[]|[]|Iterator
+	 * @return DataItem[]|array|Iterator
 	 */
 	public function getPropertyValues( ?WikiPage $subject, Property $property, ?RequestOptions $requestOptions = null );
 
 	/**
 	 * Get an array of all subjects that have the given value for the given
-	 * property. The result is an array of DIWikiPage objects. If null
+	 * property. The result is an array of WikiPage objects. If null
 	 * is given as a value, all subjects having that property are returned.
 	 *
 	 * @since 2.5
@@ -77,13 +78,13 @@ interface EntityLookup {
 	 * @param DataItem|null $dataItem
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DIWikiPage[]|[]|Iterator
+	 * @return WikiPage[]|array|Iterator
 	 */
 	public function getPropertySubjects( Property $property, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null );
 
 	/**
 	 * Get an array of all subjects that have some value for the given
-	 * property. The result is an array of DIWikiPage objects.
+	 * property. The result is an array of WikiPage objects.
 	 *
 	 * @since 2.5
 	 *
@@ -96,7 +97,7 @@ interface EntityLookup {
 
 	/**
 	 * Get an array of all properties for which there is some subject that
-	 * relates to the given value. The result is an array of DIWikiPage
+	 * relates to the given value. The result is an array of WikiPage
 	 * objects.
 	 *
 	 * @note In some stores, this function might be implemented partially
@@ -107,7 +108,7 @@ interface EntityLookup {
 	 * @param DataItem $object
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DataItem[]|[]
+	 * @return DataItem[]|array
 	 */
 	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null );
 

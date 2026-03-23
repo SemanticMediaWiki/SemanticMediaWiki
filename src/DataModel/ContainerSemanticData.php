@@ -29,10 +29,7 @@ use SMW\Exception\DataItemException;
  */
 class ContainerSemanticData extends SemanticData {
 
-	/**
-	 * @var bool
-	 */
-	private $skipAnonymousCheck = false;
+	private bool $skipAnonymousCheck = false;
 
 	/**
 	 * Construct a data container that refers to an anonymous subject. See

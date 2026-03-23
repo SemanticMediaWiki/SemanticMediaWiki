@@ -18,10 +18,7 @@ use SMW\MediaWiki\HookListener;
  */
 class TitleIsAlwaysKnown implements HookListener {
 
-	/**
-	 * @var mixed
-	 */
-	private $result;
+	private ?bool $result = null;
 
 	/**
 	 * @since  2.0

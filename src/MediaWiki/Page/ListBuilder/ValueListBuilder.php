@@ -38,7 +38,7 @@ class ValueListBuilder {
 	/**
 	 * @var int|null
 	 */
-	private $filterCount;
+	private null|int|string $filterCount = null;
 
 	/**
 	 * @var int
@@ -50,10 +50,7 @@ class ValueListBuilder {
 	 */
 	private $languageCode = 'en';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
 	/**
 	 * @var bool
@@ -71,7 +68,7 @@ class ValueListBuilder {
 	 *
 	 * @param integer
 	 */
-	public function getFilterCount() {
+	public function getFilterCount(): null|int|string {
 		return $this->filterCount;
 	}
 

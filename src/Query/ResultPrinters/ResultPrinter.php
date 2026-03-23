@@ -149,10 +149,8 @@ abstract class ResultPrinter implements IResultPrinter {
 
 	/**
 	 * Incremented while expanding templates inserted during printout; stop expansion at some point
-	 *
-	 * @var int
 	 */
-	private static $mRecursionDepth = 0;
+	private static int $mRecursionDepth = 0;
 
 	/**
 	 * This public variable can be set to higher values to allow more recursion; do this at your own risk!

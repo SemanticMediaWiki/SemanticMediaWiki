@@ -38,7 +38,7 @@ class CacheStats extends Stats {
 	 * @return array
 	 */
 	public function getStats(): array {
-		$stats = array_filter( parent::getStats(), static function ( $key ) {
+		$stats = array_filter( parent::getStats(), static function ( $key ): bool {
 			return $key !== false;
 		} );
 

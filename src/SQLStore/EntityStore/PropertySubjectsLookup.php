@@ -5,11 +5,15 @@ namespace SMW\SQLStore\EntityStore;
 use RuntimeException;
 use SMW\DataItems\Container;
 use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\IteratorFactory;
 use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,15 +38,9 @@ class PropertySubjectsLookup {
 	 */
 	private $dataItemHandler;
 
-	/**
-	 * @var array
-	 */
-	private $prefetch = [];
+	private array $prefetch = [];
 
-	/**
-	 * @var string
-	 */
-	private $caller = '';
+	private string $caller = '';
 
 	/**
 	 * @since 3.0
@@ -77,11 +75,11 @@ class PropertySubjectsLookup {
 	 * @since 3.1
 	 *
 	 * @param array $ids
-	 * @param DataItem $property
+	 * @param Property $property
 	 * @param TableDefinition $proptable
 	 * @param RequestOptions $requestOptions
 	 */
-	public function prefetchFromTable( array $ids, DataItem $property, TableDefinition $proptable, RequestOptions $requestOptions ) {
+	public function prefetchFromTable( array $ids, Property $property, TableDefinition $proptable, RequestOptions $requestOptions ) {
 		if ( $ids === [] ) {
 			return [];
 		}
@@ -332,7 +330,7 @@ class PropertySubjectsLookup {
 	 *
 	 * @param stdClass $row
 	 *
-	 * @return DIWikiPage
+	 * @return DataItem
 	 */
 	public function newFromRow( $row ) {
 		try {
@@ -355,7 +353,7 @@ class PropertySubjectsLookup {
 
 				return $dataItem;
 			}
-		} catch ( DataItemHandlerException $e ) {
+		} catch ( DataItemHandlerException ) {
 			// silently drop data, should be extremely rare and will usually fix itself at next edit
 		}
 

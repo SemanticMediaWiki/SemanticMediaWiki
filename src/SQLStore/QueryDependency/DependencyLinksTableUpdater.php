@@ -17,10 +17,7 @@ class DependencyLinksTableUpdater {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var array
-	 */
-	private static $updateList = [];
+	private static array $updateList = [];
 
 	/**
 	 * @since 2.4
@@ -111,7 +108,7 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @return void
 	 */
-	private function updateDependencyList( $sid, array $dependencyList ) {
+	private function updateDependencyList( int|string $sid, array $dependencyList ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
@@ -138,7 +135,8 @@ class DependencyLinksTableUpdater {
 		);
 
 		if ( $sid == 0 ) {
-			return $connection->endAtomicTransaction( __METHOD__ );
+			$connection->endAtomicTransaction( __METHOD__ );
+			return;
 		}
 
 		$inserts = [];
@@ -167,7 +165,8 @@ class DependencyLinksTableUpdater {
 		}
 
 		if ( $inserts === [] ) {
-			return $connection->endAtomicTransaction( __METHOD__ );
+			$connection->endAtomicTransaction( __METHOD__ );
+			return;
 		}
 
 		// MW's multi-array insert needs a numeric dimensional array but the key

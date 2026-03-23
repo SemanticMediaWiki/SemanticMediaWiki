@@ -30,10 +30,8 @@ class Config extends Options {
 
 	/**
 	 * Contains deprecated or renamed settings.
-	 *
-	 * @var array
 	 */
-	private $deprecatedKeys = [
+	private array $deprecatedKeys = [
 		'query' => [
 			// 3.2
 			'fallback.no.connection' => 'fallback.no_connection'

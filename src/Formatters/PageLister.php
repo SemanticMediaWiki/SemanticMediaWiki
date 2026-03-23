@@ -212,7 +212,7 @@ class PageLister {
 	 *
 	 * @return string
 	 */
-	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ): string {
+	public static function getColumnList( $start, $end, $diWikiPages, ?Property $diProperty, $moreCallback = null ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -341,7 +341,7 @@ class PageLister {
 		return $r;
 	}
 
-	private static function getFirstChar( $dataItem ) {
+	private static function getFirstChar( WikiPage $dataItem ) {
 		$contentLanguage = Localizer::getInstance()->getContentLanguage();
 
 		$sortkey = StoreFactory::getStore()->getWikiPageSortKey( $dataItem );

@@ -11,12 +11,13 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValues\WikiPageValue;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Query;
-use SMW\Query\QueryResult;
 use SMW\RequestOptions;
 use SMW\Services\ServicesContainer;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
@@ -125,28 +126,16 @@ class SQLStore extends Store {
 
 	private SQLStoreFactory $factory;
 
-	/**
-	 * @var PropertyTableInfoFetcher|null
-	 */
-	private $propertyTableInfoFetcher = null;
+	private ?PropertyTableInfoFetcher $propertyTableInfoFetcher = null;
+
+	private ?PropertyTableIdReferenceFinder $propertyTableIdReferenceFinder = null;
+
+	private ?DataItemHandlerFactory $dataItemHandlerFactory = null;
+
+	private ?EntityLookup $entityLookup = null;
 
 	/**
-	 * @var PropertyTableIdReferenceFinder
-	 */
-	private $propertyTableIdReferenceFinder;
-
-	/**
-	 * @var DataItemHandlerFactory
-	 */
-	private $dataItemHandlerFactory;
-
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
-
-	/**
-	 * @var ServicesContainer
+	 * @var ?ServicesContainer
 	 */
 	protected $servicesContainer;
 
@@ -158,10 +147,7 @@ class SQLStore extends Store {
 	 */
 	public $smwIds;
 
-	/**
-	 * @var SQLStoreUpdater
-	 */
-	private $updater;
+	private ?SQLStoreUpdater $updater = null;
 
 	/**
 	 * @since 1.8
@@ -353,7 +339,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Query $query
 	 *
-	 * @return QueryResult|string|int depends on $query->querymode
+	 * @return mixed depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
 		$result = null;
@@ -485,7 +471,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Title $concept
 	 */
-	public function deleteConceptCache( $concept ): void {
+	public function deleteConceptCache( Title $concept ): void {
 		$this->factory->newMasterConceptCache()->deleteConceptCache( $concept );
 	}
 
@@ -624,7 +610,7 @@ class SQLStore extends Store {
 	 *
 	 * @param string|null $type
 	 *
-	 * @return array
+	 * @return array|string
 	 */
 	public function getInfo( $type = null ) {
 		if ( $type === 'store' ) {
@@ -658,7 +644,7 @@ class SQLStore extends Store {
 	 *
 	 * @return PropertyTableInfoFetcher
 	 */
-	public function getPropertyTableInfoFetcher() {
+	public function getPropertyTableInfoFetcher(): PropertyTableInfoFetcher {
 		if ( $this->propertyTableInfoFetcher === null ) {
 			$this->propertyTableInfoFetcher = $this->factory->newPropertyTableInfoFetcher();
 		}
@@ -671,7 +657,7 @@ class SQLStore extends Store {
 	 *
 	 * @return PropertyTableIdReferenceFinder
 	 */
-	public function getPropertyTableIdReferenceFinder() {
+	public function getPropertyTableIdReferenceFinder(): PropertyTableIdReferenceFinder {
 		if ( $this->propertyTableIdReferenceFinder === null ) {
 			$this->propertyTableIdReferenceFinder = $this->factory->newPropertyTableIdReferenceFinder();
 		}

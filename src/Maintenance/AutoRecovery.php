@@ -18,10 +18,7 @@ class AutoRecovery {
 
 	private string $site;
 
-	/**
-	 * @var bool
-	 */
-	private $enabled = false;
+	private bool $enabled = false;
 
 	/**
 	 * @var int
@@ -65,7 +62,7 @@ class AutoRecovery {
 	 *
 	 * @param string $dir
 	 */
-	public function setDir( $dir ): void {
+	public function setDir( string $dir ): void {
 		$this->dir = $dir;
 	}
 

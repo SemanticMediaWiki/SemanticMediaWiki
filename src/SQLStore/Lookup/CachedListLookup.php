@@ -15,20 +15,14 @@ class CachedListLookup implements ListLookup {
 
 	const VERSION = '0.2';
 
-	/**
-	 * @var bool
-	 */
-	private $isFromCache = false;
+	private bool $isFromCache = false;
 
 	/**
 	 * @var int
 	 */
 	private $timestamp;
 
-	/**
-	 * @var string
-	 */
-	private $cachePrefix = 'smw:store:lookup:';
+	private string $cachePrefix = 'smw:store:lookup:';
 
 	/**
 	 * @since 2.2
@@ -87,7 +81,7 @@ class CachedListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return $this->isFromCache;
 	}
 

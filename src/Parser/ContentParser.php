@@ -42,10 +42,7 @@ class ContentParser {
 	/** @var array */
 	protected $errors = [];
 
-	/**
-	 * @var bool
-	 */
-	private $skipInTextAnnotationParser = false;
+	private bool $skipInTextAnnotationParser = false;
 
 	/**
 	 * @since 1.9

@@ -32,15 +32,9 @@ class ConditionBuilder {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private ?FieldMapper $fieldMapper = null;
 
 	/**
 	 * @var ConceptDescriptionInterpreter
@@ -82,20 +76,11 @@ class ConditionBuilder {
 	 */
 	private $someValueInterpreter;
 
-	/**
-	 * @var array
-	 */
-	private $sortFields = [];
+	private array $sortFields = [];
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
-	/**
-	 * @var array
-	 */
-	private $queryInfo = [];
+	private array $queryInfo = [];
 
 	/**
 	 * @var array
@@ -107,10 +92,7 @@ class ConditionBuilder {
 	 */
 	protected $isConstantScore = true;
 
-	/**
-	 * @var bool
-	 */
-	private $initServices = false;
+	private bool $initServices = false;
 
 	/**
 	 * @since 3.0
@@ -179,7 +161,7 @@ class ConditionBuilder {
 	 *
 	 * @return FieldMapper
 	 */
-	public function getFieldMapper() {
+	public function getFieldMapper(): FieldMapper {
 		if ( $this->fieldMapper === null ) {
 			$this->fieldMapper = new FieldMapper();
 		}
@@ -192,7 +174,7 @@ class ConditionBuilder {
 	 *
 	 * @param []
 	 */
-	public function getQueryInfo() {
+	public function getQueryInfo(): array {
 		return $this->queryInfo;
 	}
 
@@ -219,7 +201,7 @@ class ConditionBuilder {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

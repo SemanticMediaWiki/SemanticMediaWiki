@@ -32,10 +32,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class DataValueFactory {
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private static $instance;
+	private static ?DataValueFactory $instance = null;
 
 	private DataTypeRegistry $dataTypeRegistry;
 
@@ -54,7 +51,7 @@ class DataValueFactory {
 	/**
 	 * @var
 	 */
-	private $callables = [];
+	private array $callables = [];
 
 	/**
 	 * @since 1.9
@@ -72,7 +69,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValueFactory
 	 */
-	public static function getInstance() {
+	public static function getInstance(): DataValueFactory {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}

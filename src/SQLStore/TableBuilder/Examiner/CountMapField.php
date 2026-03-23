@@ -19,10 +19,7 @@ class CountMapField {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private ?SetupFile $setupFile = null;
 
 	/**
 	 * @since 3.2

@@ -12,10 +12,7 @@ use SMW\Property\Annotator;
  */
 class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/**
-	 * @var array
-	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.1

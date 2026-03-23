@@ -4,8 +4,6 @@ namespace SMW\Tests\Utils\Page;
 
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Content\WikitextContent;
-use MediaWiki\Context\RequestContext;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\RevisionSlotsUpdate;
 use MediaWiki\Title\Title;
@@ -65,14 +63,7 @@ class PageEditor {
 	public function doEdit( $pageContent = '', $editMessage = '' ) {
 		$content = new WikitextContent( $pageContent );
 
-		// Use a system user when temporary accounts are enabled (MW 1.44+)
-		// to avoid CannotCreateActorException for anonymous users
-		$tempUserCreator = MediaWikiServices::getInstance()->getTempUserCreator();
-		if ( $tempUserCreator->isEnabled() ) {
-			$performer = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-		} else {
-			$performer = RequestContext::getMain()->getUser();
-		}
+		$performer = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		$summary = CommentStoreComment::newUnsavedComment( trim( $editMessage ) );
 
 		$slotsUpdate = new RevisionSlotsUpdate();

@@ -24,10 +24,7 @@ class TemplateExpander {
 	 */
 	const MAX_INCLUDE_SIZE = 50000000;
 
-	/**
-	 * @var Title
-	 */
-	private $title;
+	private ?Title $title = null;
 
 	/**
 	 * @since 3.1

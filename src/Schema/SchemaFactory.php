@@ -18,10 +18,7 @@ use SMW\Store;
  */
 class SchemaFactory {
 
-	/**
-	 * @var SchemaTypes
-	 */
-	private $schemaTypes;
+	private ?SchemaTypes $schemaTypes = null;
 
 	/**
 	 * @since 3.0

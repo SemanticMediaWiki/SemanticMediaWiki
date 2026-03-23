@@ -31,20 +31,11 @@ class ResultArray {
 	 */
 	private array|false $content;
 
-	/**
-	 * @var ItemJournal
-	 */
-	private $itemJournal;
+	private ?ItemJournal $itemJournal = null;
 
-	/**
-	 * @var QueryToken
-	 */
-	private $queryToken;
+	private ?QueryToken $queryToken = null;
 
-	/**
-	 * @var WikiPage
-	 */
-	private $contextPage;
+	private ?WikiPage $contextPage = null;
 
 	/**
 	 * @since 3.1

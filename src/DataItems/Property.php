@@ -55,9 +55,8 @@ class Property extends DataItem {
 	/**
 	 * Either an internal SMW property key (starting with "_") or the DB
 	 * key of a property page in the wiki.
-	 * @var string|null
 	 */
-	private $m_key;
+	private string $m_key;
 
 	/**
 	 * @var string
@@ -66,10 +65,8 @@ class Property extends DataItem {
 
 	/**
 	 * Interwiki prefix for when a property represents a non-local entity
-	 *
-	 * @var string
 	 */
-	private $interwiki = '';
+	private string $interwiki = '';
 
 	public int $id;
 
@@ -338,7 +335,7 @@ class Property extends DataItem {
 	/**
 	 * @deprecated since 3.0, use Property::setPropertyValueType
 	 */
-	public function setPropertyTypeId( $valueType ): Property {
+	public function setPropertyTypeId( string $valueType ): Property {
 		return $this->setPropertyValueType( $valueType );
 	}
 

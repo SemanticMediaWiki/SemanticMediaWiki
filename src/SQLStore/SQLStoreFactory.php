@@ -10,6 +10,7 @@ use SMW\IteratorFactory;
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\RequestOptions;
 use SMW\Services\ServicesContainer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -181,7 +182,7 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
 	public function newUsageStatisticsCachedListLookup(): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
@@ -274,7 +275,7 @@ class SQLStoreFactory {
 	 * @param bool $useCache
 	 * @param int $cacheExpiry
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
 	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ): CachedListLookup {
 		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
@@ -302,7 +303,7 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return DeferredCallableUpdate
+	 * @return TransactionalCallableUpdate
 	 */
 	public function newDeferredCallableCachedListLookupUpdate() {
 		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function (): void {
@@ -644,7 +645,7 @@ class SQLStoreFactory {
 	 * @param IdCacheManager $idCacheManager
 	 * @param PropertyTableHashes|null $propertyTableHashes
 	 *
-	 * @return IdEntityFinder
+	 * @return EntityIdFinder
 	 */
 	public function newEntityIdFinder( IdCacheManager $idCacheManager, ?PropertyTableHashes $propertyTableHashes = null ): EntityIdFinder {
 		if ( $propertyTableHashes === null ) {
@@ -806,7 +807,7 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return SemanticDataLookup
+	 * @return CachingSemanticDataLookup
 	 */
 	public function newSemanticDataLookup(): CachingSemanticDataLookup {
 		$semanticDataLookup = new SemanticDataLookup(
@@ -981,8 +982,7 @@ class SQLStoreFactory {
 		$settings = $applicationFactory->getSettings();
 
 		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
-			$this->store,
-			$this->getIteratorFactory()
+			$this->store
 		);
 
 		$propertyTableIdReferenceDisposer->setEventDispatcher(

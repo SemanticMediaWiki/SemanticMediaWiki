@@ -87,7 +87,7 @@ class DataTypeRegistry {
 	 *
 	 * @var string[]
 	 */
-	private $defaultDataItemTypeMap = [
+	private array $defaultDataItemTypeMap = [
 		DataItem::TYPE_BLOB => '_txt', // Text type
 		DataItem::TYPE_URI => '_uri', // URL/URI type
 		DataItem::TYPE_WIKIPAGE => '_wpg', // Page type
@@ -107,7 +107,7 @@ class DataTypeRegistry {
 	/**
 	 * @var
 	 */
-	private $callables = [];
+	private array $callables = [];
 
 	/**
 	 * Returns a DataTypeRegistry instance

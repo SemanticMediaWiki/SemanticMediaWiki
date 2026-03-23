@@ -21,60 +21,33 @@ class HtmlColumnListRenderer {
 	 */
 	private $numberOfColumns = 1;
 
-	/**
-	 * @var array
-	 */
-	private $contentsByIndex = [];
+	private array $contentsByIndex = [];
 
-	/**
-	 * @var array
-	 */
-	private $itemAttributes = [];
+	private array $itemAttributes = [];
 
-	/**
-	 * @var int
-	 */
-	private $numRows = 0;
+	private int $numRows = 0;
 
-	/**
-	 * @var int
-	 */
-	private $numberOfResults = 0;
+	private int $numberOfResults = 0;
 
 	/**
 	 * @var int
 	 */
 	private $rowsPerColumn = 0;
 
-	/**
-	 * @var int
-	 */
-	private $columnWidth = 0;
+	private int|float $columnWidth = 0;
 
-	/**
-	 * @var string
-	 */
-	private $listType = 'ul';
+	private string $listType = 'ul';
 
 	/**
 	 * @var string
 	 */
 	private $olType = '';
 
-	/**
-	 * @var string
-	 */
-	private $columnListClass = 'smw-columnlist-container';
+	private string $columnListClass = 'smw-columnlist-container';
 
-	/**
-	 * @var string
-	 */
-	private $columnClass = 'smw-column';
+	private string $columnClass = 'smw-column';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
 	/**
 	 * @since 2.2
@@ -236,7 +209,7 @@ class HtmlColumnListRenderer {
 		);
 	}
 
-	private function makeList( $key, $listContinuesAbbrev, $items, &$usedColumnCloser ): string {
+	private function makeList( int|string $key, $listContinuesAbbrev, $items, &$usedColumnCloser ): string {
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';

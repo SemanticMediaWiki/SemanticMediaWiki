@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use Onoi\Cache\Cache;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\StatsFormatter;
 
@@ -31,17 +32,11 @@ class InMemoryPoolCache {
 	 */
 	const FORMAT_HTML = StatsFormatter::FORMAT_HTML;
 
-	/**
-	 * @var InMemoryPoolCache
-	 */
-	private static $instance = null;
+	private static ?InMemoryPoolCache $instance = null;
 
 	private CacheFactory $cacheFactory;
 
-	/**
-	 * @var array
-	 */
-	private $poolCacheList = [];
+	private array $poolCacheList = [];
 
 	/**
 	 * @since 2.3
@@ -57,7 +52,7 @@ class InMemoryPoolCache {
 	 *
 	 * @return InMemoryPoolCache
 	 */
-	public static function getInstance() {
+	public static function getInstance(): InMemoryPoolCache {
 		if ( self::$instance === null ) {
 			self::$instance = new self( ApplicationFactory::getInstance()->newCacheFactory() );
 		}
@@ -92,7 +87,7 @@ class InMemoryPoolCache {
 	 *
 	 * @return string|array
 	 */
-	public function getStats( $format = null ) {
+	public function getStats( $format = null ): string|array {
 		return StatsFormatter::format( $this->computeStats(), $format );
 	}
 

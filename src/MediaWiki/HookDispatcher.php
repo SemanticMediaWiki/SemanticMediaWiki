@@ -40,7 +40,7 @@ use SMW\Store;
  */
 class HookDispatcher {
 
-	private $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	private function getHookContiner(): HookContainer {
 		if ( $this->hookContainer ) {

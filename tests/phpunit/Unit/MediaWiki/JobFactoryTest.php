@@ -4,19 +4,19 @@ namespace SMW\Tests\Unit\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
-use SMW\ChangePropagationClassUpdateJob;
-use SMW\ChangePropagationDispatchJob;
-use SMW\ChangePropagationUpdateJob;
-use SMW\EntityIdDisposerJob;
-use SMW\FulltextSearchTableRebuildJob;
-use SMW\FulltextSearchTableUpdateJob;
 use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
 use SMW\MediaWiki\Jobs\NullJob;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
-use SMW\PropertyStatisticsRebuildJob;
-use SMW\RefreshJob;
-use SMW\UpdateDispatcherJob;
-use SMW\UpdateJob;
+use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 
 /**
  * @covers \SMW\MediaWiki\JobFactory
@@ -68,112 +68,19 @@ class JobFactoryTest extends TestCase {
 	}
 
 	public function typeProvider() {
-		$provider[] = [
-			RefreshJob::class,
-			'\SMW\MediaWiki\Jobs\RefreshJob'
+		return [
+			[ 'smw.refresh', RefreshJob::class ],
+			[ 'smw.update', UpdateJob::class ],
+			[ 'smw.updateDispatcher', UpdateDispatcherJob::class ],
+			[ 'smw.fulltextSearchTableUpdate', FulltextSearchTableUpdateJob::class ],
+			[ 'smw.entityIdDisposer', EntityIdDisposerJob::class ],
+			[ 'smw.propertyStatisticsRebuild', PropertyStatisticsRebuildJob::class ],
+			[ 'smw.fulltextSearchTableRebuild', FulltextSearchTableRebuildJob::class ],
+			[ 'smw.changePropagationDispatch', ChangePropagationDispatchJob::class ],
+			[ 'smw.changePropagationUpdate', ChangePropagationUpdateJob::class ],
+			[ 'smw.changePropagationClassUpdate', ChangePropagationClassUpdateJob::class ],
+			[ 'smw.parserCachePurge', ParserCachePurgeJob::class ],
 		];
-
-		$provider[] = [
-			'smw.refresh',
-			'\SMW\MediaWiki\Jobs\RefreshJob'
-		];
-
-		$provider[] = [
-			UpdateJob::class,
-			'\SMW\MediaWiki\Jobs\UpdateJob'
-		];
-
-		$provider[] = [
-			'smw.update',
-			'\SMW\MediaWiki\Jobs\UpdateJob'
-		];
-
-		$provider[] = [
-			UpdateDispatcherJob::class,
-			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob'
-		];
-
-		$provider[] = [
-			'smw.updateDispatcher',
-			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob'
-		];
-
-		$provider[] = [
-			FulltextSearchTableUpdateJob::class,
-			'\SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob'
-		];
-
-		$provider[] = [
-			'smw.fulltextSearchTableUpdate',
-			'\SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob'
-		];
-
-		$provider[] = [
-			EntityIdDisposerJob::class,
-			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob'
-		];
-
-		$provider[] = [
-			'smw.entityIdDisposer',
-			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob'
-		];
-
-		$provider[] = [
-			PropertyStatisticsRebuildJob::class,
-			'\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob'
-		];
-
-		$provider[] = [
-			'smw.propertyStatisticsRebuild',
-			'\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob'
-		];
-
-		$provider[] = [
-			FulltextSearchTableRebuildJob::class,
-			'\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob'
-		];
-
-		$provider[] = [
-			'smw.fulltextSearchTableRebuild',
-			'\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob'
-		];
-
-		$provider[] = [
-			ChangePropagationDispatchJob::class,
-			'\SMW\MediaWiki\Jobs\ChangePropagationDispatchJob'
-		];
-
-		$provider[] = [
-			'smw.changePropagationDispatch',
-			'\SMW\MediaWiki\Jobs\ChangePropagationDispatchJob'
-		];
-
-		$provider[] = [
-			ChangePropagationUpdateJob::class,
-			'\SMW\MediaWiki\Jobs\ChangePropagationUpdateJob'
-		];
-
-		$provider[] = [
-			'smw.changePropagationUpdate',
-			'\SMW\MediaWiki\Jobs\ChangePropagationUpdateJob'
-		];
-
-		$provider[] = [
-			ChangePropagationClassUpdateJob::class,
-			'\SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob'
-		];
-
-		$provider[] = [
-			'smw.changePropagationClassUpdate',
-			'\SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob'
-		];
-
-		$provider[] = [
-			'smw.parserCachePurge',
-			ParserCachePurgeJob::class
-		];
-
-		return $provider;
 	}
 
 }

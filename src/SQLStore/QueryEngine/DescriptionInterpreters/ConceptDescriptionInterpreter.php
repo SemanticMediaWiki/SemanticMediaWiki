@@ -25,10 +25,7 @@ use SMW\Utils\CircularReferenceGuard;
  */
 class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var QueryParser
-	 */
-	private $queryParser;
+	private ?QueryParser $queryParser = null;
 
 	/**
 	 * @since 2.2

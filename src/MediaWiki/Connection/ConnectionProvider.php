@@ -24,10 +24,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 */
 	private $connection;
 
-	/**
-	 * @var array
-	 */
-	private $localConnectionConf = [];
+	private array $localConnectionConf = [];
 
 	/**
 	 * @since 3.0

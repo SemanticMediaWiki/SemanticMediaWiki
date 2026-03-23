@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\NamespaceExaminer;
@@ -36,7 +37,7 @@ class TitleQuickPermissions implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( Title $title, $user, $action, &$errors ) {
+	public function process( Title $title, User $user, $action, &$errors ) {
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
 			return true;
 		}

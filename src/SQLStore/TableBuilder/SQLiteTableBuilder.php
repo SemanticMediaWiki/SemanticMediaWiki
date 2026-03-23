@@ -72,7 +72,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, ?array $attributes = null ) {
+	protected function doCreateTable( $tableName, array $attributes ) {
 		$mode = '';
 		$option = '';
 
@@ -90,8 +90,8 @@ class SQLiteTableBuilder extends TableBuilder {
 		// - 'sqlite' => array( 'FTS4' )
 		// - 'sqlite' => array( 'FTS4', 'tokenize=porter' )
 		if ( $ftsOptions !== null && is_array( $ftsOptions ) ) {
-			$mode = isset( $ftsOptions[0] ) ? $ftsOptions[0] : '';
-			$option = isset( $ftsOptions[1] ) ? $ftsOptions[1] : '';
+			$mode = $ftsOptions[0] ?? '';
+			$option = $ftsOptions[1] ?? '';
 		} elseif ( $ftsOptions !== null ) {
 			$mode = $ftsOptions;
 		}
@@ -119,18 +119,16 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
+	protected function doUpdateTable( $tableName, array $attributes ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
 		$fields = $attributes['fields'];
-		$position = 'FIRST';
 
 		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $attributes );
+			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $attributes );
 
-			$position = "AFTER $fieldName";
 			$currentFields[$fieldName] = false;
 		}
 
@@ -171,7 +169,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, array $currentFields, string $position, array $attributes ): void {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, array $currentFields, array $attributes ): void {
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
 		}
@@ -184,15 +182,15 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
+			$this->doCreateField( $tableName, $fieldName, $fieldType, $default );
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
-			$this->doUpdateFieldType( $tableName, $fieldName, $position, $currentFields[$fieldName], $fieldType );
+			$this->doUpdateFieldType();
 		} else {
 			$this->reportMessage( "   ... field $fieldName is fine.\n" );
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, string $position, string $fieldType, string $default ) {
+	private function doCreateField( $tableName, $fieldName, string $fieldType, string $default ) {
 		if ( strpos( $tableName, 'ft_search' ) !== false ) {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
 		}
@@ -218,7 +216,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doUpdateFieldType( $tableName, int|string $fieldName, string $position, $oldFieldType, string $newFieldType ): void {
+	private function doUpdateFieldType(): void {
 		$this->reportMessage( "   ... changing field type is not supported in SQLite (http://www.sqlite.org/omitted.html) \n" );
 		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 	}
@@ -261,7 +259,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions ) {
 		$indices = $indexOptions['indices'];
 		$ix = [];
 
@@ -288,7 +286,7 @@ class SQLiteTableBuilder extends TableBuilder {
 				$indexType = 'INDEX';
 			}
 
-			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns, $indexOptions );
+			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns );
 		}
 	}
 
@@ -298,7 +296,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		// TODO We do not currently get the right column definitions in
 		// SQLite; hence we can only drop all indexes. Wasteful.
 		foreach ( $currentIndices as $indexName => $indexColumn ) {
-			$this->doDropIndex( $tableName, $indexName, $indexColumn );
+			$this->doDropIndex( $indexName, $indexColumn );
 		}
 	}
 
@@ -327,13 +325,13 @@ class SQLiteTableBuilder extends TableBuilder {
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, int|string $indexName, $columns ): void {
+	private function doDropIndex( int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doCreateIndex( $tableName, $indexType, int|string $indexName, $columns, array $indexOptions ) {
+	private function doCreateIndex( $tableName, $indexType, int|string $indexName, $columns ) {
 		if ( $indexType === 'FULLTEXT' ) {
 			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
 		}

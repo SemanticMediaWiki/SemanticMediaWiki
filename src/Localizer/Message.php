@@ -43,10 +43,7 @@ class Message {
 	const CONTENT_LANGUAGE = 0x32;
 	const USER_LANGUAGE = 0x64;
 
-	/**
-	 * @var array
-	 */
-	private static $messageHandler = [];
+	private static array $messageHandler = [];
 
 	/**
 	 * @since 2.4

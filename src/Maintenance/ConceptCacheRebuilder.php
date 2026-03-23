@@ -31,12 +31,12 @@ class ConceptCacheRebuilder {
 	private $reporter;
 
 	private $concept = null;
-	private $action  = null;
-	private $options = [];
-	private $startId = 0;
-	private $endId   = 0;
-	private $lines   = 0;
-	private $verbose = false;
+	private ?string $action  = null;
+	private array $options = [];
+	private int $startId = 0;
+	private int $endId   = 0;
+	private int $lines   = 0;
+	private bool $verbose = false;
 
 	/**
 	 * @since 1.9.2
@@ -279,7 +279,7 @@ class ConceptCacheRebuilder {
 		return isset( $this->options[$key] );
 	}
 
-	private function reportMessage( string $message, $output = true ): void {
+	private function reportMessage( string $message, bool $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

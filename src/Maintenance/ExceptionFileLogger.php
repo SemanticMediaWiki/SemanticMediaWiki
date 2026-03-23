@@ -23,15 +23,9 @@ class ExceptionFileLogger {
 	 */
 	private $exceptionFile;
 
-	/**
-	 * @var int
-	 */
-	private $exceptionCount = 0;
+	private int $exceptionCount = 0;
 
-	/**
-	 * @var array
-	 */
-	private $exceptionLogMessages = [];
+	private array $exceptionLogMessages = [];
 
 	/**
 	 * @since 2.4
@@ -78,7 +72,7 @@ class ExceptionFileLogger {
 	 *
 	 * @return int
 	 */
-	public function getExceptionCount() {
+	public function getExceptionCount(): int {
 		return $this->exceptionCount;
 	}
 
@@ -109,7 +103,7 @@ class ExceptionFileLogger {
 		$this->exceptionCount = 0;
 	}
 
-	private function put( $id, $exception ): void {
+	private function put( int|string $id, $exception ): void {
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .

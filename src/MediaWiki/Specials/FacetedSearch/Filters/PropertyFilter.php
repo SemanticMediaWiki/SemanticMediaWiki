@@ -19,10 +19,7 @@ class PropertyFilter {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var UrlArgs
-	 */
-	private $urlArgs;
+	private ?UrlArgs $urlArgs = null;
 
 	/**
 	 * @since 3.2

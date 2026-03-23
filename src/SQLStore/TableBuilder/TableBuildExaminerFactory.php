@@ -104,7 +104,7 @@ class TableBuildExaminerFactory {
 	 *
 	 * @param SQLStore $store
 	 *
-	 * @return HashField
+	 * @return IdBorder
 	 */
 	public function newIdBorder( SQLStore $store ): IdBorder {
 		return new IdBorder( $store );

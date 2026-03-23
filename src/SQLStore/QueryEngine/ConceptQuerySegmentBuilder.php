@@ -14,10 +14,7 @@ use SMW\Query\Query;
  */
 class ConceptQuerySegmentBuilder {
 
-	/**
-	 * @var QueryParser
-	 */
-	private $queryParser;
+	private ?QueryParser $queryParser = null;
 
 	/**
 	 * @since 2.2

@@ -64,7 +64,7 @@ class PrefetchItemLookup {
 	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getPropertyValues( array $subjects, Property $property, RequestOptions $requestOptions ) {
 		$this->linkBatch->setCaller( __METHOD__ );
@@ -277,7 +277,7 @@ class PrefetchItemLookup {
 
 			try {
 				$dataItem = $diHandler->newFromDBKeys( $dbkeys );
-			} catch ( DataItemException $e ) {
+			} catch ( DataItemException ) {
 				// maybe type assignment changed since data was stored;
 				// don't worry, but we can only drop the data here
 				continue;

@@ -37,14 +37,10 @@ class URIValue extends DataValue {
 	/**
 	 * One of the basic modes of operation for this class (emails, URL,
 	 * telephone number URI, ...).
-	 * @var int
 	 */
-	private $m_mode;
+	private ?int $m_mode = null;
 
-	/**
-	 * @var bool
-	 */
-	private $showUrlContextInRawFormat = true;
+	private bool $showUrlContextInRawFormat = true;
 
 	private array $schemeList;
 

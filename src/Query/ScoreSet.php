@@ -18,7 +18,7 @@ class ScoreSet {
 	/**
 	 * @var
 	 */
-	private $scores = [];
+	private array $scores = [];
 
 	/**
 	 * @var int|null
@@ -95,7 +95,7 @@ class ScoreSet {
 	 *
 	 * @return
 	 */
-	public function getScores() {
+	public function getScores(): array {
 		return $this->scores;
 	}
 
@@ -109,7 +109,7 @@ class ScoreSet {
 			return;
 		}
 
-		usort( $this->scores, static function ( $a, $b ) {
+		usort( $this->scores, static function ( array $a, array $b ): int {
 			if ( $a[1] == $b[1] ) {
 				return 0;
 			}

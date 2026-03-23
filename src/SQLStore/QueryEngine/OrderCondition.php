@@ -23,11 +23,6 @@ use SMW\Query\Language\SomeProperty;
  */
 class OrderCondition {
 
-	/**
-	 * @var QuerySegmentListBuilder
-	 */
-	private $querySegmentListBuilder;
-
 	private DescriptionFactory $descriptionFactory;
 
 	/**
@@ -210,7 +205,7 @@ class OrderCondition {
 		return $description;
 	}
 
-	private function extendConditions( ConditionBuilder $conditionBuilder, $querySegment, array $extraDescriptions ): void {
+	private function extendConditions( ConditionBuilder $conditionBuilder, ?QuerySegment $querySegment, array $extraDescriptions ): void {
 		if ( $extraDescriptions === [] ) {
 			return;
 		}

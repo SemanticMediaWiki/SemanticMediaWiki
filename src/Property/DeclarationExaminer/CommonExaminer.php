@@ -16,15 +16,9 @@ use SMW\Store;
  */
 class CommonExaminer extends DeclarationExaminer {
 
-	/**
-	 * @var array
-	 */
-	private $namespacesWithSemanticLinks = [];
+	private array $namespacesWithSemanticLinks = [];
 
-	/**
-	 * @var array
-	 */
-	private $propertyReservedNameList = [];
+	private array $propertyReservedNameList = [];
 
 	/**
 	 * @since 3.1

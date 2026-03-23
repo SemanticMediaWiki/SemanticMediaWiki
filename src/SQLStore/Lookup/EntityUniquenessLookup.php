@@ -43,7 +43,7 @@ class EntityUniquenessLookup {
 	 * @param DataItem $dataItem
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return Iterator|[]
+	 * @return MappingIterator|array
 	 */
 	public function checkConstraint( Property $property, DataItem $dataItem, RequestOptions $requestOptions ): array|MappingIterator {
 		$propTableId = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(

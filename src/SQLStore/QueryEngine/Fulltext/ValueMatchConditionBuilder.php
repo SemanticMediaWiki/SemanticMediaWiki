@@ -63,7 +63,7 @@ class ValueMatchConditionBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */

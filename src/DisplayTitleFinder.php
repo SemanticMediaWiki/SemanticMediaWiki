@@ -20,10 +20,7 @@ class DisplayTitleFinder {
 
 	private EntityCache $entityCache;
 
-	/**
-	 * @var bool
-	 */
-	private $canUse = true;
+	private bool $canUse = true;
 
 	/**
 	 * @since 3.1

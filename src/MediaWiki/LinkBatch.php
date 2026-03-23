@@ -17,20 +17,17 @@ use SMW\DataItems\WikiPage;
  */
 class LinkBatch {
 
-	/**
-	 * @var LinkBatch
-	 */
-	private static $instance;
+	private static ?\SMW\MediaWiki\LinkBatch $instance = null;
 
 	/**
 	 * @var
 	 */
-	private $log = [];
+	private array $log = [];
 
 	/**
 	 * @var
 	 */
-	private $batch = [];
+	private array $batch = [];
 
 	/**
 	 * @since 3.1
@@ -43,7 +40,7 @@ class LinkBatch {
 	 *
 	 * @return LinkBatch
 	 */
-	public static function singleton() {
+	public static function singleton(): \SMW\MediaWiki\LinkBatch {
 		if ( self::$instance === null ) {
 			self::$instance = new self( MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch() );
 		}

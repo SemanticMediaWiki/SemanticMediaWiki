@@ -16,14 +16,14 @@ use SMW\SQLStore\SQLStore;
 class PrefetchCache {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $cache = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $lookupCache = [];
+	private array $lookupCache = [];
 
 	/**
 	 * @since 3.1
@@ -58,6 +58,8 @@ class PrefetchCache {
 	 *
 	 * @param Property $property
 	 * @param RequestOptions $requestOptions
+	 *
+	 * @return ?string
 	 */
 	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ): ?string {
 		$key = $property->getKey();
@@ -65,8 +67,8 @@ class PrefetchCache {
 		// Use the .dot notation to distingish it from other prrintouts that
 		// use the same property
 		if ( isset( $requestOptions->isChain ) && $requestOptions->isChain ) {
-			$key .= '#' . $requestOptions->isChain;
-			$key .= '#' . $property->isInverse();
+			$key .= '#' . (string)$requestOptions->isChain;
+			$key .= '#' . (string)$property->isInverse();
 		}
 
 		// T:P0467, requires an extra identification to ensure the test passes
@@ -124,7 +126,7 @@ class PrefetchCache {
 	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getPropertyValues( WikiPage $subject, Property $property, RequestOptions $requestOptions ): array {
 		$key = $this->makeCacheKey( $property, $requestOptions );

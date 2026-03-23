@@ -80,35 +80,20 @@ class SetupCheck {
 
 	private LocalMessageProvider $localMessageProvider;
 
-	/**
-	 * @var array
-	 */
-	private $definitions = [];
+	private array $definitions = [];
 
 	/**
 	 * @var string
 	 */
 	private $languageCode = 'en';
 
-	/**
-	 * @var string
-	 */
-	private $fallbackLanguageCode = 'en';
+	private string $fallbackLanguageCode = 'en';
 
-	/**
-	 * @var bool
-	 */
-	private $sentHeader = true;
+	private bool $sentHeader = true;
 
-	/**
-	 * @var string
-	 */
-	private $errorType = '';
+	private string $errorType = '';
 
-	/**
-	 * @var string
-	 */
-	private $errorMessage = '';
+	private string $errorMessage = '';
 
 	/**
 	 * @var string
@@ -364,7 +349,7 @@ class SetupCheck {
 		}
 	}
 
-	private function createErrorContent( $type ): array {
+	private function createErrorContent( string $type ): array {
 		$indicator_title = 'Error';
 		$template = $this->definitions['error_types'][$type];
 		$content = '';
@@ -424,7 +409,7 @@ class SetupCheck {
 		return $error;
 	}
 
-	private function createContent( $value, $type ) {
+	private function createContent( $value, string $type ) {
 		if ( $value['text'] === 'ERROR_TEXT' ) {
 			$text = str_replace( "\n", '<br>', $this->errorMessage );
 		} elseif ( $value['text'] === 'ERROR_TEXT_MULTIPLE' ) {
@@ -527,7 +512,7 @@ class SetupCheck {
 		// Minify CSS rules, we keep them readable in the template to allow for
 		// better adaption
 		// @see http://manas.tungare.name/software/css-compression-in-php/
-		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( $matches ) {
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( $matches ): string {
 				// Remove space after colons
 				$style = str_replace( ': ', ':', $matches[0] );
 

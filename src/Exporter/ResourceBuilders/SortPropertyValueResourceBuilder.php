@@ -19,10 +19,7 @@ use SMW\MediaWiki\Collator;
  */
 class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBuilder {
 
-	/**
-	 * @var bool
-	 */
-	private $enabledCollationField = false;
+	private bool $enabledCollationField = false;
 
 	/**
 	 * @since 3.0

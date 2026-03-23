@@ -15,10 +15,7 @@ use SMW\Query\QueryProcessor;
  */
 class FormatListWidget {
 
-	/**
-	 * @var array
-	 */
-	private static $resultFormats = [];
+	private static array $resultFormats = [];
 
 	/**
 	 * @since 3.0
@@ -106,7 +103,7 @@ class FormatListWidget {
 			}
 		}
 
-		usort( $formats, static function ( $x, $y ) {
+		usort( $formats, static function ( array $x, array $y ): int {
 			return strcasecmp( $x['name'], $y['name'] );
 		} );
 

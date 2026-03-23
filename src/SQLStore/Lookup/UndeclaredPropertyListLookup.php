@@ -34,7 +34,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return Property[]
+	 * @return Property[]|Error[]
 	 * @throws RuntimeException
 	 */
 	public function fetchList(): array {
@@ -64,7 +64,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return false|string
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -122,7 +122,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	}
 
 	/**
-	 * @return array{mixed, mixed}[]
+	 * @return Property[]|Error[]
 	 */
 	private function buildPropertyList( $res ): array {
 		$result = [];
@@ -137,7 +137,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	private function addPropertyFor( $title ): DataItem {
 		try {
 			$property = new Property( $title );
-		} catch ( PropertyLabelNotResolvedException $e ) {
+		} catch ( PropertyLabelNotResolvedException ) {
 			$property = new Error( new Message( 'smw_noproperty', [ $title ] ) );
 		}
 

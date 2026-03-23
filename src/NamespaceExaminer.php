@@ -19,10 +19,7 @@ class NamespaceExaminer {
 
 	private array $registeredNamespaces;
 
-	/**
-	 * @var array
-	 */
-	private $validNamespaces = [];
+	private array $validNamespaces = [];
 
 	/**
 	 * @since 1.9

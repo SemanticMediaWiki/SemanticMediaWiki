@@ -7,6 +7,7 @@ use OutOfBoundsException;
 use SMW\Localizer\Message;
 use SMW\Query\Language\Description;
 use SMW\Query\Query;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
@@ -26,17 +27,14 @@ class ConditionBuilder {
 	 */
 	private $dispatchingDescriptionInterpreter;
 
-	/**
-	 * @var bool
-	 */
-	private $isFilterDuplicates = true;
+	private bool $isFilterDuplicates = true;
 
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
 	 *
 	 * @var QuerySegment[]
 	 */
-	private $querySegmentList = [];
+	private array $querySegmentList = [];
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -50,7 +48,7 @@ class ConditionBuilder {
 	/**
 	 * @var string[]
 	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @var int
@@ -129,7 +127,7 @@ class ConditionBuilder {
 	 *
 	 * @return QuerySegment[]
 	 */
-	public function getQuerySegmentList() {
+	public function getQuerySegmentList(): array {
 		return $this->querySegmentList;
 	}
 
@@ -156,7 +154,7 @@ class ConditionBuilder {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -248,7 +246,7 @@ class ConditionBuilder {
 
 		// Get membership of descriptions that are resolved recursively
 		if ( $description->getMembership() !== '' ) {
-			$fingerprint = $fingerprint . $description->getMembership();
+			$fingerprint .= $description->getMembership();
 		}
 
 		if ( ( $querySegment = $this->findDuplicates( $fingerprint ) ) ) {

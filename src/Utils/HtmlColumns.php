@@ -27,70 +27,34 @@ class HtmlColumns {
 	 */
 	private $columns = 1;
 
-	/**
-	 * @var array
-	 */
-	private $contents = [];
+	private array $contents = [];
 
-	/**
-	 * @var array
-	 */
-	private $itemAttributes = [];
+	private array $itemAttributes = [];
 
-	/**
-	 * @var int
-	 */
-	private $numRows = 0;
+	private int $numRows = 0;
 
-	/**
-	 * @var int
-	 */
-	private $count = 0;
+	private int $count = 0;
 
-	/**
-	 * @var string
-	 */
-	private $columnStyle = '';
+	private string $columnStyle = '';
 
-	/**
-	 * @var string
-	 */
-	private $listType = 'ul';
+	private string $listType = 'ul';
 
-	/**
-	 * @var string
-	 */
-	private $olType = '';
+	private string $olType = '';
 
 	/**
 	 * @var string
 	 */
 	private $continueAbbrev = '';
 
-	/**
-	 * @var string
-	 */
-	private $columnListClass = 'smw-columnlist-container';
+	private string $columnListClass = 'smw-columnlist-container';
 
-	/**
-	 * @var string
-	 */
-	private $columnClass = 'smw-column';
+	private string $columnClass = 'smw-column';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isResponsiveCols = false;
+	private bool $isResponsiveCols = false;
 
-	/**
-	 * @var int
-	 */
-	private $responsiveColsThreshold = 10;
+	private int $responsiveColsThreshold = 10;
 
 	/**
 	 * @since 3.0
@@ -283,7 +247,7 @@ class HtmlColumns {
 		);
 	}
 
-	private function makeList( $key, $items, float $rowsPerColumn, &$usedColumnCloser ): string {
+	private function makeList( int|string $key, $items, float $rowsPerColumn, &$usedColumnCloser ): string {
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';
