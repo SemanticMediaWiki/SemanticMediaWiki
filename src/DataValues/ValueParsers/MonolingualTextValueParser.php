@@ -18,17 +18,14 @@ use SMW\Localizer\Localizer;
  */
 class MonolingualTextValueParser implements ValueParser {
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.4
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

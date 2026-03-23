@@ -6,6 +6,7 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,10 +26,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	const ENFORCED_PARENTTYPE_INHERITANCE = 'mandatorytype.propertyannotator.subproperty.parent.type.inheritance';
 
-	/**
-	 * @var bool
-	 */
-	private $subpropertyParentTypeInheritance = false;
+	private bool $subpropertyParentTypeInheritance = false;
 
 	/**
 	 * @since 3.1
@@ -138,7 +136,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->replaceAnyTypeByImportType( $property, $dataValue );
 	}
 
-	private function replaceAnyTypeByImportType( Property $property, $dataValue ): void {
+	private function replaceAnyTypeByImportType( Property $property, DataValue $dataValue ): void {
 		foreach ( $this->getSemanticData()->getPropertyValues( $property ) as $dataItem ) {
 			$this->getSemanticData()->setOption( self::IMPO_REMOVED_TYPE, $dataItem );
 

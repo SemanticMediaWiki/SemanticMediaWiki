@@ -56,10 +56,7 @@ class DocumentCreator {
 	 */
 	private $documentCreationDuration = 0;
 
-	/**
-	 * @var array
-	 */
-	private $subEntities = [];
+	private array $subEntities = [];
 
 	/**
 	 * @since 3.2

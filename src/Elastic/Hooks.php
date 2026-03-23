@@ -19,7 +19,7 @@ class Hooks {
 	/**
 	 * @var
 	 */
-	private $handlers = [];
+	private array $handlers = [];
 
 	/**
 	 * @since 3.2

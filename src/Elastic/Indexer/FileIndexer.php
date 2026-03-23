@@ -38,15 +38,12 @@ class FileIndexer {
 	 */
 	private $origin = '';
 
-	/**
-	 * @var bool
-	 */
-	private $sha1Check = true;
+	private bool $sha1Check = true;
 
 	/**
 	 * @var
 	 */
-	private $versions = [];
+	private array $versions = [];
 
 	/**
 	 * @since 3.0

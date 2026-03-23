@@ -23,17 +23,13 @@ class Disjunction extends Description {
 	/**
 	 * Contains a single class description if any such disjunct was given;
 	 * disjunctive classes are aggregated therein.
-	 *
-	 * @var null|ClassDescription
 	 */
-	private $classDescription = null;
+	private ?ClassDescription $classDescription = null;
 
 	/**
 	 * Used if disjunction is trivially true already
-	 *
-	 * @var bool
 	 */
-	private $isTrue = false;
+	private bool $isTrue = false;
 
 	public function __construct( array $descriptions = [] ) {
 		foreach ( $descriptions as $desc ) {

@@ -129,12 +129,12 @@ class CompositeIndicatorHtmlBuilder {
 		return $content;
 	}
 
-	private function content( $indicator ) {
+	private function content( array $indicator ) {
 		$this->templateEngine->compile( 'tabpanel_tab_template', $indicator );
 		return $this->templateEngine->code( 'tabpanel_tab_template' );
 	}
 
-	private function tab( $indicator ) {
+	private function tab( array $indicator ) {
 		$this->templateEngine->compile( 'tabpanel_tabset_template', $indicator );
 		return $this->templateEngine->code( 'tabpanel_tabset_template' );
 	}

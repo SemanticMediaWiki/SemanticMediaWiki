@@ -19,30 +19,18 @@ use SMW\Site;
  */
 class TransactionalCallableUpdate extends CallableUpdate {
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
 	/**
 	 * @var int|null
 	 */
 	private $transactionTicket = null;
 
-	/**
-	 * @var array
-	 */
-	private $preCommitableCallbacks = [];
+	private array $preCommitableCallbacks = [];
 
-	/**
-	 * @var array
-	 */
-	private $postCommitableCallbacks = [];
+	private array $postCommitableCallbacks = [];
 
-	/**
-	 * @var bool
-	 */
-	private $autoCommit = false;
+	private bool $autoCommit = false;
 
 	/**
 	 * @since 3.1

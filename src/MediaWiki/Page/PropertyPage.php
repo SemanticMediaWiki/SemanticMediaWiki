@@ -33,20 +33,14 @@ use SMW\Utils\JsonView;
  */
 class PropertyPage extends Page {
 
-	/**
-	 * @var Property
-	 */
-	private $property;
+	private ?Property $property = null;
 
 	/**
 	 * @var DataValue
 	 */
 	private $propertyValue;
 
-	/**
-	 * @var ItemListBuilder
-	 */
-	private $itemListBuilder;
+	private ?ItemListBuilder $itemListBuilder = null;
 
 	/**
 	 * @var bool

@@ -18,15 +18,9 @@ class EntityCollation {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private ?SetupFile $setupFile = null;
 
-	/**
-	 * @var string
-	 */
-	private $entityCollation = '';
+	private string $entityCollation = '';
 
 	/**
 	 * @since 3.2

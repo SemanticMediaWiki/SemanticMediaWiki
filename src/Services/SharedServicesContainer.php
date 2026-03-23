@@ -155,7 +155,7 @@ class SharedServicesContainer implements CallbackContainer {
 	}
 
 	private function registerCallbackHandlers( ContainerBuilder $containerBuilder ): void {
-		$containerBuilder->registerCallback( 'Settings', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'Settings', static function ( $containerBuilder ): Settings {
 			$containerBuilder->registerExpectedReturnType( 'Settings', Settings::class );
 
 			$settings = new Settings();
@@ -172,7 +172,7 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @return ConnectionManager
 		 */
-		$containerBuilder->registerCallback( 'ConnectionManager', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'ConnectionManager', static function ( $containerBuilder ): ConnectionManager {
 			$containerBuilder->registerExpectedReturnType( 'ConnectionManager', ConnectionManager::class );
 			return new ConnectionManager();
 		} );
@@ -180,7 +180,7 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @return SetupFile
 		 */
-		$containerBuilder->registerCallback( 'SetupFile', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'SetupFile', static function ( $containerBuilder ): SetupFile {
 			$containerBuilder->registerExpectedReturnType( 'SetupFile', SetupFile::class );
 			return new SetupFile();
 		} );
@@ -190,7 +190,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $containerBuilder->create( 'CacheFactory' )->newMediaWikiCompositeCache( $cacheType );
 		} );
 
-		$containerBuilder->registerCallback( 'NamespaceExaminer', static function () use ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'NamespaceExaminer', static function () use ( $containerBuilder ): NamespaceExaminer {
 			$settings = $containerBuilder->singleton( 'Settings' );
 			$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 
@@ -205,7 +205,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $namespaceExaminer;
 		} );
 
-		$containerBuilder->registerCallback( 'ParserData', static function ( $containerBuilder, Title $title, ParserOutput $parserOutput ) {
+		$containerBuilder->registerCallback( 'ParserData', static function ( $containerBuilder, Title $title, ParserOutput $parserOutput ): ParserData {
 			$containerBuilder->registerExpectedReturnType( 'ParserData', ParserData::class );
 
 			$parserData = new ParserData( $title, $parserOutput );
@@ -217,17 +217,17 @@ class SharedServicesContainer implements CallbackContainer {
 			return $parserData;
 		} );
 
-		$containerBuilder->registerCallback( 'LinksProcessor', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'LinksProcessor', static function ( $containerBuilder ): LinksProcessor {
 			$containerBuilder->registerExpectedReturnType( 'LinksProcessor', LinksProcessor::class );
 			return new LinksProcessor();
 		} );
 
-		$containerBuilder->registerCallback( 'MessageFormatter', static function ( $containerBuilder, Language $language ) {
+		$containerBuilder->registerCallback( 'MessageFormatter', static function ( $containerBuilder, Language $language ): MessageFormatter {
 			$containerBuilder->registerExpectedReturnType( 'MessageFormatter', MessageFormatter::class );
 			return new MessageFormatter( $language );
 		} );
 
-		$containerBuilder->registerCallback( 'MediaWikiNsContentReader', static function () use ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'MediaWikiNsContentReader', static function () use ( $containerBuilder ): MediaWikiNsContentReader {
 			$containerBuilder->registerExpectedReturnType( 'MediaWikiNsContentReader', MediaWikiNsContentReader::class );
 
 			$mediaWikiNsContentReader = new MediaWikiNsContentReader();
@@ -239,17 +239,17 @@ class SharedServicesContainer implements CallbackContainer {
 			return $mediaWikiNsContentReader;
 		} );
 
-		$containerBuilder->registerCallback( 'PageCreator', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'PageCreator', static function ( $containerBuilder ): PageCreator {
 			$containerBuilder->registerExpectedReturnType( 'PageCreator', PageCreator::class );
 			return new PageCreator();
 		} );
 
-		$containerBuilder->registerCallback( 'PageUpdater', static function ( $containerBuilder, $connection, ?TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
+		$containerBuilder->registerCallback( 'PageUpdater', static function ( $containerBuilder, $connection, ?TransactionalCallableUpdate $transactionalCallableUpdate = null ): PageUpdater {
 			$containerBuilder->registerExpectedReturnType( 'PageUpdater', PageUpdater::class );
 			return new PageUpdater( $connection, $transactionalCallableUpdate );
 		} );
 
-		$containerBuilder->registerCallback( 'EntityCache', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'EntityCache', static function ( $containerBuilder ): EntityCache {
 			$containerBuilder->registerExpectedReturnType( 'EntityCache', EntityCache::class );
 			return new EntityCache( $containerBuilder->singleton( 'Cache', $GLOBALS['smwgMainCacheType'] ) );
 		} );
@@ -257,7 +257,7 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @return JobQueue
 		 */
-		$containerBuilder->registerCallback( 'JobQueue', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'JobQueue', static function ( $containerBuilder ): JobQueue {
 			$containerBuilder->registerExpectedReturnType(
 				'JobQueue',
 				JobQueue::class
@@ -268,22 +268,22 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 		} );
 
-		$containerBuilder->registerCallback( 'ManualEntryLogger', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'ManualEntryLogger', static function ( $containerBuilder ): ManualEntryLogger {
 			$containerBuilder->registerExpectedReturnType( 'ManualEntryLogger', ManualEntryLogger::class );
 			return new ManualEntryLogger();
 		} );
 
-		$containerBuilder->registerCallback( 'TitleFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'TitleFactory', static function ( $containerBuilder ): TitleFactory {
 			$containerBuilder->registerExpectedReturnType( 'TitleFactory', TitleFactory::class );
 			return new TitleFactory();
 		} );
 
-		$containerBuilder->registerCallback( 'HookDispatcher', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'HookDispatcher', static function ( $containerBuilder ): HookDispatcher {
 			$containerBuilder->registerExpectedReturnType( 'HookDispatcher', HookDispatcher::class );
 			return new HookDispatcher();
 		} );
 
-		$containerBuilder->registerCallback( 'RevisionGuard', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'RevisionGuard', static function ( $containerBuilder ): RevisionGuard {
 			$containerBuilder->registerExpectedReturnType( 'RevisionGuard', RevisionGuard::class );
 
 			$revisionGuard = new RevisionGuard(
@@ -297,7 +297,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $revisionGuard;
 		} );
 
-		$containerBuilder->registerCallback( 'ContentParser', static function ( $containerBuilder, Title $title ) {
+		$containerBuilder->registerCallback( 'ContentParser', static function ( $containerBuilder, Title $title ): ContentParser {
 			$containerBuilder->registerExpectedReturnType( 'ContentParser', ContentParser::class );
 
 			$contentParser = new ContentParser(
@@ -312,14 +312,14 @@ class SharedServicesContainer implements CallbackContainer {
 			return $contentParser;
 		} );
 
-		$containerBuilder->registerCallback( 'DeferredCallableUpdate', static function ( $containerBuilder, ?callable $callback = null ) {
+		$containerBuilder->registerCallback( 'DeferredCallableUpdate', static function ( $containerBuilder, ?callable $callback = null ): CallableUpdate {
 			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', CallableUpdate::class );
 			$containerBuilder->registerAlias( 'CallableUpdate', CallableUpdate::class );
 
 			return new CallableUpdate( $callback );
 		} );
 
-		$containerBuilder->registerCallback( 'DeferredTransactionalCallableUpdate', static function ( $containerBuilder, ?callable $callback = null, ?Database $connection = null ) {
+		$containerBuilder->registerCallback( 'DeferredTransactionalCallableUpdate', static function ( $containerBuilder, ?callable $callback = null, ?Database $connection = null ): TransactionalCallableUpdate {
 			$containerBuilder->registerExpectedReturnType( 'DeferredTransactionalUpdate', TransactionalCallableUpdate::class );
 			$containerBuilder->registerAlias( 'DeferredTransactionalUpdate', TransactionalCallableUpdate::class );
 
@@ -331,14 +331,14 @@ class SharedServicesContainer implements CallbackContainer {
 			return InMemoryPoolCache::getInstance();
 		} );
 
-		$containerBuilder->registerCallback( 'PropertyAnnotatorFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'PropertyAnnotatorFactory', static function ( $containerBuilder ): AnnotatorFactory {
 			$containerBuilder->registerExpectedReturnType( 'PropertyAnnotatorFactory', AnnotatorFactory::class );
 			return new AnnotatorFactory();
 		} );
 
 		$containerBuilder->registerAlias( 'ConnectionProvider', 'DBConnectionProvider' );
 
-		$containerBuilder->registerCallback( 'ConnectionProvider', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'ConnectionProvider', static function ( $containerBuilder ): ConnectionProvider {
 			$containerBuilder->registerExpectedReturnType( 'ConnectionProvider', ConnectionProvider::class );
 
 			$connectionProvider = new ConnectionProvider();
@@ -350,12 +350,12 @@ class SharedServicesContainer implements CallbackContainer {
 			return $connectionProvider;
 		} );
 
-		$containerBuilder->registerCallback( 'TempFile', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'TempFile', static function ( $containerBuilder ): TempFile {
 			$containerBuilder->registerExpectedReturnType( 'TempFile', TempFile::class );
 			return new TempFile();
 		} );
 
-		$containerBuilder->registerCallback( 'PostProcHandler', static function ( $containerBuilder, ParserOutput $parserOutput ) {
+		$containerBuilder->registerCallback( 'PostProcHandler', static function ( $containerBuilder, ParserOutput $parserOutput ): PostProcHandler {
 			$containerBuilder->registerExpectedReturnType( 'PostProcHandler', PostProcHandler::class );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
@@ -374,7 +374,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $postProcHandler;
 		} );
 
-		$containerBuilder->registerCallback( 'JsonSchemaValidator', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'JsonSchemaValidator', static function ( $containerBuilder ): JsonSchemaValidator {
 			$containerBuilder->registerExpectedReturnType( 'JsonSchemaValidator', JsonSchemaValidator::class );
 			$containerBuilder->registerAlias( 'JsonSchemaValidator', JsonSchemaValidator::class );
 
@@ -392,7 +392,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $jsonSchemaValidator;
 		} );
 
-		$containerBuilder->registerCallback( 'SchemaFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'SchemaFactory', static function ( $containerBuilder ): SchemaFactory {
 			$containerBuilder->registerExpectedReturnType( 'SchemaFactory', SchemaFactory::class );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
@@ -404,17 +404,17 @@ class SharedServicesContainer implements CallbackContainer {
 			return $schemaFactory;
 		} );
 
-		$containerBuilder->registerCallback( 'ConstraintFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'ConstraintFactory', static function ( $containerBuilder ): ConstraintFactory {
 			$containerBuilder->registerExpectedReturnType( 'ConstraintFactory', ConstraintFactory::class );
 			return new ConstraintFactory();
 		} );
 
-		$containerBuilder->registerCallback( 'ElasticFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'ElasticFactory', static function ( $containerBuilder ): ElasticFactory {
 			$containerBuilder->registerExpectedReturnType( 'ElasticFactory', ElasticFactory::class );
 			return new ElasticFactory();
 		} );
 
-		$containerBuilder->registerCallback( 'QueryCreator', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'QueryCreator', static function ( $containerBuilder ): QueryCreator {
 			$containerBuilder->registerExpectedReturnType( 'QueryCreator', QueryCreator::class );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
@@ -436,7 +436,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $queryCreator;
 		} );
 
-		$containerBuilder->registerCallback( 'ParamListProcessor', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'ParamListProcessor', static function ( $containerBuilder ): ParamListProcessor {
 			$containerBuilder->registerExpectedReturnType( 'ParamListProcessor', ParamListProcessor::class );
 
 			$paramListProcessor = new ParamListProcessor(
@@ -446,7 +446,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $paramListProcessor;
 		} );
 
-		$containerBuilder->registerCallback( 'FactboxText', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'FactboxText', static function ( $containerBuilder ): FactboxText {
 			$containerBuilder->registerExpectedReturnType( 'FactboxText', FactboxText::class );
 
 			return new FactboxText();
@@ -454,27 +454,27 @@ class SharedServicesContainer implements CallbackContainer {
 	}
 
 	private function registerCallableFactories( ContainerBuilder $containerBuilder ): void {
-		$containerBuilder->registerCallback( 'CacheFactory', static function ( $containerBuilder, $mainCacheType = null ) {
+		$containerBuilder->registerCallback( 'CacheFactory', static function ( $containerBuilder, $mainCacheType = null ): CacheFactory {
 			$containerBuilder->registerExpectedReturnType( 'CacheFactory', CacheFactory::class );
 			return new CacheFactory( $mainCacheType );
 		} );
 
-		$containerBuilder->registerCallback( 'IteratorFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'IteratorFactory', static function ( $containerBuilder ): IteratorFactory {
 			$containerBuilder->registerExpectedReturnType( 'IteratorFactory', IteratorFactory::class );
 			return new IteratorFactory();
 		} );
 
-		$containerBuilder->registerCallback( 'JobFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'JobFactory', static function ( $containerBuilder ): JobFactory {
 			$containerBuilder->registerExpectedReturnType( 'JobFactory', JobFactory::class );
 			return new JobFactory();
 		} );
 
-		$containerBuilder->registerCallback( 'FactboxFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'FactboxFactory', static function ( $containerBuilder ): FactboxFactory {
 			$containerBuilder->registerExpectedReturnType( 'FactboxFactory', FactboxFactory::class );
 			return new FactboxFactory();
 		} );
 
-		$containerBuilder->registerCallback( 'QuerySourceFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'QuerySourceFactory', static function ( $containerBuilder ): QuerySourceFactory {
 			$containerBuilder->registerExpectedReturnType( 'QuerySourceFactory', QuerySourceFactory::class );
 
 			return new QuerySourceFactory(
@@ -483,17 +483,17 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 		} );
 
-		$containerBuilder->registerCallback( 'QueryFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'QueryFactory', static function ( $containerBuilder ): QueryFactory {
 			$containerBuilder->registerExpectedReturnType( 'QueryFactory', QueryFactory::class );
 			return new QueryFactory();
 		} );
 
-		$containerBuilder->registerCallback( 'DataItemFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'DataItemFactory', static function ( $containerBuilder ): DataItemFactory {
 			$containerBuilder->registerExpectedReturnType( 'DataItemFactory', DataItemFactory::class );
 			return new DataItemFactory();
 		} );
 
-		$containerBuilder->registerCallback( 'DataValueServiceFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'DataValueServiceFactory', static function ( $containerBuilder ): DataValueServiceFactory {
 			$containerBuilder->registerExpectedReturnType( 'DataValueServiceFactory', DataValueServiceFactory::class );
 
 			$containerBuilder->registerFromFile(
@@ -507,14 +507,14 @@ class SharedServicesContainer implements CallbackContainer {
 			return $dataValueServiceFactory;
 		} );
 
-		$containerBuilder->registerCallback( 'QueryDependencyLinksStoreFactory', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'QueryDependencyLinksStoreFactory', static function ( $containerBuilder ): QueryDependencyLinksStoreFactory {
 			$containerBuilder->registerExpectedReturnType( 'QueryDependencyLinksStoreFactory', QueryDependencyLinksStoreFactory::class );
 			return new QueryDependencyLinksStoreFactory();
 		} );
 	}
 
 	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ): void {
-		$containerBuilder->registerCallback( 'BlobStore', static function ( $containerBuilder, $namespace, $cacheType = null, $ttl = 0 ) {
+		$containerBuilder->registerCallback( 'BlobStore', static function ( $containerBuilder, $namespace, $cacheType = null, $ttl = 0 ): BlobStore {
 			$containerBuilder->registerExpectedReturnType( 'BlobStore', BlobStore::class );
 
 			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
@@ -539,7 +539,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $blobStore;
 		} );
 
-		$containerBuilder->registerCallback( 'ResultCache', static function ( $containerBuilder, $cacheType = null ) {
+		$containerBuilder->registerCallback( 'ResultCache', static function ( $containerBuilder, $cacheType = null ): ResultCache {
 			$containerBuilder->registerExpectedReturnType( 'ResultCache', ResultCache::class );
 
 			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
@@ -590,7 +590,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $resultCache;
 		} );
 
-		$containerBuilder->registerCallback( 'Stats', static function ( $containerBuilder, $id ) {
+		$containerBuilder->registerCallback( 'Stats', static function ( $containerBuilder, $id ): Stats {
 			$containerBuilder->registerExpectedReturnType( 'Stats', Stats::class );
 
 			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
@@ -604,7 +604,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $stats;
 		} );
 
-		$containerBuilder->registerCallback( 'PropertySpecificationLookup', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'PropertySpecificationLookup', static function ( $containerBuilder ): SpecificationLookup {
 			$containerBuilder->registerExpectedReturnType( 'PropertySpecificationLookup', SpecificationLookup::class );
 
 			$contentLanguage = Localizer::getInstance()->getContentLanguage();
@@ -621,7 +621,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $propertySpecificationLookup;
 		} );
 
-		$containerBuilder->registerCallback( 'ProtectionValidator', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'ProtectionValidator', static function ( $containerBuilder ): ProtectionValidator {
 			$containerBuilder->registerExpectedReturnType( 'ProtectionValidator', ProtectionValidator::class );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
@@ -651,7 +651,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $protectionValidator;
 		} );
 
-		$containerBuilder->registerCallback( 'TitlePermissions', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'TitlePermissions', static function ( $containerBuilder ): TitlePermissions {
 			$containerBuilder->registerExpectedReturnType( 'TitlePermissions', TitlePermissions::class );
 
 			$titlePermissions = new TitlePermissions(
@@ -662,7 +662,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $titlePermissions;
 		} );
 
-		$containerBuilder->registerCallback( 'EditProtectionUpdater', static function ( $containerBuilder, WikiPage $wikiPage, ?User $user = null ) {
+		$containerBuilder->registerCallback( 'EditProtectionUpdater', static function ( $containerBuilder, WikiPage $wikiPage, ?User $user = null ): EditProtectionUpdater {
 			$containerBuilder->registerExpectedReturnType( 'EditProtectionUpdater', EditProtectionUpdater::class );
 
 			$editProtectionUpdater = new EditProtectionUpdater(
@@ -681,7 +681,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $editProtectionUpdater;
 		} );
 
-		$containerBuilder->registerCallback( 'PropertyRestrictionExaminer', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'PropertyRestrictionExaminer', static function ( $containerBuilder ): RestrictionExaminer {
 			$containerBuilder->registerExpectedReturnType( 'PropertyRestrictionExaminer', RestrictionExaminer::class );
 
 			$propertyRestrictionExaminer = new RestrictionExaminer();
@@ -693,7 +693,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $propertyRestrictionExaminer;
 		} );
 
-		$containerBuilder->registerCallback( 'HierarchyLookup', static function ( $containerBuilder, $store = null, $cacheType = null ) {
+		$containerBuilder->registerCallback( 'HierarchyLookup', static function ( $containerBuilder, $store = null, $cacheType = null ): HierarchyLookup {
 			$containerBuilder->registerExpectedReturnType( 'HierarchyLookup', HierarchyLookup::class );
 
 			$hierarchyLookup = new HierarchyLookup(
@@ -716,7 +716,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $hierarchyLookup;
 		} );
 
-		$containerBuilder->registerCallback( 'PropertyLabelFinder', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'PropertyLabelFinder', static function ( $containerBuilder ): PropertyLabelFinder {
 			$containerBuilder->registerExpectedReturnType( 'PropertyLabelFinder', PropertyLabelFinder::class );
 
 			$lang = Localizer::getInstance()->getLang();
@@ -731,7 +731,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $propertyLabelFinder;
 		} );
 
-		$containerBuilder->registerCallback( 'DisplayTitleFinder', static function ( $containerBuilder, $store = null ) {
+		$containerBuilder->registerCallback( 'DisplayTitleFinder', static function ( $containerBuilder, $store = null ): DisplayTitleFinder {
 			$containerBuilder->registerExpectedReturnType( 'DisplayTitleFinder', DisplayTitleFinder::class );
 
 			$store = $store === null ? $containerBuilder->singleton( 'Store' ) : $store;
@@ -749,7 +749,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $displayTitleFinder;
 		} );
 
-		$containerBuilder->registerCallback( 'MagicWordsFinder', static function ( $containerBuilder, $parserOutput = null ) {
+		$containerBuilder->registerCallback( 'MagicWordsFinder', static function ( $containerBuilder, $parserOutput = null ): MagicWordsFinder {
 			$containerBuilder->registerExpectedReturnType( 'MagicWordsFinder', MagicWordsFinder::class );
 
 			$magicWordsFinder = new MagicWordsFinder(
@@ -760,7 +760,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $magicWordsFinder;
 		} );
 
-		$containerBuilder->registerCallback( 'DependencyValidator', static function ( $containerBuilder, $store = null ) {
+		$containerBuilder->registerCallback( 'DependencyValidator', static function ( $containerBuilder, $store = null ): DependencyValidator {
 			$containerBuilder->registerExpectedReturnType( 'DependencyValidator', DependencyValidator::class );
 
 			$store = $store === null ? $containerBuilder->singleton( 'Store' ) : $store;
@@ -777,7 +777,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $dependencyValidator;
 		} );
 
-		$containerBuilder->registerCallback( 'PreferenceExaminer', static function ( $containerBuilder, User $user ) {
+		$containerBuilder->registerCallback( 'PreferenceExaminer', static function ( $containerBuilder, User $user ): PreferenceExaminer {
 			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', PreferenceExaminer::class );
 
 			$preferenceExaminer = new PreferenceExaminer(

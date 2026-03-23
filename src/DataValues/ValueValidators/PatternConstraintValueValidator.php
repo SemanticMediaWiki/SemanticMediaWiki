@@ -22,10 +22,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 	 */
 	private $allowsPatternValueParser;
 
-	/**
-	 * @var bool
-	 */
-	private $hasConstraintViolation = false;
+	private bool $hasConstraintViolation = false;
 
 	/**
 	 * @since 2.4
@@ -41,7 +38,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasConstraintViolation() {
+	public function hasConstraintViolation(): bool {
 		return $this->hasConstraintViolation;
 	}
 

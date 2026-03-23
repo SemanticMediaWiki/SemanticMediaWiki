@@ -4,7 +4,6 @@ namespace SMW\Tests\Utils;
 
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Content\ContentHandler;
-use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\RevisionSlotsUpdate;
@@ -101,14 +100,7 @@ class PageCreator {
 			$this->getPage()->getTitle()
 		);
 
-		// Use a system user when temporary accounts are enabled (MW 1.44+)
-		// to avoid CannotCreateActorException for anonymous users
-		$tempUserCreator = MediaWikiServices::getInstance()->getTempUserCreator();
-		if ( $tempUserCreator->isEnabled() ) {
-			$performer = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-		} else {
-			$performer = RequestContext::getMain()->getUser();
-		}
+		$performer = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		$summary = CommentStoreComment::newUnsavedComment( trim( $editMessage ) );
 
 		$slotsUpdate = new RevisionSlotsUpdate();

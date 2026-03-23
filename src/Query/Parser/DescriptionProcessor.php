@@ -27,10 +27,7 @@ use SMW\Site;
  */
 class DescriptionProcessor {
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
+	private DataValueFactory $dataValueFactory;
 
 	private DescriptionFactory $descriptionFactory;
 
@@ -39,20 +36,14 @@ class DescriptionProcessor {
 	 */
 	private $queryFeatures;
 
-	/**
-	 * @var WikiPage|null
-	 */
-	private $contextPage;
+	private ?WikiPage $contextPage = null;
 
 	/**
 	 * @var bool
 	 */
 	private $selfReference = false;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.4
@@ -87,7 +78,7 @@ class DescriptionProcessor {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

@@ -20,10 +20,7 @@ use SMW\Store;
  */
 class ChangePropagationEntityLookup {
 
-	/**
-	 * @var bool
-	 */
-	private $isTypePropagation = false;
+	private bool $isTypePropagation = false;
 
 	/**
 	 * @since 3.0

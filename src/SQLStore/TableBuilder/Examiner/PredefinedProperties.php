@@ -21,7 +21,7 @@ class PredefinedProperties {
 	/**
 	 * @var array
 	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.1

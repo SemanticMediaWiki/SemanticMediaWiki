@@ -10,20 +10,11 @@ use SMW\Exception\DataItemException;
  */
 class GeoCoord extends DataItem {
 
-	/**
-	 * @var float
-	 */
-	private $latitude;
+	private ?float $latitude = null;
 
-	/**
-	 * @var float
-	 */
-	private $longitude;
+	private ?float $longitude = null;
 
-	/**
-	 * @var float|null
-	 */
-	private $altitude = null;
+	private ?float $altitude = null;
 
 	/**
 	 * @since 3.2
@@ -161,14 +152,14 @@ class GeoCoord extends DataItem {
 	/**
 	 * @return float
 	 */
-	public function getLatitude() {
+	public function getLatitude(): ?float {
 		return $this->latitude;
 	}
 
 	/**
 	 * @return float
 	 */
-	public function getLongitude() {
+	public function getLongitude(): ?float {
 		return $this->longitude;
 	}
 
@@ -177,7 +168,7 @@ class GeoCoord extends DataItem {
 	 *
 	 * @return float|null
 	 */
-	public function getAltitude() {
+	public function getAltitude(): ?float {
 		return $this->altitude;
 	}
 

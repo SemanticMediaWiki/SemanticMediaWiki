@@ -36,7 +36,7 @@ class DependencyValidator {
 	/**
 	 * @var array Title IDs marked as having outdated dependencies.
 	 */
-	private static $titles = [];
+	private static array $titles = [];
 
 	/**
 	 * @since 3.1

@@ -20,10 +20,7 @@ use SMW\SQLStore\SQLStore;
  */
 class CacheWarmer {
 
-	/**
-	 * @var DisplayTitleFinder
-	 */
-	private $displayTitleFinder;
+	private ?DisplayTitleFinder $displayTitleFinder = null;
 
 	/**
 	 * @var int

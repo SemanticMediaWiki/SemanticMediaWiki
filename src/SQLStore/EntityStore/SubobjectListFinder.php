@@ -27,12 +27,12 @@ class SubobjectListFinder {
 	/**
 	 * @var array
 	 */
-	private $mappingIterator = [];
+	private array $mappingIterator = [];
 
 	/**
 	 * @var array
 	 */
-	private $skipConditions = [];
+	private array $skipConditions = [];
 
 	/**
 	 * @since 2.5
@@ -71,7 +71,7 @@ class SubobjectListFinder {
 	 * @return MappingIterator
 	 */
 	private function newMappingIterator( WikiPage $subject ): MappingIterator {
-		$callback = static function ( $row ) use ( $subject ) {
+		$callback = static function ( $row ) use ( $subject ): ?WikiPage {
 			// #1955
 			if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
 				$property = new Property( $subject->getDBkey() );

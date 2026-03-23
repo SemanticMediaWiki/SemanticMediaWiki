@@ -42,7 +42,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		$html = '';
 
 		// Push `smw` to the top
-		uksort( $this->deprecationNoticeList, static function ( $a, $b ) {
+		uksort( $this->deprecationNoticeList, static function ( $a, $b ): bool {
 			return $b === 'smw';
 		} );
 

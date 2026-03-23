@@ -71,7 +71,7 @@ class ErrorWidgetTest extends TestCase {
 
 	public function queryErrorProvider() {
 		$provider[] = [
-			'',
+			[],
 			''
 		];
 

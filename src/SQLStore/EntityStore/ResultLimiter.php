@@ -12,15 +12,12 @@ use SMW\RequestOptions;
  */
 class ResultLimiter {
 
-	/**
-	 * @var int
-	 */
-	private $size = -1;
+	private int $size = -1;
 
 	/**
 	 * @var array
 	 */
-	private $counter = [];
+	private array $counter = [];
 
 	/**
 	 * @since 3.2

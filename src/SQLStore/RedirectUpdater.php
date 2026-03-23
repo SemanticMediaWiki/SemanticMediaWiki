@@ -24,7 +24,7 @@ class RedirectUpdater {
 	/**
 	 * @var array
 	 */
-	private $lookupCache = [];
+	private array $lookupCache = [];
 
 	/**
 	 * @var Flag

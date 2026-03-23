@@ -15,10 +15,7 @@ use MediaWiki\User\User;
  */
 class ManualEntryLogger {
 
-	/**
-	 * @var array
-	 */
-	private $eventTypes = [];
+	private array $eventTypes = [];
 
 	/**
 	 * @since 2.4

@@ -48,35 +48,20 @@ class SpecialAsk extends SpecialPage {
 	 */
 	private $querySourceFactory;
 
-	/**
-	 * @var string
-	 */
-	private $queryString = '';
+	private string $queryString = '';
 
-	/**
-	 * @var array
-	 */
-	private $parameters = [];
+	private array $parameters = [];
 
-	/**
-	 * @var array
-	 */
-	private $printouts = [];
+	private array $printouts = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isEditMode = false;
+	private bool $isEditMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isBorrowedMode = false;
+	private bool $isBorrowedMode = false;
 
 	/**
 	 * @var Param[]
 	 */
-	private $params = [];
+	private array $params = [];
 
 	public function __construct() {
 		parent::__construct( 'Ask' );
@@ -372,7 +357,7 @@ class SpecialAsk extends SpecialPage {
 
 		$htmlForm->setCallbacks(
 			[
-				'code_handler' => function () {
+				'code_handler' => function (): string {
 					return $this->print_code();
 				}
 			]

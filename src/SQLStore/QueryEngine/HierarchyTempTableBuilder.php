@@ -24,10 +24,7 @@ class HierarchyTempTableBuilder {
 	 */
 	private $hierarchyCache = [];
 
-	/**
-	 * @var array
-	 */
-	private $tableDefinitions = [];
+	private array $tableDefinitions = [];
 
 	/**
 	 * @since 2.3

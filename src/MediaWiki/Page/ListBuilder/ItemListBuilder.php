@@ -25,10 +25,7 @@ class ItemListBuilder {
 	 */
 	private $languageCode = 'en';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
 	/**
 	 * @var int
@@ -50,10 +47,7 @@ class ItemListBuilder {
 	 */
 	private $checkProperty = true;
 
-	/**
-	 * @var int
-	 */
-	private $itemCount = 0;
+	private int $itemCount = 0;
 
 	/**
 	 * @since 3.0
@@ -120,7 +114,7 @@ class ItemListBuilder {
 	 *
 	 * @return int
 	 */
-	public function getItemCount() {
+	public function getItemCount(): int {
 		return $this->itemCount;
 	}
 

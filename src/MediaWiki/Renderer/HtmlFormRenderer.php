@@ -45,10 +45,7 @@ class HtmlFormRenderer {
 	 */
 	private $method = false;
 
-	/**
-	 * @var string|bool
-	 */
-	private $useFieldset = false;
+	private bool $useFieldset = false;
 
 	/**
 	 * @var string|bool
@@ -58,12 +55,9 @@ class HtmlFormRenderer {
 	/**
 	 * @var string[]
 	 */
-	private $content = [];
+	private array $content = [];
 
-	/**
-	 * @var string
-	 */
-	private $defaultPrefix = 'smw-form';
+	private string $defaultPrefix = 'smw-form';
 
 	/**
 	 * @since 2.1
@@ -243,7 +237,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addSubmitButton( $text, $attributes = [] ) {
+	public function addSubmitButton( $text, array $attributes = [] ) {
 		$this->content[] = Html::submitButton( $text, $attributes );
 		return $this;
 	}
@@ -418,7 +412,7 @@ class HtmlFormRenderer {
 	public function addPaging( $limit, $offset, $count, $messageCount = null ) {
 		$title = $this->title;
 
-		$this->content[] = static function ( $instance ) use ( $title, $limit, $offset, $count, $messageCount ) {
+		$this->content[] = static function ( $instance ) use ( $title, $limit, $offset, $count, $messageCount ): string {
 			if ( $messageCount === null ) {
 				$messageCount = ( $count > $limit ? $count - 1 : $count );
 			}

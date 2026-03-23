@@ -120,7 +120,7 @@ final class Setup {
 	 *
 	 * @return bool
 	 */
-	public static function isValid( $isCli = false ): bool {
+	public static function isValid( bool $isCli = false ): bool {
 		return SetupFile::isGoodSchema( $isCli );
 	}
 

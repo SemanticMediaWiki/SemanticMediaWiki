@@ -18,10 +18,7 @@ class TemplateEngine {
 	 */
 	const HTML_TIDY = 2;
 
-	/**
-	 * @var array
-	 */
-	private static $templates = [];
+	private static array $templates = [];
 
 	/**
 	 * @var array

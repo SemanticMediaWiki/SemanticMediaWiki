@@ -27,10 +27,7 @@ class PageInfoProvider implements PageInfo {
 
 	use RevisionGuardAwareTrait;
 
-	/**
-	 * @var RevisionLookup
-	 */
-	private $revisionLookup;
+	private ?RevisionLookup $revisionLookup = null;
 
 	/**
 	 * @since 1.9

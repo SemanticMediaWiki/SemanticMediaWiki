@@ -23,20 +23,14 @@ use SMW\Utils\HtmlColumns;
  */
 class CategoryResultPrinter extends ResultPrinter {
 
-	/**
-	 * @var string
-	 */
-	private $delim;
+	private ?string $delim = null;
 
 	/**
 	 * @var string
 	 */
 	private $template;
 
-	/**
-	 * @var string
-	 */
-	private $userParam;
+	private ?string $userParam = null;
 
 	/**
 	 * @var int

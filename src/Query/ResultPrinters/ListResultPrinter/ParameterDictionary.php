@@ -12,7 +12,7 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
  */
 class ParameterDictionary {
 
-	private $configuration = [];
+	private array $configuration = [];
 
 	/**
 	 * @param string|string[] $setting

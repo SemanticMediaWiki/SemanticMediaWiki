@@ -23,10 +23,7 @@ class ArticleDelete implements HookListener {
 
 	use EventDispatcherAwareTrait;
 
-	/**
-	 * @var string
-	 */
-	private $origin = 'ArticleDelete';
+	private string $origin = 'ArticleDelete';
 
 	/**
 	 * @since 3.0

@@ -17,15 +17,12 @@ class OpenForm {
 
 	private Field $field;
 
-	/**
-	 * @var bool
-	 */
-	private $isActiveForm = false;
+	private bool $isActiveForm = false;
 
 	/**
 	 * @var
 	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @since 3.0
@@ -39,7 +36,7 @@ class OpenForm {
 	 *
 	 * @return
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 

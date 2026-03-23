@@ -15,10 +15,7 @@ use SMW\DataModel\SemanticData;
  */
 class ReplicationDataTruncator {
 
-	/**
-	 * @var array
-	 */
-	private $propertyExemptionList = [];
+	private array $propertyExemptionList = [];
 
 	/**
 	 * @since 2.5
@@ -36,7 +33,7 @@ class ReplicationDataTruncator {
 	 *
 	 * @return SemanticData
 	 */
-	public function doTruncate( SemanticData $semanticData ) {
+	public function doTruncate( SemanticData $semanticData ): SemanticData {
 		if ( $this->propertyExemptionList === [] ) {
 			return $semanticData;
 		}

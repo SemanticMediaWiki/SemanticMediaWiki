@@ -31,10 +31,7 @@ abstract class TaskHandler {
 	 */
 	protected $featureSet = 0;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ?Store $store = null;
 
 	/**
 	 * @var bool

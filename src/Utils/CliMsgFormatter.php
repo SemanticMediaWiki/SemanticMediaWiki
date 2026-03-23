@@ -21,12 +21,9 @@ class CliMsgFormatter {
 	/**
 	 * @var int|null
 	 */
-	private $firstColLen = null;
+	private ?int $firstColLen = null;
 
-	/**
-	 * @var float|int
-	 */
-	private $startTime = 0;
+	private int $startTime = 0;
 
 	/**
 	 * @since 3.2

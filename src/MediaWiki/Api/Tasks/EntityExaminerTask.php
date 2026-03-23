@@ -16,10 +16,7 @@ use SMW\Store;
  */
 class EntityExaminerTask extends Task implements PermissionExaminerAware {
 
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
+	private ?PermissionExaminer $permissionExaminer = null;
 
 	/**
 	 * @since 3.2

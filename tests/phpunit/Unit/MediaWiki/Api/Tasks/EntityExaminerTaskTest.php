@@ -91,7 +91,7 @@ class EntityExaminerTaskTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			[ 'done' => true, 'indicators' => null, 'html' => '' ],
+			[ 'done' => true, 'indicators' => [], 'html' => '' ],
 			$instance->process( [ 'subject' => 'Foo#0##' ] )
 		);
 	}
@@ -129,7 +129,7 @@ class EntityExaminerTaskTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			[ 'done' => true, 'indicators' => [], 'html' => null ],
+			[ 'done' => true, 'indicators' => [], 'html' => [] ],
 			$instance->process( [ 'subject' => 'Foo#0##', 'is_placeholder' => true ] )
 		);
 	}

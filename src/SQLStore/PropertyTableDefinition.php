@@ -43,10 +43,7 @@ class PropertyTableDefinition {
 	 */
 	protected $idSubject = true;
 
-	/**
-	 * @var string
-	 */
-	private $tableType = '';
+	private string $tableType = '';
 
 	/**
 	 * Factory method to create an instance for a given

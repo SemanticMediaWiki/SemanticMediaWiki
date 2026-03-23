@@ -15,10 +15,7 @@ use SMW\Importer\ImportContents;
  */
 class DispatchingContentCreator implements ContentCreator {
 
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private ?MessageReporter $messageReporter = null;
 
 	/**
 	 * @since 3.0

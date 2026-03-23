@@ -17,15 +17,9 @@ use Traversable;
  */
 class ChunkedIterator extends IteratorIterator {
 
-	/**
-	 * @var int
-	 */
-	private $chunkSize = 0;
+	private int $chunkSize = 0;
 
-	/**
-	 * @var array
-	 */
-	private $chunk;
+	private ?array $chunk = null;
 
 	/**
 	 * @since 3.0

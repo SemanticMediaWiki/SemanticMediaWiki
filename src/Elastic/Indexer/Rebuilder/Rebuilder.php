@@ -27,15 +27,9 @@ class Rebuilder {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var array
-	 */
-	private $settings = [];
+	private array $settings = [];
 
-	/**
-	 * @var array
-	 */
-	private $versions = [];
+	private array $versions = [];
 
 	/**
 	 * @var array

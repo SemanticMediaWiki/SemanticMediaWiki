@@ -13,15 +13,9 @@ use SMW\Utils\CliMsgFormatter;
  */
 class MaintenanceHelper {
 
-	/**
-	 * @var array
-	 */
-	private $globals = [];
+	private array $globals = [];
 
-	/**
-	 * @var array
-	 */
-	private $runtime = [
+	private array $runtime = [
 		'start'  => 0,
 		'memory' => 0
 	];

@@ -33,24 +33,18 @@ class RecurringEvents {
 
 	/**
 	 * Defines the dates
-	 *
-	 * @var array
 	 */
-	private $dates = [];
+	private array $dates = [];
 
 	/**
 	 * Defines remaining / unused parameters
-	 *
-	 * @var array
 	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * Defines errors
-	 *
-	 * @var array
 	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @var int
@@ -98,7 +92,7 @@ class RecurringEvents {
 	 *
 	 * @return array
 	 */
-	public function getDates() {
+	public function getDates(): array {
 		return $this->dates;
 	}
 
@@ -109,7 +103,7 @@ class RecurringEvents {
 	 *
 	 * @return array
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
@@ -120,7 +114,7 @@ class RecurringEvents {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

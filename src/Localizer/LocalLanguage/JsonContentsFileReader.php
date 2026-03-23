@@ -16,20 +16,11 @@ use SMW\Utils\ErrorCodeFormatter;
  */
 class JsonContentsFileReader {
 
-	/**
-	 * @var array
-	 */
-	private static $contents = [];
+	private static array $contents = [];
 
-	/**
-	 * @var bool
-	 */
-	private $skipCache = false;
+	private bool $skipCache = false;
 
-	/**
-	 * @var int
-	 */
-	private $ttl = 604800; // 7 * 24 * 3600
+	private int $ttl = 604800; // 7 * 24 * 3600
 
 	/**
 	 * @since 2.5

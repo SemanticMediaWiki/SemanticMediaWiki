@@ -26,18 +26,13 @@ class UniqueValueConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'unique_value_constraint';
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * Tracks annotations for the current context to verify that a subject only
 	 * contains unique assignments.
-	 *
-	 * @var array
 	 */
-	private $annotations = [];
+	private array $annotations = [];
 
 	/**
 	 * @since 2.4
@@ -53,7 +48,7 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 

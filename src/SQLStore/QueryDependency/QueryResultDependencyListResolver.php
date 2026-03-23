@@ -28,10 +28,8 @@ class QueryResultDependencyListResolver {
 	/**
 	 * Specifies a list of property keys to be excluded from the detection
 	 * process.
-	 *
-	 * @var array
 	 */
-	private $propertyDependencyExemptionlist = [];
+	private array $propertyDependencyExemptionlist = [];
 
 	/**
 	 * @since 2.3

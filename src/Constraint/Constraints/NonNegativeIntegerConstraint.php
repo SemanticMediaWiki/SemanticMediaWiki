@@ -21,17 +21,14 @@ class NonNegativeIntegerConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'non_negative_integer';
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 

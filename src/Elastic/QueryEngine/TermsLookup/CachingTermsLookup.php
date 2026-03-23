@@ -22,7 +22,7 @@ class CachingTermsLookup extends TermsLookup {
 	/**
 	 * @var
 	 */
-	private $quick_cache = [];
+	private array $quick_cache = [];
 
 	/**
 	 * @since 3.0

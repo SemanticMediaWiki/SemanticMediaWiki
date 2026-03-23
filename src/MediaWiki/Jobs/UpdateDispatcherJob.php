@@ -241,7 +241,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function apply_filter( $property, $subjects ) {
+	private function apply_filter( Property $property, $subjects ) {
 		// If the an ID was provided it already restricted the list of references
 		// hence avoid any further work
 		if ( $this->hasParameter( '_id' ) ) {
