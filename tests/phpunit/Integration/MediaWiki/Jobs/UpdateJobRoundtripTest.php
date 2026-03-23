@@ -108,9 +108,9 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 	public function jobFactoryProvider() {
 		$provider = [];
 
-		$provider[] = [ UpdateJob::class, 'smw.update' ];
+		$provider[] = [ 'smw.update', UpdateJob::class ];
 
-		$provider[] = [ RefreshJob::class, 'smw.refresh' ];
+		$provider[] = [ 'smw.refresh', RefreshJob::class ];
 
 		return $provider;
 	}
