@@ -248,7 +248,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		return $highlighter->getHtml();
 	}
 
-	private function canHighlight( &$propertyDescription, $linker ) {
+	private function canHighlight( string &$propertyDescription, $linker ) {
 		if ( $this->dataValue->getOption( PropertyValue::OPT_NO_HIGHLIGHT ) === true ) {
 			return false;
 		}

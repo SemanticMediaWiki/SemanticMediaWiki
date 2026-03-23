@@ -70,7 +70,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return
 	 */
-	public function getModuleStyles() {
+	public function getModuleStyles(): array {
 		return array_merge( [
 			'mediawiki.helplink',
 			'smw.content.schema',
@@ -216,7 +216,7 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_head', $params );
 	}
 
-	private function schema_summary( $schema, $errors ) {
+	private function schema_summary( $schema, array $errors ) {
 		$errorCount = count( $errors );
 		$type = $schema->get( Schema::SCHEMA_TYPE );
 
@@ -321,7 +321,7 @@ class SchemaContentFormatter {
 	/**
 	 * @return mixed[]
 	 */
-	private function error_params( $validator_schema, array $errors = [] ): array {
+	private function error_params( string|array $validator_schema, array $errors = [] ): array {
 		if ( $errors === [] ) {
 			return [];
 		}
@@ -358,7 +358,7 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_unknown_type', $params );
 	}
 
-	private function msg( $key, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
+	private function msg( array|string $key, int $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $key, $type, $lang );
 	}
 

@@ -93,7 +93,7 @@ class CheckboxRangeGroupValueFilter {
 		);
 	}
 
-	private function matchFilter( $property, $range, $valueFilters, &$list, $isClear ): void {
+	private function matchFilter( string $property, $range, array $valueFilters, &$list, $isClear ): void {
 		$key = $range['min'] . '|' . $range['max'];
 
 		if ( $key === '' ) {
@@ -123,7 +123,7 @@ class CheckboxRangeGroupValueFilter {
 		}
 	}
 
-	private function getValueFilters( $property ): array {
+	private function getValueFilters( string $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
@@ -133,7 +133,7 @@ class CheckboxRangeGroupValueFilter {
 	/**
 	 * @return mixed[]
 	 */
-	private function buildRangeGroups( $property, $values, $raw ): array {
+	private function buildRangeGroups( string $property, array $values, array $raw ): array {
 		$ranges = [];
 
 		$property = Property::newFromUserLabel( $property );
@@ -177,7 +177,7 @@ class CheckboxRangeGroupValueFilter {
 		return $ranges;
 	}
 
-	private function range( $diType, $property, $key, $value ): array {
+	private function range( $diType, Property $property, $key, $value ): array {
 		[ $min, $max ] = explode( '...', $value );
 
 		$msg = $this->msg( $key );
@@ -232,7 +232,7 @@ class CheckboxRangeGroupValueFilter {
 		];
 	}
 
-	private function createConditionField( $property ) {
+	private function createConditionField( string $property ) {
 		if ( $this->params['condition_field'] === false ) {
 			return '';
 		}
@@ -252,7 +252,7 @@ class CheckboxRangeGroupValueFilter {
 		return $this->templateParser->publish( 'items.condition' );
 	}
 
-	private function createInputField( $property, array $values ) {
+	private function createInputField( string $property, array $values ) {
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}
@@ -267,7 +267,7 @@ class CheckboxRangeGroupValueFilter {
 		return $this->templateParser->publish( 'items.input' );
 	}
 
-	private function getJD( $property, $value ) {
+	private function getJD( Property $property, $value ) {
 		return DataValueFactory::getInstance()->newDataValueByProperty( $property, $value )->getDataItem()->getJD();
 	}
 

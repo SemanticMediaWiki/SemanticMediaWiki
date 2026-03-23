@@ -111,10 +111,8 @@ class SemanticData implements JsonUnserializable {
 	 * WikiPage object that is the subject of this container.
 	 * Subjects can never be null (and this is ensured in all methods setting
 	 * them in this class).
-	 *
-	 * @var WikiPage
 	 */
-	protected $mSubject;
+	protected WikiPage $mSubject;
 
 	/**
 	 * Semantic data associated to subobjects of the subject of this
@@ -212,7 +210,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return WikiPage subject
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->mSubject;
 	}
 

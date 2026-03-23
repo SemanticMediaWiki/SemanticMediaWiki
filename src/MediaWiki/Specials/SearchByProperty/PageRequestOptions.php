@@ -102,7 +102,7 @@ class PageRequestOptions {
 		$this->setNearbySearch();
 	}
 
-	private function getValue( $value, $escaped ) {
+	private function getValue( string $value, bool $escaped ) {
 		$this->value = DataValueFactory::getInstance()->newDataValueByProperty(
 			$this->property->getDataItem()
 		);
@@ -113,7 +113,7 @@ class PageRequestOptions {
 		return $this->value->isValid() ? $this->value->getWikiValue() : $value;
 	}
 
-	private function unescape( $value, $escaped ) {
+	private function unescape( string $value, bool $escaped ) {
 		if ( $this->value instanceof NumberValue ) {
 			$value = $escaped ? str_replace( [ '-20', '-2D' ], [ ' ', '-' ], $value ) : $value;
 			// Do not try to decode things like 1.2e-13

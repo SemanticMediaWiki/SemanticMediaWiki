@@ -7,6 +7,7 @@ use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
@@ -47,7 +48,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): Condition {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -105,7 +106,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		return [ $condition, $namespaces ];
 	}
 
-	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ): string {
+	private function tryToAddClassHierarchyPattern( $category, $depth, string &$categoryExpName ): string {
 		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBC ) || ( $depth !== null && $depth < 1 ) ) {
 			return '';
 		}

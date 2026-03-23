@@ -254,7 +254,7 @@ class QueryResultSerializerTest extends TestCase {
 				'getPrintRequest'  => $printRequest,
 				'getNextDataValue' => $dataValue,
 				'getNextDataItem'  => $dataItem,
-				'getContent'       => $dataItem
+				'getContent'       => [ $dataItem ]
 			] );
 
 		}

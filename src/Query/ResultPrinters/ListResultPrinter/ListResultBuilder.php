@@ -168,7 +168,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function getTemplateCall( $param ) {
+	private function getTemplateCall( string $param ) {
 		$templatename = $this->get( $param );
 
 		if ( $templatename === '' ) {
@@ -228,7 +228,7 @@ class ListResultBuilder {
 	/**
 	 * @return RowBuilder
 	 */
-	private function getRowBuilder() {
+	private function getRowBuilder(): RowBuilder {
 		if ( $this->get( 'template' ) === '' ) {
 			$rowBuilder = new SimpleRowBuilder();
 			$rowBuilder->setLinker( $this->linker );

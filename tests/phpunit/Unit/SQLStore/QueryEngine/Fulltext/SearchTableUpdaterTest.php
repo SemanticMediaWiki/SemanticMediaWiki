@@ -106,6 +106,10 @@ class SearchTableUpdaterTest extends TestCase {
 	}
 
 	public function testUpdateWithText() {
+		$this->textSanitizer->expects( $this->once() )
+			->method( 'sanitize' )
+			->willReturn( 'foo' );
+
 		$this->connection->expects( $this->once() )
 			->method( 'update' );
 

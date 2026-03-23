@@ -126,7 +126,7 @@ class TextContentCreator implements ContentCreator {
 		} );
 	}
 
-	private function doCreateContent( $page, $title, $importContents, $action ): void {
+	private function doCreateContent( WikiPage $page, $title, ImportContents $importContents, string $action ): void {
 		$content = ContentHandler::makeContent(
 			$this->fetchContents( $importContents ),
 			$title
@@ -165,7 +165,7 @@ class TextContentCreator implements ContentCreator {
 		);
 	}
 
-	private function fetchContents( $importContents ) {
+	private function fetchContents( ImportContents $importContents ) {
 		if ( $importContents->getContentsFile() === '' ) {
 			return $importContents->getContents();
 		}

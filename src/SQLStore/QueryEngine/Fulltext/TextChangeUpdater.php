@@ -132,7 +132,7 @@ class TextChangeUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @param array|boolan $parameters
+	 * @param array|bool $parameters
 	 */
 	public function pushUpdatesFromJobParameters( $parameters ) {
 		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === false ) {
@@ -192,13 +192,13 @@ class TextChangeUpdater {
 				continue;
 			}
 
-			$this->collectUpdates( $sid, $textItem, $changeList, $updates );
+			$this->collectUpdates( $sid, $textItem, $updates );
 		}
 
 		foreach ( $updates as $key => $value ) {
 			[ $sid, $pid ] = explode( ':', $key, 2 );
 
-			if ( $this->searchTableUpdater->exists( $sid, $pid ) === false ) {
+			if ( !$this->searchTableUpdater->exists( $sid, $pid ) ) {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}
 
@@ -224,7 +224,7 @@ class TextChangeUpdater {
 		);
 	}
 
-	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ): void {
+	private function collectUpdates( int|string $sid, array $textItem, &$updates ): void {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 
 		foreach ( $textItem as $pid => $text ) {
@@ -267,7 +267,7 @@ class TextChangeUpdater {
 		}
 	}
 
-	private function canPostUpdate( $changeOp ) {
+	private function canPostUpdate( ChangeOp $changeOp ) {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 		$canPostUpdate = false;
 

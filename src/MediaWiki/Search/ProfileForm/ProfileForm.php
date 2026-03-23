@@ -229,7 +229,7 @@ class ProfileForm {
 		$form .= $namespaceForm;
 	}
 
-	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces, &$hidden ): string {
+	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces, string &$hidden ): string {
 		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $preselectNamespaces );
 		$default = false;
 
@@ -419,7 +419,7 @@ class ProfileForm {
 		return $text;
 	}
 
-	private function section( $msg, $attributes = [] ) {
+	private function section( string $msg, $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[
@@ -436,7 +436,7 @@ class ProfileForm {
 		);
 	}
 
-	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ): string {
+	private function msg( string|array $msg, int $type = Message::PARSE, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $msg, $type, $lang );
 	}
 

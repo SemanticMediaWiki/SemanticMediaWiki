@@ -69,7 +69,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, ?array $attributes = null ) {
+	protected function doCreateTable( $tableName, array $attributes ) {
 		$tableName = $this->connection->tableName( $tableName );
 
 		$fieldSql = [];
@@ -91,12 +91,11 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
+	protected function doUpdateTable( $tableName, array $attributes ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
 		$fields = $attributes['fields'];
-		$position = 'FIRST';
 
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
@@ -104,9 +103,8 @@ class PostgresTableBuilder extends TableBuilder {
 
 		// Loop through all the field definitions, and handle each definition
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $attributes );
+			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $attributes );
 
-			$position = "AFTER $fieldName";
 			$currentFields[$fieldName] = false;
 		}
 
@@ -185,7 +183,7 @@ EOT;
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ): void {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, array $currentFields, array $attributes ): void {
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
@@ -205,7 +203,7 @@ EOT;
 		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
+			$this->doCreateField( $tableName, $fieldName, $fieldType, $default );
 		} elseif ( strpos( $fieldType, 'ENUM' ) !== false ) {
 			$enum_type = strtolower( $currentFields[$fieldName] );
 			$current_enums = '';
@@ -227,7 +225,7 @@ EOT;
 			} else {
 				// Recreate the field and type which is the simplest way of
 				// ensuring consistency
-				$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
+				$this->doCreateField( $tableName, $fieldName, $fieldType, $default );
 			}
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->reportMessage( "   ... changing type of field $fieldName from '$currentFields[$fieldName]' to '$fieldType' ... " );
@@ -262,7 +260,7 @@ EOT;
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ): void {
+	private function doCreateField( $tableName, $fieldName, $fieldType, string $default ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		// https://www.postgresql.org/docs/9.1/datatype-enum.html
@@ -280,7 +278,7 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName ): void {
+	private function doDropField( $tableName, int|string $fieldName ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -295,7 +293,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions ) {
 		$indices = $indexOptions['indices'];
 		$ix = [];
 
@@ -322,7 +320,7 @@ EOT;
 				$indexType = 'INDEX';
 			}
 
-			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns, $indexOptions );
+			$this->doCreateIndex( $tableName, $indexType, $columns );
 		}
 	}
 
@@ -341,12 +339,12 @@ EOT;
 				}
 
 			} else { // Duplicate or unrequired index.
-				$this->doDropIndex( $tableName, $indexName, $indexColumn );
+				$this->doDropIndex( $indexName, $indexColumn );
 			}
 		}
 	}
 
-	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
+	private function doCreateIndex( $tableName, $indexType, $columns ) {
 		if ( $indexType === 'FULLTEXT' ) {
 			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
 		}
@@ -405,7 +403,7 @@ EOT;
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, $indexName, $columns ): void {
+	private function doDropIndex( int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX IF EXISTS ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );

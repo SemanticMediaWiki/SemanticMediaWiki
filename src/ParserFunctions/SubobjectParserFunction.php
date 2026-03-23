@@ -52,10 +52,7 @@ class SubobjectParserFunction {
 
 	protected Subobject $subobject;
 
-	/**
-	 * @var MessageFormatter
-	 */
-	protected $messageFormatter;
+	protected MessageFormatter $messageFormatter;
 
 	/**
 	 * @var StripMarkerDecoder
@@ -259,7 +256,7 @@ class SubobjectParserFunction {
 		return [ $parameters, $id ];
 	}
 
-	private function preprocess( ParserParameterProcessor $parserParameterProcessor, $useFirst ) {
+	private function preprocess( ParserParameterProcessor $parserParameterProcessor, bool $useFirst ) {
 		if ( $parserParameterProcessor->hasParameter( self::PARAM_LINKWITH ) ) {
 			$val = $parserParameterProcessor->getParameterValuesByKey( self::PARAM_LINKWITH );
 			$parserParameterProcessor->addParameter(

@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\DataItems\Property;
+use SMW\Export\Exporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
@@ -130,7 +131,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $serializer->flushContent();
 	}
 
-	private function makeExportData( $exporter, $row ) {
+	private function makeExportData( Exporter $exporter, $row ) {
 		$subject = reset( $row )->getResultSubject();
 		$expData = $exporter->makeExportDataForSubject( $subject );
 

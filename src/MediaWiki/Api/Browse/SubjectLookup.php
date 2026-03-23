@@ -74,7 +74,7 @@ class SubjectLookup extends Lookup {
 		return $res;
 	}
 
-	private function buildHTML( $params ): string {
+	private function buildHTML( array $params ): string {
 		if ( !isset( $params['options'] ) ) {
 			throw new ParameterNotFoundException( 'options' );
 		}
@@ -98,7 +98,7 @@ class SubjectLookup extends Lookup {
 		return $htmlBuilder->buildHTML();
 	}
 
-	private function doSerialize( $params ) {
+	private function doSerialize( array $params ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$subobject = isset( $params['subobject'] ) ? $params['subobject'] : '';
 

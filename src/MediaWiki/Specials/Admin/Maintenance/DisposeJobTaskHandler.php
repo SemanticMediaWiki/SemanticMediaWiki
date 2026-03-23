@@ -156,7 +156,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
-	private function hasPendingJob() {
+	private function hasPendingJob(): bool {
 		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.entityIdDisposer' );
 	}
 

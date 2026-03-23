@@ -13,6 +13,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\Exporter\DataItemMatchFinder;
+use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
@@ -464,7 +465,7 @@ class Exporter {
 	 * @param ExpElement $expElement
 	 * @return DataItem or null
 	 */
-	public function findDataItemForExpElement( ExpElement $expElement ) {
+	public function findDataItemForExpElement( ExpElement $expElement ): ?WikiPage {
 		return self::$dataItemMatchFinder->matchExpElement( $expElement );
 	}
 
@@ -474,7 +475,7 @@ class Exporter {
 	 *
 	 * @todo An improved mechanism for selecting property types here is needed.
 	 */
-	public function getOWLPropertyType( Property $property ) {
+	public function getOWLPropertyType( Property $property ): string {
 		return TypesRegistry::getOWLPropertyByType( $property->findPropertyTypeID() );
 	}
 
@@ -583,7 +584,7 @@ class Exporter {
 	 * @param string $uri string of the URI to be expanded
 	 * @return string of the expanded URI
 	 */
-	public function expandURI( $uri ) {
+	public function expandURI( $uri ): string|array {
 		self::initBaseURIs();
 		$uri = str_replace(
 			[
@@ -616,7 +617,7 @@ class Exporter {
 	/**
 	 * @return string
 	 */
-	public function decodeURI( $uri ) {
+	public function decodeURI( $uri ): string|array {
 		return Escaper::decodeUri( $uri );
 	}
 
@@ -667,7 +668,7 @@ class Exporter {
 	 *
 	 * @return ExpElement
 	 */
-	public function newExpElement( DataItem $dataItem ) {
+	public function newExpElement( DataItem $dataItem ): ?Element {
 		return self::$elementFactory->newFromDataItem( $dataItem );
 	}
 

@@ -283,7 +283,7 @@ class HtmlColumns {
 		);
 	}
 
-	private function makeList( $key, $items, $rowsPerColumn, &$usedColumnCloser ): string {
+	private function makeList( $key, $items, float $rowsPerColumn, &$usedColumnCloser ): string {
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';
@@ -344,7 +344,7 @@ class HtmlColumns {
 		return $result;
 	}
 
-	private function element( $type, $attributes, $content ): string {
+	private function element( string $type, $attributes, $content ): string {
 		$attr = '';
 		$attributes = (array)$attributes;
 

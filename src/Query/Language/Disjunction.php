@@ -164,7 +164,7 @@ class Disjunction extends Description {
 		return $this->descriptions[0]->isSingleton();
 	}
 
-	public function getSize() {
+	public function getSize(): int|float {
 		$size = 0;
 
 		foreach ( $this->descriptions as $desc ) {

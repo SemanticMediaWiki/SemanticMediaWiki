@@ -62,7 +62,7 @@ class SortBuilder {
 	 *
 	 * @return array
 	 */
-	public function makeSortField( Query $query ) {
+	public function makeSortField( Query $query ): array {
 		// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_memory_considerations
 		// "... the relevant sorted field values are loaded into memory. This means
 		// that per shard, there should be enough memory ... string based types,
@@ -105,7 +105,7 @@ class SortBuilder {
 		return [ $sort, $sortFields, $isRandom, $isConstantScore ];
 	}
 
-	private function addDefaultField( &$sort, $order, $sortKeysCount ): void {
+	private function addDefaultField( &$sort, $order, int $sortKeysCount ): void {
 		$sort['subject.sortkey.sort'] = [ 'order' => $order ];
 
 		// Add title as extra criteria in case an entity uses the same sortkey
@@ -164,7 +164,7 @@ class SortBuilder {
 		}
 	}
 
-	private function sort_field( $field ): bool {
+	private function sort_field( string $field ): bool {
 		return strpos( $field, 'txt' ) !== false || strpos( $field, 'wpgField' ) !== false || strpos( $field, 'uriField' ) !== false;
 	}
 

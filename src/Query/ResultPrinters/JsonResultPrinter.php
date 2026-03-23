@@ -47,7 +47,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string|array {
 		if ( $this->params['filename'] === '' ) {
 			return 'result.json';
 		}
@@ -146,7 +146,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	/**
 	 * @return list[][]
 	 */
-	private function buildSimpleList( $res ): array {
+	private function buildSimpleList( QueryResult $res ): array {
 		$result = [];
 
 		$row = $res->getNext();

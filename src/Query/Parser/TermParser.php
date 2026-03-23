@@ -158,7 +158,7 @@ class TermParser {
 		return self::$cache[$hash];
 	}
 
-	private function close( &$custom, $prefix ): string {
+	private function close( &$custom, string $prefix ): string {
 		// Standard closing
 		if ( $custom === '' ) {
 			return "]]";
@@ -183,7 +183,7 @@ class TermParser {
 		return '(' . implode( '||', $terms ) . ')';
 	}
 
-	private function normalize( $term ) {
+	private function normalize( $term ): string|array {
 		return str_replace(
 			[ ')[[', ']](', '(', ')', '||', '&&', 'AND', 'OR', ']][[', '[[[[', ']]]]', '  ' ],
 			[ ') [[', ']] (', '<q>', '</q>', ' || ', ' && ', ' AND ', ' OR ', ']] [[', '[[', ']]', ' ' ],
@@ -191,7 +191,7 @@ class TermParser {
 		);
 	}
 
-	private function normalize_compact_form( $exp, $pattern, &$term ): void {
+	private function normalize_compact_form( string $exp, string $pattern, &$term ): void {
 		if ( strpos( $term, "$exp:(" ) === false ) {
 			return;
 		}

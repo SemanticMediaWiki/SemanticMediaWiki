@@ -191,7 +191,7 @@ class MwCollaboratorFactory {
 		WikiPage $wikiPage,
 		RevisionRecord $revision,
 		?User $user = null
-	) {
+	): EditInfo {
 		return $this->newEditInfo( $wikiPage, $revision, $user );
 	}
 

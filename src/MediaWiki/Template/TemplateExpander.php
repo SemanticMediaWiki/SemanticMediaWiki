@@ -52,7 +52,7 @@ class TemplateExpander {
 	 *
 	 * @return string
 	 */
-	public function expand( $template ) {
+	public function expand( $template ): string|array {
 		if ( !$this->parser instanceof Parser && !$this->parser instanceof StubObject ) {
 			throw new RuntimeException( 'Missing a parser instance!' );
 		}

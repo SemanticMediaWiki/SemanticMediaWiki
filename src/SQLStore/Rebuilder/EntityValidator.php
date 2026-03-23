@@ -7,6 +7,8 @@ use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
 use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
+use stdClass;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @private
@@ -246,9 +248,9 @@ class EntityValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param $row
+	 * @param stdClass $row
 	 *
-	 * @return
+	 * @return ResultWrapper
 	 */
 	public function findDuplicates( $row ) {
 		$connection = $this->store->getConnection( 'mw.db' );

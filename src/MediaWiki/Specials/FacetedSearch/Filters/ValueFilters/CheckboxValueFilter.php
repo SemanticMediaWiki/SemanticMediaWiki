@@ -124,7 +124,7 @@ class CheckboxValueFilter {
 		);
 	}
 
-	private function matchFilter( $property, $key, $label, $count, $valueFilters, &$list, $isClear ): void {
+	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, &$list, $isClear ): void {
 		// Make sure characters like `"` are encoded otherwise those will be removed
 		// from the value representation
 		$key = htmlspecialchars( $key );
@@ -156,14 +156,14 @@ class CheckboxValueFilter {
 		}
 	}
 
-	private function getValueFilters( $property ): array {
+	private function getValueFilters( string $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	private function createConditionField( $property ) {
+	private function createConditionField( string $property ) {
 		if ( $this->params['condition_field'] === false ) {
 			return '';
 		}
@@ -181,7 +181,7 @@ class CheckboxValueFilter {
 		);
 	}
 
-	private function createInputField( $property, array $values ) {
+	private function createInputField( string $property, array $values ) {
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}

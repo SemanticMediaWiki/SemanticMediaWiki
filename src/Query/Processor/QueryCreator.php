@@ -205,7 +205,7 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @return 'ASC'[]|'DESC'[]|'RANDOM'[]
 	 */
-	private function normalize_order( $orderParameters ): array {
+	private function normalize_order( array $orderParameters ): array {
 		$orders = [];
 
 		foreach ( $orderParameters as $key => $order ) {
@@ -222,11 +222,11 @@ class QueryCreator implements QueryContext {
 		return $orders;
 	}
 
-	private function normalize_sort( $sort ) {
+	private function normalize_sort( string $sort ): string {
 		return Localizer::getInstance()->getNsText( NS_CATEGORY ) == mb_convert_case( $sort, MB_CASE_TITLE ) ? '_INST' : $sort;
 	}
 
-	private function getParam( $key, $default ) {
+	private function getParam( string $key, $default ) {
 		return isset( $this->params[$key] ) ? $this->params[$key] : $default;
 	}
 

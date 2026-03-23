@@ -30,7 +30,7 @@ class EntityLookup implements IEntityLookup {
 	private PropertiesLookup $propertiesLookup;
 
 	/**
-	 * @var SemanticDataLookup
+	 * @var CachingSemanticDataLookup
 	 */
 	private CachingSemanticDataLookup $semanticDataLookup;
 
@@ -163,8 +163,9 @@ class EntityLookup implements IEntityLookup {
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
+	 * @return mixed[]
 	 */
-	public function getProperties( WikiPage $subject, ?RequestOptions $requestOptions = null ) {
+	public function getProperties( WikiPage $subject, ?RequestOptions $requestOptions = null ): array {
 		$idTable = $this->store->getObjectIds();
 
 		$sid = $idTable->getSMWPageID(
@@ -203,7 +204,7 @@ class EntityLookup implements IEntityLookup {
 
 			foreach ( $res as $row ) {
 				$result[] = new Property(
-					isset( $row->smw_title ) ? $row->smw_title : $row
+					$row->smw_title ?? $row
 				);
 			}
 		}
@@ -305,7 +306,7 @@ class EntityLookup implements IEntityLookup {
 				try {
 					$diHandler = $this->store->getDataItemHandlerForDIType( $propertyDiId );
 					$result[] = $diHandler->dataItemFromDBKeys( $dbkeys );
-				} catch ( DataItemException $e ) {
+				} catch ( DataItemException ) {
 					// maybe type assignment changed since data was stored;
 					// don't worry, but we can only drop the data here
 				}
@@ -394,8 +395,9 @@ class EntityLookup implements IEntityLookup {
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
+	 * @return mixed[]
 	 */
-	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null ) {
+	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null ): array {
 		$result = [];
 		$diType = $object->getDIType();
 
@@ -414,7 +416,7 @@ class EntityLookup implements IEntityLookup {
 			foreach ( $res as $row ) {
 				try {
 					$result[] = new Property( $row->smw_title );
-				} catch ( DataItemException $e ) {
+				} catch ( DataItemException ) {
 					// has been observed to happen (empty property title); cause unclear; ignore this data
 				}
 			}

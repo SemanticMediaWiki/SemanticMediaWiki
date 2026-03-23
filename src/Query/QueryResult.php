@@ -42,29 +42,25 @@ class QueryResult {
 	 *
 	 * @var WikiPage[]
 	 */
-	protected $mResults;
+	protected array $mResults;
 
 	/**
 	 * Array of \SMW\Query\PrintRequest objects, indexed by their natural hash keys
 	 *
 	 * @var PrintRequest[]
 	 */
-	protected $mPrintRequests;
+	protected array $mPrintRequests;
 
 	/**
 	 * The query object for which this is a result, must be set on create and is the source of
 	 * data needed to create further result links.
-	 *
-	 * @var Query
 	 */
-	protected $mQuery;
+	protected Query $mQuery;
 
 	/**
 	 * The Store object used to retrieve further data on demand.
-	 *
-	 * @var Store
 	 */
-	protected $mStore;
+	protected Store $mStore;
 
 	/**
 	 * Holds a value that belongs to a count query result
@@ -80,15 +76,9 @@ class QueryResult {
 	 */
 	private $isFromCache = false;
 
-	/**
-	 * @var ItemJournal
-	 */
-	private $itemJournal;
+	private ItemJournal $itemJournal;
 
-	/**
-	 * @var FieldItemFinder
-	 */
-	private $fieldItemFinder;
+	private FieldItemFinder $fieldItemFinder;
 
 	/**
 	 * @var int
@@ -105,10 +95,7 @@ class QueryResult {
 	 */
 	private $excerpts;
 
-	/**
-	 * @var FilterMap
-	 */
-	private $filterMap;
+	private FilterMap $filterMap;
 
 	public function __construct(
 		array $printRequests,
@@ -144,7 +131,7 @@ class QueryResult {
 	 *
 	 * @return FilterMap
 	 */
-	public function getFilterMap() {
+	public function getFilterMap(): FilterMap {
 		return $this->filterMap;
 	}
 
@@ -153,7 +140,7 @@ class QueryResult {
 	 *
 	 * @return FieldItemFinder
 	 */
-	public function getFieldItemFinder() {
+	public function getFieldItemFinder(): FieldItemFinder {
 		return $this->fieldItemFinder;
 	}
 
@@ -171,7 +158,7 @@ class QueryResult {
 	 *
 	 * @return ItemJournal
 	 */
-	public function getItemJournal() {
+	public function getItemJournal(): ItemJournal {
 		return $this->itemJournal;
 	}
 
@@ -238,7 +225,7 @@ class QueryResult {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->mStore;
 	}
 
@@ -248,7 +235,7 @@ class QueryResult {
 	 *
 	 * @return ResultArray[]|false
 	 */
-	public function getNext() {
+	public function getNext(): false|array {
 		$page = current( $this->mResults );
 		next( $this->mResults );
 
@@ -286,14 +273,14 @@ class QueryResult {
 	 *
 	 * @return WikiPage[]
 	 */
-	public function getResults() {
+	public function getResults(): array {
 		return $this->mResults;
 	}
 
 	/**
 	 * @since 2.3
 	 */
-	public function reset() {
+	public function reset(): WikiPage|false {
 		return reset( $this->mResults );
 	}
 
@@ -304,7 +291,7 @@ class QueryResult {
 	 *
 	 * @return Query
 	 */
-	public function getQuery() {
+	public function getQuery(): Query {
 		return $this->mQuery;
 	}
 
@@ -324,7 +311,7 @@ class QueryResult {
 	 *
 	 * @return PrintRequest[]
 	 */
-	public function getPrintRequests() {
+	public function getPrintRequests(): array {
 		return $this->mPrintRequests;
 	}
 
@@ -455,7 +442,7 @@ class QueryResult {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		$time = microtime( true );
 
 		// @note micro optimization: We call getSerializedQueryResult()

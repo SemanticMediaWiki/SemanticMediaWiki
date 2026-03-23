@@ -65,7 +65,7 @@ class ConceptValue extends DataValue {
 		}
 	}
 
-	public function getWikiValue() {
+	public function getWikiValue(): string|array {
 		/// This should not be used for anything. This class does not support wiki values.
 		return str_replace( [ '&lt;', '&gt;', '&amp;' ], [ '<', '>', '&' ], $this->m_dataitem->getConceptQuery() );
 	}

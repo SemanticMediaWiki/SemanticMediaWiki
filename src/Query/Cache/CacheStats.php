@@ -62,7 +62,7 @@ class CacheStats extends Stats {
 	}
 
 	// http://stackoverflow.com/questions/3777995/php-array-recursive-sum
-	private static function sum( $value, $container ) {
+	private static function sum( ?int $value, $container ): int|float {
 		return $value + ( is_array( $container ) ? array_reduce( $container, self::class . '::sum' ) : $container );
 	}
 

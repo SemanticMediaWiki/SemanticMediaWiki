@@ -294,7 +294,7 @@ class InTextAnnotationParserTest extends TestCase {
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'hasStripMarker' )
-			->willReturn( true );
+			->willReturn( 1 );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'unstrip' )

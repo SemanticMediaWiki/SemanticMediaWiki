@@ -264,7 +264,7 @@ class ChangePropagationDispatchJob extends Job {
 		}
 	}
 
-	private function pushChangePropagationDispatchJob( $num, $chunk ): void {
+	private function pushChangePropagationDispatchJob( int $num, $chunk ): void {
 		$data = [];
 
 		// Filter any subobject
@@ -289,7 +289,7 @@ class ChangePropagationDispatchJob extends Job {
 		$changePropagationDispatchJob->lazyPush();
 	}
 
-	private function dispatchFromData( $subject, $data ): bool {
+	private function dispatchFromData( WikiPage $subject, $data ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$cache = $applicationFactory->getCache();
 
@@ -334,7 +334,7 @@ class ChangePropagationDispatchJob extends Job {
 		return true;
 	}
 
-	private function dispatchFromSchema( $subject, $property_key ): bool {
+	private function dispatchFromSchema( WikiPage $subject, $property_key ): bool {
 		$store = ApplicationFactory::getInstance()->getStore();
 
 		// Find all properties that point to the schema and hereby require
@@ -358,7 +358,7 @@ class ChangePropagationDispatchJob extends Job {
 		return true;
 	}
 
-	private function scheduleChangePropagationUpdateJobFromList( $dataItems ): void {
+	private function scheduleChangePropagationUpdateJobFromList( array $dataItems ): void {
 		foreach ( $dataItems as $dataItem ) {
 
 			if ( $dataItem === '' ) {
@@ -378,7 +378,7 @@ class ChangePropagationDispatchJob extends Job {
 		}
 	}
 
-	private function commitSpecificationChangePropagationAsJob( $subject, $count ): void {
+	private function commitSpecificationChangePropagationAsJob( WikiPage $subject, $count ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
@@ -417,7 +417,7 @@ class ChangePropagationDispatchJob extends Job {
 		$applicationFactory->getStore()->clear();
 	}
 
-	private function newChangePropagationUpdateJob( $title, $parameters ): ChangePropagationClassUpdateJob|ChangePropagationUpdateJob {
+	private function newChangePropagationUpdateJob( ?Title $title, array $parameters ): ChangePropagationClassUpdateJob|ChangePropagationUpdateJob {
 		$namespace = $this->getTitle()->getNamespace();
 		$parameters = $parameters + [ 'origin' => 'ChangePropagationDispatchJob' ];
 

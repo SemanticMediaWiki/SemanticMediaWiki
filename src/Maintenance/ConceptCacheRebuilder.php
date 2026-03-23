@@ -165,7 +165,7 @@ class ConceptCacheRebuilder {
 		return true;
 	}
 
-	private function workOnConcept( Title $title ) {
+	private function workOnConcept( Title $title ): int|float {
 		$concept = $this->store->getConceptCacheStatus( $title );
 
 		if ( $this->skipConcept( $title, $concept ) ) {
@@ -179,7 +179,7 @@ class ConceptCacheRebuilder {
 		return $this->lines;
 	}
 
-	private function skipConcept( $title, $concept = null ) {
+	private function skipConcept( Title $title, $concept = null ): false|string {
 		$skip = false;
 
 		if ( $concept === null ) {
@@ -246,7 +246,7 @@ class ConceptCacheRebuilder {
 		}
 	}
 
-	private function getConcepts() {
+	private function getConcepts(): array {
 		if ( $this->concept !== null ) {
 			return [ $this->createConcept() ];
 		}
@@ -258,7 +258,7 @@ class ConceptCacheRebuilder {
 		return MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $this->concept, SMW_NS_CONCEPT );
 	}
 
-	private function createMultipleConcepts() {
+	private function createMultipleConcepts(): array {
 		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
 		$titleLookup->setNamespace( SMW_NS_CONCEPT );
 
@@ -275,11 +275,11 @@ class ConceptCacheRebuilder {
 		return $titleLookup->selectByIdRange( $this->startId, $endId );
 	}
 
-	private function hasOption( $key ): bool {
+	private function hasOption( string $key ): bool {
 		return isset( $this->options[$key] );
 	}
 
-	private function reportMessage( $message, $output = true ): void {
+	private function reportMessage( string $message, $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}
@@ -290,7 +290,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @since 4.0
 	 */
-	private function countDown( $seconds ): void {
+	private function countDown( int $seconds ): void {
 		for ( $i = $seconds; $i >= 0; $i-- ) {
 			if ( $i != $seconds ) {
 				echo str_repeat( "\x08", strlen( $i + 1 ) );

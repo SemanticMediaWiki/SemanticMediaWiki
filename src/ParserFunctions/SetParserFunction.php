@@ -128,7 +128,7 @@ class SetParserFunction {
 		return [ $html, 'noparse' => $template === '', 'isHTML' => false ];
 	}
 
-	private function addFieldsToTemplate( $template, $dataValue, $property, $value, $isLastElement, &$count ) {
+	private function addFieldsToTemplate( $template, $dataValue, $property, $value, bool $isLastElement, &$count ) {
 		if ( $template === '' || !$dataValue->isValid() ) {
 			return '';
 		}

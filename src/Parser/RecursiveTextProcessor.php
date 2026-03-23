@@ -183,7 +183,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @return string
 	 */
-	public function expandTemplate( $template ) {
+	public function expandTemplate( $template ): string|array {
 		$templateExpander = new TemplateExpander(
 			$this->parser
 		);

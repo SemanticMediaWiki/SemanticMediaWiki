@@ -27,7 +27,7 @@ class ConjunctionInterpreter {
 	 *
 	 * @return Condition
 	 */
-	public function interpretDescription( Conjunction $description ) {
+	public function interpretDescription( Conjunction $description ): array|Condition {
 		$params = [];
 
 		foreach ( $description->getDescriptions() as $desc ) {

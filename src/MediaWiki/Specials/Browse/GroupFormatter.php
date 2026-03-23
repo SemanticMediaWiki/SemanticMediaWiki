@@ -8,6 +8,7 @@ use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaList;
 
 /**
  * @private
@@ -154,7 +155,7 @@ class GroupFormatter {
 		);
 	}
 
-	private function findGroup( $property, $list ) {
+	private function findGroup( $property, array $list ) {
 		if ( $this->showGroup === false ) {
 			return '';
 		}
@@ -239,7 +240,7 @@ class GroupFormatter {
 	/**
 	 * @return array{properties: array, msg_key: mixed, item: mixed}[]
 	 */
-	private function prepareListFromSchema( $schemaList ): array {
+	private function prepareListFromSchema( SchemaList $schemaList ): array {
 		$list = [];
 
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
@@ -282,7 +283,7 @@ class GroupFormatter {
 		return $list;
 	}
 
-	private function findGroupFromList( $list, $property, &$dataItem, &$label ) {
+	private function findGroupFromList( array $list, $property, &$dataItem, string &$label ) {
 		foreach ( $list as $group => $data ) {
 
 			$properties = $data['properties'];

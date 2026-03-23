@@ -83,7 +83,7 @@ class SearchTable {
 	 *
 	 * @return array
 	 */
-	public function getPropertyExemptionList() {
+	public function getPropertyExemptionList(): array {
 		return array_keys( $this->propertyExemptionList );
 	}
 
@@ -105,7 +105,7 @@ class SearchTable {
 			$property = Property::newFromUserLabel(
 				$dataItem->getDBKey()
 			);
-		} catch ( PredefinedPropertyLabelMismatchException $e ) {
+		} catch ( PredefinedPropertyLabelMismatchException ) {
 			// The property no longer exists (or is no longer available) therefore
 			// exempt it.
 			return true;
@@ -216,7 +216,9 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return int $minTokenSize
+	 * @param int $minTokenSize
+	 *
+	 * @return void
 	 */
 	public function setMinTokenSize( $minTokenSize ): void {
 		$this->minTokenSize = (int)$minTokenSize;

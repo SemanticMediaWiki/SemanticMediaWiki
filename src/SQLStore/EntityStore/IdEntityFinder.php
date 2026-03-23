@@ -4,9 +4,10 @@ namespace SMW\SQLStore\EntityStore;
 
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,7 +21,7 @@ class IdEntityFinder {
 	 * @since 2.1
 	 */
 	public function __construct(
-		private readonly Store $store,
+		private readonly SQLStore $store,
 		private readonly IteratorFactory $iteratorFactory,
 		private readonly IdCacheManager $idCacheManager,
 	) {
@@ -32,9 +33,9 @@ class IdEntityFinder {
 	 * @param array $idList
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return WikiPage[]
+	 * @return MappingIterator|array
 	 */
-	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ): array|MappingIterator {
 		if ( $idList === [] ) {
 			return [];
 		}
@@ -119,7 +120,7 @@ class IdEntityFinder {
 		return null;
 	}
 
-	private function get( $id ) {
+	private function get( int $id ) {
 		$cache = $this->idCacheManager->get( 'entity.lookup' );
 
 		if ( ( $dataItem = $cache->fetch( $id ) ) !== false ) {
@@ -141,7 +142,7 @@ class IdEntityFinder {
 		return $dataItem;
 	}
 
-	private function fetchFromTable( $conditions, $selectRow = false ) {
+	private function fetchFromTable( array $conditions, bool $selectRow = false ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$fields = [

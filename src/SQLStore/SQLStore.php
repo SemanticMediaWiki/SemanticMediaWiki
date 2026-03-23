@@ -11,12 +11,13 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValues\WikiPageValue;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Query;
-use SMW\Query\QueryResult;
 use SMW\RequestOptions;
 use SMW\Services\ServicesContainer;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
@@ -146,7 +147,7 @@ class SQLStore extends Store {
 	private $entityLookup;
 
 	/**
-	 * @var ServicesContainer
+	 * @var ?ServicesContainer
 	 */
 	protected $servicesContainer;
 
@@ -231,7 +232,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getProperties( WikiPage $subject, $requestOptions = null ) {
+	public function getProperties( WikiPage $subject, $requestOptions = null ): array {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -270,7 +271,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInProperties( DataItem $value, $requestoptions = null ) {
+	public function getInProperties( DataItem $value, $requestoptions = null ): array {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -353,7 +354,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Query $query
 	 *
-	 * @return QueryResult|string|int depends on $query->querymode
+	 * @return mixed depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
 		$result = null;
@@ -383,7 +384,7 @@ class SQLStore extends Store {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function getPropertiesSpecial( $requestOptions = null ) {
+	public function getPropertiesSpecial( $requestOptions = null ): CachedListLookup {
 		return $this->factory->newPropertyUsageCachedListLookup( $requestOptions );
 	}
 
@@ -392,7 +393,7 @@ class SQLStore extends Store {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function getUnusedPropertiesSpecial( $requestOptions = null ) {
+	public function getUnusedPropertiesSpecial( $requestOptions = null ): CachedListLookup {
 		return $this->factory->newUnusedPropertyCachedListLookup( $requestOptions );
 	}
 
@@ -401,7 +402,7 @@ class SQLStore extends Store {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function getWantedPropertiesSpecial( $requestOptions = null ) {
+	public function getWantedPropertiesSpecial( $requestOptions = null ): CachedListLookup {
 		return $this->factory->newUndeclaredPropertyCachedListLookup( $requestOptions );
 	}
 
@@ -441,7 +442,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): bool {
 		$installer = $this->factory->newInstaller();
 		$installer->setMessageReporter( $this->messageReporter );
 
@@ -474,7 +475,7 @@ class SQLStore extends Store {
 	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
-	public function refreshConceptCache( Title $concept ) {
+	public function refreshConceptCache( Title $concept ): array {
 		return $this->factory->newMasterConceptCache()->refreshConceptCache( $concept );
 	}
 
@@ -503,7 +504,7 @@ class SQLStore extends Store {
 	 *
 	 * @return Concept|null
 	 */
-	public function getConceptCacheStatus( $concept ) {
+	public function getConceptCacheStatus( $concept ): ?Concept {
 		return $this->factory->newSlaveConceptCache()->getStatus( $concept );
 	}
 
@@ -519,7 +520,7 @@ class SQLStore extends Store {
 	 *
 	 * @return array
 	 */
-	public function getSQLOptions( ?RequestOptions $requestOptions = null, $valueCol = '' ) {
+	public function getSQLOptions( ?RequestOptions $requestOptions = null, $valueCol = '' ): array {
 		return RequestOptionsProcessor::getSQLOptions( $requestOptions, $valueCol );
 	}
 
@@ -549,7 +550,7 @@ class SQLStore extends Store {
 	 *
 	 * @return DataItem[]
 	 */
-	public function applyRequestOptions( array $data, ?RequestOptions $requestOptions = null ) {
+	public function applyRequestOptions( array $data, ?RequestOptions $requestOptions = null ): array {
 		return RequestOptionsProcessor::applyRequestOptions( $this, $data, $requestOptions );
 	}
 
@@ -624,7 +625,7 @@ class SQLStore extends Store {
 	 *
 	 * @param string|null $type
 	 *
-	 * @return array
+	 * @return array|string
 	 */
 	public function getInfo( $type = null ) {
 		if ( $type === 'store' ) {
@@ -682,7 +683,7 @@ class SQLStore extends Store {
 	/**
 	 * @return ServicesContainer
 	 */
-	protected function newServicesContainer() {
+	protected function newServicesContainer(): ServicesContainer {
 		return $this->factory->newServicesContainer();
 	}
 

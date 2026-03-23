@@ -83,7 +83,7 @@ class DocumentReplicationExaminer {
 		return $this->findError( $subject, $params, $dataItems, $id );
 	}
 
-	private function findError( $subject, $params, $dataItems, $id ): ?ReplicationError {
+	private function findError( WikiPage $subject, array $params, $dataItems, $id ): ?ReplicationError {
 		$replicationError = $this->hasMissingModificationDate( $dataItems, $id );
 
 		if ( $replicationError instanceof ReplicationError ) {
@@ -111,11 +111,11 @@ class DocumentReplicationExaminer {
 		return null;
 	}
 
-	private function newReplicationError( $type, $data ): ReplicationError {
+	private function newReplicationError( string $type, array $data ): ReplicationError {
 		return new ReplicationError( $type, $data );
 	}
 
-	private function isMissingDocument( $params, $id ) {
+	private function isMissingDocument( array $params, $id ) {
 		if ( !isset( $params[self::CHECK_DOCUMENT_EXISTS] ) || $params[self::CHECK_DOCUMENT_EXISTS] === false ) {
 			return false;
 		}
@@ -129,7 +129,7 @@ class DocumentReplicationExaminer {
 		}
 	}
 
-	private function runCheck( $method, $id ) {
+	private function runCheck( string $method, $id ) {
 		try {
 			$replicationStatusResponse = $this->replicationStatus->get( $method, $id );
 		} catch ( BadRequest400Exception $e ) {
@@ -141,7 +141,7 @@ class DocumentReplicationExaminer {
 		return $replicationStatusResponse;
 	}
 
-	private function hasMissingModificationDate( $dataItems, $id ) {
+	private function hasMissingModificationDate( $dataItems, $id ): false|ReplicationError {
 		if ( $this->replicationStatusResponse['modification_date'] !== false && $dataItems !== [] ) {
 			return false;
 		}
@@ -149,7 +149,7 @@ class DocumentReplicationExaminer {
 		return $this->newReplicationError( ReplicationError::TYPE_MODIFICATION_DATE_MISSING, [ 'id' => $id ] );
 	}
 
-	private function hasModificationDateDiff( $dataItems, $id ) {
+	private function hasModificationDateDiff( $dataItems, $id ): false|ReplicationError {
 		$dataItem = end( $dataItems );
 
 		if ( $dataItem->equals( $this->replicationStatusResponse['modification_date'] ) ) {
@@ -165,7 +165,7 @@ class DocumentReplicationExaminer {
 		return $this->newReplicationError( ReplicationError::TYPE_MODIFICATION_DATE_DIFF, $data );
 	}
 
-	private function hasAssociatedRevisionDiff( $id ) {
+	private function hasAssociatedRevisionDiff( $id ): false|ReplicationError {
 		$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
 			$id
 		);
@@ -183,7 +183,7 @@ class DocumentReplicationExaminer {
 		return $this->newReplicationError( ReplicationError::TYPE_ASSOCIATED_REVISION_DIFF, $data );
 	}
 
-	private function hasMissingFileAttachment( $params, $subject ) {
+	private function hasMissingFileAttachment( array $params, WikiPage $subject ): false|ReplicationError {
 		if ( !isset( $params[self::CHECK_MISSING_FILE_ATTACHMENT] ) || $params[self::CHECK_MISSING_FILE_ATTACHMENT] === false ) {
 			return false;
 		}

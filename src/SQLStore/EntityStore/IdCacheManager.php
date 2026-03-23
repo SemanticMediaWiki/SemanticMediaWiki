@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use Onoi\Cache\Cache;
 use RuntimeException;
 use SMW\DataItems\WikiPage;
 
@@ -58,7 +59,7 @@ class IdCacheManager {
 	 *
 	 * @param string $key
 	 *
-	 * @return bool
+	 * @return Cache
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->caches[$key] ) ) {
@@ -157,7 +158,7 @@ class IdCacheManager {
 		$hash = $this->computeSha1(
 			[
 				$dataItem->getDBKey(),
-				(int)$dataItem->getNamespace(),
+				$dataItem->getNamespace(),
 				$dataItem->getInterwiki(),
 				$dataItem->getSubobjectName()
 			]
@@ -175,13 +176,13 @@ class IdCacheManager {
 	 *
 	 * @param WikiPage|array $args
 	 *
-	 * @return int|bool
+	 * @return int|false
 	 */
-	public function getId( $args ) {
+	public function getId( $args ): int|false {
 		if ( $args instanceof WikiPage ) {
 			$args = [
 				$args->getDBKey(),
-				(int)$args->getNamespace(),
+				$args->getNamespace(),
 				$args->getInterwiki(),
 				$args->getSubobjectName()
 			];

@@ -3,6 +3,7 @@
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
@@ -187,7 +188,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretDisjunction( $description, $property, $pid, $field, &$opType ) {
+	private function interpretDisjunction( Disjunction $description, Property $property, $pid, $field, string &$opType ): array|Condition {
 		$p = [];
 		$opType = Condition::TYPE_SHOULD;
 
@@ -216,7 +217,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretClassDescription( $description, $property, $pid, $field ) {
+	private function interpretClassDescription( ClassDescription $description, Property $property, $pid, $field ): array|Condition {
 		$queryString = $description->getQueryString();
 		$condition = $this->conditionBuilder->interpretDescription( $description );
 
@@ -258,7 +259,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretNamespaceDescription( $description, $property, $pid, $field ) {
+	private function interpretNamespaceDescription( NamespaceDescription $description, Property $property, $pid, $field ): array|Condition {
 		$queryString = $description->getQueryString();
 		$condition = $this->conditionBuilder->interpretDescription( $description );
 
@@ -284,7 +285,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretConjunction( $description, $property, $pid, $field ) {
+	private function interpretConjunction( Conjunction $description, Property $property, $pid, $field ): array|Condition {
 		$p = [];
 		$logs = [];
 		$queryString = $description->getQueryString();
@@ -344,7 +345,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretChain( $desc, $property, $pid, $field ) {
+	private function interpretChain( SomeProperty $desc, Property $property, $pid, $field ) {
 		$desc->sourceChainMemberField = "$pid.wpgID";
 		$p = [];
 
@@ -400,7 +401,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretThingDescription( $desc, $property, $pid, $field, &$opType ) {
+	private function interpretThingDescription( ThingDescription $desc, Property $property, $pid, $field, string &$opType ) {
 		$isResourceType = false;
 
 		if ( DataTypeRegistry::getInstance()->getDataItemByType( $property->findPropertyValueType() ) === DataItem::TYPE_WIKIPAGE ) {
@@ -434,7 +435,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretValueDescription( $desc, $property, $pid, &$field, &$type ) {
+	private function interpretValueDescription( ValueDescription $desc, Property $property, $pid, &$field, string &$type ) {
 		$options = [
 			'type' => $type,
 			'field' => $field,

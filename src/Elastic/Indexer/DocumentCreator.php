@@ -287,7 +287,7 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newHead( $id, WikiPage $subject, $type ): Document {
+	private function newHead( int $id, WikiPage $subject, string $type ): Document {
 		return new Document( $id, [ 'subject' => $this->makeSubject( $subject ) ], $type );
 	}
 

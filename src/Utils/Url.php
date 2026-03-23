@@ -103,7 +103,7 @@ class Url {
 		return $text;
 	}
 
-	private function is( $flag ): bool {
+	private function is( int $flag ): bool {
 		return in_array( $flag, $this->flag );
 	}
 

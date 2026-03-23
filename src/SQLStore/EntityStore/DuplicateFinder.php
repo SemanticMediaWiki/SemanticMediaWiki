@@ -3,8 +3,10 @@
 namespace SMW\SQLStore\EntityStore;
 
 use InvalidArgumentException;
+use Iterator;
 use SMW\DataItems\DataItem;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
@@ -79,9 +81,9 @@ class DuplicateFinder {
 	 *
 	 * @param string|null $table
 	 *
-	 * @return Iterator|[]
+	 * @return MappingIterator|array
 	 */
-	public function findDuplicates( $table = null ) {
+	public function findDuplicates( $table = null ): Iterator|array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -140,7 +142,7 @@ class DuplicateFinder {
 		return $mappingIterator;
 	}
 
-	private function id_table( $table, $query ): void {
+	private function id_table( string $table, $query ): void {
 		$fields = self::fields( $table );
 
 		$query->table( $table );
@@ -157,7 +159,7 @@ class DuplicateFinder {
 		);
 	}
 
-	private function common_table( $table, $query ): void {
+	private function common_table( string $table, $query ): void {
 		$fields = self::fields( $table );
 
 		$query->table( $table );
@@ -171,7 +173,7 @@ class DuplicateFinder {
 		);
 	}
 
-	private static function fields( $tableName ) {
+	private static function fields( string $tableName ) {
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {

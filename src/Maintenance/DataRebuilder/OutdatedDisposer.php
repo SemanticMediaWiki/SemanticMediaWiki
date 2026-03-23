@@ -130,7 +130,7 @@ class OutdatedDisposer {
 		);
 	}
 
-	private function disposeOutdatedQueryLinks( $resultIterator, $count, $label ): void {
+	private function disposeOutdatedQueryLinks( $resultIterator, $count, string $label ): void {
 		$this->messageReporter->reportMessage( "\n" );
 		$counter = 0;
 

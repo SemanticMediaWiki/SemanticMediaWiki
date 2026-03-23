@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\TableBuilder;
 
 use Exception;
+use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\DataItem;
 use SMW\SQLStore\SQLStore;
 
@@ -29,12 +30,12 @@ class TableSchemaManager {
 	private $tables = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $options = [];
 
 	/**
-	 * @var int
+	 * @var int|false
 	 */
 	private $featureFlags = false;
 
@@ -90,7 +91,7 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param int $featureFlags
+	 * @param int|false $featureFlags
 	 */
 	public function setFeatureFlags( $featureFlags ): void {
 		$this->featureFlags = $featureFlags;
@@ -150,7 +151,7 @@ class TableSchemaManager {
 			// are correctly initialized otherwise SMW can't recover
 			try {
 				$diHandler = $this->store->getDataItemHandlerForDIType( $propertyTable->getDiType() );
-			} catch ( Exception $e ) {
+			} catch ( Exception ) {
 				continue;
 			}
 
@@ -339,7 +340,7 @@ class TableSchemaManager {
 
 		if ( !$propertyTable->isFixedPropertyTable() ) {
 			$fieldarray['p_id'] = [ FieldType::FIELD_ID, 'NOT NULL' ];
-			$indexes['sp'] = $indexes['sp'] . ',p_id';
+			$indexes['sp'] .= ',p_id';
 		}
 
 		// TODO Special handling; concepts should be handled differently

@@ -120,7 +120,7 @@ class RefreshJob extends Job {
 		$job->insert();
 	}
 
-	protected function getNamespace( $run ) {
+	protected function getNamespace( $run ): false|array {
 		if ( !$this->hasParameter( 'rc' ) ) {
 			return false;
 		}

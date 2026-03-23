@@ -95,7 +95,7 @@ class SemanticDataDeserializer implements Deserializer {
 	/**
 	 * @return DataItem
 	 */
-	private function doDeserializeDataItem( $property, $data, $value, $semanticData ): void {
+	private function doDeserializeDataItem( ?Property $property, $data, $value, $semanticData ): void {
 		$dataItem = null;
 
 		if ( !is_array( $value ) ) {
@@ -152,7 +152,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 *
 	 * @return Container|null
 	 */
-	private function doDeserializeSubSemanticData( $data, $id, $semanticData ) {
+	private function doDeserializeSubSemanticData( $data, $id, ContainerSemanticData $semanticData ): Container {
 		if ( !isset( $data['sobj'] ) ) {
 			return new Container( $semanticData );
 		}

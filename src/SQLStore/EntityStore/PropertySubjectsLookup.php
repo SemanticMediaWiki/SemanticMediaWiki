@@ -5,11 +5,15 @@ namespace SMW\SQLStore\EntityStore;
 use RuntimeException;
 use SMW\DataItems\Container;
 use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\IteratorFactory;
 use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -77,11 +81,11 @@ class PropertySubjectsLookup {
 	 * @since 3.1
 	 *
 	 * @param array $ids
-	 * @param DataItem $property
+	 * @param Property $property
 	 * @param TableDefinition $proptable
 	 * @param RequestOptions $requestOptions
 	 */
-	public function prefetchFromTable( array $ids, DataItem $property, TableDefinition $proptable, RequestOptions $requestOptions ) {
+	public function prefetchFromTable( array $ids, Property $property, TableDefinition $proptable, RequestOptions $requestOptions ) {
 		if ( $ids === [] ) {
 			return [];
 		}
@@ -153,7 +157,7 @@ class PropertySubjectsLookup {
 		return $this->prefetch[$hash];
 	}
 
-	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, ?RequestOptions $requestOptions = null ) {
+	private function doFetch( $pid, TableDefinition $proptable, DataItem|array|null $dataItem, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$group = false;
 
@@ -332,7 +336,7 @@ class PropertySubjectsLookup {
 	 *
 	 * @param stdClass $row
 	 *
-	 * @return DIWikiPage
+	 * @return DataItem
 	 */
 	public function newFromRow( $row ) {
 		try {
@@ -355,7 +359,7 @@ class PropertySubjectsLookup {
 
 				return $dataItem;
 			}
-		} catch ( DataItemHandlerException $e ) {
+		} catch ( DataItemHandlerException ) {
 			// silently drop data, should be extremely rare and will usually fix itself at next edit
 		}
 
@@ -365,7 +369,7 @@ class PropertySubjectsLookup {
 		return $this->dataItemHandler->dataItemFromDBKeys( [ 'Blankpage/' . $title, NS_SPECIAL, '', '', '' ] );
 	}
 
-	private function getWhereConds( $query, $dataItem ): void {
+	private function getWhereConds( $query, DataItem|array|null $dataItem ): void {
 		$conds = '';
 
 		if ( $dataItem instanceof Container ) {
@@ -383,7 +387,7 @@ class PropertySubjectsLookup {
 		}
 	}
 
-	private function getIndexHint( $dataItemHandler, $pid, $dataItem = null ): string {
+	private function getIndexHint( $dataItemHandler, $pid, DataItem|array|null $dataItem ): string {
 		$index = '';
 
 		if ( $dataItem !== null || $dataItemHandler->getIndexHint( $dataItemHandler::IHINT_PSUBJECTS ) === '' ) {

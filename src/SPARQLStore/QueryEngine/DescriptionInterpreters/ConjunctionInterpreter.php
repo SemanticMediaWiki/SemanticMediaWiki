@@ -8,6 +8,7 @@ use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -116,7 +117,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return null;
 	}
 
-	private function doResolveSubDescriptionsRecursively( $subDescriptions, $joinVariable ) {
+	private function doResolveSubDescriptionsRecursively( $subDescriptions, $joinVariable ): FalseCondition|stdClass {
 		// Using a stdClass as data container for simpler handling in follow-up tasks
 		// and as the class is not exposed publicly we don't need to create
 		// an extra "real" class to manage its elements
@@ -184,7 +185,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $subConditionElements;
 	}
 
-	private function createConditionFromSubConditionElements( $subConditionElements ) {
+	private function createConditionFromSubConditionElements( stdClass $subConditionElements ): Condition {
 		if ( $subConditionElements->singletonMatchElement instanceof ExpElement ) {
 			return $this->createSingletonCondition( $subConditionElements );
 		}
@@ -196,7 +197,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $this->createWhereCondition( $subConditionElements );
 	}
 
-	private function createSingletonCondition( $subConditionElements ): SingletonCondition {
+	private function createSingletonCondition( stdClass $subConditionElements ): SingletonCondition {
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}
@@ -211,14 +212,14 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function createFilterCondition( $subConditionElements ): FilterCondition {
+	private function createFilterCondition( stdClass $subConditionElements ): FilterCondition {
 		return new FilterCondition(
 			$subConditionElements->filter,
 			$subConditionElements->namespaces
 		);
 	}
 
-	private function createWhereCondition( $subConditionElements ): WhereCondition {
+	private function createWhereCondition( stdClass $subConditionElements ): WhereCondition {
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}

@@ -196,7 +196,7 @@ class PropertiesQueryPage extends QueryPage {
 	 *
 	 * @return array
 	 */
-	private function getUserDefinedPropertyInfo( $title, $property, $useCount ): array {
+	private function getUserDefinedPropertyInfo( Title $title, Property $property, $useCount ): array {
 		if ( $useCount <= $this->settings->get( 'smwgPropertyLowUsageThreshold' ) ) {
 			$this->getMessageFormatter()->addFromKey( 'smw_propertyhardlyused' );
 		}

@@ -137,7 +137,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Number {
 		if ( is_string( $dbkeys ) ) {
 			return Number::doUnserialize( $dbkeys );
 		}

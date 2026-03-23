@@ -120,7 +120,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
+	public function getStats(): array {
 		return $this->cacheStats->getStats();
 	}
 
@@ -273,7 +273,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		}
 	}
 
-	private function canUse( $query ) {
+	private function canUse( Query $query ) {
 		if ( !$this->enabledCache || !$this->blobStore->canUse() ) {
 			return false;
 		}
@@ -281,7 +281,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $query->getContextPage() !== null || ( $query->getContextPage() === null && $this->nonEmbeddedCacheLifetime > 0 );
 	}
 
-	private function newQueryResultFromCache( $queryId, $query, $container ) {
+	private function newQueryResultFromCache( string $queryId, Query $query, $container ) {
 		$results = [];
 		$incrStats = 'hits.Undefined';
 		$itemJournal = null;
@@ -353,7 +353,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function addQueryResultToCache( $queryResult, $queryId, $container, $query ): void {
+	private function addQueryResultToCache( QueryResult $queryResult, string $queryId, $container, Query $query ): void {
 		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
 			$context = 'Undefined';
 		}
@@ -389,7 +389,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$deferredTransactionalUpdate->pushUpdate();
 	}
 
-	private function doCacheQueryResult( $queryResult, $queryId, $container, $query ) {
+	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, $container, Query $query ) {
 		$results = [];
 
 		// Keep the simple string representation to avoid unnecessary data cruft
@@ -427,7 +427,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function addToLinkedList( $contextPage, $queryId ): void {
+	private function addToLinkedList( $contextPage, string $queryId ): void {
 		// Ensure that without QueryDependencyLinksStore being enabled recorded
 		// subjects related to a query can be discoverable and purged separately
 		$container = $this->blobStore->read(
@@ -456,7 +456,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return md5( $subject . self::VERSION . $this->cacheKeyExtension );
 	}
 
-	private function log( $message, $context = [] ): void {
+	private function log( string $message, $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}
@@ -464,7 +464,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$this->logger->info( $message, $context );
 	}
 
-	private function noCacheExemption( $query ): string {
+	private function noCacheExemption( Query $query ): string {
 		$id = 'noCache.misc';
 
 		if ( !$this->canUse( $query ) ) {

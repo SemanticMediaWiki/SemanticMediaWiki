@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\AppendIterator;
 use SMW\Store;
 
 /**
@@ -37,6 +38,8 @@ class ChangePropagationEntityLookup {
 	 * @since 3.0
 	 *
 	 * @param bool $isTypePropagation
+	 *
+	 * @return void
 	 */
 	public function isTypePropagation( $isTypePropagation ): void {
 		$this->isTypePropagation = (bool)$isTypePropagation;
@@ -47,7 +50,7 @@ class ChangePropagationEntityLookup {
 	 *
 	 * @param Property|WikiPage $entity
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 * @throws RuntimeException
 	 */
 	public function findAll( $entity ) {
@@ -65,7 +68,7 @@ class ChangePropagationEntityLookup {
 	 *
 	 * @param Property $property
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 */
 	public function findByProperty( Property $property ) {
 		$dataItems = [];
@@ -102,7 +105,7 @@ class ChangePropagationEntityLookup {
 	 *
 	 * @param WikiPage $category
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 */
 	public function findByCategory( WikiPage $category ) {
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
@@ -128,7 +131,7 @@ class ChangePropagationEntityLookup {
 		return $appendIterator;
 	}
 
-	private function fetchOtherReferencesOnTypePropagation( $property ) {
+	private function fetchOtherReferencesOnTypePropagation( Property $property ) {
 		// Find other references only on a type propagation (which causes a
 		// change of table/id assignments) for entity references
 		if ( $this->isTypePropagation === false ) {

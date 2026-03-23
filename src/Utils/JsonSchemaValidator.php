@@ -55,7 +55,7 @@ class JsonSchemaValidator {
 	 * @param JsonSerializable $data
 	 * @param string|null $schemaLink
 	 */
-	private function runValidation( $data, $schemaLink ): void {
+	private function runValidation( JsonSerializable $data, string $schemaLink ): void {
 		// https://github.com/justinrainbow/json-schema/issues/203
 		$data = json_decode( $data->jsonSerialize() );
 

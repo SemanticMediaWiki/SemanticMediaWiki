@@ -19,7 +19,7 @@ class PredefinedProperties {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $predefinedPropertyList = [];
 
@@ -58,7 +58,7 @@ class PredefinedProperties {
 
 			try {
 				$property = new Property( $prop );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				$property = null;
 				$this->messageReporter->reportMessage( "   ... skipping {$prop} due to invalid registration ...\n" );
 			}
@@ -73,7 +73,7 @@ class PredefinedProperties {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function doUpdate( $property, $id ): void {
+	private function doUpdate( Property $property, $id ): void {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// Try to find the ID for a non-fixed predefined property

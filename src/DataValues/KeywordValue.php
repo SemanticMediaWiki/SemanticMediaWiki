@@ -223,7 +223,7 @@ class KeywordValue extends StringValue {
 		return $this->uri;
 	}
 
-	private function getFormatLink( $dataItem, $value ) {
+	private function getFormatLink( $dataItem, $value ): string|Infolink {
 		$infolink = '';
 
 		$data = json_decode(

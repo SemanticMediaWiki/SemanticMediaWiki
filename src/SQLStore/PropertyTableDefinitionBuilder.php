@@ -175,7 +175,7 @@ class PropertyTableDefinitionBuilder {
 	private function addTableDefinitionForFixedProperties( array $properties, array $fixedPropertyTablePrefix = [], $tableType = false ): void {
 		foreach ( $properties as $propertyKey => $propertyTableSuffix ) {
 
-			$tablePrefix = isset( $fixedPropertyTablePrefix[$propertyKey] ) ? $fixedPropertyTablePrefix[$propertyKey] : self::PROPERTY_TABLE_PREFIX;
+			$tablePrefix = $fixedPropertyTablePrefix[$propertyKey] ?? self::PROPERTY_TABLE_PREFIX;
 
 			// Either as plain index array containing the property key or as associated
 			// array with property key => tableSuffix

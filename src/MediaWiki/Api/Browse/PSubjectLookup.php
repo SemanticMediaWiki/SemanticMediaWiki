@@ -101,7 +101,7 @@ class PSubjectLookup extends Lookup {
 		return $res;
 	}
 
-	private function findPropertySubjects( $property, $value, $limit, $offset, $parameters ): array {
+	private function findPropertySubjects( $property, $value, int $limit, int $offset, array $parameters ): array {
 		$list = [];
 		$dataItem = null;
 
@@ -146,7 +146,7 @@ class PSubjectLookup extends Lookup {
 		return [ $list, $continueOffset ];
 	}
 
-	private function newRequestOptions( $parameters ): RequestOptions {
+	private function newRequestOptions( array $parameters ): RequestOptions {
 		$limit = 20;
 		$offset = 0;
 		$search = '';

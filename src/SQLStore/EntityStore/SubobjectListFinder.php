@@ -5,6 +5,8 @@ namespace SMW\SQLStore\EntityStore;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
+use SMW\Iterators\ResultIterator;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -23,12 +25,12 @@ class SubobjectListFinder {
 	private $subject;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $mappingIterator = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $skipConditions = [];
 
@@ -68,7 +70,7 @@ class SubobjectListFinder {
 	 *
 	 * @return MappingIterator
 	 */
-	private function newMappingIterator( WikiPage $subject ) {
+	private function newMappingIterator( WikiPage $subject ): MappingIterator {
 		$callback = static function ( $row ) use ( $subject ) {
 			// #1955
 			if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
@@ -95,7 +97,7 @@ class SubobjectListFinder {
 		);
 	}
 
-	private function newResultIterator( WikiPage $subject ) {
+	private function newResultIterator( WikiPage $subject ): ResultIterator {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$key = $subject->getDBkey();
 

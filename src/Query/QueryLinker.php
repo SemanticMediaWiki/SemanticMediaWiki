@@ -52,7 +52,7 @@ class QueryLinker {
 	/**
 	 * @return mixed[]
 	 */
-	private static function getParameters( $query ): array {
+	private static function getParameters( Query $query ): array {
 		$params = [ trim( $query->getQueryString( true ) ?? '' ) ];
 
 		foreach ( $query->getExtraPrintouts() as /* PrintRequest */ $printout ) {

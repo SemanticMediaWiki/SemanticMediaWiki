@@ -153,7 +153,7 @@ class DataRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function rebuild() {
+	public function rebuild(): bool {
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Notice' )
 		);
@@ -224,7 +224,7 @@ class DataRebuilder {
 		return $this->exceptionCount;
 	}
 
-	private function rebuildFromSelection( $params = [] ): bool {
+	private function rebuildFromSelection( array $params = [] ): bool {
 		if ( $params !== [] ) {
 			foreach ( $params as $key => $value ) {
 				$this->options->set( $key, $value );

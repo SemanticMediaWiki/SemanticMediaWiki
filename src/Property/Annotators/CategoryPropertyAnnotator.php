@@ -134,7 +134,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$annotationProcessor->release();
 	}
 
-	private function modifySemanticData( $semanticData, $annotationProcessor, $subject, $property, $catname ) {
+	private function modifySemanticData( $semanticData, AnnotationProcessor $annotationProcessor, $subject, Property $property, $catname ) {
 		$cat = new WikiPage( $catname, NS_CATEGORY );
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
@@ -193,7 +193,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		return false;
 	}
 
-	private function getRedirectTarget( $subject ) {
+	private function getRedirectTarget( WikiPage $subject ) {
 		if ( $this->useCategoryRedirect ) {
 			return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $subject );
 		}

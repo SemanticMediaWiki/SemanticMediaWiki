@@ -89,7 +89,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 		return $this->getDescriptionFor( $subdescriptions );
 	}
 
-	private function getDescriptionFor( $subdescriptions ) {
+	private function getDescriptionFor( array $subdescriptions ) {
 		switch ( count( $subdescriptions ) ) {
 			case 0:
 				return new ThingDescription();
@@ -100,7 +100,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 		}
 	}
 
-	private function getDescriptionForProperty( $diProperty, $values, &$valueIndex, $propertyIndex ): ?SomeProperty {
+	private function getDescriptionForProperty( $diProperty, array $values, int|string &$valueIndex, int $propertyIndex ): ?SomeProperty {
 		$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
 		$beforePrepareValue = $values[$valueIndex];
 

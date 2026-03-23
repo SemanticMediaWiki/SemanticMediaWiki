@@ -157,7 +157,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return int
 	 */
-	public function getSize() {
+	public function getSize(): int|float {
 		return 1 + $this->getDescription()->getSize();
 	}
 
@@ -166,7 +166,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return int
 	 */
-	public function getDepth() {
+	public function getDepth(): int|float {
 		return 1 + $this->getDescription()->getDepth();
 	}
 
@@ -175,7 +175,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return int
 	 */
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int|string {
 		return SMW_PROPERTY_QUERY | $this->description->getQueryFeatures();
 	}
 
@@ -184,7 +184,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return SomeProperty
 	 */
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
+	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
 		if ( ( $maxsize <= 0 ) || ( $maxdepth <= 0 ) ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

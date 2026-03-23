@@ -30,7 +30,7 @@ class Csv {
 	 *
 	 * @return string
 	 */
-	public function toString( array $header, array $rows, $sep = self::DEFAULT_SEP ) {
+	public function toString( array $header, array $rows, $sep = self::DEFAULT_SEP ): string|false {
 		$handle = fopen( 'php://temp', 'r+' );
 
 		// fputcsv(): delimiter must be a single character

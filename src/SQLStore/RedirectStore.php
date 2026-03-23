@@ -22,9 +22,9 @@ class RedirectStore {
 	const TABLE_NAME = 'smw_fpt_redi';
 
 	/**
-	 * @var int
+	 * @var Flag
 	 */
-	private $equalitySupport = 0;
+	private $equalitySupport;
 
 	/**
 	 * @var bool
@@ -41,6 +41,7 @@ class RedirectStore {
 		if ( $this->cache === null ) {
 			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );
 		}
+		$this->equalitySupport = new Flag( 0 );
 	}
 
 	/**
@@ -301,7 +302,7 @@ class RedirectStore {
 		return $this->store->getOption( Store::OPT_CREATE_UPDATE_JOB, true ) && $this->store->getOption( 'smwgEnableUpdateJobs' );
 	}
 
-	private function findUpdateJobs( $connection, $query, &$jobs ): void {
+	private function findUpdateJobs( $connection, array $query, &$jobs ): void {
 		$res = $connection->select(
 			$query['from'],
 			$query['fields'],

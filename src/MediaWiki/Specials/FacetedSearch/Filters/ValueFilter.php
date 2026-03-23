@@ -8,6 +8,10 @@ use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundException;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxRangeGroupValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\ListValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter;
 use SMW\Schema\SchemaFinder;
 use SMW\Utils\UrlArgs;
 
@@ -82,7 +86,7 @@ class ValueFilter {
 		return $cards;
 	}
 
-	private function newValueFilter( $property ) {
+	private function newValueFilter( int|string $property ): CheckboxRangeGroupValueFilter|RangeValueFilter|ListValueFilter|CheckboxValueFilter {
 		$prop = Property::newFromUserLabel(
 			$property
 		);
@@ -145,7 +149,7 @@ class ValueFilter {
 		throw new DefaultValueFilterNotFoundException( $property );
 	}
 
-	private function getType( $property ): string {
+	private function getType( Property $property ): string {
 		$type = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyValueType()
 		);

@@ -120,7 +120,7 @@ final class Setup {
 	 *
 	 * @return bool
 	 */
-	public static function isValid( $isCli = false ) {
+	public static function isValid( $isCli = false ): bool {
 		return SetupFile::isGoodSchema( $isCli );
 	}
 
@@ -195,7 +195,7 @@ final class Setup {
 	 *
 	 * @return void
 	 */
-	private function addDefaultConfigurations( &$vars, $rootDir ): void {
+	private function addDefaultConfigurations( array &$vars, string $rootDir ): void {
 		// Convenience function for extensions depending on a SMW specific
 		// test infrastructure
 		if ( !defined( 'SMW_PHPUNIT_AUTOLOADER_FILE' ) ) {
@@ -311,7 +311,7 @@ final class Setup {
 	 *
 	 * @return void
 	 */
-	private function registerJobClasses( &$vars ): void {
+	private function registerJobClasses( array &$vars ): void {
 		$jobClasses = [
 
 			'smw.update' => 'SMW\MediaWiki\Jobs\UpdateJob',
@@ -359,7 +359,7 @@ final class Setup {
 	 *
 	 * @return void
 	 */
-	private function registerPermissions( &$vars ): void {
+	private function registerPermissions( array &$vars ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -386,7 +386,7 @@ final class Setup {
 	 *
 	 * @return void
 	 */
-	private function registerParamDefinitions( &$vars ): void {
+	private function registerParamDefinitions( array &$vars ): void {
 		$vars['wgParamDefinitions']['smwformat'] = [
 			'definition' => ResultFormat::class,
 		];
@@ -399,7 +399,7 @@ final class Setup {
 	 *
 	 * @return void
 	 */
-	private function registerFooterIcon( &$vars ): void {
+	private function registerFooterIcon( array &$vars ): void {
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}

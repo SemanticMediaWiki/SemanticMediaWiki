@@ -102,7 +102,7 @@ class VersionExaminer {
 		return true;
 	}
 
-	private function throwFalseAndNotice( $requirements = [] ): bool {
+	private function throwFalseAndNotice( string|array $requirements = [] ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

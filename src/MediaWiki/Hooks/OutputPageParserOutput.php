@@ -112,7 +112,7 @@ class OutputPageParserOutput implements HookListener {
 		}
 	}
 
-	protected function addFactbox( OutputPage $outputPage, ParserOutput $parserOutput ) {
+	protected function addFactbox( OutputPage $outputPage, ParserOutput $parserOutput ): string|bool {
 		$request = $outputPage->getContext()->getRequest();
 
 		if ( $this->factboxText->hasText() && $request->getCheck( 'wpPreview' ) ) {

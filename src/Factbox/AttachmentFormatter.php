@@ -98,7 +98,7 @@ class AttachmentFormatter {
 		);
 	}
 
-	private function buildRow( $property, $dataItem ): void {
+	private function buildRow( Property $property, $dataItem ): void {
 		$unknown = Message::get(
 			'smw-factbox-attachments-value-unknown',
 			Message::TEXT,

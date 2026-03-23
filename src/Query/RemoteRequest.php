@@ -202,7 +202,7 @@ class RemoteRequest implements QueryEngine {
 		return [ $count, $hasFurtherResults ];
 	}
 
-	private function further_link( $query ) {
+	private function further_link( Query $query ) {
 		$link = QueryLinker::get( $query );
 
 		// Find remaining parameters, format, template etc.

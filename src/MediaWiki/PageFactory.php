@@ -32,7 +32,7 @@ class PageFactory {
 	 * @return PageView
 	 * @throws RuntimeException
 	 */
-	public function newPageFromTitle( Title $title ) {
+	public function newPageFromTitle( Title $title ): PropertyPage|ConceptPage {
 		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
 			return $this->newPropertyPage( $title );
 		} elseif ( $title->getNamespace() === SMW_NS_CONCEPT ) {

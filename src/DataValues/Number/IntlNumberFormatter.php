@@ -160,7 +160,7 @@ class IntlNumberFormatter {
 	 * @param int|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
 	 */
-	private function doFormatByHeuristicRuleWith( $value, $precision = false ): string {
+	private function doFormatByHeuristicRuleWith( $value, bool $precision = false ): string {
 		// BC configuration to keep default behaviour
 		$precision = $this->defaultPrecision;
 
@@ -282,7 +282,7 @@ class IntlNumberFormatter {
 		return strlen( strrchr( $value, "." ) ) - 1;
 	}
 
-	private function doFormatExponentialNotation( $value ) {
+	private function doFormatExponentialNotation( $value ): string|array {
 		return str_replace(
 			[ '.', 'E' ],
 			[ $this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ],
@@ -356,7 +356,7 @@ class IntlNumberFormatter {
 		return $language;
 	}
 
-	private function getPreferredLocalizedSeparator( $custom, $standard, $language ) {
+	private function getPreferredLocalizedSeparator( string $custom, string $standard, $language ) {
 		if ( $this->options->has( $custom ) && ( $separator = $this->options->get( $custom ) ) !== false ) {
 			return $separator;
 		}

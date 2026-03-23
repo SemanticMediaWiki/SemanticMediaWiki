@@ -141,7 +141,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		$manualEntryLogger->log( 'admin', $this->user, 'Special:SMWAdmin', 'Forced removal of ID ' . $id );
 	}
 
-	private function getForm( $webRequest, $id ): string {
+	private function getForm( WebRequest $webRequest, $id ): string {
 		[ $result, $error ] = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {
@@ -203,7 +203,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return $html . Html::element( 'p', [], '' );
 	}
 
-	private function createInfoMessageById( $webRequest, &$id ) {
+	private function createInfoMessageById( WebRequest $webRequest, &$id ): array {
 		if ( $webRequest->getText( 'action' ) !== 'lookup' || $id === '' ) {
 			return [ '', '' ];
 		}

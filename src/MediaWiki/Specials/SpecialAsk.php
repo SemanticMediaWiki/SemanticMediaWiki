@@ -415,7 +415,7 @@ class SpecialAsk extends SpecialPage {
 		);
 	}
 
-	private function fetchResults( &$printer, &$queryobj, &$urlArgs ) {
+	private function fetchResults( &$printer, &$queryobj, UrlArgs &$urlArgs ): array|int {
 		// Copy the printout to retain the original state while in case of no
 		// specific subject (THIS) request extend the query with a
 		// `PrintRequest::PRINT_THIS` column
@@ -570,7 +570,7 @@ class SpecialAsk extends SpecialPage {
 		return '{{#ask: ' . $code . '}}';
 	}
 
-	private function print_borrowed_msg( &$html, &$searchInfoText ): void {
+	private function print_borrowed_msg( string &$html, string &$searchInfoText ): void {
 		if ( !$this->isBorrowedMode ) {
 			return;
 		}
@@ -653,7 +653,7 @@ class SpecialAsk extends SpecialPage {
 		return $urlArgs;
 	}
 
-	private function fetchQueryResult( $params ): array {
+	private function fetchQueryResult( array $params ): array {
 		$res = null;
 		$debug = '';
 		$duration = 0;

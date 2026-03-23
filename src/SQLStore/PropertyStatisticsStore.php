@@ -306,7 +306,7 @@ class PropertyStatisticsStore {
 		);
 	}
 
-	private function log( $message, $context = [] ): void {
+	private function log( string $message, $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

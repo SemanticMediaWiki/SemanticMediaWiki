@@ -96,7 +96,7 @@ class ListLookup extends Lookup {
 		return $res;
 	}
 
-	private function newRequestOptions( $parameters ): RequestOptions {
+	private function newRequestOptions( array $parameters ): RequestOptions {
 		$limit = 50;
 		$offset = 0;
 		$search = '';
@@ -168,7 +168,7 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function fetchFromTable( $ns, $requestOptions, $parameters ): array {
+	private function fetchFromTable( $ns, RequestOptions $requestOptions, $parameters ): array {
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
 		$options = [];

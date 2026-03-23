@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\Store;
@@ -158,18 +159,18 @@ class RequestOptionsProcessor {
 	 * Not in all cases can requestoptions be forwarded to the DB using
 	 * getSQLConditions() and getSQLOptions(): some data comes from caches
 	 * that do not respect the options yet. This method takes an array of
-	 * results (SMWDataItem objects) *of the same type* and applies the
+	 * results (DataItem objects) *of the same type* and applies the
 	 * given requestoptions as appropriate.
 	 *
 	 * @since 1.8
 	 *
 	 * @param Store $store
-	 * @param array $data array of SMWDataItem objects
+	 * @param array $data array of DataItem objects
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return SMWDataItem[]
+	 * @return DataItem[]
 	 */
-	public static function applyRequestOptions( Store $store, array $data, ?RequestOptions $requestOptions = null ) {
+	public static function applyRequestOptions( Store $store, array $data, ?RequestOptions $requestOptions = null ): array {
 		if ( $data === [] || $requestOptions === null ) {
 			return $data;
 		}
@@ -202,7 +203,7 @@ class RequestOptionsProcessor {
 		return $result;
 	}
 
-	private static function applyStringConditions( $requestOptions, $label, $keepDataValue ) {
+	private static function applyStringConditions( RequestOptions $requestOptions, $label, $keepDataValue ) {
 		foreach ( $requestOptions->getStringConditions() as $strcond ) { // apply string conditions
 			switch ( $strcond->condition ) {
 				case StringCondition::STRCOND_PRE:
@@ -220,7 +221,7 @@ class RequestOptionsProcessor {
 		return $keepDataValue;
 	}
 
-	private static function applyBoundaryConditions( $requestOptions, $value, $isNumeric ) {
+	private static function applyBoundaryConditions( RequestOptions $requestOptions, $value, bool $isNumeric ) {
 		$keepDataValue = true; // keep datavalue only if this remains true
 
 		if ( $requestOptions->boundary === null ) {
@@ -247,7 +248,7 @@ class RequestOptionsProcessor {
 		return $keepDataValue;
 	}
 
-	private static function getSortKeyForItem( $store, $item ): array {
+	private static function getSortKeyForItem( Store $store, $item ): array {
 		if ( $item instanceof WikiPage ) {
 			$label = $store->getWikiPageSortKey( $item );
 			$value = $label;
@@ -259,7 +260,7 @@ class RequestOptionsProcessor {
 		return [ $label, $value ];
 	}
 
-	private static function applySortRestriction( $requestOptions, &$result, $sortres, $isNumeric ) {
+	private static function applySortRestriction( RequestOptions $requestOptions, array &$result, array $sortres, bool $isNumeric ) {
 		if ( !$requestOptions->sort ) {
 			return null;
 		}
@@ -286,7 +287,7 @@ class RequestOptionsProcessor {
 		$result = $newres;
 	}
 
-	private static function applyLimitRestriction( $requestOptions, &$result ) {
+	private static function applyLimitRestriction( RequestOptions $requestOptions, array &$result ) {
 		// In case of a `conditionConstraint` the restriction is set forth by the
 		// SELECT statement.
 		if ( isset( $requestOptions->conditionConstraint ) ) {

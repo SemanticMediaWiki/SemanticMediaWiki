@@ -37,7 +37,7 @@ class StringResultTest extends TestCase {
 
 		$this->assertEquals(
 			'Foobar',
-			$instance->getResults()
+			$instance->getFormattedResult()
 		);
 	}
 
@@ -68,7 +68,7 @@ class StringResultTest extends TestCase {
 
 		$this->assertEquals(
 			'Foobar Foo bar',
-			$instance->getResults()
+			$instance->getFormattedResult()
 		);
 	}
 

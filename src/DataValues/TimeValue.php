@@ -549,7 +549,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @return mixed typically a number but possibly false
 	 */
-	public function getYear( $calendarmodel = Time::CM_GREGORIAN ) {
+	public function getYear( $calendarmodel = Time::CM_GREGORIAN ): int|false {
 		$dataItem = $this->getDataItemForCalendarModel(
 			$calendarmodel
 		);
@@ -670,11 +670,11 @@ class TimeValue extends DataValue {
 		}
 	}
 
-	private function isYear( $value ): bool {
+	private function isYear( string $value ): bool {
 		return strpos( $value, ' ' ) === false && is_numeric( strval( $value ) ) && ( strval( $value ) < 0 || strlen( $value ) < 6 );
 	}
 
-	private function isTimestamp( $value ): bool {
+	private function isTimestamp( string $value ): bool {
 		// 1200-11-02T12:03:25 or 20120320055913
 		// avoid things like 2458119.500000 (JD)
 		return ( ( strlen( $value ) > 4 && substr( $value, 10, 1 ) === 'T' ) || ( strlen( $value ) == 14 && strpos( $value, '.' ) === false ) ) && wfTimestamp( TS_MW, $value ) !== false;

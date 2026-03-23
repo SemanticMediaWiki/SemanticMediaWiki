@@ -183,7 +183,7 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public function getLanguage( $languageCode = '' ) {
+	public function getLanguage( $languageCode = '' ): Language {
 		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
 			return $this->getContentLanguage();
 		}
@@ -277,7 +277,7 @@ class Localizer {
 	 *
 	 * @return bool
 	 */
-	public static function isKnownLanguageTag( $languageCode ) {
+	public static function isKnownLanguageTag( $languageCode ): bool {
 		$languageCode = mb_strtolower( $languageCode );
 		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
@@ -305,7 +305,7 @@ class Localizer {
 	 *
 	 * @return string|false
 	 */
-	public static function getLanguageCodeFrom( &$value ) {
+	public static function getLanguageCodeFrom( &$value ): string|false {
 		return self::getAnnotatedLanguageCodeFrom( $value );
 	}
 
@@ -360,7 +360,7 @@ class Localizer {
 	 *
 	 * @return string|false
 	 */
-	public static function getAnnotatedLanguageCodeFrom( &$value ) {
+	public static function getAnnotatedLanguageCodeFrom( &$value ): false|string {
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
 		}

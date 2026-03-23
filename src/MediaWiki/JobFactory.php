@@ -44,7 +44,7 @@ class JobFactory {
 	 * @return Job
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, ?Title $title = null, array $parameters = [] ) {
+	public function newByType( $type, ?Title $title = null, array $parameters = [] ): Job {
 		if ( $title === null ) {
 			return new NullJob( null );
 		}

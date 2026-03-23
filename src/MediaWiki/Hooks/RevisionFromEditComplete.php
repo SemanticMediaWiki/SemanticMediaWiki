@@ -96,7 +96,7 @@ class RevisionFromEditComplete implements HookListener {
 		return true;
 	}
 
-	private function tryCreateSchema( $title ) {
+	private function tryCreateSchema( Title $title ) {
 		if ( $title->getNamespace() !== SMW_NS_SCHEMA ) {
 			return null;
 		}

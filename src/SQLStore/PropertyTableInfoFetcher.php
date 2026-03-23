@@ -19,7 +19,7 @@ class PropertyTableInfoFetcher {
 	 * Array for keeping property table table data, indexed by table id.
 	 * Access this only by calling getPropertyTables().
 	 *
-	 * @var TableDefinition[]|null
+	 * @var PropertyTableDefinition[]|null
 	 */
 	private $propertyTableDefinitions = null;
 
@@ -123,7 +123,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return array
 	 */
-	public function getDefaultDataItemTables() {
+	public function getDefaultDataItemTables(): array {
 		return array_values( self::$defaultDiTypeTableIdMap );
 	}
 
@@ -176,7 +176,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @since 2.2
 	 *
-	 * @return TableDefinition[]
+	 * @return PropertyTableDefinition[]
 	 */
 	public function getPropertyTableDefinitions() {
 		if ( $this->propertyTableDefinitions === null ) {

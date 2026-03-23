@@ -33,10 +33,10 @@ class PropertyUsageListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return Property[]
+	 * @return Property[]|Error[]|int[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
@@ -56,7 +56,7 @@ class PropertyUsageListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return string|false
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -110,7 +110,7 @@ class PropertyUsageListLookup implements ListLookup {
 	}
 
 	/**
-	 * @return array{(Property|Error), int}[]
+	 * @return Property[]|Error[]|int[]
 	 */
 	private function getPropertyList( $res ): array {
 		$result = [];
@@ -119,11 +119,11 @@ class PropertyUsageListLookup implements ListLookup {
 
 			try {
 				$property = new Property( str_replace( ' ', '_', $row->smw_title ) );
-			} catch ( PropertyLabelNotResolvedException $e ) {
+			} catch ( PropertyLabelNotResolvedException ) {
 				$property = new Error( new Message( 'smw_noproperty', [ $row->smw_title ] ) );
 			}
 
-			$property->id = isset( $row->smw_id ) ? $row->smw_id : -1;
+			$property->id = $row->smw_id ?? -1;
 			$result[] = [ $property, (int)$row->usage_count ];
 		}
 

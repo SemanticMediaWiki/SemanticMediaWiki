@@ -172,7 +172,7 @@ class ReplicationCheck {
 	 *
 	 * @return string
 	 */
-	public function checkReplication( WikiPage $subject, array $options = [] ) {
+	public function checkReplication( WikiPage $subject, array $options = [] ): string {
 		$this->templateEngine = new TemplateEngine();
 		$this->templateEngine->bulkLoad(
 			[
@@ -203,7 +203,7 @@ class ReplicationCheck {
 		return $this->check( $subject, $options );
 	}
 
-	private function check( $subject, $options ) {
+	private function check( WikiPage $subject, array $options ): string {
 		$error = $this->documentReplicationExaminer->check(
 			$subject,
 			[
@@ -477,7 +477,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function wrapHTML( $content ) {
+	private function wrapHTML( string $content ): string {
 		if ( $content === '' ) {
 			return '';
 		}

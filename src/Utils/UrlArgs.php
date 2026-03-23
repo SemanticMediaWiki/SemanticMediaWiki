@@ -119,7 +119,7 @@ class UrlArgs {
 	/**
 	 * @see wfArrayToCgi
 	 */
-	private function cgi( $args, $prefix = '' ): string {
+	private function cgi( array $args, string $prefix = '' ): string {
 		$cgi = '';
 
 		foreach ( $args as $key => $value ) {

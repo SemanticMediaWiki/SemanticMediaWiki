@@ -150,7 +150,7 @@ class PageInfoProvider implements PageInfo {
 		$this->revisionLookup = $revisionLookup;
 	}
 
-	public static function isProtected( Title $title, string $action = '' ) {
+	public static function isProtected( Title $title, string $action = '' ): bool {
 		return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected(
 			$title, $action
 		);

@@ -110,7 +110,7 @@ class LocalMessageProvider implements MessageLocalizer {
 		return $message;
 	}
 
-	private function readJSONFile( $file ) {
+	private function readJSONFile( string $file ) {
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $file );
 
 		if ( !is_readable( $file ) ) {

@@ -266,7 +266,7 @@ class ParserParameterProcessor {
 		return $this->parseFromJson( $results );
 	}
 
-	private function lookAheadOnNextElement( &$params, &$pipe ) {
+	private function lookAheadOnNextElement( &$params, bool &$pipe ) {
 		$separator = '';
 
 		if ( !next( $params ) ) {
@@ -292,7 +292,7 @@ class ParserParameterProcessor {
 		return $separator;
 	}
 
-	private function parseFromJson( $results ) {
+	private function parseFromJson( array $results ) {
 		if ( !isset( $results['@json'] ) || !isset( $results['@json'][0] ) ) {
 			return $results;
 		}

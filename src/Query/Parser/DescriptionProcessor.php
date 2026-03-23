@@ -263,7 +263,7 @@ class DescriptionProcessor {
 		}
 	}
 
-	private function newCompoundDescriptionByType( $compoundType, $currentDescription, $newDescription ) {
+	private function newCompoundDescriptionByType( $compoundType, Description $currentDescription, Description $newDescription ) {
 		if ( ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Conjunction ) ) ||
 			 ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
 			$currentDescription->addDescription( $newDescription );
@@ -275,7 +275,7 @@ class DescriptionProcessor {
 		}
 	}
 
-	private function newConjunction( $currentDescription, $newDescription ) {
+	private function newConjunction( Description $currentDescription, Description $newDescription ): Description {
 		if ( $this->queryFeatures & SMW_CONJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newConjunction( [ $currentDescription, $newDescription ] );
 		}
@@ -285,7 +285,7 @@ class DescriptionProcessor {
 		return $currentDescription;
 	}
 
-	private function newDisjunction( $currentDescription, $newDescription ) {
+	private function newDisjunction( Description $currentDescription, Description $newDescription ): Description {
 		if ( $this->queryFeatures & SMW_DISJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newDisjunction( [ $currentDescription, $newDescription ] );
 		}

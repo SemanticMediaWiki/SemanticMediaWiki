@@ -91,7 +91,7 @@ class Browse extends ApiBase {
 		}
 	}
 
-	private function callListLookup( $ns, $parameters ) {
+	private function callListLookup( $ns, array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -134,7 +134,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPValueLookup( $parameters ) {
+	private function callPValueLookup( array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -174,7 +174,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPSubjectLookup( $parameters ) {
+	private function callPSubjectLookup( array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -214,7 +214,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPageLookup( $parameters ) {
+	private function callPageLookup( array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -250,7 +250,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callSubjectLookup( $parameters ) {
+	private function callSubjectLookup( array $parameters ) {
 		$subjectLookup = new SubjectLookup(
 			ApplicationFactory::getInstance()->getStore()
 		);

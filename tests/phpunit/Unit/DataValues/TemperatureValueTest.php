@@ -128,6 +128,10 @@ class TemperatureValueTest extends TestCase {
 			->method( 'getDisplayUnits' )
 			->willReturn( [ 'Celsius' ] );
 
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getDisplayPrecision' )
+			->willReturn( false );
+
 		$instance = new TemperatureValue();
 
 		$numberValueFormatter = new NumberValueFormatter();
@@ -158,7 +162,7 @@ class TemperatureValueTest extends TestCase {
 		);
 
 		$this->assertStringContainsString(
-			'100&#160;°C (373&#160;K, 212&#160;°F, 672&#160;°R)',
+			'100&#160;°C (373.15&#160;K, 212&#160;°F, 671.67&#160;°R)',
 			$instance->getLongWikiText()
 		);
 	}

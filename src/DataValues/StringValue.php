@@ -163,7 +163,7 @@ class StringValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): false|array {
 		if ( !$this->isValid() ) {
 			return false;
 		}

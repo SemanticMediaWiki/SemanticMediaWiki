@@ -109,7 +109,7 @@ class JsonImportContentsFileDirReader {
 		throw new JSONFileParseException( $file );
 	}
 
-	private function getFilesFromLocation( $path, $extension ) {
+	private function getFilesFromLocation( $path, string $extension ) {
 		if ( $path === '' ) {
 			return [];
 		}

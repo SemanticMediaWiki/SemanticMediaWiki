@@ -136,8 +136,8 @@ class PropertyTableUpdater {
 	 * @param array $rows array of rows to insert/delete
 	 * @param bool $insert
 	 */
-	private function update_rows( PropertyTableDefinition $propertyTable, array $rows, $insert ): void {
-		if ( empty( $rows ) ) {
+	private function update_rows( PropertyTableDefinition $propertyTable, array $rows, bool $insert ): void {
+		if ( $rows === [] ) {
 			return;
 		}
 
@@ -254,7 +254,7 @@ class PropertyTableUpdater {
 		}
 	}
 
-	private function update_touched( $ids ): void {
+	private function update_touched( array $ids ): void {
 		if ( $ids === [] ) {
 			return;
 		}

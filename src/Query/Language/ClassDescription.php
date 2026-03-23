@@ -176,7 +176,7 @@ class ClassDescription extends Description {
 		return SMW_CATEGORY_QUERY;
 	}
 
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
+	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
 		if ( $maxsize >= $this->getSize() ) {
 			$maxsize = $maxsize - $this->getSize();
 			return $this;

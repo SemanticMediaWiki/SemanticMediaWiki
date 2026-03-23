@@ -40,7 +40,7 @@ class SchemaLinkProfileAnnotator extends ProfileAnnotatorDecorator {
 		$this->addSchemaLinkAnnotation( $this->schemaLink );
 	}
 
-	private function addSchemaLinkAnnotation( $schemaLink ): void {
+	private function addSchemaLinkAnnotation( string $schemaLink ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
 			new Property( '_SCHEMA_LINK' ),
 			new WikiPage( $schemaLink, SMW_NS_SCHEMA )

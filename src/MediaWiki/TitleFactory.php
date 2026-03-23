@@ -99,7 +99,7 @@ class TitleFactory {
 	 *
 	 * @return WikiPage
 	 */
-	public function createPage( Title $title ) {
+	public function createPage( Title $title ): WikiPage {
 		return ServicesFactory::getInstance()->newPageCreator()->createPage( $title );
 	}
 

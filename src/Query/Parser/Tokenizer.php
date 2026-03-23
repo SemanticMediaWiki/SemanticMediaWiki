@@ -54,7 +54,7 @@ class Tokenizer {
 	 *
 	 * @return string
 	 */
-	public function getToken( &$currentString, $stoppattern = '', $consume = true, $trim = true ) {
+	public function getToken( &$currentString, $stoppattern = '', $consume = true, $trim = true ): string|array|false {
 		if ( $stoppattern === '' ) {
 			$stoppattern = $this->defaultPattern;
 		}

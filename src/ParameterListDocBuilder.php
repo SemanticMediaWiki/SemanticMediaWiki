@@ -81,7 +81,7 @@ class ParameterListDocBuilder {
 	 *
 	 * @return string
 	 */
-	private function getDescriptionRow( ParamDefinition $parameter, $hasAliases ): string {
+	private function getDescriptionRow( ParamDefinition $parameter, bool $hasAliases ): string {
 		if ( $hasAliases ) {
 			$aliases = $parameter->getAliases();
 			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : ' -';
@@ -111,7 +111,7 @@ class ParameterListDocBuilder {
 EOT;
 	}
 
-	private function msg() {
+	private function msg(): mixed {
 		return call_user_func_array( $this->msg, func_get_args() );
 	}
 

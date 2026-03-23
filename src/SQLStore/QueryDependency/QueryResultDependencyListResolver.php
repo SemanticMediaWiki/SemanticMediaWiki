@@ -65,7 +65,7 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @param QueryResult|string $queryResult
 	 *
-	 * @return DIWikiPage[]|[]
+	 * @return WikiPage[]|array
 	 */
 	public function getDependencyListByLateRetrievalFrom( $queryResult ) {
 		if ( !$this->canResolve( $queryResult ) ) {
@@ -137,7 +137,8 @@ class QueryResultDependencyListResolver {
 			$subjects[] = $description->getDataItem();
 		}
 
-		if ( $description instanceof ConceptDescription && $concept = $description->getConcept() ) {
+		if ( $description instanceof ConceptDescription ) {
+			$concept = $description->getConcept();
 			if ( $concept === null || !isset( $subjects[$concept->getHash()] ) ) {
 				$subjects[$concept->getHash()] = $concept;
 				$this->doResolveDependenciesFromDescription(
@@ -210,7 +211,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchSubproperty( &$subjects, $subject, Property $property ): void {
+	private function doMatchSubproperty( &$subjects, ?WikiPage $subject, Property $property ): void {
 		$subproperties = [];
 
 		// Using the DBKey as short-cut, as we don't expect to match sub-properties for

@@ -7,6 +7,7 @@ use OutOfBoundsException;
 use SMW\Localizer\Message;
 use SMW\Query\Language\Description;
 use SMW\Query\Query;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
@@ -248,7 +249,7 @@ class ConditionBuilder {
 
 		// Get membership of descriptions that are resolved recursively
 		if ( $description->getMembership() !== '' ) {
-			$fingerprint = $fingerprint . $description->getMembership();
+			$fingerprint .= $description->getMembership();
 		}
 
 		if ( ( $querySegment = $this->findDuplicates( $fingerprint ) ) ) {

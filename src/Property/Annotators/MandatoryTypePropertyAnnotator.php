@@ -2,6 +2,7 @@
 
 namespace SMW\Property\Annotators;
 
+use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
@@ -109,7 +110,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->addTypeFromImportVocabulary( $property, current( $dataItems ) );
 	}
 
-	private function addTypeFromImportVocabulary( $property, $dataItem ): void {
+	private function addTypeFromImportVocabulary( Property $property, DataItem $dataItem ): void {
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$property

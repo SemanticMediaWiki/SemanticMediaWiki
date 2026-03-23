@@ -129,7 +129,7 @@ class PropertyTableRowDiffer {
 
 			try {
 				$fixedProperties[] = new Property( $propertyTable->getFixedProperty() );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				// Do nothing!
 			}
 		}
@@ -159,7 +159,7 @@ class PropertyTableRowDiffer {
 					$fixedProperty['p_id'] = $this->store->getObjectIds()->getSMWPropertyID(
 						$property
 					);
-				} catch ( DataItemException $e ) {
+				} catch ( DataItemException ) {
 					$fixedProperty = [];
 				}
 			}
@@ -251,7 +251,7 @@ class PropertyTableRowDiffer {
 	 * The phenomenon has been observed in connection with a page turned from
 	 * a redirect to a normal page or for undeleted pages.
 	 */
-	private function createHash( $tableName, $newData, $hashMutator = '' ): string {
+	private function createHash( $tableName, array $newData, string $hashMutator = '' ): string {
 		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashMutator );
 	}
 
@@ -323,7 +323,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	private function arrayDeleteMatchingValues( $oldValues, $newValues, $propertyTable ): array {
+	private function arrayDeleteMatchingValues( array $oldValues, $newValues, $propertyTable ): array {
 		$isString = $propertyTable->getDIType() === DataItem::TYPE_BLOB;
 
 		// Cycle through old values

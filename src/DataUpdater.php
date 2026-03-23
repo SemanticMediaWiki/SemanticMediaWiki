@@ -6,9 +6,11 @@ use Exception;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage as DIWikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
@@ -132,7 +134,7 @@ class DataUpdater {
 	 *
 	 * @return \SMW\DataItems\WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): DIWikiPage {
 		return $this->semanticData->getSubject();
 	}
 
@@ -297,7 +299,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function addAnnotations( Title $title, WikiPage $wikiPage, $revision, $user ) {
+	private function addAnnotations( Title $title, WikiPage $wikiPage, $revision, ?User $user ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $revision !== null ) {
@@ -364,7 +366,7 @@ class DataUpdater {
 			);
 	}
 
-	private function checkUpdateEditProtection( $wikiPage, $user ) {
+	private function checkUpdateEditProtection( $wikiPage, ?User $user ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$editProtectionUpdater = $applicationFactory->create( 'EditProtectionUpdater',
@@ -437,7 +439,7 @@ class DataUpdater {
 		return $this->updateRedirectTarget( $semanticData, $target );
 	}
 
-	private function updateRedirectTarget( SemanticData $semanticData, \SMW\DataItems\WikiPage $target ): SemanticData {
+	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ): SemanticData {
 		$subject = $semanticData->getSubject();
 
 		// The general rule is that a redirect page is not expected to contain

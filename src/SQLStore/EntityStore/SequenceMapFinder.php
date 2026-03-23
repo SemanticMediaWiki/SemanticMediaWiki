@@ -17,7 +17,7 @@ use SMW\Utils\HmacSerializer;
 class SequenceMapFinder {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $preloaded = [];
 
@@ -74,7 +74,8 @@ class SequenceMapFinder {
 		$omap = [];
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
-		if ( ( $map = $cache->fetch( $sid ) ) !== false ) {
+		$map = $cache->fetch( $sid );
+		if ( $map !== false ) {
 			return $map;
 		}
 

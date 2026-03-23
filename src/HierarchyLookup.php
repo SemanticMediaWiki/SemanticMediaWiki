@@ -312,7 +312,7 @@ class HierarchyLookup {
 		return $hierarchyList[$key];
 	}
 
-	private function findSubproperties( &$hierarchyMembers, Property $property, $depth ): void {
+	private function findSubproperties( &$hierarchyMembers, Property $property, int|float $depth ): void {
 		if ( $depth++ > $this->subpropertyDepth ) {
 			return;
 		}
@@ -335,7 +335,7 @@ class HierarchyLookup {
 		}
 	}
 
-	private function findSubcategories( &$hierarchyMembers, WikiPage $category, $depth ): void {
+	private function findSubcategories( &$hierarchyMembers, WikiPage $category, int|float $depth ): void {
 		if ( $depth++ > $this->subcategoryDepth ) {
 			return;
 		}
@@ -350,7 +350,7 @@ class HierarchyLookup {
 		}
 	}
 
-	private function findSuperCategoriesByDepth( &$hierarchyMembers, WikiPage $category, $depth ): void {
+	private function findSuperCategoriesByDepth( &$hierarchyMembers, WikiPage $category, int|float $depth ): void {
 		if ( $depth++ > $this->subcategoryDepth ) {
 			return;
 		}
@@ -365,7 +365,7 @@ class HierarchyLookup {
 		}
 	}
 
-	private function lookup( $property, $key, WikiPage $subject, $requestOptions ) {
+	private function lookup( string|Property $property, $key, WikiPage $subject, RequestOptions $requestOptions ) {
 		if ( is_string( $property ) ) {
 			$property = new Property( $property );
 		}

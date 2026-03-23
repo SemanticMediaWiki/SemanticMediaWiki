@@ -71,7 +71,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 2.5
 	 *
-	 * @return WikiPage
+	 * @return ?WikiPage
 	 */
 	public function getSubject(): ?WikiPage {
 		return $this->subject;
@@ -117,7 +117,9 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 3.0
 	 *
-	 * @return array
+	 * @param array $propertyList
+	 *
+	 * @return void
 	 */
 	public function addPropertyList( $propertyList ): void {
 		$this->propertyList = array_merge( $this->propertyList, $propertyList );
@@ -320,7 +322,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getChangedEntityIdSummaryList() {
+	public function getChangedEntityIdSummaryList(): array {
 		return array_keys( $this->getChangedEntityIdListByType() );
 	}
 
@@ -330,7 +332,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getCombinedIdListOfChangedEntities() {
+	public function getCombinedIdListOfChangedEntities(): array {
 		return $this->getChangedEntityIdSummaryList();
 	}
 

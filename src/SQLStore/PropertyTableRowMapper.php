@@ -194,7 +194,7 @@ class PropertyTableRowMapper {
 			// available (i.e. an extension that defined that property was disabled)
 			try {
 				$propertyValues = $semanticData->getPropertyValues( $property );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				continue;
 			}
 
@@ -263,7 +263,7 @@ class PropertyTableRowMapper {
 	 * @param int $sid
 	 * @param array &$insertData
 	 */
-	private function mapConceptTable( $sid, &$insertData ): void {
+	private function mapConceptTable( $sid, array &$insertData ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Make sure that there is exactly one row to be written:

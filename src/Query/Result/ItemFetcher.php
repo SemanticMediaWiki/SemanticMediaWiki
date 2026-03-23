@@ -84,7 +84,7 @@ class ItemFetcher {
 	 *
 	 * @param DataItem|null|false $dataItem
 	 */
-	public function highlightTokens( $dataItem ) {
+	public function highlightTokens( $dataItem ): DataItem|false|null|Blob {
 		if ( !$dataItem instanceof Blob || !$this->printRequest instanceof PrintRequest ) {
 			return $dataItem;
 		}
@@ -198,7 +198,7 @@ class ItemFetcher {
 	/**
 	 * @return mixed[]
 	 */
-	private function legacyFetch( $dataItems, $property, $requestOptions ): array {
+	private function legacyFetch( array $dataItems, Property $property, RequestOptions $requestOptions ): array {
 		$propertyValues = [];
 		$requestOptions->setOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false );
 		$requestOptions->setCaller( __METHOD__ );

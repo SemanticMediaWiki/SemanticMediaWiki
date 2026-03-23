@@ -53,7 +53,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return WikiPage::doUnserialize( $this->data['subject']['serialization'] );
 	}
 

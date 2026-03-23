@@ -193,7 +193,7 @@ class ConceptPage extends Page {
 		);
 	}
 
-	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
+	private function msg( string $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $params, $type, $lang );
 	}
 

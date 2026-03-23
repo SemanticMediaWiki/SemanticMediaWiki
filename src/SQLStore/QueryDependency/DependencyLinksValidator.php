@@ -24,7 +24,7 @@ class DependencyLinksValidator {
 	private $checkDependencies = false;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $checkedDependencies = [];
 
@@ -55,7 +55,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getCheckedDependencies() {
 		return $this->checkedDependencies;

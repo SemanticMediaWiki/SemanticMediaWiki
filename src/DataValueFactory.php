@@ -431,7 +431,7 @@ class DataValueFactory {
 	 *
 	 * @return ErrorValue
 	 */
-	public function newErrorValue( $typeid, $errormsg = '', $uservalue = '', $caption = false ) {
+	public function newErrorValue( $typeid, $errormsg = '', $uservalue = '', $caption = false ): ErrorValue {
 		return new ErrorValue( $typeid, $errormsg, $uservalue, $caption );
 	}
 

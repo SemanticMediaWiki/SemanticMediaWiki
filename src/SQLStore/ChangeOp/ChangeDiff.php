@@ -79,7 +79,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @return TableChangeOps[]
+	 * @return array
 	 */
 	public function getTableChangeOps(): array {
 		return $this->tableChangeOps;
@@ -88,7 +88,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @return TableChangeOps[]
+	 * @return array
 	 */
 	public function getDataOps(): array {
 		return $this->dataOps;
@@ -97,7 +97,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getTextItems(): array {
 		return $this->textItems;
@@ -108,9 +108,9 @@ class ChangeDiff {
 	 *
 	 * @param bool $op
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getPropertyList( $op = false ) {
+	public function getPropertyList( $op = false ): array {
 		if ( $op === true || $op === 'flip' ) {
 			$list = [];
 
@@ -158,7 +158,7 @@ class ChangeDiff {
 	 * @return array
 	 */
 	public function getChangeListByType( $type ) {
-		return isset( $this->changeList[$type] ) ? $this->changeList[$type] : [];
+		return $this->changeList[$type] ?? [];
 	}
 
 	/**
@@ -166,7 +166,7 @@ class ChangeDiff {
 	 *
 	 * @return string
 	 */
-	public function serialize() {
+	public function serialize(): string|false {
 		return HmacSerializer::compress( $this );
 	}
 

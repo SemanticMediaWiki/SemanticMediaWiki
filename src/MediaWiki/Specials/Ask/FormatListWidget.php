@@ -79,7 +79,7 @@ class FormatListWidget {
 		return $result;
 	}
 
-	private static function formatList( $url, $selectedFormat, &$default, $defaultName, $defaultLocalizedName ) {
+	private static function formatList( $url, $selectedFormat, string &$default, $defaultName, string $defaultLocalizedName ) {
 		$formatList = Html::rawElement(
 			'option',
 			[

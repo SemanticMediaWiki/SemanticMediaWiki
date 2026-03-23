@@ -6,7 +6,9 @@ use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\TitleFactory;
+use SMW\NamespaceExaminer;
 use SMW\PropertyRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
@@ -181,7 +183,7 @@ class Rebuilder {
 	 *
 	 * @param int &$id
 	 */
-	public function rebuild( &$id ) {
+	public function rebuild( &$id ): int|float {
 		$this->updateJobs = [];
 		$this->dispatchedEntities = [];
 
@@ -245,7 +247,7 @@ class Rebuilder {
 		}
 	}
 
-	private function matchAsSubject( $id, &$emptyRange ): void {
+	private function matchAsSubject( $id, bool &$emptyRange ): void {
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -408,7 +410,7 @@ class Rebuilder {
 		}
 	}
 
-	private function next_position( &$id, $emptyRange ): void {
+	private function next_position( &$id, bool $emptyRange ): void {
 		$nextPosition = $id + $this->iterationLimit;
 		$db = $this->store->getConnection( 'mw.db' );
 
@@ -439,10 +441,10 @@ class Rebuilder {
 			$nextPosition = $nextBySmwId != 0 && $nextBySmwId > $nextByPageId ? $nextBySmwId : $nextByPageId;
 		}
 
-		$id = $nextPosition ? $nextPosition : -1;
+		$id = $nextPosition ?: -1;
 	}
 
-	private function hasSkippableRevision( $title, $row = false ) {
+	private function hasSkippableRevision( $title, bool $row = false ) {
 		if ( $this->getOption( 'force-update' ) ) {
 			return false;
 		}
@@ -450,7 +452,7 @@ class Rebuilder {
 		return $this->getOption( 'revision-mode' ) && $this->entityValidator->hasLatestRevID( $title, $row );
 	}
 
-	private function addDispatchRecord( $key, $row ): void {
+	private function addDispatchRecord( string $key, $row ): void {
 		$this->dispatchedEntities[] = [ $key => $row->smw_title . '#' . $row->smw_namespace . '#' . $row->smw_subobject ];
 	}
 
@@ -458,7 +460,7 @@ class Rebuilder {
 		$hash = $title->getDBKey() . '#' . $title->getNamespace();
 		$this->lru->set( $hash, true );
 
-		if ( $this->hasSkippableRevision( $title, $row = false ) ) {
+		if ( $this->hasSkippableRevision( $title, $row ) ) {
 			$this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
 			return;
 		}

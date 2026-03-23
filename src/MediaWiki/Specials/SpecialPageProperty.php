@@ -26,9 +26,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class SpecialPageProperty extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'PageProperty', '', false );
 	}
@@ -88,7 +85,7 @@ class SpecialPageProperty extends SpecialPage {
 		return 'smw_group/search';
 	}
 
-	private function load( $options ): void {
+	private function load( Options $options ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 

@@ -140,7 +140,7 @@ class ConceptParserFunction {
 		);
 	}
 
-	private function getRdfLink( Title $title ) {
+	private function getRdfLink( Title $title ): Infolink {
 		return Infolink::newInternalLink(
 			wfMessage( 'smw_viewasrdf' )->text(),
 			$title->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink'

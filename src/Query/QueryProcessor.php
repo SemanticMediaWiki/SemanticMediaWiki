@@ -431,7 +431,7 @@ class QueryProcessor implements QueryContext {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function getParameters( $context = null, $resultPrinter = null ) {
+	public static function getParameters( $context = null, $resultPrinter = null ): array {
 		return DefaultParamDefinition::getParamDefinitions( $context, $resultPrinter );
 	}
 
@@ -444,7 +444,7 @@ class QueryProcessor implements QueryContext {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function getFormatParameters( $format ) {
+	public static function getFormatParameters( $format ): array {
 		ResultFormat::resolveFormatAliases( $format );
 
 		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {

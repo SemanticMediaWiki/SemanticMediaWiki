@@ -164,7 +164,7 @@ class ParserData {
 	 *
 	 * @return WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->getSemanticData()->getSubject();
 	}
 
@@ -208,7 +208,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function isBlocked() {
+	public function isBlocked(): bool {
 		return $this->hasAnnotationBlock();
 	}
 

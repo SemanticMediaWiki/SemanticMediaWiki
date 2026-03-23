@@ -52,7 +52,7 @@ class SearchTableRebuilder {
 	 *
 	 * @return SearchTable
 	 */
-	public function getSearchTable() {
+	public function getSearchTable(): SearchTable {
 		return $this->searchTableUpdater->getSearchTable();
 	}
 
@@ -97,7 +97,7 @@ class SearchTableRebuilder {
 	 *
 	 * @since 2.5
 	 *
-	 * @return bool
+	 * @return void|bool
 	 */
 	public function rebuild() {
 		if ( !$this->canRebuild() ) {
@@ -305,7 +305,7 @@ class SearchTableRebuilder {
 		$this->doRebuildFromRows( $searchTable, $table, $pid, $rows );
 	}
 
-	private function doRebuildFromRows( $searchTable, $table, $pid, $rows ) {
+	private function doRebuildFromRows( SearchTable $searchTable, $table, $pid, $rows ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$i = 0;
@@ -351,13 +351,13 @@ class SearchTableRebuilder {
 		$this->reportMessage( "\n" );
 	}
 
-	private function reportMessage( $message, $verbose = true ): void {
+	private function reportMessage( string $message, $verbose = true ): void {
 		if ( $verbose ) {
 			$this->messageReporter->reportMessage( $message );
 		}
 	}
 
-	private function getIndexableTextFromRow( $searchTable, $row ): string {
+	private function getIndexableTextFromRow( SearchTable $searchTable, $row ): string {
 		$indexableText = '';
 
 		// Page, Uri, or blob?

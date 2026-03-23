@@ -210,7 +210,7 @@ class FieldItemFinder {
 		return $options;
 	}
 
-	private function getResultsForProperty( $dataItem ) {
+	private function getResultsForProperty( DataItem $dataItem ) {
 		$content = $this->fetchContent(
 			$dataItem
 		);
@@ -277,7 +277,7 @@ class FieldItemFinder {
 		return $content;
 	}
 
-	private function isMultiValueWithParameter( $parameter ): bool {
+	private function isMultiValueWithParameter( string $parameter ): bool {
 		return DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
 		$this->printRequest->getParameter( $parameter ) !== false;
 	}

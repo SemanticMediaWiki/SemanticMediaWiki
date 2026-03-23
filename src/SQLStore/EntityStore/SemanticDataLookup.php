@@ -362,7 +362,7 @@ class SemanticDataLookup {
 	/**
 	 * @return mixed[]
 	 */
-	private function fetchSemanticDataFromTableByList( $list, $pid, $propTable, $requestOptions ): array {
+	private function fetchSemanticDataFromTableByList( array $list, $pid, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions ): array {
 		if ( $list === [] ) {
 			return [];
 		}
@@ -395,7 +395,7 @@ class SemanticDataLookup {
 	/**
 	 * @return mixed[]
 	 */
-	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ): array {
+	private function fetchFromTable( $query, PropertyTableDefinition $propTable, bool $isSubject, ?RequestOptions $requestOptions, $field = '' ): array {
 		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -613,7 +613,7 @@ class SemanticDataLookup {
 		return $result;
 	}
 
-	private function addFields( &$query, &$map, $fields, $valueField, $labelField, &$valueCount, &$fieldname ): void {
+	private function addFields( &$query, array &$map, $fields, $valueField, $labelField, int &$valueCount, string &$fieldname ): void {
 		// Select dataItem column(s)
 		foreach ( $fields as $fieldname => $fieldType ) {
 
@@ -665,7 +665,7 @@ class SemanticDataLookup {
 		}
 	}
 
-	private function buildResultFromRow( $row, $params ): array {
+	private function buildResultFromRow( $row, array $params ): array {
 		$hash = '';
 		$sortField = '';
 
@@ -714,7 +714,7 @@ class SemanticDataLookup {
 		if ( $params['valueCount'] > 1 ) {
 			$hash = md5( $hash . implode( '#', $db_keys ) );
 		} else {
-			$hash = md5( $hash . $db_keys );
+			$hash = md5( $hash . (string)$db_keys );
 		}
 
 		// Avoid issues with `$row->$sortField` containing other `#` as for
@@ -734,7 +734,7 @@ class SemanticDataLookup {
 		// Filter out any accidentally retrieved internal things (interwiki
 		// starts with ":"):
 		if ( $params['valueCount'] < 3 ||
-			implode( '', $params['fields'] ) !== FieldType::FIELD_ID ||
+			implode( '', (array)$params['fields'] ) !== FieldType::FIELD_ID ||
 			$db_keys[2] === '' ||
 			$db_keys[2][0] != ':' ) {
 
@@ -748,7 +748,7 @@ class SemanticDataLookup {
 		return $result;
 	}
 
-	private function fetchPropertiesFromTable( $id, $propTable ) {
+	private function fetchPropertiesFromTable( $id, PropertyTableDefinition $propTable ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -773,7 +773,7 @@ class SemanticDataLookup {
 		return $query->execute( __METHOD__ );
 	}
 
-	private function reportDuplicate( $params ): void {
+	private function reportDuplicate( array $params ): void {
 		$this->logger->info(
 			"Found duplicate entry for {params}",
 			[

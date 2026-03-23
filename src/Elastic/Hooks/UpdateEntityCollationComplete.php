@@ -117,7 +117,7 @@ class UpdateEntityCollationComplete {
 		return true;
 	}
 
-	private function rebuild( $rebuilder, $res, $last ): void {
+	private function rebuild( Rebuilder $rebuilder, $res, $last ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$rebuilder->set( 'skip-fileindex', true );
