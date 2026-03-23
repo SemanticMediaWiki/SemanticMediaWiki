@@ -106,11 +106,11 @@ class CachingSemanticDataLookup {
 	 * @since 3.0
 	 *
 	 * @param int $id
-	 * @param mixed $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return void
 	 */
-	public function initLookupCache( $id, mixed $subject ): void {
+	public function initLookupCache( $id, WikiPage $subject ): void {
 		// *** Prepare the cache ***//
 		if ( !isset( self::$data[$id] ) ) {
 			self::$data[$id] = $this->semanticDataLookup->newStubSemanticData( $subject );
@@ -188,13 +188,13 @@ class CachingSemanticDataLookup {
 	 * @since 3.1
 	 *
 	 * @param array $subjects
-	 * @param mixed|null $dataItem
+	 * @param DataItem|null $dataItem
 	 * @param PropertyTableDefinition $propertyTableDef
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function prefetchDataFromTable( array $subjects, mixed $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function prefetchDataFromTable( array $subjects, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
 		$hash = '';
 
 		if ( $dataItem !== null ) {
@@ -274,10 +274,10 @@ class CachingSemanticDataLookup {
 		return $this->semanticDataLookup->newStubSemanticData( $subject );
 	}
 
-	private function fetchFromCache( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef ) {
+	private function fetchFromCache( $id, WikiPage $subject, PropertyTableDefinition $propertyTableDef ) {
 		// Do not clear the cache when called recursively.
 		$this->lockCache();
-		$this->initLookupCache( $id, $dataItem );
+		$this->initLookupCache( $id, $subject );
 
 		// @see also setLookupCache
 		$name = $propertyTableDef->getName();
@@ -289,7 +289,7 @@ class CachingSemanticDataLookup {
 
 		$data = $this->semanticDataLookup->fetchSemanticDataFromTable(
 			$id,
-			$dataItem,
+			$subject,
 			$propertyTableDef
 		);
 

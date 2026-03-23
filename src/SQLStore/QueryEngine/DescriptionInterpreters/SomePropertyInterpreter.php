@@ -95,7 +95,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @since 1.8
 	 */
-	private function interpretPropertyConditionForDescription( QuerySegment $query, Description $description ): void {
+	private function interpretPropertyConditionForDescription( QuerySegment $query, SomeProperty $description ): void {
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		$property = $description->getProperty();
 

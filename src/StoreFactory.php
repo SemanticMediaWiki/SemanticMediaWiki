@@ -28,7 +28,7 @@ class StoreFactory {
 	 *
 	 * @param string|null $class
 	 *
-	 * @return mixed
+	 * @return Store
 	 * @throws RuntimeException
 	 * @throws StoreNotFoundException
 	 */

@@ -6,7 +6,6 @@ use SMW\DataItems\Blob;
 use SMW\DataItems\Property;
 use SMW\DataItems\Uri;
 use SMW\DataItems\WikiPage;
-use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 
 /**
@@ -86,11 +85,11 @@ class ValueMatchConditionBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Description $description
+	 * @param ValueDescription $description
 	 *
 	 * @return bool
 	 */
-	public function canHaveMatchCondition( Description $description ): bool {
+	public function canHaveMatchCondition( ValueDescription $description ): bool {
 		return false;
 	}
 
@@ -106,7 +105,7 @@ class ValueMatchConditionBuilder {
 		return '';
 	}
 
-	protected function getMatchableTextFromDescription( Description $description ) {
+	protected function getMatchableTextFromDescription( ValueDescription $description ) {
 		$matchableText = false;
 
 		if ( $description->getDataItem() instanceof Blob ) {
