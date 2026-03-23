@@ -116,6 +116,9 @@ $GLOBALS[ 'wgHooks' ][ 'SMW::SQLStore::Installer::BeforeCreateTablesComplete' ][
 			"\n" . $cliMsgFormatter->oneCol( "Checking table definitions ..." )
 		);
 
+		/**
+		 * @var \SMW\SQLStore\TableBuilder\Table[]
+		 */
 		foreach ( $tables as $table ) {
 
 			$tableName = $table->getName();
