@@ -131,7 +131,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $serializer->flushContent();
 	}
 
-	private function makeExportData( Exporter $exporter, $row ) {
+	private function makeExportData( Exporter $exporter, array $row ) {
 		$subject = reset( $row )->getResultSubject();
 		$expData = $exporter->makeExportDataForSubject( $subject );
 

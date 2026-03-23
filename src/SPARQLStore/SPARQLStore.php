@@ -13,6 +13,7 @@ use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Options;
 use SMW\Query\Query;
+use SMW\Query\QueryResult;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\SQLStore;
@@ -309,7 +310,7 @@ class SPARQLStore extends Store {
 		return $result;
 	}
 
-	protected function fetchQueryResult( Query $query ) {
+	protected function fetchQueryResult( Query $query ): QueryResult|string|int {
 		return $this->factory->newMasterQueryEngine()->getQueryResult( $query );
 	}
 

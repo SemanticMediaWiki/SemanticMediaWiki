@@ -74,7 +74,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 			array_key_exists( $propertyId, $cachedProperties );
 	}
 
-	protected function createDataItemByPropertyId( $propertyId ) {
+	protected function createDataItemByPropertyId( $propertyId ): Blob|WikiPage|Boolean|Time|null|false {
 		$dataItem = null;
 
 		switch ( $propertyId ) {

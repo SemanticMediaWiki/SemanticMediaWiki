@@ -186,7 +186,7 @@ class EntityIdManager {
 	 *
 	 * @return string|bool
 	 */
-	public function findRedirectSource( WikiPage $target, ?string $flag = null ) {
+	public function findRedirectSource( WikiPage $target, ?string $flag = null ): WikiPage|false {
 		return $this->redirectTargetLookup->findRedirectSource( $target, $flag );
 	}
 

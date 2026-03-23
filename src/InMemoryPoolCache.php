@@ -93,7 +93,7 @@ class InMemoryPoolCache {
 	 *
 	 * @return string|array
 	 */
-	public function getStats( $format = null ) {
+	public function getStats( $format = null ): string|array {
 		return StatsFormatter::format( $this->computeStats(), $format );
 	}
 
