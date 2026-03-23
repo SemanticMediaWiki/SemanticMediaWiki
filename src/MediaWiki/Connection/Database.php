@@ -439,7 +439,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function makeSelectOptions( $options ): array {
+	public function makeSelectOptions( array $options ): array {
 		return OptionsBuilder::makeSelectOptions( $this, $options );
 	}
 
