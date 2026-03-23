@@ -206,9 +206,6 @@ final class Setup {
 			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../tests/phpunit' );
 		}
 
-		$vars['wgLogTypes'][] = 'smw';
-		$vars['wgFilterLogTypes']['smw'] = true;
-
 		$vars['smwgMasterStore'] = null;
 		$vars['smwgIQRunningNumber'] = 0;
 
