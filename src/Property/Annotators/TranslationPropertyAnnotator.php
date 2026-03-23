@@ -89,7 +89,7 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 	}
 
-	private function newContainerSemanticData( $languageCode ): ContainerSemanticData {
+	private function newContainerSemanticData( string $languageCode ): ContainerSemanticData {
 		$dataItem = $this->getSemanticData()->getSubject();
 		$subobjectName = 'trans.' . $languageCode;
 

@@ -615,7 +615,7 @@ class ServicesFactory {
 		return $this->callbackContainerBuilder->singleton( 'JobQueue' );
 	}
 
-	private static function newCallbackContainerBuilder( CallbackContainerFactory $callbackContainerFactory, $servicesFileDir ) {
+	private static function newCallbackContainerBuilder( CallbackContainerFactory $callbackContainerFactory, string $servicesFileDir ) {
 		$callbackContainerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
 		$callbackContainerBuilder->registerCallbackContainer( new SharedServicesContainer() );

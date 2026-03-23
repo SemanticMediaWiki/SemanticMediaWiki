@@ -32,7 +32,7 @@ class WikitextTemplateRenderer {
 	 *
 	 * @param string $templateName
 	 */
-	public function packFieldsForTemplate( $templateName ): void {
+	public function packFieldsForTemplate( string $templateName ): void {
 		$this->template .= '{{' . $templateName;
 
 		foreach ( $this->fields as $key => $value ) {

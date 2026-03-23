@@ -531,7 +531,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param $propertyName string
 	 * @param $dataItem DataItem
 	 */
-	public function addPropertyValue( $propertyName, DataItem $dataItem ): void {
+	public function addPropertyValue( string $propertyName, DataItem $dataItem ): void {
 		$propertyKey = smwfNormalTitleDBKey( $propertyName );
 
 		if ( array_key_exists( $propertyKey, $this->mProperties ) ) {

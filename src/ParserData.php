@@ -448,7 +448,7 @@ class ParserData {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function addLimitReport( $key, $value ): void {
+	public function addLimitReport( string $key, $value ): void {
 		$this->parserOutput->setLimitReportData( 'smw-limitreport-' . $key, $value );
 	}
 

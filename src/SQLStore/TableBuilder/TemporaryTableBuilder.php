@@ -54,7 +54,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function drop( $tableName ): void {
+	public function drop( string $tableName ): void {
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}

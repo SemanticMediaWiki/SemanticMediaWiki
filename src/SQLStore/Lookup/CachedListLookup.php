@@ -39,7 +39,7 @@ class CachedListLookup implements ListLookup {
 	 *
 	 * @param string $cachePrefix
 	 */
-	public function setCachePrefix( $cachePrefix ): void {
+	public function setCachePrefix( string $cachePrefix ): void {
 		$this->cachePrefix = $cachePrefix . ':' . $this->cachePrefix;
 	}
 
@@ -164,7 +164,7 @@ class CachedListLookup implements ListLookup {
 		$this->cache->save( $optionsKey, serialize( $data ), $ttl );
 	}
 
-	private function getCacheKey( $id ): array {
+	private function getCacheKey( string $id ): array {
 		$optionsKey = '';
 
 		if ( strpos( $id ?? '', '#' ) !== false ) {

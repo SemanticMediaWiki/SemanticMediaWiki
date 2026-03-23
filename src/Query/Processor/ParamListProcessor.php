@@ -232,7 +232,7 @@ class ParamListProcessor {
 		}
 	}
 
-	private function addOtherParameters( int|string $name, $param, array &$serialization, $showMode ): void {
+	private function addOtherParameters( int|string $name, string $param, array &$serialization, $showMode ): void {
 		// #1645
 		$parts = $showMode && $name == 0 ? $param : explode( '=', $param, 2 );
 

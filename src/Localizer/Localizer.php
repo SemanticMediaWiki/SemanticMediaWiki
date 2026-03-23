@@ -314,7 +314,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function createTextWithNamespacePrefix( $index, $text ): string {
+	public function createTextWithNamespacePrefix( $index, string $text ): string {
 		return $this->getNsText( $index ) . ':' . $text;
 	}
 

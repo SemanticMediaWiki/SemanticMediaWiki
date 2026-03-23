@@ -353,7 +353,7 @@ class SpecificationLookup {
 	 *
 	 * @return string
 	 */
-	public function getPropertyDescriptionByLanguageCode( Property $property, $languageCode = '', $linker = null ) {
+	public function getPropertyDescriptionByLanguageCode( Property $property, string $languageCode = '', $linker = null ) {
 		$subject = $property->getCanonicalDiWikiPage();
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
 
@@ -383,7 +383,7 @@ class SpecificationLookup {
 		return $text;
 	}
 
-	private function getPredefinedPropertyDescription( Property $property, $languageCode, $linker ): string {
+	private function getPredefinedPropertyDescription( Property $property, string $languageCode, $linker ): string {
 		$description = '';
 		$key = $property->getKey();
 

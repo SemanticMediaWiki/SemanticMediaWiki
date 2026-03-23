@@ -195,7 +195,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForSelect( $vars, $where, $options = [], $extraNamespaces = [] ): string {
+	public function getSparqlForSelect( $vars, string $where, $options = [], $extraNamespaces = [] ): string {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -251,7 +251,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForAsk( $where, $extraNamespaces = [] ): string {
+	public function getSparqlForAsk( string $where, $extraNamespaces = [] ): string {
 		return self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
 	}
 
@@ -268,7 +268,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function selectCount( $variable, $where, $options = [], $extraNamespaces = [] ) {
+	public function selectCount( string $variable, string $where, $options = [], $extraNamespaces = [] ) {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT (COUNT(';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -374,7 +374,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertData( $triples, $extraNamespaces = [] ): bool {
+	public function insertData( string $triples, $extraNamespaces = [] ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );

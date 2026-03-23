@@ -121,7 +121,7 @@ class RemoteRequest implements QueryEngine {
 		}
 
 		// Add an information note depending on the context before the actual output
-		$callback = function ( $result, array $options ) use( $isFromCache, $isDisabled, $source ) {
+		$callback = function ( string $result, array $options ) use( $isFromCache, $isDisabled, $source ): string {
 			$options['source'] = $source;
 			$options['is.cached'] = $isFromCache;
 			$options['is.disabled'] = $isDisabled;
@@ -149,7 +149,7 @@ class RemoteRequest implements QueryEngine {
 	 *
 	 * @return string
 	 */
-	public function format_result( $result, array $options ) {
+	public function format_result( string $result, array $options ): string {
 		// No changes to any export related output
 		if ( ( isset( $options['is.disabled'] ) && $options['is.disabled'] ) || !$this->hasFeature( SMW_REMOTE_REQ_SHOW_NOTE ) ) {
 			return $result;

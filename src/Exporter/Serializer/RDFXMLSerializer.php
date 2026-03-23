@@ -234,7 +234,7 @@ class RDFXMLSerializer extends Serializer {
 	 * @param $expLiteral ExpLiteral the data value to use
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeExpLiteral( ExpNsResource $expResourceProperty, ExpLiteral $expLiteral, $indent ) {
+	protected function serializeExpLiteral( ExpNsResource $expResourceProperty, ExpLiteral $expLiteral, string $indent ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		// https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-languages
@@ -262,7 +262,7 @@ class RDFXMLSerializer extends Serializer {
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
 	 */
-	protected function serializeExpResource( ExpNsResource $expResourceProperty, ExpResource $expResource, $indent, $isClassTypeProp ) {
+	protected function serializeExpResource( ExpNsResource $expResourceProperty, ExpResource $expResource, string $indent, $isClassTypeProp ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		if ( !$expResource->isBlankNode() ) {
@@ -294,7 +294,7 @@ class RDFXMLSerializer extends Serializer {
 	 * @bug The $isClassTypeProp parameter is not properly taken into account.
 	 * @bug Individual resources are not serialised properly.
 	 */
-	protected function serializeExpCollection( ExpNsResource $expResourceProperty, array $collection, $indent, $isClassTypeProp ) {
+	protected function serializeExpCollection( ExpNsResource $expResourceProperty, array $collection, string $indent, $isClassTypeProp ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
 
 		foreach ( $collection as $expElement ) {

@@ -108,7 +108,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function editLink( $href ) {
+	public static function editLink( string $href ) {
 		return Html::rawElement(
 				'a',
 				[

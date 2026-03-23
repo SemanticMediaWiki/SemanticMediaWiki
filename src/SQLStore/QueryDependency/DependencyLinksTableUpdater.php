@@ -218,7 +218,7 @@ class DependencyLinksTableUpdater {
 	 * @param WikiPage $subject
 	 * @param string $subobjectName
 	 */
-	public function createId( WikiPage $subject, $subobjectName = '' ) {
+	public function createId( WikiPage $subject, string $subobjectName = '' ) {
 		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),

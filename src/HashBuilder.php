@@ -52,7 +52,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromContent( $hashableContent, $prefix = '' ): string {
+	public static function createFromContent( $hashableContent, string $prefix = '' ): string {
 		if ( is_string( $hashableContent ) ) {
 			$hashableContent = [ $hashableContent ];
 		}
@@ -68,7 +68,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromArray( array $hashableContent, $prefix = '' ): string {
+	public static function createFromArray( array $hashableContent, string $prefix = '' ): string {
 		return $prefix . md5( json_encode( $hashableContent ) );
 	}
 

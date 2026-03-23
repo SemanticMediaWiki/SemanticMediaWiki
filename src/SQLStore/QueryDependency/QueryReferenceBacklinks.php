@@ -81,7 +81,7 @@ class QueryReferenceBacklinks {
 	 *
 	 * @return bool
 	 */
-	public function doesRequireFurtherLink( Property $property, WikiPage $subject, &$html ): bool {
+	public function doesRequireFurtherLink( Property $property, WikiPage $subject, string &$html ): bool {
 		if ( $property->getKey() !== '_ASK' ) {
 			return true;
 		}

@@ -101,7 +101,7 @@ class StripMarkerDecoder {
 		return $this->doUnstrip( $value );
 	}
 
-	private function addNoWikiToUnstripValue( $text ): string {
+	private function addNoWikiToUnstripValue( string $text ): string {
 		return '<nowiki>' . $text . '</nowiki>';
 	}
 

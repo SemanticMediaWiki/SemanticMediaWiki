@@ -18,7 +18,7 @@ class ContentModeller {
 	 *
 	 * @return mixed[]
 	 */
-	public function makeContentList( $fileDir, array $fileContents ): array {
+	public function makeContentList( string $fileDir, array $fileContents ): array {
 		$contents = [];
 
 		if ( !isset( $fileContents['import'] ) ) {
@@ -63,7 +63,7 @@ class ContentModeller {
 		return $contents;
 	}
 
-	private function newImportContents( ImportContents $importContents, $fileDir, $value ): ImportContents {
+	private function newImportContents( ImportContents $importContents, string $fileDir, $value ): ImportContents {
 		$importContents->setContentType( ImportContents::CONTENT_TEXT );
 
 		if ( !isset( $value['contents'] ) || $value['contents'] === '' ) {
@@ -79,7 +79,7 @@ class ContentModeller {
 		return $importContents;
 	}
 
-	private function setContents( ImportContents $importContents, $fileDir, $contents ) {
+	private function setContents( ImportContents $importContents, string $fileDir, $contents ) {
 		if ( !is_array( $contents ) || !isset( $contents['importFrom'] ) ) {
 			return $importContents->setContents( $contents );
 		}
@@ -103,7 +103,7 @@ class ContentModeller {
 		$importContents->setContentsFile( $file );
 	}
 
-	private function normalizeFile( $fileDir, $file ): string {
+	private function normalizeFile( string $fileDir, string $file ): string {
 		return str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $fileDir . ( $file[0] === '/' ? '' : '/' ) . $file );
 	}
 

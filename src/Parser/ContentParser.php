@@ -172,7 +172,7 @@ class ContentParser {
 		return $this;
 	}
 
-	private function msgForNullRevision( $fname = __METHOD__ ): static {
+	private function msgForNullRevision( string $fname = __METHOD__ ): static {
 		$this->errors = [ $fname . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" ];
 		return $this;
 	}

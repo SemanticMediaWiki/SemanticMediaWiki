@@ -178,7 +178,7 @@ class TurtleSerializer extends Serializer {
 	 * @param $data ExpData containing the data to be serialised.
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeNestedExpData( ExpData $data, $indent ) {
+	protected function serializeNestedExpData( ExpData $data, string $indent ) {
 		if ( count( $data->getProperties() ) == 0 ) {
 			return; // nothing to export
 		}
