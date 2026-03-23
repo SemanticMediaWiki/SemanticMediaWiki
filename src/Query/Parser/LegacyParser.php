@@ -156,7 +156,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->descriptionProcessor->getErrors();
 	}
 
@@ -178,7 +178,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return string
 	 */
-	public function getErrorString() {
+	public function getErrorString(): never {
 		throw new RuntimeException( "Shouldnot be used, remove getErrorString usage!" );
 	}
 

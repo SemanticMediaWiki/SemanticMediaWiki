@@ -27,10 +27,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
  */
 class SomePropertyInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1
@@ -142,7 +139,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return [ $innerOrderByProperty, $innerCondition, $innerJoinVariable ];
 	}
 
-	private function findObjectNameFromInnerCondition( $innerCondition, $innerJoinVariable, &$namespaces ): string {
+	private function findObjectNameFromInnerCondition( $innerCondition, string $innerJoinVariable, array &$namespaces ): string {
 		if ( !$innerCondition instanceof SingletonCondition ) {
 			return '?' . $innerJoinVariable;
 		}
@@ -162,7 +159,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return $objectName;
 	}
 
-	private function findMostSuitablePropertyRepresentation( Property $property, Property $nonInverseProperty, &$namespaces ) {
+	private function findMostSuitablePropertyRepresentation( Property $property, Property $nonInverseProperty, array &$namespaces ) {
 		$redirectByVariable = $this->conditionBuilder->tryToFindRedirectVariableForDataItem(
 			$nonInverseProperty->getDiWikiPage()
 		);
@@ -191,7 +188,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return TurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
 	}
 
-	private function doExchangeForWhenInversePropertyIsUsed( Property $property, string $objectName, $joinVariable ): array {
+	private function doExchangeForWhenInversePropertyIsUsed( Property $property, string $objectName, string $joinVariable ): array {
 		$subjectName = '?' . $joinVariable;
 		$nonInverseProperty = $property;
 

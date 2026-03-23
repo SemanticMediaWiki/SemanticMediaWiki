@@ -100,7 +100,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 		);
 	}
 
-	private function search( $key, $flag, $data, $meta, &$result ) {
+	private function search( $key, $flag, array $data, array $meta, &$result ) {
 		foreach ( $data as $section => $value ) {
 
 			if ( isset( $data[Compartment::ASSOCIATED_SCHEMA] ) ) {

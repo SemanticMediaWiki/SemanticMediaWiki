@@ -38,7 +38,7 @@ class SectionTag {
 			return false;
 		}
 
-		$parser->setHook( 'section', static function ( $input, array $args, Parser $parser, PPFrame $frame ) {
+		$parser->setHook( 'section', static function ( ?string $input, array $args, Parser $parser, PPFrame $frame ) {
 			return ( new self( $parser, $frame ) )->parse( $input, $args );
 		} );
 

@@ -18,7 +18,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class TemplateRendererFactory {
 
-	private $templateRenderer;
+	private ?WikitextTemplateRenderer $templateRenderer = null;
 	private $numberOfPages;
 	private $userparam = '';
 

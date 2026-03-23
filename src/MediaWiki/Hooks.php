@@ -349,7 +349,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SidebarBeforeOutput
 	 */
-	public function onSidebarBeforeOutput( $skin, &$sidebar ): bool {
+	public function onSidebarBeforeOutput( $skin, array &$sidebar ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$sidebarBeforeOutput = new SidebarBeforeOutput(
@@ -371,7 +371,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
 	 */
-	public function onSkinAfterContent( &$data, $skin = null ): bool {
+	public function onSkinAfterContent( string &$data, $skin = null ): bool {
 		$skinAfterContent = new SkinAfterContent(
 			$skin
 		);
@@ -422,7 +422,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageCheckLastModified
 	 */
-	public function onOutputPageCheckLastModified( &$lastModified ): bool {
+	public function onOutputPageCheckLastModified( array &$lastModified ): bool {
 		// Required to ensure that ViewAction doesn't bail out with
 		// "ViewAction::show: done 304" and hereby neglects to run the
 		// ArticleViewHeader hook
@@ -588,7 +588,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleProtectComplete
 	 */
-	public function onArticleProtectComplete( WikiPage &$wikiPage, ?User &$user, $protections, $reason ): bool {
+	public function onArticleProtectComplete( WikiPage &$wikiPage, ?User &$user, array $protections, $reason ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
@@ -878,7 +878,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/MaintenanceUpdateAddParams
 	 */
-	public function onMaintenanceUpdateAddParams( &$params ): bool {
+	public function onMaintenanceUpdateAddParams( array &$params ): bool {
 		ExtensionSchemaUpdates::addMaintenanceUpdateParams(
 			$params
 		);
@@ -973,7 +973,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 */
-	public function onSkinTemplateNavigationUniversal( &$skinTemplate, &$links ): bool {
+	public function onSkinTemplateNavigationUniversal( &$skinTemplate, array &$links ): bool {
 		if ( isset( $links['user-interface-preferences'] ) ) {
 			$applicationFactory = ApplicationFactory::getInstance();
 			$user = $skinTemplate->getUser();
@@ -1135,7 +1135,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserOptionsRegister (Only 1.30+)
 	 */
-	public function onParserOptionsRegister( &$defaults, &$inCacheKey ): bool {
+	public function onParserOptionsRegister( array &$defaults, array &$inCacheKey ): bool {
 		// #2509
 		// Register a new options key, used in connection with #ask/#show
 		// where the use of a localTime invalidates the ParserCache to avoid
@@ -1296,7 +1296,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SoftwareInfo
 	 */
-	public function onSoftwareInfo( &$software ): bool {
+	public function onSoftwareInfo( array &$software ): bool {
 		$store = ApplicationFactory::getInstance()->getStore();
 		$info = $store->getConnection( 'elastic' )->getSoftwareInfo();
 

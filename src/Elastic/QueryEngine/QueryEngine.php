@@ -35,10 +35,7 @@ class QueryEngine implements IQueryEngine {
 
 	private SortBuilder $sortBuilder;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @var array

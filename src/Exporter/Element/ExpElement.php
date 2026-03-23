@@ -81,7 +81,7 @@ abstract class ExpElement implements Element {
 	/**
 	 * @see ExpElement::newFromSerialization
 	 */
-	protected static function deserialize( $serialization ) {
+	protected static function deserialize( array $serialization ) {
 		$dataItem = null;
 
 		if ( !array_key_exists( 'dataitem', $serialization ) ) {

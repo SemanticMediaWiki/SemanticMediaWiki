@@ -100,7 +100,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @return bool
 	 */
-	public function hasParameter( $key ) {
+	public function hasParameter( string $key ) {
 		if ( !is_array( $this->params ) ) {
 			return false;
 		}

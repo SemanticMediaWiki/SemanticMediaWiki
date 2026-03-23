@@ -106,7 +106,7 @@ class Infolink {
 	 *
 	 * @return Infolink
 	 */
-	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ): Infolink {
+	public static function newPropertySearchLink( $caption, string $propertyName, string $propertyValue, $style = 'smwsearch' ): Infolink {
 		$infolink = new Infolink(
 			true,
 			$caption,
@@ -134,7 +134,7 @@ class Infolink {
 	 *
 	 * @return Infolink
 	 */
-	public static function newInversePropertySearchLink( $caption, $subject, $propertyName, $style = false ): Infolink {
+	public static function newInversePropertySearchLink( $caption, string $subject, string $propertyName, $style = false ): Infolink {
 		return new Infolink(
 			true,
 			$caption,
@@ -153,7 +153,7 @@ class Infolink {
 	 *
 	 * @return Infolink
 	 */
-	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ): Infolink {
+	public static function newBrowsingLink( $caption, string $titleText, $style = 'smwbrowse' ): Infolink {
 		return new Infolink(
 			true,
 			$caption,
@@ -604,7 +604,7 @@ class Infolink {
 		return $value;
 	}
 
-	private function buildTarget( $query ) {
+	private function buildTarget( string $query ) {
 		$target = $this->mTarget;
 
 		if ( count( $this->mParams ) > 0 ) {

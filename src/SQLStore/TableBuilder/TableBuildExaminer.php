@@ -169,7 +169,7 @@ class TableBuildExaminer {
 		$tableBuilder->checkOn( TableBuilder::POST_DESTRUCTION );
 	}
 
-	private function checkSortField( $log ): void {
+	private function checkSortField( array $log ): void {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		$tableName = $connection->tableName( SQLStore::ID_TABLE );

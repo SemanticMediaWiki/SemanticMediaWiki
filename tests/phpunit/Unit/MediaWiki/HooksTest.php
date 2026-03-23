@@ -145,7 +145,7 @@ class HooksTest extends TestCase {
 
 		$contentParser->expects( $this->any() )
 			->method( 'parse' )
-			->willReturn( $this->parser );
+			->willReturn( $contentParser );
 
 		$deferredCallableUpdate = $this->getMockBuilder( CallableUpdate::class )
 			->disableOriginalConstructor()

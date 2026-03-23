@@ -50,10 +50,7 @@ class UpdateJob extends Job {
 	 */
 	const SEMANTIC_DATA = 'semanticData';
 
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
+	private ?ApplicationFactory $applicationFactory = null;
 
 	/**
 	 * @since  1.9

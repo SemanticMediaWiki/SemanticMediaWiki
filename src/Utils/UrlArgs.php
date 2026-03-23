@@ -112,7 +112,7 @@ class UrlArgs {
 	/**
 	 * @see __toString
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->cgi( $this->args ) . ( $this->fragment !== '' ? '#' . $this->fragment : '' );
 	}
 

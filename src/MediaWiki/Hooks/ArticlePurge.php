@@ -8,6 +8,7 @@ use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use WikiPage;
 
 /**
@@ -65,7 +66,7 @@ class ArticlePurge implements HookListener {
 		return true;
 	}
 
-	private function invalidateResultCache( $store, Title $title ): void {
+	private function invalidateResultCache( Store $store, Title $title ): void {
 		$dependency_list = $store->getPropertyValues(
 			\SMW\DataItems\WikiPage::newFromTitle( $title ),
 			new Property( '_ASK' )

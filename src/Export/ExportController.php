@@ -69,15 +69,9 @@ class ExportController {
 	 */
 	protected $outputfile;
 
-	/**
-	 * @var DeepRedirectTargetResolver
-	 */
-	private $deepRedirectTargetResolver;
+	private ?DeepRedirectTargetResolver $deepRedirectTargetResolver = null;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private ?NamespaceExaminer $namespaceExaminer = null;
 
 	/**
 	 * @since 1.5.5
@@ -668,7 +662,7 @@ class ExportController {
 		return ( ( $res != NS_CATEGORY ) && ( $res != SMW_NS_PROPERTY ) );
 	}
 
-	private function getDeepRedirectTargetResolver() {
+	private function getDeepRedirectTargetResolver(): DeepRedirectTargetResolver {
 		if ( $this->deepRedirectTargetResolver === null ) {
 			$this->deepRedirectTargetResolver = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
 		}

@@ -102,7 +102,7 @@ class ExpData implements Element {
 	 * @param array $elements array of ExpElement
 	 * @return ExpData
 	 */
-	public static function makeCollection( array $elements ) {
+	public static function makeCollection( array $elements ): self {
 		$exporter = Exporter::getInstance();
 		if ( count( $elements ) == 0 ) {
 			return new ExpData( $exporter->newExpNsResourceById( 'rdf', 'nil' ) );

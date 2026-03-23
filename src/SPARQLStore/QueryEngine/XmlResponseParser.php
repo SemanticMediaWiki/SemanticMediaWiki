@@ -148,7 +148,7 @@ class XmlResponseParser implements HttpResponseParser {
 	/**
 	 * @see xml_set_element_handler
 	 */
-	private function handleOpenElement( $parser, $elementTag, $attributes ): void {
+	private function handleOpenElement( $parser, $elementTag, array $attributes ): void {
 		$this->currentDataType = '';
 
 		$prevTag = end( $this->xmlOpenTags );

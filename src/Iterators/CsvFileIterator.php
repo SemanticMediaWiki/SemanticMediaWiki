@@ -40,7 +40,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @since 3.0
 	 */
 	public function __construct(
-		$file,
+		string $file,
 		private $parseHeader = false,
 		private $delimiter = ",
 		",

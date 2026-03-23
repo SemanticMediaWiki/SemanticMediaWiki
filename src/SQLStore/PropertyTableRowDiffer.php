@@ -317,7 +317,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	private function arrayDeleteMatchingValues( array $oldValues, $newValues, $propertyTable ): array {
+	private function arrayDeleteMatchingValues( array $oldValues, array $newValues, $propertyTable ): array {
 		$isString = $propertyTable->getDIType() === DataItem::TYPE_BLOB;
 
 		// Cycle through old values

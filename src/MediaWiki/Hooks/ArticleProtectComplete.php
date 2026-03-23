@@ -48,7 +48,7 @@ class ArticleProtectComplete implements HookListener {
 	 * @param array $protections
 	 * @param string $reason
 	 */
-	public function process( $protections, $reason ) {
+	public function process( array $protections, $reason ) {
 		if ( Message::get( 'smw-edit-protection-auto-update' ) === $reason ) {
 			return $this->logger->info( __METHOD__ . ' No changes required, invoked by own process!' );
 		}
@@ -74,7 +74,7 @@ class ArticleProtectComplete implements HookListener {
 		);
 	}
 
-	private function doPrepareData( $protections, $parserData ): void {
+	private function doPrepareData( array $protections, $parserData ): void {
 		$isRestrictedUpdate = true;
 		$isAnnotationBySystem = false;
 

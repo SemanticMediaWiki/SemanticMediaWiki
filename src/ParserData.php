@@ -382,7 +382,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function updateStore( $opts = [] ): bool {
+	public function updateStore( bool|array $opts = [] ): bool {
 		$isDeferrableUpdate = false;
 
 		// @legacy
@@ -448,7 +448,7 @@ class ParserData {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function addLimitReport( $key, $value ): void {
+	public function addLimitReport( string $key, $value ): void {
 		$this->parserOutput->setLimitReportData( 'smw-limitreport-' . $key, $value );
 	}
 

@@ -104,7 +104,7 @@ class Subobject {
 	 * @return self
 	 * @throws InvalidArgumentException
 	 */
-	public function setEmptyContainerForId( $identifier ) {
+	public function setEmptyContainerForId( $identifier ): static {
 		if ( $identifier === '' ) {
 			throw new InvalidArgumentException( 'Expected a valid (non-empty) indentifier' );
 		}

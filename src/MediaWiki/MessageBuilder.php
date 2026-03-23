@@ -35,7 +35,7 @@ class MessageBuilder {
 	 *
 	 * @return MessageBuilder
 	 */
-	public function setLanguage( Language $language ) {
+	public function setLanguage( Language $language ): static {
 		$this->language = $language;
 		return $this;
 	}
@@ -47,7 +47,7 @@ class MessageBuilder {
 	 *
 	 * @return MessageBuilder
 	 */
-	public function setLanguageFromContext( IContextSource $context ) {
+	public function setLanguageFromContext( IContextSource $context ): static {
 		$this->language = $context->getLanguage();
 		return $this;
 	}

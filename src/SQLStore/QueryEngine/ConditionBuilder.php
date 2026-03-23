@@ -22,10 +22,7 @@ use SMW\Utils\CircularReferenceGuard;
  */
 class ConditionBuilder {
 
-	/**
-	 * @var DispatchingDescriptionInterpreter
-	 */
-	private $dispatchingDescriptionInterpreter;
+	private DispatchingDescriptionInterpreter $dispatchingDescriptionInterpreter;
 
 	private bool $isFilterDuplicates = true;
 
@@ -87,7 +84,7 @@ class ConditionBuilder {
 	 *
 	 * @return $this
 	 */
-	public function setSortKeys( $sortKeys ) {
+	public function setSortKeys( $sortKeys ): static {
 		$this->sortKeys = $sortKeys;
 		return $this;
 	}

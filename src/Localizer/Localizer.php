@@ -196,7 +196,7 @@ class Localizer {
 	 *
 	 * @return LocalLanguage
 	 */
-	public function getLang( $language = '' ) {
+	public function getLang( $language = '' ): LocalLanguage {
 		$languageCode = $language;
 
 		if ( $language instanceof Language ) {
@@ -314,7 +314,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function createTextWithNamespacePrefix( $index, $text ): string {
+	public function createTextWithNamespacePrefix( $index, string $text ): string {
 		return $this->getNsText( $index ) . ':' . $text;
 	}
 

@@ -249,7 +249,7 @@ class ProximityPropertyValueLookup {
 		return [ $diHandler->getLabelField(), $diType ];
 	}
 
-	private function build_like( $query, $field, $search ): void {
+	private function build_like( $query, $field, string $search ): void {
 		$conds = [
 			// @phan-suppress-next-line PhanUselessBinaryAddRight
 			'%' . $search . '%',

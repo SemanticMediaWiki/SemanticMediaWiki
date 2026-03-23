@@ -23,7 +23,7 @@ trait ConfigLegacyTrait {
 	/**
 	 * @since 3.2
 	 */
-	public function loadLegacyMappings( &$configuration ): void {
+	public function loadLegacyMappings( array &$configuration ): void {
 		self::setLegacyMappings( $configuration );
 		self::fillDeprecationNotices();
 	}
@@ -32,7 +32,7 @@ trait ConfigLegacyTrait {
 	 * If some settings got renamed or reassigned then add the setting together
 	 * with the new mapping to this section.
 	 */
-	private static function setLegacyMappings( &$configuration ): void {
+	private static function setLegacyMappings( array &$configuration ): void {
 		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
 			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
 		}

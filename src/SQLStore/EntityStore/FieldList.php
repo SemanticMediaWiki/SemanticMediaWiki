@@ -66,7 +66,7 @@ class FieldList {
 		return $list;
 	}
 
-	private function makeList( $map, &$list ): void {
+	private function makeList( $map, array &$list ): void {
 		foreach ( $map as $id => $values ) {
 			if ( is_iterable( $values ) ) {
 				foreach ( $values as $key => $counts ) {
@@ -76,7 +76,7 @@ class FieldList {
 		}
 	}
 
-	private function matchKeyByHash( $key, $counts, &$list ): void {
+	private function matchKeyByHash( $key, $counts, array &$list ): void {
 		// It is an internal property, so we never reference it as part of a
 		// lookup!
 		if ( $key === '_SKEY' ) {
@@ -94,7 +94,7 @@ class FieldList {
 		}
 	}
 
-	private function matchKeyByCounts( string $type, $key, $counts, &$list ): void {
+	private function matchKeyByCounts( string $type, $key, $counts, array &$list ): void {
 		if ( $key === '_SKEY' ) {
 			return;
 		}

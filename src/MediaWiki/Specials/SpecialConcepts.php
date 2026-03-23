@@ -23,10 +23,7 @@ use SMW\Utils\Pager;
  */
 class SpecialConcepts extends SpecialPage {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ?Store $store = null;
 
 	/**
 	 * @see SpecialPage::__construct

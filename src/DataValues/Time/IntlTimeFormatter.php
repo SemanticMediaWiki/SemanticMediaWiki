@@ -2,9 +2,11 @@
 
 namespace SMW\DataValues\Time;
 
+use DateTime;
 use MediaWiki\Language\Language;
 use SMW\DataItems\Time;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\ExtendedDateTime;
 
 /**
  * @license GPL-2.0-or-later
@@ -151,7 +153,7 @@ class IntlTimeFormatter {
 	 * - a	Lowercase Ante meridiem and Post meridiem am or pm
 	 * - A	Uppercase Ante meridiem and Post meridiem
 	 */
-	private function formatWithLocalizedTextReplacement( $dateTime, $format ) {
+	private function formatWithLocalizedTextReplacement( DateTime|ExtendedDateTime $dateTime, $format ) {
 		$output = $dateTime->format( $format );
 
 		// (n) DateTime => 1 through 12

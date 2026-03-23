@@ -121,7 +121,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		);
 	}
 
-	private function element( string $msg, $html = '', $attributes = [] ) {
+	private function element( string $msg, string $html = '', $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[

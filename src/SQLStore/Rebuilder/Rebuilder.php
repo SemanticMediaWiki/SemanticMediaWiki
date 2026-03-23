@@ -28,10 +28,7 @@ use SMW\Utils\Lru;
  */
 class Rebuilder {
 
-	/**
-	 * @var JobFactory
-	 */
-	private $jobFactory;
+	private JobFactory $jobFactory;
 
 	/**
 	 * @var NamespaceExaminer
@@ -53,10 +50,7 @@ class Rebuilder {
 
 	private array $dispatchedEntities = [];
 
-	/**
-	 * @var array
-	 */
-	private $updateJobs = [];
+	private array $updateJobs = [];
 
 	private Lru $lru;
 

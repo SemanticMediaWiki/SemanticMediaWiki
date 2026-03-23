@@ -21,10 +21,7 @@ class PropertyTableIdReferenceFinder {
 	 */
 	private $connection;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private NamespaceExaminer $namespaceExaminer;
 
 	/**
 	 * @var bool

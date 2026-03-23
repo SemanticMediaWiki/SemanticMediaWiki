@@ -63,7 +63,7 @@ class HtmlTable {
 	 *
 	 * @return string
 	 */
-	public function table( $attributes = [], $transpose = false, $htmlContext = false ) {
+	public function table( array $attributes = [], $transpose = false, $htmlContext = false ) {
 		$table = $this->buildTable( $transpose, $htmlContext );
 
 		if ( $transpose ) {
@@ -118,7 +118,7 @@ class HtmlTable {
 		return $this->concatenateRows( $rows, $htmlContext );
 	}
 
-	private function createRow( string $content, $attributes, int $count ) {
+	private function createRow( string $content, array $attributes, int $count ) {
 		$alternate = $count % 2 == 0 ? 'row-odd' : 'row-even';
 
 		if ( isset( $attributes['class'] ) ) {
@@ -146,7 +146,7 @@ class HtmlTable {
 		return implode( '', $rows );
 	}
 
-	private function getTransposedCell( int|string $index, $row ) {
+	private function getTransposedCell( int|string $index, array $row ) {
 		if ( isset( $row['cells'][$index] ) ) {
 			return $row['cells'][$index];
 		}

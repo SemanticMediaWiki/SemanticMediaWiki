@@ -29,7 +29,7 @@ class TemplateRowBuilder extends RowBuilder {
 	 *
 	 * @return string
 	 */
-	public function getRowText( array $fields, $rownum = 0 ) {
+	public function getRowText( array $fields, $rownum = 0 ): string {
 		$templateRenderer = $this->templateRendererFactory->getTemplateRenderer();
 
 		foreach ( $fields as $column => $field ) {

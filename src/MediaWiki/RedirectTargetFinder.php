@@ -25,7 +25,7 @@ class RedirectTargetFinder {
 	 *
 	 * @return Title|null
 	 */
-	public function findRedirectTargetFromText( $text ) {
+	public function findRedirectTargetFromText( $text ): static {
 		if ( $this->redirectTarget === null ) {
 			$this->redirectTarget = $this->findFromText( $text );
 		}

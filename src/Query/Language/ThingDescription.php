@@ -28,7 +28,7 @@ class ThingDescription extends Description {
 		return 0; // no real condition, no size or depth
 	}
 
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
+	public function prune( &$maxsize, &$maxdepth, &$log ): static {
 		return $this;
 	}
 

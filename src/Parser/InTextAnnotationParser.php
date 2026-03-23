@@ -46,7 +46,7 @@ class InTextAnnotationParser {
 	/**
 	 * @var ApplicationFactory
 	 */
-	private $applicationFactory = null;
+	private ApplicationFactory $applicationFactory;
 
 	private ?StripMarkerDecoder $stripMarkerDecoder = null;
 

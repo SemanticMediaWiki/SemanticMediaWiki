@@ -359,7 +359,7 @@ class SemanticDataLookup {
 	/**
 	 * @return mixed[]
 	 */
-	private function fetchSemanticDataFromTableByList( array $list, $pid, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions ): array {
+	private function fetchSemanticDataFromTableByList( array $list, string $pid, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions ): array {
 		if ( $list === [] ) {
 			return [];
 		}

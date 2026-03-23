@@ -154,7 +154,7 @@ abstract class DataItem implements JsonUnserializable {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->getSerialization();
 	}
 

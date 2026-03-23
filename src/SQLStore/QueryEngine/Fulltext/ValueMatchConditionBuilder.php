@@ -36,7 +36,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->searchTable->isEnabled();
 	}
 
@@ -105,7 +105,7 @@ class ValueMatchConditionBuilder {
 		return '';
 	}
 
-	protected function getMatchableTextFromDescription( ValueDescription $description ) {
+	protected function getMatchableTextFromDescription( ValueDescription $description ): string|false {
 		$matchableText = false;
 
 		if ( $description->getDataItem() instanceof Blob ) {

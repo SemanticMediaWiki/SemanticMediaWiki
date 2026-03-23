@@ -53,7 +53,7 @@ class BrowseBySubject extends ApiBase {
 		);
 	}
 
-	protected function buildHTML( $params ): string {
+	protected function buildHTML( array $params ): string {
 		$subject = new WikiPage(
 			$params['subject'],
 			$params['ns'],
@@ -73,7 +73,7 @@ class BrowseBySubject extends ApiBase {
 		return $htmlBuilder->buildHTML();
 	}
 
-	protected function doSerialize( $params ) {
+	protected function doSerialize( array $params ): array {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $applicationFactory->newTitleFactory()->newFromText(
@@ -105,7 +105,7 @@ class BrowseBySubject extends ApiBase {
 		return $this->doFormat( $semanticDataSerializer->serialize( $semanticData ) );
 	}
 
-	protected function doFormat( $serialized ) {
+	protected function doFormat( array $serialized ): array {
 		$this->addIndexTags( $serialized );
 
 		if ( isset( $serialized['sobj'] ) ) {
@@ -120,7 +120,7 @@ class BrowseBySubject extends ApiBase {
 		return $serialized;
 	}
 
-	protected function addIndexTags( &$serialized ) {
+	protected function addIndexTags( array|string &$serialized ) {
 		if ( isset( $serialized['data'] ) && is_array( $serialized['data'] ) ) {
 
 			$this->getResult()->setIndexedTagName( $serialized['data'], 'property' );

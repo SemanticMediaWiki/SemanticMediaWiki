@@ -159,7 +159,7 @@ class SpecialOWLExport extends SpecialPage {
 	 *
 	 * @return void
 	 */
-	protected function exportPages( $pages ) {
+	protected function exportPages( array $pages ) {
 		global $smwgExportBacklinks, $smwgAllowRecursiveExport;
 
 		$request = $this->getRequest();

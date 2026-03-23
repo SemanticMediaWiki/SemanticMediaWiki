@@ -144,7 +144,7 @@ class MySQLTableBuilder extends TableBuilder {
 	/**
 	 * @return mixed[]
 	 */
-	private function getCurrentFields( $tableName ): array {
+	private function getCurrentFields( string $tableName ): array {
 		$sql = 'DESCRIBE ' . $tableName;
 
 		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
@@ -331,7 +331,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * @return array indexname => columns
 	 */
-	private function getIndexInfo( $tableName ): array {
+	private function getIndexInfo( string $tableName ): array {
 		$indices = [];
 
 		$res = $this->connection->query(
@@ -355,7 +355,7 @@ class MySQLTableBuilder extends TableBuilder {
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, int|string $indexName, $columns ): void {
+	private function doDropIndex( string $tableName, int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );

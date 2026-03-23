@@ -244,7 +244,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, $columnClass ) {
+	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, string $columnClass ) {
 		/** @var DataValue[] $dataValues */
 		$dataValues = [];
 

@@ -383,7 +383,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return SemanticData[]
 	 */
-	public function getSubSemanticData() {
+	public function getSubSemanticData(): array {
 		// Remove the check in 3.0
 		$subSemanticData = $this->subSemanticData;
 
@@ -531,7 +531,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param $propertyName string
 	 * @param $dataItem DataItem
 	 */
-	public function addPropertyValue( $propertyName, DataItem $dataItem ): void {
+	public function addPropertyValue( string $propertyName, DataItem $dataItem ): void {
 		$propertyKey = smwfNormalTitleDBKey( $propertyName );
 
 		if ( array_key_exists( $propertyKey, $this->mProperties ) ) {
@@ -927,7 +927,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ): self {
 		# T312589: In the future JsonCodec will take care of unserializing
 		# the values in the $json array itself.
 		$obj = new self(

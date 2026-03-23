@@ -48,7 +48,7 @@ class Timer {
 	/**
 	 * @since 3.2
 	 */
-	public function stop( $name ) {
+	public function stop( $name ): static {
 		if ( isset( $this->times[$name] ) ) {
 			$this->times[$name] = microtime( true ) - $this->times[$name];
 		}
@@ -93,7 +93,7 @@ class Timer {
 	 *
 	 * @return string
 	 */
-	public static function getElapsedTimeAsLoggableMessage( $name, $round = null ): string {
+	public static function getElapsedTimeAsLoggableMessage( string $name, $round = null ): string {
 		return $name . ' (procTime in sec: ' . self::getElapsedTime( $name, $round ) . ')';
 	}
 

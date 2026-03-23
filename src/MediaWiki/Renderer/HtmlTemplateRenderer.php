@@ -36,7 +36,7 @@ class HtmlTemplateRenderer {
 	 *
 	 * @param string $templateName
 	 */
-	public function packFieldsForTemplate( $templateName ): void {
+	public function packFieldsForTemplate( string $templateName ): void {
 		$this->wikitextTemplateRenderer->packFieldsForTemplate( $templateName );
 	}
 

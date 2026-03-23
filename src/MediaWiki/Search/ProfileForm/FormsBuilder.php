@@ -310,7 +310,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function findDescription( $descriptions, int|string $name, bool $isActiveForm ) {
+	private function findDescription( array $descriptions, int|string $name, bool $isActiveForm ) {
 		if ( !isset( $descriptions[$name] ) ) {
 			return '';
 		}

@@ -17,7 +17,7 @@ use SMW\DataItems\DataItem;
  */
 class ConceptValue extends DataValue {
 
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): never {
 		throw new Exception( 'Concepts cannot be initialized from user-provided strings. This should not happen.' );
 	}
 

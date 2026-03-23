@@ -336,7 +336,7 @@ class ParametersProcessor {
 	/**
 	 * @return true[]
 	 */
-	private function propertyFilterConditions( $values, $clear ): array {
+	private function propertyFilterConditions( $values, array $clear ): array {
 		$filters = array_keys( (array)$values );
 		$this->propertyFilters = $filters;
 
@@ -366,7 +366,7 @@ class ParametersProcessor {
 	/**
 	 * @return true[]
 	 */
-	private function categoryFilterConditions( $values, $clear ): array {
+	private function categoryFilterConditions( $values, array $clear ): array {
 		$filters = (array)$values;
 		$conditions = [];
 		$printRequests = [];
@@ -388,7 +388,7 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	private function valueFilterConditions( $values, $cond, $clear ): void {
+	private function valueFilterConditions( $values, array $cond, array $clear ): void {
 		if ( is_string( $values ) ) {
 			$filters = array_filter( explode( '|', $values ) );
 		} else {

@@ -135,7 +135,7 @@ class SQLStoreUpdater {
 		return $status;
 	}
 
-	private function doDelete( $id, WikiPage $subject, $subobjectListFinder, &$extensionList ): void {
+	private function doDelete( $id, WikiPage $subject, $subobjectListFinder, array &$extensionList ): void {
 		$this->semanticDataLookup->invalidateCache( $id );
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches

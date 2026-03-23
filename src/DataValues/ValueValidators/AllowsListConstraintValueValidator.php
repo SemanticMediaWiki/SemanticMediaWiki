@@ -134,7 +134,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = true;
 	}
 
-	private function checkConstraintViolation( DataValue $dataValue, array $allowedValues, &$allowedValueList ) {
+	private function checkConstraintViolation( DataValue $dataValue, array $allowedValues, array &$allowedValueList ) {
 		if ( !is_array( $allowedValues ) ) {
 			return true;
 		}
@@ -209,7 +209,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return $isAllowed;
 	}
 
-	private function check_range( string $exp, $value, Blob $allowedValue, &$range, &$isAllowed, &$allowedValueList ): bool {
+	private function check_range( string $exp, $value, Blob $allowedValue, &$range, &$isAllowed, array &$allowedValueList ): bool {
 		$v = $allowedValue->getString();
 
 		// If a previous range comparison failed then bail-out!
@@ -237,7 +237,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return false;
 	}
 
-	private function check_bounds( $value, Blob $allowedValue, &$isAllowed, &$allowedValueList ): bool {
+	private function check_bounds( $value, Blob $allowedValue, &$isAllowed, array &$allowedValueList ): bool {
 		$v = $allowedValue->getString();
 
 		if ( strpos( $v, '...' ) === false ) {

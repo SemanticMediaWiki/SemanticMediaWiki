@@ -112,7 +112,7 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function checkForValidType( $namespace, $section, $uri, $typelist ) {
+	private function checkForValidType( $namespace, $section, $uri, ?array $typelist ) {
 		if ( $uri === '' ) {
 
 			$this->errors[] = [

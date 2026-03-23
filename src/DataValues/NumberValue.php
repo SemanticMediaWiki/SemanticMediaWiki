@@ -87,10 +87,7 @@ class NumberValue extends DataValue {
 	 */
 	protected $precision = null;
 
-	/**
-	 * @var IntlNumberFormatter
-	 */
-	private $intlNumberFormatter;
+	private IntlNumberFormatter $intlNumberFormatter;
 
 	/**
 	 * @var ValueFormatter
@@ -549,7 +546,7 @@ class NumberValue extends DataValue {
 		return implode( '-', $parts );
 	}
 
-	private function getNumberFormatter() {
+	private function getNumberFormatter(): IntlNumberFormatter {
 		$this->intlNumberFormatter->setOption(
 			IntlNumberFormatter::USER_LANGUAGE,
 			$this->getOption( self::OPT_USER_LANGUAGE )

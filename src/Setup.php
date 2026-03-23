@@ -51,7 +51,7 @@ final class Setup {
 	 *
 	 * @return void
 	 */
-	public static function registerExtensionCheck( &$vars ): void {
+	public static function registerExtensionCheck( array &$vars ): void {
 		$uncaughtExceptionHandler = new UncaughtExceptionHandler(
 			SetupCheck::newFromDefaults()
 		);

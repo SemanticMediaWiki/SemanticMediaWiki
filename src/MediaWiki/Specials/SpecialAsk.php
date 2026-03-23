@@ -43,10 +43,7 @@ use SMW\Utils\UrlArgs;
  */
 class SpecialAsk extends SpecialPage {
 
-	/**
-	 * @var QuerySourceFactory
-	 */
-	private $querySourceFactory;
+	private QuerySourceFactory $querySourceFactory;
 
 	private string $queryString = '';
 
@@ -503,7 +500,7 @@ class SpecialAsk extends SpecialPage {
 		return [ $result, $res, $duration ];
 	}
 
-	private function getQueryLog( $duration, $isFromCache = false ): array {
+	private function getQueryLog( $duration, bool $isFromCache = false ): array {
 		$source = null;
 
 		if ( isset( $this->parameters['source'] ) ) {

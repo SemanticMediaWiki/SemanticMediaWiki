@@ -144,7 +144,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	/**
 	 * @return mixed[]
 	 */
-	private function getCurrentFields( $tableName ): array {
+	private function getCurrentFields( string $tableName ): array {
 		$sql = 'PRAGMA table_info(' . $tableName . ')';
 
 		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
@@ -221,7 +221,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 	}
 
-	private function doDropField( $tableName, int|string $fieldName, ?array $attributes ): void {
+	private function doDropField( string $tableName, int|string $fieldName, ?array $attributes ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$fields = $attributes['fields'];
