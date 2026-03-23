@@ -11,7 +11,6 @@ use SMW\RequestOptions;
 use SMW\Settings;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\QueryPages\UnusedPropertiesQueryPage
@@ -33,8 +32,6 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
-
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -46,10 +43,6 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 		$this->settings = Settings::newFromArray( [] );
 
 		$this->dataItemFactory = new DataItemFactory();
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
