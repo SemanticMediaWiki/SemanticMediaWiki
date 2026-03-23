@@ -222,7 +222,7 @@ class PropertyTableUpdater {
 		);
 	}
 
-	private function aggregate_ids( &$ids, $propertyTable, $rows ): void {
+	private function aggregate_ids( array &$ids, $propertyTable, $rows ): void {
 		$isCategory = false;
 
 		if ( $propertyTable->isFixedPropertyTable() ) {

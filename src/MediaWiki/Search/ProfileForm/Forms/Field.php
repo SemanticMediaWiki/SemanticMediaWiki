@@ -24,7 +24,7 @@ class Field {
 	 *
 	 * @return string
 	 */
-	public function create( $type, $attributes = [] ) {
+	public function create( $type, array $attributes = [] ) {
 		$attributes['class'] = "smw-$type" . ( isset( $attributes['class'] ) ? ' ' . $attributes['class'] : '' );
 
 		if ( isset( $attributes['tooltip'] ) ) {
@@ -50,7 +50,7 @@ class Field {
 	 *
 	 * @return string
 	 */
-	public function tooltip( $attributes = [] ) {
+	public function tooltip( array $attributes = [] ) {
 		$highlighter = Highlighter::factory( Highlighter::TYPE_NOTE );
 		$msg = '';
 
@@ -78,7 +78,7 @@ class Field {
 	 *
 	 * @return string
 	 */
-	public function select( $attributes = [] ): string {
+	public function select( array $attributes = [] ): string {
 		$list = [];
 		$html = [];
 		$selected = false;
@@ -161,7 +161,7 @@ class Field {
 	 *
 	 * @return string
 	 */
-	public function input( $attributes = [] ) {
+	public function input( array $attributes = [] ) {
 		$class = isset( $attributes['class'] ) ? $attributes['class'] : '';
 		$type = 'text';
 		$tooltip = '';

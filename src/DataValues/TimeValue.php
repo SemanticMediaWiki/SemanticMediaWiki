@@ -213,7 +213,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @return bool stating if successful
 	 */
-	protected function interpretDateComponents( $datecomponents, &$date ): bool {
+	protected function interpretDateComponents( $datecomponents, array|false &$date ): bool {
 		// The following code segment creates a bit vector to encode
 		// which role each digit of the entered date can take (day,
 		// year, month). The vector starts with 1 and contains three

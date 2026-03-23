@@ -463,7 +463,7 @@ class SomeValueInterpreter {
 	 *
 	 * @return array
 	 */
-	public function inverse_property( $params, $options ) {
+	public function inverse_property( $params, array $options ) {
 		$termsLookup = $this->conditionBuilder->getTermsLookup();
 		$comparator = $options['comparator'];
 

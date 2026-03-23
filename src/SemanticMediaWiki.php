@@ -20,7 +20,7 @@ class SemanticMediaWiki {
 	/**
 	 * @since 2.4
 	 */
-	public static function initExtension( $credits = [] ): void {
+	public static function initExtension( array $credits = [] ): void {
 		if ( !defined( 'SMW_VERSION' ) && isset( $credits['version'] ) ) {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupDefines();

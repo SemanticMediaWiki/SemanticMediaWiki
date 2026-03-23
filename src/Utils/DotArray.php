@@ -36,7 +36,11 @@ class DotArray {
 		return $default;
 	}
 
-	private static function find( $array, $paths, $default ) {
+	private static function find( mixed $array, array $paths, $default ) {
+		if ( !is_array( $array ) ) {
+			return $default;
+		}
+
 		$key = '';
 
 		foreach ( $paths as $k => $p ) {

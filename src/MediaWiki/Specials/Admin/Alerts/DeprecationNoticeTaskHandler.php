@@ -93,7 +93,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		);
 	}
 
-	private function buildSection( int|string $section, $deprecationNoticeList ) {
+	private function buildSection( int|string $section, array $deprecationNoticeList ) {
 		$noticeConfigList = [];
 		$replacementConfigList = [];
 		$removedConfigList = [];

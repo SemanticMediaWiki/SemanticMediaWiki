@@ -278,7 +278,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getChangedEntityIdListByType( $type = null ) {
+	public function getChangedEntityIdListByType( $type = null ): array {
 		$changedEntities = [];
 
 		foreach ( $this->getOrderedDiffByTable() as $diff ) {
@@ -318,7 +318,7 @@ class ChangeOp implements IteratorAggregate {
 		return $this->getChangedEntityIdSummaryList();
 	}
 
-	private function addToIdList( &$list, $value ): void {
+	private function addToIdList( array &$list, $value ): void {
 		foreach ( $value as $element ) {
 
 			if ( isset( $element['p_id'] ) ) {

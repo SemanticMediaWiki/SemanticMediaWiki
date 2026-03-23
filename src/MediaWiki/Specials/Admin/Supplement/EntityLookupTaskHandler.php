@@ -289,7 +289,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return [ $output, $error ];
 	}
 
-	private function addFulltextInfo( $id, &$references ): void {
+	private function addFulltextInfo( $id, array &$references ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( !$connection->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ ) ) {

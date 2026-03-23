@@ -86,7 +86,7 @@ class TableChangeOp {
 	 *
 	 * @return mixed[]
 	 */
-	public function getFieldChangeOps( $opType = null, $filter = [] ): array {
+	public function getFieldChangeOps( $opType = null, array $filter = [] ): array {
 		if ( $opType !== null && !$this->hasChangeOp( $opType ) ) {
 			return [];
 		}

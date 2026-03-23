@@ -195,7 +195,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForSelect( $vars, string $where, $options = [], $extraNamespaces = [] ): string {
+	public function getSparqlForSelect( $vars, string $where, array $options = [], array $extraNamespaces = [] ): string {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -251,7 +251,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForAsk( string $where, $extraNamespaces = [] ): string {
+	public function getSparqlForAsk( string $where, array $extraNamespaces = [] ): string {
 		return self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
 	}
 
@@ -268,7 +268,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function selectCount( string $variable, string $where, $options = [], $extraNamespaces = [] ) {
+	public function selectCount( string $variable, string $where, array $options = [], array $extraNamespaces = [] ) {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT (COUNT(';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -353,7 +353,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ): bool {
+	public function insertDelete( $insertPattern, $deletePattern, $where, array $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -374,7 +374,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertData( string $triples, $extraNamespaces = [] ): bool {
+	public function insertData( string $triples, array $extraNamespaces = [] ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
@@ -402,7 +402,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function deleteData( $triples, $extraNamespaces = [] ): bool {
+	public function deleteData( $triples, array $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -583,7 +583,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string
 	 */
-	public static function getPrefixString( $extraNamespaces = [], $forSparql = true ): string {
+	public static function getPrefixString( array $extraNamespaces = [], $forSparql = true ): string {
 		$prefixString = '';
 		$prefixIntro = $forSparql ? 'PREFIX ' : '@prefix ';
 		$prefixOutro = $forSparql ? "\n" : " .\n";

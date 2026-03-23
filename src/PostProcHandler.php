@@ -309,7 +309,7 @@ class PostProcHandler {
 		return null;
 	}
 
-	private function find_jobs( $jobs ) {
+	private function find_jobs( array $jobs ): array {
 		// Not enabled, no need to invoke a job!
 		if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
 			unset( $jobs['smw.parserCachePurge'] );

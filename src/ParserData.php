@@ -382,7 +382,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function updateStore( $opts = [] ): bool {
+	public function updateStore( bool|array $opts = [] ): bool {
 		$isDeferrableUpdate = false;
 
 		// @legacy

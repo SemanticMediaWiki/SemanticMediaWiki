@@ -165,7 +165,7 @@ class HtmlTableRenderer {
 	 *
 	 * @return string
 	 */
-	public function getHtml( $attributes = [] ) {
+	public function getHtml( array $attributes = [] ) {
 		$table = $this->transpose ? $this->buildTransposedTable() : $this->buildStandardTable();
 
 		if ( $this->transpose ) {
@@ -179,7 +179,7 @@ class HtmlTableRenderer {
 		return '';
 	}
 
-	private function createRow( string $content = '', $attributes = [] ) {
+	private function createRow( string $content = '', array $attributes = [] ) {
 		$alternate = count( $this->tableRows ) % 2 == 0 ? 'row-odd' : 'row-even';
 
 		if ( isset( $attributes['class'] ) ) {
@@ -264,7 +264,7 @@ class HtmlTableRenderer {
 		return $this->doConcatenatedHeader() . $this->doConcatenatedRows();
 	}
 
-	private function getTransposedCell( int|string $index, $row ) {
+	private function getTransposedCell( int|string $index, array $row ) {
 		if ( isset( $row['cells'][$index] ) ) {
 			return $row['cells'][$index];
 		}

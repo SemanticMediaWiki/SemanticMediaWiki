@@ -82,7 +82,7 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function createConnection( $conf ) {
+	private function createConnection( array $conf ) {
 		if ( isset( $conf['callback'] ) && is_callable( $conf['callback'] ) ) {
 			return call_user_func( $conf['callback'] );
 		}
@@ -114,7 +114,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return $connection;
 	}
 
-	private function newConnRef( $conf ): ConnRef {
+	private function newConnRef( array $conf ): ConnRef {
 		$read = $this->newLoadBalancerConnectionProvider( $conf['read'] );
 
 		if ( $conf['read'] !== $conf['write'] ) {

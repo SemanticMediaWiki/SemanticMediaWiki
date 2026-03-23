@@ -409,7 +409,7 @@ class SetupCheck {
 		return $error;
 	}
 
-	private function createContent( $value, string $type ) {
+	private function createContent( array $value, string $type ) {
 		if ( $value['text'] === 'ERROR_TEXT' ) {
 			$text = str_replace( "\n", '<br>', $this->errorMessage );
 		} elseif ( $value['text'] === 'ERROR_TEXT_MULTIPLE' ) {
@@ -458,7 +458,7 @@ class SetupCheck {
 		return $this->templateEngine->publish( $value['type'] );
 	}
 
-	private function createProgressIndicator( $value ): string {
+	private function createProgressIndicator( array $value ): string {
 		$maintenanceMode = (array)$this->setupFile->getMaintenanceMode();
 		$content = '';
 
@@ -512,7 +512,7 @@ class SetupCheck {
 		// Minify CSS rules, we keep them readable in the template to allow for
 		// better adaption
 		// @see http://manas.tungare.name/software/css-compression-in-php/
-		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( $matches ): string {
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( array $matches ): string {
 				// Remove space after colons
 				$style = str_replace( ': ', ':', $matches[0] );
 

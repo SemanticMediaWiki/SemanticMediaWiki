@@ -139,7 +139,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return [ $innerOrderByProperty, $innerCondition, $innerJoinVariable ];
 	}
 
-	private function findObjectNameFromInnerCondition( $innerCondition, string $innerJoinVariable, &$namespaces ): string {
+	private function findObjectNameFromInnerCondition( $innerCondition, string $innerJoinVariable, array &$namespaces ): string {
 		if ( !$innerCondition instanceof SingletonCondition ) {
 			return '?' . $innerJoinVariable;
 		}
@@ -159,7 +159,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return $objectName;
 	}
 
-	private function findMostSuitablePropertyRepresentation( Property $property, Property $nonInverseProperty, &$namespaces ) {
+	private function findMostSuitablePropertyRepresentation( Property $property, Property $nonInverseProperty, array &$namespaces ) {
 		$redirectByVariable = $this->conditionBuilder->tryToFindRedirectVariableForDataItem(
 			$nonInverseProperty->getDiWikiPage()
 		);

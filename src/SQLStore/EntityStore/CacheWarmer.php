@@ -121,7 +121,7 @@ class CacheWarmer {
 	 *
 	 * @param array $hashList
 	 */
-	public function prefetchFromList( $hashList = [] ): void {
+	public function prefetchFromList( array $hashList = [] ): void {
 		if ( $hashList === [] ) {
 			return;
 		}
@@ -173,7 +173,7 @@ class CacheWarmer {
 	 *
 	 * @param array $idList
 	 */
-	public function loadByIds( $idList = [] ): void {
+	public function loadByIds( array $idList = [] ): void {
 		if ( $idList === [] ) {
 			return;
 		}
