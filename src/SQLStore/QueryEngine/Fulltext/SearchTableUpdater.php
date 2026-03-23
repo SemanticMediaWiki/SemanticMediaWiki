@@ -106,7 +106,7 @@ class SearchTableUpdater {
 	 *
 	 * @return false|string
 	 */
-	public function read( $sid, $pid ) {
+	public function read( $sid, $pid ): false|string {
 		$row = $this->connection->selectRow(
 			$this->searchTable->getTableName(),
 			[ 'o_text' ],

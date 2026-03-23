@@ -34,10 +34,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 */
 	protected $indicators = [];
 
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
+	private string $severityType = '';
 
 	/**
 	 * @var string

@@ -36,10 +36,7 @@ class WikiPage extends DataItem {
 	 */
 	protected $m_subobjectname;
 
-	/**
-	 * @var string
-	 */
-	private $sortkey = null;
+	private ?string $sortkey = null;
 
 	/**
 	 * @var string
@@ -51,10 +48,7 @@ class WikiPage extends DataItem {
 	 */
 	private $pageLanguage = null;
 
-	/**
-	 * @var int
-	 */
-	private $id = 0;
+	private int $id = 0;
 
 	public int $recdepth;
 
@@ -161,7 +155,7 @@ class WikiPage extends DataItem {
 	 * page. To obtain the latter, query for the values of the property
 	 * "new SMW\DataItems\Property( '_SKEY' )".
 	 */
-	public function getSortKey() {
+	public function getSortKey(): string {
 		if ( $this->sortkey === null || $this->sortkey === '' ) {
 			$this->sortkey = str_replace( '_', ' ', $this->m_dbkey );
 		}
@@ -222,7 +216,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getId() {
+	public function getId(): int {
 		return $this->id;
 	}
 

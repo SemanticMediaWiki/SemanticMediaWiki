@@ -56,7 +56,7 @@ class Client {
 	/**
 	 * @var bool
 	 */
-	private static $hasIndex = [];
+	private static array $hasIndex = [];
 
 	/**
 	 * @since 3.0
@@ -282,7 +282,7 @@ class Client {
 	 *
 	 * @param string $type
 	 */
-	public function createIndex( $type ): string {
+	public function createIndex( string $type ): string {
 		$index = $this->getIndexName( $type );
 		$version = 'v1';
 

@@ -10,15 +10,9 @@ namespace SMW\Elastic\QueryEngine;
  */
 class Aggregations {
 
-	/**
-	 * @var array
-	 */
-	private $subAggregations = [];
+	private array $subAggregations = [];
 
-	/**
-	 * @var bool
-	 */
-	private $plain = false;
+	private bool $plain = false;
 
 	/**
 	 * @since 3.0

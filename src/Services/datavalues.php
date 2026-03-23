@@ -56,7 +56,7 @@ return [
 	 *
 	 * @return UnitConverter
 	 */
-	'UnitConverter' => static function ( $containerBuilder ) {
+	'UnitConverter' => static function ( $containerBuilder ): UnitConverter {
 		$containerBuilder->registerExpectedReturnType(
 			'UnitConverter',
 			UnitConverter::class
@@ -75,7 +75,7 @@ return [
 	 *
 	 * @return ConstraintSchemaValue
 	 */
-	ConstraintSchemaValue::class => static function ( $containerBuilder ) {
+	ConstraintSchemaValue::class => static function ( $containerBuilder ): ConstraintSchemaValue {
 		return new ConstraintSchemaValue(
 			ConstraintSchemaValue::TYPE_ID,
 			$containerBuilder->singleton( 'PropertySpecificationLookup' )
@@ -87,7 +87,7 @@ return [
 	 *
 	 * @return PropertyValueParser
 	 */
-	DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID => static function ( $containerBuilder ): PropertyValueParser {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID,
 			PropertyValueParser::class
@@ -111,7 +111,7 @@ return [
 	 *
 	 * @return PropertyValueFormatter
 	 */
-	DataValueServiceFactory::TYPE_FORMATTER . PropertyValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_FORMATTER . PropertyValue::TYPE_ID => static function ( $containerBuilder ): PropertyValueFormatter {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . PropertyValue::TYPE_ID,
 			PropertyValueFormatter::class
@@ -125,7 +125,7 @@ return [
 	 *
 	 * @return AllowsPatternValueParser
 	 */
-	DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID => static function ( $containerBuilder ): AllowsPatternValueParser {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID,
 			AllowsPatternValueParser::class
@@ -139,7 +139,7 @@ return [
 	 *
 	 * @return AllowsListValueParser
 	 */
-	DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID => static function ( $containerBuilder ): AllowsListValueParser {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID,
 			AllowsListValueParser::class
@@ -153,7 +153,7 @@ return [
 	 *
 	 * @return CompoundConstraintValueValidator
 	 */
-	DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator' => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator' => static function ( $containerBuilder ): CompoundConstraintValueValidator {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator',
 			CompoundConstraintValueValidator::class
@@ -220,7 +220,7 @@ return [
 	 *
 	 * @return ImportValueParser
 	 */
-	DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID => static function ( $containerBuilder ): ImportValueParser {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID,
 			ImportValueParser::class
@@ -234,7 +234,7 @@ return [
 	 *
 	 * @return StringValueFormatter
 	 */
-	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID => static function ( $containerBuilder ): StringValueFormatter {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID,
 			StringValueFormatter::class
@@ -253,7 +253,7 @@ return [
 	 *
 	 * @return CodeStringValueFormatter
 	 */
-	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID => static function ( $containerBuilder ): CodeStringValueFormatter {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID,
 			CodeStringValueFormatter::class
@@ -267,7 +267,7 @@ return [
 	 *
 	 * @return ReferenceValueFormatter
 	 */
-	DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID => static function ( $containerBuilder ): ReferenceValueFormatter {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID,
 			ReferenceValueFormatter::class
@@ -281,7 +281,7 @@ return [
 	 *
 	 * @return MonolingualTextValueParser
 	 */
-	DataValueServiceFactory::TYPE_PARSER . MonolingualTextValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_PARSER . MonolingualTextValue::TYPE_ID => static function ( $containerBuilder ): MonolingualTextValueParser {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . MonolingualTextValue::TYPE_ID,
 			MonolingualTextValueParser::class
@@ -295,7 +295,7 @@ return [
 	 *
 	 * @return MonolingualTextValueFormatter
 	 */
-	DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID => static function ( $containerBuilder ): MonolingualTextValueFormatter {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID,
 			MonolingualTextValueFormatter::class
@@ -313,7 +313,7 @@ return [
 		return $containerBuilder->create( DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID );
 	},
 
-	DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID => static function ( $containerBuilder ): NumberValueFormatter {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID,
 			NumberValueFormatter::class
@@ -327,7 +327,7 @@ return [
 	 *
 	 * @return TimeValueFormatter
 	 */
-	DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID => static function ( $containerBuilder ): TimeValueFormatter {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID,
 			TimeValueFormatter::class
@@ -341,7 +341,7 @@ return [
 	 *
 	 * @return TimeValueParser
 	 */
-	DataValueServiceFactory::TYPE_PARSER . TimeValue::TYPE_ID => static function ( $containerBuilder ) {
+	DataValueServiceFactory::TYPE_PARSER . TimeValue::TYPE_ID => static function ( $containerBuilder ): TimeValueParser {
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . TimeValue::TYPE_ID,
 			TimeValueParser::class
@@ -355,7 +355,7 @@ return [
 	 *
 	 * @return DescriptionBuilderRegistry
 	 */
-	'DescriptionBuilderRegistry' => static function ( $containerBuilder ) {
+	'DescriptionBuilderRegistry' => static function ( $containerBuilder ): DescriptionBuilderRegistry {
 		return new DescriptionBuilderRegistry();
 	},
 

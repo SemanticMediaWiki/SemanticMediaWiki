@@ -19,9 +19,9 @@ class PredefinedProperties {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.1
@@ -58,7 +58,7 @@ class PredefinedProperties {
 
 			try {
 				$property = new Property( $prop );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				$property = null;
 				$this->messageReporter->reportMessage( "   ... skipping {$prop} due to invalid registration ...\n" );
 			}

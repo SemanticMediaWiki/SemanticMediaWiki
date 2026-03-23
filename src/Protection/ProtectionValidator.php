@@ -34,20 +34,17 @@ class ProtectionValidator {
 	 */
 	private $createProtectionRight = false;
 
-	/**
-	 * @var bool|string
-	 */
-	private $changePropagationProtection = true;
+	private bool $changePropagationProtection = true;
 
 	/**
 	 * @var
 	 */
-	private $importPerformers = [];
+	private array $importPerformers = [];
 
 	/**
 	 * @var
 	 */
-	private $importPerformerProtectionLookupCache = [];
+	private array $importPerformerProtectionLookupCache = [];
 
 	/**
 	 * @since 2.5

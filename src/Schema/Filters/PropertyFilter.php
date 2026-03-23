@@ -24,10 +24,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	 */
 	private $properties = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isLoaded = false;
+	private bool $isLoaded = false;
 
 	/**
 	 * @since 3.2

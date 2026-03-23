@@ -20,12 +20,9 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @var DescriptionInterpreter[]
 	 */
-	private $interpreters = [];
+	private array $interpreters = [];
 
-	/**
-	 * @var DescriptionInterpreter
-	 */
-	private $defaultInterpreter = null;
+	private ?DescriptionInterpreter $defaultInterpreter = null;
 
 	/**
 	 * @param Description $description

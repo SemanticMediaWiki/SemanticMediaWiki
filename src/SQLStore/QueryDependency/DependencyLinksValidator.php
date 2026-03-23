@@ -18,15 +18,12 @@ class DependencyLinksValidator {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	private $checkDependencies = false;
+	private bool $checkDependencies = false;
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $checkedDependencies = [];
+	private array $checkedDependencies = [];
 
 	/**
 	 * @since 3.1
@@ -48,16 +45,16 @@ class DependencyLinksValidator {
 	 *
 	 * @return bool
 	 */
-	public function canCheckDependencies() {
+	public function canCheckDependencies(): bool {
 		return $this->checkDependencies;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getCheckedDependencies() {
+	public function getCheckedDependencies(): array {
 		return $this->checkedDependencies;
 	}
 

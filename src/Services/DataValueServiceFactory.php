@@ -58,10 +58,7 @@ class DataValueServiceFactory {
 	 */
 	const TYPE_VALIDATOR = '__dv.validator.';
 
-	/**
-	 * @var DispatchingDataValueFormatter
-	 */
-	private $dispatchingDataValueFormatter = null;
+	private ?DispatchingDataValueFormatter $dispatchingDataValueFormatter = null;
 
 	/**
 	 * @since 2.5

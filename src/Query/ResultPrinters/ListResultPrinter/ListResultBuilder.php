@@ -17,7 +17,7 @@ use SMW\Query\ResultPrinters\PrefixParameterProcessor;
  */
 class ListResultBuilder {
 
-	private static $defaultConfigurations = [
+	private static array $defaultConfigurations = [
 		'*' => [
 			'value-open-tag' => '<span class="smw-value">',
 			'value-close-tag' => '</span>',
@@ -62,7 +62,7 @@ class ListResultBuilder {
 	];
 
 	private ParameterDictionary $configuration;
-	private $templateRendererFactory;
+	private ?TemplateRendererFactory $templateRendererFactory = null;
 	private $listPlainByDefault;
 
 	public function __construct(
@@ -168,7 +168,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function getTemplateCall( string $param ) {
+	private function getTemplateCall( string $param ): string {
 		$templatename = $this->get( $param );
 
 		if ( $templatename === '' ) {
@@ -184,7 +184,7 @@ class ListResultBuilder {
 	/**
 	 * @return TemplateRendererFactory
 	 */
-	private function getTemplateRendererFactory() {
+	private function getTemplateRendererFactory(): TemplateRendererFactory {
 		if ( $this->templateRendererFactory === null ) {
 			$this->templateRendererFactory = new TemplateRendererFactory( $this->getQueryResult() );
 			$this->templateRendererFactory->setUserparam( $this->get( 'userparam' ) );

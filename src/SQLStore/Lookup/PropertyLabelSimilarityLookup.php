@@ -20,19 +20,16 @@ use SMW\Store;
 class PropertyLabelSimilarityLookup {
 
 	/**
-	 * @var integer/float
+	 * @var int|float
 	 */
 	private $threshold = 50;
 
 	/**
-	 * @var Property|null
+	 * @var mixed
 	 */
 	private $exemptionProperty;
 
-	/**
-	 * @var int
-	 */
-	private $lookupCount = 0;
+	private int $lookupCount = 0;
 
 	/**
 	 * @since 2.5
@@ -51,7 +48,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @param int $threshold
 	 *
-	 * @return bool
+	 * @return void
 	 */
 	public function setThreshold( $threshold ): void {
 		$this->threshold = $threshold;
@@ -87,7 +84,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return int
 	 */
-	public function getLookupCount() {
+	public function getLookupCount(): int {
 		return $this->lookupCount;
 	}
 
@@ -128,7 +125,7 @@ class PropertyLabelSimilarityLookup {
 		$this->lookupCount = count( $propertyList );
 		$similarities = $this->matchLabels( $propertyList, $withType );
 
-		usort( $similarities, static function ( $a, $b ) {
+		usort( $similarities, static function ( array $a, array $b ): int {
 			return $b['similarity'] <=> $a['similarity'];
 		} );
 
@@ -293,7 +290,7 @@ class PropertyLabelSimilarityLookup {
 
 			try {
 				$propertyList[] = new Property( str_replace( ' ', '_', $row->smw_title ) );
-			} catch ( Exception $e ) {
+			} catch ( Exception ) {
 				// Do nothing ...
 			}
 		}

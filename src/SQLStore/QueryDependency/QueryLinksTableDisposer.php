@@ -4,8 +4,10 @@ namespace SMW\SQLStore\QueryDependency;
 
 use SMW\IteratorFactory;
 use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use stdClass;
 
 /**
  * @private
@@ -22,15 +24,9 @@ class QueryLinksTableDisposer {
 	 */
 	private $connection;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
-	/**
-	 * @var bool
-	 */
-	private $waitForReplication = false;
+	private bool $waitForReplication = false;
 
 	/**
 	 * @since 3.1

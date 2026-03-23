@@ -12,6 +12,8 @@ use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Parameters;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\Status;
 use SMW\Store;
 
@@ -39,7 +41,7 @@ class SQLStoreUpdater {
 	private $propertyTableUpdater;
 
 	/**
-	 * @var SemanticDataLookup
+	 * @var CachingSemanticDataLookup
 	 */
 	private $semanticDataLookup;
 

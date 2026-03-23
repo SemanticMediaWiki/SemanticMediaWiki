@@ -54,10 +54,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 
 	protected ?DataValue $dataValue;
 
-	/**
-	 * @var Options
-	 */
-	private $options = null;
+	private ?Options $options = null;
 
 	/**
 	 * @since 2.4

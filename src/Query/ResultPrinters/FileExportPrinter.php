@@ -17,10 +17,7 @@ use SMW\Query\QueryResult;
  */
 abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter {
 
-	/**
-	 * @var bool
-	 */
-	private $httpHeader = true;
+	private bool $httpHeader = true;
 
 	/**
 	 * @see ExportPrinter::isExportFormat
@@ -101,7 +98,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * this method futile hence we isolate its access to ensure to be able to
 	 * verify the access sequence (#4375).
 	 */
-	protected function getFileResult( $queryResult, $params ) {
+	protected function getFileResult( QueryResult $queryResult, array $params ) {
 		return $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 	}
 

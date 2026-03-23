@@ -51,25 +51,13 @@ class AskParserFunction {
 	 */
 	private $showMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $curtailmentMode = false;
+	private bool $curtailmentMode = false;
 
-	/**
-	 * @var int
-	 */
-	private $context = QueryProcessor::INLINE_QUERY;
+	private int $context = QueryProcessor::INLINE_QUERY;
 
-	/**
-	 * @var PostProcHandler
-	 */
-	private $postProcHandler;
+	private ?PostProcHandler $postProcHandler = null;
 
-	/**
-	 * @var RecursiveTextProcessor
-	 */
-	private $recursiveTextProcessor;
+	private ?RecursiveTextProcessor $recursiveTextProcessor = null;
 
 	/**
 	 * @var ProcessedParam[]
@@ -383,7 +371,7 @@ class AskParserFunction {
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
 
-	private function addQueryProfile( $query, $format, array $extraKeys ): void {
+	private function addQueryProfile( Query $query, $format, array $extraKeys ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

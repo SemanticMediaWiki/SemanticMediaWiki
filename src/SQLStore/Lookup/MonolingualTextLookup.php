@@ -3,12 +3,15 @@
 namespace SMW\SQLStore\Lookup;
 
 use InvalidArgumentException;
+use RuntimeException;
 use SMW\DataItems\Blob;
 use SMW\DataItems\Container;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -26,9 +29,9 @@ class MonolingualTextLookup {
 	private $caller = '';
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private static $lookupCache = [];
+	private static array $lookupCache = [];
 
 	/**
 	 * @since 3.1
@@ -138,7 +141,7 @@ class MonolingualTextLookup {
 	 *
 	 * @param WikiPage $subject
 	 *
-	 * @return
+	 * @return DataValue|null
 	 */
 	public function newDataValue( WikiPage $subject, Property $property, $languageCode = null ) {
 		$res = $this->fetchFromTable( $subject, $property, $languageCode );
@@ -186,7 +189,7 @@ class MonolingualTextLookup {
 	 *
 	 * @param WikiPage $subject
 	 *
-	 * @return
+	 * @return iterable
 	 */
 	public function fetchFromTable( WikiPage $subject, Property $property, $languageCode = null ) {
 		/**
@@ -320,6 +323,10 @@ class MonolingualTextLookup {
 		return $query->execute( $caller );
 	}
 
+	/**
+	 * @return PropertyTableDefinition
+	 * @throws RuntimeException
+	 */
 	private function getPropertyTable( Property $property ) {
 		$propTableId = $this->store->findPropertyTableID(
 			$property
@@ -328,7 +335,7 @@ class MonolingualTextLookup {
 		$propTables = $this->store->getPropertyTables();
 
 		if ( !isset( $propTables[$propTableId] ) ) {
-			return [];
+			throw new RuntimeException( "Unknown property table for ID $propTableId" );
 		}
 
 		return $propTables[$propTableId];

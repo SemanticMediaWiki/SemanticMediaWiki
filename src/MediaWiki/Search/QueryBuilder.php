@@ -90,7 +90,7 @@ class QueryBuilder {
 		}
 
 		$namespacesDisjunction = new Disjunction(
-			array_map( static function ( $ns ) {
+			array_map( static function ( int $ns ): NamespaceDescription {
 				return new NamespaceDescription( $ns );
 			}, $namespaces )
 		);

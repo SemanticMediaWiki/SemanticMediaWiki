@@ -15,10 +15,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  */
 class ImportValueParser implements ValueParser {
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.2
@@ -31,7 +28,7 @@ class ImportValueParser implements ValueParser {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

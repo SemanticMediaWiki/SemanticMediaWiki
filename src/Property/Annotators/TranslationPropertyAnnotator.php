@@ -14,10 +14,7 @@ use SMW\Property\Annotator;
  */
 class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/**
-	 * @var array
-	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.0

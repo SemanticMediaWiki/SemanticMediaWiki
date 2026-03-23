@@ -102,6 +102,12 @@
 		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
 		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
 	},
+	"LogTypes": [
+		"smw"
+	],
+	"FilterLogTypes": {
+		"smw": true
+	},
 	"ContentHandlers": {
 		"smw/schema": "SMW\\MediaWiki\\Content\\SchemaContentHandler"
 	},
@@ -167,19 +173,7 @@
 		"smw.deferredConstraintCheckUpdateJob": "SMW\\MediaWiki\\Jobs\\DeferredConstraintCheckUpdateJob",
 		"smw.elasticIndexerRecovery": "SMW\\Elastic\\Jobs\\IndexerRecoveryJob",
 		"smw.elasticFileIngest": "SMW\\Elastic\\Jobs\\FileIngestJob",
-		"smw.parserCachePurgeJob": "SMW\\MediaWiki\\Jobs\\ParserCachePurgeJob",
-		"SMW\\UpdateJob": "SMW\\MediaWiki\\Jobs\\UpdateJob",
-		"SMW\\RefreshJob": "SMW\\MediaWiki\\Jobs\\RefreshJob",
-		"SMW\\UpdateDispatcherJob": "SMW\\MediaWiki\\Jobs\\UpdateDispatcherJob",
-		"SMW\\FulltextSearchTableUpdateJob": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableUpdateJob",
-		"SMW\\EntityIdDisposerJob": "SMW\\MediaWiki\\Jobs\\EntityIdDisposerJob",
-		"SMW\\PropertyStatisticsRebuildJob": "SMW\\MediaWiki\\Jobs\\PropertyStatisticsRebuildJob",
-		"SMW\\FulltextSearchTableRebuildJob": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
-		"SMW\\ChangePropagationDispatchJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
-		"SMW\\ChangePropagationUpdateJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationUpdateJob",
-		"SMW\\ChangePropagationClassUpdateJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationClassUpdateJob",
-		"SMWUpdateJob'": "SMW\\MediaWiki\\Jobs\\UpdateJob",
-		"SMWRefreshJob": "SMW\\MediaWiki\\Jobs\\RefreshJob"
+		"smw.parserCachePurgeJob": "SMW\\MediaWiki\\Jobs\\ParserCachePurgeJob"
 	},
 	"DefaultUserOptions": {
 		"smw-prefs-general-options-show-entity-issue-panel": true

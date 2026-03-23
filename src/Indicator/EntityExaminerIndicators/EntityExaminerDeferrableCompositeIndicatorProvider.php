@@ -23,25 +23,19 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
+	private ?PermissionExaminer $permissionExaminer = null;
 
 	/**
 	 * @var
 	 */
-	private $indicators = [];
+	private array $indicators = [];
 
 	/**
 	 * @var
 	 */
-	private $modules = [ 'smw.entityexaminer' ];
+	private array $modules = [ 'smw.entityexaminer' ];
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
 	/**
 	 * @var string
@@ -110,7 +104,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
@@ -119,7 +113,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return $this->modules;
 	}
 
@@ -132,7 +126,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 		return '';
 	}
 
-	private function checkIndicators( WikiPage $subject, array $options ) {
+	private function checkIndicators( WikiPage $subject, array $options ): array {
 		$indicatorProviders = [];
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 		$options['error_count'] = 0;

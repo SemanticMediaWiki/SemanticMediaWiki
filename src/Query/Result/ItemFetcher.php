@@ -28,20 +28,11 @@ class ItemFetcher {
 	 */
 	private $prefetchCache;
 
-	/**
-	 * @var PrintRequest
-	 */
-	private $printRequest;
+	private ?PrintRequest $printRequest = null;
 
-	/**
-	 * @var QueryToken
-	 */
-	private $queryToken;
+	private ?QueryToken $queryToken = null;
 
-	/**
-	 * @var bool
-	 */
-	private $prefetch = true;
+	private bool $prefetch = true;
 
 	/**
 	 * @since 3.1

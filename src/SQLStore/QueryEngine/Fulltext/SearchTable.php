@@ -28,25 +28,16 @@ class SearchTable {
 	 */
 	private $connection;
 
-	/**
-	 * @var bool
-	 */
-	private $isEnabled = false;
+	private bool $isEnabled = false;
 
-	/**
-	 * @var int
-	 */
-	private $minTokenSize = 3;
+	private int $minTokenSize = 3;
 
 	/**
 	 * @var int
 	 */
 	private $indexableDataTypes = 0;
 
-	/**
-	 * @var array
-	 */
-	private $propertyExemptionList = [];
+	private array $propertyExemptionList = [];
 
 	/**
 	 * @since 2.5
@@ -105,7 +96,7 @@ class SearchTable {
 			$property = Property::newFromUserLabel(
 				$dataItem->getDBKey()
 			);
-		} catch ( PredefinedPropertyLabelMismatchException $e ) {
+		} catch ( PredefinedPropertyLabelMismatchException ) {
 			// The property no longer exists (or is no longer available) therefore
 			// exempt it.
 			return true;
@@ -173,7 +164,7 @@ class SearchTable {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->isEnabled;
 	}
 
@@ -209,14 +200,16 @@ class SearchTable {
 	 *
 	 * @return int
 	 */
-	public function getMinTokenSize() {
+	public function getMinTokenSize(): int {
 		return $this->minTokenSize;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @return int $minTokenSize
+	 * @param int $minTokenSize
+	 *
+	 * @return void
 	 */
 	public function setMinTokenSize( $minTokenSize ): void {
 		$this->minTokenSize = (int)$minTokenSize;

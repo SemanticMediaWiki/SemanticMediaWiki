@@ -27,37 +27,24 @@ class InfoLinksProvider {
 
 	/**
 	 * Used to control the addition of the standard search link.
-	 *
-	 * @var bool
 	 */
-	private $hasSearchLink;
+	private ?bool $hasSearchLink = null;
 
 	/**
 	 * Used to control service link creation.
-	 *
-	 * @var bool
 	 */
-	private $hasServiceLinks;
+	private ?bool $hasServiceLinks = null;
 
-	/**
-	 * @var bool
-	 */
-	private $enabledServiceLinks = true;
+	private bool $enabledServiceLinks = true;
 
-	/**
-	 * @var bool
-	 */
-	private $compactLink = false;
+	private bool $compactLink = false;
 
 	/**
 	 * @var bool|array
 	 */
 	private $serviceLinkParameters = false;
 
-	/**
-	 * @var array
-	 */
-	private $disabledLinksByKey = [ '_ERRT' ];
+	private array $disabledLinksByKey = [ '_ERRT' ];
 
 	/**
 	 * @since 2.4

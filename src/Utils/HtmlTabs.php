@@ -12,40 +12,19 @@ use MediaWiki\Html\Html;
  */
 class HtmlTabs {
 
-	/**
-	 * @var array
-	 */
-	private $tabs = [];
+	private array $tabs = [];
 
-	/**
-	 * @var array
-	 */
-	private $contents = [];
+	private array $contents = [];
 
-	/**
-	 * @var array
-	 */
-	private $hidden = [];
+	private array $hidden = [];
 
-	/**
-	 * @var string|null
-	 */
-	private $activeTab = null;
+	private ?string $activeTab = null;
 
-	/**
-	 * @var string
-	 */
-	private $group = 'tabs';
+	private string $group = 'tabs';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isSubTab = false;
+	private bool $isSubTab = false;
 
 	/**
 	 * @since 3.2

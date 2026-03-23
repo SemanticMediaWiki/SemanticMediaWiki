@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Lookup;
 
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\SQLStore\SQLStore;
@@ -20,9 +21,9 @@ use SMW\SQLStore\TableBuilder\FieldType;
 class ByGroupPropertyValuesLookup {
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $cache = [];
+	private array $cache = [];
 
 	/**
 	 * @since 3.2
@@ -34,7 +35,7 @@ class ByGroupPropertyValuesLookup {
 	 * @since 3.2
 	 *
 	 * @param Property $property
-	 * @param DIWikiPage[]|string[] $subjects
+	 * @param WikiPage[]|string[] $subjects
 	 *
 	 * @return array
 	 */

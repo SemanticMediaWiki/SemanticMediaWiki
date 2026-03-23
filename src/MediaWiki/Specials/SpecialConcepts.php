@@ -120,7 +120,7 @@ class SpecialConcepts extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	public function getHtml( $dataItems, $limit, $offset ): string {
+	public function getHtml( array $dataItems, $limit, $offset ): string {
 		if ( $this->store === null ) {
 			$this->store = ApplicationFactory::getInstance()->getStore();
 		}

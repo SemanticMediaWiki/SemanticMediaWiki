@@ -14,10 +14,7 @@ use Onoi\EventDispatcher\EventDispatcherFactory;
  */
 class EventHandler {
 
-	/**
-	 * @var EventHandler
-	 */
-	private static $instance = null;
+	private static ?EventHandler $instance = null;
 
 	/**
 	 * @since 2.2
@@ -30,7 +27,7 @@ class EventHandler {
 	 *
 	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance(): EventHandler {
 		if ( self::$instance === null ) {
 			self::$instance = new self( self::newEventDispatcher() );
 		}

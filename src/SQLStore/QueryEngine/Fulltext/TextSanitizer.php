@@ -17,10 +17,7 @@ use Transliterator;
  */
 class TextSanitizer {
 
-	/**
-	 * @var array
-	 */
-	private $languageDetection = [];
+	private array $languageDetection = [];
 
 	/**
 	 * @var int
@@ -35,7 +32,7 @@ class TextSanitizer {
 	/**
 	 * @var array<string, Reader|null>
 	 */
-	private $stopwordReaders = [];
+	private array $stopwordReaders = [];
 
 	/**
 	 * @since 7.0.0
@@ -162,8 +159,7 @@ class TextSanitizer {
 		$hasIcu = class_exists( IntlRuleBasedBreakIterator::class );
 
 		if ( $hasIcu ) {
-			$isWordTokenizer = !$hasCjk;
-			$tokens = $this->tokenizeWithIcu( $text, $language, $isWordTokenizer );
+			$tokens = $this->tokenizeWithIcu( $text, $language );
 			$joined = implode( ' ', $tokens );
 
 			return $this->tokenizeWithGenericRegex( $joined, $exemptionList );
@@ -194,11 +190,10 @@ class TextSanitizer {
 	 *
 	 * @param string $text
 	 * @param string|null $language
-	 * @param bool $useWordBoundary
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithIcu( string|array $text, int|string|null $language, bool $useWordBoundary ): array {
+	private function tokenizeWithIcu( string|array $text, int|string|null $language ): array {
 		$tokens = [];
 
 		$tokenizer = IntlRuleBasedBreakIterator::createWordInstance( $language ?? 'en' );
@@ -236,6 +231,7 @@ class TextSanitizer {
 	 * @return array
 	 */
 	private function tokenizeWithGenericRegex( string|array $text, string|array $exemptionList ) {
+		// @phan-suppress-next-line PhanParamSuspiciousOrder false positive
 		$pattern = str_replace(
 			$exemptionList,
 			'',
@@ -260,6 +256,7 @@ class TextSanitizer {
 	 * @return array
 	 */
 	private function tokenizeWithCjkRegex( string $text, string|array $exemptionList ): array {
+		// @phan-suppress-next-line PhanParamSuspiciousOrder false positive
 		$pattern = str_replace(
 			$exemptionList,
 			'',
@@ -377,7 +374,7 @@ class TextSanitizer {
 
 		try {
 			$this->stopwordReaders[$key] = Reader::open( $file );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			$this->stopwordReaders[$key] = null;
 		}
 

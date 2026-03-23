@@ -34,15 +34,9 @@ class ParserAfterTidy implements HookListener {
 
 	const CACHE_NAMESPACE = 'smw:parseraftertidy';
 
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
+	private bool $isCommandLineMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isReady = true;
+	private bool $isReady = true;
 
 	/**
 	 * @since  1.9

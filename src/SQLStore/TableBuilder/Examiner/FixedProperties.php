@@ -17,14 +17,14 @@ class FixedProperties {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $fixedProperties = [];
+	private array $fixedProperties = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $properties = [];
+	private array $properties = [];
 
 	/**
 	 * @since 3.1

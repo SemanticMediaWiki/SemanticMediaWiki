@@ -18,10 +18,7 @@ use SMW\QueryFactory;
  */
 class QueryCreator implements QueryContext {
 
-	/**
-	 * @var array
-	 */
-	private $params = [];
+	private array $params = [];
 
 	/**
 	 * @see smwgQFeatures

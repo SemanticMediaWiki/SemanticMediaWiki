@@ -35,10 +35,7 @@ class Stats {
 	 */
 	const CACHE_NAMESPACE = 'smw:stats';
 
-	/**
-	 * @var bool
-	 */
-	private $shouldRecord = true;
+	private bool $shouldRecord = true;
 
 	/**
 	 * @var array
@@ -49,15 +46,10 @@ class Stats {
 	 * Identifies an update fingerprint to compare invoked deferred updates
 	 * against each other and filter those with the same print to avoid recording
 	 * duplicate stats.
-	 *
-	 * @var string
 	 */
-	private $fingerprint = null;
+	private ?string $fingerprint = null;
 
-	/**
-	 * @var array
-	 */
-	private $operations = [];
+	private array $operations = [];
 
 	/**
 	 * @since 2.5

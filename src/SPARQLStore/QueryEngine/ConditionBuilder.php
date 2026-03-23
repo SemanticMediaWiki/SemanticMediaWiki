@@ -38,29 +38,18 @@ class ConditionBuilder {
 	 */
 	private $dispatchingDescriptionInterpreter;
 
-	/**
-	 * @var CircularReferenceGuard
-	 */
-	private $circularReferenceGuard;
+	private ?CircularReferenceGuard $circularReferenceGuard = null;
 
-	/**
-	 * @var HierarchyLookup
-	 */
-	private $hierarchyLookup;
+	private ?HierarchyLookup $hierarchyLookup = null;
 
 	private DescriptionFactory $descriptionFactory;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * Counter used to generate globally fresh variables.
-	 *
-	 * @var int
 	 */
-	private $variableCounter = 0;
+	private int $variableCounter = 0;
 
 	/**
 	 * sortKeys that are being used while building the query conditions
@@ -86,10 +75,7 @@ class ConditionBuilder {
 	 */
 	private $orderByProperty;
 
-	/**
-	 * @var array
-	 */
-	private $redirectByVariableReplacementMap = [];
+	private array $redirectByVariableReplacementMap = [];
 
 	/**
 	 * @since 2.2
@@ -150,7 +136,7 @@ class ConditionBuilder {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -177,7 +163,7 @@ class ConditionBuilder {
 	 *
 	 * @return CircularReferenceGuard
 	 */
-	public function getCircularReferenceGuard() {
+	public function getCircularReferenceGuard(): ?CircularReferenceGuard {
 		return $this->circularReferenceGuard;
 	}
 
@@ -195,7 +181,7 @@ class ConditionBuilder {
 	 *
 	 * @return HierarchyLookup
 	 */
-	public function getHierarchyLookup() {
+	public function getHierarchyLookup(): ?HierarchyLookup {
 		return $this->hierarchyLookup;
 	}
 

@@ -26,10 +26,7 @@ class CachedFactbox {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	private $isCached = false;
+	private bool $isCached = false;
 
 	/**
 	 * @var int
@@ -75,7 +72,7 @@ class CachedFactbox {
 	 *
 	 * @return bool
 	 */
-	public function isCached() {
+	public function isCached(): bool {
 		return $this->isCached;
 	}
 

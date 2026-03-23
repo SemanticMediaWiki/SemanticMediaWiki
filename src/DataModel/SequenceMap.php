@@ -18,7 +18,7 @@ class SequenceMap {
 	/**
 	 * @var
 	 */
-	private static $canMap = [];
+	private static array $canMap = [];
 
 	/**
 	 * @since 3.2

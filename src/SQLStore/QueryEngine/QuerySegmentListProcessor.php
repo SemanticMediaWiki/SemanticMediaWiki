@@ -21,10 +21,8 @@ class QuerySegmentListProcessor {
 	/**
 	 * Array of arrays of executed queries, indexed by the temporary table names
 	 * results were fed into.
-	 *
-	 * @var array
 	 */
-	private $executedQueries = [];
+	private array $executedQueries = [];
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when
@@ -32,12 +30,9 @@ class QuerySegmentListProcessor {
 	 *
 	 * @var int
 	 */
-	private $queryMode;
+	private $queryMode = 0;
 
-	/**
-	 * @var array
-	 */
-	private $querySegmentList = [];
+	private array $querySegmentList = [];
 
 	public function __construct(
 		private readonly Database $connection,
@@ -51,7 +46,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @return array
 	 */
-	public function getExecutedQueries() {
+	public function getExecutedQueries(): array {
 		return $this->executedQueries;
 	}
 
@@ -67,7 +62,9 @@ class QuerySegmentListProcessor {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer
+	 * @param int $queryMode
+	 *
+	 * @return void
 	 */
 	public function setQueryMode( $queryMode ): void {
 		$this->queryMode = $queryMode;
@@ -126,7 +123,7 @@ class QuerySegmentListProcessor {
 			if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 				$op = $subQuery->not ? '!' : '';
 
-				$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
+				$joinType = $subQuery->joinType ?: 'INNER';
 				$t = $this->connection->tableName( $subQuery->joinTable ) . " AS $subQuery->alias";
 				// If the alias is the same as the table name and if there is a prefix, MediaWiki does not declare the unprefixed alias
 				$joinTable = $subQuery->joinTable === $subQuery->alias ? $this->connection->tableName( $subQuery->joinTable ) : $subQuery->joinTable;
@@ -257,6 +254,7 @@ class QuerySegmentListProcessor {
 			if ( $sql ) {
 				$this->executedQueries[$query->alias][] = $sql;
 
+				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
 				if ( $this->queryMode !== Query::MODE_NONE ) {
 					$this->connection->query(
 						$sql,

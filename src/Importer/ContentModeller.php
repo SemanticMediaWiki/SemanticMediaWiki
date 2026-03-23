@@ -63,7 +63,7 @@ class ContentModeller {
 		return $contents;
 	}
 
-	private function newImportContents( ImportContents $importContents, $fileDir, $value ) {
+	private function newImportContents( ImportContents $importContents, $fileDir, $value ): ImportContents {
 		$importContents->setContentType( ImportContents::CONTENT_TEXT );
 
 		if ( !isset( $value['contents'] ) || $value['contents'] === '' ) {

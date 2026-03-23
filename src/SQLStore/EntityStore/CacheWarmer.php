@@ -20,10 +20,7 @@ use SMW\SQLStore\SQLStore;
  */
 class CacheWarmer {
 
-	/**
-	 * @var DisplayTitleFinder
-	 */
-	private $displayTitleFinder;
+	private ?DisplayTitleFinder $displayTitleFinder = null;
 
 	/**
 	 * @var int
@@ -85,9 +82,7 @@ class CacheWarmer {
 				if ( $item->getNamespace() === SMW_NS_PROPERTY ) {
 					try {
 						$property = Property::newFromUserLabel( $item->getDBKey() );
-					} catch ( PredefinedPropertyLabelMismatchException $e ) {
-						continue;
-					} catch ( PropertyLabelNotResolvedException $e ) {
+					} catch ( PredefinedPropertyLabelMismatchException | PropertyLabelNotResolvedException ) {
 						continue;
 					}
 					$hash = $item->getSha1();

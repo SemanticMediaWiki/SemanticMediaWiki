@@ -3,15 +3,23 @@
 namespace SMW\MediaWiki;
 
 use ALTree;
+use Article;
+use File;
 use MediaWiki\Context\IContextSource;
+use MediaWiki\EditPage\EditPage;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Parser\PPFrame;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use ParamProcessor\Processor;
+use Skin;
 use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
 use SMW\MediaWiki\Content\SchemaContentHandler;
@@ -55,9 +63,12 @@ use SMW\ParserFunctions\SectionTag;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
 use SMW\Site;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\Installer;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -152,7 +163,7 @@ class Hooks {
 	 * @param array &$vars
 	 */
 	public static function registerExtensionCheck( array &$vars ): void {
-		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( $outputPage ) {
+		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( OutputPage $outputPage ): bool {
 			$beforePageDisplay = new BeforePageDisplay();
 
 			$beforePageDisplay->setOptions(
@@ -190,7 +201,6 @@ class Hooks {
 		return true;
 	}
 
-	/**
 	 * @since 3.0
 	 *
 	 * @param array &$vars
@@ -379,7 +389,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageParserOutput
 	 */
-	public function onOutputPageParserOutput( &$outputPage, $parserOutput ): bool {
+	public function onOutputPageParserOutput( OutputPage &$outputPage, ParserOutput $parserOutput ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$permissionExaminer = $applicationFactory->newPermissionExaminer(
@@ -428,7 +438,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 	 */
-	public function onBeforePageDisplay( &$outputPage, &$skin ): bool {
+	public function onBeforePageDisplay( OutputPage &$outputPage, Skin &$skin ): bool {
 		$beforePageDisplay = new BeforePageDisplay();
 		$setupFile = new SetupFile();
 
@@ -487,7 +497,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchProfileForm
 	 */
-	public function onSpecialSearchProfileForm( $specialSearch, &$form, $profile, $term, $opts ): bool {
+	public function onSpecialSearchProfileForm( $specialSearch, &$form, $profile, $term, array $opts ): bool {
 		if ( !ProfileForm::isValidProfile( $profile ) ) {
 			return true;
 		}
@@ -539,7 +549,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RevisionFromEditComplete
 	 */
-	public function onRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ): bool {
+	public function onRevisionFromEditComplete( WikiPage $wikiPage, ?RevisionRecord $revision, $baseId, $user ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
@@ -577,7 +587,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleProtectComplete
 	 */
-	public function onArticleProtectComplete( &$wikiPage, &$user, $protections, $reason ): bool {
+	public function onArticleProtectComplete( WikiPage &$wikiPage, ?User &$user, $protections, $reason ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
@@ -614,7 +624,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleViewHeader
 	 */
-	public function onArticleViewHeader( &$page, &$outputDone, &$useParserCache ): bool {
+	public function onArticleViewHeader( Article &$page, &$outputDone, &$useParserCache ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		// Get the key to distinguish between an anon and logged-in user stored
@@ -732,7 +742,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
 	 */
-	public function onArticlePurge( &$wikiPage ): bool {
+	public function onArticlePurge( WikiPage &$wikiPage ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -825,7 +835,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
 	 */
-	public function onSpecialStatsAddExtra( &$extraStats, IContextSource $context ): bool {
+	public function onSpecialStatsAddExtra( array &$extraStats, IContextSource $context ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$context->getOutput()->addModules( 'ext.smw.tooltip' );
 
@@ -855,7 +865,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
 	 */
-	public function onFileUpload( $file, $reupload ): bool {
+	public function onFileUpload( File $file, ?bool $reupload ): bool {
 		$fileUpload = new FileUpload(
 			ApplicationFactory::getInstance()->getNamespaceExaminer(),
 			MediaWikiServices::getInstance()->getHookContainer()
@@ -878,7 +888,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
 	 */
-	public function onResourceLoaderGetConfigVars( &$vars ): bool {
+	public function onResourceLoaderGetConfigVars( array &$vars ): bool {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars(
@@ -895,7 +905,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
 	 */
-	public function onGetPreferences( $user, &$preferences ): bool {
+	public function onGetPreferences( ?User $user, array &$preferences ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -1019,7 +1029,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
 	 */
-	public function onExtensionTypes( &$extTypes ): bool {
+	public function onExtensionTypes( array &$extTypes ): bool {
 		$extensionTypes = new ExtensionTypes();
 
 		return $extensionTypes->process( $extTypes );
@@ -1040,7 +1050,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
 	 */
-	public function onArticleFromTitle( &$title, &$article ): bool {
+	public function onArticleFromTitle( Title &$title, ?Article &$article ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$articleFromTitle = new ArticleFromTitle(
@@ -1075,7 +1085,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
 	 */
-	public function onEditPageShowEditFormInitial( $editPage, $output ): bool {
+	public function onEditPageShowEditFormInitial( EditPage $editPage, $output ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$user = $output->getUser();
 
@@ -1110,7 +1120,7 @@ class Hooks {
 	 * function. Quick permissions are the most basic of permissions needed
 	 * to perform an action ..."
 	 */
-	public function onTitleQuickPermissions( $title, $user, $action, &$errors, $rigor, $short ) {
+	public function onTitleQuickPermissions( Title $title, User $user, $action, &$errors, $rigor, $short ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$titleQuickPermissions = new TitleQuickPermissions(
@@ -1138,7 +1148,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
 	 */
-	public function onParserFirstCallInit( &$parser ): bool {
+	public function onParserFirstCallInit( Parser &$parser ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$parserFunctionFactory = $applicationFactory->newParserFunctionFactory();
 		$parserFunctionFactory->registerFunctionHandlers( $parser );
@@ -1299,7 +1309,7 @@ class Hooks {
 	/**
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
 	 */
-	public function onAfterDataUpdateComplete( $store, $semanticData, $changeOp ): bool {
+	public function onAfterDataUpdateComplete( Store $store, $semanticData, ChangeOp $changeOp ): bool {
 		// A delete infused change should trigger an immediate update
 		// without having to wait on the job queue
 		$isPrimaryUpdate = $semanticData->getOption( SemanticData::PROC_DELETE, false );

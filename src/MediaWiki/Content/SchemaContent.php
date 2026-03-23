@@ -30,35 +30,20 @@ use Symfony\Component\Yaml\Yaml;
  */
 class SchemaContent extends JsonContent {
 
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
+	private ?SchemaFactory $schemaFactory = null;
 
-	/**
-	 * @var SchemaContentFormatter
-	 */
-	private $contentFormatter;
+	private ?SchemaContentFormatter $contentFormatter = null;
 
 	/**
 	 * @var array
 	 */
 	private $parse;
 
-	/**
-	 * @var bool
-	 */
-	private $isYaml = false;
+	private bool $isYaml = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isValid;
+	private ?bool $isValid = null;
 
-	/**
-	 * @var string
-	 */
-	private $errorMsg = '';
+	private string $errorMsg = '';
 
 	/**
 	 * @since 3.0
@@ -120,7 +105,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isValid() {
+	public function isValid(): ?bool {
 		if ( $this->isValid === null ) {
 			$this->decodeJSONContent();
 		}
@@ -190,7 +175,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return SchemaContentFormatter|null The content formatter instance or null if not set.
 	 */
-	public function getContentFormatter() {
+	public function getContentFormatter(): ?SchemaContentFormatter {
 		return $this->contentFormatter;
 	}
 
@@ -199,7 +184,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return SchemaFactory The schema factory instance.
 	 */
-	public function getSchemaFactory() {
+	public function getSchemaFactory(): ?SchemaFactory {
 		return $this->schemaFactory;
 	}
 
@@ -267,7 +252,7 @@ class SchemaContent extends JsonContent {
 		$this->parse->title_prefix = $title_prefix;
 	}
 
-	public function getErrorMsg() {
+	public function getErrorMsg(): string {
 		return $this->errorMsg;
 	}
 }

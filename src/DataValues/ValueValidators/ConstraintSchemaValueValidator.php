@@ -22,17 +22,14 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	/**
 	 * @var
 	 */
-	private $schemaLists = [];
+	private array $schemaLists = [];
 
 	/**
 	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 
-	/**
-	 * @var bool
-	 */
-	private $postUpdateCheck = false;
+	private bool $postUpdateCheck = false;
 
 	/**
 	 * @var bool

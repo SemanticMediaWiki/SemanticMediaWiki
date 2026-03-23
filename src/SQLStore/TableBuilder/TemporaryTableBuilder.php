@@ -14,10 +14,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class TemporaryTableBuilder {
 
-	/**
-	 * @var bool
-	 */
-	private $autoCommitFlag = false;
+	private bool $autoCommitFlag = false;
 
 	/**
 	 * @since 2.3

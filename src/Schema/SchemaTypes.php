@@ -16,22 +16,14 @@ class SchemaTypes implements JsonSerializable {
 
 	use HookDispatcherAwareTrait;
 
-	/**
-	 * @var array
-	 */
-	private $schemaTypes = [];
+	private array $schemaTypes = [];
 
-	/**
-	 * @var bool
-	 */
-	private $onRegisterSchemaTypes = false;
+	private bool $onRegisterSchemaTypes = false;
 
 	/**
 	 * Default types
-	 *
-	 * @var array
 	 */
-	private static $defaultTypes = [
+	private static array $defaultTypes = [
 		'LINK_FORMAT_SCHEMA' => [
 			'group' => SMW_SCHEMA_GROUP_FORMAT,
 			'validation_schema' => 'link-format-schema.v1.json',

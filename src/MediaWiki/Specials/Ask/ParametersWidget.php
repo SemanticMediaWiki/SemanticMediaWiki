@@ -20,10 +20,7 @@ use SMW\Utils\HtmlDivTable;
  */
 class ParametersWidget {
 
-	/**
-	 * @var bool
-	 */
-	private static $isTooltipDisplay = false;
+	private static bool $isTooltipDisplay = false;
 
 	/**
 	 * @var int

@@ -12,10 +12,7 @@ use SMW\Property\Annotator;
  */
 class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/**
-	 * @var bool
-	 */
-	private $canCreateAnnotation = true;
+	private bool $canCreateAnnotation = true;
 
 	/**
 	 * @since 2.4

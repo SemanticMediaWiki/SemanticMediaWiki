@@ -37,7 +37,7 @@ class FileUpload implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( File $file, $reUploadStatus = false ): bool {
+	public function process( File $file, ?bool $reUploadStatus = false ): bool {
 		if ( $this->canProcess( $file->getTitle() ) ) {
 			$this->doProcess( $file, $reUploadStatus );
 		}
@@ -49,7 +49,7 @@ class FileUpload implements HookListener {
 		return $title !== null && $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function doProcess( File $file, $reUploadStatus = false ): bool {
+	private function doProcess( File $file, ?bool $reUploadStatus = false ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$filePage = $this->makeFilePage( $file );
 

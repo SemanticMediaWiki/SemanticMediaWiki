@@ -36,10 +36,7 @@ class ParameterInput {
 	 */
 	protected string $inputName;
 
-	/**
-	 * @var array
-	 */
-	private $attributes = [];
+	private array $attributes = [];
 
 	/**
 	 * Constructor.
@@ -72,7 +69,7 @@ class ParameterInput {
 	 *
 	 * @param string $name
 	 */
-	public function setInputName( $name ): void {
+	public function setInputName( string $name ): void {
 		$this->inputName = $name;
 	}
 

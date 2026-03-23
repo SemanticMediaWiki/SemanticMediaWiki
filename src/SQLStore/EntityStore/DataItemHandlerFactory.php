@@ -23,15 +23,12 @@ use SMW\SQLStore\SQLStore;
  */
 class DataItemHandlerFactory {
 
-	/**
-	 * @var array
-	 */
-	private $handlers = [];
+	private array $handlers = [];
 
 	/**
 	 * @var int
 	 */
-	private $fieldTypeFeatures = false;
+	private $fieldTypeFeatures = 0;
 
 	/**
 	 * @since 2.5

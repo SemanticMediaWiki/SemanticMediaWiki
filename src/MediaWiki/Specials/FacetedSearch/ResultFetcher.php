@@ -53,17 +53,14 @@ class ResultFetcher {
 	/**
 	 * @var
 	 */
-	private $params;
+	private ?array $params = null;
 
-	/**
-	 * @var string
-	 */
-	private $format = '';
+	private string $format = '';
 
 	/**
 	 * @var
 	 */
-	private $valueFilters = [];
+	private array $valueFilters = [];
 
 	/**
 	 * @var

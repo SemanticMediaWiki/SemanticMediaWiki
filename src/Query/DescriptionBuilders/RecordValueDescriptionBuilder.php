@@ -3,6 +3,7 @@
 namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\RecordValue;
 use SMW\DataValues\ReferenceValue;
@@ -100,7 +101,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 		}
 	}
 
-	private function getDescriptionForProperty( $diProperty, array $values, int|string &$valueIndex, int $propertyIndex ): ?SomeProperty {
+	private function getDescriptionForProperty( Property $diProperty, array $values, int|string &$valueIndex, int $propertyIndex ): ?SomeProperty {
 		$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
 		$beforePrepareValue = $values[$valueIndex];
 

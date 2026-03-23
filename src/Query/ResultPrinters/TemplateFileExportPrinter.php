@@ -19,10 +19,7 @@ use SMW\Query\QueryResult;
  */
 class TemplateFileExportPrinter extends FileExportPrinter {
 
-	/**
-	 * @var int
-	 */
-	private $numRows = 0;
+	private int $numRows = 0;
 
 	/**
 	 * @see ResultPrinter::getName

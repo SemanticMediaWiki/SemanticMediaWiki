@@ -20,7 +20,7 @@ class ValueTextsBuilder {
 
 	use ParameterDictionaryUser;
 
-	private $linker;
+	private ?Linker $linker = null;
 
 	public function __construct( private PrefixParameterProcessor $prefixParameterProcessor ) {
 	}
@@ -66,7 +66,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	private function getValueText( DataValue $value, $column = 0 ) {
+	private function getValueText( DataValue $value, $column = 0 ): string {
 		$isSubject = ( $column === 0 );
 		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
@@ -83,7 +83,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return Linker|null
 	 */
-	private function getLinkerForColumn( $columnNumber ) {
+	private function getLinkerForColumn( $columnNumber ): ?Linker {
 		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) ||
 			( $columnNumber > 0 && $this->get( 'link-others' ) ) ) {
 			return $this->getLinker();
@@ -95,7 +95,7 @@ class ValueTextsBuilder {
 	/**
 	 * @return Linker
 	 */
-	protected function getLinker() {
+	protected function getLinker(): ?Linker {
 		return $this->linker;
 	}
 
@@ -111,7 +111,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	private function sanitizeValueText( $text ) {
+	private function sanitizeValueText( string $text ): string {
 		if ( $this->isSimpleList() ) {
 			return $text;
 		}

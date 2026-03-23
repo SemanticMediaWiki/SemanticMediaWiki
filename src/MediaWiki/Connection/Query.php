@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Connection;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @private
@@ -48,7 +49,7 @@ class Query {
 	/**
 	 * @var
 	 */
-	private $joins = [];
+	private array $joins = [];
 
 	/**
 	 * @var string
@@ -343,7 +344,7 @@ class Query {
 	 *
 	 * @param string $fname
 	 *
-	 * @return iterable
+	 * @return bool|IResultWrapper
 	 */
 	public function execute( $fname ) {
 		return $this->connection->readQuery( $this, $fname );

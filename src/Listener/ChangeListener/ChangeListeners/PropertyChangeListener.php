@@ -24,17 +24,14 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @var
 	 */
-	private $propertyIdKeyMap = [];
+	private array $propertyIdKeyMap = [];
 
 	/**
 	 * @var
 	 */
-	private $changes = [];
+	private array $changes = [];
 
-	/**
-	 * @var bool
-	 */
-	private $initListeners = false;
+	private bool $initListeners = false;
 
 	/**
 	 * @since 3.2

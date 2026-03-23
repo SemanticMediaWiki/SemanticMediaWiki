@@ -4,6 +4,7 @@ namespace SMW\Importer\ContentCreators;
 
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Importer\ContentCreator;
@@ -23,10 +24,7 @@ class TextContentCreator implements ContentCreator {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
 	/**
 	 * @since 2.5
@@ -126,7 +124,7 @@ class TextContentCreator implements ContentCreator {
 		} );
 	}
 
-	private function doCreateContent( WikiPage $page, $title, ImportContents $importContents, string $action ): void {
+	private function doCreateContent( WikiPage $page, ?Title $title, ImportContents $importContents, string $action ): void {
 		$content = ContentHandler::makeContent(
 			$this->fetchContents( $importContents ),
 			$title

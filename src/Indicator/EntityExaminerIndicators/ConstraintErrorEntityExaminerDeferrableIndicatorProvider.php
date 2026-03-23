@@ -12,10 +12,7 @@ use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
  */
 class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends ConstraintErrorEntityExaminerIndicatorProvider implements DeferrableIndicatorProvider {
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
 	/**
 	 * @since 3.2

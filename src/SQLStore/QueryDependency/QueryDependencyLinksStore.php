@@ -5,6 +5,7 @@ namespace SMW\SQLStore\QueryDependency;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\NamespaceExaminer;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;
@@ -31,10 +32,7 @@ class QueryDependencyLinksStore {
 	 */
 	private $namespaceExaminer;
 
-	/**
-	 * @var bool
-	 */
-	private $isEnabled = true;
+	private bool $isEnabled = true;
 
 	/**
 	 * @var bool
@@ -46,10 +44,8 @@ class QueryDependencyLinksStore {
 	 * or not. The comparison is made against the page_touched timestamp to a
 	 * previous update to avoid unnecessary DB transactions if it takes place
 	 * within the computed time frame.
-	 *
-	 * @var int
 	 */
-	private $skewFactorForDependencyUpdateInSeconds = 10;
+	private int $skewFactorForDependencyUpdateInSeconds = 10;
 
 	/**
 	 * @since 2.3
@@ -88,7 +84,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->isEnabled;
 	}
 

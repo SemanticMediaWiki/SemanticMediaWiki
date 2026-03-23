@@ -79,7 +79,7 @@ class RequestOptions {
 	 * are ordered alphabetically, whereas other data is ordered
 	 * numerically. Usually, the order should be fairly "natural".
 	 *
-	 * @var bool
+	 * @var string|false
 	 */
 	public $sort = false;
 
@@ -114,7 +114,7 @@ class RequestOptions {
 	 *
 	 * @var StringCondition[]
 	 */
-	private $stringConditions = [];
+	private array $stringConditions = [];
 
 	/**
 	 * Contains extra conditions which a consumer is being allowed to interpret
@@ -134,13 +134,13 @@ class RequestOptions {
 	 */
 	private $caller;
 
-	public bool $conditionConstraint;
+	public ?bool $conditionConstraint = null;
 
-	public bool $isChain;
+	public ?bool $isChain = null;
 
-	public bool $isFirstChain;
+	public ?bool $isFirstChain = null;
 
-	public bool $natural;
+	public ?bool $natural = null;
 
 	/**
 	 * @since 3.1
@@ -179,7 +179,7 @@ class RequestOptions {
 	 *
 	 * @return array
 	 */
-	public function getStringConditions() {
+	public function getStringConditions(): array {
 		return $this->stringConditions;
 	}
 
