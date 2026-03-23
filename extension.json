@@ -102,6 +102,34 @@
 		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
 		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
 	},
+	"AvailableRights": [
+		"smw-admin",
+		"smw-patternedit",
+		"smw-schemaedit",
+		"smw-pageedit",
+		"smw-viewjobqueuewatchlist",
+		"smw-viewentityassociatedrevisionmismatch",
+		"smw-vieweditpageinfo"
+	],
+	"GroupPermissions": {
+		"smwadministrator": {
+			"smw-admin": true
+		},
+		"smwcurator": {
+			"smw-patternedit": true,
+			"smw-schemaedit": true,
+			"smw-pageedit": true,
+			"smw-viewjobqueuewatchlist": true,
+			"smw-viewentityassociatedrevisionmismatch": true,
+			"smw-vieweditpageinfo": true
+		},
+		"smweditor": {
+			"smw-vieweditpageinfo": true
+		},
+		"user": {
+			"smw-vieweditpageinfo": true
+		}
+	},
 	"LogTypes": [
 		"smw"
 	],

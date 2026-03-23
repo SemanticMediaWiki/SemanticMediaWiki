@@ -136,61 +136,6 @@ class SetupTest extends TestCase {
 		$instance->init( $config, '' );
 	}
 
-	public function testRegisterDefaultRightsUserGroupPermissions() {
-		$config = $this->defaultConfig;
-
-		$instance = new Setup();
-
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$config = $instance->init( $config, 'Foo' );
-
-		$this->assertNotEmpty(
-			$config['wgAvailableRights']
-		);
-
-		$this->assertTrue(
-			$config['wgGroupPermissions']['smwcurator']['smw-patternedit']
-		);
-
-		$this->assertTrue(
-			$config['wgGroupPermissions']['smwcurator']['smw-pageedit']
-		);
-
-		$this->assertTrue(
-			$config['wgGroupPermissions']['smwadministrator']['smw-admin']
-		);
-	}
-
-	public function testNoResetOfAlreadyRegisteredGroupPermissions() {
-		// Avoid re-setting permissions, refs #1137
-		$localConfig['wgGroupPermissions']['sysop']['smw-admin'] = false;
-		$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
-
-		$localConfig = array_merge(
-			$this->defaultConfig,
-			$localConfig
-		);
-
-		$instance = new Setup();
-
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$localConfig = $instance->init( $localConfig, 'Foo' );
-
-		$this->assertFalse(
-			$localConfig['wgGroupPermissions']['sysop']['smw-admin']
-		);
-
-		$this->assertFalse(
-			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
-		);
-	}
-
 	public function testRegisterParamDefinitions() {
 		$config = $this->defaultConfig;
 
