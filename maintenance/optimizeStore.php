@@ -100,7 +100,7 @@ class optimizeStore extends Maintenance {
 	 */
 	public function execute() {
 		if ( $this->canExecute() !== true ) {
-			exit;
+			exit( 1 );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -136,14 +136,14 @@ class optimizeStore extends Maintenance {
 		global $smwgDefaultStore;
 		$storeClass = $this->getOption( 'backend', $smwgDefaultStore );
 
-		if ( !class_exists( $storeClass ) ) {
+		try {
+			$store = StoreFactory::getStore( $storeClass );
+		} catch ( \Throwable $e ) {
 			$this->messageReporter->reportMessage(
-				"\nError: There is no backend class \"$storeClass\". Aborting.\n"
+				"\nError: Invalid backend class \"$storeClass\". Aborting.\n"
 			);
-			return false;
+			exit( 1 );
 		}
-
-		$store = StoreFactory::getStore( $storeClass );
 
 		$connectionManager = $applicationFactory->getConnectionManager();
 		$store->setConnectionManager( $connectionManager );
