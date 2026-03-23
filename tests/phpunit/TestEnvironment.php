@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use Exception;
 use MediaWiki\Deferred\DeferredUpdates;
-use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
