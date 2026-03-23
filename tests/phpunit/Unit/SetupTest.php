@@ -63,7 +63,6 @@ class SetupTest extends TestCase {
 			'smwgEnableUpdateJobs' => false,
 			'wgNamespacesWithSubpages' => [],
 			'wgExtensionAssetsPath'    => false,
-			'smwgResourceLoaderDefFiles' => $GLOBALS['smwgResourceLoaderDefFiles'],
 			'wgResourceModules' => [],
 			'wgScriptPath'      => '/Foo',
 			'wgServer'          => 'http://example.org',
@@ -112,22 +111,6 @@ class SetupTest extends TestCase {
 		$this->assertCount(
 			2,
 			$vars
-		);
-	}
-
-	public function testResourceModules() {
-		$config = $this->defaultConfig;
-
-		$instance = new Setup();
-
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$config = $instance->init( $config, '' );
-
-		$this->assertNotEmpty(
-			$config['wgResourceModules']
 		);
 	}
 

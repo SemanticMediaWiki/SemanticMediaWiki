@@ -34,7 +34,6 @@ return ( static function () {
 		##
 		'smwgExtraneousLanguageFileDir' => $smwgIP . '/i18n/extra',
 		'smwgServicesFileDir' => $smwgIP . '/src/Services',
-		'smwgResourceLoaderDefFiles' => [ 'smw' => $smwgIP . '/res/Resources.php' ],
 		'smwgMaintenanceDir' => $smwgIP . '/maintenance',
 		'smwgDir' => $smwgIP,
 		# #
