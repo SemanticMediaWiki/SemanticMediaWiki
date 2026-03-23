@@ -36,10 +36,7 @@ class ParameterInput {
 	 */
 	protected string $inputName;
 
-	/**
-	 * @var array
-	 */
-	private $attributes = [];
+	private array $attributes = [];
 
 	/**
 	 * Constructor.

@@ -45,37 +45,22 @@ class CallableUpdate implements DeferrableUpdate {
 	 */
 	protected $isCommandLineMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isPending = false;
+	private bool $isPending = false;
 
 	/**
 	 * @var string
 	 */
 	private $origin = '';
 
-	/**
-	 * @var array
-	 */
-	private static $pendingUpdates = [];
+	private static array $pendingUpdates = [];
 
-	/**
-	 * @var string|null
-	 */
-	private $fingerprint = null;
+	private ?string $fingerprint = null;
 
-	/**
-	 * @var array
-	 */
-	private static $queueList = [];
+	private static array $queueList = [];
 
 	private string $stage;
 
-	/**
-	 * @var bool
-	 */
-	private $catchExceptionAndRethrow = false;
+	private bool $catchExceptionAndRethrow = false;
 
 	/**
 	 * @since 2.4
@@ -189,7 +174,7 @@ class CallableUpdate implements DeferrableUpdate {
 	/**
 	 * @since 3.0
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): ?string {
 		return $this->fingerprint;
 	}
 

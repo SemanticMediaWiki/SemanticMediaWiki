@@ -51,25 +51,13 @@ class AskParserFunction {
 	 */
 	private $showMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $curtailmentMode = false;
+	private bool $curtailmentMode = false;
 
-	/**
-	 * @var int
-	 */
-	private $context = QueryProcessor::INLINE_QUERY;
+	private int $context = QueryProcessor::INLINE_QUERY;
 
-	/**
-	 * @var PostProcHandler
-	 */
-	private $postProcHandler;
+	private ?PostProcHandler $postProcHandler = null;
 
-	/**
-	 * @var RecursiveTextProcessor
-	 */
-	private $recursiveTextProcessor;
+	private ?RecursiveTextProcessor $recursiveTextProcessor = null;
 
 	/**
 	 * @var ProcessedParam[]

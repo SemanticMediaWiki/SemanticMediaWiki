@@ -27,15 +27,9 @@ class LinksUpdateComplete implements HookListener {
 	use RevisionGuardAwareTrait;
 	use LoggerAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	private $enabledDeferredUpdate = true;
+	private bool $enabledDeferredUpdate = true;
 
-	/**
-	 * @var bool
-	 */
-	private $isReady = true;
+	private bool $isReady = true;
 
 	/**
 	 * @since 3.0

@@ -46,10 +46,7 @@ class ExpData implements Element {
 	 */
 	protected $m_edges = [];
 
-	/**
-	 * @var string|null
-	 */
-	private $hash = null;
+	private ?string $hash = null;
 
 	/**
 	 * Constructor. $subject is the ExpResource for the
@@ -74,7 +71,7 @@ class ExpData implements Element {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		if ( $this->hash !== null ) {
 			return $this->hash;
 		}

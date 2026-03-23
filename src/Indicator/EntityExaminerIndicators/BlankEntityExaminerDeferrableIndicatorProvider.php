@@ -26,17 +26,11 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	/**
 	 * @var
 	 */
-	private $indicators = [];
+	private array $indicators = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
-	/**
-	 * @var string
-	 */
-	private $severityType = TypableSeverityIndicatorProvider::SEVERITY_WARNING;
+	private string $severityType = TypableSeverityIndicatorProvider::SEVERITY_WARNING;
 
 	/**
 	 * @since 3.2
@@ -99,7 +93,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 

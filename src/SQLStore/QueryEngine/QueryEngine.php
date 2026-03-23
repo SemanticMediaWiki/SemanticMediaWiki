@@ -30,10 +30,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private ?LoggerInterface $logger = null;
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when

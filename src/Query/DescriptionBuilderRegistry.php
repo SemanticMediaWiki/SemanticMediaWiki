@@ -22,12 +22,9 @@ class DescriptionBuilderRegistry {
 	/**
 	 * @var DescriptionBuilder[]
 	 */
-	private $descriptionBuilders = [];
+	private array $descriptionBuilders = [];
 
-	/**
-	 * @var DescriptionBuilder
-	 */
-	private $defaultDescriptionBuilder;
+	private ?SomeValueDescriptionBuilder $defaultDescriptionBuilder = null;
 
 	/**
 	 * @note This allows extensions to inject their own DescriptionBuilder

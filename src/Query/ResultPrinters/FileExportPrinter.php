@@ -17,10 +17,7 @@ use SMW\Query\QueryResult;
  */
 abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter {
 
-	/**
-	 * @var bool
-	 */
-	private $httpHeader = true;
+	private bool $httpHeader = true;
 
 	/**
 	 * @see ExportPrinter::isExportFormat

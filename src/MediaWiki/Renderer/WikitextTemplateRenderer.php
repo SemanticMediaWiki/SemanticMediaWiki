@@ -15,10 +15,7 @@ class WikitextTemplateRenderer {
 	 */
 	private $fields = [];
 
-	/**
-	 * @var string
-	 */
-	private $template = '';
+	private string $template = '';
 
 	/**
 	 * @since 2.2
@@ -51,7 +48,7 @@ class WikitextTemplateRenderer {
 	 *
 	 * @return string
 	 */
-	public function render() {
+	public function render(): string {
 		$wikiText = $this->template;
 		$this->template = '';
 		$this->fields = [];

@@ -19,7 +19,7 @@ class SequenceMapFinder {
 	/**
 	 * @var array
 	 */
-	private $preloaded = [];
+	private array $preloaded = [];
 
 	/**
 	 * @since 3.1

@@ -12,35 +12,17 @@ use MediaWiki\Html\Html;
  */
 class HtmlTableRenderer {
 
-	/**
-	 * @var array
-	 */
-	private $headerItems = [];
+	private array $headerItems = [];
 
-	/**
-	 * @var array
-	 */
-	private $tableRows = [];
+	private array $tableRows = [];
 
-	/**
-	 * @var array
-	 */
-	private $rawRows = [];
+	private array $rawRows = [];
 
-	/**
-	 * @var array
-	 */
-	private $tableHeaders = [];
+	private array $tableHeaders = [];
 
-	/**
-	 * @var array
-	 */
-	private $rawHeaders = [];
+	private array $rawHeaders = [];
 
-	/**
-	 * @var array
-	 */
-	private $tableCells = [];
+	private array $tableCells = [];
 
 	/**
 	 * @var array
@@ -282,7 +264,7 @@ class HtmlTableRenderer {
 		return $this->doConcatenatedHeader() . $this->doConcatenatedRows();
 	}
 
-	private function getTransposedCell( $index, $row ) {
+	private function getTransposedCell( int|string $index, $row ) {
 		if ( isset( $row['cells'][$index] ) ) {
 			return $row['cells'][$index];
 		}

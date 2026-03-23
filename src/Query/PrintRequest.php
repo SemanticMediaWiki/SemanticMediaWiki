@@ -66,17 +66,13 @@ class PrintRequest {
 	 * the original query where it was added.
 	 *
 	 * Mostly used in cases where QueryProcessor::addThisPrintout was executed.
-	 *
-	 * @var bool
 	 */
-	private $isDisconnected = false;
+	private bool $isDisconnected = false;
 
 	/**
 	 * Whether the label was marked with an extra `#` identifier.
-	 *
-	 * @var bool
 	 */
-	private $labelMarker = false;
+	private bool $labelMarker = false;
 
 	/**
 	 * Create a print request.
@@ -143,7 +139,7 @@ class PrintRequest {
 	 *
 	 * @return bool
 	 */
-	public function hasLabelMarker() {
+	public function hasLabelMarker(): bool {
 		return $this->labelMarker;
 	}
 

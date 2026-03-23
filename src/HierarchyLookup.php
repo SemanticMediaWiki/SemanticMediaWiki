@@ -45,24 +45,17 @@ class HierarchyLookup {
 	 */
 	private $inMemoryCache = [];
 
-	/**
-	 * @var int
-	 */
-	private $cacheTTL = 60 * 60 * 24 * 7;
+	private int $cacheTTL = 60 * 60 * 24 * 7;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
-	 *
-	 * @var int
 	 */
-	private $subcategoryDepth = 10;
+	private int $subcategoryDepth = 10;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
-	 *
-	 * @var int
 	 */
-	private $subpropertyDepth = 10;
+	private int $subpropertyDepth = 10;
 
 	/**
 	 * @since 2.3

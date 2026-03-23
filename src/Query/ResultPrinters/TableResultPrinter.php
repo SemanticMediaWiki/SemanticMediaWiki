@@ -25,14 +25,11 @@ use SMW\Utils\HtmlTable;
  */
 class TableResultPrinter extends ResultPrinter {
 
-	/**
-	 * @var HtmlTable
-	 */
-	private $htmlTable;
+	private ?HtmlTable $htmlTable = null;
 
-	private $isDataTable;
+	private ?bool $isDataTable = null;
 
-	private $prefixParameterProcessor;
+	private ?PrefixParameterProcessor $prefixParameterProcessor = null;
 
 	/**
 	 * @see ResultPrinter::getName

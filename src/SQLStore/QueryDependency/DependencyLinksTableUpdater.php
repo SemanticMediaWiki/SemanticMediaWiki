@@ -17,10 +17,7 @@ class DependencyLinksTableUpdater {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var array
-	 */
-	private static $updateList = [];
+	private static array $updateList = [];
 
 	/**
 	 * @since 2.4
@@ -111,7 +108,7 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @return void
 	 */
-	private function updateDependencyList( $sid, array $dependencyList ) {
+	private function updateDependencyList( int|string $sid, array $dependencyList ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 

@@ -21,17 +21,14 @@ class MustExistsConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'must_exists';
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 

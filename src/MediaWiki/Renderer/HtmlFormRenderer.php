@@ -45,10 +45,7 @@ class HtmlFormRenderer {
 	 */
 	private $method = false;
 
-	/**
-	 * @var string|bool
-	 */
-	private $useFieldset = false;
+	private bool $useFieldset = false;
 
 	/**
 	 * @var string|bool
@@ -58,12 +55,9 @@ class HtmlFormRenderer {
 	/**
 	 * @var string[]
 	 */
-	private $content = [];
+	private array $content = [];
 
-	/**
-	 * @var string
-	 */
-	private $defaultPrefix = 'smw-form';
+	private string $defaultPrefix = 'smw-form';
 
 	/**
 	 * @since 2.1

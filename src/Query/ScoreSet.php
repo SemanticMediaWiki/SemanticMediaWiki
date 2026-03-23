@@ -18,7 +18,7 @@ class ScoreSet {
 	/**
 	 * @var
 	 */
-	private $scores = [];
+	private array $scores = [];
 
 	/**
 	 * @var int|null
@@ -95,7 +95,7 @@ class ScoreSet {
 	 *
 	 * @return
 	 */
-	public function getScores() {
+	public function getScores(): array {
 		return $this->scores;
 	}
 

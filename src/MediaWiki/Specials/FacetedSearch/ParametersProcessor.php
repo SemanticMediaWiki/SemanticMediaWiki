@@ -40,22 +40,22 @@ class ParametersProcessor {
 	/**
 	 * @var
 	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @var
 	 */
-	private $filterConditions = [];
+	private array $filterConditions = [];
 
 	/**
 	 * @var
 	 */
-	private $propertyFilters = [];
+	private array $propertyFilters = [];
 
 	/**
 	 * @var
 	 */
-	private $valueFilters = [];
+	private array $valueFilters = [];
 
 	/**
 	 * @since 3.2

@@ -886,7 +886,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
 	 */
-	public function onFileUpload( File $file, $reupload ): bool {
+	public function onFileUpload( File $file, ?bool $reupload ): bool {
 		$fileUpload = new FileUpload(
 			ApplicationFactory::getInstance()->getNamespaceExaminer(),
 			MediaWikiServices::getInstance()->getHookContainer()

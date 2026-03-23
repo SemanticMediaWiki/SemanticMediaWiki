@@ -27,25 +27,16 @@ class ReplicationCheck {
 	const SEVERITY_TYPE_ERROR = 'error';
 	const SEVERITY_TYPE_WARNING = 'warning';
 
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
+	private ?TemplateEngine $templateEngine = null;
 
-	/**
-	 * @var bool
-	 */
-	private $errorTitle = '';
+	private string $errorTitle = '';
 
 	/**
 	 * @var string
 	 */
 	private $languageCode = '';
 
-	/**
-	 * @var string
-	 */
-	private $severityType = self::SEVERITY_TYPE_ERROR;
+	private string $severityType = self::SEVERITY_TYPE_ERROR;
 
 	/**
 	 * @var int

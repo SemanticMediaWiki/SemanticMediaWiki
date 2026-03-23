@@ -31,10 +31,7 @@ class ExtendedSearch {
 	 */
 	private $errors = [];
 
-	/**
-	 * @var QueryBuilder
-	 */
-	private $queryBuilder;
+	private ?QueryBuilder $queryBuilder = null;
 
 	/**
 	 * @var string
@@ -59,22 +56,16 @@ class ExtendedSearch {
 	/**
 	 * @var
 	 */
-	private $namespaces = [];
+	private array $namespaces = [];
 
 	/**
 	 * @var
 	 */
-	private $searchableNamespaces = [];
+	private array $searchableNamespaces = [];
 
-	/**
-	 * @var int
-	 */
-	private $limit = 10;
+	private int|float $limit = 10;
 
-	/**
-	 * @var int
-	 */
-	private $offset = 0;
+	private int $offset = 0;
 
 	/**
 	 * @var string
@@ -166,7 +157,7 @@ class ExtendedSearch {
 	 *
 	 * @return int
 	 */
-	public function getLimit() {
+	public function getLimit(): int|float {
 		return $this->limit;
 	}
 
@@ -175,7 +166,7 @@ class ExtendedSearch {
 	 *
 	 * @return int
 	 */
-	public function getOffset() {
+	public function getOffset(): int {
 		return $this->offset;
 	}
 

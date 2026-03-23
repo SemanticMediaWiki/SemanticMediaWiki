@@ -67,25 +67,19 @@ class ParserData {
 
 	private ParserOutput $parserOutput;
 
-	/**
-	 * @var ParserOptions
-	 */
-	private $parserOptions;
+	private ?ParserOptions $parserOptions = null;
 
 	/**
 	 * @var SemanticData
 	 */
 	private $semanticData;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @var
 	 */
-	private $canCreateUpdateJob = true;
+	private bool $canCreateUpdateJob = true;
 
 	/**
 	 * Identifies the origin of a request.
@@ -94,10 +88,7 @@ class ParserData {
 	 */
 	private $origin = '';
 
-	/**
-	 * @var Options
-	 */
-	private $options = null;
+	private ?Options $options = null;
 
 	/**
 	 * @since 1.9
@@ -243,7 +234,7 @@ class ParserData {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

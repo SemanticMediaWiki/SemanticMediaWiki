@@ -26,10 +26,7 @@ use SMW\ParserParameterProcessor;
  */
 class SetParserFunction {
 
-	/**
-	 * @var StripMarkerDecoder
-	 */
-	private $stripMarkerDecoder;
+	private ?StripMarkerDecoder $stripMarkerDecoder = null;
 
 	/**
 	 * @since 1.9

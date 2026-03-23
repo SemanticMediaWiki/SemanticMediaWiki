@@ -53,10 +53,7 @@ class Factbox {
 	 */
 	private $attachments = [];
 
-	/**
-	 * @var CheckMagicWords
-	 */
-	private $checkMagicWords;
+	private ?CheckMagicWords $checkMagicWords = null;
 
 	private readonly AttachmentFormatter $attachmentFormatter;
 

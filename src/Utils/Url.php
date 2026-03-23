@@ -10,15 +10,9 @@ namespace SMW\Utils;
  */
 class Url {
 
-	/**
-	 * @var array
-	 */
-	private $info = [];
+	private array|bool $info = [];
 
-	/**
-	 * @var array
-	 */
-	private $flag = [];
+	private array $flag = [];
 
 	/**
 	 * @since 3.2

@@ -18,15 +18,9 @@ use SMW\Store;
  */
 class PropertyTableUpdater {
 
-	/**
-	 * @var PropertyChangeListener
-	 */
-	private $propertyChangeListener;
+	private ?PropertyChangeListener $propertyChangeListener = null;
 
-	/**
-	 * @var array
-	 */
-	private $stats = [];
+	private array $stats = [];
 
 	/**
 	 * @since 3.0

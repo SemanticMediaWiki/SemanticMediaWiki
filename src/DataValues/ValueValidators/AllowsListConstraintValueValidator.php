@@ -25,15 +25,9 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
 	private SpecificationLookup $propertySpecificationLookup;
 
-	/**
-	 * @var bool
-	 */
-	private $hasConstraintViolation = false;
+	private bool $hasConstraintViolation = false;
 
-	/**
-	 * @var string
-	 */
-	private $errorMsg = '';
+	private string $errorMsg = '';
 
 	/**
 	 * @since 2.4
@@ -51,7 +45,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasConstraintViolation() {
+	public function hasConstraintViolation(): bool {
 		return $this->hasConstraintViolation;
 	}
 

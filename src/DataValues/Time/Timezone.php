@@ -24,10 +24,8 @@ class Timezone {
 	 * The associated offsets are in hours or fractions of hours.
 	 *
 	 * 'FOO' => array( ID, OffsetInSeconds, isMilitary )
-	 *
-	 * @var array
 	 */
-	private static $shortList = [
+	private static array $shortList = [
 		"UTC" => [ 0, 0, false ],
 		"Z" => [ 1, 0, true ],
 		"A" => [ 2, 3600, true ],
@@ -208,7 +206,7 @@ class Timezone {
 	 *
 	 * @return false|string
 	 */
-	public static function getTimezoneLiteralById( $identifer ) {
+	public static function getTimezoneLiteralById( $identifer ): int|string|false {
 		foreach ( self::$shortList as $abbreviation => $value ) {
 			if ( is_numeric( $identifer ) && $value[0] == $identifer ) {
 				return $abbreviation;

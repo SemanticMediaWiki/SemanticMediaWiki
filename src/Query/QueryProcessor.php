@@ -20,10 +20,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class QueryProcessor implements QueryContext {
 
-	/**
-	 * @var RecursiveTextProcessor
-	 */
-	private static $recursiveTextProcessor;
+	private static ?RecursiveTextProcessor $recursiveTextProcessor = null;
 
 	/**
 	 * @since 3.0

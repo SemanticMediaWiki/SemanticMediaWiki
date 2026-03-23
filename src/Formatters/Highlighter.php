@@ -71,10 +71,7 @@ class Highlighter {
 	 */
 	const TYPE_REFERENCE = 10;
 
-	/**
-	 * @var array
-	 */
-	private $options;
+	private ?array $options = null;
 
 	/**
 	 * @since 1.9
@@ -163,7 +160,7 @@ class Highlighter {
 	 *
 	 * @return array
 	 */
-	public function setContent( array $content ) {
+	public function setContent( array $content ): array {
 		/**
 		 * @var $content
 		 * $content['caption'] = a text or null

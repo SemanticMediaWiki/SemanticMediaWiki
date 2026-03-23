@@ -72,15 +72,9 @@ class EntityIdManager {
 	 */
 	public $store;
 
-	/**
-	 * @var RedirectStore
-	 */
-	private $redirectStore;
+	private ?RedirectStore $redirectStore = null;
 
-	/**
-	 * @var RedirectTargetLookup
-	 */
-	private $redirectTargetLookup;
+	private RedirectTargetLookup $redirectTargetLookup;
 
 	private TableFieldUpdater $tableFieldUpdater;
 
@@ -89,31 +83,19 @@ class EntityIdManager {
 	 */
 	public static $special_ids = [];
 
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
+	private IdCacheManager $idCacheManager;
 
-	/**
-	 * @var CacheWarmer
-	 */
-	private $cacheWarmer;
+	private CacheWarmer $cacheWarmer;
 
 	private IdEntityFinder $idEntityFinder;
 
-	/**
-	 * @var EntityIdFinder
-	 */
-	private $entityIdFinder;
+	private EntityIdFinder $entityIdFinder;
 
 	private SequenceMapFinder $sequenceMapFinder;
 
 	private AuxiliaryFields $auxiliaryFields;
 
-	/**
-	 * @var DuplicateFinder
-	 */
-	private $duplicateFinder;
+	private ?DuplicateFinder $duplicateFinder = null;
 
 	/**
 	 * @var PropertyTableHashes
@@ -497,7 +479,7 @@ class EntityIdManager {
 	 *
 	 * @return int
 	 */
-	public function getId( WikiPage $subject ) {
+	public function getId( WikiPage $subject ): int {
 		// Try to match a predefined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
 			try {

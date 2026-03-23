@@ -27,10 +27,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class PageBuilder {
 
-	/**
-	 * @var MessageBuilder
-	 */
-	private $messageBuilder;
+	private ?MessageBuilder $messageBuilder = null;
 
 	/**
 	 * @var Linker

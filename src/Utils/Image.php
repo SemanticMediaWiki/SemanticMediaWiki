@@ -14,10 +14,8 @@ class Image {
 
 	/**
 	 * @see http://php.net/manual/en/function.image-type-to-extension.php
-	 *
-	 * @var array
 	 */
-	private static $images_types = [
+	private static array $images_types = [
 		'gif' => 'image/gif',
 		'jpg' => 'image/jpeg',
 		'jpeg' => 'image/jpeg',

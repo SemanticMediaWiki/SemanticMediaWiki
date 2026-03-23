@@ -15,12 +15,12 @@ class SearchResult {
 	/**
 	 * @var
 	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @var []|null
 	 */
-	private $results;
+	private ?array $results = null;
 
 	/**
 	 * @var string
@@ -30,7 +30,7 @@ class SearchResult {
 	/**
 	 * @var
 	 */
-	private $container = [
+	private array $container = [
 		'info' => [],
 		'scores' => [],
 		'excerpts' => [],
@@ -67,7 +67,7 @@ class SearchResult {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -78,7 +78,7 @@ class SearchResult {
 	 *
 	 * @return array
 	 */
-	public function getResults( $cutoff = null ) {
+	public function getResults( $cutoff = null ): ?array {
 		if ( $this->results === null ) {
 			$this->doFilterResults( $this->raw, $cutoff );
 		}

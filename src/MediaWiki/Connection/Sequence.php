@@ -14,10 +14,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class Sequence {
 
-	/**
-	 * @var Database|IDatabase
-	 */
-	private $connection;
+	private Database|IDatabase $connection;
 
 	/**
 	 * @var string

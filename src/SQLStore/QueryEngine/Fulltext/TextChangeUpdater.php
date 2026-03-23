@@ -22,15 +22,9 @@ class TextChangeUpdater {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	private $asDeferredUpdate = true;
+	private bool $asDeferredUpdate = true;
 
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
+	private bool $isCommandLineMode = false;
 
 	/**
 	 * @var bool

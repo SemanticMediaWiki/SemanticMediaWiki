@@ -18,10 +18,7 @@ class CustomForm {
 
 	private Field $field;
 
-	/**
-	 * @var bool
-	 */
-	private $isActiveForm = false;
+	private bool $isActiveForm = false;
 
 	/**
 	 * @var
@@ -31,12 +28,12 @@ class CustomForm {
 	/**
 	 * @var
 	 */
-	private $fieldCounter = [];
+	private array $fieldCounter = [];
 
 	/**
 	 * @var
 	 */
-	private $html5TypeMap = [
+	private array $html5TypeMap = [
 		'_txt' => 'text',
 		'_uri' => 'url',
 		'_dat' => 'date',

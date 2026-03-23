@@ -53,10 +53,7 @@ use SMW\Store;
  */
 class ElasticFactory {
 
-	/**
-	 * @var Indexer
-	 */
-	private $indexer;
+	private ?Indexer $indexer = null;
 
 	/**
 	 * @since 3.2

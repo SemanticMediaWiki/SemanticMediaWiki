@@ -21,10 +21,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Client
-	 */
-	private $connection;
+	private ?Client $connection = null;
 
 	/**
 	 * @since 3.0
@@ -42,7 +39,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @return Client
 	 */
-	public function getConnection() {
+	public function getConnection(): Client {
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}

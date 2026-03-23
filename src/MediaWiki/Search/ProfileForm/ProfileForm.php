@@ -33,7 +33,7 @@ class ProfileForm {
 	/**
 	 * @var
 	 */
-	private $searchableNamespaces = [];
+	private array $searchableNamespaces = [];
 
 	/**
 	 * @since 3.0

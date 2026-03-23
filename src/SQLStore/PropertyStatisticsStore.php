@@ -25,10 +25,7 @@ class PropertyStatisticsStore {
 	 */
 	private $isCommandLineMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
 	/**
 	 * @since 1.9

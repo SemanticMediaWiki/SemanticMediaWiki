@@ -12,15 +12,9 @@ use RuntimeException;
  */
 class FallbackFinder {
 
-	/**
-	 * @var string
-	 */
-	private $canonicalFallbackLanguageCode = 'en';
+	private string $canonicalFallbackLanguageCode = 'en';
 
-	/**
-	 * @var array
-	 */
-	private $fallbackLanguages = [];
+	private array $fallbackLanguages = [];
 
 	/**
 	 * @since 2.5
@@ -40,7 +34,7 @@ class FallbackFinder {
 	 *
 	 * @return string
 	 */
-	public function getCanonicalFallbackLanguageCode() {
+	public function getCanonicalFallbackLanguageCode(): string {
 		return $this->canonicalFallbackLanguageCode;
 	}
 

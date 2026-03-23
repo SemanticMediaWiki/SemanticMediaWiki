@@ -24,20 +24,11 @@ use SMW\Store;
  */
 class ChangePropagationNotifier {
 
-	/**
-	 * @var array
-	 */
-	private $propertyList = [];
+	private array $propertyList = [];
 
-	/**
-	 * @var bool
-	 */
-	private $hasDiff = false;
+	private bool $hasDiff = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isTypePropagation = false;
+	private bool $isTypePropagation = false;
 
 	/**
 	 * @var bool
@@ -79,7 +70,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @return bool
 	 */
-	public function hasDiff() {
+	public function hasDiff(): bool {
 		return $this->hasDiff;
 	}
 

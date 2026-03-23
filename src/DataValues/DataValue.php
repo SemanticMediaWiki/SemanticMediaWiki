@@ -146,27 +146,20 @@ abstract class DataValue {
 	 */
 	private $mErrors = [];
 
-	/**
-	 * @var array
-	 */
-	private $errorsByType = [];
+	private array $errorsByType = [];
 
 	/**
 	 * Boolean indicating if there where any errors.
 	 * Should be modified accordingly when modifying $mErrors.
-	 * @var bool
 	 */
-	private $mHasErrors = false;
+	private bool $mHasErrors = false;
 
 	/**
 	 * @var false|array
 	 */
 	protected $restrictionError = false;
 
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
 	/**
 	 * @var InfoLinksProvider
@@ -191,7 +184,7 @@ abstract class DataValue {
 	/**
 	 * @var
 	 */
-	private $callables = [];
+	private array $callables = [];
 
 	/**
 	 * Constructor.

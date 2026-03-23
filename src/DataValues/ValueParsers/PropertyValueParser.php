@@ -14,37 +14,22 @@ use SMW\Localizer\Localizer;
  */
 class PropertyValueParser implements ValueParser {
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
-	/**
-	 * @var array
-	 */
-	private $invalidCharacterList = [];
+	private array $invalidCharacterList = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isCapitalLinks = true;
+	private bool $isCapitalLinks = true;
 
-	/**
-	 * @var bool
-	 */
-	private $reqCapitalizedFirstChar = false;
+	private bool $reqCapitalizedFirstChar = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isQueryContext = false;
+	private bool $isQueryContext = false;
 
 	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -184,7 +169,7 @@ class PropertyValueParser implements ValueParser {
 		return [ $propertyName, $capitalizedName, $inverse ];
 	}
 
-	private function doNormalize( $text, $isCapitalLinks ) {
+	private function doNormalize( $text, bool $isCapitalLinks ) {
 		$text = trim( $text );
 
 		if ( $isCapitalLinks ) {

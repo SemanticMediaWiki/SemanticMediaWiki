@@ -24,10 +24,7 @@ class TextContentCreator implements ContentCreator {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
 	/**
 	 * @since 2.5

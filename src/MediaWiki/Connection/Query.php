@@ -49,7 +49,7 @@ class Query {
 	/**
 	 * @var
 	 */
-	private $joins = [];
+	private array $joins = [];
 
 	/**
 	 * @var string

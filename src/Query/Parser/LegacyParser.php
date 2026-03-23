@@ -41,10 +41,8 @@ class LegacyParser implements Parser {
 
 	/**
 	 * List of open blocks ("parentheses") that need closing at current step
-	 *
-	 * @var array
 	 */
-	private $separatorStack = [];
+	private array $separatorStack = [];
 
 	/**
 	 * Remaining string to be parsed (parsing eats query string from the front)
@@ -55,36 +53,25 @@ class LegacyParser implements Parser {
 
 	/**
 	 * Cache label of category namespace . ':'
-	 *
-	 * @var string
 	 */
-	private $categoryPrefix;
+	private string $categoryPrefix;
 
 	/**
 	 * Cache label of concept namespace . ':'
-	 *
-	 * @var string
 	 */
-	private $conceptPrefix;
+	private string $conceptPrefix;
 
 	/**
 	 * Cache canonnical label of category namespace . ':'
-	 *
-	 * @var string
 	 */
-	private $categoryPrefixCannonical;
+	private string $categoryPrefixCannonical;
 
 	/**
 	 * Cache canonnical label of concept namespace . ':'
-	 *
-	 * @var string
 	 */
-	private $conceptPrefixCannonical;
+	private string $conceptPrefixCannonical;
 
-	/**
-	 * @var WikiPage|null
-	 */
-	private $contextPage;
+	private ?WikiPage $contextPage = null;
 
 	/**
 	 * @var bool

@@ -25,10 +25,7 @@ class ShapeConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'shape_constraint';
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @var SemanticData
@@ -40,7 +37,7 @@ class ShapeConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 

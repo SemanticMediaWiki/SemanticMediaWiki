@@ -23,10 +23,7 @@ use WikiPage;
  */
 class EditProtectionUpdater implements LoggerAwareInterface {
 
-	/**
-	 * @var bool
-	 */
-	private $isRestrictedUpdate = false;
+	private bool $isRestrictedUpdate = false;
 
 	/**
 	 * @var bool|string
@@ -35,10 +32,8 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 
 	/**
 	 * LoggerInterface
-	 *
-	 * @var LoggerInterface|null
 	 */
-	private $logger;
+	private ?LoggerInterface $logger = null;
 
 	/**
 	 * @since 2.5
@@ -77,7 +72,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	 *
 	 * @return bool
 	 */
-	public function isRestrictedUpdate() {
+	public function isRestrictedUpdate(): bool {
 		return $this->isRestrictedUpdate;
 	}
 

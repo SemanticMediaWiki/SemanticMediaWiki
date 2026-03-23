@@ -19,15 +19,9 @@ use SMW\Elastic\Connection\Client as ElasticClient;
  */
 class Bulk implements JsonSerializable {
 
-	/**
-	 * @var array
-	 */
-	private $bulk = [];
+	private array $bulk = [];
 
-	/**
-	 * @var array
-	 */
-	private $head = [];
+	private array $head = [];
 
 	/**
 	 * @var array|string

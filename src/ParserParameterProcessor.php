@@ -13,10 +13,7 @@ use SMW\Utils\ErrorCodeFormatter;
  */
 class ParserParameterProcessor {
 
-	/**
-	 * @var string
-	 */
-	private $defaultSeparator = ',';
+	private string $defaultSeparator = ',';
 
 	private array $rawParameters;
 
@@ -30,10 +27,7 @@ class ParserParameterProcessor {
 	 */
 	private $first = null;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 1.9
@@ -52,7 +46,7 @@ class ParserParameterProcessor {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -266,7 +260,7 @@ class ParserParameterProcessor {
 		return $this->parseFromJson( $results );
 	}
 
-	private function lookAheadOnNextElement( &$params, bool &$pipe ) {
+	private function lookAheadOnNextElement( &$params, bool &$pipe ): string {
 		$separator = '';
 
 		if ( !next( $params ) ) {

@@ -28,25 +28,13 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	private $hiddenCategories = null;
 
-	/**
-	 * @var bool
-	 */
-	private $showHiddenCategories = true;
+	private bool $showHiddenCategories = true;
 
-	/**
-	 * @var bool
-	 */
-	private $useCategoryInstance = true;
+	private bool $useCategoryInstance = true;
 
-	/**
-	 * @var bool
-	 */
-	private $useCategoryHierarchy = true;
+	private bool $useCategoryHierarchy = true;
 
-	/**
-	 * @var bool
-	 */
-	private $useCategoryRedirect = true;
+	private bool $useCategoryRedirect = true;
 
 	private ProcessingErrorMsgHandler $processingErrorMsgHandler;
 

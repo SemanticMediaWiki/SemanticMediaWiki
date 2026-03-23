@@ -10,10 +10,7 @@ namespace SMW\Query\Parser;
  */
 class Tokenizer {
 
-	/**
-	 * @var string
-	 */
-	private $defaultPattern = '';
+	private string $defaultPattern = '';
 
 	/**
 	 * @since 3.0

@@ -20,10 +20,7 @@ use SMW\PropertyRegistry;
  */
 class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/**
-	 * @var array
-	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 1.9

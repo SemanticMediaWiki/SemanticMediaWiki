@@ -23,40 +23,19 @@ class PropertyListByApiRequest {
 	 */
 	private $requestOptions = null;
 
-	/**
-	 * @var array
-	 */
-	private $propertyList = [];
+	private array $propertyList = [];
 
-	/**
-	 * @var array
-	 */
-	private $namespaces = [];
+	private array $namespaces = [];
 
-	/**
-	 * @var array
-	 */
-	private $meta = [];
+	private array $meta = [];
 
-	/**
-	 * @var int
-	 */
-	private $limit = 50;
+	private int $limit = 50;
 
-	/**
-	 * @var array
-	 */
-	private $continueOffset = 1;
+	private int|float $continueOffset = 1;
 
-	/**
-	 * @var string
-	 */
-	private $languageCode = '';
+	private string $languageCode = '';
 
-	/**
-	 * @var bool
-	 */
-	private $listOnly = false;
+	private bool $listOnly = false;
 
 	/**
 	 * @since 2.4
@@ -99,7 +78,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @param array
 	 */
-	public function getPropertyList() {
+	public function getPropertyList(): array {
 		return $this->propertyList;
 	}
 
@@ -108,7 +87,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @param array
 	 */
-	public function getNamespaces() {
+	public function getNamespaces(): array {
 		return $this->namespaces;
 	}
 
@@ -117,7 +96,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @param array
 	 */
-	public function getMeta() {
+	public function getMeta(): array {
 		return $this->meta;
 	}
 
@@ -126,7 +105,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @param array
 	 */
-	public function getContinueOffset() {
+	public function getContinueOffset(): int|float {
 		return $this->continueOffset;
 	}
 

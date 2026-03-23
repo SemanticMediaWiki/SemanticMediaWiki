@@ -13,7 +13,7 @@ use SMW\Utils\HtmlDivTable;
  */
 class SummaryTable {
 
-	private $attributes = [];
+	private array $attributes = [];
 
 	/**
 	 * @var int

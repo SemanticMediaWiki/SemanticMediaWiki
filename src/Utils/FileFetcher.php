@@ -17,15 +17,9 @@ use RuntimeException;
  */
 class FileFetcher {
 
-	/**
-	 * @var int
-	 */
-	private $maxDepth = -1;
+	private int $maxDepth = -1;
 
-	/**
-	 * @var string
-	 */
-	private $sort;
+	private ?string $sort = null;
 
 	/**
 	 * @since 3.1

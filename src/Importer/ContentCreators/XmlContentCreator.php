@@ -22,20 +22,11 @@ class XmlContentCreator implements ContentCreator {
 	 */
 	private $importerServiceFactory;
 
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private ?MessageReporter $messageReporter = null;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
-	/**
-	 * @var string
-	 */
-	private $action = '';
+	private string $action = '';
 
 	/**
 	 * @since 3.0

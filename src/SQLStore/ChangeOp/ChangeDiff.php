@@ -26,10 +26,7 @@ class ChangeDiff {
 
 	private int $time;
 
-	/**
-	 * @var array
-	 */
-	private $changeList = [];
+	private array $changeList = [];
 
 	/**
 	 * @var int

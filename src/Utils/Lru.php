@@ -15,8 +15,7 @@ class Lru {
 	 */
 	private $cache = [];
 
-	/** @var int */
-	private $count = 0;
+	private int $count = 0;
 
 	/**
 	 * @since 3.0

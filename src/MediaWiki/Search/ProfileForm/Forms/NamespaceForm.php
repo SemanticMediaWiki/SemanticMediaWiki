@@ -26,17 +26,17 @@ class NamespaceForm {
 	/**
 	 * @var
 	 */
-	private $activeNamespaces = [];
+	private array $activeNamespaces = [];
 
 	/**
 	 * @var
 	 */
-	private $hiddenNamespaces = [];
+	private array $hiddenNamespaces = [];
 
 	/**
 	 * @var
 	 */
-	private $searchableNamespaces = [];
+	private array $searchableNamespaces = [];
 
 	/**
 	 * @var null|string
@@ -46,7 +46,7 @@ class NamespaceForm {
 	/**
 	 * @var null|string
 	 */
-	private $hideList = false;
+	private bool $hideList = false;
 
 	/**
 	 * @since 3.1

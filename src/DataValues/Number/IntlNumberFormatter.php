@@ -35,17 +35,11 @@ class IntlNumberFormatter {
 	const DEFAULT_FORMAT = 'default.format';
 	const VALUE_FORMAT = 'value.format';
 
-	/**
-	 * @var IntlNumberFormatter
-	 */
-	private static $instance = null;
+	private static ?IntlNumberFormatter $instance = null;
 
 	private Options $options;
 
-	/**
-	 * @var int
-	 */
-	private $defaultPrecision = 3;
+	private int $defaultPrecision = 3;
 
 	/**
 	 * @since 2.1
@@ -59,7 +53,7 @@ class IntlNumberFormatter {
 	 *
 	 * @return IntlNumberFormatter
 	 */
-	public static function getInstance() {
+	public static function getInstance(): IntlNumberFormatter {
 		if ( self::$instance === null ) {
 			self::$instance = new self(
 				$GLOBALS['smwgMaxNonExpNumber']

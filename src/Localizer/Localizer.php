@@ -28,10 +28,7 @@ use SMW\Site;
  */
 class Localizer {
 
-	/**
-	 * @var Localizer
-	 */
-	private static $instance = null;
+	private static ?Localizer $instance = null;
 
 	/**
 	 * @since 2.1
@@ -49,7 +46,7 @@ class Localizer {
 	 *
 	 * @return Localizer
 	 */
-	public static function getInstance() {
+	public static function getInstance(): Localizer {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}

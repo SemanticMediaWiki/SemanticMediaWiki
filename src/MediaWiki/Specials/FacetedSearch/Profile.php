@@ -21,25 +21,16 @@ class Profile {
 	 */
 	const SCHEMA_TYPE = 'FACETEDSEARCH_PROFILE_SCHEMA';
 
-	/**
-	 * @var Compartment
-	 */
-	private $profile;
+	private ?Compartment $profile = null;
 
 	/**
 	 * @var
 	 */
-	private $profileList = [];
+	private array $profileList = [];
 
-	/**
-	 * @var Compartment
-	 */
-	private $defaultProfile;
+	private ?Compartment $defaultProfile = null;
 
-	/**
-	 * @var string
-	 */
-	private $profileName = '';
+	private string|array $profileName = '';
 
 	/**
 	 * @since 3.2

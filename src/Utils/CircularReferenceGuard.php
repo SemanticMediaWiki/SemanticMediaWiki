@@ -10,15 +10,9 @@ namespace SMW\Utils;
  */
 class CircularReferenceGuard {
 
-	/**
-	 * @var array
-	 */
-	private static $circularRefGuard = [];
+	private static array $circularRefGuard = [];
 
-	/**
-	 * @var int
-	 */
-	private $maxRecursionDepth = 1;
+	private int $maxRecursionDepth = 1;
 
 	/**
 	 * @since 2.2

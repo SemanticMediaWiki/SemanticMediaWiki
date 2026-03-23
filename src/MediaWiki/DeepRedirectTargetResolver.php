@@ -16,10 +16,8 @@ class DeepRedirectTargetResolver {
 	/**
 	 * Track titles to prevent circular references caused by double redirects
 	 * on the same title
-	 *
-	 * @var array
 	 */
-	private $recursiveResolverTracker = [];
+	private array $recursiveResolverTracker = [];
 
 	/**
 	 * @since 2.1

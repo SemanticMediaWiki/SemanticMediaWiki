@@ -61,10 +61,7 @@ abstract class DataItem implements JsonUnserializable {
 	///  Data item ID for Error
 	const TYPE_ERROR = 12;
 
-	/**
-	 * @var Options
-	 */
-	private $options = null;
+	private ?Options $options = null;
 
 	/**
 	 * Convenience method that returns a constant that defines the concrete

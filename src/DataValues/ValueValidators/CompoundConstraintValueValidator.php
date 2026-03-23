@@ -23,17 +23,11 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 */
 	private $hasConstraintViolation = false;
 
-	/**
-	 * @var int
-	 */
-	private $time = 0;
-	private $count = 0;
+	private int $time = 0;
+	private int $count = 0;
 	private $contextPage = '';
 
-	/**
-	 * @var array
-	 */
-	private $constraintValueValidators = [];
+	private array $constraintValueValidators = [];
 
 	/**
 	 * @since 2.4

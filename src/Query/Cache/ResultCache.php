@@ -61,25 +61,16 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 */
 	const POOLCACHE_ID = 'queryresult.prefetcher';
 
-	/**
-	 * @var QueryEngine
-	 */
-	private $queryEngine;
+	private ?QueryEngine $queryEngine = null;
 
 	/**
 	 * @var int|bool
 	 */
 	private $nonEmbeddedCacheLifetime = false;
 
-	/**
-	 * @var bool
-	 */
-	private $enabledCache = true;
+	private bool $enabledCache = true;
 
-	/**
-	 * @var loggerInterface
-	 */
-	private $logger;
+	private ?LoggerInterface $logger = null;
 
 	/**
 	 * Keep a temp cache to hold on query results that aren't stored yet.

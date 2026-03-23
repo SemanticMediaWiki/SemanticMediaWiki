@@ -18,10 +18,7 @@ class AutoRecovery {
 
 	private string $site;
 
-	/**
-	 * @var bool
-	 */
-	private $enabled = false;
+	private bool $enabled = false;
 
 	/**
 	 * @var int

@@ -24,25 +24,16 @@ class Infolink {
 
 	const LINK_UPPER_LENGTH_RESTRICTION = 2000;
 
-	/**
-	 * @var array
-	 */
-	private $linkAttributes = [];
+	private array $linkAttributes = [];
 
 	/**
 	 * Array of parameters, format $name => $value, if any.
 	 */
 	protected array $mParams;
 
-	/**
-	 * @var bool
-	 */
-	private $isRestricted = false;
+	private bool $isRestricted = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isCompactLink = false;
+	private bool $isCompactLink = false;
 
 	/**
 	 * Create a new link to some internal page or to some external URL.

@@ -15,10 +15,7 @@ use SMW\DataModel\SemanticData;
  */
 class ReplicationDataTruncator {
 
-	/**
-	 * @var array
-	 */
-	private $propertyExemptionList = [];
+	private array $propertyExemptionList = [];
 
 	/**
 	 * @since 2.5

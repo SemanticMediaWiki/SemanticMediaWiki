@@ -12,10 +12,7 @@ use RuntimeException;
  */
 class ConnRef {
 
-	/**
-	 * @var array
-	 */
-	private $connections = [];
+	private array $connections = [];
 
 	/**
 	 * @since 3.0

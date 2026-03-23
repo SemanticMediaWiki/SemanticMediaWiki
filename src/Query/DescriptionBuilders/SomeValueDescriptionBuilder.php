@@ -19,10 +19,7 @@ use SMW\Query\Language\ValueDescription;
  */
 class SomeValueDescriptionBuilder extends DescriptionBuilder {
 
-	/**
-	 * @var DataValue
-	 */
-	private $dataValue;
+	private ?DataValue $dataValue = null;
 
 	/**
 	 * @since 2.3

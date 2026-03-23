@@ -12,10 +12,7 @@ namespace SMW\Utils;
  */
 class ErrorCodeFormatter {
 
-	/**
-	 * @var array
-	 */
-	private static $constants = [];
+	private static array $constants = [];
 
 	/**
 	 * @var array

@@ -35,12 +35,12 @@ class QueryToken {
 	/**
 	 * @var array
 	 */
-	private $minHighlightTokenLength = 4;
+	private int $minHighlightTokenLength = 4;
 
 	/**
 	 * @var array
 	 */
-	private $highlightType = 4;
+	private int $highlightType = 4;
 
 	/**
 	 * @var string

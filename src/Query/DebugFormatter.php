@@ -17,10 +17,7 @@ class DebugFormatter {
 
 	private string $format = '';
 
-	/**
-	 * @var string
-	 */
-	private $name = '';
+	private string $name = '';
 
 	/**
 	 * @since 3.0

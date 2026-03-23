@@ -25,17 +25,12 @@ use SMW\Store;
  */
 class HtmlBuilder {
 
-	/**
-	 * @var bool
-	 */
-	private $showoutgoing = true;
+	private bool $showoutgoing = true;
 
 	/**
 	 * To display incoming values?
-	 *
-	 * @var bool
 	 */
-	private $showincoming = false;
+	private bool $showincoming = false;
 
 	/**
 	 * At which incoming property are we currently?
@@ -60,15 +55,10 @@ class HtmlBuilder {
 
 	/**
 	 * How many incoming properties should be asked for
-	 *
-	 * @var int
 	 */
-	private $incomingPropertiesCount = 21;
+	private int $incomingPropertiesCount = 21;
 
-	/**
-	 * @var array
-	 */
-	private $extraModules = [];
+	private array $extraModules = [];
 
 	/**
 	 * @var array

@@ -27,10 +27,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class ConceptParserFunction {
 
-	/**
-	 * @var PostProcHandler
-	 */
-	private $postProcHandler;
+	private ?PostProcHandler $postProcHandler = null;
 
 	/**
 	 * @since 1.9

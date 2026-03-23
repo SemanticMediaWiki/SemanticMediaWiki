@@ -31,7 +31,7 @@ class SubSemanticData implements JsonUnserializable {
 	 * @since 2.5
 	 * @var SemanticData[]
 	 */
-	private $subSemanticData = [];
+	private array $subSemanticData = [];
 
 	/**
 	 * Maximum depth for an recursive sub data assignment
@@ -92,7 +92,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @since 2.5
 	 */
-	public function getSubSemanticData() {
+	public function getSubSemanticData(): array {
 		return $this->subSemanticData;
 	}
 

@@ -16,15 +16,9 @@ use SMW\Store;
  */
 class ChangePropagationExaminer extends DeclarationExaminer {
 
-	/**
-	 * @var bool
-	 */
-	private $isLocked = false;
+	private bool $isLocked = false;
 
-	/**
-	 * @var bool
-	 */
-	private $changePropagationProtection = true;
+	private bool $changePropagationProtection = true;
 
 	/**
 	 * @since 3.1
@@ -60,7 +54,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isLocked() {
+	public function isLocked(): bool {
 		return $this->isLocked;
 	}
 

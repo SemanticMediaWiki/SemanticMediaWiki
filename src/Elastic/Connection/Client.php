@@ -56,7 +56,7 @@ class Client {
 	/**
 	 * @var bool
 	 */
-	private static $hasIndex = [];
+	private static array $hasIndex = [];
 
 	/**
 	 * @since 3.0

@@ -25,10 +25,7 @@ class Settings extends Options {
 	use ChangeListenerAwareTrait;
 	use HookDispatcherAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	private $isLoaded = false;
+	private bool $isLoaded = false;
 
 	/**
 	 * Assemble individual SMW related settings into one accessible array for

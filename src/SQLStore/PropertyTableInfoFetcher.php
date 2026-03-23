@@ -32,22 +32,14 @@ class PropertyTableInfoFetcher {
 	 */
 	private $fixedPropertyTableIds = null;
 
-	/**
-	 * @var array
-	 */
-	private $customSpecialPropertyList = [];
+	private array $customSpecialPropertyList = [];
 
-	/**
-	 * @var array
-	 */
-	private $customFixedPropertyList = [];
+	private array $customFixedPropertyList = [];
 
 	/**
 	 * Default tables to use for storing data of certain types.
-	 *
-	 * @var array
 	 */
-	private static $defaultDiTypeTableIdMap = [
+	private static array $defaultDiTypeTableIdMap = [
 		DataItem::TYPE_NUMBER     => 'smw_di_number',
 		DataItem::TYPE_BLOB       => 'smw_di_blob',
 		DataItem::TYPE_BOOLEAN    => 'smw_di_bool',

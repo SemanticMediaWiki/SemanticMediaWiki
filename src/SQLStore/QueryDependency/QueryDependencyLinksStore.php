@@ -32,10 +32,7 @@ class QueryDependencyLinksStore {
 	 */
 	private $namespaceExaminer;
 
-	/**
-	 * @var bool
-	 */
-	private $isEnabled = true;
+	private bool $isEnabled = true;
 
 	/**
 	 * @var bool
@@ -47,10 +44,8 @@ class QueryDependencyLinksStore {
 	 * or not. The comparison is made against the page_touched timestamp to a
 	 * previous update to avoid unnecessary DB transactions if it takes place
 	 * within the computed time frame.
-	 *
-	 * @var int
 	 */
-	private $skewFactorForDependencyUpdateInSeconds = 10;
+	private int $skewFactorForDependencyUpdateInSeconds = 10;
 
 	/**
 	 * @since 2.3
@@ -89,7 +84,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->isEnabled;
 	}
 

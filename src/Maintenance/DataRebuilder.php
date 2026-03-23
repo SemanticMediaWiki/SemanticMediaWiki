@@ -32,20 +32,14 @@ class DataRebuilder {
 	const AUTO_RECOVERY_ID = 'ar_id';
 	const AUTO_RECOVERY_LAST_START = 'ar_last_start';
 
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
 	/**
 	 * @var MessageReporter
 	 */
 	private $reporter;
 
-	/**
-	 * @var AutoRecovery
-	 */
-	private $autoRecovery;
+	private ?AutoRecovery $autoRecovery = null;
 
 	private DistinctEntityDataRebuilder $distinctEntityDataRebuilder;
 
@@ -58,21 +52,18 @@ class DataRebuilder {
 	 */
 	private $rebuildCount = 0;
 
-	/**
-	 * @var int
-	 */
-	private $exceptionCount = 0;
+	private int $exceptionCount = 0;
 
 	private $delay = false;
-	private $canWriteToIdFile = false;
+	private bool $canWriteToIdFile = false;
 	private $start = 1;
 	private $end = false;
 
 	/**
 	 * @var int[]
 	 */
-	private $filters = [];
-	private $verbose = false;
+	private array $filters = [];
+	private bool $verbose = false;
 	private $startIdFile = false;
 	private Rebuilder $entityRebuildDispatcher;
 
@@ -220,7 +211,7 @@ class DataRebuilder {
 	 *
 	 * @return int
 	 */
-	public function getExceptionCount() {
+	public function getExceptionCount(): int {
 		return $this->exceptionCount;
 	}
 
@@ -609,7 +600,7 @@ class DataRebuilder {
 		}
 	}
 
-	private function reportMessage( $message, $output = true ): void {
+	private function reportMessage( $message, bool $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

@@ -22,10 +22,7 @@ use SMW\Property\SpecificationLookup;
  */
 class UnitConverter {
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @var array
@@ -61,7 +58,7 @@ class UnitConverter {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

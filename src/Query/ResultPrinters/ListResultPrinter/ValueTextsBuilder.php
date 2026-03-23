@@ -20,7 +20,7 @@ class ValueTextsBuilder {
 
 	use ParameterDictionaryUser;
 
-	private $linker;
+	private ?Linker $linker = null;
 
 	public function __construct( private PrefixParameterProcessor $prefixParameterProcessor ) {
 	}
@@ -83,7 +83,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return Linker|null
 	 */
-	private function getLinkerForColumn( $columnNumber ) {
+	private function getLinkerForColumn( $columnNumber ): ?Linker {
 		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) ||
 			( $columnNumber > 0 && $this->get( 'link-others' ) ) ) {
 			return $this->getLinker();
@@ -95,7 +95,7 @@ class ValueTextsBuilder {
 	/**
 	 * @return Linker
 	 */
-	protected function getLinker() {
+	protected function getLinker(): ?Linker {
 		return $this->linker;
 	}
 

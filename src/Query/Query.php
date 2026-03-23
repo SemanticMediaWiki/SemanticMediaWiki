@@ -82,7 +82,7 @@ class Query implements QueryContext {
 
 	private $limit;
 	private $offset = 0;
-	private $errors = []; // keep any errors that occurred so far
+	private array $errors = []; // keep any errors that occurred so far
 	private $queryString = false; // string (inline query) version (if fixed and known)
 	private bool $isInline; // query used inline? (required for finding right default parameters)
 	private bool $isUsedInConcept; // query used in concept? (required for finding right default parameters)
@@ -92,11 +92,7 @@ class Query implements QueryContext {
 	 */
 	private $m_extraprintouts = []; // SMWPrintoutRequest objects supplied outside querystring
 	private $m_mainlabel = ''; // Since 1.6
-
-	/**
-	 * @var WikiPage|null
-	 */
-	private $contextPage;
+	private ?WikiPage $contextPage = null;
 
 	/**
 	 * Describes a non-local (remote) query source
@@ -105,10 +101,7 @@ class Query implements QueryContext {
 	 */
 	private $querySource = null;
 
-	/**
-	 * @var QueryToken|null
-	 */
-	private $queryToken;
+	private ?QueryToken $queryToken = null;
 
 	/**
 	 * @var array
@@ -186,7 +179,7 @@ class Query implements QueryContext {
 	 *
 	 * @return WikiPage|null
 	 */
-	public function getContextPage() {
+	public function getContextPage(): ?WikiPage {
 		return $this->contextPage;
 	}
 
@@ -222,7 +215,7 @@ class Query implements QueryContext {
 	 *
 	 * @return QueryToken|null
 	 */
-	public function getQueryToken() {
+	public function getQueryToken(): ?QueryToken {
 		return $this->queryToken;
 	}
 
@@ -286,7 +279,7 @@ class Query implements QueryContext {
 		$this->errors = [];
 	}
 
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

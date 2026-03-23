@@ -15,10 +15,7 @@ use SMW\Query\QueryProcessor;
  */
 class FormatListWidget {
 
-	/**
-	 * @var array
-	 */
-	private static $resultFormats = [];
+	private static array $resultFormats = [];
 
 	/**
 	 * @since 3.0

@@ -25,10 +25,7 @@ class TableBuildExaminer {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var array
-	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 2.5

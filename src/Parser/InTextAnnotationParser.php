@@ -41,20 +41,14 @@ class InTextAnnotationParser {
 	const OFF = '[[SMW::off]]';
 	const ON = '[[SMW::on]]';
 
-	/**
-	 * @var AnnotationProcessor
-	 */
-	private $annotationProcessor;
+	private ?AnnotationProcessor $annotationProcessor = null;
 
 	/**
 	 * @var ApplicationFactory
 	 */
 	private $applicationFactory = null;
 
-	/**
-	 * @var StripMarkerDecoder
-	 */
-	private $stripMarkerDecoder;
+	private ?StripMarkerDecoder $stripMarkerDecoder = null;
 
 	/**
 	 * @var bool
@@ -74,10 +68,7 @@ class InTextAnnotationParser {
 	 */
 	private $isLinksInValues = false;
 
-	/**
-	 * @var bool
-	 */
-	private $showErrors = true;
+	private bool $showErrors = true;
 
 	/**
 	 * @since 1.9
