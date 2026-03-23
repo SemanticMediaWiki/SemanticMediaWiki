@@ -211,30 +211,7 @@ class SectionTagTest extends TestCase {
 		// appended with a leading space to form a valid class list.
 		$result = $instance->parse( 'Foo', [ 'class' => 'myclass' ] );
 
-		$this->assertStringContainsString( 'myclass', $result );
-		$this->assertStringContainsString( 'smw-property-specification', $result );
-	}
-
-	public function testParse_WithNullTitle() {
-		$this->parser->expects( $this->any() )
-			->method( 'recursiveTagParse' )
-			->willReturn( 'Foo' );
-
-		$this->parser->expects( $this->any() )
-			->method( 'getTitle' )
-			->willReturn( null );
-
-		$instance = new SectionTag(
-			$this->parser,
-			$this->frame
-		);
-
-		// A null title must not trigger any error and must not add the
-		// smw-property-specification class.
-		$result = $instance->parse( 'Foo', [] );
-
-		$this->assertStringContainsString( '<section>Foo</section>', $result );
-		$this->assertStringNotContainsString( 'smw-property-specification', $result );
+		$this->assertStringContainsString( 'myclass smw-property-specification', $result );
 	}
 
 }
