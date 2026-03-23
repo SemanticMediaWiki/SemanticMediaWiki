@@ -70,7 +70,7 @@ class SectionTag {
 		}
 
 		if ( $title !== null && $title->getNamespace() === SMW_NS_PROPERTY ) {
-			$attributes['class'] = ( isset( $attributes['class'] ) ? ' ' : '' ) . "smw-property-specification";
+			$attributes['class'] = ( isset( $attributes['class'] ) ? $attributes['class'] . ' ' : '' ) . "smw-property-specification";
 		}
 
 		return Html::rawElement(
