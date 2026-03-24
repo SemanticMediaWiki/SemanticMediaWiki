@@ -572,7 +572,7 @@ class Infolink {
 	 *
 	 * @return string
 	 */
-	public static function decodeCompactLink( $value ): string|false|null {
+	public static function decodeCompactLink( ?string $value ): string|false|null {
 		if ( !is_string( $value ) || substr( $value, 0, 3 ) !== 'cl:' ) {
 			return $value;
 		}

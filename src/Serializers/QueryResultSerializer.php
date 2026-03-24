@@ -73,7 +73,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @return mixed
 	 */
-	public static function getSerialization( DataItem $dataItem, $printRequest = null ): array {
+	public static function getSerialization( DataItem $dataItem, $printRequest = null ): array|string|int|float {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
 				// Support for a deserializable _rec type with 0.6
