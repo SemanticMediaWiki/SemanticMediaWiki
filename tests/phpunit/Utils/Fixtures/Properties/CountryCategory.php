@@ -4,8 +4,8 @@ namespace SMW\Tests\Utils\Fixtures\Properties;
 
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DataValues\DataValue;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later
