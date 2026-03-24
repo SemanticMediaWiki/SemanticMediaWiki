@@ -114,16 +114,6 @@ class ParserFunctionFactoryTest extends TestCase {
 	public function parserFunctionProvider() {
 		$provider[] = [
 			RecurringEventsParserFunction::class,
-			'getRecurringEventsParser'
-		];
-
-		$provider[] = [
-			SubobjectParserFunction::class,
-			'getSubobjectParser'
-		];
-
-		$provider[] = [
-			RecurringEventsParserFunction::class,
 			'newRecurringEventsParserFunction'
 		];
 

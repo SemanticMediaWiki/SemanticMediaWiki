@@ -80,13 +80,6 @@ function smwfHTMLtoUTF8( ?string $text ): string {
 }
 
 /**
- * @deprecated since 2.1, use NumberFormatter instead
- */
-function smwfNumberFormat( $value, $decplaces = 3 ) {
-	return IntlNumberFormatter::getInstance()->getLocalizedFormattedNumber( $value, $decplaces );
-}
-
-/**
  * @since 3.0
  *
  * @param string $text

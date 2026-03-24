@@ -79,9 +79,6 @@ class SQLStoreUpdater {
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ): Status {
-		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
-		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
-
 		$this->hookContainer->run( 'SMW::SQLStore::BeforeDeleteSubjectComplete', [ $this->store, $title ] );
 
 		// Fetch all possible matches (including any duplicates created by
@@ -126,9 +123,6 @@ class SQLStoreUpdater {
 				'delete_list' => array_keys( $deleteList )
 			]
 		);
-
-		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
-		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectAfter', [ $this->store, $title ] );
 
 		$this->hookContainer->run( 'SMW::SQLStore::AfterDeleteSubjectComplete', [ $this->store, $title ] );
 
