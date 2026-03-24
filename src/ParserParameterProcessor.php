@@ -62,13 +62,6 @@ class ParserParameterProcessor {
 	}
 
 	/**
-	 * @deprecated since 2.3, use ParserParameterProcessor::getFirstParameter
-	 */
-	public function getFirst() {
-		return $this->getFirstParameter();
-	}
-
-	/**
 	 * @since 2.3
 	 *
 	 * @return string

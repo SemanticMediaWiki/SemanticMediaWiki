@@ -167,9 +167,9 @@ class SubobjectParserFunction {
 		// reserved to be used by extensions only in order to separate them from
 		// user land and avoid having them accidentally to refer to the same
 		// named ID (i.e. different access restrictions etc.)
-		if ( strpos( mb_substr( $parserParameterProcessor->getFirst() ?? '', 0, 5 ), '.' ) !== false ) {
+		if ( strpos( mb_substr( $parserParameterProcessor->getFirstParameter() ?? '', 0, 5 ), '.' ) !== false ) {
 			return $this->parserData->addError(
-				Message::encode( [ 'smw-subobject-parser-invalid-naming-scheme', $parserParameterProcessor->getFirst() ] )
+				Message::encode( [ 'smw-subobject-parser-invalid-naming-scheme', $parserParameterProcessor->getFirstParameter() ] )
 			);
 		}
 
@@ -220,7 +220,7 @@ class SubobjectParserFunction {
 	}
 
 	private function getParameters( ParserParameterProcessor $parserParameterProcessor ): array {
-		$id = $parserParameterProcessor->getFirst();
+		$id = $parserParameterProcessor->getFirstParameter();
 		$isAnonymous = in_array( $id, [ null, '', '-' ] );
 
 		$useFirst = $this->useFirstElementAsPropertyLabel && !$isAnonymous;
@@ -260,7 +260,7 @@ class SubobjectParserFunction {
 
 		if ( $useFirst ) {
 			$parserParameterProcessor->addParameter(
-				$parserParameterProcessor->getFirst(),
+				$parserParameterProcessor->getFirstParameter(),
 				$this->parserData->getTitle()->getPrefixedText()
 			);
 		}

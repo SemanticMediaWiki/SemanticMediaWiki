@@ -23,7 +23,6 @@ use SMW\Localizer\Message;
 use SMW\Options;
 use SMW\ProcessingError;
 use SMW\Query\Language\Description;
-use SMW\Query\QueryComparator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;
 
@@ -525,19 +524,6 @@ abstract class DataValue {
 		}
 
 		return $description;
-	}
-
-	/**
-	 * @deprecated since 2.3
-	 *
-	 * @see DescriptionBuilder::prepareValue
-	 *
-	 * This method should no longer be used for direct public access, instead a
-	 * DataValue is expected to register a DescriptionBuilder with
-	 * DVDescriptionDeserializerRegistry.
-	 */
-	public static function prepareValue( &$value, &$comparator ): void {
-		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 	}
 
 ///// Get methods /////
