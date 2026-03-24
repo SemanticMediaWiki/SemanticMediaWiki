@@ -36,7 +36,7 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->canCreateAnnotation = (bool)$canCreateAnnotation;
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( !$this->canCreateAnnotation || !$this->displayTitle || $this->displayTitle === '' ) {
 			return;
 		}

@@ -158,7 +158,7 @@ class PropertyTableDefinitionBuilder {
 	 * @param $tableName
 	 * @param $fixedProperty
 	 */
-	protected function addPropertyTable( $diType, $tableName, $fixedProperty = false, string $tableType = '' ) {
+	protected function addPropertyTable( $diType, $tableName, $fixedProperty = false, string $tableType = '' ): void {
 		$this->propertyTables[$tableName] = $this->newTableDefinition( $diType, $tableName, $fixedProperty );
 		$this->propertyTables[$tableName]->setTableType( $tableType );
 	}

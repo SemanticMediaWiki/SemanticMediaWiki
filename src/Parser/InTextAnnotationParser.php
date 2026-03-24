@@ -253,7 +253,7 @@ class InTextAnnotationParser {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 
-	protected function addRedirectTargetAnnotationFromText( $text ) {
+	protected function addRedirectTargetAnnotationFromText( $text ): void {
 		if ( !$this->isEnabledNamespace ) {
 			return;
 		}

@@ -82,9 +82,9 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->editProtectionRight === false ) {
-			return false;
+			return;
 		}
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );

@@ -171,7 +171,7 @@ class NumberValue extends DataValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		// Set caption
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
@@ -469,7 +469,7 @@ class NumberValue extends DataValue {
 	 *
 	 * Overwritten by subclasses that support units.
 	 */
-	protected function makeConversionValues() {
+	protected function makeConversionValues(): void {
 		$this->m_unitvalues = [ '' => $this->m_dataitem->getNumber() ];
 	}
 
@@ -482,7 +482,7 @@ class NumberValue extends DataValue {
 	 *
 	 * Overwritten by subclasses that support units.
 	 */
-	protected function makeUserValue() {
+	protected function makeUserValue(): void {
 		$this->m_caption = '';
 
 		$number = $this->m_dataitem->getNumber();

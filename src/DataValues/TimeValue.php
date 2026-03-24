@@ -146,7 +146,7 @@ class TimeValue extends DataValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = Localizer::convertDoubleWidth( $value );
 
 		$this->m_wikivalue = $value;

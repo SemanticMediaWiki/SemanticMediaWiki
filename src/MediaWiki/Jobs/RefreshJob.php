@@ -110,7 +110,7 @@ class RefreshJob extends Job {
 		return true;
 	}
 
-	protected function createNextJob( array $parameters ) {
+	protected function createNextJob( array $parameters ): void {
 		$job = new self(
 			$this->getTitle(),
 			$parameters

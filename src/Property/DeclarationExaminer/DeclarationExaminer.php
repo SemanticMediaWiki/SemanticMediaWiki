@@ -79,6 +79,6 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	/**
 	 * @since 3.1
 	 */
-	abstract protected function validate( Property $property );
+	abstract protected function validate( Property $property ): void;
 
 }

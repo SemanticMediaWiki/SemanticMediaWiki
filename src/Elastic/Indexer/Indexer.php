@@ -204,11 +204,12 @@ class Indexer {
 	 * @param WikiPage $dataItem
 	 * @param array $data
 	 */
-	public function create( WikiPage $dataItem, array $data = [] ) {
+	public function create( WikiPage $dataItem, array $data = [] ): void {
 		$title = $dataItem->getTitle();
 
 		if ( !$this->canReplicate() ) {
-			return IndexerRecoveryJob::pushFromParams( $title, [ 'create' => $dataItem->getHash() ] );
+			IndexerRecoveryJob::pushFromParams( $title, [ 'create' => $dataItem->getHash() ] );
+			return;
 		}
 
 		if ( $dataItem->getId() == 0 ) {
@@ -283,13 +284,14 @@ class Indexer {
 	 * @param Document $document
 	 * @param string $type
 	 */
-	public function indexDocument( Document $document, $type = self::REQUIRE_SAFE_REPLICATION ) {
+	public function indexDocument( Document $document, $type = self::REQUIRE_SAFE_REPLICATION ): void {
 		Timer::start( __METHOD__ );
 
 		$subject = $document->getSubject();
 
 		if ( $type === self::REQUIRE_SAFE_REPLICATION && !$this->canReplicate() ) {
-			return IndexerRecoveryJob::pushFromDocument( $document );
+			IndexerRecoveryJob::pushFromDocument( $document );
+			return;
 		}
 
 		$params = [

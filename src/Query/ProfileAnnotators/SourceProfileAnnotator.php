@@ -27,7 +27,7 @@ class SourceProfileAnnotator extends ProfileAnnotatorDecorator {
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->querySource !== '' ) {
 			$this->addQuerySource( $this->querySource );
 		}

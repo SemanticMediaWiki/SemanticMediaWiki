@@ -37,7 +37,7 @@ class ConceptValue extends DataValue {
 		return true;
 	}
 
-	protected function clear() {
+	protected function clear(): void {
 		$this->m_dataitem = new Concept( '', '', 0, -1, -1, $this->m_typeid );
 	}
 

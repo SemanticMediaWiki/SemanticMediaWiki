@@ -35,7 +35,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( Property $property ) {
+	protected function validate( Property $property ): void {
 		if ( !$property->isUserDefined() ) {
 			return;
 		}

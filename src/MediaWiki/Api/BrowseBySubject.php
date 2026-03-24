@@ -120,7 +120,7 @@ class BrowseBySubject extends ApiBase {
 		return $serialized;
 	}
 
-	protected function addIndexTags( array|string &$serialized ) {
+	protected function addIndexTags( array|string &$serialized ): void {
 		if ( isset( $serialized['data'] ) && is_array( $serialized['data'] ) ) {
 
 			$this->getResult()->setIndexedTagName( $serialized['data'], 'property' );

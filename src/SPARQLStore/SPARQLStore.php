@@ -240,7 +240,7 @@ class SPARQLStore extends Store {
 	 * @see Store::doDataUpdate()
 	 * @since 1.6
 	 */
-	protected function doDataUpdate( SemanticData $semanticData ) {
+	protected function doDataUpdate( SemanticData $semanticData ): void {
 		$this->baseStore->doDataUpdate( $semanticData );
 		$this->doSparqlDataUpdate( $semanticData );
 	}

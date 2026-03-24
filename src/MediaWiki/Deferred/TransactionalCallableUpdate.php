@@ -175,17 +175,18 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		}
 	}
 
-	protected function registerUpdate( $update ) {
+	protected function registerUpdate( $update ): void {
 		if ( $this->onTransactionIdle ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Added: {origin} (onTransactionIdle)' ],
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
 			);
 
-			return $this->connection->onTransactionCommitOrIdle( function () use( $update ): void {
+			$this->connection->onTransactionCommitOrIdle( function () use( $update ): void {
 				$update->onTransactionIdle = false;
 				parent::registerUpdate( $update );
 			} );
+			return;
 		}
 
 		parent::registerUpdate( $update );
@@ -231,7 +232,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		}
 	}
 
-	protected function emptyCancelCallback() {
+	protected function emptyCancelCallback(): void {
 		$this->logger->info(
 			[ 'DeferrableUpdate', 'cancelOnRollback' ],
 			[ 'role' => 'developer', 'method' => __METHOD__ ]

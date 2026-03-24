@@ -35,7 +35,7 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->predefinedPropertyList = array_flip( $predefinedPropertyList );
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		// Expected identifiers, @see https://gerrit.wikimedia.org/r/387548
 		if ( !is_array( $this->translation ) || !isset( $this->predefinedPropertyList['_TRANS'] ) ) {
 			return;

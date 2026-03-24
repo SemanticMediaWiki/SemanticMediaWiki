@@ -81,7 +81,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeHeader() {
+	protected function serializeHeader(): void {
 		$exporter = Exporter::getInstance();
 
 		if ( $this->sparqlmode ) {
@@ -133,7 +133,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeFooter() {
+	protected function serializeFooter(): void {
 		if ( !$this->sparqlmode ) {
 			$this->post_ns_buffer .= "\n# Created by Semantic MediaWiki, https://www.semantic-mediawiki.org/\n";
 		}
@@ -162,7 +162,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeNamespace( $shortname, $uri ) {
+	protected function serializeNamespace( $shortname, $uri ): void {
 		$this->global_namespaces[$shortname] = true;
 		if ( $this->sparqlmode ) {
 			$this->sparql_namespaces[$shortname] = $uri;
@@ -178,7 +178,7 @@ class TurtleSerializer extends Serializer {
 	 * @param $data ExpData containing the data to be serialised.
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeNestedExpData( ExpData $data, string $indent ) {
+	protected function serializeNestedExpData( ExpData $data, string $indent ): void {
 		if ( count( $data->getProperties() ) == 0 ) {
 			return; // nothing to export
 		}
@@ -277,11 +277,11 @@ class TurtleSerializer extends Serializer {
 		$this->post_ns_buffer .= ( $bnode ? " ]" : " ." ) . ( $indent === '' ? "\n\n" : '' );
 	}
 
-	protected function serializeExpLiteral( ExpLiteral $element ) {
+	protected function serializeExpLiteral( ExpLiteral $element ): void {
 		$this->post_ns_buffer .= self::getTurtleNameForExpElement( $element );
 	}
 
-	protected function serializeExpResource( ExpResource $element ) {
+	protected function serializeExpResource( ExpResource $element ): void {
 		if ( $element instanceof ExpNsResource ) {
 			$this->requireNamespace( $element->getNamespaceID(), $element->getNamespace() );
 		}

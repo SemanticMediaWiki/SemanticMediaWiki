@@ -47,7 +47,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraint, $dataValue ) {
+	public function checkConstraint( array $constraint, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -57,7 +57,8 @@ class MandatoryPropertiesConstraint implements Constraint {
 		$key = key( $constraint );
 
 		if ( $key === self::CONSTRAINT_KEY ) {
-			return $this->check( $constraint[$key], $dataValue );
+			$this->check( $constraint[$key], $dataValue );
+			return;
 		}
 	}
 

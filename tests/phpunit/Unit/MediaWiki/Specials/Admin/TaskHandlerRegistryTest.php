@@ -157,8 +157,7 @@ class TaskHandlerRegistryTest extends TestCase {
 				return '';
 			}
 
-			public function handleRequest( WebRequest $webRequest ) {
-				return '';
+			public function handleRequest( WebRequest $webRequest ): void {
 			}
 		};
 	}

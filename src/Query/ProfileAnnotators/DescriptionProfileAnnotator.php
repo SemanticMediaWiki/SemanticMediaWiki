@@ -29,7 +29,7 @@ class DescriptionProfileAnnotator extends ProfileAnnotatorDecorator {
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		$this->addQueryString( $this->description->getQueryString() );
 		$this->addQuerySize( $this->description->getSize() );
 		$this->addQueryDepth( $this->description->getDepth() );

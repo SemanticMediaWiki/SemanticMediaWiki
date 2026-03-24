@@ -46,7 +46,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::makeConversionValues
 	 */
-	protected function makeConversionValues() {
+	protected function makeConversionValues(): void {
 		if ( $this->m_unitvalues !== false ) {
 			return; // do this only once
 		}
@@ -54,7 +54,7 @@ class TemperatureValue extends NumberValue {
 		$this->m_unitvalues = [];
 
 		if ( !$this->isValid() ) {
-			return $this->m_unitvalues;
+			return;
 		}
 
 		$displayUnit = $this->getPreferredDisplayUnit();
@@ -77,7 +77,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::makeUserValue
 	 */
-	protected function makeUserValue() {
+	protected function makeUserValue(): void {
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
 			 ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$printUnit = $this->normalizeUnit( $this->m_outformat );

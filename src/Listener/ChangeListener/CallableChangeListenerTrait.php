@@ -71,7 +71,7 @@ trait CallableChangeListenerTrait {
 		$this->triggerByKey( $key, $changeRecord );
 	}
 
-	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {
+	protected function triggerByKey( string $key, ChangeRecord $changeRecord ): void {
 		foreach ( $this->changeListeners[$key] as $changeListener ) {
 
 			if ( !is_callable( $changeListener ) ) {

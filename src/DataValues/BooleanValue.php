@@ -43,7 +43,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = trim( $value );
 
 		if ( $this->m_caption === false ) {

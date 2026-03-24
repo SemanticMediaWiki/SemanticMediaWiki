@@ -33,7 +33,7 @@ class ConstraintSchemaValue extends WikiPageValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		parent::parseUserValue( $value );
 
 		$dataItem = $this->getDataItem();

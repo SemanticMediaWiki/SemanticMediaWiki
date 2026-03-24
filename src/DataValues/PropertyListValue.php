@@ -25,7 +25,7 @@ class PropertyListValue extends DataValue {
 	 */
 	protected $m_diProperties;
 
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$this->m_diProperties = [];
 		$stringValue = '';
 		$localizer = Localizer::getInstance();

@@ -57,7 +57,7 @@ class QuantityValue extends NumberValue {
 		}
 	}
 
-	protected function makeConversionValues() {
+	protected function makeConversionValues(): void {
 		if ( $this->m_unitvalues !== false ) {
 			return; // do this only once
 		}
@@ -87,7 +87,7 @@ class QuantityValue extends NumberValue {
 		}
 	}
 
-	protected function makeUserValue() {
+	protected function makeUserValue(): void {
 		 // The normalised string of a known unit to use for printouts
 		$printunit = false;
 		$unitfactor = 1;
@@ -162,7 +162,7 @@ class QuantityValue extends NumberValue {
 	/**
 	 * This method initializes $m_unitfactors, $m_unitids, and $m_mainunit.
 	 */
-	protected function initConversionData() {
+	protected function initConversionData(): void {
 		if ( $this->m_unitids !== false ) {
 			return;
 		}
@@ -182,7 +182,7 @@ class QuantityValue extends NumberValue {
 	/**
 	 * This method initializes $m_displayunits.
 	 */
-	protected function initDisplayData() {
+	protected function initDisplayData(): void {
 		if ( $this->m_displayunits !== false ) {
 			return; // do the below only once
 		}

@@ -128,7 +128,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function create( Table $table ) {
+	public function create( Table $table ): void {
 		$attributes = $table->getAttributes();
 		$tableName = $table->getName();
 
@@ -145,7 +145,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		$this->reportMessage( "   ... done.\n" );
 
 		if ( !isset( $attributes['indices'] ) ) {
-			return $this->reportMessage( "No index structures for table $tableName ...\n" );
+			$this->reportMessage( "No index structures for table $tableName ...\n" );
+			return;
 		}
 
 		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
@@ -222,29 +223,29 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @param string $tableName
 	 * @param array $tableOptions
 	 */
-	abstract protected function doCreateTable( $tableName, array $tableOptions );
+	abstract protected function doCreateTable( $tableName, array $tableOptions ): void;
 
 	/**
 	 * @param string $tableName
 	 * @param array $tableOptions
 	 */
-	abstract protected function doUpdateTable( $tableName, array $tableOptions );
+	abstract protected function doUpdateTable( $tableName, array $tableOptions ): void;
 
 	/**
 	 * @param string $tableName
 	 * @param array $indexOptions
 	 */
-	abstract protected function doCreateIndices( $tableName, array $indexOptions );
+	abstract protected function doCreateIndices( $tableName, array $indexOptions ): void;
 
 	/**
 	 * @param string $tableName
 	 */
-	abstract protected function doDropTable( $tableName );
+	abstract protected function doDropTable( $tableName ): void;
 
 	/**
 	 * @param string $tableName
 	 */
-	abstract protected function doOptimize( $tableName );
+	abstract protected function doOptimize( $tableName ): void;
 
 	// #1978
 	// http://php.net/manual/en/function.array-search.php

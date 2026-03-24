@@ -36,7 +36,7 @@ class NullJob extends Job {
 	 *
 	 * @since  2.5
 	 */
-	public function insert() {
+	public function insert(): void {
 	}
 
 }

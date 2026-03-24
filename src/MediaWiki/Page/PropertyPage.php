@@ -63,7 +63,7 @@ class PropertyPage extends Page {
 	/**
 	 * @see Page::initParameters()
 	 */
-	protected function initParameters() {
+	protected function initParameters(): void {
 		// We use a smaller limit here; property pages might become large
 		$this->limit = $this->getOption( 'pagingLimit' );
 		$this->property = Property::newFromUserLabel( $this->getTitle()->getText() );

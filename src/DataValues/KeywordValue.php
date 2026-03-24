@@ -40,7 +40,7 @@ class KeywordValue extends StringValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		// For the normal blob field setup multi-byte requires more space and
 		// since we use the o_hash field to store the normalized content and
 		// as match field, ensure to have enough space to actually store

@@ -476,7 +476,7 @@ class PropertyRegistry {
 	 * cannot be entered by or displayed to users, whatever their "show" value
 	 * below.
 	 */
-	protected function initProperties( array $propertyList ) {
+	protected function initProperties( array $propertyList ): void {
 		$this->propertyList = $propertyList;
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

@@ -106,7 +106,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$action = $webRequest->getText( 'action' );
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
@@ -119,7 +119,8 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 				$taskHandler->setStore( $this->getStore() );
 			}
 
-			return $taskHandler->handleRequest( $webRequest );
+			$taskHandler->handleRequest( $webRequest );
+			return;
 		}
 	}
 

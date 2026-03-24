@@ -443,7 +443,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param array $params
 	 * @param $outputMode
 	 */
-	protected function handleParameters( array $params, $outputMode ) {
+	protected function handleParameters( array $params, $outputMode ): void {
 		// No-op
 	}
 
@@ -452,7 +452,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @since 1.8
 	 */
-	protected function postProcessParameters() {
+	protected function postProcessParameters(): void {
 		$params = $this->params;
 
 		$this->mIntro = isset( $params['intro'] ) ? str_replace( '_', ' ', $params['intro'] ) : '';
@@ -660,7 +660,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param string $errorMessage
 	 */
-	protected function addError( $errorMessage ) {
+	protected function addError( $errorMessage ): void {
 		$this->mErrors[] = $errorMessage;
 	}
 

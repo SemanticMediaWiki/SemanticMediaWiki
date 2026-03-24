@@ -72,7 +72,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $attributes ) {
+	protected function doCreateTable( $tableName, array $attributes ): void {
 		$mode = '';
 		$option = '';
 
@@ -119,7 +119,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $attributes ) {
+	protected function doUpdateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -259,7 +259,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, array $indexOptions ) {
+	protected function doCreateIndices( $tableName, array $indexOptions ): void {
 		$indices = $indexOptions['indices'];
 		$ix = [];
 
@@ -358,7 +358,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doDropTable( $tableName ) {
+	protected function doDropTable( $tableName ): void {
 		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
@@ -367,7 +367,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doOptimize( $tableName ) {
+	protected function doOptimize( $tableName ): void {
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		// https://sqlite.org/lang_analyze.html
