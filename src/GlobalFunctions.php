@@ -53,13 +53,6 @@ function smwfNormalTitleDBKey( $text ): string {
 }
 
 /**
- * @deprecated since 3.2, use `Localizer::normalizeTitleText`
- */
-function smwfNormalTitleText( string $text ): string {
-	return Localizer::getInstance()->normalizeTitleText( $text );
-}
-
-/**
  * Escapes text in a way that allows it to be used as XML content (e.g. as a
  * string value for some property).
  *
