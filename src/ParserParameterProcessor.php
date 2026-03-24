@@ -113,16 +113,6 @@ class ParserParameterProcessor {
 	}
 
 	/**
-	 * @deprecated since 2.5, use ParserParameterProcessor::getParameterValuesByKey
-	 * @since 2.3
-	 *
-	 * @return array
-	 */
-	public function getParameterValuesFor( $key ) {
-		return $this->getParameterValuesByKey( $key );
-	}
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param string $key

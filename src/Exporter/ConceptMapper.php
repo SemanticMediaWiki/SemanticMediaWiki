@@ -64,7 +64,7 @@ class ConceptMapper implements DataItemMapper {
 			return null;
 		}
 
-		$description = ApplicationFactory::getInstance()->newQueryParser()->getQueryDescription(
+		$description = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()->getQueryDescription(
 			$dataValue->getWikiValue()
 		);
 

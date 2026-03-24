@@ -87,7 +87,7 @@ class PropertyTableInfoFetcher {
 	 */
 	public function findTableIdForDataTypeTypeId( $dataTypeTypeId ) {
 		return $this->findTableIdForDataItemTypeId(
-			DataTypeRegistry::getInstance()->getDataItemId( $dataTypeTypeId )
+			DataTypeRegistry::getInstance()->getDataItemByType( $dataTypeTypeId )
 		);
 	}
 

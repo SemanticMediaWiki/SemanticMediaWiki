@@ -152,13 +152,6 @@ class DataTypeRegistry {
 	}
 
 	/**
-	 * @deprecated since 2.5, use DataTypeRegistry::getDataItemByType
-	 */
-	public function getDataItemId( $typeId ) {
-		return $this->getDataItemByType( $typeId );
-	}
-
-	/**
 	 * Get the preferred data item ID for a given type. The ID defines the
 	 * appropriate data item class for processing data of this type. See
 	 * DataItem for possible values.
@@ -415,13 +408,6 @@ class DataTypeRegistry {
 	 */
 	public function getKnownTypeAliases() {
 		return $this->typeAliases;
-	}
-
-	/**
-	 * @deprecated since 2.5, use DataTypeRegistry::getDefaultDataItemByType
-	 */
-	public function getDefaultDataItemTypeId( $diType ) {
-		return $this->getDefaultDataItemByType( $diType );
 	}
 
 	/**

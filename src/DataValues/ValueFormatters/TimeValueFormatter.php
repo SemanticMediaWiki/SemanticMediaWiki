@@ -352,7 +352,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			$outputFormat = str_replace( '#TZ', '', $outputFormat );
 		}
 
-		if ( ( $language = Localizer::getInstance()->getLanguageCodeFrom( $outputFormat ) ) === false ) {
+		if ( ( $language = Localizer::getInstance()->getAnnotatedLanguageCodeFrom( $outputFormat ) ) === false ) {
 			$language = $this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE );
 		}
 

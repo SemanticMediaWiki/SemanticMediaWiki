@@ -44,7 +44,6 @@ use SMW\PostProcHandler;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
-use SMW\Query\Parser\LegacyParser;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\SerializerFactory;
@@ -573,18 +572,6 @@ class ServicesFactory {
 		);
 
 		return $deferredTransactionalUpdate;
-	}
-
-	/**
-	 * @deprecated since 2.5, use QueryFactory::newQueryParser
-	 * @since 2.1
-	 *
-	 * @param int|bool $queryFeatures
-	 *
-	 * @return LegacyParser
-	 */
-	public function newQueryParser( $queryFeatures = false ): LegacyParser {
-		return $this->getQueryFactory()->newQueryParser( $queryFeatures );
 	}
 
 	/**

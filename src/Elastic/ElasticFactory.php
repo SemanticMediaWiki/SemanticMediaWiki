@@ -474,7 +474,7 @@ class ElasticFactory {
 	public function newConceptDescriptionInterpreter( ConditionBuilder $containerBuilder ): ConceptDescriptionInterpreter {
 		return new ConceptDescriptionInterpreter(
 			$containerBuilder,
-			ApplicationFactory::getInstance()->newQueryParser()
+			ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()
 		);
 	}
 
