@@ -5,6 +5,8 @@ namespace SMW\Tests\Unit\MediaWiki\Search;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 use ReflectionProperty;
+use SearchSuggestionSet;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Search\ExtendedSearch;
 use SMW\MediaWiki\Search\QueryBuilder;
 use SMW\MediaWiki\Search\SearchResultSet;
@@ -144,11 +146,11 @@ class ExtendedSearchTest extends TestCase {
 	public function testSearchText_withSemanticQuery() {
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
-		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
+		$infoLink = $this->getMockBuilder( Infolink::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -232,11 +234,11 @@ class ExtendedSearchTest extends TestCase {
 	}
 
 	public function testCompletionSearch_OnEligiblePrefix() {
-		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
+		$infoLink = $this->getMockBuilder( Infolink::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -292,7 +294,7 @@ class ExtendedSearchTest extends TestCase {
 		);
 
 		$this->assertInstanceof(
-			'\SearchSuggestionSet',
+			SearchSuggestionSet::class,
 			$instance->completionSearch( 'in:Foo' )
 		);
 
@@ -304,7 +306,7 @@ class ExtendedSearchTest extends TestCase {
 	}
 
 	public function testCompletionSearch_NoRelevantPrefix() {
-		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
+		$searchSuggestionSet = $this->getMockBuilder( SearchSuggestionSet::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -326,7 +328,7 @@ class ExtendedSearchTest extends TestCase {
 		);
 
 		$this->assertInstanceof(
-			'\SearchSuggestionSet',
+			SearchSuggestionSet::class,
 			$instance->completionSearch( 'Foo' )
 		);
 	}

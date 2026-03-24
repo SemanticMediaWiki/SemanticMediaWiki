@@ -14,6 +14,7 @@ use SMW\DataValues\NumberValue;
 use SMW\Formatters\Infolink;
 use SMW\Property\SpecificationLookup;
 use SMW\Query\PrintRequestFactory;
+use SMW\Query\Query;
 use SMW\Serializers\QueryResultSerializer;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
@@ -165,7 +166,7 @@ class QueryResultSerializerTest extends TestCase {
 	}
 
 	public function testQueryResultSerializerOnMockOnWikiPageNonTitle() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -218,7 +219,7 @@ class QueryResultSerializerTest extends TestCase {
 	 * @return QueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

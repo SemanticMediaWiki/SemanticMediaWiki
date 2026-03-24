@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\Query;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Formatters\Infolink;
 use SMW\Query\Query;
 use SMW\Query\QueryLinker;
 
@@ -43,7 +44,7 @@ class QueryLinkerTest extends TestCase {
 		];
 
 		$this->assertInstanceOf(
-			'SMWInfolink',
+			Infolink::class,
 			QueryLinker::get( $query, $parameters )
 		);
 	}
@@ -52,7 +53,7 @@ class QueryLinkerTest extends TestCase {
 	 * @dataProvider sortOrderProvider
 	 */
 	public function testSort_PredefinedProperty( $sortKeys, $expected ) {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

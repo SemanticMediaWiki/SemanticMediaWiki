@@ -188,12 +188,12 @@ In general, do not create methods longer then 70 lines, unless they are very sim
 
 If you have data that requires JavaScript (e.g plotting a chart etc.) do not create a string with JavaScript in which you insert PHP variables, and create an inline JS output. Inline JS with logic is prohibited, instead just construct a data object (i.e. JSON) which you then is interpret with JS in a separate file. This way the page will load faster and the code will cleaner.
 
-A simple way to get all your data from PHP to JS is to create one big PHP object (arrays and associative arrays) that holds the values and turn it into JSON using `json_encode`. This function takes care of all escaping for you after which you need to use the `SMWOutputs` class to ensure your code works both in articles (when the result printers is used for inline ask queries), and on special pages, such as `Special:Ask` and `Special:Browse`. The method needed for adding your JS is SMWOutputs::requireHeadItem, which takes an ID and your actual JS.
+A simple way to get all your data from PHP to JS is to create one big PHP object (arrays and associative arrays) that holds the values and turn it into JSON using `json_encode`. This function takes care of all escaping for you after which you need to use the `Outputs` class to ensure your code works both in articles (when the result printers is used for inline ask queries), and on special pages, such as `Special:Ask` and `Special:Browse`. The method needed for adding your JS is \SMW\MediaWiki\Outputs::requireHeadItem, which takes an ID and your actual JS.
 
 <pre>
 	$requireHeadItem = [ $id => json_encode( $data ) ];
 
-	\SMWOutputs::requireHeadItem(
+	\SMW\MediaWiki\Outputs::requireHeadItem(
 		// Unique id
 		$id,
 		\Skin::makeVariablesScript( $requireHeadItem )

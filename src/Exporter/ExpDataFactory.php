@@ -109,7 +109,7 @@ class ExpDataFactory {
 	}
 
 	/**
-	 * Create an SMWExpData container that encodes the ontology header for an
+	 * Create an ExpData container that encodes the ontology header for an
 	 * SMW exported OWL file.
 	 *
 	 * @param string $ontologyuri specifying the URI of the ontology, possibly

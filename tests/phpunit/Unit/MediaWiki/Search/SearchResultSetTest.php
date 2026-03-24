@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Search\SearchResultSet;
 use SMW\Query\Excerpts;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\QueryToken;
 
@@ -36,7 +37,7 @@ class SearchResultSetTest extends TestCase {
 			->method( 'getTokens' )
 			->willReturn( [] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -145,7 +146,7 @@ class SearchResultSetTest extends TestCase {
 			->method( 'getTokens' )
 			->willReturn( [ 'Foo' => 1, 'Bar' => 2 ] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -203,7 +204,7 @@ class SearchResultSetTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -272,7 +273,7 @@ class SearchResultSetTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

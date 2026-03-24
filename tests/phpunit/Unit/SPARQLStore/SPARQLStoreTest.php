@@ -12,6 +12,7 @@ use SMW\DataModel\Subobject;
 use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
+use SMW\Query\Query;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\RepositoryClient;
@@ -288,7 +289,7 @@ class SPARQLStoreTest extends TestCase {
 			->method( 'getPrintrequests' )
 			->willReturn( [] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -336,7 +337,7 @@ class SPARQLStoreTest extends TestCase {
 	}
 
 	public function testGetQueryResultOnDisabledQueryEndpoint() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -20,6 +20,7 @@ use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -126,7 +127,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 	 * @dataProvider storeClassProvider
 	 */
 	public function testUnregisteredQueryResultHook( $storeClass ) {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -144,7 +145,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 	 * @dataProvider storeClassProvider
 	 */
 	public function testRegisteredStoreBeforeQueryResultLookupCompleteHookToPreFetchQueryResult( $storeClass ) {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -170,7 +171,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 	 * @dataProvider storeClassProvider
 	 */
 	public function testRegisteredStoreBeforeQueryResultLookupCompleteHookToSuppressDefaultQueryResultFetch( $storeClass ) {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -202,7 +203,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

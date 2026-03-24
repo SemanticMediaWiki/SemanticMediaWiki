@@ -3,7 +3,9 @@
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
 use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,10 +25,10 @@ class CityCategory extends FixtureProperty {
 	/**
 	 * @since 2.1
 	 *
-	 * @return WiKiPage
+	 * @return WikiPage
 	 */
 	public function asSubject() {
-		return new WiKiPage( 'City', NS_CATEGORY );
+		return new WikiPage( 'City', NS_CATEGORY );
 	}
 
 	/**

@@ -72,7 +72,7 @@
 
 	/**
 	 * A class that includes methods to create a wikiPage dataItem representation
-	 * in JavaScript that resembles the SMW\Dataitems\WikiPage object in PHP
+	 * in JavaScript that resembles the SMW\DataItems\WikiPage object in PHP
 	 *
 	 * @since 1.9
 	 *

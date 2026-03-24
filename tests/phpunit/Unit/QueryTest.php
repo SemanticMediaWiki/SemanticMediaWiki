@@ -8,7 +8,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\Query;
 
 /**
- * @covers \SMWQuery
+ * @covers \SMW\Query\Query
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -32,7 +32,7 @@ class QueryTest extends TestCase {
 		$description = $this->getMockForAbstractClass( Description::class );
 
 		$this->assertInstanceOf(
-			'\SMWQuery',
+			Query::class,
 			new Query( $description )
 		);
 	}

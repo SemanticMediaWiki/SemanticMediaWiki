@@ -13,7 +13,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
- * @covers \SMWInfolink
+ * @covers \SMW\Formatters\Infolink
  *
  * @group SMW
  * @group SMWExtension

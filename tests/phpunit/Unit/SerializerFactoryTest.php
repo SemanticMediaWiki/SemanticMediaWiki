@@ -9,6 +9,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\Deserializers\ExpDataDeserializer;
 use SMW\Deserializers\SemanticDataDeserializer;
+use SMW\Export\ExpData;
 use SMW\Query\QueryResult;
 use SMW\SerializerFactory;
 use SMW\Serializers\ExpDataSerializer;
@@ -136,7 +137,7 @@ class SerializerFactoryTest extends TestCase {
 		];
 
 		# 2
-		$queryResult = $this->getMockBuilder( '\SMWExpData' )
+		$queryResult = $this->getMockBuilder( ExpData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

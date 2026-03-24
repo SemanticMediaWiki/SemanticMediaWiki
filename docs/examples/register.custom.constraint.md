@@ -139,8 +139,8 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Constraint
 ```php
 use SMW\Constraint\Constraint;
 use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\DataValues\DataValue;
-use SMW\SemanticData;
 
 class StartEndConstraint implements Constraint {
 

@@ -3,9 +3,9 @@
 namespace SMW\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataValues\TimeValue;
 use SMW\ParserParameterProcessor;
 use SMW\Utils\RecurringEvents;
-use SMW\DataValues\TimeValue;
 
 /**
  * @covers \SMW\Utils\RecurringEvents

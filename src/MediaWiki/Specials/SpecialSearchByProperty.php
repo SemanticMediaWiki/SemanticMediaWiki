@@ -49,7 +49,7 @@ class SpecialSearchByProperty extends SpecialPage {
 			$query = Infolink::decodeCompactLink( $query );
 		}
 
-		// @see SMWInfolink::encodeParameters
+		// @see Infolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
 			$query = $this->getRequest()->getVal( 'x' );
 		}

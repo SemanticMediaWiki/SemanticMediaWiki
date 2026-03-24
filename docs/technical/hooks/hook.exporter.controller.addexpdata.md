@@ -1,6 +1,6 @@
 * Since: 3.0
 * Description: Hook allows to add additional RDF data for a selected subject (`smwAddToRDFExport` was deprecated with 3.0)
-* Reference class: `SMWExportController`
+* Reference class: `SMW\Export\ExportController`
 
 ### Signature
 

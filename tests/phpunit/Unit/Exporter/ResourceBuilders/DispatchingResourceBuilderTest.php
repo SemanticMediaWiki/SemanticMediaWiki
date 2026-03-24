@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Exporter\ResourceBuilders;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Export\ExpData;
 use SMW\Exporter\ResourceBuilder;
 use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
 
@@ -63,7 +64,7 @@ class DispatchingResourceBuilderTest extends TestCase {
 	}
 
 	public function testAddResourceValueOnValidMatchedResourceBuilder() {
-		$expData = $this->getMockBuilder( '\SMWExpData' )
+		$expData = $this->getMockBuilder( ExpData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +89,7 @@ class DispatchingResourceBuilderTest extends TestCase {
 	}
 
 	public function testAddResourceValueOnDefaultResourceBuilderWhenOthersCannotMatch() {
-		$expData = $this->getMockBuilder( '\SMWExpData' )
+		$expData = $this->getMockBuilder( ExpData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

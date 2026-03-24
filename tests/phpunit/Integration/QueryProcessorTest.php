@@ -79,7 +79,7 @@ class QueryProcessorTest extends SMWIntegrationTestCase {
 				'',
 				$printouts
 			),
-			"Result should be instance of SMWQuery."
+			"Result should be instance of Query."
 		);
 	}
 

@@ -205,7 +205,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	 * @return Query
 	 */
 	public function Query() {
-		$query = $this->getMockBuilder( 'SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

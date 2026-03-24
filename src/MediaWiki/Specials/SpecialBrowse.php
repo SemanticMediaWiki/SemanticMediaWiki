@@ -52,7 +52,7 @@ class SpecialBrowse extends SpecialPage {
 
 		$isEmptyRequest = $query === null && ( $webRequest->getVal( 'article' ) === '' || $webRequest->getVal( 'article' ) === null );
 
-		// @see SMWInfolink::encodeParameters
+		// @see Infolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
 			$query = $this->getRequest()->getVal( 'x' );
 		}

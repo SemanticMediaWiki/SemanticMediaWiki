@@ -16,7 +16,7 @@ use SMW\Query\Result\ResultArray;
  * independent object consisting of arrays and associative arrays, which can
  * be fed directly to json_encode, the MediaWiki API, and similar serializers.
  *
- * This class is distinct from SMWSerializer and the SMWExpData object
+ * This class is distinct from SMWSerializer and the ExpData object
  * it takes, in that here semantic context is lost.
  *
  * @ingroup Serializers

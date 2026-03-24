@@ -42,7 +42,7 @@ class TitleIsAlwaysKnown implements HookListener {
 		// for predefined properties in order to avoid any edit link
 		// which makes no-sense for predefined properties
 		//
-		// The SECOND approach is to inject SMWWikiPageValue with a setLinkOptions setter
+		// The SECOND approach is to inject WikiPageValue with a setLinkOptions setter
 		// that enables to set the custom options 'known' for each invoked linker during
 		// getShortHTMLText
 		// $linker->link( $this->getTitle(), $caption, $customAttributes, $customQuery, $customOptions )
