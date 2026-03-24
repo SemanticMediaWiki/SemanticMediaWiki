@@ -189,7 +189,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getFeed( QueryResult $results, $type ): string {
+	protected function getFeed( QueryResult $results, $type ): ?string {
 		global $wgFeedClasses;
 
 		if ( !isset( $wgFeedClasses[$type] ) ) {
@@ -220,6 +220,8 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 		// Create feed footer
 		$feed->outFooter();
+
+		return null;
 	}
 
 	/**
