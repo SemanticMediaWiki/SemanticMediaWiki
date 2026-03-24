@@ -258,7 +258,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$dataItem,
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE ),
-			$linker
+			null
 		);
 
 		return !$dataItem->isUserDefined() || $propertyDescription !== '';

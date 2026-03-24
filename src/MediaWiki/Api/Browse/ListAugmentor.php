@@ -115,13 +115,14 @@ class ListAugmentor {
 	private function addPropertyDescription( array &$res, array $languageCodes ): void {
 		$list = $res['query'];
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
+		$linker = \smwfGetLinker();
 
 		foreach ( $list as $key => $value ) {
 			$property = new Property( $key );
 			$description = [];
 
 			foreach ( $languageCodes as $code ) {
-				$description[$code] = $propertySpecificationLookup->getPropertyDescriptionByLanguageCode( $property, $code );
+				$description[$code] = $propertySpecificationLookup->getPropertyDescriptionByLanguageCode( $property, $code, $linker );
 			}
 
 			$list[$key] = $value + [

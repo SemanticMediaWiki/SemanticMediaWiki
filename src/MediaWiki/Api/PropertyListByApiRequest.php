@@ -229,7 +229,8 @@ class PropertyListByApiRequest {
 	private function findPropertyDescriptionBy( Property $property ): string|array|null {
 		$description = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$property,
-			$this->languageCode
+			$this->languageCode,
+			\smwfGetLinker()
 		);
 
 		if ( $description === '' || $description === null ) {
