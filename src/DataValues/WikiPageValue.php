@@ -771,17 +771,6 @@ class WikiPageValue extends DataValue {
 	}
 
 	/**
-	 * Find the sortkey for this object.
-	 *
-	 * @deprecated Use \SMW\Store::getWikiPageSortKey(). Will vanish before SMW 1.7
-	 *
-	 * @return string sortkey
-	 */
-	private function getSortKey() {
-		return ApplicationFactory::getInstance()->getStore()->getWikiPageSortKey( $this->m_dataitem );
-	}
-
-	/**
 	 * @since 2.4
 	 *
 	 * @return string

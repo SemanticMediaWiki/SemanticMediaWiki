@@ -615,13 +615,6 @@ class TimeValue extends DataValue {
 	}
 
 	/**
-	 * @deprecated This method is now called getISO8601Date(). It will vanish before SMW 1.7.
-	 */
-	public function getXMLSchemaDate( $mindefault = true ) {
-		return $this->getISO8601Date( $mindefault );
-	}
-
-	/**
 	 * @see TimeValueFormatter::getISO8601DateFromDataItem
 	 *
 	 * @param $mindefault boolean determining whether values below the
