@@ -4,7 +4,6 @@ use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\WikiMap\WikiMap;
 use SMW\Formatters\Highlighter;
-use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Store;
@@ -49,13 +48,6 @@ function smwfNormalTitleDBKey( $text ): string {
 	}
 
 	return str_replace( ' ', '_', $text );
-}
-
-/**
- * @deprecated since 3.2, use `Localizer::normalizeTitleText`
- */
-function smwfNormalTitleText( string $text ): string {
-	return Localizer::getInstance()->normalizeTitleText( $text );
 }
 
 /**
