@@ -292,7 +292,6 @@ class PropertyRegistryTest extends TestCase {
 			'_TYPE',
 			$instance->findPropertyIdByLabel( 'foo', true )
 		);
-
 	}
 
 	public function testFindPropertyLabelForRegisteredId() {

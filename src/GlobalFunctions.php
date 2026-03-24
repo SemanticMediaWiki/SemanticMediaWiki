@@ -3,7 +3,6 @@
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\WikiMap\WikiMap;
-use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
