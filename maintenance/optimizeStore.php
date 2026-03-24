@@ -170,9 +170,10 @@ class optimizeStore extends Maintenance {
 				$setupFile = $applicationFactory->singleton( 'SetupFile' );
 				$tableOptimizer = new TableOptimizer( $tableBuilder );
 				$tableOptimizer->setSetupFile( $setupFile );
-				$tableOptimizer->setMessageReporter( $this->messageReporter );		$tableOptimizer->runForTables(
-			$tableSchemaManager->getTables()
-		);
+				$tableOptimizer->setMessageReporter( $this->messageReporter );
+				$tableOptimizer->runForTables(
+					$tableSchemaManager->getTables()
+				);
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
 			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'OptimizeStoreLogger' );
