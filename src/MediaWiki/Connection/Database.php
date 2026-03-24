@@ -777,7 +777,7 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function escape_bytea( $text ) {
+	public function escape_bytea( $text ): string {
 		if ( $this->isType( 'postgres' ) ) {
 			// normally one uses pg_escape_bytea PHP function to do this
 			// unfortunately pg_escape_bytea requires a PgSql\Connection as of PHP 8.1+

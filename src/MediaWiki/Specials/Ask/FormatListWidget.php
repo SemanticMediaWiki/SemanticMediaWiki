@@ -34,7 +34,7 @@ class FormatListWidget {
 	 *
 	 * @return string
 	 */
-	public static function selectList( Title $title, array $params ) {
+	public static function selectList( Title $title, array $params ): string {
 		$result = '';
 
 		// Default

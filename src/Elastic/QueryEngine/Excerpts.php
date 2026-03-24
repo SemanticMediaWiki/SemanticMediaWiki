@@ -43,7 +43,7 @@ class Excerpts extends BaseExcerpts {
 		return $this->noHighlight ? false : true;
 	}
 
-	private function format( $v ) {
+	private function format( $v ): string {
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
 		// By default, highlighted text is wrapped in <em> and </em> tags
 

@@ -39,7 +39,7 @@ class TestClient extends Client {
 	 *
 	 * @return mixed
 	 */
-	public function count( array $params ) {
+	public function count( array $params ): array {
 		if ( $params === [] ) {
 			return [];
 		}

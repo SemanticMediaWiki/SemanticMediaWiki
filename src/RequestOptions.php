@@ -302,7 +302,7 @@ class RequestOptions {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string|false {
 		$stringConditions = '';
 
 		foreach ( $this->stringConditions as $stringCondition ) {

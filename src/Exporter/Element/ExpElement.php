@@ -54,7 +54,7 @@ abstract class ExpElement implements Element {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return md5( json_encode( $this->getSerialization() ) );
 	}
 
@@ -63,7 +63,7 @@ abstract class ExpElement implements Element {
 	 *
 	 * @return array
 	 */
-	public function getSerialization() {
+	public function getSerialization(): array {
 		$dataItem = null;
 
 		if ( $this->getDataItem() !== null ) {

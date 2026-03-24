@@ -121,7 +121,7 @@ class ParameterInput {
 	 *
 	 * @return string
 	 */
-	protected function getValueToUse() {
+	protected function getValueToUse(): string {
 		$value = $this->currentValue === false ? $this->param->getDefault() : $this->currentValue;
 
 		if ( $this->param->isList() && is_array( $value ) ) {

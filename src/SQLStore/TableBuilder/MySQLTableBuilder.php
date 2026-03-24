@@ -86,7 +86,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
-	private function sql_from( array $attributes ) {
+	private function sql_from( array $attributes ): string {
 		// $smwgFulltextSearchTableOptions can define:
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' )
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )

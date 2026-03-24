@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\DataItems\Property;
+use SMW\Export\ExpData;
 use SMW\Export\Exporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Query\PrintRequest;
@@ -60,7 +61,7 @@ class RdfResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$definitions = parent::getParamDefinitions( $definitions );
 
 		$definitions['limit']->setDefault( 100 );
@@ -131,7 +132,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $serializer->flushContent();
 	}
 
-	private function makeExportData( Exporter $exporter, array $row ) {
+	private function makeExportData( Exporter $exporter, array $row ): ExpData {
 		$subject = reset( $row )->getResultSubject();
 		$expData = $exporter->makeExportDataForSubject( $subject );
 

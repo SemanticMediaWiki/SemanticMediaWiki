@@ -242,7 +242,7 @@ class QueryResult {
 		return $row;
 	}
 
-	private function newResultArray( WikiPage $page, PrintRequest $pr ) {
+	private function newResultArray( WikiPage $page, PrintRequest $pr ): ResultArray {
 		$resultArray = ResultArray::factory( $page, $pr, $this );
 		$resultArray->setItemJournal( $this->itemJournal );
 		return $resultArray;

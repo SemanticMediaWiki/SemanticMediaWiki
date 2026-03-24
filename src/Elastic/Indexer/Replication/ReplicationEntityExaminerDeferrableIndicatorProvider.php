@@ -201,7 +201,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		];
 	}
 
-	private function wasChecked( WikiPage $subject ) {
+	private function wasChecked( WikiPage $subject ): bool {
 		$connection = $this->store->getConnection( 'elastic' );
 		$wasChecked = false;
 

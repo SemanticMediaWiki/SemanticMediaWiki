@@ -453,7 +453,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function hasDataTypeClassById( $typeId ) {
+	public function hasDataTypeClassById( $typeId ): bool {
 		if ( !isset( $this->typeClasses[$typeId] ) ) {
 			return false;
 		}

@@ -59,7 +59,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @return AbstractJob
 	 */
-	public function isEnabledJobQueue( $enableJobQueue = true ) {
+	public function isEnabledJobQueue( $enableJobQueue = true ): static {
 		$this->isEnabledJobQueue = (bool)$enableJobQueue;
 		return $this;
 	}
@@ -89,7 +89,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @return int
 	 */
-	public function getJobCount() {
+	public function getJobCount(): int {
 		return count( $this->jobs );
 	}
 
@@ -100,7 +100,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @return bool
 	 */
-	public function hasParameter( string $key ) {
+	public function hasParameter( string $key ): bool {
 		if ( !is_array( $this->params ) ) {
 			return false;
 		}
@@ -216,7 +216,7 @@ abstract class Job extends MediaWikiJob {
 	 * Only run the job via commandLine or the cronJob and avoid execution via
 	 * Special:RunJobs as it can cause the script to timeout.
 	 */
-	public function waitOnCommandLineMode() {
+	public function waitOnCommandLineMode(): bool {
 		if ( !$this->hasParameter( 'waitOnCommandLine' ) || Site::isCommandLineMode() ) {
 			return false;
 		}

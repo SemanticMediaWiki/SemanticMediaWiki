@@ -134,7 +134,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string|bool
 	 */
-	protected function getRedirectTargetURL() {
+	protected function getRedirectTargetURL(): string|bool {
 		return false;
 	}
 
@@ -143,7 +143,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected function initHtml() {
+	protected function initHtml(): string {
 		return '';
 	}
 
@@ -152,7 +152,7 @@ abstract class Page extends Article {
 	 *
 	 * @return bool
 	 */
-	protected function isLockedView() {
+	protected function isLockedView(): bool {
 		return false;
 	}
 
@@ -188,7 +188,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected function beforeView() {
+	protected function beforeView(): string {
 		return '';
 	}
 
@@ -197,7 +197,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected function afterHtml() {
+	protected function afterHtml(): string {
 		return '';
 	}
 
@@ -215,7 +215,7 @@ abstract class Page extends Article {
 	 *
 	 * @return WikiPage
 	 */
-	protected function getDataItem() {
+	protected function getDataItem(): WikiPage {
 		return WikiPage::newFromTitle( $this->getTitle() );
 	}
 

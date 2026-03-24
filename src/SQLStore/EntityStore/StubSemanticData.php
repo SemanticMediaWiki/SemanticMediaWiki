@@ -80,7 +80,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return array
 	 */
-	public function __sleep() {
+	public function __sleep(): array {
 		return [ 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mStubPropVals', 'options', 'extensionData' ];
 	}
 

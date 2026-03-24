@@ -70,7 +70,7 @@ class NamespaceExaminer {
 	 * @return bool
 	 * @throws InvalidArgumentException
 	 */
-	public function isSemanticEnabled( $namespace ) {
+	public function isSemanticEnabled( $namespace ): bool {
 		if ( !is_int( $namespace ) ) {
 			throw new InvalidArgumentException( "{$namespace} is not a number" );
 		}

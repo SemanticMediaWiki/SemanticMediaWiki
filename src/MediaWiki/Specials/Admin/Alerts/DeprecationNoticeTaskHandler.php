@@ -188,9 +188,9 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return $noticeList;
 	}
 
-	private function mergeList( string $title, int|string $section, &$list ) {
+	private function mergeList( string $title, int|string $section, &$list ): ?string {
 		if ( $list === [] || ( $items = implode( '', $list ) ) === '' ) {
-			return;
+			return null;
 		}
 
 		$html = Html::rawElement(

@@ -156,7 +156,7 @@ class TitlePermissions {
 		return false;
 	}
 
-	private function checkPropertyNamespaceEditPermission( Title $title, User $user, string $action ) {
+	private function checkPropertyNamespaceEditPermission( Title $title, User $user, string $action ): bool {
 		// This renders full protection until the ChangePropagationDispatchJob was run
 		if ( !$this->protectionValidator->hasChangePropagationProtection( $title ) ) {
 			return $this->checkEditPermission( $title, $user, $action );

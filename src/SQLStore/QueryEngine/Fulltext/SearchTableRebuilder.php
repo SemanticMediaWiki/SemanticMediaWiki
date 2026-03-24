@@ -90,9 +90,9 @@ class SearchTableRebuilder {
 	 *
 	 * @return void|bool
 	 */
-	public function rebuild() {
+	public function rebuild(): ?bool {
 		if ( !$this->canRebuild() ) {
-			return;
+			return null;
 		}
 
 		if ( $this->optimization ) {

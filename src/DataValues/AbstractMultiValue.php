@@ -61,7 +61,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @return DataItem[]|null
 	 */
-	public function getDataItems() {
+	public function getDataItems(): array {
 		if ( !$this->isValid() ) {
 			return [];
 		}

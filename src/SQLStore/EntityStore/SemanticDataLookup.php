@@ -77,7 +77,7 @@ class SemanticDataLookup {
 	 * @return StubSemanticData
 	 * @throws RuntimeException
 	 */
-	public function newStubSemanticData( $object ) {
+	public function newStubSemanticData( $object ): StubSemanticData {
 		if ( $object instanceof WikiPage ) {
 			return new StubSemanticData( $object, $this->store, false );
 		}

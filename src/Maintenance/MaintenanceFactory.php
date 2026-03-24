@@ -113,7 +113,7 @@ class MaintenanceFactory {
 	 *
 	 * @return rebuildPropertyStatistics
 	 */
-	public function newRebuildPropertyStatistics() {
+	public function newRebuildPropertyStatistics(): rebuildPropertyStatistics {
 		return new rebuildPropertyStatistics();
 	}
 

@@ -66,7 +66,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 *
 	 * @return string
 	 */
-	public static function asJson( $string, $flag = 0 ) {
+	public static function asJson( $string, $flag = 0 ): string|false {
 		if ( $flag > 0 ) {
 			return json_encode( json_decode( $string ), $flag );
 		}
@@ -74,7 +74,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 		return json_encode( json_decode( $string ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 	}
 
-	private function isJson( $string ) {
+	private function isJson( $string ): bool {
 		// Don't bother
 		if ( substr( $string, 0, 1 ) !== '{' ) {
 			return false;

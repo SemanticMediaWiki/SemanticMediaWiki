@@ -44,7 +44,7 @@ class ProximityPropertyValueLookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( Property $property, $value, RequestOptions $opts ) {
+	public function lookup( Property $property, $value, RequestOptions $opts ): array {
 		$connection = $this->store->getConnection( 'elastic' );
 		$continueOffset = 0;
 

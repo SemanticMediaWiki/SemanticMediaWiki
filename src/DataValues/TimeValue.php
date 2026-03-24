@@ -526,7 +526,7 @@ class TimeValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->m_wikivalue ? $this->m_wikivalue : strip_tags( $this->getLongWikiText() );
 	}
 

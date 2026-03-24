@@ -153,7 +153,7 @@ class DataUpdater {
 	 *
 	 * @return bool
 	 */
-	public function isSkippable( Title $title, ?int &$latestRevID = null ) {
+	public function isSkippable( Title $title, ?int &$latestRevID = null ): bool {
 		if ( $this->revisionGuard->isSkippableUpdate( $title, $latestRevID ) ) {
 			return true;
 		}
@@ -164,7 +164,7 @@ class DataUpdater {
 			$title->getInterwiki()
 		);
 
-		return $associatedRev == $latestRevID;
+		return $associatedRev === $latestRevID;
 	}
 
 	/**
@@ -172,7 +172,7 @@ class DataUpdater {
 	 *
 	 * @return bool
 	 */
-	public function doUpdate() {
+	public function doUpdate(): bool {
 		if ( !$this->canUpdate() ) {
 			return false;
 		}
@@ -410,7 +410,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function checkForPossibleRedirectPreUpdate( SemanticData $semanticData ) {
+	private function checkForPossibleRedirectPreUpdate( SemanticData $semanticData ): SemanticData {
 		// Check only during online-mode so that when a user operates Special:MovePage
 		// or #redirect the same process is applied
 		if ( !$this->canCreateUpdateJob ) {

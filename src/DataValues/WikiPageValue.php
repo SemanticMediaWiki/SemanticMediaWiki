@@ -291,7 +291,7 @@ class WikiPageValue extends DataValue {
 	 * @param null $linked mixed generate links if not null or false
 	 * @return string
 	 */
-	public function getShortWikiText( $linked = null ) {
+	public function getShortWikiText( $linked = null ): string {
 		if ( $linked === null || $linked === false ||
 			$this->m_outformat == '-' || !$this->isValid() ||
 			$this->m_caption === '' ) {
@@ -501,7 +501,7 @@ class WikiPageValue extends DataValue {
 		return $text . ( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
 	}
 
-	public function getHash() {
+	public function getHash(): string {
 		return $this->isValid() ? $this->getPrefixedText() : implode( "\t", $this->getErrors() );
 	}
 
@@ -765,7 +765,7 @@ class WikiPageValue extends DataValue {
 	 * @since 1.7
 	 * @return string
 	 */
-	protected function getWikiLinkTarget() {
+	protected function getWikiLinkTarget(): string {
 		return str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .
 			( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
 	}

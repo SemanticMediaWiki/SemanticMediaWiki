@@ -221,7 +221,7 @@ class DescriptionProcessor {
 	 * The return value is the expected combined description. The object $currentDescription will
 	 * also be changed (if it was non-NULL).
 	 */
-	private function newCompoundDescription( ?Description $currentDescription = null, ?Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
+	private function newCompoundDescription( ?Description $currentDescription = null, ?Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ): ?Description {
 		$notallowedmessage = 'smw_noqueryfeature';
 
 		if ( $newDescription instanceof SomeProperty ) {
@@ -254,7 +254,7 @@ class DescriptionProcessor {
 		}
 	}
 
-	private function newCompoundDescriptionByType( $compoundType, Description $currentDescription, Description $newDescription ) {
+	private function newCompoundDescriptionByType( $compoundType, Description $currentDescription, Description $newDescription ): Description {
 		if ( ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Conjunction ) ) ||
 			 ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
 			$currentDescription->addDescription( $newDescription );

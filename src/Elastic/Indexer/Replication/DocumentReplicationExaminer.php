@@ -170,7 +170,7 @@ class DocumentReplicationExaminer {
 			$id
 		);
 
-		if ( $this->replicationStatusResponse['associated_revision'] == $associatedRev ) {
+		if ( (int)$this->replicationStatusResponse['associated_revision'] === $associatedRev ) {
 			return false;
 		}
 

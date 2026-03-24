@@ -35,7 +35,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$definitions = parent::getParamDefinitions( $definitions );
 
 		$definitions['distribution'] = [
@@ -160,7 +160,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getDistributionResults( QueryResult $queryResult, $outputMode ) {
+	protected function getDistributionResults( QueryResult $queryResult, $outputMode ): array {
 		$values = [];
 
 		$row = $queryResult->getNext();
@@ -203,7 +203,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getNumericResults( QueryResult $queryResult, $outputMode ) {
+	protected function getNumericResults( QueryResult $queryResult, $outputMode ): array {
 		$values = [];
 
 		// print all result rows

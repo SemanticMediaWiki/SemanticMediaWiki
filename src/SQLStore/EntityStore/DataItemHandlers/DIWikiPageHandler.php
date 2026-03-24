@@ -180,7 +180,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): WikiPage {
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 5 ) {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}

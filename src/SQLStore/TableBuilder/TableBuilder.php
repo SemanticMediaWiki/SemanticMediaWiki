@@ -45,7 +45,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @return TableBuilder
 	 * @throws RuntimeException
 	 */
-	public static function factory( $connection ) {
+	public static function factory( $connection ): TableBuilder {
 		if ( !$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}

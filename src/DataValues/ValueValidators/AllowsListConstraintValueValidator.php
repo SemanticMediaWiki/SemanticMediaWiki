@@ -134,7 +134,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = true;
 	}
 
-	private function checkConstraintViolation( DataValue $dataValue, array $allowedValues, array &$allowedValueList ) {
+	private function checkConstraintViolation( DataValue $dataValue, array $allowedValues, array &$allowedValueList ): bool {
 		if ( !is_array( $allowedValues ) ) {
 			return true;
 		}

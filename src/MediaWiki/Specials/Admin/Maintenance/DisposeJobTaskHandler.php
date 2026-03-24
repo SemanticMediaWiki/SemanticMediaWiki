@@ -54,7 +54,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return $this->isApiTask;
 	}
 

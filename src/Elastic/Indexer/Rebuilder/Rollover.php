@@ -34,7 +34,7 @@ class Rollover {
 	 *
 	 * @return string
 	 */
-	public function rollover( $type, $version ) {
+	public function rollover( $type, $version ): string {
 		$index = $this->connection->getIndexName( $type );
 
 		$params = [];

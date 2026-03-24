@@ -31,6 +31,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   ```
 
 * Replaced the vendored `Onoi\Tesa` text sanitizer library with PHP `intl` built-ins for fulltext search text processing. Users with `smwgEnabledFulltextSearch` enabled must run `rebuildFulltextSearchTable.php` after upgrading. Transliteration now uses ICU instead of a static mapping table, which produces minor differences for some characters (e.g., German ü→u instead of ü→ue). This does not affect search match quality.
+* Removed `smwfNormalTitleText()`, deprecated since 3.2. Use `Localizer::getInstance()->normalizeTitleText()` instead.
+* Removed `smwfNumberFormat()`, deprecated since 2.1. Use `IntlNumberFormatter::getInstance()->getLocalizedFormattedNumber()` instead.
 * Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
 * Removed long-deprecated code originally scheduled for removal:
   - `SMW_HEADER_TOOLTIP`, `SMW_HEADER_SORTTABLE`, `SMW_HEADER_STYLE` constants and the numeric-id branch in `Outputs::requireHeadItem()`

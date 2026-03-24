@@ -110,7 +110,7 @@ class Conjunction extends Description {
 		return false;
 	}
 
-	public function getSize(): int|float {
+	public function getSize(): int {
 		$size = 0;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -120,7 +120,7 @@ class Conjunction extends Description {
 		return $size;
 	}
 
-	public function getDepth() {
+	public function getDepth(): int {
 		$depth = 0;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -130,7 +130,7 @@ class Conjunction extends Description {
 		return $depth;
 	}
 
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		$result = SMW_CONJUNCTION_QUERY;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -140,7 +140,7 @@ class Conjunction extends Description {
 		return $result;
 	}
 
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
+	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
 		if ( $maxsize <= 0 ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

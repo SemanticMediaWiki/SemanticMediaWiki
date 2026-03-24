@@ -212,7 +212,7 @@ class LocalLanguage {
 	 *
 	 * @return array
 	 */
-	public function getCanonicalDatatypeLabels() {
+	public function getCanonicalDatatypeLabels(): array {
 		$datatypeLabels = $this->languageContents->get(
 			'datatype.labels',
 			$this->canonicalFallbackLanguageCode
@@ -250,7 +250,7 @@ class LocalLanguage {
 	 *
 	 * @return array
 	 */
-	public function getCanonicalPropertyLabels() {
+	public function getCanonicalPropertyLabels(): array {
 		$canonicalPropertyLabels = $this->languageContents->get(
 			'property.labels',
 			$this->canonicalFallbackLanguageCode

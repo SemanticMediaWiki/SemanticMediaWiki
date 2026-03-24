@@ -144,7 +144,7 @@ class ValueDescriptionInterpreter {
 		return $comparator === SMW_CMP_NLKE || $comparator === SMW_CMP_NEQ;
 	}
 
-	private function proximity_bool( string $field, $value ) {
+	private function proximity_bool( string $field, $value ): array {
 		$params = [];
 		$hasWildcard = strpos( $value, '*' ) !== false;
 

@@ -129,7 +129,7 @@ class PropertyListValue extends DataValue {
 
 ////// Internal helper functions
 
-	protected function makeOutputText( $type, $linker = null ) {
+	protected function makeOutputText( $type, $linker = null ): string {
 		if ( !$this->isValid() ) {
 			return ( ( $type == 0 ) || ( $type == 1 ) ) ? '' : $this->getErrorText();
 		}

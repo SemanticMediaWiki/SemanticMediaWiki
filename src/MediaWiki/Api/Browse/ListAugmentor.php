@@ -29,9 +29,9 @@ class ListAugmentor {
 	 *
 	 * @return array
 	 */
-	public function augment( array &$res, array $parameters ) {
+	public function augment( array &$res, array $parameters ): ?array {
 		if ( !isset( $res['query'] ) && $res['query'] === [] ) {
-			return;
+			return null;
 		}
 
 		$type = null;

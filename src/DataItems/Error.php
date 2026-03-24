@@ -63,7 +63,7 @@ class Error extends DataItem {
 		return new Error( unserialize( $serialization ) );
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_ERROR ) {
 			return false;
 		}

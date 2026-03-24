@@ -49,7 +49,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return $this->isApiTask;
 	}
 

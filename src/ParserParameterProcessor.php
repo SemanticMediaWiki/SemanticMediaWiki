@@ -269,7 +269,7 @@ class ParserParameterProcessor {
 		return $separator;
 	}
 
-	private function parseFromJson( array $results ) {
+	private function parseFromJson( array $results ): array {
 		if ( !isset( $results['@json'] ) || !isset( $results['@json'][0] ) ) {
 			return $results;
 		}

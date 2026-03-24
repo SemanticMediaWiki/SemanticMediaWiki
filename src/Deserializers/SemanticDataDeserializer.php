@@ -33,7 +33,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 * @throws OutOfBoundsException
 	 * @throws RuntimeException
 	 */
-	public function deserialize( $data ) {
+	public function deserialize( $data ): ?SemanticData {
 		$semanticData = null;
 
 		if ( isset( $data['version'] ) && $data['version'] !== 0.1 && $data['version'] !== 2 ) {

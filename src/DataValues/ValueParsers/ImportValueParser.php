@@ -140,7 +140,7 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function doParse( $controlledVocabulary ) {
+	private function doParse( $controlledVocabulary ): ?array {
 		$list = [];
 		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
 
@@ -148,7 +148,7 @@ class ImportValueParser implements ValueParser {
 		$fristLine = array_shift( $importDefintions );
 
 		if ( strpos( $fristLine, '|' ) === false ) {
-			return;
+			return null;
 		}
 
 		[ $uri, $name ] = explode( '|', $fristLine, 2 );

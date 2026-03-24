@@ -55,7 +55,7 @@ class Table {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string|false {
 		return json_encode( $this->attributes );
 	}
 

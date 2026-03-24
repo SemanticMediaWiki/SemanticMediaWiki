@@ -151,7 +151,7 @@ class Concept extends DataItem {
 	 * ID.
 	 * @return Concept
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): mixed {
 		$result = unserialize( $serialization );
 		if ( $result === false ) {
 			throw new DataItemException( "Unserialization failed." );
@@ -159,7 +159,7 @@ class Concept extends DataItem {
 		return $result;
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_CONCEPT ) {
 			return false;
 		}

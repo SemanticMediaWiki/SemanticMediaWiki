@@ -111,7 +111,7 @@ abstract class DataItem implements JsonUnserializable {
 	 *
 	 * @return DataItem
 	 */
-	public function getSortKeyDataItem() {
+	public function getSortKeyDataItem(): Number|Blob {
 		$sortKey = $this->getSortKey();
 
 		if ( is_numeric( $sortKey ) ) {
@@ -135,7 +135,7 @@ abstract class DataItem implements JsonUnserializable {
 	 *
 	 * @return string
 	 */
-	public function getSha1() {
+	public function getSha1(): string {
 		return sha1( $this->getSerialization() );
 	}
 

@@ -312,7 +312,7 @@ class ExportController {
 	 * and we do not want to modify the store's result which may be used for
 	 * caching purposes elsewhere.
 	 */
-	protected function getSemanticData( WikiPage $diWikiPage, $core_props_only ) {
+	protected function getSemanticData( WikiPage $diWikiPage, $core_props_only ): ?SemanticData {
 		// Issue 619
 		// Resolve the redirect target and return a container with information
 		// about the redirect
@@ -649,7 +649,7 @@ class ExportController {
 	 *
 	 * @return bool
 	 */
-	public static function fitsNsRestriction( $res, $ns ) {
+	public static function fitsNsRestriction( $res, $ns ): bool {
 		if ( $res === false ) {
 			return true;
 		}

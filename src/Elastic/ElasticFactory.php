@@ -581,7 +581,7 @@ class ElasticFactory {
 	 *
 	 * @param DispatchContext $dispatchContext
 	 */
-	public function onInvalidateEntityCache( $dispatchContext ) {
+	public function onInvalidateEntityCache( $dispatchContext ): bool {
 		$store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$store instanceof ElasticStore ) {
@@ -601,6 +601,8 @@ class ElasticFactory {
 		$replicationCheck->deleteReplicationTrail(
 			$subject
 		);
+
+		return true;
 	}
 
 	/**

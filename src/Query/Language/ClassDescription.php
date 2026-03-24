@@ -168,7 +168,7 @@ class ClassDescription extends Description {
 		return count( $this->m_diWikiPages );
 	}
 
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		if ( count( $this->m_diWikiPages ) > 1 ) {
 			return SMW_CATEGORY_QUERY | SMW_DISJUNCTION_QUERY;
 		}

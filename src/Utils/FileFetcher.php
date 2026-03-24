@@ -76,7 +76,7 @@ class FileFetcher {
 	 *
 	 * @return Iterator|array
 	 */
-	public function findByExtension( string $extension ) {
+	public function findByExtension( string $extension ): RegexIterator|array {
 		if ( !is_dir( $this->dir ) ) {
 			throw new RuntimeException( "Unable to access {$this->dir}!" );
 		}

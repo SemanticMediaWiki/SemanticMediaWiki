@@ -237,7 +237,7 @@ class PropertyRegistry {
 	 *
 	 * @return string
 	 */
-	public function findPropertyDescriptionMsgKeyById( $id ) {
+	public function findPropertyDescriptionMsgKeyById( $id ): string {
 		return isset( $this->propertyDescriptionMsgKeys[$id] ) ? $this->propertyDescriptionMsgKeys[$id] : '';
 	}
 
@@ -419,7 +419,7 @@ class PropertyRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isVisible( $id ) {
+	public function isVisible( $id ): bool {
 		return $this->isRegistered( $id ) ? $this->propertyList[$id][1] : false;
 	}
 
@@ -430,7 +430,7 @@ class PropertyRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isAnnotable( $id ) {
+	public function isAnnotable( $id ): bool {
 		return $this->isRegistered( $id ) ? $this->propertyList[$id][2] : false;
 	}
 
@@ -441,7 +441,7 @@ class PropertyRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isDeclarative( $id ) {
+	public function isDeclarative( $id ): bool {
 		if ( !$this->isRegistered( $id ) ) {
 			return false;
 		}

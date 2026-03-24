@@ -83,7 +83,7 @@ class ParserAfterTidy implements HookListener {
 		return true;
 	}
 
-	private function canPerformUpdate() {
+	private function canPerformUpdate(): bool {
 		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
 		// when for example Title::isProtected is accessed
 		if ( $this->isReady === false ) {
@@ -247,7 +247,7 @@ class ParserAfterTidy implements HookListener {
 	 * a static variable or any other messaging that is not persistent will not
 	 * work hence the reliance on the cache as temporary persistence marker
 	 */
-	private function checkPurgeRequest( $parserData ) {
+	private function checkPurgeRequest( $parserData ): ?bool {
 		$start = microtime( true );
 		$title = $this->parser->getTitle();
 
@@ -291,6 +291,8 @@ class ParserAfterTidy implements HookListener {
 				number_format( ( microtime( true ) - $start ), 3 )
 			);
 		}
+
+		return null;
 	}
 
 	private function doAbort(): bool {

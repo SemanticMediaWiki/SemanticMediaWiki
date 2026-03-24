@@ -73,7 +73,7 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function toJson( Query $query, $printParameters = false ) {
+	public static function toJson( Query $query, $printParameters = false ): string|false {
 		return json_encode( self::toArray( $query, $printParameters ) );
 	}
 

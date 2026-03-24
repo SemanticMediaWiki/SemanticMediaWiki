@@ -170,7 +170,7 @@ class SpecialStatsAddExtra implements HookListener {
 		return $formats;
 	}
 
-	private function msg( $args ) {
+	private function msg( $args ): string {
 		if ( $this->getOption( 'plain.msg_key', false ) ) {
 			return is_array( $args ) ? implode( '.', $args ) : $args;
 		}

@@ -41,7 +41,7 @@ class ParamListProcessor {
 	 *
 	 * @return array
 	 */
-	public function format( array $paramList, $type ) {
+	public function format( array $paramList, $type ): array {
 		if ( $type === self::FORMAT_LEGACY ) {
 			return $this->legacy_format( $paramList );
 		}

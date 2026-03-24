@@ -201,7 +201,7 @@ class Exporter {
 	 *
 	 * @return ExpData
 	 */
-	public function makeExportData( SemanticData $semanticData ) {
+	public function makeExportData( SemanticData $semanticData ): ExpData {
 		self::initBaseURIs();
 
 		$subject = $semanticData->getSubject();
@@ -683,7 +683,7 @@ class Exporter {
 	 * @param DataItem $dataItem
 	 * @return ExpElement|null
 	 */
-	public function newAuxiliaryExpElement( DataItem $dataItem ) {
+	public function newAuxiliaryExpElement( DataItem $dataItem ): ?ExpLiteral {
 		if ( $dataItem->getDIType() == DataItem::TYPE_TIME ) {
 			return new ExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', '', $dataItem );
 		}
@@ -691,6 +691,8 @@ class Exporter {
 		if ( $dataItem->getDIType() == DataItem::TYPE_GEO ) {
 			return new ExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#string', '', $dataItem );
 		}
+
+		return null;
 	}
 
 	/**
