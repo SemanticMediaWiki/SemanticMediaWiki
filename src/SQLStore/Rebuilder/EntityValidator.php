@@ -295,7 +295,7 @@ class EntityValidator {
 			$title->getInterwiki()
 		);
 
-		return $latestRevID == $rev;
+		return $latestRevID === $rev;
 	}
 
 }

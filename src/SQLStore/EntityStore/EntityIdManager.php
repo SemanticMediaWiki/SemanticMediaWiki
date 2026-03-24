@@ -735,7 +735,7 @@ class EntityIdManager {
 			__METHOD__
 		);
 
-		return $row === false ? 0 : $row->smw_rev;
+		return $row === false ? 0 : (int)$row->smw_rev;
 	}
 
 	/**

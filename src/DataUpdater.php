@@ -164,7 +164,7 @@ class DataUpdater {
 			$title->getInterwiki()
 		);
 
-		return $associatedRev == $latestRevID;
+		return $associatedRev === $latestRevID;
 	}
 
 	/**
