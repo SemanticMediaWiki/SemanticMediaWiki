@@ -99,7 +99,7 @@ class SemanticDataDeserializer implements Deserializer {
 			return;
 		}
 
-		$type = $this->getDataItemByType( $property );
+		$type = $this->getDataItemId( $property );
 
 		// Verify that the current property type definition and the type of the
 		// property during serialization do match, throw an error value to avoid any
