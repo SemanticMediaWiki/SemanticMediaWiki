@@ -3,7 +3,8 @@
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
 use SMW\DataItems\Property;
-use SMW\DataItems\WiKiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 use SMW\DataValueFactory;
 
 /**
@@ -38,10 +39,10 @@ class CountryCategory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return WiKiPage
+	 * @return WikiPage
 	 */
 	public function asSubject() {
-		return new WiKiPage( 'Country', NS_CATEGORY );
+		return new WikiPage( 'Country', NS_CATEGORY );
 	}
 
 	/**
