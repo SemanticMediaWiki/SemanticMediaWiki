@@ -21,10 +21,7 @@ class PropertyTableIdReferenceFinder {
 	 */
 	private $connection;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private NamespaceExaminer $namespaceExaminer;
 
 	/**
 	 * @var bool
@@ -90,7 +87,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasResidualPropertyTableReference( $id ) {
+	public function hasResidualPropertyTableReference( $id ): bool {
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 			return true;
 		}
@@ -105,7 +102,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasResidualReferenceForId( $id ) {
+	public function hasResidualReferenceForId( $id ): bool {
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 			return true;
 		}

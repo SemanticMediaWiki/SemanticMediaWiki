@@ -62,13 +62,6 @@ class ParserParameterProcessor {
 	}
 
 	/**
-	 * @deprecated since 2.3, use ParserParameterProcessor::getFirstParameter
-	 */
-	public function getFirst() {
-		return $this->getFirstParameter();
-	}
-
-	/**
 	 * @since 2.3
 	 *
 	 * @return string
@@ -117,16 +110,6 @@ class ParserParameterProcessor {
 	 */
 	public function removeParameterByKey( $key ): void {
 		unset( $this->parameters[$key] );
-	}
-
-	/**
-	 * @deprecated since 2.5, use ParserParameterProcessor::getParameterValuesByKey
-	 * @since 2.3
-	 *
-	 * @return array
-	 */
-	public function getParameterValuesFor( $key ) {
-		return $this->getParameterValuesByKey( $key );
 	}
 
 	/**
@@ -286,7 +269,7 @@ class ParserParameterProcessor {
 		return $separator;
 	}
 
-	private function parseFromJson( array $results ) {
+	private function parseFromJson( array $results ): array {
 		if ( !isset( $results['@json'] ) || !isset( $results['@json'][0] ) ) {
 			return $results;
 		}

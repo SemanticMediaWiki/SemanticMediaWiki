@@ -65,7 +65,7 @@ class FieldMapper {
 	 *
 	 * @return string
 	 */
-	public static function getField( Property $property, $affix = 'Field' ): string {
+	public static function getField( Property $property, string $affix = 'Field' ): string {
 		return self::getFieldType( $property ) . $affix;
 	}
 
@@ -636,7 +636,7 @@ class FieldMapper {
 	 *
 	 * @return string
 	 */
-	public function hierarchy( $params, $replacement, $hierarchy = [] ) {
+	public function hierarchy( $params, $replacement, $hierarchy = [] ): array|Condition {
 		if ( $hierarchy === [] ) {
 			return $params;
 		}

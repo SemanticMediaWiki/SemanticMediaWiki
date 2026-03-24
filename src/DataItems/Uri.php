@@ -159,7 +159,7 @@ class Uri extends DataItem {
 		return new Uri( $scheme, $hierpart, $query, $fragment, $strict );
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_URI ) {
 			return false;
 		}

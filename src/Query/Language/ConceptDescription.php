@@ -52,7 +52,7 @@ class ConceptDescription extends Description {
 		return false;
 	}
 
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		return SMW_CONCEPT_QUERY;
 	}
 

@@ -98,7 +98,7 @@ class ConditionBuilder {
 	 *
 	 * @param string $resultVariable
 	 */
-	public function setResultVariable( $resultVariable ) {
+	public function setResultVariable( $resultVariable ): static {
 		$this->resultVariable = $resultVariable;
 		return $this;
 	}
@@ -108,7 +108,7 @@ class ConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getNextVariable( $prefix = 'v' ): string {
+	public function getNextVariable( string $prefix = 'v' ): string {
 		return $prefix . ( ++$this->variableCounter );
 	}
 
@@ -117,7 +117,7 @@ class ConditionBuilder {
 	 *
 	 * @param array $sortKeys
 	 */
-	public function setSortKeys( $sortKeys ) {
+	public function setSortKeys( $sortKeys ): static {
 		$this->sortKeys = $sortKeys;
 		return $this;
 	}
@@ -323,7 +323,7 @@ class ConditionBuilder {
 	 *
 	 * @return Condition
 	 */
-	public function newTrueCondition( $joinVariable, $orderByProperty ) {
+	public function newTrueCondition( string $joinVariable, $orderByProperty ): TrueCondition {
 		$result = new TrueCondition();
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 		return $result;
@@ -336,7 +336,7 @@ class ConditionBuilder {
 	 *
 	 * @return string|null
 	 */
-	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ) {
+	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ): ?string {
 		if ( !$dataItem instanceof WikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}
@@ -406,13 +406,13 @@ class ConditionBuilder {
 	 * @param mixed $orderByProperty DIProperty or null
 	 * @param int $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
 	 */
-	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ): void {
+	public function addOrderByDataForProperty( Condition &$sparqlCondition, string $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ): void {
 		if ( $orderByProperty === null ) {
 			return;
 		}
 
 		if ( $diType == DataItem::TYPE_NOTYPE ) {
-			$diType = DataTypeRegistry::getInstance()->getDataItemId( $orderByProperty->findPropertyTypeID() );
+			$diType = DataTypeRegistry::getInstance()->getDataItemByType( $orderByProperty->findPropertyTypeID() );
 		}
 
 		$this->addOrderByData( $sparqlCondition, $mainVariable, $diType );
@@ -426,7 +426,7 @@ class ConditionBuilder {
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param int $diType DataItem type id
 	 */
-	public function addOrderByData( Condition &$condition, $mainVariable, $diType ): void {
+	public function addOrderByData( Condition &$condition, string $mainVariable, $diType ): void {
 		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
 			$condition->orderByVariable = $mainVariable;
 			return;
@@ -455,7 +455,7 @@ class ConditionBuilder {
 	 *
 	 * @param Condition &$condition condition to modify
 	 */
-	protected function addMissingOrderByConditions( Condition &$condition ) {
+	protected function addMissingOrderByConditions( Condition &$condition ): void {
 		foreach ( $this->sortKeys as $propertyKey => $order ) {
 
 			if ( !is_string( $propertyKey ) ) {

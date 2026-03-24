@@ -57,7 +57,7 @@ class JsonContentsFileReader {
 	 *
 	 * @return int
 	 */
-	public function getFileModificationTime( $languageCode ): int|false {
+	public function getFileModificationTime( string $languageCode ): int|false {
 		return filemtime( $this->getLanguageFile( $languageCode ) );
 	}
 
@@ -68,7 +68,7 @@ class JsonContentsFileReader {
 	 *
 	 * @return bool
 	 */
-	public function canReadByLanguageCode( $languageCode ): bool {
+	public function canReadByLanguageCode( string $languageCode ): bool {
 		$canReadByLanguageCode = '';
 
 		try {
@@ -131,7 +131,7 @@ class JsonContentsFileReader {
 		return self::$contents[$languageCode];
 	}
 
-	protected function readJSONFile( $languageCode, $cacheKey ) {
+	protected function readJSONFile( string $languageCode, $cacheKey ): mixed {
 		$contents = json_decode(
 			file_get_contents( $this->getLanguageFile( $languageCode ) ),
 			true
@@ -145,7 +145,7 @@ class JsonContentsFileReader {
 		throw new RuntimeException( ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() ) );
 	}
 
-	private function getLanguageFile( $languageCode ): string {
+	private function getLanguageFile( string $languageCode ): string {
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
 
 		if ( is_readable( $file ) ) {

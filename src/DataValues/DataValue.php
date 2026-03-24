@@ -23,7 +23,6 @@ use SMW\Localizer\Message;
 use SMW\Options;
 use SMW\ProcessingError;
 use SMW\Query\Language\Description;
-use SMW\Query\QueryComparator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;
 
@@ -527,19 +526,6 @@ abstract class DataValue {
 		return $description;
 	}
 
-	/**
-	 * @deprecated since 2.3
-	 *
-	 * @see DescriptionBuilder::prepareValue
-	 *
-	 * This method should no longer be used for direct public access, instead a
-	 * DataValue is expected to register a DescriptionBuilder with
-	 * DVDescriptionDeserializerRegistry.
-	 */
-	public static function prepareValue( &$value, &$comparator ): void {
-		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
-	}
-
 ///// Get methods /////
 
 	/**
@@ -567,7 +553,7 @@ abstract class DataValue {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->getDataItem()->getSerialization();
 	}
 
@@ -732,7 +718,7 @@ abstract class DataValue {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return $this->isValid() ? $this->m_dataitem->getHash() : implode( "\t", $this->mErrors );
 	}
 
@@ -742,7 +728,7 @@ abstract class DataValue {
 	 *
 	 * @return bool
 	 */
-	public function isNumeric() {
+	public function isNumeric(): bool {
 		if ( isset( $this->m_dataitem ) ) {
 			return is_numeric( $this->m_dataitem->getSortKey() );
 		}
@@ -756,7 +742,7 @@ abstract class DataValue {
 	 *
 	 * @return bool
 	 */
-	public function isValid() {
+	public function isValid(): bool {
 		return !$this->mHasErrors && isset( $this->m_dataitem );
 	}
 
@@ -772,7 +758,7 @@ abstract class DataValue {
 	 *
 	 * @return bool
 	 */
-	public function canUse() {
+	public function canUse(): bool {
 		return true;
 	}
 
@@ -781,7 +767,7 @@ abstract class DataValue {
 	 *
 	 * @return bool
 	 */
-	public function isRestricted() {
+	public function isRestricted(): bool {
 		return false;
 	}
 
@@ -922,7 +908,7 @@ abstract class DataValue {
 	 *
 	 * @param string $value
 	 */
-	abstract protected function parseUserValue( $value );
+	abstract protected function parseUserValue( $value ): void;
 
 	/**
 	 * Set the actual data contained in this object. The method returns
@@ -948,14 +934,14 @@ abstract class DataValue {
 	 * creating servicelinks. The number and content of values in the parameter array
 	 * may vary, depending on the concrete datatype.
 	 */
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): array|false {
 		return false;
 	}
 
 	/**
 	 * @deprecated since 3.1, use DataValue::checkConstraints
 	 */
-	protected function checkAllowedValues() {
+	protected function checkAllowedValues(): void {
 		$this->checkConstraints();
 	}
 

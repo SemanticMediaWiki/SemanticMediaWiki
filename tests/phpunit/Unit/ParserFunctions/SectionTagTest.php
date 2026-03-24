@@ -112,4 +112,106 @@ class SectionTagTest extends TestCase {
 		);
 	}
 
+	public function testParse_NullInput() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->parser->expects( $this->once() )
+			->method( 'recursiveTagParse' )
+			->with( $this->identicalTo( '' ) )
+			->willReturn( '' );
+
+		$this->parser->expects( $this->any() )
+			->method( 'getTitle' )
+			->willReturn( $title );
+
+		$instance = new SectionTag(
+			$this->parser,
+			$this->frame
+		);
+
+		$this->assertStringContainsString(
+			'<section></section>',
+			$instance->parse( null, [] )
+		);
+	}
+
+	public function testParse_WithClassArg() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->parser->expects( $this->any() )
+			->method( 'recursiveTagParse' )
+			->willReturn( 'Foo' );
+
+		$this->parser->expects( $this->any() )
+			->method( 'getTitle' )
+			->willReturn( $title );
+
+		$instance = new SectionTag(
+			$this->parser,
+			$this->frame
+		);
+
+		$this->assertStringContainsString(
+			'<section class="myclass">Foo</section>',
+			$instance->parse( 'Foo', [ 'class' => 'myclass' ] )
+		);
+	}
+
+	public function testParse_WithIdArg() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->parser->expects( $this->any() )
+			->method( 'recursiveTagParse' )
+			->willReturn( 'Foo' );
+
+		$this->parser->expects( $this->any() )
+			->method( 'getTitle' )
+			->willReturn( $title );
+
+		$instance = new SectionTag(
+			$this->parser,
+			$this->frame
+		);
+
+		$this->assertStringContainsString(
+			'<section id="mysection">Foo</section>',
+			$instance->parse( 'Foo', [ 'id' => 'mysection' ] )
+		);
+	}
+
+	public function testParse_WithClassArgInPropertyNamespace() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->willReturn( SMW_NS_PROPERTY );
+
+		$this->parser->expects( $this->any() )
+			->method( 'recursiveTagParse' )
+			->willReturn( 'Foo' );
+
+		$this->parser->expects( $this->any() )
+			->method( 'getTitle' )
+			->willReturn( $title );
+
+		$instance = new SectionTag(
+			$this->parser,
+			$this->frame
+		);
+
+		// When a class arg is already present, the property spec class is
+		// appended with a leading space to form a valid class list.
+		$result = $instance->parse( 'Foo', [ 'class' => 'myclass' ] );
+
+		$this->assertStringContainsString( 'myclass smw-property-specification', $result );
+	}
+
 }

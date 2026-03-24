@@ -255,26 +255,12 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 2.0, use setSemanticData
-	 */
-	public function setData( SemanticData $semanticData ): void {
-		$this->setSemanticData( $semanticData );
-	}
-
-	/**
 	 * @since 1.9
 	 *
 	 * @return SemanticData
 	 */
 	public function getSemanticData() {
 		return $this->semanticData;
-	}
-
-	/**
-	 * @deprecated since 2.0, use getSemanticData
-	 */
-	public function getData() {
-		return $this->getSemanticData();
 	}
 
 	/**
@@ -360,7 +346,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public static function hasSemanticData( ParserOutput $parserOutput ) {
+	public static function hasSemanticData( ParserOutput $parserOutput ): bool {
 		return $parserOutput->getExtensionData( 'smw-semanticdata-status' ) ?? false;
 	}
 
@@ -382,7 +368,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function updateStore( $opts = [] ): bool {
+	public function updateStore( bool|array $opts = [] ): bool {
 		$isDeferrableUpdate = false;
 
 		// @legacy
@@ -448,7 +434,7 @@ class ParserData {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function addLimitReport( $key, $value ): void {
+	public function addLimitReport( string $key, $value ): void {
 		$this->parserOutput->setLimitReportData( 'smw-limitreport-' . $key, $value );
 	}
 

@@ -118,7 +118,7 @@ class PropertyValue extends DataValue {
 	 * Clone it to make sure that data can be modified independently from the
 	 * original object's content.
 	 */
-	public function __clone() {
+	public function __clone(): void {
 		if ( $this->m_wikipage !== null ) {
 			$this->m_wikipage = clone $this->m_wikipage;
 		}
@@ -143,7 +143,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @todo Accept/enforce property namespace.
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$this->m_wikipage = null;
 
 		$propertyValueParser = $this->dataValueServiceFactory->getValueParser(
@@ -163,7 +163,8 @@ class PropertyValue extends DataValue {
 		[ $propertyName, $capitalizedName, $inverse ] = $propertyValueParser->parse( $value );
 
 		foreach ( $propertyValueParser->getErrors() as $error ) {
-			return $this->addErrorMsg( $error, Message::PARSE );
+			$this->addErrorMsg( $error, Message::PARSE );
+			return;
 		}
 
 		try {

@@ -381,7 +381,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function validate( array $params ) {
+	public function validate( array $params ): array {
 		if ( $params === [] ) {
 			return [];
 		}
@@ -604,7 +604,7 @@ class Client {
 	 *
 	 * @return mixed
 	 */
-	public function count( array $params ) {
+	public function count( array $params ): array {
 		if ( $params === [] ) {
 			return [];
 		}

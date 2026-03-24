@@ -37,7 +37,7 @@ class SearchTableUpdater {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->searchTable->isEnabled();
 	}
 
@@ -131,9 +131,10 @@ class SearchTableUpdater {
 	 * @param int $pid
 	 * @param string $text
 	 */
-	public function update( $sid, $pid, $text ) {
+	public function update( $sid, $pid, $text ): void {
 		if ( trim( $text ) === '' || ( $indexableText = $this->textSanitizer->sanitize( $text ) ) === '' ) {
-			return $this->delete( $sid, $pid );
+			$this->delete( $sid, $pid );
+			return;
 		}
 
 		$this->connection->update(

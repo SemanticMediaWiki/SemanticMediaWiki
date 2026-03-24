@@ -172,7 +172,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getDataItems() {
+	public function getDataItems(): array {
 		return parent::getDataItems();
 	}
 
@@ -182,7 +182,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 			return;
@@ -285,7 +285,7 @@ class ReferenceValue extends AbstractMultiValue {
 		return false;
 	}
 
-	private function newContainerSemanticData( $value ) {
+	private function newContainerSemanticData( $value ): ContainerSemanticData {
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

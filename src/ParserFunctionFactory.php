@@ -58,20 +58,6 @@ class ParserFunctionFactory {
 	}
 
 	/**
-	 * @deprecated since 2.1, use newSubobjectParserFunction
-	 */
-	public function getSubobjectParser(): SubobjectParserFunc {
-		return $this->newSubobjectParserFunction( $this->parser );
-	}
-
-	/**
-	 * @deprecated since 2.1, use newRecurringEventsParserFunction
-	 */
-	public function getRecurringEventsParser(): RecurringEventsParserFunc {
-		return $this->newRecurringEventsParserFunction( $this->parser );
-	}
-
-	/**
 	 * @since 3.0
 	 *
 	 * @param Parser $parser

@@ -37,7 +37,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->subpropertyParentTypeInheritance = (bool)$subpropertyParentTypeInheritance;
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		$subject = $this->getSemanticData()->getSubject();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {

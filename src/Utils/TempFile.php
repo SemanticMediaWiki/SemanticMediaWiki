@@ -39,7 +39,7 @@ class TempFile extends File {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function get( $file ): string {
+	public function get( string $file ): string {
 		$tmpDir = [];
 		$path = '';
 

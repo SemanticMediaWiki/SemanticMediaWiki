@@ -154,7 +154,7 @@ class ChangeDiff {
 	 *
 	 * @return array
 	 */
-	public function getChangeListByType( $type ) {
+	public function getChangeListByType( $type ): array {
 		return $this->changeList[$type] ?? [];
 	}
 
@@ -172,7 +172,7 @@ class ChangeDiff {
 	 *
 	 * @return string
 	 */
-	public function toJson( $prettify = false ) {
+	public function toJson( $prettify = false ): string|false {
 		$changes = [];
 
 		foreach ( $this->tableChangeOps as $tableChangeOp ) {

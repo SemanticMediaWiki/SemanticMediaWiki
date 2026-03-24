@@ -75,7 +75,7 @@ class Restrictions {
 	 *
 	 * @return
 	 */
-	public static function applyLimitRestriction( PrintRequest $printRequest, array $content ) {
+	public static function applyLimitRestriction( PrintRequest $printRequest, array $content ): array {
 		$limit = (int)$printRequest->getParameter( 'limit' );
 		$offset = (int)$printRequest->getParameter( 'offset' );
 

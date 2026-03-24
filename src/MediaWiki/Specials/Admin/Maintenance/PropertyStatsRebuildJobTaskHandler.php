@@ -49,7 +49,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return $this->isApiTask;
 	}
 
@@ -129,9 +129,10 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		if ( !$this->hasFeature( SMW_ADM_PSTATS ) || $this->hasPendingJob() || $this->isApiTask() ) {
-			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
+			$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
+			return;
 		}
 
 		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(

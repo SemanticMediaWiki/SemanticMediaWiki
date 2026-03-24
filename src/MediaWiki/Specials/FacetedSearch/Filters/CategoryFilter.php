@@ -98,7 +98,7 @@ class CategoryFilter {
 		);
 	}
 
-	private function matchFilter( array $categoryFilters, int|string $key, $count, &$list, $clear ) {
+	private function matchFilter( array $categoryFilters, int|string $key, $count, array &$list, $clear ): ?WikiPage {
 		$category = WikiPage::newFromText( $key, NS_CATEGORY );
 		$key = str_replace( '_', ' ', $key );
 

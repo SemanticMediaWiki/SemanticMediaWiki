@@ -191,7 +191,7 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 */
-	private function last_update() {
+	private function last_update(): string {
 		$pid = $this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new Property( '_MDAT' ) );
 

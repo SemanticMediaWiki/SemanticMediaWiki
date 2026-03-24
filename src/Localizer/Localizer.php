@@ -196,7 +196,7 @@ class Localizer {
 	 *
 	 * @return LocalLanguage
 	 */
-	public function getLang( $language = '' ) {
+	public function getLang( $language = '' ): LocalLanguage {
 		$languageCode = $language;
 
 		if ( $language instanceof Language ) {
@@ -295,18 +295,6 @@ class Localizer {
 	}
 
 	/**
-	 * @deprecated 2.5, use Localizer::getAnnotatedLanguageCodeFrom instead
-	 * @since 2.4
-	 *
-	 * @param string &$value
-	 *
-	 * @return string|false
-	 */
-	public static function getLanguageCodeFrom( &$value ): string|false {
-		return self::getAnnotatedLanguageCodeFrom( $value );
-	}
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param int $index
@@ -314,7 +302,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function createTextWithNamespacePrefix( $index, $text ): string {
+	public function createTextWithNamespacePrefix( $index, string $text ): string {
 		return $this->getNsText( $index ) . ':' . $text;
 	}
 

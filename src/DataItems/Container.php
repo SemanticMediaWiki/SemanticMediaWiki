@@ -68,7 +68,7 @@ class Container extends DataItem {
 	 *
 	 * @param string $sortKey
 	 */
-	public function setSortKey( $sortKey ): void {
+	public function setSortKey( string $sortKey ): void {
 		$this->m_semanticData->addPropertyObjectValue(
 			new Property( '_SKEY' ),
 			new Blob( $this->m_semanticData->getSubject()->getSortKey() . '#' . $sortKey )
@@ -130,7 +130,7 @@ class Container extends DataItem {
 		return new Container( $data );
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_CONTAINER ) {
 			return false;
 		}

@@ -71,7 +71,7 @@ class SemanticDataSerializerTest extends TestCase {
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
-		$subobject->setSemanticData( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 		$subobject->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has subobjects', 'Bam' ) );
 
 		$foo->addPropertyObjectValue(
@@ -87,11 +87,11 @@ class SemanticDataSerializerTest extends TestCase {
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has queez', 'Xeey' ) );
 
 		$subobject = new Subobject( $title );
-		$subobject->setSemanticData( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 		$subobject->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has subobjects', 'Bam' ) );
 		$subobject->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Fuz' ) );
 
-		$subobject->setSemanticData( 'Bar' );
+		$subobject->setEmptyContainerForId( 'Bar' );
 		$subobject->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Fuz' ) );
 
 		$foo->addPropertyObjectValue(

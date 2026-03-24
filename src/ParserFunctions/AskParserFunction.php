@@ -100,7 +100,7 @@ class AskParserFunction {
 	 *
 	 * @return AskParserFunction
 	 */
-	public function setShowMode( $mode ) {
+	public function setShowMode( $mode ): static {
 		$this->showMode = $mode;
 		return $this;
 	}
@@ -142,7 +142,7 @@ class AskParserFunction {
 	 *
 	 * @return string|null
 	 */
-	public function parse( array $functionParams ) {
+	public function parse( array $functionParams ): ?string {
 		// Do we still need this?
 		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
 		$GLOBALS['smwgIQRunningNumber']++;

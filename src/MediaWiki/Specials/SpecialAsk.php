@@ -43,10 +43,7 @@ use SMW\Utils\UrlArgs;
  */
 class SpecialAsk extends SpecialPage {
 
-	/**
-	 * @var QuerySourceFactory
-	 */
-	private $querySourceFactory;
+	private QuerySourceFactory $querySourceFactory;
 
 	private string $queryString = '';
 
@@ -248,7 +245,7 @@ class SpecialAsk extends SpecialPage {
 	/**
 	 * @param string $p
 	 */
-	protected function extractQueryParameters( $p ) {
+	protected function extractQueryParameters( $p ): void {
 		$request = $this->getRequest();
 		$this->isEditMode = false;
 
@@ -272,7 +269,7 @@ class SpecialAsk extends SpecialPage {
 		}
 	}
 
-	protected function makeHTMLResult() {
+	protected function makeHTMLResult(): void {
 		$result = '';
 		$res = null;
 		$settings = ApplicationFactory::getInstance()->getSettings();
@@ -312,7 +309,8 @@ class SpecialAsk extends SpecialPage {
 				// Generate raw content when being requested from a remote special_page
 				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_FILE ) . RemoteRequest::REQUEST_ID;
 			} else {
-				return $printer->outputAsFile( $res, $this->params );
+				$printer->outputAsFile( $res, $this->params );
+				return;
 			}
 		}
 
@@ -503,7 +501,7 @@ class SpecialAsk extends SpecialPage {
 		return [ $result, $res, $duration ];
 	}
 
-	private function getQueryLog( $duration, $isFromCache = false ): array {
+	private function getQueryLog( $duration, bool $isFromCache = false ): array {
 		$source = null;
 
 		if ( isset( $this->parameters['source'] ) ) {

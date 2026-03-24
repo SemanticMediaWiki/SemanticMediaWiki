@@ -90,7 +90,7 @@ class CheckboxRangeGroupValueFilter {
 		);
 	}
 
-	private function matchFilter( string $property, $range, array $valueFilters, &$list, $isClear ): void {
+	private function matchFilter( string $property, array $range, array $valueFilters, array &$list, $isClear ): void {
 		$key = $range['min'] . '|' . $range['max'];
 
 		if ( $key === '' ) {
@@ -135,7 +135,7 @@ class CheckboxRangeGroupValueFilter {
 
 		$property = Property::newFromUserLabel( $property );
 
-		$diType = DataTypeRegistry::getInstance()->getDataItemId(
+		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyTypeID()
 		);
 

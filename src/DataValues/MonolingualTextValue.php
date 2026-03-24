@@ -87,7 +87,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return string
 	 */
-	public function getTextWithLanguageTag( $text, $languageCode ): string {
+	public function getTextWithLanguageTag( string $text, $languageCode ): string {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
 
 		// @TODO test de-formal with PropertyListByApiRequest
@@ -102,7 +102,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @param string $userValue
 	 */
-	protected function parseUserValue( $userValue ) {
+	protected function parseUserValue( $userValue ): void {
 		[ $text, $languageCode ] = $this->getValuesFromString( $userValue );
 
 		$languageCodeValue = $this->newLanguageCodeValue( $languageCode );
@@ -269,7 +269,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getDataItems() {
+	public function getDataItems(): array {
 		return parent::getDataItems();
 	}
 
@@ -352,7 +352,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 		return $list['_TEXT'] . '@' . $list['_LCODE'];
 	}
 
-	private function newContainerSemanticData( string $value ) {
+	private function newContainerSemanticData( string $value ): ContainerSemanticData {
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

@@ -56,7 +56,7 @@ class OutputFormatter {
 	 *
 	 * @param string $html
 	 */
-	public function addAsPreformattedText( $html ): void {
+	public function addAsPreformattedText( string $html ): void {
 		$this->outputPage->addHTML( '<pre>' . $html . '</pre>' );
 	}
 
@@ -101,7 +101,7 @@ class OutputFormatter {
 	 *
 	 * @param string $fragment
 	 */
-	public function redirectToRootPage( $fragment = '', $query = [] ): void {
+	public function redirectToRootPage( string $fragment = '', $query = [] ): void {
 		$title = SpecialPage::getTitleFor( 'SMWAdmin' );
 		$title->setFragment( ' ' . $fragment );
 

@@ -265,7 +265,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		}
 	}
 
-	private function canUse( Query $query ) {
+	private function canUse( Query $query ): bool {
 		if ( !$this->enabledCache || !$this->blobStore->canUse() ) {
 			return false;
 		}
@@ -419,7 +419,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function addToLinkedList( $contextPage, string $queryId ): void {
+	private function addToLinkedList( WikiPage $contextPage, string $queryId ): void {
 		// Ensure that without QueryDependencyLinksStore being enabled recorded
 		// subjects related to a query can be discoverable and purged separately
 		$container = $this->blobStore->read(

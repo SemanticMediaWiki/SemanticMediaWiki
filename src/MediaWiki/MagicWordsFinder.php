@@ -30,7 +30,7 @@ class MagicWordsFinder {
 	 *
 	 * @return self
 	 */
-	public function setOutput( ParserOutput $parserOutput ) {
+	public function setOutput( ParserOutput $parserOutput ): static {
 		$this->parserOutput = $parserOutput;
 		return $this;
 	}

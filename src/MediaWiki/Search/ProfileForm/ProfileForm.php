@@ -81,7 +81,7 @@ class ProfileForm {
 	 *
 	 * @return array
 	 */
-	public static function getFormDefinitions( Store $store ) {
+	public static function getFormDefinitions( Store $store ): array {
 		static $data = null;
 
 		if ( $data !== null ) {

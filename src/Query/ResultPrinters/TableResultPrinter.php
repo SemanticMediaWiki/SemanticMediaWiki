@@ -56,7 +56,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['class'] = [
@@ -244,7 +244,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, $columnClass ) {
+	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, string $columnClass ): void {
 		/** @var DataValue[] $dataValues */
 		$dataValues = [];
 

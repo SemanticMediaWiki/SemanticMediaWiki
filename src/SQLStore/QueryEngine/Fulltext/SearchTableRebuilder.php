@@ -79,7 +79,7 @@ class SearchTableRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function canRebuild() {
+	public function canRebuild(): bool {
 		return $this->searchTableUpdater->isEnabled();
 	}
 
@@ -90,9 +90,9 @@ class SearchTableRebuilder {
 	 *
 	 * @return void|bool
 	 */
-	public function rebuild() {
+	public function rebuild(): ?bool {
 		if ( !$this->canRebuild() ) {
-			return;
+			return null;
 		}
 
 		if ( $this->optimization ) {

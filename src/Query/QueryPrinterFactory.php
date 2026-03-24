@@ -22,7 +22,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @return QueryPrinterFactory
 	 */
-	public static function singleton() {
+	public static function singleton(): self {
 		static $instance = null;
 
 		if ( $instance === null ) {
@@ -32,7 +32,7 @@ final class QueryPrinterFactory {
 		return $instance;
 	}
 
-	private static function newFromGlobalState() {
+	private static function newFromGlobalState(): self {
 		$instance = new self();
 
 		foreach ( $GLOBALS['smwgResultFormats'] as $formatName => $printerClass ) {

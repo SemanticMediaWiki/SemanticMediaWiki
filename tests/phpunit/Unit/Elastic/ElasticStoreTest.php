@@ -86,6 +86,10 @@ class ElasticStoreTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$connection->expects( $this->any() )
+			->method( 'tableName' )
+			->willReturnArgument( 0 );
+
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -96,6 +100,10 @@ class ElasticStoreTest extends TestCase {
 		$database->expects( $this->any() )
 			->method( 'getServerInfo' )
 			->willReturn( '5.7.21' );
+
+		$database->expects( $this->any() )
+			->method( 'tableName' )
+			->willReturnArgument( 0 );
 
 		$database->expects( $this->any() )
 			->method( 'query' )
@@ -172,6 +180,10 @@ class ElasticStoreTest extends TestCase {
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'tableName' )
+			->willReturnArgument( 0 );
 
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()

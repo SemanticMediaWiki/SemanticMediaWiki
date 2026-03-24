@@ -134,7 +134,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return bool Success indicator
 	 */
-	public function addToUsageCounts( array $additions ) {
+	public function addToUsageCounts( array $additions ): bool {
 		$success = true;
 
 		if ( $additions === [] ) {

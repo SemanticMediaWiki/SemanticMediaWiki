@@ -27,7 +27,7 @@ class StatusCodeProfileAnnotator extends ProfileAnnotatorDecorator {
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->statusCodes !== [] ) {
 			foreach ( $this->statusCodes as $statusCode ) {
 				$this->addStatusCodeAnnotation( $statusCode );

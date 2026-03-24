@@ -35,7 +35,7 @@ class SkinAfterContent implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function performUpdate( &$data ): bool {
+	public function performUpdate( string &$data ): bool {
 		if ( $this->canAddFactbox() ) {
 			$this->addFactboxTo( $data );
 		}
@@ -57,7 +57,7 @@ class SkinAfterContent implements HookListener {
 		return true;
 	}
 
-	private function addFactboxTo( &$data ): void {
+	private function addFactboxTo( string &$data ): void {
 		$cachedFactbox = ApplicationFactory::getInstance()->singleton( 'FactboxFactory' )->newCachedFactbox();
 
 		$data .= $cachedFactbox->retrieveContent(

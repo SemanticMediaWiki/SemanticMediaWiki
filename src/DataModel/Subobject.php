@@ -104,7 +104,7 @@ class Subobject {
 	 * @return self
 	 * @throws InvalidArgumentException
 	 */
-	public function setEmptyContainerForId( $identifier ) {
+	public function setEmptyContainerForId( $identifier ): static {
 		if ( $identifier === '' ) {
 			throw new InvalidArgumentException( 'Expected a valid (non-empty) indentifier' );
 		}
@@ -119,13 +119,6 @@ class Subobject {
 		$this->semanticData = new ContainerSemanticData( $subWikiPage );
 
 		return $this;
-	}
-
-	/**
-	 * @deprecated since 2.0
-	 */
-	public function setSemanticData( $identifier ): void {
-		$this->setEmptyContainerForId( $identifier );
 	}
 
 	/**

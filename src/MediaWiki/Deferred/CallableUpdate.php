@@ -194,7 +194,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @return string
 	 */
-	public function getOrigin() {
+	public function getOrigin(): string|false {
 		if ( is_string( $this->origin ) ) {
 			$this->origin = [ $this->origin ];
 		}
@@ -274,7 +274,7 @@ class CallableUpdate implements DeferrableUpdate {
 		$this->doUpdate();
 	}
 
-	protected function registerUpdate( $update ) {
+	protected function registerUpdate( $update ): void {
 		$this->logger->info(
 			[ 'DeferrableUpdate', 'Added: {ctx}' ],
 			[ 'method' => __METHOD__, 'role' => 'developer', 'ctx' => $this->loggableContext() ]
@@ -297,7 +297,7 @@ class CallableUpdate implements DeferrableUpdate {
 		return [ 'origin' => $this->origin, 'fingerprint' => $this->fingerprint, 'stage' => $this->stage ];
 	}
 
-	protected function emptyCallback() {
+	protected function emptyCallback(): void {
 		$this->logger->info(
 			[ 'DeferrableUpdate', 'Empty callback!' ],
 			[ 'role' => 'developer', 'method' => __METHOD__ ]

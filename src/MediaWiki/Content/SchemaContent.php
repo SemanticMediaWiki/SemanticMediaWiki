@@ -62,7 +62,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return array
 	 */
-	public function __sleep() {
+	public function __sleep(): array {
 		return [ 'model_id', 'mText' ];
 	}
 
@@ -78,7 +78,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return null|string
 	 */
-	public function toJson() {
+	public function toJson(): string|false|null {
 		if ( $this->isValid() ) {
 			return json_encode( $this->parse );
 		}
@@ -118,7 +118,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
+	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ): static {
 		// FIXME: WikiPage::doUserEditContent invokes PST before validation. As such, native data
 		// may be invalid (though PST result is discarded later in that case).
 		if ( !$this->isValid() ) {

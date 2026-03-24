@@ -242,7 +242,7 @@ class QueryResult {
 		return $row;
 	}
 
-	private function newResultArray( WikiPage $page, PrintRequest $pr ) {
+	private function newResultArray( WikiPage $page, PrintRequest $pr ): ResultArray {
 		$resultArray = ResultArray::factory( $page, $pr, $this );
 		$resultArray->setItemJournal( $this->itemJournal );
 		return $resultArray;
@@ -379,19 +379,6 @@ class QueryResult {
 		$link->setParameter( $this->mQuery->getOffset() + count( $this->mResults ), 'offset' );
 
 		return $link;
-	}
-
-	/**
-	 * @deprecated since 2.5, use QueryResult::getQueryLink
-	 *
-	 * Returns an SMWInfolink object with the QueryResults print requests as parameters.
-	 *
-	 * @since 1.8
-	 *
-	 * @return Infolink
-	 */
-	public function getLink() {
-		return $this->getQueryLink();
 	}
 
 	/**

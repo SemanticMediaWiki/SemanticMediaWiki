@@ -92,19 +92,6 @@ class InMemoryPoolCache {
 	}
 
 	/**
-	 * @deprecated since 2.5, use InMemoryPoolCache::getPoolCacheById
-	 * @since 2.3
-	 *
-	 * @param string $poolCacheName
-	 * @param integer $cacheSize
-	 *
-	 * @return Cache
-	 */
-	public function getPoolCacheFor( $poolCacheName, $cacheSize = 500 ) {
-		return $this->getPoolCacheById( $poolCacheName, $cacheSize );
-	}
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param string $poolCacheId

@@ -47,10 +47,7 @@ class PropertyPage extends Page {
 	 */
 	private $isLockedView = false;
 
-	/**
-	 * @var int
-	 */
-	private $filterCount = 0;
+	private int|string|null $filterCount = 0;
 
 	/**
 	 * @see 3.0
@@ -66,7 +63,7 @@ class PropertyPage extends Page {
 	/**
 	 * @see Page::initParameters()
 	 */
-	protected function initParameters() {
+	protected function initParameters(): void {
 		// We use a smaller limit here; property pages might become large
 		$this->limit = $this->getOption( 'pagingLimit' );
 		$this->property = Property::newFromUserLabel( $this->getTitle()->getText() );
@@ -129,7 +126,7 @@ class PropertyPage extends Page {
 	 *
 	 * @return bool
 	 */
-	protected function isLockedView() {
+	protected function isLockedView(): bool {
 		return $this->isLockedView;
 	}
 
@@ -140,7 +137,7 @@ class PropertyPage extends Page {
 	 *
 	 * @return string|bool
 	 */
-	protected function getRedirectTargetURL() {
+	protected function getRedirectTargetURL(): string|bool {
 		$label = $this->getTitle()->getText();
 
 		if ( ( $key = PropertyRegistry::getInstance()->findPropertyIdByLabel( $label ) ) === false ) {
@@ -167,7 +164,7 @@ class PropertyPage extends Page {
 	 *
 	 * @return string
 	 */
-	protected function getHtml() {
+	protected function getHtml(): string {
 		if ( !$this->store->getRedirectTarget( $this->property )->equals( $this->property ) ) {
 			return '';
 		}

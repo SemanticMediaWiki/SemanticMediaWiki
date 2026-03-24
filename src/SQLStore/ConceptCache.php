@@ -148,7 +148,7 @@ class ConceptCache {
 	 *
 	 * @return string
 	 */
-	public function getConceptCacheText( Title $concept ) {
+	public function getConceptCacheText( Title $concept ): string|bool {
 		$values = $this->store->getPropertyValues(
 			WikiPage::newFromTitle( $concept ),
 			new Property( '_CONC' )
@@ -172,7 +172,7 @@ class ConceptCache {
 	 *
 	 * @return int
 	 */
-	private function getIdOfConcept( Title $concept ) {
+	private function getIdOfConcept( Title $concept ): int {
 		return $this->store->smwIds->getSMWPageID(
 			$concept->getDBkey(),
 			SMW_NS_CONCEPT,
@@ -185,7 +185,7 @@ class ConceptCache {
 	/**
 	 * @param int $conceptId
 	 */
-	private function deleteConceptById( $conceptId ): void {
+	private function deleteConceptById( int $conceptId ): void {
 		// TODO: exceptions should be caught
 
 		$db = $this->store->getConnection();

@@ -28,7 +28,7 @@ class LanguageContents {
 	 *
 	 * @return string
 	 */
-	public function getCanonicalFallbackLanguageCode() {
+	public function getCanonicalFallbackLanguageCode(): string {
 		return $this->fallbackFinder->getCanonicalFallbackLanguageCode();
 	}
 
@@ -114,7 +114,7 @@ class LanguageContents {
 		return $this->matchCanonicalLanguage( $canonicalFallbackLanguageCode, $id );
 	}
 
-	private function matchCanonicalLanguage( $languageCode, $id ) {
+	private function matchCanonicalLanguage( string $languageCode, $id ) {
 		$depth = 1;
 
 		if ( strpos( $id, '.' ) !== false ) {

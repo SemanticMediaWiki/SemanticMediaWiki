@@ -69,15 +69,9 @@ class ExportController {
 	 */
 	protected $outputfile;
 
-	/**
-	 * @var DeepRedirectTargetResolver
-	 */
-	private $deepRedirectTargetResolver;
+	private ?DeepRedirectTargetResolver $deepRedirectTargetResolver = null;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private ?NamespaceExaminer $namespaceExaminer = null;
 
 	/**
 	 * @since 1.5.5
@@ -318,7 +312,7 @@ class ExportController {
 	 * and we do not want to modify the store's result which may be used for
 	 * caching purposes elsewhere.
 	 */
-	protected function getSemanticData( WikiPage $diWikiPage, $core_props_only ) {
+	protected function getSemanticData( WikiPage $diWikiPage, $core_props_only ): ?SemanticData {
 		// Issue 619
 		// Resolve the redirect target and return a container with information
 		// about the redirect
@@ -368,7 +362,7 @@ class ExportController {
 	 * Send to the output what has been serialized so far. The flush might
 	 * be deferred until later unless $force is true.
 	 */
-	protected function flush( $force = false ) {
+	protected function flush( $force = false ): void {
 		if ( !$force && ( $this->delay_flush > 0 ) ) {
 			$this->delay_flush -= 1;
 		} elseif ( $this->outputfile !== null ) {
@@ -498,7 +492,7 @@ class ExportController {
 	/**
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
-	protected function printAll( $ns_restriction, $delay, $delayeach ) {
+	protected function printAll( $ns_restriction, $delay, $delayeach ): void {
 		$mwServices = MediaWikiServices::getInstance();
 		$titleFactory = $mwServices->getTitleFactory();
 		$linkCache = $mwServices->getLinkCache();
@@ -655,7 +649,7 @@ class ExportController {
 	 *
 	 * @return bool
 	 */
-	public static function fitsNsRestriction( $res, $ns ) {
+	public static function fitsNsRestriction( $res, $ns ): bool {
 		if ( $res === false ) {
 			return true;
 		}
@@ -668,7 +662,7 @@ class ExportController {
 		return ( ( $res != NS_CATEGORY ) && ( $res != SMW_NS_PROPERTY ) );
 	}
 
-	private function getDeepRedirectTargetResolver() {
+	private function getDeepRedirectTargetResolver(): DeepRedirectTargetResolver {
 		if ( $this->deepRedirectTargetResolver === null ) {
 			$this->deepRedirectTargetResolver = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
 		}

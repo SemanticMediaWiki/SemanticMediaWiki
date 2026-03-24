@@ -33,6 +33,6 @@ interface ActionableTask {
 	 *
 	 * @param WebRequest $webRequest
 	 */
-	public function handleRequest( WebRequest $webRequest );
+	public function handleRequest( WebRequest $webRequest ): void;
 
 }

@@ -27,10 +27,7 @@ use SMWDInumber as DINumber;
  */
 class SomeValueInterpreter {
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private ?FieldMapper $fieldMapper = null;
 
 	/**
 	 * @since 3.0
@@ -466,7 +463,7 @@ class SomeValueInterpreter {
 	 *
 	 * @return array
 	 */
-	public function inverse_property( $params, $options ) {
+	public function inverse_property( $params, array $options ) {
 		$termsLookup = $this->conditionBuilder->getTermsLookup();
 		$comparator = $options['comparator'];
 

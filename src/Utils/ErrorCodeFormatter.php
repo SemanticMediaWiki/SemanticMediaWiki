@@ -27,7 +27,7 @@ class ErrorCodeFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getStringFromJsonErrorCode( $errorCode ) {
+	public static function getStringFromJsonErrorCode( $errorCode ): string {
 		if ( self::$constants === [] ) {
 			self::$constants = get_defined_constants( true );
 		}

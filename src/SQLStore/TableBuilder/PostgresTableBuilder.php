@@ -69,7 +69,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $attributes ) {
+	protected function doCreateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 
 		$fieldSql = [];
@@ -91,7 +91,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $attributes ) {
+	protected function doUpdateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -183,7 +183,7 @@ EOT;
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, array $currentFields, array $attributes ): void {
+	private function doUpdateField( string $tableName, $fieldName, $fieldType, array $currentFields, array $attributes ): void {
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
@@ -260,7 +260,7 @@ EOT;
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $fieldType, string $default ): void {
+	private function doCreateField( string $tableName, string $fieldName, $fieldType, string $default ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		// https://www.postgresql.org/docs/9.1/datatype-enum.html
@@ -278,7 +278,7 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doDropField( $tableName, int|string $fieldName ): void {
+	private function doDropField( string $tableName, int|string $fieldName ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -293,7 +293,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, array $indexOptions ) {
+	protected function doCreateIndices( $tableName, array $indexOptions ): void {
 		$indices = $indexOptions['indices'];
 		$ix = [];
 
@@ -375,7 +375,7 @@ EOT;
 	/**
 	 * @return mixed[]
 	 */
-	private function getIndexInfo( $tableName ): array {
+	private function getIndexInfo( string $tableName ): array {
 		$indices = [];
 
 		$sql = "SELECT  i.relname AS indexname,"
@@ -416,7 +416,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doDropTable( $tableName ) {
+	protected function doDropTable( $tableName ): void {
 		// Function: SMW\SQLStore\TableBuilder\PostgresTableBuilder::doDropTable
 		// Error: 2BP01 ERROR:  cannot drop table smw_object_ids because other objects depend on it
 		// DETAIL:  default for table sunittest_smw_object_ids column smw_id depends on sequence smw_object_ids_smw_id_seq
@@ -429,7 +429,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doOptimize( $tableName ) {
+	protected function doOptimize( $tableName ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(

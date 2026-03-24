@@ -136,7 +136,7 @@ class HierarchyLookup {
 	 *
 	 * @return bool
 	 */
-	public function hasSubproperty( Property $property ) {
+	public function hasSubproperty( Property $property ): bool {
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
 		}
@@ -155,7 +155,7 @@ class HierarchyLookup {
 	 *
 	 * @return bool
 	 */
-	public function hasSubcategory( WikiPage $category ) {
+	public function hasSubcategory( WikiPage $category ): bool {
 		if ( $this->subcategoryDepth < 1 ) {
 			return false;
 		}

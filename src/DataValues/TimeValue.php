@@ -146,7 +146,7 @@ class TimeValue extends DataValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = Localizer::convertDoubleWidth( $value );
 
 		$this->m_wikivalue = $value;
@@ -213,7 +213,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @return bool stating if successful
 	 */
-	protected function interpretDateComponents( $datecomponents, &$date ): bool {
+	protected function interpretDateComponents( $datecomponents, array|false &$date ): bool {
 		// The following code segment creates a bit vector to encode
 		// which role each digit of the entered date can take (day,
 		// year, month). The vector starts with 1 and contains three
@@ -526,7 +526,7 @@ class TimeValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->m_wikivalue ? $this->m_wikivalue : strip_tags( $this->getLongWikiText() );
 	}
 
@@ -612,13 +612,6 @@ class TimeValue extends DataValue {
 	 */
 	public function getTimeString( $default = '00:00:00' ) {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->getTimeString( $default );
-	}
-
-	/**
-	 * @deprecated This method is now called getISO8601Date(). It will vanish before SMW 1.7.
-	 */
-	public function getXMLSchemaDate( $mindefault = true ) {
-		return $this->getISO8601Date( $mindefault );
 	}
 
 	/**

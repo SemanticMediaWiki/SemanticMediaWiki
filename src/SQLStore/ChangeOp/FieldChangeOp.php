@@ -70,7 +70,7 @@ class FieldChangeOp {
 	/**
 	 * @since 3.0
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return json_encode( [ $this->type => $this->changeOp ] );
 	}
 

@@ -153,7 +153,7 @@ class Deserializer {
 		return $printRequest;
 	}
 
-	private static function isCategory( $text ) {
+	private static function isCategory( $text ): bool {
 		$text = mb_convert_case( $text, MB_CASE_TITLE );
 
 		// Check for the canonical form (singular, plural)

@@ -88,7 +88,7 @@ class PropertyTableHashes {
 	 *
 	 * @return array
 	 */
-	public function getPropertyTableHashesById( $id ) {
+	public function getPropertyTableHashesById( $id ): mixed {
 		if ( $id == 0 ) {
 			return [];
 		}

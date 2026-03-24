@@ -40,8 +40,7 @@ class ContentModellerTest extends TestCase {
 		$contents = [
 			'description' => '...',
 			'import' => [
-				'page' => 'Foo',
-				'version' => 1
+				[ 'page' => 'Foo', 'contents' => 'Some content' ]
 			]
 		];
 

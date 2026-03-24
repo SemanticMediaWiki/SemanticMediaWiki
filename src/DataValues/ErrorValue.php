@@ -27,7 +27,7 @@ class ErrorValue extends DataValue {
 		}
 	}
 
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}

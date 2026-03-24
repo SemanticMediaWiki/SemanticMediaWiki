@@ -26,10 +26,7 @@ class RedirectUpdater {
 	 */
 	private array $lookupCache = [];
 
-	/**
-	 * @var Flag
-	 */
-	private $equalitySupport;
+	private Flag $equalitySupport;
 
 	/**
 	 * @since 3.1

@@ -208,7 +208,7 @@ class Database {
 	 * @return ResultWrapper
 	 * @throws UnexpectedValueException
 	 */
-	public function select( $tableName, $fields, $conditions, $fname, array $options = [], $joinConditions = [] ) {
+	public function select( string|array $tableName, string|array $fields, string|array $conditions, string $fname, array $options = [], array $joinConditions = [] ) {
 		$tablePrefix = null;
 		$connection = $this->connRef->getConnection( 'read' );
 
@@ -439,7 +439,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function makeSelectOptions( $options ): array {
+	public function makeSelectOptions( array $options ): array {
 		return OptionsBuilder::makeSelectOptions( $this, $options );
 	}
 
@@ -777,7 +777,7 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function escape_bytea( $text ) {
+	public function escape_bytea( $text ): string {
 		if ( $this->isType( 'postgres' ) ) {
 			// normally one uses pg_escape_bytea PHP function to do this
 			// unfortunately pg_escape_bytea requires a PgSql\Connection as of PHP 8.1+

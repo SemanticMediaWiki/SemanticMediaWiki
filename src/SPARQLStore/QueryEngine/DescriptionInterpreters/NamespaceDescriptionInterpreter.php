@@ -21,10 +21,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
  */
 class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1
@@ -47,7 +44,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): WhereCondition {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 

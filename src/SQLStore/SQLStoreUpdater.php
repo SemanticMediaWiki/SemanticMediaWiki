@@ -79,9 +79,6 @@ class SQLStoreUpdater {
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ): Status {
-		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
-		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
-
 		$this->hookContainer->run( 'SMW::SQLStore::BeforeDeleteSubjectComplete', [ $this->store, $title ] );
 
 		// Fetch all possible matches (including any duplicates created by
@@ -127,15 +124,12 @@ class SQLStoreUpdater {
 			]
 		);
 
-		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
-		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectAfter', [ $this->store, $title ] );
-
 		$this->hookContainer->run( 'SMW::SQLStore::AfterDeleteSubjectComplete', [ $this->store, $title ] );
 
 		return $status;
 	}
 
-	private function doDelete( $id, WikiPage $subject, $subobjectListFinder, &$extensionList ): void {
+	private function doDelete( $id, WikiPage $subject, $subobjectListFinder, array &$extensionList ): void {
 		$this->semanticDataLookup->invalidateCache( $id );
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches

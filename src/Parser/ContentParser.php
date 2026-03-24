@@ -69,7 +69,7 @@ class ContentParser {
 	 *
 	 * @return ContentParser
 	 */
-	public function setRevision( ?RevisionRecord $revision = null ) {
+	public function setRevision( ?RevisionRecord $revision = null ): static {
 		$this->revision = $revision;
 		return $this;
 	}
@@ -119,7 +119,7 @@ class ContentParser {
 	 *
 	 * @return ContentParser
 	 */
-	public function parse( ?string $text = null, bool $clear = true ) {
+	public function parse( ?string $text = null, bool $clear = true ): static {
 		if ( $text !== null ) {
 			return $this->parseText( $text, $clear );
 		}
@@ -127,7 +127,7 @@ class ContentParser {
 		return $this->fetchFromContent();
 	}
 
-	private function parseText( ?string $text, bool $clear ) {
+	private function parseText( ?string $text, bool $clear ): static {
 		$options = $this->makeParserOptions();
 
 		// Deal with uninitialised parser output:
@@ -141,7 +141,7 @@ class ContentParser {
 		return $this;
 	}
 
-	private function fetchFromContent() {
+	private function fetchFromContent(): static {
 		if ( $this->getRevision() === null ) {
 			return $this->msgForNullRevision();
 		}
@@ -172,7 +172,7 @@ class ContentParser {
 		return $this;
 	}
 
-	private function msgForNullRevision( $fname = __METHOD__ ) {
+	private function msgForNullRevision( string $fname = __METHOD__ ): static {
 		$this->errors = [ $fname . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" ];
 		return $this;
 	}

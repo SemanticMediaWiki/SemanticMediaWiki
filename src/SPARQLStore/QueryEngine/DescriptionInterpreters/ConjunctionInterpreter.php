@@ -27,10 +27,7 @@ use stdClass;
  */
 class ConjunctionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1
@@ -53,7 +50,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): Condition {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 

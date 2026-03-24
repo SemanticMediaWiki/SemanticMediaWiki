@@ -128,7 +128,7 @@ class QueryBuilder {
 	 *
 	 * @return
 	 */
-	public function getQueryString( Store $store, $term ) {
+	public function getQueryString( Store $store, $term ): string {
 		// Special invisible char which is set by the JS component to allow to
 		// push a forms submit through the SearchEngine without an actual "search
 		// term" to avoid being blocked on an empty request which only contains

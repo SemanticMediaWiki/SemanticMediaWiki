@@ -66,7 +66,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $attributes ) {
+	protected function doCreateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
@@ -86,7 +86,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
-	private function sql_from( array $attributes ) {
+	private function sql_from( array $attributes ): string {
 		// $smwgFulltextSearchTableOptions can define:
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' )
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
@@ -116,7 +116,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $attributes ) {
+	protected function doUpdateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -144,7 +144,7 @@ class MySQLTableBuilder extends TableBuilder {
 	/**
 	 * @return mixed[]
 	 */
-	private function getCurrentFields( $tableName ): array {
+	private function getCurrentFields( string $tableName ): array {
 		$sql = 'DESCRIBE ' . $tableName;
 
 		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
@@ -262,7 +262,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, array $indexOptions ) {
+	protected function doCreateIndices( $tableName, array $indexOptions ): void {
 		$indices = $indexOptions['indices'];
 
 		// First remove possible obsolete indices
@@ -331,7 +331,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * @return array indexname => columns
 	 */
-	private function getIndexInfo( $tableName ): array {
+	private function getIndexInfo( string $tableName ): array {
 		$indices = [];
 
 		$res = $this->connection->query(
@@ -355,7 +355,7 @@ class MySQLTableBuilder extends TableBuilder {
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, int|string $indexName, $columns ): void {
+	private function doDropIndex( string $tableName, int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
@@ -394,7 +394,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doDropTable( $tableName ) {
+	protected function doDropTable( $tableName ): void {
 		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
@@ -403,7 +403,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doOptimize( $tableName ) {
+	protected function doOptimize( $tableName ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(

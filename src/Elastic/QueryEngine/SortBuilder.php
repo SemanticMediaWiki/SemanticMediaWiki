@@ -105,7 +105,7 @@ class SortBuilder {
 		return [ $sort, $sortFields, $isRandom, $isConstantScore ];
 	}
 
-	private function addDefaultField( &$sort, $order, int $sortKeysCount ): void {
+	private function addDefaultField( array &$sort, $order, int $sortKeysCount ): void {
 		$sort['subject.sortkey.sort'] = [ 'order' => $order ];
 
 		// Add title as extra criteria in case an entity uses the same sortkey
@@ -117,7 +117,7 @@ class SortBuilder {
 		}
 	}
 
-	private function addField( &$sort, &$sortFields, $key, $order ): void {
+	private function addField( array &$sort, &$sortFields, $key, $order ): void {
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 		$chain = false;
 

@@ -23,7 +23,7 @@ class ExpDataDeserializer implements Deserializer {
 	 * @return ExpData
 	 * @throws OutOfBoundsException
 	 */
-	public function deserialize( $serialization ) {
+	public function deserialize( $serialization ): ?ExpData {
 		$expData = null;
 
 		if ( isset( $serialization['version'] ) && $serialization['version'] !== 0.1 ) {
@@ -47,7 +47,7 @@ class ExpDataDeserializer implements Deserializer {
 		return new ExpData( ExpElement::newFromSerialization( $subject ) );
 	}
 
-	private function doDeserialize( $serialization, ExpData $expData ): void {
+	private function doDeserialize( array $serialization, ExpData $expData ): void {
 		foreach ( $serialization['data'] as $data ) {
 
 			$property = ExpElement::newFromSerialization( $data['property'] );
@@ -61,7 +61,7 @@ class ExpDataDeserializer implements Deserializer {
 		}
 	}
 
-	private function doDeserializeChild( $serialization ) {
+	private function doDeserializeChild( array $serialization ) {
 		if ( !isset( $serialization['subject'] ) ) {
 			return ExpElement::newFromSerialization( $serialization );
 		}

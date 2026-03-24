@@ -40,7 +40,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @since 3.0
 	 */
 	public function __construct(
-		$file,
+		string $file,
 		private $parseHeader = false,
 		private $delimiter = ",
 		",
@@ -141,7 +141,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 * {@inheritDoc}
 	 */
 	#[ReturnTypeWillChange]
-	public function next() {
+	public function next(): bool {
 		return !$this->file->eof();
 	}
 

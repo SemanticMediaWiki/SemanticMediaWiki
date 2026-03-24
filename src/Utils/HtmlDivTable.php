@@ -20,7 +20,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function table( $html = '', array $attributes = [] ): string {
+	public static function table( string $html = '', array $attributes = [] ): string {
 		return self::open( $attributes ) . $html . self::close();
 	}
 

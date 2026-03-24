@@ -138,7 +138,7 @@ class GroupFormatter {
 	 *
 	 * @return string
 	 */
-	public function getMessageClassLink( $id, WikiPage $dataItem ) {
+	public function getMessageClassLink( string $id, WikiPage $dataItem ) {
 		$gr = str_replace( '_', ' ', $dataItem->getDBKey() );
 		$key = mb_strtolower( str_replace( ' ', '-', $gr ) );
 
@@ -152,7 +152,7 @@ class GroupFormatter {
 		);
 	}
 
-	private function findGroup( $property, array $list ) {
+	private function findGroup( $property, array $list ): string {
 		if ( $this->showGroup === false ) {
 			return '';
 		}

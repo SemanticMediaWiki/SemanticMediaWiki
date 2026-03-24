@@ -146,7 +146,7 @@ abstract class Description {
 	 *
 	 * @return int
 	 */
-	public function getSize() {
+	public function getSize(): int {
 		return 1;
 	}
 
@@ -155,7 +155,7 @@ abstract class Description {
 	 *
 	 * @return int
 	 */
-	public function getDepth() {
+	public function getDepth(): int {
 		return 0;
 	}
 
@@ -163,7 +163,7 @@ abstract class Description {
 	 * Report on query features used in description. Return values are (sums of)
 	 * query feature constants such as SMW_PROPERTY_QUERY.
 	 */
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		return 0;
 	}
 
@@ -179,7 +179,7 @@ abstract class Description {
 	 * reused in multiple places of one or many queries. Make new objects to reflect
 	 * changes!
 	 */
-	public function prune( &$maxsize, &$maxDepth, &$log ) {
+	public function prune( &$maxsize, &$maxDepth, &$log ): Description {
 		if ( ( $maxsize < $this->getSize() ) || ( $maxDepth < $this->getDepth() ) ) {
 			$log[] = $this->getQueryString();
 
@@ -200,7 +200,7 @@ abstract class Description {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->getQueryString();
 	}
 

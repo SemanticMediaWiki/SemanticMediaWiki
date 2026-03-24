@@ -52,7 +52,7 @@ class SpecialPage extends MWSpecialPage {
 	 *
 	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): static {
 		$this->store = $store;
 		return $this;
 	}
@@ -75,7 +75,7 @@ class SpecialPage extends MWSpecialPage {
 	 *
 	 * @param Settings $settings
 	 */
-	public function setSettings( Settings $settings ) {
+	public function setSettings( Settings $settings ): static {
 		$this->settings = $settings;
 		return $this;
 	}

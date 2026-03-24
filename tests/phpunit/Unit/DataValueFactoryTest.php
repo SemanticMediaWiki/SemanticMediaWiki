@@ -50,7 +50,7 @@ class DataValueFactoryTest extends TestCase {
 
 		$dataValueFactory->addCallable( 'foo.test', $callback );
 
-		$dataValue = $dataValueFactory->newTypeIdValue(
+		$dataValue = $dataValueFactory->newDataValueByType(
 			'_txt',
 			'foo'
 		);
@@ -73,7 +73,7 @@ class DataValueFactoryTest extends TestCase {
 	public function testGetCallableOnUnknownKeyThrowsException() {
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		$dataValue = $dataValueFactory->newTypeIdValue(
+		$dataValue = $dataValueFactory->newDataValueByType(
 			'_txt',
 			'foo'
 		);
@@ -86,7 +86,7 @@ class DataValueFactoryTest extends TestCase {
 	 * @dataProvider typeIdValueDataProvider
 	 */
 	public function testNewTypeIdValue( $typeId, $value, $expectedValue, $expectedInstance ) {
-		$dataValue = DataValueFactory::getInstance()->newTypeIdValue( $typeId, $value );
+		$dataValue = DataValueFactory::getInstance()->newDataValueByType( $typeId, $value );
 
 		$this->assertInstanceOf(
 			$expectedInstance,
@@ -185,15 +185,6 @@ class DataValueFactoryTest extends TestCase {
 
 		$this->assertNotEmpty(
 			$dataValue->getErrors()
-		);
-	}
-
-	public function testToCreateDataValueUsingLegacyNewPropertyValueMethod() {
-		$dataValue = DataValueFactory::getInstance()->newPropertyValue( 'Bar', 'Foo' );
-
-		$this->assertInstanceOf(
-			DataValue::class,
-			$dataValue
 		);
 	}
 

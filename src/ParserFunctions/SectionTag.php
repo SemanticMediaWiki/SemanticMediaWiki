@@ -38,7 +38,7 @@ class SectionTag {
 			return false;
 		}
 
-		$parser->setHook( 'section', static function ( $input, array $args, Parser $parser, PPFrame $frame ) {
+		$parser->setHook( 'section', static function ( ?string $input, array $args, Parser $parser, PPFrame $frame ) {
 			return ( new self( $parser, $frame ) )->parse( $input, $args );
 		} );
 
@@ -48,12 +48,12 @@ class SectionTag {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $input
+	 * @param string|null $input
 	 * @param array $args
 	 *
 	 * @return string
 	 */
-	public function parse( $input, array $args ) {
+	public function parse( ?string $input, array $args ) {
 		$attributes = [];
 		$title = $this->parser->getTitle();
 
@@ -69,14 +69,14 @@ class SectionTag {
 			}
 		}
 
-		if ( $title !== null && $title->getNamespace() === SMW_NS_PROPERTY ) {
-			$attributes['class'] = ( isset( $attributes['class'] ) ? ' ' : '' ) . "smw-property-specification";
+		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
+			$attributes['class'] = ( isset( $attributes['class'] ) ? $attributes['class'] . ' ' : '' ) . "smw-property-specification";
 		}
 
 		return Html::rawElement(
 			'section',
 			$attributes,
-			$this->parser->recursiveTagParse( $input, $this->frame )
+			$this->parser->recursiveTagParse( $input ?? '', $this->frame )
 		);
 	}
 

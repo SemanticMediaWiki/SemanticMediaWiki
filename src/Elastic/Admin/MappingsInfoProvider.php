@@ -136,7 +136,10 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function getSummary( array $mappings ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getSummary( array $mappings ): array {
 		$summary = [
 			ElasticClient::TYPE_DATA => [
 				'fields' => [
@@ -163,7 +166,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		return $summary;
 	}
 
-	private function countFields( $mapping, int|string $type, &$count ): void {
+	private function countFields( array $mapping, int|string $type, array &$count ): void {
 		foreach ( $mapping['properties'] as $k => $val ) {
 			foreach ( $val as $p => $v ) {
 				if ( $p === 'properties' ) {

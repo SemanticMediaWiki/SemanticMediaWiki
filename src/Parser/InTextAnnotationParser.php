@@ -46,7 +46,7 @@ class InTextAnnotationParser {
 	/**
 	 * @var ApplicationFactory
 	 */
-	private $applicationFactory = null;
+	private ApplicationFactory $applicationFactory;
 
 	private ?StripMarkerDecoder $stripMarkerDecoder = null;
 
@@ -253,7 +253,7 @@ class InTextAnnotationParser {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 
-	protected function addRedirectTargetAnnotationFromText( $text ) {
+	protected function addRedirectTargetAnnotationFromText( $text ): void {
 		if ( !$this->isEnabledNamespace ) {
 			return;
 		}
@@ -364,7 +364,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	protected function addPropertyValue( ?WikiPage $subject, array $properties, $value, $valueCaption ) {
+	protected function addPropertyValue( ?WikiPage $subject, array $properties, $value, $valueCaption ): string {
 		$origValue = $value;
 
 		if ( $this->stripMarkerDecoder !== null ) {

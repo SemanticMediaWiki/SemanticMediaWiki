@@ -63,7 +63,7 @@ class ExceptionFileLogger {
 	 *
 	 * @return string
 	 */
-	public function getExceptionFile() {
+	public function getExceptionFile(): string|false {
 		return realpath( $this->exceptionFile );
 	}
 
@@ -103,7 +103,7 @@ class ExceptionFileLogger {
 		$this->exceptionCount = 0;
 	}
 
-	private function put( int|string $id, $exception ): void {
+	private function put( int|string $id, array $exception ): void {
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .

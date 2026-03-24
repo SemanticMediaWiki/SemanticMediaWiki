@@ -20,7 +20,7 @@ class ExpDataSerializer implements Serializer {
 	 *
 	 * @since 2.2
 	 */
-	public function serialize( $expData ) {
+	public function serialize( $expData ): array {
 		if ( !$expData instanceof ExpData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
@@ -28,7 +28,7 @@ class ExpDataSerializer implements Serializer {
 		return $this->doSerialize( $expData ) + [ 'serializer' => __CLASS__, 'version' => 0.1 ];
 	}
 
-	private function doSerialize( $expData ) {
+	private function doSerialize( $expData ): array {
 		$serialization = [
 			'subject' => $expData->getSubject()->getSerialization()
 		];

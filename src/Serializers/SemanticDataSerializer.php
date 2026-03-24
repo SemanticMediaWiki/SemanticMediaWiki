@@ -21,7 +21,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @since  1.9
 	 */
-	public function serialize( $semanticData, $includeInverse = false ) {
+	public function serialize( $semanticData, $includeInverse = false ): array {
 		if ( !$semanticData instanceof SemanticData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}

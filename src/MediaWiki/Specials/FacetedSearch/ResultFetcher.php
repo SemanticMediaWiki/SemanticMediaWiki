@@ -20,10 +20,7 @@ use SMW\Store;
  */
 class ResultFetcher {
 
-	/**
-	 * @var int
-	 */
-	private $totalCount = 0;
+	private ?int $totalCount = 0;
 
 	/**
 	 * @var int

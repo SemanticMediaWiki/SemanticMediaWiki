@@ -127,7 +127,7 @@ class WikiPageValue extends DataValue {
 		}
 	}
 
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$localizer = Localizer::getInstance();
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
@@ -163,17 +163,17 @@ class WikiPageValue extends DataValue {
 			// instead of the transformed DBKey which would be `Ab c*`
 			if ( $title !== null && $title->getNamespace() === NS_MAIN && $this->getOption( 'isCapitalLinks' ) === false ) {
 				$this->m_dataitem = new WikiPage( $value, NS_MAIN );
-				return $this->m_dataitem;
+				return;
 			// If we know that it is a wikipage in a query context and the wiki
 			// requires `isCapitalLinks` then use the standard transformation so
 			// they appear as standard links even though the user input was `abc`.
 			// T:P0902 (`[[Help:]]`)
 			} elseif ( $title !== null ) {
 				$this->m_dataitem = WikiPage::newFromTitle( $title );
-				return $this->m_dataitem;
+				return;
 			} elseif ( !$localizer->getNsIndex( substr( $value, 0, -1 ) ) ) {
 				$this->m_dataitem = new WikiPage( $value, NS_MAIN );
-				return $this->m_dataitem;
+				return;
 			}
 		}
 
@@ -291,7 +291,7 @@ class WikiPageValue extends DataValue {
 	 * @param null $linked mixed generate links if not null or false
 	 * @return string
 	 */
-	public function getShortWikiText( $linked = null ) {
+	public function getShortWikiText( $linked = null ): string {
 		if ( $linked === null || $linked === false ||
 			$this->m_outformat == '-' || !$this->isValid() ||
 			$this->m_caption === '' ) {
@@ -501,7 +501,7 @@ class WikiPageValue extends DataValue {
 		return $text . ( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
 	}
 
-	public function getHash() {
+	public function getHash(): string {
 		return $this->isValid() ? $this->getPrefixedText() : implode( "\t", $this->getErrors() );
 	}
 
@@ -765,20 +765,9 @@ class WikiPageValue extends DataValue {
 	 * @since 1.7
 	 * @return string
 	 */
-	protected function getWikiLinkTarget() {
+	protected function getWikiLinkTarget(): string {
 		return str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .
 			( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
-	}
-
-	/**
-	 * Find the sortkey for this object.
-	 *
-	 * @deprecated Use \SMW\Store::getWikiPageSortKey(). Will vanish before SMW 1.7
-	 *
-	 * @return string sortkey
-	 */
-	private function getSortKey() {
-		return ApplicationFactory::getInstance()->getStore()->getWikiPageSortKey( $this->m_dataitem );
 	}
 
 	/**

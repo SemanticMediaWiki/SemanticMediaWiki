@@ -326,7 +326,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return new TransactionalCallableUpdate( $callback, $connection );
 		} );
 
-		$containerBuilder->registerCallback( 'InMemoryPoolCache', static function ( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'InMemoryPoolCache', static function ( $containerBuilder ): InMemoryPoolCache {
 			$containerBuilder->registerExpectedReturnType( 'InMemoryPoolCache', InMemoryPoolCache::class );
 			return InMemoryPoolCache::getInstance();
 		} );

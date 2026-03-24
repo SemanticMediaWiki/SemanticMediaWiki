@@ -20,7 +20,7 @@ class SemanticMediaWiki {
 	/**
 	 * @since 2.4
 	 */
-	public static function initExtension( $credits = [] ): void {
+	public static function initExtension( array $credits = [] ): void {
 		if ( !defined( 'SMW_VERSION' ) && isset( $credits['version'] ) ) {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupDefines();
@@ -189,19 +189,6 @@ class SemanticMediaWiki {
 		define( 'CONCEPT_CACHE_HARD', 1 );
 		// show all concepts even without any cache
 		define( 'CONCEPT_CACHE_NONE', 0 );
-		/** @} */
-
-		/** @{
-		 * Constants for identifying javascripts as used in SMWOutputs
-		 */
-		/// @deprecated Use module 'ext.smw.tooltips', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at
-		/// the latest.
-		define( 'SMW_HEADER_TOOLTIP', 2 );
-		/// @deprecated Module removed. Vanishes in SMW 1.7 at the latest.
-		define( 'SMW_HEADER_SORTTABLE', 3 );
-		/// @deprecated Use module 'ext.smw.styles', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the
-		/// latest.
-		define( 'SMW_HEADER_STYLE', 4 );
 		/** @} */
 
 		/** @{

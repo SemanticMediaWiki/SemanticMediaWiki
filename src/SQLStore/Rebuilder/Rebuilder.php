@@ -28,10 +28,7 @@ use SMW\Utils\Lru;
  */
 class Rebuilder {
 
-	/**
-	 * @var JobFactory
-	 */
-	private $jobFactory;
+	private JobFactory $jobFactory;
 
 	/**
 	 * @var NamespaceExaminer
@@ -53,10 +50,7 @@ class Rebuilder {
 
 	private array $dispatchedEntities = [];
 
-	/**
-	 * @var array
-	 */
-	private $updateJobs = [];
+	private array $updateJobs = [];
 
 	private Lru $lru;
 
@@ -432,7 +426,7 @@ class Rebuilder {
 		$id = $nextPosition ?: -1;
 	}
 
-	private function hasSkippableRevision( $title, bool $row = false ) {
+	private function hasSkippableRevision( $title, bool $row = false ): bool {
 		if ( $this->getOption( 'force-update' ) ) {
 			return false;
 		}

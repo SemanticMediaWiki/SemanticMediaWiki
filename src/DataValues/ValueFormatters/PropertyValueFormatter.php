@@ -105,7 +105,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 	 * - displayTitle goes before translation
 	 * - translation goes before "normal" label
 	 */
-	private function getFormattedLabel( $linker = null ) {
+	private function getFormattedLabel( $linker = null ): string {
 		$property = $this->dataValue->getDataItem();
 		$output = '';
 		$displayTitle = '';
@@ -248,7 +248,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		return $highlighter->getHtml();
 	}
 
-	private function canHighlight( string &$propertyDescription, $linker ) {
+	private function canHighlight( string &$propertyDescription, $linker ): bool {
 		if ( $this->dataValue->getOption( PropertyValue::OPT_NO_HIGHLIGHT ) === true ) {
 			return false;
 		}

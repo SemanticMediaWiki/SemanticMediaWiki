@@ -18,7 +18,7 @@ class ContentModeller {
 	 *
 	 * @return mixed[]
 	 */
-	public function makeContentList( $fileDir, array $fileContents ): array {
+	public function makeContentList( string $fileDir, array $fileContents ): array {
 		$contents = [];
 
 		if ( !isset( $fileContents['import'] ) ) {
@@ -63,7 +63,7 @@ class ContentModeller {
 		return $contents;
 	}
 
-	private function newImportContents( ImportContents $importContents, $fileDir, $value ): ImportContents {
+	private function newImportContents( ImportContents $importContents, string $fileDir, array $value ): ImportContents {
 		$importContents->setContentType( ImportContents::CONTENT_TEXT );
 
 		if ( !isset( $value['contents'] ) || $value['contents'] === '' ) {
@@ -79,21 +79,24 @@ class ContentModeller {
 		return $importContents;
 	}
 
-	private function setContents( ImportContents $importContents, $fileDir, $contents ) {
+	private function setContents( ImportContents $importContents, string $fileDir, $contents ): void {
 		if ( !is_array( $contents ) || !isset( $contents['importFrom'] ) ) {
-			return $importContents->setContents( $contents );
+			$importContents->setContents( $contents );
+			return;
 		}
 
 		$file = $this->normalizeFile( $fileDir, $contents['importFrom'] );
 
 		if ( !is_readable( $file ) ) {
-			return $importContents->addError( "File: " . $file . " wasn't accessible" );
+			$importContents->addError( "File: " . $file . " wasn't accessible" );
+			return;
 		}
 
 		$extension = pathinfo( $file, PATHINFO_EXTENSION );
 
 		if ( isset( $contents['type'] ) && $contents['type'] === 'xml' && $extension !== 'xml' ) {
-			return $importContents->addError( "XML: " . $file . " is not recognized as xml file extension" );
+			$importContents->addError( "XML: " . $file . " is not recognized as xml file extension" );
+			return;
 		}
 
 		if ( $extension === 'xml' ) {
@@ -103,7 +106,7 @@ class ContentModeller {
 		$importContents->setContentsFile( $file );
 	}
 
-	private function normalizeFile( $fileDir, $file ): string {
+	private function normalizeFile( string $fileDir, string $file ): string {
 		return str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $fileDir . ( $file[0] === '/' ? '' : '/' ) . $file );
 	}
 

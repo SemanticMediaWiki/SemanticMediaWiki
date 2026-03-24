@@ -64,7 +64,7 @@ class ConceptMapper implements DataItemMapper {
 			return null;
 		}
 
-		$description = ApplicationFactory::getInstance()->newQueryParser()->getQueryDescription(
+		$description = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()->getQueryDescription(
 			$dataValue->getWikiValue()
 		);
 
@@ -113,7 +113,7 @@ class ConceptMapper implements DataItemMapper {
 	 *
 	 * @return Element|false
 	 */
-	public function newExpDataFromDescription( Description $description, &$exact ) {
+	public function newExpDataFromDescription( Description $description, &$exact ): mixed {
 		if ( ( $description instanceof Conjunction ) || ( $description instanceof Disjunction ) ) {
 			$expData = $this->mapConjunctionDisjunction( $description, $exact );
 		} elseif ( $description instanceof ClassDescription ) {
@@ -154,7 +154,7 @@ class ConceptMapper implements DataItemMapper {
 		return $result;
 	}
 
-	private function mapSomeProperty( SomeProperty $description, &$exact ) {
+	private function mapSomeProperty( SomeProperty $description, &$exact ): ExpData {
 		$result = new ExpData(
 			new ExpResource( '' )
 		);
@@ -219,7 +219,7 @@ class ConceptMapper implements DataItemMapper {
 		return $result;
 	}
 
-	private function mapClassDescription( ClassDescription $description, &$exact ) {
+	private function mapClassDescription( ClassDescription $description, &$exact ): ExpData {
 		if ( count( $description->getCategories() ) == 1 ) { // single category
 			$categories = $description->getCategories();
 			$result = new ExpData(

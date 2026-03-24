@@ -97,7 +97,7 @@ class DataTypeRegistryTest extends TestCase {
 
 		$this->assertEquals(
 			DataItem::TYPE_NOTYPE,
-			$this->dataTypeRegistry->getDataItemId( '_foo' )
+			$this->dataTypeRegistry->getDataItemByType( '_foo' )
 		);
 
 		$this->assertEquals(
@@ -111,7 +111,7 @@ class DataTypeRegistryTest extends TestCase {
 
 		$this->assertEquals(
 			DataItem::TYPE_NOTYPE,
-			$this->dataTypeRegistry->getDataItemId( 'FooBar' )
+			$this->dataTypeRegistry->getDataItemByType( 'FooBar' )
 		);
 	}
 

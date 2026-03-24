@@ -75,7 +75,7 @@ class ShapeConstraint implements Constraint {
 		}
 	}
 
-	private function check( $constraint, DataValue $dataValue ): void {
+	private function check( array $constraint, DataValue $dataValue ): void {
 		$errors = [];
 
 		if ( !isset( $constraint['property'] ) ) {

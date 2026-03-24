@@ -87,9 +87,13 @@ class CachingSemanticDataLookupTest extends TestCase {
 			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
+		$stubSemanticData = $this->getMockBuilder( StubSemanticData::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'newStubSemanticData' )
-			->willReturn( $semanticData );
+			->willReturn( $stubSemanticData );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'getTableUsageInfo' )
@@ -102,7 +106,7 @@ class CachingSemanticDataLookupTest extends TestCase {
 		$instance->setLookupCache( 42, $semanticData );
 
 		$this->assertEquals(
-			$semanticData,
+			$stubSemanticData,
 			$instance->getSemanticDataById( 42 )
 		);
 	}

@@ -23,10 +23,7 @@ use SMW\Property\SpecificationLookup;
  */
 class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
-	/**
-	 * @var bool
-	 */
-	private $hasConstraintViolation = false;
+	private bool $hasConstraintViolation = false;
 
 	/**
 	 * @since 2.4
@@ -42,7 +39,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasConstraintViolation() {
+	public function hasConstraintViolation(): bool {
 		return $this->hasConstraintViolation;
 	}
 
@@ -77,7 +74,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = $this->uniqueValueConstraint->hasViolation();
 	}
 
-	private function canValidate( $dataValue ) {
+	private function canValidate( $dataValue ): bool {
 		if ( !$dataValue->isEnabledFeature( SMW_DV_PVUC ) || !$dataValue instanceof DataValue ) {
 			return false;
 		}

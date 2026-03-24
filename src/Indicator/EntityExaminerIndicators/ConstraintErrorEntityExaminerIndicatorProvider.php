@@ -128,11 +128,11 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		return '#mw-indicator-mw-helplink {display:none;}';
 	}
 
-	protected function checkConstraintErrors( $subject, $options ) {
+	protected function checkConstraintErrors( $subject, array $options ): void {
 		$this->runCheck( $subject, $options );
 	}
 
-	protected function runCheck( $subject, $options ) {
+	protected function runCheck( $subject, array $options ) {
 		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
 
 		$errors = $this->findErrors( $subject );

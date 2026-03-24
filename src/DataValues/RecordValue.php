@@ -74,7 +74,7 @@ class RecordValue extends AbstractMultiValue {
 		return str_replace( "-3B", ";", $values );
 	}
 
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 			return;
@@ -236,7 +236,7 @@ class RecordValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getDataItems() {
+	public function getDataItems(): array {
 		return parent::getDataItems();
 	}
 
@@ -264,7 +264,7 @@ class RecordValue extends AbstractMultiValue {
 		return $this->m_diProperties;
 	}
 
-	protected function makeOutputText( $type = 0, $linker = null ) {
+	protected function makeOutputText( $type = 0, $linker = null ): string {
 		if ( !$this->isValid() ) {
 			return ( ( $type == 0 ) || ( $type == 1 ) ) ? '' : $this->getErrorText();
 		}
@@ -309,7 +309,7 @@ class RecordValue extends AbstractMultiValue {
 		}
 	}
 
-	private function newContainerSemanticData( $value ) {
+	private function newContainerSemanticData( $value ): ContainerSemanticData {
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

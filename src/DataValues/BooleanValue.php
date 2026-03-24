@@ -43,7 +43,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = trim( $value );
 
 		if ( $this->m_caption === false ) {
@@ -159,7 +159,7 @@ class BooleanValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	public function getBoolean() {
+	public function getBoolean(): bool {
 		return !$this->isValid() ? false : $this->m_dataitem->getBoolean();
 	}
 
@@ -186,7 +186,7 @@ class BooleanValue extends DataValue {
 		);
 	}
 
-	private function doParseBoolValue( string $value ) {
+	private function doParseBoolValue( string $value ): bool {
 		// Use either the global or page related content language
 		$contentLanguage = $this->getOption( 'content.language' );
 
@@ -212,7 +212,7 @@ class BooleanValue extends DataValue {
 	}
 
 	private function setLocalizedCaptions( string &$formatstring ): void {
-		if ( !( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) ) {
+		if ( !( $languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring ) ) ) {
 			$languageCode = $this->getOption( 'user.language' );
 		}
 

@@ -109,9 +109,9 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
-			return '';
+			return;
 		}
 
 		$sure = $webRequest->getText( 'rfsure' );

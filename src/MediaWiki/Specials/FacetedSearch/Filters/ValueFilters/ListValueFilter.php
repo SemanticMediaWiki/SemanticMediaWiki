@@ -132,7 +132,7 @@ class ListValueFilter {
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	private function sortValues( $list ): array {
+	private function sortValues( array $list ): array {
 		$linked = [];
 		$unlinked = [];
 
@@ -158,7 +158,7 @@ class ListValueFilter {
 		];
 	}
 
-	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, array $clear, &$list ): void {
+	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, array $clear, array &$list ): void {
 		if ( !isset( $list[$count] ) ) {
 			$list[$count] = [ 'linked' => [], 'unlinked' => [] ];
 		}

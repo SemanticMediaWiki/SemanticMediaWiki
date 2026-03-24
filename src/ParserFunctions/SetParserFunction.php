@@ -125,7 +125,7 @@ class SetParserFunction {
 		return [ $html, 'noparse' => $template === '', 'isHTML' => false ];
 	}
 
-	private function addFieldsToTemplate( $template, $dataValue, $property, $value, bool $isLastElement, &$count ) {
+	private function addFieldsToTemplate( $template, $dataValue, $property, $value, bool $isLastElement, &$count ): string {
 		if ( $template === '' || !$dataValue->isValid() ) {
 			return '';
 		}
@@ -135,6 +135,8 @@ class SetParserFunction {
 		$this->templateRenderer->addField( 'last-element', $isLastElement );
 		$this->templateRenderer->addField( '#', $count++ );
 		$this->templateRenderer->packFieldsForTemplate( $template );
+
+		return '';
 	}
 
 }

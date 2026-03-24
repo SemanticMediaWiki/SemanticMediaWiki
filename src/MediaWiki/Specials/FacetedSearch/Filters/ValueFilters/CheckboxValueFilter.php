@@ -121,7 +121,7 @@ class CheckboxValueFilter {
 		);
 	}
 
-	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, &$list, $isClear ): void {
+	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, array &$list, $isClear ): void {
 		// Make sure characters like `"` are encoded otherwise those will be removed
 		// from the value representation
 		$key = htmlspecialchars( $key );

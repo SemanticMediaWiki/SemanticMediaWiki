@@ -17,7 +17,7 @@ use SMW\DataItems\DataItem;
  */
 class ConceptValue extends DataValue {
 
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): never {
 		throw new Exception( 'Concepts cannot be initialized from user-provided strings. This should not happen.' );
 	}
 
@@ -37,7 +37,7 @@ class ConceptValue extends DataValue {
 		return true;
 	}
 
-	protected function clear() {
+	protected function clear(): void {
 		$this->m_dataitem = new Concept( '', '', 0, -1, -1, $this->m_typeid );
 	}
 

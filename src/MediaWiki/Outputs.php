@@ -103,32 +103,16 @@ class Outputs {
 
 	/**
 	 * Adds head items that are not Resource Loader modules. Should only
-	 * be used for custom head items such as RSS fedd links.
+	 * be used for custom head items such as RSS feed links.
 	 *
 	 * The id is used to avoid that the requirement for one script is
 	 * recorded multiple times in Outputs.
 	 *
-	 * Support for calling this with the old constants SMW_HEADER_STYLE
-	 * and SMW_HEADER_TOOLTIP will vanish in SMW 1.7 at the latest.
-	 *
-	 * @param mixed $id
+	 * @param string $id
 	 * @param string $item
 	 */
 	public static function requireHeadItem( $id, $item = '' ): void {
-		if ( is_numeric( $id ) ) {
-			switch ( $id ) {
-				case SMW_HEADER_TOOLTIP:
-					self::requireStyle( 'ext.smw.styles' );
-					self::requireStyle( 'ext.smw.tooltip.styles' );
-					self::requireResource( 'ext.smw.tooltip' );
-					break;
-				case SMW_HEADER_STYLE:
-					self::requireStyle( 'ext.smw.styles' );
-					break;
-			}
-		} else {
-			self::$headItems[$id] = $item;
-		}
+		self::$headItems[$id] = $item;
 	}
 
 	/**

@@ -38,7 +38,7 @@ class NullPropertyAnnotator implements Annotator {
 	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation() {
+	public function addAnnotation(): static {
 		return $this;
 	}
 

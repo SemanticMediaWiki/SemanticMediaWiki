@@ -28,10 +28,7 @@ use SMW\Utils\HtmlTabs;
  */
 class Factbox {
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
+	private DataValueFactory $dataValueFactory;
 
 	/**
 	 * @var int
@@ -95,7 +92,7 @@ class Factbox {
 	 *
 	 * @return Factbox
 	 */
-	public function doBuild() {
+	public function doBuild(): static {
 		$this->content = $this->fetchContent(
 			$this->getMagicWords()
 		);

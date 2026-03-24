@@ -38,7 +38,7 @@ class TitleLookup {
 	 *
 	 * @return TitleLookup
 	 */
-	public function setNamespace( $namespace ) {
+	public function setNamespace( $namespace ): static {
 		$this->namespace = $namespace;
 		return $this;
 	}

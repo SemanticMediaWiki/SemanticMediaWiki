@@ -60,7 +60,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return bool
 	 */
-	public function decode( $value ) {
+	public function decode( $value ): string|array {
 		$hasStripMarker = false;
 
 		if ( $this->canUse() ) {
@@ -101,7 +101,7 @@ class StripMarkerDecoder {
 		return $this->doUnstrip( $value );
 	}
 
-	private function addNoWikiToUnstripValue( $text ): string {
+	private function addNoWikiToUnstripValue( string $text ): string {
 		return '<nowiki>' . $text . '</nowiki>';
 	}
 

@@ -43,7 +43,7 @@ class Number extends DataItem {
 	 * @see DataItem::getSortKeyDataItem()
 	 * @return DataItem
 	 */
-	public function getSortKeyDataItem() {
+	public function getSortKeyDataItem(): static {
 		return $this;
 	}
 
@@ -62,7 +62,7 @@ class Number extends DataItem {
 		return new Number( floatval( $serialization ) );
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_NUMBER ) {
 			return false;
 		}

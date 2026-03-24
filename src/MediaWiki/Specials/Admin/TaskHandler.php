@@ -57,7 +57,7 @@ abstract class TaskHandler {
 	 *
 	 * @return bool
 	 */
-	public function hasFeature( $feature ) {
+	public function hasFeature( $feature ): bool {
 		return ( ( (int)$this->featureSet & $feature ) == $feature );
 	}
 
@@ -103,7 +103,7 @@ abstract class TaskHandler {
 	 *
 	 * @return string
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return '';
 	}
 
@@ -121,7 +121,7 @@ abstract class TaskHandler {
 	 *
 	 * @return bool
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return false;
 	}
 

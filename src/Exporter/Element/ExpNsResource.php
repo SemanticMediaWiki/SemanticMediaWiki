@@ -119,7 +119,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return array
 	 */
-	public function getSerialization() {
+	public function getSerialization(): array {
 		// Use '|' as divider as it is unlikely that symbol appears within a uri
 		$serialization = [
 			'type' => self::TYPE_NSRESOURCE,

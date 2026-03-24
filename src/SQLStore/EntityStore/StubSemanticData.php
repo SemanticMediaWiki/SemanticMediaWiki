@@ -80,14 +80,14 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return array
 	 */
-	public function __sleep() {
+	public function __sleep(): array {
 		return [ 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mStubPropVals', 'options', 'extensionData' ];
 	}
 
 	/**
 	 * @since 2.3
 	 */
-	public function __wakeup() {
+	public function __wakeup(): void {
 		$this->store = StoreFactory::getStore( SQLStore::class );
 	}
 
@@ -105,7 +105,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return StubSemanticData
 	 */
-	public static function newFromSemanticData( SemanticData $semanticData, SQLStore $store ) {
+	public static function newFromSemanticData( SemanticData $semanticData, SQLStore $store ): self {
 		$result = new self( $semanticData->getSubject(), $store );
 		$result->mPropVals = $semanticData->mPropVals;
 		$result->mProperties = $semanticData->mProperties;
@@ -192,7 +192,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 2.0
 	 */
-	public function getSubSemanticData() {
+	public function getSubSemanticData(): array {
 		if ( $this->subSemanticDataInit ) {
 			return parent::getSubSemanticData();
 		}
@@ -324,7 +324,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 */
-	protected function unstubProperties() {
+	protected function unstubProperties(): void {
 		foreach ( $this->mStubPropVals as $pkey => $values ) { // unstub property values only, the value lists are still kept as stubs
 			try {
 				$this->unstubProperty( $pkey );
@@ -350,7 +350,7 @@ class StubSemanticData extends SemanticData {
 	 * @throws DataItemException if property key is not valid
 	 * 	and $diProperty is null
 	 */
-	protected function unstubProperty( $propertyKey, $diProperty = null ) {
+	protected function unstubProperty( $propertyKey, $diProperty = null ): void {
 		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
 			if ( $diProperty === null ) {
 				$diProperty = new Property( $propertyKey, false );
@@ -369,7 +369,7 @@ class StubSemanticData extends SemanticData {
 		}
 	}
 
-	protected function isRedirect() {
+	protected function isRedirect(): bool {
 		return $this->store->getObjectIds()->isRedirect( $this->mSubject );
 	}
 
@@ -378,7 +378,7 @@ class StubSemanticData extends SemanticData {
 		$this->unstubProperty( $property->getKey(), $property );
 		$propertyTypeId = $property->findPropertyTypeID();
 
-		$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
+		$propertyDiId = DataTypeRegistry::getInstance()->getDataItemByType( $propertyTypeId );
 		$diHandler = $this->store->getDataItemHandlerForDIType( $propertyDiId );
 
 		foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {

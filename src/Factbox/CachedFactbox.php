@@ -339,7 +339,7 @@ class CachedFactbox {
 		return $factbox->tabs( $content, $attachmentContent );
 	}
 
-	private function hasCachedContent( string $subKey, $rev_id, $lang, $content, $request ): bool {
+	private function hasCachedContent( string $subKey, $rev_id, $lang, string|array $content, $request ): bool {
 		if ( $request->getVal( 'action' ) === 'edit' ) {
 			$this->isCached = false;
 			return false;
@@ -364,7 +364,7 @@ class CachedFactbox {
 		return false;
 	}
 
-	private function findContentFromCache( $data ) {
+	private function findContentFromCache( array|false $data ) {
 		if ( $data === false || !$this->isEnabled ) {
 			return [];
 		}

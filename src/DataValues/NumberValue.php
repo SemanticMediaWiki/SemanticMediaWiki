@@ -87,10 +87,7 @@ class NumberValue extends DataValue {
 	 */
 	protected $precision = null;
 
-	/**
-	 * @var IntlNumberFormatter
-	 */
-	private $intlNumberFormatter;
+	private IntlNumberFormatter $intlNumberFormatter;
 
 	/**
 	 * @var ValueFormatter
@@ -174,7 +171,7 @@ class NumberValue extends DataValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		// Set caption
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
@@ -472,7 +469,7 @@ class NumberValue extends DataValue {
 	 *
 	 * Overwritten by subclasses that support units.
 	 */
-	protected function makeConversionValues() {
+	protected function makeConversionValues(): void {
 		$this->m_unitvalues = [ '' => $this->m_dataitem->getNumber() ];
 	}
 
@@ -485,7 +482,7 @@ class NumberValue extends DataValue {
 	 *
 	 * Overwritten by subclasses that support units.
 	 */
-	protected function makeUserValue() {
+	protected function makeUserValue(): void {
 		$this->m_caption = '';
 
 		$number = $this->m_dataitem->getNumber();
@@ -549,7 +546,7 @@ class NumberValue extends DataValue {
 		return implode( '-', $parts );
 	}
 
-	private function getNumberFormatter() {
+	private function getNumberFormatter(): IntlNumberFormatter {
 		$this->intlNumberFormatter->setOption(
 			IntlNumberFormatter::USER_LANGUAGE,
 			$this->getOption( self::OPT_USER_LANGUAGE )
@@ -575,7 +572,7 @@ class NumberValue extends DataValue {
 
 	private function findPreferredLanguageFrom( &$formatstring ): void {
 		// Localized preferred user language
-		if ( strpos( $formatstring, 'LOCL' ) !== false && ( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) !== false ) {
+		if ( strpos( $formatstring, 'LOCL' ) !== false && ( $languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring ) ) !== false ) {
 			$this->intlNumberFormatter->setOption(
 				IntlNumberFormatter::PREFERRED_LANGUAGE,
 				$languageCode

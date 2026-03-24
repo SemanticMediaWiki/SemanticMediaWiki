@@ -75,7 +75,7 @@ class TemplateEngine {
 	 *
 	 * @throws FileNotReadableException
 	 */
-	public function load( $file, $target ) {
+	public function load( string $file, $target ) {
 		if ( isset( self::$templates[$file] ) ) {
 			$this->container[$target] = self::$templates[$file];
 			return $this->container[$target];

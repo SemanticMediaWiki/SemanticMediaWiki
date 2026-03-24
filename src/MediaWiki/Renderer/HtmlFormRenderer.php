@@ -73,7 +73,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function clear() {
+	public function clear(): static {
 		$this->queryParameters = [];
 		$this->content = [];
 		$this->name = '';
@@ -100,7 +100,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function setName( $name ) {
+	public function setName( $name ): static {
 		$this->name = $name;
 		return $this;
 	}
@@ -112,7 +112,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function setActionUrl( $actionUrl ) {
+	public function setActionUrl( $actionUrl ): static {
 		$this->actionUrl = $actionUrl;
 		return $this;
 	}
@@ -122,7 +122,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function withFieldset() {
+	public function withFieldset(): static {
 		$this->useFieldset = true;
 		return $this;
 	}
@@ -134,7 +134,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function setMethod( $method ) {
+	public function setMethod( $method ): static {
 		$this->method = strtolower( $method );
 		return $this;
 	}
@@ -147,7 +147,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addQueryParameter( $key, $value ) {
+	public function addQueryParameter( $key, $value ): static {
 		$this->queryParameters[$key] = $value;
 		return $this;
 	}
@@ -169,7 +169,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addParagraph( $text, $attributes = [] ) {
+	public function addParagraph( $text, $attributes = [] ): static {
 		if ( $attributes === [] ) {
 			$attributes = [ 'class' => $this->defaultPrefix . '-paragraph' ];
 		}
@@ -185,7 +185,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addHorizontalRule( $attributes = [] ) {
+	public function addHorizontalRule( $attributes = [] ): static {
 		if ( $attributes === [] ) {
 			$attributes = [ 'class' => $this->defaultPrefix . '-horizontalrule' ];
 		}
@@ -202,7 +202,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addHeader( $level, $text, $attributes = [] ) {
+	public function addHeader( $level, $text, $attributes = [] ): static {
 		$level = strtolower( $level );
 		$level = in_array( $level, [ 'h2', 'h3', 'h4' ] ) ? $level : 'h2';
 
@@ -215,7 +215,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addLineBreak() {
+	public function addLineBreak(): static {
 		$this->content[] = Html::element( 'br', [], '' );
 		return $this;
 	}
@@ -225,7 +225,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addNonBreakingSpace() {
+	public function addNonBreakingSpace(): static {
 		$this->content[] = '&nbsp;';
 		return $this;
 	}
@@ -237,7 +237,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addSubmitButton( $text, array $attributes = [] ) {
+	public function addSubmitButton( $text, array $attributes = [] ): static {
 		$this->content[] = Html::submitButton( $text, $attributes );
 		return $this;
 	}
@@ -250,7 +250,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function openElement( $element = 'div', array $attributes = [] ) {
+	public function openElement( $element = 'div', array $attributes = [] ): static {
 		$this->content[] = Html::openElement( $element, $attributes );
 		return $this;
 	}
@@ -263,7 +263,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function closeElement( $element = 'div', array $attributes = [] ) {
+	public function closeElement( $element = 'div', array $attributes = [] ): static {
 		$this->content[] = Html::closeElement( $element );
 		return $this;
 	}
@@ -280,7 +280,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addInputField( $label, $name, $value, $id = null, $size = 20, array $attributes = [] ) {
+	public function addInputField( $label, $name, $value, $id = null, $size = 20, array $attributes = [] ): static {
 		if ( $id === null ) {
 			$id = $name;
 		}
@@ -307,7 +307,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addHiddenField( $inputName, $inputValue ) {
+	public function addHiddenField( $inputName, $inputValue ): static {
 		$this->addQueryParameter( $inputName, $inputValue );
 
 		$this->content[] = Html::hidden( $inputName, $inputValue );
@@ -325,7 +325,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addOptionSelectList( $label, $inputName, $inputValue, $options, $id = null ) {
+	public function addOptionSelectList( $label, $inputName, $inputValue, $options, $id = null ): static {
 		if ( $id === null ) {
 			$id = $inputName;
 		}
@@ -373,7 +373,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null, $attributes = [] ) {
+	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null, $attributes = [] ): static {
 		if ( $id === null ) {
 			$id = $inputName;
 		}
@@ -409,7 +409,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addPaging( $limit, $offset, $count, $messageCount = null ) {
+	public function addPaging( $limit, $offset, $count, $messageCount = null ): static {
 		$title = $this->title;
 
 		$this->content[] = static function ( $instance ) use ( $title, $limit, $offset, $count, $messageCount ): string {

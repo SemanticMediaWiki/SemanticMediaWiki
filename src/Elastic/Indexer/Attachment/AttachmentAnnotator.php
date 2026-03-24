@@ -60,7 +60,7 @@ class AttachmentAnnotator implements Annotator {
 	 *
 	 * @return Annotator
 	 */
-	public function addAnnotation() {
+	public function addAnnotation(): static {
 		$dataItemFactory = new DataItemFactory();
 
 		// @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/using-ingest-attachment.html

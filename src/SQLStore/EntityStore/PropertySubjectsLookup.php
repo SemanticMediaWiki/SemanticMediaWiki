@@ -23,10 +23,7 @@ use stdClass;
  */
 class PropertySubjectsLookup {
 
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
+	private IteratorFactory $iteratorFactory;
 
 	/**
 	 * @var Options

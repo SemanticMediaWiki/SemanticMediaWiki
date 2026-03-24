@@ -23,7 +23,7 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 		parent::__construct( $propertyAnnotator );
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		$sortkey = $this->defaultSort ? $this->defaultSort : $this->getSemanticData()->getSubject()->getSortKey();
 
 		$property = $this->dataItemFactory->newDIProperty(

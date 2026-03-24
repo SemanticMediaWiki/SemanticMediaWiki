@@ -77,7 +77,7 @@ class SemanticDataLookup {
 	 * @return StubSemanticData
 	 * @throws RuntimeException
 	 */
-	public function newStubSemanticData( $object ) {
+	public function newStubSemanticData( $object ): StubSemanticData {
 		if ( $object instanceof WikiPage ) {
 			return new StubSemanticData( $object, $this->store, false );
 		}
@@ -359,7 +359,7 @@ class SemanticDataLookup {
 	/**
 	 * @return mixed[]
 	 */
-	private function fetchSemanticDataFromTableByList( array $list, $pid, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions ): array {
+	private function fetchSemanticDataFromTableByList( array $list, string $pid, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions ): array {
 		if ( $list === [] ) {
 			return [];
 		}

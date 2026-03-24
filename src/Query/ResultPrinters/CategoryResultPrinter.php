@@ -75,7 +75,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$definitions = parent::getParamDefinitions( $definitions );
 
 		$definitions[] = [
@@ -120,7 +120,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function handleParameters( array $params, $outputmode ) {
+	protected function handleParameters( array $params, $outputmode ): void {
 		parent::handleParameters( $params, $outputmode );
 
 		$this->userParam = isset( $params['userparam'] ) ? trim( $params['userparam'] ) : '';
@@ -132,7 +132,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	/**
 	 * @since 3.0
 	 */
-	protected function initServices() {
+	protected function initServices(): void {
 		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
 
 		$this->htmlColumns = new HtmlColumns();

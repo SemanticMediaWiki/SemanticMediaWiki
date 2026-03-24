@@ -56,7 +56,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setColumnListClass( $columnListClass ) {
+	public function setColumnListClass( $columnListClass ): static {
 		$this->columnListClass = htmlspecialchars( $columnListClass );
 		return $this;
 	}
@@ -68,7 +68,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setColumnClass( $columnClass ) {
+	public function setColumnClass( $columnClass ): static {
 		$this->columnClass = htmlspecialchars( $columnClass );
 		return $this;
 	}
@@ -78,7 +78,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function setColumnRTLDirectionalityState( $isRTL ) {
+	public function setColumnRTLDirectionalityState( $isRTL ): static {
 		$this->isRTL = (bool)$isRTL;
 		return $this;
 	}
@@ -90,7 +90,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setNumberOfColumns( $numberOfColumns ) {
+	public function setNumberOfColumns( $numberOfColumns ): static {
 		$this->numberOfColumns = $numberOfColumns;
 		return $this;
 	}
@@ -102,7 +102,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setListType( $listType, $olType = '' ) {
+	public function setListType( $listType, $olType = '' ): static {
 		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
@@ -125,7 +125,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @param array $itemAttributes
 	 */
-	public function setItemAttributes( array $itemAttributes ) {
+	public function setItemAttributes( array $itemAttributes ): static {
 		$this->itemAttributes = $itemAttributes;
 		return $this;
 	}
@@ -137,7 +137,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function addContentsByNoIndex( array $contentsByNoIndex ) {
+	public function addContentsByNoIndex( array $contentsByNoIndex ): static {
 		$contentsByEmptyIndex[''] = [];
 
 		foreach ( $contentsByNoIndex as $value ) {
@@ -154,7 +154,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function addContentsByIndex( array $contentsByIndex ) {
+	public function addContentsByIndex( array $contentsByIndex ): static {
 		$this->contentsByIndex = $contentsByIndex;
 		$this->numberOfResults = count( $this->contentsByIndex, COUNT_RECURSIVE ) - count( $this->contentsByIndex );
 		return $this;

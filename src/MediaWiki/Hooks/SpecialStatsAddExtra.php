@@ -148,7 +148,7 @@ class SpecialStatsAddExtra implements HookListener {
 	/**
 	 * @return array{name: non-falsy-string, number: mixed}[]
 	 */
-	private function addFormats( int $key, $statistics ): array {
+	private function addFormats( int $key, array $statistics ): array {
 		$i = 0;
 		$formats = [];
 
@@ -170,7 +170,7 @@ class SpecialStatsAddExtra implements HookListener {
 		return $formats;
 	}
 
-	private function msg( $args ) {
+	private function msg( $args ): string {
 		if ( $this->getOption( 'plain.msg_key', false ) ) {
 			return is_array( $args ) ? implode( '.', $args ) : $args;
 		}

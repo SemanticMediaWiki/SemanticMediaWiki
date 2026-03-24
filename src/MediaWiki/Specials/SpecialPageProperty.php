@@ -89,7 +89,7 @@ class SpecialPageProperty extends SpecialPage {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		$subject = $dataValueFactory->newTypeIDValue(
+		$subject = $dataValueFactory->newDataValueByType(
 			'_wpg',
 			$options->get( 'from' )
 		);

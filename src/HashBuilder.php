@@ -52,7 +52,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromContent( $hashableContent, $prefix = '' ): string {
+	public static function createFromContent( $hashableContent, string $prefix = '' ): string {
 		if ( is_string( $hashableContent ) ) {
 			$hashableContent = [ $hashableContent ];
 		}
@@ -68,7 +68,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromArray( array $hashableContent, $prefix = '' ): string {
+	public static function createFromArray( array $hashableContent, string $prefix = '' ): string {
 		return $prefix . md5( json_encode( $hashableContent ) );
 	}
 
@@ -79,21 +79,6 @@ class HashBuilder {
 	 */
 	public static function createFromSegments( /* args */ ): string {
 		return implode( '#', func_get_args() );
-	}
-
-	/**
-	 * @deprecated since 2.4, use Hash::createFromSegments
-	 * @since 2.1
-	 *
-	 * @param string $title
-	 * @param string $namespace
-	 * @param string $interwiki
-	 * @param string $fragment
-	 *
-	 * @return string
-	 */
-	public static function createHashIdFromSegments( $title, $namespace, $interwiki = '', $fragment = '' ): string {
-		return self::createFromSegments( $title, $namespace, $interwiki, $fragment );
 	}
 
 	/**

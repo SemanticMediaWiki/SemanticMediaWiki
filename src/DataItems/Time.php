@@ -381,7 +381,7 @@ class Time extends DataItem implements CalendarModel {
 	 * @param $calendarmodel integer one of Time::CM_GREGORIAN or Time::CM_JULIAN
 	 * @return self
 	 */
-	public function getForCalendarModel( $calendarmodel ) {
+	public function getForCalendarModel( $calendarmodel ): self {
 		if ( $calendarmodel == $this->m_model ) {
 			return $this;
 		}
@@ -566,7 +566,7 @@ class Time extends DataItem implements CalendarModel {
 		}
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_TIME ) {
 			return false;
 		}

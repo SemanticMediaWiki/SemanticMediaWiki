@@ -23,10 +23,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
  */
 class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1
@@ -99,7 +96,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		$value = end( $value );
 
-		$description = $applicationFactory->newQueryParser()->getQueryDescription(
+		$description = $applicationFactory->getQueryFactory()->newQueryParser()->getQueryDescription(
 			$value->getConceptQuery()
 		);
 

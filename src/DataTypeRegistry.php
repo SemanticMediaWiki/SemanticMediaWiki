@@ -152,13 +152,6 @@ class DataTypeRegistry {
 	}
 
 	/**
-	 * @deprecated since 2.5, use DataTypeRegistry::getDataItemByType
-	 */
-	public function getDataItemId( $typeId ) {
-		return $this->getDataItemByType( $typeId );
-	}
-
-	/**
 	 * Get the preferred data item ID for a given type. The ID defines the
 	 * appropriate data item class for processing data of this type. See
 	 * DataItem for possible values.
@@ -418,13 +411,6 @@ class DataTypeRegistry {
 	}
 
 	/**
-	 * @deprecated since 2.5, use DataTypeRegistry::getDefaultDataItemByType
-	 */
-	public function getDefaultDataItemTypeId( $diType ) {
-		return $this->getDefaultDataItemByType( $diType );
-	}
-
-	/**
 	 * Returns a default DataItem for a matchable type ID
 	 *
 	 * @since 2.5
@@ -467,7 +453,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function hasDataTypeClassById( $typeId ) {
+	public function hasDataTypeClassById( $typeId ): bool {
 		if ( !isset( $this->typeClasses[$typeId] ) ) {
 			return false;
 		}
@@ -484,7 +470,7 @@ class DataTypeRegistry {
 	 * associations. This method is called before most methods of this
 	 * factory.
 	 */
-	protected function initDatatypes( array $typeList ) {
+	protected function initDatatypes( array $typeList ): void {
 		foreach ( $typeList as $id => $definition ) {
 
 			if ( isset( $definition[0] ) ) {

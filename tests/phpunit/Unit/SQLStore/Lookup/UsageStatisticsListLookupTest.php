@@ -147,6 +147,10 @@ class UsageStatisticsListLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$tableDefinition->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'smw_fpt_mdat' );
+
 		$objectIdFetcher = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSMWPropertyID' ] )

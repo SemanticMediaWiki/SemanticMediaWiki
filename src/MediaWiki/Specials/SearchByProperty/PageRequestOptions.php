@@ -102,7 +102,7 @@ class PageRequestOptions {
 		$this->setNearbySearch();
 	}
 
-	private function getValue( string $value, bool $escaped ) {
+	private function getValue( string $value, bool $escaped ): string {
 		$this->value = DataValueFactory::getInstance()->newDataValueByProperty(
 			$this->property->getDataItem()
 		);

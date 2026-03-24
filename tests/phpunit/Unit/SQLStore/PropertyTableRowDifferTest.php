@@ -188,6 +188,10 @@ class PropertyTableRowDifferTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$propertyTable->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'smw_fpt_mdat' );
+
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'usesIdSubject' )
 			->willReturn( true );

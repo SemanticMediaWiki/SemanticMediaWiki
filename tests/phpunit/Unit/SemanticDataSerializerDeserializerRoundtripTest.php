@@ -106,7 +106,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
-		$subobject->setSemanticData( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 		$subobject->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has subobjects', 'Bam' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
@@ -119,11 +119,11 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has queez', 'Xeey' ) );
 
 		$subobject = new Subobject( $title );
-		$subobject->setSemanticData( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 		$subobject->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has subobjects', 'Bam' ) );
 		$subobject->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Fuz' ) );
 
-		$subobject->setSemanticData( 'Bar' );
+		$subobject->setEmptyContainerForId( 'Bar' );
 		$subobject->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Fuz' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
@@ -142,7 +142,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$subobject = new Subobject( $title );
-		$subobject->setSemanticData( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' ) );
@@ -170,7 +170,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		$subobject = new Subobject( $title );
-		$subobject->setSemanticData( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 		$subobject->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fomQuex', 'Bam' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );

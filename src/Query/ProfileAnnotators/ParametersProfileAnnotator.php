@@ -28,7 +28,7 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		[ $sort, $order ] = $this->doSerializeSortKeys( $this->query );
 
 		$options = [

@@ -45,7 +45,7 @@ class LanguageCodeValue extends StringValue {
 	 *
 	 * @param string $userValue
 	 */
-	protected function parseUserValue( $userValue ) {
+	protected function parseUserValue( $userValue ): void {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $userValue );
 
 		if ( $languageCode === '' ) {

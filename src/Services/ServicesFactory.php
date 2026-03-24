@@ -44,7 +44,6 @@ use SMW\PostProcHandler;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
-use SMW\Query\Parser\LegacyParser;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\SerializerFactory;
@@ -576,18 +575,6 @@ class ServicesFactory {
 	}
 
 	/**
-	 * @deprecated since 2.5, use QueryFactory::newQueryParser
-	 * @since 2.1
-	 *
-	 * @param int|bool $queryFeatures
-	 *
-	 * @return LegacyParser
-	 */
-	public function newQueryParser( $queryFeatures = false ): LegacyParser {
-		return $this->getQueryFactory()->newQueryParser( $queryFeatures );
-	}
-
-	/**
 	 * @since 2.5
 	 */
 	public function getDataItemFactory(): DataItemFactory {
@@ -615,7 +602,7 @@ class ServicesFactory {
 		return $this->callbackContainerBuilder->singleton( 'JobQueue' );
 	}
 
-	private static function newCallbackContainerBuilder( CallbackContainerFactory $callbackContainerFactory, $servicesFileDir ) {
+	private static function newCallbackContainerBuilder( CallbackContainerFactory $callbackContainerFactory, string $servicesFileDir ) {
 		$callbackContainerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
 		$callbackContainerBuilder->registerCallbackContainer( new SharedServicesContainer() );

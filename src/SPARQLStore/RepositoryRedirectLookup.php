@@ -116,7 +116,7 @@ class RepositoryRedirectLookup {
 		return $respositoryResult->current();
 	}
 
-	private function getResourceForTargetElement( ExpNsResource $expNsResource, $rediTargetElement ) {
+	private function getResourceForTargetElement( ExpNsResource $expNsResource, $rediTargetElement ): ExpNsResource {
 		if ( !$rediTargetElement instanceof ExpResource ) {
 			throw new RuntimeException( 'Expected a ExpResource instance' );
 		}

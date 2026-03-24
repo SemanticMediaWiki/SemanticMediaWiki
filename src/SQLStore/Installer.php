@@ -100,7 +100,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param Options|bool $verbose
 	 */
-	public function install( $verbose = true ) {
+	public function install( $verbose = true ): bool {
 		if ( $verbose instanceof Options ) {
 			$this->options = $verbose;
 		}

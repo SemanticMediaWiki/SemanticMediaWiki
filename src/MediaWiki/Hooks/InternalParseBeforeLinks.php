@@ -55,7 +55,7 @@ class InternalParseBeforeLinks implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( &$text ) {
+	public function process( &$text ): bool {
 		if ( !$this->canPerformUpdate( $text, $this->parser->getTitle() ) ) {
 			return true;
 		}

@@ -295,7 +295,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		$params = [
 			'tables' => $this->table,
 			'fields' => $this->fields,

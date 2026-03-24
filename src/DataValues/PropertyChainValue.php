@@ -126,7 +126,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getWikiValue
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->lastPropertyChainValue !== null ? $this->lastPropertyChainValue->getWikiValue() : '';
 	}
 
@@ -163,7 +163,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}

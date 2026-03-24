@@ -79,7 +79,7 @@ class DependencyLinksValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasArchaicDependencies( WikiPage $subject ) {
+	public function hasArchaicDependencies( WikiPage $subject ): bool {
 		$this->checkedDependencies = [];
 
 		if ( $this->checkDependencies === false ) {

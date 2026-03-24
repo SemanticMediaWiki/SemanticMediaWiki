@@ -270,9 +270,9 @@ class CliMsgFormatter {
 	 * @param string $message
 	 * @param int $seconds
 	 */
-	public function countDown( string $message, int $seconds ) {
+	public function countDown( string $message, int $seconds ): ?string {
 		if ( $seconds < 1 ) {
-			return;
+			return null;
 		}
 
 		echo "\n";
@@ -427,7 +427,7 @@ class CliMsgFormatter {
 		return $content;
 	}
 
-	private function humanReadableTime( $time ) {
+	private function humanReadableTime( $time ): int|string {
 		$time = (int)round( $time, 2 );
 
 		$s = $time % 60;

@@ -90,7 +90,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$action = $webRequest->getText( 'action' );
 
 		if ( $action === 'stats' ) {
@@ -106,7 +106,8 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 					$taskHandler->setStore( $this->getStore() );
 				}
 
-				return $taskHandler->handleRequest( $webRequest );
+				$taskHandler->handleRequest( $webRequest );
+				return;
 			}
 		}
 

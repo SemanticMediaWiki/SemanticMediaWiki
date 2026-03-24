@@ -54,7 +54,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return $this->isApiTask;
 	}
 
@@ -141,9 +141,10 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		if ( !$this->hasFeature( SMW_ADM_DISPOSAL ) || $this->hasPendingJob() || $this->isApiTask() ) {
-			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
+			$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
+			return;
 		}
 
 		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(

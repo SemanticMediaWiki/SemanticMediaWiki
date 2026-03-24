@@ -108,7 +108,7 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @return void
 	 */
-	private function updateDependencyList( int|string $sid, array $dependencyList ) {
+	private function updateDependencyList( int|string $sid, array $dependencyList ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
@@ -218,7 +218,7 @@ class DependencyLinksTableUpdater {
 	 * @param WikiPage $subject
 	 * @param string $subobjectName
 	 */
-	public function createId( WikiPage $subject, $subobjectName = '' ) {
+	public function createId( WikiPage $subject, string $subobjectName = '' ) {
 		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),

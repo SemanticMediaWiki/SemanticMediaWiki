@@ -49,7 +49,7 @@ class JsonContentIterator implements ContentIterator {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->jsonImportContentsFileDirReader->getErrors();
 	}
 

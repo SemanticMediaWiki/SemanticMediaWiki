@@ -126,7 +126,7 @@ class QueryResultDependencyListResolver {
 		return $queryResult instanceof QueryResult && $queryResult->getQuery() !== null && $queryResult->getQuery()->getContextPage() !== null && $queryResult->getQuery()->getLimit() > 0;
 	}
 
-	private function doResolveDependenciesFromDescription( &$subjects, $store, $description ): void {
+	private function doResolveDependenciesFromDescription( array &$subjects, $store, $description ): void {
 		// Ignore entities that use a comparator other than SMW_CMP_EQ
 		// [[Has page::~Foo*]] or similar is going to be ignored
 		if ( $description instanceof ValueDescription &&
@@ -170,7 +170,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchProperty( &$subjects, Property $property ): void {
+	private function doMatchProperty( array &$subjects, Property $property ): void {
 		if ( $property->isInverse() ) {
 			$property = new Property( $property->getKey() );
 		}
@@ -189,7 +189,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchSubcategory( &$subjects, WikiPage $category ): void {
+	private function doMatchSubcategory( array &$subjects, WikiPage $category ): void {
 		$hash = $category->getHash();
 		$subcategories = [];
 
@@ -209,7 +209,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchSubproperty( &$subjects, ?WikiPage $subject, Property $property ): void {
+	private function doMatchSubproperty( array &$subjects, ?WikiPage $subject, Property $property ): void {
 		$subproperties = [];
 
 		// Using the DBKey as short-cut, as we don't expect to match sub-properties for
@@ -234,7 +234,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doResolveDependenciesFromPrintRequest( &$subjects, array $printRequests ): void {
+	private function doResolveDependenciesFromPrintRequest( array &$subjects, array $printRequests ): void {
 		foreach ( $printRequests as $printRequest ) {
 			$data = $printRequest->getData();
 
@@ -261,7 +261,7 @@ class QueryResultDependencyListResolver {
 
 		$value = end( $value );
 
-		return ApplicationFactory::getInstance()->newQueryParser()->getQueryDescription(
+		return ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()->getQueryDescription(
 			$value->getConceptQuery()
 		);
 	}

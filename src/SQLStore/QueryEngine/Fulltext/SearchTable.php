@@ -112,8 +112,8 @@ class SearchTable {
 	 *
 	 * @return bool
 	 */
-	public function isExemptedProperty( Property $property ) {
-		$dataItemTypeId = DataTypeRegistry::getInstance()->getDataItemId(
+	public function isExemptedProperty( Property $property ): bool {
+		$dataItemTypeId = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyTypeID()
 		);
 
