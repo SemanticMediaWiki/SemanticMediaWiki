@@ -7,6 +7,7 @@ use SMW\DataItems\Blob;
 use SMW\DataItems\Boolean;
 use SMW\DataItems\Concept;
 use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\GeoCoord;
 use SMW\DataItems\Number;
 use SMW\DataItems\Property;
@@ -106,7 +107,7 @@ class XsdValueMapperTest extends TestCase {
 	}
 
 	public function unsupportedDataItemProvider() {
-		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
+		$dataItem = $this->getMockBuilder( DataItem::class )
 			->disableOriginalConstructor()
 			->setMethods( [ '__toString' ] )
 			->getMockForAbstractClass();

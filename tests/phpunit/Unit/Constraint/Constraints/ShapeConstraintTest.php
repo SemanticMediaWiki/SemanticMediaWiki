@@ -3,8 +3,11 @@
 namespace SMW\Tests\Unit\Constraint\Constraints;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\DataItemFactory;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValues\DataValue;
@@ -139,7 +142,7 @@ class ShapeConstraintTest extends TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-class-shape-constraint-invalid-max-cardinality';
 
-		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
+		$dataItem = $this->getMockBuilder( DataItem::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -188,7 +191,7 @@ class ShapeConstraintTest extends TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-class-shape-constraint-invalid-min-length';
 
-		$dataItem = $this->getMockBuilder( '\SMWDIBlob' )
+		$dataItem = $this->getMockBuilder( Blob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -241,7 +244,7 @@ class ShapeConstraintTest extends TestCase {
 
 		$instance = new ShapeConstraint();
 
-		$this->expectException( '\RuntimeException' );
+		$this->expectException( RuntimeException::class );
 		$instance->checkConstraint( $constraint, 'Foo' );
 	}
 

@@ -191,7 +191,7 @@ class PropertyUsageListLookupTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWDIError',
+			SMWDIError::class,
 			$result[0][0]
 		);
 	}

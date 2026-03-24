@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Container;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
@@ -200,7 +201,7 @@ class MonolingualTextLookupTest extends TestCase {
 		);
 
 		$this->assertInstanceof(
-			'\SMWDIContainer',
+			Container::class,
 			$instance->newDIContainer( $subject, $property )
 		);
 	}

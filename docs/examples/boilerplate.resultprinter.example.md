@@ -5,9 +5,9 @@ This document contains an example for a `ResultPrinter` both for the PHP and Jav
 <pre>
 namespace SMW\Query\ResultPrinters;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\DataValue;
 use SMW\Query\QueryResult;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
 use MediaWiki\Html\Html;
 
 /**

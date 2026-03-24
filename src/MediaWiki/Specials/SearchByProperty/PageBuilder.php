@@ -235,7 +235,7 @@ class PageBuilder {
 	 * query. Values can be highlighted to show exact matches among nearby
 	 * ones.
 	 *
-	 * @param array $results (array of (array of one or two SMWDataValues))
+	 * @param array $results (array of (array of one or two DataValues))
 	 * @param int $number How many results should be displayed? -1 for all
 	 * @param bool $first If less results should be displayed than
 	 * 	given, should they show the first $number results, or the last

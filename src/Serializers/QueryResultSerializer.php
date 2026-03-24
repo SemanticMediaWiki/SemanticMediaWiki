@@ -12,7 +12,7 @@ use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
 
 /**
- * Class for serializing SMWDataItem and QueryResult objects to a context
+ * Class for serializing DataItem and QueryResult objects to a context
  * independent object consisting of arrays and associative arrays, which can
  * be fed directly to json_encode, the MediaWiki API, and similar serializers.
  *

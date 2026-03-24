@@ -157,7 +157,7 @@ class DIBlobHandlerTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWDIBlob',
+			Blob::class,
 			$instance->dataItemFromDBKeys( $dbKeys )
 		);
 	}

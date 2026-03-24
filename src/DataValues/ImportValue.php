@@ -115,7 +115,7 @@ class ImportValue extends DataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem
+	 * @see DataValue::loadDataItem
 	 *
 	 * @param DataItem $dataItem
 	 *

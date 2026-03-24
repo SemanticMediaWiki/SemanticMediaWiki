@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\Elastic\Indexer\Attachment;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Container;
 use SMW\DataItems\Property;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
@@ -50,7 +51,7 @@ class AttachmentAnnotatorTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$instance->getContainer()
 		);
 	}

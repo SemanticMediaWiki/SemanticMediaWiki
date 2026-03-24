@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
@@ -130,7 +131,7 @@ class ErrorLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = $this->getMockBuilder( '\SMWDIBlob' )
+		$dataItem = $this->getMockBuilder( Blob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -203,7 +204,7 @@ class ErrorLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = $this->getMockBuilder( '\SMWDIBlob' )
+		$dataItem = $this->getMockBuilder( Blob::class )
 			->disableOriginalConstructor()
 			->getMock();
 

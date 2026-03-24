@@ -138,8 +138,9 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Constraint
 
 ```php
 use SMW\Constraint\Constraint;
+use SMW\DataItems\Property;
+use SMW\DataValues\DataValue;
 use SMW\SemanticData;
-use SMW\DIProperty;
 
 class StartEndConstraint implements Constraint {
 
@@ -172,7 +173,7 @@ class StartEndConstraint implements Constraint {
 
 		$this->hasViolation = false;
 
-		if ( !$dataValue instanceof \SMWDataValue ) {
+		if ( !$dataValue instanceof DataValue ) {
 			throw new RuntimeException( "Expected a DataValue instance!" );
 		}
 
@@ -196,11 +197,11 @@ class StartEndConstraint implements Constraint {
 		$semanticData = $dataValue->getCallable( SemanticData::class )();
 
 		$s = $semanticData->getPropertyValues(
-			DIProperty::newFromUserLabel( $start )
+			Property::newFromUserLabel( $start )
 		);
 
 		$e = $semanticData->getPropertyValues(
-			DIProperty::newFromUserLabel( $end )
+			Property::newFromUserLabel( $end )
 		);
 
 		// Compare $s and $e and issue an error on case of

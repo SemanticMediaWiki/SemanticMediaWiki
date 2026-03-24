@@ -4,7 +4,6 @@ namespace SMW\Tests\Utils\Fixtures\Properties;
 
 use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIWiKiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,10 +23,10 @@ class CityCategory extends FixtureProperty {
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIWiKiPage
+	 * @return WiKiPage
 	 */
 	public function asSubject() {
-		return new DIWiKiPage( 'City', NS_CATEGORY );
+		return new WiKiPage( 'City', NS_CATEGORY );
 	}
 
 	/**

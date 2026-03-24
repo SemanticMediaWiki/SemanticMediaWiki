@@ -50,7 +50,7 @@ class DataTypeRegistry {
 	private $canonicalLabels = [];
 
 	/**
-	 * Array of class names for creating new SMWDataValue, indexed by type
+	 * Array of class names for creating new DataValue, indexed by type
 	 * id.
 	 *
 	 * @var string[]
@@ -156,9 +156,9 @@ class DataTypeRegistry {
 	 * appropriate data item class for processing data of this type. See
 	 * DataItem for possible values.
 	 *
-	 * @note SMWDIContainer is a pseudo dataitem type that is used only in
+	 * @note \SMW\DataItems\Container is a pseudo dataitem type that is used only in
 	 * data input methods, but not for storing data. Types that work with
-	 * SMWDIContainer use SMWDIWikiPage as their DI type. (Since SMW 1.8)
+	 * \SMW\DataItems\Container use \SMW\DataItems\WikiPage as their DI type. (Since SMW 1.8)
 	 *
 	 * @param $typeId string id string for the given type
 	 *
@@ -233,7 +233,7 @@ class DataTypeRegistry {
 	 * called from within the hook 'smwInitDatatypes'.
 	 *
 	 * @param $id string type ID for which this datatype is registered
-	 * @param $className string name of the according subclass of SMWDataValue
+	 * @param $className string name of the according subclass of DataValue
 	 * @param $dataItemId integer ID of the data item class that this data value uses, see DataItem
 	 * @param $label mixed string label or false for types that cannot be accessed by users
 	 * @param bool $isSubDataType

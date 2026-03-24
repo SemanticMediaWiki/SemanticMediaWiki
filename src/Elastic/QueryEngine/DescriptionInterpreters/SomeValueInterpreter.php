@@ -7,6 +7,7 @@ use RuntimeException;
 use SMW\DataItems\Blob;
 use SMW\DataItems\Boolean;
 use SMW\DataItems\GeoCoord;
+use SMW\DataItems\Number;
 use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataItems\Uri;
@@ -17,7 +18,6 @@ use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Query\Language\ValueDescription;
 use SMW\Utils\CharExaminer;
-use SMWDInumber as DINumber;
 
 /**
  * @license GPL-2.0-or-later
@@ -90,7 +90,7 @@ class SomeValueInterpreter {
 			$params = $this->plain( $dataItem->getJD(), $options );
 		} elseif ( $dataItem instanceof Boolean ) {
 			$params = $this->plain( $dataItem->getBoolean(), $options );
-		} elseif ( $dataItem instanceof DINumber ) {
+		} elseif ( $dataItem instanceof Number ) {
 			$params = $this->plain( $dataItem->getNumber(), $options );
 		} else {
 			$params = $this->plain( $dataItem->getSerialization(), $options );

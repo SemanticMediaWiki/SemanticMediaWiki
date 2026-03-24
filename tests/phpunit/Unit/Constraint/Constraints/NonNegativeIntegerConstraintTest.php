@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\Constraint\Constraints;
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 use SMW\DataItemFactory;
+use SMW\DataValues\DataValue;
 
 /**
  * @covers \SMW\Constraint\Constraints\NonNegativeIntegerConstraint
@@ -54,7 +55,7 @@ class NonNegativeIntegerConstraintTest extends TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-non-negative-integer';
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
 			->getMockForAbstractClass();

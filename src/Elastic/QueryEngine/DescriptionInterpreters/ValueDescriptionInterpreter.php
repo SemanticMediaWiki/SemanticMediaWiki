@@ -4,12 +4,12 @@ namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\DataItems\Blob;
 use SMW\DataItems\Boolean;
+use SMW\DataItems\Number;
 use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ValueDescription;
 use SMW\Utils\CharExaminer;
-use SMWDInumber as DINumber;
 
 /**
  * @license GPL-2.0-or-later
@@ -93,7 +93,7 @@ class ValueDescriptionInterpreter {
 			$value = $dataItem->getJD();
 		} elseif ( $dataItem instanceof Boolean ) {
 			$value = $dataItem->getBoolean();
-		} elseif ( $dataItem instanceof DINumber ) {
+		} elseif ( $dataItem instanceof Number ) {
 			$value = $dataItem->getNumber();
 		} else {
 			$value = $dataItem->getSerialization();

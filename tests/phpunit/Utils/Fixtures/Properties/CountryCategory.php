@@ -3,8 +3,8 @@
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
 use SMW\DataItems\Property;
+use SMW\DataItems\WiKiPage;
 use SMW\DataValueFactory;
-use SMW\DIWiKiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -38,10 +38,10 @@ class CountryCategory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIWiKiPage
+	 * @return WiKiPage
 	 */
 	public function asSubject() {
-		return new DIWiKiPage( 'Country', NS_CATEGORY );
+		return new WiKiPage( 'Country', NS_CATEGORY );
 	}
 
 	/**

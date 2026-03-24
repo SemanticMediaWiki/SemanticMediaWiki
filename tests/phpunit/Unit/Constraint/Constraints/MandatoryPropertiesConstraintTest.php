@@ -7,6 +7,7 @@ use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 
 /**
  * @covers \SMW\Constraint\Constraints\MandatoryPropertiesConstraint
@@ -64,7 +65,7 @@ class MandatoryPropertiesConstraintTest extends TestCase {
 			->method( 'getProperties' )
 			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'addError', 'getCallable' ] )
 			->getMockForAbstractClass();

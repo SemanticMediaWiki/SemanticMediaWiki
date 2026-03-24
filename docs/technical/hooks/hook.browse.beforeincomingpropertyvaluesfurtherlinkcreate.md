@@ -6,10 +6,10 @@
 
 ```php
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 
-MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', function( DIProperty $property, DIWikiPage $subject, &$propertyValue ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', function( Property $property, WikiPage $subject, &$propertyValue ) {
 
 	// return `false` to replace the link
 

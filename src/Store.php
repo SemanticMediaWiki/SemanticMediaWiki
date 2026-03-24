@@ -9,6 +9,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\DataItem;
+use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -73,8 +74,8 @@ abstract class Store implements QueryEngine {
 	/**
 	 * @see EntityLookup::getPropertyValues
 	 *
-	 * @param $subject mixed SMWDIWikiPage or null
-	 * @param $property DIProperty
+	 * @param $subject mixed WikiPage or null
+	 * @param Property $property
 	 * @param null $requestoptions RequestOptions
 	 *
 	 * @return array of DataItem
@@ -90,7 +91,7 @@ abstract class Store implements QueryEngine {
 
 	/**
 	 * Get an array of all subjects that have some value for the given
-	 * property. The result is an array of DIWikiPage objects.
+	 * property. The result is an array of WikiPage objects.
 	 *
 	 * @return WikiPage[]
 	 */
@@ -117,7 +118,7 @@ abstract class Store implements QueryEngine {
 	abstract public function getInProperties( DataItem $object, $requestOptions = null );
 
 	/**
-	 * Convenience method to find the sortkey of an SMWDIWikiPage. The
+	 * Convenience method to find the sortkey of an WikiPage. The
 	 * result is based on the contents of this store, and may differ from
 	 * the MediaWiki database entry about a Title objects sortkey. If no
 	 * sortkey is stored, the default sortkey (title string) is returned.
@@ -137,8 +138,8 @@ abstract class Store implements QueryEngine {
 	}
 
 	/**
-	 * Convenience method to find the redirect target of a DIWikiPage
-	 * or DIProperty object. Returns a dataitem of the same type that
+	 * Convenience method to find the redirect target of a WikiPage
+	 * or Property object. Returns a dataitem of the same type that
 	 * the input redirects to, or the input itself if there is no redirect.
 	 *
 	 * @param DataItem $dataItem
@@ -149,7 +150,7 @@ abstract class Store implements QueryEngine {
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
-			throw new InvalidArgumentException( 'Store::getRedirectTarget expects a DIProperty or DIWikiPage object.' );
+			throw new InvalidArgumentException( 'Store::getRedirectTarget expects a Property or WikiPage object.' );
 		}
 
 		if ( $type === DataItem::TYPE_PROPERTY ) {
@@ -326,7 +327,7 @@ abstract class Store implements QueryEngine {
 	 * names.
 	 *
 	 * If there is an error on creating some property object, then a
-	 * suitable SMWDIError object might be returned in its place. Even if
+	 * suitable Error object might be returned in its place. Even if
 	 * there are errors, the function should always return the number of
 	 * results requested (otherwise callers might assume that there are no
 	 * further results to ask for).
@@ -344,14 +345,14 @@ abstract class Store implements QueryEngine {
 	 * means of accessing the set of all pages in the property namespace.
 	 *
 	 * If there is an error on creating some property object, then a
-	 * suitable SMWDIError object might be returned in its place. Even if
+	 * suitable Error object might be returned in its place. Even if
 	 * there are errors, the function should always return the number of
 	 * results requested (otherwise callers might assume that there are no
 	 * further results to ask for).
 	 *
 	 * @param RequestOptions|null $requestoptions
 	 *
-	 * @return array of DIProperty|SMWDIError
+	 * @return Property|Error array
 	 */
 	abstract public function getUnusedPropertiesSpecial( $requestoptions = null );
 
@@ -363,7 +364,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param RequestOptions|null $requestoptions
 	 *
-	 * @return array of array( DIProperty, int )
+	 * @return array of array( Property, int )
 	 */
 	abstract public function getWantedPropertiesSpecial( $requestoptions = null );
 

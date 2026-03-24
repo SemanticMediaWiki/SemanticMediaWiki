@@ -10,6 +10,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\DataValues\NumberValue;
 use SMW\Formatters\Infolink;
 use SMW\Property\SpecificationLookup;
 use SMW\Query\PrintRequestFactory;
@@ -243,7 +244,7 @@ class QueryResultSerializerTest extends TestCase {
 			] );
 
 			$dataValue = $this->newMockBuilder()->newObject( 'DataValue', [
-				'DataValueType'    => 'SMWNumberValue',
+				'DataValueType'    => NumberValue::class,
 				'getTypeID'        => '_num',
 				'getShortWikiText' => $value['dataValue'],
 				'getDataItem'      => $dataItem

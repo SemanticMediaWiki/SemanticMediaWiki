@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\Parser;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -82,7 +83,7 @@ class AnnotationProcessorTest extends TestCase {
 	}
 
 	public function testNewDataValueByItem() {
-		$dataItem = $this->getMockBuilder( 'SMWDataItem' )
+		$dataItem = $this->getMockBuilder( DataItem::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

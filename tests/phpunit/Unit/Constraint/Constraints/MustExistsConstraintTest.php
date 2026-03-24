@@ -8,6 +8,7 @@ use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\DataItemFactory;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 
 /**
  * @covers \SMW\Constraint\Constraints\MustExistsConstraint
@@ -77,7 +78,7 @@ class MustExistsConstraintTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
 			->getMockForAbstractClass();

@@ -184,7 +184,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param RequestOptions $requestOptions
-	 * @return array of Property|SMWDIError
+	 * @return array of Property|Error
 	 */
 	public function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestOptions );

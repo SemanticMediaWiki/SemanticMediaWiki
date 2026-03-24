@@ -6,9 +6,9 @@
 
 ```php
 use MediaWiki\MediaWikiServices;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
-MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Exporter::Controller::AddExpData', function( DIWikiPage $subject, &$expDataList, $hasRecursionDepth, $withBacklinks ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Exporter::Controller::AddExpData', function( WikiPage $subject, &$expDataList, $hasRecursionDepth, $withBacklinks ) {
 
 	// $expData = new ExpData( ... );
 	// $expDataList[] = $expData;

@@ -7,6 +7,7 @@ use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 
 /**
  * @covers \SMW\Constraint\Constraints\SingleValueConstraint
@@ -64,7 +65,7 @@ class SingleValueConstraintTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'addError', 'getCallable' ] )
 			->getMockForAbstractClass();
