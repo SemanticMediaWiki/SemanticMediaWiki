@@ -76,11 +76,11 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 		);
 	}
 
-	protected function addResourceHelperValue( ExpData $expData, Property $property, DataItem $dataItem ) {
-		return $this->addAuxiliaryResourceValue( $expData, $property, $dataItem );
+	protected function addResourceHelperValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
+		$this->addAuxiliaryResourceValue( $expData, $property, $dataItem );
 	}
 
-	protected function addAuxiliaryResourceValue( ExpData $expData, Property $property, DataItem $dataItem ) {
+	protected function addAuxiliaryResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		$auxiliaryExpElement = $this->exporter->newAuxiliaryExpElement(
 			$dataItem
 		);

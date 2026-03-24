@@ -455,7 +455,7 @@ class ConditionBuilder {
 	 *
 	 * @param Condition &$condition condition to modify
 	 */
-	protected function addMissingOrderByConditions( Condition &$condition ) {
+	protected function addMissingOrderByConditions( Condition &$condition ): void {
 		foreach ( $this->sortKeys as $propertyKey => $order ) {
 
 			if ( !is_string( $propertyKey ) ) {

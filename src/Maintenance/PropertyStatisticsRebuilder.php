@@ -201,7 +201,7 @@ class PropertyStatisticsRebuilder {
 		return [ $usageCount, $nullCount ];
 	}
 
-	protected function reportMessage( $message ) {
+	protected function reportMessage( $message ): void {
 		$this->messageReporter->reportMessage( $message );
 	}
 

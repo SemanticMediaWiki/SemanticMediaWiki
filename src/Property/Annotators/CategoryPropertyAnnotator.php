@@ -87,7 +87,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		$subject = $this->getSemanticData()->getSubject();
 		$namespace = $subject->getNamespace();
 		$property = null;
@@ -123,7 +123,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$annotationProcessor->release();
 	}
 
-	private function modifySemanticData( SemanticData $semanticData, AnnotationProcessor $annotationProcessor, $subject, Property $property, $catname ) {
+	private function modifySemanticData( SemanticData $semanticData, AnnotationProcessor $annotationProcessor, $subject, Property $property, $catname ): void {
 		$cat = new WikiPage( $catname, NS_CATEGORY );
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
@@ -145,7 +145,8 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 				$cat
 			);
 
-			return $semanticData->addDataValue( $dataValue );
+			$semanticData->addDataValue( $dataValue );
+			return;
 		}
 
 		$container = $this->processingErrorMsgHandler->newErrorContainerFromMsg(

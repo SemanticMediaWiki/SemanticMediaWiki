@@ -103,7 +103,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-idlookup-title' ) ] )
 		);
@@ -112,7 +112,8 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		// https://phabricator.wikimedia.org/T109652#1562641
 		if ( !$this->user->matchEditToken( $webRequest->getVal( 'wpEditToken' ) ) ) {
-			return $this->outputFormatter->addHtml( $this->msg( 'sessionfailure' ) );
+			$this->outputFormatter->addHtml( $this->msg( 'sessionfailure' ) );
+			return;
 		}
 
 		$id = $webRequest->getText( 'id' );

@@ -135,7 +135,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 		return $this->current !== false && $this->position < $this->count();
 	}
 
-	protected function setCurrent( $row ) {
+	protected function setCurrent( $row ): void {
 		if ( $row === false || $row === null ) {
 			$this->current = false;
 		} else {

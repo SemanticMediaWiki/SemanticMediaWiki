@@ -102,7 +102,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @param string $userValue
 	 */
-	protected function parseUserValue( $userValue ) {
+	protected function parseUserValue( $userValue ): void {
 		[ $text, $languageCode ] = $this->getValuesFromString( $userValue );
 
 		$languageCodeValue = $this->newLanguageCodeValue( $languageCode );

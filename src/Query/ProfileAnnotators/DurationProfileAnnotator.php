@@ -27,7 +27,7 @@ class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->duration > 0 ) {
 			$this->addGreaterThanZeroQueryDuration( $this->duration );
 		}

@@ -922,7 +922,7 @@ abstract class DataValue {
 	 *
 	 * @param string $value
 	 */
-	abstract protected function parseUserValue( $value );
+	abstract protected function parseUserValue( $value ): void;
 
 	/**
 	 * Set the actual data contained in this object. The method returns
@@ -955,7 +955,7 @@ abstract class DataValue {
 	/**
 	 * @deprecated since 3.1, use DataValue::checkConstraints
 	 */
-	protected function checkAllowedValues() {
+	protected function checkAllowedValues(): void {
 		$this->checkConstraints();
 	}
 

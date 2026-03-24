@@ -159,7 +159,7 @@ abstract class Page extends Article {
 	/**
 	 * Main method for adding all additional HTML to the output stream.
 	 */
-	protected function showList() {
+	protected function showList(): void {
 		$outputPage = $this->getContext()->getOutput();
 		$request = $this->getContext()->getRequest();
 
@@ -179,7 +179,7 @@ abstract class Page extends Article {
 	 *
 	 * @return true
 	 */
-	protected function initParameters() {
+	protected function initParameters(): void {
 		$this->limit = 20;
 	}
 

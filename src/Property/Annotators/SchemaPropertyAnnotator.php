@@ -24,7 +24,7 @@ class SchemaPropertyAnnotator extends PropertyAnnotatorDecorator {
 		parent::__construct( $propertyAnnotator );
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->schema === null ) {
 			return;
 		}

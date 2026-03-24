@@ -79,21 +79,24 @@ class ContentModeller {
 		return $importContents;
 	}
 
-	private function setContents( ImportContents $importContents, string $fileDir, $contents ) {
+	private function setContents( ImportContents $importContents, string $fileDir, $contents ): void {
 		if ( !is_array( $contents ) || !isset( $contents['importFrom'] ) ) {
-			return $importContents->setContents( $contents );
+			$importContents->setContents( $contents );
+			return;
 		}
 
 		$file = $this->normalizeFile( $fileDir, $contents['importFrom'] );
 
 		if ( !is_readable( $file ) ) {
-			return $importContents->addError( "File: " . $file . " wasn't accessible" );
+			$importContents->addError( "File: " . $file . " wasn't accessible" );
+			return;
 		}
 
 		$extension = pathinfo( $file, PATHINFO_EXTENSION );
 
 		if ( isset( $contents['type'] ) && $contents['type'] === 'xml' && $extension !== 'xml' ) {
-			return $importContents->addError( "XML: " . $file . " is not recognized as xml file extension" );
+			$importContents->addError( "XML: " . $file . " is not recognized as xml file extension" );
+			return;
 		}
 
 		if ( $extension === 'xml' ) {

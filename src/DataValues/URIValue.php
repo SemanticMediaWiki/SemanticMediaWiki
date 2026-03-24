@@ -67,7 +67,7 @@ class URIValue extends DataValue {
 		$this->schemeList = array_flip( $GLOBALS['smwgURITypeSchemeList'] );
 	}
 
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = trim( $value );
 		$this->m_wikitext = $value;
 		if ( $this->m_caption === false ) {
@@ -141,7 +141,8 @@ class URIValue extends DataValue {
 
 				// #3540
 				if ( $hierpart !== '' && $hierpart[0] === '/' ) {
-					return $this->addErrorMsg( [ 'smw-datavalue-uri-invalid-authority-path-component', $value, $hierpart ] );
+					$this->addErrorMsg( [ 'smw-datavalue-uri-invalid-authority-path-component', $value, $hierpart ] );
+					return;
 				}
 
 				break;

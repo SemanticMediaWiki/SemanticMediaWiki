@@ -74,7 +74,7 @@ class RecordValue extends AbstractMultiValue {
 		return str_replace( "-3B", ";", $values );
 	}
 
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 			return;

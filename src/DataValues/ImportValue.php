@@ -80,7 +80,7 @@ class ImportValue extends DataValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$this->qname = $value;
 
 		$importValueParser = $this->dataValueServiceFactory->getValueParser(

@@ -41,7 +41,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->predefinedPropertyList = $predefinedPropertyList;
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		$cachedProperties = [];
 
 		foreach ( $this->predefinedPropertyList as $propertyId ) {

@@ -484,7 +484,7 @@ class DataTypeRegistry {
 	 * associations. This method is called before most methods of this
 	 * factory.
 	 */
-	protected function initDatatypes( array $typeList ) {
+	protected function initDatatypes( array $typeList ): void {
 		foreach ( $typeList as $id => $definition ) {
 
 			if ( isset( $definition[0] ) ) {

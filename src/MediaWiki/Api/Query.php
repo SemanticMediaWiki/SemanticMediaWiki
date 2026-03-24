@@ -67,7 +67,7 @@ abstract class Query extends ApiBase {
 	 *
 	 * @param QueryResult $queryResult
 	 */
-	protected function addQueryResult( QueryResult $queryResult, $outputFormat = 'json' ) {
+	protected function addQueryResult( QueryResult $queryResult, $outputFormat = 'json' ): void {
 		$result = $this->getResult();
 
 		$resultFormatter = new ApiQueryResultFormatter( $queryResult );

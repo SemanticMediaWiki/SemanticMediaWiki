@@ -47,8 +47,7 @@ class ConstraintCheckRunnerTest extends TestCase {
 			->method( 'checkConstraint' )
 			->with(
 				[ 'foo_bar' => [] ],
-				'__value__' )
-			->willReturn( false );
+				'__value__' );
 
 		$constraint->expects( $this->atLeastOnce() )
 			->method( 'hasViolation' )

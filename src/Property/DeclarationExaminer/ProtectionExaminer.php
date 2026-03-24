@@ -30,7 +30,7 @@ class ProtectionExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( Property $property ) {
+	protected function validate( Property $property ): void {
 		if ( $this->declarationExaminer->isLocked() ) {
 			return;
 		}

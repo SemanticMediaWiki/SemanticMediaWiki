@@ -183,7 +183,7 @@ class SchemaContentHandler extends JsonContentHandler {
 		Content $content,
 		ContentParseParams $cpoParams,
 		ParserOutput &$output
-	) {
+	): void {
 		$title = Title::castFromPageReference( $cpoParams->getPage() );
 
 		if ( !$cpoParams->getGenerateHtml() || !$content->isValid() ) {

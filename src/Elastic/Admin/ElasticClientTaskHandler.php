@@ -112,12 +112,13 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$action = $webRequest->getText( 'action' );
 
 		if ( !$connection->ping() ) {
-			return $this->outputNoNodesAvailable( $connection );
+			$this->outputNoNodesAvailable( $connection );
+			return;
 		} elseif ( $action === $this->getTask() ) {
 			$this->outputHead();
 		} else {
@@ -128,7 +129,8 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 						$this->getStore()
 					);
 
-					return $taskHandler->handleRequest( $webRequest );
+					$taskHandler->handleRequest( $webRequest );
+					return;
 				}
 			}
 		}

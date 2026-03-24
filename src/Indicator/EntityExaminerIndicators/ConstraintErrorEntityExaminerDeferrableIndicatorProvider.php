@@ -35,9 +35,10 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends Constrain
 	/**
 	 * @see ConstraintErrorEntityExaminerIndicatorProvider::checkConstraintErrors
 	 */
-	protected function checkConstraintErrors( $subject, $options ) {
+	protected function checkConstraintErrors( $subject, $options ): void {
 		if ( $this->isDeferredMode ) {
-			return $this->runCheck( $subject, $options );
+			$this->runCheck( $subject, $options );
+			return;
 		}
 
 		$this->indicators = [ 'id' => $this->getName() ];

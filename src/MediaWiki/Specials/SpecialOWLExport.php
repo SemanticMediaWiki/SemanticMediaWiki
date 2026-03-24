@@ -84,7 +84,7 @@ class SpecialOWLExport extends SpecialPage {
 	 *
 	 * @return void
 	 */
-	protected function showForm() {
+	protected function showForm(): void {
 		global $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
 
 		$out = $this->getOutput();
@@ -119,7 +119,7 @@ class SpecialOWLExport extends SpecialPage {
 	 *
 	 * @return void
 	 */
-	protected function startRDFExport() {
+	protected function startRDFExport(): void {
 		$out = $this->getOutput();
 		$request = $this->getRequest();
 
@@ -159,7 +159,7 @@ class SpecialOWLExport extends SpecialPage {
 	 *
 	 * @return void
 	 */
-	protected function exportPages( array $pages ) {
+	protected function exportPages( array $pages ): void {
 		global $smwgExportBacklinks, $smwgAllowRecursiveExport;
 
 		$request = $this->getRequest();

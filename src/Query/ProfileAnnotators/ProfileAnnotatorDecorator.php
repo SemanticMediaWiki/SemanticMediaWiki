@@ -88,6 +88,6 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	/**
 	 * @since 1.9
 	 */
-	abstract protected function addPropertyValues();
+	abstract protected function addPropertyValues(): void;
 
 }

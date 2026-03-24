@@ -362,7 +362,7 @@ class ExportController {
 	 * Send to the output what has been serialized so far. The flush might
 	 * be deferred until later unless $force is true.
 	 */
-	protected function flush( $force = false ) {
+	protected function flush( $force = false ): void {
 		if ( !$force && ( $this->delay_flush > 0 ) ) {
 			$this->delay_flush -= 1;
 		} elseif ( $this->outputfile !== null ) {
@@ -492,7 +492,7 @@ class ExportController {
 	/**
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
-	protected function printAll( $ns_restriction, $delay, $delayeach ) {
+	protected function printAll( $ns_restriction, $delay, $delayeach ): void {
 		$mwServices = MediaWikiServices::getInstance();
 		$titleFactory = $mwServices->getTitleFactory();
 		$linkCache = $mwServices->getLinkCache();

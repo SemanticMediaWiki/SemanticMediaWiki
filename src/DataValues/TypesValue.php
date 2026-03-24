@@ -181,7 +181,7 @@ class TypesValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = (string)$value;
 
 		if ( $this->m_caption === false ) {

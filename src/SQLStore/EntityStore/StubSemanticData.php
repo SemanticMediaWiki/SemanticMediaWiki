@@ -87,7 +87,7 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * @since 2.3
 	 */
-	public function __wakeup() {
+	public function __wakeup(): void {
 		$this->store = StoreFactory::getStore( SQLStore::class );
 	}
 
@@ -324,7 +324,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 */
-	protected function unstubProperties() {
+	protected function unstubProperties(): void {
 		foreach ( $this->mStubPropVals as $pkey => $values ) { // unstub property values only, the value lists are still kept as stubs
 			try {
 				$this->unstubProperty( $pkey );
@@ -350,7 +350,7 @@ class StubSemanticData extends SemanticData {
 	 * @throws DataItemException if property key is not valid
 	 * 	and $diProperty is null
 	 */
-	protected function unstubProperty( $propertyKey, $diProperty = null ) {
+	protected function unstubProperty( $propertyKey, $diProperty = null ): void {
 		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
 			if ( $diProperty === null ) {
 				$diProperty = new Property( $propertyKey, false );

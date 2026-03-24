@@ -63,7 +63,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( Property $property ) {
+	protected function validate( Property $property ): void {
 		$subject = $property->getCanonicalDiWikiPage();
 		$semanticData = $this->store->getSemanticData( $subject );
 

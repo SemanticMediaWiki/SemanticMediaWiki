@@ -135,7 +135,7 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @see CallableChangeListenerTrait::triggerByKey
 	 */
-	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {
+	protected function triggerByKey( string $key, ChangeRecord $changeRecord ): void {
 		$property = new Property( $key );
 
 		foreach ( $this->changeListeners[$key] as $changeListener ) {

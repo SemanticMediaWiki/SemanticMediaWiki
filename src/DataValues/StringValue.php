@@ -134,7 +134,7 @@ class StringValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}

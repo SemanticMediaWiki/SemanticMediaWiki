@@ -27,7 +27,7 @@ class FormatProfileAnnotator extends ProfileAnnotatorDecorator {
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		$this->addQueryFormat( $this->format );
 	}
 

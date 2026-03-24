@@ -67,7 +67,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation() {
+	public function addAnnotation(): void {
 	}
 
 }

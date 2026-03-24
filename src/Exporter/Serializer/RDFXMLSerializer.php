@@ -52,7 +52,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeHeader() {
+	protected function serializeHeader(): void {
 		$exporter = Exporter::getInstance();
 
 		$this->namespaces_are_global = true;
@@ -99,7 +99,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeFooter() {
+	protected function serializeFooter(): void {
 		$this->post_ns_buffer .= "\t<!-- Created by Semantic MediaWiki, https://www.semantic-mediawiki.org/ -->\n";
 		$this->post_ns_buffer .= '</rdf:RDF>';
 	}
@@ -142,7 +142,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeNamespace( $shortname, $uri ) {
+	protected function serializeNamespace( $shortname, $uri ): void {
 		if ( $this->namespaces_are_global ) {
 			$this->global_namespaces[$shortname] = true;
 			$this->pre_ns_buffer .= "\n\t";
@@ -234,7 +234,7 @@ class RDFXMLSerializer extends Serializer {
 	 * @param $expLiteral ExpLiteral the data value to use
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeExpLiteral( ExpNsResource $expResourceProperty, ExpLiteral $expLiteral, string $indent ) {
+	protected function serializeExpLiteral( ExpNsResource $expResourceProperty, ExpLiteral $expLiteral, string $indent ): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		// https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-languages
@@ -262,7 +262,7 @@ class RDFXMLSerializer extends Serializer {
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
 	 */
-	protected function serializeExpResource( ExpNsResource $expResourceProperty, ExpResource $expResource, string $indent, $isClassTypeProp ) {
+	protected function serializeExpResource( ExpNsResource $expResourceProperty, ExpResource $expResource, string $indent, $isClassTypeProp ): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		if ( !$expResource->isBlankNode() ) {
@@ -294,7 +294,7 @@ class RDFXMLSerializer extends Serializer {
 	 * @bug The $isClassTypeProp parameter is not properly taken into account.
 	 * @bug Individual resources are not serialised properly.
 	 */
-	protected function serializeExpCollection( ExpNsResource $expResourceProperty, array $collection, string $indent, $isClassTypeProp ) {
+	protected function serializeExpCollection( ExpNsResource $expResourceProperty, array $collection, string $indent, $isClassTypeProp ): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
 
 		foreach ( $collection as $expElement ) {

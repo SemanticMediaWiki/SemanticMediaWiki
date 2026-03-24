@@ -88,7 +88,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 */
-	protected function addResources() {
+	protected function addResources(): void {
 	}
 
 	/**
@@ -117,7 +117,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @param array &$data
 	 */
-	protected function applyDistributionParams( array &$data ) {
+	protected function applyDistributionParams( array &$data ): void {
 		if ( $this->params['distributionsort'] == 'asc' ) {
 			asort( $data, SORT_NUMERIC );
 		} elseif ( $this->params['distributionsort'] == 'desc' ) {
@@ -258,7 +258,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @param array &$values
 	 * @param string $name
 	 */
-	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ) {
+	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ): void {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_NUMBER:
 				// Collect and aggregate values for the same array key

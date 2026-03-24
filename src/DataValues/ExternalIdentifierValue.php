@@ -38,7 +38,7 @@ class ExternalIdentifierValue extends StringValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		parent::parseUserValue( $value );
 	}
 

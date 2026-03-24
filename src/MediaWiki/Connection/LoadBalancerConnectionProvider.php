@@ -46,7 +46,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @param boolean $asConnectionRef
 	 */
-	public function asConnectionRef( $asConnectionRef ) {
+	public function asConnectionRef( $asConnectionRef ): void {
 	}
 
 	/**

@@ -68,7 +68,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( Property $property ) {
+	protected function validate( Property $property ): void {
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$property
 		);
