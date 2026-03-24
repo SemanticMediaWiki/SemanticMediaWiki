@@ -265,7 +265,7 @@ class QueryResultSerializerTest extends TestCase {
 			'getResults'        => $getResults,
 			'getQuery'          => $query,
 			'getStore'          => $this->newMockBuilder()->newObject( 'Store' ),
-			'getLink'           => new Infolink( true, 'Lala', 'Lula' ),
+			'getQueryLink'      => new Infolink( true, 'Lala', 'Lula' ),
 			'hasFurtherResults' => true
 		] );
 
