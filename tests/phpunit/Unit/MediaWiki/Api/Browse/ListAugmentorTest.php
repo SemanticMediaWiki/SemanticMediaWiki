@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\TestEnvironment;
 use stdClass;
 
 /**
@@ -18,6 +19,18 @@ use stdClass;
  * @author mwjames
  */
 class ListAugmentorTest extends TestCase {
+
+	private $testEnvironment;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( SQLStore::class )
@@ -64,7 +77,17 @@ class ListAugmentorTest extends TestCase {
 			]
 		];
 
-		$store = $this->getMockBuilder( SQLStore::class )
+				$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+						->disableOriginalConstructor()
+						->getMock();
+
+				$propertySpecificationLookup->expects( $this->any() )
+						->method( 'getPropertyDescriptionByLanguageCode' )
+						->willReturn( '' );
+
+				$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
+
+				$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
