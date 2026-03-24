@@ -3,7 +3,6 @@
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\WikiMap\WikiMap;
-use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
@@ -77,13 +76,6 @@ function smwfXMLContentEncode( ?string $text ): string {
  */
 function smwfHTMLtoUTF8( ?string $text ): string {
 	return Sanitizer::decodeCharReferences( $text ?? '' );
-}
-
-/**
- * @deprecated since 2.1, use NumberFormatter instead
- */
-function smwfNumberFormat( $value, $decplaces = 3 ) {
-	return IntlNumberFormatter::getInstance()->getLocalizedFormattedNumber( $value, $decplaces );
 }
 
 /**
