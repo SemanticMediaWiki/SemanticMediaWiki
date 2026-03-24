@@ -378,7 +378,7 @@ class StubSemanticData extends SemanticData {
 		$this->unstubProperty( $property->getKey(), $property );
 		$propertyTypeId = $property->findPropertyTypeID();
 
-		$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
+		$propertyDiId = DataTypeRegistry::getInstance()->getDataItemByType( $propertyTypeId );
 		$diHandler = $this->store->getDataItemHandlerForDIType( $propertyDiId );
 
 		foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {

@@ -255,26 +255,12 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 2.0, use setSemanticData
-	 */
-	public function setData( SemanticData $semanticData ): void {
-		$this->setSemanticData( $semanticData );
-	}
-
-	/**
 	 * @since 1.9
 	 *
 	 * @return SemanticData
 	 */
 	public function getSemanticData() {
 		return $this->semanticData;
-	}
-
-	/**
-	 * @deprecated since 2.0, use getSemanticData
-	 */
-	public function getData() {
-		return $this->getSemanticData();
 	}
 
 	/**

@@ -180,7 +180,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 */
 	private function getDataItemId( Property $property ) {
 		if ( !isset( $this->dataItemTypeIdCache[$property->getKey()] ) ) {
-			$this->dataItemTypeIdCache[$property->getKey()] = DataTypeRegistry::getInstance()->getDataItemId( $property->findPropertyTypeID() );
+			$this->dataItemTypeIdCache[$property->getKey()] = DataTypeRegistry::getInstance()->getDataItemByType( $property->findPropertyTypeID() );
 		}
 
 		return $this->dataItemTypeIdCache[$property->getKey()];

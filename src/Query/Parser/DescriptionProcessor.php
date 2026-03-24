@@ -152,7 +152,7 @@ class DescriptionProcessor {
 		// character, the chunk itself is processed by
 		// DataValue::getQueryDescription hence no need to use it as input for
 		// the factory instance
-		$dataValue = $this->dataValueFactory->newTypeIDValue( '_wpg', 'QP_WPG_TITLE' );
+		$dataValue = $this->dataValueFactory->newDataValueByType( '_wpg', 'QP_WPG_TITLE' );
 		$dataValue->setContextPage( $this->contextPage );
 
 		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );

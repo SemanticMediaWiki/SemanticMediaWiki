@@ -135,7 +135,7 @@ class CheckboxRangeGroupValueFilter {
 
 		$property = Property::newFromUserLabel( $property );
 
-		$diType = DataTypeRegistry::getInstance()->getDataItemId(
+		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyTypeID()
 		);
 

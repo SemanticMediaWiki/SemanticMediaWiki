@@ -261,7 +261,7 @@ class QueryResultDependencyListResolver {
 
 		$value = end( $value );
 
-		return ApplicationFactory::getInstance()->newQueryParser()->getQueryDescription(
+		return ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()->getQueryDescription(
 			$value->getConceptQuery()
 		);
 	}

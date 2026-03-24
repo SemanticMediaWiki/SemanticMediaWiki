@@ -221,7 +221,7 @@ class QueryTestCaseInterpreter {
 
 		foreach ( $this->contents['assert-queryresult']['dataitems'] as $dataitem ) {
 			$dataItems[] = DataItem::newFromSerialization(
-				DataTypeRegistry::getInstance()->getDataItemId( $dataitem['type'] ),
+				DataTypeRegistry::getInstance()->getDataItemByType( $dataitem['type'] ),
 				$dataitem['value']
 			);
 		}

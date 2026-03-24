@@ -321,7 +321,7 @@ class AggregatablePrinterTest extends TestCase {
 			->willReturnOnConsecutiveCalls( $resultArrays, false );
 
 		$queryResult->expects( $this->any() )
-			->method( 'getLink' )
+			->method( 'getQueryLink' )
 			->willReturn( new Infolink( true, 'Lala', 'Lula' ) );
 
 		$queryResult->expects( $this->any() )

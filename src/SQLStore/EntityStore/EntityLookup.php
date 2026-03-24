@@ -103,7 +103,7 @@ class EntityLookup implements IEntityLookup {
 			} elseif ( $filter !== false ) {
 				$relevant = false;
 				foreach ( $filter as $typeId ) {
-					$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
+					$diType = DataTypeRegistry::getInstance()->getDataItemByType( $typeId );
 					$relevant = $relevant || ( $proptable->getDiType() == $diType );
 					if ( $relevant ) {
 						break;
@@ -298,7 +298,7 @@ class EntityLookup implements IEntityLookup {
 			$result = [];
 			$propertyTypeId = $property->findPropertyTypeID();
 
-			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId(
+			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemByType(
 				$propertyTypeId
 			);
 

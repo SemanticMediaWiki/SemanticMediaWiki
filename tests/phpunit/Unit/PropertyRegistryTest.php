@@ -292,12 +292,6 @@ class PropertyRegistryTest extends TestCase {
 			'_TYPE',
 			$instance->findPropertyIdByLabel( 'foo', true )
 		);
-
-		// findPropertyId legacy test
-		$this->assertEquals(
-			'_TYPE',
-			$instance->findPropertyId( 'Has type' )
-		);
 	}
 
 	public function testFindPropertyLabelForRegisteredId() {
@@ -341,23 +335,11 @@ class PropertyRegistryTest extends TestCase {
 			$instance->findPropertyLabelById( '_TYPE' )
 		);
 
-		// findPropertyLabel legacy test
-		$this->assertEquals(
-			'Has type',
-			$instance->findPropertyLabel( '_TYPE' )
-		);
-
 		// This was part of an extra test but the extra test caused an segfault on postgres travis-ci
 
 		$this->assertEquals(
 			'__typ',
 			$instance->getPropertyTypeId( '_TYPE' )
-		);
-
-		// getPredefinedPropertyTypeId legacy test
-		$this->assertEquals(
-			'__typ',
-			$instance->getPredefinedPropertyTypeId( '_TYPE' )
 		);
 	}
 

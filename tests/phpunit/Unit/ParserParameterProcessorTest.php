@@ -147,7 +147,7 @@ class ParserParameterProcessorTest extends TestCase {
 
 		$this->assertEquals(
 			$expected['identifier'],
-			$instance->getFirst()
+			$instance->getFirstParameter()
 		);
 	}
 

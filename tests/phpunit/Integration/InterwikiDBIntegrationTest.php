@@ -45,7 +45,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->pageCreator = $utilityFactory->newPageCreator();
 
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
-		$this->queryParser = ApplicationFactory::getInstance()->newQueryParser();
+		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 
 		$utilityFactory->newMwHooksHandler()
 			->deregisterListedHooks()

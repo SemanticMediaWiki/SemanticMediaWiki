@@ -382,19 +382,6 @@ class QueryResult {
 	}
 
 	/**
-	 * @deprecated since 2.5, use QueryResult::getQueryLink
-	 *
-	 * Returns an SMWInfolink object with the QueryResults print requests as parameters.
-	 *
-	 * @since 1.8
-	 *
-	 * @return Infolink
-	 */
-	public function getLink() {
-		return $this->getQueryLink();
-	}
-
-	/**
 	 * @private
 	 *
 	 * @since 3.0

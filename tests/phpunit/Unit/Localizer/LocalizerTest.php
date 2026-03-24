@@ -180,7 +180,7 @@ class LocalizerTest extends TestCase {
 		$value = 'Fooen';
 
 		$this->assertFalse(
-			Localizer::getLanguageCodeFrom( $value )
+			Localizer::getAnnotatedLanguageCodeFrom( $value )
 		);
 
 		$this->assertEquals(
@@ -193,7 +193,7 @@ class LocalizerTest extends TestCase {
 		$value = 'Foo@';
 
 		$this->assertFalse(
-			Localizer::getLanguageCodeFrom( $value )
+			Localizer::getAnnotatedLanguageCodeFrom( $value )
 		);
 
 		$this->assertEquals(

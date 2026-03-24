@@ -142,7 +142,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$hash = $dataValue->getDataItem()->getHash();
 		$value = $dataValue->getWikiValue();
 
-		$testDataValue = ApplicationFactory::getInstance()->getDataValueFactory()->newTypeIDValue(
+		$testDataValue = ApplicationFactory::getInstance()->getDataValueFactory()->newDataValueByType(
 			$dataValue->getTypeID()
 		);
 

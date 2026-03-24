@@ -96,7 +96,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		$value = end( $value );
 
-		$description = $applicationFactory->newQueryParser()->getQueryDescription(
+		$description = $applicationFactory->getQueryFactory()->newQueryParser()->getQueryDescription(
 			$value->getConceptQuery()
 		);
 

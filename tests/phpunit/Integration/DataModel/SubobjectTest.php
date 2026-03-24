@@ -62,7 +62,7 @@ class SubobjectTest extends TestCase {
 		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$this->expectException( 'InvalidArgumentException' );
-		$instance->setSemanticData( '' );
+		$instance->setEmptyContainerForId( '' );
 	}
 
 	public function testSetEmptySemanticData() {

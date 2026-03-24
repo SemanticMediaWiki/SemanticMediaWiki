@@ -82,21 +82,6 @@ class HashBuilder {
 	}
 
 	/**
-	 * @deprecated since 2.4, use Hash::createFromSegments
-	 * @since 2.1
-	 *
-	 * @param string $title
-	 * @param string $namespace
-	 * @param string $interwiki
-	 * @param string $fragment
-	 *
-	 * @return string
-	 */
-	public static function createHashIdFromSegments( $title, $namespace, $interwiki = '', $fragment = '' ): string {
-		return self::createFromSegments( $title, $namespace, $interwiki, $fragment );
-	}
-
-	/**
 	 * @since 2.1
 	 *
 	 * @param Title $title

@@ -178,7 +178,7 @@ class SpecialTypes extends SpecialPage {
 	}
 
 	private function getPropertiesByType( string|array $typeLabel ) {
-		$typeValue = DataValueFactory::getInstance()->newTypeIDValue(
+		$typeValue = DataValueFactory::getInstance()->newDataValueByType(
 			TypesValue::TYPE_ID,
 			$typeLabel
 		);
@@ -228,7 +228,7 @@ class SpecialTypes extends SpecialPage {
 
 		$typeId = $typeValue->getDataItem()->getFragment();
 
-		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByType(
 			$typeId
 		);
 

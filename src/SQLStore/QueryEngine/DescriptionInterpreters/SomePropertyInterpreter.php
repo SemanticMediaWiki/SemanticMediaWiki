@@ -117,7 +117,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		}
 
 		$typeid = $property->findPropertyTypeID();
-		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeid );
+		$diType = DataTypeRegistry::getInstance()->getDataItemByType( $typeid );
 
 		if ( $property->isInverse() && $diType !== DataItem::TYPE_WIKIPAGE ) {
 			// can only invert properties that point to pages
