@@ -65,7 +65,7 @@ class HashBuilderTest extends TestCase {
 		$this->assertEquals(
 			$dataItem,
 			$instance->newDiWikiPageFromHash(
-				$instance->createHashIdFromSegments( $property->getKey(), SMW_NS_PROPERTY )
+				$instance->createFromSegments( $property->getKey(), SMW_NS_PROPERTY, '', '' )
 			)
 		);
 	}

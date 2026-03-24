@@ -18,7 +18,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  * Factory class for creating SMWDataValue objects for supplied types or
  * properties and data values.
  *
- * The class has the main entry point newTypeIdValue(), which creates a new
+ * The class has the main entry point newDataValueByType(), which creates a new
  * datavalue object, possibly with preset user values, captions and
  * property names. To create suitable datavalues for a given property, the
  * method newDataValueByProperty() can be used.
@@ -430,44 +430,6 @@ class DataValueFactory {
 	 */
 	public function newErrorValue( $typeid, $errormsg = '', $uservalue = '', $caption = false ): ErrorValue {
 		return new ErrorValue( $typeid, $errormsg, $uservalue, $caption );
-	}
-
-/// Deprecated methods
-
-	/**
-	 * @deprecated since 2.4, use DataValueFactory::newDataValueByItem
-	 *
-	 * @return DataValue
-	 */
-	public static function newDataItemValue( DataItem $dataItem, ?Property $property = null, $caption = false ) {
-		return self::getInstance()->newDataValueByItem( $dataItem, $property, $caption );
-	}
-
-	/**
-	 * @deprecated since 2.4, use DataValueFactory::newDataValueByProperty
-	 *
-	 * @return DataValue
-	 */
-	public static function newPropertyObjectValue( Property $property, $valueString = false, $caption = false, $contextPage = null ) {
-		return self::getInstance()->newDataValueByProperty( $property, $valueString, $caption, $contextPage );
-	}
-
-	/**
-	 * @deprecated since 2.4, use DataValueFactory::newDataValueByType
-	 *
-	 * @return DataValue
-	 */
-	public static function newTypeIdValue( $typeId, $valueString = false, $caption = false, ?Property $property = null, $contextPage = null ) {
-		return self::getInstance()->newDataValueByType( $typeId, $valueString, $caption, $property, $contextPage );
-	}
-
-	/**
-	 * @deprecated since 2.4, use DataTypeRegistry::newDataValueByText
-	 *
-	 * @return DataValue
-	 */
-	public function newPropertyValue( $propertyName, $valueString, $caption = false, ?WikiPage $contextPage = null ) {
-		return $this->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
 	}
 
 }

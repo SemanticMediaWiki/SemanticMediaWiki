@@ -50,6 +50,11 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   - `SMWSQLStore3::deleteSubjectBefore` / `SMWSQLStore3::deleteSubjectAfter` hooks (use `SMW::SQLStore::BeforeDeleteSubjectComplete` / `SMW::SQLStore::AfterDeleteSubjectComplete`)
   - `ParserParameterProcessor::getFirst()` (use `getFirstParameter()`)
   - `DataValue::prepareValue()` (use `DescriptionBuilder`)
+  - `HashBuilder::createHashIdFromSegments()` (use `createFromSegments()`)
+  - `DataValueFactory::newDataItemValue()` (use `newDataValueByItem()`)
+  - `DataValueFactory::newPropertyObjectValue()` (use `newDataValueByProperty()`)
+  - `DataValueFactory::newTypeIdValue()` (use `newDataValueByType()`)
+  - `DataValueFactory::newPropertyValue()` (use `newDataValueByText()`)
 * Moved permission rights and group assignments to declarative `AvailableRights` and `GroupPermissions` keys in `extension.json`. The `SMW::GroupPermissions::BeforeInitializationComplete` hook has been removed. Extensions that modified SMW permissions via this hook should use MediaWiki's standard `$wgGroupPermissions` override in `LocalSettings.php` instead.
 * Removed the `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting. HTTP version negotiation is now handled by MediaWiki's HTTP layer. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped — SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory`.
 * Removed the deprecated root `DefaultSettings.php` shim (deprecated since 4.0.0). Code that loaded settings directly via `require .../DefaultSettings.php` should use `SemanticMediaWiki::getDefaultSettings()` instead.
