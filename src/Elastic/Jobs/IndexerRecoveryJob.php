@@ -160,7 +160,7 @@ class IndexerRecoveryJob extends Job {
 		return true;
 	}
 
-	private function requeueRetry( $config ) {
+	private function requeueRetry( $config ): bool {
 		// Give up!
 		if ( $this->getParameter( 'retryCount' ) >= $config->dotGet( 'indexer.job.recovery.retries' ) ) {
 			return true;
@@ -180,6 +180,8 @@ class IndexerRecoveryJob extends Job {
 		$job->setDelay( 60 * 10 );
 
 		$job->insert();
+
+		return true;
 	}
 
 	private function delete( array $idList ): void {

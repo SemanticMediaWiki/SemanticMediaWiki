@@ -70,7 +70,7 @@ class SequenceMapFinder {
 	 *
 	 * @return array
 	 */
-	public function findMapById( $sid ) {
+	public function findMapById( $sid ): array {
 		$omap = [];
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 

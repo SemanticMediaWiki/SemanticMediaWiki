@@ -19,15 +19,15 @@ use PSExtensionHandler;
 
 class PageSchemas extends PSExtensionHandler {
 
-	public static function getDisplayColor() {
+	public static function getDisplayColor(): string {
 		return '#DEF';
 	}
 
-	public static function getTemplateDisplayString() {
+	public static function getTemplateDisplayString(): string {
 		return 'Connecting property';
 	}
 
-	public static function getFieldDisplayString() {
+	public static function getFieldDisplayString(): string {
 		return 'Semantic property';
 	}
 
@@ -35,7 +35,7 @@ class PageSchemas extends PSExtensionHandler {
 	 * Returns the display info for the "connecting property" (if any)
 	 * of the #subobject call (if any) in this template.
 	 */
-	public static function getTemplateDisplayValues( $templateXML ) {
+	public static function getTemplateDisplayValues( $templateXML ): ?array {
 		foreach ( $templateXML->children() as $tag => $child ) {
 			if ( $tag == "semanticmediawiki_ConnectingProperty" ) {
 				$propName = $child->attributes()->name;
@@ -50,7 +50,7 @@ class PageSchemas extends PSExtensionHandler {
 	 * Returns the display info for the property (if any is defined)
 	 * for a single field in the Page Schemas XML.
 	 */
-	public static function getFieldDisplayValues( $fieldXML ) {
+	public static function getFieldDisplayValues( $fieldXML ): ?array {
 		foreach ( $fieldXML->children() as $tag => $child ) {
 			if ( $tag == "semanticmediawiki_Property" ) {
 				$propName = $child->attributes()->name;
@@ -67,7 +67,7 @@ class PageSchemas extends PSExtensionHandler {
 	/**
 	 * Returns the set of SMW property data from the entire page schema.
 	 */
-	public static function getAllPropertyData( $pageSchemaObj ) {
+	public static function getAllPropertyData( $pageSchemaObj ): array {
 		$propertyDataArray = [];
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
@@ -92,7 +92,7 @@ class PageSchemas extends PSExtensionHandler {
 	 * Constructs XML for the "connecting property", based on what was
 	 * submitted in the 'edit schema' form.
 	 */
-	public static function createTemplateXMLFromForm() {
+	public static function createTemplateXMLFromForm(): array {
 		global $wgRequest;
 
 		$xmlPerTemplate = [];
@@ -117,7 +117,7 @@ class PageSchemas extends PSExtensionHandler {
 	 * Sets the list of property pages defined by the passed-in
 	 * Page Schemas object.
 	 */
-	public static function getPagesToGenerate( $pageSchemaObj ) {
+	public static function getPagesToGenerate( $pageSchemaObj ): array {
 		$pagesToGenerate = [];
 
 		$psTemplates = $pageSchemaObj->getTemplates();
@@ -142,7 +142,7 @@ class PageSchemas extends PSExtensionHandler {
 	 * Constructs XML for the SMW property, based on what was submitted
 	 * in the 'edit schema' form.
 	 */
-	public static function createFieldXMLFromForm() {
+	public static function createFieldXMLFromForm(): array {
 		global $wgRequest;
 
 		$fieldNum = -1;
@@ -181,7 +181,7 @@ class PageSchemas extends PSExtensionHandler {
 	 * Returns the HTML necessary for getting information about the
 	 * "connecting property" within the Page Schemas 'editschema' page.
 	 */
-	public static function getTemplateEditingHTML( $psTemplate ) {
+	public static function getTemplateEditingHTML( $psTemplate ): ?array {
 		// Only display this if the Semantic Internal Objects extension
 		// isn't displaying something similar.
 		if ( class_exists( 'SIOPageSchemas' ) ) {
@@ -207,7 +207,7 @@ class PageSchemas extends PSExtensionHandler {
 	 * Returns the HTML necessary for getting information about a regular
 	 * semantic property within the Page Schemas 'editschema' page.
 	 */
-	public static function getFieldEditingHTML( $psTemplateField ) {
+	public static function getFieldEditingHTML( $psTemplateField ): array {
 		$smwgContLang = smwfContLang();
 
 		$prop_array = [];
@@ -343,7 +343,7 @@ class PageSchemas extends PSExtensionHandler {
 	 * Returns either the "connecting property", or a field property, based
 	 * on the XML passed from the Page Schemas extension.
 	 */
-	public static function createPageSchemasObject( $tagName, $xml ) {
+	public static function createPageSchemasObject( $tagName, $xml ): ?array {
 		if ( $tagName == "semanticmediawiki_ConnectingProperty" ) {
 			foreach ( $xml->children() as $tag => $child ) {
 				if ( $tag == $tagName ) {

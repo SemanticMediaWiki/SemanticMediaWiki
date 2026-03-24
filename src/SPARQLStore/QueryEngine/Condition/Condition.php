@@ -86,11 +86,11 @@ abstract class Condition {
 		$this->namespaces = array_merge( $this->namespaces, $namespaces );
 	}
 
-	public function getWeakConditionString() {
+	public function getWeakConditionString(): string {
 		return implode( '', $this->weakConditions );
 	}
 
-	public function getCogentConditionString() {
+	public function getCogentConditionString(): string {
 		return implode( '', $this->cogentConditions );
 	}
 

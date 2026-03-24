@@ -142,7 +142,7 @@ class AskParserFunction {
 	 *
 	 * @return string|null
 	 */
-	public function parse( array $functionParams ) {
+	public function parse( array $functionParams ): ?string {
 		// Do we still need this?
 		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
 		$GLOBALS['smwgIQRunningNumber']++;

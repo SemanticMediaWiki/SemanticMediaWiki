@@ -203,7 +203,7 @@ class RequestOptionsProcessor {
 		return $result;
 	}
 
-	private static function applyStringConditions( RequestOptions $requestOptions, $label, $keepDataValue ) {
+	private static function applyStringConditions( RequestOptions $requestOptions, $label, $keepDataValue ): bool {
 		foreach ( $requestOptions->getStringConditions() as $strcond ) { // apply string conditions
 			switch ( $strcond->condition ) {
 				case StringCondition::STRCOND_PRE:
@@ -221,7 +221,7 @@ class RequestOptionsProcessor {
 		return $keepDataValue;
 	}
 
-	private static function applyBoundaryConditions( RequestOptions $requestOptions, $value, bool $isNumeric ) {
+	private static function applyBoundaryConditions( RequestOptions $requestOptions, $value, bool $isNumeric ): bool {
 		$keepDataValue = true; // keep datavalue only if this remains true
 
 		if ( $requestOptions->boundary === null ) {
@@ -287,11 +287,11 @@ class RequestOptionsProcessor {
 		$result = $newres;
 	}
 
-	private static function applyLimitRestriction( RequestOptions $requestOptions, array &$result ) {
+	private static function applyLimitRestriction( RequestOptions $requestOptions, array &$result ): void {
 		// In case of a `conditionConstraint` the restriction is set forth by the
 		// SELECT statement.
 		if ( isset( $requestOptions->conditionConstraint ) ) {
-			return $result;
+			return;
 		}
 
 		if ( $requestOptions->limit > 0 ) {

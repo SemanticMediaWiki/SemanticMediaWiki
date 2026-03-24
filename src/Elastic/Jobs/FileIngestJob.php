@@ -117,7 +117,7 @@ class FileIngestJob extends Job {
 		$fileIndexer->index( $subject, $file );
 	}
 
-	private function requeueRetry( $config ) {
+	private function requeueRetry( $config ): bool {
 		// Give up!
 		if ( $this->getParameter( 'retryCount' ) >= $config->dotGet( 'indexer.job.file.ingest.retries' ) ) {
 			return true;
@@ -137,6 +137,8 @@ class FileIngestJob extends Job {
 		$job->setDelay( 60 * 10 );
 
 		$job->insert();
+
+		return true;
 	}
 
 }

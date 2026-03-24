@@ -24,7 +24,7 @@ class InfoParserFunction {
 	 *
 	 * @return mixed
 	 */
-	public function handle( Parser $parser, ProcessingResult $result ) {
+	public function handle( Parser $parser, ProcessingResult $result ): string|ProcessingResult {
 		if ( $result->hasFatal() ) {
 			return $this->getOutputForErrors( $result->getErrors() );
 		}

@@ -70,7 +70,7 @@ class InvalidateResultCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isPropagationStopped() {
+	public function isPropagationStopped(): bool {
 		return true;
 	}
 

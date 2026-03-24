@@ -250,7 +250,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callSubjectLookup( array $parameters ) {
+	private function callSubjectLookup( array $parameters ): array {
 		$subjectLookup = new SubjectLookup(
 			ApplicationFactory::getInstance()->getStore()
 		);

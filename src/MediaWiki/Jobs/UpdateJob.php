@@ -184,7 +184,7 @@ class UpdateJob extends Job {
 		return $this->updateStore( $parserData );
 	}
 
-	private function parse_content() {
+	private function parse_content(): bool {
 		$this->setParameter( 'updateType', 'ContentParse' );
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );

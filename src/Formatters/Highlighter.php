@@ -106,7 +106,7 @@ class Highlighter {
 	 *
 	 * @return bool
 	 */
-	public static function hasHighlighterClass( $text, $type = null ) {
+	public static function hasHighlighterClass( $text, $type = null ): bool {
 		if ( strpos( $text, 'smw-highlighter' ) === false ) {
 			return false;
 		}

@@ -126,7 +126,7 @@ class Indexer {
 	 *
 	 * @return string
 	 */
-	public function getIndexName( $type ) {
+	public function getIndexName( $type ): string {
 		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to

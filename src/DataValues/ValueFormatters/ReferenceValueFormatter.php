@@ -49,7 +49,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $this->getOutputText( $type, $linker );
 	}
 
-	protected function getOutputText( $type, $linker = null ) {
+	protected function getOutputText( $type, $linker = null ): string {
 		if ( !$this->dataValue->isValid() ) {
 			return ( ( $type == self::WIKI_SHORT ) || ( $type == self::HTML_SHORT ) ) ? '' : $this->dataValue->getErrorText();
 		}

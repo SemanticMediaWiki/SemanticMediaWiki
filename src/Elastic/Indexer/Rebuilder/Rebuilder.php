@@ -105,7 +105,7 @@ class Rebuilder {
 	 *
 	 * @return bool
 	 */
-	public function rollover() {
+	public function rollover(): bool {
 		if ( $this->versions === [] ) {
 			return false;
 		}
@@ -181,7 +181,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function setDefaults() {
+	public function setDefaults(): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "\n" );
@@ -205,6 +205,8 @@ class Rebuilder {
 
 		$this->setDefaultByType( ElasticClient::TYPE_DATA );
 		$this->setDefaultByType( ElasticClient::TYPE_LOOKUP );
+
+		return true;
 	}
 
 	/**
@@ -276,7 +278,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function refresh() {
+	public function refresh(): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -298,6 +300,8 @@ class Rebuilder {
 		$this->messageReporter->reportMessage(
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
+
+		return true;
 	}
 
 	private function fetchRawText( WikiPage $dataItem ) {

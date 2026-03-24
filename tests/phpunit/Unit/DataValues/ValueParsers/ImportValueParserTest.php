@@ -48,7 +48,7 @@ class ImportValueParserTest extends TestCase {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
 			->with( ImportValue::IMPORT_PREFIX . 'Foo' )
-			->willReturn( false );
+			->willReturn( '' );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader

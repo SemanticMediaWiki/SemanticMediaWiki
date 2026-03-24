@@ -67,7 +67,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return bool Indicates if the passed format was an alias, and thus was changed.
 	 */
-	public static function resolveFormatAliases( &$format ) {
+	public static function resolveFormatAliases( &$format ): bool {
 		global $smwgResultAliases;
 
 		$isAlias = false;
@@ -91,7 +91,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return string Array key in $smwgResultFormats
 	 */
-	protected function getDefaultFormat() {
+	protected function getDefaultFormat(): string|bool {
 		if ( empty( $this->printRequests ) ) {
 			return 'table';
 		}
@@ -155,7 +155,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return mixed
 	 */
-	protected function formatValue( $value, IParam $param, array &$definitions, array $params ) {
+	protected function formatValue( $value, IParam $param, array &$definitions, array $params ): string {
 		$value = parent::formatValue( $value, $param, $definitions, $params );
 
 		// Make sure the format value is valid.

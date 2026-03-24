@@ -32,7 +32,7 @@ class MediaWikiNsContentReader {
 	 *
 	 * @return string|false
 	 */
-	public function read( $name ) {
+	public function read( $name ): string {
 		$content = '';
 
 		if ( !$this->skipMessageCache && wfMessage( $name )->exists() ) {

@@ -485,7 +485,7 @@ class SPARQLStore extends Store {
 	 *
 	 * @return array
 	 */
-	public function getInfo( $type = null ) {
+	public function getInfo( $type = null ): array {
 		$respositoryConnetion = $this->getConnection( 'sparql' );
 		$repositoryClient = $respositoryConnetion->getRepositoryClient();
 

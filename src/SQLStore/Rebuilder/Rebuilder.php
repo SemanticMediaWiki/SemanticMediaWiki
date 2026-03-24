@@ -426,7 +426,7 @@ class Rebuilder {
 		$id = $nextPosition ?: -1;
 	}
 
-	private function hasSkippableRevision( $title, bool $row = false ) {
+	private function hasSkippableRevision( $title, bool $row = false ): bool {
 		if ( $this->getOption( 'force-update' ) ) {
 			return false;
 		}

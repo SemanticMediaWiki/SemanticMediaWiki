@@ -52,7 +52,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 *
 	 * @return string
 	 */
-	public function getMessagesAsString() {
+	public function getMessagesAsString(): string|false {
 		return json_encode( $this->messages );
 	}
 

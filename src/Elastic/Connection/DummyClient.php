@@ -211,8 +211,8 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::count
 	 */
-	public function count( array $params ): int {
-		return 0;
+	public function count( array $params ): array {
+		return [];
 	}
 
 	/**

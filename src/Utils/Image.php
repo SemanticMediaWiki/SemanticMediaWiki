@@ -43,7 +43,7 @@ class Image {
 	 *
 	 * @return bool
 	 */
-	public static function isImage( WikiPage $dataItem ) {
+	public static function isImage( WikiPage $dataItem ): bool {
 		if ( $dataItem->getNamespace() !== NS_FILE || $dataItem->getSubobjectName() !== '' ) {
 			return false;
 		}

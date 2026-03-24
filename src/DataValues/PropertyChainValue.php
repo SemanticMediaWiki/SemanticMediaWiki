@@ -126,7 +126,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getWikiValue
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->lastPropertyChainValue !== null ? $this->lastPropertyChainValue->getWikiValue() : '';
 	}
 

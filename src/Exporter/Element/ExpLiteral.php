@@ -110,7 +110,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @return array
 	 */
-	public function getSerialization() {
+	public function getSerialization(): array {
 		$serialization = [
 			'type'     => self::TYPE_LITERAL,
 			'lexical'  => $this->lexicalForm,

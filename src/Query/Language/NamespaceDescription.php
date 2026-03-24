@@ -55,7 +55,7 @@ class NamespaceDescription extends Description {
 		return false;
 	}
 
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		return SMW_NAMESPACE_QUERY;
 	}
 

@@ -197,7 +197,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $condition;
 	}
 
-	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, string $comparator ) {
+	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, string $comparator ): FilterCondition {
 		$result = new FilterCondition( '', [] );
 
 		$this->conditionBuilder->addOrderByData(

@@ -47,7 +47,7 @@ class QuerySourceFactory {
 	 * @return QueryEngine|Store
 	 * @throws RuntimeException
 	 */
-	public function get( $source = null ) {
+	public function get( $source = null ): mixed {
 		$params = [];
 
 		if ( $source !== '' && isset( $this->querySources[$source] ) ) {

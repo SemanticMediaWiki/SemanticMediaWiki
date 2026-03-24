@@ -130,7 +130,7 @@ class Container extends DataItem {
 		return new Container( $data );
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_CONTAINER ) {
 			return false;
 		}

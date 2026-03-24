@@ -194,7 +194,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @return string
 	 */
-	public function getOrigin() {
+	public function getOrigin(): string|false {
 		if ( is_string( $this->origin ) ) {
 			$this->origin = [ $this->origin ];
 		}

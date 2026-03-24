@@ -169,7 +169,7 @@ class PropertyValueParser implements ValueParser {
 		return [ $propertyName, $capitalizedName, $inverse ];
 	}
 
-	private function doNormalize( $text, bool $isCapitalLinks ) {
+	private function doNormalize( $text, bool $isCapitalLinks ): string {
 		$text = trim( $text );
 
 		if ( $isCapitalLinks ) {

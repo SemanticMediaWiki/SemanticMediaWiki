@@ -44,7 +44,7 @@ class DsvResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ): string|array {
+	public function getFileName( QueryResult $queryResult ): string {
 		if ( $this->params['filename'] === '' ) {
 			return 'result.dsv';
 		}
@@ -63,7 +63,7 @@ class DsvResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['searchlabel']->setDefault( wfMessage( 'smw_dsv_link' )->text() );

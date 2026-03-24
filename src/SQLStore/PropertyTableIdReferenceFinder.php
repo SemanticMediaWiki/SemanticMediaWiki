@@ -87,7 +87,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasResidualPropertyTableReference( $id ) {
+	public function hasResidualPropertyTableReference( $id ): bool {
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 			return true;
 		}
@@ -102,7 +102,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasResidualReferenceForId( $id ) {
+	public function hasResidualReferenceForId( $id ): bool {
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 			return true;
 		}

@@ -577,7 +577,7 @@ class EntityIdManager {
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */
-	protected function makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes ) {
+	protected function makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes ): int {
 		$oldsort = '';
 		$id = $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
 		$db = $this->store->getConnection( 'mw.db' );
@@ -708,7 +708,7 @@ class EntityIdManager {
 	 * @param int|string $namespace
 	 * @param string $iw
 	 */
-	public function findAssociatedRev( $title, $namespace = '', $iw = '' ) {
+	public function findAssociatedRev( $title, $namespace = '', $iw = '' ): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( $title instanceof WikiPage ) {

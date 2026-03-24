@@ -392,7 +392,7 @@ class Infolink {
 	 *
 	 * @return Linker
 	 */
-	protected function getLinker( &$linker = null ) {
+	protected function getLinker( &$linker = null ): Linker {
 		if ( $linker === null ) {
 			$linker = new Linker;
 		}
@@ -416,7 +416,7 @@ class Infolink {
 	 * @param array $params
 	 * @param bool $forTitle
 	 */
-	public static function encodeParameters( array $params, $forTitle = true ) {
+	public static function encodeParameters( array $params, $forTitle = true ): string {
 		$result = '';
 
 		if ( $forTitle ) {
@@ -572,7 +572,7 @@ class Infolink {
 	 *
 	 * @return string
 	 */
-	public static function decodeCompactLink( $value ) {
+	public static function decodeCompactLink( $value ): string|false|null {
 		if ( !is_string( $value ) || substr( $value, 0, 3 ) !== 'cl:' ) {
 			return $value;
 		}
@@ -604,7 +604,7 @@ class Infolink {
 		return $value;
 	}
 
-	private function buildTarget( string $query ) {
+	private function buildTarget( string $query ): string {
 		$target = $this->mTarget;
 
 		if ( count( $this->mParams ) > 0 ) {

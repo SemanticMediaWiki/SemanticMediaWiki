@@ -57,12 +57,12 @@ abstract class QueryPage extends MWQueryPage {
 		/// TODO
 	}
 
-	public function isExpensive() {
+	public function isExpensive(): bool {
 		// Disables caching for now
 		return false;
 	}
 
-	public function isSyndicated() {
+	public function isSyndicated(): bool {
 		// TODO: why not?
 		return false;
 	}
@@ -74,7 +74,7 @@ abstract class QueryPage extends MWQueryPage {
 	 *
 	 * @return array
 	 */
-	public function linkParameters() {
+	public function linkParameters(): array {
 		$parameters = [];
 		$property   = $this->getRequest()->getVal( 'property' );
 
@@ -197,7 +197,7 @@ abstract class QueryPage extends MWQueryPage {
 	 * @param $limit database query limit
 	 * @param $property database string query
 	 */
-	public function doQuery( $offset = false, $limit = false, $property = false ) {
+	public function doQuery( $offset = false, $limit = false, $property = false ): ?int {
 		$out  = $this->getOutput();
 		$sk   = $this->getSkin();
 
@@ -232,7 +232,7 @@ abstract class QueryPage extends MWQueryPage {
 		// if list is empty, show it
 		if ( $num == 0 ) {
 			$out->addHTML( '<p>' . $this->msg( 'specialpage-empty' )->escaped() . '</p>' );
-			return;
+			return null;
 		}
 
 		if ( $num > 0 ) {

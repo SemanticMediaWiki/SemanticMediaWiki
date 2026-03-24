@@ -88,7 +88,7 @@ class ChunkedIterator extends IteratorIterator {
 	 * {@inheritDoc}
 	 */
 	#[ReturnTypeWillChange]
-	public function valid() {
+	public function valid(): bool {
 		return (bool)$this->chunk;
 	}
 

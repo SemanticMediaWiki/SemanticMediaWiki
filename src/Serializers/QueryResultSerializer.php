@@ -47,7 +47,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 * @return array
 	 * @throws OutOfBoundsException
 	 */
-	public function serialize( $queryResult ) {
+	public function serialize( $queryResult ): array {
 		if ( !( $this->isSerializerFor( $queryResult ) ) ) {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
@@ -60,7 +60,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @since  1.9
 	 */
-	public function isSerializerFor( $queryResult ) {
+	public function isSerializerFor( $queryResult ): bool {
 		return $queryResult instanceof QueryResult;
 	}
 
@@ -73,7 +73,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @return mixed
 	 */
-	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
+	public static function getSerialization( DataItem $dataItem, $printRequest = null ): array {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
 				// Support for a deserializable _rec type with 0.6

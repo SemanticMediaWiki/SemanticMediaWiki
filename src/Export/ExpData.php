@@ -206,7 +206,7 @@ class ExpData implements Element {
 	 *
 	 * @return ExpElement
 	 */
-	public function extractMainType() {
+	public function extractMainType(): mixed {
 		$exporter = Exporter::getInstance();
 		$pe = $exporter->newExpNsResourceById( 'rdf', 'type' );
 		if ( array_key_exists( $pe->getUri(), $this->m_children ) ) {
@@ -231,7 +231,7 @@ class ExpData implements Element {
 	 *
 	 * @return ExpElement[]|false array of ExpElement (but not ExpLiteral) or false
 	 */
-	public function getCollection() {
+	public function getCollection(): bool|array {
 		$exporter = Exporter::getInstance();
 
 		$rdftypeUri  = $exporter->newExpNsResourceById( 'rdf', 'type' )->getUri();

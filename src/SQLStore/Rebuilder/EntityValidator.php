@@ -85,7 +85,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function inNamespace( $row ) {
+	public function inNamespace( $row ): bool {
 		if ( $this->namespaces === false ) {
 			return true;
 		}
@@ -134,7 +134,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isDetachedSubobject( $title, $row ) {
+	public function isDetachedSubobject( $title, $row ): bool {
 		if ( $row->smw_subobject === '' ) {
 			return false;
 		}
@@ -157,7 +157,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isDetachedQueryRef( $row ) {
+	public function isDetachedQueryRef( $row ): bool {
 		if ( $row->smw_subobject === '' || $row->smw_proptable_hash !== null ) {
 			return false;
 		}
@@ -174,7 +174,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isPlainObjectValue( $row ) {
+	public function isPlainObjectValue( $row ): bool {
 		// A rogue title should never happen
 		if ( $row->smw_title === '' && $row->smw_proptable_hash === null ) {
 			return true;

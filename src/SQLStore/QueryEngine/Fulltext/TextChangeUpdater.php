@@ -261,7 +261,7 @@ class TextChangeUpdater {
 		}
 	}
 
-	private function canPostUpdate( ChangeOp $changeOp ) {
+	private function canPostUpdate( ChangeOp $changeOp ): bool {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 		$canPostUpdate = false;
 

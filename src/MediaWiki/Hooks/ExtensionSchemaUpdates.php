@@ -106,7 +106,7 @@ class ExtensionSchemaUpdates implements HookListener {
 		return true;
 	}
 
-	private function hasMaintenanceArg( string $key ) {
+	private function hasMaintenanceArg( string $key ): bool {
 		$maintenance = null;
 
 		// We don't have access to the `update.php` internals due to lack

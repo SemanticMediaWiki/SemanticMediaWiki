@@ -265,7 +265,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		}
 	}
 
-	private function canUse( Query $query ) {
+	private function canUse( Query $query ): bool {
 		if ( !$this->enabledCache || !$this->blobStore->canUse() ) {
 			return false;
 		}

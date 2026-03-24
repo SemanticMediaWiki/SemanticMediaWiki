@@ -278,7 +278,7 @@ class MessageFormatter {
 	 *
 	 * @return string
 	 */
-	public function getPlain() {
+	public function getPlain(): string {
 		return $this->exists() ? $this->getString( false ) : '';
 	}
 }

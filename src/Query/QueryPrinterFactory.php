@@ -22,7 +22,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @return QueryPrinterFactory
 	 */
-	public static function singleton() {
+	public static function singleton(): self {
 		static $instance = null;
 
 		if ( $instance === null ) {

@@ -131,7 +131,7 @@ class JsonContentsFileReader {
 		return self::$contents[$languageCode];
 	}
 
-	protected function readJSONFile( string $languageCode, $cacheKey ) {
+	protected function readJSONFile( string $languageCode, $cacheKey ): mixed {
 		$contents = json_decode(
 			file_get_contents( $this->getLanguageFile( $languageCode ) ),
 			true

@@ -54,7 +54,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSemanticData( WikiPage $subject, $filter = false ) {
+	public function getSemanticData( WikiPage $subject, $filter = false ): SemanticData {
 		$idTable = $this->store->getObjectIds();
 
 		// *** Find out if this subject exists ***//
@@ -223,7 +223,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertyValues( ?WikiPage $subject, Property $property, ?RequestOptions $requestOptions = null ) {
+	public function getPropertyValues( ?WikiPage $subject, Property $property, ?RequestOptions $requestOptions = null ): array {
 		$idTable = $this->store->getObjectIds();
 
 		if ( $property->isInverse() ) { // inverses are working differently

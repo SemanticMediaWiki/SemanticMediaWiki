@@ -87,7 +87,7 @@ class OutputPageParserOutput implements HookListener {
 		$this->addPostProc( $title, $outputPage, $parserOutput );
 	}
 
-	private function addPostProc( Title $title, OutputPage $outputPage, ParserOutput $parserOutput ) {
+	private function addPostProc( Title $title, OutputPage $outputPage, ParserOutput $parserOutput ): ?string {
 		$request = $outputPage->getContext()->getRequest();
 
 		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit', 'formedit' ] ) ) {
@@ -107,6 +107,8 @@ class OutputPageParserOutput implements HookListener {
 			$outputPage->addModules( $postProcHandler->getModules() );
 			$outputPage->addHtml( $html );
 		}
+
+		return null;
 	}
 
 	protected function addFactbox( OutputPage $outputPage, ParserOutput $parserOutput ): string|bool {

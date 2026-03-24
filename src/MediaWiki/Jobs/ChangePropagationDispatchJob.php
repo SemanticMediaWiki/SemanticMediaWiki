@@ -110,7 +110,7 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @return bool
 	 */
-	public static function hasPendingJobs( WikiPage $subject ) {
+	public static function hasPendingJobs( WikiPage $subject ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobQueue = $applicationFactory->getJobQueue();
 
@@ -149,7 +149,7 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @return int
 	 */
-	public static function getPendingJobsCount( WikiPage $subject ) {
+	public static function getPendingJobsCount( WikiPage $subject ): int {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobQueue = $applicationFactory->getJobQueue();
 
@@ -187,7 +187,7 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @since 3.0
 	 */
-	public function run() {
+	public function run(): bool {
 		$subject = WikiPage::newFromTitle( $this->getTitle() );
 
 		if ( $this->hasParameter( 'data' ) ) {

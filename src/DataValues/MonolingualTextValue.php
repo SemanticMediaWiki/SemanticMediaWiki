@@ -269,7 +269,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getDataItems() {
+	public function getDataItems(): array {
 		return parent::getDataItems();
 	}
 
@@ -352,7 +352,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 		return $list['_TEXT'] . '@' . $list['_LCODE'];
 	}
 
-	private function newContainerSemanticData( string $value ) {
+	private function newContainerSemanticData( string $value ): ContainerSemanticData {
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

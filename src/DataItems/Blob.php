@@ -72,7 +72,7 @@ class Blob extends DataItem {
 		return new Blob( $serialization );
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( !( $di instanceof Blob ) ) {
 			return false;
 		}

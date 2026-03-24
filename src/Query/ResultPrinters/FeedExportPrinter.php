@@ -116,7 +116,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['searchlabel']->setDefault( $this->msg( 'smw-label-feed-link' )->inContentLanguage()->text() );
@@ -189,7 +189,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getFeed( QueryResult $results, $type ) {
+	protected function getFeed( QueryResult $results, $type ): string {
 		global $wgFeedClasses;
 
 		if ( !isset( $wgFeedClasses[$type] ) ) {
@@ -359,7 +359,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function feedItemDescription( $items, $pageContent ) {
+	protected function feedItemDescription( $items, $pageContent ): string {
 		$text = FeedItem::stripComment( implode( '', $items ) ) . FeedItem::stripComment( $pageContent );
 
 		// Abstract of the first 200 chars
@@ -381,7 +381,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		return '';
 	}
 
-	private function newFeedItem( Title $title, array $rowItems ) {
+	private function newFeedItem( Title $title, array $rowItems ): FeedItem {
 		$mwServices = MediaWikiServices::getInstance();
 		$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
 
