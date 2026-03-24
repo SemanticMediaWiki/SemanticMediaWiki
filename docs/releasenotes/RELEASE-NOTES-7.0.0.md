@@ -36,6 +36,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   - `SMW_HEADER_TOOLTIP`, `SMW_HEADER_SORTTABLE`, `SMW_HEADER_STYLE` constants and the numeric-id branch in `Outputs::requireHeadItem()`
   - `TimeValue::getXMLSchemaDate()` (use `getISO8601Date()`)
   - `ValueDescription::getDataValue()` (use `getDataItem()`)
+  - `ResultPrinter::getParameters()` (use `getParamDefinitions()`)
 * Moved permission rights and group assignments to declarative `AvailableRights` and `GroupPermissions` keys in `extension.json`. The `SMW::GroupPermissions::BeforeInitializationComplete` hook has been removed. Extensions that modified SMW permissions via this hook should use MediaWiki's standard `$wgGroupPermissions` override in `LocalSettings.php` instead.
 * Removed the `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting. HTTP version negotiation is now handled by MediaWiki's HTTP layer. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped — SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory`.
 * Removed the deprecated root `DefaultSettings.php` shim (deprecated since 4.0.0). Code that loaded settings directly via `require .../DefaultSettings.php` should use `SemanticMediaWiki::getDefaultSettings()` instead.
