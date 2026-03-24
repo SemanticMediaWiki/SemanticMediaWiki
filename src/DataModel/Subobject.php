@@ -122,13 +122,6 @@ class Subobject {
 	}
 
 	/**
-	 * @deprecated since 2.0
-	 */
-	public function setSemanticData( $identifier ): void {
-		$this->setEmptyContainerForId( $identifier );
-	}
-
-	/**
 	 * Returns semantic data container for a subobject
 	 *
 	 * @since 1.9
