@@ -141,7 +141,7 @@ $GLOBALS[ 'wgHooks' ][ 'SMW::SQLStore::Installer::BeforeCreateTablesComplete' ][
 		$messageReporter->reportMessage(
 			$cliMsgFormatter->oneCol( "... done.", 3 )
 		);
-};
+	};
 
 return [
 
