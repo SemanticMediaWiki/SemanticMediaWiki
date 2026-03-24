@@ -192,7 +192,7 @@ class SpecificationLookup {
 	 *
 	 * @return bool
 	 */
-	public function hasUniquenessConstraint( Property $property ) {
+	public function hasUniquenessConstraint( Property $property ): bool {
 		$hasUniquenessConstraint = false;
 		$dataItems = $this->getSpecification( $property, new Property( '_PVUC' ) );
 
@@ -258,7 +258,7 @@ class SpecificationLookup {
 	 *
 	 * @return string
 	 */
-	public function getAllowedPatternBy( Property $property ) {
+	public function getAllowedPatternBy( Property $property ): string {
 		$allowsPattern = '';
 		$dataItems = $this->getSpecification( $property, new Property( '_PVAP' ) );
 

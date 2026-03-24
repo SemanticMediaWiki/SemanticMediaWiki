@@ -55,7 +55,7 @@ class ContainerSemanticData extends SemanticData {
 	/**
 	 * Restore complete serialization which is disabled in SemanticData.
 	 */
-	public function __sleep() {
+	public function __sleep(): array {
 		return [
 			'mSubject',
 			'mProperties',

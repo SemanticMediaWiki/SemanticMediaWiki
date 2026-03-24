@@ -243,7 +243,7 @@ class ProcessingErrorMsgHandler {
 		}
 	}
 
-	private function newContainerSemanticData( $hash ) {
+	private function newContainerSemanticData( $hash ): ContainerSemanticData {
 		if ( $this->subject === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

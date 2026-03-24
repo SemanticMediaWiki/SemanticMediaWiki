@@ -124,7 +124,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return new Client( $clientBuilder, $this->lockManager, $this->config );
 	}
 
-	private function hasEndpoints( $endpoints ) {
+	private function hasEndpoints( $endpoints ): bool {
 		if ( $this->config->isDefaultStore() === false ) {
 			return true;
 		}

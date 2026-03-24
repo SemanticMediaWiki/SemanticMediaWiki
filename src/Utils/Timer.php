@@ -71,7 +71,7 @@ class Timer {
 	 *
 	 * @return float|int
 	 */
-	public static function getElapsedTime( $name, $round = null ) {
+	public static function getElapsedTime( $name, $round = null ): int|float {
 		if ( !isset( self::$start[$name] ) ) {
 			return 0;
 		}

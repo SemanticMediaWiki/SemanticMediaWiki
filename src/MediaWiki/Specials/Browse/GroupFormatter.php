@@ -152,7 +152,7 @@ class GroupFormatter {
 		);
 	}
 
-	private function findGroup( $property, array $list ) {
+	private function findGroup( $property, array $list ): string {
 		if ( $this->showGroup === false ) {
 			return '';
 		}

@@ -636,7 +636,7 @@ class FieldMapper {
 	 *
 	 * @return string
 	 */
-	public function hierarchy( $params, $replacement, $hierarchy = [] ) {
+	public function hierarchy( $params, $replacement, $hierarchy = [] ): array|Condition {
 		if ( $hierarchy === [] ) {
 			return $params;
 		}

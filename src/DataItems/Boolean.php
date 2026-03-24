@@ -58,7 +58,7 @@ class Boolean extends DataItem {
 		}
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_BOOLEAN ) {
 			return false;
 		}

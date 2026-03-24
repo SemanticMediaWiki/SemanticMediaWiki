@@ -284,7 +284,7 @@ class IntlNumberFormatter {
 		);
 	}
 
-	private function doFormatWithPrecision( $value, $precision, $decimal, $thousand ) {
+	private function doFormatWithPrecision( $value, $precision, $decimal, $thousand ): string {
 		$replacement = 0;
 
 		// Don't try to be more precise than the actual value (e.g avoid turning

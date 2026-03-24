@@ -62,7 +62,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return array
 	 */
-	public function __sleep() {
+	public function __sleep(): array {
 		return [ 'model_id', 'mText' ];
 	}
 
@@ -78,7 +78,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return null|string
 	 */
-	public function toJson() {
+	public function toJson(): string|false|null {
 		if ( $this->isValid() ) {
 			return json_encode( $this->parse );
 		}

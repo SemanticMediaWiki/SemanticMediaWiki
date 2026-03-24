@@ -23,7 +23,7 @@ class ExpDataDeserializer implements Deserializer {
 	 * @return ExpData
 	 * @throws OutOfBoundsException
 	 */
-	public function deserialize( $serialization ) {
+	public function deserialize( $serialization ): ?ExpData {
 		$expData = null;
 
 		if ( isset( $serialization['version'] ) && $serialization['version'] !== 0.1 ) {

@@ -63,7 +63,7 @@ class ExceptionFileLogger {
 	 *
 	 * @return string
 	 */
-	public function getExceptionFile() {
+	public function getExceptionFile(): string|false {
 		return realpath( $this->exceptionFile );
 	}
 

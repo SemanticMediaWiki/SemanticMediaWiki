@@ -50,7 +50,7 @@ abstract class PropertyAnnotatorDecorator implements Annotator {
 	 *
 	 * @return PropertyAnnotator
 	 */
-	public function addAnnotation() {
+	public function addAnnotation(): self {
 		$this->propertyAnnotator->addAnnotation();
 		$this->addPropertyValues();
 

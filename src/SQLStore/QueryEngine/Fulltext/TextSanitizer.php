@@ -230,7 +230,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithGenericRegex( string|array $text, string|array $exemptionList ) {
+	private function tokenizeWithGenericRegex( string|array $text, string|array $exemptionList ): array {
 		// @phan-suppress-next-line PhanParamSuspiciousOrder false positive
 		$pattern = str_replace(
 			$exemptionList,

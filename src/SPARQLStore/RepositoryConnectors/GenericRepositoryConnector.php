@@ -135,7 +135,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool to indicate success
 	 */
-	public function ping( $endpointType = self::ENDP_QUERY ) {
+	public function ping( $endpointType = self::ENDP_QUERY ): bool {
 		if ( $endpointType == self::ENDP_QUERY ) {
 			$url = $this->repositoryClient->getQueryEndpoint();
 			$request = $this->httpRequestFactory->create( $url, array_merge(
@@ -427,7 +427,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function doQuery( $sparql ) {
+	public function doQuery( $sparql ): RepositoryResult {
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}

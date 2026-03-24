@@ -153,7 +153,7 @@ class IntlTimeFormatter {
 	 * - a	Lowercase Ante meridiem and Post meridiem am or pm
 	 * - A	Uppercase Ante meridiem and Post meridiem
 	 */
-	private function formatWithLocalizedTextReplacement( DateTime|ExtendedDateTime $dateTime, $format ) {
+	private function formatWithLocalizedTextReplacement( DateTime|ExtendedDateTime $dateTime, $format ): string {
 		$output = $dateTime->format( $format );
 
 		// (n) DateTime => 1 through 12

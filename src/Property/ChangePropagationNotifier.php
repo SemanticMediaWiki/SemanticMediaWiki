@@ -79,7 +79,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @param WikiPage $subject
 	 */
-	public function notify( WikiPage $subject ) {
+	public function notify( WikiPage $subject ): bool {
 		if ( !$this->hasDiff() || !$this->inNamespace( $subject ) ) {
 			return false;
 		}

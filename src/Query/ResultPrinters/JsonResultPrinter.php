@@ -47,7 +47,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ): string|array {
+	public function getFileName( QueryResult $queryResult ): string {
 		if ( $this->params['filename'] === '' ) {
 			return 'result.json';
 		}
@@ -66,7 +66,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['searchlabel']->setDefault( $this->msg( 'smw_json_link' )->inContentLanguage()->text() );
@@ -130,7 +130,7 @@ class JsonResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function buildJSON( QueryResult $res, $outputMode ) {
+	private function buildJSON( QueryResult $res, $outputMode ): string|false {
 		$flags = isset( $this->params['prettyprint'] ) && $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
 		$flags = $flags | ( isset( $this->params['unescape'] ) && $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
 

@@ -190,7 +190,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function __sleep() {
+	public function __sleep(): array {
 		return [
 			'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options', 'extensionData', 'sequenceMap', 'countMap'
 		];

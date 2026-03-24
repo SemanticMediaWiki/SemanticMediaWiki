@@ -45,7 +45,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		return $this->params['filename'];
 	}
 
@@ -56,7 +56,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$definitions['searchlabel']->setDefault(

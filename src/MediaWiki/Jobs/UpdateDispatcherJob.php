@@ -63,7 +63,7 @@ class UpdateDispatcherJob extends Job {
 	 *
 	 * @return bool
 	 */
-	public function run() {
+	public function run(): bool {
 		$this->initServices();
 
 		/**

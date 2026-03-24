@@ -49,7 +49,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return $this->isApiTask;
 	}
 

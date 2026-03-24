@@ -172,7 +172,7 @@ class GeoCoord extends DataItem {
 		return $this->altitude;
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_GEO ) {
 			return false;
 		}

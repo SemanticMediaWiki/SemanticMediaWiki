@@ -71,7 +71,7 @@ class PageInfoProvider implements PageInfo {
 	 *
 	 * @return bool
 	 */
-	public function isNewPage() {
+	public function isNewPage(): bool {
 		if ( $this->isFilePage() ) {
 			return $this->isReUpload !== null ? !$this->isReUpload : false;
 		}

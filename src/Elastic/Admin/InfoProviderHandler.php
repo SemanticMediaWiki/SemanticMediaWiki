@@ -31,7 +31,7 @@ abstract class InfoProviderHandler extends TaskHandler implements ActionableTask
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -58,7 +58,7 @@ abstract class InfoProviderHandler extends TaskHandler implements ActionableTask
 	 *
 	 * @return string
 	 */
-	public function getParentTask() {
+	public function getParentTask(): string {
 		return 'elastic';
 	}
 

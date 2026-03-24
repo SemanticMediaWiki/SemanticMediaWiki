@@ -63,7 +63,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function __sleep() {
+	public function __sleep(): array {
 		return [ 'subject', 'subSemanticData' ];
 	}
 
@@ -110,7 +110,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @return bool
 	 */
-	public function hasSubSemanticData( $subobjectName = null ) {
+	public function hasSubSemanticData( $subobjectName = null ): bool {
 		if ( $this->subSemanticData === [] || $subobjectName === '' ) {
 			return false;
 		}

@@ -79,10 +79,10 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			return;
 		}
 
-		if ( isset( $case['special-page']['query-parameters'] ) ) {
+		if ( isset( $case['special-page']['query-parameters'] ) && is_string( $case['special-page']['query-parameters'] ) ) {
 			$queryParameters = $case['special-page']['query-parameters'];
 		} else {
-			$queryParameters = [];
+			$queryParameters = '';
 		}
 
 		$text = $this->getTextForRequestBy(

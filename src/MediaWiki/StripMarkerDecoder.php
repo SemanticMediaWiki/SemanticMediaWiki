@@ -60,7 +60,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return bool
 	 */
-	public function decode( $value ) {
+	public function decode( $value ): string|array {
 		$hasStripMarker = false;
 
 		if ( $this->canUse() ) {

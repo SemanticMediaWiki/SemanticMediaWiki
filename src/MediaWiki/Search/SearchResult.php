@@ -51,7 +51,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::getTextSnippet
 	 */
-	public function getTextSnippet( $terms = [] ) {
+	public function getTextSnippet( $terms = [] ): string {
 		if ( $this->hasHighlight ) {
 			return str_replace( [ '<em>', '</em>' ], [ "<span class='searchmatch'>", '</span>' ], $this->mText );
 		}
@@ -80,7 +80,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::isMissingRevision
 	 */
-	public function isMissingRevision() {
+	public function isMissingRevision(): bool {
 		if ( $this->mTitle == null ) {
 			return true;
 		}

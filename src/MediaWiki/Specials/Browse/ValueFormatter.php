@@ -139,7 +139,7 @@ class ValueFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
+	public static function getPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ): ?string {
 		$proptext = null;
 
 		$linker = smwfGetLinker();

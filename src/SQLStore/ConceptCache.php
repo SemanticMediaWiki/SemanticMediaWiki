@@ -148,7 +148,7 @@ class ConceptCache {
 	 *
 	 * @return string
 	 */
-	public function getConceptCacheText( Title $concept ) {
+	public function getConceptCacheText( Title $concept ): string|bool {
 		$values = $this->store->getPropertyValues(
 			WikiPage::newFromTitle( $concept ),
 			new Property( '_CONC' )

@@ -228,7 +228,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return bool
 	 */
-	public function isEnabledFeature( $feature ) {
+	public function isEnabledFeature( $feature ): bool {
 		return ( (int)$GLOBALS['smwgResultFormatsFeatures'] & $feature ) != 0;
 	}
 
@@ -369,7 +369,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function handleNonFileResult( $result, QueryResult $results, $outputmode ) {
+	protected function handleNonFileResult( $result, QueryResult $results, $outputmode ): string|array {
 		// append errors
 		$result .= $this->getErrorString( $results );
 
@@ -587,7 +587,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getErrorString( QueryResult $res ) {
+	protected function getErrorString( QueryResult $res ): string {
 		return $this->mShowErrors ? smwfEncodeMessages( array_merge( $this->mErrors, $res->getErrors() ) ) : '';
 	}
 
@@ -610,7 +610,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return array[]
 	 */
-	protected function getResources() {
+	protected function getResources(): array {
 		return [ 'modules' => [], 'styles' => [] ];
 	}
 
@@ -623,7 +623,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function escapeText( $text, $outputmode ) {
+	protected function escapeText( $text, $outputmode ): ?string {
 		return $outputmode == SMW_OUTPUT_HTML ? htmlspecialchars( $text ?? '' ) : $text;
 	}
 
@@ -648,7 +648,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return bool
 	 */
-	protected function linkFurtherResults( QueryResult $results ) {
+	protected function linkFurtherResults( QueryResult $results ): bool {
 		return $this->mInline && $results->hasFurtherResults() && $this->mSearchlabel !== '';
 	}
 
@@ -675,7 +675,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return array
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return [];
 	}
 
@@ -688,7 +688,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return array
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		return array_merge( $definitions, $this->getParameters() );
 	}
 
@@ -699,7 +699,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return bool
 	 */
-	public function isExportFormat() {
+	public function isExportFormat(): bool {
 		return false;
 	}
 
@@ -708,7 +708,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return bool
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return false;
 	}
 
@@ -720,7 +720,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return bool
 	 */
-	public function supportsRecursiveAnnotation() {
+	public function supportsRecursiveAnnotation(): bool {
 		return false;
 	}
 
@@ -729,7 +729,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	public function getDefaultSort() {
+	public function getDefaultSort(): string {
 		return 'ASC';
 	}
 

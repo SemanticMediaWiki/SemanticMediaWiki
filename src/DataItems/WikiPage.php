@@ -314,7 +314,7 @@ class WikiPage extends DataItem {
 		return new self( $text, $namespace );
 	}
 
-	public function equals( DataItem $di ) {
+	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
 			return false;
 		}

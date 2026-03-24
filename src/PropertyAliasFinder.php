@@ -97,7 +97,7 @@ class PropertyAliasFinder {
 	 *
 	 * @return array
 	 */
-	public function getKnownPropertyAliasesByLanguageCode( $languageCode = 'en' ) {
+	public function getKnownPropertyAliasesByLanguageCode( $languageCode = 'en' ): array {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[

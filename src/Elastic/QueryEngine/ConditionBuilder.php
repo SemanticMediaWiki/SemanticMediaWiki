@@ -354,7 +354,7 @@ class ConditionBuilder {
 	 *
 	 * @return array
 	 */
-	public function interpretDescription( Description $description, $isConjunction = false ) {
+	public function interpretDescription( Description $description, $isConjunction = false ): Condition|array {
 		$params = [];
 
 		if ( $this->initServices === false ) {

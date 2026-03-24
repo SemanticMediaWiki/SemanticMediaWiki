@@ -90,7 +90,7 @@ class AutoRecovery {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): bool {
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -105,6 +105,8 @@ class AutoRecovery {
 			$this->getFile(),
 			json_encode( $this->contents, JSON_PRETTY_PRINT )
 		);
+
+		return true;
 	}
 
 	/**
@@ -139,7 +141,7 @@ class AutoRecovery {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		if ( !$this->enabled ) {
 			return false;
 		}

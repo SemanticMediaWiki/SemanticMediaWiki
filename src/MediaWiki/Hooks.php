@@ -132,7 +132,7 @@ class Hooks {
 	 *
 	 * @return callable|false
 	 */
-	public function getHandlerFor( $name ) {
+	public function getHandlerFor( $name ): callable|false {
 		return isset( $this->handlers[$name] ) ? $this->handlers[$name] : false;
 	}
 

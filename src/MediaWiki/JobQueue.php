@@ -182,7 +182,7 @@ class JobQueue {
 	 *
 	 * @return string
 	 */
-	public static function mapLegacyType( $type ) {
+	public static function mapLegacyType( $type ): string {
 		// Legacy names
 		if ( strpos( $type, 'SMW\\' ) !== false ) {
 			$type = 'smw.' . lcfirst( str_replace( [ 'SMW\\', 'Job' ], '', $type ) );

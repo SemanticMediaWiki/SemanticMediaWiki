@@ -207,7 +207,7 @@ class FieldItemFinder {
 		return $options;
 	}
 
-	private function getResultsForProperty( DataItem $dataItem ) {
+	private function getResultsForProperty( DataItem $dataItem ): array {
 		$content = $this->fetchContent(
 			$dataItem
 		);
@@ -279,7 +279,7 @@ class FieldItemFinder {
 		$this->printRequest->getParameter( $parameter ) !== false;
 	}
 
-	private function fetchContent( DataItem $dataItem ) {
+	private function fetchContent( DataItem $dataItem ): array {
 		$dataValue = $this->printRequest->getData();
 		$dataItems = [ $dataItem ];
 

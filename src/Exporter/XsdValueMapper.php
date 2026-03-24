@@ -29,7 +29,7 @@ class XsdValueMapper {
 	 * @return array
 	 * @throws RuntimeException
 	 */
-	public static function map( DataItem $dataItem ) {
+	public static function map( DataItem $dataItem ): array {
 		if ( $dataItem instanceof Boolean ) {
 			$val = self::mapBoolean( $dataItem );
 		} elseif ( $dataItem instanceof Number ) {

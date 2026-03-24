@@ -85,7 +85,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return array
 	 */
-	public function getSerialization() {
+	public function getSerialization(): array {
 		$serialization = [
 			'type' => self::TYPE_RESOURCE,
 			'uri'  => $this->getUri()

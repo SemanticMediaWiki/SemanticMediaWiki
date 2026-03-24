@@ -62,7 +62,7 @@ class ConstraintFactory {
 	 * @return Constraint
 	 * @throws RuntimeException
 	 */
-	public function newConstraintByClass( $class ) {
+	public function newConstraintByClass( $class ): Constraint {
 		if ( !class_exists( $class ) ) {
 			throw new ClassNotFoundException( $class );
 		}

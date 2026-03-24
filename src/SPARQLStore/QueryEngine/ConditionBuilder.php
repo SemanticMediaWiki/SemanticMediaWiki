@@ -323,7 +323,7 @@ class ConditionBuilder {
 	 *
 	 * @return Condition
 	 */
-	public function newTrueCondition( string $joinVariable, $orderByProperty ) {
+	public function newTrueCondition( string $joinVariable, $orderByProperty ): TrueCondition {
 		$result = new TrueCondition();
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 		return $result;
@@ -336,7 +336,7 @@ class ConditionBuilder {
 	 *
 	 * @return string|null
 	 */
-	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ) {
+	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ): ?string {
 		if ( !$dataItem instanceof WikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}

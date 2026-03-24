@@ -60,7 +60,7 @@ class LinksUpdateComplete implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( $linksUpdate ) {
+	public function process( $linksUpdate ): bool {
 		if ( $this->isReady === false ) {
 			return $this->doAbort();
 		}

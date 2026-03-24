@@ -119,7 +119,7 @@ class SPARQLStoreFactory {
 	 *
 	 * @return ConnectionManager
 	 */
-	public function getConnectionManager() {
+	public function getConnectionManager(): ConnectionManager {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

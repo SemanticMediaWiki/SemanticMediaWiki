@@ -264,7 +264,7 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasCreateProtection( ?Title $title = null ) {
+	public function hasCreateProtection( ?Title $title = null ): bool {
 		if ( $title === null ) {
 			return false;
 		}
@@ -286,7 +286,7 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasEditProtection( ?Title $title = null ) {
+	public function hasEditProtection( ?Title $title = null ): bool {
 		if ( $title === null ) {
 			return false;
 		}
@@ -300,7 +300,7 @@ class ProtectionValidator {
 			&& $this->checkProtection( $subject->asBase() );
 	}
 
-	private function checkProtection( WikiPage $subject, $property = null ) {
+	private function checkProtection( WikiPage $subject, $property = null ): bool {
 		if ( $property === null ) {
 			$property = new Property( '_EDIP' );
 		}

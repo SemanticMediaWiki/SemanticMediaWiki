@@ -45,7 +45,7 @@ class DeepRedirectTargetResolver {
 		return $title instanceof Title && $title->isRedirect();
 	}
 
-	private function doResolveRedirectTarget( Title $title ) {
+	private function doResolveRedirectTarget( Title $title ): ?Title {
 		$this->addToResolverTracker( $title );
 
 		if ( $this->isCircularByKnownRedirectTarget( $title ) ) {

@@ -90,7 +90,7 @@ class JsonImportContentsFileDirReader {
 		return $contents;
 	}
 
-	private function readJSONFile( $file ) {
+	private function readJSONFile( $file ): mixed {
 		$contents = json_decode(
 			$this->file->read( $file ),
 			true

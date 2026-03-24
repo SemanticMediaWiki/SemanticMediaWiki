@@ -106,7 +106,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( WikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}

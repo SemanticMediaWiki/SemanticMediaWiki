@@ -190,7 +190,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @return string
 	 */
-	public function recursivePreprocess( $text ) {
+	public function recursivePreprocess( $text ): string {
 		// not during parsing, no preprocessing needed, still protect the result
 		if ( !$this->parser || !$this->parser->getOptions() || !$this->parser->getTitle() ) {
 			return $this->recursiveAnnotation ? $text : '[[SMW::off]]' . $text . '[[SMW::on]]';

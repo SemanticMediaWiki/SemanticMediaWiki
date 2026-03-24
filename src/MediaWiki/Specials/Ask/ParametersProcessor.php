@@ -162,7 +162,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	private static function getParameterList( WebRequest $request, $params ) {
+	private static function getParameterList( WebRequest $request, $params ): array {
 		// Called from wiki, get all parameters
 		if ( !$request->getCheck( 'q' ) ) {
 			return Infolink::decodeParameters( $params ?? '', true );
