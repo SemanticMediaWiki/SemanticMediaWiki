@@ -2,6 +2,7 @@
 
 namespace SMW\Schema;
 
+use JsonSchema\Validator;
 use RuntimeException;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
@@ -160,7 +161,7 @@ class SchemaFactory {
 	 */
 	public function newSchemaValidator(): SchemaValidator {
 		return new SchemaValidator(
-			ApplicationFactory::getInstance()->create( 'JsonSchemaValidator' )
+			new Validator()
 		);
 	}
 

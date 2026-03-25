@@ -990,7 +990,6 @@
 	"smw-schema-error-title": "{{PLURAL:$1|Valideringsfeil}}",
 	"smw-schema-error-schema": "Valideringsskjemaet '''$1''' fant følgende inkonsekvenser:",
 	"smw-schema-error-miscellaneous": "Udefinert feil ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "JSON-validatoren «<b>$1</b>» er ikke tilgjengelig (eller installert), hvilket er grunnen til at fila «$2» ikke kan undersøkes, som hindrer den gjeldende siden fra å bli lagret eller endret.",
 	"smw-schema-error-validation-file-inaccessible": "Valideringsfila «$1» er utilgjengelig.",
 	"smw-schema-error-violation": "[«$1», «$2»]",
 	"smw-schema-error-type-missing": "Konspetet mangler en type for at den skal kunne gjenkjennes og brukes i [https://www.semantic-mediawiki.org/wiki/Help:Schema skjemanavnerommet].",

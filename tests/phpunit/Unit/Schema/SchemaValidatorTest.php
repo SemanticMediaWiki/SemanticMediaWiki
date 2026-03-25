@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\Unit\Schema;
 
+use JsonSchema\Exception\ResourceNotFoundException;
+use JsonSchema\Validator;
 use PHPUnit\Framework\TestCase;
 use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaValidator;
-use SMW\Utils\JsonSchemaValidator;
 
 /**
  * @covers \SMW\Schema\SchemaValidator
@@ -19,25 +20,21 @@ use SMW\Utils\JsonSchemaValidator;
 class SchemaValidatorTest extends TestCase {
 
 	public function testCanConstruct() {
-		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$validator = $this->createMock( Validator::class );
 
 		$this->assertInstanceOf(
 			SchemaValidator::class,
-			new SchemaValidator( $jsonSchemaValidator )
+			new SchemaValidator( $validator )
 		);
 	}
 
 	public function testValidate_InaccessibleFile() {
-		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$validator = $this->createMock( Validator::class );
 
-		$jsonSchemaValidator->expects( $this->never() )
-			->method( 'validate' );
+		$validator->expects( $this->never() )
+			->method( 'check' );
 
-		$instance = new SchemaValidator( $jsonSchemaValidator );
+		$instance = new SchemaValidator( $validator );
 
 		$info = [
 			SchemaDefinition::SCHEMA_VALIDATION_FILE => '...'
@@ -49,18 +46,16 @@ class SchemaValidatorTest extends TestCase {
 	}
 
 	public function testValidate_IsValid() {
-		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$validator = $this->createMock( Validator::class );
 
-		$jsonSchemaValidator->expects( $this->once() )
-			->method( 'validate' );
+		$validator->expects( $this->once() )
+			->method( 'check' );
 
-		$jsonSchemaValidator->expects( $this->once() )
+		$validator->expects( $this->once() )
 			->method( 'isValid' )
 			->willReturn( true );
 
-		$instance = new SchemaValidator( $jsonSchemaValidator );
+		$instance = new SchemaValidator( $validator );
 
 		$info = [
 			SchemaDefinition::SCHEMA_VALIDATION_FILE => \SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
@@ -72,22 +67,38 @@ class SchemaValidatorTest extends TestCase {
 	}
 
 	public function testValidate_Error() {
-		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$validator = $this->createMock( Validator::class );
 
-		$jsonSchemaValidator->expects( $this->once() )
-			->method( 'validate' );
+		$validator->expects( $this->once() )
+			->method( 'check' );
 
-		$jsonSchemaValidator->expects( $this->once() )
+		$validator->expects( $this->once() )
 			->method( 'isValid' )
 			->willReturn( false );
 
-		$jsonSchemaValidator->expects( $this->once() )
+		$validator->expects( $this->once() )
 			->method( 'getErrors' )
 			->willReturn( [ '...' ] );
 
-		$instance = new SchemaValidator( $jsonSchemaValidator );
+		$instance = new SchemaValidator( $validator );
+
+		$info = [
+			SchemaDefinition::SCHEMA_VALIDATION_FILE => \SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
+		];
+
+		$this->assertNotEmpty(
+			$instance->validate( new SchemaDefinition( 'foo', [], $info ) )
+		);
+	}
+
+	public function testValidate_ResourceNotFoundException() {
+		$validator = $this->createMock( Validator::class );
+
+		$validator->expects( $this->once() )
+			->method( 'check' )
+			->willThrowException( new ResourceNotFoundException() );
+
+		$instance = new SchemaValidator( $validator );
 
 		$info = [
 			SchemaDefinition::SCHEMA_VALIDATION_FILE => \SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
@@ -99,14 +110,12 @@ class SchemaValidatorTest extends TestCase {
 	}
 
 	public function testValidate_EmptySchema() {
-		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$validator = $this->createMock( Validator::class );
 
-		$jsonSchemaValidator->expects( $this->never() )
-			->method( 'validate' );
+		$validator->expects( $this->never() )
+			->method( 'check' );
 
-		$instance = new SchemaValidator( $jsonSchemaValidator );
+		$instance = new SchemaValidator( $validator );
 
 		$this->assertEquals(
 			[],

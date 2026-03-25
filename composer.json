@@ -52,7 +52,6 @@
 		"onoi/event-dispatcher": "~1.0",
 		"onoi/blob-store": "~1.2",
 		"onoi/callback-container": "~2.0",
-		"justinrainbow/json-schema": "~5.2",
 		"jeroen/file-fetcher": "^6|^5|^4.4",
 		"wikimedia/textcat": "^2|^1.1"
 	},

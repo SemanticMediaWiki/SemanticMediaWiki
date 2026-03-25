@@ -991,7 +991,6 @@
 	"smw-schema-error-title": "Doğrulama {{PLURAL:$1|hatası|hataları}}",
 	"smw-schema-error-schema": "'''$1''' doğrulama şeması aşağıdaki tutarsızlıkları buldu:",
 	"smw-schema-error-miscellaneous": "Çeşitli hatalar ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "\"<b>$1</b>\" JSON doğrulayıcısına erişilemiyor (veya yüklenemiyor) ve \"$2\" dosyasının incelenememesinin nedeni, geçerli sayfanın kaydedilmesini veya değiştirilmesini engelliyor.",
 	"smw-schema-error-validation-file-inaccessible": "\"$1\" doğrulama dosyasına erişilemiyor.",
 	"smw-schema-error-type-missing": "İçeriğin [https://www.semantic-mediawiki.org/wiki/Help:Schema şema ad alanında] tanınması ve kullanılabilmesi için bir türü eksik.",
 	"smw-schema-error-type-unknown": "\"$1\" türü kaydedilmedi ve [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema] ad alanındaki içerik için kullanılamaz.",
