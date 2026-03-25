@@ -326,7 +326,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function buildResult( QueryResult $results ): string {
+	protected function buildResult( QueryResult $results ): ?string {
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 
