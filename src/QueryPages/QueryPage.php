@@ -113,7 +113,7 @@ abstract class QueryPage extends MWQueryPage {
 	 *
 	 * @return Linker
 	 */
-	public function getLinker() {
+	public function getLinker(): Linker {
 		if ( $this->linker === null ) {
 			$this->linker = smwfGetLinker();
 		}

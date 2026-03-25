@@ -75,7 +75,7 @@ class RestrictionExaminer {
 	 *
 	 * @param array
 	 */
-	public function getError() {
+	public function getError(): string|array {
 		return $this->error;
 	}
 

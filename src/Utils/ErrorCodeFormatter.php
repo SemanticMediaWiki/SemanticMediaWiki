@@ -50,7 +50,7 @@ class ErrorCodeFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getMessageFromJsonErrorCode( $errorCode ) {
+	public static function getMessageFromJsonErrorCode( $errorCode ): string {
 		$errorMessages = [
 			JSON_ERROR_STATE_MISMATCH => 'Underflow or the modes mismatch, malformed JSON',
 			JSON_ERROR_CTRL_CHAR => 'Unexpected control character found, possibly incorrectly encoded',

@@ -85,7 +85,7 @@ class SearchTable {
 	 *
 	 * @return bool
 	 */
-	public function isExemptedPropertyById( $id ) {
+	public function isExemptedPropertyById( $id ): bool {
 		$dataItem = $this->getDataItemById( $id );
 
 		if ( !$dataItem instanceof WikiPage || $dataItem->getDBKey() === '' ) {

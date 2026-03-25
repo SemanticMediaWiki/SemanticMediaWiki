@@ -482,9 +482,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function applyExtraWhereCondition( $connection, $qid ) {
+	private function applyExtraWhereCondition( $connection, $qid ): void {
 		if ( !isset( $this->querySegmentList[$qid] ) ) {
-			return null;
+			return;
 		}
 
 		$qobj = $this->querySegmentList[$qid];

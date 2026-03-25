@@ -144,7 +144,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return array of DIProperty objects
 	 */
-	public function getProperties() {
+	public function getProperties(): array {
 		$this->unstubProperties();
 		return parent::getProperties();
 	}
@@ -274,7 +274,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return bool
 	 */
-	public function hasVisibleProperties() {
+	public function hasVisibleProperties(): bool {
 		$this->unstubProperties();
 		return parent::hasVisibleProperties();
 	}
@@ -287,7 +287,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return bool
 	 */
-	public function hasVisibleSpecialProperties() {
+	public function hasVisibleSpecialProperties(): bool {
 		$this->unstubProperties();
 		return parent::hasVisibleSpecialProperties();
 	}

@@ -94,7 +94,7 @@ class ConditionBuilder {
 	 *
 	 * @return string[]
 	 */
-	public function getSortKeys() {
+	public function getSortKeys(): array {
 		return $this->sortKeys;
 	}
 
@@ -171,7 +171,7 @@ class ConditionBuilder {
 	 *
 	 * @return int
 	 */
-	public function buildCondition( Query $query ) {
+	public function buildCondition( Query $query ): int {
 		$this->sortKeys = $query->sortkeys;
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 

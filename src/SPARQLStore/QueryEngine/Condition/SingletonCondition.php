@@ -33,11 +33,11 @@ class SingletonCondition extends Condition {
 		$this->namespaces = $namespaces;
 	}
 
-	public function getCondition() {
+	public function getCondition(): string {
 		return $this->condition;
 	}
 
-	public function isSafe() {
+	public function isSafe(): bool {
 		return $this->isSafe;
 	}
 

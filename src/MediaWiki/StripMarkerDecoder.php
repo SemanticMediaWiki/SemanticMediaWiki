@@ -38,7 +38,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return bool
 	 */
-	public function canUse() {
+	public function canUse(): bool {
 		return $this->isSupported;
 	}
 

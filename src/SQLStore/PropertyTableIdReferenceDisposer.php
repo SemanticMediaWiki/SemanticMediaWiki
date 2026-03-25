@@ -110,9 +110,9 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param int $id
 	 */
-	public function removeOutdatedEntityReferencesById( $id ) {
+	public function removeOutdatedEntityReferencesById( $id ): void {
 		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) ) {
-			return null;
+			return;
 		}
 
 		$this->cleanUpSecondaryReferencesById( $id, false );

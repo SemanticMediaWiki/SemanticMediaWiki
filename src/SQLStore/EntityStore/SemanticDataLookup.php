@@ -116,7 +116,7 @@ class SemanticDataLookup {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
+	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): StubSemanticData {
 		if ( !$dataItem instanceof WikiPage ) {
 			throw new RuntimeException( 'Expected a DIWikiPage instance' );
 		}

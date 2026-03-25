@@ -170,7 +170,7 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 */
-	private function refresh_interval() {
+	private function refresh_interval(): ?string {
 		$refresh_interval = null;
 
 		$settings = $this->connection->getSettings(

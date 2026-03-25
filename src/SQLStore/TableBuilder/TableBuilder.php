@@ -119,7 +119,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $fieldType ) {
+	public function getStandardFieldType( $fieldType ): string|false {
 		return false;
 	}
 
@@ -160,7 +160,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( Table $table ) {
+	public function drop( Table $table ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !isset( $this->droppedTables ) ) {
@@ -176,9 +176,10 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		$this->droppedTables[$tableName] = true;
 
 		if ( $this->connection->tableExists( $tableName, __METHOD__ ) === false ) { // create new table
-			return $this->reportMessage(
+			$this->reportMessage(
 				$cliMsgFormatter->twoCols( "... $tableName (not found) ...", 'SKIPPED', 3 )
 			);
+			return;
 		}
 
 		$this->reportMessage(
@@ -215,7 +216,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLog() {
+	public function getLog(): array {
 		return $this->activityLog;
 	}
 

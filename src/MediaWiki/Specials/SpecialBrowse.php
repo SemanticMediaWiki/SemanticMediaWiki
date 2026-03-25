@@ -185,9 +185,9 @@ class SpecialBrowse extends SpecialPage {
 		return $htmlBuilder;
 	}
 
-	private function addExternalHelpLinks( $dataValue ) {
+	private function addExternalHelpLinks( $dataValue ): void {
 		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
-			return null;
+			return;
 		}
 
 		if ( $dataValue->isValid() ) {

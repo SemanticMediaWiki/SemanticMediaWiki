@@ -192,7 +192,7 @@ class ConditionBuilder {
 	 *
 	 * @param []
 	 */
-	public function getDescriptionLog() {
+	public function getDescriptionLog(): array {
 		return $this->descriptionLog;
 	}
 

@@ -291,21 +291,21 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @return int
 	 */
-	public function getLimit() {
+	public function getLimit(): int {
 		return $this->limit;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getOffset() {
+	public function getOffset(): int {
 		return $this->offset;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function getShowSuggestion() {
+	public function getShowSuggestion(): bool {
 		return $this->showSuggestion;
 	}
 

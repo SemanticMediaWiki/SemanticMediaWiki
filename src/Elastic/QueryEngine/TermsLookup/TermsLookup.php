@@ -102,7 +102,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return array
 	 */
-	public function concept_index_lookup( Parameters $parameters ) {
+	public function concept_index_lookup( Parameters $parameters ): ?array {
 		$params = $parameters->get( 'params' );
 		$query = $params instanceof Condition ? $params->toArray() : $params;
 

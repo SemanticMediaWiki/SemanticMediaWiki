@@ -170,7 +170,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return PropertyTableDefinition[]
 	 */
-	public function getPropertyTableDefinitions() {
+	public function getPropertyTableDefinitions(): array {
 		if ( $this->propertyTableDefinitions === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}

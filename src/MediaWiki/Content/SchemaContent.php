@@ -91,7 +91,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @param boolean
 	 */
-	public function isYaml() {
+	public function isYaml(): bool {
 		if ( $this->isValid() ) {
 			return $this->isYaml;
 		}
@@ -188,7 +188,7 @@ class SchemaContent extends JsonContent {
 		return $this->schemaFactory;
 	}
 
-	private function decodeJSONContent() {
+	private function decodeJSONContent(): ?bool {
 		// Support either JSON or YAML, if the class is available! Do a quick
 		// check on `{ ... }` to decide whether it is a non-JSON string.
 		if (

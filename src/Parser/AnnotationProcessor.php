@@ -56,7 +56,7 @@ class AnnotationProcessor {
 	 *
 	 * @return bool
 	 */
-	public function canAnnotate() {
+	public function canAnnotate(): bool {
 		return $this->canAnnotate;
 	}
 

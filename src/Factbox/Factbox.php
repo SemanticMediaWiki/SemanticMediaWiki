@@ -121,7 +121,7 @@ class Factbox {
 	 *
 	 * @return string|null
 	 */
-	public function getContent() {
+	public function getContent(): ?string {
 		return $this->content;
 	}
 

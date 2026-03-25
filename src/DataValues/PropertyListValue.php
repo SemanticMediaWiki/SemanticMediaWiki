@@ -111,15 +111,15 @@ class PropertyListValue extends DataValue {
 		return ( $this->m_caption !== false ) ? $this->m_caption : $this->makeOutputText( 3, $linker );
 	}
 
-	public function getLongWikiText( $linked = null ) {
+	public function getLongWikiText( $linked = null ): string {
 		return $this->makeOutputText( 2, $linked );
 	}
 
-	public function getLongHTMLText( $linker = null ) {
+	public function getLongHTMLText( $linker = null ): string {
 		return $this->makeOutputText( 3, $linker );
 	}
 
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->makeOutputText( 4 );
 	}
 

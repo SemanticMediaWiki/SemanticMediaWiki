@@ -88,7 +88,7 @@ class ContentParser {
 	 *
 	 * @return ParserOutput|null
 	 */
-	public function getOutput() {
+	public function getOutput(): ?ParserOutput {
 		return $this->parserOutput;
 	}
 
@@ -97,7 +97,7 @@ class ContentParser {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -197,7 +197,7 @@ class ContentParser {
 		return $parserOptions;
 	}
 
-	private function getRevision() {
+	private function getRevision(): ?RevisionRecord {
 		if ( $this->revision instanceof RevisionRecord ) {
 			return $this->revision;
 		}

@@ -306,7 +306,7 @@ class SubobjectParserFunction {
 		return $parameters;
 	}
 
-	private function augment( $semanticData ) {
+	private function augment( $semanticData ): void {
 		// Data block created by a user
 		$semanticData->setOption( SemanticData::PROC_USER, true );
 
@@ -314,7 +314,7 @@ class SubobjectParserFunction {
 		$displayTitle = new Property( Property::TYPE_DISPLAYTITLE );
 
 		if ( $semanticData->hasProperty( $sortkey ) || !$semanticData->hasProperty( $displayTitle ) ) {
-			return null;
+			return;
 		}
 
 		$pv = $semanticData->getPropertyValues(

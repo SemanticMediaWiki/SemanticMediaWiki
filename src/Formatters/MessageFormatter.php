@@ -114,7 +114,7 @@ class MessageFormatter {
 	 *
 	 * @return array
 	 */
-	public function getMessages() {
+	public function getMessages(): array {
 		return $this->messages;
 	}
 

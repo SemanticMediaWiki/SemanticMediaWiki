@@ -88,7 +88,7 @@ class JsonSchemaValidator {
 	 *
 	 * @return bool
 	 */
-	public function isValid() {
+	public function isValid(): bool {
 		return $this->isValid;
 	}
 
@@ -97,7 +97,7 @@ class JsonSchemaValidator {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

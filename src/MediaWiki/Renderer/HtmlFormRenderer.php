@@ -157,7 +157,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return array
 	 */
-	public function getQueryParameter() {
+	public function getQueryParameter(): array {
 		return $this->queryParameters;
 	}
 

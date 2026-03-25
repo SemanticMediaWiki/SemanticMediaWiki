@@ -142,7 +142,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return void
 	 */
-	private function checkReplication( WikiPage $subject, array $options ) {
+	private function checkReplication( WikiPage $subject, array $options ): void {
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
@@ -158,7 +158,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		}
 
 		if ( $this->isDeferredMode ) {
-			return $this->runCheck( $subject, $options );
+			$this->runCheck( $subject, $options );
+			return;
 		}
 
 		$this->indicators = [

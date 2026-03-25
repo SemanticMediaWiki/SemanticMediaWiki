@@ -317,9 +317,9 @@ class SQLStore extends Store {
 		return $status;
 	}
 
-	private function doDeferredCachedListLookupUpdate( WikiPage $subject ) {
+	private function doDeferredCachedListLookupUpdate( WikiPage $subject ): void {
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
-			return null;
+			return;
 		}
 
 		$deferredCallableUpdate = $this->factory->newDeferredCallableCachedListLookupUpdate();

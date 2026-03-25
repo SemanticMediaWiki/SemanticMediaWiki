@@ -47,7 +47,7 @@ class RedirectTargetFinder {
 	 *
 	 * @return Title|null
 	 */
-	public function getRedirectTarget() {
+	public function getRedirectTarget(): ?Title {
 		return $this->redirectTarget;
 	}
 

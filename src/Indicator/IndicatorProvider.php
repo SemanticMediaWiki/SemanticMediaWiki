@@ -20,21 +20,21 @@ interface IndicatorProvider {
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( WikiPage $subject, array $options );
+	public function hasIndicator( WikiPage $subject, array $options ): bool;
 
 	/**
 	 * @since 3.1
 	 *
 	 * @return
 	 */
-	public function getIndicators();
+	public function getIndicators(): array;
 
 	/**
 	 * @since 3.1
 	 *
 	 * @return
 	 */
-	public function getModules();
+	public function getModules(): array;
 
 	/**
 	 * @since 3.1

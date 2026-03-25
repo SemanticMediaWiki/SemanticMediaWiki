@@ -87,7 +87,7 @@ class DescriptionProcessor {
 	 *
 	 * @return bool
 	 */
-	public function containsSelfReference() {
+	public function containsSelfReference(): bool {
 		return $this->selfReference;
 	}
 
@@ -193,7 +193,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function asOr( ?Description $currentDescription = null, ?Description $newDescription = null ) {
+	public function asOr( ?Description $currentDescription = null, ?Description $newDescription = null ): ?Description {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_DISJUNCTION_QUERY );
 	}
 
@@ -205,7 +205,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function asAnd( ?Description $currentDescription = null, ?Description $newDescription = null ) {
+	public function asAnd( ?Description $currentDescription = null, ?Description $newDescription = null ): ?Description {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_CONJUNCTION_QUERY );
 	}
 

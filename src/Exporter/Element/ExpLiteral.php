@@ -81,7 +81,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getLang() {
+	public function getLang(): string {
 		return $this->lang;
 	}
 

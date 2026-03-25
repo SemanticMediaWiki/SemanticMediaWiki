@@ -43,7 +43,7 @@ class Disjunction extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		// Avoid a recursive tree
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
@@ -80,7 +80,7 @@ class Disjunction extends Description {
 		}
 	}
 
-	public function getDescriptions() {
+	public function getDescriptions(): array {
 		return $this->descriptions;
 	}
 

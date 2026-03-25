@@ -114,7 +114,7 @@ class ProtectionValidator {
 	 *
 	 * @return string|false
 	 */
-	public function getEditProtectionRight() {
+	public function getEditProtectionRight(): string|false {
 		return $this->editProtectionRight;
 	}
 
@@ -132,7 +132,7 @@ class ProtectionValidator {
 	 *
 	 * @return string|false
 	 */
-	public function getCreateProtectionRight() {
+	public function getCreateProtectionRight(): string|false {
 		return $this->createProtectionRight;
 	}
 
@@ -227,7 +227,7 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasChangePropagationProtection( Title $title ) {
+	public function hasChangePropagationProtection( Title $title ): bool {
 		$subject = WikiPage::newFromTitle( $title )->asBase();
 		$namespace = $subject->getNamespace();
 
@@ -249,7 +249,7 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasProtection( Title $title ) {
+	public function hasProtection( Title $title ): bool {
 		$subject = WikiPage::newFromTitle(
 			$title
 		);

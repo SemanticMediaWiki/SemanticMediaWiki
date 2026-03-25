@@ -35,7 +35,7 @@ class SortForm {
 	 *
 	 * @return
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 

@@ -510,7 +510,7 @@ class NumberValue extends DataValue {
 		return [ '' ];
 	}
 
-	protected function getPreferredDisplayPrecision() {
+	protected function getPreferredDisplayPrecision(): int|false {
 		// Don't restrict the value with a display precision
 		if ( $this->getProperty() === null || $this->getOption( self::NO_DISP_PRECISION_LIMIT ) ) {
 			return false;

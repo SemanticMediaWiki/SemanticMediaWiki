@@ -94,7 +94,7 @@ class FieldItemFinder {
 	 *
 	 * @param DataItem[]|[]
 	 */
-	public function findFor( DataItem $dataItem ) {
+	public function findFor( DataItem $dataItem ): array {
 		$content = [];
 
 		if ( $this->printRequest === null ) {
