@@ -2,7 +2,9 @@
 
 namespace SMW\Schema;
 
-use SMW\Utils\JsonSchemaValidator;
+use JsonSchema\Exception\ResourceNotFoundException;
+use JsonSchema\Validator;
+use JsonSerializable;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,7 +17,7 @@ class SchemaValidator {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( private readonly JsonSchemaValidator $validator ) {
+	public function __construct( private readonly Validator $validator ) {
 	}
 
 	/**
@@ -25,25 +27,37 @@ class SchemaValidator {
 	 *
 	 * @return array
 	 */
-	public function validate( ?Schema $schema = null ) {
+	public function validate( ?Schema $schema = null ): array {
 		if ( $schema === null || !is_string( $schema->info( Schema::SCHEMA_VALIDATION_FILE ) ) ) {
 			return [];
 		}
 
-		if ( !is_readable( $schema->info( Schema::SCHEMA_VALIDATION_FILE ) ) ) {
-			return [ [ 'smw-schema-error-validation-file-inaccessible', $schema->info( Schema::SCHEMA_VALIDATION_FILE ) ] ];
+		$schemaFile = $schema->info( Schema::SCHEMA_VALIDATION_FILE );
+
+		if ( !is_readable( $schemaFile ) ) {
+			return [ [ 'smw-schema-error-validation-file-inaccessible', $schemaFile ] ];
 		}
 
-		$this->validator->validate(
-			$schema,
-			$schema->info( Schema::SCHEMA_VALIDATION_FILE )
-		);
+		return $this->runValidation( $schema, $schemaFile );
+	}
 
-		if ( $this->validator->isValid() ) {
-			return [];
+	private function runValidation( JsonSerializable $data, string $schemaFile ): array {
+		$decoded = json_decode( $data->jsonSerialize() );
+
+		try {
+			$this->validator->check(
+				$decoded,
+				(object)[ '$ref' => 'file://' . $schemaFile ]
+			);
+
+			if ( $this->validator->isValid() ) {
+				return [];
+			}
+
+			return $this->validator->getErrors();
+		} catch ( ResourceNotFoundException $e ) {
+			return [ $e->getMessage() ];
 		}
-
-		return $this->validator->getErrors();
 	}
 
 }
