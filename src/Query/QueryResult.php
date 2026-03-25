@@ -320,7 +320,7 @@ class QueryResult {
 	 *
 	 * @return bool
 	 */
-	public function hasFurtherResults() {
+	public function hasFurtherResults(): bool {
 		return $this->mFurtherResults;
 	}
 
@@ -372,7 +372,7 @@ class QueryResult {
 	 *
 	 * @return Infolink
 	 */
-	public function getQueryLink( $caption = false ) {
+	public function getQueryLink( $caption = false ): Infolink {
 		$link = QueryLinker::get( $this->mQuery );
 
 		$link->setCaption( $caption );
@@ -395,7 +395,7 @@ class QueryResult {
 	 * @since 1.7
 	 * @return array
 	 */
-	public function serializeToArray() {
+	public function serializeToArray(): array {
 		$serializerFactory = new SerializerFactory();
 		$serializer = $serializerFactory->newQueryResultSerializer();
 		$serializer->version( $this->serializer_version );

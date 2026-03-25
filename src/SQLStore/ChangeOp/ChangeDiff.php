@@ -60,7 +60,7 @@ class ChangeDiff {
 	 *
 	 * @return int
 	 */
-	public function getAssociatedRev() {
+	public function getAssociatedRev(): int {
 		return $this->associatedRev;
 	}
 

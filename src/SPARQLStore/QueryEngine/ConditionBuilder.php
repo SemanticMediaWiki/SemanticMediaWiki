@@ -127,7 +127,7 @@ class ConditionBuilder {
 	 *
 	 * @return array
 	 */
-	public function getSortKeys() {
+	public function getSortKeys(): array {
 		return $this->sortKeys;
 	}
 
@@ -472,7 +472,7 @@ class ConditionBuilder {
 		}
 	}
 
-	private function addOrderForUnknownPropertyKey( Condition &$condition, string $propertyKey, $order ) {
+	private function addOrderForUnknownPropertyKey( Condition &$condition, string $propertyKey, $order ): void {
 		if ( $propertyKey === '' || $propertyKey === '#' ) { // order by result page sortkey
 
 			$this->addOrderByData(
@@ -488,7 +488,7 @@ class ConditionBuilder {
 			$propertyChainValue->setUserValue( $propertyKey );
 
 			if ( !$propertyChainValue->isValid() ) {
-				return null;
+				return;
 			}
 
 			$lastDataItem = $propertyChainValue->getLastPropertyChainValue()->getDataItem();

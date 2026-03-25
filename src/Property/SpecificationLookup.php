@@ -146,7 +146,7 @@ class SpecificationLookup {
 	 *
 	 * @return false|DataItem
 	 */
-	public function getFieldListBy( Property $property ) {
+	public function getFieldListBy( Property $property ): DataItem|false {
 		$fieldList = false;
 		$dataItems = $this->getSpecification( $property, new Property( '_LIST' ) );
 
@@ -210,7 +210,7 @@ class SpecificationLookup {
 	 *
 	 * @return DataItem|null
 	 */
-	public function getPropertyGroup( Property $property ) {
+	public function getPropertyGroup( Property $property ): ?DataItem {
 		$dataItem = null;
 		$dataItems = $this->getSpecification( $property, new Property( '_INST' ) );
 
@@ -240,7 +240,7 @@ class SpecificationLookup {
 	 *
 	 * @return DataItem|null
 	 */
-	public function getExternalFormatterUri( Property $property ) {
+	public function getExternalFormatterUri( Property $property ): ?DataItem {
 		$dataItem = null;
 		$dataItems = $this->getSpecification( $property, new Property( '_PEFU' ) );
 
@@ -353,14 +353,14 @@ class SpecificationLookup {
 	 *
 	 * @return string
 	 */
-	public function getPropertyDescriptionByLanguageCode( Property $property, string $languageCode = '', $linker = null ) {
+	public function getPropertyDescriptionByLanguageCode( Property $property, string $languageCode = '', $linker = null ): string {
 		$subject = $property->getCanonicalDiWikiPage();
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
 
 		$sub_key = $languageCode . ':' . ( $linker === null ? '0' : '1' );
 
 		if ( ( $text = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
-			return $text;
+			return (string)$text;
 		}
 
 		$text = $this->getTextByLanguageCode(

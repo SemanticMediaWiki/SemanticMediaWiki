@@ -253,15 +253,15 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 				return '';
 			}
 
-			public function hasIndicator( WikiPage $subject, array $options ) {
+			public function hasIndicator( WikiPage $subject, array $options ): bool {
 				return false;
 			}
 
-			public function getModules() {
+			public function getModules(): array {
 				return [];
 			}
 
-			public function getIndicators() {
+			public function getIndicators(): array {
 				return [];
 			}
 

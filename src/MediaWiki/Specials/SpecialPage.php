@@ -64,7 +64,7 @@ class SpecialPage extends MWSpecialPage {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->store;
 	}
 
@@ -87,7 +87,7 @@ class SpecialPage extends MWSpecialPage {
 	 *
 	 * @return Settings
 	 */
-	public function getSettings() {
+	public function getSettings(): Settings {
 		if ( $this->settings === null ) {
 			$this->settings = ServicesFactory::getInstance()->getSettings();
 		}

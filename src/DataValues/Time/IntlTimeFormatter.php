@@ -42,7 +42,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return bool
 	 */
-	public function hasLocalTimeCorrection() {
+	public function hasLocalTimeCorrection(): bool {
 		return $this->hasLocalTimeCorrection;
 	}
 
@@ -111,7 +111,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return string|bool
 	 */
-	public function format( $format ) {
+	public function format( $format ): string|false {
 		$dateTime = $this->dataItem->asDateTime();
 
 		if ( !$dateTime ) {

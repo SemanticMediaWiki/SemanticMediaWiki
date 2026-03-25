@@ -204,7 +204,7 @@ abstract class Job extends MediaWikiJob {
 	 * @see Job::ignoreDuplicates
 	 * @since 3.0
 	 */
-	public function ignoreDuplicates() {
+	public function ignoreDuplicates(): bool {
 		if ( isset( $this->params['waitOnCommandLine'] ) ) {
 			return $this->params['waitOnCommandLine'] > 1;
 		}

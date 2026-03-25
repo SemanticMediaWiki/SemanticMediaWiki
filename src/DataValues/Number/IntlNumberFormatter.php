@@ -227,7 +227,7 @@ class IntlNumberFormatter {
 		return $value;
 	}
 
-	private function getValueFormattedNumberWithPrecision( $value, $precision = false ) {
+	private function getValueFormattedNumberWithPrecision( $value, $precision = false ): string|array {
 		// The decimal are in ISO format (.), the separator as plain representation
 		// may collide with the content language (FR) therefore use the content language
 		// to match the decimal separator
@@ -247,7 +247,7 @@ class IntlNumberFormatter {
 		);
 	}
 
-	private function getDefaultFormattedNumberWithPrecision( $value, $precision = false ) {
+	private function getDefaultFormattedNumberWithPrecision( $value, $precision = false ): float|string {
 		if ( $precision === false ) {
 			return $this->isDecimal( $value ) ? $this->applyDefaultPrecision( $value ) : floatval( $value );
 		}

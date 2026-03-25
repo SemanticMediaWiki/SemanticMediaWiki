@@ -141,7 +141,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getResults( QueryResult $queryResult, $outputMode ) {
+	protected function getResults( QueryResult $queryResult, $outputMode ): array {
 		if ( $this->params['distribution'] ) {
 			return $this->getDistributionResults( $queryResult, $outputMode );
 		}

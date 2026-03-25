@@ -260,9 +260,9 @@ class RequestOptionsProcessor {
 		return [ $label, $value ];
 	}
 
-	private static function applySortRestriction( RequestOptions $requestOptions, array &$result, array $sortres, bool $isNumeric ) {
+	private static function applySortRestriction( RequestOptions $requestOptions, array &$result, array $sortres, bool $isNumeric ): void {
 		if ( !$requestOptions->sort ) {
-			return null;
+			return;
 		}
 
 		$flag = $isNumeric ? SORT_NUMERIC : SORT_LOCALE_STRING;

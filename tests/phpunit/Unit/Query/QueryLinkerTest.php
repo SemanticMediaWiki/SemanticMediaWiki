@@ -82,17 +82,17 @@ class QueryLinkerTest extends TestCase {
 
 		yield [
 			[ '' => 'ASC' ],
-			'&mainlabel=&source=&offset='
+			'&mainlabel=&source='
 		];
 
 		yield [
 			[ 'Foo_bar' => 'ASC' ],
-			'&mainlabel=&source=&offset=&order=asc&sort=Foo%20bar'
+			'&mainlabel=&source=&order=asc&sort=Foo%20bar'
 		];
 
 		yield [
 			[ '' => 'ASC', 'Foo_bar' => 'DESC' ],
-			'&mainlabel=&source=&offset=&order=asc%2Cdesc&sort=%2CFoo%20bar'
+			'&mainlabel=&source=&order=asc%2Cdesc&sort=%2CFoo%20bar'
 		];
 	}
 

@@ -79,7 +79,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getProperties() {
+	public function getProperties(): ?array {
 		return $this->properties;
 	}
 
@@ -155,7 +155,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertyDataItems() {
+	public function getPropertyDataItems(): ?array {
 		if ( $this->properties === null ) {
 			$this->properties = $this->getFieldProperties( $this->getProperty() );
 

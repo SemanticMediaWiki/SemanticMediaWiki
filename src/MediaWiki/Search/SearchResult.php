@@ -44,7 +44,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return File|null
 	 */
-	public function getFile() {
+	public function getFile(): ?File {
 		return null;
 	}
 
@@ -143,7 +143,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return Title|null
 	 */
-	public function getRedirectTitle() {
+	public function getRedirectTitle(): ?Title {
 		return null;
 	}
 

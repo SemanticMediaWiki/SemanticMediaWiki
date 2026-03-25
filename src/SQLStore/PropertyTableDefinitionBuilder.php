@@ -96,7 +96,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return array|null
 	 */
-	public function getFixedPropertyTableIds() {
+	public function getFixedPropertyTableIds(): ?array {
 		return $this->fixedPropertyTableIds;
 	}
 
@@ -107,7 +107,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return PropertyTableDefinition[]
 	 */
-	public function getTableDefinitions() {
+	public function getTableDefinitions(): array {
 		return $this->propertyTables;
 	}
 

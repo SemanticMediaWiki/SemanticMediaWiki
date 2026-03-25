@@ -88,7 +88,7 @@ class FormsBuilder {
 	 *
 	 * @return
 	 */
-	public function getTermPrefixes() {
+	public function getTermPrefixes(): array {
 		return $this->termPrefixes;
 	}
 

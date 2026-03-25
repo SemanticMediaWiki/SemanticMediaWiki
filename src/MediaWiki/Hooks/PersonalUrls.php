@@ -53,7 +53,7 @@ class PersonalUrls implements HookListener {
 		return true;
 	}
 
-	private function getJobQueueWatchlist( $watchlist, array $personalUrls ) {
+	private function getJobQueueWatchlist( $watchlist, array $personalUrls ): array {
 		$queue = [];
 
 		foreach ( $watchlist as $job ) {

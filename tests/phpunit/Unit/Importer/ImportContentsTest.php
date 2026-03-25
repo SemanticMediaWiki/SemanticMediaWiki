@@ -37,7 +37,7 @@ class ImportContentsTest extends TestCase {
 	public function testVersion() {
 		$instance = new ImportContents();
 
-		$instance->setVersion( '1' );
+		$instance->setVersion( 1 );
 
 		$this->assertSame(
 			1,
@@ -70,10 +70,10 @@ class ImportContentsTest extends TestCase {
 	public function testNamespace() {
 		$instance = new ImportContents();
 
-		$instance->setNamespace( 'Foo' );
+		$instance->setNamespace( NS_MAIN );
 
 		$this->assertSame(
-			'Foo',
+			NS_MAIN,
 			$instance->getNamespace()
 		);
 	}

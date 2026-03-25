@@ -128,7 +128,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return array
 	 */
-	public function getPrefixes() {
+	public function getPrefixes(): array {
 		return $this->prefixes;
 	}
 

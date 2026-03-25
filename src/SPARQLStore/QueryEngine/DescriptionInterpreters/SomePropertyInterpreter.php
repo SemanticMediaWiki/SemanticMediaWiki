@@ -225,13 +225,13 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @see http://www.w3.org/TR/sparql11-query/#propertypath-arbitrary-length
 	 */
-	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, Property $property, &$propertyName, $depth ) {
+	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, Property $property, &$propertyName, $depth ): void {
 		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() || ( $depth !== null && $depth < 1 ) ) {
-			return null;
+			return;
 		}
 
 		if ( $this->conditionBuilder->getHierarchyLookup() == null || !$this->conditionBuilder->getHierarchyLookup()->hasSubproperty( $property ) ) {
-			return null;
+			return;
 		}
 
 		$subPropExpElement = $this->exporter->getSpecialPropertyResource( '_SUBP', SMW_NS_PROPERTY );

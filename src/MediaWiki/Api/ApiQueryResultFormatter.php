@@ -67,7 +67,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @return int
 	 */
-	public function getContinueOffset() {
+	public function getContinueOffset(): int|false {
 		return $this->continueOffset;
 	}
 

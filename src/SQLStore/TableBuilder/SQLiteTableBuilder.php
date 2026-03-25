@@ -190,9 +190,10 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, string $fieldType, string $default ) {
+	private function doCreateField( $tableName, $fieldName, string $fieldType, string $default ): void {
 		if ( strpos( $tableName, 'ft_search' ) !== false ) {
-			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
+			$this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
+			return;
 		}
 
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
@@ -331,13 +332,15 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doCreateIndex( $tableName, $indexType, int|string $indexName, $columns ) {
+	private function doCreateIndex( $tableName, $indexType, int|string $indexName, $columns ): void {
 		if ( $indexType === 'FULLTEXT' ) {
-			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
+			$this->reportMessage( "   ... skipping the fulltext index creation ..." );
+			return;
 		}
 
 		if ( strpos( $tableName, 'ft_search' ) !== false ) {
-			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
+			$this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
+			return;
 		}
 
 		if ( $indexType === 'PRIMARY KEY' ) {

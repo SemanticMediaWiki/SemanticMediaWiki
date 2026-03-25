@@ -113,7 +113,7 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @since  3.0
 	 */
-	public function run() {
+	public function run(): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$store = $applicationFactory->getStore( ElasticStore::class );

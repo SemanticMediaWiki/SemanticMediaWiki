@@ -67,7 +67,7 @@ class UnitConverter {
 	 *
 	 * @return array
 	 */
-	public function getUnitIds() {
+	public function getUnitIds(): array {
 		return $this->unitIds;
 	}
 
@@ -76,7 +76,7 @@ class UnitConverter {
 	 *
 	 * @return array
 	 */
-	public function getUnitFactors() {
+	public function getUnitFactors(): array {
 		return $this->unitFactors;
 	}
 
@@ -85,7 +85,7 @@ class UnitConverter {
 	 *
 	 * @return string
 	 */
-	public function getMainUnit() {
+	public function getMainUnit(): string|false {
 		return $this->mainUnit;
 	}
 
@@ -94,7 +94,7 @@ class UnitConverter {
 	 *
 	 * @return array
 	 */
-	public function getPrefixalUnitPreference() {
+	public function getPrefixalUnitPreference(): array {
 		return $this->prefixalUnitPreference;
 	}
 

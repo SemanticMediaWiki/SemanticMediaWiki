@@ -213,7 +213,7 @@ class PrintRequest {
 		return $this->m_data;
 	}
 
-	public function getOutputFormat() {
+	public function getOutputFormat(): string|false {
 		return $this->m_outputformat;
 	}
 
@@ -223,7 +223,7 @@ class PrintRequest {
 	 *
 	 * @return string
 	 */
-	public function getTypeID() {
+	public function getTypeID(): string {
 		if ( $this->m_typeid !== false ) {
 			return $this->m_typeid;
 		}
@@ -247,7 +247,7 @@ class PrintRequest {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		if ( $this->m_hash !== false ) {
 			return $this->m_hash;
 		}
@@ -298,7 +298,7 @@ class PrintRequest {
 	 *
 	 * @return array Map of parameter names to values.
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->m_params;
 	}
 

@@ -124,7 +124,7 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}

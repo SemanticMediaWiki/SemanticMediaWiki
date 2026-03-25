@@ -14,9 +14,9 @@ class ImportContents {
 	const CONTENT_XML = 'text/xml';
 
 	/**
-	 * @var string
+	 * @var int
 	 */
-	private $version = '';
+	private $version = 0;
 
 	/**
 	 * @var string
@@ -74,7 +74,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): int {
 		return $this->version;
 	}
 
@@ -92,7 +92,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getDescription() {
+	public function getDescription(): string {
 		return $this->description;
 	}
 
@@ -128,7 +128,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		return $this->name;
 	}
 
@@ -164,7 +164,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getNamespace() {
+	public function getNamespace(): int {
 		return $this->namespace;
 	}
 
@@ -197,7 +197,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getContentsFile() {
+	public function getContentsFile(): string {
 		return $this->contentsFile;
 	}
 
@@ -215,7 +215,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getContents() {
+	public function getContents(): string {
 		return $this->contents;
 	}
 
@@ -233,7 +233,7 @@ class ImportContents {
 	 *
 	 * @return string[]
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

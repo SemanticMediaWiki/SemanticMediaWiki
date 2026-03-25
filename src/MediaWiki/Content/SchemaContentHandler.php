@@ -123,7 +123,7 @@ class SchemaContentHandler extends JsonContentHandler {
 		} catch ( SchemaTypeNotFoundException $e ) {
 			if ( !$content->isValid() && $content->getErrorMsg() !== '' ) {
 				$errors[] = [ 'smw-schema-error-json', $content->getErrorMsg() ];
-			} elseif ( $e->getType() === '' || $e->getType() === null ) {
+			} elseif ( $e->getType() === '' ) {
 				$errors[] = [ 'smw-schema-error-type-missing' ];
 			} else {
 				$errors[] = [ 'smw-schema-error-type-unknown', $e->getType() ];

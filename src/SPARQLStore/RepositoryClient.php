@@ -65,7 +65,7 @@ class RepositoryClient {
 	 *
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		return $this->name;
 	}
 
@@ -92,7 +92,7 @@ class RepositoryClient {
 	 *
 	 * @return string
 	 */
-	public function getUpdateEndpoint() {
+	public function getUpdateEndpoint(): string {
 		return $this->updateEndpoint;
 	}
 
@@ -101,7 +101,7 @@ class RepositoryClient {
 	 *
 	 * @return string
 	 */
-	public function getDataEndpoint() {
+	public function getDataEndpoint(): string {
 		return $this->dataEndpoint;
 	}
 

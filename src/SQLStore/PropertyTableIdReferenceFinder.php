@@ -143,7 +143,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return DataItem|false
 	 */
-	public function findAtLeastOneActiveReferenceById( $id, $secondary_ref = true ) {
+	public function findAtLeastOneActiveReferenceById( $id, $secondary_ref = true ): DataItem|false {
 		$reference = false;
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {

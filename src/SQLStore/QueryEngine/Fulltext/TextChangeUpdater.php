@@ -81,7 +81,7 @@ class TextChangeUpdater {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pushUpdates( ChangeOp $changeOp ) {
+	public function pushUpdates( ChangeOp $changeOp ): void {
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
 		}
@@ -90,7 +90,8 @@ class TextChangeUpdater {
 
 		// Update within the same transaction as started by SMW::SQLStore::AfterDataUpdateComplete
 		if ( !$this->asDeferredUpdate || $this->isCommandLineMode || $this->isPrimary ) {
-			return $this->doUpdateFromChangeDiff( $changeOp->newChangeDiff() );
+			$this->doUpdateFromChangeDiff( $changeOp->newChangeDiff() );
+			return;
 		}
 
 		if ( !$this->canPostUpdate( $changeOp ) ) {
@@ -128,7 +129,7 @@ class TextChangeUpdater {
 	 *
 	 * @param array|bool $parameters
 	 */
-	public function pushUpdatesFromJobParameters( $parameters ) {
+	public function pushUpdatesFromJobParameters( $parameters ): void {
 		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === false ) {
 			return;
 		}
@@ -137,7 +138,8 @@ class TextChangeUpdater {
 		$changeDiff = ChangeDiff::fetch( $this->cache, $subject );
 
 		if ( $changeDiff !== false ) {
-			return $this->doUpdateFromChangeDiff( $changeDiff );
+			$this->doUpdateFromChangeDiff( $changeDiff );
+			return;
 		}
 
 		$this->logger->info(

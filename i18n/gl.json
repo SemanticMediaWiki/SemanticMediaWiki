@@ -985,7 +985,6 @@
 	"smw-schema-error-title": "{{PLURAL:$1|Erro|Erros}} de validación",
 	"smw-schema-error-schema": "O esquema de validación «'''$1'''» atopou as seguintes inconsistencias:",
 	"smw-schema-error-miscellaneous": "Erro diverso ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "O validador JSON «<b>$1</b>» non é accesible (nin está instalado) e é a razón pola que non se pode examinar o ficheiro «$2», o que impide que se garde ou modifique a páxina actual.",
 	"smw-schema-error-validation-file-inaccessible": "O ficheiro de validación «$1» é inaccesible.",
 	"smw-schema-error-type-missing": "O contido carece dun tipo para que sexa recoñecido e utilizable no [https://www.semantic-mediawiki.org/wiki/Help:Schema espazo de nomes de esquema].",
 	"smw-schema-error-type-unknown": "O tipo «$1» non está rexistrado e non se pode usar para contido no espazo de nomes «[https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema]».",

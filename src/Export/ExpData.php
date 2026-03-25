@@ -162,7 +162,7 @@ class ExpData implements Element {
 	 *
 	 * @return array of ExpResource
 	 */
-	public function getProperties() {
+	public function getProperties(): array {
 		return $this->m_edges;
 	}
 

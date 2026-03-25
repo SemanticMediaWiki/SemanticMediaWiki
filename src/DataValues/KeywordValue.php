@@ -177,7 +177,7 @@ class KeywordValue extends StringValue {
 		return $dataValue->getDataItem();
 	}
 
-	private function makeUri( $value, $outputformat, $linker = null ) {
+	private function makeUri( $value, $outputformat, $linker = null ): ?string {
 		if ( $this->uri !== null ) {
 			return $this->uri;
 		}

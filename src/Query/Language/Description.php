@@ -39,7 +39,7 @@ abstract class Description {
 	 *
 	 * @return PrintRequest[]
 	 */
-	public function getPrintRequests() {
+	public function getPrintRequests(): array {
 		return $this->m_printreqs;
 	}
 
@@ -84,7 +84,7 @@ abstract class Description {
 	 * @return string
 	 * @throws FingerprintNotFoundException
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
 		}
@@ -101,7 +101,7 @@ abstract class Description {
 	 *
 	 * @return string
 	 */
-	public function getMembership() {
+	public function getMembership(): string {
 		return $this->membership;
 	}
 

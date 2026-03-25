@@ -344,9 +344,10 @@ EOT;
 		}
 	}
 
-	private function doCreateIndex( $tableName, $indexType, $columns ) {
+	private function doCreateIndex( $tableName, $indexType, $columns ): void {
 		if ( $indexType === 'FULLTEXT' ) {
-			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
+			$this->reportMessage( "   ... skipping the fulltext index creation ..." );
+			return;
 		}
 
 		$tableName = $this->connection->tableName( $tableName, 'raw' );

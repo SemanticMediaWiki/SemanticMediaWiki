@@ -74,7 +74,7 @@ class StringResult extends QueryResult {
 	 *
 	 * @return bool
 	 */
-	public function hasFurtherResults() {
+	public function hasFurtherResults(): bool {
 		return $this->hasFurtherResults;
 	}
 

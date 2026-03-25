@@ -81,7 +81,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function doUpdateFrom( SemanticData $semanticData ) {
+	public function doUpdateFrom( SemanticData $semanticData ): void {
 		// Do nothing
 		if ( $this->editProtectionRight === false ) {
 			return;
@@ -101,15 +101,18 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		// No `Is edit protected` was found and the restriction doesn't contain
 		// a matchable `editProtectionRight`
 		if ( $isEditProtected === null && !isset( $restrictions[$this->editProtectionRight] ) ) {
-			return $this->log( __METHOD__ . ' no update required' );
+			$this->log( __METHOD__ . ' no update required' );
+			return;
 		}
 
 		if ( $isEditProtected && !isset( $restrictions[$this->editProtectionRight] ) && !$isAnnotationBySystem ) {
-			return $this->doUpdateRestrictions( $isEditProtected );
+			$this->doUpdateRestrictions( $isEditProtected );
+			return;
 		}
 
 		if ( (bool)$isEditProtected === PageInfoProvider::isProtected( $title, 'edit' ) ) {
-			return $this->log( __METHOD__ . ' Status already set, no update required' );
+			$this->log( __METHOD__ . ' Status already set, no update required' );
+			return;
 		}
 
 		$this->doUpdateRestrictions( $isEditProtected );

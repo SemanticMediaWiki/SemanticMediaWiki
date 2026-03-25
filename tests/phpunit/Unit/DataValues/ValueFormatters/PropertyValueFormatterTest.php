@@ -49,6 +49,10 @@ class PropertyValueFormatterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getPropertyDescriptionByLanguageCode' )
+			->willReturn( 'Some description' );
+
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
 		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
@@ -136,6 +140,7 @@ class PropertyValueFormatterTest extends TestCase {
 	public function testFormatWithCaptionOutputAndHighlighter() {
 		$propertyValue = new PropertyValue();
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, false );
+		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
 
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 		$propertyValue->setCaption( 'ABC[<>]' );
@@ -149,12 +154,12 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 
 		$this->assertStringContainsString(
-			'<span class="smwtext">ABC[<>]</span><span class="smwttcontent"></span>',
+			'<span class="smwtext">ABC[<>]</span><span class="smwttcontent">Some description</span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] )
 		);
 
 		$this->assertStringContainsString(
-			'<span class="smwtext">ABC[&lt;&gt;]</span><span class="smwttcontent"></span>',
+			'<span class="smwtext">ABC[&lt;&gt;]</span><span class="smwttcontent">Some description</span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::HTML_SHORT ] )
 		);
 	}

@@ -278,7 +278,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return array
 	 */
-	protected function feedItem( array $row ) {
+	protected function feedItem( array $row ): FeedItem|array {
 		$rowItems = [];
 		$subject = false;
 

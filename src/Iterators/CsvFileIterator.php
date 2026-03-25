@@ -66,8 +66,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[ReturnTypeWillChange]
-	public function count() {
+	public function count(): int {
 		if ( $this->count ) {
 			return $this->count;
 		}
@@ -85,7 +84,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * @return
 	 */
-	public function getHeader() {
+	public function getHeader(): array {
 		return $this->header;
 	}
 
@@ -128,8 +127,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[ReturnTypeWillChange]
-	public function key() {
+	public function key(): int {
 		return $this->key;
 	}
 

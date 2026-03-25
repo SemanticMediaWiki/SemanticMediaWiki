@@ -25,7 +25,7 @@ interface DeclarationExaminer {
 	 *
 	 * @return array[]
 	 */
-	public function getMessages();
+	public function getMessages(): array;
 
 	/**
 	 * @since 3.1

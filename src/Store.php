@@ -491,7 +491,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return Options
 	 */
-	public function getOptions() {
+	public function getOptions(): Options {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}

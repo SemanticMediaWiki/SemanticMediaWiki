@@ -65,7 +65,7 @@ class OrderCondition {
 	 *
 	 * @return string[]
 	 */
-	public function getSortKeys() {
+	public function getSortKeys(): array {
 		return $this->sortKeys;
 	}
 

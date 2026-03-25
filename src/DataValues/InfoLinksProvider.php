@@ -111,7 +111,7 @@ class InfoLinksProvider {
 	 *
 	 * @since 2.4
 	 */
-	public function createInfoLinks() {
+	public function createInfoLinks(): array {
 		if ( $this->infoLinks !== [] ) {
 			return $this->infoLinks;
 		}

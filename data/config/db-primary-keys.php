@@ -1,6 +1,5 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Utils\CliMsgFormatter;
 
@@ -92,55 +91,57 @@ class ConfigPreloadPrimaryKeyTableMutator {
 /**
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md
  */
-MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', static function ( array $tables, MessageReporter $messageReporter ) {
-	$cliMsgFormatter = new CliMsgFormatter();
-	$configPreloadPrimaryKeyTableMutator = new ConfigPreloadPrimaryKeyTableMutator();
+$GLOBALS[ 'wgHooks' ][ 'SMW::SQLStore::Installer::BeforeCreateTablesComplete' ][] =
+	static function ( array $tables, MessageReporter $messageReporter ) {
+		$cliMsgFormatter = new CliMsgFormatter();
+		$configPreloadPrimaryKeyTableMutator =
+			new ConfigPreloadPrimaryKeyTableMutator();
 
-	$messageReporter->reportMessage(
-		$cliMsgFormatter->section( 'Primary key(s)', 3, '-', true )
-	);
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Primary key(s)', 3, '-', true )
+		);
 
-	$i = 0;
+		$i = 0;
 
-	$text = [
-		'The following updates adds primary key information for the tables',
-		'owned by Semantic MediaWiki.'
-	];
+		$text = [
+			'The following updates adds primary key information for the tables',
+			'owned by Semantic MediaWiki.'
+		];
 
-	$messageReporter->reportMessage(
-		"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
-	);
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
 
-	$messageReporter->reportMessage(
-		"\n" . $cliMsgFormatter->oneCol( "Checking table definitions ..." )
-	);
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->oneCol( "Checking table definitions ..." )
+		);
 
-	/**
-	 * @var \SMW\SQLStore\TableBuilder\Table[]
-	 */
-	foreach ( $tables as $table ) {
+		/**
+		 * @var \SMW\SQLStore\TableBuilder\Table[]
+		 */
+		foreach ( $tables as $table ) {
 
-		$tableName = $table->getName();
+			$tableName = $table->getName();
 
-		if ( !$configPreloadPrimaryKeyTableMutator->hasKey( $tableName ) ) {
-			continue;
+			if ( !$configPreloadPrimaryKeyTableMutator->hasKey( $tableName ) ) {
+				continue;
+			}
+
+			$i++;
+
+			$table->setPrimaryKey(
+				$configPreloadPrimaryKeyTableMutator->getKey( $tableName )
+			);
 		}
 
-		$i++;
-
-		$table->setPrimaryKey(
-			$configPreloadPrimaryKeyTableMutator->getKey( $tableName )
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->twoCols( "... run table definition update ...", "$i (tables)", 3 )
 		);
-	}
 
-	$messageReporter->reportMessage(
-		$cliMsgFormatter->twoCols( "... run table definition update ...", "$i (tables)", 3 )
-	);
-
-	$messageReporter->reportMessage(
-		$cliMsgFormatter->oneCol( "... done.", 3 )
-	);
-} );
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->oneCol( "... done.", 3 )
+		);
+	};
 
 return [
 

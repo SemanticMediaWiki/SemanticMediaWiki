@@ -323,7 +323,7 @@ class Timezone {
 	 *
 	 * @return array
 	 */
-	public static function getDateTimeZoneList() {
+	public static function getDateTimeZoneList(): array {
 		if ( self::$dateTimeZoneList !== [] ) {
 			return self::$dateTimeZoneList;
 		}

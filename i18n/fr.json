@@ -1033,7 +1033,6 @@
 	"smw-schema-error-title": "Erreur{{PLURAL:$1||s}} de validation",
 	"smw-schema-error-schema": "Le schéma de validation '''$1''' a trouvé les incohérences suivantes :",
 	"smw-schema-error-miscellaneous": "Erreur diverse ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "Le validateur JSON « <b>$1</b> » n’est pas accessible (ou installé) et le fichier « $2 » n’a donc pas pu être examiné, ce qui empêche l’enregistrement ou la modification de la page actuelle.",
 	"smw-schema-error-validation-file-inaccessible": "Le fichier de validation « $1 » n’est pas accessible.",
 	"smw-schema-error-violation": "[« $1 », « $2 »]",
 	"smw-schema-error-type-missing": "Il manque un type au contenu pour qu’il soit reconnu et utilisable dans l’[https://www.semantic-mediawiki.org/wiki/Help:Schema espace de noms de schéma].",

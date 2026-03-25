@@ -135,7 +135,7 @@ class ExportController {
 	 * @param int $recursiondepth specifying the depth of recursion
 	 * @return void|null
 	 */
-	protected function serializePage( WikiPage $diWikiPage, $recursiondepth = 1 ) {
+	protected function serializePage( WikiPage $diWikiPage, $recursiondepth = 1 ): void {
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
 			return; // do not export twice
 		}
@@ -146,7 +146,7 @@ class ExportController {
 		// Don't try to serialize an empty page that cause an incomplete exp-data set
 		// (e.g. _REDI as no property page hence DBKey is empty)
 		if ( $semData === null || $diWikiPage->getDBKey() === '' ) {
-			return null;
+			return;
 		}
 
 		$expData = Exporter::getInstance()->makeExportData( $semData );

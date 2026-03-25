@@ -2,7 +2,7 @@
 
 namespace SMW\DataItems;
 
-use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\Json\JsonDeserializer;
 use SMW\DataValues\Time\CalendarModel;
 use SMW\DataValues\Time\JulianDay;
 use SMW\Exception\DataItemException;
@@ -412,7 +412,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return double
 	 */
-	public function getJD() {
+	public function getJD(): float {
 		if ( $this->julianDay !== null ) {
 			return $this->julianDay;
 		}
@@ -611,17 +611,17 @@ class Time extends DataItem implements CalendarModel {
 	}
 
 	/**
-	 * Implements JsonUnserializable.
+	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param JsonDeserializer $deserializer
 	 * @param array $json JSON to be unserialized
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
-		$obj = parent::newFromJsonArray( $unserializer, $json );
+	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
+		$obj = parent::newFromJsonArray( $deserializer, $json );
 		$obj->julianDay = $json['julianDay'];
 		return $obj;
 	}
