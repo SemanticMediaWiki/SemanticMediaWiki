@@ -975,7 +975,6 @@
 	"smw-schema-error-title": "Валидацин {{PLURAL:$1|1=гӀалат|гӀалаташ}}",
 	"smw-schema-error-schema": "'''$1''' валидацин схемин карийна хӀара нийса цахиларш:",
 	"smw-schema-error-miscellaneous": "Тайп-тайпана гӀалаташ ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "JSON валидатор \"<b>$1</b>\" тӀекхочуш йац (йа дӀахӀоттийна йац) и бахьана долуш файл \"$2\" талла а, карарчу хенахь йолу агӀо Ӏалашйан а, хийца а новкъарло йо.",
 	"smw-schema-error-validation-file-inaccessible": "Талламан файл «$1» тӀекхочуш йац.",
 	"smw-schema-error-type-missing": "Чулацаман тайпа дац иза довза а, лело а оьшуш долу [https://www.semantic-mediawiki.org/wiki/Help:Schema схемийн цӀераш] чохь.",
 	"smw-schema-error-type-unknown": "«$1» тайпа дӀайаздина дац, цун дела цӀерийн меттигехь чулацамна лело йиш йац [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema].",

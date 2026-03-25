@@ -994,7 +994,6 @@
 	"smw-schema-error-title": "{{PLURAL:$1|1=Помилка|Помилки}} валідації",
 	"smw-schema-error-schema": "Схема валідації '''$1''' виявила такі невідповідності:",
 	"smw-schema-error-miscellaneous": "Різні помилки ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "Валідатор JSON «<b>$1</b>» не доступний (чи не встановлений), і є причиною того, що файл «$2» не вдається дослідити, що, в свою чергу, запобігає збереженню чи зміні поточної сторінки.",
 	"smw-schema-error-validation-file-inaccessible": "Файл валідації «$1» недоступний.",
 	"smw-schema-error-violation": "[«$1», «$2»]",
 	"smw-schema-error-type-missing": "Контентові бракує зазначення типу, щоб його можна було розпізнати й використовувати в [https://www.semantic-mediawiki.org/wiki/Help:Schema просторі назв для схем].",

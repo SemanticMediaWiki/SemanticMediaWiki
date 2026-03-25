@@ -997,7 +997,6 @@
 	"smw-schema-error-title": "{{PLURAL:$1|Napaka|Napake}} validacije",
 	"smw-schema-error-schema": "Shema preverjanja '''$1''' je odkrila naslednje nedoslednosti:",
 	"smw-schema-error-miscellaneous": "Druga napaka ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "Validator JSON »<b>$1</b>« ni dostopen (ali nameščen) in je razlog, zakaj datoteke »$2« ni mogoče pregledati, kar preprečuje shranjevanje ali spreminjanje trenutne strani.",
 	"smw-schema-error-validation-file-inaccessible": "Datoteka za preverjanje veljavnosti »$1« je nedostopna.",
 	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-type-missing": "Vsebini manjka tip, da bi bila prepoznana in uporabna v [https://www.semantic-mediawiki.org/wiki/Help:Schema imenskem prostoru shem].",

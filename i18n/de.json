@@ -1016,7 +1016,6 @@
 	"smw-schema-error-title": "{{PLURAL:$1|Validierungsfehler}}",
 	"smw-schema-error-schema": "Die Spezifikation '''$1''' und dessen Validierung für das aktuelle Schema hat die folgenden Widersprüche ergeben:",
 	"smw-schema-error-miscellaneous": "Sonstiger Fehler ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "Der JSON-Validator „<b>$1</b>“ ist nicht aufrufbar oder wurde nicht installiert. Dies ist der Grund, warum die Datei „$2“ nicht verarbeitet werden kann. Dies verhindert, daß die aktuelle Seite verändert oder gespeichert werden kann.",
 	"smw-schema-error-validation-file-inaccessible": "Auf die Validierungsdatei „$1“ kann nicht zugegriffen werden.",
 	"smw-schema-error-violation": "[„$1“, „$2“]",
 	"smw-schema-error-type-missing": "Dem Inhalt fehlt die Angabe eines Typs, um im [https://www.semantic-mediawiki.org/wiki/Help:Schema Namensraum für Schemata] erkannt und verwendet werden zu können.",

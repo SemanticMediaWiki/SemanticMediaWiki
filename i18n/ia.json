@@ -976,7 +976,6 @@
 	"smw-schema-error-title": "Error{{PLURAL:$1||es}} de validation",
 	"smw-schema-error-schema": "Le schema de validation '''$1''' ha trovate le sequente inconsistentias:",
 	"smw-schema-error-miscellaneous": "Error miscellanee ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "Le validator de JSON \"<b>$1</b>\" non es accessibile (o installate); pro isto, le file \"$2\" non pote esser examinate, impediente le salveguarda o alteration del pagina actual.",
 	"smw-schema-error-validation-file-inaccessible": "Le file de validation \"$1\" es inaccessibile.",
 	"smw-schema-error-type-missing": "Al contento manca un typo necessari pro render lo recognoscibile e usabile in le [https://www.semantic-mediawiki.org/wiki/Help:Schema spatio de nomines de schema].",
 	"smw-schema-error-type-unknown": "Le typo \"$1\" non es registrate e non pote esser usate pro contento in le spatio de nomines [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema].",
