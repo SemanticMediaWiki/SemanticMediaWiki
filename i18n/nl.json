@@ -1005,7 +1005,6 @@
 	"smw-schema-error-title": "Valideerfout{{PLURAL:$1||en}}",
 	"smw-schema-error-schema": "Aan de hand van het validatieschema '''$1''' zijn de volgende tegenstrijdigheden aangetroffen:",
 	"smw-schema-error-miscellaneous": "Overige fout ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "De JSON-validator <b>“$1”</b> is niet toegankelijk (of niet geïnstalleerd). Daardoor kan het bestand “$2” niet worden beoordeeld, wat het onmogelijk maakt de huidige pagina op te slaan of te wijzigen.",
 	"smw-schema-error-validation-file-inaccessible": "Het validatiebestand “$1” is niet toegankelijk.",
 	"smw-schema-error-type-missing": "Er ontbreekt een typeaanduiding voor de inhoud, zodat deze kan niet worden herkend en gebruikt in de [https://www.semantic-mediawiki.org/wiki/Help:Schema schemanaamruimte].",
 	"smw-schema-error-type-unknown": "Het type “$1” is niet geregistreerd en kan niet worden gebruikt voor inhoud in de naamruimte [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema].",

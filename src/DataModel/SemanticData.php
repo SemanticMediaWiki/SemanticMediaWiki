@@ -2,8 +2,8 @@
 
 namespace SMW\DataModel;
 
-use MediaWiki\Json\JsonUnserializable;
-use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\Json\JsonDeserializable;
+use MediaWiki\Json\JsonDeserializer;
 use SMW\DataItems\Container;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
@@ -35,7 +35,7 @@ use SMW\ProcessingErrorMsgHandler;
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class SemanticData implements JsonUnserializable {
+class SemanticData implements JsonDeserializable {
 
 	/**
 	 * Returns the last modified timestamp the data were stored to the Store or
@@ -899,52 +899,32 @@ class SemanticData implements JsonUnserializable {
 		return $json;
 	}
 
-	public static function maybeUnserialize( $unserializer, $value ) {
-		# Compatibility thunk for MW versions with T312589 fixed/unfixed
-		return is_object( $value ) ? $value :
-			$unserializer->unserialize( $value );
-	}
-
 	/**
-	 * @return mixed[]
-	 */
-	public static function maybeUnserializeArray( $unserializer, array $value ): array {
-		# Compatibility thunk for MW versions with T312589 fixed/unfixed
-		$result = [];
-		foreach ( $value as $k => $v ) {
-			$result[$k] = self::maybeUnserialize( $unserializer, $v );
-		}
-		return $result;
-	}
-
-	/**
-	 * Implements JsonUnserializable.
+	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonUnserializer $unserializer Unserializer
-	 * @param array $json JSON to be unserialized
+	 * @param JsonDeserializer $deserializer
+	 * @param array $json JSON to be deserialized
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ): self {
-		# T312589: In the future JsonCodec will take care of unserializing
-		# the values in the $json array itself.
+	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ): self {
 		$obj = new self(
-			self::maybeUnserialize( $unserializer, $json['mSubject'] ),
+			$deserializer->deserialize( $json['mSubject'] ),
 			$json['mNoDuplicates']
 		);
 		$obj->stubObject = $json['stubObject'];
-		$obj->mPropVals = array_map( static function ( array $x ) use( $unserializer ): array {
-			return self::maybeUnserializeArray( $unserializer, $x );
+		$obj->mPropVals = array_map( static function ( array $x ) use( $deserializer ): array {
+			return $deserializer->deserializeArray( $x );
 		}, $json['mPropVals'] );
-		$obj->mProperties = self::maybeUnserializeArray( $unserializer, $json['mProperties'] );
+		$obj->mProperties = $deserializer->deserializeArray( $json['mProperties'] );
 		$obj->mHasVisibleProps = $json['mHasVisibleProps'];
 		$obj->mHasVisibleSpecs = $json['mHasVisibleSpecs'];
-		$obj->subSemanticData = $json['subSemanticData'] ? self::maybeUnserialize( $unserializer, $json['subSemanticData'] ) : null;
+		$obj->subSemanticData = $json['subSemanticData'] ? $deserializer->deserialize( $json['subSemanticData'] ) : null;
 		$obj->errors = $json['errors'];
 		$obj->hash = $json['hash'];
-		$obj->options = $json['options'] ? self::maybeUnserialize( $unserializer, $json['options'] ) : null;
+		$obj->options = $json['options'] ? $deserializer->deserialize( $json['options'] ) : null;
 		$obj->extensionData = $json['extensionData'];
 		$obj->sequenceMap = $json['sequenceMap'];
 		$obj->countMap = $json['countMap'];

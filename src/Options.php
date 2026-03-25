@@ -3,8 +3,8 @@
 namespace SMW;
 
 use InvalidArgumentException;
-use MediaWiki\Json\JsonUnserializable;
-use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\Json\JsonDeserializable;
+use MediaWiki\Json\JsonDeserializer;
 use SMW\Utils\DotArray;
 
 /**
@@ -13,7 +13,7 @@ use SMW\Utils\DotArray;
  *
  * @author mwjames
  */
-class Options implements JsonUnserializable {
+class Options implements JsonDeserializable {
 
 	protected array $options;
 
@@ -171,16 +171,16 @@ class Options implements JsonUnserializable {
 	}
 
 	/**
-	 * Implements JsonUnserializable.
+	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param JsonDeserializer $deserializer
 	 * @param array $json JSON to be unserialized
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ): self {
+	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ): self {
 		return new self( $json['options'] );
 	}
 

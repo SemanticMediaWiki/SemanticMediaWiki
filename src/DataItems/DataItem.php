@@ -3,9 +3,8 @@
 namespace SMW\DataItems;
 
 use InvalidArgumentException;
-use MediaWiki\Json\JsonUnserializable;
-use MediaWiki\Json\JsonUnserializer;
-use SMW\DataModel\SemanticData;
+use MediaWiki\Json\JsonDeserializable;
+use MediaWiki\Json\JsonDeserializer;
 use SMW\Options;
 
 /**
@@ -34,7 +33,7 @@ use SMW\Options;
  *
  * @ingroup DataItems
  */
-abstract class DataItem implements JsonUnserializable {
+abstract class DataItem implements JsonDeserializable {
 
 	/// Data item ID that can be used to indicate that no data item class is appropriate
 	const TYPE_NOTYPE = 0;
@@ -263,18 +262,18 @@ abstract class DataItem implements JsonUnserializable {
 	}
 
 	/**
-	 * Implements JsonUnserializable.
+	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonUnserializer $unserializer Unserializer
-	 * @param array $json JSON to be unserialized
+	 * @param JsonDeserializer $deserializer
+	 * @param array $json JSON to be deserialized
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
 		$obj = static::doUnserialize( $json['value'] );
-		$obj->options = $json['options'] ? SemanticData::maybeUnserialize( $unserializer, $json['options'] ) : null;
+		$obj->options = $json['options'] ? $deserializer->deserialize( $json['options'] ) : null;
 		return $obj;
 	}
 

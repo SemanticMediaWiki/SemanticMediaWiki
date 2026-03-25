@@ -2,8 +2,8 @@
 
 namespace SMW\DataModel;
 
-use MediaWiki\Json\JsonUnserializable;
-use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\Json\JsonDeserializable;
+use MediaWiki\Json\JsonDeserializer;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Exception\SubSemanticDataException;
@@ -21,7 +21,7 @@ use SMW\Exception\SubSemanticDataException;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class SubSemanticData implements JsonUnserializable {
+class SubSemanticData implements JsonDeserializable {
 
 	/**
 	 * Semantic data associated to subobjects of the subject of this
@@ -261,18 +261,18 @@ class SubSemanticData implements JsonUnserializable {
 	}
 
 	/**
-	 * Implements JsonUnserializable.
+	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonUnserializer $unserializer Unserializer
-	 * @param array $json JSON to be unserialized
+	 * @param JsonDeserializer $deserializer
+	 * @param array $json JSON to be deserialized
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ): self {
-		$obj = new self( SemanticData::maybeUnserialize( $unserializer, $json['subject'] ), $json['noDuplicates'] );
-		$obj->subSemanticData = SemanticData::maybeUnserializeArray( $unserializer, $json['subSemanticData'] );
+	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ): self {
+		$obj = new self( $deserializer->deserialize( $json['subject'] ), $json['noDuplicates'] );
+		$obj->subSemanticData = $deserializer->deserializeArray( $json['subSemanticData'] );
 		$obj->subContainerMaxDepth = $json['subContainerMaxDepth'];
 		return $obj;
 	}

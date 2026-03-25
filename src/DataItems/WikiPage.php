@@ -2,7 +2,7 @@
 
 namespace SMW\DataItems;
 
-use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\Json\JsonDeserializer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\Exception\DataItemDeserializationException;
@@ -339,17 +339,17 @@ class WikiPage extends DataItem {
 	}
 
 	/**
-	 * Implements JsonUnserializable.
+	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param JsonDeserializer $deserializer
 	 * @param array $json JSON to be unserialized
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
-		$obj = parent::newFromJsonArray( $unserializer, $json );
+	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
+		$obj = parent::newFromJsonArray( $deserializer, $json );
 		$obj->sortkey = $json['sortkey'];
 		$obj->contextReference = $json['contextReference'];
 		$obj->pageLanguage = $json['pageLanguage'];

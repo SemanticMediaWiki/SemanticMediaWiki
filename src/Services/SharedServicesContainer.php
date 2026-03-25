@@ -2,7 +2,6 @@
 
 namespace SMW\Services;
 
-use JsonSchema\Validator as SchemaValidator;
 use MediaWiki\Language\Language;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
@@ -68,7 +67,6 @@ use SMW\SetupFile;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
 use SMW\StoreFactory;
-use SMW\Utils\JsonSchemaValidator;
 use SMW\Utils\Stats;
 use SMW\Utils\TempFile;
 use Wikipage;
@@ -372,24 +370,6 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $postProcHandler;
-		} );
-
-		$containerBuilder->registerCallback( 'JsonSchemaValidator', static function ( $containerBuilder ): JsonSchemaValidator {
-			$containerBuilder->registerExpectedReturnType( 'JsonSchemaValidator', JsonSchemaValidator::class );
-			$containerBuilder->registerAlias( 'JsonSchemaValidator', JsonSchemaValidator::class );
-
-			$schemaValidator = null;
-
-			// justinrainbow/json-schema
-			if ( class_exists( SchemaValidator::class ) ) {
-				$schemaValidator = new SchemaValidator();
-			}
-
-			$jsonSchemaValidator = new JsonSchemaValidator(
-				$schemaValidator
-			);
-
-			return $jsonSchemaValidator;
 		} );
 
 		$containerBuilder->registerCallback( 'SchemaFactory', static function ( $containerBuilder ): SchemaFactory {
