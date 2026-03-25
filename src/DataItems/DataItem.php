@@ -5,7 +5,6 @@ namespace SMW\DataItems;
 use InvalidArgumentException;
 use MediaWiki\Json\JsonDeserializable;
 use MediaWiki\Json\JsonDeserializer;
-use SMW\DataModel\SemanticData;
 use SMW\Options;
 
 /**
