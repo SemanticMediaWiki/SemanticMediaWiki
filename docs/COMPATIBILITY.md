@@ -29,7 +29,7 @@ Increases of minimum requirements are indicated in bold.
         <td>TBD</td>
         <td>TBD</td>
         <td>8.1 - 8.4</td>
-        <td>1.43 - <strong>1.45</strong></td>
+        <td>1.43 - 1.45</td>
         <td></td>
     </tr>
     <tr>
