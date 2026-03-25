@@ -2,7 +2,7 @@
 
 namespace SMW\DataItems;
 
-use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\Json\JsonDeserializer;
 
 /**
  * This class implements error list data items. These data items are used to
@@ -85,17 +85,17 @@ class Error extends DataItem {
 	}
 
 	/**
-	 * Implements JsonUnserializable.
+	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param JsonDeserializer $deserializer
 	 * @param array $json JSON to be unserialized
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
-		$obj = parent::newFromJsonArray( $unserializer, $json );
+	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
+		$obj = parent::newFromJsonArray( $deserializer, $json );
 		$obj->userValue = $json['userValue'];
 		return $obj;
 	}
