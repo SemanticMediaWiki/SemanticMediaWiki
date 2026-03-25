@@ -484,7 +484,7 @@ abstract class DataValue {
 	 *
 	 * @return array|false
 	 */
-	public function getRestrictionError(): array|false {
+	public function getRestrictionError(): string|array|false {
 		return $this->restrictionError;
 	}
 

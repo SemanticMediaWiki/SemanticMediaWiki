@@ -325,7 +325,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertySubjects( Property $property, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null ): array {
+	public function getPropertySubjects( Property $property, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		// * @todo This method cannot retrieve subjects for sortkeys, i.e., for
 		// * property _SKEY. Only empty arrays will be returned there.
 
