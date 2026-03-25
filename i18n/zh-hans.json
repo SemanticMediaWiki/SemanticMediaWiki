@@ -1040,7 +1040,6 @@
 	"smw-schema-error-title": "验证{{PLURAL:$1|错误}}",
 	"smw-schema-error-schema": "验证模式'''$1'''找到以下不一致：",
 	"smw-schema-error-miscellaneous": "其他错误（$1）",
-	"smw-schema-error-validation-json-validator-inaccessible": "JSON验证器“<b>$1</b>”无法访问（或未安装），因此无法检查“$2”文件，这会阻止当前页面被保存或更改。",
 	"smw-schema-error-validation-file-inaccessible": "无法访问验证文件“$1”。",
 	"smw-schema-error-violation": "[“$1”，“$2”]",
 	"smw-schema-error-type-missing": "内容缺少在[https://www.semantic-mediawiki.org/wiki/Help:Schema 模式命名空间]内识别和使用它所需的类型。",

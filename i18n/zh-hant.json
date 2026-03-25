@@ -1018,7 +1018,6 @@
 	"smw-schema-error-title": "驗證{{PLURAL:$1|錯誤}}",
 	"smw-schema-error-schema": "驗證架構'''$1'''發現以下不一致：",
 	"smw-schema-error-miscellaneous": "雜項錯誤（$1）",
-	"smw-schema-error-validation-json-validator-inaccessible": "無法存取（或安裝）JSON 驗證器「<b>$1</b>」，此為無法審查檔案「$2」的原因，因為會阻止保存或變動目前的頁面。",
 	"smw-schema-error-validation-file-inaccessible": "驗證檔案「$1」無法存取。",
 	"smw-schema-error-violation": "[\"$1\"，\"$2\"]",
 	"smw-schema-error-type-missing": "內容缺少可用於識別且用在[https://www.semantic-mediawiki.org/wiki/Help:Schema 架構命名空間]的類型",

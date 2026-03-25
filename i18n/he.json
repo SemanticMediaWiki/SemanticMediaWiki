@@ -991,7 +991,6 @@
 	"smw-schema-error-title": "{{PLURAL:$1|שגיאת|שגיאות}} בדיקת תקינות",
 	"smw-schema-error-schema": "סכֵמת בדיקת התקינות '''$1''' מצאה את המקרים הבאים של חוסר עקביות:",
 	"smw-schema-error-miscellaneous": "שגיאה אחרת ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "בודק תקינות ה־JSON \"<b dir=\"ltr\">$1</b>\" אינו נגיש (או אינו מותקן) וזאת הסיבה לכך שלא ניתן לבחון את הקובץ \"$2\", וזה מונע את השמירה או את השינוי של הדף הנוכחי.",
 	"smw-schema-error-validation-file-inaccessible": "קובץ בדיקת התקינות \"$1\" אינו נגיש.",
 	"smw-schema-error-type-missing": "בתוכן חסר סוג שהיה מאפשר לזהות אותו ולהשתמש ב[https://www.semantic-mediawiki.org/wiki/Help:Schema מרחב שם של סכֵמה].",
 	"smw-schema-error-type-unknown": "הסוג \"$1\" אינו רשום ולא ניתן להשתמש בו עבור תוכן במרחב השם [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema].",
