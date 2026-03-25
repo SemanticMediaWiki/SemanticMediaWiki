@@ -6,6 +6,7 @@ use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
 use SMW\ParserData;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
+use SMW\Query\Query;
 
 /**
  * @covers \SMW\ParserFunctions\ExpensiveFuncExecutionWatcher
@@ -44,7 +45,7 @@ class ExpensiveFuncExecutionWatcherTest extends TestCase {
 			->method( 'getExtensionData' )
 			->willReturn( 42 );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -82,7 +83,7 @@ class ExpensiveFuncExecutionWatcherTest extends TestCase {
 				ExpensiveFuncExecutionWatcher::EXPENSIVE_COUNTER,
 				43 );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,7 +120,7 @@ class ExpensiveFuncExecutionWatcherTest extends TestCase {
 				ExpensiveFuncExecutionWatcher::EXPENSIVE_COUNTER,
 				1 );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

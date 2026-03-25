@@ -205,7 +205,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	 * @return Query
 	 */
 	public function Query() {
-		$query = $this->getMockBuilder( 'SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -494,7 +494,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	 * @return Error
 	 */
 	public function DIError() {
-		$errors = $this->getMockBuilder( 'SMWDIError' )
+		$errors = $this->getMockBuilder( Error::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -521,7 +521,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 
 		$methods = array_unique( array_merge( $requiredMethods, $this->builder->getInvokedMethods() ) );
 
-		$dataItem = $this->getMockBuilder( 'SMWDataItem' )
+		$dataItem = $this->getMockBuilder( DataItem::class )
 			->disableOriginalConstructor()
 			->setMethods( $methods )
 			->getMock();

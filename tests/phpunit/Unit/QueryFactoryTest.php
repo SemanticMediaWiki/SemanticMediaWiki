@@ -8,6 +8,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Parser;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\ProfileAnnotatorFactory;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryFactory;
 use SMW\RequestOptions;
@@ -49,7 +50,7 @@ class QueryFactoryTest extends TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMWQuery',
+			Query::class,
 			$instance->newQuery( $description )
 		);
 	}
@@ -108,7 +109,7 @@ class QueryFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

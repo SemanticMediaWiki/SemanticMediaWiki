@@ -3,6 +3,8 @@
 namespace SMW\Tests\Unit\Exporter;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ExpDataFactory;
 
@@ -22,7 +24,7 @@ class ExpDataFactoryTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->exporter = $this->getMockBuilder( '\SMWExporter' )
+		$this->exporter = $this->getMockBuilder( Exporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -52,7 +54,7 @@ class ExpDataFactoryTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWExpData',
+			ExpData::class,
 			$instance->newSiteExpData()
 		);
 	}
@@ -75,7 +77,7 @@ class ExpDataFactoryTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWExpData',
+			ExpData::class,
 			$instance->newDefinedExpData()
 		);
 	}
@@ -94,7 +96,7 @@ class ExpDataFactoryTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWExpData',
+			ExpData::class,
 			$instance->newOntologyExpData( '' )
 		);
 	}

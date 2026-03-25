@@ -12,7 +12,7 @@ use SMW\DataItems\DataItem;
  * objects of class ExpElement or any of its subclasses represent a blank
  * node if their name is empty or of the form "_id" where "id" is any
  * identifier string. IDs are local to the current context, such as a list of
- * triples or an SMWExpData container.
+ * triples or an ExpData container.
  *
  * @license GPL-2.0-or-later
  * @since 2.2

@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\Services;
 use Onoi\CallbackContainer\ContainerBuilder;
 use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\Number\UnitConverter;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Property\RestrictionExaminer;
@@ -47,7 +48,7 @@ class DataValueServiceFactoryTest extends TestCase {
 	}
 
 	public function testNewDataValueByTypeOrClass() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -75,7 +76,7 @@ class DataValueServiceFactoryTest extends TestCase {
 	}
 
 	public function testGetValueParser() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -95,7 +96,7 @@ class DataValueServiceFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -120,7 +121,7 @@ class DataValueServiceFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

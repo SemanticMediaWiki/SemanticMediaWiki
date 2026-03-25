@@ -1,7 +1,7 @@
 ## Setup a "Text" type property
 
 ```php
-$property = new DIProperty( 'Foo' );
+$property = new \SMW\DataItems\Property( 'Foo' );
 $property->setPropertyTypeId( '_txt' );
 
 // Using a dedicated property to created a DV
@@ -11,7 +11,7 @@ $dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 );
 
 $this->assertInstanceof(
-	'\SMWStringValue',
+	\SMW\DataValues\StringValue::class,
 	$dataValue
 );
 
@@ -31,18 +31,18 @@ $store = $this->getMockBuilder( '\SMW\Store' )
 $store->expects( $this->at( 0 ) )
 	->method( 'getPropertyValues' )
 	->will( $this->returnValue( array(
-		new DIWikiPage( 'SomePropertyOfTypeBlob', SMW_NS_PROPERTY ) ) ) );
+		new \SMW\DataItems\WikiPage( 'SomePropertyOfTypeBlob', SMW_NS_PROPERTY ) ) ) );
 
 $store->expects( $this->at( 1 ) )
 	->method( 'getPropertyValues' )
 	->with(
-		$this->equalTo( new DIWikiPage( 'SomePropertyOfTypeBlob', SMW_NS_PROPERTY ) ),
+		$this->equalTo( new \SMW\DataItems\WikiPage( 'SomePropertyOfTypeBlob', SMW_NS_PROPERTY ) ),
 		$this->anything(),
 		$this->anything() )
 	->will( $this->returnValue( array(
-		\SMWDIUri::doUnserialize( 'http://semantic-mediawiki.org/swivt/1.0#_txt' ) ) ) );
+		\SMW\DataItems\Uri::doUnserialize( 'http://semantic-mediawiki.org/swivt/1.0#_txt' ) ) ) );
 
-// Inject the store as a mock object due to DIProperty::findPropertyTypeID finding the
+// Inject the store as a mock object due to Property::findPropertyTypeID finding the
 // type dynamically when called without explicit declaration
 ApplicationFactory::getInstance()->registerObject( 'Store', $store );
 

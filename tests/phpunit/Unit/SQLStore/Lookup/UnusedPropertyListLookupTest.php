@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
@@ -204,7 +205,7 @@ class UnusedPropertyListLookupTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWDIError',
+			Error::class,
 			$result[0]
 		);
 	}

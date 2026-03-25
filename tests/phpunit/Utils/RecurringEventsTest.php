@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataValues\TimeValue;
 use SMW\ParserParameterProcessor;
 use SMW\Utils\RecurringEvents;
 
@@ -138,8 +139,7 @@ class RecurringEventsTest extends TestCase {
 		$instance = new RecurringEvents();
 		$instance->parse( [] );
 
-		// SMWDIWikiPage stub object
-		$dataValue = $this->getMockBuilder( 'SMWTimeValue' )
+		$dataValue = $this->getMockBuilder( TimeValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -148,7 +148,7 @@ class RecurringEventsTest extends TestCase {
 			->willReturn( null );
 
 		$this->assertNull(
-						$instance->getJulianDay( $dataValue )
+			$instance->getJulianDay( $dataValue )
 		);
 	}
 

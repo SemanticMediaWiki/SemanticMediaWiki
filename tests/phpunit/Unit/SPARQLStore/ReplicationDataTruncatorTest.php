@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\SPARQLStore;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\SPARQLStore\ReplicationDataTruncator;
 
 /**
@@ -20,7 +21,7 @@ class ReplicationDataTruncatorTest extends TestCase {
 	private $semanticData;
 
 	public function setUp(): void {
-		$this->semanticData = $this->getMockBuilder( '\SMW\semanticData' )
+		$this->semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

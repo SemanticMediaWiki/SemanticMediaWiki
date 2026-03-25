@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\Exporter;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Concept;
 use SMW\DataItems\WikiPage;
+use SMW\Export\ExpData;
 use SMW\Exporter\ConceptMapper;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Query\DescriptionFactory;
@@ -66,7 +67,7 @@ class ConceptMapperTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWExpData',
+			ExpData::class,
 			$result
 		);
 

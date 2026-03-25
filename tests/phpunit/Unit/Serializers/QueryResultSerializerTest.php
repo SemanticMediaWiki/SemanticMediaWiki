@@ -10,9 +10,11 @@ use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\DataValues\NumberValue;
 use SMW\Formatters\Infolink;
 use SMW\Property\SpecificationLookup;
 use SMW\Query\PrintRequestFactory;
+use SMW\Query\Query;
 use SMW\Serializers\QueryResultSerializer;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
@@ -164,7 +166,7 @@ class QueryResultSerializerTest extends TestCase {
 	}
 
 	public function testQueryResultSerializerOnMockOnWikiPageNonTitle() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -217,7 +219,7 @@ class QueryResultSerializerTest extends TestCase {
 	 * @return QueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -243,7 +245,7 @@ class QueryResultSerializerTest extends TestCase {
 			] );
 
 			$dataValue = $this->newMockBuilder()->newObject( 'DataValue', [
-				'DataValueType'    => 'SMWNumberValue',
+				'DataValueType'    => NumberValue::class,
 				'getTypeID'        => '_num',
 				'getShortWikiText' => $value['dataValue'],
 				'getDataItem'      => $dataItem

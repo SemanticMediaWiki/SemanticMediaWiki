@@ -10,7 +10,7 @@ use SMW\DataItems\DataItem;
  * value could be created. It is always invalid and never gets stored or
  * exported, but it can help to transport an error message.
  *
- * @note DataValue will return a data item of type SMWDIError for invalid
+ * @note DataValue will return a data item of type \SMW\DataItems\Error for invalid
  * data values. Hence this is the DI type of this DV, even if not mentioned in
  * this file.
  *

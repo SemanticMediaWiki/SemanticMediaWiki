@@ -77,7 +77,7 @@ class QueryResultLookup {
 	 *
 	 * @param QueryOptions $pageRequestOptions
 	 *
-	 * @return array of array(SMWWikiPageValue, SMWDataValue) with the
+	 * @return array of array(WikiPageValue, DataValue) with the
 	 * first being the entity, and the second the value
 	 */
 	public function doQuery( PageRequestOptions $pageRequestOptions ): array {
@@ -115,7 +115,7 @@ class QueryResultLookup {
 	 * @param int $count How many entities have the exact same value on the property?
 	 * @param int $greater Should the values be bigger? Set false for smaller values.
 	 *
-	 * @return array of array of SMWWikiPageValue, SMWDataValue with the
+	 * @return array of array of WikiPageValue, DataValue with the
 	 * first being the entity, and the second the value
 	 */
 	public function doQueryForNearbyResults( PageRequestOptions $pageRequestOptions, $count, $greater = true ): array {

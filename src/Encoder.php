@@ -11,7 +11,7 @@ namespace SMW;
 class Encoder {
 
 	/**
-	 * @see SMWInfolink::encodeParameters
+	 * @see Infolink::encodeParameters
 	 *
 	 * Escape certain problematic values. Use SMW-escape
 	 * (like URLencode but - instead of % to prevent double encoding by later MW actions)
@@ -66,7 +66,7 @@ class Encoder {
 	}
 
 	/**
-	 * @see SMWInfolink::encodeParameters
+	 * @see Infolink::encodeParameters
 	 *
 	 * @since 2.2
 	 *
@@ -86,7 +86,7 @@ class Encoder {
 	 * @return string
 	 */
 	public static function decode( $string ): array|string {
-		// Apply decoding for SMW's own url encoding strategy (see SMWInfolink)
+		// Apply decoding for SMW's own url encoding strategy (see Infolink)
 		$string = str_replace( '%', '-', rawurldecode( str_replace( '-', '%', $string ) ) );
 
 		$string = str_replace( [ '-2D', '-3A' ], [ '-', ':' ], $string );

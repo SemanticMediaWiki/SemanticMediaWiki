@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\Elastic\Indexer\Replication;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Config;
@@ -73,7 +74,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 			'associated_revision' => 42
 		];
 
-		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
+		$dataItem = $this->getMockBuilder( DataItem::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

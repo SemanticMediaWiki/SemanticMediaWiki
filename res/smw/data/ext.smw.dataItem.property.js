@@ -60,7 +60,7 @@
 		/**
 		 * Returns type
 		 *
-		 * @see SMW\DIProperty::getDIType()
+		 * @see SMW\DataItems\Property::getDIType()
 		 *
 		 * @since  1.9
 		 *
@@ -73,7 +73,7 @@
 		/**
 		 * Returns a label
 		 *
-		 * @see SMW\DIProperty::getLabel()
+		 * @see SMW\DataItems\Property::getLabel()
 		 *
 		 * @since 1.9
 		 *
@@ -86,7 +86,7 @@
 		/**
 		 * Returns wikiPage representation
 		 *
-		 * @see SMW\DIProperty::getDiWikiPage()
+		 * @see SMW\DataItems\Property::getDiWikiPage()
 		 *
 		 * @since 1.9
 		 *

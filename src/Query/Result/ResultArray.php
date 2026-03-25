@@ -15,7 +15,7 @@ use SMW\Store;
 
 /**
  * Container for the contents of a single result field of a query result,
- * i.e. basically an array of SMWDataItems with some additional parameters.
+ * i.e. basically an array of DataItems with some additional parameters.
  * The content of the array is fetched on demand only.
  *
  * @license GPL-2.0-or-later
@@ -127,7 +127,7 @@ class ResultArray {
 	}
 
 	/**
-	 * Returns an array of SMWDataItem objects that contain the results of
+	 * Returns an array of DataItem objects that contain the results of
 	 * the given print request for the given result object.
 	 *
 	 * @return DataItem[]|false
@@ -148,7 +148,7 @@ class ResultArray {
 	}
 
 	/**
-	 * Return the next SMWDataItem object or false if no further object exists.
+	 * Return the next DataItem object or false if no further object exists.
 	 *
 	 * @since 1.6
 	 *
@@ -168,8 +168,8 @@ class ResultArray {
 	}
 
 	/**
-	 * Set the internal pointer of the array of SMWDataItem objects to its first
-	 * element. Return the first SMWDataItem object or false if the array is
+	 * Set the internal pointer of the array of DataItem objects to its first
+	 * element. Return the first DataItem object or false if the array is
 	 * empty.
 	 *
 	 * @since 1.7.1
@@ -182,7 +182,7 @@ class ResultArray {
 	}
 
 	/**
-	 * Return an DataValue object for the next SMWDataItem object or
+	 * Return an DataValue object for the next DataItem object or
 	 * false if no further object exists.
 	 *
 	 * @since 1.6
@@ -250,7 +250,7 @@ class ResultArray {
 	}
 
 	/**
-	 * Return the main text representation of the next SMWDataItem object
+	 * Return the main text representation of the next DataItem object
 	 * in the specified format, or false if no further object exists.
 	 *
 	 * The parameter $linker controls linking of title values and should

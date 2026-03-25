@@ -5,7 +5,12 @@ namespace SMW\Tests\Unit;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Boolean;
 use SMW\DataItems\Concept;
+use SMW\DataItems\Container;
+use SMW\DataItems\Error;
+use SMW\DataItems\Number;
 use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataItems\Uri;
@@ -34,7 +39,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMWDIError',
+			Error::class,
 			$instance->newDIError( 'Foo' )
 		);
 	}
@@ -82,7 +87,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$instance->newDIContainer( $containerSemanticData )
 		);
 	}
@@ -104,7 +109,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMWDINumber',
+			Number::class,
 			$instance->newDINumber( 42 )
 		);
 	}
@@ -113,7 +118,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMWDIBlob',
+			Blob::class,
 			$instance->newDIBlob( 'Foo' )
 		);
 	}
@@ -122,7 +127,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMWDIBoolean',
+			Boolean::class,
 			$instance->newDIBoolean( true )
 		);
 	}

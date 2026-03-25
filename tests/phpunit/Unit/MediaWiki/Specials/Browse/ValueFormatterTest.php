@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\MediaWiki\Specials\Browse;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyValue;
 use SMW\MediaWiki\Specials\Browse\ValueFormatter;
 use SMW\Store;
@@ -43,7 +44,7 @@ class ValueFormatterTest extends TestCase {
 	public function testGetFormattedSubject() {
 		$dataItem = WikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getDataItem' ] )
 			->getMockForAbstractClass();
@@ -63,7 +64,7 @@ class ValueFormatterTest extends TestCase {
 	}
 
 	public function testGetFormattedValue() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

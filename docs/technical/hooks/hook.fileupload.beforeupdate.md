@@ -6,7 +6,7 @@
 
 ```php
 use MediaWiki\MediaWikiServices;
-use SMW\SemanticData;
+use SMW\DataModel\SemanticData;
 
 MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::FileUpload::BeforeUpdate', function( $filePage, SemanticData $semanticData  ) {
 

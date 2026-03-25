@@ -84,7 +84,7 @@ class InfoLinksProvider {
 	}
 
 	/**
-	 * Adds a single SMWInfolink object to the infoLinks array.
+	 * Adds a single Infolink object to the infoLinks array.
 	 *
 	 * @since 2.4
 	 *

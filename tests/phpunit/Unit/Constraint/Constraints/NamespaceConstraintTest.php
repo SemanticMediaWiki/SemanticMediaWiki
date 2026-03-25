@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\Constraint\Constraints;
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\DataItemFactory;
+use SMW\DataValues\DataValue;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -61,7 +62,7 @@ class NamespaceConstraintTest extends TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-allowed-namespace-no-match';
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
 			->getMockForAbstractClass();

@@ -508,7 +508,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
-	 * Gets a SMWInfolink object that allows linking to a display of the query result.
+	 * Gets an Infolink object that allows linking to a display of the query result.
 	 *
 	 * @since 1.8
 	 *
@@ -540,7 +540,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
-	 * Gets a SMWInfolink object that allows linking to further results for the query.
+	 * Gets an Infolink object that allows linking to further results for the query.
 	 *
 	 * @since 1.8
 	 *

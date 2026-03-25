@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\Constraint\ConstraintError;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\DataItemFactory;
+use SMW\DataValues\DataValue;
 use SMW\Property\SpecificationLookup;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\Store;
@@ -75,7 +76,7 @@ class UniqueValueConstraintTest extends TestCase {
 	}
 
 	public function testCanNotValidateOnNull() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
@@ -99,7 +100,7 @@ class UniqueValueConstraintTest extends TestCase {
 			->method( 'checkConstraint' )
 			->willReturn( [] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
@@ -143,7 +144,7 @@ class UniqueValueConstraintTest extends TestCase {
 			->method( 'checkConstraint' )
 			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage', 'addError' ] )
 			->getMockForAbstractClass();

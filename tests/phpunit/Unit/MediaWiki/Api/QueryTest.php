@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\MediaWiki\Api;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\MediaWiki\Api\Query;
+use SMW\Query\Query as SMWQuery;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\MwApiFactory;
@@ -57,7 +58,7 @@ class QueryTest extends TestCase {
 		$query = $getQuery->invoke( $instance, '[[Modification date::+]]', [], [] );
 
 		$this->assertInstanceOf(
-			'\SMWQuery',
+			SMWQuery::class,
 			$query
 		);
 

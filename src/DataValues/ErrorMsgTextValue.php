@@ -39,7 +39,7 @@ class ErrorMsgTextValue extends DataValue {
 	/**
 	 * @see DataValue::loadDataItem
 	 *
-	 * @param SMWDataItem $dataItem
+	 * @param DataItem $dataItem
 	 *
 	 * @return bool
 	 */

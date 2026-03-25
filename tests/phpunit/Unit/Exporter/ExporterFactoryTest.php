@@ -3,6 +3,8 @@
 namespace SMW\Tests\Unit\Exporter;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Export\ExportController;
+use SMW\Export\Exporter;
 use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\ExporterFactory;
 use SMW\Exporter\Serializer\RDFXMLSerializer;
@@ -31,7 +33,7 @@ class ExporterFactoryTest extends TestCase {
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
-			'\SMWExporter',
+			Exporter::class,
 			$instance->getExporter()
 		);
 	}
@@ -44,7 +46,7 @@ class ExporterFactoryTest extends TestCase {
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
-			'\SMWExportController',
+			ExportController::class,
 			$instance->newExportController( $serializer )
 		);
 	}
@@ -87,7 +89,7 @@ class ExporterFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructExpDataFactory() {
-		$exporter = $this->getMockBuilder( '\SMWExporter' )
+		$exporter = $this->getMockBuilder( Exporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -15,7 +15,7 @@ use SMW\Services\DataValueServiceFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
- * Factory class for creating SMWDataValue objects for supplied types or
+ * Factory class for creating DataValue objects for supplied types or
  * properties and data values.
  *
  * The class has the main entry point newDataValueByType(), which creates a new

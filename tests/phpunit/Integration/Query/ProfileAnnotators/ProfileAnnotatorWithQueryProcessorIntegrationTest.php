@@ -11,7 +11,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMWQueryProcessor
+ * @covers \SMW\Query\QueryProcessor
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

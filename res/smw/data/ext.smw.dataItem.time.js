@@ -168,7 +168,7 @@
 		/**
 		 * Returns an ISO string
 		 *
-		 * @see SMWTimeValue::getISO8601Date()
+		 * @see TimeValue::getISO8601Date()
 		 *
 		 * @since 1.9
 		 *

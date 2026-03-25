@@ -6,6 +6,7 @@ use MediaWiki\Request\WebRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Search\QueryBuilder;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Query;
 use SMW\Store;
 
 /**
@@ -49,7 +50,7 @@ class QueryBuilderTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWQuery',
+			Query::class,
 			$instance->getQuery( '[[Foo::bar]]' )
 		);
 	}
@@ -68,7 +69,7 @@ class QueryBuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +93,7 @@ class QueryBuilderTest extends TestCase {
 			$this->webRequest
 		);
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

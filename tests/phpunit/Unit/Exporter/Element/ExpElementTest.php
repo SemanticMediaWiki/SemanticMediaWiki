@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Exporter\Element;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
@@ -47,7 +48,7 @@ class ExpElementTest extends TestCase {
 			);
 		} else {
 			$this->assertInstanceOf(
-				'\SMWDataItem',
+				DataItem::class,
 				$element->getDataItem()
 			);
 		}

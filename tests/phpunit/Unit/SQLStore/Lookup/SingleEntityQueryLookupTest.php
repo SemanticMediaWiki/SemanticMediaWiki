@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\SQLStore\EntityStore\EntityIdManager;
@@ -61,7 +62,7 @@ class SingleEntityQueryLookupTest extends TestCase {
 			->method( 'getPrintrequests' )
 			->willReturn( [] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +106,7 @@ class SingleEntityQueryLookupTest extends TestCase {
 			->method( 'getDataItem' )
 			->willReturn( $dataItem );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -168,7 +169,7 @@ class SingleEntityQueryLookupTest extends TestCase {
 			->method( 'getDataItem' )
 			->willReturn( $dataItem );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -216,7 +217,7 @@ class SingleEntityQueryLookupTest extends TestCase {
 			->method( 'getDataItem' )
 			->willReturn( $dataItem );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

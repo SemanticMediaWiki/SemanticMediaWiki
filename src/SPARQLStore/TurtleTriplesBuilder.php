@@ -161,13 +161,13 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * Prepare an array of SMWExpData elements that should be written to
+	 * Prepare an array of ExpData elements that should be written to
 	 * the SPARQL store. The result is empty if no updates should be done.
-	 * Note that this is different from writing an SMWExpData element that
+	 * Note that this is different from writing an ExpData element that
 	 * has no content.
-	 * Otherwise, the first SMWExpData object in the array is a translation
+	 * Otherwise, the first ExpData object in the array is a translation
 	 * of the given input data, but with redirects resolved. Further
-	 * SMWExpData objects might be included in the resulting list to
+	 * ExpData objects might be included in the resulting list to
 	 * capture necessary stub declarations for objects that do not have
 	 * any data in the RDF store yet.
 	 *
@@ -175,7 +175,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @param SemanticData $semanticData
 	 *
-	 * @return array of SMWExpData
+	 * @return array of ExpData
 	 */
 	private function prepareUpdateExpData( SemanticData $semanticData ): array {
 		$result = [];
@@ -191,7 +191,7 @@ class TurtleTriplesBuilder {
 	 * Find a normalized representation of the given SMW\Exporter\Element\ExpElement that can
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects. The type of the ExpElement might change, especially into
-	 * SMWExpData in order to store auxiliary properties.
+	 * ExpData in order to store auxiliary properties.
 	 * Moreover, the method records any auxiliary data that should be
 	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
@@ -199,7 +199,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param Element $expElement object containing the update data
-	 * @param &$auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of ExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -216,10 +216,10 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * Find a normalized representation of the given SMWExpResource that can
+	 * Find a normalized representation of the given ExpResource that can
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects. The type of the ExpElement might change, especially into
-	 * SMWExpData in order to store auxiliary properties.
+	 * ExpData in order to store auxiliary properties.
 	 * Moreover, the method records any auxiliary data that should be
 	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
@@ -227,7 +227,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpResource $expResource object containing the update data
-	 * @param &$auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of ExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -256,7 +256,7 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * Find a normalized representation of the given SMWExpData that can
+	 * Find a normalized representation of the given ExpData that can
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects.
 	 * Moreover, the method records any auxiliary data that should be
@@ -266,7 +266,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpData $expData object containing the update data
-	 * @param &$auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of ExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
 	 *
 	 * @return ExpData
@@ -280,7 +280,7 @@ class TurtleTriplesBuilder {
 
 			if ( $expandedExpElement instanceof ExpData ) {
 				$newExpData = $expandedExpElement;
-			} else { // instanceof SMWExpResource
+			} else {
 				$newExpData = new ExpData( $subjectExpResource );
 			}
 		} else {

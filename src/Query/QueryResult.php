@@ -362,10 +362,10 @@ class QueryResult {
 	}
 
 	/**
-	 * Create an SMWInfolink object representing a link to further query results.
+	 * Create an Infolink object representing a link to further query results.
 	 * This link can then be serialised or extended by further params first.
 	 * The optional $caption can be used to set the caption of the link (though this
-	 * can also be changed afterwards with SMWInfolink::setCaption()). If empty, the
+	 * can also be changed afterwards with Infolink::setCaption()). If empty, the
 	 * message 'smw_iq_moreresults' is used as a caption.
 	 *
 	 * @param string|false $caption

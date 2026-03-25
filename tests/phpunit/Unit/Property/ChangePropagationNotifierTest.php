@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Property;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -189,12 +190,12 @@ class ChangePropagationNotifierTest extends TestCase {
 	}
 
 	/**
-	 * Returns an array of SMWDataItem and simulates an alternating
+	 * Returns an array of DataItem and simulates an alternating
 	 * existencance of return values ('_LIST')
 	 *
 	 * @see Store::getPropertyValues
 	 *
-	 * @return SMWDataItem[]
+	 * @return DataItem[]
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
 	public function doComparePropertyValuesOnCallback( $subject, Property $property, $requestoptions = null ) { // @codingStandardsIgnoreEnd

@@ -202,7 +202,8 @@ class NumberValue extends DataValue {
 
 	/**
 	 * @see DataValue::loadDataItem()
-	 * @param $dataItem SMWDataItem
+	 * @param $dataItem DataItem
+	 *
 	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ): bool {

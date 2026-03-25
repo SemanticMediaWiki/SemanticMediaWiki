@@ -9,6 +9,7 @@ use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\NamespaceExaminer;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;
 use SMW\SQLStore\ChangeOp\ChangeOp;
@@ -469,7 +470,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance->setEnabled( true );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -540,7 +541,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance->setEnabled( true );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -605,7 +606,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance->setEnabled( true );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -711,7 +712,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			$this->spyLogger
 		);
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -788,7 +789,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			$this->spyLogger
 		);
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -876,7 +877,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			$this->spyLogger
 		);
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

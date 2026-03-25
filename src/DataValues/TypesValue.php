@@ -11,7 +11,7 @@ use SMW\Localizer\Localizer;
 
 /**
  * This datavalue implements special processing suitable for defining types of
- * properties. Types behave largely like values of type SMWWikiPageValue
+ * properties. Types behave largely like values of type WikiPageValue
  * with three main differences. First, they actively check if a value is an
  * alias for another type, modifying the internal representation accordingly.
  * Second, they have a modified display for emphasizing if some type is defined

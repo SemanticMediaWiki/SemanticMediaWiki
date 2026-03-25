@@ -4,8 +4,10 @@ namespace SMW\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\Container;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 use SMW\ProcessingError;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Tests\TestEnvironment;
@@ -73,7 +75,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 			WikiPage::newFromText( __METHOD__ )
 		);
 
-		$container = $this->getMockBuilder( '\SMWDIContainer' )
+		$container = $this->getMockBuilder( Container::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,7 +102,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 		$container = $instance->newErrorContainerFromMsg( 'foo', $property );
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$container
 		);
 
@@ -136,7 +138,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 		$container = $instance->newErrorContainerFromMsg( $processingError, $property );
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$container
 		);
 
@@ -174,7 +176,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 			WikiPage::newFromText( __METHOD__ )
 		);
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getErrors', 'getProperty' ] )
 			->getMockForAbstractClass();
@@ -190,7 +192,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$container
 		);
 
@@ -210,7 +212,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 			WikiPage::newFromText( __METHOD__ )
 		);
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getErrors', 'getProperty' ] )
 			->getMockForAbstractClass();
@@ -226,7 +228,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$container
 		);
 
@@ -246,7 +248,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 			WikiPage::newFromText( __METHOD__ )
 		);
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getErrors', 'getErrorsByType', 'getProperty' ] )
 			->getMockForAbstractClass();
@@ -266,7 +268,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$container
 		);
 

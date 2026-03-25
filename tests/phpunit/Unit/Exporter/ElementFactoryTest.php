@@ -109,7 +109,7 @@ class ElementFactoryTest extends TestCase {
 	}
 
 	public function unsupportedDataItemProvider() {
-		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
+		$dataItem = $this->getMockBuilder( DataItem::class )
 			->disableOriginalConstructor()
 			->setMethods( [ '__toString' ] )
 			->getMockForAbstractClass();

@@ -5,9 +5,9 @@ This document contains an example for a `ResultPrinter` both for the PHP and Jav
 <pre>
 namespace SMW\Query\ResultPrinters;
 
+use SMW\DataItems\DataItem;
+use SMW\DataValues\DataValue;
 use SMW\Query\QueryResult;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
 use MediaWiki\Html\Html;
 
 /**
@@ -251,7 +251,7 @@ class BoilerplateResultPrinter extends ResultPrinter {
 		// Assign the ID to make a data instance readily available and distinguishable
 		// from other content within the same page
 		$requireHeadItem = [ $id => json_encode( $data ) ];
-		\SMWOutputs::requireHeadItem( $id, \Skin::makeVariablesScript( $requireHeadItem ) );
+		\SMW\MediaWiki\Outputs::requireHeadItem( $id, \Skin::makeVariablesScript( $requireHeadItem ) );
 
 		// Add two elements a outer wrapper that is assigned a class which the JS plugin
 		// can select and will fetch all instances of the same result printer and an inner

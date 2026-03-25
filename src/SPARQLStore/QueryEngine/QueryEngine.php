@@ -15,7 +15,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\RepositoryConnection;
 
 /**
- * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
+ * Class mapping Query objects to SPARQL, and for controlling the execution
  * of these queries to obtain suitable QueryResult objects.
  *
  * @license GPL-2.0-or-later

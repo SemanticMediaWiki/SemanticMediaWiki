@@ -364,7 +364,7 @@ class PropertySubjectsLookup {
 		$conds = '';
 
 		if ( $dataItem instanceof Container ) {
-			throw new RuntimeException( 'SMWDIContainer support is missing!' );
+			throw new RuntimeException( '\SMW\DataItems\Container support is missing!' );
 		}
 
 		if ( $dataItem !== null ) {

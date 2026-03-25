@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\SPARQLStore\QueryEngine\DescriptionInterpreters;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Blob;
 use SMW\DataItems\Concept;
+use SMW\DataItems\GeoCoord;
 use SMW\DataItems\Number;
 use SMW\DataItems\Property;
 use SMW\DataItems\Uri;
@@ -568,7 +569,7 @@ class ValueDescriptionInterpreterTest extends TestCase {
 	}
 
 	public function notSupportedDataItemTypeProvider() {
-		$dataItem = $this->getMockBuilder( '\SMWDIGeoCoord' )
+		$dataItem = $this->getMockBuilder( GeoCoord::class )
 			->disableOriginalConstructor()
 			->getMock();
 

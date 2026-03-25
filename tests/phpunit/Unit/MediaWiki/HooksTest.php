@@ -35,6 +35,7 @@ use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Options;
 use SMW\Parser\ContentParser;
+use SMW\Query\Query;
 use SMW\QueryEngine;
 use SMW\RequestOptions;
 use SMW\Schema\SchemaFactory;
@@ -1690,7 +1691,7 @@ class HooksTest extends TestCase {
 	public function callSMWStoreBeforeQueryResultLookupComplete( $instance ) {
 		$handler = 'SMW::Store::BeforeQueryResultLookupComplete';
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
