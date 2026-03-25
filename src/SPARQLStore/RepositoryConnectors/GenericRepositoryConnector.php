@@ -178,7 +178,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function select( $vars, $where, $options = [], $extraNamespaces = [] ) {
+	public function select( $vars, $where, $options = [], $extraNamespaces = [] ): RepositoryResult {
 		return $this->doQuery( $this->getSparqlForSelect( $vars, $where, $options, $extraNamespaces ) );
 	}
 
@@ -236,7 +236,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function ask( $where, $extraNamespaces = [] ) {
+	public function ask( $where, $extraNamespaces = [] ): RepositoryResult {
 		return $this->doQuery( $this->getSparqlForAsk( $where, $extraNamespaces ) );
 	}
 
@@ -268,7 +268,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function selectCount( string $variable, string $where, array $options = [], array $extraNamespaces = [] ) {
+	public function selectCount( string $variable, string $where, array $options = [], array $extraNamespaces = [] ): RepositoryResult {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT (COUNT(';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {

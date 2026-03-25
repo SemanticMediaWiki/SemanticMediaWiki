@@ -526,7 +526,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
 	 */
-	public function onInternalParseBeforeLinks( &$parser, &$text, &$stripState ) {
+	public function onInternalParseBeforeLinks( &$parser, &$text, &$stripState ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$internalParseBeforeLinks = new InternalParseBeforeLinks(

@@ -154,7 +154,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenize( string|array $text, int|string|null $language, array|string $exemptionList ) {
+	private function tokenize( string|array $text, int|string|null $language, array|string $exemptionList ): array {
 		$hasCjk = (bool)preg_match( '/[\x{4e00}-\x{9fa5}]/u', $text );
 		$hasIcu = class_exists( IntlRuleBasedBreakIterator::class );
 

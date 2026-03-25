@@ -75,7 +75,7 @@ class ConnectionManager {
 		self::$connectionProviders[strtolower( $id )] = new CallbackConnectionProvider( $callback );
 	}
 
-	private function isConnectable() {
+	private function isConnectable(): bool {
 		if ( defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return true;
 		}

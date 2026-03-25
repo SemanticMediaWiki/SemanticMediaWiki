@@ -143,7 +143,7 @@ class Indexer {
 	 *
 	 * @param array $idList
 	 */
-	public function delete( array $idList, $isConcept = false ) {
+	public function delete( array $idList, $isConcept = false ): void {
 		if ( $idList === [] ) {
 			return;
 		}
@@ -153,7 +153,8 @@ class Indexer {
 		);
 
 		if ( !$this->canReplicate() ) {
-			return IndexerRecoveryJob::pushFromParams( $title, [ 'delete' => $idList ] );
+			IndexerRecoveryJob::pushFromParams( $title, [ 'delete' => $idList ] );
+			return;
 		}
 
 		$params = [

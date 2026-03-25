@@ -47,7 +47,7 @@ class HierarchyTempTableBuilder {
 	 *
 	 * @return array
 	 */
-	public function getHierarchyCache() {
+	public function getHierarchyCache(): array {
 		return $this->hierarchyCache;
 	}
 

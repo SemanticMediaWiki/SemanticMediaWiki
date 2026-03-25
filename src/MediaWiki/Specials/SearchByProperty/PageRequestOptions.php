@@ -142,9 +142,9 @@ class PageRequestOptions {
 		}
 	}
 
-	private function setNearbySearch() {
+	private function setNearbySearch(): void {
 		if ( $this->value === null ) {
-			return null;
+			return;
 		}
 
 		if ( isset( $this->requestOptions['nearbySearchForType'] ) && is_array( $this->requestOptions['nearbySearchForType'] ) ) {

@@ -37,7 +37,7 @@ class Conjunction extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
 		}
@@ -57,7 +57,7 @@ class Conjunction extends Description {
 		return $this->fingerprint;
 	}
 
-	public function getDescriptions() {
+	public function getDescriptions(): array {
 		return $this->descriptions;
 	}
 

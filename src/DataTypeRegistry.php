@@ -116,7 +116,7 @@ class DataTypeRegistry {
 	 *
 	 * @return DataTypeRegistry
 	 */
-	public static function getInstance() {
+	public static function getInstance(): self {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -385,7 +385,7 @@ class DataTypeRegistry {
 	 *
 	 * @return array
 	 */
-	public function getCanonicalDatatypeLabels() {
+	public function getCanonicalDatatypeLabels(): array {
 		return $this->canonicalLabels;
 	}
 
@@ -397,7 +397,7 @@ class DataTypeRegistry {
 	 *
 	 * @return array
 	 */
-	public function getKnownTypeLabels() {
+	public function getKnownTypeLabels(): array {
 		return $this->typeLabels;
 	}
 
@@ -406,7 +406,7 @@ class DataTypeRegistry {
 	 *
 	 * @return array
 	 */
-	public function getKnownTypeAliases() {
+	public function getKnownTypeAliases(): array {
 		return $this->typeAliases;
 	}
 

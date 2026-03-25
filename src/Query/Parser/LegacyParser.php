@@ -272,7 +272,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return Description|null
 	 */
-	private function getSubqueryDescription( bool &$setNS ) {
+	private function getSubqueryDescription( bool &$setNS ): ?Description {
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 

@@ -64,7 +64,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @return PropertyValue[]
 	 */
-	public function getPropertyChainValues() {
+	public function getPropertyChainValues(): array {
 		return $this->propertyValues;
 	}
 
@@ -177,7 +177,7 @@ class PropertyChainValue extends StringValue {
 		$this->m_dataitem = new Blob( $value );
 	}
 
-	private function initPropertyChain( $value ) {
+	private function initPropertyChain( $value ): void {
 		$chain = explode( '.', $value );
 
 		// Get the last which represents the final output
@@ -187,7 +187,8 @@ class PropertyChainValue extends StringValue {
 		$this->lastPropertyChainValue = DataValueFactory::getInstance()->newPropertyValueByLabel( $last );
 
 		if ( !$this->lastPropertyChainValue->isValid() ) {
-			return $this->addError( $this->lastPropertyChainValue->getErrors() );
+			$this->addError( $this->lastPropertyChainValue->getErrors() );
+			return;
 		}
 
 		$this->lastPropertyChainValue->copyOptions( $this->getOptions() );

@@ -5,7 +5,6 @@ namespace SMW\Iterators;
 use ArrayIterator;
 use InvalidArgumentException;
 use IteratorIterator;
-use ReturnTypeWillChange;
 use RuntimeException;
 use Traversable;
 
@@ -51,7 +50,6 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[ReturnTypeWillChange]
 	public function rewind(): void {
 		parent::rewind();
 		$this->next();
@@ -62,7 +60,6 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[ReturnTypeWillChange]
 	public function next(): void {
 		$this->chunk = [];
 
@@ -77,8 +74,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[ReturnTypeWillChange]
-	public function current() {
+	public function current(): ?array {
 		return $this->chunk;
 	}
 
@@ -87,7 +83,6 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[ReturnTypeWillChange]
 	public function valid(): bool {
 		return (bool)$this->chunk;
 	}

@@ -221,7 +221,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @return array[]
 	 */
-	public function getSequenceMap() {
+	public function getSequenceMap(): array {
 		return $this->sequenceMap;
 	}
 
@@ -232,7 +232,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @return array
 	 */
-	public function getCountMap() {
+	public function getCountMap(): array {
 		return $this->countMap;
 	}
 
@@ -241,7 +241,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @return Property[]
 	 */
-	public function getProperties() {
+	public function getProperties(): array {
 		ksort( $this->mProperties, SORT_STRING );
 		return $this->mProperties;
 	}
@@ -341,7 +341,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -367,7 +367,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		if ( $this->hash !== null ) {
 			return $this->hash;
 		}
@@ -419,7 +419,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @return bool
 	 */
-	public function hasVisibleProperties() {
+	public function hasVisibleProperties(): bool {
 		return $this->mHasVisibleProps;
 	}
 
@@ -433,7 +433,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @return bool
 	 */
-	public function hasVisibleSpecialProperties() {
+	public function hasVisibleSpecialProperties(): bool {
 		return $this->mHasVisibleSpecs;
 	}
 

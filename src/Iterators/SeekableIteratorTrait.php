@@ -91,8 +91,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[ReturnTypeWillChange]
-	public function key() {
+	public function key(): int|string {
 		return $this->position;
 	}
 

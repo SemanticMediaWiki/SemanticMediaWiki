@@ -45,7 +45,7 @@ abstract class ExpElement implements Element {
 	 *
 	 * @return DataItem|null
 	 */
-	public function getDataItem() {
+	public function getDataItem(): ?DataItem {
 		return $this->dataItem;
 	}
 

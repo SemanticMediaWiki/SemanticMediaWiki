@@ -6,6 +6,7 @@ use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Sanitizer;
+use MediaWiki\Title\Title;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
@@ -534,7 +535,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @return Title
 	 */
-	public function getTitle() {
+	public function getTitle(): ?Title {
 		if ( $this->m_title !== null ) {
 			return $this->m_title;
 		}
@@ -635,7 +636,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getPrefixedText() {
+	public function getPrefixedText(): string {
 		if ( $this->m_prefixedtext !== '' ) {
 			return $this->m_prefixedtext;
 		}

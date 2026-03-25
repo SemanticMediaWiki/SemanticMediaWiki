@@ -143,7 +143,7 @@ class MonolingualTextLookup {
 	 *
 	 * @return DataValue|null
 	 */
-	public function newDataValue( WikiPage $subject, Property $property, $languageCode = null ) {
+	public function newDataValue( WikiPage $subject, Property $property, $languageCode = null ): ?DataValue {
 		$res = $this->fetchFromTable( $subject, $property, $languageCode );
 		$dataValue = null;
 

@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\SPARQLStore\QueryEngine\RepositoryResult;
+
 /**
  * @license GPL-2.0-or-later
  * @since 2.2
@@ -48,7 +50,7 @@ interface RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function select( $vars, $where, $options = [], $extraNamespaces = [] );
+	public function select( $vars, $where, $options = [], $extraNamespaces = [] ): RepositoryResult;
 
 	/**
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
@@ -60,7 +62,7 @@ interface RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function ask( $where, $extraNamespaces = [] );
+	public function ask( $where, $extraNamespaces = [] ): RepositoryResult;
 
 	/**
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,

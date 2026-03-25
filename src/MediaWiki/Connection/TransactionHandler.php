@@ -133,7 +133,7 @@ class TransactionHandler {
 	 *
 	 * @return mixed A value to pass to commitAndWaitForReplication
 	 */
-	public function getEmptyTransactionTicket( $fname = __METHOD__ ) {
+	public function getEmptyTransactionTicket( $fname = __METHOD__ ): ?int {
 		$ticket = null;
 
 		// @see LBFactory::getEmptyTransactionTicket

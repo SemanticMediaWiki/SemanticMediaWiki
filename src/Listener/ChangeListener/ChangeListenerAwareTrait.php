@@ -36,7 +36,7 @@ trait ChangeListenerAwareTrait {
 	 *
 	 * @param ChangeListener[]|[]
 	 */
-	public function getChangeListeners() {
+	public function getChangeListeners(): array {
 		return self::$changeListeners;
 	}
 

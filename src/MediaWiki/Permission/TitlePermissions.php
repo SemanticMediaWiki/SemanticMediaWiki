@@ -134,7 +134,7 @@ class TitlePermissions {
 		return true;
 	}
 
-	private function checkPropertyNamespaceCreatePermission( Title $title, User $user, string $action ) {
+	private function checkPropertyNamespaceCreatePermission( Title $title, User $user, string $action ): bool {
 		$protectionRight = $this->protectionValidator->getCreateProtectionRight();
 
 		if ( $protectionRight === false ) {

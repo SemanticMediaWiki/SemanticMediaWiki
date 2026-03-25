@@ -197,7 +197,7 @@ class Query implements QueryContext {
 	 *
 	 * @return string
 	 */
-	public function getQuerySource() {
+	public function getQuerySource(): ?string {
 		return $this->querySource;
 	}
 
@@ -237,7 +237,7 @@ class Query implements QueryContext {
 	 *
 	 * @return string
 	 */
-	public function getMainLabel() {
+	public function getMainLabel(): string {
 		return $this->m_mainlabel;
 	}
 
@@ -268,7 +268,7 @@ class Query implements QueryContext {
 	/**
 	 * @return PrintRequest[]
 	 */
-	public function getExtraPrintouts() {
+	public function getExtraPrintouts(): array {
 		return $this->m_extraprintouts;
 	}
 
@@ -336,7 +336,7 @@ class Query implements QueryContext {
 		}
 	}
 
-	public function getOffset() {
+	public function getOffset(): int {
 		return $this->offset;
 	}
 
@@ -348,7 +348,7 @@ class Query implements QueryContext {
 	 * @todo The function should be extended to take into account whether or not we
 	 * are in inline mode (not critical, since offsets are usually not applicable inline).
 	 */
-	public function setOffset( $offset ) {
+	public function setOffset( $offset ): int {
 		global $smwgQMaxLimit;
 		$this->offset = min( $smwgQMaxLimit, $offset ); // select integer between 0 and maximal limit;
 		$this->limit = min( $smwgQMaxLimit - $this->offset, $this->limit ); // note that limit might become 0 here
@@ -411,7 +411,7 @@ class Query implements QueryContext {
 	 *
 	 * @return array
 	 */
-	public function getSortKeys() {
+	public function getSortKeys(): array {
 		return $this->sortkeys;
 	}
 

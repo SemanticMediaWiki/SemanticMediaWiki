@@ -153,7 +153,7 @@ class ExternalIdentifierValue extends StringValue {
 		return $dataValue->getDataItem();
 	}
 
-	private function makeUri( $value ) {
+	private function makeUri( $value ): ?string {
 		if ( $this->uri !== null ) {
 			return $this->uri;
 		}
@@ -164,7 +164,7 @@ class ExternalIdentifierValue extends StringValue {
 
 		if ( $dataItem === null ) {
 			$this->addErrorMsg( 'smw-datavalue-external-identifier-formatter-missing' );
-			return;
+			return null;
 		}
 
 		$dataValue = $this->dataValueServiceFactory->getDataValueFactory()->newDataValueByItem(
@@ -174,7 +174,7 @@ class ExternalIdentifierValue extends StringValue {
 
 		if ( $dataValue->getErrors() !== [] ) {
 			$this->addError( $dataValue->getErrors() );
-			return;
+			return null;
 		}
 
 		$parameters = [];

@@ -55,7 +55,7 @@ class Container extends DataItem {
 		return DataItem::TYPE_CONTAINER;
 	}
 
-	public function getSemanticData() {
+	public function getSemanticData(): ContainerSemanticData {
 		return $this->m_semanticData;
 	}
 

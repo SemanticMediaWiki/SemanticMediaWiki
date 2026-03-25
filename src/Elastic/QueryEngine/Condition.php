@@ -45,7 +45,7 @@ class Condition {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): ?string {
 		return $this->type;
 	}
 
@@ -63,7 +63,7 @@ class Condition {
 	 *
 	 * @return array
 	 */
-	public function getLogs() {
+	public function getLogs(): array {
 		return $this->logs;
 	}
 

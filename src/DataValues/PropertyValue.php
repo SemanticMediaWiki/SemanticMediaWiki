@@ -240,7 +240,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getPreferredLabel() {
+	public function getPreferredLabel(): string {
 		return $this->preferredLabel;
 	}
 
@@ -288,7 +288,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @return WikiPageValue or null
 	 */
-	public function getWikiPageValue() {
+	public function getWikiPageValue(): ?DataValue {
 		if ( isset( $this->m_wikipage ) ) {
 			return $this->m_wikipage;
 		}

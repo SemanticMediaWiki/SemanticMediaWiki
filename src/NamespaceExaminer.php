@@ -46,7 +46,7 @@ class NamespaceExaminer {
 	 *
 	 * @return bool
 	 */
-	public function inNamespace( $object ) {
+	public function inNamespace( $object ): bool {
 		$namespace = null;
 
 		if ( $object instanceof Title ) {

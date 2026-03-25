@@ -59,7 +59,7 @@ class FileIngestJob extends Job {
 	 *
 	 * @since  3.0
 	 */
-	public function run() {
+	public function run(): bool {
 		// Make sure the script is only executed from the command line to avoid
 		// Special:RunJobs to execute a queued job
 		if ( $this->waitOnCommandLineMode() ) {

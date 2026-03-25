@@ -46,7 +46,7 @@ abstract class TaskHandler {
 	 *
 	 * @return boolean
 	 */
-	public function isEnabledFeature( $feature ) {
+	public function isEnabledFeature( $feature ): bool {
 		return $this->hasFeature( $feature );
 	}
 
@@ -94,7 +94,7 @@ abstract class TaskHandler {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): ?Store {
 		return $this->store;
 	}
 

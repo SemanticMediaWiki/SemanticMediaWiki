@@ -94,7 +94,7 @@ class WikiPage extends DataItem {
 		return $this->m_namespace;
 	}
 
-	public function getInterwiki() {
+	public function getInterwiki(): string {
 		return $this->m_interwiki;
 	}
 
@@ -179,7 +179,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getContextReference() {
+	public function getContextReference(): ?string {
 		return $this->contextReference;
 	}
 
@@ -190,7 +190,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getPageLanguage() {
+	public function getPageLanguage(): string|false {
 		if ( $this->pageLanguage === null ) {
 			$this->pageLanguage = false;
 

@@ -61,7 +61,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return $this->modules;
 	}
 

@@ -61,7 +61,7 @@ class NamespaceConstraint implements Constraint {
 		}
 	}
 
-	private function check( $namespaces, DataValue $dataValue ) {
+	private function check( $namespaces, DataValue $dataValue ): void {
 		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
 
@@ -71,7 +71,8 @@ class NamespaceConstraint implements Constraint {
 				'smw-constraint-violation-allowed-namespaces-requires-page-type'
 			];
 
-			return $this->reportError( $dataValue, $error );
+			$this->reportError( $dataValue, $error );
+			return;
 		}
 
 		foreach ( $namespaces as $ns ) {

@@ -412,7 +412,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return double
 	 */
-	public function getJD() {
+	public function getJD(): float {
 		if ( $this->julianDay !== null ) {
 			return $this->julianDay;
 		}

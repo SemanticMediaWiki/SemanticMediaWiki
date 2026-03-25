@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\Property;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\DataItem;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\StringValue;
 use SMW\EntityCache;
@@ -65,6 +66,10 @@ class SpecificationLookupTest extends TestCase {
 		$property = $this->dataItemFactory->newDIProperty( '_PDESC' );
 		$subject = $property->getDiWikiPage();
 
+		$deDataValue = $this->createMock( DataValue::class );
+		$deFormalDataValue = $this->createMock( DataValue::class );
+		$enDataValue = $this->createMock( DataValue::class );
+
 		$this->monolingualTextLookup->expects( $this->any() )
 			->method( 'newDataValue' )
 			->with(
@@ -72,16 +77,17 @@ class SpecificationLookupTest extends TestCase {
 				$property,
 				$this->anything() )
 
-			->willReturnCallback( static function () {
+			->willReturnCallback( static function () use ( $deDataValue, $deFormalDataValue, $enDataValue ) {
 				$args = func_get_args();
 				switch ( $args[2] ) {
 					case 'de':
-						return 'de-desc';
+						return $deDataValue;
 					case 'de-formal':
-						return 'de-formal-desc';
+						return $deFormalDataValue;
 					case 'en':
-						return 'en-desc';
+						return $enDataValue;
 				}
+				return null;
 			} );
 
 		$instance = new SpecificationLookup(
@@ -93,21 +99,18 @@ class SpecificationLookupTest extends TestCase {
 		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
 
 		// #1 will return languageFalldown
-		$this->assertEquals(
-			[ 'de-desc', 'de' ],
-			$languageFalldownAndInverse->tryout()
-		);
+		$result = $languageFalldownAndInverse->tryout();
+		$this->assertSame( $deDataValue, $result[0] );
+		$this->assertSame( 'de', $result[1] );
 
 		$languageCode = 'de';
 		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
 
 		// #2 will return the first existing FallbackInverse
 		// (de-formal from de)
-
-		$this->assertEquals(
-			[ 'de-formal-desc', 'de-formal' ],
-			$languageFalldownAndInverse->tryout()
-		);
+		$result = $languageFalldownAndInverse->tryout();
+		$this->assertSame( $deFormalDataValue, $result[0] );
+		$this->assertSame( 'de-formal', $result[1] );
 
 		$languageCode = 'en';
 		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
@@ -453,7 +456,7 @@ class SpecificationLookupTest extends TestCase {
 			->with(
 				$this->stringContains( 'smw:entity:propertyspecificationlookup:description:1313b81bb6a61a4661f7b91408659f86' ),
 				'en:0' )
-			->willReturn( 1001 );
+			->willReturn( 'cached description' );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -461,7 +464,7 @@ class SpecificationLookupTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			1001,
+			'cached description',
 			$instance->getPropertyDescriptionByLanguageCode( $property, 'en' )
 		);
 	}

@@ -53,7 +53,7 @@ class RepositoryRedirectLookup {
 	 * @return ExpNsResource
 	 * @throws RuntimeException
 	 */
-	public function findRedirectTargetResource( ExpNsResource $expNsResource, &$exists ) {
+	public function findRedirectTargetResource( ExpNsResource $expNsResource, &$exists ): ExpNsResource {
 		$exists = true;
 
 		if ( $expNsResource->isBlankNode() || $this->isNonRedirectableResource( $expNsResource ) ) {

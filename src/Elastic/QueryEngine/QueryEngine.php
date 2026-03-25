@@ -68,7 +68,7 @@ class QueryEngine implements IQueryEngine {
 	 *
 	 * @param []
 	 */
-	public function getQueryInfo() {
+	public function getQueryInfo(): array {
 		return $this->queryInfo;
 	}
 

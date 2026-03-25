@@ -167,7 +167,7 @@ class SearchResultSet extends \SearchResultSet {
 		return true;
 	}
 
-	public function getTotalHits() {
+	public function getTotalHits(): ?int {
 		return $this->count;
 	}
 

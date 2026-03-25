@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Time;
 use SMW\Export\Exporter;
+use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
 
@@ -181,7 +182,7 @@ class ElementFactory {
 	 *
 	 * @param DataItem $dataItem
 	 */
-	public function newFromGeo( DataItem $dataItem ) {
+	public function newFromGeo( DataItem $dataItem ): ?ExpElement {
 		return null;
 	}
 

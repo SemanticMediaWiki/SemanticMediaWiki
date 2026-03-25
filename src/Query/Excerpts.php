@@ -84,7 +84,7 @@ class Excerpts {
 	 *
 	 * @return
 	 */
-	public function getExcerpts() {
+	public function getExcerpts(): array {
 		return $this->excerpts;
 	}
 
@@ -93,7 +93,7 @@ class Excerpts {
 	 *
 	 * @return bool
 	 */
-	public function hasHighlight() {
+	public function hasHighlight(): bool {
 		return $this->hasHighlight;
 	}
 

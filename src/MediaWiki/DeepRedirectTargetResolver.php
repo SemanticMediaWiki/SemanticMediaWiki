@@ -33,7 +33,7 @@ class DeepRedirectTargetResolver {
 	 * @return Title|null
 	 * @throws RuntimeException
 	 */
-	public function findRedirectTargetFor( Title $title ) {
+	public function findRedirectTargetFor( Title $title ): ?Title {
 		return $this->doResolveRedirectTarget( $title );
 	}
 

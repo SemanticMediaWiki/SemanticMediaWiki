@@ -37,7 +37,7 @@ class Error extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getUserValue() {
+	public function getUserValue(): string {
 		return $this->userValue;
 	}
 

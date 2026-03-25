@@ -43,7 +43,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMessages() {
+	public function getMessages(): array {
 		return $this->messages;
 	}
 

@@ -326,7 +326,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function buildResult( QueryResult $results ) {
+	protected function buildResult( QueryResult $results ): ?string {
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 
@@ -499,7 +499,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return Linker|null
 	 */
-	protected function getLinker( $firstcol = false ) {
+	protected function getLinker( $firstcol = false ): ?Linker {
 		if ( ( $firstcol && $this->mLinkFirst ) || ( !$firstcol && $this->mLinkOthers ) ) {
 			return $this->mLinker;
 		} else {
@@ -635,7 +635,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getSearchLabel( $outputmode ) {
+	protected function getSearchLabel( $outputmode ): ?string {
 		return $this->escapeText( $this->mSearchlabel, $outputmode );
 	}
 

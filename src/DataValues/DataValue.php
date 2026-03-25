@@ -290,7 +290,7 @@ abstract class DataValue {
 	 *
 	 * @return Property|null
 	 */
-	public function getProperty() {
+	public function getProperty(): ?Property {
 		return $this->m_property;
 	}
 
@@ -317,7 +317,7 @@ abstract class DataValue {
 	 *
 	 * @return WikiPage|null
 	 */
-	public function getContextPage() {
+	public function getContextPage(): ?WikiPage {
 		return $this->m_contextPage;
 	}
 
@@ -378,7 +378,7 @@ abstract class DataValue {
 	 *
 	 * @return string
 	 */
-	public function getOutputFormat() {
+	public function getOutputFormat(): string|false {
 		return $this->m_outformat;
 	}
 
@@ -456,7 +456,7 @@ abstract class DataValue {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->mErrors;
 	}
 
@@ -484,7 +484,7 @@ abstract class DataValue {
 	 *
 	 * @return array|false
 	 */
-	public function getRestrictionError() {
+	public function getRestrictionError(): string|array|false {
 		return $this->restrictionError;
 	}
 
@@ -897,7 +897,7 @@ abstract class DataValue {
 	 *
 	 * @return Options
 	 */
-	protected function getOptions() {
+	protected function getOptions(): ?Options {
 		return $this->options;
 	}
 

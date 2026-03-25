@@ -66,7 +66,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return bool
 	 */
-	public function isImported() {
+	public function isImported(): bool {
 		return $this->isImported;
 	}
 

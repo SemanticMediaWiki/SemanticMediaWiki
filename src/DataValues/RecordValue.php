@@ -51,7 +51,7 @@ class RecordValue extends AbstractMultiValue {
 	 *
 	 * @return Property[]|null
 	 */
-	public function getProperties() {
+	public function getProperties(): ?array {
 		return $this->m_diProperties;
 	}
 
@@ -196,15 +196,15 @@ class RecordValue extends AbstractMultiValue {
 		return $this->makeOutputText( 1, $linker );
 	}
 
-	public function getLongWikiText( $linked = null ) {
+	public function getLongWikiText( $linked = null ): string {
 		return $this->makeOutputText( 2, $linked );
 	}
 
-	public function getLongHTMLText( $linker = null ) {
+	public function getLongHTMLText( $linker = null ): string {
 		return $this->makeOutputText( 3, $linker );
 	}
 
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->makeOutputText( 4 );
 	}
 
@@ -250,7 +250,7 @@ class RecordValue extends AbstractMultiValue {
 	 *
 	 * @return array of Property
 	 */
-	public function getPropertyDataItems() {
+	public function getPropertyDataItems(): ?array {
 		if ( $this->m_diProperties !== null ) {
 			return $this->m_diProperties;
 		}

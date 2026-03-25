@@ -197,7 +197,7 @@ class RequestOptions {
 	 *
 	 * @param array
 	 */
-	public function getExtraConditions() {
+	public function getExtraConditions(): array {
 		return $this->extraConditions;
 	}
 

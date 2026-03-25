@@ -66,7 +66,7 @@ class ParserParameterProcessor {
 	 *
 	 * @return string
 	 */
-	public function getFirstParameter() {
+	public function getFirstParameter(): ?string {
 		return $this->first;
 	}
 
@@ -185,7 +185,7 @@ class ParserParameterProcessor {
 	 * Map raw parameters array into an 2n-array for simplified
 	 * via [key] => [value1, value2]
 	 */
-	private function doMap( array $params ) {
+	private function doMap( array $params ): array {
 		$results = [];
 		$previousProperty = null;
 

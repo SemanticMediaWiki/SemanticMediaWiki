@@ -175,7 +175,7 @@ class ExtendedSearch {
 	 *
 	 * @return
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -184,7 +184,7 @@ class ExtendedSearch {
 	 *
 	 * @return string
 	 */
-	public function getQueryString() {
+	public function getQueryString(): string {
 		return $this->queryString;
 	}
 

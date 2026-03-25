@@ -77,7 +77,7 @@ class PropertyAliasFinder {
 	 *
 	 * @return array
 	 */
-	public function getKnownPropertyAliases() {
+	public function getKnownPropertyAliases(): array {
 		return $this->propertyAliases;
 	}
 
@@ -86,7 +86,7 @@ class PropertyAliasFinder {
 	 *
 	 * @return array
 	 */
-	public function getKnownPropertyAliasesWithMsgKey() {
+	public function getKnownPropertyAliasesWithMsgKey(): array {
 		return $this->propertyAliasesByMsgKey;
 	}
 
@@ -128,7 +128,7 @@ class PropertyAliasFinder {
 	 * @param string $id string
 	 * @param string $label
 	 */
-	public function registerAliasByFixedLabel( $id, $label ) {
+	public function registerAliasByFixedLabel( $id, $label ): void {
 		$label = (string)$label;
 
 		// Prevent an extension to register an already known
@@ -139,7 +139,7 @@ class PropertyAliasFinder {
 
 		// Indicates an untranslated MW message key
 		if ( $label !== '' && $label[0] === '<' ) {
-			return null;
+			return;
 		}
 
 		$this->propertyAliases[$label] = $id;
