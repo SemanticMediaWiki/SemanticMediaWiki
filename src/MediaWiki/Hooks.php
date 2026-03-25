@@ -1470,7 +1470,7 @@ class Hooks {
 	}
 
 	public function onPageSchemasRegisterHandlers(): bool {
-		$GLOBALS['wgPageSchemasHandlerClasses'][] = '\SMW\MediaWiki\PageSchemas';
+		$GLOBALS['wgPageSchemasHandlerClasses'][] = 'SMW\MediaWiki\PageSchemas';
 		return true;
 	}
 

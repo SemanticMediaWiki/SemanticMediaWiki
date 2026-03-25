@@ -118,7 +118,7 @@ abstract class Store implements QueryEngine {
 	abstract public function getInProperties( DataItem $object, $requestOptions = null );
 
 	/**
-	 * Convenience method to find the sortkey of an WikiPage. The
+	 * Convenience method to find the sortkey of a WikiPage. The
 	 * result is based on the contents of this store, and may differ from
 	 * the MediaWiki database entry about a Title objects sortkey. If no
 	 * sortkey is stored, the default sortkey (title string) is returned.

@@ -139,7 +139,6 @@ class RecurringEventsTest extends TestCase {
 		$instance = new RecurringEvents();
 		$instance->parse( [] );
 
-		// \SMW\DataItems\WikiPage stub object
 		$dataValue = $this->getMockBuilder( TimeValue::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -149,7 +148,7 @@ class RecurringEventsTest extends TestCase {
 			->willReturn( null );
 
 		$this->assertNull(
-						$instance->getJulianDay( $dataValue )
+			$instance->getJulianDay( $dataValue )
 		);
 	}
 
