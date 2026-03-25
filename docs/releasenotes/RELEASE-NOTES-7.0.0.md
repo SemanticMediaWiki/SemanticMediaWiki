@@ -2,73 +2,37 @@
 
 Released on TBD.
 
-Like SMW 6.0.x, this version is compatible with MediaWiki 1.43 up to 1.45 and PHP 8.1 up to 8.4.
+This release adds MediaWiki 1.45 support and removes long-deprecated APIs, vendored libraries, and legacy dependencies in favor of MediaWiki core services. If you maintain an extension or integration that depends on SMW, review the [breaking changes](#breaking-changes) before upgrading.
+
+## Compatibility
+
+* Added support for MediaWiki 1.45 (new compared to SMW 6.0.x, which supported up to 1.44)
+* Compatible with PHP 8.1 up to 8.4 and MediaWiki 1.43 up to 1.45
+
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
 ## Changes
 
-### Bug fixes
+### Breaking changes
 
-* Fixed incorrect timezone offset calculation for negative half-hour timezones such as Newfoundland (`-3:30`). The 30-minute component was always added positively, producing `-2.5` instead of the correct `-3.5`.
+**Configuration and runtime:**
 
-### Deprecations
-
-* `enableSemantics()` is deprecated and now a no-op. `wfLoadExtension( 'SemanticMediaWiki' )` alone is sufficient to install SMW, aligning with standard MediaWiki extension conventions. The RDF namespace URI is now auto-derived from `Special:URIResolver` when not explicitly set. Users who set a custom `$smwgNamespace` in `LocalSettings.php` are unaffected.
-
-  If you used configuration preloading via `enableSemantics`:
+* **Fulltext search reindex required.** The vendored `Onoi\Tesa` text sanitizer has been replaced with PHP `intl` built-ins. If you have `smwgEnabledFulltextSearch` enabled, run `rebuildFulltextSearchTable.php` after upgrading. Transliteration now uses ICU instead of a static mapping table, which produces minor differences for some characters (e.g., German ü→u instead of ü→ue).
+* **SPARQL HTTP configuration removed.** The `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting no longer exists. SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory` for HTTP version negotiation. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped.
+* **`loadDefaultConfigFrom()` removed.** The method on the return value of `enableSemantics()` has been removed and will fatal if called. Replace with a direct `require`:
 
   ```php
-  // Before (deprecated)
+  // Before (broken — will fatal)
   enableSemantics( 'example.org' )->loadDefaultConfigFrom( 'media.php' );
-  ```
 
-  Replace with a direct `require`:
-
-  ```php
   // After
   wfLoadExtension( 'SemanticMediaWiki' );
   require "$IP/extensions/SemanticMediaWiki/data/config/media.php";
   ```
 
-* Replaced the vendored `Onoi\Tesa` text sanitizer library with PHP `intl` built-ins for fulltext search text processing. Users with `smwgEnabledFulltextSearch` enabled must run `rebuildFulltextSearchTable.php` after upgrading. Transliteration now uses ICU instead of a static mapping table, which produces minor differences for some characters (e.g., German ü→u instead of ü→ue). This does not affect search match quality.
-* Removed `smwfNormalTitleText()`, deprecated since 3.2. Use `Localizer::getInstance()->normalizeTitleText()` instead.
-* Removed `smwfNumberFormat()`, deprecated since 2.1. Use `IntlNumberFormatter::getInstance()->getLocalizedFormattedNumber()` instead.
-* Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
-* Removed long-deprecated code originally scheduled for removal:
-  - `SMW_HEADER_TOOLTIP`, `SMW_HEADER_SORTTABLE`, `SMW_HEADER_STYLE` constants and the numeric-id branch in `Outputs::requireHeadItem()`
-  - `TimeValue::getXMLSchemaDate()` (use `getISO8601Date()`)
-  - `ValueDescription::getDataValue()` (use `getDataItem()`)
-  - `ResultPrinter::getParameters()` (use `getParamDefinitions()`)
-  - `ParserData::setData()` (use `setSemanticData()`)
-  - `ParserData::getData()` (use `getSemanticData()`)
-  - `Subobject::setSemanticData()` (use `setEmptyContainerForId()`)
-  - `PropertyRegistry::findPropertyLabel()` (use `findPropertyLabelById()`)
-  - `PropertyRegistry::getPredefinedPropertyTypeId()` (use `getPropertyValueTypeById()`)
-  - `PropertyRegistry::findPropertyId()` (use `findPropertyIdByLabel()`)
-  - `smwfNumberFormat()` (use `IntlNumberFormatter`)
-  - `ParserFunctionFactory::getSubobjectParser()` (use `newSubobjectParserFunction()`)
-  - `ParserFunctionFactory::getRecurringEventsParser()` (use `newRecurringEventsParserFunction()`)
-  - `smwInitProperties` hook (use `SMW::Property::initProperties`)
-  - `SMWSQLStore3::deleteSubjectBefore` / `SMWSQLStore3::deleteSubjectAfter` hooks (use `SMW::SQLStore::BeforeDeleteSubjectComplete` / `SMW::SQLStore::AfterDeleteSubjectComplete`)
-  - `ParserParameterProcessor::getFirst()` (use `getFirstParameter()`)
-  - `DataValue::prepareValue()` (use `DescriptionBuilder`)
-  - `HashBuilder::createHashIdFromSegments()` (use `createFromSegments()`)
-  - `DataValueFactory::newDataItemValue()` (use `newDataValueByItem()`)
-  - `DataValueFactory::newPropertyObjectValue()` (use `newDataValueByProperty()`)
-  - `DataValueFactory::newTypeIdValue()` (use `newDataValueByType()`)
-  - `DataValueFactory::newPropertyValue()` (use `newDataValueByText()`)
-  - `InMemoryPoolCache::getPoolCacheFor()` (use `getPoolCacheById()`)
-  - `ParserParameterProcessor::getParameterValuesFor()` (use `getParameterValuesByKey()`)
-  - `Localizer::getLanguageCodeFrom()` (use `getAnnotatedLanguageCodeFrom()`)
-  - `ServicesFactory::newQueryParser()` (use `QueryFactory::newQueryParser()`)
-  - `DataTypeRegistry::getDataItemId()` (use `getDataItemByType()`)
-  - `DataTypeRegistry::getDefaultDataItemTypeId()` (use `getDefaultDataItemByType()`)
-  - `QueryResult::getLink()` (use `getQueryLink()`)
-* Moved permission rights and group assignments to declarative `AvailableRights` and `GroupPermissions` keys in `extension.json`. The `SMW::GroupPermissions::BeforeInitializationComplete` hook has been removed. Extensions that modified SMW permissions via this hook should use MediaWiki's standard `$wgGroupPermissions` override in `LocalSettings.php` instead.
-* Removed the `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting. HTTP version negotiation is now handled by MediaWiki's HTTP layer. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped — SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory`.
-* Removed the deprecated root `DefaultSettings.php` shim (deprecated since 4.0.0). Code that loaded settings directly via `require .../DefaultSettings.php` should use `SemanticMediaWiki::getDefaultSettings()` instead.
+  Note: `enableSemantics()` itself still exists but is deprecated as a no-op (see Deprecations).
 
-- Removed legacy job name aliases. All job types must now be referenced by their `smw.*` names. The following aliases no longer work:
+* **Legacy job aliases removed.** All job types must now use their `smw.*` names. The following aliases no longer work:
 
   | Removed alias | Use instead |
   |---|---|
@@ -85,9 +49,59 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `SMWUpdateJob` | `smw.update` |
   | `SMWRefreshJob` | `smw.refresh` |
 
-- The following class aliases are deprecated. They will be removed in a future update. Update any code referencing these to use the new namespaced class names.
+**Dependencies and autoloading:**
 
- | Deprecated alias | New class name |
+* Removed the `mediawiki/parser-hooks` dependency.
+* Removed `psr/log` from `composer.json`. Extensions that relied on SMW pulling in `psr/log` transitively must declare it in their own `composer.json`.
+* Removed the root `DefaultSettings.php` shim (deprecated since 4.0.0). Use `SemanticMediaWiki::getDefaultSettings()` instead.
+* Removed `Defines.php`.
+* **`includes/` directory removed.** All classes have moved to `src/` under new namespaces (`DataItems/`, `DataValues/`, `Export/`, `Formatters/`, `Query/`, `QueryPages/`, `MediaWiki/Specials/`). Class aliases are provided for the transition (see Deprecations below), but code that loaded files by path (e.g., `require .../includes/dataitems/...`) will break.
+
+**Hooks:**
+
+* **`SMW::GroupPermissions::BeforeInitializationComplete` hook removed.** Permission rights and group assignments are now declared in `extension.json`. Extensions that modified SMW permissions via this hook should use MediaWiki's standard `$wgGroupPermissions` override in `LocalSettings.php` instead.
+
+**Removed APIs:**
+
+* Removed `getTextFromContent()`, `replacePrefixes()`, and `textAlreadyUpdatedForIndex()` from `ExtendedSearchEngine`, matching their removal from MediaWiki core's `SearchEngine`.
+* Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
+* Removed long-deprecated code originally scheduled for removal:
+  * `smwfNormalTitleText()` — use `Localizer::getInstance()->normalizeTitleText()` (deprecated since 3.2)
+  * `smwfNumberFormat()` — use `IntlNumberFormatter::getInstance()->getLocalizedFormattedNumber()` (deprecated since 2.1)
+  * `SMW_HEADER_TOOLTIP`, `SMW_HEADER_SORTTABLE`, `SMW_HEADER_STYLE` constants and the numeric-id branch in `Outputs::requireHeadItem()`
+  * `TimeValue::getXMLSchemaDate()` — use `getISO8601Date()`
+  * `ValueDescription::getDataValue()` — use `getDataItem()`
+  * `ResultPrinter::getParameters()` — use `getParamDefinitions()`
+  * `ParserData::setData()` / `getData()` — use `setSemanticData()` / `getSemanticData()`
+  * `Subobject::setSemanticData()` — use `setEmptyContainerForId()`
+  * `PropertyRegistry::findPropertyLabel()` — use `findPropertyLabelById()`
+  * `PropertyRegistry::getPredefinedPropertyTypeId()` — use `getPropertyValueTypeById()`
+  * `PropertyRegistry::findPropertyId()` — use `findPropertyIdByLabel()`
+  * `ParserFunctionFactory::getSubobjectParser()` — use `newSubobjectParserFunction()`
+  * `ParserFunctionFactory::getRecurringEventsParser()` — use `newRecurringEventsParserFunction()`
+  * `smwInitProperties` hook — use `SMW::Property::initProperties`
+  * `SMWSQLStore3::deleteSubjectBefore` / `deleteSubjectAfter` hooks — use `SMW::SQLStore::BeforeDeleteSubjectComplete` / `AfterDeleteSubjectComplete`
+  * `ParserParameterProcessor::getFirst()` — use `getFirstParameter()`
+  * `DataValue::prepareValue()` — use `DescriptionBuilder`
+  * `HashBuilder::createHashIdFromSegments()` — use `createFromSegments()`
+  * `DataValueFactory::newDataItemValue()` — use `newDataValueByItem()`
+  * `DataValueFactory::newPropertyObjectValue()` — use `newDataValueByProperty()`
+  * `DataValueFactory::newTypeIdValue()` — use `newDataValueByType()`
+  * `DataValueFactory::newPropertyValue()` — use `newDataValueByText()`
+  * `InMemoryPoolCache::getPoolCacheFor()` — use `getPoolCacheById()`
+  * `ParserParameterProcessor::getParameterValuesFor()` — use `getParameterValuesByKey()`
+  * `Localizer::getLanguageCodeFrom()` — use `getAnnotatedLanguageCodeFrom()`
+  * `ServicesFactory::newQueryParser()` — use `QueryFactory::newQueryParser()`
+  * `DataTypeRegistry::getDataItemId()` — use `getDataItemByType()`
+  * `DataTypeRegistry::getDefaultDataItemTypeId()` — use `getDefaultDataItemByType()`
+  * `QueryResult::getLink()` — use `getQueryLink()`
+
+### Deprecations
+
+* `enableSemantics()` is deprecated and now a no-op. `wfLoadExtension( 'SemanticMediaWiki' )` alone is sufficient to install SMW, aligning with standard MediaWiki extension conventions. The RDF namespace URI is now auto-derived from `Special:URIResolver` when not explicitly set. Users who set a custom `$smwgNamespace` in `LocalSettings.php` are unaffected.
+* The following class aliases are deprecated. They will be removed in a future release. Update any code referencing these to use the new namespaced class names:
+
+  | Deprecated alias | New class name |
   |---|---|
   | `SMWDIBlob` | `SMW\DataItems\Blob` |
   | `SMWDIBoolean` | `SMW\DataItems\Boolean` |
@@ -141,9 +155,40 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `SMWPageSchemas` | `SMW\MediaWiki\PageSchemas` |
   | `SMW\ContentParser` | `SMW\Parser\ContentParser` |
 
+### Bug fixes
+
+* Fixed incorrect timezone offset for negative half-hour timezones (e.g., Newfoundland `-3:30`): the 30-minute component was always added positively, producing `-2.5` instead of `-3.5` ([#6478](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6478))
+* Fixed CSV export producing malformed output when values contain the delimiter character ([#6343](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6343))
+* Fixed `#ask` sum format failing when encountering non-numeric values instead of treating them as zero ([#6253](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6253))
+* Fixed sortkey being silently dropped in certain query result contexts ([#6250](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6250))
+* Fixed template-rendered values with HTML tags breaking when used with named parameters ([#6235](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6235))
+* Fixed `limit`, `offset`, and `default` parameters being ignored in `@deferred` queries ([#6233](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6233))
+* Fixed malformed Page-type values producing unsanitized error messages ([#6234](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6234))
+* Fixed long property values being incorrectly truncated in the SQL store ([#6225](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6225))
+* Fixed content namespaces configuration failing when array keys are numeric ([#6293](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6293))
+* Fixed JavaScript configuration variables missing after deferred query execution ([#6266](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6266))
+* Fixed unwanted bullet-point styling in FacetedSearch result list ([#6287](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6287))
+* Fixed empty `<section>` tags producing broken output ([#6521](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6521))
+* Fixed `CannotCreateActorException` when importing pages on wikis with temporary accounts enabled ([#6331](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6331))
+* Fixed deprecation warnings on PostgreSQL ([#6202](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6202))
+* Fixed dynamic property deprecation warnings on PHP 8.2+ ([#6362](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6362))
+* Fixed PHP notices in `db-primary-keys.php` maintenance script ([#6466](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6466))
+* Fixed float-to-int precision loss in maintenance script progress output ([#6229](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6229))
+* Fixed null argument error in entity lookup task handler ([#6228](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6228))
+* Improved wording of the post-edit reload notice ([#6301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6301))
+
+### Internal improvements
+
+* Native PHP type coverage significantly expanded across the entire codebase, including return types, parameter types, property types, and constructor promotion with `readonly`
+* PHPUnit test suite reorganized into `Unit/` and `Integration/` directories
+* Numerous static analysis (phan) errors fixed
+* CI updated: added MediaWiki 1.45 to the test matrix, added cancellation of in-progress runs on new pushes, removed Travis CI leftovers
+
 ## Upgrading
 
-No need to run "update.php" or any other migration scripts.
+No need to run `update.php` or any other migration scripts.
+
+**If you use fulltext search** (`smwgEnabledFulltextSearch`): run `rebuildFulltextSearchTable.php` after upgrading to rebuild the index with the new ICU-based transliteration.
 
 **Get the new version via Composer:**
 
@@ -155,4 +200,4 @@ No need to run "update.php" or any other migration scripts.
 This is only for those who have installed SMW via Git.
 
 * Step 1: do a `git pull` in the SemanticMediaWiki directory
-* Step 2: run `composer update --no-dev --optimize-autoloader` in the MediaWiki directory
+* Step 2: run `composer update --no-dev --optimize-autoloader`
