@@ -255,7 +255,7 @@ class SetupCheck {
 	 *
 	 * @param bool $isCli
 	 *
-	 * @return string
+	 * @return string|array|null
 	 */
 	public function getError( $isCli = false ): string|array|null {
 		$error = [
@@ -331,7 +331,7 @@ class SetupCheck {
 	 *
 	 * @return never
 	 */
-	public function showErrorAndAbort( $isCli = false ): void {
+	public function showErrorAndAbort( $isCli = false ): never {
 		echo $this->getError( $isCli );
 
 		if ( ob_get_level() ) {

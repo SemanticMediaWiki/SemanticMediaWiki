@@ -9,6 +9,7 @@ use SMW\DataTypeRegistry;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -42,9 +43,9 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 */
-	public function __construct( SQLStore $store ) {
+	public function __construct( Store $store ) {
 		$this->store = $store;
 		$this->connection = $store->getConnection( 'mw.db.queryengine' );
 	}

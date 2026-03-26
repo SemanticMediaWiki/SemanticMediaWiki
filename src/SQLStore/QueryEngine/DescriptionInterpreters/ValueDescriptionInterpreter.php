@@ -59,7 +59,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 
-		if ( !$description->getDataItem() instanceof WikiPage ) {
+		if ( !$description instanceof ValueDescription || !$description->getDataItem() instanceof WikiPage ) {
 			return $query;
 		}
 
@@ -113,7 +113,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $query;
 	}
 
-	private function addFulltextSearchCondition( Description $description, QuerySegment $query, $comparator, &$value ): false|QuerySegment {
+	private function addFulltextSearchCondition( ValueDescription $description, QuerySegment $query, $comparator, &$value ): false|QuerySegment {
 		// Uses ~~ wide proximity?
 		$usesWidePromixity = false;
 

@@ -199,7 +199,7 @@ class Stats {
 	 * @param bool $asPending
 	 */
 	public function recordStats( $asPending = false ) {
-		if ( $this->shouldRecord === false ) {
+		if ( !$this->shouldRecord ) {
 			$this->stats = [];
 			return $this->stats;
 		}

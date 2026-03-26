@@ -73,6 +73,10 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 
+		if ( !$description instanceof SomeProperty ) {
+			return $query;
+		}
+
 		$this->interpretPropertyConditionForDescription(
 			$query,
 			$description

@@ -179,13 +179,13 @@ class CachingSemanticDataLookup {
 	 * @since 3.1
 	 *
 	 * @param array $subjects
-	 * @param DataItem|null $dataItem
+	 * @param Property $dataItem
 	 * @param PropertyTableDefinition $propertyTableDef
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function prefetchDataFromTable( array $subjects, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function prefetchDataFromTable( array $subjects, Property $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
 		$hash = '';
 
 		if ( $dataItem !== null ) {

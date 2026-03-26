@@ -246,7 +246,8 @@ class ConditionBuilder {
 			$fingerprint .= $description->getMembership();
 		}
 
-		if ( ( $querySegment = $this->findDuplicates( $fingerprint ) ) ) {
+		$querySegment = $this->findDuplicates( $fingerprint );
+		if ( $querySegment ) {
 			return $querySegment;
 		}
 
@@ -292,7 +293,7 @@ class ConditionBuilder {
 	}
 
 	private function findDuplicates( $fingerprint ) {
-		if ( $this->errors !== [] || $this->isFilterDuplicates === false ) {
+		if ( $this->errors !== [] || !$this->isFilterDuplicates ) {
 			return false;
 		}
 

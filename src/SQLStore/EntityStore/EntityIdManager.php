@@ -160,7 +160,7 @@ class EntityIdManager {
 	 * @param WikiPage $target
 	 * @param string|null $flag
 	 *
-	 * @return string|bool
+	 * @return WikiPage|false
 	 */
 	public function findRedirectSource( WikiPage $target, ?string $flag = null ): WikiPage|false {
 		return $this->redirectTargetLookup->findRedirectSource( $target, $flag );
@@ -552,7 +552,7 @@ class EntityIdManager {
 		if ( $id != 0 ) {
 			return $id;
 		} else {
-			return (int)$this->makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes );
+			return $this->makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes );
 		}
 	}
 
@@ -617,7 +617,7 @@ class EntityIdManager {
 				__METHOD__
 			);
 
-			$id = (int)$db->insertId();
+			$id = $db->insertId();
 
 			// Properties also need to be in the property statistics table
 			if ( $namespace === SMW_NS_PROPERTY ) {
@@ -799,7 +799,7 @@ class EntityIdManager {
 			return self::$special_ids[$key];
 		}
 
-		return (int)$this->makeDatabaseId(
+		return $this->makeDatabaseId(
 			$key,
 			SMW_NS_PROPERTY,
 			$this->getPropertyInterwiki( $property ),

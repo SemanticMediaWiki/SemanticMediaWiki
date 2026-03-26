@@ -260,15 +260,15 @@ class RequestOptionsProcessor {
 		return [ $label, $value ];
 	}
 
-	private static function applySortRestriction( RequestOptions $requestOptions, array &$result, array $sortres, bool $isNumeric ): void {
-		if ( !$requestOptions->sort ) {
+	private static function applySortRestriction( ?RequestOptions $requestOptions, array &$result, array $sortres, bool $isNumeric ): void {
+		if ( !$requestOptions || !$requestOptions->sort ) {
 			return;
 		}
 
 		$flag = $isNumeric ? SORT_NUMERIC : SORT_LOCALE_STRING;
 
 		// SORT_NATURAL is selected on n-asc, n-desc
-		if ( isset( $requestOptions->natural ) ) {
+		if ( $requestOptions->natural ) {
 			$flag = SORT_NATURAL;
 		}
 
@@ -287,10 +287,10 @@ class RequestOptionsProcessor {
 		$result = $newres;
 	}
 
-	private static function applyLimitRestriction( RequestOptions $requestOptions, array &$result ): void {
+	private static function applyLimitRestriction( ?RequestOptions $requestOptions, array &$result ): void {
 		// In case of a `conditionConstraint` the restriction is set forth by the
 		// SELECT statement.
-		if ( isset( $requestOptions->conditionConstraint ) ) {
+		if ( !$requestOptions || $requestOptions->conditionConstraint ) {
 			return;
 		}
 
