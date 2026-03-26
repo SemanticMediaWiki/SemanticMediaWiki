@@ -46,15 +46,15 @@ class WantedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @return string
+	 * @param Title $title
+	 *
+	 * @return void
 	 */
 	public function setTitle( Title $title ): void {
 		$this->title = $title;
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function getName(): string {
@@ -62,7 +62,6 @@ class WantedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return bool
 	 */
 	public function isExpensive(): bool {
@@ -71,7 +70,6 @@ class WantedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return bool
 	 */
 	public function isSyndicated(): bool {
@@ -80,7 +78,6 @@ class WantedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * Returns available cache information (takes into account user preferences)
 	 *
 	 * @since 1.9
@@ -96,7 +93,6 @@ class WantedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function getPageHeader(): string {
