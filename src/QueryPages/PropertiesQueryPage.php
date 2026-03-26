@@ -51,7 +51,6 @@ class PropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * Returns available cache information (takes into account user preferences)
 	 *
 	 * @since 1.9
@@ -83,7 +82,6 @@ class PropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function getName(): string {
