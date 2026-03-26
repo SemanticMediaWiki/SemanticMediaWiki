@@ -22,7 +22,6 @@ class WantedPropertiesQueryPageTest extends TestCase {
 
 	private $store;
 	private $skin;
-	private $settings;
 	private $dataItemFactory;
 
 	protected function setUp(): void {
@@ -36,25 +35,20 @@ class WantedPropertiesQueryPageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->settings = Settings::newFromArray( [] );
-
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			WantedPropertiesQueryPage::class,
-			new WantedPropertiesQueryPage( $this->store, $this->settings )
+			new WantedPropertiesQueryPage( $this->store )
 		);
 	}
 
 	public function testFormatResultDIError() {
 		$error = $this->dataItemFactory->newDIError( 'Foo' );
 
-		$instance = new WantedPropertiesQueryPage(
-			$this->store,
-			$this->settings
-		);
+		$instance = new WantedPropertiesQueryPage( $this->store );
 
 		$result = $instance->formatResult(
 			$this->skin,
@@ -74,10 +68,7 @@ class WantedPropertiesQueryPageTest extends TestCase {
 	public function testFormatPropertyItemOnUserDefinedProperty() {
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
-		$instance = new WantedPropertiesQueryPage(
-			$this->store,
-			$this->settings
-		);
+		$instance = new WantedPropertiesQueryPage( $this->store );
 
 		$result = $instance->formatResult(
 			$this->skin,
@@ -93,10 +84,7 @@ class WantedPropertiesQueryPageTest extends TestCase {
 	public function testFormatPropertyItemOnPredefinedProperty() {
 		$property = $this->dataItemFactory->newDIProperty( '_MDAT' );
 
-		$instance = new WantedPropertiesQueryPage(
-			$this->store,
-			$this->settings
-		);
+		$instance = new WantedPropertiesQueryPage( $this->store );
 
 		$result = $instance->formatResult(
 			$this->skin,
