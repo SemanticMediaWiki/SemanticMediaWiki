@@ -19,9 +19,6 @@ use SMW\SQLStore\SQLStore;
  */
 class SpecialPropertyLabelSimilarity extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'PropertyLabelSimilarity' );
 	}
