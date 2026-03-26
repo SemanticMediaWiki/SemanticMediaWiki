@@ -3,7 +3,6 @@
   <coverage includeUncoveredFiles="true">
     <include>
       <directory suffix=".php">src</directory>
-      <directory suffix=".php">includes</directory>
       <directory suffix=".php">maintenance</directory>
     </include>
   </coverage>
