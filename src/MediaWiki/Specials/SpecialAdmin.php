@@ -29,9 +29,6 @@ use SMW\Utils\HtmlTabs;
  */
 class SpecialAdmin extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'SMWAdmin', 'smw-admin' );
 	}
