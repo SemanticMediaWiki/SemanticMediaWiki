@@ -48,7 +48,7 @@ class SpecialWantedProperties extends SpecialPage {
 
 		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
 
-		$page = new WantedPropertiesQueryPage( $this->getStore(), $this->getSettings() );
+		$page = new WantedPropertiesQueryPage( $this->getStore() );
 		$page->setContext( $this->getContext() );
 		$page->setTitle( $this->getPageTitle() );
 

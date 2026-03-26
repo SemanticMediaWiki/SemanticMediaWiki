@@ -6,7 +6,6 @@ use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use SMW\DataItems\Property;
 use SMW\RequestOptions;
-use SMW\Settings;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
 
@@ -25,8 +24,6 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	protected Store $store;
 
-	protected Settings $settings;
-
 	/**
 	 * @var ListLookup
 	 */
@@ -38,11 +35,9 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @since 1.9
 	 *
 	 * @param Store $store
-	 * @param Settings $settings
 	 */
-	public function __construct( Store $store, Settings $settings ) {
+	public function __construct( Store $store ) {
 		$this->store = $store;
-		$this->settings = $settings;
 	}
 
 	/**
