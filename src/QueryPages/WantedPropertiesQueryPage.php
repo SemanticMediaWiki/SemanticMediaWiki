@@ -13,6 +13,7 @@ use SMW\Store;
 /**
  * Query class that provides content for the Special:WantedProperties page
  *
+ * @ingroup semantic-mediawiki
  * @ingroup QueryPage
  *
  * @license GPL-2.0-or-later
