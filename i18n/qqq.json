@@ -694,7 +694,7 @@
 	"log-show-hide-smw": "This is the name for an entry added by Semantic MediaWiki to special page \"[[Special:Log]]\".\nParameters:\n* $1 - one of {{msg-mw|Show}} or {{msg-mw|Hide}}\n{{Related|Log-show-hide}}",
 	"logeventslist-smw-log": "Semantic MediaWiki log option label on [[Special:Log]]",
 	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]].",
-	"logentry-smw-maintenance": "This is the message for an entry added by Semantic MediaWiki to special page \"[[Special:Log]]\".",
+	"logentry-smw-maintenance": "{{Logentry}}\nThis is the message for a maintenance entry added by Semantic MediaWiki to special page \"[[Special:Log]]\".",
 	"smw-datavalue-import-unknown-namespace": "This is an error message.\n\nParameter:\n* $1 holds the name of the namespace.",
 	"smw-datavalue-import-missing-namespace-uri": "This is an error message.\n\nParameter:\n* $1 holds the name of the namespace.",
 	"smw-datavalue-import-missing-type": "This is an error message show to the user during [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary the import of an vocabulary]\n\nParameters:\n* $1 - name of the property to be imported\n* $2 - number of vocabulary to be imported",

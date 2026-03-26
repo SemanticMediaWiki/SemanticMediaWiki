@@ -176,6 +176,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed float-to-int precision loss in maintenance script progress output ([#6229](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6229))
 * Fixed null argument error in entity lookup task handler ([#6228](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6228))
 * Improved wording of the post-edit reload notice ([#6301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6301))
+* Fixed maintenance log entries showing "performed unknown action" instead of a proper message, and improved log comment formatting from raw JSON to human-readable text ([#6146](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6146), [#6554](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6554))
 
 ### Internal improvements
 

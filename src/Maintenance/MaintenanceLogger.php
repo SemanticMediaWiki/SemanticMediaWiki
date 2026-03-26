@@ -56,7 +56,42 @@ class MaintenanceLogger {
 			}
 		}
 
-		$this->log( json_encode( $message ), $target );
+		$this->log( self::formatMessage( $message ), $target );
+	}
+
+	private static function formatMessage( array $message ): string {
+		$parts = [];
+
+		foreach ( $message as $key => $value ) {
+			if ( is_array( $value ) ) {
+				if ( $value === [] ) {
+					continue;
+				}
+				$value = json_encode( $value );
+			} elseif ( $key === 'Memory used' ) {
+				$value = self::formatBytes( (int)$value );
+			}
+
+			$parts[] = "$key: $value";
+		}
+
+		return implode( ', ', $parts );
+	}
+
+	private static function formatBytes( int $bytes ): string {
+		if ( $bytes >= 1073741824 ) {
+			return round( $bytes / 1073741824, 2 ) . ' GB';
+		}
+
+		if ( $bytes >= 1048576 ) {
+			return round( $bytes / 1048576, 2 ) . ' MB';
+		}
+
+		if ( $bytes >= 1024 ) {
+			return round( $bytes / 1024, 2 ) . ' KB';
+		}
+
+		return $bytes . ' bytes';
 	}
 
 	/**
