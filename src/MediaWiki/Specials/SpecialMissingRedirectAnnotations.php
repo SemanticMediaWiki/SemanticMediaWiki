@@ -19,9 +19,6 @@ use SMW\Utils\HtmlColumns;
  */
 class SpecialMissingRedirectAnnotations extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'MissingRedirectAnnotations' );
 	}
