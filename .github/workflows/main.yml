@@ -77,12 +77,8 @@ jobs:
         run: make ci
         if: matrix.coverage == false
 
-      - name: Run unit tests with coverage
-        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite=semantic-mediawiki-unit"
-        if: matrix.coverage == true
-
       - name: Run tests with coverage
-        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure,semantic-mediawiki-unit"
+        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-unit,semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure"
         if: matrix.coverage == true
 
       - name: Upload code coverage
