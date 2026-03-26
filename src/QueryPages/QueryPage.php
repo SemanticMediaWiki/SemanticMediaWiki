@@ -27,7 +27,7 @@ use SMW\StringCondition;
  * Subclasses must implement getResults() and formatResult(), as
  * well as some other standard functions of QueryPage.
  *
- * @ingroup SMW
+ * @ingroup semantic-mediawiki
  * @ingroup QueryPage
  */
 abstract class QueryPage extends MWQueryPage {
