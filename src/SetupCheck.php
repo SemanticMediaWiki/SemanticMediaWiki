@@ -331,7 +331,7 @@ class SetupCheck {
 	 *
 	 * @return never
 	 */
-	public function showErrorAndAbort( $isCli = false ): never {
+	public function showErrorAndAbort( $isCli = false ): void {
 		echo $this->getError( $isCli );
 
 		if ( ob_get_level() ) {
