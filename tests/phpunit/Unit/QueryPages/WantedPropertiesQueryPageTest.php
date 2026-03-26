@@ -11,6 +11,7 @@ use SMW\Store;
 /**
  * @covers \SMW\QueryPages\WantedPropertiesQueryPage
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GPL-2.0-or-later
  * @since 1.9
