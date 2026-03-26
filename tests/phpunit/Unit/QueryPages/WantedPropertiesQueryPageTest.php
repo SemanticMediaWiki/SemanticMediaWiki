@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Skin;
 use SMW\DataItemFactory;
 use SMW\QueryPages\WantedPropertiesQueryPage;
-use SMW\Settings;
 use SMW\Store;
 
 /**
