@@ -136,6 +136,9 @@
 	"FilterLogTypes": {
 		"smw": true
 	},
+	"LogActionsHandlers": {
+		"smw/maintenance": "LogFormatter"
+	},
 	"ContentHandlers": {
 		"smw/schema": "SMW\\MediaWiki\\Content\\SchemaContentHandler"
 	},
