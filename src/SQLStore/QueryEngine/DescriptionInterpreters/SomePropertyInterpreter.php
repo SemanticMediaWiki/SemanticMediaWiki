@@ -74,6 +74,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		$query = new QuerySegment();
 
 		if ( !$description instanceof SomeProperty ) {
+			$query->type = QuerySegment::Q_NOQUERY;
 			return $query;
 		}
 
