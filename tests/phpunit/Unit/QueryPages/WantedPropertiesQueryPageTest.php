@@ -62,11 +62,11 @@ class WantedPropertiesQueryPageTest extends TestCase {
 		);
 
 		$this->assertIsString(
-
 			$result
 		);
 
-		$this->assertEmpty(
+		$this->assertSame(
+			'',
 			$result
 		);
 	}
@@ -103,7 +103,8 @@ class WantedPropertiesQueryPageTest extends TestCase {
 			[ $property, 42 ]
 		);
 
-		$this->assertEmpty(
+		$this->assertSame(
+			'',
 			$result
 		);
 	}
