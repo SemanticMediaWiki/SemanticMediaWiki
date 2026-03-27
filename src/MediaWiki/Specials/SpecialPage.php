@@ -22,7 +22,6 @@ use SMW\StoreFactory;
  * Semantic MediaWiki SpecialPage base class
  *
  * @ingroup SpecialPage
- * @codeCoverageIgnore
  */
 class SpecialPage extends MWSpecialPage {
 

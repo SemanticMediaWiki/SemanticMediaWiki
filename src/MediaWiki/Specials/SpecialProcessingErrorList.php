@@ -16,9 +16,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class SpecialProcessingErrorList extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'ProcessingErrorList' );
 	}

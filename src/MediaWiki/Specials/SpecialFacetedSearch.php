@@ -27,9 +27,6 @@ use SMW\Utils\UrlArgs;
  */
 class SpecialFacetedSearch extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'FacetedSearch', '', true, false, 'default', true );
 	}
