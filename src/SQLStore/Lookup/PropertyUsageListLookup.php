@@ -20,6 +20,8 @@ use SMW\Store;
  */
 class PropertyUsageListLookup implements ListLookup {
 
+	use KeysetPaginationTrait;
+
 	/**
 	 * @since 2.2
 	 */
@@ -72,41 +74,38 @@ class PropertyUsageListLookup implements ListLookup {
 	}
 
 	private function doQueryPropertyTable() {
-		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = [ 'ORDER BY' => 'smw_sort' ];
+		$db = $this->store->getConnection( 'mw.db' );
 		$search_field = 'smw_sortkey';
-
-		$conditions = [
-			'smw_namespace' => SMW_NS_PROPERTY,
-			'smw_iw' => '',
-			'smw_subobject' => ''
-		];
-
-		if ( $this->requestOptions->limit > 0 ) {
-			$options['LIMIT'] = $this->requestOptions->limit;
-			$options['OFFSET'] = max( $this->requestOptions->offset, 0 );
-		}
 
 		if ( $this->requestOptions->getOption( RequestOptions::SEARCH_FIELD ) ) {
 			$search_field = $this->requestOptions->getOption( RequestOptions::SEARCH_FIELD );
 		}
 
+		$queryBuilder = $db->newSelectQueryBuilder()
+			->from( SQLStore::ID_TABLE )
+			->fields( [ 'smw_id', 'smw_title', 'smw_sort', 'usage_count' ] )
+			->join( SQLStore::PROPERTY_STATISTICS_TABLE, null, 'smw_id=p_id' )
+			->where( [
+				'smw_namespace' => SMW_NS_PROPERTY,
+				'smw_iw' => '',
+				'smw_subobject' => '',
+			] )
+			->caller( __METHOD__ );
+
 		if ( $this->requestOptions->getStringConditions() ) {
-			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', $search_field, false );
+			$queryBuilder->andWhere(
+				$this->store->getSQLConditions( $this->requestOptions, '', $search_field, false )
+			);
 		}
 
-		$db = $this->store->getConnection( 'mw.db' );
+		// Fetch one extra row to detect whether more results exist
+		if ( $this->requestOptions->limit > 0 ) {
+			$queryBuilder->limit( $this->requestOptions->limit + 1 );
+		}
 
-		$res = $db->select(
-			[ SQLStore::ID_TABLE, SQLStore::PROPERTY_STATISTICS_TABLE ],
-			[ 'smw_id', 'smw_title', 'usage_count' ],
-			$conditions,
-			__METHOD__,
-			$options,
-			[ SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
-		);
+		$this->applyCursorPagination( $queryBuilder, $db );
 
-		return $res;
+		return $queryBuilder->fetchResultSet();
 	}
 
 	/**
@@ -114,9 +113,26 @@ class PropertyUsageListLookup implements ListLookup {
 	 */
 	private function getPropertyList( $res ): array {
 		$result = [];
+		$rows = [];
 
 		foreach ( $res as $row ) {
+			$rows[] = $row;
+		}
 
+		$isReversed = $this->requestOptions->getCursorBefore() !== null;
+		$limit = $this->requestOptions->limit;
+
+		// Trim the extra lookahead row used to detect more results
+		if ( $limit > 0 && count( $rows ) > $limit ) {
+			array_pop( $rows );
+			$this->requestOptions->setCursorHasMore( true );
+		}
+
+		if ( $isReversed ) {
+			$rows = array_reverse( $rows );
+		}
+
+		foreach ( $rows as $row ) {
 			try {
 				$property = new Property( str_replace( ' ', '_', $row->smw_title ) );
 			} catch ( PropertyLabelNotResolvedException ) {
@@ -125,6 +141,11 @@ class PropertyUsageListLookup implements ListLookup {
 
 			$property->id = $row->smw_id ?? -1;
 			$result[] = [ $property, (int)$row->usage_count ];
+		}
+
+		if ( $rows !== [] ) {
+			$this->requestOptions->setFirstCursor( (int)$rows[0]->smw_id );
+			$this->requestOptions->setLastCursor( (int)$rows[count( $rows ) - 1]->smw_id );
 		}
 
 		return $result;

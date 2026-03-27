@@ -44,8 +44,17 @@ class SpecialProperties extends SpecialPage {
 		$page = new PropertiesQueryPage( $this->getStore(), $this->getSettings() );
 		$page->setContext( $this->getContext() );
 
-		[ $limit, $offset ] = $this->getLimitOffset();
-		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
+		$request = $this->getRequest();
+		$hasCursor = $request->getInt( 'after' ) > 0
+			|| $request->getInt( 'before' ) > 0;
+
+		if ( $hasCursor ) {
+			$limit = $request->getLimitOffsetForUser( $this->getUser() )[0];
+			$page->doQuery( 0, $limit, $request->getVal( 'property' ) );
+		} else {
+			[ $limit, $offset ] = $request->getLimitOffsetForUser( $this->getUser() );
+			$page->doQuery( $offset, $limit, $request->getVal( 'property' ) );
+		}
 
 		// Ensure locally collected output data is pushed to the output!
 		Outputs::commitToOutputPage( $out );
@@ -56,11 +65,6 @@ class SpecialProperties extends SpecialPage {
 	 */
 	protected function getGroupName(): string {
 		return 'smw_group/properties-concepts-types';
-	}
-
-	private function getLimitOffset() {
-		$request = $this->getRequest();
-		return $request->getLimitOffsetForUser( $this->getUser() );
 	}
 
 }

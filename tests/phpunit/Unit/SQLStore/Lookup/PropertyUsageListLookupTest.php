@@ -11,6 +11,8 @@ use SMW\SQLStore\Lookup\PropertyUsageListLookup;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use stdClass;
+use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyUsageListLookup
@@ -112,15 +114,10 @@ class PropertyUsageListLookupTest extends TestCase {
 		$row = new stdClass;
 		$row->smw_title = 'Foo';
 		$row->smw_id = 42;
+		$row->smw_sort = 'Foo';
 		$row->usage_count = $expectedCount;
 
-		$connection = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+		$connection = $this->createMockConnectionWithQueryBuilder( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -129,6 +126,14 @@ class PropertyUsageListLookupTest extends TestCase {
 		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->requestOptions->expects( $this->any() )
+			->method( 'getCursorAfter' )
+			->willReturn( null );
+
+		$this->requestOptions->expects( $this->any() )
+			->method( 'getCursorBefore' )
+			->willReturn( null );
 
 		$instance = new PropertyUsageListLookup(
 			$this->store,
@@ -161,15 +166,10 @@ class PropertyUsageListLookupTest extends TestCase {
 		$row = new stdClass;
 		$row->smw_title = '-Foo';
 		$row->smw_id = 42;
+		$row->smw_sort = '-Foo';
 		$row->usage_count = 42;
 
-		$connection = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+		$connection = $this->createMockConnectionWithQueryBuilder( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -177,6 +177,14 @@ class PropertyUsageListLookupTest extends TestCase {
 
 		// TODO: Illegal dynamic property (#5421)
 		$this->requestOptions->limit = 1001;
+
+		$this->requestOptions->expects( $this->any() )
+			->method( 'getCursorAfter' )
+			->willReturn( null );
+
+		$this->requestOptions->expects( $this->any() )
+			->method( 'getCursorBefore' )
+			->willReturn( null );
 
 		$instance = new PropertyUsageListLookup(
 			$this->store,
@@ -197,6 +205,316 @@ class PropertyUsageListLookupTest extends TestCase {
 		);
 	}
 
+	public function testFetchListWithCursorAfterSetsCursors() {
+		$row = new stdClass;
+		$row->smw_title = 'Bar';
+		$row->smw_id = 50;
+		$row->smw_sort = 'Bar';
+		$row->usage_count = 10;
+
+		$cursorRow = new stdClass;
+		$cursorRow->smw_sort = 'Alpha';
+
+		$queryBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
+
+		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( $cursorRow );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->exactly( 2 ) )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnOnConsecutiveCalls( $queryBuilder, $cursorQueryBuilder );
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnCallback( static fn ( $v ) => "'$v'" );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setCursorAfter( 42 );
+
+		$instance = new PropertyUsageListLookup(
+			$this->store,
+			$this->propertyStatisticsStore,
+			$requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		$this->assertCount( 1, $result );
+		$this->assertSame( 50, $requestOptions->getFirstCursor() );
+		$this->assertSame( 50, $requestOptions->getLastCursor() );
+	}
+
+	public function testFetchListWithCursorBeforeReversesResults() {
+		$row1 = new stdClass;
+		$row1->smw_title = 'Beta';
+		$row1->smw_id = 60;
+		$row1->smw_sort = 'Beta';
+		$row1->usage_count = 5;
+
+		$row2 = new stdClass;
+		$row2->smw_title = 'Alpha';
+		$row2->smw_id = 40;
+		$row2->smw_sort = 'Alpha';
+		$row2->usage_count = 3;
+
+		$cursorRow = new stdClass;
+		$cursorRow->smw_sort = 'Gamma';
+
+		$queryBuilder = $this->createMockSelectQueryBuilder( [ $row1, $row2 ] );
+
+		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( $cursorRow );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->exactly( 2 ) )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnOnConsecutiveCalls( $queryBuilder, $cursorQueryBuilder );
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnCallback( static fn ( $v ) => "'$v'" );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setCursorBefore( 70 );
+
+		$instance = new PropertyUsageListLookup(
+			$this->store,
+			$this->propertyStatisticsStore,
+			$requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		// DESC results [Beta(60), Alpha(40)] should be reversed to [Alpha(40), Beta(60)]
+		$this->assertCount( 2, $result );
+		$this->assertSame( 'Alpha', $result[0][0]->getKey() );
+		$this->assertSame( 'Beta', $result[1][0]->getKey() );
+		$this->assertSame( 40, $requestOptions->getFirstCursor() );
+		$this->assertSame( 60, $requestOptions->getLastCursor() );
+	}
+
+	public function testFetchListWithEmptyResultSetsNoCursors() {
+		$connection = $this->createMockConnectionWithQueryBuilder( [] );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$requestOptions = new RequestOptions();
+
+		$instance = new PropertyUsageListLookup(
+			$this->store,
+			$this->propertyStatisticsStore,
+			$requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		$this->assertSame( [], $result );
+		$this->assertNull( $requestOptions->getFirstCursor() );
+		$this->assertNull( $requestOptions->getLastCursor() );
+	}
+
+	public function testFetchListWithInvalidCursorFallsBackToFirstPage() {
+		$row = new stdClass;
+		$row->smw_title = 'Foo';
+		$row->smw_id = 42;
+		$row->smw_sort = 'Foo';
+		$row->usage_count = 10;
+
+		// cursor lookup returns null (no matching row)
+		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( false );
+
+		$queryBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->exactly( 2 ) )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnOnConsecutiveCalls( $queryBuilder, $cursorQueryBuilder );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setCursorAfter( 99999 );
+
+		$instance = new PropertyUsageListLookup(
+			$this->store,
+			$this->propertyStatisticsStore,
+			$requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		// Should still return results (no WHERE cursor clause added)
+		$this->assertCount( 1, $result );
+		$this->assertSame( 42, $requestOptions->getFirstCursor() );
+		$this->assertSame( 42, $requestOptions->getLastCursor() );
+	}
+
+	public function testFetchListTrimsExtraRowAndSetsCursorHasMore() {
+		$row1 = new stdClass;
+		$row1->smw_title = 'Alpha';
+		$row1->smw_id = 10;
+		$row1->smw_sort = 'Alpha';
+		$row1->usage_count = 5;
+
+		$row2 = new stdClass;
+		$row2->smw_title = 'Beta';
+		$row2->smw_id = 20;
+		$row2->smw_sort = 'Beta';
+		$row2->usage_count = 3;
+
+		$row3 = new stdClass;
+		$row3->smw_title = 'Gamma';
+		$row3->smw_id = 30;
+		$row3->smw_sort = 'Gamma';
+		$row3->usage_count = 1;
+
+		$connection = $this->createMockConnectionWithQueryBuilder( [ $row1, $row2, $row3 ] );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 2;
+
+		$instance = new PropertyUsageListLookup(
+			$this->store,
+			$this->propertyStatisticsStore,
+			$requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		$this->assertCount( 2, $result );
+		$this->assertSame( 'Alpha', $result[0][0]->getKey() );
+		$this->assertSame( 'Beta', $result[1][0]->getKey() );
+		$this->assertTrue( $requestOptions->getCursorHasMore() );
+	}
+
+	public function testFetchListDoesNotSetCursorHasMoreWhenExactLimit() {
+		$row1 = new stdClass;
+		$row1->smw_title = 'Alpha';
+		$row1->smw_id = 10;
+		$row1->smw_sort = 'Alpha';
+		$row1->usage_count = 5;
+
+		$row2 = new stdClass;
+		$row2->smw_title = 'Beta';
+		$row2->smw_id = 20;
+		$row2->smw_sort = 'Beta';
+		$row2->usage_count = 3;
+
+		$connection = $this->createMockConnectionWithQueryBuilder( [ $row1, $row2 ] );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 2;
+
+		$instance = new PropertyUsageListLookup(
+			$this->store,
+			$this->propertyStatisticsStore,
+			$requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		$this->assertCount( 2, $result );
+		$this->assertFalse( $requestOptions->getCursorHasMore() );
+	}
+
+	public function testFetchListWithCursorAfterAppliesCorrectWhereClause() {
+		$row = new stdClass;
+		$row->smw_title = 'Bar';
+		$row->smw_id = 50;
+		$row->smw_sort = 'Bar';
+		$row->usage_count = 10;
+
+		$cursorRow = new stdClass;
+		$cursorRow->smw_sort = 'Alpha';
+
+		$capturedWhereClauses = [];
+
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'from', 'fields', 'field', 'join', 'where',
+			'orderBy', 'limit', 'offset', 'caller' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'andWhere' )
+			->willReturnCallback( static function ( $clause ) use ( $queryBuilder, &$capturedWhereClauses ) {
+				$capturedWhereClauses[] = $clause;
+				return $queryBuilder;
+			} );
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
+
+		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( $cursorRow );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->exactly( 2 ) )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnOnConsecutiveCalls( $queryBuilder, $cursorQueryBuilder );
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnCallback( static fn ( $v ) => "'$v'" );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setCursorAfter( 42 );
+
+		$instance = new PropertyUsageListLookup(
+			$this->store,
+			$this->propertyStatisticsStore,
+			$requestOptions
+		);
+
+		$instance->fetchList();
+
+		$cursorClause = "(smw_sort, smw_id) > ('Alpha', 42)";
+		$this->assertContains( $cursorClause, $capturedWhereClauses,
+			'Expected cursor WHERE clause not found in andWhere calls' );
+	}
+
 	public function usageCountProvider() {
 		$provider[] = [
 			0
@@ -207,6 +525,57 @@ class PropertyUsageListLookupTest extends TestCase {
 		];
 
 		return $provider;
+	}
+
+	/**
+	 * Creates a mock SelectQueryBuilder where all chained methods return $this.
+	 *
+	 * @param array|stdClass|false $result For arrays: wrapped in FakeResultWrapper
+	 *   for fetchResultSet(). For stdClass/false: returned by fetchRow().
+	 */
+	private function createMockSelectQueryBuilder( $result ) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'from', 'fields', 'field', 'join', 'where',
+			'andWhere', 'orderBy', 'limit', 'offset', 'caller' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		if ( is_array( $result ) ) {
+			$queryBuilder->expects( $this->any() )
+				->method( 'fetchResultSet' )
+				->willReturn( new FakeResultWrapper( $result ) );
+		} else {
+			$queryBuilder->expects( $this->any() )
+				->method( 'fetchRow' )
+				->willReturn( $result );
+		}
+
+		return $queryBuilder;
+	}
+
+	/**
+	 * Creates a mock Database connection with a single newSelectQueryBuilder
+	 * that returns the given rows from fetchResultSet.
+	 */
+	private function createMockConnectionWithQueryBuilder( array $rows ) {
+		$queryBuilder = $this->createMockSelectQueryBuilder( $rows );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
+
+		return $connection;
 	}
 
 }

@@ -9,6 +9,7 @@ use MediaWiki\Request\WebRequest;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\QueryPages\QueryPage;
+use SMW\RequestOptions;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
 /**
@@ -76,11 +77,13 @@ class QueryPageTest extends TestCase {
 
 		$reflector = new ReflectionClass( QueryPage::class );
 		$selectOptions = $reflector->getProperty( 'selectOptions' );
+		$requestOptions = new RequestOptions();
 		$selectOptions->setValue( $instance, [
 			'offset' => 1,
 			'limit'  => 2,
 			'end'    => 5,
-			'count'  => 4
+			'count'  => 4,
+			'requestOptions' => $requestOptions
 		] );
 
 		$result = $instance->getSearchForm( $search );

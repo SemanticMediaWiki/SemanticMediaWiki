@@ -137,16 +137,21 @@ abstract class QueryPage extends MWQueryPage {
 		// No need to verify $this->selectOptions because its values are set
 		// during doQuery() which is processed before this form is generated
 		$limit = $this->selectOptions['limit'];
-		$offset = $this->selectOptions['offset'];
-		$resultCount = $this->msg( 'smw-showingresults' )->numParams( $limit, $offset + 1 )->parse();
+		$options = $this->selectOptions['requestOptions'];
 
 		$msgBuilder = new MessageBuilder( $this->getLanguage() );
-		$selection = $msgBuilder->prevNextToText(
+
+		$isFirstPage = !$options->hasCursor();
+		$resultCount = $this->msg( 'smw-showingresults-cursor' )->numParams( $limit )->parse();
+
+		$selection = $msgBuilder->cursorPrevNextToText(
 			$this->getContext()->getTitle(),
 			$limit,
-			$offset,
+			$isFirstPage ? null : $options->getFirstCursor(),
+			$options->getLastCursor(),
 			$this->linkParameters(),
-			$this->selectOptions['end']
+			$this->selectOptions['end'],
+			$options->getCursorBefore() !== null
 		);
 
 		if ( $cacheDate !== '' ) {
@@ -206,6 +211,17 @@ abstract class QueryPage extends MWQueryPage {
 		$options->offset = $offset;
 		$options->sort = true;
 
+		// Set cursor params from request
+		$request = $this->getRequest();
+		$afterId = $request->getInt( 'after' );
+		$beforeId = $request->getInt( 'before' );
+
+		if ( $afterId > 0 ) {
+			$options->setCursorAfter( $afterId );
+		} elseif ( $beforeId > 0 ) {
+			$options->setCursorBefore( $beforeId );
+		}
+
 		if ( $property ) {
 			$options->addStringCondition( $property, StringCondition::STRCOND_MID );
 		}
@@ -217,14 +233,18 @@ abstract class QueryPage extends MWQueryPage {
 		$res = $this->getResults( $options );
 		$num = count( $res );
 
-		// often disable 'next' link when we reach the end
-		$atend = $num < $limit;
+		// The lookup fetches limit+1 rows and trims the extra, setting
+		// cursorHasMore if more results exist. Ideally the lookup would
+		// return a result object with a hasMore field instead of using
+		// the RequestOptions side-channel.
+		$atend = !$options->getCursorHasMore();
 
 		$this->selectOptions = [
-			'offset' => $offset,
-			'limit'  => $limit,
-			'end'    => $atend,
-			'count'  => $num
+			'offset'         => $offset,
+			'limit'          => $limit,
+			'end'            => $atend,
+			'count'          => $num,
+			'requestOptions' => $options,
 		];
 
 		$out->addHTML( $this->getPageHeader() );
@@ -238,7 +258,7 @@ abstract class QueryPage extends MWQueryPage {
 		if ( $num > 0 ) {
 			$s = [];
 			if ( !$this->listoutput ) {
-				$s[] = $this->openList( $offset );
+				$s[] = "<ul>\n";
 			}
 
 			foreach ( $res as $r ) {
@@ -249,7 +269,7 @@ abstract class QueryPage extends MWQueryPage {
 			}
 
 			if ( !$this->listoutput ) {
-				$s[] = $this->closeList();
+				$s[] = "</ul>\n";
 			}
 			$str = $this->listoutput ? $this->getLanguage()->listToText( $s ) : implode( '', $s );
 			$out->addHTML( $str );

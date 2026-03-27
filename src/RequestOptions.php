@@ -142,6 +142,56 @@ class RequestOptions {
 
 	public ?bool $natural = null;
 
+	private ?int $cursorAfter = null;
+	private ?int $cursorBefore = null;
+	private ?int $firstCursor = null;
+	private ?int $lastCursor = null;
+	private bool $cursorHasMore = false;
+
+	public function setCursorAfter( int $id ): void {
+		$this->cursorAfter = $id;
+	}
+
+	public function getCursorAfter(): ?int {
+		return $this->cursorAfter;
+	}
+
+	public function setCursorBefore( int $id ): void {
+		$this->cursorBefore = $id;
+	}
+
+	public function getCursorBefore(): ?int {
+		return $this->cursorBefore;
+	}
+
+	public function setFirstCursor( int $id ): void {
+		$this->firstCursor = $id;
+	}
+
+	public function getFirstCursor(): ?int {
+		return $this->firstCursor;
+	}
+
+	public function setLastCursor( int $id ): void {
+		$this->lastCursor = $id;
+	}
+
+	public function getLastCursor(): ?int {
+		return $this->lastCursor;
+	}
+
+	public function hasCursor(): bool {
+		return $this->cursorAfter !== null || $this->cursorBefore !== null;
+	}
+
+	public function setCursorHasMore( bool $hasMore ): void {
+		$this->cursorHasMore = $hasMore;
+	}
+
+	public function getCursorHasMore(): bool {
+		return $this->cursorHasMore;
+	}
+
 	/**
 	 * @since 3.1
 	 *
@@ -321,6 +371,8 @@ class RequestOptions {
 			$stringConditions,
 			$this->extraConditions,
 			$this->options,
+			$this->cursorAfter,
+			$this->cursorBefore,
 		] );
 	}
 

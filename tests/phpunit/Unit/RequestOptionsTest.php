@@ -40,7 +40,7 @@ class RequestOptionsTest extends TestCase {
 		}
 
 		$this->assertEquals(
-			'[-1,0,0,false,true,null,true,false,"Foo#0##",[],[]]',
+			'[-1,0,0,false,true,null,true,false,"Foo#0##",[],[],null,null]',
 			$instance->getHash()
 		);
 	}
@@ -59,7 +59,7 @@ class RequestOptionsTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			'[-1,0,0,false,true,null,true,false,"",["Foo",{"Bar":"Foobar"}],[]]',
+			'[-1,0,0,false,true,null,true,false,"",["Foo",{"Bar":"Foobar"}],[],null,null]',
 			$instance->getHash()
 		);
 	}
@@ -116,6 +116,52 @@ class RequestOptionsTest extends TestCase {
 		];
 
 		return $provider;
+	}
+
+	public function testCursorAfterRoundTrip() {
+		$options = new RequestOptions();
+		$this->assertNull( $options->getCursorAfter() );
+
+		$options->setCursorAfter( 123 );
+
+		$this->assertSame( 123, $options->getCursorAfter() );
+		$this->assertNull( $options->getCursorBefore() );
+		$this->assertTrue( $options->hasCursor() );
+	}
+
+	public function testCursorBeforeRoundTrip() {
+		$options = new RequestOptions();
+
+		$options->setCursorBefore( 456 );
+
+		$this->assertSame( 456, $options->getCursorBefore() );
+		$this->assertNull( $options->getCursorAfter() );
+		$this->assertTrue( $options->hasCursor() );
+	}
+
+	public function testFirstAndLastCursorRoundTrip() {
+		$options = new RequestOptions();
+		$this->assertNull( $options->getFirstCursor() );
+		$this->assertNull( $options->getLastCursor() );
+
+		$options->setFirstCursor( 1 );
+		$options->setLastCursor( 99 );
+
+		$this->assertSame( 1, $options->getFirstCursor() );
+		$this->assertSame( 99, $options->getLastCursor() );
+	}
+
+	public function testHasCursorReturnsFalseByDefault() {
+		$options = new RequestOptions();
+		$this->assertFalse( $options->hasCursor() );
+	}
+
+	public function testHashIncludesCursorData() {
+		$a = new RequestOptions();
+		$b = new RequestOptions();
+		$b->setCursorAfter( 1 );
+
+		$this->assertNotSame( $a->getHash(), $b->getHash() );
 	}
 
 }

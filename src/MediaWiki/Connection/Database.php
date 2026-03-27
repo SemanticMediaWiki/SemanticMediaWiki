@@ -13,6 +13,7 @@ use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\ScopedCallback;
 
 /**
@@ -87,6 +88,10 @@ class Database {
 	 */
 	public function newQuery(): Query {
 		return new Query( $this );
+	}
+
+	public function newSelectQueryBuilder(): SelectQueryBuilder {
+		return $this->connRef->getConnection( 'read' )->newSelectQueryBuilder();
 	}
 
 	/**
