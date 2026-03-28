@@ -98,7 +98,7 @@ class QueryEngine implements QueryEngineInterface {
 
 	private function getCountQueryResult( Query $query, Condition $compoundCondition ): int|QueryResult {
 		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
-			if ( $compoundCondition->getCondition() === '' ) { // all URIs exist, no querying
+			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;
 			} else {
 				$condition = $this->conditionBuilder->convertConditionToString( $compoundCondition );
@@ -132,7 +132,7 @@ class QueryEngine implements QueryEngineInterface {
 		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
 			$matchElement = $compoundCondition->matchElement;
 
-			if ( $compoundCondition->getCondition() === '' ) { // all URIs exist, no querying
+			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				$results = [ [ $matchElement ] ];
 			} else {
 				$condition = $this->conditionBuilder->convertConditionToString( $compoundCondition );
@@ -170,7 +170,7 @@ class QueryEngine implements QueryEngineInterface {
 		$debugFormatter->setName( 'SPARQLStore' );
 
 		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
-			if ( $compoundCondition->getCondition() === '' ) { // all URIs exist, no querying
+			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				$sparql = 'None (no conditions).';
 			} else {
 				$condition = $this->conditionBuilder->convertConditionToString( $compoundCondition );
