@@ -91,7 +91,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	 *
 	 * @since 2.0
 	 *
-	 * @return SparqlDatabase
+	 * @return RepositoryConnection
 	 * @throws RuntimeException
 	 */
 	public function getConnection(): RepositoryConnection {

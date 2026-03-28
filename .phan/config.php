@@ -57,4 +57,16 @@ if ( is_dir( 'vendor' ) ) {
 	$config['exclude_analysis_directory_list'][] = 'vendor';
 }
 
+$config = array_merge( $config, [
+'prefer_narrowed_phpdoc_param_type' => false,
+
+// Do not let PHPDoc return types override real return types
+'prefer_narrowed_phpdoc_return_type' => false,
+
+// Warns you if the @param type in the docblock doesn't match the native signature
+'check_docblock_signature_param_type_match' => true,
+
+// Warns you if the @return type in the docblock doesn't match the native signature
+'check_docblock_signature_return_type_match' => true,
+] );
 return $config;

@@ -175,7 +175,7 @@ class RepositoryResult implements Iterator {
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
 	 *
-	 * @return array of (ExpElement or null), or false at end of data
+	 * @return mixed
 	 */
 	#[ReturnTypeWillChange]
 	public function next() {
@@ -186,7 +186,7 @@ class RepositoryResult implements Iterator {
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
 	 *
-	 * @return array of (ExpElement or null), or false at end of data
+	 * @return int|string|null
 	 */
 	#[ReturnTypeWillChange]
 	public function key() {

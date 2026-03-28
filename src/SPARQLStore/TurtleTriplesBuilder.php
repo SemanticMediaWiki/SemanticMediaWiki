@@ -2,6 +2,7 @@
 
 namespace SMW\SPARQLStore;
 
+use LogicException;
 use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -201,7 +202,7 @@ class TurtleTriplesBuilder {
 	 * @param Element $expElement object containing the update data
 	 * @param &$auxiliaryExpData array of ExpData
 	 *
-	 * @return ExpElement
+	 * @return Element
 	 */
 	private function expandUpdateExpElement( Element $expElement, array &$auxiliaryExpData ) {
 		if ( $expElement instanceof ExpResource ) {
@@ -240,9 +241,8 @@ class TurtleTriplesBuilder {
 			$elementTarget = $expResource;
 		}
 
-		if ( !$exists && $elementTarget->getDataItem() instanceof WikiPage && $elementTarget->getDataItem()->getDBKey() !== '' ) {
-
-			$diWikiPage = $elementTarget->getDataItem();
+		$diWikiPage = $elementTarget->getDataItem();
+		if ( !$exists && $diWikiPage instanceof WikiPage && $elementTarget->getDataItem()->getDBKey() !== '' ) {
 			$hash = $diWikiPage->getHash();
 
 			if ( !$this->cache->contains( $hash ) ) {
@@ -270,6 +270,7 @@ class TurtleTriplesBuilder {
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
 	 *
 	 * @return ExpData
+	 * @throws LogicException
 	 */
 	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, bool $expandSubject ) {
 		$subjectExpResource = $expData->getSubject();
@@ -290,6 +291,10 @@ class TurtleTriplesBuilder {
 		foreach ( $expData->getProperties() as $propertyResource ) {
 
 			$propertyTarget = $this->expandUpdateExpElement( $propertyResource, $auxiliaryExpData );
+
+			if ( !$propertyTarget instanceof ExpNsResource ) {
+				throw new LogicException( 'Expected ExpNsResource' );
+			}
 
 			foreach ( $expData->getValues( $propertyResource ) as $element ) {
 				$newExpData->addPropertyObjectValue(

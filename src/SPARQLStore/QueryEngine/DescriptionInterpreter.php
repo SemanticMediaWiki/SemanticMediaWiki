@@ -3,6 +3,7 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use SMW\Query\Language\Description;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 
 /**
  * @license GPL-2.0-or-later

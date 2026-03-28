@@ -19,12 +19,12 @@ class SingletonCondition extends Condition {
 	/**
 	 * The single element that this condition may possibly match.
 	 *
-	 * @var ExpElement
+	 * @var ExpElement|string
 	 */
 	public $matchElement;
 
 	public function __construct(
-		ExpElement $matchElement,
+		ExpElement|string $matchElement,
 		public $condition = '',
 		public $isSafe = false,
 		$namespaces = [],

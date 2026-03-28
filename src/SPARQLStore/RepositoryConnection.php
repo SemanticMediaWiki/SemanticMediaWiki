@@ -91,7 +91,7 @@ interface RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function doQuery( $sparql );
+	public function doQuery( string $sparql );
 
 	/**
 	 * Execute a SPARQL update and return a boolean to indicate if the
@@ -109,7 +109,7 @@ interface RepositoryConnection {
 	 *
 	 * @return bool
 	 */
-	public function doUpdate( $sparql );
+	public function doUpdate( string $sparql );
 
 	/**
 	 * Execute a HTTP-based SPARQL POST request according to

@@ -33,7 +33,7 @@ class ExpNsResource extends ExpResource {
 	 */
 	private string $namespaceId;
 
-	public bool $isUserDefined;
+	public ?bool $isUserDefined;
 
 	/**
 	 * @note The given URI must not contain serialization-specific

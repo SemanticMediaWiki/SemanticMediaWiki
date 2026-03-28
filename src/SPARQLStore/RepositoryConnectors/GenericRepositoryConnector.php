@@ -69,7 +69,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @param string|int $type
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getEndpoint( $type ): ?string {
 		if ( $type === RepositoryConnection::QUERY_ENDPOINT ) {
@@ -191,7 +191,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param string|array $vars
 	 * @param string $where WHERE part of the query, without surrounding { }
 	 * @param array $options
-	 * @param aray $extraNamespaces (associative) of namespaceId => namespaceUri
+	 * @param array $extraNamespaces (associative) of namespaceId => namespaceUri
 	 *
 	 * @return string SPARQL query
 	 */
@@ -423,11 +423,12 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @note This function sets the graph that is to be used as part of the
 	 * request. Queries should not include additional graph information.
 	 *
-	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
+	 * @param string $sparql string with the complete SPARQL query (SELECT or ASK)
 	 *
 	 * @return RepositoryResult
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doQuery( $sparql ): RepositoryResult {
+	public function doQuery( string $sparql ): RepositoryResult {
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -480,11 +481,12 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * when sending the query. Direct callers to this function must include
 	 * the graph information in the queries that they build.
 	 *
-	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
+	 * @param string $sparql string with the complete SPARQL update query (INSERT or DELETE)
 	 *
 	 * @return bool
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doUpdate( $sparql ): bool {
+	public function doUpdate( string $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -537,6 +539,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param $payload string Turtle serialization of data to send
 	 *
 	 * @return bool
+	 * @throws BadHttpEndpointResponseException
 	 */
 	public function doHttpPost( $payload ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
@@ -603,7 +606,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	/**
 	 * @since 3.2
 	 *
-	 * @return string|int
+	 * @return string
 	 */
 	public function getVersion(): string {
 		return 'n/a';

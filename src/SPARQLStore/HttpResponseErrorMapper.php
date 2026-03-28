@@ -24,6 +24,9 @@ class HttpResponseErrorMapper {
 	 * @since 2.0
 	 *
 	 * @param int $httpStatusCode HTTP status code (0 for connection failures)
+	 *
+	 * @return void
+	 * @throws BadHttpEndpointResponseException
 	 */
 	public function mapErrorResponse(
 		int $httpStatusCode,
