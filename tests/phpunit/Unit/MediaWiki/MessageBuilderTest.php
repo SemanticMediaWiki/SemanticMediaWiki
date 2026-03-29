@@ -116,4 +116,65 @@ class MessageBuilderTest extends TestCase {
 		$instance->getMessage( 'properties' );
 	}
 
+	public function testCursorPrevNextToTextReturnsString() {
+		$language = $this->getMockBuilder( Language::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$builder = new MessageBuilder( $language );
+		$title = Title::newFromText( 'Special:Properties' );
+
+		$result = $builder->cursorPrevNextToText( $title, 50, 1, 99, [], false );
+
+		$this->assertIsString( $result );
+		$this->assertStringContainsString( 'after=', $result );
+		$this->assertStringContainsString( 'before=', $result );
+	}
+
+	public function testCursorPrevNextFirstPageNoPrevLink() {
+		$language = $this->getMockBuilder( Language::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$builder = new MessageBuilder( $language );
+		$title = Title::newFromText( 'Special:Properties' );
+
+		$result = $builder->cursorPrevNextToText( $title, 50, null, 99, [], false );
+
+		$this->assertIsString( $result );
+		$this->assertStringNotContainsString( 'before=', $result );
+		$this->assertStringContainsString( 'after=', $result );
+	}
+
+	public function testCursorPrevNextBackwardAtBeginningHidesPrev() {
+		$language = $this->getMockBuilder( Language::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$builder = new MessageBuilder( $language );
+		$title = Title::newFromText( 'Special:Properties' );
+
+		// Going backward, atEnd=true means we hit the beginning
+		$result = $builder->cursorPrevNextToText( $title, 50, 1, 99, [], true, true );
+
+		$this->assertIsString( $result );
+		$this->assertStringNotContainsString( 'before=', $result );
+		$this->assertStringContainsString( 'after=', $result );
+	}
+
+	public function testCursorPrevNextLastPageNoNextLink() {
+		$language = $this->getMockBuilder( Language::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$builder = new MessageBuilder( $language );
+		$title = Title::newFromText( 'Special:Properties' );
+
+		$result = $builder->cursorPrevNextToText( $title, 50, 1, 99, [], true );
+
+		$this->assertIsString( $result );
+		$this->assertStringContainsString( 'before=', $result );
+		$this->assertStringNotContainsString( 'after=', $result );
+	}
+
 }
