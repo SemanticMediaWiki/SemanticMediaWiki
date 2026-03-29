@@ -35,3 +35,27 @@ expected
 .DS_Store
 ## Windows
 Thumbs.db
+data/config/db-primary-keys.php
+res/smw/tokens.less
+src/DataValues/KeywordValue.php
+src/Exporter/ResourceBuilders/KeywordPropertyValueResourceBuilder.php
+src/Property/Annotators/SortKeyPropertyAnnotator.php
+src/Query/Parser/Tokenizer.php
+src/Query/QueryToken.php
+src/Utils/Tokenizer.php
+tests/phpunit/Integration/SemanticDataSortKeyUpdateDBIntegrationTest.php
+tests/phpunit/Structure/ConfigPreloadTableListPrimaryKeysCompleteTest.php
+tests/phpunit/Structure/I18nMsgKeyIntegrityTest.php
+tests/phpunit/Utils/TokenizerTest.php
+data/config/db-primary-keys.php
+res/smw/tokens.less
+src/DataValues/KeywordValue.php
+src/Exporter/ResourceBuilders/KeywordPropertyValueResourceBuilder.php
+src/Property/Annotators/SortKeyPropertyAnnotator.php
+src/Query/Parser/Tokenizer.php
+src/Query/QueryToken.php
+src/Utils/Tokenizer.php
+tests/phpunit/Integration/SemanticDataSortKeyUpdateDBIntegrationTest.php
+tests/phpunit/Structure/ConfigPreloadTableListPrimaryKeysCompleteTest.php
+tests/phpunit/Structure/I18nMsgKeyIntegrityTest.php
+tests/phpunit/Utils/TokenizerTest.php
