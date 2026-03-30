@@ -681,7 +681,7 @@
 	"log-show-hide-smw": "$1 le registro de Semantic MediaWiki",
 	"logeventslist-smw-log": "Registro de Semantic MediaWiki",
 	"log-description-smw": "Activitates pro le [https://www.semantic-mediawiki.org/wiki/Help:Logging typos de evento activate] que ha essite reportate per Semantic MediaWiki e su componentes.",
-	"logentry-smw-maintenance": "Eventos concernente le mantenentia emittite per Semantic MediaWiki",
+	"logentry-smw-maintenance": "$1 {{GENDER:$2|ha exequite}} mantenentia",
 	"smw-datavalue-import-unknown-namespace": "Le spatio de nomines de importation \"$1\" es incognite. Per favor assecura te que le detalios de importation OWL es disponibile via [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-namespace-uri": "Impossibile trovar un URI de spatio de nomines \"$1\" in le [[MediaWiki:Smw import $1|importation de $1]].",
 	"smw-datavalue-import-missing-type": "Nulle definition de typo esseva trovate pro \"$1\" in le [[MediaWiki:Smw import $2|importation de $2]].",
@@ -1099,5 +1099,6 @@
 	"smw-facetedsearch-clear-filters": "Rader filtro{{PLURAL:$1||s}}",
 	"smw-search-placeholder": "Cercar…",
 	"smw-listingcontinuesabbrev": "cont.",
-	"smw-showingresults": "Infra appare non plus de {{PLURAL:$1|<strong>1</strong> resultato|<strong>$1</strong> resultatos}} a partir del numero <strong>$2</strong>."
+	"smw-showingresults": "Infra appare non plus de {{PLURAL:$1|<strong>1</strong> resultato|<strong>$1</strong> resultatos}} a partir del numero <strong>$2</strong>.",
+	"smw-showingresults-cursor": "Infra appare usque a <strong>$1</strong> resultato{{PLURAL:$1||s}}."
 }

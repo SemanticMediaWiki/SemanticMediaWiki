@@ -739,7 +739,7 @@
 	"log-show-hide-smw": "$1语义MediaWiki日志",
 	"logeventslist-smw-log": "语义MediaWiki日志",
 	"log-description-smw": "语义MediaWiki及其组件报告的[https://www.semantic-mediawiki.org/wiki/Help:Logging 已启用事件类型]的活动。",
-	"logentry-smw-maintenance": "语义MediaWiki发出的维护相关事件",
+	"logentry-smw-maintenance": "$1{{GENDER:$2|执行了}}维护",
 	"smw-datavalue-import-unknown-namespace": "导入命名空间“$1”未知。请确保OWL导入详细信息可通过[[MediaWiki:Smw import $1]]获取",
 	"smw-datavalue-import-missing-namespace-uri": "无法在[[MediaWiki:Smw import $1|$1导入]]内找到“$1”命名空间的URI。",
 	"smw-datavalue-import-missing-type": "没有在[[MediaWiki:Smw import $2|$2导入]]内找到“$1”的类型定义。",

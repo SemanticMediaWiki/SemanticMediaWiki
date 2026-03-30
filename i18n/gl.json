@@ -689,7 +689,7 @@
 	"log-show-hide-smw": "$1 o rexistro de Semantic MediaWiki",
 	"logeventslist-smw-log": "Rexistro de Semantic MediaWiki",
 	"log-description-smw": "Actividades dos [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de evento activados]  que foron notificados por Semantic MediaWiki e os seus compoñentes.",
-	"logentry-smw-maintenance": "Eventos relacionados co mantemento emitidos por Semantic MediaWiki",
+	"logentry-smw-maintenance": "$1 {{GENDER:$2|realizou}} mantemento",
 	"smw-datavalue-import-unknown-namespace": "Descoñécese o espazo de nomes de importación «$1». Asegúrate de que os detalles de importación de OWL están dispoñibles mediante «[[MediaWiki:Smw import $1]]»",
 	"smw-datavalue-import-missing-namespace-uri": "Non se puido atopar un URI do espazo de nomes de «$1» na [[MediaWiki:Smw import $1|importación de «$1»]].",
 	"smw-datavalue-import-missing-type": "Non se atopou ningunha definición de tipo para «$1» na [[MediaWiki:Smw import $2|importación de «$2»]].",
@@ -1108,5 +1108,6 @@
 	"smw-facetedsearch-clear-filters": "Quitar {{PLURAL:$1|o filtro|os filtros}}",
 	"smw-search-placeholder": "Procurar...",
 	"smw-listingcontinuesabbrev": "cont.",
-	"smw-showingresults": "{{PLURAL:$1|Móstrase <strong>1</strong> resultado|Móstranse <strong>$1</strong> resultados}}, comezando polo número <strong>$2</strong>."
+	"smw-showingresults": "{{PLURAL:$1|Móstrase <strong>1</strong> resultado|Móstranse <strong>$1</strong> resultados}}, comezando polo número <strong>$2</strong>.",
+	"smw-showingresults-cursor": "{{PLURAL:$1|Móstrase <strong>1</strong> resultado|Móstranse <strong>$1</strong> resultados}}."
 }
