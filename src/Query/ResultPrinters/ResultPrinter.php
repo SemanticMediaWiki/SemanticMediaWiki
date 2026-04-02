@@ -320,13 +320,16 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * Build and return the HTML result.
 	 *
+	 * FIXME: The Datatable format in SRF can return array.
+	 * We can not use ?string as return type until that is patched.
+	 *
 	 * @since 1.8
 	 *
 	 * @param QueryResult $results
 	 *
 	 * @return string
 	 */
-	protected function buildResult( QueryResult $results ): ?string {
+	protected function buildResult( QueryResult $results ) {
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 
