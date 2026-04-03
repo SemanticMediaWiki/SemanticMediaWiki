@@ -136,13 +136,15 @@ class AskParserFunction {
 	 * @todo $rawParams should be of IParameterFormatter
 	 * QueryParameterFormatter class
 	 *
+	 * Note: Datatable in SRF can return array
+	 *
 	 * @since 1.9
 	 *
 	 * @param array $functionParams
 	 *
 	 * @return string|null
 	 */
-	public function parse( array $functionParams ): ?string {
+	public function parse( array $functionParams ) {
 		// Do we still need this?
 		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
 		$GLOBALS['smwgIQRunningNumber']++;
