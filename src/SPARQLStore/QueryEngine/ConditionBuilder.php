@@ -19,6 +19,7 @@ use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
+use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
@@ -318,10 +319,10 @@ class ConditionBuilder {
 	 * Create an Condition from an empty (true) description.
 	 * May still require helper conditions for ordering.
 	 *
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
+	 * @param string $joinVariable string name, see mapDescriptionToCondition()
+	 * @param mixed $orderByProperty mixed Property or null, see mapDescriptionToCondition()
 	 *
-	 * @return Condition
+	 * @return TrueCondition
 	 */
 	public function newTrueCondition( string $joinVariable, $orderByProperty ): TrueCondition {
 		$result = new TrueCondition();
@@ -406,7 +407,12 @@ class ConditionBuilder {
 	 * @param mixed $orderByProperty DIProperty or null
 	 * @param int $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
 	 */
-	public function addOrderByDataForProperty( Condition &$sparqlCondition, string $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ): void {
+	public function addOrderByDataForProperty(
+		Condition &$sparqlCondition,
+		string $mainVariable,
+		$orderByProperty,
+		$diType = DataItem::TYPE_NOTYPE
+	): void {
 		if ( $orderByProperty === null ) {
 			return;
 		}

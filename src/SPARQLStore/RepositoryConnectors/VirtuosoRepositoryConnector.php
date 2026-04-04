@@ -148,6 +148,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
 	 *
 	 * @return bool
+	 * @throws BadHttpEndpointResponseException
 	 */
 	public function doUpdate( $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {

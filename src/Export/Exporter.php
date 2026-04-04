@@ -650,7 +650,7 @@ class Exporter {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return ExpElement
+	 * @return Element|null
 	 */
 	public function newExpElement( DataItem $dataItem ): ?Element {
 		return self::$elementFactory->newFromDataItem( $dataItem );

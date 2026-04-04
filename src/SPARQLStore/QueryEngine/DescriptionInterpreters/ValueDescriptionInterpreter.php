@@ -49,6 +49,8 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 * @since 2.2
 	 *
 	 * {@inheritDoc}
+	 *
+	 * @return Condition
 	 */
 	public function interpretDescription( Description $description ) {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
@@ -91,7 +93,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		if ( $comparator === '' ) {
 			return $this->createConditionForEmptyComparator( $joinVariable, $orderByProperty );
-		} elseif ( $comparator == '=' && $asNoCase === false ) {
+		} elseif ( $comparator == '=' && !$asNoCase ) {
 			return $this->createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty );
 		} elseif ( $comparator == 'regex' || $comparator == '!regex' ) {
 			return $this->createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator );
@@ -100,7 +102,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $this->createFilterConditionForAnyOtherComparator(
 			$dataItem,
 			$joinVariable,
-			$orderByProperty,
 			$comparator
 		);
 	}
@@ -134,7 +135,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$condition = $this->createFilterConditionForAnyOtherComparator(
 				$dataItem,
 				$joinVariable,
-				$orderByProperty,
 				'='
 			);
 
@@ -183,7 +183,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$dataItem
 		);
 
-		if ( $redirectByVariable !== null ) {
+		if ( $condition instanceof SingletonCondition && $redirectByVariable !== null ) {
 			$condition->matchElement = $redirectByVariable;
 		}
 
@@ -197,7 +197,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $condition;
 	}
 
-	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, string $comparator ): FilterCondition {
+	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, string $comparator ): FilterCondition {
 		$result = new FilterCondition( '', [] );
 
 		$this->conditionBuilder->addOrderByData(
@@ -247,6 +247,11 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
 
 		$expElement = $this->exporter->newExpElement( $dataItem->getSortKeyDataItem() );
+
+		if ( !$expElement instanceof ExpElement ) {
+			return new FalseCondition();
+		}
+
 		$condition = new SingletonCondition( $expElement );
 
 		$filterVariable = $this->conditionBuilder->getNextVariable();

@@ -32,8 +32,9 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
 	 *
 	 * @return RepositoryResult
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doQuery( $sparql ): RepositoryResult {
+	public function doQuery( string $sparql ): RepositoryResult {
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -119,6 +120,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $payload string Turtle serialization of data to send
 	 *
 	 * @return bool
+	 * @throws BadHttpEndpointResponseException
 	 */
 	public function doHttpPost( $payload ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
@@ -162,8 +164,13 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 * @note 4store 1.1.4 breaks on update if charset is set in the Content-Type header
 	 *
 	 * @since 2.0
+	 *
+	 * @param string $sparql
+	 *
+	 * @return bool
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doUpdate( $sparql ): bool {
+	public function doUpdate( string $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}

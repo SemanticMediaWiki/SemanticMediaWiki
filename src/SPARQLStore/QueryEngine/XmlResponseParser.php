@@ -75,9 +75,9 @@ class XmlResponseParser implements HttpResponseParser {
 		xml_parser_set_option( $this->parser, XML_OPTION_TARGET_ENCODING, 'UTF-8' );
 		xml_parser_set_option( $this->parser, XML_OPTION_CASE_FOLDING, 0 );
 		xml_set_object( $this->parser, $this );
-		xml_set_element_handler( $this->parser, 'handleOpenElement', 'handleCloseElement' );
-		xml_set_character_data_handler( $this->parser, 'handleCharacterData' );
-		xml_set_default_handler( $this->parser, 'handleDefault' );
+		xml_set_element_handler( $this->parser, $this->handleOpenElement( ... ), $this->handleCloseElement( ... ) );
+		xml_set_character_data_handler( $this->parser, $this->handleCharacterData( ... ) );
+		xml_set_default_handler( $this->parser, $this->handleDefault( ... ) );
 		// xml_set_start_namespace_decl_handler($parser, 'handleNsDeclaration' );
 	}
 
@@ -138,6 +138,9 @@ class XmlResponseParser implements HttpResponseParser {
 		return xml_get_current_column_number( $this->parser );
 	}
 
+	/**
+	 * @suppress PhanUnusedPrivateMethodParameter Used as callback with fix signature
+	 */
 	private function handleDefault( $parser, $data ): void {
 		if ( substr( $data, 0, 4 ) == '<!--' ) {
 			$comment = substr( $data, 4, strlen( $data ) - 7 );
@@ -147,6 +150,7 @@ class XmlResponseParser implements HttpResponseParser {
 
 	/**
 	 * @see xml_set_element_handler
+	 * @suppress PhanUnusedPrivateMethodParameter Used as callback with fix signature
 	 */
 	private function handleOpenElement( $parser, $elementTag, array $attributes ): void {
 		$this->currentDataType = '';
@@ -180,6 +184,7 @@ class XmlResponseParser implements HttpResponseParser {
 
 	/**
 	 * @see xml_set_element_handler
+	 * @suppress PhanUnusedPrivateMethodParameter Used as callback with fix signature
 	 */
 	private function handleCloseElement( $parser, $elementTag ): void {
 		array_pop( $this->xmlOpenTags );
@@ -187,6 +192,7 @@ class XmlResponseParser implements HttpResponseParser {
 
 	/**
 	 * @see xml_set_character_data_handler
+	 * @suppress PhanUnusedPrivateMethodParameter Used as callback with fix signature
 	 */
 	private function handleCharacterData( $parser, $characterData ): void {
 		$prevTag = end( $this->xmlOpenTags );

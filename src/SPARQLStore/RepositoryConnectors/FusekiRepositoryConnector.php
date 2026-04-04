@@ -19,8 +19,13 @@ class FusekiRepositoryConnector extends GenericRepositoryConnector {
 
 	/**
 	 * @see GenericRepositoryConnector::doQuery
+	 *
+	 * @param string $sparql
+	 *
+	 * @return RepositoryResult
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doQuery( $sparql ): RepositoryResult {
+	public function doQuery( string $sparql ): RepositoryResult {
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}

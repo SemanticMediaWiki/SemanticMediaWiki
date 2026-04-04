@@ -42,7 +42,7 @@ class QueryEngine implements QueryEngineInterface {
 	 * @param RepositoryConnection $connection
 	 * @param ConditionBuilder $conditionBuilder
 	 * @param QueryResultFactory $queryResultFactory
-	 * @param EngineOptions|null $EngineOptions
+	 * @param EngineOptions|null $engineOptions
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
 	public function __construct(
@@ -62,7 +62,7 @@ class QueryEngine implements QueryEngineInterface {
      * @since  2.0
      * @param Query $query
      *
-     * @return QueryResult|string
+     * @return QueryResult|string|int
      */
     public function getQueryResult( Query $query ): QueryResult|string|int {
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
@@ -97,7 +97,7 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	private function getCountQueryResult( Query $query, Condition $compoundCondition ): int|QueryResult {
-		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
+		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;
 			} else {
@@ -129,7 +129,7 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	private function getInstanceQueryResult( Query $query, Condition $compoundCondition ): QueryResult {
-		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
+		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
 			$matchElement = $compoundCondition->matchElement;
 
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
@@ -169,7 +169,7 @@ class QueryEngine implements QueryEngineInterface {
 		$debugFormatter = new DebugFormatter();
 		$debugFormatter->setName( 'SPARQLStore' );
 
-		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
+		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				$sparql = 'None (no conditions).';
 			} else {
@@ -200,10 +200,6 @@ class QueryEngine implements QueryEngineInterface {
 		);
 
 		return $debugFormatter->buildHTML( $entries, $query );
-	}
-
-	private function isSingletonConditionWithElementMatch( Condition $condition ): bool {
-		return $condition instanceof SingletonCondition && $condition->matchElement instanceof Element;
 	}
 
 	/**

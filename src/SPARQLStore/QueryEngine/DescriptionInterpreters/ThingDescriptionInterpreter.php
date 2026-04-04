@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 use SMW\Export\Exporter;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 
@@ -39,6 +40,8 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 * @since 2.2
 	 *
 	 * {@inheritDoc}
+	 *
+	 * @return Condition
 	 */
 	public function interpretDescription( Description $description ) {
 		return $this->conditionBuilder->newTrueCondition(
