@@ -162,7 +162,7 @@ class ConditionBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @return CircularReferenceGuard
+	 * @return CircularReferenceGuard|null
 	 */
 	public function getCircularReferenceGuard(): ?CircularReferenceGuard {
 		return $this->circularReferenceGuard;
@@ -180,7 +180,7 @@ class ConditionBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @return HierarchyLookup
+	 * @return HierarchyLookup|null
 	 */
 	public function getHierarchyLookup(): ?HierarchyLookup {
 		return $this->hierarchyLookup;

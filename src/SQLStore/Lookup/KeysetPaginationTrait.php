@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use SMW\MediaWiki\Connection\Database;
+use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
@@ -10,6 +11,9 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * Shared keyset (cursor-based) pagination logic for property list lookups.
  *
  * @since 7.0
+ *
+ * @property SQLStore $store
+ * @property RequestOptions $requestOptions
  */
 trait KeysetPaginationTrait {
 
@@ -33,6 +37,11 @@ trait KeysetPaginationTrait {
 	 * Apply cursor-based WHERE conditions and ORDER BY to a query builder.
 	 *
 	 * When no cursor is active, falls back to offset-based pagination.
+	 *
+	 * @param SelectQueryBuilder $queryBuilder
+	 * @param Database $db
+	 *
+	 * @return void
 	 */
 	private function applyCursorPagination( SelectQueryBuilder $queryBuilder, Database $db ): void {
 		$cursorAfter = $this->requestOptions->getCursorAfter();
@@ -43,7 +52,7 @@ trait KeysetPaginationTrait {
 			if ( $sort !== null ) {
 				$queryBuilder->andWhere(
 					'(smw_sort, smw_id) > (' .
-					$db->addQuotes( $sort ) . ', ' . (int)$cursorAfter . ')'
+					$db->addQuotes( $sort ) . ', ' . $cursorAfter . ')'
 				);
 			}
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_ASC );
@@ -52,7 +61,7 @@ trait KeysetPaginationTrait {
 			if ( $sort !== null ) {
 				$queryBuilder->andWhere(
 					'(smw_sort, smw_id) < (' .
-					$db->addQuotes( $sort ) . ', ' . (int)$cursorBefore . ')'
+					$db->addQuotes( $sort ) . ', ' . $cursorBefore . ')'
 				);
 			}
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_DESC );
