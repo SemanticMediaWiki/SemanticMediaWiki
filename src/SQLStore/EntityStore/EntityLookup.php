@@ -331,6 +331,10 @@ class EntityLookup implements IEntityLookup {
 
 		// inverses are working differently
 		if ( $property->isInverse() ) {
+			if ( !$dataItem instanceof WikiPage ) {
+				return [];
+			}
+
 			$noninverse = new Property( $property->getKey(), false );
 			$result = $this->getPropertyValues( $dataItem, $noninverse, $requestOptions );
 			return $result;

@@ -31,11 +31,7 @@ class SortLetter {
 	 */
 	public function __construct( Store $store, ?Collator $collator = null ) {
 		$this->store = $store;
-		$this->collator = $collator;
-
-		if ( $this->collator === null ) {
-			$this->collator = Collator::singleton();
-		}
+		$this->collator = $collator ?? Collator::singleton();
 	}
 
 	/**
