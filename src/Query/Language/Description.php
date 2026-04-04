@@ -31,7 +31,7 @@ abstract class Description {
 	private $membership = '';
 
 	public bool $isPartOfDisjunction;
-	public ?bool $isNegation;
+	public ?bool $isNegation = null;
 
 	/**
 	 * Get the (possibly empty) array of all print requests that
