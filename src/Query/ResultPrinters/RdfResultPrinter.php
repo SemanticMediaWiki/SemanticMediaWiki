@@ -88,7 +88,7 @@ class RdfResultPrinter extends FileExportPrinter {
 			return $this->getRdfLink( $res, $outputMode );
 		}
 
-		return $this->makeExport( $res, $outputMode );
+		return $this->makeExport( $res );
 	}
 
 	private function getRdfLink( QueryResult $res, $outputMode ) {
@@ -103,7 +103,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function makeExport( QueryResult $res, $outputMode ): string {
+	private function makeExport( QueryResult $res ): string {
 		$exporterFactory = new ExporterFactory();
 		$exporter = $exporterFactory->getExporter();
 

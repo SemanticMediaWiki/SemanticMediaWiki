@@ -17,7 +17,7 @@ use SMW\Query\Language\Description;
 class NumberValueDescriptionBuilder extends DescriptionBuilder {
 
 	/**
-	 * @var DataValue
+	 * @var NumberValue
 	 */
 	private $dataValue;
 

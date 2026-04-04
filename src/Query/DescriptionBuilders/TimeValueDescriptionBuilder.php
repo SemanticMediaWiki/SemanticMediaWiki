@@ -19,7 +19,7 @@ use SMW\Query\Language\Description;
 class TimeValueDescriptionBuilder extends DescriptionBuilder {
 
 	/**
-	 * @var DataValue
+	 * @var TimeValue
 	 */
 	private $dataValue;
 

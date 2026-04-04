@@ -2,6 +2,8 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
 use SMW\DataModel\SemanticData;
 use SMW\Query\ProfileAnnotator;
 
@@ -31,7 +33,7 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getProperty() {
 		return $this->profileAnnotator->getProperty();
@@ -42,7 +44,7 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIContainer
+	 * @return Container
 	 */
 	public function getContainer() {
 		return $this->profileAnnotator->getContainer();
@@ -64,7 +66,7 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return ProfileAnnotator
+	 * @return void
 	 */
 	public function addAnnotation(): void {
 		$this->profileAnnotator->addAnnotation();

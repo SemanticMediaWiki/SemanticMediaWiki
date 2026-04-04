@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
@@ -125,8 +126,8 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		$this->userParam = isset( $params['userparam'] ) ? trim( $params['userparam'] ) : '';
 		$this->delim = isset( $params['delim'] ) ? trim( $params['delim'] ) : '';
-		$this->numColumns = isset( $params['columns'] ) ? $params['columns'] : 3;
-		$this->template = isset( $params['template'] ) ? $params['template'] : '';
+		$this->numColumns = $params['columns'] ?? 3;
+		$this->template = $params['template'] ?? '';
 	}
 
 	/**
@@ -211,7 +212,7 @@ class CategoryResultPrinter extends ResultPrinter {
 					$this->templateRenderer->addField( 'userparam', $this->userParam );
 				}
 
-				$this->row_to_template( $row, $res, $first_col );
+				$this->row_to_template( $row, $first_col );
 
 				$this->templateRenderer->addField( '#', $rowindex );
 				$this->templateRenderer->packFieldsForTemplate( $this->template );
@@ -230,7 +231,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$index = isset( $last_letter ) ? $last_letter : $first_letter;
+			$index = $last_letter ?? $first_letter;
 			$contents[$index][] = $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
 		}
 
@@ -240,7 +241,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	private function first_letter( QueryResult $res, DataItem $dataItem ) {
 		$sortKey = $dataItem->getSortKey();
 
-		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
+		if ( $dataItem instanceof WikiPage && $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
 			$sortKey = $res->getStore()->getWikiPageSortKey( $dataItem );
 		}
 
@@ -286,7 +287,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 			// Always sort the column value list in the same order
 			natsort( $fieldValues );
-			$result .= implode( ( $this->delim ? $this->delim : ',' ) . ' ', $fieldValues ) . ' ';
+			$result .= implode( ( $this->delim ?: ',' ) . ' ', $fieldValues ) . ' ';
 		}
 
 		if ( $found_values ) {
@@ -296,7 +297,7 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $result;
 	}
 
-	private function row_to_template( array $row, QueryResult $res, bool &$first_col ): void {
+	private function row_to_template( array $row, bool &$first_col ): void {
 		// explicitly number parameters for more robust parsing (values may contain "=")
 		$i = 0;
 
@@ -310,7 +311,7 @@ class CategoryResultPrinter extends ResultPrinter {
 			}
 
 			if ( $fieldName === '' || $fieldName === '?' ) {
-				$fieldName = $fieldName . $i;
+				$fieldName .= $i;
 			}
 
 			$fieldValues = [];

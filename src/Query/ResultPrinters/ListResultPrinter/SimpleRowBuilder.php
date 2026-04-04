@@ -96,7 +96,7 @@ class SimpleRowBuilder extends RowBuilder {
 	}
 
 	/**
-	 * @return Linker
+	 * @return Linker|null
 	 */
 	protected function getLinker(): ?Linker {
 		return $this->linker;

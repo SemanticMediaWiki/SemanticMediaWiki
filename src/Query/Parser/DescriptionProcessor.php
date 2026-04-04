@@ -48,7 +48,7 @@ class DescriptionProcessor {
 	/**
 	 * @since 2.4
 	 *
-	 * @param int $queryFeatures
+	 * @param int|false $queryFeatures
 	 */
 	public function __construct( $queryFeatures = false ) {
 		$this->queryFeatures = $queryFeatures === false ? $GLOBALS['smwgQFeatures'] : $queryFeatures;

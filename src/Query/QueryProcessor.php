@@ -228,7 +228,7 @@ class QueryProcessor implements QueryContext {
 	 *
 	 * @param array $rawParams
 	 * @param bool $showMode
-	 * @return array( string, array( string => string ), array( PrintRequest ) )
+	 * @return array ( string, array( string => string ), array( PrintRequest ) )
 	 */
 	public static function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
 		/**
@@ -257,7 +257,7 @@ class QueryProcessor implements QueryContext {
 	 * @param int $outputMode SMW_OUTPUT_WIKI, SMW_OUTPUT_HTML, ...
 	 * @param int $context INLINE_QUERY, SPECIAL_PAGE, CONCEPT_DESC
 	 * @param bool $showMode process like #show parser function?
-	 * @return array( Query, ProcessedParam[] )
+	 * @return array ( Query, ProcessedParam[] )
 	 */
 	public static function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ): array {
 		[ $queryString, $params, $printouts ] = self::getComponentsFromFunctionParams( $rawParams, $showMode );
@@ -311,7 +311,7 @@ class QueryProcessor implements QueryContext {
 			// process is picked-up by the `deferred.js` loader that will
 			// initiate an API request to finalize the query after MW has build
 			// the page.
-			if ( $printer->isDeferrable() !== $printer::DEFERRED_DATA ) {
+			if ( $printer->isDeferrable() ) {
 				return Deferred::buildHTML( $query );
 			}
 
@@ -340,6 +340,7 @@ class QueryProcessor implements QueryContext {
 		$res = $querySource->getQueryResult( $query );
 		$start = microtime( true );
 
+		// @phan-suppress-next-line PhanRedundantCondition
 		if ( $res instanceof QueryResult && $query->getOption( 'calc.result_hash' ) ) {
 			$query->setOption( 'result_hash', $res->getHash( QueryResult::QUICK_HASH ) );
 		}

@@ -27,7 +27,7 @@ class QueryStringifier {
 	 * @param Query $query
 	 * @param bool $printParameters
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public static function toArray( Query $query, $printParameters = false ): array {
 		$serialized = [];

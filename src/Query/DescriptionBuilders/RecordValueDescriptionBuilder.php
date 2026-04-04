@@ -5,6 +5,7 @@ namespace SMW\Query\DescriptionBuilders;
 use InvalidArgumentException;
 use SMW\DataItems\Property;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\RecordValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\Query\Language\Conjunction;
@@ -41,7 +42,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 	 * @param DataValue $dataValue
 	 * @param string $value
 	 *
-	 * @return Description
+	 * @return mixed
 	 * @throws InvalidArgumentException
 	 */
 	public function newDescription( $dataValue, $value ) {

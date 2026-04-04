@@ -174,7 +174,7 @@ class ResultArray {
 	 *
 	 * @since 1.7.1
 	 *
-	 * @return DataItem|false
+	 * @return mixed
 	 */
 	public function reset(): mixed {
 		$this->loadContent();

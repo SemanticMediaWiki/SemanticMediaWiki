@@ -49,7 +49,7 @@ class Tokenizer {
 	 * @param bool $consume
 	 * @param bool $trim
 	 *
-	 * @return string
+	 * @return string|array|false
 	 */
 	public function getToken( &$currentString, $stoppattern = '', $consume = true, $trim = true ): string|array|false {
 		if ( $stoppattern === '' ) {

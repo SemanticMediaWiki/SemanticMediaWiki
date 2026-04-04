@@ -75,7 +75,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @param QueryResult $queryResult
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public function getFileName( QueryResult $queryResult ): string|false {
 		return false;

@@ -179,7 +179,7 @@ abstract class Description {
 	 * reused in multiple places of one or many queries. Make new objects to reflect
 	 * changes!
 	 */
-	public function prune( &$maxsize, &$maxDepth, &$log ): Description {
+	public function prune( &$maxsize, &$maxDepth, &$log ): mixed {
 		if ( ( $maxsize < $this->getSize() ) || ( $maxDepth < $this->getDepth() ) ) {
 			$log[] = $this->getQueryString();
 
@@ -189,8 +189,8 @@ abstract class Description {
 			return $result;
 		}
 
-		$maxsize = $maxsize - $this->getSize();
-		$maxDepth = $maxDepth - $this->getDepth();
+		$maxsize -= $this->getSize();
+		$maxDepth -= $this->getDepth();
 
 		return $this;
 	}

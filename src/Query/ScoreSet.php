@@ -16,7 +16,7 @@ use SMW\DataItems\WikiPage;
 class ScoreSet {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private array $scores = [];
 
@@ -93,7 +93,7 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getScores(): array {
 		return $this->scores;

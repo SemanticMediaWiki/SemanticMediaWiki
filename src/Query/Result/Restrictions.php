@@ -73,7 +73,7 @@ class Restrictions {
 	 * @param PrintRequest $printRequest
 	 * @param DataItem[] $content
 	 *
-	 * @return
+	 * @return array
 	 */
 	public static function applyLimitRestriction( PrintRequest $printRequest, array $content ): array {
 		$limit = (int)$printRequest->getParameter( 'limit' );

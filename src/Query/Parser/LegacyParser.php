@@ -35,7 +35,7 @@ class LegacyParser implements Parser {
 	/**
 	 * Description of the default namespace restriction, or NULL if not used
 	 *
-	 * @var array|null
+	 * @var Description|array|null
 	 */
 	private $defaultNamespace;
 
@@ -176,7 +176,7 @@ class LegacyParser implements Parser {
 	/**
 	 * Return error message or empty string if no error occurred.
 	 *
-	 * @return string
+	 * @return never
 	 */
 	public function getErrorString(): never {
 		throw new RuntimeException( "Shouldnot be used, remove getErrorString usage!" );

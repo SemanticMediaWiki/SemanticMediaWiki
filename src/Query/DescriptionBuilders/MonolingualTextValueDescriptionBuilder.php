@@ -22,7 +22,7 @@ use SMW\Query\Language\ValueDescription;
 class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 
 	/**
-	 * @var DataValue
+	 * @var MonolingualTextValue
 	 */
 	private $dataValue;
 
@@ -41,7 +41,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 	 * @param MonolingualTextValue $dataValue
 	 * @param string $value
 	 *
-	 * @return Description
+	 * @return mixed
 	 * @throws InvalidArgumentException
 	 */
 	public function newDescription( MonolingualTextValue $dataValue, $value ) {

@@ -36,7 +36,7 @@ class FieldItemFinder {
 	private array $dataItems = [];
 
 	/**
-	 * @var bool|array
+	 * @var bool|string
 	 */
 	private static $catCacheObj = false;
 
@@ -92,7 +92,7 @@ class FieldItemFinder {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @param DataItem[]|[]
+	 * @return DataItem[]|array
 	 */
 	public function findFor( DataItem $dataItem ): array {
 		$content = [];
@@ -182,11 +182,11 @@ class FieldItemFinder {
 			$options = new RequestOptions();
 
 			if ( $limit !== false ) {
-				$options->limit = trim( $limit );
+				$options->limit = (int)trim( $limit );
 			}
 
 			if ( $offset !== false ) {
-				$options->offset = trim( $offset );
+				$options->offset = (int)trim( $offset );
 			}
 
 			// Expecting a natural sort behaviour (n-asc, n-desc)?
@@ -308,7 +308,7 @@ class FieldItemFinder {
 		// for `Has page` and try to match a Number annotation on the results
 		// retrieved from `Has page`.
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-			$requestOptions->isChain = $dataValue->getDataItem()->getString();
+			$requestOptions->isChain = (bool)$dataValue->getDataItem()->getString();
 			$isFirstChain = true;
 
 			// Output of the previous iteration is the input for the next iteration
