@@ -79,7 +79,7 @@ class RecurringEvents {
 	 *
 	 * @since  1.9
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getProperty(): ?string {
 		return $this->property;

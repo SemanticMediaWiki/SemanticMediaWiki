@@ -25,7 +25,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public static function encode( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {
@@ -49,7 +49,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return mixed
 	 */
 	public static function decode( $data, $key = null, $algo = 'md5' ): mixed {
 		if ( $key === null ) {
@@ -78,7 +78,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public static function serialize( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {

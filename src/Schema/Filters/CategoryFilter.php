@@ -49,7 +49,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	 * @return void
 	 */
 	private function match( Compartment $compartment ): void {
-		if ( $this->isLoaded === false ) {
+		if ( !$this->isLoaded ) {
 			$this->loadCategories();
 		}
 

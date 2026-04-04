@@ -164,7 +164,7 @@ class CachedListLookup implements ListLookup {
 		$this->cache->save( $optionsKey, serialize( $data ), $ttl );
 	}
 
-	private function getCacheKey( string $id ): array {
+	private function getCacheKey( ?string $id ): array {
 		$optionsKey = '';
 
 		if ( strpos( $id ?? '', '#' ) !== false ) {

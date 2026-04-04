@@ -93,7 +93,7 @@ class PropertyTableIdReferenceDisposer {
 	 * @return bool
 	 */
 	public function isDisposable( $id ): bool {
-		return $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) === false;
+		return !$this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id );
 	}
 
 	/**

@@ -71,7 +71,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return mixed
+	 * @return array|string|int|float
 	 */
 	public static function getSerialization( DataItem $dataItem, $printRequest = null ): array|string|int|float {
 		switch ( $dataItem->getDIType() ) {

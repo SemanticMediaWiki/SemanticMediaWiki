@@ -86,7 +86,7 @@ class PropertyTableHashes {
 	 *
 	 * @param int $id ID of the page as stored in the SMW IDs table
 	 *
-	 * @return array
+	 * @return mixed
 	 */
 	public function getPropertyTableHashesById( $id ): mixed {
 		if ( $id == 0 ) {

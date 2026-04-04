@@ -23,9 +23,9 @@ class StoreFactory {
 	/**
 	 * @since 1.9
 	 *
-	 * @param string|null $class
-	 *
-	 * @return Store
+	 * @template T of Store
+	 * @param class-string<T>|null $class
+	 * @return T
 	 * @throws RuntimeException
 	 * @throws StoreNotFoundException
 	 */

@@ -43,7 +43,7 @@ class SemanticDataLookup {
 	 * @return RequestOptions|null
 	 */
 	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, Property $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
-		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
+		if ( !$requestOptions || !$requestOptions->conditionConstraint ) {
 			return $requestOptions;
 		}
 
@@ -114,7 +114,7 @@ class SemanticDataLookup {
 	 * @param PropertyTableDefinition $propTable
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return SemanticData
+	 * @return StubSemanticData
 	 */
 	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): StubSemanticData {
 		if ( !$dataItem instanceof WikiPage ) {

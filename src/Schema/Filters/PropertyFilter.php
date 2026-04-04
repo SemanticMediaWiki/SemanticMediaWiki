@@ -45,7 +45,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function match( Compartment $compartment ): void {
-		if ( $this->isLoaded === false ) {
+		if ( !$this->isLoaded ) {
 			$this->loadProperties();
 		}
 
