@@ -237,6 +237,8 @@ class RequestOptions {
 	 * @since 2.5
 	 *
 	 * @param mixed $extraCondition
+	 *
+	 * @return void
 	 */
 	public function addExtraCondition( $extraCondition ): void {
 		$this->extraConditions[] = $extraCondition;
@@ -245,7 +247,7 @@ class RequestOptions {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array
+	 * @return array
 	 */
 	public function getExtraConditions(): array {
 		return $this->extraConditions;
@@ -253,6 +255,8 @@ class RequestOptions {
 
 	/**
 	 * @since 3.1
+	 *
+	 * @return void
 	 */
 	public function emptyExtraConditions(): void {
 		$this->extraConditions = [];
@@ -263,6 +267,8 @@ class RequestOptions {
 	 *
 	 * @param string $key
 	 * @param string $value
+	 *
+	 * @return void
 	 */
 	public function setOption( $key, $value ): void {
 		$this->options[$key] = $value;
@@ -272,6 +278,8 @@ class RequestOptions {
 	 * @since 3.1
 	 *
 	 * @param string $key
+	 *
+	 * @return void
 	 */
 	public function deleteOption( $key ): void {
 		unset( $this->options[$key] );
@@ -297,6 +305,8 @@ class RequestOptions {
 	 * @since 2.5
 	 *
 	 * @param int $limit
+	 *
+	 * @return void
 	 */
 	public function setLimit( $limit ): void {
 		$this->limit = (int)$limit;
@@ -315,6 +325,8 @@ class RequestOptions {
 	 * @since 2.5
 	 *
 	 * @param int $offset
+	 *
+	 * @return void
 	 */
 	public function setOffset( $offset ): void {
 		$this->offset = (int)$offset;
@@ -333,6 +345,8 @@ class RequestOptions {
 	 * @since 3.2
 	 *
 	 * @param int $lookahead
+	 *
+	 * @return void
 	 */
 	public function setLookahead( int $lookahead ): void {
 		$this->lookahead = $lookahead;
