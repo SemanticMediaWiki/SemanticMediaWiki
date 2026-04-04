@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\DataItems\WikiPage;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
 use SMW\Query\Parser\DescriptionProcessor;
@@ -118,7 +119,7 @@ class QueryFactory {
 	 *
 	 * @param Store $store
 	 * @param Query $query
-	 * @param DIWikiPage[]|[] $results = array()
+	 * @param WikiPage[]|array $results = array()
 	 * @param bool $continue
 	 *
 	 * @return QueryResult
