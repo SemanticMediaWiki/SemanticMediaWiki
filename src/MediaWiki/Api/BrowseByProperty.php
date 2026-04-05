@@ -122,39 +122,28 @@ class BrowseByProperty extends ApiBase {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebyproperty-param-property',
 			],
 			'limit' => [
 				ParamValidator::PARAM_TYPE => 'limit',
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_DEFAULT => 50,
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebyproperty-param-limit',
 			],
 			'lang' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebyproperty-param-lang',
 			],
 			'listonly' => [
 				ParamValidator::PARAM_TYPE => 'boolean',
 				ParamValidator::PARAM_DEFAULT => false,
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebyproperty-param-listonly',
 			]
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
-	 */
-	public function getParamDescription(): array {
-		return [
-			'property' => 'To match a specific property',
-			'limit'    => 'To specify the size of the list request',
-			'lang'     => 'To specify a specific language used for some attributes (description etc.)',
-			'listonly' => 'To specify that only a property list is returned without further details'
 		];
 	}
 
