@@ -145,6 +145,7 @@ class BrowseBySubject extends ApiBase {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebysubject-param-subject',
 			],
 			'ns' => [
 				ParamValidator::PARAM_TYPE => 'integer',
@@ -163,6 +164,7 @@ class BrowseBySubject extends ApiBase {
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_DEFAULT => '',
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebysubject-param-subobject',
 			],
 			'type' => [
 				ParamValidator::PARAM_TYPE => 'string',
@@ -176,19 +178,6 @@ class BrowseBySubject extends ApiBase {
 				ParamValidator::PARAM_DEFAULT => '',
 				ParamValidator::PARAM_REQUIRED => false,
 			]
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
-	 */
-	public function getParamDescription(): array {
-		return [
-			'subject' => 'The subject to be queried',
-			'subobject' => 'A particular subobject id for the related subject'
 		];
 	}
 
