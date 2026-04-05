@@ -82,12 +82,12 @@ class Task extends ApiBase {
 			'task' => [
 				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => $taskFactory->getAllowedTypes(),
-				ApiBase::PARAM_HELP_MSG => 'apihelp-task-param-task',
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwtask-param-task',
 			],
 			'params' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => false,
-				ApiBase::PARAM_HELP_MSG => 'apihelp-task-param-params',
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwtask-param-params',
 			],
 		];
 	}
