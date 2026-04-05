@@ -183,18 +183,6 @@ class BrowseBySubject extends ApiBase {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to query a subject.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
