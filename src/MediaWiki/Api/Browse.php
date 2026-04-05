@@ -298,25 +298,14 @@ class Browse extends ApiBase {
 
 					// Equivalent to Special:Browse
 					'subject',
-				]
+				],
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwbrowse-param-browse',
 			],
 			'params' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwbrowse-param-params',
 			],
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
-	 */
-	public function getParamDescription(): array {
-		return [
-			'browse' => 'Specifies the type of browse activity',
-			'params' => 'JSON encoded parameters containing required and optional fields and depend on the selected browse type'
 		];
 	}
 
