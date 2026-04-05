@@ -28,7 +28,6 @@ class SpecialWantedProperties extends SpecialPage {
 
 	/**
 	 * @see SpecialPage::__construct
-	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
 		parent::__construct( 'WantedProperties' );
