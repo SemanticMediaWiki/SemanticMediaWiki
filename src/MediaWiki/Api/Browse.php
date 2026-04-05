@@ -311,18 +311,6 @@ class Browse extends ApiBase {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to support browse activties for different entity types in Semantic MediaWiki.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
