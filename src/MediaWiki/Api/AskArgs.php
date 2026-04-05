@@ -55,36 +55,25 @@ class AskArgs extends Query {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_ISMULTI => true,
 				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-conditions',
 			],
 			'printouts' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_DEFAULT => '',
 				ParamValidator::PARAM_ISMULTI => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-printouts',
 			],
 			'parameters' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_DEFAULT => '',
 				ParamValidator::PARAM_ISMULTI => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-parameters',
 			],
 			'api_version' => [
 				ParamValidator::PARAM_TYPE => [ '2', '3' ],
 				ParamValidator::PARAM_DEFAULT => '2',
-				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-param-api-version',
 			],
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
-	 */
-	public function getParamDescription(): array {
-		return [
-			'conditions' => 'The query conditions, i.e. the requirements for a subject to be included',
-			'printouts'  => 'The query printouts, i.e. the properties to show per subject',
-			'parameters' => 'The query parameters, i.e. all non-condition and non-printout arguments',
 		];
 	}
 
