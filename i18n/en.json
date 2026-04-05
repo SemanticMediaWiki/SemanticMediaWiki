@@ -972,6 +972,8 @@
 	"apihelp-browsebyproperty-param-listonly": "To specify that only a property list is returned without further details",
 	"apihelp-browsebysubject-param-subject": "The subject to be queried",
 	"apihelp-browsebysubject-param-subobject": "A particular subobject id for the related subject",
+	"apihelp-smwbrowse-param-browse": "Specifies the type of browse activity",
+	"apihelp-smwbrowse-param-params": "JSON encoded parameters containing required and optional fields and depend on the selected browse type",
 	"apihelp-smwtask-param-task": "Defines the task type",
 	"apihelp-smwtask-param-params": "JSON encoded parameters that match the selected task type requirement",
 	"smw-apihelp-smwtask-example-update": "Example of running a update task for a particular subject:",
