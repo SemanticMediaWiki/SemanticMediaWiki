@@ -925,6 +925,8 @@
 	"apihelp-browsebyproperty-param-listonly": "{{doc-apihelp-param|browsebyproperty|listonly}}",
 	"apihelp-browsebysubject-param-subject": "{{doc-apihelp-param|browsebysubject|subject}}",
 	"apihelp-browsebysubject-param-subobject": "{{doc-apihelp-param|browsebysubject|subobject}}",
+	"apihelp-smwbrowse-param-browse": "{{doc-apihelp-param|smwbrowse|browse}}",
+	"apihelp-smwbrowse-param-params": "{{doc-apihelp-param|smwbrowse|params}}",
 	"apihelp-smwtask-param-task": "{{doc-apihelp-param|smwtask|task}}",
 	"apihelp-smwtask-param-params": "{{doc-apihelp-param|smwtask|params}}",
 	"smw-api-invalid-parameters": "This is an error message emitted by an API module.\n\nParameter:\n* $1 - holds the name of the invalid parameter",
