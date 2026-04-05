@@ -101,18 +101,6 @@ class Info extends ApiBase {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module get info about this SMW install.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
