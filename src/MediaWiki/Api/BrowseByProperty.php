@@ -111,7 +111,6 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getAllowedParams
 	 *
 	 * @return array
@@ -144,7 +143,6 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getParamDescription
 	 *
 	 * @return array
@@ -159,7 +157,6 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getDescription
 	 *
 	 * @return array
@@ -171,7 +168,6 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
@@ -185,7 +181,6 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getVersion
 	 *
 	 * @return string
