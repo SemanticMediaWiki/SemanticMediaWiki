@@ -58,23 +58,13 @@ class Ask extends Query {
 			'query' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-query',
 			],
 			'api_version' => [
 				ParamValidator::PARAM_TYPE => [ '2', '3' ],
 				ParamValidator::PARAM_DEFAULT => '2',
 				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
 			],
-		];
-	}
-
-	/**
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
-	 */
-	public function getParamDescription(): array {
-		return [
-			'query' => 'The query string in ask-language'
 		];
 	}
 
