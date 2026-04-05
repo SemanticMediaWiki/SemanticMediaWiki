@@ -69,17 +69,6 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to query SMW by providing a query in the ask language.'
-		];
-	}
-
-	/**
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
