@@ -94,18 +94,6 @@ class Task extends ApiBase {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'Semantic MediaWiki API module to invoke and execute tasks (for internal use only)'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::needsToken
 	 */
 	public function needsToken(): string {
