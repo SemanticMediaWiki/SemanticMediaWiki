@@ -147,17 +147,6 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to query a property list or an individual property.'
-		];
-	}
-
-	/**
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
