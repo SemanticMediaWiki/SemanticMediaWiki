@@ -919,6 +919,8 @@
 	"apihelp-askargs-param-conditions": "{{doc-apihelp-param|askargs|conditions}}",
 	"apihelp-askargs-param-printouts": "{{doc-apihelp-param|askargs|printouts}}",
 	"apihelp-askargs-param-parameters": "{{doc-apihelp-param|askargs|parameters}}",
+	"apihelp-browsebysubject-param-subject": "{{doc-apihelp-param|browsebysubject|subject}}",
+	"apihelp-browsebysubject-param-subobject": "{{doc-apihelp-param|browsebysubject|subobject}}",
 	"apihelp-smwtask-param-task": "{{doc-apihelp-param|smwtask|task}}",
 	"apihelp-smwtask-param-params": "{{doc-apihelp-param|smwtask|params}}",
 	"smw-api-invalid-parameters": "This is an error message emitted by an API module.\n\nParameter:\n* $1 - holds the name of the invalid parameter",
