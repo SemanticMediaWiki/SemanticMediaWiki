@@ -966,6 +966,8 @@
 	"apihelp-askargs-param-conditions": "The query conditions, i.e. the requirements for a subject to be included",
 	"apihelp-askargs-param-printouts": "The query printouts, i.e. the properties to show per subject",
 	"apihelp-askargs-param-parameters": "The query parameters, i.e. all non-condition and non-printout arguments",
+	"apihelp-browsebysubject-param-subject": "The subject to be queried",
+	"spihelp-browsebysubject-param-subobject": "A particular subobject id for the related subject",
 	"apihelp-smwtask-param-task": "Defines the task type",
 	"apihelp-smwtask-param-params": "JSON encoded parameters that match the selected task type requirement",
 	"smw-apihelp-smwtask-example-update": "Example of running a update task for a particular subject:",
