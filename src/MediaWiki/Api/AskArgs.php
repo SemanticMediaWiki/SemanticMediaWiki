@@ -79,18 +79,6 @@ class AskArgs extends Query {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
