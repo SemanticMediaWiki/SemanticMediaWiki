@@ -93,20 +93,9 @@ class Info extends ApiBase {
 					'conceptcount',
 					'subobjectcount',
 					'jobcount'
-				]
+				],
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwinfo-param-info',
 			],
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
-	 */
-	public function getParamDescription(): array {
-		return [
-			'info' => 'The info to provide.'
 		];
 	}
 
