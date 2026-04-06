@@ -709,7 +709,7 @@
 	"log-show-hide-smw": "$1 Semantic MediaWiki-logboek",
 	"logeventslist-smw-log": "Logboek Semantic MediaWiki",
 	"log-description-smw": "Activiteiten voor [https://www.semantic-mediawiki.org/wiki/Help:Logging ingeschakelde gebeurtenistypen] die zijn gemeld door Semantic MediaWiki en de componenten ervan.",
-	"logentry-smw-maintenance": "Onderhoudsgerelateerde gebeurtenissen die zijn doorgevoerd door Semantic MediaWiki",
+	"logentry-smw-maintenance": "$1 {{GENDER:$2|heeft}} onderhoud uitgevoerd",
 	"smw-datavalue-import-unknown-namespace": "De importnaamruimte “$1” is onbekend. Zorg ervoor dat de OWL-importgegevens beschikbaar zijn via [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-namespace-uri": "Kan geen URI in de naamruimte “$1” vinden in de [[MediaWiki:Smw import $1|import van $1]].",
 	"smw-datavalue-import-missing-type": "Er is geen typedefinitie voor “$1” gevonden in de [[MediaWiki:Smw import $2|import van $2]].",
@@ -1128,5 +1128,6 @@
 	"smw-facetedsearch-clear-filters": "Filter{{PLURAL:$1||s}} wissen",
 	"smw-search-placeholder": "Zoeken…",
 	"smw-listingcontinuesabbrev": "meer",
-	"smw-showingresults": "Hieronder {{PLURAL:$1|staat '''1''' resultaat|staan '''$1''' resultaten}} vanaf #'''$2'''."
+	"smw-showingresults": "Hieronder {{PLURAL:$1|staat '''1''' resultaat|staan '''$1''' resultaten}} vanaf #'''$2'''.",
+	"smw-showingresults-cursor": "Hieronder {{PLURAL:$1|wordt maximaal <strong>1</strong> resultaat|worden maximaal <strong>$1</strong> resultaten}} weergegeven."
 }
