@@ -3,8 +3,6 @@
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Html\Html;
-use SMW\DataItems\Blob;
-use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
