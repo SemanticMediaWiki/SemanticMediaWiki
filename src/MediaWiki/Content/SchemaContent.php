@@ -30,35 +30,20 @@ use Symfony\Component\Yaml\Yaml;
  */
 class SchemaContent extends JsonContent {
 
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
+	private ?SchemaFactory $schemaFactory = null;
 
-	/**
-	 * @var SchemaContentFormatter
-	 */
-	private $contentFormatter;
+	private ?SchemaContentFormatter $contentFormatter = null;
 
 	/**
 	 * @var array
 	 */
 	private $parse;
 
-	/**
-	 * @var bool
-	 */
-	private $isYaml = false;
+	private bool $isYaml = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isValid;
+	private ?bool $isValid = null;
 
-	/**
-	 * @var string
-	 */
-	private $errorMsg = '';
+	private string $errorMsg = '';
 
 	/**
 	 * @since 3.0
@@ -77,7 +62,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return array
 	 */
-	public function __sleep() {
+	public function __sleep(): array {
 		return [ 'model_id', 'mText' ];
 	}
 
@@ -93,7 +78,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return null|string
 	 */
-	public function toJson() {
+	public function toJson(): string|false|null {
 		if ( $this->isValid() ) {
 			return json_encode( $this->parse );
 		}
@@ -106,7 +91,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @param boolean
 	 */
-	public function isYaml() {
+	public function isYaml(): bool {
 		if ( $this->isValid() ) {
 			return $this->isYaml;
 		}
@@ -120,7 +105,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isValid() {
+	public function isValid(): ?bool {
 		if ( $this->isValid === null ) {
 			$this->decodeJSONContent();
 		}
@@ -133,7 +118,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
+	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ): static {
 		// FIXME: WikiPage::doUserEditContent invokes PST before validation. As such, native data
 		// may be invalid (though PST result is discarded later in that case).
 		if ( !$this->isValid() ) {
@@ -157,7 +142,7 @@ class SchemaContent extends JsonContent {
 	 * @param SchemaFactory $schemaFactory
 	 * @param SchemaContentFormatter|null $contentFormatter
 	 */
-	public function setServices( SchemaFactory $schemaFactory, ?SchemaContentFormatter $contentFormatter = null ) {
+	public function setServices( SchemaFactory $schemaFactory, ?SchemaContentFormatter $contentFormatter = null ): void {
 		$this->schemaFactory = $schemaFactory;
 		$this->contentFormatter = $contentFormatter;
 	}
@@ -169,11 +154,11 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return string
 	 */
-	public static function normalizeLineEndings( $text ) {
+	public static function normalizeLineEndings( $text ): string {
 		return str_replace( [ "\r\n", "\r" ], "\n", rtrim( $text ) );
 	}
 
-	public function initServices() {
+	public function initServices(): void {
 		if ( $this->schemaFactory === null ) {
 			$this->schemaFactory = new SchemaFactory();
 		}
@@ -190,7 +175,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return SchemaContentFormatter|null The content formatter instance or null if not set.
 	 */
-	public function getContentFormatter() {
+	public function getContentFormatter(): ?SchemaContentFormatter {
 		return $this->contentFormatter;
 	}
 
@@ -199,11 +184,11 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return SchemaFactory The schema factory instance.
 	 */
-	public function getSchemaFactory() {
+	public function getSchemaFactory(): ?SchemaFactory {
 		return $this->schemaFactory;
 	}
 
-	private function decodeJSONContent() {
+	private function decodeJSONContent(): ?bool {
 		// Support either JSON or YAML, if the class is available! Do a quick
 		// check on `{ ... }` to decide whether it is a non-JSON string.
 		if (
@@ -220,7 +205,8 @@ class SchemaContent extends JsonContent {
 				$this->parse = null;
 			}
 
-			return $this->isValid = $this->isYaml;
+			$this->isValid = $this->isYaml;
+			return $this->isValid;
 		} elseif ( $this->mText !== '' ) {
 
 			// Note that this parses it without casting objects to associative arrays.
@@ -242,7 +228,7 @@ class SchemaContent extends JsonContent {
 		}
 	}
 
-	public function setTitlePrefix( Title $title ) {
+	public function setTitlePrefix( Title $title ): void {
 		if ( $this->parse === null ) {
 			$this->decodeJSONContent();
 		}
@@ -266,7 +252,7 @@ class SchemaContent extends JsonContent {
 		$this->parse->title_prefix = $title_prefix;
 	}
 
-	public function getErrorMsg() {
+	public function getErrorMsg(): string {
 		return $this->errorMsg;
 	}
 }

@@ -37,7 +37,7 @@ class Conjunction extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
 		}
@@ -53,14 +53,15 @@ class Conjunction extends Description {
 		// position within a conjunction ( [Foo]][[Bar]], [[Bar]][[Foo]])
 		ksort( $fingerprint );
 
-		return $this->fingerprint = 'C:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+		$this->fingerprint = 'C:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+		return $this->fingerprint;
 	}
 
-	public function getDescriptions() {
+	public function getDescriptions(): array {
 		return $this->descriptions;
 	}
 
-	public function addDescription( Description $description ) {
+	public function addDescription( Description $description ): void {
 		$this->fingerprint = null;
 
 		if ( !( $description instanceof ThingDescription ) ) {
@@ -85,7 +86,7 @@ class Conjunction extends Description {
 		}
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asvalue = false ): string {
 		$result = '';
 
 		foreach ( $this->descriptions as $desc ) {
@@ -100,7 +101,7 @@ class Conjunction extends Description {
 		return $asvalue ? " <q>{$result}</q> " : $result;
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		foreach ( $this->descriptions as $d ) {
 			if ( $d->isSingleton() ) {
 				return true;
@@ -109,7 +110,7 @@ class Conjunction extends Description {
 		return false;
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		$size = 0;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -119,7 +120,7 @@ class Conjunction extends Description {
 		return $size;
 	}
 
-	public function getDepth() {
+	public function getDepth(): int {
 		$depth = 0;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -129,7 +130,7 @@ class Conjunction extends Description {
 		return $depth;
 	}
 
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		$result = SMW_CONJUNCTION_QUERY;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -139,7 +140,7 @@ class Conjunction extends Description {
 		return $result;
 	}
 
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
+	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
 		if ( $maxsize <= 0 ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

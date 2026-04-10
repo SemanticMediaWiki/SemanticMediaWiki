@@ -3,7 +3,6 @@
 namespace SMW\Query;
 
 use SMW\ProcessingErrorMsgHandler;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,34 +15,21 @@ class DebugFormatter {
 
 	const JSON_FORMAT = 'json';
 
-	/**
-	 * @var string
-	 */
-	private $type = '';
+	private string $format = '';
 
-	/**
-	 * @var string
-	 */
-	private $format = '';
-
-	/**
-	 * @var string
-	 */
-	private $name = '';
+	private string $name = '';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string|null $type
-	 * @param string $format
 	 */
-	public function __construct( ?string $type = '', string $format = '' ) {
-		$this->type = $type;
-
+	public function __construct(
+		private readonly ?string $type = '',
+		string $format = '',
+	) {
 		// Use a more expressive explain output
 		// https://dev.mysql.com/doc/refman/5.6/en/explain.html
 		// https://mariadb.com/kb/en/mariadb/explain-formatjson-in-mysql/
-		if ( $type === 'mysql' && $format === self::JSON_FORMAT ) {
+		if ( $this->type === 'mysql' && $format === self::JSON_FORMAT ) {
 			$this->format = 'FORMAT=json';
 		}
 	}
@@ -53,7 +39,7 @@ class DebugFormatter {
 	 *
 	 * @param string $name
 	 */
-	public function setName( string $name ) {
+	public function setName( string $name ): void {
 		$this->name = $name;
 	}
 
@@ -74,11 +60,11 @@ class DebugFormatter {
 	 * contexts.
 	 *
 	 * @param $entries array of name => value of informative entries to display
-	 * @param null $query SMWQuery or null, if given add basic data about this query as well
+	 * @param Query|null $query Query or null, if given add basic data about this query as well
 	 *
 	 * @return string
 	 */
-	public function buildHTML( array $entries, ?Query $query = null ) {
+	public function buildHTML( array $entries, ?Query $query = null ): string {
 		if ( $query instanceof Query ) {
 			$preEntries = [];
 			$description = $query->getDescription();
@@ -129,7 +115,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function prettifyExplain( iterable $res ) {
+	public function prettifyExplain( iterable $res ): string {
 		$output = '';
 
 		// https://dev.mysql.com/doc/refman/5.0/en/explain-output.html
@@ -227,7 +213,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function prettifySPARQL( $sparql ) {
+	public function prettifySPARQL( $sparql ): string {
 		$sparql = str_replace(
 			[
 				'[',
@@ -257,11 +243,11 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function prettifySQL( $sql, $alias ) {
+	public function prettifySQL( $sql, $alias ): string {
 		$matches = [];
 		$i = 0;
 
-		$sql = preg_replace_callback( '/NOT IN .*\)/', static function ( $m ) use ( &$matches, &$i ) {
+		$sql = preg_replace_callback( '/NOT IN .*\)/', static function ( array $m ) use ( &$matches, &$i ): string {
 			$i++;
 
 			$string = str_replace( [ 'AND ((' ], [ "AND (<br>   (" ], $m[0] );

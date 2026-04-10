@@ -19,23 +19,12 @@ class CountMapField {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private ?SetupFile $setupFile = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**
@@ -43,7 +32,7 @@ class CountMapField {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -52,7 +41,7 @@ class CountMapField {
 	 *
 	 * @param array $log
 	 */
-	public function check( array $log = [] ) {
+	public function check( array $log = [] ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

@@ -1,0 +1,213 @@
+<?php
+
+namespace SMW\Tests\Unit\SQLStore\QueryEngine\Fulltext;
+
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
+use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
+use stdClass;
+
+/**
+ * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class SearchTableUpdaterTest extends TestCase {
+
+	private $connection;
+	private $searchTable;
+	private $textSanitizer;
+
+	protected function setUp(): void {
+		$this->connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->searchTable = $this->getMockBuilder( SearchTable::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->textSanitizer = $this->getMockBuilder( TextSanitizer::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			SearchTableUpdater::class,
+			new SearchTableUpdater( $this->connection, $this->searchTable, $this->textSanitizer )
+		);
+	}
+
+	public function testRead() {
+		$row = new stdClass;
+		$row->o_text = 'Foo';
+
+		$this->connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->with(
+				$this->anything(),
+				[ 'o_text' ],
+				$this->equalTo( [ 's_id' => 12, 'p_id' => 42 ] ) )
+			->willReturn( $row );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$instance->read( 12, 42 );
+	}
+
+	public function testOptimizeOnEnabledType() {
+		$this->connection->expects( $this->once() )
+			->method( 'isType' )
+			->with( 'mysql' )
+			->willReturn( true );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$this->assertTrue(
+			$instance->optimize()
+		);
+	}
+
+	public function testOptimizeOnDisabledType() {
+		$this->connection->expects( $this->once() )
+			->method( 'isType' )
+			->willReturn( false );
+
+		$this->connection->expects( $this->never() )
+			->method( 'query' );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$this->assertFalse(
+			$instance->optimize()
+		);
+	}
+
+	public function testUpdateWithText() {
+		$this->textSanitizer->expects( $this->once() )
+			->method( 'sanitize' )
+			->willReturn( 'foo' );
+
+		$this->connection->expects( $this->once() )
+			->method( 'update' );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$instance->update( 12, 42, 'foo' );
+	}
+
+	public function testDeleteOnUpdateWithEmptyText() {
+		$this->connection->expects( $this->once() )
+			->method( 'delete' );
+
+		$this->connection->expects( $this->never() )
+			->method( 'update' );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$instance->update( 12, 42, ' ' );
+	}
+
+	public function testInsert() {
+		$this->connection->expects( $this->once() )
+			->method( 'insert' )
+			->with(
+				$this->anything(),
+				$this->equalTo( [
+					's_id' => 12,
+					'p_id' => 42,
+					'o_text' => '' ] ) );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$instance->insert( 12, 42 );
+	}
+
+	public function testDelete() {
+		$this->connection->expects( $this->once() )
+			->method( 'delete' )
+			->with(
+				$this->anything(),
+				$this->equalTo( [
+					's_id' => 12,
+					'p_id' => 42 ] ) );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$instance->delete( 12, 42 );
+	}
+
+	public function testFlushTable() {
+		$this->connection->expects( $this->once() )
+			->method( 'delete' )
+			->with(
+				$this->anything(),
+				'*' );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$instance->flushTable();
+	}
+
+	public function testExists() {
+		$this->connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( [
+					's_id' => 12,
+					'p_id' => 42 ] ) );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$instance->exists( 12, 42 );
+	}
+
+}

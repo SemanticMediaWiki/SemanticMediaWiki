@@ -2,7 +2,7 @@
 
 namespace SMW\Exporter\Controller;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,18 +25,18 @@ class Queue {
 	 * An array that keeps track of the elements for which we still need to
 	 * write auxiliary definitions/declarations.
 	 */
-	private $queue = [];
+	private array $queue = [];
 
 	/**
 	 * An array that keeps track of the recursion depth with which each object
 	 * has been serialised.
 	 */
-	private $done = [];
+	private array $done = [];
 
 	/**
 	 * @since 3.2
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->queue = [];
 		$this->done = [];
 	}
@@ -55,7 +55,7 @@ class Queue {
 	 *
 	 * @param string $key
 	 */
-	public function remove( string $key ) {
+	public function remove( string $key ): void {
 		unset( $this->queue[$key] );
 	}
 
@@ -71,17 +71,17 @@ class Queue {
 	/**
 	 * @since 3.2
 	 */
-	public function reset() {
+	public function reset(): mixed {
 		return reset( $this->queue );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 * @param int $recdepth
 	 */
-	public function add( DIWikiPage $dataItem, int $recdepth ) {
+	public function add( WikiPage $dataItem, int $recdepth ): void {
 		if ( $this->isDone( $dataItem, $recdepth ) ) {
 			return;
 		}
@@ -94,11 +94,11 @@ class Queue {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem specifying the object to check
+	 * @param WikiPage $dataItem specifying the object to check
 	 *
 	 * @return bool
 	 */
-	public function isNotDone( DIWikiPage $dataItem ): bool {
+	public function isNotDone( WikiPage $dataItem ): bool {
 		return !isset( $this->done[$dataItem->getSha1()] );
 	}
 
@@ -108,12 +108,12 @@ class Queue {
 	 *
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem specifying the object to check
+	 * @param WikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 *
 	 * @return bool
 	 */
-	public function isDone( DIWikiPage $dataItem, int $recdepth ): bool {
+	public function isDone( WikiPage $dataItem, int $recdepth ): bool {
 		return $this->isHashDone( $dataItem->getSha1(), $recdepth );
 	}
 
@@ -123,10 +123,10 @@ class Queue {
 	 *
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem specifying the object to check
+	 * @param WikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 */
-	public function done( DIWikiPage $dataItem, int $recdepth ) {
+	public function done( WikiPage $dataItem, int $recdepth ): void {
 		$hash = $dataItem->getSha1();
 
 		if ( count( $this->done ) >= self::MAX_CACHE_SIZE ) {
@@ -148,7 +148,7 @@ class Queue {
 	 * Check if the given task has already been completed at sufficient
 	 * recursion depth.
 	 */
-	private function isHashDone( string $hash, int $recdepth ) {
+	private function isHashDone( string $hash, int $recdepth ): bool {
 		if ( isset( $this->done[$hash] ) && $this->done[$hash] == -1 ) {
 			return true;
 		}

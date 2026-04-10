@@ -14,9 +14,9 @@ class ImportContents {
 	const CONTENT_XML = 'text/xml';
 
 	/**
-	 * @var string
+	 * @var int
 	 */
-	private $version = '';
+	private $version = 0;
 
 	/**
 	 * @var string
@@ -31,7 +31,7 @@ class ImportContents {
 	/**
 	 * @var string
 	 */
-	private $importPerformer = '';
+	private string $importPerformer = '';
 
 	/**
 	 * @var int
@@ -58,17 +58,14 @@ class ImportContents {
 	 */
 	private $errors = [];
 
-	/**
-	 * @var array
-	 */
-	private $options = [];
+	private array $options = [];
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param string $version
 	 */
-	public function setVersion( $version ) {
+	public function setVersion( $version ): void {
 		$this->version = intval( $version );
 	}
 
@@ -77,7 +74,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): int {
 		return $this->version;
 	}
 
@@ -86,7 +83,7 @@ class ImportContents {
 	 *
 	 * @param string $description
 	 */
-	public function setDescription( $description ) {
+	public function setDescription( $description ): void {
 		$this->description = $description;
 	}
 
@@ -95,7 +92,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getDescription() {
+	public function getDescription(): string {
 		return $this->description;
 	}
 
@@ -104,7 +101,7 @@ class ImportContents {
 	 *
 	 * @param string $contentType
 	 */
-	public function setContentType( $contentType ) {
+	public function setContentType( $contentType ): void {
 		$this->contentType = $contentType;
 	}
 
@@ -122,7 +119,7 @@ class ImportContents {
 	 *
 	 * @param string $name
 	 */
-	public function setName( $name ) {
+	public function setName( $name ): void {
 		$this->name = $name;
 	}
 
@@ -131,7 +128,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		return $this->name;
 	}
 
@@ -140,7 +137,7 @@ class ImportContents {
 	 *
 	 * @param string $importPerformer
 	 */
-	public function setImportPerformer( string $importPerformer ) {
+	public function setImportPerformer( string $importPerformer ): void {
 		$this->importPerformer = $importPerformer;
 	}
 
@@ -158,7 +155,7 @@ class ImportContents {
 	 *
 	 * @param int $namespace
 	 */
-	public function setNamespace( $namespace ) {
+	public function setNamespace( $namespace ): void {
 		$this->namespace = $namespace;
 	}
 
@@ -167,7 +164,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getNamespace() {
+	public function getNamespace(): int {
 		return $this->namespace;
 	}
 
@@ -176,7 +173,7 @@ class ImportContents {
 	 *
 	 * @param string $contentsFile
 	 */
-	public function setContentsFile( $contentsFile ) {
+	public function setContentsFile( $contentsFile ): void {
 		$this->contentsFile = $contentsFile;
 	}
 
@@ -200,7 +197,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getContentsFile() {
+	public function getContentsFile(): string {
 		return $this->contentsFile;
 	}
 
@@ -209,7 +206,7 @@ class ImportContents {
 	 *
 	 * @param string $contents
 	 */
-	public function setContents( $contents ) {
+	public function setContents( $contents ): void {
 		$this->contents = $contents;
 	}
 
@@ -218,7 +215,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getContents() {
+	public function getContents(): string {
 		return $this->contents;
 	}
 
@@ -227,7 +224,7 @@ class ImportContents {
 	 *
 	 * @param string $error
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		$this->errors[] = $error;
 	}
 
@@ -236,7 +233,7 @@ class ImportContents {
 	 *
 	 * @return string[]
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -245,7 +242,7 @@ class ImportContents {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( $options ) {
+	public function setOptions( $options ): void {
 		$this->options = (array)$options;
 	}
 
@@ -254,7 +251,7 @@ class ImportContents {
 	 *
 	 * @return array
 	 */
-	public function getOptions() {
+	public function getOptions(): array {
 		return $this->options;
 	}
 

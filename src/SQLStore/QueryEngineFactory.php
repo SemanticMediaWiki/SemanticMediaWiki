@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
@@ -24,17 +24,9 @@ use SMW\Utils\CircularReferenceGuard;
 class QueryEngineFactory {
 
 	/**
-	 * @var \SMW\SQLStore\SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -42,7 +34,7 @@ class QueryEngineFactory {
 	 *
 	 * @return ConditionBuilder
 	 */
-	public function newConditionBuilder() {
+	public function newConditionBuilder(): ConditionBuilder {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 		$orderCondition = new OrderCondition();
 
@@ -76,7 +68,7 @@ class QueryEngineFactory {
 	 *
 	 * @return QuerySegmentListProcessor
 	 */
-	public function newQuerySegmentListProcessor() {
+	public function newQuerySegmentListProcessor(): QuerySegmentListProcessor {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
@@ -90,11 +82,11 @@ class QueryEngineFactory {
 		$hierarchyTempTableBuilder->setTableDefinitions(
 			[
 				'property' => [
-					'table' => $this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
+					'table' => $this->store->findPropertyTableID( new Property( '_SUBP' ) ),
 					'depth' => $settings->get( 'smwgQSubpropertyDepth' )
 				],
 				'class' => [
-					'table' => $this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
+					'table' => $this->store->findPropertyTableID( new Property( '_SUBC' ) ),
 					'depth' => $settings->get( 'smwgQSubcategoryDepth' )
 				]
 
@@ -115,7 +107,7 @@ class QueryEngineFactory {
 	 *
 	 * @return QueryEngine
 	 */
-	public function newQueryEngine() {
+	public function newQueryEngine(): QueryEngine {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$queryEngine = new QueryEngine(
@@ -137,7 +129,7 @@ class QueryEngineFactory {
 	 *
 	 * @return ConceptQuerySegmentBuilder
 	 */
-	public function newConceptQuerySegmentBuilder() {
+	public function newConceptQuerySegmentBuilder(): ConceptQuerySegmentBuilder {
 		$pplicationFactory = ApplicationFactory::getInstance();
 
 		$conceptQuerySegmentBuilder = new ConceptQuerySegmentBuilder(
@@ -154,7 +146,7 @@ class QueryEngineFactory {
 		return $conceptQuerySegmentBuilder;
 	}
 
-	private function newTemporaryTableBuilder() {
+	private function newTemporaryTableBuilder(): TemporaryTableBuilder {
 		$temporaryTableBuilder = new TemporaryTableBuilder(
 			$this->store->getConnection( 'mw.db.queryengine' )
 		);

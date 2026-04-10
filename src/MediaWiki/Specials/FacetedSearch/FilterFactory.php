@@ -18,31 +18,13 @@ use SMW\Schema\SchemaFactory;
 class FilterFactory {
 
 	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var TreeBuilder
-	 */
-	private $treeBuilder;
-
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
-	 * @param TreeBuilder $treeBuilder
-	 * @param SchemaFactory $schemaFactory
 	 */
-	public function __construct( TemplateParser $templateParser, TreeBuilder $treeBuilder, SchemaFactory $schemaFactory ) {
-		$this->templateParser = $templateParser;
-		$this->treeBuilder = $treeBuilder;
-		$this->schemaFactory = $schemaFactory;
+	public function __construct(
+		private readonly TemplateParser $templateParser,
+		private readonly TreeBuilder $treeBuilder,
+		private readonly SchemaFactory $schemaFactory,
+	) {
 	}
 
 	/**

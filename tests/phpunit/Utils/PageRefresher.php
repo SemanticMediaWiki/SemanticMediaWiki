@@ -5,7 +5,6 @@ namespace SMW\Tests\Utils;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use RuntimeException;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use WikiPage;
@@ -27,7 +26,7 @@ class PageRefresher {
 	 * @return PageRefresher
 	 */
 	public function doRefresh( $title ) {
-		if ( $title instanceof WikiPage || $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage || $title instanceof \SMW\DataItems\WikiPage ) {
 			$title = $title->getTitle();
 		}
 
@@ -72,7 +71,7 @@ class PageRefresher {
 	 * @return PageRefresher
 	 */
 	public function doRefreshByUpdateJob( $title ) {
-		if ( $title instanceof WikiPage || $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage || $title instanceof \SMW\DataItems\WikiPage ) {
 			$title = $title->getTitle();
 		}
 

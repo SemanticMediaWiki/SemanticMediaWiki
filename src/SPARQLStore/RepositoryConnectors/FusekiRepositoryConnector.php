@@ -19,36 +19,47 @@ class FusekiRepositoryConnector extends GenericRepositoryConnector {
 
 	/**
 	 * @see GenericRepositoryConnector::doQuery
+	 *
+	 * @param string $sparql
+	 *
+	 * @return RepositoryResult
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doQuery( $sparql ) {
+	public function doQuery( string $sparql ): RepositoryResult {
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
-
-		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
-
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [
-			'Accept: application/sparql-results+xml,application/xml;q=0.8',
-			'Content-Type: application/x-www-form-urlencoded;charset=UTF-8'
-		] );
-
-		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "query=" . urlencode( $sparql ) .
 			( ( $defaultGraph !== '' ) ? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' ) . '&output=xml';
 
-		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+		$request = $this->httpRequestFactory->create(
+			$this->repositoryClient->getQueryEndpoint(),
+			array_merge( $this->getBaseOptions(), [
+				'method' => 'POST',
+				'postData' => $parameterString,
+			] ),
+			__METHOD__
+		);
 
-		$httpResponse = $this->httpRequest->execute();
+		$request->setHeader( 'Accept', 'application/sparql-results+xml,application/xml;q=0.8' );
+		$request->setHeader( 'Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8' );
 
-		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
+		$status = $request->execute();
+		$this->lastErrorCode = $request->getStatus();
+
+		if ( $status->isOK() ) {
 			$xmlResponseParser = new XmlResponseParser();
-			return $xmlResponseParser->parse( $httpResponse );
+			return $xmlResponseParser->parse( $request->getContent() );
 		}
 
-		$this->mapHttpRequestError( $this->repositoryClient->getQueryEndpoint(), $sparql );
+		$this->mapHttpRequestError(
+			$request->getStatus(),
+			$this->repositoryClient->getQueryEndpoint(),
+			$sparql
+		);
 
 		$repositoryResult = new RepositoryResult();
 		$repositoryResult->setErrorCode( RepositoryResult::ERROR_UNREACHABLE );
@@ -61,19 +72,28 @@ class FusekiRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @see GenericRepositoryConnector::getVersion
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		$url = new Url(
 			$this->repositoryClient->getQueryEndpoint()
 		);
 
 		// https://jena.apache.org/documentation/fuseki2/fuseki-server-protocol.html
-		$this->httpRequest->setOption( CURLOPT_URL, $url->path( '/$/server' ) );
-		$httpResponse = $this->httpRequest->execute();
+		$request = $this->httpRequestFactory->create(
+			$url->path( '/$/server' ),
+			$this->getBaseOptions(),
+			__METHOD__
+		);
 
-		if ( is_string( $httpResponse ) ) {
-			$httpResponse = json_decode( $httpResponse, true );
+		$status = $request->execute();
 
-			return $httpResponse['version'] ?? '/na';
+		if ( $status->isOK() ) {
+			$httpResponse = $request->getContent();
+
+			if ( is_string( $httpResponse ) ) {
+				$httpResponse = json_decode( $httpResponse, true );
+
+				return $httpResponse['version'] ?? '/na';
+			}
 		}
 
 		return 'n/a';

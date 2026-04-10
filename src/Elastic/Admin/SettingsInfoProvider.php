@@ -20,7 +20,7 @@ class SettingsInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSupplementTask() {
+	public function getSupplementTask(): string {
 		return 'settings';
 	}
 
@@ -52,7 +52,7 @@ class SettingsInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch settings' );
 
 		$this->outputFormatter->addParentLink(
@@ -63,7 +63,7 @@ class SettingsInfoProvider extends InfoProviderHandler {
 		$this->outputInfo();
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$settings = [

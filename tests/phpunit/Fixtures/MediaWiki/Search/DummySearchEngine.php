@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Fixtures\MediaWiki\Search;
 
+use SearchEngine;
+
 /**
  * @group semantic-mediawiki
  *
@@ -10,6 +12,6 @@ namespace SMW\Tests\Fixtures\MediaWiki\Search;
  *
  * @author mwjames
  */
-class DummySearchEngine extends \SearchEngine {
+class DummySearchEngine extends SearchEngine {
 
 }

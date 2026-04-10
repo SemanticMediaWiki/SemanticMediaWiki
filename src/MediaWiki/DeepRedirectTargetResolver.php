@@ -14,25 +14,15 @@ use RuntimeException;
 class DeepRedirectTargetResolver {
 
 	/**
-	 * @var PageCreator
-	 */
-	private $pageCreator = null;
-
-	/**
 	 * Track titles to prevent circular references caused by double redirects
 	 * on the same title
-	 *
-	 * @var array
 	 */
-	private $recursiveResolverTracker = [];
+	private array $recursiveResolverTracker = [];
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param PageCreator $pageCreator
 	 */
-	public function __construct( PageCreator $pageCreator ) {
-		$this->pageCreator = $pageCreator;
+	public function __construct( private readonly PageCreator $pageCreator ) {
 	}
 
 	/**
@@ -43,19 +33,19 @@ class DeepRedirectTargetResolver {
 	 * @return Title|null
 	 * @throws RuntimeException
 	 */
-	public function findRedirectTargetFor( Title $title ) {
+	public function findRedirectTargetFor( Title $title ): ?Title {
 		return $this->doResolveRedirectTarget( $title );
 	}
 
-	protected function isValidRedirectTarget( $title ) {
+	protected function isValidRedirectTarget( $title ): bool {
 		return $title instanceof Title && $title->isValidRedirectTarget();
 	}
 
-	protected function isRedirect( $title ) {
+	protected function isRedirect( $title ): bool {
 		return $title instanceof Title && $title->isRedirect();
 	}
 
-	private function doResolveRedirectTarget( Title $title ) {
+	private function doResolveRedirectTarget( Title $title ): ?Title {
 		$this->addToResolverTracker( $title );
 
 		if ( $this->isCircularByKnownRedirectTarget( $title ) ) {
@@ -77,7 +67,7 @@ class DeepRedirectTargetResolver {
 		throw new RuntimeException( "Redirect target is unresolvable" );
 	}
 
-	private function addToResolverTracker( $title ) {
+	private function addToResolverTracker( Title $title ) {
 		if ( !isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) ) {
 			$this->recursiveResolverTracker[$title->getPrefixedDBkey()] = 0;
 		}
@@ -85,7 +75,7 @@ class DeepRedirectTargetResolver {
 		return $this->recursiveResolverTracker[$title->getPrefixedDBkey()]++;
 	}
 
-	private function isCircularByKnownRedirectTarget( $title ) {
+	private function isCircularByKnownRedirectTarget( Title $title ): bool {
 		return isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) && $this->recursiveResolverTracker[$title->getPrefixedDBkey()] > 1;
 	}
 

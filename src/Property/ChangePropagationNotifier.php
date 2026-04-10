@@ -2,14 +2,14 @@
 
 namespace SMW\Property;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
-use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Store;
-use SMWDataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * Before a new set of data (type, constraints etc.) is stored about a property
@@ -24,30 +24,11 @@ use SMWDIBlob as DIBlob;
  */
 class ChangePropagationNotifier {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private array $propertyList = [];
 
-	/**
-	 * @var SerializerFactory
-	 */
-	private $serializerFactory;
+	private bool $hasDiff = false;
 
-	/**
-	 * @var array
-	 */
-	private $propertyList = [];
-
-	/**
-	 * @var bool
-	 */
-	private $hasDiff = false;
-
-	/**
-	 * @var bool
-	 */
-	private $isTypePropagation = false;
+	private bool $isTypePropagation = false;
 
 	/**
 	 * @var bool
@@ -56,13 +37,11 @@ class ChangePropagationNotifier {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param SerializerFactory $serializerFactory
 	 */
-	public function __construct( Store $store, SerializerFactory $serializerFactory ) {
-		$this->store = $store;
-		$this->serializerFactory = $serializerFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SerializerFactory $serializerFactory,
+	) {
 	}
 
 	/**
@@ -70,7 +49,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @param array $propertyList
 	 */
-	public function setPropertyList( array $propertyList ) {
+	public function setPropertyList( array $propertyList ): void {
 		$this->propertyList = $propertyList;
 	}
 
@@ -82,7 +61,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
@@ -91,16 +70,16 @@ class ChangePropagationNotifier {
 	 *
 	 * @return bool
 	 */
-	public function hasDiff() {
+	public function hasDiff(): bool {
 		return $this->hasDiff;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function notify( DIWikiPage $subject ) {
+	public function notify( WikiPage $subject ): bool {
 		if ( !$this->hasDiff() || !$this->inNamespace( $subject ) ) {
 			return false;
 		}
@@ -117,11 +96,11 @@ class ChangePropagationNotifier {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function inNamespace( DIWikiPage $subject ) {
+	public function inNamespace( WikiPage $subject ): bool {
 		return $subject->getNamespace() === SMW_NS_PROPERTY || $subject->getNamespace() === NS_CATEGORY;
 	}
 
@@ -134,7 +113,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @since 1.9
 	 */
-	public function checkAndNotify( SemanticData &$semanticData ) {
+	public function checkAndNotify( SemanticData &$semanticData ): void {
 		if ( !$this->inNamespace( $semanticData->getSubject() ) ) {
 			return;
 		}
@@ -166,8 +145,8 @@ class ChangePropagationNotifier {
 		$this->doNotifyAndPostpone( $semanticData );
 	}
 
-	private function doCompare( $semanticData, $key ) {
-		$property = new DIProperty( $key );
+	private function doCompare( SemanticData $semanticData, $key ): void {
+		$property = new Property( $key );
 
 		$newValues = $semanticData->getPropertyValues( $property );
 
@@ -179,7 +158,7 @@ class ChangePropagationNotifier {
 		$this->setDiff( !$this->isEqual( $oldValues, $newValues ), $key );
 	}
 
-	private function setDiff( $hasDiff, $key ) {
+	private function setDiff( bool $hasDiff, $key ): void {
 		if ( !$hasDiff || $this->hasDiff ) {
 			return;
 		}
@@ -193,12 +172,12 @@ class ChangePropagationNotifier {
 	 * they contain the same content. Returns true if the two arrays contain the
 	 * same data values (irrespective of their order), false otherwise.
 	 *
-	 * @param SMWDataItem[] $oldDataValue
-	 * @param SMWDataItem[] $newDataValue
+	 * @param DataItem[] $oldDataValue
+	 * @param DataItem[] $newDataValue
 	 *
 	 * @return bool
 	 */
-	private function isEqual( array $oldDataValue, array $newDataValue ) {
+	private function isEqual( array $oldDataValue, array $newDataValue ): bool {
 		// The hashes of all values of both arrays are taken, then sorted
 		// and finally concatenated, thus creating one long hash out of each
 		// of the data value arrays. These are compared.
@@ -221,7 +200,7 @@ class ChangePropagationNotifier {
 		return $oldDataValueHash == $newDataValueHash;
 	}
 
-	private function doNotifyAndPostpone( SemanticData &$semanticData ) {
+	private function doNotifyAndPostpone( SemanticData &$semanticData ): void {
 		if ( !$this->hasDiff() ) {
 			return;
 		}
@@ -248,8 +227,8 @@ class ChangePropagationNotifier {
 		// the update until ChangePropagationDispatchJob was able to select
 		// all connected entities
 		$previous->addPropertyObjectValue(
-			new DIProperty( DIProperty::TYPE_CHANGE_PROP ),
-			new DIBlob( json_encode( $new ) )
+			new Property( Property::TYPE_CHANGE_PROP ),
+			new Blob( json_encode( $new ) )
 		);
 
 		$semanticData = $previous;

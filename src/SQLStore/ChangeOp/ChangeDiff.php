@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\ChangeOp;
 
 use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Utils\HmacSerializer;
 
 /**
@@ -24,40 +24,9 @@ class ChangeDiff {
 	 */
 	const CACHE_TTL = 604800;
 
-	/**
-	 * @var string
-	 */
-	private $time;
+	private int $time;
 
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
-
-	/**
-	 * @var array
-	 */
-	private $tableChangeOps = [];
-
-	/**
-	 * @var array
-	 */
-	private $dataOps = [];
-
-	/**
-	 * @var array
-	 */
-	private $propertyList = [];
-
-	/**
-	 * @var array
-	 */
-	private $textItems = [];
-
-	/**
-	 * @var array
-	 */
-	private $changeList = [];
+	private array $changeList = [];
 
 	/**
 	 * @var int
@@ -66,20 +35,15 @@ class ChangeDiff {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DIWikiPage $subject
-	 * @param array $tableChangeOps
-	 * @param array $dataOps
-	 * @param array $propertyList
-	 * @param array $textItems
 	 */
-	public function __construct( DIWikiPage $subject, array $tableChangeOps, array $dataOps, array $propertyList, array $textItems = [] ) {
+	public function __construct(
+		private readonly WikiPage $subject,
+		private readonly array $tableChangeOps,
+		private readonly array $dataOps,
+		private readonly array $propertyList,
+		private readonly array $textItems = [],
+	) {
 		$this->time = time();
-		$this->subject = $subject;
-		$this->tableChangeOps = $tableChangeOps;
-		$this->dataOps = $dataOps;
-		$this->propertyList = $propertyList;
-		$this->textItems = $textItems;
 	}
 
 	/**
@@ -87,7 +51,7 @@ class ChangeDiff {
 	 *
 	 * @param int $associatedRev
 	 */
-	public function setAssociatedRev( $associatedRev ) {
+	public function setAssociatedRev( $associatedRev ): void {
 		$this->associatedRev = $associatedRev;
 	}
 
@@ -96,43 +60,43 @@ class ChangeDiff {
 	 *
 	 * @return int
 	 */
-	public function getAssociatedRev() {
+	public function getAssociatedRev(): int {
 		return $this->associatedRev;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->subject;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return TableChangeOps[]
+	 * @return array
 	 */
-	public function getTableChangeOps() {
+	public function getTableChangeOps(): array {
 		return $this->tableChangeOps;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return TableChangeOps[]
+	 * @return array
 	 */
-	public function getDataOps() {
+	public function getDataOps(): array {
 		return $this->dataOps;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getTextItems() {
+	public function getTextItems(): array {
 		return $this->textItems;
 	}
 
@@ -141,9 +105,9 @@ class ChangeDiff {
 	 *
 	 * @param bool $op
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getPropertyList( $op = false ) {
+	public function getPropertyList( $op = false ): array {
 		if ( $op === true || $op === 'flip' ) {
 			$list = [];
 
@@ -179,7 +143,7 @@ class ChangeDiff {
 	 * @param string $type
 	 * @param array $changes
 	 */
-	public function setChangeList( $type, array $changes ) {
+	public function setChangeList( $type, array $changes ): void {
 		$this->changeList[$type] = $changes;
 	}
 
@@ -190,8 +154,8 @@ class ChangeDiff {
 	 *
 	 * @return array
 	 */
-	public function getChangeListByType( $type ) {
-		return isset( $this->changeList[$type] ) ? $this->changeList[$type] : [];
+	public function getChangeListByType( $type ): array {
+		return $this->changeList[$type] ?? [];
 	}
 
 	/**
@@ -199,7 +163,7 @@ class ChangeDiff {
 	 *
 	 * @return string
 	 */
-	public function serialize() {
+	public function serialize(): string|false {
 		return HmacSerializer::compress( $this );
 	}
 
@@ -208,7 +172,7 @@ class ChangeDiff {
 	 *
 	 * @return string
 	 */
-	public function toJson( $prettify = false ) {
+	public function toJson( $prettify = false ): string|false {
 		$changes = [];
 
 		foreach ( $this->tableChangeOps as $tableChangeOp ) {
@@ -243,7 +207,7 @@ class ChangeDiff {
 	 *
 	 * @param Cache $cache
 	 */
-	public function save( Cache $cache ) {
+	public function save( Cache $cache ): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$this->subject->getHash()
@@ -257,9 +221,9 @@ class ChangeDiff {
 	 * @since 3.0
 	 *
 	 * @param Cache $cache
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public static function fetch( Cache $cache, DIWikiPage $subject ) {
+	public static function fetch( Cache $cache, WikiPage $subject ) {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$subject->getHash()

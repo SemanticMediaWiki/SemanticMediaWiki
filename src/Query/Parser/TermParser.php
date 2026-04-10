@@ -22,34 +22,17 @@ class TermParser {
 	/**
 	 * @var
 	 */
-	private $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
+	private array $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
 
 	/**
 	 * @var
 	 */
-	private static $cache = [];
-
-	/**
-	 * The `prefix_map` is expected to contain assignments of prefixes that link
-	 * to a collection of properties. The prefix is used as short-cut to cover a
-	 * range of disjunctive query declarations to simplify the creation of a
-	 * query construct such as:
-	 *
-	 * - Prefix map: `'keyword' => [ 'Has keyword', 'Keyword' ]`
-	 * - Input: `keyword:foo bar`
-	 * - Output: `([[Has keyword::foo bar]] || [[Keyword::foo bar]])`
-	 *
-	 * @var
-	 */
-	private $prefix_map = [];
+	private static array $cache = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $prefix_map
 	 */
-	public function __construct( array $prefix_map = [] ) {
-		$this->prefix_map = $prefix_map;
+	public function __construct( private readonly array $prefix_map = [] ) {
 	}
 
 	/**
@@ -171,10 +154,11 @@ class TermParser {
 			$k++;
 		}
 
-		return self::$cache[$hash] = $this->normalize( $term );
+		self::$cache[$hash] = $this->normalize( $term );
+		return self::$cache[$hash];
 	}
 
-	private function close( &$custom, $prefix ) {
+	private function close( &$custom, string $prefix ): string {
 		// Standard closing
 		if ( $custom === '' ) {
 			return "]]";
@@ -199,7 +183,7 @@ class TermParser {
 		return '(' . implode( '||', $terms ) . ')';
 	}
 
-	private function normalize( $term ) {
+	private function normalize( $term ): string|array {
 		return str_replace(
 			[ ')[[', ']](', '(', ')', '||', '&&', 'AND', 'OR', ']][[', '[[[[', ']]]]', '  ' ],
 			[ ') [[', ']] (', '<q>', '</q>', ' || ', ' && ', ' AND ', ' OR ', ']] [[', '[[', ']]', ' ' ],
@@ -207,7 +191,7 @@ class TermParser {
 		);
 	}
 
-	private function normalize_compact_form( $exp, $pattern, &$term ) {
+	private function normalize_compact_form( string $exp, string $pattern, &$term ): void {
 		if ( strpos( $term, "$exp:(" ) === false ) {
 			return;
 		}

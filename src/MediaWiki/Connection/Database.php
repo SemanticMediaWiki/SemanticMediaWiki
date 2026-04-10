@@ -6,12 +6,14 @@ use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
-use Wikimedia\Rdbms\Database as MWDatabase;
+use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\ScopedCallback;
 
 /**
@@ -43,24 +45,11 @@ class Database {
 	const LIST_COMMA = ISQLPlatform::LIST_COMMA;
 
 	/**
-	 * @var ConnRef
-	 */
-	private $connRef;
-
-	/**
-	 * @var TransactionHandler
-	 */
-	private $transactionHandler;
-
-	/**
 	 * @var int
 	 */
 	private $flags = 0;
 
-	/**
-	 * @var int
-	 */
-	private $insertId = null;
+	private ?int $insertId = null;
 
 	/**
 	 * @var string
@@ -69,19 +58,17 @@ class Database {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ConnRef $connRef
-	 * @param TransactionHandler $transactionHandler
 	 */
-	public function __construct( ConnRef $connRef, TransactionHandler $transactionHandler ) {
-		$this->connRef = $connRef;
-		$this->transactionHandler = $transactionHandler;
+	public function __construct(
+		private readonly ConnRef $connRef,
+		private readonly TransactionHandler $transactionHandler,
+	) {
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		$this->connRef->releaseConnections();
 	}
 
@@ -90,7 +77,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return true;
 	}
 
@@ -99,8 +86,12 @@ class Database {
 	 *
 	 * @return Query
 	 */
-	public function newQuery() {
+	public function newQuery(): Query {
 		return new Query( $this );
+	}
+
+	public function newSelectQueryBuilder(): SelectQueryBuilder {
+		return $this->connRef->getConnection( 'read' )->newSelectQueryBuilder();
 	}
 
 	/**
@@ -110,7 +101,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}
@@ -125,7 +116,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function getInfo() {
+	public function getInfo(): array {
 		return [
 			$this->getType() => $this->connRef->getConnection( 'read' )->getServerInfo()
 		];
@@ -138,7 +129,7 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}
@@ -187,7 +178,7 @@ class Database {
 		// https://github.com/wikimedia/mediawiki/commit/6ab57b9c2424d9cc01b29908658b273a6ce75489
 		// Avoid "DBUnexpectedError ... DBConnRef.php: Database selection is
 		// disallowed to enable reuse ..."
-		if ( $connection instanceof \Wikimedia\Rdbms\DBConnRef ) {
+		if ( $connection instanceof DBConnRef ) {
 			return $connection->__call( __FUNCTION__, [ $prefix ] );
 		}
 
@@ -222,7 +213,7 @@ class Database {
 	 * @return ResultWrapper
 	 * @throws UnexpectedValueException
 	 */
-	public function select( $tableName, $fields, $conditions, $fname, array $options = [], $joinConditions = [] ) {
+	public function select( string|array $tableName, string|array $fields, string|array $conditions, string $fname, array $options = [], array $joinConditions = [] ) {
 		$tablePrefix = null;
 		$connection = $this->connRef->getConnection( 'read' );
 
@@ -305,7 +296,7 @@ class Database {
 	 * @param Query|string $sql
 	 * @param string $fname
 	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
 	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
@@ -326,7 +317,7 @@ class Database {
 	 * @param Query|string $sql
 	 * @param $fname
 	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
 	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {
@@ -453,7 +444,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function makeSelectOptions( $options ) {
+	public function makeSelectOptions( array $options ): array {
 		return OptionsBuilder::makeSelectOptions( $this, $options );
 	}
 
@@ -466,7 +457,7 @@ class Database {
 	 *
 	 * @return int|null
 	 */
-	public function nextSequenceValue( $seqName ) {
+	public function nextSequenceValue( $seqName ): ?int {
 		$this->insertId = null;
 
 		if ( !$this->isType( 'postgres' ) ) {
@@ -480,7 +471,8 @@ class Database {
 		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
 		$row = $res->fetchRow();
 
-		return $this->insertId = $row[0] === null ? null : (int)$row[0];
+		$this->insertId = $row[0] === null ? null : (int)$row[0];
+		return $this->insertId;
 	}
 
 	/**
@@ -490,7 +482,7 @@ class Database {
 	 *
 	 * @return int
 	 */
-	public function insertId() {
+	public function insertId(): int {
 		if ( $this->insertId !== null ) {
 			return $this->insertId;
 		}
@@ -503,7 +495,7 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	public function clearFlag( $flag ) {
+	public function clearFlag( $flag ): void {
 		$this->connRef->getConnection( 'write' )->clearFlag( $flag );
 	}
 
@@ -521,9 +513,10 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	public function setFlag( $flag ) {
+	public function setFlag( $flag ): void {
 		if ( $flag === self::AUTO_COMMIT ) {
-			return $this->flags = self::AUTO_COMMIT;
+			$this->flags = self::AUTO_COMMIT;
+			return;
 		}
 
 		$this->connRef->getConnection( 'write' )->setFlag( $flag );
@@ -689,15 +682,13 @@ class Database {
 	}
 
 	/**
-	 * @TransactionHandler::beginSectionTransaction
-	 *
 	 * @since 3.1
 	 *
 	 * @param string $fname
 	 *
 	 * @throws RuntimeException
 	 */
-	public function beginSectionTransaction( $fname = __METHOD__ ) {
+	public function beginSectionTransaction( $fname = __METHOD__ ): void {
 		$this->transactionHandler->markSectionTransaction(
 			$fname
 		);
@@ -710,7 +701,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 */
-	public function endSectionTransaction( $fname = __METHOD__ ) {
+	public function endSectionTransaction( $fname = __METHOD__ ): void {
 		$this->transactionHandler->detachSectionTransaction(
 			$fname
 		);
@@ -725,7 +716,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
+	public function inSectionTransaction( $fname = __METHOD__ ): bool {
 		return $this->transactionHandler->inSectionTransaction( $fname );
 	}
 
@@ -734,7 +725,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 */
-	public function beginAtomicTransaction( $fname = __METHOD__ ) {
+	public function beginAtomicTransaction( $fname = __METHOD__ ): void {
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
 		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
@@ -751,7 +742,7 @@ class Database {
 	 *
 	 * @return void
 	 */
-	public function endAtomicTransaction( $fname = __METHOD__ ) {
+	public function endAtomicTransaction( $fname = __METHOD__ ): void {
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
 		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
@@ -766,7 +757,7 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ) {
+	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ): void {
 		$connection = $this->connRef->getConnection( 'write' );
 
 		if ( $connection->trxLevel() ) {
@@ -779,7 +770,7 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionCommitOrIdle( callable $callback ) {
+	public function onTransactionCommitOrIdle( callable $callback ): void {
 		$connection = $this->connRef->getConnection( 'write' );
 		$connection->onTransactionCommitOrIdle( $callback );
 	}
@@ -791,7 +782,7 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function escape_bytea( $text ) {
+	public function escape_bytea( $text ): string {
 		if ( $this->isType( 'postgres' ) ) {
 			// normally one uses pg_escape_bytea PHP function to do this
 			// unfortunately pg_escape_bytea requires a PgSql\Connection as of PHP 8.1+

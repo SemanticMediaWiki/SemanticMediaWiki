@@ -25,10 +25,7 @@ class Settings extends Options {
 	use ChangeListenerAwareTrait;
 	use HookDispatcherAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	private $isLoaded = false;
+	private bool $isLoaded = false;
 
 	/**
 	 * Assemble individual SMW related settings into one accessible array for
@@ -40,7 +37,7 @@ class Settings extends Options {
 	 *
 	 * @throws SettingsAlreadyLoadedException
 	 */
-	public function loadFromGlobals() {
+	public function loadFromGlobals(): void {
 		// This function is never expected to be called more than once per active
 		// instance which should only happen via the service factory, yet, if
 		// someone attempted to call this function then we want to know by what
@@ -71,7 +68,6 @@ class Settings extends Options {
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
-			'smwgResourceLoaderDefFiles' => $GLOBALS['smwgResourceLoaderDefFiles'],
 			'smwgMaintenanceDir' => $GLOBALS['smwgMaintenanceDir'],
 			'smwgDir' => $GLOBALS['smwgDir'],
 			'smwgConfigFileDir' => $GLOBALS['smwgConfigFileDir'],
@@ -89,7 +85,6 @@ class Settings extends Options {
 			'smwgSparqlEndpoint' => $GLOBALS['smwgSparqlEndpoint'],
 			'smwgSparqlDefaultGraph' => $GLOBALS['smwgSparqlDefaultGraph'],
 			'smwgSparqlRepositoryFeatures' => $GLOBALS['smwgSparqlRepositoryFeatures'],
-			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
@@ -155,8 +150,8 @@ class Settings extends Options {
 			'smwgAutoRefreshOnPageMove' => $GLOBALS['smwgAutoRefreshOnPageMove'],
 			'smwgMaxPropertyValues' => $GLOBALS['smwgMaxPropertyValues'],
 			'smwgNamespace' => $GLOBALS['smwgNamespace'],
-			'smwgMasterStore' => isset( $GLOBALS['smwgMasterStore'] ) ? $GLOBALS['smwgMasterStore'] : '',
-			'smwgIQRunningNumber' => isset( $GLOBALS['smwgIQRunningNumber'] ) ? $GLOBALS['smwgIQRunningNumber'] : 0,
+			'smwgMasterStore' => $GLOBALS['smwgMasterStore'] ?? '',
+			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'] ?? 0,
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
@@ -242,7 +237,7 @@ class Settings extends Options {
 	 *
 	 * @return Settings
 	 */
-	public static function newFromArray( array $settings ) {
+	public static function newFromArray( array $settings ): self {
 		return new self( $settings );
 	}
 
@@ -251,7 +246,7 @@ class Settings extends Options {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		foreach ( $this->getChangeListeners() as $changeListener ) {
 
 			if ( !$changeListener->canTrigger( $key ) ) {
@@ -292,7 +287,7 @@ class Settings extends Options {
 	public function safeGet( $key, $default = false ) {
 		try {
 			$r = $this->get( $key );
-		} catch ( SettingNotFoundException $e ) {
+		} catch ( SettingNotFoundException ) {
 			return $default;
 		}
 
@@ -305,10 +300,10 @@ class Settings extends Options {
 	 * @param string $key
 	 * @param mixed $mung
 	 *
-	 * @return mixed
+	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function mung( string $key, $mung ) {
+	public function mung( string $key, mixed $mung ): string {
 		if ( is_string( $mung ) ) {
 			return (string)$this->get( $key ) . $mung;
 		}

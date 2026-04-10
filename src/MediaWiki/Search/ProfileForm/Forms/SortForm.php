@@ -16,15 +16,7 @@ use SMW\Localizer\Message;
  */
 class SortForm {
 
-	/**
-	 * @var WebRequest
-	 */
-	private $request;
-
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private Field $field;
 
 	/**
 	 * @var
@@ -33,11 +25,8 @@ class SortForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
 	 */
-	public function __construct( WebRequest $request ) {
-		$this->request = $request;
+	public function __construct( private readonly WebRequest $request ) {
 		$this->field = new Field();
 	}
 
@@ -46,7 +35,7 @@ class SortForm {
 	 *
 	 * @return
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
@@ -55,7 +44,7 @@ class SortForm {
 	 *
 	 * @param array $features
 	 */
-	public function makeFields( $features = [] ) {
+	public function makeFields( array $features = [] ) {
 		$default = isset( $features['best'] ) && $features['best'] ? 'best' : 'title';
 		$sort = $this->request->getVal( 'sort', $default );
 
@@ -101,7 +90,7 @@ class SortForm {
 		);
 	}
 
-	private function sortList( $features ) {
+	private function sortList( array $features ): array {
 		$list = [];
 
 		if ( isset( $features['best'] ) && $features['best'] ) {

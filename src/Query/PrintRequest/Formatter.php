@@ -5,6 +5,7 @@ namespace SMW\Query\PrintRequest;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
+use SMW\Parser\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
 
 /**
@@ -40,10 +41,10 @@ class Formatter {
 		return self::getHTMLText( $printRequest, $linker );
 	}
 
-	private static function getHTMLText( $printRequest, $linker = null ) {
+	private static function getHTMLText( PrintRequest $printRequest, $linker = null ) {
 		$label = $printRequest->getLabel();
 
-		if ( \SMW\Parser\InTextAnnotationParser::hasPropertyLink( $label ) ) {
+		if ( InTextAnnotationParser::hasPropertyLink( $label ) ) {
 			return Message::get( [ 'smw-parse', $label ], Message::PARSE );
 		}
 
@@ -67,7 +68,7 @@ class Formatter {
 		}
 	}
 
-	private static function getWikiText( $printRequest, $linker = false ) {
+	private static function getWikiText( PrintRequest $printRequest, $linker = false ) {
 		$label = $printRequest->getLabel();
 
 		if ( $linker === null || $linker === false || $label === '' ) {

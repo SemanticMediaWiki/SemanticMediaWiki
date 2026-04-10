@@ -34,7 +34,7 @@ class Deserializer {
 	 *
 	 * @return PrintRequest|null
 	 */
-	public static function deserialize( $text, array $options = [] ) {
+	public static function deserialize( $text, array $options = [] ): ?PrintRequest {
 		$showMode = false;
 		$useCanonicalLabel = false;
 
@@ -153,7 +153,7 @@ class Deserializer {
 		return $printRequest;
 	}
 
-	private static function isCategory( $text ) {
+	private static function isCategory( $text ): bool {
 		$text = mb_convert_case( $text, MB_CASE_TITLE );
 
 		// Check for the canonical form (singular, plural)
@@ -164,7 +164,7 @@ class Deserializer {
 		return Localizer::getInstance()->getNsText( NS_CATEGORY ) == $text;
 	}
 
-	private static function getPartsFromText( $text ) {
+	private static function getPartsFromText( $text ): array {
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
 		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", static function ( $matches ) {

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\FileFetcher;
 
 /**
@@ -12,7 +13,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class PHPUnitCheckRunnerTest extends \PHPUnit\Framework\TestCase {
+class PHPUnitCheckRunnerTest extends TestCase {
 
 	private static $iterator;
 

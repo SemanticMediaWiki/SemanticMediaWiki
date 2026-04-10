@@ -22,29 +22,17 @@ class Collator {
 	/**
 	 * @var Collator
 	 */
-	private static $instance = [];
-
-	/**
-	 * @var Collation
-	 */
-	private $collation;
-
-	/**
-	 * @var string
-	 */
-	private $collationName;
+	private static array $instance = [];
 
 	/**
 	 * @private
 	 *
 	 * @since 3.0
-	 *
-	 * @param Collation $collation
-	 * @param string $collationName
 	 */
-	public function __construct( Collation $collation, $collationName = '' ) {
-		$this->collation = $collation;
-		$this->collationName = $collationName;
+	public function __construct(
+		private readonly Collation $collation,
+		private $collationName = '',
+	) {
 	}
 
 	/**
@@ -128,7 +116,7 @@ class Collator {
 	 *
 	 * @return bool
 	 */
-	public function isIdentical( $old, $new ) {
+	public function isIdentical( $old, $new ): bool {
 		return $this->collation->getSortKey( $old ) === $this->collation->getSortKey( $new );
 	}
 

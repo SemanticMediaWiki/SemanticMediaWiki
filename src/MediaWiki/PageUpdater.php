@@ -21,19 +21,9 @@ class PageUpdater implements DeferrableUpdate {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var TransactionalCallableUpdate
-	 */
-	private $transactionalCallableUpdate;
-
-	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var Title[]
 	 */
-	private $titles = [];
+	private array $titles = [];
 
 	/**
 	 * @var string
@@ -50,35 +40,21 @@ class PageUpdater implements DeferrableUpdate {
 	 */
 	private $isHtmlCacheUpdate = true;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
-	/**
-	 * @var bool
-	 */
-	private $asPoolPurge = false;
+	private bool $asPoolPurge = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isPending = false;
+	private bool $isPending = false;
 
-	/**
-	 * @var array
-	 */
-	private $pendingUpdates = [];
+	private array $pendingUpdates = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Database|null $connection
-	 * @param TransactionalCallableUpdate|null $transactionalCallableUpdate
 	 */
-	public function __construct( ?Database $connection = null, ?TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
-		$this->connection = $connection;
-		$this->transactionalCallableUpdate = $transactionalCallableUpdate;
+	public function __construct(
+		private ?Database $connection = null,
+		private ?TransactionalCallableUpdate $transactionalCallableUpdate = null,
+	) {
 	}
 
 	/**
@@ -86,7 +62,7 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -95,7 +71,7 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @param string|null $fingerprint
 	 */
-	public function setFingerprint( $fingerprint = null ) {
+	public function setFingerprint( $fingerprint = null ): void {
 		$this->fingerprint = $fingerprint;
 	}
 
@@ -104,14 +80,14 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @param bool $isHtmlCacheUpdate
 	 */
-	public function isHtmlCacheUpdate( $isHtmlCacheUpdate ) {
+	public function isHtmlCacheUpdate( $isHtmlCacheUpdate ): void {
 		$this->isHtmlCacheUpdate = $isHtmlCacheUpdate;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function markAsPending() {
+	public function markAsPending(): void {
 		$this->isPending = true;
 	}
 
@@ -120,7 +96,7 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @param Title|null $title
 	 */
-	public function addPage( ?Title $title = null ) {
+	public function addPage( ?Title $title = null ): void {
 		if ( $title === null ) {
 			return;
 		}
@@ -136,7 +112,7 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @since 2.5
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = true;
 	}
 
@@ -146,9 +122,9 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function doPurgeParserCacheAsPool() {
+	public function doPurgeParserCacheAsPool(): void {
 		if ( $this->connection !== null ) {
-			$this->connection->onTransactionCommitOrIdle( function () {
+			$this->connection->onTransactionCommitOrIdle( function (): void {
 				 $this->doPoolPurge();
 			} );
 		} else {
@@ -159,7 +135,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @since 2.1
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->titles = [];
 	}
 
@@ -168,7 +144,7 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @return bool
 	 */
-	public function canUpdate() {
+	public function canUpdate(): bool {
 		return !MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
 	}
 
@@ -183,7 +159,7 @@ class PageUpdater implements DeferrableUpdate {
 			return $this->log( __METHOD__ . ' it is not possible to push updates as DeferredTransactionalUpdate)' );
 		}
 
-		$this->transactionalCallableUpdate->setCallback( function (){
+		$this->transactionalCallableUpdate->setCallback( function (): void{
 			$this->doUpdate();
 		} );
 
@@ -209,7 +185,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @since 3.0
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		$this->isPending = false;
 		$this->onTransactionIdle = false;
 
@@ -227,7 +203,8 @@ class PageUpdater implements DeferrableUpdate {
 		$method = __METHOD__;
 
 		if ( $this->isPending || $this->onTransactionIdle ) {
-			return $this->pendingUpdates['doPurgeParserCache'] = true;
+			$this->pendingUpdates['doPurgeParserCache'] = true;
+			return $this->pendingUpdates['doPurgeParserCache'];
 		}
 
 		foreach ( $this->titles as $title ) {
@@ -244,7 +221,8 @@ class PageUpdater implements DeferrableUpdate {
 		}
 
 		if ( $this->isPending || $this->onTransactionIdle ) {
-			return $this->pendingUpdates['doPurgeHtmlCache'] = true;
+			$this->pendingUpdates['doPurgeHtmlCache'] = true;
+			return $this->pendingUpdates['doPurgeHtmlCache'];
 		}
 
 		$method = __METHOD__;
@@ -260,7 +238,7 @@ class PageUpdater implements DeferrableUpdate {
 	 * Copied from PurgeJobUtils to avoid the AutoCommitUpdate from
 	 * Title::invalidateCache introduced with MW 1.28/1.29 on a large update pool
 	 */
-	private function doPoolPurge() {
+	private function doPoolPurge(): void {
 		Timer::start( __METHOD__ );
 
 		// #3413

@@ -4,13 +4,13 @@ namespace SMW\MediaWiki\Specials\FacetedSearch;
 
 use MediaWiki\Html\Html;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\FilterMap;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,15 +20,7 @@ use SMWQueryProcessor as QueryProcessor;
  */
 class ResultFetcher {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var int
-	 */
-	private $totalCount = 0;
+	private ?int $totalCount = 0;
 
 	/**
 	 * @var int
@@ -58,17 +50,14 @@ class ResultFetcher {
 	/**
 	 * @var
 	 */
-	private $params;
+	private ?array $params = null;
 
-	/**
-	 * @var string
-	 */
-	private $format = '';
+	private string $format = '';
 
 	/**
 	 * @var
 	 */
-	private $valueFilters = [];
+	private array $valueFilters = [];
 
 	/**
 	 * @var
@@ -87,11 +76,8 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -216,7 +202,7 @@ class ResultFetcher {
 	 *
 	 * @param ParametersProcessor $parametersProcessor
 	 */
-	public function fetchQueryResult( ParametersProcessor $parametersProcessor ) {
+	public function fetchQueryResult( ParametersProcessor $parametersProcessor ): void {
 		[ $queryString, $parameters, $printRequests ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parametersProcessor->getParameters(),
 			false
@@ -347,7 +333,7 @@ class ResultFetcher {
 		$this->findValueFilters( $results, $valueFilterResult, $parametersProcessor->getPropertyFilters() );
 	}
 
-	private function findValueFilters( $results, $valueFilterResult, array $propertyFilters ) {
+	private function findValueFilters( $results, array $valueFilterResult, array $propertyFilters ): void {
 		if ( $propertyFilters === [] ) {
 			return;
 		}
@@ -366,7 +352,7 @@ class ResultFetcher {
 		foreach ( $propertyFilters as $label ) {
 			$list = $valueFilterResult[$label] ?? $subjects;
 
-			$property = DIProperty::newFromUserLabel( $label );
+			$property = Property::newFromUserLabel( $label );
 
 			$valuesGroup = $byGroupPropertyValuesLookup->findValueGroups(
 				$property,

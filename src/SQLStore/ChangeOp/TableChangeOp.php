@@ -14,24 +14,12 @@ class TableChangeOp {
 	const OP_DELETE = 'delete';
 
 	/**
-	 * @var string
-	 */
-	private $tableName;
-
-	/**
-	 * @var array
-	 */
-	private $changeOps;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param string $tableName
-	 * @param array $changeOps
 	 */
-	public function __construct( $tableName, array $changeOps ) {
-		$this->tableName = $tableName;
-		$this->changeOps = $changeOps;
+	public function __construct(
+		private $tableName,
+		private array $changeOps,
+	) {
 	}
 
 	/**
@@ -48,7 +36,7 @@ class TableChangeOp {
 	 *
 	 * @return bool
 	 */
-	public function isFixedPropertyOp() {
+	public function isFixedPropertyOp(): bool {
 		return isset( $this->changeOps['property'] );
 	}
 
@@ -86,7 +74,7 @@ class TableChangeOp {
 	 *
 	 * @return bool
 	 */
-	public function hasChangeOp( $opType ) {
+	public function hasChangeOp( $opType ): bool {
 		return isset( $this->changeOps[$opType] );
 	}
 
@@ -96,9 +84,9 @@ class TableChangeOp {
 	 * @param string|null $opType
 	 * @param array $filter
 	 *
-	 * @return FieldChangeOp[]|[]
+	 * @return mixed[]
 	 */
-	public function getFieldChangeOps( $opType = null, $filter = [] ) {
+	public function getFieldChangeOps( $opType = null, array $filter = [] ): array {
 		if ( $opType !== null && !$this->hasChangeOp( $opType ) ) {
 			return [];
 		}
@@ -141,7 +129,7 @@ class TableChangeOp {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return json_encode( $this->toArray() );
 	}
 
@@ -150,7 +138,7 @@ class TableChangeOp {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return [ $this->tableName => $this->changeOps ];
 	}
 

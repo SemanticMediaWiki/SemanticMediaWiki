@@ -4,6 +4,7 @@ namespace SMW\Schema;
 
 use Countable;
 use Iterator;
+use ReturnTypeWillChange;
 use SeekableIterator;
 use SMW\Iterators\SeekableIteratorTrait;
 use SMW\Utils\DotArray;
@@ -30,19 +31,13 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	const RULE_COMPARTMENT = 'type/rule';
 
 	/**
-	 * @var string|null
-	 */
-	private $type;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param array $compartments
-	 * @param string|null $type
 	 */
-	public function __construct( array $compartments = [], ?string $type = null ) {
+	public function __construct(
+		array $compartments = [],
+		private ?string $type = null,
+	) {
 		$this->container = $compartments;
-		$this->type = $type;
 	}
 
 	/**
@@ -68,7 +63,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		$data = current( $this->container );
 
@@ -105,7 +100,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 		);
 	}
 
-	private function search( $key, $flag, $data, $meta, &$result ) {
+	private function search( $key, $flag, array $data, array $meta, &$result ) {
 		foreach ( $data as $section => $value ) {
 
 			if ( isset( $data[Compartment::ASSOCIATED_SCHEMA] ) ) {

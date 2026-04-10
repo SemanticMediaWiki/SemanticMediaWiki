@@ -28,17 +28,9 @@ class IdBorder {
 	const UPPER_BOUND = 'upper.bound';
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**
@@ -46,7 +38,7 @@ class IdBorder {
 	 *
 	 * @param array $params
 	 */
-	public function check( array $params = [] ) {
+	public function check( array $params = [] ): void {
 		if ( !isset( $params[self::UPPER_BOUND] ) ) {
 			throw new RuntimeException( "Missing an upper bound!" );
 		}
@@ -137,7 +129,7 @@ class IdBorder {
 		}
 	}
 
-	private function move( $old, $new ) {
+	private function move( $old, $new ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

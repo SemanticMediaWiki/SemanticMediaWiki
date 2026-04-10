@@ -2,8 +2,8 @@
 
 namespace SMW\Query\Result;
 
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -12,16 +12,6 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class StringResult extends QueryResult {
-
-	/**
-	 * @var array
-	 */
-	private $result = '';
-
-	/**
-	 * @var Query
-	 */
-	private $query;
 
 	/**
 	 * @var callable
@@ -34,11 +24,6 @@ class StringResult extends QueryResult {
 	private $count = 0;
 
 	/**
-	 * @var bool
-	 */
-	private $hasFurtherResults = false;
-
-	/**
 	 * @var array
 	 */
 	private $options = [
@@ -48,13 +33,12 @@ class StringResult extends QueryResult {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $result
 	 */
-	public function __construct( $result, Query $query, $hasFurtherResults = false ) {
-		$this->result = $result;
-		$this->query = $query;
-		$this->hasFurtherResults = $hasFurtherResults;
+	public function __construct(
+		private $result,
+		private readonly Query $query,
+		private $hasFurtherResults = false,
+	) {
 	}
 
 	/**
@@ -63,7 +47,7 @@ class StringResult extends QueryResult {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -72,7 +56,7 @@ class StringResult extends QueryResult {
 	 *
 	 * @param int $count
 	 */
-	public function setCount( $count ) {
+	public function setCount( $count ): void {
 		$this->count = $count;
 	}
 
@@ -81,7 +65,7 @@ class StringResult extends QueryResult {
 	 *
 	 * @return int
 	 */
-	public function getCount() {
+	public function getCount(): int {
 		return $this->count;
 	}
 
@@ -90,7 +74,7 @@ class StringResult extends QueryResult {
 	 *
 	 * @return bool
 	 */
-	public function hasFurtherResults() {
+	public function hasFurtherResults(): bool {
 		return $this->hasFurtherResults;
 	}
 
@@ -101,16 +85,14 @@ class StringResult extends QueryResult {
 	 *
 	 * @param callable $preOutputCallback
 	 */
-	public function setPreOutputCallback( callable $preOutputCallback ) {
+	public function setPreOutputCallback( callable $preOutputCallback ): void {
 		$this->preOutputCallback = $preOutputCallback;
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @return string
+	 * @since 7.0
 	 */
-	public function getResults() {
+	public function getFormattedResult(): string|array {
 		$result = $this->result;
 
 		if ( is_callable( $this->preOutputCallback ) ) {
@@ -124,6 +106,19 @@ class StringResult extends QueryResult {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * This override previously returned string|array, violating the parent's
+	 * array return type contract. Use getFormattedResult() for the original
+	 * string|array behavior.
+	 */
+	public function getResults(): array {
+		$result = $this->getFormattedResult();
+
+		return is_array( $result ) ? $result : [ $result ];
 	}
 
 }

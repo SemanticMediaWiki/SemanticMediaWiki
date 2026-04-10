@@ -6,10 +6,11 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 use SMW\Localizer\Message;
 use SMW\Query\Language\Description;
+use SMW\Query\Query;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,32 +22,16 @@ use SMWQuery as Query;
  */
 class ConditionBuilder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private DispatchingDescriptionInterpreter $dispatchingDescriptionInterpreter;
 
-	/**
-	 * @var OrderCondition
-	 */
-	private $orderCondition;
-
-	/**
-	 * @var DispatchingDescriptionInterpreter
-	 */
-	private $dispatchingDescriptionInterpreter;
-
-	/**
-	 * @var bool
-	 */
-	private $isFilterDuplicates = true;
+	private bool $isFilterDuplicates = true;
 
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
 	 *
 	 * @var QuerySegment[]
 	 */
-	private $querySegmentList = [];
+	private array $querySegmentList = [];
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -60,27 +45,22 @@ class ConditionBuilder {
 	/**
 	 * @var string[]
 	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @var int
 	 */
 	private $lastQuerySegmentId = -1;
 
-	private CircularReferenceGuard $circularReferenceGuard;
-
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param OrderCondition $orderCondition
-	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
-	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function __construct( Store $store, OrderCondition $orderCondition, DescriptionInterpreterFactory $descriptionInterpreterFactory, CircularReferenceGuard $circularReferenceGuard ) {
-		$this->store = $store;
-		$this->orderCondition = $orderCondition;
-		$this->circularReferenceGuard = $circularReferenceGuard;
+	public function __construct(
+		private readonly Store $store,
+		private readonly OrderCondition $orderCondition,
+		DescriptionInterpreterFactory $descriptionInterpreterFactory,
+		private readonly CircularReferenceGuard $circularReferenceGuard,
+	) {
 		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
 		QuerySegment::$qnum = 0;
 	}
@@ -93,7 +73,7 @@ class ConditionBuilder {
 	 *
 	 * @param bool $isFilterDuplicates
 	 */
-	public function isFilterDuplicates( $isFilterDuplicates ) {
+	public function isFilterDuplicates( $isFilterDuplicates ): void {
 		$this->isFilterDuplicates = (bool)$isFilterDuplicates;
 	}
 
@@ -104,7 +84,7 @@ class ConditionBuilder {
 	 *
 	 * @return $this
 	 */
-	public function setSortKeys( $sortKeys ) {
+	public function setSortKeys( $sortKeys ): static {
 		$this->sortKeys = $sortKeys;
 		return $this;
 	}
@@ -114,7 +94,7 @@ class ConditionBuilder {
 	 *
 	 * @return string[]
 	 */
-	public function getSortKeys() {
+	public function getSortKeys(): array {
 		return $this->sortKeys;
 	}
 
@@ -144,7 +124,7 @@ class ConditionBuilder {
 	 *
 	 * @return QuerySegment[]
 	 */
-	public function getQuerySegmentList() {
+	public function getQuerySegmentList(): array {
 		return $this->querySegmentList;
 	}
 
@@ -153,7 +133,7 @@ class ConditionBuilder {
 	 *
 	 * @param QuerySegment $query
 	 */
-	public function addQuerySegment( QuerySegment $query ) {
+	public function addQuerySegment( QuerySegment $query ): void {
 		$this->querySegmentList[$query->queryNumber] = $query;
 	}
 
@@ -171,7 +151,7 @@ class ConditionBuilder {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -180,7 +160,7 @@ class ConditionBuilder {
 	 *
 	 * @param string $error
 	 */
-	public function addError( $error, $type = Message::TEXT ) {
+	public function addError( $error, $type = Message::TEXT ): void {
 		$this->errors[Message::getHash( $error, $type )] = Message::encode( $error, $type );
 	}
 
@@ -191,7 +171,7 @@ class ConditionBuilder {
 	 *
 	 * @return int
 	 */
-	public function buildCondition( Query $query ) {
+	public function buildCondition( Query $query ): int {
 		$this->sortKeys = $query->sortkeys;
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 
@@ -263,10 +243,11 @@ class ConditionBuilder {
 
 		// Get membership of descriptions that are resolved recursively
 		if ( $description->getMembership() !== '' ) {
-			$fingerprint = $fingerprint . $description->getMembership();
+			$fingerprint .= $description->getMembership();
 		}
 
-		if ( ( $querySegment = $this->findDuplicates( $fingerprint ) ) ) {
+		$querySegment = $this->findDuplicates( $fingerprint );
+		if ( $querySegment ) {
 			return $querySegment;
 		}
 
@@ -312,7 +293,7 @@ class ConditionBuilder {
 	}
 
 	private function findDuplicates( $fingerprint ) {
-		if ( $this->errors !== [] || $this->isFilterDuplicates === false ) {
+		if ( $this->errors !== [] || !$this->isFilterDuplicates ) {
 			return false;
 		}
 

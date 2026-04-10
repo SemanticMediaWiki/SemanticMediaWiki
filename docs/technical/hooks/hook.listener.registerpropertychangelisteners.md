@@ -22,7 +22,7 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Listener::
 use MediaWiki\MediaWikiServices;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 class ActOnPropertyChange {
 
@@ -32,21 +32,21 @@ class ActOnPropertyChange {
 	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ) {
 
 		$propertyChangeListener->addListenerCallback(
-			new DIProperty( 'PropertyFoo' ),
+			new Property( 'PropertyFoo' ),
 			[ $this, 'onChange' ]
 		);
 
 		$propertyChangeListener->addListenerCallback(
-			new DIProperty( 'PropertyBar' ),
+			new Property( 'PropertyBar' ),
 			[ $this, 'onChange' ]
 		);
 	}
 
 	/**
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function onChange( DIProperty $property, ChangeRecord $changeRecord ) {
+	public function onChange( Property $property, ChangeRecord $changeRecord ) {
 
 		if ( $property->getKey() === 'PropertyFoo' ) {
 			foreach ( $changeRecord as $record ) {

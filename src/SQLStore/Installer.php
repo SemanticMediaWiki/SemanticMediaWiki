@@ -14,6 +14,7 @@ use SMW\Setup;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\Utils\CliMsgFormatter;
@@ -52,61 +53,22 @@ class Installer implements MessageReporter {
 	 */
 	const POPULATE_HASH_FIELD_COMPLETE = 'populate.smw_hash_field_complete';
 
-	/**
-	 * @var TableSchemaManager
-	 */
-	private $tableSchemaManager;
+	private Options $options;
 
-	/**
-	 * @var TableBuilder
-	 */
-	private $tableBuilder;
+	private SetupFile $setupFile;
 
-	/**
-	 * @var TableBuildExaminer
-	 */
-	private $tableBuildExaminer;
-
-	/**
-	 * @var VersionExaminer
-	 */
-	private $versionExaminer;
-
-	/**
-	 * @var TableOptimizer
-	 */
-	private $tableOptimizer;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
-
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param TableSchemaManager $tableSchemaManager
-	 * @param TableBuilder $tableBuilder
-	 * @param TableBuildExaminer $tableBuildExaminer
-	 * @param VersionExaminer VersionExaminer
-	 * @param TableOptimizer $tableOptimizer
 	 */
-	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableBuildExaminer $tableBuildExaminer, VersionExaminer $versionExaminer, TableOptimizer $tableOptimizer ) {
-		$this->tableSchemaManager = $tableSchemaManager;
-		$this->tableBuilder = $tableBuilder;
-		$this->tableBuildExaminer = $tableBuildExaminer;
-		$this->versionExaminer = $versionExaminer;
-		$this->tableOptimizer = $tableOptimizer;
+	public function __construct(
+		private TableSchemaManager $tableSchemaManager,
+		private TableBuilder $tableBuilder,
+		private TableBuildExaminer $tableBuildExaminer,
+		private VersionExaminer $versionExaminer,
+		private TableOptimizer $tableOptimizer,
+	) {
 		$this->options = new Options();
 		$this->setupFile = new SetupFile();
 	}
@@ -116,7 +78,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param Options|array $options
 	 */
-	public function setOptions( $options ) {
+	public function setOptions( $options ): void {
 		if ( !$options instanceof Options ) {
 			$options = new Options( $options );
 		}
@@ -129,7 +91,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -138,7 +100,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param Options|bool $verbose
 	 */
-	public function install( $verbose = true ) {
+	public function install( $verbose = true ): bool {
 		if ( $verbose instanceof Options ) {
 			$this->options = $verbose;
 		}
@@ -193,7 +155,7 @@ class Installer implements MessageReporter {
 			$this->messageReporter
 		);
 
-		if ( $this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) === false ) {
+		if ( !$this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) ) {
 			return $this->printBottom();
 		}
 
@@ -291,7 +253,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param bool $verbose
 	 */
-	public function uninstall( $verbose = true ) {
+	public function uninstall( $verbose = true ): bool {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->initMessageReporter( $verbose );
@@ -341,7 +303,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		ob_start();
 		print $message;
 		ob_flush();
@@ -424,7 +386,7 @@ class Installer implements MessageReporter {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function outputReport( $timer ) {
+	private function outputReport( Timer $timer ): void {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$keys = $timer->keys;
 
@@ -447,7 +409,7 @@ class Installer implements MessageReporter {
 		}
 	}
 
-	private function printHead() {
+	private function printHead(): void {
 		if (
 			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
 			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
@@ -457,7 +419,7 @@ class Installer implements MessageReporter {
 		}
 	}
 
-	private function printBottom() {
+	private function printBottom(): bool {
 		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
 			$this->messageReporter->reportMessage( $this->cliMsgFormatter->section( '', 0, '=' ) );
 			$this->messageReporter->reportMessage( "\n" );

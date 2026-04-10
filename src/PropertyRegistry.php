@@ -16,15 +16,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class PropertyRegistry {
 
-	/**
-	 * @var PropertyRegistry
-	 */
-	private static $instance = null;
+	private static ?PropertyRegistry $instance = null;
 
-	/**
-	 * @var PropertyLabelFinder
-	 */
-	private $propertyLabelFinder = null;
+	private PropertyLabelFinder $propertyLabelFinder;
 
 	/**
 	 * Array for assigning types to predefined properties. Each
@@ -37,10 +31,8 @@ class PropertyRegistry {
 	 *   similar interfaces; (note that this is only relevant if the
 	 *   property can be displayed at all, i.e. has a translated label in
 	 *   the wiki language; invisible properties are never shown).
-	 *
-	 * @var array
 	 */
-	private $propertyList = [];
+	private array $propertyList = [];
 
 	/**
 	 * @var string[]
@@ -52,22 +44,19 @@ class PropertyRegistry {
 	 */
 	private $propertyDescriptionMsgKeys = [];
 
-	/**
-	 * @var PropertyAliasFinder
-	 */
-	private $propertyAliasFinder;
+	private PropertyAliasFinder $propertyAliasFinder;
 
 	/**
 	 * @var string[]
 	 */
-	private $dataTypePropertyExemptionList = [];
+	private array $dataTypePropertyExemptionList;
 
 	/**
 	 * @since 2.1
 	 *
 	 * @return PropertyRegistry
 	 */
-	public static function getInstance() {
+	public static function getInstance(): PropertyRegistry {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -142,7 +131,7 @@ class PropertyRegistry {
 	/**
 	 * @since 2.1
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -151,7 +140,7 @@ class PropertyRegistry {
 	 *
 	 * @return array
 	 */
-	public function getPropertyList() {
+	public function getPropertyList(): array {
 		return $this->propertyList;
 	}
 
@@ -166,7 +155,7 @@ class PropertyRegistry {
 
 	/**
 	 * A method for registering/overwriting predefined properties for SMW.
-	 * It should be called from within the hook 'smwInitProperties' only.
+	 * It should be called from within the hook 'SMW::Property::initProperties' only.
 	 * IDs should start with three underscores "___" to avoid current and
 	 * future confusion with SMW built-ins.
 	 *
@@ -177,7 +166,7 @@ class PropertyRegistry {
 	 * @param bool $isAnnotable
 	 * @param bool $isDeclarative
 	 */
-	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true, $isDeclarative = false ) {
+	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true, $isDeclarative = false ): void {
 		$signature = [ $valueType, $isVisible, $isAnnotable, $isDeclarative ];
 
 		// Don't override an existing property registration with a different signature
@@ -204,7 +193,7 @@ class PropertyRegistry {
 	 * that has used "false" for a label on registration should have an
 	 * alias.
 	 */
-	public function registerPropertyAlias( $id, $label ) {
+	public function registerPropertyAlias( $id, $label ): void {
 		$this->propertyAliasFinder->registerAliasByFixedLabel( $id, $label );
 	}
 
@@ -217,7 +206,7 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $msgKey
 	 */
-	public function registerPropertyAliasByMsgKey( $id, $msgKey ) {
+	public function registerPropertyAliasByMsgKey( $id, $msgKey ): void {
 		$this->propertyAliasFinder->registerAliasByMsgKey( $id, $msgKey );
 	}
 
@@ -230,14 +219,14 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $msgKey
 	 */
-	public function registerPropertyDescriptionByMsgKey( $id, $msgKey ) {
+	public function registerPropertyDescriptionByMsgKey( $id, $msgKey ): void {
 		$this->propertyDescriptionMsgKeys[$id] = $msgKey;
 	}
 
 	/**
 	 * @deprecated since 3.0, use PropertyRegistry::registerPropertyDescriptionByMsgKey
 	 */
-	public function registerPropertyDescriptionMsgKeyById( $id, $msgKey ) {
+	public function registerPropertyDescriptionMsgKeyById( $id, $msgKey ): void {
 		$this->registerPropertyDescriptionByMsgKey( $id, $msgKey );
 	}
 
@@ -248,7 +237,7 @@ class PropertyRegistry {
 	 *
 	 * @return string
 	 */
-	public function findPropertyDescriptionMsgKeyById( $id ) {
+	public function findPropertyDescriptionMsgKeyById( $id ): string {
 		return isset( $this->propertyDescriptionMsgKeys[$id] ) ? $this->propertyDescriptionMsgKeys[$id] : '';
 	}
 
@@ -305,13 +294,6 @@ class PropertyRegistry {
 	}
 
 	/**
-	 * @deprecated since 2.1 use findPropertyLabelById instead
-	 */
-	public function findPropertyLabel( $id ) {
-		return $this->findPropertyLabelById( $id );
-	}
-
-	/**
 	 * Get the type ID of a predefined property, or '' if the property
 	 * is not predefined.
 	 * The function is guaranteed to return a type ID for keys of
@@ -333,13 +315,6 @@ class PropertyRegistry {
 	 * @deprecated since 3.0, use PropertyRegistry::getPropertyValueTypeById instead
 	 */
 	public function getPropertyTypeId( $id ) {
-		return $this->getPropertyValueTypeById( $id );
-	}
-
-	/**
-	 * @deprecated since 2.1 use getPropertyValueTypeById instead
-	 */
-	public function getPredefinedPropertyTypeId( $id ) {
 		return $this->getPropertyValueTypeById( $id );
 	}
 
@@ -420,16 +395,9 @@ class PropertyRegistry {
 	}
 
 	/**
-	 * @deprecated since 2.1 use findPropertyIdByLabel instead
-	 */
-	public function findPropertyId( $label, $useAlias = true ) {
-		return $this->findPropertyIdByLabel( $label, $useAlias );
-	}
-
-	/**
 	 * @deprecated since 3.0 use isRegistered instead
 	 */
-	public function isKnownPropertyId( $id ) {
+	public function isKnownPropertyId( $id ): bool {
 		return $this->isRegistered( $id );
 	}
 
@@ -440,7 +408,7 @@ class PropertyRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isRegistered( $id ) {
+	public function isRegistered( $id ): bool {
 		return isset( $this->propertyList[$id] ) || array_key_exists( $id, $this->propertyList );
 	}
 
@@ -451,7 +419,7 @@ class PropertyRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isVisible( $id ) {
+	public function isVisible( $id ): bool {
 		return $this->isRegistered( $id ) ? $this->propertyList[$id][1] : false;
 	}
 
@@ -462,7 +430,7 @@ class PropertyRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isAnnotable( $id ) {
+	public function isAnnotable( $id ): bool {
 		return $this->isRegistered( $id ) ? $this->propertyList[$id][2] : false;
 	}
 
@@ -473,7 +441,7 @@ class PropertyRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isDeclarative( $id ) {
+	public function isDeclarative( $id ): bool {
 		if ( !$this->isRegistered( $id ) ) {
 			return false;
 		}
@@ -487,21 +455,18 @@ class PropertyRegistry {
 	 * cannot be entered by or displayed to users, whatever their "show" value
 	 * below.
 	 */
-	protected function initProperties( array $propertyList ) {
+	protected function initProperties( array $propertyList ): void {
 		$this->propertyList = $propertyList;
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
 			$this->propertyList[$id] = [ $id, true, true, false ];
 		}
 
-		// @deprecated since 2.1
 		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
-		$hookContainer->run( 'smwInitProperties' );
-
 		$hookContainer->run( 'SMW::Property::initProperties', [ $this ] );
 	}
 
-	private function registerPropertyLabel( $id, $label, $asCanonical = true ) {
+	private function registerPropertyLabel( $id, $label, $asCanonical = true ): void {
 		$this->propertyLabelFinder->registerPropertyLabel( $id, $label, $asCanonical );
 	}
 

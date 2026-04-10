@@ -20,7 +20,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function table( $html = '', array $attributes = [] ) {
+	public static function table( string $html = '', array $attributes = [] ): string {
 		return self::open( $attributes ) . $html . self::close();
 	}
 
@@ -129,7 +129,10 @@ class HtmlDivTable {
 		);
 	}
 
-	private static function mergeAttributes( $class, $attr ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function mergeAttributes( string $class, array $attr ): array {
 		$attributes = [];
 
 		// A bit of attribute order
@@ -143,7 +146,8 @@ class HtmlDivTable {
 			$attributes['class'] = $class;
 		}
 
-		return $attributes += $attr;
+		$attributes += $attr;
+		return $attributes;
 	}
 
 }

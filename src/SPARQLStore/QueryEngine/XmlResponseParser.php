@@ -18,26 +18,23 @@ use XMLParser;
  */
 class XmlResponseParser implements HttpResponseParser {
 
-	/**
-	 * @var XMLParser
-	 */
-	private $parser;
+	private XMLParser $parser;
 
 	/**
 	 * Associative array mapping SPARQL variable names to column indices.
 	 *
 	 * @var array of integer
 	 */
-	private $header;
+	private ?array $header = null;
 
 	/**
 	 * List of result rows. Individual entries can be null if a cell in the
 	 * SPARQL result table is empty (this is different from finding a blank
 	 * node).
 	 *
-	 * @var array of array of (\SMW\Exporter\Element\ExpElement or null)
+	 * @var array of array of (ExpElement or null)
 	 */
-	private $data;
+	private ?array $data = null;
 
 	/**
 	 * List of comment strings found in the XML file (without surrounding
@@ -45,7 +42,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 *
 	 * @var array of string
 	 */
-	private $comments;
+	private ?array $comments = null;
 
 	/**
 	 * Stack of open XML tags during parsing.
@@ -78,9 +75,9 @@ class XmlResponseParser implements HttpResponseParser {
 		xml_parser_set_option( $this->parser, XML_OPTION_TARGET_ENCODING, 'UTF-8' );
 		xml_parser_set_option( $this->parser, XML_OPTION_CASE_FOLDING, 0 );
 		xml_set_object( $this->parser, $this );
-		xml_set_element_handler( $this->parser, 'handleOpenElement', 'handleCloseElement' );
-		xml_set_character_data_handler( $this->parser, 'handleCharacterData' );
-		xml_set_default_handler( $this->parser, 'handleDefault' );
+		xml_set_element_handler( $this->parser, $this->handleOpenElement( ... ), $this->handleCloseElement( ... ) );
+		xml_set_character_data_handler( $this->parser, $this->handleCharacterData( ... ) );
+		xml_set_default_handler( $this->parser, $this->handleDefault( ... ) );
 		// xml_set_start_namespace_decl_handler($parser, 'handleNsDeclaration' );
 	}
 
@@ -93,7 +90,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 * @return RepositoryResult
 	 * @throws XmlParserException
 	 */
-	public function parse( $response ) {
+	public function parse( $response ): RepositoryResult {
 		$this->xmlOpenTags = [];
 		$this->header = [];
 		$this->data = [];
@@ -125,23 +122,26 @@ class XmlResponseParser implements HttpResponseParser {
 		);
 	}
 
-	private function parseXml( $xmlResultData ) {
+	private function parseXml( $xmlResultData ): int {
 		return xml_parse( $this->parser, $xmlResultData, true );
 	}
 
-	private function getLastError() {
+	private function getLastError(): ?string {
 		return xml_error_string( xml_get_error_code( $this->parser ) );
 	}
 
-	private function getLastLineNumber() {
+	private function getLastLineNumber(): int {
 		return xml_get_current_line_number( $this->parser );
 	}
 
-	private function getLastColumnNumber() {
+	private function getLastColumnNumber(): int {
 		return xml_get_current_column_number( $this->parser );
 	}
 
-	private function handleDefault( $parser, $data ) {
+	/**
+	 * @suppress PhanUnusedPrivateMethodParameter Used as callback with fix signature
+	 */
+	private function handleDefault( $parser, $data ): void {
 		if ( substr( $data, 0, 4 ) == '<!--' ) {
 			$comment = substr( $data, 4, strlen( $data ) - 7 );
 			$this->comments[] = trim( $comment );
@@ -150,8 +150,9 @@ class XmlResponseParser implements HttpResponseParser {
 
 	/**
 	 * @see xml_set_element_handler
+	 * @suppress PhanUnusedPrivateMethodParameter Used as callback with fix signature
 	 */
-	private function handleOpenElement( $parser, $elementTag, $attributes ) {
+	private function handleOpenElement( $parser, $elementTag, array $attributes ): void {
 		$this->currentDataType = '';
 
 		$prevTag = end( $this->xmlOpenTags );
@@ -183,15 +184,17 @@ class XmlResponseParser implements HttpResponseParser {
 
 	/**
 	 * @see xml_set_element_handler
+	 * @suppress PhanUnusedPrivateMethodParameter Used as callback with fix signature
 	 */
-	private function handleCloseElement( $parser, $elementTag ) {
+	private function handleCloseElement( $parser, $elementTag ): void {
 		array_pop( $this->xmlOpenTags );
 	}
 
 	/**
 	 * @see xml_set_character_data_handler
+	 * @suppress PhanUnusedPrivateMethodParameter Used as callback with fix signature
 	 */
-	private function handleCharacterData( $parser, $characterData ) {
+	private function handleCharacterData( $parser, $characterData ): void {
 		$prevTag = end( $this->xmlOpenTags );
 		$rowcount = count( $this->data ) - 1;
 

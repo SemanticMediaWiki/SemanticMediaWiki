@@ -17,9 +17,6 @@ use SMW\Utils\HtmlTabs;
  */
 class SpecialPendingTaskList extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'PendingTaskList', '', false );
 	}
@@ -27,7 +24,7 @@ class SpecialPendingTaskList extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): bool {
 		$this->addHelpLink(
 			$this->msg( 'smw-helplink', 'Pending_tasks' )->escaped(),
 			true
@@ -47,11 +44,11 @@ class SpecialPendingTaskList extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/maintenance';
 	}
 
-	private function buildHTML() {
+	private function buildHTML(): string {
 		$isEmpty = true;
 
 		$htmlTabs = new HtmlTabs();

@@ -4,16 +4,16 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Enum;
 use SMW\Exception\DataItemDeserializationException;
 use SMW\MediaWiki\Job;
 use SMW\RequestOptions;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
 
 /**
  * Dispatcher to find and create individual UpdateJob instances for a specific
@@ -63,7 +63,7 @@ class UpdateDispatcherJob extends Job {
 	 *
 	 * @return bool
 	 */
-	public function run() {
+	public function run(): bool {
 		$this->initServices();
 
 		/**
@@ -86,13 +86,13 @@ class UpdateDispatcherJob extends Job {
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->dispatchUpdateForProperty(
-				DIProperty::newFromUserLabel( $this->getTitle()->getText() )
+				Property::newFromUserLabel( $this->getTitle()->getText() )
 			);
 
-			$this->jobs[] = DIWikiPage::newFromTitle( $this->getTitle() )->getHash();
+			$this->jobs[] = WikiPage::newFromTitle( $this->getTitle() )->getHash();
 		} else {
 			$this->dispatchUpdateForSubject(
-				DIWikiPage::newFromTitle( $this->getTitle() )
+				WikiPage::newFromTitle( $this->getTitle() )
 			);
 		}
 
@@ -110,7 +110,7 @@ class UpdateDispatcherJob extends Job {
 		return true;
 	}
 
-	private function initServices() {
+	private function initServices(): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$this->setStore( $applicationFactory->getStore() );
 
@@ -121,7 +121,7 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function dispatch_by_id( $id ) {
+	private function dispatch_by_id( $id ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
 
@@ -157,7 +157,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function create_secondary_dispatch_run( $jobs ) {
+	private function create_secondary_dispatch_run( $jobs ): void {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$origin = $this->getTitle()->getPrefixedText();
 
@@ -179,7 +179,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function dispatchUpdateForSubject( DIWikiPage $subject ) {
+	private function dispatchUpdateForSubject( WikiPage $subject ): void {
 		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
 			$this->addUpdateJobsForProperties(
 				$this->store->getProperties( $subject )
@@ -193,13 +193,13 @@ class UpdateDispatcherJob extends Job {
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	private function dispatchUpdateForProperty( DIProperty $property ) {
+	private function dispatchUpdateForProperty( Property $property ): void {
 		$this->addUpdateJobsForProperties( [ $property ] );
 		$this->addUpdateJobsForSubjectsThatContainTypeError();
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	private function addUpdateJobsForProperties( array $properties ) {
+	private function addUpdateJobsForProperties( array $properties ): void {
 		foreach ( $properties as $property ) {
 
 			if ( !$property->isUserDefined() ) {
@@ -241,7 +241,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function apply_filter( $property, $subjects ) {
+	private function apply_filter( Property $property, $subjects ) {
 		// If the an ID was provided it already restricted the list of references
 		// hence avoid any further work
 		if ( $this->hasParameter( '_id' ) ) {
@@ -255,7 +255,7 @@ class UpdateDispatcherJob extends Job {
 		$list = [];
 
 		// Identify the source as base for a comparison
-		$source = DIWikiPage::newFromTitle( $this->getTitle() );
+		$source = WikiPage::newFromTitle( $this->getTitle() );
 
 		foreach ( $subjects as $subject ) {
 
@@ -267,7 +267,7 @@ class UpdateDispatcherJob extends Job {
 			foreach ( $dataItems as $dataItem ) {
 				// Make a judgment based on a literal comparison for the
 				// values assigned and the now deleted entity
-				if ( $dataItem instanceof DIWikiPage && $dataItem->equals( $source ) ) {
+				if ( $dataItem instanceof WikiPage && $dataItem->equals( $source ) ) {
 					$list[] = $subject;
 				}
 			}
@@ -276,10 +276,10 @@ class UpdateDispatcherJob extends Job {
 		return $list;
 	}
 
-	private function addUpdateJobsForSubjectsThatContainTypeError() {
+	private function addUpdateJobsForSubjectsThatContainTypeError(): void {
 		$subjects = $this->store->getPropertySubjects(
-			new DIProperty( DIProperty::TYPE_ERROR ),
-			DIWikiPage::newFromTitle( $this->getTitle() )
+			new Property( Property::TYPE_ERROR ),
+			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
 		$this->add_job(
@@ -287,7 +287,7 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function addUpdateJobsFromDeserializedSemanticData() {
+	private function addUpdateJobsFromDeserializedSemanticData(): void {
 		if ( !$this->hasParameter( 'semanticData' ) ) {
 			return;
 		}
@@ -301,14 +301,14 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function add_job( $subjects = [] ) {
+	private function add_job( $subjects = [] ): void {
 		foreach ( $subjects as $subject ) {
 
 			// Not trying to get the title here as it is waste of resources
 			// as makeTitleSafe is expensive for large lists
 			// $title = $subject->getTitle();
 
-			if ( !$subject instanceof DIWikiPage ) {
+			if ( !$subject instanceof WikiPage ) {
 				continue;
 			}
 
@@ -323,7 +323,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function push_jobs_from_list( array $subjects ) {
+	private function push_jobs_from_list( array $subjects ): bool {
 		$check_exists = $this->getParameter( 'check_exists', false );
 
 		$parameters = [
@@ -340,7 +340,7 @@ class UpdateDispatcherJob extends Job {
 			}
 
 			try {
-				$subject = DIWikiPage::doUnserialize( $subject );
+				$subject = WikiPage::doUnserialize( $subject );
 			} catch ( DataItemDeserializationException $e ) {
 				continue;
 			}

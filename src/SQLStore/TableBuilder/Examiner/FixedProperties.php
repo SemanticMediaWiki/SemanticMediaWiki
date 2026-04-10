@@ -17,27 +17,19 @@ class FixedProperties {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var SQLStore
+	 * @var array
 	 */
-	private $store;
+	private array $fixedProperties = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $fixedProperties = [];
-
-	/**
-	 * @var
-	 */
-	private $properties = [];
+	private array $properties = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**
@@ -45,7 +37,7 @@ class FixedProperties {
 	 *
 	 * @param array $fixedProperties
 	 */
-	public function setFixedProperties( array $fixedProperties = [] ) {
+	public function setFixedProperties( array $fixedProperties = [] ): void {
 		$this->fixedProperties = $fixedProperties;
 	}
 
@@ -54,7 +46,7 @@ class FixedProperties {
 	 *
 	 * @param array $properties
 	 */
-	public function setProperties( array $properties = [] ) {
+	public function setProperties( array $properties = [] ): void {
 		$this->properties = $properties;
 	}
 
@@ -63,7 +55,7 @@ class FixedProperties {
 	 *
 	 * @param array $opts
 	 */
-	public function check( array $opts = [] ) {
+	public function check( array $opts = [] ): void {
 		$this->messageReporter->reportMessage( "Checking selected fixed properties IDs ...\n" );
 
 		if ( $this->fixedProperties === [] ) {

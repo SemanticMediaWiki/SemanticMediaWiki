@@ -19,17 +19,9 @@ class ExploreListBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var Profile
-	 */
-	private $profile;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
 	 */
-	public function __construct( Profile $profile ) {
-		$this->profile = $profile;
+	public function __construct( private Profile $profile ) {
 	}
 
 	/**

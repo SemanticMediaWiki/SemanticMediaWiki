@@ -18,38 +18,14 @@ class FacetBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var FilterFactory
-	 */
-	private $filterFactory;
-
-	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var ResultFetcher
-	 */
-	private $resultFetcher;
-
-	/**
-	 * @var Profile
-	 */
-	private $profile;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
-	 * @param TemplateParser $templateParser
-	 * @param FilterFactory $filterFactory
-	 * @param ResultFetcher $resultFetcher
 	 */
-	public function __construct( Profile $profile, TemplateParser $templateParser, FilterFactory $filterFactory, ResultFetcher $resultFetcher ) {
-		$this->profile = $profile;
-		$this->templateParser = $templateParser;
-		$this->filterFactory = $filterFactory;
-		$this->resultFetcher = $resultFetcher;
+	public function __construct(
+		private Profile $profile,
+		private TemplateParser $templateParser,
+		private FilterFactory $filterFactory,
+		private ResultFetcher $resultFetcher,
+	) {
 	}
 
 	/**
@@ -234,7 +210,7 @@ class FacetBuilder {
 		return $html;
 	}
 
-	private function createClearFilter( $name, $count = 1 ) {
+	private function createClearFilter( string $name, int $count = 1 ) {
 		return $this->templateParser->processTemplate(
 			'items.clear.button',
 			[

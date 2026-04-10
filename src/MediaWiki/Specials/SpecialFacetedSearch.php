@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
@@ -26,9 +27,6 @@ use SMW\Utils\UrlArgs;
  */
 class SpecialFacetedSearch extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'FacetedSearch', '', true, false, 'default', true );
 	}
@@ -168,7 +166,7 @@ class SpecialFacetedSearch extends SpecialPage {
 
 		// Add any resources that were registered by a specific result
 		// printer
-		\SMWOutputs::commitToOutputPage( $output );
+		Outputs::commitToOutputPage( $output );
 
 		$output->addHTML( $html );
 	}
@@ -176,7 +174,7 @@ class SpecialFacetedSearch extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 

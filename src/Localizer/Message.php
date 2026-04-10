@@ -4,6 +4,7 @@ namespace SMW\Localizer;
 
 use Closure;
 use MediaWiki\Language\Language;
+use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
 
 /**
@@ -43,10 +44,7 @@ class Message {
 	const CONTENT_LANGUAGE = 0x32;
 	const USER_LANGUAGE = 0x64;
 
-	/**
-	 * @var array
-	 */
-	private static $messageHandler = [];
+	private static array $messageHandler = [];
 
 	/**
 	 * @since 2.4
@@ -54,7 +52,7 @@ class Message {
 	 * @param $type
 	 * @param Closure $handler
 	 */
-	public static function registerCallbackHandler( $type, Closure $handler ) {
+	public static function registerCallbackHandler( $type, Closure $handler ): void {
 		self::$messageHandler[$type] = $handler;
 	}
 
@@ -63,14 +61,14 @@ class Message {
 	 *
 	 * @param $type
 	 */
-	public static function deregisterHandlerFor( $type ) {
+	public static function deregisterHandlerFor( $type ): void {
 		unset( self::$messageHandler[$type] );
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$messageCache = null;
 	}
 
@@ -79,7 +77,7 @@ class Message {
 	 *
 	 * @return FixedInMemoryLruCache
 	 */
-	public static function getCache() {
+	public static function getCache(): Cache {
 		if ( self::$messageCache === null ) {
 			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID, 1000 );
 		}

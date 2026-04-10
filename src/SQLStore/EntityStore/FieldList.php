@@ -5,7 +5,7 @@ namespace SMW\SQLStore\EntityStore;
 /**
  * @private
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -23,17 +23,9 @@ class FieldList {
 	const CATEGORY_LIST = 'list/category';
 
 	/**
-	 * @var
-	 */
-	private $countMaps = [];
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param iterable $countMaps
 	 */
-	public function __construct( iterable $countMaps = [] ) {
-		$this->countMaps = $countMaps;
+	public function __construct( private readonly iterable $countMaps = [] ) {
 	}
 
 	/**
@@ -74,7 +66,7 @@ class FieldList {
 		return $list;
 	}
 
-	private function makeList( $map, &$list ) {
+	private function makeList( $map, array &$list ): void {
 		foreach ( $map as $id => $values ) {
 			if ( is_iterable( $values ) ) {
 				foreach ( $values as $key => $counts ) {
@@ -84,7 +76,7 @@ class FieldList {
 		}
 	}
 
-	private function matchKeyByHash( $key, $counts, &$list ) {
+	private function matchKeyByHash( $key, $counts, array &$list ): void {
 		// It is an internal property, so we never reference it as part of a
 		// lookup!
 		if ( $key === '_SKEY' ) {
@@ -102,7 +94,7 @@ class FieldList {
 		}
 	}
 
-	private function matchKeyByCounts( $type, $key, $counts, &$list ) {
+	private function matchKeyByCounts( string $type, $key, $counts, array &$list ): void {
 		if ( $key === '_SKEY' ) {
 			return;
 		}

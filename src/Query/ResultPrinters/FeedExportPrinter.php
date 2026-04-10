@@ -4,33 +4,35 @@ namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Content\TextContent;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Feed\ChannelFeed;
 use MediaWiki\Feed\FeedItem;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Query\ExportPrinter;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 use SMW\Query\Result\StringResult;
 use SMW\Site;
-use WikiPage;
+use WikiPage as MWWikiPage;
 
 /**
  * Result printer that exports query results as RSS/Atom feed
  *
  * @since 1.8
  *
- * @license GNU GPL v2 or later
+ * @license GPL-2.0-or-later
  * @author mwjames
  */
 final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
-	/**
-	 * @var bool
-	 */
-	private $httpHeader = true;
+	private bool $httpHeader = true;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -46,14 +48,14 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isExportFormat() {
+	public function isExportFormat(): bool {
 		return true;
 	}
 
 	/**
 	 * @see 3.0
 	 */
-	public function disableHttpHeader() {
+	public function disableHttpHeader(): void {
 		$this->httpHeader = false;
 	}
 
@@ -62,7 +64,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return $this->params['type'] === 'atom' ? 'application/atom+xml' : 'application/rss+xml';
 	}
 
@@ -71,7 +73,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): bool {
 		return false;
 	}
 
@@ -80,7 +82,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function outputAsFile( QueryResult $queryResult, array $params ) {
+	public function outputAsFile( QueryResult $queryResult, array $params ): void {
 		$result = $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 
 		if ( Site::isCommandLineMode() || $queryResult instanceof StringResult ) {
@@ -102,11 +104,11 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return int
 	 */
-	public function getQueryMode( $mode ) {
-		if ( $mode == \SMWQueryProcessor::SPECIAL_PAGE ) {
-			return \SMWQuery::MODE_INSTANCES;
+	public function getQueryMode( $mode ): int {
+		if ( $mode == QueryProcessor::SPECIAL_PAGE ) {
+			return Query::MODE_INSTANCES;
 		}
-		return \SMWQuery::MODE_NONE;
+		return Query::MODE_NONE;
 	}
 
 	/**
@@ -114,7 +116,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['searchlabel']->setDefault( $this->msg( 'smw-label-feed-link' )->inContentLanguage()->text() );
@@ -153,7 +155,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getDefaultSort() {
+	public function getDefaultSort(): string {
 		return 'DESC';
 	}
 
@@ -187,7 +189,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getFeed( QueryResult $results, $type ) {
+	protected function getFeed( QueryResult $results, $type ): ?string {
 		global $wgFeedClasses;
 
 		if ( !isset( $wgFeedClasses[$type] ) ) {
@@ -196,7 +198,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		}
 
 		/**
-		 * @var \ChannelFeed $feed
+		 * @var ChannelFeed $feed
 		 */
 		$feed = new $wgFeedClasses[$type](
 			$this->feedTitle(),
@@ -218,6 +220,8 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 		// Create feed footer
 		$feed->outFooter();
+
+		return null;
 	}
 
 	/**
@@ -274,15 +278,15 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return array
 	 */
-	protected function feedItem( array $row ) {
+	protected function feedItem( array $row ): FeedItem|array {
 		$rowItems = [];
 		$subject = false;
 
 		/**
 		 * Loop over all properties within a row
 		 *
-		 * @var \SMW\Query\Result\ResultArray $field
-		 * @var \SMWDataValue $object
+		 * @var ResultArray $field
+		 * @var DataValue $object
 		 */
 		foreach ( $row as $field ) {
 			$itemSegments = [];
@@ -292,7 +296,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			// Loop over all values for the property.
 			$dataValue = $field->getNextDataValue();
 			while ( $dataValue !== false ) {
-				if ( $dataValue->getDataItem() instanceof DIWikiPage ) {
+				if ( $dataValue->getDataItem() instanceof WikiPage ) {
 
 					$linker = null;
 
@@ -325,11 +329,11 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param WikiPage $wikiPage
+	 * @param MWWikiPage $wikiPage
 	 *
 	 * @return string
 	 */
-	protected function getPageContent( WikiPage $wikiPage ) {
+	protected function getPageContent( MWWikiPage $wikiPage ) {
 		if ( !in_array( $this->params['page'], [ 'abstract', 'full' ] ) ) {
 			return '';
 		}
@@ -357,7 +361,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function feedItemDescription( $items, $pageContent ) {
+	protected function feedItemDescription( $items, $pageContent ): string {
 		$text = FeedItem::stripComment( implode( '', $items ) ) . FeedItem::stripComment( $pageContent );
 
 		// Abstract of the first 200 chars
@@ -375,11 +379,11 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function feedItemComments() {
+	protected function feedItemComments(): string {
 		return '';
 	}
 
-	private function newFeedItem( $title, $rowItems ) {
+	private function newFeedItem( Title $title, array $rowItems ): FeedItem {
 		$mwServices = MediaWikiServices::getInstance();
 		$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
 
@@ -387,7 +391,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 			// #1741
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-				DIWikipage::newFromTitle( $title )
+				WikiPage::newFromTitle( $title )
 			);
 
 			// Ensures that the namespace prefix (Help:...) is used in cases where

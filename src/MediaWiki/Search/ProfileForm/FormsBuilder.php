@@ -18,16 +18,6 @@ use SMW\Localizer\Message;
 class FormsBuilder {
 
 	/**
-	 * @var WebRequest
-	 */
-	private $request;
-
-	/**
-	 * @var FormsFactory
-	 */
-	private $formsFactory;
-
-	/**
 	 * @var OpenForm
 	 */
 	private $openForm;
@@ -37,30 +27,27 @@ class FormsBuilder {
 	 */
 	private $customForm;
 
-	/**
-	 * @var string
-	 */
-	private $defaultForm = '';
+	private string $defaultForm = '';
 
 	/**
 	 * @var
 	 */
-	private $formList = [];
+	private array $formList = [];
 
 	/**
 	 * @var
 	 */
-	private $preselectNsList = [];
+	private array $preselectNsList = [];
 
 	/**
 	 * @var
 	 */
-	private $hiddenNsList = [];
+	private array $hiddenNsList = [];
 
 	/**
 	 * @var
 	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @var
@@ -69,13 +56,11 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
-	 * @param FormsFactory $formsFactory
 	 */
-	public function __construct( WebRequest $request, FormsFactory $formsFactory ) {
-		$this->request = $request;
-		$this->formsFactory = $formsFactory;
+	public function __construct(
+		private readonly WebRequest $request,
+		private readonly FormsFactory $formsFactory,
+	) {
 	}
 
 	/**
@@ -83,7 +68,7 @@ class FormsBuilder {
 	 *
 	 * @return
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
@@ -94,7 +79,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public static function toLowerCase( $key ) {
+	public static function toLowerCase( $key ): string {
 		return strtolower( str_replace( [ ' ' ], [ '' ], $key ) );
 	}
 
@@ -103,7 +88,7 @@ class FormsBuilder {
 	 *
 	 * @return
 	 */
-	public function getTermPrefixes() {
+	public function getTermPrefixes(): array {
 		return $this->termPrefixes;
 	}
 
@@ -112,7 +97,7 @@ class FormsBuilder {
 	 *
 	 * @return
 	 */
-	public function getHiddenNsList() {
+	public function getHiddenNsList(): array {
 		return $this->hiddenNsList;
 	}
 
@@ -142,7 +127,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildFormList() {
+	public function buildFormList(): string {
 		$list = [];
 		$name = '';
 		$value = '';
@@ -191,7 +176,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildForm( array $data ) {
+	public function buildForm( array $data ): string {
 		if ( !isset( $data['forms'] ) ) {
 			throw new RuntimeException( "Missing forms definition" );
 		}
@@ -260,7 +245,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function form_fields( $data, $activeForm, $name, $definition ) {
+	private function form_fields( array $data, $activeForm, int|string $name, $definition ) {
 		// Short form, URL query conform
 		$s = self::toLowerCase( $name );
 		$this->formList[$s] = [ 'name' => $name, 'selected' => $activeForm === $s ];
@@ -296,7 +281,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function preselect_namespaces( $preselect ) {
+	private function preselect_namespaces( array $preselect ): void {
 		foreach ( $preselect as $k => $values ) {
 			$k = self::toLowerCase( $k );
 			$this->preselectNsList[$k] = [];
@@ -313,7 +298,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function hidden_namespaces( $hidden ) {
+	private function hidden_namespaces( array $hidden ): void {
 		foreach ( $hidden as $ns ) {
 			if ( is_string( $ns ) && defined( $ns ) ) {
 				$this->hiddenNsList[] = constant( $ns );
@@ -325,7 +310,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function findDescription( $descriptions, $name, $isActiveForm ) {
+	private function findDescription( array $descriptions, int|string $name, bool $isActiveForm ) {
 		if ( !isset( $descriptions[$name] ) ) {
 			return '';
 		}

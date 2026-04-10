@@ -14,37 +14,22 @@ use SMW\Localizer\Localizer;
  */
 class PropertyValueParser implements ValueParser {
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
-	/**
-	 * @var array
-	 */
-	private $invalidCharacterList = [];
+	private array $invalidCharacterList = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isCapitalLinks = true;
+	private bool $isCapitalLinks = true;
 
-	/**
-	 * @var bool
-	 */
-	private $reqCapitalizedFirstChar = false;
+	private bool $reqCapitalizedFirstChar = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isQueryContext = false;
+	private bool $isQueryContext = false;
 
 	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -53,7 +38,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param array $invalidCharacterList
 	 */
-	public function setInvalidCharacterList( array $invalidCharacterList ) {
+	public function setInvalidCharacterList( array $invalidCharacterList ): void {
 		$this->invalidCharacterList = $invalidCharacterList;
 	}
 
@@ -64,7 +49,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $isCapitalLinks
 	 */
-	public function isCapitalLinks( $isCapitalLinks ) {
+	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = (bool)$isCapitalLinks;
 	}
 
@@ -76,7 +61,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $reqCapitalizedFirstChar
 	 */
-	public function reqCapitalizedFirstChar( $reqCapitalizedFirstChar ) {
+	public function reqCapitalizedFirstChar( $reqCapitalizedFirstChar ): void {
 		$this->reqCapitalizedFirstChar = (bool)$reqCapitalizedFirstChar;
 	}
 
@@ -88,7 +73,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $isQueryContext
 	 */
-	public function isQueryContext( $isQueryContext ) {
+	public function isQueryContext( $isQueryContext ): void {
 		$this->isQueryContext = (bool)$isQueryContext;
 	}
 
@@ -99,7 +84,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @return array
 	 */
-	public function parse( $userValue ) {
+	public function parse( $userValue ): array {
 		$this->errors = [];
 
 		// #1727 <Foo> or <Foo-<Bar> are not permitted but
@@ -115,7 +100,7 @@ class PropertyValueParser implements ValueParser {
 		return $this->getNormalizedValueFrom( $userValue );
 	}
 
-	private function hasValidCharacters( $value ) {
+	private function hasValidCharacters( string $value ): bool {
 		if ( trim( $value ) === '' ) {
 			$this->errors[] = [ 'smw_emptystring' ];
 			return false;
@@ -158,7 +143,7 @@ class PropertyValueParser implements ValueParser {
 		return true;
 	}
 
-	private function getNormalizedValueFrom( $value ) {
+	private function getNormalizedValueFrom( string $value ): array {
 		$inverse = false;
 		$capitalizedName = '';
 		$value = (string)$value;
@@ -184,7 +169,7 @@ class PropertyValueParser implements ValueParser {
 		return [ $propertyName, $capitalizedName, $inverse ];
 	}
 
-	private function doNormalize( $text, $isCapitalLinks ) {
+	private function doNormalize( $text, bool $isCapitalLinks ): string {
 		$text = trim( $text );
 
 		if ( $isCapitalLinks ) {

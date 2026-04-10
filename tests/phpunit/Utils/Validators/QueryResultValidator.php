@@ -3,11 +3,12 @@
 namespace SMW\Tests\Utils\Validators;
 
 use Closure;
+use PHPUnit\Framework\Assert;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Query\QueryResult;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,7 +16,7 @@ use SMWDataValue as DataValue;
  *
  * @author mwjames
  */
-class QueryResultValidator extends \PHPUnit\Framework\Assert {
+class QueryResultValidator extends Assert {
 
 	private $dataValueValidationMethod = null;
 
@@ -170,7 +171,7 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 		foreach ( $resultSubjects as $rKey => $resultSubject ) {
 			foreach ( $expectedSubjects as $ekey => $expectedSubject ) {
 
-				if ( $expectedSubject instanceof DIWikiPage && $expectedSubject->equals( $resultSubject ) ) {
+				if ( $expectedSubject instanceof WikiPage && $expectedSubject->equals( $resultSubject ) ) {
 					$actualComparedToCount++;
 					unset( $expectedSubjects[$ekey] );
 					unset( $resultSubjects[$rKey] );

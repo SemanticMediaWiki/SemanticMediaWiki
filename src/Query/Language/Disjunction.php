@@ -23,17 +23,13 @@ class Disjunction extends Description {
 	/**
 	 * Contains a single class description if any such disjunct was given;
 	 * disjunctive classes are aggregated therein.
-	 *
-	 * @var null|ClassDescription
 	 */
-	private $classDescription = null;
+	private ?ClassDescription $classDescription = null;
 
 	/**
 	 * Used if disjunction is trivially true already
-	 *
-	 * @var bool
 	 */
-	private $isTrue = false;
+	private bool $isTrue = false;
 
 	public function __construct( array $descriptions = [] ) {
 		foreach ( $descriptions as $desc ) {
@@ -47,7 +43,7 @@ class Disjunction extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		// Avoid a recursive tree
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
@@ -61,7 +57,8 @@ class Disjunction extends Description {
 
 		ksort( $fingerprint );
 
-		return $this->fingerprint = 'D:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+		$this->fingerprint = 'D:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+		return $this->fingerprint;
 	}
 
 	/**
@@ -69,7 +66,7 @@ class Disjunction extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		$this->fingerprint = null;
 
 		if ( $this->classDescription !== null ) {
@@ -83,11 +80,11 @@ class Disjunction extends Description {
 		}
 	}
 
-	public function getDescriptions() {
+	public function getDescriptions(): array {
 		return $this->descriptions;
 	}
 
-	public function addDescription( Description $description ) {
+	public function addDescription( Description $description ): void {
 		$this->fingerprint = null;
 		$fingerprint = $description->getFingerprint();
 
@@ -125,7 +122,7 @@ class Disjunction extends Description {
 		$description->setPrintRequests( [] );
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		if ( $this->isTrue ) {
 			return '+';
 		}
@@ -163,7 +160,7 @@ class Disjunction extends Description {
 		return $this->descriptions[0]->isSingleton();
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		$size = 0;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -173,7 +170,7 @@ class Disjunction extends Description {
 		return $size;
 	}
 
-	public function getDepth() {
+	public function getDepth(): int {
 		$depth = 0;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -183,7 +180,7 @@ class Disjunction extends Description {
 		return $depth;
 	}
 
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		$result = SMW_DISJUNCTION_QUERY;
 
 		foreach ( $this->descriptions as $desc ) {
@@ -193,7 +190,7 @@ class Disjunction extends Description {
 		return $result;
 	}
 
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
+	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
 		if ( $maxsize <= 0 ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

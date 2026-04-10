@@ -6,6 +6,7 @@ use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GPL-2.0-or-later
@@ -30,7 +31,7 @@ class FulltextSearchTableRebuildJob extends Job {
 	 *
 	 * @since  2.5
 	 */
-	public function run() {
+	public function run(): bool {
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}
@@ -39,7 +40,7 @@ class FulltextSearchTableRebuildJob extends Job {
 
 		// Only the SQLStore is supported
 		$searchTableRebuilder = $fulltextSearchTableFactory->newSearchTableRebuilder(
-			ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' )
+			ApplicationFactory::getInstance()->getStore( SQLStore::class )
 		);
 
 		if ( $this->hasParameter( 'table' ) ) {
@@ -54,7 +55,7 @@ class FulltextSearchTableRebuildJob extends Job {
 		return true;
 	}
 
-	private function createJobsFromTableList( $tableList ) {
+	private function createJobsFromTableList( array $tableList ): void {
 		if ( $tableList === [] ) {
 			return;
 		}

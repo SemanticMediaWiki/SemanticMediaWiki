@@ -2,7 +2,7 @@
 
 namespace SMW\DataModel;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory;
 
 /**
@@ -18,16 +18,16 @@ class SequenceMap {
 	/**
 	 * @var
 	 */
-	private static $canMap = [];
+	private static array $canMap = [];
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @param boolean
 	 */
-	public function hasSequenceMap( DIProperty $property ): bool {
+	public function hasSequenceMap( Property $property ): bool {
 		return self::canMap( $property );
 	}
 
@@ -36,7 +36,7 @@ class SequenceMap {
 	 *
 	 * @param boolean
 	 */
-	public static function canMap( DIProperty $property ) {
+	public static function canMap( Property $property ) {
 		$key = $property->getKey();
 
 		if ( isset( self::$canMap[$key] ) ) {
@@ -48,16 +48,18 @@ class SequenceMap {
 
 		$schemaList = $schemaFinder->newSchemaList(
 			$property,
-			new DIProperty( '_PROFILE_SCHEMA' )
+			new Property( '_PROFILE_SCHEMA' )
 		);
 
 		if ( $schemaList === null ) {
-			return self::$canMap[$key] = false;
+			self::$canMap[$key] = false;
+			return self::$canMap[$key];
 		}
 
 		$profile = $schemaList->get( 'profile' );
 
-		return self::$canMap[$key] = $profile['sequence_map'] ?? false;
+		self::$canMap[$key] = $profile['sequence_map'] ?? false;
+		return self::$canMap[$key];
 	}
 
 }

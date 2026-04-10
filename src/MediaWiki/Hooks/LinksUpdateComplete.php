@@ -2,12 +2,14 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Parser\ParserOutputLinkTypes;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -25,28 +27,14 @@ class LinksUpdateComplete implements HookListener {
 	use RevisionGuardAwareTrait;
 	use LoggerAwareTrait;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private bool $enabledDeferredUpdate = true;
 
-	/**
-	 * @var bool
-	 */
-	private $enabledDeferredUpdate = true;
-
-	/**
-	 * @var bool
-	 */
-	private $isReady = true;
+	private bool $isReady = true;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct( private NamespaceExaminer $namespaceExaminer ) {
 	}
 
 	/**
@@ -54,25 +42,25 @@ class LinksUpdateComplete implements HookListener {
 	 *
 	 * @param bool $isReady
 	 */
-	public function isReady( $isReady ) {
+	public function isReady( $isReady ): void {
 		$this->isReady = (bool)$isReady;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function disableDeferredUpdate() {
+	public function disableDeferredUpdate(): void {
 		$this->enabledDeferredUpdate = false;
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param LinksUpdate|MediaWiki\Deferred\LinksUpdate\LinksUpdate $linksUpdate
+	 * @param LinksUpdate $linksUpdate
 	 *
 	 * @return true
 	 */
-	public function process( $linksUpdate ) {
+	public function process( $linksUpdate ): bool {
 		if ( $this->isReady === false ) {
 			return $this->doAbort();
 		}
@@ -129,7 +117,7 @@ class LinksUpdateComplete implements HookListener {
 	 * @note Parsing is expensive but it is more expensive to loose data or to
 	 * expect that an external process adheres the object contract
 	 */
-	private function updateSemanticData( &$parserData, $title, $reason = '' ) {
+	private function updateSemanticData( &$parserData, Title $title, string $reason = '' ): void {
 		$this->logger->info(
 			[
 				'LinksUpdateConstructed',
@@ -145,7 +133,7 @@ class LinksUpdateComplete implements HookListener {
 		}
 	}
 
-	private function reparseAndFetchSemanticData( $title ) {
+	private function reparseAndFetchSemanticData( Title $title ) {
 		$contentParser = ApplicationFactory::getInstance()->newContentParser( $title );
 		$parserOutput = $contentParser->parse()->getOutput();
 
@@ -156,7 +144,7 @@ class LinksUpdateComplete implements HookListener {
 		return $parserOutput->getExtensionData( 'smwdata' );
 	}
 
-	private function doAbort() {
+	private function doAbort(): bool {
 		$this->logger->info(
 			"LinksUpdateConstructed was invoked but the site isn't ready yet, aborting the processing."
 		);

@@ -15,24 +15,18 @@ namespace SMW\SPARQLStore\QueryEngine\Condition;
  */
 class FilterCondition extends Condition {
 
-	/**
-	 * Additional filter condition, i.e. a string that could be placed in
-	 * "FILTER( ... )".
-	 *
-	 * @var string
-	 */
-	public $filter;
-
-	public function __construct( $filter, $namespaces = [] ) {
-		$this->filter = $filter;
+	public function __construct(
+		public $filter,
+		$namespaces = [],
+	) {
 		$this->namespaces = $namespaces;
 	}
 
-	public function getCondition() {
+	public function getCondition(): string {
 		return "FILTER( {$this->filter} )\n";
 	}
 
-	public function isSafe() {
+	public function isSafe(): bool {
 		return false;
 	}
 

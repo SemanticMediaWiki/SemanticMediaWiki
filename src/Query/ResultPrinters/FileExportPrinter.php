@@ -3,9 +3,9 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\Query\ExportPrinter;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
-use SMWQuery;
-use SMWQueryProcessor;
 
 /**
  * Base class for file export result printers
@@ -17,10 +17,7 @@ use SMWQueryProcessor;
  */
 abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter {
 
-	/**
-	 * @var bool
-	 */
-	private $httpHeader = true;
+	private bool $httpHeader = true;
 
 	/**
 	 * @see ExportPrinter::isExportFormat
@@ -29,14 +26,14 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @return bool
 	 */
-	public function isExportFormat() {
+	public function isExportFormat(): bool {
 		return true;
 	}
 
 	/**
 	 * @see 3.0
 	 */
-	public function disableHttpHeader() {
+	public function disableHttpHeader(): void {
 		$this->httpHeader = false;
 	}
 
@@ -48,7 +45,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * @param QueryResult $queryResult
 	 * @param array $params
 	 */
-	public function outputAsFile( QueryResult $queryResult, array $params ) {
+	public function outputAsFile( QueryResult $queryResult, array $params ): void {
 		$result = $this->getFileResult( $queryResult, $params );
 
 		$this->httpHeader(
@@ -80,7 +77,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @return string|bool
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string|false {
 		return false;
 	}
 
@@ -93,7 +90,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
-		return $mode == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
+		return $mode == QueryProcessor::SPECIAL_PAGE ? Query::MODE_INSTANCES : Query::MODE_NONE;
 	}
 
 	/**
@@ -101,11 +98,11 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * this method futile hence we isolate its access to ensure to be able to
 	 * verify the access sequence (#4375).
 	 */
-	protected function getFileResult( $queryResult, $params ) {
+	protected function getFileResult( QueryResult $queryResult, array $params ) {
 		return $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 	}
 
-	private function httpHeader( $string ) {
+	private function httpHeader( string $string ): void {
 		$this->httpHeader ? header( $string ) : '';
 	}
 

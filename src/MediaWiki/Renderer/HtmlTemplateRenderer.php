@@ -13,24 +13,12 @@ use MediaWiki\Parser\Parser;
 class HtmlTemplateRenderer {
 
 	/**
-	 * @var WikitextTemplateRenderer
-	 */
-	private $wikitextTemplateRenderer;
-
-	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param WikitextTemplateRenderer $wikitextTemplateRenderer
-	 * @param Parser $parser
 	 */
-	public function __construct( WikitextTemplateRenderer $wikitextTemplateRenderer, Parser $parser ) {
-		$this->wikitextTemplateRenderer = $wikitextTemplateRenderer;
-		$this->parser = $parser;
+	public function __construct(
+		private readonly WikitextTemplateRenderer $wikitextTemplateRenderer,
+		private readonly Parser $parser,
+	) {
 	}
 
 	/**
@@ -39,7 +27,7 @@ class HtmlTemplateRenderer {
 	 * @param string $field
 	 * @param mixed $value
 	 */
-	public function addField( $field, $value ) {
+	public function addField( $field, $value ): void {
 		$this->wikitextTemplateRenderer->addField( $field, $value );
 	}
 
@@ -48,7 +36,7 @@ class HtmlTemplateRenderer {
 	 *
 	 * @param string $templateName
 	 */
-	public function packFieldsForTemplate( $templateName ) {
+	public function packFieldsForTemplate( string $templateName ): void {
 		$this->wikitextTemplateRenderer->packFieldsForTemplate( $templateName );
 	}
 

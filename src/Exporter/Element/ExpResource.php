@@ -4,7 +4,7 @@ namespace SMW\Exporter\Element;
 
 use InvalidArgumentException;
 use RuntimeException;
-use SMWDataItem as DataItem;
+use SMW\DataItems\DataItem;
 
 /**
  * A single resource (individual) for export, as defined by a URI.
@@ -12,7 +12,7 @@ use SMWDataItem as DataItem;
  * objects of class ExpElement or any of its subclasses represent a blank
  * node if their name is empty or of the form "_id" where "id" is any
  * identifier string. IDs are local to the current context, such as a list of
- * triples or an SMWExpData container.
+ * triples or an ExpData container.
  *
  * @license GPL-2.0-or-later
  * @since 2.2
@@ -22,10 +22,7 @@ use SMWDataItem as DataItem;
  */
 class ExpResource extends ExpElement {
 
-	/**
-	 * @var string
-	 */
-	private $uri;
+	private string $uri;
 
 	/**
 	 * @var bool
@@ -60,7 +57,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return bool
 	 */
-	public function isBlankNode() {
+	public function isBlankNode(): bool {
 		return $this->uri === '' || $this->uri[0] == '_';
 	}
 
@@ -69,7 +66,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return bool
 	 */
-	public function isImported() {
+	public function isImported(): bool {
 		return $this->isImported;
 	}
 
@@ -79,7 +76,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getUri() {
+	public function getUri(): string {
 		return $this->uri;
 	}
 
@@ -88,7 +85,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return array
 	 */
-	public function getSerialization() {
+	public function getSerialization(): array {
 		$serialization = [
 			'type' => self::TYPE_RESOURCE,
 			'uri'  => $this->getUri()
@@ -100,7 +97,7 @@ class ExpResource extends ExpElement {
 	/**
 	 * @see ExpElement::newFromSerialization
 	 */
-	protected static function deserialize( $serialization ) {
+	protected static function deserialize( $serialization ): self {
 		if ( !isset( $serialization['uri'] ) ) {
 			throw new RuntimeException( "Invalid serialization format" );
 		}

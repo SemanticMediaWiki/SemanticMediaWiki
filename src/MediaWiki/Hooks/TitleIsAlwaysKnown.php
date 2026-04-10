@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
 
 /**
@@ -18,24 +18,15 @@ use SMW\MediaWiki\HookListener;
  */
 class TitleIsAlwaysKnown implements HookListener {
 
-	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
-	 * @var mixed
-	 */
-	private $result;
+	private ?bool $result = null;
 
 	/**
 	 * @since  2.0
-	 *
-	 * @param Title $title
-	 * @param mixed &$result
 	 */
-	public function __construct( Title $title, &$result ) {
-		$this->title = $title;
+	public function __construct(
+		private readonly Title $title,
+		&$result,
+	) {
 		$this->result =& $result;
 	}
 
@@ -44,14 +35,14 @@ class TitleIsAlwaysKnown implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process() {
+	public function process(): bool {
 		// Two possible ways of going forward:
 		//
 		// The FIRST seen here is to use the hook to override the known status
 		// for predefined properties in order to avoid any edit link
 		// which makes no-sense for predefined properties
 		//
-		// The SECOND approach is to inject SMWWikiPageValue with a setLinkOptions setter
+		// The SECOND approach is to inject WikiPageValue with a setLinkOptions setter
 		// that enables to set the custom options 'known' for each invoked linker during
 		// getShortHTMLText
 		// $linker->link( $this->getTitle(), $caption, $customAttributes, $customQuery, $customOptions )
@@ -59,7 +50,7 @@ class TitleIsAlwaysKnown implements HookListener {
 		// @see also HooksTest::testOnTitleIsAlwaysKnown
 
 		if ( $this->title->getNamespace() === SMW_NS_PROPERTY ) {
-			if ( !DIProperty::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
+			if ( !Property::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
 				$this->result = true;
 			}
 		}

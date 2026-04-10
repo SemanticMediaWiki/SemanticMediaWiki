@@ -1,0 +1,338 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki\Jobs;
+
+use MediaWiki\DAO\WikiAwareEntity;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use ParserOutput;
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\Parser\ContentParser;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\MediaWiki\Jobs\UpdateJob
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 1.9
+ *
+ * @author mwjames
+ */
+class UpdateJobTest extends TestCase {
+
+	private $testEnvironment;
+	private $semanticDataFactory;
+	private $semanticDataSerializer;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment( [
+			'smwgMainCacheType'        => 'hash',
+			'smwgEnableUpdateJobs' => false,
+			'smwgEnabledDeferredUpdate' => false,
+			'smwgDVFeatures' => '',
+		] );
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->getMock();
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getObjectIds', 'getPropertyValues', 'updateData' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [] );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
+
+		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
+		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			UpdateJob::class,
+			new UpdateJob( $title )
+		);
+	}
+
+	public function testJobWithMissingParserOutput() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->willReturn( true );
+
+		$instance = new UpdateJob( $title );
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertFalse(	$instance->run() );
+	}
+
+	public function testJobWithInvalidTitle() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->willReturn( 0 );
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->willReturn( 'Foo' );
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->willReturn( false );
+
+		$this->testEnvironment->registerObject( 'ContentParser', null );
+
+		$instance = new UpdateJob( $title );
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertTrue( $instance->run() );
+	}
+
+	public function testJobWithNoRevisionAvailable() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->willReturn( true );
+
+		$contentParser = $this->getMockBuilder( ContentParser::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentParser->expects( $this->once() )
+			->method( 'getOutput' )
+			->willReturn( null );
+
+		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
+
+		$instance = new UpdateJob( $title );
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertFalse( $instance->run() );
+	}
+
+	public function testJobWithValidRevision() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBkey' )
+			->willReturn( __METHOD__ );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->willReturn( 0 );
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->willReturn( true );
+
+		$contentParser = $this->getMockBuilder( ContentParser::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentParser->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->willReturn( new ParserOutput );
+
+		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->getMock();
+
+		$idTable->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->willReturn( true );
+
+		$idTable->expects( $this->any() )
+			->method( 'findAssociatedRev' )
+			->willReturn( 42 );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'clearData', 'getObjectIds' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$store->expects( $this->once() )
+			->method( 'clearData' );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new UpdateJob( $title );
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertTrue( $instance->run() );
+	}
+
+	public function testJobToCompareLastModified() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBkey' )
+			->willReturn( __METHOD__ );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->willReturn( 0 );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->willReturn( true );
+
+		$title->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
+
+		if ( method_exists( $title, 'getWikiId' ) ) {
+			$title->expects( $this->any() )
+				->method( 'getWikiId' )
+				->willReturn( WikiAwareEntity::LOCAL );
+		}
+
+		$contentParser = $this->getMockBuilder( ContentParser::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentParser->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->willReturn( new ParserOutput );
+
+		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->getMock();
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyValues', 'getObjectIds' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [] );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new UpdateJob( $title, [ 'shallowUpdate' => true ] );
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertTrue( $instance->run() );
+	}
+
+	public function testJobOnSerializedSemanticData() {
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'updateData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'updateData' );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$semanticData = $this->semanticDataSerializer->serialize(
+			$this->semanticDataFactory->newEmptySemanticData( __METHOD__ )
+		);
+
+		$instance = new UpdateJob( $title,
+			[
+				UpdateJob::SEMANTIC_DATA => $semanticData
+			]
+		);
+
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertTrue(
+			$instance->run()
+		);
+	}
+
+	public function testJobOnChangePropagation() {
+		$subject = WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
+
+		$semanticData = $this->semanticDataSerializer->serialize(
+			$this->semanticDataFactory->newEmptySemanticData( __METHOD__ )
+		);
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'updateData', 'getPropertyValues' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ new Blob( json_encode( $semanticData ) ) ] );
+
+		$store->expects( $this->once() )
+			->method( 'updateData' );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new UpdateJob( $subject->getTitle(),
+			[
+				UpdateJob::CHANGE_PROP => $subject->getSerialization()
+			]
+		);
+
+		$instance->isEnabledJobQueue( false );
+
+		$instance->run();
+	}
+
+}

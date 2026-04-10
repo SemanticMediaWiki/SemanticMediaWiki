@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Collator;
 use SMW\SQLStore\SQLStore;
@@ -19,22 +19,14 @@ class PredefinedProperties {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var SQLStore
+	 * @var array
 	 */
-	private $store;
-
-	/**
-	 * @var
-	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**
@@ -42,7 +34,7 @@ class PredefinedProperties {
 	 *
 	 * @param array $predefinedPropertyList
 	 */
-	public function setPredefinedPropertyList( array $predefinedPropertyList ) {
+	public function setPredefinedPropertyList( array $predefinedPropertyList ): void {
 		$this->predefinedPropertyList = $predefinedPropertyList;
 	}
 
@@ -56,7 +48,7 @@ class PredefinedProperties {
 	 *
 	 * @param array $opts
 	 */
-	public function check( array $opts = [] ) {
+	public function check( array $opts = [] ): void {
 		// now write actual properties; do that each time, it is cheap enough
 		// and we can update sortkeys by current language
 		$this->messageReporter->reportMessage( "Checking predefined properties ...\n" );
@@ -65,8 +57,8 @@ class PredefinedProperties {
 		foreach ( $this->predefinedPropertyList as $prop => $id ) {
 
 			try {
-				$property = new DIProperty( $prop );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+				$property = new Property( $prop );
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				$property = null;
 				$this->messageReporter->reportMessage( "   ... skipping {$prop} due to invalid registration ...\n" );
 			}
@@ -81,7 +73,7 @@ class PredefinedProperties {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function doUpdate( $property, $id ) {
+	private function doUpdate( Property $property, $id ): void {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// Try to find the ID for a non-fixed predefined property

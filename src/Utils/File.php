@@ -20,7 +20,7 @@ class File {
 	 *
 	 * @return string
 	 */
-	public static function dir( $file ) {
+	public static function dir( $file ): string {
 		return str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
 	}
 
@@ -31,7 +31,7 @@ class File {
 	 * @param string $contents
 	 * @param int $flags
 	 */
-	public function write( $file, $contents, $flags = 0 ) {
+	public function write( $file, $contents, $flags = 0 ): void {
 		$file = self::dir( $file );
 
 		if ( !is_writable( dirname( $file ) ) ) {
@@ -48,7 +48,7 @@ class File {
 	 *
 	 * @return bool
 	 */
-	public function exists( $file ) {
+	public function exists( $file ): bool {
 		return file_exists( self::dir( $file ) );
 	}
 
@@ -61,7 +61,7 @@ class File {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function read( $file, $checkSum = null ) {
+	public function read( $file, $checkSum = null ): string|false {
 		$file = self::dir( $file );
 
 		if ( !is_readable( $file ) ) {
@@ -80,7 +80,7 @@ class File {
 	 *
 	 * @param string $file
 	 */
-	public function delete( $file ) {
+	public function delete( $file ): void {
 		@unlink( self::dir( $file ) );
 	}
 
@@ -89,7 +89,7 @@ class File {
 	 *
 	 * @param string $file
 	 *
-	 * @return int
+	 * @return bool|string
 	 */
 	public function getCheckSum( $file ) {
 		return md5_file( $file );

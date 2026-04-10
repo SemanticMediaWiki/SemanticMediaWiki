@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -18,28 +18,17 @@ class DependencyLinksValidator {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private bool $checkDependencies = false;
 
 	/**
-	 * @var bool
+	 * @var array
 	 */
-	private $checkDependencies = false;
-
-	/**
-	 * @var
-	 */
-	private $checkedDependencies = [];
+	private array $checkedDependencies = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**
@@ -47,7 +36,7 @@ class DependencyLinksValidator {
 	 *
 	 * @param bool $checkDependencies
 	 */
-	public function setCheckDependencies( $checkDependencies ) {
+	public function setCheckDependencies( $checkDependencies ): void {
 		$this->checkDependencies = (bool)$checkDependencies;
 	}
 
@@ -56,16 +45,16 @@ class DependencyLinksValidator {
 	 *
 	 * @return bool
 	 */
-	public function canCheckDependencies() {
+	public function canCheckDependencies(): bool {
 		return $this->checkDependencies;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getCheckedDependencies() {
+	public function getCheckedDependencies(): array {
 		return $this->checkedDependencies;
 	}
 
@@ -86,14 +75,14 @@ class DependencyLinksValidator {
 	 *
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function hasArchaicDependencies( DIWikiPage $subject ) {
+	public function hasArchaicDependencies( WikiPage $subject ): bool {
 		$this->checkedDependencies = [];
 
-		if ( $this->checkDependencies === false ) {
+		if ( !$this->checkDependencies ) {
 			return false;
 		}
 
@@ -101,7 +90,7 @@ class DependencyLinksValidator {
 		$propertyTableInfoFetcher = $this->store->getPropertyTableInfoFetcher();
 
 		$tableid = $propertyTableInfoFetcher->findTableIdForProperty(
-			new DIProperty( '_ASK' )
+			new Property( '_ASK' )
 		);
 
 		if ( !isset( $proptables[$tableid] ) ) {

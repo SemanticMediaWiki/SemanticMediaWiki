@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Page;
 
 use Article;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Outputs;
 use SMW\Options;
 use SMW\Services\ServicesFactory;
-use SMWOutputs as Outputs;
 
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of
@@ -50,17 +50,14 @@ abstract class Page extends Article {
 	 */
 	protected $skin;
 
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
 	/**
 	 * Overwrite Article::view to add additional HTML to the output.
 	 *
 	 * @see Article::view
 	 */
-	public function view() {
+	public function view(): void {
 		$outputPage = $this->getContext()->getOutput();
 		$outputPage->addModuleStyles( [
 			'ext.smw.styles',
@@ -137,7 +134,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string|bool
 	 */
-	protected function getRedirectTargetURL() {
+	protected function getRedirectTargetURL(): string|bool {
 		return false;
 	}
 
@@ -146,7 +143,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected function initHtml() {
+	protected function initHtml(): string {
 		return '';
 	}
 
@@ -155,14 +152,14 @@ abstract class Page extends Article {
 	 *
 	 * @return bool
 	 */
-	protected function isLockedView() {
+	protected function isLockedView(): bool {
 		return false;
 	}
 
 	/**
 	 * Main method for adding all additional HTML to the output stream.
 	 */
-	protected function showList() {
+	protected function showList(): void {
 		$outputPage = $this->getContext()->getOutput();
 		$request = $this->getContext()->getRequest();
 
@@ -182,7 +179,7 @@ abstract class Page extends Article {
 	 *
 	 * @return true
 	 */
-	protected function initParameters() {
+	protected function initParameters(): void {
 		$this->limit = 20;
 	}
 
@@ -191,7 +188,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected function beforeView() {
+	protected function beforeView(): string {
 		return '';
 	}
 
@@ -200,7 +197,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected function afterHtml() {
+	protected function afterHtml(): string {
 		return '';
 	}
 
@@ -216,10 +213,10 @@ abstract class Page extends Article {
 	 *
 	 * @since 1.6
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	protected function getDataItem() {
-		return DIWikiPage::newFromTitle( $this->getTitle() );
+	protected function getDataItem(): WikiPage {
+		return WikiPage::newFromTitle( $this->getTitle() );
 	}
 
 }

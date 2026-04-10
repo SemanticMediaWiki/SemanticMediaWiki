@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * This class implements Store access to blob (string) data items.
@@ -23,7 +23,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_hash' => $this->getCharFieldType()
@@ -35,7 +35,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_hash' => $this->getCharFieldType()
@@ -47,7 +47,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 
 			's_id,o_hash',
@@ -63,7 +63,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 		// Store::getPropertySubjects has seen to choose the wrong index
 
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
@@ -97,7 +97,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		$isKeyword = $dataItem->getOption( 'is.keyword' );
 		$text = $dataItem->getString();
 
@@ -111,7 +111,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		$isKeyword = $dataItem->getOption( 'is.keyword' );
 
 		$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
@@ -138,7 +138,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_hash';
 	}
 
@@ -147,7 +147,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_hash';
 	}
 
@@ -156,7 +156,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Blob {
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
@@ -168,10 +168,10 @@ class DIBlobHandler extends DataItemHandler {
 
 		// empty blob: use "hash" string
 		if ( $dbkeys[0] == '' ) {
-			return new DIBlob( $dbkeys[1] );
+			return new Blob( $dbkeys[1] );
 		}
 
-		return new DIBlob( $dbkeys[0] );
+		return new Blob( $dbkeys[0] );
 	}
 
 	/**
@@ -218,7 +218,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * @since 3.0
 	 */
-	private function getMaxLength() {
+	private function getMaxLength(): int {
 		$length = 72;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {
@@ -228,7 +228,7 @@ class DIBlobHandler extends DataItemHandler {
 		return $length;
 	}
 
-	private function getCharFieldType() {
+	private function getCharFieldType(): string {
 		// http://sqlite.1065341.n5.nabble.com/Leading-zeros-disappear-td60515.html
 		// @Test:[p-0430]
 		if ( $this->isDbType( 'sqlite' ) ) {

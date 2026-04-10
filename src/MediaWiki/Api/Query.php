@@ -3,10 +3,9 @@
 namespace SMW\MediaWiki\Api;
 
 use MediaWiki\Api\ApiBase;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWQuery;
-use SMWQueryProcessor;
 
 /**
  * Base for API modules that query SMW
@@ -30,20 +29,20 @@ abstract class Query extends ApiBase {
 	 * @param array $printouts
 	 * @param array $parameters
 	 *
-	 * @return SMWQuery
+	 * @return \SMW\Query\Query
 	 */
 	protected function getQuery( $queryString, array $printouts, array $parameters = [] ) {
-		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
+		QueryProcessor::addThisPrintout( $printouts, $parameters );
 
-		$query = SMWQueryProcessor::createQuery(
+		$query = QueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( $parameters, $printouts ),
-			SMWQueryProcessor::SPECIAL_PAGE,
+			QueryProcessor::getProcessedParams( $parameters, $printouts ),
+			QueryProcessor::SPECIAL_PAGE,
 			'',
 			$printouts
 		);
 
-		$query->setOption( SMWQuery::PROC_CONTEXT, 'API' );
+		$query->setOption( \SMW\Query\Query::PROC_CONTEXT, 'API' );
 
 		return $query;
 	}
@@ -53,11 +52,11 @@ abstract class Query extends ApiBase {
 	 *
 	 * @since 1.6.2
 	 *
-	 * @param SMWQuery $query
+	 * @param \SMW\Query\Query $query
 	 *
 	 * @return QueryResult
 	 */
-	protected function getQueryResult( SMWQuery $query ) {
+	protected function getQueryResult( \SMW\Query\Query $query ) {
 		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $query->getQuerySource() )->getQueryResult( $query );
 	}
 
@@ -68,7 +67,7 @@ abstract class Query extends ApiBase {
 	 *
 	 * @param QueryResult $queryResult
 	 */
-	protected function addQueryResult( QueryResult $queryResult, $outputFormat = 'json' ) {
+	protected function addQueryResult( QueryResult $queryResult, $outputFormat = 'json' ): void {
 		$result = $this->getResult();
 
 		$resultFormatter = new ApiQueryResultFormatter( $queryResult );

@@ -3,11 +3,10 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Parser\Sanitizer;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * This datavalue implements the handling of Boolean datavalues.
@@ -44,14 +43,14 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = trim( $value );
 
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
 
-		$this->m_dataitem = new DIBoolean(
+		$this->m_dataitem = new Boolean(
 			$this->doParseBoolValue( $value )
 		);
 	}
@@ -63,7 +62,7 @@ class BooleanValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_BOOLEAN ) {
 			return false;
 		}
@@ -77,7 +76,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::setOutputFormat
 	 */
-	public function setOutputFormat( $formatstring ) {
+	public function setOutputFormat( $formatstring ): void {
 		if ( $formatstring == $this->m_outformat ) {
 			return;
 		}
@@ -148,7 +147,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::getWikiValue
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): mixed {
 		return $this->getFirstBooleanCaptionFrom(
 			$this->isValid() && $this->m_dataitem->getBoolean() ? 'smw_true_words' : 'smw_false_words',
 			Message::CONTENT_LANGUAGE
@@ -160,7 +159,7 @@ class BooleanValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	public function getBoolean() {
+	public function getBoolean(): bool {
 		return !$this->isValid() ? false : $this->m_dataitem->getBoolean();
 	}
 
@@ -187,7 +186,7 @@ class BooleanValue extends DataValue {
 		);
 	}
 
-	private function doParseBoolValue( $value ) {
+	private function doParseBoolValue( string $value ): bool {
 		// Use either the global or page related content language
 		$contentLanguage = $this->getOption( 'content.language' );
 
@@ -212,8 +211,8 @@ class BooleanValue extends DataValue {
 		return $boolvalue;
 	}
 
-	private function setLocalizedCaptions( &$formatstring ) {
-		if ( !( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) ) {
+	private function setLocalizedCaptions( string &$formatstring ): void {
+		if ( !( $languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring ) ) ) {
 			$languageCode = $this->getOption( 'user.language' );
 		}
 
@@ -228,7 +227,7 @@ class BooleanValue extends DataValue {
 		);
 	}
 
-	private function getFirstBooleanCaptionFrom( $msgKey, $languageCode = null ) {
+	private function getFirstBooleanCaptionFrom( string $msgKey, $languageCode = null ): mixed {
 		$vals = $this->getBooleanWordsFrom(
 			$msgKey,
 			$languageCode
@@ -237,7 +236,10 @@ class BooleanValue extends DataValue {
 		return reset( $vals );
 	}
 
-	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getBooleanWordsFrom( string $msgKey, $languageCode = null, $canonicalForm = null ): array {
 		$vals = explode(
 			',',
 			Message::get( $msgKey, Message::TEXT, $languageCode )

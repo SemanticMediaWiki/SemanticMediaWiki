@@ -22,12 +22,12 @@ class Site {
 	 *
 	 * @return bool
 	 */
-	public static function isReadOnly() {
+	public static function isReadOnly(): bool {
 		// MediaWiki\Services\ServiceDisabledException from line 340 of
 		// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
 		try {
 			$isReadOnly = MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
-		} catch ( ServiceDisabledException $e ) {
+		} catch ( ServiceDisabledException ) {
 			$isReadOnly = true;
 		}
 
@@ -39,7 +39,7 @@ class Site {
 	 *
 	 * @return bool
 	 */
-	public static function isReady() {
+	public static function isReady(): bool {
 		// #3341
 		// When running as part of the install don't try to access the DB
 		// or update the Store
@@ -78,7 +78,7 @@ class Site {
 	 *
 	 * @return string
 	 */
-	public static function wikiurl() {
+	public static function wikiurl(): string {
 		return $GLOBALS['wgServer'] . str_replace( '$1', '', $GLOBALS['wgArticlePath'] );
 	}
 
@@ -96,7 +96,7 @@ class Site {
 	 *
 	 * @return bool
 	 */
-	public static function isCommandLineMode() {
+	public static function isCommandLineMode(): bool {
 		return MW_ENTRY_POINT === 'cli' || defined( 'MEDIAWIKI_JOB_RUNNER' );
 	}
 
@@ -140,9 +140,9 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
-	public static function stats() {
+	public static function stats(): array {
 		return [
 			'pageCount' => SiteStats::pages(),
 			'contentPageCount' => SiteStats::articles(),

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\TempFile;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\TempFile;
  *
  * @author mwjames
  */
-class TempFileTest extends \PHPUnit\Framework\TestCase {
+class TempFileTest extends TestCase {
 
 	public function testGenerate() {
 		$instance = new TempFile();

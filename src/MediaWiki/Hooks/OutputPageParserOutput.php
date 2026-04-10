@@ -31,34 +31,16 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class OutputPageParserOutput implements HookListener {
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
-
-	/**
-	 * @var IndicatorRegistry
-	 */
-	private $indicatorRegistry;
-
-	private FactboxText $factboxText;
+	private ?IndicatorRegistry $indicatorRegistry = null;
 
 	/**
 	 * @since 1.9
 	 */
 	public function __construct(
-		NamespaceExaminer $namespaceExaminer,
-		PermissionExaminer $permissionExaminer,
-		FactboxText $factboxText
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly PermissionExaminer $permissionExaminer,
+		private readonly FactboxText $factboxText,
 	) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->permissionExaminer = $permissionExaminer;
-		$this->factboxText = $factboxText;
 	}
 
 	/**
@@ -66,7 +48,7 @@ class OutputPageParserOutput implements HookListener {
 	 *
 	 * @param IndicatorRegistry $indicatorRegistry
 	 */
-	public function setIndicatorRegistry( IndicatorRegistry $indicatorRegistry ) {
+	public function setIndicatorRegistry( IndicatorRegistry $indicatorRegistry ): void {
 		$this->indicatorRegistry = $indicatorRegistry;
 	}
 
@@ -105,7 +87,7 @@ class OutputPageParserOutput implements HookListener {
 		$this->addPostProc( $title, $outputPage, $parserOutput );
 	}
 
-	private function addPostProc( Title $title, OutputPage $outputPage, ParserOutput $parserOutput ) {
+	private function addPostProc( Title $title, OutputPage $outputPage, ParserOutput $parserOutput ): ?string {
 		$request = $outputPage->getContext()->getRequest();
 
 		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit', 'formedit' ] ) ) {
@@ -125,9 +107,11 @@ class OutputPageParserOutput implements HookListener {
 			$outputPage->addModules( $postProcHandler->getModules() );
 			$outputPage->addHtml( $html );
 		}
+
+		return null;
 	}
 
-	protected function addFactbox( OutputPage $outputPage, ParserOutput $parserOutput ) {
+	protected function addFactbox( OutputPage $outputPage, ParserOutput $parserOutput ): string|bool {
 		$request = $outputPage->getContext()->getRequest();
 
 		if ( $this->factboxText->hasText() && $request->getCheck( 'wpPreview' ) ) {

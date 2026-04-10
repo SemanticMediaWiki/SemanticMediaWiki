@@ -20,7 +20,7 @@ trait HookDispatcherAwareTrait {
 	 *
 	 * @param HookDispatcher $hookDispatcher
 	 */
-	public function setHookDispatcher( HookDispatcher $hookDispatcher ) {
+	public function setHookDispatcher( HookDispatcher $hookDispatcher ): void {
 		$this->hookDispatcher = $hookDispatcher;
 	}
 

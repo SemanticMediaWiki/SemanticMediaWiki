@@ -24,7 +24,7 @@ class CharExaminer {
 	 *
 	 * @return bool
 	 */
-	public static function isCJK( $text ) {
+	public static function isCJK( $text ): bool {
 		if ( self::contains( self::HAN, $text ) ) {
 			return true;
 		}
@@ -53,7 +53,7 @@ class CharExaminer {
 	 *
 	 * @return bool
 	 */
-	public static function contains( $type, $text ) {
+	public static function contains( $type, $text ): bool {
 		if ( $type === self::CYRILLIC ) {
 			return preg_match( '/\p{Cyrillic}/u', $text ) > 0;
 		}

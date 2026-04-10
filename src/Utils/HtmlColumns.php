@@ -27,77 +27,41 @@ class HtmlColumns {
 	 */
 	private $columns = 1;
 
-	/**
-	 * @var array
-	 */
-	private $contents = [];
+	private array $contents = [];
 
-	/**
-	 * @var array
-	 */
-	private $itemAttributes = [];
+	private array $itemAttributes = [];
 
-	/**
-	 * @var int
-	 */
-	private $numRows = 0;
+	private int $numRows = 0;
 
-	/**
-	 * @var int
-	 */
-	private $count = 0;
+	private int $count = 0;
 
-	/**
-	 * @var string
-	 */
-	private $columnStyle = '';
+	private string $columnStyle = '';
 
-	/**
-	 * @var string
-	 */
-	private $listType = 'ul';
+	private string $listType = 'ul';
 
-	/**
-	 * @var string
-	 */
-	private $olType = '';
+	private string $olType = '';
 
 	/**
 	 * @var string
 	 */
 	private $continueAbbrev = '';
 
-	/**
-	 * @var string
-	 */
-	private $columnListClass = 'smw-columnlist-container';
+	private string $columnListClass = 'smw-columnlist-container';
 
-	/**
-	 * @var string
-	 */
-	private $columnClass = 'smw-column';
+	private string $columnClass = 'smw-column';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isResponsiveCols = false;
+	private bool $isResponsiveCols = false;
 
-	/**
-	 * @var int
-	 */
-	private $responsiveColsThreshold = 10;
+	private int $responsiveColsThreshold = 10;
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param string $columnListClass
 	 */
-	public function setColumnListClass( $columnListClass ) {
+	public function setColumnListClass( $columnListClass ): void {
 		$this->columnListClass = htmlspecialchars( $columnListClass );
 	}
 
@@ -106,7 +70,7 @@ class HtmlColumns {
 	 *
 	 * @param string $columnClass
 	 */
-	public function setColumnClass( $columnClass ) {
+	public function setColumnClass( $columnClass ): void {
 		$this->columnClass = htmlspecialchars( $columnClass );
 	}
 
@@ -115,7 +79,7 @@ class HtmlColumns {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
+	public function isRTL( $isRTL ): void {
 		$this->isRTL = (bool)$isRTL;
 	}
 
@@ -124,7 +88,7 @@ class HtmlColumns {
 	 *
 	 * @param bool $isResponsiveCols
 	 */
-	public function setResponsiveCols( $isResponsiveCols = true ) {
+	public function setResponsiveCols( $isResponsiveCols = true ): void {
 		$this->isResponsiveCols = (bool)$isResponsiveCols;
 	}
 
@@ -133,7 +97,7 @@ class HtmlColumns {
 	 *
 	 * @param int $responsiveColsThreshold
 	 */
-	public function setResponsiveColsThreshold( $responsiveColsThreshold ) {
+	public function setResponsiveColsThreshold( $responsiveColsThreshold ): void {
 		$this->responsiveColsThreshold = (int)$responsiveColsThreshold;
 	}
 
@@ -142,7 +106,7 @@ class HtmlColumns {
 	 *
 	 * @param int $columns
 	 */
-	public function setColumns( $columns ) {
+	public function setColumns( $columns ): void {
 		$this->columns = $columns;
 	}
 
@@ -152,7 +116,7 @@ class HtmlColumns {
 	 * @param string $listType
 	 * @param string $olType
 	 */
-	public function setListType( $listType, $olType = '' ) {
+	public function setListType( $listType, $olType = '' ): void {
 		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
@@ -173,7 +137,7 @@ class HtmlColumns {
 	 *
 	 * @param array $itemAttributes
 	 */
-	public function setItemAttributes( array $itemAttributes ) {
+	public function setItemAttributes( array $itemAttributes ): void {
 		$this->itemAttributes = $itemAttributes;
 	}
 
@@ -182,7 +146,7 @@ class HtmlColumns {
 	 *
 	 * @param string $continueAbbrev
 	 */
-	public function setContinueAbbrev( $continueAbbrev ) {
+	public function setContinueAbbrev( $continueAbbrev ): void {
 		$this->continueAbbrev = $continueAbbrev;
 	}
 
@@ -192,7 +156,7 @@ class HtmlColumns {
 	 * @param string[] $cnts
 	 * @param string $type
 	 */
-	public function addContents( array $cnts, $type = self::PLAIN_LIST ) {
+	public function addContents( array $cnts, $type = self::PLAIN_LIST ): void {
 		$this->setContents( $cnts, $type );
 	}
 
@@ -202,7 +166,7 @@ class HtmlColumns {
 	 * @param string[] $cnts
 	 * @param string $type
 	 */
-	public function setContents( array $cnts, $type = self::PLAIN_LIST ) {
+	public function setContents( array $cnts, $type = self::PLAIN_LIST ): void {
 		if ( $type === self::PLAIN_LIST ) {
 			$contents[''] = [];
 
@@ -225,7 +189,7 @@ class HtmlColumns {
 	 *
 	 * @return string
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$result = '';
 		$usedColumnCloser = false;
 		$this->numRows = 0;
@@ -283,7 +247,7 @@ class HtmlColumns {
 		);
 	}
 
-	private function makeList( $key, $items, $rowsPerColumn, &$usedColumnCloser ) {
+	private function makeList( int|string $key, $items, float $rowsPerColumn, &$usedColumnCloser ): string {
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';
@@ -344,7 +308,7 @@ class HtmlColumns {
 		return $result;
 	}
 
-	private function element( $type, $attributes, $content ) {
+	private function element( string $type, $attributes, $content ): string {
 		$attr = '';
 		$attributes = (array)$attributes;
 

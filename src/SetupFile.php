@@ -95,7 +95,7 @@ class SetupFile {
 			return true;
 		}
 
-		if ( $isCli === false && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
+		if ( !$isCli && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return true;
 		}
 
@@ -259,7 +259,7 @@ class SetupFile {
 	/**
 	 * FIXME: a bunch of callers are calling with a single array argument. These are likely broken.
 	 */
-	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ) {
+	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}

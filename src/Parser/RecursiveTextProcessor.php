@@ -11,9 +11,9 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\ParserData;
-use SMWOutputs;
 
 /**
  * @private
@@ -28,38 +28,27 @@ use SMWOutputs;
  */
 class RecursiveTextProcessor {
 
-	/**
-	 * @var Parser
-	 */
-	private $parser;
+	private Parser $parser;
 
 	/**
 	 * Incremented while expanding templates inserted during printout; stop
 	 * expansion at some point
-	 *
-	 * @var int
 	 */
-	private $recursionDepth = 0;
+	private int $recursionDepth = 0;
 
 	/**
 	 * @var int
 	 */
 	private $maxRecursionDepth = 2;
 
-	/**
-	 * @var bool
-	 */
-	private $recursiveAnnotation = false;
+	private bool $recursiveAnnotation = false;
 
 	/**
 	 * @var int
 	 */
 	private $uniqid;
 
-	/**
-	 * @var array
-	 */
-	private $error = [];
+	private array $error = [];
 
 	/**
 	 * @since 3.0
@@ -75,7 +64,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @return Parser
 	 */
-	public function getParser() {
+	public function getParser(): Parser {
 		return $this->parser;
 	}
 
@@ -84,7 +73,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @return
 	 */
-	public function getError() {
+	public function getError(): array {
 		return $this->error;
 	}
 
@@ -95,7 +84,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param string|int|null $uniqid
 	 */
-	public function uniqid( $uniqid = null ) {
+	public function uniqid( $uniqid = null ): void {
 		$this->uniqid = $uniqid ?? uniqid();
 	}
 
@@ -104,7 +93,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param int $maxRecursionDepth
 	 */
-	public function setMaxRecursionDepth( $maxRecursionDepth ) {
+	public function setMaxRecursionDepth( $maxRecursionDepth ): void {
 		$this->maxRecursionDepth = $maxRecursionDepth;
 	}
 
@@ -113,7 +102,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param bool $transcludeAnnotation
 	 */
-	public function transcludeAnnotation( $transcludeAnnotation ) {
+	public function transcludeAnnotation( $transcludeAnnotation ): void {
 		$parserOutput = $this->getParserOutputSafe();
 
 		if ( !$parserOutput || $transcludeAnnotation === true ) {
@@ -138,7 +127,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 */
-	public function releaseAnnotationBlock() {
+	public function releaseAnnotationBlock(): void {
 		$parserOutput = $this->getParserOutputSafe();
 
 		if ( !$parserOutput ) {
@@ -164,7 +153,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param bool $recursiveAnnotation
 	 */
-	public function setRecursiveAnnotation( $recursiveAnnotation ) {
+	public function setRecursiveAnnotation( $recursiveAnnotation ): void {
 		$this->recursiveAnnotation = (bool)$recursiveAnnotation;
 	}
 
@@ -173,7 +162,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param ParserData $parserData
 	 */
-	public function copyData( ParserData $parserData ) {
+	public function copyData( ParserData $parserData ): void {
 		if ( $this->recursiveAnnotation ) {
 			$parserData->importFromParserOutput( $this->getParserOutputSafe() );
 		}
@@ -186,7 +175,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @return string
 	 */
-	public function expandTemplate( $template ) {
+	public function expandTemplate( $template ): string|array {
 		$templateExpander = new TemplateExpander(
 			$this->parser
 		);
@@ -201,7 +190,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @return string
 	 */
-	public function recursivePreprocess( $text ) {
+	public function recursivePreprocess( $text ): string {
 		// not during parsing, no preprocessing needed, still protect the result
 		if ( !$this->parser || !$this->parser->getOptions() || !$this->parser->getTitle() ) {
 			return $this->recursiveAnnotation ? $text : '[[SMW::off]]' . $text . '[[SMW::on]]';
@@ -258,7 +247,7 @@ class RecursiveTextProcessor {
 			/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
 			$parserOutput = $this->parser->parse( $text . '__NOTOC__', $title, $popt );
 
-			SMWOutputs::requireFromParserOutput( $parserOutput );
+			Outputs::requireFromParserOutput( $parserOutput );
 			$text = $parserOutput->getContentHolderText();
 		} else {
 			$this->error = [ 'smw-parser-recursion-level-exceeded', $this->maxRecursionDepth ];
@@ -270,7 +259,7 @@ class RecursiveTextProcessor {
 		return $text;
 	}
 
-	private function pruneCategory( &$text ) {
+	private function pruneCategory( &$text ): void {
 		$parserOutput = $this->getParserOutputSafe();
 		if ( !$parserOutput ) {
 			return;

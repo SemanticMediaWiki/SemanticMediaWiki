@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HmacSerializer;
@@ -9,7 +10,7 @@ use SMW\Utils\HmacSerializer;
 /**
  * @private
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -19,30 +20,18 @@ class AuxiliaryFields {
 	const COUNTMAP_CACHE_ID = 'count.map';
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Database $connection
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage[] $subjects
+	 * @param WikiPage[] $subjects
 	 *
 	 * @return FieldList
 	 */
@@ -86,7 +75,7 @@ class AuxiliaryFields {
 	 * @param array|null $seqmap
 	 * @param array|null $countmap
 	 */
-	public function setFieldMaps( $sid, ?array $seqmap = null, ?array $countmap = null ) {
+	public function setFieldMaps( $sid, ?array $seqmap = null, ?array $countmap = null ): void {
 		$cache = $this->idCacheManager->get( self::COUNTMAP_CACHE_ID );
 
 		if ( $seqmap !== [] ) {

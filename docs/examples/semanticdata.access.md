@@ -80,10 +80,10 @@ $data = $store->getSemanticData( $subject, [ MonolingualTextValue::TYPE_ID ] );
 
 if ( $data->hasSubSemanticData() ) {
 	foreach ( $data->getSubSemanticData() as $subSemanticData ) {
-		/** @var \SMWDIBlob $text */
-		$textDataItems = $subSemanticData->getPropertyValues( new DIProperty( '_TEXT' ) );
-		/** @var \SMWDIBlob $lang */
-		$langDataItems = $subSemanticData->getPropertyValues( new DIProperty( '_LCODE' ) );
+		/** @var \SMW\DataItems\Blob $text */
+		$textDataItems = $subSemanticData->getPropertyValues( new \SMW\DataItems\Property( '_TEXT' ) );
+		/** @var \SMW\DataItems\Blob $lang */
+		$langDataItems = $subSemanticData->getPropertyValues( new \SMW\DataItems\Property( '_LCODE' ) );
 		...
 	}
 }

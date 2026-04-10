@@ -2,7 +2,8 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use SMW\DIProperty;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\Protection\ProtectionValidator;
 
@@ -15,19 +16,13 @@ use SMW\Protection\ProtectionValidator;
 class ProtectionExaminer extends DeclarationExaminer {
 
 	/**
-	 * @var ProtectionValidator
-	 */
-	private $protectionValidator;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param DeclarationExaminer $declarationExaminer
-	 * @param ProtectionValidator $protectionValidator
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, ProtectionValidator $protectionValidator ) {
+	public function __construct(
+		IDeclarationExaminer $declarationExaminer,
+		private readonly ProtectionValidator $protectionValidator,
+	) {
 		$this->declarationExaminer = $declarationExaminer;
-		$this->protectionValidator = $protectionValidator;
 	}
 
 	/**
@@ -35,7 +30,7 @@ class ProtectionExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ): void {
 		if ( $this->declarationExaminer->isLocked() ) {
 			return;
 		}
@@ -47,7 +42,7 @@ class ProtectionExaminer extends DeclarationExaminer {
 		$this->checkEditProtectionRight( $title, $property );
 	}
 
-	private function checkCreateProtectionRight( $title, $property ) {
+	private function checkCreateProtectionRight( ?Title $title, Property $property ): void {
 		if ( !$this->protectionValidator->hasCreateProtection( $title ) ) {
 			return;
 		}
@@ -62,7 +57,7 @@ class ProtectionExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'warning', $msg, $property->getLabel(), $createProtectionRight ];
 	}
 
-	private function checkEditProtectionRight( $title, $property ) {
+	private function checkEditProtectionRight( ?Title $title, Property $property ): void {
 		$editProtectionRight = $this->protectionValidator->getEditProtectionRight();
 
 		if ( $this->protectionValidator->hasEditProtection( $title ) ) {

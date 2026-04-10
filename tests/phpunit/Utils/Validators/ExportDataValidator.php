@@ -2,8 +2,9 @@
 
 namespace SMW\Tests\Utils\Validators;
 
+use PHPUnit\Framework\Assert;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpResource;
-use SMWExpData as ExpData;
 
 /**
  * @license GPL-2.0-or-later
@@ -11,7 +12,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class ExportDataValidator extends \PHPUnit\Framework\Assert {
+class ExportDataValidator extends Assert {
 
 	/**
 	 * @since 2.0

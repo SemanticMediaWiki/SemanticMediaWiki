@@ -6,7 +6,9 @@ use ArrayIterator;
 use Countable;
 use Iterator;
 use IteratorIterator;
+use ReturnTypeWillChange;
 use RuntimeException;
+use Traversable;
 
 /**
  * This iterator is expected to be called in combination with another iterator
@@ -36,7 +38,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 * @param Iterator|array $iterable
 	 * @param callable $callback
 	 */
-	public function __construct( $iterable, callable $callback ) {
+	public function __construct( Traversable|array $iterable, callable $callback ) {
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
 		}
@@ -68,7 +70,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		return call_user_func( $this->callback, parent::current() );
 	}

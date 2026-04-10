@@ -13,20 +13,11 @@ use Exception;
  */
 class QueryComparator {
 
-	/**
-	 * @var QueryComparator
-	 */
-	private static $instance = null;
+	private static ?QueryComparator $instance = null;
 
-	/**
-	 * @var array
-	 */
-	private $comparators = null;
+	private array $comparators;
 
-	/**
-	 * @var array
-	 */
-	private $reverseCache = [];
+	private array $reverseCache = [];
 
 	/**
 	 * @since 2.3
@@ -43,7 +34,7 @@ class QueryComparator {
 	 *
 	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance(): QueryComparator {
 		if ( self::$instance === null ) {
 			self::$instance = new self(
 				$GLOBALS['smwgQComparators'],
@@ -57,7 +48,7 @@ class QueryComparator {
 	/**
 	 * @since 2.3
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -69,7 +60,7 @@ class QueryComparator {
 	 *
 	 * @return array
 	 */
-	public function getComparatorStrings() {
+	public function getComparatorStrings(): array {
 		return array_keys( $this->comparators );
 	}
 
@@ -100,7 +91,7 @@ class QueryComparator {
 	 *
 	 * @return bool
 	 */
-	public function containsComparator( $value, $comparator = SMW_CMP_EQ ) {
+	public function containsComparator( $value, $comparator = SMW_CMP_EQ ): bool {
 		return $this->extractComparatorFromString( $value ) === $comparator;
 	}
 
@@ -151,7 +142,10 @@ class QueryComparator {
 		throw new Exception( "Comparator $comparator does not have a string representatation" );
 	}
 
-	private function getEnabledComparators( $comparatorList, $strictComparators ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getEnabledComparators( $comparatorList, $strictComparators ): array {
 		// Note: Comparators that contain other comparators at the beginning of
 		// the string need to be at beginning of the array.
 		$comparators = [

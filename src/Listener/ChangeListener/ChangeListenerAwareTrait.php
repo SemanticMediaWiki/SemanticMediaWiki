@@ -18,7 +18,7 @@ trait ChangeListenerAwareTrait {
 	/**
 	 * @since 3.2
 	 */
-	public function clearChangeListeners() {
+	public function clearChangeListeners(): void {
 		self::$changeListeners = [];
 	}
 
@@ -27,7 +27,7 @@ trait ChangeListenerAwareTrait {
 	 *
 	 * @param ChangeListener $changeListener
 	 */
-	public function registerChangeListener( ChangeListener $changeListener ) {
+	public function registerChangeListener( ChangeListener $changeListener ): void {
 		self::$changeListeners[spl_object_hash( $changeListener )] = $changeListener;
 	}
 
@@ -36,7 +36,7 @@ trait ChangeListenerAwareTrait {
 	 *
 	 * @param ChangeListener[]|[]
 	 */
-	public function getChangeListeners() {
+	public function getChangeListeners(): array {
 		return self::$changeListeners;
 	}
 

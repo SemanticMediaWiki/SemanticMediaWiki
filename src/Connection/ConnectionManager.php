@@ -21,10 +21,8 @@ class ConnectionManager {
 	/**
 	 * By design this variable is static to ensure that ConnectionProvider
 	 * instances are only initialized once per request.
-	 *
-	 * @var array
 	 */
-	private static $connectionProviders = [];
+	private static array $connectionProviders = [];
 
 	/**
 	 * @since 2.1
@@ -51,7 +49,7 @@ class ConnectionManager {
 	/**
 	 * @since 2.1
 	 */
-	public function releaseConnections() {
+	public function releaseConnections(): void {
 		foreach ( self::$connectionProviders as $connectionProvider ) {
 			$connectionProvider->releaseConnection();
 		}
@@ -63,7 +61,7 @@ class ConnectionManager {
 	 * @param string $id
 	 * @param ConnectionProvider $connectionProvider
 	 */
-	public function registerConnectionProvider( $id, ConnectionProvider $connectionProvider ) {
+	public function registerConnectionProvider( $id, ConnectionProvider $connectionProvider ): void {
 		self::$connectionProviders[strtolower( $id )] = $connectionProvider;
 	}
 
@@ -73,11 +71,11 @@ class ConnectionManager {
 	 * @param string $id
 	 * @param callable $callback
 	 */
-	public function registerCallbackConnection( $id, callable $callback ) {
+	public function registerCallbackConnection( $id, callable $callback ): void {
 		self::$connectionProviders[strtolower( $id )] = new CallbackConnectionProvider( $callback );
 	}
 
-	private function isConnectable() {
+	private function isConnectable(): bool {
 		if ( defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return true;
 		}

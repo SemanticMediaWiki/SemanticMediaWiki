@@ -18,24 +18,12 @@ use SMW\SQLStore\SQLStore;
 class PropertyTableHashes {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
@@ -44,9 +32,9 @@ class PropertyTableHashes {
 	 * @since 3.1
 	 *
 	 * @param int $id ID of the page as stored in SMW IDs table
-	 * @param string[] of hash values with table names as keys
+	 * @param string[]|null $hash of hash values with table names as keys
 	 */
-	public function setPropertyTableHashes( $id, $hash = null ) {
+	public function setPropertyTableHashes( $id, $hash = null ): void {
 		$update = [];
 
 		if ( $hash === null ) {
@@ -98,9 +86,9 @@ class PropertyTableHashes {
 	 *
 	 * @param int $id ID of the page as stored in the SMW IDs table
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function getPropertyTableHashesById( $id ) {
+	public function getPropertyTableHashesById( $id ): mixed {
 		if ( $id == 0 ) {
 			return [];
 		}
@@ -143,7 +131,7 @@ class PropertyTableHashes {
 	 *
 	 * @param $id integer
 	 */
-	public function clearPropertyTableHashCacheById( $id ) {
+	public function clearPropertyTableHashCacheById( $id ): void {
 		$this->setPropertyTableHashesCache( $id, null );
 	}
 
@@ -152,8 +140,10 @@ class PropertyTableHashes {
 	 *
 	 * @param $id integer
 	 * @param string|null $hash
+	 *
+	 * @return void
 	 */
-	public function setPropertyTableHashesCache( $id, $hash = null ) {
+	public function setPropertyTableHashesCache( $id, $hash = null ): void {
 		// never cache 0
 		if ( $id == 0 ) {
 			return;

@@ -14,22 +14,14 @@ use MediaWiki\Parser\StripState;
 class StripMarkerDecoder {
 
 	/**
-	 * @var StripState
-	 */
-	private $stripState;
-
-	/**
 	 * @var bool
 	 */
 	private $isSupported = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param StripState $stripState
 	 */
-	public function __construct( StripState $stripState ) {
-		$this->stripState = $stripState;
+	public function __construct( private readonly StripState $stripState ) {
 	}
 
 	/**
@@ -37,7 +29,7 @@ class StripMarkerDecoder {
 	 *
 	 * @param bool $isSupported
 	 */
-	public function isSupported( $isSupported ) {
+	public function isSupported( $isSupported ): void {
 		$this->isSupported = $isSupported;
 	}
 
@@ -46,7 +38,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return bool
 	 */
-	public function canUse() {
+	public function canUse(): bool {
 		return $this->isSupported;
 	}
 
@@ -57,7 +49,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return bool
 	 */
-	public function hasStripMarker( $text ) {
+	public function hasStripMarker( $text ): int|false {
 		return strpos( $text ?? '', Parser::MARKER_SUFFIX );
 	}
 
@@ -68,7 +60,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return bool
 	 */
-	public function decode( $value ) {
+	public function decode( $value ): string|array {
 		$hasStripMarker = false;
 
 		if ( $this->canUse() ) {
@@ -87,7 +79,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return text
 	 */
-	public function unstrip( $text ) {
+	public function unstrip( $text ): string|array {
 		// Escape the text case to avoid any HTML elements
 		// cause an issue during parsing
 		return str_replace(
@@ -109,7 +101,7 @@ class StripMarkerDecoder {
 		return $this->doUnstrip( $value );
 	}
 
-	private function addNoWikiToUnstripValue( $text ) {
+	private function addNoWikiToUnstripValue( string $text ): string {
 		return '<nowiki>' . $text . '</nowiki>';
 	}
 

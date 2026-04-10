@@ -15,23 +15,12 @@ use SMW\Importer\ImportContents;
  */
 class DispatchingContentCreator implements ContentCreator {
 
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
-
-	/**
-	 * @var ContentCreator[]
-	 */
-	private $contentCreators = [];
+	private ?MessageReporter $messageReporter = null;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ContentCreator[]
 	 */
-	public function __construct( array $contentCreators ) {
-		$this->contentCreators = $contentCreators;
+	public function __construct( private readonly array $contentCreators ) {
 	}
 
 	/**
@@ -41,7 +30,7 @@ class DispatchingContentCreator implements ContentCreator {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -50,7 +39,7 @@ class DispatchingContentCreator implements ContentCreator {
 	 *
 	 * @param ImportContents $importContents
 	 */
-	public function canCreateContentsFor( ImportContents $importContents ) {
+	public function canCreateContentsFor( ImportContents $importContents ): bool {
 		foreach ( $this->contentCreators as $contentCreator ) {
 			if ( $contentCreator->canCreateContentsFor( $importContents ) ) {
 				return true;

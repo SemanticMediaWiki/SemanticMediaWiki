@@ -2,15 +2,13 @@
 
 namespace SMW\DataValues;
 
-use SMWURIValue as UriValue;
-
 /**
  * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class TelephoneUriValue extends UriValue {
+class TelephoneUriValue extends URIValue {
 
 	/**
 	 * @since 2.4

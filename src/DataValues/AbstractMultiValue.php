@@ -2,11 +2,9 @@
 
 namespace SMW\DataValues;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem;
-use SMWDataValue as DataValue;
-use SMWPropertyListValue as PropertyListValue;
 
 /**
  * @private
@@ -30,16 +28,16 @@ abstract class AbstractMultiValue extends DataValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty[] $properties
+	 * @param Property[] $properties
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function setFieldProperties( array $properties );
 
 	/**
 	 * @since 2.5
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function getProperties();
 
@@ -49,7 +47,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function getPropertyDataItems();
 
@@ -61,9 +59,9 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @return SMWDataItem[]|null
+	 * @return DataItem[]|null
 	 */
-	public function getDataItems() {
+	public function getDataItems(): array {
 		if ( !$this->isValid() ) {
 			return [];
 		}
@@ -81,7 +79,7 @@ abstract class AbstractMultiValue extends DataValue {
 	}
 
 	/**
-	 * @note called by \SMW\Query\Result\ResultArray::loadContent for matching an index as denoted
+	 * @note called by ResultArray::loadContent for matching an index as denoted
 	 * in |?Foo=Bar|+index=1 OR |?Foo=Bar|+index=Bar
 	 *
 	 * @see https://www.semantic-mediawiki.org/wiki/Help:Type_Record#Semantic_search
@@ -108,14 +106,14 @@ abstract class AbstractMultiValue extends DataValue {
 	}
 
 	/**
-	 * @note called by \SMW\Query\Result\ResultArray::getNextDataValue to match an index
+	 * @note called by ResultArray::getNextDataValue to match an index
 	 * that has been denoted using |?Foo=Bar|+index=1 OR |?Foo=Bar|+index=Bar
 	 *
 	 * @since 2.5
 	 *
 	 * @param string|int $index
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getPropertyDataItemByIndex( $index ) {
 		$properties = $this->getPropertyDataItems();
@@ -140,11 +138,11 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param DIProperty|null $property
+	 * @param Property|null $property
 	 *
-	 * @return DIProperty[]|[]
+	 * @return Property[]|array
 	 */
-	protected function getFieldProperties( ?DIProperty $property = null ) {
+	protected function getFieldProperties( ?Property $property = null ) {
 		if ( $property === null || $property->getDiWikiPage() === null ) {
 			return [];
 		}

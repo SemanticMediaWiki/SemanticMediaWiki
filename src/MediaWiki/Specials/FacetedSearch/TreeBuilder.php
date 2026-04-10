@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\Store;
@@ -26,22 +26,14 @@ class TreeBuilder {
 	const TYPE_CATEGORY = 'type/category';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
 	private $nodes;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -49,7 +41,7 @@ class TreeBuilder {
 	 *
 	 * @param Node $node
 	 */
-	public function addNode( $node ) {
+	public function addNode( $node ): void {
 		$this->nodes[$node->id] = $node;
 	}
 
@@ -58,7 +50,7 @@ class TreeBuilder {
 	 *
 	 * @param array $items
 	 */
-	public function setNodes( array $items ) {
+	public function setNodes( array $items ): void {
 		$this->nodes = [];
 
 		foreach ( $items as $id => $item ) {
@@ -92,7 +84,7 @@ class TreeBuilder {
 
 		$propertyValues = $prefetchItemLookup->getPropertyValues(
 			$subjects,
-			new DIProperty( $property ),
+			new Property( $property ),
 			$requestOptions
 		);
 
@@ -124,7 +116,7 @@ class TreeBuilder {
 	 * @param array $subjects
 	 * @param string $type
 	 */
-	public function buildFrom( array $subjects, string $type ) {
+	public function buildFrom( array $subjects, string $type ): void {
 		$hierarchyList = $this->getHierarchyList(
 			$subjects,
 			$type
@@ -156,11 +148,11 @@ class TreeBuilder {
 	 *
 	 * @param $node
 	 */
-	public function removeNode( $node ) {
+	public function removeNode( $node ): void {
 		unset( $this->nodes[$node->id] );
 	}
 
-	public function hasNode( $id ) {
+	public function hasNode( $id ): bool {
 		if ( $this->nodes === [] || $this->nodes === null ) {
 			return false;
 		}
@@ -190,7 +182,7 @@ class TreeBuilder {
 		}
 	}
 
-	public function getTree() {
+	public function getTree(): string {
 		$text = '';
 
 		if ( $this->nodes === [] || $this->nodes === null ) {
@@ -204,16 +196,15 @@ class TreeBuilder {
 		return "<ul>$text</ul>";
 	}
 
-	public function newNode( $id, $content = '' ) {
+	public function newNode( $id, $content = '' ): object {
 		return new class ( $id, $content ) {
 
-			public $id;
-			public $content = '';
 			public $children = [];
 
-			public function __construct( $id, $content ) {
-				$this->id = $id;
-				$this->content = $content;
+			public function __construct(
+				public $id,
+				public $content,
+			) {
 			}
 
 			public function hasNode( $id ) {
@@ -242,7 +233,7 @@ class TreeBuilder {
 				}
 			}
 
-			public function addChild( $node ) {
+			public function addChild( $node ): void {
 				$this->children[$node->id] = $node;
 			}
 

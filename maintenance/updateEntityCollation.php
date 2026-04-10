@@ -4,7 +4,7 @@ namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -242,7 +242,7 @@ class updateEntityCollation extends Maintenance {
 		);
 
 		$cliMsgFormatter = new CliMsgFormatter();
-		$property = new DIProperty( '_SKEY' );
+		$property = new Property( '_SKEY' );
 		$i = 0;
 
 		foreach ( $rows as $row ) {
@@ -282,7 +282,7 @@ class updateEntityCollation extends Maintenance {
 		}
 
 		try {
-			$property = new DIProperty( $row->smw_title );
+			$property = new Property( $row->smw_title );
 		} catch ( PredefinedPropertyLabelMismatchException $e ) {
 			return $row->smw_sortkey;
 		}

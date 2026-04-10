@@ -3,7 +3,7 @@
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
 use SMW\Listener\ChangeListener\ChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -22,38 +22,27 @@ class PropertyChangeListener implements ChangeListener {
 	use HookDispatcherAwareTrait;
 
 	/**
-	 * @var Store
+	 * @var
 	 */
-	private $store;
+	private array $propertyIdKeyMap = [];
 
 	/**
 	 * @var
 	 */
-	private $propertyIdKeyMap = [];
+	private array $changes = [];
 
-	/**
-	 * @var
-	 */
-	private $changes = [];
-
-	/**
-	 * @var bool
-	 */
-	private $initListeners = false;
+	private bool $initListeners = false;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**
 	 * @since 3.2
 	 */
-	public function loadListeners() {
+	public function loadListeners(): void {
 		if ( $this->initListeners === true ) {
 			return;
 		}
@@ -65,10 +54,10 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param callable $callback
 	 */
-	public function addListenerCallback( DIProperty $property, callable $callback ) {
+	public function addListenerCallback( Property $property, callable $callback ): void {
 		$key = $property->getKey();
 
 		$pid = $this->store->getObjectIds()->getSMWPropertyID(
@@ -92,7 +81,7 @@ class PropertyChangeListener implements ChangeListener {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function recordChange( int $pid, array $record ) {
+	public function recordChange( int $pid, array $record ): void {
 		if ( $this->initListeners === false ) {
 			throw new RuntimeException(
 				"Hook wasn't run, possible listeners weren't registered from the available hook!"
@@ -114,7 +103,7 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 */
-	public function triggerChangeListeners() {
+	public function triggerChangeListeners(): void {
 		$keyIdMap = array_flip( $this->propertyIdKeyMap );
 
 		foreach ( $this->changeListeners as $key => $changeListeners ) {
@@ -139,15 +128,15 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 */
-	public function runChangeListeners() {
+	public function runChangeListeners(): void {
 		$this->store->getConnection( 'mw.db' )->onTransactionCommitOrIdle( [ $this, 'triggerChangeListeners' ] );
 	}
 
 	/**
 	 * @see CallableChangeListenerTrait::triggerByKey
 	 */
-	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {
-		$property = new DIProperty( $key );
+	protected function triggerByKey( string $key, ChangeRecord $changeRecord ): void {
+		$property = new Property( $key );
 
 		foreach ( $this->changeListeners[$key] as $changeListener ) {
 			$changeListener( $property, $changeRecord );

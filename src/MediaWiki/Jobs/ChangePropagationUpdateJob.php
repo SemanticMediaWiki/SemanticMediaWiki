@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Job;
 
 /**
@@ -13,7 +13,7 @@ use SMW\MediaWiki\Job;
  * Use `ChangePropagationUpdateJob` to easily count the jobs and distinguish them
  * from other `UpdateJob`.
  *
- * `MediaWikiServices::getInstance()->getJobQueueGroup()->get( 'SMW\ChangePropagationUpdateJob' )->getSize()`
+ * `MediaWikiServices::getInstance()->getJobQueueGroup()->get( 'smw.changePropagationUpdate' )->getSize()`
  *
  * @license GPL-2.0-or-later
  * @since 3.0
@@ -47,9 +47,9 @@ class ChangePropagationUpdateJob extends Job {
 	 *
 	 * @since 3.0
 	 */
-	public function run() {
+	public function run(): bool {
 		ChangePropagationDispatchJob::cleanUp(
-			DIWikiPage::newFromTitle( $this->getTitle() )
+			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
 		$updateJob = new UpdateJob(

@@ -27,49 +27,17 @@ class PageInfoProvider implements PageInfo {
 
 	use RevisionGuardAwareTrait;
 
-	/**
-	 * @var WikiPage
-	 */
-	private $wikiPage = null;
-
-	/**
-	 * @var RevisionRecord
-	 */
-	private $revision = null;
-
-	/**
-	 * @var User
-	 */
-	private $user = null;
-
-	/**
-	 * @var RevisionLookup
-	 */
-	private $revisionLookup;
-
-	/**
-	 * @var ?bool
-	 */
-	private $isReUpload = null;
+	private ?RevisionLookup $revisionLookup = null;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param WikiPage $wikiPage
-	 * @param ?RevisionRecord $revision
-	 * @param ?User $user
-	 * @param ?bool $isReUpload
 	 */
 	public function __construct(
-		WikiPage $wikiPage,
-		?RevisionRecord $revision = null,
-		?User $user = null,
-		?bool $isReUpload = null
+		private WikiPage $wikiPage,
+		private ?RevisionRecord $revision = null,
+		private ?User $user = null,
+		private ?bool $isReUpload = null,
 	) {
-		$this->wikiPage = $wikiPage;
-		$this->revision = $revision;
-		$this->user = $user;
-		$this->isReUpload = $isReUpload;
 	}
 
 	/**
@@ -103,7 +71,7 @@ class PageInfoProvider implements PageInfo {
 	 *
 	 * @return bool
 	 */
-	public function isNewPage() {
+	public function isNewPage(): bool {
 		if ( $this->isFilePage() ) {
 			return $this->isReUpload !== null ? !$this->isReUpload : false;
 		}
@@ -128,7 +96,7 @@ class PageInfoProvider implements PageInfo {
 	 *
 	 * @return bool
 	 */
-	public function isFilePage() {
+	public function isFilePage(): bool {
 		return $this->wikiPage instanceof WikiFilePage;
 	}
 
@@ -175,11 +143,11 @@ class PageInfoProvider implements PageInfo {
 	/**
 	 * @since 4.0
 	 */
-	public function setRevisionLookup( RevisionLookup $revisionLookup ) {
+	public function setRevisionLookup( RevisionLookup $revisionLookup ): void {
 		$this->revisionLookup = $revisionLookup;
 	}
 
-	public static function isProtected( Title $title, string $action = '' ) {
+	public static function isProtected( Title $title, string $action = '' ): bool {
 		return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected(
 			$title, $action
 		);

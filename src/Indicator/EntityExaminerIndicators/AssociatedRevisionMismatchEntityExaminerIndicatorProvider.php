@@ -2,8 +2,8 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\GroupPermissions;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
@@ -27,39 +27,25 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	use RevisionGuardAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
-	private $indicators = [];
+	private array $indicators = [];
 
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
+	private string $severityType = '';
 
 	/**
 	 * @var string
 	 */
 	private $languageCode = '';
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
 	private TemplateEngine $templateEngine;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**
@@ -79,7 +65,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
@@ -115,12 +101,12 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}
@@ -135,7 +121,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
@@ -144,7 +130,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
@@ -153,11 +139,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 
-	private function runCheck( $subject, $options ) {
+	private function runCheck( WikiPage $subject, array $options ): bool {
 		$this->indicators = [];
 
 		$latestRevID = $this->revisionGuard->getLatestRevID(
@@ -167,10 +153,10 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		// Make sure to match the correct internal predefined property key
 		// when it is not a user-defined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$property = Property::newFromUserLabel( $subject->getDBKey() );
 
 			if ( !$property->isUserDefined() ) {
-				$subject = new DIWikiPage( $property->getKey(), SMW_NS_PROPERTY );
+				$subject = new WikiPage( $property->getKey(), SMW_NS_PROPERTY );
 			}
 		}
 
@@ -186,7 +172,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		return $this->indicators !== [];
 	}
 
-	private function buildHTML( $latestRevID, $associatedRev, $options ) {
+	private function buildHTML( $latestRevID, int $associatedRev, array $options ): void {
 		$content = '';
 		$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_ERROR;
 

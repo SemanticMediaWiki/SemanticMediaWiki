@@ -15,28 +15,14 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  */
 class AllowsListValueParser implements ValueParser {
 
-	/**
-	 * @var MediaWikiNsContentReader
-	 */
-	private $mediaWikiNsContentReader;
+	private array $errors = [];
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
-
-	/**
-	 * @var array
-	 */
-	private static $contents = [];
+	private static array $contents = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param MediaWikiNsContentReader $mediaWikiNsContentReader
 	 */
-	public function __construct( MediaWikiNsContentReader $mediaWikiNsContentReader ) {
-		$this->mediaWikiNsContentReader = $mediaWikiNsContentReader;
+	public function __construct( private readonly MediaWikiNsContentReader $mediaWikiNsContentReader ) {
 	}
 
 	/**
@@ -44,14 +30,14 @@ class AllowsListValueParser implements ValueParser {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$contents = [];
 		$this->errors = [];
 	}
@@ -78,9 +64,11 @@ class AllowsListValueParser implements ValueParser {
 		return self::$contents[$userValue];
 	}
 
-	private function parse_contents( $userValue, $contents ) {
+	private function parse_contents( $userValue, $contents ): array {
 		if ( $contents === '' ) {
-			return $this->errors[] = [ 'smw-datavalue-allows-value-list-unknown', $userValue ];
+			$error = [ 'smw-datavalue-allows-value-list-unknown', $userValue ];
+			$this->errors[] = $error;
+			return $error;
 		}
 
 		if ( $contents[0] === '{' && ( $list = json_decode( $contents, true ) ) && is_array( $list ) ) {
@@ -90,7 +78,10 @@ class AllowsListValueParser implements ValueParser {
 		return $this->parse_string( $userValue, $contents );
 	}
 
-	private function parse_string( $userValue, $contents ) {
+	/**
+	 * @return string[]
+	 */
+	private function parse_string( $userValue, $contents ): array {
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
 		$list = [];
 

@@ -109,7 +109,7 @@ class EntityIdDisposerJob extends Job {
 	 *
 	 * @param int|stdClass $id
 	 */
-	public function disposeQueryLinks( $id ) {
+	public function disposeQueryLinks( $id ): void {
 		if ( $this->queryLinksTableDisposer === null ) {
 			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
 		}
@@ -139,7 +139,7 @@ class EntityIdDisposerJob extends Job {
 	 *
 	 * @since 2.5
 	 */
-	public function run() {
+	public function run(): bool {
 		if ( $this->hasParameter( 'id' ) ) {
 			$this->dispose( $this->getParameter( 'id' ) );
 		} else {
@@ -149,7 +149,7 @@ class EntityIdDisposerJob extends Job {
 		return true;
 	}
 
-	private function disposeOutdatedEntities() {
+	private function disposeOutdatedEntities(): ?bool {
 		// Make sure the script is only executed from the command line to avoid
 		// Special:RunJobs to execute a queued job
 		if ( $this->waitOnCommandLineMode() ) {
@@ -167,7 +167,7 @@ class EntityIdDisposerJob extends Job {
 		$cycle = $this->hasParameter( 'cycle' ) ? (int)$this->getParameter( 'cycle' ) : 0;
 
 		if ( $count == 0 ) {
-			return;
+			return null;
 		}
 
 		// We expect more outdated entities to be contained in the ID_TABLE
@@ -197,6 +197,8 @@ class EntityIdDisposerJob extends Job {
 
 			$connection->commitAndWaitForReplication( __METHOD__, $transactionTicket );
 		}
+
+		return null;
 	}
 
 	private function newPropertyTableIdReferenceDisposer() {

@@ -31,8 +31,9 @@ class SetupCheck {
 
 	/**
 	 * A user tried to use `wfLoadExtension( 'SemanticMediaWiki' )` and
-	 * `enableSemantics` at the same causing the ExtensionRegistry to throw an
-	 * "Uncaught Exception: It was attempted to load SemanticMediaWiki twice ..."
+	 * the deprecated `enableSemantics` at the same time, causing the
+	 * ExtensionRegistry to throw an "Uncaught Exception: It was attempted
+	 * to load SemanticMediaWiki twice ..."
 	 */
 	const ERROR_EXTENSION_REGISTRY = 'ERROR_EXTENSION_REGISTRY';
 
@@ -71,55 +72,28 @@ class SetupCheck {
 	 */
 	const MAINTENANCE_MODE = 'MAINTENANCE_MODE';
 
-	/**
-	 * @var
-	 */
-	private $options = [];
+	private array $options;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private ?SetupFile $setupFile;
 
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
+	private TemplateEngine $templateEngine;
 
-	/**
-	 * @var LocalMessageProvider
-	 */
-	private $localMessageProvider;
+	private LocalMessageProvider $localMessageProvider;
 
-	/**
-	 * @var
-	 */
-	private $definitions = [];
+	private array $definitions = [];
 
 	/**
 	 * @var string
 	 */
 	private $languageCode = 'en';
 
-	/**
-	 * @var string
-	 */
-	private $fallbackLanguageCode = 'en';
+	private string $fallbackLanguageCode = 'en';
 
-	/**
-	 * @var bool
-	 */
-	private $sentHeader = true;
+	private bool $sentHeader = true;
 
-	/**
-	 * @var string
-	 */
-	private $errorType = '';
+	private string $errorType = '';
 
-	/**
-	 * @var string
-	 */
-	private $errorMessage = '';
+	private string $errorMessage = '';
 
 	/**
 	 * @var string
@@ -175,7 +149,7 @@ class SetupCheck {
 	 *
 	 * @return SetupCheck
 	 */
-	public static function newFromDefaults( ?SetupFile $setupFile = null ) {
+	public static function newFromDefaults( ?SetupFile $setupFile = null ): SetupCheck {
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$version = self::readFromFile( $GLOBALS['smwgIP'] . 'extension.json' )['version'];
 		} else {
@@ -197,7 +171,7 @@ class SetupCheck {
 	/**
 	 * @since 3.2
 	 */
-	public function disableHeader() {
+	public function disableHeader(): void {
 		$this->sentHeader = false;
 	}
 
@@ -206,7 +180,7 @@ class SetupCheck {
 	 *
 	 * @return bool
 	 */
-	public function isCli() {
+	public function isCli(): bool {
 		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
 	}
 
@@ -215,7 +189,7 @@ class SetupCheck {
 	 *
 	 * @param string $traceString
 	 */
-	public function setTraceString( $traceString ) {
+	public function setTraceString( $traceString ): void {
 		$this->traceString = $traceString;
 	}
 
@@ -224,7 +198,7 @@ class SetupCheck {
 	 *
 	 * @param string $errorMessage
 	 */
-	public function setErrorMessage( string $errorMessage ) {
+	public function setErrorMessage( string $errorMessage ): void {
 		$this->errorMessage = $errorMessage;
 	}
 
@@ -233,7 +207,7 @@ class SetupCheck {
 	 *
 	 * @param string $errorType
 	 */
-	public function setErrorType( string $errorType ) {
+	public function setErrorType( string $errorType ): void {
 		$this->errorType = $errorType;
 	}
 
@@ -251,14 +225,14 @@ class SetupCheck {
 	 *
 	 * @return bool
 	 */
-	public function hasError() {
+	public function hasError(): bool {
 		$this->errorType = '';
 
 		if ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = self::MAINTENANCE_MODE;
 		} elseif ( !$this->isCli() && !$this->setupFile->hasDatabaseMinRequirement() ) {
 			$this->errorType = self::ERROR_DB_REQUIREMENT_INCOMPATIBLE;
-		} elseif ( $this->setupFile->isGoodSchema() === false ) {
+		} elseif ( !$this->setupFile->isGoodSchema() ) {
 			$this->errorType = self::ERROR_SCHEMA_INVALID_KEY;
 		}
 
@@ -281,9 +255,9 @@ class SetupCheck {
 	 *
 	 * @param bool $isCli
 	 *
-	 * @return string
+	 * @return string|array|null
 	 */
-	public function getError( $isCli = false ) {
+	public function getError( $isCli = false ): string|array|null {
 		$error = [
 			'title' => '',
 			'content' => ''
@@ -354,8 +328,10 @@ class SetupCheck {
 	 * @since 3.1
 	 *
 	 * @param bool $isCli
+	 *
+	 * @return never
 	 */
-	public function showErrorAndAbort( $isCli = false ) {
+	public function showErrorAndAbort( $isCli = false ): void {
 		echo $this->getError( $isCli );
 
 		if ( ob_get_level() ) {
@@ -367,13 +343,13 @@ class SetupCheck {
 		die();
 	}
 
-	private function header( $text ) {
+	private function header( string $text ): void {
 		if ( $this->sentHeader ) {
 			header( $text );
 		}
 	}
 
-	private function createErrorContent( $type ) {
+	private function createErrorContent( string $type ): array {
 		$indicator_title = 'Error';
 		$template = $this->definitions['error_types'][$type];
 		$content = '';
@@ -433,7 +409,7 @@ class SetupCheck {
 		return $error;
 	}
 
-	private function createContent( $value, $type ) {
+	private function createContent( array $value, string $type ) {
 		if ( $value['text'] === 'ERROR_TEXT' ) {
 			$text = str_replace( "\n", '<br>', $this->errorMessage );
 		} elseif ( $value['text'] === 'ERROR_TEXT_MULTIPLE' ) {
@@ -482,7 +458,7 @@ class SetupCheck {
 		return $this->templateEngine->publish( $value['type'] );
 	}
 
-	private function createProgressIndicator( $value ) {
+	private function createProgressIndicator( array $value ): string {
 		$maintenanceMode = (array)$this->setupFile->getMaintenanceMode();
 		$content = '';
 
@@ -516,7 +492,7 @@ class SetupCheck {
 		return $default;
 	}
 
-	private function buildHTML( array $error ) {
+	private function buildHTML( array $error ): string|array|null {
 		$args = [
 			'logo' => Logo::get( 'small' ),
 			'title' => $error['title'] ?? '',
@@ -536,7 +512,7 @@ class SetupCheck {
 		// Minify CSS rules, we keep them readable in the template to allow for
 		// better adaption
 		// @see http://manas.tungare.name/software/css-compression-in-php/
-		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( $matches ) {
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( array $matches ): string {
 				// Remove space after colons
 				$style = str_replace( ': ', ':', $matches[0] );
 

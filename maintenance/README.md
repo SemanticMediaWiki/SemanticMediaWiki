@@ -219,7 +219,7 @@ The script requires the `--force` flag and an interactive `YES` confirmation bef
 changes. Re-running the script will clear previously seeded pages before re-creating them.
 Use `--clear-only` together with `--force` to remove seeded pages without recreating them.
 
-Available since SMW 6.1.0
+Available since SMW 7.0.0
 
 Usage:
 ```sh

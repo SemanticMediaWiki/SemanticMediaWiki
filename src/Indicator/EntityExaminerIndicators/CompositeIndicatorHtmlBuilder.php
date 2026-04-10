@@ -21,22 +21,14 @@ class CompositeIndicatorHtmlBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
-
-	/**
 	 * @var string
 	 */
 	private $languageCode = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateEngine $templateEngine
 	 */
-	public function __construct( TemplateEngine $templateEngine ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( private TemplateEngine $templateEngine ) {
 	}
 
 	/**
@@ -137,17 +129,17 @@ class CompositeIndicatorHtmlBuilder {
 		return $content;
 	}
 
-	private function content( $indicator ) {
+	private function content( array $indicator ) {
 		$this->templateEngine->compile( 'tabpanel_tab_template', $indicator );
 		return $this->templateEngine->code( 'tabpanel_tab_template' );
 	}
 
-	private function tab( $indicator ) {
+	private function tab( array $indicator ) {
 		$this->templateEngine->compile( 'tabpanel_tabset_template', $indicator );
 		return $this->templateEngine->code( 'tabpanel_tabset_template' );
 	}
 
-	private function highlighter( $content, $tabset, $options ) {
+	private function highlighter( string $content, string $tabset, array $options ) {
 		$this->templateEngine->load( '/indicator/comment.ms', 'comment_template' );
 
 		$this->templateEngine->compile(
@@ -189,7 +181,7 @@ class CompositeIndicatorHtmlBuilder {
 		return $this->templateEngine->code( 'highlighter_template' );
 	}
 
-	private function placeholder( $options ) {
+	private function placeholder( array $options ) {
 		$this->templateEngine->load( '/indicator/composite.placeholder.ms', 'placeholder_template' );
 
 		$this->templateEngine->compile(

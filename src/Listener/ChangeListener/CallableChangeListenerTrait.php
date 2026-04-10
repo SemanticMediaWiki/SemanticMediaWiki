@@ -27,7 +27,7 @@ trait CallableChangeListenerTrait {
 	/**
 	 * @since 3.2
 	 */
-	public function clearListeners() {
+	public function clearListeners(): void {
 		$this->changeListeners = [];
 		$this->attrs = [];
 	}
@@ -37,7 +37,7 @@ trait CallableChangeListenerTrait {
 	 *
 	 * @param array $attrs
 	 */
-	public function setAttrs( array $attrs ) {
+	public function setAttrs( array $attrs ): void {
 		$this->attrs = $attrs;
 	}
 
@@ -57,7 +57,7 @@ trait CallableChangeListenerTrait {
 	 *
 	 * @param string $key
 	 */
-	public function trigger( string $key ) {
+	public function trigger( string $key ): void {
 		if ( !isset( $this->changeListeners[$key] ) ) {
 			return;
 		}
@@ -71,7 +71,7 @@ trait CallableChangeListenerTrait {
 		$this->triggerByKey( $key, $changeRecord );
 	}
 
-	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {
+	protected function triggerByKey( string $key, ChangeRecord $changeRecord ): void {
 		foreach ( $this->changeListeners[$key] as $changeListener ) {
 
 			if ( !is_callable( $changeListener ) ) {

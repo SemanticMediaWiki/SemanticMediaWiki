@@ -34,24 +34,12 @@ class ArticleProtectComplete implements HookListener {
 	const RESTRICTED_UPDATE = 'articleprotectcomplete.restricted.update';
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
-	 * @var EditInfo
-	 */
-	private $editInfo;
-
-	/**
 	 * @since  2.5
-	 *
-	 * @param Title $title
-	 * @param EditInfo $editInfo
 	 */
-	public function __construct( Title $title, EditInfo $editInfo ) {
-		$this->title = $title;
-		$this->editInfo = $editInfo;
+	public function __construct(
+		private Title $title,
+		private EditInfo $editInfo,
+	) {
 	}
 
 	/**
@@ -60,7 +48,7 @@ class ArticleProtectComplete implements HookListener {
 	 * @param array $protections
 	 * @param string $reason
 	 */
-	public function process( $protections, $reason ) {
+	public function process( array $protections, $reason ) {
 		if ( Message::get( 'smw-edit-protection-auto-update' ) === $reason ) {
 			return $this->logger->info( __METHOD__ . ' No changes required, invoked by own process!' );
 		}
@@ -86,7 +74,7 @@ class ArticleProtectComplete implements HookListener {
 		);
 	}
 
-	private function doPrepareData( $protections, $parserData ) {
+	private function doPrepareData( array $protections, $parserData ): void {
 		$isRestrictedUpdate = true;
 		$isAnnotationBySystem = false;
 

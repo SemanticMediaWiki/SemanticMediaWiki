@@ -13,21 +13,17 @@ use SMW\Exception\JSONFileParseException;
  */
 class LocalMessageProvider implements MessageLocalizer {
 
-	private /* string */ $file = '';
-	private /* ?string */ $languageCode;
 	private /* string */ $languageFileDir = '';
-	private /* string */ $fallbackLanguageCode = 'en';
+	private /* string */ string $fallbackLanguageCode = 'en';
 	private /* array */ $contents = [];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $file
-	 * @param ?string $languageCode
 	 */
-	public function __construct( string $file, ?string $languageCode = null ) {
-		$this->file = $file;
-		$this->languageCode = $languageCode;
+	public function __construct(
+		private readonly string $file,
+		private ?string $languageCode = null,
+	) {
 		$this->languageFileDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
 							  ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
 							  : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
@@ -36,7 +32,7 @@ class LocalMessageProvider implements MessageLocalizer {
 	/**
 	 * @since 3.2
 	 */
-	public function loadMessages() {
+	public function loadMessages(): void {
 		$this->contents = $this->readJSONFile( $this->file );
 	}
 
@@ -45,7 +41,7 @@ class LocalMessageProvider implements MessageLocalizer {
 	 *
 	 * @param string $languageFileDir
 	 */
-	public function setLanguageFileDir( string $languageFileDir ) {
+	public function setLanguageFileDir( string $languageFileDir ): void {
 		$this->languageFileDir = $languageFileDir;
 	}
 
@@ -54,7 +50,7 @@ class LocalMessageProvider implements MessageLocalizer {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( string $languageCode ) {
+	public function setLanguageCode( string $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
@@ -114,7 +110,7 @@ class LocalMessageProvider implements MessageLocalizer {
 		return $message;
 	}
 
-	private function readJSONFile( $file ) {
+	private function readJSONFile( string $file ): array {
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $file );
 
 		if ( !is_readable( $file ) ) {
@@ -124,7 +120,8 @@ class LocalMessageProvider implements MessageLocalizer {
 		$contents = json_decode( file_get_contents( $file ), true );
 
 		if ( $contents !== null && json_last_error() === JSON_ERROR_NONE ) {
-			return $this->contents = $contents;
+			$this->contents = $contents;
+			return $this->contents;
 		}
 
 		throw new JSONFileParseException( $file );

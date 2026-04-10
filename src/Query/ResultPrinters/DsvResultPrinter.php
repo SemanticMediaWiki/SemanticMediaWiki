@@ -4,6 +4,7 @@ namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Parser\Sanitizer;
 use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 
 /**
  * Result printer to print results in UNIX-style DSV (deliminter separated value)
@@ -32,7 +33,7 @@ class DsvResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return 'text/dsv';
 	}
 
@@ -43,7 +44,7 @@ class DsvResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		if ( $this->params['filename'] === '' ) {
 			return 'result.dsv';
 		}
@@ -62,7 +63,7 @@ class DsvResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['searchlabel']->setDefault( wfMessage( 'smw_dsv_link' )->text() );
@@ -110,7 +111,7 @@ class DsvResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function buildContents( QueryResult $queryResult ) {
+	private function buildContents( QueryResult $queryResult ): string {
 		$lines = [];
 
 		// Do not allow backspaces as delimiter, as they'll break stuff.
@@ -140,7 +141,7 @@ class DsvResultPrinter extends FileExportPrinter {
 
 			/**
 			 * Loop over their fields (properties).
-			 * @var \SMW\Query\Result\ResultArray $field
+			 * @var ResultArray $field
 			 */
 			foreach ( $row as $field ) {
 				$itemSegments = [];
@@ -163,11 +164,11 @@ class DsvResultPrinter extends FileExportPrinter {
 		return implode( "\n", $lines );
 	}
 
-	private function getDSVLine( array $fields ) {
+	private function getDSVLine( array $fields ): string {
 		return implode( $this->params['separator'], array_map( [ $this, 'encodeDSV' ], $fields ) );
 	}
 
-	private function encodeDSV( $value ) {
+	private function encodeDSV( $value ): string|array {
 		$sep = $this->params['separator'];
 		// TODO
 		// \nnn or \onnn or \0nnn for the character with octal value nnn

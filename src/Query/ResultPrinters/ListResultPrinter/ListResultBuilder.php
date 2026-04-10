@@ -17,7 +17,7 @@ use SMW\Query\ResultPrinters\PrefixParameterProcessor;
  */
 class ListResultBuilder {
 
-	private static $defaultConfigurations = [
+	private static array $defaultConfigurations = [
 		'*' => [
 			'value-open-tag' => '<span class="smw-value">',
 			'value-close-tag' => '</span>',
@@ -61,20 +61,15 @@ class ListResultBuilder {
 		],
 	];
 
-	/** @var Linker|null */
-	private $linker = null;
-
-	/** @var QueryResult */
-	private $queryResult;
-
-	/** @var ParameterDictionary */
-	private $configuration;
-	private $templateRendererFactory;
+	private ParameterDictionary $configuration;
+	private ?TemplateRendererFactory $templateRendererFactory = null;
 	private $listPlainByDefault;
 
-	public function __construct( QueryResult $queryResult, Linker $linker, ?bool $listPlainByDefault = null ) {
-		$this->linker = $linker;
-		$this->queryResult = $queryResult;
+	public function __construct(
+		private readonly QueryResult $queryResult,
+		private readonly Linker $linker,
+		?bool $listPlainByDefault = null,
+	) {
 		$this->configuration = new ParameterDictionary();
 		$this->listPlainByDefault = $listPlainByDefault ?? $GLOBALS['smwgPlainList'];
 	}
@@ -82,7 +77,7 @@ class ListResultBuilder {
 	/**
 	 * @return string
 	 */
-	public function getResultText() {
+	public function getResultText(): string {
 		$this->prepareBuilt();
 
 		return $this->getTemplateCall( 'introtemplate' ) .
@@ -94,7 +89,7 @@ class ListResultBuilder {
 			$this->getTemplateCall( 'outrotemplate' );
 	}
 
-	private function prepareBuilt() {
+	private function prepareBuilt(): void {
 		$format = $this->getEffectiveFormat();
 
 		$this->configuration->setDefault(
@@ -144,14 +139,14 @@ class ListResultBuilder {
 	 * @param string|string[] $setting
 	 * @param string|null $value
 	 */
-	public function set( $setting, $value = null ) {
+	public function set( $setting, $value = null ): void {
 		$this->configuration->set( $setting, $value );
 	}
 
 	/**
 	 * @return string[]
 	 */
-	private function getDefaultsFromI18N() {
+	private function getDefaultsFromI18N(): array {
 		return [
 			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
 			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),
@@ -164,7 +159,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function replaceVariables( $subject ) {
+	private function replaceVariables( $subject ): string {
 		return str_replace( [ '$START$', '$CLASS$' ], [ htmlspecialchars( $this->get( 'offset' ) + 1 ), htmlspecialchars( $this->get( 'class' ) ) ], $subject );
 	}
 
@@ -173,7 +168,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function getTemplateCall( $param ) {
+	private function getTemplateCall( string $param ): string {
 		$templatename = $this->get( $param );
 
 		if ( $templatename === '' ) {
@@ -189,7 +184,7 @@ class ListResultBuilder {
 	/**
 	 * @return TemplateRendererFactory
 	 */
-	private function getTemplateRendererFactory() {
+	private function getTemplateRendererFactory(): TemplateRendererFactory {
 		if ( $this->templateRendererFactory === null ) {
 			$this->templateRendererFactory = new TemplateRendererFactory( $this->getQueryResult() );
 			$this->templateRendererFactory->setUserparam( $this->get( 'userparam' ) );
@@ -201,14 +196,14 @@ class ListResultBuilder {
 	/**
 	 * @return QueryResult
 	 */
-	private function getQueryResult() {
+	private function getQueryResult(): QueryResult {
 		return $this->queryResult;
 	}
 
 	/**
 	 * @return string[]
 	 */
-	private function getRowTexts() {
+	private function getRowTexts(): array {
 		$queryResult = $this->getQueryResult();
 		$queryResult->reset();
 
@@ -233,7 +228,7 @@ class ListResultBuilder {
 	/**
 	 * @return RowBuilder
 	 */
-	private function getRowBuilder() {
+	private function getRowBuilder(): RowBuilder {
 		if ( $this->get( 'template' ) === '' ) {
 			$rowBuilder = new SimpleRowBuilder();
 			$rowBuilder->setLinker( $this->linker );

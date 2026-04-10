@@ -2,13 +2,15 @@
 
 namespace SMW\Tests\Utils\Validators;
 
+use PHPUnit\Framework\Assert;
+
 /**
  * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class StringValidator extends \PHPUnit\Framework\Assert {
+class StringValidator extends Assert {
 
 	/**
 	 * @since 2.1

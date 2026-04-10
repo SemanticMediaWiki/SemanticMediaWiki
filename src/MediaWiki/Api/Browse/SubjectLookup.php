@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIWikiPage;
+use Exception;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
@@ -18,17 +19,9 @@ use SMW\Store;
 class SubjectLookup extends Lookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -36,7 +29,7 @@ class SubjectLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'SubjectLookup:' . self::VERSION;
 	}
 
@@ -47,7 +40,7 @@ class SubjectLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		if ( !isset( $parameters['subject'] ) ) {
 			throw new ParameterNotFoundException( 'subject' );
 		}
@@ -81,12 +74,12 @@ class SubjectLookup extends Lookup {
 		return $res;
 	}
 
-	private function buildHTML( $params ) {
+	private function buildHTML( array $params ): string {
 		if ( !isset( $params['options'] ) ) {
 			throw new ParameterNotFoundException( 'options' );
 		}
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$params['subject'],
 			$params['ns'],
 			$params['iw'],
@@ -105,7 +98,7 @@ class SubjectLookup extends Lookup {
 		return $htmlBuilder->buildHTML();
 	}
 
-	private function doSerialize( $params ) {
+	private function doSerialize( array $params ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$subobject = isset( $params['subobject'] ) ? $params['subobject'] : '';
 
@@ -119,11 +112,11 @@ class SubjectLookup extends Lookup {
 
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			throw new RedirectTargetUnresolvableException( $e->getMessage() );
 		}
 
-		$dataItem = new DIWikiPage(
+		$dataItem = new WikiPage(
 			$title->getDBkey(),
 			$title->getNamespace(),
 			$title->getInterwiki(),

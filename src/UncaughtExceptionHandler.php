@@ -4,6 +4,7 @@ namespace SMW;
 
 use MediaWiki\Registration\ExtensionDependencyError;
 use SMW\Exception\ConfigPreloadFileNotReadableException;
+use Throwable;
 
 /**
  * @private
@@ -15,10 +16,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
  */
 class UncaughtExceptionHandler {
 
-	/**
-	 * @var SetupCheck
-	 */
-	private $setupCheck;
+	private SetupCheck $setupCheck;
 
 	/**
 	 * @since 3.2
@@ -33,12 +31,14 @@ class UncaughtExceptionHandler {
 	 * @since 3.2
 	 *
 	 * @param Throwable $e
+	 * @throws Throwable
 	 */
-	public function registerHandler( $e ) {
+	public function registerHandler( Throwable $e ): void {
 		$message = $e->getMessage();
 
 		if ( $e instanceof ConfigPreloadFileNotReadableException ) {
-			return $this->reportConfigPreloadError( $e );
+			$this->reportConfigPreloadError( $e );
+			return;
 		}
 
 		// There is no better way to fetch the specific info other then comparing
@@ -47,7 +47,8 @@ class UncaughtExceptionHandler {
 		if (
 			strpos( $message, 'SemanticMediaWiki' ) !== false &&
 			strpos( $message, 'extension.json' ) !== false ) {
-			return $this->reportExtensionRegistryError( $e );
+			$this->reportExtensionRegistryError( $e );
+			return;
 		}
 
 		// We only care for those extensions that directly relate to Semantic
@@ -55,13 +56,17 @@ class UncaughtExceptionHandler {
 		if (
 			strpos( $message, 'Semantic' ) !== false &&
 			$e instanceof ExtensionDependencyError ) {
-			return $this->reportExtensionDependencyError( $e );
+				$this->reportExtensionDependencyError( $e );
+			return;
 		}
 
 		throw $e;
 	}
 
-	private function reportConfigPreloadError( $e ) {
+	/**
+	 * @param ConfigPreloadFileNotReadableException $e
+	 */
+	private function reportConfigPreloadError( ConfigPreloadFileNotReadableException $e ): void {
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);
@@ -75,7 +80,10 @@ class UncaughtExceptionHandler {
 		);
 	}
 
-	private function reportExtensionRegistryError( $e ) {
+	/**
+	 * @param Throwable $e
+	 */
+	private function reportExtensionRegistryError( Throwable $e ): void {
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);
@@ -93,18 +101,21 @@ class UncaughtExceptionHandler {
 		);
 	}
 
-	private function reportExtensionDependencyError( $e ) {
+	/**
+	 * @param ExtensionDependencyError $e
+	 */
+	private function reportExtensionDependencyError( ExtensionDependencyError $e ): void {
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);
 
-		if ( isset( $e->incompatibleCore ) && $e->incompatibleCore ) {
+		if ( $e->incompatibleCore ) {
 			$errorType = SetupCheck::ERROR_EXTENSION_INCOMPATIBLE;
-		} elseif ( isset( $e->incompatiblePhp ) && $e->incompatiblePhp ) {
+		} elseif ( $e->incompatiblePhp ) {
 			$errorType = SetupCheck::ERROR_EXTENSION_INCOMPATIBLE;
-		} elseif ( isset( $e->incompatibleExtensions ) && $e->incompatibleExtensions !== [] ) {
+		} elseif ( $e->incompatibleExtensions !== [] ) {
 			$errorType = SetupCheck::ERROR_EXTENSION_INCOMPATIBLE;
-		} elseif ( isset( $e->missingExtensions ) && count( $e->missingExtensions ) > 1 ) {
+		} elseif ( $e->missingExtensions && count( $e->missingExtensions ) > 1 ) {
 			$errorType = SetupCheck::ERROR_EXTENSION_DEPENDENCY_MULTIPLE;
 		} else {
 			$errorType = SetupCheck::ERROR_EXTENSION_DEPENDENCY;

@@ -5,6 +5,7 @@ namespace SMW\DataValues\Time;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
+use Exception;
 
 /**
  * @private
@@ -23,10 +24,8 @@ class Timezone {
 	 * The associated offsets are in hours or fractions of hours.
 	 *
 	 * 'FOO' => array( ID, OffsetInSeconds, isMilitary )
-	 *
-	 * @var array
 	 */
-	private static $shortList = [
+	private static array $shortList = [
 		"UTC" => [ 0, 0, false ],
 		"Z" => [ 1, 0, true ],
 		"A" => [ 2, 3600, true ],
@@ -134,7 +133,7 @@ class Timezone {
 	 *
 	 * @return array
 	 */
-	public static function listShortAbbreviations() {
+	public static function listShortAbbreviations(): array {
 		return array_keys( self::$shortList );
 	}
 
@@ -145,7 +144,7 @@ class Timezone {
 	 *
 	 * @return bool
 	 */
-	public static function isValid( $identifer ) {
+	public static function isValid( $identifer ): bool {
 		$identifer = str_replace( ' ', '_', $identifer );
 
 		if ( isset( self::$shortList[strtoupper( $identifer )] ) ) {
@@ -207,7 +206,7 @@ class Timezone {
 	 *
 	 * @return false|string
 	 */
-	public static function getTimezoneLiteralById( $identifer ) {
+	public static function getTimezoneLiteralById( $identifer ): int|string|false {
 		foreach ( self::$shortList as $abbreviation => $value ) {
 			if ( is_numeric( $identifer ) && $value[0] == $identifer ) {
 				return $abbreviation;
@@ -246,11 +245,12 @@ class Timezone {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
 			$offset = $dateTimeZone->getOffset( new DateTime() );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			//
 		}
 
-		return self::$offsetCache[$abbreviation] = $offset;
+		self::$offsetCache[$abbreviation] = $offset;
+		return self::$offsetCache[$abbreviation];
 	}
 
 	/**
@@ -260,7 +260,7 @@ class Timezone {
 	 *
 	 * @return string
 	 */
-	public static function getNameByAbbreviation( $abbreviation ) {
+	public static function getNameByAbbreviation( $abbreviation ): string|false {
 		$abbreviation = strtoupper( $abbreviation );
 
 		if ( isset( self::$shortList[$abbreviation] ) ) {
@@ -286,7 +286,7 @@ class Timezone {
 	 *
 	 * @return DateInterval
 	 */
-	public static function newDateIntervalWithOffsetFrom( $abbreviation ) {
+	public static function newDateIntervalWithOffsetFrom( $abbreviation ): DateInterval {
 		$minutes = 0;
 		$hour = 0;
 
@@ -304,10 +304,10 @@ class Timezone {
 	 *
 	 * @return false|DateTimeZone
 	 */
-	public static function newDateTimeZone( $abbreviation ) {
+	public static function newDateTimeZone( $abbreviation ): DateTimeZone|false {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			if ( ( $name = self::getNameByAbbreviation( $abbreviation ) ) !== false ) {
 				return new DateTimeZone( $name );
 			}
@@ -323,7 +323,7 @@ class Timezone {
 	 *
 	 * @return array
 	 */
-	public static function getDateTimeZoneList() {
+	public static function getDateTimeZoneList(): array {
 		if ( self::$dateTimeZoneList !== [] ) {
 			return self::$dateTimeZoneList;
 		}
@@ -345,7 +345,7 @@ class Timezone {
 	 *
 	 * @return DateTime
 	 */
-	public static function getModifiedTime( DateTime $dateTime, &$tz = 0 ) {
+	public static function getModifiedTime( DateTime $dateTime, &$tz = 0 ): DateTime {
 		if ( ( $timezoneLiteral = self::getTimezoneLiteralById( $tz ) ) === false ) {
 			$tz = $timezoneLiteral;
 			return $dateTime;

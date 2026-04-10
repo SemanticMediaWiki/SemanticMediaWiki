@@ -3,7 +3,8 @@
 namespace SMW\MediaWiki\Page;
 
 use MediaWiki\Html\Html;
-use SMW\DIConcept;
+use SMW\DataItems\Concept;
+use SMW\Formatters\PageLister;
 use SMW\Localizer\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
@@ -49,7 +50,7 @@ class ConceptPage extends Page {
 			$descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
 
 			$description = $descriptionFactory->newConceptDescription( $dataItem );
-			$query = \SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
+			$query = PageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 
 			$query->setLimit( $limit );
 			$query->setOffset( $offset );
@@ -172,7 +173,7 @@ class ConceptPage extends Page {
 			$this->getDataItem()
 		);
 
-		if ( !$concept instanceof DIConcept || $concept->getCacheStatus() !== 'full' ) {
+		if ( !$concept instanceof Concept || $concept->getCacheStatus() !== 'full' ) {
 			return '';
 		}
 
@@ -192,7 +193,7 @@ class ConceptPage extends Page {
 		);
 	}
 
-	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
+	private function msg( string $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $params, $type, $lang );
 	}
 

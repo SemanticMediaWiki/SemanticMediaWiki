@@ -21,7 +21,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $fieldType ) {
+	public function getStandardFieldType( $fieldType ): string {
 		$charLongLength = FieldType::CHAR_LONG_LENGTH;
 
 		$fieldTypes = [
@@ -66,7 +66,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, ?array $attributes = null ) {
+	protected function doCreateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
@@ -86,7 +86,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
-	private function sql_from( array $attributes ) {
+	private function sql_from( array $attributes ): string {
 		// $smwgFulltextSearchTableOptions can define:
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' )
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
@@ -96,7 +96,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 			// By convention the first index has table specific relevance
 			if ( is_array( $tableOption ) ) {
-				$tableOption = isset( $tableOption[0] ) ? $tableOption[0] : '';
+				$tableOption = $tableOption[0] ?? '';
 			}
 
 			return $tableOption;
@@ -116,7 +116,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
+	protected function doUpdateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -141,7 +141,10 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function getCurrentFields( $tableName ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getCurrentFields( string $tableName ): array {
 		$sql = 'DESCRIBE ' . $tableName;
 
 		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
@@ -179,7 +182,7 @@ class MySQLTableBuilder extends TableBuilder {
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, array $currentFields, string $position, array $attributes ): void {
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
 		}
@@ -208,7 +211,7 @@ class MySQLTableBuilder extends TableBuilder {
 		return $expectedType === $actualType;
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
+	private function doCreateField( $tableName, $fieldName, string $position, string $fieldType, string $default ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
@@ -216,7 +219,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ) {
+	private function doUpdateFieldType( $tableName, int|string $fieldName, string $position, $oldFieldType, string $newFieldType ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_UPD;
 
 		// Continue to alter the type but silence the output since we cannot get
@@ -244,7 +247,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName ) {
+	private function doDropField( $tableName, int|string $fieldName ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -259,7 +262,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions ): void {
 		$indices = $indexOptions['indices'];
 
 		// First remove possible obsolete indices
@@ -277,11 +280,11 @@ class MySQLTableBuilder extends TableBuilder {
 				$indexType = 'INDEX';
 			}
 
-			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns, $indexOptions );
+			$this->doCreateIndex( $tableName, $indexType, $columns, $indexOptions );
 		}
 	}
 
-	private function doDropObsoleteIndices( $tableName, array &$indices ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentIndices = $this->getIndexInfo( $tableName );
 
@@ -328,7 +331,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * @return array indexname => columns
 	 */
-	private function getIndexInfo( $tableName ) {
+	private function getIndexInfo( string $tableName ): array {
 		$indices = [];
 
 		$res = $this->connection->query(
@@ -352,13 +355,13 @@ class MySQLTableBuilder extends TableBuilder {
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, $indexName, $columns ) {
+	private function doDropIndex( string $tableName, int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
+	private function doCreateIndex( $tableName, $indexType, $columns, array $indexOptions ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$indexOption = '';
 
@@ -371,7 +374,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 			// By convention the second index has index specific relevance
 			if ( is_array( $indexOption ) ) {
-				$indexOption = isset( $indexOption[1] ) ? $indexOption[1] : '';
+				$indexOption = $indexOption[1] ?? '';
 			}
 		}
 
@@ -391,7 +394,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doDropTable( $tableName ) {
+	protected function doDropTable( $tableName ): void {
 		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
@@ -400,7 +403,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doOptimize( $tableName ) {
+	protected function doOptimize( $tableName ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(

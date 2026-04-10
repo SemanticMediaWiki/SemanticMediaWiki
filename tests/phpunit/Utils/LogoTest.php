@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Logo;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\Logo;
  *
  * @author mwjames
  */
-class LogoTest extends \PHPUnit\Framework\TestCase {
+class LogoTest extends TestCase {
 
 	public function testGet_Small() {
 		$this->assertStringContainsString(

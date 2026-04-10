@@ -2,11 +2,13 @@
 
 namespace SMW;
 
+use Iterator;
 use SMW\Iterators\AppendIterator;
 use SMW\Iterators\ChunkedIterator;
 use SMW\Iterators\CsvFileIterator;
 use SMW\Iterators\MappingIterator;
 use SMW\Iterators\ResultIterator;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,11 +21,11 @@ class IteratorFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param \Wikimedia\Rdbms\ResultWrapper|Iterator|array $res
+	 * @param ResultWrapper|Iterator|array $res
 	 *
 	 * @return ResultIterator
 	 */
-	public function newResultIterator( $res ) {
+	public function newResultIterator( $res ): ResultIterator {
 		return new ResultIterator( $res );
 	}
 
@@ -35,7 +37,7 @@ class IteratorFactory {
 	 *
 	 * @return MappingIterator
 	 */
-	public function newMappingIterator( $iterable, callable $callback ) {
+	public function newMappingIterator( $iterable, callable $callback ): MappingIterator {
 		return new MappingIterator( $iterable, $callback );
 	}
 
@@ -47,7 +49,7 @@ class IteratorFactory {
 	 *
 	 * @return ChunkedIterator
 	 */
-	public function newChunkedIterator( $iterable, $chunkSize = 500 ) {
+	public function newChunkedIterator( $iterable, $chunkSize = 500 ): ChunkedIterator {
 		return new ChunkedIterator( $iterable, $chunkSize );
 	}
 
@@ -56,7 +58,7 @@ class IteratorFactory {
 	 *
 	 * @return AppendIterator
 	 */
-	public function newAppendIterator() {
+	public function newAppendIterator(): AppendIterator {
 		return new AppendIterator();
 	}
 
@@ -70,7 +72,7 @@ class IteratorFactory {
 	 *
 	 * @return CsvFileIterator
 	 */
-	public function newCsvFileIterator( $file, $parseHeader = false, $delimiter = "\t", $length = 8000 ) {
+	public function newCsvFileIterator( $file, $parseHeader = false, $delimiter = "\t", $length = 8000 ): CsvFileIterator {
 		return new CsvFileIterator( $file, $parseHeader, $delimiter, $length );
 	}
 

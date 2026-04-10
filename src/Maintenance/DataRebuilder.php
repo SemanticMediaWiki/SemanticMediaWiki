@@ -7,7 +7,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
@@ -32,80 +32,50 @@ class DataRebuilder {
 	const AUTO_RECOVERY_ID = 'ar_id';
 	const AUTO_RECOVERY_LAST_START = 'ar_last_start';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var TitleFactory
-	 */
-	private $titleFactory;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
 	/**
 	 * @var MessageReporter
 	 */
 	private $reporter;
 
-	/**
-	 * @var AutoRecovery
-	 */
-	private $autoRecovery;
+	private ?AutoRecovery $autoRecovery = null;
 
-	/**
-	 * @var DistinctEntityDataRebuilder
-	 */
-	private $distinctEntityDataRebuilder;
+	private DistinctEntityDataRebuilder $distinctEntityDataRebuilder;
 
-	/**
-	 * @var ExceptionFileLogger
-	 */
-	private $exceptionFileLogger;
+	private ExceptionFileLogger $exceptionFileLogger;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private CliMsgFormatter $cliMsgFormatter;
 
 	/**
 	 * @var int
 	 */
 	private $rebuildCount = 0;
 
-	/**
-	 * @var int
-	 */
-	private $exceptionCount = 0;
+	private int $exceptionCount = 0;
 
 	private $delay = false;
-	private $canWriteToIdFile = false;
+	private bool $canWriteToIdFile = false;
 	private $start = 1;
 	private $end = false;
 
 	/**
 	 * @var int[]
 	 */
-	private $filters = [];
-	private $verbose = false;
+	private array $filters = [];
+	private bool $verbose = false;
 	private $startIdFile = false;
 	private Rebuilder $entityRebuildDispatcher;
 
 	/**
 	 * @since 1.9.2
-	 *
-	 * @param Store $store
-	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( Store $store, TitleFactory $titleFactory ) {
-		$this->store = $store;
-		$this->titleFactory = $titleFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly TitleFactory $titleFactory,
+	) {
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-		$this->distinctEntityDataRebuilder = new DistinctEntityDataRebuilder( $store, $titleFactory );
+		$this->distinctEntityDataRebuilder = new DistinctEntityDataRebuilder( $this->store, $this->titleFactory );
 		$this->exceptionFileLogger = new ExceptionFileLogger( 'rebuilddata' );
 		$this->cliMsgFormatter = new CliMsgFormatter();
 	}
@@ -115,7 +85,7 @@ class DataRebuilder {
 	 *
 	 * @param MessageReporter $reporter
 	 */
-	public function setMessageReporter( MessageReporter $reporter ) {
+	public function setMessageReporter( MessageReporter $reporter ): void {
 		$this->reporter = $reporter;
 	}
 
@@ -124,7 +94,7 @@ class DataRebuilder {
 	 *
 	 * @param AutoRecovery $autoRecovery
 	 */
-	public function setAutoRecovery( AutoRecovery $autoRecovery ) {
+	public function setAutoRecovery( AutoRecovery $autoRecovery ): void {
 		$this->autoRecovery = $autoRecovery;
 	}
 
@@ -133,7 +103,7 @@ class DataRebuilder {
 	 *
 	 * @param Options $options
 	 */
-	public function setOptions( Options $options ) {
+	public function setOptions( Options $options ): void {
 		$this->options = $options;
 
 		if ( $options->has( 'server' ) ) {
@@ -174,7 +144,7 @@ class DataRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function rebuild() {
+	public function rebuild(): bool {
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Notice' )
 		);
@@ -223,7 +193,7 @@ class DataRebuilder {
 		return $this->rebuildAll();
 	}
 
-	private function hasFilters() {
+	private function hasFilters(): bool {
 		return $this->filters !== [];
 	}
 
@@ -232,7 +202,7 @@ class DataRebuilder {
 	 *
 	 * @return int
 	 */
-	public function getRebuildCount() {
+	public function getRebuildCount(): int {
 		return $this->rebuildCount;
 	}
 
@@ -241,11 +211,11 @@ class DataRebuilder {
 	 *
 	 * @return int
 	 */
-	public function getExceptionCount() {
+	public function getExceptionCount(): int {
 		return $this->exceptionCount;
 	}
 
-	private function rebuildFromSelection( $params = [] ) {
+	private function rebuildFromSelection( array $params = [] ): bool {
 		if ( $params !== [] ) {
 			foreach ( $params as $key => $value ) {
 				$this->options->set( $key, $value );
@@ -287,7 +257,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function rebuildAll() {
+	private function rebuildAll(): bool {
 		$this->entityRebuildDispatcher = $this->store->refreshData(
 			$this->start,
 			1
@@ -459,7 +429,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function doUpdateById( &$id ) {
+	private function doUpdateById( &$id ): void {
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			$this->entityRebuildDispatcher->rebuild( $id );
 		} else {
@@ -482,7 +452,7 @@ class DataRebuilder {
 		$this->rebuildCount++;
 	}
 
-	private function getHumanReadableTextFrom( $id, array $entities ) {
+	private function getHumanReadableTextFrom( $id, array $entities ): array {
 		if ( !$this->options->has( 'v' ) ) {
 			return [ '', '' ];
 		}
@@ -497,14 +467,14 @@ class DataRebuilder {
 			return [ $text, "[$prefix " . $entity->getPrefixedDBKey() . ']' ];
 		}
 
-		if ( $entity instanceof DIWikiPage ) {
+		if ( $entity instanceof WikiPage ) {
 			return [ $text, "[$prefix " . $entity->getHash() . ']' ];
 		}
 
 		return [ $text, "[$prefix " . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ']' ];
 	}
 
-	private function performFullDelete() {
+	private function performFullDelete(): bool {
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Delete data' )
 		);
@@ -580,7 +550,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function runOutdatedDisposer() {
+	private function runOutdatedDisposer(): void {
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Disposal (outdated)', 3, '-', true ) . "\n"
 		);
@@ -597,7 +567,7 @@ class DataRebuilder {
 		$outdatedDisposer->run();
 	}
 
-	private function is_writable( $startIdFile ) {
+	private function is_writable( $startIdFile ): bool {
 		if ( !is_writable( file_exists( $startIdFile ) ? $startIdFile : dirname( $startIdFile ) ) ) {
 			die( "Cannot use a startidfile that we can't write to.\n" );
 		}
@@ -605,7 +575,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function write_to_file( $id ) {
+	private function write_to_file( $id ): void {
 		if ( $this->canWriteToIdFile ) {
 			file_put_contents( $this->startIdFile, "$id" );
 		}
@@ -614,7 +584,7 @@ class DataRebuilder {
 	/**
 	 * @param array $options
 	 */
-	private function setFiltersFromOptions( Options $options ) {
+	private function setFiltersFromOptions( Options $options ): void {
 		$this->filters = [];
 
 		if ( $options->has( 'categories' ) ) {
@@ -630,7 +600,7 @@ class DataRebuilder {
 		}
 	}
 
-	private function reportMessage( $message, $output = true ) {
+	private function reportMessage( $message, bool $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

@@ -25,9 +25,9 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
-	public static function encode( $data, $key = null, $algo = 'md5' ) {
+	public static function encode( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -49,9 +49,9 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return mixed
 	 */
-	public static function decode( $data, $key = null, $algo = 'md5' ) {
+	public static function decode( $data, $key = null, $algo = 'md5' ): mixed {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -78,9 +78,9 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
-	public static function serialize( $data, $key = null, $algo = 'md5' ) {
+	public static function serialize( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -104,7 +104,7 @@ class HmacSerializer {
 	 *
 	 * @return mixed|bool
 	 */
-	public static function unserialize( $data, $key = null, $algo = 'md5' ) {
+	public static function unserialize( $data, $key = null, $algo = 'md5' ): mixed {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -134,14 +134,14 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
-	public static function compress( $data, $key = null, $algo = 'md5' ) {
+	public static function compress( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
 
-		$key = $key . 'compress';
+		$key .= 'compress';
 
 		return gzcompress( self::serialize( $data, $key, $algo ), 9 );
 	}
@@ -160,7 +160,7 @@ class HmacSerializer {
 			$key = $GLOBALS['wgSecretKey'];
 		}
 
-		$key = $key . 'compress';
+		$key .= 'compress';
 
 		return self::unserialize( @gzuncompress( $data ), $key, $algo );
 	}

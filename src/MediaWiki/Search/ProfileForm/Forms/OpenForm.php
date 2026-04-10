@@ -15,33 +15,19 @@ use MediaWiki\Request\WebRequest;
  */
 class OpenForm {
 
-	/**
-	 * @var WebRequest
-	 */
-	private $request;
+	private Field $field;
 
-	/**
-	 * @var Field
-	 */
-	private $field;
-
-	/**
-	 * @var bool
-	 */
-	private $isActiveForm = false;
+	private bool $isActiveForm = false;
 
 	/**
 	 * @var
 	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
 	 */
-	public function __construct( WebRequest $request ) {
-		$this->request = $request;
+	public function __construct( private readonly WebRequest $request ) {
 		$this->field = new Field();
 	}
 
@@ -50,7 +36,7 @@ class OpenForm {
 	 *
 	 * @return
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
@@ -59,7 +45,7 @@ class OpenForm {
 	 *
 	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ) {
+	public function isActiveForm( $isActiveForm ): void {
 		$this->isActiveForm = (bool)$isActiveForm;
 	}
 
@@ -68,7 +54,7 @@ class OpenForm {
 	 *
 	 * @param array $definition
 	 */
-	public function makeFields( $definition = [] ) {
+	public function makeFields( $definition = [] ): string {
 		$this->parameters = [];
 
 		$group = '';

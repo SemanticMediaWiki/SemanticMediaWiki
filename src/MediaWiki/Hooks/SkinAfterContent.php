@@ -23,17 +23,9 @@ class SkinAfterContent implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var Skin
-	 */
-	private $skin = null;
-
-	/**
 	 * @since  1.9
-	 *
-	 * @param Skin|null $skin
 	 */
-	public function __construct( ?Skin $skin = null ) {
-		$this->skin = $skin;
+	public function __construct( private ?Skin $skin = null ) {
 	}
 
 	/**
@@ -43,7 +35,7 @@ class SkinAfterContent implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function performUpdate( &$data ) {
+	public function performUpdate( string &$data ): bool {
 		if ( $this->canAddFactbox() ) {
 			$this->addFactboxTo( $data );
 		}
@@ -51,7 +43,7 @@ class SkinAfterContent implements HookListener {
 		return true;
 	}
 
-	private function canAddFactbox() {
+	private function canAddFactbox(): bool {
 		if ( !$this->skin instanceof Skin || !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			return false;
 		}
@@ -65,7 +57,7 @@ class SkinAfterContent implements HookListener {
 		return true;
 	}
 
-	private function addFactboxTo( &$data ) {
+	private function addFactboxTo( string &$data ): void {
 		$cachedFactbox = ApplicationFactory::getInstance()->singleton( 'FactboxFactory' )->newCachedFactbox();
 
 		$data .= $cachedFactbox->retrieveContent(

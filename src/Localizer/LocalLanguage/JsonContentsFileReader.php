@@ -2,6 +2,7 @@
 
 namespace SMW\Localizer\LocalLanguage;
 
+use Exception;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use RuntimeException;
@@ -15,41 +16,19 @@ use SMW\Utils\ErrorCodeFormatter;
  */
 class JsonContentsFileReader {
 
-	/**
-	 * @var array
-	 */
-	private static $contents = [];
+	private static array $contents = [];
 
-	/**
-	 * @var string
-	 */
-	private $languageFileDir = '';
+	private bool $skipCache = false;
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var bool
-	 */
-	private $skipCache = false;
-
-	/**
-	 * @var int
-	 */
-	private $ttl = 604800; // 7 * 24 * 3600
+	private int $ttl = 604800; // 7 * 24 * 3600
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Cache|null $cache
-	 * @param string $languageFileDir
 	 */
-	public function __construct( ?Cache $cache = null, $languageFileDir = '' ) {
-		$this->cache = $cache;
-		$this->languageFileDir = $languageFileDir;
-
+	public function __construct(
+		private ?Cache $cache = null,
+		private $languageFileDir = '',
+	) {
 		if ( $this->cache === null ) {
 			$this->cache = new NullCache();
 		}
@@ -62,14 +41,14 @@ class JsonContentsFileReader {
 	/**
 	 * @since 2.5
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$contents = [];
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function skipCache() {
+	public function skipCache(): void {
 		$this->skipCache = true;
 	}
 
@@ -78,7 +57,7 @@ class JsonContentsFileReader {
 	 *
 	 * @return int
 	 */
-	public function getFileModificationTime( $languageCode ) {
+	public function getFileModificationTime( string $languageCode ): int|false {
 		return filemtime( $this->getLanguageFile( $languageCode ) );
 	}
 
@@ -89,12 +68,12 @@ class JsonContentsFileReader {
 	 *
 	 * @return bool
 	 */
-	public function canReadByLanguageCode( $languageCode ) {
+	public function canReadByLanguageCode( string $languageCode ): bool {
 		$canReadByLanguageCode = '';
 
 		try {
 			$canReadByLanguageCode = $this->getLanguageFile( $languageCode );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$canReadByLanguageCode = '';
 		}
 
@@ -107,7 +86,7 @@ class JsonContentsFileReader {
 	 * @param string $languageCode
 	 * @param array $contents
 	 */
-	public function writeByLanguageCode( $languageCode, $contents ) {
+	public function writeByLanguageCode( $languageCode, $contents ): void {
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		file_put_contents(
@@ -152,7 +131,7 @@ class JsonContentsFileReader {
 		return self::$contents[$languageCode];
 	}
 
-	protected function readJSONFile( $languageCode, $cacheKey ) {
+	protected function readJSONFile( string $languageCode, $cacheKey ): mixed {
 		$contents = json_decode(
 			file_get_contents( $this->getLanguageFile( $languageCode ) ),
 			true
@@ -166,7 +145,7 @@ class JsonContentsFileReader {
 		throw new RuntimeException( ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() ) );
 	}
 
-	private function getLanguageFile( $languageCode ) {
+	private function getLanguageFile( string $languageCode ): string {
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
 
 		if ( is_readable( $file ) ) {

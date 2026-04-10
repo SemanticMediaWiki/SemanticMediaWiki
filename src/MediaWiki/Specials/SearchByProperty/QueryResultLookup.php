@@ -2,17 +2,17 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
@@ -29,15 +29,9 @@ use SMWQuery as Query;
 class QueryResultLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 2.1
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -47,7 +41,7 @@ class QueryResultLookup {
 	 *
 	 * @return array
 	 */
-	public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ) {
+	public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ): array {
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( $pageRequestOptions->limit + 1 );
 		$requestOptions->setOffset( $pageRequestOptions->offset );
@@ -70,7 +64,7 @@ class QueryResultLookup {
 
 		foreach ( $queryBacklinks as $result ) {
 			$results[] = [
-				$dataValueFactory->newDataValueByItem( DIWikiPage::doUnserialize( $result ), null ),
+				$dataValueFactory->newDataValueByItem( WikiPage::doUnserialize( $result ), null ),
 				$pageRequestOptions->value
 			];
 		}
@@ -83,10 +77,10 @@ class QueryResultLookup {
 	 *
 	 * @param QueryOptions $pageRequestOptions
 	 *
-	 * @return array of array(SMWWikiPageValue, SMWDataValue) with the
+	 * @return array of array(WikiPageValue, DataValue) with the
 	 * first being the entity, and the second the value
 	 */
-	public function doQuery( PageRequestOptions $pageRequestOptions ) {
+	public function doQuery( PageRequestOptions $pageRequestOptions ): array {
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = $pageRequestOptions->limit + 1;
 		$requestOptions->offset = $pageRequestOptions->offset;
@@ -121,10 +115,10 @@ class QueryResultLookup {
 	 * @param int $count How many entities have the exact same value on the property?
 	 * @param int $greater Should the values be bigger? Set false for smaller values.
 	 *
-	 * @return array of array of SMWWikiPageValue, SMWDataValue with the
+	 * @return array of array of WikiPageValue, DataValue with the
 	 * first being the entity, and the second the value
 	 */
-	public function doQueryForNearbyResults( PageRequestOptions $pageRequestOptions, $count, $greater = true ) {
+	public function doQueryForNearbyResults( PageRequestOptions $pageRequestOptions, $count, $greater = true ): array {
 		$comparator = $greater ? SMW_CMP_GRTR : SMW_CMP_LESS;
 		$sortOrder = $greater ? 'ASC' : 'DESC';
 
@@ -213,7 +207,7 @@ class QueryResultLookup {
 		);
 	}
 
-	private function destructureDIContainer( DIProperty $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ) {
+	private function destructureDIContainer( Property $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ): array {
 		$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$DIProperty

@@ -2,12 +2,13 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,17 +21,9 @@ class PSubjectLookup extends Lookup {
 	const VERSION = 1;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -38,7 +31,7 @@ class PSubjectLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __METHOD__ . self::VERSION;
 	}
 
@@ -49,7 +42,7 @@ class PSubjectLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$limit = 20;
 		$offset = 0;
 
@@ -108,11 +101,11 @@ class PSubjectLookup extends Lookup {
 		return $res;
 	}
 
-	private function findPropertySubjects( $property, $value, $limit, $offset, $parameters ) {
+	private function findPropertySubjects( $property, $value, int $limit, int $offset, array $parameters ): array {
 		$list = [];
 		$dataItem = null;
 
-		$property = DIProperty::newFromUserLabel( $property );
+		$property = Property::newFromUserLabel( $property );
 
 		if ( $value !== '' && $value !== null ) {
 			$dataItem = DataValueFactory::getInstance()->newDataValueByProperty( $property, $value )->getDataItem();
@@ -130,7 +123,7 @@ class PSubjectLookup extends Lookup {
 
 		foreach ( $res as $dataItem ) {
 
-			if ( !$dataItem instanceof DIWikiPage ) {
+			if ( !$dataItem instanceof WikiPage ) {
 				continue;
 			}
 
@@ -153,7 +146,7 @@ class PSubjectLookup extends Lookup {
 		return [ $list, $continueOffset ];
 	}
 
-	private function newRequestOptions( $parameters ) {
+	private function newRequestOptions( array $parameters ): RequestOptions {
 		$limit = 20;
 		$offset = 0;
 		$search = '';
@@ -207,8 +200,8 @@ class PSubjectLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function is_iterable( $obj ) {
-		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
+	private function is_iterable( $obj ): bool {
+		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 
 }

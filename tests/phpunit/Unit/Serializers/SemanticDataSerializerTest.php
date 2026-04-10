@@ -1,0 +1,107 @@
+<?php
+
+namespace SMW\Tests\Unit\Serializers;
+
+use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\Subobject;
+use SMW\DataValueFactory;
+use SMW\Serializers\SemanticDataSerializer;
+use SMW\Tests\Utils\UtilityFactory;
+
+/**
+ * @covers \SMW\Serializers\SemanticDataSerializer
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 1.9
+ *
+ * @author mwjames
+ */
+class SemanticDataSerializerTest extends TestCase {
+
+	private $dataValueFactory;
+	private $semanticDataFactory;
+
+	public function testCanConstructor() {
+		$this->assertInstanceOf(
+			SemanticDataSerializer::class,
+			new SemanticDataSerializer()
+		);
+	}
+
+	public function testInvalidSerializerObjectThrowsException() {
+		$this->expectException( 'OutOfBoundsException' );
+
+		$instance = new SemanticDataSerializer();
+		$instance->serialize( 'Foo' );
+	}
+
+	/**
+	 * @dataProvider semanticDataProvider
+	 */
+	public function testSerializerDeserializerRountrip( $data ) {
+		$instance = new SemanticDataSerializer();
+
+		$this->assertIsArray(
+
+			$instance->serialize( $data )
+		);
+	}
+
+	public function semanticDataProvider() {
+		// Is a dataprovider therefore can't use the setUp
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->dataValueFactory = DataValueFactory::getInstance();
+
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo' );
+
+		# 0 Empty container
+		$foo = $this->semanticDataFactory->setSubject( WikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$provider[] = [ $foo ];
+
+		# 1 Single entry
+		$foo = $this->semanticDataFactory->setSubject( WikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
+		$provider[] = [ $foo ];
+
+		// #2 Single + single subobject entry
+		$foo = $this->semanticDataFactory->setSubject( WikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
+
+		$subobject = new Subobject( $title );
+		$subobject->setEmptyContainerForId( 'Foo' );
+		$subobject->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has subobjects', 'Bam' ) );
+
+		$foo->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
+
+		$provider[] = [ $foo ];
+
+		# 3 Multiple entries
+		$foo = $this->semanticDataFactory->setSubject( WikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has queez', 'Xeey' ) );
+
+		$subobject = new Subobject( $title );
+		$subobject->setEmptyContainerForId( 'Foo' );
+		$subobject->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Fuz' ) );
+
+		$subobject->setEmptyContainerForId( 'Bar' );
+		$subobject->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Fuz' ) );
+
+		$foo->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
+
+		$provider[] = [ $foo ];
+
+		return $provider;
+	}
+
+}

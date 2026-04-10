@@ -6,8 +6,8 @@ use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use ParamProcessor\ParamDefinition;
 use SMW\Localizer\Message;
+use SMW\Query\QueryProcessor;
 use SMW\Utils\HtmlDivTable;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @private
@@ -20,10 +20,7 @@ use SMWQueryProcessor as QueryProcessor;
  */
 class ParametersWidget {
 
-	/**
-	 * @var bool
-	 */
-	private static $isTooltipDisplay = false;
+	private static bool $isTooltipDisplay = false;
 
 	/**
 	 * @var int
@@ -35,7 +32,7 @@ class ParametersWidget {
 	 *
 	 * @param bool $isTooltipDisplay
 	 */
-	public static function setTooltipDisplay( $isTooltipDisplay ) {
+	public static function setTooltipDisplay( $isTooltipDisplay ): void {
 		self::$isTooltipDisplay = (bool)$isTooltipDisplay;
 	}
 
@@ -44,7 +41,7 @@ class ParametersWidget {
 	 *
 	 * @param int $defaultLimit
 	 */
-	public static function setDefaultLimit( $defaultLimit ) {
+	public static function setDefaultLimit( $defaultLimit ): void {
 		self::$defaultLimit = $defaultLimit;
 	}
 
@@ -132,7 +129,7 @@ class ParametersWidget {
 	 *
 	 * @return string
 	 */
-	public static function parameterList( array $values ) {
+	public static function parameterList( array $values ): string {
 		$format = 'broadtable';
 
 		if ( isset( $values['format'] ) ) {
@@ -203,11 +200,14 @@ class ParametersWidget {
 		return $resultHtml;
 	}
 
-	private static function optionList( $definitions, $values ) {
+	/**
+	 * @return non-falsy-string[]
+	 */
+	private static function optionList( array $definitions, array $values ): array {
 		$html = [];
 
 		/**
-		 * @var \ParamProcessor\ParamDefinition $definition
+		 * @var ParamDefinition $definition
 		 */
 		foreach ( $definitions as $name => $definition ) {
 
@@ -256,7 +256,7 @@ class ParametersWidget {
 		return $html;
 	}
 
-	private static function field( ParamDefinition $definition, $name ) {
+	private static function field( ParamDefinition $definition, int|string $name ) {
 		$info = '';
 		$class = '';
 

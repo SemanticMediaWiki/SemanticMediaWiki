@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\DataItems\DataItem;
 use SMW\Query\QueryResult;
-use SMWDataItem as DataItem;
 
 /**
  * Abstract class that supports the aggregation and distributive calculation
@@ -35,7 +35,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$definitions = parent::getParamDefinitions( $definitions );
 
 		$definitions['distribution'] = [
@@ -88,7 +88,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 */
-	protected function addResources() {
+	protected function addResources(): void {
 	}
 
 	/**
@@ -117,7 +117,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @param array &$data
 	 */
-	protected function applyDistributionParams( array &$data ) {
+	protected function applyDistributionParams( array &$data ): void {
 		if ( $this->params['distributionsort'] == 'asc' ) {
 			asort( $data, SORT_NUMERIC );
 		} elseif ( $this->params['distributionsort'] == 'desc' ) {
@@ -141,7 +141,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getResults( QueryResult $queryResult, $outputMode ) {
+	protected function getResults( QueryResult $queryResult, $outputMode ): array {
 		if ( $this->params['distribution'] ) {
 			return $this->getDistributionResults( $queryResult, $outputMode );
 		}
@@ -160,7 +160,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getDistributionResults( QueryResult $queryResult, $outputMode ) {
+	protected function getDistributionResults( QueryResult $queryResult, $outputMode ): array {
 		$values = [];
 
 		$row = $queryResult->getNext();
@@ -203,7 +203,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getNumericResults( QueryResult $queryResult, $outputMode ) {
+	protected function getNumericResults( QueryResult $queryResult, $outputMode ): array {
 		$values = [];
 
 		// print all result rows
@@ -258,7 +258,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @param array &$values
 	 * @param string $name
 	 */
-	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ) {
+	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ): void {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_NUMBER:
 				// Collect and aggregate values for the same array key

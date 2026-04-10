@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Html\Html;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\GroupPermissions;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
@@ -28,31 +28,13 @@ class EditPageForm implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
-
-	/**
-	 * @var PreferenceExaminer
-	 */
-	private $preferenceExaminer;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param PermissionExaminer $permissionExaminer
-	 * @param PreferenceExaminer $preferenceExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, PermissionExaminer $permissionExaminer, PreferenceExaminer $preferenceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->permissionExaminer = $permissionExaminer;
-		$this->preferenceExaminer = $preferenceExaminer;
+	public function __construct(
+		private NamespaceExaminer $namespaceExaminer,
+		private PermissionExaminer $permissionExaminer,
+		private PreferenceExaminer $preferenceExaminer,
+	) {
 	}
 
 	/**
@@ -62,7 +44,7 @@ class EditPageForm implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( EditPage $editPage ) {
+	public function process( EditPage $editPage ): bool {
 		$html = '';
 
 		if (
@@ -97,12 +79,12 @@ class EditPageForm implements HookListener {
 		);
 	}
 
-	private function getMessageKey( $title ) {
+	private function getMessageKey( $title ): string {
 		$text = $title->getText();
 		$namespace = $title->getNamespace();
 
 		if ( $namespace === SMW_NS_PROPERTY ) {
-			if ( DIProperty::newFromUserLabel( $text )->isUserDefined() ) {
+			if ( Property::newFromUserLabel( $text )->isUserDefined() ) {
 				return 'smw-editpage-property-annotation-enabled';
 			} else {
 				return 'smw-editpage-property-annotation-disabled';

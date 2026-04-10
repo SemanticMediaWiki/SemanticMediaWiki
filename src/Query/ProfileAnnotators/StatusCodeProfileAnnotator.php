@@ -2,9 +2,9 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
 use SMW\Query\ProfileAnnotator;
-use SMWDINumber as DINumber;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,25 +15,19 @@ use SMWDINumber as DINumber;
 class StatusCodeProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var array
-	 */
-	private $statusCodes = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param array $statusCodes
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, array $statusCodes = [] ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private readonly array $statusCodes = [],
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->statusCodes = $statusCodes;
 	}
 
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->statusCodes !== [] ) {
 			foreach ( $this->statusCodes as $statusCode ) {
 				$this->addStatusCodeAnnotation( $statusCode );
@@ -41,10 +35,10 @@ class StatusCodeProfileAnnotator extends ProfileAnnotatorDecorator {
 		}
 	}
 
-	private function addStatusCodeAnnotation( $statusCode ) {
+	private function addStatusCodeAnnotation( $statusCode ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKCO' ),
-			new DINumber( $statusCode )
+			new Property( '_ASKCO' ),
+			new Number( $statusCode )
 		);
 	}
 

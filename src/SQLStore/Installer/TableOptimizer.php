@@ -21,23 +21,12 @@ class TableOptimizer {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var TableBuilder
-	 */
-	private $tableBuilder;
-
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private ?SetupFile $setupFile = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TableBuilder $tableBuilder
 	 */
-	public function __construct( TableBuilder $tableBuilder ) {
-		$this->tableBuilder = $tableBuilder;
+	public function __construct( private TableBuilder $tableBuilder ) {
 	}
 
 	/**
@@ -45,7 +34,7 @@ class TableOptimizer {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -54,7 +43,7 @@ class TableOptimizer {
 	 *
 	 * @param array $tables
 	 */
-	public function runForTables( array $tables ) {
+	public function runForTables( array $tables ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$text = [

@@ -2,10 +2,10 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
-use SMW\SemanticData;
 use SMW\Store;
 
 /**
@@ -16,37 +16,19 @@ use SMW\Store;
  */
 class ChangePropagationExaminer extends DeclarationExaminer {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private bool $isLocked = false;
 
-	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
-
-	/**
-	 * @var bool
-	 */
-	private $isLocked = false;
-
-	/**
-	 * @var bool
-	 */
-	private $changePropagationProtection = true;
+	private bool $changePropagationProtection = true;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DeclarationExaminer $declarationExaminer
-	 * @param Store $store
-	 * @param SemanticData|null $semanticData
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, ?SemanticData $semanticData = null ) {
+	public function __construct(
+		IDeclarationExaminer $declarationExaminer,
+		private readonly Store $store,
+		private ?SemanticData $semanticData = null,
+	) {
 		$this->declarationExaminer = $declarationExaminer;
-		$this->store = $store;
-		$this->semanticData = $semanticData;
 	}
 
 	/**
@@ -54,7 +36,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * @param bool $changePropagationProtection
 	 */
-	public function setChangePropagationProtection( $changePropagationProtection ) {
+	public function setChangePropagationProtection( $changePropagationProtection ): void {
 		$this->changePropagationProtection = (bool)$changePropagationProtection;
 	}
 
@@ -63,7 +45,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSemanticData() {
+	public function getSemanticData(): ?SemanticData {
 		return $this->semanticData;
 	}
 
@@ -72,7 +54,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isLocked() {
+	public function isLocked(): bool {
 		return $this->isLocked;
 	}
 
@@ -81,7 +63,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ): void {
 		$subject = $property->getCanonicalDiWikiPage();
 		$semanticData = $this->store->getSemanticData( $subject );
 
@@ -89,14 +71,14 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 			$this->semanticData = $semanticData;
 		}
 
-		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
+		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
 			$this->isChangePropagation( $property );
 		} else {
 			$this->checkForPendingChangePropagationDispatchJob( $property );
 		}
 	}
 
-	private function isChangePropagation( $property ) {
+	private function isChangePropagation( Property $property ): void {
 		$severity = 'warning';
 		$this->isLocked = true;
 
@@ -111,7 +93,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkForPendingChangePropagationDispatchJob( $property ) {
+	private function checkForPendingChangePropagationDispatchJob( Property $property ): void {
 		$subject = $property->getCanonicalDiWikiPage();
 
 		if ( !ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {

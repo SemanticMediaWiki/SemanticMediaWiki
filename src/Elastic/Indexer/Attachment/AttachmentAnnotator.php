@@ -3,11 +3,11 @@
 namespace SMW\Elastic\Indexer\Attachment;
 
 use SMW\DataItemFactory;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIProperty;
 use SMW\Property\Annotator;
-use SMWDIContainer as DIContainer;
-use SMWDITime as DITime;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,42 +18,30 @@ use SMWDITime as DITime;
 class AttachmentAnnotator implements Annotator {
 
 	/**
-	 * @var ContainerSemanticData
-	 */
-	private $containerSemanticData;
-
-	/**
-	 * @var
-	 */
-	private $doc = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ContainerSemanticData $containerSemanticData
-	 * @param array $doc
 	 */
-	public function __construct( ContainerSemanticData $containerSemanticData, array $doc = [] ) {
-		$this->containerSemanticData = $containerSemanticData;
-		$this->doc = $doc;
+	public function __construct(
+		private readonly ContainerSemanticData $containerSemanticData,
+		private array $doc = [],
+	) {
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
-	public function getProperty() {
-		return new DIProperty( '_FILE_ATTCH' );
+	public function getProperty(): Property {
+		return new Property( '_FILE_ATTCH' );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return DIContainer
+	 * @return Container
 	 */
-	public function getContainer() {
-		return new DIContainer( $this->containerSemanticData );
+	public function getContainer(): Container {
+		return new Container( $this->containerSemanticData );
 	}
 
 	/**
@@ -62,7 +50,7 @@ class AttachmentAnnotator implements Annotator {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData() {
+	public function getSemanticData(): ContainerSemanticData {
 		return $this->containerSemanticData;
 	}
 
@@ -72,12 +60,12 @@ class AttachmentAnnotator implements Annotator {
 	 *
 	 * @return Annotator
 	 */
-	public function addAnnotation() {
+	public function addAnnotation(): static {
 		$dataItemFactory = new DataItemFactory();
 
 		// @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/using-ingest-attachment.html
 		if ( isset( $this->doc['_source']['attachment']['date'] ) ) {
-			if ( ( $dataItem = DITime::newFromTimestamp( $this->doc['_source']['attachment']['date'] ) ) instanceof DITime ) {
+			if ( ( $dataItem = Time::newFromTimestamp( $this->doc['_source']['attachment']['date'] ) ) instanceof Time ) {
 				$this->containerSemanticData->addPropertyObjectValue(
 					$dataItemFactory->newDIProperty( '_CONT_DATE' ),
 					$dataItem

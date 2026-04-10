@@ -22,24 +22,12 @@ use SMW\Site;
 class ChangeTitleUpdate implements DeferrableUpdate {
 
 	/**
-	 * @var Title|null
-	 */
-	private $oldTitle;
-
-	/**
-	 * @var Title|null
-	 */
-	private $newTitle;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Title|null $oldTitle
-	 * @param Title|null $newTitle
 	 */
-	public function __construct( ?Title $oldTitle = null, ?Title $newTitle = null ) {
-		$this->oldTitle = $oldTitle;
-		$this->newTitle = $newTitle;
+	public function __construct(
+		private readonly ?Title $oldTitle = null,
+		private readonly ?Title $newTitle = null,
+	) {
 	}
 
 	/**
@@ -48,7 +36,7 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 * @param Title|null $oldTitle
 	 * @param Title|null $newTitle
 	 */
-	public static function addUpdate( ?Title $oldTitle = null, ?Title $newTitle = null ) {
+	public static function addUpdate( ?Title $oldTitle = null, ?Title $newTitle = null ): void {
 		// Avoid deferring the update on CLI (and the DeferredUpdates::tryOpportunisticExecute)
 		// since we use a Job instance to carry out the change
 		if ( Site::isCommandLineMode() ) {
@@ -64,7 +52,7 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobFactory = $applicationFactory->newJobFactory();
 

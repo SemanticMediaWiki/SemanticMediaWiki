@@ -2,7 +2,7 @@
 
 namespace SMW\Query;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * Record scores for query results retrieved from stores that support the computation
@@ -18,7 +18,7 @@ class ScoreSet {
 	/**
 	 * @var
 	 */
-	private $scores = [];
+	private array $scores = [];
 
 	/**
 	 * @var int|null
@@ -35,7 +35,7 @@ class ScoreSet {
 	 *
 	 * @param string|int $max_score
 	 */
-	public function max_score( $max_score ) {
+	public function max_score( $max_score ): void {
 		$this->max_score = $max_score;
 	}
 
@@ -44,21 +44,21 @@ class ScoreSet {
 	 *
 	 * @param string|int $min_score
 	 */
-	public function min_score( $min_score ) {
+	public function min_score( $min_score ): void {
 		$this->min_score = $min_score;
 	}
 
 	/**
-	 * @note The hash is expected to match DIWikiPage::getHash to easily match
+	 * @note The hash is expected to match WikiPage::getHash to easily match
 	 * result subjects available in an QueryResult instance.
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|string $hash
+	 * @param WikiPage|string $hash
 	 * @param string|int $score
 	 */
-	public function addScore( $hash, $score, $pos = null ) {
-		if ( $hash instanceof DIWikiPage ) {
+	public function addScore( $hash, $score, $pos = null ): void {
+		if ( $hash instanceof WikiPage ) {
 			$hash = $hash->getHash();
 		}
 
@@ -72,12 +72,12 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|string $hash
+	 * @param WikiPage|string $hash
 	 *
 	 * @return string|int|false
 	 */
 	public function getScore( $hash ) {
-		if ( $hash instanceof DIWikiPage ) {
+		if ( $hash instanceof WikiPage ) {
 			$hash = $hash->getHash();
 		}
 
@@ -95,7 +95,7 @@ class ScoreSet {
 	 *
 	 * @return
 	 */
-	public function getScores() {
+	public function getScores(): array {
 		return $this->scores;
 	}
 
@@ -104,12 +104,12 @@ class ScoreSet {
 	 *
 	 * @param bool $usort
 	 */
-	public function usort( $usort ) {
+	public function usort( $usort ): void {
 		if ( !$usort || $this->scores === [] ) {
 			return;
 		}
 
-		usort( $this->scores, static function ( $a, $b ) {
+		usort( $this->scores, static function ( array $a, array $b ): int {
 			if ( $a[1] == $b[1] ) {
 				return 0;
 			}
@@ -125,7 +125,7 @@ class ScoreSet {
 	 *
 	 * @return string
 	 */
-	public function asTable( $class = '' ) {
+	public function asTable( $class = '' ): string {
 		if ( $this->scores === [] ) {
 			return '';
 		}

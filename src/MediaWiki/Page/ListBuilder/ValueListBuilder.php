@@ -4,8 +4,14 @@ namespace SMW\MediaWiki\Page\ListBuilder;
 
 use Iterator;
 use MediaWiki\Html\Html;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\DataValues\DataValue;
+use SMW\Formatters\Infolink;
+use SMW\Formatters\PageLister;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
 use SMW\Query\Language\SomeProperty;
@@ -14,11 +20,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlDivTable;
 use SMW\Utils\Pager;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDITime as DITime;
-use SMWInfolink as Infolink;
-use SMWPageLister as PageLister;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -29,11 +31,6 @@ use SMWPageLister as PageLister;
 class ValueListBuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var int
 	 */
 	private $pagingLimit = 0;
@@ -41,7 +38,7 @@ class ValueListBuilder {
 	/**
 	 * @var int|null
 	 */
-	private $filterCount;
+	private null|int|string $filterCount = null;
 
 	/**
 	 * @var int
@@ -53,10 +50,7 @@ class ValueListBuilder {
 	 */
 	private $languageCode = 'en';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
 	/**
 	 * @var bool
@@ -65,11 +59,8 @@ class ValueListBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -77,7 +68,7 @@ class ValueListBuilder {
 	 *
 	 * @param integer
 	 */
-	public function getFilterCount() {
+	public function getFilterCount(): null|int|string {
 		return $this->filterCount;
 	}
 
@@ -86,7 +77,7 @@ class ValueListBuilder {
 	 *
 	 * @param int $pagingLimit
 	 */
-	public function setPagingLimit( $pagingLimit ) {
+	public function setPagingLimit( $pagingLimit ): void {
 		$this->pagingLimit = $pagingLimit;
 	}
 
@@ -95,7 +86,7 @@ class ValueListBuilder {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ) {
+	public function setLanguageCode( $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
@@ -104,7 +95,7 @@ class ValueListBuilder {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
+	public function isRTL( $isRTL ): void {
 		$this->isRTL = (bool)$isRTL;
 	}
 
@@ -113,7 +104,7 @@ class ValueListBuilder {
 	 *
 	 * @param bool $localTimeOffset
 	 */
-	public function applyLocalTimeOffset( $localTimeOffset ) {
+	public function applyLocalTimeOffset( $localTimeOffset ): void {
 		$this->localTimeOffset = $localTimeOffset;
 	}
 
@@ -122,19 +113,19 @@ class ValueListBuilder {
 	 *
 	 * @param int $maxPropertyValues
 	 */
-	public function setMaxPropertyValues( $maxPropertyValues ) {
+	public function setMaxPropertyValues( $maxPropertyValues ): void {
 		$this->maxPropertyValues = $maxPropertyValues;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param DataItem $dataItem
 	 *
 	 * @return string
 	 */
-	public function createHtml( DIProperty $property, DataItem $dataItem, array $query = [] ) {
+	public function createHtml( Property $property, DataItem $dataItem, array $query = [] ): string {
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
 		$from = isset( $query['from'] ) ? $query['from'] : 0;
@@ -161,7 +152,7 @@ class ValueListBuilder {
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		}
 
-		if ( $dataItems instanceof \Traversable ) {
+		if ( $dataItems instanceof Traversable ) {
 			$dataItems = iterator_to_array( $dataItems );
 		}
 
@@ -256,7 +247,7 @@ class ValueListBuilder {
 		);
 	}
 
-	private function createValueList( DIProperty $property, DataItem $dataItem, $diWikiPages, $limit, $until ) {
+	private function createValueList( Property $property, DataItem $dataItem, $diWikiPages, int $limit, $until ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -331,7 +322,7 @@ class ValueListBuilder {
 			}
 
 			// May return an iterator
-			if ( $values instanceof \Iterator ) {
+			if ( $values instanceof Iterator ) {
 				$values = iterator_to_array( $values );
 			}
 
@@ -358,7 +349,7 @@ class ValueListBuilder {
 						$outputFormat = 'LOCL';
 					}
 
-					if ( $di instanceof DITime && $this->localTimeOffset ) {
+					if ( $di instanceof Time && $this->localTimeOffset ) {
 						$outputFormat .= '#TO';
 					}
 
@@ -401,7 +392,10 @@ class ValueListBuilder {
 		);
 	}
 
-	private function filterByValue( $property, $value, $options ) {
+	/**
+	 * @return WikiPage[]
+	 */
+	private function filterByValue( Property $property, $value, RequestOptions $options ): array {
 		$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$queryParser = $queryFactory->newQueryParser();
 

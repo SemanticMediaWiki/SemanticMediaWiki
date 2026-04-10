@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\SequenceMap;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Exception\DataItemException;
 use SMW\MediaWiki\LinkBatch;
 use SMW\RequestOptions;
@@ -37,46 +37,15 @@ class PrefetchItemLookup {
 	const HASH_INDEX = 'hash.index';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SemanticDataLookup
-	 */
-	private $semanticDataLookup;
-
-	/**
-	 * @var PropertySubjectsLookup
-	 */
-	private $propertySubjectsLookup;
-
-	/**
-	 * @var LinkBatch
-	 */
-	private $linkBatch;
-
-	/**
-	 * @var SequenceMap
-	 */
-	private $sequenceMap;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param CachingSemanticDataLookup $semanticDataLookup
-	 * @param PropertySubjectsLookup $propertySubjectsLookup
-	 * @param LinkBatch|null $linkBatch
-	 * @param SequenceMap|null $sequenceMap
 	 */
-	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, PropertySubjectsLookup $propertySubjectsLookup, ?LinkBatch $linkBatch = null, ?SequenceMap $sequenceMap = null ) {
-		$this->store = $store;
-		$this->semanticDataLookup = $semanticDataLookup;
-		$this->propertySubjectsLookup = $propertySubjectsLookup;
-		$this->linkBatch = $linkBatch;
-		$this->sequenceMap = $sequenceMap;
-
+	public function __construct(
+		private readonly Store $store,
+		private readonly CachingSemanticDataLookup $semanticDataLookup,
+		private readonly PropertySubjectsLookup $propertySubjectsLookup,
+		private ?LinkBatch $linkBatch = null,
+		private ?SequenceMap $sequenceMap = null,
+	) {
 		// Help reduce the amount of queries by allowing to prefetch those
 		// links we know will be used for the display
 		if ( $this->linkBatch === null ) {
@@ -92,12 +61,12 @@ class PrefetchItemLookup {
 	 * @since 3.1
 	 *
 	 * @param array $subjects
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getPropertyValues( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
+	public function getPropertyValues( array $subjects, Property $property, RequestOptions $requestOptions ) {
 		$this->linkBatch->setCaller( __METHOD__ );
 		$this->linkBatch->addFromList( $subjects );
 		$this->linkBatch->execute();
@@ -109,7 +78,10 @@ class PrefetchItemLookup {
 		return $this->prefetchSemanticData( $subjects, $property, $requestOptions );
 	}
 
-	private function prefetchSemanticData( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function prefetchSemanticData( array $subjects, Property $property, RequestOptions $requestOptions ): array {
 		$tableid = $this->store->findPropertyTableID( $property );
 		$entityIdManager = $this->store->getObjectIds();
 
@@ -160,7 +132,7 @@ class PrefetchItemLookup {
 
 				// Avoid reference to something like `__foo_bar#102##` (predefined property)
 				if ( $subject->getNamespace() === SMW_NS_PROPERTY && $hash[0] === '_' ) {
-					$property = DIProperty::newFromUserLabel(
+					$property = Property::newFromUserLabel(
 						$subject->getDBKey()
 					);
 					$hash = $property->getCanonicalDIWikiPage()->getHash();
@@ -192,8 +164,8 @@ class PrefetchItemLookup {
 		return $result;
 	}
 
-	private function prefetchPropertySubjects( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
-		$noninverse = new DIProperty(
+	private function prefetchPropertySubjects( array $subjects, Property $property, RequestOptions $requestOptions ) {
+		$noninverse = new Property(
 			$property->getKey(),
 			false
 		);
@@ -259,7 +231,7 @@ class PrefetchItemLookup {
 				// Avoid reference to something like `__foo_bar#102##` (predefined property)
 				if ( $subject->getNamespace() === SMW_NS_PROPERTY && $hash[0] === '_' ) {
 
-					$property = DIProperty::newFromUserLabel(
+					$property = Property::newFromUserLabel(
 						$subject->getDBKey()
 					);
 
@@ -274,7 +246,10 @@ class PrefetchItemLookup {
 		return $result;
 	}
 
-	private function buildList( $diHandler, $itemList, $requestOptions, $sequenceMap ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function buildList( $diHandler, $itemList, RequestOptions $requestOptions, $sequenceMap ): array {
 		$values = [];
 		$i = 0;
 
@@ -302,7 +277,7 @@ class PrefetchItemLookup {
 
 			try {
 				$dataItem = $diHandler->newFromDBKeys( $dbkeys );
-			} catch ( DataItemException $e ) {
+			} catch ( DataItemException ) {
 				// maybe type assignment changed since data was stored;
 				// don't worry, but we can only drop the data here
 				continue;
@@ -310,7 +285,7 @@ class PrefetchItemLookup {
 
 			$index_hash = md5( $dataItem->getHash() );
 
-			if ( $dataItem instanceof DIWikiPage ) {
+			if ( $dataItem instanceof WikiPage ) {
 
 				// Avoid unnecessary DB lookups by relying on `CACHE_ONLY` which
 				// should match any item in the list given that
@@ -330,7 +305,7 @@ class PrefetchItemLookup {
 				// be matched here, if it exists.
 				$source = $entityIdManager->findRedirectSource( $dataItem, $flag );
 
-				if ( $source instanceof DIWikiPage ) {
+				if ( $source instanceof WikiPage ) {
 					$index_hash = md5( $source->getHash() );
 				}
 			}

@@ -13,15 +13,7 @@ use SMW\Utils\HtmlDivTable;
  */
 class SummaryTable {
 
-	/**
-	 * @var
-	 */
-	private $parameters = [];
-
-	/**
-	 * @var
-	 */
-	private $attributes = [];
+	private array $attributes = [];
 
 	/**
 	 * @var int
@@ -35,19 +27,16 @@ class SummaryTable {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $parameters
 	 */
-	public function __construct( array $parameters = [] ) {
-		$this->parameters = $parameters;
+	public function __construct( private readonly array $parameters = [] ) {
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
-	public static function getModuleStyles() {
+	public static function getModuleStyles(): array {
 		return [ 'ext.smw.styles', 'smw.summarytable' ];
 	}
 
@@ -56,7 +45,7 @@ class SummaryTable {
 	 *
 	 * @param array $attributes
 	 */
-	public function setAttributes( array $attributes = [] ) {
+	public function setAttributes( array $attributes = [] ): void {
 		$this->attributes = $attributes;
 	}
 
@@ -65,14 +54,14 @@ class SummaryTable {
 	 *
 	 * @param int $columnThreshold
 	 */
-	public function setColumnThreshold( $columnThreshold ) {
+	public function setColumnThreshold( $columnThreshold ): void {
 		$this->columnThreshold = $columnThreshold;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function noImage() {
+	public function noImage(): void {
 		$this->thumbImage = Html::rawElement(
 			'div',
 			[
@@ -92,7 +81,7 @@ class SummaryTable {
 	 *
 	 * @param string $thumbImage
 	 */
-	public function setThumbImage( $thumbImage ) {
+	public function setThumbImage( $thumbImage ): void {
 		$this->thumbImage = $thumbImage;
 	}
 
@@ -149,7 +138,7 @@ class SummaryTable {
 		);
 	}
 
-	private function tableAndImage( $params ) {
+	private function tableAndImage( array $params ) {
 		$html = Html::rawElement(
 			'div',
 			[
@@ -175,7 +164,7 @@ class SummaryTable {
 		);
 	}
 
-	private function table( $params ) {
+	private function table( array $params ) {
 		$rows = '';
 		$html = '';
 

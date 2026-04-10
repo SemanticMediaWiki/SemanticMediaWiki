@@ -24,29 +24,19 @@ class NamespaceForm {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var NamespaceInfo
+	 * @var
 	 */
-	private $namespaceInfo;
-
-	/**
-	 * @var Localizer
-	 */
-	private $localizer;
+	private array $activeNamespaces = [];
 
 	/**
 	 * @var
 	 */
-	private $activeNamespaces = [];
+	private array $hiddenNamespaces = [];
 
 	/**
 	 * @var
 	 */
-	private $hiddenNamespaces = [];
-
-	/**
-	 * @var
-	 */
-	private $searchableNamespaces = [];
+	private array $searchableNamespaces = [];
 
 	/**
 	 * @var null|string
@@ -56,17 +46,15 @@ class NamespaceForm {
 	/**
 	 * @var null|string
 	 */
-	private $hideList = false;
+	private bool $hideList = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param NamespaceInfo $namespaceInfo
-	 * @param Localizer $localizer
 	 */
-	public function __construct( NamespaceInfo $namespaceInfo, Localizer $localizer ) {
-		$this->namespaceInfo = $namespaceInfo;
-		$this->localizer = $localizer;
+	public function __construct(
+		private NamespaceInfo $namespaceInfo,
+		private Localizer $localizer,
+	) {
 	}
 
 	/**
@@ -74,7 +62,7 @@ class NamespaceForm {
 	 *
 	 * @param array $activeNamespaces
 	 */
-	public function setActiveNamespaces( array $activeNamespaces ) {
+	public function setActiveNamespaces( array $activeNamespaces ): void {
 		$this->activeNamespaces = $activeNamespaces;
 	}
 
@@ -83,7 +71,7 @@ class NamespaceForm {
 	 *
 	 * @param bool $hideList
 	 */
-	public function setHideList( $hideList ) {
+	public function setHideList( $hideList ): void {
 		$this->hideList = (bool)$hideList;
 	}
 
@@ -92,7 +80,7 @@ class NamespaceForm {
 	 *
 	 * @param array $hiddenNamespaces
 	 */
-	public function setHiddenNamespaces( array $hiddenNamespaces ) {
+	public function setHiddenNamespaces( array $hiddenNamespaces ): void {
 		$this->hiddenNamespaces = $hiddenNamespaces;
 	}
 
@@ -101,7 +89,7 @@ class NamespaceForm {
 	 *
 	 * @param array $searchableNamespaces
 	 */
-	public function setSearchableNamespaces( array $searchableNamespaces ) {
+	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
 	}
 
@@ -112,7 +100,7 @@ class NamespaceForm {
 	 *
 	 * @param SpecialSearch $specialSearch
 	 */
-	public function checkNamespaceEditToken( SpecialSearch $specialSearch ) {
+	public function checkNamespaceEditToken( SpecialSearch $specialSearch ): void {
 		$user = $specialSearch->getUser();
 
 		if ( !$user->isRegistered() ) {
@@ -127,7 +115,7 @@ class NamespaceForm {
 	 *
 	 * @return string
 	 */
-	public function makeFields() {
+	public function makeFields(): string {
 		$divider = "<div class='divider'></div>";
 		$rows = [];
 		$tableRows = [];

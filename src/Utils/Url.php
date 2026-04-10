@@ -10,15 +10,9 @@ namespace SMW\Utils;
  */
 class Url {
 
-	/**
-	 * @var array
-	 */
-	private $info = [];
+	private array|false $info = [];
 
-	/**
-	 * @var array
-	 */
-	private $flag = [];
+	private array $flag = [];
 
 	/**
 	 * @since 3.2
@@ -103,7 +97,7 @@ class Url {
 		return $text;
 	}
 
-	private function is( $flag ): bool {
+	private function is( int $flag ): bool {
 		return in_array( $flag, $this->flag );
 	}
 

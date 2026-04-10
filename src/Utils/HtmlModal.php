@@ -17,7 +17,7 @@ class HtmlModal {
 	 *
 	 * @return array
 	 */
-	public static function getModules() {
+	public static function getModules(): array {
 		return [ 'ext.smw.modal' ];
 	}
 
@@ -26,7 +26,7 @@ class HtmlModal {
 	 *
 	 * @return array
 	 */
-	public static function getModuleStyles() {
+	public static function getModuleStyles(): array {
 		return [ 'ext.smw.modal.styles' ];
 	}
 
@@ -144,7 +144,10 @@ class HtmlModal {
 		);
 	}
 
-	private static function mergeAttributes( $class, $attr ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function mergeAttributes( string $class, array $attr ): array {
 		$attributes = [];
 
 		// A bit of attribute order
@@ -158,7 +161,8 @@ class HtmlModal {
 			$attributes['class'] = $class;
 		}
 
-		return $attributes += $attr;
+		$attributes += $attr;
+		return $attributes;
 	}
 
 }

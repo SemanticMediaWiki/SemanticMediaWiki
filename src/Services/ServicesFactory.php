@@ -12,8 +12,8 @@ use Onoi\EventDispatcher\EventDispatcher;
 use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
-use SMW\ContentParser;
 use SMW\DataItemFactory;
+use SMW\DataModel\SemanticData;
 use SMW\DataUpdater;
 use SMW\DataValueFactory;
 use SMW\EntityCache;
@@ -36,20 +36,21 @@ use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
+use SMW\Parser\ContentParser;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
 use SMW\PostProcHandler;
+use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
-use SMW\Query\Parser as QueryParser;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
-use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Site;
 use SMW\Store;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * Application instances access for internal and external use
@@ -61,30 +62,15 @@ use SMW\Store;
  */
 class ServicesFactory {
 
-	/**
-	 * @var ServicesFactory
-	 */
-	private static $instance = null;
-
-	/**
-	 * @var CallbackContainerBuilder|null
-	 */
-	private $callbackContainerBuilder;
-
-	/**
-	 * @var string
-	 */
-	private $servicesFileDir = '';
+	private static ?ServicesFactory $instance = null;
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param CallbackContainerBuilder|null $callbackContainerBuilder
-	 * @param string $servicesFileDir
 	 */
-	public function __construct( ?CallbackContainerBuilder $callbackContainerBuilder = null, $servicesFileDir = '' ) {
-		$this->callbackContainerBuilder = $callbackContainerBuilder;
-		$this->servicesFileDir = $servicesFileDir;
+	public function __construct(
+		private readonly ?CallbackContainerBuilder $callbackContainerBuilder = null,
+		private $servicesFileDir = '',
+	) {
 	}
 
 	/**
@@ -101,7 +87,7 @@ class ServicesFactory {
 	 *
 	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance(): ServicesFactory {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -113,13 +99,14 @@ class ServicesFactory {
 			$servicesFileDir
 		);
 
-		return self::$instance = new self( $callbackContainerBuilder, $servicesFileDir );
+		self::$instance = new self( $callbackContainerBuilder, $servicesFileDir );
+		return self::$instance;
 	}
 
 	/**
 	 * @since 2.0
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -129,7 +116,7 @@ class ServicesFactory {
 	 * @param string $objectName
 	 * @param callable|array $objectSignature
 	 */
-	public function registerObject( $objectName, $objectSignature ) {
+	public function registerObject( $objectName, $objectSignature ): void {
 		$this->callbackContainerBuilder->registerObject( $objectName, $objectSignature );
 	}
 
@@ -138,7 +125,7 @@ class ServicesFactory {
 	 *
 	 * @param string $file
 	 */
-	public function registerFromFile( $file ) {
+	public function registerFromFile( $file ): void {
 		$this->callbackContainerBuilder->registerFromFile( $file );
 	}
 
@@ -149,12 +136,13 @@ class ServicesFactory {
 	 * not to be relied upon for external access.
 	 *
 	 *
-	 * @param string ...$service
+	 * @param string $serviceName
+	 * @param mixed ...$args
 	 *
 	 * @return mixed
 	 */
-	public function singleton( ...$service ) {
-		return $this->callbackContainerBuilder->singleton( ...$service );
+	public function singleton( $serviceName, ...$args ) {
+		return $this->callbackContainerBuilder->singleton( $serviceName, ...$args );
 	}
 
 	/**
@@ -165,12 +153,13 @@ class ServicesFactory {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string ...$service
+	 * @param string $serviceName
+	 * @param mixed ...$args
 	 *
 	 * @return mixed
 	 */
-	public function create( ...$service ) {
-		return $this->callbackContainerBuilder->create( ...$service );
+	public function create( $serviceName, ...$args ) {
+		return $this->callbackContainerBuilder->create( $serviceName, ...$args );
 	}
 
 	/**
@@ -347,7 +336,7 @@ class ServicesFactory {
 	 *
 	 * @return DataValueFactory
 	 */
-	public function getDataValueFactory() {
+	public function getDataValueFactory(): DataValueFactory {
 		return DataValueFactory::getInstance();
 	}
 
@@ -372,7 +361,7 @@ class ServicesFactory {
 	 *
 	 * @return InTextAnnotationParser
 	 */
-	public function newInTextAnnotationParser( ParserData $parserData ) {
+	public function newInTextAnnotationParser( ParserData $parserData ): InTextAnnotationParser {
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
 		$linksProcessor = $this->callbackContainerBuilder->create( 'LinksProcessor' );
@@ -431,10 +420,10 @@ class ServicesFactory {
 	 *
 	 * @return DataUpdater
 	 */
-	public function newDataUpdater( SemanticData $semanticData ) {
+	public function newDataUpdater( SemanticData $semanticData ): DataUpdater {
 		$settings = $this->getSettings();
 
-		$changePropagationNotifier = new \SMW\Property\ChangePropagationNotifier(
+		$changePropagationNotifier = new ChangePropagationNotifier(
 			$this->getStore(),
 			$this->newSerializerFactory()
 		);
@@ -477,7 +466,7 @@ class ServicesFactory {
 	 *
 	 * @return MwCollaboratorFactory
 	 */
-	public function newMwCollaboratorFactory() {
+	public function newMwCollaboratorFactory(): MwCollaboratorFactory {
 		return new MwCollaboratorFactory( $this );
 	}
 
@@ -526,7 +515,7 @@ class ServicesFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return \createBalancer
+	 * @return ILoadBalancer
 	 */
 	public function getLoadBalancer() {
 		return $this->callbackContainerBuilder->singleton( 'DBLoadBalancer' );
@@ -586,16 +575,6 @@ class ServicesFactory {
 	}
 
 	/**
-	 * @deprecated since 2.5, use QueryFactory::newQueryParser
-	 * @since 2.1
-	 *
-	 * @return QueryParser
-	 */
-	public function newQueryParser( $queryFeatures = false ) {
-		return $this->getQueryFactory()->newQueryParser( $queryFeatures );
-	}
-
-	/**
 	 * @since 2.5
 	 */
 	public function getDataItemFactory(): DataItemFactory {
@@ -623,7 +602,7 @@ class ServicesFactory {
 		return $this->callbackContainerBuilder->singleton( 'JobQueue' );
 	}
 
-	private static function newCallbackContainerBuilder( CallbackContainerFactory $callbackContainerFactory, $servicesFileDir ) {
+	private static function newCallbackContainerBuilder( CallbackContainerFactory $callbackContainerFactory, string $servicesFileDir ) {
 		$callbackContainerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
 		$callbackContainerBuilder->registerCallbackContainer( new SharedServicesContainer() );

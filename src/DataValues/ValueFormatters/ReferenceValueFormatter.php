@@ -4,15 +4,15 @@ namespace SMW\DataValues\ValueFormatters;
 
 use MediaWiki\Html\Html;
 use RuntimeException;
+use SMW\DataItems\Time;
+use SMW\DataItems\Uri;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ExternalIdentifierValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ReferenceValue;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
-use SMWDataValue as DataValue;
-use SMWDITime as DITime;
-use SMWDIUri as DIUri;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,7 +27,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof ReferenceValue;
 	}
 
@@ -49,7 +49,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $this->getOutputText( $type, $linker );
 	}
 
-	protected function getOutputText( $type, $linker = null ) {
+	protected function getOutputText( $type, $linker = null ): string {
 		if ( !$this->dataValue->isValid() ) {
 			return ( ( $type == self::WIKI_SHORT ) || ( $type == self::HTML_SHORT ) ) ? '' : $this->dataValue->getErrorText();
 		}
@@ -57,7 +57,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $this->createOutput( $type, $linker );
 	}
 
-	private function createOutput( $type, $linker ) {
+	private function createOutput( $type, $linker ): string {
 		$results = $this->getListOfFormattedPropertyDataItems(
 			$type,
 			$linker,
@@ -92,7 +92,10 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $result;
 	}
 
-	private function getListOfFormattedPropertyDataItems( $type, $linker, $propertyDataItems ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getListOfFormattedPropertyDataItems( $type, $linker, $propertyDataItems ): array {
 		$results = [];
 
 		foreach ( $propertyDataItems as $propertyDataItem ) {
@@ -142,21 +145,21 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $results;
 	}
 
-	private function findValueOutputFor( $isValue, $type, $dataValue, $linker ) {
+	private function findValueOutputFor( bool $isValue, $type, $dataValue, $linker ) {
 		$dataItem = $dataValue->getDataItem();
 
 		// Turn URI, External identifier, or Page links into a href representation
 		// when not used as (first) value
 		if (
 			$isValue === false && $type !== self::VALUE && (
-			$dataItem instanceof DIUri ||
-			$dataItem instanceof DIWikiPage ||
+			$dataItem instanceof Uri ||
+			$dataItem instanceof WikiPage ||
 			$dataValue->getTypeID() === ExternalIdentifierValue::TYPE_ID ) ) {
 			return $dataValue->getShortHTMLText( smwfGetLinker() );
 		}
 
 		// Dates and times are to be displayed in a localized format
-		if ( !$isValue && $dataItem instanceof DITime && $type !== self::VALUE ) {
+		if ( !$isValue && $dataItem instanceof Time && $type !== self::VALUE ) {
 			$dataValue->setOutputFormat( 'LOCL' );
 		}
 

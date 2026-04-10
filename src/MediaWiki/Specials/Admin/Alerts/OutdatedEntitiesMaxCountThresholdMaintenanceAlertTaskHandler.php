@@ -23,17 +23,9 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 	const MAXCOUNT_THRESHOLD = 20000;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -51,7 +43,7 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 		return $this->buildHTML( $count );
 	}
 
-	private function fetchCount() {
+	private function fetchCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -66,7 +58,7 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 		return $row !== false ? (int)$row->count : 0;
 	}
 
-	private function buildHTML( $count ) {
+	private function buildHTML( int $count ) {
 		$html = Html::rawElement(
 			'fieldset',
 			[

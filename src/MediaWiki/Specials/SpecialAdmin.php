@@ -10,6 +10,7 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\HtmlTabs;
 
 /**
@@ -28,9 +29,6 @@ use SMW\Utils\HtmlTabs;
  */
 class SpecialAdmin extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'SMWAdmin', 'smw-admin' );
 	}
@@ -38,7 +36,7 @@ class SpecialAdmin extends SpecialPage {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function doesWrites() {
+	public function doesWrites(): bool {
 		return true;
 	}
 
@@ -79,8 +77,8 @@ class SpecialAdmin extends SpecialPage {
 
 		// Some functions require methods only provided by the SQLStore (or any
 		// inherit class thereof)
-		if ( !is_a( ( $store = $applicationFactory->getStore() ), '\SMW\SQLStore\SQLStore' ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		if ( !is_a( ( $store = $applicationFactory->getStore() ), SQLStore::class ) ) {
+			$store = $applicationFactory->getStore( SQLStore::class );
 		}
 
 		$outputFormatter = new OutputFormatter(
@@ -129,7 +127,7 @@ class SpecialAdmin extends SpecialPage {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group';
 	}
 
@@ -197,7 +195,7 @@ class SpecialAdmin extends SpecialPage {
 		return $html;
 	}
 
-	private function msg_text( $key, $type = Message::TEXT ) {
+	private function msg_text( string $key, $type = Message::TEXT ): string {
 		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 

@@ -18,25 +18,12 @@ use SMW\StoreAware;
 class QuerySourceFactory {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var array
-	 */
-	private $querySources = [];
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param array $querySources
 	 */
-	public function __construct( Store $store, $querySources = [] ) {
-		$this->store = $store;
-		$this->querySources = $querySources;
-
+	public function __construct(
+		private readonly Store $store,
+		private $querySources = [],
+	) {
 		// Standard store
 		$this->querySources['sql_store'] = 'SMW\SQLStore\SQLStore';
 	}
@@ -60,7 +47,7 @@ class QuerySourceFactory {
 	 * @return QueryEngine|Store
 	 * @throws RuntimeException
 	 */
-	public function get( $source = null ) {
+	public function get( $source = null ): mixed {
 		$params = [];
 
 		if ( $source !== '' && isset( $this->querySources[$source] ) ) {

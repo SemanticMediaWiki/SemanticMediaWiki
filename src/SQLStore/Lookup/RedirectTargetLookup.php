@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\RedirectStore;
-use SMW\Store;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,24 +25,15 @@ class RedirectTargetLookup {
 	 */
 	const CACHE_ONLY = 'cache/only';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var InMemoryCacheManager
-	 */
-	private $inMemoryCacheManager;
+	private IdCacheManager $inMemoryCacheManager;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param IdCacheManager $inMemoryCacheManager
 	 */
-	public function __construct( Store $store, IdCacheManager $inMemoryCacheManager ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly SQLStore $store,
+		IdCacheManager $inMemoryCacheManager,
+	) {
 		$this->inMemoryCacheManager = $inMemoryCacheManager;
 	}
 
@@ -51,7 +42,7 @@ class RedirectTargetLookup {
 	 *
 	 * @param array $list
 	 */
-	public function prepareCache( array $list ) {
+	public function prepareCache( array $list ): void {
 		$ids = array_keys( $list );
 
 		if ( $ids === [] ) {
@@ -99,18 +90,18 @@ class RedirectTargetLookup {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $target
+	 * @param WikiPage $target
 	 * @param string|null $flag
 	 *
-	 * @return DIWikiPage|false
+	 * @return WikiPage|false
 	 */
-	public function findRedirectSource( DIWikiPage $target, ?string $flag = null ) {
+	public function findRedirectSource( WikiPage $target, ?string $flag = null ): WikiPage|false {
 		$cache = $this->inMemoryCacheManager->get(
 			IdCacheManager::REDIRECT_SOURCE
 		);
 
 		if ( $flag === self::CACHE_ONLY && $cache->fetch( $target->getSha1() ) !== false ) {
-			return DIWikiPage::doUnserialize( $cache->fetch( $target->getSha1() ) );
+			return WikiPage::doUnserialize( $cache->fetch( $target->getSha1() ) );
 		}
 
 		return false;

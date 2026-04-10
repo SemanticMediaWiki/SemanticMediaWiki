@@ -3,10 +3,10 @@
 namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
+use SMW\Query\Query;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,15 +18,7 @@ class SortBuilder {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private FieldMapper $fieldMapper;
 
 	/**
 	 * @var string
@@ -40,11 +32,8 @@ class SortBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 		$this->fieldMapper = new FieldMapper();
 	}
 
@@ -53,7 +42,7 @@ class SortBuilder {
 	 *
 	 * @param string $scoreField
 	 */
-	public function setScoreField( $scoreField ) {
+	public function setScoreField( $scoreField ): void {
 		$this->scoreField = $scoreField;
 	}
 
@@ -73,7 +62,7 @@ class SortBuilder {
 	 *
 	 * @return array
 	 */
-	public function makeSortField( Query $query ) {
+	public function makeSortField( Query $query ): array {
 		// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_memory_considerations
 		// "... the relevant sorted field values are loaded into memory. This means
 		// that per shard, there should be enough memory ... string based types,
@@ -89,7 +78,7 @@ class SortBuilder {
 		return $this->getFields( $query->getSortKeys() );
 	}
 
-	private function getFields( array $sortKeys ) {
+	private function getFields( array $sortKeys ): array {
 		$isRandom = false;
 		$isConstantScore = true;
 		$sort = [];
@@ -116,7 +105,7 @@ class SortBuilder {
 		return [ $sort, $sortFields, $isRandom, $isConstantScore ];
 	}
 
-	private function addDefaultField( &$sort, $order, $sortKeysCount ) {
+	private function addDefaultField( array &$sort, $order, int $sortKeysCount ): void {
 		$sort['subject.sortkey.sort'] = [ 'order' => $order ];
 
 		// Add title as extra criteria in case an entity uses the same sortkey
@@ -128,7 +117,7 @@ class SortBuilder {
 		}
 	}
 
-	private function addField( &$sort, &$sortFields, $key, $order ) {
+	private function addField( array &$sort, &$sortFields, $key, $order ): void {
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 		$chain = false;
 
@@ -145,7 +134,7 @@ class SortBuilder {
 			if ( $key === '_score' ) {
 				$field = '_score';
 			} else {
-				$property = DIProperty::newFromUserLabel( $key );
+				$property = Property::newFromUserLabel( $key );
 
 				$field = $this->fieldMapper->getField( $property, 'Field' );
 
@@ -175,7 +164,7 @@ class SortBuilder {
 		}
 	}
 
-	private function sort_field( $field ) {
+	private function sort_field( string $field ): bool {
 		return strpos( $field, 'txt' ) !== false || strpos( $field, 'wpgField' ) !== false || strpos( $field, 'uriField' ) !== false;
 	}
 

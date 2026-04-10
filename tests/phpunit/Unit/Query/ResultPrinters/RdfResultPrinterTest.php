@@ -1,0 +1,56 @@
+<?php
+
+namespace SMW\Tests\Unit\Query\ResultPrinters;
+
+use PHPUnit\Framework\TestCase;
+use SMW\Query\QueryResult;
+use SMW\Query\ResultPrinters\RdfResultPrinter;
+use SMW\Query\ResultPrinters\ResultPrinter;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\Query\ResultPrinters\RdfResultPrinter
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 1.9
+ *
+ * @author mwjames
+ */
+class RdfResultPrinterTest extends TestCase {
+
+	private $queryResult;
+	private $resultPrinterReflector;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
+
+		$this->queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			RdfResultPrinter::class,
+			new RdfResultPrinter( 'rdf' )
+		);
+
+		$this->assertInstanceOf(
+			ResultPrinter::class,
+			new RdfResultPrinter( 'rdf' )
+		);
+	}
+
+	public function testGetMimeType() {
+		$instance = new RdfResultPrinter( 'json' );
+
+		$this->assertEquals(
+			'application/xml',
+			$instance->getMimeType( $this->queryResult )
+		);
+	}
+
+}

@@ -1,0 +1,220 @@
+<?php
+
+namespace SMW\MediaWiki;
+
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
+
+/**
+ * This class attempts to provide safe yet simple means for managing data that is relevant
+ * for the final HTML output of MediaWiki. In particular, this concerns additions to the HTML
+ * header in the form of scripts of stylesheets.
+ *
+ * The problem is that many components in SMW create hypertext that should eventually be displayed.
+ * The normal way of accessing such text are functions of the form getText() which return a
+ * (hypertext) string. Such a string, however, might refer to styles or scripts that are also
+ * needed. It is not possible to directly add those scripts to the MediaWiki output, since the form
+ * of this output depends on the context in which the function is called. Many functions might be
+ * called both during parsing and directly in special pages that do not use the usual parsing and
+ * caching mechanisms.
+ *
+ * Ideally, all functions that generate hypertext with dependencies would also include parameters to
+ * record required scripts. Since this would require major API changes, the current solution is to have
+ * a "temporal" global storage for the required items, managed in this class. It is not safe to use
+ * such a global store across hooks -- you never know what happens in between! Hence, every function
+ * that creates SMW outputs that may require head items must afterwards clear the temporal store by
+ * writing its contents to the according output.
+ *
+ * @ingroup SMW
+ *
+ * @author Markus Krötzsch
+ */
+class Outputs {
+
+	/**
+	 * Protected member for temporarily storing header items.
+	 * Format $id => $headItem where $id is used only to avoid duplicate
+	 * items in the time before they are forwarded to the output.
+	 *
+	 * @var array
+	 */
+	protected static $headItems = [];
+
+	/**
+	 * Protected member for temporarily storing additional Javascript
+	 * snippets. Format $id => $scriptText where $id is used only to
+	 * avoid duplicate scripts in the time before they are forwarded
+	 * to the output.
+	 *
+	 * @var array
+	 */
+	protected static $scripts = [];
+
+	/**
+	 * Protected member for temporarily storing resource modules.
+	 *
+	 * @var array
+	 */
+	protected static $resourceModules = [];
+
+	/**
+	 * Protected member for temporarily storing resource modules.
+	 *
+	 * @var array
+	 */
+	protected static $resourceStyles = [];
+
+	/**
+	 * Adds a resource module to the parser output.
+	 *
+	 * @since 1.5.3
+	 *
+	 * @param string $moduleName
+	 */
+	public static function requireResource( $moduleName ): void {
+		self::$resourceModules[$moduleName] = $moduleName;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $stylesName
+	 */
+	public static function requireStyle( $stylesName ): void {
+		self::$resourceStyles[$stylesName] = $stylesName;
+	}
+
+	/**
+	 * Require the presence of header scripts, provided as strings with
+	 * enclosing script tags. Note that the same could be achieved with
+	 * requireHeadItems, but scripts use a special method "addScript" in
+	 * MediaWiki OutputPage, hence we distinguish them.
+	 *
+	 * The id is used to avoid that the requirement for one script is
+	 * recorded multiple times in Outputs.
+	 *
+	 * @param string $id
+	 * @param string $script
+	 */
+	public static function requireScript( $id, $script ): void {
+		self::$scripts[$id] = $script;
+	}
+
+	/**
+	 * Adds head items that are not Resource Loader modules. Should only
+	 * be used for custom head items such as RSS feed links.
+	 *
+	 * The id is used to avoid that the requirement for one script is
+	 * recorded multiple times in Outputs.
+	 *
+	 * @param string $id
+	 * @param string $item
+	 */
+	public static function requireHeadItem( $id, $item = '' ): void {
+		self::$headItems[$id] = $item;
+	}
+
+	/**
+	 * This function takes output requirements as can be found in a given ParserOutput
+	 * object and puts them back in to the internal temporal requirement list from
+	 * which they can be committed to some other output. It is needed when code that
+	 * would normally call Outputs::requireHeadItem() has need to use a full
+	 * independent parser call (Parser::parse()) that produces its own parseroutput.
+	 * If omitted, all output items potentially committed to this parseroutput during
+	 * parsing will not be passed on to higher levels.
+	 *
+	 * Note that this is not required if the $parseroutput is further processed by
+	 * MediaWiki, but there are cases where the output is discarded and only its text
+	 * is used.
+	 *
+	 * @param ParserOutput $parserOutput
+	 */
+	public static function requireFromParserOutput( ParserOutput $parserOutput ): void {
+		// Note: we do not attempt to recover which head items where scripts here.
+
+		$parserOutputHeadItems = $parserOutput->getHeadItems();
+
+		self::$headItems = array_merge( (array)self::$headItems, $parserOutputHeadItems );
+
+		/// TODO Is the following needed?
+		if ( $parserOutput->getModules() ) {
+			foreach ( $parserOutput->getModules() as $module ) {
+				self::$resourceModules[$module] = $module;
+			}
+		}
+	}
+
+	/**
+	 * Actually commit the collected requirements to a given parser that is about to parse
+	 * what will later be the HTML output. This makes sure that HTML output based on the
+	 * parser results contains all required output items.
+	 *
+	 * If the parser creates output for a normal wiki page, then the committed items will
+	 * also become part of the page cache so that they will correctly be added to all page
+	 * outputs built from this cache later on.
+	 *
+	 * @param Parser $parser
+	 */
+	public static function commitToParser( Parser $parser ): void {
+		$po = $parser->getOutput();
+
+		if ( isset( $po ) ) {
+			self::commitToParserOutput( $po );
+		}
+	}
+
+	/**
+	 * Similar to Outputs::commitToParser() but acting on a ParserOutput object.
+	 *
+	 * @param ParserOutput $parserOutput
+	 */
+	public static function commitToParserOutput( ParserOutput $parserOutput ): void {
+		foreach ( self::$scripts as $key => $script ) {
+			$parserOutput->addHeadItem( $script . "\n", $key );
+		}
+
+		foreach ( self::$headItems as $key => $item ) {
+			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
+		}
+
+		$parserOutput->addModuleStyles( array_values( self::$resourceStyles ) );
+		$parserOutput->addModules( array_values( self::$resourceModules ) );
+
+		self::$resourceStyles = [];
+		self::$resourceModules = [];
+		self::$headItems = [];
+	}
+
+	/**
+	 * Actually commit the collected requirements to a given OutputPage object that
+	 * will later generate the HTML output. This makes sure that HTML output contains
+	 * all required output items. Note that there is no parser caching at this level of
+	 * processing. In particular, data should not be committed to $wgOut in methods
+	 * that run during page parsing, since these would not run next time when the page
+	 * is produced from parser cache.
+	 *
+	 * @param OutputPage $output
+	 */
+	public static function commitToOutputPage( OutputPage $output ): void {
+		foreach ( self::$scripts as $script ) {
+			$output->addScript( $script );
+		}
+		foreach ( self::$headItems as $key => $item ) {
+			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
+		}
+
+		$output->addModuleStyles( array_values( self::$resourceStyles ) );
+		$output->addModules( array_values( self::$resourceModules ) );
+
+		self::$resourceStyles = [];
+		self::$resourceModules = [];
+		self::$headItems = [];
+	}
+
+}
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Outputs::class, 'SMWOutputs' );

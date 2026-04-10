@@ -15,10 +15,7 @@ use SearchEngine;
  */
 class ExtendedSearchEngine extends SearchEngine {
 
-	/**
-	 * @var ExtendedSearch
-	 */
-	private $extendedSearch;
+	private ExtendedSearch $extendedSearch;
 
 	/**
 	 * @var SearchEngine
@@ -53,7 +50,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * @param ExtendedSearch $extendedSearch
 	 */
-	public function setExtendedSearch( ExtendedSearch $extendedSearch ) {
+	public function setExtendedSearch( ExtendedSearch $extendedSearch ): void {
 		$this->extendedSearch = $extendedSearch;
 	}
 
@@ -62,7 +59,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * @param null|SearchEngine $fallbackSearchEngine
 	 */
-	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ) {
+	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ): void {
 		$this->fallbackSearchEngine = $fallbackSearchEngine;
 	}
 
@@ -80,7 +77,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getValidSorts() {
+	public function getValidSorts(): array {
 		return $this->extendedSearch->getValidSorts();
 	}
 
@@ -133,7 +130,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function update( $id, $title, $text ) {
+	public function update( $id, $title, $text ): void {
 		$this->fallbackSearchEngine->update( $id, $title, $text );
 	}
 
@@ -142,7 +139,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function updateTitle( $id, $title ) {
+	public function updateTitle( $id, $title ): void {
 		$this->fallbackSearchEngine->updateTitle( $id, $title );
 	}
 
@@ -151,7 +148,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function delete( $id, $title ) {
+	public function delete( $id, $title ): void {
 		$this->fallbackSearchEngine->delete( $id, $title );
 	}
 
@@ -160,7 +157,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setFeatureData( $feature, $data ) {
+	public function setFeatureData( $feature, $data ): void {
 		parent::setFeatureData( $feature, $data );
 		$this->fallbackSearchEngine->setFeatureData( $feature, $data );
 	}
@@ -194,7 +191,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setLimitOffset( $limit, $offset = 0 ) {
+	public function setLimitOffset( $limit, $offset = 0 ): void {
 		parent::setLimitOffset( $limit, $offset );
 		$this->extendedSearch->setLimitOffset( $limit, $offset );
 		$this->fallbackSearchEngine->setLimitOffset( $limit, $offset );
@@ -205,7 +202,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setNamespaces( $namespaces ) {
+	public function setNamespaces( $namespaces ): void {
 		parent::setNamespaces( $namespaces );
 
 		$this->extendedSearch->setNamespaces(
@@ -220,7 +217,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setShowSuggestion( $showSuggestion ) {
+	public function setShowSuggestion( $showSuggestion ): void {
 		parent::setShowSuggestion( $showSuggestion );
 		$this->fallbackSearchEngine->setShowSuggestion( $showSuggestion );
 	}
@@ -294,24 +291,27 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @return int
 	 */
-	public function getLimit() {
+	public function getLimit(): int {
 		return $this->limit;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getOffset() {
+	public function getOffset(): int {
 		return $this->offset;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function getShowSuggestion() {
+	public function getShowSuggestion(): bool {
 		return $this->showSuggestion;
 	}
 
 }
 
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( ExtendedSearchEngine::class, 'SMWSearch' );

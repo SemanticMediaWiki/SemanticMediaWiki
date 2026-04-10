@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\DIProperty;
-use SMW\SemanticData;
-use SMWDIBlob as DIBlob;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,7 +18,7 @@ class StatusProperty extends FixtureProperty {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = DIProperty::newFromUserLabel( 'Status' );
+		$this->property = Property::newFromUserLabel( 'Status' );
 		$this->property->setPropertyTypeId( '_txt' );
 	}
 
@@ -31,13 +31,13 @@ class StatusProperty extends FixtureProperty {
 		$semanticData = parent::getDependencies();
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_PVAL' ),
-			new DIBlob( 'open' )
+			new Property( '_PVAL' ),
+			new Blob( 'open' )
 		);
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_PVAL' ),
-			new DIBlob( 'closed' )
+			new Property( '_PVAL' ),
+			new Blob( 'closed' )
 		);
 
 		return $semanticData;

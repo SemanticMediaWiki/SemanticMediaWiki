@@ -19,27 +19,19 @@ class CompositeFilter implements SchemaFilter {
 	const SORT_FILTER_SCORE = 'sort/filterscore';
 
 	/**
-	 * @var SchemaFilter[]
-	 */
-	private $filters = [];
-
-	/**
 	 * @var iterable
 	 */
 	private $matches = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $options = [];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SchemaFilter[] $filters
 	 */
-	public function __construct( array $filters ) {
-		$this->filters = $filters;
+	public function __construct( private readonly array $filters ) {
 	}
 
 	/**
@@ -65,7 +57,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addOption( string $key, $value ) {
+	public function addOption( string $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -74,7 +66,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function sortMatches( $type, $order = 'desc' ) {
+	public function sortMatches( $type, $order = 'desc' ): void {
 		if ( $this->matches === [] ) {
 			return;
 		}
@@ -82,7 +74,7 @@ class CompositeFilter implements SchemaFilter {
 		$order = strtolower( $order );
 
 		if ( $type === self::SORT_FILTER_SCORE ) {
-			usort( $this->matches, static function ( $a, $b ) use ( $order ) {
+			usort( $this->matches, static function ( $a, $b ) use ( $order ): int {
 				if ( $order === 'desc' ) {
 					return $b->filterScore <=> $a->filterScore;
 				}
@@ -97,7 +89,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function filter( iterable $compartments ) {
+	public function filter( iterable $compartments ): void {
 		$nodeFilter = null;
 
 		foreach ( $this->filters as $filter ) {

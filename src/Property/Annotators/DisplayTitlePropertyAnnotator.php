@@ -12,32 +12,17 @@ use SMW\Property\Annotator;
  */
 class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/**
-	 * @var string|false
-	 */
-	private $displayTitle;
-
-	/**
-	 * @var string
-	 */
-	private $defaultSort;
-
-	/**
-	 * @var bool
-	 */
-	private $canCreateAnnotation = true;
+	private bool $canCreateAnnotation = true;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param string|false $displayTitle
-	 * @param string $defaultSort
 	 */
-	public function __construct( Annotator $propertyAnnotator, $displayTitle = false, $defaultSort = '' ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private $displayTitle = false,
+		private $defaultSort = '',
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->displayTitle = $displayTitle;
-		$this->defaultSort = $defaultSort;
 	}
 
 	/**
@@ -47,11 +32,11 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $canCreateAnnotation
 	 */
-	public function canCreateAnnotation( $canCreateAnnotation ) {
+	public function canCreateAnnotation( $canCreateAnnotation ): void {
 		$this->canCreateAnnotation = (bool)$canCreateAnnotation;
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( !$this->canCreateAnnotation || !$this->displayTitle || $this->displayTitle === '' ) {
 			return;
 		}

@@ -3,8 +3,8 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use SMW\PropertyRegistry;
 
 /**
@@ -23,11 +23,6 @@ class PropertyTableDefinitionBuilder {
 	const PROPERTY_TABLE_PREFIX = 'smw_fpt';
 
 	/**
-	 * @var PropertyTypeFinder
-	 */
-	private $propertyTypeFinder;
-
-	/**
 	 * @var PropertyTableDefinition[]
 	 */
 	protected $propertyTables = [];
@@ -39,11 +34,8 @@ class PropertyTableDefinitionBuilder {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param PropertyTypeFinder $propertyTypeFinder
 	 */
-	public function __construct( PropertyTypeFinder $propertyTypeFinder ) {
-		$this->propertyTypeFinder = $propertyTypeFinder;
+	public function __construct( private readonly PropertyTypeFinder $propertyTypeFinder ) {
 	}
 
 	/**
@@ -53,7 +45,7 @@ class PropertyTableDefinitionBuilder {
 	 * @param array $specialProperties
 	 * @param array $userDefinedFixedProperties
 	 */
-	public function doBuild( $diTypes, $specialProperties, $userDefinedFixedProperties ) {
+	public function doBuild( array $diTypes, array $specialProperties, array $userDefinedFixedProperties ): void {
 		$this->addTableDefinitionForDiTypes( $diTypes );
 
 		$this->addTableDefinitionForFixedProperties(
@@ -93,7 +85,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getTablePrefix() {
+	public function getTablePrefix(): string {
 		return self::PROPERTY_TABLE_PREFIX;
 	}
 
@@ -104,7 +96,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return array|null
 	 */
-	public function getFixedPropertyTableIds() {
+	public function getFixedPropertyTableIds(): ?array {
 		return $this->fixedPropertyTableIds;
 	}
 
@@ -115,7 +107,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return PropertyTableDefinition[]
 	 */
-	public function getTableDefinitions() {
+	public function getTableDefinitions(): array {
 		return $this->propertyTables;
 	}
 
@@ -130,7 +122,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return PropertyTableDefinition
 	 */
-	public function newTableDefinition( $diType, $tableName, $fixedProperty = false ) {
+	public function newTableDefinition( $diType, $tableName, $fixedProperty = false ): PropertyTableDefinition {
 		return new PropertyTableDefinition( $diType, $tableName, $fixedProperty );
 	}
 
@@ -141,7 +133,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return string
 	 */
-	public static function makeTableName( $tableName ) {
+	public static function makeTableName( $tableName ): string {
 		return self::PROPERTY_TABLE_PREFIX . strtolower( $tableName );
 	}
 
@@ -153,7 +145,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return string
 	 */
-	public function createHashedTableNameFrom( $tableName ) {
+	public function createHashedTableNameFrom( $tableName ): string {
 		return self::PROPERTY_TABLE_PREFIX . '_' . substr( base_convert( md5( $tableName ), 16, 32 ), 0, 12 );
 	}
 
@@ -166,7 +158,7 @@ class PropertyTableDefinitionBuilder {
 	 * @param $tableName
 	 * @param $fixedProperty
 	 */
-	protected function addPropertyTable( $diType, $tableName, $fixedProperty = false, $tableType = '' ) {
+	protected function addPropertyTable( $diType, $tableName, $fixedProperty = false, string $tableType = '' ): void {
 		$this->propertyTables[$tableName] = $this->newTableDefinition( $diType, $tableName, $fixedProperty );
 		$this->propertyTables[$tableName]->setTableType( $tableType );
 	}
@@ -174,16 +166,16 @@ class PropertyTableDefinitionBuilder {
 	/**
 	 * @param array $diTypes
 	 */
-	private function addTableDefinitionForDiTypes( array $diTypes ) {
+	private function addTableDefinitionForDiTypes( array $diTypes ): void {
 		foreach ( $diTypes as $tableDIType => $tableName ) {
 			$this->addPropertyTable( $tableDIType, $tableName, false, PropertyTableDefinition::TYPE_CORE );
 		}
 	}
 
-	private function addTableDefinitionForFixedProperties( array $properties, array $fixedPropertyTablePrefix = [], $tableType = false ) {
+	private function addTableDefinitionForFixedProperties( array $properties, array $fixedPropertyTablePrefix = [], $tableType = false ): void {
 		foreach ( $properties as $propertyKey => $propertyTableSuffix ) {
 
-			$tablePrefix = isset( $fixedPropertyTablePrefix[$propertyKey] ) ? $fixedPropertyTablePrefix[$propertyKey] : self::PROPERTY_TABLE_PREFIX;
+			$tablePrefix = $fixedPropertyTablePrefix[$propertyKey] ?? self::PROPERTY_TABLE_PREFIX;
 
 			// Either as plain index array containing the property key or as associated
 			// array with property key => tableSuffix
@@ -199,7 +191,7 @@ class PropertyTableDefinitionBuilder {
 		}
 	}
 
-	private function addRedirectTableDefinition() {
+	private function addRedirectTableDefinition(): void {
 		// Redirect table uses another subject scheme for historic reasons
 		// TODO This should be changed if possible
 		$redirectTableName = $this->makeTableName( '_REDI' );
@@ -215,7 +207,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @param array $fixedProperties
 	 */
-	private function addTableDefinitionForUserDefinedFixedProperties( array $fixedProperties ) {
+	private function addTableDefinitionForUserDefinedFixedProperties( array $fixedProperties ): void {
 		$this->propertyTypeFinder->setTypeTableName(
 			$this->makeTableName( '_TYPE' )
 		);
@@ -225,7 +217,7 @@ class PropertyTableDefinitionBuilder {
 			// Normalize the key to be independent from a possible MW setting
 			// (has area == Has_area <> Has_Area)
 			$propertyKey = str_replace( ' ', '_', ucfirst( $propertyKey ) );
-			$property = new DIProperty( $propertyKey );
+			$property = new Property( $propertyKey );
 
 			$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 				$this->propertyTypeFinder->findTypeID( $property )
@@ -237,7 +229,7 @@ class PropertyTableDefinitionBuilder {
 		}
 	}
 
-	private function createFixedPropertyTableIdIndex() {
+	private function createFixedPropertyTableIdIndex(): void {
 		foreach ( $this->propertyTables as $tid => $propTable ) {
 			if ( $propTable->isFixedPropertyTable() ) {
 				$this->fixedPropertyTableIds[$propTable->getFixedProperty()] = $tid;

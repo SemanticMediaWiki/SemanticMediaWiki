@@ -27,31 +27,13 @@ class SpecialSearchResultsPrepend implements HookListener {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var PreferenceExaminer
-	 */
-	private $preferenceExaminer;
-
-	/**
-	 * @var SpecialSearch
-	 */
-	private $specialSearch;
-
-	/**
-	 * @var OutputPage
-	 */
-	private $outputPage;
-
-	/**
 	 * @since  3.0
-	 *
-	 * @param PreferenceExaminer $preferenceExaminer
-	 * @param SpecialSearch $specialSearch
-	 * @param OutputPage $outputPage
 	 */
-	public function __construct( PreferenceExaminer $preferenceExaminer, SpecialSearch $specialSearch, OutputPage $outputPage ) {
-		$this->preferenceExaminer = $preferenceExaminer;
-		$this->specialSearch = $specialSearch;
-		$this->outputPage = $outputPage;
+	public function __construct(
+		private PreferenceExaminer $preferenceExaminer,
+		private SpecialSearch $specialSearch,
+		private OutputPage $outputPage,
+	) {
 	}
 
 	/**
@@ -61,7 +43,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( $term ) {
+	public function process( $term ): bool {
 		if ( !$this->specialSearch->getSearchEngine() instanceof ExtendedSearchEngine ) {
 			return true;
 		}
@@ -104,7 +86,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		return true;
 	}
 
-	private function search_sheet() {
+	private function search_sheet(): string {
 		$text = $this->element( 'smw-search-help-intro' );
 		$text .= $this->section( 'smw-search-input' );
 
@@ -122,7 +104,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		return $text;
 	}
 
-	private function section( $msg, $attributes = [] ) {
+	private function section( string $msg, $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[
@@ -139,7 +121,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		);
 	}
 
-	private function element( $msg, $html = '', $attributes = [] ) {
+	private function element( string $msg, string $html = '', $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[

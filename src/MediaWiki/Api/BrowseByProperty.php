@@ -20,14 +20,14 @@ class BrowseByProperty extends ApiBase {
 	 * #2696
 	 * @deprecated since 3.0, use the smwbrowse API module
 	 */
-	public function isDeprecated() {
+	public function isDeprecated(): bool {
 		return true;
 	}
 
 	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -111,12 +111,11 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getAllowedParams
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'property' => [
 				ParamValidator::PARAM_TYPE => 'string',
@@ -144,12 +143,11 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getParamDescription
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'property' => 'To match a specific property',
 			'limit'    => 'To specify the size of the list request',
@@ -159,24 +157,22 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getDescription
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module to query a property list or an individual property.'
 		];
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
 	 */
-	public function getExamples() {
+	public function getExamples(): array {
 		return [
 			'api.php?action=browsebyproperty&property=Modification_date',
 			'api.php?action=browsebyproperty&limit=50',
@@ -185,12 +181,11 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getVersion
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __CLASS__ . '-' . SMW_VERSION;
 	}
 

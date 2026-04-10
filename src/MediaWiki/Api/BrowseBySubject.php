@@ -2,8 +2,9 @@
 
 namespace SMW\MediaWiki\Api;
 
+use Exception;
 use MediaWiki\Api\ApiBase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use Wikimedia\ParamValidator\ParamValidator;
@@ -29,14 +30,14 @@ class BrowseBySubject extends ApiBase {
 	/**
 	 * @deprecated since 3.0, use the smwbrowse API module
 	 */
-	public function isDeprecated() {
+	public function isDeprecated(): bool {
 		return true;
 	}
 
 	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 
 		if ( isset( $params['type'] ) && $params['type'] === 'html' ) {
@@ -52,8 +53,8 @@ class BrowseBySubject extends ApiBase {
 		);
 	}
 
-	protected function buildHTML( $params ) {
-		$subject = new DIWikiPage(
+	protected function buildHTML( array $params ): string {
+		$subject = new WikiPage(
 			$params['subject'],
 			$params['ns'],
 			$params['iw'],
@@ -72,7 +73,7 @@ class BrowseBySubject extends ApiBase {
 		return $htmlBuilder->buildHTML();
 	}
 
-	protected function doSerialize( $params ) {
+	protected function doSerialize( array $params ): array {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $applicationFactory->newTitleFactory()->newFromText(
@@ -84,11 +85,11 @@ class BrowseBySubject extends ApiBase {
 
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 		}
 
-		$dataItem = new DIWikiPage(
+		$dataItem = new WikiPage(
 			$title->getDBkey(),
 			$title->getNamespace(),
 			$title->getInterwiki(),
@@ -104,7 +105,7 @@ class BrowseBySubject extends ApiBase {
 		return $this->doFormat( $semanticDataSerializer->serialize( $semanticData ) );
 	}
 
-	protected function doFormat( $serialized ) {
+	protected function doFormat( array $serialized ): array {
 		$this->addIndexTags( $serialized );
 
 		if ( isset( $serialized['sobj'] ) ) {
@@ -119,7 +120,7 @@ class BrowseBySubject extends ApiBase {
 		return $serialized;
 	}
 
-	protected function addIndexTags( &$serialized ) {
+	protected function addIndexTags( array|string &$serialized ): void {
 		if ( isset( $serialized['data'] ) && is_array( $serialized['data'] ) ) {
 
 			$this->getResult()->setIndexedTagName( $serialized['data'], 'property' );
@@ -138,7 +139,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'subject' => [
 				ParamValidator::PARAM_TYPE => 'string',
@@ -184,7 +185,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'subject' => 'The subject to be queried',
 			'subobject' => 'A particular subobject id for the related subject'
@@ -197,7 +198,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module to query a subject.'
 		];
@@ -209,7 +210,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=browsebysubject&subject=Main_Page',
 		];
@@ -221,7 +222,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __CLASS__ . '-' . SMW_VERSION;
 	}
 

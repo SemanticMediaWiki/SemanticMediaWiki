@@ -3,6 +3,7 @@
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\Description;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 
 /**
@@ -18,19 +19,16 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @var DescriptionInterpreter[]
 	 */
-	private $interpreters = [];
+	private array $interpreters = [];
 
-	/**
-	 * @var DescriptionInterpreter
-	 */
-	private $defaultInterpreter = null;
+	private ?DescriptionInterpreter $defaultInterpreter = null;
 
 	/**
 	 * @param Description $description
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		foreach ( $this->interpreters as $interpreter ) {
 			if ( $interpreter->canInterpretDescription( $description ) ) {
 				return true;
@@ -62,7 +60,7 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param DescriptionInterpreter $interpreter
 	 */
-	public function addInterpreter( DescriptionInterpreter $interpreter ) {
+	public function addInterpreter( DescriptionInterpreter $interpreter ): void {
 		$this->interpreters[] = $interpreter;
 	}
 
@@ -71,7 +69,7 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param DescriptionInterpreter $defaultInterpreter
 	 */
-	public function addDefaultInterpreter( DescriptionInterpreter $defaultInterpreter ) {
+	public function addDefaultInterpreter( DescriptionInterpreter $defaultInterpreter ): void {
 		$this->defaultInterpreter = $defaultInterpreter;
 	}
 

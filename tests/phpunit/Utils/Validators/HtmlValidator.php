@@ -3,6 +3,9 @@
 namespace SMW\Tests\Utils\Validators;
 
 use DOMDocument;
+use DOMXPath;
+use Exception;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 
 /**
@@ -11,7 +14,7 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
  *
  * @author Stephan Gambke
  */
-class HtmlValidator extends \PHPUnit\Framework\Assert {
+class HtmlValidator extends Assert {
 
 	/**
 	 * @var array
@@ -38,7 +41,7 @@ class HtmlValidator extends \PHPUnit\Framework\Assert {
 	 */
 	public function canUse() {
 		if ( $this->canUse === null ) {
-			$this->canUse = class_exists( '\Symfony\Component\CssSelector\CssSelectorConverter' );
+			$this->canUse = class_exists( CssSelectorConverter::class );
 		}
 
 		return $this->canUse;
@@ -92,7 +95,7 @@ class HtmlValidator extends \PHPUnit\Framework\Assert {
 	 */
 	public function assertThatHtmlContains( $cssSelectors, $htmlFragment, $message = '', $expected = true ) {
 		$document = $this->getDomDocumentFromHtmlFragment( $htmlFragment );
-		$xpath = new \DOMXPath( $document );
+		$xpath = new DOMXPath( $document );
 		$converter = new CssSelectorConverter();
 
 		foreach ( $cssSelectors as $selector ) {
@@ -115,7 +118,7 @@ class HtmlValidator extends \PHPUnit\Framework\Assert {
 
 				$message .= "Expected occurrences: {$expectedCountText}\nFound occurrences: {$actualCount}\n";
 
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$actualCount = 0;
 				$message .= "CssSelector: " . $e->getMessage();
 			}

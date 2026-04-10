@@ -3,7 +3,7 @@
 namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\Constraint\ConstraintError;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\Message;
@@ -25,16 +25,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	const LOOKUP_LIMIT = 20;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @var bool
 	 */
 	private $checkConstraintErrors = true;
@@ -44,10 +34,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 */
 	protected $indicators = [];
 
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
+	private string $severityType = '';
 
 	/**
 	 * @var string
@@ -60,13 +47,11 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store, EntityCache $entityCache ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
+	public function __construct(
+		private Store $store,
+		private EntityCache $entityCache,
+	) {
 	}
 
 	/**
@@ -94,19 +79,19 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @param bool $checkConstraintErrors
 	 */
-	public function setConstraintErrorCheck( $checkConstraintErrors ) {
+	public function setConstraintErrorCheck( $checkConstraintErrors ): void {
 		$this->checkConstraintErrors = $checkConstraintErrors;
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkConstraintErrors ) {
 			$this->checkConstraintErrors( $subject, $options );
 		}
@@ -119,7 +104,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
@@ -128,7 +113,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
@@ -137,27 +122,28 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
 		// component) therefore disabled it when indicators are present
 		return '#mw-indicator-mw-helplink {display:none;}';
 	}
 
-	protected function checkConstraintErrors( $subject, $options ) {
+	protected function checkConstraintErrors( $subject, array $options ): void {
 		$this->runCheck( $subject, $options );
 	}
 
-	protected function runCheck( $subject, $options ) {
+	protected function runCheck( $subject, array $options ) {
 		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
 
 		$errors = $this->findErrors( $subject );
 		$top = '';
 
 		if ( $errors === [] ) {
-			return $this->indicators = [
+			$this->indicators = [
 				'id'      => $this->getName(),
 				'content' => '',
 			];
+			return $this->indicators;
 		}
 
 		$this->errorTitle = 'smw-constraint-error';
@@ -247,7 +233,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		];
 	}
 
-	private function findErrors( $subject ) {
+	private function findErrors( $subject ): array {
 		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
 
 		if ( ( $errors = $this->entityCache->fetch( $key ) ) !== false ) {
@@ -284,7 +270,10 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		return $this->decodeErrors( $errors );
 	}
 
-	private function decodeErrors( $errors ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function decodeErrors( $errors ): array {
 		if ( $errors === 'null' ) {
 			return [];
 		}

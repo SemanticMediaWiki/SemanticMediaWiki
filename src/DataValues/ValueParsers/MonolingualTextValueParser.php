@@ -18,17 +18,14 @@ use SMW\Localizer\Localizer;
  */
 class MonolingualTextValueParser implements ValueParser {
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.4
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -39,7 +36,7 @@ class MonolingualTextValueParser implements ValueParser {
 	 *
 	 * @return array
 	 */
-	public function parse( $userValue ) {
+	public function parse( $userValue ): array {
 		// Allow things like [ "en" => "Foo ..." ] when retrieved from a JSON string
 		if ( is_array( $userValue ) ) {
 			foreach ( $userValue as $key => $value ) {

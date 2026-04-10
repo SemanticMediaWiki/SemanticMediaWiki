@@ -15,17 +15,12 @@ class SearchResult {
 	/**
 	 * @var
 	 */
-	private $raw = [];
-
-	/**
-	 * @var
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @var []|null
 	 */
-	private $results;
+	private ?array $results = null;
 
 	/**
 	 * @var string
@@ -35,7 +30,7 @@ class SearchResult {
 	/**
 	 * @var
 	 */
-	private $container = [
+	private array $container = [
 		'info' => [],
 		'scores' => [],
 		'excerpts' => [],
@@ -45,11 +40,8 @@ class SearchResult {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $raw
 	 */
-	public function __construct( array $raw = [] ) {
-		$this->raw = $raw;
+	public function __construct( private readonly array $raw = [] ) {
 	}
 
 	/**
@@ -57,7 +49,7 @@ class SearchResult {
 	 *
 	 * @param array $errors
 	 */
-	public function setErrors( array $errors ) {
+	public function setErrors( array $errors ): void {
 		$this->errors = $errors;
 	}
 
@@ -66,7 +58,7 @@ class SearchResult {
 	 *
 	 * @param string $filterField
 	 */
-	public function setFilterField( $filterField ) {
+	public function setFilterField( $filterField ): void {
 		$this->filterField = $filterField;
 	}
 
@@ -75,7 +67,7 @@ class SearchResult {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -86,7 +78,7 @@ class SearchResult {
 	 *
 	 * @return array
 	 */
-	public function getResults( $cutoff = null ) {
+	public function getResults( $cutoff = null ): ?array {
 		if ( $this->results === null ) {
 			$this->doFilterResults( $this->raw, $cutoff );
 		}
@@ -113,9 +105,9 @@ class SearchResult {
 	 * @param array $results
 	 * @param int|null $cutoff
 	 *
-	 * @return
+	 * @return int[]|string[]
 	 */
-	public function doFilterResults( array $results, $cutoff = null ) {
+	public function doFilterResults( array $results, $cutoff = null ): array {
 		$this->results = [];
 
 		$this->container = [
@@ -148,8 +140,9 @@ class SearchResult {
 
 	/**
 	 * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/6.0/_search_operations.html
+	 * @return true[]
 	 */
-	private function filterByField( $results, $cutoff, $field ) {
+	private function filterByField( array $results, $cutoff, $field ): array {
 		$res = [];
 		$continue = false;
 

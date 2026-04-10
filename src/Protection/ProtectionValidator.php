@@ -5,8 +5,8 @@ namespace SMW\Protection;
 use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -25,21 +25,6 @@ use SMW\Store;
 class ProtectionValidator {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
-	 * @var PermissionManager
-	 */
-	private $permissionManager;
-
-	/**
 	 * @var bool|string
 	 */
 	private $editProtectionRight = false;
@@ -49,32 +34,26 @@ class ProtectionValidator {
 	 */
 	private $createProtectionRight = false;
 
-	/**
-	 * @var bool|string
-	 */
-	private $changePropagationProtection = true;
+	private bool $changePropagationProtection = true;
 
 	/**
 	 * @var
 	 */
-	private $importPerformers = [];
+	private array $importPerformers = [];
 
 	/**
 	 * @var
 	 */
-	private $importPerformerProtectionLookupCache = [];
+	private array $importPerformerProtectionLookupCache = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
-	 * @param PermissionManager $permissionManager
 	 */
-	public function __construct( Store $store, EntityCache $entityCache, PermissionManager $permissionManager ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
-		$this->permissionManager = $permissionManager;
+	public function __construct(
+		private readonly Store $store,
+		private readonly EntityCache $entityCache,
+		private readonly PermissionManager $permissionManager,
+	) {
 	}
 
 	/**
@@ -82,17 +61,17 @@ class ProtectionValidator {
 	 *
 	 * @param PropertyChangeListener $propertyChangeListener
 	 */
-	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ) {
-		$propertyChangeListener->addListenerCallback( new DIProperty( '_CHGPRO' ), [ $this, 'invalidateCache' ] );
+	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ): void {
+		$propertyChangeListener->addListenerCallback( new Property( '_CHGPRO' ), [ $this, 'invalidateCache' ] );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ) {
+	public function invalidateCache( Property $property, ChangeRecord $changeRecord ): void {
 		if ( $property->getKey() !== '_CHGPRO' ) {
 			return;
 		}
@@ -126,7 +105,7 @@ class ProtectionValidator {
 	 *
 	 * @param string|bool $editProtectionRight
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
+	public function setEditProtectionRight( $editProtectionRight ): void {
 		$this->editProtectionRight = $editProtectionRight;
 	}
 
@@ -135,7 +114,7 @@ class ProtectionValidator {
 	 *
 	 * @return string|false
 	 */
-	public function getEditProtectionRight() {
+	public function getEditProtectionRight(): string|false {
 		return $this->editProtectionRight;
 	}
 
@@ -144,7 +123,7 @@ class ProtectionValidator {
 	 *
 	 * @param string|bool $createProtectionRight
 	 */
-	public function setCreateProtectionRight( $createProtectionRight ) {
+	public function setCreateProtectionRight( $createProtectionRight ): void {
 		$this->createProtectionRight = $createProtectionRight;
 	}
 
@@ -153,7 +132,7 @@ class ProtectionValidator {
 	 *
 	 * @return string|false
 	 */
-	public function getCreateProtectionRight() {
+	public function getCreateProtectionRight(): string|false {
 		return $this->createProtectionRight;
 	}
 
@@ -162,7 +141,7 @@ class ProtectionValidator {
 	 *
 	 * @param bool $changePropagationProtection
 	 */
-	public function setChangePropagationProtection( $changePropagationProtection ) {
+	public function setChangePropagationProtection( $changePropagationProtection ): void {
 		$this->changePropagationProtection = (bool)$changePropagationProtection;
 	}
 
@@ -171,7 +150,7 @@ class ProtectionValidator {
 	 *
 	 * @param array $importPerformers
 	 */
-	public function setImportPerformers( array $importPerformers ) {
+	public function setImportPerformers( array $importPerformers ): void {
 		$this->importPerformers = $importPerformers;
 	}
 
@@ -182,8 +161,8 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasEditProtectionOnNamespace( Title $title ) {
-		$subject = DIWikiPage::newFromTitle(
+	public function hasEditProtectionOnNamespace( Title $title ): bool {
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -224,7 +203,8 @@ class ProtectionValidator {
 			->getCreator();
 
 		if ( !$creator instanceof User ) {
-			return $this->importPerformerProtectionLookupCache[$key] = false;
+			$this->importPerformerProtectionLookupCache[$key] = false;
+			return $this->importPerformerProtectionLookupCache[$key];
 		}
 
 		$importPerformers = array_flip( $this->importPerformers );
@@ -232,10 +212,12 @@ class ProtectionValidator {
 		// Was the creator a dedicated import performer?, if yes, it means
 		// only this user is allowed to alter the content
 		if ( !isset( $importPerformers[$creator->getName()] ) ) {
-			return $this->importPerformerProtectionLookupCache[$key] = false;
+			$this->importPerformerProtectionLookupCache[$key] = false;
+			return $this->importPerformerProtectionLookupCache[$key];
 		}
 
-		return $this->importPerformerProtectionLookupCache[$key] = !$creator->equals( $user );
+		$this->importPerformerProtectionLookupCache[$key] = !$creator->equals( $user );
+		return $this->importPerformerProtectionLookupCache[$key];
 	}
 
 	/**
@@ -245,8 +227,8 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasChangePropagationProtection( Title $title ) {
-		$subject = DIWikiPage::newFromTitle( $title )->asBase();
+	public function hasChangePropagationProtection( Title $title ): bool {
+		$subject = WikiPage::newFromTitle( $title )->asBase();
 		$namespace = $subject->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -257,7 +239,7 @@ class ProtectionValidator {
 			return false;
 		}
 
-		return $this->checkProtection( $subject, new DIProperty( '_CHGPRO' ) );
+		return $this->checkProtection( $subject, new Property( '_CHGPRO' ) );
 	}
 
 	/**
@@ -267,8 +249,8 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasProtection( Title $title ) {
-		$subject = DIWikiPage::newFromTitle(
+	public function hasProtection( Title $title ): bool {
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -282,7 +264,7 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasCreateProtection( ?Title $title = null ) {
+	public function hasCreateProtection( ?Title $title = null ): bool {
 		if ( $title === null ) {
 			return false;
 		}
@@ -304,12 +286,12 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasEditProtection( ?Title $title = null ) {
+	public function hasEditProtection( ?Title $title = null ): bool {
 		if ( $title === null ) {
 			return false;
 		}
 
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -318,9 +300,9 @@ class ProtectionValidator {
 			&& $this->checkProtection( $subject->asBase() );
 	}
 
-	private function checkProtection( $subject, $property = null ) {
+	private function checkProtection( WikiPage $subject, $property = null ): bool {
 		if ( $property === null ) {
-			$property = new DIProperty( '_EDIP' );
+			$property = new Property( '_EDIP' );
 		}
 
 		$key = $this->entityCache->makeCacheKey( 'protection', $subject->getHash() );

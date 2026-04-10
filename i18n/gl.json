@@ -32,10 +32,6 @@
 	"smw-upgrade-error-how-title": "Como corrixo este erro?",
 	"smw-upgrade-error-how-explain-admin": "Alguén da administración (ou calquera persoa con dereitos administrativos) ten que executar o script de mantemento «[https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Update.php update.php]» de MediaWiki ou o script «[https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php setupStore.php]» de Semantic MediaWiki.",
 	"smw-upgrade-error-how-explain-links": "Tamén podes consultar as seguintes páxinas para obter máis axuda: \n* [https://www.semantic-mediawiki.org/wiki/Help:Installation Instrucións de instalación] \n* Páxina de axuda sobre a [https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting solución de erros]",
-	"smw-extensionload-error-why-title": "Por que vexo esta páxina?",
-	"smw-extensionload-error-why-explain": "A extensión <b>non</b> se cargou usando <code>enableSemantics</code> e, no seu lugar, activouse por outros medios, como o uso directo de <code>wfLoadExtension( 'SemanticMediaWiki' )</code>.",
-	"smw-extensionload-error-how-title": "Como corrixo este erro?",
-	"smw-extensionload-error-how-explain": "Para activar a extensión e evitar problemas coas declaracións de espazos de nomes e as configuracións pendentes, cómpre usar <code>enableSemantics</code>, que garantirá que as variables necesarias estean definidas antes de cargar a extensión a través de <code>ExtensionRegistry</code>.\n\nConsulta a páxina de axuda de «[https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics enableSemantics]» para obter máis axuda.",
 	"smw-upgrade-maintenance-title": "Mantemento » Semantic MediaWiki",
 	"smw-upgrade-maintenance-why-title": "Por que vexo esta páxina?",
 	"smw-upgrade-maintenance-note": "O sistema está a realizar unha [https://www.semantic-mediawiki.org/wiki/Help:Upgrade actualización] da extensión [https://www.semantic-mediawiki.org/ Semantic MediaWiki] xunto co seu repositorio de datos. Ten paciencia e agarda a que remate o mantemento para que o wiki sexa accesible de novo.",
@@ -693,7 +689,7 @@
 	"log-show-hide-smw": "$1 o rexistro de Semantic MediaWiki",
 	"logeventslist-smw-log": "Rexistro de Semantic MediaWiki",
 	"log-description-smw": "Actividades dos [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de evento activados]  que foron notificados por Semantic MediaWiki e os seus compoñentes.",
-	"logentry-smw-maintenance": "Eventos relacionados co mantemento emitidos por Semantic MediaWiki",
+	"logentry-smw-maintenance": "$1 {{GENDER:$2|realizou}} mantemento",
 	"smw-datavalue-import-unknown-namespace": "Descoñécese o espazo de nomes de importación «$1». Asegúrate de que os detalles de importación de OWL están dispoñibles mediante «[[MediaWiki:Smw import $1]]»",
 	"smw-datavalue-import-missing-namespace-uri": "Non se puido atopar un URI do espazo de nomes de «$1» na [[MediaWiki:Smw import $1|importación de «$1»]].",
 	"smw-datavalue-import-missing-type": "Non se atopou ningunha definición de tipo para «$1» na [[MediaWiki:Smw import $2|importación de «$2»]].",
@@ -989,7 +985,6 @@
 	"smw-schema-error-title": "{{PLURAL:$1|Erro|Erros}} de validación",
 	"smw-schema-error-schema": "O esquema de validación «'''$1'''» atopou as seguintes inconsistencias:",
 	"smw-schema-error-miscellaneous": "Erro diverso ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "O validador JSON «<b>$1</b>» non é accesible (nin está instalado) e é a razón pola que non se pode examinar o ficheiro «$2», o que impide que se garde ou modifique a páxina actual.",
 	"smw-schema-error-validation-file-inaccessible": "O ficheiro de validación «$1» é inaccesible.",
 	"smw-schema-error-type-missing": "O contido carece dun tipo para que sexa recoñecido e utilizable no [https://www.semantic-mediawiki.org/wiki/Help:Schema espazo de nomes de esquema].",
 	"smw-schema-error-type-unknown": "O tipo «$1» non está rexistrado e non se pode usar para contido no espazo de nomes «[https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema]».",
@@ -1113,5 +1108,6 @@
 	"smw-facetedsearch-clear-filters": "Quitar {{PLURAL:$1|o filtro|os filtros}}",
 	"smw-search-placeholder": "Procurar...",
 	"smw-listingcontinuesabbrev": "cont.",
-	"smw-showingresults": "{{PLURAL:$1|Móstrase <strong>1</strong> resultado|Móstranse <strong>$1</strong> resultados}}, comezando polo número <strong>$2</strong>."
+	"smw-showingresults": "{{PLURAL:$1|Móstrase <strong>1</strong> resultado|Móstranse <strong>$1</strong> resultados}}, comezando polo número <strong>$2</strong>.",
+	"smw-showingresults-cursor": "{{PLURAL:$1|Móstrase <strong>1</strong> resultado|Móstranse <strong>$1</strong> resultados}}."
 }

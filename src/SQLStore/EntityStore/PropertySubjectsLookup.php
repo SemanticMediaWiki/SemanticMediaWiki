@@ -3,30 +3,27 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\IteratorFactory;
 use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
+use stdClass;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
 class PropertySubjectsLookup {
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
+	private IteratorFactory $iteratorFactory;
 
 	/**
 	 * @var Options
@@ -38,23 +35,14 @@ class PropertySubjectsLookup {
 	 */
 	private $dataItemHandler;
 
-	/**
-	 * @var array
-	 */
-	private $prefetch = [];
+	private array $prefetch = [];
 
-	/**
-	 * @var string
-	 */
-	private $caller = '';
+	private string $caller = '';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 		$this->iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 
@@ -84,11 +72,11 @@ class PropertySubjectsLookup {
 	 * @since 3.1
 	 *
 	 * @param array $ids
-	 * @param DataItem $property
+	 * @param Property $property
 	 * @param TableDefinition $proptable
 	 * @param RequestOptions $requestOptions
 	 */
-	public function prefetchFromTable( array $ids, DataItem $property, TableDefinition $proptable, RequestOptions $requestOptions ) {
+	public function prefetchFromTable( array $ids, Property $property, TableDefinition $proptable, RequestOptions $requestOptions ) {
 		if ( $ids === [] ) {
 			return [];
 		}
@@ -156,10 +144,11 @@ class PropertySubjectsLookup {
 			$this->store->getObjectIds()->warmupCache( $warmupCache );
 		}
 
-		return $this->prefetch[$hash] = $result;
+		$this->prefetch[$hash] = $result;
+		return $this->prefetch[$hash];
 	}
 
-	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, ?RequestOptions $requestOptions = null ) {
+	private function doFetch( $pid, TableDefinition $proptable, DataItem|array|null $dataItem, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$group = false;
 
@@ -338,7 +327,7 @@ class PropertySubjectsLookup {
 	 *
 	 * @param stdClass $row
 	 *
-	 * @return DIWikiPage
+	 * @return DataItem
 	 */
 	public function newFromRow( $row ) {
 		try {
@@ -361,7 +350,7 @@ class PropertySubjectsLookup {
 
 				return $dataItem;
 			}
-		} catch ( DataItemHandlerException $e ) {
+		} catch ( DataItemHandlerException ) {
 			// silently drop data, should be extremely rare and will usually fix itself at next edit
 		}
 
@@ -371,11 +360,11 @@ class PropertySubjectsLookup {
 		return $this->dataItemHandler->dataItemFromDBKeys( [ 'Blankpage/' . $title, NS_SPECIAL, '', '', '' ] );
 	}
 
-	private function getWhereConds( $query, $dataItem ) {
+	private function getWhereConds( $query, DataItem|array|null $dataItem ): void {
 		$conds = '';
 
-		if ( $dataItem instanceof \SMWDIContainer ) {
-			throw new RuntimeException( 'SMWDIContainer support is missing!' );
+		if ( $dataItem instanceof Container ) {
+			throw new RuntimeException( '\SMW\DataItems\Container support is missing!' );
 		}
 
 		if ( $dataItem !== null ) {
@@ -389,7 +378,7 @@ class PropertySubjectsLookup {
 		}
 	}
 
-	private function getIndexHint( $dataItemHandler, $pid, $dataItem = null ) {
+	private function getIndexHint( $dataItemHandler, $pid, DataItem|array|null $dataItem ): string {
 		$index = '';
 
 		if ( $dataItem !== null || $dataItemHandler->getIndexHint( $dataItemHandler::IHINT_PSUBJECTS ) === '' ) {

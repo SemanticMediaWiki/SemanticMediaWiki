@@ -46,7 +46,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
 	}
 
@@ -59,7 +59,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @return AbstractJob
 	 */
-	public function isEnabledJobQueue( $enableJobQueue = true ) {
+	public function isEnabledJobQueue( $enableJobQueue = true ): static {
 		$this->isEnabledJobQueue = (bool)$enableJobQueue;
 		return $this;
 	}
@@ -71,7 +71,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @since 1.9
 	 */
-	public function pushToJobQueue() {
+	public function pushToJobQueue(): void {
 		$this->isEnabledJobQueue ? self::batchInsert( $this->jobs ) : null;
 	}
 
@@ -89,7 +89,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @return int
 	 */
-	public function getJobCount() {
+	public function getJobCount(): int {
 		return count( $this->jobs );
 	}
 
@@ -100,7 +100,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @return bool
 	 */
-	public function hasParameter( $key ) {
+	public function hasParameter( string $key ): bool {
 		if ( !is_array( $this->params ) ) {
 			return false;
 		}
@@ -125,7 +125,7 @@ abstract class Job extends MediaWikiJob {
 	 * @param mixed $key
 	 * @param mixed $value
 	 */
-	public function setParameter( $key, $value ) {
+	public function setParameter( $key, $value ): void {
 		$this->params[$key] = $value;
 	}
 
@@ -169,7 +169,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param int $delay
 	 */
-	public function setDelay( $delay ) {
+	public function setDelay( $delay ): void {
 		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(
 			$this->getType()
 		);
@@ -204,7 +204,7 @@ abstract class Job extends MediaWikiJob {
 	 * @see Job::ignoreDuplicates
 	 * @since 3.0
 	 */
-	public function ignoreDuplicates() {
+	public function ignoreDuplicates(): bool {
 		if ( isset( $this->params['waitOnCommandLine'] ) ) {
 			return $this->params['waitOnCommandLine'] > 1;
 		}
@@ -216,7 +216,7 @@ abstract class Job extends MediaWikiJob {
 	 * Only run the job via commandLine or the cronJob and avoid execution via
 	 * Special:RunJobs as it can cause the script to timeout.
 	 */
-	public function waitOnCommandLineMode() {
+	public function waitOnCommandLineMode(): bool {
 		if ( !$this->hasParameter( 'waitOnCommandLine' ) || Site::isCommandLineMode() ) {
 			return false;
 		}

@@ -6,17 +6,17 @@ use MediaWiki\Html\Html;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Store;
 use SMW\Utils\HtmlTabs;
-use SMWInfolink;
 
 /**
  * Class handling the "Factbox" content rendering
@@ -28,25 +28,7 @@ use SMWInfolink;
  */
 class Factbox {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var DisplayTitleFinder
-	 */
-	private $displayTitleFinder;
-
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
+	private DataValueFactory $dataValueFactory;
 
 	/**
 	 * @var int
@@ -68,26 +50,20 @@ class Factbox {
 	 */
 	private $attachments = [];
 
-	/**
-	 * @var CheckMagicWords
-	 */
-	private $checkMagicWords;
+	private ?CheckMagicWords $checkMagicWords = null;
 
-	private AttachmentFormatter $attachmentFormatter;
+	private readonly AttachmentFormatter $attachmentFormatter;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param ParserData $parserData
-	 * @param DisplayTitleFinder $displayTitleFinder
 	 */
-	public function __construct( Store $store, ParserData $parserData, DisplayTitleFinder $displayTitleFinder ) {
-		$this->store = $store;
-		$this->parserData = $parserData;
-		$this->displayTitleFinder = $displayTitleFinder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ParserData $parserData,
+		private readonly DisplayTitleFinder $displayTitleFinder,
+	) {
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->attachmentFormatter = new AttachmentFormatter( $store );
+		$this->attachmentFormatter = new AttachmentFormatter( $this->store );
 	}
 
 	/**
@@ -116,7 +92,7 @@ class Factbox {
 	 *
 	 * @return Factbox
 	 */
-	public function doBuild() {
+	public function doBuild(): static {
 		$this->content = $this->fetchContent(
 			$this->getMagicWords()
 		);
@@ -145,7 +121,7 @@ class Factbox {
 	 *
 	 * @return string|null
 	 */
-	public function getContent() {
+	public function getContent(): ?string {
 		return $this->content;
 	}
 
@@ -168,7 +144,7 @@ class Factbox {
 
 		$templateParser = new TemplateParser( __DIR__ . '/../../templates' );
 		$data = [
-			'data-header' => $this->getHeaderData( DIWikiPage::newFromTitle( $this->getTitle() ) ),
+			'data-header' => $this->getHeaderData( WikiPage::newFromTitle( $this->getTitle() ) ),
 			'array-sections' => [
 				'html-section' => $this->attachmentFormatter->buildHTML(
 					$this->attachments
@@ -194,7 +170,7 @@ class Factbox {
 	 * @param string $attachment
 	 * @param string $derived
 	 */
-	public static function tabs( $list, $attachment = '', $derived = '' ): string {
+	public static function tabs( $list, string $attachment = '', string $derived = '' ): string {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setActiveTab(
 			$list !== '' ? 'facts-list' : 'facts-attachment'
@@ -350,7 +326,7 @@ class Factbox {
 		// MW's internal Parser does iterate the ParserOutput object several times
 		// which can leave a '_SKEY' property while in fact the container is empty.
 		$semanticData->removeProperty(
-			new DIProperty( '_SKEY' )
+			new Property( '_SKEY' )
 		);
 
 		return (bool)$semanticData->isEmpty();
@@ -360,10 +336,10 @@ class Factbox {
 		return ( (int)$this->featureSet & $feature ) != 0;
 	}
 
-	private function getHeaderData( DIWikiPage $subject ): array {
+	private function getHeaderData( WikiPage $subject ): array {
 		$dataValue = $this->dataValueFactory->newDataValueByItem( $subject, null );
 
-		$browselink = SMWInfolink::newBrowsingLink(
+		$browselink = Infolink::newBrowsingLink(
 			$dataValue->getPreferredCaption(),
 			$dataValue->getWikiValue(),
 			''
@@ -371,7 +347,7 @@ class Factbox {
 
 		return [
 			'html-title' => Message::get( [ 'smw-factbox-head', $browselink->getWikiText() ], Message::TEXT, Message::USER_LANGUAGE ),
-			'html-actions' => SMWInfolink::newInternalLink(
+			'html-actions' => Infolink::newInternalLink(
 				Message::get( 'smw_viewasrdf', Message::TEXT, Message::USER_LANGUAGE ),
 				Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
 				'rdflink'

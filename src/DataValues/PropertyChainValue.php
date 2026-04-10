@@ -3,9 +3,9 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Html\Html;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\DataValueFactory;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * @private
@@ -46,7 +46,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @return bool
 	 */
-	public static function isChained( $value ) {
+	public static function isChained( $value ): bool {
 		return strpos( $value, '.' ) !== false;
 	}
 
@@ -64,14 +64,14 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @return PropertyValue[]
 	 */
-	public function getPropertyChainValues() {
+	public function getPropertyChainValues(): array {
 		return $this->propertyValues;
 	}
 
 	/**
 	 * @see DataValue::getShortWikiText
 	 */
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		$this->m_caption = $caption;
 
 		if ( $this->lastPropertyChainValue !== null ) {
@@ -82,7 +82,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 */
-	public function getShortWikiText( $linker = null ) {
+	public function getShortWikiText( $linker = null ): string {
 		if ( $this->lastPropertyChainValue !== null ) {
 			return $this->lastPropertyChainValue->getShortWikiText( $linker ) . $this->doHintPropertyChainMembers();
 		}
@@ -93,7 +93,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getLongWikiText
 	 */
-	public function getLongWikiText( $linker = null ) {
+	public function getLongWikiText( $linker = null ): string {
 		if ( $this->lastPropertyChainValue !== null ) {
 			return $this->lastPropertyChainValue->getLongWikiText( $linker ) . $this->doHintPropertyChainMembers();
 		}
@@ -104,7 +104,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getShortHTMLText
 	 */
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linker = null ): string {
 		if ( $this->lastPropertyChainValue !== null ) {
 			return $this->lastPropertyChainValue->getShortHTMLText( $linker ) . $this->doHintPropertyChainMembers();
 		}
@@ -115,7 +115,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getLongHTMLText
 	 */
-	public function getLongHTMLText( $linker = null ) {
+	public function getLongHTMLText( $linker = null ): string {
 		if ( $this->lastPropertyChainValue !== null ) {
 			return $this->lastPropertyChainValue->getLongHTMLText( $linker ) . $this->doHintPropertyChainMembers();
 		}
@@ -126,26 +126,26 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getWikiValue
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->lastPropertyChainValue !== null ? $this->lastPropertyChainValue->getWikiValue() : '';
 	}
 
 	/**
 	 * @see PropertyValue::isVisible
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isValid() && ( $this->lastPropertyChainValue->getDataItem()->isUserDefined() || $this->lastPropertyChainValue->getDataItem()->getLabel() !== '' );
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
+	 * @see DataValue::loadDataItem()
 	 *
-	 * @param $dataItem SMWDataItem
+	 * @param $dataItem DataItem
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 
@@ -163,7 +163,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
@@ -174,10 +174,10 @@ class PropertyChainValue extends StringValue {
 
 		$this->initPropertyChain( $value );
 
-		$this->m_dataitem = new DIBlob( $value );
+		$this->m_dataitem = new Blob( $value );
 	}
 
-	private function initPropertyChain( $value ) {
+	private function initPropertyChain( $value ): void {
 		$chain = explode( '.', $value );
 
 		// Get the last which represents the final output
@@ -187,7 +187,8 @@ class PropertyChainValue extends StringValue {
 		$this->lastPropertyChainValue = DataValueFactory::getInstance()->newPropertyValueByLabel( $last );
 
 		if ( !$this->lastPropertyChainValue->isValid() ) {
-			return $this->addError( $this->lastPropertyChainValue->getErrors() );
+			$this->addError( $this->lastPropertyChainValue->getErrors() );
+			return;
 		}
 
 		$this->lastPropertyChainValue->copyOptions( $this->getOptions() );

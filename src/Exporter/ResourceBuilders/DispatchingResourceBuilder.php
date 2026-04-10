@@ -2,10 +2,10 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
 use SMW\Exporter\ResourceBuilder;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
 
 /**
  * @private
@@ -20,21 +20,18 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	/**
 	 * @var ResourceBuilder[]
 	 */
-	private $resourceBuilders = [];
+	private array $resourceBuilders = [];
 
-	/**
-	 * @var ResourceBuilder
-	 */
-	private $defaultResourceBuilder = null;
+	private ?ResourceBuilder $defaultResourceBuilder = null;
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( Property $property ): bool {
 		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();
 		}
@@ -53,18 +50,18 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ) {
 		return $this->findResourceBuilder( $property )->addResourceValue( $expData, $property, $dataItem );
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return ResourceBuilder $resourceBuilder
 	 */
-	public function findResourceBuilder( DIProperty $property ) {
+	public function findResourceBuilder( Property $property ) {
 		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();
 		}
@@ -83,7 +80,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 *
 	 * @param ResourceBuilder $resourceBuilder
 	 */
-	public function addResourceBuilder( ResourceBuilder $resourceBuilder ) {
+	public function addResourceBuilder( ResourceBuilder $resourceBuilder ): void {
 		$this->resourceBuilders[] = $resourceBuilder;
 	}
 
@@ -92,11 +89,11 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 *
 	 * @param ResourceBuilder $defaultResourceBuilder
 	 */
-	public function addDefaultResourceBuilder( ResourceBuilder $defaultResourceBuilder ) {
+	public function addDefaultResourceBuilder( ResourceBuilder $defaultResourceBuilder ): void {
 		$this->defaultResourceBuilder = $defaultResourceBuilder;
 	}
 
-	private function initResourceBuilders() {
+	private function initResourceBuilders(): void {
 		$this->addResourceBuilder( new UniquenessConstraintPropertyValueResourceBuilder() );
 
 		$sortPropertyValueResourceBuilder = new SortPropertyValueResourceBuilder();

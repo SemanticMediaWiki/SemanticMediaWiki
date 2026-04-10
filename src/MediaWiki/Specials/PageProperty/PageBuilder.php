@@ -5,10 +5,10 @@ namespace SMW\MediaWiki\Specials\PageProperty;
 use MediaWiki\Html\Html;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Options;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,29 +19,17 @@ use SMWInfolink as Infolink;
 class PageBuilder {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
 	 * @var Linker
 	 */
 	private $linker;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param Options $options
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, Options $options ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->options = $options;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly Options $options,
+	) {
 		$this->linker = smwfGetLinker();
 	}
 
@@ -52,7 +40,7 @@ class PageBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildForm( $count = 0 ) {
+	public function buildForm( $count = 0 ): string {
 		$html = Html::rawElement(
 			'p',
 			[

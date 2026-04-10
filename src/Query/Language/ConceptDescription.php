@@ -2,8 +2,8 @@
 
 namespace SMW\Query\Language;
 
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 
 /**
  * Description of a single class as described by a concept page in the wiki.
@@ -17,16 +17,7 @@ use SMW\DIWikiPage;
  */
 class ConceptDescription extends Description {
 
-	/**
-	 * @var DIWikiPage
-	 */
-	private $concept;
-
-	/**
-	 * @param DIWikiPage $concept
-	 */
-	public function __construct( DIWikiPage $concept ) {
-		$this->concept = $concept;
+	public function __construct( private readonly WikiPage $concept ) {
 	}
 
 	/**
@@ -35,18 +26,18 @@ class ConceptDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		return 'Co:' . md5( $this->concept->getHash() );
 	}
 
 	/**
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function getConcept() {
+	public function getConcept(): WikiPage {
 		return $this->concept;
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$pageValue = DataValueFactory::getInstance()->newDataValueByItem( $this->concept, null );
 		$result = '[[' . $pageValue->getPrefixedText() . ']]';
 
@@ -57,11 +48,11 @@ class ConceptDescription extends Description {
 		return $result;
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		return SMW_CONCEPT_QUERY;
 	}
 

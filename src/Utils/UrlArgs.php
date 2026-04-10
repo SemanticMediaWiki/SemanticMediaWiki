@@ -10,10 +10,7 @@ namespace SMW\Utils;
  */
 class UrlArgs {
 
-	/**
-	 * @var array
-	 */
-	private $args = [];
+	private array $args = [];
 
 	/**
 	 * @var string
@@ -22,8 +19,6 @@ class UrlArgs {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $args
 	 */
 	public function __construct( array $args = [] ) {
 		$this->args = $args;
@@ -35,7 +30,7 @@ class UrlArgs {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->args[$key] = $value;
 	}
 
@@ -87,7 +82,7 @@ class UrlArgs {
 	 *
 	 * @param string $key
 	 */
-	public function delete( $key ) {
+	public function delete( $key ): void {
 		unset( $this->args[$key] );
 	}
 
@@ -96,14 +91,14 @@ class UrlArgs {
 	 *
 	 * @param string $fragment
 	 */
-	public function setFragment( $fragment ) {
+	public function setFragment( $fragment ): void {
 		$this->fragment = $fragment;
 	}
 
 	/**
 	 * @see __toString
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return $this->args;
 	}
 
@@ -117,14 +112,14 @@ class UrlArgs {
 	/**
 	 * @see __toString
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->cgi( $this->args ) . ( $this->fragment !== '' ? '#' . $this->fragment : '' );
 	}
 
 	/**
 	 * @see wfArrayToCgi
 	 */
-	private function cgi( $args, $prefix = '' ) {
+	private function cgi( array $args, string $prefix = '' ): string {
 		$cgi = '';
 
 		foreach ( $args as $key => $value ) {

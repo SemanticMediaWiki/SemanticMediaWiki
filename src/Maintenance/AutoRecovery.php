@@ -16,25 +16,9 @@ class AutoRecovery {
 
 	const TOPIC_IDENTIFIER = 'maintenance_script.auto_recovery';
 
-	/**
-	 * @var string
-	 */
-	private $identifier = '';
+	private string $site;
 
-	/**
-	 * @var string
-	 */
-	private $site = '';
-
-	/**
-	 * @var File
-	 */
-	private $file;
-
-	/**
-	 * @var bool
-	 */
-	private $enabled = false;
+	private bool $enabled = false;
 
 	/**
 	 * @var int
@@ -50,13 +34,11 @@ class AutoRecovery {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $identifier
-	 * @param File|null $file
 	 */
-	public function __construct( $identifier, ?File $file = null ) {
-		$this->identifier = $identifier;
-		$this->file = $file;
+	public function __construct(
+		private $identifier,
+		private ?File $file = null,
+	) {
 		$this->site = Site::id();
 
 		if ( $this->file === null ) {
@@ -71,7 +53,7 @@ class AutoRecovery {
 	 *
 	 * @param bool $enabled
 	 */
-	public function enable( $enabled ) {
+	public function enable( $enabled ): void {
 		$this->enabled = (bool)$enabled;
 	}
 
@@ -80,7 +62,7 @@ class AutoRecovery {
 	 *
 	 * @param string $dir
 	 */
-	public function setDir( $dir ) {
+	public function setDir( string $dir ): void {
 		$this->dir = $dir;
 	}
 
@@ -89,7 +71,7 @@ class AutoRecovery {
 	 *
 	 * @param int $safeMargin
 	 */
-	public function safeMargin( $safeMargin ) {
+	public function safeMargin( $safeMargin ): void {
 		$this->safeMargin = $safeMargin;
 	}
 
@@ -98,7 +80,7 @@ class AutoRecovery {
 	 *
 	 * @return string
 	 */
-	public function getFile() {
+	public function getFile(): string {
 		return $this->dir . "/" . SetupFile::FILE_NAME;
 	}
 
@@ -108,7 +90,7 @@ class AutoRecovery {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): bool {
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -123,6 +105,8 @@ class AutoRecovery {
 			$this->getFile(),
 			json_encode( $this->contents, JSON_PRETTY_PRINT )
 		);
+
+		return true;
 	}
 
 	/**
@@ -157,7 +141,7 @@ class AutoRecovery {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -173,7 +157,7 @@ class AutoRecovery {
 		return $this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key] !== false;
 	}
 
-	private function initContents( $key ) {
+	private function initContents( $key ): void {
 		$file = $this->getFile();
 
 		$this->contents = [

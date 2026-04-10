@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\Query\Parser as QueryParser;
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,30 +14,15 @@ use SMWQuery as Query;
  */
 class ConceptQuerySegmentBuilder {
 
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var QuerySegmentListProcessor
-	 */
-	private $querySegmentListProcessor;
-
-	/**
-	 * @var QueryParser
-	 */
-	private $queryParser;
+	private ?QueryParser $queryParser = null;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param QuerySegmentListProcessor $querySegmentListProcessor
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder, QuerySegmentListProcessor $querySegmentListProcessor ) {
-		$this->conditionBuilder = $conditionBuilder;
-		$this->querySegmentListProcessor = $querySegmentListProcessor;
+	public function __construct(
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly QuerySegmentListProcessor $querySegmentListProcessor,
+	) {
 	}
 
 	/**
@@ -45,7 +30,7 @@ class ConceptQuerySegmentBuilder {
 	 *
 	 * @param QueryParser $queryParser
 	 */
-	public function setQueryParser( QueryParser $queryParser ) {
+	public function setQueryParser( QueryParser $queryParser ): void {
 		$this->queryParser = $queryParser;
 	}
 
@@ -94,7 +79,7 @@ class ConceptQuerySegmentBuilder {
 	/**
 	 * @since 2.2
 	 */
-	public function cleanUp() {
+	public function cleanUp(): void {
 		$this->querySegmentListProcessor->setQueryMode( Query::MODE_INSTANCES );
 		$this->querySegmentListProcessor->cleanUp();
 	}
@@ -104,7 +89,7 @@ class ConceptQuerySegmentBuilder {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->conditionBuilder->getErrors();
 	}
 

@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Store;
 
 /**
@@ -19,17 +19,9 @@ use SMW\Store;
 class InSemanticDataFetcher {
 
 	/**
-	 * @var Store
-	 */
-	private $store = null;
-
-	/**
 	 * @since 2.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -37,7 +29,7 @@ class InSemanticDataFetcher {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData( DIWikiPage $subject ) {
+	public function getSemanticData( WikiPage $subject ) {
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 

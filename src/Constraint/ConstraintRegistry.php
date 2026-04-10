@@ -24,11 +24,6 @@ class ConstraintRegistry {
 	use HookDispatcherAwareTrait;
 
 	/**
-	 * @var ConstraintFactory
-	 */
-	private $constraintFactory;
-
-	/**
 	 * @var
 	 */
 	private $constraints = [];
@@ -36,20 +31,14 @@ class ConstraintRegistry {
 	/**
 	 * @var
 	 */
-	private $instances = [];
+	private array $instances = [];
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ConstraintFactory $constraintFactory
 	 */
-	public function __construct( ConstraintFactory $constraintFactory ) {
-		$this->constraintFactory = $constraintFactory;
+	public function __construct( private ConstraintFactory $constraintFactory ) {
 	}
 
 	/**
@@ -58,7 +47,7 @@ class ConstraintRegistry {
 	 * @param string $key
 	 * @param Constraint|string $constraint
 	 */
-	public function registerConstraint( $key, $constraint ) {
+	public function registerConstraint( $key, $constraint ): void {
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();
 		}
@@ -71,7 +60,7 @@ class ConstraintRegistry {
 	 *
 	 * @return
 	 */
-	public function getConstraintKeys() {
+	public function getConstraintKeys(): array {
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();
 		}
@@ -98,7 +87,7 @@ class ConstraintRegistry {
 		return $this->loadInstance( $this->constraints['null'] );
 	}
 
-	private function initConstraints() {
+	private function initConstraints(): void {
 		$this->constraints = [
 			'null' => NullConstraint::class,
 			'allowed_namespaces' => NamespaceConstraint::class,

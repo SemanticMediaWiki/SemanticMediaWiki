@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\JobQueue;
+
 /**
  * @private
  *
@@ -21,7 +23,7 @@ trait ConfigLegacyTrait {
 	/**
 	 * @since 3.2
 	 */
-	public function loadLegacyMappings( &$configuration ) {
+	public function loadLegacyMappings( array &$configuration ): void {
 		self::setLegacyMappings( $configuration );
 		self::fillDeprecationNotices();
 	}
@@ -30,7 +32,7 @@ trait ConfigLegacyTrait {
 	 * If some settings got renamed or reassigned then add the setting together
 	 * with the new mapping to this section.
 	 */
-	private static function setLegacyMappings( &$configuration ) {
+	private static function setLegacyMappings( array &$configuration ): void {
 		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
 			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
 		}
@@ -219,13 +221,13 @@ trait ConfigLegacyTrait {
 	 * Settings planned to be removed (or replaced) should be registered in this
 	 * section.
 	 */
-	private static function fillDeprecationNotices() {
+	private static function fillDeprecationNotices(): void {
 		$jobQueueWatchlist = [];
 
 		// FIXME Remove with 3.1
 		foreach ( $GLOBALS['smwgJobQueueWatchlist'] as $job ) {
 			if ( strpos( $job, 'SMW\\' ) !== false ) {
-				$jobQueueWatchlist[$job] = \SMW\MediaWiki\JobQueue::mapLegacyType( $job );
+				$jobQueueWatchlist[$job] = JobQueue::mapLegacyType( $job );
 			}
 		}
 

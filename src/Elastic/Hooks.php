@@ -17,22 +17,14 @@ use SMW\Store;
 class Hooks {
 
 	/**
-	 * @var ElasticFactory
-	 */
-	private $elasticFactory;
-
-	/**
 	 * @var
 	 */
-	private $handlers = [];
+	private array $handlers = [];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param ElasticFactory $elasticFactory
 	 */
-	public function __construct( ElasticFactory $elasticFactory ) {
-		$this->elasticFactory = $elasticFactory;
+	public function __construct( private readonly ElasticFactory $elasticFactory ) {
 	}
 
 	/**
@@ -51,7 +43,7 @@ class Hooks {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Admin::RegisterTaskHandlers
 	 * @since 3.0
 	 */
-	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ) {
+	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ): bool {
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {
@@ -74,7 +66,7 @@ class Hooks {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders
 	 * @since 3.2
 	 */
-	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, &$indicatorProviders ) {
+	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, &$indicatorProviders ): bool {
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {

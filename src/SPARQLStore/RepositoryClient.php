@@ -16,60 +16,21 @@ use SMW\Utils\Flag;
 class RepositoryClient {
 
 	/**
-	 * The URI of the default graph that is used to store data.
-	 * Can be the empty string to omit this information in all requests
-	 * (not supported by all stores).
-	 *
-	 * @var string
-	 */
-	private $defaultGraph = '';
-
-	/**
-	 * The URL of the endpoint for executing read queries.
-	 *
-	 * @var string
-	 */
-	private $queryEndpoint = '';
-
-	/**
-	 * The URL of the endpoint for executing update queries, or empty if
-	 * update is not allowed/supported.
-	 *
-	 * @var string
-	 */
-	private $updateEndpoint = '';
-
-	/**
-	 * The URL of the endpoint for using the SPARQL Graph Store HTTP
-	 * Protocol with, or empty if this method is not allowed/supported.
-	 *
-	 * @var string
-	 */
-	private $dataEndpoint = '';
-
-	/**
 	 * @var string
 	 */
 	private $name = '';
 
-	/**
-	 * @var Flag|null
-	 */
-	private $featureSet;
+	private ?Flag $featureSet = null;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param string $defaultGraph
-	 * @param string $queryEndpoint
-	 * @param string $updateEndpoint
-	 * @param string $dataEndpoint
 	 */
-	public function __construct( $defaultGraph, $queryEndpoint, $updateEndpoint = '', $dataEndpoint = '' ) {
-		$this->defaultGraph = $defaultGraph;
-		$this->queryEndpoint = $queryEndpoint;
-		$this->updateEndpoint = $updateEndpoint;
-		$this->dataEndpoint = $dataEndpoint;
+	public function __construct(
+		private $defaultGraph,
+		private $queryEndpoint,
+		private $updateEndpoint = '',
+		private $dataEndpoint = '',
+	) {
 	}
 
 	/**
@@ -77,7 +38,7 @@ class RepositoryClient {
 	 *
 	 * @param int $featureSet
 	 */
-	public function setFeatureSet( int $featureSet ) {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = new Flag( $featureSet );
 	}
 
@@ -95,7 +56,7 @@ class RepositoryClient {
 	 *
 	 * @param string $name
 	 */
-	public function setName( $name ) {
+	public function setName( $name ): void {
 		$this->name = $name;
 	}
 
@@ -104,7 +65,7 @@ class RepositoryClient {
 	 *
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		return $this->name;
 	}
 
@@ -131,7 +92,7 @@ class RepositoryClient {
 	 *
 	 * @return string
 	 */
-	public function getUpdateEndpoint() {
+	public function getUpdateEndpoint(): string {
 		return $this->updateEndpoint;
 	}
 
@@ -140,7 +101,7 @@ class RepositoryClient {
 	 *
 	 * @return string
 	 */
-	public function getDataEndpoint() {
+	public function getDataEndpoint(): string {
 		return $this->dataEndpoint;
 	}
 

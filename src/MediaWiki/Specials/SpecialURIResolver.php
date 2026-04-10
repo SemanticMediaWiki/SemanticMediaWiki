@@ -30,7 +30,7 @@ class SpecialURIResolver extends SpecialPage {
 	 *
 	 * @param string $query string
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$out = $this->getOutput();
 
 		// #2344, It is believed that when no HTTP_ACCEPT is available then a
@@ -73,7 +73,7 @@ class SpecialURIResolver extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group';
 	}
 

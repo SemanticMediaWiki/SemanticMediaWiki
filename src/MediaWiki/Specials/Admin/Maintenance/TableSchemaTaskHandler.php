@@ -20,31 +20,13 @@ use SMW\Store;
 class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private readonly Store $store,
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly OutputFormatter $outputFormatter,
+	) {
 	}
 
 	/**
@@ -52,7 +34,7 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SCHEMA;
 	}
 
@@ -108,7 +90,7 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		if ( !$this->hasFeature( SMW_ADM_SETUP ) ) {
 			return;
 		}
@@ -180,7 +162,7 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		$this->outputFormatter->addHTML( $message );
 	}
 

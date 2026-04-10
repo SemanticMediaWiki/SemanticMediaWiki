@@ -3,18 +3,19 @@
 namespace SMW\Query\Cache;
 
 use Onoi\BlobStore\BlobStore;
+use Onoi\BlobStore\Container;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Excerpts;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\QueryFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\Timer;
-use SMWQuery as Query;
 
 /**
  * The prefetcher only caches the subject list from a computed a query
@@ -60,45 +61,16 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 */
 	const POOLCACHE_ID = 'queryresult.prefetcher';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var QueryFactory
-	 */
-	private $queryFactory;
-
-	/**
-	 * @var BlobStore
-	 */
-	private $blobStore;
-
-	/**
-	 * @var QueryEngine
-	 */
-	private $queryEngine;
-
-	/**
-	 * @var CacheStats
-	 */
-	private $cacheStats;
+	private ?QueryEngine $queryEngine = null;
 
 	/**
 	 * @var int|bool
 	 */
 	private $nonEmbeddedCacheLifetime = false;
 
-	/**
-	 * @var bool
-	 */
-	private $enabledCache = true;
+	private bool $enabledCache = true;
 
-	/**
-	 * @var loggerInterface
-	 */
-	private $logger;
+	private ?LoggerInterface $logger = null;
 
 	/**
 	 * Keep a temp cache to hold on query results that aren't stored yet.
@@ -124,17 +96,13 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param QueryFactory $queryFactory
-	 * @param BlobStore $blobStore
-	 * @param cacheStats $cacheStats
 	 */
-	public function __construct( Store $store, QueryFactory $queryFactory, BlobStore $blobStore, CacheStats $cacheStats ) {
-		$this->store = $store;
-		$this->queryFactory = $queryFactory;
-		$this->blobStore = $blobStore;
-		$this->cacheStats = $cacheStats;
+	public function __construct(
+		private readonly Store $store,
+		private readonly QueryFactory $queryFactory,
+		private readonly BlobStore $blobStore,
+		private readonly CacheStats $cacheStats,
+	) {
 		$this->tempCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 		$this->cacheStats->shouldRecord( $this->isEnabled() );
 	}
@@ -144,7 +112,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
+	public function getStats(): array {
 		return $this->cacheStats->getStats();
 	}
 
@@ -153,7 +121,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @param string|int $cacheKeyExtension
 	 */
-	public function setCacheKeyExtension( $cacheKeyExtension ) {
+	public function setCacheKeyExtension( $cacheKeyExtension ): void {
 		if ( is_array( $cacheKeyExtension ) ) {
 			$cacheKeyExtension = implode( '|', $cacheKeyExtension );
 		}
@@ -168,7 +136,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function setLogger( LoggerInterface $logger ) {
+	public function setLogger( LoggerInterface $logger ): void {
 		$this->logger = $logger;
 	}
 
@@ -177,7 +145,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @param QueryEngine $queryEngine
 	 */
-	public function setQueryEngine( QueryEngine $queryEngine ) {
+	public function setQueryEngine( QueryEngine $queryEngine ): void {
 		$this->queryEngine = $queryEngine;
 	}
 
@@ -193,14 +161,14 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 */
-	public function disableCache() {
+	public function disableCache(): void {
 		$this->enabledCache = false;
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function recordStats() {
+	public function recordStats(): void {
 		$this->cacheStats->recordStats();
 	}
 
@@ -209,7 +177,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @param int|bool $nonEmbeddedCacheLifetime
 	 */
-	public function setNonEmbeddedCacheLifetime( $nonEmbeddedCacheLifetime ) {
+	public function setNonEmbeddedCacheLifetime( $nonEmbeddedCacheLifetime ): void {
 		$this->nonEmbeddedCacheLifetime = $nonEmbeddedCacheLifetime;
 	}
 
@@ -262,10 +230,10 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage|array $items
+	 * @param WikiPage|array $items
 	 * @param string $context
 	 */
-	public function invalidateCache( $items, $context = '' ) {
+	public function invalidateCache( $items, $context = '' ): void {
 		if ( !$this->blobStore->canUse() ) {
 			return;
 		}
@@ -297,7 +265,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		}
 	}
 
-	private function canUse( $query ) {
+	private function canUse( Query $query ): bool {
 		if ( !$this->enabledCache || !$this->blobStore->canUse() ) {
 			return false;
 		}
@@ -305,7 +273,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $query->getContextPage() !== null || ( $query->getContextPage() === null && $this->nonEmbeddedCacheLifetime > 0 );
 	}
 
-	private function newQueryResultFromCache( $queryId, $query, $container ) {
+	private function newQueryResultFromCache( string $queryId, Query $query, $container ) {
 		$results = [];
 		$incrStats = 'hits.Undefined';
 		$itemJournal = null;
@@ -337,7 +305,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$incrStats = ( $query->getContextPage() !== null ? 'hits.embedded.' : 'hits.nonEmbedded.' ) . $context;
 
 			foreach ( $container->get( 'results' ) as $hash ) {
-				$results[] = DIWikiPage::doUnserialize( $hash );
+				$results[] = WikiPage::doUnserialize( $hash );
 			}
 
 			$hasFurtherResults = $container->get( 'continue' );
@@ -377,7 +345,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function addQueryResultToCache( $queryResult, $queryId, $container, $query ) {
+	private function addQueryResultToCache( QueryResult $queryResult, string $queryId, $container, Query $query ): void {
 		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
 			$context = 'Undefined';
 		}
@@ -391,7 +359,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			Timer::getElapsedTime( __CLASS__, 5 )
 		);
 
-		$callback = function () use( $queryResult, $queryId, $container, $query ) {
+		$callback = function () use( $queryResult, $queryId, $container, $query ): void {
 			$this->doCacheQueryResult( $queryResult, $queryId, $container, $query );
 		};
 
@@ -413,7 +381,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$deferredTransactionalUpdate->pushUpdate();
 	}
 
-	private function doCacheQueryResult( $queryResult, $queryId, $container, $query ) {
+	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, Container $container, Query $query ): QueryResult {
 		$results = [];
 
 		// Keep the simple string representation to avoid unnecessary data cruft
@@ -451,7 +419,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function addToLinkedList( $contextPage, $queryId ) {
+	private function addToLinkedList( WikiPage $contextPage, string $queryId ): void {
 		// Ensure that without QueryDependencyLinksStore being enabled recorded
 		// subjects related to a query can be discoverable and purged separately
 		$container = $this->blobStore->read(
@@ -467,8 +435,8 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		);
 	}
 
-	private function getHashFrom( $subject ) {
-		if ( $subject instanceof DIWikiPage ) {
+	private function getHashFrom( $subject ): string {
+		if ( $subject instanceof WikiPage ) {
 			// In case the we detect a _QUERY subobject, use it directly
 			if ( ( $subobjectName = $subject->getSubobjectName() ) !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
 				$subject = $subobjectName;
@@ -480,7 +448,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return md5( $subject . self::VERSION . $this->cacheKeyExtension );
 	}
 
-	private function log( $message, $context = [] ) {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}
@@ -488,7 +456,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$this->logger->info( $message, $context );
 	}
 
-	private function noCacheExemption( $query ) {
+	private function noCacheExemption( Query $query ): string {
 		$id = 'noCache.misc';
 
 		if ( !$this->canUse( $query ) ) {

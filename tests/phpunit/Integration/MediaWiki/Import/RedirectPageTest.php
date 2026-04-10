@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
 
@@ -66,7 +66,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 		$main = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SimplePageRedirectRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
-			'property' => new DIProperty( DIProperty::TYPE_CATEGORY ),
+			'property' => new Property( Property::TYPE_CATEGORY ),
 			'propertyValues' => [
 				'Regression test',
 				'Redirect test',
@@ -76,12 +76,12 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 
 		$expectedSomeProperties = [
 			'properties' => [
-				new DIProperty( 'Has regression test' )
+				new Property( 'Has regression test' )
 			]
 		];
 
 		$expectedRedirectAsWikiValue = [
-			'property' => new DIProperty( '_REDI' ),
+			'property' => new Property( '_REDI' ),
 			'propertyValues' => [
 				'ToBeSimplePageRedirect',
 				'NewPageRedirectRegressionTest',
@@ -112,7 +112,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$semanticDataBatches = [
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $main ) ),
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $main ) ),
 		];
 
 		// Something changed in MW since 1.28 that causes a
@@ -132,7 +132,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 		);
 
 		$inSemanticDataFetcher = new InSemanticDataFetcher( $this->getStore() );
-		$inSemanticData = $inSemanticDataFetcher->getSemanticData( DIWikiPage::newFromTitle( $main ) );
+		$inSemanticData = $inSemanticDataFetcher->getSemanticData( WikiPage::newFromTitle( $main ) );
 
 		// When running sqlite, the database select returns an empty result which
 		// is probably due to some DB-prefix issues in MW's DatabaseSqlite

@@ -2,20 +2,21 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\SPARQLStore;
-use SMW\Subobject;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
-use SMWDINumber as DINumber;
-use SMWQuery as Query;
 
 /**
  * @group semantic-mediawiki
@@ -25,7 +26,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framework\TestCase {
+class QueryResultLookupWithoutBaseStoreIntegrationTest extends TestCase {
 
 	private $store = null;
 	private $queryResultValidator;
@@ -77,7 +78,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framewor
 	public function testQueryZeroResults_afterSubjectRemoval() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$property = new DIProperty( __METHOD__ );
+		$property = new Property( __METHOD__ );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$semanticData->addDataValue(
@@ -118,13 +119,13 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framewor
 	 * @see http://semantic-mediawiki.org/wiki/Help:Selecting_pages#Restricting_results_to_a_namespace
 	 */
 	public function testQuerySubjects_onNamspaceRestrictedCondition() {
-		$subjectInHelpNamespace = new DIWikiPage( __METHOD__, NS_HELP, '' );
+		$subjectInHelpNamespace = new WikiPage( __METHOD__, NS_HELP, '' );
 
 		$semanticData = $this->semanticDataFactory
 			->setSubject( $subjectInHelpNamespace )
 			->newEmptySemanticData();
 
-		$property = new DIProperty( 'SomePageTypePropertyForNamespaceAnnotation' );
+		$property = new Property( 'SomePageTypePropertyForNamespaceAnnotation' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$semanticData->addDataValue(
@@ -162,10 +163,10 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framewor
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
 		$subobject->setEmptyContainerForId( 'SubobjectToTestReferenceAfterUpdate' );
 
-		$property = new DIProperty( 'SomeNumericPropertyToCompareReference' );
+		$property = new Property( 'SomeNumericPropertyToCompareReference' );
 		$property->setPropertyTypeId( '_num' );
 
-		$dataItem = new DINumber( 99999 );
+		$dataItem = new Number( 99999 );
 
 		$subobject->addDataValue(
 			$this->dataValueFactory->newDataValueByItem( $dataItem, $property )

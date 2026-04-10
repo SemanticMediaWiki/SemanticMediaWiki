@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\DataItems\Property;
 use SMW\Localizer\Localizer;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -14,29 +15,26 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class PropertyLabelFinder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
 	/**
 	 * Array with entries "property id" => "property label"
 	 *
 	 * @var string[]
 	 */
-	private $languageDependentPropertyLabels = [];
+	private array $languageDependentPropertyLabels;
 
 	/**
 	 * Array with entries "property label" => "property id"
 	 *
 	 * @var string[]
 	 */
-	private $canonicalPropertyLabels = [];
+	private array $canonicalPropertyLabels;
 
 	/**
 	 * @var string[]
 	 */
-	private $canonicalDatatypeLabels = [];
+	private array $canonicalDatatypeLabels;
 
 	/**
 	 * @since 2.2
@@ -57,7 +55,7 @@ class PropertyLabelFinder {
 	 *
 	 * @return array
 	 */
-	public function getKownPredefinedPropertyLabels() {
+	public function getKownPredefinedPropertyLabels(): array {
 		return $this->languageDependentPropertyLabels;
 	}
 
@@ -88,7 +86,7 @@ class PropertyLabelFinder {
 	 *
 	 * @return string
 	 */
-	public function findPropertyLabelById( $id ) {
+	public function findPropertyLabelById( $id ): string {
 		if ( array_key_exists( $id, $this->languageDependentPropertyLabels ) ) {
 			return $this->languageDependentPropertyLabels[$id];
 		}
@@ -142,7 +140,7 @@ class PropertyLabelFinder {
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
 		$preferredPropertyLabel = $propertySpecificationLookup->getPreferredPropertyLabelByLanguageCode(
-			new DIProperty( str_replace( ' ', '_', $id ) ),
+			new Property( str_replace( ' ', '_', $id ) ),
 			$languageCode
 		);
 
@@ -155,9 +153,9 @@ class PropertyLabelFinder {
 	 * @param string $text
 	 * @param string $languageCode
 	 *
-	 * @return DIProperty[]|[]
+	 * @return mixed[]
 	 */
-	public function findPropertyListFromLabelByLanguageCode( $text, $languageCode = '' ) {
+	public function findPropertyListFromLabelByLanguageCode( $text, $languageCode = '' ): array {
 		if ( $text === '' ) {
 			return [];
 		}
@@ -167,7 +165,7 @@ class PropertyLabelFinder {
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
-			new DIProperty( '_PPLB' )
+			new Property( '_PPLB' )
 		);
 
 		$dataValue->setUserValue(
@@ -197,7 +195,7 @@ class PropertyLabelFinder {
 		}
 
 		foreach ( $queryResult->getResults() as $result ) {
-			$propertyList[] = DIProperty::newFromUserLabel( $result->getDBKey() );
+			$propertyList[] = Property::newFromUserLabel( $result->getDBKey() );
 		}
 
 		return $propertyList;
@@ -210,7 +208,7 @@ class PropertyLabelFinder {
 	 *
 	 * @return string|false
 	 */
-	public function searchPropertyIdByLabel( $label ) {
+	public function searchPropertyIdByLabel( $label ): int|string|false {
 		return array_search( $label, $this->languageDependentPropertyLabels );
 	}
 
@@ -220,7 +218,7 @@ class PropertyLabelFinder {
 	 * @param string $id
 	 * @param string $label
 	 */
-	public function registerPropertyLabel( $id, $label, $asCanonical = true ) {
+	public function registerPropertyLabel( $id, $label, $asCanonical = true ): void {
 		// Prevent an extension from overriding an already registered
 		// canonical label that may point to a different ID
 		if ( isset( $this->canonicalPropertyLabels[$label] ) && $this->canonicalPropertyLabels[$label] !== $id ) {

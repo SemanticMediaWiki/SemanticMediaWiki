@@ -6,11 +6,11 @@ use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataModel\SequenceMap;
 use SMW\DataValueFactory;
 use SMW\Encoder;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink as Infolink;
 
 /**
  * This special page implements a view on a object-relation pair, i.e. a page that
@@ -26,9 +26,6 @@ use SMWInfolink as Infolink;
  */
 class SpecialPageProperty extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'PageProperty', '', false );
 	}
@@ -36,7 +33,7 @@ class SpecialPageProperty extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$request = $this->getRequest();
 
 		if ( $request->getText( 'cl', '' ) !== '' ) {
@@ -84,15 +81,15 @@ class SpecialPageProperty extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 
-	private function load( $options ) {
+	private function load( Options $options ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		$subject = $dataValueFactory->newTypeIDValue(
+		$subject = $dataValueFactory->newDataValueByType(
 			'_wpg',
 			$options->get( 'from' )
 		);

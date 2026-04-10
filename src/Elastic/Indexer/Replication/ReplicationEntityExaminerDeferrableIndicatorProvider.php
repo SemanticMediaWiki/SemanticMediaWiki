@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
@@ -22,53 +22,26 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
-	 * @var ReplicationCheck
-	 */
-	private $replicationCheck;
-
-	/**
 	 * @var
 	 */
-	private $indicators = [];
+	private array $indicators = [];
 
-	/**
-	 * @var bool
-	 */
-	private $checkReplication = false;
+	private bool $checkReplication = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
+	private string $severityType = '';
 
 	private TemplateEngine $templateEngine;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
-	 * @param ReplicationCheck $replicationCheck
 	 */
-	public function __construct( Store $store, EntityCache $entityCache, ReplicationCheck $replicationCheck ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
-		$this->replicationCheck = $replicationCheck;
+	public function __construct(
+		private readonly Store $store,
+		private readonly EntityCache $entityCache,
+		private readonly ReplicationCheck $replicationCheck,
+	) {
 	}
 
 	/**
@@ -76,7 +49,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @param bool $checkReplication
 	 */
-	public function canCheckReplication( $checkReplication ) {
+	public function canCheckReplication( $checkReplication ): void {
 		$this->checkReplication = (bool)$checkReplication;
 	}
 
@@ -85,7 +58,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
@@ -121,12 +94,12 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkReplication ) {
 			$this->checkReplication( $subject, $options );
 		}
@@ -139,7 +112,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
@@ -148,7 +121,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
@@ -157,26 +130,26 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
 		// component) therefore disabled it when indicators are present
 		return '#mw-indicator-mw-helplink {display:none;}';
 	}
 
 	/**
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return void
 	 */
-	private function checkReplication( $subject, $options ) {
+	private function checkReplication( WikiPage $subject, array $options ): void {
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$property = Property::newFromUserLabel( $subject->getDBKey() );
 
 			if ( !$property->isUserDefined() ) {
-				$subject = new DIWikiPage( $property->getKey(), SMW_NS_PROPERTY );
+				$subject = new WikiPage( $property->getKey(), SMW_NS_PROPERTY );
 			}
 		}
 
@@ -185,7 +158,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		}
 
 		if ( $this->isDeferredMode ) {
-			return $this->runCheck( $subject, $options );
+			$this->runCheck( $subject, $options );
+			return;
 		}
 
 		$this->indicators = [
@@ -199,7 +173,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return null
 	 */
-	private function runCheck( $subject, $options ) {
+	private function runCheck( WikiPage $subject, array $options ): void {
 		$html = $this->replicationCheck->checkReplication( $subject, $options );
 
 		$this->templateEngine = new TemplateEngine();
@@ -228,7 +202,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		];
 	}
 
-	private function wasChecked( $subject ) {
+	private function wasChecked( WikiPage $subject ): bool {
 		$connection = $this->store->getConnection( 'elastic' );
 		$wasChecked = false;
 

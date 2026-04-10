@@ -3,8 +3,8 @@
 namespace SMW\Property;
 
 use MediaWiki\User\User;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
 
@@ -23,32 +23,23 @@ class RestrictionExaminer {
 	 */
 	private $error = [];
 
-	/**
-	 * @var User|null
-	 */
-	private $user;
+	private ?User $user = null;
 
 	/**
 	 * @var bool|string
 	 */
 	private $createProtectionRight = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isQueryContext = false;
+	private bool $isQueryContext = false;
 
-	/**
-	 * @var array
-	 */
-	private $exists = [];
+	private array $exists = [];
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param User $user
 	 */
-	public function setUser( User $user ) {
+	public function setUser( User $user ): void {
 		$this->user = $user;
 	}
 
@@ -57,7 +48,7 @@ class RestrictionExaminer {
 	 *
 	 * @param string|bool $createProtectionRight
 	 */
-	public function setCreateProtectionRight( $createProtectionRight ) {
+	public function setCreateProtectionRight( $createProtectionRight ): void {
 		$this->createProtectionRight = $createProtectionRight;
 	}
 
@@ -66,7 +57,7 @@ class RestrictionExaminer {
 	 *
 	 * @param bool $isQueryContext
 	 */
-	public function isQueryContext( $isQueryContext ) {
+	public function isQueryContext( $isQueryContext ): void {
 		$this->isQueryContext = (bool)$isQueryContext;
 	}
 
@@ -75,7 +66,7 @@ class RestrictionExaminer {
 	 *
 	 * @return bool
 	 */
-	public function hasRestriction() {
+	public function hasRestriction(): bool {
 		return $this->error !== [];
 	}
 
@@ -84,7 +75,7 @@ class RestrictionExaminer {
 	 *
 	 * @param array
 	 */
-	public function getError() {
+	public function getError(): string|array {
 		return $this->error;
 	}
 
@@ -93,25 +84,25 @@ class RestrictionExaminer {
 	 *
 	 * @param string $errorMsg
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
-	public static function grepPropertyFromRestrictionErrorMsg( $errorMsg ) {
+	public static function grepPropertyFromRestrictionErrorMsg( $errorMsg ): ?Property {
 		if ( strpos( $errorMsg, self::CREATE_RESTRICTION ) === false ) {
 			return null;
 		}
 
 		$error = json_decode( $errorMsg, true );
 
-		return isset( $error[2] ) ? DIProperty::newFromUserLabel( $error[2] ) : null;
+		return isset( $error[2] ) ? Property::newFromUserLabel( $error[2] ) : null;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
-	 * @param DIWikiPage|null $contextPage
+	 * @param Property $property
+	 * @param WikiPage|null $contextPage
 	 */
-	public function checkRestriction( DIProperty $property, ?DIWikiPage $contextPage = null ) {
+	public function checkRestriction( Property $property, ?WikiPage $contextPage = null ): void {
 		$this->error = [];
 
 		if ( $this->isDeclarative( $property, $contextPage ) ) {
@@ -127,7 +118,7 @@ class RestrictionExaminer {
 		}
 	}
 
-	private function isDeclarative( $property, $contextPage = null ) {
+	private function isDeclarative( Property $property, ?WikiPage $contextPage = null ) {
 		if ( $this->isQueryContext || $contextPage === null ) {
 			return false;
 		}
@@ -143,16 +134,17 @@ class RestrictionExaminer {
 			return false;
 		}
 
-		return $this->error = Message::encode(
+		$this->error = Message::encode(
 			[
 				'smw-datavalue-property-restricted-declarative-use',
 				$property->getLabel()
 			],
 			Message::PARSE
 		);
+		return $this->error;
 	}
 
-	private function isAnnotationRestricted( $property ) {
+	private function isAnnotationRestricted( Property $property ): false|array {
 		if ( $this->isQueryContext || $property->isUserDefined() ) {
 			return false;
 		}
@@ -161,13 +153,14 @@ class RestrictionExaminer {
 			return false;
 		}
 
-		return $this->error = [
+		$this->error = [
 			'smw-datavalue-property-restricted-annotation-use',
 			$property->getLabel()
 		];
+		return $this->error;
 	}
 
-	private function isCreateProtected( $property ) {
+	private function isCreateProtected( Property $property ) {
 		if ( $this->user === null || $this->createProtectionRight === false ) {
 			return false;
 		}
@@ -184,7 +177,7 @@ class RestrictionExaminer {
 		}
 
 		// A user without the appropriate right cannot use a non-existing property
-		return $this->error = Message::encode(
+		$this->error = Message::encode(
 			[
 				self::CREATE_RESTRICTION,
 				$property->getLabel(),
@@ -192,6 +185,7 @@ class RestrictionExaminer {
 			],
 			Message::PARSE
 		);
+		return $this->error;
 	}
 
 }

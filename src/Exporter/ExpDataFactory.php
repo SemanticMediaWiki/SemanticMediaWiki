@@ -3,11 +3,11 @@
 namespace SMW\Exporter;
 
 use MediaWiki\MediaWikiServices;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Site;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,17 +18,9 @@ use SMWExporter as Exporter;
 class ExpDataFactory {
 
 	/**
-	 * @var Exporter
-	 */
-	private $exporter;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Exporter $exporter
 	 */
-	public function __construct( Exporter $exporter ) {
-		$this->exporter = $exporter;
+	public function __construct( private readonly Exporter $exporter ) {
 	}
 
 	/**
@@ -117,7 +109,7 @@ class ExpDataFactory {
 	}
 
 	/**
-	 * Create an SMWExpData container that encodes the ontology header for an
+	 * Create an ExpData container that encodes the ontology header for an
 	 * SMW exported OWL file.
 	 *
 	 * @param string $ontologyuri specifying the URI of the ontology, possibly

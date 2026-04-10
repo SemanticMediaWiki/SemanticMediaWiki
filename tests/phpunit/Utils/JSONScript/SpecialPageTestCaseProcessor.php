@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use HttpStatus;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
@@ -78,10 +79,10 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			return;
 		}
 
-		if ( isset( $case['special-page']['query-parameters'] ) ) {
+		if ( isset( $case['special-page']['query-parameters'] ) && is_string( $case['special-page']['query-parameters'] ) ) {
 			$queryParameters = $case['special-page']['query-parameters'];
 		} else {
-			$queryParameters = [];
+			$queryParameters = '';
 		}
 
 		$text = $this->getTextForRequestBy(
@@ -128,7 +129,7 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		$code = $response->getStatusCode();
 
 		if ( $code > 0 ) {
-			$response->header( "Status: " . $code . ' ' . \HttpStatus::getMessage( $code ) );
+			$response->header( "Status: " . $code . ' ' . HttpStatus::getMessage( $code ) );
 		}
 
 		return $text;

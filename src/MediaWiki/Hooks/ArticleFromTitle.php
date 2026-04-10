@@ -22,17 +22,9 @@ use SMW\Store;
 class ArticleFromTitle implements HookListener {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 2.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -43,7 +35,7 @@ class ArticleFromTitle implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( Title &$title, ?Article &$page = null ) {
+	public function process( Title &$title, ?Article &$page = null ): bool {
 		$ns = $title->getNamespace();
 
 		if ( $ns !== SMW_NS_PROPERTY && $ns !== SMW_NS_CONCEPT ) {

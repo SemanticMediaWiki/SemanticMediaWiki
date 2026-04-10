@@ -2,12 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use WikiPage;
 
 /**
@@ -35,7 +36,7 @@ class ArticlePurge implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( WikiPage &$wikiPage ) {
+	public function process( WikiPage &$wikiPage ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $wikiPage->getTitle();
@@ -65,10 +66,10 @@ class ArticlePurge implements HookListener {
 		return true;
 	}
 
-	private function invalidateResultCache( $store, $title ) {
+	private function invalidateResultCache( Store $store, Title $title ): void {
 		$dependency_list = $store->getPropertyValues(
-			DIWikiPage::newFromTitle( $title ),
-			new DIProperty( '_ASK' )
+			\SMW\DataItems\WikiPage::newFromTitle( $title ),
+			new Property( '_ASK' )
 		);
 
 		$context = [

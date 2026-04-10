@@ -30,7 +30,7 @@ class JobFactory {
 	 *
 	 * @param array $jobs
 	 */
-	public static function batchInsert( array $jobs ) {
+	public static function batchInsert( array $jobs ): void {
 		Job::batchInsert( $jobs );
 	}
 
@@ -44,43 +44,32 @@ class JobFactory {
 	 * @return Job
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, ?Title $title = null, array $parameters = [] ) {
+	public function newByType( $type, ?Title $title = null, array $parameters = [] ): Job {
 		if ( $title === null ) {
 			return new NullJob( null );
 		}
 
 		switch ( $type ) {
-			case 'SMW\RefreshJob':
 			case 'smw.refresh':
 				return $this->newRefreshJob( $title, $parameters );
-			case 'SMW\UpdateJob':
 			case 'smw.update':
 				return $this->newUpdateJob( $title, $parameters );
-			case 'SMW\UpdateDispatcherJob':
 			case 'smw.updateDispatcher':
 				return $this->newUpdateDispatcherJob( $title, $parameters );
-			case 'SMW\ParserCachePurgeJob':
 			case 'smw.parserCachePurge':
 				return $this->newParserCachePurgeJob( $title, $parameters );
-			case 'SMW\EntityIdDisposerJob':
 			case 'smw.entityIdDisposer':
 				return $this->newEntityIdDisposerJob( $title, $parameters );
-			case 'SMW\PropertyStatisticsRebuildJob':
 			case 'smw.propertyStatisticsRebuild':
 				return $this->newPropertyStatisticsRebuildJob( $title, $parameters );
-			case 'SMW\FulltextSearchTableUpdateJob':
 			case 'smw.fulltextSearchTableUpdate':
 				return $this->newFulltextSearchTableUpdateJob( $title, $parameters );
-			case 'SMW\FulltextSearchTableRebuildJob':
 			case 'smw.fulltextSearchTableRebuild':
 				return $this->newFulltextSearchTableRebuildJob( $title, $parameters );
-			case 'SMW\ChangePropagationDispatchJob':
 			case 'smw.changePropagationDispatch':
 				return $this->newChangePropagationDispatchJob( $title, $parameters );
-			case 'SMW\ChangePropagationUpdateJob':
 			case 'smw.changePropagationUpdate':
 				return $this->newChangePropagationUpdateJob( $title, $parameters );
-			case 'SMW\ChangePropagationClassUpdateJob':
 			case 'smw.changePropagationClassUpdate':
 				return $this->newChangePropagationClassUpdateJob( $title, $parameters );
 		}
@@ -96,7 +85,7 @@ class JobFactory {
 	 *
 	 * @return RefreshJob
 	 */
-	public function newRefreshJob( Title $title, array $parameters = [] ) {
+	public function newRefreshJob( Title $title, array $parameters = [] ): RefreshJob {
 		return new RefreshJob( $title, $parameters );
 	}
 
@@ -108,7 +97,7 @@ class JobFactory {
 	 *
 	 * @return UpdateJob
 	 */
-	public function newUpdateJob( Title $title, array $parameters = [] ) {
+	public function newUpdateJob( Title $title, array $parameters = [] ): UpdateJob {
 		return new UpdateJob( $title, $parameters );
 	}
 
@@ -120,7 +109,7 @@ class JobFactory {
 	 *
 	 * @return UpdateDispatcherJob
 	 */
-	public function newUpdateDispatcherJob( Title $title, array $parameters = [] ) {
+	public function newUpdateDispatcherJob( Title $title, array $parameters = [] ): UpdateDispatcherJob {
 		return new UpdateDispatcherJob( $title, $parameters );
 	}
 
@@ -132,7 +121,7 @@ class JobFactory {
 	 *
 	 * @return FulltextSearchTableUpdateJob
 	 */
-	public function newFulltextSearchTableUpdateJob( Title $title, array $parameters = [] ) {
+	public function newFulltextSearchTableUpdateJob( Title $title, array $parameters = [] ): FulltextSearchTableUpdateJob {
 		return new FulltextSearchTableUpdateJob( $title, $parameters );
 	}
 
@@ -144,7 +133,7 @@ class JobFactory {
 	 *
 	 * @return EntityIdDisposerJob
 	 */
-	public function newEntityIdDisposerJob( Title $title, array $parameters = [] ) {
+	public function newEntityIdDisposerJob( Title $title, array $parameters = [] ): EntityIdDisposerJob {
 		return new EntityIdDisposerJob( $title, $parameters );
 	}
 
@@ -156,7 +145,7 @@ class JobFactory {
 	 *
 	 * @return PropertyStatisticsRebuildJob
 	 */
-	public function newPropertyStatisticsRebuildJob( Title $title, array $parameters = [] ) {
+	public function newPropertyStatisticsRebuildJob( Title $title, array $parameters = [] ): PropertyStatisticsRebuildJob {
 		return new PropertyStatisticsRebuildJob( $title, $parameters );
 	}
 
@@ -168,7 +157,7 @@ class JobFactory {
 	 *
 	 * @return FulltextSearchTableRebuildJob
 	 */
-	public function newFulltextSearchTableRebuildJob( Title $title, array $parameters = [] ) {
+	public function newFulltextSearchTableRebuildJob( Title $title, array $parameters = [] ): FulltextSearchTableRebuildJob {
 		return new FulltextSearchTableRebuildJob( $title, $parameters );
 	}
 
@@ -180,7 +169,7 @@ class JobFactory {
 	 *
 	 * @return ChangePropagationDispatchJob
 	 */
-	public function newChangePropagationDispatchJob( Title $title, array $parameters = [] ) {
+	public function newChangePropagationDispatchJob( Title $title, array $parameters = [] ): ChangePropagationDispatchJob {
 		return new ChangePropagationDispatchJob( $title, $parameters );
 	}
 
@@ -192,7 +181,7 @@ class JobFactory {
 	 *
 	 * @return ChangePropagationUpdateJob
 	 */
-	public function newChangePropagationUpdateJob( Title $title, array $parameters = [] ) {
+	public function newChangePropagationUpdateJob( Title $title, array $parameters = [] ): ChangePropagationUpdateJob {
 		return new ChangePropagationUpdateJob( $title, $parameters );
 	}
 
@@ -204,7 +193,7 @@ class JobFactory {
 	 *
 	 * @return ChangePropagationClassUpdateJob
 	 */
-	public function newChangePropagationClassUpdateJob( Title $title, array $parameters = [] ) {
+	public function newChangePropagationClassUpdateJob( Title $title, array $parameters = [] ): ChangePropagationClassUpdateJob {
 		return new ChangePropagationClassUpdateJob( $title, $parameters );
 	}
 
@@ -216,7 +205,7 @@ class JobFactory {
 	 *
 	 * @return ParserCachePurgeJob
 	 */
-	public function newParserCachePurgeJob( Title $title, array $parameters = [] ) {
+	public function newParserCachePurgeJob( Title $title, array $parameters = [] ): ParserCachePurgeJob {
 		return new ParserCachePurgeJob( $title, $parameters );
 	}
 

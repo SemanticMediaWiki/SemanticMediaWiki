@@ -10,9 +10,9 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\TermParser;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @private
@@ -25,30 +25,17 @@ use SMWQueryProcessor as QueryProcessor;
 class QueryBuilder {
 
 	/**
-	 * @var WebRequest
-	 */
-	private $request;
-
-	/**
-	 * @var array
-	 */
-	private $data = [];
-
-	/**
 	 * @var array
 	 */
 	private $queryCache = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest|null $request
-	 * @param array|null $data
 	 */
-	public function __construct( ?WebRequest $request = null, array $data = [] ) {
-		$this->request = $request;
-		$this->data = $data;
-
+	public function __construct(
+		private ?WebRequest $request = null,
+		private readonly array $data = [],
+	) {
 		if ( $this->request === null ) {
 			$this->request = $GLOBALS['wgRequest'];
 		}
@@ -89,7 +76,7 @@ class QueryBuilder {
 	 * @param Query|null $query
 	 * @param array $searchableNamespaces
 	 */
-	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ) {
+	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ): void {
 		if ( $query === null ) {
 			return;
 		}
@@ -103,7 +90,7 @@ class QueryBuilder {
 		}
 
 		$namespacesDisjunction = new Disjunction(
-			array_map( static function ( $ns ) {
+			array_map( static function ( int $ns ): NamespaceDescription {
 				return new NamespaceDescription( $ns );
 			}, $namespaces )
 		);
@@ -117,7 +104,7 @@ class QueryBuilder {
 	 *
 	 * @param Query|null $query
 	 */
-	public function addSort( ?Query $query = null ) {
+	public function addSort( ?Query $query = null ): void {
 		if ( $query === null ) {
 			return;
 		}
@@ -141,7 +128,7 @@ class QueryBuilder {
 	 *
 	 * @return
 	 */
-	public function getQueryString( Store $store, $term ) {
+	public function getQueryString( Store $store, $term ): string {
 		// Special invisible char which is set by the JS component to allow to
 		// push a forms submit through the SearchEngine without an actual "search
 		// term" to avoid being blocked on an empty request which only contains
@@ -207,9 +194,9 @@ class QueryBuilder {
 	 * @param string $form
 	 * @param array $data
 	 *
-	 * @return
+	 * @return mixed[]|\non-empty-list<array{mixed, mixed}>[]|\non-empty-list<array{mixed, 'and'}>[]
 	 */
-	public function fetchFieldValues( $form, array $data ) {
+	public function fetchFieldValues( $form, array $data ): array {
 		$fieldValues = [];
 
 		if ( !isset( $data['forms'] ) ) {

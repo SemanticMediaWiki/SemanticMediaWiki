@@ -7,6 +7,7 @@ use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Hooks;
+use SMW\Query\ResultFormat;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Logo;
 
@@ -31,6 +32,8 @@ final class Setup {
 	 * - `SqliteInstaller`
 	 *
 	 * Any change to a version will modify the key computed by `SetupFile::makeKey`.
+	 *
+	 * @var array
 	 */
 	const MINIMUM_DB_VERSION = [
 		'postgres' => '9.5',
@@ -45,15 +48,17 @@ final class Setup {
 	 * @since 3.1
 	 *
 	 * @param array &$vars
+	 *
+	 * @return void
 	 */
-	public static function registerExtensionCheck( &$vars ) {
+	public static function registerExtensionCheck( array &$vars ): void {
 		$uncaughtExceptionHandler = new UncaughtExceptionHandler(
 			SetupCheck::newFromDefaults()
 		);
 
 		// Register an exception handler to fetch the "Uncaught Exception" which
-		// is can be thrown by the `ExtensionRegistry` in case `enableSemantics`
-		// and `wfLoadExtension( 'SemanticMediaWiki' )` were used simultaneously
+		// can be thrown by the `ExtensionRegistry` in case the deprecated
+		// `enableSemantics` and `wfLoadExtension` were used simultaneously
 		// by emitting something like:
 		//
 		// "... It was attempted to load SemanticMediaWiki twice ..."
@@ -70,8 +75,10 @@ final class Setup {
 	 * @since 3.2
 	 *
 	 * @param array &$vars
+	 *
+	 * @return void
 	 */
-	public static function releaseExtensionCheck( &$vars ) {
+	public static function releaseExtensionCheck( &$vars ): void {
 		// Restore the exception handler from before Setup::registerExtensionCheck
 		// and before MediaWiki setup has added its own in `Setup.php` after
 		// declaring `MW_SERVICE_BOOTSTRAP_COMPLETE` using
@@ -86,6 +93,10 @@ final class Setup {
 	 * are otherwise too late for the hook system to be recognized.
 	 *
 	 * @since 3.0
+	 *
+	 * @param array $vars
+	 *
+	 * @return array
 	 */
 	public static function initExtension( array $vars ): array {
 		Hooks::registerEarly( $vars );
@@ -95,20 +106,31 @@ final class Setup {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return bool
 	 */
-	public static function isEnabled() {
+	public static function isEnabled(): bool {
 		return defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' );
 	}
 
 	/**
 	 * @since 3.0
+	 *
+	 * @param bool $isCli
+	 *
+	 * @return bool
 	 */
-	public static function isValid( $isCli = false ) {
+	public static function isValid( bool $isCli = false ): bool {
 		return SetupFile::isGoodSchema( $isCli );
 	}
 
 	/**
 	 * @since 1.9
+	 *
+	 * @param array $vars
+	 * @param string $rootDir
+	 *
+	 * @return array
 	 */
 	public function init( array $vars, string $rootDir ): array {
 		$setupFile = new SetupFile();
@@ -123,18 +145,23 @@ final class Setup {
 		$this->initMessageCallbackHandler();
 		$this->addDefaultConfigurations( $vars, $rootDir );
 
-		$this->registerJobClasses( $vars );
 		$this->registerPermissions( $vars );
 
 		$this->registerParamDefinitions( $vars );
-		$this->registerFooterIcon( $vars, $rootDir );
-		$this->registerHooks( $vars );
+		$this->registerFooterIcon( $vars );
+		$this->registerHooks();
 
 		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
 
 		return $vars;
 	}
 
+	/**
+	 * @param SetupFile $setupFile
+	 * @param array $vars
+	 *
+	 * @return void
+	 */
 	private function runUpgradeKeyCheck( SetupFile $setupFile, array $vars ): void {
 		$setupCheck = new SetupCheck(
 			[
@@ -161,7 +188,13 @@ final class Setup {
 		}
 	}
 
-	private function addDefaultConfigurations( &$vars, $rootDir ) {
+	/**
+	 * @param array &$vars
+	 * @param string $rootDir
+	 *
+	 * @return void
+	 */
+	private function addDefaultConfigurations( array &$vars, string $rootDir ): void {
 		// Convenience function for extensions depending on a SMW specific
 		// test infrastructure
 		if ( !defined( 'SMW_PHPUNIT_AUTOLOADER_FILE' ) ) {
@@ -173,24 +206,14 @@ final class Setup {
 			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../tests/phpunit' );
 		}
 
-		$vars['wgLogTypes'][] = 'smw';
-		$vars['wgFilterLogTypes']['smw'] = true;
-
 		$vars['smwgMasterStore'] = null;
 		$vars['smwgIQRunningNumber'] = 0;
-
-		if ( !isset( $vars['smwgNamespace'] ) ) {
-			$vars['smwgNamespace'] = parse_url( $vars['wgServer'], PHP_URL_HOST );
-		}
-
-		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
-			if ( is_readable( $file ) ) {
-				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include $file );
-			}
-		}
 	}
 
-	private function initConnectionProviders() {
+	/**
+	 * @return void
+	 */
+	private function initConnectionProviders(): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
@@ -223,7 +246,7 @@ final class Setup {
 		);
 	}
 
-	private function initMessageCallbackHandler() {
+	private function initMessageCallbackHandler(): void {
 		Message::registerCallbackHandler( Message::TEXT, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
@@ -272,67 +295,14 @@ final class Setup {
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgRestrictionLevels
 	 */
-	private function registerJobClasses( &$vars ) {
-		$jobClasses = [
-
-			'smw.update' => 'SMW\MediaWiki\Jobs\UpdateJob',
-			'smw.refresh' => 'SMW\MediaWiki\Jobs\RefreshJob',
-			'smw.updateDispatcher' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
-			'smw.fulltextSearchTableUpdate' => 'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
-			'smw.entityIdDisposer' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
-			'smw.propertyStatisticsRebuild' => 'SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob',
-			'smw.fulltextSearchTableRebuild' => 'SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob',
-			'smw.changePropagationDispatch' => 'SMW\MediaWiki\Jobs\ChangePropagationDispatchJob',
-			'smw.changePropagationUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
-			'smw.changePropagationClassUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
-			'smw.deferredConstraintCheckUpdateJob' => 'SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob',
-			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Jobs\IndexerRecoveryJob',
-			'smw.elasticFileIngest' => 'SMW\Elastic\Jobs\FileIngestJob',
-			'smw.parserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
-
-			// Legacy 3.0-
-			'SMW\UpdateJob' => 'SMW\MediaWiki\Jobs\UpdateJob',
-			'SMW\RefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob',
-			'SMW\UpdateDispatcherJob' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
-			'SMW\FulltextSearchTableUpdateJob' => 'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
-			'SMW\EntityIdDisposerJob' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
-			'SMW\PropertyStatisticsRebuildJob' => 'SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob',
-			'SMW\FulltextSearchTableRebuildJob' => 'SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob',
-			'SMW\ChangePropagationDispatchJob' => 'SMW\MediaWiki\Jobs\ChangePropagationDispatchJob',
-			'SMW\ChangePropagationUpdateJob' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
-			'SMW\ChangePropagationClassUpdateJob' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
-
-			// Legacy 2.0-
-			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',
-			'SMWRefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob'
-		];
-
-		foreach ( $jobClasses as $job => $class ) {
-			$vars['wgJobClasses'][$job] = $class;
-		}
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgAvailableRights
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgGroupPermissions
-	 */
-	private function registerPermissions( &$vars ) {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$settings = $applicationFactory->getSettings();
-
+	private function registerPermissions( array &$vars ): void {
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}
 
-		$groupPermissions = new GroupPermissions();
-
-		$groupPermissions->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$groupPermissions->initPermissions( $vars );
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		// Add an additional protection level restricting edit/move/etc
 		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {
@@ -340,16 +310,25 @@ final class Setup {
 		}
 	}
 
-	private function registerParamDefinitions( &$vars ) {
+	/**
+	 * @param array &$vars
+	 *
+	 * @return void
+	 */
+	private function registerParamDefinitions( array &$vars ): void {
 		$vars['wgParamDefinitions']['smwformat'] = [
-			'definition' => '\SMW\Query\ResultFormat',
+			'definition' => ResultFormat::class,
 		];
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
+	 *
+	 * @param array &$vars
+	 *
+	 * @return void
 	 */
-	private function registerFooterIcon( &$vars, $path ) {
+	private function registerFooterIcon( array &$vars ): void {
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}
@@ -371,10 +350,12 @@ final class Setup {
 	 *
 	 * @note $wgHooks contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
+	 *
+	 * @return void
 	 */
-	private function registerHooks( &$vars ) {
+	private function registerHooks(): void {
 		$hooks = new Hooks();
-		$hooks->register( $vars );
+		$hooks->register();
 	}
 
 }

@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Ask;
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
-use SMWQueryProcessor as QueryProcessor;
+use SMW\Query\QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,17 +15,14 @@ use SMWQueryProcessor as QueryProcessor;
  */
 class FormatListWidget {
 
-	/**
-	 * @var array
-	 */
-	private static $resultFormats = [];
+	private static array $resultFormats = [];
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param array $resultFormats
 	 */
-	public static function setResultFormats( array $resultFormats ) {
+	public static function setResultFormats( array $resultFormats ): void {
 		self::$resultFormats = $resultFormats;
 	}
 
@@ -37,7 +34,7 @@ class FormatListWidget {
 	 *
 	 * @return string
 	 */
-	public static function selectList( Title $title, array $params ) {
+	public static function selectList( Title $title, array $params ): string {
 		$result = '';
 
 		// Default
@@ -79,7 +76,7 @@ class FormatListWidget {
 		return $result;
 	}
 
-	private static function formatList( $url, $selectedFormat, &$default, $defaultName, $defaultLocalizedName ) {
+	private static function formatList( $url, string $selectedFormat, string &$default, $defaultName, string $defaultLocalizedName ) {
 		$formatList = Html::rawElement(
 			'option',
 			[
@@ -106,7 +103,7 @@ class FormatListWidget {
 			}
 		}
 
-		usort( $formats, static function ( $x, $y ) {
+		usort( $formats, static function ( array $x, array $y ): int {
 			return strcasecmp( $x['name'], $y['name'] );
 		} );
 

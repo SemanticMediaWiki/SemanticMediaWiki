@@ -17,25 +17,16 @@ class Logger extends AbstractLogger {
 	const ROLE_USER = 'user';
 	const ROLE_PRODUCTION = 'production';
 
-	/**
-	 * @var LoggerInterface
-	 */
-	protected $logger;
-
-	/**
-	 * @var string
-	 */
-	protected $role;
+	protected LoggerInterface $logger;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param LoggerInterface $logger
-	 * @param string $role
 	 */
-	public function __construct( LoggerInterface $logger, $role = self::ROLE_DEVELOPER ) {
+	public function __construct(
+		LoggerInterface $logger,
+		protected $role = self::ROLE_DEVELOPER,
+	) {
 		$this->logger = $logger;
-		$this->role = $role;
 	}
 
 	/**
@@ -43,7 +34,7 @@ class Logger extends AbstractLogger {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function log( $level, $message, array $context = [] ) {
+	public function log( $level, $message, array $context = [] ): void {
 		$shouldLog = false;
 
 		// Everthings goes for the developer role!

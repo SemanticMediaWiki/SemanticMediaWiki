@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,47 +15,23 @@ class CachedListLookup implements ListLookup {
 
 	const VERSION = '0.2';
 
-	/**
-	 * @var ListLookup
-	 */
-	private $listLookup;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var stdClass
-	 */
-	private $cacheOptions;
-
-	/**
-	 * @var bool
-	 */
-	private $isFromCache = false;
+	private bool $isFromCache = false;
 
 	/**
 	 * @var int
 	 */
 	private $timestamp;
 
-	/**
-	 * @var string
-	 */
-	private $cachePrefix = 'smw:store:lookup:';
+	private string $cachePrefix = 'smw:store:lookup:';
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param ListLookup $listLookup
-	 * @param Cache $cache
-	 * @param stdClass $cacheOptions
 	 */
-	public function __construct( ListLookup $listLookup, Cache $cache, \stdClass $cacheOptions ) {
-		$this->listLookup = $listLookup;
-		$this->cache = $cache;
-		$this->cacheOptions = $cacheOptions;
+	public function __construct(
+		private readonly ListLookup $listLookup,
+		private readonly Cache $cache,
+		private readonly stdClass $cacheOptions,
+	) {
 	}
 
 	/**
@@ -62,7 +39,7 @@ class CachedListLookup implements ListLookup {
 	 *
 	 * @param string $cachePrefix
 	 */
-	public function setCachePrefix( $cachePrefix ) {
+	public function setCachePrefix( string $cachePrefix ): void {
 		$this->cachePrefix = $cachePrefix . ':' . $this->cachePrefix;
 	}
 
@@ -104,7 +81,7 @@ class CachedListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return $this->isFromCache;
 	}
 
@@ -129,7 +106,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @since 2.3
 	 */
-	public function deleteCache() {
+	public function deleteCache(): void {
 		[ $id, $optionsKey ] = $this->getCacheKey(
 			$this->listLookup->getHash()
 		);
@@ -169,7 +146,7 @@ class CachedListLookup implements ListLookup {
 		return $data['list'];
 	}
 
-	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ) {
+	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ): void {
 		$this->timestamp = $time;
 		$this->isFromCache = false;
 
@@ -187,7 +164,7 @@ class CachedListLookup implements ListLookup {
 		$this->cache->save( $optionsKey, serialize( $data ), $ttl );
 	}
 
-	private function getCacheKey( $id ) {
+	private function getCacheKey( ?string $id ): array {
 		$optionsKey = '';
 
 		if ( strpos( $id ?? '', '#' ) !== false ) {

@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\Serializer;
 
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
-use SMWExpData as ExpData;
 
 /**
  * Abstract class for serializing exported data (encoded as ExpData object)
@@ -100,7 +100,7 @@ abstract class Serializer {
 	/**
 	 * Clear internal states to start a new serialization.
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
 		$this->decl_todo = [];
@@ -113,7 +113,7 @@ abstract class Serializer {
 	 * Start a new serialization, resetting all internal data and serializing
 	 * necessary header elements.
 	 */
-	public function startSerialization() {
+	public function startSerialization(): void {
 		$this->clear();
 		$this->serializeHeader();
 	}
@@ -124,7 +124,7 @@ abstract class Serializer {
 	 * all necessary declarations. No further serialization functions must be
 	 * called after this.
 	 */
-	public function finishSerialization() {
+	public function finishSerialization(): void {
 		$this->serializeDeclarations();
 		$this->serializeFooter();
 	}
@@ -134,18 +134,18 @@ abstract class Serializer {
 	 * include standard syntax to start output but also declare some common
 	 * namespaces globally.
 	 */
-	abstract protected function serializeHeader();
+	abstract protected function serializeHeader(): void;
 
 	/**
 	 * Serialise the footer (i.e. write it to the internal buffer).
 	 */
-	abstract protected function serializeFooter();
+	abstract protected function serializeFooter(): void;
 
 	/**
 	 * Serialize any declarations that have been found to be missing while
 	 * serializing other elements.
 	 */
-	public function serializeDeclarations() {
+	public function serializeDeclarations(): void {
 		foreach ( $this->decl_todo as $name => $flag ) {
 			$types = [];
 
@@ -216,7 +216,7 @@ abstract class Serializer {
 	/**
 	 * Include collected namespace information into the serialization.
 	 */
-	protected function serializeNamespaces() {
+	protected function serializeNamespaces(): void {
 		foreach ( $this->extra_namespaces as $nsshort => $nsuri ) {
 			$this->serializeNamespace( $nsshort, $nsuri );
 		}
@@ -233,14 +233,14 @@ abstract class Serializer {
 	 * @param $shortname string abbreviation/prefix to declare
 	 * @param $uri string URI prefix that the namespace encodes
 	 */
-	abstract protected function serializeNamespace( $shortname, $uri );
+	abstract protected function serializeNamespace( $shortname, $uri ): void;
 
 	/**
 	 * Require an additional namespace to be declared in the serialization.
 	 * The function checks whether the required namespace is available globally
 	 * and add it to the list of required namespaces otherwise.
 	 */
-	protected function requireNamespace( $nsshort, $nsuri ) {
+	protected function requireNamespace( $nsshort, $nsuri ): void {
 		if ( !array_key_exists( $nsshort, $this->global_namespaces ) ) {
 			$this->extra_namespaces[$nsshort] = $nsuri;
 		}
@@ -250,7 +250,7 @@ abstract class Serializer {
 	 * State that a certain declaration is needed. The method checks if the
 	 * declaration is already available, and records a todo otherwise.
 	 */
-	protected function requireDeclaration( ExpResource $resource, $decltype ) {
+	protected function requireDeclaration( ExpResource $resource, $decltype ): void {
 		// Do not declare predefined OWL language constructs:
 		if ( $resource instanceof ExpNsResource ) {
 			$nsId = $resource->getNamespaceId();
@@ -283,7 +283,7 @@ abstract class Serializer {
 	 *
 	 * @param ExpData $expData
 	 */
-	protected function recordDeclarationTypes( ExpData $expData ) {
+	protected function recordDeclarationTypes( ExpData $expData ): void {
 		foreach ( $expData->getSpecialValues( 'rdf', 'type' ) as $typeresource ) {
 
 			if ( $typeresource instanceof ExpNsResource ) {
@@ -315,7 +315,7 @@ abstract class Serializer {
 	 * @param ExpResource $element specifying the element to update
 	 * @param $typeflag integer specifying the type (e.g. SMW_SERIALIZER_DECL_CLASS)
 	 */
-	protected function declarationDone( ExpResource $element, int $typeflag ) {
+	protected function declarationDone( ExpResource $element, int $typeflag ): void {
 		$name = $element->getUri();
 		$curdone = array_key_exists( $name, $this->decl_done ) ? $this->decl_done[$name] : 0;
 		$this->decl_done[$name] = $curdone | $typeflag;

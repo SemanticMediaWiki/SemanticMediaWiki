@@ -4,13 +4,13 @@ namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\Message\Message;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIError as DIError;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,41 +21,25 @@ use SMWDIError as DIError;
  */
 class UnusedPropertyListLookup implements ListLookup {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
-	 * @var RequestOptions
-	 */
-	private $requestOptions;
+	use KeysetPaginationTrait;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
-	 * @param RequestOptions|null $requestOptions
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore, ?RequestOptions $requestOptions = null ) {
-		$this->store = $store;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
-		$this->requestOptions = $requestOptions;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+		private readonly ?RequestOptions $requestOptions = null,
+	) {
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
@@ -68,14 +52,14 @@ class UnusedPropertyListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return false|string
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -86,64 +70,85 @@ class UnusedPropertyListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 
 	private function selectPropertiesFromTable() {
-		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = [ 'ORDER BY' => 'smw_sort' ];
+		$db = $this->store->getConnection( 'mw.db' );
 
-		if ( $this->requestOptions->limit > 0 ) {
-			$options['LIMIT'] = $this->requestOptions->limit;
-			$options['OFFSET'] = max( $this->requestOptions->offset, 0 );
-		}
-
-		$conditions = [
-			"smw_title NOT LIKE '\_%'", // #2182, exclude predefined properties
-			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
-			'smw_namespace' => SMW_NS_PROPERTY,
-			'smw_iw' => '',
-			'smw_subobject' => '',
-			'smw_proptable_hash IS NOT NULL'
-		];
-
-		$conditions['usage_count'] = 0;
+		$queryBuilder = $db->newSelectQueryBuilder()
+			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->fields( [ 'smw_id', 'smw_title', 'smw_sort' ] )
+			->join( SQLStore::ID_TABLE, null, 'smw_id=p_id' )
+			->where( [
+				'smw_namespace' => SMW_NS_PROPERTY,
+				'smw_iw' => '',
+				'smw_subobject' => '',
+				'usage_count' => 0,
+			] )
+			->andWhere( "smw_title NOT LIKE '\_%'" ) // #2182, exclude predefined properties
+			->andWhere( 'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND )
+			->andWhere( 'smw_proptable_hash IS NOT NULL' )
+			->caller( __METHOD__ );
 
 		if ( $this->requestOptions->getStringConditions() ) {
-			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_sortkey', false );
+			$queryBuilder->andWhere(
+				$this->store->getSQLConditions( $this->requestOptions, '', 'smw_sortkey', false )
+			);
 		}
 
-		$res = $this->store->getConnection( 'mw.db' )->select(
-			[ SQLStore::ID_TABLE, SQLStore::PROPERTY_STATISTICS_TABLE ],
-			[ 'smw_title', 'usage_count' ],
-			$conditions,
-			__METHOD__,
-			$options,
-			[ SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
-		);
+		// Fetch one extra row to detect whether more results exist
+		if ( $this->requestOptions->limit > 0 ) {
+			$queryBuilder->limit( $this->requestOptions->limit + 1 );
+		}
 
-		return $res;
+		$this->applyCursorPagination( $queryBuilder, $db );
+
+		return $queryBuilder->fetchResultSet();
 	}
 
-	private function buildPropertyList( $res ) {
+	/**
+	 * @return Property[]|Error[]
+	 */
+	private function buildPropertyList( $res ): array {
 		$result = [];
+		$rows = [];
 
 		foreach ( $res as $row ) {
-			$result[] = $this->addPropertyFor( $row->smw_title );
+			$rows[] = $row;
+		}
+
+		$isReversed = $this->requestOptions->getCursorBefore() !== null;
+		$limit = $this->requestOptions->limit;
+
+		// Trim the extra lookahead row used to detect more results
+		if ( $limit > 0 && count( $rows ) > $limit ) {
+			array_pop( $rows );
+			$this->requestOptions->setCursorHasMore( true );
+		}
+
+		if ( $isReversed ) {
+			$rows = array_reverse( $rows );
+		}
+
+		foreach ( $rows as $row ) {
+			try {
+				$property = new Property( $row->smw_title );
+			} catch ( PropertyLabelNotResolvedException ) {
+				$property = new Error( new Message( 'smw_noproperty', [ $row->smw_title ] ) );
+			}
+
+			$property->id = $row->smw_id ?? -1;
+			$result[] = $property;
+		}
+
+		if ( $rows !== [] ) {
+			$this->requestOptions->setFirstCursor( (int)$rows[0]->smw_id );
+			$this->requestOptions->setLastCursor( (int)$rows[count( $rows ) - 1]->smw_id );
 		}
 
 		return $result;
-	}
-
-	private function addPropertyFor( $title ) {
-		try {
-			$property = new DIProperty( $title );
-		} catch ( PropertyLabelNotResolvedException $e ) {
-			$property = new DIError( new Message( 'smw_noproperty', [ $title ] ) );
-		}
-
-		return $property;
 	}
 
 }

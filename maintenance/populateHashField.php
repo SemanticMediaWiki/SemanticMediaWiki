@@ -2,10 +2,12 @@
 
 namespace SMW\Maintenance;
 
+use Iterator;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
+use SMW\SQLStore\Installer;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
@@ -88,7 +90,7 @@ class populateHashField extends Maintenance {
 		}
 
 		// Remove legacy by 3.3
-		$setupFile->remove( \SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE );
+		$setupFile->remove( Installer::POPULATE_HASH_FIELD_COMPLETE );
 
 		$this->reportMessage(
 			$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
@@ -218,7 +220,7 @@ class populateHashField extends Maintenance {
 	 *
 	 * @param Iterator|null $rows
 	 */
-	public function populate( ?\Iterator $rows = null ) {
+	public function populate( ?Iterator $rows = null ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$this->cliMsgFormatter->setStartTime( (int)microtime( true ) );
 

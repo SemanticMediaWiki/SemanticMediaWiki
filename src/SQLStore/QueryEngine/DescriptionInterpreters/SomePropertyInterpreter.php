@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\DataTypeRegistry;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
@@ -19,7 +20,6 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -31,25 +31,7 @@ use SMWDataItem as DataItem;
  */
 class SomePropertyInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var ValueMatchConditionBuilder
-	 */
-	private $valueMatchConditionBuilder;
-
-	/**
-	 * @var ComparatorMapper
-	 */
-	private $comparatorMapper;
+	private ComparatorMapper $comparatorMapper;
 
 	/**
 	 * @var FulltextSearchTableFactory
@@ -58,14 +40,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder, ValueMatchConditionBuilder $valueMatchConditionBuilder ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
-		$this->valueMatchConditionBuilder = $valueMatchConditionBuilder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly ValueMatchConditionBuilder $valueMatchConditionBuilder,
+	) {
 		$this->comparatorMapper = new ComparatorMapper();
 	}
 
@@ -74,7 +54,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof SomeProperty;
 	}
 
@@ -90,8 +70,13 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
+
+		if ( !$description instanceof SomeProperty ) {
+			$query->type = QuerySegment::Q_NOQUERY;
+			return $query;
+		}
 
 		$this->interpretPropertyConditionForDescription(
 			$query,
@@ -115,7 +100,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @since 1.8
 	 */
-	private function interpretPropertyConditionForDescription( QuerySegment $query, SomeProperty $description ) {
+	private function interpretPropertyConditionForDescription( QuerySegment $query, SomeProperty $description ): void {
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		$property = $description->getProperty();
 
@@ -137,7 +122,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		}
 
 		$typeid = $property->findPropertyTypeID();
-		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeid );
+		$diType = DataTypeRegistry::getInstance()->getDataItemByType( $typeid );
 
 		if ( $property->isInverse() && $diType !== DataItem::TYPE_WIKIPAGE ) {
 			// can only invert properties that point to pages
@@ -215,7 +200,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$query->joinfield = "{$query->alias}.s_id";
 			$this->compilePropertyValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
 			if ( array_key_exists( $sortkey, $this->conditionBuilder->getSortKeys() ) ) {
-				$query->sortfields[$sortkey] = isset( $query->sortIndexField ) ? $query->sortIndexField : "{$query->alias}.{$indexField}";
+				$query->sortfields[$sortkey] = $query->sortIndexField ?? "{$query->alias}.{$indexField}";
 			}
 		}
 	}
@@ -233,8 +218,8 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 */
 	private function compilePropertyValueDescription(
 			$query, Description $description, PropertyTableDefinition $proptable,
-			DataItemHandler $diHandler, $operator
-	) {
+			DataItemHandler $diHandler, string $operator
+	): void {
 		if ( $description instanceof ValueDescription ) {
 			$this->mapValueDescription( $query, $description, $diHandler, $operator );
 		} elseif ( ( $description instanceof Conjunction ) ||
@@ -272,7 +257,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	private function mapValueDescription( $query, ValueDescription $description, DataItemHandler $diHandler, $operator ) {
+	private function mapValueDescription( $query, ValueDescription $description, DataItemHandler $diHandler, string $operator ): void {
 		$where = '';
 		$dataItem = $description->getDataItem();
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );

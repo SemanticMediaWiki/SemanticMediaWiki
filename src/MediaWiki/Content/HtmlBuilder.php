@@ -27,7 +27,7 @@ class HtmlBuilder {
 		return $this->{$key}( $params );
 	}
 
-	private function schema_head( $params ) {
+	private function schema_head( array $params ): string {
 		$list = [];
 		$text = '';
 		$type_description = '';
@@ -113,7 +113,7 @@ class HtmlBuilder {
 		);
 	}
 
-	private function schema_summary( $params ) {
+	private function schema_summary( array $params ) {
 		$html = '';
 		$rows = '';
 		$parameters = [];
@@ -210,7 +210,7 @@ class HtmlBuilder {
 		);
 	}
 
-	private function schema_body( $params ) {
+	private function schema_body( array $params ) {
 		$class = '';
 		$placeholder = '';
 
@@ -269,7 +269,7 @@ class HtmlBuilder {
 		);
 	}
 
-	private function schema_error_text( $params ) {
+	private function schema_error_text( array $params ) {
 		return Html::rawElement(
 				'ul',
 				[
@@ -279,7 +279,7 @@ class HtmlBuilder {
 		);
 	}
 
-	private function schema_error( $params ) {
+	private function schema_error( array $params ): string {
 		$html = Html::rawElement(
 			'span',
 			[
@@ -295,7 +295,7 @@ class HtmlBuilder {
 		);
 	}
 
-	private function schema_footer( $params ) {
+	private function schema_footer( array $params ) {
 		$html = Html::rawElement(
 			'div',
 			[
@@ -343,11 +343,11 @@ class HtmlBuilder {
 		);
 	}
 
-	private function schema_unknown_type( $params ) {
+	private function schema_unknown_type( array $params ) {
 		return Html::errorBox( $params['msg'] );
 	}
 
-	private function schema_help_link( $params ) {
+	private function schema_help_link( array $params ) {
 		return Html::rawElement(
 			'a',
 			[

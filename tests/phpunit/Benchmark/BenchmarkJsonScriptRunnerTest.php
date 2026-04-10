@@ -8,6 +8,7 @@ use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 
 /**
  * @group semantic-mediawiki-benchmark
+ * @group Database
  * @group medium
  *
  * @license GPL-2.0-or-later

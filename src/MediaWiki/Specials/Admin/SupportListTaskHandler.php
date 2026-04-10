@@ -14,17 +14,9 @@ use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 class SupportListTaskHandler extends TaskHandler {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
+	public function __construct( private readonly HtmlFormRenderer $htmlFormRenderer ) {
 	}
 
 	/**
@@ -32,7 +24,7 @@ class SupportListTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPORT;
 	}
 
@@ -41,7 +33,7 @@ class SupportListTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = Html::rawElement(
 			'p',
 			[],
@@ -55,7 +47,7 @@ class SupportListTaskHandler extends TaskHandler {
 		return $html;
 	}
 
-	private function ennvironmentSection() {
+	private function ennvironmentSection(): string {
 		$info = $this->getStore()->getInfo() + [
 			'smw' => SMW_VERSION,
 			'mediawiki' => MW_VERSION,

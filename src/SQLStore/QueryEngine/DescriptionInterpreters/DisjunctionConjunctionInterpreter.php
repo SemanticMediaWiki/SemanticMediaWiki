@@ -19,20 +19,10 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  */
 class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 
-	// DisjunctionConjunctionInterpreter -> CompoundInterpreter
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
 	/**
 	 * @since 2.2
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**
@@ -40,7 +30,7 @@ class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof Conjunction || $description instanceof Disjunction;
 	}
 
@@ -51,7 +41,7 @@ class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 		$query->type = QuerySegment::Q_DISJUNCTION;
 

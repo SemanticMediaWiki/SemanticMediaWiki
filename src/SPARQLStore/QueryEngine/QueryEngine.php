@@ -6,16 +6,16 @@ use RuntimeException;
 use SMW\Exporter\Element;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\RepositoryConnection;
-use SMWQuery as Query;
 
 /**
- * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
+ * Class mapping Query objects to SPARQL, and for controlling the execution
  * of these queries to obtain suitable QueryResult objects.
  *
  * @license GPL-2.0-or-later
@@ -32,26 +32,6 @@ class QueryEngine implements QueryEngineInterface {
 	const RESULT_VARIABLE = 'result';
 
 	/**
-	 * @var RepositoryConnection
-	 */
-	private $connection;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var QueryResultFactory
-	 */
-	private $queryResultFactory;
-
-	/**
-	 * @var EngineOptions
-	 */
-	private $engineOptions;
-
-	/**
 	 * @var array
 	 */
 	private $sortKeys = [];
@@ -62,17 +42,16 @@ class QueryEngine implements QueryEngineInterface {
 	 * @param RepositoryConnection $connection
 	 * @param ConditionBuilder $conditionBuilder
 	 * @param QueryResultFactory $queryResultFactory
-	 * @param EngineOptions|null $EngineOptions
+	 * @param EngineOptions|null $engineOptions
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-	public function __construct( RepositoryConnection $connection, ConditionBuilder $conditionBuilder, QueryResultFactory $queryResultFactory, ?EngineOptions $engineOptions = null ) {
-	// @codingStandardsIgnoreEnd
-		$this->connection = $connection;
-		$this->conditionBuilder = $conditionBuilder;
-		$this->queryResultFactory = $queryResultFactory;
-		$this->engineOptions = $engineOptions;
-
-		if ( $this->engineOptions === null ) {
+	public function __construct(
+		private readonly RepositoryConnection $connection,
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly QueryResultFactory $queryResultFactory,
+		private ?EngineOptions $engineOptions = null,
+	) {
+	if ( $this->engineOptions === null ) {
 			$this->engineOptions = new EngineOptions();
 		}
 
@@ -80,12 +59,12 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	/**
-	 * @since  2.0
-	 * @param Query $query
-	 *
-	 * @return QueryResult|string
-	 */
-	public function getQueryResult( Query $query ) {
+     * @since  2.0
+     * @param Query $query
+     *
+     * @return QueryResult|string|int
+     */
+    public function getQueryResult( Query $query ): QueryResult|string|int {
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 			 $query->querymode != Query::MODE_DEBUG &&
 			 count( $query->getErrors() ) > 0 ) {
@@ -117,8 +96,8 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->getInstanceQueryResult( $query, $compoundCondition );
 	}
 
-	private function getCountQueryResult( Query $query, Condition $compoundCondition ) {
-		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
+	private function getCountQueryResult( Query $query, Condition $compoundCondition ): int|QueryResult {
+		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;
 			} else {
@@ -149,8 +128,8 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->queryResultFactory->newQueryResult( $repositoryResult, $query );
 	}
 
-	private function getInstanceQueryResult( Query $query, Condition $compoundCondition ) {
-		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
+	private function getInstanceQueryResult( Query $query, Condition $compoundCondition ): QueryResult {
+		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
 			$matchElement = $compoundCondition->matchElement;
 
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
@@ -185,12 +164,12 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->queryResultFactory->newQueryResult( $repositoryResult, $query );
 	}
 
-	private function getDebugQueryResult( Query $query, Condition $compoundCondition ) {
+	private function getDebugQueryResult( Query $query, Condition $compoundCondition ): string {
 		$entries = [];
 		$debugFormatter = new DebugFormatter();
 		$debugFormatter->setName( 'SPARQLStore' );
 
-		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
+		if ( $compoundCondition instanceof SingletonCondition && $compoundCondition->matchElement instanceof Element ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				$sparql = 'None (no conditions).';
 			} else {
@@ -223,19 +202,15 @@ class QueryEngine implements QueryEngineInterface {
 		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function isSingletonConditionWithElementMatch( $condition ) {
-		return $condition instanceof SingletonCondition && $condition->matchElement instanceof Element;
-	}
-
 	/**
-	 * Get a SPARQL option array for the given query.
-	 *
-	 * @param Query $query
-	 * @param Condition $compoundCondition (storing order by variable names)
-	 *
-	 * @return array
-	 */
-	protected function getOptions( Query $query, Condition $compoundCondition ) {
+     * Get a SPARQL option array for the given query.
+     *
+     * @param Query $query
+     * @param Condition $compoundCondition (storing order by variable names)
+     *
+     * @return array
+     */
+    protected function getOptions( Query $query, Condition $compoundCondition ): array {
 		$options = [
 			'LIMIT' => $query->getLimit() + 1,
 			'OFFSET' => $query->getOffset()

@@ -3,14 +3,16 @@
 namespace SMW\Property;
 
 use RuntimeException;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
+use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\Store;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
@@ -33,11 +35,6 @@ class SpecificationLookup {
 	const CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION = ':propertyspecificationlookup:description';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var Cache
 	 */
 	private $entityCache;
@@ -54,12 +51,11 @@ class SpecificationLookup {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store, EntityCache $entityCache ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly Store $store,
+		EntityCache $entityCache,
+	) {
 		$this->entityCache = $entityCache;
 	}
 
@@ -68,7 +64,7 @@ class SpecificationLookup {
 	 *
 	 * @param bool $skipCache
 	 */
-	public function skipCache( $skipCache = true ) {
+	public function skipCache( $skipCache = true ): void {
 		$this->skipCache = $skipCache;
 	}
 
@@ -77,16 +73,16 @@ class SpecificationLookup {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ) {
+	public function setLanguageCode( $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function invalidateCache( DIWikiPage $subject ) {
+	public function invalidateCache( WikiPage $subject ): void {
 		$this->entityCache->invalidate( $subject );
 
 		$this->entityCache->delete(
@@ -105,15 +101,15 @@ class SpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty|DIWikiPage $source
-	 * @param DIProperty $target
+	 * @param Property|WikiPage $source
+	 * @param Property $target
 	 *
-	 * @return ]|DataItem[
+	 * @return bool|array|DataItem[]
 	 */
-	public function getSpecification( $source, DIProperty $target ) {
-		if ( $source instanceof DIProperty ) {
+	public function getSpecification( $source, Property $target ) {
+		if ( $source instanceof Property ) {
 			$subject = $source->getCanonicalDiWikiPage();
-		} elseif ( $source instanceof DIWikiPage ) {
+		} elseif ( $source instanceof WikiPage ) {
 			$subject = $source;
 		} else {
 			throw new RuntimeException( "Invalid request instance type" );
@@ -146,13 +142,13 @@ class SpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return false|DataItem
 	 */
-	public function getFieldListBy( DIProperty $property ) {
+	public function getFieldListBy( Property $property ): DataItem|false {
 		$fieldList = false;
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_LIST' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_LIST' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$fieldList = end( $dataItems );
@@ -164,12 +160,12 @@ class SpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param string $languageCode
 	 *
 	 * @return string
 	 */
-	public function getPreferredPropertyLabelByLanguageCode( DIProperty $property, $languageCode = '' ) {
+	public function getPreferredPropertyLabelByLanguageCode( Property $property, $languageCode = '' ) {
 		$subject = $property->getCanonicalDiWikiPage();
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject );
 
@@ -179,7 +175,7 @@ class SpecificationLookup {
 
 		$text = $this->getTextByLanguageCode(
 			$subject,
-			new DIProperty( '_PPLB' ),
+			new Property( '_PPLB' ),
 			$languageCode
 		);
 
@@ -192,13 +188,13 @@ class SpecificationLookup {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function hasUniquenessConstraint( DIProperty $property ) {
+	public function hasUniquenessConstraint( Property $property ): bool {
 		$hasUniquenessConstraint = false;
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVUC' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_PVUC' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$hasUniquenessConstraint = end( $dataItems )->getBoolean();
@@ -210,25 +206,25 @@ class SpecificationLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return DataItem|null
 	 */
-	public function getPropertyGroup( DIProperty $property ) {
+	public function getPropertyGroup( Property $property ): ?DataItem {
 		$dataItem = null;
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_INST' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_INST' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 
 			foreach ( $dataItems as $dataItem ) {
 				$pv = $this->store->getPropertyValues(
 					$dataItem,
-					new DIProperty( '_PPGR' )
+					new Property( '_PPGR' )
 				);
 
 				$di = end( $pv );
 
-				if ( $di instanceof DIBoolean && $di->getBoolean() ) {
+				if ( $di instanceof Boolean && $di->getBoolean() ) {
 					return $dataItem;
 				}
 			}
@@ -240,13 +236,13 @@ class SpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return DataItem|null
 	 */
-	public function getExternalFormatterUri( DIProperty $property ) {
+	public function getExternalFormatterUri( Property $property ): ?DataItem {
 		$dataItem = null;
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_PEFU' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_PEFU' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$dataItem = end( $dataItems );
@@ -258,13 +254,13 @@ class SpecificationLookup {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 */
-	public function getAllowedPatternBy( DIProperty $property ) {
+	public function getAllowedPatternBy( Property $property ): string {
 		$allowsPattern = '';
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAP' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_PVAP' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$allowsPattern = end( $dataItems )->getString();
@@ -276,13 +272,13 @@ class SpecificationLookup {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return array
 	 */
-	public function getAllowedValues( DIProperty $property ) {
+	public function getAllowedValues( Property $property ): array {
 		$allowsValues = [];
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAL' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_PVAL' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$allowsValues = $dataItems;
@@ -294,13 +290,13 @@ class SpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return array
 	 */
-	public function getAllowedListValues( DIProperty $property ) {
+	public function getAllowedListValues( Property $property ): array {
 		$allowsListValue = [];
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVALI' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_PVALI' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$allowsListValue = $dataItems;
@@ -312,13 +308,13 @@ class SpecificationLookup {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return int|false
 	 */
-	public function getDisplayPrecision( DIProperty $property ) {
+	public function getDisplayPrecision( Property $property ): int|false {
 		$displayPrecision = false;
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_PREC' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_PREC' ) );
 
 		if ( $dataItems !== false && $dataItems !== [] ) {
 			$dataItem = end( $dataItems );
@@ -331,13 +327,13 @@ class SpecificationLookup {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return array
 	 */
-	public function getDisplayUnits( DIProperty $property ) {
+	public function getDisplayUnits( Property $property ): array {
 		$units = [];
-		$dataItems = $this->getSpecification( $property, new DIProperty( '_UNIT' ) );
+		$dataItems = $this->getSpecification( $property, new Property( '_UNIT' ) );
 
 		if ( $dataItems !== false && $dataItems !== [] ) {
 			foreach ( $dataItems as $dataItem ) {
@@ -351,25 +347,25 @@ class SpecificationLookup {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param string $languageCode
 	 * @param mixed|null $linker
 	 *
 	 * @return string
 	 */
-	public function getPropertyDescriptionByLanguageCode( DIProperty $property, $languageCode = '', $linker = null ) {
+	public function getPropertyDescriptionByLanguageCode( Property $property, string $languageCode = '', $linker = null ): string {
 		$subject = $property->getCanonicalDiWikiPage();
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
 
 		$sub_key = $languageCode . ':' . ( $linker === null ? '0' : '1' );
 
 		if ( ( $text = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
-			return $text;
+			return (string)$text;
 		}
 
 		$text = $this->getTextByLanguageCode(
 			$subject,
-			new DIProperty( '_PDESC' ),
+			new Property( '_PDESC' ),
 			$languageCode
 		);
 
@@ -387,7 +383,7 @@ class SpecificationLookup {
 		return $text;
 	}
 
-	private function getPredefinedPropertyDescription( $property, $languageCode, $linker ) {
+	private function getPredefinedPropertyDescription( Property $property, string $languageCode, $linker ): string {
 		$description = '';
 		$key = $property->getKey();
 
@@ -415,17 +411,17 @@ class SpecificationLookup {
 	}
 
 	/**
-	 * @param DIWikiPage $subject
-	 * @param DIProperty $property
+	 * @param WikiPage $subject
+	 * @param Property $property
 	 * @param string $languageCode
 	 *
 	 * @return string
 	 */
-	private function getTextByLanguageCode( $subject, $property, $languageCode ) {
+	private function getTextByLanguageCode( ?WikiPage $subject, Property $property, $languageCode ) {
 		// @TODO move in the constructor ?
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
-		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( ServiceNotFoundException $e ) {
 			return '';
 		}
 

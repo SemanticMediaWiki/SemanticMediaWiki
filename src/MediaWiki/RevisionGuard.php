@@ -27,17 +27,9 @@ class RevisionGuard {
 	use HookDispatcherAwareTrait;
 
 	/**
-	 * @var RevisionLookup
-	 */
-	private $revisionLookup;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param RevisionLookup $revisionLookup
 	 */
-	public function __construct( RevisionLookup $revisionLookup ) {
-		$this->revisionLookup = $revisionLookup;
+	public function __construct( private RevisionLookup $revisionLookup ) {
 	}
 
 	/**
@@ -48,7 +40,7 @@ class RevisionGuard {
 	 *
 	 * @return bool
 	 */
-	public function isSkippableUpdate( Title $title, &$latestRevID = null ) {
+	public function isSkippableUpdate( Title $title, &$latestRevID = null ): bool {
 		$flag = IDBAccessObject::READ_LATEST;
 
 		if ( $latestRevID === null ) {
@@ -146,7 +138,7 @@ class RevisionGuard {
 	 *
 	 * @return File|null
 	 */
-	public function getFile( Title $title, ?File $file = null ) {
+	public function getFile( Title $title, ?File $file = null ): ?File {
 		$origFile = $file;
 
 		$this->hookDispatcher->onChangeFile( $title, $file );

@@ -21,29 +21,17 @@ use SMW\Utils\CliMsgFormatter;
 class PropertyStatisticsRebuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store = null;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
-		$this->store = $store;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+	) {
 		$this->messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -52,14 +40,14 @@ class PropertyStatisticsRebuilder {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function rebuild() {
+	public function rebuild(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -140,7 +128,7 @@ class PropertyStatisticsRebuilder {
 		$this->reportMessage( "\n   ... done.\n" );
 	}
 
-	private function getCountFormRow( $row ) {
+	private function getCountFormRow( $row ): array {
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -163,7 +151,7 @@ class PropertyStatisticsRebuilder {
 		return [ $usageCount, $nullCount ];
 	}
 
-	private function getPropertyTableRowCount( $propertyTable, $pid ) {
+	private function getPropertyTableRowCount( $propertyTable, $pid ): array {
 		$condition = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -213,7 +201,7 @@ class PropertyStatisticsRebuilder {
 		return [ $usageCount, $nullCount ];
 	}
 
-	protected function reportMessage( $message ) {
+	protected function reportMessage( $message ): void {
 		$this->messageReporter->reportMessage( $message );
 	}
 

@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMWDataValue as DataValue;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later

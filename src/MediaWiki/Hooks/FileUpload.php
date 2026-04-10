@@ -23,22 +23,10 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class FileUpload implements HookListener {
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var HookContainer
-	 */
-	private $hookContainer;
-
 	public function __construct(
-		NamespaceExaminer $namespaceExaminer,
-		HookContainer $hookContainer
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly HookContainer $hookContainer,
 	) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -49,7 +37,7 @@ class FileUpload implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( File $file, $reUploadStatus = false ) {
+	public function process( File $file, ?bool $reUploadStatus = false ): bool {
 		if ( $this->canProcess( $file->getTitle() ) ) {
 			$this->doProcess( $file, $reUploadStatus );
 		}
@@ -57,11 +45,11 @@ class FileUpload implements HookListener {
 		return true;
 	}
 
-	private function canProcess( $title ) {
+	private function canProcess( $title ): bool {
 		return $title !== null && $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function doProcess( $file, $reUploadStatus = false ) {
+	private function doProcess( File $file, ?bool $reUploadStatus = false ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$filePage = $this->makeFilePage( $file );
 
@@ -108,7 +96,7 @@ class FileUpload implements HookListener {
 		return true;
 	}
 
-	private function makeFilePage( $file ) {
+	private function makeFilePage( File $file ) {
 		$filePage = ApplicationFactory::getInstance()->newPageCreator()->createFilePage(
 			$file->getTitle()
 		);

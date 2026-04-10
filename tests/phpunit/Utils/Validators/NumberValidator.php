@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\Validators;
 
+use PHPUnit\Framework\Assert;
 use SMW\Query\QueryComparator;
 
 /**
@@ -10,7 +11,7 @@ use SMW\Query\QueryComparator;
  *
  * @author mwjames
  */
-class NumberValidator extends \PHPUnit\Framework\Assert {
+class NumberValidator extends Assert {
 
 	/**
 	 * @since 2.5

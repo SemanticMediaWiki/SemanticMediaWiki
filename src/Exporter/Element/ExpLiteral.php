@@ -4,7 +4,7 @@ namespace SMW\Exporter\Element;
 
 use InvalidArgumentException;
 use RuntimeException;
-use SMWDataItem as DataItem;
+use SMW\DataItems\DataItem;
 
 /**
  * A single datatype literal for export. Defined by a literal value and a
@@ -20,17 +20,13 @@ class ExpLiteral extends ExpElement {
 
 	/**
 	 * Lexical form of the literal.
-	 *
-	 * @var string
 	 */
-	private $lexicalForm;
+	private string $lexicalForm;
 
 	/**
 	 * Datatype URI for the literal.
-	 *
-	 * @var string
 	 */
-	private $datatype;
+	private string $datatype;
 
 	/**
 	 * @var string
@@ -85,7 +81,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getLang() {
+	public function getLang(): string {
 		return $this->lang;
 	}
 
@@ -94,7 +90,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getDatatype() {
+	public function getDatatype(): string {
 		return $this->datatype;
 	}
 
@@ -105,7 +101,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getLexicalForm() {
+	public function getLexicalForm(): string {
 		return $this->lexicalForm;
 	}
 
@@ -114,7 +110,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @return array
 	 */
-	public function getSerialization() {
+	public function getSerialization(): array {
 		$serialization = [
 			'type'     => self::TYPE_LITERAL,
 			'lexical'  => $this->lexicalForm,
@@ -128,7 +124,7 @@ class ExpLiteral extends ExpElement {
 	/**
 	 * @see ExpElement::newFromSerialization
 	 */
-	protected static function deserialize( $serialization ) {
+	protected static function deserialize( $serialization ): self {
 		if ( !isset( $serialization['lexical'] ) || !isset( $serialization['datatype'] ) || !isset( $serialization['lang'] ) ) {
 			throw new RuntimeException( "Invalid format caused by a missing lexical/datatype element" );
 		}

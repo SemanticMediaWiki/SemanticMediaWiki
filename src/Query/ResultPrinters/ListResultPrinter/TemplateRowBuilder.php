@@ -14,15 +14,10 @@ use SMW\Query\Result\ResultArray;
  */
 class TemplateRowBuilder extends RowBuilder {
 
-	private $templateRendererFactory;
-
 	/**
 	 * TemplateRowBuilder constructor.
-	 *
-	 * @param TemplateRendererFactory $templateRendererFactory
 	 */
-	public function __construct( TemplateRendererFactory $templateRendererFactory ) {
-		$this->templateRendererFactory = $templateRendererFactory;
+	public function __construct( private readonly TemplateRendererFactory $templateRendererFactory ) {
 	}
 
 	/**
@@ -34,7 +29,7 @@ class TemplateRowBuilder extends RowBuilder {
 	 *
 	 * @return string
 	 */
-	public function getRowText( array $fields, $rownum = 0 ) {
+	public function getRowText( array $fields, $rownum = 0 ): string {
 		$templateRenderer = $this->templateRendererFactory->getTemplateRenderer();
 
 		foreach ( $fields as $column => $field ) {
@@ -60,7 +55,7 @@ class TemplateRowBuilder extends RowBuilder {
 	 *
 	 * @return string
 	 */
-	private function getFieldLabel( ResultArray $field, $column ) {
+	private function getFieldLabel( ResultArray $field, int|string $column ) {
 		if ( $this->get( 'named args' ) === false ) {
 			return intval( $column + 1 );
 		}

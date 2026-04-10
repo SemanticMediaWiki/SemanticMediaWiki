@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBooleanHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIConceptHandler;
@@ -13,7 +14,6 @@ use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,28 +23,17 @@ use SMWDataItem as DataItem;
  */
 class DataItemHandlerFactory {
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var array
-	 */
-	private $handlers = [];
+	private array $handlers = [];
 
 	/**
 	 * @var int
 	 */
-	private $fieldTypeFeatures = false;
+	private $fieldTypeFeatures = 0;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -52,7 +41,7 @@ class DataItemHandlerFactory {
 	 *
 	 * @param int $fieldTypeFeatures
 	 */
-	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
+	public function setFieldTypeFeatures( $fieldTypeFeatures ): void {
 		$this->fieldTypeFeatures = $fieldTypeFeatures;
 	}
 
@@ -72,7 +61,7 @@ class DataItemHandlerFactory {
 		return $this->handlers[$type];
 	}
 
-	private function newHandlerByType( $type ) {
+	private function newHandlerByType( $type ): DataItemHandler {
 		switch ( $type ) {
 			case DataItem::TYPE_NUMBER:
 				$handler = new DINumberHandler( $this->store );

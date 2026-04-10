@@ -5,7 +5,7 @@ namespace SMW\Listener\EventListener\EventListeners;
 use Onoi\EventDispatcher\DispatchContext;
 use Onoi\EventDispatcher\EventListener;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Cache\ResultCache;
 
 /**
@@ -21,15 +21,9 @@ class InvalidateResultCacheEventListener implements EventListener {
 	const EVENT_ID = 'InvalidateResultCache';
 
 	/**
-	 * @var ResultCache
-	 */
-	private $resultCache;
-
-	/**
 	 * @since 3.1
 	 */
-	public function __construct( ResultCache $resultCache ) {
-		$this->resultCache = $resultCache;
+	public function __construct( private ResultCache $resultCache ) {
 	}
 
 	/**
@@ -37,13 +31,13 @@ class InvalidateResultCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function execute( ?DispatchContext $dispatchContext = null ) {
+	public function execute( ?DispatchContext $dispatchContext = null ): void {
 		if ( $dispatchContext === null ) {
 			return;
 		}
 
 		if ( $dispatchContext->has( 'title' ) ) {
-			$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
+			$subject = WikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
 		} else {
 			$subject = $dispatchContext->get( 'subject' );
 		}
@@ -76,7 +70,7 @@ class InvalidateResultCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isPropagationStopped() {
+	public function isPropagationStopped(): bool {
 		return true;
 	}
 

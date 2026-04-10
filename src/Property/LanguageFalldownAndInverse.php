@@ -1,6 +1,6 @@
 <?php
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author thomas-topway-it for KM-A
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342
@@ -8,16 +8,10 @@
 namespace SMW\Property;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SQLStore\Lookup\MonolingualTextLookup;
 
 class LanguageFalldownAndInverse {
 
-	/**
-	 * @var array
-	 */
-	private $languagesFallbackInverse = [
+	private array $languagesFallbackInverse = [
 		'ru' => [
 			'ab',
 			'av',
@@ -333,43 +327,18 @@ class LanguageFalldownAndInverse {
 		]
 	];
 
-	/**
-	 * @var MonolingualTextLookup
-	 */
-	private $monolingualTextLookup;
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property;
-
-	/**
-	 * @var string
-	 */
-	private $languageCode;
-
-	/**
-	 * @param MonolingualTextLookup $monolingualTextLookup
-	 * @param DIWikiPage $subject
-	 * @param DIProperty $property
-	 * @param string $languageCode
-	 */
-	public function __construct( $monolingualTextLookup, $subject, $property, $languageCode ) {
-		$this->monolingualTextLookup = $monolingualTextLookup;
-		$this->subject = $subject;
-		$this->property = $property;
-		$this->languageCode = $languageCode;
+	public function __construct(
+		private $monolingualTextLookup,
+		private $subject,
+		private $property,
+		private $languageCode,
+	) {
 	}
 
 	/**
 	 * @return array
 	 */
-	public function tryout() {
+	public function tryout(): array {
 		$dataValue = $this->falldownInverse();
 		if ( $dataValue ) {
 			return [ $dataValue, $this->languageCode ];

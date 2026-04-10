@@ -39,7 +39,7 @@ abstract class Description {
 	 *
 	 * @return PrintRequest[]
 	 */
-	public function getPrintRequests() {
+	public function getPrintRequests(): array {
 		return $this->m_printreqs;
 	}
 
@@ -48,16 +48,16 @@ abstract class Description {
 	 *
 	 * @param PrintRequest[] $printRequests
 	 */
-	public function setPrintRequests( array $printRequests ) {
+	public function setPrintRequests( array $printRequests ): void {
 		$this->m_printreqs = $printRequests;
 	}
 
 	/**
-	 * Add a single SMW\Query\PrintRequest.
+	 * Add a single PrintRequest.
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function addPrintRequest( PrintRequest $printRequest ) {
+	public function addPrintRequest( PrintRequest $printRequest ): void {
 		$this->m_printreqs[] = $printRequest;
 	}
 
@@ -67,7 +67,7 @@ abstract class Description {
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function prependPrintRequest( PrintRequest $printRequest ) {
+	public function prependPrintRequest( PrintRequest $printRequest ): void {
 		array_unshift( $this->m_printreqs, $printRequest );
 	}
 
@@ -84,7 +84,7 @@ abstract class Description {
 	 * @return string
 	 * @throws FingerprintNotFoundException
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
 		}
@@ -101,7 +101,7 @@ abstract class Description {
 	 *
 	 * @return string
 	 */
-	public function getMembership() {
+	public function getMembership(): string {
 		return $this->membership;
 	}
 
@@ -110,7 +110,7 @@ abstract class Description {
 	 *
 	 * @param string $membership
 	 */
-	public function setMembership( $membership ) {
+	public function setMembership( $membership ): void {
 		$this->membership = $membership;
 	}
 
@@ -146,7 +146,7 @@ abstract class Description {
 	 *
 	 * @return int
 	 */
-	public function getSize() {
+	public function getSize(): int {
 		return 1;
 	}
 
@@ -155,7 +155,7 @@ abstract class Description {
 	 *
 	 * @return int
 	 */
-	public function getDepth() {
+	public function getDepth(): int {
 		return 0;
 	}
 
@@ -163,7 +163,7 @@ abstract class Description {
 	 * Report on query features used in description. Return values are (sums of)
 	 * query feature constants such as SMW_PROPERTY_QUERY.
 	 */
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		return 0;
 	}
 
@@ -179,7 +179,7 @@ abstract class Description {
 	 * reused in multiple places of one or many queries. Make new objects to reflect
 	 * changes!
 	 */
-	public function prune( &$maxsize, &$maxDepth, &$log ) {
+	public function prune( &$maxsize, &$maxDepth, &$log ): Description {
 		if ( ( $maxsize < $this->getSize() ) || ( $maxDepth < $this->getDepth() ) ) {
 			$log[] = $this->getQueryString();
 
@@ -200,7 +200,7 @@ abstract class Description {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->getQueryString();
 	}
 

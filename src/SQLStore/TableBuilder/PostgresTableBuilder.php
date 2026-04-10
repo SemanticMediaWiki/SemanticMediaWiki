@@ -23,7 +23,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $fieldType ) {
+	public function getStandardFieldType( $fieldType ): string {
 		// serial is a 4 bytes autoincrementing integer (1 to 2147483647)
 
 		$fieldTypes = [
@@ -69,7 +69,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, ?array $attributes = null ) {
+	protected function doCreateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 
 		$fieldSql = [];
@@ -91,12 +91,11 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
+	protected function doUpdateTable( $tableName, array $attributes ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
 		$fields = $attributes['fields'];
-		$position = 'FIRST';
 
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
@@ -104,9 +103,8 @@ class PostgresTableBuilder extends TableBuilder {
 
 		// Loop through all the field definitions, and handle each definition
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $attributes );
+			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $attributes );
 
-			$position = "AFTER $fieldName";
 			$currentFields[$fieldName] = false;
 		}
 
@@ -119,7 +117,10 @@ class PostgresTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function getCurrentFields( $tableName ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getCurrentFields( $tableName ): array {
 		$tableName = str_replace( '"', '', $tableName );
 		// Use the data dictionary in postgresql to get an output comparable to DESCRIBE.
 /*
@@ -182,7 +183,7 @@ EOT;
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
+	private function doUpdateField( string $tableName, $fieldName, $fieldType, array $currentFields, array $attributes ): void {
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
@@ -202,7 +203,7 @@ EOT;
 		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
+			$this->doCreateField( $tableName, $fieldName, $fieldType, $default );
 		} elseif ( strpos( $fieldType, 'ENUM' ) !== false ) {
 			$enum_type = strtolower( $currentFields[$fieldName] );
 			$current_enums = '';
@@ -224,7 +225,7 @@ EOT;
 			} else {
 				// Recreate the field and type which is the simplest way of
 				// ensuring consistency
-				$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
+				$this->doCreateField( $tableName, $fieldName, $fieldType, $default );
 			}
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->reportMessage( "   ... changing type of field $fieldName from '$currentFields[$fieldName]' to '$fieldType' ... " );
@@ -259,7 +260,7 @@ EOT;
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
+	private function doCreateField( string $tableName, string $fieldName, $fieldType, string $default ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		// https://www.postgresql.org/docs/9.1/datatype-enum.html
@@ -277,7 +278,7 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName ) {
+	private function doDropField( string $tableName, int|string $fieldName ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -292,7 +293,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions ): void {
 		$indices = $indexOptions['indices'];
 		$ix = [];
 
@@ -319,11 +320,11 @@ EOT;
 				$indexType = 'INDEX';
 			}
 
-			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns, $indexOptions );
+			$this->doCreateIndex( $tableName, $indexType, $columns );
 		}
 	}
 
-	private function doDropObsoleteIndices( $tableName, array &$indices ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ): void {
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
 		$currentIndices = $this->getIndexInfo( $tableName );
 
@@ -338,14 +339,15 @@ EOT;
 				}
 
 			} else { // Duplicate or unrequired index.
-				$this->doDropIndex( $tableName, $indexName, $indexColumn );
+				$this->doDropIndex( $indexName, $indexColumn );
 			}
 		}
 	}
 
-	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
+	private function doCreateIndex( $tableName, $indexType, $columns ): void {
 		if ( $indexType === 'FULLTEXT' ) {
-			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
+			$this->reportMessage( "   ... skipping the fulltext index creation ..." );
+			return;
 		}
 
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
@@ -365,13 +367,16 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function getCumulatedIndexName( $tableName, $columns ) {
+	private function getCumulatedIndexName( $tableName, $columns ): string {
 		// Identifiers -- table names, column names, constraint names,
 		// etc. -- are limited to a maximum length of 63 bytes
 		return str_replace( '__', '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );
 	}
 
-	private function getIndexInfo( $tableName ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getIndexInfo( string $tableName ): array {
 		$indices = [];
 
 		$sql = "SELECT  i.relname AS indexname,"
@@ -399,7 +404,7 @@ EOT;
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, $indexName, $columns ) {
+	private function doDropIndex( int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX IF EXISTS ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
@@ -412,7 +417,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doDropTable( $tableName ) {
+	protected function doDropTable( $tableName ): void {
 		// Function: SMW\SQLStore\TableBuilder\PostgresTableBuilder::doDropTable
 		// Error: 2BP01 ERROR:  cannot drop table smw_object_ids because other objects depend on it
 		// DETAIL:  default for table sunittest_smw_object_ids column smw_id depends on sequence smw_object_ids_smw_id_seq
@@ -425,7 +430,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doOptimize( $tableName ) {
+	protected function doOptimize( $tableName ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -458,13 +463,13 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkOn( $event ) {
+	public function checkOn( $event ): void {
 		if ( $event === self::POST_CREATION ) {
 			$this->doCheckOnPostCreation();
 		}
 	}
 
-	private function doCheckOnPostCreation() {
+	private function doCheckOnPostCreation(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$sequence = new Sequence( $this->connection );

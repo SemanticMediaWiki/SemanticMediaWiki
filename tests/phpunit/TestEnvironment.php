@@ -21,11 +21,11 @@ use SMW\Tests\Utils\Validators\ValidatorFactory;
  */
 class TestEnvironment {
 
-	private ApplicationFactory $applicationFactory;
+	private readonly ApplicationFactory $applicationFactory;
 
-	private DataValueFactory $dataValueFactory;
+	private readonly DataValueFactory $dataValueFactory;
 
-	private TestConfig $testConfig;
+	private readonly TestConfig $testConfig;
 
 	/**
 	 * @since 2.4
@@ -60,7 +60,7 @@ class TestEnvironment {
 	 * last read") caused by ChangeTagsStore::updateTags reading and then
 	 * updating change_tag_def within the same transaction.
 	 *
-	 * @since 6.1.0
+	 * @since 7.0.0
 	 */
 	public function disableSoftwareChangeTags(): void {
 		$GLOBALS['wgSoftwareTags'] = [
@@ -82,7 +82,7 @@ class TestEnvironment {
 	 * @since 3.2
 	 */
 	public static function loadDefaultSettings( array $defaultSettingKeys = [] ): void {
-		$settings = require $GLOBALS['smwgIP'] . '/includes/DefaultSettings.php';
+		$settings = require $GLOBALS['smwgIP'] . '/src/DefaultSettings.php';
 
 		if ( $defaultSettingKeys !== [] ) {
 			$copy = [];

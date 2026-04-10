@@ -2,9 +2,10 @@
 
 namespace SMW\Query\Parser;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ClassDescription;
@@ -16,7 +17,6 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\QueryComparator;
 use SMW\Site;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,35 +27,23 @@ use SMWDataValue as DataValue;
  */
 class DescriptionProcessor {
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
+	private DataValueFactory $dataValueFactory;
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	private $descriptionFactory;
+	private DescriptionFactory $descriptionFactory;
 
 	/**
 	 * @var int
 	 */
 	private $queryFeatures;
 
-	/**
-	 * @var DIWikiPage|null
-	 */
-	private $contextPage;
+	private ?WikiPage $contextPage = null;
 
 	/**
 	 * @var bool
 	 */
 	private $selfReference = false;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.4
@@ -71,16 +59,16 @@ class DescriptionProcessor {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ): void {
 		$this->contextPage = $contextPage;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->errors = [];
 		$this->selfReference = false;
 	}
@@ -90,7 +78,7 @@ class DescriptionProcessor {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -99,7 +87,7 @@ class DescriptionProcessor {
 	 *
 	 * @return bool
 	 */
-	public function containsSelfReference() {
+	public function containsSelfReference(): bool {
 		return $this->selfReference;
 	}
 
@@ -108,7 +96,7 @@ class DescriptionProcessor {
 	 *
 	 * @param array|string $error
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		if ( !is_array( $error ) ) {
 			$error = (array)$error;
 		}
@@ -123,19 +111,19 @@ class DescriptionProcessor {
 	 *
 	 * @param string $msgKey
 	 */
-	public function addErrorWithMsgKey( $msgKey ) {
+	public function addErrorWithMsgKey( $msgKey ): void {
 		$this->errors[] = Message::encode( func_get_args() );
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param string $chunk
 	 *
 	 * @return Description|null
 	 */
-	public function newDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
+	public function newDescriptionForPropertyObjectValue( Property $property, $chunk ) {
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property );
 		$dataValue->setContextPage( $this->contextPage );
 
@@ -164,7 +152,7 @@ class DescriptionProcessor {
 		// character, the chunk itself is processed by
 		// DataValue::getQueryDescription hence no need to use it as input for
 		// the factory instance
-		$dataValue = $this->dataValueFactory->newTypeIDValue( '_wpg', 'QP_WPG_TITLE' );
+		$dataValue = $this->dataValueFactory->newDataValueByType( '_wpg', 'QP_WPG_TITLE' );
 		$dataValue->setContextPage( $this->contextPage );
 
 		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
@@ -205,7 +193,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function asOr( ?Description $currentDescription = null, ?Description $newDescription = null ) {
+	public function asOr( ?Description $currentDescription = null, ?Description $newDescription = null ): ?Description {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_DISJUNCTION_QUERY );
 	}
 
@@ -217,7 +205,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function asAnd( ?Description $currentDescription = null, ?Description $newDescription = null ) {
+	public function asAnd( ?Description $currentDescription = null, ?Description $newDescription = null ): ?Description {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_CONJUNCTION_QUERY );
 	}
 
@@ -233,7 +221,7 @@ class DescriptionProcessor {
 	 * The return value is the expected combined description. The object $currentDescription will
 	 * also be changed (if it was non-NULL).
 	 */
-	private function newCompoundDescription( ?Description $currentDescription = null, ?Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
+	private function newCompoundDescription( ?Description $currentDescription = null, ?Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ): ?Description {
 		$notallowedmessage = 'smw_noqueryfeature';
 
 		if ( $newDescription instanceof SomeProperty ) {
@@ -266,7 +254,7 @@ class DescriptionProcessor {
 		}
 	}
 
-	private function newCompoundDescriptionByType( $compoundType, $currentDescription, $newDescription ) {
+	private function newCompoundDescriptionByType( $compoundType, Description $currentDescription, Description $newDescription ): Description {
 		if ( ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Conjunction ) ) ||
 			 ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
 			$currentDescription->addDescription( $newDescription );
@@ -278,7 +266,7 @@ class DescriptionProcessor {
 		}
 	}
 
-	private function newConjunction( $currentDescription, $newDescription ) {
+	private function newConjunction( Description $currentDescription, Description $newDescription ): Description {
 		if ( $this->queryFeatures & SMW_CONJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newConjunction( [ $currentDescription, $newDescription ] );
 		}
@@ -288,7 +276,7 @@ class DescriptionProcessor {
 		return $currentDescription;
 	}
 
-	private function newDisjunction( $currentDescription, $newDescription ) {
+	private function newDisjunction( Description $currentDescription, Description $newDescription ): Description {
 		if ( $this->queryFeatures & SMW_DISJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newDisjunction( [ $currentDescription, $newDescription ] );
 		}

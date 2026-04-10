@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
 
 /**
  * @see http://semantic-mediawiki.org/wiki/Inverse_Properties
@@ -73,10 +73,10 @@ class InversePropertyRelationshipDBIntegrationTest extends SMWIntegrationTestCas
 		$this->getStore()->updateData( $semanticData );
 
 		$description = new SomeProperty(
-			DIProperty::newFromUserLabel( 'Has mother', true )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'Has mother', true )->setPropertyTypeId( '_wpg' ),
 			new ValueDescription(
-				new DIWikiPage( 'Michael', NS_MAIN, '' ),
-				DIProperty::newFromUserLabel( 'Has mother', true )->setPropertyTypeId( '_wpg' ),
+				new WikiPage( 'Michael', NS_MAIN, '' ),
+				Property::newFromUserLabel( 'Has mother', true )->setPropertyTypeId( '_wpg' ),
 				SMW_CMP_EQ
 			)
 		);
@@ -102,7 +102,7 @@ class InversePropertyRelationshipDBIntegrationTest extends SMWIntegrationTestCas
 		);
 
 		$expectedSubjects = [
-			new DIWikiPage( 'Carol', NS_MAIN, '' )
+			new WikiPage( 'Carol', NS_MAIN, '' )
 		];
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
@@ -116,10 +116,10 @@ class InversePropertyRelationshipDBIntegrationTest extends SMWIntegrationTestCas
 	}
 
 	private function newDataValueForPagePropertyValue( $property, $value ) {
-		$property = DIProperty::newFromUserLabel( $property );
+		$property = Property::newFromUserLabel( $property );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$dataItem = new DIWikiPage( $value, NS_MAIN, '' );
+		$dataItem = new WikiPage( $value, NS_MAIN, '' );
 
 		return $this->dataValueFactory->newDataValueByItem(
 			$dataItem,

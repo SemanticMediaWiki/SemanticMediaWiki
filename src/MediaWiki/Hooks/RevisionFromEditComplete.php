@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Exception;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
@@ -38,38 +39,14 @@ class RevisionFromEditComplete implements HookListener {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var EditInfo
-	 */
-	private $editInfo;
-
-	/**
-	 * @var PageInfoProvider
-	 */
-	private $pageInfoProvider;
-
-	/**
-	 * @var PropertyAnnotatorFactory
-	 */
-	private $propertyAnnotatorFactory;
-
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param EditInfo $editInfo
-	 * @param PageInfoProvider $pageInfoProvider
-	 * @param PropertyAnnotatorFactory $propertyAnnotatorFactory
-	 * @param SchemaFactory $schemaFactory
 	 */
-	public function __construct( EditInfo $editInfo, PageInfoProvider $pageInfoProvider, PropertyAnnotatorFactory $propertyAnnotatorFactory, SchemaFactory $schemaFactory ) {
-		$this->editInfo = $editInfo;
-		$this->pageInfoProvider = $pageInfoProvider;
-		$this->propertyAnnotatorFactory = $propertyAnnotatorFactory;
-		$this->schemaFactory = $schemaFactory;
+	public function __construct(
+		private EditInfo $editInfo,
+		private PageInfoProvider $pageInfoProvider,
+		private PropertyAnnotatorFactory $propertyAnnotatorFactory,
+		private SchemaFactory $schemaFactory,
+	) {
 	}
 
 	/**
@@ -79,7 +56,7 @@ class RevisionFromEditComplete implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( Title $title ) {
+	public function process( Title $title ): bool {
 		$this->editInfo->fetchEditInfo();
 
 		$parserOutput = $this->editInfo->getOutput();
@@ -119,7 +96,7 @@ class RevisionFromEditComplete implements HookListener {
 		return true;
 	}
 
-	private function tryCreateSchema( $title ) {
+	private function tryCreateSchema( Title $title ) {
 		if ( $title->getNamespace() !== SMW_NS_SCHEMA ) {
 			return null;
 		}
@@ -129,14 +106,14 @@ class RevisionFromEditComplete implements HookListener {
 				$title->getDBKey(),
 				$this->pageInfoProvider->getNativeData()
 			);
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			return null;
 		}
 
 		return $schema;
 	}
 
-	private function addPredefinedPropertyAnnotation( ParserData $parserData, ?Schema $schema = null ) {
+	private function addPredefinedPropertyAnnotation( ParserData $parserData, ?Schema $schema = null ): void {
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()
 		);

@@ -2,10 +2,11 @@
 
 namespace SMW\Maintenance;
 
+use Iterator;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
@@ -181,7 +182,7 @@ class purgeEntityCache extends Maintenance {
 		return true;
 	}
 
-	private function doPurge( \Iterator $rows ) {
+	private function doPurge( Iterator $rows ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -218,14 +219,14 @@ class purgeEntityCache extends Maintenance {
 
 		if ( $namespace === SMW_NS_PROPERTY ) {
 			try {
-				$property = DIProperty::newFromUserLabel( $row->smw_title );
+				$property = Property::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
 			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				//
 			}
 		}
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$title,
 			$namespace,
 			$row->smw_iw,

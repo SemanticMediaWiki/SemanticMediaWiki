@@ -2,7 +2,7 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
@@ -23,30 +23,19 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var
-	 */
-	private $indicatorProviders = [];
-
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
+	private ?PermissionExaminer $permissionExaminer = null;
 
 	/**
 	 * @var
 	 */
-	private $indicators = [];
+	private array $indicators = [];
 
 	/**
 	 * @var
 	 */
-	private $modules = [ 'smw.entityexaminer' ];
+	private array $modules = [ 'smw.entityexaminer' ];
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
 	/**
 	 * @var string
@@ -57,11 +46,8 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $indicatorProviders
 	 */
-	public function __construct( array $indicatorProviders ) {
-		$this->indicatorProviders = $indicatorProviders;
+	public function __construct( private array $indicatorProviders ) {
 	}
 
 	/**
@@ -70,7 +56,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ): void {
 		$this->permissionExaminer = $permissionExaminer;
 	}
 
@@ -79,7 +65,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
@@ -104,12 +90,12 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		return $this->checkIndicators( $subject, $options ) !== [];
 	}
 
@@ -118,7 +104,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
@@ -127,7 +113,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return $this->modules;
 	}
 
@@ -136,11 +122,11 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 
-	private function checkIndicators( $subject, $options ) {
+	private function checkIndicators( WikiPage $subject, array $options ): array {
 		$indicatorProviders = [];
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 		$options['error_count'] = 0;
@@ -181,7 +167,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 		return $this->indicators;
 	}
 
-	private function buildHTML( $subject, array $indicatorProviders, array $options ) {
+	private function buildHTML( WikiPage $subject, array $indicatorProviders, array $options ): void {
 		$this->templateEngine = new TemplateEngine();
 
 		$this->templateEngine->bulkLoad(

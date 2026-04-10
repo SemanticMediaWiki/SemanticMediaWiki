@@ -15,7 +15,7 @@ use SMW\Query\Result\ResultArray;
  */
 class SimpleRowBuilder extends RowBuilder {
 
-	private $linker;
+	private ?Linker $linker = null;
 
 	/**
 	 * @param ResultArray[] $fields
@@ -24,7 +24,7 @@ class SimpleRowBuilder extends RowBuilder {
 	 *
 	 * @return string
 	 */
-	public function getRowText( array $fields, $rownum = 0 ) {
+	public function getRowText( array $fields, $rownum = 0 ): string {
 		$fieldTexts = $this->getFieldTexts( $fields );
 
 		$firstFieldText = array_shift( $fieldTexts );
@@ -53,7 +53,7 @@ class SimpleRowBuilder extends RowBuilder {
 	 *
 	 * @return array
 	 */
-	private function getFieldTexts( array $fields ) {
+	private function getFieldTexts( array $fields ): array {
 		$columnNumber = 0;
 		$fieldTexts = [];
 
@@ -80,7 +80,7 @@ class SimpleRowBuilder extends RowBuilder {
 	 *
 	 * @return string
 	 */
-	private function getFieldLabel( ResultArray $field ) {
+	private function getFieldLabel( ResultArray $field ): string {
 		$showHeaders = $this->get( 'show-headers' );
 
 		if ( $showHeaders === SMW_HEADERS_HIDE || $field->getPrintRequest()->getLabel() === '' ) {
@@ -98,14 +98,14 @@ class SimpleRowBuilder extends RowBuilder {
 	/**
 	 * @return Linker
 	 */
-	protected function getLinker() {
+	protected function getLinker(): ?Linker {
 		return $this->linker;
 	}
 
 	/**
 	 * @param Linker $linker
 	 */
-	public function setLinker( Linker $linker ) {
+	public function setLinker( Linker $linker ): void {
 		$this->linker = $linker;
 	}
 

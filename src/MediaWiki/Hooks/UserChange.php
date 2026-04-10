@@ -25,22 +25,14 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class UserChange implements HookListener {
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
 	 * @var string
 	 */
 	private $origin = '';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct( private readonly NamespaceExaminer $namespaceExaminer ) {
 	}
 
 	/**
@@ -48,7 +40,7 @@ class UserChange implements HookListener {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -57,7 +49,7 @@ class UserChange implements HookListener {
 	 *
 	 * @param UserIdentity|string|null $user
 	 */
-	public function process( $user ) {
+	public function process( $user ): bool {
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
 		}

@@ -6,7 +6,7 @@ use Article;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Parser\ParserOptions;
 use MediaWikiIntegrationTestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\HtmlValidator;
 
@@ -23,21 +23,12 @@ use SMW\Tests\Utils\Validators\HtmlValidator;
 class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
-	 * @var HtmlValidator
-	 */
-	private $htmlValidator;
-
-	/**
 	 * @var PageReader
 	 */
 	private $pageReader;
 
-	/**
-	 * @param HtmlValidator $htmlValidator
-	 */
-	public function __construct( HtmlValidator $htmlValidator ) {
+	public function __construct( private readonly HtmlValidator $htmlValidator ) {
 		parent::__construct();
-		$this->htmlValidator = $htmlValidator;
 		$this->pageReader = UtilityFactory::getInstance()->newPageReader();
 	}
 
@@ -102,7 +93,7 @@ class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	 * @return string
 	 */
 	private function getOutputText( array $case ) {
-		$subject = DIWikiPage::newFromText(
+		$subject = WikiPage::newFromText(
 			$case[ 'subject' ],
 			isset( $case[ 'namespace' ] ) ? constant( $case[ 'namespace' ] ) : NS_MAIN
 		);

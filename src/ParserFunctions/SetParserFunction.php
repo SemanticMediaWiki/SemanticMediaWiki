@@ -2,14 +2,14 @@
 
 namespace SMW\ParserFunctions;
 
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\Formatters\MessageFormatter;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\MediaWiki\StripMarkerDecoder;
-use SMW\MessageFormatter;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
-use SMW\SemanticData;
 
 /**
  * Class that provides the {{#set}} parser function
@@ -26,37 +26,16 @@ use SMW\SemanticData;
  */
 class SetParserFunction {
 
-	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var MessageFormatter
-	 */
-	private $messageFormatter;
-
-	/**
-	 * @var WikitextTemplateRenderer
-	 */
-	private $templateRenderer;
-
-	/**
-	 * @var StripMarkerDecoder
-	 */
-	private $stripMarkerDecoder;
+	private ?StripMarkerDecoder $stripMarkerDecoder = null;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param MessageFormatter $messageFormatter
-	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, WikitextTemplateRenderer $templateRenderer ) {
-		$this->parserData = $parserData;
-		$this->messageFormatter = $messageFormatter;
-		$this->templateRenderer = $templateRenderer;
+	public function __construct(
+		private readonly ParserData $parserData,
+		private readonly MessageFormatter $messageFormatter,
+		private readonly WikitextTemplateRenderer $templateRenderer,
+	) {
 	}
 
 	/**
@@ -64,7 +43,7 @@ class SetParserFunction {
 	 *
 	 * @param StripMarkerDecoder $stripMarkerDecoder
 	 */
-	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ): void {
 		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
@@ -84,7 +63,7 @@ class SetParserFunction {
 	 *
 	 * @return string|null
 	 */
-	public function parse( ParserParameterProcessor $parameters ) {
+	public function parse( ParserParameterProcessor $parameters ): array {
 		$count = 0;
 		$template = '';
 		$subject = $this->parserData->getSemanticData()->getSubject();
@@ -146,7 +125,7 @@ class SetParserFunction {
 		return [ $html, 'noparse' => $template === '', 'isHTML' => false ];
 	}
 
-	private function addFieldsToTemplate( $template, $dataValue, $property, $value, $isLastElement, &$count ) {
+	private function addFieldsToTemplate( $template, $dataValue, $property, $value, bool $isLastElement, &$count ): string {
 		if ( $template === '' || !$dataValue->isValid() ) {
 			return '';
 		}
@@ -156,6 +135,8 @@ class SetParserFunction {
 		$this->templateRenderer->addField( 'last-element', $isLastElement );
 		$this->templateRenderer->addField( '#', $count++ );
 		$this->templateRenderer->packFieldsForTemplate( $template );
+
+		return '';
 	}
 
 }

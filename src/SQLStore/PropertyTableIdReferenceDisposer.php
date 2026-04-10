@@ -4,10 +4,12 @@ namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use stdClass;
 use Wikimedia\Rdbms\DBError;
 
 /**
@@ -27,42 +29,25 @@ class PropertyTableIdReferenceDisposer {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store = null;
-
-	/**
 	 * @var Database
 	 */
 	private $connection = null;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
 	/**
 	 * @var bool
 	 */
 	private $redirectRemoval = false;
 
-	/**
-	 * @var bool
-	 */
-	private $fulltextTableUsage = false;
+	private bool $fulltextTableUsage = false;
 
-	/**
-	 * @var array
-	 */
-	private $namespacesWithSemanticLinks = [];
+	private array $namespacesWithSemanticLinks = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 
@@ -71,7 +56,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param bool $redirectRemoval
 	 */
-	public function setRedirectRemoval( $redirectRemoval ) {
+	public function setRedirectRemoval( $redirectRemoval ): void {
 		$this->redirectRemoval = $redirectRemoval;
 	}
 
@@ -80,7 +65,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param bool $fulltextTableUsage
 	 */
-	public function setFulltextTableUsage( bool $fulltextTableUsage ) {
+	public function setFulltextTableUsage( bool $fulltextTableUsage ): void {
 		$this->fulltextTableUsage = $fulltextTableUsage;
 	}
 
@@ -89,14 +74,14 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param array $namespacesWithSemanticLinks
 	 */
-	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ) {
+	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ): void {
 		$this->namespacesWithSemanticLinks = $namespacesWithSemanticLinks;
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = true;
 	}
 
@@ -107,8 +92,8 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return bool
 	 */
-	public function isDisposable( $id ) {
-		return $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) === false;
+	public function isDisposable( $id ): bool {
+		return !$this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id );
 	}
 
 	/**
@@ -125,9 +110,9 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param int $id
 	 */
-	public function removeOutdatedEntityReferencesById( $id ) {
+	public function removeOutdatedEntityReferencesById( $id ): void {
 		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) ) {
-			return null;
+			return;
 		}
 
 		$this->cleanUpSecondaryReferencesById( $id, false );
@@ -140,7 +125,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
+	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ): ResultIterator {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
@@ -168,7 +153,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
+	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ): ResultIterator {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
@@ -196,7 +181,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param stdClass $row
 	 */
-	public function cleanUpTableEntriesByRow( $row ) {
+	public function cleanUpTableEntriesByRow( $row ): void {
 		if ( !isset( $row->smw_id ) ) {
 			return;
 		}
@@ -214,7 +199,7 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionCommitOrIdle( function () use ( $id ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use ( $id ): void {
 				$this->cleanUpReferencesById( $id );
 			} );
 		} else {
@@ -222,15 +207,15 @@ class PropertyTableIdReferenceDisposer {
 		}
 	}
 
-	private function cleanUpReferencesById( $id ) {
+	private function cleanUpReferencesById( $id ): void {
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
 		$isRedirect = false;
 
-		if ( $subject instanceof DIWikiPage ) {
+		if ( $subject instanceof WikiPage ) {
 			$isRedirect = $subject->getInterwiki() === SMW_SQL3_SMWREDIIW;
 
 			// Use the subject without an internal 'smw-delete' iw marker
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$subject->getDBKey(),
 				$subject->getNamespace(),
 				'',
@@ -282,9 +267,9 @@ class PropertyTableIdReferenceDisposer {
 			);
 	}
 
-	private function cleanUpSecondaryReferencesById( $id, $isRedirect ) {
+	private function cleanUpSecondaryReferencesById( $id, bool $isRedirect ): void {
 		// When marked as redirect, don't remove the reference
-		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
+		if ( !$isRedirect || $this->redirectRemoval ) {
 			$this->connection->delete(
 				SQLStore::ID_TABLE,
 				[ 'smw_id' => $id ],
@@ -333,8 +318,8 @@ class PropertyTableIdReferenceDisposer {
 		}
 	}
 
-	private function triggerCleanUpEvents( $subject ) {
-		if ( !$subject instanceof DIWikiPage ) {
+	private function triggerCleanUpEvents( $subject ): void {
+		if ( !$subject instanceof WikiPage ) {
 			return;
 		}
 

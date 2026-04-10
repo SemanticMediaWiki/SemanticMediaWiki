@@ -3,6 +3,7 @@
 namespace SMW\Property\Annotators;
 
 use MediaWiki\Title\Title;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\Property\Annotator;
 
 /**
@@ -13,25 +14,16 @@ use SMW\Property\Annotator;
  */
 class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/**
-	 * @var array|null
-	 */
-	private $translation;
-
-	/**
-	 * @var array
-	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param array|null $translation
 	 */
-	public function __construct( Annotator $propertyAnnotator, $translation ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private $translation,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->translation = $translation;
 	}
 
 	/**
@@ -39,11 +31,11 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param array $predefinedPropertyList
 	 */
-	public function setPredefinedPropertyList( array $predefinedPropertyList ) {
+	public function setPredefinedPropertyList( array $predefinedPropertyList ): void {
 		$this->predefinedPropertyList = array_flip( $predefinedPropertyList );
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		// Expected identifiers, @see https://gerrit.wikimedia.org/r/387548
 		if ( !is_array( $this->translation ) || !isset( $this->predefinedPropertyList['_TRANS'] ) ) {
 			return;
@@ -97,7 +89,7 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 	}
 
-	private function newContainerSemanticData( $languageCode ) {
+	private function newContainerSemanticData( string $languageCode ): ContainerSemanticData {
 		$dataItem = $this->getSemanticData()->getSubject();
 		$subobjectName = 'trans.' . $languageCode;
 

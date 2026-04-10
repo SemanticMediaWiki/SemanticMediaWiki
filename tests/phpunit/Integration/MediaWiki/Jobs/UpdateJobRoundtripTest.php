@@ -4,6 +4,8 @@ namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use Job;
 use MediaWiki\MediaWikiServices;
+use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
@@ -106,13 +108,9 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 	public function jobFactoryProvider() {
 		$provider = [];
 
-		$provider[] = [ 'SMW\UpdateJob', 'smw.update' ];
-		$provider[] = [ 'SMW\UpdateJob', 'SMW\UpdateJob' ];
-		$provider[] = [ 'SMWUpdateJob', 'SMW\UpdateJob' ];
+		$provider[] = [ 'smw.update', UpdateJob::class ];
 
-		$provider[] = [ 'SMW\RefreshJob', 'smw.refresh' ];
-		$provider[] = [ 'SMW\RefreshJob', 'SMW\RefreshJob' ];
-		$provider[] = [ 'SMWRefreshJob', 'SMW\RefreshJob' ];
+		$provider[] = [ 'smw.refresh', RefreshJob::class ];
 
 		return $provider;
 	}

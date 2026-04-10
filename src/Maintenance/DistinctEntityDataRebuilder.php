@@ -6,16 +6,17 @@ use Exception;
 use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Options;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
-use SMWQueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,50 +26,26 @@ use SMWQueryProcessor;
  */
 class DistinctEntityDataRebuilder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var TitleFactory
-	 */
-	private $titleFactory;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
 	/**
 	 * @var MessageReporter
 	 */
 	private $reporter;
 
-	/**
-	 * @var ExceptionFileLogger
-	 */
-	private $exceptionFileLogger;
+	private ?ExceptionFileLogger $exceptionFileLogger = null;
 
-	/**
-	 * @var array
-	 */
-	private $filters = [];
+	private array $filters = [];
 
-	/**
-	 * @var int
-	 */
-	private $rebuildCount = 0;
+	private int $rebuildCount = 0;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( Store $store, TitleFactory $titleFactory ) {
-		$this->store = $store;
-		$this->titleFactory = $titleFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly TitleFactory $titleFactory,
+	) {
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -77,7 +54,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @param Options $options
 	 */
-	public function setOptions( Options $options ) {
+	public function setOptions( Options $options ): void {
 		$this->options = $options;
 	}
 
@@ -86,7 +63,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @param MessageReporter $reporter
 	 */
-	public function setMessageReporter( MessageReporter $reporter ) {
+	public function setMessageReporter( MessageReporter $reporter ): void {
 		$this->reporter = $reporter;
 	}
 
@@ -95,7 +72,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @param ExceptionFileLogger $exceptionFileLogger
 	 */
-	public function setExceptionFileLogger( ExceptionFileLogger $exceptionFileLogger ) {
+	public function setExceptionFileLogger( ExceptionFileLogger $exceptionFileLogger ): void {
 		$this->exceptionFileLogger = $exceptionFileLogger;
 	}
 
@@ -104,7 +81,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @return int
 	 */
-	public function getRebuildCount() {
+	public function getRebuildCount(): int {
 		return $this->rebuildCount;
 	}
 
@@ -113,7 +90,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function doRebuild() {
+	public function doRebuild(): bool {
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
 		( $this->options->has( 'categories' ) ? 'category' : '' ) .
 		( $this->options->has( 'namespace' ) ? $this->options->get( 'namespace' ) : '' ) .
@@ -179,7 +156,7 @@ class DistinctEntityDataRebuilder {
 		return true;
 	}
 
-	private function doUpdate( $jobFactory, $page ) {
+	private function doUpdate( JobFactory $jobFactory, Title $page ) {
 		$updatejob = $jobFactory->newUpdateJob(
 			$page,
 			[
@@ -199,7 +176,7 @@ class DistinctEntityDataRebuilder {
 		}
 	}
 
-	private function findFilters() {
+	private function findFilters(): void {
 		$this->filters = [];
 
 		if ( $this->options->has( 'categories' ) ) {
@@ -215,11 +192,11 @@ class DistinctEntityDataRebuilder {
 		}
 	}
 
-	private function hasFilters() {
+	private function hasFilters(): bool {
 		return $this->filters !== [];
 	}
 
-	private function getPagesFromQuery() {
+	private function getPagesFromQuery(): array {
 		if ( !$this->options->has( 'query' ) ) {
 			return [];
 		}
@@ -227,17 +204,17 @@ class DistinctEntityDataRebuilder {
 		$queryString = $this->options->get( 'query' );
 
 		// get number of pages and fix query limit
-		$query = SMWQueryProcessor::createQuery(
+		$query = QueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( [ 'format' => 'count' ] )
+			QueryProcessor::getProcessedParams( [ 'format' => 'count' ] )
 		);
 
 		$result = $this->store->getQueryResult( $query );
 
 		// get pages and add them to the pages explicitly listed in the 'page' parameter
-		$query = SMWQueryProcessor::createQuery(
+		$query = QueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( [] )
+			QueryProcessor::getProcessedParams( [] )
 		);
 
 		$query->setUnboundLimit( $result instanceof QueryResult ? $result->getCountValue() : $result );
@@ -245,7 +222,10 @@ class DistinctEntityDataRebuilder {
 		return $this->store->getQueryResult( $query )->getResults();
 	}
 
-	private function getPagesFromFilters() {
+	/**
+	 * @return mixed[]
+	 */
+	private function getPagesFromFilters(): array {
 		$pages = [];
 
 		if ( !$this->hasFilters() ) {
@@ -261,7 +241,7 @@ class DistinctEntityDataRebuilder {
 		return $pages;
 	}
 
-	private function getRedirectPages() {
+	private function getRedirectPages(): array {
 		if ( !$this->options->has( 'redirects' ) ) {
 			return [];
 		}
@@ -273,14 +253,17 @@ class DistinctEntityDataRebuilder {
 		return $titleLookup->getRedirectPages();
 	}
 
-	private function normalize( $list ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function normalize( array $list ): array {
 		$titleCache = [];
 		$p = [];
 
 		foreach ( $list as $pages ) {
 			foreach ( $pages as $key => $page ) {
 
-				if ( $page instanceof DIWikiPage ) {
+				if ( $page instanceof WikiPage ) {
 					$page = $page->getTitle();
 				}
 
@@ -299,7 +282,7 @@ class DistinctEntityDataRebuilder {
 		return $p;
 	}
 
-	private function reportMessage( $message, $output = true ) {
+	private function reportMessage( string $message, bool $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

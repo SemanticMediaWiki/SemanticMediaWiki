@@ -18,17 +18,9 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( OutputFormatter $outputFormatter ) {
-		$this->outputFormatter = $outputFormatter;
+	public function __construct( private readonly OutputFormatter $outputFormatter ) {
 	}
 
 	/**
@@ -36,7 +28,7 @@ class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -88,7 +80,7 @@ class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-duplookup-title' ) ] )
 		);

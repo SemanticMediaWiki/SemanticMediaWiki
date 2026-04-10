@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Connection;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @private
@@ -19,11 +20,6 @@ use RuntimeException;
 class Query {
 
 	const TYPE_SELECT = 'SELECT';
-
-	/**
-	 * @var Database
-	 */
-	private $connection;
 
 	/**
 	 * @var string
@@ -53,7 +49,7 @@ class Query {
 	/**
 	 * @var
 	 */
-	private $joins = [];
+	private array $joins = [];
 
 	/**
 	 * @var string
@@ -72,11 +68,8 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly Database $connection ) {
 	}
 
 	/**
@@ -86,7 +79,7 @@ class Query {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function type( $type ) {
+	public function type( $type ): void {
 		$type = strtoupper( $type );
 
 		if ( !in_array( $type, [ self::TYPE_SELECT ] ) ) {
@@ -101,7 +94,7 @@ class Query {
 	 *
 	 * @param array $fields
 	 */
-	public function fields( array $fields ) {
+	public function fields( array $fields ): void {
 		$this->fields = $fields;
 	}
 
@@ -110,7 +103,7 @@ class Query {
 	 *
 	 * @param array ...$field
 	 */
-	public function field( ...$field ) {
+	public function field( ...$field ): void {
 		$this->fields[] = $field;
 	}
 
@@ -119,7 +112,7 @@ class Query {
 	 *
 	 * @return bool
 	 */
-	public function hasField( $field = '' ) {
+	public function hasField( $field = '' ): bool {
 		if ( (string)$field === '' ) {
 			return $this->fields !== [];
 		}
@@ -132,7 +125,7 @@ class Query {
 	 *
 	 * @return bool
 	 */
-	public function hasCondition() {
+	public function hasCondition(): bool {
 		return $this->conditions !== [];
 	}
 
@@ -143,7 +136,7 @@ class Query {
 	 *
 	 * @param array ...$table
 	 */
-	public function table( ...$table ) {
+	public function table( ...$table ): void {
 		if ( strpos( $table[0] ?? '', 'SELECT' ) !== false ) {
 			$tableName = '(' . $table[0] . ')';
 		} else {
@@ -158,7 +151,7 @@ class Query {
 	 *
 	 * @param string ...$join
 	 */
-	public function join( ...$join ) {
+	public function join( ...$join ): void {
 		if ( strpos( $join[0], 'JOIN' ) === false ) {
 			throw new InvalidArgumentException( "A join type is missing!" );
 		}
@@ -191,7 +184,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function like( $k, $v ) {
+	public function like( $k, $v ): string {
 		return "$k LIKE " . $this->connection->addQuotes( $v );
 	}
 
@@ -203,7 +196,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function in( $k, array $v ) {
+	public function in( $k, array $v ): string {
 		return "$k IN (" . $this->connection->makeList( $v ) . ')';
 	}
 
@@ -215,7 +208,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function eq( $k, $v ) {
+	public function eq( $k, $v ): string {
 		return "$k=" . $this->connection->addQuotes( $v );
 	}
 
@@ -227,7 +220,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function neq( $k, $v ) {
+	public function neq( $k, $v ): string {
 		return "$k!=" . $this->connection->addQuotes( $v );
 	}
 
@@ -240,7 +233,7 @@ class Query {
 	 *
 	 * @return array
 	 */
-	public function asAnd( $condition ) {
+	public function asAnd( $condition ): array {
 		return [ 'AND' => $condition ];
 	}
 
@@ -253,7 +246,7 @@ class Query {
 	 *
 	 * @return array
 	 */
-	public function asOr( $condition ) {
+	public function asOr( $condition ): array {
 		return [ 'OR' => $condition ];
 	}
 
@@ -262,7 +255,7 @@ class Query {
 	 *
 	 * @param string|array $condition
 	 */
-	public function condition( $condition ) {
+	public function condition( $condition ): void {
 		if ( $condition === '' ) {
 			return;
 		}
@@ -279,7 +272,7 @@ class Query {
 	 *
 	 * @param array $options
 	 */
-	public function options( array $options ) {
+	public function options( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -289,7 +282,7 @@ class Query {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function option( $key, $value ) {
+	public function option( $key, $value ): void {
 		if ( $value === null ) {
 			unset( $this->options[$key] );
 		} else {
@@ -302,7 +295,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		$params = [
 			'tables' => $this->table,
 			'fields' => $this->fields,
@@ -322,7 +315,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function getSQL() {
+	public function getSQL(): string {
 		return $this->sql();
 	}
 
@@ -331,7 +324,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function build() {
+	public function build(): string {
 		$statement = $this->sql();
 
 		$this->type = '';
@@ -351,13 +344,13 @@ class Query {
 	 *
 	 * @param string $fname
 	 *
-	 * @return iterable
+	 * @return bool|IResultWrapper
 	 */
 	public function execute( $fname ) {
 		return $this->connection->readQuery( $this, $fname );
 	}
 
-	private function sql() {
+	private function sql(): string {
 		$i = 0;
 		$sql = "";
 		$fields = [];

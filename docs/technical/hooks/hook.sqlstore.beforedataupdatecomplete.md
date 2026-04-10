@@ -6,8 +6,8 @@
 
 ```php
 use MediaWiki\MediaWikiServices;
+use SMW\DataModel\SemanticData;
 use SMW\SQLStore\SQLStore;
-use SMW\SemanticData;
 
 MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::BeforeDataUpdateComplete', function( SQLStore $store, SemanticData $semanticData ) {
 

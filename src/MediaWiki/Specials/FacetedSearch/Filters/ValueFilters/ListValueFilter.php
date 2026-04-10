@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
 use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Utils\UrlArgs;
 
@@ -19,30 +19,15 @@ class ListValueFilter {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var UrlArgs
-	 */
-	private $urlArgs;
-
-	/**
-	 * @var
-	 */
-	private $params;
+	private ?UrlArgs $urlArgs = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
-	 * @param array $params
 	 */
-	public function __construct( TemplateParser $templateParser, array $params ) {
-		$this->templateParser = $templateParser;
-		$this->params = $params;
+	public function __construct(
+		private TemplateParser $templateParser,
+		private array $params,
+	) {
 	}
 
 	/**
@@ -71,7 +56,7 @@ class ListValueFilter {
 		$valueFilters = $this->getValueFilters( $property );
 		$clear = $this->urlArgs->getArray( 'clear' );
 
-		$prop = DIProperty::newFromUserLabel( $property );
+		$prop = Property::newFromUserLabel( $property );
 
 		$isRecordType = DataTypeRegistry::getInstance()->isRecordType(
 			$prop->findPropertyTypeID()
@@ -140,14 +125,14 @@ class ListValueFilter {
 		);
 	}
 
-	private function getValueFilters( $property ) {
+	private function getValueFilters( string $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	private function sortValues( $list ) {
+	private function sortValues( array $list ): array {
 		$linked = [];
 		$unlinked = [];
 
@@ -173,7 +158,7 @@ class ListValueFilter {
 		];
 	}
 
-	private function matchFilter( $property, $key, $label, $count, $valueFilters, $clear, &$list ) {
+	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, array $clear, array &$list ): void {
 		if ( !isset( $list[$count] ) ) {
 			$list[$count] = [ 'linked' => [], 'unlinked' => [] ];
 		}
@@ -218,7 +203,7 @@ class ListValueFilter {
 		asort( $list[$count]['linked'] );
 	}
 
-	private function createConditionField( $property ) {
+	private function createConditionField( string $property ) {
 		if ( $this->params['condition_field'] === false ) {
 			return '';
 		}
@@ -236,7 +221,7 @@ class ListValueFilter {
 		);
 	}
 
-	private function createInputField( $property, array $values ) {
+	private function createInputField( string $property, array $values ) {
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}

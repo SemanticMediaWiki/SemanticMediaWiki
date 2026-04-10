@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\Connection;
 
+use Elasticsearch\Client as ElasticClient;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use Psr\Log\NullLogger;
@@ -18,32 +19,13 @@ use SMW\Elastic\Config;
 class DummyClient extends Client {
 
 	/**
-	 * @var Client
-	 */
-	protected $client;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param \Elasticsearch\Client|null $client
-	 * @param Cache|null $cache
-	 * @param Config|null $config
 	 */
-	public function __construct( $client = null, ?Cache $cache = null, ?Config $config = null ) {
-		$this->client = $client;
-		$this->cache = $cache;
-		$this->config = $config;
-
+	public function __construct(
+		protected ?ElasticClient $client = null,
+		private ?Cache $cache = null,
+		private ?Config $config = null,
+	) {
 		if ( $this->cache === null ) {
 			$this->cache = new NullCache();
 		}
@@ -58,7 +40,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getConfig
 	 */
-	public function getConfig() {
+	public function getConfig(): ?Config {
 		return $this->config;
 	}
 
@@ -79,14 +61,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getIndexDefFileModificationTimeByType
 	 */
-	public function getIndexDefFileModificationTimeByType( $type ) {
+	public function getIndexDefFileModificationTimeByType( $type ): int {
 		return 0;
 	}
 
 	/**
 	 * @see Client::getSoftwareInfo
 	 */
-	public function getSoftwareInfo() {
+	public function getSoftwareInfo(): array {
 		return [
 			'component' => "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
 			'version' => null
@@ -110,146 +92,147 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::cat
 	 */
-	public function cat( $type, $params = [] ) {
+	public function cat( $type, $params = [] ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::hasIndex
 	 */
-	public function hasIndex( $type, $useCache = true ) {
+	public function hasIndex( $type, $useCache = true ): bool {
 		return true;
 	}
 
 	/**
 	 * @see Client::createIndex
 	 */
-	public function createIndex( $type ) {
+	public function createIndex( $type ): string {
+		return '';
 	}
 
 	/**
 	 * @see Client::deleteIndex
 	 */
-	public function deleteIndex( $index ) {
+	public function deleteIndex( $index ): void {
 	}
 
 	/**
 	 * @see Client::putSettings
 	 */
-	public function putSettings( array $params ) {
+	public function putSettings( array $params ): void {
 	}
 
 	/**
 	 * @see Client::putMapping
 	 */
-	public function putMapping( array $params ) {
+	public function putMapping( array $params ): void {
 	}
 
 	/**
 	 * @see Client::getMapping
 	 */
-	public function getMapping( array $params ) {
+	public function getMapping( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::getSettings
 	 */
-	public function getSettings( array $params ) {
+	public function getSettings( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::refresh
 	 */
-	public function refresh( array $params ) {
+	public function refresh( array $params ): void {
 	}
 
 	/**
 	 * @see Client::validate
 	 */
-	public function validate( array $params ) {
+	public function validate( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::ping
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::quick_ping
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::exists
 	 */
-	public function exists( array $params ) {
+	public function exists( array $params ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::get
 	 */
-	public function get( array $params ) {
+	public function get( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::delete
 	 */
-	public function delete( array $params ) {
+	public function delete( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::update
 	 */
-	public function update( array $params ) {
+	public function update( array $params ): void {
 	}
 
 	/**
 	 * @see Client::index
 	 */
-	public function index( array $params ) {
+	public function index( array $params ): void {
 	}
 
 	/**
 	 * @see Client::bulk
 	 */
-	public function bulk( array $params ) {
+	public function bulk( array $params ): void {
 	}
 
 	/**
 	 * @see Client::count
 	 */
-	public function count( array $params ) {
-		return 0;
+	public function count( array $params ): array {
+		return [];
 	}
 
 	/**
 	 * @see Client::search
 	 */
-	public function search( array $params ) {
+	public function search( array $params ): array {
 		return [ [], [] ];
 	}
 
 	/**
 	 * @see Client::explain
 	 */
-	public function explain( array $params ) {
+	public function explain( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::updateAliases
 	 */
-	public function updateAliases( array $params ) {
+	public function updateAliases( array $params ): void {
 	}
 
 	/**
@@ -269,52 +252,52 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::openIndex
 	 */
-	public function openIndex( string $index ) {
+	public function openIndex( string $index ): void {
 	}
 
 	/**
 	 * @see Client::closeIndex
 	 */
-	public function closeIndex( string $index ) {
+	public function closeIndex( string $index ): void {
 	}
 
 	/**
 	 * @see Client::hasMaintenanceLock
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::setMaintenanceLock
 	 */
-	public function setMaintenanceLock() {
+	public function setMaintenanceLock(): void {
 	}
 
 	/**
 	 * @see Client::setLock
 	 */
-	public function setLock( $type, $version ) {
+	public function setLock( $type, $version ): void {
 	}
 
 	/**
 	 * @see Client::hasLock
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::getLock
 	 */
-	public function getLock( $type ) {
+	public function getLock( $type ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::getLock
 	 */
-	public function releaseLock( $type ) {
+	public function releaseLock( $type ): void {
 	}
 
 }

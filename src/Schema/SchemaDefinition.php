@@ -11,26 +11,14 @@ namespace SMW\Schema;
 class SchemaDefinition extends Compartment implements Schema {
 
 	/**
-	 * @var string
-	 */
-	private $name;
-
-	/**
-	 * @var array
-	 */
-	private $info = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param string $name
-	 * @param array $definition
-	 * @param array $info
 	 */
-	public function __construct( $name, array $definition, array $info = [] ) {
+	public function __construct(
+		private $name,
+		array $definition,
+		private array $info = [],
+	) {
 		parent::__construct( $definition );
-		$this->name = $name;
-		$this->info = $info;
 	}
 
 	/**
@@ -53,16 +41,16 @@ class SchemaDefinition extends Compartment implements Schema {
 	 *
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string|array {
 		return str_replace( '_', ' ', $this->name );
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return $this->data;
 	}
 

@@ -192,7 +192,7 @@ class setupStore extends Maintenance {
 			$smwgIP = __DIR__ . '/../';
 		}
 
-		require_once $smwgIP . 'includes/GlobalFunctions.php';
+		require_once $smwgIP . 'src/GlobalFunctions.php';
 	}
 
 	protected function getStore() {

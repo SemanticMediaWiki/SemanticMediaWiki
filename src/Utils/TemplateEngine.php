@@ -18,15 +18,7 @@ class TemplateEngine {
 	 */
 	const HTML_TIDY = 2;
 
-	/**
-	 * @var array
-	 */
-	private static $templates = [];
-
-	/**
-	 * @var string
-	 */
-	private $templateDir;
+	private static array $templates = [];
 
 	/**
 	 * @var array
@@ -40,12 +32,8 @@ class TemplateEngine {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string|null $templateDir
 	 */
-	public function __construct( $templateDir = null ) {
-		$this->templateDir = $templateDir;
-
+	public function __construct( private $templateDir = null ) {
 		if ( $this->templateDir === null ) {
 			$this->templateDir = $GLOBALS['smwgDir'] . '/data/template';
 		}
@@ -54,7 +42,7 @@ class TemplateEngine {
 	/**
 	 * @since 3.2
 	 */
-	public function clearTemplates() {
+	public function clearTemplates(): void {
 		self::$templates = [];
 	}
 
@@ -64,7 +52,7 @@ class TemplateEngine {
 	 * @param string $target
 	 * @param string $contents
 	 */
-	public function setContents( $target, $contents ) {
+	public function setContents( $target, $contents ): void {
 		$this->container[$target] = $contents;
 	}
 
@@ -73,7 +61,7 @@ class TemplateEngine {
 	 *
 	 * @param array $files
 	 */
-	public function bulkLoad( array $files ) {
+	public function bulkLoad( array $files ): void {
 		foreach ( $files as $file => $target ) {
 			$this->load( $file, $target );
 		}
@@ -87,9 +75,10 @@ class TemplateEngine {
 	 *
 	 * @throws FileNotReadableException
 	 */
-	public function load( $file, $target ) {
+	public function load( string $file, $target ) {
 		if ( isset( self::$templates[$file] ) ) {
-			return $this->container[$target] = self::$templates[$file];
+			$this->container[$target] = self::$templates[$file];
+			return $this->container[$target];
 		}
 
 		$_file = str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, $this->templateDir . '/' . $file );
@@ -107,7 +96,7 @@ class TemplateEngine {
 	 * @param string $target
 	 * @param array $args
 	 */
-	public function compile( $target, array $args = [] ) {
+	public function compile( $target, array $args = [] ): void {
 		if ( !isset( $this->container[$target] ) ) {
 			return;
 		}

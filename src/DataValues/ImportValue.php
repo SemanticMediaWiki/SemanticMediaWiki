@@ -2,12 +2,11 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\Services\ServicesFactory;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
@@ -36,49 +35,37 @@ class ImportValue extends DataValue {
 
 	/**
 	 * Type string assigned by the import declaration
-	 *
-	 * @var string
 	 */
-	private $termType = '';
+	private string $termType = '';
 
 	/**
 	 * String provided by user which is used to look up data on Mediawiki:*-Page
-	 *
-	 * @var string
 	 */
-	private $qname = '';
+	private string $qname = '';
 
 	/**
 	 * URI of namespace (without local name)
-	 *
-	 * @var string
 	 */
-	private $uri = '';
+	private string $uri = '';
 
 	/**
 	 * Namespace id (e.g. "foaf")
-	 *
-	 * @var string
 	 */
-	private $namespace = '';
+	private string $namespace = '';
 
 	/**
 	 * Local name (e.g. "knows")
-	 *
-	 * @var string
 	 */
-	private $term = '';
+	private string $term = '';
 
 	/**
 	 * Wiki name of the vocab (e.g. "Friend of a Friend"), might contain wiki markup
-	 *
-	 * @var string
 	 */
-	private $declarativeName = '';
+	private string $declarativeName = '';
 
 	private array $declarativeNames = [];
 
-	private MediaWikiNsContentReader $mediaWikiNsContentReader;
+	private readonly MediaWikiNsContentReader $mediaWikiNsContentReader;
 
 	/**
 	 * @param string $typeid
@@ -93,29 +80,28 @@ class ImportValue extends DataValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$this->qname = $value;
 
 		$importValueParser = $this->dataValueServiceFactory->getValueParser(
 			$this
 		);
 
-		[ $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ] = $importValueParser->parse(
-			$value
-		);
+		$result = $importValueParser->parse( $value );
 
-		if ( $importValueParser->getErrors() !== [] ) {
-
+		if ( $result === null || $importValueParser->getErrors() !== [] ) {
 			foreach ( $importValueParser->getErrors() as $message ) {
 				$this->addErrorMsg( $message );
 			}
 
-			$this->m_dataitem = new DIBlob( 'ERROR' );
+			$this->m_dataitem = new Blob( 'ERROR' );
 			return;
 		}
 
+		[ $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ] = $result;
+
 		// Encoded string for DB storage
-		$this->m_dataitem = new DIBlob(
+		$this->m_dataitem = new Blob(
 			$this->namespace . ' ' .
 			$this->term . ' ' .
 			$this->uri . ' ' .
@@ -129,14 +115,14 @@ class ImportValue extends DataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem
+	 * @see DataValue::loadDataItem
 	 *
 	 * @param DataItem $dataItem
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 
@@ -169,7 +155,8 @@ class ImportValue extends DataValue {
 		);
 
 		if ( $controlledVocabulary === '' ) {
-			return $this->declarativeNames[$namespace] = '';
+			$this->declarativeNames[$namespace] = '';
+			return $this->declarativeNames[$namespace];
 		}
 
 		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
@@ -178,12 +165,14 @@ class ImportValue extends DataValue {
 		$fristLine = array_shift( $importDefintions );
 
 		if ( strpos( $fristLine, '|' ) === false ) {
-			return $this->declarativeNames[$namespace] = '';
+			$this->declarativeNames[$namespace] = '';
+			return $this->declarativeNames[$namespace];
 		}
 
 		[ $uri, $name ] = explode( '|', $fristLine, 2 );
 
-		return $this->declarativeNames[$namespace] = $name;
+		$this->declarativeNames[$namespace] = $name;
+		return $this->declarativeNames[$namespace];
 	}
 
 	/**
@@ -196,7 +185,7 @@ class ImportValue extends DataValue {
 	/**
 	 * @see DataValue::getShortHTMLText
 	 */
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linker = null ): string {
 		return htmlspecialchars( $this->qname );
 	}
 
@@ -225,19 +214,19 @@ class ImportValue extends DataValue {
 	/**
 	 * @see DataValue::getWikiValue
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->qname;
 	}
 
-	public function getNS() {
+	public function getNS(): string {
 		return $this->uri;
 	}
 
-	public function getNSID() {
+	public function getNSID(): string {
 		return $this->namespace;
 	}
 
-	public function getLocalName() {
+	public function getLocalName(): string {
 		return $this->term;
 	}
 
@@ -246,7 +235,7 @@ class ImportValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getTermType() {
+	public function getTermType(): string {
 		return $this->termType;
 	}
 
@@ -255,11 +244,11 @@ class ImportValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getImportReference() {
+	public function getImportReference(): string {
 		return $this->namespace . ':' . $this->term . '|' . $this->uri;
 	}
 
-	private function createCaption( $namespace, $qname, $uri, $declarativeName ) {
+	private function createCaption( string $namespace, string $qname, string $uri, string $declarativeName ): string {
 		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " . Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::TEXT );
 	}
 

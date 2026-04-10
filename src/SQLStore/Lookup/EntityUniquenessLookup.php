@@ -3,13 +3,14 @@
 namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDIContainer as DIContainer;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -21,24 +22,12 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class EntityUniquenessLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IteratorFactory $iteratorFactory,
+	) {
 	}
 
 	/**
@@ -50,13 +39,13 @@ class EntityUniquenessLookup {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param DataItem $dataItem
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return Iterator|[]
+	 * @return MappingIterator|array
 	 */
-	public function checkConstraint( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
+	public function checkConstraint( Property $property, DataItem $dataItem, RequestOptions $requestOptions ): array|MappingIterator {
 		$propTableId = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
 			$property
 		);
@@ -109,7 +98,7 @@ class EntityUniquenessLookup {
 		return $result;
 	}
 
-	private function resolve_value_condition( $propertyTable, $property, $dataItem, $query ) {
+	private function resolve_value_condition( $propertyTable, $property, $dataItem, $query ): void {
 		// Collect conditions to appear as
 		// `... (t1.p_id='121913' AND t1.o_sortkey='3520062') ...`
 		$conditions = [];
@@ -130,7 +119,7 @@ class EntityUniquenessLookup {
 			$propertyTable->getDiType()
 		);
 
-		if ( !$dataItem instanceof DIContainer ) {
+		if ( !$dataItem instanceof Container ) {
 			foreach ( $diHandler->getWhereConds( $dataItem ) as $fieldName => $value ) {
 				$conditions[] = $query->eq( "{$query->alias}{$i}.$fieldName", $value );
 			}
@@ -159,7 +148,7 @@ class EntityUniquenessLookup {
 		$query->condition( $query->asAnd( $conditions ) );
 	}
 
-	private function resolve_container_conditions( $propertyTable, $dataItem, $query ) {
+	private function resolve_container_conditions( $propertyTable, Container $dataItem, $query ): void {
 		$proptables = $this->store->getPropertyTables();
 		$semanticData = $dataItem->getSemanticData();
 

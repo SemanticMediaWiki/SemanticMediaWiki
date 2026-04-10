@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
@@ -21,24 +21,12 @@ use SMW\Store;
 class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ConditionBuilder $conditionBuilder,
+	) {
 	}
 
 	/**
@@ -46,7 +34,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ClassDescription;
 	}
 
@@ -57,7 +45,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 
 		$cqid = QuerySegment::$qnum;
@@ -85,7 +73,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 			$query->joinTable = '';
 			$query->joinfield = '';
 		} else { // Instance query with disjunction of classes (categories)
-			$query->joinTable = $this->store->findPropertyTableID( new DIProperty( '_INST' ) );
+			$query->joinTable = $this->store->findPropertyTableID( new Property( '_INST' ) );
 			$query->joinfield = "$query->alias.s_id";
 			$query->components[$cqid] = "$query->alias.o_id";
 

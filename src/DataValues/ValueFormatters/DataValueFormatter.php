@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use SMW\DataValues\DataValue;
 use SMW\Options;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -52,15 +52,9 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 */
 	const HTML_LONG = 4;
 
-	/**
-	 * @var DataValue
-	 */
-	protected $dataValue;
+	protected ?DataValue $dataValue;
 
-	/**
-	 * @var Options
-	 */
-	private $options = null;
+	private ?Options $options = null;
 
 	/**
 	 * @since 2.4
@@ -85,7 +79,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 *
 	 * @param DataValue $dataValue
 	 */
-	public function setDataValue( DataValue $dataValue ) {
+	public function setDataValue( DataValue $dataValue ): void {
 		$this->dataValue = $dataValue;
 		$this->options = null;
 	}
@@ -105,7 +99,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}

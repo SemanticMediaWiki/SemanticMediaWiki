@@ -2,16 +2,17 @@
 
 namespace SMW\SPARQLStore;
 
+use LogicException;
 use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
-use SMW\SemanticData;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -32,45 +33,24 @@ class TurtleTriplesBuilder {
 	 */
 	private $semanticData = null;
 
-	/**
-	 * @var RepositoryRedirectLookup
-	 */
-	private $repositoryRedirectLookup = null;
-
-	/**
-	 * @var null|string
-	 */
-	private $triples = null;
+	private ?string $triples = null;
 
 	/**
 	 * @var array
 	 */
 	private $prefixes = [];
 
-	/**
-	 * @var bool
-	 */
-	private $hasTriplesForUpdate = false;
+	private bool $hasTriplesForUpdate = false;
 
-	/**
-	 * @var int
-	 */
-	private $triplesChunkSize = 80;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
+	private int $triplesChunkSize = 80;
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
-	 * @param Cache|null $cache
 	 */
-	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, ?Cache $cache = null ) {
-		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
-		$this->cache = $cache;
+	public function __construct(
+		private readonly RepositoryRedirectLookup $repositoryRedirectLookup,
+		private readonly ?Cache $cache = null,
+	) {
 	}
 
 	/**
@@ -78,7 +58,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @param int $triplesChunkSize
 	 */
-	public function setTriplesChunkSize( $triplesChunkSize ) {
+	public function setTriplesChunkSize( $triplesChunkSize ): void {
 		$this->triplesChunkSize = (int)$triplesChunkSize;
 	}
 
@@ -87,7 +67,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function doBuildTriplesFrom( SemanticData $semanticData ) {
+	public function doBuildTriplesFrom( SemanticData $semanticData ): void {
 		$this->hasTriplesForUpdate = false;
 		$this->triples = '';
 		$this->prefixes = [];
@@ -100,7 +80,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return bool
 	 */
-	public function hasTriples() {
+	public function hasTriples(): bool {
 		return $this->hasTriplesForUpdate;
 	}
 
@@ -109,7 +89,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return string
 	 */
-	public function getTriples() {
+	public function getTriples(): string {
 		return $this->triples === null ? '' : $this->triples;
 	}
 
@@ -122,7 +102,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return array
 	 */
-	public function getChunkedTriples() {
+	public function getChunkedTriples(): array {
 		$chunkedTriples = [];
 
 		if ( $this->triples === null ) {
@@ -149,18 +129,18 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return array
 	 */
-	public function getPrefixes() {
+	public function getPrefixes(): array {
 		return $this->prefixes;
 	}
 
 	/**
 	 * @since 2.0
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		TurtleSerializer::reset();
 	}
 
-	private function doSerialize( SemanticData $semanticData ) {
+	private function doSerialize( SemanticData $semanticData ): void {
 		$expDataArray = $this->prepareUpdateExpData( $semanticData );
 
 		if ( count( $expDataArray ) > 0 ) {
@@ -182,13 +162,13 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * Prepare an array of SMWExpData elements that should be written to
+	 * Prepare an array of ExpData elements that should be written to
 	 * the SPARQL store. The result is empty if no updates should be done.
-	 * Note that this is different from writing an SMWExpData element that
+	 * Note that this is different from writing an ExpData element that
 	 * has no content.
-	 * Otherwise, the first SMWExpData object in the array is a translation
+	 * Otherwise, the first ExpData object in the array is a translation
 	 * of the given input data, but with redirects resolved. Further
-	 * SMWExpData objects might be included in the resulting list to
+	 * ExpData objects might be included in the resulting list to
 	 * capture necessary stub declarations for objects that do not have
 	 * any data in the RDF store yet.
 	 *
@@ -196,9 +176,9 @@ class TurtleTriplesBuilder {
 	 *
 	 * @param SemanticData $semanticData
 	 *
-	 * @return array of SMWExpData
+	 * @return array of ExpData
 	 */
-	private function prepareUpdateExpData( SemanticData $semanticData ) {
+	private function prepareUpdateExpData( SemanticData $semanticData ): array {
 		$result = [];
 
 		$expData = Exporter::getInstance()->makeExportData( $semanticData );
@@ -212,7 +192,7 @@ class TurtleTriplesBuilder {
 	 * Find a normalized representation of the given SMW\Exporter\Element\ExpElement that can
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects. The type of the ExpElement might change, especially into
-	 * SMWExpData in order to store auxiliary properties.
+	 * ExpData in order to store auxiliary properties.
 	 * Moreover, the method records any auxiliary data that should be
 	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
@@ -220,9 +200,9 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param Element $expElement object containing the update data
-	 * @param &$auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of ExpData
 	 *
-	 * @return ExpElement
+	 * @return Element
 	 */
 	private function expandUpdateExpElement( Element $expElement, array &$auxiliaryExpData ) {
 		if ( $expElement instanceof ExpResource ) {
@@ -237,10 +217,10 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * Find a normalized representation of the given SMWExpResource that can
+	 * Find a normalized representation of the given ExpResource that can
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects. The type of the ExpElement might change, especially into
-	 * SMWExpData in order to store auxiliary properties.
+	 * ExpData in order to store auxiliary properties.
 	 * Moreover, the method records any auxiliary data that should be
 	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
@@ -248,7 +228,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpResource $expResource object containing the update data
-	 * @param &$auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of ExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -261,9 +241,8 @@ class TurtleTriplesBuilder {
 			$elementTarget = $expResource;
 		}
 
-		if ( !$exists && $elementTarget->getDataItem() instanceof DIWikiPage && $elementTarget->getDataItem()->getDBKey() !== '' ) {
-
-			$diWikiPage = $elementTarget->getDataItem();
+		$diWikiPage = $elementTarget->getDataItem();
+		if ( !$exists && $diWikiPage instanceof WikiPage && $elementTarget->getDataItem()->getDBKey() !== '' ) {
 			$hash = $diWikiPage->getHash();
 
 			if ( !$this->cache->contains( $hash ) ) {
@@ -277,7 +256,7 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * Find a normalized representation of the given SMWExpData that can
+	 * Find a normalized representation of the given ExpData that can
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects.
 	 * Moreover, the method records any auxiliary data that should be
@@ -287,12 +266,13 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpData $expData object containing the update data
-	 * @param &$auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of ExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
 	 *
 	 * @return ExpData
+	 * @throws LogicException
 	 */
-	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
+	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, bool $expandSubject ) {
 		$subjectExpResource = $expData->getSubject();
 
 		if ( $expandSubject ) {
@@ -301,7 +281,7 @@ class TurtleTriplesBuilder {
 
 			if ( $expandedExpElement instanceof ExpData ) {
 				$newExpData = $expandedExpElement;
-			} else { // instanceof SMWExpResource
+			} else {
 				$newExpData = new ExpData( $subjectExpResource );
 			}
 		} else {
@@ -311,6 +291,10 @@ class TurtleTriplesBuilder {
 		foreach ( $expData->getProperties() as $propertyResource ) {
 
 			$propertyTarget = $this->expandUpdateExpElement( $propertyResource, $auxiliaryExpData );
+
+			if ( !$propertyTarget instanceof ExpNsResource ) {
+				throw new LogicException( 'Expected ExpNsResource' );
+			}
 
 			foreach ( $expData->getValues( $propertyResource ) as $element ) {
 				$newExpData->addPropertyObjectValue(

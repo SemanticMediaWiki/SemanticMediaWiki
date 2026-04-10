@@ -2,7 +2,7 @@
 
 namespace SMW\Utils;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,10 +14,8 @@ class Image {
 
 	/**
 	 * @see http://php.net/manual/en/function.image-type-to-extension.php
-	 *
-	 * @var
 	 */
-	private static $images_types = [
+	private static array $images_types = [
 		'gif' => 'image/gif',
 		'jpg' => 'image/jpeg',
 		'jpeg' => 'image/jpeg',
@@ -41,11 +39,11 @@ class Image {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return bool
 	 */
-	public static function isImage( DIWikiPage $dataItem ) {
+	public static function isImage( WikiPage $dataItem ): bool {
 		if ( $dataItem->getNamespace() !== NS_FILE || $dataItem->getSubobjectName() !== '' ) {
 			return false;
 		}

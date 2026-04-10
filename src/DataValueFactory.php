@@ -3,20 +3,22 @@
 namespace SMW;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\ErrorValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIError;
-use SMWErrorValue as ErrorValue;
 
 /**
- * Factory class for creating SMWDataValue objects for supplied types or
+ * Factory class for creating DataValue objects for supplied types or
  * properties and data values.
  *
- * The class has the main entry point newTypeIdValue(), which creates a new
+ * The class has the main entry point newDataValueByType(), which creates a new
  * datavalue object, possibly with preset user values, captions and
  * property names. To create suitable datavalues for a given property, the
  * method newDataValueByProperty() can be used.
@@ -30,20 +32,11 @@ use SMWErrorValue as ErrorValue;
  */
 class DataValueFactory {
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private static $instance;
+	private static ?DataValueFactory $instance = null;
 
-	/**
-	 * @var DataTypeRegistry
-	 */
-	private $dataTypeRegistry;
+	private DataTypeRegistry $dataTypeRegistry;
 
-	/**
-	 * @var DataValueServiceFactory
-	 */
-	private $dataValueServiceFactory;
+	private DataValueServiceFactory $dataValueServiceFactory;
 
 	/**
 	 * @var int
@@ -58,7 +51,7 @@ class DataValueFactory {
 	/**
 	 * @var
 	 */
-	private $callables = [];
+	private array $callables = [];
 
 	/**
 	 * @since 1.9
@@ -76,7 +69,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValueFactory
 	 */
-	public static function getInstance() {
+	public static function getInstance(): DataValueFactory {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -100,7 +93,8 @@ class DataValueFactory {
 			$settings->get( 'smwgDefaultOutputFormatters' )
 		);
 
-		return self::$instance = $instance;
+		self::$instance = $instance;
+		return self::$instance;
 	}
 
 	/**
@@ -111,7 +105,7 @@ class DataValueFactory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function addCallable( $key, callable $callable ) {
+	public function addCallable( $key, callable $callable ): void {
 		if ( isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` is already in use, please clear the callable first!" );
 		}
@@ -124,14 +118,14 @@ class DataValueFactory {
 	 *
 	 * @param string $key
 	 */
-	public function clearCallable( $key ) {
+	public function clearCallable( $key ): void {
 		unset( $this->callables[$key] );
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->dataTypeRegistry->clear();
 		$this->callables = [];
 		self::$instance = null;
@@ -142,7 +136,7 @@ class DataValueFactory {
 	 *
 	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
@@ -151,7 +145,7 @@ class DataValueFactory {
 	 *
 	 * @param array $defaultOutputFormatters
 	 */
-	public function setDefaultOutputFormatters( array $defaultOutputFormatters ) {
+	public function setDefaultOutputFormatters( array $defaultOutputFormatters ): void {
 		$this->defaultOutputFormatters = [];
 
 		foreach ( $defaultOutputFormatters as $type => $formatter ) {
@@ -173,12 +167,12 @@ class DataValueFactory {
 	 * @param string $typeId id string for the given type
 	 * @param string|false $valueString user value string, or false if unknown
 	 * @param string|false $caption user-defined caption, or false if none given
-	 * @param DIProperty|null $property property object for which this value is made, or null
-	 * @param DIWikiPage|null $contextPage that provides a context for parsing the value string, or null
+	 * @param Property|null $property property object for which this value is made, or null
+	 * @param WikiPage|null $contextPage that provides a context for parsing the value string, or null
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByType( $typeId, $valueString = false, $caption = false, ?DIProperty $property = null, $contextPage = null ) {
+	public function newDataValueByType( $typeId, $valueString = false, $caption = false, ?Property $property = null, $contextPage = null ) {
 		if ( !$this->dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
@@ -251,13 +245,13 @@ class DataValueFactory {
 	 * Create a value for a data item.
 	 *
 	 * @param $dataItem DataItem
-	 * @param null $property mixed null or \SMW\DIProperty property object for which this value is made
+	 * @param null $property mixed null or DIProperty property object for which this value is made
 	 * @param $caption mixed user-defined caption, or false if none given
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByItem( DataItem $dataItem, ?DIProperty $property = null, $caption = false, $contextPage = null ) {
+	public function newDataValueByItem( DataItem $dataItem, ?Property $property = null, $caption = false, $contextPage = null ) {
 		if ( $property !== null ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
@@ -286,14 +280,14 @@ class DataValueFactory {
 	 * object. If no value is given, an empty container is created, the
 	 * value of which can be set later on.
 	 *
-	 * @param $property \SMW\DIProperty property object for which this value is made
+	 * @param $property DIProperty property object for which this value is made
 	 * @param $valueString mixed user value string, or false if unknown
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param null $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByProperty( DIProperty $property, $valueString = false, $caption = false, $contextPage = null ) {
+	public function newDataValueByProperty( Property $property, $valueString = false, $caption = false, $contextPage = null ) {
 		$typeId = $property->isInverse() ? '_wpg' : $property->findPropertyTypeID();
 
 		return $this->newDataValueByType( $typeId, $valueString, $caption, $property, $contextPage );
@@ -313,7 +307,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?DIWikiPage $contextPage = null ) {
+	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?WikiPage $contextPage = null ) {
 		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $caption, $contextPage );
 
 		if ( !$propertyDV->isValid() ) {
@@ -328,7 +322,7 @@ class DataValueFactory {
 				$caption
 			);
 
-			if ( $propertyDV->getDataItem() instanceof DIProperty ) {
+			if ( $propertyDV->getDataItem() instanceof Property ) {
 				$dataValue->setProperty( $propertyDV->getDataItem() );
 			}
 
@@ -337,11 +331,11 @@ class DataValueFactory {
 
 		$propertyDI = $propertyDV->getDataItem();
 
-		if ( $propertyDI instanceof SMWDIError ) {
+		if ( $propertyDI instanceof Error ) {
 			return $propertyDV;
 		}
 
-		if ( $propertyDI instanceof DIProperty && !$propertyDI->isInverse() ) {
+		if ( $propertyDI instanceof Property && !$propertyDI->isInverse() ) {
 			$dataValue = $this->newDataValueByProperty(
 				$propertyDI,
 				$valueString,
@@ -351,7 +345,7 @@ class DataValueFactory {
 
 			$dataValue->setProperty( $propertyDV->getDataItem() );
 
-		} elseif ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
+		} elseif ( $propertyDI instanceof Property && $propertyDI->isInverse() ) {
 			$dataValue = new ErrorValue( $propertyDV->getPropertyTypeID(),
 				[ 'smw_noinvannot' ],
 				$valueString,
@@ -389,24 +383,24 @@ class DataValueFactory {
 	 *
 	 * @param string $propertyLabel
 	 * @param string|false $caption
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValueByLabel( $propertyLabel, $caption = false, ?DIWikiPage $contextPage = null ) {
+	public function newPropertyValueByLabel( $propertyLabel, $caption = false, ?WikiPage $contextPage = null ) {
 		return $this->newDataValueByType( PropertyValue::TYPE_ID, $propertyLabel, $caption, null, $contextPage );
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param string|false $caption
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValueByItem( DIProperty $property, $caption = false, ?DIWikiPage $contextPage = null ) {
+	public function newPropertyValueByItem( Property $property, $caption = false, ?WikiPage $contextPage = null ) {
 		$dataValue = $this->newDataValueByType(
 			PropertyValue::TYPE_ID,
 			false,
@@ -434,46 +428,8 @@ class DataValueFactory {
 	 *
 	 * @return ErrorValue
 	 */
-	public function newErrorValue( $typeid, $errormsg = '', $uservalue = '', $caption = false ) {
+	public function newErrorValue( $typeid, $errormsg = '', $uservalue = '', $caption = false ): ErrorValue {
 		return new ErrorValue( $typeid, $errormsg, $uservalue, $caption );
-	}
-
-/// Deprecated methods
-
-	/**
-	 * @deprecated since 2.4, use DataValueFactory::newDataValueByItem
-	 *
-	 * @return DataValue
-	 */
-	public static function newDataItemValue( DataItem $dataItem, ?DIProperty $property = null, $caption = false ) {
-		return self::getInstance()->newDataValueByItem( $dataItem, $property, $caption );
-	}
-
-	/**
-	 * @deprecated since 2.4, use DataValueFactory::newDataValueByProperty
-	 *
-	 * @return DataValue
-	 */
-	public static function newPropertyObjectValue( DIProperty $property, $valueString = false, $caption = false, $contextPage = null ) {
-		return self::getInstance()->newDataValueByProperty( $property, $valueString, $caption, $contextPage );
-	}
-
-	/**
-	 * @deprecated since 2.4, use DataValueFactory::newDataValueByType
-	 *
-	 * @return DataValue
-	 */
-	public static function newTypeIdValue( $typeId, $valueString = false, $caption = false, ?DIProperty $property = null, $contextPage = null ) {
-		return self::getInstance()->newDataValueByType( $typeId, $valueString, $caption, $property, $contextPage );
-	}
-
-	/**
-	 * @deprecated since 2.4, use DataTypeRegistry::newDataValueByText
-	 *
-	 * @return DataValue
-	 */
-	public function newPropertyValue( $propertyName, $valueString, $caption = false, ?DIWikiPage $contextPage = null ) {
-		return $this->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
 	}
 
 }

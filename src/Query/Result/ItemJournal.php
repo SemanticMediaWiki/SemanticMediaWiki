@@ -2,9 +2,9 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMWDataItem;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 
 /**
  * This class records selected entities used in a QueryResult by the time the
@@ -20,31 +20,31 @@ use SMWDataItem;
  */
 class ItemJournal {
 
-	private $dataItems = [];
-	private $properties = [];
+	private array $dataItems = [];
+	private array $properties = [];
 
 	/**
 	 * @since 2.4
 	 *
-	 * @return SMWDataItem[]
+	 * @return DataItem[]
 	 */
-	public function getEntityList() {
+	public function getEntityList(): array {
 		return $this->dataItems;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 */
-	public function getPropertyList() {
+	public function getPropertyList(): array {
 		return $this->properties;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function prune() {
+	public function prune(): void {
 		$this->dataItems = [];
 		$this->properties = [];
 	}
@@ -52,10 +52,10 @@ class ItemJournal {
 	/**
 	 * @since 2.4
 	 *
-	 * @param SMWDataItem $dataItem
+	 * @param DataItem $dataItem
 	 */
-	public function recordItem( SMWDataItem $dataItem ) {
-		if ( $dataItem instanceof DIWikiPage ) {
+	public function recordItem( DataItem $dataItem ): void {
+		if ( $dataItem instanceof WikiPage ) {
 			$this->dataItems[$dataItem->getHash()] = $dataItem;
 		}
 	}
@@ -63,9 +63,9 @@ class ItemJournal {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty|null $property
+	 * @param Property|null $property
 	 */
-	public function recordProperty( ?DIProperty $property = null ) {
+	public function recordProperty( ?Property $property = null ): void {
 		if ( $property !== null ) {
 			$this->properties[$property->getKey()] = $property;
 		}

@@ -2,13 +2,13 @@
 
 namespace SMW\Elastic\Indexer;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Collator;
-use SMW\SemanticData;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @private
@@ -47,11 +47,6 @@ use SMWDataItem as DataItem;
 class DocumentCreator {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var bool
 	 */
 	private $compatibilityMode = true;
@@ -61,16 +56,12 @@ class DocumentCreator {
 	 */
 	private $documentCreationDuration = 0;
 
-	/**
-	 * @var array
-	 */
-	private $subEntities = [];
+	private array $subEntities = [];
 
 	/**
 	 * @since 3.2
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -78,7 +69,7 @@ class DocumentCreator {
 	 *
 	 * @param bool $compatibilityMode
 	 */
-	public function setCompatibilityMode( $compatibilityMode ) {
+	public function setCompatibilityMode( $compatibilityMode ): void {
 		$this->compatibilityMode = $compatibilityMode;
 	}
 
@@ -133,7 +124,7 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newFromData( SemanticData $semanticData, $parent_id = null ) {
+	private function newFromData( SemanticData $semanticData, $parent_id = null ): Document {
 		$subject = $semanticData->getSubject();
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
@@ -162,7 +153,7 @@ class DocumentCreator {
 		// Remove any document that has been identified as redirect to avoid
 		// having Elasticsearch to match those documents and create a subject
 		// match similar to `[[::smw-redi:Issue/1286|Issue/1286]]` (#P0904)
-		if ( $semanticData->hasProperty( new DIProperty( '_REDI' ) ) ) {
+		if ( $semanticData->hasProperty( new Property( '_REDI' ) ) ) {
 			$type = Document::TYPE_DELETE;
 		}
 
@@ -293,11 +284,11 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newHead( $id, DIWikiPage $subject, $type ) {
+	private function newHead( int $id, WikiPage $subject, string $type ): Document {
 		return new Document( $id, [ 'subject' => $this->makeSubject( $subject ) ], $type );
 	}
 
-	private function makeSubject( DIWikiPage $subject ) {
+	private function makeSubject( WikiPage $subject ): array {
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || !str_starts_with( $title ?? '', '_' ) ) {

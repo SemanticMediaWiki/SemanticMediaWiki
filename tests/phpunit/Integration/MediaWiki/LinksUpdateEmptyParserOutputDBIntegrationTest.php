@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 
@@ -26,7 +26,7 @@ class LinksUpdateEmptyParserOutputDBIntegrationTest extends SMWIntegrationTestCa
 
 	public function testDoUpdate() {
 		$title   = Title::newFromText( __METHOD__ );
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$pageCreator = new PageCreator();
 		$pageCreator

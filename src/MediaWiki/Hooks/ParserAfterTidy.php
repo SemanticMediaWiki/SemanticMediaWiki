@@ -6,13 +6,13 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -34,42 +34,18 @@ class ParserAfterTidy implements HookListener {
 
 	const CACHE_NAMESPACE = 'smw:parseraftertidy';
 
-	/**
-	 * @var Parser
-	 */
-	private $parser;
+	private bool $isCommandLineMode = false;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
-
-	/**
-	 * @var bool
-	 */
-	private $isReady = true;
+	private bool $isReady = true;
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Parser &$parser
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param Cache $cache
 	 */
-	public function __construct( Parser &$parser, NamespaceExaminer $namespaceExaminer, Cache $cache ) {
-		$this->parser = $parser;
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->cache = $cache;
+	public function __construct(
+		private Parser &$parser,
+		private NamespaceExaminer $namespaceExaminer,
+		private Cache $cache,
+	) {
 	}
 
 	/**
@@ -79,7 +55,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
@@ -88,7 +64,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @param bool $isReady
 	 */
-	public function isReady( $isReady ) {
+	public function isReady( $isReady ): void {
 		$this->isReady = (bool)$isReady;
 	}
 
@@ -99,7 +75,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( &$text ) {
+	public function process( &$text ): bool {
 		if ( $this->canPerformUpdate() ) {
 			$this->performUpdate( $text );
 		}
@@ -107,7 +83,7 @@ class ParserAfterTidy implements HookListener {
 		return true;
 	}
 
-	private function canPerformUpdate() {
+	private function canPerformUpdate(): bool {
 		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
 		// when for example Title::isProtected is accessed
 		if ( $this->isReady === false ) {
@@ -176,7 +152,7 @@ class ParserAfterTidy implements HookListener {
 		return false;
 	}
 
-	private function performUpdate( &$text ) {
+	private function performUpdate( &$text ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -202,7 +178,7 @@ class ParserAfterTidy implements HookListener {
 		}
 	}
 
-	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ) {
+	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ): void {
 		$parserOutput = $this->parser->getOutput();
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
@@ -271,7 +247,7 @@ class ParserAfterTidy implements HookListener {
 	 * a static variable or any other messaging that is not persistent will not
 	 * work hence the reliance on the cache as temporary persistence marker
 	 */
-	private function checkPurgeRequest( $parserData ) {
+	private function checkPurgeRequest( $parserData ): ?bool {
 		$start = microtime( true );
 		$title = $this->parser->getTitle();
 
@@ -315,9 +291,11 @@ class ParserAfterTidy implements HookListener {
 				number_format( ( microtime( true ) - $start ), 3 )
 			);
 		}
+
+		return null;
 	}
 
-	private function doAbort() {
+	private function doAbort(): bool {
 		$this->logger->info(
 			"ParserAfterTidy was invoked but the site isn't ready yet, aborting the processing."
 		);

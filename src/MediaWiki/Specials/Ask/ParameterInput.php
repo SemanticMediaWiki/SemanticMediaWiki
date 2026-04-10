@@ -26,46 +26,27 @@ class ParameterInput {
 	 * The parameter to print an input for.
 	 *
 	 * @since 1.9
-	 *
-	 * @var ParamDefinition
 	 */
-	protected $param;
-
-	/**
-	 * The current value for the parameter. When provided,
-	 * it'll be used as value for the input, otherwise the
-	 * parameters default value will be used.
-	 *
-	 * @since 1.9
-	 *
-	 * @var mixed string or false
-	 */
-	protected $currentValue;
+	protected ParamDefinition $param;
 
 	/**
 	 * Name for the input.
 	 *
 	 * @since 1.9
-	 *
-	 * @var string
 	 */
-	protected $inputName;
+	protected string $inputName;
 
-	/**
-	 * @var array
-	 */
-	private $attributes = [];
+	private array $attributes = [];
 
 	/**
 	 * Constructor.
 	 *
 	 * @since 1.9
-	 *
-	 * @param ParamDefinition $param
-	 * @param mixed $currentValue
 	 */
-	public function __construct( ParamDefinition $param, $currentValue = false ) {
-		$this->currentValue = $currentValue;
+	public function __construct(
+		ParamDefinition $param,
+		protected $currentValue = false,
+	) {
 		$this->inputName = $param->getName();
 		$this->param = $param;
 	}
@@ -77,7 +58,7 @@ class ParameterInput {
 	 *
 	 * @param mixed $currentValue
 	 */
-	public function setCurrentValue( $currentValue ) {
+	public function setCurrentValue( $currentValue ): void {
 		$this->currentValue = $currentValue;
 	}
 
@@ -88,7 +69,7 @@ class ParameterInput {
 	 *
 	 * @param string $name
 	 */
-	public function setInputName( $name ) {
+	public function setInputName( string $name ): void {
 		$this->inputName = $name;
 	}
 
@@ -97,7 +78,7 @@ class ParameterInput {
 	 *
 	 * @param array $attributes
 	 */
-	public function setAttributes( array $attributes ) {
+	public function setAttributes( array $attributes ): void {
 		$this->attributes = $attributes;
 	}
 
@@ -140,7 +121,7 @@ class ParameterInput {
 	 *
 	 * @return string
 	 */
-	protected function getValueToUse() {
+	protected function getValueToUse(): string {
 		$value = $this->currentValue === false ? $this->param->getDefault() : $this->currentValue;
 
 		if ( $this->param->isList() && is_array( $value ) ) {
@@ -274,7 +255,7 @@ class ParameterInput {
 	 *
 	 * @return string
 	 */
-	protected function getCheckboxListInput( array $valueList ) {
+	protected function getCheckboxListInput( array $valueList ): string {
 		$boxes = [];
 		$currentValues = [];
 

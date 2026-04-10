@@ -5,11 +5,12 @@ namespace SMW\Maintenance;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
+use SMW\DataItems\DataItem;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
-use SMWDataItem as DataItem;
 
 /**
  * Load the required class
@@ -106,7 +107,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 
 		// Only the SQLStore is supported
 		$searchTableRebuilder = $fulltextSearchTableFactory->newSearchTableRebuilder(
-			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' )
+			$applicationFactory->getStore( SQLStore::class )
 		);
 
 		$textSanitizer = $fulltextSearchTableFactory->newTextSanitizer();

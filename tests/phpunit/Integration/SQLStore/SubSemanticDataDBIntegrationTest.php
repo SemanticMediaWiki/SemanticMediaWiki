@@ -3,8 +3,9 @@
 namespace SMW\Tests\Integration\SQLStore;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
@@ -54,19 +55,19 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 				'{{#subobject:namedSubobject|AA=Test1|@sortkey=Z}}' .
 				'{{#subobject:|BB=Test2|@sortkey=Z}}' );
 
-		$semanticData = $this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) );
+		$semanticData = $this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) );
 
 		$this->assertInstanceOf(
-			'SMW\SemanticData',
+			SemanticData::class,
 			$semanticData->findSubSemanticData( 'namedSubobject' )
 		);
 
 		$expected = [
 			'propertyCount'  => 2,
 			'properties' => [
-				new DIProperty( 'AA' ),
-				new DIProperty( 'BB' ),
-				new DIProperty( '_SKEY' )
+				new Property( 'AA' ),
+				new Property( 'BB' ),
+				new Property( '_SKEY' )
 			],
 			'propertyValues' => [
 				'Test1',
@@ -97,15 +98,15 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 			);
 
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromTitle( $this->title )
+			WikiPage::newFromTitle( $this->title )
 		);
 
 		$expected = [
 			'propertyCount'  => 3,
 			'properties' => [
-				new DIProperty( '_TEXT' ),
-				new DIProperty( '_LCODE' ),
-				new DIProperty( '_SKEY' )
+				new Property( '_TEXT' ),
+				new Property( '_LCODE' ),
+				new Property( '_SKEY' )
 			],
 			'propertyValues' => [
 				'en',
@@ -137,15 +138,15 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 			);
 
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromText( '_PREC', SMW_NS_PROPERTY )
+			WikiPage::newFromText( '_PREC', SMW_NS_PROPERTY )
 		);
 
 		$expected = [
 			'propertyCount'  => 3,
 			'properties' => [
-				new DIProperty( '_TEXT' ),
-				new DIProperty( '_LCODE' ),
-				new DIProperty( '_SKEY' )
+				new Property( '_TEXT' ),
+				new Property( '_LCODE' ),
+				new Property( '_SKEY' )
 			],
 			'propertyValues' => [
 				'en',

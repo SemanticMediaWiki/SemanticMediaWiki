@@ -15,22 +15,16 @@ use SMW\Localizer\Message;
  */
 class SortWidget {
 
-	/**
-	 * @var bool
-	 */
-	private static $sortingSupport = false;
+	private static bool $sortingSupport = false;
 
-	/**
-	 * @var bool
-	 */
-	private static $randSortingSupport = false;
+	private static bool $randSortingSupport = false;
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param bool $sortingSupport
 	 */
-	public static function setSortingSupport( $sortingSupport ) {
+	public static function setSortingSupport( $sortingSupport ): void {
 		self::$sortingSupport = (bool)$sortingSupport;
 	}
 
@@ -39,7 +33,7 @@ class SortWidget {
 	 *
 	 * @param bool $randSortingSupport
 	 */
-	public static function setRandSortingSupport( $randSortingSupport ) {
+	public static function setRandSortingSupport( $randSortingSupport ): void {
 		self::$randSortingSupport = (bool)$randSortingSupport;
 	}
 
@@ -90,7 +84,7 @@ class SortWidget {
 		);
 	}
 
-	private static function sortingOptions( array $sorts, array $orders ) {
+	private static function sortingOptions( array $sorts, array $orders ): string {
 		$result = '';
 
 		foreach ( $orders as $i => $order ) {

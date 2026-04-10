@@ -5,8 +5,8 @@ namespace SMW\Tests\Utils;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
-use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
+use Throwable;
 use WikiPage;
 
 /**
@@ -38,10 +38,8 @@ class PageDeleter {
 
 		try {
 			$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-			if ( $user !== null ) {
-				$page->doDeleteArticleReal( 'SMW system test: delete page', $user );
-			}
-		} catch ( \Throwable $e ) {
+			$page->doDeleteArticleReal( 'SMW system test: delete page', $user );
+		} catch ( Throwable $e ) {
 			error_log( 'PageDeleter::deletePage failed for "' . $title->getPrefixedText() . '": ' . $e );
 		}
 
@@ -56,7 +54,7 @@ class PageDeleter {
 	public function doDeletePoolOfPages( array $poolOfPages ) {
 		foreach ( $poolOfPages as $page ) {
 
-			if ( $page instanceof WikiPage || $page instanceof DIWikiPage ) {
+			if ( $page instanceof WikiPage || $page instanceof \SMW\DataItems\WikiPage ) {
 				$page = $page->getTitle();
 			}
 

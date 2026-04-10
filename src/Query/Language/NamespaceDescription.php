@@ -17,16 +17,7 @@ use SMW\Localizer\Localizer;
  */
 class NamespaceDescription extends Description {
 
-	/**
-	 * @var int
-	 */
-	private $namespace;
-
-	/**
-	 * @param int $namespace
-	 */
-	public function __construct( $namespace ) {
-		$this->namespace = $namespace;
+	public function __construct( private $namespace ) {
 	}
 
 	/**
@@ -35,7 +26,7 @@ class NamespaceDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		// Avoid a simple `int` which may interfere with an associative array
 		// when compounding hash strings from different descriptions
 		return 'N:' . md5( $this->namespace );
@@ -48,7 +39,7 @@ class NamespaceDescription extends Description {
 		return $this->namespace;
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$localizedNamespaceText = Localizer::getInstance()->getNsText( $this->namespace );
 
 		$prefix = $this->namespace == NS_CATEGORY ? ':' : '';
@@ -60,11 +51,11 @@ class NamespaceDescription extends Description {
 		return '[[' . $prefix . $localizedNamespaceText . ':+]]';
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int {
 		return SMW_NAMESPACE_QUERY;
 	}
 

@@ -21,38 +21,19 @@ class ExceptionFileLogger {
 	/**
 	 * @var string
 	 */
-	private $namespace;
-
-	/**
-	 * @var File
-	 */
-	private $file;
-
-	/**
-	 * @var string
-	 */
 	private $exceptionFile;
 
-	/**
-	 * @var int
-	 */
-	private $exceptionCount = 0;
+	private int $exceptionCount = 0;
 
-	/**
-	 * @var array
-	 */
-	private $exceptionLogMessages = [];
+	private array $exceptionLogMessages = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $namespace
-	 * @param File|null $file
 	 */
-	public function __construct( $namespace = 'smw', ?File $file = null ) {
-		$this->namespace = $namespace;
-		$this->file = $file;
-
+	public function __construct(
+		private $namespace = 'smw',
+		private ?File $file = null,
+	) {
 		if ( $this->file === null ) {
 			$this->file = new File();
 		}
@@ -63,7 +44,7 @@ class ExceptionFileLogger {
 	 *
 	 * @param Options $options
 	 */
-	public function setOptions( Options $options ) {
+	public function setOptions( Options $options ): void {
 		$dateTimeUtc = new ExtendedDateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$this->exceptionFile = __DIR__ . "/../../../";
 
@@ -82,7 +63,7 @@ class ExceptionFileLogger {
 	 *
 	 * @return string
 	 */
-	public function getExceptionFile() {
+	public function getExceptionFile(): string|false {
 		return realpath( $this->exceptionFile );
 	}
 
@@ -91,7 +72,7 @@ class ExceptionFileLogger {
 	 *
 	 * @return int
 	 */
-	public function getExceptionCount() {
+	public function getExceptionCount(): int {
 		return $this->exceptionCount;
 	}
 
@@ -101,7 +82,7 @@ class ExceptionFileLogger {
 	 * @param string $id
 	 * @param Exception $exception
 	 */
-	public function recordException( $id, Exception $exception ) {
+	public function recordException( $id, Exception $exception ): void {
 		$this->exceptionCount++;
 
 		$this->exceptionLogMessages[$id] = [
@@ -113,7 +94,7 @@ class ExceptionFileLogger {
 	/**
 	 * @since 3.0
 	 */
-	public function doWrite() {
+	public function doWrite(): void {
 		foreach ( $this->exceptionLogMessages as $id => $exception ) {
 			$this->put( $id, $exception );
 		}
@@ -122,7 +103,7 @@ class ExceptionFileLogger {
 		$this->exceptionCount = 0;
 	}
 
-	private function put( $id, $exception ) {
+	private function put( int|string $id, array $exception ): void {
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .

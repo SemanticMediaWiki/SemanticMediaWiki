@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Connection;
 
+use Profiler;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
@@ -19,27 +20,16 @@ class ConnectionProvider implements IConnectionProvider {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var string
-	 */
-	private $provider;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
 
-	/**
-	 * @var array
-	 */
-	private $localConnectionConf = [];
+	private array $localConnectionConf = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string|null $provider
 	 */
-	public function __construct( $provider = null ) {
-		$this->provider = $provider;
+	public function __construct( private $provider = null ) {
 	}
 
 	/**
@@ -49,7 +39,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 3.0
 	 */
-	public function setLocalConnectionConf( array $localConnectionConf ) {
+	public function setLocalConnectionConf( array $localConnectionConf ): void {
 		$this->localConnectionConf = $localConnectionConf;
 	}
 
@@ -75,7 +65,8 @@ class ConnectionProvider implements IConnectionProvider {
 			$conf = $this->localConnectionConf[$this->provider];
 		}
 
-		return $this->connection = $this->createConnection( $conf );
+		$this->connection = $this->createConnection( $conf );
+		return $this->connection;
 	}
 
 	/**
@@ -83,7 +74,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 2.1
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		if ( $this->connection !== null ) {
 			$this->connection->releaseConnection();
 		}
@@ -91,7 +82,7 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function createConnection( $conf ) {
+	private function createConnection( array $conf ) {
 		if ( isset( $conf['callback'] ) && is_callable( $conf['callback'] ) ) {
 			return call_user_func( $conf['callback'] );
 		}
@@ -123,7 +114,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return $connection;
 	}
 
-	private function newConnRef( $conf ) {
+	private function newConnRef( array $conf ): ConnRef {
 		$read = $this->newLoadBalancerConnectionProvider( $conf['read'] );
 
 		if ( $conf['read'] !== $conf['write'] ) {
@@ -140,17 +131,17 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 	}
 
-	private function newLoadBalancerConnectionProvider( $id ) {
+	private function newLoadBalancerConnectionProvider( $id ): LoadBalancerConnectionProvider {
 		return new LoadBalancerConnectionProvider( $id );
 	}
 
-	private function newTransactionHandler() {
+	private function newTransactionHandler(): TransactionHandler {
 		$transactionHandler = new TransactionHandler(
 			ServicesFactory::getInstance()->create( 'DBLoadBalancerFactory' )
 		);
 
 		$transactionHandler->setTransactionProfiler(
-			\Profiler::instance()->getTransactionProfiler()
+			Profiler::instance()->getTransactionProfiler()
 		);
 
 		return $transactionHandler;

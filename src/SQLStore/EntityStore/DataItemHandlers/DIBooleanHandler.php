@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * This class implements Store access to Boolean data items.
@@ -22,7 +22,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_value' => FieldType::TYPE_BOOL
 		];
@@ -33,13 +33,13 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_value' => FieldType::TYPE_BOOL
 		];
 	}
 
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 			// smw.entityIdDisposer causes denial of service on job queue (#4950)
 			'p_id'
@@ -51,7 +51,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		// PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
 			$value = $dataItem->getBoolean() ? 't' : 'f';
@@ -69,7 +69,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		// PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
 			$value = $dataItem->getBoolean() ? 't' : 'f';
@@ -87,7 +87,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_value';
 	}
 
@@ -96,7 +96,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_value';
 	}
 
@@ -105,7 +105,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Boolean {
 		// PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
 			$value = ( $dbkeys == 't' );
@@ -113,6 +113,6 @@ class DIBooleanHandler extends DataItemHandler {
 			$value = ( $dbkeys == '1' );
 		}
 
-		return new DIBoolean( $value );
+		return new Boolean( $value );
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace SMW\Services;
 
+use Onoi\CallbackContainer\CallbackContainerBuilder;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
@@ -12,7 +13,7 @@ use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener
  * Services defined in this file SHOULD only be accessed either via the
  * ApplicationFactory or a different factory instance.
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -20,11 +21,11 @@ use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener
 return [
 
 	/**
-	 * InvalidateResultCacheEventListener
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return InvalidateResultCacheEventListener
 	 */
-	'InvalidateResultCacheEventListener' => static function ( $containerBuilder ) {
+	'InvalidateResultCacheEventListener' => static function ( $containerBuilder ): InvalidateResultCacheEventListener {
 		$invalidateResultCacheEventListener = new InvalidateResultCacheEventListener(
 			$containerBuilder->singleton( 'ResultCache' )
 		);
@@ -33,11 +34,11 @@ return [
 	},
 
 	/**
-	 * InvalidateEntityCacheEventListener
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return InvalidateEntityCacheEventListener
 	 */
-	'InvalidateEntityCacheEventListener' => static function ( $containerBuilder ) {
+	'InvalidateEntityCacheEventListener' => static function ( $containerBuilder ): InvalidateEntityCacheEventListener {
 		$invalidateEntityCacheEventListener = new InvalidateEntityCacheEventListener(
 			$containerBuilder->singleton( 'EntityCache' )
 		);
@@ -46,11 +47,11 @@ return [
 	},
 
 	/**
-	 * InvalidatePropertySpecificationLookupCacheEventListener
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return InvalidatePropertySpecificationLookupCacheEventListener
 	 */
-	'InvalidatePropertySpecificationLookupCacheEventListener' => static function ( $containerBuilder ) {
+	'InvalidatePropertySpecificationLookupCacheEventListener' => static function ( $containerBuilder ): InvalidatePropertySpecificationLookupCacheEventListener {
 		$invalidatePropertySpecificationLookupCacheEventListener = new InvalidatePropertySpecificationLookupCacheEventListener(
 			$containerBuilder->singleton( 'PropertySpecificationLookup' )
 		);

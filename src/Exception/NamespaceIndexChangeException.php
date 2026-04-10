@@ -23,7 +23,7 @@ class NamespaceIndexChangeException extends RuntimeException {
 			"A change to the `smwgNamespaceIndex` was detected showing a discrepancy ($old, $new) and " .
 			"is preventing Semantic MediaWiki from modifying related namespace settings.\n\n" .
 			"LocalSettings.php should only contain one `smwgNamespaceIndex` definition and the declaration should " .
-			"happen before `enableSemantics`."
+			"happen before `wfLoadExtension( 'SemanticMediaWiki' )`."
 		);
 	}
 

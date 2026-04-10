@@ -4,9 +4,9 @@ namespace SMW;
 
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMWDataItem as DataItem;
 
 /**
  * DataTypes registry class
@@ -50,7 +50,7 @@ class DataTypeRegistry {
 	private $canonicalLabels = [];
 
 	/**
-	 * Array of class names for creating new SMWDataValue, indexed by type
+	 * Array of class names for creating new DataValue, indexed by type
 	 * id.
 	 *
 	 * @var string[]
@@ -87,7 +87,7 @@ class DataTypeRegistry {
 	 *
 	 * @var string[]
 	 */
-	private $defaultDataItemTypeMap = [
+	private array $defaultDataItemTypeMap = [
 		DataItem::TYPE_BLOB => '_txt', // Text type
 		DataItem::TYPE_URI => '_uri', // URL/URI type
 		DataItem::TYPE_WIKIPAGE => '_wpg', // Page type
@@ -107,7 +107,7 @@ class DataTypeRegistry {
 	/**
 	 * @var
 	 */
-	private $callables = [];
+	private array $callables = [];
 
 	/**
 	 * Returns a DataTypeRegistry instance
@@ -116,7 +116,7 @@ class DataTypeRegistry {
 	 *
 	 * @return DataTypeRegistry
 	 */
-	public static function getInstance() {
+	public static function getInstance(): self {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -137,7 +137,7 @@ class DataTypeRegistry {
 	 *
 	 * @since 1.9
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -152,20 +152,13 @@ class DataTypeRegistry {
 	}
 
 	/**
-	 * @deprecated since 2.5, use DataTypeRegistry::getDataItemByType
-	 */
-	public function getDataItemId( $typeId ) {
-		return $this->getDataItemByType( $typeId );
-	}
-
-	/**
 	 * Get the preferred data item ID for a given type. The ID defines the
 	 * appropriate data item class for processing data of this type. See
 	 * DataItem for possible values.
 	 *
-	 * @note SMWDIContainer is a pseudo dataitem type that is used only in
+	 * @note \SMW\DataItems\Container is a pseudo dataitem type that is used only in
 	 * data input methods, but not for storing data. Types that work with
-	 * SMWDIContainer use SMWDIWikiPage as their DI type. (Since SMW 1.8)
+	 * \SMW\DataItems\Container use \SMW\DataItems\WikiPage as their DI type. (Since SMW 1.8)
 	 *
 	 * @param $typeId string id string for the given type
 	 *
@@ -186,7 +179,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isRegistered( $typeId ) {
+	public function isRegistered( $typeId ): bool {
 		return isset( $this->typeDataItemIds[$typeId] );
 	}
 
@@ -208,7 +201,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isSubDataType( $typeId ) {
+	public function isSubDataType( $typeId ): bool {
 		return isset( $this->subTypes[$typeId] ) && $this->subTypes[$typeId];
 	}
 
@@ -219,7 +212,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isBrowsableType( $typeId ) {
+	public function isBrowsableType( $typeId ): bool {
 		return isset( $this->browsableTypes[$typeId] ) && $this->browsableTypes[$typeId];
 	}
 
@@ -231,7 +224,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isEqualByType( $srcType, $tagType ) {
+	public function isEqualByType( $srcType, $tagType ): bool {
 		return $this->getDataItemByType( $srcType ) === $this->getDataItemByType( $tagType );
 	}
 
@@ -240,13 +233,13 @@ class DataTypeRegistry {
 	 * called from within the hook 'smwInitDatatypes'.
 	 *
 	 * @param $id string type ID for which this datatype is registered
-	 * @param $className string name of the according subclass of SMWDataValue
+	 * @param $className string name of the according subclass of DataValue
 	 * @param $dataItemId integer ID of the data item class that this data value uses, see DataItem
 	 * @param $label mixed string label or false for types that cannot be accessed by users
 	 * @param bool $isSubDataType
 	 * @param bool $isBrowsableType
 	 */
-	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ) {
+	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ): void {
 		$this->typeClasses[$id] = $className;
 		$this->typeDataItemIds[$id] = $dataItemId;
 		$this->subTypes[$id] = $isSubDataType;
@@ -257,12 +250,12 @@ class DataTypeRegistry {
 		}
 	}
 
-	private function registerTypeLabel( $typeId, $typeLabel ) {
+	private function registerTypeLabel( $typeId, $typeLabel ): void {
 		$this->typeLabels[$typeId] = $typeLabel;
 		$this->addTextToIdLookupMap( $typeId, $typeLabel );
 	}
 
-	private function addTextToIdLookupMap( $dataTypeId, $text ) {
+	private function addTextToIdLookupMap( $dataTypeId, $text ): void {
 		$this->typeByLabelOrAliasLookup[mb_strtolower( $text )] = $dataTypeId;
 	}
 
@@ -275,7 +268,7 @@ class DataTypeRegistry {
 	 * @param string $typeId
 	 * @param string $typeAlias
 	 */
-	public function registerDataTypeAlias( $typeId, $typeAlias ) {
+	public function registerDataTypeAlias( $typeId, $typeAlias ): void {
 		$this->typeAliases[$typeAlias] = $typeId;
 		$this->addTextToIdLookupMap( $typeId, $typeAlias );
 	}
@@ -392,7 +385,7 @@ class DataTypeRegistry {
 	 *
 	 * @return array
 	 */
-	public function getCanonicalDatatypeLabels() {
+	public function getCanonicalDatatypeLabels(): array {
 		return $this->canonicalLabels;
 	}
 
@@ -404,7 +397,7 @@ class DataTypeRegistry {
 	 *
 	 * @return array
 	 */
-	public function getKnownTypeLabels() {
+	public function getKnownTypeLabels(): array {
 		return $this->typeLabels;
 	}
 
@@ -413,15 +406,8 @@ class DataTypeRegistry {
 	 *
 	 * @return array
 	 */
-	public function getKnownTypeAliases() {
+	public function getKnownTypeAliases(): array {
 		return $this->typeAliases;
-	}
-
-	/**
-	 * @deprecated since 2.5, use DataTypeRegistry::getDefaultDataItemByType
-	 */
-	public function getDefaultDataItemTypeId( $diType ) {
-		return $this->getDefaultDataItemByType( $diType );
 	}
 
 	/**
@@ -467,7 +453,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function hasDataTypeClassById( $typeId ) {
+	public function hasDataTypeClassById( $typeId ): bool {
 		if ( !isset( $this->typeClasses[$typeId] ) ) {
 			return false;
 		}
@@ -484,7 +470,7 @@ class DataTypeRegistry {
 	 * associations. This method is called before most methods of this
 	 * factory.
 	 */
-	protected function initDatatypes( array $typeList ) {
+	protected function initDatatypes( array $typeList ): void {
 		foreach ( $typeList as $id => $definition ) {
 
 			if ( isset( $definition[0] ) ) {
@@ -530,7 +516,7 @@ class DataTypeRegistry {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function registerCallable( $typeId, $key, callable $callable ) {
+	public function registerCallable( $typeId, $key, callable $callable ): void {
 		if ( !is_string( $typeId ) || !is_string( $key ) ) {
 			throw new RuntimeException( "`$key`, `$typeId` need to be a string!" );
 		}
@@ -560,11 +546,11 @@ class DataTypeRegistry {
 	/**
 	 * @since 3.1
 	 */
-	public function clearCallables() {
+	public function clearCallables(): void {
 		$this->callables = [];
 	}
 
-	private function registerLabels() {
+	private function registerLabels(): void {
 		foreach ( $this->localLanguage->getDatatypeLabels() as $typeId => $typeLabel ) {
 			$this->registerTypeLabel( $typeId, $typeLabel );
 		}

@@ -2,13 +2,13 @@
 
 namespace SMW\Query;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Utils\Tokenizer;
-use SMWDIBlob as DIBlob;
 
 /**
  * For a wildcard search, build tokens from the query string, and allow to highlight
@@ -35,17 +35,12 @@ class QueryToken {
 	/**
 	 * @var array
 	 */
-	private $tokens = [];
+	private int $minHighlightTokenLength = 4;
 
 	/**
 	 * @var array
 	 */
-	private $minHighlightTokenLength = 4;
-
-	/**
-	 * @var array
-	 */
-	private $highlightType = 4;
+	private int $highlightType = 4;
 
 	/**
 	 * @var string
@@ -54,11 +49,8 @@ class QueryToken {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $tokens
 	 */
-	public function __construct( array $tokens = [] ) {
-		$this->tokens = $tokens;
+	public function __construct( private array $tokens = [] ) {
 	}
 
 	/**
@@ -66,7 +58,7 @@ class QueryToken {
 	 *
 	 * @return array
 	 */
-	public function getTokens() {
+	public function getTokens(): array {
 		return $this->tokens;
 	}
 
@@ -93,12 +85,12 @@ class QueryToken {
 		$isProximate = $description->getComparator() === SMW_CMP_LIKE || $description->getComparator() === SMW_CMP_PRIM_LIKE;
 
 		// [[SomeProperty::~*Foo*]] / [[SomeProperty::like:*Foo*]]
-		if ( $isProximate && $description->getDataItem() instanceof DIBlob ) {
+		if ( $isProximate && $description->getDataItem() instanceof Blob ) {
 			return $this->addTokensFromText( $description->getDataItem()->getString() );
 		}
 
 		// [[~~* ... *]]
-		if ( $description->getDataItem() instanceof DIWikiPage && strpos( $description->getDataItem()->getDBKey(), '~' ) !== false ) {
+		if ( $description->getDataItem() instanceof WikiPage && strpos( $description->getDataItem()->getDBKey(), '~' ) !== false ) {
 			return $this->addTokensFromText( $description->getDataItem()->getDBKey() );
 		}
 	}
@@ -110,7 +102,7 @@ class QueryToken {
 	 *
 	 * @param string $outputFormat
 	 */
-	public function setOutputFormat( $outputFormat ) {
+	public function setOutputFormat( $outputFormat ): void {
 		$this->outputFormat = $outputFormat;
 	}
 
@@ -130,7 +122,7 @@ class QueryToken {
 		return $this->doHighlight( $text, $type, array_keys( $this->tokens ) );
 	}
 
-	private function doHighlight( $text, $type, $tokens ) {
+	private function doHighlight( $text, $type, array $tokens ): string|array|null {
 		if ( $type === self::HL_BOLD ) {
 			$replacement = "<b>$0</b>";
 		} elseif ( $type === self::HL_UNDERLINE ) {
@@ -148,7 +140,7 @@ class QueryToken {
 		return preg_replace( $pattern, $replacement, $text );
 	}
 
-	private function addTokensFromText( $text ) {
+	private function addTokensFromText( $text ): array {
 		// Remove query related chars
 		$text = str_replace(
 			[ '*', '"', '~', '_', '+', '-' ],
@@ -156,7 +148,8 @@ class QueryToken {
 			$text
 		);
 
-		return $this->tokens += array_flip( Tokenizer::tokenize( $text ) );
+		$this->tokens += array_flip( Tokenizer::tokenize( $text ) );
+		return $this->tokens;
 	}
 
 }

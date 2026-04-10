@@ -1,0 +1,389 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki;
+
+use MediaWiki\Content\Content;
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\PageInfoProvider;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\Tests\Utils\Mock\MockTitle;
+
+/**
+ * @covers \SMW\MediaWiki\PageInfoProvider
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 1.9
+ *
+ * @author mwjames
+ */
+class PageInfoProviderTest extends TestCase {
+
+	public function testCanConstruct() {
+		$wikipage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			PageInfoProvider::class,
+			new PageInfoProvider( $wikipage )
+		);
+	}
+
+	public function testWikiPage_TYPE_MODIFICATION_DATE() {
+		$instance = $this->constructPageInfoProviderInstance(
+			[
+				'wikiPage' => [ 'getTimestamp' => 1272508903 ],
+				'revision' => [],
+				'user'     => [],
+			]
+		);
+
+		$this->assertEquals( 1272508903, $instance->getModificationDate() );
+	}
+
+	public function testWikiPage_TYPE_CREATION_DATE() {
+		$revision = $this->getMockBuilder( RevisionRecord::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision->expects( $this->any() )
+			->method( 'getTimestamp' )
+			->willReturn( 1272508903 );
+
+		$title = MockTitle::buildMock( 'Lula' );
+
+		$instance = $this->constructPageInfoProviderInstance(
+			[
+				'wikiPage' => [ 'getTitle' => $title ],
+				'revision' => [],
+				'user'     => [],
+			]
+		);
+
+		$revisionLookup = $this->getMockBuilder( RevisionLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionLookup->expects( $this->any() )
+			->method( 'getFirstRevision' )
+			->willReturn( $revision );
+
+		$instance->setRevisionLookup(
+			$revisionLookup
+		);
+
+		$this->assertEquals( 1272508903, $instance->getCreationDate() );
+	}
+
+	/**
+	 * @dataProvider parentIdProvider
+	 */
+	public function testWikiPage_TYPE_NEW_PAGE_ForRevision( $parentId, $expected ) {
+		$instance = $this->constructPageInfoProviderInstance(
+			[
+				'wikiPage' => [],
+				'revision' => [ 'getParentId' => $parentId ],
+				'user'     => [],
+			]
+		);
+
+		$this->assertEquals( $expected, $instance->isNewPage() );
+	}
+
+	/**
+	 * @dataProvider parentIdProvider
+	 */
+	public function testWikiPage_TYPE_NEW_PAGE( $parentId, $expected ) {
+		$revision = $this->getMockBuilder( RevisionRecord::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision->expects( $this->any() )
+			->method( 'getParentId' )
+			->willReturn( $parentId );
+
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionGuard->expects( $this->any() )
+			->method( 'newRevisionFromPage' )
+			->willReturn( $revision );
+
+		$instance = $this->constructPageInfoProviderInstance(
+			[
+				'wikiPage' => [ 'getRevisionRecord' => $revision ],
+				'revision' => [],
+				'user'     => [],
+			]
+		);
+
+		$instance->setRevisionGuard(
+			$revisionGuard
+		);
+
+		$this->assertEquals( $expected, $instance->isNewPage() );
+	}
+
+	public function parentIdProvider() {
+		$provider = [
+			[ 90001, false ],
+			[ 0, true ],
+			[ null, false ]
+		];
+
+		return $provider;
+	}
+
+	public function testWikiPage_TYPE_LAST_EDITOR() {
+		$userPage = MockTitle::buildMock( 'Lula' );
+
+		$userPage->expects( $this->any() )
+			->method( 'getNamespace' )
+			->willReturn( NS_USER );
+
+		$instance = $this->constructPageInfoProviderInstance(
+			[
+				'wikiPage' => [],
+				'revision' => [],
+				'user'     => [ 'getUserPage' => $userPage ],
+			]
+		);
+
+		$this->assertEquals( $userPage, $instance->getLastEditor() );
+	}
+
+	public function constructPageInfoProviderInstance( array $parameters ) {
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		foreach ( $parameters['wikiPage'] as $method => $returnValue ) {
+			$wikiPage->expects( $this->any() )
+				->method( $method )
+				->willReturn( $returnValue );
+		}
+
+		$revision = $this->getMockBuilder( RevisionRecord::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		foreach ( $parameters['revision'] as $method => $returnValue ) {
+			$revision->expects( $this->any() )
+				->method( $method )
+				->willReturn( $returnValue );
+		}
+
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		foreach ( $parameters['user'] as $method => $returnValue ) {
+			$user->expects( $this->any() )
+				->method( $method )
+				->willReturn( $returnValue );
+		}
+
+		$pageInfoProvider = new PageInfoProvider(
+			$wikiPage,
+			( $parameters['revision'] !== [] ? $revision : null ),
+			( $parameters['user'] !== [] ? $user : null )
+		);
+
+		if ( $parameters['revision'] != [] ) {
+			$revisionLookup = $this->getMockBuilder( RevisionLookup::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$revisionLookup->expects( $this->any() )
+				->method( 'getFirstRevision' )
+				->willReturn( $revision );
+
+			$pageInfoProvider->setRevisionLookup(
+				$revisionLookup
+			);
+		}
+
+		return $pageInfoProvider;
+	}
+
+	/**
+	 * @dataProvider uploadStatusWikiFilePageDataProvider
+	 */
+	public function testWikiFilePage_TYPE_NEW_PAGE( $uploadStatus, $expected ) {
+		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PageInfoProvider( $wikiFilePage, null, null, $uploadStatus );
+
+		$this->assertEquals( $expected, $instance->isNewPage() );
+	}
+
+	/**
+	 * @dataProvider mediaTypeWikiFilePageDataProvider
+	 */
+	public function testWikiFilePage_MEDIA_TYPE( $file, $expected ) {
+		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'isFilePage', 'getFile' ] )
+			->getMock();
+
+		$wikiFilePage->expects( $this->any() )
+			->method( 'isFilePage' )
+			->willReturn( true );
+
+		$wikiFilePage->expects( $this->any() )
+			->method( 'getFile' )
+			->willReturn( $file );
+
+		$instance = new PageInfoProvider( $wikiFilePage );
+
+		$this->assertEquals( $expected, $instance->getMediaType() );
+	}
+
+	/**
+	 * @dataProvider mimeTypeWikiFilePageDataProvider
+	 */
+	public function testWikiFilePage_MIME_TYPE( $file, $expected ) {
+		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'isFilePage', 'getFile' ] )
+			->getMock();
+
+		$wikiFilePage->expects( $this->any() )
+			->method( 'isFilePage' )
+			->willReturn( true );
+
+		$wikiFilePage->expects( $this->any() )
+			->method( 'getFile' )
+			->willReturn( $file );
+
+		$instance = new PageInfoProvider( $wikiFilePage );
+
+		$this->assertEquals( $expected, $instance->getMimeType() );
+	}
+
+	public function testWikiPage_MEDIA_TYPE() {
+		$wikiFilePage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PageInfoProvider( $wikiFilePage );
+
+		$this->assertNull( $instance->getMediaType() );
+	}
+
+	public function testWikiPage_MIME_TYPE() {
+		$wikiFilePage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PageInfoProvider( $wikiFilePage );
+
+		$this->assertNull( $instance->getMimeType() );
+	}
+
+	public function testWikiPage_NativeData() {
+		$content = $this->getMockBuilder( Content::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$content->expects( $this->any() )
+			->method( 'getNativeData' )
+			->willReturn( 'Foo' );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getContent' )
+			->willReturn( $content );
+
+		$instance = new PageInfoProvider( $wikiPage );
+
+		$this->assertEquals(
+			'Foo',
+			$instance->getNativeData()
+		);
+	}
+
+	public function testWikiPage_NativeData_Null() {
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getContent' )
+			->willReturn( null );
+
+		$instance = new PageInfoProvider( $wikiPage );
+
+		$this->assertSame(
+			'',
+			$instance->getNativeData()
+		);
+	}
+
+	public function uploadStatusWikiFilePageDataProvider() {
+		$provider = [
+			[ null, false ],
+			[ false, true ],
+			[ true, false ]
+		];
+
+		return $provider;
+	}
+
+	public function mediaTypeWikiFilePageDataProvider() {
+		$fileWithMedia = $this->getMockBuilder( '\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$fileWithMedia->expects( $this->any() )
+			->method( 'getMediaType' )
+			->willReturn( 'FooMedia' );
+
+		$fileNullMedia = $this->getMockBuilder( '\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$fileNullMedia->expects( $this->any() )
+			->method( 'getMediaType' )
+			->willReturn( null );
+
+		$provider[] = [ $fileWithMedia, 'FooMedia' ];
+		$provider[] = [ $fileNullMedia, null ];
+
+		return $provider;
+	}
+
+	public function mimeTypeWikiFilePageDataProvider() {
+		$fileWithMime = $this->getMockBuilder( '\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$fileWithMime->expects( $this->any() )
+			->method( 'getMimeType' )
+			->willReturn( 'FooMime' );
+
+		$fileNullMime = $this->getMockBuilder( '\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$fileNullMime->expects( $this->any() )
+			->method( 'getMediaType' )
+			->willReturn( null );
+
+		$provider[] = [ $fileWithMime, 'FooMime' ];
+		$provider[] = [ $fileNullMime, null ];
+
+		return $provider;
+	}
+
+}

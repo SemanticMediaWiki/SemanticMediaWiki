@@ -9,7 +9,7 @@ use SMW\Utils\HmacSerializer;
 /**
  * @private
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -17,29 +17,17 @@ use SMW\Utils\HmacSerializer;
 class SequenceMapFinder {
 
 	/**
-	 * @var Database
+	 * @var array
 	 */
-	private $connection;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
-	 * @var
-	 */
-	private $preloaded = [];
+	private array $preloaded = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
@@ -50,7 +38,7 @@ class SequenceMapFinder {
 	 * @param int $sid
 	 * @param array|null $map
 	 */
-	public function setMap( $sid, ?array $map = null ) {
+	public function setMap( $sid, ?array $map = null ): void {
 		if ( $map === null ) {
 			return;
 		}
@@ -82,11 +70,12 @@ class SequenceMapFinder {
 	 *
 	 * @return array
 	 */
-	public function findMapById( $sid ) {
+	public function findMapById( $sid ): array {
 		$omap = [];
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
-		if ( ( $map = $cache->fetch( $sid ) ) !== false ) {
+		$map = $cache->fetch( $sid );
+		if ( $map !== false ) {
 			return $map;
 		}
 
@@ -125,7 +114,7 @@ class SequenceMapFinder {
 	 *
 	 * @param array $ids
 	 */
-	public function prefetchSequenceMap( array $ids ) {
+	public function prefetchSequenceMap( array $ids ): void {
 		sort( $ids );
 		$hash = md5( json_encode( $ids ) );
 

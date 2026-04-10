@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -16,51 +16,39 @@ use SMW\SQLStore\SQLStore;
 class PrefetchCache {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var PrefetchItemLookup
-	 */
-	private $prefetchItemLookup;
-
-	/**
-	 * @var
+	 * @var array
 	 */
 	private $cache = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $lookupCache = [];
+	private array $lookupCache = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
-	 * @param PrefetchItemLookup $prefetchItemLookup
 	 */
-	public function __construct( SQLStore $store, PrefetchItemLookup $prefetchItemLookup ) {
-		$this->store = $store;
-		$this->prefetchItemLookup = $prefetchItemLookup;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly PrefetchItemLookup $prefetchItemLookup,
+	) {
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function isCached( DIProperty $property ) {
+	public function isCached( Property $property ): bool {
 		return isset( $this->cache[$property->getKey()] );
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->cache = [];
 		$this->lookupCache = [];
 	}
@@ -68,17 +56,19 @@ class PrefetchCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
+	 *
+	 * @return ?string
 	 */
-	public static function makeCacheKey( DIProperty $property, RequestOptions $requestOptions ) {
+	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ): ?string {
 		$key = $property->getKey();
 
 		// Use the .dot notation to distingish it from other prrintouts that
 		// use the same property
-		if ( isset( $requestOptions->isChain ) && $requestOptions->isChain ) {
-			$key .= '#' . $requestOptions->isChain;
-			$key .= '#' . $property->isInverse();
+		if ( $requestOptions->isChain ) {
+			$key .= '#' . (string)$requestOptions->isChain;
+			$key .= '#' . (string)$property->isInverse();
 		}
 
 		// T:P0467, requires an extra identification to ensure the test passes
@@ -96,11 +86,11 @@ class PrefetchCache {
 	 *
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage[] $subjects
-	 * @param DIProperty $property
+	 * @param WikiPage[] $subjects
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 */
-	public function prefetch( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
+	public function prefetch( array $subjects, Property $property, RequestOptions $requestOptions ): void {
 		$fingerprint = '';
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 
@@ -132,13 +122,13 @@ class PrefetchCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
-	 * @param DIProperty $property
+	 * @param WikiPage $subject
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions ) {
+	public function getPropertyValues( WikiPage $subject, Property $property, RequestOptions $requestOptions ): array {
 		$key = $this->makeCacheKey( $property, $requestOptions );
 
 		// 0 is the default ID of the subject, if it already has an ID,

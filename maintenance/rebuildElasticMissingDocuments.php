@@ -5,8 +5,8 @@ namespace SMW\Maintenance;
 use Iterator;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Elastic\Jobs\FileIngestJob;
@@ -391,16 +391,14 @@ class rebuildElasticMissingDocuments extends Maintenance {
 
 		if ( $namespace === SMW_NS_PROPERTY ) {
 			try {
-				$property = DIProperty::newFromUserLabel( $row->smw_title );
+				$property = Property::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
-			} catch ( PropertyLabelNotResolvedException $e ) {
-				return;
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PropertyLabelNotResolvedException | PredefinedPropertyLabelMismatchException ) {
 				return;
 			}
 		}
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$title,
 			$namespace,
 			$row->smw_iw,

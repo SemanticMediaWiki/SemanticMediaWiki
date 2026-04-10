@@ -30,10 +30,8 @@ class Config extends Options {
 
 	/**
 	 * Contains deprecated or renamed settings.
-	 *
-	 * @var array
 	 */
-	private $deprecatedKeys = [
+	private array $deprecatedKeys = [
 		'query' => [
 			// 3.2
 			'fallback.no.connection' => 'fallback.no_connection'
@@ -60,7 +58,7 @@ class Config extends Options {
 	 *
 	 * @param array $deprecatedKeys
 	 */
-	public function setDeprectedKeys( array $deprecatedKeys ) {
+	public function setDeprectedKeys( array $deprecatedKeys ): void {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 			return;
 		}
@@ -71,7 +69,7 @@ class Config extends Options {
 	/**
 	 * @since 3.2
 	 */
-	public function reassignDeprectedKeys() {
+	public function reassignDeprectedKeys(): void {
 		foreach ( $this->deprecatedKeys as $k => $keys ) {
 			foreach ( $keys as $deprected => $new ) {
 
@@ -89,7 +87,7 @@ class Config extends Options {
 	 *
 	 * @param string $data
 	 */
-	public function loadFromJSON( $data ) {
+	public function loadFromJSON( $data ): void {
 		if ( $data === false ) {
 			return;
 		}
@@ -119,7 +117,7 @@ class Config extends Options {
 	 * @return string|false
 	 * @throws RuntimeException
 	 */
-	public function readFile( $file ) {
+	public function readFile( $file ): false|string {
 		if ( $file === false ) {
 			return false;
 		}

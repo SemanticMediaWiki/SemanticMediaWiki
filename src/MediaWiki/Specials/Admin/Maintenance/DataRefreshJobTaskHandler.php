@@ -20,30 +20,15 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 
-	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var null|Job
-	 */
-	private $refreshjob = null;
+	private ?Job $refreshjob = null;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly OutputFormatter $outputFormatter,
+	) {
 	}
 
 	/**
@@ -51,7 +36,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_MAINTENANCE;
 	}
 
@@ -124,9 +109,9 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
-			return '';
+			return;
 		}
 
 		$sure = $webRequest->getText( 'rfsure' );
@@ -155,7 +140,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
-	private function getProgressBar( $prog ) {
+	private function getProgressBar( $prog ): string {
 		return Html::rawElement(
 			'div',
 			[ 'style' => 'float: left; background: #DDDDDD; border: 1px solid grey; width: 300px;' ],
@@ -163,7 +148,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 		) . '&#160;' . round( $prog * 100, 4 ) . '%';
 	}
 
-	private function getRefreshJob() {
+	private function getRefreshJob(): ?Job {
 		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
 			return null;
 		}

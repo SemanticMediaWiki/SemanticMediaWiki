@@ -21,60 +21,33 @@ class HtmlColumnListRenderer {
 	 */
 	private $numberOfColumns = 1;
 
-	/**
-	 * @var array
-	 */
-	private $contentsByIndex = [];
+	private array $contentsByIndex = [];
 
-	/**
-	 * @var array
-	 */
-	private $itemAttributes = [];
+	private array $itemAttributes = [];
 
-	/**
-	 * @var int
-	 */
-	private $numRows = 0;
+	private int $numRows = 0;
 
-	/**
-	 * @var int
-	 */
-	private $numberOfResults = 0;
+	private int $numberOfResults = 0;
 
 	/**
 	 * @var int
 	 */
 	private $rowsPerColumn = 0;
 
-	/**
-	 * @var int
-	 */
-	private $columnWidth = 0;
+	private int|float $columnWidth = 0;
 
-	/**
-	 * @var string
-	 */
-	private $listType = 'ul';
+	private string $listType = 'ul';
 
 	/**
 	 * @var string
 	 */
 	private $olType = '';
 
-	/**
-	 * @var string
-	 */
-	private $columnListClass = 'smw-columnlist-container';
+	private string $columnListClass = 'smw-columnlist-container';
 
-	/**
-	 * @var string
-	 */
-	private $columnClass = 'smw-column';
+	private string $columnClass = 'smw-column';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
 	/**
 	 * @since 2.2
@@ -83,7 +56,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setColumnListClass( $columnListClass ) {
+	public function setColumnListClass( $columnListClass ): static {
 		$this->columnListClass = htmlspecialchars( $columnListClass );
 		return $this;
 	}
@@ -95,7 +68,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setColumnClass( $columnClass ) {
+	public function setColumnClass( $columnClass ): static {
 		$this->columnClass = htmlspecialchars( $columnClass );
 		return $this;
 	}
@@ -105,7 +78,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function setColumnRTLDirectionalityState( $isRTL ) {
+	public function setColumnRTLDirectionalityState( $isRTL ): static {
 		$this->isRTL = (bool)$isRTL;
 		return $this;
 	}
@@ -117,7 +90,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setNumberOfColumns( $numberOfColumns ) {
+	public function setNumberOfColumns( $numberOfColumns ): static {
 		$this->numberOfColumns = $numberOfColumns;
 		return $this;
 	}
@@ -129,7 +102,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setListType( $listType, $olType = '' ) {
+	public function setListType( $listType, $olType = '' ): static {
 		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
@@ -152,7 +125,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @param array $itemAttributes
 	 */
-	public function setItemAttributes( array $itemAttributes ) {
+	public function setItemAttributes( array $itemAttributes ): static {
 		$this->itemAttributes = $itemAttributes;
 		return $this;
 	}
@@ -164,7 +137,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function addContentsByNoIndex( array $contentsByNoIndex ) {
+	public function addContentsByNoIndex( array $contentsByNoIndex ): static {
 		$contentsByEmptyIndex[''] = [];
 
 		foreach ( $contentsByNoIndex as $value ) {
@@ -181,7 +154,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function addContentsByIndex( array $contentsByIndex ) {
+	public function addContentsByIndex( array $contentsByIndex ): static {
 		$this->contentsByIndex = $contentsByIndex;
 		$this->numberOfResults = count( $this->contentsByIndex, COUNT_RECURSIVE ) - count( $this->contentsByIndex );
 		return $this;
@@ -236,7 +209,7 @@ class HtmlColumnListRenderer {
 		);
 	}
 
-	private function makeList( $key, $listContinuesAbbrev, $items, &$usedColumnCloser ) {
+	private function makeList( int|string $key, $listContinuesAbbrev, $items, &$usedColumnCloser ): string {
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';

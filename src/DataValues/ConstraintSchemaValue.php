@@ -3,10 +3,9 @@
 namespace SMW\DataValues;
 
 use SMW\Constraint\Constraint;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Property\SpecificationLookup;
-use SMWWikiPageValue as WikiPageValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,17 +20,11 @@ class ConstraintSchemaValue extends WikiPageValue {
 	 */
 	const TYPE_ID = '__cschema';
 
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $specificationLookup;
-
-	/**
-	 * @param string $typeid
-	 */
-	public function __construct( $typeid, SpecificationLookup $specificationLookup ) {
+	public function __construct(
+		$typeid,
+		private readonly SpecificationLookup $specificationLookup,
+	) {
 		parent::__construct( self::TYPE_ID );
-		$this->specificationLookup = $specificationLookup;
 		$this->m_fixNamespace = SMW_NS_SCHEMA;
 	}
 
@@ -40,7 +33,7 @@ class ConstraintSchemaValue extends WikiPageValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		parent::parseUserValue( $value );
 
 		$dataItem = $this->getDataItem();
@@ -48,13 +41,13 @@ class ConstraintSchemaValue extends WikiPageValue {
 		$schema = null;
 		$error = [];
 
-		if ( !$dataItem instanceof DIWikiPage || $contextPage === null ) {
+		if ( !$dataItem instanceof WikiPage || $contextPage === null ) {
 			return;
 		}
 
 		$definitions = $this->specificationLookup->getSpecification(
 			$dataItem,
-			new DIProperty( '_SCHEMA_DEF' )
+			new Property( '_SCHEMA_DEF' )
 		);
 
 		foreach ( $definitions as $definition ) {
@@ -83,7 +76,7 @@ class ConstraintSchemaValue extends WikiPageValue {
 	 *
 	 * @return string
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->getPrefixedText();
 	}
 

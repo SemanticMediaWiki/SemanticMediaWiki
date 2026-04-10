@@ -5,10 +5,10 @@ namespace SMW\Tests\Utils\JSONScript;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use SMW\Query\Parser as QueryParser;
+use SMW\Query\Query;
 use SMW\Store;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
 use SMW\Tests\Utils\Validators\StringValidator;
-use SMWQuery as Query;
 
 /**
  * @group semantic-mediawiki
@@ -21,11 +21,6 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
 
 	/**
 	 * @var QueryParser
@@ -41,20 +36,17 @@ class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	 * @var bool
 	 */
 	private $debug = false;
-
-	private QueryResultValidator $queryResultValidator;
-	private StringValidator $stringValidator;
 	private QueryParser $queryParser;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store, $queryResultValidator, $stringValidator, $numberValidator ) {
-		$this->store = $store;
-		$this->queryResultValidator = $queryResultValidator;
-		$this->stringValidator = $stringValidator;
+	public function __construct(
+		private readonly Store $store,
+		private readonly QueryResultValidator $queryResultValidator,
+		private readonly StringValidator $stringValidator,
+		$numberValidator,
+	) {
 		$this->numberValidator = $numberValidator;
 	}
 

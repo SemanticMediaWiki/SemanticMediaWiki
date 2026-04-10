@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
 use MediaWiki\Html\TemplateParser;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
 use SMW\Utils\UrlArgs;
@@ -19,37 +19,16 @@ class PropertyFilter {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var TreeBuilder
-	 */
-	private $treeBuilder;
-
-	/**
-	 * @var
-	 */
-	private $params;
-
-	/**
-	 * @var UrlArgs
-	 */
-	private $urlArgs;
+	private ?UrlArgs $urlArgs = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
-	 * @param TreeBuilder $treeBuilder
-	 * @param array $params
 	 */
-	public function __construct( TemplateParser $templateParser, TreeBuilder $treeBuilder, array $params ) {
-		$this->templateParser = $templateParser;
-		$this->treeBuilder = $treeBuilder;
-		$this->params = $params;
+	public function __construct(
+		private TemplateParser $templateParser,
+		private TreeBuilder $treeBuilder,
+		private array $params,
+	) {
 	}
 
 	/**
@@ -72,7 +51,7 @@ class PropertyFilter {
 		];
 
 		foreach ( $propertyFilters as $key => $count ) {
-			$key = DIProperty::newFromUserLabel( $key )->getLabel();
+			$key = Property::newFromUserLabel( $key )->getLabel();
 			$filters[$key] = $count;
 		}
 
@@ -127,8 +106,8 @@ class PropertyFilter {
 		);
 	}
 
-	private function matchFilter( $key, $count, &$list ) {
-		$property = DIWikiPage::newFromText( $key, SMW_NS_PROPERTY );
+	private function matchFilter( int|string $key, $count, array &$list ): ?WikiPage {
+		$property = WikiPage::newFromText( $key, SMW_NS_PROPERTY );
 		$propertyFilters = $this->urlArgs->getArray( 'pv' );
 
 		$clear = $this->urlArgs->find( 'clear.p' );

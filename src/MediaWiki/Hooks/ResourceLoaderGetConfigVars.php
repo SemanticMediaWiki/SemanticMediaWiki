@@ -32,17 +32,9 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	];
 
 	/**
-	 * @var NamespaceInfo
-	 */
-	private $namespaceInfo;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param NamespaceInfo $namespaceInfo
 	 */
-	public function __construct( NamespaceInfo $namespaceInfo ) {
-		$this->namespaceInfo = $namespaceInfo;
+	public function __construct( private NamespaceInfo $namespaceInfo ) {
 	}
 
 	/**
@@ -52,7 +44,7 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( array &$vars ) {
+	public function process( array &$vars ): bool {
 		$vars['smw-config'] = [
 			'version' => SMW_VERSION,
 			'namespaces' => [],

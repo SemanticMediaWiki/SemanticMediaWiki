@@ -2,15 +2,16 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\DataItems\DataItem;
+use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,23 +22,12 @@ use SMWExporter as Exporter;
  */
 class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ?ConditionBuilder $conditionBuilder = null ) {
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -46,7 +36,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ClassDescription;
 	}
 
@@ -55,7 +45,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): Condition {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -82,7 +72,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function mapCategoriesToConditionElements( array $categories, $depth, $joinVariable ) {
+	private function mapCategoriesToConditionElements( array $categories, $depth, $joinVariable ): array {
 		$condition = '';
 		$namespaces = [];
 		$instExpElement = $this->exporter->getSpecialPropertyResource( '_INST' );
@@ -113,7 +103,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		return [ $condition, $namespaces ];
 	}
 
-	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ) {
+	private function tryToAddClassHierarchyPattern( $category, $depth, string &$categoryExpName ): string {
 		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBC ) || ( $depth !== null && $depth < 1 ) ) {
 			return '';
 		}

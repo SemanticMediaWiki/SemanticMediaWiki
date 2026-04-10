@@ -11,22 +11,14 @@ namespace SMW\MediaWiki\Template;
 class Template {
 
 	/**
-	 * @var string
-	 */
-	private $name;
-
-	/**
 	 * @var
 	 */
 	private $fields = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $name
 	 */
-	public function __construct( $name ) {
-		$this->name = $name;
+	public function __construct( private $name ) {
 	}
 
 	/**
@@ -35,7 +27,7 @@ class Template {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function field( $key, $value ) {
+	public function field( $key, $value ): void {
 		$this->fields[$key] = $value;
 	}
 
@@ -44,7 +36,7 @@ class Template {
 	 *
 	 * @return string
 	 */
-	public function text() {
+	public function text(): string {
 		$text = '{{' . $this->name;
 
 		foreach ( $this->fields as $key => $value ) {

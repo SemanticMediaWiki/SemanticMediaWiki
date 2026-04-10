@@ -13,24 +13,12 @@ use InvalidArgumentException;
 class FieldChangeOp {
 
 	/**
-	 * @var array
-	 */
-	private $changeOp = [];
-
-	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param array $changeOp
-	 * @param string|null $type
 	 */
-	public function __construct( array $changeOp = [], $type = null ) {
-		$this->changeOp = $changeOp;
-		$this->type = $type;
+	public function __construct(
+		private array $changeOp = [],
+		private $type = null,
+	) {
 	}
 
 	/**
@@ -39,7 +27,7 @@ class FieldChangeOp {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->changeOp[$key] = $value;
 	}
 
@@ -50,7 +38,7 @@ class FieldChangeOp {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		return isset( $this->changeOp[$key] ) || array_key_exists( $key, $this->changeOp );
 	}
 
@@ -75,14 +63,14 @@ class FieldChangeOp {
 	 *
 	 * @return array
 	 */
-	public function getChangeOp() {
+	public function getChangeOp(): array {
 		return $this->changeOp;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return json_encode( [ $this->type => $this->changeOp ] );
 	}
 

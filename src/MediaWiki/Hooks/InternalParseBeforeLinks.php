@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\StripState;
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Parser\InTextAnnotationParser;
@@ -40,24 +40,12 @@ class InternalParseBeforeLinks implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
-	 * @var StripState
-	 */
-	private $stripState;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param Parser &$parser
-	 * @param StripState $stripState
 	 */
-	public function __construct( Parser &$parser, $stripState ) {
-		$this->parser = $parser;
-		$this->stripState = $stripState;
+	public function __construct(
+		private Parser &$parser,
+		private $stripState,
+	) {
 	}
 
 	/**
@@ -67,7 +55,7 @@ class InternalParseBeforeLinks implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( &$text ) {
+	public function process( &$text ): bool {
 		if ( !$this->canPerformUpdate( $text, $this->parser->getTitle() ) ) {
 			return true;
 		}
@@ -75,7 +63,7 @@ class InternalParseBeforeLinks implements HookListener {
 		return $this->performUpdate( $text );
 	}
 
-	private function canPerformUpdate( $text, $title ) {
+	private function canPerformUpdate( $text, Title $title ): bool {
 		if ( $this->getRedirectTarget() !== null ) {
 			return true;
 		}
@@ -106,7 +94,7 @@ class InternalParseBeforeLinks implements HookListener {
 		return false;
 	}
 
-	private function performUpdate( &$text ) {
+	private function performUpdate( &$text ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		/**

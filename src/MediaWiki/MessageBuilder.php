@@ -23,17 +23,9 @@ use RuntimeException;
 class MessageBuilder {
 
 	/**
-	 * @var Language
-	 */
-	private $language = null;
-
-	/**
 	 * @since 2.1
-	 *
-	 * @param Language|null $language
 	 */
-	public function __construct( ?Language $language = null ) {
-		$this->language = $language;
+	public function __construct( private ?Language $language = null ) {
 	}
 
 	/**
@@ -43,7 +35,7 @@ class MessageBuilder {
 	 *
 	 * @return MessageBuilder
 	 */
-	public function setLanguage( Language $language ) {
+	public function setLanguage( Language $language ): static {
 		$this->language = $language;
 		return $this;
 	}
@@ -55,7 +47,7 @@ class MessageBuilder {
 	 *
 	 * @return MessageBuilder
 	 */
-	public function setLanguageFromContext( IContextSource $context ) {
+	public function setLanguageFromContext( IContextSource $context ): static {
 		$this->language = $context->getLanguage();
 		return $this;
 	}
@@ -98,7 +90,7 @@ class MessageBuilder {
 	 *
 	 * @return string
 	 */
-	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ) {
+	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ): string {
 		$limit = (int)$limit;
 		$offset = (int)$offset;
 		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
@@ -117,6 +109,47 @@ class MessageBuilder {
 
 		if ( !$isAtTheEnd ) {
 			$navBuilder->setNextLinkQuery( [ 'offset' => (string)( $offset + $limit ) ] );
+		}
+
+		return $navBuilder->getHtml();
+	}
+
+	public function cursorPrevNextToText(
+		Title $title,
+		int $limit,
+		?int $firstCursor,
+		?int $lastCursor,
+		array $query,
+		bool $isAtTheEnd,
+		bool $isBackward = false
+	): string {
+		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+		$navBuilder
+			->setPage( $title )
+			->setLinkQuery( [ 'limit' => $limit ] + $query )
+			->setLimitLinkQueryParam( 'limit' )
+			->setCurrentLimit( $limit )
+			->setPrevTooltipMsg( 'prevn-title' )
+			->setNextTooltipMsg( 'nextn-title' )
+			->setLimitTooltipMsg( 'shown-title' );
+
+		// When going forward (after): atEnd means no more results ahead
+		//   -> always show Previous (we navigated here), hide Next if atEnd
+		// When going backward (before): atEnd means we hit the beginning
+		//   -> hide Previous if atEnd, always show Next (we came from ahead)
+		$showPrev = $isBackward ? !$isAtTheEnd : true;
+		$showNext = $isBackward ? true : !$isAtTheEnd;
+
+		if ( $showPrev && $firstCursor !== null ) {
+			$navBuilder->setPrevLinkQuery( [
+				'before' => (string)$firstCursor,
+			] );
+		}
+
+		if ( $showNext && $lastCursor !== null ) {
+			$navBuilder->setNextLinkQuery( [
+				'after' => (string)$lastCursor,
+			] );
 		}
 
 		return $navBuilder->getHtml();
@@ -142,7 +175,7 @@ class MessageBuilder {
 		return $message->inLanguage( $this->getLanguage() )->title( $GLOBALS['wgTitle'] );
 	}
 
-	private function getLanguage() {
+	private function getLanguage(): Language {
 		if ( $this->language instanceof Language ) {
 			return $this->language;
 		}

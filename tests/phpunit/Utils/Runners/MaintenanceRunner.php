@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
+use Maintenance;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RuntimeException;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
@@ -26,20 +27,16 @@ class MaintenanceRunner {
 	use MessageReporterAwareTrait;
 	use HookDispatcherAwareTrait;
 
-	protected $maintenanceClass = null;
-	protected $options = [];
 	protected $output = null;
 	protected $quiet = false;
 
 	/**
 	 * @since 1.9.2
-	 *
-	 * @param string $maintenanceClass
-	 * @param array $options
 	 */
-	public function __construct( $maintenanceClass, $options = [] ) {
-		$this->maintenanceClass = $maintenanceClass;
-		$this->options = $options;
+	public function __construct(
+		protected $maintenanceClass,
+		protected $options = [],
+	) {
 	}
 
 	/**
@@ -82,7 +79,7 @@ class MaintenanceRunner {
 		ApplicationFactory::getInstance()->clear();
 		$maintenance = new $this->maintenanceClass;
 
-		if ( !( $maintenance instanceof \Maintenance ) ) {
+		if ( !( $maintenance instanceof Maintenance ) ) {
 			throw new DomainException( "Expected a Maintenance instance" );
 		}
 

@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\SQLStore\propertyTable\propertyTableHashes;
@@ -19,36 +19,18 @@ use SMW\SQLStore\SQLStore;
 class EntityIdFinder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var PropertyTableHashes
-	 */
-	private $propertyTableHashes;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @var bool
 	 */
 	private $fetchPropertyTableHashes = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param PropertyTableHashes $propertyTableHashes
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, PropertyTableHashes $propertyTableHashes, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->propertyTableHashes = $propertyTableHashes;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly PropertyTableHashes $propertyTableHashes,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
@@ -56,18 +38,18 @@ class EntityIdFinder {
 	 *
 	 * @param bool $fetchPropertyTableHashes
 	 */
-	public function setFetchPropertyTableHashes( $fetchPropertyTableHashes ) {
+	public function setFetchPropertyTableHashes( $fetchPropertyTableHashes ): void {
 		$this->fetchPropertyTableHashes = $fetchPropertyTableHashes;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return int
 	 */
-	public function findIdByItem( DIWikiPage $dataItem ) {
+	public function findIdByItem( WikiPage $dataItem ): int {
 		if ( ( $id = $this->idCacheManager->getId( $dataItem ) ) !== false ) {
 			return $id;
 		}
@@ -116,7 +98,7 @@ class EntityIdFinder {
 	 *
 	 * @return array
 	 */
-	public function fetchFieldsFromTableById( $id, $title, $namespace, $iw, $subobjectName, &$sortkey ) {
+	public function fetchFieldsFromTableById( $id, $title, $namespace, $iw, $subobjectName, &$sortkey ): array {
 		if ( $id == 0 ) {
 			return [ $id, '' ];
 		}
@@ -184,7 +166,7 @@ class EntityIdFinder {
 	 *
 	 * @return array
 	 */
-	public function fetchFromTableByTitle( $title, $namespace, $iw, $subobjectName, &$sortkey ) {
+	public function fetchFromTableByTitle( $title, $namespace, $iw, $subobjectName, &$sortkey ): array {
 		$sha1 = IdCacheManager::computeSha1(
 			[
 				$title,
@@ -264,7 +246,7 @@ class EntityIdFinder {
 	 *
 	 * @return array
 	 */
-	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ) {
+	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
 		$matches = [];
 
 		$conditions = [

@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -16,17 +16,9 @@ use SMW\SQLStore\SQLStore;
 class PropertiesLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -34,7 +26,7 @@ class PropertiesLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( ?RequestOptions $requestOptions = null ) {
+	public function newRequestOptions( ?RequestOptions $requestOptions = null ): ?RequestOptions {
 		if ( $requestOptions !== null ) {
 			$clone = clone $requestOptions;
 			$clone->limit = $requestOptions->limit + $requestOptions->offset;
@@ -53,7 +45,7 @@ class PropertiesLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchFromTable( DIWikiPage $subject, TableDefinition $propertyTable, ?RequestOptions $requestOptions = null ) {
+	public function fetchFromTable( WikiPage $subject, TableDefinition $propertyTable, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -98,7 +90,7 @@ class PropertiesLookup {
 		return $query->execute( __METHOD__ );
 	}
 
-	private function fetchFromFixedTable( $query, $title ) {
+	private function fetchFromFixedTable( $query, $title ): array {
 		// just check if subject occurs in table
 		$query->options(
 			[ 'LIMIT' => 1 ]

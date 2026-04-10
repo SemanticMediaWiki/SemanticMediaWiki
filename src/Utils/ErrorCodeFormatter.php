@@ -12,10 +12,7 @@ namespace SMW\Utils;
  */
 class ErrorCodeFormatter {
 
-	/**
-	 * @var array
-	 */
-	private static $constants = [];
+	private static array $constants = [];
 
 	/**
 	 * @var array
@@ -30,7 +27,7 @@ class ErrorCodeFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getStringFromJsonErrorCode( $errorCode ) {
+	public static function getStringFromJsonErrorCode( $errorCode ): string {
 		if ( self::$constants === [] ) {
 			self::$constants = get_defined_constants( true );
 		}
@@ -43,7 +40,7 @@ class ErrorCodeFormatter {
 			}
 		}
 
-		return isset( self::$jsonErrors[$errorCode] ) ? self::$jsonErrors[$errorCode] : 'UNKNOWN';
+		return self::$jsonErrors[$errorCode] ?? 'UNKNOWN';
 	}
 
 	/**
@@ -53,7 +50,7 @@ class ErrorCodeFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getMessageFromJsonErrorCode( $errorCode ) {
+	public static function getMessageFromJsonErrorCode( $errorCode ): string {
 		$errorMessages = [
 			JSON_ERROR_STATE_MISMATCH => 'Underflow or the modes mismatch, malformed JSON',
 			JSON_ERROR_CTRL_CHAR => 'Unexpected control character found, possibly incorrectly encoded',

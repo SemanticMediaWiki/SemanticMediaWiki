@@ -4,16 +4,16 @@ namespace SMW\SQLStore\EntityStore;
 
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataModel\SequenceMap;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,36 +25,25 @@ class SemanticDataLookup {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var string
-	 */
-	private $caller = '';
+	private string $caller = '';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param PropertyTableDefinition $propertyTableDef
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, ?RequestOptions $requestOptions = null ) {
-		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
+	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, Property $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
+		if ( !$requestOptions || !$requestOptions->conditionConstraint ) {
 			return $requestOptions;
 		}
 
@@ -83,13 +72,13 @@ class SemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|SemanticData $object
+	 * @param WikiPage|SemanticData $object
 	 *
 	 * @return StubSemanticData
 	 * @throws RuntimeException
 	 */
-	public function newStubSemanticData( $object ) {
-		if ( $object instanceof DIWikiPage ) {
+	public function newStubSemanticData( $object ): StubSemanticData {
+		if ( $object instanceof WikiPage ) {
 			return new StubSemanticData( $object, $this->store, false );
 		}
 
@@ -107,7 +96,7 @@ class SemanticDataLookup {
 	 *
 	 * @return array
 	 */
-	public function getTableUsageInfo( SemanticData $semanticData ) {
+	public function getTableUsageInfo( SemanticData $semanticData ): array {
 		$state = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -125,10 +114,10 @@ class SemanticDataLookup {
 	 * @param PropertyTableDefinition $propTable
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return SemanticData
+	 * @return StubSemanticData
 	 */
-	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
-		if ( !$dataItem instanceof DIWikiPage ) {
+	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): StubSemanticData {
+		if ( !$dataItem instanceof WikiPage ) {
 			throw new RuntimeException( 'Expected a DIWikiPage instance' );
 		}
 
@@ -206,20 +195,20 @@ class SemanticDataLookup {
 	 * @since 3.1
 	 *
 	 * @param array $subjects
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param PropertyTableDefinition $propTable
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function prefetchDataFromTable( array $subjects, DIProperty $property, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
+	public function prefetchDataFromTable( array $subjects, Property $property, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): array {
 		$ids = [];
 		$isSubject = true;
 		$entityIdManager = $this->store->getObjectIds();
 
 		foreach ( $subjects as $k => $subject ) {
 
-			if ( !$subject instanceof DIWikiPage ) {
+			if ( !$subject instanceof WikiPage ) {
 				continue;
 			}
 
@@ -314,8 +303,8 @@ class SemanticDataLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
-		$isSubject = $dataItem instanceof DIWikiPage || $dataItem === null;
+	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): array {
+		$isSubject = $dataItem instanceof WikiPage || $dataItem === null;
 
 		// stop if there is not enough data:
 		// properties always need to be given as dataItem,
@@ -367,7 +356,10 @@ class SemanticDataLookup {
 		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
 	}
 
-	private function fetchSemanticDataFromTableByList( $list, $pid, $propTable, $requestOptions ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function fetchSemanticDataFromTableByList( array $list, string $pid, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions ): array {
 		if ( $list === [] ) {
 			return [];
 		}
@@ -397,7 +389,10 @@ class SemanticDataLookup {
 		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
 	}
 
-	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function fetchFromTable( $query, PropertyTableDefinition $propTable, bool $isSubject, ?RequestOptions $requestOptions, $field = '' ): array {
 		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -593,7 +588,7 @@ class SemanticDataLookup {
 
 			// Using a short-cut to warmup the cache/linkbatch instance
 			if ( $propTable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
-				$warmupCache[$row->id0] = DIWikiPage::newFromText( $row->v0, $row->v1 );
+				$warmupCache[$row->id0] = WikiPage::newFromText( $row->v0, $row->v1 );
 			}
 		}
 
@@ -615,7 +610,7 @@ class SemanticDataLookup {
 		return $result;
 	}
 
-	private function addFields( &$query, &$map, $fields, $valueField, $labelField, &$valueCount, &$fieldname ) {
+	private function addFields( &$query, array &$map, $fields, $valueField, $labelField, int &$valueCount, string &$fieldname ): void {
 		// Select dataItem column(s)
 		foreach ( $fields as $fieldname => $fieldType ) {
 
@@ -667,7 +662,7 @@ class SemanticDataLookup {
 		}
 	}
 
-	private function buildResultFromRow( $row, $params ) {
+	private function buildResultFromRow( $row, array $params ): array {
 		$hash = '';
 		$sortField = '';
 
@@ -716,7 +711,7 @@ class SemanticDataLookup {
 		if ( $params['valueCount'] > 1 ) {
 			$hash = md5( $hash . implode( '#', $db_keys ) );
 		} else {
-			$hash = md5( $hash . $db_keys );
+			$hash = md5( $hash . (string)$db_keys );
 		}
 
 		// Avoid issues with `$row->$sortField` containing other `#` as for
@@ -736,7 +731,7 @@ class SemanticDataLookup {
 		// Filter out any accidentally retrieved internal things (interwiki
 		// starts with ":"):
 		if ( $params['valueCount'] < 3 ||
-			implode( '', $params['fields'] ) !== FieldType::FIELD_ID ||
+			implode( '', (array)$params['fields'] ) !== FieldType::FIELD_ID ||
 			$db_keys[2] === '' ||
 			$db_keys[2][0] != ':' ) {
 
@@ -750,7 +745,7 @@ class SemanticDataLookup {
 		return $result;
 	}
 
-	private function fetchPropertiesFromTable( $id, $propTable ) {
+	private function fetchPropertiesFromTable( $id, PropertyTableDefinition $propTable ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -775,7 +770,7 @@ class SemanticDataLookup {
 		return $query->execute( __METHOD__ );
 	}
 
-	private function reportDuplicate( $params ) {
+	private function reportDuplicate( array $params ): void {
 		$this->logger->info(
 			"Found duplicate entry for {params}",
 			[

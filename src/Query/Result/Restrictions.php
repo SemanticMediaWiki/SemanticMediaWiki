@@ -2,9 +2,9 @@
 
 namespace SMW\Query\Result;
 
+use SMW\DataItems\DataItem;
 use SMW\DataTypeRegistry;
 use SMW\Query\PrintRequest;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,9 +20,9 @@ class Restrictions {
 	 * @param PrintRequest $printRequest
 	 * @param DataItem[] $content
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	public static function applySortRestriction( PrintRequest $printRequest, array $content ) {
+	public static function applySortRestriction( PrintRequest $printRequest, array $content ): array {
 		if ( $content === [] ) {
 			return $content;
 		}
@@ -75,7 +75,7 @@ class Restrictions {
 	 *
 	 * @return
 	 */
-	public static function applyLimitRestriction( PrintRequest $printRequest, array $content ) {
+	public static function applyLimitRestriction( PrintRequest $printRequest, array $content ): array {
 		$limit = (int)$printRequest->getParameter( 'limit' );
 		$offset = (int)$printRequest->getParameter( 'offset' );
 

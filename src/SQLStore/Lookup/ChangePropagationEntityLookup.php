@@ -3,9 +3,10 @@
 namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\AppendIterator;
 use SMW\Store;
 
 /**
@@ -19,53 +20,40 @@ use SMW\Store;
  */
 class ChangePropagationEntityLookup {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
-	 * @var bool
-	 */
-	private $isTypePropagation = false;
+	private bool $isTypePropagation = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IteratorFactory $iteratorFactory,
+	) {
 	}
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param bool $isTypePropagation
+	 *
+	 * @return void
 	 */
-	public function isTypePropagation( $isTypePropagation ) {
+	public function isTypePropagation( $isTypePropagation ): void {
 		$this->isTypePropagation = (bool)$isTypePropagation;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty|DIWikiPage $entity
+	 * @param Property|WikiPage $entity
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 * @throws RuntimeException
 	 */
 	public function findAll( $entity ) {
-		if ( $entity instanceof DIProperty ) {
+		if ( $entity instanceof Property ) {
 			return $this->findByProperty( $entity );
-		} elseif ( $entity instanceof DIWikiPage ) {
+		} elseif ( $entity instanceof WikiPage ) {
 			return $this->findByCategory( $entity );
 		}
 
@@ -75,11 +63,11 @@ class ChangePropagationEntityLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 */
-	public function findByProperty( DIProperty $property ) {
+	public function findByProperty( Property $property ) {
 		$dataItems = [];
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
 
@@ -98,7 +86,7 @@ class ChangePropagationEntityLookup {
 		);
 
 		$dataItems = $this->store->getPropertySubjects(
-			new DIProperty( DIProperty::TYPE_ERROR ),
+			new Property( Property::TYPE_ERROR ),
 			$property->getCanonicalDiWikiPage()
 		);
 
@@ -112,14 +100,14 @@ class ChangePropagationEntityLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $category
+	 * @param WikiPage $category
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 */
-	public function findByCategory( DIWikiPage $category ) {
+	public function findByCategory( WikiPage $category ) {
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
 
-		$property = new DIProperty( '_INST' );
+		$property = new Property( '_INST' );
 
 		$appendIterator->add(
 			$this->store->getPropertySubjects( $property, $category )
@@ -128,7 +116,7 @@ class ChangePropagationEntityLookup {
 		// Only direct antecedents
 		$dataItems = $this->store->getPropertyValues(
 			$category,
-			new DIProperty( '_SUBC' )
+			new Property( '_SUBC' )
 		);
 
 		foreach ( $dataItems as $dataItem ) {
@@ -140,10 +128,10 @@ class ChangePropagationEntityLookup {
 		return $appendIterator;
 	}
 
-	private function fetchOtherReferencesOnTypePropagation( $property ) {
+	private function fetchOtherReferencesOnTypePropagation( Property $property ) {
 		// Find other references only on a type propagation (which causes a
 		// change of table/id assignments) for entity references
-		if ( $this->isTypePropagation === false ) {
+		if ( !$this->isTypePropagation ) {
 			return [];
 		}
 

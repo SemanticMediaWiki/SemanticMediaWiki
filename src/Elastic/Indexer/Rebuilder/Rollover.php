@@ -21,17 +21,9 @@ use SMW\Elastic\Exception\NoConnectionException;
 class Rollover {
 
 	/**
-	 * @var ElasticClient
-	 */
-	private $connection;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $connection
 	 */
-	public function __construct( ElasticClient $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly ElasticClient $connection ) {
 	}
 
 	/**
@@ -42,7 +34,7 @@ class Rollover {
 	 *
 	 * @return string
 	 */
-	public function rollover( $type, $version ) {
+	public function rollover( $type, $version ): string {
 		$index = $this->connection->getIndexName( $type );
 
 		$params = [];
@@ -86,7 +78,7 @@ class Rollover {
 	 *
 	 * @throws NoConnectionException
 	 */
-	public function update( $type ) {
+	public function update( string $type ): string {
 		// Fail hard since we expect to create an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();
@@ -135,7 +127,7 @@ class Rollover {
 	 *
 	 * @throws NoConnectionException
 	 */
-	public function delete( $type ) {
+	public function delete( $type ): string {
 		// Fail hard since we expect to delete an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();

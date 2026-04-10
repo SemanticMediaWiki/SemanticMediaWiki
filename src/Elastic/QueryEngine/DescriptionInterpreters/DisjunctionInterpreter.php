@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\Disjunction;
 
@@ -14,17 +15,9 @@ use SMW\Query\Language\Disjunction;
 class DisjunctionInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**
@@ -34,7 +27,7 @@ class DisjunctionInterpreter {
 	 *
 	 * @return Condition|[]
 	 */
-	public function interpretDescription( Disjunction $description, $isConjunction = false ) {
+	public function interpretDescription( Disjunction $description, $isConjunction = false ): array|Condition {
 		$params = [];
 		$notConditionFields = [];
 

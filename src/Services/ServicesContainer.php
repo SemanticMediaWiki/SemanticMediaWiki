@@ -16,15 +16,9 @@ use SMW\Services\Exception\ServiceNotFoundException;
 class ServicesContainer {
 
 	/**
-	 * @var callable[]
-	 */
-	private $services;
-
-	/**
 	 * @since 3.0
 	 */
-	public function __construct( array $services = [] ) {
-		$this->services = $services;
+	public function __construct( private array $services = [] ) {
 	}
 
 	/**
@@ -66,7 +60,7 @@ class ServicesContainer {
 	 * @param string $key
 	 * @param callable $service
 	 */
-	public function add( $key, callable $service ) {
+	public function add( $key, callable $service ): void {
 		$this->services[$key] = $service;
 	}
 

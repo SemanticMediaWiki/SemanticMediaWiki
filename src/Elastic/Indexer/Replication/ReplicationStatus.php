@@ -3,10 +3,11 @@
 namespace SMW\Elastic\Indexer\Replication;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
-use SMWDITime as DITime;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,20 +22,12 @@ class ReplicationStatus {
 	 */
 	private $elasticClient;
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
-
-	private ElasticClient $connection;
+	private FieldMapper $fieldMapper;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $connection
 	 */
-	public function __construct( ElasticClient $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly ElasticClient $connection ) {
 		$this->fieldMapper = new FieldMapper();
 	}
 
@@ -79,9 +72,9 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	private function modification_date_associated_revision( $id ) {
+	private function modification_date_associated_revision( $id ): array {
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -91,14 +84,14 @@ class ReplicationStatus {
 			return [ 'modification_date' => false, 'associated_revision' => 0 ];
 		}
 
-		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
-		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
+		$pid = $this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] );
+		$field = $this->fieldMapper->getField( new Property( '_MDAT' ) );
 
 		$doc = $this->connection->get( $params + [ '_source_includes' => [ "$pid.$field", "subject.rev_id" ] ] );
 
 		if ( isset( $doc['_source'][$pid][$field] ) ) {
 			$date = end( $doc['_source'][$pid][$field] );
-			$modification_date = DITime::newFromJD( $date, DITime::CM_GREGORIAN, DITime::PREC_YMDT );
+			$modification_date = Time::newFromJD( $date, Time::CM_GREGORIAN, Time::PREC_YMDT );
 		} else {
 			$modification_date = false;
 		}
@@ -117,10 +110,10 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return bool|DITime
+	 * @return bool|Time
 	 * @throws RuntimeException
 	 */
-	public function getModificationDate( $id ) {
+	public function getModificationDate( $id ): false|Time {
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -130,8 +123,8 @@ class ReplicationStatus {
 			return false;
 		}
 
-		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
-		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
+		$pid = $this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] );
+		$field = $this->fieldMapper->getField( new Property( '_MDAT' ) );
 
 		$doc = $this->connection->get( $params + [ '_source_includes' => [ "$pid.$field" ] ] );
 
@@ -139,10 +132,10 @@ class ReplicationStatus {
 			return false;
 		}
 
-		$dataItem = DITime::newFromJD(
+		$dataItem = Time::newFromJD(
 			end( $doc['_source'][$pid][$field] ),
-			DITime::CM_GREGORIAN,
-			DITime::PREC_YMDT
+			Time::CM_GREGORIAN,
+			Time::PREC_YMDT
 		);
 
 		return $dataItem;
@@ -177,7 +170,7 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 */
-	private function refresh_interval() {
+	private function refresh_interval(): ?string {
 		$refresh_interval = null;
 
 		$settings = $this->connection->getSettings(
@@ -198,9 +191,9 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 */
-	private function last_update() {
-		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
-		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
+	private function last_update(): string {
+		$pid = $this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] );
+		$field = $this->fieldMapper->getField( new Property( '_MDAT' ) );
 
 		$params = $this->fieldMapper->exists( "$pid.$field" );
 
@@ -228,10 +221,10 @@ class ReplicationStatus {
 			foreach ( $result['hits'] as $key => $value ) {
 				foreach ( $value as $key => $v ) {
 					if ( $key === '_source' ) {
-						$time = DITime::newFromJD(
+						$time = Time::newFromJD(
 							end( $v[$pid][$field] ),
-							DITime::CM_GREGORIAN,
-							DITime::PREC_YMDT
+							Time::CM_GREGORIAN,
+							Time::PREC_YMDT
 						);
 					}
 				}

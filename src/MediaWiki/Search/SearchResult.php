@@ -2,10 +2,11 @@
 
 namespace SMW\MediaWiki\Search;
 
+use File;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 
 /**
  * @ingroup SMW
@@ -16,11 +17,6 @@ use SMW\DIWikiPage;
  * @author mwjames
  */
 class SearchResult extends \SearchResult {
-
-	/**
-	 * @var Title|null
-	 */
-	protected $mTitle;
 
 	/**
 	 * @var string|null
@@ -34,11 +30,8 @@ class SearchResult extends \SearchResult {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title|null $title
 	 */
-	public function __construct( $title ) {
-		$this->mTitle = $title;
+	public function __construct( protected $mTitle ) {
 	}
 
 	/**
@@ -49,16 +42,16 @@ class SearchResult extends \SearchResult {
 	}
 
 	/**
-	 * @return \File|null
+	 * @return File|null
 	 */
-	public function getFile() {
+	public function getFile(): ?File {
 		return null;
 	}
 
 	/**
 	 * @see SearchResult::getTextSnippet
 	 */
-	public function getTextSnippet( $terms = [] ) {
+	public function getTextSnippet( $terms = [] ): string {
 		if ( $this->hasHighlight ) {
 			return str_replace( [ '<em>', '</em>' ], [ "<span class='searchmatch'>", '</span>' ], $this->mText );
 		}
@@ -80,20 +73,20 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::isBrokenTitle
 	 */
-	public function isBrokenTitle() {
+	public function isBrokenTitle(): bool {
 		return $this->mTitle === null;
 	}
 
 	/**
 	 * @see SearchResult::isMissingRevision
 	 */
-	public function isMissingRevision() {
+	public function isMissingRevision(): bool {
 		if ( $this->mTitle == null ) {
 			return true;
 		}
 
 		if ( $this->mTitle->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $this->mTitle->getDBKey() );
+			$property = Property::newFromUserLabel( $this->mTitle->getDBKey() );
 
 			// Predefined properties do not necessarily have a page and hereby a
 			// a revision in MediaWiki, anyway the page exists so allow it
@@ -112,7 +105,7 @@ class SearchResult extends \SearchResult {
 	 * @param string|null $text
 	 * @param bool $hasHighlight
 	 */
-	public function setExcerpt( $text = null, $hasHighlight = false ) {
+	public function setExcerpt( $text = null, $hasHighlight = false ): void {
 		$this->mText = $text;
 		$this->hasHighlight = $hasHighlight;
 	}
@@ -133,7 +126,7 @@ class SearchResult extends \SearchResult {
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-			DIWikiPage::newFromTitle( $this->mTitle )
+			WikiPage::newFromTitle( $this->mTitle )
 		);
 
 		// Will return the DISPLAYTITLE, if available
@@ -143,70 +136,70 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return string
 	 */
-	public function getRedirectSnippet() {
+	public function getRedirectSnippet(): string {
 		return '';
 	}
 
 	/**
 	 * @return Title|null
 	 */
-	public function getRedirectTitle() {
+	public function getRedirectTitle(): ?Title {
 		return null;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getSectionSnippet() {
+	public function getSectionSnippet(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getCategorySnippet() {
+	public function getCategorySnippet(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getTimestamp() {
+	public function getTimestamp(): string {
 		return '';
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getWordCount() {
+	public function getWordCount(): int {
 		return 0;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getByteSize() {
+	public function getByteSize(): int {
 		return 0;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getInterwikiPrefix() {
+	public function getInterwikiPrefix(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getInterwikiNamespaceText() {
+	public function getInterwikiNamespaceText(): string {
 		return '';
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isFileMatch() {
+	public function isFileMatch(): bool {
 		return false;
 	}
 

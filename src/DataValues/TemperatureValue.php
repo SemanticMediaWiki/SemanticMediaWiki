@@ -2,8 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMWDINumber as DINumber;
-use SMWNumberValue as NumberValue;
+use SMW\DataItems\Number;
 
 /**
  * This datavalue implements unit support for measuring temperatures. This is
@@ -32,14 +31,14 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::convertToMainUnit
 	 */
-	protected function convertToMainUnit( $number, $unit ) {
+	protected function convertToMainUnit( $number, $unit ): bool {
 		$this->m_unitin = $this->getUnitID( $unit );
 
 		if ( ( $value = $this->convertToKelvin( $number, $this->m_unitin ) ) === false ) {
 			return false;
 		}
 
-		$this->m_dataitem = new DINumber( $value );
+		$this->m_dataitem = new Number( $value );
 
 		return true;
 	}
@@ -47,7 +46,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::makeConversionValues
 	 */
-	protected function makeConversionValues() {
+	protected function makeConversionValues(): void {
 		if ( $this->m_unitvalues !== false ) {
 			return; // do this only once
 		}
@@ -55,7 +54,7 @@ class TemperatureValue extends NumberValue {
 		$this->m_unitvalues = [];
 
 		if ( !$this->isValid() ) {
-			return $this->m_unitvalues;
+			return;
 		}
 
 		$displayUnit = $this->getPreferredDisplayUnit();
@@ -78,7 +77,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::makeUserValue
 	 */
-	protected function makeUserValue() {
+	protected function makeUserValue(): void {
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
 			 ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$printUnit = $this->normalizeUnit( $this->m_outformat );
@@ -116,7 +115,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * Helper method to find the main representation of a certain unit.
 	 */
-	protected function getUnitID( $unit ) {
+	protected function getUnitID( $unit ): string|false {
 		/// TODO possibly localise some of those strings
 		switch ( $unit ) {
 			case '':
@@ -146,18 +145,18 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::getUnitList
 	 */
-	public function getUnitList() {
+	public function getUnitList(): array {
 		return [ 'K', '°C', '°F', '°R' ];
 	}
 
 	/**
 	 * NumberValue::getUnit
 	 */
-	public function getUnit() {
+	public function getUnit(): string {
 		return 'K';
 	}
 
-	private function getPreferredDisplayUnit() {
+	private function getPreferredDisplayUnit(): string|false {
 		$unit = $this->getUnit();
 
 		if ( $this->getProperty() === null ) {
@@ -175,7 +174,7 @@ class TemperatureValue extends NumberValue {
 		return $this->getUnitID( $unit );
 	}
 
-	private function convertToKelvin( $number, $unit ) {
+	private function convertToKelvin( $number, string|bool $unit ) {
 		switch ( $unit ) {
 			case 'K':
 				return $number;
@@ -190,7 +189,7 @@ class TemperatureValue extends NumberValue {
 		return false; // unsupported unit
 	}
 
-	private function convertToUnit( $number, $unit ) {
+	private function convertToUnit( $number, string|bool $unit ) {
 		switch ( $unit ) {
 			case 'K':
 				return $number;

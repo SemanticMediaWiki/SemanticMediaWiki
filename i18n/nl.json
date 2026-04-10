@@ -52,10 +52,6 @@
 	"smw-upgrade-error-how-title": "Hoe los ik deze fout op?",
 	"smw-upgrade-error-how-explain-admin": "Een beheerder (of een persoon met beheerdersrechten) moet het onderhoudsscript [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Update.php update.php] van MediaWiki of [https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php setupStore.php] van Semantic MediaWiki uitvoeren.",
 	"smw-upgrade-error-how-explain-links": "U kunt ook de volgende pagina’s raadplegen voor verdere hulp:\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation Installatie-instructies]\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting Hulppagina probleemoplossing]",
-	"smw-extensionload-error-why-title": "Waarom zie ik deze pagina?",
-	"smw-extensionload-error-why-explain": "De uitbreiding is <b>niet</b> geladen met behulp van <code>enableSemantics</code> en is in plaats daarvan op een andere manier ingeschakeld, zoals door rechtstreeks gebruik van <code>wfLoadExtension( 'SemanticMediaWiki' )</code>.",
-	"smw-extensionload-error-how-title": "Hoe los ik deze fout op?",
-	"smw-extensionload-error-how-explain": "Om de uitbreiding in te schakelen en problemen met naamruimte-declaraties en in behandeling zijnde configuraties te voorkomen, is het noodzakelijk om <code>enableSemantics</code> te gebruiken. Dit zorgt ervoor dat de vereiste variabelen worden klaargezet voordat de uitbreiding via de <code>ExtensionRegistry</code> wordt geladen.\n\nKijk eens naar de hulppagina [https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics enableSemantics] voor verdere inlichtingen.",
 	"smw-upgrade-maintenance-title": "Onderhoud » Semantic MediaWiki",
 	"smw-upgrade-maintenance-why-title": "Waarom zie ik deze pagina?",
 	"smw-upgrade-maintenance-note": "Het systeem ondergaat momenteel een [https://www.semantic-mediawiki.org/wiki/Help:Upgrade opwaardering] van de uitbreiding [https://www.semantic-mediawiki.org/ Semantic MediaWiki] alsmede de bijbehorende gegevensopslag. Even geduld alstublieft; na het onderhoud kan de wiki weer toegankelijk worden gemaakt.",
@@ -713,7 +709,7 @@
 	"log-show-hide-smw": "$1 Semantic MediaWiki-logboek",
 	"logeventslist-smw-log": "Logboek Semantic MediaWiki",
 	"log-description-smw": "Activiteiten voor [https://www.semantic-mediawiki.org/wiki/Help:Logging ingeschakelde gebeurtenistypen] die zijn gemeld door Semantic MediaWiki en de componenten ervan.",
-	"logentry-smw-maintenance": "Onderhoudsgerelateerde gebeurtenissen die zijn doorgevoerd door Semantic MediaWiki",
+	"logentry-smw-maintenance": "$1 {{GENDER:$2|heeft}} onderhoud uitgevoerd",
 	"smw-datavalue-import-unknown-namespace": "De importnaamruimte “$1” is onbekend. Zorg ervoor dat de OWL-importgegevens beschikbaar zijn via [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-namespace-uri": "Kan geen URI in de naamruimte “$1” vinden in de [[MediaWiki:Smw import $1|import van $1]].",
 	"smw-datavalue-import-missing-type": "Er is geen typedefinitie voor “$1” gevonden in de [[MediaWiki:Smw import $2|import van $2]].",
@@ -1009,7 +1005,6 @@
 	"smw-schema-error-title": "Valideerfout{{PLURAL:$1||en}}",
 	"smw-schema-error-schema": "Aan de hand van het validatieschema '''$1''' zijn de volgende tegenstrijdigheden aangetroffen:",
 	"smw-schema-error-miscellaneous": "Overige fout ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "De JSON-validator <b>“$1”</b> is niet toegankelijk (of niet geïnstalleerd). Daardoor kan het bestand “$2” niet worden beoordeeld, wat het onmogelijk maakt de huidige pagina op te slaan of te wijzigen.",
 	"smw-schema-error-validation-file-inaccessible": "Het validatiebestand “$1” is niet toegankelijk.",
 	"smw-schema-error-type-missing": "Er ontbreekt een typeaanduiding voor de inhoud, zodat deze kan niet worden herkend en gebruikt in de [https://www.semantic-mediawiki.org/wiki/Help:Schema schemanaamruimte].",
 	"smw-schema-error-type-unknown": "Het type “$1” is niet geregistreerd en kan niet worden gebruikt voor inhoud in de naamruimte [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema].",
@@ -1133,5 +1128,6 @@
 	"smw-facetedsearch-clear-filters": "Filter{{PLURAL:$1||s}} wissen",
 	"smw-search-placeholder": "Zoeken…",
 	"smw-listingcontinuesabbrev": "meer",
-	"smw-showingresults": "Hieronder {{PLURAL:$1|staat '''1''' resultaat|staan '''$1''' resultaten}} vanaf #'''$2'''."
+	"smw-showingresults": "Hieronder {{PLURAL:$1|staat '''1''' resultaat|staan '''$1''' resultaten}} vanaf #'''$2'''.",
+	"smw-showingresults-cursor": "Hieronder {{PLURAL:$1|wordt maximaal <strong>1</strong> resultaat|worden maximaal <strong>$1</strong> resultaten}} weergegeven."
 }

@@ -19,10 +19,7 @@ use SMW\Query\QueryResult;
  */
 class TemplateFileExportPrinter extends FileExportPrinter {
 
-	/**
-	 * @var int
-	 */
-	private $numRows = 0;
+	private int $numRows = 0;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -55,7 +52,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		return $this->params['filename'];
 	}
 
@@ -66,7 +63,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['searchlabel']->setDefault( 'templateFile' );
@@ -154,7 +151,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function newTemplateSet( $queryResult ) {
+	private function newTemplateSet( QueryResult $queryResult ): TemplateSet {
 		$templateSet = new TemplateSet();
 
 		$link = $this->getLink(
@@ -199,7 +196,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 		return $templateSet;
 	}
 
-	private function addFields( $template, array $row ) {
+	private function addFields( Template $template, array $row ): void {
 		$this->numRows + 1;
 
 		foreach ( $row as $i => $field ) {

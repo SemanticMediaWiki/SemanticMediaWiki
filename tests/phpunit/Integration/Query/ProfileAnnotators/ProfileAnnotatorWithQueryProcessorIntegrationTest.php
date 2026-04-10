@@ -2,14 +2,16 @@
 
 namespace SMW\Tests\Integration\Query\ProfileAnnotators;
 
-use SMW\DIWikiPage;
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Localizer\Localizer;
+use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
-use SMWQueryProcessor;
 
 /**
- * @covers \SMWQueryProcessor
+ * @covers \SMW\Query\QueryProcessor
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -17,7 +19,7 @@ use SMWQueryProcessor;
  *
  * @author mwjames
  */
-class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit\Framework\TestCase {
+class ProfileAnnotatorWithQueryProcessorIntegrationTest extends TestCase {
 
 	private $semanticDataValidator;
 
@@ -36,15 +38,15 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit\Framewo
 	 * @dataProvider queryDataProvider
 	 */
 	public function testCreateProfile( array $rawParams, array $expected ) {
-		[ $query, $formattedParams ] = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $formattedParams ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
+			QueryProcessor::INLINE_QUERY,
 			false
 		);
 
 		$query->setContextPage(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$profileAnnotatorFactory = ApplicationFactory::getInstance()->getQueryFactory()->newProfileAnnotatorFactory();
@@ -57,7 +59,7 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit\Framewo
 		$profileAnnotator->addAnnotation();
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$profileAnnotator->getSemanticData()
 		);
 

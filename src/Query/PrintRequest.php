@@ -4,13 +4,13 @@ namespace SMW\Query;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest\Deserializer;
 use SMW\Query\PrintRequest\Formatter;
 use SMW\Query\PrintRequest\Serializer;
-use SMWDataValue;
 
 /**
  * Container class for request for printout, as used in queries to
@@ -55,9 +55,7 @@ class PrintRequest {
 
 	protected $m_data; // data entries specifyin gwhat was requested (mixed type)
 
-	protected $m_typeid = false; // id of the datatype of the printed objects, if applicable
-
-	protected $m_outputformat; // output format string for formatting results, if applicable
+	protected $m_typeid = false; // cached type id of this print request
 
 	protected $m_hash = false; // cache your hash (currently useful since QueryResult accesses the hash many times, might be dropped at some point)
 
@@ -69,23 +67,23 @@ class PrintRequest {
 	 *
 	 * Mostly used in cases where QueryProcessor::addThisPrintout was executed.
 	 */
-	private $isDisconnected = false;
+	private bool $isDisconnected = false;
 
 	/**
 	 * Whether the label was marked with an extra `#` identifier.
 	 */
-	private $labelMarker = false;
+	private bool $labelMarker = false;
 
 	/**
 	 * Create a print request.
-	 *
-	 * @param int $mode a constant defining what to printout
-	 * @param string $label the string label to describe this printout
-	 * @param mixed $data optional data for specifying some request, might be a property object, title, or something else; interpretation depends on $mode
-	 * @param mixed $outputformat optional string for specifying an output format, e.g. an output unit
-	 * @param array|null $params optional array of further, named parameters for the print request
 	 */
-	public function __construct( $mode, $label, $data = null, $outputformat = false, ?array $params = null ) {
+	public function __construct(
+		$mode,
+		$label,
+		$data = null,
+		protected $m_outputformat = false,
+		?array $params = null,
+	) {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
 				$data !== null ) ||
 			( $mode == self::PRINT_PROP &&
@@ -100,9 +98,8 @@ class PrintRequest {
 
 		$this->m_mode = $mode;
 		$this->m_data = $data;
-		$this->m_outputformat = $outputformat;
 
-		if ( $mode == self::PRINT_CCAT && !$outputformat ) {
+		if ( $mode == self::PRINT_CCAT && !$this->m_outputformat ) {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
 
@@ -118,7 +115,7 @@ class PrintRequest {
 	 *
 	 * @param bool $isDisconnected
 	 */
-	public function isDisconnected( $isDisconnected ) {
+	public function isDisconnected( $isDisconnected ): void {
 		$this->isDisconnected = (bool)$isDisconnected;
 	}
 
@@ -127,7 +124,7 @@ class PrintRequest {
 	 *
 	 * @param string $text
 	 */
-	public function markThisLabel( $text ) {
+	public function markThisLabel( $text ): void {
 		if ( $this->m_mode !== self::PRINT_THIS ) {
 			return;
 		}
@@ -142,7 +139,7 @@ class PrintRequest {
 	 *
 	 * @return bool
 	 */
-	public function hasLabelMarker() {
+	public function hasLabelMarker(): bool {
 		return $this->labelMarker;
 	}
 
@@ -153,7 +150,7 @@ class PrintRequest {
 	 *
 	 * @return bool
 	 */
-	public function isMode( $mode ) {
+	public function isMode( $mode ): bool {
 		return $this->m_mode === $mode;
 	}
 
@@ -216,7 +213,7 @@ class PrintRequest {
 		return $this->m_data;
 	}
 
-	public function getOutputFormat() {
+	public function getOutputFormat(): string|false {
 		return $this->m_outputformat;
 	}
 
@@ -226,7 +223,7 @@ class PrintRequest {
 	 *
 	 * @return string
 	 */
-	public function getTypeID() {
+	public function getTypeID(): string {
 		if ( $this->m_typeid !== false ) {
 			return $this->m_typeid;
 		}
@@ -250,7 +247,7 @@ class PrintRequest {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		if ( $this->m_hash !== false ) {
 			return $this->m_hash;
 		}
@@ -259,7 +256,7 @@ class PrintRequest {
 
 		if ( $this->m_data instanceof Title ) {
 			$this->m_hash .= $this->m_data->getPrefixedText() . ':';
-		} elseif ( $this->m_data instanceof SMWDataValue ) {
+		} elseif ( $this->m_data instanceof DataValue ) {
 			$this->m_hash .= $this->m_data->getHash() . ':';
 		}
 
@@ -274,7 +271,7 @@ class PrintRequest {
 	 * @param $showParams boolean that sets if the serialization should
 	 *                include the extra print request parameters
 	 */
-	public function getSerialisation( $showParams = false ) {
+	public function getSerialisation( $showParams = false ): string {
 		// In case of  disconnected instance (QueryProcessor::addThisPrintout as
 		// part of a post-processing) return an empty serialization when the
 		// mainLabel is available to avoid an extra `?...`
@@ -301,7 +298,7 @@ class PrintRequest {
 	 *
 	 * @return array Map of parameter names to values.
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->m_params;
 	}
 
@@ -311,7 +308,7 @@ class PrintRequest {
 	 * @param $key string Name of the parameter
 	 * @param $value string Value for the parameter
 	 */
-	public function setParameter( $key, $value ) {
+	public function setParameter( $key, $value ): void {
 		$this->m_params[$key] = $value;
 	}
 
@@ -322,7 +319,7 @@ class PrintRequest {
 	 *
 	 * @param string $key
 	 */
-	public function removeParameter( $key ) {
+	public function removeParameter( $key ): void {
 		unset( $this->m_params[$key] );
 	}
 
@@ -334,10 +331,10 @@ class PrintRequest {
 	 *
 	 * @param string $label
 	 */
-	public function setLabel( $label ) {
+	public function setLabel( $label ): void {
 		$this->m_label = $label;
 
-		if ( $this->m_data instanceof SMWDataValue ) {
+		if ( $this->m_data instanceof DataValue ) {
 			$this->m_data->setCaption( $label );
 		}
 	}
@@ -352,7 +349,7 @@ class PrintRequest {
 	 *
 	 * @return PrintRequest|null
 	 */
-	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false ) {
+	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false ): ?PrintRequest {
 		$options = [
 			'show_mode' => $showMode,
 			'canonical_label' => $useCanonicalLabel

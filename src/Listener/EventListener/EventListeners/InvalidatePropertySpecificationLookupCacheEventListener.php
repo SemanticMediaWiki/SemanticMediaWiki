@@ -20,17 +20,9 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 	const EVENT_ID = 'InvalidatePropertySpecificationLookupCache';
 
 	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SpecificationLookup $propertySpecificationLookup ) {
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct( private SpecificationLookup $propertySpecificationLookup ) {
 	}
 
 	/**
@@ -38,7 +30,7 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 	 *
 	 * {@inheritDoc}
 	 */
-	public function execute( ?DispatchContext $dispatchContext = null ) {
+	public function execute( ?DispatchContext $dispatchContext = null ): void {
 		$subject = $dispatchContext->get( 'subject' );
 		$context = $dispatchContext->get( 'context' );
 
@@ -57,7 +49,7 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isPropagationStopped() {
+	public function isPropagationStopped(): bool {
 		return false;
 	}
 

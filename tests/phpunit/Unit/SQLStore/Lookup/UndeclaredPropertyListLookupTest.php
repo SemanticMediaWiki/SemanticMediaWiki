@@ -1,0 +1,278 @@
+<?php
+
+namespace SMW\Tests\Unit\SQLStore\Lookup;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
+use SMW\MediaWiki\Connection\Database;
+use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
+use stdClass;
+
+/**
+ * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since   2.2
+ *
+ * @author mwjames
+ */
+class UndeclaredPropertyListLookupTest extends TestCase {
+
+	private $store;
+	private $requestOptions;
+
+	protected function setUp(): void {
+		$this->store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->requestOptions->expects( $this->any() )
+			->method( 'getExtraConditions' )
+			->willReturn( [] );
+	}
+
+	public function testCanConstruct() {
+		$defaultPropertyType = '_foo';
+
+		$this->assertInstanceOf(
+			UndeclaredPropertyListLookup::class,
+			new UndeclaredPropertyListLookup( $this->store, $defaultPropertyType, null )
+		);
+	}
+
+	public function testListLookupInterfaceMethodAccess() {
+		$defaultPropertyType = '_foo';
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
+
+		$this->assertIsString(
+
+			$instance->getTimestamp()
+		);
+
+		$this->assertFalse(
+			$instance->isFromCache()
+		);
+
+		$this->assertStringContainsString(
+			'UndeclaredPropertyListLookup',
+			$instance->getHash()
+		);
+	}
+
+	public function testNullRequestOptionsThrowsException() {
+		$defaultPropertyType = '_foo';
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType
+		);
+
+		$this->expectException( 'RuntimeException' );
+		$instance->fetchList();
+	}
+
+	public function testInvalidTableIdThrowsException() {
+		$defaultPropertyType = '_foo';
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
+
+		$this->expectException( 'RuntimeException' );
+		$instance->fetchList();
+	}
+
+	public function testLookupIdentifierChangedByRequestOptions() {
+		$defaultPropertyType = '_foo';
+		$requestOptions = new RequestOptions();
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$requestOptions
+		);
+
+		$lookupIdentifier = $instance->getHash();
+		$requestOptions->limit = 100;
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$requestOptions
+		);
+
+		$this->assertNotSame(
+			$lookupIdentifier,
+			$instance->getHash()
+		);
+	}
+
+	public function testfetchListForValidProperty() {
+		$row = new stdClass;
+		$row->smw_title = 'Foo';
+		$row->count = 42;
+
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'select' )
+			->willReturn( [ $row ] );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$this->store->expects( $this->once() )
+			->method( 'findTypeTableId' )
+			->with( '_foo' )
+			->willReturn( 'Foo' );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->willReturn( [ 'Foo' => $tableDefinition ] );
+
+		$defaultPropertyType = '_foo';
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		$this->assertIsArray(
+
+			$result
+		);
+
+		$expected = [
+			new Property( 'Foo' ),
+			42
+		];
+
+		$this->assertEquals(
+			[ $expected ],
+			$result
+		);
+	}
+
+	public function testfetchListForInvalidProperty() {
+		$row = new stdClass;
+		$row->smw_title = '-Foo';
+		$row->count = 42;
+
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'select' )
+			->willReturn( [ $row ] );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$this->store->expects( $this->once() )
+			->method( 'findTypeTableId' )
+			->with( '_foo' )
+			->willReturn( 'Foo' );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->willReturn( [ 'Foo' => $tableDefinition ] );
+
+		$defaultPropertyType = '_foo';
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		$this->assertIsArray(
+
+			$result
+		);
+
+		$this->assertInstanceOf(
+			Error::class,
+			$result[0][0]
+		);
+	}
+
+	public function testfetchListForFixedPropertyTable() {
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$tableDefinition->expects( $this->any() )
+			->method( 'isFixedPropertyTable' )
+			->willReturn( true );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->never() )
+			->method( 'select' );
+
+		$this->store->expects( $this->once() )
+			->method( 'findTypeTableId' )
+			->with( '_foo' )
+			->willReturn( 'Foo' );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->willReturn( [ 'Foo' => $tableDefinition ] );
+
+		$defaultPropertyType = '_foo';
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
+
+		$result = $instance->fetchList();
+
+		$this->assertIsArray(
+
+			$result
+		);
+
+		$this->assertEmpty(
+			$result
+		);
+	}
+
+}

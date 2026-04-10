@@ -20,35 +20,23 @@ class CachingTermsLookup extends TermsLookup {
 	const CACHE_NAMESPACE = 'smw:elastic:lookup';
 
 	/**
-	 * @var TermsLookup
-	 */
-	private $termsLookup;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @var
 	 */
-	private $quick_cache = [];
+	private array $quick_cache = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param TermsLookup $termsLookup
-	 * @param Cache $cache
 	 */
-	public function __construct( TermsLookup $termsLookup, Cache $cache ) {
-		$this->termsLookup = $termsLookup;
-		$this->cache = $cache;
+	public function __construct(
+		private readonly TermsLookup $termsLookup,
+		private readonly Cache $cache,
+	) {
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->quick_cache = [];
 	}
 
@@ -57,7 +45,7 @@ class CachingTermsLookup extends TermsLookup {
 	 *
 	 * @return string
 	 */
-	public static function makeCacheKey() {
+	public static function makeCacheKey(): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, func_get_args() );
 	}
 

@@ -17,22 +17,14 @@ use SMW\Query\PrintRequest;
 final class ApiRequestParameterFormatter {
 
 	/**
-	 * @var array
-	 */
-	protected $requestParameters = [];
-
-	/**
 	 * @var ObjectDictionary
 	 */
 	protected $results = null;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $requestParameters
 	 */
-	public function __construct( array $requestParameters ) {
-		$this->requestParameters = $requestParameters;
+	public function __construct( protected array $requestParameters ) {
 	}
 
 	/**
@@ -42,7 +34,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return array
 	 */
-	public function getAskApiParameters() {
+	public function getAskApiParameters(): array {
 		if ( $this->results === null ) {
 			$this->results = isset( $this->requestParameters['query'] ) ? preg_split( "/(?<=[^\|])\|(?=[^\|])(?=[^\+])/", $this->requestParameters['query'] ) : [];
 		}
@@ -72,7 +64,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return ObjectDictionary
 	 */
-	protected function formatAskArgs() {
+	protected function formatAskArgs(): Options {
 		$result = new Options();
 
 		// Set defaults
@@ -102,7 +94,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return string
 	 */
-	protected function formatParameters() {
+	protected function formatParameters(): array {
 		$parameters = [];
 
 		foreach ( $this->requestParameters['parameters'] as $param ) {
@@ -125,7 +117,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return string
 	 */
-	protected function formatConditions( $condition ) {
+	protected function formatConditions( $condition ): string {
 		return "[[$condition]]";
 	}
 
@@ -138,7 +130,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return PrintRequest
 	 */
-	protected function formatPrintouts( $printout ) {
+	protected function formatPrintouts( $printout ): PrintRequest {
 		return new PrintRequest(
 			PrintRequest::PRINT_PROP,
 			$printout,

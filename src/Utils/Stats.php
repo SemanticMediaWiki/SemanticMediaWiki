@@ -35,20 +35,7 @@ class Stats {
 	 */
 	const CACHE_NAMESPACE = 'smw:stats';
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var string|int
-	 */
-	private $id;
-
-	/**
-	 * @var bool
-	 */
-	private $shouldRecord = true;
+	private bool $shouldRecord = true;
 
 	/**
 	 * @var array
@@ -59,39 +46,32 @@ class Stats {
 	 * Identifies an update fingerprint to compare invoked deferred updates
 	 * against each other and filter those with the same print to avoid recording
 	 * duplicate stats.
-	 *
-	 * @var string
 	 */
-	private $fingerprint = null;
+	private ?string $fingerprint = null;
 
-	/**
-	 * @var array
-	 */
-	private $operations = [];
+	private array $operations = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Cache $cache
-	 * @param string $id
 	 */
-	public function __construct( Cache $cache, $id ) {
-		$this->cache = $cache;
-		$this->id = $id;
+	public function __construct(
+		private readonly Cache $cache,
+		private $id,
+	) {
 		$this->initRecord();
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function makeCacheKey( $id ) {
+	public function makeCacheKey( $id ): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, [ $id, self::VERSION ] );
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function initRecord() {
+	public function initRecord(): void {
 		$this->fingerprint = $this->id . uniqid();
 	}
 
@@ -100,7 +80,7 @@ class Stats {
 	 *
 	 * @param bool $shouldRecord
 	 */
-	public function shouldRecord( $shouldRecord ) {
+	public function shouldRecord( $shouldRecord ): void {
 		$this->shouldRecord = (bool)$shouldRecord;
 	}
 
@@ -109,7 +89,7 @@ class Stats {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
+	public function getStats(): array {
 		if ( ( $stats = $this->cache->fetch( $this->makeCacheKey( $this->id ) ) ) === false ) {
 			return [];
 		}
@@ -122,7 +102,7 @@ class Stats {
 	 *
 	 * @param string|array $key
 	 */
-	public function incr( $key ) {
+	public function incr( $key ): void {
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = 0;
 		}
@@ -137,7 +117,7 @@ class Stats {
 	 * @param string|array $key
 	 * @param string|int $default
 	 */
-	public function init( $key, $default ) {
+	public function init( $key, $default ): void {
 		$this->stats[$key] = $default;
 		$this->operations[$key] = self::STATS_INIT;
 	}
@@ -148,7 +128,7 @@ class Stats {
 	 * @param string|array $key
 	 * @param string|int $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->stats[$key] = $value;
 		$this->operations[$key] = self::STATS_SET;
 	}
@@ -159,7 +139,7 @@ class Stats {
 	 * @param string|array $key
 	 * @param int $value
 	 */
-	public function calcMedian( $key, $value ) {
+	public function calcMedian( $key, $value ): void {
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = $value;
 		} else {
@@ -172,7 +152,7 @@ class Stats {
 	/**
 	 * @since 2.5
 	 */
-	public function saveStats() {
+	public function saveStats(): void {
 		if ( $this->stats === [] ) {
 			return;
 		}
@@ -219,8 +199,9 @@ class Stats {
 	 * @param bool $asPending
 	 */
 	public function recordStats( $asPending = false ) {
-		if ( $this->shouldRecord === false ) {
-			return $this->stats = [];
+		if ( !$this->shouldRecord ) {
+			$this->stats = [];
+			return $this->stats;
 		}
 
 		// #2046

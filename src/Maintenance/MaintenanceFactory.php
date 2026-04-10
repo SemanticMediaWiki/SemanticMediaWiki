@@ -23,7 +23,7 @@ class MaintenanceFactory {
 	 *
 	 * @return MaintenanceHelper
 	 */
-	public function newMaintenanceHelper() {
+	public function newMaintenanceHelper(): MaintenanceHelper {
 		return new MaintenanceHelper();
 	}
 
@@ -47,7 +47,7 @@ class MaintenanceFactory {
 	 *
 	 * @return DataRebuilder
 	 */
-	public function newDataRebuilder( Store $store, $reporterCallback = null ) {
+	public function newDataRebuilder( Store $store, $reporterCallback = null ): DataRebuilder {
 		$messageReporter = $this->newMessageReporter( $reporterCallback );
 
 		$dataRebuilder = new DataRebuilder(
@@ -70,7 +70,7 @@ class MaintenanceFactory {
 	 *
 	 * @return ConceptCacheRebuilder
 	 */
-	public function newConceptCacheRebuilder( Store $store, $reporterCallback = null ) {
+	public function newConceptCacheRebuilder( Store $store, $reporterCallback = null ): ConceptCacheRebuilder {
 		$conceptCacheRebuilder = new ConceptCacheRebuilder(
 			$store,
 			ApplicationFactory::getInstance()->getSettings()
@@ -91,7 +91,7 @@ class MaintenanceFactory {
 	 *
 	 * @return PropertyStatisticsRebuilder
 	 */
-	public function newPropertyStatisticsRebuilder( Store $store, $reporterCallback = null ) {
+	public function newPropertyStatisticsRebuilder( Store $store, $reporterCallback = null ): PropertyStatisticsRebuilder {
 		$propertyStatisticsStore = new PropertyStatisticsStore(
 			$store->getConnection( 'mw.db' )
 		);
@@ -113,7 +113,7 @@ class MaintenanceFactory {
 	 *
 	 * @return rebuildPropertyStatistics
 	 */
-	public function newRebuildPropertyStatistics() {
+	public function newRebuildPropertyStatistics(): rebuildPropertyStatistics {
 		return new rebuildPropertyStatistics();
 	}
 
@@ -122,7 +122,7 @@ class MaintenanceFactory {
 	 *
 	 * @return DuplicateEntitiesDisposer
 	 */
-	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null ) {
+	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null ): DuplicateEntitiesDisposer {
 		$duplicateEntitiesDisposer = new DuplicateEntitiesDisposer(
 			$store,
 			ApplicationFactory::getInstance()->getCache()
@@ -142,7 +142,7 @@ class MaintenanceFactory {
 	 *
 	 * @return MaintenanceLogger
 	 */
-	public function newMaintenanceLogger( $performer ) {
+	public function newMaintenanceLogger( $performer ): MaintenanceLogger {
 		$maintenanceLogger = new MaintenanceLogger( $performer, new ManualEntryLogger() );
 		$maintenanceLogger->setMaxNameChars( $GLOBALS['wgMaxNameChars'] );
 

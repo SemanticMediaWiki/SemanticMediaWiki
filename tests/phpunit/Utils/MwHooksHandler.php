@@ -37,9 +37,6 @@ class MwHooksHandler {
 
 		'SMW::Settings::BeforeInitializationComplete',
 		'SMW::Setup::AfterInitializationComplete',
-		'SMW::GroupPermissions::BeforeInitializationComplete',
-
-		'smwInitProperties',
 		'SMW::Property::initProperties',
 		'SMW::Constraint::initConstraints',
 		'SMW::Factbox::BeforeContentGeneration',

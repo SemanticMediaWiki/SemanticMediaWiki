@@ -18,11 +18,6 @@ class Condition {
 	/**
 	 * @var array
 	 */
-	private $parameters = [];
-
-	/**
-	 * @var array
-	 */
 	private $logs = [];
 
 	/**
@@ -32,11 +27,8 @@ class Condition {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Condition|array $parameters
 	 */
-	public function __construct( $parameters = [] ) {
-		$this->parameters = $parameters;
+	public function __construct( private $parameters = [] ) {
 	}
 
 	/**
@@ -44,7 +36,7 @@ class Condition {
 	 *
 	 * @param string $type
 	 */
-	public function type( $type ) {
+	public function type( $type ): void {
 		$this->type = $type;
 	}
 
@@ -53,7 +45,7 @@ class Condition {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): ?string {
 		return $this->type;
 	}
 
@@ -62,7 +54,7 @@ class Condition {
 	 *
 	 * @param mixed $log
 	 */
-	public function log( $log ) {
+	public function log( $log ): void {
 		$this->logs[] = $log;
 	}
 
@@ -71,7 +63,7 @@ class Condition {
 	 *
 	 * @return array
 	 */
-	public function getLogs() {
+	public function getLogs(): array {
 		return $this->logs;
 	}
 
@@ -117,7 +109,7 @@ class Condition {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return json_encode( $this->toArray(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 	}
 

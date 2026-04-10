@@ -21,12 +21,9 @@ class CliMsgFormatter {
 	/**
 	 * @var int|null
 	 */
-	private $firstColLen = null;
+	private ?int $firstColLen = null;
 
-	/**
-	 * @var float|int
-	 */
-	private $startTime = 0;
+	private int $startTime = 0;
 
 	/**
 	 * @since 3.2
@@ -145,7 +142,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $startTime
 	 */
-	public function setStartTime( int $startTime ) {
+	public function setStartTime( int $startTime ): void {
 		$this->startTime = $startTime;
 	}
 
@@ -273,9 +270,9 @@ class CliMsgFormatter {
 	 * @param string $message
 	 * @param int $seconds
 	 */
-	public function countDown( string $message, int $seconds ) {
+	public function countDown( string $message, int $seconds ): ?string {
 		if ( $seconds < 1 ) {
-			return;
+			return null;
 		}
 
 		echo "\n";
@@ -332,7 +329,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $firstColLen
 	 */
-	public function setFirstColLen( int $firstColLen ) {
+	public function setFirstColLen( int $firstColLen ): void {
 		$this->firstColLen = $firstColLen;
 	}
 
@@ -341,7 +338,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $len
 	 */
-	public function incrFirstColLen( int $len ) {
+	public function incrFirstColLen( int $len ): void {
 		$this->firstColLen += $len;
 	}
 
@@ -371,7 +368,7 @@ class CliMsgFormatter {
 		$maxLen = self::MAX_LEN;
 
 		if ( $expectedSecondColLen > 0 ) {
-			$maxLen = $maxLen - $expectedSecondColLen;
+			$maxLen -= $expectedSecondColLen;
 		}
 
 		$firstCol = $this->trimContent( $firstCol, $maxLen );
@@ -418,7 +415,7 @@ class CliMsgFormatter {
 		return sprintf( "%'{$placeHolder}{$len}s%s", ' ', $value ) . "\n";
 	}
 
-	private function trimContent( $content, $maxLen = self::MAX_LEN ) {
+	private function trimContent( string $content, int $maxLen = self::MAX_LEN ): string {
 		$length = mb_strlen( $content ) - 1;
 		$startOff = (int)floor( ( $maxLen / 2 ) - 3 );
 		$endOff = (int)floor( ( $maxLen / 2 ) - 3 );
@@ -430,8 +427,8 @@ class CliMsgFormatter {
 		return $content;
 	}
 
-	private function humanReadableTime( $time ) {
-		$time = round( $time, 2 );
+	private function humanReadableTime( $time ): int|string {
+		$time = (int)round( $time, 2 );
 
 		$s = $time % 60;
 		$m = floor( ( $time % 3600 ) / 60 );

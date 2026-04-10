@@ -4,10 +4,10 @@ namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\MediaWikiServices;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * `#show` will only make a request to one particular entity therefore instead of
@@ -23,17 +23,9 @@ use SMWQuery as Query;
 class SingleEntityQueryLookup implements QueryEngine {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -43,7 +35,7 @@ class SingleEntityQueryLookup implements QueryEngine {
 	 *
 	 * @return QueryResult
 	 */
-	public function getQueryResult( Query $query ) {
+	public function getQueryResult( Query $query ): QueryResult {
 		$description = $query->getDescription();
 		$results = [];
 		$furtherResults = false;

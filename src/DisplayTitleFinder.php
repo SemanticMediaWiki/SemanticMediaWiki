@@ -2,7 +2,11 @@
 
 namespace SMW;
 
-use SMWDataItem as DataItem;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\Services\Exception\ServiceNotFoundException;
 
 /**
  * @license GPL-2.0-or-later
@@ -12,20 +16,11 @@ use SMWDataItem as DataItem;
  */
 class DisplayTitleFinder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
+	private EntityCache $entityCache;
 
-	/**
-	 * @var bool
-	 */
-	private $canUse = true;
+	private bool $canUse = true;
 
 	/**
 	 * @since 3.1
@@ -41,7 +36,7 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 */
-	public function getEntityCache() {
+	public function getEntityCache(): EntityCache {
 		return $this->entityCache;
 	}
 
@@ -50,7 +45,7 @@ class DisplayTitleFinder {
 	 *
 	 * @param bool $canUse
 	 */
-	public function setCanUse( $canUse ) {
+	public function setCanUse( $canUse ): void {
 		$this->canUse = (bool)$canUse;
 	}
 
@@ -59,7 +54,7 @@ class DisplayTitleFinder {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function prefetchFromSemanticData( SemanticData $semanticData ) {
+	public function prefetchFromSemanticData( SemanticData $semanticData ): void {
 		if ( $this->canUse === false ) {
 			return;
 		}
@@ -110,7 +105,7 @@ class DisplayTitleFinder {
 	 *
 	 * @param array $dataItems
 	 */
-	public function prefetchFromList( $dataItems ) {
+	public function prefetchFromList( $dataItems ): void {
 		if ( $this->canUse === false || !is_iterable( $dataItems ) ) {
 			return;
 		}
@@ -119,7 +114,7 @@ class DisplayTitleFinder {
 
 		foreach ( $dataItems as $dataItem ) {
 
-			if ( !$dataItem instanceof DIWikiPage ) {
+			if ( !$dataItem instanceof WikiPage ) {
 				continue;
 			}
 
@@ -146,7 +141,7 @@ class DisplayTitleFinder {
 
 		try {
 			$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
-		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( ServiceNotFoundException $e ) {
 			return;
 		}
 
@@ -189,11 +184,11 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return string
 	 */
-	public function findDisplayTitle( DIWikiPage $subject ) {
+	public function findDisplayTitle( WikiPage $subject ): string {
 		if ( $this->canUse === false ) {
 			return '';
 		}
@@ -225,7 +220,7 @@ class DisplayTitleFinder {
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
-			new DIProperty( '_DTITLE' ),
+			new Property( '_DTITLE' ),
 			$requestOptions
 		);
 

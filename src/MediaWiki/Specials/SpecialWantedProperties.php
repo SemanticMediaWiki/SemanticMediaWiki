@@ -1,0 +1,79 @@
+<?php
+
+namespace SMW\MediaWiki\Specials;
+
+use SMW\MediaWiki\Outputs;
+use SMW\QueryPages\WantedPropertiesQueryPage;
+
+/**
+ * Special page (Special:WantedProperties) for MediaWiki shows all
+ * wanted properties
+ *
+ *
+ * @license GPL-2.0-or-later
+ * @since   1.9
+ *
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ * @author mwjames
+ */
+
+/**
+ * This special page (Special:WantedProperties) for MediaWiki shows all wanted
+ * properties (used but not having a page).
+ *
+ * @ingroup SpecialPage
+ */
+class SpecialWantedProperties extends SpecialPage {
+
+	/**
+	 * @see SpecialPage::__construct
+	 */
+	public function __construct() {
+		parent::__construct( 'WantedProperties' );
+	}
+
+	/**
+	 * @see SpecialPage::execute
+	 */
+	public function execute( $param ): void {
+		$this->setHeaders();
+
+		$out = $this->getOutput();
+
+		$out->addModuleStyles( [
+			'ext.smw.special.styles'
+		] );
+
+		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
+
+		$page = new WantedPropertiesQueryPage( $this->getStore() );
+		$page->setContext( $this->getContext() );
+		$page->setTitle( $this->getPageTitle() );
+
+		[ $limit, $offset ] = $this->getLimitOffset();
+		$page->doQuery( $offset, $limit );
+
+		// Ensure locally collected output data is pushed to the output!
+		// ?? still needed !!
+		Outputs::commitToOutputPage( $out );
+	}
+
+	/**
+	 * @see SpecialPage::getGroupName
+	 */
+	protected function getGroupName(): string {
+		return 'smw_group/properties-concepts-types';
+	}
+
+	private function getLimitOffset() {
+		$request = $this->getRequest();
+		return $request->getLimitOffsetForUser( $this->getUser() );
+	}
+
+}
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialWantedProperties::class, 'SMW\SpecialWantedProperties' );

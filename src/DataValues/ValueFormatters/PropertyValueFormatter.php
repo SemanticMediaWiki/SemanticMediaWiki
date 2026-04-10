@@ -4,13 +4,13 @@ namespace SMW\DataValues\ValueFormatters;
 
 use MediaWiki\Html\Html;
 use RuntimeException;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyValue;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,17 +21,9 @@ use SMWDataValue as DataValue;
 class PropertyValueFormatter extends DataValueFormatter {
 
 	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SpecificationLookup $propertySpecificationLookup ) {
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct( private readonly SpecificationLookup $propertySpecificationLookup ) {
 	}
 
 	/**
@@ -39,7 +31,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof PropertyValue;
 	}
 
@@ -113,7 +105,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 	 * - displayTitle goes before translation
 	 * - translation goes before "normal" label
 	 */
-	private function getFormattedLabel( $linker = null ) {
+	private function getFormattedLabel( $linker = null ): string {
 		$property = $this->dataValue->getDataItem();
 		$output = '';
 		$displayTitle = '';
@@ -256,7 +248,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		return $highlighter->getHtml();
 	}
 
-	private function canHighlight( &$propertyDescription, $linker ) {
+	private function canHighlight( string &$propertyDescription, $linker ): bool {
 		if ( $this->dataValue->getOption( PropertyValue::OPT_NO_HIGHLIGHT ) === true ) {
 			return false;
 		}
@@ -272,7 +264,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		return !$dataItem->isUserDefined() || $propertyDescription !== '';
 	}
 
-	private function hintPreferredLabelUse() {
+	private function hintPreferredLabelUse(): string {
 		if ( !$this->dataValue->isEnabledFeature( SMW_DV_PROV_LHNT ) ||
 			$this->dataValue->getOption( PropertyValue::OPT_NO_PREF_LHNT ) ) {
 			return '';
@@ -311,7 +303,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		);
 	}
 
-	private function findTranslatedPropertyLabel( $property ) {
+	private function findTranslatedPropertyLabel( $property ): string {
 		// User-defined properties don't have any translatable label (this is
 		// what the preferred label is for)
 		if ( $property->isUserDefined() ) {

@@ -14,29 +14,17 @@ use SMW\MediaWiki\ManualEntryLogger;
 class MaintenanceLogger {
 
 	/**
-	 * @var string
-	 */
-	private $performer = '';
-
-	/**
-	 * @var ManualEntryLogger
-	 */
-	private $manualEntryLogger;
-
-	/**
 	 * @var int
 	 */
 	private $maxNameChars = 255;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $performer
-	 * @param ManualEntryLogger $manualEntryLogger
 	 */
-	public function __construct( $performer, ManualEntryLogger $manualEntryLogger ) {
-		$this->performer = $performer;
-		$this->manualEntryLogger = $manualEntryLogger;
+	public function __construct(
+		private $performer,
+		private readonly ManualEntryLogger $manualEntryLogger,
+	) {
 		$this->manualEntryLogger->registerLoggableEventType( 'maintenance' );
 	}
 
@@ -45,7 +33,7 @@ class MaintenanceLogger {
 	 *
 	 * @param int $maxNameChars
 	 */
-	public function setMaxNameChars( $maxNameChars ) {
+	public function setMaxNameChars( $maxNameChars ): void {
 		$this->maxNameChars = $maxNameChars;
 	}
 
@@ -55,7 +43,7 @@ class MaintenanceLogger {
 	 * @param array $message
 	 * @param string $target
 	 */
-	public function logFromArray( array $message, $target = '' ) {
+	public function logFromArray( array $message, $target = '' ): void {
 		if ( isset( $message['Options'] ) ) {
 			unset( $message['Options']['with-maintenance-log'] );
 			unset( $message['Options']['memory-limit'] );
@@ -68,7 +56,42 @@ class MaintenanceLogger {
 			}
 		}
 
-		$this->log( json_encode( $message ), $target );
+		$this->log( self::formatMessage( $message ), $target );
+	}
+
+	private static function formatMessage( array $message ): string {
+		$parts = [];
+
+		foreach ( $message as $key => $value ) {
+			if ( is_array( $value ) ) {
+				if ( $value === [] ) {
+					continue;
+				}
+				$value = json_encode( $value );
+			} elseif ( $key === 'Memory used' ) {
+				$value = self::formatBytes( (int)$value );
+			}
+
+			$parts[] = "$key: $value";
+		}
+
+		return implode( ', ', $parts );
+	}
+
+	private static function formatBytes( int $bytes ): string {
+		if ( $bytes >= 1073741824 ) {
+			return round( $bytes / 1073741824, 2 ) . ' GB';
+		}
+
+		if ( $bytes >= 1048576 ) {
+			return round( $bytes / 1048576, 2 ) . ' MB';
+		}
+
+		if ( $bytes >= 1024 ) {
+			return round( $bytes / 1024, 2 ) . ' KB';
+		}
+
+		return $bytes . ' bytes';
 	}
 
 	/**
@@ -77,7 +100,7 @@ class MaintenanceLogger {
 	 * @param string $message
 	 * @param string $target
 	 */
-	public function log( $message, $target = '' ) {
+	public function log( $message, $target = '' ): void {
 		if ( $target === '' ) {
 			$target = $this->performer;
 		}

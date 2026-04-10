@@ -16,24 +16,12 @@ class ArticleLookup extends Lookup {
 	const VERSION = 1;
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var ArticleAugmentor
-	 */
-	private $articleAugmentor;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Database $connection
-	 * @param ArticleAugmentor $articleAugmentor
 	 */
-	public function __construct( Database $connection, ArticleAugmentor $articleAugmentor ) {
-		$this->connection = $connection;
-		$this->articleAugmentor = $articleAugmentor;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly ArticleAugmentor $articleAugmentor,
+	) {
 	}
 
 	/**
@@ -41,7 +29,7 @@ class ArticleLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'ArticleLookup:' . self::VERSION;
 	}
 
@@ -52,7 +40,7 @@ class ArticleLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$limit = 50;
 		$offset = 0;
 		$namespace = null;
@@ -93,7 +81,7 @@ class ArticleLookup extends Lookup {
 		return $res;
 	}
 
-	private function search( $limit, $offset, $search, $namespace = null ) {
+	private function search( int $limit, int $offset, $search, $namespace = null ): array {
 		$search = $this->getSearchTerm( $search, $namespace );
 
 		$escapeChar = '`';

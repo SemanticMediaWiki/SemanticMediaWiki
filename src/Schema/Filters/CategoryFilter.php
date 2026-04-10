@@ -19,14 +19,11 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var
+	 * @var string|array|callable
 	 */
 	private $categories = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isLoaded = false;
+	private bool $isLoaded = false;
 
 	/**
 	 * @since 3.2
@@ -46,8 +43,13 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		return 'category';
 	}
 
-	private function match( Compartment $compartment ) {
-		if ( $this->isLoaded === false ) {
+	/**
+	 * @param Compartment $compartment
+	 *
+	 * @return void
+	 */
+	private function match( Compartment $compartment ): void {
+		if ( !$this->isLoaded ) {
 			$this->loadCategories();
 		}
 
@@ -56,13 +58,15 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		// In case the filter was marked as elective, allow sets to remain in
 		// the match pool.
 		if ( $conditions === null && $this->getOption( self::FILTER_CONDITION_NOT_REQUIRED ) === true ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		// No restriction and no `category` filter was defined hence allow the
 		// rule to remain in the pool of matches.
 		if ( $this->categories === [] && $conditions === null ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		$matchedCondition = false;
@@ -137,7 +141,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			unset( $conditions['not'] );
 		}
 
-		if ( $matchedCondition === true && $compartment instanceof Rule ) {
+		if ( $matchedCondition && $compartment instanceof Rule ) {
 			$compartment->incrFilterScore();
 		}
 
@@ -157,17 +161,20 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 
 			// Increasing the score in case an extra `not` condition was applied
-			if ( $matchedCondition === true && $compartment instanceof Rule ) {
+			if ( $matchedCondition && $compartment instanceof Rule ) {
 				$compartment->incrFilterScore();
 			}
 		}
 
-		if ( $matchedCondition === true ) {
+		if ( $matchedCondition ) {
 			$this->matches[] = $compartment;
 		}
 	}
 
-	private function loadCategories() {
+	/**
+	 * @return void
+	 */
+	private function loadCategories(): void {
 		// Allow categories to be lazy loaded when for example those are
 		// fetched from the DB
 		if ( is_callable( $this->categories ) ) {
@@ -192,6 +199,11 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		$this->isLoaded = true;
 	}
 
+	/**
+	 * @param array $categories
+	 *
+	 * @return bool
+	 */
 	private function matchAllOf( array $categories ): bool {
 		$count = count( $categories );
 
@@ -206,6 +218,11 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		return $count == 0;
 	}
 
+	/**
+	 * @param array $categories
+	 *
+	 * @return bool
+	 */
 	private function matchOneOf( array $categories ): bool {
 		$count = 0;
 
@@ -220,6 +237,11 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		return $count == 1;
 	}
 
+	/**
+	 * @param array $categories
+	 *
+	 * @return bool
+	 */
 	private function matchAnyOf( array $categories ): bool {
 		foreach ( $categories as $category ) {
 			$category = str_replace( ' ', '_', $category );

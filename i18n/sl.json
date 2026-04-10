@@ -25,10 +25,6 @@
 	"smw-upgrade-error-how-title": "Kako popravim to napako?",
 	"smw-upgrade-error-how-explain-admin": "Administrator (ali katera koli oseba z administratorskimi pravicami) mora zagnati MediaWiki [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Update.php update.php] ali vzdrževalni skript Semantičnega MediaWikija [https://www .semantic-mediawiki.org/wiki/Help:SetupStore.php setupStore.php].",
 	"smw-upgrade-error-how-explain-links": "Za dodatno pomoč si lahko ogledate tudi naslednje strani:\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation Navodila za namestitev]\n* [https://www.semantic-mediawiki .org/wiki/Help:Installation/Troubleshooting Stran s pomočjo za odpravljanje težav]",
-	"smw-extensionload-error-why-title": "Zakaj vidim to stran?",
-	"smw-extensionload-error-why-explain": "Razširitev <b>ni</b> bila naložena z <code>enableSemantics</code>, temveč je bila omogočena z drugimi sredstvi, na primer z neposredno uporabo <code>wfLoadExtension( 'SemanticMediaWiki')</code>.",
-	"smw-extensionload-error-how-title": "Kako popravim to napako?",
-	"smw-extensionload-error-how-explain": "Da bi omogočili razširitev in se izognili težavam z deklaracijami imenskega prostora in čakajočimi konfiguracijami, je treba uporabiti <code>enableSemantics</code>, ki bo zagotovil, da bodo zahtevane spremenljivke nastavljene pred nalaganjem razširitve prek <code>ExtensionRegistry</code>.\n\nZa nadaljnjo pomoč glejte stran pomoči [https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics enableSemantics].",
 	"smw-upgrade-maintenance-title": "Vzdrževanje » Semantični MediaWiki",
 	"smw-upgrade-maintenance-why-title": "Zakaj vidim to stran?",
 	"smw-upgrade-maintenance-note": "Sistem se trenutno [https://www.semantic-mediawiki.org/wiki/Help:Upgrade nadgrajuje] z razširitvijo [https://www.semantic-mediawiki.org/ Semantični MediaWiki] skupaj z njenim repozitorijem podatkov. Prosimo vas za potrpežljivost, da se vzdrževanje konča in bo viki znova dostopen.",
@@ -698,7 +694,7 @@
 	"log-show-hide-smw": "Dnevnik Semantičnega MediaWikija $1",
 	"logeventslist-smw-log": "Dnevnik Semantičnega MediaWikija",
 	"log-description-smw": "Dejavnosti za [https://www.semantic-mediawiki.org/wiki/Help:Logging omogočene vrste dogodkov], o katerih poročajo Semantični MediaWiki in njegove komponente.",
-	"logentry-smw-maintenance": "Dogodki, povezani z vzdrževanjem, ki jih oddaja Semantični MediaWiki",
+	"logentry-smw-maintenance": "$1 {{GENDER:$2|je opravil|je opravila|je opravil_a}} vzdrževanje",
 	"smw-datavalue-import-unknown-namespace": "Imenski prostor uvoza »$1« ni znan. Zagotovite, da so podatki o uvozu OWL na voljo na [[MediaWiki:Smw import $1]].",
 	"smw-datavalue-import-missing-namespace-uri": "V [[MediaWiki:Smw import $1|uvozu $1]] ni mogoče najti URI-ja imenskega prostora.",
 	"smw-datavalue-import-missing-type": "Za »$1« ni bila v [[MediaWiki:Smw import $2|uvozu $2]] najdena nobena definicija tipa.",
@@ -1001,7 +997,6 @@
 	"smw-schema-error-title": "{{PLURAL:$1|Napaka|Napake}} validacije",
 	"smw-schema-error-schema": "Shema preverjanja '''$1''' je odkrila naslednje nedoslednosti:",
 	"smw-schema-error-miscellaneous": "Druga napaka ($1)",
-	"smw-schema-error-validation-json-validator-inaccessible": "Validator JSON »<b>$1</b>« ni dostopen (ali nameščen) in je razlog, zakaj datoteke »$2« ni mogoče pregledati, kar preprečuje shranjevanje ali spreminjanje trenutne strani.",
 	"smw-schema-error-validation-file-inaccessible": "Datoteka za preverjanje veljavnosti »$1« je nedostopna.",
 	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-type-missing": "Vsebini manjka tip, da bi bila prepoznana in uporabna v [https://www.semantic-mediawiki.org/wiki/Help:Schema imenskem prostoru shem].",
@@ -1127,5 +1122,6 @@
 	"smw-specials-facetedsearch-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:FacetedSearch",
 	"smw-search-placeholder": "Iskanje&nbsp;...",
 	"smw-listingcontinuesabbrev": "nadalj.",
-	"smw-showingresults": "Prikazujem do '''$1''' {{PLURAL:$1|zadetek|zadetka|zadetke|zadetkov}}, začenši s št. '''$2'''."
+	"smw-showingresults": "Prikazujem do '''$1''' {{PLURAL:$1|zadetek|zadetka|zadetke|zadetkov}}, začenši s št. '''$2'''.",
+	"smw-showingresults-cursor": "Spodaj je  {{PLURAL:$1|prikazan do <strong>1</strong> rezultat|sta prikazana do <strong>$1</strong> rezultata|so prikazani do <strong>$1</strong> rezultati|je prikazano do <strong>$1</strong> rezultatov}}."
 }

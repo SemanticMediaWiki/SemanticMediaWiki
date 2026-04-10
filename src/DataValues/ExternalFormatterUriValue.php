@@ -2,8 +2,6 @@
 
 namespace SMW\DataValues;
 
-use SMWURIValue as UriValue;
-
 /**
  * https://www.ietf.org/rfc/rfc3986.txt describes:
  *
@@ -17,7 +15,7 @@ use SMWURIValue as UriValue;
  *
  * @author mwjames
  */
-class ExternalFormatterUriValue extends UriValue {
+class ExternalFormatterUriValue extends URIValue {
 
 	/**
 	 * @param string $typeid
@@ -31,7 +29,7 @@ class ExternalFormatterUriValue extends UriValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 			return;
@@ -55,7 +53,7 @@ class ExternalFormatterUriValue extends UriValue {
 	 *
 	 * @return bool
 	 */
-	public function hasMultiSubstitute() {
+	public function hasMultiSubstitute(): bool {
 		$dataItem = $this->getDataItem();
 		$uri = str_replace( [ '%24' ], [ '$' ], $dataItem->getUri() );
 
@@ -70,7 +68,7 @@ class ExternalFormatterUriValue extends UriValue {
 	 *
 	 * @return string
 	 */
-	public function substituteAndFormatUri( $value, $parameters = [] ) {
+	public function substituteAndFormatUri( $value, $parameters = [] ): string|array {
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -99,7 +97,7 @@ class ExternalFormatterUriValue extends UriValue {
 	}
 
 	// http://php.net/manual/en/function.urlencode.php#97969
-	private function encode( $string ) {
+	private function encode( string $string ): string {
 		return str_replace(
 			[ '%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D' ],
 			[ '!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]" ],

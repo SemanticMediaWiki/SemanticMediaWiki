@@ -18,23 +18,17 @@ class HashField {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var SQLStore
+	 * @var ?PopulateHashField
 	 */
-	private $store;
-
-	/**
-	 * @var PopulateHashField
-	 */
-	private $populateHashField;
+	private ?populateHashField $populateHashField;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
-	 * @param PopulateHashField|null $populateHashField
 	 */
-	public function __construct( SQLStore $store, ?PopulateHashField $populateHashField = null ) {
-		$this->store = $store;
+	public function __construct(
+		private SQLStore $store,
+		?PopulateHashField $populateHashField = null,
+	) {
 		$this->populateHashField = $populateHashField;
 	}
 
@@ -52,7 +46,7 @@ class HashField {
 	 *
 	 * @param array $opts
 	 */
-	public function check( array $opts = [] ) {
+	public function check( array $opts = [] ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "Checking smw_hash field consistency ...\n" );

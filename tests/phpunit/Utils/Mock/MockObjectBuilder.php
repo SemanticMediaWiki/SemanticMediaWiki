@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Mock;
 
 use InvalidArgumentException;
 use OutOfBoundsException;
+use PHPUnit\Framework\TestCase;
 use SMW\ObjectDictionary;
 use SMW\Options;
 
@@ -27,7 +28,7 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
+class MockObjectBuilder extends TestCase {
 
 	/** @var ObjectDictionary */
 	protected $configuration;
@@ -180,9 +181,10 @@ class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 		$configuration = new Options( $config );
 
 		if ( $this->configuration instanceof Options ) {
-			return $this->configuration = new Options(
+			$this->configuration = new Options(
 				array_merge( $this->configuration->getOptions(), $configuration->getOptions() )
 			);
+			return $this->configuration;
 		}
 
 		$this->configuration = $configuration;

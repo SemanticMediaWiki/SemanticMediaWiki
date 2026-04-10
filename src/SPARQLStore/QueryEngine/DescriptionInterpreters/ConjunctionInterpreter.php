@@ -2,11 +2,13 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -14,7 +16,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWExporter as Exporter;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,23 +27,12 @@ use SMWExporter as Exporter;
  */
 class ConjunctionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ?ConditionBuilder $conditionBuilder = null ) {
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -50,7 +41,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof Conjunction;
 	}
 
@@ -59,7 +50,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): Condition {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -123,11 +114,11 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return null;
 	}
 
-	private function doResolveSubDescriptionsRecursively( $subDescriptions, $joinVariable ) {
+	private function doResolveSubDescriptionsRecursively( $subDescriptions, $joinVariable ): FalseCondition|stdClass {
 		// Using a stdClass as data container for simpler handling in follow-up tasks
 		// and as the class is not exposed publicly we don't need to create
 		// an extra "real" class to manage its elements
-		$subConditionElements = new \stdClass;
+		$subConditionElements = new stdClass;
 
 		$subConditionElements->condition = '';
 		$subConditionElements->filter = '';
@@ -191,7 +182,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $subConditionElements;
 	}
 
-	private function createConditionFromSubConditionElements( $subConditionElements ) {
+	private function createConditionFromSubConditionElements( stdClass $subConditionElements ): Condition {
 		if ( $subConditionElements->singletonMatchElement instanceof ExpElement ) {
 			return $this->createSingletonCondition( $subConditionElements );
 		}
@@ -203,7 +194,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $this->createWhereCondition( $subConditionElements );
 	}
 
-	private function createSingletonCondition( $subConditionElements ) {
+	private function createSingletonCondition( stdClass $subConditionElements ): SingletonCondition {
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}
@@ -218,14 +209,14 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function createFilterCondition( $subConditionElements ) {
+	private function createFilterCondition( stdClass $subConditionElements ): FilterCondition {
 		return new FilterCondition(
 			$subConditionElements->filter,
 			$subConditionElements->namespaces
 		);
 	}
 
-	private function createWhereCondition( $subConditionElements ) {
+	private function createWhereCondition( stdClass $subConditionElements ): WhereCondition {
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}

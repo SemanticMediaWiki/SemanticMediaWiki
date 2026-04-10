@@ -15,50 +15,19 @@ use SMW\Utils\FileFetcher;
  */
 class JsonImportContentsFileDirReader {
 
-	/**
-	 * @var ContentModeller
-	 */
-	private $contentModeller;
+	private static array $contents = [];
 
-	/**
-	 * @var FileFetcher
-	 */
-	private $fileFetcher;
-
-	/**
-	 * @var File
-	 */
-	private $file;
-
-	/**
-	 * @var array
-	 */
-	private static $contents = [];
-
-	/**
-	 * @var array
-	 */
-	private $errors = [];
-
-	/**
-	 * @var
-	 */
-	private $importFileDirs = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param ContentModeller $contentModeller
-	 * @param FileFetcher $fileFetcher
-	 * @param File|null $file
-	 * @param array $importFileDirs
 	 */
-	public function __construct( ContentModeller $contentModeller, FileFetcher $fileFetcher, ?File $file = null, $importFileDirs = [] ) {
-		$this->contentModeller = $contentModeller;
-		$this->fileFetcher = $fileFetcher;
-		$this->file = $file;
-		$this->importFileDirs = $importFileDirs;
-
+	public function __construct(
+		private readonly ContentModeller $contentModeller,
+		private readonly FileFetcher $fileFetcher,
+		private ?File $file = null,
+		private $importFileDirs = [],
+	) {
 		if ( $this->importFileDirs === [] ) {
 			$this->importFileDirs = $GLOBALS['smwgImportFileDirs'];
 		}
@@ -73,7 +42,7 @@ class JsonImportContentsFileDirReader {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -82,7 +51,7 @@ class JsonImportContentsFileDirReader {
 	 *
 	 * @return ImportContents[]
 	 */
-	public function getContentList() {
+	public function getContentList(): array {
 		$contents = [];
 		sort( $this->importFileDirs );
 
@@ -121,7 +90,7 @@ class JsonImportContentsFileDirReader {
 		return $contents;
 	}
 
-	private function readJSONFile( $file ) {
+	private function readJSONFile( $file ): mixed {
 		$contents = json_decode(
 			$this->file->read( $file ),
 			true
@@ -134,7 +103,7 @@ class JsonImportContentsFileDirReader {
 		throw new JSONFileParseException( $file );
 	}
 
-	private function getFilesFromLocation( $path, $extension ) {
+	private function getFilesFromLocation( $path, string $extension ) {
 		if ( $path === '' ) {
 			return [];
 		}

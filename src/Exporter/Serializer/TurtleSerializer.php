@@ -3,13 +3,13 @@
 namespace SMW\Exporter\Serializer;
 
 use InvalidArgumentException;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 use SMW\InMemoryPoolCache;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * Class for serializing exported data (encoded as ExpData object) in
@@ -34,14 +34,6 @@ class TurtleSerializer extends Serializer {
 	protected $subexpdata;
 
 	/**
-	 * If true, do not serialize namespace declarations and record them in
-	 * $sparql_namespaces instead for later retrieval.
-	 *
-	 * @var bool
-	 */
-	protected $sparqlmode;
-
-	/**
 	 * Array of retrieved namespaces (abbreviation => URI) for later use.
 	 *
 	 * @var array of string
@@ -52,18 +44,15 @@ class TurtleSerializer extends Serializer {
 
 	/**
 	 * @since 1.5.5
-	 *
-	 * @param bool $sparqlMode
 	 */
-	public function __construct( $sparqlMode = false ) {
+	public function __construct( protected $sparqlmode = false ) {
 		parent::__construct();
-		$this->sparqlmode = $sparqlMode;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->sparql_namespaces = [];
 	}
@@ -71,7 +60,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * @since 2.3
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'turtle.serializer' );
 	}
 
@@ -92,7 +81,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeHeader() {
+	protected function serializeHeader(): void {
 		$exporter = Exporter::getInstance();
 
 		if ( $this->sparqlmode ) {
@@ -144,7 +133,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeFooter() {
+	protected function serializeFooter(): void {
 		if ( !$this->sparqlmode ) {
 			$this->post_ns_buffer .= "\n# Created by Semantic MediaWiki, https://www.semantic-mediawiki.org/\n";
 		}
@@ -153,14 +142,14 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeDeclaration( $uri, $typename ) {
+	public function serializeDeclaration( $uri, $typename ): void {
 		$this->post_ns_buffer .= "<" . Exporter::getInstance()->expandURI( $uri ) . "> rdf:type $typename .\n";
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeExpData( ExpData $expData ) {
+	public function serializeExpData( ExpData $expData ): void {
 		$this->subExpData = [ $expData ];
 
 		while ( count( $this->subExpData ) > 0 ) {
@@ -173,7 +162,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeNamespace( $shortname, $uri ) {
+	protected function serializeNamespace( $shortname, $uri ): void {
 		$this->global_namespaces[$shortname] = true;
 		if ( $this->sparqlmode ) {
 			$this->sparql_namespaces[$shortname] = $uri;
@@ -189,7 +178,7 @@ class TurtleSerializer extends Serializer {
 	 * @param $data ExpData containing the data to be serialised.
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeNestedExpData( ExpData $data, $indent ) {
+	protected function serializeNestedExpData( ExpData $data, string $indent ): void {
 		if ( count( $data->getProperties() ) == 0 ) {
 			return; // nothing to export
 		}
@@ -288,11 +277,11 @@ class TurtleSerializer extends Serializer {
 		$this->post_ns_buffer .= ( $bnode ? " ]" : " ." ) . ( $indent === '' ? "\n\n" : '' );
 	}
 
-	protected function serializeExpLiteral( ExpLiteral $element ) {
+	protected function serializeExpLiteral( ExpLiteral $element ): void {
 		$this->post_ns_buffer .= self::getTurtleNameForExpElement( $element );
 	}
 
-	protected function serializeExpResource( ExpResource $element ) {
+	protected function serializeExpResource( ExpResource $element ): void {
 		if ( $element instanceof ExpNsResource ) {
 			$this->requireNamespace( $element->getNamespaceID(), $element->getNamespace() );
 		}
@@ -309,7 +298,7 @@ class TurtleSerializer extends Serializer {
 	 *
 	 * @return string
 	 */
-	public static function getTurtleNameForExpElement( ExpElement $expElement ) {
+	public static function getTurtleNameForExpElement( ExpElement $expElement ): string {
 		if ( $expElement instanceof ExpResource ) {
 			if ( $expElement->isBlankNode() ) {
 				return '[]';
@@ -334,7 +323,7 @@ class TurtleSerializer extends Serializer {
 		throw new InvalidArgumentException( 'The method can only serialize atomic elements of type ExpResource or ExpLiteral.' );
 	}
 
-	private static function getCorrectLexicalForm( $expElement ) {
+	private static function getCorrectLexicalForm( ExpLiteral $expElement ): string {
 		$lexicalForm = str_replace( [ '\\', "\n", '"' ], [ '\\\\', "\\n", '\"' ], $expElement->getLexicalForm() );
 
 		if ( $expElement->getLang() !== '' && ( $expElement->getDatatype() === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString' ) ) {

@@ -3,6 +3,8 @@
 namespace SMW\Services;
 
 use Onoi\Cache\CacheFactory;
+use Onoi\Cache\FixedInMemoryLruCache;
+use Onoi\CallbackContainer\CallbackContainerBuilder;
 
 /**
  * @codeCoverageIgnore
@@ -10,7 +12,7 @@ use Onoi\Cache\CacheFactory;
  * Services defined in this file SHOULD only be accessed either via the
  * ServicesFactory or a different factory instance.
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -18,9 +20,10 @@ use Onoi\Cache\CacheFactory;
 return [
 
 	/**
-	 * FixedInMemoryLruCache
+	 * @param CallbackContainerBuilder $containerBuilder
+	 * @param int $cacheSize
 	 *
-	 * @return callable
+	 * @return FixedInMemoryLruCache
 	 */
 	'FixedInMemoryLruCache' => static function ( $containerBuilder, $cacheSize = 500 ) {
 		return CacheFactory::getInstance()->newFixedInMemoryLruCache( $cacheSize );

@@ -2,9 +2,11 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\MediaWiki\Connection\Database;
+use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,19 +17,11 @@ use SMWDataItem as DataItem;
 class PropertyTableIdReferenceFinder {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private NamespaceExaminer $namespaceExaminer;
 
 	/**
 	 * @var bool
@@ -36,11 +30,8 @@ class PropertyTableIdReferenceFinder {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
@@ -52,20 +43,20 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @since 2.4
 	 *
-	 * @param booelan $isCapitalLinks
+	 * @param bool $isCapitalLinks
 	 */
-	public function isCapitalLinks( $isCapitalLinks ) {
+	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = $isCapitalLinks;
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return DataItem|false
 	 */
-	public function tryToFindAtLeastOneReferenceForProperty( DIProperty $property ) {
+	public function tryToFindAtLeastOneReferenceForProperty( Property $property ) {
 		$dataItem = $property->getDiWikiPage();
 
 		$sid = $this->store->getObjectIds()->getSMWPageID(
@@ -96,7 +87,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasResidualPropertyTableReference( $id ) {
+	public function hasResidualPropertyTableReference( $id ): bool {
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 			return true;
 		}
@@ -111,7 +102,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasResidualReferenceForId( $id ) {
+	public function hasResidualReferenceForId( $id ): bool {
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 			return true;
 		}
@@ -126,7 +117,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return array
 	 */
-	public function searchAllTablesToFindAtLeastOneReferenceById( $id ) {
+	public function searchAllTablesToFindAtLeastOneReferenceById( $id ): array {
 		$references = [];
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
@@ -152,7 +143,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return DataItem|false
 	 */
-	public function findAtLeastOneActiveReferenceById( $id, $secondary_ref = true ) {
+	public function findAtLeastOneActiveReferenceById( $id, $secondary_ref = true ): DataItem|false {
 		$reference = false;
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
@@ -177,11 +168,11 @@ class PropertyTableIdReferenceFinder {
 			}
 		}
 
-		if ( $secondary_ref && !isset( $reference->s_id ) ) {
+		if ( $secondary_ref && is_object( $reference ) && !isset( $reference->s_id ) ) {
 			$reference = $this->findQueryLinksTableReferenceById( $id );
 		}
 
-		if ( isset( $reference->s_id ) ) {
+		if ( is_object( $reference ) && isset( $reference->s_id ) ) {
 			$reference = $this->store->getObjectIds()->getDataItemById( $reference->s_id );
 		}
 

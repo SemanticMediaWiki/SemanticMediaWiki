@@ -18,24 +18,12 @@ use SMW\NamespaceExaminer;
 class DeleteAccount implements HookListener {
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var ArticleDelete
-	 */
-	private $articleDelete;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param ArticleDelete $articleDelete
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, ArticleDelete $articleDelete ) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->articleDelete = $articleDelete;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly ArticleDelete $articleDelete,
+	) {
 	}
 
 	/**
@@ -43,7 +31,7 @@ class DeleteAccount implements HookListener {
 	 *
 	 * @param User|string $user
 	 */
-	public function process( $user ) {
+	public function process( $user ): bool {
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
 		}

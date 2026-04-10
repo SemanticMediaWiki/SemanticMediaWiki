@@ -16,15 +16,9 @@ use Traversable;
  */
 class ChunkedIterator extends IteratorIterator {
 
-	/**
-	 * @var int
-	 */
-	private $chunkSize = 0;
+	private int $chunkSize = 0;
 
-	/**
-	 * @var array
-	 */
-	private $chunk;
+	private ?array $chunk = null;
 
 	/**
 	 * @since 3.0
@@ -32,7 +26,7 @@ class ChunkedIterator extends IteratorIterator {
 	 * @param Traversable|array $iterable
 	 * @param int $chunkSize
 	 */
-	public function __construct( $iterable, $chunkSize = 500 ) {
+	public function __construct( Traversable|array $iterable, $chunkSize = 500 ) {
 		$chunkSize = (int)$chunkSize;
 
 		if ( is_array( $iterable ) ) {
@@ -56,8 +50,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function rewind() {
+	public function rewind(): void {
 		parent::rewind();
 		$this->next();
 	}
@@ -67,8 +60,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function next() {
+	public function next(): void {
 		$this->chunk = [];
 
 		for ( $i = 0; $i < $this->chunkSize && parent::valid(); $i++ ) {
@@ -82,8 +74,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function current() {
+	public function current(): ?array {
 		return $this->chunk;
 	}
 
@@ -92,8 +83,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function valid() {
+	public function valid(): bool {
 		return (bool)$this->chunk;
 	}
 

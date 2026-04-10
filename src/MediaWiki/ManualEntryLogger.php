@@ -15,23 +15,12 @@ use MediaWiki\User\User;
  */
 class ManualEntryLogger {
 
-	/**
-	 * @var logEntry
-	 */
-	private $logEntry = null;
-
-	/**
-	 * @var array
-	 */
-	private $eventTypes = [];
+	private array $eventTypes = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param LogEntry|null $logEntry
 	 */
-	public function __construct( ?LogEntry $logEntry = null ) {
-		$this->logEntry = $logEntry;
+	public function __construct( private readonly ?LogEntry $logEntry = null ) {
 	}
 
 	/**
@@ -39,7 +28,7 @@ class ManualEntryLogger {
 	 *
 	 * @param string $eventType
 	 */
-	public function registerLoggableEventType( $eventType ) {
+	public function registerLoggableEventType( $eventType ): void {
 		$this->eventTypes[$eventType] = true;
 	}
 
@@ -72,7 +61,7 @@ class ManualEntryLogger {
 		return $logEntry->insert();
 	}
 
-	protected function newManualLogEntryForType( $type ) {
+	protected function newManualLogEntryForType( $type ): LogEntry {
 		if ( $this->logEntry !== null ) {
 			return $this->logEntry;
 		}

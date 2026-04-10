@@ -5,17 +5,17 @@ namespace SMW\SQLStore\QueryEngine;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Iterators\ResultIterator;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -30,15 +30,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private ?LoggerInterface $logger = null;
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when
@@ -69,41 +61,19 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @var string[]
 	 */
-	private $errors = [];
+	private array $errors = [];
 
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var QuerySegmentListProcessor
-	 */
-	private $querySegmentListProcessor;
-
-	/**
-	 * @var EngineOptions
-	 */
-	private $engineOptions;
-
-	/**
-	 * @var QueryFactory
-	 */
-	private $queryFactory;
+	private QueryFactory $queryFactory;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param SQLStore $store
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param QuerySegmentListProcessor $querySegmentListProcessor
-	 * @param EngineOptions $engineOptions
 	 */
-	public function __construct( SQLStore $store, ConditionBuilder $conditionBuilder, QuerySegmentListProcessor $querySegmentListProcessor, EngineOptions $engineOptions ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
-		$this->querySegmentListProcessor = $querySegmentListProcessor;
-		$this->engineOptions = $engineOptions;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly QuerySegmentListProcessor $querySegmentListProcessor,
+		private readonly EngineOptions $engineOptions,
+	) {
 		$this->queryFactory = new QueryFactory();
 	}
 
@@ -114,7 +84,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function setLogger( LoggerInterface $logger ) {
+	public function setLogger( LoggerInterface $logger ): void {
 		$this->logger = $logger;
 	}
 
@@ -210,7 +180,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		if ( $connection->isType( 'postgres' ) ) {
 			$this->engineOptions->set(
 				'smwgQSortFeatures',
-				$this->engineOptions->get( 'smwgQSortFeatures' ) & ~SMW_QSORT_RANDOM
+				(int)$this->engineOptions->get( 'smwgQSortFeatures' ) & ~SMW_QSORT_RANDOM
 			);
 		}
 
@@ -241,7 +211,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return string
 	 */
-	private function getDebugQueryResult( Query $query, $rootid ) {
+	private function getDebugQueryResult( Query $query, $rootid ): string {
 		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries = [];
 
@@ -276,9 +246,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, &$entries ) {
-		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
-			return $entries['SQL Query'] = 'Empty result, no SQL query created.';
+	private function doExecuteDebugQueryResult( DebugFormatter $debugFormatter, $qobj, array $sqlOptions, array &$entries ) {
+		if ( !is_object( $qobj ) || !$qobj->joinfield ) {
+			$entries['SQL Query'] = 'Empty result, no SQL query created.';
+			return $entries['SQL Query'];
 		}
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
@@ -323,7 +294,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @param Query $query
 	 * @param int $rootid
 	 *
-	 * @return int
+	 * @return QueryResult
 	 */
 	private function getCountQueryResult( Query $query, $rootid ) {
 		$queryResult = $this->queryFactory->newQueryResult(
@@ -468,7 +439,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					$dataItem = '';
 				}
 
-				if ( $dataItem instanceof DIWikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
+				if ( $dataItem instanceof WikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
 					$count++;
 					$dataItemCache[$dataItem->getHash()] = true;
 					$results[] = $dataItem;
@@ -511,9 +482,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function applyExtraWhereCondition( $connection, $qid ) {
+	private function applyExtraWhereCondition( $connection, $qid ): void {
 		if ( !isset( $this->querySegmentList[$qid] ) ) {
-			return null;
+			return;
 		}
 
 		$qobj = $this->querySegmentList[$qid];
@@ -543,7 +514,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	private function getSQLOptions( Query $query, $rootId ) {
+	private function getSQLOptions( Query $query, $rootId ): array {
 		$result = [
 			'LIMIT' => $query->getLimit() + 5,
 			'OFFSET' => $query->getOffset()
@@ -580,7 +551,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $result;
 	}
 
-	private function log( $message, $context = [] ) {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

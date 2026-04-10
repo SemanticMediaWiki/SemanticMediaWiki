@@ -20,7 +20,7 @@ trait OptionsAwareTrait {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = new Options( $options );
 	}
 
@@ -30,7 +30,7 @@ trait OptionsAwareTrait {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( $this->options === null ) {
 			$this->setOptions( [] );
 		}

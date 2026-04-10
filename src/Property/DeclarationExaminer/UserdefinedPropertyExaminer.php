@@ -3,14 +3,14 @@
 namespace SMW\Property\DeclarationExaminer;
 
 use MediaWiki\Registration\ExtensionRegistry;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValues\MonolingualTextValue;
-use SMW\DIProperty;
 use SMW\Localizer\Message;
 use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,19 +21,13 @@ use SMWDataItem as DataItem;
 class UserdefinedPropertyExaminer extends DeclarationExaminer {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param DeclarationExaminer $declarationExaminer
-	 * @param Store $store
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store ) {
+	public function __construct(
+		IDeclarationExaminer $declarationExaminer,
+		private readonly Store $store,
+	) {
 		$this->declarationExaminer = $declarationExaminer;
-		$this->store = $store;
 	}
 
 	/**
@@ -41,7 +35,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ): void {
 		if ( !$property->isUserDefined() ) {
 			return;
 		}
@@ -57,7 +51,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		$this->checkSubpropertyParentType( $type, $property );
 	}
 
-	private function checkMessages( $property ) {
+	private function checkMessages( Property $property ): void {
 		$label = $property->getLabel();
 
 		if ( $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $property ) ) {
@@ -69,7 +63,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 	}
 
-	private function checkRecordType( $type, $property ) {
+	private function checkRecordType( string $type, Property $property ): void {
 		if ( !DataTypeRegistry::getInstance()->isRecordType( $type ) ) {
 			return;
 		}
@@ -81,8 +75,8 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 
 		$semanticData = $this->getSemanticData();
-		$prop = new DIProperty( $type );
-		$pv = $semanticData->getPropertyValues( new DIProperty( '_LIST' ) );
+		$prop = new Property( $type );
+		$pv = $semanticData->getPropertyValues( new Property( '_LIST' ) );
 
 		// #3522
 		// Multiple `Has fields`
@@ -106,7 +100,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 	}
 
-	private function checkExternalIdentifierType( $type, $property ) {
+	private function checkExternalIdentifierType( string $type, Property $property ): void {
 		if ( $type !== '_eid' ) {
 			return;
 		}
@@ -115,7 +109,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 
 		// A violation occurs when the External Identifier typed property does
 		// not declare a `External formatter URI` declaration.
-		if ( $semanticData->hasProperty( new DIProperty( '_PEFU' ) ) ) {
+		if ( $semanticData->hasProperty( new Property( '_PEFU' ) ) ) {
 			return;
 		}
 
@@ -126,7 +120,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkGeoType( $type, $property ) {
+	private function checkGeoType( string $type, Property $property ): void {
 		if ( $type !== '_geo' ) {
 			return;
 		}
@@ -142,10 +136,10 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkImportedVocabType( $property ) {
+	private function checkImportedVocabType( Property $property ): void {
 		$semanticData = $this->getSemanticData();
 
-		if ( !$semanticData->hasProperty( new DIProperty( '_IMPO' ) ) ) {
+		if ( !$semanticData->hasProperty( new Property( '_IMPO' ) ) ) {
 			return;
 		}
 
@@ -154,7 +148,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 
 		$typeValues = $semanticData->getPropertyValues(
-			new DIProperty( '_TYPE' )
+			new Property( '_TYPE' )
 		);
 
 		$dataItem = $semanticData->getOption(
@@ -174,10 +168,10 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkSubpropertyParentType( $type, $property ) {
+	private function checkSubpropertyParentType( string $type, Property $property ): void {
 		$semanticData = $this->getSemanticData();
 
-		if ( !$semanticData->hasProperty( new DIProperty( '_SUBP' ) ) ) {
+		if ( !$semanticData->hasProperty( new Property( '_SUBP' ) ) ) {
 			return;
 		}
 
@@ -187,7 +181,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 
 		if ( $dataItem instanceof DataItem ) {
 
-			$parentProperty = new DIProperty( $dataItem->getDBKey() );
+			$parentProperty = new Property( $dataItem->getDBKey() );
 
 			$this->messages[] = [
 				'error',
@@ -198,7 +192,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 
 		$pv = $semanticData->getPropertyValues(
-			new DIProperty( '_SUBP' )
+			new Property( '_SUBP' )
 		);
 
 		if ( $pv === null || $pv === [] ) {
@@ -206,7 +200,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 
 		$key = end( $pv )->getDBKey();
-		$parentProperty = new DIProperty( $key );
+		$parentProperty = new Property( $key );
 
 		if ( $type === $parentProperty->findPropertyTypeID() ) {
 			return;

@@ -17,29 +17,17 @@ use SMW\Protection\ProtectionValidator;
 class TitlePermissions {
 
 	/**
-	 * @var ProtectionValidator
-	 */
-	private $protectionValidator;
-
-	/**
-	 * @var PermissionManager
-	 */
-	private $permissionManager;
-
-	/**
 	 * @var
 	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param ProtectionValidator $protectionValidator
-	 * @param permissionManager $permissionManager
 	 */
-	public function __construct( ProtectionValidator $protectionValidator, PermissionManager $permissionManager ) {
-		$this->protectionValidator = $protectionValidator;
-		$this->permissionManager = $permissionManager;
+	public function __construct(
+		private readonly ProtectionValidator $protectionValidator,
+		private readonly PermissionManager $permissionManager,
+	) {
 	}
 
 	/**
@@ -47,7 +35,7 @@ class TitlePermissions {
 	 *
 	 * @return
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -113,7 +101,7 @@ class TitlePermissions {
 		return true;
 	}
 
-	private function checkMwNamespacePatternEditPermission( Title $title, User $user, $action ) {
+	private function checkMwNamespacePatternEditPermission( Title $title, User $user, string $action ): bool {
 		// @see https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_pattern
 		if (
 			$title->getDBKey() !== AllowsPatternValue::REFERENCE_PAGE_ID ||
@@ -126,7 +114,7 @@ class TitlePermissions {
 		return false;
 	}
 
-	private function checkSchemaNamespacePermission( Title $title, User $user, $action ) {
+	private function checkSchemaNamespacePermission( Title $title, User $user, $action ): bool {
 		if ( !$this->permissionManager->userHasRight( $user, 'smw-schemaedit' ) ) {
 			$this->errors[] = [ 'smw-schema-namespace-edit-protection', 'smw-schemaedit' ];
 			return false;
@@ -146,7 +134,7 @@ class TitlePermissions {
 		return true;
 	}
 
-	private function checkPropertyNamespaceCreatePermission( Title $title, User $user, $action ) {
+	private function checkPropertyNamespaceCreatePermission( Title $title, User $user, string $action ): bool {
 		$protectionRight = $this->protectionValidator->getCreateProtectionRight();
 
 		if ( $protectionRight === false ) {
@@ -168,7 +156,7 @@ class TitlePermissions {
 		return false;
 	}
 
-	private function checkPropertyNamespaceEditPermission( Title $title, User $user, $action ) {
+	private function checkPropertyNamespaceEditPermission( Title $title, User $user, string $action ): bool {
 		// This renders full protection until the ChangePropagationDispatchJob was run
 		if ( !$this->protectionValidator->hasChangePropagationProtection( $title ) ) {
 			return $this->checkEditPermission( $title, $user, $action );
@@ -179,7 +167,7 @@ class TitlePermissions {
 		return false;
 	}
 
-	private function checkChangePropagationProtection( Title $title, User $user, $action ) {
+	private function checkChangePropagationProtection( Title $title, User $user, string $action ): bool {
 		// This renders full protection until the ChangePropagationDispatchJob was run
 		if ( !$this->protectionValidator->hasChangePropagationProtection( $title ) ) {
 			return true;
@@ -190,7 +178,7 @@ class TitlePermissions {
 		return false;
 	}
 
-	private function checkEditPermission( Title $title, User $user, $action ) {
+	private function checkEditPermission( Title $title, User $user, string $action ): bool {
 		$editProtectionRight = $this->protectionValidator->getEditProtectionRight();
 
 		// @see https://www.semantic-mediawiki.org/wiki/Help:Special_property_Is_edit_protected

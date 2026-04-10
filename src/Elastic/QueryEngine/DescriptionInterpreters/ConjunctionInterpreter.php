@@ -15,17 +15,9 @@ use SMW\Query\Language\Conjunction;
 class ConjunctionInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**
@@ -35,7 +27,7 @@ class ConjunctionInterpreter {
 	 *
 	 * @return Condition
 	 */
-	public function interpretDescription( Conjunction $description ) {
+	public function interpretDescription( Conjunction $description ): array|Condition {
 		$params = [];
 
 		foreach ( $description->getDescriptions() as $desc ) {

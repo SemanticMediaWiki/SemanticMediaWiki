@@ -12,34 +12,20 @@ use RuntimeException;
  */
 class FallbackFinder {
 
-	/**
-	 * @var JsonContentsFileReader
-	 */
-	private $jsonContentsFileReader;
+	private string $canonicalFallbackLanguageCode = 'en';
 
-	/**
-	 * @var string
-	 */
-	private $canonicalFallbackLanguageCode = 'en';
-
-	/**
-	 * @var array
-	 */
-	private $fallbackLanguages = [];
+	private array $fallbackLanguages = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param JsonContentsFileReader $jsonContentsFileReader
 	 */
-	public function __construct( JsonContentsFileReader $jsonContentsFileReader ) {
-		$this->jsonContentsFileReader = $jsonContentsFileReader;
+	public function __construct( private readonly JsonContentsFileReader $jsonContentsFileReader ) {
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function emptyByLanguageCode( $languageCode ) {
+	public function emptyByLanguageCode( $languageCode ): void {
 		unset( $this->fallbackLanguages[strtolower( trim( $languageCode ) )] );
 	}
 
@@ -48,7 +34,7 @@ class FallbackFinder {
 	 *
 	 * @return string
 	 */
-	public function getCanonicalFallbackLanguageCode() {
+	public function getCanonicalFallbackLanguageCode(): string {
 		return $this->canonicalFallbackLanguageCode;
 	}
 

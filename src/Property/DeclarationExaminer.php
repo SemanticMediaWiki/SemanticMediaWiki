@@ -2,8 +2,8 @@
 
 namespace SMW\Property;
 
-use SMW\DIProperty;
-use SMW\SemanticData;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,7 +25,7 @@ interface DeclarationExaminer {
 	 *
 	 * @return array[]
 	 */
-	public function getMessages();
+	public function getMessages(): array;
 
 	/**
 	 * @since 3.1
@@ -37,8 +37,8 @@ interface DeclarationExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 */
-	public function check( DIProperty $property );
+	public function check( Property $property );
 
 }

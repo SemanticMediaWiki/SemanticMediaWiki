@@ -24,22 +24,14 @@ class FileHandler {
 	const FORMAT_BASE64 = 'format/base64';
 
 	/**
-	 * @var FileRepoFinder
-	 */
-	private $fileRepoFinder;
-
-	/**
 	 * @var callable
 	 */
 	private $readCallback;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param FileRepoFinder $fileRepoFinder
 	 */
-	public function __construct( FileRepoFinder $fileRepoFinder ) {
-		$this->fileRepoFinder = $fileRepoFinder;
+	public function __construct( private FileRepoFinder $fileRepoFinder ) {
 	}
 
 	/**
@@ -47,7 +39,7 @@ class FileHandler {
 	 *
 	 * @param callable $readCallback
 	 */
-	public function setReadCallback( callable $readCallback ) {
+	public function setReadCallback( callable $readCallback ): void {
 		$this->readCallback = $readCallback;
 	}
 

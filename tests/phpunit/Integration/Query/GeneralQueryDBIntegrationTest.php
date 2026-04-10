@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
 
 /**
  * @group SMW
@@ -55,7 +55,7 @@ class GeneralQueryDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPropertyBeforeAfterDataRemoval() {
-		$property = new DIProperty( 'SomePagePropertyBeforeAfter' );
+		$property = new Property( 'SomePagePropertyBeforeAfter' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$this->assertEmpty(
@@ -91,7 +91,7 @@ class GeneralQueryDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testUserDefinedPropertyUsedForInvalidValueAssignment() {
-		$property = new DIProperty( 'SomePropertyWithInvalidValueAssignment' );
+		$property = new Property( 'SomePropertyWithInvalidValueAssignment' );
 		$property->setPropertyTypeId( '_tem' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property, '1 Jan 1970' );
@@ -111,7 +111,7 @@ class GeneralQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		];
 	}
 
-	private function searchForResultsThatCompareEqualToOnlySingularPropertyOf( DIProperty $property ) {
+	private function searchForResultsThatCompareEqualToOnlySingularPropertyOf( Property $property ) {
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( $property );
 

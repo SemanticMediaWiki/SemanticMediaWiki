@@ -23,36 +23,18 @@ use SMW\Store;
 class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @var User|null
 	 */
 	private $user;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private readonly Store $store,
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly OutputFormatter $outputFormatter,
+	) {
 	}
 
 	/**
@@ -60,7 +42,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -87,7 +69,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setUser( $user = null ) {
+	public function setUser( $user = null ): void {
 		$this->user = $user;
 	}
 
@@ -121,7 +103,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-idlookup-title' ) ] )
 		);
@@ -130,7 +112,8 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		// https://phabricator.wikimedia.org/T109652#1562641
 		if ( !$this->user->matchEditToken( $webRequest->getVal( 'wpEditToken' ) ) ) {
-			return $this->outputFormatter->addHtml( $this->msg( 'sessionfailure' ) );
+			$this->outputFormatter->addHtml( $this->msg( 'sessionfailure' ) );
+			return;
 		}
 
 		$id = $webRequest->getText( 'id' );
@@ -145,7 +128,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	/**
 	 * @param int $id
 	 */
-	private function doDispose( $id ) {
+	private function doDispose( $id ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
@@ -159,7 +142,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		$manualEntryLogger->log( 'admin', $this->user, 'Special:SMWAdmin', 'Forced removal of ID ' . $id );
 	}
 
-	private function getForm( $webRequest, $id ) {
+	private function getForm( WebRequest $webRequest, $id ): string {
 		[ $result, $error ] = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {
@@ -221,7 +204,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return $html . Html::element( 'p', [], '' );
 	}
 
-	private function createInfoMessageById( $webRequest, &$id ) {
+	private function createInfoMessageById( WebRequest $webRequest, &$id ): array {
 		if ( $webRequest->getText( 'action' ) !== 'lookup' || $id === '' ) {
 			return [ '', '' ];
 		}
@@ -255,7 +238,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return $this->createMessageFromRows( $id, $rows );
 	}
 
-	private function createMessageFromRows( &$id, $rows ) {
+	private function createMessageFromRows( &$id, $rows ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$references = [];
@@ -307,7 +290,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return [ $output, $error ];
 	}
 
-	private function addFulltextInfo( $id, &$references ) {
+	private function addFulltextInfo( $id, array &$references ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( !$connection->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ ) ) {

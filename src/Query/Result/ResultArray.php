@@ -2,19 +2,20 @@
 
 namespace SMW\Query\Result;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\RecordValue;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\QueryToken;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDataValue;
 
 /**
  * Container for the contents of a single result field of a query result,
- * i.e. basically an array of SMWDataItems with some additional parameters.
+ * i.e. basically an array of DataItems with some additional parameters.
  * The content of the array is fetched on demand only.
  *
  * @license GPL-2.0-or-later
@@ -26,55 +27,26 @@ use SMWDataValue;
 class ResultArray {
 
 	/**
-	 * @var PrintRequest
-	 */
-	private $printRequest;
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $result;
-
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var DataItem[]|false
 	 */
-	private $content;
+	private array|false $content;
 
-	/**
-	 * @var ItemJournal
-	 */
-	private $itemJournal;
+	private ?ItemJournal $itemJournal = null;
 
-	/**
-	 * @var FieldItemFinder
-	 */
-	private $fieldItemFinder;
+	private ?QueryToken $queryToken = null;
 
-	/**
-	 * @var QueryToken
-	 */
-	private $queryToken;
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $contextPage;
+	private ?WikiPage $contextPage = null;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $resultPage
+	 * @param WikiPage $resultPage
 	 * @param PrintRequest $printRequest
 	 * @param QueryResult $queryResult
 	 *
 	 * @return self
 	 */
-	public static function factory( DIWikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
+	public static function factory( WikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ): self {
 		$resultArray = new self(
 			$resultPage,
 			$printRequest,
@@ -90,23 +62,16 @@ class ResultArray {
 		return $resultArray;
 	}
 
-	/**
-	 * @param DIWikiPage $resultPage
-	 * @param PrintRequest $printRequest
-	 * @param Store $store
-	 * @param fieldItemFinder|null $fieldItemFinder
-	 */
-	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, Store $store, ?FieldItemFinder $fieldItemFinder = null ) {
-		$this->result = $resultPage;
-		$this->printRequest = $printRequest;
-		$this->store = $store;
+	public function __construct(
+		private readonly WikiPage $result,
+		private readonly PrintRequest $printRequest,
+		private readonly Store $store,
+		private ?FieldItemFinder $fieldItemFinder = null,
+	) {
 		$this->content = false;
 
-		// FIXME 3.0; Inject the object
-		$this->fieldItemFinder = $fieldItemFinder;
-
 		if ( $this->fieldItemFinder === null ) {
-			$this->fieldItemFinder = new FieldItemFinder( $store );
+			$this->fieldItemFinder = new FieldItemFinder( $this->store );
 		}
 	}
 
@@ -115,18 +80,18 @@ class ResultArray {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->store;
 	}
 
 	/**
-	 * Returns the DIWikiPage object to which this ResultArray refers.
+	 * Returns the WikiPage object to which this ResultArray refers.
 	 * If you only care for those objects, consider using \SMW\Query\QueryResult::getResults()
 	 * directly.
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function getResultSubject() {
+	public function getResultSubject(): WikiPage {
 		return $this->result;
 	}
 
@@ -139,7 +104,7 @@ class ResultArray {
 	 *
 	 * @param ItemJournal $itemJournal
 	 */
-	public function setItemJournal( ItemJournal $itemJournal ) {
+	public function setItemJournal( ItemJournal $itemJournal ): void {
 		$this->itemJournal = $itemJournal;
 	}
 
@@ -148,26 +113,26 @@ class ResultArray {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( ?QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ): void {
 		$this->queryToken = $queryToken;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ): void {
 		$this->contextPage = $contextPage;
 	}
 
 	/**
-	 * Returns an array of SMWDataItem objects that contain the results of
+	 * Returns an array of DataItem objects that contain the results of
 	 * the given print request for the given result object.
 	 *
 	 * @return DataItem[]|false
 	 */
-	public function getContent() {
+	public function getContent(): array|false {
 		$this->loadContent();
 		return $this->content;
 	}
@@ -178,12 +143,12 @@ class ResultArray {
 	 *
 	 * @return PrintRequest
 	 */
-	public function getPrintRequest() {
+	public function getPrintRequest(): PrintRequest {
 		return $this->printRequest;
 	}
 
 	/**
-	 * Return the next SMWDataItem object or false if no further object exists.
+	 * Return the next DataItem object or false if no further object exists.
 	 *
 	 * @since 1.6
 	 *
@@ -203,26 +168,26 @@ class ResultArray {
 	}
 
 	/**
-	 * Set the internal pointer of the array of SMWDataItem objects to its first
-	 * element. Return the first SMWDataItem object or false if the array is
+	 * Set the internal pointer of the array of DataItem objects to its first
+	 * element. Return the first DataItem object or false if the array is
 	 * empty.
 	 *
 	 * @since 1.7.1
 	 *
 	 * @return DataItem|false
 	 */
-	public function reset() {
+	public function reset(): mixed {
 		$this->loadContent();
 		return reset( $this->content );
 	}
 
 	/**
-	 * Return an SMWDataValue object for the next SMWDataItem object or
+	 * Return an DataValue object for the next DataItem object or
 	 * false if no further object exists.
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataValue|false
+	 * @return DataValue|false
 	 */
 	public function getNextDataValue() {
 		$dataItem = $this->getNextDataItem();
@@ -245,7 +210,7 @@ class ResultArray {
 			$this->printRequest->getParameter( 'index' ) !== false ) {
 
 			/**
-			 * @var \SMWRecordValue $recordValue
+			 * @var RecordValue $recordValue
 			 */
 			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
@@ -285,7 +250,7 @@ class ResultArray {
 	}
 
 	/**
-	 * Return the main text representation of the next SMWDataItem object
+	 * Return the main text representation of the next DataItem object
 	 * in the specified format, or false if no further object exists.
 	 *
 	 * The parameter $linker controls linking of title values and should

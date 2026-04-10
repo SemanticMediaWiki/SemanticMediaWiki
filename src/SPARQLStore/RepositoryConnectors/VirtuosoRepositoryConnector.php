@@ -56,7 +56,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
+	public function delete( $deletePattern, $where, $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE" .
@@ -79,7 +79,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
+	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "MODIFY" .
@@ -100,7 +100,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertData( $triples, $extraNamespaces = [] ) {
+	public function insertData( $triples, $extraNamespaces = [] ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
@@ -127,7 +127,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function deleteData( $triples, $extraNamespaces = [] ) {
+	public function deleteData( $triples, $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -148,25 +148,36 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
 	 *
 	 * @return bool
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doUpdate( $sparql ) {
+	public function doUpdate( $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
-		$this->httpRequest->setOption( CURLOPT_POST, true );
-
 		$parameterString = "query=" . urlencode( $sparql );
 
-		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
-		$this->httpRequest->execute();
+		$request = $this->httpRequestFactory->create(
+			$this->repositoryClient->getUpdateEndpoint(),
+			array_merge( $this->getBaseOptions(), [
+				'method' => 'POST',
+				'postData' => $parameterString,
+			] ),
+			__METHOD__
+		);
 
-		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
+		$status = $request->execute();
+		$this->lastErrorCode = $request->getStatus();
+
+		if ( $status->isOK() ) {
 			return true;
 		}
 
-		$this->mapHttpRequestError( $this->repositoryClient->getUpdateEndpoint(), $sparql );
+		$this->mapHttpRequestError(
+			$request->getStatus(),
+			$this->repositoryClient->getUpdateEndpoint(),
+			$sparql
+		);
 
 		return false;
 	}

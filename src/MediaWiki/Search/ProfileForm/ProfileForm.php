@@ -3,14 +3,15 @@
 namespace SMW\MediaWiki\Search\ProfileForm;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Title\Title;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Schema\SchemaFactory;
 use SMW\Store;
 use SMW\Utils\HtmlModal;
-use SMWInfolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,35 +28,20 @@ class ProfileForm {
 	 */
 	const SCHEMA_TYPE = 'SEARCH_FORM_SCHEMA';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecialSearch
-	 */
-	private $specialSearch;
-
-	/**
-	 * @var FormsFactory
-	 */
-	private $formsFactory;
+	private FormsFactory $formsFactory;
 
 	/**
 	 * @var
 	 */
-	private $searchableNamespaces = [];
+	private array $searchableNamespaces = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param SpecialSearch $specialSearch
 	 */
-	public function __construct( Store $store, SpecialSearch $specialSearch ) {
-		$this->store = $store;
-		$this->specialSearch = $specialSearch;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SpecialSearch $specialSearch,
+	) {
 		$this->formsFactory = new FormsFactory();
 	}
 
@@ -66,7 +52,7 @@ class ProfileForm {
 	 *
 	 * @return bool
 	 */
-	public static function isValidProfile( $profile ) {
+	public static function isValidProfile( $profile ): bool {
 		return $profile === self::PROFILE_NAME;
 	}
 
@@ -76,7 +62,7 @@ class ProfileForm {
 	 * @param string $type
 	 * @param array &$profiles
 	 */
-	public static function addProfile( $type, array &$profiles, array $options ) {
+	public static function addProfile( $type, array &$profiles, array $options ): void {
 		if ( $type !== SMW_SPECIAL_SEARCHTYPE ) {
 			return;
 		}
@@ -95,7 +81,7 @@ class ProfileForm {
 	 *
 	 * @return array
 	 */
-	public static function getFormDefinitions( Store $store ) {
+	public static function getFormDefinitions( Store $store ): array {
 		static $data = null;
 
 		if ( $data !== null ) {
@@ -112,7 +98,8 @@ class ProfileForm {
 			self::SCHEMA_TYPE
 		);
 
-		return $data = $schemaList->merge( $schemaList );
+		$data = $schemaList->merge( $schemaList );
+		return $data;
 	}
 
 	/**
@@ -122,7 +109,7 @@ class ProfileForm {
 	 *
 	 * @return array
 	 */
-	public static function getPrefixMap( array $data ) {
+	public static function getPrefixMap( array $data ): array {
 		$map = [];
 
 		if (
@@ -139,7 +126,7 @@ class ProfileForm {
 	 *
 	 * @param array $searchableNamespaces
 	 */
-	public function setSearchableNamespaces( array $searchableNamespaces ) {
+	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
 	}
 
@@ -149,7 +136,7 @@ class ProfileForm {
 	 * @param string &$form
 	 * @param array $opts
 	 */
-	public function buildForm( &$form, array $opts = [] ) {
+	public function buildForm( &$form, array $opts = [] ): void {
 		$hidden = '';
 		$html = '';
 
@@ -177,7 +164,7 @@ class ProfileForm {
 
 		$searchEngine = $this->specialSearch->getSearchEngine();
 
-		if ( ( $queryLink = $searchEngine->getQueryLink() ) instanceof SMWInfolink ) {
+		if ( ( $queryLink = $searchEngine->getQueryLink() ) instanceof Infolink ) {
 			$queryLink->setCaption( $this->msg( 'smw-search-profile-link-caption-query', Message::TEXT ) );
 			$queryLink->setLinkAttributes(
 				[
@@ -243,7 +230,7 @@ class ProfileForm {
 		$form .= $namespaceForm;
 	}
 
-	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces, &$hidden ) {
+	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, array $hiddenNamespaces, string &$hidden ): string {
 		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $preselectNamespaces );
 		$default = false;
 
@@ -296,7 +283,7 @@ class ProfileForm {
 		return $namespaceForm->makeFields();
 	}
 
-	private function buildSearchForms( $request ) {
+	private function buildSearchForms( $request ): array {
 		$data = $this->getFormDefinitions( $this->store );
 
 		if ( $data === [] ) {
@@ -325,7 +312,7 @@ class ProfileForm {
 		];
 	}
 
-	private function findErrors( $searchEngine ) {
+	private function findErrors( $searchEngine ): string {
 		if ( ( $errors = $searchEngine->getErrors() ) === [] ) {
 			return '';
 		}
@@ -346,7 +333,7 @@ class ProfileForm {
 		) . $divider;
 	}
 
-	private function buildSortForm( $request ) {
+	private function buildSortForm( WebRequest $request ) {
 		$sortForm = $this->formsFactory->newSortForm( $request );
 
 		// TODO this information should come from the store and not being
@@ -365,7 +352,7 @@ class ProfileForm {
 		return $form;
 	}
 
-	private function profile_sheet( $query, $queryLink, $termPrefixes ) {
+	private function profile_sheet( $query, $queryLink, $termPrefixes ): string {
 		$text = Message::get( 'smw-search-profile-extended-help-intro', Message::PARSE, Message::USER_LANGUAGE );
 
 		$link = $queryLink !== null ? $queryLink->getHtml() : '';
@@ -433,7 +420,7 @@ class ProfileForm {
 		return $text;
 	}
 
-	private function section( $msg, $attributes = [] ) {
+	private function section( string $msg, $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[
@@ -450,7 +437,7 @@ class ProfileForm {
 		);
 	}
 
-	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {
+	private function msg( string|array $msg, int $type = Message::PARSE, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $msg, $type, $lang );
 	}
 

@@ -1,0 +1,110 @@
+publiccodeYmlVersion: 0.5.0
+name: Semantic MediaWiki
+applicationSuite: MediaWiki
+url: https://github.com/SemanticMediaWiki
+landingURL: https://www.semantic-mediawiki.org
+isBasedOn: https://www.mediawiki.org
+softwareVersion: 6.0.1
+releaseDate: 2025-08-26
+logo: https://www.semantic-mediawiki.org/w/images/d/d4/SMW_logo_2020.svg
+platforms:
+  - web
+categories:
+  - knowledge-management
+  - blog
+  - collaboration
+  - enterprise-project-management
+  - online-community
+  - project-collaboration
+  - web-collaboration
+  - other
+organisation:
+  uri: https://opencollective.com/smw
+usedBy:
+  - City of Vienna
+  - Federal Chancellory of Austria
+  - Austrian Federal Ministry of Innovation, Mobility and Infrastructure (BMIMI)
+  - Austrian Academy of Science
+  - City of Bonn
+  - City of Landsberg am Lech
+  - City of Göttingen
+  - Bayerische Staatsbibliothek
+  - Fraunhofer ISC
+  - Dutch Ministry of the Interior and Kingdom Relations
+  - Municipality of Venlo
+roadmap: https://www.semantic-mediawiki.org/wiki/Roadmap
+developmentStatus: stable
+softwareType: standalone/web
+description:
+  en:
+    localisedName: Semantic MediaWiki
+    shortDescription: "Semantic MediaWiki (SMW) is a full-fledged frame­work, that
+      can turn a MediaWiki into a pow­er­ful and flex­i­ble know­ledge
+      manage­ment sys­tem. "
+    longDescription: "Semantic MediaWiki (SMW) is an extension of MediaWiki – the
+      wiki application best known for powering Wikipedia – that helps to search,
+      organise, tag, browse, evaluate, and share the wiki's content. While
+      traditional wikis contain only text which computers can neither understand
+      nor evaluate, SMW adds semantic annotations that allow a wiki to function
+      as a collaborative database. Semantic MediaWiki was first released in
+      2005, and currently has over ten developers, and is in use on hundreds of
+      sites. In addition, a large number of related extensions have been created
+      that extend the ability to edit, display and browse through the data
+      stored by SMW: the term \"Semantic MediaWiki\" is sometimes used to refer
+      to this entire family of extensions. "
+    documentation: https://www.semantic-mediawiki.org
+    apiDocumentation: https://www.semantic-mediawiki.org/wiki/Help:API
+    features:
+      - Wiki
+      - RDF
+      - Semantic Web
+      - TripleStore
+      - Query language
+      - Structured Wiki
+      - Input Forms
+      - Data Visualization
+      - Data Export
+      - API
+    screenshots:
+      - https://www.semantic-mediawiki.org/wiki/Sites_using_Semantic_MediaWiki
+    videos:
+      - https://www.youtube.com/watch?v=Gcdl4iCDJ0Q&list=PLw2YgbWET_pg6tY2KlEUgTmtTZXWil-y6
+legal:
+  license: GPL-2.0-or-later
+maintenance:
+  type: community
+  contacts:
+    - name: Jeroen DeDauw
+      email: jeroendedauw@proton.me
+      affiliation: Professional Wiki
+    - name: Bernhard Krabina
+      email: bernhard.krabina@km-a.net
+      affiliation: KMA Knowledge Management Associates
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - en
+    - de
+    - fr
+    - es
+    - zh
+    - pt
+    - nl
+    - pl
+    - cs
+    - sk
+    - sl
+    - hr
+    - bs
+    - hu
+    - ru
+    - uk
+    - fi
+    - el
+    - it
+    - ja
+    - no
+    - ro
+    - sr
+    - sv
+    - tr

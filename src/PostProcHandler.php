@@ -8,9 +8,10 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
+use SMW\Query\Query;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMWQuery as Query;
 
 /**
  * Some updates need to be handled in via post processing,
@@ -49,20 +50,14 @@ class PostProcHandler {
 	 */
 	const POST_UPDATE_TTL = 86400;
 
-	/**
-	 * @var ParserOutput
-	 */
-	private $parserOutput;
+	private ParserOutput $parserOutput;
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
+	private Cache $cache;
 
 	/**
 	 * @var
 	 */
-	private $options = [];
+	private array $options = [];
 
 	/**
 	 * @since 3.0
@@ -80,7 +75,7 @@ class PostProcHandler {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -105,7 +100,7 @@ class PostProcHandler {
 	 *
 	 * @return array|string
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [ 'ext.smw.postproc', 'ext.smw.purge' ];
 	}
 
@@ -118,7 +113,7 @@ class PostProcHandler {
 	 * @return string
 	 */
 	public function getHtml( Title $title, WebRequest $webRequest ) {
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -219,7 +214,7 @@ class PostProcHandler {
 	 *
 	 * @param Query $query
 	 */
-	public function addUpdate( Query $query ) {
+	public function addUpdate( Query $query ): void {
 		// Query:getHash returns a hash based on a fingerprint
 		// (when $smwgQueryResultCacheType is set) that eliminates duplicate
 		// queries, yet for the post processing it is necessary to know each
@@ -246,7 +241,7 @@ class PostProcHandler {
 	 *
 	 * @param Query $query
 	 */
-	public function addCheck( Query $query ) {
+	public function addCheck( Query $query ): void {
 		if ( !isset( $this->options['check-query'] ) || $this->options['check-query'] === false ) {
 			return;
 		}
@@ -275,7 +270,7 @@ class PostProcHandler {
 		);
 	}
 
-	private function checkDiff( $changeDiff ) {
+	private function checkDiff( $changeDiff ): ?bool {
 		$propertyList = $changeDiff->getPropertyList(
 			'flip'
 		);
@@ -314,7 +309,7 @@ class PostProcHandler {
 		return null;
 	}
 
-	private function find_jobs( $jobs ) {
+	private function find_jobs( array $jobs ): array {
 		// Not enabled, no need to invoke a job!
 		if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
 			unset( $jobs['smw.parserCachePurge'] );

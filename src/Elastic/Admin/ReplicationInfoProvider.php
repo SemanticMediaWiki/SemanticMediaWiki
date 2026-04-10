@@ -4,7 +4,8 @@ namespace SMW\Elastic\Admin;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
-use SMW\DIWikiPage;
+use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\EntityCache;
@@ -21,26 +22,14 @@ use SMW\Utils\HtmlColumns;
 class ReplicationInfoProvider extends InfoProviderHandler {
 
 	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
-	 * @var ReplicationCheck
-	 */
-	private $replicationCheck;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param ReplicationCheck $replicationCheck
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( OutputFormatter $outputFormatter, ReplicationCheck $replicationCheck, EntityCache $entityCache ) {
+	public function __construct(
+		OutputFormatter $outputFormatter,
+		private readonly ReplicationCheck $replicationCheck,
+		private readonly EntityCache $entityCache,
+	) {
 		parent::__construct( $outputFormatter );
-		$this->replicationCheck = $replicationCheck;
-		$this->entityCache = $entityCache;
 	}
 
 	/**
@@ -48,7 +37,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	 *
 	 * @return string
 	 */
-	public function getSupplementTask() {
+	public function getSupplementTask(): string {
 		return 'replication';
 	}
 
@@ -80,7 +69,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( 'smw-admin-supplementary-elastic-replication-header-title' )
 		);
@@ -93,7 +82,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		$this->outputInfo();
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$this->outputFormatter->addModules( 'ext.smw.purge' );
 
 		$html = Html::rawElement(
@@ -119,7 +108,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		$files = [];
 
 		foreach ( $failures as $hash ) {
-			$title = DIWikiPage::doUnserialize( $hash )->getTitle();
+			$title = WikiPage::doUnserialize( $hash )->getTitle();
 
 			if ( $title->getNamespace() === NS_FILE ) {
 				$files[] = $this->buildFromFile( $title );
@@ -163,7 +152,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function buildFromFile( $title ) {
+	private function buildFromFile( ?Title $title ): string {
 		$response = '';
 
 		$key = $this->entityCache->makeCacheKey(
@@ -205,7 +194,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		) . "&nbsp;($response)";
 	}
 
-	private function error( $error ) {
+	private function error( $error ): string {
 		return Html::rawElement(
 			'span',
 			[
@@ -221,7 +210,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function purge( $title ) {
+	private function purge( ?Title $title ) {
 		return Html::rawElement(
 			'a',
 			[
@@ -233,7 +222,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function buildFromTitle( $title ) {
+	private function buildFromTitle( ?Title $title ) {
 		$response = $this->purge( $title );
 
 		return Html::rawElement(

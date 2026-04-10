@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Lookup;
 
 use SMW\SQLStore\RedirectStore;
 use SMW\Store;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @license GPL-2.0-or-later
@@ -13,28 +14,14 @@ use SMW\Store;
  */
 class MissingRedirectLookup {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ?array $namespaces = null;
 
-	/**
-	 * @var array
-	 */
-	private $namespaces;
-
-	/**
-	 * @var bool
-	 */
-	private $nosort = false;
+	private bool $nosort = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -42,21 +29,21 @@ class MissingRedirectLookup {
 	 *
 	 * @param array $namespaces
 	 */
-	public function setNamespaceMatrix( array $namespaces ) {
+	public function setNamespaceMatrix( array $namespaces ): void {
 		$this->namespaces = $namespaces;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function noSort() {
+	public function noSort(): void {
 		$this->nosort = true;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return Iterator/array
+	 * @return ResultWrapper
 	 */
 	public function findMissingRedirects() {
 		$namespaces = array_keys( array_filter( $this->namespaces, static function ( $v ) {
@@ -67,7 +54,12 @@ class MissingRedirectLookup {
 		return $this->fetchFromTable( $namespaces );
 	}
 
-	private function fetchFromTable( $namespaces ) {
+	/**
+	 * @param array $namespaces
+	 *
+	 * @return ResultWrapper
+	 */
+	private function fetchFromTable( array $namespaces ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$options = [

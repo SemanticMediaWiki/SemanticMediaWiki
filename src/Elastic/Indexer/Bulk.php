@@ -19,20 +19,9 @@ use SMW\Elastic\Connection\Client as ElasticClient;
  */
 class Bulk implements JsonSerializable {
 
-	/**
-	 * @var ElasticClient
-	 */
-	private $connection;
+	private array $bulk = [];
 
-	/**
-	 * @var array
-	 */
-	private $bulk = [];
-
-	/**
-	 * @var array
-	 */
-	private $head = [];
+	private array $head = [];
 
 	/**
 	 * @var array|string
@@ -42,14 +31,13 @@ class Bulk implements JsonSerializable {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( ElasticClient $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly ElasticClient $connection ) {
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->bulk = [];
 		$this->head = [];
 		$this->response = [];
@@ -60,7 +48,7 @@ class Bulk implements JsonSerializable {
 	 *
 	 * @param array $params
 	 */
-	public function head( array $params ) {
+	public function head( array $params ): void {
 		$this->head = $params;
 	}
 
@@ -69,7 +57,7 @@ class Bulk implements JsonSerializable {
 	 *
 	 * @param array $params
 	 */
-	public function delete( array $params ) {
+	public function delete( array $params ): void {
 		$this->bulk['body'][] = [ 'delete' => $params + $this->head ];
 	}
 
@@ -79,7 +67,7 @@ class Bulk implements JsonSerializable {
 	 * @param array $params
 	 * @param array $source
 	 */
-	public function index( array $params, array $source ) {
+	public function index( array $params, array $source ): void {
 		$this->bulk['body'][] = [ 'index' => $params + $this->head ];
 		$this->bulk['body'][] = $source;
 	}
@@ -90,7 +78,7 @@ class Bulk implements JsonSerializable {
 	 * @param array $params
 	 * @param array $doc
 	 */
-	public function upsert( array $params, array $doc ) {
+	public function upsert( array $params, array $doc ): void {
 		$this->bulk['body'][] = [ 'update' => $params + $this->head ];
 		$this->bulk['body'][] = [ 'doc' => $doc, "doc_as_upsert" => true ];
 	}
@@ -98,7 +86,7 @@ class Bulk implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 */
-	public function isEmpty() {
+	public function isEmpty(): bool {
 		return $this->bulk === [];
 	}
 
@@ -107,7 +95,7 @@ class Bulk implements JsonSerializable {
 	 *
 	 * @param Document $document
 	 */
-	public function infuseDocument( Document $document ) {
+	public function infuseDocument( Document $document ): void {
 		if ( $document->isType( Document::TYPE_DELETE ) ) {
 			$this->delete( [ '_id' => $document->getId() ] );
 		}
@@ -134,14 +122,14 @@ class Bulk implements JsonSerializable {
 	 *
 	 * @return array|string
 	 */
-	public function getResponse() {
+	public function getResponse(): array|string {
 		return $this->response;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function execute() {
+	public function execute(): void {
 		$this->response = $this->connection->bulk(
 			$this->bulk
 		);

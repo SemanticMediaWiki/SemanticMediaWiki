@@ -4,6 +4,7 @@ namespace SMW;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 
 /**
  * Examines if a specific namespace is enabled for the usage of the
@@ -16,15 +17,9 @@ use MediaWiki\Title\Title;
  */
 class NamespaceExaminer {
 
-	/**
-	 * @var array
-	 */
-	private $registeredNamespaces = [];
+	private array $registeredNamespaces;
 
-	/**
-	 * @var array
-	 */
-	private $validNamespaces = [];
+	private array $validNamespaces = [];
 
 	/**
 	 * @since 1.9
@@ -40,25 +35,25 @@ class NamespaceExaminer {
 	 *
 	 * @param array $validNamespaces
 	 */
-	public function setValidNamespaces( array $validNamespaces ) {
+	public function setValidNamespaces( array $validNamespaces ): void {
 		$this->validNamespaces = $validNamespaces;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param Title|DIWikiPage $object
+	 * @param Title|WikiPage $object
 	 *
 	 * @return bool
 	 */
-	public function inNamespace( $object ) {
+	public function inNamespace( $object ): bool {
 		$namespace = null;
 
 		if ( $object instanceof Title ) {
 			$namespace = $object->getNamespace();
 		}
 
-		if ( $object instanceof \SMW\DIWikiPage ) {
+		if ( $object instanceof WikiPage ) {
 			$namespace = $object->getNamespace();
 		}
 
@@ -75,7 +70,7 @@ class NamespaceExaminer {
 	 * @return bool
 	 * @throws InvalidArgumentException
 	 */
-	public function isSemanticEnabled( $namespace ) {
+	public function isSemanticEnabled( $namespace ): bool {
 		if ( !is_int( $namespace ) ) {
 			throw new InvalidArgumentException( "{$namespace} is not a number" );
 		}
@@ -88,7 +83,7 @@ class NamespaceExaminer {
 		return $this->isEnabled( $namespace );
 	}
 
-	private function isEnabled( $namespace ) {
+	private function isEnabled( int $namespace ): bool {
 		return !empty( $this->registeredNamespaces[$namespace] );
 	}
 

@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Hooks;
 
 use Psr\Log\LoggerAwareTrait;
 use SMW\DependencyValidator;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
 use WikiPage;
@@ -22,24 +21,12 @@ class RejectParserCacheValue implements HookListener {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var DependencyValidator
-	 */
-	private $dependencyValidator;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param DependencyValidator $dependencyValidator
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator ) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->dependencyValidator = $dependencyValidator;
+	public function __construct(
+		private NamespaceExaminer $namespaceExaminer,
+		private DependencyValidator $dependencyValidator,
+	) {
 	}
 
 	/**
@@ -49,14 +36,14 @@ class RejectParserCacheValue implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( WikiPage $page ) {
+	public function process( WikiPage $page ): bool {
 		$title = $page->getTitle();
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
 			return true;
 		}
 
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = \SMW\DataItems\WikiPage::newFromTitle( $title );
 
 		if ( $this->dependencyValidator->canKeepParserCache( $subject ) ) {
 			return true;

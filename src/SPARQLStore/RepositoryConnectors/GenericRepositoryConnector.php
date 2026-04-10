@@ -2,14 +2,14 @@
 
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
-use Onoi\HttpRequest\HttpRequest;
+use MediaWiki\Http\HttpRequestFactory;
+use SMW\Export\Exporter;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\HttpResponseErrorMapper;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\RepositoryConnection;
-use SMWExporter as Exporter;
 
 /**
  * Basic database connector for exchanging data via SPARQL.
@@ -36,42 +36,22 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 */
 	const ENDP_DATA = RepositoryConnection::DATA_ENDPOINT;
 
-	/**
-	 * @var RepositoryClient
-	 */
-	protected $repositoryClient;
+	private ?HttpResponseErrorMapper $badHttpResponseMapper = null;
 
-	/**
-	 * @note Handles the curl handle and is reused throughout the instance to
-	 * safe some initialization effort
-	 *
-	 * @var HttpRequest
-	 */
-	protected $httpRequest;
+	private int $connectionTimeout = 10;
 
-	/**
-	 * @var HttpResponseErrorMapper
-	 */
-	private $badHttpResponseMapper;
+	protected int $lastErrorCode = 0;
 
 	/**
 	 * @note It is suggested to use the RepositoryConnectionProvider to create
 	 * a valid instance
 	 *
 	 * @since 2.2
-	 *
-	 * @param RepositoryClient $repositoryClient
-	 * @param HttpRequest $httpRequest
 	 */
-	public function __construct( RepositoryClient $repositoryClient, HttpRequest $httpRequest ) {
-		$this->repositoryClient = $repositoryClient;
-		$this->httpRequest = $httpRequest;
-
-		$this->httpRequest->setOption( CURLOPT_FORBID_REUSE, false );
-		$this->httpRequest->setOption( CURLOPT_FRESH_CONNECT, false );
-		$this->httpRequest->setOption( CURLOPT_RETURNTRANSFER, true ); // put result into variable
-		$this->httpRequest->setOption( CURLOPT_FAILONERROR, true );
-
+	public function __construct(
+		protected readonly RepositoryClient $repositoryClient,
+		protected readonly HttpRequestFactory $httpRequestFactory
+	) {
 		$this->setConnectionTimeout( 10 );
 	}
 
@@ -80,7 +60,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryClient
 	 */
-	public function getRepositoryClient() {
+	public function getRepositoryClient(): RepositoryClient {
 		return $this->repositoryClient;
 	}
 
@@ -89,7 +69,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @param string|int $type
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getEndpoint( $type ): ?string {
 		if ( $type === RepositoryConnection::QUERY_ENDPOINT ) {
@@ -109,11 +89,9 @@ class GenericRepositoryConnector implements RepositoryConnection {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
-	public function getLastErrorCode() {
-		return $this->httpRequest->getLastErrorCode();
+	public function getLastErrorCode(): int {
+		return $this->lastErrorCode;
 	}
 
 	/**
@@ -132,8 +110,8 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @param int $timeout in seconds
 	 */
-	public function setConnectionTimeout( $timeout = 10 ) {
-		$this->httpRequest->setOption( CURLOPT_CONNECTTIMEOUT, $timeout );
+	public function setConnectionTimeout( int $timeout = 10 ): void {
+		$this->connectionTimeout = $timeout;
 	}
 
 	/**
@@ -157,43 +135,34 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool to indicate success
 	 */
-	public function ping( $endpointType = self::ENDP_QUERY ) {
+	public function ping( $endpointType = self::ENDP_QUERY ): bool {
 		if ( $endpointType == self::ENDP_QUERY ) {
-			$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
-			$this->httpRequest->setOption( CURLOPT_NOBODY, true );
-			$this->httpRequest->setOption( CURLOPT_POST, true );
+			$url = $this->repositoryClient->getQueryEndpoint();
+			$request = $this->httpRequestFactory->create( $url, array_merge(
+				$this->getBaseOptions(),
+				[ 'method' => 'HEAD' ]
+			), __METHOD__ );
 		} elseif ( $endpointType == self::ENDP_UPDATE ) {
-
 			if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 				return false;
 			}
-
-			$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
-
-			// 4Store gives 404 instead of 500 with CURLOPT_NOBODY
-			$this->httpRequest->setOption( CURLOPT_NOBODY, false );
-
-		} else { // ( $endpointType == self::ENDP_DATA )
-
+			$url = $this->repositoryClient->getUpdateEndpoint();
+			$request = $this->httpRequestFactory->create( $url, $this->getBaseOptions(), __METHOD__ );
+		} else {
 			if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 				return false;
 			}
-
-			// try an empty POST
 			return $this->doHttpPost( '' );
 		}
 
-		$this->httpRequest->execute();
+		$status = $request->execute();
+		$this->lastErrorCode = $request->getStatus();
 
-		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
+		if ( $status->isOK() ) {
 			return true;
 		}
 
-		// Valid HTTP responses from a complaining SPARQL endpoint that is
-		// alive and kicking
-		$httpCode = $this->httpRequest->getLastTransferInfo( CURLINFO_HTTP_CODE );
-
-		return ( ( $httpCode == 500 ) || ( $httpCode == 400 ) );
+		return ( $this->lastErrorCode == 500 || $this->lastErrorCode == 400 );
 	}
 
 	/**
@@ -209,7 +178,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function select( $vars, $where, $options = [], $extraNamespaces = [] ) {
+	public function select( $vars, $where, $options = [], $extraNamespaces = [] ): RepositoryResult {
 		return $this->doQuery( $this->getSparqlForSelect( $vars, $where, $options, $extraNamespaces ) );
 	}
 
@@ -222,11 +191,11 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param string|array $vars
 	 * @param string $where WHERE part of the query, without surrounding { }
 	 * @param array $options
-	 * @param aray $extraNamespaces (associative) of namespaceId => namespaceUri
+	 * @param array $extraNamespaces (associative) of namespaceId => namespaceUri
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForSelect( $vars, $where, $options = [], $extraNamespaces = [] ) {
+	public function getSparqlForSelect( $vars, string $where, array $options = [], array $extraNamespaces = [] ): string {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -267,7 +236,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function ask( $where, $extraNamespaces = [] ) {
+	public function ask( $where, $extraNamespaces = [] ): RepositoryResult {
 		return $this->doQuery( $this->getSparqlForAsk( $where, $extraNamespaces ) );
 	}
 
@@ -282,7 +251,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForAsk( $where, $extraNamespaces = [] ) {
+	public function getSparqlForAsk( string $where, array $extraNamespaces = [] ): string {
 		return self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
 	}
 
@@ -299,7 +268,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function selectCount( $variable, $where, $options = [], $extraNamespaces = [] ) {
+	public function selectCount( string $variable, string $where, array $options = [], array $extraNamespaces = [] ): RepositoryResult {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT (COUNT(';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -331,7 +300,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
+	public function delete( $deletePattern, $where, $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -358,7 +327,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {
+	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ): bool {
 		return $this->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o", $extraNamespaces );
 	}
 
@@ -367,7 +336,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool
 	 */
-	public function deleteAll() {
+	public function deleteAll(): bool {
 		return $this->delete( "?s ?p ?o", "?s ?p ?o" );
 	}
 
@@ -384,7 +353,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
+	public function insertDelete( $insertPattern, $deletePattern, $where, array $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -405,7 +374,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertData( $triples, $extraNamespaces = [] ) {
+	public function insertData( string $triples, array $extraNamespaces = [] ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
@@ -433,7 +402,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function deleteData( $triples, $extraNamespaces = [] ) {
+	public function deleteData( $triples, array $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -454,39 +423,45 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @note This function sets the graph that is to be used as part of the
 	 * request. Queries should not include additional graph information.
 	 *
-	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
+	 * @param string $sparql string with the complete SPARQL query (SELECT or ASK)
 	 *
 	 * @return RepositoryResult
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doQuery( $sparql ) {
+	public function doQuery( string $sparql ): RepositoryResult {
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
-
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [
-			'Accept: application/sparql-results+xml,application/xml;q=0.8',
-			'Content-Type: application/x-www-form-urlencoded;charset=UTF-8'
-		] );
-
-		$this->httpRequest->setOption( CURLOPT_POST, true );
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
-
 		$parameterString = "query=" . urlencode( $sparql ) .
 			( ( $defaultGraph !== '' ) ? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' );
 
-		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+		$request = $this->httpRequestFactory->create(
+			$this->repositoryClient->getQueryEndpoint(),
+			array_merge( $this->getBaseOptions(), [
+				'method' => 'POST',
+				'postData' => $parameterString,
+			] ),
+			__METHOD__
+		);
 
-		$httpResponse = $this->httpRequest->execute();
+		$request->setHeader( 'Accept', 'application/sparql-results+xml,application/xml;q=0.8' );
+		$request->setHeader( 'Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8' );
 
-		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
+		$status = $request->execute();
+		$this->lastErrorCode = $request->getStatus();
+
+		if ( $status->isOK() ) {
 			$xmlResponseParser = new XmlResponseParser();
-			return $xmlResponseParser->parse( $httpResponse );
+			return $xmlResponseParser->parse( $request->getContent() );
 		}
 
-		$this->mapHttpRequestError( $this->repositoryClient->getQueryEndpoint(), $sparql );
+		$this->mapHttpRequestError(
+			$request->getStatus(),
+			$this->repositoryClient->getQueryEndpoint(),
+			$sparql
+		);
 
 		$repositoryResult = new RepositoryResult();
 		$repositoryResult->setErrorCode( RepositoryResult::ERROR_UNREACHABLE );
@@ -506,30 +481,42 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * when sending the query. Direct callers to this function must include
 	 * the graph information in the queries that they build.
 	 *
-	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
+	 * @param string $sparql string with the complete SPARQL update query (INSERT or DELETE)
 	 *
 	 * @return bool
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doUpdate( $sparql ) {
+	public function doUpdate( string $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
-		$this->httpRequest->setOption( CURLOPT_POST, true );
-
 		$parameterString = "update=" . urlencode( $sparql );
 
-		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [ 'Content-Type: application/x-www-form-urlencoded;charset=UTF-8' ] );
+		$request = $this->httpRequestFactory->create(
+			$this->repositoryClient->getUpdateEndpoint(),
+			array_merge( $this->getBaseOptions(), [
+				'method' => 'POST',
+				'postData' => $parameterString,
+			] ),
+			__METHOD__
+		);
 
-		$this->httpRequest->execute();
+		$request->setHeader( 'Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8' );
 
-		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
+		$status = $request->execute();
+		$this->lastErrorCode = $request->getStatus();
+
+		if ( $status->isOK() ) {
 			return true;
 		}
 
-		$this->mapHttpRequestError( $this->repositoryClient->getUpdateEndpoint(), $sparql );
+		$this->mapHttpRequestError(
+			$request->getStatus(),
+			$this->repositoryClient->getUpdateEndpoint(),
+			$sparql
+		);
+
 		return false;
 	}
 
@@ -552,35 +539,41 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param $payload string Turtle serialization of data to send
 	 *
 	 * @return bool
+	 * @throws BadHttpEndpointResponseException
 	 */
-	public function doHttpPost( $payload ) {
+	public function doHttpPost( $payload ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
+		$url = $this->repositoryClient->getDataEndpoint() .
+			( ( $defaultGraph !== '' ) ? '?graph=' . urlencode( $defaultGraph ) : '?default' );
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getDataEndpoint() .
-			( ( $defaultGraph !== '' ) ? '?graph=' . urlencode( $defaultGraph ) : '?default' ) );
-		$this->httpRequest->setOption( CURLOPT_POST, true );
+		$request = $this->httpRequestFactory->create(
+			$url,
+			array_merge( $this->getBaseOptions(), [
+				'method' => 'POST',
+				'postData' => $payload,
+			] ),
+			__METHOD__
+		);
 
-		// POST as file (fails in 4Store)
-		$payloadFile = tmpfile();
-		fwrite( $payloadFile, $payload );
-		fseek( $payloadFile, 0 );
+		$request->setHeader( 'Content-Type', 'application/x-turtle' );
 
-		$this->httpRequest->setOption( CURLOPT_INFILE, $payloadFile );
-		$this->httpRequest->setOption( CURLOPT_INFILESIZE, strlen( $payload ) );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [ 'Content-Type: application/x-turtle' ] );
+		$status = $request->execute();
+		$this->lastErrorCode = $request->getStatus();
 
-		$this->httpRequest->execute();
-
-		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
+		if ( $status->isOK() ) {
 			return true;
 		}
 
-		// TODO The error reporting based on SPARQL (Update) is not adequate for the HTTP POST protocol
-		$this->mapHttpRequestError( $this->repositoryClient->getDataEndpoint(), $payload );
+		$this->mapHttpRequestError(
+			$request->getStatus(),
+			$this->repositoryClient->getDataEndpoint(),
+			$payload
+		);
+
 		return false;
 	}
 
@@ -593,7 +586,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string
 	 */
-	public static function getPrefixString( $extraNamespaces = [], $forSparql = true ) {
+	public static function getPrefixString( array $extraNamespaces = [], $forSparql = true ): string {
 		$prefixString = '';
 		$prefixIntro = $forSparql ? 'PREFIX ' : '@prefix ';
 		$prefixOutro = $forSparql ? "\n" : " .\n";
@@ -613,22 +606,24 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	/**
 	 * @since 3.2
 	 *
-	 * @return string|int
+	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'n/a';
 	}
 
-	/**
-	 * @param $endpoint string URL of endpoint that was used
-	 * @param $sparql string query that caused the problem
-	 */
-	protected function mapHttpRequestError( $endpoint, $sparql ) {
+	protected function getBaseOptions(): array {
+		return [
+			'connectTimeout' => $this->connectionTimeout,
+		];
+	}
+
+	protected function mapHttpRequestError( int $httpStatusCode, string $endpoint, string $sparql ): void {
 		if ( $this->badHttpResponseMapper === null ) {
-			$this->badHttpResponseMapper = new HttpResponseErrorMapper( $this->httpRequest );
+			$this->badHttpResponseMapper = new HttpResponseErrorMapper();
 		}
 
-		$this->badHttpResponseMapper->mapErrorResponse( $endpoint, $sparql );
+		$this->badHttpResponseMapper->mapErrorResponse( $httpStatusCode, $endpoint, $sparql );
 	}
 
 }

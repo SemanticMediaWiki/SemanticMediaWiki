@@ -24,23 +24,12 @@ class TemplateExpander {
 	 */
 	const MAX_INCLUDE_SIZE = 50000000;
 
-	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
-	 * @var Title
-	 */
-	private $title;
+	private ?Title $title = null;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Parser $parser
 	 */
-	public function __construct( $parser ) {
-		$this->parser = $parser;
+	public function __construct( private $parser ) {
 	}
 
 	/**
@@ -48,7 +37,7 @@ class TemplateExpander {
 	 *
 	 * @param Title $title
 	 */
-	public function setTitle( Title $title ) {
+	public function setTitle( Title $title ): void {
 		$this->title = $title;
 	}
 
@@ -60,7 +49,7 @@ class TemplateExpander {
 	 *
 	 * @return string
 	 */
-	public function expand( $template ) {
+	public function expand( $template ): string|array {
 		if ( !$this->parser instanceof Parser && !$this->parser instanceof StubObject ) {
 			throw new RuntimeException( 'Missing a parser instance!' );
 		}

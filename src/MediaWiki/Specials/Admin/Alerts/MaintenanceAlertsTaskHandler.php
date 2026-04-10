@@ -14,17 +14,9 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 class MaintenanceAlertsTaskHandler extends TaskHandler {
 
 	/**
-	 * @var TaskHandler[]
-	 */
-	private $taskHandlers = [];
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param TaskHandler[] $taskHandlers
 	 */
-	public function __construct( array $taskHandlers = [] ) {
-		$this->taskHandlers = $taskHandlers;
+	public function __construct( private readonly array $taskHandlers = [] ) {
 	}
 
 	/**
@@ -41,7 +33,7 @@ class MaintenanceAlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$contents = '';
 
 		foreach ( $this->taskHandlers as $taskHandler ) {

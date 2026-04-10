@@ -4,10 +4,10 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Utils\CliMsgFormatter;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,44 +18,23 @@ use SMWDataItem as DataItem;
 class SearchTableRebuilder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var SearchTableUpdater
-	 */
-	private $searchTableUpdater;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
 
-	/**
-	 * @var bool
-	 */
-	private $reportVerbose = false;
+	private bool $reportVerbose = false;
 
-	/**
-	 * @var bool
-	 */
-	private $optimization = false;
+	private bool $optimization = false;
 
-	/**
-	 * @var array
-	 */
-	private $skippedTables = [];
+	private array $skippedTables = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Database $connection
-	 * @param SearchTableUpdater $searchTableUpdater
 	 */
-	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater ) {
-		$this->connection = $connection;
-		$this->searchTableUpdater = $searchTableUpdater;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly SearchTableUpdater $searchTableUpdater,
+	) {
 		$this->messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -64,7 +43,7 @@ class SearchTableRebuilder {
 	 *
 	 * @return SearchTable
 	 */
-	public function getSearchTable() {
+	public function getSearchTable(): SearchTable {
 		return $this->searchTableUpdater->getSearchTable();
 	}
 
@@ -73,7 +52,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -82,7 +61,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param bool $reportVerbose
 	 */
-	public function reportVerbose( $reportVerbose ) {
+	public function reportVerbose( $reportVerbose ): void {
 		$this->reportVerbose = (bool)$reportVerbose;
 	}
 
@@ -91,7 +70,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param bool $optimization
 	 */
-	public function requestOptimization( $optimization ) {
+	public function requestOptimization( $optimization ): void {
 		$this->optimization = (bool)$optimization;
 	}
 
@@ -100,7 +79,7 @@ class SearchTableRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function canRebuild() {
+	public function canRebuild(): bool {
 		return $this->searchTableUpdater->isEnabled();
 	}
 
@@ -109,11 +88,11 @@ class SearchTableRebuilder {
 	 *
 	 * @since 2.5
 	 *
-	 * @return bool
+	 * @return void|bool
 	 */
-	public function rebuild() {
+	public function rebuild(): ?bool {
 		if ( !$this->canRebuild() ) {
-			return;
+			return null;
 		}
 
 		if ( $this->optimization ) {
@@ -128,7 +107,7 @@ class SearchTableRebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function flushTable() {
+	public function flushTable(): void {
 		if ( $this->searchTableUpdater->isEnabled() ) {
 			$this->searchTableUpdater->flushTable();
 		}
@@ -139,7 +118,7 @@ class SearchTableRebuilder {
 	 *
 	 * @return array
 	 */
-	public function getQualifiedTableList() {
+	public function getQualifiedTableList(): array {
 		$tableList = [];
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
@@ -163,7 +142,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function rebuildByTable( $tableName ) {
+	public function rebuildByTable( $tableName ): void {
 		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
 			if ( $proptable->getName() === $tableName && $this->getSearchTable()->isValidByType( $proptable->getDiType() ) ) {
 				$this->doRebuildByPropertyTable( $proptable );
@@ -171,7 +150,7 @@ class SearchTableRebuilder {
 		}
 	}
 
-	private function doOptimize() {
+	private function doOptimize(): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -197,7 +176,7 @@ class SearchTableRebuilder {
 		return true;
 	}
 
-	private function doRebuild() {
+	private function doRebuild(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$propertyTables = [];
 
@@ -285,10 +264,11 @@ class SearchTableRebuilder {
 		if ( $proptable->isFixedPropertyTable() ) {
 			unset( $fetchFields[1] ); // p_id
 
-			$property = new DIProperty( $proptable->getFixedProperty() );
+			$property = new Property( $proptable->getFixedProperty() );
 
 			if ( $property->getLabel() === '' ) {
-				return $this->skippedTables[$table] = '[FIXED]';
+				$this->skippedTables[$table] = '[FIXED]';
+				return $this->skippedTables[$table];
 			}
 
 			$pid = $searchTable->getIdByProperty(
@@ -296,7 +276,8 @@ class SearchTableRebuilder {
 			);
 
 			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
-				return $this->skippedTables[$table] = '[EXEMPT]';
+				$this->skippedTables[$table] = '[EXEMPT]';
+				return $this->skippedTables[$table];
 			}
 		}
 
@@ -308,20 +289,22 @@ class SearchTableRebuilder {
 		);
 
 		if ( $rows === false || $rows === null ) {
-			return $this->skippedTables[$table] = '[EMPTY]';
+			$this->skippedTables[$table] = '[EMPTY]';
+			return $this->skippedTables[$table];
 		}
 
 		$this->doRebuildFromRows( $searchTable, $table, $pid, $rows );
 	}
 
-	private function doRebuildFromRows( $searchTable, $table, $pid, $rows ) {
+	private function doRebuildFromRows( SearchTable $searchTable, $table, $pid, $rows ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$i = 0;
 		$expected = $rows->numRows();
 
 		if ( $expected == 0 ) {
-			return $this->skippedTables[$table] = '[EMPTY]';
+			$this->skippedTables[$table] = '[EMPTY]';
+			return $this->skippedTables[$table];
 		}
 
 		foreach ( $rows as $row ) {
@@ -359,13 +342,13 @@ class SearchTableRebuilder {
 		$this->reportMessage( "\n" );
 	}
 
-	private function reportMessage( $message, $verbose = true ) {
+	private function reportMessage( string $message, bool $verbose = true ): void {
 		if ( $verbose ) {
 			$this->messageReporter->reportMessage( $message );
 		}
 	}
 
-	private function getIndexableTextFromRow( $searchTable, $row ) {
+	private function getIndexableTextFromRow( SearchTable $searchTable, $row ): string {
 		$indexableText = '';
 
 		// Page, Uri, or blob?

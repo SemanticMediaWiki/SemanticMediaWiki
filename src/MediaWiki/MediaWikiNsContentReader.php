@@ -16,15 +16,12 @@ class MediaWikiNsContentReader {
 
 	use RevisionGuardAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	private $skipMessageCache = false;
+	private bool $skipMessageCache = false;
 
 	/**
 	 * @since 2.3
 	 */
-	public function skipMessageCache() {
+	public function skipMessageCache(): void {
 		$this->skipMessageCache = true;
 	}
 
@@ -35,7 +32,7 @@ class MediaWikiNsContentReader {
 	 *
 	 * @return string|false
 	 */
-	public function read( $name ) {
+	public function read( $name ): string {
 		$content = '';
 
 		if ( !$this->skipMessageCache && wfMessage( $name )->exists() ) {

@@ -6,15 +6,15 @@ use MediaWiki\Html\Html;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Skin\SkinComponentUtils;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMWDataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,27 +25,12 @@ use SMWDataValue;
  */
 class HtmlBuilder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
-
-	/**
-	 * @var bool
-	 */
-	private $showoutgoing = true;
+	private bool $showoutgoing = true;
 
 	/**
 	 * To display incoming values?
-	 *
-	 * @var bool
 	 */
-	private $showincoming = false;
+	private bool $showincoming = false;
 
 	/**
 	 * At which incoming property are we currently?
@@ -70,15 +55,10 @@ class HtmlBuilder {
 
 	/**
 	 * How many incoming properties should be asked for
-	 *
-	 * @var int
 	 */
-	private $incomingPropertiesCount = 21;
+	private int $incomingPropertiesCount = 21;
 
-	/**
-	 * @var array
-	 */
-	private $extraModules = [];
+	private array $extraModules = [];
 
 	/**
 	 * @var array
@@ -90,19 +70,17 @@ class HtmlBuilder {
 	 */
 	private $language = 'en';
 
-	private SMWDataValue $dataValue;
+	private DataValue $dataValue;
 
 	private string $articletext;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param DIWikiPage $subject
 	 */
-	public function __construct( Store $store, DIWikiPage $subject ) {
-		$this->store = $store;
-		$this->subject = $subject;
+	public function __construct(
+		private readonly Store $store,
+		private readonly WikiPage $subject,
+	) {
 	}
 
 	/**
@@ -110,7 +88,7 @@ class HtmlBuilder {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -119,7 +97,7 @@ class HtmlBuilder {
 	 *
 	 * @return array
 	 */
-	public function getOptions() {
+	public function getOptions(): array {
 		return $this->options;
 	}
 
@@ -129,7 +107,7 @@ class HtmlBuilder {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -229,7 +207,7 @@ class HtmlBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildHTML() {
+	public function buildHTML(): string {
 		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
 			$this->offset = $offset;
 		}
@@ -627,7 +605,7 @@ class HtmlBuilder {
 
 		// Sort by label instead of the key which may start with `_` or `__`
 		// and thereby distorts the lexicographical order
-		usort( $properties, static function ( $a, $b ) {
+		usort( $properties, static function ( $a, $b ): int {
 			return strnatcmp( $a->getLabel(), $b->getLabel() );
 		} );
 
@@ -762,11 +740,11 @@ class HtmlBuilder {
 	 * Returns the Mustache data to build the HTML for message classes
 	 * in connection with categories linked to a property group.
 	 */
-	private function getGroupMessageClassLinksData( $groupFormatter, $semanticData ): array {
+	private function getGroupMessageClassLinksData( GroupFormatter $groupFormatter, SemanticData $semanticData ): array {
 		$data = [];
 		$contextPage = $semanticData->getSubject();
 
-		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new DIProperty( '_PPGR' ) ) ) {
+		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new Property( '_PPGR' ) ) ) {
 			return $data;
 		}
 

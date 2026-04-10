@@ -19,37 +19,22 @@ class OutdatedDisposer {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var EntityIdDisposerJob
-	 */
-	private $entityIdDisposerJob;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private CliMsgFormatter $cliMsgFormatter;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param EntityIdDisposerJob $entityIdDisposerJob
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( EntityIdDisposerJob $entityIdDisposerJob, IteratorFactory $iteratorFactory ) {
-		$this->entityIdDisposerJob = $entityIdDisposerJob;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private EntityIdDisposerJob $entityIdDisposerJob,
+		private IteratorFactory $iteratorFactory,
+	) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function run() {
+	public function run(): void {
 		$this->messageReporter->reportMessage(
 			"Removing outdated and invalid entities ...\n"
 		);
@@ -119,7 +104,7 @@ class OutdatedDisposer {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function disposeOutdatedEntities( $resultIterator, $count ) {
+	private function disposeOutdatedEntities( $resultIterator, string $count ): void {
 		$this->messageReporter->reportMessage( "\n" );
 		$chunkedIterator = $this->iteratorFactory->newChunkedIterator( $resultIterator, 200 );
 
@@ -145,7 +130,7 @@ class OutdatedDisposer {
 		);
 	}
 
-	private function disposeOutdatedQueryLinks( $resultIterator, $count, $label ) {
+	private function disposeOutdatedQueryLinks( $resultIterator, string $count, string $label ): void {
 		$this->messageReporter->reportMessage( "\n" );
 		$counter = 0;
 

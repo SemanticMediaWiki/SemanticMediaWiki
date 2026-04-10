@@ -2,14 +2,15 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
+use MediaWiki\User\User;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\DIProperty;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
-use SMWInfolink as Infolink;
 
 /**
  * @private
@@ -32,13 +33,13 @@ class ValueFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getFormattedSubject( DataValue $dataValue ) {
+	public static function getFormattedSubject( DataValue $dataValue ): string {
 		$extra = '';
 
 		if ( $dataValue->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
 
 			$dv = DataValueFactory::getInstance()->newDataValueByItem(
-				DIProperty::newFromUserLabel( $dataValue->getDataItem()->getDBKey() )
+				Property::newFromUserLabel( $dataValue->getDataItem()->getDBKey() )
 			);
 
 			$label = $dv->getFormattedLabel( DataValueFormatter::WIKI_LONG );
@@ -64,7 +65,7 @@ class ValueFormatter {
 	 * @param DataValue $dataValue
 	 * @param PropertyValue $propertyValue
 	 * @param bool $incoming
-	 * @param \User|null $user
+	 * @param User|null $user
 	 *
 	 * @return string
 	 */
@@ -118,7 +119,7 @@ class ValueFormatter {
 			$infolink = Infolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $propertyValue->getDataItem()->getLabel(), 'smwsearch' );
 			$infolink->setCompactLink( $isCompactLink );
 			$html .= "&#160;" . $infolink->getHTML( $linker );
-		} elseif ( $dataValue->getProperty() instanceof DIProperty && !in_array( $dataValue->getProperty()->getKey(), $noInfolinks ) ) {
+		} elseif ( $dataValue->getProperty() instanceof Property && !in_array( $dataValue->getProperty()->getKey(), $noInfolinks ) ) {
 			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $linker );
 		}
 
@@ -138,7 +139,7 @@ class ValueFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
+	public static function getPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ): ?string {
 		$proptext = null;
 
 		$linker = smwfGetLinker();
@@ -156,7 +157,7 @@ class ValueFormatter {
 		return $proptext;
 	}
 
-	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
+	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ): string|array|null {
 		$property = $propertyValue->getDataItem();
 		$contextPage = $propertyValue->getContextPage();
 
@@ -194,7 +195,7 @@ class ValueFormatter {
 	 *
 	 * @return string
 	 */
-	public static function addNonBreakingSpace( $text ) {
+	public static function addNonBreakingSpace( $text ): string|null|array {
 		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
 		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text ?? '', -1, $count );
 

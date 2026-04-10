@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\SerializerFactory;
-use SMW\Subobject;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\Utils\SemanticDataFactory;
@@ -49,7 +50,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends SMWIntegrationTestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 
@@ -76,7 +77,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends SMWIntegrationTestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 
@@ -115,7 +116,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends SMWIntegrationTestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 

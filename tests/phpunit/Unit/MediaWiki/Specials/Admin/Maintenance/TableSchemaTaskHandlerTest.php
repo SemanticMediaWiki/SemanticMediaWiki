@@ -1,0 +1,112 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki\Specials\Admin\Maintenance;
+
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Store;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class TableSchemaTaskHandlerTest extends TestCase {
+
+	private $testEnvironment;
+	private $store;
+	private $htmlFormRenderer;
+	private $outputFormatter;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			TableSchemaTaskHandler::class,
+			new TableSchemaTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+		);
+	}
+
+	public function testGetHtml() {
+		$methods = [
+			'setName',
+			'setMethod',
+			'addHiddenField',
+			'addHeader',
+			'addParagraph',
+			'addSubmitButton'
+		];
+
+		foreach ( $methods as $method ) {
+			$this->htmlFormRenderer->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
+			->method( 'getForm' );
+
+		$instance = new TableSchemaTaskHandler(
+			$this->store,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+		$instance->setFeatureSet( SMW_ADM_SETUP );
+
+		$instance->getHtml();
+	}
+
+	public function testHandleRequest() {
+		$this->store->expects( $this->once() )
+			->method( 'setup' );
+
+		$webRequest = $this->getMockBuilder( WebRequest::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$webRequest->expects( $this->once() )
+			->method( 'getVal' )
+			->willReturn( 'done' );
+
+		$instance = new TableSchemaTaskHandler(
+			$this->store,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+
+		$instance->setFeatureSet( SMW_ADM_SETUP );
+		$instance->handleRequest( $webRequest );
+	}
+
+}

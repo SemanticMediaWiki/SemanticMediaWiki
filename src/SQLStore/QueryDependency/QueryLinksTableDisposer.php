@@ -3,8 +3,11 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use SMW\IteratorFactory;
+use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use stdClass;
 
 /**
  * @private
@@ -17,53 +20,35 @@ use SMW\Store;
 class QueryLinksTableDisposer {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
-	/**
-	 * @var bool
-	 */
-	private $waitForReplication = false;
+	private bool $waitForReplication = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IteratorFactory $iteratorFactory,
+	) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = true;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function waitForReplication() {
+	public function waitForReplication(): void {
 		$this->waitForReplication = true;
 	}
 
@@ -72,7 +57,7 @@ class QueryLinksTableDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedQueryLinksResultIterator() {
+	public function newOutdatedQueryLinksResultIterator(): ResultIterator {
 		$res = $this->connection->select(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			's_id as id',
@@ -97,7 +82,7 @@ class QueryLinksTableDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newUnassignedQueryLinksResultIterator() {
+	public function newUnassignedQueryLinksResultIterator(): ResultIterator {
 		$res = $this->connection->select(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			's_id as id',
@@ -127,7 +112,7 @@ class QueryLinksTableDisposer {
 		}
 
 		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ): void {
 				$this->connection->delete(
 					SQLStore::QUERY_LINKS_TABLE,
 					[

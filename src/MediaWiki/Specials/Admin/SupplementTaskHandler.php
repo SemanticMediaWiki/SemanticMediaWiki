@@ -15,24 +15,12 @@ use SMW\Localizer\Message;
 class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var TaskHandler[]
-	 */
-	private $taskHandlers = [];
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param TaskHandler[] $taskHandlers
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $taskHandlers = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->taskHandlers = $taskHandlers;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly array $taskHandlers = [],
+	) {
 	}
 
 	/**
@@ -40,7 +28,7 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -73,7 +61,7 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = $this->buildHTML();
 		$list = '';
 
@@ -91,7 +79,7 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$action = $webRequest->getText( 'action' );
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
@@ -104,11 +92,12 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 				$taskHandler->setStore( $this->getStore() );
 			}
 
-			return $taskHandler->handleRequest( $webRequest );
+			$taskHandler->handleRequest( $webRequest );
+			return;
 		}
 	}
 
-	private function buildHTML() {
+	private function buildHTML(): string {
 		$html = Html::rawElement(
 			'p',
 			[

@@ -36,25 +36,12 @@ class Client {
 	 */
 	const TYPE_LOOKUP = 'lookup';
 
-	/**
-	 * @var ElasticClient
-	 */
-	protected $client;
+	protected ?ElasticClient $client = null;
 
 	/**
 	 * @var bool
 	 */
 	private static $ping;
-
-	/**
-	 * @var LockManager
-	 */
-	private $lockManager;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
 
 	/**
 	 * @var string
@@ -69,22 +56,20 @@ class Client {
 	/**
 	 * @var bool
 	 */
-	private static $hasIndex = [];
+	private static array $hasIndex = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $client
-	 * @param LockManager $lockManager
-	 * @param Options|null $options
 	 */
-	public function __construct( ElasticClient $client, LockManager $lockManager, ?Config $options = null ) {
+	public function __construct(
+		ElasticClient $client,
+		private LockManager $lockManager,
+		private ?Config $options = null,
+	) {
 		$this->client = $client;
-		$this->lockManager = $lockManager;
-		$this->options = $options;
 
 		if ( $this->options === null ) {
-			$this->options = new Options();
+			$this->options = new Config();
 		}
 
 		$this->logger = new NullLogger();
@@ -98,14 +83,14 @@ class Client {
 	 *
 	 * @return Options
 	 */
-	public function getConfig() {
+	public function getConfig(): ?Config {
 		return $this->options;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$ping = null;
 	}
 
@@ -188,7 +173,7 @@ class Client {
 	 *
 	 * @return array
 	 */
-	public function getSoftwareInfo() {
+	public function getSoftwareInfo(): array {
 		return [
 			'component' => $this->isOpenSearch() ?
 				"[https://opensearch.org OpenSearch]" :
@@ -254,8 +239,9 @@ class Client {
 	 * @since 3.0
 	 *
 	 * @param array
+	 * @return mixed[]
 	 */
-	public function cat( $type, $params = [] ) {
+	public function cat( $type, $params = [] ): array {
 		$res = [];
 
 		if ( $type === 'indices' ) {
@@ -287,7 +273,8 @@ class Client {
 		$index = $this->getIndexName( $type );
 		$result = $this->indexExists( $index );
 
-		return self::$hasIndex[$type] = $result;
+		self::$hasIndex[$type] = $result;
+		return self::$hasIndex[$type];
 	}
 
 	/**
@@ -295,7 +282,7 @@ class Client {
 	 *
 	 * @param string $type
 	 */
-	public function createIndex( $type ) {
+	public function createIndex( string $type ): string {
 		$index = $this->getIndexName( $type );
 		$version = 'v1';
 
@@ -329,7 +316,7 @@ class Client {
 	 *
 	 * @param string $index
 	 */
-	public function deleteIndex( string $index ) {
+	public function deleteIndex( string $index ): void {
 		$params = [
 			'index' => $index,
 		];
@@ -349,7 +336,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function putSettings( array $params ) {
+	public function putSettings( array $params ): void {
 		$this->client->indices()->putSettings( $params );
 	}
 
@@ -358,7 +345,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function putMapping( array $params ) {
+	public function putMapping( array $params ): void {
 		$this->client->indices()->putMapping( $params );
 	}
 
@@ -385,7 +372,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function refresh( array $params ) {
+	public function refresh( array $params ): void {
 		$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
 	}
 
@@ -394,7 +381,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function validate( array $params ) {
+	public function validate( array $params ): array {
 		if ( $params === [] ) {
 			return [];
 		}
@@ -434,10 +421,12 @@ class Client {
 		}
 
 		if ( $this->options->dotGet( 'connection.quick_ping' ) ) {
-			return self::$ping = $this->quick_ping();
+			self::$ping = $this->quick_ping();
+			return self::$ping;
 		}
 
-		return self::$ping = $this->client->ping( [] );
+		self::$ping = $this->client->ping( [] );
+		return self::$ping;
 	}
 
 	/**
@@ -447,7 +436,7 @@ class Client {
 	 *
 	 * @return bool
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 
 		foreach ( $hosts as $host ) {
@@ -615,7 +604,7 @@ class Client {
 	 *
 	 * @return mixed
 	 */
-	public function count( array $params ) {
+	public function count( array $params ): array {
 		if ( $params === [] ) {
 			return [];
 		}
@@ -658,7 +647,7 @@ class Client {
 	 *
 	 * @return array
 	 */
-	public function search( array $params ) {
+	public function search( array $params ): array {
 		if ( $params === [] ) {
 			return [];
 		}
@@ -716,7 +705,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function updateAliases( array $params ) {
+	public function updateAliases( array $params ): void {
 		$this->client->indices()->updateAliases( $params );
 	}
 
@@ -747,7 +736,7 @@ class Client {
 	 *
 	 * @param string $index
 	 */
-	public function openIndex( string $index ) {
+	public function openIndex( string $index ): void {
 		$this->client->indices()->open( [ 'index' => $index ] );
 	}
 
@@ -756,7 +745,7 @@ class Client {
 	 *
 	 * @param string $index
 	 */
-	public function closeIndex( string $index ) {
+	public function closeIndex( string $index ): void {
 		$this->client->indices()->close( [ 'index' => $index ] );
 	}
 
@@ -765,7 +754,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function ingestPutPipeline( array $params ) {
+	public function ingestPutPipeline( array $params ): void {
 		$this->client->ingest()->putPipeline( $params );
 	}
 
@@ -774,14 +763,14 @@ class Client {
 	 *
 	 * @return bool
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		return $this->lockManager->hasMaintenanceLock();
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function setMaintenanceLock() {
+	public function setMaintenanceLock(): void {
 		$this->lockManager->setMaintenanceLock();
 	}
 
@@ -791,7 +780,7 @@ class Client {
 	 * @param string $type
 	 * @param string $version
 	 */
-	public function setLock( $type, $version ) {
+	public function setLock( $type, $version ): void {
 		$this->lockManager->setLock( $type, $version );
 	}
 
@@ -802,7 +791,7 @@ class Client {
 	 *
 	 * @return bool
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		return $this->lockManager->hasLock( $type );
 	}
 
@@ -822,7 +811,7 @@ class Client {
 	 *
 	 * @param string $type
 	 */
-	public function releaseLock( $type ) {
+	public function releaseLock( $type ): void {
 		$this->lockManager->releaseLock( $type );
 	}
 

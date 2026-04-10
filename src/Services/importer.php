@@ -19,7 +19,7 @@ use SMW\Utils\FileFetcher;
  * Services defined in this file SHOULD only be accessed either via the
  * ApplicationFactory or a different factory instance.
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -27,32 +27,26 @@ use SMW\Utils\FileFetcher;
 return [
 
 	/**
-	 * ImporterServiceFactory
-	 *
-	 * @return callable
+	 * @return ImporterServiceFactory
 	 */
-	'ImporterServiceFactory' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
-		return new ImporterServiceFactory( $containerBuilder );
+	'ImporterServiceFactory' => static function ( $callbackContainerBuilder ): ImporterServiceFactory {
+		$callbackContainerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', ImporterServiceFactory::class );
+		return new ImporterServiceFactory( $callbackContainerBuilder );
 	},
 
 	/**
-	 * XmlContentCreator
-	 *
-	 * @return callable
+	 * @return XmlContentCreator
 	 */
-	'XmlContentCreator' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', '\SMW\Importer\ContentCreators\XmlContentCreator' );
+	'XmlContentCreator' => static function ( $containerBuilder ): XmlContentCreator {
+		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', XmlContentCreator::class );
 		return new XmlContentCreator( $containerBuilder->create( 'ImporterServiceFactory' ) );
 	},
 
 	/**
-	 * TextContentCreator
-	 *
-	 * @return callable
+	 * @return TextContentCreator
 	 */
-	'TextContentCreator' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', '\SMW\Importer\ContentCreators\TextContentCreator' );
+	'TextContentCreator' => static function ( $containerBuilder ): TextContentCreator {
+		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', TextContentCreator::class );
 
 		$connectionManager = $containerBuilder->singleton( 'ConnectionManager' );
 
@@ -65,12 +59,10 @@ return [
 	},
 
 	/**
-	 * Importer
-	 *
-	 * @return callable
+	 * @return Importer
 	 */
-	'Importer' => static function ( $containerBuilder, ContentIterator $contentIterator ) {
-		$containerBuilder->registerExpectedReturnType( 'Importer', '\SMW\Importer\Importer' );
+	'Importer' => static function ( $containerBuilder, ContentIterator $contentIterator ): Importer {
+		$containerBuilder->registerExpectedReturnType( 'Importer', Importer::class );
 
 		$dispatchingContentCreator = new DispatchingContentCreator(
 			[
@@ -92,12 +84,10 @@ return [
 	},
 
 	/**
-	 * JsonContentIterator
-	 *
-	 * @return callable
+	 * @return JsonContentIterator
 	 */
-	'JsonContentIterator' => static function ( $containerBuilder, $importFileDirs ) {
-		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', '\SMW\Importer\JsonContentIterator' );
+	'JsonContentIterator' => static function ( $containerBuilder, $importFileDirs ): JsonContentIterator {
+		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', JsonContentIterator::class );
 
 		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(
 			new ContentModeller(),

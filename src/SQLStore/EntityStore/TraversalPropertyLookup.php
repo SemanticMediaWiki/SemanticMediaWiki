@@ -3,16 +3,17 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\DIContainer;
 use SMW\MediaWiki\Connection\OptionsBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as PropertyTableDef;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
+use stdClass;
 use Wikimedia\Rdbms\Subquery;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -20,17 +21,9 @@ use Wikimedia\Rdbms\Subquery;
 class TraversalPropertyLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -115,7 +108,7 @@ class TraversalPropertyLookup {
 			);
 
 			if ( $result->numRows() > 0 ) {
-				$res = new \stdClass;
+				$res = new stdClass;
 				$res->smw_title = $propertyTableDef->getFixedProperty();
 				$result = [ $res ];
 			}
@@ -124,7 +117,7 @@ class TraversalPropertyLookup {
 		return $result;
 	}
 
-	private function getWhereConds( $dataItem ) {
+	private function getWhereConds( DataItem $dataItem ): string {
 		$where = '';
 		$connection = $this->store->getConnection( 'mw.db' );
 

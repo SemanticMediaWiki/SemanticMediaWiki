@@ -2,6 +2,7 @@
 
 namespace SMW\Importer\ContentCreators;
 
+use Exception;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
@@ -21,20 +22,11 @@ class XmlContentCreator implements ContentCreator {
 	 */
 	private $importerServiceFactory;
 
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private ?MessageReporter $messageReporter = null;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
-	/**
-	 * @var string
-	 */
-	private $action = '';
+	private string $action = '';
 
 	/**
 	 * @since 3.0
@@ -52,7 +44,7 @@ class XmlContentCreator implements ContentCreator {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -61,7 +53,7 @@ class XmlContentCreator implements ContentCreator {
 	 *
 	 * @param ImportContents $importContents
 	 */
-	public function canCreateContentsFor( ImportContents $importContents ) {
+	public function canCreateContentsFor( ImportContents $importContents ): bool {
 		return $importContents->getContentType() === ImportContents::CONTENT_XML;
 	}
 
@@ -105,7 +97,7 @@ class XmlContentCreator implements ContentCreator {
 
 		try {
 			$importer->doImport();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->action = 'FAILED';
 			$importContents->addError( $e->getMessage() );
 		}
@@ -122,7 +114,7 @@ class XmlContentCreator implements ContentCreator {
 	 * @param int $successCount
 	 * @param array $pageInfo
 	 */
-	public function reportPage( $title, $foreignTitle, $revisionCount, $successCount, $pageInfo ) {
+	public function reportPage( $title, $foreignTitle, $revisionCount, $successCount, $pageInfo ): void {
 		// Invalid or non-importable title
 		if ( $title === null ) {
 			return;
@@ -140,7 +132,7 @@ class XmlContentCreator implements ContentCreator {
 		);
 	}
 
-	private function reportAction() {
+	private function reportAction(): void {
 		if ( $this->action === '' ) {
 			return;
 		}

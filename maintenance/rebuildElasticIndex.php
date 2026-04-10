@@ -7,6 +7,7 @@ use SMW\Elastic\ElasticStore;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SetupFile;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -123,7 +124,7 @@ class rebuildElasticIndex extends Maintenance {
 		);
 
 		$this->jobQueue = $applicationFactory->getJobQueue();
-		$this->store = $applicationFactory->getStore( 'SMW\SQLStore\SQLStore' );
+		$this->store = $applicationFactory->getStore( SQLStore::class );
 		$elasticFactory = $applicationFactory->create( 'ElasticFactory' );
 		$messageReporter = $maintenanceFactory->newMessageReporter( [ $this, 'reportMessage' ] );
 

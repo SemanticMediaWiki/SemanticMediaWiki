@@ -21,7 +21,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSupplementTask() {
+	public function getSupplementTask(): string {
 		return 'mappings';
 	}
 
@@ -53,7 +53,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch mappings' );
 
 		$this->outputFormatter->addParentLink(
@@ -64,7 +64,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		$this->outputInfo();
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$mappings = [
@@ -136,7 +136,10 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function getSummary( $mappings ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getSummary( array $mappings ): array {
 		$summary = [
 			ElasticClient::TYPE_DATA => [
 				'fields' => [
@@ -163,7 +166,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		return $summary;
 	}
 
-	private function countFields( $mapping, $type, &$count ) {
+	private function countFields( array $mapping, int|string $type, array &$count ): void {
 		foreach ( $mapping['properties'] as $k => $val ) {
 			foreach ( $val as $p => $v ) {
 				if ( $p === 'properties' ) {

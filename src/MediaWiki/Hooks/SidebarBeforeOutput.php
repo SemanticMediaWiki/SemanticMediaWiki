@@ -5,10 +5,10 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\Title\Title;
 use Skin;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
-use SMWInfolink as Infolink;
 
 /**
  * Called at the end of Skin::buildSidebar().
@@ -23,16 +23,7 @@ class SidebarBeforeOutput implements HookListener {
 
 	use OptionsAwareTrait;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @param NamespaceExaminer $namespaceExaminer
-	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct( private NamespaceExaminer $namespaceExaminer ) {
 	}
 
 	/**
@@ -41,7 +32,7 @@ class SidebarBeforeOutput implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( $skin, &$sidebar ) {
+	public function process( $skin, array &$sidebar ): bool {
 		$title = $skin->getTitle();
 
 		if ( $this->canProcess( $title, $skin ) ) {
@@ -51,7 +42,7 @@ class SidebarBeforeOutput implements HookListener {
 		return true;
 	}
 
-	private function canProcess( Title $title, Skin $skin ) {
+	private function canProcess( Title $title, Skin $skin ): bool {
 		if ( $title->isSpecialPage() || !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return false;
 		}
@@ -63,7 +54,7 @@ class SidebarBeforeOutput implements HookListener {
 		return true;
 	}
 
-	private function performUpdate( Title $title, Skin $skin, &$sidebar ) {
+	private function performUpdate( Title $title, Skin $skin, array &$sidebar ): void {
 		$link = Infolink::encodeParameters(
 			[
 				$title->getPrefixedDBkey()

@@ -2,18 +2,18 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\EntityLookup as IEntityLookup;
 use SMW\Enum;
 use SMW\Exception\DataItemException;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,39 +23,24 @@ use SMWDIBlob as DIBlob;
  */
 class EntityLookup implements IEntityLookup {
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
+	private TraversalPropertyLookup $traversalPropertyLookup;
+
+	private PropertySubjectsLookup $propertySubjectsLookup;
+
+	private PropertiesLookup $propertiesLookup;
 
 	/**
-	 * @var TraversalPropertyLookup
+	 * @var CachingSemanticDataLookup
 	 */
-	private $traversalPropertyLookup;
-
-	/**
-	 * @var PropertySubjectsLookup
-	 */
-	private $propertySubjectsLookup;
-
-	/**
-	 * @var PropertiesLookup
-	 */
-	private $propertiesLookup;
-
-	/**
-	 * @var SemanticDataLookup
-	 */
-	private $semanticDataLookup;
+	private CachingSemanticDataLookup $semanticDataLookup;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
-	 * @param SQLStoreFactory $factory
 	 */
-	public function __construct( SQLStore $store, SQLStoreFactory $factory ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly SQLStore $store,
+		SQLStoreFactory $factory,
+	) {
 		$this->traversalPropertyLookup = $factory->newTraversalPropertyLookup();
 		$this->propertySubjectsLookup = $factory->newPropertySubjectsLookup();
 		$this->propertiesLookup = $factory->newPropertiesLookup();
@@ -69,7 +54,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
+	public function getSemanticData( WikiPage $subject, $filter = false ): SemanticData {
 		$idTable = $this->store->getObjectIds();
 
 		// *** Find out if this subject exists ***//
@@ -118,7 +103,7 @@ class EntityLookup implements IEntityLookup {
 			} elseif ( $filter !== false ) {
 				$relevant = false;
 				foreach ( $filter as $typeId ) {
-					$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
+					$diType = DataTypeRegistry::getInstance()->getDataItemByType( $typeId );
 					$relevant = $relevant || ( $proptable->getDiType() == $diType );
 					if ( $relevant ) {
 						break;
@@ -157,7 +142,7 @@ class EntityLookup implements IEntityLookup {
 		}
 
 		// Avoid adding a sortkey for an already extended stub
-		if ( !$semanticData->hasProperty( new DIProperty( '_SKEY' ) ) ) {
+		if ( !$semanticData->hasProperty( new Property( '_SKEY' ) ) ) {
 			$semanticData->addPropertyStubValue( '_SKEY', [ '', $sortKey ] );
 		}
 
@@ -166,7 +151,7 @@ class EntityLookup implements IEntityLookup {
 		);
 
 		$idTable->warmUpCache(
-			$semanticData->getPropertyValues( new DIProperty( '_INST' ) )
+			$semanticData->getPropertyValues( new Property( '_INST' ) )
 		);
 
 		return $semanticData;
@@ -178,8 +163,9 @@ class EntityLookup implements IEntityLookup {
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
+	 * @return mixed[]
 	 */
-	public function getProperties( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
+	public function getProperties( WikiPage $subject, ?RequestOptions $requestOptions = null ): array {
 		$idTable = $this->store->getObjectIds();
 
 		$sid = $idTable->getSMWPageID(
@@ -217,8 +203,8 @@ class EntityLookup implements IEntityLookup {
 			);
 
 			foreach ( $res as $row ) {
-				$result[] = new DIProperty(
-					isset( $row->smw_title ) ? $row->smw_title : $row
+				$result[] = new Property(
+					$row->smw_title ?? $row
 				);
 			}
 		}
@@ -237,11 +223,11 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertyValues( ?DIWikiPage $subject, DIProperty $property, ?RequestOptions $requestOptions = null ) {
+	public function getPropertyValues( ?WikiPage $subject, Property $property, ?RequestOptions $requestOptions = null ): array {
 		$idTable = $this->store->getObjectIds();
 
 		if ( $property->isInverse() ) { // inverses are working differently
-			$noninverse = new DIProperty( $property->getKey(), false );
+			$noninverse = new Property( $property->getKey(), false );
 			$result = $this->getPropertySubjects( $noninverse, $subject, $requestOptions );
 		} elseif ( $subject !== null ) { // subject given, use semantic data cache
 			$sortKey = '';
@@ -257,7 +243,7 @@ class EntityLookup implements IEntityLookup {
 			if ( $sid == 0 ) {
 				$result = [];
 			} elseif ( $property->getKey() == '_SKEY' ) {
-				$sortKeyDi = new DIBlob( $sortKey );
+				$sortKeyDi = new Blob( $sortKey );
 				$result = $this->store->applyRequestOptions( [ $sortKeyDi ], $requestOptions );
 			} else {
 				$propTableId = $this->store->findPropertyTableID(
@@ -312,7 +298,7 @@ class EntityLookup implements IEntityLookup {
 			$result = [];
 			$propertyTypeId = $property->findPropertyTypeID();
 
-			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId(
+			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemByType(
 				$propertyTypeId
 			);
 
@@ -320,7 +306,7 @@ class EntityLookup implements IEntityLookup {
 				try {
 					$diHandler = $this->store->getDataItemHandlerForDIType( $propertyDiId );
 					$result[] = $diHandler->dataItemFromDBKeys( $dbkeys );
-				} catch ( DataItemException $e ) {
+				} catch ( DataItemException ) {
 					// maybe type assignment changed since data was stored;
 					// don't worry, but we can only drop the data here
 				}
@@ -339,13 +325,17 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertySubjects( DIProperty $property, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null ) {
+	public function getPropertySubjects( Property $property, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		// * @todo This method cannot retrieve subjects for sortkeys, i.e., for
 		// * property _SKEY. Only empty arrays will be returned there.
 
 		// inverses are working differently
 		if ( $property->isInverse() ) {
-			$noninverse = new DIProperty( $property->getKey(), false );
+			if ( !$dataItem instanceof WikiPage ) {
+				return [];
+			}
+
+			$noninverse = new Property( $property->getKey(), false );
 			$result = $this->getPropertyValues( $dataItem, $noninverse, $requestOptions );
 			return $result;
 		}
@@ -399,7 +389,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getAllPropertySubjects( DIProperty $property, ?RequestOptions $requestOptions = null ) {
+	public function getAllPropertySubjects( Property $property, ?RequestOptions $requestOptions = null ) {
 		return $this->getPropertySubjects( $property, null, $requestOptions );
 	}
 
@@ -409,8 +399,9 @@ class EntityLookup implements IEntityLookup {
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
+	 * @return mixed[]
 	 */
-	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null ) {
+	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null ): array {
 		$result = [];
 		$diType = $object->getDIType();
 
@@ -428,8 +419,8 @@ class EntityLookup implements IEntityLookup {
 
 			foreach ( $res as $row ) {
 				try {
-					$result[] = new DIProperty( $row->smw_title );
-				} catch ( DataItemException $e ) {
+					$result[] = new Property( $row->smw_title );
+				} catch ( DataItemException ) {
 					// has been observed to happen (empty property title); cause unclear; ignore this data
 				}
 			}

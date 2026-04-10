@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\Utils\HtmlTable;
 
@@ -14,7 +15,7 @@ use SMW\Utils\HtmlTable;
  *
  * @author mwjames
  */
-class HtmlTableTest extends \PHPUnit\Framework\TestCase {
+class HtmlTableTest extends TestCase {
 
 	private $stringValidator;
 

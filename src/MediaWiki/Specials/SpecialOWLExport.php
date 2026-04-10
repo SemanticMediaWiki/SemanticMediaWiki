@@ -1,0 +1,234 @@
+<?php
+
+namespace SMW\MediaWiki\Specials;
+
+use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\SpecialPage;
+use SMW\Exporter\ExporterFactory;
+
+/**
+ * This special page (Special:ExportRDF) for MediaWiki implements an OWL-export of semantic data,
+ * gathered both from the annotations in articles, and from metadata already
+ * present in the database.
+ *
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ *
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ */
+class SpecialOWLExport extends SpecialPage {
+
+	/// Export controller object to be used for serializing data
+	protected $export_controller;
+
+	public function __construct() {
+		parent::__construct( 'ExportRDF' );
+	}
+
+	public function execute( $page ): void {
+		$this->setHeaders();
+
+		$out = $this->getOutput();
+		$request = $this->getRequest();
+
+		$out->setPageTitle( $this->msg( 'exportrdf' )->text() );
+
+		// see if we can find something to export:
+		$page = $page === null ? $request->getVal( 'page' ) : rawurldecode( $page );
+		$pages = false;
+
+		if ( $page !== null || $request->getCheck( 'page' ) ) {
+			$page = $page === null ? $request->getCheck( 'text' ) : $page;
+
+			if ( $page !== '' ) {
+				$pages = [ $page ];
+			}
+		}
+
+		if ( $pages === false && $request->getCheck( 'pages' ) ) {
+			$pageBlob = $request->getText( 'pages' );
+
+			if ( $pageBlob !== '' ) {
+				$pages = explode( "\n", $request->getText( 'pages' ) );
+			}
+		}
+
+		if ( $pages !== false ) {
+			$this->exportPages( $pages );
+			return;
+		} else {
+			$offset = $request->getVal( 'offset' );
+
+			if ( isset( $offset ) ) {
+				$this->startRDFExport();
+				$this->export_controller->printPageList( $offset );
+				return;
+			} else {
+				$stats = $request->getVal( 'stats' );
+
+				if ( isset( $stats ) ) {
+					$this->startRDFExport();
+					$this->export_controller->printWikiInfo();
+					return;
+				}
+			}
+		}
+
+		// Nothing exported yet; show user interface:
+		$this->showForm();
+	}
+
+	/**
+	 * Create the HTML user interface for this special page.
+	 *
+	 * @return void
+	 */
+	protected function showForm(): void {
+		global $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
+
+		$out = $this->getOutput();
+
+		$user = $this->getUser();
+
+		$html = '<form name="tripleSearch" action="" method="POST">' . "\n" .
+					'<p>' . $this->msg( 'smw_exportrdf_docu' )->text() . "</p>\n" .
+					'<input type="hidden" name="postform" value="1"/>' . "\n" .
+					'<textarea name="pages" cols="40" rows="10"></textarea><br />' . "\n";
+
+		if ( $user->isAllowed( 'delete' ) || $smwgAllowRecursiveExport ) {
+			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&#160;<label for="rec">' . $this->msg( 'smw_exportrdf_recursive' )->text() . '</label></input><br />' . "\n";
+		}
+
+		if ( $user->isAllowed( 'delete' ) || $smwgExportBacklinks ) {
+			$html .= '<input type="checkbox" name="backlinks" value="1" default="true" id="bl">&#160;<label for="bl">' . $this->msg( 'smw_exportrdf_backlinks' )->text() . '</label></input><br />' . "\n";
+		}
+
+		if ( $user->isAllowed( 'delete' ) || $smwgExportAll ) {
+			$html .= '<br />';
+			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&#160;<label for="ea">' . $this->msg( 'smw_exportrdf_lastdate' )->text() . '</label></input><br />' . "\n";
+		}
+
+		$html .= '<br /><input type="submit"  value="' . $this->msg( 'smw_exportrdf_submit' )->text() . "\"/>\n</form>";
+
+		$out->addHTML( $html );
+	}
+
+	/**
+	 * Prepare $this->getOutput() for printing non-HTML data.
+	 *
+	 * @return void
+	 */
+	protected function startRDFExport(): void {
+		$out = $this->getOutput();
+		$request = $this->getRequest();
+
+		$exporterFactory = new ExporterFactory();
+
+		$syntax = $request->getText( 'syntax' );
+
+		if ( $syntax === '' ) {
+			$syntax = $request->getVal( 'syntax' );
+		}
+
+		$out->disable();
+		ob_start();
+
+		if ( $syntax == 'turtle' ) {
+			$mimetype = 'application/x-turtle'; // may change to 'text/turtle' at some time, watch Turtle development
+			$serializer = $exporterFactory->newTurtleSerializer();
+		} else { // rdfxml as default
+			// Only use rdf+xml mimetype if explicitly requested (browsers do
+			// not support it by default).
+			// We do not add this parameter to RDF links within the export
+			// though; it is only meant to help some tools to see that HTML
+			// included resources are RDF (from there on they should be fine).
+			$mimetype = ( $request->getVal( 'xmlmime' ) == 'rdf' ) ? 'application/rdf+xml' : 'application/xml';
+			$serializer = $exporterFactory->newRDFXMLSerializer();
+		}
+
+		header( "Content-type: $mimetype; charset=UTF-8" );
+
+		$this->export_controller = $exporterFactory->newExportController( $serializer );
+	}
+
+	/**
+	 * Export the given pages to RDF.
+	 *
+	 * @param array $pages containing the string names of pages to be exported
+	 *
+	 * @return void
+	 */
+	protected function exportPages( array $pages ): void {
+		global $smwgExportBacklinks, $smwgAllowRecursiveExport;
+
+		$request = $this->getRequest();
+
+		$user = $this->getUser();
+
+		// Effect: assume "no" from missing parameters generated by checkboxes.
+		$postform = $request->getText( 'postform' ) == 1;
+
+		$recursive = 0;  // default, no recursion
+		$rec = $request->getText( 'recursive' );
+
+		if ( $rec === '' ) {
+			$rec = $request->getVal( 'recursive' );
+		}
+
+		if ( ( $rec == '1' ) && ( $smwgAllowRecursiveExport || $user->isAllowed( 'delete' ) ) ) {
+			$recursive = 1; // users may be allowed to switch it on
+		}
+
+		$backlinks = $smwgExportBacklinks; // default
+		$bl = $request->getText( 'backlinks' );
+
+		if ( $bl === '' ) {
+			// TODO: wtf? this does not make a lot of sense...
+			$bl = $request->getVal( 'backlinks' );
+		}
+
+		if ( ( $bl == '1' ) && ( $user->isAllowed( 'delete' ) ) ) {
+			$backlinks = true; // admins can always switch on backlinks
+		} elseif ( ( $bl == '0' ) || ( $bl == '' && $postform ) ) {
+			$backlinks = false; // everybody can explicitly switch off backlinks
+		}
+
+		$date = $request->getText( 'date' );
+		if ( $date === '' ) {
+			$date = $request->getVal( 'date', '' );
+		}
+
+		if ( $date !== '' ) {
+			$timeint = strtotime( $date );
+			$stamp = date( "YmdHis", $timeint );
+			$date = $stamp;
+		}
+
+		// If it is a redirect then we don't want to generate triples other than
+		// the redirect target information
+		if (
+			isset( $pages[0] ) &&
+			( $title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $pages[0] ) ) !== null &&
+			$title->isRedirect()
+		) {
+			$backlinks = false;
+		}
+
+		$this->startRDFExport();
+		$this->export_controller->enableBacklinks( $backlinks );
+		$this->export_controller->printPages( $pages, $recursive, $date );
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getGroupName(): string {
+		return 'smw_group';
+	}
+}
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialOWLExport::class, 'SMWSpecialOWLExport' );

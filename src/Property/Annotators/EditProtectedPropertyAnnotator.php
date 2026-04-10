@@ -6,6 +6,7 @@ use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotator;
@@ -25,24 +26,18 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	const SYSTEM_ANNOTATION = 'editprotectedpropertyannotator.system.annotation';
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
 	 * @var bool
 	 */
 	private $editProtectionRight = false;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param Title $title
 	 */
-	public function __construct( Annotator $propertyAnnotator, Title $title ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private readonly Title $title,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->title = $title;
 	}
 
 	/**
@@ -50,7 +45,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param string|bool $editProtectionRight
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
+	public function setEditProtectionRight( $editProtectionRight ): void {
 		$this->editProtectionRight = $editProtectionRight;
 	}
 
@@ -59,7 +54,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param ParserOutput
 	 */
-	public function addTopIndicatorTo( ParserOutput $parserOutput ) {
+	public function addTopIndicatorTo( ParserOutput $parserOutput ): ?bool {
 		if ( $this->editProtectionRight === false ) {
 			return false;
 		}
@@ -67,7 +62,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
 		if ( !$this->isEnabledProtection( $property ) && !$this->hasEditProtection() ) {
-			return;
+			return null;
 		}
 
 		$html = Html::rawElement(
@@ -87,9 +82,9 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->editProtectionRight === false ) {
-			return false;
+			return;
 		}
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
@@ -112,7 +107,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 	}
 
-	private function hasEditProtection() {
+	private function hasEditProtection(): bool {
 		// $this->title->flushRestrictions();
 
 		if ( !PageInfoProvider::isProtected( $this->title, 'edit' ) ) {
@@ -127,7 +122,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		return isset( $restrictions[$this->editProtectionRight] );
 	}
 
-	private function isEnabledProtection( $property ) {
+	private function isEnabledProtection( Property $property ): bool {
 		if ( !$this->getSemanticData()->hasProperty( $property ) ) {
 			return false;
 		}

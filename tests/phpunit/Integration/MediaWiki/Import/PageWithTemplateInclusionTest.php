@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
@@ -65,13 +65,13 @@ class PageWithTemplateInclusionTest extends SMWIntegrationTestCase {
 
 		$expectedProperties = [
 			'properties' => [
-				DIProperty::newFromUserLabel( 'Foo' ),
-				DIProperty::newFromUserLabel( 'Quux' ),
-				new DIProperty( '_ASK' ),
-				new DIProperty( '_MDAT' ),
-				new DIProperty( '_SKEY' ),
-				new DIProperty( '_SOBJ' ),
-				new DIProperty( '_INST' )
+				Property::newFromUserLabel( 'Foo' ),
+				Property::newFromUserLabel( 'Quux' ),
+				new Property( '_ASK' ),
+				new Property( '_MDAT' ),
+				new Property( '_SKEY' ),
+				new Property( '_SOBJ' ),
+				new Property( '_INST' )
 			]
 		];
 

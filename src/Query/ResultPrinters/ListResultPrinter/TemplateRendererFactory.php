@@ -3,6 +3,8 @@
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -16,25 +18,20 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class TemplateRendererFactory {
 
-	private $templateRenderer;
-
-	private $queryResult;
+	private ?WikitextTemplateRenderer $templateRenderer = null;
 	private $numberOfPages;
 	private $userparam = '';
 
 	/**
 	 * TemplateRendererFactory constructor.
-	 *
-	 * @param $queryResult
 	 */
-	public function __construct( $queryResult ) {
-		$this->queryResult = $queryResult;
+	public function __construct( private $queryResult ) {
 	}
 
 	/**
 	 * @param mixed $userparam
 	 */
-	public function setUserparam( $userparam ) {
+	public function setUserparam( $userparam ): void {
 		$this->userparam = $userparam;
 	}
 
@@ -53,7 +50,7 @@ class TemplateRendererFactory {
 	/**
 	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
-	private function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ) {
+	private function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ): void {
 		if ( $this->userparam !== '' ) {
 
 			$templateRenderer->addField(
@@ -101,8 +98,8 @@ class TemplateRendererFactory {
 
 			$queryResult = $this->getQueryResult();
 
-			$countQuery = \SMWQueryProcessor::createQuery( $queryResult->getQueryString(), \SMWQueryProcessor::getProcessedParams( [] ) );
-			$countQuery->querymode = \SMWQuery::MODE_COUNT;
+			$countQuery = QueryProcessor::createQuery( $queryResult->getQueryString(), QueryProcessor::getProcessedParams( [] ) );
+			$countQuery->querymode = Query::MODE_COUNT;
 
 			$countQueryResult = $queryResult->getStore()->getQueryResult( $countQuery );
 

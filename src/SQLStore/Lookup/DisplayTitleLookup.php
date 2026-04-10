@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -17,27 +17,19 @@ class DisplayTitleLookup {
 	private const MAX_ITEMS_PER_QUERY = 2000;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param Iterator|array $dataItems
+	 * @param array $dataItems
 	 *
-	 * @return Iterator|array
+	 * @return array
 	 */
-	public function prefetchFromList( array $dataItems ) {
+	public function prefetchFromList( array $dataItems ): array {
 		$list = [];
 		$prefetch = [];
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -105,8 +97,8 @@ class DisplayTitleLookup {
 		return $prefetch;
 	}
 
-	private function fetchFromTable( $list ) {
-		$property = new DIProperty( '_DTITLE' );
+	private function fetchFromTable( array $list ) {
+		$property = new Property( '_DTITLE' );
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$propTableId = $this->store->findPropertyTableID(

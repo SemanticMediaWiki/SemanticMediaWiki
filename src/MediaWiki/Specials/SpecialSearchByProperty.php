@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki\Specials;
 
 use MediaWiki\SpecialPage\SpecialPage;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink as Infolink;
 
 /**
  * A special page to search for entities that have a certain property with
@@ -24,9 +24,6 @@ use SMWInfolink as Infolink;
  */
 class SpecialSearchByProperty extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'SearchByProperty' );
 	}
@@ -34,7 +31,7 @@ class SpecialSearchByProperty extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$this->setHeaders();
 		$output = $this->getOutput();
 		$request = $this->getRequest();
@@ -52,7 +49,7 @@ class SpecialSearchByProperty extends SpecialPage {
 			$query = Infolink::decodeCompactLink( $query );
 		}
 
-		// @see SMWInfolink::encodeParameters
+		// @see Infolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
 			$query = $this->getRequest()->getVal( 'x' );
 		}
@@ -89,7 +86,7 @@ class SpecialSearchByProperty extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 

@@ -28,11 +28,6 @@ class SpecialStatsAddExtra implements HookListener {
 	const CRITICAL_DELETECOUNT = 5000;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var Language|string
 	 */
 	private $language;
@@ -45,7 +40,7 @@ class SpecialStatsAddExtra implements HookListener {
 	/**
 	 * @var string[]
 	 */
-	private $messageMapper = [
+	private array $messageMapper = [
 		'PROPUSES'      => 'smw-statistics-property-instance',
 		'ERRORUSES'     => 'smw-statistics-error-count',
 		'TOTALPROPS'    => 'smw-statistics-property-total',
@@ -62,11 +57,8 @@ class SpecialStatsAddExtra implements HookListener {
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**
@@ -74,7 +66,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @param Language|string $language
 	 */
-	public function setLanguage( $language ) {
+	public function setLanguage( $language ): void {
 		$this->language = $language;
 	}
 
@@ -83,7 +75,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @param array
 	 */
-	public function setDataTypeLabels( $dataTypeLabels ) {
+	public function setDataTypeLabels( $dataTypeLabels ): void {
 		$this->dataTypeLabels = $dataTypeLabels;
 	}
 
@@ -94,7 +86,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( array &$extraStats ) {
+	public function process( array &$extraStats ): bool {
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
 			return true;
 		}
@@ -104,7 +96,7 @@ class SpecialStatsAddExtra implements HookListener {
 		return true;
 	}
 
-	private function copyStatistics( &$extraStats ) {
+	private function copyStatistics( array &$extraStats ): void {
 		$statistics = $this->store->getStatistics();
 		$statistics['DATATYPECOUNT'] = count( $this->dataTypeLabels );
 
@@ -153,7 +145,10 @@ class SpecialStatsAddExtra implements HookListener {
 		}
 	}
 
-	private function addFormats( $key, $statistics ) {
+	/**
+	 * @return array{name: non-falsy-string, number: mixed}[]
+	 */
+	private function addFormats( int $key, array $statistics ): array {
 		$i = 0;
 		$formats = [];
 
@@ -175,7 +170,7 @@ class SpecialStatsAddExtra implements HookListener {
 		return $formats;
 	}
 
-	private function msg( $args ) {
+	private function msg( $args ): string {
 		if ( $this->getOption( 'plain.msg_key', false ) ) {
 			return is_array( $args ) ? implode( '.', $args ) : $args;
 		}

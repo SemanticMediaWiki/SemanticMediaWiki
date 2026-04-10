@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\StoreFactory;
 use SMW\StringCondition;
 use SMW\Tests\SMWIntegrationTestCase;
-use SMWDIBlob as DIBlob;
 
 /**
  * @group semantic-mediawiki
@@ -58,11 +58,11 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 
-		$property = new DIProperty( 'SomeWpgPropertyToFilter' );
+		$property = new Property( 'SomeWpgPropertyToFilter' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$semanticData->addPropertyObjectValue( $property, DIWikiPage::newFromText( 'Bar' ) );
-		$semanticData->addPropertyObjectValue( $property, DIWikiPage::newFromText( 'Foobar' ) );
+		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Bar' ) );
+		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Foobar' ) );
 
 		$store->updateData( $semanticData );
 
@@ -78,7 +78,7 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$results = $store->getPropertyValues( null, $property, $requestOptions );
 
 		$this->assertTrue(
-			end( $results )->equals( DIWikiPage::newFromText( 'Bar' ) )
+			end( $results )->equals( WikiPage::newFromText( 'Bar' ) )
 		);
 	}
 
@@ -92,11 +92,11 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$subject = $semanticData->getSubject();
 		$this->subjectsToBeCleared[] = $subject;
 
-		$property = new DIProperty( 'SomeWpgPropertyToFilter' );
+		$property = new Property( 'SomeWpgPropertyToFilter' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$semanticData->addPropertyObjectValue( $property, DIWikiPage::newFromText( 'Bar' ) );
-		$semanticData->addPropertyObjectValue( $property, DIWikiPage::newFromText( 'Foobar' ) );
+		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Bar' ) );
+		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Foobar' ) );
 
 		$store->updateData( $semanticData );
 
@@ -109,7 +109,7 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$results = $store->getPropertyValues( $subject, $property, $requestOptions );
 
 		$this->assertTrue(
-			end( $results )->equals( DIWikiPage::newFromText( 'Bar' ) )
+			end( $results )->equals( WikiPage::newFromText( 'Bar' ) )
 		);
 	}
 
@@ -122,13 +122,13 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 
-		$property = new DIProperty( 'SomeWpgPropertySortedFilter' );
+		$property = new Property( 'SomeWpgPropertySortedFilter' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$semanticData->addPropertyObjectValue( $property, DIWikiPage::newFromText( 'FooBar' ) );
-		$semanticData->addPropertyObjectValue( $property, DIWikiPage::newFromText( 'Bar_9' ) );
-		$semanticData->addPropertyObjectValue( $property, DIWikiPage::newFromText( 'Bar_5' ) );
-		$semanticData->addPropertyObjectValue( $property, DIWikiPage::newFromText( 'Bar_1' ) );
+		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'FooBar' ) );
+		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Bar_9' ) );
+		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Bar_5' ) );
+		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Bar_1' ) );
 
 		$store->updateData( $semanticData );
 
@@ -143,10 +143,10 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$results = $store->getPropertyValues( null, $property, $requestOptions );
 
 		$expected = [
-			DIWikiPage::newFromText( 'FooBar' ),
-			DIWikiPage::newFromText( 'Bar_9' ),
-			DIWikiPage::newFromText( 'Bar_5' ),
-			DIWikiPage::newFromText( 'Bar_1' ),
+			WikiPage::newFromText( 'FooBar' ),
+			WikiPage::newFromText( 'Bar_9' ),
+			WikiPage::newFromText( 'Bar_5' ),
+			WikiPage::newFromText( 'Bar_1' ),
 		];
 
 		foreach ( $expected as $subject ) {
@@ -168,10 +168,10 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 
-		$property = new DIProperty( 'SomeBlobPropertyToFilter' );
+		$property = new Property( 'SomeBlobPropertyToFilter' );
 		$property->setPropertyTypeId( '_txt' );
 
-		$semanticData->addPropertyObjectValue( $property, new DIBlob( 'testfoobar' ) );
+		$semanticData->addPropertyObjectValue( $property, new Blob( 'testfoobar' ) );
 
 		$store->updateData( $semanticData );
 
@@ -188,7 +188,7 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$results = $store->getPropertyValues( null, $property, $requestOptions );
 
 		$this->assertTrue(
-			end( $results )->equals( new DIBlob( 'testfoobar' ) )
+			end( $results )->equals( new Blob( 'testfoobar' ) )
 		);
 	}
 

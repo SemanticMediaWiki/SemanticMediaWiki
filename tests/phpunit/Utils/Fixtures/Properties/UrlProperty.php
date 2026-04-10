@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,7 +16,7 @@ class UrlProperty extends FixtureProperty {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = DIProperty::newFromUserLabel( 'Url' );
+		$this->property = Property::newFromUserLabel( 'Url' );
 		$this->property->setPropertyTypeId( '_uri' );
 	}
 

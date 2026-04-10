@@ -31,10 +31,7 @@ abstract class TaskHandler {
 	 */
 	protected $featureSet = 0;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ?Store $store = null;
 
 	/**
 	 * @var bool
@@ -49,7 +46,7 @@ abstract class TaskHandler {
 	 *
 	 * @return boolean
 	 */
-	public function isEnabledFeature( $feature ) {
+	public function isEnabledFeature( $feature ): bool {
 		return $this->hasFeature( $feature );
 	}
 
@@ -60,7 +57,7 @@ abstract class TaskHandler {
 	 *
 	 * @return bool
 	 */
-	public function hasFeature( $feature ) {
+	public function hasFeature( $feature ): bool {
 		return ( ( (int)$this->featureSet & $feature ) == $feature );
 	}
 
@@ -70,7 +67,7 @@ abstract class TaskHandler {
 	 *
 	 * @param integer $enabledFeatures
 	 */
-	public function setEnabledFeatures( $enabledFeatures ) {
+	public function setEnabledFeatures( $enabledFeatures ): void {
 		$this->setFeatureSet( $enabledFeatures );
 	}
 
@@ -79,7 +76,7 @@ abstract class TaskHandler {
 	 *
 	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
@@ -88,7 +85,7 @@ abstract class TaskHandler {
 	 *
 	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
 	}
 
@@ -97,7 +94,7 @@ abstract class TaskHandler {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): ?Store {
 		return $this->store;
 	}
 
@@ -106,7 +103,7 @@ abstract class TaskHandler {
 	 *
 	 * @return string
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return '';
 	}
 
@@ -124,7 +121,7 @@ abstract class TaskHandler {
 	 *
 	 * @return bool
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return false;
 	}
 

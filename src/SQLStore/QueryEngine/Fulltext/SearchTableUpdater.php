@@ -14,31 +14,13 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class SearchTableUpdater {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var SearchTable
-	 */
-	private $searchTable;
-
-	/**
-	 * @var TextSanitizer
-	 */
-	private $textSanitizer;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param Database $connection
-	 * @param SearchTable $searchTable
-	 * @param TextSanitizer $textSanitizer
 	 */
-	public function __construct( Database $connection, SearchTable $searchTable, TextSanitizer $textSanitizer ) {
-		$this->connection = $connection;
-		$this->searchTable = $searchTable;
-		$this->textSanitizer = $textSanitizer;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly SearchTable $searchTable,
+		private readonly TextSanitizer $textSanitizer,
+	) {
 	}
 
 	/**
@@ -46,7 +28,7 @@ class SearchTableUpdater {
 	 *
 	 * @return SearchTable
 	 */
-	public function getSearchTable() {
+	public function getSearchTable(): SearchTable {
 		return $this->searchTable;
 	}
 
@@ -55,7 +37,7 @@ class SearchTableUpdater {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->searchTable->isEnabled();
 	}
 
@@ -80,7 +62,7 @@ class SearchTableUpdater {
 	 *
 	 * @return bool
 	 */
-	public function optimize() {
+	public function optimize(): bool {
 		if ( !$this->connection->isType( 'mysql' ) ) {
 			return false;
 		}
@@ -102,7 +84,7 @@ class SearchTableUpdater {
 	 *
 	 * @return bool
 	 */
-	public function exists( $sid, $pid ) {
+	public function exists( $sid, $pid ): bool {
 		$row = $this->connection->selectRow(
 			$this->searchTable->getTableName(),
 			[ 's_id' ],
@@ -124,7 +106,7 @@ class SearchTableUpdater {
 	 *
 	 * @return false|string
 	 */
-	public function read( $sid, $pid ) {
+	public function read( $sid, $pid ): false|string {
 		$row = $this->connection->selectRow(
 			$this->searchTable->getTableName(),
 			[ 'o_text' ],
@@ -149,9 +131,10 @@ class SearchTableUpdater {
 	 * @param int $pid
 	 * @param string $text
 	 */
-	public function update( $sid, $pid, $text ) {
+	public function update( $sid, $pid, $text ): void {
 		if ( trim( $text ) === '' || ( $indexableText = $this->textSanitizer->sanitize( $text ) ) === '' ) {
-			return $this->delete( $sid, $pid );
+			$this->delete( $sid, $pid );
+			return;
 		}
 
 		$this->connection->update(
@@ -174,7 +157,7 @@ class SearchTableUpdater {
 	 * @param int $sid
 	 * @param int $pid
 	 */
-	public function insert( $sid, $pid ) {
+	public function insert( $sid, $pid ): void {
 		$this->connection->insert(
 			$this->searchTable->getTableName(),
 			[
@@ -192,7 +175,7 @@ class SearchTableUpdater {
 	 * @param int $sid
 	 * @param int $pid
 	 */
-	public function delete( $sid, $pid ) {
+	public function delete( $sid, $pid ): void {
 		$this->connection->delete(
 			$this->searchTable->getTableName(),
 			[
@@ -206,7 +189,7 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 */
-	public function flushTable() {
+	public function flushTable(): void {
 		$this->connection->delete(
 			$this->searchTable->getTableName(),
 			'*',

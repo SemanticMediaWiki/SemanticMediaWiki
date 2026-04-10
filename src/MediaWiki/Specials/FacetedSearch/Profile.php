@@ -21,39 +21,24 @@ class Profile {
 	 */
 	const SCHEMA_TYPE = 'FACETEDSEARCH_PROFILE_SCHEMA';
 
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
-
-	/**
-	 * @var Compartment
-	 */
-	private $profile;
+	private ?Compartment $profile = null;
 
 	/**
 	 * @var
 	 */
-	private $profileList = [];
+	private array $profileList = [];
 
-	/**
-	 * @var Compartment
-	 */
-	private $defaultProfile;
+	private ?Compartment $defaultProfile = null;
 
-	/**
-	 * @var string
-	 */
-	private $profileName = '';
+	private string $profileName = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SchemaFactory $schemaFactory
-	 * @param string $profileName
 	 */
-	public function __construct( SchemaFactory $schemaFactory, string $profileName = '' ) {
-		$this->schemaFactory = $schemaFactory;
+	public function __construct(
+		private readonly SchemaFactory $schemaFactory,
+		string $profileName = '',
+	) {
 		$this->profileName = str_replace( '_profile', '', $profileName );
 	}
 
@@ -110,7 +95,7 @@ class Profile {
 		return $this->defaultProfile->get( $key, $default );
 	}
 
-	private function loadProfile() {
+	private function loadProfile(): void {
 		$schemaList = $this->schemaFactory->newSchemaFinder()->getSchemaListByType(
 			self::SCHEMA_TYPE
 		);
@@ -136,7 +121,7 @@ class Profile {
 		}
 	}
 
-	private function addProfile( Compartment $profile ) {
+	private function addProfile( Compartment $profile ): void {
 		$name = str_replace( '_profile', '', $profile->get( Compartment::ASSOCIATED_SECTION ) );
 
 		$this->profileList[$name] = $profile->get( 'message_key' );

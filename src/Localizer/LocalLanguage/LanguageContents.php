@@ -12,30 +12,15 @@ use RuntimeException;
  */
 class LanguageContents {
 
-	/**
-	 * @var JsonContentsFileReader
-	 */
-	private $jsonContentsFileReader;
-
-	/**
-	 * @var FallbackFinder
-	 */
-	private $fallbackFinder;
-
-	/**
-	 * @var array
-	 */
-	private $contents = [];
+	private array $contents = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param JsonContentsFileReader $jsonContentsFileReader
-	 * @param FallbackFinder $fallbackFinder
 	 */
-	public function __construct( JsonContentsFileReader $jsonContentsFileReader, FallbackFinder $fallbackFinder ) {
-		$this->jsonContentsFileReader = $jsonContentsFileReader;
-		$this->fallbackFinder = $fallbackFinder;
+	public function __construct(
+		private readonly JsonContentsFileReader $jsonContentsFileReader,
+		private readonly FallbackFinder $fallbackFinder,
+	) {
 	}
 
 	/**
@@ -43,7 +28,7 @@ class LanguageContents {
 	 *
 	 * @return string
 	 */
-	public function getCanonicalFallbackLanguageCode() {
+	public function getCanonicalFallbackLanguageCode(): string {
 		return $this->fallbackFinder->getCanonicalFallbackLanguageCode();
 	}
 
@@ -54,7 +39,7 @@ class LanguageContents {
 	 *
 	 * @return bool
 	 */
-	public function isLoaded( $languageCode ) {
+	public function isLoaded( $languageCode ): bool {
 		return isset( $this->contents[$languageCode] ) || array_key_exists( $languageCode, $this->contents );
 	}
 
@@ -65,7 +50,7 @@ class LanguageContents {
 	 *
 	 * @return bool
 	 */
-	public function load( $languageCode ) {
+	public function load( $languageCode ): void {
 		if ( !$this->isLoaded( $languageCode ) && !$this->jsonContentsFileReader->canReadByLanguageCode( $languageCode ) ) {
 			$languageCode = $this->fallbackFinder->getFallbackLanguageBy( $languageCode );
 		}
@@ -129,7 +114,7 @@ class LanguageContents {
 		return $this->matchCanonicalLanguage( $canonicalFallbackLanguageCode, $id );
 	}
 
-	private function matchCanonicalLanguage( $languageCode, $id ) {
+	private function matchCanonicalLanguage( string $languageCode, $id ) {
 		$depth = 1;
 
 		if ( strpos( $id, '.' ) !== false ) {

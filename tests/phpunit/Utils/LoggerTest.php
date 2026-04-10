@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\Utils\Logger;
 
 /**
@@ -13,12 +15,12 @@ use SMW\Utils\Logger;
  *
  * @author mwjames
  */
-class LoggerTest extends \PHPUnit\Framework\TestCase {
+class LoggerTest extends TestCase {
 
 	private $logger;
 
 	protected function setUp(): void {
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\MediaWiki\Collator;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWExpData as ExpData;
 
 /**
  * @private
@@ -19,17 +19,14 @@ use SMWExpData as ExpData;
  */
 class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBuilder {
 
-	/**
-	 * @var bool
-	 */
-	private $enabledCollationField = false;
+	private bool $enabledCollationField = false;
 
 	/**
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return $property->getKey() === '_SKEY';
 	}
 
@@ -38,7 +35,7 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 	 *
 	 * @param bool $enabledCollationField
 	 */
-	public function enabledCollationField( $enabledCollationField ) {
+	public function enabledCollationField( $enabledCollationField ): void {
 		$this->enabledCollationField = (bool)$enabledCollationField;
 	}
 
@@ -47,9 +44,9 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
-			$dataItem = new DIBlob( $dataItem->getSortKey() );
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
+		if ( !$dataItem instanceof Blob ) {
+			$dataItem = new Blob( $dataItem->getSortKey() );
 		}
 
 		parent::addResourceValue( $expData, $property, $dataItem );

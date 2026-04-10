@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
@@ -22,29 +22,17 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @var bool
 	 */
 	public $isApiTask = true;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly OutputFormatter $outputFormatter,
+	) {
 	}
 
 	/**
@@ -52,7 +40,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_MAINTENANCE;
 	}
 
@@ -61,7 +49,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return $this->isApiTask;
 	}
 
@@ -89,7 +77,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-		$subject = DIWikiPage::newFromTitle( SpecialPage::getTitleFor( 'SMWAdmin' ) );
+		$subject = WikiPage::newFromTitle( SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
 		if ( $this->hasFeature( SMW_ADM_FULLT ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
@@ -138,9 +126,10 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		if ( !$this->hasFeature( SMW_ADM_FULLT ) || $this->hasPendingJob() || $this->isApiTask() ) {
-			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
+			$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
+			return;
 		}
 
 		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
@@ -156,7 +145,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
-	private function hasPendingJob() {
+	private function hasPendingJob(): bool {
 		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.fulltextSearchTableRebuild' );
 	}
 

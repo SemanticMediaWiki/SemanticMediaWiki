@@ -20,17 +20,9 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	const EVENT_ID = 'InvalidateEntityCache';
 
 	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( EntityCache $entityCache ) {
-		$this->entityCache = $entityCache;
+	public function __construct( private EntityCache $entityCache ) {
 	}
 
 	/**
@@ -38,7 +30,7 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function execute( ?DispatchContext $dispatchContext = null ) {
+	public function execute( ?DispatchContext $dispatchContext = null ): void {
 		if ( $dispatchContext->has( 'subject' ) ) {
 			$subject = $dispatchContext->get( 'subject' );
 			$id = $subject->getHash();
@@ -61,7 +53,7 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isPropagationStopped() {
+	public function isPropagationStopped(): bool {
 		return false;
 	}
 

@@ -37,31 +37,13 @@ class TaskHandlerFactory {
 	use HookDispatcherAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private Store $store,
+		private HtmlFormRenderer $htmlFormRenderer,
+		private OutputFormatter $outputFormatter,
+	) {
 	}
 
 	/**
@@ -72,7 +54,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return TaskHandlerRegistry
 	 */
-	public function newTaskHandlerRegistry( User $user, int $adminFeatures ) {
+	public function newTaskHandlerRegistry( User $user, int $adminFeatures ): TaskHandlerRegistry {
 		$taskHandlerRegistry = new TaskHandlerRegistry(
 			$this->store,
 			$this->outputFormatter
@@ -104,7 +86,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return TableSchemaTaskHandler
 	 */
-	public function newTableSchemaTaskHandler() {
+	public function newTableSchemaTaskHandler(): TableSchemaTaskHandler {
 		return new TableSchemaTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
@@ -113,7 +95,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return SupportListTaskHandler
 	 */
-	public function newSupportListTaskHandler() {
+	public function newSupportListTaskHandler(): SupportListTaskHandler {
 		return new SupportListTaskHandler( $this->htmlFormRenderer );
 	}
 
@@ -125,7 +107,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return SupplementTaskHandler
 	 */
-	public function newSupplementTaskHandler( $adminFeatures = 0, $user = null ) {
+	public function newSupplementTaskHandler( $adminFeatures = 0, $user = null ): SupplementTaskHandler {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$taskHandlers = [
@@ -152,7 +134,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return ConfigurationListTaskHandler
 	 */
-	public function newConfigurationListTaskHandler() {
+	public function newConfigurationListTaskHandler(): ConfigurationListTaskHandler {
 		return new ConfigurationListTaskHandler( $this->outputFormatter );
 	}
 
@@ -161,7 +143,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return OperationalStatisticsListTaskHandler
 	 */
-	public function newOperationalStatisticsListTaskHandler() {
+	public function newOperationalStatisticsListTaskHandler(): OperationalStatisticsListTaskHandler {
 		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
 
 		$taskHandlers = [
@@ -179,7 +161,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return MaintenanceTaskHandler
 	 */
-	public function newMaintenanceTaskHandler( $adminFeatures = 0 ) {
+	public function newMaintenanceTaskHandler( $adminFeatures = 0 ): MaintenanceTaskHandler {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$taskHandlers = [
@@ -208,7 +190,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return EntityLookupTaskHandler
 	 */
-	public function newEntityLookupTaskHandler( $user = null ) {
+	public function newEntityLookupTaskHandler( $user = null ): EntityLookupTaskHandler {
 		$entityLookupTaskHandler = new EntityLookupTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
@@ -227,7 +209,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return DataRefreshJobTaskHandler
 	 */
-	public function newDataRefreshJobTaskHandler() {
+	public function newDataRefreshJobTaskHandler(): DataRefreshJobTaskHandler {
 		return new DataRefreshJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
@@ -236,7 +218,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return DisposeJobTaskHandler
 	 */
-	public function newDisposeJobTaskHandler() {
+	public function newDisposeJobTaskHandler(): DisposeJobTaskHandler {
 		return new DisposeJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
@@ -245,7 +227,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return PropertyStatsRebuildJobTaskHandler
 	 */
-	public function newPropertyStatsRebuildJobTaskHandler() {
+	public function newPropertyStatsRebuildJobTaskHandler(): PropertyStatsRebuildJobTaskHandler {
 		return new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
@@ -254,7 +236,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return FulltextSearchTableRebuildJobTaskHandler
 	 */
-	public function newFulltextSearchTableRebuildJobTaskHandler() {
+	public function newFulltextSearchTableRebuildJobTaskHandler(): FulltextSearchTableRebuildJobTaskHandler {
 		return new FulltextSearchTableRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
@@ -265,7 +247,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return AlertsTaskHandler
 	 */
-	public function newAlertsTaskHandler( $adminFeatures = 0 ) {
+	public function newAlertsTaskHandler( $adminFeatures = 0 ): AlertsTaskHandler {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$byNamespaceInvalidEntitiesMaintenanceAlertTaskHandler = new ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler(
@@ -307,7 +289,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return DeprecationNoticeTaskHandler
 	 */
-	public function newDeprecationNoticeTaskHandler() {
+	public function newDeprecationNoticeTaskHandler(): DeprecationNoticeTaskHandler {
 		return new DeprecationNoticeTaskHandler( $this->outputFormatter, $GLOBALS['smwgDeprecationNotices'] );
 	}
 
@@ -316,7 +298,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return DuplicateLookupTaskHandler
 	 */
-	public function newDuplicateLookupTaskHandler() {
+	public function newDuplicateLookupTaskHandler(): DuplicateLookupTaskHandler {
 		return new DuplicateLookupTaskHandler( $this->outputFormatter );
 	}
 

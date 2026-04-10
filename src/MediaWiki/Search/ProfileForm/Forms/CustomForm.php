@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use MediaWiki\Request\WebRequest;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 
 /**
@@ -16,20 +16,9 @@ use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
  */
 class CustomForm {
 
-	/**
-	 * @var WebRequest
-	 */
-	private $request;
+	private Field $field;
 
-	/**
-	 * @var Field
-	 */
-	private $field;
-
-	/**
-	 * @var bool
-	 */
-	private $isActiveForm = false;
+	private bool $isActiveForm = false;
 
 	/**
 	 * @var
@@ -39,12 +28,12 @@ class CustomForm {
 	/**
 	 * @var
 	 */
-	private $fieldCounter = [];
+	private array $fieldCounter = [];
 
 	/**
 	 * @var
 	 */
-	private $html5TypeMap = [
+	private array $html5TypeMap = [
 		'_txt' => 'text',
 		'_uri' => 'url',
 		'_dat' => 'date',
@@ -55,11 +44,8 @@ class CustomForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
 	 */
-	public function __construct( WebRequest $request ) {
-		$this->request = $request;
+	public function __construct( private readonly WebRequest $request ) {
 		$this->field = new Field();
 	}
 
@@ -75,7 +61,7 @@ class CustomForm {
 	 *
 	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ) {
+	public function isActiveForm( $isActiveForm ): void {
 		$this->isActiveForm = (bool)$isActiveForm;
 	}
 
@@ -84,7 +70,7 @@ class CustomForm {
 	 *
 	 * @param array $definition
 	 */
-	public function makeFields( $definition ) {
+	public function makeFields( $definition ): string {
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];
@@ -134,7 +120,7 @@ class CustomForm {
 		return implode( '', $fields );
 	}
 
-	private function makeField( $name, $property, $value, $options ) {
+	private function makeField( string $name, string $property, $value, $options ) {
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 		$options = !is_array( $options ) ? [] : $options;
 
@@ -153,7 +139,7 @@ class CustomForm {
 		if ( isset( $options['type'] ) ) {
 			$type = $options['type'];
 		} else {
-			$typeID = DIProperty::newFromUserLabel( $property )->findPropertyTypeID();
+			$typeID = Property::newFromUserLabel( $property )->findPropertyTypeID();
 			$type = 'text';
 
 			if ( isset( $this->html5TypeMap[$typeID] ) ) {

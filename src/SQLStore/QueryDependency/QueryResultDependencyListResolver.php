@@ -3,9 +3,9 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\HierarchyLookup;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
@@ -26,25 +26,15 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class QueryResultDependencyListResolver {
 
 	/**
-	 * @var HierarchyLookup
-	 */
-	private $hierarchyLookup;
-
-	/**
 	 * Specifies a list of property keys to be excluded from the detection
 	 * process.
-	 *
-	 * @var array
 	 */
-	private $propertyDependencyExemptionlist = [];
+	private array $propertyDependencyExemptionlist = [];
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param HierarchyLookup $hierarchyLookup
 	 */
-	public function __construct( HierarchyLookup $hierarchyLookup ) {
-		$this->hierarchyLookup = $hierarchyLookup;
+	public function __construct( private readonly HierarchyLookup $hierarchyLookup ) {
 	}
 
 	/**
@@ -52,7 +42,7 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @param array $propertyDependencyExemptionlist
 	 */
-	public function setPropertyDependencyExemptionlist( array $propertyDependencyExemptionlist ) {
+	public function setPropertyDependencyExemptionlist( array $propertyDependencyExemptionlist ): void {
 		// Make sure that user defined properties are correctly normalized and flip
 		// to build an index based map
 		$this->propertyDependencyExemptionlist = array_flip(
@@ -73,7 +63,7 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @param QueryResult|string $queryResult
 	 *
-	 * @return DIWikiPage[]|[]
+	 * @return WikiPage[]|array
 	 */
 	public function getDependencyListByLateRetrievalFrom( $queryResult ) {
 		if ( !$this->canResolve( $queryResult ) ) {
@@ -93,9 +83,9 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @param QueryResult|string $queryResult
 	 *
-	 * @return DIWikiPage[]|[]
+	 * @return mixed[]
 	 */
-	public function getDependencyListFrom( $queryResult ) {
+	public function getDependencyListFrom( $queryResult ): array {
 		if ( !$this->canResolve( $queryResult ) ) {
 			return [];
 		}
@@ -132,20 +122,21 @@ class QueryResultDependencyListResolver {
 	 * Resolving dependencies for non-embedded queries or limit=0 (which only
 	 * links to Special:Ask via further results) is not required
 	 */
-	private function canResolve( $queryResult ) {
+	private function canResolve( $queryResult ): bool {
 		return $queryResult instanceof QueryResult && $queryResult->getQuery() !== null && $queryResult->getQuery()->getContextPage() !== null && $queryResult->getQuery()->getLimit() > 0;
 	}
 
-	private function doResolveDependenciesFromDescription( &$subjects, $store, $description ) {
+	private function doResolveDependenciesFromDescription( array &$subjects, $store, $description ): void {
 		// Ignore entities that use a comparator other than SMW_CMP_EQ
 		// [[Has page::~Foo*]] or similar is going to be ignored
 		if ( $description instanceof ValueDescription &&
-			$description->getDataItem() instanceof DIWikiPage &&
+			$description->getDataItem() instanceof WikiPage &&
 			$description->getComparator() === SMW_CMP_EQ ) {
 			$subjects[] = $description->getDataItem();
 		}
 
-		if ( $description instanceof ConceptDescription && $concept = $description->getConcept() ) {
+		if ( $description instanceof ConceptDescription ) {
+			$concept = $description->getConcept();
 			if ( $concept === null || !isset( $subjects[$concept->getHash()] ) ) {
 				$subjects[$concept->getHash()] = $concept;
 				$this->doResolveDependenciesFromDescription(
@@ -179,9 +170,9 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchProperty( &$subjects, DIProperty $property ) {
+	private function doMatchProperty( array &$subjects, Property $property ): void {
 		if ( $property->isInverse() ) {
-			$property = new DIProperty( $property->getKey() );
+			$property = new Property( $property->getKey() );
 		}
 
 		$subject = $property->getCanonicalDiWikiPage();
@@ -198,7 +189,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchSubcategory( &$subjects, DIWikiPage $category ) {
+	private function doMatchSubcategory( array &$subjects, WikiPage $category ): void {
 		$hash = $category->getHash();
 		$subcategories = [];
 
@@ -218,7 +209,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchSubproperty( &$subjects, $subject, DIProperty $property ) {
+	private function doMatchSubproperty( array &$subjects, ?WikiPage $subject, Property $property ): void {
 		$subproperties = [];
 
 		// Using the DBKey as short-cut, as we don't expect to match sub-properties for
@@ -243,7 +234,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doResolveDependenciesFromPrintRequest( &$subjects, array $printRequests ) {
+	private function doResolveDependenciesFromPrintRequest( array &$subjects, array $printRequests ): void {
 		foreach ( $printRequests as $printRequest ) {
 			$data = $printRequest->getData();
 
@@ -253,15 +244,15 @@ class QueryResultDependencyListResolver {
 
 			// Category
 			if ( $data instanceof Title ) {
-				$subjects[] = DIWikiPage::newFromTitle( $data );
+				$subjects[] = WikiPage::newFromTitle( $data );
 			}
 		}
 	}
 
-	private function getConceptDescription( $store, DIWikiPage $concept ) {
+	private function getConceptDescription( $store, WikiPage $concept ) {
 		$value = $store->getPropertyValues(
 			$concept,
-			new DIProperty( '_CONC' )
+			new Property( '_CONC' )
 		);
 
 		if ( $value === null || $value === [] ) {
@@ -270,7 +261,7 @@ class QueryResultDependencyListResolver {
 
 		$value = end( $value );
 
-		return ApplicationFactory::getInstance()->newQueryParser()->getQueryDescription(
+		return ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()->getQueryDescription(
 			$value->getConceptQuery()
 		);
 	}

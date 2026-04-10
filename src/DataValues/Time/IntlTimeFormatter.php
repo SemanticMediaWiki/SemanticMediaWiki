@@ -2,9 +2,11 @@
 
 namespace SMW\DataValues\Time;
 
+use DateTime;
 use MediaWiki\Language\Language;
+use SMW\DataItems\Time;
 use SMW\Localizer\Localizer;
-use SMWDITime as DITime;
+use SMW\MediaWiki\ExtendedDateTime;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,30 +21,17 @@ class IntlTimeFormatter {
 	const LOCL_TIMEOFFSET = 0x4;
 
 	/**
-	 * @var DITime
-	 */
-	private $dataItem;
-
-	/**
-	 * @var Language
-	 */
-	private $language;
-
-	/**
 	 * @var bool
 	 */
 	private $hasLocalTimeCorrection = false;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param DITime $dataItem
-	 * @param Language|null $language
 	 */
-	public function __construct( DITime $dataItem, ?Language $language = null ) {
-		$this->dataItem = $dataItem;
-		$this->language = $language;
-
+	public function __construct(
+		private readonly Time $dataItem,
+		private ?Language $language = null,
+	) {
 		if ( $this->language === null ) {
 			$this->language = Localizer::getInstance()->getContentLanguage();
 		}
@@ -53,7 +42,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return bool
 	 */
-	public function hasLocalTimeCorrection() {
+	public function hasLocalTimeCorrection(): bool {
 		return $this->hasLocalTimeCorrection;
 	}
 
@@ -64,7 +53,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return string|bool
 	 */
-	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ) {
+	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ): false|string|array {
 		$dateTime = $this->dataItem->asDateTime();
 		$timezone = '';
 
@@ -122,7 +111,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return string|bool
 	 */
-	public function format( $format ) {
+	public function format( $format ): string|false {
 		$dateTime = $this->dataItem->asDateTime();
 
 		if ( !$dateTime ) {
@@ -144,7 +133,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return bool
 	 */
-	public function containsValidDateFormatRule( $format ) {
+	public function containsValidDateFormatRule( $format ): bool {
 		foreach ( str_split( $format ) as $value ) {
 			if ( in_array( $value, [ 'd', 'D', 'j', 'l', 'N', 'w', 'W', 'F', 'M', 'm', 'n', 't', 'L', 'o', 'Y', 'y', "c", 'r' ] ) ) {
 				return true;
@@ -164,7 +153,7 @@ class IntlTimeFormatter {
 	 * - a	Lowercase Ante meridiem and Post meridiem am or pm
 	 * - A	Uppercase Ante meridiem and Post meridiem
 	 */
-	private function formatWithLocalizedTextReplacement( $dateTime, $format ) {
+	private function formatWithLocalizedTextReplacement( DateTime|ExtendedDateTime $dateTime, $format ): string {
 		$output = $dateTime->format( $format );
 
 		// (n) DateTime => 1 through 12

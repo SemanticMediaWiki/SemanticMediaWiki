@@ -3,17 +3,18 @@
 namespace SMW\Parser;
 
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\MagicWordsFinder;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Timer;
-use SMWOutputs;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are
@@ -40,40 +41,14 @@ class InTextAnnotationParser {
 	const OFF = '[[SMW::off]]';
 	const ON = '[[SMW::on]]';
 
-	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var LinksProcessor
-	 */
-	private $linksProcessor;
-
-	/**
-	 * @var MagicWordsFinder
-	 */
-	private $magicWordsFinder;
-
-	/**
-	 * @var RedirectTargetFinder
-	 */
-	private $redirectTargetFinder;
-
-	/**
-	 * @var AnnotationProcessor
-	 */
-	private $annotationProcessor;
+	private ?AnnotationProcessor $annotationProcessor = null;
 
 	/**
 	 * @var ApplicationFactory
 	 */
-	private $applicationFactory = null;
+	private ApplicationFactory $applicationFactory;
 
-	/**
-	 * @var StripMarkerDecoder
-	 */
-	private $stripMarkerDecoder;
+	private ?StripMarkerDecoder $stripMarkerDecoder = null;
 
 	/**
 	 * @var bool
@@ -93,24 +68,17 @@ class InTextAnnotationParser {
 	 */
 	private $isLinksInValues = false;
 
-	/**
-	 * @var bool
-	 */
-	private $showErrors = true;
+	private bool $showErrors = true;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param LinksProcessor $linksProcessor
-	 * @param MagicWordsFinder $magicWordsFinder
-	 * @param RedirectTargetFinder $redirectTargetFinder
 	 */
-	public function __construct( ParserData $parserData, LinksProcessor $linksProcessor, MagicWordsFinder $magicWordsFinder, RedirectTargetFinder $redirectTargetFinder ) {
-		$this->parserData = $parserData;
-		$this->linksProcessor = $linksProcessor;
-		$this->magicWordsFinder = $magicWordsFinder;
-		$this->redirectTargetFinder = $redirectTargetFinder;
+	public function __construct(
+		private ParserData $parserData,
+		private LinksProcessor $linksProcessor,
+		private MagicWordsFinder $magicWordsFinder,
+		private RedirectTargetFinder $redirectTargetFinder,
+	) {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
@@ -119,7 +87,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param bool $isLinksInValues
 	 */
-	public function isLinksInValues( $isLinksInValues ) {
+	public function isLinksInValues( $isLinksInValues ): void {
 		$this->isLinksInValues = $isLinksInValues;
 	}
 
@@ -128,7 +96,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param bool $showErrors
 	 */
-	public function showErrors( $showErrors ) {
+	public function showErrors( $showErrors ): void {
 		$this->showErrors = (bool)$showErrors;
 	}
 
@@ -149,7 +117,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param string &$text
 	 */
-	public function parse( &$text ) {
+	public function parse( &$text ): void {
 		$title = $this->parserData->getTitle();
 		Timer::start( __CLASS__ );
 
@@ -209,7 +177,7 @@ class InTextAnnotationParser {
 			Timer::getElapsedTime( __CLASS__, 3 )
 		);
 
-		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
+		Outputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
 
 	/**
@@ -219,7 +187,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return bool
 	 */
-	public static function hasMarker( $text ) {
+	public static function hasMarker( $text ): bool {
 		return strpos( $text, self::OFF ) !== false || strpos( $text, self::ON ) !== false;
 	}
 
@@ -230,7 +198,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return bool
 	 */
-	public static function hasPropertyLink( $text ) {
+	public static function hasPropertyLink( $text ): bool {
 		return strpos( $text, '::@@@' ) !== false;
 	}
 
@@ -241,7 +209,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ) {
+	public static function decodeSquareBracket( $text ): string {
 		return LinksEncoder::decodeSquareBracket( $text );
 	}
 
@@ -252,7 +220,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ) {
+	public static function obfuscateAnnotation( $text ): ?string {
 		return LinksEncoder::obfuscateAnnotation( $text );
 	}
 
@@ -272,7 +240,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param StripMarkerDecoder $stripMarkerDecoder
 	 */
-	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ): void {
 		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
@@ -281,11 +249,11 @@ class InTextAnnotationParser {
 	 *
 	 * @param Title|null $redirectTarget
 	 */
-	public function setRedirectTarget( ?Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ): void {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 
-	protected function addRedirectTargetAnnotationFromText( $text ) {
+	protected function addRedirectTargetAnnotationFromText( $text ): void {
 		if ( !$this->isEnabledNamespace ) {
 			return;
 		}
@@ -313,7 +281,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return array
 	 */
-	protected function getModules() {
+	protected function getModules(): array {
 		return [
 			'ext.smw.styles'
 		];
@@ -327,7 +295,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	public function getRegexpPattern( $linksInValues = false ) {
+	public function getRegexpPattern( $linksInValues = false ): string {
 		return LinksProcessor::getRegexpPattern( $linksInValues );
 	}
 
@@ -396,7 +364,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	protected function addPropertyValue( $subject, array $properties, $value, $valueCaption ) {
+	protected function addPropertyValue( ?WikiPage $subject, array $properties, $value, $valueCaption ): string {
 		$origValue = $value;
 
 		if ( $this->stripMarkerDecoder !== null ) {
@@ -441,7 +409,10 @@ class InTextAnnotationParser {
 		return $result;
 	}
 
-	protected function doStripMagicWordsFromText( &$text ) {
+	/**
+	 * @return mixed[]
+	 */
+	protected function doStripMagicWordsFromText( &$text ): array {
 		$words = [];
 
 		$this->magicWordsFinder->setOutput( $this->parserData->getOutput() );
@@ -466,7 +437,7 @@ class InTextAnnotationParser {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function makePropertyLink( $subject, $properties, $value, $caption ) {
+	private function makePropertyLink( WikiPage $subject, $properties, $value, $caption ) {
 		$property = end( $properties );
 		$linker = smwfGetLinker();
 		$class = 'smw-property';

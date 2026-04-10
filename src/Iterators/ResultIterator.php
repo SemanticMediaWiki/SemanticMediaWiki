@@ -5,6 +5,7 @@ namespace SMW\Iterators;
 use ArrayIterator;
 use Countable;
 use Iterator;
+use ReturnTypeWillChange;
 use RuntimeException;
 use SeekableIterator;
 use Wikimedia\Rdbms\ResultWrapper;
@@ -88,7 +89,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		return $this->current;
 	}
@@ -98,7 +99,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function key() {
 		return $this->position;
 	}
@@ -134,7 +135,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 		return $this->current !== false && $this->position < $this->count();
 	}
 
-	protected function setCurrent( $row ) {
+	protected function setCurrent( $row ): void {
 		if ( $row === false || $row === null ) {
 			$this->current = false;
 		} else {

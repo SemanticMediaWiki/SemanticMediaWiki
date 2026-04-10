@@ -2,7 +2,7 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 
 /**
@@ -13,10 +13,7 @@ use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
  */
 abstract class DeclarationExaminer implements IDeclarationExaminer {
 
-	/**
-	 * @var DeclarationExaminer
-	 */
-	protected $declarationExaminer;
+	protected IDeclarationExaminer $declarationExaminer;
 
 	/**
 	 * @var array[]
@@ -28,7 +25,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 *
 	 * @param DeclarationExaminer $declarationExaminer
 	 */
-	public function __construct( DeclarationExaminer $declarationExaminer ) {
+	public function __construct( IDeclarationExaminer $declarationExaminer ) {
 		$this->declarationExaminer = $declarationExaminer;
 	}
 
@@ -46,7 +43,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMessages() {
+	public function getMessages(): array {
 		return $this->messages;
 	}
 
@@ -55,7 +52,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 *
 	 * @return string
 	 */
-	public function getMessagesAsString() {
+	public function getMessagesAsString(): string|false {
 		return json_encode( $this->messages );
 	}
 
@@ -73,7 +70,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function check( DIProperty $property ) {
+	public function check( Property $property ): void {
 		$this->declarationExaminer->check( $property );
 		$this->messages = array_merge( $this->messages, $this->declarationExaminer->getMessages() );
 		$this->validate( $property );
@@ -82,6 +79,6 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	/**
 	 * @since 3.1
 	 */
-	abstract protected function validate( DIProperty $property );
+	abstract protected function validate( Property $property ): void;
 
 }

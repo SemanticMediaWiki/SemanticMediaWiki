@@ -32,7 +32,7 @@ class BeforePageDisplay implements HookListener {
 	 *
 	 * @param OutputPage $outputPage
 	 */
-	public function informAboutExtensionAvailability( OutputPage $outputPage ) {
+	public function informAboutExtensionAvailability( OutputPage $outputPage ): void {
 		if (
 			$this->getOption( 'SMW_EXTENSION_LOADED' ) ||
 			$this->getOption( 'smwgIgnoreExtensionRegistrationCheck' ) ) {
@@ -60,7 +60,7 @@ class BeforePageDisplay implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( OutputPage $outputPage, Skin $skin ) {
+	public function process( OutputPage $outputPage, Skin $skin ): bool {
 		$title = $outputPage->getTitle();
 		$user = $outputPage->getUser();
 		// #2726

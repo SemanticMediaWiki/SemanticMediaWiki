@@ -2,7 +2,7 @@
 
 namespace SMW\Constraint;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
@@ -16,24 +16,12 @@ use SMW\Schema\SchemaFinder;
 class ConstraintSchemaCompiler {
 
 	/**
-	 * @var SchemaFinder
-	 */
-	private $schemaFinder;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param SchemaFinder $schemaFinder
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SchemaFinder $schemaFinder, SpecificationLookup $propertySpecificationLookup ) {
-		$this->schemaFinder = $schemaFinder;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly SchemaFinder $schemaFinder,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**
@@ -43,7 +31,7 @@ class ConstraintSchemaCompiler {
 	 *
 	 * @return string
 	 */
-	public function prettify( array $constraintSchema ) {
+	public function prettify( array $constraintSchema ): string {
 		if ( $constraintSchema === [] ) {
 			return '';
 		}
@@ -54,11 +42,11 @@ class ConstraintSchemaCompiler {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
-	 * @return
+	 * @return 'PROPERTY_CONSTRAINT_SCHEMA'[]|non-empty-array[]
 	 */
-	public function compileConstraintSchema( DIProperty $property ) {
+	public function compileConstraintSchema( Property $property ): array {
 		$constraintSchema = [];
 
 		$this->constraint_schema( $property, $constraintSchema );
@@ -80,7 +68,7 @@ class ConstraintSchemaCompiler {
 		return $constraintSchema;
 	}
 
-	private function constraint_schema( $property, &$constraintSchema ) {
+	private function constraint_schema( Property $property, array &$constraintSchema ): void {
 		$schemaList = $this->schemaFinder->getConstraintSchema(
 			$property
 		);
@@ -90,7 +78,7 @@ class ConstraintSchemaCompiler {
 		}
 	}
 
-	private function allowed_values( $property, &$constraintSchema ) {
+	private function allowed_values( Property $property, array &$constraintSchema ): void {
 		$allowedValues = $this->propertySpecificationLookup->getAllowedValues(
 			$property
 		);
@@ -127,7 +115,7 @@ class ConstraintSchemaCompiler {
 		);
 	}
 
-	private function allowed_pattern( $property, &$constraintSchema ) {
+	private function allowed_pattern( Property $property, array &$constraintSchema ): void {
 		$allowed_pattern = $this->propertySpecificationLookup->getAllowedPatternBy(
 			$property
 		);
@@ -164,7 +152,7 @@ class ConstraintSchemaCompiler {
 		$constraintSchema['constraints']['allowed_pattern'] = [ $allowed_pattern => $pattern ];
 	}
 
-	private function unique_value_constraint( $property, &$constraintSchema ) {
+	private function unique_value_constraint( Property $property, array &$constraintSchema ): void {
 		$unique_value_constraint = $this->propertySpecificationLookup->hasUniquenessConstraint(
 			$property
 		);

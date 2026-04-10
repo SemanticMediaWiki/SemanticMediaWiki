@@ -5,7 +5,10 @@ namespace SMW\SQLStore\Rebuilder;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
+use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
+use stdClass;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @private
@@ -19,25 +22,9 @@ class EntityValidator {
 
 	use RevisionGuardAwareTrait;
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
+	private array $propertyInvalidCharacterList = [];
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var array
-	 */
-	private $propertyInvalidCharacterList = [];
-
-	/**
-	 * @var array
-	 */
-	private $propertyRetiredList = [];
+	private array $propertyRetiredList = [];
 
 	/**
 	 * @var array|false
@@ -46,13 +33,11 @@ class EntityValidator {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
-	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( SQLStore $store, NamespaceExaminer $namespaceExaminer ) {
-		$this->store = $store;
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct(
+		private SQLStore $store,
+		private NamespaceExaminer $namespaceExaminer,
+	) {
 	}
 
 	/**
@@ -60,7 +45,7 @@ class EntityValidator {
 	 *
 	 * @param array $propertyInvalidCharacterList
 	 */
-	public function setPropertyInvalidCharacterList( array $propertyInvalidCharacterList ) {
+	public function setPropertyInvalidCharacterList( array $propertyInvalidCharacterList ): void {
 		$this->propertyInvalidCharacterList = $propertyInvalidCharacterList;
 	}
 
@@ -69,7 +54,7 @@ class EntityValidator {
 	 *
 	 * @param array $propertyRetiredList
 	 */
-	public function setPropertyRetiredList( array $propertyRetiredList ) {
+	public function setPropertyRetiredList( array $propertyRetiredList ): void {
 		$this->propertyRetiredList = $propertyRetiredList;
 	}
 
@@ -78,7 +63,7 @@ class EntityValidator {
 	 *
 	 * @param array|false $namespaces
 	 */
-	public function setNamespaceRestriction( $namespaces ) {
+	public function setNamespaceRestriction( $namespaces ): void {
 		$this->namespaces = $namespaces;
 	}
 
@@ -100,7 +85,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function inNamespace( $row ) {
+	public function inNamespace( $row ): bool {
 		if ( $this->namespaces === false ) {
 			return true;
 		}
@@ -115,7 +100,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isProperty( $row ) {
+	public function isProperty( $row ): bool {
 		return $row->smw_namespace === SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '';
 	}
 
@@ -126,7 +111,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isOutdated( $row ) {
+	public function isOutdated( $row ): bool {
 		return $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW;
 	}
 
@@ -137,7 +122,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isRedirect( $row ) {
+	public function isRedirect( $row ): bool {
 		return $row->smw_iw == SMW_SQL3_SMWREDIIW;
 	}
 
@@ -149,7 +134,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isDetachedSubobject( $title, $row ) {
+	public function isDetachedSubobject( $title, $row ): bool {
 		if ( $row->smw_subobject === '' ) {
 			return false;
 		}
@@ -172,14 +157,14 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isDetachedQueryRef( $row ) {
+	public function isDetachedQueryRef( $row ): bool {
 		if ( $row->smw_subobject === '' || $row->smw_proptable_hash !== null ) {
 			return false;
 		}
 
 		// Any query reference without a `proptable` map is considered
 		// detached (doesn't belong to any subject, or is outdated)
-		return substr( $row->smw_subobject, 0, 6 ) === \SMWQuery::ID_PREFIX;
+		return substr( $row->smw_subobject, 0, 6 ) === Query::ID_PREFIX;
 	}
 
 	/**
@@ -189,7 +174,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isPlainObjectValue( $row ) {
+	public function isPlainObjectValue( $row ): bool {
 		// A rogue title should never happen
 		if ( $row->smw_title === '' && $row->smw_proptable_hash === null ) {
 			return true;
@@ -212,7 +197,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasPropertyInvalidCharacter( $row ) {
+	public function hasPropertyInvalidCharacter( $row ): bool {
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
 			return false;
 		}
@@ -233,7 +218,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isRetiredProperty( $row ) {
+	public function isRetiredProperty( $row ): bool {
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
 			return false;
 		}
@@ -257,9 +242,9 @@ class EntityValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param $row
+	 * @param stdClass $row
 	 *
-	 * @return
+	 * @return ResultWrapper
 	 */
 	public function findDuplicates( $row ) {
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -295,7 +280,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasLatestRevID( Title $title, $row = false ) {
+	public function hasLatestRevID( Title $title, $row = false ): bool {
 		$latestRevID = $this->revisionGuard->getLatestRevID( $title );
 
 		if ( $row !== false ) {
@@ -310,7 +295,7 @@ class EntityValidator {
 			$title->getInterwiki()
 		);
 
-		return $latestRevID == $rev;
+		return $latestRevID === $rev;
 	}
 
 }

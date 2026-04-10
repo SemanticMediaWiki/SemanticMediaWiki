@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use SMW\DataItems\DataItem;
 use SMW\MediaWiki\ExtendedDateTime;
+use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,17 +16,9 @@ use SMWQuery as Query;
 class TableStatisticsLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -34,7 +26,7 @@ class TableStatisticsLookup {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
+	public function getStats(): array {
 		return $this->loadFromDB( $this->store->getConnection( 'mw.db' ) );
 	}
 
@@ -47,7 +39,10 @@ class TableStatisticsLookup {
 		return $this->{$key}( $this->store->getConnection( 'mw.db' ) );
 	}
 
-	private function loadFromDB( $connection ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function loadFromDB( $connection ): array {
 		$start_time = -microtime( true );
 		$duplicates = $this->store->getObjectIds()->findDuplicates();
 
@@ -175,7 +170,7 @@ class TableStatisticsLookup {
 		return $stats;
 	}
 
-	private function last_id( $connection ) {
+	private function last_id( $connection ): int {
 		return (int)$connection->selectField(
 			SQLStore::ID_TABLE,
 			'MAX(smw_id)',
@@ -184,7 +179,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function rows_total_count( $connection ) {
+	private function rows_total_count( $connection ): int {
 		return (int)$connection->selectField(
 			SQLStore::ID_TABLE,
 			'Count(*)',
@@ -193,7 +188,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function rows_delete_count( $connection ) {
+	private function rows_delete_count( $connection ): int {
 		return (int)$connection->selectField(
 			SQLStore::ID_TABLE,
 			'Count(*)',
@@ -204,7 +199,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function rows_redirect_count( $connection ) {
+	private function rows_redirect_count( $connection ): int {
 		return (int)$connection->selectField(
 			SQLStore::ID_TABLE,
 			'Count(*)',
@@ -215,7 +210,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function rows_rev_count( $connection ) {
+	private function rows_rev_count( $connection ): int {
 		return (int)$connection->selectField(
 			SQLStore::ID_TABLE,
 			'Count(*)',
@@ -226,7 +221,10 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function rows_group_by_namespace( $connection ) {
+	/**
+	 * @return int[]
+	 */
+	private function rows_group_by_namespace( $connection ): array {
 		$res = $connection->select(
 			SQLStore::ID_TABLE,
 			[
@@ -249,7 +247,7 @@ class TableStatisticsLookup {
 		return $rows_group_by_namespace;
 	}
 
-	private function rows_query_links_total_count( $connection ) {
+	private function rows_query_links_total_count( $connection ): int {
 		return (int)$connection->selectField(
 			SQLStore::QUERY_LINKS_TABLE,
 			'Count(*)',
@@ -258,7 +256,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function unlinked_query_proptable_hash_count( $connection ) {
+	private function unlinked_query_proptable_hash_count( $connection ): int {
 		return (int)$connection->selectField(
 			SQLStore::ID_TABLE,
 			'Count(*)',
@@ -270,7 +268,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function linked_query_proptable_hash_count( $connection ) {
+	private function linked_query_proptable_hash_count( $connection ): int {
 		return (int)$connection->selectField(
 			SQLStore::ID_TABLE,
 			'Count(*)',
@@ -282,7 +280,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function active_query_links_count( $connection ) {
+	private function active_query_links_count( $connection ): int {
 		$row = $connection->selectRow(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			'COUNT(*) as count',
@@ -301,7 +299,7 @@ class TableStatisticsLookup {
 		return (int)$row->count;
 	}
 
-	private function invalid_query_links_count( $connection ) {
+	private function invalid_query_links_count( $connection ): int {
 		$row = $connection->selectRow(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			'COUNT(*) as count',
@@ -320,7 +318,7 @@ class TableStatisticsLookup {
 		return (int)$row->count;
 	}
 
-	private function unassigned_query_links_count( $connection ) {
+	private function unassigned_query_links_count( $connection ): int {
 		$row = $connection->selectRow(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			'COUNT(*) as count',
@@ -339,7 +337,7 @@ class TableStatisticsLookup {
 		return (int)$row->count;
 	}
 
-	private function rows_blob_table_total_count( $connection, $blobTable ) {
+	private function rows_blob_table_total_count( $connection, $blobTable ): int {
 		return (int)$connection->selectField(
 			$blobTable,
 			'Count(o_hash)',
@@ -348,7 +346,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function blob_field_null_row_count( $connection, $blobTable ) {
+	private function blob_field_null_row_count( $connection, $blobTable ): int {
 		return (int)$connection->selectField(
 			$blobTable,
 			'Count(o_hash)',
@@ -359,7 +357,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function hash_field_count( $connection, $blobTable ) {
+	private function hash_field_count( $connection, $blobTable ): array {
 		$hash_field_multi_occurrence_total_count = 0;
 		$hash_field_single_occurrence_total_count = 0;
 

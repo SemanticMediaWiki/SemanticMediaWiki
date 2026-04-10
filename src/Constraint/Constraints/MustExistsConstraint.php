@@ -5,8 +5,8 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
+use SMW\DataItems\DataItem;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,17 +21,14 @@ class MustExistsConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'must_exists';
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 
@@ -40,7 +37,7 @@ class MustExistsConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -49,7 +46,7 @@ class MustExistsConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraint, $dataValue ) {
+	public function checkConstraint( array $constraint, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -59,11 +56,12 @@ class MustExistsConstraint implements Constraint {
 		$key = key( $constraint );
 
 		if ( $key === self::CONSTRAINT_KEY ) {
-			return $this->check( $constraint[$key], $dataValue );
+			$this->check( $constraint[$key], $dataValue );
+			return;
 		}
 	}
 
-	private function check( $must_exists, $dataValue ) {
+	private function check( $must_exists, DataValue $dataValue ): void {
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $must_exists === false || $dataItem->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
@@ -77,7 +75,7 @@ class MustExistsConstraint implements Constraint {
 		$this->reportError( $dataValue );
 	}
 
-	private function reportError( $dataValue ) {
+	private function reportError( DataValue $dataValue ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

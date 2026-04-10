@@ -4,6 +4,7 @@ namespace SMW\Importer\ContentCreators;
 
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Importer\ContentCreator;
@@ -23,30 +24,15 @@ class TextContentCreator implements ContentCreator {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var TitleFactory
-	 */
-	private $titleFactory;
-
-	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param TitleFactory $titleFactory
-	 * @param Database $connection
 	 */
-	public function __construct( TitleFactory $titleFactory, Database $connection ) {
-		$this->titleFactory = $titleFactory;
-		$this->connection = $connection;
+	public function __construct(
+		private TitleFactory $titleFactory,
+		private Database $connection,
+	) {
 	}
 
 	/**
@@ -54,7 +40,7 @@ class TextContentCreator implements ContentCreator {
 	 *
 	 * @param ImportContents $importContents
 	 */
-	public function canCreateContentsFor( ImportContents $importContents ) {
+	public function canCreateContentsFor( ImportContents $importContents ): bool {
 		return $importContents->getContentType() === ImportContents::CONTENT_TEXT;
 	}
 
@@ -133,12 +119,12 @@ class TextContentCreator implements ContentCreator {
 		// Avoid a possible "Notice: WikiPage::doUserEditContent: Transaction already
 		// in progress (from DatabaseUpdater::doUpdates), performing implicit
 		// commit ..."
-		$this->connection->onTransactionCommitOrIdle( function () use ( $page, $title, $importContents, $action ) {
+		$this->connection->onTransactionCommitOrIdle( function () use ( $page, $title, $importContents, $action ): void {
 			$this->doCreateContent( $page, $title, $importContents, $action );
 		} );
 	}
 
-	private function doCreateContent( $page, $title, $importContents, $action ) {
+	private function doCreateContent( WikiPage $page, ?Title $title, ImportContents $importContents, string $action ): void {
 		$content = ContentHandler::makeContent(
 			$this->fetchContents( $importContents ),
 			$title
@@ -177,7 +163,7 @@ class TextContentCreator implements ContentCreator {
 		);
 	}
 
-	private function fetchContents( $importContents ) {
+	private function fetchContents( ImportContents $importContents ) {
 		if ( $importContents->getContentsFile() === '' ) {
 			return $importContents->getContents();
 		}

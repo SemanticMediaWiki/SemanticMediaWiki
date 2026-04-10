@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\CharArmor;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\CharArmor;
  *
  * @author mwjames
  */
-class CharArmorTest extends \PHPUnit\Framework\TestCase {
+class CharArmorTest extends TestCase {
 
 	/**
 	 * @dataProvider invisibleControlCharactersProvider

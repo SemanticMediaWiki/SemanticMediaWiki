@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 use Exception;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -20,23 +20,12 @@ class ListLookup extends Lookup {
 	const VERSION = 1;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ListAugmentor
-	 */
-	private $listAugmentor;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store, ListAugmentor $listAugmentor ) {
-		$this->store = $store;
-		$this->listAugmentor = $listAugmentor;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ListAugmentor $listAugmentor,
+	) {
 	}
 
 	/**
@@ -44,7 +33,7 @@ class ListLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'ListLookup:' . self::VERSION;
 	}
 
@@ -55,7 +44,7 @@ class ListLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$requestOptions = $this->newRequestOptions(
 			$parameters
 		);
@@ -107,7 +96,7 @@ class ListLookup extends Lookup {
 		return $res;
 	}
 
-	private function newRequestOptions( $parameters ) {
+	private function newRequestOptions( array $parameters ): RequestOptions {
 		$limit = 50;
 		$offset = 0;
 		$search = '';
@@ -179,7 +168,7 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function fetchFromTable( $ns, $requestOptions, $parameters ) {
+	private function fetchFromTable( $ns, RequestOptions $requestOptions, array $parameters ): array {
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
 		$options = [];
@@ -234,7 +223,7 @@ class ListLookup extends Lookup {
 
 			if ( $ns === SMW_NS_PROPERTY ) {
 				try {
-					$label = DIProperty::newFromUserLabel( $row->smw_title )->getLabel();
+					$label = Property::newFromUserLabel( $row->smw_title )->getLabel();
 				} catch ( Exception $e ) {
 					continue;
 				}

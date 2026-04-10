@@ -4,7 +4,7 @@ namespace SMW\Exporter\Element;
 
 use InvalidArgumentException;
 use RuntimeException;
-use SMWDataItem as DataItem;
+use SMW\DataItems\DataItem;
 
 /**
  * A single resource (individual) for export, defined by a URI for which there
@@ -20,26 +20,20 @@ class ExpNsResource extends ExpResource {
 
 	/**
 	 * Local part of the abbreviated URI
-	 *
-	 * @var string
 	 */
-	private $localName;
+	private string $localName;
 
 	/**
 	 * Namespace URI prefix of the abbreviated URI
-	 *
-	 * @var string
 	 */
-	private $namespace;
+	private string $namespace;
 
 	/**
 	 * Namespace abbreviation of the abbreviated URI
-	 *
-	 * @var string
 	 */
-	private $namespaceId;
+	private string $namespaceId;
 
-	public bool $isUserDefined;
+	public ?bool $isUserDefined;
 
 	/**
 	 * @note The given URI must not contain serialization-specific
@@ -77,7 +71,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return string
 	 */
-	public function getQName() {
+	public function getQName(): string {
 		return $this->namespaceId . ':' . $this->localName;
 	}
 
@@ -86,7 +80,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return string
 	 */
-	public function getNamespaceId() {
+	public function getNamespaceId(): string {
 		return $this->namespaceId;
 	}
 
@@ -95,7 +89,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return string
 	 */
-	public function getNamespace() {
+	public function getNamespace(): string {
 		return $this->namespace;
 	}
 
@@ -104,7 +98,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return string
 	 */
-	public function getLocalName() {
+	public function getLocalName(): string {
 		return $this->localName;
 	}
 
@@ -116,7 +110,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return bool
 	 */
-	public function hasAllowedLocalName() {
+	public function hasAllowedLocalName(): int|false {
 		return preg_match( '/^[A-Za-z_][-A-Za-z_0-9]*$/u', $this->localName );
 	}
 
@@ -125,7 +119,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return array
 	 */
-	public function getSerialization() {
+	public function getSerialization(): array {
 		// Use '|' as divider as it is unlikely that symbol appears within a uri
 		$serialization = [
 			'type' => self::TYPE_NSRESOURCE,
@@ -138,7 +132,7 @@ class ExpNsResource extends ExpResource {
 	/**
 	 * @see ExpElement::newFromSerialization
 	 */
-	protected static function deserialize( $serialization ) {
+	protected static function deserialize( $serialization ): self {
 		if ( !isset( $serialization['uri'] ) ) {
 			throw new RuntimeException( "Invalid serialization format, missing a uri element" );
 		}

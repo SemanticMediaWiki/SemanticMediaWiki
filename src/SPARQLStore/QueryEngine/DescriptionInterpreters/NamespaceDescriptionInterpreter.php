@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\DataItems\DataItem;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
@@ -9,8 +11,6 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,23 +21,12 @@ use SMWExporter as Exporter;
  */
 class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ?ConditionBuilder $conditionBuilder = null ) {
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -46,7 +35,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof NamespaceDescription;
 	}
 
@@ -55,7 +44,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): WhereCondition {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 

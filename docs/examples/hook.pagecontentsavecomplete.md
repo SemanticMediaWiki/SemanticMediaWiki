@@ -7,11 +7,11 @@
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
-use SMWDIContainer as DIContainer;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 
 MediaWikiServices::getInstance()->getHookContainer()->register( 'PageContentSaveComplete', function( $wikiPage, $user, $content, $summary, $isMinor, $isWatch, $section, $flags, $revision, $status, $baseRevId, $undidRevId ) {
 
@@ -49,7 +49,7 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'PageContentSave
         // Identify the content as unique
         $subobjectName = '_MYCUSTOMPREFIX' . md5( $nativeData );
 
-        $subject = new DIWikiPage(
+        $subject = new WikiPage(
                 $subject->getDBkey(),
                 $subject->getNamespace(),
                 $subject->getInterwiki(),
@@ -67,8 +67,8 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'PageContentSave
 
         // If one knows the details you can add it directly
         $containerSemanticData->addPropertyObjectValue(
-                new DIProperty( 'PropertyIWantToUse' ),
-                new DIWikiPage( 'SomeTextItem', NS_MAIN )
+                new Property( 'PropertyIWantToUse' ),
+                new WikiPage( 'SomeTextItem', NS_MAIN )
         );
 
         // If you don't know the type, use the DataValueFactory (see available methods)
@@ -88,8 +88,8 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'PageContentSave
         // This part is used to add the subobject the the main subject
         // Page: Foo -> gets a _MYCUSTOMPREFIX.... attached
         $parserData->getSemanticData()->addPropertyObjectValue(
-                new DIProperty( DIProperty::TYPE_SUBOBJECT ),
-                new DIContainer( $containerSemanticData )
+                new Property( Property::TYPE_SUBOBJECT ),
+                new Container( $containerSemanticData )
         );
 
         $parserData->pushSemanticDataToParserOutput();

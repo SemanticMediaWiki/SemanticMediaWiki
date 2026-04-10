@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Page;
 
 use MediaWiki\Linker\Linker;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
 use SMW\Store;
 use SMW\Utils\HtmlColumns;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,29 +20,13 @@ use SMWInfolink as Infolink;
 class ListBuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Collator
-	 */
-	private $collator;
-
-	/**
 	 * @var callable
 	 */
 	private $itemFormatter;
 
-	/**
-	 * @var DIProperty
-	 */
-	private $property;
+	private ?Property $property = null;
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
 	/**
 	 * @var callable
@@ -61,21 +45,19 @@ class ListBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param Collator|null $collator
 	 */
-	public function __construct( Store $store, ?Collator $collator = null ) {
-		$this->store = $store;
-		$this->collator = $collator;
+	public function __construct(
+		private readonly Store $store,
+		private ?Collator $collator = null,
+	) {
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 */
-	public function setProperty( DIProperty $property ) {
+	public function setProperty( Property $property ): void {
 		$this->property = $property;
 	}
 
@@ -84,7 +66,7 @@ class ListBuilder {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
+	public function isRTL( $isRTL ): void {
 		$this->isRTL = (bool)$isRTL;
 	}
 
@@ -93,7 +75,7 @@ class ListBuilder {
 	 *
 	 * @param callable $itemFormatter
 	 */
-	public function setItemFormatter( callable $itemFormatter ) {
+	public function setItemFormatter( callable $itemFormatter ): void {
 		$this->itemFormatter = $itemFormatter;
 	}
 
@@ -102,7 +84,7 @@ class ListBuilder {
 	 *
 	 * @param callable $lastItemFormatter
 	 */
-	public function setLastItemFormatter( callable $lastItemFormatter ) {
+	public function setLastItemFormatter( callable $lastItemFormatter ): void {
 		$this->lastItemFormatter = $lastItemFormatter;
 	}
 
@@ -111,7 +93,7 @@ class ListBuilder {
 	 *
 	 * @param Linker|false $linker
 	 */
-	public function setLinker( $linker ) {
+	public function setLinker( $linker ): void {
 		$this->linker = $linker;
 	}
 
@@ -120,7 +102,7 @@ class ListBuilder {
 	 *
 	 * @param int $sort
 	 */
-	public function sort( $sort ) {
+	public function sort( $sort ): void {
 		$this->sort = $sort;
 	}
 
@@ -131,7 +113,7 @@ class ListBuilder {
 	 *
 	 * @return array
 	 */
-	public function getList( array $dataItems ) {
+	public function getList( array $dataItems ): array {
 		return $this->buildList( $dataItems );
 	}
 
@@ -142,7 +124,7 @@ class ListBuilder {
 	 *
 	 * @return string
 	 */
-	public function getColumnList( array $dataItems, $colsThreshold = 10 ) {
+	public function getColumnList( array $dataItems, $colsThreshold = 10 ): string {
 		$htmlColumns = new HtmlColumns();
 
 		$htmlColumns->setResponsiveCols();
@@ -162,7 +144,10 @@ class ListBuilder {
 		return $htmlColumns->getHtml();
 	}
 
-	private function buildList( $dataItems ) {
+	/**
+	 * @return \non-empty-list<mixed>[]
+	 */
+	private function buildList( array $dataItems ): array {
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		if ( $this->linker === false ) {

@@ -2,10 +2,10 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\Query\ProfileAnnotator;
-use SMWDIBlob as DIBlob;
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,25 +16,19 @@ use SMWQuery as Query;
 class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var Query
-	 */
-	private $query;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param Query $query
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, Query $query ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private readonly Query $query,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->query = $query;
 	}
 
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		[ $sort, $order ] = $this->doSerializeSortKeys( $this->query );
 
 		$options = [
@@ -46,12 +40,15 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 		];
 
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKPA' ),
-			new DIBlob( json_encode( $options ) )
+			new Property( '_ASKPA' ),
+			new Blob( json_encode( $options ) )
 		);
 	}
 
-	private function doSerializeSortKeys( $query ) {
+	/**
+	 * @return mixed[][]
+	 */
+	private function doSerializeSortKeys( Query $query ): array {
 		$sort = [];
 		$order = [];
 

@@ -21,27 +21,16 @@ class PropertyStatisticsStore {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct( private Database $connection ) {
 	}
 
 	/**
@@ -52,14 +41,14 @@ class PropertyStatisticsStore {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
@@ -74,7 +63,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return bool Success indicator
 	 */
-	public function addToUsageCount( $pid, $value ) {
+	public function addToUsageCount( $pid, $value ): bool {
 		$usageVal = 0;
 		$nullVal = 0;
 
@@ -120,7 +109,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return string
 	 */
-	private function safeIncrement( string $field, int $delta ) {
+	private function safeIncrement( string $field, int $delta ): string {
 		if ( $delta < 0 ) {
 			return $field . '=' . $this->connection->conditional(
 				$this->connection->expr( $field, '>=', abs( $delta ) ),
@@ -145,7 +134,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return bool Success indicator
 	 */
-	public function addToUsageCounts( array $additions ) {
+	public function addToUsageCounts( array $additions ): bool {
 		$success = true;
 
 		if ( $additions === [] ) {
@@ -155,7 +144,7 @@ class PropertyStatisticsStore {
 		$method = __METHOD__;
 
 		if ( $this->onTransactionIdle ) {
-			$this->connection->onTransactionCommitOrIdle( function () use ( $method, $additions ) {
+			$this->connection->onTransactionCommitOrIdle( function () use ( $method, $additions ): void {
 				$this->log( $method . ' (onTransactionIdle)' );
 				$this->onTransactionIdle = false;
 				$this->addToUsageCounts( $additions );
@@ -188,7 +177,7 @@ class PropertyStatisticsStore {
 	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
-	public function insertUsageCount( $propertyId, $value ) {
+	public function insertUsageCount( $propertyId, $value ): bool {
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -234,7 +223,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return int
 	 */
-	public function getUsageCount( $propertyId ) {
+	public function getUsageCount( $propertyId ): int {
 		if ( !is_int( $propertyId ) ) {
 			return 0;
 		}
@@ -268,7 +257,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return array
 	 */
-	public function getUsageCounts( array $propertyIds ) {
+	public function getUsageCounts( array $propertyIds ): array {
 		if ( $propertyIds === [] ) {
 			return [];
 		}
@@ -314,7 +303,7 @@ class PropertyStatisticsStore {
 		);
 	}
 
-	private function log( $message, $context = [] ) {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

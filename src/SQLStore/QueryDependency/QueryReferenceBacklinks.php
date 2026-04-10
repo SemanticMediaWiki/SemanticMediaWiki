@@ -4,11 +4,11 @@ namespace SMW\SQLStore\QueryDependency;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Skin\SkinComponentUtils;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Localizer\Message;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,17 +19,9 @@ use SMW\SemanticData;
 class QueryReferenceBacklinks {
 
 	/**
-	 * @var QueryDependencyLinksStore
-	 */
-	private $queryDependencyLinksStore = null;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param QueryDependencyLinksStore $queryDependencyLinksStore
 	 */
-	public function __construct( QueryDependencyLinksStore $queryDependencyLinksStore ) {
-		$this->queryDependencyLinksStore = $queryDependencyLinksStore;
+	public function __construct( private readonly QueryDependencyLinksStore $queryDependencyLinksStore ) {
 	}
 
 	/**
@@ -40,7 +32,7 @@ class QueryReferenceBacklinks {
 	 *
 	 * @return bool
 	 */
-	public function addReferenceLinksTo( SemanticData $semanticData, ?RequestOptions $requestOptions = null ) {
+	public function addReferenceLinksTo( SemanticData $semanticData, ?RequestOptions $requestOptions = null ): bool {
 		if ( !$this->queryDependencyLinksStore->isEnabled() ) {
 			return false;
 		}
@@ -53,12 +45,12 @@ class QueryReferenceBacklinks {
 
 		$referenceLinks = $this->findReferenceLinks( $semanticData->getSubject(), $requestOptions );
 
-		$property = new DIProperty(
+		$property = new Property(
 			'_ASK'
 		);
 
 		foreach ( $referenceLinks as $subject ) {
-			$semanticData->addPropertyObjectValue( $property, DIWikiPage::doUnserialize( $subject ) );
+			$semanticData->addPropertyObjectValue( $property, WikiPage::doUnserialize( $subject ) );
 		}
 
 		return true;
@@ -67,12 +59,12 @@ class QueryReferenceBacklinks {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findReferenceLinks( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
+	public function findReferenceLinks( WikiPage $subject, ?RequestOptions $requestOptions = null ) {
 		$queryTargetLinksHashList = $this->queryDependencyLinksStore->findDependencyTargetLinksForSubject(
 			$subject,
 			$requestOptions
@@ -84,12 +76,12 @@ class QueryReferenceBacklinks {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
-	 * @param DIWikiPage $subject
+	 * @param Property $property
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function doesRequireFurtherLink( DIProperty $property, DIWikiPage $subject, &$html ) {
+	public function doesRequireFurtherLink( Property $property, WikiPage $subject, string &$html ): bool {
 		if ( $property->getKey() !== '_ASK' ) {
 			return true;
 		}

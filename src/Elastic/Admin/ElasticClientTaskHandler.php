@@ -23,24 +23,12 @@ use SMW\Utils\JsonView;
 class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var array
-	 */
-	private $taskHandlers = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param array $taskHandlers
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $taskHandlers = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->taskHandlers = $taskHandlers;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly array $taskHandlers = [],
+	) {
 	}
 
 	/**
@@ -48,7 +36,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -89,7 +77,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-title' ),
 			[ 'action' => $this->getTask() ]
@@ -124,12 +112,13 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$action = $webRequest->getText( 'action' );
 
 		if ( !$connection->ping() ) {
-			return $this->outputNoNodesAvailable( $connection );
+			$this->outputNoNodesAvailable( $connection );
+			return;
 		} elseif ( $action === $this->getTask() ) {
 			$this->outputHead();
 		} else {
@@ -140,7 +129,8 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 						$this->getStore()
 					);
 
-					return $taskHandler->handleRequest( $webRequest );
+					$taskHandler->handleRequest( $webRequest );
+					return;
 				}
 			}
 		}
@@ -148,7 +138,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputInfo();
 	}
 
-	private function outputNoNodesAvailable( $connection ) {
+	private function outputNoNodesAvailable( $connection ): void {
 		$this->outputHead();
 		$config = $connection->getConfig();
 
@@ -173,7 +163,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->addHTML( $html );
 	}
 
-	private function outputHead() {
+	private function outputHead(): void {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch' );
 		$this->outputFormatter->addHelpLink( 'https://www.semantic-mediawiki.org/wiki/Help:ElasticStore' );
 
@@ -190,7 +180,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->addHTML( $html );
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$html = '';
 

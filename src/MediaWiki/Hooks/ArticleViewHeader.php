@@ -4,9 +4,10 @@ namespace SMW\MediaWiki\Hooks;
 
 use Article;
 use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
@@ -30,31 +31,13 @@ class ArticleViewHeader implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var DependencyValidator
-	 */
-	private $dependencyValidator;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param DependencyValidator $dependencyValidator
 	 */
-	public function __construct( Store $store, NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator ) {
-		$this->store = $store;
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->dependencyValidator = $dependencyValidator;
+	public function __construct(
+		private Store $store,
+		private NamespaceExaminer $namespaceExaminer,
+		private DependencyValidator $dependencyValidator,
+	) {
 	}
 
 	/**
@@ -66,14 +49,14 @@ class ArticleViewHeader implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( Article $page, &$outputDone, &$useParserCache ) {
+	public function process( Article $page, &$outputDone, &$useParserCache ): bool {
 		$title = $page->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return true;
 		}
 
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$changePropagationWatchlist = array_flip(
 			$this->getOption( 'smwgChangePropagationWatchlist', [] )
@@ -93,10 +76,10 @@ class ArticleViewHeader implements HookListener {
 		return true;
 	}
 
-	private function updateCategoryTop( $title, $output ) {
+	private function updateCategoryTop( Title $title, $output ): bool {
 		$message = '';
 
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -104,7 +87,7 @@ class ArticleViewHeader implements HookListener {
 			$subject
 		);
 
-		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
+		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
 			$severity = $this->getOption( 'smwgChangePropagationProtection', true ) ? 'error' : 'warning';
 
 			$message .= $this->message(
@@ -134,7 +117,7 @@ class ArticleViewHeader implements HookListener {
 		return $message === '';
 	}
 
-	private function message( $type, array $message ) {
+	private function message( string $type, array $message ) {
 		$content = Message::get( $message, Message::PARSE, Message::USER_LANGUAGE );
 		switch ( $type ) {
 			case 'error':

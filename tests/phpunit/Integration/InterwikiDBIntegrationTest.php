@@ -4,12 +4,12 @@ namespace SMW\Tests\Integration;
 
 use MediaWiki\Interwiki\ClassicInterwikiLookup;
 use MediaWiki\MediaWikiServices;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Exporter\ExporterFactory;
+use SMW\Query\Query;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
 
 /**
  * @group semantic-mediawiki
@@ -45,16 +45,14 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->pageCreator = $utilityFactory->newPageCreator();
 
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
-		$this->queryParser = ApplicationFactory::getInstance()->newQueryParser();
+		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 
 		$utilityFactory->newMwHooksHandler()
 			->deregisterListedHooks()
 			->invokeHooksFromRegistry();
 
 		// Register a test interwiki prefix via the interwiki cache.
-		// Must be set after deregisterListedHooks()/invokeHooksFromRegistry()
-		// which call resetGlobalInstance() and disable the old service container,
-		// making overrideConfigValue() unusable.
+		// Must be set after deregisterListedHooks()/invokeHooksFromRegistry().
 		$this->oldInterwikiCache = $GLOBALS['wgInterwikiCache'] ?? false;
 		$GLOBALS['wgInterwikiCache'] = ClassicInterwikiLookup::buildCdbHash( [
 			[
@@ -139,14 +137,14 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 		$query->setLimit( 10 );
 
 		// Expects only one result with an interwiki being used as differentiator
-		$this->subjects[] = DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ . '-2' ) );
+		$this->subjects[] = WikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ . '-2' ) );
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$this->subjects,
 			$this->getStore()->getQueryResult( $query )
 		);
 
-		$this->subjects[] = DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ . '-1' ) );
+		$this->subjects[] = WikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ . '-1' ) );
 	}
 
 	private function fetchSerializedRdfOutputFor( array $pages ) {

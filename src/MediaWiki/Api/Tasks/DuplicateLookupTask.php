@@ -15,26 +15,17 @@ use SMW\Store;
 class DuplicateLookupTask extends Task {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
-	private $cacheUsage;
-
-	private Cache $cache;
+	private ?array $cacheUsage = null;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param Cache $cache
 	 */
-	public function __construct( Store $store, Cache $cache ) {
-		$this->store = $store;
-		$this->cache = $cache;
+	public function __construct(
+		private readonly Store $store,
+		private readonly Cache $cache,
+	) {
 	}
 
 	/**
@@ -42,7 +33,7 @@ class DuplicateLookupTask extends Task {
 	 *
 	 * @param array $cacheUsage
 	 */
-	public function setCacheUsage( array $cacheUsage ) {
+	public function setCacheUsage( array $cacheUsage ): void {
 		$this->cacheUsage = $cacheUsage;
 	}
 
@@ -53,7 +44,7 @@ class DuplicateLookupTask extends Task {
 	 *
 	 * @return array
 	 */
-	public function process( array $parameters ) {
+	public function process( array $parameters ): array {
 		$cacheTTL = 3600;
 
 		if ( isset( $this->cacheUsage['api.task'] ) ) {

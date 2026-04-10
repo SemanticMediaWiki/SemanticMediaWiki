@@ -3,13 +3,17 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
 use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundException;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxRangeGroupValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\ListValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter;
 use SMW\Schema\SchemaFinder;
 use SMW\Utils\UrlArgs;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,43 +26,19 @@ class ValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var ValueFilterFactory
-	 */
-	private $valueFilterFactory;
-
-	/**
-	 * @var SchemaFinder
-	 */
-	private $schemaFinder;
-
-	/**
 	 * @var UrlArgs
 	 */
 	private $urlArgs;
 
 	/**
-	 * @var
-	 */
-	private $params;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
-	 * @param ValueFilterFactory $valueFilterFactory
-	 * @param SchemaFinder $schemaFinder
-	 * @param array $params
 	 */
-	public function __construct( TemplateParser $templateParser, ValueFilterFactory $valueFilterFactory, SchemaFinder $schemaFinder, array $params ) {
-		$this->templateParser = $templateParser;
-		$this->valueFilterFactory = $valueFilterFactory;
-		$this->schemaFinder = $schemaFinder;
-		$this->params = $params;
+	public function __construct(
+		private TemplateParser $templateParser,
+		private ValueFilterFactory $valueFilterFactory,
+		private SchemaFinder $schemaFinder,
+		private array $params,
+	) {
 	}
 
 	/**
@@ -106,14 +86,14 @@ class ValueFilter {
 		return $cards;
 	}
 
-	private function newValueFilter( $property ) {
-		$prop = DIProperty::newFromUserLabel(
+	private function newValueFilter( int|string $property ): CheckboxRangeGroupValueFilter|RangeValueFilter|ListValueFilter|CheckboxValueFilter {
+		$prop = Property::newFromUserLabel(
 			$property
 		);
 
 		$schemaList = $this->schemaFinder->newSchemaList(
 			$prop,
-			new DIProperty( '_PROFILE_SCHEMA' )
+			new Property( '_PROFILE_SCHEMA' )
 		);
 
 		$compartmentIterator = $schemaList->newCompartmentIteratorByKey( 'profile' );
@@ -169,7 +149,7 @@ class ValueFilter {
 		throw new DefaultValueFilterNotFoundException( $property );
 	}
 
-	private function getType( $property ) {
+	private function getType( Property $property ): string {
 		$type = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyValueType()
 		);

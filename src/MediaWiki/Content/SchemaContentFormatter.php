@@ -5,14 +5,15 @@ namespace SMW\MediaWiki\Content;
 use MediaWiki\MediaWikiServices;
 use Onoi\CodeHighlighter\Geshi;
 use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\Schema\Schema;
 use SMW\Store;
 use SMW\Utils\Html\SummaryTable;
-use SMWInfolink as Infolink;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,15 +23,7 @@ use SMWInfolink as Infolink;
  */
 class SchemaContentFormatter {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var HtmlBuilder
-	 */
-	private $htmlBuilder;
+	private HtmlBuilder $htmlBuilder;
 
 	/**
 	 * @var bool
@@ -49,11 +42,8 @@ class SchemaContentFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 		$this->htmlBuilder = new HtmlBuilder();
 	}
 
@@ -62,7 +52,7 @@ class SchemaContentFormatter {
 	 *
 	 * @param bool $isYaml
 	 */
-	public function isYaml( $isYaml ) {
+	public function isYaml( $isYaml ): void {
 		$this->isYaml = $isYaml;
 	}
 
@@ -71,7 +61,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return
 	 */
-	public function setType( $type ) {
+	public function setType( $type ): void {
 		$this->type = $type;
 	}
 
@@ -80,7 +70,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return
 	 */
-	public function getModuleStyles() {
+	public function getModuleStyles(): array {
 		return array_merge( [
 			'mediawiki.helplink',
 			'smw.content.schema',
@@ -95,7 +85,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [ 'smw.content.schemaview' ];
 	}
 
@@ -124,7 +114,7 @@ class SchemaContentFormatter {
 	 *
 	 * @param string $type
 	 */
-	public function setUnknownType( $type ) {
+	public function setUnknownType( $type ): void {
 		$this->unknownType = $type;
 	}
 
@@ -137,7 +127,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return string
 	 */
-	public function getText( $text, ?Schema $schema = null, array $errors = [] ) {
+	public function getText( $text, ?Schema $schema = null, array $errors = [] ): string {
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
 		// 'footer' => [ $schema ]
@@ -163,7 +153,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return array
 	 */
-	public function getUsage( ?Schema $schema = null ) {
+	public function getUsage( ?Schema $schema = null ): array {
 		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
 			return [ '', 0 ];
 		}
@@ -173,19 +163,19 @@ class SchemaContentFormatter {
 
 		$usage_lookup = (array)$this->type['usage_lookup'];
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			str_replace( ' ', '_', $schema->getName() ?? '' ),
 			SMW_NS_SCHEMA
 		);
 
 		foreach ( $usage_lookup as $property ) {
-			$property = new DIProperty(
+			$property = new Property(
 				$property
 			);
 
 			$ps = $this->store->getPropertySubjects( $property, $subject );
 
-			if ( $ps instanceof \Traversable ) {
+			if ( $ps instanceof Traversable ) {
 				$ps = iterator_to_array( $ps );
 			}
 
@@ -226,7 +216,7 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_head', $params );
 	}
 
-	private function schema_summary( $schema, $errors ) {
+	private function schema_summary( $schema, array $errors ) {
 		$errorCount = count( $errors );
 		$type = $schema->get( Schema::SCHEMA_TYPE );
 
@@ -265,7 +255,7 @@ class SchemaContentFormatter {
 	private function schema_body( $text ) {
 		$codeHighlighter = null;
 
-		if ( class_exists( '\Onoi\CodeHighlighter\Highlighter' ) ) {
+		if ( class_exists( CodeHighlighter::class ) ) {
 			$codeHighlighter = new CodeHighlighter();
 
 			// `yaml` works well enough for both JSON and YAML
@@ -293,7 +283,10 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_body', $params );
 	}
 
-	private function attributes_extra( $schema ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function attributes_extra( $schema ): array {
 		if ( $schema === null ) {
 			return [];
 		}
@@ -325,7 +318,10 @@ class SchemaContentFormatter {
 		return $params;
 	}
 
-	private function error_params( $validator_schema, array $errors = [] ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function error_params( string|array $validator_schema, array $errors = [] ): array {
 		if ( $errors === [] ) {
 			return [];
 		}
@@ -362,7 +358,7 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_unknown_type', $params );
 	}
 
-	private function msg( $key, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+	private function msg( array|string $key, int $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $key, $type, $lang );
 	}
 
