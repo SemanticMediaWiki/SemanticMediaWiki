@@ -107,7 +107,7 @@ class PropertiesQueryPage extends QueryPage {
 		} elseif ( $dataItem instanceof Error ) {
 			return $this->getMessageFormatter()->clear()
 				->setType( 'warning' )
-				->addFromArray( [ $dataItem->getErrors(), 'ID: ' . ( isset( $dataItem->id ) ? $dataItem->id : 'N/A' ) ] )
+				->addFromArray( [ $dataItem->getErrors(), 'ID: ' . ( $dataItem->id ?? 'N/A' ) ] )
 				->getHtml();
 		}
 
@@ -142,7 +142,7 @@ class PropertiesQueryPage extends QueryPage {
 				$typestring = '';
 				$proplink = $property->getLabel();
 				$this->getMessageFormatter()
-					->addFromArray( [ 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) ] )
+					->addFromArray( [ 'ID: ' . ( $property->id ?? 'N/A' ) ] )
 					->addFromKey( 'smw_notitle', $proplink );
 			} else {
 				[ $typestring, $proplink ] = $this->getUserDefinedPropertyInfo( $title, $property, $useCount );
@@ -247,7 +247,7 @@ class PropertiesQueryPage extends QueryPage {
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $property, null );
 
 		$dataValue->setLinkAttributes( [
-			'title' => 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' )
+			'title' => 'ID: ' . ( $property->id ?? 'N/A' )
 					. ' (' . $property->getKey() . ')'
 		] );
 

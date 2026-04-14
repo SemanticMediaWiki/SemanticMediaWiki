@@ -41,9 +41,6 @@ abstract class QueryPage extends MWQueryPage {
 	/** @var array */
 	protected $selectOptions = [];
 
-	/** @var array */
-	protected $useSerchForm = false;
-
 	/**
 	 * Implemented by subclasses to provide concrete functions.
 	 */
@@ -99,7 +96,7 @@ abstract class QueryPage extends MWQueryPage {
 	 * @return MessageFormatter
 	 */
 	public function getMessageFormatter() {
-		if ( !isset( $this->msgFormatter ) ) {
+		if ( !$this->msgFormatter ) {
 			$this->msgFormatter = new MessageFormatter( $this->getLanguage() );
 		}
 
@@ -131,7 +128,6 @@ abstract class QueryPage extends MWQueryPage {
 	 * @return string
 	 */
 	public function getSearchForm( $property = '', $cacheDate = '', $propertySearch = true, $filter = '' ) {
-		$this->useSerchForm = true;
 		$this->getOutput()->addModules( 'ext.smw.autocomplete.property' );
 
 		// No need to verify $this->selectOptions because its values are set
@@ -273,10 +269,6 @@ abstract class QueryPage extends MWQueryPage {
 			}
 			$str = $this->listoutput ? $this->getLanguage()->listToText( $s ) : implode( '', $s );
 			$out->addHTML( $str );
-		}
-
-		if ( !$this->useSerchForm ) {
-			$out->addHTML( "<p>{$sl}</p>\n" );
 		}
 
 		return $num;
