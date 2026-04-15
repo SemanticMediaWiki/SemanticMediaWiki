@@ -122,6 +122,10 @@ class JsonContentsFileReaderTest extends TestCase {
 		foreach ( explode( ',', $list ) as $lang ) {
 			$contents = $instance->readByLanguageCode( $lang, true );
 
+			var_dump( $lang );
+			var_dump( $contents );
+			var_dump( $contents[$topic] );
+
 			if ( $contents === '' || !isset( $contents[$topic] ) ) {
 				continue;
 			}
