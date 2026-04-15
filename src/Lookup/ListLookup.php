@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore\Lookup;
+namespace SMW\Lookup;
 
 /**
  * A simple interface for fetching a list from either a DB or being used as
@@ -15,27 +15,21 @@ interface ListLookup {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return array
 	 */
-	public function fetchList();
+	public function fetchList(): array;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return bool
 	 */
-	public function isFromCache();
+	public function isFromCache(): bool;
 
 	/**
 	 * A unique identifier that can describe a specific lookup instance to
 	 * distinguish it from other lookup's of the same list
 	 *
 	 * @since 2.2
-	 *
-	 * @return string
 	 */
-	public function getHash();
+	public function getHash(): string;
 
 	/**
 	 * @since 2.2
@@ -45,3 +39,8 @@ interface ListLookup {
 	public function getTimestamp();
 
 }
+
+/**
+ * @deprecated since 7.0.0, use \SMW\Lookup\ListLookup
+ */
+class_alias( ListLookup::class, 'SMW\SQLStore\Lookup\ListLookup' );

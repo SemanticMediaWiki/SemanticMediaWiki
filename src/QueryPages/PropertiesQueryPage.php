@@ -12,9 +12,9 @@ use SMW\DataValues\TypesValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;
 use SMW\Formatters\Infolink;
+use SMW\Lookup\ListLookup;
 use SMW\RequestOptions;
 use SMW\Settings;
-use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
 
 /**
