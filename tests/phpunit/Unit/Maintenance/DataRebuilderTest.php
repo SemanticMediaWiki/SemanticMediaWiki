@@ -10,7 +10,7 @@ use SMW\DataItems\WikiPage;
 use SMW\Maintenance\DataRebuilder;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
 use SMW\Query\QueryResult;
@@ -40,9 +40,7 @@ class DataRebuilderTest extends TestCase {
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp(): void {
-		$this->markTestSkipped( 'SUT needs refactoring - Store::setupStore cannot be mocked' );
-
-		$nullJob = $this->getMockBuilder( NullJob::class )
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,7 +51,7 @@ class DataRebuilderTest extends TestCase {
 
 		$jobFactory->expects( $this->any() )
 			->method( 'newUpdateJob' )
-			->willReturn( $nullJob );
+			->willReturn( $updateJob );
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
@@ -409,6 +407,7 @@ class DataRebuilderTest extends TestCase {
 	 */
 	public function refreshDataOnMockCallback( &$index ) {
 		$index++;
+		return 1;
 	}
 
 }
