@@ -10,9 +10,9 @@ use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\Lookup\ListLookup;
 use SMW\RequestOptions;
 use SMW\Settings;
-use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
 
 /**

@@ -5,8 +5,8 @@ namespace SMW\QueryPages;
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use SMW\DataItems\Property;
+use SMW\Lookup\ListLookup;
 use SMW\RequestOptions;
-use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
 
 /**
