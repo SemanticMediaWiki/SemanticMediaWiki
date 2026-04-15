@@ -31,10 +31,6 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		if ( method_exists( RestrictionStore::class, 'isProtected' ) ) {
-			$this->markTestSkipped( 'SUT needs refactoring for RestrictionStore' );
-		}
-
 		$testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
