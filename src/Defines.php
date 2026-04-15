@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * @codeCoverageIgnore
+ *
  * Constants relevant to Semantic MediaWiki.
  *
  * This file is loaded via Composer's autoload mechanism (autoload.files in
@@ -15,8 +17,6 @@
  *
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6579
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6580
- *
- * @codeCoverageIgnore
  */
 
 if ( defined( 'SMW_SPECIAL_SEARCHTYPE' ) ) {
