@@ -7,6 +7,7 @@ use MWHttpRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\RepositoryClient;
+use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 use StatusValue;
 
@@ -21,7 +22,9 @@ use StatusValue;
 class ElementaryRepositoryConnectorTest extends TestCase {
 
 	public function getRepositoryConnectors() {
-		return [];
+		return [
+			GenericRepositoryConnector::class
+		];
 	}
 
 	protected function createMockHttpRequestFactory( MWHttpRequest $mockRequest ): HttpRequestFactory {
