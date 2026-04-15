@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Unit\Property\Annotators;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
@@ -95,9 +97,19 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
-			->method( 'getRestrictions' )
-			->willReturn( [ 'Foo' ] );
+		MediaWikiServices::getInstance()->resetServiceForTesting( 'RestrictionStore' );
+
+		MediaWikiServices::getInstance()->redefineService( 'RestrictionStore', function () {
+			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'getRestrictions' )
+				->willReturn( [ 'Foo' ] );
+
+			return $restrictionStore;
+		} );
 
 		$instance = new EditProtectedPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
