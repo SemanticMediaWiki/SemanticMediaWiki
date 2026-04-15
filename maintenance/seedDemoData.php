@@ -73,13 +73,15 @@ class seedDemoData extends Maintenance {
 			exit( $maintenanceCheck->getMessage() );
 		}
 
-		$action = $clearOnly
-			? 'delete all pages in Category:Seed data'
-			: 'delete all pages in Category:Seed data and recreate them';
-		$confirm = $this->readconsole( "This will {$action}. Type YES to proceed: " );
-		if ( $confirm !== 'YES' ) {
-			$this->output( "Aborted.\n" );
-			return;
+		if ( !$this->hasOption( 'force' ) ) {
+			$action = $clearOnly
+				? 'delete all pages in Category:Seed data'
+				: 'delete all pages in Category:Seed data and recreate them';
+			$confirm = $this->readconsole( "This will {$action}. Type YES to proceed: " );
+			if ( $confirm !== 'YES' ) {
+				$this->output( "Aborted.\n" );
+				return;
+			}
 		}
 
 		$this->initBreedData();
