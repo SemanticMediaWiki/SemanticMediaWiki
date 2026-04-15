@@ -40,8 +40,6 @@ class DataRebuilderTest extends TestCase {
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp(): void {
-		$this->markTestSkipped( 'SUT needs refactoring - Store::setupStore cannot be mocked' );
-
 		$nullJob = $this->getMockBuilder( NullJob::class )
 			->disableOriginalConstructor()
 			->getMock();
