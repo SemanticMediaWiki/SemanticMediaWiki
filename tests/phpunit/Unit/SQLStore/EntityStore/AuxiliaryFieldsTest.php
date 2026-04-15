@@ -56,7 +56,7 @@ class AuxiliaryFieldsTest extends TestCase {
 
 		$row = [
 			'smw_id' => 42,
-			'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
+			'smw_hash' => sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ),
 			'smw_countmap' => 0
 		];
 
@@ -65,7 +65,7 @@ class AuxiliaryFieldsTest extends TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				[ 't.smw_hash' => [ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ] ] )
+				[ 't.smw_hash' => [ sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ) ] ] )
 			->willReturn( [ (object)$row ] );
 
 		$instance = new AuxiliaryFields(

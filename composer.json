@@ -68,6 +68,7 @@
 	},
 	"autoload": {
 		"files": [
+			"src/Defines.php",
 			"src/enableSemantics.php"
 		]
 	},

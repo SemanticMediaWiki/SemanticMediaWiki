@@ -77,7 +77,7 @@ class CacheWarmerTest extends TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				[ 'smw_hash' => [ '7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] )
+				[ 'smw_hash' => [ sha1( json_encode( [ 'Bar', 0, '', '' ] ), true ) ] ] )
 			->willReturn( [ (object)$row ] );
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
@@ -149,7 +149,7 @@ class CacheWarmerTest extends TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				[ 'smw_hash' => [ '909d8ab26ea49adb7e1b106bc47602050d07d19f' ] ] )
+				[ 'smw_hash' => [ sha1( json_encode( [ 'Foo', 102, '', '' ] ), true ) ] ] )
 			->willReturn( [ (object)$row ] );
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
