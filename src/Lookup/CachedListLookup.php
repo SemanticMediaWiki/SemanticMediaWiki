@@ -46,10 +46,8 @@ class CachedListLookup implements ListLookup {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return array
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		[ $key, $optionsKey ] = $this->getCacheKey( $this->listLookup->getHash() );
 
 		if ( $this->cacheOptions->useCache && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
@@ -79,8 +77,6 @@ class CachedListLookup implements ListLookup {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return bool
 	 */
 	public function isFromCache(): bool {
 		return $this->isFromCache;
@@ -97,10 +93,8 @@ class CachedListLookup implements ListLookup {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return $this->listLookup->getHash();
 	}
 
