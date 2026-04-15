@@ -155,7 +155,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->blobStore->canUse();
 	}
 
