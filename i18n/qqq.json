@@ -953,7 +953,7 @@
 	"apihelp-browsebyproperty-example-3": "{{doc-apihelp-example|browsebyproperty}}",
 	"apihelp-browsebysubject-example-1": "{{doc-apihelp-example|browsebysubject}}",
 	"apihelp-smwinfo-example-1": "{{doc-apihelp-example|smwinfo}}",
-	"smw-apihelp-smwtask-example-update": "{{doc-apihelp-example|smwtask}}"
+	"smw-apihelp-smwtask-example-update": "{{doc-apihelp-example|smwtask}}",
 	"smw-api-invalid-parameters": "This is an error message emitted by an API module.\n\nParameter:\n* $1 - holds the name of the invalid parameter",
 	"smw-parser-recursion-level-exceeded": "This is an error message.\n\nParameter:\n* $1 - holds the count of recursions (integer) detected by the software",
 	"smw-property-page-list-count": "This is an informatory message on a property page.\n\nParameter:\n* $1 - holds the number of pages",
