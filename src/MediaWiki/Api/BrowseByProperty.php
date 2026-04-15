@@ -149,7 +149,7 @@ class BrowseByProperty extends ApiBase {
 	/**
 	 * @inheritDoc
 	 */
-	protected function getExamplesMessages() {
+	protected function getExamplesMessages(): array {
 		return [
 			'action=browsebyproperty&property=Modification_date'
 				=> 'apihelp-browsebyproperty-example-1',
