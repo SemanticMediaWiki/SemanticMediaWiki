@@ -36,10 +36,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends TestCase {
 	protected function setUp(): void {
 		$this->store = ApplicationFactory::getInstance()->getStore();
 
-		if ( !$this->store instanceof SPARQLStore ) {
-			$this->markTestSkipped( "Requires a SPARQLStore instance" );
-		}
-
 		$repositoryConnection = $this->store->getConnection( 'sparql' );
 		$repositoryConnection->setConnectionTimeout( 5 );
 
