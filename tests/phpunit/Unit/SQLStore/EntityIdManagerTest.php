@@ -358,7 +358,7 @@ class EntityIdManagerTest extends TestCase {
 			->with(
 				42,
 				'Bar',
-				'8ba1886210e332a1fbaf28c38e43d1e89dc761db' );
+				sha1( json_encode( [ 'Foo', 0, 'Bar', '' ] ), true ) );
 
 		$instance = new EntityIdManager(
 			$this->store,

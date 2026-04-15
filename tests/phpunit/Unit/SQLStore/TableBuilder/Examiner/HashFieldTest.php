@@ -27,9 +27,19 @@ class HashFieldTest extends TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->method( 'selectField' )
+			->willReturn( 0 );
+
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store->method( 'getConnection' )
+			->willReturn( $connection );
 
 		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\populateHashField' )
 			->disableOriginalConstructor()

@@ -74,6 +74,25 @@ class TableBuildExaminer {
 	}
 
 	/**
+	 * Run migrations that must complete before table schemas are altered.
+	 *
+	 * @since 7.0
+	 */
+	public function runPreCreationMigrations(): void {
+		// Skip on fresh install — tables don't exist yet
+		if ( !$this->store->getConnection( 'mw.db' )->tableExists( SQLStore::ID_TABLE, __METHOD__ ) ) {
+			return;
+		}
+
+		$hashField = $this->tableBuildExaminerFactory->newHashField(
+			$this->store
+		);
+
+		$hashField->setMessageReporter( $this->messageReporter );
+		$hashField->migrateHexHashes();
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param TableBuilder $tableBuilder

@@ -31,7 +31,7 @@ class QueueTest extends TestCase {
 		$instance->add( $dataItem, 1 );
 
 		$this->assertEquals(
-			[ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' => $dataItem ],
+			[ sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ) => $dataItem ],
 			$instance->getMembers()
 		);
 	}

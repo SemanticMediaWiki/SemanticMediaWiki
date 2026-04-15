@@ -137,7 +137,7 @@ class WikiPage extends DataItem {
 	 * @return string
 	 */
 	public function getSha1(): string {
-		return sha1( json_encode( [ $this->m_dbkey, $this->m_namespace, $this->m_interwiki, $this->m_subobjectname ] ) );
+		return sha1( json_encode( [ $this->m_dbkey, $this->m_namespace, $this->m_interwiki, $this->m_subobjectname ] ), true );
 	}
 
 	/**

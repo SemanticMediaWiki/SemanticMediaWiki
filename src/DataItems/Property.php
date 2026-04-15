@@ -127,7 +127,7 @@ class Property extends DataItem {
 	 * @return string
 	 */
 	public function getSha1(): string {
-		return sha1( json_encode( [ $this->m_key, SMW_NS_PROPERTY, '', '' ] ) );
+		return sha1( json_encode( [ $this->m_key, SMW_NS_PROPERTY, '', '' ] ), true );
 	}
 
 	/**

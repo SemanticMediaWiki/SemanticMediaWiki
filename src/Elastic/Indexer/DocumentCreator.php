@@ -318,7 +318,7 @@ class DocumentCreator {
 			'interwiki' => $subject->getInterwiki(),
 			'sortkey'   => $sort,
 			'serialization' => $subject->getSerialization(),
-			'sha1' => $subject->getSha1()
+			'sha1' => bin2hex( $subject->getSha1() )
 		];
 	}
 

@@ -42,6 +42,86 @@ class HashField {
 	}
 
 	/**
+	 * Convert hex-encoded smw_hash values to raw binary.
+	 *
+	 * Must run BEFORE the column type changes from VARBINARY(40) to
+	 * BINARY(20), because the ALTER would truncate 40-byte hex strings.
+	 * The LENGTH check distinguishes hex (40) from already-converted
+	 * binary (20) and empty values.
+	 *
+	 * @since 7.0
+	 */
+	public function migrateHexHashes(): void {
+		$cliMsgFormatter = new CliMsgFormatter();
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$count = (int)$connection->selectField(
+			SQLStore::ID_TABLE,
+			'COUNT(*)',
+			'LENGTH(smw_hash) = 40',
+			__METHOD__
+		);
+
+		if ( $count === 0 ) {
+			return;
+		}
+
+		if ( $count > self::threshold() ) {
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->twoCols(
+					"... hex hashes to convert ...",
+					"(rows) $count — run populateHashField.php --force-update",
+					3
+				)
+			);
+			return;
+		}
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->twoCols( "... converting hex hashes to binary ...", "(rows) $count", 3 )
+		);
+
+		$table = $connection->tableName( SQLStore::ID_TABLE );
+		$type = $connection->getType();
+
+		if ( $type === 'postgres' ) {
+			$connection->query(
+				"UPDATE $table SET smw_hash = decode(smw_hash, 'hex') WHERE LENGTH(smw_hash) = 40",
+				__METHOD__
+			);
+		} elseif ( $type === 'sqlite' ) {
+			// unhex() requires SQLite 3.38+; fall back to PHP-side conversion
+			$this->migrateHexHashesViaPHP( $connection );
+		} else {
+			$connection->query(
+				"UPDATE $table SET smw_hash = UNHEX(smw_hash) WHERE LENGTH(smw_hash) = 40",
+				__METHOD__
+			);
+		}
+	}
+
+	/**
+	 * Row-by-row hex-to-binary conversion for databases without UNHEX().
+	 */
+	private function migrateHexHashesViaPHP( $connection ): void {
+		$rows = $connection->select(
+			SQLStore::ID_TABLE,
+			[ 'smw_id', 'smw_hash' ],
+			'LENGTH(smw_hash) = 40',
+			__METHOD__
+		);
+
+		foreach ( $rows as $row ) {
+			$connection->update(
+				SQLStore::ID_TABLE,
+				[ 'smw_hash' => hex2bin( $row->smw_hash ) ],
+				[ 'smw_id' => $row->smw_id ],
+				__METHOD__
+			);
+		}
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $opts
