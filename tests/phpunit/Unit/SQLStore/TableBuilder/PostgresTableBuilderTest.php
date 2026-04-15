@@ -159,14 +159,40 @@ class PostgresTableBuilderTest extends TestCase {
 	}
 
 	public function testDoCheckOnAfterCreate() {
-		$this->markTestSkipped( 'SUT needs refactoring - onTransactionCommitOrIdle cannot be mocked' );
-		$this->connection->expects( $this->any() )
+
+		$selectCalled = false;
+		$callbackRegistered = false;
+
+		$this->connection->expects( $this->once() )
 			->method( 'selectField' )
-			->willReturn( 42 );
+			->with(
+				$this->equalTo( SQLStore::ID_TABLE ),
+				$this->equalTo( 'max(smw_id)' )
+			)
+			->willReturnCallback( function () use ( &$selectCalled ) {
+				$selectCalled = true;
+				return 42;
+			});
+
+		$this->connection->expects( $this->once() )
+			->method( 'onTransactionCommitOrIdle' )
+			->willReturnCallback( function ( $callback ) use ( &$callbackRegistered ) {
+				$callbackRegistered = true;
+
+				$callback();
+			});
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER SEQUENCE' ) )
+			->willReturn( new FakeResultWrapper( [] ) );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );
 
 		$instance->checkOn( $instance::POST_CREATION );
+
+		$this->assertTrue( $selectCalled, 'selectField was not called' );
+		$this->assertTrue( $callbackRegistered, 'transaction callback was not registered' );
 	}
 
 	public function testOptimizeTable() {
