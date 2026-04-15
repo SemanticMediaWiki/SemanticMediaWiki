@@ -117,6 +117,8 @@ class JsonContentsFileReaderTest extends TestCase {
 
 		$didWrite = false;
 
+		var_dump( $instance->readByLanguageCode( 'en', true ) );
+
 		foreach ( explode( ',', $list ) as $lang ) {
 			$contents = $instance->readByLanguageCode( $lang, true );
 
