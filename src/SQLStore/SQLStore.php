@@ -11,6 +11,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValues\WikiPageValue;
+use SMW\Lookup\CachedListLookup;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Query;
 use SMW\RequestOptions;
@@ -19,7 +20,6 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
-use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 

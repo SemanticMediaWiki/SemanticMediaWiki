@@ -12,11 +12,11 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\Lookup\ListLookup;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\Timer;
 
@@ -332,10 +332,8 @@ abstract class Store implements QueryEngine {
 	 * further results to ask for).
 	 *
 	 * @param RequestOptions|null $requestoptions
-	 *
-	 * @return ListLookup
 	 */
-	abstract public function getPropertiesSpecial( $requestoptions = null );
+	abstract public function getPropertiesSpecial( $requestoptions = null ): ListLookup;
 
 	/**
 	 * Return all properties that have been declared in the wiki but that
@@ -350,10 +348,8 @@ abstract class Store implements QueryEngine {
 	 * further results to ask for).
 	 *
 	 * @param RequestOptions|null $requestoptions
-	 *
-	 * @return mixed array
 	 */
-	abstract public function getUnusedPropertiesSpecial( $requestoptions = null );
+	abstract public function getUnusedPropertiesSpecial( $requestoptions = null ): ListLookup;
 
 	/**
 	 * Return all properties that are used on some page but that do not
@@ -362,10 +358,8 @@ abstract class Store implements QueryEngine {
 	 * properties that are used but do not have a type assigned to them.
 	 *
 	 * @param RequestOptions|null $requestoptions
-	 *
-	 * @return mixed of array( Property, int )
 	 */
-	abstract public function getWantedPropertiesSpecial( $requestoptions = null );
+	abstract public function getWantedPropertiesSpecial( $requestoptions = null ): ListLookup;
 
 	/**
 	 * Return statistical information as an associative array with the
