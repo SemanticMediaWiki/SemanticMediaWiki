@@ -305,6 +305,14 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	public function testVerifyToFetchCorrectSemanticDataFromInternalCache() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
+		$this->pageCreator
+			->createPage( $titleFactory->newFromText( 'Foo-A' ) )
+			->doEdit( '#REDIRECT [[Foo-C]]' );
+
+		$this->pageCreator
+			->createPage( $titleFactory->newFromText( 'Foo-C' ) )
+			->doEdit( '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
+
 		$redirect = WikiPage::newFromTitle( $titleFactory->newFromText( 'Foo-A' ) );
 		$target = WikiPage::newFromTitle( $titleFactory->newFromText( 'Foo-C' ) );
 
