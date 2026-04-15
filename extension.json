@@ -92,7 +92,9 @@
 		"SMW\\QueryPrinterFactory": "src/Query/QueryPrinterFactory.php",
 		"SMW\\RecurringEvents": "src/Utils/RecurringEvents.php",
 		"SMW\\SemanticData": "src/DataModel/SemanticData.php",
-		"SMW\\Subobject": "src/DataModel/Subobject.php"
+		"SMW\\Subobject": "src/DataModel/Subobject.php",
+		"SMW\\SQLStore\\Lookup\\ListLookup": "src/Lookup/ListLookup.php",
+		"SMW\\SQLStore\\Lookup\\CachedListLookup": "src/Lookup/CachedListLookup.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

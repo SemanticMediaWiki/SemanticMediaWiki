@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore\Lookup;
+namespace SMW\Lookup;
 
 /**
  * A simple interface for fetching a list from either a DB or being used as
@@ -45,3 +45,8 @@ interface ListLookup {
 	public function getTimestamp();
 
 }
+
+/**
+ * @deprecated since 7.0.0, use \SMW\Lookup\ListLookup
+ */
+class_alias( ListLookup::class, 'SMW\SQLStore\Lookup\ListLookup' );

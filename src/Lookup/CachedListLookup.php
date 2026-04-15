@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW\SQLStore\Lookup;
+namespace SMW\Lookup;
 
 use Onoi\Cache\Cache;
+use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use stdClass;
 
 /**
@@ -178,3 +179,8 @@ class CachedListLookup implements ListLookup {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0, use \SMW\Lookup\CachedListLookup
+ */
+class_alias( CachedListLookup::class, 'SMW\SQLStore\Lookup\CachedListLookup' );

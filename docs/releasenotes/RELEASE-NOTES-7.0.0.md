@@ -154,6 +154,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `SMWOutputs` | `SMW\MediaWiki\Outputs` |
   | `SMWPageSchemas` | `SMW\MediaWiki\PageSchemas` |
   | `SMW\ContentParser` | `SMW\Parser\ContentParser` |
+  | `SMW\SQLStore\Lookup\ListLookup` | `SMW\Lookup\ListLookup` |
+  | `SMW\SQLStore\Lookup\CachedListLookup` | `SMW\Lookup\CachedListLookup` |
 
 ### Bug fixes
 
