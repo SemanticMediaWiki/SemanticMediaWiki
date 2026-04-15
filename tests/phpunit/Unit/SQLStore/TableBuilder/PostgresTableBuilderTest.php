@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\SQLStore\TableBuilder;
 
 use PHPUnit\Framework\TestCase;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
 use SMW\SQLStore\TableBuilder\Table;
 use Wikimedia\Rdbms\Database;
