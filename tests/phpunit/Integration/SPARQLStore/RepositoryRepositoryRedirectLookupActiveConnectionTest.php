@@ -11,7 +11,6 @@ use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
-use SMW\SPARQLStore\SPARQLStore;
 
 /**
  * @group semantic-mediawiki
@@ -28,10 +27,6 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->store = ApplicationFactory::getInstance()->getStore();
-
-		if ( !$this->store instanceof SPARQLStore ) {
-			$this->markTestSkipped( "Skipping test because a SPARQLStore instance is required." );
-		}
 
 		$this->repositoryConnection = $this->store->getConnection( 'sparql' );
 		$this->repositoryConnection->setConnectionTimeout( 5 );
