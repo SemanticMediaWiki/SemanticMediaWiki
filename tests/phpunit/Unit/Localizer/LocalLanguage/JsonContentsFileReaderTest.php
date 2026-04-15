@@ -117,21 +117,14 @@ class JsonContentsFileReaderTest extends TestCase {
 
 		$didWrite = false;
 
-		var_dump( $instance->readByLanguageCode( 'en', true ) );
-		var_dump( $GLOBALS['smwgExtraneousLanguageFileDir'] );
-
 		foreach ( explode( ',', $list ) as $lang ) {
 			$contents = $instance->readByLanguageCode( $lang, true );
 
-			var_dump( $lang );
-			var_dump( $contents );
-			var_dump( $contents[$topic] );
-
-			if ( $contents === '' || !isset( $contents[$topic] ) ) {
+			if ( $contents === '' ) {
 				continue;
 			}
 
-			$contents[$topic] = $contents[$topic] + $extension;
+			$contents[$topic] = ( $contents[$topic] ?? [] ) + $extension;
 
 			$instance->writeByLanguageCode( $lang, $contents );
 
@@ -166,11 +159,9 @@ class JsonContentsFileReaderTest extends TestCase {
 
 	public function dataExtensionProvider() {
 		$provider[] = [
-			'datatype',
+			'dataTypeLabels',
 			[
-				'labels' => [
-					"_ref_rec" => "Reference"
-				]
+				"_ref_rec" => "Reference"
 			]
 		];
 
