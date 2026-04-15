@@ -15,6 +15,8 @@
  *
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6579
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6580
+ *
+ * @codeCoverageIgnore
  */
 
 if ( defined( 'SMW_SPECIAL_SEARCHTYPE' ) ) {
