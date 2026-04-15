@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * @codeCoverageIgnore
+ *
  * Constants relevant to Semantic MediaWiki.
  *
  * This file is loaded via Composer's autoload mechanism (autoload.files in
