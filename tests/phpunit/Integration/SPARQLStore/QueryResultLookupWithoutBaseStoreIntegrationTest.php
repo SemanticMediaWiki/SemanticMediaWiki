@@ -14,7 +14,6 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Query;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SPARQLStore\SPARQLStore;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
 
