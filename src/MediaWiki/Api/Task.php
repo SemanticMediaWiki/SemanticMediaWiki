@@ -81,37 +81,14 @@ class Task extends ApiBase {
 		return [
 			'task' => [
 				ParamValidator::PARAM_REQUIRED => true,
-				ParamValidator::PARAM_TYPE => $taskFactory->getAllowedTypes()
+				ParamValidator::PARAM_TYPE => $taskFactory->getAllowedTypes(),
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwtask-param-task',
 			],
 			'params' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwtask-param-params',
 			],
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
-	 */
-	public function getParamDescription(): array {
-		return [
-			'task' => 'Defines the task type',
-			'params' => 'JSON encoded parameters that matches the selected type requirement'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'Semantic MediaWiki API module to invoke and execute tasks (for internal use only)'
 		];
 	}
 

@@ -952,7 +952,7 @@
 	"apihelp-browsebysubject-summary": "Modul API za pridobivanje informacij o temi.",
 	"apihelp-smwtask-summary": "Modul API za izvajanje opravil, povezanih s Semantićnim MediaWikijem (samo za interno uporabo, ne za javno uporabo).",
 	"apihelp-smwbrowse-summary": "Modul API za podporo dejavnosti brskanja za različne vrste entitet v Semantičnem MediaWikiju.",
-	"apihelp-ask-parameter-api-version": "Oblikovanje izhoda:\n;2:Vzvratno združljiva oblika z uporabo {} za seznam zadetkov.\n;3:Poskusna oblika z uporabo [] za seznam zadetkov.",
+	"apihelp-ask-param-api-version": "Oblikovanje izhoda:\n;2:Vzvratno združljiva oblika z uporabo {} za seznam zadetkov.\n;3:Poskusna oblika z uporabo [] za seznam zadetkov.",
 	"apihelp-smwtask-param-task": "Določa vrsto opravila",
 	"apihelp-smwtask-param-params": "Parametri, kodirani z JSON, ki ustrezajo zahtevi za izbrano vrsto opravila",
 	"smw-apihelp-smwtask-example-update": "Zgled izvajanja opravila posodabljanja za določen predmet:",

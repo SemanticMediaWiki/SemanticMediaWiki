@@ -777,7 +777,7 @@
 	"apihelp-browsebysubject-summary": "Mòdul API per recuperar informació d'un tema.",
 	"apihelp-smwtask-summary": "Mòdul API per executar tasques relacionades amb Semantic MediaWiki (només per a ús intern, no per a ús públic).",
 	"apihelp-smwbrowse-summary": "Mòdul API per permetre les activitats de navegació de diferents tipus d'entitat a Semantic MediaWiki.",
-	"apihelp-ask-parameter-api-version": "Format de sortida:\n;2:Compatibilitat enrere fent servir {} per a la llista de resultats.\n;3:Format experimental que utilitza [] per a la llista de resultats.",
+	"apihelp-ask-param-api-version": "Format de sortida:\n;2:Compatibilitat enrere fent servir {} per a la llista de resultats.\n;3:Format experimental que utilitza [] per a la llista de resultats.",
 	"apihelp-smwtask-param-task": "Defineix el tipus de tasca",
 	"smw-api-invalid-parameters": "Paràmetres no vàlids, «$1»",
 	"smw-parser-recursion-level-exceeded": "S'ha excedit el nivell de $1 recurrències durant el procés d'anàlisi. Se suggereix que es valida l'estructura de la plantilla o, si s'escau, que s'ajusti el paràmetre de configuració <code>$maxRecursionDepth</code>.",

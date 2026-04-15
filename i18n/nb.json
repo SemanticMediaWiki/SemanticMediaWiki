@@ -945,7 +945,7 @@
 	"apihelp-browsebysubject-summary": "API-modul for å hente informasjon om et subjekt.",
 	"apihelp-smwtask-summary": "API-modul for å utføre Semantic MediaWiki-relaterte oppgaver (kun for intern bruk, ikke offentlig bruk).",
 	"apihelp-smwbrowse-summary": "API-modul for å støtte leseaktiviteter for forskjellige entitetstyper i Semantic MediaWiki.",
-	"apihelp-ask-parameter-api-version": "Resultatformat:\n;2:Bakoverkompatibelt format som bruker {} for resultatlista.\n;3:Eksperimentelt format som bruker [] for resultatlista.",
+	"apihelp-ask-param-api-version": "Resultatformat:\n;2:Bakoverkompatibelt format som bruker {} for resultatlista.\n;3:Eksperimentelt format som bruker [] for resultatlista.",
 	"apihelp-smwtask-param-task": "Definerer oppgavetypen",
 	"apihelp-smwtask-param-params": "JSON-kodede parametere som matcher valgte oppgavetypekrav",
 	"smw-apihelp-smwtask-example-update": "Eksempel på å kjøre en oppdateringsoppgave for et visst subjekt:",

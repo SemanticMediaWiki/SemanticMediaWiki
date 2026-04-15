@@ -940,7 +940,7 @@
 	"apihelp-browsebysubject-summary": "Módulo da API para obter información sobre un suxeito.",
 	"apihelp-smwtask-summary": "Módulo da API para executar tarefas relacionadas con Semantic MediaWiki (só para uso interno, non para uso público).",
 	"apihelp-smwbrowse-summary": "Módulo da API para permitir actividades de navegación para diferentes tipos de entidades en Semantic MediaWiki.",
-	"apihelp-ask-parameter-api-version": "Formato de saída:\n;2:Formato compatible con versións anteriores usando {} para a lista de resultados.\n;3:Formato experimental usando [] para a lista de resultados.",
+	"apihelp-ask-param-api-version": "Formato de saída:\n;2:Formato compatible con versións anteriores usando {} para a lista de resultados.\n;3:Formato experimental usando [] para a lista de resultados.",
 	"apihelp-smwtask-param-task": "Define o tipo de tarefa",
 	"apihelp-smwtask-param-params": "Parámetros codificados en JSON que coinciden co requisito do tipo de tarefa seleccionado",
 	"smw-apihelp-smwtask-example-update": "Exemplo de execución dunha tarefa de actualización para un suxeito en particular:",

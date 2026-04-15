@@ -946,7 +946,7 @@
 	"apihelp-browsebysubject-summary": "Bir konu hakkında bilgi almak için API modülü.",
 	"apihelp-smwtask-summary": "Semantic MediaWiki ile ilgili görevleri yürütmek için API modülü (yalnızca dahili kullanım için, genel kullanım için değil).",
 	"apihelp-smwbrowse-summary": "Semantic MediaWiki'deki farklı varlık türleri için göz atma etkinliklerini destekleyen API modülü.",
-	"apihelp-ask-parameter-api-version": "Çıkış biçimlendirme:\n;2:Sonuç listesi için {} kullanarak geriye dönük uyumlu biçim.\n;3:Sonuç listesi olarak [] kullanılarak deneysel biçim.",
+	"apihelp-ask-param-api-version": "Çıkış biçimlendirme:\n;2:Sonuç listesi için {} kullanarak geriye dönük uyumlu biçim.\n;3:Sonuç listesi olarak [] kullanılarak deneysel biçim.",
 	"apihelp-smwtask-param-task": "Görev türünü tanımlar",
 	"apihelp-smwtask-param-params": "Seçilen görev türü gereksinimiyle eşleşen JSON kodlu parametreler",
 	"smw-apihelp-smwtask-example-update": "Belirli bir konu için güncelleme görevi çalıştırma örneği:",

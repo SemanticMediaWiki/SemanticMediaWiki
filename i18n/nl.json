@@ -960,7 +960,7 @@
 	"apihelp-browsebysubject-summary": "API-module om informatie over een onderwerp op te vragen.",
 	"apihelp-smwtask-summary": "API-module om Semantic MediaWiki-gerelateerde taken uit te voeren (alleen voor intern gebruik, niet voor openbaar gebruik).",
 	"apihelp-smwbrowse-summary": "API-module ter ondersteuning van het doorbladeren van verschillende entiteitstypen in Semantic MediaWiki.",
-	"apihelp-ask-parameter-api-version": "Uitvoeropmaak:\n;2:Achterwaarts compatibele indeling met {} voor de resultatenlijst.\n;3:Experimentele indeling met [] als resultatenlijst.",
+	"apihelp-ask-param-api-version": "Uitvoeropmaak:\n;2:Achterwaarts compatibele indeling met {} voor de resultatenlijst.\n;3:Experimentele indeling met [] als resultatenlijst.",
 	"apihelp-smwtask-param-task": "Definieert het taaktype",
 	"apihelp-smwtask-param-params": "In JSON gecodeerde parameters die overeenkomen met de geselecteerde taaktypevereiste",
 	"smw-apihelp-smwtask-example-update": "Voorbeeld van het uitvoeren van een bijwerktaak voor een bepaald onderwerp:",
