@@ -134,7 +134,7 @@ class Conjunction extends Description {
 		$result = SMW_CONJUNCTION_QUERY;
 
 		foreach ( $this->descriptions as $desc ) {
-			$result = $result | $desc->getQueryFeatures();
+			$result |= $desc->getQueryFeatures();
 		}
 
 		return $result;

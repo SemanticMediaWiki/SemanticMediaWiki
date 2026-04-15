@@ -101,11 +101,11 @@ class ParamListProcessor {
 
 			if ( $param === '' ) {
 			} elseif ( $isMainlabel ) {
-				$this->addThisPrintRequest( $name, $param, $previousPrintout, $serialization );
+				$this->addThisPrintRequest( $param, $previousPrintout, $serialization );
 			} elseif ( $param[0] == '?' ) {
 				$this->addPrintRequest( $name, $param, $previousPrintout, $serialization );
 			} elseif ( $param[0] == '+' ) {
-				$this->addPrintRequestParameter( $name, $param, $previousPrintout, $serialization );
+				$this->addPrintRequestParameter( $param, $previousPrintout, $serialization );
 			} else {
 				$this->addOtherParameters( $name, $param, $serialization, $showMode );
 			}
@@ -201,7 +201,7 @@ class ParamListProcessor {
 		];
 	}
 
-	private function addThisPrintRequest( int|string $name, $param, &$previousPrintout, array &$serialization ): void {
+	private function addThisPrintRequest( $param, &$previousPrintout, array &$serialization ): void {
 		$param = substr( $param, 1 );
 
 		$parts = explode( '=', $param, 2 );
@@ -209,7 +209,7 @@ class ParamListProcessor {
 		$previousPrintout = self::PRINT_THIS;
 	}
 
-	private function addPrintRequestParameter( int|string $name, $param, $previousPrintout, array &$serialization ): void {
+	private function addPrintRequestParameter( $param, $previousPrintout, array &$serialization ): void {
 		if ( $previousPrintout === null ) {
 			return;
 		}

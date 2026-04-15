@@ -197,7 +197,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	}
 
 	private function addFields( Template $template, array $row ): void {
-		$this->numRows + 1;
+		$this->numRows += 1;
 
 		foreach ( $row as $i => $field ) {
 

@@ -4,6 +4,7 @@ namespace SMW\Query;
 
 use RuntimeException;
 use SMW\QueryEngine;
+use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
 use SMW\Store;
 use SMW\StoreAware;
 
@@ -44,7 +45,7 @@ class QuerySourceFactory {
 	 *
 	 * @param string|null $source
 	 *
-	 * @return QueryEngine|Store
+	 * @return mixed
 	 * @throws RuntimeException
 	 */
 	public function get( $source = null ): mixed {

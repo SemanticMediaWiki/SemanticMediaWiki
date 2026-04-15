@@ -182,9 +182,9 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return SomeProperty
+	 * @return SomeProperty|ThingDescription
 	 */
-	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
+	public function prune( &$maxsize, &$maxdepth, &$log ): SomeProperty|ThingDescription {
 		if ( ( $maxsize <= 0 ) || ( $maxdepth <= 0 ) ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

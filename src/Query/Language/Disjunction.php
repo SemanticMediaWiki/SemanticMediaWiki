@@ -184,7 +184,7 @@ class Disjunction extends Description {
 		$result = SMW_DISJUNCTION_QUERY;
 
 		foreach ( $this->descriptions as $desc ) {
-			$result = $result | $desc->getQueryFeatures();
+			$result |= $desc->getQueryFeatures();
 		}
 
 		return $result;

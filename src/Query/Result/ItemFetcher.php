@@ -12,8 +12,8 @@ use SMW\Parser\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\Store;
-use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -123,7 +123,7 @@ class ItemFetcher {
 	 * @return array
 	 */
 	public function fetch( array $dataItems, Property $property, RequestOptions $requestOptions ): array {
-		if ( $this->prefetch === false ) {
+		if ( !$this->prefetch ) {
 			return $this->legacyFetch( $dataItems, $property, $requestOptions );
 		}
 
@@ -166,10 +166,6 @@ class ItemFetcher {
 				$property,
 				$requestOptions
 			);
-
-			if ( $pv instanceof Traversable ) {
-				$pv = iterator_to_array( $pv );
-			}
 
 			if ( $pv === [] ) {
 				continue;

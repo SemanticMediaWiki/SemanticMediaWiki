@@ -5,6 +5,7 @@ namespace SMW\Query\Processor;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
+use SMW\Query\Query;
 use SMW\Query\QueryContext;
 use SMW\QueryFactory;
 
@@ -185,14 +186,14 @@ class QueryCreator implements QueryContext {
 			}
 
 			if ( $sortKey !== false ) {
-				$order = empty( $orders ) ? $defaultSort : array_shift( $orders );
+				$order = $orders === [] ? $defaultSort : array_shift( $orders );
 				$sortKeys[$sortKey] = $order;
 			}
 		}
 
 		// If more sort arguments are provided then properties, assume the first one is for the page.
 		// TODO: we might want to add errors if there is more then one.
-		if ( !array_key_exists( '', $sortKeys ) && !empty( $orders ) ) {
+		if ( !array_key_exists( '', $sortKeys ) && $orders !== [] ) {
 			$sortKeys[''] = array_shift( $orders );
 		}
 
@@ -224,7 +225,7 @@ class QueryCreator implements QueryContext {
 	}
 
 	private function getParam( string $key, $default ) {
-		return isset( $this->params[$key] ) ? $this->params[$key] : $default;
+		return $this->params[$key] ?? $default;
 	}
 
 }

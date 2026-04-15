@@ -115,7 +115,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			return $this->params['default'] !== '' ? $this->params['default'] : '';
 		}
 
-		return $this->buildJSON( $res, $outputMode );
+		return $this->buildJSON( $res );
 	}
 
 	private function getJsonLink( QueryResult $res, $outputMode ) {
@@ -130,9 +130,13 @@ class JsonResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function buildJSON( QueryResult $res, $outputMode ): string|false {
-		$flags = isset( $this->params['prettyprint'] ) && $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
-		$flags = $flags | ( isset( $this->params['unescape'] ) && $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
+	private function buildJSON( QueryResult $res ): string|false {
+		$flags = isset( $this->params['prettyprint'] ) && $this->params['prettyprint']
+			? JSON_PRETTY_PRINT
+			: 0;
+		$flags |= isset( $this->params['unescape'] ) && $this->params['unescape']
+			? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+			: 0;
 
 		if ( isset( $this->params['type'] ) && $this->params['type'] === 'simple' ) {
 			$result = $this->buildSimpleList( $res );

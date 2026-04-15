@@ -85,7 +85,7 @@ class ListResultPrinter extends ResultPrinter {
 			'show-headers' => $this->mShowHeaders,
 		] );
 
-		if ( $this->params['template'] !== '' && isset( $this->fullParams['sep'] ) && $this->fullParams['sep']->wasSetToDefault() === true ) {
+		if ( $this->params['template'] !== '' && isset( $this->fullParams['sep'] ) && $this->fullParams['sep']->wasSetToDefault() ) {
 			$builder->set( 'sep', '' );
 		}
 

@@ -139,7 +139,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean
+	 * @return bool
 	 */
 	public function isEmbedded(): bool {
 		return $this->isInline;
@@ -148,7 +148,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer
+	 * @param int $queryMode
 	 */
 	public function setQueryMode( $queryMode ): void {
 		// FIXME 3.0; $this->querymode is a public property
@@ -159,7 +159,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer
+	 * @return int
 	 */
 	public function getQueryMode() {
 		return $this->querymode;
@@ -186,7 +186,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string
+	 * @param string $querySource
 	 */
 	public function setQuerySource( $querySource ): void {
 		$this->querySource = $querySource;
@@ -195,7 +195,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 2.4
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getQuerySource(): ?string {
 		return $this->querySource;
@@ -309,7 +309,7 @@ class Query implements QueryContext {
 	 * @return mixed
 	 */
 	public function getOption( $key ) {
-		return isset( $this->options[$key] ) ? $this->options[$key] : false;
+		return $this->options[$key] ?? false;
 	}
 
 	/**

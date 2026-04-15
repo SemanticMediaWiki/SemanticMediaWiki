@@ -15,7 +15,7 @@ use SMW\DataItems\WikiPage;
 class Excerpts {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	protected $excerpts = [];
 
@@ -82,7 +82,7 @@ class Excerpts {
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getExcerpts(): array {
 		return $this->excerpts;

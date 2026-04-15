@@ -2,7 +2,7 @@
 
 namespace SMW\Query\Language;
 
-use Exception;
+use InvalidArgumentException;
 use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
@@ -34,7 +34,7 @@ class ClassDescription extends Description {
 	 *
 	 * @param mixed $content WikiPage or array of WikiPage
 	 *
-	 * @throws Exception
+	 * @throws InvalidArgumentException
 	 */
 	public function __construct( $content ) {
 		if ( $content instanceof WikiPage ) {
@@ -42,7 +42,7 @@ class ClassDescription extends Description {
 		} elseif ( is_array( $content ) ) {
 			$this->m_diWikiPages = $content;
 		} else {
-			throw new Exception( "ClassDescription::__construct(): parameter must be a WikiPage Object or an array of such objects." );
+			throw new InvalidArgumentException( "ClassDescription::__construct(): parameter must be a WikiPage Object or an array of such objects." );
 		}
 	}
 
@@ -76,11 +76,11 @@ class ClassDescription extends Description {
 	 * @return bool
 	 */
 	public function isMergableDescription( ClassDescription $description ): bool {
-		if ( isset( $this->isNegation ) && isset( $description->isNegation ) ) {
+		if ( $this->isNegation && $description->isNegation ) {
 			return true;
 		}
 
-		if ( !isset( $this->isNegation ) && !isset( $description->isNegation ) ) {
+		if ( !$this->isNegation && !$description->isNegation ) {
 			return true;
 		}
 
@@ -117,7 +117,7 @@ class ClassDescription extends Description {
 		}
 
 		ksort( $hash );
-		$extra = ( isset( $this->isNegation ) ? '|' . $this->isNegation : '' );
+		$extra = ( $this->isNegation ? '|' . (string)$this->isNegation : '' );
 
 		return 'Cl:' . md5( implode( '|', array_keys( $hash ) ) . $this->hierarchyDepth . $extra );
 	}
@@ -136,10 +136,10 @@ class ClassDescription extends Description {
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
 			$wikiValue = DataValueFactory::getInstance()->newDataValueByItem( $wikiPage, null );
 			if ( $first ) {
-				$result = '[[' . $namespaceText . ':' . ( isset( $this->isNegation ) ? '!' : '' ) . $wikiValue->getText();
+				$result = '[[' . $namespaceText . ':' . ( $this->isNegation ? '!' : '' ) . $wikiValue->getText();
 				$first = false;
 			} else {
-				$result .= '||' . ( isset( $this->isNegation ) ? '!' : '' ) . $wikiValue->getText();
+				$result .= '||' . ( $this->isNegation ? '!' : '' ) . $wikiValue->getText();
 			}
 		}
 
@@ -178,7 +178,7 @@ class ClassDescription extends Description {
 
 	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
 		if ( $maxsize >= $this->getSize() ) {
-			$maxsize = $maxsize - $this->getSize();
+			$maxsize -= $this->getSize();
 			return $this;
 		} elseif ( $maxsize <= 0 ) {
 			$log[] = $this->getQueryString();

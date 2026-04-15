@@ -2,6 +2,7 @@
 
 namespace SMW\Query;
 
+use SMW\DataItems\Property;
 use SMW\Query\Language\Description;
 
 /**
@@ -15,7 +16,7 @@ interface Parser {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty|string $property
+	 * @param Property|string $property
 	 * @param string $value
 	 *
 	 * @return string
@@ -25,7 +26,7 @@ interface Parser {
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getErrors();
 
