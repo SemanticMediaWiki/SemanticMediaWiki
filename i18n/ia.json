@@ -931,7 +931,7 @@
 	"apihelp-browsebysubject-summary": "Modulo API pro obtener information sur un subjecto.",
 	"apihelp-smwtask-summary": "Modulo API pro executar cargas concernente Semantic MediaWiki (solmente pro uso interne, non pro uso public).",
 	"apihelp-smwbrowse-summary": "Modulo API pro supportar activitates de navigation pro differente typos de entitate in Semantic MediaWiki.",
-	"apihelp-ask-parameter-api-version": "Formato del sortita:\n;2:Formato compatibile con versiones ancian que usa {} pro le lista de resultatos.\n;3:Formato experimental que usa [] como lista de resultatos.",
+	"apihelp-ask-param-api-version": "Formato del sortita:\n;2:Formato compatibile con versiones ancian que usa {} pro le lista de resultatos.\n;3:Formato experimental que usa [] como lista de resultatos.",
 	"apihelp-smwtask-param-task": "Defini le typo de carga",
 	"apihelp-smwtask-param-params": "Parametros codificate in JSON que corresponde al requisitos del typo de carga seligite",
 	"smw-apihelp-smwtask-example-update": "Exemplo de execution de un carga de actualisation pro un subjecto particular:",
