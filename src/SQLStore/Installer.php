@@ -161,6 +161,10 @@ class Installer implements MessageReporter {
 
 		// #3559
 		$tables = $this->tableSchemaManager->getTables();
+
+		// Run data migrations that must complete before column types change
+		$this->tableBuildExaminer->runPreCreationMigrations();
+
 		$this->setupFile->setMaintenanceMode( [ 'create-tables' => 20 ] );
 
 		/**
