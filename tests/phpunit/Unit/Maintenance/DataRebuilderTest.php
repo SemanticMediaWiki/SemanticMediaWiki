@@ -407,6 +407,8 @@ class DataRebuilderTest extends TestCase {
 	 */
 	public function refreshDataOnMockCallback( &$index ) {
 		$index++;
+		return 1;
 	}
 
 }
+
