@@ -39,7 +39,7 @@ class ResultCacheTest extends TestCase {
 		$this->queryFactory = $this->getMockBuilder( QueryFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
-		
+
 		$cache = $this->createMock( Cache::class );
 		$this->blobStore = new BlobStore( 'test-namespace', $cache );
 
