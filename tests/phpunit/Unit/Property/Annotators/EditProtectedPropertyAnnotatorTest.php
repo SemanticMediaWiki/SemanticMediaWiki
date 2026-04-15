@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit\Property\Annotators;
 
 use MediaWiki\Parser\ParserOutput;
-use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
