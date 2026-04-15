@@ -166,9 +166,11 @@ class JsonContentsFileReaderTest extends TestCase {
 
 	public function dataExtensionProvider() {
 		$provider[] = [
-			'dataTypeLabels',
+			'datatype',
 			[
-				"_ref_rec" => "Reference"
+				'labels' => [
+					"_ref_rec" => "Reference"
+				]
 			]
 		];
 
