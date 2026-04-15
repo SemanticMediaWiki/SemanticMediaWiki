@@ -4,7 +4,6 @@ namespace SMW\Tests\Unit\Query\Cache;
 
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Query\Cache\CacheStats;
@@ -40,8 +39,13 @@ class ResultCacheTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache = $this->createMock( Cache::class );
-		$this->blobStore = new BlobStore( 'test-namespace', $cache );
+		$this->blobStore = $this->getMockBuilder( BlobStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->blobStore
+			->method( 'canUse' )
+			->willReturn( true );
 
 		$this->container = $this->getMockBuilder( Container::class )
 			->disableOriginalConstructor()
