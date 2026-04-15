@@ -78,25 +78,13 @@ class AskArgs extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	protected function getExamples(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'api.php?action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc',
+			'action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc'
+				=> 'apihelp-askargs-example-1',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }
