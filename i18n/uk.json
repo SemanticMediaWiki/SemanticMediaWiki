@@ -697,7 +697,7 @@
 	"log-show-hide-smw": "$1 журнал Семантичної MediaWiki",
 	"logeventslist-smw-log": "Журнал Семантичної MediaWiki",
 	"log-description-smw": "Діяльність щодо [https://www.semantic-mediawiki.org/wiki/Help:Logging увімкнених типів подій], яку реєструє Семантична MediaWiki та її компоненти.",
-	"logentry-smw-maintenance": "Події, пов'язані з підтримкою, що відбулися у Семантичній MediaWiki",
+	"logentry-smw-maintenance": "$1 {{GENDER:$2|виконав|виконала|виконало}} технічне обслуговування",
 	"smw-datavalue-import-unknown-namespace": "Простір назв імпорту «$1» невідомий. Будь ласка, впевніться, що деталі імпорту OWL доступні через [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-namespace-uri": "Не вдалося знайти URI простору назв «$1» в [[MediaWiki:Smw import $1|імпорті $1]].",
 	"smw-datavalue-import-missing-type": "Не було знайдено визначення типу для «$1» в [[MediaWiki:Smw import $2|імпорті $2]].",

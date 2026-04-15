@@ -5,6 +5,7 @@
 			"Aviator",
 			"Hakimi97",
 			"Pizza1016",
+			"SNN95",
 			"Tofeiku"
 		]
 	},
@@ -29,8 +30,8 @@
 	"smw_printername_embedded": "Benamkan kandungan laman",
 	"smw_printername_json": "Eksport JSON",
 	"smw_printername_list": "Senarai",
-	"smw_printername_ol": "Penyenaraian dengan urutan",
-	"smw_printername_ul": "Penyenaraian tanpa urutan",
+	"smw_printername_ol": "Senarai bernombor",
+	"smw_printername_ul": "Senarai berbutir",
 	"smw_printername_table": "Jadual",
 	"smw_printername_broadtable": "Jadual lebar",
 	"smw_printername_template": "Templat",
@@ -76,7 +77,7 @@
 	"smw_result_next": "Berikutnya",
 	"smw_result_results": "Hasil",
 	"smw_result_noresults": "Tiada hasil.",
-	"smwadmin": "Fungsi penyelia untuk Semantic MediaWiki",
+	"smwadmin": "Papan Pemuka Semantic MediaWiki",
 	"smw_smwadmin_datarefreshstopconfirm": "Ya, saya {{GENDER:$1|pasti}}.",
 	"smw-admin-support": "Mendapat sokongan",
 	"smw-admin-other-functions": "Fungsi lain",

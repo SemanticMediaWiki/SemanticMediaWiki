@@ -19,7 +19,7 @@
 		 * @param api {Object}
 		 */
 		constructor( container, api ) {
-			this.VERSION = '6.0.1';
+			this.VERSION = '7.0.0';
 			this.title = mw.config.get('wgPageName' );
 			this.step = 5;
 			this.postfix = '';

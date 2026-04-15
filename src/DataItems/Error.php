@@ -16,7 +16,7 @@ use MediaWiki\Json\JsonDeserializer;
  */
 class Error extends DataItem {
 
-	public int $id;
+	public ?int $id;
 
 	public function __construct(
 		protected $m_errors,

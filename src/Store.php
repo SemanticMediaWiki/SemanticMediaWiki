@@ -9,7 +9,6 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\DataItem;
-use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -352,7 +351,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param RequestOptions|null $requestoptions
 	 *
-	 * @return Property|Error array
+	 * @return mixed array
 	 */
 	abstract public function getUnusedPropertiesSpecial( $requestoptions = null );
 
@@ -364,7 +363,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param RequestOptions|null $requestoptions
 	 *
-	 * @return array of array( Property, int )
+	 * @return mixed of array( Property, int )
 	 */
 	abstract public function getWantedPropertiesSpecial( $requestoptions = null );
 
