@@ -310,39 +310,41 @@ class Browse extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	protected function getExamples(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }',
-			'api.php?action=smwbrowse&browse=pvalue&params={ "limit": 10, "offset": 0, "property" : "Foo", "search": "Bar" }',
-			'api.php?action=smwbrowse&browse=psubject&params={ "limit": 10, "offset": 0, "property" : "Foo", "value" : "Bar", "search": "foo" }',
-			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }',
-			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',
-			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main" }',
-			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }',
-			'api.php?action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }'
+				=> 'apihelp-smwbrowse-example-1',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }'
+				=> 'apihelp-smwbrowse-example-2',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-3',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }'
+				=> 'apihelp-smwbrowse-example-4',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }'
+				=> 'apihelp-smwbrowse-example-5',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }'
+				=> 'apihelp-smwbrowse-example-6',
+			'action=smwbrowse&browse=pvalue&params={ "limit": 10, "offset": 0, "property" : "Foo", "search": "Bar" }'
+				=> 'apihelp-smwbrowse-example-7',
+			'action=smwbrowse&browse=psubject&params={ "limit": 10, "offset": 0, "property" : "Foo", "value" : "Bar", "search": "foo" }'
+				=> 'apihelp-smwbrowse-example-8',
+			'action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }'
+				=> 'apihelp-smwbrowse-example-9',
+			'action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-10',
+			'action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }'
+				=> 'apihelp-smwbrowse-example-11',
+			'action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-12',
+			'action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main" }'
+				=> 'apihelp-smwbrowse-example-13',
+			'action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }'
+				=> 'apihelp-smwbrowse-example-14',
+			'action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }'
+				=> 'apihelp-smwbrowse-example-15',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . ':' . SMW_VERSION;
 	}
 
 	/**

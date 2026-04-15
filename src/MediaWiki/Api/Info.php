@@ -100,25 +100,13 @@ class Info extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	protected function getExamples(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'api.php?action=smwinfo&info=proppagecount|propcount',
+			'action=smwinfo&info=proppagecount|propcount'
+				=> 'apihelp-smwinfo-example-1',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . ': $Id$';
 	}
 
 	/**

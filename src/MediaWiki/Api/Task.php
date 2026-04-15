@@ -117,19 +117,6 @@ class Task extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples(): array {
-		return [
-			'api.php?action=smwtask&task=update&params={ "subject": "Foo" }',
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamplesMessages
 	 *
 	 * @return array
@@ -149,16 +136,6 @@ class Task extends ApiBase {
 	 */
 	public function getHelpUrls(): string {
 		return 'https://www.semantic-mediawiki.org/wiki/Help:API:smwtask';
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . ':' . SMW_VERSION;
 	}
 
 }

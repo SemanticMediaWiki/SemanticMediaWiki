@@ -182,25 +182,13 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	protected function getExamples(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'api.php?action=browsebysubject&subject=Main_Page',
+			'action=browsebysubject&subject=Main_Page'
+				=> 'apihelp-browsebysubject-example-1',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }

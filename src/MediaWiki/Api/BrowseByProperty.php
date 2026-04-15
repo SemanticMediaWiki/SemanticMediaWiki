@@ -147,25 +147,17 @@ class BrowseByProperty extends ApiBase {
 	}
 
 	/**
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getExamples(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'api.php?action=browsebyproperty&property=Modification_date',
-			'api.php?action=browsebyproperty&limit=50',
-			'api.php?action=browsebyproperty&limit=5&listonly=true',
+			'action=browsebyproperty&property=Modification_date'
+				=> 'apihelp-browsebyproperty-example-1',
+			'action=browsebyproperty&limit=50'
+				=> 'apihelp-browsebyproperty-example-2',
+			'action=browsebyproperty&limit=5&listonly=true'
+				=> 'apihelp-browsebyproperty-example-3',
 		];
-	}
-
-	/**
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }

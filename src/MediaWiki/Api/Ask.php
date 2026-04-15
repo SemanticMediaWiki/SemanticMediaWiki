@@ -69,24 +69,15 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	protected function getExamples(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
-			'api.php?action=ask&query=[[Modification%20date::%2B]]|limit%3D5|offset%3D1'
+			'action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc'
+				=> 'apihelp-ask-example-1',
+			'action=ask&query=[[Modification%20date::%2B]]|limit%3D5|offset%3D1'
+				=> 'apihelp-ask-example-2',
 		];
-	}
-
-	/**
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }
