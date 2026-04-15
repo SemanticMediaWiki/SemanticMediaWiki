@@ -68,7 +68,7 @@ class Property extends DataItem {
 	 */
 	private string $interwiki = '';
 
-	public int $id;
+	public ?int $id;
 
 	/**
 	 * Initialise a property. This constructor checks that keys of
