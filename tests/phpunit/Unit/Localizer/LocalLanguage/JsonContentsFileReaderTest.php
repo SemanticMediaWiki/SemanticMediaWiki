@@ -118,7 +118,7 @@ class JsonContentsFileReaderTest extends TestCase {
 		$didWrite = false;
 
 		var_dump( $instance->readByLanguageCode( 'en', true ) );
-		var_dump ( $GLOBALS['smwgExtraneousLanguageFileDir'] );
+		var_dump( $GLOBALS['smwgExtraneousLanguageFileDir'] );
 
 		foreach ( explode( ',', $list ) as $lang ) {
 			$contents = $instance->readByLanguageCode( $lang, true );
