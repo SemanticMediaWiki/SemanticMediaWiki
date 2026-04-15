@@ -115,6 +115,8 @@ class JsonContentsFileReaderTest extends TestCase {
 		$instance = new JsonContentsFileReader();
 		$list = 'ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
 
+		$didWrite = false;
+
 		foreach ( explode( ',', $list ) as $lang ) {
 			$contents = $instance->readByLanguageCode( $lang, true );
 
@@ -125,7 +127,14 @@ class JsonContentsFileReaderTest extends TestCase {
 			$contents[$topic] = $contents[$topic] + $extension;
 
 			$instance->writeByLanguageCode( $lang, $contents );
+
+			$didWrite = true;
 		}
+
+		$this->assertTrue(
+			$didWrite,
+			'Expected at least one language file to be written'
+		);
 	}
 
 	/**
