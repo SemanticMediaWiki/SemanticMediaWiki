@@ -159,28 +159,27 @@ class PostgresTableBuilderTest extends TestCase {
 	}
 
 	public function testDoCheckOnAfterCreate() {
-
 		$selectCalled = false;
 		$callbackRegistered = false;
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectField' )
 			->with(
-				$this->equalTo( SQLStore::ID_TABLE ),
-				$this->equalTo( 'max(smw_id)' )
+				SQLStore::ID_TABLE,
+				'max(smw_id)'
 			)
-			->willReturnCallback( function () use ( &$selectCalled ) {
+			->willReturnCallback( static function () use ( &$selectCalled ) {
 				$selectCalled = true;
 				return 42;
-			});
+			} );
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) use ( &$callbackRegistered ) {
+			->willReturnCallback( static function ( $callback ) use ( &$callbackRegistered ) {
 				$callbackRegistered = true;
 
 				$callback();
-			});
+			} );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
