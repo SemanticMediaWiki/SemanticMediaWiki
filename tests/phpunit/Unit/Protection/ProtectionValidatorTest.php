@@ -327,7 +327,6 @@ class ProtectionValidatorTest extends TestCase {
 		);
 	}
 
-
 	public function testIsClassifiedAsImportPerformerProtected_CreatorAndCurrentUserDontMatch2() {
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
@@ -340,48 +339,48 @@ class ProtectionValidatorTest extends TestCase {
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->willReturn( 'FooSchema' );
-	
+
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
-	
+
 		$user->method( 'getName' )->willReturn( 'OtherUser' );
-	
+
 		$creator = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$creator->method( 'getName' )->willReturn( 'FooImporter' );
-	
+
 		$page = $this->getMockBuilder( \stdClass::class )
 			->addMethods( [ 'getCreator' ] )
 			->getMock();
 		$page->method( 'getCreator' )->willReturn( $creator );
-	
+
 		$pageCreator = $this->getMockBuilder( \SMW\MediaWiki\PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
-	
+
 		$pageCreator->method( 'createPage' )
 			->with( $title )
 			->willReturn( $page );
-	
+
 		$servicesFactory = $this->getMockBuilder( \SMW\Services\ServicesFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
-	
+
 		$servicesFactory->method( 'newPageCreator' )
 			->willReturn( $pageCreator );
-	
+
 		\SMW\Services\ServicesFactory::setInstance( $servicesFactory );
-	
+
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
 			$this->permissionManager
 		);
-	
+
 		$instance->setImportPerformers( [ 'FooImporter' ] );
-	
+
 		$this->assertTrue(
 			$instance->isClassifiedAsImportPerformerProtected( $title, $user )
 		);
