@@ -57,9 +57,6 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Format/Embedded/A",
-			"skip-on": {
-				"mediawiki": [ ">=1.39.x", "See #2966" ]
-			},
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
