@@ -46,6 +46,10 @@ class EditProtectionUpdaterTest extends TestCase {
 			->getMock();
 	}
 
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			EditProtectionUpdater::class,
