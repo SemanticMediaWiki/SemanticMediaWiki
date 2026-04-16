@@ -14,6 +14,7 @@ use SMW\Protection\ProtectionValidator;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use WikiPage;
 
 /**
  * @covers \SMW\Protection\ProtectionValidator
@@ -351,8 +352,8 @@ class ProtectionValidatorTest extends TestCase {
 			->getMock();
 		$creator->method( 'getName' )->willReturn( 'FooImporter' );
 
-		$page = $this->getMockBuilder( \stdClass::class )
-			->addMethods( [ 'getCreator' ] )
+		$page = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
 			->getMock();
 		$page->method( 'getCreator' )->willReturn( $creator );
 
