@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\Protection;
 
-use MediaWiki\Page\WikiPage;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
@@ -38,7 +37,7 @@ class EditProtectionUpdaterTest extends TestCase {
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->wikiPage = $this->getMockBuilder( WikiPage::class )
+		$this->wikiPage = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
