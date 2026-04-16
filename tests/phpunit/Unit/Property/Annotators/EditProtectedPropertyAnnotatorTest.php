@@ -79,7 +79,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
 					->disableOriginalConstructor()
 					->getMock();
-	
+
 				$restrictionStore->expects( $this->any() )
 					->method( 'isProtected' )
 					->willReturn( $isProtected );
@@ -92,7 +92,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 					$restrictionStore->expects( $this->never() )
 						->method( 'getRestrictions' );
 				}
-	
+
 				return $restrictionStore;
 			}
 		);
