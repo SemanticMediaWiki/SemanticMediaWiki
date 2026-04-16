@@ -111,10 +111,10 @@ class CsvFileIterator implements Iterator, Countable {
 	public function current() {
 		// First iteration to match the header
 		if ( $this->parseHeader && $this->key == 0 ) {
-			$this->header = $this->file->fgetcsv( $this->delimiter );
+			$this->header = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
 		}
 
-		$currentElement = $this->file->fgetcsv( $this->delimiter );
+		$currentElement = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
 		$this->key++;
 
 		return $currentElement;
