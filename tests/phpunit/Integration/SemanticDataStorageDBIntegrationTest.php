@@ -299,9 +299,6 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 		);
 	}
 
-	/**
-	 * @depends testPrepareToFetchCorrectSemanticDataFromInternalCache
-	 */
 	public function testVerifyToFetchCorrectSemanticDataFromInternalCache() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
