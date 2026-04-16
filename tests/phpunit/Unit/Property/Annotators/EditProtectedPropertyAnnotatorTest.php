@@ -111,6 +111,10 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 			return $restrictionStore;
 		} );
 
+		var_dump( 'test' );
+		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
+		var_dump( $restrictionStore->getRestrictions( $title, 'edit' ) );
+
 		$instance = new EditProtectedPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$title
