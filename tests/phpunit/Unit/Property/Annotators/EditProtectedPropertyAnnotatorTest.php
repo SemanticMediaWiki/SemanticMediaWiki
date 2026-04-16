@@ -181,9 +181,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyValues' => [],
 			],
 			true,
-			[
-				'Foo'
-			]
+			[]
 		];
 
 		# 1
@@ -196,9 +194,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyValues' => [],
 			],
 			true,
-			[
-				'Foo'
-			]
+			[]
 		];
 
 		$title = $this->getMockBuilder( Title::class )
@@ -222,8 +218,10 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyKeys'   => [ '_EDIP' ],
 				'propertyValues' => [ true ],
 			],
-			false,
-			null
+			true,
+			[
+				'Foo'
+			]
 		];
 
 		$title = $this->getMockBuilder( Title::class )
