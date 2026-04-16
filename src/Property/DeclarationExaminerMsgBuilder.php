@@ -102,7 +102,7 @@ class DeclarationExaminerMsgBuilder {
 	}
 
 	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ): string {
-		return Message::get( $msg, Message::PARSE, Message::USER_LANGUAGE );
+		return Message::get( $msg, $type, $lang );
 	}
 
 }

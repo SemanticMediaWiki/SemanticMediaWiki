@@ -35,7 +35,7 @@ class SpecificationLookup {
 	const CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION = ':propertyspecificationlookup:description';
 
 	/**
-	 * @var Cache
+	 * @var EntityCache
 	 */
 	private $entityCache;
 
@@ -411,7 +411,7 @@ class SpecificationLookup {
 	}
 
 	/**
-	 * @param WikiPage $subject
+	 * @param WikiPage|null $subject
 	 * @param Property $property
 	 * @param string $languageCode
 	 *
@@ -421,7 +421,7 @@ class SpecificationLookup {
 		// @TODO move in the constructor ?
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
-		} catch ( ServiceNotFoundException $e ) {
+		} catch ( ServiceNotFoundException ) {
 			return '';
 		}
 
