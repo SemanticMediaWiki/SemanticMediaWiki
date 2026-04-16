@@ -106,7 +106,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 
 			$restrictionStore->expects( $this->any() )
 				->method( 'isProtected' )
-				->willReturn( true);
+				->willReturn( true );
 
 			$restrictionStore->expects( $this->any() )
 				->method( 'getRestrictions' )
