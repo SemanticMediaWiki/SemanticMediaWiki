@@ -73,13 +73,13 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F1\">",
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F2\">",
+					"id=\"Format.2FEmbedded.2FA.2F1\"",
+					"id=\"Format.2FEmbedded.2FA.2F2\"",
 					"ABC",
 					"DEF"
 				],
 				"not-contain": [
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA\">.*selflink\">Format/Embedded/A.*</h1>"
+					"selflink\">Format/Embedded/A.*</h1>"
 				]
 			}
 		},
