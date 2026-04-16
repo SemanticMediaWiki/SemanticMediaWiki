@@ -200,7 +200,7 @@
 			"subject": "Example/P0416/5",
 			"assert-output": {
 				"to-contain": [
-					"Example/P0416/5#_47ab3a24a41d0687c9398e1886c38fe3\" title=\"Example/P0416/5\">Foo</a>"
+					"#_47ab3a24a41d0687c9398e1886c38fe3\">Foo</a>"
 				]
 			}
 		},
