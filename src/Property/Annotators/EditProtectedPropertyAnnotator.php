@@ -26,7 +26,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	const SYSTEM_ANNOTATION = 'editprotectedpropertyannotator.system.annotation';
 
 	/**
-	 * @var bool
+	 * @var string|bool
 	 */
 	private $editProtectionRight = false;
 
@@ -52,17 +52,17 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param ParserOutput
+	 * @param ParserOutput $parserOutput
 	 */
-	public function addTopIndicatorTo( ParserOutput $parserOutput ): ?bool {
+	public function addTopIndicatorTo( ParserOutput $parserOutput ): void {
 		if ( $this->editProtectionRight === false ) {
-			return false;
+			return;
 		}
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
 		if ( !$this->isEnabledProtection( $property ) && !$this->hasEditProtection() ) {
-			return null;
+			return;
 		}
 
 		$html = Html::rawElement(

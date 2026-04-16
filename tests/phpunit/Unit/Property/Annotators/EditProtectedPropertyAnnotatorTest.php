@@ -27,19 +27,20 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 	private $dataItemFactory;
+	private $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		if ( method_exists( RestrictionStore::class, 'isProtected' ) ) {
-			$this->markTestSkipped( 'SUT needs refactoring for RestrictionStore' );
-		}
-
-		$testEnvironment = new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->semanticDataFactory = $testEnvironment->getUtilityFactory()->newSemanticDataFactory();
-		$this->semanticDataValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -65,7 +66,37 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 	/**
 	 * @dataProvider titleProvider
 	 */
-	public function testAddAnnotationForDisplayTitle( $title, $editProtectionRight, array $expected ) {
+	public function testAddAnnotationForDisplayTitle(
+		$title,
+		$editProtectionRight,
+		array $expected,
+		bool $isProtected,
+		?array $restrictions
+	) {
+		$this->testEnvironment->redefineMediaWikiService(
+			'RestrictionStore',
+			function () use ( $isProtected, $restrictions ) {
+				$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+					->disableOriginalConstructor()
+					->getMock();
+
+				$restrictionStore->expects( $this->any() )
+					->method( 'isProtected' )
+					->willReturn( $isProtected );
+
+				if ( is_array( $restrictions ) ) {
+					$restrictionStore->expects( $this->any() )
+						->method( 'getRestrictions' )
+						->willReturn( $restrictions );
+				} else {
+					$restrictionStore->expects( $this->never() )
+						->method( 'getRestrictions' );
+				}
+
+				return $restrictionStore;
+			}
+		);
+
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$title
 		);
@@ -100,9 +131,21 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
-			->method( 'getRestrictions' )
-			->willReturn( [ 'Foo' ] );
+		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
+			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'isProtected' )
+				->willReturn( true );
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'getRestrictions' )
+				->willReturn( [ 'Foo' ] );
+
+			return $restrictionStore;
+		} );
 
 		$instance = new EditProtectedPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
@@ -136,7 +179,9 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyCount'  => 0,
 				'propertyKeys'   => [],
 				'propertyValues' => [],
-			]
+			],
+			true,
+			[]
 		];
 
 		# 1
@@ -147,7 +192,9 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyCount'  => 0,
 				'propertyKeys'   => [],
 				'propertyValues' => [],
-			]
+			],
+			true,
+			[]
 		];
 
 		$title = $this->getMockBuilder( Title::class )
@@ -170,6 +217,10 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyCount'  => 1,
 				'propertyKeys'   => [ '_EDIP' ],
 				'propertyValues' => [ true ],
+			],
+			true,
+			[
+				'Foo'
 			]
 		];
 
@@ -193,7 +244,9 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyCount'  => 0,
 				'propertyKeys'   => [],
 				'propertyValues' => [],
-			]
+			],
+			false,
+			null
 		];
 
 		return $provider;
