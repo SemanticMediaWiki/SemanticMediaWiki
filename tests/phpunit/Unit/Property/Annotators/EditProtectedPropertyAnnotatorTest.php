@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\Property\Annotators;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
@@ -28,15 +27,20 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 	private $dataItemFactory;
+	private $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$testEnvironment = new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->semanticDataFactory = $testEnvironment->getUtilityFactory()->newSemanticDataFactory();
-		$this->semanticDataValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -97,9 +101,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		MediaWikiServices::getInstance()->resetServiceForTesting( 'RestrictionStore' );
-
-		MediaWikiServices::getInstance()->redefineService( 'RestrictionStore', function () {
+		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
 			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
 				->disableOriginalConstructor()
 				->getMock();
