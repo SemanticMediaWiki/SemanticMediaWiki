@@ -32,7 +32,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwttcontent\">A number to display ....</span>",
-					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1,001</td>"
+					"<td class=\"Has-number smwtype&#95;num\" data-sort-value=\"1001\">1,001</td>"
 				]
 			}
 		},
@@ -43,7 +43,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<a href=\".*Property:Modification_date\" title=\"Property:Modification date\">Modification date</a>",
-					"<td class=\"Property-description smwtype_mlt_rec\">Some description (en)</td>"
+					"<td class=\"Property-description smwtype&#95;mlt&#95;rec\">Some description (en)</td>"
 				]
 			}
 		}
@@ -57,9 +57,6 @@
 		}
 	},
 	"meta": {
-		"skip-on": {
-			"mysql": "Failed assertions, check implementation of MediaWikiIntegrationTestCase."
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false
