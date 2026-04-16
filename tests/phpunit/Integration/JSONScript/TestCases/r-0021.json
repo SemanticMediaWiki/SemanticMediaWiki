@@ -11,9 +11,6 @@
 		{
 			"type": "rdf",
 			"about": "#0 (canonical `Display precision of` representation)",
-			"skip-on": {
-				"mediawiki": [ ">1.42.x", "Skipping, broken due to missing <skos:scopeNote xml:lang=\"en\">Is described as ...</skos:scopeNote>" ]
-			},
 			"dumpRDF": {
 				"parameters": {
 					"page": "Property:Display precision of"
