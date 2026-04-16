@@ -34,7 +34,7 @@ class DeclarationExaminerFactory {
 	 * @param Store $store
 	 * @param SemanticData|null $semanticData
 	 *
-	 * @return DeclarationExaminer
+	 * @return UserdefinedPropertyExaminer
 	 */
 	public function newDeclarationExaminer( Store $store, ?SemanticData $semanticData = null ): UserdefinedPropertyExaminer {
 		$applicationFactory = ApplicationFactory::getInstance();

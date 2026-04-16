@@ -19,7 +19,7 @@ class RestrictionExaminer {
 	const CREATE_RESTRICTION = 'smw-datavalue-property-create-restriction';
 
 	/**
-	 * @var array
+	 * @var array|string
 	 */
 	private $error = [];
 
@@ -72,8 +72,6 @@ class RestrictionExaminer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array
 	 */
 	public function getError(): string|array {
 		return $this->error;

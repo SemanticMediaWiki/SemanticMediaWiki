@@ -8,6 +8,7 @@
 namespace SMW\Property;
 
 use MediaWiki\MediaWikiServices;
+use SMW\DataValues\DataValue;
 
 class LanguageFalldownAndInverse {
 
