@@ -58,9 +58,6 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
-		"skip-on": {
-			"mediawiki": [ ">1.42.x", "Skipping, broken due to missing <skos:scopeNote xml:lang=\"en\">Is described as ...</skos:scopeNote>" ]
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false
