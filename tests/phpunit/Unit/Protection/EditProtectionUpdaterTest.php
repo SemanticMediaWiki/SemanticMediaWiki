@@ -37,7 +37,7 @@ class EditProtectionUpdaterTest extends TestCase {
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->wikiPage = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
+		$this->wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
