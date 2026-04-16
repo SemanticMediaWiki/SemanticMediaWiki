@@ -139,6 +139,22 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 			->method( 'getNamespace' )
 			->willReturn( 0 );
 
+		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
+			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'isProtected' )
+				->willReturn( true );
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'getRestrictions' )
+				->willReturn( [ 'Foo' ] );
+
+			return $restrictionStore;
+		} );
+
 		$provider = [];
 
 		# 0 no EditProtectionRight
@@ -174,6 +190,21 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
 			->willReturn( 0 );
+
+		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
+			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'isProtected' )
+				->willReturn( false );
+
+			$restrictionStore->expects( $this->never() )
+				->method( 'getRestrictions' );
+
+			return $restrictionStore;
+		} );
 
 		# 2
 		$provider[] = [
