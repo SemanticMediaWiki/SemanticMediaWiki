@@ -4,7 +4,6 @@ namespace SMW\Protection;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Page\WikiPage;
 use MediaWiki\User\User;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -14,6 +13,7 @@ use SMW\Localizer\Message;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
+use WikiPage;
 
 /**
  * @license GPL-2.0-or-later
