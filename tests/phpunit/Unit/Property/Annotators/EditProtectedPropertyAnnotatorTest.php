@@ -75,7 +75,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 	) {
 		$this->testEnvironment->redefineMediaWikiService(
 			'RestrictionStore',
-			function () use ( $isProtected, $isRestricted ) {
+			function () use ( $isProtected, $restrictions ) {
 				$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
 					->disableOriginalConstructor()
 					->getMock();
