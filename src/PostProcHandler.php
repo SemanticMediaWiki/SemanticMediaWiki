@@ -54,9 +54,6 @@ class PostProcHandler {
 
 	private Cache $cache;
 
-	/**
-	 * @var
-	 */
 	private array $options = [];
 
 	/**
@@ -97,8 +94,6 @@ class PostProcHandler {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array|string
 	 */
 	public function getModules(): array {
 		return [ 'ext.smw.postproc', 'ext.smw.purge' ];
