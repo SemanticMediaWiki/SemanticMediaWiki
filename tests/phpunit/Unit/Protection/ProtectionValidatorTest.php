@@ -328,7 +328,6 @@ class ProtectionValidatorTest extends TestCase {
 	}
 
 	public function testIsClassifiedAsImportPerformerProtected_CreatorAndCurrentUserDontMatch() {
-		$this->markTestSkipped( "FIXME later" );
 		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
