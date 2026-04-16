@@ -66,7 +66,32 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 	/**
 	 * @dataProvider titleProvider
 	 */
-	public function testAddAnnotationForDisplayTitle( $title, $editProtectionRight, array $expected ) {
+	public function testAddAnnotationForDisplayTitle(
+		$title,
+		$editProtectionRight,
+		array $expected,
+		bool $isProtected,
+		?array $restrictions
+	) {
+		$this->testEnvironment->redefineMediaWikiService(
+			'RestrictionStore',
+			function () use ( $isProtected, $isRestricted ) {
+				$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+					->disableOriginalConstructor()
+					->getMock();
+	
+				$restrictionStore->expects( $this->any() )
+					->method( 'isProtected' )
+					->willReturn( $isProtected );
+	
+				$restrictionStore->expects( $this->any() )
+					->method( 'getRestrictions' )
+					->willReturn( $restrictions );
+	
+				return $restrictionStore;
+			}
+		);
+
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$title
 		);
@@ -139,22 +164,6 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 			->method( 'getNamespace' )
 			->willReturn( 0 );
 
-		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
-			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
-				->disableOriginalConstructor()
-				->getMock();
-
-			$restrictionStore->expects( $this->any() )
-				->method( 'isProtected' )
-				->willReturn( true );
-
-			$restrictionStore->expects( $this->any() )
-				->method( 'getRestrictions' )
-				->willReturn( [ 'Foo' ] );
-
-			return $restrictionStore;
-		} );
-
 		$provider = [];
 
 		# 0 no EditProtectionRight
@@ -165,6 +174,10 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyCount'  => 0,
 				'propertyKeys'   => [],
 				'propertyValues' => [],
+			],
+			true,
+			[
+				'Foo'
 			]
 		];
 
@@ -176,6 +189,10 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyCount'  => 0,
 				'propertyKeys'   => [],
 				'propertyValues' => [],
+			],
+			true,
+			[
+				'Foo'
 			]
 		];
 
@@ -191,21 +208,6 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 			->method( 'getNamespace' )
 			->willReturn( 0 );
 
-		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
-			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
-				->disableOriginalConstructor()
-				->getMock();
-
-			$restrictionStore->expects( $this->any() )
-				->method( 'isProtected' )
-				->willReturn( false );
-
-			$restrictionStore->expects( $this->never() )
-				->method( 'getRestrictions' );
-
-			return $restrictionStore;
-		} );
-
 		# 2
 		$provider[] = [
 			$title,
@@ -214,7 +216,8 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyCount'  => 1,
 				'propertyKeys'   => [ '_EDIP' ],
 				'propertyValues' => [ true ],
-			]
+			],
+			false
 		];
 
 		$title = $this->getMockBuilder( Title::class )
@@ -237,7 +240,8 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				'propertyCount'  => 0,
 				'propertyKeys'   => [],
 				'propertyValues' => [],
-			]
+			],
+			false
 		];
 
 		return $provider;
