@@ -105,6 +105,10 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 				->getMock();
 
 			$restrictionStore->expects( $this->any() )
+				->method( 'isProtected' )
+				->willReturn( true);
+
+			$restrictionStore->expects( $this->any() )
 				->method( 'getRestrictions' )
 				->willReturn( [ 'Foo' ] );
 
