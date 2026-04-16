@@ -136,6 +136,10 @@ class EditProtectionUpdaterTest extends TestCase {
 				->getMock();
 
 			$restrictionStore->expects( $this->any() )
+				->method( 'isProtected' )
+				->willReturn( true );
+
+			$restrictionStore->expects( $this->any() )
 				->method( 'getRestrictions' )
 				->willReturn( [ 'Foo' ] );
 
@@ -191,6 +195,10 @@ class EditProtectionUpdaterTest extends TestCase {
 			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
 				->disableOriginalConstructor()
 				->getMock();
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'isProtected' )
+				->willReturn( true );
 
 			$restrictionStore->expects( $this->any() )
 				->method( 'getRestrictions' )
