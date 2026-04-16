@@ -26,7 +26,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	const SYSTEM_ANNOTATION = 'editprotectedpropertyannotator.system.annotation';
 
 	/**
-	 * @var bool
+	 * @var string|bool
 	 */
 	private $editProtectionRight = false;
 
@@ -52,21 +52,17 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param ParserOutput
+	 * @param ParserOutput $parserOutput
 	 */
-	public function addTopIndicatorTo( ParserOutput $parserOutput ): ?bool {
-		var_dump( 'addTopIndicatorTo' );
-		var_dump( $this->editProtectionRight );
+	public function addTopIndicatorTo( ParserOutput $parserOutput ): void {
 		if ( $this->editProtectionRight === false ) {
-			return false;
+			return;
 		}
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
-		var_dump( $this->isEnabledProtection( $property ) ? 'true' : 'false' );
-		var_dump( $this->hasEditProtection() ? 'true' : 'false' );
 
 		if ( !$this->isEnabledProtection( $property ) && !$this->hasEditProtection() ) {
-			return null;
+			return;
 		}
 
 		$html = Html::rawElement(
@@ -118,9 +114,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 			return false;
 		}
 
-		var_dump( 'hasEditProtection' );
 		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
-		var_dump( $restrictionStore->getRestrictions( $this->title, 'edit' ) );
 		$restrictions = array_flip( $restrictionStore->getRestrictions( $this->title, 'edit' ) );
 
 		// There could by any edit protections but the `Is edit protected` is
