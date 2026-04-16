@@ -238,7 +238,7 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function findPropertyDescriptionMsgKeyById( $id ): string {
-		return isset( $this->propertyDescriptionMsgKeys[$id] ) ? $this->propertyDescriptionMsgKeys[$id] : '';
+		return $this->propertyDescriptionMsgKeys[$id] ?? '';
 	}
 
 	/**
@@ -446,7 +446,7 @@ class PropertyRegistry {
 			return false;
 		}
 
-		return isset( $this->propertyList[$id][3] ) ? $this->propertyList[$id][3] : false;
+		return $this->propertyList[$id][3] ?? false;
 	}
 
 	/**
