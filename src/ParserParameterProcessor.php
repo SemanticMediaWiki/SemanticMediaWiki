@@ -71,8 +71,6 @@ class ParserParameterProcessor {
 	 * Returns raw parameters
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
 	public function getRaw(): array {
 		return $this->rawParameters;
