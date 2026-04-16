@@ -55,11 +55,15 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @param ParserOutput
 	 */
 	public function addTopIndicatorTo( ParserOutput $parserOutput ): ?bool {
+		var_dump( 'addTopIndicatorTo' );
+		var_dump( $this->editProtectionRight );
 		if ( $this->editProtectionRight === false ) {
 			return false;
 		}
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
+		var_dump( $this->isEnabledProtection( $property ) ? 'true' : 'false' );
+		var_dump( $this->hasEditProtection() ? 'true' : 'false' );
 
 		if ( !$this->isEnabledProtection( $property ) && !$this->hasEditProtection() ) {
 			return null;
@@ -114,7 +118,9 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 			return false;
 		}
 
+		var_dump( 'hasEditProtection' );
 		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
+		var_dump( $restrictionStore->getRestrictions( $this->title, 'edit' ) );
 		$restrictions = array_flip( $restrictionStore->getRestrictions( $this->title, 'edit' ) );
 
 		// There could by any edit protections but the `Is edit protected` is
