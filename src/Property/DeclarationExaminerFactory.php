@@ -21,8 +21,6 @@ class DeclarationExaminerFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return DeclarationExaminerMsgBuilder
 	 */
 	public function newDeclarationExaminerMsgBuilder(): DeclarationExaminerMsgBuilder {
 		return new DeclarationExaminerMsgBuilder();
@@ -30,11 +28,6 @@ class DeclarationExaminerFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param SemanticData|null $semanticData
-	 *
-	 * @return UserdefinedPropertyExaminer
 	 */
 	public function newDeclarationExaminer( Store $store, ?SemanticData $semanticData = null ): UserdefinedPropertyExaminer {
 		$applicationFactory = ApplicationFactory::getInstance();
