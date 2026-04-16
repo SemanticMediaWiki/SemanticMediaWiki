@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Unit\Protection;
 
+use MediaWiki\Page\WikiPage;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
@@ -26,16 +28,17 @@ class EditProtectionUpdaterTest extends TestCase {
 	private $wikiPage;
 	private $user;
 	private $spyLogger;
+	private $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$testEnvironment = new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
-		$this->spyLogger = $testEnvironment->getUtilityFactory()->newSpyLogger();
+		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$this->wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,15 +127,21 @@ class EditProtectionUpdaterTest extends TestCase {
 	}
 
 	public function testDoUpdateFromWithRestrictionsButNoTrueEditProtection() {
-		$this->markTestSkipped( 'SUT needs refactoring' );
-
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
-			->method( 'getRestrictions' )
-			->willReturn( [ 'Foo' ] );
+		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
+			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'getRestrictions' )
+				->willReturn( [ 'Foo' ] );
+
+			return $restrictionStore;
+		} );
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'getTitle' )
@@ -173,17 +182,23 @@ class EditProtectionUpdaterTest extends TestCase {
 	}
 
 	public function testDoUpdateFromWithRestrictionsAnActiveEditProtection() {
-		$this->markTestSkipped( 'SUT needs refactoring' );
-
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
-			->method( 'getRestrictions' )
-			->willReturn( [ 'Foo' ] );
+		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
+			$restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$restrictionStore->expects( $this->any() )
+				->method( 'getRestrictions' )
+				->willReturn( [ 'Foo' ] );
+
+			return $restrictionStore;
+		} );
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'getTitle' )
