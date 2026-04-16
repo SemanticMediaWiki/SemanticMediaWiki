@@ -22,10 +22,7 @@ class ParserParameterProcessor {
 	 */
 	private $parameters;
 
-	/**
-	 * @var null
-	 */
-	private $first = null;
+	private ?string $first = null;
 
 	private array $errors = [];
 
@@ -74,8 +71,6 @@ class ParserParameterProcessor {
 	 * Returns raw parameters
 	 *
 	 * @since 1.9
-	 *
-	 * @return string
 	 */
 	public function getRaw(): array {
 		return $this->rawParameters;
@@ -176,6 +171,7 @@ class ParserParameterProcessor {
 
 		foreach ( $parameters as $key => &$value ) {
 			if ( is_array( $value ) ) {
+				/** @phan-suppress-next-line PhanRedundantConditionInLoop */
 				self::sort( $value, is_int( $key ) );
 			}
 		}
