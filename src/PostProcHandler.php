@@ -94,8 +94,6 @@ class PostProcHandler {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
 	public function getModules(): array {
 		return [ 'ext.smw.postproc', 'ext.smw.purge' ];
