@@ -41,7 +41,7 @@ class ParameterListDocBuilder {
 			}
 		}
 
-		if ( empty( $tableRows ) ) {
+		if ( $tableRows === [] ) {
 			return '';
 		}
 
@@ -65,7 +65,7 @@ class ParameterListDocBuilder {
 	 */
 	private function containsAliases( array $paramDefinitions ): bool {
 		foreach ( $paramDefinitions as $parameter ) {
-			if ( !empty( $parameter->getAliases() ) ) {
+			if ( $parameter->getAliases() !== [] ) {
 				return true;
 			}
 		}
