@@ -83,12 +83,8 @@ class LinksProcessor {
 	 * value and caption (instead of leaving this to a more complex regexp).
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $semanticLink expects (linktext, properties, value|caption)
-	 *
-	 * @return string
 	 */
-	public function preprocess( array $semanticLink ) {
+	public function preprocess( array $semanticLink ): string|array {
 		$value = '';
 		$caption = false;
 
@@ -122,10 +118,6 @@ class LinksProcessor {
 	 * Function strips out the semantic attributes from a wiki link.
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $semanticLink expects (linktext, properties, value|caption)
-	 *
-	 * @return string
 	 */
 	public function process( array $semanticLink ): string|array {
 		$valueCaption = false;
