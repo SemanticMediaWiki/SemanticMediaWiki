@@ -17,19 +17,12 @@ class ParameterListDocBuilder {
 	 */
 	private $msg;
 
-	/**
-	 * @param callable $messageFunction
-	 */
 	public function __construct( callable $messageFunction ) {
 		$this->msg = $messageFunction;
 	}
 
 	/**
 	 * Returns the wikitext for a table listing the provided parameters.
-	 *
-	 * @param ParamDefinition[] $paramDefinitions
-	 *
-	 * @return string
 	 */
 	public function getParameterTable( array $paramDefinitions ): string {
 		$tableRows = [];
@@ -58,11 +51,6 @@ class ParameterListDocBuilder {
 			"\n|}";
 	}
 
-	/**
-	 * @param ParamDefinition[] $paramDefinitions
-	 *
-	 * @return bool
-	 */
 	private function containsAliases( array $paramDefinitions ): bool {
 		foreach ( $paramDefinitions as $parameter ) {
 			if ( $parameter->getAliases() !== [] ) {
@@ -75,11 +63,6 @@ class ParameterListDocBuilder {
 
 	/**
 	 * Returns the wikitext for a table row describing a single parameter.
-	 *
-	 * @param ParamDefinition $parameter
-	 * @param bool $hasAliases
-	 *
-	 * @return string
 	 */
 	private function getDescriptionRow( ParamDefinition $parameter, bool $hasAliases ): string {
 		if ( $hasAliases ) {
