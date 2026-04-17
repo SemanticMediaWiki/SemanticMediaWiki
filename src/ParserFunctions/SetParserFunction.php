@@ -58,10 +58,6 @@ class SetParserFunction {
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param ParserParameterProcessor $parameters
-	 *
-	 * @return string|null
 	 */
 	public function parse( ParserParameterProcessor $parameters ): array {
 		$count = 0;

@@ -170,7 +170,7 @@ class DataValueFactory {
 	 * @param Property|null $property property object for which this value is made, or null
 	 * @param WikiPage|null $contextPage that provides a context for parsing the value string, or null
 	 *
-	 * @return DataValue
+	 * @return DataValue|ErrorValue
 	 */
 	public function newDataValueByType( $typeId, $valueString = false, $caption = false, ?Property $property = null, $contextPage = null ) {
 		if ( !$this->dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
@@ -249,7 +249,7 @@ class DataValueFactory {
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param WikiPage|null $contextPage
 	 *
-	 * @return DataValue
+	 * @return DataValue|ErrorValue
 	 */
 	public function newDataValueByItem( DataItem $dataItem, ?Property $property = null, $caption = false, $contextPage = null ) {
 		if ( $property !== null ) {
@@ -285,7 +285,7 @@ class DataValueFactory {
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param null $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null
 	 *
-	 * @return DataValue
+	 * @return DataValue|ErrorValue
 	 */
 	public function newDataValueByProperty( Property $property, $valueString = false, $caption = false, $contextPage = null ) {
 		$typeId = $property->isInverse() ? '_wpg' : $property->findPropertyTypeID();
@@ -385,7 +385,7 @@ class DataValueFactory {
 	 * @param string|false $caption
 	 * @param WikiPage|null $contextPage
 	 *
-	 * @return DataValue
+	 * @return DataValue|ErrorValue
 	 */
 	public function newPropertyValueByLabel( $propertyLabel, $caption = false, ?WikiPage $contextPage = null ) {
 		return $this->newDataValueByType( PropertyValue::TYPE_ID, $propertyLabel, $caption, null, $contextPage );
@@ -398,7 +398,7 @@ class DataValueFactory {
 	 * @param string|false $caption
 	 * @param WikiPage|null $contextPage
 	 *
-	 * @return DataValue
+	 * @return DataValue|ErrorValue
 	 */
 	public function newPropertyValueByItem( Property $property, $caption = false, ?WikiPage $contextPage = null ) {
 		$dataValue = $this->newDataValueByType(

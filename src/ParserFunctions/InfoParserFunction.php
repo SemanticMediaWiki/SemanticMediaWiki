@@ -3,7 +3,6 @@
 namespace SMW\ParserFunctions;
 
 use MediaWiki\Parser\Parser;
-use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
 use SMW\Formatters\Highlighter;
 use SMW\MediaWiki\Outputs;
@@ -18,15 +17,9 @@ use SMW\MediaWiki\Outputs;
  */
 class InfoParserFunction {
 
-	/**
-	 * @param Parser $parser
-	 * @param ProcessingResult $result
-	 *
-	 * @return mixed
-	 */
 	public function handle( Parser $parser, ProcessingResult $result ): string|ProcessingResult {
 		if ( $result->hasFatal() ) {
-			return $this->getOutputForErrors( $result->getErrors() );
+			return $this->getOutputForErrors();
 		}
 
 		$parameters = $result->getParameters();
@@ -85,12 +78,7 @@ class InfoParserFunction {
 		return $result;
 	}
 
-	/**
-	 * @param ProcessingError[] $errors
-	 *
-	 * @return string
-	 */
-	private function getOutputForErrors( array $errors ): string {
+	private function getOutputForErrors(): string {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #info parser function';
 	}
