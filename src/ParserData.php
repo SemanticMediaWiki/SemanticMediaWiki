@@ -351,7 +351,7 @@ class ParserData {
 		$isDeferrableUpdate = false;
 
 		// @legacy
-		if ( is_bool( $opts ) && $opts === true ) {
+		if ( is_bool( $opts ) && $opts ) {
 			$isDeferrableUpdate = true;
 		}
 
