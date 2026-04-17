@@ -17,9 +17,6 @@ class ParameterListDocBuilder {
 	 */
 	private $msg;
 
-	/**
-	 * @param callable $messageFunction
-	 */
 	public function __construct( callable $messageFunction ) {
 		$this->msg = $messageFunction;
 	}
@@ -41,7 +38,7 @@ class ParameterListDocBuilder {
 			}
 		}
 
-		if ( empty( $tableRows ) ) {
+		if ( $tableRows === [] ) {
 			return '';
 		}
 
@@ -65,7 +62,7 @@ class ParameterListDocBuilder {
 	 */
 	private function containsAliases( array $paramDefinitions ): bool {
 		foreach ( $paramDefinitions as $parameter ) {
-			if ( !empty( $parameter->getAliases() ) ) {
+			if ( $parameter->getAliases() !== [] ) {
 				return true;
 			}
 		}
@@ -75,11 +72,6 @@ class ParameterListDocBuilder {
 
 	/**
 	 * Returns the wikitext for a table row describing a single parameter.
-	 *
-	 * @param ParamDefinition $parameter
-	 * @param bool $hasAliases
-	 *
-	 * @return string
 	 */
 	private function getDescriptionRow( ParamDefinition $parameter, bool $hasAliases ): string {
 		if ( $hasAliases ) {
