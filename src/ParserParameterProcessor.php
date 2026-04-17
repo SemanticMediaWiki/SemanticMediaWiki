@@ -61,7 +61,7 @@ class ParserParameterProcessor {
 	/**
 	 * @since 2.3
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getFirstParameter(): ?string {
 		return $this->first;
