@@ -3,6 +3,7 @@
 namespace SMW\ParserFunctions;
 
 use MediaWiki\Parser\PPFrame;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\ParserData;
@@ -21,7 +22,7 @@ use SMW\ParserData;
 class DeclareParserFunction {
 
 	/**
-	 * @var DIWikiPage
+	 * @var WikiPage
 	 */
 	private $subject;
 
@@ -62,7 +63,7 @@ class DeclareParserFunction {
 				$argument = $frame->getArgument( $argumentname );
 				$valuestring = $frame->expand( $argument );
 
-				if ( $propertyValue->isValid() ) {
+				if ( $propertyValue instanceof PropertyValue && $propertyValue->isValid() ) {
 					$this->matchValueArgument( $propertyValue, $propertystring, $valuestring );
 				}
 			}

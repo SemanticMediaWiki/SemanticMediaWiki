@@ -363,7 +363,7 @@ class AskParserFunction {
 	}
 
 	private function hasReachedExpensiveExecutionLimit( $query ) {
-		if ( $this->expensiveFuncExecutionWatcher->hasReachedExpensiveLimit( $query ) === false ) {
+		if ( !$this->expensiveFuncExecutionWatcher->hasReachedExpensiveLimit( $query ) ) {
 			return false;
 		}
 
