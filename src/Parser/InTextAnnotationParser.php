@@ -6,6 +6,7 @@ use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\MagicWordsFinder;
@@ -204,34 +205,22 @@ class InTextAnnotationParser {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ): string {
+	public static function decodeSquareBracket( string $text ): string {
 		return LinksEncoder::decodeSquareBracket( $text );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ): ?string {
+	public static function obfuscateAnnotation( string $text ): ?string {
 		return LinksEncoder::obfuscateAnnotation( $text );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function removeAnnotation( $text ) {
+	public static function removeAnnotation( string $text ): string {
 		return LinksEncoder::removeAnnotation( $text );
 	}
 
@@ -458,14 +447,17 @@ class InTextAnnotationParser {
 
 		$dataValue->setLinkAttributes( [ 'class' => $class ] );
 
-		if ( ( $lang = Localizer::getAnnotatedLanguageCodeFrom( $value ) ) !== false ) {
+		$lang = Localizer::getAnnotatedLanguageCodeFrom( $value );
+		if ( $lang !== false ) {
 			$dataValue->setOption( $dataValue::OPT_USER_LANGUAGE, $lang );
 			$dataValue->setCaption(
 				$caption === false ? $dataValue->getWikiValue() : $caption
 			);
 		}
 
-		$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
+		if ( $dataValue instanceof PropertyValue ) {
+			$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
+		}
 
 		return $dataValue->getShortWikitext( $linker );
 	}

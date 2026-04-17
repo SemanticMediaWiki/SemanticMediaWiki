@@ -70,8 +70,6 @@ class RecursiveTextProcessor {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getError(): array {
 		return $this->error;
@@ -241,7 +239,7 @@ class RecursiveTextProcessor {
 
 			$user = RequestContext::getMain()->getUser();
 			$popt = new ParserOptions( $user );
-			$popt->setSuppressSectionEditLinks( true );
+			$popt->setSuppressSectionEditLinks();
 
 			// Maybe better to use Parser::recursiveTagParseFully ??
 			/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
@@ -295,7 +293,7 @@ class RecursiveTextProcessor {
 				return null;
 			}
 			return $this->parser->getOutput();
-		} catch ( Error $e ) {
+		} catch ( Error ) {
 			return null;
 		}
 	}
