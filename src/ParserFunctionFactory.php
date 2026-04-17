@@ -247,7 +247,7 @@ class ParserFunctionFactory {
 	 *
 	 * @param Parser $parser
 	 *
-	 * @return SubobjectParserFunction
+	 * @return SubobjectParserFunc
 	 */
 	public function newSubobjectParserFunction( Parser $parser ): SubobjectParserFunc {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -293,7 +293,7 @@ class ParserFunctionFactory {
 	 *
 	 * @param Parser $parser
 	 *
-	 * @return RecurringEventsParserFunction
+	 * @return RecurringEventsParserFunc
 	 */
 	public function newRecurringEventsParserFunction( Parser $parser ): RecurringEventsParserFunc {
 		$applicationFactory = ApplicationFactory::getInstance();
