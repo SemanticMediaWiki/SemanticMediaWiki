@@ -35,8 +35,6 @@ class NamespaceManager {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param LocalLanguage|null $LocalLanguage
 	 */
 	public function __construct( ?LocalLanguage $LocalLanguage = null ) {
 		$this->localLanguage = $LocalLanguage;
@@ -80,8 +78,6 @@ class NamespaceManager {
 	 * @Bug 34383
 	 *
 	 * @since 2.5
-	 *
-	 * @param array &$namespaces
 	 */
 	public static function initCanonicalNamespaces( array &$namespaces ): bool {
 		$instance_newVars = self::initCustomNamespace( $GLOBALS );
@@ -106,8 +102,6 @@ class NamespaceManager {
 	 * @see Hooks:CanonicalNamespaces
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
 	public static function getCanonicalNames(): array {
 		$canonicalNames = [
@@ -124,12 +118,8 @@ class NamespaceManager {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param integer offset
-	 *
-	 * @return array
 	 */
-	public static function buildNamespaceIndex( $offset ): array {
+	public static function buildNamespaceIndex( int $offset ): array {
 		// 100 and 101 used to be occupied by SMW's now obsolete namespaces
 		// "Relation" and "Relation_Talk"
 
@@ -272,7 +262,7 @@ class NamespaceManager {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:$wgNamespacesWithSubpages
 		 */
-		$vars['wgNamespacesWithSubpages'] = $vars['wgNamespacesWithSubpages'] + [
+		$vars['wgNamespacesWithSubpages'] += [
 			SMW_NS_PROPERTY_TALK => true,
 			SMW_NS_CONCEPT_TALK => true,
 		];
@@ -292,7 +282,7 @@ class NamespaceManager {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:$wgNamespacesToBeSearchedDefault
 		 */
-		$vars['wgNamespacesToBeSearchedDefault'] = $vars['wgNamespacesToBeSearchedDefault'] + [
+		$vars['wgNamespacesToBeSearchedDefault'] += [
 			SMW_NS_PROPERTY => true,
 			SMW_NS_CONCEPT => true
 		];
