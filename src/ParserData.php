@@ -76,9 +76,6 @@ class ParserData {
 
 	private array $errors = [];
 
-	/**
-	 * @var
-	 */
 	private bool $canCreateUpdateJob = true;
 
 	/**
@@ -180,7 +177,7 @@ class ParserData {
 	/**
 	 * @since 3.0
 	 *
-	 * @return ParserOptions|null
+	 * @return void
 	 */
 	public function addExtraParserKey( $key ): void {
 		$keysToCache = ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheKeys' ) ?? [];
@@ -273,7 +270,7 @@ class ParserData {
 	/**
 	 * @since 2.1
 	 *
-	 * @param ParserOutput|null
+	 * @param ParserOutput|null $parserOutput
 	 */
 	public function importFromParserOutput( ?ParserOutput $parserOutput = null ): void {
 		if ( $parserOutput === null ) {
@@ -372,7 +369,7 @@ class ParserData {
 		$isDeferrableUpdate = false;
 
 		// @legacy
-		if ( $opts === true ) {
+		if ( is_bool( $opts ) && $opts === true ) {
 			$isDeferrableUpdate = true;
 		}
 
