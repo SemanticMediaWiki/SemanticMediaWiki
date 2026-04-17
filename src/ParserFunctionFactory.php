@@ -37,8 +37,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Parser|null $parser
 	 */
 	public function __construct( ?Parser $parser = null ) {
 		$this->parser = $parser;
@@ -48,10 +46,6 @@ class ParserFunctionFactory {
 	 * Convenience instantiation of a ParserFunctionFactory object
 	 *
 	 * @since 1.9
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return ParserFunctionFactory
 	 */
 	public static function newFromParser( Parser $parser ): self {
 		return new self( $parser );
@@ -59,8 +53,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parser $parser
 	 */
 	public function registerFunctionHandlers( Parser $parser ): void {
 		[ $name, $definition, $flag ] = $this->getAskParserFunctionDefinition();
@@ -87,10 +79,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return AskParserFunction
 	 */
 	public function newAskParserFunction( Parser $parser ): AskParserFunction {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -150,10 +138,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return ShowParserFunction
 	 */
 	public function newShowParserFunction( Parser $parser ): ShowParserFunction {
 		$settings = ApplicationFactory::getInstance()->getSettings();
@@ -175,10 +159,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return SetParserFunction
 	 */
 	public function newSetParserFunction( Parser $parser ): SetParserFunction {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -213,10 +193,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return ConceptParserFunction
 	 */
 	public function newConceptParserFunction( Parser $parser ): ConceptParserFunction {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -244,10 +220,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return SubobjectParserFunction
 	 */
 	public function newSubobjectParserFunction( Parser $parser ): SubobjectParserFunc {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -290,10 +262,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return RecurringEventsParserFunction
 	 */
 	public function newRecurringEventsParserFunction( Parser $parser ): RecurringEventsParserFunc {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -340,10 +308,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return DeclareParserFunction
 	 */
 	public function newDeclareParserFunction( Parser $parser ): DeclareParserFunction {
 		$parserData = ApplicationFactory::getInstance()->newParserData(
@@ -360,8 +324,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return array
 	 */
 	public function getAskParserFunctionDefinition(): array {
 		$askParserFunctionDefinition = function ( Parser $parser ) {
@@ -384,8 +346,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return array
 	 */
 	public function getShowParserFunctionDefinition(): array {
 		$showParserFunctionDefinition = function ( Parser $parser ) {
@@ -408,8 +368,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return array
 	 */
 	public function getSubobjectParserFunctionDefinition(): array {
 		$subobjectParserFunctionDefinition = function ( Parser $parser ) {
@@ -427,8 +385,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return array
 	 */
 	public function getSetRecurringEventParserFunctionDefinition(): array {
 		$recurringEventsParserFunctionDefinition = function ( Parser $parser ) {
@@ -446,8 +402,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return array
 	 */
 	public function getSetParserFunctionDefinition(): array {
 		$setParserFunctionDefinition = function ( Parser $parser ): array {
@@ -465,8 +419,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return array
 	 */
 	public function getConceptParserFunctionDefinition(): array {
 		$conceptParserFunctionDefinition = function ( Parser $parser ) {
@@ -482,8 +434,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return array
 	 */
 	public function getDeclareParserFunctionDefinition(): array {
 		$declareParserFunctionDefinition = function ( Parser $parser, PPFrame $frame, array $args ): string {
@@ -499,8 +449,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 5.1
-	 *
-	 * @return array
 	 */
 	public function getDocumentationParserFunctionDefinition(): array {
 		$smwdocDefinition = static function ( Parser $parser, PPFrame $frame, array $args ): array {
@@ -527,8 +475,6 @@ class ParserFunctionFactory {
 
 	/**
 	 * @since 5.1
-	 *
-	 * @return array
 	 */
 	public function getInfoParserFunctionDefinition(): array {
 		$infoDefinition = static function ( Parser $parser, PPFrame $frame, array $args ): array {
