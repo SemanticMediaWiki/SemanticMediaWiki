@@ -176,8 +176,6 @@ class ParserData {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return void
 	 */
 	public function addExtraParserKey( $key ): void {
 		$keysToCache = ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheKeys' ) ?? [];
@@ -217,8 +215,6 @@ class ParserData {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function canUse(): bool {
 		return !$this->hasAnnotationBlock();
@@ -228,8 +224,6 @@ class ParserData {
 	 * Returns collected errors occurred during processing
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -244,8 +238,6 @@ class ParserData {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param SemanticData $semanticData
 	 */
 	public function setSemanticData( SemanticData $semanticData ): void {
 		$this->semanticData = $semanticData;
@@ -269,8 +261,6 @@ class ParserData {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param ParserOutput|null $parserOutput
 	 */
 	public function importFromParserOutput( ?ParserOutput $parserOutput = null ): void {
 		if ( $parserOutput === null ) {
@@ -338,10 +328,6 @@ class ParserData {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param ParserOutput $parserOutput
-	 *
-	 * @return bool
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ): bool {
 		return $parserOutput->getExtensionData( 'smw-semanticdata-status' ) ?? false;
@@ -351,8 +337,6 @@ class ParserData {
 	 * @see SemanticData::addDataValue
 	 *
 	 * @since 1.9
-	 *
-	 * @param DataValue $dataValue
 	 */
 	public function addDataValue( DataValue $dataValue ): void {
 		$this->semanticData->addDataValue( $dataValue );
@@ -362,8 +346,6 @@ class ParserData {
 	 * @private This method is not for public use
 	 *
 	 * @since 1.9
-	 *
-	 * @return bool
 	 */
 	public function updateStore( bool|array $opts = [] ): bool {
 		$isDeferrableUpdate = false;
