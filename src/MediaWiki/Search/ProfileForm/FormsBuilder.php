@@ -21,7 +21,7 @@ class FormsBuilder {
 
 	private ?OpenForm $openForm;
 
-	private ?CustomForm $customForm;
+	private ?CustomForm $customForm = null;
 
 	private string $defaultForm = '';
 

@@ -25,7 +25,7 @@ class TreeBuilder {
 	 */
 	const TYPE_CATEGORY = 'type/category';
 
-	private ?array $nodes;
+	private ?array $nodes = null;
 
 	/**
 	 * @since 3.2

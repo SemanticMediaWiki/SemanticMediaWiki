@@ -69,8 +69,10 @@ class Query {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @param array ...$field
 	 */
-	public function field( array|string ...$field ): void {
+	public function field( ...$field ): void {
 		$this->fields[] = $field;
 	}
 
@@ -96,25 +98,27 @@ class Query {
 	 * Register the main table in form of ( 'foo' ) or as ( 'foo', 't1' ).
 	 *
 	 * @since 3.0
+	 *
+	 * @param array ...$table
 	 */
-	public function table( array|string ...$table ): void {
+	public function table( ...$table ): void {
 		if ( strpos( $table[0] ?? '', 'SELECT' ) !== false ) {
+			// @phan-suppress-next-line PhanTypeConversionFromArray
 			$tableName = '(' . $table[0] . ')';
 		} else {
 			$tableName = $this->connection->tableName( $table[0] );
 		}
 
-		$this->table = $tableName . (
-			isset( $table[1] ) && is_string( $table[1] )
-				? " AS " . $table[1]
-				: ''
-		);
+		// @phan-suppress-next-line PhanTypeConversionFromArray
+		$this->table = $tableName . ( isset( $table[1] ) ? " AS " . $table[1] : '' );
 	}
 
 	/**
 	 * @since 3.0
+	 *
+	 * @param string ...$join
 	 */
-	public function join( array|string ...$join ): void {
+	public function join( ...$join ): void {
 		if ( strpos( $join[0], 'JOIN' ) === false ) {
 			throw new InvalidArgumentException( "A join type is missing!" );
 		}
@@ -210,7 +214,7 @@ class Query {
 	/**
 	 * @since 3.1
 	 */
-	public function option( string $key, ?string $value ): void {
+	public function option( string $key, mixed $value ): void {
 		if ( $value === null ) {
 			unset( $this->options[$key] );
 		} else {

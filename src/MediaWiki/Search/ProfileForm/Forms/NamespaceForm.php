@@ -29,7 +29,7 @@ class NamespaceForm {
 
 	private array $searchableNamespaces = [];
 
-	private ?string $token;
+	private ?string $token = null;
 
 	private bool $hideList = false;
 

@@ -28,7 +28,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 */
 	const CRITICAL_DELETECOUNT = 5000;
 
-	private Language|string $language;
+	private Language|string|null $language = null;
 
 	private array $dataTypeLabels = [];
 
@@ -152,6 +152,9 @@ class SpecialStatsAddExtra implements HookListener {
 	}
 
 	private function msg( $args ): string {
+		if ( $this->language === null ) {
+			return '';
+		}
 		if ( $this->getOption( 'plain.msg_key', false ) ) {
 			return is_array( $args ) ? implode( '.', $args ) : $args;
 		}

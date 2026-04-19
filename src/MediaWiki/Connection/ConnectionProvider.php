@@ -19,7 +19,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
-	private ?Database $connection;
+	private ?Database $connection = null;
 
 	private array $localConnectionConf = [];
 

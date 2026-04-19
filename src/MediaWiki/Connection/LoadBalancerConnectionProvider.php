@@ -19,9 +19,9 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
-	private ?IDatabase $connection;
+	private ?IDatabase $connection = null;
 
-	private ?ILoadBalancer $loadBalancer;
+	private ?ILoadBalancer $loadBalancer = null;
 
 	/**
 	 * @since 1.9

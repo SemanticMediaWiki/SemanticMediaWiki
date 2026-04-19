@@ -18,7 +18,7 @@ class ExtendedSearchEngine extends SearchEngine {
 
 	private ExtendedSearch $extendedSearch;
 
-	private ?SearchEngine $fallbackSearchEngine;
+	private ?SearchEngine $fallbackSearchEngine = null;
 
 	/**
 	 * @see SearchEngineFactory::create
@@ -60,7 +60,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @since 2.1
 	 */
-	public function getFallbackSearchEngine(): SearchEngine {
+	public function getFallbackSearchEngine(): ?SearchEngine {
 		return $this->fallbackSearchEngine;
 	}
 
@@ -270,7 +270,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @since 3.0
 	 */
-	public function getQueryLink(): InfoLink {
+	public function getQueryLink(): ?InfoLink {
 		return $this->extendedSearch->getQueryLink();
 	}
 

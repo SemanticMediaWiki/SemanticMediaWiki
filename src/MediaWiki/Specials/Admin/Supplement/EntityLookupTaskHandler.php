@@ -23,7 +23,7 @@ use SMW\Store;
  */
 class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
-	private ?User $user;
+	private ?User $user = null;
 
 	/**
 	 * @since 2.5

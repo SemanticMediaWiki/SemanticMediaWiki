@@ -34,9 +34,9 @@ class ExtendedSearch {
 
 	private string $queryString = '';
 
-	private InfoLink $queryLink;
+	private ?InfoLink $queryLink = null;
 
-	private string $prefix;
+	private string $prefix = '';
 
 	private $extraPrefixMap = [];
 
@@ -149,7 +149,7 @@ class ExtendedSearch {
 	/**
 	 * @since 3.0
 	 */
-	public function getQueryLink(): InfoLink {
+	public function getQueryLink(): ?InfoLink {
 		return $this->queryLink;
 	}
 

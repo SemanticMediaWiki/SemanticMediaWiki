@@ -34,7 +34,7 @@ class SchemaContent extends JsonContent {
 
 	private ?SchemaContentFormatter $contentFormatter = null;
 
-	private ?array $parse;
+	private mixed $parse = null;
 
 	private bool $isYaml = false;
 

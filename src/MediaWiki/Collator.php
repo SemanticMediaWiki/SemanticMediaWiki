@@ -58,12 +58,8 @@ class Collator {
 	 * bit-per-bit.
 	 *
 	 * @since 3.0
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function armor( string $text, $source = '' ) {
+	public function armor( string $text ): string {
 		if ( strpos( $this->collationName, 'uca' ) === false ) {
 			return $text;
 		}

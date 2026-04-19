@@ -248,7 +248,7 @@ class ProfileForm {
 		}
 
 		$namespaceForm->setHideList(
-			$request->getVal( 'ns-list', $default )
+			(bool)$request->getVal( 'ns-list', $default )
 		);
 
 		$namespaceForm->setSearchableNamespaces(

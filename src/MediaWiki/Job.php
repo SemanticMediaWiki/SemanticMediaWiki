@@ -23,7 +23,7 @@ abstract class Job extends MediaWikiJob {
 
 	protected bool $isEnabledJobQueue = true;
 
-	protected JobQueue $jobQueue;
+	protected ?JobQueue $jobQueue = null;
 
 	/** @var array<int|string, mixed> */
 	protected array $jobs = [];
