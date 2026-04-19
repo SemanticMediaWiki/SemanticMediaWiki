@@ -28,8 +28,6 @@ class ParserParameterProcessor {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $rawParameters
 	 */
 	public function __construct( array $rawParameters = [] ) {
 		$this->rawParameters = $rawParameters;
@@ -40,8 +38,6 @@ class ParserParameterProcessor {
 	 * Returns collected errors
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -60,8 +56,6 @@ class ParserParameterProcessor {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return string
 	 */
 	public function getFirstParameter(): ?string {
 		return $this->first;
@@ -91,8 +85,6 @@ class ParserParameterProcessor {
 	 * @since 2.3
 	 *
 	 * @param string $key
-	 *
-	 * @return bool
 	 */
 	public function hasParameter( $key ): bool {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );
@@ -124,8 +116,6 @@ class ParserParameterProcessor {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $parameters
 	 */
 	public function setParameters( array $parameters ): void {
 		$this->parameters = $parameters;
