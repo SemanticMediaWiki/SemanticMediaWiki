@@ -74,6 +74,7 @@ class PageSchemas extends PSExtensionHandler {
 			$psTemplateFields = $psTemplate->getFields();
 			foreach ( $psTemplateFields as $psTemplateField ) {
 				$prop_array = $psTemplateField->getObject( 'semanticmediawiki_Property' );
+				// @phan-suppress-next-line MediaWikiNoEmptyIfDefined
 				if ( empty( $prop_array ) ) {
 					continue;
 				}

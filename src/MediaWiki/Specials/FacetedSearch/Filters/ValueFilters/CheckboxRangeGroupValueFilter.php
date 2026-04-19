@@ -35,12 +35,6 @@ class CheckboxRangeGroupValueFilter {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param UrlArgs $urlArgs
-	 * @param string $property
-	 * @param array $values
-	 *
-	 * @return string
 	 */
 	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ): string {
 		if ( $values === [] ) {
@@ -127,9 +121,6 @@ class CheckboxRangeGroupValueFilter {
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	/**
-	 * @return mixed[]
-	 */
 	private function buildRangeGroups( string $property, array $values, array $raw ): array {
 		$ranges = [];
 
@@ -236,7 +227,7 @@ class CheckboxRangeGroupValueFilter {
 
 		$condition = $this->urlArgs->find( "vc.$property", 'or' );
 
-		$this->templateParser->compile(
+		return $this->templateParser->processTemplate(
 			'items.condition',
 			[
 				'property' => $property,
@@ -245,8 +236,6 @@ class CheckboxRangeGroupValueFilter {
 				'not-selected' => $condition === 'not' ? 'selected' : ''
 			]
 		);
-
-		return $this->templateParser->publish( 'items.condition' );
 	}
 
 	private function createInputField( string $property, array $values ) {
@@ -254,14 +243,12 @@ class CheckboxRangeGroupValueFilter {
 			return '';
 		}
 
-		$this->templateParser->compile(
+		return $this->templateParser->processTemplate(
 			'items.input',
 			[
 				'placeholder' => $this->msg( [ 'smw-facetedsearch-input-filter-placeholder', $property ] ),
 			]
 		);
-
-		return $this->templateParser->publish( 'items.input' );
 	}
 
 	private function getJD( Property $property, $value ) {

@@ -15,9 +15,6 @@ class TableStatisticsTask extends Task {
 
 	const CACHE_KEY = 'table-statistics';
 
-	/**
-	 * @var
-	 */
 	private ?array $cacheUsage = null;
 
 	/**
@@ -31,8 +28,6 @@ class TableStatisticsTask extends Task {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $cacheUsage
 	 */
 	public function setCacheUsage( array $cacheUsage ): void {
 		$this->cacheUsage = $cacheUsage;
@@ -40,10 +35,6 @@ class TableStatisticsTask extends Task {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function process( array $parameters ): array {
 		$cacheTTL = 3600;

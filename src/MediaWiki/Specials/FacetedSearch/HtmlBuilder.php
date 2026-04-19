@@ -34,9 +34,6 @@ class HtmlBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param UrlArgs $urlArgs
 	 */
 	public function buildEmptyHTML( Title $title, UrlArgs $urlArgs ): string {
 		$profileName = $this->profile->getProfileName();
@@ -86,9 +83,6 @@ class HtmlBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param UrlArgs $urlArgs
 	 */
 	public function buildHTML( Title $title, UrlArgs $urlArgs ): string {
 		$result = $this->resultFetcher->getHtml();
@@ -133,7 +127,7 @@ class HtmlBuilder {
 
 		// Remember the "cstate" (aka card state) over the period of one
 		// request by adding hidden elements to the form
-		foreach ( $urlArgs->getArray( 'cstate', [] ) as $key => $value ) {
+		foreach ( $urlArgs->getArray( 'cstate' ) as $key => $value ) {
 			$hidden .= '<input name="' . "cstate[$key]" . '" type="hidden" value="' . $value . '">';
 		}
 

@@ -16,15 +16,9 @@ class TaskHandlerRegistry {
 
 	use HookDispatcherAwareTrait;
 
-	/**
-	 * @var
-	 */
 	private array $taskHandlers = [];
 
-	/**
-	 * @var int
-	 */
-	private $featureSet = 0;
+	private int $featureSet = 0;
 
 	private bool $onRegisterTaskHandlers = false;
 
@@ -39,9 +33,6 @@ class TaskHandlerRegistry {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $taskHandlers
-	 * @param User $user
 	 */
 	public function registerTaskHandlers( array $taskHandlers, User $user ): void {
 		if ( $this->onRegisterTaskHandlers ) {
@@ -56,8 +47,6 @@ class TaskHandlerRegistry {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TaskHandler $taskHandler
 	 */
 	public function registerTaskHandler( TaskHandler $taskHandler ): void {
 		$this->taskHandlers[] = $taskHandler;
@@ -65,19 +54,13 @@ class TaskHandlerRegistry {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ): void {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $type
-	 *
-	 * @return TaskHandler[]
 	 */
 	public function get( string $type ): array {
 		$taskHandlers = [];

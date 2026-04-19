@@ -30,8 +30,6 @@ class ListLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|int
 	 */
 	public function getVersion(): string {
 		return 'ListLookup:' . self::VERSION;
@@ -39,10 +37,6 @@ class ListLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function lookup( array $parameters ): array {
 		$requestOptions = $this->newRequestOptions(
@@ -55,7 +49,7 @@ class ListLookup extends Lookup {
 
 		// Increase by one to look ahead
 		$requestOptions->setLimit( $limit + 1 );
-		$ns = isset( $parameters['ns'] ) ? $parameters['ns'] : '';
+		$ns = $parameters['ns'] ?? '';
 
 		switch ( $ns ) {
 			case NS_CATEGORY:
@@ -224,7 +218,7 @@ class ListLookup extends Lookup {
 			if ( $ns === SMW_NS_PROPERTY ) {
 				try {
 					$label = Property::newFromUserLabel( $row->smw_title )->getLabel();
-				} catch ( Exception $e ) {
+				} catch ( Exception ) {
 					continue;
 				}
 

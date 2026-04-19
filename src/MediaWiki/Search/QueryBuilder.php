@@ -24,10 +24,7 @@ use SMW\Store;
  */
 class QueryBuilder {
 
-	/**
-	 * @var array
-	 */
-	private $queryCache = [];
+	private array $queryCache = [];
 
 	/**
 	 * @since 3.0
@@ -45,10 +42,8 @@ class QueryBuilder {
 	 * @since 3.0
 	 *
 	 * @param string $term
-	 *
-	 * @return Query|null
 	 */
-	public function getQuery( $term ) {
+	public function getQuery( $term ): ?Query {
 		if ( !is_string( $term ) || trim( $term ) === '' ) {
 			return null;
 		}
@@ -72,11 +67,11 @@ class QueryBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Query|null $query
-	 * @param array $searchableNamespaces
 	 */
-	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ): void {
+	public function addNamespaceCondition(
+		?Query $query = null,
+		array $searchableNamespaces = []
+	): void {
 		if ( $query === null ) {
 			return;
 		}
@@ -101,8 +96,6 @@ class QueryBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Query|null $query
 	 */
 	public function addSort( ?Query $query = null ): void {
 		if ( $query === null ) {
@@ -125,10 +118,8 @@ class QueryBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getQueryString( Store $store, $term ): string {
+	public function getQueryString( Store $store, string $term ): string {
 		// Special invisible char which is set by the JS component to allow to
 		// push a forms submit through the SearchEngine without an actual "search
 		// term" to avoid being blocked on an empty request which only contains
@@ -190,13 +181,8 @@ class QueryBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $form
-	 * @param array $data
-	 *
-	 * @return mixed[]|\non-empty-list<array{mixed, mixed}>[]|\non-empty-list<array{mixed, 'and'}>[]
 	 */
-	public function fetchFieldValues( $form, array $data ): array {
+	public function fetchFieldValues( string $form, array $data ): array {
 		$fieldValues = [];
 
 		if ( !isset( $data['forms'] ) ) {

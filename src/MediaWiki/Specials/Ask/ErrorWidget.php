@@ -17,10 +17,8 @@ class ErrorWidget {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public static function disabled() {
+	public static function disabled(): string {
 		return Html::errorBox(
 			Message::get( 'smw_iq_disabled', Message::TEXT, Message::USER_LANGUAGE ),
 			'',
@@ -30,10 +28,8 @@ class ErrorWidget {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
-	public static function noResult() {
+	public static function noResult(): string {
 		return Html::noticeBox(
 			Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE ),
 			'smw-notice-result-noresults'
@@ -42,10 +38,8 @@ class ErrorWidget {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public static function noScript() {
+	public static function noScript(): string {
 		return Html::rawElement(
 			'div',
 			[
@@ -66,10 +60,8 @@ class ErrorWidget {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public static function sessionFailure() {
+	public static function sessionFailure(): string {
 		return Html::errorBox(
 			Message::get( 'sessionfailure', Message::TEXT, Message::USER_LANGUAGE ),
 			'',
@@ -79,13 +71,9 @@ class ErrorWidget {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Query|null $query
-	 *
-	 * @return string
 	 */
-	public static function queryError( ?Query $query = null ) {
-		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === [] ) {
+	public static function queryError( ?Query $query = null ): string {
+		if ( $query === null || $query->getErrors() === [] ) {
 			return '';
 		}
 

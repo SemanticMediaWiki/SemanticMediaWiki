@@ -21,31 +21,23 @@ class SortWidget {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $sortingSupport
 	 */
-	public static function setSortingSupport( $sortingSupport ): void {
-		self::$sortingSupport = (bool)$sortingSupport;
+	public static function setSortingSupport( bool $sortingSupport ): void {
+		self::$sortingSupport = $sortingSupport;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $randSortingSupport
 	 */
-	public static function setRandSortingSupport( $randSortingSupport ): void {
-		self::$randSortingSupport = (bool)$randSortingSupport;
+	public static function setRandSortingSupport( bool $randSortingSupport ): void {
+		self::$randSortingSupport = $randSortingSupport;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $params
-	 *
-	 * @return string
 	 */
-	public static function sortSection( array $params ) {
-		if ( self::$sortingSupport === false ) {
+	public static function sortSection( array $params ): string {
+		if ( !self::$sortingSupport ) {
 			return '';
 		}
 

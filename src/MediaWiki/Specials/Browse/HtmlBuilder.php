@@ -34,24 +34,18 @@ class HtmlBuilder {
 
 	/**
 	 * At which incoming property are we currently?
-	 *
-	 * @var int
 	 */
-	private $offset = 0;
+	private int $offset = 0;
 
 	/**
 	 * How many incoming values should be asked for
-	 *
-	 * @var int
 	 */
-	private $incomingValuesCount = 8;
+	private int $incomingValuesCount = 8;
 
 	/**
 	 * How many outgoing values should be asked for
-	 *
-	 * @var int
 	 */
-	private $outgoingValuesCount = 200;
+	private int $outgoingValuesCount = 200;
 
 	/**
 	 * How many incoming properties should be asked for
@@ -60,15 +54,9 @@ class HtmlBuilder {
 
 	private array $extraModules = [];
 
-	/**
-	 * @var array
-	 */
-	private $options = [];
+	private array $options = [];
 
-	/**
-	 * @var array
-	 */
-	private $language = 'en';
+	private string|int $language = 'en';
 
 	private DataValue $dataValue;
 
@@ -85,8 +73,6 @@ class HtmlBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $options
 	 */
 	public function setOptions( array $options ): void {
 		$this->options = $options;
@@ -94,8 +80,6 @@ class HtmlBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
 	public function getOptions(): array {
 		return $this->options;
@@ -103,22 +87,15 @@ class HtmlBuilder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $key
-	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ): void {
+	public function setOption( string $key, mixed $value ): void {
 		$this->options[$key] = $value;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $key
-	 *
-	 * @return mixed
 	 */
-	public function getOption( $key, $default = null ) {
+	public function getOption( string $key, mixed $default = null ): mixed {
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
@@ -128,10 +105,8 @@ class HtmlBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function legacy() {
+	public function legacy(): string {
 		$subject = [
 			'dbkey' => $this->subject->getDBKey(),
 			'ns' => $this->subject->getNamespace(),
@@ -162,7 +137,7 @@ class HtmlBuilder {
 			'subobject' => $this->subject->getSubobjectName(),
 		];
 
-		$this->language = $this->getOption( 'lang' ) !== null ? $this->getOption( 'lang' ) : Message::USER_LANGUAGE;
+		$this->language = $this->getOption( 'lang' ) ?? Message::USER_LANGUAGE;
 
 		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$this->subject
@@ -204,15 +179,13 @@ class HtmlBuilder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function buildHTML(): string {
 		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
 			$this->offset = $offset;
 		}
 
-		$this->language = $this->getOption( 'lang' ) !== null ? $this->getOption( 'lang' ) : Message::USER_LANGUAGE;
+		$this->language = $this->getOption( 'lang' ) ?? Message::USER_LANGUAGE;
 
 		$this->outgoingValuesCount = $this->getOption( 'valuelistlimit.out', 200 );
 
@@ -463,7 +436,7 @@ class HtmlBuilder {
 	 */
 	private function getPaginationData( bool $more ): array {
 		if (
-			$more === false ||
+			!$more ||
 			$this->offset <= 0 ||
 			$this->getOption( 'showAll' )
 		) {

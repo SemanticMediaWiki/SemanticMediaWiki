@@ -1000,6 +1000,7 @@
 	"smw-schema-error-input": "This is an error message in namespace \"smw/schema\".",
 	"smw-schema-error-input-schema": "This is an error message in namespace \"smw/schema\".\n\nParameter:\n* $1 - Holds the name of the schema validation information.",
 	"smw-schema-error-title-prefix": "This is an error message.\n\nParameter:\n* $1 - Holds the string representing the intended prefix.",
+	"smw-schema-error-unknown": "This is an error message stating that an unkown JSON error occured.",
 	"smw-schema-validation-error": "This is an error message in namespace \"smw/schema\".\n\nParameter:\n* $1 - Holds the name of the datatype.",
 	"smw-schema-validation-schema-title": "This is a tab on a page in namesace \"smw/schema\".",
 	"smw-schema-summary-title": "This is a tab on a page in namesace \"smw/schema\".",

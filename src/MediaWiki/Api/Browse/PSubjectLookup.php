@@ -28,8 +28,6 @@ class PSubjectLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|int
 	 */
 	public function getVersion(): string {
 		return __METHOD__ . self::VERSION;
@@ -37,10 +35,6 @@ class PSubjectLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function lookup( array $parameters ): array {
 		$limit = 20;
@@ -127,7 +121,7 @@ class PSubjectLookup extends Lookup {
 				continue;
 			}
 
-			if ( isset( $parameters['title-prefix'] ) && (bool)$parameters['title-prefix'] === false ) {
+			if ( isset( $parameters['title-prefix'] ) && !( (bool)( $parameters['title-prefix'] ) ) ) {
 				$list[] = $dataItem->getTitle()->getText();
 			} else {
 				$list[] = $dataItem->getTitle()->getPrefixedText();

@@ -21,10 +21,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements ActionableTask {
 
-	/**
-	 * @var bool
-	 */
-	public $isApiTask = true;
+	public bool $isApiTask = true;
 
 	/**
 	 * @since 2.5

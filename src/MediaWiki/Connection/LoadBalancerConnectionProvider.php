@@ -19,15 +19,9 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var IDatabase
-	 */
-	private $connection;
+	private ?IDatabase $connection;
 
-	/**
-	 * @var ILoadBalancer
-	 */
-	private $loadBalancer;
+	private ?ILoadBalancer $loadBalancer;
 
 	/**
 	 * @since 1.9
@@ -43,16 +37,12 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 * @since 3.1
 	 *
 	 * @deprecated since 5.0
-	 *
-	 * @param boolean $asConnectionRef
 	 */
-	public function asConnectionRef( $asConnectionRef ): void {
+	public function asConnectionRef( bool $asConnectionRef ): void {
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param loadBalancer $loadBalancer
 	 */
 	public function setLoadBalancer( ILoadBalancer $loadBalancer ): void {
 		$this->loadBalancer = $loadBalancer;
@@ -63,10 +53,9 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 1.9
 	 *
-	 * @return IDatabase
 	 * @throws RuntimeException
 	 */
-	public function getConnection() {
+	public function getConnection(): IDatabase {
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}

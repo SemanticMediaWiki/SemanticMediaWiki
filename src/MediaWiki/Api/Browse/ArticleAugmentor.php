@@ -20,11 +20,6 @@ class ArticleAugmentor {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array &$res
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function augment( array &$res, array $parameters ): ?array {
 		if ( !isset( $res['query'] ) && $res['query'] === [] ) {

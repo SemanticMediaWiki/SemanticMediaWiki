@@ -52,30 +52,22 @@ class ParserAfterTidy implements HookListener {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
 	 *
 	 * @since 2.5
-	 *
-	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ): void {
-		$this->isCommandLineMode = (bool)$isCommandLineMode;
+	public function isCommandLineMode( bool $isCommandLineMode ): void {
+		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isReady
 	 */
-	public function isReady( $isReady ): void {
-		$this->isReady = (bool)$isReady;
+	public function isReady( bool $isReady ): void {
+		$this->isReady = $isReady;
 	}
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param string &$text
-	 *
-	 * @return true
 	 */
-	public function process( &$text ): bool {
+	public function process( string &$text ): bool {
 		if ( $this->canPerformUpdate() ) {
 			$this->performUpdate( $text );
 		}
@@ -86,7 +78,7 @@ class ParserAfterTidy implements HookListener {
 	private function canPerformUpdate(): bool {
 		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
 		// when for example Title::isProtected is accessed
-		if ( $this->isReady === false ) {
+		if ( !$this->isReady ) {
 			return $this->doAbort();
 		}
 
@@ -152,7 +144,7 @@ class ParserAfterTidy implements HookListener {
 		return false;
 	}
 
-	private function performUpdate( &$text ): void {
+	private function performUpdate( string &$text ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(

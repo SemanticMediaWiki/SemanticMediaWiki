@@ -25,20 +25,11 @@ class SchemaContentFormatter {
 
 	private HtmlBuilder $htmlBuilder;
 
-	/**
-	 * @var bool
-	 */
-	private $isYaml = false;
+	private bool $isYaml = false;
 
-	/**
-	 * @var
-	 */
-	private $type = [];
+	private array $type = [];
 
-	/**
-	 * @var string|null
-	 */
-	private $unknownType = false;
+	private string|null|false $unknownType = false;
 
 	/**
 	 * @since 3.0
@@ -49,17 +40,13 @@ class SchemaContentFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isYaml
 	 */
-	public function isYaml( $isYaml ): void {
+	public function isYaml( bool $isYaml ): void {
 		$this->isYaml = $isYaml;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function setType( $type ): void {
 		$this->type = $type;
@@ -67,8 +54,6 @@ class SchemaContentFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getModuleStyles(): array {
 		return array_merge( [
@@ -82,8 +67,6 @@ class SchemaContentFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getModules(): array {
 		return [ 'smw.content.schemaview' ];
@@ -91,12 +74,8 @@ class SchemaContentFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Schema $schema
-	 *
-	 * @return string
 	 */
-	public function getHelpLink( Schema $schema ) {
+	public function getHelpLink( Schema $schema ): string {
 		$key = [
 			'smw-schema-type-help-link',
 			$schema->get( Schema::SCHEMA_TYPE )
@@ -111,23 +90,15 @@ class SchemaContentFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
 	 */
-	public function setUnknownType( $type ): void {
+	public function setUnknownType( string $type ): void {
 		$this->unknownType = $type;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param $text
-	 * @param Schema|null $schema
-	 * @param array $errors
-	 *
-	 * @return string
 	 */
-	public function getText( $text, ?Schema $schema = null, array $errors = [] ): string {
+	public function getText( string $text, ?Schema $schema = null, array $errors = [] ): string {
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
 		// 'footer' => [ $schema ]
@@ -148,10 +119,6 @@ class SchemaContentFormatter {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Schema|null $schema
-	 *
-	 * @return array
 	 */
 	public function getUsage( ?Schema $schema = null ): array {
 		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
@@ -245,7 +212,7 @@ class SchemaContentFormatter {
 				],
 			'validator-schema-title' => $this->msg( [ 'smw-schema-validation-schema-title' ] ),
 			'validator_schema' => $schema_link,
-			'error_params' => $this->error_params( $schema_link, $errors ),
+			'error_params' => $this->error_params( $errors ),
 			'error-title' => $this->msg( [ 'smw-schema-error-title', $errorCount ] ),
 		];
 
@@ -255,17 +222,20 @@ class SchemaContentFormatter {
 	private function schema_body( $text ) {
 		$codeHighlighter = null;
 
+		// @phan-suppress-next-line PhanUndeclaredClassReference
 		if ( class_exists( CodeHighlighter::class ) ) {
 			$codeHighlighter = new CodeHighlighter();
 
 			// `yaml` works well enough for both JSON and YAML
 			$codeHighlighter->setLanguage( 'yaml' );
+			// @phan-suppress-next-line PhanUndeclaredClassConstant
 			$codeHighlighter->addOption( Geshi::SET_OVERALL_CLASS, 'content-highlight' );
 		}
 
 		if ( $codeHighlighter !== null && $this->isYaml ) {
 			$text = $codeHighlighter->highlight( $text );
 		} elseif ( $codeHighlighter !== null ) {
+			// @phan-suppress-next-line PhanUndeclaredClassConstant
 			$codeHighlighter->addOption( Geshi::SET_STRINGS_STYLE, 'color: #000' );
 			$text = $codeHighlighter->highlight( $text );
 		} else {
@@ -283,9 +253,6 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_body', $params );
 	}
 
-	/**
-	 * @return mixed[]
-	 */
 	private function attributes_extra( $schema ): array {
 		if ( $schema === null ) {
 			return [];
@@ -318,10 +285,7 @@ class SchemaContentFormatter {
 		return $params;
 	}
 
-	/**
-	 * @return mixed[]
-	 */
-	private function error_params( string|array $validator_schema, array $errors = [] ): array {
+	private function error_params( array $errors = [] ): array {
 		if ( $errors === [] ) {
 			return [];
 		}

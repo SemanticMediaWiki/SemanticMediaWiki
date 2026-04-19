@@ -20,19 +20,10 @@ class CustomForm {
 
 	private bool $isActiveForm = false;
 
-	/**
-	 * @var
-	 */
-	private $parameters = [];
+	private array $parameters = [];
 
-	/**
-	 * @var
-	 */
 	private array $fieldCounter = [];
 
-	/**
-	 * @var
-	 */
 	private array $html5TypeMap = [
 		'_txt' => 'text',
 		'_uri' => 'url',
@@ -58,19 +49,15 @@ class CustomForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ): void {
-		$this->isActiveForm = (bool)$isActiveForm;
+	public function isActiveForm( bool $isActiveForm ): void {
+		$this->isActiveForm = $isActiveForm;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $definition
 	 */
-	public function makeFields( $definition ): string {
+	public function makeFields( array $definition ): string {
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];
@@ -120,7 +107,7 @@ class CustomForm {
 		return implode( '', $fields );
 	}
 
-	private function makeField( string $name, string $property, $value, $options ) {
+	private function makeField( string $name, string $property, $value, $options ): string {
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 		$options = !is_array( $options ) ? [] : $options;
 

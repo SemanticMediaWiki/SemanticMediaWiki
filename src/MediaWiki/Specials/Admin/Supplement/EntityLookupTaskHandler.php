@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin\Supplement;
 use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\WebRequest;
+use MediaWiki\User\User;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
@@ -22,10 +23,7 @@ use SMW\Store;
  */
 class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
-	/**
-	 * @var User|null
-	 */
-	private $user;
+	private ?User $user;
 
 	/**
 	 * @since 2.5
@@ -125,10 +123,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->addHtml( $this->getForm( $webRequest, $id ) );
 	}
 
-	/**
-	 * @param int $id
-	 */
-	private function doDispose( $id ): void {
+	private function doDispose( string $id ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(

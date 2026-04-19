@@ -51,10 +51,6 @@ class RevisionFromEditComplete implements HookListener {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Title $title
-	 *
-	 * @return bool
 	 */
 	public function process( Title $title ): bool {
 		$this->editInfo->fetchEditInfo();
@@ -106,7 +102,7 @@ class RevisionFromEditComplete implements HookListener {
 				$title->getDBKey(),
 				$this->pageInfoProvider->getNativeData()
 			);
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			return null;
 		}
 

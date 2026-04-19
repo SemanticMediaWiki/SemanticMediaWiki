@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use File;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
@@ -248,11 +249,8 @@ class HookDispatcher {
 	 * @note This hook is only to be called from the `RevisionGuard` class.
 	 *
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param File|null &$file
 	 */
-	public function onChangeFile( Title $title, &$file ): void {
+	public function onChangeFile( Title $title, ?File &$file ): void {
 		$this->getHookContiner()
 			->run( 'SMW::RevisionGuard::ChangeFile', [ $title, &$file ] );
 	}

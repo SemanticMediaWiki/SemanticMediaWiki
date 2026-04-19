@@ -21,50 +21,23 @@ class Query {
 
 	const TYPE_SELECT = 'SELECT';
 
-	/**
-	 * @var string
-	 */
-	protected $type = '';
+	protected string $type = '';
 
-	/**
-	 * @var
-	 */
-	protected $table = '';
+	protected string $table = '';
 
-	/**
-	 * @var
-	 */
-	protected $fields = [];
+	protected array $fields = [];
 
-	/**
-	 * @var
-	 */
-	protected $conditions = [];
+	protected array $conditions = [];
 
-	/**
-	 * @var
-	 */
-	protected $options = [];
+	protected array $options = [];
 
-	/**
-	 * @var
-	 */
 	private array $joins = [];
 
-	/**
-	 * @var string
-	 */
-	public $alias = '';
+	public string $alias = '';
 
-	/**
-	 * @var int
-	 */
-	public $index = 0;
+	public int $index = 0;
 
-	/**
-	 * @var bool
-	 */
-	public $autoCommit = false;
+	public bool $autoCommit = false;
 
 	/**
 	 * @since 3.0
@@ -75,11 +48,9 @@ class Query {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $type
-	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function type( $type ): void {
+	public function type( string $type ): void {
 		$type = strtoupper( $type );
 
 		if ( !in_array( $type, [ self::TYPE_SELECT ] ) ) {
@@ -91,8 +62,6 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $fields
 	 */
 	public function fields( array $fields ): void {
 		$this->fields = $fields;
@@ -100,17 +69,13 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array ...$field
 	 */
-	public function field( ...$field ): void {
+	public function field( array|string ...$field ): void {
 		$this->fields[] = $field;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function hasField( $field = '' ): bool {
 		if ( (string)$field === '' ) {
@@ -122,8 +87,6 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function hasCondition(): bool {
 		return $this->conditions !== [];
@@ -133,25 +96,25 @@ class Query {
 	 * Register the main table in form of ( 'foo' ) or as ( 'foo', 't1' ).
 	 *
 	 * @since 3.0
-	 *
-	 * @param array ...$table
 	 */
-	public function table( ...$table ): void {
+	public function table( array|string ...$table ): void {
 		if ( strpos( $table[0] ?? '', 'SELECT' ) !== false ) {
 			$tableName = '(' . $table[0] . ')';
 		} else {
 			$tableName = $this->connection->tableName( $table[0] );
 		}
 
-		$this->table = $tableName . ( isset( $table[1] ) ? " AS " . $table[1] : '' );
+		$this->table = $tableName . (
+			isset( $table[1] ) && is_string( $table[1] )
+				? " AS " . $table[1]
+				: ''
+		);
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string ...$join
 	 */
-	public function join( ...$join ): void {
+	public function join( array|string ...$join ): void {
 		if ( strpos( $join[0], 'JOIN' ) === false ) {
 			throw new InvalidArgumentException( "A join type is missing!" );
 		}
@@ -178,49 +141,29 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $k
-	 * @param string $v
-	 *
-	 * @return string
 	 */
-	public function like( $k, $v ): string {
+	public function like( string $k, string $v ): string {
 		return "$k LIKE " . $this->connection->addQuotes( $v );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $k
-	 * @param array $v
-	 *
-	 * @return string
 	 */
-	public function in( $k, array $v ): string {
+	public function in( string $k, array $v ): string {
 		return "$k IN (" . $this->connection->makeList( $v ) . ')';
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $k
-	 * @param string $v
-	 *
-	 * @return string
 	 */
-	public function eq( $k, $v ): string {
+	public function eq( string $k, string $v ): string {
 		return "$k=" . $this->connection->addQuotes( $v );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $k
-	 * @param string $v
-	 *
-	 * @return string
 	 */
-	public function neq( $k, $v ): string {
+	public function neq( string $k, string $v ): string {
 		return "$k!=" . $this->connection->addQuotes( $v );
 	}
 
@@ -228,12 +171,8 @@ class Query {
 	 * Supposed to be called `and` but this works only on PHP 7.1+.
 	 *
 	 * @since 3.0
-	 *
-	 * @param string $condition
-	 *
-	 * @return array
 	 */
-	public function asAnd( $condition ): array {
+	public function asAnd( string $condition ): array {
 		return [ 'AND' => $condition ];
 	}
 
@@ -241,21 +180,15 @@ class Query {
 	 * Supposed to be called `or` but this works only on PHP 7.1+.
 	 *
 	 * @since 3.0
-	 *
-	 * @param string $condition
-	 *
-	 * @return array
 	 */
-	public function asOr( $condition ): array {
+	public function asOr( string $condition ): array {
 		return [ 'OR' => $condition ];
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string|array $condition
 	 */
-	public function condition( $condition ): void {
+	public function condition( string|array $condition ): void {
 		if ( $condition === '' ) {
 			return;
 		}
@@ -269,8 +202,6 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $options
 	 */
 	public function options( array $options ): void {
 		$this->options = $options;
@@ -278,11 +209,8 @@ class Query {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $key
-	 * @param string $value
 	 */
-	public function option( $key, $value ): void {
+	public function option( string $key, ?string $value ): void {
 		if ( $value === null ) {
 			unset( $this->options[$key] );
 		} else {
@@ -292,8 +220,6 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public function __toString(): string {
 		$params = [
@@ -312,8 +238,6 @@ class Query {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return string
 	 */
 	public function getSQL(): string {
 		return $this->sql();
@@ -321,8 +245,6 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public function build(): string {
 		$statement = $this->sql();
@@ -341,12 +263,8 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $fname
-	 *
-	 * @return bool|IResultWrapper
 	 */
-	public function execute( $fname ) {
+	public function execute( string $fname = __METHOD__ ): bool|IResultWrapper {
 		return $this->connection->readQuery( $this, $fname );
 	}
 

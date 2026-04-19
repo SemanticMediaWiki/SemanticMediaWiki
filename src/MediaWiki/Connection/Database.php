@@ -41,13 +41,12 @@ class Database {
 	 */
 	const TRIGGER_ROLLBACK = IDatabase::TRIGGER_ROLLBACK;
 
-	/** @var ISQLPlatform::LIST_COMMA (Combine list with comma delimeters) */
+	/**
+	 * @see ISQLPlatform::LIST_COMMA
+	 */
 	const LIST_COMMA = ISQLPlatform::LIST_COMMA;
 
-	/**
-	 * @var int
-	 */
-	private $flags = 0;
+	private int|string|false $flags = 0;
 
 	private ?int $insertId = null;
 
@@ -265,14 +264,9 @@ class Database {
 	 *
 	 * @since 1.9
 	 *
-	 * @param Query|string $sql
-	 * @param string $fname
-	 * @param int $flags
-	 *
-	 * @return ResultWrapper
 	 * @throws RuntimeException
 	 */
-	public function query( $sql, $fname = __METHOD__, $flags = 0 ) {
+	public function query( Query|string $sql, string $fname = __METHOD__, int $flags = 0 ): bool|IResultWrapper {
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$results = $this->executeQuery(
@@ -293,13 +287,9 @@ class Database {
 	 * @see IDatabase::query()
 	 * @since 4.0.0
 	 *
-	 * @param Query|string $sql
-	 * @param string $fname
-	 * @param int $flags
-	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
-	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
+	public function readQuery( Query|string $sql, string $fname = __METHOD__, $flags = 0 ): bool|IResultWrapper {
 		return $this->executeQuery(
 			$this->connRef->getConnection( 'read' ),
 			$sql,
@@ -313,14 +303,9 @@ class Database {
 	 *
 	 * @see IDatabase::query()
 	 *
-	 * @param IDatabase $connection
-	 * @param Query|string $sql
-	 * @param $fname
-	 * @param int $flags
-	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
-	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {
+	private function executeQuery( IDatabase $connection, Query|string $sql, ?string $fname, int $flags ): bool|IResultWrapper {
 		if ( $sql instanceof Query ) {
 			$sql = $sql->build();
 		}
@@ -624,13 +609,8 @@ class Database {
 	 * @see IDatabase::listTables
 	 *
 	 * @since 3.1
-	 *
-	 * @param string|null $prefix
-	 * @param string $fname
-	 *
-	 * @return
 	 */
-	public function listTables( $prefix = null, $fname = __METHOD__ ) {
+	public function listTables( ?string $prefix = null, string $fname = __METHOD__ ): array {
 		return $this->connRef->getConnection( 'read' )->listTables( $prefix, $fname );
 	}
 
@@ -797,14 +777,10 @@ class Database {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function unescape_bytea( $text ) {
+	public function unescape_bytea( ?string $text ): ?string {
 		if ( $this->isType( 'postgres' ) ) {
-			$text = pg_unescape_bytea( (string)( $text ?? '' ) );
+			$text = pg_unescape_bytea( $text ?? '' );
 		}
 
 		return $text;

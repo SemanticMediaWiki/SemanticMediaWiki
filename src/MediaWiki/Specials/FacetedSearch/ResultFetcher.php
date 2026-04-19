@@ -22,57 +22,27 @@ class ResultFetcher {
 
 	private ?int $totalCount = 0;
 
-	/**
-	 * @var int
-	 */
-	private $limit = 0;
+	private int $limit = 0;
 
-	/**
-	 * @var int
-	 */
-	private $offset = 0;
+	private int $offset = 0;
 
-	/**
-	 * @var bool
-	 */
-	private $hasFurtherResults = false;
+	private bool $hasFurtherResults = false;
 
-	/**
-	 * @var string
-	 */
-	private $queryString = '';
+	private string $queryString = '';
 
-	/**
-	 * @var QueryResult
-	 */
-	private $queryResult;
+	private ?QueryResult $queryResult;
 
-	/**
-	 * @var
-	 */
 	private ?array $params = null;
 
 	private string $format = '';
 
-	/**
-	 * @var
-	 */
 	private array $valueFilters = [];
 
-	/**
-	 * @var
-	 */
-	private $propertyFilters = [];
+	private array $propertyFilters = [];
 
-	/**
-	 * @var
-	 */
-	private $categoryFilters = [];
+	private array $categoryFilters = [];
 
-	/**
-	 * @var
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 3.2
@@ -82,17 +52,13 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
-	public function getTotalCount(): int {
+	public function getTotalCount(): ?int {
 		return $this->totalCount;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getLimit(): int {
 		return $this->limit;
@@ -100,8 +66,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getOffset(): int {
 		return $this->offset;
@@ -109,8 +73,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return bool
 	 */
 	public function hasFurtherResults(): bool {
 		return $this->hasFurtherResults;
@@ -118,8 +80,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getQueryString(): string {
 		return $this->queryString;
@@ -127,8 +87,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return QueryResult|null
 	 */
 	public function getQueryResult(): ?QueryResult {
 		return $this->queryResult;
@@ -136,8 +94,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
@@ -145,8 +101,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getCategoryFilters(): array {
 		return $this->categoryFilters;
@@ -154,8 +108,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getValueFilters(): array {
 		return $this->valueFilters;
@@ -163,8 +115,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getHtml(): string {
 		if ( $this->errors !== [] ) {
@@ -199,8 +149,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param ParametersProcessor $parametersProcessor
 	 */
 	public function fetchQueryResult( ParametersProcessor $parametersProcessor ): void {
 		[ $queryString, $parameters, $printRequests ] = QueryProcessor::getComponentsFromFunctionParams(

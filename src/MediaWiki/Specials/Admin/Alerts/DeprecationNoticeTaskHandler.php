@@ -38,7 +38,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '';
 
 		// Push `smw` to the top
@@ -93,7 +93,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		);
 	}
 
-	private function buildSection( int|string $section, array $deprecationNoticeList ) {
+	private function buildSection( int|string $section, array $deprecationNoticeList ): string {
 		$noticeConfigList = [];
 		$replacementConfigList = [];
 		$removedConfigList = [];
@@ -157,7 +157,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-replacement", $section, $list ) ) !== null ) {
+		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-replacement", $list ) ) !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -170,7 +170,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-notice", $section, $list ) ) !== null ) {
+		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-notice", $list ) ) !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -181,14 +181,14 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-removal", $section, $list ) ) !== null ) {
+		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-removal", $list ) ) !== null ) {
 			$noticeList[] = $mList;
 		}
 
 		return $noticeList;
 	}
 
-	private function mergeList( string $title, int|string $section, &$list ): ?string {
+	private function mergeList( string $title, array &$list ): ?string {
 		if ( $list === [] || ( $items = implode( '', $list ) ) === '' ) {
 			return null;
 		}
@@ -255,7 +255,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return isset( $GLOBALS[$setting][$option] ) || ( is_array( $GLOBALS[$setting] ) && array_search( $option, $GLOBALS[$setting] ) );
 	}
 
-	private function createItem( array $message ) {
+	private function createItem( array $message ): string {
 		return Html::rawElement( 'li', [], $this->msg( $message, Message::PARSE ) );
 	}
 

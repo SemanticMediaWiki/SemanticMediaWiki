@@ -21,30 +21,17 @@ abstract class Job extends MediaWikiJob {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	protected $isEnabledJobQueue = true;
+	protected bool $isEnabledJobQueue = true;
 
-	/**
-	 * @var JobQueue
-	 */
-	protected $jobQueue;
+	protected JobQueue $jobQueue;
 
-	/**
-	 * @var Job
-	 */
-	protected $jobs = [];
+	/** @var array<int|string, mixed> */
+	protected array $jobs = [];
 
-	/**
-	 * @var Store
-	 */
-	protected $store = null;
+	protected ?Store $store = null;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Store $store
 	 */
 	public function setStore( Store $store ): void {
 		$this->store = $store;
@@ -54,13 +41,9 @@ abstract class Job extends MediaWikiJob {
 	 * Whether to insert jobs into the JobQueue is enabled or not
 	 *
 	 * @since 1.9
-	 *
-	 * @param bool|true $enableJobQueue
-	 *
-	 * @return AbstractJob
 	 */
-	public function isEnabledJobQueue( $enableJobQueue = true ): static {
-		$this->isEnabledJobQueue = (bool)$enableJobQueue;
+	public function isEnabledJobQueue( bool $enableJobQueue = true ): static {
+		$this->isEnabledJobQueue = $enableJobQueue;
 		return $this;
 	}
 
@@ -77,17 +60,13 @@ abstract class Job extends MediaWikiJob {
 
 	/**
 	 * @note Job::getType was introduced with MW 1.21
-	 *
-	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		return $this->command;
 	}
 
 	/**
 	 * @since  2.0
-	 *
-	 * @return int
 	 */
 	public function getJobCount(): int {
 		return count( $this->jobs );
@@ -95,10 +74,6 @@ abstract class Job extends MediaWikiJob {
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param mixed $key
-	 *
-	 * @return bool
 	 */
 	public function hasParameter( string $key ): bool {
 		if ( !is_array( $this->params ) ) {
@@ -111,41 +86,32 @@ abstract class Job extends MediaWikiJob {
 	/**
 	 * @since  1.9
 	 *
-	 * @param mixed $key
-	 *
 	 * @return bool
 	 */
-	public function getParameter( $key, $default = false ) {
+	public function getParameter( string $key, $default = false ) {
 		return $this->hasParameter( $key ) ? $this->params[$key] : $default;
 	}
 
 	/**
 	 * @since  3.0
-	 *
-	 * @param mixed $key
-	 * @param mixed $value
 	 */
-	public function setParameter( $key, $value ): void {
+	public function setParameter( string $key, mixed $value ): void {
 		$this->params[$key] = $value;
 	}
 
 	/**
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009
-	 *
-	 * @param self[] $jobs
-	 *
-	 * @return bool
 	 */
-	public static function batchInsert( $jobs ) {
-		return ApplicationFactory::getInstance()->getJobQueue()->push( $jobs );
+	public static function batchInsert( array $jobs ): void {
+		ApplicationFactory::getInstance()->getJobQueue()->push( $jobs );
 	}
 
 	/**
 	 * @see Job::insert
 	 */
-	public function insert() {
+	public function insert(): void {
 		if ( $this->isEnabledJobQueue ) {
-			return self::batchInsert( [ $this ] );
+			self::batchInsert( [ $this ] );
 		}
 	}
 
@@ -157,19 +123,17 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @since 3.0
 	 */
-	public function lazyPush() {
+	public function lazyPush(): void {
 		if ( $this->isEnabledJobQueue ) {
-			return $this->getJobQueue()->lazyPush( $this );
+			$this->getJobQueue()->lazyPush( $this );
 		}
 	}
 
 	/**
 	 * @see Translate::TTMServerMessageUpdateJob
 	 * @since 3.0
-	 *
-	 * @param int $delay
 	 */
-	public function setDelay( $delay ): void {
+	public function setDelay( int $delay ): void {
 		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(
 			$this->getType()
 		);
@@ -191,6 +155,9 @@ abstract class Job extends MediaWikiJob {
 	/**
 	 * @see Job::newRootJobParams
 	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param string|Title $title
 	 */
 	public static function newRootJobParams( $key = '', $title = '' ) {
 		if ( $title instanceof Title ) {

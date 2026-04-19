@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\Page\Page;
 
 /**
  * Before displaying noarticletext or noarticletext-nopermission messages
@@ -17,26 +18,21 @@ use SMW\MediaWiki\HookListener;
  */
 class BeforeDisplayNoArticleText implements HookListener {
 
-	/**
-	 * @var Page
-	 */
-	private $article;
+	private Page $article;
 
 	/**
 	 * @since  2.0
 	 *
 	 * @param Page $article
 	 */
-	public function __construct( $article ) {
+	public function __construct( Page $article ) {
 		$this->article = $article;
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return bool
 	 */
-	public function process() {
+	public function process(): bool {
 		// Avoid having "noarticletext" info being generated for predefined
 		// properties as we are going to display an introductory text
 		if ( $this->article->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {

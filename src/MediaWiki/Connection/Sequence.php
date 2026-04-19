@@ -16,10 +16,7 @@ class Sequence {
 
 	private Database|IDatabase $connection;
 
-	/**
-	 * @var string
-	 */
-	private $tablePrefix;
+	private string $tablePrefix;
 
 	/**
 	 * @since 3.0
@@ -37,35 +34,25 @@ class Sequence {
 	/**
 	 * @since 3.0
 	 */
-	public function tablePrefix( $tablePrefix = '' ): void {
+	public function tablePrefix( string $tablePrefix = '' ): void {
 		$this->tablePrefix = $tablePrefix;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $table
-	 * @param string $field
-	 *
-	 * @return string
 	 */
-	public static function makeSequence( $table, $field ): string {
+	public static function makeSequence( string $table, string $field ): string {
 		return "{$table}_{$field}_seq";
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $table
-	 * @param string $field
-	 *
-	 * @return int
 	 */
-	public function restart( $table, $field ) {
+	public function restart( string $table, string $field ): int|false {
 		$fname = __METHOD__;
 
 		if ( $this->connection->getType() !== 'postgres' ) {
-			return;
+			return false;
 		}
 
 		if ( $this->tablePrefix !== null ) {

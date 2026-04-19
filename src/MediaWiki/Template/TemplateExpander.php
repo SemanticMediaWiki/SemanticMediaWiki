@@ -3,11 +3,9 @@
 namespace SMW\MediaWiki\Template;
 
 use MediaWiki\Context\RequestContext;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\StubObject\StubObject;
-use MediaWiki\Title\Title;
 use RuntimeException;
 
 /**
@@ -24,8 +22,6 @@ class TemplateExpander {
 	 */
 	const MAX_INCLUDE_SIZE = 50000000;
 
-	private ?Title $title = null;
-
 	/**
 	 * @since 3.1
 	 */
@@ -33,21 +29,10 @@ class TemplateExpander {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param Title $title
-	 */
-	public function setTitle( Title $title ): void {
-		$this->title = $title;
-	}
-
-	/**
 	 * @see Special:ExpandTemplates
 	 * @since 3.1
 	 *
 	 * @param Template|TemplateSet|string $template
-	 *
-	 * @return string
 	 */
 	public function expand( $template ): string|array {
 		if ( !$this->parser instanceof Parser && !$this->parser instanceof StubObject ) {
@@ -68,19 +53,6 @@ class TemplateExpander {
 		}
 
 		$title = $this->parser->getTitle();
-
-		if ( !$title instanceof Title ) {
-
-			if ( $this->title !== null ) {
-				$title = $this->title;
-			} else {
-				$title = $GLOBALS['wgTitle'];
-			}
-
-			if ( !$title instanceof Title ) {
-				$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'UNKNOWN_TITLE' );
-			}
-		}
 
 		$text = $this->parser->preprocess( $template, $title, $options );
 

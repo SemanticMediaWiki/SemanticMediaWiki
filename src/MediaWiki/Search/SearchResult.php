@@ -63,7 +63,7 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getSectionTitle
 	 */
 	public function getSectionTitle() {
-		if ( !isset( $this->mTitle ) || $this->mTitle->getFragment() === '' ) {
+		if ( $this->mTitle === null || $this->mTitle->getFragment() === '' ) {
 			return null;
 		}
 
@@ -121,7 +121,7 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getTitleSnippet
 	 */
 	public function getTitleSnippet() {
-		if ( !isset( $this->mTitle ) ) {
+		if ( $this->mTitle === null ) {
 			return '';
 		}
 
