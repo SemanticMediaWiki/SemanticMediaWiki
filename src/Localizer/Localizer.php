@@ -8,6 +8,7 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\Language\Language;
 use MediaWiki\Language\LanguageCode;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\StubObject\StubUserLang;
 use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
@@ -77,10 +78,8 @@ class Localizer {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return Language
 	 */
-	public function getUserLanguage(): Language {
+	public function getUserLanguage(): Language|StubUserLang {
 		return $GLOBALS['wgLang'];
 	}
 
