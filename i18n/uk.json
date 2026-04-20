@@ -560,7 +560,7 @@
 	"right-smw-schemaedit": "Редагування [https://www.semantic-mediawiki.org/wiki/Help:Schema сторінок схеми] (Семантична MediaWiki)",
 	"right-smw-viewjobqueuewatchlist": "Доступ до функції [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist списку спостереження] за чергою завдань (Семантична MediaWiki)",
 	"right-smw-viewentityassociatedrevisionmismatch": "Доступ до інформації про невідповідність версії, пов'язаної із сутністю (Семантична MediaWiki)",
-	"right-smw-vieweditpageinfo": "Перегляд [https://www.semantic-mediawiki.org/wiki/Help:Edit_help довідку з редагування] (Semantic MediaWiki)",
+	"right-smw-vieweditpageinfo": "Перегляд [https://www.semantic-mediawiki.org/wiki/Help:Edit_help довідки з редагування] (Семантична MediaWiki)",
 	"restriction-level-smw-pageedit": "захищено (лише прийнятні користувачі)",
 	"action-smw-patternedit": "редагування регулярних виразів, що використовуються Семантичною MediaWiki",
 	"action-smw-pageedit": "редагування сторінок з анотацією <code>Is edit protected</code> (Семантична MediaWiki)",
