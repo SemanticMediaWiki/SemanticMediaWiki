@@ -19,7 +19,8 @@
 			"Valtlai",
 			"Valtlait",
 			"Veikk0.ma",
-			"VezonThunder"
+			"VezonThunder",
+			"Wikipeedikko"
 		]
 	},
 	"smw-desc": "Lisää wikisi saavutettavuutta – niin koneille kuin ihmisille ([https://www.semantic-mediawiki.org/wiki/Help:User_manual verkko-opas])",
@@ -378,6 +379,16 @@
 	"smw-format-datatable-next": "Seuraava",
 	"smw-format-datatable-previous": "Edellinen",
 	"smw-format-datatable-toolbar-export": "Vie",
+	"apihelp-ask-param-query": "Kyselymerkkijono kyselykielellä",
+	"apihelp-browsebysubject-param-subject": "Kyselyn aihe",
+	"apihelp-smwbrowse-param-browse": "Määrittelee selaustyypin",
+	"apihelp-smwinfo-param-info": "Toimitettavat tiedot.",
+	"apihelp-ask-example-2": "Esimerkki hakutulosten rajaamisesta viidelle sivulle muokkauspäivää ja siirtymäarvoa 1 käyttäen.",
+	"apihelp-smwbrowse-example-3": "Esimerkki hakusanalla suodatettujen ominaisuuksien selaamistavasta.",
+	"apihelp-smwbrowse-example-7": "Esimerkki ominaisuuksien arvojen selaamistavasta tietylle ominaisuudelle ja hakusanalle.",
+	"apihelp-smwbrowse-example-8": "Esimerkki ominaisuus-arvo-parin aiheiden selaamistavasta hakusuodattimella.",
+	"apihelp-smwbrowse-example-11": "Esimerkki käsitteiden selaamistavasta oletussivutuksella.",
+	"apihelp-browsebyproperty-example-1": "Esimerkki ominaisuuden nimen mukaisesti suodatettujen ominaisuuksien selaamistavasta.",
 	"smw-property-page-list-count": "Näytetään $1 tätä ominaisuutta {{PLURAL:$1|käyttävä sivu|käyttävää sivua}}.",
 	"smw-property-reserved-category": "Luokka",
 	"smw-category": "Luokka",
