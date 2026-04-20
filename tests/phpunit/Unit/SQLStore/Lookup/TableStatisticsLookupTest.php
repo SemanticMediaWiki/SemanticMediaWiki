@@ -8,6 +8,7 @@ use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\TableStatisticsLookup;
 use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Lookup\TableStatisticsLookup
@@ -64,7 +65,7 @@ class TableStatisticsLookupTest extends TestCase {
 	public function testGetStats() {
 		$this->query->expects( $this->any() )
 			->method( 'execute' )
-			->willReturn( [] );
+			->willReturn( new FakeResultWrapper( [] ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'select' )

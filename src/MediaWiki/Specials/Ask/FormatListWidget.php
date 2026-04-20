@@ -19,8 +19,6 @@ class FormatListWidget {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $resultFormats
 	 */
 	public static function setResultFormats( array $resultFormats ): void {
 		self::$resultFormats = $resultFormats;
@@ -28,11 +26,6 @@ class FormatListWidget {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $params
-	 *
-	 * @return string
 	 */
 	public static function selectList( Title $title, array $params ): string {
 		$result = '';
@@ -55,7 +48,7 @@ class FormatListWidget {
 		$defaultName = $printer->getName();
 
 		$default = '';
-		$selectedFormat = isset( $params['format'] ) ? $params['format'] : 'broadtable';
+		$selectedFormat = $params['format'] ?? 'broadtable';
 
 		$formatList = self::formatList(
 			$url,
@@ -76,7 +69,13 @@ class FormatListWidget {
 		return $result;
 	}
 
-	private static function formatList( $url, string $selectedFormat, string &$default, $defaultName, string $defaultLocalizedName ) {
+	private static function formatList(
+		?string $url,
+		string $selectedFormat,
+		string &$default,
+		string $defaultName,
+		string $defaultLocalizedName
+	) {
 		$formatList = Html::rawElement(
 			'option',
 			[

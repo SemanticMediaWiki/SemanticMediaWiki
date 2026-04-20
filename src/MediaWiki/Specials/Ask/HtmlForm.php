@@ -20,10 +20,7 @@ class HtmlForm {
 
 	private array $parameters = [];
 
-	/**
-	 * @var string
-	 */
-	private $queryString = '';
+	private string $queryString = '';
 
 	private ?Query $query = null;
 
@@ -43,8 +40,6 @@ class HtmlForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
 	 */
 	public function setParameters( array $parameters ): void {
 		$this->parameters = $parameters;
@@ -52,17 +47,13 @@ class HtmlForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $queryString
 	 */
-	public function setQueryString( $queryString ): void {
+	public function setQueryString( string $queryString ): void {
 		$this->queryString = $queryString;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Query|null $query
 	 */
 	public function setQuery( ?Query $query = null ): void {
 		$this->query = $query;
@@ -70,8 +61,6 @@ class HtmlForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $callbacks
 	 */
 	public function setCallbacks( array $callbacks ): void {
 		$this->callbacks = $callbacks;
@@ -79,40 +68,34 @@ class HtmlForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isEditMode
 	 */
-	public function isEditMode( $isEditMode ): void {
-		$this->isEditMode = (bool)$isEditMode;
+	public function isEditMode( bool $isEditMode ): void {
+		$this->isEditMode = $isEditMode;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isBorrowedMode
 	 */
-	public function isBorrowedMode( $isBorrowedMode ): void {
-		$this->isBorrowedMode = (bool)$isBorrowedMode;
+	public function isBorrowedMode( bool $isBorrowedMode ): void {
+		$this->isBorrowedMode = $isBorrowedMode;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isPostSubmit
 	 */
-	public function isPostSubmit( $isPostSubmit ): void {
-		$this->isPostSubmit = (bool)$isPostSubmit;
+	public function isPostSubmit( bool $isPostSubmit ): void {
+		$this->isPostSubmit = $isPostSubmit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param UrlArgs $urlArgs
-	 * @param QueryResult|string|null $queryResult
-	 *
-	 * @return string
 	 */
-	public function getForm( UrlArgs $urlArgs, $queryResult = null, array $queryLog = [] ) {
+	public function getForm(
+		UrlArgs $urlArgs,
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
+		QueryResult|string|null $queryResult = null,
+		array $queryLog = []
+	): string {
 		$html = $this->buildHTML( $urlArgs, $queryResult, $queryLog );
 
 		if ( $this->isPostSubmit ) {
@@ -132,7 +115,12 @@ class HtmlForm {
 		return Html::rawElement( 'form', $params, $html );
 	}
 
-	private function buildHTML( UrlArgs $urlArgs, $queryResult, array $queryLog ): string {
+	private function buildHTML(
+		UrlArgs $urlArgs,
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
+		QueryResult|string|null $queryResult = null,
+		array $queryLog = []
+	): string {
 		$navigation = '';
 		$queryLink = null;
 		$isFromCache = false;
@@ -265,6 +253,7 @@ class HtmlForm {
 				]
 			);
 
+			// @phan-suppress-next-line PhanRedundantCondition
 			if ( is_array( $links ) ) {
 
 				// External source cannot disable the cache
@@ -272,7 +261,8 @@ class HtmlForm {
 					$isFromCache = false;
 				}
 
-				if ( ( $noCacheLink = LinksWidget::noQCacheLink( $this->title, $urlArgs, $isFromCache ) ) !== '' ) {
+				$noCacheLink = LinksWidget::noQCacheLink( $this->title, $urlArgs, $isFromCache );
+				if ( $noCacheLink !== '' ) {
 					$links[] = $noCacheLink;
 				}
 

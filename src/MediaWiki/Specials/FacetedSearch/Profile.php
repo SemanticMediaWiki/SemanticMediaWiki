@@ -23,9 +23,6 @@ class Profile {
 
 	private ?Compartment $profile = null;
 
-	/**
-	 * @var
-	 */
 	private array $profileList = [];
 
 	private ?Compartment $defaultProfile = null;
@@ -44,8 +41,6 @@ class Profile {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getProfileName(): string {
 		return $this->profileName;
@@ -53,8 +48,6 @@ class Profile {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getProfileCount(): int {
 		return count( $this->getProfileList() );
@@ -62,8 +55,6 @@ class Profile {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getProfileList(): array {
 		if ( $this->profileList === [] ) {

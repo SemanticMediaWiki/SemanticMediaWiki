@@ -6,6 +6,8 @@ use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
 use RuntimeException;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
 
 /**
  * @private
@@ -17,42 +19,21 @@ use SMW\Localizer\Message;
  */
 class FormsBuilder {
 
-	/**
-	 * @var OpenForm
-	 */
-	private $openForm;
+	private ?OpenForm $openForm = null;
 
-	/**
-	 * @var CustomForm
-	 */
-	private $customForm;
+	private ?CustomForm $customForm = null;
 
 	private string $defaultForm = '';
 
-	/**
-	 * @var
-	 */
 	private array $formList = [];
 
-	/**
-	 * @var
-	 */
 	private array $preselectNsList = [];
 
-	/**
-	 * @var
-	 */
 	private array $hiddenNsList = [];
 
-	/**
-	 * @var
-	 */
 	private array $parameters = [];
 
-	/**
-	 * @var
-	 */
-	private $termPrefixes = [];
+	private array $termPrefixes = [];
 
 	/**
 	 * @since 3.0
@@ -65,8 +46,6 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getParameters(): array {
 		return $this->parameters;
@@ -74,19 +53,13 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $key
-	 *
-	 * @return string
 	 */
-	public static function toLowerCase( $key ): string {
+	public static function toLowerCase( string $key ): string {
 		return strtolower( str_replace( [ ' ' ], [ '' ], $key ) );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getTermPrefixes(): array {
 		return $this->termPrefixes;
@@ -94,8 +67,6 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getHiddenNsList(): array {
 		return $this->hiddenNsList;
@@ -103,8 +74,6 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getPreselectNsList() {
 		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );
@@ -124,8 +93,6 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public function buildFormList(): string {
 		$list = [];
@@ -171,10 +138,6 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $data
-	 *
-	 * @return string
 	 */
 	public function buildForm( array $data ): string {
 		if ( !isset( $data['forms'] ) ) {
@@ -227,10 +190,12 @@ class FormsBuilder {
 			$this->preselect_namespaces( $data['namespaces']['preselect'] );
 		}
 
+		// @phan-suppress-next-line PhanTypeInvalidDimOffset
 		if ( isset( $data['namespaces']['hidden'] ) && is_array( $data['namespaces']['hidden'] ) ) {
 			$this->hidden_namespaces( $data['namespaces']['hidden'] );
 		}
 
+		// @phan-suppress-next-line PhanTypeInvalidDimOffset
 		if ( isset( $data['namespaces']['hide'] ) && is_array( $data['namespaces']['hide'] ) ) {
 			$this->hidden_namespaces( $data['namespaces']['hide'] );
 		}

@@ -19,10 +19,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Database
-	 */
-	private $connection;
+	private ?Database $connection = null;
 
 	private array $localConnectionConf = [];
 
@@ -35,8 +32,6 @@ class ConnectionProvider implements IConnectionProvider {
 	/**
 	 * @see #2532
 	 *
-	 * @param array $localConnectionConf
-	 *
 	 * @since 3.0
 	 */
 	public function setLocalConnectionConf( array $localConnectionConf ): void {
@@ -47,10 +42,8 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @see IConnectionProvider::getConnection
 	 *
 	 * @since 2.1
-	 *
-	 * @return Database
 	 */
-	public function getConnection() {
+	public function getConnection(): Database {
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -82,7 +75,7 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function createConnection( array $conf ) {
+	private function createConnection( array $conf ): Database {
 		if ( isset( $conf['callback'] ) && is_callable( $conf['callback'] ) ) {
 			return call_user_func( $conf['callback'] );
 		}

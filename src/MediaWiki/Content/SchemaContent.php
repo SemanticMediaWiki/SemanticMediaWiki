@@ -34,10 +34,7 @@ class SchemaContent extends JsonContent {
 
 	private ?SchemaContentFormatter $contentFormatter = null;
 
-	/**
-	 * @var array
-	 */
-	private $parse;
+	private mixed $parse = null;
 
 	private bool $isYaml = false;
 
@@ -59,8 +56,6 @@ class SchemaContent extends JsonContent {
 	 * a possible serialization attempt. (@see #4210)
 	 *
 	 * @since 3.1
-	 *
-	 * @return array
 	 */
 	public function __sleep(): array {
 		return [ 'model_id', 'mText' ];
@@ -75,8 +70,6 @@ class SchemaContent extends JsonContent {
 	 * JSON and YAML for when the data is valid.
 	 *
 	 * @since 3.0
-	 *
-	 * @return null|string
 	 */
 	public function toJson(): string|false|null {
 		if ( $this->isValid() ) {
@@ -88,8 +81,6 @@ class SchemaContent extends JsonContent {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param boolean
 	 */
 	public function isYaml(): bool {
 		if ( $this->isValid() ) {
@@ -181,8 +172,6 @@ class SchemaContent extends JsonContent {
 
 	/**
 	 * Gets the schema factory.
-	 *
-	 * @return SchemaFactory The schema factory instance.
 	 */
 	public function getSchemaFactory(): ?SchemaFactory {
 		return $this->schemaFactory;
@@ -200,7 +189,7 @@ class SchemaContent extends JsonContent {
 			try {
 				$this->parse = Yaml::parse( $this->mText );
 				$this->isYaml = true;
-			} catch ( ParseException $e ) {
+			} catch ( ParseException ) {
 				$this->isYaml = false;
 				$this->parse = null;
 			}

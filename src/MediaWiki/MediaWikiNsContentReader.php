@@ -27,12 +27,8 @@ class MediaWikiNsContentReader {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param string $name
-	 *
-	 * @return string|false
 	 */
-	public function read( $name ): string {
+	public function read( string $name ): string {
 		$content = '';
 
 		if ( !$this->skipMessageCache && wfMessage( $name )->exists() ) {
@@ -46,7 +42,7 @@ class MediaWikiNsContentReader {
 		return $content;
 	}
 
-	private function readFromDatabase( $name ) {
+	private function readFromDatabase( string $name ) {
 		$title = Title::makeTitleSafe( NS_MEDIAWIKI, ucfirst( $name ) );
 
 		if ( $title === null ) {

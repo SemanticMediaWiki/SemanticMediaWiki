@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\MediaWiki;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\LinkBatch;
 
@@ -37,10 +38,10 @@ class LinkBatchTest extends TestCase {
 
 	public function testAdd_NoPage() {
 		$instance = new LinkBatch();
-		$instance->add( 'Foo' );
+		$instance->add( new Blob( 'Foo' ) );
 
 		$this->assertFalse(
-			$instance->has( 'Foo' )
+			$instance->has( new Blob( 'Foo' ) )
 		);
 	}
 

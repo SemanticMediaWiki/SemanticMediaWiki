@@ -150,7 +150,7 @@ class UpdateDispatcherJob extends Job {
 		foreach ( $dependencyTargetLinks as $targetLink ) {
 			[ $title, $namespace, $iw, $subobjectname ] = explode( '#', $targetLink, 4 );
 
-			// @see DIWikiPage::doUnserialize
+			// @see WikiPage::doUnserialize
 			if ( !isset( $this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] ) ) {
 				$this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] = true;
 			}
@@ -341,7 +341,7 @@ class UpdateDispatcherJob extends Job {
 
 			try {
 				$subject = WikiPage::doUnserialize( $subject );
-			} catch ( DataItemDeserializationException $e ) {
+			} catch ( DataItemDeserializationException ) {
 				continue;
 			}
 

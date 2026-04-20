@@ -24,31 +24,18 @@ abstract class Page extends Article {
 
 	/**
 	 * Limit for results per page.
-	 *
-	 * @var int
 	 */
-	protected $limit;
+	protected int $limit;
 
 	/**
 	 * Start string: print $limit results from here.
-	 *
-	 * @var string
 	 */
-	protected $from;
+	protected string $from;
 
 	/**
 	 * End string: print $limit results strictly before this article.
-	 *
-	 * @var string
 	 */
-	protected $until;
-
-	/**
-	 * Cache for the current skin, obtained from $wgUser.
-	 *
-	 * @var Skin
-	 */
-	protected $skin;
+	protected string $until;
 
 	private ?Options $options = null;
 
@@ -84,16 +71,16 @@ abstract class Page extends Article {
 		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		$diffOnly = $request->getBool( 'diffonly', $userOptionsLookup->getOption( $user, 'diffonly' ) );
 
-		if ( !isset( $diff ) || !$diffOnly ) {
+		if ( $diff === null || !$diffOnly ) {
 			$outputPage->addHTML( $this->initHtml() );
 			$outputPage->addHTML( $this->beforeView() );
 		}
 
-		if ( $this->isLockedView() === false ) {
+		if ( !$this->isLockedView() ) {
 			parent::view();
 		}
 
-		if ( !isset( $diff ) || !$diffOnly ) {
+		if ( $diff === null || !$diffOnly ) {
 			$this->showList();
 		}
 
@@ -102,12 +89,8 @@ abstract class Page extends Article {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $key
-	 *
-	 * @return mixed
 	 */
-	public function getOption( $key ) {
+	public function getOption( string $key ): mixed {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -117,22 +100,17 @@ abstract class Page extends Article {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $key
-	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( string $key, mixed $value ): void {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
 
-		return $this->options->set( $key, $value );
+		$this->options->set( $key, $value );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|bool
 	 */
 	protected function getRedirectTargetURL(): string|bool {
 		return false;
@@ -140,8 +118,6 @@ abstract class Page extends Article {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	protected function initHtml(): string {
 		return '';
@@ -176,8 +152,6 @@ abstract class Page extends Article {
 	 * (e.g. $limit). Method can be overwritten in this case.
 	 * If the method returns false, nothing will be printed besides
 	 * the original article.
-	 *
-	 * @return true
 	 */
 	protected function initParameters(): void {
 		$this->limit = 20;
@@ -185,8 +159,6 @@ abstract class Page extends Article {
 
 	/**
 	 * Returns HTML to be displayed before the article text.
-	 *
-	 * @return string
 	 */
 	protected function beforeView(): string {
 		return '';
@@ -194,8 +166,6 @@ abstract class Page extends Article {
 
 	/**
 	 * Returns HTML to be displayed after the list display.
-	 *
-	 * @return string
 	 */
 	protected function afterHtml(): string {
 		return '';
@@ -203,8 +173,6 @@ abstract class Page extends Article {
 
 	/**
 	 * Returns the HTML which is added to $wgOut after the article text.
-	 *
-	 * @return string
 	 */
 	abstract protected function getHtml();
 
@@ -212,8 +180,6 @@ abstract class Page extends Article {
 	 * Like Article's getTitle(), but returning a suitable SMWDIWikiPage.
 	 *
 	 * @since 1.6
-	 *
-	 * @return WikiPage
 	 */
 	protected function getDataItem(): WikiPage {
 		return WikiPage::newFromTitle( $this->getTitle() );

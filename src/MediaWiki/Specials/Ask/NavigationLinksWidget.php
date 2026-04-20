@@ -19,29 +19,23 @@ use SMW\Utils\UrlArgs;
  */
 class NavigationLinksWidget {
 
-	/**
-	 * @var int
-	 */
-	private static $maxInlineLimit = 500;
+	private static int $maxInlineLimit = 500;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $maxInlineLimit
 	 */
-	public static function setMaxInlineLimit( $maxInlineLimit ): void {
+	public static function setMaxInlineLimit( int $maxInlineLimit ): void {
 		self::$maxInlineLimit = $maxInlineLimit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $visibleLinks
-	 *
-	 * @return string
 	 */
-	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ): string {
+	public static function topLinks(
+		Title $title,
+		array $visibleLinks = [],
+		bool $isEditMode = true
+	): string {
 		if ( $visibleLinks === [] ) {
 			return '';
 		}
@@ -153,7 +147,12 @@ class NavigationLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function navigationLinks( Title $title, UrlArgs $urlArgs, $count, $hasFurtherResults = false ) {
+	public static function navigationLinks(
+		Title $title,
+		UrlArgs $urlArgs,
+		int $count,
+		bool $hasFurtherResults = false
+	) {
 		if ( $count == 0 ) {
 			return '';
 		}
@@ -186,13 +185,8 @@ class NavigationLinksWidget {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $navigation
-	 * @param Infolink|null $infoLink
-	 *
-	 * @return string
 	 */
-	public static function basicLinks( $navigation = '', ?Infolink $infoLink = null ) {
+	public static function basicLinks( string $navigation = '', ?Infolink $infoLink = null ): string {
 		if ( $navigation === '' ) {
 			return '';
 		}

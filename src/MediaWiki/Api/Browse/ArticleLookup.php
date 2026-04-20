@@ -26,8 +26,6 @@ class ArticleLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|int
 	 */
 	public function getVersion(): string {
 		return 'ArticleLookup:' . self::VERSION;
@@ -35,10 +33,6 @@ class ArticleLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function lookup( array $parameters ): array {
 		$limit = 50;
@@ -93,7 +87,7 @@ class ArticleLookup extends Lookup {
 			$search
 		);
 
-		$limit = $limit + 1;
+		$limit += 1;
 		$conditions = '';
 
 		$fields = [

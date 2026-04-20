@@ -15,17 +15,11 @@ use Wikimedia\ScopedCallback;
  */
 class TransactionHandler {
 
-	/**
-	 * @var string|null
-	 */
-	private $sectionTransaction;
+	private ?string $sectionTransaction = null;
 
-	/**
-	 * @var bool|null
-	 */
-	private $mutedTransactionProfiler;
+	private ?bool $mutedTransactionProfiler = null;
 
-	private TransactionProfiler $transactionProfiler;
+	private ?TransactionProfiler $transactionProfiler = null;
 
 	/**
 	 * @since 3.1
@@ -35,8 +29,6 @@ class TransactionHandler {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param TransactionProfiler $transactionProfiler
 	 */
 	public function setTransactionProfiler( TransactionProfiler $transactionProfiler ): void {
 		$this->transactionProfiler = $transactionProfiler;
@@ -63,19 +55,13 @@ class TransactionHandler {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $fname
-	 *
-	 * @return bool
 	 */
-	public function inSectionTransaction( $fname = __METHOD__ ): bool {
+	public function inSectionTransaction( string $fname = __METHOD__ ): bool {
 		return $this->sectionTransaction === $fname;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return bool
 	 */
 	public function hasActiveSectionTransaction(): bool {
 		return $this->sectionTransaction !== null;
@@ -95,11 +81,9 @@ class TransactionHandler {
 	 *
 	 * @since 3.1
 	 *
-	 * @param string $fname
-	 *
 	 * @throws RuntimeException
 	 */
-	public function markSectionTransaction( $fname = __METHOD__ ): void {
+	public function markSectionTransaction( string $fname = __METHOD__ ): void {
 		if ( $this->sectionTransaction !== null ) {
 			throw new RuntimeException(
 				"Trying to begin a new section transaction while {$this->sectionTransaction} is still active!"
@@ -111,10 +95,8 @@ class TransactionHandler {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $fname
 	 */
-	public function detachSectionTransaction( $fname = __METHOD__ ): void {
+	public function detachSectionTransaction( string $fname = __METHOD__ ): void {
 		if ( $this->sectionTransaction !== $fname ) {
 			throw new RuntimeException(
 				"Trying to end an invalid section transaction (registered: {$this->sectionTransaction}, requested: {$fname})"
@@ -128,12 +110,8 @@ class TransactionHandler {
 	 * @note Only supported with 1.28+
 	 *
 	 * @since 3.1
-	 *
-	 * @param string $fname Caller name (e.g. __METHOD__)
-	 *
-	 * @return mixed A value to pass to commitAndWaitForReplication
 	 */
-	public function getEmptyTransactionTicket( $fname = __METHOD__ ): ?int {
+	public function getEmptyTransactionTicket( string $fname = __METHOD__ ): ?int {
 		$ticket = null;
 
 		// @see LBFactory::getEmptyTransactionTicket
@@ -155,12 +133,8 @@ class TransactionHandler {
 	 * @note Only supported with 1.28+
 	 *
 	 * @since 3.1
-	 *
-	 * @param string $fname Caller name (e.g. __METHOD__)
-	 * @param mixed $ticket Result of Database::getEmptyTransactionTicket
-	 * @param array $opts Options to waitForReplication
 	 */
-	public function commitAndWaitForReplication( $fname, $ticket, array $opts = [] ) {
+	public function commitAndWaitForReplication( string $fname, mixed $ticket, array $opts = [] ) {
 		if ( !is_int( $ticket ) ) {
 			return;
 		}

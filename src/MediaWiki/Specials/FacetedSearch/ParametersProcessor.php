@@ -27,34 +27,16 @@ use SMW\Localizer\Localizer;
  */
 class ParametersProcessor {
 
-	/**
-	 * @var string
-	 */
-	private $queryString = '';
+	private string $queryString = '';
 
-	/**
-	 * @var string
-	 */
-	private $format = '';
+	private string $format = '';
 
-	/**
-	 * @var
-	 */
 	private array $parameters = [];
 
-	/**
-	 * @var
-	 */
 	private array $filterConditions = [];
 
-	/**
-	 * @var
-	 */
 	private array $propertyFilters = [];
 
-	/**
-	 * @var
-	 */
 	private array $valueFilters = [];
 
 	/**
@@ -65,8 +47,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getParameters(): array {
 		return $this->parameters;
@@ -74,8 +54,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getFormat(): string {
 		return $this->format;
@@ -83,8 +61,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getFilterConditions(): array {
 		return $this->filterConditions;
@@ -92,8 +68,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getValueFilters(): array {
 		return $this->valueFilters;
@@ -101,8 +75,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
@@ -110,8 +82,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WebRequest $request
 	 */
 	public function checkRequest( WebRequest $request ): void {
 		// Was not filtered and the query checksum is different which means
@@ -221,9 +191,6 @@ class ParametersProcessor {
 		return $params;
 	}
 
-	/**
-	 * @return mixed[]
-	 */
 	private function makeParameters( array $query, WebRequest $request ): array {
 		$this->queryString = $query[0] ?? '';
 
@@ -297,9 +264,6 @@ class ParametersProcessor {
 		return $parameters;
 	}
 
-	/**
-	 * @return true[]
-	 */
 	private function fieldConditions( $fields ): array {
 		if ( !is_array( $fields ) || $fields === [] ) {
 			return [];
@@ -333,9 +297,6 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	/**
-	 * @return true[]
-	 */
 	private function propertyFilterConditions( $values, array $clear ): array {
 		$filters = array_keys( (array)$values );
 		$this->propertyFilters = $filters;
@@ -363,9 +324,6 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	/**
-	 * @return true[]
-	 */
 	private function categoryFilterConditions( $values, array $clear ): array {
 		$filters = (array)$values;
 		$conditions = [];
@@ -473,9 +431,6 @@ class ParametersProcessor {
 		}
 	}
 
-	/**
-	 * @return true[]
-	 */
 	private function addDefaultPrintRequests( string $query ): array {
 		preg_match_all( '/\[\[(.*?)\]\]/i', $query, $matches );
 		$printRequests = [];

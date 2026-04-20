@@ -6,6 +6,7 @@ use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Title\Title;
+use SearchEngine;
 use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
@@ -30,9 +31,6 @@ class ProfileForm {
 
 	private FormsFactory $formsFactory;
 
-	/**
-	 * @var
-	 */
 	private array $searchableNamespaces = [];
 
 	/**
@@ -47,22 +45,15 @@ class ProfileForm {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $profile
-	 *
-	 * @return bool
 	 */
-	public static function isValidProfile( $profile ): bool {
+	public static function isValidProfile( string $profile ): bool {
 		return $profile === self::PROFILE_NAME;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 * @param array &$profiles
 	 */
-	public static function addProfile( $type, array &$profiles, array $options ): void {
+	public static function addProfile( string $type, array &$profiles, array $options ): void {
 		if ( $type !== SMW_SPECIAL_SEARCHTYPE ) {
 			return;
 		}
@@ -76,10 +67,6 @@ class ProfileForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 *
-	 * @return array
 	 */
 	public static function getFormDefinitions( Store $store ): array {
 		static $data = null;
@@ -104,10 +91,6 @@ class ProfileForm {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $data
-	 *
-	 * @return array
 	 */
 	public static function getPrefixMap( array $data ): array {
 		$map = [];
@@ -123,8 +106,6 @@ class ProfileForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $searchableNamespaces
 	 */
 	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
@@ -132,11 +113,8 @@ class ProfileForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string &$form
-	 * @param array $opts
 	 */
-	public function buildForm( &$form, array $opts = [] ): void {
+	public function buildForm( string &$form, array $opts = [] ): void {
 		$hidden = '';
 		$html = '';
 
@@ -230,7 +208,13 @@ class ProfileForm {
 		$form .= $namespaceForm;
 	}
 
-	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, array $hiddenNamespaces, string &$hidden ): string {
+	private function buildNamespaceForm(
+		WebRequest $request,
+		SearchEngine $searchEngine,
+		array $preselectNamespaces,
+		array $hiddenNamespaces,
+		string &$hidden
+	): string {
 		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $preselectNamespaces );
 		$default = false;
 
@@ -264,7 +248,7 @@ class ProfileForm {
 		}
 
 		$namespaceForm->setHideList(
-			$request->getVal( 'ns-list', $default )
+			(bool)$request->getVal( 'ns-list', $default )
 		);
 
 		$namespaceForm->setSearchableNamespaces(
@@ -333,7 +317,7 @@ class ProfileForm {
 		) . $divider;
 	}
 
-	private function buildSortForm( WebRequest $request ) {
+	private function buildSortForm( WebRequest $request ): string {
 		$sortForm = $this->formsFactory->newSortForm( $request );
 
 		// TODO this information should come from the store and not being
@@ -420,7 +404,7 @@ class ProfileForm {
 		return $text;
 	}
 
-	private function section( string $msg, $attributes = [] ) {
+	private function section( string $msg ) {
 		return Html::rawElement(
 			'div',
 			[
@@ -437,7 +421,11 @@ class ProfileForm {
 		);
 	}
 
-	private function msg( string|array $msg, int $type = Message::PARSE, $lang = Message::USER_LANGUAGE ): string {
+	private function msg(
+		string|array $msg,
+		int $type = Message::PARSE,
+		$lang = Message::USER_LANGUAGE
+	): string {
 		return Message::get( $msg, $type, $lang );
 	}
 

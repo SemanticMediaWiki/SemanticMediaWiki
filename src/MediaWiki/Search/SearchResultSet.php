@@ -5,7 +5,9 @@ namespace SMW\MediaWiki\Search;
 use SearchSuggestion;
 use SearchSuggestionSet;
 use SMW\DataItems\WikiPage;
+use SMW\Query\Excerpts;
 use SMW\Query\QueryResult;
+use SMW\Query\QueryToken;
 use SMW\Utils\CharExaminer;
 
 /**
@@ -18,20 +20,11 @@ use SMW\Utils\CharExaminer;
  */
 class SearchResultSet extends \SearchResultSet {
 
-	/**
-	 * @var DIWikiPage[]|[]
-	 */
 	private array $pages;
 
-	/**
-	 * @var QueryToken
-	 */
-	private $queryToken;
+	private ?QueryToken $queryToken;
 
-	/**
-	 * @var Excerpts
-	 */
-	private $excerpts;
+	private ?Excerpts $excerpts;
 
 	public function __construct(
 		QueryResult $result,
@@ -44,8 +37,6 @@ class SearchResultSet extends \SearchResultSet {
 
 	/**
 	 * Return number of rows included in this result set.
-	 *
-	 * @return int|void
 	 */
 	public function numRows(): int {
 		return count( $this->pages );
@@ -150,6 +141,7 @@ class SearchResultSet extends \SearchResultSet {
 				}
 			}
 
+			// @phan-suppress-next-line PhanTypeMismatchProperty
 			$this->results[] = $searchResult;
 		}
 

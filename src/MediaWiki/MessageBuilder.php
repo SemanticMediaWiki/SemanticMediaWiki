@@ -30,10 +30,6 @@ class MessageBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Language $language
-	 *
-	 * @return MessageBuilder
 	 */
 	public function setLanguage( Language $language ): static {
 		$this->language = $language;
@@ -42,10 +38,6 @@ class MessageBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param IContextSource $context
-	 *
-	 * @return MessageBuilder
 	 */
 	public function setLanguageFromContext( IContextSource $context ): static {
 		$this->language = $context->getLanguage();
@@ -54,13 +46,11 @@ class MessageBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param mixed $number
-	 * @param bool $useForSpecialNumbers set to true for numbers like dates
-	 *
-	 * @return string
 	 */
-	public function formatNumberToText( $number, $useForSpecialNumbers = false ) {
+	public function formatNumberToText(
+		mixed $number,
+		bool $useForSpecialNumbers = false
+	): string {
 		if ( $useForSpecialNumbers ) {
 			return $this->getLanguage()->formatNumNoSeparators( $number );
 		} else {
@@ -70,35 +60,27 @@ class MessageBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param array $list
-	 *
-	 * @return string
 	 */
-	public function listToCommaSeparatedText( array $list ) {
+	public function listToCommaSeparatedText( array $list ): string {
 		return $this->getLanguage()->listToText( $list );
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Title $title
-	 * @param int $limit
-	 * @param int $offset
-	 * @param array $query
-	 * @param bool|null $isAtTheEnd
-	 *
-	 * @return string
 	 */
-	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ): string {
-		$limit = (int)$limit;
-		$offset = (int)$offset;
+	public function prevNextToText(
+		Title $title,
+		int $limit,
+		int $offset,
+		array $query,
+		?bool $isAtTheEnd
+	): string {
 		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
 		$navBuilder
 			->setPage( $title )
 			->setLinkQuery( [ 'limit' => $limit, 'offset' => $offset ] + $query )
 			->setLimitLinkQueryParam( 'limit' )
-			->setCurrentLimit( (int)$limit )
+			->setCurrentLimit( $limit )
 			->setPrevTooltipMsg( 'prevn-title' )
 			->setNextTooltipMsg( 'nextn-title' )
 			->setLimitTooltipMsg( 'shown-title' );
@@ -157,12 +139,8 @@ class MessageBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $key
-	 *
-	 * @return Message
 	 */
-	public function getMessage( $key ) {
+	public function getMessage( string $key ): Message {
 		$params = func_get_args();
 		array_shift( $params );
 

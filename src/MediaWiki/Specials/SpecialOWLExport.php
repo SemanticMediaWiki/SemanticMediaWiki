@@ -60,14 +60,14 @@ class SpecialOWLExport extends SpecialPage {
 		} else {
 			$offset = $request->getVal( 'offset' );
 
-			if ( isset( $offset ) ) {
+			if ( $offset !== null ) {
 				$this->startRDFExport();
 				$this->export_controller->printPageList( $offset );
 				return;
 			} else {
 				$stats = $request->getVal( 'stats' );
 
-				if ( isset( $stats ) ) {
+				if ( $stats !== null ) {
 					$this->startRDFExport();
 					$this->export_controller->printWikiInfo();
 					return;

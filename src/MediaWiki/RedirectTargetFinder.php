@@ -13,19 +13,12 @@ use MediaWiki\Title\Title;
  */
 class RedirectTargetFinder {
 
-	/**
-	 * @var Title|null
-	 */
-	private $redirectTarget = null;
+	private ?Title $redirectTarget = null;
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param string $text
-	 *
-	 * @return Title|null
 	 */
-	public function findRedirectTargetFromText( $text ): static {
+	public function findRedirectTargetFromText( string $text ): static {
 		if ( $this->redirectTarget === null ) {
 			$this->redirectTarget = $this->findFromText( $text );
 		}
@@ -35,8 +28,6 @@ class RedirectTargetFinder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Title|null
 	 */
 	public function setRedirectTarget( ?Title $redirectTarget = null ): void {
 		$this->redirectTarget = $redirectTarget;
@@ -44,8 +35,6 @@ class RedirectTargetFinder {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return Title|null
 	 */
 	public function getRedirectTarget(): ?Title {
 		return $this->redirectTarget;
@@ -53,14 +42,12 @@ class RedirectTargetFinder {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return bool
 	 */
 	public function hasRedirectTarget(): bool {
 		return $this->redirectTarget instanceof Title;
 	}
 
-	private function findFromText( $text ) {
+	private function findFromText( string $text ): ?Title {
 		return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
 	}
 

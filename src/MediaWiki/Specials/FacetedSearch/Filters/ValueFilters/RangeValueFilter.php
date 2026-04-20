@@ -32,13 +32,6 @@ class RangeValueFilter {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param UrlArgs $urlArgs
-	 * @param string $property
-	 * @param array $values
-	 * @param array $raw
-	 *
-	 * @return string
 	 */
 	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ): string {
 		if ( $values === [] ) {
@@ -48,7 +41,7 @@ class RangeValueFilter {
 		$this->urlArgs = $urlArgs;
 		$defaults = $this->findDefaults();
 
-		$ranges = $this->urlArgs->getArray( 'pv', [] );
+		$ranges = $this->urlArgs->getArray( 'pv' );
 		$ranges = $ranges[$property] ?? [];
 
 		$rangeFilters = [];
@@ -122,9 +115,6 @@ class RangeValueFilter {
 		);
 	}
 
-	/**
-	 * @return mixed[]
-	 */
 	private function findDefaults(): array {
 		$defaults = [
 			'step_size' => 1,

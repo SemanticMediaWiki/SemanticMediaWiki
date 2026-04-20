@@ -115,7 +115,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 				'settings' => [
 					'smwgPageSpecialProperties' => [ Property::TYPE_MODIFICATION_DATE ]
 				],
-				'pageInfo' => [ 'getModificationDate' => 1272508903 ]
+				'pageInfo' => [ 'getModificationDate' => '1272508903' ]
 			],
 			[
 				'propertyCount'  => 1,
@@ -131,7 +131,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 				'settings' => [
 					'smwgPageSpecialProperties' => [ Property::TYPE_CREATION_DATE ]
 				],
-				'pageInfo' => [ 'getCreationDate' => 1272508903 ]
+				'pageInfo' => [ 'getCreationDate' => '1272508903' ]
 			],
 			[
 				'propertyCount'  => 1,
@@ -210,7 +210,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 					'smwgPageSpecialProperties' => [ '_MDAT', '_LEDT' ]
 				],
 				'pageInfo' => [
-					'getModificationDate' => 1272508903,
+					'getModificationDate' => '1272508903',
 					'getLastEditor'       => $userPage
 				]
 			],

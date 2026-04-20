@@ -39,7 +39,7 @@ class RejectParserCacheValue implements HookListener {
 	public function process( WikiPage $page ): bool {
 		$title = $page->getTitle();
 
-		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return true;
 		}
 

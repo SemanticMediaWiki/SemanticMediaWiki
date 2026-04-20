@@ -25,10 +25,7 @@ class TreeBuilder {
 	 */
 	const TYPE_CATEGORY = 'type/category';
 
-	/**
-	 * @var
-	 */
-	private $nodes;
+	private ?array $nodes = null;
 
 	/**
 	 * @since 3.2
@@ -38,17 +35,13 @@ class TreeBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Node $node
 	 */
-	public function addNode( $node ): void {
+	public function addNode( Node $node ): void {
 		$this->nodes[$node->id] = $node;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $items
 	 */
 	public function setNodes( array $items ): void {
 		$this->nodes = [];
@@ -60,11 +53,6 @@ class TreeBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $subjects
-	 * @param string $type
-	 *
-	 * @return
 	 */
 	public function getHierarchyList( array $subjects, string $type ): array {
 		if ( $subjects === [] ) {
@@ -145,10 +133,8 @@ class TreeBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param $node
 	 */
-	public function removeNode( $node ): void {
+	public function removeNode( Node $node ): void {
 		unset( $this->nodes[$node->id] );
 	}
 
@@ -196,80 +182,8 @@ class TreeBuilder {
 		return "<ul>$text</ul>";
 	}
 
-	public function newNode( $id, $content = '' ): object {
-		return new class ( $id, $content ) {
-
-			public $children = [];
-
-			public function __construct(
-				public $id,
-				public $content,
-			) {
-			}
-
-			public function hasNode( $id ) {
-				if ( isset( $this->children[$id] ) ) {
-					return $this->children[$id];
-				}
-
-				foreach ( $this->children as $key => $child ) {
-					if ( $child->hasNode( $id ) ) {
-						return true;
-					}
-				}
-
-				return false;
-			}
-
-			public function getNode( $id ) {
-				if ( isset( $this->children[$id] ) ) {
-					return $this->children[$id];
-				}
-
-				foreach ( $this->children as $key => $child ) {
-					if ( $child->hasNode( $id ) ) {
-						return $child->getNode( $id );
-					}
-				}
-			}
-
-			public function addChild( $node ): void {
-				$this->children[$node->id] = $node;
-			}
-
-			public function getString() {
-				if ( is_array( $this->content ) ) {
-					$text = implode( '', $this->content );
-				} else {
-					$text = $this->content;
-				}
-
-				if ( $text === '' ) {
-					$text = '<li><div class="blank-item">' . $this->id . '</div>';
-				}
-
-				// Remove the last </li> from the current <li> element to ensure
-				// the <ul> becomes part of the <li> element otherwise the elements
-				// aren't correct positioned as per HTML standard.
-				if ( $this->children !== [] && substr( "$text", -5 ) === '</li>' ) {
-					$text = substr_replace( $text, "", -5 );
-				}
-
-				if ( $this->children !== [] ) {
-					$text .= '<ul class="child">';
-				}
-
-				foreach ( $this->children as $child ) {
-					$text .= $child->getString();
-				}
-
-				if ( $this->children !== [] ) {
-					$text .= '</ul></li>';
-				}
-
-				return $text;
-			}
-		};
+	public function newNode( string $id, string|array $content = '' ): Node {
+		return new Node( $id, $content );
 	}
 
 }

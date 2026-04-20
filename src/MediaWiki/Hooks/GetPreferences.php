@@ -72,11 +72,6 @@ class GetPreferences implements HookListener {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param User $user
-	 * @param array &$preferences
-	 *
-	 * @return true
 	 */
 	public function process( User $user, array &$preferences ): bool {
 		$otherPreferences = [];
@@ -172,7 +167,7 @@ class GetPreferences implements HookListener {
 
 		try {
 			$profileList = $facetedSearchProfile->getProfileList();
-		} catch ( DefaultProfileNotFoundException | SchemaTypeNotFoundException $e ) {
+		} catch ( DefaultProfileNotFoundException | SchemaTypeNotFoundException ) {
 			$profileList = [];
 		}
 

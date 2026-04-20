@@ -35,22 +35,13 @@ class CallableUpdate implements DeferrableUpdate {
 	 */
 	protected $callback;
 
-	/**
-	 * @var bool
-	 */
-	protected $isDeferrableUpdate = true;
+	protected bool $isDeferrableUpdate = true;
 
-	/**
-	 * @var bool
-	 */
-	protected $isCommandLineMode = false;
+	protected bool $isCommandLineMode = false;
 
 	private bool $isPending = false;
 
-	/**
-	 * @var string
-	 */
-	private $origin = '';
+	private string|array $origin = '';
 
 	private static array $pendingUpdates = [];
 
@@ -64,8 +55,6 @@ class CallableUpdate implements DeferrableUpdate {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param callable|null $callback
 	 */
 	public function __construct( ?callable $callback = null ) {
 		if ( $callback === null ) {
@@ -81,10 +70,8 @@ class CallableUpdate implements DeferrableUpdate {
 	 * Indicates whether MW is running in command-line mode.
 	 *
 	 * @since 2.5
-	 *
-	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ): void {
+	public function isCommandLineMode( bool $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
@@ -97,8 +84,6 @@ class CallableUpdate implements DeferrableUpdate {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public function getStage(): string {
 		return $this->stage;
@@ -106,8 +91,6 @@ class CallableUpdate implements DeferrableUpdate {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param callable $callback
 	 */
 	public function setCallback( callable $callback ): void {
 		$this->callback = $callback;
@@ -117,7 +100,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @deprecated since 3.0, use DeferredCallableUpdate::isDeferrableUpdate
 	 * @since 2.4
 	 */
-	public function enabledDeferredUpdate( $enabledDeferredUpdate = true ): void {
+	public function enabledDeferredUpdate( bool $enabledDeferredUpdate = true ): void {
 		$this->isDeferrableUpdate( $enabledDeferredUpdate );
 	}
 
@@ -128,8 +111,8 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function isDeferrableUpdate( $isDeferrableUpdate ): void {
-		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
+	public function isDeferrableUpdate( bool $isDeferrableUpdate ): void {
+		$this->isDeferrableUpdate = $isDeferrableUpdate;
 	}
 
 	/**
@@ -138,11 +121,9 @@ class CallableUpdate implements DeferrableUpdate {
 	 * a possible rollback without a chance to investigate missing data updates.
 	 *
 	 * @since 3.1
-	 *
-	 * @param bool $catchExceptionAndRethrow
 	 */
-	public function catchExceptionAndRethrow( $catchExceptionAndRethrow ): void {
-		$this->catchExceptionAndRethrow = (bool)$catchExceptionAndRethrow;
+	public function catchExceptionAndRethrow( bool $catchExceptionAndRethrow ): void {
+		$this->catchExceptionAndRethrow = $catchExceptionAndRethrow;
 	}
 
 	/**
@@ -152,11 +133,9 @@ class CallableUpdate implements DeferrableUpdate {
 	 * by using an internal waitableUpdate list and release them at convenience.
 	 *
 	 * @since 2.4
-	 *
-	 * @param booloan $isPending
 	 */
-	public function markAsPending( $isPending = false ): void {
-		$this->isPending = (bool)$isPending;
+	public function markAsPending( bool $isPending = false ): void {
+		$this->isPending = $isPending;
 	}
 
 	/**
@@ -164,10 +143,8 @@ class CallableUpdate implements DeferrableUpdate {
 	 * requests while being unprocessed.
 	 *
 	 * @since 2.5
-	 *
-	 * @param string|null $fingerprint
 	 */
-	public function setFingerprint( $fingerprint = null ): void {
+	public function setFingerprint( ?string $fingerprint = null ): void {
 		$this->fingerprint = md5( $fingerprint ?? '' );
 	}
 
@@ -180,10 +157,8 @@ class CallableUpdate implements DeferrableUpdate {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $origin
 	 */
-	public function setOrigin( $origin ): void {
+	public function setOrigin( string|array $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -191,8 +166,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @see DeferrableCallback::getOrigin
 	 *
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getOrigin(): string|false {
 		if ( is_string( $this->origin ) ) {
@@ -304,13 +277,15 @@ class CallableUpdate implements DeferrableUpdate {
 		);
 	}
 
+	/**
+	 * @throws Exception|Throwable
+	 */
 	private function attemptUpdate(): void {
 		$e = null;
 
 		try {
 			$this->runUpdate();
-		} catch ( Exception $e ) {
-		} catch ( Throwable $e ) {
+		} catch ( Exception | Throwable $e ) {
 		}
 
 		if ( $e === null ) {

@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use MediaWiki\Cache\LinkBatch as MwLinkBatch;
 use MediaWiki\MediaWikiServices;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
 
 /**
@@ -17,16 +18,10 @@ use SMW\DataItems\WikiPage;
  */
 class LinkBatch {
 
-	private static ?\SMW\MediaWiki\LinkBatch $instance = null;
+	private static ?LinkBatch $instance = null;
 
-	/**
-	 * @var
-	 */
 	private array $log = [];
 
-	/**
-	 * @var
-	 */
 	private array $batch = [];
 
 	/**
@@ -40,7 +35,7 @@ class LinkBatch {
 	 *
 	 * @return LinkBatch
 	 */
-	public static function singleton(): \SMW\MediaWiki\LinkBatch {
+	public static function singleton(): LinkBatch {
 		if ( self::$instance === null ) {
 			self::$instance = new self( MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch() );
 		}
@@ -57,10 +52,8 @@ class LinkBatch {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $caller
 	 */
-	public function setCaller( $caller ): void {
+	public function setCaller( string $caller ): void {
 		if ( $this->linkBatch === null ) {
 			$this->linkBatch = MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch();
 		}
@@ -70,8 +63,6 @@ class LinkBatch {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem[] $dataItems
 	 */
 	public function addFromList( array $dataItems ): void {
 		foreach ( $dataItems as $dataItem ) {
@@ -81,10 +72,8 @@ class LinkBatch {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param $dataItem
 	 */
-	public function add( $dataItem ): void {
+	public function add( DataItem|null $dataItem ): void {
 		if ( !$dataItem instanceof WikiPage || isset( $this->log[$dataItem->getSha1()] ) ) {
 			return;
 		}
@@ -106,12 +95,8 @@ class LinkBatch {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem|null|false $dataItem
-	 *
-	 * @return bool
 	 */
-	public function has( $dataItem ): bool {
+	public function has( DataItem|null|false $dataItem ): bool {
 		if ( $dataItem instanceof WikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {
 			return true;
 		}

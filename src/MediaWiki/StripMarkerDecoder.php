@@ -44,23 +44,15 @@ class StripMarkerDecoder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $text
-	 *
-	 * @return bool
 	 */
-	public function hasStripMarker( $text ): int|false {
+	public function hasStripMarker( ?string $text ): int|false {
 		return strpos( $text ?? '', Parser::MARKER_SUFFIX );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $value
-	 *
-	 * @return bool
 	 */
-	public function decode( $value ): string|array {
+	public function decode( string $value ): string|array {
 		$hasStripMarker = false;
 
 		if ( $this->canUse() ) {
@@ -76,10 +68,8 @@ class StripMarkerDecoder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return text
 	 */
-	public function unstrip( $text ): string|array {
+	public function unstrip( string $text ): string|array {
 		// Escape the text case to avoid any HTML elements
 		// cause an issue during parsing
 		return str_replace(
@@ -89,12 +79,14 @@ class StripMarkerDecoder {
 		);
 	}
 
-	public function doUnstrip( $text ) {
-		if ( ( $value = $this->stripState->unstripNoWiki( $text ) ) !== '' && !$this->hasStripMarker( $value ) ) {
+	public function doUnstrip( ?string $text ): ?string {
+		$value = $this->stripState->unstripNoWiki( $text );
+		if ( $value !== '' && !$this->hasStripMarker( $value ) ) {
 			return $this->addNoWikiToUnstripValue( $value );
 		}
 
-		if ( ( $value = $this->stripState->unstripGeneral( $text ) ) !== '' && !$this->hasStripMarker( $value ) ) {
+		$value = $this->stripState->unstripGeneral( $text );
+		if ( $value !== '' && !$this->hasStripMarker( $value ) ) {
 			return $value;
 		}
 

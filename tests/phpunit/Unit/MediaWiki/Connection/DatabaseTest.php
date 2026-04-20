@@ -515,7 +515,8 @@ class DatabaseTest extends TestCase {
 			->getMock();
 
 		$read->expects( $this->once() )
-			->method( 'listTables' );
+			->method( 'listTables' )
+			->willReturn( [] );
 
 		$readConnectionProvider->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -552,6 +553,10 @@ class DatabaseTest extends TestCase {
 
 		$database->expects( $this->once() )
 			->method( 'setFlag' );
+
+		$database->expects( $this->once() )
+			->method( 'query' )
+			->willReturn( new FakeResultWrapper( [] ) );
 
 		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()

@@ -89,7 +89,7 @@ class SpecialAdmin extends SpecialPage {
 
 		// Disable the feature in case the function is not supported
 		if ( $applicationFactory->getSettings()->get( 'smwgEnabledFulltextSearch' ) === false ) {
-			$adminFeatures = $adminFeatures & ~SMW_ADM_FULLT;
+			$adminFeatures &= ~SMW_ADM_FULLT;
 		}
 
 		$taskHandlerFactory = new TaskHandlerFactory(

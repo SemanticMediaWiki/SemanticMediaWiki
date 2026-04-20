@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Search;
 
 use SearchEngine;
+use SMW\Formatters\InfoLink;
 
 /**
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory
@@ -17,10 +18,7 @@ class ExtendedSearchEngine extends SearchEngine {
 
 	private ExtendedSearch $extendedSearch;
 
-	/**
-	 * @var SearchEngine
-	 */
-	private $fallbackSearchEngine;
+	private ?SearchEngine $fallbackSearchEngine = null;
 
 	/**
 	 * @see SearchEngineFactory::create
@@ -47,8 +45,6 @@ class ExtendedSearchEngine extends SearchEngine {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ExtendedSearch $extendedSearch
 	 */
 	public function setExtendedSearch( ExtendedSearch $extendedSearch ): void {
 		$this->extendedSearch = $extendedSearch;
@@ -56,8 +52,6 @@ class ExtendedSearchEngine extends SearchEngine {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param null|SearchEngine $fallbackSearchEngine
 	 */
 	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ): void {
 		$this->fallbackSearchEngine = $fallbackSearchEngine;
@@ -65,10 +59,8 @@ class ExtendedSearchEngine extends SearchEngine {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return SearchEngine
 	 */
-	public function getFallbackSearchEngine() {
+	public function getFallbackSearchEngine(): ?SearchEngine {
 		return $this->fallbackSearchEngine;
 	}
 
@@ -263,48 +255,33 @@ class ExtendedSearchEngine extends SearchEngine {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->extendedSearch->getErrors();
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getQueryString() {
+	public function getQueryString(): ?string {
 		return $this->extendedSearch->getQueryString();
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getQueryLink() {
+	public function getQueryLink(): ?InfoLink {
 		return $this->extendedSearch->getQueryLink();
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getLimit(): int {
 		return $this->limit;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getOffset(): int {
 		return $this->offset;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function getShowSuggestion(): bool {
 		return $this->showSuggestion;
 	}

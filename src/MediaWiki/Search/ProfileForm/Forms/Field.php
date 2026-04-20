@@ -18,13 +18,8 @@ class Field {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 * @param array $attributes
-	 *
-	 * @return string
 	 */
-	public function create( $type, array $attributes = [] ) {
+	public function create( string $type, array $attributes = [] ): string {
 		$attributes['class'] = "smw-$type" . ( isset( $attributes['class'] ) ? ' ' . $attributes['class'] : '' );
 
 		if ( isset( $attributes['tooltip'] ) ) {
@@ -45,12 +40,8 @@ class Field {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $attributes
-	 *
-	 * @return string
 	 */
-	public function tooltip( array $attributes = [] ) {
+	public function tooltip( array $attributes = [] ): string {
 		$highlighter = Highlighter::factory( Highlighter::TYPE_NOTE );
 		$msg = '';
 
@@ -73,10 +64,6 @@ class Field {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $attributes
-	 *
-	 * @return string
 	 */
 	public function select( array $attributes = [] ): string {
 		$list = [];
@@ -156,13 +143,9 @@ class Field {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $attributes
-	 *
-	 * @return string
 	 */
-	public function input( array $attributes = [] ) {
-		$class = isset( $attributes['class'] ) ? $attributes['class'] : '';
+	public function input( array $attributes = [] ): string {
+		$class = $attributes['class'] ?? '';
 		$type = 'text';
 		$tooltip = '';
 		$required = false;

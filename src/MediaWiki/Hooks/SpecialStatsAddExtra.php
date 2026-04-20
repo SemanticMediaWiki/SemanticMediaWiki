@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Language\Language;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
@@ -27,19 +28,10 @@ class SpecialStatsAddExtra implements HookListener {
 	 */
 	const CRITICAL_DELETECOUNT = 5000;
 
-	/**
-	 * @var Language|string
-	 */
-	private $language;
+	private Language|string|null $language = null;
 
-	/**
-	 * @var
-	 */
-	private $dataTypeLabels = [];
+	private array $dataTypeLabels = [];
 
-	/**
-	 * @var string[]
-	 */
 	private array $messageMapper = [
 		'PROPUSES'      => 'smw-statistics-property-instance',
 		'ERRORUSES'     => 'smw-statistics-error-count',
@@ -63,28 +55,20 @@ class SpecialStatsAddExtra implements HookListener {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Language|string $language
 	 */
-	public function setLanguage( $language ): void {
+	public function setLanguage( Language|string|null $language ): void {
 		$this->language = $language;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array
 	 */
-	public function setDataTypeLabels( $dataTypeLabels ): void {
+	public function setDataTypeLabels( array $dataTypeLabels ): void {
 		$this->dataTypeLabels = $dataTypeLabels;
 	}
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array &$extraStats
-	 *
-	 * @return true
 	 */
 	public function process( array &$extraStats ): bool {
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
@@ -145,9 +129,6 @@ class SpecialStatsAddExtra implements HookListener {
 		}
 	}
 
-	/**
-	 * @return array{name: non-falsy-string, number: mixed}[]
-	 */
 	private function addFormats( int $key, array $statistics ): array {
 		$i = 0;
 		$formats = [];
