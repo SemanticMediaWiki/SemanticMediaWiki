@@ -128,7 +128,7 @@ class OptionsBuilder {
 
 		if ( isset( $options['HAVING'] ) ) {
 			$having = is_array( $options['HAVING'] )
-				? $connection->makeList( $options['HAVING'], LIST_AND )
+				? $connection->makeList( $options['HAVING'], SQLPlatform::LIST_AND )
 				: $options['HAVING'];
 			$sql .= ' HAVING ' . $having;
 		}
