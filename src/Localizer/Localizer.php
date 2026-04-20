@@ -210,7 +210,7 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 */
-	public function getNsIndex( string|array $namespaceName ): int|false {
+	public function getNsIndex( string $namespaceName ): int|false {
 		return $this->contentLanguage->getNsIndex( str_replace( ' ', '_', $namespaceName ) );
 	}
 
