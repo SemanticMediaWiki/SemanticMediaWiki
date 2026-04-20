@@ -43,7 +43,7 @@ class DuplicateEntitiesDisposer {
 	/**
 	 * @since 3.0
 	 */
-	public function verifyAndDispose( Iterator|array $duplicates ): void {
+	public function verifyAndDispose( mixed $duplicates ): void {
 		if ( !$this->is_iterable( $duplicates ) ) {
 			return;
 		}
@@ -128,7 +128,7 @@ class DuplicateEntitiesDisposer {
 	 *
 	 * @since 3.0
 	 */
-	private function is_iterable( $obj ): bool {
+	private function is_iterable( mixed $obj ): bool {
 		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 
