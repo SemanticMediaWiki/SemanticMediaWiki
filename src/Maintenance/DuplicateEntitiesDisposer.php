@@ -2,7 +2,6 @@
 
 namespace SMW\Maintenance;
 
-use Iterator;
 use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\DataItems\DataItem;
