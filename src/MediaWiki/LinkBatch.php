@@ -96,7 +96,7 @@ class LinkBatch {
 	/**
 	 * @since 3.1
 	 */
-	public function has( DataItem|null|false $dataItem ): bool {
+	public function has( DataItem|null|bool $dataItem ): bool {
 		if ( $dataItem instanceof WikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {
 			return true;
 		}
