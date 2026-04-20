@@ -191,7 +191,7 @@ class HtmlFormRenderer {
 	/**
 	 * @since 3.0
 	 */
-	public function closeElement( string $element = 'div', array $attributes = [] ): static {
+	public function closeElement( string $element = 'div' ): static {
 		$this->content[] = Html::closeElement( $element );
 		return $this;
 	}
