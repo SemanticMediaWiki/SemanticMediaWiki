@@ -209,7 +209,7 @@ class Message {
 	 * @since 2.4
 	 */
 	public static function getHash(
-		array $parameters,
+		array|string $parameters,
 		?int $type = null,
 		mixed $language = null
 	): string {
