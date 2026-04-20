@@ -14,6 +14,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\Lru;
+use stdClass;
 
 /**
  * @private
@@ -426,7 +427,7 @@ class Rebuilder {
 		$id = $nextPosition ?: -1;
 	}
 
-	private function hasSkippableRevision( $title, bool $row = false ): bool {
+	private function hasSkippableRevision( $title, stdClass|false $row = false ): bool {
 		if ( $this->getOption( 'force-update' ) ) {
 			return false;
 		}
@@ -438,7 +439,7 @@ class Rebuilder {
 		$this->dispatchedEntities[] = [ $key => $row->smw_title . '#' . $row->smw_namespace . '#' . $row->smw_subobject ];
 	}
 
-	private function addJob( $title, $row = false ): void {
+	private function addJob( $title, stdClass|false $row = false ): void {
 		$hash = $title->getDBKey() . '#' . $title->getNamespace();
 		$this->lru->set( $hash, true );
 

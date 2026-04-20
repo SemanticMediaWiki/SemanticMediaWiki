@@ -280,7 +280,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasLatestRevID( Title $title, $row = false ): bool {
+	public function hasLatestRevID( Title $title, stdClass|false $row = false ): bool {
 		$latestRevID = $this->revisionGuard->getLatestRevID( $title );
 
 		if ( $row !== false ) {
