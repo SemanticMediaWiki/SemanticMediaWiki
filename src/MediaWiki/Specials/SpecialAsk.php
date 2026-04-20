@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Specials;
 
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\SpecialPage;
-use ParamProcessor\Param;
+use ParamProcessor\ProcessedParam;
 use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
@@ -56,7 +56,7 @@ class SpecialAsk extends SpecialPage {
 	private bool $isBorrowedMode = false;
 
 	/**
-	 * @var Param[]
+	 * @var ProcessedParam[]
 	 */
 	private array $params = [];
 
@@ -693,6 +693,7 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		if ( $this->getRequest()->getVal( 'native_result', false ) && isset( $queryobj->native_result ) ) {
+			// @phan-suppress-next-line PhanUndeclaredProperty
 			$native_result = $queryobj->native_result;
 		}
 

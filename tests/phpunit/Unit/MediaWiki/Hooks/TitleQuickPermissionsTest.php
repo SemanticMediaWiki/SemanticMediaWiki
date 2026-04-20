@@ -67,17 +67,19 @@ class TitleQuickPermissionsTest extends TestCase {
 			->willReturn( true );
 
 		$this->titlePermissions->expects( $this->once() )
-			->method( 'checkPermissionFor' );
+			->method( 'checkPermissionFor' )
+			->willReturn( true );
 
 		$this->titlePermissions->expects( $this->once() )
-			->method( 'getErrors' );
+			->method( 'getErrors' )
+			->willReturn( [] );
 
 		$instance = new TitleQuickPermissions(
 			$this->namespaceExaminer,
 			$this->titlePermissions
 		);
 
-		$error = '';
+		$error = [];
 
 		$instance->process( $this->title, $this->user, '', $error );
 	}
@@ -95,7 +97,7 @@ class TitleQuickPermissionsTest extends TestCase {
 			$this->titlePermissions
 		);
 
-		$error = '';
+		$error = [];
 
 		$instance->process( $this->title, $this->user, '', $error );
 	}

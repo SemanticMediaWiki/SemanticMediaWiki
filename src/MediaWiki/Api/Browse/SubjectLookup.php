@@ -18,6 +18,8 @@ use SMW\Store;
  */
 class SubjectLookup extends Lookup {
 
+	const VERSION = 1;
+
 	/**
 	 * @since 3.0
 	 */
@@ -26,8 +28,6 @@ class SubjectLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|int
 	 */
 	public function getVersion(): string {
 		return 'SubjectLookup:' . self::VERSION;
@@ -35,10 +35,6 @@ class SubjectLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function lookup( array $parameters ): array {
 		if ( !isset( $parameters['subject'] ) ) {
@@ -100,7 +96,7 @@ class SubjectLookup extends Lookup {
 
 	private function doSerialize( array $params ) {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$subobject = isset( $params['subobject'] ) ? $params['subobject'] : '';
+		$subobject = $params['subobject'] ?? '';
 
 		$title = $applicationFactory->newTitleFactory()->newFromText(
 			$params['subject'],

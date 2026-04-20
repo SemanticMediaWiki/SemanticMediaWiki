@@ -21,15 +21,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 
-	/**
-	 * @var null|Job
-	 */
-	private $refreshjob = null;
-
-	/**
-	 * @var bool
-	 */
-	public $isApiTask = true;
+	public bool $isApiTask = true;
 
 	/**
 	 * @since 2.5

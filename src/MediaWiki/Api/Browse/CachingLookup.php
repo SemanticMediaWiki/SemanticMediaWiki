@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 use Onoi\Cache\Cache;
+use SMW\Store;
 use SMW\Utils\Timer;
 
 /**

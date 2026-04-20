@@ -29,16 +29,9 @@ class TitleQuickPermissions implements HookListener {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title $title
-	 * @param $user
-	 * @param $action
-	 * @param &$errors
-	 *
-	 * @return bool
 	 */
-	public function process( Title $title, User $user, $action, &$errors ) {
-		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
+	public function process( Title $title, User $user, string $action, array &$errors ): bool {
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return true;
 		}
 

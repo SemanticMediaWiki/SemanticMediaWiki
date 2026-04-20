@@ -18,16 +18,8 @@ class ExtensionTypes implements HookListener {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param array &$extensionTypes
-	 *
-	 * @return bool
 	 */
 	public function process( array &$extensionTypes ): bool {
-		if ( !is_array( $extensionTypes ) ) {
-			$extensionTypes = [];
-		}
-
 		$extensionTypes = array_merge(
 			[ 'semantic' => wfMessage( 'version-semantic' )->text() ],
 			$extensionTypes

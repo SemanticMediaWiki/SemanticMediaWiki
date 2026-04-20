@@ -18,10 +18,7 @@ use SMW\StringCondition;
  */
 class PropertyListByApiRequest {
 
-	/**
-	 * @var RequestOptions
-	 */
-	private $requestOptions = null;
+	private ?RequestOptions $requestOptions = null;
 
 	private array $propertyList = [];
 
@@ -48,35 +45,27 @@ class PropertyListByApiRequest {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param int $limit
 	 */
-	public function setLimit( $limit ): void {
-		$this->limit = (int)$limit;
+	public function setLimit( int $limit ): void {
+		$this->limit = $limit;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param bool $listOnly
 	 */
-	public function setListOnly( $listOnly ): void {
-		$this->listOnly = (bool)$listOnly;
+	public function setListOnly( bool $listOnly ): void {
+		$this->listOnly = $listOnly;
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ): void {
-		$this->languageCode = (string)$languageCode;
+	public function setLanguageCode( string $languageCode ): void {
+		$this->languageCode = $languageCode;
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array
 	 */
 	public function getPropertyList(): array {
 		return $this->propertyList;
@@ -84,8 +73,6 @@ class PropertyListByApiRequest {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array
 	 */
 	public function getNamespaces(): array {
 		return $this->namespaces;
@@ -93,8 +80,6 @@ class PropertyListByApiRequest {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array
 	 */
 	public function getMeta(): array {
 		return $this->meta;
@@ -102,8 +87,6 @@ class PropertyListByApiRequest {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array
 	 */
 	public function getContinueOffset(): int {
 		return $this->continueOffset;
@@ -111,12 +94,8 @@ class PropertyListByApiRequest {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $property
-	 *
-	 * @return bool
 	 */
-	public function findPropertyListBy( $property = '' ): bool {
+	public function findPropertyListBy( string $property = '' ): bool {
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->limit = $this->limit;
@@ -174,7 +153,7 @@ class PropertyListByApiRequest {
 		// make the request a success
 		try {
 			$property = Property::newFromUserLabel( $property )->getLabel();
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			$property = '';
 		}
 

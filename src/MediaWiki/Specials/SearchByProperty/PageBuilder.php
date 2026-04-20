@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
 use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -47,8 +48,6 @@ class PageBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return string
 	 */
 	public function getHtml(): string {
 		$this->pageRequestOptions->initialize();
@@ -115,9 +114,6 @@ class PageBuilder {
 		return $html;
 	}
 
-	/**
-	 * @return mixed[]
-	 */
 	private function getResultHtml(): array {
 		$resultList = '';
 		$resultMessage = '';
@@ -168,9 +164,6 @@ class PageBuilder {
 		return [ str_replace( '_', ' ', $resultMessage ?? '' ), $resultList, $exactCount ];
 	}
 
-	/**
-	 * @return mixed[]
-	 */
 	private function getNearbyResults( array $exactResults, int $exactCount ): array {
 		$resultList = '';
 
@@ -234,15 +227,6 @@ class PageBuilder {
 	 * Creates the HTML for a bullet list with all the results of the set
 	 * query. Values can be highlighted to show exact matches among nearby
 	 * ones.
-	 *
-	 * @param array $results (array of (array of one or two DataValues))
-	 * @param int $number How many results should be displayed? -1 for all
-	 * @param bool $first If less results should be displayed than
-	 * 	given, should they show the first $number results, or the last
-	 * 	$number results?
-	 * @param bool $highlight Should the results be highlighted?
-	 *
-	 * @return string HTML with the bullet list, including header
 	 */
 	private function makeResultList( array $results, $number, bool $first, bool $highlight = false ): string {
 		if ( $number > 0 ) {
@@ -256,7 +240,7 @@ class PageBuilder {
 		foreach ( $results as $result ) {
 
 			$outputFormat = $result[0]->getOutputFormat();
-			$result[0]->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+			$result[0]->setOutputFormat( $outputFormat ?: 'LOCL' );
 
 			$listitem = $result[0]->getLongHTMLText( $this->linker );
 
@@ -292,7 +276,7 @@ class PageBuilder {
 					|| $highlight ) ) {
 
 				$outputFormat = $result[1]->getOutputFormat();
-				$result[1]->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+				$result[1]->setOutputFormat( $outputFormat ?: 'LOCL' );
 
 				$listitem .= "&#160;<em><small>" . $this->messageBuilder->getMessage( 'parentheses' )
 					->rawParams( $result[1]->getLongHTMLText( $this->linker ) )
@@ -349,7 +333,7 @@ class PageBuilder {
 		);
 
 		$outputFormat = $dataValue->getOutputFormat();
-		$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+		$dataValue->setOutputFormat( $outputFormat ?: 'LOCL' );
 
 		if ( $dataValue->isValid() ) {
 			// $resultMessage = 'Item reference for a zero-marked property.';

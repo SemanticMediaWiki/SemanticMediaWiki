@@ -10,10 +10,7 @@ namespace SMW\MediaWiki\Template;
  */
 class Template {
 
-	/**
-	 * @var
-	 */
-	private $fields = [];
+	private array $fields = [];
 
 	/**
 	 * @since 3.1
@@ -33,8 +30,6 @@ class Template {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return string
 	 */
 	public function text(): string {
 		$text = '{{' . $this->name;

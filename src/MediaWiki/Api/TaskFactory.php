@@ -24,15 +24,10 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class TaskFactory {
 
-	/**
-	 * @var
-	 */
 	private static $services;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return mixed[]
 	 */
 	public function getAllowedTypes(): array {
 		if ( self::$services === null ) {
@@ -74,11 +69,9 @@ class TaskFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param string $type
-	 *
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, ?User $user = null ): Task {
+	public function newByType( string $type, ?User $user = null ): Task {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$service = null;
 
@@ -112,8 +105,6 @@ class TaskFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return DuplicateLookupTask
 	 */
 	public function newDuplicateLookupTask(): DuplicateLookupTask {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -132,8 +123,6 @@ class TaskFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return TableStatisticsTask
 	 */
 	public function newTableStatisticsTask(): TableStatisticsTask {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -152,8 +141,6 @@ class TaskFactory {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return EntityExaminerTask
 	 */
 	public function newEntityExaminerTask( ?User $user = null ): EntityExaminerTask {
 		$applicationFactory = ApplicationFactory::getInstance();

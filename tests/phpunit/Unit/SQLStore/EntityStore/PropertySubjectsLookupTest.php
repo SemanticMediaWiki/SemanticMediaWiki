@@ -67,7 +67,7 @@ class PropertySubjectsLookupTest extends TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )
-			->willReturn( [] );
+			->willReturn( new FakeResultWrapper( [] ) );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

@@ -42,10 +42,8 @@ class PageInfoProvider implements PageInfo {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return int
 	 */
-	public function getModificationDate() {
+	public function getModificationDate(): string {
 		return $this->wikiPage->getTimestamp();
 	}
 
@@ -54,10 +52,8 @@ class PageInfoProvider implements PageInfo {
 	 * revision table which is not cached
 	 *
 	 * @since 1.9
-	 *
-	 * @return int
 	 */
-	public function getCreationDate() {
+	public function getCreationDate(): string {
 		return $this->revisionLookup->getFirstRevision(
 			$this->wikiPage->getTitle(),
 			IDBAccessObject::READ_LATEST
@@ -68,8 +64,6 @@ class PageInfoProvider implements PageInfo {
 	 * @note Using isNewPage() is expensive due to access to the database
 	 *
 	 * @since 1.9
-	 *
-	 * @return bool
 	 */
 	public function isNewPage(): bool {
 		if ( $this->isFilePage() ) {
@@ -84,17 +78,13 @@ class PageInfoProvider implements PageInfo {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return Title
 	 */
-	public function getLastEditor() {
+	public function getLastEditor(): ?Title {
 		return $this->user ? $this->user->getUserPage() : null;
 	}
 
 	/**
 	 * @since 1.9.1
-	 *
-	 * @return bool
 	 */
 	public function isFilePage(): bool {
 		return $this->wikiPage instanceof WikiFilePage;
@@ -102,10 +92,8 @@ class PageInfoProvider implements PageInfo {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return text
 	 */
-	public function getNativeData() {
+	public function getNativeData(): mixed {
 		$content = $this->wikiPage->getContent();
 		if ( $content === null ) {
 			return '';
@@ -116,11 +104,9 @@ class PageInfoProvider implements PageInfo {
 
 	/**
 	 * @since 1.9.1
-	 *
-	 * @return string|null
 	 */
-	public function getMediaType() {
-		if ( $this->isFilePage() === false ) {
+	public function getMediaType(): ?string {
+		if ( !$this->isFilePage() ) {
 			return null;
 		}
 
@@ -129,11 +115,9 @@ class PageInfoProvider implements PageInfo {
 
 	/**
 	 * @since 1.9.1
-	 *
-	 * @return string|null
 	 */
-	public function getMimeType() {
-		if ( $this->isFilePage() === false ) {
+	public function getMimeType(): ?string {
+		if ( !$this->isFilePage() ) {
 			return null;
 		}
 

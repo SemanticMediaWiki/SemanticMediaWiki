@@ -23,29 +23,14 @@ class NamespaceForm {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var
-	 */
 	private array $activeNamespaces = [];
 
-	/**
-	 * @var
-	 */
 	private array $hiddenNamespaces = [];
 
-	/**
-	 * @var
-	 */
 	private array $searchableNamespaces = [];
 
-	/**
-	 * @var null|string
-	 */
-	private $token;
+	private ?string $token = null;
 
-	/**
-	 * @var null|string
-	 */
 	private bool $hideList = false;
 
 	/**
@@ -59,8 +44,6 @@ class NamespaceForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $activeNamespaces
 	 */
 	public function setActiveNamespaces( array $activeNamespaces ): void {
 		$this->activeNamespaces = $activeNamespaces;
@@ -68,17 +51,13 @@ class NamespaceForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $hideList
 	 */
-	public function setHideList( $hideList ): void {
-		$this->hideList = (bool)$hideList;
+	public function setHideList( bool $hideList ): void {
+		$this->hideList = $hideList;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $hiddenNamespaces
 	 */
 	public function setHiddenNamespaces( array $hiddenNamespaces ): void {
 		$this->hiddenNamespaces = $hiddenNamespaces;
@@ -86,8 +65,6 @@ class NamespaceForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $searchableNamespaces
 	 */
 	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
@@ -97,8 +74,6 @@ class NamespaceForm {
 	 * @see SearchFormWidget
 	 *
 	 * @since 3.0
-	 *
-	 * @param SpecialSearch $specialSearch
 	 */
 	public function checkNamespaceEditToken( SpecialSearch $specialSearch ): void {
 		$user = $specialSearch->getUser();
@@ -112,8 +87,6 @@ class NamespaceForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public function makeFields(): string {
 		$divider = "<div class='divider'></div>";

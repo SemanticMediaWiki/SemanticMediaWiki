@@ -16,10 +16,7 @@ use SMW\Query\PrintRequest;
  */
 final class ApiRequestParameterFormatter {
 
-	/**
-	 * @var ObjectDictionary
-	 */
-	protected $results = null;
+	protected Options|array|null $results = null;
 
 	/**
 	 * @since 1.9
@@ -31,8 +28,6 @@ final class ApiRequestParameterFormatter {
 	 * Return formatted request parameters for the AskApi
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
 	public function getAskApiParameters(): array {
 		if ( $this->results === null ) {
@@ -46,10 +41,8 @@ final class ApiRequestParameterFormatter {
 	 * Return formatted request parameters AskArgsApi
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
-	public function getAskArgsApiParameter( $key ) {
+	public function getAskArgsApiParameter( $key ): mixed {
 		if ( $this->results === null ) {
 			$this->results = $this->formatAskArgs();
 		}
@@ -61,8 +54,6 @@ final class ApiRequestParameterFormatter {
 	 * Return formatted request parameters
 	 *
 	 * @since 1.9
-	 *
-	 * @return ObjectDictionary
 	 */
 	protected function formatAskArgs(): Options {
 		$result = new Options();
@@ -91,8 +82,6 @@ final class ApiRequestParameterFormatter {
 	 * Format parameters
 	 *
 	 * @since  1.9
-	 *
-	 * @return string
 	 */
 	protected function formatParameters(): array {
 		$parameters = [];

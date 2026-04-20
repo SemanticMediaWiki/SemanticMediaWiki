@@ -24,8 +24,6 @@ class PreferenceExaminer {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return User $user
 	 */
 	public function setUser( User $user ): void {
 		$this->user = $user;
@@ -33,10 +31,6 @@ class PreferenceExaminer {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $key
-	 *
-	 * @return bool
 	 */
 	public function hasPreferenceOf( string $key ): bool {
 		if ( $this->user === null ) {

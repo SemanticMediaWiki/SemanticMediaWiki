@@ -30,11 +30,6 @@ class FacetBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param UrlArgs $urlArgs
-	 *
-	 * @return string
 	 */
 	public function getPropertyFilterFacet( Title $title, UrlArgs $urlArgs ): string {
 		$params = [
@@ -65,7 +60,7 @@ class FacetBuilder {
 		$pv = $urlArgs->getArray( 'pv' );
 		$clear = '';
 
-		if ( is_array( $pv ) && $pv !== [] ) {
+		if ( $pv !== [] ) {
 			$clear = $this->createClearFilter( 'clear[p.all]', count( $pv ) );
 		}
 
@@ -83,11 +78,6 @@ class FacetBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param UrlArgs $urlArgs
-	 *
-	 * @return string
 	 */
 	public function getCategoryFilterFacet( Title $title, UrlArgs $urlArgs ): string {
 		$params = [
@@ -119,7 +109,7 @@ class FacetBuilder {
 		$c = $args->getArray( 'c' );
 		$clear = '';
 
-		if ( is_array( $c ) && $c !== [] ) {
+		if ( $c !== [] ) {
 			$clear = $this->createClearFilter( 'clear[c.all]', count( $c ) );
 		}
 
@@ -137,11 +127,6 @@ class FacetBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param UrlArgs $urlArgs
-	 *
-	 * @return string
 	 */
 	public function getValueFilterFacets( Title $title, UrlArgs $urlArgs ): string {
 		$params = [

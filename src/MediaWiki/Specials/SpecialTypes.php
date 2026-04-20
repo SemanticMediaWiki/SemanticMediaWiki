@@ -90,7 +90,9 @@ class SpecialTypes extends SpecialPage {
 				null
 			);
 
+			// @phan-suppress-next-line PhanUndeclaredConstantOfClass
 			$dataValue->setOption( $dataValue::NO_TEXT_TRANSFORMATION, true );
+			// @phan-suppress-next-line PhanUndeclaredConstantOfClass
 			$dataValue->setOption( $dataValue::SHORT_FORM, true );
 
 			return $dataValue->getWikiValue();

@@ -12,6 +12,7 @@ use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use stdClass;
+use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\ResultWrapper;
 
 /**
@@ -124,7 +125,7 @@ class DuplicateFinderTest extends TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
-			->willReturn( [ $row ] );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$instance = new DuplicateFinder(
 			$this->store,
@@ -171,7 +172,7 @@ class DuplicateFinderTest extends TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
-			->willReturn( [ $row ] );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$instance = new DuplicateFinder(
 			$this->store,

@@ -49,7 +49,7 @@ class RevisionGuard {
 
 		// If for some reason an extension decides that the current used revision
 		// isn't approved then the hook should return `false`
-		if ( $this->hookDispatcher->onIsApprovedRevision( $title, $latestRevID ) === false ) {
+		if ( !$this->hookDispatcher->onIsApprovedRevision( $title, $latestRevID ) ) {
 			return true;
 		}
 

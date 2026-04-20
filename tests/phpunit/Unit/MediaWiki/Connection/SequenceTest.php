@@ -54,7 +54,7 @@ class SequenceTest extends TestCase {
 		);
 
 		$this->assertNull(
-						$instance->restart( 'Foo', 'bar' )
+			$instance->restart( 'Foo', 'bar' )
 		);
 	}
 

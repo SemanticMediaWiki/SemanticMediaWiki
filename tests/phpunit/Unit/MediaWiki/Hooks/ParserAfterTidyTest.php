@@ -206,6 +206,10 @@ class ParserAfterTidyTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $parameters['title'] );
 
+		$wikiPage->expects( $this->any() )
+			->method( 'getTimestamp' )
+			->willReturn( '' );
+
 		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();

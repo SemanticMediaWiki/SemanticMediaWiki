@@ -3,10 +3,13 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
+use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Job;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\SQLStore\QueryDependency\QueryLinksTableDisposer;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later

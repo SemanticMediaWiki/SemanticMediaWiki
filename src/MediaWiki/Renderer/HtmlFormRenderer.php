@@ -30,31 +30,16 @@ use SMW\MediaWiki\MessageBuilder;
  */
 class HtmlFormRenderer {
 
-	/**
-	 * @var array
-	 */
-	private $queryParameters = [];
+	private array $queryParameters = [];
 
-	/**
-	 * @var string
-	 */
-	private $name = '';
+	private string $name = '';
 
-	/**
-	 * @var string|bool
-	 */
-	private $method = false;
+	private string|bool $method = false;
 
 	private bool $useFieldset = false;
 
-	/**
-	 * @var string|bool
-	 */
-	private $actionUrl = false;
+	private string|bool $actionUrl = false;
 
-	/**
-	 * @var string[]
-	 */
 	private array $content = [];
 
 	private string $defaultPrefix = 'smw-form';
@@ -70,8 +55,6 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return HtmlFormRenderer
 	 */
 	public function clear(): static {
 		$this->queryParameters = [];
@@ -86,8 +69,6 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return MessageBuilder
 	 */
 	public function getMessageBuilder(): MessageBuilder {
 		return $this->messageBuilder;
@@ -95,32 +76,22 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $name
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function setName( $name ): static {
+	public function setName( string $name ): static {
 		$this->name = $name;
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $actionUrl
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function setActionUrl( $actionUrl ): static {
+	public function setActionUrl( string $actionUrl ): static {
 		$this->actionUrl = $actionUrl;
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return HtmlFormRenderer
 	 */
 	public function withFieldset(): static {
 		$this->useFieldset = true;
@@ -129,33 +100,22 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $method
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function setMethod( $method ): static {
+	public function setMethod( string $method ): static {
 		$this->method = strtolower( $method );
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $key
-	 * @param string $value
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addQueryParameter( $key, $value ): static {
+	public function addQueryParameter( string $key, mixed $value ): static {
 		$this->queryParameters[$key] = $value;
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return array
 	 */
 	public function getQueryParameter(): array {
 		return $this->queryParameters;
@@ -163,13 +123,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $text
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addParagraph( $text, $attributes = [] ): static {
+	public function addParagraph( string $text, array $attributes = [] ): static {
 		if ( $attributes === [] ) {
 			$attributes = [ 'class' => $this->defaultPrefix . '-paragraph' ];
 		}
@@ -180,12 +135,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addHorizontalRule( $attributes = [] ): static {
+	public function addHorizontalRule( array $attributes = [] ): static {
 		if ( $attributes === [] ) {
 			$attributes = [ 'class' => $this->defaultPrefix . '-horizontalrule' ];
 		}
@@ -196,13 +147,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param $level
-	 * @param $text
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addHeader( $level, $text, $attributes = [] ): static {
+	public function addHeader( string $level, string $text, array $attributes = [] ): static {
 		$level = strtolower( $level );
 		$level = in_array( $level, [ 'h2', 'h3', 'h4' ] ) ? $level : 'h2';
 
@@ -212,8 +158,6 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return HtmlFormRenderer
 	 */
 	public function addLineBreak(): static {
 		$this->content[] = Html::element( 'br', [], '' );
@@ -222,8 +166,6 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return HtmlFormRenderer
 	 */
 	public function addNonBreakingSpace(): static {
 		$this->content[] = '&nbsp;';
@@ -232,55 +174,39 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string|null $text
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addSubmitButton( $text, array $attributes = [] ): static {
-		$this->content[] = Html::submitButton( $text, $attributes );
+	public function addSubmitButton( ?string $text = null, array $attributes = [] ): static {
+		$this->content[] = Html::submitButton( $text ?? '', $attributes );
 		return $this;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $element
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function openElement( $element = 'div', array $attributes = [] ): static {
+	public function openElement( string $element = 'div', array $attributes = [] ): static {
 		$this->content[] = Html::openElement( $element, $attributes );
 		return $this;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $element
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function closeElement( $element = 'div', array $attributes = [] ): static {
+	public function closeElement( string $element = 'div' ): static {
 		$this->content[] = Html::closeElement( $element );
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $label
-	 * @param string $name
-	 * @param string $value
-	 * @param string|null $id
-	 * @param int $size
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addInputField( $label, $name, $value, $id = null, $size = 20, array $attributes = [] ): static {
+	public function addInputField(
+		?string $label,
+		string $name,
+		mixed $value,
+		?string $id = null,
+		int $size = 20,
+		array $attributes = []
+	): static {
 		if ( $id === null ) {
 			$id = $name;
 		}
@@ -301,13 +227,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $inputName
-	 * @param string $inputValue
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addHiddenField( $inputName, $inputValue ): static {
+	public function addHiddenField( string $inputName, string $inputValue ): static {
 		$this->addQueryParameter( $inputName, $inputValue );
 
 		$this->content[] = Html::hidden( $inputName, $inputValue );
@@ -316,16 +237,14 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $label
-	 * @param string $inputName
-	 * @param string $inputValue
-	 * @param array $options
-	 * @param string|null $id
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addOptionSelectList( $label, $inputName, $inputValue, $options, $id = null ): static {
+	public function addOptionSelectList(
+		string $label,
+		string $inputName,
+		string $inputValue,
+		array $options,
+		?string $id = null
+	): static {
 		if ( $id === null ) {
 			$id = $inputName;
 		}
@@ -364,16 +283,15 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $label
-	 * @param string $inputName
-	 * @param string $inputValue
-	 * @param bool $isChecked
-	 * @param string|null $id
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null, $attributes = [] ): static {
+	public function addCheckbox(
+		string $label,
+		string $inputName,
+		string $inputValue,
+		bool $isChecked = false,
+		?string $id = null,
+		array $attributes = []
+	): static {
 		if ( $id === null ) {
 			$id = $inputName;
 		}
@@ -401,15 +319,13 @@ class HtmlFormRenderer {
 	 *
 	 * @note Encapsulate as closure to ensure that the build contains all query
 	 * parameters that are necessary to build the paging links
-	 *
-	 * @param int $limit
-	 * @param int $offset
-	 * @param int $count
-	 * @param int|null $messageCount
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addPaging( $limit, $offset, $count, $messageCount = null ): static {
+	public function addPaging(
+		int $limit,
+		int $offset,
+		int $count,
+		?int $messageCount = null
+	): static {
 		$title = $this->title;
 
 		$this->content[] = static function ( $instance ) use ( $title, $limit, $offset, $count, $messageCount ): string {
@@ -419,7 +335,7 @@ class HtmlFormRenderer {
 
 			$resultCount = $instance->getMessageBuilder()
 				->getMessage( 'smw-showingresults' )
-				->numParams( $messageCount, (int)$offset + 1 )
+				->numParams( $messageCount, $offset + 1 )
 				->parse();
 
 			$paging = $instance->getMessageBuilder()->prevNextToText(
@@ -438,10 +354,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return string
 	 */
-	public function getForm() {
+	public function getForm(): string {
 		$content = '';
 
 		foreach ( $this->content as $value ) {
@@ -462,7 +376,7 @@ class HtmlFormRenderer {
 			'id'     => $this->defaultPrefix . "-{$this->name}",
 			'name'   => $this->name,
 			'method' => in_array( $this->method, [ 'get', 'post' ] ) ? $this->method : 'get',
-			'action' => htmlspecialchars( $this->actionUrl ? $this->actionUrl : $GLOBALS['wgScript'] )
+			'action' => htmlspecialchars( $this->actionUrl ?: $GLOBALS['wgScript'] )
 		], Html::hidden(
 			'title',
 			strtok( $this->title->getPrefixedText() ?? '', '/' )
@@ -475,10 +389,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function renderForm() {
+	public function renderForm(): string {
 		return $this->getForm();
 	}
 

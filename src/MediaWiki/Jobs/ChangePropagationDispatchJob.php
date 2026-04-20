@@ -52,11 +52,8 @@ class ChangePropagationDispatchJob extends Job {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $params
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct( Title $title, array $params = [] ) {
 		parent::__construct( 'smw.changePropagationDispatch', $title, $params );
 		$this->removeDuplicates = true;
 	}
@@ -65,13 +62,8 @@ class ChangePropagationDispatchJob extends Job {
 	 * Called from PropertyChangePropagationNotifier
 	 *
 	 * @since 3.0
-	 *
-	 * @param WikiPage $subject
-	 * @param array $params
-	 *
-	 * @return bool
 	 */
-	public static function planAsJob( WikiPage $subject, $params = [] ): bool {
+	public static function planAsJob( WikiPage $subject, array $params = [] ): bool {
 		Exporter::getInstance()->resetCacheBy( $subject );
 		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->invalidateCache(
 			$subject
@@ -85,8 +77,6 @@ class ChangePropagationDispatchJob extends Job {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WikiPage $subject
 	 */
 	public static function cleanUp( WikiPage $subject ): void {
 		$namespace = $subject->getNamespace();
@@ -105,10 +95,6 @@ class ChangePropagationDispatchJob extends Job {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WikiPage $subject
-	 *
-	 * @return bool
 	 */
 	public static function hasPendingJobs( WikiPage $subject ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -144,10 +130,6 @@ class ChangePropagationDispatchJob extends Job {
 	 * and does not distinguish by changes to a specific property.
 	 *
 	 * @since 3.0
-	 *
-	 * @param WikiPage $subject
-	 *
-	 * @return int
 	 */
 	public static function getPendingJobsCount( WikiPage $subject ): int {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -419,7 +401,7 @@ class ChangePropagationDispatchJob extends Job {
 
 	private function newChangePropagationUpdateJob( ?Title $title, array $parameters ): ChangePropagationClassUpdateJob|ChangePropagationUpdateJob {
 		$namespace = $this->getTitle()->getNamespace();
-		$parameters = $parameters + [ 'origin' => 'ChangePropagationDispatchJob' ];
+		$parameters += [ 'origin' => 'ChangePropagationDispatchJob' ];
 
 		if ( $namespace === NS_CATEGORY ) {
 			return new ChangePropagationClassUpdateJob( $title, $parameters );

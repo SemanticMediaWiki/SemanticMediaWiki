@@ -31,11 +31,6 @@ class FileUpload implements HookListener {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param File $file
-	 * @param bool $reUploadStatus
-	 *
-	 * @return true
 	 */
 	public function process( File $file, ?bool $reUploadStatus = false ): bool {
 		if ( $this->canProcess( $file->getTitle() ) ) {

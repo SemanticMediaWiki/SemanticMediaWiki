@@ -12,6 +12,7 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MonolingualTextLookup
@@ -160,7 +161,7 @@ class MonolingualTextLookupTest extends TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'readQuery' )
-			->willReturn( [ (object)$row ] );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$query = new Query( $connection );
 

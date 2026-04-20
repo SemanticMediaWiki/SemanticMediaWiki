@@ -19,8 +19,6 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public static function toString( array $options ): string {
 		$string = '';
@@ -130,7 +128,7 @@ class OptionsBuilder {
 
 		if ( isset( $options['HAVING'] ) ) {
 			$having = is_array( $options['HAVING'] )
-				? $connection->makeList( $options['HAVING'], self::LIST_AND )
+				? $connection->makeList( $options['HAVING'], SQLPlatform::LIST_AND )
 				: $options['HAVING'];
 			$sql .= ' HAVING ' . $having;
 		}

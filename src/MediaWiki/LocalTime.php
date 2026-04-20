@@ -56,7 +56,7 @@ class LocalTime {
 				$dateTime->setTimezone( $userTZ );
 				$dateTime->hasLocalTimeCorrection = true;
 				return $dateTime;
-			} catch ( Exception $e ) {
+			} catch ( Exception ) {
 				// Unrecognized timezone, default to 'Offset' with the stored offset.
 				$data[0] = 'Offset';
 			}

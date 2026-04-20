@@ -18,10 +18,7 @@ class SortForm {
 
 	private Field $field;
 
-	/**
-	 * @var
-	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @since 3.0
@@ -32,8 +29,6 @@ class SortForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getParameters(): array {
 		return $this->parameters;
@@ -41,8 +36,6 @@ class SortForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $features
 	 */
 	public function makeFields( array $features = [] ) {
 		$default = isset( $features['best'] ) && $features['best'] ? 'best' : 'title';
@@ -76,7 +69,11 @@ class SortForm {
 					'name' => 'sort',
 					'value' => $sort,
 					'data-list' => json_encode( $list ),
-					'title' => Message::get( 'smw-search-profile-extended-section-sort', Message::TEXT, Message::USER_LANGUAGE ),
+					'title' => Message::get(
+						'smw-search-profile-extended-section-sort',
+						Message::TEXT,
+						Message::USER_LANGUAGE
+					),
 				],
 				$sort === '' ? 'Sort' : $name
 			) . Html::rawElement(
@@ -94,17 +91,37 @@ class SortForm {
 		$list = [];
 
 		if ( isset( $features['best'] ) && $features['best'] ) {
-			$list['best'] = Message::get( 'smw-search-profile-sort-best', Message::TEXT, Message::USER_LANGUAGE );
+			$list['best'] = Message::get(
+				'smw-search-profile-sort-best',
+				Message::TEXT,
+				Message::USER_LANGUAGE
+			);
 
 			$list += [
-				'recent' => Message::get( 'smw-search-profile-sort-recent', Message::TEXT, Message::USER_LANGUAGE ),
-				'title'  => Message::get( 'smw-search-profile-sort-title', Message::TEXT, Message::USER_LANGUAGE )
+				'recent' => Message::get(
+					'smw-search-profile-sort-recent',
+					Message::TEXT,
+					Message::USER_LANGUAGE
+				),
+				'title'  => Message::get(
+					'smw-search-profile-sort-title',
+					Message::TEXT,
+					Message::USER_LANGUAGE
+				)
 			];
 
 		} else {
 			$list = [
-				'title'  => Message::get( 'smw-search-profile-sort-title', Message::TEXT, Message::USER_LANGUAGE ),
-				'recent' => Message::get( 'smw-search-profile-sort-recent', Message::TEXT, Message::USER_LANGUAGE )
+				'title'  => Message::get(
+					'smw-search-profile-sort-title',
+					Message::TEXT,
+					Message::USER_LANGUAGE
+				),
+				'recent' => Message::get(
+					'smw-search-profile-sort-recent',
+					Message::TEXT,
+					Message::USER_LANGUAGE
+				)
 			];
 		}
 

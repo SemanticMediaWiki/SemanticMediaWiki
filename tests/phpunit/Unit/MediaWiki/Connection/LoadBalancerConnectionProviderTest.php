@@ -79,7 +79,8 @@ class LoadBalancerConnectionProviderTest extends TestCase {
 
 		$instance->setLoadBalancer( $loadBalancer );
 
-		$this->expectException( 'RuntimeException' );
+		// It will throw an exception as wrong php type is used.
+		$this->expectException( 'TypeError' );
 		$instance->getConnection();
 	}
 

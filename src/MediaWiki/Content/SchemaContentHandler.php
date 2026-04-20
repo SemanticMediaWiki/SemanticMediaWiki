@@ -35,8 +35,6 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * @since 1.21
 	 *
-	 * @return bool Always true.
-	 *
 	 * @see ContentHandler::isParserCacheSupported
 	 */
 	public function isParserCacheSupported(): bool {
@@ -169,6 +167,7 @@ class SchemaContentHandler extends JsonContentHandler {
 			} elseif ( is_string( $error ) ) {
 				$status->fatal( $error );
 			} else {
+				// @phan-suppress-next-line PhanParamTooFewUnpack
 				$status->fatal( ...$error );
 			}
 		}

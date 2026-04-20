@@ -14,9 +14,6 @@ use SMW\Store;
  */
 class DuplicateLookupTask extends Task {
 
-	/**
-	 * @var
-	 */
 	private ?array $cacheUsage = null;
 
 	/**
@@ -30,8 +27,6 @@ class DuplicateLookupTask extends Task {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $cacheUsage
 	 */
 	public function setCacheUsage( array $cacheUsage ): void {
 		$this->cacheUsage = $cacheUsage;
@@ -39,10 +34,6 @@ class DuplicateLookupTask extends Task {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function process( array $parameters ): array {
 		$cacheTTL = 3600;

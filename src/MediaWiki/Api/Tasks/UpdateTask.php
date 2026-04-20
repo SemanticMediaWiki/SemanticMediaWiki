@@ -23,10 +23,6 @@ class UpdateTask extends Task {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function process( array $parameters ): array {
 		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
@@ -49,7 +45,7 @@ class UpdateTask extends Task {
 			$parameters['ref'] = [ $subject->getHash() ];
 		}
 
-		$isPost = isset( $parameters['post'] ) ? $parameters['post'] : false;
+		$isPost = $parameters['post'] ?? false;
 		$origin = [];
 
 		if ( isset( $parameters['origin'] ) ) {

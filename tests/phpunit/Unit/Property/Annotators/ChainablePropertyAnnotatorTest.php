@@ -94,7 +94,7 @@ class ChainablePropertyAnnotatorTest extends TestCase {
 		// #0
 		$provider[] = [
 			[
-				'modificationDate' => 1272508903,
+				'modificationDate' => '1272508903',
 				'categories' => [ 'Foo', 'Bar' ],
 				'sortkey'    => 'Lala',
 				'settings'   => [
