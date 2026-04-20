@@ -31,8 +31,6 @@ class FallbackFinder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getCanonicalFallbackLanguageCode(): string {
 		return $this->canonicalFallbackLanguageCode;
@@ -40,12 +38,8 @@ class FallbackFinder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $languageCode
-	 *
-	 * @return string
 	 */
-	public function getFallbackLanguageBy( $languageCode = '' ) {
+	public function getFallbackLanguageBy( string $languageCode = '' ): string {
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		if ( isset( $this->fallbackLanguages[$languageCode] ) ) {
@@ -61,7 +55,7 @@ class FallbackFinder {
 
 		try {
 			$contents = $this->jsonContentsFileReader->readByLanguageCode( $languageCode );
-		} catch ( RuntimeException $e ) {
+		} catch ( RuntimeException ) {
 			$this->fallbackLanguages[$languageCode] = $this->canonicalFallbackLanguageCode;
 		}
 

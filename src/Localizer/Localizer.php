@@ -43,8 +43,6 @@ class Localizer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return Localizer
 	 */
 	public static function getInstance(): Localizer {
 		if ( self::$instance !== null ) {
@@ -72,8 +70,6 @@ class Localizer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return Language
 	 */
 	public function getContentLanguage(): Language {
 		return $this->contentLanguage;
@@ -84,18 +80,14 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public function getUserLanguage() {
+	public function getUserLanguage(): Language {
 		return $GLOBALS['wgLang'];
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param User|null $user
-	 *
-	 * @return bool
 	 */
-	public function hasLocalTimeOffsetPreference( $user = null ) {
+	public function hasLocalTimeOffsetPreference( ?User $user = null ): bool {
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
@@ -105,13 +97,8 @@ class Localizer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ExtendedDateTime $dateTime
-	 * @param User|null $user
-	 *
-	 * @return ExtendedDateTime
 	 */
-	public function getLocalTime( ExtendedDateTime $dateTime, $user = null ): ExtendedDateTime {
+	public function getLocalTime( ExtendedDateTime $dateTime, ?User $user = null ): ExtendedDateTime {
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
@@ -144,12 +131,11 @@ class Localizer {
 	 * written in wikitext
 	 *
 	 * @since 2.4
-	 *
-	 * @param WikiPage|Title|null $title
-	 *
-	 * @return Language
 	 */
-	public function getPreferredContentLanguage( $title = null ): Language {
+	public function getPreferredContentLanguage(
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
+		WikiPage|Title|null $title = null
+	): Language {
 		$language = '';
 
 		if ( $title instanceof WikiPage ) {
@@ -165,8 +151,7 @@ class Localizer {
 			// is not registered
 			try {
 				$language = $title->getPageLanguage();
-			} catch ( Exception $e ) {
-
+			} catch ( Exception ) {
 			}
 		}
 
@@ -175,12 +160,8 @@ class Localizer {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $languageCode
-	 *
-	 * @return Language
 	 */
-	public function getLanguage( $languageCode = '' ): Language {
+	public function getLanguage( mixed $languageCode = '' ): Language {
 		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
 			return $this->getContentLanguage();
 		}
@@ -191,12 +172,8 @@ class Localizer {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Language|string $language
-	 *
-	 * @return LocalLanguage
 	 */
-	public function getLang( $language = '' ): LocalLanguage {
+	public function getLang( mixed $language = '' ): LocalLanguage {
 		$languageCode = $language;
 
 		if ( $language instanceof Language ) {
@@ -212,23 +189,15 @@ class Localizer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param int $index
-	 *
-	 * @return string
 	 */
-	public function getNsText( $index ): string {
+	public function getNsText( int $index ): string {
 		return str_replace( '_', ' ', $this->contentLanguage->getNsText( $index ) );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $index
-	 *
-	 * @return string
 	 */
-	public function getCanonicalNamespaceTextById( $index ) {
+	public function getCanonicalNamespaceTextById( int $index ): string {
 		$canonicalNames = NamespaceManager::getCanonicalNames();
 
 		if ( isset( $canonicalNames[$index] ) ) {
@@ -240,12 +209,8 @@ class Localizer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $namespaceName
-	 *
-	 * @return int|bool
 	 */
-	public function getNsIndex( $namespaceName ) {
+	public function getNsIndex( string|array $namespaceName ): string|bool {
 		return $this->contentLanguage->getNsIndex( str_replace( ' ', '_', $namespaceName ) );
 	}
 
@@ -255,13 +220,8 @@ class Localizer {
 	 * @since 3.2
 	 *
 	 * @deprecated since 1.35 use LanguageConverter::convertNamespace instead
-	 *
-	 * @param int $ns namespace
-	 * @param string|null $variant
-	 *
-	 * @return string a string representation of the namespace
 	 */
-	public function convertNamespace( $ns, $variant = null ): string {
+	public function convertNamespace( int $ns, ?string $variant = null ): string {
 		$services = MediaWikiServices::getInstance();
 		$langConverter = $services->getLanguageConverterFactory()->getLanguageConverter( $this->contentLanguage );
 		return $langConverter->convertNamespace( $ns, $variant );
@@ -274,7 +234,7 @@ class Localizer {
 	 *
 	 * @return bool
 	 */
-	public static function isKnownLanguageTag( $languageCode ): bool {
+	public static function isKnownLanguageTag( string $languageCode ): bool {
 		$languageCode = mb_strtolower( $languageCode );
 		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
@@ -285,36 +245,22 @@ class Localizer {
 	 * @see IETF language tag / BCP 47 standards
 	 *
 	 * @since 2.4
-	 *
-	 * @param string $languageCode
-	 *
-	 * @return string
 	 */
-	public static function asBCP47FormattedLanguageCode( $languageCode ) {
+	public static function asBCP47FormattedLanguageCode( string $languageCode ): string {
 		return LanguageCode::bcp47( $languageCode );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $index
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function createTextWithNamespacePrefix( $index, string $text ): string {
+	public function createTextWithNamespacePrefix( int $index, string $text ): string {
 		return $this->getNsText( $index ) . ':' . $text;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $index
-	 * @param string $url
-	 *
-	 * @return string
 	 */
-	public function getCanonicalizedUrlByNamespace( $index, $url ): string {
+	public function getCanonicalizedUrlByNamespace( int $index, string $url ): string {
 		$namespace = $this->getNsText( $index );
 
 		if ( strpos( $url, 'title=' ) !== false ) {
@@ -340,12 +286,8 @@ class Localizer {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string &$value
-	 *
-	 * @return string|false
 	 */
-	public static function getAnnotatedLanguageCodeFrom( &$value ): false|string {
+	public static function getAnnotatedLanguageCodeFrom( string &$value ): false|string {
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
 		}
@@ -369,10 +311,6 @@ class Localizer {
 	 * here if more advanced normalization is needed.
 	 *
 	 * @since 3.2
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
 	public function normalizeTitleText( string $text ): string {
 		$text = trim( $text );
@@ -392,12 +330,8 @@ class Localizer {
 	 *
 	 * Convert double-width roman characters to single-width.
 	 * range: ff00-ff5f ~= 0020-007f
-	 *
-	 * @param string $string
-	 *
-	 * @return string
 	 */
-	public static function convertDoubleWidth( $string ): string {
+	public static function convertDoubleWidth( string $string ): string {
 		static $full = null;
 		static $half = null;
 

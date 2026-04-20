@@ -6,6 +6,7 @@ use Closure;
 use MediaWiki\Language\Language;
 use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
+use Wikimedia\Message\MessageSpecifier;
 
 /**
  * @private
@@ -21,10 +22,7 @@ use SMW\InMemoryPoolCache;
  */
 class Message {
 
-	/**
-	 * @var array
-	 */
-	private static $messageCache = null;
+	private static ?Cache $messageCache = null;
 
 	/**
 	 * PoolCache ID
@@ -48,20 +46,15 @@ class Message {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param $type
-	 * @param Closure $handler
 	 */
-	public static function registerCallbackHandler( $type, Closure $handler ): void {
+	public static function registerCallbackHandler( string|int $type, Closure $handler ): void {
 		self::$messageHandler[$type] = $handler;
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param $type
 	 */
-	public static function deregisterHandlerFor( $type ): void {
+	public static function deregisterHandlerFor( string|int $type ): void {
 		unset( self::$messageHandler[$type] );
 	}
 
@@ -74,8 +67,6 @@ class Message {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return FixedInMemoryLruCache
 	 */
 	public static function getCache(): Cache {
 		if ( self::$messageCache === null ) {
@@ -93,13 +84,8 @@ class Message {
 	 * '[2,"Foo", "Bar"]' => Preferred output type, Message ID, Argument $1 ... $
 	 *
 	 * @since 2.5
-	 *
-	 * @param string|array $message
-	 * @param int|null $type
-	 *
-	 * @return string
 	 */
-	public static function encode( $message, $type = null ) {
+	public static function encode( string|array $message, ?int $type = null ): string {
 		if ( is_string( $message ) && json_decode( $message ) && json_last_error() === JSON_ERROR_NONE ) {
 			return $message;
 		}
@@ -118,7 +104,7 @@ class Message {
 
 		foreach ( $message as $value ) {
 			// Ensure $value is a string before using substr()
-			$value = $value ?? '';
+			$value ??= '';
 
 			// Check if the value is already encoded, and if decode to keep the
 			// structure intact
@@ -146,23 +132,15 @@ class Message {
 	 * @fixme Needs to be MW agnostic !
 	 *
 	 * @since 2.5
-	 *
-	 * @param string $message
 	 */
-	public static function exists( $message ): bool {
+	public static function exists( string|array|MessageSpecifier $message ): bool {
 		return wfMessage( $message )->exists();
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string|array $message
-	 * @param int|null $type
-	 * @param mixed|null $language
-	 *
-	 * @return string|bool
 	 */
-	public static function decode( $message, $type = null, $language = null ) {
+	public static function decode( string $message, ?int $type = null, mixed $language = null ): string|bool {
 		$message = json_decode( $message );
 		$asType = null;
 
@@ -190,14 +168,8 @@ class Message {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string|array $parameters
-	 * @param int|null $type
-	 * @param int|null $language
-	 *
-	 * @return string
 	 */
-	public static function get( $parameters, $type = null, $language = null ): string {
+	public static function get( string|array $parameters, ?int $type = null, mixed $language = null ): string {
 		$handler = null;
 		$parameters = (array)$parameters;
 
@@ -235,12 +207,12 @@ class Message {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array $parameters
-	 * @param int|null $type
-	 * @param int|string|Language|null $language
 	 */
-	public static function getHash( $parameters, $type = null, $language = null ): string {
+	public static function getHash(
+		array $parameters,
+		?int $type = null,
+		mixed $language = null
+	): string {
 		if ( $language instanceof Language ) {
 			$language = $language->getCode();
 		}
