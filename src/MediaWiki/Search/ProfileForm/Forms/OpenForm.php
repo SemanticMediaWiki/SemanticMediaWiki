@@ -45,7 +45,7 @@ class OpenForm {
 	/**
 	 * @since 3.0
 	 */
-	public function makeFields( array $definition = [] ): string {
+	public function makeFields(): string {
 		$this->parameters = [];
 
 		$group = '';
