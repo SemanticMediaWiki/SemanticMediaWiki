@@ -169,7 +169,11 @@ class Message {
 	/**
 	 * @since 2.4
 	 */
-	public static function get( string|array $parameters, ?int $type = null, mixed $language = null ): string {
+	public static function get(
+		string|array $parameters,
+		int|string|null $type = null,
+		mixed $language = null
+	): string {
 		$handler = null;
 		$parameters = (array)$parameters;
 
@@ -210,14 +214,14 @@ class Message {
 	 */
 	public static function getHash(
 		array|string $parameters,
-		?int $type = null,
+		int|string|null $type = null,
 		mixed $language = null
 	): string {
 		if ( $language instanceof Language ) {
 			$language = $language->getCode();
 		}
 
-		return md5( json_encode( $parameters ) . '#' . $type . '#' . $language );
+		return md5( json_encode( $parameters ) . '#' . (string)$type . '#' . $language );
 	}
 
 }
