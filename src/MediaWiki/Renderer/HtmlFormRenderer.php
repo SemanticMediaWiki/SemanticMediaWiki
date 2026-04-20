@@ -176,7 +176,7 @@ class HtmlFormRenderer {
 	 * @since 2.1
 	 */
 	public function addSubmitButton( ?string $text = null, array $attributes = [] ): static {
-		$this->content[] = Html::submitButton( $text, $attributes );
+		$this->content[] = Html::submitButton( $text ?? '', $attributes );
 		return $this;
 	}
 
