@@ -18,7 +18,7 @@ use SMW\Utils\File;
  */
 class ExceptionFileLogger {
 
-	private string $exceptionFile;
+	private string $exceptionFile = '';
 
 	private int $exceptionCount = 0;
 
@@ -70,7 +70,7 @@ class ExceptionFileLogger {
 	/**
 	 * @since 2.4
 	 */
-	public function recordException( string $id, Exception $exception ): void {
+	public function recordException( int|string $id, Exception $exception ): void {
 		$this->exceptionCount++;
 
 		$this->exceptionLogMessages[$id] = [
