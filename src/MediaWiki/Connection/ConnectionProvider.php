@@ -75,7 +75,7 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function createConnection( array $conf ): Database {
+	private function createConnection( array $conf ) {
 		if ( isset( $conf['callback'] ) && is_callable( $conf['callback'] ) ) {
 			return call_user_func( $conf['callback'] );
 		}
