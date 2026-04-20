@@ -20,10 +20,7 @@ use SMW\Utils\CliMsgFormatter;
  */
 class PropertyStatisticsRebuilder {
 
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private MessageReporter $messageReporter;
 
 	/**
 	 * @since 1.9
@@ -37,8 +34,6 @@ class PropertyStatisticsRebuilder {
 
 	/**
 	 * @since  2.2
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
@@ -195,7 +190,7 @@ class PropertyStatisticsRebuilder {
 		}
 
 		if ( $usageCount > 0 ) {
-			$usageCount = $usageCount - $nullCount;
+			$usageCount -= $nullCount;
 		}
 
 		return [ $usageCount, $nullCount ];
