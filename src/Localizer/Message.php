@@ -171,6 +171,7 @@ class Message {
 	 */
 	public static function get(
 		string|array $parameters,
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
 		int|string|null $type = null,
 		mixed $language = null
 	): string {
@@ -214,6 +215,7 @@ class Message {
 	 */
 	public static function getHash(
 		array|string $parameters,
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
 		int|string|null $type = null,
 		mixed $language = null
 	): string {
