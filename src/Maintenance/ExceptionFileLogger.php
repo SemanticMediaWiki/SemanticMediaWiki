@@ -18,10 +18,7 @@ use SMW\Utils\File;
  */
 class ExceptionFileLogger {
 
-	/**
-	 * @var string
-	 */
-	private $exceptionFile;
+	private string $exceptionFile;
 
 	private int $exceptionCount = 0;
 
@@ -41,8 +38,6 @@ class ExceptionFileLogger {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Options $options
 	 */
 	public function setOptions( Options $options ): void {
 		$dateTimeUtc = new ExtendedDateTime( 'now', new DateTimeZone( 'UTC' ) );
@@ -51,7 +46,7 @@ class ExceptionFileLogger {
 		if ( $options->has( 'exception-log' ) ) {
 			$this->exceptionFile = $options->get( 'exception-log' );
 			if ( !str_ends_with( $this->exceptionFile, '/' ) ) {
-				$this->exceptionFile = $this->exceptionFile . '/';
+				$this->exceptionFile .= '/';
 			}
 		}
 
@@ -60,8 +55,6 @@ class ExceptionFileLogger {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return string
 	 */
 	public function getExceptionFile(): string|false {
 		return realpath( $this->exceptionFile );
@@ -69,8 +62,6 @@ class ExceptionFileLogger {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return int
 	 */
 	public function getExceptionCount(): int {
 		return $this->exceptionCount;
@@ -78,11 +69,8 @@ class ExceptionFileLogger {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $id
-	 * @param Exception $exception
 	 */
-	public function recordException( $id, Exception $exception ): void {
+	public function recordException( string $id, Exception $exception ): void {
 		$this->exceptionCount++;
 
 		$this->exceptionLogMessages[$id] = [

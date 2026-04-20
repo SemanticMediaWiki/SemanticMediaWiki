@@ -352,7 +352,8 @@ class DataRebuilder {
 			$this->doUpdateById( $id );
 
 			// Refresh progressively
-			if ( $this->rebuildCount % round( log10( $this->rebuildCount ) * 100, 0 ) === 0 ) {
+			$modBase = (int)round( log10( $this->rebuildCount ) * 100, 0 );
+			if ( $modBase > 0 && $this->rebuildCount % $modBase === 0 ) {
 				$estimatedProgress = $this->entityRebuildDispatcher->getEstimatedProgress();
 				$max = $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId();
 			}
@@ -581,9 +582,6 @@ class DataRebuilder {
 		}
 	}
 
-	/**
-	 * @param array $options
-	 */
 	private function setFiltersFromOptions( Options $options ): void {
 		$this->filters = [];
 

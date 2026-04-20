@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use Iterator;
 use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\DataItems\DataItem;
@@ -41,10 +42,8 @@ class DuplicateEntitiesDisposer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Iterator|array $duplicates
 	 */
-	public function verifyAndDispose( $duplicates ): void {
+	public function verifyAndDispose( Iterator|array $duplicates ): void {
 		if ( !$this->is_iterable( $duplicates ) ) {
 			return;
 		}
