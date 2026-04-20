@@ -87,7 +87,7 @@ class Localizer {
 	/**
 	 * @since 3.0
 	 */
-	public function hasLocalTimeOffsetPreference( ?User $user = null ): bool {
+	public function hasLocalTimeOffsetPreference( ?User $user = null ): ?bool {
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
