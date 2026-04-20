@@ -167,7 +167,8 @@ class SchemaContentHandler extends JsonContentHandler {
 			} elseif ( is_string( $error ) ) {
 				$status->fatal( $error );
 			} else {
-				$status->fatal( 'smw-schema-error-unknown' );
+				// @phan-suppress-next-line PhanParamTooFewUnpack
+				$status->fatal( ...$error );
 			}
 		}
 
