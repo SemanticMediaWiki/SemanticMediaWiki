@@ -20,11 +20,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class EventListenerRegistry implements EventListenerCollection {
 
 	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-
-	/**
 	 * @since 2.2
 	 */
 	public function __construct( private readonly EventListenerCollection $eventListenerCollection ) {
@@ -88,8 +83,6 @@ class EventListenerRegistry implements EventListenerCollection {
 	}
 
 	private function addListenersToCollection(): EventListenerCollection {
-		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
-
 		$this->eventListenerCollection->registerCallback(
 			'exporter.reset', static function (): void {
 				Exporter::getInstance()->clear();

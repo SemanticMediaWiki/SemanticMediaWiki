@@ -20,8 +20,6 @@ class ChangeRecord implements Iterator, SeekableIterator {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $container
 	 */
 	public function __construct( array $container = [] ) {
 		$this->container = $container;
@@ -29,15 +27,11 @@ class ChangeRecord implements Iterator, SeekableIterator {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param mixed $key
-	 *
-	 * @return bool
 	 */
-	public function has( $key ): bool {
+	public function has( mixed $key ): bool {
 		try {
 			$this->seek( $key );
-		} catch ( OutOfBoundsException $e ) {
+		} catch ( OutOfBoundsException ) {
 			return false;
 		}
 
@@ -47,15 +41,12 @@ class ChangeRecord implements Iterator, SeekableIterator {
 	/**
 	 * @since 3.2
 	 *
-	 * @param mixed $key
-	 *
-	 * @return mixed
 	 * @throws RuntimeException
 	 */
-	public function get( $key ) {
+	public function get( mixed $key ): mixed {
 		try {
 			$this->seek( $key );
-		} catch ( OutOfBoundsException $e ) {
+		} catch ( OutOfBoundsException ) {
 			throw new RuntimeException( "There is no `$key` key available!" );
 		}
 

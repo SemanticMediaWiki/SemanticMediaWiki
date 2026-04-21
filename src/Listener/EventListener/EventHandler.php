@@ -3,6 +3,7 @@
 namespace SMW\Listener\EventListener;
 
 use Closure;
+use Onoi\EventDispatcher\DispatchContext;
 use Onoi\EventDispatcher\EventDispatcher;
 use Onoi\EventDispatcher\EventDispatcherFactory;
 
@@ -24,8 +25,6 @@ class EventHandler {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return self
 	 */
 	public static function getInstance(): EventHandler {
 		if ( self::$instance === null ) {
@@ -44,8 +43,6 @@ class EventHandler {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return EventDispatcher
 	 */
 	public function getEventDispatcher(): EventDispatcher {
 		return $this->eventDispatcher;
@@ -53,20 +50,15 @@ class EventHandler {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return DispatchContext
 	 */
-	public function newDispatchContext() {
+	public function newDispatchContext(): DispatchContext {
 		return EventDispatcherFactory::getInstance()->newDispatchContext();
 	}
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param string $event
-	 * @param Closure $callback
 	 */
-	public function addCallbackListener( $event, Closure $callback ): void {
+	public function addCallbackListener( string $event, Closure $callback ): void {
 		$listener = EventDispatcherFactory::getInstance()->newGenericCallbackEventListener();
 		$listener->registerCallback( $callback );
 
