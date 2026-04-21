@@ -54,8 +54,6 @@ class JsonContentsFileReader {
 
 	/**
 	 * @since 1.2.0
-	 *
-	 * @return int
 	 */
 	public function getFileModificationTime( string $languageCode ): int|false {
 		return filemtime( $this->getLanguageFile( $languageCode ) );
@@ -63,17 +61,13 @@ class JsonContentsFileReader {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $languageCode
-	 *
-	 * @return bool
 	 */
 	public function canReadByLanguageCode( string $languageCode ): bool {
 		$canReadByLanguageCode = '';
 
 		try {
 			$canReadByLanguageCode = $this->getLanguageFile( $languageCode );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			$canReadByLanguageCode = '';
 		}
 
@@ -82,11 +76,8 @@ class JsonContentsFileReader {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $languageCode
-	 * @param array $contents
 	 */
-	public function writeByLanguageCode( $languageCode, $contents ): void {
+	public function writeByLanguageCode( string $languageCode, array $contents ): void {
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		file_put_contents(
@@ -98,13 +89,9 @@ class JsonContentsFileReader {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $languageCode
-	 * @param bool $readFromFile
-	 *
-	 * @return array
 	 * @throws RuntimeException
 	 */
-	public function readByLanguageCode( $languageCode, $readFromFile = false ) {
+	public function readByLanguageCode( string $languageCode, bool $readFromFile = false ): array {
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		if ( !$readFromFile && isset( self::$contents[$languageCode] ) ) {
