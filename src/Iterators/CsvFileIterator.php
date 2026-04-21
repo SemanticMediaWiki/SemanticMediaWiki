@@ -30,10 +30,10 @@ class CsvFileIterator implements Iterator, Countable {
 	 */
 	public function __construct(
 		string $file,
-		private $parseHeader = false,
-		private $delimiter = ",
+		private bool $parseHeader = false,
+		private string $delimiter = ",
 		",
-		private $length = 8000,
+		private int $length = 8000,
 	) {
 		try {
 			$this->file = new SplFileObject( $file, 'r' );
