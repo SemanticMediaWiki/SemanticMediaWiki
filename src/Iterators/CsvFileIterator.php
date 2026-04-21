@@ -19,7 +19,7 @@ class CsvFileIterator implements Iterator, Countable {
 
 	private ?SplFileObject $file = null;
 
-	private ?array $header = [];
+	private array|false|null $header = [];
 
 	private int $key = 0;
 
@@ -65,6 +65,9 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @since 3.0
 	 */
 	public function getHeader(): array {
+		if ( !is_array( $this->header ) ) {
+			return [];
+		}
 		return $this->header;
 	}
 
