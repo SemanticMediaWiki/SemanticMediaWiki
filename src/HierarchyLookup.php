@@ -178,7 +178,7 @@ class HierarchyLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @return WikiPage[]|array|Iterator
+	 * @return WikiPage[]|Iterator
 	 */
 	public function findNearbySuperCategories( WikiPage $category ): array|Iterator {
 		if ( $this->subcategoryDepth < 1 ) {
@@ -196,7 +196,7 @@ class HierarchyLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return Property[]|WikiPage[]|array
+	 * @return Property[]|WikiPage[]
 	 */
 	public function getConsecutiveHierarchyList(
 		Property|WikiPage $id,
