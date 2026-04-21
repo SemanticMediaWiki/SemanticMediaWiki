@@ -19,7 +19,7 @@ class CsvFileIterator implements Iterator, Countable {
 
 	private ?SplFileObject $file = null;
 
-	private array|false $header = [];
+	private ?array $header = [];
 
 	private int $key = 0;
 
@@ -64,7 +64,7 @@ class CsvFileIterator implements Iterator, Countable {
 	/**
 	 * @since 3.0
 	 */
-	public function getHeader(): array|false {
+	public function getHeader(): array {
 		return $this->header;
 	}
 
@@ -117,11 +117,11 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
+	 * @suppress PhanParamSignatureMismatchInternal
 	 */
 	#[ReturnTypeWillChange]
-	public function next(): void {
-		$this->file->next();
-		$this->key++;
+	public function next(): bool {
+		return !$this->file->eof();
 	}
 
 	/**
@@ -132,7 +132,11 @@ class CsvFileIterator implements Iterator, Countable {
 	 * {@inheritDoc}
 	 */
 	public function valid(): bool {
-		return !$this->file->eof();
+		if ( $this->next() ) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

@@ -19,7 +19,7 @@ trait SeekableIteratorTrait {
 
 	private array $container = [];
 
-	private int $position = 0;
+	private int|string|null $position = 0;
 
 	/**
 	 * @var int
