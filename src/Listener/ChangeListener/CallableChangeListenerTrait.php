@@ -14,15 +14,9 @@ trait CallableChangeListenerTrait {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var
-	 */
-	private $changeListeners = [];
+	private array $changeListeners = [];
 
-	/**
-	 * @var
-	 */
-	private $attrs = [];
+	private array $attrs = [];
 
 	/**
 	 * @since 3.2
@@ -34,8 +28,6 @@ trait CallableChangeListenerTrait {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $attrs
 	 */
 	public function setAttrs( array $attrs ): void {
 		$this->attrs = $attrs;
@@ -43,10 +35,6 @@ trait CallableChangeListenerTrait {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $key
-	 *
-	 * @return bool
 	 */
 	public function canTrigger( string $key ): bool {
 		return isset( $this->changeListeners[$key] );
@@ -54,8 +42,6 @@ trait CallableChangeListenerTrait {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $key
 	 */
 	public function trigger( string $key ): void {
 		if ( !isset( $this->changeListeners[$key] ) ) {

@@ -10,10 +10,7 @@ namespace SMW\Listener\ChangeListener;
  */
 trait ChangeListenerAwareTrait {
 
-	/**
-	 * @var array
-	 */
-	private static $changeListeners = [];
+	private static array $changeListeners = [];
 
 	/**
 	 * @since 3.2
@@ -24,8 +21,6 @@ trait ChangeListenerAwareTrait {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param ChangeListener $changeListener
 	 */
 	public function registerChangeListener( ChangeListener $changeListener ): void {
 		self::$changeListeners[spl_object_hash( $changeListener )] = $changeListener;
@@ -33,8 +28,6 @@ trait ChangeListenerAwareTrait {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param ChangeListener[]|[]
 	 */
 	public function getChangeListeners(): array {
 		return self::$changeListeners;

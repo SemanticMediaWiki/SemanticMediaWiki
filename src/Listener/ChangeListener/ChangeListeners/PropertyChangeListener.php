@@ -21,14 +21,8 @@ class PropertyChangeListener implements ChangeListener {
 	use CallableChangeListenerTrait;
 	use HookDispatcherAwareTrait;
 
-	/**
-	 * @var
-	 */
 	private array $propertyIdKeyMap = [];
 
-	/**
-	 * @var
-	 */
 	private array $changes = [];
 
 	private bool $initListeners = false;
@@ -43,7 +37,7 @@ class PropertyChangeListener implements ChangeListener {
 	 * @since 3.2
 	 */
 	public function loadListeners(): void {
-		if ( $this->initListeners === true ) {
+		if ( $this->initListeners ) {
 			return;
 		}
 
@@ -53,9 +47,6 @@ class PropertyChangeListener implements ChangeListener {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Property $property
-	 * @param callable $callback
 	 */
 	public function addListenerCallback( Property $property, callable $callback ): void {
 		$key = $property->getKey();
@@ -76,13 +67,10 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 *
-	 * @param int $pid
-	 * @param array $record
-	 *
 	 * @throws RuntimeException
 	 */
 	public function recordChange( int $pid, array $record ): void {
-		if ( $this->initListeners === false ) {
+		if ( !$this->initListeners ) {
 			throw new RuntimeException(
 				"Hook wasn't run, possible listeners weren't registered from the available hook!"
 			);
