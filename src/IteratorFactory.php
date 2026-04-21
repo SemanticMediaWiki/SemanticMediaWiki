@@ -20,43 +20,35 @@ class IteratorFactory {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param ResultWrapper|Iterator|array $res
-	 *
-	 * @return ResultIterator
 	 */
-	public function newResultIterator( $res ): ResultIterator {
+	public function newResultIterator(
+		ResultWrapper|Iterator|array $res
+	): ResultIterator {
 		return new ResultIterator( $res );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Iterator/array $iterable
-	 * @param callable $callback
-	 *
-	 * @return MappingIterator
 	 */
-	public function newMappingIterator( $iterable, callable $callback ): MappingIterator {
+	public function newMappingIterator(
+		ResultIterator|Iterator|array $iterable,
+		callable $callback
+	): MappingIterator {
 		return new MappingIterator( $iterable, $callback );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Iterator|array $iterable
-	 * @param int $chunkSize
-	 *
-	 * @return ChunkedIterator
 	 */
-	public function newChunkedIterator( $iterable, $chunkSize = 500 ): ChunkedIterator {
+	public function newChunkedIterator(
+		ResultIterator|Iterator|array $iterable,
+		int $chunkSize = 500
+	): ChunkedIterator {
 		return new ChunkedIterator( $iterable, $chunkSize );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return AppendIterator
 	 */
 	public function newAppendIterator(): AppendIterator {
 		return new AppendIterator();
@@ -64,15 +56,13 @@ class IteratorFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $file
-	 * @param bool $parseHeader
-	 * @param string $delimiter
-	 * @param int $length
-	 *
-	 * @return CsvFileIterator
 	 */
-	public function newCsvFileIterator( $file, $parseHeader = false, $delimiter = "\t", $length = 8000 ): CsvFileIterator {
+	public function newCsvFileIterator(
+		string $file,
+		bool $parseHeader = false,
+		string $delimiter = "\t",
+		int $length = 8000
+	): CsvFileIterator {
 		return new CsvFileIterator( $file, $parseHeader, $delimiter, $length );
 	}
 
