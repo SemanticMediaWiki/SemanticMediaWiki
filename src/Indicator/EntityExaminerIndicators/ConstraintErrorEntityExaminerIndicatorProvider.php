@@ -24,22 +24,13 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	const LOOKUP_LIMIT = 20;
 
-	/**
-	 * @var bool
-	 */
-	private $checkConstraintErrors = true;
+	private bool $checkConstraintErrors = true;
 
-	/**
-	 * @var
-	 */
-	protected $indicators = [];
+	protected array $indicators = [];
 
 	private string $severityType = '';
 
-	/**
-	 * @var string
-	 */
-	private $languageCode = '';
+	private mixed $languageCode = '';
 
 	private string $errorTitle;
 
@@ -56,10 +47,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $severityType
-	 *
-	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -67,8 +54,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return 'smw-entity-examiner-deferred-constraint-error';
@@ -76,20 +61,13 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param bool $checkConstraintErrors
 	 */
-	public function setConstraintErrorCheck( $checkConstraintErrors ): void {
+	public function setConstraintErrorCheck( bool $checkConstraintErrors ): void {
 		$this->checkConstraintErrors = $checkConstraintErrors;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
 	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkConstraintErrors ) {
@@ -101,8 +79,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getIndicators(): array {
 		return $this->indicators;
@@ -110,8 +86,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getModules(): array {
 		return [];
@@ -119,8 +93,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
@@ -236,7 +208,8 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	private function findErrors( $subject ): array {
 		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
 
-		if ( ( $errors = $this->entityCache->fetch( $key ) ) !== false ) {
+		$errors = $this->entityCache->fetch( $key );
+		if ( $errors !== false ) {
 			return $this->decodeErrors( $errors );
 		}
 
@@ -270,9 +243,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		return $this->decodeErrors( $errors );
 	}
 
-	/**
-	 * @return mixed[]
-	 */
 	private function decodeErrors( $errors ): array {
 		if ( $errors === 'null' ) {
 			return [];
@@ -280,7 +250,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 		$messages = [];
 
-		foreach ( $errors as $error ) {
+		foreach ( (array)$errors as $error ) {
 			$messages[] = Message::decode( $error, Message::PARSE, $this->languageCode );
 		}
 
