@@ -249,7 +249,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 				return '';
 			}
 
-			public function getInlineStyle() {
+			public function getInlineStyle(): string {
 				return '';
 			}
 
