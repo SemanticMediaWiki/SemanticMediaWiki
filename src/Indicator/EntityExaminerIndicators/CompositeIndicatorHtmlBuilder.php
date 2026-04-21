@@ -80,7 +80,7 @@ class CompositeIndicatorHtmlBuilder {
 			}
 
 			if ( $indicatorProvider instanceof DeferrableIndicatorProvider ) {
-				$options['has_deferred'] = $indicatorProvider->isDeferredMode() === false;
+				$options['has_deferred'] = !( $indicatorProvider->isDeferredMode() );
 
 				if ( $indicatorProvider->isDeferredMode() ) {
 					$options['is_placeholder'] = false;

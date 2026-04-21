@@ -26,17 +26,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	use MessageLocalizerTrait;
 	use RevisionGuardAwareTrait;
 
-	/**
-	 * @var
-	 */
 	private array $indicators = [];
 
 	private string $severityType = '';
 
-	/**
-	 * @var string
-	 */
-	private $languageCode = '';
+	private mixed $languageCode = '';
 
 	private bool $isDeferredMode = false;
 
@@ -51,10 +45,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	/**
 	 * @see PermissionAware::hasPermission
 	 * @since 3.2
-	 *
-	 * @param PermissionExaminer $permissionExaminer
-	 *
-	 * @return bool
 	 */
 	public function hasPermission( PermissionExaminer $permissionExaminer ): bool {
 		return $permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH );
@@ -62,8 +52,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param bool $isDeferredMode
 	 */
 	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
@@ -71,8 +59,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
@@ -80,10 +66,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $severityType
-	 *
-	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -91,8 +73,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return 'smw-entity-examiner-associated-revision-mismatch';
@@ -100,11 +80,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
 	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->isDeferredMode ) {
@@ -118,8 +93,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getIndicators(): array {
 		return $this->indicators;
@@ -127,8 +100,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getModules(): array {
 		return [];
@@ -136,8 +107,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getInlineStyle(): string {
 		return '';
@@ -223,7 +192,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		);
 
 		$content .= $this->templateEngine->code( 'text_template' );
-	// $content .= $this->templateEngine->code( 'line_template' );
+		// $content .= $this->templateEngine->code( 'line_template' );
 		$content .= $this->templateEngine->code( 'compare_list_template' );
 		$content .= $this->templateEngine->code( 'line_template' );
 		$content .= $this->templateEngine->code( 'bottom_comment_template' );
