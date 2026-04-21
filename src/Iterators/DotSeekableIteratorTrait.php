@@ -19,10 +19,7 @@ trait DotSeekableIteratorTrait {
 
 	use SeekableIteratorTrait;
 
-	/**
-	 * @var
-	 */
-	private $seekable = [];
+	private array $seekable = [];
 
 	/**
 	 * @see SeekableIterator::seek

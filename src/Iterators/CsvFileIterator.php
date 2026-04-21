@@ -19,45 +19,27 @@ class CsvFileIterator implements Iterator, Countable {
 
 	private ?SplFileObject $file = null;
 
-	/**
-	 * @var Resource
-	 */
-	private $handle;
-
-	/**
-	 * @var
-	 */
-	private $header = [];
+	private array $header = [];
 
 	private int $key = 0;
 
-	/**
-	 * @var bool
-	 */
-	private $count = false;
+	private int $count = 0;
 
 	/**
 	 * @since 3.0
 	 */
 	public function __construct(
 		string $file,
-		private $parseHeader = false,
-		private $delimiter = ",
+		private bool $parseHeader = false,
+		private string $delimiter = ",
 		",
-		private $length = 8000,
+		private int $length = 8000,
 	) {
 		try {
 			$this->file = new SplFileObject( $file, 'r' );
-		} catch ( RuntimeException $e ) {
+		} catch ( RuntimeException ) {
 			throw new FileNotFoundException( 'File "' . $file . '" is not accessible.' );
 		}
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function __destruct() {
-		$this->handle = null;
 	}
 
 	/**
@@ -81,8 +63,6 @@ class CsvFileIterator implements Iterator, Countable {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getHeader(): array {
 		return $this->header;
@@ -111,7 +91,8 @@ class CsvFileIterator implements Iterator, Countable {
 	public function current() {
 		// First iteration to match the header
 		if ( $this->parseHeader && $this->key == 0 ) {
-			$this->header = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
+			$header = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
+			$this->header = is_array( $header ) ? $header : [];
 		}
 
 		$currentElement = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
@@ -137,6 +118,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
+	 * @suppress PhanParamSignatureMismatchInternal
 	 */
 	#[ReturnTypeWillChange]
 	public function next(): bool {

@@ -18,10 +18,7 @@ use Wikimedia\Rdbms\ResultWrapper;
  */
 class ResultIterator implements Iterator, Countable, SeekableIterator {
 
-	/**
-	 * @var ResultWrapper
-	 */
-	public $res;
+	public ResultWrapper|Iterator|array $res;
 
 	/**
 	 * @var int
@@ -40,10 +37,8 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Iterator|array $res
 	 */
-	public function __construct( $res ) {
+	public function __construct( mixed $res ) {
 		if ( !$res instanceof Iterator && !is_array( $res ) ) {
 			throw new RuntimeException( "Expected an Iterator or array!" );
 		}
