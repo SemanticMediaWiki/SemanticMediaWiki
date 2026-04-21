@@ -7,8 +7,6 @@ use Countable;
 use Iterator;
 use IteratorIterator;
 use ReturnTypeWillChange;
-use RuntimeException;
-use Traversable;
 
 /**
  * This iterator is expected to be called in combination with another iterator
@@ -27,24 +25,14 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 */
 	private $callback;
 
-	/**
-	 * @var int
-	 */
-	private $count = 1;
+	private int $count = 1;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Iterator|array $iterable
-	 * @param callable $callback
 	 */
-	public function __construct( Traversable|array $iterable, callable $callback ) {
+	public function __construct( ResultIterator|Iterator|array $iterable, callable $callback ) {
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
-		}
-
-		if ( !$iterable instanceof Iterator ) {
-			throw new RuntimeException( "MappingIterator expected an Iterator" );
 		}
 
 		if ( $iterable instanceof Countable ) {

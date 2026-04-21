@@ -19,22 +19,11 @@ class CsvFileIterator implements Iterator, Countable {
 
 	private ?SplFileObject $file = null;
 
-	/**
-	 * @var Resource
-	 */
-	private $handle;
-
-	/**
-	 * @var
-	 */
-	private $header = [];
+	private array|false $header = [];
 
 	private int $key = 0;
 
-	/**
-	 * @var bool
-	 */
-	private $count = false;
+	private int $count = 0;
 
 	/**
 	 * @since 3.0
@@ -48,16 +37,9 @@ class CsvFileIterator implements Iterator, Countable {
 	) {
 		try {
 			$this->file = new SplFileObject( $file, 'r' );
-		} catch ( RuntimeException $e ) {
+		} catch ( RuntimeException ) {
 			throw new FileNotFoundException( 'File "' . $file . '" is not accessible.' );
 		}
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function __destruct() {
-		$this->handle = null;
 	}
 
 	/**
@@ -81,10 +63,8 @@ class CsvFileIterator implements Iterator, Countable {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getHeader(): array {
+	public function getHeader(): array|false {
 		return $this->header;
 	}
 
@@ -139,8 +119,9 @@ class CsvFileIterator implements Iterator, Countable {
 	 * {@inheritDoc}
 	 */
 	#[ReturnTypeWillChange]
-	public function next(): bool {
-		return !$this->file->eof();
+	public function next(): void {
+		$this->file->next();
+		$this->key++;
 	}
 
 	/**
@@ -151,11 +132,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 * {@inheritDoc}
 	 */
 	public function valid(): bool {
-		if ( $this->next() ) {
-			return true;
-		}
-
-		return false;
+		return !$this->file->eof();
 	}
 
 }
