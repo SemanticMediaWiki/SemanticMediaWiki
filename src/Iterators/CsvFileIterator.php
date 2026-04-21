@@ -19,7 +19,7 @@ class CsvFileIterator implements Iterator, Countable {
 
 	private ?SplFileObject $file = null;
 
-	private array|false|null $header = [];
+	private array $header = [];
 
 	private int $key = 0;
 
@@ -94,7 +94,8 @@ class CsvFileIterator implements Iterator, Countable {
 	public function current() {
 		// First iteration to match the header
 		if ( $this->parseHeader && $this->key == 0 ) {
-			$this->header = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
+			$header = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
+			$this->header = is_array( $header ) ? $header : [];
 		}
 
 		$currentElement = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
