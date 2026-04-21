@@ -3,6 +3,7 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use Iterator;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
@@ -147,8 +148,10 @@ class HierarchyLookup {
 
 	/**
 	 * @since 2.3
+	 *
+	 * @return WikiPage[]|array|Iterator|false
 	 */
-	public function findSubpropertyList( Property $property ): array|false {
+	public function findSubpropertyList( Property $property ): array|Iterator|false {
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
 		}
@@ -164,7 +167,7 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 */
-	public function findSubcategoryList( WikiPage $category ): array {
+	public function findSubcategoryList( WikiPage $category ): array|Iterator {
 		if ( $this->subcategoryDepth < 1 ) {
 			return [];
 		}
@@ -174,8 +177,10 @@ class HierarchyLookup {
 
 	/**
 	 * @since 3.1
+	 *
+	 * @return WikiPage[]|array|Iterator
 	 */
-	public function findNearbySuperCategories( WikiPage $category ): array {
+	public function findNearbySuperCategories( WikiPage $category ): array|Iterator {
 		if ( $this->subcategoryDepth < 1 ) {
 			return [];
 		}
@@ -190,6 +195,8 @@ class HierarchyLookup {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return Property[]|WikiPage[]|array
 	 */
 	public function getConsecutiveHierarchyList(
 		Property|WikiPage $id,
@@ -334,7 +341,7 @@ class HierarchyLookup {
 		}
 	}
 
-	private function lookup( string|Property $property, $key, WikiPage $subject, RequestOptions $requestOptions ): array {
+	private function lookup( string|Property $property, $key, WikiPage $subject, RequestOptions $requestOptions ): array|Iterator {
 		if ( is_string( $property ) ) {
 			$property = new Property( $property );
 		}
