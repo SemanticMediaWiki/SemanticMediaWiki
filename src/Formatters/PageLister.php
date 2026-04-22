@@ -194,9 +194,9 @@ class PageLister {
 	public static function getColumnList(
 		int $start,
 		int $end,
-		array $diWikiPages,
+		array|Iterator $diWikiPages,
 		?Property $diProperty,
-		?callback $moreCallback = null
+		?callable $moreCallback = null
 	): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
