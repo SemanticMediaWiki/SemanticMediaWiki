@@ -13,8 +13,8 @@ use SMW\Utils\File;
  */
 class FileSystemSmwJsonRepo implements SmwJsonRepo {
 
-	private /* FileFetcher */ FileFetcher $fileFetcher;
-	private /* File */ File $file;
+	private FileFetcher $fileFetcher;
+	private File $file;
 
 	public function __construct( FileFetcher $fileFetcher, File $file ) {
 		$this->fileFetcher = $fileFetcher;
@@ -26,7 +26,7 @@ class FileSystemSmwJsonRepo implements SmwJsonRepo {
 
 		try {
 			$fileContents = $this->fileFetcher->fetchFile( $filePath );
-		} catch ( FileFetchingException $ex ) {
+		} catch ( FileFetchingException ) {
 			return null;
 		}
 
