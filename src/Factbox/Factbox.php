@@ -30,25 +30,13 @@ class Factbox {
 
 	private DataValueFactory $dataValueFactory;
 
-	/**
-	 * @var int
-	 */
-	private $featureSet = 0;
+	private int $featureSet = 0;
 
-	/**
-	 * @var bool
-	 */
-	protected $isVisible = false;
+	protected bool $isVisible = false;
 
-	/**
-	 * @var string
-	 */
-	protected $content = null;
+	protected ?string $content = null;
 
-	/**
-	 * @var array
-	 */
-	private $attachments = [];
+	private array $attachments = [];
 
 	private ?CheckMagicWords $checkMagicWords = null;
 
@@ -68,17 +56,13 @@ class Factbox {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ): void {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param CheckMagicWords $checkMagicWords
 	 */
 	public function setCheckMagicWords( CheckMagicWords $checkMagicWords ): void {
 		$this->checkMagicWords = $checkMagicWords;
@@ -89,8 +73,6 @@ class Factbox {
 	 * updating the ParserOutput accordingly
 	 *
 	 * @since 1.9
-	 *
-	 * @return Factbox
 	 */
 	public function doBuild(): static {
 		$this->content = $this->fetchContent(
@@ -118,8 +100,6 @@ class Factbox {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return string|null
 	 */
 	public function getContent(): ?string {
 		return $this->content;
@@ -127,8 +107,6 @@ class Factbox {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $attachments
 	 */
 	public function setAttachments( array $attachments ): void {
 		$this->attachments = $attachments;
@@ -225,10 +203,8 @@ class Factbox {
 	 * Returns magic words attached to the ParserOutput object
 	 *
 	 * @since 1.9
-	 *
-	 * @return string|null
 	 */
-	protected function getMagicWords() {
+	protected function getMagicWords(): int|string|null {
 		if ( $this->checkMagicWords === null ) {
 			return SMW_FACTBOX_HIDDEN;
 		}
@@ -329,11 +305,11 @@ class Factbox {
 			new Property( '_SKEY' )
 		);
 
-		return (bool)$semanticData->isEmpty();
+		return $semanticData->isEmpty();
 	}
 
-	private function hasFeature( ?int $feature ): bool {
-		return ( (int)$this->featureSet & $feature ) != 0;
+	private function hasFeature( int $feature ): bool {
+		return ( $this->featureSet & $feature ) != 0;
 	}
 
 	private function getHeaderData( WikiPage $subject ): array {
@@ -358,7 +334,7 @@ class Factbox {
 	private function getPropertiesData( SemanticData $semanticData ): array {
 		$data = [];
 		$properties = $semanticData->getProperties();
-		if ( empty( $properties ) ) {
+		if ( $properties === [] ) {
 			/**
 			 * @todo: Should we show an empty state if there are no data?
 			 * We can do it by setting 'html-section' with the HTML of a notice box
@@ -415,7 +391,7 @@ class Factbox {
 				}
 
 				$outputFormat = $dataValue->getOutputFormat();
-				$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+				$dataValue->setOutputFormat( $outputFormat ?: 'LOCL' );
 				$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
 
 				$list[] = Html::rawElement(
