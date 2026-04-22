@@ -85,7 +85,7 @@ class Highlighter {
 	/**
 	 * @since 1.9
 	 */
-	public static function factory( string|int $type, ?string $language = null ): Highlighter {
+	public static function factory( string|int|null $type, ?string $language = null ): Highlighter {
 		if ( $type === '' || !is_int( $type ) ) {
 			$type = self::getTypeId( $type );
 		}
