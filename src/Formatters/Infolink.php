@@ -51,62 +51,52 @@ class Infolink {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isRestricted
 	 */
-	public function isRestricted( $isRestricted ): void {
-		$this->isRestricted = (bool)$isRestricted;
+	public function isRestricted( bool $isRestricted ): void {
+		$this->isRestricted = $isRestricted;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isCompactLink
 	 */
-	public function setCompactLink( $isCompactLink = true ): void {
-		$this->isCompactLink = (bool)$isCompactLink;
+	public function setCompactLink( bool $isCompactLink = true ): void {
+		$this->isCompactLink = $isCompactLink;
 	}
 
 	/**
 	 * Create a new link to an internal page $target.
 	 * All parameters are mere strings as used by wiki users.
-	 *
-	 * @param string $caption The label for the link.
-	 * @param string $target The actual link target.
-	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
-	 * @param array $params Array of parameters, format $name => $value, if any.
-	 *
-	 * @return Infolink
 	 */
-	public static function newInternalLink( $caption, $target, $style = false, array $params = [] ): Infolink {
+	public static function newInternalLink(
+		string $caption,
+		string $target,
+		mixed $style = false,
+		array $params = []
+	): Infolink {
 		return new Infolink( true, $caption, $target, $style, $params );
 	}
 
 	/**
 	 * Create a new link to an external location $url.
-	 *
-	 * @param string $caption The label for the link.
-	 * @param string $url The actual link target.
-	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
-	 * @param array $params Array of parameters, format $name => $value, if any.
-	 *
-	 * @return Infolink
 	 */
-	public static function newExternalLink( $caption, $url, $style = false, array $params = [] ): Infolink {
+	public static function newExternalLink(
+		string $caption,
+		string $url,
+		mixed $style = false,
+		array $params = []
+	): Infolink {
 		return new Infolink( false, $caption, $url, $style, $params );
 	}
 
 	/**
 	 * Static function to construct links to property searches.
-	 *
-	 * @param string $caption The label for the link.
-	 * @param string $propertyName
-	 * @param string $propertyValue
-	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
-	 *
-	 * @return Infolink
 	 */
-	public static function newPropertySearchLink( $caption, string $propertyName, string $propertyValue, $style = 'smwsearch' ): Infolink {
+	public static function newPropertySearchLink(
+		string $caption,
+		string $propertyName,
+		string $propertyValue,
+		mixed $style = 'smwsearch'
+	): Infolink {
 		$infolink = new Infolink(
 			true,
 			$caption,
@@ -126,15 +116,13 @@ class Infolink {
 
 	/**
 	 * Static function to construct links to inverse property searches.
-	 *
-	 * @param string $caption The label for the link.
-	 * @param string $subject
-	 * @param string $propertyName
-	 * @param mixed $style CSS class of a span to embed the link into, or false if no extra style is required.
-	 *
-	 * @return Infolink
 	 */
-	public static function newInversePropertySearchLink( $caption, string $subject, string $propertyName, $style = false ): Infolink {
+	public static function newInversePropertySearchLink(
+		string $caption,
+		string $subject,
+		string $propertyName,
+		mixed $style = false
+	): Infolink {
 		return new Infolink(
 			true,
 			$caption,
@@ -146,14 +134,12 @@ class Infolink {
 
 	/**
 	 * Static function to construct links to the browsing special.
-	 *
-	 * @param string $caption The label for the link.
-	 * @param string $titleText
-	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
-	 *
-	 * @return Infolink
 	 */
-	public static function newBrowsingLink( $caption, string $titleText, $style = 'smwbrowse' ): Infolink {
+	public static function newBrowsingLink(
+		string $caption,
+		string $titleText,
+		mixed $style = 'smwbrowse'
+	): Infolink {
 		return new Infolink(
 			true,
 			$caption,
@@ -165,11 +151,8 @@ class Infolink {
 
 	/**
 	 * Set (or add) parameter values for an existing link.
-	 *
-	 * @param mixed $value
-	 * @param mixed $key
 	 */
-	public function setParameter( $value, $key = false ): void {
+	public function setParameter( mixed $value, mixed $key = false ): void {
 		if ( $key === false ) {
 			$this->mParams[] = $value;
 		} else {
@@ -207,8 +190,6 @@ class Infolink {
 	 * Modify link attributes
 	 *
 	 * @since 3.0
-	 *
-	 * @param array $linkAttributes
 	 */
 	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
@@ -315,19 +296,15 @@ class Infolink {
 
 	/**
 	 * Return hyperlink for this infolink in HTML format.
-	 *
-	 * @return string
 	 */
-	public function getHTML( $linker = null ) {
+	public function getHTML( ?Linker $linker = null ): string {
 		return $this->getText( SMW_OUTPUT_HTML, $linker );
 	}
 
 	/**
 	 * Return hyperlink for this infolink in wiki format.
-	 *
-	 * @return string
 	 */
-	public function getWikiText( $linker = null ) {
+	public function getWikiText( ?Linker $linker = null ): string {
 		return $this->getText( SMW_OUTPUT_WIKI, $linker );
 	}
 
@@ -335,10 +312,8 @@ class Infolink {
 	 * Return a fully qualified URL that points to the link target (whether internal or not).
 	 * This function might be used when the URL is needed outside normal links, e.g. in the HTML
 	 * header or in some metadata file. For making normal links, getText() should be used.
-	 *
-	 * @return string
 	 */
-	public function getURL() {
+	public function getURL(): string {
 		$query = self::encodeParameters( $this->mParams, $this->isCompactLink );
 
 		if ( $this->isCompactLink && $query !== '' ) {
@@ -361,10 +336,8 @@ class Infolink {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getLocalURL() {
+	public function getLocalURL(): string {
 		$query = self::encodeParameters( $this->mParams, $this->isCompactLink );
 
 		if ( $this->isCompactLink && $query !== '' ) {
@@ -389,10 +362,8 @@ class Infolink {
 	 * Return a Linker object, using the parameter $linker if not null, and creatng a new one
 	 * otherwise. $linker is usually a user skin object, while the fallback linker object is
 	 * not customised to user settings.
-	 *
-	 * @return Linker
 	 */
-	protected function getLinker( &$linker = null ): Linker {
+	protected function getLinker( ?Linker &$linker = null ): Linker {
 		if ( $linker === null ) {
 			$linker = new Linker;
 		}
@@ -412,11 +383,8 @@ class Infolink {
 	 * It is strongly recommended to not create any code that depends on the concrete
 	 * way of how parameters are encoded within this function, and to always use the
 	 * respective encoding/decoding methods instead.
-	 *
-	 * @param array $params
-	 * @param bool $forTitle
 	 */
-	public static function encodeParameters( array $params, $forTitle = true ): string {
+	public static function encodeParameters( array $params, bool $forTitle = true ): string {
 		$result = '';
 
 		if ( $forTitle ) {
@@ -459,7 +427,7 @@ class Infolink {
 
 			foreach ( $params as $name => $value ) {
 				if ( is_string( $name ) && ( $name !== '' ) ) {
-					$value = rawurlencode( $name ?? '' ) . '=' . rawurlencode( $value ?? '' );
+					$value = rawurlencode( $name ) . '=' . rawurlencode( $value );
 
 					if ( $result !== '' ) {
 						$result .= '&';
@@ -541,12 +509,8 @@ class Infolink {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $value
-	 *
-	 * @return string|array
 	 */
-	public static function encodeCompactLink( $value, $compound = false ): array|string {
+	public static function encodeCompactLink( string $value, bool $compound = false ): array|string {
 		// Expect to gain on larger strings and set an identifier to
 		// distinguish between compressed and non compressed
 		if ( mb_strlen( $value ) > 150 ) {
@@ -567,10 +531,6 @@ class Infolink {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $value
-	 *
-	 * @return string
 	 */
 	public static function decodeCompactLink( ?string $value ): string|false|null {
 		if ( !is_string( $value ) || substr( $value, 0, 3 ) !== 'cl:' ) {

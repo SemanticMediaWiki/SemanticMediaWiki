@@ -84,13 +84,8 @@ class Highlighter {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param string|int $type
-	 * @param string|null $language
-	 *
-	 * @return Highlighter
 	 */
-	public static function factory( $type, $language = null ): Highlighter {
+	public static function factory( string|int $type, ?string $language = null ): Highlighter {
 		if ( $type === '' || !is_int( $type ) ) {
 			$type = self::getTypeId( $type );
 		}
@@ -100,13 +95,8 @@ class Highlighter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $text
-	 * @param string|null $type
-	 *
-	 * @return bool
 	 */
-	public static function hasHighlighterClass( $text, $type = null ): bool {
+	public static function hasHighlighterClass( string $text, ?string $type = null ): bool {
 		if ( strpos( $text, 'smw-highlighter' ) === false ) {
 			return false;
 		}
@@ -120,12 +110,8 @@ class Highlighter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public static function decode( $text ): string {
+	public static function decode( string $text ): string {
 		// #2347, '[' is handled by the MediaWiki parser/sanitizer itself
 		return str_replace(
 			[ '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>' ],
@@ -138,10 +124,8 @@ class Highlighter {
 	 * Returns html output
 	 *
 	 * @since 1.9
-	 *
-	 * @return string
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		Outputs::requireStyle( 'ext.smw.styles' );
 		Outputs::requireStyle( 'ext.smw.tooltip.styles' );
 		Outputs::requireResource( 'ext.smw.tooltip' );
@@ -155,10 +139,6 @@ class Highlighter {
 	 * that all data are appropriately escaped.
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $content
-	 *
-	 * @return array
 	 */
 	public function setContent( array $content ): array {
 		/**
@@ -174,12 +154,8 @@ class Highlighter {
 	 * Returns type id
 	 *
 	 * @since 1.9
-	 *
-	 * @param string $type
-	 *
-	 * @return int
 	 */
-	public static function getTypeId( $type ): int {
+	public static function getTypeId( string $type ): int {
 		// TODO: why do we have a htmlspecialchars here?!
 		switch ( strtolower( htmlspecialchars( $type ?? '' ) ) ) {
 			case 'property':
@@ -214,10 +190,8 @@ class Highlighter {
 	 * @see Highlighter::setContent
 	 *
 	 * @since 1.9
-	 *
-	 * @return string
 	 */
-	private function getContainer() {
+	private function getContainer(): string {
 		$captionclass = $this->options['captionclass'];
 
 		// 2.4+ can display context for user-defined properties, here we ensure
@@ -259,7 +233,7 @@ class Highlighter {
 			[
 				'class'        => 'smw-highlighter',
 				'data-type'    => $this->options['type'],
-				'data-content' => isset( $this->options['data-content'] ) ? $this->options['data-content'] : null,
+				'data-content' => $this->options['data-content'] ?? null,
 				'data-state'   => $this->options['state'],
 				'data-title'   => Message::get( $this->options['title'], Message::TEXT, $language ),
 				'title'        => $title
@@ -293,12 +267,8 @@ class Highlighter {
 	 * really make sense just to get some configuration parameters?
 	 *
 	 * @since 1.9
-	 *
-	 * @param string $type
-	 *
-	 * @return array
 	 */
-	private function getTypeConfiguration( $type ): array {
+	private function getTypeConfiguration( string $type ): array {
 		$settings = [];
 		$settings['type'] = $type;
 		$settings['caption'] = '';
@@ -364,14 +334,14 @@ class Highlighter {
 	private function title( $content, string|int $language ): string {
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)
-		$content = $content ?? '';
+		$content ??= '';
 		if ( strpos( $content, '[' ) !== false || strpos( $content, '//' ) !== false ) {
 			$content = Message::get( [ 'smw-parse', $content ], Message::PARSE, $language );
 		}
 
 		return strip_tags(
 			htmlspecialchars_decode(
-				str_replace( [ "[", '&#160;', "&#10;", "\n", "&#39;", "'" ], [ "&#91;", ' ', '', '', '' ], $content ?? '' ),
+				str_replace( [ "[", '&#160;', "&#10;", "\n", "&#39;", "'" ], [ "&#91;", ' ', '', '', '' ], $content ),
 			)
 		);
 	}
