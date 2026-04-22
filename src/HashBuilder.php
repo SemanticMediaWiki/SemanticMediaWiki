@@ -18,10 +18,6 @@ class HashBuilder {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param SemanticData $semanticData
-	 *
-	 * @return string
 	 */
 	public static function createFromSemanticData( SemanticData $semanticData ): string {
 		$hash = [];
@@ -46,13 +42,8 @@ class HashBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string|array $hashableContent
-	 * @param string $prefix
-	 *
-	 * @return string
 	 */
-	public static function createFromContent( $hashableContent, string $prefix = '' ): string {
+	public static function createFromContent( string|array $hashableContent, string $prefix = '' ): string {
 		if ( is_string( $hashableContent ) ) {
 			$hashableContent = [ $hashableContent ];
 		}
@@ -62,11 +53,6 @@ class HashBuilder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $hashableContent
-	 * @param string $prefix
-	 *
-	 * @return string
 	 */
 	public static function createFromArray( array $hashableContent, string $prefix = '' ): string {
 		return $prefix . md5( json_encode( $hashableContent ) );
@@ -74,8 +60,6 @@ class HashBuilder {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return string
 	 */
 	public static function createFromSegments( /* args */ ): string {
 		return implode( '#', func_get_args() );
@@ -83,10 +67,6 @@ class HashBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Title $title
-	 *
-	 * @return string
 	 */
 	public static function getHashIdForTitle( Title $title ): string {
 		return self::createFromSegments(
@@ -99,10 +79,6 @@ class HashBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param WikiPage $dataItem
-	 *
-	 * @return string
 	 */
 	public static function getHashIdForDiWikiPage( WikiPage $dataItem ): string {
 		return self::createFromSegments(
@@ -115,12 +91,8 @@ class HashBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $hash
-	 *
-	 * @return Title|null
 	 */
-	public static function newTitleFromHash( $hash ) {
+	public static function newTitleFromHash( string $hash ): Title {
 		[ $title, $namespace, $interwiki, $fragement ] = explode( '#', $hash, 4 );
 		return Title::makeTitle( $namespace, $title, $fragement, $interwiki );
 	}
@@ -130,12 +102,8 @@ class HashBuilder {
 	 * that the input hash is derived or generated from HashBuilder::getSegmentedHashId
 	 *
 	 * @since 2.1
-	 *
-	 * @param string
-	 *
-	 * @return WikiPage|null
 	 */
-	public static function newDiWikiPageFromHash( $hash ): WikiPage {
+	public static function newDiWikiPageFromHash( string $hash ): WikiPage {
 		[ $title, $namespace, $interwiki, $subobjectName ] = explode( '#', $hash, 4 );
 
 		// A leading underscore is an internal SMW convention to describe predefined
