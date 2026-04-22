@@ -39,8 +39,6 @@ class JsonImportContentsFileDirReader {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -59,7 +57,7 @@ class JsonImportContentsFileDirReader {
 
 			try {
 				$files = $this->getFilesFromLocation( $importFileDir, 'json' );
-			} catch ( RuntimeException $e ) {
+			} catch ( RuntimeException ) {
 				$this->errors[] = $importFileDir . ' is not accessible.';
 				continue;
 			}
