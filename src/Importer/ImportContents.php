@@ -161,7 +161,7 @@ class ImportContents {
 	/**
 	 * @since 2.5
 	 */
-	public function addError( string $error ): void {
+	public function addError( array|string $error ): void {
 		$this->errors[] = $error;
 	}
 
