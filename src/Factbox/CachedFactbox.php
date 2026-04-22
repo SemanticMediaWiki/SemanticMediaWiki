@@ -28,35 +28,17 @@ class CachedFactbox {
 
 	private bool $isCached = false;
 
-	/**
-	 * @var int
-	 */
-	private $featureSet = 0;
+	private int $featureSet = 0;
 
-	/**
-	 * @var int
-	 */
-	private $showFactboxEdit = 0;
+	private int $showFactboxEdit = 0;
 
-	/**
-	 * @var int
-	 */
-	private $showFactbox = 0;
+	private int $showFactbox = 0;
 
-	/**
-	 * @var bool
-	 */
-	private $isEnabled = true;
+	private bool $isEnabled = true;
 
-	/**
-	 * @var int
-	 */
-	private $cacheTTL = 0;
+	private int $cacheTTL = 0;
 
-	/**
-	 * @var int
-	 */
-	private $timestamp;
+	private string $timestamp = '';
 
 	/**
 	 * @since 1.9
@@ -69,8 +51,6 @@ class CachedFactbox {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return bool
 	 */
 	public function isCached(): bool {
 		return $this->isCached;
@@ -78,62 +58,48 @@ class CachedFactbox {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ): void {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $showFactboxEdit
 	 */
-	public function setShowFactboxEdit( $showFactboxEdit ): void {
+	public function setShowFactboxEdit( int $showFactboxEdit ): void {
 		$this->showFactboxEdit = $showFactboxEdit;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $showFactbox
 	 */
-	public function setShowFactbox( $showFactbox ): void {
+	public function setShowFactbox( int $showFactbox ): void {
 		$this->showFactbox = $showFactbox;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ): void {
+	public function setCacheTTL( int $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return bool
 	 */
-	public function isEnabled( $isEnabled ): void {
+	public function isEnabled( bool $isEnabled ): void {
 		$this->isEnabled = $isEnabled;
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return int
 	 */
-	public function getTimestamp() {
+	public function getTimestamp(): string {
 		return $this->timestamp;
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return int
 	 */
 	public static function makeCacheKey( $id ): string {
 		if ( $id instanceof Title ) {
@@ -192,7 +158,7 @@ class CachedFactbox {
 			$content = $this->findContentFromCache( $data );
 		}
 
-		if ( !$isPreview && $this->hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) ) {
+		if ( !$isPreview && $this->hasCachedContent( $subKey, $rev_id, $content, $request ) ) {
 
 			$this->logger->info(
 				[ 'Factbox', 'Using cached factbox', 'rev_id: {rev_id}', '{lang}', 'procTime: {procTime}' ],
@@ -258,12 +224,8 @@ class CachedFactbox {
 	 * or from the Cache
 	 *
 	 * @since 1.9
-	 *
-	 * @param OutputPage $outputPage
-	 *
-	 * @return string
 	 */
-	public function retrieveContent( OutputPage $outputPage ) {
+	public function retrieveContent( OutputPage $outputPage ): string {
 		$text = '';
 		$content = [];
 		$title = $outputPage->getTitle();
@@ -297,7 +259,7 @@ class CachedFactbox {
 			}
 		}
 
-		return $text;
+		return $text ?? '';
 	}
 
 	/**
@@ -339,7 +301,7 @@ class CachedFactbox {
 		return $factbox->tabs( $content, $attachmentContent );
 	}
 
-	private function hasCachedContent( string $subKey, $rev_id, $lang, string|array $content, $request ): bool {
+	private function hasCachedContent( string $subKey, $rev_id, string|array $content, $request ): bool {
 		if ( $request->getVal( 'action' ) === 'edit' ) {
 			$this->isCached = false;
 			return false;
