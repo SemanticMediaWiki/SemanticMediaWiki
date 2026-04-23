@@ -107,8 +107,8 @@ class PageLister {
 	 */
 	public static function getRequestOptions(
 		int $limit,
-		string $from,
-		string $until
+		string|int $from,
+		string|int $until
 	): RequestOptions {
 		$options = new RequestOptions();
 		$options->limit = $limit + 1;
@@ -277,7 +277,7 @@ class PageLister {
 		int $end,
 		array $diWikiPages,
 		?Property $diProperty,
-		?callback $moreCallback = null
+		?callable $moreCallback = null
 	): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
