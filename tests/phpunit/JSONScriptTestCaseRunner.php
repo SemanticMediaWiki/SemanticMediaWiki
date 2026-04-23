@@ -78,11 +78,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 				$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
 			}
 		} finally {
-			try {
-				$this->testEnvironment->tearDown();
-			} finally {
-				parent::tearDown();
-			}
+			parent::tearDown();
 		}
 	}
 
