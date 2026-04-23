@@ -36,8 +36,6 @@ class TurtleSerializer extends Serializer {
 	 */
 	protected array $sparql_namespaces = [];
 
-	protected array $subExpData;
-
 	/**
 	 * @since 1.5.5
 	 */
@@ -208,7 +206,7 @@ class TurtleSerializer extends Serializer {
 		// Called to generate a nested descripion; but Turtle cannot nest non-bnode
 		// descriptions, do this later
 		if ( ( $indent !== '' ) && ( !$bnode ) ) {
-			$this->subexpdata[] = $data;
+			$this->subExpData[] = $data;
 			return;
 		} elseif ( !$bnode ) {
 			$this->post_ns_buffer .= "\n ";
