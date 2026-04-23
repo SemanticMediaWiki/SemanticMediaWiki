@@ -4,7 +4,6 @@ namespace SMW\Formatters;
 
 use Iterator;
 use MediaWiki\Title\Title;
-use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
@@ -53,12 +52,8 @@ class PageLister {
 	 * depends on specified boundaries, limit, and results. The title is
 	 * required to create a link to the right page. The query array gives
 	 * optional further parameters to append to all navigation links.
-	 *
-	 * @param $title Title
-	 * @param $query array that associates parameter names to parameter values
-	 * @return string
 	 */
-	public function getNavigationLinks( Title $title, $query = [] ): string {
+	public function getNavigationLinks( Title $title, array $query = [] ): string {
 		$limitText = Localizer::getInstance()->getUserLanguage()->formatNum( $this->mLimit );
 
 		$resultCount = count( $this->mDiWikiPages );
@@ -99,10 +94,8 @@ class PageLister {
 
 	/**
 	 * Format an HTML link with the given text and parameters.
-	 *
-	 * @return string
 	 */
-	protected function makeSelfLink( Title $title, $linkText, array $parameters ) {
+	protected function makeSelfLink( Title $title, $linkText, array $parameters ): string {
 		return smwfGetLinker()->link( $title, $linkText, [], $parameters );
 	}
 
@@ -111,13 +104,12 @@ class PageLister {
 	 * the given limit, and from or until string. One more result than the
 	 * limit will be created, and the results may have to be reversed in
 	 * order if ascending is set to false in the resulting object.
-	 *
-	 * @param $limit integer
-	 * @param $from string can be empty if no from condition is desired
-	 * @param $until string can be empty if no until condition is desired
-	 * @return RequestOptions
 	 */
-	public static function getRequestOptions( $limit, $from, $until ): RequestOptions {
+	public static function getRequestOptions(
+		int $limit,
+		string $from,
+		string $until
+	): RequestOptions {
 		$options = new RequestOptions();
 		$options->limit = $limit + 1;
 		$options->sort = true;
@@ -140,15 +132,13 @@ class PageLister {
 	 * given description, limit, and from or until string. One more result
 	 * than the limit will be created, and the results may have to be
 	 * reversed in order if $until is nonempty.
-	 *
-	 * @param $description Description main query description
-	 * @param $limit integer
-	 * @param $from string can be empty if no from condition is desired
-	 * @param $until string can be empty if no until condition is desired
-	 *
-	 * @return Query
 	 */
-	public static function getQuery( Description $description, $limit, $from, $until ): Query {
+	public static function getQuery(
+		Description $description,
+		int $limit,
+		string $from,
+		string $until
+	): Query {
 		if ( $from !== '' ) {
 			$diWikiPage = new WikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$fromDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
@@ -176,12 +166,8 @@ class PageLister {
 	/**
 	 * Format a list of data items chunked by letter, either as a
 	 * bullet list or a columnar format, depending on the length.
-	 *
-	 * @param int $cutoff integer, use columns for more results than that
-	 *
-	 * @return string
 	 */
-	public function formatList( $cutoff = 6 ): string {
+	public function formatList( int $cutoff = 6 ): string {
 		$end = count( $this->mDiWikiPages );
 		$start = 0;
 		if ( $end > $this->mLimit ) {
@@ -204,15 +190,14 @@ class PageLister {
 	/**
 	 * Format a list of WikiPage objects chunked by letter in a three-column
 	 * list, ordered vertically.
-	 *
-	 * @param int $start
-	 * @param int $end
-	 * @param WikiPage[] $diWikiPages array of WikiPage
-	 * @param Property[] $diProperty Property that the wikipages are values of, or null
-	 *
-	 * @return string
 	 */
-	public static function getColumnList( $start, $end, $diWikiPages, ?Property $diProperty, $moreCallback = null ): string {
+	public static function getColumnList(
+		int $start,
+		int $end,
+		array|Iterator $diWikiPages,
+		?Property $diProperty,
+		?callable $moreCallback = null
+	): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -286,15 +271,14 @@ class PageLister {
 
 	/**
 	 * Format a list of diWikiPages chunked by letter in a bullet list.
-	 *
-	 * @param int $start
-	 * @param int $end
-	 * @param DataItem[] $diWikiPages array of DataItem
-	 * @param Property $diProperty Property that the wikipages are values of, or null
-	 *
-	 * @return string
 	 */
-	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ): string {
+	public static function getShortList(
+		int $start,
+		int $end,
+		array $diWikiPages,
+		?Property $diProperty,
+		?callback $moreCallback = null
+	): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
