@@ -108,7 +108,7 @@ class ConceptMapper implements DataItemMapper {
 	 * @since 2.4
 	 *
 	 * @param Description $description
-	 * @param string|bool &$exact
+	 * @param bool &$exact
 	 */
 	public function newExpDataFromDescription( Description $description, &$exact ): mixed {
 		if ( ( $description instanceof Conjunction ) || ( $description instanceof Disjunction ) ) {
