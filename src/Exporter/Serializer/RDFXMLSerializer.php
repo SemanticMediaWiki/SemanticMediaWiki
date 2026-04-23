@@ -23,10 +23,8 @@ class RDFXMLSerializer extends Serializer {
 	 * True if the $pre_ns_buffer contains the beginning of a namespace
 	 * declaration block to which further declarations for the current
 	 * context can be appended.
-	 *
-	 * @var bool|null
 	 */
-	protected $namespace_block_started;
+	protected ?bool $namespace_block_started = null;
 
 	/**
 	 * True if the namespaces that are added at the current serialization stage
@@ -35,10 +33,8 @@ class RDFXMLSerializer extends Serializer {
 	 * client (reflected herein by calling flushContent()). Later, namespaces
 	 * can only be added locally to individual elements, thus requiring them to
 	 * be re-added multiple times if used in many elements.
-	 *
-	 * @var bool|null
 	 */
-	protected $namespaces_are_global;
+	protected ?bool $namespaces_are_global = null;
 
 	/**
 	 * {@inheritDoc}
@@ -156,11 +152,8 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * Serialize the given ExpData object, possibly recursively with
 	 * increased indentation.
-	 *
-	 * @param $expData ExpData containing the data to be serialised.
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeNestedExpData( ExpData $expData, $indent ) {
+	protected function serializeNestedExpData( ExpData $expData, string $indent ) {
 		$this->recordDeclarationTypes( $expData );
 
 		$type = $expData->extractMainType()->getQName();
@@ -173,9 +166,7 @@ class RDFXMLSerializer extends Serializer {
 		}
 
 		// else: blank node, no "rdf:about"
-		if (
-			$expData->getSubject() instanceof ExpResource &&
-			!$expData->getSubject()->isBlankNode() ) {
+		if ( !$expData->getSubject()->isBlankNode() ) {
 			$this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
 		}
 
@@ -229,12 +220,12 @@ class RDFXMLSerializer extends Serializer {
 	 * Add to the output a serialization of a property assignment where an
 	 * ExpLiteral is the object. It is assumed that a suitable subject
 	 * block has already been openend.
-	 *
-	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $expLiteral ExpLiteral the data value to use
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeExpLiteral( ExpNsResource $expResourceProperty, ExpLiteral $expLiteral, string $indent ): void {
+	protected function serializeExpLiteral(
+		ExpNsResource $expResourceProperty,
+		ExpLiteral $expLiteral,
+		string $indent
+	): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		// https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-languages
@@ -256,13 +247,13 @@ class RDFXMLSerializer extends Serializer {
 	 * Add to the output a serialization of a property assignment where an
 	 * ExpResource is the object. It is assumed that a suitable subject
 	 * block has already been openend.
-	 *
-	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $expResource ExpResource the data value to use
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
-	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
 	 */
-	protected function serializeExpResource( ExpNsResource $expResourceProperty, ExpResource $expResource, string $indent, $isClassTypeProp ): void {
+	protected function serializeExpResource(
+		ExpNsResource $expResourceProperty,
+		ExpResource $expResource,
+		string $indent,
+		bool $isClassTypeProp
+	): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		if ( !$expResource->isBlankNode() ) {
@@ -286,15 +277,15 @@ class RDFXMLSerializer extends Serializer {
 	 * Add a serialization of the given ExpResource to the output,
 	 * assuming that an opening property tag is alerady there.
 	 *
-	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $collection array of (ExpResource or ExpData)
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
-	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
-	 *
 	 * @bug The $isClassTypeProp parameter is not properly taken into account.
 	 * @bug Individual resources are not serialised properly.
 	 */
-	protected function serializeExpCollection( ExpNsResource $expResourceProperty, array $collection, string $indent, $isClassTypeProp ): void {
+	protected function serializeExpCollection(
+		ExpNsResource $expResourceProperty,
+		array $collection,
+		string $indent,
+		bool $isClassTypeProp
+	): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
 
 		foreach ( $collection as $expElement ) {
@@ -317,23 +308,15 @@ class RDFXMLSerializer extends Serializer {
 	 * Escape a string in the special form that is required for values in
 	 * DTD entity declarations in XML. Namely, this require the percent sign
 	 * to be replaced.
-	 *
-	 * @param $string string to be escaped
-	 *
-	 * @return string
 	 */
-	protected function makeValueEntityString( $string ): string {
+	protected function makeValueEntityString( string $string ): string {
 		return "'" . str_replace( '%', '&#37;', $string ) . "'";
 	}
 
 	/**
 	 * Escape a string as required for using it in XML attribute values.
-	 *
-	 * @param $string string to be escaped
-	 *
-	 * @return string
 	 */
-	protected function makeAttributeValueString( $string ): string|array {
+	protected function makeAttributeValueString( string $string ): string {
 		return str_replace( [ '&', '>', '<' ], [ '&amp;', '&gt;', '&lt;' ], $string );
 	}
 

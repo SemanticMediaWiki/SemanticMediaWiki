@@ -72,6 +72,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 			}
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturnNullable set in initResourceBuilders
 		return $this->defaultResourceBuilder;
 	}
 

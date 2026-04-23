@@ -28,19 +28,13 @@ class TurtleSerializer extends Serializer {
 	 * later during the same serialization step (so this is not like another
 	 * queue for declarations or the like; it just unfolds an ExpData
 	 * object).
-	 *
-	 * @var array of ExpData
 	 */
-	protected $subexpdata;
+	protected array $subExpData = [];
 
 	/**
 	 * Array of retrieved namespaces (abbreviation => URI) for later use.
-	 *
-	 * @var array of string
 	 */
-	protected $sparql_namespaces;
-
-	protected array $subExpData;
+	protected array $sparql_namespaces = [];
 
 	/**
 	 * @since 1.5.5
@@ -69,10 +63,8 @@ class TurtleSerializer extends Serializer {
 	 * Namespaces are not serialized among triples in SPARQL mode but are
 	 * collected separately. This method returns the prefixes and empties
 	 * the collected list afterwards.
-	 *
-	 * @return array shortName => namespace URI
 	 */
-	public function flushSparqlPrefixes() {
+	public function flushSparqlPrefixes(): array {
 		$result = $this->sparql_namespaces;
 		$this->sparql_namespaces = [];
 		return $result;
@@ -152,6 +144,7 @@ class TurtleSerializer extends Serializer {
 	public function serializeExpData( ExpData $expData ): void {
 		$this->subExpData = [ $expData ];
 
+		// @phan-suppress-next-line PhanRedundantValueComparisonInLoop
 		while ( count( $this->subExpData ) > 0 ) {
 			$this->serializeNestedExpData( array_pop( $this->subExpData ), '' );
 		}
@@ -174,9 +167,6 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * Serialize the given ExpData object, possibly recursively with
 	 * increased indentation.
-	 *
-	 * @param $data ExpData containing the data to be serialised.
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
 	protected function serializeNestedExpData( ExpData $data, string $indent ): void {
 		if ( count( $data->getProperties() ) == 0 ) {
@@ -216,7 +206,7 @@ class TurtleSerializer extends Serializer {
 		// Called to generate a nested descripion; but Turtle cannot nest non-bnode
 		// descriptions, do this later
 		if ( ( $indent !== '' ) && ( !$bnode ) ) {
-			$this->subexpdata[] = $data;
+			$this->subExpData[] = $data;
 			return;
 		} elseif ( !$bnode ) {
 			$this->post_ns_buffer .= "\n ";
@@ -293,10 +283,6 @@ class TurtleSerializer extends Serializer {
 	 * Get the Turtle serialization string for the given ExpElement. The
 	 * method just computes a name, and does not serialize triples, so the
 	 * parameter must be an ExpResource or ExpLiteral, no ExpData.
-	 *
-	 * @param $expElement ExpElement being ExpLiteral or ExpResource
-	 *
-	 * @return string
 	 */
 	public static function getTurtleNameForExpElement( ExpElement $expElement ): string {
 		if ( $expElement instanceof ExpResource ) {

@@ -36,37 +36,29 @@ abstract class Serializer {
 	 * that one can append additional namespace declarations to $pre_ns_buffer
 	 * so that they affect all current elements. The buffers are flushed during
 	 * output in order to achieve "streaming" RDF export for larger files.
-	 *
-	 * @var string
 	 */
-	protected $pre_ns_buffer;
+	protected ?string $pre_ns_buffer = null;
 
 	/**
 	 * See documentation for $pre_ns_buffer.
-	 *
-	 * @var string
 	 */
-	protected $post_ns_buffer;
+	protected ?string $post_ns_buffer = null;
 
 	/**
 	 * Array for recording required declarations; format:
 	 * resourcename => decl-flag, where decl-flag is a sum of flags
 	 * SMW_SERIALIZER_DECL_CLASS, SMW_SERIALIZER_DECL_OPROP,
 	 * SMW_SERIALIZER_DECL_APROP.
-	 *
-	 * @var array of integer
 	 */
-	protected $decl_todo;
+	protected array $decl_todo = [];
 
 	/**
 	 * Array for recording previous declarations; format:
 	 * resourcename => decl-flag, where decl-flag is a sum of flags
 	 * SMW_SERIALIZER_DECL_CLASS, SMW_SERIALIZER_DECL_OPROP,
 	 * SMW_SERIALIZER_DECL_APROP.
-	 *
-	 * @var array of integer
 	 */
-	protected $decl_done;
+	protected array $decl_done = [];
 
 	/**
 	 * Array of additional namespaces (abbreviation => URI), flushed on
@@ -76,10 +68,8 @@ abstract class Serializer {
 	 * the client already. But we wait with printing the current block so that
 	 * extra namespaces from this array can still be printed (note that one
 	 * never know which extra namespaces you encounter during export).
-	 *
-	 * @var array of string
 	 */
-	protected $extra_namespaces;
+	protected array $extra_namespaces = [];
 
 	/**
 	 * Array of namespaces that have been declared globally already. Contains
@@ -88,7 +78,7 @@ abstract class Serializer {
 	 *
 	 * @var array of string
 	 */
-	protected $global_namespaces;
+	protected array $global_namespaces = [];
 
 	/**
 	 * @since 1.5.5
@@ -187,8 +177,6 @@ abstract class Serializer {
 	 * the exported data refers to wiki pages or other SMW data, and it must
 	 * ensure that all required auxiliary declarations for obtaining proper OWL
 	 * are included in any case (this can be done using requireDeclaration()).
-	 *
-	 * @param $data ExpData containing the data to be serialised.
 	 */
 	abstract public function serializeExpData( ExpData $data );
 
@@ -196,8 +184,6 @@ abstract class Serializer {
 	 * Get the string that has been serialized so far. This function also
 	 * resets the internal buffers for serilized strings and namespaces
 	 * (what is flushed is gone).
-	 *
-	 * @return string
 	 */
 	public function flushContent(): string {
 		if ( ( $this->pre_ns_buffer === '' ) && ( $this->post_ns_buffer === '' ) ) {
@@ -273,15 +259,13 @@ abstract class Serializer {
 		if ( !array_key_exists( $name, $this->decl_todo ) ) {
 			$this->decl_todo[$name] = $decltype;
 		} else {
-			$this->decl_todo[$name] = $this->decl_todo[$name] | $decltype;
+			$this->decl_todo[$name] |= $decltype;
 		}
 	}
 
 	/**
 	 * Update the declaration "todo" and "done" lists for the case that the
 	 * given data has been serialized with the type information it provides.
-	 *
-	 * @param ExpData $expData
 	 */
 	protected function recordDeclarationTypes( ExpData $expData ): void {
 		foreach ( $expData->getSpecialValues( 'rdf', 'type' ) as $typeresource ) {
@@ -311,9 +295,6 @@ abstract class Serializer {
 	/**
 	 * Update the declaration "todo" and "done" lists to reflect the fact that
 	 * the given element has been declared to has the given type.
-	 *
-	 * @param ExpResource $element specifying the element to update
-	 * @param $typeflag integer specifying the type (e.g. SMW_SERIALIZER_DECL_CLASS)
 	 */
 	protected function declarationDone( ExpResource $element, int $typeflag ): void {
 		$name = $element->getUri();
@@ -321,7 +302,7 @@ abstract class Serializer {
 		$this->decl_done[$name] = $curdone | $typeflag;
 
 		if ( array_key_exists( $name, $this->decl_todo ) ) {
-			$this->decl_todo[$name] = $this->decl_todo[$name] & ( ~$typeflag );
+			$this->decl_todo[$name] &= ~$typeflag;
 
 			if ( $this->decl_todo[$name] == 0 ) {
 				unset( $this->decl_todo[$name] );
@@ -342,10 +323,6 @@ abstract class Serializer {
 	 * used as such, hence it is enough to check the property. Moreover, we do
 	 * not use OWL Datatypes in SMW, so rdf:type, rdfs:domain, etc. always
 	 * refer to classes.
-	 *
-	 * @param ExpNsResource $property
-	 *
-	 * @return bool
 	 */
 	protected function isOWLClassTypeProperty( ExpNsResource $property ): bool {
 		$locname = $property->getLocalName();

@@ -170,9 +170,9 @@ class ExpData implements Element {
 	 * Return the list of ExpElement values associated to some property
 	 * (element).
 	 *
-	 * @return ExpElement[]
+	 * @return Element[]
 	 */
-	public function getValues( ExpResource $property ) {
+	public function getValues( ExpResource $property ): array {
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
 			return $this->m_children[$property->getUri()];
 		}
@@ -187,7 +187,7 @@ class ExpData implements Element {
 	 * @param $namespaceId string idetifying a known special namespace (e.g. "rdf")
 	 * @param $localName string of local name (e.g. "type")
 	 *
-	 * @return ExpData[]
+	 * @return Element[]
 	 */
 	public function getSpecialValues( $namespaceId, $localName ) {
 		$pe = Exporter::getInstance()->newExpNsResourceById( $namespaceId, $localName );
@@ -203,8 +203,6 @@ class ExpData implements Element {
 	 *
 	 * @note Under all normal conditions, the result will be an
 	 * ExpResource.
-	 *
-	 * @return ExpElement
 	 */
 	public function extractMainType(): mixed {
 		$exporter = Exporter::getInstance();
@@ -286,9 +284,7 @@ class ExpData implements Element {
 	 */
 	public function getTripleList( ?Element $subject = null ): array {
 		global $smwgBnodeCount;
-		if ( !isset( $smwgBnodeCount ) ) {
-			$smwgBnodeCount = 0;
-		}
+		$smwgBnodeCount ??= 0;
 
 		if ( $subject == null ) {
 			$subject = $this->m_subject;

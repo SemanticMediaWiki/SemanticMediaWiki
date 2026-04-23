@@ -2,6 +2,8 @@
 
 namespace SMW\Exporter;
 
+use SMW\DataItems\DataItem;
+
 /**
  * @license GPL-2.0-or-later
  * @since 2.2

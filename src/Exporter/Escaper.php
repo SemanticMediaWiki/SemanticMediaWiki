@@ -15,12 +15,8 @@ class Escaper {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param WikiPage $diWikiPage
-	 *
-	 * @return string
 	 */
-	public static function encodePage( WikiPage $diWikiPage ): string|array {
+	public static function encodePage( WikiPage $diWikiPage ): string {
 		$localName = '';
 
 		if ( $diWikiPage->getInterwiki() !== '' ) {
@@ -40,24 +36,15 @@ class Escaper {
 		return self::encodeUri( $localName );
 	}
 
-	/**
-	 * @param string
-	 *
-	 * @return string
-	 */
-	public static function armorChars( $string ): string|array {
+	public static function armorChars( string $string ): string {
 		return str_replace( [ '/' ], [ '-2F' ], $string );
 	}
 
 	/**
 	 * This function escapes symbols that might be problematic in XML in a uniform
 	 * and injective way.
-	 *
-	 * @param string
-	 *
-	 * @return string
 	 */
-	public static function encodeUri( $uri ): string|array {
+	public static function encodeUri( string $uri ): string {
 		$uri = $GLOBALS['smwgExportResourcesAsIri'] ? $uri : wfUrlencode( $uri );
 
 		$uri = str_replace(
@@ -77,12 +64,8 @@ class Escaper {
 
 	/**
 	 * This function unescapes URIs generated with Escaper::decodeUri.
-	 *
-	 * @param string
-	 *
-	 * @return string
 	 */
-	public static function decodeUri( $uri ): string|array {
+	public static function decodeUri( string $uri ): string {
 		$uri = str_replace(
 			[ '-2A', '-2C', '-3B', '-3C', '-3E', '-28', '-29', '-5B', '-5D', '-7B', '-7D', '-5C', '-24', '-5E', '-3A', '-22', '-23', '-26', '-27', '-2B', '-21', '-25', '-' ],
 			[ '*', ',', ';', '<', '>', '(', ')', '[', ']', '{', '}', '\\', '$', '^', ':', '"', '#', '&', "'", '+', '!', '%', '%' ],
