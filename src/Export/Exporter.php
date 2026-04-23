@@ -81,8 +81,6 @@ class Exporter {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return Exporter
 	 */
 	public static function getInstance(): Exporter {
 		if ( self::$instance === null ) {
@@ -124,8 +122,6 @@ class Exporter {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return void
 	 */
 	public static function clear(): void {
 		self::$instance = null;
@@ -134,10 +130,6 @@ class Exporter {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param WikiPage $diWikiPage
-	 *
-	 * @return void
 	 */
 	public function resetCacheBy( WikiPage $diWikiPage ): void {
 		self::$expResourceMapper->invalidateCache( $diWikiPage );
@@ -145,8 +137,6 @@ class Exporter {
 
 	/**
 	 * Make sure that necessary base URIs are initialised properly.
-	 *
-	 * @return void
 	 */
 	public static function initBaseURIs(): void {
 		if ( self::$m_exporturl !== false ) {
@@ -278,6 +268,7 @@ class Exporter {
 	 */
 	public function makeExportDataForSubject( WikiPage $subject, $addStubData = false ): ExpData {
 		$wikiPageExpElement = $this->newExpElement( $subject );
+		// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 		$expData = new ExpData( $wikiPageExpElement );
 
 		if ( $subject->getSubobjectName() !== '' ) {
@@ -386,10 +377,6 @@ class Exporter {
 	 * Extend a given ExpData element by adding export data for the
 	 * specified property data itme. This method is called when
 	 * constructing export data structures from SemanticData objects.
-	 *
-	 * @param Property $property
-	 * @param DataItem[] $dataItems of DataItem objects for the given property
-	 * @param ExpData &$expData to add the data to
 	 */
 	public static function addPropertyValues( Property $property, array $dataItems, ExpData &$expData ): void {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
@@ -445,9 +432,6 @@ class Exporter {
 	/**
 	 * Try to find an DataItem that the given ExpElement might
 	 * represent. Returns null if this attempt failed.
-	 *
-	 * @param ExpElement $expElement
-	 * @return DataItem or null
 	 */
 	public function findDataItemForExpElement( ExpElement $expElement ): ?WikiPage {
 		return self::$dataItemMatchFinder->matchExpElement( $expElement );
@@ -472,7 +456,6 @@ class Exporter {
 	 *
 	 * @param string $propertyKey string the Id of the special property
 	 * @param int $forNamespace integer the namespace of the page which has a value for this property
-	 * @return ExpNsResource|null
 	 */
 	public static function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ): ?ExpNsResource {
 		switch ( $propertyKey ) {
@@ -524,8 +507,6 @@ class Exporter {
 	 *
 	 * @param string $namespaceId string (e.g. "rdf")
 	 * @param string $localName string (e.g. "type")
-	 *
-	 * @return ExpNsResource
 	 */
 	public function newExpNsResourceById( $namespaceId, $localName ): ExpNsResource {
 		$namespace = self::getNamespaceUri( $namespaceId );
@@ -546,7 +527,6 @@ class Exporter {
 	 *
 	 * @param string $namespaceId string (e.g. "rdf")
 	 * @param string $localName string (e.g. "type")
-	 * @return ExpNsResource
 	 */
 	public static function getSpecialNsResource( $namespaceId, $localName ): ExpNsResource {
 		$namespace = self::getNamespaceUri( $namespaceId );
@@ -566,7 +546,6 @@ class Exporter {
 	 * suitable. This XML-specific method might become obsolete.
 	 *
 	 * @param string $uri string of the URI to be expanded
-	 * @return string of the expanded URI
 	 */
 	public function expandURI( $uri ): string|array {
 		self::initBaseURIs();
@@ -598,10 +577,7 @@ class Exporter {
 		return $uri;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function decodeURI( $uri ): string|array {
+	public function decodeURI( $uri ): string {
 		return Escaper::decodeUri( $uri );
 	}
 
@@ -647,10 +623,6 @@ class Exporter {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return Element|null
 	 */
 	public function newExpElement( DataItem $dataItem ): ?Element {
 		return self::$elementFactory->newFromDataItem( $dataItem );
@@ -679,9 +651,6 @@ class Exporter {
 	 * newAuxiliaryExpElement( $dataItem->getSortKeyDataItem() ).
 	 * Query conditions like ">" use sortkeys for values, and helper
 	 * elements are always preferred in query answering.
-	 *
-	 * @param DataItem $dataItem
-	 * @return ExpElement|null
 	 */
 	public function newAuxiliaryExpElement( DataItem $dataItem ): ?ExpLiteral {
 		if ( $dataItem->getDIType() == DataItem::TYPE_TIME ) {
@@ -698,10 +667,6 @@ class Exporter {
 	/**
 	 * Check whether the values of a given type of dataitem have helper
 	 * values in the sense of Exporter::getInstance()->newAuxiliaryExpElement().
-	 *
-	 * @param Property $property
-	 *
-	 * @return bool
 	 */
 	public static function hasHelperExpElement( Property $property ): bool {
 		return ( $property->findPropertyTypeID() === '_dat' ||

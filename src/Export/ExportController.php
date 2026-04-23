@@ -45,10 +45,8 @@ class ExportController {
 	 * Adding such dependencies counts as "recursive serialisation" and whether
 	 * or not inlinking objects are included in full depends on the setting for
 	 * recursion depth. Setting this to true enables "browsable RDF".
-	 *
-	 * @var bool
 	 */
-	protected $add_backlinks = false;
+	protected bool $add_backlinks = false;
 
 	/**
 	 * Controls how long to wait until flushing content to output. Flushing
@@ -56,18 +54,16 @@ class ExportController {
 	 * Flushing later has some advantages for export formats like RDF/XML where
 	 * global namespace declarations are only possible by modifying the header,
 	 * so that only local declarations are possible after the first flush.
-	 *
-	 * @var int
 	 */
-	protected $delay_flush;
+	protected ?int $delay_flush = null;
 
 	/**
 	 * File handle for a potential output file to write to, or null if printing
 	 * to standard output.
 	 *
-	 * @var resource|null|false
+	 * @var resource|null|false|int
 	 */
-	protected $outputfile;
+	protected $outputfile = null;
 
 	private ?DeepRedirectTargetResolver $deepRedirectTargetResolver = null;
 
@@ -86,11 +82,8 @@ class ExportController {
 
 	/**
 	 * Enable or disable inclusion of backlinks into the output.
-	 *
-	 * @param bool $enable
-	 * @return void
 	 */
-	public function enableBacklinks( $enable ): void {
+	public function enableBacklinks( bool $enable ): void {
 		$this->add_backlinks = $enable;
 	}
 
@@ -101,8 +94,6 @@ class ExportController {
 	 *
 	 * @param string $outfilename URL of the file that output should be written
 	 * to, or empty string for writing to the standard output.
-	 *
-	 * @return bool
 	 */
 	protected function prepareSerialization( $outfilename = '' ): bool {
 		$this->serializer->clear();
@@ -130,12 +121,11 @@ class ExportController {
 	 * minimal declarations are serialised, so no dependencies are added. A
 	 * depth of -1 encodes "infinite" depth, i.e. a complete recursive
 	 * serialisation without limit.
-	 *
-	 * @param WikiPage $diWikiPage specifying the page to be exported
-	 * @param int $recursiondepth specifying the depth of recursion
-	 * @return void|null
 	 */
-	protected function serializePage( WikiPage $diWikiPage, $recursiondepth = 1 ): void {
+	protected function serializePage(
+		WikiPage $diWikiPage,
+		int $recursiondepth = 1
+	): void {
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
 			return; // do not export twice
 		}
@@ -183,6 +173,7 @@ class ExportController {
 				]
 			);
 
+		// @phan-suppress-next-line PhanEmptyForeach $expDataList is set in a hook (above)
 		foreach ( $expDataList as $data ) {
 
 			if ( !$data instanceof ExpData ) {
@@ -194,7 +185,7 @@ class ExportController {
 
 		if ( $recursiondepth != 0 ) {
 			$subrecdepth = $recursiondepth > 0 ? ( $recursiondepth - 1 ) :
-						   ( $recursiondepth == 0 ? 0 : -1 );
+						   ( $recursiondepth === 0 ? 0 : -1 );
 
 			foreach ( $expData->getProperties() as $property ) {
 				if ( $property->getDataItem() instanceof WikiPageValue ) {
@@ -202,12 +193,15 @@ class ExportController {
 				}
 				$wikipagevalues = false;
 				foreach ( $expData->getValues( $property ) as $valueExpElement ) {
-					$valueResource = $valueExpElement instanceof ExpData ? $valueExpElement->getSubject() : $valueExpElement;
+					$valueResource = $valueExpElement instanceof ExpData ?
+						$valueExpElement->getSubject() :
+						$valueExpElement;
 					if ( !$wikipagevalues && ( $valueResource->getDataItem() instanceof WikiPageValue ) ) {
 						$wikipagevalues = true;
 					} elseif ( !$wikipagevalues ) {
 						break;
 					}
+					// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 					$this->queue->add( $valueResource->getDataItem(), $subrecdepth );
 				}
 			}
@@ -233,7 +227,9 @@ class ExportController {
 					$inSubs = StoreFactory::getStore()->getPropertySubjects( $inprop, $diWikiPage );
 
 					foreach ( $inSubs as $inSub ) {
-						if ( !$this->queue->isDone( $inSub, $subrecdepth ) ) {
+						if ( $inSub instanceof WikiPage &&
+							!$this->queue->isDone( $inSub, $subrecdepth )
+						) {
 							$semdata = $this->getSemanticData( $inSub, true );
 
 							if ( !$semdata instanceof SemanticData ) {
@@ -247,14 +243,21 @@ class ExportController {
 					}
 				}
 
-				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) { // also print elements of categories
+				// also print elements of categories
+				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) {
 					$options = new RequestOptions();
 					$options->limit = 100; // Categories can be large, always use limit
-					$instances = StoreFactory::getStore()->getPropertySubjects( new Property( '_INST' ), $diWikiPage, $options );
+					$instances = StoreFactory::getStore()->getPropertySubjects(
+						new Property( '_INST' ),
+						$diWikiPage,
+						$options
+					);
 					$pinst = new Property( '_INST' );
 
 					foreach ( $instances as $instance ) {
-						if ( $this->queue->isNotDone( $instance ) ) {
+						if ( $instance instanceof WikiPage &&
+							$this->queue->isNotDone( $instance )
+						) {
 							$semdata = $this->getSemanticData( $instance, true );
 
 							if ( !$semdata instanceof SemanticData ) {
@@ -266,7 +269,10 @@ class ExportController {
 							$this->serializer->serializeExpData( $expData );
 						}
 					}
-				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
+				} elseif (
+					// print concept members (slightly different code)
+					SMW_NS_CONCEPT === $diWikiPage->getNamespace()
+				) {
 					$desc = new ConceptDescription( $diWikiPage );
 					$desc->addPrintRequest( new PrintRequest( PrintRequest::PRINT_THIS, '' ) );
 					$query = new Query( $desc );
@@ -284,7 +290,9 @@ class ExportController {
 							continue;
 						}
 
-						if ( $this->queue->isNotDone( $instance ) ) {
+						if ( $instance instanceof WikiPage &&
+							$this->queue->isNotDone( $instance )
+						) {
 							$semdata = $this->getSemanticData( $instance, true );
 
 							if ( !$semdata instanceof SemanticData ) {
@@ -320,7 +328,7 @@ class ExportController {
 
 			try {
 				$redirectTarget = $this->getDeepRedirectTargetResolver()->findRedirectTargetFor( $diWikiPage->getTitle() );
-			} catch ( Exception $e ) {
+			} catch ( Exception ) {
 				$redirectTarget = null;
 			}
 
@@ -341,7 +349,10 @@ class ExportController {
 		}
 
 		// advise store to retrieve only core things
-		$semdata = StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? [ '__spu', '__typ', '__imp' ] : false );
+		$semdata = StoreFactory::getStore()->getSemanticData(
+			$diWikiPage,
+			$core_props_only ? [ '__spu', '__typ', '__imp' ] : false
+		);
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
 			$result = new SemanticData( $diWikiPage );
 			foreach ( [ '_URI', '_TYPE', '_IMPO' ] as $propid ) {
@@ -375,6 +386,7 @@ class ExportController {
 			// for app/xml). You may want to sleep(1) here for debugging this.
 			ob_flush();
 			flush();
+			// @phan-suppress-next-line PhanPluginUseReturnValueInternalKnown
 			ob_get_clean();
 		}
 	}
@@ -383,18 +395,14 @@ class ExportController {
 	 * This function prints all selected pages, specified as an array of page
 	 * names (strings with namespace identifiers).
 	 *
-	 * @param array $pages list of page names to export
-	 * @param int $recursion determines how pages are exported recursively:
-	 * "0" means that referenced resources are only declared briefly, "1" means
-	 * that all referenced resources are also exported recursively (propbably
-	 * retrieving the whole wiki).
-	 * @param string $revisiondate filter page list by including only pages
-	 * that have been changed since this date; format "YmdHis"
-	 *
 	 * @todo Consider dropping the $revisiondate filtering and all associated
 	 * functionality. Is anybody using this?
 	 */
-	public function printPages( $pages, $recursion = 1, $revisiondate = false ): void {
+	public function printPages(
+		array $pages,
+		int $recursion = 1,
+		string|bool $revisionDate = false
+	): void {
 		$mwServices = MediaWikiServices::getInstance();
 		$titleFactory = $mwServices->getTitleFactory();
 		$linkCache = $mwServices->getLinkCache();
@@ -409,9 +417,9 @@ class ExportController {
 			if ( $title === null ) {
 				continue; // invalid title name given
 			}
-			if ( $revisiondate !== '' ) { // filter page list by revision date
+			if ( is_string( $revisionDate ) && $revisionDate !== '' ) { // filter page list by revision date
 				$rev = $revisionStore->getTimeStampFromID( $title, $title->getLatestRevID() );
-				if ( $rev < $revisiondate ) {
+				if ( $rev < $revisionDate ) {
 					continue;
 				}
 			}
@@ -422,12 +430,16 @@ class ExportController {
 
 		$this->serializer->startSerialization();
 
-		if ( count( $pages ) == 1 ) { // ensure that ontologies that are retrieved as linked data are not confused with their subject!
-			$ontologyuri = Exporter::getInstance()->expandURI( '&export;' ) . '/' . Escaper::encodeUri( end( $pages ) );
+		// ensure that ontologies that are retrieved as linked data are not confused with their subject!
+		if ( count( $pages ) == 1 ) {
+			$ontologyuri = Exporter::getInstance()->expandURI( '&export;' ) .
+				'/' . Escaper::encodeUri( end( $pages ) );
 		} else { // use empty URI, i.e. "location" as URI otherwise
 			$ontologyuri = '';
 		}
-		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( $ontologyuri ) );
+		$this->serializer->serializeExpData(
+			$this->expDataFactory->newOntologyExpData( $ontologyuri )
+		);
 
 		while ( $this->queue->count() > 0 ) {
 			$diPage = $this->queue->reset();
@@ -530,8 +542,9 @@ class ExportController {
 				foreach ( $members as $key => $diaux ) {
 					if ( !$this->isSemanticEnabled( $diaux->getNamespace() ) ||
 						 !self::fitsNsRestriction( $ns_restriction, $diaux->getNamespace() ) ) {
-						// Note: we do not need to check the cache to guess if an element was already
-						// printed. If so, it would not be included in the queue in the first place.
+						// Note: we do not need to check the cache to guess if an element was
+						// already printed. If so, it would not be included in the queue in the
+						// first place.
 						$d_count += 1; // DEBUG
 					} else { // don't carry values that you do not want to export (yet)
 						$this->queue->remove( $key );
@@ -596,14 +609,15 @@ class ExportController {
 				$this->serializePage( $diPage, 0 );
 				$this->flush();
 				$linkCache->clear();
-			} catch ( DataItemException $e ) {
+			} catch ( DataItemException ) {
 				// strange data, who knows, not our DB table, keep calm and carry on
 			}
 		}
 
 		if ( $foundpages ) { // add link to next result page
 			$exporter = Exporter::getInstance();
-			if ( strpos( $exporter->expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
+			// check whether we have title as a first parameter or in URL
+			if ( strpos( $exporter->expandURI( '&wikiurl;' ), '?' ) === false ) {
 				$nexturl = $exporter->expandURI( '&export;?offset=' ) . ( $offset + $limit );
 			} else {
 				$nexturl = $exporter->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
@@ -611,9 +625,15 @@ class ExportController {
 
 			$expData = new ExpData( new ExpResource( $nexturl ) );
 			$ed = new ExpData( $exporter->newExpNsResourceById( 'owl', 'Thing' ) );
-			$expData->addPropertyObjectValue( $exporter->newExpNsResourceById( 'rdf', 'type' ), $ed );
+			$expData->addPropertyObjectValue(
+				$exporter->newExpNsResourceById( 'rdf', 'type' ),
+				$ed
+			);
 			$ed = new ExpData( new ExpResource( $nexturl ) );
-			$expData->addPropertyObjectValue( $exporter->newExpNsResourceById( 'rdfs', 'isDefinedBy' ), $ed );
+			$expData->addPropertyObjectValue(
+				$exporter->newExpNsResourceById( 'rdfs', 'isDefinedBy' ),
+				$ed
+			);
 			$this->serializer->serializeExpData( $expData );
 		}
 
@@ -664,7 +684,9 @@ class ExportController {
 
 	private function getDeepRedirectTargetResolver(): DeepRedirectTargetResolver {
 		if ( $this->deepRedirectTargetResolver === null ) {
-			$this->deepRedirectTargetResolver = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
+			$this->deepRedirectTargetResolver = ApplicationFactory::getInstance()
+				->newMwCollaboratorFactory()
+				->newDeepRedirectTargetResolver();
 		}
 
 		return $this->deepRedirectTargetResolver;

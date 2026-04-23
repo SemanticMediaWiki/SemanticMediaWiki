@@ -9,7 +9,6 @@ use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpResource;
 use SMW\InMemoryPoolCache;
 use SMW\Store;
 
@@ -36,10 +35,7 @@ class ExpResourceMapper {
 	 */
 	private bool $bcAuxiliaryUse = true;
 
-	/**
-	 * @var bool
-	 */
-	private $seekImportVocabulary = true;
+	private bool $seekImportVocabulary = true;
 
 	/**
 	 * @since 2.2
@@ -77,7 +73,7 @@ class ExpResourceMapper {
 			'exporter.expresource.mapper'
 		);
 
-		foreach ( [ $hash, $hash . self::AUX_MARKER . $this->seekImportVocabulary ] as $key ) {
+		foreach ( [ $hash, $hash . self::AUX_MARKER . (string)$this->seekImportVocabulary ] as $key ) {
 			$poolCache->delete( $key );
 		}
 	}
@@ -95,14 +91,13 @@ class ExpResourceMapper {
 	 * property resource is to store a helper value
 	 * (see Exporter::newAuxiliaryExpElement) should be generated
 	 *
-	 * @param Property $property
-	 * @param bool $useAuxiliaryModifier
-	 * @param bool $seekImportVocabulary
-	 *
-	 * @return ExpResource
 	 * @throws RuntimeException
 	 */
-	public function mapPropertyToResourceElement( Property $property, $useAuxiliaryModifier = false, $seekImportVocabulary = true ) {
+	public function mapPropertyToResourceElement(
+		Property $property,
+		bool $useAuxiliaryModifier = false,
+		bool $seekImportVocabulary = true
+	): ExpNsResource {
 		// We want the a canonical representation to ensure that resources
 		// are language independent
 		$this->seekImportVocabulary = $seekImportVocabulary;
@@ -131,16 +126,14 @@ class ExpResourceMapper {
 	 * auxiliary properties. In this case, the URI is modiied by appending
 	 * "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
 	 * occurring in MW titles).
-	 *
-	 * @param WikiPage $diWikiPage
-	 * @param bool $useAuxiliaryModifier
-	 *
-	 * @return ExpResource
 	 */
-	public function mapWikiPageToResourceElement( WikiPage $diWikiPage, $useAuxiliaryModifier = false ) {
+	public function mapWikiPageToResourceElement(
+		WikiPage $diWikiPage,
+		bool $useAuxiliaryModifier = false
+	): ExpNsResource {
 		$modifier = $useAuxiliaryModifier ? self::AUX_MARKER : '';
 
-		$hash = $diWikiPage->getHash() . $modifier . $this->seekImportVocabulary;
+		$hash = $diWikiPage->getHash() . $modifier . (string)$this->seekImportVocabulary;
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.expresource.mapper' );
 
@@ -166,7 +159,7 @@ class ExpResourceMapper {
 	}
 
 	private function newExpNsResource( WikiPage $diWikiPage, $modifier ): ExpNsResource {
-		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
+		$importDataItem = $this->findImportDataItem( $diWikiPage );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
 			[ $localName, $namespace, $namespaceId ] = $this->defineElementsForImportDataItem( $importDataItem );
@@ -250,7 +243,7 @@ class ExpResourceMapper {
 		];
 	}
 
-	private function findImportDataItem( WikiPage $diWikiPage, $modifier ) {
+	private function findImportDataItem( WikiPage $diWikiPage ) {
 		$importDataItems = null;
 
 		// Only try to find an import vocab for a matchable entity

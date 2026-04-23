@@ -3,7 +3,6 @@
 namespace SMW\Exporter;
 
 use MediaWiki\Title\Title;
-use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
@@ -32,10 +31,6 @@ class DataItemMatchFinder {
 	 * if the attempt fails.
 	 *
 	 * @since 2.4
-	 *
-	 * @param ExpElement $expElement
-	 *
-	 * @return DataItem|null
 	 */
 	public function matchExpElement( ExpElement $expElement ): ?WikiPage {
 		$dataItem = null;
