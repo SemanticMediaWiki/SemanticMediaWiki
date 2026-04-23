@@ -40,8 +40,6 @@ class EntityCache {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Cache $cache
 	 */
 	public function __construct( Cache $cache ) {
 		$this->cache = $cache;
@@ -51,8 +49,6 @@ class EntityCache {
 	 * @since 3.1
 	 *
 	 * @param array ...$params
-	 *
-	 * @return string
 	 */
 	public static function makeCacheKey( ...$params ): string {
 		$namespace = self::CACHE_NAMESPACE;
@@ -76,8 +72,6 @@ class EntityCache {
 	 * @since 3.1
 	 *
 	 * @param array ...$params
-	 *
-	 * @return string
 	 */
 	public function makeKey( ...$params ): string {
 		return self::makeCacheKey( ...$params );
@@ -85,8 +79,6 @@ class EntityCache {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return
 	 */
 	public function getStats() {
 		return $this->cache->getStats();
@@ -145,7 +137,7 @@ class EntityCache {
 			return false;
 		}
 
-		return isset( $res[$sub] ) ? $res[$sub] : false;
+		return $res[$sub] ?? false;
 	}
 
 	/**
