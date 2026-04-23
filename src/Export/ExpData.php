@@ -169,6 +169,8 @@ class ExpData implements Element {
 	/**
 	 * Return the list of ExpElement values associated to some property
 	 * (element).
+	 *
+	 * @return Element[]
 	 */
 	public function getValues( ExpResource $property ): array {
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
@@ -185,7 +187,7 @@ class ExpData implements Element {
 	 * @param $namespaceId string idetifying a known special namespace (e.g. "rdf")
 	 * @param $localName string of local name (e.g. "type")
 	 *
-	 * @return ExpData[]
+	 * @return Element[]
 	 */
 	public function getSpecialValues( $namespaceId, $localName ) {
 		$pe = Exporter::getInstance()->newExpNsResourceById( $namespaceId, $localName );
