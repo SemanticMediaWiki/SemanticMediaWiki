@@ -29,7 +29,7 @@ class TurtleSerializer extends Serializer {
 	 * queue for declarations or the like; it just unfolds an ExpData
 	 * object).
 	 */
-	protected array $subexpdata = [];
+	protected array $subExpData = [];
 
 	/**
 	 * Array of retrieved namespaces (abbreviation => URI) for later use.
