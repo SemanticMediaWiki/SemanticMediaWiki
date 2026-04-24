@@ -35,6 +35,7 @@ class Client {
 	 */
 	const TYPE_LOOKUP = 'lookup';
 
+	// @phan-suppress-next-line PhanUndeclaredTypeProperty
 	protected ?ElasticClient $client = null;
 
 	/**
@@ -58,7 +59,7 @@ class Client {
 	 * @since 3.0
 	 */
 	public function __construct(
-		// @phan-suppress-next-line PhanUndeclaredTypeProperty,PhanUndeclaredTypeParameter
+		// @phan-suppress-next-line PhanUndeclaredTypeParameter
 		ElasticClient $client,
 		private LockManager $lockManager,
 		private ?Config $options = null,
