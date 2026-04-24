@@ -37,7 +37,7 @@ class ValueDescriptionInterpreter {
 	 */
 	public function interpretDescription(
 		ValueDescription $description,
-		bool $isConjunction = false
+		bool|array $isConjunction = false
 	) {
 		$dataItem = $description->getDataItem();
 		$comparator = $description->getComparator();
