@@ -98,7 +98,7 @@ class ReplicationCheck {
 	 * @since 3.1
 	 */
 	public function setCacheTTL( mixed $cacheTTL ): void {
-		$this->cacheTTL = (int)$cacheTTL > 0 ? (int)$cacheTTL : 3600;
+		$this->cacheTTL = is_int( $cacheTTL ) && $cacheTTL > 0 ? $cacheTTL : 3600;
 	}
 
 	/**
