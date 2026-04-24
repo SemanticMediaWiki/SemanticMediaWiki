@@ -23,29 +23,20 @@ class DependencyValidator {
 
 	private EntityCache $entityCache;
 
-	/**
-	 * @var int
-	 */
-	private $cacheTTL = 3600;
+	private int $cacheTTL = 3600;
 
-	/**
-	 * @var string
-	 */
-	private $eTag;
+	private ?string $eTag = null;
 
-	/**
-	 * @var array Title IDs marked as having outdated dependencies.
-	 */
 	private static array $titles = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param DependencyLinksValidator $dependencyLinksValidator
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, DependencyLinksValidator $dependencyLinksValidator, EntityCache $entityCache ) {
+	public function __construct(
+		NamespaceExaminer $namespaceExaminer,
+		DependencyLinksValidator $dependencyLinksValidator,
+		EntityCache $entityCache
+	) {
 		$this->namespaceExaminer = $namespaceExaminer;
 		$this->dependencyLinksValidator = $dependencyLinksValidator;
 		$this->entityCache = $entityCache;
@@ -53,26 +44,20 @@ class DependencyValidator {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ): void {
+	public function setCacheTTL( int $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string eTag
 	 */
-	public function setETag( $eTag ): void {
+	public function setETag( string $eTag ): void {
 		$this->eTag = $eTag;
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return int
 	 */
 	public static function makeCacheKey( Title $title ): string {
 		return EntityCache::makeCacheKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );
@@ -111,7 +96,7 @@ class DependencyValidator {
 	public function hasArchaicDependencies( WikiPage $subject ): bool {
 		$title = $subject->getTitle();
 
-		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return false;
 		}
 
