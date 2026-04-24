@@ -46,7 +46,7 @@ class FileHandler {
 	/**
 	 * @since 3.2
 	 */
-	public function findFileByTitle( Title $title ): File|false {
+	public function findFileByTitle( Title $title ): File|false|null {
 		return $this->fileRepoFinder->findFile( $title );
 	}
 
