@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
+use RuntimeException;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
