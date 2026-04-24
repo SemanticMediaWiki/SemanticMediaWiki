@@ -61,8 +61,8 @@ class DocumentCreator {
 	/**
 	 * @since 3.2
 	 */
-	public function setCompatibilityMode( bool $compatibilityMode ): void {
-		$this->compatibilityMode = $compatibilityMode;
+	public function setCompatibilityMode( mixed $compatibilityMode ): void {
+		$this->compatibilityMode = (bool)$compatibilityMode;
 	}
 
 	/**
