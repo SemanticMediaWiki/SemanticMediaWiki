@@ -89,7 +89,7 @@ class FileIndexer {
 	/**
 	 * @since 3.1
 	 */
-	public function findFile( Title $title ): File|false {
+	public function findFile( Title $title ): File|false|null {
 		return $this->fileHandler->findFileByTitle( $title );
 	}
 
