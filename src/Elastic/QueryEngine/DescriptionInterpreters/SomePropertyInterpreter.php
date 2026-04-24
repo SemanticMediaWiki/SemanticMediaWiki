@@ -8,6 +8,7 @@ use SMW\DataTypeRegistry;
 use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\FieldMapper;
+use SMW\Elastic\QueryEngine\TermsLookup;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
@@ -43,6 +44,7 @@ class SomePropertyInterpreter {
 	 * @param SomeProperty $description
 	 *
 	 * @return Condition|array
+	 * @throws RuntimeException
 	 */
 	public function interpretDescription( SomeProperty $description, $isConjunction = false, $isChain = false ) {
 		// Query types
@@ -75,7 +77,7 @@ class SomePropertyInterpreter {
 		$desc = $description->getDescription();
 
 		// Copy the context
-		if ( isset( $description->isPartOfDisjunction ) ) {
+		if ( $description->isPartOfDisjunction ) {
 			$desc->isPartOfDisjunction = true;
 		}
 
@@ -100,11 +102,11 @@ class SomePropertyInterpreter {
 		}
 
 		if ( $desc instanceof ClassDescription ) {
-			$params = $this->interpretClassDescription( $desc, $property, $pid, $field );
+			$params = $this->interpretClassDescription( $desc, $property, $pid );
 		}
 
 		if ( $desc instanceof NamespaceDescription ) {
-			$params = $this->interpretNamespaceDescription( $desc, $property, $pid, $field );
+			$params = $this->interpretNamespaceDescription( $desc, $pid );
 		}
 
 		// [[-Person:: <q>[[Person.-Has friend.Person::Andy Mars]] [[Age::>>32]]</q> ]]
@@ -115,7 +117,7 @@ class SomePropertyInterpreter {
 		// Use case: `[[Has page-2:: <q>[[Has page-1::Value 1||Value 2]]
 		// [[Has text-1::Value 1||Value 2]]</q> || <q> [[Has page-2::Value 1||Value 2]]</q> ]]`
 		if ( $desc instanceof Disjunction ) {
-			$params = $this->interpretDisjunction( $desc, $property, $pid, $field, $opType );
+			$params = $this->interpretDisjunction( $desc, $property, $pid, $opType );
 		}
 
 		if ( !$params instanceof Condition ) {
@@ -129,11 +131,7 @@ class SomePropertyInterpreter {
 
 		// [[Foo.Bar::Foobar]], [[Foo.Bar::<q>[[Foo::Bar]] OR [[Fobar::Foo]]</q>]]
 		if ( $desc instanceof SomeProperty ) {
-			$condition = $this->interpretChain( $desc, $property, $pid, $field );
-		}
-
-		if ( $condition === [] ) {
-			return [];
+			$condition = $this->interpretChain( $desc, $property, $pid );
 		}
 
 		// Build an extra condition to restore strictness by making sure
@@ -156,7 +154,7 @@ class SomePropertyInterpreter {
 			return $condition;
 		}
 
-		if ( !isset( $description->sourceChainMemberField ) ) {
+		if ( !$description->sourceChainMemberField ) {
 			throw new RuntimeException( "Missing `sourceChainMemberField`" );
 		}
 
@@ -173,7 +171,7 @@ class SomePropertyInterpreter {
 		$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 
 		// Let it fail for a conjunction when the subquery returns empty!
-		if ( $params === [] && !isset( $desc->isPartOfDisjunction ) ) {
+		if ( $params === [] && !$desc->isPartOfDisjunction ) {
 			// Fail with a non existing condition to avoid a " ...
 			// query malformed, must start with start_object ..."
 			$params = $this->fieldMapper->exists( "empty.lookup_query" );
@@ -185,22 +183,28 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretDisjunction( Disjunction $description, Property $property, string $pid, string $field, string &$opType ): array|Condition {
+	private function interpretDisjunction(
+		Disjunction $description,
+		Property $property,
+		string $pid,
+		string &$opType
+	): array|Condition {
 		$p = [];
 		$opType = Condition::TYPE_SHOULD;
 
 		foreach ( $description->getDescriptions() as $desc ) {
-
 			$d = new SomeProperty(
 				$property,
 				$desc
 			);
 
 			$d->sourceChainMemberField = "$pid.wpgID";
-			$t = $this->conditionBuilder->interpretDescription( $d, true, true );
+			$t = $this->conditionBuilder->interpretDescription( $d, true );
 
-			if ( $t !== [] ) {
+			if ( $t instanceof Condition ) {
 				$p[] = $t->toArray();
+			} elseif ( $t !== [] ) {
+				$p[] = $t;
 			}
 		}
 
@@ -214,7 +218,10 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretClassDescription( ClassDescription $description, Property $property, string $pid, string $field ): array|Condition {
+	private function interpretClassDescription(
+		ClassDescription $description,
+		Property $property, string $pid
+	): array|Condition {
 		$queryString = $description->getQueryString();
 		$condition = $this->conditionBuilder->interpretDescription( $description );
 
@@ -256,7 +263,10 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretNamespaceDescription( NamespaceDescription $description, Property $property, string $pid, string $field ): array|Condition {
+	private function interpretNamespaceDescription(
+		NamespaceDescription $description,
+		string $pid
+	): array|Condition {
 		$queryString = $description->getQueryString();
 		$condition = $this->conditionBuilder->interpretDescription( $description );
 
@@ -292,9 +302,11 @@ class SomePropertyInterpreter {
 		foreach ( $description->getDescriptions() as $desc ) {
 			$params = $this->conditionBuilder->interpretDescription( $desc, true );
 
-			if ( $params !== [] ) {
+			if ( $params instanceof Condition ) {
 				$p[] = $params->toArray();
 				$logs = array_merge( $logs, $params->getLogs() );
+			} elseif ( $params !== [] ) {
+				$p[] = $params;
 			}
 		}
 
@@ -342,7 +354,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretChain( SomeProperty $desc, Property $property, string $pid, string $field ) {
+	private function interpretChain( SomeProperty $desc, Property $property, string $pid ) {
 		$desc->sourceChainMemberField = "$pid.wpgID";
 		$p = [];
 
@@ -359,7 +371,7 @@ class SomePropertyInterpreter {
 				$d->setMembership( $desc->getFingerprint() );
 				$d->sourceChainMemberField = "$pid.wpgID";
 
-				if ( isset( $desc->isPartOfDisjunction ) ) {
+				if ( $desc->isPartOfDisjunction ) {
 					$d->isPartOfDisjunction = true;
 				}
 
@@ -407,7 +419,7 @@ class SomePropertyInterpreter {
 		}
 
 		// [[Has subobject::!+]] is only supported with the ElasticStore
-		$opType = isset( $desc->isNegation ) ? Condition::TYPE_MUST_NOT : Condition::TYPE_FILTER;
+		$opType = $desc->isNegation ? Condition::TYPE_MUST_NOT : Condition::TYPE_FILTER;
 		$params = $this->fieldMapper->exists( "$pid.$field" );
 
 		// Only allow to match wpg types (aka resources) to be used as

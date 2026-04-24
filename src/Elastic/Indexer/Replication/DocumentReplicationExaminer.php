@@ -27,10 +27,7 @@ class DocumentReplicationExaminer {
 	 */
 	const CHECK_MISSING_FILE_ATTACHMENT = 'check/missing/file_attachment';
 
-	/**
-	 * @var
-	 */
-	private $replicationStatusResponse = [];
+	private mixed $replicationStatusResponse = [];
 
 	/**
 	 * @since 3.1
@@ -43,11 +40,6 @@ class DocumentReplicationExaminer {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param WikiPage $subject
-	 * @param array $params
-	 *
-	 * @return ReplicationError|null
 	 */
 	public function check( WikiPage $subject, array $params = [] ): ?ReplicationError {
 		$id = $this->store->getObjectIds()->getSMWPageID(
@@ -132,7 +124,8 @@ class DocumentReplicationExaminer {
 	private function runCheck( string $method, $id ) {
 		try {
 			$replicationStatusResponse = $this->replicationStatus->get( $method, $id );
-		} catch ( BadRequest400Exception $e ) {
+		// @phan-suppress-next-line PhanUndeclaredClassCatch
+		} catch ( BadRequest400Exception ) {
 			return $this->newReplicationError( ReplicationError::TYPE_EXCEPTION, [ 'exception_error' => 'BadRequest400Exception' ] );
 		} catch ( Exception $e ) {
 			return $this->newReplicationError( ReplicationError::TYPE_EXCEPTION, [ 'exception_error' => $e->getMessage() ] );

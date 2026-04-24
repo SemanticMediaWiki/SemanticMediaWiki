@@ -33,16 +33,10 @@ class FileIndexer {
 
 	const INGEST_RESPONSE = 'es.ingest.response';
 
-	/**
-	 * @var string
-	 */
-	private $origin = '';
+	private string $origin = '';
 
 	private bool $sha1Check = true;
 
-	/**
-	 * @var
-	 */
 	private array $versions = [];
 
 	/**
@@ -58,17 +52,13 @@ class FileIndexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $origin
 	 */
-	public function setOrigin( $origin ): void {
+	public function setOrigin( string $origin ): void {
 		$this->origin = $origin;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param $versions
 	 */
 	public function setVersions( array $versions ): void {
 		$this->versions = $versions;
@@ -76,12 +66,8 @@ class FileIndexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 *
-	 * @return string
 	 */
-	public function getIndexName( $type ): string {
+	public function getIndexName( string $type ): string {
 		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
@@ -102,12 +88,8 @@ class FileIndexer {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title $title
-	 *
-	 * @return File
 	 */
-	public function findFile( Title $title ) {
+	public function findFile( Title $title ): File|false {
 		return $this->fileHandler->findFileByTitle( $title );
 	}
 
@@ -129,9 +111,6 @@ class FileIndexer {
 	 * will be invisible the any SMW user
 	 *
 	 * @since 3.0
-	 *
-	 * @param WikiPage $dataItem
-	 * @param File|null $file
 	 */
 	public function index( WikiPage $dataItem, ?File $file = null ): void {
 		$title = $dataItem->getTitle();
@@ -213,6 +192,7 @@ class FileIndexer {
 
 		// Is the sha1 the same? Don't do anything since the content is expected
 		// to be the same!
+		// @phan-suppress-next-line PhanTypeInvalidDimOffset
 		if ( $this->sha1Check && isset( $doc['_source']['file_sha1'] ) && $doc['_source']['file_sha1'] === $sha1 ) {
 			$ingest = false;
 		}
@@ -224,7 +204,7 @@ class FileIndexer {
 			'subject' => $dataItem->getHash()
 		];
 
-		if ( $ingest === false ) {
+		if ( !$ingest ) {
 			$this->logger->info(
 				[ 'File indexer', 'Skipping the ingest process', 'Found identical file_sha1 ({subject})' ],
 				$context

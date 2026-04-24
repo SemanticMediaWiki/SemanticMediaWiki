@@ -46,10 +46,6 @@ class TermsLookup implements ITermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return Parameters
 	 */
 	public function newParameters( array $parameters = [] ): Parameters {
 		return new Parameters( $parameters );
@@ -72,7 +68,7 @@ class TermsLookup implements ITermsLookup {
 	 * @param $type
 	 * @param Parameters $parameters
 	 *
-	 * @return array
+	 * @return ?array
 	 * @throws RuntimeException
 	 */
 	public function lookup( $type, Parameters $parameters ) {
@@ -97,10 +93,6 @@ class TermsLookup implements ITermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
 	public function concept_index_lookup( Parameters $parameters ): ?array {
 		$params = $parameters->get( 'params' );
@@ -139,10 +131,6 @@ class TermsLookup implements ITermsLookup {
 	 * return a list of matchable `_id` to can be fed to the source query.
 	 *
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
 	public function chain_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
@@ -170,10 +158,6 @@ class TermsLookup implements ITermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
 	public function predef_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
@@ -203,10 +187,6 @@ class TermsLookup implements ITermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
 	public function inverse_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
@@ -251,8 +231,6 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @param string $field
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function terms_filter( $field, $params ): array {
 		if ( $params === [] ) {
@@ -266,9 +244,9 @@ class TermsLookup implements ITermsLookup {
 			$params
 		);
 
-	// if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
-	//		$params = $this->fieldMapper->constant_score( $params );
-	//	}
+		// if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
+		//		$params = $this->fieldMapper->constant_score( $params );
+		//	}
 
 		return $params;
 	}
@@ -277,8 +255,6 @@ class TermsLookup implements ITermsLookup {
 	 * @since 3.0
 	 *
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function ids_filter( $params ): array {
 		if ( $params === [] ) {
@@ -298,8 +274,6 @@ class TermsLookup implements ITermsLookup {
 	 * @since 3.0
 	 *
 	 * @param string $id
-	 *
-	 * @return array
 	 */
 	public function path_filter( $id ): array {
 		$connection = $this->store->getConnection( 'elastic' );
@@ -315,7 +289,7 @@ class TermsLookup implements ITermsLookup {
 
 	private function query_result( Parameters $parameters ): ?array {
 		$connection = $this->store->getConnection( 'elastic' );
-		$info = $parameters->get( 'query.info' );
+		$info = (array)$parameters->get( 'query.info' );
 
 		$params = [
 			'index' => $connection->getIndexName( ElasticClient::TYPE_DATA ),
@@ -331,7 +305,7 @@ class TermsLookup implements ITermsLookup {
 
 		$parameters->set( 'query.info', $info );
 
-		if ( $parameters->get( 'params' ) === [] ) {
+		if ( (array)$parameters->get( 'params' ) === [] ) {
 			return [];
 		}
 
@@ -346,7 +320,7 @@ class TermsLookup implements ITermsLookup {
 		$results = $searchResult->getResults();
 		$count = $searchResult->get( 'count' );
 
-		if ( $count >= $parameters->get( 'threshold' ) ) {
+		if ( (int)$count >= (int)$parameters->get( 'threshold' ) ) {
 			$results = $this->terms_index( $parameters->get( 'id' ), $results );
 		}
 

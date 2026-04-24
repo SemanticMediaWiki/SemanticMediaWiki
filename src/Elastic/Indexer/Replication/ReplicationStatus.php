@@ -48,6 +48,7 @@ class ReplicationStatus {
 			throw new RuntimeException( "`$key` as accessor is unknown!" );
 		}
 
+		// @phan-suppress-next-line PhanParamTooFewUnpack
 		return $this->{$key}( ...$args );
 	}
 
@@ -110,7 +111,6 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return bool|Time
 	 * @throws RuntimeException
 	 */
 	public function getModificationDate( $id ): false|Time {

@@ -30,7 +30,7 @@ abstract class Description {
 	 */
 	private $membership = '';
 
-	public bool $isPartOfDisjunction;
+	public ?bool $isPartOfDisjunction = null;
 	public ?bool $isNegation = null;
 
 	/**

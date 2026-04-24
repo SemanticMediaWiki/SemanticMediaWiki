@@ -10,7 +10,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\DataItems\WikiPage;
-use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
@@ -34,24 +34,12 @@ class Indexer {
 	 */
 	const REQUIRE_SAFE_REPLICATION = 'replication/safe';
 
-	/**
-	 * @var FileIndexer
-	 */
-	private $fileIndexer;
+	private ?FileIndexer $fileIndexer = null;
 
-	/**
-	 * @var string
-	 */
-	private $origin = '';
+	private string $origin = '';
 
-	/**
-	 * @var bool
-	 */
-	private $isRebuild = false;
+	private bool $isRebuild = false;
 
-	/**
-	 * @var
-	 */
 	private array $versions = [];
 
 	/**
@@ -65,8 +53,6 @@ class Indexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param $versions
 	 */
 	public function setVersions( array $versions ): void {
 		$this->versions = $versions;
@@ -74,28 +60,20 @@ class Indexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $origin
 	 */
-	public function setOrigin( $origin ): void {
+	public function setOrigin( string $origin ): void {
 		$this->origin = $origin;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WikiPage $dataItem
-	 *
-	 * @return string
 	 */
-	public function getId( WikiPage $dataItem ) {
+	public function getId( WikiPage $dataItem ): int {
 		return $this->store->getObjectIds()->getId( $dataItem );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function isAccessible(): bool {
 		return $this->canReplicate();
@@ -103,10 +81,8 @@ class Indexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isRebuild
 	 */
-	public function isRebuild( $isRebuild = true ): void {
+	public function isRebuild( bool $isRebuild = true ): void {
 		$this->isRebuild = $isRebuild;
 	}
 
@@ -121,12 +97,8 @@ class Indexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 *
-	 * @return string
 	 */
-	public function getIndexName( $type ): string {
+	public function getIndexName( string $type ): string {
 		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
@@ -140,10 +112,8 @@ class Indexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $idList
 	 */
-	public function delete( array $idList, $isConcept = false ): void {
+	public function delete( array $idList, bool $isConcept = false ): void {
 		if ( $idList === [] ) {
 			return;
 		}
@@ -158,7 +128,7 @@ class Indexer {
 		}
 
 		$params = [
-			'_index' => $this->getIndexName( ElasticClient::TYPE_DATA )
+			'_index' => $this->getIndexName( Client::TYPE_DATA )
 		];
 
 		$this->bulk->clear();
@@ -173,14 +143,16 @@ class Indexer {
 			if ( $isConcept ) {
 				$this->bulk->delete(
 					[
-						'_index' => $this->getIndexName( ElasticClient::TYPE_LOOKUP ),
+						'_index' => $this->getIndexName( Client::TYPE_LOOKUP ),
 						'_id' => md5( $id )
 					]
 				);
 			}
 		}
 
-		$response = $this->bulk->execute();
+		$this->bulk->execute();
+
+		$response = $this->bulk->getResponse();
 
 		$this->logger->info(
 			[
@@ -201,9 +173,6 @@ class Indexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WikiPage $dataItem
-	 * @param array $data
 	 */
 	public function create( WikiPage $dataItem, array $data = [] ): void {
 		$title = $dataItem->getTitle();
@@ -224,7 +193,7 @@ class Indexer {
 		$connection = $this->store->getConnection( 'elastic' );
 
 		$params = [
-			'index' => $this->getIndexName( ElasticClient::TYPE_DATA ),
+			'index' => $this->getIndexName( Client::TYPE_DATA ),
 			'id'	=> $dataItem->getId()
 		];
 
@@ -250,12 +219,8 @@ class Indexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WikiPage|Title|int $id
-	 *
-	 * @return string
 	 */
-	public function fetchNativeData( $id ) {
+	public function fetchNativeData( WikiPage|Title|int $id ): string {
 		if ( $id instanceof WikiPage ) {
 			$id = $id->getTitle();
 		}
@@ -281,11 +246,11 @@ class Indexer {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Document $document
-	 * @param string $type
 	 */
-	public function indexDocument( Document $document, $type = self::REQUIRE_SAFE_REPLICATION ): void {
+	public function indexDocument(
+		Document $document,
+		string $type = self::REQUIRE_SAFE_REPLICATION
+	): void {
 		Timer::start( __METHOD__ );
 
 		$subject = $document->getSubject();
@@ -296,7 +261,7 @@ class Indexer {
 		}
 
 		$params = [
-			'_index' => $this->getIndexName( ElasticClient::TYPE_DATA )
+			'_index' => $this->getIndexName( Client::TYPE_DATA )
 		];
 
 		$this->bulk->clear();
@@ -327,7 +292,7 @@ class Indexer {
 		$connection = $this->store->getConnection( 'elastic' );
 
 		// Make sure a node is available and is not locked by the rebuilder
-		if ( !$connection->hasLock( ElasticClient::TYPE_DATA ) && $connection->ping() ) {
+		if ( !$connection->hasLock( Client::TYPE_DATA ) && $connection->ping() ) {
 			return true;
 		}
 

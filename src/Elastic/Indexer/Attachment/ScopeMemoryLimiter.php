@@ -25,17 +25,13 @@ class ScopeMemoryLimiter {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
-	public function getMemoryLimit(): int {
+	public function getMemoryLimit(): string|false {
 		return ini_get( 'memory_limit' );
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param callable $callable
 	 */
 	public function execute( callable $callable ): void {
 		$memory_limit = ini_get( 'memory_limit' );

@@ -108,6 +108,9 @@ class Query implements QueryContext {
 	 */
 	private $options = [];
 
+	// Used in other files
+	public string $native_result = '';
+
 	/**
 	 * @since 1.6
 	 */

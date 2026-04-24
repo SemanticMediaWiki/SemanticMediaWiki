@@ -10,9 +10,9 @@ use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Options;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Query;
-use SMW\Query\QueryResult;
 use SMW\Query\ScoreSet;
 use SMW\QueryEngine as IQueryEngine;
+use SMW\QueryFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -26,10 +26,7 @@ class QueryEngine implements IQueryEngine {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var QueryFactory
-	 */
-	private $queryFactory;
+	private QueryFactory $queryFactory;
 
 	private FieldMapper $fieldMapper;
 
@@ -37,10 +34,7 @@ class QueryEngine implements IQueryEngine {
 
 	private array $errors = [];
 
-	/**
-	 * @var array
-	 */
-	private $queryInfo = [];
+	private array $queryInfo = [];
 
 	/**
 	 * @since 3.0
@@ -65,8 +59,6 @@ class QueryEngine implements IQueryEngine {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param []
 	 */
 	public function getQueryInfo(): array {
 		return $this->queryInfo;
@@ -75,12 +67,10 @@ class QueryEngine implements IQueryEngine {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Query $query
-	 *
-	 * @return QueryResult
+	 * @return mixed depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
-// if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
+		// if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 
 		if ( ( $query->getDescription() instanceof ThingDescription ) &&
 				$query->querymode != Query::MODE_DEBUG &&
@@ -233,7 +223,7 @@ class QueryEngine implements IQueryEngine {
 			false
 		);
 
-		$count = isset( $result['count'] ) ? $result['count'] : 0;
+		$count = $result['count'] ?? 0;
 		$queryResult->setCountValue( $count );
 
 		$this->queryInfo['info'] = $result;
@@ -294,7 +284,7 @@ class QueryEngine implements IQueryEngine {
 
 				try {
 					$property = Property::newFromUserLabel( $dbKey );
-				} catch ( PredefinedPropertyLabelMismatchException $e ) {
+				} catch ( PredefinedPropertyLabelMismatchException ) {
 					// Keep the dataItem as-is, this may hint to an outdated
 					// predefined property
 				}
@@ -331,7 +321,8 @@ class QueryEngine implements IQueryEngine {
 	}
 
 	private function addHighlight( array &$body ): void {
-		if ( ( $type = $this->options->dotGet( 'query.highlight.fragment.type', false ) ) === false ) {
+		$type = $this->options->dotGet( 'query.highlight.fragment.type', false );
+		if ( $type === false ) {
 			return;
 		}
 

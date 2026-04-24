@@ -7,7 +7,9 @@ use SMW\DataItems\Boolean;
 use SMW\DataItems\Number;
 use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
+use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
+use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Query\Language\ValueDescription;
 use SMW\Utils\CharExaminer;
 
@@ -19,10 +21,7 @@ use SMW\Utils\CharExaminer;
  */
 class ValueDescriptionInterpreter {
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private ?FieldMapper $fieldMapper = null;
 
 	/**
 	 * @since 3.0
@@ -33,11 +32,13 @@ class ValueDescriptionInterpreter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ValueDescription $description
-	 *
 	 * @return Condition
+	 * @throws RuntimeException
 	 */
-	public function interpretDescription( ValueDescription $description, $isConjunction = false ) {
+	public function interpretDescription(
+		ValueDescription $description,
+		bool $isConjunction = false
+	) {
 		$dataItem = $description->getDataItem();
 		$comparator = $description->getComparator();
 

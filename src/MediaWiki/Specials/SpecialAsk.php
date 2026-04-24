@@ -692,8 +692,7 @@ class SpecialAsk extends SpecialPage {
 			$queryobj
 		);
 
-		if ( $this->getRequest()->getVal( 'native_result', false ) && isset( $queryobj->native_result ) ) {
-			// @phan-suppress-next-line PhanUndeclaredProperty
+		if ( $this->getRequest()->getVal( 'native_result', false ) && $queryobj->native_result !== '' ) {
 			$native_result = $queryobj->native_result;
 		}
 

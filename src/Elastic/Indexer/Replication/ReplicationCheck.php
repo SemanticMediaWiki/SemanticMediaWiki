@@ -31,17 +31,11 @@ class ReplicationCheck {
 
 	private string $errorTitle = '';
 
-	/**
-	 * @var string
-	 */
-	private $languageCode = '';
+	private mixed $languageCode = '';
 
 	private string $severityType = self::SEVERITY_TYPE_ERROR;
 
-	/**
-	 * @var int
-	 */
-	private $cacheTTL = 3600;
+	private int $cacheTTL = 3600;
 
 	/**
 	 * @since 3.1
@@ -57,8 +51,6 @@ class ReplicationCheck {
 	 * @since 3.1
 	 *
 	 * @param WikiPage $subject
-	 *
-	 * @return string
 	 */
 	public static function makeCacheKey( $subject ): string {
 		if ( $subject instanceof WikiPage ) {
@@ -70,8 +62,6 @@ class ReplicationCheck {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return
 	 */
 	public function getReplicationFailures() {
 		return $this->entityCache->fetch( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
@@ -106,17 +96,13 @@ class ReplicationCheck {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ): void {
+	public function setCacheTTL( int $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL > 0 ? $cacheTTL : 3600;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getErrorTitle(): string {
 		return $this->errorTitle;
@@ -124,8 +110,6 @@ class ReplicationCheck {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getSeverityType(): string {
 		return $this->severityType;
@@ -133,10 +117,6 @@ class ReplicationCheck {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function process( array $parameters ): array {
 		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
@@ -157,11 +137,6 @@ class ReplicationCheck {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param WikiPage $subject
-	 * @param array $options
-	 *
-	 * @return string
 	 */
 	public function checkReplication( WikiPage $subject, array $options = [] ): string {
 		$this->templateEngine = new TemplateEngine();
@@ -191,10 +166,10 @@ class ReplicationCheck {
 			return $this->wrapHTML( $this->maintenanceError() );
 		}
 
-		return $this->check( $subject, $options );
+		return $this->check( $subject );
 	}
 
-	private function check( WikiPage $subject, array $options ): string {
+	private function check( WikiPage $subject ): string {
 		$error = $this->documentReplicationExaminer->check(
 			$subject,
 			[
@@ -242,7 +217,7 @@ class ReplicationCheck {
 		} elseif ( $error->is( ReplicationError::TYPE_ASSOCIATED_REVISION_DIFF ) ) {
 			$html = $this->associatedRevisionDiffError( $error, $title_text );
 		} elseif ( $error->is( ReplicationError::TYPE_FILE_ATTACHMENT_MISSING ) ) {
-			$html = $this->fileAttachmentError( $error, $title_text );
+			$html = $this->fileAttachmentError( $title_text );
 		} else {
 			$html = $this->missingDocumentError( $error, $title_text );
 		}
@@ -442,7 +417,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function fileAttachmentError( ReplicationError $error, $title_text ): string {
+	private function fileAttachmentError( $title_text ): string {
 		$html = '';
 		$this->severityType = self::SEVERITY_TYPE_WARNING;
 
