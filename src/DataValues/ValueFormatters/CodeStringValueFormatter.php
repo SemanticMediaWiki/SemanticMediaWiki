@@ -28,7 +28,6 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 * @param int $type
 	 * @param mixed $linker
 	 *
-	 * @return string
 	 * @see StringValueFormatter::doFormat
 	 */
 	protected function doFormat( $dataValue, $type, $linker ): string {
@@ -63,8 +62,6 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 * @since 2.5
 	 *
 	 * @param string $string
-	 *
-	 * @return string
 	 */
 	public static function asJson( $string, $flag = 0 ): string|false {
 		if ( $flag > 0 ) {
@@ -80,6 +77,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 			return false;
 		}
 
+		// @phan-suppress-next-line PhanPluginUseReturnValueInternalKnown
 		json_decode( $string );
 
 		return ( json_last_error() == JSON_ERROR_NONE );

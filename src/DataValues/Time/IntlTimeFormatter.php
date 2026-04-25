@@ -20,10 +20,7 @@ class IntlTimeFormatter {
 	const LOCL_TIMEZONE = 0x2;
 	const LOCL_TIMEOFFSET = 0x4;
 
-	/**
-	 * @var bool
-	 */
-	private $hasLocalTimeCorrection = false;
+	private bool $hasLocalTimeCorrection = false;
 
 	/**
 	 * @since 2.4
@@ -39,8 +36,6 @@ class IntlTimeFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function hasLocalTimeCorrection(): bool {
 		return $this->hasLocalTimeCorrection;
@@ -50,24 +45,18 @@ class IntlTimeFormatter {
 	 * @since 2.4
 	 *
 	 * @param int $formatFlag
-	 *
-	 * @return string|bool
 	 */
-	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ): false|string|array {
+	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ): string|array {
 		$dateTime = $this->dataItem->asDateTime();
 		$timezone = '';
 
 		$this->hasLocalTimeCorrection = false;
 
-		if ( !$dateTime ) {
-			return false;
-		}
-
 		$localizer = Localizer::getInstance();
 
 		if ( ( self::LOCL_TIMEOFFSET & $formatFlag ) != 0 ) {
 			$dateTime = $localizer->getLocalTime( $dateTime );
-			$this->hasLocalTimeCorrection = isset( $dateTime->hasLocalTimeCorrection ) ? $dateTime->hasLocalTimeCorrection : false;
+			$this->hasLocalTimeCorrection = $dateTime->hasLocalTimeCorrection ?? false;
 		}
 
 		if ( ( self::LOCL_TIMEZONE & $formatFlag ) != 0 ) {
@@ -108,15 +97,9 @@ class IntlTimeFormatter {
 	 * @since 2.4
 	 *
 	 * @param string $format
-	 *
-	 * @return string|bool
 	 */
-	public function format( $format ): string|false {
+	public function format( $format ): string {
 		$dateTime = $this->dataItem->asDateTime();
-
-		if ( !$dateTime ) {
-			return false;
-		}
 
 		$output = $this->formatWithLocalizedTextReplacement(
 			$dateTime,

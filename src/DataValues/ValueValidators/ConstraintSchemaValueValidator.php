@@ -3,7 +3,6 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\Constraint\ConstraintCheckRunner;
-use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 use SMW\Schema\SchemaFinder;
@@ -19,27 +18,13 @@ use SMW\Schema\SchemaList;
  */
 class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 
-	/**
-	 * @var
-	 */
 	private array $schemaLists = [];
 
-	/**
-	 * @var bool
-	 */
-	private $hasConstraintViolation = false;
+	private bool $hasConstraintViolation = false;
 
 	private bool $postUpdateCheck = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
-
-	/**
-	 * @var WikiPage
-	 */
-	private $contextPage;
+	private bool $isCommandLineMode = false;
 
 	/**
 	 * @since 3.1
@@ -52,10 +37,8 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ): void {
+	public function isCommandLineMode( bool $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 

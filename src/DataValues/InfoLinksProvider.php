@@ -154,7 +154,9 @@ class InfoLinksProvider {
 			$infoLink->setCompactLink( $this->compactLink );
 		}
 
-		$this->infoLinks[] = $infoLink;
+		if ( $infoLink !== null ) {
+			$this->infoLinks[] = $infoLink;
+		}
 		$this->hasSearchLink = $this->infoLinks !== [];
 
 		// add further service links

@@ -184,6 +184,7 @@ class PropertyChainValue extends StringValue {
 		// Foo.Bar.Foobar.Baz
 		$last = array_pop( $chain );
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$this->lastPropertyChainValue = DataValueFactory::getInstance()->newPropertyValueByLabel( $last );
 
 		if ( !$this->lastPropertyChainValue->isValid() ) {
@@ -204,6 +205,7 @@ class PropertyChainValue extends StringValue {
 
 			$propertyValue->copyOptions( $this->getOptions() );
 
+			// @phan-suppress-next-line PhanTypeMismatchProperty
 			$this->propertyValues[] = $propertyValue;
 		}
 	}

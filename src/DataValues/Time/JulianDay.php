@@ -44,8 +44,19 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return float
 	 */
-	public static function getJD( $calendarModel, $year, $month, $day, $hour, $minute, $second ): float {
-		return self::format( self::date2JD( $calendarModel, $year, $month, $day ) + self::time2JDoffset( $hour, $minute, $second ) );
+	public static function getJD(
+		$calendarModel,
+		$year,
+		$month,
+		$day,
+		$hour,
+		$minute,
+		$second
+	): float {
+		return self::format(
+			self::date2JD( $calendarModel, $year, $month, $day ) +
+			self::time2JDoffset( $hour, $minute, $second )
+		);
 	}
 
 	/**
@@ -58,8 +69,6 @@ class JulianDay implements CalendarModel {
 	 * @since 3.0
 	 *
 	 * @param $value
-	 *
-	 * @return float
 	 */
 	public static function format( $value ): float {
 		// Keep microseconds to a certain degree distinguishable
@@ -72,9 +81,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @since 2.4
 	 *
-	 * @param float jdValue
-	 *
-	 * @return float
+	 * @param float $jdValue
 	 */
 	public static function getModifiedJulianDate( $jdValue ): float {
 		return $jdValue - self::MJD;
@@ -85,12 +92,11 @@ class JulianDay implements CalendarModel {
 	 * calendar model. This calculation assumes that neither calendar
 	 * has a year 0.
 	 *
-	 * @param $calendarmodel integer either CM_GREGORIAN or CM_JULIAN
-	 * @param $year integer representing the year
-	 * @param $month integer representing the month
-	 * @param $day integer representing the day
+	 * @param int $calendarmodel integer either CM_GREGORIAN or CM_JULIAN
+	 * @param int $year integer representing the year
+	 * @param int $month integer representing the month
+	 * @param int $day integer representing the day
 	 *
-	 * @return float Julian Day number
 	 * @throws RuntimeException
 	 */
 	protected static function date2JD( $calendarmodel, $year, $month, $day ): float {
@@ -114,9 +120,9 @@ class JulianDay implements CalendarModel {
 	 * Compute the offset for the Julian Day number from a given time.
 	 * This computation is the same for all calendar models.
 	 *
-	 * @param $hours integer representing the hour
-	 * @param $minutes integer representing the minutes
-	 * @param $seconds integer representing the seconds
+	 * @param int $hours integer representing the hour
+	 * @param int $minutes integer representing the minutes
+	 * @param int $seconds integer representing the seconds
 	 *
 	 * @return float offset for a Julian Day number to get this time
 	 */
@@ -132,10 +138,9 @@ class JulianDay implements CalendarModel {
 	 * conversion to Gregorian needs positive JD. If this happens, wrong
 	 * values will be returned. Avoid date conversions before 10000 BCE.
 	 *
-	 * @param $jdValue float number of Julian Days
+	 * @param float $jdValue float number of Julian Days
 	 * @param null $calendarModel integer either CM_GREGORIAN or CM_JULIAN
 	 *
-	 * @return array( calendarModel, yearnumber, monthnumber, daynumber )
 	 * @throws RuntimeException
 	 */
 	public static function JD2Date( $jdValue, $calendarModel = null ): array {
@@ -147,11 +152,11 @@ class JulianDay implements CalendarModel {
 			$jdValue += 2921940; // add the days of 8000 years (this algorithm only works for positive JD)
 			$j = floor( $jdValue + 0.5 ) + 32044;
 			$g = floor( $j / 146097 );
-			$dg = $j % 146097;
+			$dg = (int)$j % 146097;
 			$c = floor( ( ( floor( $dg / 36524 ) + 1 ) * 3 ) / 4 );
 			$dc = $dg - $c * 36524;
 			$b = floor( $dc / 1461 );
-			$db = $dc % 1461;
+			$db = (int)$dc % 1461;
 			$a = floor( ( ( floor( $db / 365 ) + 1 ) * 3 ) / 4 );
 			$da = $db - ( $a * 365 );
 			$y = $g * 400 + $c * 100 + $b * 4 + $a;
@@ -159,7 +164,7 @@ class JulianDay implements CalendarModel {
 			$d = $da - floor( ( ( $m + 4 ) * 153 ) / 5 ) + 122;
 
 			$year  = $y - 4800 + floor( ( $m + 2 ) / 12 ) - 8000;
-			$month = ( ( $m + 2 ) % 12 + 1 );
+			$month = ( ( (int)$m + 2 ) % 12 + 1 );
 			$day   = $d + 1;
 		} elseif ( $calendarModel === self::CM_JULIAN ) {
 			$b = floor( $jdValue + 0.5 ) + 1524;
@@ -183,16 +188,14 @@ class JulianDay implements CalendarModel {
 	 * Extract the time from a Julian Day number and return it as a string.
 	 * This conversion is the same for all calendar models.
 	 *
-	 * @param $jdvalue float number of Julian Days
-	 *
-	 * @return array( hours, minutes, seconds )
+	 * @param float $jdvalue float number of Julian Days
 	 */
 	public static function JD2Time( $jdvalue ): array {
 		$wjd = $jdvalue + 0.5;
 		$fraction = $wjd - floor( $wjd );
 		$time = round( $fraction * 3600 * 24 );
 		$hours = floor( $time / 3600 );
-		$time = $time - $hours * 3600;
+		$time -= ( $hours * 3600 );
 		$minutes = floor( $time / 60 );
 		$seconds = floor( $time - $minutes * 60 );
 		return [ $hours, $minutes, $seconds ];

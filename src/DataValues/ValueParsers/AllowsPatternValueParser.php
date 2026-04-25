@@ -25,8 +25,6 @@ class AllowsPatternValueParser implements ValueParser {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -60,7 +58,7 @@ class AllowsPatternValueParser implements ValueParser {
 			return null;
 		}
 
-		$contents = $contents ?? '';
+		$contents ??= '';
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
 
 		// Get definition from first line

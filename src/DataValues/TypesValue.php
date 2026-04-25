@@ -57,15 +57,13 @@ class TypesValue extends DataValue {
 	 * @since 1.6
 	 *
 	 * @param string $typeId
-	 *
-	 * @return TypesValue
 	 */
 	public static function newFromTypeId( $typeId ): TypesValue {
 		$result = new TypesValue( self::TYPE_ID );
 
 		try {
 			$dataItem = self::getTypeUriFromTypeId( $typeId );
-		} catch ( DataItemException $e ) {
+		} catch ( DataItemException ) {
 			$dataItem = self::getTypeUriFromTypeId( 'notype' );
 		}
 
@@ -78,8 +76,6 @@ class TypesValue extends DataValue {
 	 * @since 1.6
 	 *
 	 * @param string $typeId
-	 *
-	 * @return Uri
 	 */
 	public static function getTypeUriFromTypeId( $typeId ): Uri {
 		return new Uri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
@@ -207,7 +203,7 @@ class TypesValue extends DataValue {
 
 		try {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
-		} catch ( DataItemException $e ) {
+		} catch ( DataItemException ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
 			$this->addErrorMsg( [ 'smw-datavalue-type-invalid-typeuri', $this->m_typeId ] );
 		}
