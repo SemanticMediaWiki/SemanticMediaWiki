@@ -189,7 +189,9 @@ class Timezone {
 	/**
 	 * @since 2.5
 	 */
-	public static function getTimezoneLiteralById( int $identifer ): int|string|false {
+	public static function getTimezoneLiteralById(
+		string|int|false $identifer
+	): int|string|false {
 		foreach ( self::$shortList as $abbreviation => $value ) {
 			if ( is_numeric( $identifer ) && $value[0] == $identifer ) {
 				return $abbreviation;
