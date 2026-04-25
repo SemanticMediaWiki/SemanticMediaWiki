@@ -572,7 +572,7 @@ class WikiPageValue extends DataValue {
 	 * @return int
 	 */
 	private function getArticleID() {
-		if ( $this->m_id === false ) {
+		if ( $this->m_id === -1 ) {
 			$this->m_id = $this->getTitle() !== null ? $this->m_title->getArticleID() : 0;
 		}
 

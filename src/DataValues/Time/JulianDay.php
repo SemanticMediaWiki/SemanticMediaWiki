@@ -139,7 +139,7 @@ class JulianDay implements CalendarModel {
 	 * values will be returned. Avoid date conversions before 10000 BCE.
 	 *
 	 * @param float $jdValue float number of Julian Days
-	 * @param null $calendarModel integer either CM_GREGORIAN or CM_JULIAN
+	 * @param int|null $calendarModel integer either CM_GREGORIAN or CM_JULIAN
 	 *
 	 * @throws RuntimeException
 	 */

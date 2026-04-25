@@ -2,7 +2,6 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
-use MediaWiki\Linker\Linker;
 use RuntimeException;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
@@ -68,7 +67,7 @@ class StringValueFormatter extends DataValueFormatter {
 	protected function doFormat(
 		StringValue $dataValue,
 		int $type,
-		Linker|null|false $linker
+		mixed $linker
 	): string {
 		$text = $dataValue->getDataItem()->getString();
 		$length = mb_strlen( $text );
@@ -105,7 +104,7 @@ class StringValueFormatter extends DataValueFormatter {
 	private function getAbbreviatedText(
 		string $text,
 		int $length,
-		Linker|null|false $linker
+		mixed $linker
 	): string {
 		if ( $linker === false || $linker === null ) {
 			$ellipsis = ' <span class="smwwarning">…</span> ';
