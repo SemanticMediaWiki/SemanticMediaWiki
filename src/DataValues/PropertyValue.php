@@ -289,7 +289,8 @@ class PropertyValue extends DataValue {
 	 * properties without any label).
 	 */
 	public function getWikiPageValue(): ?DataValue {
-		if ( $this->m_wikipage !== null ) {
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
+		if ( isset( $this->m_wikipage ) ) {
 			return $this->m_wikipage;
 		}
 
