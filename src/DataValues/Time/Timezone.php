@@ -119,9 +119,9 @@ class Timezone {
 	 * where they appear in the name of a location ...  names have a maximum
 	 * length of 14 characters ..."
 	 */
-	private static $dateTimeZoneList = [];
+	private static array $dateTimeZoneList = [];
 
-	private static $offsetCache = [];
+	private static array $offsetCache = [];
 
 	/**
 	 * @since 2.5
