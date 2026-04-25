@@ -178,7 +178,8 @@ class BooleanValue extends DataValue {
 			return false;
 		}
 
-		if ( $useformat && ( $this->trueCaption !== null ) ) {
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
+		if ( $useformat && ( isset( $this->trueCaption ) ) ) {
 			return $this->m_dataitem->getBoolean() ? $this->trueCaption : $this->falseCaption;
 		}
 
