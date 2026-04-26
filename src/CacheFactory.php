@@ -31,11 +31,7 @@ class CacheFactory {
 	 * @param string|int|null $mainCacheType
 	 */
 	public function __construct( $mainCacheType = null ) {
-		$this->mainCacheType = $mainCacheType;
-
-		if ( $this->mainCacheType === null ) {
-			$this->mainCacheType = $GLOBALS['smwgMainCacheType'];
-		}
+		$this->mainCacheType = $mainCacheType ?? $GLOBALS['smwgMainCacheType'];
 	}
 
 	/**
@@ -61,8 +57,6 @@ class CacheFactory {
 	 * @since 2.2
 	 *
 	 * @param Title|int|string $key
-	 *
-	 * @return string
 	 */
 	public static function getPurgeCacheKey( $key ): string {
 		if ( $key instanceof Title ) {
@@ -75,9 +69,6 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param array $cacheOptions
-	 *
-	 * @return object
 	 * @throws RuntimeException
 	 */
 	public function newCacheOptions( array $cacheOptions ): stdClass {
