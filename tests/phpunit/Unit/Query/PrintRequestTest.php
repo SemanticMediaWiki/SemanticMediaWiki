@@ -37,20 +37,18 @@ class PrintRequestTest extends TestCase {
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( new Property( 'Foo' ) );
 
-		$instance = new PrintRequest( PrintRequest::PRINT_PROP, '', $propertyValue );
+		$instance = new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue );
 
 		$this->assertEquals(
 			'Foo',
 			$instance->getCanonicalLabel()
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertNull(
 			$instance->getLabel()
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertNull(
 			$instance->getWikiText()
 		);
 
