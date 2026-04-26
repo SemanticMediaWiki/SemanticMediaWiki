@@ -129,7 +129,7 @@ abstract class DataValue {
 	/**
 	 * The text label to be used for output or false if none given.
 	 */
-	protected string|int|false $m_caption = false;
+	protected string|int|false|null $m_caption = null;
 
 	/**
 	 * Output formatting string, false when not set.
