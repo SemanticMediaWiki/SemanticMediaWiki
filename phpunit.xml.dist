@@ -76,7 +76,6 @@
     <var name="benchmarkPageEditRepetitionCount" value="50"/>
   </php>
   <extensions>
-    <extension class="MediaWikiLoggerPHPUnitExtension" />
     <extension class="MediaWikiTeardownPHPUnitExtension" />
   </extensions>
 </phpunit>
