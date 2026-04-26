@@ -60,4 +60,8 @@
     <var name="benchmarkPageCopyCount" value="1000"/>
     <var name="benchmarkPageEditRepetitionCount" value="50"/>
   </php>
+	<extensions>
+		<extension class="MediaWikiLoggerPHPUnitExtension" />
+		<extension class="MediaWikiTeardownPHPUnitExtension" />
+	</extensions>
 </phpunit>
