@@ -108,7 +108,7 @@
 		"phpcs-fix": "phpcbf",
 		"phpunit": [
 			"Composer\\Config::disableProcessTimeout",
-			"cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 composer phpunit"
+			"cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 composer phpunit -- extensions/SemanticMediaWiki/tests/phpunit/"
 		],
 		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
 		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
