@@ -12,7 +12,8 @@
           beStrictAboutTestsThatDoNotTestAnything="true"
           printerClass="SMW\Tests\PHPUnitResultPrinter"
           printerFile="tests/phpunit/PHPUnitResultPrinter.php"
-          stderr="true" verbose="true"
+          stderr="true"
+          verbose="true"
           xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage includeUncoveredFiles="true">
     <include>
