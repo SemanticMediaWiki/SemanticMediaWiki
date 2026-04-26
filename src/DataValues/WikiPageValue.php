@@ -278,7 +278,7 @@ class WikiPageValue extends DataValue {
 		if ( $linked === null || $linked === false ||
 			$this->m_outformat == '-' || !$this->isValid() ||
 			$this->m_caption === '' ) {
-			$text = $this->m_caption !== false && $this->m_caption !== null ?
+			$text = $this->m_caption !== false ?
 				$this->m_caption :
 				$this->getWikiValue();
 
