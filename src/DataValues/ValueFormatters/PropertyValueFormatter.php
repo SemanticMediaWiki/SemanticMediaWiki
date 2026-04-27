@@ -52,7 +52,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		$this->dataValue = $dataValue;
 
 		$type = $options[0];
-		$linker = isset( $options[1] ) ? $options[1] : null;
+		$linker = $options[1] ?? null;
 
 		if ( !$this->dataValue->isVisible() ) {
 			return '';
@@ -70,7 +70,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 			return $this->getSearchLabel();
 		}
 
-		$wikiPageValue = $this->prepareWikiPageValue( $linker );
+		$wikiPageValue = $this->prepareWikiPageValue();
 		$text = '';
 
 		if ( $wikiPageValue === null ) {
@@ -199,7 +199,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		return $this->dataValue->getDataItem()->getLabel();
 	}
 
-	private function prepareWikiPageValue( $linker = null ) {
+	private function prepareWikiPageValue() {
 		$wikiPageValue = $this->dataValue->getWikiPageValue();
 
 		if ( $wikiPageValue === null ) {

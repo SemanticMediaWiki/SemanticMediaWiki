@@ -17,14 +17,16 @@ use SMW\DataItems\DataItem;
  */
 class ConceptValue extends DataValue {
 
+	/**
+	 * @throws Exception
+	 */
 	protected function parseUserValue( $value ): never {
+		// @phan-suppress-next-line MediaWikiNoBaseException
 		throw new Exception( 'Concepts cannot be initialized from user-provided strings. This should not happen.' );
 	}
 
 	/**
 	 * @see DataValue::loadDataItem()
-	 * @param $dataItem DataItem
-	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_CONCEPT ) {
@@ -38,7 +40,7 @@ class ConceptValue extends DataValue {
 	}
 
 	protected function clear(): void {
-		$this->m_dataitem = new Concept( '', '', 0, -1, -1, $this->m_typeid );
+		$this->m_dataitem = new Concept( '', '', 0, -1, -1 );
 	}
 
 	public function getShortWikiText( $linked = null ) {

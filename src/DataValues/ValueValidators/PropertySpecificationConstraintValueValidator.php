@@ -77,7 +77,7 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 	}
 
 	private function isKnownByLabelAndLanguage( array $value, $dbkey ) {
-		$lang = isset( $value['_LCODE'] ) ? $value['_LCODE'] : false;
+		$lang = $value['_LCODE'] ?? false;
 
 		if ( !isset( self::$inMemoryLabelToLanguageTracer[$dbkey] ) ) {
 			self::$inMemoryLabelToLanguageTracer[$dbkey] = [];

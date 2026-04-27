@@ -177,14 +177,16 @@ class TimeValue extends DataValue {
 			}
 		} elseif ( $this->isTimestamp( $value ) ) {
 			$this->m_dataitem = Time::newFromTimestamp( $value );
-		} elseif ( ( $components = $timeValueParser->parse( $value ) ) ) {
+		} else {
+			$components = $timeValueParser->parse( $value );
+			if ( $components instanceof Components ) {
+				$calendarmodel = $components->get( 'calendarmodel' );
 
-			$calendarmodel = $components->get( 'calendarmodel' );
-
-			if ( ( $calendarmodel == 'JD' ) || ( $calendarmodel == 'MJD' ) ) {
-				$this->setDateFromJD( $components );
-			} else {
-				$this->setDateFromParsedValues( $components );
+				if ( ( $calendarmodel == 'JD' ) || ( $calendarmodel == 'MJD' ) ) {
+					$this->setDateFromJD( $components );
+				} else {
+					$this->setDateFromParsedValues( $components );
+				}
 			}
 		}
 
@@ -288,7 +290,7 @@ class TimeValue extends DataValue {
 	/**
 	 * Initialise data from an anticipated JD value.
 	 */
-	private function setDateFromJD( $components ): void {
+	private function setDateFromJD( Components $components ): void {
 		$datecomponents = $components->get( 'datecomponents' );
 		$calendarmodel = $components->get( 'calendarmodel' );
 		$era = $components->get( 'era' );
@@ -314,12 +316,8 @@ class TimeValue extends DataValue {
 	 * parsing, assuming that a conventional date notation is used.
 	 * If errors occur, error messages are added to the objects list of
 	 * errors, and false is returned. Otherwise, true is returned.
-	 *
-	 * @param $components
-	 *
-	 * @return bool stating if successful
 	 */
-	protected function setDateFromParsedValues( $components ): bool {
+	protected function setDateFromParsedValues( Components $components ): bool {
 		$datecomponents = $components->get( 'datecomponents' );
 		$calendarmodel = $components->get( 'calendarmodel' );
 		$era = $components->get( 'era' );
@@ -338,6 +336,7 @@ class TimeValue extends DataValue {
 
 		// Handle BC: the year is negative.
 		if ( ( $era == '-' ) && ( $date['y'] > 0 ) ) { // see class documentation on BC, "year 0", and ISO conformance ...
+			// @phan-suppress-next-line PhanTypeInvalidUnaryOperandNumeric
 			$date['y'] = -( $date['y'] );
 		}
 
@@ -527,7 +526,7 @@ class TimeValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getWikiValue(): string {
-		return $this->m_wikivalue ? $this->m_wikivalue : strip_tags( $this->getLongWikiText() );
+		return $this->m_wikivalue ?: strip_tags( $this->getLongWikiText() );
 	}
 
 	/**
@@ -546,8 +545,6 @@ class TimeValue extends DataValue {
 	 * there is no year 0.
 	 *
 	 * @param $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
-	 *
-	 * @return mixed typically a number but possibly false
 	 */
 	public function getYear( $calendarmodel = Time::CM_GREGORIAN ): int|false {
 		$dataItem = $this->getDataItemForCalendarModel(
@@ -607,8 +604,6 @@ class TimeValue extends DataValue {
 
 	/**
 	 * @see TimeValueFormatter::getTimeStringFromDataItem
-	 *
-	 * @return
 	 */
 	public function getTimeString( $default = '00:00:00' ) {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->getTimeString( $default );
@@ -645,7 +640,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @param $calendarmodel integer one of Time::CM_GREGORIAN or Time::CM_JULIAN
 	 *
-	 * @return Time
+	 * @return ?Time
 	 */
 	public function getDataItemForCalendarModel( $calendarmodel ) {
 		if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
@@ -663,8 +658,13 @@ class TimeValue extends DataValue {
 		}
 	}
 
+	/**
+	 * @suppress PhanRedundantCondition
+	 */
 	private function isYear( string $value ): bool {
-		return strpos( $value, ' ' ) === false && is_numeric( strval( $value ) ) && ( strval( $value ) < 0 || strlen( $value ) < 6 );
+		return strpos( $value, ' ' ) === false &&
+			is_numeric( strval( $value ) ) &&
+			( strval( $value ) < 0 || strlen( $value ) < 6 );
 	}
 
 	private function isTimestamp( string $value ): bool {

@@ -50,7 +50,7 @@ class QuantityValue extends NumberValue {
 			$this->m_unitin = $this->m_unitids[$unit];
 			// phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.assert
 			assert( $this->m_unitfactors[$this->m_unitin] != 0 /* Should be filtered by initConversionData() */ );
-			$this->m_dataitem = new Number( $number / $this->m_unitfactors[$this->m_unitin], $this->m_typeid );
+			$this->m_dataitem = new Number( $number / $this->m_unitfactors[$this->m_unitin] );
 			return true;
 		} else { // unsupported unit
 			return false;
@@ -114,7 +114,7 @@ class QuantityValue extends NumberValue {
 		}
 
 		$asPrefix = isset( $this->prefixalUnitPreference[$printunit] ) && $this->prefixalUnitPreference[$printunit];
-		$this->m_unitin = isset( $this->m_unitids[$printunit] ) ? $this->m_unitids[$printunit] : 0;
+		$this->m_unitin = $this->m_unitids[$printunit] ?? 0;
 
 		// This array depends on m_unitin if displayunits were used, better
 		// invalidate it here
@@ -155,9 +155,9 @@ class QuantityValue extends NumberValue {
 		return $this->m_mainunit;
 	}
 
-/// The remaining functions are relatively "private" but are kept protected since
-/// subclasses might exploit this to, e.g., "fake" conversion factors instead of
-/// getting them from the database. A cheap way of making built-in types.
+	/// The remaining functions are relatively "private" but are kept protected since
+	/// subclasses might exploit this to, e.g., "fake" conversion factors instead of
+	/// getting them from the database. A cheap way of making built-in types.
 
 	/**
 	 * This method initializes $m_unitfactors, $m_unitids, and $m_mainunit.

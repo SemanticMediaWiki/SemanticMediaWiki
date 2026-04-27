@@ -17,17 +17,12 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class PatternConstraintValueValidator implements ConstraintValueValidator {
 
-	/**
-	 * @var AllowsPatternContentParser
-	 */
-	private $allowsPatternValueParser;
+	private AllowsPatternValueParser $allowsPatternValueParser;
 
 	private bool $hasConstraintViolation = false;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param AllowsPatternValueParser $allowsPatternValueParser
 	 */
 	public function __construct( AllowsPatternValueParser $allowsPatternValueParser ) {
 		$this->allowsPatternValueParser = $allowsPatternValueParser;
@@ -90,7 +85,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 		}
 
 		if ( substr( $pattern, -1 ) !== '/' ) {
-			$pattern = $pattern . '/';
+			$pattern .= '/';
 		}
 
 		// @to suppress any errors caused by an invalid regex, the user should

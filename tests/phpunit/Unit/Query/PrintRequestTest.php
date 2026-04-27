@@ -45,11 +45,11 @@ class PrintRequestTest extends TestCase {
 		);
 
 		$this->assertNull(
-						$instance->getLabel()
+			$instance->getLabel()
 		);
 
 		$this->assertNull(
-						$instance->getWikiText()
+			$instance->getWikiText()
 		);
 
 		$instance->setLabel( 'Bar' );

@@ -180,6 +180,7 @@ class UnitConverter {
 		// conversion tooltip will still display the main unit for clarity
 		// (the empty unit is never displayed; we filter it when making
 		// conversion values)
+		// @phan-suppress-next-line PhanUselessBinaryAddRight
 		$this->unitFactors = [ '' => 1 ] + $this->unitFactors;
 		$this->unitIds[''] = '';
 	}

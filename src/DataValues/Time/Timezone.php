@@ -118,20 +118,13 @@ class Timezone {
 	 * The underscore character is used in place of spaces. Hyphens are used
 	 * where they appear in the name of a location ...  names have a maximum
 	 * length of 14 characters ..."
-	 *
-	 * @var array
 	 */
-	private static $dateTimeZoneList = [];
+	private static array $dateTimeZoneList = [];
 
-	/**
-	 * @var array
-	 */
-	private static $offsetCache = [];
+	private static array $offsetCache = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return array
 	 */
 	public static function listShortAbbreviations(): array {
 		return array_keys( self::$shortList );
@@ -162,12 +155,8 @@ class Timezone {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $abbreviation
-	 *
-	 * @return bool
 	 */
-	public static function isMilitary( $abbreviation ) {
+	public static function isMilitary( string $abbreviation ): bool {
 		$abbreviation = strtoupper( $abbreviation );
 
 		if ( isset( self::$shortList[$abbreviation] ) ) {
@@ -180,11 +169,9 @@ class Timezone {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $identifer
-	 *
 	 * @return false|int
 	 */
-	public static function getIdByAbbreviation( $identifer ) {
+	public static function getIdByAbbreviation( string $identifer ) {
 		if ( isset( self::$shortList[strtoupper( $identifer )] ) ) {
 			return self::$shortList[strtoupper( $identifer )][0];
 		}
@@ -201,12 +188,10 @@ class Timezone {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $identifer
-	 *
-	 * @return false|string
 	 */
-	public static function getTimezoneLiteralById( $identifer ): int|string|false {
+	public static function getTimezoneLiteralById(
+		string|int|false $identifer
+	): int|string|false {
 		foreach ( self::$shortList as $abbreviation => $value ) {
 			if ( is_numeric( $identifer ) && $value[0] == $identifer ) {
 				return $abbreviation;
@@ -215,7 +200,8 @@ class Timezone {
 
 		$dateTimeZoneList = self::getDateTimeZoneList();
 
-		if ( ( $abbreviation = array_search( $identifer, $dateTimeZoneList ) ) !== false ) {
+		$abbreviation = array_search( $identifer, $dateTimeZoneList );
+		if ( $abbreviation !== false ) {
 			return $abbreviation;
 		}
 
@@ -224,12 +210,8 @@ class Timezone {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $abbreviation
-	 *
-	 * @return false|string
 	 */
-	public static function getOffsetByAbbreviation( $abbreviation ) {
+	public static function getOffsetByAbbreviation( string $abbreviation ): int|false {
 		if ( isset( self::$shortList[strtoupper( $abbreviation )] ) ) {
 			return self::$shortList[strtoupper( $abbreviation )][1];
 		}
@@ -245,7 +227,7 @@ class Timezone {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
 			$offset = $dateTimeZone->getOffset( new DateTime() );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			//
 		}
 
@@ -255,12 +237,8 @@ class Timezone {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $abbreviation
-	 *
-	 * @return string
 	 */
-	public static function getNameByAbbreviation( $abbreviation ): string|false {
+	public static function getNameByAbbreviation( string $abbreviation ): string|false {
 		$abbreviation = strtoupper( $abbreviation );
 
 		if ( isset( self::$shortList[$abbreviation] ) ) {
@@ -281,12 +259,8 @@ class Timezone {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $abbreviation
-	 *
-	 * @return DateInterval
 	 */
-	public static function newDateIntervalWithOffsetFrom( $abbreviation ): DateInterval {
+	public static function newDateIntervalWithOffsetFrom( string $abbreviation ): DateInterval {
 		$minutes = 0;
 		$hour = 0;
 
@@ -299,15 +273,11 @@ class Timezone {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $abbreviation
-	 *
-	 * @return false|DateTimeZone
 	 */
-	public static function newDateTimeZone( $abbreviation ): DateTimeZone|false {
+	public static function newDateTimeZone( string $abbreviation ): DateTimeZone|false {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			if ( ( $name = self::getNameByAbbreviation( $abbreviation ) ) !== false ) {
 				return new DateTimeZone( $name );
 			}
@@ -320,8 +290,6 @@ class Timezone {
 	 * Generated from the DateTimeZone::listAbbreviations
 	 *
 	 * @since 2.5
-	 *
-	 * @return array
 	 */
 	public static function getDateTimeZoneList(): array {
 		if ( self::$dateTimeZoneList !== [] ) {
@@ -341,12 +309,11 @@ class Timezone {
 	 * @since 2.5
 	 *
 	 * @param DateTime $dateTime
-	 * @param string|int &$tz
-	 *
-	 * @return DateTime
+	 * @param string|int|false &$tz
 	 */
 	public static function getModifiedTime( DateTime $dateTime, &$tz = 0 ): DateTime {
-		if ( ( $timezoneLiteral = self::getTimezoneLiteralById( $tz ) ) === false ) {
+		$timezoneLiteral = self::getTimezoneLiteralById( $tz );
+		if ( $timezoneLiteral === false ) {
 			$tz = $timezoneLiteral;
 			return $dateTime;
 		}

@@ -138,7 +138,7 @@ class ExternalIdentifierValue extends StringValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DataItem
+	 * @return DataItem|string
 	 */
 	public function getUri() {
 		if ( !$this->isValid() ) {

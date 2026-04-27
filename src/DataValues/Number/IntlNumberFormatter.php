@@ -142,7 +142,7 @@ class IntlNumberFormatter {
 			return $this->getDefaultFormattedNumberWithPrecision( $value, $precision );
 		}
 
-		return $this->doFormatByHeuristicRuleWith( $value, $precision );
+		return $this->doFormatByHeuristicRuleWith( $value );
 	}
 
 	/**
@@ -151,10 +151,8 @@ class IntlNumberFormatter {
 	 * to format a number that was not hand-formatted by a user.
 	 *
 	 * @param $value
-	 * @param int|false $precision optional positive integer, controls how many digits after
-	 * the decimal point are shown
 	 */
-	private function doFormatByHeuristicRuleWith( $value, bool $precision = false ): string {
+	private function doFormatByHeuristicRuleWith( $value ): string {
 		// BC configuration to keep default behaviour
 		$precision = $this->defaultPrecision;
 

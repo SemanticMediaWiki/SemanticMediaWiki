@@ -61,49 +61,38 @@ class WikiPageValue extends DataValue {
 	/**
 	 * Fragment text for user-specified title. Not stored, but kept for
 	 * printout on page.
-	 * @var string
 	 */
-	protected $m_fragment = '';
+	protected string $m_fragment = '';
 
 	/**
 	 * Full titletext with prefixes, including interwiki prefix.
 	 * Set to empty string if not computed yet.
-	 * @var string
 	 */
-	protected $m_prefixedtext = '';
+	protected string $m_prefixedtext = '';
 
 	/**
 	 * Cache for the related MW page ID.
 	 * Set to -1 if not computed yet.
-	 * @var int
 	 */
-	protected $m_id = -1;
+	protected int $m_id = -1;
 
 	/**
 	 * Cache for the related MW title object.
 	 * Set to null if not computed yet.
-	 * @var Title
 	 */
-	protected $m_title = null;
+	protected ?Title $m_title = null;
 
 	/**
 	 * If this has a value other than NS_MAIN, the datavalue will only
 	 * accept pages in this namespace. This field is initialized when
 	 * creating the object (based on the type id or base on the preference
 	 * of some subclass); it is not usually changed afterwards.
-	 * @var int
 	 */
-	protected $m_fixNamespace = NS_MAIN;
+	protected int $m_fixNamespace = NS_MAIN;
 
-	/**
-	 * @var array
-	 */
-	protected $linkAttributes = [];
+	protected array $linkAttributes = [];
 
-	/**
-	 * @var array
-	 */
-	protected $queryParameters = [];
+	protected array $queryParameters = [];
 
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
@@ -210,14 +199,12 @@ class WikiPageValue extends DataValue {
 			$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
 			$this->m_prefixedtext = '';
 			$this->m_id = -1; // unset id
-			$this->m_dataitem = WikiPage::newFromTitle( $this->m_title, $this->m_typeid );
+			$this->m_dataitem = WikiPage::newFromTitle( $this->m_title );
 		}
 	}
 
 	/**
 	 * @see DataValue::loadDataItem()
-	 * @param $dataItem DataItem
-	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {
@@ -252,8 +239,6 @@ class WikiPageValue extends DataValue {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array $linkAttributes
 	 */
 	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
@@ -261,8 +246,6 @@ class WikiPageValue extends DataValue {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $queryParameters
 	 */
 	public function setQueryParameters( array $queryParameters ): void {
 		$this->queryParameters = $queryParameters;
@@ -289,14 +272,15 @@ class WikiPageValue extends DataValue {
 	 * user input, this includes the full value that one would also see in
 	 * MediaWiki.
 	 *
-	 * @param null $linked mixed generate links if not null or false
-	 * @return string
+	 * @param Linker|null|bool $linked mixed generate links if not null or false
 	 */
 	public function getShortWikiText( $linked = null ): string {
 		if ( $linked === null || $linked === false ||
 			$this->m_outformat == '-' || !$this->isValid() ||
 			$this->m_caption === '' ) {
-			$text = $this->m_caption !== false ? $this->m_caption : $this->getWikiValue();
+			$text = $this->m_caption !== false && $this->m_caption !== null ?
+				$this->m_caption :
+				$this->getWikiValue();
 
 			// #4037
 			if ( $this->linkAttributes !== [] ) {
@@ -316,10 +300,14 @@ class WikiPageValue extends DataValue {
 			$noImage = true;
 		}
 
-		if ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' && !$noImage ) {
+		if ( Image::isImage( $this->m_dataitem ) &&
+			$this->m_dataitem->getInterwiki() === '' && !$noImage
+		) {
 			$linkEscape = '';
 			$sanitizedHtml = Sanitizer::removeSomeTags( $this->m_outformat );
-			$options = $this->m_outformat === false ? 'frameless|border|text-top|' : str_replace( ';', '|', $sanitizedHtml );
+			$options = $this->m_outformat === false ?
+				'frameless|border|text-top|' :
+				str_replace( ';', '|', $sanitizedHtml );
 			$defaultCaption = '|' . $this->getShortCaptionText() . '|' . $options;
 		} else {
 			$linkEscape = ':';
@@ -329,7 +317,8 @@ class WikiPageValue extends DataValue {
 		if ( $this->m_caption === false ) {
 			$link = '[[' . $linkEscape . $this->getWikiLinkTarget() . $defaultCaption . ']]';
 		} else {
-			$link = '[[' . $linkEscape . $this->getWikiLinkTarget() . '|' . $this->m_caption . ']]';
+			$link =
+				'[[' . $linkEscape . $this->getWikiLinkTarget() . '|' . $this->m_caption . ']]';
 		}
 
 		if ( $this->m_fragment !== '' ) {
@@ -351,7 +340,7 @@ class WikiPageValue extends DataValue {
 	 * Display the value as in getShortWikiText() but create HTML.
 	 * The only difference is that images are not embedded.
 	 *
-	 * @param Linker|null $linker mixed the Linker object to use or null if no linking is desired
+	 * @param Linker|null|bool $linker mixed the Linker object to use or null if no linking is desired
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
@@ -392,7 +381,7 @@ class WikiPageValue extends DataValue {
 	 * getShortWikiText() but does not use the caption. Instead, it always
 	 * takes the long display form (wiki value).
 	 *
-	 * @param null $linked mixed if true the result will be linked
+	 * @param Linker|null|bool $linked mixed if true the result will be linked
 	 * @return string
 	 */
 	public function getLongWikiText( $linked = null ) {
@@ -438,7 +427,7 @@ class WikiPageValue extends DataValue {
 	 * Display the "long" value in HTML. This behaves largely like
 	 * getLongWikiText() but does not embed images.
 	 *
-	 * @param mixed $linker mixed if a Linker is given, the result will be linked
+	 * @param Linker|null|bool $linker mixed if a Linker is given, the result will be linked
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
@@ -482,8 +471,6 @@ class WikiPageValue extends DataValue {
 	 * not include such escapes either. Fragment information is included.
 	 * Namespaces are omitted if a fixed namespace is used, since they are
 	 * not needed in this case when making a property assignment.
-	 *
-	 * @return string
 	 */
 	public function getWikiValue(): string {
 		if ( $this->getOption( self::SHORT_FORM, false ) ) {
@@ -491,7 +478,10 @@ class WikiPageValue extends DataValue {
 		} elseif ( $this->getOption( self::PREFIXED_FORM, false ) ) {
 			$text = $this->getPrefixedText();
 		} elseif (
-			in_array( $this->getTypeID(), [ '_wpp', '_wps', '_wpu', '__sup', '__sin', '__suc', '__con' ] ) ||
+			in_array(
+				$this->getTypeID(),
+				[ '_wpp', '_wps', '_wpu', '__sup', '__sin', '__suc', '__con' ]
+			) ||
 			$this->m_fixNamespace === NS_MAIN
 		) {
 			$text = $this->getPrefixedText();
@@ -521,7 +511,7 @@ class WikiPageValue extends DataValue {
 		}
 	}
 
-///// special interface for wiki page values
+	///// special interface for wiki page values
 
 	/**
 	 * @deprecated since 3.1 use getDataItem()->getTitle() instead
@@ -532,8 +522,6 @@ class WikiPageValue extends DataValue {
 	 * make a Title out of the given data.
 	 * However, isValid() will return false *after* this function failed in
 	 * trying to create a title.
-	 *
-	 * @return Title
 	 */
 	public function getTitle(): ?Title {
 		if ( $this->m_title !== null ) {
@@ -542,7 +530,8 @@ class WikiPageValue extends DataValue {
 
 		if ( $this->isValid() ) {
 
-			if ( ( $title = $this->m_dataitem->getTitle() ) !== null ) {
+			$title = $this->m_dataitem->getTitle();
+			if ( $title !== null ) {
 				$this->m_title = $title;
 				return $this->m_title;
 			}
@@ -585,7 +574,7 @@ class WikiPageValue extends DataValue {
 	 * @return int
 	 */
 	private function getArticleID() {
-		if ( $this->m_id === false ) {
+		if ( $this->m_id === -1 ) {
 			$this->m_id = $this->getTitle() !== null ? $this->m_title->getArticleID() : 0;
 		}
 
@@ -633,8 +622,6 @@ class WikiPageValue extends DataValue {
 	/**
 	 * Get the prefixed text for this value, including a localized namespace
 	 * prefix.
-	 *
-	 * @return string
 	 */
 	public function getPrefixedText(): string {
 		if ( $this->m_prefixedtext !== '' ) {
@@ -764,7 +751,6 @@ class WikiPageValue extends DataValue {
 	 * fragment.
 	 *
 	 * @since 1.7
-	 * @return string
 	 */
 	protected function getWikiLinkTarget(): string {
 		return str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .

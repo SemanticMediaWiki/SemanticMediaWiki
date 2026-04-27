@@ -96,8 +96,7 @@ class KeywordValue extends StringValue {
 
 		$uri = $this->makeUri(
 			$this->m_dataitem->getString(),
-			SMW_OUTPUT_WIKI,
-			$linker
+			SMW_OUTPUT_WIKI
 		);
 
 		if ( $uri === '' ) {
@@ -125,8 +124,7 @@ class KeywordValue extends StringValue {
 
 		$uri = $this->makeUri(
 			$this->m_dataitem->getString(),
-			SMW_OUTPUT_HTML,
-			$linker
+			SMW_OUTPUT_HTML
 		);
 
 		if ( $uri === '' ) {
@@ -153,7 +151,7 @@ class KeywordValue extends StringValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DataItem
+	 * @return DataItem|string
 	 */
 	public function getUri() {
 		if ( !$this->isValid() ) {
@@ -177,7 +175,7 @@ class KeywordValue extends StringValue {
 		return $dataValue->getDataItem();
 	}
 
-	private function makeUri( $value, $outputformat, $linker = null ): ?string {
+	private function makeUri( $value, $outputformat ): ?string {
 		if ( $this->uri !== null ) {
 			return $this->uri;
 		}

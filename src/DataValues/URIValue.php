@@ -31,9 +31,8 @@ class URIValue extends DataValue {
 
 	/**
 	 * The value as returned by getWikitext() and getLongText().
-	 * @var string
 	 */
-	protected $m_wikitext;
+	protected ?string $m_wikitext = null;
 	/**
 	 * One of the basic modes of operation for this class (emails, URL,
 	 * telephone number URI, ...).
@@ -98,10 +97,14 @@ class URIValue extends DataValue {
 					$parts[0] = 'http';
 				}
 				// check against blacklist
-				$uri_blacklist = explode( "\n", Message::get( 'smw_uri_blacklist', Message::TEXT, Message::CONTENT_LANGUAGE ) );
+				$uri_blacklist = explode(
+					"\n",
+					Message::get( 'smw_uri_blacklist', Message::TEXT, Message::CONTENT_LANGUAGE )
+				);
 				foreach ( $uri_blacklist as $uri ) {
-					$uri = trim( (string)$uri );
-					if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
+					$uri = trim( $uri );
+					if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) {
+						// disallowed URI!
 						$this->addErrorMsg( [ 'smw_baduri', $value ] );
 						return;
 					}
@@ -128,9 +131,21 @@ class URIValue extends DataValue {
 				}
 				// We do not validate the URI characters (the data item will do this) but we do some escaping:
 				// encode most characters, but leave special symbols as given by user:
-				$hierpart = str_replace( [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ], [ ':', '/', '#', '@', '?', '=', '&', '%' ], rawurlencode( $hierpart ) );
-				$query = str_replace( [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ], [ ':', '/', '#', '@', '?', '=', '&', '%' ], rawurlencode( $query ) );
-				$fragment = str_replace( [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ], [ ':', '/', '#', '@', '?', '=', '&', '%' ], rawurlencode( $fragment ) );
+				$hierpart = str_replace(
+					[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ],
+					[ ':', '/', '#', '@', '?', '=', '&', '%' ],
+					rawurlencode( $hierpart )
+				);
+				$query = str_replace(
+					[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ],
+					[ ':', '/', '#', '@', '?', '=', '&', '%' ],
+					rawurlencode( $query )
+				);
+				$fragment = str_replace(
+					[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ],
+					[ ':', '/', '#', '@', '?', '=', '&', '%' ],
+					rawurlencode( $fragment )
+				);
 				/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
 				/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
 				///       this prevents tel: from working directly, but we have a datatype for this anyway.
@@ -141,7 +156,9 @@ class URIValue extends DataValue {
 
 				// #3540
 				if ( $hierpart !== '' && $hierpart[0] === '/' ) {
-					$this->addErrorMsg( [ 'smw-datavalue-uri-invalid-authority-path-component', $value, $hierpart ] );
+					$this->addErrorMsg(
+						[ 'smw-datavalue-uri-invalid-authority-path-component', $value, $hierpart ]
+					);
 					return;
 				}
 
@@ -162,7 +179,8 @@ class URIValue extends DataValue {
 
 				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
 					( preg_match( '<[-+./][-./]>', $hierpart ) ) ||
-					( !self::isValidTelURI( 'tel:' . $hierpart ) ) ) ) { /// TODO: introduce error-message for "bad" phone number
+					( !self::isValidTelURI( 'tel:' . $hierpart ) ) ) ) {
+					// TODO: introduce error-message for "bad" phone number
 					$this->addErrorMsg( [ 'smw_baduri', $this->m_wikitext ] );
 					return;
 				}
@@ -179,13 +197,19 @@ class URIValue extends DataValue {
 					$this->addErrorMsg( [ 'smw_baduri', $value ] );
 					return;
 				}
-				$hierpart = str_replace( [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ], [ ':', '/', '#', '@', '?', '=', '&', '%' ], rawurlencode( $value ) );
+				$hierpart = str_replace(
+					[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ],
+					[ ':', '/', '#', '@', '?', '=', '&', '%' ],
+					rawurlencode( $value )
+				);
 		}
 
 		// Now create the URI data item:
 		try {
-			$this->m_dataitem = new Uri( $scheme, $hierpart, $query, $fragment, !$this->getOption( self::OPT_QUERY_CONTEXT ) );
-		} catch ( DataItemException $e ) {
+			$this->m_dataitem = new Uri(
+				$scheme, $hierpart, $query, $fragment, !$this->getOption( self::OPT_QUERY_CONTEXT )
+			);
+		} catch ( DataItemException ) {
 			$this->addErrorMsg( [ 'smw_baduri', $this->m_wikitext ] );
 		}
 	}
@@ -202,8 +226,6 @@ class URIValue extends DataValue {
 
 	/**
 	 * @see DataValue::loadDataItem()
-	 * @param $dataItem DataItem
-	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_URI ) {
@@ -305,7 +327,6 @@ class URIValue extends DataValue {
 	/**
 	 * Get a URL for hyperlinking this URI, or the empty string if this URI
 	 * is not hyperlinked in MediaWiki.
-	 * @return string
 	 */
 	public function getURL(): string {
 		global $wgUrlProtocols;
@@ -327,7 +348,7 @@ class URIValue extends DataValue {
 	 * @return Uri
 	 */
 	protected function getUriDataitem() {
-		if ( isset( $this->m_dataitem ) ) {
+		if ( $this->m_dataitem !== null ) {
 			return $this->m_dataitem;
 		} else { // note: use "noprotocol" to avoid accidental use in an MW link, see getURL()
 			return new Uri( 'noprotocol', 'x', '', '', $this->m_typeid );

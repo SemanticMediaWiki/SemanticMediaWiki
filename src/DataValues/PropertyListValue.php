@@ -55,7 +55,7 @@ class PropertyListValue extends DataValue {
 
 			try {
 				$diProperty = Property::newFromUserLabel( $propertyName );
-			} catch ( DataItemException $e ) {
+			} catch ( DataItemException ) {
 				$diProperty = new Property( 'Error' );
 				$this->addErrorMsg( [ 'smw_noproperty', $propertyName ] );
 			}
@@ -69,10 +69,6 @@ class PropertyListValue extends DataValue {
 
 	/**
 	 * @see DataValue::loadDataItem()
-	 *
-	 * @param $dataItem DataItem
-	 *
-	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( !$dataItem instanceof Blob ) {
@@ -87,7 +83,7 @@ class PropertyListValue extends DataValue {
 
 			try {
 				$property = new Property( $propertyKey );
-			} catch ( DataItemException $e ) {
+			} catch ( DataItemException ) {
 				$property = new Property( 'Error' );
 				$this->addErrorMsg( [ 'smw-datavalue-propertylist-invalid-property-key', $dataItem->getString(), $propertyKey ] );
 			}
@@ -127,7 +123,7 @@ class PropertyListValue extends DataValue {
 		return $this->m_diProperties;
 	}
 
-////// Internal helper functions
+	////// Internal helper functions
 
 	protected function makeOutputText( $type, $linker = null ): string {
 		if ( !$this->isValid() ) {

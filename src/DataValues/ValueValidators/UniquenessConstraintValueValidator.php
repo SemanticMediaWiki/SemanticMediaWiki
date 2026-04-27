@@ -44,15 +44,6 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function clear(): void {
-		self::$annotations = [];
-	}
-
-	/**
 	 * @since 2.4
 	 *
 	 * {@inheritDoc}

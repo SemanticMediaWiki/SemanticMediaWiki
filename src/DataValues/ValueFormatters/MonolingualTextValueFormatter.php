@@ -87,7 +87,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 			);
 
 			// Should not happen but just in case
-			if ( !$dataItems === [] ) {
+			if ( $dataItems === [] ) {
 				$this->dataValue->addErrorMsg( 'smw-datavalue-monolingual-dataitem-missing' );
 				continue;
 			}

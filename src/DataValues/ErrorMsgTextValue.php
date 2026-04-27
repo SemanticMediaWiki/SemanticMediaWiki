@@ -38,10 +38,6 @@ class ErrorMsgTextValue extends DataValue {
 
 	/**
 	 * @see DataValue::loadDataItem
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( !$dataItem instanceof Blob ) {
@@ -90,7 +86,7 @@ class ErrorMsgTextValue extends DataValue {
 	}
 
 	private function constructErrorText( $linker = null ) {
-		if ( !$this->isValid() || $this->getDataItem() === [] ) {
+		if ( !$this->isValid() ) {
 			return '';
 		}
 

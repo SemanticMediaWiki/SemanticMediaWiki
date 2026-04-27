@@ -22,14 +22,14 @@ class BooleanValue extends DataValue {
 	/**
 	 * The text to write for "true" if a custom output format was set.
 	 *
-	 * @var string
+	 * @var string|int
 	 */
 	protected $trueCaption;
 
 	/**
 	 * The text to write for "false" if a custom output format was set.
 	 *
-	 * @var string
+	 * @var string|int
 	 */
 	protected $falseCaption;
 
@@ -81,7 +81,9 @@ class BooleanValue extends DataValue {
 			return;
 		}
 
+		// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 		unset( $this->trueCaption );
+		// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 		unset( $this->falseCaption );
 
 		if ( $formatstring === '' ) { // no format
@@ -169,13 +171,14 @@ class BooleanValue extends DataValue {
 	 *
 	 * @param $useformat bool, true if the output format should be used, false if the returned text should be parsable
 	 *
-	 * @return string
+	 * @return string|int|false
 	 */
 	protected function getStandardCaption( $useformat ) {
 		if ( !$this->isValid() ) {
 			return false;
 		}
 
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( $useformat && ( isset( $this->trueCaption ) ) ) {
 			return $this->m_dataitem->getBoolean() ? $this->trueCaption : $this->falseCaption;
 		}
