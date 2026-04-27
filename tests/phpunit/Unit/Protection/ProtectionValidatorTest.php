@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\Unit\Protection;
 
-use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
@@ -340,22 +338,6 @@ class ProtectionValidatorTest extends TestCase {
 	}
 
 	public function testIsClassifiedAsImportPerformerProtected_CreatorAndCurrentUserDontMatch() {
-		$revisionRecord = $this->getMockBuilder( RevisionRecord::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$revisionRecord->expects( $this->any() )
-			->method( 'getUser' )
-			->willReturn( User::newFromName( 'FooImporter', false ) );
-
-		$revisionStore = $this->getMockBuilder( RevisionStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$revisionStore->expects( $this->any() )
-			->method( 'getFirstRevision' )
-			->willReturn( $revisionRecord );
-
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -374,7 +356,7 @@ class ProtectionValidatorTest extends TestCase {
 
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getCreator' )
-			->willReturn( $revisionStore );
+			->willReturn( User::newFromName( 'FooImporter', false ) );
 
 		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
@@ -406,22 +388,6 @@ class ProtectionValidatorTest extends TestCase {
 	}
 
 	public function testIsClassifiedAsNotImportPerformerProtected_CreatorAndCurrentUserDoMatch() {
-		$revisionRecord = $this->getMockBuilder( RevisionRecord::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$revisionRecord->expects( $this->any() )
-			->method( 'getUser' )
-			->willReturn( User::newFromName( 'FooImporter', false ) );
-
-		$revisionStore = $this->getMockBuilder( RevisionStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$revisionStore->expects( $this->any() )
-			->method( 'getFirstRevision' )
-			->willReturn( $revisionRecord );
-
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -440,7 +406,7 @@ class ProtectionValidatorTest extends TestCase {
 
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getCreator' )
-			->willReturn( $revisionStore );
+			->willReturn( User::newFromName( 'FooImporter', false ) );
 
 		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
