@@ -405,10 +405,6 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'getDBKey' )
 			->willReturn( 'FooSchema' );
 
-		$title->expects( $this->any() )
-			->method( 'getFirstRevision' )
-			->willReturn( $revisionRecord );
-
 		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
