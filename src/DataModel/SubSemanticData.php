@@ -60,8 +60,6 @@ class SubSemanticData implements JsonDeserializable {
 	 * if, for any reason, SMW should ever access an unserialised parser
 	 * output, then the Semdata container will at least look as if properly
 	 * initialised (though empty).
-	 *
-	 * @return array
 	 */
 	public function __sleep(): array {
 		return [ 'subject', 'subSemanticData' ];
@@ -69,8 +67,6 @@ class SubSemanticData implements JsonDeserializable {
 
 	/**
 	 * Return subject to which the stored semantic annotations refer to.
-	 *
-	 * @return WikiPage subject
 	 */
 	public function getSubject(): WikiPage {
 		return $this->subject;
@@ -88,7 +84,7 @@ class SubSemanticData implements JsonDeserializable {
 
 	/**
 	 * Return the array of subSemanticData objects in form of
-	 * subobjectName => ContainerSemanticData
+	 * subobjectName => SemanticData
 	 *
 	 * @since 2.5
 	 */
@@ -107,8 +103,6 @@ class SubSemanticData implements JsonDeserializable {
 	 * @since 2.5
 	 *
 	 * @param string|null $subobjectName
-	 *
-	 * @return bool
 	 */
 	public function hasSubSemanticData( $subobjectName = null ): bool {
 		if ( $this->subSemanticData === [] || $subobjectName === '' ) {
@@ -125,7 +119,7 @@ class SubSemanticData implements JsonDeserializable {
 	 *
 	 * @param string $subobjectName
 	 *
-	 * @return ContainerSemanticData|null
+	 * @return SemanticData|null
 	 */
 	public function findSubSemanticData( $subobjectName ) {
 		if ( $this->hasSubSemanticData( $subobjectName ) && isset( $this->subSemanticData[$subobjectName] ) ) {
@@ -144,8 +138,6 @@ class SubSemanticData implements JsonDeserializable {
 	 * after the operation; it should not be modified further by the caller.
 	 *
 	 * @since 2.5
-	 *
-	 * @param SemanticData $semanticData
 	 *
 	 * @throws SubSemanticDataException if not adding data about a subobject of this data
 	 */
@@ -175,8 +167,6 @@ class SubSemanticData implements JsonDeserializable {
 	 * removing data that is not present does not change anything.
 	 *
 	 * @since 2.5
-	 *
-	 * @param SemanticData $semanticData
 	 */
 	public function removeSubSemanticData( SemanticData $semanticData ): void {
 		if ( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
@@ -198,8 +188,6 @@ class SubSemanticData implements JsonDeserializable {
 	 * Remove property and all values associated with this property.
 	 *
 	 * @since 2.5
-	 *
-	 * @param $property DIProperty
 	 */
 	public function removeProperty( Property $property ): void {
 		// Inverse properties cannot be used for an annotation
@@ -243,8 +231,6 @@ class SubSemanticData implements JsonDeserializable {
 	 * Implements \JsonSerializable.
 	 *
 	 * @since 4.0.0
-	 *
-	 * @return array
 	 */
 	public function jsonSerialize(): array {
 		# T312589 explicitly calling jsonSerialize() will be unnecessary
@@ -264,11 +250,6 @@ class SubSemanticData implements JsonDeserializable {
 	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
-	 *
-	 * @param JsonDeserializer $deserializer
-	 * @param array $json JSON to be deserialized
-	 *
-	 * @return self
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ): self {
 		$obj = new self( $deserializer->deserialize( $json['subject'] ), $json['noDuplicates'] );

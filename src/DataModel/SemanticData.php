@@ -138,7 +138,7 @@ class SemanticData implements JsonDeserializable {
 	private $hash = null;
 
 	/**
-	 * @var Options
+	 * @var ?Options
 	 */
 	protected $options;
 
@@ -391,7 +391,7 @@ class SemanticData implements JsonDeserializable {
 		// returned from a __wakeup, where now a SubSemanticData (#2177) is expected.
 		if ( !$subSemanticData instanceof SubSemanticData ) {
 			$this->subSemanticData = new SubSemanticData( $this->mSubject, $this->mNoDuplicates );
-			$this->subSemanticData->copyDataFrom( $subSemanticData );
+			$this->subSemanticData->copyDataFrom( [ $subSemanticData ] );
 		}
 
 		return $this->subSemanticData->getSubSemanticData();
