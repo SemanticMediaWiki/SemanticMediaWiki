@@ -17,6 +17,7 @@ use SMW\Protection\ProtectionValidator;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\Tests\TestEnvironment;
 use WikiPage;
 
 /**
@@ -52,6 +53,13 @@ class ProtectionValidatorTest extends TestCase {
 		$this->permissionManager = $this->getMockBuilder( PermissionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
