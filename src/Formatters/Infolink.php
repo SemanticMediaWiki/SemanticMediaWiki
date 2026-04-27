@@ -427,7 +427,7 @@ class Infolink {
 
 			foreach ( $params as $name => $value ) {
 				if ( is_string( $name ) && ( $name !== '' ) ) {
-					$value = rawurlencode( $name ) . '=' . rawurlencode( $value );
+					$value = rawurlencode( $name ) . '=' . rawurlencode( (string)$value );
 
 					if ( $result !== '' ) {
 						$result .= '&';
@@ -435,7 +435,7 @@ class Infolink {
 
 					$result .= $value;
 				} else {
-					$q[] = $value;
+					$q[] = (string)$value;
 				}
 			}
 			if ( count( $q ) > 0 ) { // prepend encoding for unlabelled parameters
