@@ -1,5 +1,6 @@
 <?php
 
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -1946,6 +1947,46 @@ return ( static function (): array {
 		# @default identity (as legacy setting)
 		##
 		'smwgEntityCollation' => 'identity',
+		# #
+
+		##
+		# Per-pool entry limits for the in-memory caches SMW uses to look up
+		# entity IDs during a single request.
+		#
+		# These caches let SMW avoid duplicate database queries for the same
+		# titles and IDs while a page renders. On large or unusually rich pages,
+		# the default sizes can fill up and force SMW to re-query entities it
+		# already saw earlier in the same render. Raising a limit keeps more
+		# entries resident at the cost of additional memory.
+		#
+		# To tune a single pool, override only that key — pools you don't list
+		# keep their defaults:
+		#
+		#   $smwgEntityCacheSizes['entity.id'] = 5000;
+		#
+		# To assess whether tuning is needed, monitor the
+		# `smw_inmemory_cache_hits_total` and `smw_inmemory_cache_misses_total`
+		# metrics emitted via MediaWiki's StatsFactory. These require
+		# `$wgStatsTarget` and `$wgStatsFormat` to be configured (see
+		# MediaWiki's stats documentation); from there metrics flow to a
+		# StatsD endpoint, which can in turn be relayed to Prometheus through
+		# standard tooling such as `statsd_exporter`. A consistently low hit
+		# ratio on a specific pool indicates it would benefit from a higher
+		# limit.
+		#
+		# Pools:
+		# - entity.id           — title -> SMW ID
+		# - entity.sort         — title -> sortkey
+		# - entity.lookup       — SMW ID -> WikiPage data item
+		# - propertytable.hash  — which property tables hold data for each entity
+		# - warmup.byid         — IDs already prefetched in this request
+		# - sequence.map        — SMW ID -> property sequence map
+		# - redirect.source.lookup / redirect.target.lookup — redirect resolution
+		# - count.map           — SMW ID -> auxiliary count map
+		#
+		# @since 7.0.0
+		##
+		'smwgEntityCacheSizes' => EntityIdManager::DEFAULT_CACHE_SIZES,
 		# #
 
 		##
