@@ -70,12 +70,12 @@ class DataUpdater {
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Store $store
-	 * @param SemanticData $semanticData
-	 * @param ChangePropagationNotifier $changePropagationNotifier
 	 */
-	public function __construct( Store $store, SemanticData $semanticData, ChangePropagationNotifier $changePropagationNotifier ) {
+	public function __construct(
+		Store $store,
+		SemanticData $semanticData,
+		ChangePropagationNotifier $changePropagationNotifier
+	) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
 		$this->changePropagationNotifier = $changePropagationNotifier;
@@ -122,8 +122,6 @@ class DataUpdater {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return \SMW\DataItems\WikiPage
 	 */
 	public function getSubject(): DIWikiPage {
 		return $this->semanticData->getSubject();
@@ -147,11 +145,6 @@ class DataUpdater {
 	 * running an update more than once for the same RevID.
 	 *
 	 * @since 3.1
-	 *
-	 * @param Title $title
-	 * @param int|null &$latestRevID
-	 *
-	 * @return bool
 	 */
 	public function isSkippable( Title $title, ?int &$latestRevID = null ): bool {
 		if ( $this->revisionGuard->isSkippableUpdate( $title, $latestRevID ) ) {
@@ -169,8 +162,6 @@ class DataUpdater {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return bool
 	 */
 	public function doUpdate(): bool {
 		if ( !$this->canUpdate() ) {
@@ -179,7 +170,7 @@ class DataUpdater {
 
 		DeferredUpdate::releasePendingUpdates();
 
-		if ( $this->isDeferrableUpdate === false || $this->isCommandLineMode ) {
+		if ( !$this->isDeferrableUpdate || $this->isCommandLineMode ) {
 			return $this->runUpdate();
 		}
 
@@ -241,7 +232,9 @@ class DataUpdater {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $this->canCreateUpdateJob === null ) {
-			$this->canCreateUpdateJob( $applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
+			$this->canCreateUpdateJob(
+				$applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' )
+			);
 		}
 
 		$user = null;
@@ -294,7 +287,10 @@ class DataUpdater {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $revision !== null ) {
-			$this->processSemantics = $applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+			$this->processSemantics =
+				$applicationFactory->getNamespaceExaminer()->isSemanticEnabled(
+					$title->getNamespace()
+				);
 		}
 
 		if ( !$this->processSemantics ) {
@@ -308,7 +304,9 @@ class DataUpdater {
 			$user
 		);
 
-		$this->semanticData->setExtensionData( 'revision_id', $revision->getId() );
+		if ( $revision !== null ) {
+			$this->semanticData->setExtensionData( 'revision_id', $revision->getId() );
+		}
 
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
@@ -332,7 +330,7 @@ class DataUpdater {
 					$title->getDBKey(),
 					$pageInfoProvider->getNativeData()
 				);
-			} catch ( Exception $e ) {
+			} catch ( Exception ) {
 				$schema = null;
 			}
 
@@ -360,7 +358,8 @@ class DataUpdater {
 	private function checkUpdateEditProtection( $wikiPage, ?User $user ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$editProtectionUpdater = $applicationFactory->create( 'EditProtectionUpdater',
+		$editProtectionUpdater = $applicationFactory->create(
+			'EditProtectionUpdater',
 			$wikiPage,
 			$user
 		);
@@ -410,7 +409,9 @@ class DataUpdater {
 		return true;
 	}
 
-	private function checkForPossibleRedirectPreUpdate( SemanticData $semanticData ): SemanticData {
+	private function checkForPossibleRedirectPreUpdate(
+		SemanticData $semanticData
+	): SemanticData {
 		// Check only during online-mode so that when a user operates Special:MovePage
 		// or #redirect the same process is applied
 		if ( !$this->canCreateUpdateJob ) {
@@ -423,14 +424,19 @@ class DataUpdater {
 
 		$target = end( $redirects );
 
-		if ( $target === false || $semanticData->getSubject()->equals( $target ) ) {
+		if ( $target === false || $semanticData->getSubject()->equals( $target ) ||
+			!$target instanceof DIWikiPage
+		) {
 			return $semanticData;
 		}
 
 		return $this->updateRedirectTarget( $semanticData, $target );
 	}
 
-	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ): SemanticData {
+	private function updateRedirectTarget(
+		SemanticData $semanticData,
+		DIWikiPage $target
+	): SemanticData {
 		$subject = $semanticData->getSubject();
 
 		// The general rule is that a redirect page is not expected to contain
