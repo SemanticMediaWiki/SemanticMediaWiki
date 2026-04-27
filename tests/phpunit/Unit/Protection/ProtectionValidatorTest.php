@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Protection;
 
+use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
@@ -373,14 +374,13 @@ class ProtectionValidatorTest extends TestCase {
 	}
 
 	public function testIsClassifiedAsNotImportPerformerProtected_CreatorAndCurrentUserDoMatch() {
-		$this->markTestSkipped( "FIXME later" );
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revisionRecord = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision->expects( $this->any() )
-			->method( 'getUserText' )
-			->willReturn( 'FooImporter' );
+		$revisionRecord->expects( $this->any() )
+			->method( 'getUser' )
+			->willReturn( User::newFromName( 'FooImporter', false ) );
 
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
@@ -396,7 +396,7 @@ class ProtectionValidatorTest extends TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getFirstRevision' )
-			->willReturn( $revision );
+			->willReturn( $revisionRecord );
 
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
