@@ -329,7 +329,7 @@
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" huet e puer eidel Komponenten",
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" huet méi wéi dräi Komponenten, déi fir d'Interpretatioun vun engem Datum obligatoresch sinn.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\" huet \"$2\" als Stonnenelement, dat ass fir eng 12-Stonne-Konventioun awer net valabel.",
-	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" ass keng valabel URL",
+	"smw-datavalue-external-formatter-invalid-uri": "„$1“ ass eng ongülteg URL.",
 	"smw-parser-invalid-json-format": "Den JSON-Parser huet mat engem \"$1\" geäntwert.",
 	"smw-clipboard-copy-link": "Link an den Tëschespäicher kopéieren",
 	"smw-data-lookup": "Donnéeën ofruffen...",
