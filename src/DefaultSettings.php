@@ -744,6 +744,23 @@ return ( static function (): array {
 		# #
 
 		###
+		# Use the legacy query SQL shape (pre-7.x).
+		#
+		# Set to true to revert to the previous query construction that emits
+		# SELECT DISTINCT against the full join. The default uses a derived-
+		# table rewrite that avoids inefficient query plans MariaDB tends to
+		# pick when DISTINCT and ORDER BY are combined.
+		#
+		# Toggle to true if you encounter query performance regressions after
+		# upgrading and want to fall back while reporting the issue.
+		#
+		# @since 7.0.0
+		# @default false
+		##
+		'smwgQUseLegacyQuery' => false,
+		# #
+
+		###
 		# Settings about printout of (especially inline) queries:
 		#
 		# @since 1.0

@@ -37,6 +37,14 @@ class EngineOptionsTest extends TestCase {
 		);
 	}
 
+	public function testUseLegacyQueryDefaultValue() {
+		$instance = new EngineOptions();
+
+		$this->assertFalse(
+			$instance->get( 'smwgQUseLegacyQuery' )
+		);
+	}
+
 	public function testAddOption() {
 		$instance = new EngineOptions();
 

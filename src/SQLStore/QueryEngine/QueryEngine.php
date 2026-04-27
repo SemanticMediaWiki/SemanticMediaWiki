@@ -73,6 +73,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		private readonly ConditionBuilder $conditionBuilder,
 		private readonly QuerySegmentListProcessor $querySegmentListProcessor,
 		private readonly EngineOptions $engineOptions,
+		private readonly SubqueryQueryBuilder $subqueryQueryBuilder,
 	) {
 		$this->queryFactory = new QueryFactory();
 	}
@@ -253,24 +254,33 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		}
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
-		[ $startOpts, $useIndex, $tailOpts ] = $connection->makeSelectOptions( $sqlOptions );
 
-		$sortfields = implode( ',', $qobj->sortfields );
-		$sortfields = $sortfields ? ', ' . $sortfields : '';
+		if ( $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
+			[ $startOpts, $useIndex, $tailOpts ] = $connection->makeSelectOptions( $sqlOptions );
 
-		$sql = "SELECT DISTINCT " .
-			"$qobj->alias.smw_id AS id," .
-			"$qobj->alias.smw_title AS t," .
-			"$qobj->alias.smw_namespace AS ns," .
-			"$qobj->alias.smw_iw AS iw," .
-			"$qobj->alias.smw_subobject AS so," .
-			"$qobj->alias.smw_sortkey AS sortkey" .
-			"$sortfields " .
-			"FROM " .
-			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
-			( $qobj->where === '' ? '' : ' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex " .
-			"LIMIT " . $sqlOptions['LIMIT'] . ' ' .
-			"OFFSET " . $sqlOptions['OFFSET'];
+			$sortfields = implode( ',', $qobj->sortfields );
+			$sortfields = $sortfields ? ', ' . $sortfields : '';
+
+			$sql = "SELECT DISTINCT " .
+				"$qobj->alias.smw_id AS id," .
+				"$qobj->alias.smw_title AS t," .
+				"$qobj->alias.smw_namespace AS ns," .
+				"$qobj->alias.smw_iw AS iw," .
+				"$qobj->alias.smw_subobject AS so," .
+				"$qobj->alias.smw_sortkey AS sortkey" .
+				"$sortfields " .
+				"FROM " .
+				$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
+				( $qobj->where === '' ? '' : ' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex " .
+				"LIMIT " . $sqlOptions['LIMIT'] . ' ' .
+				"OFFSET " . $sqlOptions['OFFSET'];
+		} else {
+			$sql = $this->subqueryQueryBuilder->buildInstanceQuerySQL(
+				$qobj,
+				$sqlOptions,
+				''
+			);
+		}
 
 		if ( $connection->isType( 'sqlite' ) ) {
 			$query = "EXPLAIN QUERY PLAN $sql";
@@ -316,17 +326,26 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$sql_options = [ 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() ];
 
-		$res = $connection->select(
-			array_merge(
-				[ $qobj->alias => $qobj->joinTable ],
-				$qobj->fromTables
-			),
-			[ 'count' => "COUNT(DISTINCT $qobj->alias.smw_id)" ],
-			$qobj->where,
-			__METHOD__,
-			$sql_options,
-			$qobj->joinConditions
-		);
+		if ( $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
+			$res = $connection->select(
+				array_merge(
+					[ $qobj->alias => $qobj->joinTable ],
+					$qobj->fromTables
+				),
+				[ 'count' => "COUNT(DISTINCT $qobj->alias.smw_id)" ],
+				$qobj->where,
+				__METHOD__,
+				$sql_options,
+				$qobj->joinConditions
+			);
+		} else {
+			$sql = $this->subqueryQueryBuilder->buildCountQuerySQL(
+				$qobj,
+				$sql_options,
+				''
+			);
+			$res = $connection->readQuery( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
+		}
 
 		$row = $res->fetchObject();
 		$count = 0;
@@ -376,29 +395,39 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		}
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
-		$sql_options[] = 'DISTINCT';
 
-		$res = $connection->select(
-			array_merge(
-				[ $qobj->alias => $qobj->joinTable ],
-				$qobj->fromTables
-			),
-			array_merge(
-				[
-					'id' => "$qobj->alias.smw_id",
-					't' => "$qobj->alias.smw_title",
-					'ns' => "$qobj->alias.smw_namespace",
-					'iw' => "$qobj->alias.smw_iw",
-					'so' => "$qobj->alias.smw_subobject",
-					'sortkey' => "$qobj->alias.smw_sortkey",
-				],
-				array_values( $qobj->sortfields ) # TODO strange to only keep values, but it was like that before rewriting select() with arrays
-			),
-			$qobj->where,
-			__METHOD__,
-			$sql_options,
-			$qobj->joinConditions
-		);
+		if ( $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
+			$sql_options[] = 'DISTINCT';
+
+			$res = $connection->select(
+				array_merge(
+					[ $qobj->alias => $qobj->joinTable ],
+					$qobj->fromTables
+				),
+				array_merge(
+					[
+						'id' => "$qobj->alias.smw_id",
+						't' => "$qobj->alias.smw_title",
+						'ns' => "$qobj->alias.smw_namespace",
+						'iw' => "$qobj->alias.smw_iw",
+						'so' => "$qobj->alias.smw_subobject",
+						'sortkey' => "$qobj->alias.smw_sortkey",
+					],
+					array_values( $qobj->sortfields ) # TODO strange to only keep values, but it was like that before rewriting select() with arrays
+				),
+				$qobj->where,
+				__METHOD__,
+				$sql_options,
+				$qobj->joinConditions
+			);
+		} else {
+			$sql = $this->subqueryQueryBuilder->buildInstanceQuerySQL(
+				$qobj,
+				$sql_options,
+				''
+			);
+			$res = $connection->readQuery( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
+		}
 
 		$results = [];
 		$dataItemCache = [];

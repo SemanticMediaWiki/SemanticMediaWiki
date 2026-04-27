@@ -106,6 +106,7 @@ class Settings extends Options {
 			'smwgQDefaultNamespaces' => $GLOBALS['smwgQDefaultNamespaces'],
 			'smwgQComparators' => $GLOBALS['smwgQComparators'],
 			'smwgQFilterDuplicates' => $GLOBALS['smwgQFilterDuplicates'],
+			'smwgQUseLegacyQuery' => $GLOBALS['smwgQUseLegacyQuery'],
 			'smwStrictComparators' => $GLOBALS['smwStrictComparators'],
 			'smwgQStrictComparators' => $GLOBALS['smwgQStrictComparators'],
 			'smwgQMaxSize' => $GLOBALS['smwgQMaxSize'],
