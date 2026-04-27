@@ -186,6 +186,9 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Improved pagination performance on Special:Properties and Special:UnusedProperties by switching from OFFSET-based to cursor-based pagination. Browsing deep pages is now significantly faster on wikis with many properties. ([#6559](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6559))
   * Navigation links now use `after=` and `before=` URL parameters instead of `offset=`. Existing `offset=` bookmarks continue to work.
   * The numbered result list has been replaced with a bullet list, and the "starting with #N" indicator has been removed, as cursor-based pagination does not track absolute position.
+* The SQLStore query engine now uses a derived-table SQL shape by default, pushing `DISTINCT` and the inner `LIMIT` / `ORDER BY` into a subquery to avoid an optimizer pathology around `DISTINCT` + `ORDER BY` on MariaDB that could degrade `#ask` query performance by several orders of magnitude. The `smw_object_ids` filter conditions remain on the outer query so the inner subquery sees only the property table it actually needs. ([#6559](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6559))
+  * Set `$smwgQUseLegacyQuery = true` in `LocalSettings.php` to revert to the previous `SELECT DISTINCT` shape if you encounter a regression. The flag is provided as an emergency rollback; the rewrite is the supported path.
+  * The disjunction temp-table insert no longer emits a redundant `DISTINCT` keyword — the enclosing `INSERT IGNORE` already deduplicates on the temp table's primary key. No configuration change needed.
 
 ### Internal improvements
 
