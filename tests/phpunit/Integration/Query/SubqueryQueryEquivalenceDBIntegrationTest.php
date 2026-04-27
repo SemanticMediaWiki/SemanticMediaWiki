@@ -72,7 +72,9 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 
 	protected function tearDown(): void {
 		// Restore the flag to its default before the rest of the suite runs.
-		$GLOBALS['smwgQUseLegacyQuery'] = false;
+		// Goes through testEnvironment for symmetry with runUnderLegacyFlag,
+		// keeping the SMW Settings container in sync with $GLOBALS.
+		$this->testEnvironment->addConfiguration( 'smwgQUseLegacyQuery', false );
 
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );

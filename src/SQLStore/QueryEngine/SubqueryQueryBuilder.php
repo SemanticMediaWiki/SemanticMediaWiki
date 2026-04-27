@@ -6,14 +6,23 @@ use SMW\MediaWiki\Connection\Database;
 
 /**
  * Builds derived-table SQL for the SQLStore query engine, hoisting DISTINCT
- * and the inner LIMIT/ORDER BY into a subquery to avoid the MariaDB planner
- * pathology around DISTINCT + ORDER BY against a wide outer projection.
+ * and the inner LIMIT/ORDER BY into a subquery to avoid MariaDB picking
+ * inefficient query plans when DISTINCT and ORDER BY are combined against
+ * a wide outer projection.
  *
  * @note The builder consumes $root->from (the pre-assembled string-form
  * joins produced by QuerySegmentListProcessor). $root->fromTables and
  * $root->joinConditions are equivalent structured representations of the
  * same joins and are not consumed; callers using this builder do not need
  * to pass them separately.
+ *
+ * @note Current QueryEngine callers pass $outerWhere = ''. ID-table filters
+ * from applyExtraWhereCondition land in $root->where and end up inside the
+ * derived table, where t0.smw_iw resolves because the inner query joins
+ * smw_object_ids AS t0 (ConditionBuilder always anchors the root segment
+ * on SQLStore::ID_TABLE). The $outerWhere parameter is retained as an
+ * extension point for future callers that want to keep $root->where clean
+ * and apply ID-table filters on the outer query instead.
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
@@ -84,6 +93,13 @@ class SubqueryQueryBuilder {
 	}
 
 	/**
+	 * Builds COUNT(*) SQL for a query segment.
+	 *
+	 * $sqlOptions['LIMIT']/['OFFSET']/['ORDER BY'] are intentionally
+	 * ignored — applying LIMIT or ORDER BY to a single-row aggregate is
+	 * meaningless. The parameter is kept for signature parity with
+	 * buildInstanceQuerySQL.
+	 *
 	 * @since 7.0.0
 	 */
 	public function buildCountQuerySQL(

@@ -748,8 +748,8 @@ return ( static function (): array {
 		#
 		# Set to true to revert to the previous query construction that emits
 		# SELECT DISTINCT against the full join. The default uses a derived-
-		# table rewrite which avoids the planner pathology around DISTINCT +
-		# ORDER BY (especially on MariaDB).
+		# table rewrite that avoids inefficient query plans MariaDB tends to
+		# pick when DISTINCT and ORDER BY are combined.
 		#
 		# Toggle to true if you encounter query performance regressions after
 		# upgrading and want to fall back while reporting the issue.
