@@ -6,6 +6,7 @@ use SMW\DataItems\Number;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
@@ -174,6 +175,55 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 			$resultRewrite->getCountValue(),
 			'Count mismatch between legacy and rewrite for multi-valued property'
 		);
+	}
+
+	public function testDefaultSortProducesCompoundSortfield(): void {
+		// No explicit sortkeys; SMW's OrderCondition defaults to label '#'
+		// which produces a comma-joined sortfield value
+		// ("t0.smw_sort,t0.smw_title,t0.smw_subobject"). This is the
+		// shape almost all real-world #ask queries land on when no
+		// explicit sort= parameter is supplied.
+		$factory = function (): Query {
+			$description = new SomeProperty(
+				$this->numberProperty,
+				new ThingDescription()
+			);
+			$query = new Query( $description );
+			$query->querymode = Query::MODE_INSTANCES;
+			$query->setLimit( 10 );
+			// Default sort label '#' produces the compound sortfield
+			$query->sortkeys = [ '#' => 'ASC' ];
+			return $query;
+		};
+
+		$this->assertQueryEquivalent( $factory, 'default-sort compound sortfield' );
+	}
+
+	public function testDisjunctionAcrossTwoProperties(): void {
+		// Query: [[Has equivalence number::+]] OR [[Has equivalence author::+]].
+		// QuerySegmentListProcessor::disjunction populates a temp table
+		// that the outer query joins as if it were a normal property
+		// table. The rewrite path treats this temp-table join the same
+		// as any other property-table join, but the segment shape is
+		// distinct enough to warrant explicit equivalence testing.
+		$factory = function (): Query {
+			$description = new Disjunction( [
+				new SomeProperty(
+					$this->numberProperty,
+					new ThingDescription()
+				),
+				new SomeProperty(
+					$this->authorProperty,
+					new ThingDescription()
+				),
+			] );
+			$query = new Query( $description );
+			$query->querymode = Query::MODE_INSTANCES;
+			$query->setLimit( 20 );
+			return $query;
+		};
+
+		$this->assertQueryEquivalent( $factory, 'disjunction across two properties' );
 	}
 
 	private function seedFixtures(): void {
