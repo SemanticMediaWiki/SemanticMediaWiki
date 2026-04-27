@@ -824,7 +824,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @param string $subobjectName
 	 *
-	 * @return ContainerSemanticData|null
+	 * @return SemanticData|null
 	 */
 	public function findSubSemanticData( $subobjectName ) {
 		return $this->subSemanticData->findSubSemanticData( $subobjectName );
