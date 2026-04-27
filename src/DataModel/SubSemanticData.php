@@ -73,16 +73,6 @@ class SubSemanticData implements JsonDeserializable {
 	}
 
 	/**
-	 * This is used as contingency where the serialized SementicData still
-	 * has an array object reference.
-	 *
-	 * @since 2.5
-	 */
-	public function copyDataFrom( array $subSemanticData ): void {
-		$this->subSemanticData = $subSemanticData;
-	}
-
-	/**
 	 * Return the array of subSemanticData objects in form of
 	 * subobjectName => SemanticData
 	 *
