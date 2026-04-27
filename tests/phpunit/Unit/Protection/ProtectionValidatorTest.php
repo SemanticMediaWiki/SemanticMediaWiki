@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\Protection;
 
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
@@ -10,11 +11,13 @@ use SMW\DataItemFactory;
 use SMW\EntityCache;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PermissionManager;
 use SMW\Protection\ProtectionValidator;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use WikiPage;
 
 /**
  * @covers \SMW\Protection\ProtectionValidator
@@ -382,6 +385,14 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'getUser' )
 			->willReturn( User::newFromName( 'FooImporter', false ) );
 
+		$revisionStore = $this->getMockBuilder( RevisionStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionStore->expects( $this->any() )
+			->method( 'getFirstRevision' )
+			->willReturn( $revisionRecord );
+
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -397,6 +408,24 @@ class ProtectionValidatorTest extends TestCase {
 		$title->expects( $this->any() )
 			->method( 'getFirstRevision' )
 			->willReturn( $revisionRecord );
+
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->atLeastOnce() )
+			->method( 'getCreator' )
+			->willReturn( $revisionStore );
+
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageCreator->expects( $this->atLeastOnce() )
+			->method( 'createPage' )
+			->willReturn( $wikiPage );
+
+		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
