@@ -340,14 +340,21 @@ class ProtectionValidatorTest extends TestCase {
 	}
 
 	public function testIsClassifiedAsImportPerformerProtected_CreatorAndCurrentUserDontMatch() {
-		$this->markTestSkipped( "FIXME later" );
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revisionRecord = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision->expects( $this->any() )
-			->method( 'getUserText' )
-			->willReturn( 'FooImporter' );
+		$revisionRecord->expects( $this->any() )
+			->method( 'getUser' )
+			->willReturn( User::newFromName( 'FooImporter', false ) );
+
+		$revisionStore = $this->getMockBuilder( RevisionStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionStore->expects( $this->any() )
+			->method( 'getFirstRevision' )
+			->willReturn( $revisionRecord );
 
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
@@ -361,9 +368,23 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'getDBKey' )
 			->willReturn( 'FooSchema' );
 
-		$title->expects( $this->any() )
-			->method( 'getFirstRevision' )
-			->willReturn( $revision );
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->atLeastOnce() )
+			->method( 'getCreator' )
+			->willReturn( $revisionStore );
+
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageCreator->expects( $this->atLeastOnce() )
+			->method( 'createPage' )
+			->willReturn( $wikiPage );
+
+		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
