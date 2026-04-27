@@ -10,7 +10,6 @@ use Psr\Log\NullLogger;
 use SMW\Elastic\Config;
 use SMW\Elastic\Exception\InvalidJSONException;
 use SMW\Elastic\Exception\ReplicationException;
-use SMW\Options;
 use SMW\Site;
 
 /**
@@ -36,10 +35,11 @@ class Client {
 	 */
 	const TYPE_LOOKUP = 'lookup';
 
+	// @phan-suppress-next-line PhanUndeclaredTypeProperty
 	protected ?ElasticClient $client = null;
 
 	/**
-	 * @var bool
+	 * @var ?bool
 	 */
 	private static $ping;
 
@@ -53,15 +53,13 @@ class Client {
 	 */
 	private $distribution;
 
-	/**
-	 * @var bool
-	 */
 	private static array $hasIndex = [];
 
 	/**
 	 * @since 3.0
 	 */
 	public function __construct(
+		// @phan-suppress-next-line PhanUndeclaredTypeParameter
 		ElasticClient $client,
 		private LockManager $lockManager,
 		private ?Config $options = null,
@@ -80,8 +78,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return Options
 	 */
 	public function getConfig(): ?Config {
 		return $this->options;
@@ -96,10 +92,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 *
-	 * @return string
 	 */
 	public function getIndexName( string $type ): string {
 		return "smw-$type-" . $this->wikiid;
@@ -107,10 +99,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 *
-	 * @return string
 	 */
 	public function getIndexDefinition( string $type ): string {
 		static $indexDef = [];
@@ -154,7 +142,7 @@ class Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @return int
+	 * @return ?int
 	 */
 	public function getVersion() {
 		$info = $this->info();
@@ -170,8 +158,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
 	public function getSoftwareInfo(): array {
 		return [
@@ -184,8 +170,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array
 	 */
 	public function info(): array {
 		if ( !$this->ping() ) {
@@ -197,9 +181,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 * @param array $params
 	 */
 	public function stats( string $type = 'indices', array $params = [] ): array {
 		$indices = [
@@ -238,7 +219,6 @@ class Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array
 	 * @return mixed[]
 	 */
 	public function cat( $type, $params = [] ): array {
@@ -262,8 +242,6 @@ class Client {
 	 * @since 3.0
 	 *
 	 * @param string $type
-	 *
-	 * @param boolean
 	 */
 	public function hasIndex( $type ) {
 		if ( isset( self::$hasIndex[$type] ) && self::$hasIndex[$type] ) {
@@ -279,8 +257,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
 	 */
 	public function createIndex( string $type ): string {
 		$index = $this->getIndexName( $type );
@@ -313,8 +289,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $index
 	 */
 	public function deleteIndex( string $index ): void {
 		$params = [
@@ -333,8 +307,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 */
 	public function putSettings( array $params ): void {
 		$this->client->indices()->putSettings( $params );
@@ -342,8 +314,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 */
 	public function putMapping( array $params ): void {
 		$this->client->indices()->putMapping( $params );
@@ -351,8 +321,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 */
 	public function getMapping( array $params ) {
 		return $this->client->indices()->getMapping( $params );
@@ -360,8 +328,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 */
 	public function getSettings( array $params ) {
 		return $this->client->indices()->getSettings( $params );
@@ -369,8 +335,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 */
 	public function refresh( array $params ): void {
 		$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
@@ -378,8 +342,6 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 */
 	public function validate( array $params ): array {
 		if ( $params === [] ) {
@@ -431,15 +393,11 @@ class Client {
 
 	/**
 	 * Check is faster than the standard Client::ping
-	 *
-	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function quick_ping( $timeout = 2 ): bool {
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 
-		foreach ( $hosts as $host ) {
+		foreach ( (array)$hosts as $host ) {
 
 			if ( is_string( $host ) ) {
 				$host = parse_url( $host );
@@ -459,8 +417,6 @@ class Client {
 	 * @see Client::exists
 	 * @since 3.0
 	 *
-	 * @param array $params
-	 *
 	 * @return bool
 	 */
 	public function exists( array $params ) {
@@ -470,8 +426,6 @@ class Client {
 	/**
 	 * @see Client::get
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 *
 	 * @return mixed
 	 */
@@ -483,8 +437,6 @@ class Client {
 	 * @see Client::delete
 	 * @since 3.0
 	 *
-	 * @param array $params
-	 *
 	 * @return mixed
 	 */
 	public function delete( array $params ) {
@@ -494,8 +446,6 @@ class Client {
 	/**
 	 * @see Client::update
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 *
 	 * @return array|string
 	 */
@@ -521,8 +471,6 @@ class Client {
 	 * @see Client::index
 	 * @since 3.0
 	 *
-	 * @param array $params
-	 *
 	 * @return array|string
 	 */
 	public function index( array $params ) {
@@ -546,8 +494,6 @@ class Client {
 	/**
 	 * @see Client::index
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 */
 	public function bulk( array $params ) {
 		if ( $params === [] ) {
@@ -599,10 +545,6 @@ class Client {
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html
 	 * @see Client::count
 	 * @since 3.0
-	 *
-	 * @param array $params
-	 *
-	 * @return mixed
 	 */
 	public function count( array $params ): array {
 		if ( $params === [] ) {
@@ -642,10 +584,6 @@ class Client {
 	/**
 	 * @see Client::search
 	 * @since 3.0
-	 *
-	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function search( array $params ): array {
 		if ( $params === [] ) {
@@ -659,6 +597,7 @@ class Client {
 
 		try {
 			$results = $this->client->search( $params );
+		// @phan-suppress-next-line PhanUndeclaredClassCatch
 		} catch ( NoNodesAvailableException $e ) {
 			$errors[] = 'Elasticsearch endpoint returned with "' . $e->getMessage() . '" .';
 		} catch ( Exception $e ) {
@@ -687,8 +626,6 @@ class Client {
 	 * @see Client::explain
 	 * @since 3.0
 	 *
-	 * @param array $params
-	 *
 	 * @return mixed
 	 */
 	public function explain( array $params ) {
@@ -702,8 +639,6 @@ class Client {
 	/**
 	 * @see Indices::updateAliases
 	 * @since 4.2.0
-	 *
-	 * @param array $params
 	 */
 	public function updateAliases( array $params ): void {
 		$this->client->indices()->updateAliases( $params );
@@ -711,10 +646,6 @@ class Client {
 
 	/**
 	 * @since 4.2.0
-	 *
-	 * @param string $index
-	 *
-	 * @return bool
 	 */
 	public function indexExists( string $index ): bool {
 		return $this->client->indices()->exists( [ 'index' => $index ] );
@@ -722,10 +653,6 @@ class Client {
 
 	/**
 	 * @since 4.2.0
-	 *
-	 * @param string $index
-	 *
-	 * @return bool
 	 */
 	public function aliasExists( string $index ): bool {
 		return $this->client->indices()->existsAlias( [ 'name' => $index ] );
@@ -733,8 +660,6 @@ class Client {
 
 	/**
 	 * @since 4.2.0
-	 *
-	 * @param string $index
 	 */
 	public function openIndex( string $index ): void {
 		$this->client->indices()->open( [ 'index' => $index ] );
@@ -742,8 +667,6 @@ class Client {
 
 	/**
 	 * @since 4.2.0
-	 *
-	 * @param string $index
 	 */
 	public function closeIndex( string $index ): void {
 		$this->client->indices()->close( [ 'index' => $index ] );
@@ -751,8 +674,6 @@ class Client {
 
 	/**
 	 * @since 4.2.0
-	 *
-	 * @param array $params
 	 */
 	public function ingestPutPipeline( array $params ): void {
 		$this->client->ingest()->putPipeline( $params );
@@ -760,8 +681,6 @@ class Client {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return bool
 	 */
 	public function hasMaintenanceLock(): bool {
 		return $this->lockManager->hasMaintenanceLock();
@@ -788,8 +707,6 @@ class Client {
 	 * @since 3.0
 	 *
 	 * @param string $type
-	 *
-	 * @return bool
 	 */
 	public function hasLock( $type ): bool {
 		return $this->lockManager->hasLock( $type );
@@ -817,11 +734,9 @@ class Client {
 
 	/**
 	 * @since 4.2
-	 *
-	 * @return bool
 	 */
 	public function isOpenSearch(): bool {
-		if ( !isset( $this->distribution ) ) {
+		if ( $this->distribution === null ) {
 			$info = $this->info();
 			$this->distribution = $info['version']['distribution'] ?? 'elasticsearch';
 		}

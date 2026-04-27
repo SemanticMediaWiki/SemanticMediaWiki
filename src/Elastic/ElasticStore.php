@@ -9,8 +9,10 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Options;
 use SMW\Query\Query;
+use SMW\Query\QueryResult;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 
@@ -46,7 +48,7 @@ class ElasticStore extends SQLStore {
 	private ?Indexer $indexer = null;
 
 	/**
-	 * @var QueryEngine
+	 * @var ?QueryEngine
 	 */
 	private $queryEngine;
 
@@ -60,16 +62,11 @@ class ElasticStore extends SQLStore {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ElasticFactory $elasticFactory
 	 */
 	public function setElasticFactory( ElasticFactory $elasticFactory ): void {
 		$this->elasticFactory = $elasticFactory;
 	}
 
-	/**
-	 * @return ElasticFactory
-	 */
 	public function getElasticFactory(): ElasticFactory {
 		return $this->elasticFactory;
 	}
@@ -98,8 +95,6 @@ class ElasticStore extends SQLStore {
 	/**
 	 * @see SQLStore::deleteSubject
 	 * @since 3.0
-	 *
-	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
 		$status = parent::deleteSubject( $title );
@@ -156,7 +151,7 @@ class ElasticStore extends SQLStore {
 		// Use case [[Foo]] redirects to #REDIRECT [[Bar]] with Bar not yet being
 		// materialized and with the update not having created any reference,
 		// fulfill T:Q0604 by allowing to create a minimized document body
-		if ( $newTitle->exists() === false ) {
+		if ( !$newTitle->exists() ) {
 			$id = $this->getObjectIds()->getSMWPageID(
 				$newTitle->getDBkey(),
 				$newTitle->getNamespace(),
@@ -177,8 +172,6 @@ class ElasticStore extends SQLStore {
 	/**
 	 * @see SQLStore::fetchQueryResult
 	 * @since 3.0
-	 *
-	 * @param Query $query
 	 *
 	 * @return QueryResult
 	 */
@@ -224,8 +217,6 @@ class ElasticStore extends SQLStore {
 	/**
 	 * @see SQLStore::doDataUpdate
 	 * @since 3.0
-	 *
-	 * @param SemanticData $semanticData
 	 */
 	protected function doDataUpdate( SemanticData $semanticData ) {
 		$status = parent::doDataUpdate( $semanticData );
@@ -441,8 +432,6 @@ class ElasticStore extends SQLStore {
 	 * @since 3.0
 	 *
 	 * @param string|null $type
-	 *
-	 * @return array
 	 */
 	public function getInfo( $type = null ): string|array {
 		if ( $type === 'store' ) {

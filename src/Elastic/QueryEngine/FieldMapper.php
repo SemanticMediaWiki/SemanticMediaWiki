@@ -139,10 +139,8 @@ class FieldMapper {
 	 *
 	 * @param string $field
 	 * @param array $params
-	 *
-	 * @return
 	 */
-	public function field_filter( $field, $params ) {
+	public function field_filter( $field, $params ): array {
 		$idList = [];
 
 		foreach ( $params as $key => $value ) {
@@ -166,8 +164,6 @@ class FieldMapper {
 	 *
 	 * @param string $type
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function bool( $type, $params ): array {
 		return [ 'bool' => [ $type => $params ] ];
@@ -180,8 +176,6 @@ class FieldMapper {
 	 * @since 3.0
 	 *
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function constant_score( $params ): array {
 		return [ 'constant_score' => [ 'filter' => $params ] ];
@@ -197,8 +191,6 @@ class FieldMapper {
 	 * @since 3.0
 	 *
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function filter( $params ): array {
 		return [ 'filter' => $params ];
@@ -212,8 +204,6 @@ class FieldMapper {
 	 * @param $field
 	 * @param $coordinates
 	 * @param $distance
-	 *
-	 * @return array
 	 */
 	public function geo_distance( $field, $coordinates, $distance ): array {
 		return [ 'geo_distance' => [ 'distance' => $distance, $field => $coordinates ] ];
@@ -229,8 +219,6 @@ class FieldMapper {
 	 * @param $left
 	 * @param $bottom
 	 * @param $right
-	 *
-	 * @return array
 	 */
 	public function geo_bounding_box( $field, $top, $left, $bottom, $right ): array {
 		return [ 'geo_bounding_box' => [ $field => [ 'top' => $top, 'left' => $left, 'bottom' => $bottom, 'right' => $right ] ] ];
@@ -241,8 +229,6 @@ class FieldMapper {
 	 *
 	 * @param string $field
 	 * @param mixed $value
-	 *
-	 * @return array
 	 */
 	public function range( $field, $value, $comp = '' ): array {
 		$comparators = [
@@ -262,8 +248,6 @@ class FieldMapper {
 	 *
 	 * @param string|string[] $field
 	 * @param mixed $value
-	 *
-	 * @return array
 	 */
 	public function match( $field, $value, $operator = 'or' ): array {
 		if ( is_array( $field ) ) {
@@ -305,8 +289,6 @@ class FieldMapper {
 	 * @param string[] $fields
 	 * @param mixed $value
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function multi_match( $fields, $value, array $params = [] ): array {
 		// return $this->multi_match( $field, trim( $value, '"' ) , [ "type" => "phrase" ] );
@@ -332,8 +314,6 @@ class FieldMapper {
 	 * @param string $field
 	 * @param mixed $value
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function match_phrase( $field, $value, array $params = [] ): array {
 		if ( strpos( $value, '*' ) !== false ) {
@@ -362,8 +342,6 @@ class FieldMapper {
 	 * @since 3.0
 	 *
 	 * @param mixed $value
-	 *
-	 * @return array
 	 */
 	public function query_string_compat( $value, array $params = [] ): array {
 		$wildcard = '';
@@ -457,8 +435,6 @@ class FieldMapper {
 	 * @param string|array $fields
 	 * @param mixed $value
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function query_string( $fields, $value, array $params = [] ): array {
 		if ( $this->isCompatMode ) {
@@ -479,8 +455,6 @@ class FieldMapper {
 	 * @since 3.0
 	 *
 	 * @param mixed $value
-	 *
-	 * @return array
 	 */
 	public function ids( $value ): array {
 		return [ 'ids' => [ "values" => $value ] ];
@@ -492,8 +466,6 @@ class FieldMapper {
 	 *
 	 * @param string $field
 	 * @param mixed $value
-	 *
-	 * @return array
 	 */
 	public function term( $field, $value ): array {
 		return [ 'term' => [ "$field" => $value ] ];
@@ -509,8 +481,6 @@ class FieldMapper {
 	 *
 	 * @param string $field
 	 * @param mixed $value
-	 *
-	 * @return array
 	 */
 	public function terms( $field, $value ): array {
 		if ( !is_array( $value ) ) {
@@ -525,8 +495,6 @@ class FieldMapper {
 	 *
 	 * @param string $field
 	 * @param mixed $value
-	 *
-	 * @return array
 	 */
 	public function wildcard( $field, $value ): array {
 		return [ 'wildcard' => [ "$field" => $value ] ];
@@ -536,8 +504,6 @@ class FieldMapper {
 	 * @since 3.0
 	 *
 	 * @param string $field
-	 *
-	 * @return array
 	 */
 	public function exists( $field ): array {
 		return [ 'exists' => [ "field" => "$field" ] ];
@@ -550,8 +516,6 @@ class FieldMapper {
 	 *
 	 * @param string $name
 	 * @param mixed $params
-	 *
-	 * @return array
 	 */
 	public function aggs( $name, $params ): array {
 		return [ 'aggregations' => [ "$name" => $params ] ];
@@ -565,8 +529,6 @@ class FieldMapper {
 	 * @param string $key
 	 * @param mixed $field
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function aggs_terms( $key, $field, $params = [] ): array {
 		return [ $key => [ 'terms' => [ "field" => $field ] + $params ] ];
@@ -583,8 +545,6 @@ class FieldMapper {
 	 * @param string $key
 	 * @param mixed $field
 	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function aggs_significant_terms( $key, $field, $params = [] ): array {
 		return [ $key => [ 'significant_terms' => [ "field" => $field ] + $params ] ];
@@ -602,8 +562,6 @@ class FieldMapper {
 	 * @param string $key
 	 * @param mixed $field
 	 * @param $interval
-	 *
-	 * @return array
 	 */
 	public static function aggs_histogram( $key, $field, $interval ): array {
 		return [ $key => [ 'histogram' => [ "field" => $field, 'interval' => $interval ] ] ];
@@ -620,8 +578,6 @@ class FieldMapper {
 	 * @param string $key
 	 * @param mixed $field
 	 * @param $interval
-	 *
-	 * @return array
 	 */
 	public static function aggs_date_histogram( $key, $field, $interval ): array {
 		return [ $key => [ 'date_histogram' => [ "field" => $field, 'interval' => $interval ] ] ];
@@ -633,8 +589,6 @@ class FieldMapper {
 	 * @param Condition|array $params
 	 * @param string $replacement
 	 * @param array $hierarchy
-	 *
-	 * @return string
 	 */
 	public function hierarchy( $params, $replacement, $hierarchy = [] ): array|Condition {
 		if ( $hierarchy === [] ) {

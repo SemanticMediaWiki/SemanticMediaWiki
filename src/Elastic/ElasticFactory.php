@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic;
 
+use Onoi\EventDispatcher\DispatchContext;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
@@ -57,8 +58,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return Hooks
 	 */
 	public function newHooks(): Hooks {
 		return new Hooks( $this );
@@ -66,8 +65,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return Config
 	 */
 	public function newConfig(): Config {
 		$settings = ApplicationFactory::getInstance()->getSettings();
@@ -102,8 +99,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return ConnectionProvider
 	 */
 	public function newConnectionProvider(): ConnectionProvider {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -122,10 +117,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 *
-	 * @return DocumentCreator
 	 */
 	public function newDocumentCreator( Store $store ): DocumentCreator {
 		$config = $store->getConnection( 'elastic' )->getConfig();
@@ -141,21 +132,15 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 *
-	 * @return ProximityPropertyValueLookup
 	 */
-	public function newProximityPropertyValueLookup( Store $store ): ProximityPropertyValueLookup {
+	public function newProximityPropertyValueLookup(
+		Store $store
+	): ProximityPropertyValueLookup {
 		return new ProximityPropertyValueLookup( $store );
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param ElasticClient $connection
-	 *
-	 * @return Installer
 	 */
 	public function newInstaller( ElasticClient $connection ): Installer {
 		return new Installer( $this->newRollover( $connection ) );
@@ -163,13 +148,11 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store|null $store
-	 * @param MessageReporter|null $messageReporter
-	 *
-	 * @return Indexer
 	 */
-	public function newIndexer( ?Store $store = null, ?MessageReporter $messageReporter = null ): Indexer {
+	public function newIndexer(
+		?Store $store = null,
+		?MessageReporter $messageReporter = null
+	): Indexer {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -204,10 +187,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $connection
-	 *
-	 * @return Rollover
 	 */
 	public function newRollover( ElasticClient $connection ): Rollover {
 		return new Rollover( $connection );
@@ -215,10 +194,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $connection
-	 *
-	 * @return Bulk
 	 */
 	public function newBulk( ElasticClient $connection ): Bulk {
 		return new Bulk( $connection );
@@ -226,11 +201,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param Indexer $indexer
-	 *
-	 * @return FileIndexer
 	 */
 	public function newFileIndexer( Store $store, Indexer $indexer ): FileIndexer {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -279,10 +249,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ElasticClient $connection
-	 *
-	 * @return ReplicationStatus
 	 */
 	public function newReplicationStatus( ElasticClient $connection ): ReplicationStatus {
 		return new ReplicationStatus( $connection );
@@ -290,12 +256,10 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store|null $store
-	 *
-	 * @return DocumentReplicationExaminer
 	 */
-	public function newDocumentReplicationExaminer( ?Store $store = null ): DocumentReplicationExaminer {
+	public function newDocumentReplicationExaminer(
+		?Store $store = null
+	): DocumentReplicationExaminer {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -312,10 +276,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store|null $store
-	 *
-	 * @return ReplicationCheck
 	 */
 	public function newReplicationCheck( ?Store $store = null ): ReplicationCheck {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -342,10 +302,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 *
-	 * @return QueryEngine
 	 */
 	public function newQueryEngine( Store $store ): QueryEngine {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -397,10 +353,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 *
-	 * @return Rebuilder
 	 */
 	public function newRebuilder( Store $store ): Rebuilder {
 		$connection = $store->getConnection( 'elastic' );
@@ -419,13 +371,11 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param MessageReporter $messageReporter
-	 *
-	 * @return UpdateEntityCollationComplete
 	 */
-	public function newUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ): UpdateEntityCollationComplete {
+	public function newUpdateEntityCollationComplete(
+		Store $store,
+		MessageReporter $messageReporter
+	): UpdateEntityCollationComplete {
 		$updateEntityCollationComplete = new UpdateEntityCollationComplete(
 			$store
 		);
@@ -439,10 +389,6 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 *
-	 * @return ElasticClientTaskHandler
 	 */
 	public function newInfoTaskHandler( Store $store, $outputFormatter ): ElasticClientTaskHandler {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -466,12 +412,10 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $containerBuilder
-	 *
-	 * @return ConceptDescriptionInterpreter
 	 */
-	public function newConceptDescriptionInterpreter( ConditionBuilder $containerBuilder ): ConceptDescriptionInterpreter {
+	public function newConceptDescriptionInterpreter(
+		ConditionBuilder $containerBuilder
+	): ConceptDescriptionInterpreter {
 		return new ConceptDescriptionInterpreter(
 			$containerBuilder,
 			ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()
@@ -480,86 +424,70 @@ class ElasticFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $containerBuilder
-	 *
-	 * @return SomePropertyInterpreter
 	 */
-	public function newSomePropertyInterpreter( ConditionBuilder $containerBuilder ): SomePropertyInterpreter {
+	public function newSomePropertyInterpreter(
+		ConditionBuilder $containerBuilder
+	): SomePropertyInterpreter {
 		return new SomePropertyInterpreter( $containerBuilder );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $containerBuilder
-	 *
-	 * @return ClassDescriptionInterpreter
 	 */
-	public function newClassDescriptionInterpreter( ConditionBuilder $containerBuilder ): ClassDescriptionInterpreter {
+	public function newClassDescriptionInterpreter(
+		ConditionBuilder $containerBuilder
+	): ClassDescriptionInterpreter {
 		return new ClassDescriptionInterpreter( $containerBuilder );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $containerBuilder
-	 *
-	 * @return NamespaceDescriptionInterpreter
 	 */
-	public function newNamespaceDescriptionInterpreter( ConditionBuilder $containerBuilder ): NamespaceDescriptionInterpreter {
+	public function newNamespaceDescriptionInterpreter(
+		ConditionBuilder $containerBuilder
+	): NamespaceDescriptionInterpreter {
 		return new NamespaceDescriptionInterpreter( $containerBuilder );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $containerBuilder
-	 *
-	 * @return ValueDescriptionInterpreter
 	 */
-	public function newValueDescriptionInterpreter( ConditionBuilder $containerBuilder ): ValueDescriptionInterpreter {
+	public function newValueDescriptionInterpreter(
+		ConditionBuilder $containerBuilder
+	): ValueDescriptionInterpreter {
 		return new ValueDescriptionInterpreter( $containerBuilder );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $containerBuilder
-	 *
-	 * @return SomeValueInterpreter
 	 */
-	public function newSomeValueInterpreter( ConditionBuilder $containerBuilder ): SomeValueInterpreter {
+	public function newSomeValueInterpreter(
+		ConditionBuilder $containerBuilder
+	): SomeValueInterpreter {
 		return new SomeValueInterpreter( $containerBuilder );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $containerBuilder
-	 *
-	 * @return ConjunctionInterpreter
 	 */
-	public function newConjunctionInterpreter( ConditionBuilder $containerBuilder ): ConjunctionInterpreter {
+	public function newConjunctionInterpreter(
+		ConditionBuilder $containerBuilder
+	): ConjunctionInterpreter {
 		return new ConjunctionInterpreter( $containerBuilder );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $containerBuilder
-	 *
-	 * @return DisjunctionInterpreter
 	 */
-	public function newDisjunctionInterpreter( ConditionBuilder $containerBuilder ): DisjunctionInterpreter {
+	public function newDisjunctionInterpreter(
+		ConditionBuilder $containerBuilder
+	): DisjunctionInterpreter {
 		return new DisjunctionInterpreter( $containerBuilder );
 	}
 
 	/**
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::EntityReferenceCleanUpComplete
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
 	public function onEntityReferenceCleanUpComplete( Store $store, $id, $subject, $isRedirect ): bool {
 		if ( !$store instanceof ElasticStore || $store->getConnection( 'elastic' ) instanceof DummyClient ) {

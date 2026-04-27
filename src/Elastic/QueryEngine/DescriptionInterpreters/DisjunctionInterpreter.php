@@ -22,12 +22,11 @@ class DisjunctionInterpreter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Disjunction $description
-	 *
-	 * @return Condition|[]
 	 */
-	public function interpretDescription( Disjunction $description, $isConjunction = false ): array|Condition {
+	public function interpretDescription(
+		Disjunction $description,
+		bool $isConjunction = false
+	): array|Condition {
 		$params = [];
 		$notConditionFields = [];
 
@@ -40,7 +39,8 @@ class DisjunctionInterpreter {
 			// [[Foo.bar::123]] OR [[Foobar::123]]
 			$desc->isPartOfDisjunction = true;
 
-			if ( ( $param = $this->conditionBuilder->interpretDescription( $desc, true ) ) !== [] ) {
+			$param = $this->conditionBuilder->interpretDescription( $desc, true );
+			if ( $param !== [] ) {
 
 				// @see SomePropertyInterpreter
 				// Collect a possible negation condition in case `must_not.property.exists`

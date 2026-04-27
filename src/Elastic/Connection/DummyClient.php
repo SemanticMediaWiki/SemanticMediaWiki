@@ -22,6 +22,7 @@ class DummyClient extends Client {
 	 * @since 3.0
 	 */
 	public function __construct(
+		// @phan-suppress-next-line PhanUndeclaredTypeParameter,PhanUndeclaredTypeProperty
 		protected ?ElasticClient $client = null,
 		private ?Cache $cache = null,
 		private ?Config $config = null,

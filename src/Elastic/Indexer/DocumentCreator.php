@@ -46,15 +46,9 @@ use SMW\Store;
  */
 class DocumentCreator {
 
-	/**
-	 * @var bool
-	 */
-	private $compatibilityMode = true;
+	private bool $compatibilityMode = true;
 
-	/**
-	 * @var int
-	 */
-	private $documentCreationDuration = 0;
+	private int $documentCreationDuration = 0;
 
 	private array $subEntities = [];
 
@@ -66,17 +60,13 @@ class DocumentCreator {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param bool $compatibilityMode
 	 */
-	public function setCompatibilityMode( $compatibilityMode ): void {
-		$this->compatibilityMode = $compatibilityMode;
+	public function setCompatibilityMode( mixed $compatibilityMode ): void {
+		$this->compatibilityMode = (bool)$compatibilityMode;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getDocumentCreationDuration(): int {
 		return $this->documentCreationDuration;
@@ -84,10 +74,6 @@ class DocumentCreator {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SemanticData $semanticData
-	 *
-	 * @return Document
 	 */
 	public function newFromSemanticData( SemanticData $semanticData ): Document {
 		$time = microtime( true );
@@ -104,6 +90,7 @@ class DocumentCreator {
 		// have been processed because pending entities don't follow any order
 		// in `SemanticData::SubSemanticData` and have therefore to be resolved
 		// first.
+		// @phan-suppress-next-line PhanEmptyForeach
 		foreach ( $this->subEntities as $oid => $value ) {
 
 			if ( !$document->hasSubDocumentById( $oid ) ) {
@@ -119,7 +106,7 @@ class DocumentCreator {
 			$document->getSubDocumentById( $oid )->setField( "P:$pid", $value );
 		}
 
-		$this->documentCreationDuration = ( microtime( true ) - $time );
+		$this->documentCreationDuration = (int)( microtime( true ) - $time );
 
 		return $document;
 	}
@@ -248,8 +235,12 @@ class DocumentCreator {
 					// match the object.
 					//
 					// @see also T:Q0105#8
-					if ( !$document->hasSubDocumentById( $oid ) ) {
-						$document->addSubDocument( $this->newHead( $oid, $dataItem, Document::TYPE_UPSERT ) );
+					if ( !$document->hasSubDocumentById( $oid ) &&
+						$dataItem instanceof WikiPage
+					) {
+						$document->addSubDocument(
+							$this->newHead( $oid, $dataItem, Document::TYPE_UPSERT )
+						);
 					}
 				} elseif ( $type === DataItem::TYPE_BLOB ) {
 
@@ -264,7 +255,9 @@ class DocumentCreator {
 					// Remove control chars and avoid Elasticsearch to throw a
 					// "SmartSerializer.php: Failed to JSON encode: 5" since JSON requires
 					// valid UTF-8
-					$values["$fieldType"][] = TextSanitizer::removeLinks( mb_convert_encoding( $val, 'UTF-8', 'UTF-8' ) );
+					$values["$fieldType"][] = TextSanitizer::removeLinks(
+						mb_convert_encoding( $val, 'UTF-8', 'UTF-8' )
+					);
 				} elseif ( $type === DataItem::TYPE_URI ) {
 
 					// Used for `compatibilityMode`

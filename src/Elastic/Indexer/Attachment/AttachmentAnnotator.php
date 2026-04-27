@@ -28,8 +28,6 @@ class AttachmentAnnotator implements Annotator {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return Property
 	 */
 	public function getProperty(): Property {
 		return new Property( '_FILE_ATTCH' );
@@ -37,8 +35,6 @@ class AttachmentAnnotator implements Annotator {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return Container
 	 */
 	public function getContainer(): Container {
 		return new Container( $this->containerSemanticData );
@@ -47,8 +43,6 @@ class AttachmentAnnotator implements Annotator {
 	/**
 	 * @see Annotator::getSemanticData
 	 * @since 3.0
-	 *
-	 * @return SemanticData
 	 */
 	public function getSemanticData(): ContainerSemanticData {
 		return $this->containerSemanticData;
@@ -57,8 +51,6 @@ class AttachmentAnnotator implements Annotator {
 	/**
 	 * @see Annotator::addAnnotation
 	 * @since 3.0
-	 *
-	 * @return Annotator
 	 */
 	public function addAnnotation(): static {
 		$dataItemFactory = new DataItemFactory();
