@@ -33,6 +33,7 @@ class ProtectionValidatorTest extends TestCase {
 	private $store;
 	private $entityCache;
 	private $permissionManager;
+	private $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
