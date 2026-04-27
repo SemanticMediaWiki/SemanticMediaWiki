@@ -38,36 +38,25 @@ class DataValueFactory {
 
 	private DataValueServiceFactory $dataValueServiceFactory;
 
-	/**
-	 * @var int
-	 */
-	private $featureSet = 0;
+	private int $featureSet = 0;
 
-	/**
-	 * @var array
-	 */
-	private $defaultOutputFormatters;
+	private array $defaultOutputFormatters;
 
-	/**
-	 * @var
-	 */
 	private array $callables = [];
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param DataTypeRegistry $dataTypeRegistry
-	 * @param DataValueServiceFactory $dataValueServiceFactory
 	 */
-	protected function __construct( DataTypeRegistry $dataTypeRegistry, DataValueServiceFactory $dataValueServiceFactory ) {
+	protected function __construct(
+		DataTypeRegistry $dataTypeRegistry,
+		DataValueServiceFactory $dataValueServiceFactory
+	) {
 		$this->dataTypeRegistry = $dataTypeRegistry;
 		$this->dataValueServiceFactory = $dataValueServiceFactory;
 	}
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return DataValueFactory
 	 */
 	public static function getInstance(): DataValueFactory {
 		if ( self::$instance !== null ) {
@@ -133,17 +122,13 @@ class DataValueFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ): void {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $defaultOutputFormatters
 	 */
 	public function setDefaultOutputFormatters( array $defaultOutputFormatters ): void {
 		$this->defaultOutputFormatters = [];
@@ -172,7 +157,13 @@ class DataValueFactory {
 	 *
 	 * @return DataValue|ErrorValue
 	 */
-	public function newDataValueByType( $typeId, $valueString = false, $caption = false, ?Property $property = null, $contextPage = null ) {
+	public function newDataValueByType(
+		$typeId,
+		$valueString = false,
+		$caption = false,
+		?Property $property = null,
+		$contextPage = null
+	) {
 		if ( !$this->dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
@@ -251,7 +242,12 @@ class DataValueFactory {
 	 *
 	 * @return DataValue|ErrorValue
 	 */
-	public function newDataValueByItem( DataItem $dataItem, ?Property $property = null, $caption = false, $contextPage = null ) {
+	public function newDataValueByItem(
+		DataItem $dataItem,
+		?Property $property = null,
+		$caption = false,
+		$contextPage = null
+	) {
 		if ( $property !== null ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
@@ -287,7 +283,12 @@ class DataValueFactory {
 	 *
 	 * @return DataValue|ErrorValue
 	 */
-	public function newDataValueByProperty( Property $property, $valueString = false, $caption = false, $contextPage = null ) {
+	public function newDataValueByProperty(
+		Property $property,
+		$valueString = false,
+		$caption = false,
+		$contextPage = null
+	) {
 		$typeId = $property->isInverse() ? '_wpg' : $property->findPropertyTypeID();
 
 		return $this->newDataValueByType( $typeId, $valueString, $caption, $property, $contextPage );
@@ -303,11 +304,16 @@ class DataValueFactory {
 	 * @param string $propertyName property string
 	 * @param string $valueString user value string
 	 * @param mixed $caption user-defined caption
-	 * @param SMWDIWikiPage|null $contextPage context for parsing the value string
+	 * @param WikiPage|null $contextPage context for parsing the value string
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?WikiPage $contextPage = null ) {
+	public function newDataValueByText(
+		$propertyName,
+		$valueString,
+		$caption = false,
+		?WikiPage $contextPage = null
+	) {
 		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $caption, $contextPage );
 
 		if ( !$propertyDV->isValid() ) {
@@ -387,8 +393,18 @@ class DataValueFactory {
 	 *
 	 * @return DataValue|ErrorValue
 	 */
-	public function newPropertyValueByLabel( $propertyLabel, $caption = false, ?WikiPage $contextPage = null ) {
-		return $this->newDataValueByType( PropertyValue::TYPE_ID, $propertyLabel, $caption, null, $contextPage );
+	public function newPropertyValueByLabel(
+		$propertyLabel,
+		$caption = false,
+		?WikiPage $contextPage = null
+	) {
+		return $this->newDataValueByType(
+			PropertyValue::TYPE_ID,
+			$propertyLabel,
+			$caption,
+			null,
+			$contextPage
+		);
 	}
 
 	/**
@@ -400,7 +416,11 @@ class DataValueFactory {
 	 *
 	 * @return DataValue|ErrorValue
 	 */
-	public function newPropertyValueByItem( Property $property, $caption = false, ?WikiPage $contextPage = null ) {
+	public function newPropertyValueByItem(
+		Property $property,
+		$caption = false,
+		?WikiPage $contextPage = null
+	) {
 		$dataValue = $this->newDataValueByType(
 			PropertyValue::TYPE_ID,
 			false,
@@ -424,11 +444,16 @@ class DataValueFactory {
 	 * @param string $typeid
 	 * @param string|array $errormsg
 	 * @param string $uservalue
-	 * @param string $caption
+	 * @param string|false $caption
 	 *
 	 * @return ErrorValue
 	 */
-	public function newErrorValue( $typeid, $errormsg = '', $uservalue = '', $caption = false ): ErrorValue {
+	public function newErrorValue(
+		$typeid,
+		$errormsg = '',
+		$uservalue = '',
+		$caption = false
+	): ErrorValue {
 		return new ErrorValue( $typeid, $errormsg, $uservalue, $caption );
 	}
 
