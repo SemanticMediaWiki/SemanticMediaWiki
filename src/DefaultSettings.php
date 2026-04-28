@@ -1136,6 +1136,18 @@ return ( static function (): array {
 		# #
 
 		###
+		# Initial value for the registry of deprecation notices surfaced on
+		# Special:Admin's "Deprecation notices" panel. Extensions can populate
+		# this array (keyed by section name) to inform administrators about
+		# settings or features they are using that are planned for removal or
+		# have already been removed in the running version.
+		#
+		# @since 7.0.0
+		##
+		'smwgDeprecationNotices' => [],
+		# #
+
+		###
 		# Sets whether or not to refresh the pages of which semantic data is stored.
 		#
 		# @since 1.5.6
