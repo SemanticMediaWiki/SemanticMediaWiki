@@ -36,7 +36,7 @@ class RebuilderTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment(
 			[
 				'smwgAutoRefreshSubject' => true,
-				'smwgCacheType' => 'hash',
+				'smwgMainCacheType' => 'hash',
 				'smwgEnableUpdateJobs' => false,
 			]
 		);
