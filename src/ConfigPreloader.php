@@ -17,10 +17,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
  */
 class ConfigPreloader {
 
-	/**
-	 * @var
-	 */
-	private static $config = [];
+	private static array $config = [];
 
 	/**
 	 * Loading files from the internal `config` directory that provides some
@@ -40,6 +37,7 @@ class ConfigPreloader {
 		$dir = $GLOBALS['smwgDir'] . '/data/config/';
 
 		foreach ( $files as $file ) {
+			// @phan-suppress-next-line PhanTypeConversionFromArray
 			$this->load( "$dir/$file" );
 		}
 
@@ -75,10 +73,12 @@ class ConfigPreloader {
 			throw new ConfigPreloadFileNotReadableException( $file );
 		}
 
-		if ( ( $config = require_once $file ) !== true ) {
+		$config = require_once $file;
+		if ( $config !== true ) {
 			self::$config[$file] = $config;
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchDimFetch
 		foreach ( self::$config[$file] as $key => $value ) {
 			$GLOBALS[$key] = $value;
 		}
