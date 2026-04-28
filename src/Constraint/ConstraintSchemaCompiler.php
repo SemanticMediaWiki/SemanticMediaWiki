@@ -26,23 +26,24 @@ class ConstraintSchemaCompiler {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $constraintSchema
-	 *
-	 * @return string
 	 */
 	public function prettify( array $constraintSchema ): string {
 		if ( $constraintSchema === [] ) {
 			return '';
 		}
 
-		return str_replace( [ '\\\\' ], [ '\\' ], json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
+		return str_replace(
+			[ '\\\\' ],
+			[ '\\' ],
+			json_encode(
+				$constraintSchema,
+				JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+			)
+		);
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Property $property
 	 *
 	 * @return 'PROPERTY_CONSTRAINT_SCHEMA'[]|non-empty-array[]
 	 */
@@ -157,7 +158,7 @@ class ConstraintSchemaCompiler {
 			$property
 		);
 
-		if ( $unique_value_constraint === false || $unique_value_constraint === null ) {
+		if ( !$unique_value_constraint ) {
 			return;
 		}
 
