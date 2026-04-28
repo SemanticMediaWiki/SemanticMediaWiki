@@ -186,7 +186,8 @@ class setupStore extends Maintenance {
 	protected function loadGlobalFunctions() {
 		global $smwgIP;
 
-		if ( $smwgIP === null ) {
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
+		if ( !isset( $smwgIP ) ) {
 			$smwgIP = __DIR__ . '/../';
 		}
 
