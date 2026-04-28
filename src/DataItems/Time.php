@@ -108,7 +108,7 @@ class Time extends DataItem implements CalendarModel {
 	protected int $era;
 
 	/**
-	 * @var float
+	 * @var ?float
 	 */
 	protected $julianDay = null;
 
