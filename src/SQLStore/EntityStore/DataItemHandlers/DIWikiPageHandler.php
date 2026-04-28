@@ -55,7 +55,7 @@ class DIWikiPageHandler extends DataItemHandler {
 		return [
 			// Standalone (o_id) intentionally omitted — it is a leftmost prefix
 			// of (o_id, s_id) and (o_id, p_id) below, so the composites cover
-			// every query a standalone (o_id) index could serve. See #6559.
+			// any query a standalone (o_id) index could serve. See #6559.
 
 			// SMWSQLStore3Readers::getPropertySubjects
 			'p_id,s_id',
