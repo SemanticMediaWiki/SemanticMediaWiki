@@ -4,7 +4,6 @@ namespace SMW\Tests\Unit\MediaWiki;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use SMW\FakeJob;
 use SMW\MediaWiki\JobQueue;
 
 /**
