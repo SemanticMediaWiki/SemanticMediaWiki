@@ -34,8 +34,6 @@ class Error extends DataItem {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public function getUserValue(): string {
 		return $this->userValue;
@@ -57,7 +55,6 @@ class Error extends DataItem {
 	 * Create a data item from the provided serialization string and type
 	 * ID.
 	 * @todo Be more careful with unserialization. It can create E_NOTICEs.
-	 * @return Error
 	 */
 	public static function doUnserialize( $serialization ): Error {
 		return new Error( unserialize( $serialization ) );
@@ -75,8 +72,6 @@ class Error extends DataItem {
 	 * Implements \JsonSerializable.
 	 *
 	 * @since 4.0.0
-	 *
-	 * @return array
 	 */
 	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
@@ -89,10 +84,7 @@ class Error extends DataItem {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonDeserializer $deserializer
-	 * @param array $json JSON to be unserialized
-	 *
-	 * @return self
+	 * @return static
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
 		$obj = parent::newFromJsonArray( $deserializer, $json );

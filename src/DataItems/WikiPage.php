@@ -44,7 +44,7 @@ class WikiPage extends DataItem {
 	private $contextReference = null;
 
 	/**
-	 * @var string
+	 * @var string|false|null
 	 */
 	private $pageLanguage = null;
 
@@ -104,10 +104,6 @@ class WikiPage extends DataItem {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $prefix
-	 *
-	 * @return bool
 	 */
 	public function isSubEntityOf( string $prefix ): bool {
 		if (
@@ -122,10 +118,6 @@ class WikiPage extends DataItem {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $namespace
-	 *
-	 * @return bool
 	 */
 	public function inNamespace( int $namespace ): bool {
 		return $this->m_dbkey !== '' && $this->m_namespace === $namespace;
@@ -137,7 +129,12 @@ class WikiPage extends DataItem {
 	 * @return string
 	 */
 	public function getSha1(): string {
-		return sha1( json_encode( [ $this->m_dbkey, $this->m_namespace, $this->m_interwiki, $this->m_subobjectname ] ), true );
+		return sha1(
+			json_encode(
+				[ $this->m_dbkey, $this->m_namespace, $this->m_interwiki, $this->m_subobjectname ]
+			),
+			true
+		);
 	}
 
 	/**
@@ -176,8 +173,6 @@ class WikiPage extends DataItem {
 	 * Returns a reference for the processing context (parser etc.).
 	 *
 	 * @since 2.3
-	 *
-	 * @return string
 	 */
 	public function getContextReference(): ?string {
 		return $this->contextReference;
@@ -187,8 +182,6 @@ class WikiPage extends DataItem {
 	 * Returns the page content language
 	 *
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getPageLanguage(): string|false {
 		if ( $this->pageLanguage === null ) {
@@ -213,8 +206,6 @@ class WikiPage extends DataItem {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getId(): int {
 		return $this->id;
@@ -223,8 +214,6 @@ class WikiPage extends DataItem {
 	/**
 	 * Create a MediaWiki Title object for this WikiPage. The result
 	 * can be null if an error occurred.
-	 *
-	 * @return Title|null
 	 */
 	public function getTitle(): ?Title {
 		return MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
@@ -239,8 +228,6 @@ class WikiPage extends DataItem {
 	 * Returns the base part (without a fragment) of a wikipage representation.
 	 *
 	 * @since 2.4
-	 *
-	 * @return WikiPage
 	 */
 	public function asBase(): self {
 		return new self (
@@ -252,8 +239,6 @@ class WikiPage extends DataItem {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return string
 	 */
 	public function getSerialization(): string {
 		$segments = [
@@ -272,7 +257,6 @@ class WikiPage extends DataItem {
 	 *
 	 * @param string $serialization
 	 *
-	 * @return WikiPage
 	 * @throws DataItemDeserializationException
 	 */
 	public static function doUnserialize( $serialization ): self {
@@ -289,9 +273,6 @@ class WikiPage extends DataItem {
 
 	/**
 	 * Create a data item from a MediaWiki Title.
-	 *
-	 * @param Title $title
-	 * @return WikiPage
 	 */
 	public static function newFromTitle( Title $title ): self {
 		return new self(
@@ -306,9 +287,7 @@ class WikiPage extends DataItem {
 	 * @since 2.1
 	 *
 	 * @param string $text
-	 * @param integer namespace
-	 *
-	 * @return WikiPage
+	 * @param int $namespace
 	 */
 	public static function newFromText( $text, $namespace = NS_MAIN ): self {
 		return new self( $text, $namespace );
@@ -326,8 +305,6 @@ class WikiPage extends DataItem {
 	 * Implements JsonSerializable.
 	 *
 	 * @since 4.0.0
-	 *
-	 * @return array
 	 */
 	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
@@ -343,10 +320,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonDeserializer $deserializer
-	 * @param array $json JSON to be unserialized
-	 *
-	 * @return self
+	 * @return static
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
 		$obj = parent::newFromJsonArray( $deserializer, $json );

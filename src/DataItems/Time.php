@@ -48,7 +48,20 @@ class Time extends DataItem implements CalendarModel {
 	 * Maximal number of days in a given month.
 	 * @var array
 	 */
-	protected static $m_daysofmonths = [ 1 => 31, 2 => 29, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 ];
+	protected static $m_daysofmonths = [
+		1 => 31,
+		2 => 29,
+		3 => 31,
+		4 => 30,
+		5 => 31,
+		6 => 30,
+		7 => 31,
+		8 => 31,
+		9 => 30,
+		10 => 31,
+		11 => 30,
+		12 => 31
+	];
 
 	/**
 	 * Precision Time::PREC_Y, Time::PREC_YM,
@@ -95,7 +108,7 @@ class Time extends DataItem implements CalendarModel {
 	protected int $era;
 
 	/**
-	 * @var int
+	 * @var ?float
 	 */
 	protected $julianDay = null;
 
@@ -116,8 +129,16 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @todo Implement more validation here.
 	 */
-	public function __construct( $calendarmodel, $year, $month = false, $day = false,
-								 $hour = false, $minute = false, $second = false, $timezone = false ) {
+	public function __construct(
+		$calendarmodel,
+		$year,
+		$month = false,
+		$day = false,
+		$hour = false,
+		$minute = false,
+		$second = false,
+		$timezone = false
+	) {
 		if ( ( $calendarmodel != self::CM_GREGORIAN ) && ( $calendarmodel != self::CM_JULIAN ) ) {
 			throw new DataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
@@ -151,8 +172,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return int
 	 */
 	public function getDIType(): int {
 		return DataItem::TYPE_TIME;
@@ -194,8 +213,6 @@ class Time extends DataItem implements CalendarModel {
 	 * - [1] indicates AD/CE was used
 	 *
 	 * @since 2.4
-	 *
-	 * @return int
 	 */
 	public function getEra(): int {
 		return $this->era;
@@ -203,8 +220,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return int
 	 */
 	public function getYear(): int {
 		return $this->m_year;
@@ -212,8 +227,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return int
 	 */
 	public function getMonth(): int {
 		return $this->m_month;
@@ -221,8 +234,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return int
 	 */
 	public function getDay(): int {
 		return $this->m_day;
@@ -230,8 +241,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return int
 	 */
 	public function getHour(): int {
 		return $this->m_hours;
@@ -239,8 +248,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return int
 	 */
 	public function getMinute(): int {
 		return $this->m_minutes;
@@ -257,8 +264,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return string
 	 */
 	public function getCalendarModelLiteral(): string {
 		$literal = [
@@ -272,9 +277,6 @@ class Time extends DataItem implements CalendarModel {
 	/**
 	 * @since 2.4
 	 *
-	 * @param ExtendedDateTime $dateTime
-	 *
-	 * @return self
 	 * @throws DataItemException
 	 */
 	public static function newFromDateTime( ExtendedDateTime $dateTime ): Time {
@@ -295,8 +297,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return ExtendedDateTime
 	 */
 	public function asDateTime(): ExtendedDateTime {
 		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
@@ -327,8 +327,6 @@ class Time extends DataItem implements CalendarModel {
 	 * @since 1.8
 	 *
 	 * @param string $timestamp must be in format
-	 *
-	 * @return self|false
 	 */
 	public static function newFromTimestamp( $timestamp ): false|Time {
 		$timestamp = wfTimestamp( TS_MW, (string)$timestamp );
@@ -378,8 +376,7 @@ class Time extends DataItem implements CalendarModel {
 	 * numbers when the internal calculations hit floating point accuracy.
 	 * Callers might want to avoid this (calendar models make little sense
 	 * in such cases anyway).
-	 * @param $calendarmodel integer one of Time::CM_GREGORIAN or Time::CM_JULIAN
-	 * @return self
+	 * @param int $calendarmodel integer one of Time::CM_GREGORIAN or Time::CM_JULIAN
 	 */
 	public function getForCalendarModel( $calendarmodel ): self {
 		if ( $calendarmodel == $this->m_model ) {
@@ -396,6 +393,7 @@ class Time extends DataItem implements CalendarModel {
 	 * with a fraction for the date is used (times are ignored). This
 	 * avoids calculation errors that would occur for very ancient dates
 	 * if the JD number was used there.
+	 *
 	 * @return double sortkey
 	 */
 	public function getSortKey() {
@@ -409,8 +407,6 @@ class Time extends DataItem implements CalendarModel {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return double
 	 */
 	public function getJD(): float {
 		if ( $this->julianDay !== null ) {
@@ -502,10 +498,13 @@ class Time extends DataItem implements CalendarModel {
 	 * @param double $jdValue
 	 * @param int|null $calendarModel
 	 * @param int|null $precision
-	 *
-	 * @return self
 	 */
-	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ): self {
+	public static function newFromJD(
+		$jdValue,
+		$calendarModel = null,
+		$precision = null,
+		$timezone = false
+	): self {
 		$hour = $minute = $second = false;
 		$year = $month = $day = false;
 		$jdValue = JulianDay::format( $jdValue );
@@ -533,9 +532,8 @@ class Time extends DataItem implements CalendarModel {
 	/**
 	 * Find out whether the given year number is a leap year.
 	 * This calculation assumes that neither calendar has a year 0.
-	 * @param $year integer year number
-	 * @param $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
-	 * @return bool
+	 * @param int $year integer year number
+	 * @param int $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
 	 */
 	public static function isLeapYear( $year, $calendarmodel ): bool {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
@@ -551,10 +549,12 @@ class Time extends DataItem implements CalendarModel {
 	 * Find out how many days the given month had in the given year
 	 * based on the specified calendar model.
 	 * This calculation assumes that neither calendar has a year 0.
-	 * @param $month integer month number
-	 * @param $year integer year number
-	 * @param $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
-	 * @return bool
+	 *
+	 * @param int $month integer month number
+	 * @param int $year integer year number
+	 * @param int $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
+	 *
+	 * @return int
 	 */
 	public static function getDayNumberForMonth( $month, $year, $calendarmodel ) {
 		if ( $month !== 2 ) {
@@ -601,8 +601,6 @@ class Time extends DataItem implements CalendarModel {
 	 * Implements \JsonSerializable.
 	 *
 	 * @since 4.0.0
-	 *
-	 * @return array
 	 */
 	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
@@ -615,10 +613,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonDeserializer $deserializer
-	 * @param array $json JSON to be unserialized
-	 *
-	 * @return self
+	 * @return static
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
 		$obj = parent::newFromJsonArray( $deserializer, $json );

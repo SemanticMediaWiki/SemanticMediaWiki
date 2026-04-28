@@ -98,7 +98,6 @@ abstract class DataItem implements JsonDeserializable {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DataItem $di
 	 * @return bool
 	 */
 	abstract public function equals( DataItem $di );
@@ -107,8 +106,6 @@ abstract class DataItem implements JsonDeserializable {
 	 * Create a data item that represents the sortkey, i.e. either an
 	 * Blob or an Number. For efficiency, these subclasses
 	 * overwrite this method to return themselves.
-	 *
-	 * @return DataItem
 	 */
 	public function getSortKeyDataItem(): Number|Blob {
 		$sortKey = $this->getSortKey();
@@ -131,8 +128,6 @@ abstract class DataItem implements JsonDeserializable {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return string
 	 */
 	public function getSha1(): string {
 		return sha1( $this->getSerialization() );
@@ -150,8 +145,6 @@ abstract class DataItem implements JsonDeserializable {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return string
 	 */
 	public function __toString(): string {
 		return $this->getSerialization();
@@ -248,8 +241,6 @@ abstract class DataItem implements JsonDeserializable {
 	 * Implements \JsonSerializable.
 	 *
 	 * @since 4.0.0
-	 *
-	 * @return array
 	 */
 	public function jsonSerialize(): array {
 		# T312589 explicitly calling jsonSerialize() will be unnecessary
@@ -266,10 +257,7 @@ abstract class DataItem implements JsonDeserializable {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonDeserializer $deserializer
-	 * @param array $json JSON to be deserialized
-	 *
-	 * @return self
+	 * @return static
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
 		$obj = static::doUnserialize( $json['value'] );

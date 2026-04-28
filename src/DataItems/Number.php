@@ -41,9 +41,8 @@ class Number extends DataItem {
 
 	/**
 	 * @see DataItem::getSortKeyDataItem()
-	 * @return DataItem
 	 */
-	public function getSortKeyDataItem(): static {
+	public function getSortKeyDataItem(): Number {
 		return $this;
 	}
 
@@ -56,7 +55,6 @@ class Number extends DataItem {
 	 * ID.
 	 * @note PHP can convert any string to some number, so we do not do
 	 * validation here (because this would require less efficient parsing).
-	 * @return Number
 	 */
 	public static function doUnserialize( $serialization ): Number {
 		return new Number( floatval( $serialization ) );

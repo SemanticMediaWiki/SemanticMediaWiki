@@ -23,13 +23,13 @@ class Concept extends DataItem {
 
 	/**
 	 * Status
-	 * @var int
+	 * @var string
 	 */
 	protected $cacheStatus;
 
 	/**
 	 * Date
-	 * @var int
+	 * @var string
 	 */
 	protected $cacheDate;
 
@@ -85,7 +85,7 @@ class Concept extends DataItem {
 	 *
 	 * @since 1.9
 	 *
-	 * @param string
+	 * @param string $status
 	 */
 	public function setCacheStatus( $status ): void {
 		$this->cacheStatus = $status;
@@ -96,7 +96,7 @@ class Concept extends DataItem {
 	 *
 	 * @since 1.9
 	 *
-	 * @param string
+	 * @param string $date
 	 */
 	public function setCacheDate( $date ): void {
 		$this->cacheDate = $date;
@@ -107,7 +107,7 @@ class Concept extends DataItem {
 	 *
 	 * @since 1.9
 	 *
-	 * @param int
+	 * @param int $count
 	 */
 	public function setCacheCount( $count ): void {
 		$this->cacheCount = $count;
@@ -149,7 +149,6 @@ class Concept extends DataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return Concept
 	 */
 	public static function doUnserialize( $serialization ): mixed {
 		$result = unserialize( $serialization );
@@ -186,10 +185,7 @@ class Concept extends DataItem {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonDeserializer $deserializer
-	 * @param array $json JSON to be unserialized
-	 *
-	 * @return self
+	 * @return static
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
 		$obj = parent::newFromJsonArray( $deserializer, $json );

@@ -24,7 +24,7 @@ class Boolean extends DataItem {
 			throw new DataItemException( "Initialization value '$boolean' is not a boolean." );
 		}
 
-		$this->m_boolean = ( $boolean == true );
+		$this->m_boolean = $boolean;
 	}
 
 	public function getDIType(): int {
