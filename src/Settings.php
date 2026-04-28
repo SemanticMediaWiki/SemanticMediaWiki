@@ -185,6 +185,7 @@ class Settings extends Options {
 			'smwgPropertyRetiredList' => $GLOBALS['smwgPropertyRetiredList'],
 			'smwgPropertyReservedNameList' => $GLOBALS['smwgPropertyReservedNameList'],
 			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
+			'smwgEntityCacheSizes' => $GLOBALS['smwgEntityCacheSizes'],
 			'smwgExperimentalFeatures' => $GLOBALS['smwgExperimentalFeatures'],
 			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
 			'smwgChangePropagationProtection' => $GLOBALS['smwgChangePropagationProtection'],

@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use Psr\Log\LoggerInterface;
@@ -30,6 +31,7 @@ use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\SQLStore\EntityStore\InstrumentedCache;
 use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
@@ -582,16 +584,19 @@ class SQLStoreFactory {
 	 */
 	public function newIdCacheManager( $id, array $config ): IdCacheManager {
 		$inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache();
+		$statsFactory = MediaWikiServices::getInstance()
+			->getStatsFactory()
+			->withComponent( 'SemanticMediaWiki' );
 		$caches = [];
 
 		foreach ( $config as $key => $cacheSize ) {
-			$inMemoryPoolCache->resetPoolCacheById(
-				"$id.$key"
-			);
+			$poolId = "$id.$key";
+			$inMemoryPoolCache->resetPoolCacheById( $poolId );
 
-			$caches[$key] = $inMemoryPoolCache->getPoolCacheById(
-				"$id.$key",
-				$cacheSize
+			$caches[$key] = new InstrumentedCache(
+				$inMemoryPoolCache->getPoolCacheById( $poolId, $cacheSize ),
+				$statsFactory,
+				$poolId
 			);
 		}
 

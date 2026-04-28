@@ -14,6 +14,7 @@ use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\PropertyTableInfoFetcher;
@@ -64,8 +65,27 @@ use SMW\Utils\Flag;
  */
 class EntityIdManager {
 
-	const MAX_CACHE_SIZE = 1000;
 	const POOLCACHE_ID = 'smw.sqlstore';
+
+	/**
+	 * Built-in maximum entry counts for the request-scoped LRU caches that
+	 * back entity ID lookups. Each pool is independent — these values are
+	 * starting points that can be tuned per-pool via the
+	 * `$smwgEntityCacheSizes` setting based on observed hit rates.
+	 *
+	 * @since 7.0.0
+	 */
+	public const DEFAULT_CACHE_SIZES = [
+		'entity.id' => 1000,
+		'entity.sort' => 1000,
+		'entity.lookup' => 2000,
+		'propertytable.hash' => 1000,
+		'warmup.byid' => 1000,
+		'sequence.map' => 1000,
+		IdCacheManager::REDIRECT_SOURCE => 1000,
+		IdCacheManager::REDIRECT_TARGET => 1000,
+		AuxiliaryFields::COUNTMAP_CACHE_ID => 1000,
+	];
 
 	/**
 	 * @var SQLStore
@@ -989,17 +1009,7 @@ class EntityIdManager {
 		// values in some data structure (other than a single string).
 		$this->idCacheManager = $this->factory->newIdCacheManager(
 			self::POOLCACHE_ID,
-			[
-				'entity.id' => self::MAX_CACHE_SIZE,
-				'entity.sort' => self::MAX_CACHE_SIZE,
-				'entity.lookup' => 2000,
-				'propertytable.hash' => self::MAX_CACHE_SIZE,
-				'warmup.byid' => self::MAX_CACHE_SIZE,
-				'sequence.map' => self::MAX_CACHE_SIZE,
-				IdCacheManager::REDIRECT_SOURCE => self::MAX_CACHE_SIZE,
-				IdCacheManager::REDIRECT_TARGET => self::MAX_CACHE_SIZE,
-				AuxiliaryFields::COUNTMAP_CACHE_ID => self::MAX_CACHE_SIZE,
-			]
+			$this->resolveCacheSizes()
 		);
 
 		$this->cacheWarmer = $this->factory->newCacheWarmer(
@@ -1110,6 +1120,16 @@ class EntityIdManager {
 	 */
 	public function loadSequenceMap( array $ids ): void {
 		$this->sequenceMapFinder->prefetchSequenceMap( $ids );
+	}
+
+	private function resolveCacheSizes(): array {
+		$configured = ApplicationFactory::getInstance()->getSettings()->safeGet( 'smwgEntityCacheSizes', [] );
+
+		if ( !is_array( $configured ) || $configured === [] ) {
+			return self::DEFAULT_CACHE_SIZES;
+		}
+
+		return array_merge( self::DEFAULT_CACHE_SIZES, $configured );
 	}
 
 }
