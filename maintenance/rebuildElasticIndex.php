@@ -4,10 +4,13 @@ namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
 use SMW\Elastic\ElasticStore;
+use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\MediaWiki\JobQueue;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -224,7 +227,7 @@ class rebuildElasticIndex extends Maintenance {
 		parent::addDefaultParams();
 	}
 
-	protected function handleTermSignal( $signal ) {
+	protected function handleTermSignal( $signal ): never {
 		$this->reportMessage( "\n" . '   ... rebuild was terminated, start recovery process ...' );
 		$this->rebuilder->setDefaults();
 		$this->rebuilder->refresh();

@@ -99,8 +99,6 @@ class populateHashField extends Maintenance {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
 	public function setStore( Store $store ) {
 		$this->store = $store;
@@ -108,8 +106,6 @@ class populateHashField extends Maintenance {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -132,7 +128,7 @@ class populateHashField extends Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		if ( !( $maintenanceCheck = new MaintenanceCheck() )->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 

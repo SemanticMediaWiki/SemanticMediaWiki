@@ -63,10 +63,7 @@ class rebuildElasticMissingDocuments extends Maintenance {
 	 */
 	private $lastId = 0;
 
-	/**
-	 * @var
-	 */
-	private $missingDocuments = [];
+	private array $missingDocuments = [];
 
 	/**
 	 * @since 3.1
@@ -85,8 +82,6 @@ class rebuildElasticMissingDocuments extends Maintenance {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
