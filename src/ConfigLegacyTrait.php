@@ -33,115 +33,155 @@ trait ConfigLegacyTrait {
 	 * with the new mapping to this section.
 	 */
 	private static function setLegacyMappings( array &$configuration ): void {
-		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
-			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
+		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) &&
+			$GLOBALS['smwgAdminRefreshStore'] === false
+		) {
+			$configuration['smwgAdminFeatures'] &= ~SMW_ADM_REFRESH;
 		}
 
 		// smwgParserFeatures
-		if ( isset( $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] ) && $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] === false ) {
-			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_STRICT;
+		if ( isset( $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] ) &&
+			$GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] === false
+		) {
+			$configuration['smwgParserFeatures'] &= ~SMW_PARSER_STRICT;
 		}
 
 		if ( isset( $GLOBALS['smwgInlineErrors'] ) && $GLOBALS['smwgInlineErrors'] === false ) {
-			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_INL_ERROR;
+			$configuration['smwgParserFeatures'] &= ~SMW_PARSER_INL_ERROR;
 		}
 
-		if ( isset( $GLOBALS['smwgShowHiddenCategories'] ) && $GLOBALS['smwgShowHiddenCategories'] === false ) {
-			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_HID_CATS;
+		if ( isset( $GLOBALS['smwgShowHiddenCategories'] ) &&
+			$GLOBALS['smwgShowHiddenCategories'] === false
+		) {
+			$configuration['smwgParserFeatures'] &= ~SMW_PARSER_HID_CATS;
 		}
 
 		// smwgFactboxFeatures
-		if ( isset( $GLOBALS['smwgFactboxUseCache'] ) && $GLOBALS['smwgFactboxUseCache'] === false ) {
-			$configuration['smwgFactboxFeatures'] = $configuration['smwgFactboxFeatures'] & ~SMW_FACTBOX_CACHE;
+		if ( isset( $GLOBALS['smwgFactboxUseCache'] ) &&
+			$GLOBALS['smwgFactboxUseCache'] === false
+		) {
+			$configuration['smwgFactboxFeatures'] &= ~SMW_FACTBOX_CACHE;
 		}
 
-		if ( isset( $GLOBALS['smwgFactboxCacheRefreshOnPurge'] ) && $GLOBALS['smwgFactboxCacheRefreshOnPurge'] === false ) {
-			$configuration['smwgFactboxFeatures'] = $configuration['smwgFactboxFeatures'] & ~SMW_FACTBOX_PURGE_REFRESH;
+		if ( isset( $GLOBALS['smwgFactboxCacheRefreshOnPurge'] ) &&
+			$GLOBALS['smwgFactboxCacheRefreshOnPurge'] === false
+		) {
+			$configuration['smwgFactboxFeatures'] &= ~SMW_FACTBOX_PURGE_REFRESH;
 		}
 
 		// smwgLinksInValues
-		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === SMW_LINV_PCRE ) {
-			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+		if ( isset( $GLOBALS['smwgLinksInValues'] ) &&
+			$GLOBALS['smwgLinksInValues'] === SMW_LINV_PCRE
+		) {
+			$configuration['smwgParserFeatures'] |= SMW_PARSER_LINV;
 		}
 
-		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === SMW_LINV_OBFU ) {
-			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+		if ( isset( $GLOBALS['smwgLinksInValues'] ) &&
+			$GLOBALS['smwgLinksInValues'] === SMW_LINV_OBFU
+		) {
+			$configuration['smwgParserFeatures'] |= SMW_PARSER_LINV;
 		}
 
 		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === true ) {
-			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+			$configuration['smwgParserFeatures'] |= SMW_PARSER_LINV;
 		}
 
 		// smwgCategoryFeatures
-		if ( isset( $GLOBALS['smwgUseCategoryRedirect'] ) && $GLOBALS['smwgUseCategoryRedirect'] === false ) {
-			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_REDIRECT;
+		if ( isset( $GLOBALS['smwgUseCategoryRedirect'] ) &&
+			$GLOBALS['smwgUseCategoryRedirect'] === false
+		) {
+			$configuration['smwgCategoryFeatures'] &= ~SMW_CAT_REDIRECT;
 		}
 
-		if ( isset( $GLOBALS['smwgCategoriesAsInstances'] ) && $GLOBALS['smwgCategoriesAsInstances'] === false ) {
-			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_INSTANCE;
+		if ( isset( $GLOBALS['smwgCategoriesAsInstances'] ) &&
+			$GLOBALS['smwgCategoriesAsInstances'] === false
+		) {
+			$configuration['smwgCategoryFeatures'] &= ~SMW_CAT_INSTANCE;
 		}
 
-		if ( isset( $GLOBALS['smwgUseCategoryHierarchy'] ) && $GLOBALS['smwgUseCategoryHierarchy'] === false ) {
-			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_HIERARCHY;
+		if ( isset( $GLOBALS['smwgUseCategoryHierarchy'] ) &&
+			$GLOBALS['smwgUseCategoryHierarchy'] === false
+		) {
+			$configuration['smwgCategoryFeatures'] &= ~SMW_CAT_HIERARCHY;
 		}
 
 		if ( isset( $GLOBALS['smwgQueryDependencyPropertyExemptionlist'] ) ) {
-			$configuration['smwgQueryDependencyPropertyExemptionList'] = $GLOBALS['smwgQueryDependencyPropertyExemptionlist'];
+			$configuration['smwgQueryDependencyPropertyExemptionList'] =
+				$GLOBALS['smwgQueryDependencyPropertyExemptionlist'];
 		}
 
 		// smwgPropertyListLimit
 		if ( isset( $GLOBALS['smwgSubPropertyListLimit'] ) ) {
-			$configuration['smwgPropertyListLimit']['subproperty'] = $GLOBALS['smwgSubPropertyListLimit'];
+			$configuration['smwgPropertyListLimit']['subproperty'] =
+				$GLOBALS['smwgSubPropertyListLimit'];
 		}
 
 		if ( isset( $GLOBALS['smwgRedirectPropertyListLimit'] ) ) {
-			$configuration['smwgPropertyListLimit']['redirect'] = $GLOBALS['smwgRedirectPropertyListLimit'];
+			$configuration['smwgPropertyListLimit']['redirect'] =
+				$GLOBALS['smwgRedirectPropertyListLimit'];
 		}
 
 		// smwgCacheUsage
 		if ( isset( $GLOBALS['smwgCacheUsage']['smwgStatisticsCacheExpiry'] ) ) {
-			$configuration['smwgCacheUsage']['special.statistics'] = $GLOBALS['smwgCacheUsage']['smwgStatisticsCacheExpiry'];
+			$configuration['smwgCacheUsage']['special.statistics'] =
+				$GLOBALS['smwgCacheUsage']['smwgStatisticsCacheExpiry'];
 		}
 
-		if ( isset( $GLOBALS['smwgCacheUsage']['smwgStatisticsCache'] ) && $GLOBALS['smwgCacheUsage']['smwgStatisticsCache'] === false ) {
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgStatisticsCache'] ) &&
+			$GLOBALS['smwgCacheUsage']['smwgStatisticsCache'] === false
+		) {
 			$configuration['smwgCacheUsage']['special.statistics'] = false;
 		}
 
 		if ( isset( $GLOBALS['smwgCacheUsage']['smwgPropertiesCacheExpiry'] ) ) {
-			$configuration['smwgCacheUsage']['special.properties'] = $GLOBALS['smwgCacheUsage']['smwgPropertiesCacheExpiry'];
+			$configuration['smwgCacheUsage']['special.properties'] =
+				$GLOBALS['smwgCacheUsage']['smwgPropertiesCacheExpiry'];
 		}
 
-		if ( isset( $GLOBALS['smwgCacheUsage']['smwgPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgPropertiesCache'] === false ) {
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgPropertiesCache'] ) &&
+			$GLOBALS['smwgCacheUsage']['smwgPropertiesCache'] === false
+		) {
 			$configuration['smwgCacheUsage']['special.properties'] = false;
 		}
 
 		if ( isset( $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCacheExpiry'] ) ) {
-			$configuration['smwgCacheUsage']['special.unusedproperties'] = $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCacheExpiry'];
+			$configuration['smwgCacheUsage']['special.unusedproperties'] =
+				$GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCacheExpiry'];
 		}
 
-		if ( isset( $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCache'] === false ) {
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCache'] ) &&
+			$GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCache'] === false
+		) {
 			$configuration['smwgCacheUsage']['special.unusedproperties'] = false;
 		}
 
 		if ( isset( $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCacheExpiry'] ) ) {
-			$configuration['smwgCacheUsage']['special.wantedproperties'] = $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCacheExpiry'];
+			$configuration['smwgCacheUsage']['special.wantedproperties'] =
+				$GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCacheExpiry'];
 		}
 
-		if ( isset( $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCache'] === false ) {
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCache'] ) &&
+			$GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCache'] === false
+		) {
 			$configuration['smwgCacheUsage']['special.wantedproperties'] = false;
 		}
 
 		// smwgQueryProfiler
-		if ( isset( $GLOBALS['smwgQueryProfiler']['smwgQueryDurationEnabled'] ) && $GLOBALS['smwgQueryProfiler']['smwgQueryDurationEnabled'] === true ) {
-			$configuration['smwgQueryProfiler'] = $configuration['smwgQueryProfiler'] | SMW_QPRFL_DUR;
+		if ( isset( $GLOBALS['smwgQueryProfiler']['smwgQueryDurationEnabled'] ) &&
+			$GLOBALS['smwgQueryProfiler']['smwgQueryDurationEnabled'] === true
+		) {
+			$configuration['smwgQueryProfiler'] |= SMW_QPRFL_DUR;
 		}
 
-		if ( isset( $GLOBALS['smwgQueryProfiler']['smwgQueryParametersEnabled'] ) && $GLOBALS['smwgQueryProfiler']['smwgQueryParametersEnabled'] === true ) {
-			$configuration['smwgQueryProfiler'] = $configuration['smwgQueryProfiler'] | SMW_QPRFL_PARAMS;
+		if ( isset( $GLOBALS['smwgQueryProfiler']['smwgQueryParametersEnabled'] ) &&
+			$GLOBALS['smwgQueryProfiler']['smwgQueryParametersEnabled'] === true
+		) {
+			$configuration['smwgQueryProfiler'] |= SMW_QPRFL_PARAMS;
 		}
 
 		if ( isset( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
-			$configuration['smwgSparqlRepositoryConnector'] = $GLOBALS['smwgSparqlDatabaseConnector'];
+			$configuration['smwgSparqlRepositoryConnector'] =
+				$GLOBALS['smwgSparqlDatabaseConnector'];
 		}
 
 		if ( isset( $GLOBALS['smwgSparqlDatabase'] ) ) {
@@ -149,33 +189,42 @@ trait ConfigLegacyTrait {
 		}
 
 		if ( isset( $GLOBALS['smwgDeclarationProperties'] ) ) {
-			$configuration['smwgChangePropagationWatchlist'] = $GLOBALS['smwgDeclarationProperties'];
+			$configuration['smwgChangePropagationWatchlist'] =
+				$GLOBALS['smwgDeclarationProperties'];
 		}
 
 		// smwgBrowseFeatures
-		if ( isset( $GLOBALS['smwgToolboxBrowseLink'] ) && $GLOBALS['smwgToolboxBrowseLink'] === false ) {
-			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_TLINK;
+		if ( isset( $GLOBALS['smwgToolboxBrowseLink'] ) &&
+			$GLOBALS['smwgToolboxBrowseLink'] === false
+		) {
+			$configuration['smwgBrowseFeatures'] &= ~SMW_BROWSE_TLINK;
 		}
 
-		if ( isset( $GLOBALS['smwgBrowseShowInverse'] ) && $GLOBALS['smwgBrowseShowInverse'] === true ) {
-			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] | SMW_BROWSE_SHOW_INVERSE;
+		if ( isset( $GLOBALS['smwgBrowseShowInverse'] ) &&
+			$GLOBALS['smwgBrowseShowInverse'] === true
+		) {
+			$configuration['smwgBrowseFeatures'] |= SMW_BROWSE_SHOW_INVERSE;
 		}
 
 		if ( isset( $GLOBALS['smwgBrowseShowAll'] ) && $GLOBALS['smwgBrowseShowAll'] === false ) {
-			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_SHOW_INCOMING;
+			$configuration['smwgBrowseFeatures'] &= ~SMW_BROWSE_SHOW_INCOMING;
 		}
 
 		if ( isset( $GLOBALS['smwgBrowseByApi'] ) && $GLOBALS['smwgBrowseByApi'] === false ) {
-			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_USE_API;
+			$configuration['smwgBrowseFeatures'] &= ~SMW_BROWSE_USE_API;
 		}
 
 		// smwgQSortFeatures
-		if ( isset( $GLOBALS['smwgQSortingSupport'] ) && $GLOBALS['smwgQSortingSupport'] === false ) {
-			$configuration['smwgQSortFeatures'] = $configuration['smwgQSortFeatures'] & ~SMW_QSORT;
+		if ( isset( $GLOBALS['smwgQSortingSupport'] ) &&
+			$GLOBALS['smwgQSortingSupport'] === false
+		) {
+			$configuration['smwgQSortFeatures'] &= ~SMW_QSORT;
 		}
 
-		if ( isset( $GLOBALS['smwgQRandSortingSupport'] ) && $GLOBALS['smwgQRandSortingSupport'] === false ) {
-			$configuration['smwgQSortFeatures'] = $configuration['smwgQSortFeatures'] & ~SMW_QSORT_RANDOM;
+		if ( isset( $GLOBALS['smwgQRandSortingSupport'] ) &&
+			$GLOBALS['smwgQRandSortingSupport'] === false
+		) {
+			$configuration['smwgQSortFeatures'] &= ~SMW_QSORT_RANDOM;
 		}
 
 		if ( isset( $GLOBALS['smwgImportFileDir'] ) ) {
