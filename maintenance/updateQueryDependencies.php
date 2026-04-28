@@ -38,8 +38,6 @@ class updateQueryDependencies extends Maintenance {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -110,7 +108,7 @@ class updateQueryDependencies extends Maintenance {
 		parent::addDefaultParams();
 	}
 
-	private function dieMessage( $message ) {
+	private function dieMessage( $message ): never {
 		$this->reportMessage( $message );
 		exit;
 	}
