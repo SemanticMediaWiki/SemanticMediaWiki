@@ -36,16 +36,51 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   `SMW::Schema::RegisterSchemaTypes` hook (available since 3.2). Any entries
   left in `$smwgSchemaTypes` after upgrade are silently ignored — port them
   to a hook handler first. Hook signature: `src/Schema/README.md`.
-* **Legacy setting auto-translation removed.** Around 50 settings deprecated in
-  SMW 3.1 and 3.2 — most notably `$smwgInlineErrors`, `$smwgLinksInValues`,
-  `$smwgCacheType`, `$smwgFactboxUseCache`, the split SPARQL endpoint settings,
-  the `$smwgCacheUsage` and `$smwgQueryProfiler` sub-keys, and the per-feature
-  toggles since folded into `$smwgParserFeatures`, `$smwgFactboxFeatures`,
-  `$smwgCategoryFeatures`, `$smwgQSortFeatures`, and `$smwgBrowseFeatures` —
-  used to be silently rewritten to their replacements at runtime. That shim is
-  gone. Update any of these names in `LocalSettings.php` to their replacements
-  as listed in the 3.1 and 3.2 release notes; otherwise they're silently
-  ignored. Special:Admin no longer surfaces them as deprecation notices.
+* **Legacy setting auto-translation removed.** The runtime shim that silently
+  rewrote settings deprecated in SMW 3.1 and 3.2 to their replacements is gone.
+  Update any of these names in `LocalSettings.php` to the replacement below;
+  otherwise the legacy names are silently ignored. Special:Admin no longer
+  surfaces them as deprecation notices.
+
+  | Removed setting | Use instead |
+  |---|---|
+  | `$smwgEnabledInTextAnnotationParserStrictMode` | `$smwgParserFeatures` (`SMW_PARSER_STRICT` bit) |
+  | `$smwgInlineErrors` | `$smwgParserFeatures` (`SMW_PARSER_INL_ERROR` bit) |
+  | `$smwgShowHiddenCategories` | `$smwgParserFeatures` (`SMW_PARSER_HID_CATS` bit) |
+  | `$smwgLinksInValues` | `$smwgParserFeatures` (`SMW_PARSER_LINV` bit) |
+  | `$smwgFactboxUseCache` | `$smwgFactboxFeatures` (`SMW_FACTBOX_CACHE` bit) |
+  | `$smwgFactboxCacheRefreshOnPurge` | `$smwgFactboxFeatures` (`SMW_FACTBOX_PURGE_REFRESH` bit) |
+  | `$smwgUseCategoryRedirect` | `$smwgCategoryFeatures` (`SMW_CAT_REDIRECT` bit) |
+  | `$smwgCategoriesAsInstances` | `$smwgCategoryFeatures` (`SMW_CAT_INSTANCE` bit) |
+  | `$smwgUseCategoryHierarchy` | `$smwgCategoryFeatures` (`SMW_CAT_HIERARCHY` bit) |
+  | `$smwgQSortingSupport` | `$smwgQSortFeatures` (`SMW_QSORT` bit) |
+  | `$smwgQRandSortingSupport` | `$smwgQSortFeatures` (`SMW_QSORT_RANDOM` bit) |
+  | `$smwgToolboxBrowseLink` | `$smwgBrowseFeatures` (`SMW_BROWSE_TLINK` bit) |
+  | `$smwgBrowseShowInverse` | `$smwgBrowseFeatures` (`SMW_BROWSE_SHOW_INVERSE` bit) |
+  | `$smwgBrowseShowAll` | `$smwgBrowseFeatures` (`SMW_BROWSE_SHOW_INCOMING` bit) |
+  | `$smwgBrowseByApi` | `$smwgBrowseFeatures` (`SMW_BROWSE_USE_API` bit) |
+  | `$smwgAdminRefreshStore` | `$smwgAdminFeatures` (`SMW_ADM_REFRESH` bit) |
+  | `$smwgQueryProfiler['smwgQueryDurationEnabled']` | `$smwgQueryProfiler` (`SMW_QPRFL_DUR` bit) |
+  | `$smwgQueryProfiler['smwgQueryParametersEnabled']` | `$smwgQueryProfiler` (`SMW_QPRFL_PARAMS` bit) |
+  | `$smwgCacheType` | `$smwgMainCacheType` |
+  | `$smwgImportFileDir` | `$smwgImportFileDirs` |
+  | `$smwgDeclarationProperties` | `$smwgChangePropagationWatchlist` |
+  | `$smwgQueryDependencyPropertyExemptionlist` | `$smwgQueryDependencyPropertyExemptionList` (capital `L`) |
+  | `$smwgSparqlDatabaseConnector` | `$smwgSparqlRepositoryConnector` |
+  | `$smwgSparqlDatabase` | `$smwgSparqlCustomConnector` |
+  | `$smwgSparqlQueryEndpoint` | `$smwgSparqlEndpoint['query']` |
+  | `$smwgSparqlUpdateEndpoint` | `$smwgSparqlEndpoint['update']` |
+  | `$smwgSparqlDataEndpoint` | `$smwgSparqlEndpoint['data']` |
+  | `$smwgTypePagingLimit` | `$smwgPagingLimit['type']` |
+  | `$smwgConceptPagingLimit` | `$smwgPagingLimit['concept']` |
+  | `$smwgPropertyPagingLimit` | `$smwgPagingLimit['property']` |
+  | `$smwgSubPropertyListLimit` | `$smwgPropertyListLimit['subproperty']` |
+  | `$smwgRedirectPropertyListLimit` | `$smwgPropertyListLimit['redirect']` |
+  | `$smwgCacheUsage['smwgStatisticsCacheExpiry']` | `$smwgCacheUsage['special.statistics']` |
+  | `$smwgCacheUsage['smwgPropertiesCacheExpiry']` | `$smwgCacheUsage['special.properties']` |
+  | `$smwgCacheUsage['smwgUnusedPropertiesCacheExpiry']` | `$smwgCacheUsage['special.unusedproperties']` |
+  | `$smwgCacheUsage['smwgWantedPropertiesCacheExpiry']` | `$smwgCacheUsage['special.wantedproperties']` |
+
 * **Legacy job aliases removed.** All job types must now use their `smw.*` names. The following aliases no longer work:
 
   | Removed alias | Use instead |
