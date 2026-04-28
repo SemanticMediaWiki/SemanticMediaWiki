@@ -93,8 +93,6 @@ class GeoCoord extends DataItem {
 	/**
 	 * Returns the coordinate set as an array with lat and long (and alt) keys
 	 * pointing to float values.
-	 *
-	 * @return array
 	 */
 	public function getCoordinateSet(): array {
 		$coords = [ 'lat' => $this->latitude, 'lon' => $this->longitude ];
@@ -129,8 +127,6 @@ class GeoCoord extends DataItem {
 	 * validation here (because this would require less efficient parsing).
 	 *
 	 * @param string $serialization
-	 *
-	 * @return self
 	 */
 	public static function doUnserialize( $serialization ): self {
 		$parts = explode( ',', $serialization );
@@ -149,24 +145,16 @@ class GeoCoord extends DataItem {
 		return new self( $coords );
 	}
 
-	/**
-	 * @return float
-	 */
 	public function getLatitude(): ?float {
 		return $this->latitude;
 	}
 
-	/**
-	 * @return float
-	 */
 	public function getLongitude(): ?float {
 		return $this->longitude;
 	}
 
 	/**
 	 * Returns the altitude if set, null otherwise.
-	 *
-	 * @return float|null
 	 */
 	public function getAltitude(): ?float {
 		return $this->altitude;
