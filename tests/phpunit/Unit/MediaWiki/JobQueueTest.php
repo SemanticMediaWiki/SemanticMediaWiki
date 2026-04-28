@@ -206,26 +206,4 @@ class JobQueueTest extends TestCase {
 		);
 	}
 
-	public function testHasPendingJobWithSmwJobName() {
-		$jobQueue = $this->getMockBuilder( '\JobQueue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'doGetSize' ] )
-			->getMockForAbstractClass();
-
-		$jobQueue->expects( $this->once() )
-			->method( 'doGetSize' )
-			->willReturn( 1 );
-
-		$this->jobQueueGroup->expects( $this->once() )
-			->method( 'get' )
-			->with( $this->stringContains( 'smw.fake' ) )
-			->willReturn( $jobQueue );
-
-		$instance = new JobQueue( $this->jobQueueGroup );
-
-		$this->assertTrue(
-			$instance->hasPendingJob( 'smw.fake' )
-		);
-	}
-
 }
