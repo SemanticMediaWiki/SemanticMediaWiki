@@ -1965,8 +1965,10 @@ return ( static function (): array {
 		#   $smwgEntityCacheSizes['entity.id'] = 5000;
 		#
 		# To assess whether tuning is needed, monitor the
-		# `smw_inmemory_cache_hits_total` and `smw_inmemory_cache_misses_total`
-		# metrics emitted via MediaWiki's StatsFactory. These require
+		# `mediawiki.SemanticMediaWiki.inmemory_cache_hits_total` and
+		# `mediawiki.SemanticMediaWiki.inmemory_cache_misses_total` metrics
+		# emitted via MediaWiki's StatsFactory (Prometheus exporters
+		# typically normalize the dots to underscores). These require
 		# `$wgStatsTarget` and `$wgStatsFormat` to be configured (see
 		# MediaWiki's stats documentation); from there metrics flow to a
 		# StatsD endpoint, which can in turn be relayed to Prometheus through
