@@ -96,8 +96,6 @@ class ConnectionManager {
 		);
 
 		$setupCheck->showErrorAndAbort( $setupCheck->isCli() );
-
-		return false;
 	}
 
 }
