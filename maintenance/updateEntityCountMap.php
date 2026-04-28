@@ -4,9 +4,10 @@ namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\HmacSerializer;
 
@@ -85,7 +86,7 @@ class updateEntityCountMap extends Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		if ( !( $maintenanceCheck = new MaintenanceCheck() )->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 
@@ -206,7 +207,7 @@ class updateEntityCountMap extends Maintenance {
 				continue;
 			}
 
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$row->smw_title,
 				$row->smw_namespace,
 				$row->smw_iw,
@@ -224,7 +225,7 @@ class updateEntityCountMap extends Maintenance {
 				);
 
 				if ( $key === '_INST' ) {
-					$countMap[$key] = $countMap[$key] ?? [];
+					$countMap[$key] ??= [];
 
 					foreach ( $pv as $dataItem ) {
 						$countMap[$key] += [ $dataItem->getDBKey() => 1 ];

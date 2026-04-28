@@ -42,8 +42,6 @@ class runImport extends Maintenance {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -62,7 +60,7 @@ class runImport extends Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		if ( !( $maintenanceCheck = new MaintenanceCheck() )->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 

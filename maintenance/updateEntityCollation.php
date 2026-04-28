@@ -65,8 +65,6 @@ class updateEntityCollation extends Maintenance {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param HookDispatcher $hookDispatcher
 	 */
 	public function setHookDispatcher( HookDispatcher $hookDispatcher ) {
 		$this->hookDispatcher = $hookDispatcher;
@@ -74,8 +72,6 @@ class updateEntityCollation extends Maintenance {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -94,7 +90,7 @@ class updateEntityCollation extends Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		if ( !( $maintenanceCheck = new MaintenanceCheck() )->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 
@@ -102,6 +98,7 @@ class updateEntityCollation extends Maintenance {
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 		$setupFile = $applicationFactory->singleton( 'SetupFile' );
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$this->store = $applicationFactory->getStore(
 			SQLStore::class
 		);
@@ -283,7 +280,7 @@ class updateEntityCollation extends Maintenance {
 
 		try {
 			$property = new Property( $row->smw_title );
-		} catch ( PredefinedPropertyLabelMismatchException $e ) {
+		} catch ( PredefinedPropertyLabelMismatchException ) {
 			return $row->smw_sortkey;
 		}
 
