@@ -3,14 +3,11 @@
 namespace SMW\SQLStore\EntityStore;
 
 use Iterator;
-use MediaWiki\Deferred\DeferredUpdates;
-use MediaWiki\MediaWikiServices;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
-use SMW\InMemoryPoolCache;
 use SMW\Iterators\MappingIterator;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Collator;
@@ -105,8 +102,6 @@ class EntityIdManager {
 	 * @var array
 	 */
 	public static $special_ids = [];
-
-	private static bool $statsReporterRegistered = false;
 
 	private IdCacheManager $idCacheManager;
 
@@ -1017,8 +1012,6 @@ class EntityIdManager {
 			$this->resolveCacheSizes()
 		);
 
-		self::registerCacheStatsReporter();
-
 		$this->cacheWarmer = $this->factory->newCacheWarmer(
 			$this->idCacheManager
 		);
@@ -1137,67 +1130,6 @@ class EntityIdManager {
 		}
 
 		return array_merge( self::DEFAULT_CACHE_SIZES, $configured );
-	}
-
-	/**
-	 * Registers a deferred update that snapshots `InMemoryPoolCache` stats and
-	 * emits them to MediaWiki's `StatsFactory` once per request. The deferred
-	 * update fires inside `MediaWikiEntryPoint::doPostOutputShutdown`, before
-	 * the StatsFactory flush, ensuring web and API requests both report.
-	 *
-	 * Maintenance scripts and jobs call `DeferredUpdates::doUpdates()` but do
-	 * not invoke `StatsFactory::flush()`, so the snapshot is recorded but never
-	 * sent to the configured StatsD/Prometheus backend in those execution
-	 * paths. This is intentional for a Phase 1 observability feature focused
-	 * on web traffic.
-	 */
-	private static function registerCacheStatsReporter(): void {
-		if ( self::$statsReporterRegistered ) {
-			return;
-		}
-		self::$statsReporterRegistered = true;
-
-		DeferredUpdates::addCallableUpdate( static function (): void {
-			$stats = InMemoryPoolCache::getInstance()->getStats();
-
-			if ( !is_array( $stats ) || $stats === [] ) {
-				return;
-			}
-
-			$statsFactory = MediaWikiServices::getInstance()
-				->getStatsFactory()
-				->withComponent( 'SemanticMediaWiki' );
-
-			foreach ( $stats as $pool => $data ) {
-				if ( !is_array( $data ) ) {
-					continue;
-				}
-
-				$hits = (int)( $data['hits'] ?? 0 );
-				$misses = (int)( $data['misses'] ?? 0 );
-				$count = (int)( $data['count'] ?? 0 );
-
-				if ( $hits + $misses === 0 && $count === 0 ) {
-					continue;
-				}
-
-				if ( $hits > 0 ) {
-					$statsFactory->getCounter( 'inmemory_cache_hits_total' )
-						->setLabel( 'pool', (string)$pool )
-						->incrementBy( $hits );
-				}
-
-				if ( $misses > 0 ) {
-					$statsFactory->getCounter( 'inmemory_cache_misses_total' )
-						->setLabel( 'pool', (string)$pool )
-						->incrementBy( $misses );
-				}
-
-				$statsFactory->getGauge( 'inmemory_cache_size' )
-					->setLabel( 'pool', (string)$pool )
-					->set( $count );
-			}
-		} );
 	}
 
 }
