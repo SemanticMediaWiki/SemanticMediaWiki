@@ -2224,23 +2224,6 @@ return ( static function (): array {
 		##
 
 		##
-		# @deprecated since 3.2, use `SchemaTypes` or the
-		# `SMW::Schema::RegisterSchemaTypes` hook.
-		#
-		# Schema types
-		#
-		# The mapping defines the relation between a specific type, group and
-		# a possible interpreter which validates the expected syntax.
-		#
-		# Each type will have its own interpretation about elements and how to
-		# define and enact requirements.
-		#
-		# @since 3.0
-		##
-		'smwgSchemaTypes' => [],
-		# #
-
-		##
 		# ElasticStore settings
 		#
 		# Supported options and settings required by the ElasticStore.
