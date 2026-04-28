@@ -189,6 +189,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * `#ask` queries that sort by a property value are now significantly faster on MariaDB and MySQL. The query engine restructures the SQL so the database can choose a more efficient plan; on large wikis the improvement can be orders of magnitude depending on query shape. ([#6559](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6559))
   * Set `$smwgQUseLegacyQuery = true` in `LocalSettings.php` to fall back to the previous query shape if you encounter a regression after upgrading.
   * A redundant `DISTINCT` keyword was also dropped from the disjunction-query temp-table insert. Same result, less work for the database; no setting required.
+* Page saves are a little faster and the database uses less memory on large wikis. A redundant index on `smw_di_wikipage` and related fixed-property tables has been removed. ([#6559](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6559))
 
 ### Internal improvements
 
