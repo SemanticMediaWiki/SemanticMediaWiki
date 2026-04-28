@@ -206,7 +206,7 @@ class JobQueueTest extends TestCase {
 		);
 	}
 
-	public function testHasPendingJobWithLegacyName() {
+	public function testHasPendingJobWithSmwJobName() {
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doGetSize' ] )
@@ -224,7 +224,7 @@ class JobQueueTest extends TestCase {
 		$instance = new JobQueue( $this->jobQueueGroup );
 
 		$this->assertTrue(
-			$instance->hasPendingJob( FakeJob::class )
+			$instance->hasPendingJob( 'smw.fake' )
 		);
 	}
 
