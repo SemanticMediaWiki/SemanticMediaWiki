@@ -95,7 +95,9 @@ class ConnectionManager {
 			( new RuntimeException() )->getTraceAsString()
 		);
 
-		return $setupCheck->showErrorAndAbort( $setupCheck->isCli() );
+		$setupCheck->showErrorAndAbort( $setupCheck->isCli() );
+
+		return false;
 	}
 
 }
