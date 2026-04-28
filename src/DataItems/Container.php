@@ -116,7 +116,7 @@ class Container extends DataItem {
 	public static function doUnserialize( $serialization ): Container {
 		/// TODO May issue an E_NOTICE when problems occur; catch this
 		$data = unserialize( $serialization );
-		if ( !( $data instanceof ContainerSemanticData ) ) {
+		if ( !( $data instanceof SemanticData ) ) {
 			throw new DataItemException( "Could not unserialize Container from the given string." );
 		}
 		return new Container( $data );
