@@ -66,9 +66,7 @@ class ShapeConstraint implements Constraint {
 			return;
 		}
 
-		// PHP 7.0+ $this->semanticData = $dataValue->getCallable( SemanticData::class )();
-		$semanticData = $dataValue->getCallable( SemanticData::class );
-		$this->semanticData = $semanticData();
+		$this->semanticData = $dataValue->getCallable( SemanticData::class )();
 
 		foreach ( $constraints[self::CONSTRAINT_KEY] as $constraint ) {
 			$this->check( $constraint, $dataValue );
@@ -152,7 +150,7 @@ class ShapeConstraint implements Constraint {
 				$type = DataItem::TYPE_URI;
 				break;
 			default:
-				$type = DataItem::TYPE_NONE;
+				$type = DataItem::TYPE_NOTYPE;
 				break;
 		}
 
