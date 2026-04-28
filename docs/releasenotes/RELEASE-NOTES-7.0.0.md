@@ -32,6 +32,20 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
   Note: `enableSemantics()` itself still exists but is deprecated as a no-op (see Deprecations).
 
+* **`$smwgSchemaTypes` removed.** Register custom schema types through the
+  `SMW::Schema::RegisterSchemaTypes` hook (available since 3.2). Any entries
+  left in `$smwgSchemaTypes` after upgrade are silently ignored — port them
+  to a hook handler first. Hook signature: `src/Schema/README.md`.
+* **Legacy setting auto-translation removed.** Around 50 settings deprecated in
+  SMW 3.1 and 3.2 — most notably `$smwgInlineErrors`, `$smwgLinksInValues`,
+  `$smwgCacheType`, `$smwgFactboxUseCache`, the split SPARQL endpoint settings,
+  the `$smwgCacheUsage` and `$smwgQueryProfiler` sub-keys, and the per-feature
+  toggles since folded into `$smwgParserFeatures`, `$smwgFactboxFeatures`,
+  `$smwgCategoryFeatures`, `$smwgQSortFeatures`, and `$smwgBrowseFeatures` —
+  used to be silently rewritten to their replacements at runtime. That shim is
+  gone. Update any of these names in `LocalSettings.php` to their replacements
+  as listed in the 3.1 and 3.2 release notes; otherwise they're silently
+  ignored. Special:Admin no longer surfaces them as deprecation notices.
 * **Legacy job aliases removed.** All job types must now use their `smw.*` names. The following aliases no longer work:
 
   | Removed alias | Use instead |
