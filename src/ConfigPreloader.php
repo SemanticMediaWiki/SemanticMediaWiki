@@ -73,7 +73,7 @@ class ConfigPreloader {
 			throw new ConfigPreloadFileNotReadableException( $file );
 		}
 
-		$config = require_once $file ;
+		$config = require_once $file;
 		if ( $config !== true ) {
 			self::$config[$file] = $config;
 		}
