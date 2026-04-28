@@ -21,7 +21,6 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  */
 class Settings extends Options {
 
-	use ConfigLegacyTrait;
 	use ChangeListenerAwareTrait;
 	use HookDispatcherAwareTrait;
 
@@ -58,11 +57,6 @@ class Settings extends Options {
 				NamespaceManager::initCustomNamespace( $GLOBALS )['newVars']
 			);
 		}
-
-		/**
-		 * IF YOU REMOVE SETTING(S) FROM THIS ARRAY DEFINTION, PLEASE ENSURE
-		 * TO REGISTER THEM WITH THE `ConfigLegacyTrait`.
-		 */
 
 		$this->options = [
 			'smwgIP' => $GLOBALS['smwgIP'],
@@ -212,11 +206,6 @@ class Settings extends Options {
 		];
 
 		$this->isLoaded = true;
-
-		/**
-		 * @see ConfigLegacyTrait::loadLegacyMappings
-		 */
-		$this->loadLegacyMappings( $this->options );
 
 		/**
 		 * @see HookDispatcher::onSettingsBeforeInitializationComplete
