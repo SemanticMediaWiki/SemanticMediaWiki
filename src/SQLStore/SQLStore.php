@@ -264,8 +264,6 @@ class SQLStore extends Store {
 		return $this->entityLookup->getInProperties( $value, $requestoptions );
 	}
 
-///// Writing methods /////
-
 	public function deleteSubject( Title $title ) {
 		if ( $this->updater === null ) {
 			$this->updater = $this->factory->newUpdater();
