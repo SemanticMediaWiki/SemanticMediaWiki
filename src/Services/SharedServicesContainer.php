@@ -375,13 +375,7 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'SchemaFactory', static function ( $containerBuilder ): SchemaFactory {
 			$containerBuilder->registerExpectedReturnType( 'SchemaFactory', SchemaFactory::class );
 
-			$settings = $containerBuilder->singleton( 'Settings' );
-
-			$schemaFactory = new SchemaFactory(
-				$settings->get( 'smwgSchemaTypes' )
-			);
-
-			return $schemaFactory;
+			return new SchemaFactory();
 		} );
 
 		$containerBuilder->registerCallback( 'ConstraintFactory', static function ( $containerBuilder ): ConstraintFactory {

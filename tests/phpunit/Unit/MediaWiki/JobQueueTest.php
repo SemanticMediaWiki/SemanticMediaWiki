@@ -4,7 +4,6 @@ namespace SMW\Tests\Unit\MediaWiki;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use SMW\FakeJob;
 use SMW\MediaWiki\JobQueue;
 
 /**
@@ -203,28 +202,6 @@ class JobQueueTest extends TestCase {
 
 		$this->assertTrue(
 			$instance->hasPendingJob( 'FakeJob' )
-		);
-	}
-
-	public function testHasPendingJobWithLegacyName() {
-		$jobQueue = $this->getMockBuilder( '\JobQueue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'doGetSize' ] )
-			->getMockForAbstractClass();
-
-		$jobQueue->expects( $this->once() )
-			->method( 'doGetSize' )
-			->willReturn( 1 );
-
-		$this->jobQueueGroup->expects( $this->once() )
-			->method( 'get' )
-			->with( $this->stringContains( 'smw.fake' ) )
-			->willReturn( $jobQueue );
-
-		$instance = new JobQueue( $this->jobQueueGroup );
-
-		$this->assertTrue(
-			$instance->hasPendingJob( FakeJob::class )
 		);
 	}
 

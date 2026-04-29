@@ -186,7 +186,6 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			'smwgFixedProperties',
 			'smwgPropertyZeroCountDisplay',
 			'smwgQueryResultCacheType',
-			'smwgLinksInValues',
 			'smwgQFilterDuplicates',
 			'smwgQueryProfiler',
 			'smwgEntityCollation',

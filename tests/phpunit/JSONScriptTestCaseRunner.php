@@ -58,13 +58,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		);
 
 		if ( $this->getStore() instanceof SPARQLStore ) {
-			if ( isset( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
-				$connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
-			} else {
-				$connectorId = $GLOBALS['smwgSparqlRepositoryConnector'];
-			}
-
-			$this->connectorId = strtolower( $connectorId );
+			$this->connectorId = strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] );
 		} elseif ( $this->getStore() instanceof ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {

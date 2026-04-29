@@ -178,10 +178,6 @@ class SchemaFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		if ( $types === [] ) {
-			$types = $settings->get( 'smwgSchemaTypes' );
-		}
-
 		$schemaTypes = new SchemaTypes(
 			$settings->mung( 'smwgDir', '/data/schema' )
 		);
