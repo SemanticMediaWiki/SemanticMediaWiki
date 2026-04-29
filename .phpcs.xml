@@ -22,7 +22,6 @@
 		<exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
 		<exclude name="MediaWiki.PHPUnit.SetMethods.SetMethods" />
-		<exclude name="MediaWiki.Commenting.FunctionComment.WrongStyle" />
 		<exclude name="MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestClass" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTestdox" />
