@@ -31,8 +31,6 @@ class MaintenanceBenchmarkRunner implements BenchmarkReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array
 	 */
 	public function getBenchmarkReport() {
 		return $this->benchmarkReport;
@@ -40,8 +38,6 @@ class MaintenanceBenchmarkRunner implements BenchmarkReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $case
 	 */
 	public function run( array $case ) {
 		$this->benchmarkReport = [];

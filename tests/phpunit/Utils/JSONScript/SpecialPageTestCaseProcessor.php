@@ -9,8 +9,10 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\Request\WebRequest;
 use MediaWikiIntegrationTestCase;
+use SMW\Store;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\Mock\MockSuperUser;
+use SMW\Tests\Utils\Validators\StringValidator;
 
 /**
  * @group semantic-mediawiki
@@ -45,8 +47,8 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $testCaseLocation = '';
 
 	/**
-	 * @param Store
-	 * @param StringValidator
+	 * @param Store $store
+	 * @param StringValidator $stringValidator
 	 */
 	public function __construct( $store, $stringValidator ) {
 		$this->store = $store;
@@ -71,8 +73,6 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array $case
 	 */
 	public function process( array $case ) {
 		if ( !isset( $case['special-page'] ) ) {
