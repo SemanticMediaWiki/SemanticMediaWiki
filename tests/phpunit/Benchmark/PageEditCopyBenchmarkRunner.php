@@ -23,7 +23,7 @@ class PageEditCopyBenchmarkRunner {
 	private $benchmarkReport = [];
 
 	/**
-	 * @var int|count
+	 * @var int|null
 	 */
 	private $editRepetitionCount = null;
 
@@ -40,8 +40,6 @@ class PageEditCopyBenchmarkRunner {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array
 	 */
 	public function getBenchmarkReport() {
 		return $this->benchmarkReport;
@@ -58,8 +56,6 @@ class PageEditCopyBenchmarkRunner {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $case
 	 */
 	public function run( array $case ) {
 		$this->benchmarkReport = [];

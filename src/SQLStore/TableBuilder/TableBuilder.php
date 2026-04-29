@@ -248,8 +248,10 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 */
 	abstract protected function doOptimize( $tableName ): void;
 
-	// #1978
-	// http://php.net/manual/en/function.array-search.php
+	/**
+	 * #1978
+	 * http://php.net/manual/en/function.array-search.php
+	 */
 	protected function recursive_array_search( $needle, $haystack ) {
 		foreach ( $haystack as $key => $value ) {
 			$current_key = $key;

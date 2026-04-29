@@ -72,27 +72,37 @@ class ConceptValue extends DataValue {
 		return str_replace( [ '&lt;', '&gt;', '&amp;' ], [ '<', '>', '&' ], $this->m_dataitem->getConceptQuery() );
 	}
 
-	/// Return the concept's defining text (in SMW query syntax)
+	/**
+	 * Return the concept's defining text (in SMW query syntax)
+	 */
 	public function getConceptText() {
 		return $this->m_dataitem->getConceptQuery();
 	}
 
-	/// Return the optional concept documentation.
+	/**
+	 * Return the optional concept documentation.
+	 */
 	public function getDocu() {
 		return $this->m_dataitem->getDocumentation();
 	}
 
-	/// Return the concept's size (a metric used to estimate computation complexity).
+	/**
+	 * Return the concept's size (a metric used to estimate computation complexity).
+	 */
 	public function getSize() {
 		return $this->m_dataitem->getSize();
 	}
 
-	/// Return the concept's depth (a metric used to estimate computation complexity).
+	/**
+	 *  Return the concept's depth (a metric used to estimate computation complexity).
+	 */
 	public function getDepth() {
 		return $this->m_dataitem->getDepth();
 	}
 
-	/// Return the concept's query feature bit field (a metric used to estimate computation complexity).
+	/**
+	 * Return the concept's query feature bit field (a metric used to estimate computation complexity).
+	 */
 	public function getQueryFeatures() {
 		return $this->m_dataitem->getQueryFeatures();
 	}
