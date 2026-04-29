@@ -68,10 +68,21 @@ class ValueTextsBuilder {
 	 */
 	private function getValueText( DataValue $value, $column = 0 ): string {
 		$isSubject = ( $column === 0 );
-		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
+		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
+		$linker = $this->getLinkerForColumn( $column );
 
-		$text = $value->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
+		if ( $dataValue instanceof SMWWikiPageValue ) {
+			$dataValue->setOption(
+				$useLongText
+					? $dataValue::PREFIXED_FORM
+					: $dataValue::SHORT_FORM,
+				true
+			);
+		}
 
+		$text = $dataValue->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
 		return $this->sanitizeValueText( $text );
 	}
 
