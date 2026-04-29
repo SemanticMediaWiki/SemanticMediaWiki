@@ -1,5 +1,6 @@
 <?php
 
+// phpcs:disable Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 namespace SMW\MediaWiki;
 
 use Collation;
