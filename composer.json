@@ -89,6 +89,7 @@
 			"@lint",
 			"@phpcs",
 			"minus-x check .",
+			"@phan",
 			"@phpunit:unit",
 			"@phpunit:integration"
 		],
