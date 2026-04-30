@@ -972,7 +972,7 @@
 	"apihelp-browsebysubject-param-subject": "Het onderwerp dat wordt opgevraagd",
 	"apihelp-browsebysubject-param-subobject": "Een specifiek ondervoorwerp-ID voor het gerelateerde onderwerp",
 	"apihelp-smwbrowse-param-browse": "Specificeert het type browse-activiteit",
-	"apihelp-smwbrowse-param-params": "JSON-gecodeerde parameters met vereiste en optionele velden en afhankelijk van het geselecteerde browsertype",
+	"apihelp-smwbrowse-param-params": "In JSON gecodeerde parameters die vereiste en optionele velden bevatten en afhangen van het geselecteerde browsertype",
 	"apihelp-smwinfo-param-info": "De informatie om te verstrekken.",
 	"apihelp-smwtask-param-task": "Definieert het taaktype",
 	"apihelp-smwtask-param-params": "In JSON gecodeerde parameters die overeenkomen met de geselecteerde taaktypevereiste",

@@ -113,6 +113,7 @@
 	"smw-admin-supplementary-elastic-settings-title": "Настройки (индекси)",
 	"smw-admin-supplementary-elastic-mappings-summary": "Резюме",
 	"smw-admin-supplementary-elastic-statistics-title": "Статистика",
+	"smw-admin-supplementary-elastic-replication-pages": "Страници",
 	"smw_adminlinks_datastructure": "Структура на данните",
 	"smw_adminlinks_displayingdata": "Показване на данни",
 	"prefs-smw": "Семантично МедияУики",
@@ -168,6 +169,7 @@
 	"smw-help": "Помощ",
 	"smw-jsonview-search-label": "Търсене:",
 	"smw-facetedsearch-intro-tab-search": "Търсене",
+	"smw-search-placeholder": "Търсене...",
 	"smw-listingcontinuesabbrev": "продълж.",
 	"smw-showingresults": "Показване на до {{PLURAL:$1|<strong>1</strong> резултат|<strong>$1</strong> резултата}}, като се започва от номер <strong>$2</strong>."
 }
