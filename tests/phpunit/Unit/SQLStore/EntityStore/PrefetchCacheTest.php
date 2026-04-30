@@ -85,4 +85,44 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
+	public function testCacheMergeWithDifferentFingerprints() {
+		$property = new Property( 'Pm' );
+		$subject1 = WikiPage::newFromText( 'Subject1' );
+		$subject2 = WikiPage::newFromText( 'Subject2' );
+
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idTable->method( 'getSMWPageID' )
+			->willReturnOnConsecutiveCalls( 101, 102 );
+
+		$this->store->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$this->prefetchItemLookup->method( 'getPropertyValues' )
+			->willReturnOnConsecutiveCalls(
+				[ 101 => [ WikiPage::newFromText( 'Result1' ) ] ],
+				[ 102 => [ WikiPage::newFromText( 'Result2' ) ] ]
+			);
+
+		$instance = new PrefetchCache(
+			$this->store,
+			$this->prefetchItemLookup
+		);
+
+		$instance->prefetch( [ $subject1 ], $property, $this->requestOptions );
+		$instance->prefetch( [ $subject2 ], $property, $this->requestOptions );
+
+		$this->assertEquals(
+			[ WikiPage::newFromText( 'Result1' ) ],
+			$instance->getPropertyValues( $subject1, $property, $this->requestOptions )
+		);
+
+		$this->assertEquals(
+			[ WikiPage::newFromText( 'Result2' ) ],
+			$instance->getPropertyValues( $subject2, $property, $this->requestOptions )
+		);
+	}
+
 }
