@@ -229,6 +229,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed null argument error in entity lookup task handler ([#6228](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6228))
 * Improved wording of the post-edit reload notice ([#6301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6301))
 * Fixed maintenance log entries showing "performed unknown action" instead of a proper message, and improved log comment formatting from raw JSON to human-readable text ([#6146](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6146), [#6554](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6554))
+* Fixed `update.php` failing with "Data too long for column 'smw_hash'" on wikis with more than 200,000 entities. The pre-upgrade hex-to-binary conversion now always runs as a single server-side `UPDATE`, regardless of row count. Setting `$smwgIgnoreUpgradeKeyCheck = true` now also lets maintenance scripts run when the schema is in an intermediate state, providing a documented escape hatch for stalled upgrades. ([#6715](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6715))
 
 ### Enhancements
 
@@ -250,7 +251,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Upgrading
 
-**Run `update.php` after upgrading.** This release changes the `smw_hash` column type from `VARBINARY(40)` to `BINARY(20)`. The update script converts existing hash values automatically. For wikis with more than 200,000 entities, run `populateHashField.php --force-update` before `update.php`.
+**Run `update.php` after upgrading.** This release changes the `smw_hash` column type from `VARBINARY(40)` to `BINARY(20)`. The update script converts existing hash values automatically via a single server-side `UPDATE` before the column-type change. On wikis with millions of entities, expect this UPDATE to hold a write lock on `smw_object_ids` for the duration of the conversion — plan a maintenance window if needed.
 
 **If you use fulltext search** (`smwgEnabledFulltextSearch`): run `rebuildFulltextSearchTable.php` after upgrading to rebuild the index with the new ICU-based transliteration.
 

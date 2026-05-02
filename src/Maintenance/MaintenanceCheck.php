@@ -37,7 +37,13 @@ class MaintenanceCheck {
 			$this->message .= "\n" . $cliMsgFormatter->wordwrap( $text ) . "\n";
 		}
 
-		if ( !Setup::isValid( true ) ) {
+		// `smwgIgnoreUpgradeKeyCheck` is the documented escape hatch for
+		// running maintenance scripts when the schema is in an intermediate
+		// state — notably when an upgrade was blocked by data that requires
+		// a maintenance script (e.g. `populateHashField.php`) to fix first.
+		// Read directly from `$GLOBALS` because this runs before `Setup::init`
+		// has populated the Settings registry.
+		if ( !( $GLOBALS['smwgIgnoreUpgradeKeyCheck'] ?? false ) && !$this->isSchemaValid() ) {
 			$text = [
 				"It seems that the setup of Semantic MediaWiki wasn't finalized or a",
 				"new upgrade key is required.\n\n",
@@ -51,6 +57,14 @@ class MaintenanceCheck {
 		}
 
 		return $this->message === '';
+	}
+
+	/**
+	 * Indirection to allow tests to assert behavior independent of
+	 * `SetupFile::isGoodSchema`'s test-environment short-circuit.
+	 */
+	protected function isSchemaValid(): bool {
+		return Setup::isValid( true );
 	}
 
 	/**
