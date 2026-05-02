@@ -3,9 +3,12 @@
 namespace SMW\Tests\Unit\SQLStore\TableBuilder\Examiner;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Maintenance\populateHashField;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\ResultWrapper;
 
 /**
@@ -28,7 +31,7 @@ class HashFieldTest extends TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +45,7 @@ class HashFieldTest extends TestCase {
 		$this->store->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\populateHashField' )
+		$this->populateHashField = $this->getMockBuilder( populateHashField::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -89,7 +92,7 @@ class HashFieldTest extends TestCase {
 		// hashes exist, the SQL conversion must still run — otherwise the
 		// subsequent ALTER TABLE BINARY(20) truncates the 40-byte values
 		// and the upgrade fails.
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,7 +127,7 @@ class HashFieldTest extends TestCase {
 	}
 
 	public function testMigrateHexHashes_EmitsRecoveryHintOnDBError() {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -137,7 +140,7 @@ class HashFieldTest extends TestCase {
 		$this->connection->method( 'getType' )
 			->willReturn( 'mysql' );
 
-		$dbError = $this->getMockBuilder( '\Wikimedia\Rdbms\DBError' )
+		$dbError = $this->getMockBuilder( DBError::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -157,7 +160,7 @@ class HashFieldTest extends TestCase {
 		try {
 			$instance->migrateHexHashes();
 			$this->fail( 'Expected DBError to be re-thrown' );
-		} catch ( \Wikimedia\Rdbms\DBError $e ) {
+		} catch ( DBError $e ) {
 			// expected
 		}
 
