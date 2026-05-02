@@ -143,7 +143,7 @@ class DebugFormatter {
 				$possible_keys = $row->possible_keys;
 				$ref = $row->ref;
 
-				if ( strpos( $possible_keys, ',' ) !== false ) {
+				if ( strpos( $possible_keys ?? '', ',' ) !== false ) {
 					$possible_keys = implode( ', ', explode( ',', $possible_keys ) );
 				}
 
