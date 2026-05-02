@@ -102,10 +102,10 @@ class HashField {
 
 	/**
 	 * Surface a recovery hint before the raw `DBError` propagates and aborts
-	 * `update.php`. The conversion is wrapped in a single transactional UPDATE
-	 * (or, on SQLite, a sequence of per-row UPDATEs each in its own implicit
-	 * transaction), so partial state cannot persist across a failure — the
-	 * operator just needs to resolve the underlying issue and re-run.
+	 * `update.php`. The migration is safe to retry after a partial failure
+	 * because the `LENGTH(smw_hash) = 40` predicate skips already-converted
+	 * rows — the SQLite per-row fallback in particular is not transactional,
+	 * but the idempotent predicate makes that safe.
 	 */
 	private function reportMigrationFailure( CliMsgFormatter $cliMsgFormatter ): void {
 		$text = [
@@ -115,8 +115,8 @@ class HashField {
 			),
 			"Common causes: lock contention on `smw_object_ids`, insufficient " .
 			"disk space, or a restrictive SQL mode. Resolve the underlying " .
-			"database error and re-run `update.php` — the conversion is atomic " .
-			"and safe to retry.",
+			"database error and re-run `update.php` — already-converted rows " .
+			"are skipped, so the migration is safe to retry.",
 		];
 
 		$this->messageReporter->reportMessage(

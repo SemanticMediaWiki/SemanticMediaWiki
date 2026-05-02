@@ -44,7 +44,8 @@ class MaintenanceCheckTest extends TestCase {
 	 * would pass even with the bypass missing.
 	 */
 	public function testCanExecute_HonorsIgnoreUpgradeKeyCheck() {
-		$previous = $GLOBALS['smwgIgnoreUpgradeKeyCheck'] ?? false;
+		$hadPrevious = array_key_exists( 'smwgIgnoreUpgradeKeyCheck', $GLOBALS );
+		$previous = $GLOBALS['smwgIgnoreUpgradeKeyCheck'] ?? null;
 		$GLOBALS['smwgIgnoreUpgradeKeyCheck'] = true;
 
 		try {
@@ -57,7 +58,11 @@ class MaintenanceCheckTest extends TestCase {
 			$this->assertTrue( $instance->canExecute() );
 			$this->assertSame( '', $instance->getMessage() );
 		} finally {
-			$GLOBALS['smwgIgnoreUpgradeKeyCheck'] = $previous;
+			if ( $hadPrevious ) {
+				$GLOBALS['smwgIgnoreUpgradeKeyCheck'] = $previous;
+			} else {
+				unset( $GLOBALS['smwgIgnoreUpgradeKeyCheck'] );
+			}
 		}
 	}
 
@@ -69,7 +74,8 @@ class MaintenanceCheckTest extends TestCase {
 	 * lets the previous case succeed.
 	 */
 	public function testCanExecute_BlocksWhenSchemaInvalidAndFlagUnset() {
-		$previous = $GLOBALS['smwgIgnoreUpgradeKeyCheck'] ?? false;
+		$hadPrevious = array_key_exists( 'smwgIgnoreUpgradeKeyCheck', $GLOBALS );
+		$previous = $GLOBALS['smwgIgnoreUpgradeKeyCheck'] ?? null;
 		$GLOBALS['smwgIgnoreUpgradeKeyCheck'] = false;
 
 		try {
@@ -85,7 +91,11 @@ class MaintenanceCheckTest extends TestCase {
 				$instance->getMessage()
 			);
 		} finally {
-			$GLOBALS['smwgIgnoreUpgradeKeyCheck'] = $previous;
+			if ( $hadPrevious ) {
+				$GLOBALS['smwgIgnoreUpgradeKeyCheck'] = $previous;
+			} else {
+				unset( $GLOBALS['smwgIgnoreUpgradeKeyCheck'] );
+			}
 		}
 	}
 
