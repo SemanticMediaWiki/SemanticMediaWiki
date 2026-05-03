@@ -23,6 +23,8 @@ use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableFieldUpdater;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -35,6 +37,9 @@ use stdClass;
  * @author mwjames
  */
 class EntityIdManagerTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $store;
 	private $cache;
@@ -212,9 +217,10 @@ class EntityIdManagerTest extends TestCase {
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_hash = '___hash___';
 
-		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( $selectRow );
+		$qb = $this->createMockSelectQueryBuilder( [ $selectRow ] );
+		$this->connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -245,9 +251,10 @@ class EntityIdManagerTest extends TestCase {
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 		$selectRow->smw_hash = '___hash___';
 
-		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( $selectRow );
+		$qb = $this->createMockSelectQueryBuilder( [ $selectRow ] );
+		$this->connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -289,9 +296,16 @@ class EntityIdManagerTest extends TestCase {
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 		$selectRow->smw_hash = '___hash___';
 
+		$qb = $this->createMockSelectQueryBuilder( [ $selectRow ] );
 		$this->connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( $selectRow );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$insertTables = $insertRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $insertTables, $insertRows );
+		$this->connection->expects( $this->once() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$this->connection->expects( $this->once() )
 			->method( 'insertId' )
@@ -325,6 +339,8 @@ class EntityIdManagerTest extends TestCase {
 		);
 
 		$this->assertEquals( 9999, $result );
+		$this->assertSame( [ SQLStore::ID_TABLE ], $insertTables );
+		$this->assertCount( 1, $insertRows );
 	}
 
 	public function testGetDataItemById() {
@@ -418,9 +434,10 @@ class EntityIdManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( $row );
+		$qb = $this->createMockSelectQueryBuilder( [ $row ] );
+		$this->connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -519,9 +536,11 @@ class EntityIdManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ], $whereConditions );
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -539,6 +558,16 @@ class EntityIdManagerTest extends TestCase {
 		$this->assertEquals(
 			1001,
 			$instance->findAssociatedRev( 'Foo', NS_MAIN, '', '' )
+		);
+
+		$this->assertSame(
+			[ [
+				'smw_title' => 'Foo',
+				'smw_namespace' => NS_MAIN,
+				'smw_iw' => '',
+				'smw_subobject' => '',
+			] ],
+			$whereConditions
 		);
 	}
 
