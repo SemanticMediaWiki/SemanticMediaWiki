@@ -10,6 +10,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -22,6 +23,8 @@ use stdClass;
  * @author mwjames
  */
 class SubobjectListFinderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $iteratorFactory;
 
@@ -54,9 +57,11 @@ class SubobjectListFinderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -96,13 +101,12 @@ class SubobjectListFinderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				'smw_title= AND smw_namespace= AND smw_iw= AND smw_subobject!=' )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -121,6 +125,12 @@ class SubobjectListFinderTest extends TestCase {
 		foreach ( $instance->find( $subject ) as $v ) {
 			$this->assertEquals( 42, $v->getId() );
 		}
+
+		$this->assertNotEmpty( $whereConditions );
+		$flat = $whereConditions[0];
+		$this->assertArrayHasKey( 'smw_title', $flat );
+		$this->assertArrayHasKey( 'smw_namespace', $flat );
+		$this->assertArrayHasKey( 'smw_iw', $flat );
 	}
 
 	public function subjectProvider() {
