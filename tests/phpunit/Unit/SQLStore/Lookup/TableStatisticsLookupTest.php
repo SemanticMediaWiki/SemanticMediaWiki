@@ -7,8 +7,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\TableStatisticsLookup;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\TableStatisticsLookup
@@ -20,6 +19,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class TableStatisticsLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $connection;
@@ -54,17 +55,12 @@ class TableStatisticsLookupTest extends TestCase {
 	}
 
 	public function testGetStats() {
-		$ignored = [];
+		$rows = [ (object)[ 'smw_namespace' => NS_MAIN, 'count' => 0 ] ];
 
 		$this->connection->expects( $this->any() )
 			->method( 'newSelectQueryBuilder' )
-			->willReturnCallback( function () use ( &$ignored ) {
-				return $this->createMockSelectQueryBuilder(
-					[],
-					0,
-					$ignored,
-					(object)[ 'count' => 0 ]
-				);
+			->willReturnCallback( function () use ( $rows ) {
+				return $this->createMockSelectQueryBuilder( $rows );
 			} );
 
 		$instance = new TableStatisticsLookup(
@@ -72,18 +68,18 @@ class TableStatisticsLookupTest extends TestCase {
 		);
 
 		$this->assertIsArray(
-
 			$instance->getStats()
 		);
 	}
 
 	public function testGet_last_id() {
 		$selectedFields = [];
+		$throwawayWhere = [];
 
 		$this->connection->expects( $this->any() )
 			->method( 'newSelectQueryBuilder' )
-			->willReturnCallback( function () use ( &$selectedFields ) {
-				return $this->createMockSelectQueryBuilder( [], "42", $selectedFields );
+			->willReturnCallback( function () use ( &$selectedFields, &$throwawayWhere ) {
+				return $this->createMockSelectQueryBuilder( [ [ '42' ] ], $throwawayWhere, $selectedFields );
 			} );
 
 		$instance = new TableStatisticsLookup(
@@ -100,11 +96,12 @@ class TableStatisticsLookupTest extends TestCase {
 
 	public function testGet_rows_total_count() {
 		$selectedFields = [];
+		$throwawayWhere = [];
 
 		$this->connection->expects( $this->any() )
 			->method( 'newSelectQueryBuilder' )
-			->willReturnCallback( function () use ( &$selectedFields ) {
-				return $this->createMockSelectQueryBuilder( [], "42", $selectedFields );
+			->willReturnCallback( function () use ( &$selectedFields, &$throwawayWhere ) {
+				return $this->createMockSelectQueryBuilder( [ [ '42' ] ], $throwawayWhere, $selectedFields );
 			} );
 
 		$instance = new TableStatisticsLookup(
@@ -117,65 +114,6 @@ class TableStatisticsLookupTest extends TestCase {
 		);
 
 		$this->assertContains( 'Count(*)', $selectedFields );
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where chained methods return $this,
-	 * fetchResultSet() returns the given rows wrapped in FakeResultWrapper,
-	 * fetchRow() returns the supplied row (or false), and fetchField() returns
-	 * the supplied scalar value.
-	 *
-	 * If $selectedFields is provided (by reference), every call to select() is
-	 * appended to it so tests can assert which field was queried.
-	 */
-	private function createMockSelectQueryBuilder(
-		array $rows = [],
-		$field = 0,
-		array &$selectedFields = [],
-		$row = false
-	) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$chainMethods = [ 'from', 'join', 'leftJoin', 'where', 'groupBy',
-			'having', 'orderBy', 'caller' ];
-
-		foreach ( $chainMethods as $method ) {
-			$queryBuilder->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'select' )
-			->willReturnCallback( static function ( $fields ) use ( $queryBuilder, &$selectedFields ) {
-				$selectedFields[] = $fields;
-				return $queryBuilder;
-			} );
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'newSubquery' )
-			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder(
-				$rows,
-				$field,
-				$selectedFields,
-				$row
-			) );
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchResultSet' )
-			->willReturn( new FakeResultWrapper( $rows ) );
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchRow' )
-			->willReturn( $row );
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchField' )
-			->willReturn( $field );
-
-		return $queryBuilder;
 	}
 
 }

@@ -15,8 +15,7 @@ use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\EntityUniquenessLookup
@@ -28,6 +27,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class EntityUniquenessLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $connection;
@@ -161,31 +162,6 @@ class EntityUniquenessLookupTest extends TestCase {
 		$result = $instance->checkConstraint( $property, $dataItem, $requestOptions );
 
 		$this->assertSame( $mappingIterator, $result );
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where chained methods return $this
-	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
-	 */
-	private function createMockSelectQueryBuilder( array $rows ) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$chainMethods = [ 'select', 'from', 'join', 'leftJoin', 'where',
-			'andWhere', 'limit', 'caller' ];
-
-		foreach ( $chainMethods as $method ) {
-			$queryBuilder->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchResultSet' )
-			->willReturn( new FakeResultWrapper( $rows ) );
-
-		return $queryBuilder;
 	}
 
 }

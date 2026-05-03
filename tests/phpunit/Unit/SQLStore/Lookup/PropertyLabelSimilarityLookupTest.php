@@ -9,9 +9,8 @@ use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup
@@ -23,6 +22,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class PropertyLabelSimilarityLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $propertyStatisticsStore;
@@ -144,30 +145,6 @@ class PropertyLabelSimilarityLookupTest extends TestCase {
 
 			$instance->compareAndFindLabels( $requestOptions )
 		);
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where all chained methods return $this
-	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
-	 */
-	private function createMockSelectQueryBuilder( array $rows ) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$chainMethods = [ 'select', 'from', 'where', 'orderBy', 'limit', 'offset', 'caller' ];
-
-		foreach ( $chainMethods as $method ) {
-			$queryBuilder->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchResultSet' )
-			->willReturn( new FakeResultWrapper( $rows ) );
-
-		return $queryBuilder;
 	}
 
 }

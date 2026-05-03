@@ -8,9 +8,8 @@ use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UsageStatisticsListLookup
@@ -23,6 +22,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class UsageStatisticsListLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $propertyStatisticsStore;
@@ -183,36 +184,6 @@ class UsageStatisticsListLookupTest extends TestCase {
 		);
 
 		return $instance->fetchList();
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where all chained methods return $this,
-	 * fetchResultSet() returns the given rows wrapped in FakeResultWrapper, and
-	 * fetchRow() returns the first row (or false if empty).
-	 */
-	private function createMockSelectQueryBuilder( array $rows ) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$chainMethods = [ 'select', 'from', 'join', 'where', 'groupBy',
-			'orderBy', 'caller' ];
-
-		foreach ( $chainMethods as $method ) {
-			$queryBuilder->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchResultSet' )
-			->willReturn( new FakeResultWrapper( $rows ) );
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchRow' )
-			->willReturn( $rows[0] ?? false );
-
-		return $queryBuilder;
 	}
 
 }

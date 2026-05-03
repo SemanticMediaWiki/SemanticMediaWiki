@@ -6,8 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MissingRedirectLookup
@@ -19,6 +18,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class MissingRedirectLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 
@@ -96,26 +97,6 @@ class MissingRedirectLookupTest extends TestCase {
 		);
 
 		$instance->findMissingRedirects();
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where common chained methods return $this
-	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
-	 */
-	private function createMockSelectQueryBuilder( array $rows ) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'caller' )
-			->willReturnSelf();
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchResultSet' )
-			->willReturn( new FakeResultWrapper( $rows ) );
-
-		return $queryBuilder;
 	}
 
 }

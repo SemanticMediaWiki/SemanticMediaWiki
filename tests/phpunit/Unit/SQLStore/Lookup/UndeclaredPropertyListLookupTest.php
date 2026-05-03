@@ -10,9 +10,8 @@ use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
@@ -24,6 +23,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class UndeclaredPropertyListLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $requestOptions;
@@ -275,31 +276,6 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 		$this->assertEmpty(
 			$result
 		);
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where all chained methods return $this
-	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
-	 */
-	private function createMockSelectQueryBuilder( array $rows ) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$chainMethods = [ 'select', 'from', 'join', 'where', 'groupBy', 'orderBy',
-			'limit', 'offset', 'distinct', 'caller' ];
-
-		foreach ( $chainMethods as $method ) {
-			$queryBuilder->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchResultSet' )
-			->willReturn( new FakeResultWrapper( $rows ) );
-
-		return $queryBuilder;
 	}
 
 }

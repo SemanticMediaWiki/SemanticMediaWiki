@@ -9,9 +9,8 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PValueLookup
@@ -23,6 +22,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class PValueLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 
@@ -308,51 +309,6 @@ class PValueLookupTest extends TestCase {
 			}
 		}
 		return $flat;
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where chained methods return $this,
-	 * fetchResultSet() returns the given rows wrapped in FakeResultWrapper,
-	 * and andWhere() arguments are captured into $whereConditions for
-	 * inspection by tests.
-	 */
-	private function createMockSelectQueryBuilder(
-		array $rows = [],
-		array &$whereConditions = []
-	) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$chainMethods = [ 'select', 'fields', 'field', 'from', 'table',
-			'join', 'leftJoin', 'where', 'groupBy', 'having', 'orderBy',
-			'caller', 'distinct', 'limit', 'offset', 'options', 'option' ];
-
-		foreach ( $chainMethods as $method ) {
-			$queryBuilder->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'andWhere' )
-			->willReturnCallback( static function ( $conds ) use ( $queryBuilder, &$whereConditions ) {
-				$whereConditions[] = $conds;
-				return $queryBuilder;
-			} );
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'newSubquery' )
-			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder(
-				$rows,
-				$whereConditions
-			) );
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchResultSet' )
-			->willReturn( new FakeResultWrapper( $rows ) );
-
-		return $queryBuilder;
 	}
 
 }

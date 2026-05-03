@@ -9,8 +9,7 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\DisplayTitleLookup
@@ -22,6 +21,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class DisplayTitleLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 
@@ -121,30 +122,6 @@ class DisplayTitleLookupTest extends TestCase {
 			],
 			$instance->prefetchFromList( $list )
 		);
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where all chained methods return $this
-	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
-	 */
-	private function createMockSelectQueryBuilder( array $rows ) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$chainMethods = [ 'select', 'from', 'where', 'caller' ];
-
-		foreach ( $chainMethods as $method ) {
-			$queryBuilder->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		$queryBuilder->expects( $this->any() )
-			->method( 'fetchResultSet' )
-			->willReturn( new FakeResultWrapper( $rows ) );
-
-		return $queryBuilder;
 	}
 
 }
