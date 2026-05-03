@@ -117,7 +117,7 @@ class AuxiliaryFields {
 		return $this->connection->newSelectQueryBuilder()
 			->select( [ 't.smw_id', 't.smw_hash', 'p.smw_countmap' ] )
 			->from( SQLStore::ID_TABLE, 't' )
-			->join( SQLStore::ID_AUXILIARY_TABLE, 'p', [ 'p.smw_id=t.smw_id' ] )
+			->join( SQLStore::ID_AUXILIARY_TABLE, 'p', 'p.smw_id=t.smw_id' )
 			->where( [ 't.smw_hash' => $hashes ] )
 			->caller( __METHOD__ )
 			->fetchResultSet();
