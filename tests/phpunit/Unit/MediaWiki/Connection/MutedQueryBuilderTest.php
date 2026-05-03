@@ -66,6 +66,10 @@ class MutedQueryBuilderTest extends TestCase {
 		$builder = new $builderClass( $database, $transactionHandler );
 		$configure( $builder );
 		$builder->execute();
+
+		// Mock expectations above verify the mute and write calls; record
+		// an assertion so the test is not flagged as risky under strict mode.
+		$this->addToAssertionCount( 1 );
 	}
 
 	public static function builderProvider(): array {

@@ -25,7 +25,7 @@ class MutedReplaceQueryBuilder extends ReplaceQueryBuilder {
 		parent::__construct( $db );
 	}
 
-	public function execute() {
+	public function execute(): void {
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		try {
