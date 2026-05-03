@@ -77,7 +77,9 @@ class FieldMapper {
 	 * @return bool
 	 */
 	public static function isPhrase( $value = '' ): bool {
-		return $value[0] === '"' && substr( $value, -1 ) === '"';
+		return $value !== ''
+			&& $value[0] === '"'
+			&& substr( $value, -1 ) === '"';
 	}
 
 	/**
@@ -400,7 +402,7 @@ class FieldMapper {
 
 			// Use case: `[[Has text::~foo*]]`, `[[Has text::~foo]]`
 			// - add Boolean + which translates into "must be present"
-			if ( $value[0] !== '*' ) {
+			if ( $value !== '' && $value[0] !== '*' ) {
 				$value = "+$value";
 			}
 
