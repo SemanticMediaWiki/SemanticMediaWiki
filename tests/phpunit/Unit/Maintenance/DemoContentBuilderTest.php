@@ -62,12 +62,24 @@ class DemoContentBuilderTest extends TestCase {
 			'Toy Group', 'Working Group', 'Non-Sporting Group',
 			'Dog Breeds', 'Dogs', 'Breed Groups',
 			'Small Dogs', 'Medium Dogs', 'Large Dogs', 'Templates',
+			// Origin-derived categories (one per unique breed origin).
+			'Dogs from Germany', 'Dogs from United Kingdom', 'Dogs from Japan',
 		];
 		foreach ( $expected as $name ) {
 			$this->assertContains( $name, $names, "missing category {$name}" );
 		}
 
 		$this->assertSame( $names, array_unique( $names ), 'category names must be unique' );
+	}
+
+	public function testGetCategoryDataEntriesAreNameContentTuples(): void {
+		foreach ( $this->builder->getCategoryData() as $entry ) {
+			$this->assertCount( 2, $entry, 'category entry must be a [name, content] tuple' );
+			$this->assertIsString( $entry[0] );
+			$this->assertIsString( $entry[1] );
+			$this->assertNotEmpty( $entry[0] );
+			$this->assertNotEmpty( $entry[1] );
+		}
 	}
 
 	public function testGetTopicPagesReturnsEightEntries(): void {
@@ -197,6 +209,45 @@ class DemoContentBuilderTest extends TestCase {
 		$this->assertMatchesRegularExpression( '/\| related_breed = \s*\n/', $wikitext );
 	}
 
+	/**
+	 * @dataProvider groupRenderingProvider
+	 */
+	public function testRenderBreedArticleEmbedsGroupSpecificRoleAndHistory(
+		string $breedName, string $expectedRoleSnippet, string $expectedHistorySnippet
+	): void {
+		$breeds = $this->builder->getBreedData();
+		$breed = null;
+		foreach ( $breeds as $b ) {
+			if ( $b['name'] === $breedName ) {
+				$breed = $b;
+				break;
+			}
+		}
+		$this->assertNotNull( $breed, "fixture breed {$breedName} not in seeded data" );
+
+		$wikitext = $this->builder->renderBreedArticle( $breed );
+
+		$this->assertStringContainsString( $expectedRoleSnippet, $wikitext,
+			"missing group-specific role snippet for {$breedName}" );
+		$this->assertStringContainsString( $expectedHistorySnippet, $wikitext,
+			"missing group-specific history snippet for {$breedName}" );
+		$this->assertStringContainsString( "[[Category:{$breed['group']} Group]]", $wikitext );
+	}
+
+	public static function groupRenderingProvider(): array {
+		// One breed per group; exercises every entry in the $roles and
+		// $histories dispatch tables in renderBreedArticle.
+		return [
+			'Herding'      => [ 'Border Collie', 'valued herding and farm dog', 'as a herding dog' ],
+			'Sporting'     => [ 'Labrador Retriever', 'popular sporting and hunting companion', 'as a sporting dog' ],
+			'Hound'        => [ 'Beagle', 'skilled hunting hound', 'prized for their hunting abilities' ],
+			'Terrier'      => [ 'Jack Russell Terrier', 'spirited vermin hunter and companion', 'bred to hunt and control vermin' ],
+			'Toy'          => [ 'Chihuahua', 'beloved companion dog', 'cherished companion' ],
+			'Working'      => [ 'Siberian Husky', 'dependable working dog', 'for practical working tasks' ],
+			'Non-Sporting' => [ 'Poodle', 'versatile companion', 'served various roles throughout history' ],
+		];
+	}
+
 	public function testRenderBreedArticleProducesValidRelatedBreedLinkWhenSiblingsExist(): void {
 		// Pick a real Herding breed — siblings exist, so related_breed gets a value.
 		$breeds = $this->builder->getBreedData();
@@ -213,5 +264,77 @@ class DemoContentBuilderTest extends TestCase {
 
 		// related_breed line has a non-empty value (a real breed name).
 		$this->assertMatchesRegularExpression( '/\| related_breed = [A-Z][^\n]+/', $wikitext );
+	}
+
+	public function testRenderQueryShowcaseContainsAllSections(): void {
+		$wikitext = $this->builder->renderQueryShowcase();
+
+		$this->assertStringContainsString( '== Total breed count ==', $wikitext );
+		$this->assertStringContainsString( '== Working group breeds, heaviest first ==', $wikitext );
+		$this->assertStringContainsString( '== Breeds from Germany ==', $wikitext );
+		$this->assertStringContainsString( '== Heaviest breeds across all groups (over 50 kg) ==', $wikitext );
+		$this->assertStringContainsString( '== Breeds with a related breed ==', $wikitext );
+		$this->assertStringContainsString( '== Earliest recognized breeds (Date property) ==', $wikitext );
+		$this->assertStringContainsString( '== Breeds with intelligent temperament (multi-value #set) ==', $wikitext );
+		$this->assertStringContainsString( '== Toy breeds (template format) ==', $wikitext );
+
+		$this->assertStringContainsString( '[[Category:Seed data]]', $wikitext );
+	}
+
+	public function testRenderQueryShowcaseHasEightWellFormedAskQueries(): void {
+		$wikitext = $this->builder->renderQueryShowcase();
+
+		// Each {{#ask: must have a matching closing }} — count opens.
+		$this->assertSame( 8, substr_count( $wikitext, '{{#ask:' ),
+			'expected 8 #ask queries' );
+
+		// All braces balanced overall.
+		$this->assertSame( substr_count( $wikitext, '{{' ), substr_count( $wikitext, '}}' ),
+			'opening and closing braces unbalanced' );
+	}
+
+	public function testRenderQueryShowcaseUsesEachDemoFeature(): void {
+		$wikitext = $this->builder->renderQueryShowcase();
+
+		// Original five.
+		$this->assertStringContainsString( 'format=count', $wikitext );
+		$this->assertStringContainsString( 'format=ul', $wikitext );
+		$this->assertStringContainsString( 'sort=Maximum weight', $wikitext );
+		$this->assertStringContainsString( 'order=desc', $wikitext );
+		$this->assertStringContainsString( '[[Maximum weight::>50]]', $wikitext );
+		$this->assertStringContainsString( '[[Related breed::+]]', $wikitext );
+		$this->assertStringContainsString( '[[Breed group::Working]]', $wikitext );
+		$this->assertStringContainsString( '[[Origin country::Germany]]', $wikitext );
+
+		// Date filter (Date datatype).
+		$this->assertStringContainsString( '[[Recognition date::>1880-01-01]]', $wikitext );
+		$this->assertStringContainsString( 'sort=Recognition date', $wikitext );
+		$this->assertStringContainsString( 'order=asc', $wikitext );
+
+		// Multi-value #set lookup (Temperament is annotated via {{#set}}).
+		$this->assertStringContainsString( '[[Temperament::Intelligent]]', $wikitext );
+
+		// format=template requires a template parameter.
+		$this->assertStringContainsString( 'format=template', $wikitext );
+		$this->assertStringContainsString( 'template=Breed query row', $wikitext );
+	}
+
+	public function testRenderBreedQueryRowTemplateIsWellFormed(): void {
+		$template = $this->builder->renderBreedQueryRowTemplate();
+
+		// Has noinclude documentation block and includeonly render block.
+		$this->assertStringContainsString( '<noinclude>', $template );
+		$this->assertStringContainsString( '</noinclude>', $template );
+		$this->assertStringContainsString( '<includeonly>', $template );
+		$this->assertStringContainsString( '</includeonly>', $template );
+
+		// Uses positional parameters 1, 2, 3 (breed name, weight, origin).
+		$this->assertStringContainsString( '{{{1|}}}', $template );
+		$this->assertStringContainsString( '{{{2|}}}', $template );
+		$this->assertStringContainsString( '{{{3|}}}', $template );
+
+		// Categorised so the seed cleanup can find it.
+		$this->assertStringContainsString( '[[Category:Templates]]', $template );
+		$this->assertStringContainsString( '[[Category:Seed data]]', $template );
 	}
 }

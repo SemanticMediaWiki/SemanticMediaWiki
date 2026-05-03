@@ -254,7 +254,81 @@ The {$breed['name']} has a typical lifespan of {$breed['lifeMin']}–{$breed['li
 	 * @since 7.0.0
 	 */
 	public function renderQueryShowcase(): string {
-		return '';
+		return "This page demonstrates Semantic MediaWiki queries against the seeded breed data.
+
+== Total breed count ==
+{{#ask: [[Category:Dog Breeds]] | format=count }}
+
+== Working group breeds, heaviest first ==
+{{#ask: [[Category:Dog Breeds]] [[Breed group::Working]]
+ | ?Origin country
+ | ?Maximum weight
+ | ?Maximum life expectancy
+ | sort=Maximum weight
+ | order=desc
+ | limit=10
+}}
+
+== Breeds from Germany ==
+{{#ask: [[Category:Dog Breeds]] [[Origin country::Germany]]
+ | format=ul
+}}
+
+== Heaviest breeds across all groups (over 50 kg) ==
+{{#ask: [[Category:Dog Breeds]] [[Maximum weight::>50]]
+ | ?Maximum weight
+ | sort=Maximum weight
+ | order=desc
+}}
+
+== Breeds with a related breed ==
+{{#ask: [[Category:Dog Breeds]] [[Related breed::+]]
+ | ?Related breed
+ | limit=8
+}}
+
+== Earliest recognized breeds (Date property) ==
+{{#ask: [[Category:Dog Breeds]] [[Recognition date::>1880-01-01]]
+ | ?Recognition date
+ | sort=Recognition date
+ | order=asc
+ | limit=5
+}}
+
+== Breeds with intelligent temperament (multi-value #set) ==
+{{#ask: [[Category:Dog Breeds]] [[Temperament::Intelligent]]
+ | ?Temperament
+ | limit=8
+}}
+
+== Toy breeds (template format) ==
+{{#ask: [[Category:Dog Breeds]] [[Breed group::Toy]]
+ | ?Maximum weight
+ | ?Origin country
+ | format=template
+ | template=Breed query row
+ | limit=5
+}}
+
+[[Category:Seed data]]";
+	}
+
+	/**
+	 * Wikitext for the row template used by the format=template query on the
+	 * showcase page.
+	 *
+	 * @since 7.0.0
+	 */
+	public function renderBreedQueryRowTemplate(): string {
+		return "<noinclude>
+This template is used by the [[SMW Query Examples]] page to render breed query results in `format=template` style.
+
+== Usage ==
+Called by SMW with positional parameters: 1=breed name, 2=maximum weight, 3=origin country.
+
+[[Category:Templates]]
+[[Category:Seed data]]
+</noinclude><includeonly>* '''{{{1|}}}''' — {{{2|}}} ({{{3|}}})</includeonly>";
 	}
 
 	private function getGroomingInfo( string $coat ): string {

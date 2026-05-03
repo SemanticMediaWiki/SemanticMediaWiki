@@ -25,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 /**
  * Seed the dev wiki with demo pages including SMW annotations.
  *
- * Creates ~148 dog-themed pages covering all common SMW property types
+ * Creates ~150 dog-themed pages covering all common SMW property types
  * (Text, Number, Quantity, Page, Date), multi-value properties, templates with
  * annotations, categories, and inline queries. Useful for development
  * and testing of SMW features.
@@ -59,6 +59,7 @@ class seedDemoData extends Maintenance {
 			$this->output( "  - Delete all pages in Category:Seed data\n" );
 			if ( !$clearOnly ) {
 				$this->output( "  - Create dog breed pages, topic pages, SMW properties, templates, and categories\n" );
+				$this->output( "  - Create SMW Query Examples page\n" );
 			}
 			$this->output( "\nRe-run with --force to execute.\n" );
 			return;
@@ -256,12 +257,16 @@ class seedDemoData extends Maintenance {
 			}
 		}
 
-		// 2. Template
-		$this->output( "\n--- Creating template ---\n" );
-		$createdTemplate = 0;
+		// 2. Templates
+		$this->output( "\n--- Creating templates ---\n" );
+		$createdTemplates = 0;
 		if ( $this->editPage( 'Template:Dog breed', $this->content->renderBreedTemplate(), 'Seed: create dog breed template' ) ) {
 			$this->output( "  Created Template:Dog breed\n" );
-			$createdTemplate = 1;
+			$createdTemplates++;
+		}
+		if ( $this->editPage( 'Template:Breed query row', $this->content->renderBreedQueryRowTemplate(), 'Seed: create breed query row template' ) ) {
+			$this->output( "  Created Template:Breed query row\n" );
+			$createdTemplates++;
 		}
 
 		// 3. Categories
@@ -296,15 +301,24 @@ class seedDemoData extends Maintenance {
 			}
 		}
 
+		// 6. SMW query showcase
+		$this->output( "\n--- Creating query showcase page ---\n" );
+		$createdQueryShowcase = 0;
+		if ( $this->editPage( 'SMW Query Examples', $this->content->renderQueryShowcase(), 'Seed: query examples page' ) ) {
+			$this->output( "  Created: SMW Query Examples\n" );
+			$createdQueryShowcase = 1;
+		}
+
 		// Summary
 		$this->output( "\n=== Summary ===\n" );
 		$this->output( "  {$createdBreeds} breed pages\n" );
 		$this->output( "  {$createdTopics} topic pages\n" );
+		$this->output( "  {$createdQueryShowcase} query showcase page\n" );
 		$this->output( "  {$createdProperties} SMW properties\n" );
-		$this->output( "  {$createdTemplate} template\n" );
+		$this->output( "  {$createdTemplates} templates\n" );
 		$this->output( "  {$createdCategories} categories\n" );
 		$total = $createdTrackingCategory + $createdBreeds + $createdTopics +
-			$createdProperties + $createdTemplate + $createdCategories;
+			$createdQueryShowcase + $createdProperties + $createdTemplates + $createdCategories;
 		$this->output( "  Total: ~{$total} pages\n" );
 	}
 }
