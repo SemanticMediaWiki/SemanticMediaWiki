@@ -72,7 +72,7 @@ class Lru {
 	 */
 	public function delete( $key ) {
 		if ( !isset( $this->cache[$key] ) ) {
-			return $default;
+			return;
 		}
 
 		$this->count--;
