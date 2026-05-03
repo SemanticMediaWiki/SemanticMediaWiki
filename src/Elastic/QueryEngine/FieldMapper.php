@@ -402,7 +402,7 @@ class FieldMapper {
 
 			// Use case: `[[Has text::~foo*]]`, `[[Has text::~foo]]`
 			// - add Boolean + which translates into "must be present"
-			if ( $value[0] !== '*' ) {
+			if ( $value !== '' && $value[0] !== '*' ) {
 				$value = "+$value";
 			}
 
