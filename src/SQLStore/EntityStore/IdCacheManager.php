@@ -135,10 +135,10 @@ class IdCacheManager {
 			[ $title, (int)$namespace, $interwiki, $subobject ]
 		);
 
+		$id = $this->caches['entity.id']->fetch( $hash );
 		$this->caches['entity.id']->delete( $hash );
 		$this->caches['entity.sort']->delete( $hash );
 
-		$id = $this->caches['entity.id']->fetch( $hash );
 		if ( $id !== false ) {
 			$this->caches['entity.lookup']->delete( $id );
 		}
