@@ -315,15 +315,11 @@ class UsageStatisticsListLookup implements ListLookup {
 	}
 
 	private function count( string $type ): int {
-		$res = $this->store->getConnection()->newSelectQueryBuilder()
-			->select( 'COUNT(s_id) AS count' )
+		return (int)$this->store->getConnection()->newSelectQueryBuilder()
+			->select( 'COUNT(s_id)' )
 			->from( $this->findPropertyTableByType( $type )->getName() )
 			->caller( __METHOD__ )
-			->fetchResultSet();
-
-		$row = $res->fetchObject();
-
-		return isset( $row->count ) ? (int)$row->count : 0;
+			->fetchField();
 	}
 
 	private function findPropertyTableByType( string $type ) {

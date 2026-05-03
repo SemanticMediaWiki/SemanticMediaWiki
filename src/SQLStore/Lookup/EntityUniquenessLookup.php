@@ -203,7 +203,7 @@ class EntityUniquenessLookup {
 					$qb->join(
 						$subproptable->getName(),
 						"{$alias}{$i}",
-						"{$alias}{$i}.s_title=ids{$alias}{$i}.smw_title AND {$alias}{$i}.s_namespace=ids{$alias}{$i}.smw_namespace"
+						"{$alias}{$i}.s_title=ids{$i}.smw_title AND {$alias}{$i}.s_namespace=ids{$i}.smw_namespace"
 					);
 				}
 

@@ -82,9 +82,7 @@ class ProximityPropertyValueLookup {
 				$qb->andWhere( "$field LIKE " . $connection->addQuotes( '%' . $search . '%' ) );
 			}
 		} else {
-			// Preserve original semantics: filter against the literal string
-			// 'NULL', not the SQL NULL value.
-			$qb->andWhere( "$field != " . $connection->addQuotes( 'NULL' ) );
+			$qb->andWhere( "$field IS NOT NULL" );
 		}
 
 		if ( $this->isFixedPropertyTable( $table ) === false ) {
