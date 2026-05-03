@@ -36,6 +36,26 @@ class MockWriteQueryBuilderTraitTest extends TestCase {
 		$this->assertSame( [ [ 'a' ] ], $uniqueIndexFields );
 	}
 
+	public function testInsertAppendsAcrossMultipleCalls(): void {
+		$tables = $rows = $sets = $uniqueIndexFields = [];
+
+		$builder = $this->createMockInsertQueryBuilder( $tables, $rows, $sets, $uniqueIndexFields );
+
+		$builder
+			->insertInto( 'smw_test' )
+			->row( [ 'a' => 1 ] )
+			->row( [ 'a' => 2 ] )
+			->rows( [ [ 'a' => 3 ], [ 'a' => 4 ] ] )
+			->caller( __METHOD__ )
+			->execute();
+
+		$this->assertSame( [ 'smw_test' ], $tables );
+		$this->assertSame(
+			[ [ 'a' => 1 ], [ 'a' => 2 ], [ [ 'a' => 3 ], [ 'a' => 4 ] ] ],
+			$rows
+		);
+	}
+
 	public function testUpdateCapturesTableSetAndWhere(): void {
 		$tables = $sets = $wheres = [];
 

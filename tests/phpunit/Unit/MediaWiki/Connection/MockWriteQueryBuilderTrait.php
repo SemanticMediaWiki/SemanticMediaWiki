@@ -23,6 +23,17 @@ use Wikimedia\Rdbms\UpdateQueryBuilder;
  */
 trait MockWriteQueryBuilderTrait {
 
+	/**
+	 * @param array &$tables Captures `insertInto()`/`insert()`/`table()`
+	 *   arguments in call order. Successive calls append.
+	 * @param array &$rows Captures `row()` and `rows()` arguments in call
+	 *   order. `row($a)` followed by `rows([$b, $c])` yields
+	 *   `[$a, [$b, $c]]`.
+	 * @param array &$sets Captures `set()`/`andSet()` arguments in call
+	 *   order. Successive calls append.
+	 * @param array &$uniqueIndexFields Captures `uniqueIndexFields()`
+	 *   arguments in call order. Successive calls append.
+	 */
 	private function createMockInsertQueryBuilder(
 		array &$tables = [],
 		array &$rows = [],
@@ -70,6 +81,14 @@ trait MockWriteQueryBuilderTrait {
 		return $builder;
 	}
 
+	/**
+	 * @param array &$tables Captures `update()`/`table()` arguments in call
+	 *   order. Successive calls append.
+	 * @param array &$sets Captures `set()`/`andSet()` arguments in call
+	 *   order. Successive calls append.
+	 * @param array &$wheres Captures `where()`/`andWhere()`/`conds()`
+	 *   arguments in call order. Successive calls append.
+	 */
 	private function createMockUpdateQueryBuilder(
 		array &$tables = [],
 		array &$sets = [],
@@ -110,6 +129,12 @@ trait MockWriteQueryBuilderTrait {
 		return $builder;
 	}
 
+	/**
+	 * @param array &$tables Captures `deleteFrom()`/`delete()`/`table()`
+	 *   arguments in call order. Successive calls append.
+	 * @param array &$wheres Captures `where()`/`andWhere()`/`conds()`
+	 *   arguments in call order. Successive calls append.
+	 */
 	private function createMockDeleteQueryBuilder(
 		array &$tables = [],
 		array &$wheres = []
@@ -140,6 +165,15 @@ trait MockWriteQueryBuilderTrait {
 		return $builder;
 	}
 
+	/**
+	 * @param array &$tables Captures `replaceInto()`/`table()` arguments in
+	 *   call order. Successive calls append.
+	 * @param array &$rows Captures `row()` and `rows()` arguments in call
+	 *   order. `row($a)` followed by `rows([$b, $c])` yields
+	 *   `[$a, [$b, $c]]`.
+	 * @param array &$uniqueIndexFields Captures `uniqueIndexFields()`
+	 *   arguments in call order. Successive calls append.
+	 */
 	private function createMockReplaceQueryBuilder(
 		array &$tables = [],
 		array &$rows = [],
