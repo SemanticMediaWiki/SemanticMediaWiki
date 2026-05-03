@@ -77,7 +77,8 @@ class SpecialAdmin extends SpecialPage {
 
 		// Some functions require methods only provided by the SQLStore (or any
 		// inherit class thereof)
-		if ( !is_a( ( $store = $applicationFactory->getStore() ), SQLStore::class ) ) {
+		$store = $applicationFactory->getStore();
+		if ( !is_a( $store, SQLStore::class ) ) {
 			$store = $applicationFactory->getStore( SQLStore::class );
 		}
 

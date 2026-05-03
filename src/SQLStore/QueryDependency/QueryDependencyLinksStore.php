@@ -133,7 +133,8 @@ class QueryDependencyLinksStore {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
-		if ( ( $subject = $changeOp->getSubject() ) !== null ) {
+		$subject = $changeOp->getSubject();
+		if ( $subject !== null ) {
 			$hash = $subject->getHash();
 		}
 
@@ -401,7 +402,11 @@ class QueryDependencyLinksStore {
 
 		// SID < 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered)
-		if ( $sid < 1 || ( $sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash ) ) < 1 ) {
+		if ( $sid >= 1 ) {
+			$sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash );
+		}
+
+		if ( $sid < 1 ) {
 			$sid = $this->dependencyLinksTableUpdater->createId( $subject, $hash );
 		}
 
@@ -425,6 +430,10 @@ class QueryDependencyLinksStore {
 
 		$query = $queryResult->getQuery();
 
+		if ( $query === null ) {
+			return false;
+		}
+
 		$actions = [
 			// #2484 Avoid any update activities during a stashedit API access
 			'stashedit',
@@ -440,7 +449,8 @@ class QueryDependencyLinksStore {
 			return false;
 		}
 
-		if ( $query === null || ( $subject = $query->getContextPage() ) === null ) {
+		$subject = $query->getContextPage();
+		if ( $subject === null ) {
 			return false;
 		}
 

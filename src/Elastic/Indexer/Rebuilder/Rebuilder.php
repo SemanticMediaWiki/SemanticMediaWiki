@@ -301,7 +301,8 @@ class Rebuilder {
 			return '';
 		}
 
-		if ( ( $title = $dataItem->getTitle() ) !== null ) {
+		$title = $dataItem->getTitle();
+		if ( $title !== null ) {
 			return $this->indexer->fetchNativeData( $title );
 		}
 
@@ -405,7 +406,8 @@ class Rebuilder {
 	private function createIndexByType( string $type ): void {
 		// If for some reason a recent rebuild didn't finish, use
 		// the locked version as master
-		if ( ( $version = $this->client->getLock( $type ) ) === false ) {
+		$version = $this->client->getLock( $type );
+		if ( $version === false ) {
 			$version = $this->client->createIndex( $type );
 		}
 

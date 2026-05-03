@@ -591,7 +591,8 @@ class Exporter {
 	public static function getNamespaceUri( $shortName ) {
 		self::initBaseURIs();
 
-		if ( ( $uri = NamespaceUriFinder::getUri( $shortName ) ) !== false ) {
+		$uri = NamespaceUriFinder::getUri( $shortName );
+		if ( $uri !== false ) {
 			return $uri;
 		}
 

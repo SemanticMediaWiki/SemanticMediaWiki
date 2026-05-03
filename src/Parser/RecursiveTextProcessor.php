@@ -263,7 +263,8 @@ class RecursiveTextProcessor {
 			return;
 		}
 
-		if ( ( $track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK ) ) === false ) {
+		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK );
+		if ( $track === false ) {
 			return;
 		}
 

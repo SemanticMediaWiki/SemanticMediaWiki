@@ -187,7 +187,8 @@ class DisplayTitleFinder {
 		$base = $subject->asBase();
 		$key = $this->entityCache->makeKey( 'displaytitle', $subject->getHash() );
 
-		if ( ( $displayTitle = $this->entityCache->fetch( $key ) ) !== false && $displayTitle !== null ) {
+		$displayTitle = $this->entityCache->fetch( $key );
+		if ( $displayTitle !== false && $displayTitle !== null ) {
 			return trim( $displayTitle );
 		}
 

@@ -111,7 +111,8 @@ class dumpRDF extends Maintenance {
 	 * @since 2.0
 	 */
 	public function execute() {
-		if ( !( $maintenanceCheck = new MaintenanceCheck() )->canExecute() ) {
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 

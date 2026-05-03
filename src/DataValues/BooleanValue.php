@@ -215,7 +215,8 @@ class BooleanValue extends DataValue {
 	}
 
 	private function setLocalizedCaptions( string &$formatstring ): void {
-		if ( !( $languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring ) ) ) {
+		$languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring );
+		if ( !$languageCode ) {
 			$languageCode = $this->getOption( 'user.language' );
 		}
 

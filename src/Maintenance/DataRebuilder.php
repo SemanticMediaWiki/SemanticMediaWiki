@@ -296,7 +296,8 @@ class DataRebuilder {
 
 			$this->reportMessage( "Detecting an incomplete rebuild run ...\n" );
 
-			if ( ( $last_start = $this->autoRecovery->get( self::AUTO_RECOVERY_LAST_START ) ) ) {
+			$last_start = $this->autoRecovery->get( self::AUTO_RECOVERY_LAST_START );
+			if ( $last_start ) {
 				$this->reportMessage(
 					$this->cliMsgFormatter->twoCols( '   ... rebuild record from', $last_start )
 				);

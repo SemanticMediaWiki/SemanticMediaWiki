@@ -260,7 +260,8 @@ class SchemaContentFormatter {
 
 		$tags = [];
 
-		if ( ( $tags = $schema->get( Schema::SCHEMA_TAG, [] ) ) !== [] ) {
+		$tags = $schema->get( Schema::SCHEMA_TAG, [] );
+		if ( $tags !== [] ) {
 			foreach ( $tags as $k => $tag ) {
 				$tags[$k] = Infolink::newPropertySearchLink( $tag, 'Schema tag', $tag, '' )->getHtml();
 			}

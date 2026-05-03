@@ -154,8 +154,12 @@ class DependencyLinksTableUpdater {
 			// This can happen when a query is added with object reference that have not
 			// yet been referenced as annotation and therefore do not recognized as
 			// value annotation
-			if ( $oid < 1 && ( ( $oid = $this->createId( $dependency ) ) < 1 ) ) {
-				continue;
+			if ( $oid < 1 ) {
+				$oid = $this->createId( $dependency );
+
+				if ( $oid < 1 ) {
+					continue;
+				}
 			}
 
 			$inserts[$sid . $oid] = [

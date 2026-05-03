@@ -123,12 +123,14 @@ class PropertyTableIdReferenceFinder {
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			$reference = false;
 
-			if ( ( $reference = $this->findReferenceByPropertyTable( $proptable, $id ) ) !== false ) {
+			$reference = $this->findReferenceByPropertyTable( $proptable, $id );
+			if ( $reference !== false ) {
 				$references[$proptable->getName()] = $reference;
 			}
 		}
 
-		if ( ( $reference = $this->findQueryLinksTableReferenceById( $id ) ) !== false ) {
+		$reference = $this->findQueryLinksTableReferenceById( $id );
+		if ( $reference !== false ) {
 			$references[SQLStore::QUERY_LINKS_TABLE] = $reference;
 		}
 
@@ -148,7 +150,8 @@ class PropertyTableIdReferenceFinder {
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 
-			if ( ( $reference = $this->findReferenceByPropertyTable( $proptable, $id ) ) !== false ) {
+			$reference = $this->findReferenceByPropertyTable( $proptable, $id );
+			if ( $reference !== false ) {
 
 				// If null is returned it means that a reference was found but no DI could
 				// be matched therefore is categorized as false positive

@@ -100,7 +100,8 @@ class SchemaFactory {
 	 */
 	public function newSchema( $name, $data ) {
 		if ( is_string( $data ) ) {
-			if ( ( $data = json_decode( $data, true ) ) === null || json_last_error() !== JSON_ERROR_NONE ) {
+			$data = json_decode( $data, true );
+			if ( $data === null || json_last_error() !== JSON_ERROR_NONE ) {
 				throw new RuntimeException( "Invalid JSON format." );
 			}
 		}

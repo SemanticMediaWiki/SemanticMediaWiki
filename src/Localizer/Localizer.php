@@ -291,7 +291,8 @@ class Localizer {
 			return false;
 		}
 
-		if ( ( $langCode = mb_substr( strrchr( $value, "@" ), 1 ) ) !== '' ) {
+		$langCode = mb_substr( strrchr( $value, "@" ), 1 );
+		if ( $langCode !== '' ) {
 			$value = str_replace( '_', ' ', substr_replace( $value, '', ( mb_strlen( $langCode ) + 1 ) * -1 ) );
 		}
 

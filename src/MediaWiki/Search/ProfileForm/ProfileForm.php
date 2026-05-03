@@ -142,7 +142,8 @@ class ProfileForm {
 
 		$searchEngine = $this->specialSearch->getSearchEngine();
 
-		if ( ( $queryLink = $searchEngine->getQueryLink() ) instanceof Infolink ) {
+		$queryLink = $searchEngine->getQueryLink();
+		if ( $queryLink instanceof Infolink ) {
 			$queryLink->setCaption( $this->msg( 'smw-search-profile-link-caption-query', Message::TEXT ) );
 			$queryLink->setLinkAttributes(
 				[
@@ -297,7 +298,8 @@ class ProfileForm {
 	}
 
 	private function findErrors( $searchEngine ): string {
-		if ( ( $errors = $searchEngine->getErrors() ) === [] ) {
+		$errors = $searchEngine->getErrors();
+		if ( $errors === [] ) {
 			return '';
 		}
 

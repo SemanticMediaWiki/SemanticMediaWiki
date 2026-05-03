@@ -137,8 +137,11 @@ class DataValueFactory {
 
 			$type = str_replace( ' ', '_', $type );
 
-			if ( $type[0] !== '_' && ( $dType = $this->dataTypeRegistry->findTypeByLabel( $type ) ) !== '' ) {
-				$type = $dType;
+			if ( $type[0] !== '_' ) {
+				$dType = $this->dataTypeRegistry->findTypeByLabel( $type );
+				if ( $dType !== '' ) {
+					$type = $dType;
+				}
 			}
 
 			$this->defaultOutputFormatters[$type] = $formatter;

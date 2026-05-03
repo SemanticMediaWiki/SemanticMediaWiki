@@ -439,7 +439,8 @@ class Property extends DataItem {
 		}
 
 		// Special handling for when the user value contains a @LCODE marker
-		if ( ( $annotatedLanguageCode = Localizer::getAnnotatedLanguageCodeFrom( $label ) ) !== false ) {
+		$annotatedLanguageCode = Localizer::getAnnotatedLanguageCodeFrom( $label );
+		if ( $annotatedLanguageCode !== false ) {
 			$languageCode = $annotatedLanguageCode;
 		}
 

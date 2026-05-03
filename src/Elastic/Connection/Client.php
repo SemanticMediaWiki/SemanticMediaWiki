@@ -113,7 +113,8 @@ class Client {
 		if ( $this->options->dotGet( "settings.$type", [] ) !== [] ) {
 			$definition = json_decode( $indexDef[$type], true );
 
-			if ( ( $error = json_last_error() ) !== JSON_ERROR_NONE ) {
+			$error = json_last_error();
+			if ( $error !== JSON_ERROR_NONE ) {
 				throw new InvalidJSONException( $error, $this->options->dotGet( "index_def.$type" ) );
 			}
 

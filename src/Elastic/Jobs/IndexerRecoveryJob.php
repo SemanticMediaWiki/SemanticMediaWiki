@@ -199,7 +199,8 @@ class IndexerRecoveryJob extends Job {
 
 		$document = null;
 
-		if ( ( $data = $cache->fetch( $key ) ) !== false ) {
+		$data = $cache->fetch( $key );
+		if ( $data !== false ) {
 			$document = HmacSerializer::uncompress( $data );
 		}
 

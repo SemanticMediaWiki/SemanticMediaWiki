@@ -64,7 +64,8 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 		$dbKey = $dataValue->getContextPage()->getDBKey();
 
 		// Language has been already assigned!
-		if ( ( $isKnownBy = $this->isKnownByLabelAndLanguage( $value, $dbKey ) ) !== false ) {
+		$isKnownBy = $this->isKnownByLabelAndLanguage( $value, $dbKey );
+		if ( $isKnownBy !== false ) {
 			$dataValue->addErrorMsg(
 				[
 					'smw-property-preferred-label-language-combination-exists',

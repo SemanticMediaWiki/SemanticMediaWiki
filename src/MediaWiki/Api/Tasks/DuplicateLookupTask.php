@@ -45,7 +45,8 @@ class DuplicateLookupTask extends Task {
 		$key = self::makeCacheKey( 'duplicate-lookup' );
 
 		// Guard against repeated API calls (or fuzzing)
-		if ( ( $result = $this->cache->fetch( $key ) ) !== false && $cacheTTL !== false ) {
+		$result = $this->cache->fetch( $key );
+		if ( $result !== false && $cacheTTL !== false ) {
 			return $result + [ 'isFromCache' => true ];
 		}
 

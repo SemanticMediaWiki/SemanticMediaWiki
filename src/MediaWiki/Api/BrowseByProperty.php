@@ -44,7 +44,8 @@ class BrowseByProperty extends ApiBase {
 			$params['listonly']
 		);
 
-		if ( ( $lang = $params['lang'] ) === null ) {
+		$lang = $params['lang'];
+		if ( $lang === null ) {
 			$lang = Localizer::getInstance()->getUserLanguage()->getCode();
 		}
 

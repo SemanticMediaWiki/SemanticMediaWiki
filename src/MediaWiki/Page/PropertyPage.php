@@ -140,7 +140,8 @@ class PropertyPage extends Page {
 	protected function getRedirectTargetURL(): string|bool {
 		$label = $this->getTitle()->getText();
 
-		if ( ( $key = PropertyRegistry::getInstance()->findPropertyIdByLabel( $label ) ) === false ) {
+		$key = PropertyRegistry::getInstance()->findPropertyIdByLabel( $label );
+		if ( $key === false ) {
 			return false;
 		}
 

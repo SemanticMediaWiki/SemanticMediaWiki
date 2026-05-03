@@ -52,7 +52,10 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 			return $this->hasConstraintViolation;
 		}
 
-		if ( ( $reference = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getAllowedPatternBy( $dataValue->getProperty() ) ) === '' ) {
+		$reference = ApplicationFactory::getInstance()
+			->getPropertySpecificationLookup()
+			->getAllowedPatternBy( $dataValue->getProperty() );
+		if ( $reference === '' ) {
 			return $this->hasConstraintViolation;
 		}
 

@@ -99,7 +99,8 @@ class SpecialStatsAddExtra implements HookListener {
 			$count = $statistics[$key];
 			$message = $this->msg( $msgKey );
 
-			if ( ( $info = $this->msg( $msgKey . '-info' ) ) !== '' && $this->getOption( 'no.tooltip', false ) === false ) {
+			$info = $this->msg( $msgKey . '-info' );
+			if ( $info !== '' && $this->getOption( 'no.tooltip', false ) === false ) {
 				$message .= "&nbsp;<span class='smw-highlighter' data-content='{$info}'>ⁱ</span>";
 			}
 

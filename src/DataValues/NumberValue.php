@@ -574,11 +574,14 @@ class NumberValue extends DataValue {
 
 	private function findPreferredLanguageFrom( &$formatstring ): void {
 		// Localized preferred user language
-		if ( strpos( $formatstring, 'LOCL' ) !== false && ( $languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring ) ) !== false ) {
-			$this->intlNumberFormatter->setOption(
-				IntlNumberFormatter::PREFERRED_LANGUAGE,
-				$languageCode
-			);
+		if ( strpos( $formatstring, 'LOCL' ) !== false ) {
+			$languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring );
+			if ( $languageCode !== false ) {
+				$this->intlNumberFormatter->setOption(
+					IntlNumberFormatter::PREFERRED_LANGUAGE,
+					$languageCode
+				);
+			}
 		}
 
 		// Remove any remaining

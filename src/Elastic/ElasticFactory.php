@@ -548,9 +548,8 @@ class ElasticFactory {
 	 * @since 3.1
 	 */
 	public function onAfterUpdateEntityCollationComplete( $store, MessageReporter $messageReporter ): bool {
-		if (
-			( $connection = $store->getConnection( 'elastic' ) ) === null ||
-			$connection instanceof DummyClient ) {
+		$connection = $store->getConnection( 'elastic' );
+		if ( $connection === null || $connection instanceof DummyClient ) {
 			return true;
 		}
 

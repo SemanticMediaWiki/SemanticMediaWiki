@@ -107,13 +107,19 @@ class UnitConverter {
 		$this->errors = [];
 		$property = $numberValue->getProperty();
 
-		if ( $property === null || ( $subject = $property->getDiWikiPage() ) === null ) {
+		if ( $property === null ) {
+			return;
+		}
+
+		$subject = $property->getDiWikiPage();
+		if ( $subject === null ) {
 			return;
 		}
 
 		$key = $this->entityCache->makeCacheKey( 'unit', $subject->getHash() );
 
-		if ( ( $data = $this->entityCache->fetch( $key ) ) !== false ) {
+		$data = $this->entityCache->fetch( $key );
+		if ( $data !== false ) {
 			$this->unitIds = $data['ids'];
 			$this->unitFactors = $data['factors'];
 			$this->mainUnit = $data['main'];

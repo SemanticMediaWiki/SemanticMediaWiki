@@ -242,8 +242,11 @@ class FieldItemFinder {
 
 			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
 
-			if ( $multiValue instanceof MonolingualTextValue && $lang !== false && ( $textValue = $multiValue->getTextValueByLanguageCode( $lang ) ) !== null ) {
-
+			$textValue = $multiValue->getTextValueByLanguageCode( $lang );
+			if ( $multiValue instanceof MonolingualTextValue &&
+				$lang !== false &&
+				$textValue !== null
+			) {
 				// Return the text representation without a language reference
 				// (tag) since the value has been filtered hence only matches
 				// that language
@@ -253,8 +256,11 @@ class FieldItemFinder {
 				// find the correct PropertyDataItem (_TEXT;_LCODE) position
 				// to match the DI
 				$this->printRequest->setParameter( 'index', 1 );
-			} elseif ( $lang === false && $index !== false && ( $dataItemByRecord = $multiValue->getDataItemByIndex( $index ) ) !== null ) {
-				$newcontent[] = $this->itemFetcher->highlightTokens( $dataItemByRecord );
+			} elseif ( $lang === false && $index !== false ) {
+				$dataItemByRecord = $multiValue->getDataItemByIndex( $index );
+				if ( $dataItemByRecord !== null ) {
+					$newcontent[] = $this->itemFetcher->highlightTokens( $dataItemByRecord );
+				}
 			}
 		}
 

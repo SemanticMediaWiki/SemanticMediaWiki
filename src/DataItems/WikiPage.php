@@ -187,7 +187,8 @@ class WikiPage extends DataItem {
 		if ( $this->pageLanguage === null ) {
 			$this->pageLanguage = false;
 
-			if ( ( $title = $this->getTitle() ) !== null ) {
+			$title = $this->getTitle();
+			if ( $title !== null ) {
 				$this->pageLanguage = $title->getPageLanguage()->getCode();
 			}
 		}

@@ -121,7 +121,8 @@ class SchemaFinder {
 		$schemaList = [];
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_LIST, $type ] );
 
-		if ( ( $subjects = $this->cache->fetch( $key ) ) === false ) {
+		$subjects = $this->cache->fetch( $key );
+		if ( $subjects === false ) {
 			$subjects = [];
 
 			$dataItems = $this->store->getPropertySubjects(

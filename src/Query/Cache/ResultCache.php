@@ -279,13 +279,15 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$incrStats = 'hits.Undefined';
 		$itemJournal = null;
 
-		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
+		$context = $query->getOption( Query::PROC_CONTEXT );
+		if ( $context === false ) {
 			$context = 'Undefined';
 		}
 
 		// Check if the tempCache is available for result that have not yet been
 		// stored to the cache back-end
-		if ( ( $queryResult = $this->tempCache->fetch( $queryId ) ) !== false ) {
+		$queryResult = $this->tempCache->fetch( $queryId );
+		if ( $queryResult !== false ) {
 			$this->log( __METHOD__ . ' using tempCache ' . "($queryId)" );
 
 			if ( !$queryResult instanceof QueryResult ) {
@@ -347,7 +349,8 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function addQueryResultToCache( QueryResult $queryResult, string $queryId, $container, Query $query ): void {
-		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
+		$context = $query->getOption( Query::PROC_CONTEXT );
+		if ( $context === false ) {
 			$context = 'Undefined';
 		}
 
@@ -439,7 +442,8 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	private function getHashFrom( $subject ): string {
 		if ( $subject instanceof WikiPage ) {
 			// In case the we detect a _QUERY subobject, use it directly
-			if ( ( $subobjectName = $subject->getSubobjectName() ) !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
+			$subobjectName = $subject->getSubobjectName();
+			if ( $subobjectName !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
 				$subject = $subobjectName;
 			} else {
 				$subject = $subject->asBase()->getHash();
@@ -472,7 +476,8 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$id = 'noCache.byOption';
 		}
 
-		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) !== false ) {
+		$context = $query->getOption( Query::PROC_CONTEXT );
+		if ( $context !== false ) {
 			$id .= '.' . $context;
 		}
 

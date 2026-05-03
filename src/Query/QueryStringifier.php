@@ -111,7 +111,8 @@ class QueryStringifier {
 		}
 
 		foreach ( $query->getExtraPrintouts() as $printout ) {
-			if ( ( $serialisation = $printout->getSerialisation( $showParams ) ) !== '' ) {
+			$serialisation = $printout->getSerialisation( $showParams );
+			if ( $serialisation !== '' ) {
 				$printouts[] = $serialisation;
 			}
 		}

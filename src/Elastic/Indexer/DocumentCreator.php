@@ -127,7 +127,8 @@ class DocumentCreator {
 			'subject' => $this->makeSubject( $subject )
 		];
 
-		if ( ( $rev_id = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
+		$rev_id = $semanticData->getExtensionData( 'revision_id' );
+		if ( $rev_id !== null ) {
 			$data['subject']['rev_id'] = (int)$rev_id;
 		}
 

@@ -140,7 +140,8 @@ class QueryBuilder {
 
 		$form = $this->request->getVal( 'smw-form' );
 
-		if ( ( $data = $this->fetchFieldValues( $form, $data ) ) === [] && trim( $term ) ) {
+		$data = $this->fetchFieldValues( $form, $data );
+		if ( $data === [] && trim( $term ) ) {
 			return $term;
 		}
 

@@ -157,7 +157,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-replacement", $list ) ) !== null ) {
+		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-replacement", $list );
+		if ( $list !== [] && $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -170,7 +171,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-notice", $list ) ) !== null ) {
+		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-notice", $list );
+		if ( $list !== [] && $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -181,7 +183,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-removal", $list ) ) !== null ) {
+		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-removal", $list );
+		if ( $list !== [] && $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -189,7 +192,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	}
 
 	private function mergeList( string $title, array &$list ): ?string {
-		if ( $list === [] || ( $items = implode( '', $list ) ) === '' ) {
+		$items = implode( '', $list );
+		if ( $list === [] || $items === '' ) {
 			return null;
 		}
 

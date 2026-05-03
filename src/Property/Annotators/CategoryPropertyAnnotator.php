@@ -126,7 +126,8 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private function modifySemanticData( SemanticData $semanticData, AnnotationProcessor $annotationProcessor, $subject, Property $property, $catname ): void {
 		$cat = new WikiPage( $catname, NS_CATEGORY );
 
-		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
+		$cat = $this->getRedirectTarget( $cat );
+		if ( $cat && $cat->getNamespace() === NS_CATEGORY ) {
 
 			$dataValue = $annotationProcessor->newDataValueByItem(
 				$cat,

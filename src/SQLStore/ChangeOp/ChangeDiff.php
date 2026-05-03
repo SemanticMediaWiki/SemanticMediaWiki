@@ -229,7 +229,8 @@ class ChangeDiff {
 			$subject->getHash()
 		);
 
-		if ( ( $diff = $cache->fetch( $key ) ) !== false ) {
+		$diff = $cache->fetch( $key );
+		if ( $diff !== false ) {
 			return HmacSerializer::uncompress( $diff );
 		}
 

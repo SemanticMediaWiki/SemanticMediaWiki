@@ -76,8 +76,11 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 		$this->count++;
 		$this->time += microtime( true ) + $time;
 
-		if ( $dataValue instanceof DataValue && ( $contextPage = $dataValue->getContextPage() ) !== null ) {
-			$this->contextPage = $contextPage->asBase()->getSerialization();
+		if ( $dataValue instanceof DataValue ) {
+			$contextPage = $dataValue->getContextPage();
+			if ( $contextPage !== null ) {
+				$this->contextPage = $contextPage->asBase()->getSerialization();
+			}
 		}
 	}
 

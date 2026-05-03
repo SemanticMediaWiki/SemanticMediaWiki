@@ -96,7 +96,8 @@ class PropertyTableHashes {
 		$hash = null;
 		$cache = $this->idCacheManager->get( 'propertytable.hash' );
 
-		if ( ( $hash = $cache->fetch( $id ) ) !== false ) {
+		$hash = $cache->fetch( $id );
+		if ( $hash !== false ) {
 			return $hash;
 		}
 

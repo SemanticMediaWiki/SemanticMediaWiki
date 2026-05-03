@@ -118,7 +118,11 @@ class IdChanger {
 
 		$connection->endAtomicTransaction( __METHOD__ );
 
-		if ( ( $title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $row->smw_title, $row->smw_namespace ) ) !== null ) {
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
+			$row->smw_title,
+			$row->smw_namespace
+		);
+		if ( $title !== null ) {
 			$updateJob = $this->jobFactory->newUpdateJob( $title, [ 'origin' => __METHOD__ ] );
 			$updateJob->insert();
 		}

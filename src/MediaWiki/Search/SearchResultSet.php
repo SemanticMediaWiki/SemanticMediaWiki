@@ -66,7 +66,8 @@ class SearchResultSet extends \SearchResultSet {
 
 		// Attempt to use excerpts available from a different back-end
 		if ( $searchResult && $this->excerpts !== null ) {
-			if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
+			$excerpt = $this->excerpts->getExcerpt( $page );
+			if ( $excerpt !== false ) {
 				$searchResult->setExcerpt( $excerpt, $this->excerpts->hasHighlight() );
 			}
 		}
@@ -89,7 +90,8 @@ class SearchResultSet extends \SearchResultSet {
 		$score = count( $this->pages );
 
 		foreach ( $this->pages as $page ) {
-			if ( ( $title = $page->getTitle() ) !== null ) {
+			$title = $page->getTitle();
+			if ( $title !== null ) {
 				$key = $title->getPrefixedDBKey();
 
 				if ( $title->getNamespace() !== SMW_NS_PROPERTY && !$title->exists() ) {
@@ -136,7 +138,8 @@ class SearchResultSet extends \SearchResultSet {
 
 			// Attempt to use excerpts available from a different back-end
 			if ( $searchResult && $this->excerpts !== null ) {
-				if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
+				$excerpt = $this->excerpts->getExcerpt( $page );
+				if ( $excerpt !== false ) {
 					$searchResult->setExcerpt( $excerpt, $this->excerpts->hasHighlight() );
 				}
 			}

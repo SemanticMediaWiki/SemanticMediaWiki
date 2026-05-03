@@ -248,7 +248,8 @@ class ExtendedSearch {
 		foreach ( $defaultPrefixMap as $key ) {
 			$prefix = "$key:";
 
-			if ( ( $pos = stripos( $search, $prefix ) ) !== false && $pos == 0 ) {
+			$pos = stripos( $search, $prefix );
+			if ( $pos !== false && $pos == 0 ) {
 				return true;
 			}
 		}
@@ -256,7 +257,8 @@ class ExtendedSearch {
 		foreach ( $this->extraPrefixMap as $key ) {
 			$prefix = "$key:";
 
-			if ( ( $pos = stripos( $search, $prefix ) ) !== false && $pos == 0 ) {
+			$pos = stripos( $search, $prefix );
+			if ( $pos !== false && $pos == 0 ) {
 				return true;
 			}
 		}

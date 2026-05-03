@@ -64,25 +64,25 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 */
 	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ): string {
 		$affix = '';
-		$matchableText = $this->getMatchableTextFromDescription(
-			$description
-		);
+		$matchableText = $this->getMatchableTextFromDescription( $description );
 
-		// Any query modifier? Take care of it before any tokenizer or ngrams
-		// distort the marker
-		if (
-			( $pos = strrpos( $matchableText, '&BOL' ) ) !== false ||
-			( $pos = strrpos( $matchableText, '&INL' ) ) !== false ||
-			( $pos = strrpos( $matchableText, '&QEX' ) ) !== false ) {
+		// Any query modifier? Take care of it before any tokenizer or ngrams distort the marker
+		$pos = strrpos( $matchableText, '&BOL' );
+
+		if ( $pos === false ) {
+			$pos = strrpos( $matchableText, '&INL' );
+		}
+
+		if ( $pos === false ) {
+			$pos = strrpos( $matchableText, '&QEX' );
+		}
+
+		if ( $pos !== false ) {
 			$affix = mb_strcut( $matchableText, $pos );
 			$matchableText = str_replace( $affix, '', $matchableText );
 		}
 
-		$value = $this->textSanitizer->sanitize(
-			$matchableText,
-			true
-		);
-
+		$value = $this->textSanitizer->sanitize( $matchableText, true );
 		$value .= $affix;
 
 		// A leading or trailing minus sign indicates that this word must not
@@ -104,11 +104,11 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 			$propertyCondition = 'AND ' . $temporaryTable . 'p_id=' . $this->searchTable->getIdByProperty( $property );
 		}
 
-		$querySearchModifier = $this->getQuerySearchModifier(
-			$value
-		);
+		$querySearchModifier = $this->getQuerySearchModifier( $value );
 
-		return "MATCH($column) AGAINST (" . $this->searchTable->addQuotes( $value ) . " $querySearchModifier) $propertyCondition";
+		return "MATCH($column) AGAINST (" .
+			$this->searchTable->addQuotes( $value ) .
+			" $querySearchModifier) $propertyCondition";
 	}
 
 	/**

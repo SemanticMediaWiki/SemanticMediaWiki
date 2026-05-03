@@ -50,8 +50,11 @@ class CachedListLookup implements ListLookup {
 	public function fetchList(): array {
 		[ $key, $optionsKey ] = $this->getCacheKey( $this->listLookup->getHash() );
 
-		if ( $this->cacheOptions->useCache && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
-			return $result;
+		if ( $this->cacheOptions->useCache ) {
+			$result = $this->tryFetchFromCache( $key, $optionsKey );
+			if ( $result !== null ) {
+				return $result;
+			}
 		}
 
 		$list = $this->listLookup->fetchList();
