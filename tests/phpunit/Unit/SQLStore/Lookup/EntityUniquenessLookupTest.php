@@ -7,6 +7,7 @@ use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\DataItemHandler;
@@ -149,7 +150,7 @@ class EntityUniquenessLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$mappingIterator = $this->getMockBuilder( \SMW\Iterators\MappingIterator::class )
+		$mappingIterator = $this->getMockBuilder( MappingIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 

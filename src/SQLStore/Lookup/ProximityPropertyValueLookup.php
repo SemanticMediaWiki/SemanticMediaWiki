@@ -7,6 +7,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -58,8 +59,7 @@ class ProximityPropertyValueLookup {
 		$pid = $this->store->getObjectIds()->getSMWPropertyID( $property );
 
 		$connection = $this->store->getConnection( 'mw.db' );
-		$qb = $connection->newSelectQueryBuilder()
-			->from( $table );
+		$qb = $connection->newSelectQueryBuilder();
 
 		[ $field, $diType ] = $this->getField( $property );
 
@@ -72,7 +72,8 @@ class ProximityPropertyValueLookup {
 			return $this->fetchFromIDTable( $qb, $pid, $table, $limit, $offset, $search, $sort );
 		}
 
-		$qb->select( $field );
+		$qb->from( $table )
+			->select( $field );
 
 		if ( trim( $search ) !== '' ) {
 			if ( $diType === DataItem::TYPE_BLOB || $diType === DataItem::TYPE_URI ) {
@@ -166,7 +167,8 @@ class ProximityPropertyValueLookup {
 
 		} elseif ( $this->isFixedPropertyTable( $table ) === false ) {
 
-			$qb->andWhere( [ 'p_id' => $pid ] );
+			$qb->from( $table )
+				->andWhere( [ 'p_id' => $pid ] );
 
 			// To make the MySQL query planner happy to pick the right index!
 			$qb->select( 'p_id' );
@@ -182,7 +184,8 @@ class ProximityPropertyValueLookup {
 			 * WHERE ( smw_sortkey LIKE '%foo%' OR smw_sortkey LIKE '%Foo%' OR smw_sortkey LIKE '%FOO%' )
 			 * LIMIT 11
 			 */
-			$qb->join( SQLStore::ID_TABLE, null, 'smw_id=o_id' );
+			$qb->from( $table )
+				->join( SQLStore::ID_TABLE, null, 'smw_id=o_id' );
 		}
 
 		$res = $qb->caller( __METHOD__ )->fetchResultSet();
@@ -219,7 +222,7 @@ class ProximityPropertyValueLookup {
 		return [ $diHandler->getLabelField(), $diType ];
 	}
 
-	private function build_like( SelectQueryBuilder $qb, $connection, string $field, string $search ): void {
+	private function build_like( SelectQueryBuilder $qb, Database $connection, string $field, string $search ): void {
 		$conds = [
 			// @phan-suppress-next-line PhanUselessBinaryAddRight
 			'%' . $search . '%',

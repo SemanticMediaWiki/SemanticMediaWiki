@@ -118,6 +118,106 @@ class ProximityPropertyValueLookupTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Regression: `SelectQueryBuilder::from()` appends to the tables list, unlike
+	 * the legacy `Query::table()` which overwrote it. The wpg + non-empty-search +
+	 * non-fixed-property path must set FROM exactly once on the outer builder
+	 * (SQLStore::ID_TABLE), with the property table appearing only inside the
+	 * subquery. Two `from()` calls on the outer builder would emit a cross join.
+	 */
+	public function testLookup_wpg_property_outerHasSingleFrom(): void {
+		$row = new stdClass;
+		$row->smw_title = 'Test';
+		$row->smw_id = 42;
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnArgument( 0 );
+
+		$outerFromCalls = [];
+
+		// First newSelectQueryBuilder() call returns the outer builder which
+		// captures from() args. Any subsequent connection->newSelectQueryBuilder()
+		// (and any subquery created via $outer->newSubquery()) gets a plain mock
+		// without capture.
+		$builderCount = 0;
+		$throwawayWhereConditions = [];
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback(
+				function () use ( $row, &$outerFromCalls, &$builderCount, &$throwawayWhereConditions ) {
+					if ( $builderCount === 0 ) {
+						$builderCount++;
+						return $this->createCapturingMockSelectQueryBuilder( [ $row ], $outerFromCalls );
+					}
+					$builderCount++;
+					return $this->createMockSelectQueryBuilder( [ $row ], $throwawayWhereConditions );
+				}
+			);
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSMWPropertyID', 'isFixedPropertyTable' ] )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getSMWPropertyID' )
+			->willReturn( 42 );
+
+		$idTable->expects( $this->any() )
+			->method( 'isFixedPropertyTable' )
+			->willReturn( false );
+
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->willReturn( [] );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$store->expects( $this->any() )
+			->method( 'getDataItemHandlerForDIType' )
+			->willReturn( $dataItemHandler );
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new ProximityPropertyValueLookup( $store );
+
+		$instance->lookup(
+			new Property( 'Bar' ),
+			'Foo',
+			new RequestOptions()
+		);
+
+		$this->assertCount(
+			1,
+			$outerFromCalls,
+			'Outer SelectQueryBuilder::from() must be called exactly once; ' .
+			'multiple calls produce a CROSS JOIN.'
+		);
+
+		$this->assertSame(
+			SQLStore::ID_TABLE,
+			$outerFromCalls[0]['table'],
+			'Outer FROM must be SQLStore::ID_TABLE for the wpg+search+non-fixed path.'
+		);
+	}
+
 	public function testLookup_txt_property() {
 		$row = new stdClass;
 		$row->o_hash = 'Test';
@@ -222,6 +322,50 @@ class ProximityPropertyValueLookupTest extends TestCase {
 			}
 		}
 		return $flat;
+	}
+
+	/**
+	 * Variant of createMockSelectQueryBuilder() that also captures from()
+	 * arguments. Used by the cross-join regression test.
+	 */
+	private function createCapturingMockSelectQueryBuilder(
+		array $rows,
+		array &$fromCalls
+	) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'select', 'fields', 'field', 'table',
+			'join', 'leftJoin', 'where', 'andWhere', 'groupBy', 'having',
+			'orderBy', 'caller', 'distinct', 'limit', 'offset', 'options',
+			'option' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'from' )
+			->willReturnCallback( static function ( $table, $alias = null ) use ( $queryBuilder, &$fromCalls ) {
+				$fromCalls[] = [ 'table' => $table, 'alias' => $alias ];
+				return $queryBuilder;
+			} );
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'newSubquery' )
+			->willReturnCallback( function () use ( $rows ) {
+				$throwawayWhere = [];
+				return $this->createMockSelectQueryBuilder( $rows, $throwawayWhere );
+			} );
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( $rows ) );
+
+		return $queryBuilder;
 	}
 
 	/**
