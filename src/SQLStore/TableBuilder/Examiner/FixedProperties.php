@@ -83,18 +83,16 @@ class FixedProperties {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 		$this->messageReporter->reportMessage( "   ... reading `$prop` ...\n" );
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id'
-			],
-			[
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_title' => $prop,
 				'smw_namespace' => SMW_NS_PROPERTY,
 				'smw_subobject' => ''
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false || (int)$row->smw_id == $target_id ) {
 			return $this->messageReporter->reportMessage( "   ... done.\n" );
@@ -105,40 +103,30 @@ class FixedProperties {
 		$this->messageReporter->reportMessage( "   ... moving from $current_id to $target_id ...\n" );
 
 		// Avoid "Error: 1062 Duplicate entry '52' for key 'PRIMARY' ..." before moving
-		$connection->delete(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id' => $target_id
-			],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $target_id ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$this->store->getObjectIds()->moveSMWPageID(
 			$current_id,
 			$target_id
 		);
 
-		$connection->update(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				'o_id' => $target_id
-			],
-			[
-				'o_id' => $current_id
-			],
-			__METHOD__
-		);
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::QUERY_LINKS_TABLE )
+			->set( [ 'o_id' => $target_id ] )
+			->where( [ 'o_id' => $current_id ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$connection->update(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[
-				'p_id' => $target_id
-			],
-			[
-				'p_id' => $current_id
-			],
-			__METHOD__
-		);
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->set( [ 'p_id' => $target_id ] )
+			->where( [ 'p_id' => $current_id ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }
