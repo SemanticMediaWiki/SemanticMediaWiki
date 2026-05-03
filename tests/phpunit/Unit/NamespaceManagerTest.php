@@ -263,6 +263,42 @@ class NamespaceManagerTest extends TestCase {
 		);
 	}
 
+	public function testInitMergesStandardDefaultsWhenUserSetsOnlyCustomNamespaces() {
+		// Simulates a LocalSettings.php that opts a custom namespace into
+		// semantic processing, which causes setupGlobals() to skip seeding
+		// $smwgNamespacesWithSemanticLinks. The standard MW namespace
+		// defaults must still be merged in. (#6726)
+		$customNamespace = 3000;
+
+		$vars = $this->default + [
+			'wgExtraNamespaces'  => '',
+			'wgNamespaceAliases' => '',
+		];
+
+		$vars['smwgNamespacesWithSemanticLinks'] = [
+			$customNamespace => true,
+		];
+
+		$instance = new NamespaceManager( $this->localLanguage );
+		$vars = $instance->init( $vars );
+
+		$this->assertTrue(
+			$vars['smwgNamespacesWithSemanticLinks'][$customNamespace]
+		);
+
+		$this->assertTrue(
+			$vars['smwgNamespacesWithSemanticLinks'][NS_MAIN]
+		);
+
+		$this->assertTrue(
+			$vars['smwgNamespacesWithSemanticLinks'][NS_HELP]
+		);
+
+		$this->assertTrue(
+			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY]
+		);
+	}
+
 	public function testInitCustomNamespace_NamespaceAliases() {
 		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
