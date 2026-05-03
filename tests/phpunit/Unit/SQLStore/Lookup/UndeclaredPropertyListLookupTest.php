@@ -11,6 +11,8 @@ use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use stdClass;
+use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
@@ -137,8 +139,8 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -193,8 +195,8 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -244,7 +246,7 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->never() )
-			->method( 'select' );
+			->method( 'newSelectQueryBuilder' );
 
 		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
@@ -273,6 +275,31 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 		$this->assertEmpty(
 			$result
 		);
+	}
+
+	/**
+	 * Creates a mock SelectQueryBuilder where all chained methods return $this
+	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
+	 */
+	private function createMockSelectQueryBuilder( array $rows ) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'select', 'from', 'join', 'where', 'groupBy', 'orderBy',
+			'limit', 'offset', 'distinct', 'caller' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( $rows ) );
+
+		return $queryBuilder;
 	}
 
 }

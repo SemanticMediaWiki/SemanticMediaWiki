@@ -62,32 +62,22 @@ class MissingRedirectLookup {
 	private function fetchFromTable( array $namespaces ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$options = [
-			'ORDER BY' => 'page_namespace,page_title'
-		];
-
-		if ( $this->nosort ) {
-			unset( $options['ORDER BY'] );
-		}
-
-		$rows = $connection->select(
-			[ 'page', RedirectStore::TABLE_NAME ],
-			[ 'page_id', 'page_title', 'page_namespace' ],
-			[
+		$queryBuilder = $connection->newSelectQueryBuilder()
+			->select( [ 'page_id', 'page_title', 'page_namespace' ] )
+			->from( 'page' )
+			->leftJoin( RedirectStore::TABLE_NAME, null, [ 's_title=page_title', 's_namespace=page_namespace' ] )
+			->where( [
 				'page_is_redirect' => 1,
 				'page_namespace' => $namespaces,
 				's_title IS NULL'
-			],
-			__METHOD__,
-			$options,
-			[
-				RedirectStore::TABLE_NAME => [
-					'LEFT JOIN', [ "s_title=page_title", "s_namespace=page_namespace" ]
-				]
-			]
-		);
+			] )
+			->caller( __METHOD__ );
 
-		return $rows;
+		if ( !$this->nosort ) {
+			$queryBuilder->orderBy( 'page_namespace,page_title' );
+		}
+
+		return $queryBuilder->fetchResultSet();
 	}
 
 }

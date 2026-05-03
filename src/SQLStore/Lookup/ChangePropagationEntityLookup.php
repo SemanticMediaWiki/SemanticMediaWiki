@@ -147,16 +147,16 @@ class ChangePropagationEntityLookup {
 		foreach ( $dataItemTables as $tableName ) {
 
 			// Select any references that are hidden or remained active
-			$rows = $connection->select(
-				$tableName,
-				[
+			$rows = $connection->newSelectQueryBuilder()
+				->select( [
 					's_id'
-				],
-				[
+				] )
+				->from( $tableName )
+				->where( [
 					'p_id' => $pid
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 
 			foreach ( $rows as $row ) {
 				$idList[] = $row->s_id;

@@ -106,20 +106,28 @@ class UndeclaredPropertyListLookup implements ListLookup {
 			}
 		}
 
-		$res = $this->store->getConnection( 'mw.db' )->select(
-			[ $idTable, $propertyTable->getName() ],
-			[ 'smw_id', 'smw_title', 'COUNT(*) as count' ],
-			$conditions,
-			__METHOD__,
-			$options,
-			[
-				$idTable => [
-					'INNER JOIN', "$joinCond=smw_id"
-				]
-			]
-		);
+		$queryBuilder = $this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title', 'COUNT(*) as count' ] )
+			->from( $propertyTable->getName() )
+			->join( $idTable, null, "$joinCond=smw_id" )
+			->where( $conditions )
+			->groupBy( $options['GROUP BY'] )
+			->orderBy( $options['ORDER BY'] )
+			->caller( __METHOD__ );
 
-		return $res;
+		if ( isset( $options['LIMIT'] ) ) {
+			$queryBuilder->limit( $options['LIMIT'] );
+		}
+
+		if ( isset( $options['OFFSET'] ) ) {
+			$queryBuilder->offset( $options['OFFSET'] );
+		}
+
+		if ( !empty( $options['DISTINCT'] ) ) {
+			$queryBuilder->distinct();
+		}
+
+		return $queryBuilder->fetchResultSet();
 	}
 
 	/**

@@ -258,19 +258,11 @@ class PropertyLabelSimilarityLookup {
 	private function getPropertyList( ?RequestOptions $requestOptions = null ): array {
 		$propertyList = [];
 
-		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = [ 'ORDER BY' => 'smw_sort' ];
-
 		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
 			'smw_subobject' => ''
 		];
-
-		if ( $requestOptions !== null && $requestOptions->getLimit() > 0 ) {
-			$options['LIMIT'] = $requestOptions->getLimit();
-			$options['OFFSET'] = max( $requestOptions->getOffset(), 0 );
-		}
 
 		if ( $requestOptions !== null && $requestOptions->getStringConditions() ) {
 			$conditions[] = $this->store->getSQLConditions( $requestOptions, '', 'smw_sortkey', false );
@@ -278,13 +270,20 @@ class PropertyLabelSimilarityLookup {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[ 'smw_id', 'smw_title' ],
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		// the query needs to do the filtering of internal properties, else LIMIT is wrong
+		$queryBuilder = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->orderBy( 'smw_sort' )
+			->caller( __METHOD__ );
+
+		if ( $requestOptions !== null && $requestOptions->getLimit() > 0 ) {
+			$queryBuilder->limit( $requestOptions->getLimit() );
+			$queryBuilder->offset( max( $requestOptions->getOffset(), 0 ) );
+		}
+
+		$res = $queryBuilder->fetchResultSet();
 
 		foreach ( $res as $row ) {
 

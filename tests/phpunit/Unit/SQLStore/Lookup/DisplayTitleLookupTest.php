@@ -9,6 +9,8 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\DisplayTitleLookup
@@ -67,19 +69,17 @@ class DisplayTitleLookupTest extends TestCase {
 			->method( 'unescape_bytea' )
 			->willReturnArgument( 0 );
 
+		$idTableRows = [
+			(object)[ 'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', 'smw_id' => 42 ],
+			(object)[ 'smw_hash' => '7b6b944694382bfab461675f40a2bda7e71e68e3', 'smw_id' => 1001 ]
+		];
+
 		$connection->expects( $this->exactly( 2 ) )
-			->method( 'select' )
-			->willReturnCallback( static function ( $table ) use ( $rows ) {
-				if ( $table === 'smw_object_ids' ) {
-					return [
-						(object)[ 'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', 'smw_id' => 42 ],
-						(object)[ 'smw_hash' => '7b6b944694382bfab461675f40a2bda7e71e68e3', 'smw_id' => 1001 ]
-					];
-				} elseif ( $table === 'foo_table' ) {
-					return $rows;
-				}
-				return [];
-			} );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnOnConsecutiveCalls(
+				$this->createMockSelectQueryBuilder( $idTableRows ),
+				$this->createMockSelectQueryBuilder( $rows )
+			);
 
 		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -121,6 +121,30 @@ class DisplayTitleLookupTest extends TestCase {
 			],
 			$instance->prefetchFromList( $list )
 		);
+	}
+
+	/**
+	 * Creates a mock SelectQueryBuilder where all chained methods return $this
+	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
+	 */
+	private function createMockSelectQueryBuilder( array $rows ) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'select', 'from', 'where', 'caller' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( $rows ) );
+
+		return $queryBuilder;
 	}
 
 }

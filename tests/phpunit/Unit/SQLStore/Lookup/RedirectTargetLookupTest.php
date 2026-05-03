@@ -9,6 +9,8 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\RedirectTargetLookup
@@ -62,8 +64,8 @@ class RedirectTargetLookupTest extends TestCase {
 		];
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( $rows ) );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
@@ -97,8 +99,8 @@ class RedirectTargetLookupTest extends TestCase {
 		];
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( $rows ) );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
@@ -149,6 +151,30 @@ class RedirectTargetLookupTest extends TestCase {
 			WikiPage::class,
 			$instance->findRedirectSource( $target, $flag )
 		);
+	}
+
+	/**
+	 * Creates a mock SelectQueryBuilder where all chained methods return $this
+	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
+	 */
+	private function createMockSelectQueryBuilder( array $rows ) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'select', 'from', 'where', 'caller' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( $rows ) );
+
+		return $queryBuilder;
 	}
 
 }

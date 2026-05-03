@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MissingRedirectLookup
@@ -34,37 +36,48 @@ class MissingRedirectLookupTest extends TestCase {
 	}
 
 	public function testFindMissingRedirects() {
-		$tables = [
-			'page',
-			'smw_fpt_redi'
-		];
+		$queryBuilder = $this->createMockSelectQueryBuilder( [] );
 
-		$fields = [
-			'page_id',
-			'page_title',
-			'page_namespace'
-		];
+		$queryBuilder->expects( $this->once() )
+			->method( 'select' )
+			->with( [ 'page_id', 'page_title', 'page_namespace' ] )
+			->willReturnSelf();
 
-		$conditions = [
-			// Required for the LEFT JOIN to find all rows that don't exist
-			// in the redirect table
-			's_title IS NULL',
-			'page_is_redirect' => 1,
+		$queryBuilder->expects( $this->once() )
+			->method( 'from' )
+			->with( 'page' )
+			->willReturnSelf();
 
-			// @see difference to `NamespaceMatrix`
-			'page_namespace' => [ NS_MAIN, SMW_NS_PROPERTY ]
-		];
+		$queryBuilder->expects( $this->once() )
+			->method( 'leftJoin' )
+			->with(
+				'smw_fpt_redi',
+				null,
+				[ 's_title=page_title', 's_namespace=page_namespace' ]
+			)
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'where' )
+			->with( [
+				'page_is_redirect' => 1,
+				'page_namespace' => [ NS_MAIN, SMW_NS_PROPERTY ],
+				's_title IS NULL'
+			] )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'orderBy' )
+			->with( 'page_namespace,page_title' )
+			->willReturnSelf();
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$tables,
-				$fields,
-				$conditions );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -83,6 +96,26 @@ class MissingRedirectLookupTest extends TestCase {
 		);
 
 		$instance->findMissingRedirects();
+	}
+
+	/**
+	 * Creates a mock SelectQueryBuilder where common chained methods return $this
+	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
+	 */
+	private function createMockSelectQueryBuilder( array $rows ) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'caller' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( $rows ) );
+
+		return $queryBuilder;
 	}
 
 }
