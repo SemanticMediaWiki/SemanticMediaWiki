@@ -10,6 +10,7 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UsageStatisticsListLookup
@@ -71,8 +72,8 @@ class UsageStatisticsListLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
@@ -140,8 +141,8 @@ class UsageStatisticsListLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -182,6 +183,36 @@ class UsageStatisticsListLookupTest extends TestCase {
 		);
 
 		return $instance->fetchList();
+	}
+
+	/**
+	 * Creates a mock SelectQueryBuilder where all chained methods return $this,
+	 * fetchResultSet() returns the given rows wrapped in FakeResultWrapper, and
+	 * fetchRow() returns the first row (or false if empty).
+	 */
+	private function createMockSelectQueryBuilder( array $rows ) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'select', 'from', 'join', 'where', 'groupBy',
+			'orderBy', 'caller' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( $rows ) );
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchRow' )
+			->willReturn( $rows[0] ?? false );
+
+		return $queryBuilder;
 	}
 
 }
