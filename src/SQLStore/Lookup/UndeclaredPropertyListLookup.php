@@ -9,6 +9,7 @@ use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Lookup\ListLookup;
+use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -111,21 +112,9 @@ class UndeclaredPropertyListLookup implements ListLookup {
 			->from( $propertyTable->getName() )
 			->join( $idTable, null, "$joinCond=smw_id" )
 			->where( $conditions )
-			->groupBy( $options['GROUP BY'] )
-			->orderBy( $options['ORDER BY'] )
 			->caller( __METHOD__ );
 
-		if ( isset( $options['LIMIT'] ) ) {
-			$queryBuilder->limit( $options['LIMIT'] );
-		}
-
-		if ( isset( $options['OFFSET'] ) ) {
-			$queryBuilder->offset( $options['OFFSET'] );
-		}
-
-		if ( !empty( $options['DISTINCT'] ) ) {
-			$queryBuilder->distinct();
-		}
+		LegacyOptionsApplier::applyTo( $queryBuilder, $options );
 
 		return $queryBuilder->fetchResultSet();
 	}
