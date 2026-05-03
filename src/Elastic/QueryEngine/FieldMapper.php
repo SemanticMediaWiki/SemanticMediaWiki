@@ -77,7 +77,9 @@ class FieldMapper {
 	 * @return bool
 	 */
 	public static function isPhrase( $value = '' ): bool {
-		return $value[0] === '"' && substr( $value, -1 ) === '"';
+		return $value !== ''
+			&& $value[0] === '"'
+			&& substr( $value, -1 ) === '"';
 	}
 
 	/**
