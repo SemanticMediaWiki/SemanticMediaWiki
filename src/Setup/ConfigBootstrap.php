@@ -23,6 +23,8 @@ class ConfigBootstrap {
 	 */
 	public static function seedComputedDefaults(): void {
 		// Filled in PR 2 (SMW feature-flag constants) and PR 4 (class constants).
+		// Writes directly to $GLOBALS using provide-default semantics
+		// (only sets keys that aren't already user-defined).
 	}
 
 }
