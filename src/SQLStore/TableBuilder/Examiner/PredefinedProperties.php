@@ -78,18 +78,16 @@ class PredefinedProperties {
 
 		// Try to find the ID for a non-fixed predefined property
 		if ( $id === null ) {
-			$row = $connection->selectRow(
-				SQLStore::ID_TABLE,
-				[
-					'smw_id'
-				],
-				[
+			$row = $connection->newSelectQueryBuilder()
+				->select( [ 'smw_id' ] )
+				->from( SQLStore::ID_TABLE )
+				->where( [
 					'smw_title' => $property->getKey(),
 					'smw_namespace' => SMW_NS_PROPERTY,
 					'smw_subobject' => ''
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->fetchRow();
 
 			if ( $row !== false ) {
 				$id = $row->smw_id;
@@ -106,19 +104,17 @@ class PredefinedProperties {
 			$property
 		);
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			[
+		$row = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_proptable_hash',
 				'smw_hash',
 				'smw_rev',
 				'smw_touched'
-			],
-			[
-				'smw_id' => $id
-			],
-			__METHOD__
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false ) {
 			$row = (object)[
@@ -129,10 +125,10 @@ class PredefinedProperties {
 			];
 		}
 
-		$connection->replace(
-			SQLStore::ID_TABLE,
-			'smw_id',
-			[
+		$connection->newReplaceQueryBuilder()
+			->replaceInto( SQLStore::ID_TABLE )
+			->uniqueIndexFields( [ 'smw_id' ] )
+			->row( [
 				'smw_id' => $id,
 				'smw_title' => $property->getKey(),
 				'smw_namespace' => SMW_NS_PROPERTY,
@@ -144,20 +140,20 @@ class PredefinedProperties {
 				'smw_hash' => $row->smw_hash,
 				'smw_rev' => $row->smw_rev,
 				'smw_touched' => $row->smw_touched
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		if ( $id === null ) {
 			return;
 		}
 
-		$row = $connection->selectRow(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[ 'p_id' ],
-			[ 'p_id' => $id ],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'p_id' ] )
+			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->where( [ 'p_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		// Entry is available therefore don't try to override the count
 		// value
@@ -165,15 +161,15 @@ class PredefinedProperties {
 			return;
 		}
 
-		$connection->insert(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[
+		$connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->row( [
 				'p_id' => $id,
 				'usage_count' => 0,
 				'null_count' => 0
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }

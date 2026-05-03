@@ -8,6 +8,8 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\FixedProperties
@@ -19,6 +21,9 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class FixedPropertiesTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $spyMessageReporter;
 	private $store;
@@ -49,11 +54,43 @@ class FixedPropertiesTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$selectBuilderFoo = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'smw_id' => 99999 ] ]
+		);
+		$selectBuilderBar = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'smw_id' => 11111 ] ]
+		);
+
+		$capturedDeleteTables = [];
+		$capturedDeleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedDeleteTables,
+			$capturedDeleteWheres
+		);
+
+		$capturedUpdateTables = [];
+		$capturedUpdateSets = [];
+		$capturedUpdateWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedUpdateTables,
+			$capturedUpdateSets,
+			$capturedUpdateWheres
+		);
+
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
+			->method( 'newSelectQueryBuilder' )
 			->willReturnOnConsecutiveCalls(
-				(object)[ 'smw_id' => 99999 ],
-				(object)[ 'smw_id' => 11111 ] );
+				$selectBuilderFoo,
+				$selectBuilderBar
+			);
+
+		$this->connection->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -72,6 +109,46 @@ class FixedPropertiesTest extends TestCase {
 		$instance->setProperties( [ '_FOO', '_BAR' ] );
 
 		$instance->check();
+
+		$this->assertSame(
+			[ SQLStore::ID_TABLE, SQLStore::ID_TABLE ],
+			$capturedDeleteTables
+		);
+
+		$this->assertSame(
+			[ [ 'smw_id' => 51 ], [ 'smw_id' => 52 ] ],
+			$capturedDeleteWheres
+		);
+
+		$this->assertSame(
+			[
+				SQLStore::QUERY_LINKS_TABLE,
+				SQLStore::PROPERTY_STATISTICS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
+				SQLStore::PROPERTY_STATISTICS_TABLE,
+			],
+			$capturedUpdateTables
+		);
+
+		$this->assertSame(
+			[
+				[ 'o_id' => 51 ],
+				[ 'p_id' => 51 ],
+				[ 'o_id' => 52 ],
+				[ 'p_id' => 52 ],
+			],
+			$capturedUpdateSets
+		);
+
+		$this->assertSame(
+			[
+				[ 'o_id' => 99999 ],
+				[ 'p_id' => 99999 ],
+				[ 'o_id' => 11111 ],
+				[ 'p_id' => 11111 ],
+			],
+			$capturedUpdateWheres
+		);
 
 		$expected = $this->spyMessageReporter->getMessagesAsString();
 

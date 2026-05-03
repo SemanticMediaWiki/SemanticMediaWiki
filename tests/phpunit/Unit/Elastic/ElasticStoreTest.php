@@ -122,6 +122,26 @@ class ElasticStoreTest extends TestCase {
 			->method( 'selectRow' )
 			->willReturn( $row );
 
+		$database->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+
+		$database->expects( $this->any() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockInsertQueryBuilder() );
+
+		$database->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
+
+		$database->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockDeleteQueryBuilder() );
+
+		$database->expects( $this->any() )
+			->method( 'newReplaceQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockReplaceQueryBuilder() );
+
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
