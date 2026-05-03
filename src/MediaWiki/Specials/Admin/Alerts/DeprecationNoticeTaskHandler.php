@@ -158,7 +158,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		}
 
 		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-replacement", $list );
-		if ( $list !== [] && $mList !== null ) {
+		if ( $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -172,7 +172,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		}
 
 		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-notice", $list );
-		if ( $list !== [] && $mList !== null ) {
+		if ( $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -184,7 +184,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		}
 
 		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-removal", $list );
-		if ( $list !== [] && $mList !== null ) {
+		if ( $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
