@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MissingRedirectLookup
@@ -17,6 +18,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class MissingRedirectLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 
@@ -34,37 +37,48 @@ class MissingRedirectLookupTest extends TestCase {
 	}
 
 	public function testFindMissingRedirects() {
-		$tables = [
-			'page',
-			'smw_fpt_redi'
-		];
+		$queryBuilder = $this->createMockSelectQueryBuilder( [] );
 
-		$fields = [
-			'page_id',
-			'page_title',
-			'page_namespace'
-		];
+		$queryBuilder->expects( $this->once() )
+			->method( 'select' )
+			->with( [ 'page_id', 'page_title', 'page_namespace' ] )
+			->willReturnSelf();
 
-		$conditions = [
-			// Required for the LEFT JOIN to find all rows that don't exist
-			// in the redirect table
-			's_title IS NULL',
-			'page_is_redirect' => 1,
+		$queryBuilder->expects( $this->once() )
+			->method( 'from' )
+			->with( 'page' )
+			->willReturnSelf();
 
-			// @see difference to `NamespaceMatrix`
-			'page_namespace' => [ NS_MAIN, SMW_NS_PROPERTY ]
-		];
+		$queryBuilder->expects( $this->once() )
+			->method( 'leftJoin' )
+			->with(
+				'smw_fpt_redi',
+				null,
+				[ 's_title=page_title', 's_namespace=page_namespace' ]
+			)
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'where' )
+			->with( [
+				'page_is_redirect' => 1,
+				'page_namespace' => [ NS_MAIN, SMW_NS_PROPERTY ],
+				's_title IS NULL'
+			] )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'orderBy' )
+			->with( 'page_namespace,page_title' )
+			->willReturnSelf();
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$tables,
-				$fields,
-				$conditions );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )

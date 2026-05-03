@@ -7,6 +7,7 @@ use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DataItems\WikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use stdClass;
@@ -131,19 +132,18 @@ class PropertyTableIdReferenceDisposer {
 		if ( $requestOptions !== null ) {
 			$options = [
 				'LIMIT'  => $requestOptions->getLimit(),
-				'OFFSET' => $requestOptions->getOffset()
+				'OFFSET' => $requestOptions->getOffset(),
 			];
 		}
 
-		$res = $this->connection->select(
-			SQLStore::ID_TABLE,
-			[ 'smw_id' ],
-			[ 'smw_iw' => SMW_SQL3_SMWDELETEIW ],
-			__METHOD__,
-			$options
-		);
+		$qb = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_iw' => SMW_SQL3_SMWDELETEIW ] );
 
-		return new ResultIterator( $res );
+		LegacyOptionsApplier::applyTo( $qb, $options );
+
+		return new ResultIterator( $qb->caller( __METHOD__ )->fetchResultSet() );
 	}
 
 	/**
@@ -159,21 +159,18 @@ class PropertyTableIdReferenceDisposer {
 		if ( $requestOptions !== null ) {
 			$options = [
 				'LIMIT'  => $requestOptions->getLimit(),
-				'OFFSET' => $requestOptions->getOffset()
+				'OFFSET' => $requestOptions->getOffset(),
 			];
 		}
 
-		$res = $this->connection->select(
-			SQLStore::ID_TABLE,
-			[ 'smw_id' ],
-			[
-				'smw_namespace NOT IN (' . $this->connection->makeList( array_keys( $this->namespacesWithSemanticLinks ) ) . ')'
-			],
-			__METHOD__,
-			$options
-		);
+		$qb = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( 'smw_namespace NOT IN (' . $this->connection->makeList( array_keys( $this->namespacesWithSemanticLinks ) ) . ')' );
 
-		return new ResultIterator( $res );
+		LegacyOptionsApplier::applyTo( $qb, $options );
+
+		return new ResultIterator( $qb->caller( __METHOD__ )->fetchResultSet() );
 	}
 
 	/**
@@ -229,30 +226,30 @@ class PropertyTableIdReferenceDisposer {
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			if ( $proptable->usesIdSubject() ) {
-				$this->connection->delete(
-					$proptable->getName(),
-					[ 's_id' => $id ],
-					__METHOD__
-				);
+				$this->connection->newDeleteQueryBuilder()
+					->deleteFrom( $proptable->getName() )
+					->where( [ 's_id' => $id ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
 
 			if ( !$proptable->isFixedPropertyTable() ) {
-				$this->connection->delete(
-					$proptable->getName(),
-					[ 'p_id' => $id ],
-					__METHOD__
-				);
+				$this->connection->newDeleteQueryBuilder()
+					->deleteFrom( $proptable->getName() )
+					->where( [ 'p_id' => $id ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
 
 			$fields = $proptable->getFields( $this->store );
 
 			// Match tables (including ftp_redi) that contain an object reference
 			if ( isset( $fields['o_id'] ) ) {
-				$this->connection->delete(
-					$proptable->getName(),
-					[ 'o_id' => $id ],
-					__METHOD__
-				);
+				$this->connection->newDeleteQueryBuilder()
+					->deleteFrom( $proptable->getName() )
+					->where( [ 'o_id' => $id ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
 		}
 
@@ -270,36 +267,36 @@ class PropertyTableIdReferenceDisposer {
 	private function cleanUpSecondaryReferencesById( $id, bool $isRedirect ): void {
 		// When marked as redirect, don't remove the reference
 		if ( !$isRedirect || $this->redirectRemoval ) {
-			$this->connection->delete(
-				SQLStore::ID_TABLE,
-				[ 'smw_id' => $id ],
-				__METHOD__
-			);
+			$this->connection->newDeleteQueryBuilder()
+				->deleteFrom( SQLStore::ID_TABLE )
+				->where( [ 'smw_id' => $id ] )
+				->caller( __METHOD__ )
+				->execute();
 		}
 
-		$this->connection->delete(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[ 'smw_id' => $id ],
-			__METHOD__
-		);
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::ID_AUXILIARY_TABLE )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$this->connection->delete(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[ 'p_id' => $id ],
-			__METHOD__
-		);
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->where( [ 'p_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$this->connection->delete(
-			SQLStore::QUERY_LINKS_TABLE,
-			[ 's_id' => $id ],
-			__METHOD__
-		);
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$this->connection->delete(
-			SQLStore::QUERY_LINKS_TABLE,
-			[ 'o_id' => $id ],
-			__METHOD__
-		);
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 'o_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$tableExists = false;
 
@@ -314,7 +311,11 @@ class PropertyTableIdReferenceDisposer {
 		}
 
 		if ( $tableExists ) {
-			$this->connection->delete( SQLStore::FT_SEARCH_TABLE, [ 's_id' => $id ], __METHOD__ );
+			$this->connection->newDeleteQueryBuilder()
+				->deleteFrom( SQLStore::FT_SEARCH_TABLE )
+				->where( [ 's_id' => $id ] )
+				->caller( __METHOD__ )
+				->execute();
 		}
 	}
 

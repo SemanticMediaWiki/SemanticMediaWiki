@@ -108,26 +108,26 @@ class SubobjectListFinder {
 		}
 
 		$conditions = [
-			'smw_title=' . $connection->addQuotes( $key ),
-			'smw_namespace=' . $connection->addQuotes( $subject->getNamespace() ),
-			'smw_iw=' . $connection->addQuotes( $subject->getInterwiki() ),
-			'smw_subobject!=' . $connection->addQuotes( '' )
+			'smw_title' => $key,
+			'smw_namespace' => $subject->getNamespace(),
+			'smw_iw' => $subject->getInterwiki(),
+			$connection->expr( 'smw_subobject', '!=', '' ),
 		];
 
 		foreach ( $this->skipConditions as $skipOn ) {
-			$conditions[] = 'smw_subobject!=' . $connection->addQuotes( $skipOn );
+			$conditions[] = $connection->expr( 'smw_subobject', '!=', $skipOn );
 		}
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		$res = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_subobject',
 				'smw_sortkey'
-			],
-			implode( ' AND ', $conditions ),
-			__METHOD__
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->iteratorFactory->newResultIterator( $res );
 	}

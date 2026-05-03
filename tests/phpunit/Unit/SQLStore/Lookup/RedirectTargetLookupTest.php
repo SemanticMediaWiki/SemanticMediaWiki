@@ -9,6 +9,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\RedirectTargetLookup
@@ -20,6 +21,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class RedirectTargetLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $idCacheManager;
@@ -62,8 +65,8 @@ class RedirectTargetLookupTest extends TestCase {
 		];
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( $rows ) );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
@@ -97,8 +100,8 @@ class RedirectTargetLookupTest extends TestCase {
 		];
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( $rows ) );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )

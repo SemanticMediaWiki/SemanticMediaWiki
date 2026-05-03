@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\PropertyTable\PropertyTableHashes
@@ -18,6 +20,9 @@ use SMW\SQLStore\PropertyTable\PropertyTableHashes;
  * @author mwjames
  */
 class PropertyTableHashesTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $connection;
 	private $idCacheManager;
@@ -52,20 +57,12 @@ class PropertyTableHashesTest extends TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$rows = [
-			'smw_proptable_hash' => 'a:1:{i:0;s:3:"foo";}'
-		];
-
-		$expected = [
-			'smw_id' => 42
-		];
+		$updateTables = $updateSets = $updateWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder( $updateTables, $updateSets, $updateWheres );
 
 		$this->connection->expects( $this->once() )
-			->method( 'update' )
-			->with(
-				$this->anything(),
-				$rows,
-				$expected );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$instance = new PropertyTableHashes(
 			$this->connection,
@@ -73,6 +70,10 @@ class PropertyTableHashesTest extends TestCase {
 		);
 
 		$instance->setPropertyTableHashes( 42, [ 'foo' ] );
+
+		$this->assertSame( [ 'smw_object_ids' ], $updateTables );
+		$this->assertSame( [ [ 'smw_proptable_hash' => 'a:1:{i:0;s:3:"foo";}' ] ], $updateSets );
+		$this->assertSame( [ [ 'smw_id' => 42 ] ], $updateWheres );
 	}
 
 	public function testGetPropertyTableHashes() {
@@ -87,14 +88,6 @@ class PropertyTableHashesTest extends TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$fields = [
-			'smw_proptable_hash'
-		];
-
-		$expected = [
-			'smw_id' => 42
-		];
-
 		$row = [
 			'smw_proptable_hash' => 'a:1:{i:0;s:3:"foo";}'
 		];
@@ -103,13 +96,12 @@ class PropertyTableHashesTest extends TestCase {
 			->method( 'unescape_bytea' )
 			->willReturnArgument( 0 );
 
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ], $whereConditions );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$fields,
-				$expected )
-			->willReturn( (object)$row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new PropertyTableHashes(
 			$this->connection,
@@ -120,6 +112,8 @@ class PropertyTableHashesTest extends TestCase {
 			[ 'foo' ],
 			$instance->getPropertyTableHashesById( 42 )
 		);
+
+		$this->assertContains( [ 'smw_id' => 42 ], $whereConditions );
 	}
 
 	public function testSetPropertyTableHashesCache() {
