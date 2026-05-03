@@ -76,9 +76,9 @@ class Query implements QueryContext {
 	 */
 	const SCORE_SORT = 'score.sort';
 
-	public $sort = false;
-	public $sortkeys = []; // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
-	public $querymode = self::MODE_INSTANCES;
+	public bool $sort = false;
+	public array $sortkeys = []; // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
+	public int $querymode = self::MODE_INSTANCES;
 
 	private $limit;
 	private $offset = 0;
@@ -150,10 +150,8 @@ class Query implements QueryContext {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $queryMode
 	 */
-	public function setQueryMode( $queryMode ): void {
+	public function setQueryMode( int $queryMode ): void {
 		// FIXME 3.0; $this->querymode is a public property
 		// declare it private and rename it to $this->queryMode
 		$this->querymode = $queryMode;
