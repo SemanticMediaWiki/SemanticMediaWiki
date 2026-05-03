@@ -8,14 +8,14 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\EntityUniquenessLookup
@@ -132,31 +132,9 @@ class EntityUniquenessLookupTest extends TestCase {
 			->method( 'getLimit' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnArgument( 0 );
-
-		$connection->expects( $this->any() )
-			->method( 'tableName' )
-			->willReturnArgument( 0 );
-
-		$query = new Query( $connection );
-
-		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'newQuery' )
-			->willReturn( $query );
-
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
-			->willReturn( $resultWrapper );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [] ) );
 
 		$instance = new EntityUniquenessLookup(
 			$store,
@@ -171,17 +149,42 @@ class EntityUniquenessLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance->checkConstraint( $property, $dataItem, $requestOptions );
+		$mappingIterator = $this->getMockBuilder( \SMW\Iterators\MappingIterator::class )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$this->assertJsonStringEqualsJsonString(
-			'{' .
-			'"tables": "smw_foo AS t1",' .
-			'"fields":[["t1.s_id"]],' .
-			'"conditions":[{"AND":["t1.o_hash="]}],' .
-			'"joins":[],' .
-			'"options":{"LIMIT":42},"alias":"t","index":1,"autocommit":false}',
-			(string)$query
-		);
+		$this->iteratorFactory->expects( $this->any() )
+			->method( 'newMappingIterator' )
+			->willReturn( $mappingIterator );
+
+		$result = $instance->checkConstraint( $property, $dataItem, $requestOptions );
+
+		$this->assertSame( $mappingIterator, $result );
+	}
+
+	/**
+	 * Creates a mock SelectQueryBuilder where chained methods return $this
+	 * and fetchResultSet() returns the given rows wrapped in FakeResultWrapper.
+	 */
+	private function createMockSelectQueryBuilder( array $rows ) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'select', 'from', 'join', 'leftJoin', 'where',
+			'andWhere', 'limit', 'caller' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( $rows ) );
+
+		return $queryBuilder;
 	}
 
 }
