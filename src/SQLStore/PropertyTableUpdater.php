@@ -173,11 +173,11 @@ class PropertyTableUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$tableName = $propertyTable->getName();
 
-		$connection->insert(
-			$tableName,
-			$rows,
-			__METHOD__ . "-$tableName"
-		);
+		$connection->newInsertQueryBuilder()
+			->insertInto( $tableName )
+			->rows( $rows )
+			->caller( __METHOD__ . "-$tableName" )
+			->execute();
 	}
 
 	private function delete( PropertyTableDefinition $propertyTable, array $rows ): void {
@@ -215,11 +215,11 @@ class PropertyTableUpdater {
 
 		$condition = "s_id=" . $connection->addQuotes( $sid ) . " AND ($condition)";
 
-		$connection->delete(
-			$tableName,
-			[ $condition ],
-			__METHOD__ . "-$tableName"
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( $tableName )
+			->where( $condition )
+			->caller( __METHOD__ . "-$tableName" )
+			->execute();
 	}
 
 	private function aggregate_ids( array &$ids, $propertyTable, $rows ): void {
@@ -261,16 +261,12 @@ class PropertyTableUpdater {
 		// onTransctionIdle( ... ) to avoid locking the rows for succeeding
 		// updates?
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
-				'smw_touched' => $touched
-			],
-			[
-				'smw_id' => $ids
-			],
-			__METHOD__
-		);
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [ 'smw_touched' => $touched ] )
+			->where( [ 'smw_id' => $ids ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }
