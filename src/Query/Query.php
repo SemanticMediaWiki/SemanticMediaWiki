@@ -150,8 +150,6 @@ class Query implements QueryContext {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $queryMode
 	 */
 	public function setQueryMode( int $queryMode ): void {
 		// FIXME 3.0; $this->querymode is a public property
