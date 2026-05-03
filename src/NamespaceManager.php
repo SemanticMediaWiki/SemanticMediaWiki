@@ -237,18 +237,17 @@ class NamespaceManager {
 			SMW_NS_SCHEMA_TALK => false,
 		];
 
-		// When the CanonicalNamespaces hook fires before src/DefaultSettings.php
-		// has been applied, smwgNamespacesWithSemanticLinks may be empty.
-		// Load the defaults from src/DefaultSettings.php to ensure standard MW
-		// namespaces (NS_MAIN, NS_USER, etc.) are preserved. (#6302)
-		if ( $vars['smwgNamespacesWithSemanticLinks'] === [] ) {
-			$defaults = SemanticMediaWiki::getDefaultSettings();
-			$vars['smwgNamespacesWithSemanticLinks'] = $defaults['smwgNamespacesWithSemanticLinks'];
-		}
+		// Always merge in the standard MW namespace defaults from
+		// src/DefaultSettings.php. Without this, a LocalSettings.php that
+		// only sets entries for custom namespaces — e.g.
+		// `$smwgNamespacesWithSemanticLinks[NS_AUTHORITY] = true;` — would
+		// leave NS_MAIN, NS_USER, etc. unset because `setupGlobals()` skips
+		// any global already touched by the user. User-set keys still win
+		// via `array_replace`'s right-most precedence. (#6302, #6726)
+		$defaults = SemanticMediaWiki::getDefaultSettings();
 
-		// Combine default values with values specified in other places
-		// (LocalSettings etc.)
 		$vars['smwgNamespacesWithSemanticLinks'] = array_replace(
+			$defaults['smwgNamespacesWithSemanticLinks'],
 			$smwNamespacesSettings,
 			$vars['smwgNamespacesWithSemanticLinks']
 		);
