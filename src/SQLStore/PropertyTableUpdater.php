@@ -156,6 +156,10 @@ class PropertyTableUpdater {
 				$pid = $row['p_id'];
 			}
 
+			if ( !isset( $pid ) ) {
+				continue;
+			}
+
 			$this->propertyChangeListener->recordChange(
 				$pid,
 				[ 'row' => $row, 'is_insert' => $insert ]
@@ -242,9 +246,8 @@ class PropertyTableUpdater {
 			// Individual pid? or fixed?
 			if ( isset( $row['p_id'] ) ) {
 				$pid = $row['p_id'];
+				$ids[$pid] = true;
 			}
-
-			$ids[$pid] = true;
 		}
 	}
 

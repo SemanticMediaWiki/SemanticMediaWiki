@@ -383,6 +383,7 @@ class Database {
 
 		// https://github.com/wikimedia/mediawiki/blob/42d5e6f43a00eb8bedc3532876125f74e3188343/includes/deferred/AutoCommitUpdate.php
 		// https://github.com/wikimedia/mediawiki/blob/f7dad57c64db3eb1296894c2d3ae97b9f7f27c4c/includes/installer/DatabaseInstaller.php#L157
+		$autoTrx = null;
 		if ( $this->flags === self::AUTO_COMMIT ) {
 			$autoTrx = $connection->getFlag( DBO_TRX );
 			$connection->clearFlag( DBO_TRX );
@@ -392,8 +393,8 @@ class Database {
 			}
 		}
 
+		$exception = null;
 		try {
-			$exception = null;
 			$results = $connection->query(
 				$sql,
 				$fname,
@@ -413,6 +414,7 @@ class Database {
 			throw $exception;
 		}
 
+		// @phan-suppress-next-line PhanPossiblyUndeclaredVariable
 		return $results;
 	}
 

@@ -185,6 +185,7 @@ class RDFXMLSerializer extends Serializer {
 			foreach ( $expData->getValues( $property ) as $valueElement ) {
 				$this->requireNamespace( $property->getNamespaceID(), $property->getNamespace() );
 
+				$prop_decl_type = 0;
 				if ( $valueElement instanceof ExpLiteral ) {
 					$prop_decl_type = SMW_SERIALIZER_DECL_APROP;
 					$this->serializeExpLiteral( $property, $valueElement, "\t\t$indent" );

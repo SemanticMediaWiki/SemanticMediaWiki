@@ -149,7 +149,9 @@ abstract class Store implements QueryEngine {
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
-			throw new InvalidArgumentException( 'Store::getRedirectTarget expects a Property or WikiPage object.' );
+			throw new InvalidArgumentException(
+				'Store::getRedirectTarget expects a Property or WikiPage object.'
+			);
 		}
 
 		if ( $type === DataItem::TYPE_PROPERTY ) {
@@ -161,6 +163,10 @@ abstract class Store implements QueryEngine {
 			$wikipage = $dataItem->getDiWikiPage();
 		} elseif ( $type === DataItem::TYPE_WIKIPAGE ) {
 			$wikipage = $dataItem;
+		}
+
+		if ( !isset( $wikipage ) ) {
+			return $dataItem;
 		}
 
 		$entityCache = ApplicationFactory::getInstance()->getEntityCache();

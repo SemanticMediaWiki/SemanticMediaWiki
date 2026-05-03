@@ -51,6 +51,8 @@ class ArticleLookup extends Lookup {
 			$namespace = $parameters['namespace'];
 		}
 
+		$list = [];
+		$continueOffset = 0;
 		if ( isset( $parameters['search'] ) ) {
 			[ $list, $continueOffset ] = $this->search( $limit, $offset, $parameters['search'], $namespace );
 		}

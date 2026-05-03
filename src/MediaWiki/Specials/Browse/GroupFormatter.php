@@ -269,6 +269,10 @@ class GroupFormatter {
 					continue;
 				}
 
+				if ( !isset( $group ) ) {
+					continue;
+				}
+
 				if ( $message_key !== '' && !Message::exists( $message_key ) ) {
 					$message_key = $group;
 				}

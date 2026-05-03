@@ -99,6 +99,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 		);
 
+		$res = [];
 		$requestOptions->setLimit( 2 );
 		$count = 0;
 

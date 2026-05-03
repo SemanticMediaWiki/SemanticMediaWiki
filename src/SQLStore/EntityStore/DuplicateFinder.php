@@ -176,6 +176,7 @@ class DuplicateFinder {
 
 		$fields = $fieldsDef[$tableName];
 
+		$map = [];
 		foreach ( $fields as $field ) {
 			$map[$field] = $row->{$field};
 		}

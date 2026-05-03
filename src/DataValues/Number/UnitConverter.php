@@ -229,7 +229,6 @@ class UnitConverter {
 			);
 
 			if ( $first ) {
-				$unitid = $unit;
 				if ( $number == 1 ) { // add main unit to front of array (displayed first)
 					$this->mainUnit = $unit;
 					$this->unitFactors = [ $unit => 1 ] + $this->unitFactors;
@@ -239,8 +238,8 @@ class UnitConverter {
 				$first = false;
 			}
 			// add all known units to m_unitids to simplify checking for them
-			$this->unitIds[$unit] = $unitid;
-			$this->unitIds[$normalizedUnit] = $unitid;
+			$this->unitIds[$unit] = $unit;
+			$this->unitIds[$normalizedUnit] = $unit;
 			$this->prefixalUnitPreference[$unit] = $asPrefix;
 		}
 	}

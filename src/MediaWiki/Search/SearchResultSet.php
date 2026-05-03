@@ -136,6 +136,10 @@ class SearchResultSet extends \SearchResultSet {
 				$searchResult = new SearchResult( $page->getTitle() );
 			}
 
+			if ( !isset( $searchResult ) ) {
+				continue;
+			}
+
 			// Attempt to use excerpts available from a different back-end
 			if ( $searchResult && $this->excerpts !== null ) {
 				$excerpt = $this->excerpts->getExcerpt( $page );
@@ -144,7 +148,6 @@ class SearchResultSet extends \SearchResultSet {
 				}
 			}
 
-			// @phan-suppress-next-line PhanTypeMismatchProperty
 			$this->results[] = $searchResult;
 		}
 

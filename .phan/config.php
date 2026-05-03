@@ -13,7 +13,6 @@ $config['suppress_issue_types'] = array_merge(
 		'PhanParamSignatureMismatch',
 		'PhanPluginLoopVariableReuse',
 		'PhanPluginRedundantAssignment',
-		'PhanPossiblyUndeclaredVariable',
 		'PhanStaticCallToNonStatic',
 		'PhanTypeArraySuspicious',
 		'PhanTypeArraySuspiciousNullable',

@@ -101,6 +101,10 @@ class CompositeFilter implements SchemaFilter {
 			$nodeFilter = $filter;
 		}
 
+		if ( !isset( $filter ) ) {
+			return;
+		}
+
 		$filter->filter( $compartments );
 		$this->matches = $filter->getMatches();
 	}

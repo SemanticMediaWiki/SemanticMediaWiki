@@ -226,6 +226,7 @@ class TurtleSerializer extends Serializer {
 				$this->post_ns_buffer .= $firstvalue ? '  ' : ' ,  ';
 				$firstvalue = false;
 
+				$prop_decl_type = 0;
 				if ( $value instanceof ExpLiteral ) {
 					$prop_decl_type = SMW_SERIALIZER_DECL_APROP;
 					$this->serializeExpLiteral( $value );

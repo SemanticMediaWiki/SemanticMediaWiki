@@ -74,6 +74,7 @@ class ParameterListDocBuilder {
 	 * Returns the wikitext for a table row describing a single parameter.
 	 */
 	private function getDescriptionRow( ParamDefinition $parameter, bool $hasAliases ): string {
+		$aliases = '';
 		if ( $hasAliases ) {
 			$aliases = $parameter->getAliases();
 			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : ' -';

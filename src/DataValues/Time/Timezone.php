@@ -241,6 +241,7 @@ class Timezone {
 	public static function getNameByAbbreviation( string $abbreviation ): string|false {
 		$abbreviation = strtoupper( $abbreviation );
 
+		$name = '';
 		if ( isset( self::$shortList[$abbreviation] ) ) {
 			$name = timezone_name_from_abbr( $abbreviation );
 		}

@@ -94,7 +94,7 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 			] );
 		}
 
-		return $description;
+		return $description ?? $this->descriptionFactory->newThingDescription();
 	}
 
 	private function getUpperLimit( $dataItem ) {

@@ -284,6 +284,7 @@ class QuerySegmentListProcessor {
 	 * @param QuerySegment &$query
 	 */
 	private function hierarchy( QuerySegment &$query ): void {
+		$type = '';
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
 				$type = 'property';

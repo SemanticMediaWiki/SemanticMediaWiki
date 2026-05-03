@@ -332,7 +332,7 @@ class SomePropertyInterpreter {
 		if ( $property->isInverse() ) {
 			$parameters = $this->termsLookup->newParameters(
 				[
-					'query.string' => $desc->getQueryString(),
+					'query.string' => $description->getQueryString(),
 					'property.key' => $property->getKey(),
 					'field' => "$pid.wpgID",
 					'params' => $this->fieldMapper->field_filter( "$pid.wpgID", $p )
