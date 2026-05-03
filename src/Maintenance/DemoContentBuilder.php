@@ -169,7 +169,7 @@ This template is used to create standardized dog breed articles with Semantic Me
 	 * @param array<string, mixed> $breed
 	 */
 	public function renderBreedArticle( array $breed ): string {
-		$sizeCategory = $breed['weightMax'] <= 10 ? 'Small' : ( $breed['weightMax'] <= 25 ? 'Medium' : 'Large' );
+		$sizeCategory = $breed['weightMax'] < 10 ? 'Small' : ( $breed['weightMax'] <= 25 ? 'Medium' : 'Large' );
 		$exerciseLevel = in_array( 'Energetic', $breed['temperaments'] ) ? 'High' : ( in_array( 'Playful', $breed['temperaments'] ) ? 'Moderate' : 'Low' );
 		$temperamentStr = implode( ', ', $breed['temperaments'] );
 		$temperamentLower = strtolower( implode( ', ', array_slice( $breed['temperaments'], 0, 3 ) ) );
