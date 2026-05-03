@@ -12,6 +12,7 @@ use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableUpdater;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableUpdater
@@ -23,6 +24,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class PropertyTableUpdaterTest extends TestCase {
+
+	use MockWriteQueryBuilderTrait;
 
 	private $store;
 	private $idTable;
@@ -99,11 +102,25 @@ class PropertyTableUpdaterTest extends TestCase {
 	}
 
 	public function testUpdate_WithInsertRows() {
-		$this->connection->expects( $this->once() )
-			->method( 'insert' );
+		$insertTables = $insertRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $insertTables, $insertRows );
+
+		$deleteTables = $deleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $deleteTables, $deleteWheres );
+
+		$updateBuilder = $this->createMockUpdateQueryBuilder();
 
 		$this->connection->expects( $this->once() )
-			->method( 'delete' );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$this->idTable->expects( $this->once() )
 			->method( 'setPropertyTableHashes' );
@@ -111,6 +128,10 @@ class PropertyTableUpdaterTest extends TestCase {
 		$this->propertyTable->expects( $this->any() )
 			->method( 'usesIdSubject' )
 			->willReturn( true );
+
+		$this->propertyTable->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'table_foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
@@ -146,6 +167,10 @@ class PropertyTableUpdaterTest extends TestCase {
 		);
 
 		$instance->update( 42, $params );
+
+		$this->assertContains( 'table_foo', $insertTables );
+		$this->assertContains( [ [ 's_id' => 1001, 'p_id' => 99999 ] ], $insertRows );
+		$this->assertContains( 'table_foo', $deleteTables );
 	}
 
 	public function testUpdate_Touched() {
@@ -153,16 +178,31 @@ class PropertyTableUpdaterTest extends TestCase {
 			->method( 'timestamp' )
 			->willReturn( '19700101000000' );
 
+		$insertBuilder = $this->createMockInsertQueryBuilder();
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+
+		$updateTables = $updateSets = $updateWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder( $updateTables, $updateSets, $updateWheres );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
 		$this->connection->expects( $this->once() )
-			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ 'smw_touched' => '19700101000000' ],
-				$this->equalTo( [ 'smw_id' => [ 1001, 99999, 99998 ] ] ) );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$this->propertyTable->expects( $this->any() )
 			->method( 'usesIdSubject' )
 			->willReturn( true );
+
+		$this->propertyTable->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'table_foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
@@ -194,6 +234,10 @@ class PropertyTableUpdaterTest extends TestCase {
 		);
 
 		$instance->update( 42, $params );
+
+		$this->assertContains( SQLStore::ID_TABLE, $updateTables );
+		$this->assertContains( [ 'smw_touched' => '19700101000000' ], $updateSets );
+		$this->assertContains( [ 'smw_id' => [ 1001, 99999, 99998 ] ], $updateWheres );
 	}
 
 	public function testUpdate_WithInsertRowsButMissingIdFieldThrowsException() {
