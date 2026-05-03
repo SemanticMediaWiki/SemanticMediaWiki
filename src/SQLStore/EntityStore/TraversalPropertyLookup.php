@@ -53,7 +53,6 @@ class TraversalPropertyLookup {
 		if ( !$propertyTableDef->isFixedPropertyTable() ) {
 
 			$cond = $this->getWhereConds( $dataItem );
-			$conditions = '';
 
 			// No sorting
 			$subQueryOptions = $this->store->getSQLOptions( $subOptions, '' );
@@ -77,7 +76,7 @@ class TraversalPropertyLookup {
 				'SELECT p_id FROM ' . $connection->tableName( $propertyTableDef->getName() ) . " $cond $opt"
 			);
 
-			$conditions .= ( $conditions ? ' AND ' : ' ' ) .
+			$conditions = ' ' .
 				" smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
 				" AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
 

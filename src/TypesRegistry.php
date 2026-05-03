@@ -252,7 +252,7 @@ class TypesRegistry {
 	 *
 	 * @return array
 	 */
-	public static function getTypesByGroup( $key = '' ): array {
+	public static function getTypesByGroup( string $key = '' ): array {
 		$groups = [
 			'primitive' => [
 				'_txt', '_boo', '_num', '_dat'

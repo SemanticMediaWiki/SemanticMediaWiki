@@ -47,7 +47,6 @@ class ValueDescriptionInterpreter {
 
 		$params = [];
 		$pid = false;
-		$filter = false;
 
 		if ( $property === null ) {
 			$field = "subject.sortkey";
@@ -129,7 +128,7 @@ class ValueDescriptionInterpreter {
 		}
 
 		if ( !$isConjunction ) {
-			$condition->type( ( $this->isNot( $comparator ) ? 'must_not' : ( $filter ? 'filter' : 'must' ) ) );
+			$condition->type( ( $this->isNot( $comparator ) ? 'must_not' : 'must' ) );
 		}
 
 		$condition->log( [ 'ValueDescription' => $description->getQueryString() ] );

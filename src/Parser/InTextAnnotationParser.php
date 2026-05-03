@@ -145,12 +145,9 @@ class InTextAnnotationParser {
 			$text = LinksEncoder::findAndEncodeLinks( $text, $this );
 		}
 
-		// No longer used with 3.0 given that the LinksEncoder is safer and faster
-		$linksInValuesPcre = false;
-
 		$text = preg_replace_callback(
-			$this->getRegexpPattern( $linksInValuesPcre ),
-			$linksInValuesPcre ? self::class . '::process' : self::class . '::preprocess',
+			$this->getRegexpPattern( false ),
+			self::class . '::preprocess',
 			$text
 		);
 
