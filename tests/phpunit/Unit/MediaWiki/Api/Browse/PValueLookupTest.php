@@ -6,12 +6,12 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\SQLStore;
 use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PValueLookup
@@ -53,19 +53,20 @@ class PValueLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = new Query( $connection );
-
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
 			->willReturnArgument( 0 );
 
-		$connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $query );
+		$whereConditions = [];
 
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( function () use ( $row, &$whereConditions ) {
+				return $this->createMockSelectQueryBuilder(
+					[ $row ],
+					$whereConditions
+				);
+			} );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -118,9 +119,11 @@ class PValueLookupTest extends TestCase {
 			$res['query']
 		);
 
-		$this->assertStringContainsString(
-			'[{"OR":"smw_sortkey LIKE %Foo%"},{"OR":"smw_sortkey LIKE %Foo%"},{"OR":"smw_sortkey LIKE %FOO%"}]',
-			$query->__toString()
+		$flat = $this->flattenWhereConditions( $whereConditions );
+
+		$this->assertContains(
+			'(smw_sortkey LIKE %Foo% OR smw_sortkey LIKE %Foo% OR smw_sortkey LIKE %FOO%)',
+			$flat
 		);
 	}
 
@@ -129,21 +132,24 @@ class PValueLookupTest extends TestCase {
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
-		$query = $this->getMockBuilder( Query::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $query );
+			->method( 'addQuotes' )
+			->willReturnArgument( 0 );
 
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$whereConditions = [];
+
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( function () use ( $row, &$whereConditions ) {
+				return $this->createMockSelectQueryBuilder(
+					[ $row ],
+					$whereConditions
+				);
+			} );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -203,19 +209,20 @@ class PValueLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = new Query( $connection );
-
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
 			->willReturnArgument( 0 );
 
-		$connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $query );
+		$whereConditions = [];
 
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( function () use ( $row, &$whereConditions ) {
+				return $this->createMockSelectQueryBuilder(
+					[ $row ],
+					$whereConditions
+				);
+			} );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -272,10 +279,80 @@ class PValueLookupTest extends TestCase {
 			$res['query']
 		);
 
-		$this->assertStringContainsString(
-			'[{"OR":"o_hash LIKE %Foo%"},{"OR":"o_hash LIKE %Foo%"},{"OR":"o_hash LIKE %FOO%"},{"AND":"p_id=42"}]',
-			$query->__toString()
+		$flat = $this->flattenWhereConditions( $whereConditions );
+
+		$this->assertContains(
+			'(o_hash LIKE %Foo% OR o_hash LIKE %Foo% OR o_hash LIKE %FOO%)',
+			$flat
 		);
+
+		$this->assertContains(
+			[ 'p_id' => 42 ],
+			$whereConditions
+		);
+	}
+
+	/**
+	 * Flatten a list of captured andWhere() arguments into a list of strings
+	 * for easy substring assertions.
+	 */
+	private function flattenWhereConditions( array $conditions ): array {
+		$flat = [];
+		foreach ( $conditions as $cond ) {
+			if ( is_string( $cond ) ) {
+				$flat[] = $cond;
+			} elseif ( is_array( $cond ) ) {
+				foreach ( $cond as $k => $v ) {
+					$flat[] = is_int( $k ) ? (string)$v : "$k=$v";
+				}
+			}
+		}
+		return $flat;
+	}
+
+	/**
+	 * Creates a mock SelectQueryBuilder where chained methods return $this,
+	 * fetchResultSet() returns the given rows wrapped in FakeResultWrapper,
+	 * and andWhere() arguments are captured into $whereConditions for
+	 * inspection by tests.
+	 */
+	private function createMockSelectQueryBuilder(
+		array $rows = [],
+		array &$whereConditions = []
+	) {
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$chainMethods = [ 'select', 'fields', 'field', 'from', 'table',
+			'join', 'leftJoin', 'where', 'groupBy', 'having', 'orderBy',
+			'caller', 'distinct', 'limit', 'offset', 'options', 'option' ];
+
+		foreach ( $chainMethods as $method ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $method )
+				->willReturnSelf();
+		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'andWhere' )
+			->willReturnCallback( static function ( $conds ) use ( $queryBuilder, &$whereConditions ) {
+				$whereConditions[] = $conds;
+				return $queryBuilder;
+			} );
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'newSubquery' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder(
+				$rows,
+				$whereConditions
+			) );
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'fetchResultSet' )
+			->willReturn( new FakeResultWrapper( $rows ) );
+
+		return $queryBuilder;
 	}
 
 }
