@@ -627,4 +627,64 @@ class DatabaseTest extends TestCase {
 			[ 'postgres' ]
 		];
 	}
+
+	public function testNewInsertQueryBuilderReturnsMutedSubclassBoundToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertInstanceOf(
+			\SMW\MediaWiki\Connection\MutedInsertQueryBuilder::class,
+			$instance->newInsertQueryBuilder()
+		);
+	}
+
+	public function testNewUpdateQueryBuilderReturnsMutedSubclassBoundToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertInstanceOf(
+			\SMW\MediaWiki\Connection\MutedUpdateQueryBuilder::class,
+			$instance->newUpdateQueryBuilder()
+		);
+	}
+
+	public function testNewDeleteQueryBuilderReturnsMutedSubclassBoundToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertInstanceOf(
+			\SMW\MediaWiki\Connection\MutedDeleteQueryBuilder::class,
+			$instance->newDeleteQueryBuilder()
+		);
+	}
+
+	public function testNewReplaceQueryBuilderReturnsMutedSubclassBoundToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertInstanceOf(
+			\SMW\MediaWiki\Connection\MutedReplaceQueryBuilder::class,
+			$instance->newReplaceQueryBuilder()
+		);
+	}
 }

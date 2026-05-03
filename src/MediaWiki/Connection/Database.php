@@ -8,12 +8,16 @@ use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\Platform\SQLPlatform;
+use Wikimedia\Rdbms\ReplaceQueryBuilder;
 use Wikimedia\Rdbms\ResultWrapper;
 use Wikimedia\Rdbms\SelectQueryBuilder;
+use Wikimedia\Rdbms\UpdateQueryBuilder;
 use Wikimedia\ScopedCallback;
 
 /**
@@ -91,6 +95,46 @@ class Database {
 
 	public function newSelectQueryBuilder(): SelectQueryBuilder {
 		return $this->connRef->getConnection( 'read' )->newSelectQueryBuilder();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newInsertQueryBuilder(): InsertQueryBuilder {
+		return new MutedInsertQueryBuilder(
+			$this->connRef->getConnection( 'write' ),
+			$this->transactionHandler
+		);
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newUpdateQueryBuilder(): UpdateQueryBuilder {
+		return new MutedUpdateQueryBuilder(
+			$this->connRef->getConnection( 'write' ),
+			$this->transactionHandler
+		);
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newDeleteQueryBuilder(): DeleteQueryBuilder {
+		return new MutedDeleteQueryBuilder(
+			$this->connRef->getConnection( 'write' ),
+			$this->transactionHandler
+		);
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newReplaceQueryBuilder(): ReplaceQueryBuilder {
+		return new MutedReplaceQueryBuilder(
+			$this->connRef->getConnection( 'write' ),
+			$this->transactionHandler
+		);
 	}
 
 	/**
