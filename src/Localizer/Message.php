@@ -86,12 +86,11 @@ class Message {
 	 * @since 2.5
 	 */
 	public static function encode( string|array $message, ?int $type = null ): string {
-		// If already valid JSON, return as-is
-		if ( is_string( $message ) ) {
-			json_decode( $message );
-			if ( json_last_error() === JSON_ERROR_NONE ) {
-				return $message;
-			}
+		if ( is_string( $message ) &&
+			json_decode( $message ) &&
+			json_last_error() === JSON_ERROR_NONE
+		) {
+			return $message;
 		}
 
 		$type ??= self::TEXT;
