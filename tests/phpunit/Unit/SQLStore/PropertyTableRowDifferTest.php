@@ -13,6 +13,7 @@ use SMW\SQLStore\PropertyTableRowDiffer;
 use SMW\SQLStore\PropertyTableRowMapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer
@@ -25,6 +26,8 @@ use SMW\Store;
  * @author mwjames
  */
 class PropertyTableRowDifferTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $propertyTableRowMapper;
 
@@ -176,13 +179,11 @@ class PropertyTableRowDifferTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
 
 		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()

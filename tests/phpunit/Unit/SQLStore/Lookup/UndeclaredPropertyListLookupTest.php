@@ -10,6 +10,7 @@ use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -22,6 +23,8 @@ use stdClass;
  * @author mwjames
  */
 class UndeclaredPropertyListLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $requestOptions;
@@ -137,8 +140,8 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -193,8 +196,8 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -244,7 +247,7 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->never() )
-			->method( 'select' );
+			->method( 'newSelectQueryBuilder' );
 
 		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )

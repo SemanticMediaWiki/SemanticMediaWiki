@@ -94,44 +94,33 @@ class AuxiliaryFields {
 			$countmap = null;
 		}
 
-		$this->connection->upsert(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[
+		$this->connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::ID_AUXILIARY_TABLE )
+			->row( [
 				'smw_id' => $sid,
 				'smw_seqmap' => $seqmap,
 				'smw_countmap' => $countmap
-			],
-			'smw_id',
-			[
+			] )
+			->onDuplicateKeyUpdate()
+			->uniqueIndexFields( [ 'smw_id' ] )
+			->set( [
 				'smw_seqmap' => $seqmap,
 				'smw_countmap' => $countmap
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$cache->save( $sid, $countmap );
 	}
 
 	private function fetchCountMap( array $hashes ) {
-		return $this->connection->select(
-			[
-				't' => SQLStore::ID_TABLE,
-				'p' => SQLStore::ID_AUXILIARY_TABLE
-			],
-			[
-				't.smw_id',
-				't.smw_hash',
-				'p.smw_countmap',
-			],
-			[
-				't.smw_hash' => $hashes
-			],
-			__METHOD__,
-			[],
-			[
-				'p' => [ 'INNER JOIN', [ 'p.smw_id=t.smw_id' ] ],
-			]
-		);
+		return $this->connection->newSelectQueryBuilder()
+			->select( [ 't.smw_id', 't.smw_hash', 'p.smw_countmap' ] )
+			->from( SQLStore::ID_TABLE, 't' )
+			->join( SQLStore::ID_AUXILIARY_TABLE, 'p', 'p.smw_id=t.smw_id' )
+			->where( [ 't.smw_hash' => $hashes ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 }

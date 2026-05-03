@@ -47,19 +47,19 @@ class DisplayTitleLookup {
 			// - $dataItems[] expects to be of the format [ sha1 => DataItem ]
 			// - Adding smw_title, smw_namespace to ensure a `Using index condition`
 			//   during the select
-			$rows = $connection->select(
-				SQLStore::ID_TABLE,
-				[
+			$rows = $connection->newSelectQueryBuilder()
+				->select( [
 					'smw_id',
 					'smw_title',
 					'smw_namespace',
 					'smw_hash'
-				],
-				[
+				] )
+				->from( SQLStore::ID_TABLE )
+				->where( [
 					'smw_hash' => array_keys( $chunk )
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 
 			foreach ( $rows as $row ) {
 				$hashes[$row->smw_hash] = $row->smw_id;
@@ -113,18 +113,18 @@ class DisplayTitleLookup {
 
 		$propTable = $propTables[$propTableId];
 
-		$rows = $connection->select(
-			$propTable->getName(),
-			[
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [
 				's_id',
 				'o_hash',
 				'o_blob'
-			],
-			[
+			] )
+			->from( $propTable->getName() )
+			->where( [
 				's_id' => array_keys( $list )
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $rows;
 	}

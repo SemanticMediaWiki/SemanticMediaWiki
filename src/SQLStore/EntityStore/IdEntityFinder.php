@@ -156,11 +156,17 @@ class IdEntityFinder {
 			'smw_hash'
 		];
 
+		$queryBuilder = $connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->caller( __METHOD__ );
+
 		if ( $selectRow ) {
-			return $connection->selectRow( SQLStore::ID_TABLE, $fields, $conditions, __METHOD__ );
+			return $queryBuilder->fetchRow();
 		}
 
-		return $connection->select( SQLStore::ID_TABLE, $fields, $conditions, __METHOD__ );
+		return $queryBuilder->fetchResultSet();
 	}
 
 }

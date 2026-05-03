@@ -12,6 +12,7 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup
@@ -23,6 +24,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class ByGroupPropertyValuesLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 
@@ -75,8 +78,8 @@ class ByGroupPropertyValuesLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -159,8 +162,8 @@ class ByGroupPropertyValuesLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ (object)$row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ (object)$row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -243,8 +246,8 @@ class ByGroupPropertyValuesLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ (object)$row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ (object)$row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )

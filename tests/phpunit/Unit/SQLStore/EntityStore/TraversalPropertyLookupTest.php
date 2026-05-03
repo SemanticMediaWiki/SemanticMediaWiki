@@ -9,7 +9,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\FakeResultWrapper;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\TraversalPropertyLookup
@@ -21,6 +21,8 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class TraversalPropertyLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( SQLStore::class )
@@ -52,13 +54,15 @@ class TraversalPropertyLookupTest extends TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( false );
 
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -91,10 +95,6 @@ class TraversalPropertyLookupTest extends TestCase {
 	public function testlookupForFixedPropertyTable() {
 		$dataItem = WikiPage::newFromText( __METHOD__ );
 
-		$resultWrapper = $this->getMockBuilder( FakeResultWrapper::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -111,13 +111,15 @@ class TraversalPropertyLookupTest extends TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( $resultWrapper );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

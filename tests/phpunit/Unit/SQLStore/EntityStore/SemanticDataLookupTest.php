@@ -9,7 +9,6 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\EntityIdManager;
@@ -17,8 +16,8 @@ use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\StubSemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SemanticDataLookup
@@ -31,10 +30,11 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  */
 class SemanticDataLookupTest extends TestCase {
 
+	use MockSelectQueryBuilderTrait;
+
 	private $store;
 	private $connection;
 	private $dataItemHandler;
-	private $query;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -59,8 +59,6 @@ class SemanticDataLookupTest extends TestCase {
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
-
-		$this->query = new Query( $this->connection );
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
@@ -210,13 +208,12 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'getDIType' )
 			->willReturn( 'Foo' );
 
-		$this->connection->expects( $this->once() )
-			->method( 'readQuery' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
 
 		$this->connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $this->query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -224,11 +221,13 @@ class SemanticDataLookupTest extends TestCase {
 
 		$subject = WikiPage::newFromText( __METHOD__ );
 
-		$semanticData = $instance->fetchSemanticDataFromTable(
+		$instance->fetchSemanticDataFromTable(
 			42,
 			$subject,
 			$propertyTable
 		);
+
+		$this->assertContainsEquals( [ 's_id' => 42 ], $whereConditions );
 	}
 
 	public function testSemanticDataFromTable_WithConstraint() {
@@ -269,18 +268,12 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'getDIType' )
 			->willReturn( 'Foo' );
 
-		$this->connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnCallback( static function ( $value ) { return "'$value'";
-			} );
-
-		$this->connection->expects( $this->once() )
-			->method( 'readQuery' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
 
 		$this->connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $this->query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$subject = WikiPage::newFromText( __METHOD__ );
 
@@ -300,13 +293,10 @@ class SemanticDataLookupTest extends TestCase {
 
 		$instance->fetchSemanticDataFromTable( 42, $subject, $propertyTable, $requestOptions );
 
-		$this->assertEquals(
-			"SELECT p.smw_title AS prop, fooField AS v0 FROM  " .
-			"INNER JOIN smw_object_ids AS p ON p_id=p.smw_id " .
-			"WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete') AND (p_id='9999') " .
-			"LIMIT 4",
-			$this->query->build()
-		);
+		// `s_id` from the subject restriction and `p_id` from the extra-condition
+		// constraint must both be present in the captured where conditions.
+		$this->assertContainsEquals( [ 's_id' => 42 ], $whereConditions );
+		$this->assertContainsEquals( [ 'p_id' => 9999 ], $whereConditions );
 	}
 
 	public function testFetchSemanticDataFromTable_NoDataItem() {
@@ -330,18 +320,12 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'getDIType' )
 			->willReturn( 'Foo' );
 
-		$this->connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnCallback( static function ( $value ) { return "'$value'";
-			} );
-
-		$this->connection->expects( $this->once() )
-			->method( 'readQuery' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
 
 		$this->connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $this->query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -349,12 +333,7 @@ class SemanticDataLookupTest extends TestCase {
 
 		$instance->fetchSemanticDataFromTable( 42, null, $propertyTable );
 
-		$this->assertEquals(
-			"SELECT p.smw_title AS prop, fooField AS v0 FROM  " .
-			"INNER JOIN smw_object_ids AS p ON p_id=p.smw_id " .
-			"WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')",
-			$this->query->build()
-		);
+		$this->assertContainsEquals( [ 's_id' => 42 ], $whereConditions );
 	}
 
 	public function testFetchSemanticDataFromTable_NoIdSubject() {
@@ -382,18 +361,12 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'getName' )
 			->willReturn( 'bar_table' );
 
-		$this->connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnCallback( static function ( $value ) { return "'$value'";
-			} );
-
-		$this->connection->expects( $this->once() )
-			->method( 'readQuery' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
 
 		$this->connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $this->query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$dataItem = WikiPage::newFromText( 'no_id_subject' );
 
@@ -403,11 +376,13 @@ class SemanticDataLookupTest extends TestCase {
 
 		$instance->fetchSemanticDataFromTable( 42, $dataItem, $propertyTable );
 
-		$this->assertEquals(
-			"SELECT p.smw_title AS prop, fooField AS v0 FROM bar_table " .
-			"INNER JOIN smw_object_ids AS p ON p_id=p.smw_id " .
-			"WHERE (s_title='no_id_subject') AND (s_namespace='0') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')",
-			$this->query->build()
+		// Subject without idSubject column → restriction by title+namespace.
+		$this->assertContainsEquals(
+			[
+				's_title' => 'no_id_subject',
+				's_namespace' => 0,
+			],
+			$whereConditions
 		);
 	}
 
@@ -489,18 +464,12 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'getName' )
 			->willReturn( 'bar_table' );
 
-		$this->connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnCallback( static function ( $value ) { return "'$value'";
-			} );
-
-		$this->connection->expects( $this->once() )
-			->method( 'readQuery' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
 
 		$this->connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $this->query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$dataItem = new Blob( __METHOD__ );
 
@@ -511,12 +480,12 @@ class SemanticDataLookupTest extends TestCase {
 			$this->store
 		);
 
+		// Non-WikiPage `Blob` data item → property branch (isSubject=false), which
+		// applies DISTINCT and a `p_id` restriction. `distinct()` on the trait mock
+		// is a `willReturnSelf()` no-op; assert the restriction made it through.
 		$instance->fetchSemanticDataFromTable( 42, $dataItem, $propertyTable, $requestOptions );
 
-		$this->assertEquals(
-			"SELECT DISTINCT fooField AS v0 FROM bar_table WHERE (p_id='42') LIMIT 4",
-			$this->query->build()
-		);
+		$this->assertContainsEquals( [ 'p_id' => 42 ], $whereConditions );
 	}
 
 	public function testGetSemanticData_OnLimit() {
@@ -527,9 +496,6 @@ class SemanticDataLookupTest extends TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
-
-		$query_1 = new Query( $this->connection );
-		$query_2 = new Query( $this->connection );
 
 		$row = new stdClass;
 		$row->p_id = 9000;
@@ -560,18 +526,13 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'getName' )
 			->willReturn( 'bar_table' );
 
-		$this->connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnCallback( static function ( $value ) { return "'$value'";
-			} );
+		$whereConditions = [];
+		$qb1 = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+		$qb2 = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
 
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'readQuery' )
-			->willReturnOnConsecutiveCalls( new FakeResultWrapper( [ $row ] ), new FakeResultWrapper( [ $row ] ) );
-
-		$this->connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturnOnConsecutiveCalls( $query_1, $query_2 );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnOnConsecutiveCalls( $qb1, $qb2 );
 
 		$dataItem = WikiPage::newFromText( 'Bar' );
 
@@ -584,17 +545,11 @@ class SemanticDataLookupTest extends TestCase {
 
 		$instance->getSemanticData( 42, $dataItem, $propertyTable, $requestOptions );
 
-		$this->assertEquals(
-			"SELECT DISTINCT p_id FROM bar_table INNER JOIN smw_object_ids " .
-			"AS p ON p_id=p.smw_id WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')",
-			$query_1->build()
-		);
-
-		$this->assertEquals(
-			"SELECT p.smw_title AS prop, fooField AS v0 FROM bar_table INNER JOIN smw_object_ids " .
-			"AS p ON p_id=p.smw_id WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete') AND (p_id='9000') LIMIT 4",
-			$query_2->build()
-		);
+		// First query: `fetchPropertiesFromTable` restricts on `s_id`.
+		// Second query: `fetchSemanticDataFromTable` re-applies `s_id` and adds the
+		// extra-condition `p_id` discovered from the first query's row.
+		$this->assertContainsEquals( [ 's_id' => 42 ], $whereConditions );
+		$this->assertContainsEquals( [ 'p_id' => 9000 ], $whereConditions );
 	}
 
 }

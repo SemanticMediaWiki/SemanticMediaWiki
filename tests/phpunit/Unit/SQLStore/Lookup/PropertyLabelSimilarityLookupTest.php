@@ -9,6 +9,7 @@ use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -21,6 +22,8 @@ use stdClass;
  * @author mwjames
  */
 class PropertyLabelSimilarityLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $propertyStatisticsStore;
@@ -75,8 +78,8 @@ class PropertyLabelSimilarityLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -113,8 +116,8 @@ class PropertyLabelSimilarityLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row1, $row2 ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ $row1, $row2 ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
