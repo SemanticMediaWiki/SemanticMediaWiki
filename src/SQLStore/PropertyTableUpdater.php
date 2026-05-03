@@ -237,16 +237,16 @@ class PropertyTableUpdater {
 
 			$pid = $this->store->getObjectIds()->makeSMWPropertyID( $property );
 			$isCategory = $property->getKey() === '_INST';
+			$ids[$pid] = true;
 		}
 
 		foreach ( $rows as $row ) {
 			$sid = $isCategory ? $row['o_id'] : $row['s_id'];
 			$ids[$sid] = true;
 
-			// Individual pid? or fixed?
+			// Individual pid for non-fixed tables
 			if ( isset( $row['p_id'] ) ) {
-				$pid = $row['p_id'];
-				$ids[$pid] = true;
+				$ids[$row['p_id']] = true;
 			}
 		}
 	}
