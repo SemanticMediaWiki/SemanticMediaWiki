@@ -193,7 +193,7 @@ class RecursiveTextProcessorTest extends TestCase {
 
 	public function testRecursiveTagParse() {
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
+			->method( 'getPage' )
 			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
