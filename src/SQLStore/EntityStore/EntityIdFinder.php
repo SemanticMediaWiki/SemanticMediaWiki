@@ -56,19 +56,17 @@ class EntityIdFinder {
 
 		$id = 0;
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id'
-			],
-			[
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_title' => $dataItem->getDBKey(),
 				'smw_namespace' => $dataItem->getNamespace(),
 				'smw_iw' => $dataItem->getInterWiki(),
 				'smw_subobject' => $dataItem->getSubobjectName()
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$id = (int)$row->smw_id;
@@ -118,14 +116,12 @@ class EntityIdFinder {
 			$fields = [ 'smw_sortkey', 'smw_sort', 'smw_hash' ];
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_TABLE,
-			$fields,
-			[
-				'smw_id' => $id
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			// Make sure that smw_sort is being re-computed in case it is null
@@ -194,17 +190,17 @@ class EntityIdFinder {
 			$subobjectName = mb_substr( $subobjectName, 0, 255 );
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_TABLE,
-			$fields,
-			[
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_title' => $title,
 				'smw_namespace' => $namespace,
 				'smw_iw' => $iw,
 				'smw_subobject' => $subobjectName
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$id = $row->smw_id;
@@ -261,14 +257,12 @@ class EntityIdFinder {
 			unset( $conditions['smw_iw'] );
 		}
 
-		$rows = $this->connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id'
-			],
-			$conditions,
-			__METHOD__
-		);
+		$rows = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $rows as $row ) {
 			$matches[] = (int)$row->smw_id;

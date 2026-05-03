@@ -37,7 +37,7 @@ trait MockSelectQueryBuilderTrait {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$chainMethods = [ 'fields', 'field', 'from', 'table', 'tables',
+		$chainMethods = [ 'fields', 'field', 'from', 'table', 'tables', 'rawTables',
 			'join', 'leftJoin', 'straightJoin', 'joinConds',
 			'groupBy', 'having', 'orderBy', 'caller', 'distinct',
 			'limit', 'offset', 'options', 'option', 'conds',

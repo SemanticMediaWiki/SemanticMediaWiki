@@ -138,9 +138,8 @@ class CacheWarmer {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
@@ -148,12 +147,11 @@ class CacheWarmer {
 				'smw_subobject',
 				'smw_sortkey',
 				'smw_sort'
-			],
-			[
-				'smw_hash' => $hashList
-			],
-			__METHOD__
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_hash' => $hashList ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 		foreach ( $rows as $row ) {
 			$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
 
@@ -191,9 +189,8 @@ class CacheWarmer {
 			return;
 		}
 
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
@@ -201,12 +198,11 @@ class CacheWarmer {
 				'smw_subobject',
 				'smw_sortkey',
 				'smw_sort'
-			],
-			[
-				'smw_id' => $idList
-			],
-			__METHOD__
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $idList ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $rows as $row ) {
 			$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;

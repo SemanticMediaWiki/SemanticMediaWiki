@@ -13,6 +13,8 @@ use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\PropertyTableIdReferenceFinder;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -25,6 +27,9 @@ use stdClass;
  * @author mwjames
  */
 class PropertyTableIdReferenceDisposerTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $store;
 	private $testEnvironment;
@@ -105,24 +110,23 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 	}
 
 	public function testTryToRemoveOutdatedEntryFromIDTable() {
-		$tableDefinition = $connection = $this->getMockBuilder( PropertyTableDefinition::class )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableIdReferenceFinder = $connection = $this->getMockBuilder( PropertyTableIdReferenceFinder::class )
+		$propertyTableIdReferenceFinder = $this->getMockBuilder( PropertyTableIdReferenceFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
-
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'delete' );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -148,7 +152,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 	}
 
 	public function testCleanUpTableEntriesFor() {
-		$tableDefinition = $connection = $this->getMockBuilder( PropertyTableDefinition::class )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -156,16 +160,19 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->method( 'usesIdSubject' )
 			->willReturn( true );
 
+		$tableDefinition->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'smw_test_table' );
+
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
-
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'delete' );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -187,13 +194,15 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 	}
 
 	public function testCanConstructOutdatedEntitiesResultIterator() {
+		$queryBuilder = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -214,13 +223,15 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 	}
 
 	public function testCanConstructByNamespaceInvalidEntitiesResultIterator() {
+		$queryBuilder = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -244,12 +255,15 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 		$row = new stdClass;
 		$row->smw_id = 42;
 
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'delete' );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -271,6 +285,8 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 	}
 
 	public function testCleanUpOnTransactionIdle() {
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -283,7 +299,8 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			);
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'delete' );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -322,6 +339,9 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
+		$capturedTables = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $capturedTables );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -333,15 +353,8 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			} );
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'delete' )
-			->withConsecutive(
-				[ $this->equalTo( SQLStore::ID_TABLE ) ],
-				[ $this->equalTo( SQLStore::ID_AUXILIARY_TABLE ) ],
-				[ $this->equalTo( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
-				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
-				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
-				[ $this->equalTo( SQLStore::FT_SEARCH_TABLE ) ]
-			);
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -357,6 +370,17 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 
 		$instance->waitOnTransactionIdle();
 		$instance->cleanUpTableEntriesById( 42 );
+
+		$this->assertSame(
+			[
+				SQLStore::ID_TABLE,
+				SQLStore::ID_AUXILIARY_TABLE,
+				SQLStore::PROPERTY_STATISTICS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
+			],
+			$capturedTables
+		);
 	}
 
 	public function testCleanUp_Redirect() {
@@ -380,20 +404,16 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
+		$capturedTables = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $capturedTables );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		// No SQLStore::ID_TABLE
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'delete' )
-			->withConsecutive(
-				[ $this->equalTo( SQLStore::ID_AUXILIARY_TABLE ) ],
-				[ $this->equalTo( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
-				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
-				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
-				[ $this->equalTo( SQLStore::FT_SEARCH_TABLE ) ]
-			);
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -412,6 +432,17 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 		);
 
 		$instance->cleanUpTableEntriesById( 42 );
+
+		// No SQLStore::ID_TABLE for redirects (without redirectRemoval)
+		$this->assertSame(
+			[
+				SQLStore::ID_AUXILIARY_TABLE,
+				SQLStore::PROPERTY_STATISTICS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
+			],
+			$capturedTables
+		);
 	}
 
 }

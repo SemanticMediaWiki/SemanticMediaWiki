@@ -10,6 +10,7 @@ use SMW\SQLStore\EntityStore\EntityIdFinder;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\EntityIdFinder
@@ -21,6 +22,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class EntityIdFinderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $cache;
@@ -75,9 +78,11 @@ class EntityIdFinderTest extends TestCase {
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'setCache' );
 
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new EntityIdFinder(
 			$this->connection,
@@ -106,9 +111,11 @@ class EntityIdFinderTest extends TestCase {
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'setCache' );
 
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new EntityIdFinder(
 			$this->connection,
@@ -139,9 +146,11 @@ class EntityIdFinderTest extends TestCase {
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'setCache' );
 
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new EntityIdFinder(
 			$this->connection,
@@ -167,9 +176,11 @@ class EntityIdFinderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$qb = $this->createMockSelectQueryBuilder( $rows );
+
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new EntityIdFinder(
 			$this->connection,

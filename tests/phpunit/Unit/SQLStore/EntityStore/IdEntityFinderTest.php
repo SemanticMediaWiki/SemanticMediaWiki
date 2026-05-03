@@ -11,6 +11,7 @@ use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -23,6 +24,8 @@ use stdClass;
  * @author mwjames
  */
 class IdEntityFinderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $cache;
@@ -92,13 +95,12 @@ class IdEntityFinderTest extends TestCase {
 			->method( 'fetch' )
 			->willReturn( false );
 
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 'smw_id' => 42 ] )
-			->willReturn( $row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -110,6 +112,8 @@ class IdEntityFinderTest extends TestCase {
 			WikiPage::class,
 			$instance->getDataItemById( 42 )
 		);
+
+		$this->assertContains( [ 'smw_id' => 42 ], $whereConditions );
 	}
 
 	public function testGetDataItemForCachedId() {
@@ -118,7 +122,7 @@ class IdEntityFinderTest extends TestCase {
 			->willReturn( new WikiPage( 'Foo', NS_MAIN ) );
 
 		$this->connection->expects( $this->never() )
-			->method( 'selectRow' );
+			->method( 'newSelectQueryBuilder' );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -152,13 +156,12 @@ class IdEntityFinderTest extends TestCase {
 			->method( 'fetch' )
 			->willReturn( false );
 
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 'smw_id' => 42 ] )
-			->willReturn( $row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -170,6 +173,8 @@ class IdEntityFinderTest extends TestCase {
 			$dataItem,
 			$instance->getDataItemById( 42 )
 		);
+
+		$this->assertContains( [ 'smw_id' => 42 ], $whereConditions );
 	}
 
 	public function testNullForUnknownId() {
@@ -177,9 +182,11 @@ class IdEntityFinderTest extends TestCase {
 			->method( 'fetch' )
 			->willReturn( false );
 
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( false );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -208,13 +215,12 @@ class IdEntityFinderTest extends TestCase {
 		$row->smw_sort = '...';
 		$row->smw_hash = 'x99w';
 
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 'smw_id' => [ 42 ] ] )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -228,6 +234,8 @@ class IdEntityFinderTest extends TestCase {
 				$value
 			);
 		}
+
+		$this->assertContains( [ 'smw_id' => [ 42 ] ], $whereConditions );
 	}
 
 }

@@ -19,6 +19,8 @@ use SMW\Options;
 use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -31,6 +33,9 @@ use stdClass;
  * @author mwjames
  */
 class ElasticStoreTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $elasticFactory;
@@ -309,9 +314,15 @@ class ElasticStoreTest extends TestCase {
 			->method( 'getType' )
 			->willReturn( 'mysql' );
 
+		$qb = $this->createMockSelectQueryBuilder( [] );
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$insertBuilder = $this->createMockInsertQueryBuilder();
+		$connection->expects( $this->any() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
