@@ -219,8 +219,8 @@ class ReplicationStatus {
 			}
 
 			foreach ( $result['hits'] as $key => $value ) {
-				foreach ( $value as $key => $v ) {
-					if ( $key === '_source' ) {
+				foreach ( $value as $k => $v ) {
+					if ( $k === '_source' ) {
 						$time = Time::newFromJD(
 							end( $v[$pid][$field] ),
 							Time::CM_GREGORIAN,
