@@ -166,8 +166,11 @@ abstract class Store implements QueryEngine {
 		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
 		$key = $entityCache->makeCacheKey( 'redirect', $wikipage->getHash() );
 
-		if ( $type === DataItem::TYPE_PROPERTY && ( $serialization = $entityCache->fetch( $key ) ) !== false ) {
-			return DataItem::newFromSerialization( $type, $serialization );
+		if ( $type === DataItem::TYPE_PROPERTY ) {
+			$serialization = $entityCache->fetch( $key );
+			if ( $serialization !== false ) {
+				return DataItem::newFromSerialization( $type, $serialization );
+			}
 		}
 
 		$dataItems = $this->getPropertyValues( $wikipage, new Property( '_REDI' ) );

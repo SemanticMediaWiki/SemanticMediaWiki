@@ -100,7 +100,8 @@ class CachingTermsLookup extends TermsLookup {
 			return $this->quick_cache[$key]['params'];
 		}
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->fetch( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_concept_lookup' => $parameters->get( 'query.string' ),
@@ -322,7 +323,8 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->fetch( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_inverse_lookup' => [

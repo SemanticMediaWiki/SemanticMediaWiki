@@ -287,7 +287,8 @@ class IntlNumberFormatter {
 
 		// Don't try to be more precise than the actual value (e.g avoid turning
 		// 72.769482308 into 72.76948230799999350892904)
-		if ( ( $actualPrecision = $this->getPrecisionFrom( $value ) ) < $precision && $actualPrecision > 0 && !$this->isScientific( $value ) ) {
+		$actualPrecision = $this->getPrecisionFrom( $value );
+		if ( $actualPrecision < $precision && $actualPrecision > 0 && !$this->isScientific( $value ) ) {
 			$replacement = $precision - $actualPrecision;
 			$precision = $actualPrecision;
 		}
@@ -349,8 +350,11 @@ class IntlNumberFormatter {
 	}
 
 	private function getPreferredLocalizedSeparator( string $custom, string $standard, $language ) {
-		if ( $this->options->has( $custom ) && ( $separator = $this->options->get( $custom ) ) !== false ) {
-			return $separator;
+		if ( $this->options->has( $custom ) ) {
+			$separator = $this->options->get( $custom );
+			if ( $separator !== false ) {
+				return $separator;
+			}
 		}
 
 		return Message::get( $standard, Message::TEXT, $language );

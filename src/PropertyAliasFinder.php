@@ -106,7 +106,8 @@ class PropertyAliasFinder {
 			]
 		);
 
-		if ( ( $propertyAliases = $this->cache->fetch( $key ) ) !== false ) {
+		$propertyAliases = $this->cache->fetch( $key );
+		if ( $propertyAliases !== false ) {
 			return $propertyAliases;
 		}
 

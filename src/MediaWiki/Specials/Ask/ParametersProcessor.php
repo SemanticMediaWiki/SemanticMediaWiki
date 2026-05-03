@@ -46,13 +46,15 @@ class ParametersProcessor {
 
 		// Check for q= query string, used whenever this special page calls
 		// itself (via submit or plain link):
-		if ( ( $q = $request->getText( 'q' ) ) !== '' ) {
+		$q = $request->getText( 'q' );
+		if ( $q !== '' ) {
 			$parameterList[] = $q;
 		}
 
 		// Parameters separated by newlines here (compatible with text-input for
 		// printouts)
-		if ( ( $po = $request->getText( 'po' ) ) !== '' ) {
+		$po = $request->getText( 'po' );
+		if ( $po !== '' ) {
 			$printouts = explode( "\n", $po ?? '' );
 		}
 
@@ -80,7 +82,8 @@ class ParametersProcessor {
 
 		// First check whether the sorting options input send an
 		// request data as array
-		if ( ( $sort_values = $request->getArray( 'sort_num', [] ) ) !== [] ) {
+		$sort_values = $request->getArray( 'sort_num', [] );
+		if ( $sort_values !== [] ) {
 
 			if ( is_array( $sort_values ) ) {
 
@@ -109,7 +112,8 @@ class ParametersProcessor {
 
 		// First check whether the order options input send an
 		// request data as array
-		if ( ( $order_values = $request->getArray( 'order_num', [] ) ) !== [] ) {
+		$order_values = $request->getArray( 'order_num', [] );
+		if ( $order_values !== [] ) {
 
 			// Count doesn't match means we have a order from an
 			// empty (#subject) carrying around which we don't permit when

@@ -57,7 +57,8 @@ class AttachmentAnnotator implements Annotator {
 
 		// @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/using-ingest-attachment.html
 		if ( isset( $this->doc['_source']['attachment']['date'] ) ) {
-			if ( ( $dataItem = Time::newFromTimestamp( $this->doc['_source']['attachment']['date'] ) ) instanceof Time ) {
+			$dataItem = Time::newFromTimestamp( $this->doc['_source']['attachment']['date'] );
+			if ( $dataItem instanceof Time ) {
 				$this->containerSemanticData->addPropertyObjectValue(
 					$dataItemFactory->newDIProperty( '_CONT_DATE' ),
 					$dataItem

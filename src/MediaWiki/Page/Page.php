@@ -57,7 +57,8 @@ abstract class Page extends Article {
 			return;
 		}
 
-		if ( ( $redirectTargetURL = $this->getRedirectTargetURL() ) !== false ) {
+		$redirectTargetURL = $this->getRedirectTargetURL();
+		if ( $redirectTargetURL !== false ) {
 			$outputPage->redirect( $redirectTargetURL );
 		}
 

@@ -166,10 +166,14 @@ class GroupFormatter {
 		// `smw-category-group` message to point to a group
 		if ( $property->getKey() === '_INST' && Message::exists( 'smw-category-group' ) ) {
 			$group = Message::get( 'smw-category-group' );
-		} elseif ( ( $dataItem = $this->propertySpecificationLookup->getPropertyGroup( $property ) ) instanceof DataItem ) {
-			$group = str_replace( '_', ' ', $dataItem->getDBKey() );
-		} elseif ( $list !== [] ) {
-			$group = $this->findGroupFromList( $list, $property, $dataItem, $msg_key );
+		} else {
+			$dataItem = $this->propertySpecificationLookup->getPropertyGroup( $property );
+
+			if ( $dataItem instanceof DataItem ) {
+				$group = str_replace( '_', ' ', $dataItem->getDBKey() );
+			} elseif ( $list !== [] ) {
+				$group = $this->findGroupFromList( $list, $property, $dataItem, $msg_key );
+			}
 		}
 
 		if ( $group === '' || $group === null ) {

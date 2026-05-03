@@ -97,7 +97,8 @@ class DataItemMatchFinder {
 		// try the by far most common cases directly before using Title
 		$namespaceName = str_replace( '_', ' ', $name );
 
-		if ( ( $namespaceId = Localizer::getInstance()->getNsIndex( $name ) ) !== false ) {
+		$namespaceId = Localizer::getInstance()->getNsIndex( $name );
+		if ( $namespaceId !== false ) {
 			return $namespaceId;
 		}
 

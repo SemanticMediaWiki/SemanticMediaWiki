@@ -86,7 +86,8 @@ class updateEntityCountMap extends Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( !( $maintenanceCheck = new MaintenanceCheck() )->canExecute() ) {
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 

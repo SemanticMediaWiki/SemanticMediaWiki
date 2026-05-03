@@ -71,8 +71,11 @@ class AllowsListValueParser implements ValueParser {
 			return $error;
 		}
 
-		if ( $contents[0] === '{' && ( $list = json_decode( $contents, true ) ) && is_array( $list ) ) {
-			return $list;
+		if ( $contents[0] === '{' ) {
+			$list = json_decode( $contents, true );
+			if ( $list && is_array( $list ) ) {
+				return $list;
+			}
 		}
 
 		return $this->parse_string( $userValue, $contents );

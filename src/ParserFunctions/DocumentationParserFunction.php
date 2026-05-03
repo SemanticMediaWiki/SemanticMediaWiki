@@ -96,7 +96,8 @@ class DocumentationParserFunction {
 			[ $this, 'msg' ]
 		);
 
-		if ( ( $parameterTable = $docBuilder->getParameterTable( $formatParameters ) ) !== '' ) {
+		$parameterTable = $docBuilder->getParameterTable( $formatParameters );
+		if ( $parameterTable !== '' ) {
 			return $parameterTable;
 		}
 

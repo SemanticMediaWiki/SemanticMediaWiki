@@ -349,7 +349,8 @@ class UpdateDispatcherJob extends Job {
 				continue;
 			}
 
-			if ( ( $title = $subject->getTitle() ) === null ) {
+			$title = $subject->getTitle();
+			if ( $title === null ) {
 				continue;
 			}
 

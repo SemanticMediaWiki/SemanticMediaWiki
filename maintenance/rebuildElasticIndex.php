@@ -438,7 +438,8 @@ class rebuildElasticIndex extends Maintenance {
 
 		$this->reportMessage( '   ... done.' . "\n" );
 
-		if ( ( $count = $this->jobQueue->getQueueSize( 'smw.elasticIndexerRecovery' ) ) > 0 ) {
+		$count = $this->jobQueue->getQueueSize( 'smw.elasticIndexerRecovery' );
+		if ( $count > 0 ) {
 			$this->reportMessage(
 				$this->cliMsgFormatter->section( 'Job queue' )
 			);

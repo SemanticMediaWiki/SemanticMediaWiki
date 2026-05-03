@@ -69,7 +69,8 @@ class seedDemoData extends Maintenance {
 			return;
 		}
 
-		if ( !( $maintenanceCheck = new MaintenanceCheck() )->canExecute() ) {
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 

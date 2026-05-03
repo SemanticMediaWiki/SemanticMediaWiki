@@ -68,7 +68,8 @@ class NonNegativeIntegerConstraint implements Constraint {
 		}
 
 		// https://www.w3.org/TR/xmlschema11-2/#nonNegativeInteger
-		if ( ( $number = $dataItem->getNumber() ) >= 0 ) {
+		$number = $dataItem->getNumber();
+		if ( $number >= 0 ) {
 			return;
 		}
 

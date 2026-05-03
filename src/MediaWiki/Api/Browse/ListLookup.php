@@ -187,7 +187,8 @@ class ListLookup extends Lookup {
 			'smw_subobject' => ''
 		];
 
-		if ( ( $cond = $this->store->getSQLConditions( $requestOptions, '', 'smw_sortkey', false ) ) !== '' ) {
+		$cond = $this->store->getSQLConditions( $requestOptions, '', 'smw_sortkey', false );
+		if ( $cond !== '' ) {
 			$conditions[] = $cond;
 			$fields[] = 'smw_sortkey';
 		}

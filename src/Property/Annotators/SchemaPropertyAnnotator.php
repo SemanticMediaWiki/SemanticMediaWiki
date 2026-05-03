@@ -41,7 +41,8 @@ class SchemaPropertyAnnotator extends PropertyAnnotatorDecorator {
 			$this->dataItemFactory->newDIBlob( $this->schema )
 		);
 
-		if ( ( $desc = $this->schema->get( Schema::SCHEMA_DESCRIPTION, '' ) ) !== '' ) {
+		$desc = $this->schema->get( Schema::SCHEMA_DESCRIPTION, '' );
+		if ( $desc !== '' ) {
 			$semanticData->addPropertyObjectValue(
 				new Property( '_SCHEMA_DESC' ),
 				$this->dataItemFactory->newDIBlob( $desc )

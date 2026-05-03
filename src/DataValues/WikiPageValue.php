@@ -665,7 +665,8 @@ class WikiPageValue extends DataValue {
 	 * @return string
 	 */
 	public function getPreferredCaption() {
-		if ( ( $preferredCaption = parent::getPreferredCaption() ) !== '' && $preferredCaption !== false ) {
+		$preferredCaption = parent::getPreferredCaption();
+		if ( $preferredCaption !== '' && $preferredCaption !== false ) {
 			return $preferredCaption;
 		}
 

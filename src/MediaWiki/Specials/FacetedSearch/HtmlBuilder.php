@@ -66,7 +66,8 @@ class HtmlBuilder {
 			]
 		);
 
-		if ( ( $html = $this->exploreListBuilder->buildHTML( $title ) ) === '' ) {
+		$html = $this->exploreListBuilder->buildHTML( $title );
+		if ( $html === '' ) {
 			$html = $intro;
 		}
 

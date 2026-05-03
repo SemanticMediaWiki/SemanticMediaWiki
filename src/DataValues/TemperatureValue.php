@@ -34,7 +34,8 @@ class TemperatureValue extends NumberValue {
 	protected function convertToMainUnit( $number, $unit ): bool {
 		$this->m_unitin = $this->getUnitID( $unit );
 
-		if ( ( $value = $this->convertToKelvin( $number, $this->m_unitin ) ) === false ) {
+		$value = $this->convertToKelvin( $number, $this->m_unitin );
+		if ( $value === false ) {
 			return false;
 		}
 

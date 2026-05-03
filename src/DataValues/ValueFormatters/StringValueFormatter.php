@@ -122,11 +122,13 @@ class StringValueFormatter extends DataValueFormatter {
 		$endOff = 42;
 
 		// Avoid breaking a link (i.e. [[ ... ]])
-		if ( ( $pos = stripos( $text, '[[' ) ) && $pos < 42 ) {
+		$pos = stripos( $text, '[[' );
+		if ( $pos && $pos < 42 ) {
 			$startOff = stripos( $text, ']]' ) + 2;
 		}
 
-		if ( ( $pos = strrpos( $text, ']]' ) ) && $pos > $length - $endOff ) {
+		$pos = strrpos( $text, ']]' );
+		if ( $pos && $pos > $length - $endOff ) {
 			$endOff = $length - strrpos( $text, '[[' );
 		}
 

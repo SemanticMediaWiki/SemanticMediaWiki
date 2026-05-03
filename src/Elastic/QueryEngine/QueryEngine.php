@@ -181,7 +181,8 @@ class QueryEngine implements IQueryEngine {
 		$connection = $this->store->getConnection( 'elastic' );
 		$this->queryInfo['elastic'][] = $connection->validate( $params );
 
-		if ( ( $log = $this->conditionBuilder->getDescriptionLog() ) !== [] ) {
+		$log = $this->conditionBuilder->getDescriptionLog();
+		if ( $log !== [] ) {
 			$this->queryInfo['smw']['description_log'] = $log;
 		}
 
@@ -277,16 +278,15 @@ class QueryEngine implements IQueryEngine {
 			$property = null;
 
 			// Handle predefined properties
-			if (
-				$dataItem->getNamespace() === SMW_NS_PROPERTY &&
-				( $dbKey = $dataItem->getDBKey() ) &&
-				$dbKey[0] === '_' ) {
-
-				try {
-					$property = Property::newFromUserLabel( $dbKey );
-				} catch ( PredefinedPropertyLabelMismatchException ) {
-					// Keep the dataItem as-is, this may hint to an outdated
-					// predefined property
+			if ( $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
+				$dbKey = $dataItem->getDBKey();
+				if ( $dbKey && $dbKey[0] === '_' ) {
+					try {
+						$property = Property::newFromUserLabel( $dbKey );
+					} catch ( PredefinedPropertyLabelMismatchException ) {
+						// Keep the dataItem as-is, this may hint to an outdated
+						// predefined property
+					}
 				}
 			}
 

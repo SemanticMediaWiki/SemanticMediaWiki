@@ -278,7 +278,8 @@ class Timezone {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
 		} catch ( Exception ) {
-			if ( ( $name = self::getNameByAbbreviation( $abbreviation ) ) !== false ) {
+			$name = self::getNameByAbbreviation( $abbreviation );
+			if ( $name !== false ) {
 				return new DateTimeZone( $name );
 			}
 		}

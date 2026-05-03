@@ -76,7 +76,8 @@ class Condition {
 		if ( $condition instanceof Condition ) {
 			$params = $condition->toArray();
 
-			if ( ( $rlogs = $condition->getLogs() ) !== [] ) {
+			$rlogs = $condition->getLogs();
+			if ( $rlogs !== [] ) {
 				$logs[] = $rlogs;
 			}
 		}

@@ -69,7 +69,8 @@ class PropertyLabelFinder {
 	public function findCanonicalPropertyLabelById( $id ) {
 		// Due to mapped lists avoid possible mismatch on dataTypes
 		// (e.g. Text -> _TEXT vs. Text -> _txt)
-		if ( ( $label = array_search( $id, $this->canonicalDatatypeLabels ) ) ) {
+		$label = array_search( $id, $this->canonicalDatatypeLabels );
+		if ( $label ) {
 			return $label;
 		}
 

@@ -199,13 +199,16 @@ class XmlResponseParser implements HttpResponseParser {
 
 		// UTF-8 is being split therefore concatenate the string (use row as indicator
 		// to detect a sliced string)
-		if ( isset( $this->data[$rowcount] ) && ( $element = end( $this->data[$rowcount] ) ) !== null ) {
-			switch ( $prevTag ) {
-				case 'uri':
-					$characterData = $element->getUri() . $characterData;
-					break;
-				case 'literal':
-					$characterData = $element->getLexicalForm() . $characterData;
+		if ( isset( $this->data[$rowcount] ) ) {
+			$element = end( $this->data[$rowcount] );
+			if ( $element !== null ) {
+				switch ( $prevTag ) {
+					case 'uri':
+						$characterData = $element->getUri() . $characterData;
+						break;
+					case 'literal':
+						$characterData = $element->getLexicalForm() . $characterData;
+				}
 			}
 		}
 

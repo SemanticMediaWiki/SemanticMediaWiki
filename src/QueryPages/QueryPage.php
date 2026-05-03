@@ -222,7 +222,8 @@ abstract class QueryPage extends MWQueryPage {
 			$options->addStringCondition( $property, StringCondition::STRCOND_MID );
 		}
 
-		if ( ( $filter = $this->getRequest()->getVal( 'filter' ) ) === 'unapprove' ) {
+		$filter = $this->getRequest()->getVal( 'filter' );
+		if ( $filter === 'unapprove' ) {
 			$options->addExtraCondition( [ 'filter.unapprove' => true ] );
 		}
 

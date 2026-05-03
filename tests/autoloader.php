@@ -23,12 +23,16 @@ if ( !class_exists( 'SemanticMediaWiki' ) || !defined( 'SMW_VERSION' ) ) {
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
-if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
+$path = __DIR__ . '/../vendor/autoload.php';
+if ( is_readable( $path ) ) {
 	$autoloadType = "Extension vendor autoloader";
-} elseif ( is_readable( $path = $basePath . '/vendor/autoload.php' ) ) {
-	$autoloadType = "MediaWiki vendor autoloader";
 } else {
-	die( 'To run the test suite it is required that packages are installed using Composer.' );
+	$path = $basePath . '/vendor/autoload.php';
+	if ( is_readable( $path ) ) {
+		$autoloadType = "MediaWiki vendor autoloader";
+	} else {
+		die( 'To run the test suite it is required that packages are installed using Composer.' );
+	}
 }
 
 // Extensions are able to define this in case the output requires an extended

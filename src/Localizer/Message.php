@@ -86,43 +86,51 @@ class Message {
 	 * @since 2.5
 	 */
 	public static function encode( string|array $message, ?int $type = null ): string {
-		if ( is_string( $message ) && json_decode( $message ) && json_last_error() === JSON_ERROR_NONE ) {
+		if ( is_string( $message ) &&
+			json_decode( $message ) &&
+			json_last_error() === JSON_ERROR_NONE
+		) {
 			return $message;
 		}
 
-		if ( $type === null ) {
-			$type = self::TEXT;
-		}
+		$type ??= self::TEXT;
 
 		if ( $message === [] ) {
 			return '';
 		}
 
 		$message = (array)$message;
-		$encode = [];
-		$encode[] = $type;
+		$encode = [ $type ];
 
 		foreach ( $message as $value ) {
-			// Ensure $value is a string before using substr()
 			$value ??= '';
 
 			// Check if the value is already encoded, and if decode to keep the
 			// structure intact
-			if ( substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {
-				$encode += $dc;
-			} else {
-				// Normalize arguments like "<strong>Expression error:
-				// Unrecognized word "yyyy".</strong>"
-				$value = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+			if ( is_string( $value ) && $value !== '' && $value[0] === '[' ) {
+				$decoded = json_decode( $value, true );
 
-				// - Internally encoded to circumvent the strip_tags which would
-				//   remove <, > from values that represent a range
-				// - Encode `::` to prevent the annotation parser to pick the
-				//   message value
-				$value = str_replace( [ '%3C', '%3E', "::" ], [ '>', '<', "&#58;&#58;" ], $value );
-
-				$encode[] = $value;
+				if ( is_array( $decoded ) && json_last_error() === JSON_ERROR_NONE ) {
+					$encode += $decoded;
+					continue;
+				}
 			}
+
+			// Normalize arguments like "<strong>Expression error:
+			// Unrecognized word "yyyy".</strong>"
+			$value = strip_tags( htmlspecialchars_decode( (string)$value, ENT_QUOTES ) );
+
+			// - Internally encoded to circumvent the strip_tags which would
+			//   remove <, > from values that represent a range
+			// - Encode `::` to prevent the annotation parser to pick the
+			//   message value
+			$value = str_replace(
+				[ '%3C', '%3E', "::" ],
+				[ '>', '<', "&#58;&#58;" ],
+				$value
+			);
+
+			$encode[] = $value;
 		}
 
 		return json_encode( $encode );
@@ -188,7 +196,8 @@ class Message {
 
 		$hash = self::getHash( $parameters, $type, $language );
 
-		if ( $content = self::getCache()->fetch( $hash ) ) {
+		$content = self::getCache()->fetch( $hash );
+		if ( $content ) {
 			return $content;
 		}
 

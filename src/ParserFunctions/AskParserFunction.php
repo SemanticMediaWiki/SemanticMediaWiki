@@ -265,7 +265,8 @@ class AskParserFunction {
 			$contextPage
 		);
 
-		if ( ( $result = $this->hasReachedExpensiveExecutionLimit( $query ) ) !== false ) {
+		$result = $this->hasReachedExpensiveExecutionLimit( $query );
+		if ( $result !== false ) {
 			return $result;
 		}
 
@@ -417,7 +418,8 @@ class AskParserFunction {
 
 		foreach ( $errors as $error ) {
 
-			if ( ( $property = $processingErrorMsgHandler->grepPropertyFromRestrictionErrorMsg( $error ) ) === null ) {
+			$property = $processingErrorMsgHandler->grepPropertyFromRestrictionErrorMsg( $error );
+			if ( $property === null ) {
 				$property = new Property( '_ASK' );
 			}
 

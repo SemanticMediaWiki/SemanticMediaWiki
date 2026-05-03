@@ -132,7 +132,8 @@ class SearchTableUpdater {
 	 * @param string $text
 	 */
 	public function update( $sid, $pid, $text ): void {
-		if ( trim( $text ) === '' || ( $indexableText = $this->textSanitizer->sanitize( $text ) ) === '' ) {
+		$indexableText = $this->textSanitizer->sanitize( $text );
+		if ( trim( $text ) === '' || $indexableText === '' ) {
 			$this->delete( $sid, $pid );
 			return;
 		}

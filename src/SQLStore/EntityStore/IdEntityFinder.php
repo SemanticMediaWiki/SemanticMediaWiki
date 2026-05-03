@@ -113,7 +113,8 @@ class IdEntityFinder {
 	 * @return WikiPage|null
 	 */
 	public function getDataItemById( $id ) {
-		if ( ( $dataItem = $this->get( (int)$id ) ) !== false ) {
+		$dataItem = $this->get( (int)$id );
+		if ( $dataItem !== false ) {
 			return $dataItem;
 		}
 
@@ -123,7 +124,8 @@ class IdEntityFinder {
 	private function get( int $id ): WikiPage|false {
 		$cache = $this->idCacheManager->get( 'entity.lookup' );
 
-		if ( ( $dataItem = $cache->fetch( $id ) ) !== false ) {
+		$dataItem = $cache->fetch( $id );
+		if ( $dataItem !== false ) {
 			return $dataItem;
 		}
 

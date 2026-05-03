@@ -33,7 +33,8 @@ class ExtraFieldBuilder {
 	 * @return string
 	 */
 	public function buildHTML( ?UrlArgs $urlArgs = null ): string {
-		if ( ( $fieldList = $this->profile->get( 'search.extra_fields.field_list', [] ) ) === [] ) {
+		$fieldList = $this->profile->get( 'search.extra_fields.field_list', [] );
+		if ( $fieldList === [] ) {
 			return '';
 		}
 

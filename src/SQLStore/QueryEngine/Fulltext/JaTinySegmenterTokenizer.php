@@ -58,7 +58,8 @@ class JaTinySegmenterTokenizer {
 		$contents = null;
 		$file = __DIR__ . '/model/rwcp.model.json';
 
-		if ( ( $contents = @file_get_contents( $file ) ) !== false ) {
+		$contents = @file_get_contents( $file );
+		if ( $contents !== false ) {
 			self::$model = json_decode( $contents, true );
 		}
 

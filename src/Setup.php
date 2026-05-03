@@ -305,7 +305,8 @@ final class Setup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		// Add an additional protection level restricting edit/move/etc
-		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {
+		$editProtectionRight = $settings->get( 'smwgEditProtectionRight' );
+		if ( $editProtectionRight !== false ) {
 			$vars['wgRestrictionLevels'][] = $editProtectionRight;
 		}
 	}

@@ -238,7 +238,8 @@ class SQLStoreUpdater {
 			}
 		}
 
-		if ( ( $rev_id = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
+		$rev_id = $semanticData->getExtensionData( 'revision_id' );
+		if ( $rev_id !== null ) {
 			$this->store->getObjectIds()->updateRevField( $sid, $rev_id );
 		}
 

@@ -46,8 +46,11 @@ class TableStatisticsTask extends Task {
 		$key = self::makeCacheKey( self::CACHE_KEY );
 
 		// Guard against repeated API calls (or fuzzing)
-		if ( $cacheTTL !== false && ( $result = $this->cache->fetch( $key ) ) !== false ) {
-			return $result + [ 'isFromCache' => true, 'cacheTTL' => $cacheTTL ];
+		if ( $cacheTTL !== false ) {
+			$result = $this->cache->fetch( $key );
+			if ( $result !== false ) {
+				return $result + [ 'isFromCache' => true, 'cacheTTL' => $cacheTTL ];
+			}
 		}
 
 		$tableStatisticsLookup = $this->store->service( 'TableStatisticsLookup' );

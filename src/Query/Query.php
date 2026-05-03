@@ -483,7 +483,8 @@ class Query implements QueryContext {
 		}
 
 		foreach ( $this->getExtraPrintouts() as $printout ) {
-			if ( ( $serialisation = $printout->getSerialisation() ) !== '' ) {
+			$serialisation = $printout->getSerialisation();
+			if ( $serialisation !== '' ) {
 				$serialized['printouts'][] = $serialisation;
 			}
 		}

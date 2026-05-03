@@ -154,7 +154,8 @@ class CachedFactbox {
 		$key = $this->makeCacheKey( $title );
 		$subKey = $this->makeSubCacheKey( $rev_id, $lang, $this->featureSet );
 
-		if ( ( $data = $this->entityCache->fetchSub( $key, $subKey ) ) !== false ) {
+		$data = $this->entityCache->fetchSub( $key, $subKey );
+		if ( $data !== false ) {
 			$content = $this->findContentFromCache( $data );
 		}
 
@@ -286,14 +287,16 @@ class CachedFactbox {
 
 		$contentParser = $applicationFactory->newContentParser( $title );
 
-		if ( ( $content = $factbox->getContent() ) !== '' ) {
+		$content = $factbox->getContent();
+		if ( $content !== '' ) {
 			$contentParser->parse( $content, false );
 			$content = InTextAnnotationParser::removeAnnotation(
 				$contentParser->getOutput()->getContentHolderText()
 			);
 		}
 
-		if ( ( $attachmentContent = $factbox->getAttachmentHTML() ) !== '' ) {
+		$attachmentContent = $factbox->getAttachmentHTML();
+		if ( $attachmentContent !== '' ) {
 			$contentParser->parse( $attachmentContent, false );
 			$attachmentContent = $contentParser->getOutput()->getContentHolderText();
 		}
