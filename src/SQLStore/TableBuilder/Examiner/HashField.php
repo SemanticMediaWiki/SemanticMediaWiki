@@ -61,12 +61,12 @@ class HashField {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$count = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'COUNT(*)',
-			'LENGTH(smw_hash) = 40',
-			__METHOD__
-		);
+		$count = (int)$connection->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( 'LENGTH(smw_hash) = 40' )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		if ( $count === 0 ) {
 			return;
@@ -128,20 +128,20 @@ class HashField {
 	 * Row-by-row hex-to-binary conversion for databases without UNHEX().
 	 */
 	private function migrateHexHashesViaPHP( $connection ): void {
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[ 'smw_id', 'smw_hash' ],
-			'LENGTH(smw_hash) = 40',
-			__METHOD__
-		);
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_hash' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( 'LENGTH(smw_hash) = 40' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $rows as $row ) {
-			$connection->update(
-				SQLStore::ID_TABLE,
-				[ 'smw_hash' => hex2bin( $row->smw_hash ) ],
-				[ 'smw_id' => $row->smw_id ],
-				__METHOD__
-			);
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [ 'smw_hash' => hex2bin( $row->smw_hash ) ] )
+				->where( [ 'smw_id' => $row->smw_id ] )
+				->caller( __METHOD__ )
+				->execute();
 		}
 	}
 

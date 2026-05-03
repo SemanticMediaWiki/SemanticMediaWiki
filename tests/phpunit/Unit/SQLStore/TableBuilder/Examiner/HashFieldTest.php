@@ -8,6 +8,8 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\ResultWrapper;
 
@@ -22,6 +24,9 @@ use Wikimedia\Rdbms\ResultWrapper;
  */
 class HashFieldTest extends TestCase {
 
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
+
 	private $spyMessageReporter;
 	private $store;
 	private $populateHashField;
@@ -34,9 +39,6 @@ class HashFieldTest extends TestCase {
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->connection->method( 'selectField' )
-			->willReturn( 0 );
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -96,8 +98,12 @@ class HashFieldTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection->method( 'selectField' )
-			->willReturn( HashField::threshold() + 1 );
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'count' => HashField::threshold() + 1 ] ]
+		);
+
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$this->connection->method( 'tableName' )
 			->willReturn( 'smw_object_ids' );
@@ -131,8 +137,12 @@ class HashFieldTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection->method( 'selectField' )
-			->willReturn( 1 );
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'count' => 1 ] ]
+		);
+
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$this->connection->method( 'tableName' )
 			->willReturn( 'smw_object_ids' );
@@ -170,6 +180,13 @@ class HashFieldTest extends TestCase {
 	}
 
 	public function testMigrateHexHashes_NoOpWhenCountIsZero() {
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'count' => 0 ] ]
+		);
+
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
 		$this->connection->expects( $this->never() )
 			->method( 'query' );
 
