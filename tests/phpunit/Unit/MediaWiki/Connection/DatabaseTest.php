@@ -7,6 +7,10 @@ use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\MutedDeleteQueryBuilder;
+use SMW\MediaWiki\Connection\MutedInsertQueryBuilder;
+use SMW\MediaWiki\Connection\MutedReplaceQueryBuilder;
+use SMW\MediaWiki\Connection\MutedUpdateQueryBuilder;
 use SMW\MediaWiki\Connection\Query;
 use SMW\MediaWiki\Connection\TransactionHandler;
 use Wikimedia\Rdbms\DBError;
@@ -638,7 +642,7 @@ class DatabaseTest extends TestCase {
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
 		$this->assertInstanceOf(
-			\SMW\MediaWiki\Connection\MutedInsertQueryBuilder::class,
+			MutedInsertQueryBuilder::class,
 			$instance->newInsertQueryBuilder()
 		);
 	}
@@ -653,7 +657,7 @@ class DatabaseTest extends TestCase {
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
 		$this->assertInstanceOf(
-			\SMW\MediaWiki\Connection\MutedUpdateQueryBuilder::class,
+			MutedUpdateQueryBuilder::class,
 			$instance->newUpdateQueryBuilder()
 		);
 	}
@@ -668,7 +672,7 @@ class DatabaseTest extends TestCase {
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
 		$this->assertInstanceOf(
-			\SMW\MediaWiki\Connection\MutedDeleteQueryBuilder::class,
+			MutedDeleteQueryBuilder::class,
 			$instance->newDeleteQueryBuilder()
 		);
 	}
@@ -683,7 +687,7 @@ class DatabaseTest extends TestCase {
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
 		$this->assertInstanceOf(
-			\SMW\MediaWiki\Connection\MutedReplaceQueryBuilder::class,
+			MutedReplaceQueryBuilder::class,
 			$instance->newReplaceQueryBuilder()
 		);
 	}
