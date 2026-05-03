@@ -242,7 +242,11 @@ class FieldItemFinder {
 
 			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
 
-			$textValue = $multiValue->getTextValueByLanguageCode( $lang );
+			if ( $multiValue instanceof MonolingualTextValue && $lang !== false ) {
+				$textValue = $multiValue->getTextValueByLanguageCode( $lang );
+			} else {
+				$textValue = null;
+			}
 			if ( $multiValue instanceof MonolingualTextValue &&
 				$lang !== false &&
 				$textValue !== null
