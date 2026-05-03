@@ -45,14 +45,12 @@ class PropertyTableHashes {
 			throw new RuntimeException( "Expected a null or an array as value!" );
 		}
 
-		$this->connection->update(
-			SQLStore::ID_TABLE,
-			$update,
-			[
-				'smw_id' => $id
-			],
-			__METHOD__
-		);
+		$this->connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( $update )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
 /*
 		$smw_proptable = $hash === null ? null : serialize( $hash );
@@ -100,16 +98,12 @@ class PropertyTableHashes {
 			return $hash;
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_TABLE,
-			[
-				'smw_proptable_hash'
-			],
-			[
-				'smw_id' => $id
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_proptable_hash' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$hash = $row->smw_proptable_hash;

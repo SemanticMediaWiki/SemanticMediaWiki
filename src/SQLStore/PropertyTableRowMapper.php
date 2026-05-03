@@ -281,12 +281,12 @@ class PropertyTableRowMapper {
 		}
 
 		// Add existing cache status data to this row:
-		$row = $connection->selectRow(
-			'smw_fpt_conc',
-			[ 'cache_date', 'cache_count' ],
-			[ 's_id' => $sid ],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'cache_date', 'cache_count' ] )
+			->from( 'smw_fpt_conc' )
+			->where( [ 's_id' => $sid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false ) {
 			$insertValues['cache_date'] = null;
