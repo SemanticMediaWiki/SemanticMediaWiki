@@ -275,7 +275,7 @@ class PageLister {
 	public static function getShortList(
 		int $start,
 		int $end,
-		array $diWikiPages,
+		array|Iterator $diWikiPages,
 		?Property $diProperty,
 		?callable $moreCallback = null
 	): string {

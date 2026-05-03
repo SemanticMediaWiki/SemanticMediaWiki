@@ -59,6 +59,7 @@ class TaskFactory {
 			'run-joblist'
 		];
 
+		// @phan-suppress-next-line PhanImpossibleCondition
 		if ( is_array( self::$services ) ) {
 			$types = array_merge( $types, array_keys( self::$services ) );
 		}

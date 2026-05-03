@@ -58,7 +58,7 @@ class RecursiveTextProcessorTest extends TestCase {
 
 	public function testRecursivePreprocess_NO_RecursiveAnnotation() {
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
+			->method( 'getPage' )
 			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
@@ -91,7 +91,7 @@ class RecursiveTextProcessorTest extends TestCase {
 			->willReturn( $this->parserOutput );
 
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
+			->method( 'getPage' )
 			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
@@ -121,7 +121,7 @@ class RecursiveTextProcessorTest extends TestCase {
 			->willReturn( $this->parserOutput );
 
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
+			->method( 'getPage' )
 			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
@@ -147,7 +147,7 @@ class RecursiveTextProcessorTest extends TestCase {
 
 	public function testRecursivePreprocess_WITH_RecursiveAnnotation() {
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
+			->method( 'getPage' )
 			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
@@ -193,7 +193,7 @@ class RecursiveTextProcessorTest extends TestCase {
 
 	public function testRecursiveTagParse() {
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
+			->method( 'getPage' )
 			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
@@ -242,7 +242,7 @@ class RecursiveTextProcessorTest extends TestCase {
 
 	public function testRecursivePreprocess_ExceededRecursion() {
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
+			->method( 'getPage' )
 			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )

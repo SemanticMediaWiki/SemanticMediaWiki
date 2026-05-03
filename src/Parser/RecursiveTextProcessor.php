@@ -190,7 +190,7 @@ class RecursiveTextProcessor {
 	 */
 	public function recursivePreprocess( $text ): string {
 		// not during parsing, no preprocessing needed, still protect the result
-		if ( !$this->parser || !$this->parser->getOptions() || !$this->parser->getTitle() ) {
+		if ( !$this->parser || !$this->parser->getOptions() || !$this->parser->getPage() ) {
 			return $this->recursiveAnnotation ? $text : '[[SMW::off]]' . $text . '[[SMW::on]]';
 		}
 
@@ -230,7 +230,7 @@ class RecursiveTextProcessor {
 		}
 
 		$this->recursionDepth++;
-		$isValid = $this->parser->getOptions() && $this->parser->getTitle();
+		$isValid = $this->parser->getOptions() && $this->parser->getPage();
 
 		if ( $this->recursionDepth <= $this->maxRecursionDepth && $isValid ) {
 			$text = $this->parser->recursiveTagParse( $text );

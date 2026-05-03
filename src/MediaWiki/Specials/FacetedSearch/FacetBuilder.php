@@ -51,8 +51,6 @@ class FacetBuilder {
 
 		if ( $collapsed ) {
 			$cssClass = 'mw-collapsed property-filter';
-		} elseif ( $urlArgs->getArray( 'pv' ) !== [] && $collapsed ) {
-			$cssClass = 'mw-collapsed property-filter';
 		} else {
 			$cssClass = 'property-filter';
 		}
@@ -98,8 +96,6 @@ class FacetBuilder {
 		$collapsed = isset( $cardState['card-cat'] ) && $cardState['card-cat'] === 'c';
 
 		if ( $collapsed ) {
-			$cssClass = 'mw-collapsed category-filter';
-		} elseif ( $urlArgs->getArray( 'pv' ) !== [] && $collapsed ) {
 			$cssClass = 'mw-collapsed category-filter';
 		} else {
 			$cssClass = 'category-filter';
