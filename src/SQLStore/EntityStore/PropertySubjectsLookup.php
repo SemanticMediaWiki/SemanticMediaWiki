@@ -7,6 +7,7 @@ use SMW\DataItems\Container;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\IteratorFactory;
+use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -14,6 +15,7 @@ use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
 use stdClass;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @license GPL-2.0-or-later
@@ -157,8 +159,6 @@ class PropertySubjectsLookup {
 		);
 
 		$sortField = $dataItemHandler->getSortField();
-		$query = $connection->newQuery();
-		$query->type( 'SELECT' );
 
 		if ( $requestOptions === null ) {
 			$requestOptions = new RequestOptions();
@@ -178,74 +178,67 @@ class PropertySubjectsLookup {
 		// and causes an unacceptable query time therefore force an index for
 		// those tables where the behaviour has been observed.
 		$index = $this->getIndexHint( $dataItemHandler, $pid, $dataItem );
-		$result = [];
+
+		$qb = $connection->newSelectQueryBuilder();
 
 		if ( $proptable->usesIdSubject() ) {
 			$group = true;
 
-			$query->table( SQLStore::ID_TABLE );
-
-			$query->join(
-				'INNER JOIN',
-				[ $proptable->getName() => "t1 $index ON t1.s_id=smw_id" ]
-			);
-
-			$query->fields(
-				[
+			$qb->from( SQLStore::ID_TABLE )
+				->join( $proptable->getName(), 't1', 't1.s_id=smw_id' )
+				->select( [
 					'smw_id',
 					'smw_title',
 					'smw_namespace',
 					'smw_iw',
 					'smw_subobject',
 					'smw_sortkey',
-					'smw_sort'
-				]
-			);
+					'smw_sort',
+				] );
 
-		} else { // no join needed, title+namespace as given in proptable
-			$query->table( $proptable->getName(), "t1" );
-
-			$query->fields(
-				[
+			// Preserve the FORCE INDEX(...) hint by translating to useIndex( [ 't1' => $name ] ).
+			// This emits USE INDEX on MySQL (vs the original FORCE INDEX). Both restrict the
+			// optimizer to the named index; on Postgres/SQLite both are no-ops. The semantic
+			// difference is documented in the PR description.
+			if ( $index !== '' && preg_match( '/^FORCE INDEX\(([^)]+)\)$/', $index, $m ) ) {
+				$qb->useIndex( [ 't1' => $m[1] ] );
+			}
+		} else {
+			// no join needed, title+namespace as given in proptable
+			$qb->from( $proptable->getName(), 't1' )
+				->select( [
 					's_title AS smw_title',
 					's_namespace AS smw_namespace',
-					'\'\' AS smw_iw',
-					'\'\' AS smw_subobject',
+					"'' AS smw_iw",
+					"'' AS smw_subobject",
 					's_title AS smw_sortkey',
-					's_title AS smw_sort'
-				]
-			);
+					's_title AS smw_sort',
+				] );
 
 			$requestOptions->setOption( 'ORDER BY', false );
 		}
 
 		if ( !$proptable->isFixedPropertyTable() ) {
-			$query->condition( $query->eq( "t1.p_id", $pid ) );
+			$qb->where( [ 't1.p_id' => $pid ] );
 		}
 
 		// Specified by the prefetch
 		if ( is_array( $dataItem ) ) {
-
-			$fieldname = 's_id';
-
-			if ( $proptable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
-				$fieldname = 'o_id';
-			}
-
-			$query->condition( $query->in( "t1.$fieldname", $dataItem ) );
-			$query->field( "t1.$fieldname AS id" );
+			$fieldname = ( $proptable->getDiType() === DataItem::TYPE_WIKIPAGE ) ? 'o_id' : 's_id';
+			$qb->andWhere( [ "t1.$fieldname" => $dataItem ] )
+				->select( [ 'id' => "t1.$fieldname" ] );
 		} else {
-			$this->getWhereConds( $query, $dataItem );
+			$this->getWhereConds( $qb, $dataItem );
 		}
 
 		if ( $requestOptions !== null ) {
 			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
 				if ( isset( $extraCondition['o_id'] ) ) {
-					$query->condition( $query->eq( 't1.o_id', $extraCondition['o_id'] ) );
+					$qb->andWhere( [ 't1.o_id' => $extraCondition['o_id'] ] );
 				}
 
 				if ( is_callable( $extraCondition ) ) {
-					$extraCondition( $query );
+					$extraCondition( $qb );
 				}
 			}
 
@@ -254,8 +247,8 @@ class PropertySubjectsLookup {
 		}
 
 		if ( $proptable->usesIdSubject() ) {
-			foreach ( [ SMW_SQL3_SMWIW_OUTDATED, SMW_SQL3_SMWDELETEIW, SMW_SQL3_SMWREDIIW ] as $v ) {
-				$query->condition( $query->neq( "smw_iw", $v ) );
+			foreach ( [ SMW_SQL3_SMWIW_OUTDATED, SMW_SQL3_SMWDELETEIW, SMW_SQL3_SMWREDIIW ] as $iw ) {
+				$qb->andWhere( $connection->expr( 'smw_iw', '!=', $iw ) );
 			}
 		}
 
@@ -290,30 +283,35 @@ class PropertySubjectsLookup {
 			false
 		);
 
-		$query->condition( $cond );
+		if ( $cond !== '' ) {
+			$qb->andWhere( $cond );
+		}
 
 		$opts = $this->store->getSQLOptions(
 			$requestOptions,
 			$sortField
 		);
 
-		$query->options( $opts );
+		// Preserve Postgres-specific `DISTINCT ON (...)` (a string DISTINCT value),
+		// which the legacy options array supports but `->distinct()` does not.
+		if ( isset( $opts['DISTINCT'] ) && is_string( $opts['DISTINCT'] ) ) {
+			$qb->option( 'DISTINCT', $opts['DISTINCT'] );
+			unset( $opts['DISTINCT'] );
+		}
 
 		if ( $requestOptions->exclude_limit ) {
-			$query->option( 'LIMIT', null );
-			$query->option( 'OFFSET', null );
+			unset( $opts['LIMIT'], $opts['OFFSET'] );
 		}
+
+		LegacyOptionsApplier::applyTo( $qb, $opts );
 
 		$caller = $this->caller;
 
 		if ( strval( $requestOptions->getCaller() ) !== '' ) {
-			$caller .= " (for " . $requestOptions->getCaller() . ")";
+			$caller .= ' (for ' . $requestOptions->getCaller() . ')';
 		}
 
-		$res = $connection->readQuery(
-			$query,
-			$caller
-		);
+		$res = $qb->caller( $caller )->fetchResultSet();
 
 		$this->dataItemHandler = $this->store->getDataItemHandlerForDIType(
 			DataItem::TYPE_WIKIPAGE
@@ -360,21 +358,21 @@ class PropertySubjectsLookup {
 		return $this->dataItemHandler->dataItemFromDBKeys( [ 'Blankpage/' . $title, NS_SPECIAL, '', '', '' ] );
 	}
 
-	private function getWhereConds( $query, DataItem|array|null $dataItem ): void {
-		$conds = '';
-
+	private function getWhereConds( SelectQueryBuilder $qb, ?DataItem $dataItem ): void {
 		if ( $dataItem instanceof Container ) {
 			throw new RuntimeException( '\SMW\DataItems\Container support is missing!' );
 		}
 
-		if ( $dataItem !== null ) {
-			$dataItemHandler = $this->store->getDataItemHandlerForDIType(
-				$dataItem->getDIType()
-			);
+		if ( $dataItem === null ) {
+			return;
+		}
 
-			foreach ( $dataItemHandler->getWhereConds( $dataItem ) as $fieldname => $value ) {
-				$query->condition( $query->eq( "t1.$fieldname", $value ) );
-			}
+		$dataItemHandler = $this->store->getDataItemHandlerForDIType(
+			$dataItem->getDIType()
+		);
+
+		foreach ( $dataItemHandler->getWhereConds( $dataItem ) as $fieldname => $value ) {
+			$qb->andWhere( [ "t1.$fieldname" => $value ] );
 		}
 	}
 
@@ -418,12 +416,12 @@ class PropertySubjectsLookup {
 		//
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[ 'usage_count' ],
-			[ 'p_id' => $pid ],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'usage_count' ] )
+			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->where( [ 'p_id' => $pid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		// 5000? It just showed to be a sweet spot while doing some
 		// exploratory queries

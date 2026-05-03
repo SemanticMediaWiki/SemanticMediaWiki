@@ -5,11 +5,10 @@ namespace SMW\Tests\Unit\SQLStore\EntityStore;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\FakeResultWrapper;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\PropertiesLookup
@@ -21,6 +20,8 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class PropertiesLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( SQLStore::class )
@@ -37,33 +38,28 @@ class PropertiesLookupTest extends TestCase {
 		$dataItem = WikiPage::newFromText( __METHOD__ );
 		$dataItem->setId( 42 );
 
-		$resultWrapper = $this->getMockBuilder( FakeResultWrapper::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$propertyTableDef = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyTableDef->expects( $this->atLeastOnce() )
+			->method( 'usesIdSubject' )
+			->willReturn( true );
+
+		$propertyTableDef->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
 			->willReturn( false );
 
-		$query = $this->getMockBuilder( Query::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$query->expects( $this->atLeastOnce() )
-			->method( 'execute' )
-			->willReturn( $resultWrapper );
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [], $whereConditions );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'newQuery' )
-			->willReturn( $query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -87,13 +83,13 @@ class PropertiesLookupTest extends TestCase {
 		);
 
 		$instance->fetchFromTable( $dataItem, $propertyTableDef );
+
+		$this->assertContains( [ 's_id' => 42 ], $whereConditions );
 	}
 
 	public function testLookupForFixedPropertyTable() {
 		$dataItem = WikiPage::newFromText( __METHOD__ );
 		$dataItem->setId( 1001 );
-
-		$resultWrapper = new FakeResultWrapper( [] );
 
 		$propertyTableDef = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -103,21 +99,15 @@ class PropertiesLookupTest extends TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
-		$query = $this->getMockBuilder( Query::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$query->expects( $this->atLeastOnce() )
-			->method( 'execute' )
-			->willReturn( $resultWrapper );
+		$qb = $this->createMockSelectQueryBuilder( [] );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'newQuery' )
-			->willReturn( $query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

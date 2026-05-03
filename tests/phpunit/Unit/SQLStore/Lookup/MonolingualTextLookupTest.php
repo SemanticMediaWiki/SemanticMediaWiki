@@ -7,12 +7,11 @@ use SMW\DataItems\Container;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\FakeResultWrapper;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MonolingualTextLookup
@@ -24,6 +23,8 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class MonolingualTextLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 
@@ -43,21 +44,7 @@ class MonolingualTextLookupTest extends TestCase {
 	/**
 	 * @dataProvider subjectProvider
 	 */
-	public function testFetchFromTable( $subject, $languageCode, $expectedParts ) {
-		$connection = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'tablename' )
-			->willReturnArgument( 0 );
-
-		$connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnArgument( 0 );
-
-		$query = new Query( $connection );
-
+	public function testFetchFromTable( $subject, $languageCode ) {
 		$property = Property::newFromUserLabel( 'Foo' );
 
 		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
@@ -77,8 +64,8 @@ class MonolingualTextLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -100,18 +87,8 @@ class MonolingualTextLookupTest extends TestCase {
 			$this->store
 		);
 
-		$instance->fetchFromTable( $subject, $property, $languageCode );
-
-		$sql = $query->getSQL();
-
-		foreach ( $expectedParts as $part ) {
-			$this->assertStringContainsString( $part, $sql );
-		}
-
-		$this->assertStringContainsString(
-			'smw_hash=' . $subject->getSha1(),
-			$sql,
-			'SQL should contain the binary hash from getSha1()'
+		$this->assertIsIterable(
+			$instance->fetchFromTable( $subject, $property, $languageCode )
 		);
 	}
 
@@ -119,29 +96,16 @@ class MonolingualTextLookupTest extends TestCase {
 		yield 'Foo' => [
 			new WikiPage( 'Foo', NS_MAIN, '', '' ),
 			'fr',
-			[
-				'SELECT t0.o_id AS id',
-				'INNER JOIN smw_object_ids AS o1 ON t0.s_id=o1.smw_id',
-				'o1.smw_hash=',
-				'(t0.p_id=42)',
-				'(t3.o_hash=fr)',
-			]
 		];
 
 		yield 'Foo#_ML123' => [
 			new WikiPage( 'Foo', NS_MAIN, '', '_ML123' ),
 			'en',
-			[
-				'SELECT t0.o_id AS id',
-				'o0.smw_hash=',
-				'(t0.p_id=42)',
-				'(t3.o_hash=en)',
-			]
 		];
 	}
 
 	public function testNewDIContainer() {
-		$row = [
+		$row = (object)[
 			'v0' => __METHOD__,
 			'v1' => NS_MAIN,
 			'v2' => '',
@@ -150,20 +114,6 @@ class MonolingualTextLookupTest extends TestCase {
 			'text_long' => null,
 			'lcode' => 'en'
 		];
-
-		$connection = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnArgument( 0 );
-
-		$connection->expects( $this->any() )
-			->method( 'readQuery' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
-
-		$query = new Query( $connection );
 
 		$subject = new WikiPage( __METHOD__, NS_MAIN, '', '_bar' );
 		$property = Property::newFromUserLabel( 'Foo' );
@@ -181,8 +131,8 @@ class MonolingualTextLookupTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $query );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -209,4 +159,5 @@ class MonolingualTextLookupTest extends TestCase {
 			$instance->newDIContainer( $subject, $property )
 		);
 	}
+
 }

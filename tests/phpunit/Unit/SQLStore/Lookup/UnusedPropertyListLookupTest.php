@@ -10,9 +10,8 @@ use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup
@@ -24,6 +23,8 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class UnusedPropertyListLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $propertyStatisticsStore;
@@ -206,7 +207,7 @@ class UnusedPropertyListLookupTest extends TestCase {
 
 		$queryBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
 
-		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( $cursorRow );
+		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( [ $cursorRow ] );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -256,7 +257,7 @@ class UnusedPropertyListLookupTest extends TestCase {
 
 		$queryBuilder = $this->createMockSelectQueryBuilder( [ $row1, $row2 ] );
 
-		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( $cursorRow );
+		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( [ $cursorRow ] );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -322,7 +323,7 @@ class UnusedPropertyListLookupTest extends TestCase {
 		$row->smw_sort = 'Foo';
 
 		// cursor lookup returns null (no matching row)
-		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( false );
+		$cursorQueryBuilder = $this->createMockSelectQueryBuilder( [] );
 
 		$queryBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
 
@@ -424,39 +425,6 @@ class UnusedPropertyListLookupTest extends TestCase {
 
 		$this->assertCount( 2, $result );
 		$this->assertFalse( $requestOptions->getCursorHasMore() );
-	}
-
-	/**
-	 * Creates a mock SelectQueryBuilder where all chained methods return $this.
-	 *
-	 * @param array|stdClass|false $result For arrays: wrapped in FakeResultWrapper
-	 *   for fetchResultSet(). For stdClass/false: returned by fetchRow().
-	 */
-	private function createMockSelectQueryBuilder( $result ) {
-		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$chainMethods = [ 'from', 'fields', 'field', 'join', 'where',
-			'andWhere', 'orderBy', 'limit', 'offset', 'caller' ];
-
-		foreach ( $chainMethods as $method ) {
-			$queryBuilder->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		if ( is_array( $result ) ) {
-			$queryBuilder->expects( $this->any() )
-				->method( 'fetchResultSet' )
-				->willReturn( new FakeResultWrapper( $result ) );
-		} else {
-			$queryBuilder->expects( $this->any() )
-				->method( 'fetchRow' )
-				->willReturn( $result );
-		}
-
-		return $queryBuilder;
 	}
 
 	/**

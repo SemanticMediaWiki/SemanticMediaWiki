@@ -54,18 +54,18 @@ class RedirectTargetLookup {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$rows = $connection->select(
-			RedirectStore::TABLE_NAME,
-			[
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [
 				'o_id',
 				's_title',
 				's_namespace',
-			],
-			[
+			] )
+			->from( RedirectStore::TABLE_NAME )
+			->where( [
 				'o_id' => $ids
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $rows as $row ) {
 

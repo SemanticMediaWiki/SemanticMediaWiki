@@ -130,6 +130,16 @@ return ( static function (): array {
 		# #
 
 		###
+		# Bypass schema validation gates that would otherwise block extension and
+		# maintenance-script execution when the schema is in an intermediate
+		# state. When set to `true`:
+		#
+		# - The early `SetupCheck` invoked from `Setup::init` is skipped, so the
+		#   extension loads even if the upgrade key does not match the schema.
+		# - `MaintenanceCheck` no longer aborts maintenance scripts with the
+		#   "setup wasn't finalized" message, allowing recovery scripts such as
+		#   `populateHashField.php` to run when an upgrade is stalled.
+		#
 		# @since 4.1.3
 		##
 		'smwgIgnoreUpgradeKeyCheck' => false,

@@ -621,9 +621,9 @@ class EntityIdManager {
 			// #2089 (MySQL 5.7 complained with "Data too long for column")
 			$sortkey = mb_substr( $sortkey, 0, 254 );
 
-			$db->insert(
-				SQLStore::ID_TABLE,
-				[
+			$db->newInsertQueryBuilder()
+				->insertInto( SQLStore::ID_TABLE )
+				->row( [
 					'smw_id' => $sequenceValue,
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
@@ -632,10 +632,10 @@ class EntityIdManager {
 					'smw_sortkey' => $sortkey,
 					'smw_sort' => $collator->getSortKey( $sortkey ),
 					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] ),
-					'smw_touched' => $db->timestamp()
-				],
-				__METHOD__
-			);
+					'smw_touched' => $db->timestamp(),
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			$id = $db->insertId();
 
@@ -733,27 +733,27 @@ class EntityIdManager {
 
 		if ( $title instanceof WikiPage ) {
 			$cond = [
-				"smw_hash" => $title->getSha1()
+				'smw_hash' => $title->getSha1(),
 			];
 		} elseif ( is_int( $title ) ) {
 			$cond = [
-				"smw_id" => $title
+				'smw_id' => $title,
 			];
 		} else {
 			$cond = [
-				"smw_title =" . $connection->addQuotes( $title ),
-				"smw_namespace =" . $connection->addQuotes( $namespace ),
-				"smw_iw =" . $connection->addQuotes( $iw ),
-				"smw_subobject =''"
+				'smw_title' => $title,
+				'smw_namespace' => $namespace,
+				'smw_iw' => $iw,
+				'smw_subobject' => '',
 			];
 		}
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			'smw_rev',
-			$cond,
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( 'smw_rev' )
+			->from( SQLStore::ID_TABLE )
+			->where( $cond )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row === false ? 0 : (int)$row->smw_rev;
 	}

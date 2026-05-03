@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\SequenceMapFinder;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use SMW\Utils\HmacSerializer;
 
 /**
@@ -19,6 +21,9 @@ use SMW\Utils\HmacSerializer;
  * @author mwjames
  */
 class SequenceMapFinderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $cache;
 	private $idCacheManager;
@@ -50,18 +55,16 @@ class SequenceMapFinderTest extends TestCase {
 	}
 
 	public function testSetMap() {
-		$row = [
-			'smw_id' => 42,
-			'smw_seqmap' => null
-		];
+		$this->connection->expects( $this->any() )
+			->method( 'escape_bytea' )
+			->willReturn( '' );
+
+		$tables = $rows = $sets = $uniqueIndexFields = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $tables, $rows, $sets, $uniqueIndexFields );
 
 		$this->connection->expects( $this->once() )
-			->method( 'upsert' )
-			->with(
-				$this->anything(),
-				$row,
-				'smw_id',
-				[ 'smw_seqmap' => null ] );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$instance = new SequenceMapFinder(
 			$this->connection,
@@ -69,6 +72,17 @@ class SequenceMapFinderTest extends TestCase {
 		);
 
 		$instance->setMap( 42, [ 'Foo' ] );
+
+		$this->assertSame( [ 'smw_object_aux' ], $tables );
+		$this->assertSame(
+			[ [ 'smw_id' => 42, 'smw_seqmap' => '' ] ],
+			$rows
+		);
+		$this->assertSame( [ [ 'smw_id' ] ], $uniqueIndexFields );
+		$this->assertSame(
+			[ [ 'smw_seqmap' => '' ] ],
+			$sets
+		);
 	}
 
 	public function testFindMapById() {
@@ -83,9 +97,11 @@ class SequenceMapFinderTest extends TestCase {
 			->method( 'fetch' )
 			->willReturn( false );
 
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->connection->expects( $this->once() )
 			->method( 'unescape_bytea' )
@@ -95,8 +111,6 @@ class SequenceMapFinderTest extends TestCase {
 			$this->connection,
 			$this->idCacheManager
 		);
-
-		$sortkey = '';
 
 		$this->assertEquals(
 			[ 'Foo' ],
@@ -115,13 +129,13 @@ class SequenceMapFinderTest extends TestCase {
 		$this->cache->expects( $this->atLeastOnce() )
 			->method( 'save' );
 
+		$whereConditions = [];
+		$capturedSelects = [];
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ], $whereConditions, $capturedSelects );
+
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [ 'smw_id', 'smw_seqmap' ] ),
-				$this->equalTo( [ 'smw_id' => [ 42, 1001 ] ] ) )
-			->willReturn( [ (object)$row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->connection->expects( $this->once() )
 			->method( 'unescape_bytea' )
@@ -133,6 +147,9 @@ class SequenceMapFinderTest extends TestCase {
 		);
 
 		$instance->prefetchSequenceMap( [ 42, 1001 ] );
+
+		$this->assertContains( [ 'smw_id', 'smw_seqmap' ], $capturedSelects );
+		$this->assertContains( [ 'smw_id' => [ 42, 1001 ] ], $whereConditions );
 	}
 
 }

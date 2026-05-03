@@ -221,15 +221,8 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ): void {
 		foreach ( $subject as $i => $field ) {
-			// $columnClasses will be empty if "headers=hide"
-			// was set.
-			if ( array_key_exists( $i, $columnClasses ) ) {
-				$columnClass = $columnClasses[$i];
-			} else {
-				$columnClass = null;
-			}
-
-			$this->getCellForPropVals( $field, $outputMode, $columnClass );
+			// $columnClasses will be empty if "headers=hide" was set.
+			$this->getCellForPropVals( $field, $outputMode, $columnClasses[$i] ?? '' );
 		}
 	}
 
