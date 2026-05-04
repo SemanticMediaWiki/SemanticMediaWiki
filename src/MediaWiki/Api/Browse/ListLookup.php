@@ -195,13 +195,13 @@ class ListLookup extends Lookup {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			$fields,
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$res = $connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$count = 0;
 		$continueOffset = 0;

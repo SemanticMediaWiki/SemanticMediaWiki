@@ -121,13 +121,13 @@ class ArticleLookup extends Lookup {
 			$conditions = 'page_namespace=' . $this->connection->addQuotes( $namespace ) . ' AND (' . $conditions . ')';
 		}
 
-		$res = $this->connection->select(
-			[ 'page' ],
-			$fields,
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( 'page' )
+			->where( [ $conditions ] )
+			->options( $options )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$count = 0;
 		$continueOffset = 0;
