@@ -123,7 +123,7 @@ class ConfigDefaultsParityTest extends TestCase {
 	/**
 	 * Cast a string value (from XML) to the same PHP type as $reference.
 	 */
-	private function castToType( string $value, mixed $reference ): mixed {
+	private function castToType( string $value, mixed $reference ): bool|int|float|string|null {
 		if ( is_bool( $reference ) ) {
 			return filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 		}
