@@ -78,6 +78,7 @@ class PropertyTypeFinder {
 					'smw_iw'        => '',
 					'smw_subobject' => '',
 				] )
+				->limit( 1 )
 				->caller( __METHOD__ )
 				->fetchRow();
 		} catch ( Exception ) {
@@ -103,6 +104,7 @@ class PropertyTypeFinder {
 			->select( [ 'o_serialized' ] )
 			->from( $this->typeTableName )
 			->where( [ 's_id' => $row->smw_id ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

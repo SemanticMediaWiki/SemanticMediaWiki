@@ -752,6 +752,7 @@ class EntityIdManager {
 			->select( 'smw_rev' )
 			->from( SQLStore::ID_TABLE )
 			->where( $cond )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

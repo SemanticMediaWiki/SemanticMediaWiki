@@ -194,6 +194,7 @@ class PropertyTableIdReferenceFinder {
 				->select( [ 's_id' ] )
 				->from( $proptable->getName() )
 				->where( [ 's_id' => $id ] )
+				->limit( 1 )
 				->caller( __METHOD__ )
 				->fetchRow();
 		}
@@ -214,6 +215,7 @@ class PropertyTableIdReferenceFinder {
 				->select( $field )
 				->from( $proptable->getName() )
 				->where( [ 'o_id' => $id ] )
+				->limit( 1 )
 				->caller( __METHOD__ )
 				->fetchRow();
 
@@ -230,6 +232,7 @@ class PropertyTableIdReferenceFinder {
 				->select( [ 's_id' ] )
 				->from( $proptable->getName() )
 				->where( [ 'p_id' => $id ] )
+				->limit( 1 )
 				->caller( __METHOD__ )
 				->fetchRow();
 		}
@@ -245,6 +248,7 @@ class PropertyTableIdReferenceFinder {
 			->select( [ 's_id' ] )
 			->from( SQLStore::QUERY_LINKS_TABLE )
 			->where( [ 'o_id' => $id ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

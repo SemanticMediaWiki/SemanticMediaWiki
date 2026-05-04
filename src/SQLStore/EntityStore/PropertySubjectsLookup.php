@@ -420,6 +420,7 @@ class PropertySubjectsLookup {
 			->select( [ 'usage_count' ] )
 			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
 			->where( [ 'p_id' => $pid ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

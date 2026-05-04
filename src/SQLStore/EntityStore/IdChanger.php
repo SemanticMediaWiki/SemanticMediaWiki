@@ -51,6 +51,7 @@ class IdChanger {
 			->select( '*' )
 			->from( SQLStore::ID_TABLE )
 			->where( [ 'smw_id' => $curid ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 
@@ -160,6 +161,7 @@ class IdChanger {
 					->select( [ 's_id' ] )
 					->from( $proptable->getName() )
 					->where( [ 's_id' => $old_id ] )
+					->limit( 1 )
 					->caller( __METHOD__ )
 					->fetchRow();
 
@@ -203,6 +205,7 @@ class IdChanger {
 						->select( [ $fieldName ] )
 						->from( $proptable->getName() )
 						->where( [ $fieldName => $old_id ] )
+						->limit( 1 )
 						->caller( __METHOD__ )
 						->fetchRow();
 

@@ -112,6 +112,7 @@ class DuplicateFinder {
 					->select( [ 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject' ] )
 					->from( SQLStore::ID_TABLE )
 					->where( [ 'smw_id' => $row->s_id ] )
+					->limit( 1 )
 					->caller( $fname )
 					->fetchRow();
 

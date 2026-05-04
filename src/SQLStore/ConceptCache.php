@@ -229,6 +229,7 @@ class ConceptCache {
 			->select( [ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ] )
 			->from( 'smw_fpt_conc' )
 			->where( [ 's_id' => $cid ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

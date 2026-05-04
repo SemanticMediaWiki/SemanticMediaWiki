@@ -285,6 +285,7 @@ class PropertyTableRowMapper {
 			->select( [ 'cache_date', 'cache_count' ] )
 			->from( 'smw_fpt_conc' )
 			->where( [ 's_id' => $sid ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

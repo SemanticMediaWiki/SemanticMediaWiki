@@ -84,6 +84,7 @@ class SequenceMapFinder {
 			->select( [ 'smw_seqmap' ] )
 			->from( SQLStore::ID_AUXILIARY_TABLE )
 			->where( [ 'smw_id' => $sid ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

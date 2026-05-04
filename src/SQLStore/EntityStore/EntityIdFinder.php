@@ -66,6 +66,7 @@ class EntityIdFinder {
 				'smw_iw' => $dataItem->getInterWiki(),
 				'smw_subobject' => $dataItem->getSubobjectName()
 			] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 
@@ -121,6 +122,7 @@ class EntityIdFinder {
 			->select( $fields )
 			->from( SQLStore::ID_TABLE )
 			->where( [ 'smw_id' => $id ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 
@@ -200,6 +202,7 @@ class EntityIdFinder {
 				'smw_iw' => $iw,
 				'smw_subobject' => $subobjectName
 			] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

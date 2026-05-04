@@ -236,6 +236,7 @@ class RedirectStore {
 			->select( [ 'o_id' ] )
 			->from( self::TABLE_NAME )
 			->where( [ 's_title' => $title, 's_namespace' => $namespace ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 
@@ -249,6 +250,7 @@ class RedirectStore {
 			->select( [ 'o_id' ] )
 			->from( self::TABLE_NAME )
 			->where( [ 's_title' => $title, 's_namespace' => $namespace, 'o_id' => $id ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

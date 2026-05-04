@@ -154,6 +154,7 @@ class DependencyLinksValidator {
 				'p.s_id' => $list,
 				'smw_touched > ' . $connection->addQuotes( $touched ),
 			] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

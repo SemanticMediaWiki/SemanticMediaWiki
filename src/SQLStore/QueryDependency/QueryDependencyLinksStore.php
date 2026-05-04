@@ -474,6 +474,7 @@ class QueryDependencyLinksStore {
 			->select( [ 's_id' ] )
 			->from( SQLStore::QUERY_LINKS_TABLE )
 			->where( [ 's_id' => $sid ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

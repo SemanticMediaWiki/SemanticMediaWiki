@@ -232,6 +232,7 @@ class PropertyStatisticsStore {
 			->select( [ 'usage_count' ] )
 			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
 			->where( [ 'p_id' => $propertyId ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

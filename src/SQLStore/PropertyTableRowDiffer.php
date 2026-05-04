@@ -197,6 +197,7 @@ class PropertyTableRowDiffer {
 					->select( 's_id' )
 					->from( $propertyTable->getName() )
 					->where( [ 's_id' => $sid ] )
+					->limit( 1 )
 					->caller( __METHOD__ )
 					->fetchRow();
 

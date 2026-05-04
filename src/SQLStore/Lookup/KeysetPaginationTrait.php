@@ -27,6 +27,7 @@ trait KeysetPaginationTrait {
 			->from( SQLStore::ID_TABLE )
 			->field( 'smw_sort' )
 			->where( [ 'smw_id' => $cursorId ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

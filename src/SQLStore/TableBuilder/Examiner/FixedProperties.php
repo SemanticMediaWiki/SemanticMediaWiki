@@ -91,6 +91,7 @@ class FixedProperties {
 				'smw_namespace' => SMW_NS_PROPERTY,
 				'smw_subobject' => ''
 			] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

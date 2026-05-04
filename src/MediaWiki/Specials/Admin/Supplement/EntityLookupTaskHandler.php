@@ -300,6 +300,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			] )
 			->from( SQLStore::FT_SEARCH_TABLE )
 			->where( [ 's_id' => $id ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

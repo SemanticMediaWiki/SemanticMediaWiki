@@ -165,7 +165,7 @@ class IdEntityFinder {
 			->caller( __METHOD__ );
 
 		if ( $selectRow ) {
-			return $queryBuilder->fetchRow();
+			return $queryBuilder->limit( 1 )->fetchRow();
 		}
 
 		return $queryBuilder->fetchResultSet();

@@ -86,6 +86,7 @@ class PredefinedProperties {
 					'smw_namespace' => SMW_NS_PROPERTY,
 					'smw_subobject' => ''
 				] )
+				->limit( 1 )
 				->caller( __METHOD__ )
 				->fetchRow();
 
@@ -113,6 +114,7 @@ class PredefinedProperties {
 			] )
 			->from( SQLStore::ID_TABLE )
 			->where( [ 'smw_id' => $id ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 
@@ -152,6 +154,7 @@ class PredefinedProperties {
 			->select( [ 'p_id' ] )
 			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
 			->where( [ 'p_id' => $id ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 

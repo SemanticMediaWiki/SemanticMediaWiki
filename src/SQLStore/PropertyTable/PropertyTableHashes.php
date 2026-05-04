@@ -103,6 +103,7 @@ class PropertyTableHashes {
 			->select( [ 'smw_proptable_hash' ] )
 			->from( SQLStore::ID_TABLE )
 			->where( [ 'smw_id' => $id ] )
+			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchRow();
 
