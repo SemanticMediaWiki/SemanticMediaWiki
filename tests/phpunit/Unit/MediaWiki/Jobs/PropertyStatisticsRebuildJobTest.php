@@ -9,6 +9,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -22,6 +23,8 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class PropertyStatisticsRebuildJobTest extends TestCase {
+
+	use MockWriteQueryBuilderTrait;
 
 	private $testEnvironment;
 
@@ -41,6 +44,14 @@ class PropertyStatisticsRebuildJobTest extends TestCase {
 		$connection->expects( $this->any() )
 			->method( 'select' )
 			->willReturn( new FakeResultWrapper( [ $row ] ) );
+
+		// PropertyStatisticsRebuilder::rebuild() calls deleteAll() and
+		// insertUsageCount() on PropertyStatisticsStore, which now route
+		// through newDeleteQueryBuilder() and newInsertQueryBuilder().
+		$connection->method( 'newDeleteQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockDeleteQueryBuilder() );
+		$connection->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockInsertQueryBuilder() );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

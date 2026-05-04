@@ -5,6 +5,7 @@ namespace SMW\SQLStore;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * Simple implementation of PropertyStatisticsTable using MediaWikis
@@ -86,17 +87,15 @@ class PropertyStatisticsStore {
 			return true;
 		}
 
-		$this->connection->update(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[
+		$this->connection->newUpdateQueryBuilder()
+			->update( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->set( [
 				$this->safeIncrement( 'usage_count', $usageVal ),
-				$this->safeIncrement( 'null_count', $nullVal )
-			],
-			[
-				'p_id' => $pid
-			],
-			__METHOD__
-		);
+				$this->safeIncrement( 'null_count', $nullVal ),
+			] )
+			->where( [ 'p_id' => $pid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		return true;
 	}
@@ -196,20 +195,21 @@ class PropertyStatisticsStore {
 			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
-		$this->connection->upsert(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[
+		$this->connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->row( [
 				'usage_count' => $usageCount,
-				'null_count' => $nullCount,
-				'p_id' => $propertyId,
-			],
-			[ [ 'p_id' ] ],
-			[
+				'null_count'  => $nullCount,
+				'p_id'        => $propertyId,
+			] )
+			->onDuplicateKeyUpdate()
+			->uniqueIndexFields( [ 'p_id' ] )
+			->set( [
 				'usage_count' => $usageCount,
-				'null_count' => $nullCount,
-			],
-			__METHOD__
-		);
+				'null_count'  => $nullCount,
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		return true;
 	}
@@ -228,16 +228,12 @@ class PropertyStatisticsStore {
 			return 0;
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[
-				'usage_count'
-			],
-			[
-				'p_id' => $propertyId,
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'usage_count' ] )
+			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->where( [ 'p_id' => $propertyId ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row !== false ? (int)$row->usage_count : 0;
 	}
@@ -262,17 +258,12 @@ class PropertyStatisticsStore {
 			return [];
 		}
 
-		$propertyStatistics = $this->connection->select(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[
-				'usage_count',
-				'p_id',
-			],
-			[
-				'p_id' => $propertyIds,
-			],
-			__METHOD__
-		);
+		$propertyStatistics = $this->connection->newSelectQueryBuilder()
+			->select( [ 'usage_count', 'p_id' ] )
+			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->where( [ 'p_id' => $propertyIds ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$usageCounts = [];
 
@@ -292,15 +283,13 @@ class PropertyStatisticsStore {
 	 * Deletes all rows in the table.
 	 *
 	 * @since 1.9
-	 *
-	 * @return bool Success indicator
 	 */
-	public function deleteAll() {
-		return $this->connection->delete(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			'*',
-			__METHOD__
-		);
+	public function deleteAll(): void {
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->where( IDatabase::ALL_ROWS )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	private function log( string $message, array $context = [] ): void {
