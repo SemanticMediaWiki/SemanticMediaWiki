@@ -86,15 +86,15 @@ class PropertyStatisticsRebuilder {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[ 'smw_id', 'smw_title' ],
-			[
+		$res = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_namespace' => SMW_NS_PROPERTY,
 				'smw_subobject' => ''
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$propCount = $res->numRows();
 
@@ -162,12 +162,12 @@ class PropertyStatisticsRebuilder {
 
 		// Select all (incl. NULL since for example blob table can have a null
 		// for when only the hash field is used, substract NULL in a second step)
-		$row = $connection->selectRow(
-			$tableName,
-			'Count(*) as count',
-			$condition,
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( 'Count(*) as count' )
+			->from( $tableName )
+			->where( $condition )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$usageCount = $row->count;
@@ -178,12 +178,12 @@ class PropertyStatisticsRebuilder {
 			$condition[] = "$field IS NULL";
 		}
 
-		$nRow = $connection->selectRow(
-			$tableName,
-			'Count(*) as count',
-			$condition,
-			__METHOD__
-		);
+		$nRow = $connection->newSelectQueryBuilder()
+			->select( 'Count(*) as count' )
+			->from( $tableName )
+			->where( $condition )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $nRow !== false ) {
 			$nullCount = $nRow->count;
