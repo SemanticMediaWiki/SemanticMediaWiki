@@ -9,7 +9,6 @@ use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Setup\ConfigBootstrap;
 use SMW\Tests\Utils\SpyLogger;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\ValidatorFactory;
@@ -83,24 +82,20 @@ class TestEnvironment {
 	 * @since 3.2
 	 */
 	public static function loadDefaultSettings( array $defaultSettingKeys = [] ): void {
-		$settings = require $GLOBALS['smwgIP'] . '/src/DefaultSettings.php';
+		if ( $defaultSettingKeys === [] ) {
+			// Historical empty-array form snapshot every entry of DefaultSettings.php
+			// into TestConfig. After the migration to extension.json, defaults are
+			// already in $GLOBALS by extension load time, and no caller currently
+			// uses the empty-array form (verified by grep at PR-5 time). The
+			// empty branch is therefore a no-op.
+			return;
+		}
 
-		if ( $defaultSettingKeys !== [] ) {
-			// Seed computed defaults so keys migrated out of DefaultSettings.php
-			// (e.g. feature-flag constants) are available via $GLOBALS.
-			ConfigBootstrap::seedComputedDefaults();
-
-			$copy = [];
-
-			foreach ( $defaultSettingKeys as $key ) {
-				if ( array_key_exists( $key, $settings ) ) {
-					$copy[$key] = $settings[$key];
-				} elseif ( isset( $GLOBALS[$key] ) ) {
-					$copy[$key] = $GLOBALS[$key];
-				}
+		$settings = [];
+		foreach ( $defaultSettingKeys as $key ) {
+			if ( isset( $GLOBALS[$key] ) ) {
+				$settings[$key] = $GLOBALS[$key];
 			}
-
-			$settings = $copy;
 		}
 
 		( new TestConfig() )->set( $settings );

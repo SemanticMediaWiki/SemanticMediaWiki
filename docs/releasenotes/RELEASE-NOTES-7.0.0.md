@@ -32,6 +32,10 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
   Note: `enableSemantics()` itself still exists but is deprecated as a no-op (see Deprecations).
 
+* **`SMW\SemanticMediaWiki::getDefaultSettings()` and `SMW\SemanticMediaWiki::setupGlobals()` removed.** SMW's defaults now come from `extension.json`'s `config` block (and a small registration callback for constants/paths) instead of the bespoke `src/DefaultSettings.php` array + `setupGlobals()` seeding. External code that called `getDefaultSettings()` should read globals directly via `$GLOBALS['smwgFoo']` or via `SMW\Settings::getInstance()->get('smwgFoo')`.
+
+* **`src/DefaultSettings.php` removed.** Per-setting documentation that previously lived as inline comments in this file now lives at `docs/config.md` (one section per setting) and in the manifest's `description` field. Authoring `LocalSettings.php` is unchanged — `$smwgFoo = …;` continues to work for every setting that ever did.
+
 * **`$smwgSchemaTypes` removed.** Register custom schema types through the
   `SMW::Schema::RegisterSchemaTypes` hook (available since 3.2). Any entries
   left in `$smwgSchemaTypes` after upgrade are silently ignored — port them
@@ -244,6 +248,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### Internal improvements
 
+* **Config defaults migrated to `extension.json`.** All `$smwg*` defaults are now declared in the manifest's `config` block (with `merge_strategy` declarations on compound arrays so partial writes from `LocalSettings.php` merge cleanly with defaults — fixes #6649 and the partial-write class behind #6726). Settings whose values can't be expressed as static JSON (PHP constants, `$smwgIP`-relative paths, class constants) are seeded by a small `SMW\Setup\ConfigBootstrap` callback at registration time.
 * Native PHP type coverage significantly expanded across the entire codebase, including return types, parameter types, property types, and constructor promotion with `readonly`
 * PHPUnit test suite reorganized into `Unit/` and `Integration/` directories
 * Numerous static analysis (phan) errors fixed

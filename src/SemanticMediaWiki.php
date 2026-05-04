@@ -4,7 +4,6 @@ namespace SMW;
 
 use SMW\Services\ServicesFactory;
 use SMW\Setup\ConfigBootstrap;
-use UnexpectedValueException;
 
 /**
  * @codeCoverageIgnore
@@ -25,7 +24,6 @@ class SemanticMediaWiki {
 		if ( !defined( 'SMW_VERSION' ) && isset( $credits['version'] ) ) {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupDefines();
-			self::setupGlobals();
 			ConfigBootstrap::seedComputedDefaults();
 			require_once __DIR__ . "/GlobalFunctions.php";
 		}
@@ -90,37 +88,6 @@ class SemanticMediaWiki {
 		require_once __DIR__ . '/Defines.php';
 	}
 
-	/**
-	 * Get the array that DefaultSettings.php is supposed to return.  We did not put it inline here
-	 * because there are references to that file online for documentation.
-	 *
-	 * @return array
-	 * @throws UnexpectedValueException
-	 */
-	public static function getDefaultSettings(): array {
-		static $settings = null;
-		if ( $settings === null ) {
-			$settings = include __DIR__ . '/DefaultSettings.php';
-			if ( !is_array( $settings ) ) {
-				throw new UnexpectedValueException( "Including DefaultSettings.php did not return an array." );
-			}
-		}
-		return $settings;
-	}
-
-	/**
-	 * Set up $GLOBALS according to what is found in DefaultSettings.php
-	 *
-	 * @return void
-	 */
-	public static function setupGlobals(): void {
-		$defaultSettings = self::getDefaultSettings();
-		foreach ( $defaultSettings as $key => $value ) {
-			if ( !isset( $GLOBALS[$key] ) ) {
-				$GLOBALS[$key] = $value;
-			}
-		}
-	}
 }
 
 /**
