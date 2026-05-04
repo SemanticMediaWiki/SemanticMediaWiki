@@ -70,24 +70,19 @@ class Rebuilder {
 	public function select( Store $store, array $conditions ): array {
 		$connection = $store->getConnection( 'mw.db' );
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id',
-				'smw_iw',
-				'smw_rev'
-			],
-			$conditions,
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+		$res = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_iw', 'smw_rev' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
-		$last = $connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$last = $connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		return [ $res, $last ];
 	}
