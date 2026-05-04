@@ -270,7 +270,7 @@ class GroupFormatter {
 					continue;
 				}
 
-				if ( !isset( $group ) ) {
+				if ( $group === null ) {
 					continue;
 				}
 
