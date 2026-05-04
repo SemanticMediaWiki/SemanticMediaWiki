@@ -248,6 +248,7 @@ class GroupFormatter {
 			foreach ( $schemaDefinition->get( 'groups' ) as $data ) {
 
 				$message_key = '';
+				$group = null;
 
 				if ( isset( $data['properties'] ) ) {
 					$property_keys = $data['properties'];
