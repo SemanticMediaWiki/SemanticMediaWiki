@@ -9,6 +9,7 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\DependencyLinksValidator
@@ -20,6 +21,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class DependencyLinksValidatorTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $dataItemFactory;
@@ -70,17 +73,25 @@ class DependencyLinksValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$firstSelectBuilder = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'smw_id' => 42, 'smw_subobject' => '_foo', 'smw_touched' => '99999' ] ]
+		);
+
+		$secondSelectBuilder = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'smw_id' => 42 ] ]
+		);
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( (object)[ 'smw_id' => 42 ] );
+		$connection->expects( $this->exactly( 2 ) )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnOnConsecutiveCalls( $firstSelectBuilder, $secondSelectBuilder );
 
-		$connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( [ (object)[ 'smw_id' => 42, 'smw_subobject' => '_foo', 'smw_touched' => '99999' ] ] );
+		$connection->method( 'addQuotes' )->willReturnCallback(
+			static fn ( $v ) => "'" . $v . "'"
+		);
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )

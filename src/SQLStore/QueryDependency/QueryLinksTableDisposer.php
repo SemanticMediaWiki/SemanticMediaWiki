@@ -58,18 +58,13 @@ class QueryLinksTableDisposer {
 	 * @return ResultIterator
 	 */
 	public function newOutdatedQueryLinksResultIterator(): ResultIterator {
-		$res = $this->connection->select(
-			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
-			's_id as id',
-			[
-				"smw_subobject=''"
-			],
-			__METHOD__,
-			[],
-			[
-				SQLStore::QUERY_LINKS_TABLE => [ 'INNER JOIN', "s_id=smw_id" ]
-			]
-		);
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( [ 'id' => 's_id' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->join( SQLStore::ID_TABLE, null, [ 's_id=smw_id' ] )
+			->where( [ "smw_subobject=''" ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->iteratorFactory->newResultIterator( $res );
 	}
@@ -83,18 +78,13 @@ class QueryLinksTableDisposer {
 	 * @return ResultIterator
 	 */
 	public function newUnassignedQueryLinksResultIterator(): ResultIterator {
-		$res = $this->connection->select(
-			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
-			's_id as id',
-			[
-				"smw_id IS NULL"
-			],
-			__METHOD__,
-			[],
-			[
-				SQLStore::ID_TABLE => [ 'LEFT JOIN', "smw_id=s_id" ]
-			]
-		);
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( [ 'id' => 's_id' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->leftJoin( SQLStore::ID_TABLE, null, [ 'smw_id=s_id' ] )
+			->where( [ 'smw_id IS NULL' ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->iteratorFactory->newResultIterator( $res );
 	}
@@ -113,23 +103,19 @@ class QueryLinksTableDisposer {
 
 		if ( $this->onTransactionIdle ) {
 			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ): void {
-				$this->connection->delete(
-					SQLStore::QUERY_LINKS_TABLE,
-					[
-						's_id' => $id
-					],
-					$fname
-				);
+				$this->connection->newDeleteQueryBuilder()
+					->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+					->where( [ 's_id' => $id ] )
+					->caller( $fname )
+					->execute();
 			} );
 		}
 
-		$this->connection->delete(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				's_id' => $id
-			],
-			$fname
-		);
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $id ] )
+			->caller( $fname )
+			->execute();
 	}
 
 }
