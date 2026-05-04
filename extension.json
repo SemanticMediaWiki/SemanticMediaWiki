@@ -782,7 +782,7 @@
 		"DeprecationNotices": {
 			"value": [],
 			"description": "Registry of deprecation notices shown in the Special:Admin \"Deprecation notices\" panel.",
-			"merge_strategy": "provide_default"
+			"merge_strategy": "array_plus"
 		},
 		"DetectOutdatedData": {
 			"value": false,
