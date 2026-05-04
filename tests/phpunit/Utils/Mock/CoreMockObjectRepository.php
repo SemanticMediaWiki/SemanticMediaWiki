@@ -403,6 +403,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 			'refreshData',
 			'getStatistics',
 			'getQueryResult',
+			'fetchQueryResult',
 			'getPropertiesSpecial',
 			'getUnusedPropertiesSpecial',
 			'getWantedPropertiesSpecial',
