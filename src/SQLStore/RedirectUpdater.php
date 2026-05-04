@@ -11,7 +11,6 @@ use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\Store;
 use SMW\Utils\Flag;
-use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GPL-2.0-or-later
@@ -442,20 +441,20 @@ class RedirectUpdater {
 		// does too much; fall back to general case below.
 		if ( $sid != 0 ) { // change id entry to refer to the new title
 			// Note that this also changes the reference for internal objects (subobjects)
-			$connection->update(
-				SQLStore::ID_TABLE,
-				[
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [
 					'smw_title' => $target->getDBkey(),
 					'smw_namespace' => $target->getNamespace(),
-					'smw_iw' => ''
-				],
-				[
+					'smw_iw' => '',
+				] )
+				->where( [
 					'smw_title' => $source->getDBkey(),
 					'smw_namespace' => $source->getNamespace(),
-					'smw_iw' => ''
-				],
-				__METHOD__
-			);
+					'smw_iw' => '',
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			$this->moveSubobjects(
 				$source->getDBkey(),
@@ -539,21 +538,21 @@ class RedirectUpdater {
 		}
 
 		// Associate internal objects (subobjects) with the new title:
-		$table = $connection->tableName( SQLStore::ID_TABLE );
-
-		$values = [
-			'smw_title' => $target->getDBkey(),
-			'smw_namespace' => $target->getNamespace(),
-			'smw_iw' => ''
-		];
-
-		$sql = "UPDATE $table SET " . $connection->makeList( $values, LIST_SET ) .
-			' WHERE smw_title = ' . $connection->addQuotes( $source->getDBkey() ) . ' AND ' .
-			'smw_namespace = ' . $connection->addQuotes( $source->getNamespace() ) . ' AND ' .
-			'smw_iw = ' . $connection->addQuotes( '' ) . ' AND ' .
-			'smw_subobject != ' . $connection->addQuotes( '' ); // The "!=" is why we cannot use MW array syntax here
-
-		$connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [
+				'smw_title' => $target->getDBkey(),
+				'smw_namespace' => $target->getNamespace(),
+				'smw_iw' => '',
+			] )
+			->where( [
+				'smw_title' => $source->getDBkey(),
+				'smw_namespace' => $source->getNamespace(),
+				'smw_iw' => '',
+				$connection->expr( 'smw_subobject', '!=', '' ),
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$this->moveSubobjects(
 			$source->getDBkey(),
