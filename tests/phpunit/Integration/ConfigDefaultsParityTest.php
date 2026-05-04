@@ -69,6 +69,15 @@ class ConfigDefaultsParityTest extends TestCase {
 					// Intentionally overridden in the test environment; skip.
 					continue;
 				}
+				// Override equals the manifest default. Either the override is
+				// redundant (remove it from phpunit.xml.dist) or the manifest
+				// drifted to match it (a real bug we'd otherwise miss). Fail
+				// loudly rather than silently passing.
+				$this->fail(
+					"phpunit.xml.dist `<var name=\"$globalKey\">` equals the "
+					. "manifest default. Either remove the redundant override, or "
+					. "investigate whether the manifest default has drifted."
+				);
 			}
 
 			$this->assertArrayHasKey(
