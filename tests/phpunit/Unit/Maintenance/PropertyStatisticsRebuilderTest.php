@@ -10,8 +10,8 @@ use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Maintenance\PropertyStatisticsRebuilder
@@ -23,6 +23,8 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class PropertyStatisticsRebuilderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( Store::class )
@@ -53,10 +55,6 @@ class PropertyStatisticsRebuilderTest extends TestCase {
 			'smw_id' => 9999
 		];
 
-		$resultWrapper = new FakeResultWrapper(
-			[ (object)$res ]
-		);
-
 		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -69,18 +67,12 @@ class PropertyStatisticsRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( $resultWrapper );
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->with(
-				$this->stringContains( $tableName ),
-				$this->anything(),
-				[ 'p_id' => 9999 ],
-				$this->anything() )
-			->willReturnOnConsecutiveCalls( $uRow, $nRow );
+		$database->method( 'newSelectQueryBuilder' )
+			->willReturnOnConsecutiveCalls(
+				$this->createMockSelectQueryBuilder( [ (object)$res ] ),
+				$this->createMockSelectQueryBuilder( [ $uRow ] ),
+				$this->createMockSelectQueryBuilder( [ $nRow ] )
+			);
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

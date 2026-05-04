@@ -516,7 +516,11 @@ class ExportController {
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( '' ) );
 
-		$end = $dbr->selectField( 'page', 'max(page_id)', false, __METHOD__ );
+		$end = $dbr->newSelectQueryBuilder()
+			->select( 'max(page_id)' )
+			->from( 'page' )
+			->caller( __METHOD__ )
+			->fetchField();
 		$a_count = 0; // DEBUG
 		$d_count = 0; // DEBUG
 		$delaycount = $delayeach;
@@ -594,13 +598,19 @@ class ExportController {
 				$query .= 'page_namespace = ' . $dbr->addQuotes( $ns );
 			}
 		}
-		$res = $dbr->select(
-			'page',
-			'page_id,page_title,page_namespace',
-			$query,
-			'SMW::RDF::PrintPageList',
-			[ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ]
-		);
+		$queryBuilder = $dbr->newSelectQueryBuilder()
+			->select( [ 'page_id', 'page_title', 'page_namespace' ] )
+			->from( 'page' )
+			->orderBy( 'page_id', 'ASC' )
+			->offset( $offset )
+			->limit( $limit )
+			->caller( 'SMW::RDF::PrintPageList' );
+
+		if ( $query !== '' ) {
+			$queryBuilder->where( $query );
+		}
+
+		$res = $queryBuilder->fetchResultSet();
 		$foundpages = false;
 
 		foreach ( $res as $row ) {
