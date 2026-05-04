@@ -66,13 +66,20 @@ class TitleLookup {
 			$options = [ 'USE INDEX' => 'PRIMARY' ];
 		}
 
-		$res = $this->connection->select(
-			$tableName,
-			$fields,
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$qb = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( $tableName )
+			->options( $options )
+			->caller( __METHOD__ );
+
+		// $conditions is '' on the category branch (no WHERE clause); only
+		// invoke where() when there is something to add. where([]) is a no-op
+		// so the array branch does not need a guard.
+		if ( $conditions !== '' ) {
+			$qb->where( $conditions );
+		}
+
+		$res = $qb->fetchResultSet();
 
 		return $this->makeTitlesFromSelection( $res );
 	}
@@ -83,17 +90,12 @@ class TitleLookup {
 	 * @return Title[]
 	 */
 	public function getRedirectPages(): array {
-		$conditions = [];
-		$options = [];
-
-		$res = $this->connection->select(
-			[ 'page', 'redirect' ],
-			[ 'page_namespace', 'page_title' ],
-			$conditions,
-			__METHOD__,
-			$options,
-			[ 'page' => [ 'INNER JOIN', [ 'page_id=rd_from' ] ] ]
-		);
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( [ 'page_namespace', 'page_title' ] )
+			->rawTables( [ 'page', 'redirect' ] )
+			->joinConds( [ 'page' => [ 'INNER JOIN', [ 'page_id=rd_from' ] ] ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->makeTitlesFromSelection( $res );
 	}
@@ -124,13 +126,13 @@ class TitleLookup {
 			$options = [ 'ORDER BY' => 'page_id ASC', 'USE INDEX' => 'PRIMARY' ];
 		}
 
-		$res = $this->connection->select(
-			$tableName,
-			$fields,
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( $tableName )
+			->where( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->makeTitlesFromSelection( $res );
 	}
@@ -149,12 +151,11 @@ class TitleLookup {
 			$var = 'MAX(page_id)';
 		}
 
-		return (int)$this->connection->selectField(
-			$tableName,
-			$var,
-			false,
-			__METHOD__
-		);
+		return (int)$this->connection->newSelectQueryBuilder()
+			->select( [ $var ] )
+			->from( $tableName )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
 	/**

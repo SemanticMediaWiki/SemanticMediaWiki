@@ -13,6 +13,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -25,6 +26,8 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class BrowseTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $apiFactory;
@@ -116,6 +119,9 @@ class BrowseTest extends TestCase {
 		$connection->expects( $this->any() )
 			->method( 'select' )
 			->willReturn( [] );
+
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 
 		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
