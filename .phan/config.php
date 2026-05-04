@@ -11,7 +11,6 @@ $config['suppress_issue_types'] = array_merge(
 		// checks to be incrementally fixed and enabled without massive changes.
 		'PhanImpossibleTypeComparison',
 		'PhanParamSignatureMismatch',
-		'PhanPluginLoopVariableReuse',
 		'PhanPluginRedundantAssignment',
 		'PhanPossiblyUndeclaredVariable',
 		'PhanStaticCallToNonStatic',

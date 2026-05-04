@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
+use SMW\DataItems\Container;
 use SMW\DataItems\DataItem;
-use SMW\DIContainer;
 use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\MediaWiki\Connection\OptionsBuilder;
 use SMW\RequestOptions;
@@ -37,7 +37,7 @@ class TraversalPropertyLookup {
 	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( $dataItem instanceof DIContainer ) {
+		if ( $dataItem instanceof Container ) {
 			throw new RuntimeException( "DIContainer: " . $dataItem->getSerialization() );
 		}
 
