@@ -112,7 +112,7 @@ class ConceptCache {
 		// MySQL just uses INSERT IGNORE, no extra conditions
 		$where = $querySegment->where;
 
-		if ( $db->getType() == 'postgres' ) {
+		if ( $db->getType() === 'postgres' ) {
 			// PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 			// This code doesn't work and has created all sorts of issues therefore use LEFT JOIN instead
 			// http://people.planetpostgresql.org/dfetter/index.php?/archives/48-Adding-Only-New-Rows-INSERT-IGNORE,-Done-Right.html

@@ -126,4 +126,68 @@ class TemporaryTableBuilderTest extends TestCase {
 		$instance->drop( 'Foo' );
 	}
 
+	public function testCreateOnSQLite(): void {
+		$this->connection->method( 'isType' )
+			->willReturnCallback( static fn ( $type ) => $type === 'sqlite' );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with(
+				$this->stringContains( 'CREATE TEMP TABLE IF NOT EXISTS Foo' ),
+				$this->anything(),
+				$this->anything()
+			);
+
+		$instance = new TemporaryTableBuilder( $this->connection );
+		$instance->create( 'Foo' );
+	}
+
+	public function testDropOnSQLite(): void {
+		$this->connection->method( 'isType' )
+			->willReturnCallback( static fn ( $type ) => $type === 'sqlite' );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with(
+				'DROP TABLE Foo',
+				$this->anything(),
+				$this->anything()
+			);
+
+		$instance = new TemporaryTableBuilder( $this->connection );
+		$instance->drop( 'Foo' );
+	}
+
+	public function testDropOnPostgres(): void {
+		$this->connection->method( 'isType' )
+			->willReturnCallback( static fn ( $type ) => $type === 'postgres' );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with(
+				'DROP TABLE IF EXISTS Foo',
+				$this->anything(),
+				$this->anything()
+			);
+
+		$instance = new TemporaryTableBuilder( $this->connection );
+		$instance->drop( 'Foo' );
+	}
+
+	public function testDropOnMySQL(): void {
+		$this->connection->method( 'isType' )
+			->willReturn( false );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with(
+				'DROP TEMPORARY TABLE Foo',
+				$this->anything(),
+				$this->anything()
+			);
+
+		$instance = new TemporaryTableBuilder( $this->connection );
+		$instance->drop( 'Foo' );
+	}
+
 }

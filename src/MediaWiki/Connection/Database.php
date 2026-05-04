@@ -303,7 +303,11 @@ class Database {
 	}
 
 	/**
-	 * Execute a SQL query using the given DB connection handle.
+	 * Execute a SQL query using the given DB connection handle. Wraps the
+	 * passthrough call in `Database::AUTO_COMMIT` flag handling so that a
+	 * caller that requested `AUTO_COMMIT` (e.g. temp-table DDL) gets the
+	 * underlying `DBO_TRX` flag flipped off for the duration of the query
+	 * and restored afterward.
 	 *
 	 * @see IDatabase::query()
 	 *

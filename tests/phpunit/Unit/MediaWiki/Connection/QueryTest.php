@@ -314,7 +314,7 @@ class QueryTest extends TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
 			->with(
-				$this->isType( 'string' ),
+				$this->stringContains( 'SELECT * FROM Foo' ),
 				'Foo' );
 
 		$instance->execute( 'Foo' );

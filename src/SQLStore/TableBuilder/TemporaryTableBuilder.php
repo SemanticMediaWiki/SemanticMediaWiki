@@ -109,8 +109,11 @@ class TemporaryTableBuilder {
 				. "END\$\$";
 		}
 
-		// SQLite: TEMP keyword (TEMPORARY also accepted) and no engine clause;
-		// dedup is handled later via INSERT OR IGNORE on a PRIMARY KEY column.
+		// SQLite: TEMP keyword (TEMPORARY also accepted) and no engine clause.
+		// `INTEGER PRIMARY KEY` is a SQLite-specific rowid alias — the column
+		// accepts explicit values supplied via INSERT (HierarchyTempTableBuilder
+		// supplies them) and rejects duplicates, so dedup later via
+		// INSERT OR IGNORE works without an extra constraint clause.
 		if ( $this->connection->isType( 'sqlite' ) ) {
 			return 'CREATE TEMP TABLE IF NOT EXISTS ' . $tableName . ' ( id INTEGER PRIMARY KEY )';
 		}

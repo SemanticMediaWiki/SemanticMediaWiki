@@ -407,12 +407,8 @@ class DatabaseTest extends TestCase {
 	public function testDoQueryWithAutoCommit() {
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ] )
+			->setMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'query' ] )
 			->getMockForAbstractClass();
-
-		$database->expects( $this->any() )
-			->method( 'getType' )
-			->willReturn( 'mysql' );
 
 		$database->expects( $this->any() )
 			->method( 'getFlag' )
