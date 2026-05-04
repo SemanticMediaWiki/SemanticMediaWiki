@@ -89,10 +89,10 @@ class ConfigDefaultsParityTest extends TestCase {
 			$expected = $entry['value'];
 
 			// Apply path: true semantics. Mirrors MW core's
-			// ExtensionProcessor::applyPath (includes/registration/ExtensionProcessor.php:856) —
-			// shallow: a scalar gets the dir prefixed; a flat array gets each
-			// value prefixed. Settings whose value would need recursion don't use
-			// path: true (they're handled by ConfigBootstrap instead).
+			// ExtensionProcessor::applyPath — shallow: a scalar gets the dir
+			// prefixed; a flat array gets each value prefixed. Settings whose
+			// value would need recursion don't use path: true (they're
+			// handled by ConfigBootstrap instead).
 			if ( !empty( $entry['path'] ) ) {
 				$dir = realpath( dirname( self::MANIFEST ) );
 				if ( is_array( $expected ) ) {

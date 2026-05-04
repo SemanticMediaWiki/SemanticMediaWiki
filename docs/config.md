@@ -807,17 +807,18 @@ Directories from which SMW reads import-content definitions during setup.
 For all files in these directories, import is initiated when
 `$smwgImportReqVersion` matches the version declared in the file.
 
+The manifest declares `array_plus`, so users register additional
+vocabularies without dropping the built-in `'smw'` entry:
+
+```php
+$GLOBALS['smwgImportFileDirs']['custom-vocab'] = __DIR__ . '/custom';
+```
+
 **Since:** 2.5
 **Default:**
 
 ```php
 [ 'smw' => '<smwgIP>/data/import' ]
-```
-
-Add custom vocabularies via `array_plus` semantics:
-
-```php
-$GLOBALS['smwgImportFileDirs']['custom-vocab'] = __DIR__ . '/custom';
 ```
 
 **Related:** [`src/Importer/README.md`](../src/Importer/README.md) — full import-format docs.
