@@ -33,14 +33,14 @@ class TableFieldUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [
 				'smw_touched' => $connection->timestamp( $tz )
-			],
-			[ 'smw_id' => $id ],
-			__METHOD__
-		);
+			] )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$connection->endAtomicTransaction( __METHOD__ );
 	}
@@ -61,16 +61,16 @@ class TableFieldUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [
 				'smw_sortkey' => mb_strcut( $searchKey, 0, 255 ),
 				'smw_sort'    => substr( $this->collator->getSortKey( $searchKey ), 0, 255 ),
 				'smw_touched' => $connection->timestamp()
-			],
-			[ 'smw_id' => $id ],
-			__METHOD__
-		);
+			] )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$connection->endAtomicTransaction( __METHOD__ );
 	}
@@ -86,17 +86,17 @@ class TableFieldUpdater {
 	public function updateRevField( $sid, $rev_id ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [
 				'smw_rev' => $rev_id,
 				'smw_touched' => $connection->timestamp()
-			],
-			[
+			] )
+			->where( [
 				'smw_id' => $sid
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
@@ -111,17 +111,17 @@ class TableFieldUpdater {
 	public function updateIwField( $sid, $iw, $hash ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [
 				'smw_iw' => $iw,
 				'smw_hash' => $hash
-			],
-			[
+			] )
+			->where( [
 				'smw_id' => $sid
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }
