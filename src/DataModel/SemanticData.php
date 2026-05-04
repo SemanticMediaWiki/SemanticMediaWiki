@@ -254,10 +254,7 @@ class SemanticData implements JsonDeserializable {
 	 * @return bool
 	 */
 	public function hasProperty( Property $property ): bool {
-		$key = $property->getKey();
-		if ( $key === null ) {
-			return false;
-		}
+		$key = $property->getKey() ?? '';
 		return isset( $this->mProperties[$key] ) ||
 			array_key_exists( $key, $this->mProperties );
 	}
