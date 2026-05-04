@@ -42,7 +42,8 @@ class TextChangeUpdater {
 	}
 
 	/**
-	 * @note See comments in src/DefaultSettings.php on the smwgFulltextDeferredUpdate setting
+	 * @note See `docs/config.md` and the `description` field for the
+	 *  `smwgFulltextDeferredUpdate` setting in `extension.json`.
 	 *
 	 * @since 2.5
 	 *

@@ -241,7 +241,7 @@ class NamespaceManagerTest extends TestCase {
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_SCHEMA]
 		);
 
-		// Standard MW namespaces loaded from DefaultSettings.php (#6302)
+		// Standard MW namespaces seeded by ConfigBootstrap::seedComputedDefaults() (#6302)
 		$this->assertArrayHasKey(
 			NS_MAIN,
 			$vars['smwgNamespacesWithSemanticLinks']
