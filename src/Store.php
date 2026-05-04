@@ -323,8 +323,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return QueryResult
 	 */
-	protected function fetchQueryResult( Query $query ) {
-	}
+	abstract protected function fetchQueryResult( Query $query );
 
 ///// Special page functions /////
 

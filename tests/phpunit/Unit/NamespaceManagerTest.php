@@ -44,8 +44,28 @@ class NamespaceManagerTest extends TestCase {
 			->method( 'getNamespaceAliases' )
 			->willReturn( [] );
 
+		// ConfigBootstrap::seedComputedDefaults() seeds these standard MW namespace
+		// defaults before NamespaceManager::init() runs in production. Replicate
+		// that here so unit tests reflect the real call order. (#6726, #6302)
 		$this->default = [
-			'smwgNamespacesWithSemanticLinks' => [],
+			'smwgNamespacesWithSemanticLinks' => [
+				NS_MAIN             => true,
+				NS_TALK             => false,
+				NS_USER             => true,
+				NS_USER_TALK        => false,
+				NS_PROJECT          => true,
+				NS_PROJECT_TALK     => false,
+				NS_FILE             => true,
+				NS_FILE_TALK        => false,
+				NS_MEDIAWIKI        => false,
+				NS_MEDIAWIKI_TALK   => false,
+				NS_TEMPLATE         => false,
+				NS_TEMPLATE_TALK    => false,
+				NS_HELP             => true,
+				NS_HELP_TALK        => false,
+				NS_CATEGORY         => true,
+				NS_CATEGORY_TALK    => false,
+			],
 			'wgNamespacesWithSubpages' => [],
 			'wgExtraNamespaces'  => [],
 			'wgNamespaceAliases' => [],
@@ -221,7 +241,7 @@ class NamespaceManagerTest extends TestCase {
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_SCHEMA]
 		);
 
-		// Standard MW namespaces loaded from DefaultSettings.php (#6302)
+		// Standard MW namespaces seeded by ConfigBootstrap::seedComputedDefaults() (#6302)
 		$this->assertArrayHasKey(
 			NS_MAIN,
 			$vars['smwgNamespacesWithSemanticLinks']
@@ -265,9 +285,10 @@ class NamespaceManagerTest extends TestCase {
 
 	public function testInitMergesStandardDefaultsWhenUserSetsOnlyCustomNamespaces() {
 		// Simulates a LocalSettings.php that opts a custom namespace into
-		// semantic processing, which causes setupGlobals() to skip seeding
-		// $smwgNamespacesWithSemanticLinks. The standard MW namespace
-		// defaults must still be merged in. (#6726)
+		// semantic processing. ConfigBootstrap::seedComputedDefaults() runs
+		// first (array_plus), so both the custom entry and the standard MW
+		// namespace defaults are present by the time NamespaceManager::init()
+		// is called. (#6726, #6302)
 		$customNamespace = 3000;
 
 		$vars = $this->default + [
@@ -275,9 +296,9 @@ class NamespaceManagerTest extends TestCase {
 			'wgNamespaceAliases' => '',
 		];
 
-		$vars['smwgNamespacesWithSemanticLinks'] = [
-			$customNamespace => true,
-		];
+		// Merge custom namespace on top of the already-seeded defaults,
+		// reflecting the state after ConfigBootstrap has run.
+		$vars['smwgNamespacesWithSemanticLinks'][$customNamespace] = true;
 
 		$instance = new NamespaceManager( $this->localLanguage );
 		$vars = $instance->init( $vars );
