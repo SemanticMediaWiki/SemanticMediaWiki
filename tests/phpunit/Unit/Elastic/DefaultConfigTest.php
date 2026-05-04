@@ -49,9 +49,13 @@ class DefaultConfigTest extends TestCase {
 	}
 
 	public function defaultSettingsProvider() {
-		// smwgElasticsearchConfig defaults now live in ConfigBootstrap. Seed
-		// them into a temporary copy of $GLOBALS so the data provider can read
-		// them without permanently mutating the real globals.
+		// smwgElasticsearchConfig defaults now live in ConfigBootstrap. Save
+		// and restore that one global so the data provider can re-read it
+		// without leaving the test environment in a different state. The
+		// other globals seeded by seedComputedDefaults() are untouched in
+		// practice — provide-default scalars are no-ops on already-set
+		// values, and the unconditional compound merges are idempotent on
+		// already-merged arrays.
 		$saved = $GLOBALS['smwgElasticsearchConfig'] ?? null;
 		unset( $GLOBALS['smwgElasticsearchConfig'] );
 

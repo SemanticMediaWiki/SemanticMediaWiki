@@ -6,14 +6,32 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 
 /**
  * Registration-time bootstrap for SMW config defaults that cannot be
- * expressed as static JSON in extension.json — chiefly settings whose
- * values derive from SMW feature-flag constants (SMW_FACTBOX_*, SMW_DV_*,
- * etc.) or class constants.
+ * expressed as static JSON in extension.json — settings whose values
+ * derive from PHP constants (SMW_FACTBOX_*, NS_*, DB_REPLICA, etc.),
+ * class constants (EntityIdManager::DEFAULT_CACHE_SIZES), or runtime paths
+ * ($smwgIP).
  *
- * Called from SemanticMediaWiki::initExtension() after extension.json
+ * Called from SemanticMediaWiki::initExtension() after extension.json's
  * config defaults have been seeded into $GLOBALS by ExtensionRegistry.
- * Implementations must use provide-default semantics: write only when the
- * key is not already set, so user values from LocalSettings.php win.
+ *
+ * Two distinct merge contracts coexist here, applied per setting:
+ *
+ * - **provide-default** (scalar feature-flag / cache-type settings, e.g.
+ *   smwgFactboxFeatures, smwgQFeatures, smwgMainCacheType). Guarded with
+ *   `!isset($GLOBALS[$key])` so the default is only written when the user
+ *   hasn't set the global. A user value of any kind — including `null`,
+ *   `0`, `false` — wins.
+ *
+ * - **explicit per-strategy merge** (compound array settings, e.g.
+ *   smwgNamespacesWithSemanticLinks, smwgElasticsearchConfig). Runs
+ *   unconditionally so that *partial* writes from LocalSettings.php
+ *   (e.g. `$smwgElasticsearchConfig['query']['x']['y'] = 'z';`) merge
+ *   cleanly with the manifest defaults. Each compound block uses the
+ *   merge form that mirrors the merge_strategy it would have declared if
+ *   the value could be expressed in JSON: `+` (array_plus), the wfArrayPlus2d
+ *   loop pattern, or `array_replace_recursive($defaults, $userValue)`.
+ *   These blocks MUST stay unconditional — adding an `!isset()` guard
+ *   would re-open the partial-write bug class behind #6649 and #6726.
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
