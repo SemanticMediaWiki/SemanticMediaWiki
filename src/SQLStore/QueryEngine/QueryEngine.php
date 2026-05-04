@@ -557,6 +557,14 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		// Build ORDER BY options using discovered sorting fields.
 		$qobj = $this->querySegmentList[$rootId];
 
+		// Postgres masks off SMW_QSORT_RANDOM in getQueryResult() before
+		// reaching this branch (SELECT DISTINCT + ORDER BY RANDOM() is invalid
+		// in Postgres, see #835), so the RANDOM dispatch below only ever runs
+		// for MySQL/MariaDB or SQLite.
+		$randomToken = $this->store->getConnection( 'mw.db.queryengine' )->getType() === 'sqlite'
+			? 'RANDOM()'
+			: 'RAND()';
+
 		foreach ( $this->sortKeys as $propkey => $order ) {
 
 			if ( !is_string( $propkey ) ) {
@@ -574,7 +582,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $list . " $order ";
 			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_RANDOM ) ) {
-				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . ' RAND() ';
+				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . " $randomToken ";
 			}
 		}
 
