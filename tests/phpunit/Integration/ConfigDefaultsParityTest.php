@@ -47,7 +47,7 @@ class ConfigDefaultsParityTest extends TestCase {
 				$expected = $this->applyPath( $expected, dirname( self::MANIFEST ) );
 			}
 
-			$this->assertEquals(
+			$this->assertSame(
 				$expected,
 				$GLOBALS[$globalKey],
 				"Config value drift for '$key'"
@@ -56,10 +56,20 @@ class ConfigDefaultsParityTest extends TestCase {
 	}
 
 	/**
-	 * Mirrors ExtensionProcessor::applyPath — recursive path prefixing for
-	 * `path: true` config entries.
+	 * Recursive path prefixing. NOTE: MW's ExtensionProcessor::applyPath
+	 * (includes/registration/ExtensionProcessor.php:856) is **shallow** —
+	 * it only iterates one level and string-concatenates each value with
+	 * the extension dir. Settings whose `path: true` value contains a
+	 * nested array (e.g. `smwgElasticsearchConfig.index_def.{data,lookup}`)
+	 * therefore cannot be expressed via the manifest's `path` flag and
+	 * must be set in `ConfigBootstrap::seedComputedDefaults()` instead.
+	 *
+	 * The recursive form here exists so that the parity test would still
+	 * compute a meaningful expected value if such a nested-path setting
+	 * were ever added to the manifest by mistake — the assertion would
+	 * then fail loudly rather than silently passing.
 	 */
-	private function applyPath( $value, string $dir ) {
+	private function applyPath( mixed $value, string $dir ) {
 		if ( is_array( $value ) ) {
 			foreach ( $value as $k => $v ) {
 				$value[$k] = $this->applyPath( $v, $dir );
