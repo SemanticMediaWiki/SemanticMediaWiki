@@ -23,6 +23,8 @@ use SMW\SQLStore\RedirectUpdater;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\SQLStoreUpdater;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreUpdater
@@ -34,6 +36,9 @@ use SMW\SQLStore\SQLStoreUpdater;
  * @author mwjames
  */
 class SQLStoreUpdaterTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $store;
 	private $factory;
@@ -200,6 +205,10 @@ class SQLStoreUpdaterTest extends TestCase {
 		$database->expects( $this->once() )
 			->method( 'endSectionTransaction' )
 			->with( SQLStore::UPDATE_TRANSACTION );
+
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+		$database->method( 'newDeleteQueryBuilder' )->willReturn( $deleteBuilder );
+
 		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -251,6 +260,9 @@ class SQLStoreUpdaterTest extends TestCase {
 		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+		$database->method( 'newDeleteQueryBuilder' )->willReturn( $deleteBuilder );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
@@ -475,9 +487,13 @@ class SQLStoreUpdaterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->exactly( 2 ) )
-			->method( 'delete' )
-			->willReturn( true );
+		$capturedDeleteTables = [];
+		$capturedDeleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedDeleteTables,
+			$capturedDeleteWheres
+		);
+		$database->method( 'newDeleteQueryBuilder' )->willReturn( $deleteBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -497,6 +513,15 @@ class SQLStoreUpdaterTest extends TestCase {
 
 		$instance = new SQLStoreUpdater( $this->store, $this->factory );
 		$instance->deleteSubject( $title );
+
+		$this->assertSame(
+			[ SQLStore::CONCEPT_TABLE, SQLStore::CONCEPT_CACHE_TABLE ],
+			$capturedDeleteTables
+		);
+		$this->assertSame(
+			[ [ 's_id' => 0 ], [ 'o_id' => 0 ] ],
+			$capturedDeleteWheres
+		);
 	}
 
 }

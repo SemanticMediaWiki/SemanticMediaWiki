@@ -232,15 +232,12 @@ class RedirectStore {
 	private function select( $title, $namespace ): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			self::TABLE_NAME,
-			'o_id',
-			[
-				's_title' => $title,
-				's_namespace' => $namespace
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'o_id' ] )
+			->from( self::TABLE_NAME )
+			->where( [ 's_title' => $title, 's_namespace' => $namespace ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row !== false && isset( $row->o_id ) ? (int)$row->o_id : 0;
 	}
@@ -248,18 +245,12 @@ class RedirectStore {
 	private function insert( $id, $title, $namespace ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			self::TABLE_NAME,
-			[
-				'o_id'
-			],
-			[
-				's_title' => $title,
-				's_namespace' => $namespace,
-				'o_id' => $id
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'o_id' ] )
+			->from( self::TABLE_NAME )
+			->where( [ 's_title' => $title, 's_namespace' => $namespace, 'o_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		// Found a match, avoid duplicates!
 		if ( $row !== false ) {
@@ -269,27 +260,25 @@ class RedirectStore {
 		// Only allow one active redirection from source to target
 		$this->delete( $title, $namespace );
 
-		$connection->insert(
-			self::TABLE_NAME,
-			[
-				's_title' => $title,
+		$connection->newInsertQueryBuilder()
+			->insertInto( self::TABLE_NAME )
+			->row( [
+				's_title'     => $title,
 				's_namespace' => $namespace,
-				'o_id' => $id
-			],
-			__METHOD__
-		);
+				'o_id'        => $id,
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	private function delete( $title, $namespace ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$connection->delete(
-			self::TABLE_NAME,
-			[
-				's_title' => $title,
-				's_namespace' => $namespace ],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( self::TABLE_NAME )
+			->where( [ 's_title' => $title, 's_namespace' => $namespace ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	private function canCreateUpdateJobs(): bool {
@@ -297,14 +286,21 @@ class RedirectStore {
 	}
 
 	private function findUpdateJobs( $connection, array $query, &$jobs ): void {
-		$res = $connection->select(
-			$query['from'],
-			$query['fields'],
-			$query['condition'],
-			__METHOD__,
-			$query['options'],
-			$query['join']
-		);
+		$queryBuilder = $connection->newSelectQueryBuilder()
+			->select( $query['fields'] )
+			->from( $query['from'][0] )
+			->where( $query['condition'] )
+			->caller( __METHOD__ );
+
+		if ( in_array( SQLStore::ID_TABLE, $query['from'], true ) ) {
+			$queryBuilder->join( SQLStore::ID_TABLE, null, [ 's_id=smw_id' ] );
+		}
+
+		if ( in_array( 'DISTINCT', $query['options'], true ) ) {
+			$queryBuilder->distinct();
+		}
+
+		$res = $queryBuilder->fetchResultSet();
 
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		foreach ( $res as $row ) {

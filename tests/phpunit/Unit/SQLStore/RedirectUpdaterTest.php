@@ -17,6 +17,8 @@ use SMW\SQLStore\RedirectUpdater;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\RedirectUpdater
@@ -28,6 +30,9 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class RedirectUpdaterTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $store;
 	private $tableFieldUpdater;
@@ -166,9 +171,18 @@ class RedirectUpdaterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$capturedTables = [];
+		$capturedSets = [];
+		$capturedWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedTables,
+			$capturedSets,
+			$capturedWheres
+		);
+
 		$connection->expects( $this->once() )
-			->method( 'query' )
-			->willReturn( true );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
@@ -210,6 +224,11 @@ class RedirectUpdaterTest extends TestCase {
 			WikiPage::newFromText( __METHOD__ . '-new', NS_MAIN ),
 			[ 'page_id' => 9999, 'redirect_id' => 0 ]
 		);
+
+		$this->assertSame(
+			[ SQLStore::ID_TABLE ],
+			$capturedTables
+		);
 	}
 
 	public function testChangeTitleForMainNamespaceWithRedirectId() {
@@ -229,9 +248,18 @@ class RedirectUpdaterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$capturedTables = [];
+		$capturedSets = [];
+		$capturedWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedTables,
+			$capturedSets,
+			$capturedWheres
+		);
+
 		$database->expects( $this->once() )
-			->method( 'query' )
-			->willReturn( true );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
@@ -272,6 +300,11 @@ class RedirectUpdaterTest extends TestCase {
 			WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
 			WikiPage::newFromText( __METHOD__ . '-new', NS_MAIN ),
 			[ 'page_id' => 9999, 'redirect_id' => 1111 ]
+		);
+
+		$this->assertSame(
+			[ SQLStore::ID_TABLE ],
+			$capturedTables
 		);
 	}
 

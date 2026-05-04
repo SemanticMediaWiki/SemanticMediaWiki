@@ -101,11 +101,11 @@ class ConceptCache {
 		}
 
 		// TODO: catch db exception
-		$db->delete(
-			SQLStore::CONCEPT_CACHE_TABLE,
-			[ 'o_id' => $cid ],
-			__METHOD__
-		);
+		$db->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::CONCEPT_CACHE_TABLE )
+			->where( [ 'o_id' => $cid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$concCacheTableName = $db->tablename( SQLStore::CONCEPT_CACHE_TABLE );
 
@@ -133,12 +133,15 @@ class ConceptCache {
 			ISQLPlatform::QUERY_CHANGE_ROWS
 		);
 
-		$db->update(
-			'smw_fpt_conc',
-			[ 'cache_date' => strtotime( "now" ), 'cache_count' => $db->affectedRows() ],
-			[ 's_id' => $cid ],
-			__METHOD__
-		);
+		$db->newUpdateQueryBuilder()
+			->update( 'smw_fpt_conc' )
+			->set( [
+				'cache_date'  => strtotime( "now" ),
+				'cache_count' => $db->affectedRows(),
+			] )
+			->where( [ 's_id' => $cid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		return [];
 	}
@@ -190,18 +193,18 @@ class ConceptCache {
 
 		$db = $this->store->getConnection();
 
-		$db->delete(
-			SQLStore::CONCEPT_CACHE_TABLE,
-			[ 'o_id' => $conceptId ],
-			__METHOD__
-		);
+		$db->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::CONCEPT_CACHE_TABLE )
+			->where( [ 'o_id' => $conceptId ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$db->update(
-			'smw_fpt_conc',
-			[ 'cache_date' => null, 'cache_count' => null ],
-			[ 's_id' => $conceptId ],
-			__METHOD__
-		);
+		$db->newUpdateQueryBuilder()
+			->update( 'smw_fpt_conc' )
+			->set( [ 'cache_date' => null, 'cache_count' => null ] )
+			->where( [ 's_id' => $conceptId ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
@@ -222,12 +225,12 @@ class ConceptCache {
 
 		// TODO: catch db exception
 
-		$row = $db->selectRow(
-			'smw_fpt_conc',
-			[ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ],
-			[ 's_id' => $cid ],
-			__METHOD__
-		);
+		$row = $db->newSelectQueryBuilder()
+			->select( [ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ] )
+			->from( 'smw_fpt_conc' )
+			->where( [ 's_id' => $cid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false ) {
 			return null;
