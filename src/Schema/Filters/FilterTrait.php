@@ -65,8 +65,10 @@ trait FilterTrait {
 	 * @since 3.2
 	 */
 	public function getLog(): iterable {
+		$matches = $this->getMatches();
+		$matchArray = is_array( $matches ) ? $matches : iterator_to_array( $matches );
 		$log = [
-			$this->getName() => count( $this->getMatches() )
+			$this->getName() => count( $matchArray )
 		];
 
 		if ( $this->nodeFilter instanceof SchemaFilter ) {

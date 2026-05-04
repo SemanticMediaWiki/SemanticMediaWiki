@@ -143,7 +143,7 @@ class ElasticStore extends SQLStore {
 		$idList = [ $id ];
 
 		if ( $status->has( 'delete_list' ) ) {
-			$idList = array_merge( $idList, $status->get( 'delete_list' ) );
+			$idList = array_merge( $idList, (array)$status->get( 'delete_list' ) );
 		}
 
 		$this->indexer->delete( $idList );

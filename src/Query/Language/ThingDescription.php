@@ -41,7 +41,7 @@ class ThingDescription extends Description {
 	public function getFingerprint(): string {
 		// Avoid a simple 0 which may interfere with an associative array
 		// when compounding hash strings from different descriptions
-		return 'T:' . md5( 0 ) . ( $this->isNegation ? '!' : '' );
+		return 'T:' . md5( (string)0 ) . ( $this->isNegation ? '!' : '' );
 	}
 
 }

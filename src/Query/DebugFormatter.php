@@ -182,6 +182,7 @@ class DebugFormatter {
 		if ( $this->type === 'sqlite' ) {
 			$output .= 'QUERY PLAN' . "<br>";
 			$plan = '';
+			$resArray = is_array( $res ) ? $res : iterator_to_array( $res, false );
 			$last = count( $res ) - 1;
 
 			foreach ( $res as $k => $row ) {

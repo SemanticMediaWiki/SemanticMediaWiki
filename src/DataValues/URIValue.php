@@ -376,7 +376,7 @@ class URIValue extends DataValue {
 		}
 
 		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
-			$context = str_replace( '_', ' ', $context );
+			$context = str_replace( '_', ' ', $context ?? '' );
 		}
 
 		// Allow the display without `_` so that URIs can be split

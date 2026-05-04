@@ -125,7 +125,7 @@ class FieldItemFinder {
 
 			$limit = $this->printRequest->getParameter( 'limit' );
 
-			return ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, $limit );
+			return ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, (int)$limit );
 		}
 
 		// Request to whether current element is in given category (Boolean printout).

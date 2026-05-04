@@ -311,7 +311,7 @@ class ChangePropagationDispatchJob extends Job {
 		}
 
 		// @see ChangePropagationDispatchJob::pushChangePropagationDispatchJob
-		$dataItems = explode( "\n", $data );
+		$dataItems = explode( "\n", (string)$data );
 
 		$this->scheduleChangePropagationUpdateJobFromList(
 			$dataItems

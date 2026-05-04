@@ -61,7 +61,7 @@ class WikiPage extends DataItem {
 	 * careful and since errors here do not have major consequences.
 	 */
 	public function __construct(
-		$dbkey,
+		string $dbkey,
 		$namespace,
 		protected $m_interwiki = '',
 		$subobjectname = '',
