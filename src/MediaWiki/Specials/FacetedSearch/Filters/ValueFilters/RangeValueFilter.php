@@ -71,7 +71,7 @@ class RangeValueFilter {
 				$v = $raw[$key];
 			}
 
-			$numbers[] = round( $v, $defaults['precision'] );
+			$numbers[] = round( $v ?? 0, $defaults['precision'] );
 		}
 
 		$min = min( $numbers ) - $defaults['uncertainty'];

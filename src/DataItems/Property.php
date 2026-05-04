@@ -75,11 +75,9 @@ class Property extends DataItem {
 	 * done, the function self::newFromUserLabel() can be used.
 	 */
 	public function __construct(
-		$key,
+		string $key,
 		private $m_inverse = false,
 	) {
-		$key = (string)$key;
-
 		if ( $key === '' || $key[0] == '-' ) {
 			throw new PropertyLabelNotResolvedException( "Illegal property key \"$key\"." );
 		}

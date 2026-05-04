@@ -198,6 +198,8 @@ class ExpResourceMapper {
 	}
 
 	private function defineElementsForDiWikiPage( WikiPage $diWikiPage, $modifier ): array {
+		$namespace = '';
+		$namespaceId = '';
 		$localName = '';
 		$hasFixedNamespace = false;
 

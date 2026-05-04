@@ -128,6 +128,7 @@ class SchemaContentHandler extends JsonContentHandler {
 			}
 		}
 
+		$schema_link = '';
 		if ( $schema !== null ) {
 			$errors = $content->getSchemaFactory()->newSchemaValidator()->validate(
 				$schema

@@ -38,6 +38,8 @@ class MonolingualTextValueParser implements ValueParser {
 	 */
 	public function parse( $userValue ): array {
 		// Allow things like [ "en" => "Foo ..." ] when retrieved from a JSON string
+		$languageCode = '';
+		$text = '';
 		if ( is_array( $userValue ) ) {
 			foreach ( $userValue as $key => $value ) {
 				$languageCode = is_string( $key ) ? $key : '';

@@ -132,8 +132,13 @@ class SearchResultSet extends \SearchResultSet {
 
 		foreach ( $this->pages as $page ) {
 
+			$searchResult = null;
 			if ( $page instanceof WikiPage ) {
 				$searchResult = new SearchResult( $page->getTitle() );
+			}
+
+			if ( $searchResult === null ) {
+				continue;
 			}
 
 			// Attempt to use excerpts available from a different back-end
@@ -144,7 +149,6 @@ class SearchResultSet extends \SearchResultSet {
 				}
 			}
 
-			// @phan-suppress-next-line PhanTypeMismatchProperty
 			$this->results[] = $searchResult;
 		}
 

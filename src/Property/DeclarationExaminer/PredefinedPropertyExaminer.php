@@ -104,7 +104,16 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 			[ $url, $type ] = explode( "#", end( $typeValues )->getSerialization() );
 		}
 
-		if ( DataTypeRegistry::getInstance()->isEqualByType( $type, $property->findPropertyTypeID() ) ) {
+		if ( !isset( $type ) ) {
+			return;
+		}
+
+		if (
+			DataTypeRegistry::getInstance()->isEqualByType(
+				$type,
+				$property->findPropertyTypeID()
+			)
+		) {
 			return;
 		}
 

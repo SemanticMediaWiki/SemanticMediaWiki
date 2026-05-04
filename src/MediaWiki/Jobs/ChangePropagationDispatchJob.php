@@ -216,6 +216,10 @@ class ChangePropagationDispatchJob extends Job {
 			$entity = $subject;
 		}
 
+		if ( !isset( $entity ) ) {
+			return;
+		}
+
 		$appendIterator = $changePropagationEntityLookup->findAll(
 			$entity
 		);

@@ -369,24 +369,27 @@ class InTextAnnotationParser {
 			if (
 				$this->isEnabledNamespace &&
 				$this->isAnnotation &&
-				$this->parserData->canUse() ) {
+				$this->parserData->canUse()
+			) {
 				$this->parserData->addDataValue( $dataValue );
 			}
 		}
 
+		$result = '';
 		// Return the wikitext or the unmodified text representation in case of
 		// a strip marker in order for the standard Parser to work its magic since
 		// we were only interested in the value for the annotation
 		if ( $origValue !== $value ) {
 			$result = $origValue;
-		} else {
+		} elseif ( isset( $dataValue ) ) {
 			$result = $dataValue->getShortWikitext( true );
 		}
 
 		// If necessary add an error text
 		if ( ( $this->showErrors &&
 			$this->isEnabledNamespace && $this->isAnnotation ) &&
-			( !$dataValue->isValid() ) ) {
+			( isset( $dataValue ) && !$dataValue->isValid() )
+		) {
 			// Encode `:` to avoid a comment block and instead of the nowiki tag
 			// use &#58; as placeholder
 			$result = str_replace( ':', '&#58;', $result ) . $dataValue->getErrorText();

@@ -173,6 +173,7 @@ class SpecialAdmin extends SpecialPage {
 			]
 		);
 
+		$supportSection = '';
 		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
 			$supportSection = $supportTask->getHtml();
 			$htmlTabs->tab( 'general', $this->msg_text( 'smw-admin-tab-general' ) );

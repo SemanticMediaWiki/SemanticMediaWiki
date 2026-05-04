@@ -218,6 +218,7 @@ class UnitConverter {
 
 	private function matchUnitAliases( NumberValue $numberValue, $number, $asPrefix, array $unitAliases ): void {
 		$first = true;
+		$unitid = null;
 
 		foreach ( $unitAliases as $unit ) {
 			$unit = $numberValue->normalizeUnit( $unit );
@@ -230,14 +231,17 @@ class UnitConverter {
 
 			if ( $first ) {
 				$unitid = $unit;
+
 				if ( $number == 1 ) { // add main unit to front of array (displayed first)
 					$this->mainUnit = $unit;
 					$this->unitFactors = [ $unit => 1 ] + $this->unitFactors;
 				} else { // non-main units are not ordered (can be modified via display units)
 					$this->unitFactors[$unit] = $number;
 				}
+
 				$first = false;
 			}
+
 			// add all known units to m_unitids to simplify checking for them
 			$this->unitIds[$unit] = $unitid;
 			$this->unitIds[$normalizedUnit] = $unitid;

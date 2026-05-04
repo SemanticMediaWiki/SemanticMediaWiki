@@ -148,6 +148,7 @@ class NumberValue extends DataValue {
 			PREG_SPLIT_DELIM_CAPTURE
 		);
 
+		$numstring = '';
 		if ( count( $parts ) >= 2 ) {
 			$numstring = str_replace( $kiloseparator, '', preg_replace( '/\s*/u', '', $parts[1] ) ); // simplify
 			if ( $decseparator != '.' ) {
