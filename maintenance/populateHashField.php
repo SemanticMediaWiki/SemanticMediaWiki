@@ -190,26 +190,26 @@ class populateHashField extends Maintenance {
 			unset( $conditions['smw_hash' ] );
 		}
 
-		$this->last = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			$conditions,
-			__METHOD__
-		);
+		$this->last = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		return $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject'
-			],
-			$conditions,
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	/**
@@ -266,16 +266,16 @@ class populateHashField extends Maintenance {
 				$this->cliMsgFormatter->twoColsOverride( "... updating the `smw_hash` field ...", "$progress", 3 )
 			);
 
-			$connection->update(
-				SQLStore::ID_TABLE,
-				[
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [
 					'smw_hash' => $hash
-				],
-				[
+				] )
+				->where( [
 					'smw_id' => $row->smw_id
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 		}
 
 		$this->reportMessage( "\n" );
