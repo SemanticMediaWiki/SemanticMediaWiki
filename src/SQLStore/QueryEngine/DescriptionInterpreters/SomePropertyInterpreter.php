@@ -137,6 +137,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		// since sortkey is based on a "wiki value"
 		$sortkey = $property->getKey();
 		if ( $sortkey === null ) {
+			$query->type = QuerySegment::Q_NOQUERY;
 			return;
 		}
 
