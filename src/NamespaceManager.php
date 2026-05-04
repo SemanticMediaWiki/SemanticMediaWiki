@@ -239,8 +239,7 @@ class NamespaceManager {
 
 		// Merge SMW-specific namespaces under user values; the standard MW
 		// namespaces are seeded by ConfigBootstrap::seedComputedDefaults().
-		$vars['smwgNamespacesWithSemanticLinks'] = $vars['smwgNamespacesWithSemanticLinks']
-			+ $smwNamespacesSettings;
+		$vars['smwgNamespacesWithSemanticLinks'] += $smwNamespacesSettings;
 
 		$vars['wgNamespaceContentModels'][SMW_NS_SCHEMA] = CONTENT_MODEL_SMW_SCHEMA;
 	}
