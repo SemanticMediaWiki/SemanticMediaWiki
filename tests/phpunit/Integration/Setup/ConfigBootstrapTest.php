@@ -13,17 +13,48 @@ use SMW\Setup\ConfigBootstrap;
  */
 class ConfigBootstrapTest extends TestCase {
 
-	public function testSeedComputedDefaultsIsNoOpWhenEmpty(): void {
-		// This test must be replaced when seedComputedDefaults() gains a
-		// body in a subsequent PR (feature-flag constants, then class
-		// constants). The replacement should assert provide-default
-		// semantics — a pre-set $GLOBALS key survives, an unset key is
-		// populated — rather than full-array equality.
-		$snapshot = $GLOBALS;
+	public function testUnsetGlobalGetsSeededDefault(): void {
+		$key    = 'smwgQFeatures';
+		$backup = $GLOBALS[$key] ?? null;
+		unset( $GLOBALS[$key] );
 
-		ConfigBootstrap::seedComputedDefaults();
+		try {
+			ConfigBootstrap::seedComputedDefaults();
+			$this->assertSame(
+				SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY
+					| SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY,
+				$GLOBALS[$key]
+			);
+		} finally {
+			$GLOBALS[$key] = $backup;
+		}
+	}
 
-		$this->assertSame( $snapshot, $GLOBALS );
+	public function testUserPresetValueIsPreserved(): void {
+		$key    = 'smwgShowFactbox';
+		$backup = $GLOBALS[$key] ?? null;
+		$GLOBALS[$key] = SMW_FACTBOX_SHOWN;
+
+		try {
+			ConfigBootstrap::seedComputedDefaults();
+			$this->assertSame( SMW_FACTBOX_SHOWN, $GLOBALS[$key] );
+			$this->assertNotSame( SMW_FACTBOX_HIDDEN, $GLOBALS[$key] );
+		} finally {
+			$GLOBALS[$key] = $backup;
+		}
+	}
+
+	public function testFalseyButPresentValueIsPreserved(): void {
+		$key    = 'smwgQEqualitySupport';
+		$backup = $GLOBALS[$key] ?? null;
+		$GLOBALS[$key] = SMW_EQ_NONE;
+
+		try {
+			ConfigBootstrap::seedComputedDefaults();
+			$this->assertSame( SMW_EQ_NONE, $GLOBALS[$key] );
+		} finally {
+			$GLOBALS[$key] = $backup;
+		}
 	}
 
 }
