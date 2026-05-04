@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -18,6 +19,8 @@ use stdClass;
  * @author mwjames
  */
 class ListAugmentorTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( SQLStore::class )
@@ -168,8 +171,10 @@ class ListAugmentorTest extends TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( $row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( function () use ( $row ) {
+				return $this->createMockSelectQueryBuilder( [ $row ] );
+			} );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

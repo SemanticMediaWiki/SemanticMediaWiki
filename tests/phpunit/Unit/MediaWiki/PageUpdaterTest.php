@@ -8,6 +8,8 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\MediaWiki\PageUpdater;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -20,6 +22,9 @@ use stdClass;
  * @author mwjames
  */
 class PageUpdaterTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $connection;
 	private $spyLogger;
@@ -249,12 +254,17 @@ class PageUpdaterTest extends TestCase {
 		$row = new stdClass;
 		$row->page_id = 42;
 
-		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
 
 		$this->connection->expects( $this->once() )
-			->method( 'update' );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$updateBuilder = $this->createMockUpdateQueryBuilder();
+
+		$this->connection->expects( $this->once() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )

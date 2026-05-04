@@ -267,19 +267,15 @@ class PageUpdater implements DeferrableUpdate {
 		// Required due to postgres and "Error: 22007 ERROR:  invalid input
 		// syntax for type timestamp with time zone: "20170408113703""
 		$now = $this->connection->timestamp();
-		$res = $this->connection->select(
-			'page',
-			'page_id',
-			[
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( [ 'page_id' ] )
+			->from( 'page' )
+			->where( [
 				$titleConds,
 				'page_touched < ' . $this->connection->addQuotes( $now )
-			],
-			__METHOD__
-		);
-
-		if ( $res === false ) {
-			return;
-		}
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$ids = [];
 
@@ -291,15 +287,15 @@ class PageUpdater implements DeferrableUpdate {
 			return;
 		}
 
-		$this->connection->update(
-			'page',
-			[ 'page_touched' => $now ],
-			[
+		$this->connection->newUpdateQueryBuilder()
+			->update( 'page' )
+			->set( [ 'page_touched' => $now ] )
+			->where( [
 				'page_id' => $ids,
 				'page_touched < ' . $this->connection->addQuotes( $now )
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$context = [
 			'method' => __METHOD__,

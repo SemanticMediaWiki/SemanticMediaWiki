@@ -9,6 +9,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\Settings;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -21,6 +22,8 @@ use stdClass;
  * @author mwjames
  */
 class ConceptCacheRebuilderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$store = $this->getMockForAbstractClass( Store::class );
@@ -174,9 +177,13 @@ class ConceptCacheRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// ConceptCacheRebuilder iterates page IDs via TitleLookup::selectAll(),
+		// which goes through newSelectQueryBuilder() since the QueryBuilder
+		// migration. Wire a fresh mock builder per call so the chain returns
+		// the seeded $row.
 		$database->expects( $expectedToRun )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

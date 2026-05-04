@@ -27,17 +27,22 @@ trait MockSelectQueryBuilderTrait {
 	 * @param array &$capturedSelects Captures select() arguments for
 	 *   assertion. When omitted, select() simply returns the builder.
 	 *   Subqueries share the same array.
+	 * @param array &$capturedTables Captures from()/table()/tables()/rawTables()
+	 *   arguments in call order. Each invocation appends one entry. Lets tests
+	 *   verify which table the chain was pointed at, including the multi-table
+	 *   tables()/rawTables() form. Subqueries share the same array.
 	 */
 	private function createMockSelectQueryBuilder(
 		array $rows = [],
 		array &$whereConditions = [],
-		array &$capturedSelects = []
+		array &$capturedSelects = [],
+		array &$capturedTables = []
 	): SelectQueryBuilder {
 		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$chainMethods = [ 'fields', 'field', 'from', 'table', 'tables', 'rawTables',
+		$chainMethods = [ 'fields', 'field',
 			'join', 'leftJoin', 'straightJoin', 'joinConds',
 			'groupBy', 'having', 'orderBy', 'caller', 'distinct',
 			'limit', 'offset', 'options', 'option', 'conds',
@@ -69,10 +74,23 @@ trait MockSelectQueryBuilderTrait {
 				return $queryBuilder;
 			} );
 
+		$captureTable = static function ( $table ) use ( $queryBuilder, &$capturedTables ) {
+			$capturedTables[] = $table;
+			return $queryBuilder;
+		};
+
+		foreach ( [ 'from', 'table', 'tables', 'rawTables' ] as $tableMethod ) {
+			$queryBuilder->expects( $this->any() )
+				->method( $tableMethod )
+				->willReturnCallback( $captureTable );
+		}
+
 		$queryBuilder->expects( $this->any() )
 			->method( 'newSubquery' )
 			->willReturnCallback(
-				fn () => $this->createMockSelectQueryBuilder( $rows, $whereConditions, $capturedSelects )
+				fn () => $this->createMockSelectQueryBuilder(
+					$rows, $whereConditions, $capturedSelects, $capturedTables
+				)
 			);
 
 		$queryBuilder->expects( $this->any() )

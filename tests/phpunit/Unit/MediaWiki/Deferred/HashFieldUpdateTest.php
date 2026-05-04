@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\MediaWiki\Deferred\HashFieldUpdate
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class HashFieldUpdateTest extends TestCase {
+
+	use MockWriteQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $connection;
@@ -46,24 +49,31 @@ class HashFieldUpdateTest extends TestCase {
 	}
 
 	public function testAddUpdate() {
+		$tables = [];
+		$sets = [];
+		$wheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder( $tables, $sets, $wheres );
+
 		$this->connection->expects( $this->once() )
-			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ 'smw_hash' => '' ],
-				[ 'smw_id' => 1001 ] );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		HashFieldUpdate::$isCommandLineMode = true;
 		HashFieldUpdate::addUpdate( $this->connection, 1001, '' );
+
+		$this->assertSame( [ 'smw_hash' => '' ], $sets[0] );
+		$this->assertSame( [ 'smw_id' => 1001 ], $wheres[0] );
 	}
 
 	public function testDoUpdate() {
+		$tables = [];
+		$sets = [];
+		$wheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder( $tables, $sets, $wheres );
+
 		$this->connection->expects( $this->once() )
-			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ 'smw_hash' => '__hash__' ],
-				[ 'smw_id' => 42 ] );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$instance = new HashFieldUpdate(
 			$this->connection,
@@ -76,6 +86,9 @@ class HashFieldUpdateTest extends TestCase {
 		);
 
 		$instance->doUpdate();
+
+		$this->assertSame( [ 'smw_hash' => '__hash__' ], $sets[0] );
+		$this->assertSame( [ 'smw_id' => 42 ], $wheres[0] );
 	}
 
 }

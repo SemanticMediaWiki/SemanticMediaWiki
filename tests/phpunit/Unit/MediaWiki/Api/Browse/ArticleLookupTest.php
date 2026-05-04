@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
 use SMW\MediaWiki\Api\Browse\ArticleLookup;
 use SMW\MediaWiki\Connection\Database;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -18,6 +19,8 @@ use stdClass;
  * @author mwjames
  */
 class ArticleLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$connection = $this->getMockBuilder( Database::class )
@@ -50,13 +53,12 @@ class ArticleLookupTest extends TestCase {
 			->method( 'addQuotes' )
 			->willReturnArgument( 0 );
 
+		$whereConditions = [];
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->with(
-				$this->anyThing(),
-				$this->anyThing(),
-				$this->stringContains( $condition ) )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( function () use ( $row, &$whereConditions ) {
+				return $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+			} );
 
 		$instance = new ArticleLookup(
 			$connection,
@@ -73,6 +75,9 @@ class ArticleLookupTest extends TestCase {
 			$expected,
 			$res['query']
 		);
+
+		$this->assertNotEmpty( $whereConditions );
+		$this->assertStringContainsString( $condition, $whereConditions[0][0] );
 	}
 
 	public function articleSearchProvider() {

@@ -129,49 +129,70 @@ class HierarchyTempTableBuilder {
 		$this->temporaryTableBuilder->create( $tmpnew );
 		$this->temporaryTableBuilder->create( $tmpres );
 
-		// Adding multiple values for the same column in sqlite is not supported
+		// Adding multiple values for the same column in sqlite is not supported.
+		//
+		// $tablename and $tmpnew are temporary tables created via
+		// TemporaryTableBuilder, which uses raw query() and so does not apply
+		// the table prefix. Routing these inserts through the QueryBuilder
+		// would apply the prefix and target a non-existent table under MW's
+		// unittest_ prefix mode. Stay on $db->query() with getType() dispatch
+		// (same pattern as the INSERT...SELECT calls below) so the dialect-
+		// correct SQL is emitted directly without depending on the cross-DB
+		// regex shim.
+		//
+		// Postgres temp tables created by TemporaryTableBuilder have no unique
+		// constraint; their dedup comes from a CREATE RULE ... DO INSTEAD
+		// NOTHING that runs at INSERT time. ON CONFLICT DO NOTHING here is a
+		// no-op (no unique constraints to arbitrate) and is kept only to
+		// match the legacy regex-shim output. SQLite uses INSERT OR IGNORE
+		// (its native equivalent of MySQL's INSERT IGNORE).
 		foreach ( explode( ',', $values ) as $value ) {
+			if ( $db->getType() === 'postgres' ) {
+				$tablenameInsertSql = "INSERT INTO $tablename (id) VALUES $value ON CONFLICT DO NOTHING";
+				$tmpnewInsertSql = "INSERT INTO $tmpnew (id) VALUES $value ON CONFLICT DO NOTHING";
+			} elseif ( $db->getType() === 'sqlite' ) {
+				$tablenameInsertSql = "INSERT OR IGNORE INTO $tablename (id) VALUES $value";
+				$tmpnewInsertSql = "INSERT OR IGNORE INTO $tmpnew (id) VALUES $value";
+			} else {
+				$tablenameInsertSql = "INSERT IGNORE INTO $tablename (id) VALUES $value";
+				$tmpnewInsertSql = "INSERT IGNORE INTO $tmpnew (id) VALUES $value";
+			}
 
-			$db->query(
-				"INSERT " . "IGNORE" . " INTO $tablename (id) VALUES $value",
-				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
-			);
-
-			$db->query(
-				"INSERT " . "IGNORE" . " INTO $tmpnew (id) VALUES $value",
-				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
-			);
+			$db->query( $tablenameInsertSql, __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
+			$db->query( $tmpnewInsertSql, __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
 		}
 
 		for ( $i = 0; $i < $depth; $i++ ) {
-			$db->query(
-				"INSERT " . 'IGNORE ' . "INTO $tmpres (id) SELECT s_id" . '@INT' . " FROM $smwtable, $tmpnew WHERE o_id=id",
-				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
-			);
+			if ( $db->getType() === 'postgres' ) {
+				$insertIgnoreSql = "INSERT INTO $tmpres (id) SELECT CAST(s_id AS INTEGER) FROM $smwtable, $tmpnew WHERE o_id=id ON CONFLICT DO NOTHING";
+			} elseif ( $db->getType() === 'sqlite' ) {
+				$insertIgnoreSql = "INSERT OR IGNORE INTO $tmpres (id) SELECT CAST(s_id AS INTEGER) FROM $smwtable, $tmpnew WHERE o_id=id";
+			} else {
+				$insertIgnoreSql = "INSERT IGNORE INTO $tmpres (id) SELECT CAST(s_id AS INTEGER) FROM $smwtable, $tmpnew WHERE o_id=id";
+			}
+
+			$db->query( $insertIgnoreSql, __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
 
 			if ( $db->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
 
-			$db->query(
-				"INSERT " . 'IGNORE ' . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
-				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
-			);
+			if ( $db->getType() === 'postgres' ) {
+				$carrybackSql = "INSERT INTO $tablename (id) SELECT $tmpres.id FROM $tmpres ON CONFLICT DO NOTHING";
+			} elseif ( $db->getType() === 'sqlite' ) {
+				$carrybackSql = "INSERT OR IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres";
+			} else {
+				$carrybackSql = "INSERT IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres";
+			}
+
+			$db->query( $carrybackSql, __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
 
 			if ( $db->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
 
-			// empty "new" table
-			$db->query(
-				'DELETE FROM ' . $tmpnew,
-				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
-			);
+			// empty "new" table — see prefix-bypass note above; stay on raw query()
+			$db->query( "DELETE FROM $tmpnew", __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
 
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;

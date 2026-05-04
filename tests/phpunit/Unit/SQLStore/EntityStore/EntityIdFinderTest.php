@@ -11,6 +11,7 @@ use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\EntityIdFinder
@@ -24,6 +25,7 @@ use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 class EntityIdFinderTest extends TestCase {
 
 	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $cache;
@@ -49,6 +51,12 @@ class EntityIdFinderTest extends TestCase {
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		// HashFieldUpdate::doUpdate() (deferred from EntityIdFinder)
+		// calls newUpdateQueryBuilder(); default to an empty builder so
+		// tests don't NPE on the ->update()->set()->where() chain.
+		$this->connection->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
 
 		$this->propertyTableHashes = $this->getMockBuilder( PropertyTableHashes::class )
 			->disableOriginalConstructor()
