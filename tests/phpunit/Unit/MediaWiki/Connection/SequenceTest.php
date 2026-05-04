@@ -17,6 +17,8 @@ use SMW\MediaWiki\Connection\Sequence;
  */
 class SequenceTest extends TestCase {
 
+	use MockSelectQueryBuilderTrait;
+
 	private $connection;
 
 	protected function setUp(): void {
@@ -72,9 +74,8 @@ class SequenceTest extends TestCase {
 			->method( 'query' )
 			->with( 'ALTER SEQUENCE Foo_bar_seq RESTART WITH 43' );
 
-		$this->connection->expects( $this->once() )
-			->method( 'selectField' )
-			->willReturn( 42 );
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ [ 42 ] ] ) );
 
 		$instance = new Sequence(
 			$this->connection
