@@ -171,7 +171,7 @@ class DuplicateEntitiesDisposerTest extends TestCase {
 
 		$instance->verifyAndDispose( $duplicates );
 
-		$this->assertContains( $record, $whereConditions );
+		$this->assertSame( [ $record ], $whereConditions );
 	}
 
 }

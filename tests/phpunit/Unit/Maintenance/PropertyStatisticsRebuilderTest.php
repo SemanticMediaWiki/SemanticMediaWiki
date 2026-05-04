@@ -67,11 +67,14 @@ class PropertyStatisticsRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
 		$database->method( 'newSelectQueryBuilder' )
 			->willReturnOnConsecutiveCalls(
-				$this->createMockSelectQueryBuilder( [ (object)$res ] ),
-				$this->createMockSelectQueryBuilder( [ $uRow ] ),
-				$this->createMockSelectQueryBuilder( [ $nRow ] )
+				$this->createMockSelectQueryBuilder( [ (object)$res ], $whereConditions, $capturedSelects, $capturedTables ),
+				$this->createMockSelectQueryBuilder( [ $uRow ], $whereConditions, $capturedSelects, $capturedTables ),
+				$this->createMockSelectQueryBuilder( [ $nRow ], $whereConditions, $capturedSelects, $capturedTables )
 			);
 
 		$store = $this->getMockBuilder( SQLStore::class )
@@ -106,6 +109,19 @@ class PropertyStatisticsRebuilderTest extends TestCase {
 		);
 
 		$instance->rebuild();
+
+		$this->assertSame(
+			[ SQLStore::ID_TABLE, $tableName, $tableName ],
+			$capturedTables
+		);
+		$this->assertSame(
+			[
+				[ 'smw_namespace' => SMW_NS_PROPERTY, 'smw_subobject' => '' ],
+				[ 'p_id' => 9999 ],
+				[ 'p_id' => 9999 ],
+			],
+			$whereConditions
+		);
 	}
 
 	protected function newPropertyTable( $propertyTableName, $fixedPropertyTable = false ) {
