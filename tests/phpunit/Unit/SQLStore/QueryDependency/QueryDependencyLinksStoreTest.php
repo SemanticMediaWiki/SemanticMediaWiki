@@ -20,6 +20,7 @@ use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -33,6 +34,8 @@ use stdClass;
  * @author mwjames
  */
 class QueryDependencyLinksStoreTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $spyLogger;
@@ -224,17 +227,20 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$idTable->expects( $this->once() )
 			->method( 'getDataItemPoolHashListFor' );
 
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				SQLStore::QUERY_LINKS_TABLE,
-				$this->anything(),
-				[ 'o_id' => [ 42 ] ] )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$connection->method( 'addQuotes' )->willReturnCallback(
+			static fn ( $v ) => "'" . $v . "'"
+		);
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
@@ -277,6 +283,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$requestOptions->setOffset( 200 );
 
 		$instance->findDependencyTargetLinks( [ 42 ], $requestOptions );
+
+		$this->assertSame( [ [ 'o_id' => [ 42 ] ] ], $capturedWheres );
 	}
 
 	public function testFindEmbeddedQueryTargetLinksHashListBySubject() {
@@ -290,17 +298,20 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$idTable->expects( $this->once() )
 			->method( 'getDataItemPoolHashListFor' );
 
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				SQLStore::QUERY_LINKS_TABLE,
-				$this->anything(),
-				[ 'o_id' => [ 42 ] ] )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$connection->method( 'addQuotes' )->willReturnCallback(
+			static fn ( $v ) => "'" . $v . "'"
+		);
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
@@ -347,6 +358,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$requestOptions->setOffset( 200 );
 
 		$instance->findDependencyTargetLinksForSubject( WikiPage::newFromText( 'Foo' ), $requestOptions );
+
+		$this->assertSame( [ [ 'o_id' => [ 42 ] ] ], $capturedWheres );
 	}
 
 	public function testCountDependencies() {
@@ -361,17 +374,16 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				SQLStore::QUERY_LINKS_TABLE,
-				$this->anything(),
-				[ 'o_id' => [ 42 ] ] )
-			->willReturn( $row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -392,6 +404,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		);
 
 		$instance->countDependencies( 42 );
+
+		$this->assertSame( [ [ 'o_id' => [ 42 ] ] ], $capturedWheres );
 	}
 
 	public function testTryDoUpdateDependenciesByWhileBeingDisabled() {
@@ -654,6 +668,9 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
+
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -833,6 +850,12 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		// isRegistered() only checks `$row !== false`, so returning any
+		// non-empty row preserves the "already registered, skip update"
+		// branch this test was originally exercising.
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ (object)[ 's_id' => 1 ] ] ) );
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()

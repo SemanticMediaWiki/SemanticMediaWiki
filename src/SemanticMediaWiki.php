@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\Services\ServicesFactory;
+use SMW\Setup\ConfigBootstrap;
 use UnexpectedValueException;
 
 /**
@@ -25,6 +26,7 @@ class SemanticMediaWiki {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupDefines();
 			self::setupGlobals();
+			ConfigBootstrap::seedComputedDefaults();
 			require_once __DIR__ . "/GlobalFunctions.php";
 		}
 

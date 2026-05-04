@@ -10,6 +10,8 @@ use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater
@@ -21,6 +23,9 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DependencyLinksTableUpdaterTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $spyLogger;
@@ -60,26 +65,37 @@ class DependencyLinksTableUpdaterTest extends TestCase {
 			->method( 'getId' )
 			->willReturnOnConsecutiveCalls( 1001 );
 
+		$capturedDeleteTables = [];
+		$capturedDeleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedDeleteTables,
+			$capturedDeleteWheres
+		);
+
+		$capturedInsertTables = [];
+		$capturedInsertRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder(
+			$capturedInsertTables,
+			$capturedInsertRows
+		);
+
+		$capturedUpdateTables = [];
+		$capturedUpdateSets = [];
+		$capturedUpdateWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedUpdateTables,
+			$capturedUpdateSets,
+			$capturedUpdateWheres
+		);
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				SQLStore::QUERY_LINKS_TABLE,
-				[ 's_id' => 42 ] );
-
-		$insert[] = [
-			's_id' => 42,
-			'o_id' => 1001
-		];
-
-		$connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				SQLStore::QUERY_LINKS_TABLE,
-				$insert );
+		$connection->method( 'timestamp' )->willReturn( '20260503000000' );
+		$connection->method( 'newDeleteQueryBuilder' )->willReturn( $deleteBuilder );
+		$connection->method( 'newInsertQueryBuilder' )->willReturn( $insertBuilder );
+		$connection->method( 'newUpdateQueryBuilder' )->willReturn( $updateBuilder );
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
@@ -112,6 +128,19 @@ class DependencyLinksTableUpdaterTest extends TestCase {
 
 		$instance->addToUpdateList( 42, [ WikiPage::newFromText( 'Bar' ) ] );
 		$instance->doUpdate();
+
+		$this->assertSame( [ SQLStore::QUERY_LINKS_TABLE ], $capturedDeleteTables );
+		$this->assertSame( [ [ 's_id' => 42 ] ], $capturedDeleteWheres );
+
+		$this->assertSame( [ SQLStore::QUERY_LINKS_TABLE ], $capturedInsertTables );
+		$this->assertSame(
+			[ [ [ 's_id' => 42, 'o_id' => 1001 ] ] ],
+			$capturedInsertRows
+		);
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedUpdateTables );
+		$this->assertSame( [ [ 'smw_touched' => '20260503000000' ] ], $capturedUpdateSets );
+		$this->assertSame( [ [ 'smw_id' => 42 ] ], $capturedUpdateWheres );
 	}
 
 	public function testAddToUpdateListOnNull_List() {
@@ -157,26 +186,37 @@ class DependencyLinksTableUpdaterTest extends TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
+		$capturedDeleteTables = [];
+		$capturedDeleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedDeleteTables,
+			$capturedDeleteWheres
+		);
+
+		$capturedInsertTables = [];
+		$capturedInsertRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder(
+			$capturedInsertTables,
+			$capturedInsertRows
+		);
+
+		$capturedUpdateTables = [];
+		$capturedUpdateSets = [];
+		$capturedUpdateWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedUpdateTables,
+			$capturedUpdateSets,
+			$capturedUpdateWheres
+		);
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				SQLStore::QUERY_LINKS_TABLE,
-				[ 's_id' => 42 ] );
-
-		$insert[] = [
-			's_id' => 42,
-			'o_id' => 1001
-		];
-
-		$connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				SQLStore::QUERY_LINKS_TABLE,
-				$insert );
+		$connection->method( 'timestamp' )->willReturn( '20260503000000' );
+		$connection->method( 'newDeleteQueryBuilder' )->willReturn( $deleteBuilder );
+		$connection->method( 'newInsertQueryBuilder' )->willReturn( $insertBuilder );
+		$connection->method( 'newUpdateQueryBuilder' )->willReturn( $updateBuilder );
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
@@ -209,6 +249,19 @@ class DependencyLinksTableUpdaterTest extends TestCase {
 
 		$instance->addToUpdateList( 42, [ WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ] );
 		$instance->doUpdate();
+
+		$this->assertSame( [ SQLStore::QUERY_LINKS_TABLE ], $capturedDeleteTables );
+		$this->assertSame( [ [ 's_id' => 42 ] ], $capturedDeleteWheres );
+
+		$this->assertSame( [ SQLStore::QUERY_LINKS_TABLE ], $capturedInsertTables );
+		$this->assertSame(
+			[ [ [ 's_id' => 42, 'o_id' => 1001 ] ] ],
+			$capturedInsertRows
+		);
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedUpdateTables );
+		$this->assertSame( [ [ 'smw_touched' => '20260503000000' ] ], $capturedUpdateSets );
+		$this->assertSame( [ [ 'smw_id' => 42 ] ], $capturedUpdateWheres );
 	}
 
 }

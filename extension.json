@@ -718,5 +718,7 @@
 		"smw-prefs-general-options-show-entity-issue-panel": true
 	},
 	"load_composer_autoloader": true,
+	"config_prefix": "smwg",
+	"config": {},
 	"manifest_version": 2
 }
