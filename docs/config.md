@@ -332,6 +332,58 @@ keep this distinct from standard MediaWiki edit protections.
 **Since:** 2.5
 **Default:** `false`
 
+## $smwgElasticsearchConfig
+
+Top-level configuration map for the ElasticStore: index definition paths, connection parameters, index settings, indexer behaviour, and query-engine tuning. Merged with `array_replace_recursive` semantics so a partial user override (e.g. setting only `query.highlight.fragment.type`) leaves all unset keys at every depth intact.
+
+**Since:** 3.0
+**Default:**
+
+```php
+[
+    'index_def' => [
+        'data'   => $smwgIP . '/data/elastic/smw-data-standard.json',
+        'lookup' => $smwgIP . '/data/elastic/smw-lookup.json',
+    ],
+    'connection' => [
+        'quick_ping'      => true,
+        'retries'         => 2,
+        'timeout'         => 30,
+        'connect_timeout' => 30,
+    ],
+    'settings' => [
+        'data' => [
+            'index.mapping.total_fields.limit' => 9000,
+            'index.max_result_window'          => 50000,
+        ],
+    ],
+    'indexer' => [
+        'raw.text'                                  => false,
+        'experimental.file.ingest'                  => false,
+        'throw.exception.on.illegal.argument.error' => true,
+        'job.recovery.retries'                      => 5,
+        'job.file.ingest.retries'                   => 3,
+        'monitor.entity.replication'                => true,
+        'monitor.entity.replication.cache_lifetime' => 3600,
+        'data.sqlstore_compatibility'               => true,
+        // ...
+    ],
+    'query' => [
+        'fallback.no_connection'          => false,
+        'profiling'                       => false,
+        'debug.explain'                   => true,
+        'debug.description.log'           => true,
+        'maximum.value.length'            => 500,
+        'compat.mode'                     => true,
+        'subquery.size'                   => 10000,
+        'highlight.fragment'              => [ 'number' => 1, 'size' => 250, 'type' => false ],
+        // ...
+    ],
+]
+```
+
+**Related:** See [`src/Elastic/docs/config.md`](../src/Elastic/docs/config.md) for the full key reference.
+
 ## $smwgElasticsearchCredentials
 
 ElasticSearch HTTP basic-authentication credentials (`user`/`pass`).
@@ -434,6 +486,13 @@ maintenance script.
 
 **Since:** 3.0
 **Default:** `"identity"`
+
+## $smwgEntityCacheSizes
+
+Per-pool entry limits for the in-memory caches SMW uses to look up entity IDs during a single request. Each pool maps a string key to an integer capacity. Override individual pools to tune memory use without replacing the full map; pools not listed keep their defaults.
+
+**Since:** 7.0.0
+**Default:** `EntityIdManager::DEFAULT_CACHE_SIZES`
 
 ## $smwgExperimentalFeatures
 
@@ -706,6 +765,26 @@ $smwgJobQueueWatchlist = [
 **Since:** 3.0
 **Default:** `[]`
 
+## $smwgLocalConnectionConf
+
+Connection characteristics for each named database handle used by SMW. The outer key is the connection name; the inner map specifies `read` and `write` DB index constants. Merged with `array_plus_2d` semantics: user-defined inner keys win; connections not defined by the user are filled from defaults. Should only be modified by trained professionals.
+
+**Since:** 2.5.3
+**Default:**
+
+```php
+[
+    'mw.db' => [
+        'read'  => DB_REPLICA,
+        'write' => DB_PRIMARY,
+    ],
+    'mw.db.queryengine' => [
+        'read'  => DB_REPLICA,
+        'write' => DB_PRIMARY,
+    ],
+]
+```
+
 ## $smwgMainCacheType
 
 Main persistent cache type used by SMW. `CACHE_ANYTHING` defers to
@@ -761,6 +840,34 @@ $smwgNamespace = "http://example.org/id/";
 
 **Since:** 0.7
 **Default:** `null`
+
+## $smwgNamespacesWithSemanticLinks
+
+Controls which namespaces are evaluated for semantic annotations. Pages outside listed namespaces may carry annotations but they are silently ignored and excluded from RDF export unless referenced from another article. Merged with `array_plus` semantics: user-defined keys win; unlisted standard MW namespaces are filled from defaults.
+
+**Since:** 0.7
+**Default:**
+
+```php
+[
+    NS_MAIN             => true,
+    NS_TALK             => false,
+    NS_USER             => true,
+    NS_USER_TALK        => false,
+    NS_PROJECT          => true,
+    NS_PROJECT_TALK     => false,
+    NS_FILE             => true,
+    NS_FILE_TALK        => false,
+    NS_MEDIAWIKI        => false,
+    NS_MEDIAWIKI_TALK   => false,
+    NS_TEMPLATE         => false,
+    NS_TEMPLATE_TALK    => false,
+    NS_HELP             => true,
+    NS_HELP_TALK        => false,
+    NS_CATEGORY         => true,
+    NS_CATEGORY_TALK    => false,
+]
+```
 
 ## $smwgPageSpecialProperties
 

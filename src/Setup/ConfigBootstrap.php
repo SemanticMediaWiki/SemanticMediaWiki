@@ -2,6 +2,8 @@
 
 namespace SMW\Setup;
 
+use SMW\SQLStore\EntityStore\EntityIdManager;
+
 /**
  * Registration-time bootstrap for SMW config defaults that cannot be
  * expressed as static JSON in extension.json — chiefly settings whose
@@ -113,6 +115,121 @@ class ConfigBootstrap {
 		if ( !isset( $GLOBALS['smwgCheckForConstraintErrors'] ) ) {
 			$GLOBALS['smwgCheckForConstraintErrors'] = SMW_CONSTRAINT_ERR_CHECK_ALL;
 		}
+
+		// smwgLocalConnectionConf — array_plus_2d semantics: user inner keys win,
+		// missing connections are filled from defaults.
+		$defaults = [
+			'mw.db' => [
+				'read'  => DB_REPLICA,
+				'write' => DB_PRIMARY,
+			],
+			'mw.db.queryengine' => [
+				'read'  => DB_REPLICA,
+				'write' => DB_PRIMARY,
+			],
+		];
+		$user = $GLOBALS['smwgLocalConnectionConf'] ?? [];
+		foreach ( $defaults as $name => $defaultPair ) {
+			$userPair = $user[$name] ?? [];
+			$user[$name] = $userPair + $defaultPair;
+		}
+		$GLOBALS['smwgLocalConnectionConf'] = $user;
+
+		// smwgNamespacesWithSemanticLinks — array_plus semantics: user keys win,
+		// standard MW namespaces filled from defaults.
+		$defaults = [
+			NS_MAIN             => true,
+			NS_TALK             => false,
+			NS_USER             => true,
+			NS_USER_TALK        => false,
+			NS_PROJECT          => true,
+			NS_PROJECT_TALK     => false,
+			NS_FILE             => true,
+			NS_FILE_TALK        => false,
+			NS_MEDIAWIKI        => false,
+			NS_MEDIAWIKI_TALK   => false,
+			NS_TEMPLATE         => false,
+			NS_TEMPLATE_TALK    => false,
+			NS_HELP             => true,
+			NS_HELP_TALK        => false,
+			NS_CATEGORY         => true,
+			NS_CATEGORY_TALK    => false,
+		];
+		$GLOBALS['smwgNamespacesWithSemanticLinks'] = ( $GLOBALS['smwgNamespacesWithSemanticLinks'] ?? [] ) + $defaults;
+
+		// smwgEntityCacheSizes — array_plus semantics: user-overridden pools win,
+		// unset pools filled from EntityIdManager::DEFAULT_CACHE_SIZES.
+		$GLOBALS['smwgEntityCacheSizes'] = ( $GLOBALS['smwgEntityCacheSizes'] ?? [] )
+			+ EntityIdManager::DEFAULT_CACHE_SIZES;
+
+		// smwgElasticsearchConfig — array_replace_recursive semantics: user values
+		// at any depth win; unset keys at any depth survive from defaults.
+		// The $smwgIP paths in index_def cannot be expressed as static JSON.
+		$smwgIP = $GLOBALS['smwgIP'];
+		$defaults = [
+			'index_def' => [
+				'data'   => $smwgIP . '/data/elastic/smw-data-standard.json',
+				'lookup' => $smwgIP . '/data/elastic/smw-lookup.json',
+			],
+			'connection' => [
+				'quick_ping'      => true,
+				'retries'         => 2,
+				'timeout'         => 30,
+				'connect_timeout' => 30,
+			],
+			'settings' => [
+				'data' => [
+					'index.mapping.total_fields.limit' => 9000,
+					'index.max_result_window'          => 50000,
+				],
+			],
+			'indexer' => [
+				'raw.text'                                  => false,
+				'experimental.file.ingest'                  => false,
+				'throw.exception.on.illegal.argument.error' => true,
+				'job.recovery.retries'                      => 5,
+				'job.file.ingest.retries'                   => 3,
+				'monitor.entity.replication'                => true,
+				'monitor.entity.replication.cache_lifetime' => 3600,
+				'data.sqlstore_compatibility'               => true,
+			],
+			'query' => [
+				'fallback.no_connection'    => false,
+				'profiling'                 => false,
+				'debug.explain'             => true,
+				'debug.description.log'     => true,
+				'maximum.value.length'      => 500,
+				'must_not.property.exists'  => true,
+				'sort.property.must.exists' => true,
+				'score.sortfield'           => 'es.score',
+				'query_string.boolean.operators' => true,
+				'compat.mode'               => true,
+				'subquery.size'             => 10000,
+				'subquery.constant.score'   => true,
+				'subquery.terms.lookup.result.size.index.write.threshold' => 200,
+				'subquery.terms.lookup.cache.lifetime'                    => 60 * 60,
+				'concept.terms.lookup'                                    => true,
+				'concept.terms.lookup.result.size.index.write.threshold'  => 10,
+				'concept.terms.lookup.cache.lifetime'                     => 60 * 60,
+				'cjk.best.effort.proximity.match'       => true,
+				'wide.proximity.as.match_phrase'        => true,
+				'wide.proximity.fields'                 => [
+					'subject.title^8',
+					'text_copy^5',
+					'text_raw',
+					'attachment.title^3',
+					'attachment.content',
+				],
+				'uri.field.case.insensitive'                  => false,
+				'text.field.case.insensitive.eq.match'        => false,
+				'page.field.case.insensitive.proximity.match' => true,
+				'highlight.fragment'                          => [ 'number' => 1, 'size' => 250, 'type' => false ],
+			],
+		];
+		$GLOBALS['smwgElasticsearchConfig'] = array_replace_recursive(
+			$defaults,
+			$GLOBALS['smwgElasticsearchConfig'] ?? []
+		);
 	}
 
 }

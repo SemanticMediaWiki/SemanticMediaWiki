@@ -4,7 +4,7 @@ namespace SMW\Tests\Unit\Elastic;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Exception\JSONParseException;
-use SMW\SemanticMediaWiki;
+use SMW\Setup\ConfigBootstrap;
 
 /**
  * @license GPL-2.0-or-later
@@ -49,9 +49,24 @@ class DefaultConfigTest extends TestCase {
 	}
 
 	public function defaultSettingsProvider() {
-		$defaultSettings = SemanticMediaWiki::getDefaultSettings();
+		// smwgElasticsearchConfig defaults now live in ConfigBootstrap. Seed
+		// them into a temporary copy of $GLOBALS so the data provider can read
+		// them without permanently mutating the real globals.
+		$saved = $GLOBALS['smwgElasticsearchConfig'] ?? null;
+		unset( $GLOBALS['smwgElasticsearchConfig'] );
 
-		foreach ( $defaultSettings['smwgElasticsearchConfig'] as $key => $configs ) {
+		ConfigBootstrap::seedComputedDefaults();
+
+		$elasticsearchConfig = $GLOBALS['smwgElasticsearchConfig'];
+
+		// Restore to pre-provider state.
+		if ( $saved === null ) {
+			unset( $GLOBALS['smwgElasticsearchConfig'] );
+		} else {
+			$GLOBALS['smwgElasticsearchConfig'] = $saved;
+		}
+
+		foreach ( $elasticsearchConfig as $key => $configs ) {
 
 			if ( $key === 'index_def' ) {
 				continue;

@@ -229,28 +229,18 @@ class NamespaceManager {
 		 * be defined after SMW_NS_PROPERTY is declared
 		 */
 		$smwNamespacesSettings = [
-			SMW_NS_PROPERTY => true,
+			SMW_NS_PROPERTY      => true,
 			SMW_NS_PROPERTY_TALK => false,
-			SMW_NS_CONCEPT => true,
-			SMW_NS_CONCEPT_TALK => false,
-			SMW_NS_SCHEMA => true,
-			SMW_NS_SCHEMA_TALK => false,
+			SMW_NS_CONCEPT       => true,
+			SMW_NS_CONCEPT_TALK  => false,
+			SMW_NS_SCHEMA        => true,
+			SMW_NS_SCHEMA_TALK   => false,
 		];
 
-		// Always merge in the standard MW namespace defaults from
-		// src/DefaultSettings.php. Without this, a LocalSettings.php that
-		// only sets entries for custom namespaces — e.g.
-		// `$smwgNamespacesWithSemanticLinks[NS_AUTHORITY] = true;` — would
-		// leave NS_MAIN, NS_USER, etc. unset because `setupGlobals()` skips
-		// any global already touched by the user. User-set keys still win
-		// via `array_replace`'s right-most precedence. (#6302, #6726)
-		$defaults = SemanticMediaWiki::getDefaultSettings();
-
-		$vars['smwgNamespacesWithSemanticLinks'] = array_replace(
-			$defaults['smwgNamespacesWithSemanticLinks'],
-			$smwNamespacesSettings,
-			$vars['smwgNamespacesWithSemanticLinks']
-		);
+		// Merge SMW-specific namespaces under user values; the standard MW
+		// namespaces are seeded by ConfigBootstrap::seedComputedDefaults().
+		$vars['smwgNamespacesWithSemanticLinks'] = $vars['smwgNamespacesWithSemanticLinks']
+			+ $smwNamespacesSettings;
 
 		$vars['wgNamespaceContentModels'][SMW_NS_SCHEMA] = CONTENT_MODEL_SMW_SCHEMA;
 	}
