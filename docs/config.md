@@ -29,6 +29,13 @@ beyond the per-setting boxes here:
 
 ---
 
+## $smwgAdminFeatures
+
+Bitmask of Special:SemanticMediaWiki admin-panel features and alerts.
+
+**Since:** 2.5
+**Default:** `SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT | SMW_ADM_MAINTENANCE_SCRIPT_DOCS | SMW_ADM_SHOW_OVERVIEW | SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN`
+
 ## $smwgAllowRecursiveExport
 
 When `true`, normal users can request recursive OWL/RDF exports.
@@ -57,6 +64,20 @@ When `true`, refreshes the semantic store for pages that are edited.
 **Since:** 1.5.6
 **Default:** `true`
 
+## $smwgBrowseFeatures
+
+Bitmask of Special:Browse capabilities enabled by default.
+
+**Since:** 3.0
+**Default:** `SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API`
+
+## $smwgCategoryFeatures
+
+Bitmask of category processing features: redirect resolution, category-as-instance, and subcategory-as-hierarchy.
+
+**Since:** 3.0
+**Default:** `SMW_CAT_REDIRECT | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY`
+
 ## $smwgChangePropagationProtection
 
 When `true`, protects an active change propagation from being disabled without administrative intervention.
@@ -70,6 +91,13 @@ Property IDs that trigger full re-processing of dependent pages when their value
 
 **Since:** 1.5
 **Default:** `["_PVAL", "_LIST", "_PVAP", "_PVUC", "_PDESC", "_PPLB", "_PREC", "_PDESC", "_SUBP", "_SUBC", "_PVALI"]`
+
+## $smwgCheckForConstraintErrors
+
+Scope of constraint-error lookups shown via the page indicator (`SMW_CONSTRAINT_ERR_CHECK_NONE`, `_MAIN`, or `_ALL`).
+
+**Since:** 3.1
+**Default:** `SMW_CONSTRAINT_ERR_CHECK_ALL`
 
 ## $smwgCheckForRemnantEntities
 
@@ -141,6 +169,13 @@ When `true`, verifies semantic data is up to date with the latest revision on ev
 
 **Since:** 3.2
 **Default:** `false`
+
+## $smwgDVFeatures
+
+Bitmask of DataValue type-specific features enabled by default.
+
+**Since:** 2.4
+**Default:** `SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM | SMW_DV_PPLB | SMW_DV_PROV_LHNT`
 
 ## $smwgEditProtectionRight
 
@@ -229,6 +264,13 @@ Collation strategy for entity sort values; must match `$wgCategoryCollation`; ch
 **Since:** 3.0
 **Default:** `"identity"`
 
+## $smwgExperimentalFeatures
+
+Bitmask of experimental features that can be toggled off to revert to a previous working state.
+
+**Since:** 3.0
+**Default:** `SMW_QUERYRESULT_PREFETCH | SMW_SHOWPARSER_USE_CURTAILMENT`
+
 ## $smwgExportBacklinks
 
 When `true`, backlinks are included by default in OWL/RDF exports.
@@ -256,6 +298,13 @@ When `true`, resources are exported as IRIs (RFC 3987) instead of ASCII-encoded 
 
 **Since:** 2.5
 **Default:** `true`
+
+## $smwgFactboxFeatures
+
+Bitmask of factbox capabilities: caching, purge-refresh, subobject display, and attachment display.
+
+**Since:** 3.0
+**Default:** `SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT | SMW_FACTBOX_DISPLAY_ATTACHMENT`
 
 ## $smwgFallbackSearchType
 
@@ -291,6 +340,13 @@ Language-detector configurations for fulltext indexing; empty disables language 
 
 **Since:** 2.5
 **Default:** `[]`
+
+## $smwgFulltextSearchIndexableDataTypes
+
+Bitmask of DataItem types indexed in the fulltext search table.
+
+**Since:** 2.5
+**Default:** `SMW_FT_BLOB | SMW_FT_URI`
 
 ## $smwgFulltextSearchMinTokenSize
 
@@ -349,6 +405,13 @@ Job types shown in the personal-bar job-queue watchlist; empty disables the feat
 **Since:** 3.0
 **Default:** `[]`
 
+## $smwgMainCacheType
+
+Main persistent cache type used by SMW; `CACHE_ANYTHING` defers to `$wgMessageCacheType` / `$wgParserCacheType`.
+
+**Since:** 3.0
+**Default:** `CACHE_ANYTHING`
+
 ## $smwgMandatorySubpropertyParentTypeInheritance
 
 When `true`, enforces type inheritance between a parent property and its subproperties.
@@ -390,6 +453,13 @@ Special properties automatically tracked and stored for pages (e.g. modification
 
 **Since:** 1.7
 **Default:** `["_MDAT"]`
+
+## $smwgParserFeatures
+
+Bitmask of annotation-parsing features: strict mode, inline errors, and hidden-category exclusion.
+
+**Since:** 3.0
+**Default:** `SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR | SMW_PARSER_HID_CATS`
 
 ## $smwgPDefaultType
 
@@ -454,6 +524,20 @@ Concept cache lifetime in minutes; SMW recomputes an older cache if this thresho
 **Since:** 2.1
 **Default:** `1440`
 
+## $smwgQConceptCaching
+
+Controls when concepts require a pre-computed cache (`CONCEPT_CACHE_ALL`, `CONCEPT_CACHE_HARD`, or `CONCEPT_CACHE_NONE`).
+
+**Since:** 1.0
+**Default:** `CONCEPT_CACHE_HARD`
+
+## $smwgQConceptFeatures
+
+Bitmask of query types available inside concept definitions.
+
+**Since:** 1.0
+**Default:** `SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY | SMW_CONCEPT_QUERY`
+
 ## $smwgQConceptMaxDepth
 
 Maximum property-chain depth for a concept query.
@@ -496,6 +580,13 @@ Master switch to enable or disable all query-related features and interfaces.
 **Since:** 1.0
 **Default:** `true`
 
+## $smwgQEqualitySupport
+
+Depth of redirect equality evaluation in queries (`SMW_EQ_NONE`, `SMW_EQ_SOME`, or `SMW_EQ_FULL`).
+
+**Since:** 1.0
+**Default:** `SMW_EQ_SOME`
+
 ## $smwgQExpensiveExecutionLimit
 
 Maximum number of expensive `#ask` / `#show` calls per page; `false` means no limit.
@@ -509,6 +600,13 @@ Time in seconds above which a `#ask` / `#show` call is classified as expensive.
 
 **Since:** 3.0
 **Default:** `10`
+
+## $smwgQFeatures
+
+Bitmask of query types available by default.
+
+**Since:** 1.2
+**Default:** `SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY`
 
 ## $smwgQFilterDuplicates
 
@@ -551,6 +649,13 @@ Maximum number of printout columns (`?`-statements) supported in a single query.
 
 **Since:** 1.0
 **Default:** `100`
+
+## $smwgQSortFeatures
+
+Bitmask of query sort capabilities: standard sort and random sort.
+
+**Since:** 3.0
+**Default:** `SMW_QSORT | SMW_QSORT_RANDOM`
 
 ## $smwgQStrictComparators
 
@@ -608,6 +713,13 @@ When `true`, embedded query result caches are invalidated when an `action=purge`
 **Since:** 2.5
 **Default:** `true`
 
+## $smwgQueryResultCacheType
+
+Cache backend for query result storage; `CACHE_NONE` disables the query result cache.
+
+**Since:** 2.5
+**Default:** `CACHE_NONE`
+
 ## $smwgQueryResultNonEmbeddedCacheLifetime
 
 Lifetime in seconds for non-embedded (Special:Ask, API) query result caches; `0` disables.
@@ -636,6 +748,20 @@ When `true`, reverts to the pre-7.x `SELECT DISTINCT` query shape instead of the
 **Since:** 7.0.0
 **Default:** `false`
 
+## $smwgRemoteReqFeatures
+
+Bitmask of remote-request handling features for Special:Ask.
+
+**Since:** 3.0
+**Default:** `SMW_REMOTE_REQ_SEND_RESPONSE | SMW_REMOTE_REQ_SHOW_NOTE`
+
+## $smwgResultFormatsFeatures
+
+Bitmask of result-printer features; currently only template outer-separator support.
+
+**Since:** 2.3
+**Default:** `SMW_RF_TEMPLATE_OUTSEP`
+
 ## $smwgSearchByPropertyFuzzy
 
 Type IDs for which Special:SearchByProperty displays nearby fuzzy results when exact matches are few.
@@ -656,6 +782,20 @@ When `true`, sets a timestamp on `ParserOutput` to allow immediate parser-cache 
 
 **Since:** 5.1
 **Default:** `true`
+
+## $smwgShowFactbox
+
+Controls factbox visibility on page views; one of the `SMW_FACTBOX_*` values.
+
+**Since:** 0.7
+**Default:** `SMW_FACTBOX_HIDDEN`
+
+## $smwgShowFactboxEdit
+
+Controls factbox visibility in edit mode; one of the `SMW_FACTBOX_*` values.
+
+**Since:** 1.0
+**Default:** `SMW_FACTBOX_NONEMPTY`
 
 ## $smwgSimilarityLookupExemptionProperty
 
@@ -678,6 +818,13 @@ Default graph URI for the SPARQL repository, analogous to a database name in rel
 **Since:** 1.7
 **Default:** `""`
 
+## $smwgSparqlQFeatures
+
+SPARQL query features expected to be supported by the repository (redirect resolution, sub-property, sub-category).
+
+**Since:** 2.3
+**Default:** `SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP | SMW_SPARQL_QF_SUBC`
+
 ## $smwgSparqlReplicationPropertyExemptionList
 
 Properties exempted from the SPARQL replication process.
@@ -691,6 +838,20 @@ Pre-deployed SPARQL repository connector to use (`default`, `4store`, `blazegrap
 
 **Since:** 2.0
 **Default:** `"default"`
+
+## $smwgSparqlRepositoryFeatures
+
+Repository-level SPARQL features such as connection-ping support.
+
+**Since:** 3.2
+**Default:** `SMW_SPARQL_NONE`
+
+## $smwgSpecialAskFormSubmitMethod
+
+HTTP method used by the Special:Ask form (`SMW_SASK_SUBMIT_POST`, `SMW_SASK_SUBMIT_GET`, or `SMW_SASK_SUBMIT_GET_REDIRECT`).
+
+**Since:** 3.0
+**Default:** `SMW_SASK_SUBMIT_POST`
 
 ## $smwgSupportSectionTag
 

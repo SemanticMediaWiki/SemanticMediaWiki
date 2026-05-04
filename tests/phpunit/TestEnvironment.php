@@ -9,6 +9,7 @@ use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup\ConfigBootstrap;
 use SMW\Tests\Utils\SpyLogger;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\ValidatorFactory;
@@ -85,10 +86,18 @@ class TestEnvironment {
 		$settings = require $GLOBALS['smwgIP'] . '/src/DefaultSettings.php';
 
 		if ( $defaultSettingKeys !== [] ) {
+			// Seed computed defaults so keys migrated out of DefaultSettings.php
+			// (e.g. feature-flag constants) are available via $GLOBALS.
+			ConfigBootstrap::seedComputedDefaults();
+
 			$copy = [];
 
 			foreach ( $defaultSettingKeys as $key ) {
-				$copy[$key] = $settings[$key];
+				if ( array_key_exists( $key, $settings ) ) {
+					$copy[$key] = $settings[$key];
+				} elseif ( isset( $GLOBALS[$key] ) ) {
+					$copy[$key] = $GLOBALS[$key];
+				}
 			}
 
 			$settings = $copy;
