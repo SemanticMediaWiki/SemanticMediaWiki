@@ -45,13 +45,18 @@ class ConfigBootstrapTest extends TestCase {
 	}
 
 	public function testFalseyButPresentValueIsPreserved(): void {
-		$key    = 'smwgQEqualitySupport';
+		// Sets the user value to literal 0 — falsey, but `isset()` returns
+		// true. A buggy `if ( !$GLOBALS[$key] )` guard would overwrite the
+		// 0 with the non-zero default; the correct `!isset()` guard
+		// preserves it. Without this test, that regression would slip past
+		// `testUserPresetValueIsPreserved` (which uses a truthy non-default).
+		$key    = 'smwgFactboxFeatures';
 		$backup = $GLOBALS[$key] ?? null;
-		$GLOBALS[$key] = SMW_EQ_NONE;
+		$GLOBALS[$key] = 0;
 
 		try {
 			ConfigBootstrap::seedComputedDefaults();
-			$this->assertSame( SMW_EQ_NONE, $GLOBALS[$key] );
+			$this->assertSame( 0, $GLOBALS[$key] );
 		} finally {
 			$GLOBALS[$key] = $backup;
 		}
