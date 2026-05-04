@@ -309,7 +309,7 @@ class Time extends DataItem implements CalendarModel {
 
 		// Avoid "Failed to parse time string (1300-11-02 12:03:25.888499949) at
 		// at position 11 (1): The timezone could not ..."
-		$seconds = number_format( (int)str_pad( (string)$this->m_seconds, 2, '0', STR_PAD_LEFT ), 7, '.', '' );
+		$seconds = number_format( (float)$this->m_seconds, 7, '.', '' );
 
 		$time = $year . '-' .
 			str_pad( (string)$this->m_month, 2, '0', STR_PAD_LEFT ) . '-' .
