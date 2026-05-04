@@ -9,6 +9,7 @@ use SMW\Maintenance\DuplicateEntitiesDisposer;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -21,6 +22,8 @@ use stdClass;
  * @author mwjames
  */
 class DuplicateEntitiesDisposerTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $cache;
@@ -138,14 +141,13 @@ class DuplicateEntitiesDisposerTest extends TestCase {
 		$row = new stdClass;
 		$row->smw_id = 42;
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$record,
-				$this->anything() )
-			->willReturn( [ $row ] );
+		$whereConditions = [];
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback(
+				function () use ( $row, &$whereConditions ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+				}
+			);
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -168,6 +170,8 @@ class DuplicateEntitiesDisposerTest extends TestCase {
 		];
 
 		$instance->verifyAndDispose( $duplicates );
+
+		$this->assertSame( [ $record ], $whereConditions );
 	}
 
 }

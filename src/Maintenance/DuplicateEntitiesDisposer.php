@@ -147,25 +147,25 @@ class DuplicateEntitiesDisposer {
 			$this->messageReporter->reportMessage( '.' );
 			$log[] = [ 'DELETE' => $duplicate['s_id'] . ", " . $duplicate['p_id'] . ', ' . $duplicate['o_id'] ];
 
-			$connection->delete(
-				$table,
-				[
+			$connection->newDeleteQueryBuilder()
+				->deleteFrom( $table )
+				->where( [
 					's_id' => $duplicate['s_id'],
 					'p_id' => $duplicate['p_id'],
 					'o_id' => $duplicate['o_id'],
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
-			$connection->insert(
-				$table,
-				[
+			$connection->newInsertQueryBuilder()
+				->insertInto( $table )
+				->row( [
 					's_id' => $duplicate['s_id'],
 					'p_id' => $duplicate['p_id'],
 					'o_id' => $duplicate['o_id'],
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			$i++;
 		}
@@ -187,29 +187,29 @@ class DuplicateEntitiesDisposer {
 			$this->messageReporter->reportMessage( '.' );
 			$log[] = [ 'DELETE' => $duplicate['o_id'] . " (" . $duplicate['s_title'] . '#' . $duplicate['s_namespace'] . ")" ];
 
-			$connection->delete(
-				$table,
-				[
+			$connection->newDeleteQueryBuilder()
+				->deleteFrom( $table )
+				->where( [
 					's_title' => $duplicate['s_title'],
 					's_namespace' => $duplicate['s_namespace'],
 					'o_id' => $duplicate['o_id'],
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			if ( $duplicate['s_title'] === '' ) {
 				continue;
 			}
 
-			$connection->insert(
-				$table,
-				[
+			$connection->newInsertQueryBuilder()
+				->insertInto( $table )
+				->row( [
 					's_title' => $duplicate['s_title'],
 					's_namespace' => $duplicate['s_namespace'],
 					'o_id' => $duplicate['o_id'],
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			$i++;
 		}
@@ -233,19 +233,17 @@ class DuplicateEntitiesDisposer {
 			}
 
 			$this->messageReporter->reportMessage( '.' );
-			$res = $connection->select(
-				SQLStore::ID_TABLE,
-				[
-					'smw_id',
-				],
-				[
+			$res = $connection->newSelectQueryBuilder()
+				->select( [ 'smw_id' ] )
+				->from( SQLStore::ID_TABLE )
+				->where( [
 					'smw_title' => $duplicate['smw_title'],
 					'smw_namespace' => $duplicate['smw_namespace'],
 					'smw_iw' => $duplicate['smw_iw'],
 					'smw_subobject' => $duplicate['smw_subobject']
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 
 			$hash = $duplicate['smw_title'] . '#' . $duplicate['smw_namespace'] . '#' . $duplicate['smw_iw'] . '#' . $duplicate['smw_subobject'];
 
