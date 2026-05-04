@@ -9,6 +9,8 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\ConceptCache;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\ConceptCache
@@ -20,6 +22,9 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class ConceptCacheTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $store;
 	private $conceptQuerySegmentBuilder;
@@ -59,16 +64,31 @@ class ConceptCacheTest extends TestCase {
 	}
 
 	public function testDeleteConceptCache() {
+		$capturedDeleteTables = [];
+		$capturedDeleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedDeleteTables,
+			$capturedDeleteWheres
+		);
+
+		$capturedUpdateTables = [];
+		$capturedUpdateSets = [];
+		$capturedUpdateWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedUpdateTables,
+			$capturedUpdateSets,
+			$capturedUpdateWheres
+		);
+
+		$selectBuilder = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
-
-		$connection->expects( $this->once() )
-			->method( 'delete' );
+		$connection->method( 'newDeleteQueryBuilder' )->willReturn( $deleteBuilder );
+		$connection->method( 'newUpdateQueryBuilder' )->willReturn( $updateBuilder );
+		$connection->method( 'newSelectQueryBuilder' )->willReturn( $selectBuilder );
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
@@ -88,6 +108,13 @@ class ConceptCacheTest extends TestCase {
 
 		$instance->deleteConceptCache(
 			Title::newFromText( 'Foo', SMW_NS_CONCEPT )
+		);
+
+		$this->assertSame( [ SQLStore::CONCEPT_CACHE_TABLE ], $capturedDeleteTables );
+		$this->assertSame( [ 'smw_fpt_conc' ], $capturedUpdateTables );
+		$this->assertSame(
+			[ [ 'cache_date' => null, 'cache_count' => null ] ],
+			$capturedUpdateSets
 		);
 	}
 
