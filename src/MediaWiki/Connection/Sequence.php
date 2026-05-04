@@ -59,7 +59,11 @@ class Sequence {
 			$this->connection->tablePrefix( $this->tablePrefix );
 		}
 
-		$seq_num = $this->connection->selectField( $table, "max({$field})", [], __METHOD__ );
+		$seq_num = $this->connection->newSelectQueryBuilder()
+			->select( "max({$field})" )
+			->from( $table )
+			->caller( __METHOD__ )
+			->fetchField();
 		$seq_num += 1;
 
 		$sequence = self::makeSequence( $table, $field );
