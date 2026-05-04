@@ -403,6 +403,7 @@ class Rebuilder {
 				->from( 'page' )
 				->where( [ "page_id >= $nextPosition" ] )
 				->orderBy( 'page_id', 'ASC' )
+				->limit( 1 )
 				->caller( __METHOD__ )
 				->fetchField();
 
@@ -411,6 +412,7 @@ class Rebuilder {
 				->from( SQLStore::ID_TABLE )
 				->where( [ "smw_id >= $nextPosition" ] )
 				->orderBy( 'smw_id', 'ASC' )
+				->limit( 1 )
 				->caller( __METHOD__ )
 				->fetchField();
 
