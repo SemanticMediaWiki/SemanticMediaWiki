@@ -116,10 +116,6 @@ class BrowseTest extends TestCase {
 			->method( 'query' )
 			->willReturn( $resultWrapper );
 
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
-
 		$connection->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 

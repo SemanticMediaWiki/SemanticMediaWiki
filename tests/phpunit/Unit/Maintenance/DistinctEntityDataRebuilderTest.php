@@ -56,10 +56,6 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
-
 		$connection->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 
@@ -161,15 +157,6 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->stringContains( 'category' ),
-				$this->anything(),
-				$this->anything(),
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $row ] );
-
 		$database->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
 
@@ -207,15 +194,6 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->anything(),
-				$this->anything(),
-				[ 'page_namespace' => SMW_NS_PROPERTY ],
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $row ] );
 
 		$database->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );

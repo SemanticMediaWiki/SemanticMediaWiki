@@ -81,6 +81,10 @@ class ElasticStoreTest extends TestCase {
 		$row->smw_hash = 42;
 		$row->smw_rev = null;
 		$row->smw_touched = null;
+		$row->smw_title = '';
+		$row->smw_namespace = 0;
+		$row->smw_iw = '';
+		$row->smw_subobject = '';
 		$row->count = 0;
 
 		$client = $this->getMockBuilder( Client::class )
@@ -94,6 +98,26 @@ class ElasticStoreTest extends TestCase {
 		$connection->expects( $this->any() )
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
+
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+
+		$connection->expects( $this->any() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockInsertQueryBuilder() );
+
+		$connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
+
+		$connection->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockDeleteQueryBuilder() );
+
+		$connection->expects( $this->any() )
+			->method( 'newReplaceQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockReplaceQueryBuilder() );
 
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
@@ -113,14 +137,6 @@ class ElasticStoreTest extends TestCase {
 		$database->expects( $this->any() )
 			->method( 'query' )
 			->willReturn( [] );
-
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
-
-		$database->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( $row );
 
 		$database->expects( $this->any() )
 			->method( 'newSelectQueryBuilder' )

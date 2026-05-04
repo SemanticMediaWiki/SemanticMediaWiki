@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit\MediaWiki\Connection;
 
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
@@ -134,77 +133,6 @@ class DatabaseTest extends TestCase {
 		);
 	}
 
-	public function testSelectMethod() {
-		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'select' ] )
-			->getMockForAbstractClass();
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $resultWrapper );
-
-		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
-
-		$instance = new Database(
-			new ConnRef(
-				[
-					'read' => $connectionProvider
-				]
-			),
-			$this->transactionHandler
-		);
-
-		$this->assertInstanceOf(
-			ResultWrapper::class,
-			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
-		);
-	}
-
-	public function testSelectFieldMethod() {
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'selectField' ] )
-			->getMockForAbstractClass();
-
-		$database->expects( $this->once() )
-			->method( 'selectField' )
-			->with( 'Foo' )
-			->willReturn( 'Bar' );
-
-		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
-
-		$instance = new Database(
-			new ConnRef(
-				[
-					'read' => $connectionProvider
-				]
-			),
-			$this->transactionHandler
-		);
-
-		$this->assertEquals(
-			'Bar',
-			$instance->selectField( 'Foo', 'Bar', '', __METHOD__, [] )
-		);
-	}
-
 	/**
 	 * @dataProvider querySqliteProvider
 	 */
@@ -274,41 +202,6 @@ class DatabaseTest extends TestCase {
 		];
 
 		return $provider;
-	}
-
-	public function testSelectThrowsException() {
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'select' ] )
-			->getMockForAbstractClass();
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->willThrowException( new RuntimeException( 'Database error' ) );
-
-		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
-
-		$instance = new Database(
-			new ConnRef(
-				[
-					'read'  => $connectionProvider
-				]
-			),
-			$this->transactionHandler
-		);
-
-		$this->expectException( 'RuntimeException' );
-
-		$this->assertInstanceOf(
-			ResultWrapper::class,
-			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
-		);
 	}
 
 	public function testQueryThrowsException() {
