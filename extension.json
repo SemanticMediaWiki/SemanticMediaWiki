@@ -769,6 +769,11 @@
 			"value": false,
 			"description": "When `true`, encodes and compresses Special:Browse / Special:Ask / Special:SearchByProperty links to reduce URL length."
 		},
+		"ConfigFileDir": {
+			"value": "",
+			"description": "Directory used to persistently store SMW configuration files (`.smw.json`, `.smw.maintenance.json`). The directory must be writable. Defaults to the extension root; you may point it to `$wgUploadDirectory` or any other writable location.",
+			"path": true
+		},
 		"CreateProtectionRight": {
 			"value": false,
 			"description": "User right required to create new properties; `false` disables creation protection."
@@ -803,6 +808,11 @@
 		"DetectOutdatedData": {
 			"value": false,
 			"description": "When `true`, verifies semantic data is up to date with the latest revision on every page load."
+		},
+		"Dir": {
+			"value": "",
+			"description": "Alias for `smwgIP`; resolves to the extension root directory. Provided for readability in code that does not use `smwgIP` directly.",
+			"path": true
 		},
 		"EditProtectionRight": {
 			"value": false,
@@ -871,6 +881,11 @@
 			"value": true,
 			"description": "When `true`, resources are exported as IRIs (RFC 3987) instead of ASCII-encoded URIs."
 		},
+		"ExtraneousLanguageFileDir": {
+			"value": "i18n/extra",
+			"description": "Directory containing SMW-specific i18n files for extraneous language data (unit labels, property aliases, etc.).",
+			"path": true
+		},
 		"FallbackSearchType": {
 			"value": null,
 			"description": "Search engine class to fall back to when SMWSearch cannot parse a query; `null` uses the database default."
@@ -922,6 +937,14 @@
 			"value": false,
 			"description": "When `true`, bypasses the `SetupCheck` and `MaintenanceCheck` gates that block execution when the schema is in an intermediate state."
 		},
+		"ImportFileDirs": {
+			"value": {
+				"smw": "data/import"
+			},
+			"description": "Directories from which SMW reads import-content definitions; users add their own vocabularies by adding entries.",
+			"path": true,
+			"merge_strategy": "array_plus"
+		},
 		"ImportPerformers": {
 			"value": ["SemanticMediaWikiImporter"],
 			"description": "Users reserved exclusively for the import task; they may lock content from alteration by others.",
@@ -931,10 +954,20 @@
 			"value": 1,
 			"description": "Import-file version required for content to be imported during setup; set to `false` to disable import."
 		},
+		"IP": {
+			"value": "",
+			"description": "Path to the SMW extension root directory as seen on the local filesystem. Used to resolve PHP file paths within the extension.",
+			"path": true
+		},
 		"JobQueueWatchlist": {
 			"value": [],
 			"description": "Job types shown in the personal-bar job-queue watchlist; empty disables the feature.",
 			"merge_strategy": "provide_default"
+		},
+		"MaintenanceDir": {
+			"value": "maintenance",
+			"description": "Directory containing SMW maintenance scripts.",
+			"path": true
 		},
 		"MandatorySubpropertyParentTypeInheritance": {
 			"value": false,
@@ -1178,6 +1211,11 @@
 			"value": ["_num", "_txt", "_dat", "_mlt_rec"],
 			"description": "Type IDs for which Special:SearchByProperty displays nearby fuzzy results when exact matches are few.",
 			"merge_strategy": "provide_default"
+		},
+		"ServicesFileDir": {
+			"value": "src/Services",
+			"description": "Directory containing SMW service-wiring files loaded by the dependency injection container.",
+			"path": true
 		},
 		"SetParserCacheKeys": {
 			"value": ["userlang", "dateformat"],

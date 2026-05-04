@@ -206,6 +206,16 @@ them.
 **Since:** 3.1
 **Default:** `"purge"`
 
+## $smwgConfigFileDir
+
+Directory used to persistently store SMW configuration files (`.smw.json`,
+`.smw.maintenance.json`). The directory must be writable. You may assign
+the same directory as `$wgUploadDirectory` or select an entirely different
+location.
+
+**Since:** 3.0
+**Default:** the extension's root directory
+
 ## $smwgCompactLinkSupport
 
 When `true`, encodes and compresses Special:Browse / Special:Ask /
@@ -301,6 +311,14 @@ the entity issue panel appears on pages.
 
 **Since:** 3.2
 **Default:** `false`
+
+## $smwgDir
+
+Alias for `$smwgIP`; resolves to the extension root directory. Provided
+for readability in code that does not use `$smwgIP` directly.
+
+**Since:** 1.0
+**Default:** the extension's root directory
 
 ## $smwgDVFeatures
 
@@ -595,6 +613,14 @@ ASCII-encoded URIs. See also the W3C RDF 1.1 specification on IRIs.
 **Since:** 2.5
 **Default:** `true`
 
+## $smwgExtraneousLanguageFileDir
+
+Directory containing SMW-specific i18n files for extraneous language data
+(unit labels, property aliases, and similar locale-specific content).
+
+**Since:** 2.5
+**Default:** `<smwgIP>/i18n/extra`
+
 ## $smwgFactboxFeatures
 
 Bitmask of factbox capabilities: caching, purge-refresh, subobject
@@ -775,6 +801,28 @@ block execution when the schema is in an intermediate state.
 **Since:** 4.1.3
 **Default:** `false`
 
+## $smwgImportFileDirs
+
+Directories from which SMW reads import-content definitions during setup.
+For all files in these directories, import is initiated when
+`$smwgImportReqVersion` matches the version declared in the file.
+
+The manifest declares `array_plus`, so users register additional
+vocabularies without dropping the built-in `'smw'` entry:
+
+```php
+$GLOBALS['smwgImportFileDirs']['custom-vocab'] = __DIR__ . '/custom';
+```
+
+**Since:** 2.5
+**Default:**
+
+```php
+[ 'smw' => '<smwgIP>/data/import' ]
+```
+
+**Related:** [`src/Importer/README.md`](../src/Importer/README.md) — full import-format docs.
+
 ## $smwgImportPerformers
 
 Users reserved exclusively for the import task; they may lock content from
@@ -794,6 +842,14 @@ the file.
 
 **Since:** 2.5
 **Default:** `1`
+
+## $smwgIP
+
+Path to the SMW extension root directory as seen on the local filesystem.
+Used to resolve PHP file paths within the extension.
+
+**Since:** 1.0
+**Default:** the extension's root directory
 
 ## $smwgJobQueueWatchlist
 
@@ -849,6 +905,13 @@ persistence via whatever backend MediaWiki is already using.
 
 **Since:** 3.0
 **Default:** `CACHE_ANYTHING`
+
+## $smwgMaintenanceDir
+
+Directory containing SMW maintenance scripts.
+
+**Since:** 2.5
+**Default:** `<smwgIP>/maintenance`
 
 ## $smwgMandatorySubpropertyParentTypeInheritance
 
@@ -1608,6 +1671,14 @@ when exact matches are few. Switch off if this page has performance problems.
 
 **Since:** 2.1
 **Default:** `["_num", "_txt", "_dat", "_mlt_rec"]`
+
+## $smwgServicesFileDir
+
+Directory containing SMW service-wiring files loaded by the dependency
+injection container.
+
+**Since:** 2.5
+**Default:** `<smwgIP>/src/Services`
 
 ## $smwgSetParserCacheKeys
 
