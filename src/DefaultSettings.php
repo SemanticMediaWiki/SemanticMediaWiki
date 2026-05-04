@@ -105,33 +105,6 @@ return ( static function (): array {
 		# #
 
 		###
-		# Configure SPARQL database connection for Semantic MediaWiki. This is used
-		# when SPARQL-based features are enabled, e.g. when using SPARQLStore as
-		# the $smwgDefaultStore.
-		#
-		# The default class GenericRepositoryConnector works with many databases that support
-		# SPARQL and SPARQL Update. Three different endpoints (service URLs) are given
-		# - query (reading queries like SELECT)
-		# - update (SPARQL Update queries), and
-		# - data (SPARQL HTTP Protocol for Graph Management).
-		#
-		# The query endpoint is necessary, but the update and data endpoints can be
-		# omitted if not supported.
-		#
-		# This will lead to reduced functionality (e.g. the SPARQLStore will not
-		# work if Update is not available). The data endpoint is always optional, but
-		# in some SPARQL databases this method is more efficient than update.
-		#
-		# @since 1.6
-		##
-		'smwgSparqlEndpoint' => [
-			'query'  => 'http://localhost:8080/sparql/',
-			'update' => 'http://localhost:8080/update/',
-			'data'   => 'http://localhost:8080/data/'
-		],
-		# #
-
-		###
 		# If you already have custom namespaces on your site, insert
 		#    	'smwgNamespaceIndex' => ???,
 		# into your LocalSettings.php *before* including this file. The number ??? must
@@ -176,55 +149,6 @@ return ( static function (): array {
 		# #
 
 		###
-		# Number of results shown in the listings on pages in the Property and Concept
-		# namespaces as well as other services that require a limit.
-		#
-		# If a value of 0 is given, the respective listings are hidden completely.
-		#
-		# - `type` used for `Special:Types` (was $smwgTypePagingLimit)
-		# - `errorlist` used for `Special:ProcessingErrorList`
-		# - `concept` (was $smwgConceptPagingLimit)
-		# - `property` (was $smwgPropertyPagingLimit)
-		#
-		# Special:Browse
-		# - `valuelist.outgoingt` outgoing value list count
-		# - `valuelist.incoming` incoming value list count
-		#
-		# @since 3.0
-		##
-		'smwgPagingLimit' => [
-			'type' => 50,
-			'concept' => 250,
-			'property' => 20,
-			'errorlist' => 20,
-
-			// Special:Browse
-			'browse' => [
-				'valuelist.outgoing' => 30,
-				'valuelist.incoming' => 20,
-			]
-		],
-		# #
-
-		###
-		# Property page list limits
-		#
-		# 'subproperty' limit the query request on subproperties
-		# 'redirect' limit the query request on redirects
-		# 'error' limit the query request on improper assignments
-		#
-		# `false` as value assignment will disable the display of a selected list
-		#
-		# @since 3.0
-		##
-		'smwgPropertyListLimit' => [
-			'subproperty' => 25,
-			'redirect' => 25,
-			'error' => 10
-		],
-		# #
-
-		###
 		# Sets whether the > and < comparators should be strict or not. If they are strict,
 		# values that are equal will not be accepted.
 		#
@@ -232,55 +156,7 @@ return ( static function (): array {
 		##
 		'smwStrictComparators' => false,
 
-		# #
-		# Predefined result formats for queries
-		#
-		# Array of available formats for formatting queries. Can be redefined in
-		# the settings to disallow certain formats or to register extension formats.
-		# To disable a format, do "unset($smwgResultFormats['template'])," Disabled
-		# formats will be treated like if the format parameter had been omitted. The
-		# formats 'table' and 'list' are defaults that cannot be disabled. The format
-		# 'broadtable' should not be disabled either in order not to break Special:ask.
-		##
-		'smwgResultFormats' => [
-			'table'      => 'SMW\Query\ResultPrinters\TableResultPrinter',
-			'broadtable' => 'SMW\Query\ResultPrinters\TableResultPrinter',
-			'list'       => 'SMW\Query\ResultPrinters\ListResultPrinter',
-			'plainlist'  => 'SMW\Query\ResultPrinters\ListResultPrinter',
-			'ol'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
-			'ul'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
-			'category'   => 'SMW\Query\ResultPrinters\CategoryResultPrinter',
-			'embedded'   => 'SMW\Query\ResultPrinters\EmbeddedResultPrinter',
-			'template'   => 'SMW\Query\ResultPrinters\ListResultPrinter',
-			'count'      => 'SMW\Query\ResultPrinters\NullResultPrinter',
-			'debug'      => 'SMW\Query\ResultPrinters\NullResultPrinter',
-			'feed'       => 'SMW\Query\ResultPrinters\FeedExportPrinter',
-			'csv'        => 'SMW\Query\ResultPrinters\CsvFileExportPrinter',
-			'templatefile' => 'SMW\Query\ResultPrinters\TemplateFileExportPrinter',
-			'dsv'        => 'SMW\Query\ResultPrinters\DsvResultPrinter',
-			'json'       => 'SMW\Query\ResultPrinters\JsonResultPrinter',
-			'rdf'        => 'SMW\Query\ResultPrinters\RdfResultPrinter'
-		],
-		# #
-
-		##
-		# Predefined aliases for result formats
-		#
-		# Array of available aliases for result formats. Can be redefined in
-		# the settings to disallow certain aliases or to register extension aliases.
-		# To disable an alias, do "unset($smwgResultAliases['alias'])," Disabled
-		# aliases will be treated like if the alias parameter had been omitted.
-		#
-		# @since 1.8
-		##
-		'smwgResultAliases' => [
-			'feed' => [ 'rss' ],
-			'templatefile' => [ 'template file' ],
-			'plainlist' => [ 'plain' ]
-		],
-		# #
-
-		###
+		# ##
 		# -- FEATURE IS DISABLED --
 		# If you want to import ontologies, you need to install RAP,
 		# a free RDF API for PHP, see
@@ -296,131 +172,6 @@ return ( static function (): array {
 		// 	'smwgRAPPath' => $smwgIP . 'libs/rdfapi-php',
 		// 	'smwgRAPPath' => '/another/example/path/rdfapi-php',
 		##
-
-		###
-		# CacheTTL settings
-		#
-		# Defines time to live for in Semantic MediaWiki used cache instances and
-		# requires $smwgMainCacheType to be set otherwise related settings will have
-		# no effect.
-		#
-		# - special.wantedproperties TTL (in sec, or false to disable it) for caching
-		#   the lookup on wanted property usage
-		#
-		# - special.unusedproperties TTL (in sec, or false to disable it) for caching
-		#   the lookup on unused property usage
-		#
-		# - special.properties TTL (in sec, or false to disable it) for caching the
-		#   lookup on property usage
-		#
-		# - special.statistics TTL (in sec, or false to disable it) for caching the
-		#   lookup on statistics
-		#
-		# - api.browse TTL (in sec, or false to disable it) for the API browse module
-		#   as general cache
-		#
-		# - api.browse.pvalue TTL (in sec, or false to disable it) for the API browse
-		#   pvalue module when requesting property values
-		#
-		# - api.browse.psubject TTL (in sec, or false to disable it) for the API browse
-		#   psubject module when requesting property subjects
-		#
-		# - api.task TTL (in sec, or false to disable it) for the API task module
-		#
-		# @since 1.9
-		##
-		'smwgCacheUsage' => [
-			'special.wantedproperties' => 3600,
-			'special.unusedproperties' => 3600,
-			'special.properties' => 3600,
-			'special.statistics' => 3600,
-			'table.statistics' => 3600,
-			'api.browse' => 3600,
-			'api.browse.pvalue' => 3600,
-			'api.browse.psubject' => 3600,
-			'api.task'  => 3600,
-			'api.table.statistics'  => 3600
-		],
-		# #
-
-		###
-		# Regulates task specific settings for the post-edit process.
-		#
-		# The main objective is to defer secondary updates until after the GET request
-		# has been finalized so that resource requirements are part of an API request
-		# (and not a GET) and hereby ensures that a client remains responsive
-		# independent of the update workload.
-		#
-		# `run-jobs` specifies jobs that should be executed on a post-edit to run in a
-		# timely manner independent of a users job scheduler environment. The number
-		# indicates the expected number of jobs to be executed per request.
-		#
-		# `purge-page`
-		#   `on-outdated-query-dependency` actively does a page purge via the API
-		#   so that not only the parser cache is refreshed but also ensures that any
-		#   newly annotation values (such as annotations depending on some query input)
-		#   are stored and recomputed.
-		#
-		# @experimental
-		#
-		# `check-query` The display of query results and the storage of entities that
-		# make up the results of a query are two distinct processes. The display
-		# normally happens before the storage due to how the MW parser works meaning
-		# that a query can only display the most recent results after a page has
-		# been processed and rendered while the storage is being deferred (or in case
-		# of an external store is influenced by the network lag).
-		#
-		# The `check-query` uses the `post-edit` event to run registered queries and
-		# if necessary reloads the page (hereby refreshes the results) in case the
-		# result is different by comparing the `result_hash` from before and after.
-		# To determine the query state, the `post-edit` has to invoke the API (as
-		# background task) which has to probe the query and to only run the query once
-		# for the page that embeds the query, it is strongly recommended that this
-		# option is only enabled together with:
-		#   - the query cache (@see $smwgQueryResultCacheType) and
-		#   - the query links store (@see $smwgEnabledQueryDependencyLinksStore)
-		#
-		# @since 3.0
-		##
-		'smwgPostEditUpdate' => [
-			'check-query' => false,
-			'run-jobs' => [
-				'smw.fulltextSearchTableUpdate' => 1
-			],
-			'purge-page' => [
-				'on-outdated-query-dependency' => true
-			]
-		],
-		# #
-
-		##
-		# Fulltext search table options
-		#
-		# This setting directly influences how a ft table is created therefore change
-		# the content with caution.
-		#
-		# - MySQL version 5.5 or later with only MyISAM and InnoDB storage engines
-		# to support full-text search (according to sources)
-		#
-		# - MariaDB full-text indexes can be used only with MyISAM and Aria tables,
-		# from MariaDB 10.0.5 with InnoDB tables and from MariaDB 10.0.15
-		# with Mroonga tables (according to sources)
-		#
-		# - SQLite FTS3 has been available since version 3.5, FTS4 were added with
-		# version 3.7.4, and FTS5 is available with version 3.9.0 (according to
-		# sources), The setting allows to specify extra arguments after the module
-		# engine such as array( 'FTS4', 'tokenize=porter' ).
-		#
-		# It is possible to extend the option description (MySQL 5.7+)  with
-		# 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
-		#
-		# @since 2.5
-		##
-		'smwgFulltextSearchTableOptions' => [
-			'mysql'  => [ 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' ],
-			'sqlite' => [ 'FTS4' ]
-		],
-		# #
 
 		##
 		# Per-pool entry limits for the in-memory caches SMW uses to look up

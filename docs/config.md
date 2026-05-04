@@ -103,6 +103,28 @@ Bitmask of Special:Browse capabilities enabled by default.
 **Since:** 3.0
 **Default:** `SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API`
 
+## $smwgCacheUsage
+
+Defines time to live for in Semantic MediaWiki used cache instances.
+
+**Since:** 1.9
+**Default:**
+
+```php
+[
+    'special.wantedproperties' => 3600,
+    'special.unusedproperties' => 3600,
+    'special.properties'       => 3600,
+    'special.statistics'       => 3600,
+    'table.statistics'         => 3600,
+    'api.browse'               => 3600,
+    'api.browse.pvalue'        => 3600,
+    'api.browse.psubject'      => 3600,
+    'api.task'                 => 3600,
+    'api.table.statistics'     => 3600,
+]
+```
+
 ## $smwgCategoryFeatures
 
 Bitmask of category processing features: redirect resolution,
@@ -599,6 +621,20 @@ fulltext indexing unsuitable.
 **Since:** 2.5
 **Default:** `["_ASKFO", "_ASKST", "_ASKPA", "_IMPO", "_LCODE", "_UNIT", "_CONV", "_TYPE", "_ERRT", "_INST", "_ASK", "_SOBJ", "_PVAL", "_PVALI", "_REDI", "_CHGPRO"]`
 
+## $smwgFulltextSearchTableOptions
+
+Fulltext search table options.
+
+**Since:** 2.5
+**Default:**
+
+```php
+[
+    'mysql'  => [ 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' ],
+    'sqlite' => [ 'FTS4' ],
+]
+```
+
 ## $smwgIgnoreExtensionRegistrationCheck
 
 When `true`, suppresses the check that verifies the extension was correctly
@@ -751,6 +787,26 @@ $smwgPageSpecialProperties += [ '_CDAT' ];
 **Since:** 1.7
 **Default:** `["_MDAT"]`
 
+## $smwgPagingLimit
+
+Number of results shown in the listings on pages in the Property and Concept namespaces as well as other services that require a limit.
+
+**Since:** 3.0
+**Default:**
+
+```php
+[
+    'type'      => 50,
+    'concept'   => 250,
+    'property'  => 20,
+    'errorlist' => 20,
+    'browse'    => [
+        'valuelist.outgoing' => 30,
+        'valuelist.incoming' => 20,
+    ],
+]
+```
+
 ## $smwgParserFeatures
 
 Bitmask of annotation-parsing features.
@@ -795,6 +851,25 @@ plain lists.
 **Since:** 3.1.2
 **Default:** `false`
 
+## $smwgPostEditUpdate
+
+Regulates task specific settings for the post-edit process.
+
+**Since:** 3.0
+**Default:**
+
+```php
+[
+    'check-query' => false,
+    'run-jobs'    => [
+        'smw.fulltextSearchTableUpdate' => 1,
+    ],
+    'purge-page'  => [
+        'on-outdated-query-dependency' => true,
+    ],
+]
+```
+
 ## $smwgPropertyInvalidCharacterList
 
 Characters considered invalid in property labels; annotations using them
@@ -802,6 +877,13 @@ produce an error.
 
 **Since:** 2.5
 **Default:** `["[", "]", "|", "<", ">", "{", "}", "+", "–", "%", "\r", "\n", "?", "*", "!"]`
+
+## $smwgPropertyListLimit
+
+Property page list limits.
+
+**Since:** 3.0
+**Default:** `{ 'subproperty' => 25, 'redirect' => 25, 'error' => 10 }`
 
 ## $smwgPropertyLowUsageThreshold
 
@@ -1241,6 +1323,52 @@ supported regardless of this setting.
 **Since:** 3.0
 **Default:** `SMW_REMOTE_REQ_SEND_RESPONSE | SMW_REMOTE_REQ_SHOW_NOTE`
 
+## $smwgResultAliases
+
+Predefined aliases for result formats.
+
+**Since:** 1.8
+**Default:**
+
+```php
+[
+    'feed'         => [ 'rss' ],
+    'templatefile' => [ 'template file' ],
+    'plainlist'    => [ 'plain' ],
+]
+```
+
+## $smwgResultFormats
+
+Predefined result formats for queries.
+
+**Since:** 1.0
+**Default:**
+
+```php
+[
+    'table'        => 'SMW\Query\ResultPrinters\TableResultPrinter',
+    'broadtable'   => 'SMW\Query\ResultPrinters\TableResultPrinter',
+    'list'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
+    'plainlist'    => 'SMW\Query\ResultPrinters\ListResultPrinter',
+    'ol'           => 'SMW\Query\ResultPrinters\ListResultPrinter',
+    'ul'           => 'SMW\Query\ResultPrinters\ListResultPrinter',
+    'category'     => 'SMW\Query\ResultPrinters\CategoryResultPrinter',
+    'embedded'     => 'SMW\Query\ResultPrinters\EmbeddedResultPrinter',
+    'template'     => 'SMW\Query\ResultPrinters\ListResultPrinter',
+    'count'        => 'SMW\Query\ResultPrinters\NullResultPrinter',
+    'debug'        => 'SMW\Query\ResultPrinters\NullResultPrinter',
+    'feed'         => 'SMW\Query\ResultPrinters\FeedExportPrinter',
+    'csv'          => 'SMW\Query\ResultPrinters\CsvFileExportPrinter',
+    'templatefile' => 'SMW\Query\ResultPrinters\TemplateFileExportPrinter',
+    'dsv'          => 'SMW\Query\ResultPrinters\DsvResultPrinter',
+    'json'         => 'SMW\Query\ResultPrinters\JsonResultPrinter',
+    'rdf'          => 'SMW\Query\ResultPrinters\RdfResultPrinter',
+]
+```
+
+**Related:** [Help:Result formats](https://www.semantic-mediawiki.org/wiki/Help:Result_formats)
+
 ## $smwgResultFormatsFeatures
 
 Bitmask of result-printer features.
@@ -1326,6 +1454,13 @@ interface defined by `GenericRepositoryConnector`. Has no effect when
 
 **Since:** 2.0
 **Default:** `"\\SMW\\SPARQLStore\\RepositoryConnectors\\GenericRepositoryConnector"`
+
+## $smwgSparqlEndpoint
+
+Configure SPARQL database connection for Semantic MediaWiki.
+
+**Since:** 1.6
+**Default:** `{ 'query' => 'http://localhost:8080/sparql/', 'update' => 'http://localhost:8080/update/', 'data' => 'http://localhost:8080/data/' }`
 
 ## $smwgSparqlDefaultGraph
 

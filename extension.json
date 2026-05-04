@@ -740,6 +740,22 @@
 			"value": true,
 			"description": "When `true`, protects an active change propagation from being disabled without administrative intervention."
 		},
+		"CacheUsage": {
+			"value": {
+				"special.wantedproperties": 3600,
+				"special.unusedproperties": 3600,
+				"special.properties": 3600,
+				"special.statistics": 3600,
+				"table.statistics": 3600,
+				"api.browse": 3600,
+				"api.browse.pvalue": 3600,
+				"api.browse.psubject": 3600,
+				"api.task": 3600,
+				"api.table.statistics": 3600
+			},
+			"description": "Defines time to live for in Semantic MediaWiki used cache instances.",
+			"merge_strategy": "array_plus"
+		},
 		"ChangePropagationWatchlist": {
 			"value": ["_PVAL", "_LIST", "_PVAP", "_PVUC", "_PDESC", "_PPLB", "_PREC", "_PDESC", "_SUBP", "_SUBC", "_PVALI"],
 			"description": "Property IDs that trigger full re-processing of dependent pages when their values change.",
@@ -886,6 +902,14 @@
 			"description": "Property keys excluded from fulltext indexing; LIKE/NLIKE is used for these instead.",
 			"merge_strategy": "provide_default"
 		},
+		"FulltextSearchTableOptions": {
+			"value": {
+				"mysql": ["ENGINE=MyISAM, DEFAULT CHARSET=utf8"],
+				"sqlite": ["FTS4"]
+			},
+			"description": "Fulltext search table options.",
+			"merge_strategy": "array_plus"
+		},
 		"IgnoreExtensionRegistrationCheck": {
 			"value": false,
 			"description": "When `true`, suppresses the check that verifies the extension was correctly registered via `wfLoadExtension`."
@@ -937,6 +961,20 @@
 			"description": "Special properties automatically tracked and stored for pages (e.g. modification date).",
 			"merge_strategy": "provide_default"
 		},
+		"PagingLimit": {
+			"value": {
+				"type": 50,
+				"concept": 250,
+				"property": 20,
+				"errorlist": 20,
+				"browse": {
+					"valuelist.outgoing": 30,
+					"valuelist.incoming": 20
+				}
+			},
+			"description": "Number of results shown in the listings on pages in the Property and Concept namespaces as well as other services that require a limit.",
+			"merge_strategy": "array_plus_2d"
+		},
 		"PDefaultType": {
 			"value": "_wpg",
 			"description": "Internal type ID assumed for properties that have no explicit type declaration; defaults to `Type:Page`."
@@ -945,10 +983,32 @@
 			"value": false,
 			"description": "When `true`, `format=list` produces plain lists without HTML markup, restoring pre-3.0 behaviour."
 		},
+		"PostEditUpdate": {
+			"value": {
+				"check-query": false,
+				"run-jobs": {
+					"smw.fulltextSearchTableUpdate": 1
+				},
+				"purge-page": {
+					"on-outdated-query-dependency": true
+				}
+			},
+			"description": "Regulates task specific settings for the post-edit process.",
+			"merge_strategy": "array_plus_2d"
+		},
 		"PropertyInvalidCharacterList": {
 			"value": ["[", "]", "|", "<", ">", "{", "}", "+", "–", "%", "\r", "\n", "?", "*", "!"],
 			"description": "Characters considered invalid in property labels; annotations using them produce an error.",
 			"merge_strategy": "provide_default"
+		},
+		"PropertyListLimit": {
+			"value": {
+				"subproperty": 25,
+				"redirect": 25,
+				"error": 10
+			},
+			"description": "Property page list limits.",
+			"merge_strategy": "array_plus"
 		},
 		"PropertyLowUsageThreshold": {
 			"value": 5,
@@ -1082,6 +1142,38 @@
 			"value": false,
 			"description": "When `true`, reverts to the pre-7.x `SELECT DISTINCT` query shape instead of the derived-table rewrite."
 		},
+		"ResultAliases": {
+			"value": {
+				"feed": ["rss"],
+				"templatefile": ["template file"],
+				"plainlist": ["plain"]
+			},
+			"description": "Predefined aliases for result formats.",
+			"merge_strategy": "array_plus"
+		},
+		"ResultFormats": {
+			"value": {
+				"table": "SMW\\Query\\ResultPrinters\\TableResultPrinter",
+				"broadtable": "SMW\\Query\\ResultPrinters\\TableResultPrinter",
+				"list": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"plainlist": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"ol": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"ul": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"category": "SMW\\Query\\ResultPrinters\\CategoryResultPrinter",
+				"embedded": "SMW\\Query\\ResultPrinters\\EmbeddedResultPrinter",
+				"template": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"count": "SMW\\Query\\ResultPrinters\\NullResultPrinter",
+				"debug": "SMW\\Query\\ResultPrinters\\NullResultPrinter",
+				"feed": "SMW\\Query\\ResultPrinters\\FeedExportPrinter",
+				"csv": "SMW\\Query\\ResultPrinters\\CsvFileExportPrinter",
+				"templatefile": "SMW\\Query\\ResultPrinters\\TemplateFileExportPrinter",
+				"dsv": "SMW\\Query\\ResultPrinters\\DsvResultPrinter",
+				"json": "SMW\\Query\\ResultPrinters\\JsonResultPrinter",
+				"rdf": "SMW\\Query\\ResultPrinters\\RdfResultPrinter"
+			},
+			"description": "Predefined result formats for queries.",
+			"merge_strategy": "array_plus"
+		},
 		"SearchByPropertyFuzzy": {
 			"value": ["_num", "_txt", "_dat", "_mlt_rec"],
 			"description": "Type IDs for which Special:SearchByProperty displays nearby fuzzy results when exact matches are few.",
@@ -1103,6 +1195,15 @@
 		"SparqlCustomConnector": {
 			"value": "\\SMW\\SPARQLStore\\RepositoryConnectors\\GenericRepositoryConnector",
 			"description": "Custom SPARQL repository connector class used when `smwgSparqlRepositoryConnector` is set to `custom`."
+		},
+		"SparqlEndpoint": {
+			"value": {
+				"query": "http://localhost:8080/sparql/",
+				"update": "http://localhost:8080/update/",
+				"data": "http://localhost:8080/data/"
+			},
+			"description": "Configure SPARQL database connection for Semantic MediaWiki.",
+			"merge_strategy": "array_plus"
 		},
 		"SparqlDefaultGraph": {
 			"value": "",
