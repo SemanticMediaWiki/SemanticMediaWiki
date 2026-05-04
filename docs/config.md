@@ -105,7 +105,20 @@ Bitmask of Special:Browse capabilities enabled by default.
 
 ## $smwgCacheUsage
 
-Defines time to live for in Semantic MediaWiki used cache instances.
+Defines time-to-live (in seconds) for each named cache instance used by Semantic MediaWiki. Requires `$smwgMainCacheType` to be set; without a persistent cache backend the TTL values have no effect.
+
+Set any key to `false` to disable caching for that lookup entirely. Each key is independent — override only the entries you want to tune.
+
+- `special.wantedproperties` — TTL for the lookup powering Special:WantedProperties.
+- `special.unusedproperties` — TTL for the lookup powering Special:UnusedProperties.
+- `special.properties` — TTL for the property-usage lookup powering Special:Properties.
+- `special.statistics` — TTL for the statistics lookup powering Special:Statistics.
+- `table.statistics` — TTL for the table-level statistics used internally.
+- `api.browse` — TTL for the general `wbgetentities`-style browse API response.
+- `api.browse.pvalue` — TTL for browse API responses that return property values.
+- `api.browse.psubject` — TTL for browse API responses that return property subjects.
+- `api.task` — TTL for API task module responses.
+- `api.table.statistics` — TTL for the API table-statistics endpoint.
 
 **Since:** 1.9
 **Default:**
@@ -336,6 +349,16 @@ keep this distinct from standard MediaWiki edit protections.
 
 Top-level configuration map for the ElasticStore: index definition paths, connection parameters, index settings, indexer behaviour, and query-engine tuning. Merged with `array_replace_recursive` semantics so a partial user override (e.g. setting only `query.highlight.fragment.type`) leaves all unset keys at every depth intact.
 
+The setting is organised into five top-level subkeys:
+
+- `index_def` — paths to the JSON files that define the Elasticsearch index mappings for the `data` and `lookup` indices.
+- `connection` — low-level HTTP client parameters: `quick_ping` (boolean health-check on connect), `retries` (retry count on failure), `timeout`, and `connect_timeout` (both in seconds).
+- `settings` — Elasticsearch index-level settings applied at index creation time (e.g. `index.mapping.total_fields.limit`, `index.max_result_window`).
+- `indexer` — controls indexer behaviour: `raw.text` (index raw wikitext), `experimental.file.ingest` (file content ingestion), retry counts for jobs, entity-replication monitoring, and SQLStore compatibility mode.
+- `query` — controls query-engine behaviour: connection-failure fallback, profiling, debug output, value-length cap, compatibility mode, subquery size, and highlight fragment parameters.
+
+See the related documentation for per-key details.
+
 **Since:** 3.0
 **Default:**
 
@@ -490,6 +513,27 @@ maintenance script.
 ## $smwgEntityCacheSizes
 
 Per-pool entry limits for the in-memory caches SMW uses to look up entity IDs during a single request. Each pool maps a string key to an integer capacity. Override individual pools to tune memory use without replacing the full map; pools not listed keep their defaults.
+
+These caches avoid duplicate database queries for the same titles and IDs while a page renders. On large or unusually rich pages the default sizes can fill up and force SMW to re-query entities it has already seen. Raising a limit keeps more entries resident at the cost of additional memory.
+
+Pools:
+
+- `entity.id` — title → SMW internal ID.
+- `entity.sort` — title → sortkey.
+- `entity.lookup` — SMW ID → WikiPage data item.
+- `propertytable.hash` — which property tables hold data for each entity.
+- `warmup.byid` — IDs already prefetched in the current request.
+- `sequence.map` — SMW ID → property sequence map.
+- `redirect.source.lookup` / `redirect.target.lookup` — redirect resolution caches.
+- `count.map` — SMW ID → auxiliary count map.
+
+To tune a single pool without replacing the full map, override only that key:
+
+```php
+$smwgEntityCacheSizes['entity.id'] = 5000;
+```
+
+To assess whether tuning is needed, monitor the `mediawiki.SemanticMediaWiki.inmemory_cache_hits_total` and `mediawiki.SemanticMediaWiki.inmemory_cache_misses_total` metrics emitted via MediaWiki's StatsFactory. A consistently low hit ratio on a specific pool indicates it would benefit from a higher limit.
 
 **Since:** 7.0.0
 **Default:** `EntityIdManager::DEFAULT_CACHE_SIZES`
@@ -682,7 +726,12 @@ fulltext indexing unsuitable.
 
 ## $smwgFulltextSearchTableOptions
 
-Fulltext search table options.
+Table creation options for the fulltext search index table. This setting directly influences how the fulltext table is created; change with caution. Each key is the database driver name; the value is an array of table option strings passed verbatim when the table is built.
+
+Engine-specific notes:
+
+- **MySQL / MariaDB** — MySQL 5.5+ supports fulltext search on MyISAM and InnoDB storage engines. MariaDB supports fulltext on MyISAM and Aria tables; InnoDB support was added in MariaDB 10.0.5, Mroonga in 10.0.15. The default `ENGINE=MyISAM, DEFAULT CHARSET=utf8` is broadly compatible. For MySQL 5.7+ the option array can include a parser directive, e.g. `[ 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' ]`.
+- **SQLite** — FTS3 has been available since SQLite 3.5; FTS4 since 3.7.4; FTS5 since 3.9.0. Extra arguments can follow the module name, e.g. `[ 'FTS4', 'tokenize=porter' ]`.
 
 **Since:** 2.5
 **Default:**
@@ -767,7 +816,14 @@ $smwgJobQueueWatchlist = [
 
 ## $smwgLocalConnectionConf
 
-Connection characteristics for each named database handle used by SMW. The outer key is the connection name; the inner map specifies `read` and `write` DB index constants. Merged with `array_plus_2d` semantics: user-defined inner keys win; connections not defined by the user are filled from defaults. Should only be modified by trained professionals.
+Connection characteristics for each named database handle used by SMW. The outer key is the connection name; the inner map specifies `read` and `write` DB index constants using MediaWiki's standard `DB_REPLICA` / `DB_PRIMARY` constants. Merged with `array_plus_2d` semantics: user-defined inner keys win; connections not defined by the user are filled from defaults.
+
+**Changes to this setting should only be made by trained professionals** to avoid unexpected or unanticipated results when using connection handlers.
+
+Named handles:
+
+- `mw.db` — the general-purpose SMW database connection used for most reads and writes.
+- `mw.db.queryengine` — the connection used exclusively by the query engine; separating it allows routing heavy read queries to a dedicated replica.
 
 **Since:** 2.5.3
 **Default:**
@@ -843,7 +899,20 @@ $smwgNamespace = "http://example.org/id/";
 
 ## $smwgNamespacesWithSemanticLinks
 
-Controls which namespaces are evaluated for semantic annotations. Pages outside listed namespaces may carry annotations but they are silently ignored and excluded from RDF export unless referenced from another article. Merged with `array_plus` semantics: user-defined keys win; unlisted standard MW namespaces are filled from defaults.
+Controls which namespaces are evaluated for semantic annotations. Pages outside listed namespaces may carry annotations but they are silently ignored and excluded from RDF export unless referenced from another article.
+
+The manifest declares `array_plus` merge semantics, so a `LocalSettings.php` write that adds a single entry merges cleanly with the built-in defaults rather than replacing the entire map:
+
+```php
+// Enable semantics in a custom namespace without losing standard defaults
+$smwgNamespacesWithSemanticLinks[NS_AUTHORITY] = true;
+```
+
+To disable a namespace that is enabled by default, set its value to `false` explicitly:
+
+```php
+$smwgNamespacesWithSemanticLinks[NS_HELP] = false;
+```
 
 **Since:** 0.7
 **Default:**
@@ -896,7 +965,15 @@ $smwgPageSpecialProperties += [ '_CDAT' ];
 
 ## $smwgPagingLimit
 
-Number of results shown in the listings on pages in the Property and Concept namespaces as well as other services that require a limit.
+Number of results shown in the listings on pages in the Property and Concept namespaces as well as other services that require a limit. Setting a value to `0` hides the corresponding listing entirely.
+
+- `type` — row limit for Special:Types (replaces the former `$smwgTypePagingLimit`).
+- `concept` — row limit for concept-page listings (replaces `$smwgConceptPagingLimit`).
+- `property` — row limit for property-page listings (replaces `$smwgPropertyPagingLimit`).
+- `errorlist` — row limit for Special:ProcessingErrorList.
+- `browse` — sub-map for Special:Browse value lists:
+  - `valuelist.outgoing` — outgoing value list count.
+  - `valuelist.incoming` — incoming value list count.
 
 **Since:** 3.0
 **Default:**
@@ -960,7 +1037,14 @@ plain lists.
 
 ## $smwgPostEditUpdate
 
-Regulates task specific settings for the post-edit process.
+Regulates task-specific settings for the post-edit process. The main objective is to defer secondary updates until after the GET request has been finalised so that resource requirements are part of an API request rather than a GET request, keeping the client responsive independent of update workload.
+
+Sub-keys:
+
+- `run-jobs` — jobs to execute on post-edit to run in a timely manner independent of the user's job-scheduler environment. The integer value is the expected number of jobs to execute per request.
+- `purge-page` — controls active page-purge behaviour:
+  - `on-outdated-query-dependency` — when `true`, issues an API-driven page purge after a post-edit so that newly stored annotation values (including those depending on query output) are recomputed, not just the parser cache.
+- `check-query` — **(experimental)** uses the `post-edit` event to re-run embedded queries and compare their `result_hash` before and after; if the hash differs the page is reloaded to show fresh results. Because this invokes the API as a background task for every page that embeds a query, it is strongly recommended to enable this only together with the query cache (`$smwgQueryResultCacheType`) and the query dependency links store (`$smwgEnabledQueryDependencyLinksStore`).
 
 **Since:** 3.0
 **Default:**
@@ -987,10 +1071,22 @@ produce an error.
 
 ## $smwgPropertyListLimit
 
-Property page list limits.
+Row limits for the sub-lists shown on a property page. Setting a value to `false` disables the display of that list entirely.
+
+- `subproperty` — maximum number of subproperties to show.
+- `redirect` — maximum number of redirect entries to show.
+- `error` — maximum number of improper-assignment error entries to show.
 
 **Since:** 3.0
-**Default:** `{ 'subproperty' => 25, 'redirect' => 25, 'error' => 10 }`
+**Default:**
+
+```php
+[
+    'subproperty' => 25,
+    'redirect'    => 25,
+    'error'       => 10,
+]
+```
 
 ## $smwgPropertyLowUsageThreshold
 
@@ -1432,7 +1528,15 @@ supported regardless of this setting.
 
 ## $smwgResultAliases
 
-Predefined aliases for result formats.
+Predefined aliases mapping alternative format names to canonical result formats. The manifest declares `array_plus`, so extensions and `LocalSettings.php` additions merge with the built-in set rather than replacing it.
+
+To disable an alias, `unset` it after the extension is loaded:
+
+```php
+unset( $smwgResultAliases['rss'] );
+```
+
+Disabled aliases are treated as if the alias parameter had been omitted.
 
 **Since:** 1.8
 **Default:**
@@ -1447,7 +1551,17 @@ Predefined aliases for result formats.
 
 ## $smwgResultFormats
 
-Predefined result formats for queries.
+Map of available result formats for `#ask` and `#show` queries; each key is the format name and each value is the fully-qualified result-printer class. The manifest declares `array_plus`, so extensions register their own formats by adding entries and `LocalSettings.php` additions merge with the built-in set.
+
+The formats `table` and `list` are built-in defaults that cannot be disabled. The `broadtable` format should also not be disabled as it is used by Special:Ask.
+
+To disable a format after the extension is loaded:
+
+```php
+unset( $smwgResultFormats['template'] );
+```
+
+Disabled formats are treated as if the `format` parameter had been omitted.
 
 **Since:** 1.0
 **Default:**
@@ -1564,10 +1678,24 @@ interface defined by `GenericRepositoryConnector`. Has no effect when
 
 ## $smwgSparqlEndpoint
 
-Configure SPARQL database connection for Semantic MediaWiki.
+Service URLs for the SPARQL repository used when SPARQL-based features are enabled (e.g. when `$smwgDefaultStore` is set to `SPARQLStore`). The default `GenericRepositoryConnector` works with any database that supports SPARQL 1.1 and SPARQL Update.
+
+Three endpoint types are configured:
+
+- `query` — the SPARQL query endpoint for read operations such as `SELECT`. **Required.**
+- `update` — the SPARQL Update endpoint for write operations. Omitting or leaving empty reduces functionality (the SPARQLStore will not be able to write data).
+- `data` — the SPARQL HTTP Protocol for Graph Management endpoint. Always optional, but some repositories handle bulk graph operations more efficiently through this endpoint than through SPARQL Update.
 
 **Since:** 1.6
-**Default:** `{ 'query' => 'http://localhost:8080/sparql/', 'update' => 'http://localhost:8080/update/', 'data' => 'http://localhost:8080/data/' }`
+**Default:**
+
+```php
+[
+    'query'  => 'http://localhost:8080/sparql/',
+    'update' => 'http://localhost:8080/update/',
+    'data'   => 'http://localhost:8080/data/',
+]
+```
 
 ## $smwgSparqlDefaultGraph
 
