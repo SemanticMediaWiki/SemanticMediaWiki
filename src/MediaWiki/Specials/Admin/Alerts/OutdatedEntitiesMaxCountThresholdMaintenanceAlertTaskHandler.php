@@ -46,14 +46,12 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 	private function fetchCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			'COUNT(smw_id) AS count',
-			[
-				'smw_iw' => SMW_SQL3_SMWDELETEIW
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'count' => 'COUNT(smw_id)' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_iw' => SMW_SQL3_SMWDELETEIW ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row !== false ? (int)$row->count : 0;
 	}
