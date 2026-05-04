@@ -267,7 +267,8 @@ class DatabaseTest extends TestCase {
 	public function querySqliteProvider() {
 		$provider = [
 			[ 'TEMPORARY', 'TEMP' ],
-			[ 'RAND', 'RANDOM' ],
+			[ 'RAND()', 'RANDOM()' ],
+			[ 'RANDOM()', 'RANDOM()' ],
 			[ 'ENGINE=MEMORY', '' ],
 			[ 'DROP TEMP', 'DROP' ]
 		];

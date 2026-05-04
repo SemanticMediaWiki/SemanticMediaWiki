@@ -268,7 +268,12 @@ class Database {
 			$tablePrefix = $this->tablePrefix( '' );
 
 			if ( isset( $options['ORDER BY'] ) ) {
-				$options['ORDER BY'] = str_replace( 'RAND', 'RANDOM', $options['ORDER BY'] );
+				// Idempotent token replacement: leaves an already-emitted
+				// RANDOM() untouched (RAND() is not a substring of RANDOM()).
+				// QueryEngine::getSQLOptions() now emits RANDOM() directly for
+				// SQLite, so this only fires for legacy callers still passing
+				// raw RAND() through select().
+				$options['ORDER BY'] = str_replace( 'RAND()', 'RANDOM()', $options['ORDER BY'] );
 			}
 		}
 
@@ -378,7 +383,10 @@ class Database {
 			$sql = str_replace( 'ENGINE=MEMORY', '', $sql );
 			$sql = str_replace( 'DROP TEMP', 'DROP', $sql );
 			$sql = str_replace( 'TRUNCATE TABLE', 'DELETE FROM', $sql );
-			$sql = str_replace( 'RAND', 'RANDOM', $sql );
+			// Idempotent token replacement: leaves an already-emitted RANDOM()
+			// untouched. Callsites should now emit the platform-correct token
+			// directly; this stays as a fallback for raw query() callers.
+			$sql = str_replace( 'RAND()', 'RANDOM()', $sql );
 		}
 
 		// https://github.com/wikimedia/mediawiki/blob/42d5e6f43a00eb8bedc3532876125f74e3188343/includes/deferred/AutoCommitUpdate.php
