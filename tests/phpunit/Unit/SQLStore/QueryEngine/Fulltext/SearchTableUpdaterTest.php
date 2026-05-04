@@ -7,7 +7,10 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater
@@ -19,6 +22,9 @@ use stdClass;
  * @author mwjames
  */
 class SearchTableUpdaterTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $connection;
 	private $searchTable;
@@ -49,13 +55,17 @@ class SearchTableUpdaterTest extends TestCase {
 		$row = new stdClass;
 		$row->o_text = 'Foo';
 
+		$capturedSelects = [];
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[ $row ],
+			$capturedWheres,
+			$capturedSelects
+		);
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				[ 'o_text' ],
-				$this->equalTo( [ 's_id' => 12, 'p_id' => 42 ] ) )
-			->willReturn( $row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -64,6 +74,9 @@ class SearchTableUpdaterTest extends TestCase {
 		);
 
 		$instance->read( 12, 42 );
+
+		$this->assertSame( [ [ 'o_text' ] ], $capturedSelects );
+		$this->assertSame( [ [ 's_id' => 12, 'p_id' => 42 ] ], $capturedWheres );
 	}
 
 	public function testOptimizeOnEnabledType() {
@@ -110,8 +123,18 @@ class SearchTableUpdaterTest extends TestCase {
 			->method( 'sanitize' )
 			->willReturn( 'foo' );
 
+		$capturedTables = [];
+		$capturedSets = [];
+		$capturedWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedTables,
+			$capturedSets,
+			$capturedWheres
+		);
+
 		$this->connection->expects( $this->once() )
-			->method( 'update' );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -120,14 +143,27 @@ class SearchTableUpdaterTest extends TestCase {
 		);
 
 		$instance->update( 12, 42, 'foo' );
+
+		$this->assertSame( [ [ 's_id' => 12, 'p_id' => 42 ] ], $capturedWheres );
+		$this->assertCount( 1, $capturedSets );
+		$this->assertSame( 'foo', $capturedSets[0]['o_text'] );
+		$this->assertArrayHasKey( 'o_sort', $capturedSets[0] );
 	}
 
 	public function testDeleteOnUpdateWithEmptyText() {
+		$capturedTables = [];
+		$capturedWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedTables,
+			$capturedWheres
+		);
+
 		$this->connection->expects( $this->once() )
-			->method( 'delete' );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$this->connection->expects( $this->never() )
-			->method( 'update' );
+			->method( 'newUpdateQueryBuilder' );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -136,17 +172,21 @@ class SearchTableUpdaterTest extends TestCase {
 		);
 
 		$instance->update( 12, 42, ' ' );
+
+		$this->assertSame( [ [ 's_id' => 12, 'p_id' => 42 ] ], $capturedWheres );
 	}
 
 	public function testInsert() {
+		$capturedTables = [];
+		$capturedRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder(
+			$capturedTables,
+			$capturedRows
+		);
+
 		$this->connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [
-					's_id' => 12,
-					'p_id' => 42,
-					'o_text' => '' ] ) );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -155,16 +195,24 @@ class SearchTableUpdaterTest extends TestCase {
 		);
 
 		$instance->insert( 12, 42 );
+
+		$this->assertSame(
+			[ [ 's_id' => 12, 'p_id' => 42, 'o_text' => '' ] ],
+			$capturedRows
+		);
 	}
 
 	public function testDelete() {
+		$capturedTables = [];
+		$capturedWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedTables,
+			$capturedWheres
+		);
+
 		$this->connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [
-					's_id' => 12,
-					'p_id' => 42 ] ) );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -173,14 +221,21 @@ class SearchTableUpdaterTest extends TestCase {
 		);
 
 		$instance->delete( 12, 42 );
+
+		$this->assertSame( [ [ 's_id' => 12, 'p_id' => 42 ] ], $capturedWheres );
 	}
 
 	public function testFlushTable() {
+		$capturedTables = [];
+		$capturedWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedTables,
+			$capturedWheres
+		);
+
 		$this->connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				$this->anything(),
-				'*' );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -189,17 +244,22 @@ class SearchTableUpdaterTest extends TestCase {
 		);
 
 		$instance->flushTable();
+
+		$this->assertSame( [ IDatabase::ALL_ROWS ], $capturedWheres );
 	}
 
 	public function testExists() {
+		$capturedSelects = [];
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[],
+			$capturedWheres,
+			$capturedSelects
+		);
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$this->equalTo( [
-					's_id' => 12,
-					'p_id' => 42 ] ) );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -208,6 +268,9 @@ class SearchTableUpdaterTest extends TestCase {
 		);
 
 		$instance->exists( 12, 42 );
+
+		$this->assertSame( [ [ 's_id' ] ], $capturedSelects );
+		$this->assertSame( [ [ 's_id' => 12, 'p_id' => 42 ] ], $capturedWheres );
 	}
 
 }

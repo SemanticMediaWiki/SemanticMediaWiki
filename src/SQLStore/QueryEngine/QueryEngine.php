@@ -327,17 +327,18 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$sql_options = [ 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() ];
 
 		if ( $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
-			$res = $connection->select(
-				array_merge(
-					[ $qobj->alias => $qobj->joinTable ],
-					$qobj->fromTables
-				),
-				[ 'count' => "COUNT(DISTINCT $qobj->alias.smw_id)" ],
-				$qobj->where,
-				__METHOD__,
-				$sql_options,
-				$qobj->joinConditions
-			);
+			$qb = $connection->newSelectQueryBuilder()
+				->select( [ 'count' => "COUNT(DISTINCT $qobj->alias.smw_id)" ] )
+				->rawTables( array_merge( [ $qobj->alias => $qobj->joinTable ], $qobj->fromTables ) )
+				->joinConds( $qobj->joinConditions )
+				->options( $sql_options )
+				->caller( __METHOD__ );
+
+			if ( $qobj->where !== '' ) {
+				$qb->where( [ $qobj->where ] );
+			}
+
+			$res = $qb->fetchResultSet();
 		} else {
 			$sql = $this->subqueryQueryBuilder->buildCountQuerySQL(
 				$qobj,
@@ -397,14 +398,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 
 		if ( $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
-			$sql_options[] = 'DISTINCT';
-
-			$res = $connection->select(
-				array_merge(
-					[ $qobj->alias => $qobj->joinTable ],
-					$qobj->fromTables
-				),
-				array_merge(
+			$qb = $connection->newSelectQueryBuilder()
+				->select( array_merge(
 					[
 						'id' => "$qobj->alias.smw_id",
 						't' => "$qobj->alias.smw_title",
@@ -414,12 +409,18 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 						'sortkey' => "$qobj->alias.smw_sortkey",
 					],
 					array_values( $qobj->sortfields ) # TODO strange to only keep values, but it was like that before rewriting select() with arrays
-				),
-				$qobj->where,
-				__METHOD__,
-				$sql_options,
-				$qobj->joinConditions
-			);
+				) )
+				->rawTables( array_merge( [ $qobj->alias => $qobj->joinTable ], $qobj->fromTables ) )
+				->joinConds( $qobj->joinConditions )
+				->options( $sql_options )
+				->distinct()
+				->caller( __METHOD__ );
+
+			if ( $qobj->where !== '' ) {
+				$qb->where( [ $qobj->where ] );
+			}
+
+			$res = $qb->fetchResultSet();
 		} else {
 			$sql = $this->subqueryQueryBuilder->buildInstanceQuerySQL(
 				$qobj,
