@@ -178,6 +178,18 @@ class EntityIdManagerTest extends TestCase {
 	public function testRedirectInfoRoundtrip() {
 		$subject = new WikiPage( 'Foo', 9001 );
 
+		// This test exercises real RedirectStore (via EntityIdManager), so
+		// the converted RedirectStore::select()/insert()/delete() chains need
+		// chainable mock builders to avoid NPEing on `null->from(...)` etc.
+		// Returned rows are empty — RedirectStore's cache fronts the DB after
+		// addRedirect(), so the assertions don't depend on DB row content.
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
+		$this->connection->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockInsertQueryBuilder() );
+		$this->connection->method( 'newDeleteQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockDeleteQueryBuilder() );
+
 		$instance = new EntityIdManager(
 			$this->store,
 			$this->factory
