@@ -16,6 +16,7 @@ use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
 use SMW\Elastic\Installer;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Store;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\Elastic\Indexer\Rebuilder\Rebuilder
@@ -27,6 +28,8 @@ use SMW\Store;
  * @author mwjames
  */
 class RebuilderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $connection;
 	private $fileIndexer;
@@ -76,6 +79,9 @@ class RebuilderTest extends TestCase {
 		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$database->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
