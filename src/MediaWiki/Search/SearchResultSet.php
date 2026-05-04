@@ -132,11 +132,12 @@ class SearchResultSet extends \SearchResultSet {
 
 		foreach ( $this->pages as $page ) {
 
+			$searchResult = null;
 			if ( $page instanceof WikiPage ) {
 				$searchResult = new SearchResult( $page->getTitle() );
 			}
 
-			if ( !isset( $searchResult ) ) {
+			if ( $searchResult === null ) {
 				continue;
 			}
 
