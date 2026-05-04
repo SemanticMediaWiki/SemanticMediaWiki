@@ -22,6 +22,18 @@ class ConfigDefaultsParityTest extends TestCase {
 
 	private const MANIFEST = __DIR__ . '/../../../extension.json';
 
+	/**
+	 * Settings whose value in $GLOBALS is derived at runtime by SMW
+	 * initialization code (e.g. Exporter::initBaseURIs() computes the
+	 * namespace URI from the wiki URL and stores it back via `global`). These
+	 * start as the manifest default but are overwritten before the test can
+	 * compare them, so exclude them from the parity check rather than
+	 * hardcoding the environment-specific computed value.
+	 */
+	private const RUNTIME_DERIVED_KEYS = [
+		'smwgNamespace',
+	];
+
 	public function testEveryConfigEntrySeedsMatchingGlobalsValue(): void {
 		$manifest = json_decode( file_get_contents( self::MANIFEST ), true );
 		$prefix   = $manifest['config_prefix'] ?? 'wg';
@@ -32,8 +44,32 @@ class ConfigDefaultsParityTest extends TestCase {
 			return;
 		}
 
+		// phpunit.xml.dist may intentionally override some globals for the test
+		// environment (e.g. smwgEnabledDeferredUpdate => false to disable async
+		// updates during tests). Read those overrides and skip any key whose
+		// phpunit value differs from the manifest default so the parity test
+		// only fails on genuine drift, not intentional test-env overrides.
+		$phpunitOverrides = $this->readPhpunitVarOverrides();
+
 		foreach ( $config as $key => $entry ) {
 			$globalKey = $prefix . $key;
+
+			// Skip settings with runtime-derived $GLOBALS values.
+			if ( in_array( $globalKey, self::RUNTIME_DERIVED_KEYS, true ) ) {
+				continue;
+			}
+
+			if ( isset( $phpunitOverrides[$globalKey] ) ) {
+				// Cast to the same type as the manifest value for comparison.
+				$overrideValue = $this->castToType(
+					$phpunitOverrides[$globalKey],
+					$entry['value']
+				);
+				if ( $overrideValue !== $entry['value'] ) {
+					// Intentionally overridden in the test environment; skip.
+					continue;
+				}
+			}
 
 			$this->assertArrayHasKey(
 				$globalKey,
@@ -53,6 +89,54 @@ class ConfigDefaultsParityTest extends TestCase {
 				"Config value drift for '$key'"
 			);
 		}
+	}
+
+	/**
+	 * Parse `<var name="..." value="..."/>` entries from the nearest phpunit
+	 * XML config file and return them as a `[ globalName => stringValue ]` map.
+	 *
+	 * @return array<string, string>
+	 */
+	private function readPhpunitVarOverrides(): array {
+		$xmlFile = __DIR__ . '/../../../phpunit.xml.dist';
+		if ( !is_readable( $xmlFile ) ) {
+			return [];
+		}
+
+		$overrides = [];
+		$xml = simplexml_load_file( $xmlFile );
+		if ( $xml === false ) {
+			return [];
+		}
+
+		foreach ( $xml->xpath( '//php/var' ) as $var ) {
+			$name  = (string)$var['name'];
+			$value = (string)$var['value'];
+			if ( $name !== '' ) {
+				$overrides[$name] = $value;
+			}
+		}
+
+		return $overrides;
+	}
+
+	/**
+	 * Cast a string value (from XML) to the same PHP type as $reference.
+	 */
+	private function castToType( string $value, mixed $reference ): mixed {
+		if ( is_bool( $reference ) ) {
+			return filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+		}
+		if ( is_int( $reference ) ) {
+			return (int)$value;
+		}
+		if ( is_float( $reference ) ) {
+			return (float)$value;
+		}
+		if ( $reference === null ) {
+			return $value === 'null' ? null : $value;
+		}
+		return $value;
 	}
 
 	/**

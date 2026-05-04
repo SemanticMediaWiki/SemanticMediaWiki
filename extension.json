@@ -719,6 +719,315 @@
 	},
 	"load_composer_autoloader": true,
 	"config_prefix": "smwg",
-	"config": {},
+	"config": {
+		"AllowRecursiveExport": {
+			"value": false,
+			"description": "When `true`, normal users can request recursive OWL/RDF exports."
+		},
+		"AutoRefreshOnPageMove": {
+			"value": true,
+			"description": "When `true`, refreshes semantic data in the store when a page is moved."
+		},
+		"AutoRefreshOnPurge": {
+			"value": true,
+			"description": "When `true`, refreshes semantic data in the store when a page is manually purged."
+		},
+		"AutoRefreshSubject": {
+			"value": true,
+			"description": "When `true`, refreshes the semantic store for pages that are edited."
+		},
+		"ChangePropagationProtection": {
+			"value": true,
+			"description": "When `true`, protects an active change propagation from being disabled without administrative intervention."
+		},
+		"CheckForRemnantEntities": {
+			"value": "purge",
+			"description": "Controls when remnant entity checks run: `\"purge\"` (on purge only), `true` (every update), or `false` (disabled)."
+		},
+		"CompactLinkSupport": {
+			"value": false,
+			"description": "When `true`, encodes and compresses Special:Browse / Special:Ask / Special:SearchByProperty links to reduce URL length."
+		},
+		"CreateProtectionRight": {
+			"value": false,
+			"description": "User right required to create new properties; `false` disables creation protection."
+		},
+		"DefaultLoggerRole": {
+			"value": "production",
+			"description": "Logging granularity role (`developer`, `user`, or `production`); controls which SMW events are written to the debug log."
+		},
+		"DefaultNumRecurringEvents": {
+			"value": 100,
+			"description": "Default number of recurring-event instances generated when no end date is set."
+		},
+		"DefaultStore": {
+			"value": "SMW\\SQLStore\\SQLStore",
+			"description": "Default storage backend class; `SQLStore::class` evaluates to this fully-qualified string at compile time."
+		},
+		"DetectOutdatedData": {
+			"value": false,
+			"description": "When `true`, verifies semantic data is up to date with the latest revision on every page load."
+		},
+		"EditProtectionRight": {
+			"value": false,
+			"description": "User right required to edit pages protected via `Is edit protected`; `false` disables the feature."
+		},
+		"ElasticsearchProfile": {
+			"value": false,
+			"description": "Path to a JSON profile that overrides `smwgElasticsearchConfig` values; `false` disables profile loading."
+		},
+		"EnabledDeferredUpdate": {
+			"value": true,
+			"description": "When `true`, defers store updates via MediaWiki's `DeferredUpdates` mechanism."
+		},
+		"EnabledEditPageHelp": {
+			"value": false,
+			"description": "When `true`, displays SMW help information on the edit page."
+		},
+		"EnabledFulltextSearch": {
+			"value": false,
+			"description": "When `true`, stores text in a separate fulltext-indexed table for SQL fulltext operations."
+		},
+		"EnabledQueryDependencyLinksStore": {
+			"value": false,
+			"description": "When `true`, stores query dependencies to enable parser-cache invalidation when queried entities change."
+		},
+		"EnableExportRDFLink": {
+			"value": true,
+			"description": "When `true`, adds a `Special:ExportRDF` `<link>` element to every page `<head>`."
+		},
+		"EnableUpdateJobs": {
+			"value": true,
+			"description": "When `false`, disables MediaWiki job-queue updates triggered by semantic data changes."
+		},
+		"EntityCollation": {
+			"value": "identity",
+			"description": "Collation strategy for entity sort values; must match `$wgCategoryCollation`; changes require running `updateEntityCollation.php`."
+		},
+		"ExportBacklinks": {
+			"value": true,
+			"description": "When `true`, backlinks are included by default in OWL/RDF exports."
+		},
+		"ExportBCAuxiliaryUse": {
+			"value": false,
+			"description": "BC: when `true`, retains the legacy `aux`-marker URIs in RDF/Turtle exports."
+		},
+		"ExportBCNonCanonicalFormUse": {
+			"value": false,
+			"description": "BC: when `true`, uses localized rather than canonical identifiers in RDF/Query statements."
+		},
+		"ExportResourcesAsIri": {
+			"value": true,
+			"description": "When `true`, resources are exported as IRIs (RFC 3987) instead of ASCII-encoded URIs."
+		},
+		"FallbackSearchType": {
+			"value": null,
+			"description": "Search engine class to fall back to when SMWSearch cannot parse a query; `null` uses the database default."
+		},
+		"FieldTypeFeatures": {
+			"value": false,
+			"description": "SQLStore field-type modifications (case-insensitive collation / extended field width); `false` (= `SMW_FIELDT_NONE`) disables all flags."
+		},
+		"FulltextDeferredUpdate": {
+			"value": true,
+			"description": "When `true`, defers fulltext index updates to a background process decoupled from the storage update."
+		},
+		"FulltextSearchMinTokenSize": {
+			"value": 3,
+			"description": "Minimum token length used to decide between MATCH and LIKE operators in fulltext conditions."
+		},
+		"IgnoreExtensionRegistrationCheck": {
+			"value": false,
+			"description": "When `true`, suppresses the check that verifies the extension was correctly registered via `wfLoadExtension`."
+		},
+		"IgnoreQueryErrors": {
+			"value": true,
+			"description": "When `true`, queries execute even if errors were detected during parsing."
+		},
+		"IgnoreUpgradeKeyCheck": {
+			"value": false,
+			"description": "When `true`, bypasses the `SetupCheck` and `MaintenanceCheck` gates that block execution when the schema is in an intermediate state."
+		},
+		"ImportReqVersion": {
+			"value": 1,
+			"description": "Import-file version required for content to be imported during setup; set to `false` to disable import."
+		},
+		"MandatorySubpropertyParentTypeInheritance": {
+			"value": false,
+			"description": "When `true`, enforces type inheritance between a parent property and its subproperties."
+		},
+		"MaxNonExpNumber": {
+			"value": 1000000000000000,
+			"description": "Largest number displayed without scientific notation."
+		},
+		"MaxNumRecurringEvents": {
+			"value": 500,
+			"description": "Maximum number of recurring-event instances that can be defined regardless of end date."
+		},
+		"MaxPropertyValues": {
+			"value": 3,
+			"description": "Maximum number of property values displayed per property on a page's Property page."
+		},
+		"Namespace": {
+			"value": null,
+			"description": "URI/IRI namespace for OWL/RDF export resources; auto-derived from the wiki URL when `null`."
+		},
+		"PDefaultType": {
+			"value": "_wpg",
+			"description": "Internal type ID assumed for properties that have no explicit type declaration; defaults to `Type:Page`."
+		},
+		"PlainList": {
+			"value": false,
+			"description": "When `true`, `format=list` produces plain lists without HTML markup, restoring pre-3.0 behaviour."
+		},
+		"PropertyLowUsageThreshold": {
+			"value": 5,
+			"description": "Usage count below which a property is highlighted as \"hardly used\" on Special:Properties."
+		},
+		"PropertyZeroCountDisplay": {
+			"value": true,
+			"description": "When `true`, properties with zero usage are shown on Special:Properties."
+		},
+		"QComparators": {
+			"value": "<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|in:|not:|phrase:",
+			"description": "Pipe-delimited list of comparator operators supported in queries."
+		},
+		"QConceptCacheLifetime": {
+			"value": 1440,
+			"description": "Concept cache lifetime in minutes; SMW recomputes an older cache if this threshold is exceeded."
+		},
+		"QConceptMaxDepth": {
+			"value": 8,
+			"description": "Maximum property-chain depth for a concept query."
+		},
+		"QConceptMaxSize": {
+			"value": 20,
+			"description": "Maximum number of conditions permitted in a concept query."
+		},
+		"QDefaultLimit": {
+			"value": 50,
+			"description": "Default number of result rows returned by an inline query."
+		},
+		"QDefaultLinking": {
+			"value": "all",
+			"description": "Default linking behaviour for query results; one of `none`, `subject`, or `all`."
+		},
+		"QDefaultNamespaces": {
+			"value": null,
+			"description": "Default namespaces searched by queries; `null` disables namespace restrictions for faster queries."
+		},
+		"QEnabled": {
+			"value": true,
+			"description": "Master switch to enable or disable all query-related features and interfaces."
+		},
+		"QExpensiveExecutionLimit": {
+			"value": false,
+			"description": "Maximum number of expensive `#ask` / `#show` calls per page; `false` means no limit."
+		},
+		"QExpensiveThreshold": {
+			"value": 10,
+			"description": "Time in seconds above which a `#ask` / `#show` call is classified as expensive."
+		},
+		"QFilterDuplicates": {
+			"value": false,
+			"description": "When `true`, filters duplicate query segments from the query build process (experimental)."
+		},
+		"QMaxDepth": {
+			"value": 4,
+			"description": "Maximum property-chain depth of a query."
+		},
+		"QMaxInlineLimit": {
+			"value": 500,
+			"description": "Maximum number of result rows printed by a single inline query on a page."
+		},
+		"QMaxLimit": {
+			"value": 10000,
+			"description": "Maximum number of results ever retrieved, even on special query pages."
+		},
+		"QMaxSize": {
+			"value": 16,
+			"description": "Maximum number of conditions permitted in a single query."
+		},
+		"QPrintoutLimit": {
+			"value": 100,
+			"description": "Maximum number of printout columns (`?`-statements) supported in a single query."
+		},
+		"QStrictComparators": {
+			"value": false,
+			"description": "Canonical spelling of `smwStrictComparators`; same semantics."
+		},
+		"QSubcategoryDepth": {
+			"value": 10,
+			"description": "Maximum depth for sub-category inclusion steps within the category hierarchy."
+		},
+		"QSubpropertyDepth": {
+			"value": 10,
+			"description": "Maximum depth for sub-property inclusion steps within the property hierarchy."
+		},
+		"QTemporaryTablesAutoCommitMode": {
+			"value": false,
+			"description": "When `true`, forces auto-commit for temporary tables to work around MySQL GTID restrictions."
+		},
+		"QueryProfiler": {
+			"value": true,
+			"description": "When `false`, disables the query profiler; can be set to a bitmask of `SMW_QPRFL_*` constants for granular control."
+		},
+		"QueryResultCacheLifetime": {
+			"value": 604800,
+			"description": "Lifetime in seconds for embedded query result caches; default one week."
+		},
+		"QueryResultCacheRefreshOnPurge": {
+			"value": true,
+			"description": "When `true`, embedded query result caches are invalidated when an `action=purge` event fires."
+		},
+		"QueryResultNonEmbeddedCacheLifetime": {
+			"value": 600,
+			"description": "Lifetime in seconds for non-embedded (Special:Ask, API) query result caches; `0` disables."
+		},
+		"QUpperbound": {
+			"value": 5000,
+			"description": "Maximum rows printable in an inline query when an offset is applied."
+		},
+		"QUseLegacyQuery": {
+			"value": false,
+			"description": "When `true`, reverts to the pre-7.x `SELECT DISTINCT` query shape instead of the derived-table rewrite."
+		},
+		"SetParserCacheTimestamp": {
+			"value": true,
+			"description": "When `true`, sets a timestamp on `ParserOutput` to allow immediate parser-cache invalidation."
+		},
+		"SimilarityLookupExemptionProperty": {
+			"value": "owl:differentFrom",
+			"description": "Property whose annotation exempts a property from the similarity lookup."
+		},
+		"SparqlCustomConnector": {
+			"value": "\\SMW\\SPARQLStore\\RepositoryConnectors\\GenericRepositoryConnector",
+			"description": "Custom SPARQL repository connector class used when `smwgSparqlRepositoryConnector` is set to `custom`."
+		},
+		"SparqlDefaultGraph": {
+			"value": "",
+			"description": "Default graph URI for the SPARQL repository, analogous to a database name in relational stores."
+		},
+		"SparqlRepositoryConnector": {
+			"value": "default",
+			"description": "Pre-deployed SPARQL repository connector to use (`default`, `4store`, `blazegraph`, `fuseki`, `sesame`, `virtuoso`, or `custom`)."
+		},
+		"SupportSectionTag": {
+			"value": true,
+			"description": "When `true`, enables `<section>…</section>` tag support."
+		},
+		"Translate": {
+			"value": false,
+			"description": "(Disabled feature) When `true`, translates browser labels using interwiki links."
+		},
+		"UpgradeKey": {
+			"value": "smw:2020-04-18",
+			"description": "Version key that verifies a correct upgrade path was run against the DB schema."
+		},
+		"UseComparableContentHash": {
+			"value": true,
+			"description": "When `true`, normalises subobject content hashes so property-value order does not affect hash equality."
+		}
+	},
 	"manifest_version": 2
 }
