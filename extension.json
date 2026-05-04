@@ -973,7 +973,7 @@
 				}
 			},
 			"description": "Number of results shown in the listings on pages in the Property and Concept namespaces as well as other services that require a limit.",
-			"merge_strategy": "array_plus_2d"
+			"merge_strategy": "array_replace_recursive"
 		},
 		"PDefaultType": {
 			"value": "_wpg",
@@ -994,7 +994,7 @@
 				}
 			},
 			"description": "Regulates task specific settings for the post-edit process.",
-			"merge_strategy": "array_plus_2d"
+			"merge_strategy": "array_replace_recursive"
 		},
 		"PropertyInvalidCharacterList": {
 			"value": ["[", "]", "|", "<", ">", "{", "}", "+", "–", "%", "\r", "\n", "?", "*", "!"],

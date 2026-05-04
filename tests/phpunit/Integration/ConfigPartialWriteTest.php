@@ -109,30 +109,27 @@ class ConfigPartialWriteTest extends TestCase {
 	}
 
 	/**
-	 * smwgPagingLimit — array_plus_2d
-	 * User overrides the nested 'browse.valuelist.outgoing' key; the peer
-	 * 'browse.valuelist.incoming' key and the scalar top-level keys
-	 * ('type', 'concept', etc.) must survive with their defaults.
-	 *
-	 * Note: wfArrayPlus2d() uses array-union (not replacement) at the inner
-	 * level, so the inner key 'valuelist.outgoing' takes the user value and
-	 * 'valuelist.incoming' is filled from the default.
+	 * smwgPagingLimit — array_replace_recursive
+	 * User overrides one scalar leaf ('type'); peer scalar leaves and the
+	 * nested 'browse' submap must survive with their defaults.
 	 */
 	public function testPagingLimitPartialWrite(): void {
 		$entry = $this->loadManifestEntry( 'PagingLimit' );
-		// User overrides only the nested browse outgoing limit.
-		$user = [ 'browse' => [ 'valuelist.outgoing' => 50 ] ];
+		// Documented user pattern: $smwgPagingLimit['type'] = 100;
+		$user = [ 'type' => 100 ];
 
 		$result = $this->applyMergeStrategy( $entry['merge_strategy'], $entry['value'], $user );
 
-		// User nested value won.
-		$this->assertSame( 50, $result['browse']['valuelist.outgoing'] );
-		// Peer nested key filled in from default.
-		$this->assertArrayHasKey( 'valuelist.incoming', $result['browse'] );
-		// Scalar top-level keys survive.
-		$this->assertArrayHasKey( 'type', $result );
+		// User scalar override won (and was NOT summed with the default 50).
+		$this->assertSame( 100, $result['type'] );
+		// Peer scalar keys survive.
 		$this->assertArrayHasKey( 'concept', $result );
 		$this->assertArrayHasKey( 'property', $result );
+		$this->assertArrayHasKey( 'errorlist', $result );
+		// Nested 'browse' submap survives entirely.
+		$this->assertArrayHasKey( 'browse', $result );
+		$this->assertArrayHasKey( 'valuelist.outgoing', $result['browse'] );
+		$this->assertArrayHasKey( 'valuelist.incoming', $result['browse'] );
 	}
 
 	/**
@@ -207,28 +204,24 @@ class ConfigPartialWriteTest extends TestCase {
 	}
 
 	/**
-	 * smwgPostEditUpdate — array_plus_2d
-	 * User adds a new job to 'run-jobs'; the built-in
-	 * 'smw.fulltextSearchTableUpdate' job and the 'purge-page' submap must
-	 * survive.
-	 *
-	 * Note: wfArrayPlus2d() uses array-union at the inner level, so the user's
-	 * new job key is added and the default job key is preserved.
+	 * smwgPostEditUpdate — array_replace_recursive
+	 * User flips the top-level 'check-query' bool; the 'run-jobs' and
+	 * 'purge-page' submaps must survive untouched.
 	 */
 	public function testPostEditUpdatePartialWrite(): void {
 		$entry = $this->loadManifestEntry( 'PostEditUpdate' );
-		// User adds a custom job to the run-jobs submap.
-		$user = [ 'run-jobs' => [ 'smw.updateJobs' => 1 ] ];
+		// Documented user pattern: $smwgPostEditUpdate['check-query'] = true;
+		$user = [ 'check-query' => true ];
 
 		$result = $this->applyMergeStrategy( $entry['merge_strategy'], $entry['value'], $user );
 
-		// User's new run-jobs entry won.
-		$this->assertArrayHasKey( 'smw.updateJobs', $result['run-jobs'] );
-		$this->assertSame( 1, $result['run-jobs']['smw.updateJobs'] );
-		// Default run-jobs entry survived.
+		// User scalar override won (NOT summed with the default false).
+		$this->assertTrue( $result['check-query'] );
+		// Nested submaps survive entirely.
+		$this->assertArrayHasKey( 'run-jobs', $result );
 		$this->assertArrayHasKey( 'smw.fulltextSearchTableUpdate', $result['run-jobs'] );
-		// Unrelated 'purge-page' submap survived.
 		$this->assertArrayHasKey( 'purge-page', $result );
+		$this->assertArrayHasKey( 'on-outdated-query-dependency', $result['purge-page'] );
 	}
 
 	/**
