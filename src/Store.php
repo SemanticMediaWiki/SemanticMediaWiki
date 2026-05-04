@@ -469,7 +469,7 @@ abstract class Store implements QueryEngine {
 	 * @since 1.8
 	 *
 	 * @param bool $verbose
-	 * @param Options|null $options
+	 * @param array|null $options
 	 *
 	 * @return bool Success indicator
 	 */
