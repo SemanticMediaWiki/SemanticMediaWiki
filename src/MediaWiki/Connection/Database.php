@@ -310,36 +310,6 @@ class Database {
 	 * @throws Exception
 	 */
 	private function executeQuery( IDatabase $connection, string $sql, ?string $fname, int $flags ): bool|IResultWrapper {
-		if ( !$this->isType( 'postgres' ) ) {
-			$sql = str_replace( '@INT', '', $sql );
-		}
-
-		if ( $this->isType( 'postgres' ) ) {
-
-			// Requires postgres 9.5+
-			// https://www.postgresql.org/docs/9.5/sql-insert.html
-			if ( strpos( $sql, "INSERT IGNORE INTO" ) !== false ) {
-				$sql = ( str_replace( 'IGNORE ', '', $sql ) ) . " ON CONFLICT DO NOTHING";
-			}
-
-			$sql = str_replace( '@INT', '::integer', $sql );
-			$sql = str_replace( 'IGNORE', '', $sql );
-			$sql = str_replace( 'DROP TEMPORARY TABLE', 'DROP TABLE IF EXISTS', $sql );
-			$sql = str_replace( 'RAND()', ( strpos( $sql, 'DISTINCT' ) !== false ? '' : 'RANDOM()' ), $sql );
-		}
-
-		if ( $this->isType( 'sqlite' ) ) {
-			$sql = str_replace( 'IGNORE', '', $sql );
-			$sql = str_replace( 'TEMPORARY', 'TEMP', $sql );
-			$sql = str_replace( 'ENGINE=MEMORY', '', $sql );
-			$sql = str_replace( 'DROP TEMP', 'DROP', $sql );
-			$sql = str_replace( 'TRUNCATE TABLE', 'DELETE FROM', $sql );
-			// Idempotent token replacement: leaves an already-emitted RANDOM()
-			// untouched. Callsites should now emit the platform-correct token
-			// directly; this stays as a fallback for raw query() callers.
-			$sql = str_replace( 'RAND()', 'RANDOM()', $sql );
-		}
-
 		// https://github.com/wikimedia/mediawiki/blob/42d5e6f43a00eb8bedc3532876125f74e3188343/includes/deferred/AutoCommitUpdate.php
 		// https://github.com/wikimedia/mediawiki/blob/f7dad57c64db3eb1296894c2d3ae97b9f7f27c4c/includes/installer/DatabaseInstaller.php#L157
 		$autoTrx = null;

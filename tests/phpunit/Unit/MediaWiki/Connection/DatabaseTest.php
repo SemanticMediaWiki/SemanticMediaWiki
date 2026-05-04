@@ -133,30 +133,14 @@ class DatabaseTest extends TestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider querySqliteProvider
-	 */
-	public function testQueryOnSQLite( $query, $expected ) {
+	public function testQueryPassesSqlThroughToUnderlyingConnection() {
 		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getType' ] )
-			->getMockForAbstractClass();
-
-		$read->expects( $this->any() )
-			->method( 'getType' )
-			->willReturn( 'sqlite' );
-
 		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$readConnectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $read );
 
 		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
@@ -165,7 +149,7 @@ class DatabaseTest extends TestCase {
 
 		$write->expects( $this->once() )
 			->method( 'query' )
-			->with( $expected )
+			->with( 'SELECT 1' )
 			->willReturn( $resultWrapper );
 
 		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
@@ -188,20 +172,8 @@ class DatabaseTest extends TestCase {
 
 		$this->assertInstanceOf(
 			ResultWrapper::class,
-			$instance->query( $query )
+			$instance->query( 'SELECT 1' )
 		);
-	}
-
-	public function querySqliteProvider() {
-		$provider = [
-			[ 'TEMPORARY', 'TEMP' ],
-			[ 'RAND()', 'RANDOM()' ],
-			[ 'RANDOM()', 'RANDOM()' ],
-			[ 'ENGINE=MEMORY', '' ],
-			[ 'DROP TEMP', 'DROP' ]
-		];
-
-		return $provider;
 	}
 
 	public function testQueryThrowsException() {
@@ -459,10 +431,6 @@ class DatabaseTest extends TestCase {
 		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$readConnectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
 
 		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()

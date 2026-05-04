@@ -123,8 +123,18 @@ class ConceptCache {
 			$querySegment->from = str_replace( 'INNER JOIN', 'LEFT JOIN', $querySegment->from );
 		}
 
-		$db->query( "INSERT " . ( ( $db->getType() == 'postgres' ) ? '' : 'IGNORE ' ) .
-			"INTO $concCacheTableName" .
+		// Platform-specific INSERT verb. Postgres dedups via the LEFT JOIN
+		// substitution above, so the INSERT verb has no IGNORE clause. SQLite
+		// uses INSERT OR IGNORE; MySQL uses INSERT IGNORE.
+		if ( $db->getType() === 'postgres' ) {
+			$insertVerb = 'INSERT INTO';
+		} elseif ( $db->getType() === 'sqlite' ) {
+			$insertVerb = 'INSERT OR IGNORE INTO';
+		} else {
+			$insertVerb = 'INSERT IGNORE INTO';
+		}
+
+		$db->query( "$insertVerb $concCacheTableName" .
 			" SELECT DISTINCT {$querySegment->joinfield} AS s_id, $cid AS o_id FROM " .
 			$db->tableName( $querySegment->joinTable ) . " AS {$querySegment->alias}" .
 			$querySegment->from .
