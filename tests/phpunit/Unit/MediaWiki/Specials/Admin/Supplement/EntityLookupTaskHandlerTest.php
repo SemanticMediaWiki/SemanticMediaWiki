@@ -14,6 +14,7 @@ use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler
@@ -25,6 +26,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class EntityLookupTaskHandlerTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $store;
@@ -139,8 +142,8 @@ class EntityLookupTaskHandlerTest extends TestCase {
 
 	public function testPerformActionWithId() {
 		$this->connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 
 		$manualEntryLogger = $this->getMockBuilder( ManualEntryLogger::class )
 			->disableOriginalConstructor()
