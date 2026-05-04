@@ -80,8 +80,14 @@ class RebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$capturedSelects = [];
 		$database->method( 'newSelectQueryBuilder' )
-			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
+			->willReturnCallback(
+				function () use ( &$whereConditions, &$capturedSelects ) {
+					return $this->createMockSelectQueryBuilder( [], $whereConditions, $capturedSelects );
+				}
+			);
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
@@ -100,9 +106,11 @@ class RebuilderTest extends TestCase {
 			$this->installer
 		);
 
-		$this->assertIsArray(
+		$this->assertIsArray( $instance->select( $store, [] ) );
 
-			$instance->select( $store, [] )
+		$this->assertSame(
+			[ [ 'smw_id', 'smw_iw', 'smw_rev' ], 'MAX(smw_id)' ],
+			$capturedSelects
 		);
 	}
 
