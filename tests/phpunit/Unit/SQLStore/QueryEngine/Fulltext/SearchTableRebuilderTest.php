@@ -9,9 +9,8 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
-use SMW\Tests\Utils\Mock\IteratorMockBuilder;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder
@@ -24,10 +23,11 @@ use Wikimedia\Rdbms\ResultWrapper;
  */
 class SearchTableRebuilderTest extends TestCase {
 
+	use MockSelectQueryBuilderTrait;
+
 	private $searchTableUpdater;
 	private $searchTable;
 	private $connection;
-	private $iteratorMockBuilder;
 
 	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( Database::class )
@@ -45,8 +45,6 @@ class SearchTableRebuilderTest extends TestCase {
 		$this->searchTableUpdater->expects( $this->any() )
 			->method( 'getSearchTable' )
 			->willReturn( $this->searchTable );
-
-		$this->iteratorMockBuilder = new IteratorMockBuilder();
 	}
 
 	public function testCanConstruct() {
@@ -112,18 +110,11 @@ class SearchTableRebuilderTest extends TestCase {
 		$row->o_blob = null;
 		$row->s_id = 42;
 
-		$resultWrapper = $this->iteratorMockBuilder->setClass( ResultWrapper::class )
-			->with( [ $row ] )
-			->incrementInvokedCounterBy( 1 )
-			->getMockForIterator();
-
-		$resultWrapper->expects( $this->atLeastOnce() )
-			->method( 'numRows' )
-			->willReturn( 1 );
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
 
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( $resultWrapper );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
