@@ -104,6 +104,13 @@ class EntityIdManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// HashFieldUpdate::doUpdate() (fired through real EntityIdFinder
+		// via setMethods(null) below) calls newUpdateQueryBuilder() on the
+		// connection. Default to an empty builder so tests that don't
+		// override don't NPE on the ->update()->set()->where() chain.
+		$this->connection->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
+
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
