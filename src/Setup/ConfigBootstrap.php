@@ -134,6 +134,13 @@ class ConfigBootstrap {
 			$GLOBALS['smwgCheckForConstraintErrors'] = SMW_CONSTRAINT_ERR_CHECK_ALL;
 		}
 
+		if ( !isset( $GLOBALS['smwStrictComparators'] ) ) {
+			// Legacy alias (no `g` after `smw`); see also smwgQStrictComparators
+			// which is the canonical name in extension.json. Removed in a
+			// future major version once consumers are migrated.
+			$GLOBALS['smwStrictComparators'] = false;
+		}
+
 		// smwgLocalConnectionConf — array_plus_2d semantics: user inner keys win,
 		// missing connections are filled from defaults.
 		$defaults = [
