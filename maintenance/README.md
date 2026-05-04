@@ -213,7 +213,8 @@ php maintenance/run.php SemanticMediaWiki:runLocalMessageCopy [--file|--copy-can
 
 Allows to seed the wiki with demo pages and SMW annotations for development and testing. Creates
 property definitions, category pages, breed articles with typed semantic annotations, topic pages,
-and a Main Page. All created pages are tracked in `Category:Seed data` for scoped cleanup.
+and an `SMW Query Examples` page demonstrating common `#ask` query features. All created pages are
+tracked in `Category:Seed data` for scoped cleanup.
 
 The script requires the `--force` flag and an interactive `YES` confirmation before making any
 changes. Re-running the script will clear previously seeded pages before re-creating them.
