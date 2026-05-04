@@ -77,22 +77,6 @@ return ( static function (): array {
 		# #
 
 		###
-		# List of users for import activities
-		#
-		# Users listed here are to be used exclusively for the import task and can
-		# depending on the specific protection level lock certain content from being
-		# altered by any other user.
-		#
-		# The protection is only enabled when a specific import content has defined
-		# the `import_performer` with a listed user.
-		#
-		# @since 3.2
-		# @default []
-		##
-		'smwgImportPerformers' => [ 'SemanticMediaWikiImporter' ],
-		# #
-
-		###
 		# Local connection configurations
 		#
 		# Allows to modify connection characteristics for providers that are used by
@@ -182,18 +166,6 @@ return ( static function (): array {
 		# @since 3.2
 		##
 		'smwgSparqlRepositoryFeatures' => SMW_SPARQL_NONE,
-		# #
-
-		##
-		# Property replication exemption list
-		#
-		# Listed properties will be exempted from the replication process for a
-		# registered SPARQL repository.
-		#
-		# @since 2.5
-		# @default array
-		##
-		'smwgSparqlReplicationPropertyExemptionList' => [],
 		# #
 
 		###
@@ -331,17 +303,6 @@ return ( static function (): array {
 		# @since 3.0
 		##
 		'smwgBrowseFeatures' => SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API,
-		# #
-
-		###
-		# Should the search by property special page display nearby results when there
-		# are only a few results with the exact value? Switch this off if this page has
-		# performance problems.
-		#
-		# @since 2.1 enabled default types, to disable the functionality either set the
-		# variable to array() or false
-		##
-		'smwgSearchByPropertyFuzzy' => [ '_num', '_txt', '_dat', '_mlt_rec' ],
 		# #
 
 		###
@@ -559,142 +520,6 @@ return ( static function (): array {
 		# #
 
 		###
-		#
-		# Predefined list of sources that can return query results
-		#
-		# Array of available sources for answering queries. Can be redefined in
-		# the settings to register new sources (usually an extension will do so
-		# on installation). Unknown source will be rerouted to the local wiki.
-		# Note that the basic installation comes with no additional source besides
-		# the local source (which in turn cannot be disabled or set explicitly).
-		#
-		# A query class handler is required to implement the `QueryEngine` interface
-		# and if it needs to be aware of the store, it should also implement the
-		# `StoreAware` interface.
-		#
-		# @since 1.4.3
-		##
-		'smwgQuerySources' => [
-			// 'local'      => '',
-			//	'mw-wiki-foo' => [ '\SMW\Query\RemoteRequest', 'url' => 'http://example.org/wiki/index.php' ],
-		],
-		# #
-
-		###
-		# JobQueue watchlist
-		#
-		# This setting allows to display a personal bar link that shows the queue
-		# sizes for listed jobs. The information presented is fetched from the
-		# MediaWiki API and might be slightly inaccurate but should allow to make
-		# assumptions as to where the system needs attention.
-		#
-		# @see https://www.mediawiki.org/wiki/Manual:Job_queue#Special:Statistics
-		#
-		# To make this feature available, assign a simple list to the setting as in:
-		#
-		# $GLOBALS['smwgJobQueueWatchlist'] = [
-		#	'smw.update',
-		#	'smw.parserCachePurge',
-		#	'smw.fulltextSearchTableUpdate',
-		#	'smw.changePropagationUpdate'
-		# ]
-		#
-		# Information are not displayed unless a user enables the setting in his or
-		# her preference setting.
-		#
-		# @since 3.0
-		# @default disabled (empty array)
-		##
-		'smwgJobQueueWatchlist' => [],
-		# #
-
-		###
-		# List of enabled special page properties.
-		#
-		# - `_MDAT` Modification date is enabled by default for backward compatibility.
-		# - `_TRANS` Add annotations (language, source etc. ) when a page is
-		#   indentified as translation page (as done by the Translation extension)
-		# - `_ATTCH_LINK` tracks embedded files and images
-		#
-		#  Extend array to enable other properties:
-		#     $smwgPageSpecialProperties[ => '_CDAT',
-		# Or:
-		#     array_merge( $smwgPageSpecialProperties, array( '_CDAT' ) ),
-		# Or rewrite entire array:
-		#     	'smwgPageSpecialProperties' => array( '_MDAT', '_CDAT' ),
-		#
-		# However, DO NOT use `+=' operator! This DOES NOT work:
-		#     $smwgPageSpecialProperties += array( '_MDAT' ),
-		#
-		# @since 1.7
-		##
-		'smwgPageSpecialProperties' => [ '_MDAT' ],
-		# #
-
-		###
-		# Change propagation watchlist
-		#
-		# Properties (usually given as internal ids or DB key versions of property
-		# titles) that are relevant for declaring the behavior of a property P on a
-		# property page in the sense that changing their values requires that all
-		# pages that use P must be processed again.
-		#
-		# For example, if _PVAL (allowed values) for a property change, then pages
-		# must be processed again. This setting is not normally changed by users but
-		# by extensions that add new types that have their own additional declaration
-		# properties.
-		#
-		# @since 1.5
-		##
-		'smwgChangePropagationWatchlist' => [
-			'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC',
-			'_SUBP', '_SUBC', '_PVALI'
-		],
-		# #
-
-		###
-		# By default, DataTypes (Date, URL etc.) are registered with a corresponding
-		# property of the same name to match the expected semantics. Yet, users can
-		# decide to change the behaviour by exempting listed DataTypes from the property
-		# registration process.
-		#
-		# @since 2.5
-		##
-		'smwgDataTypePropertyExemptionList' => [
-			'Record',
-			'Reference',
-			'Keyword'
-		],
-		# #
-
-		##
-		# Default output formatter
-		#
-		# Users who want to alter the default output for a specific type can do so by
-		# setting a specify default formatter.
-		#
-		# The expected form is:
-		#
-		# [ <_typeID> => '<Formatter>' ] OR
-		# [ <typeName> => '<Formatter>' ] OR
-		# [ <propertyName> => '<Formatter>' ]
-		#
-		# Only valid formatters will be considered for an individual type, no
-		# errors or exceptions are raised in case of an improper formatter.
-		#
-		# The formatter is applied to values displayed on special pages
-		# as well.
-		#
-		# @since 3.0
-		# @default: []
-		##
-		'smwgDefaultOutputFormatters' => [
-			// '_dat' => 'LOCL',
-			// 'Boolean' => 'tick',
-		],
-		# #
-
-		###
 		# -- FEATURE IS DISABLED --
 		# If you want to import ontologies, you need to install RAP,
 		# a free RDF API for PHP, see
@@ -734,18 +559,6 @@ return ( static function (): array {
 		'smwgAdminFeatures' =>
 		SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT |
 		SMW_ADM_MAINTENANCE_SCRIPT_DOCS | SMW_ADM_SHOW_OVERVIEW | SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN,
-		# #
-
-		###
-		# Initial value for the registry of deprecation notices surfaced on
-		# Special:Admin's "Deprecation notices" panel. Extensions can populate
-		# this array (keyed by section name) to inform administrators about
-		# settings or features they are using that are planned for removal or
-		# have already been removed in the running version.
-		#
-		# @since 7.0.0
-		##
-		'smwgDeprecationNotices' => [],
 		# #
 
 		###
@@ -812,38 +625,6 @@ return ( static function (): array {
 		],
 		# #
 
-		##
-		# List of user-defined fixed properties
-		#
-		# Listed properties are managed by its own fixed table (instad of a
-		# shared one) to allow for sharding large datasets with value assignments.
-		#
-		# The type definition is talen from the property page `[[Has type::...]]` and
-		# by default (if no type is defined) then the `smwgPDefaultType` is returned.
-		#
-		# Any change to the property type requires to run the `setupStore.php` script
-		# or `Special:SMWAdmin` table update.
-		#
-		# 'smwgFixedProperties' => array(
-		#		'Age',
-		#		'Has population'
-		# ),
-		#
-		# @see https://semantic-mediawiki.org/wiki/Fixed_properties
-		# @since 1.9
-		#
-		# @default array()
-		##
-		'smwgFixedProperties' => [],
-
-		# ##
-		# Enables SMW specific annotation and content processing for listed SpecialPages
-		#
-		# @since 1.9
-		##
-		'smwgEnabledSpecialPage' => [ 'Ask' ],
-		# #
-
 		###
 		# Regulates task specific settings for the post-edit process.
 		#
@@ -891,27 +672,6 @@ return ( static function (): array {
 			'purge-page' => [
 				'on-outdated-query-dependency' => true
 			]
-		],
-		# #
-
-		###
-		# Relates to `smwgEnabledQueryDependencyLinksStore` and defines property keys
-		# to be excluded from the dependency detection.
-		#
-		# For example, to avoid a purge process being triggered for each altered subobject
-		# '_SOBJ' is excluded from the processing but it will not exclude any properties
-		# defined by a subobject (given that it is not part of an extended exclusion list).
-		#
-		# `_MDAT` is excluded to avoid a purge on each page edit with a `Modification date`
-		# change that would otherwise trigger a dependency update.
-		#
-		# '_ASKDU' changes to the duration of a query should not trigger an update of
-		# possible query dependencies (as this has no bearing on the result list).
-		#
-		# @since 2.3 (experimental)
-		##
-		'smwgQueryDependencyPropertyExemptionList' => [
-			'_MDAT', '_SOBJ', '_ASKDU', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST'
 		],
 		# #
 
@@ -1033,26 +793,6 @@ return ( static function (): array {
 		# #
 
 		##
-		# Exempted properties
-		#
-		# List of property keys for which index and fulltext match operations are
-		# exempted because there are either insignificant, mostly represent single
-		# terms, or contain other characteristics that make them non preferable when
-		# searching via the fulltext index.
-		#
-		# Listed properties will use the standard LIKE/NLIKE match operation when used
-		# in connection with the ~/!~ expression.
-		#
-		# @since 2.5
-		##
-		'smwgFulltextSearchPropertyExemptionList' => [
-			'_ASKFO', '_ASKST', '_ASKPA', '_IMPO', '_LCODE', '_UNIT', '_CONV',
-			'_TYPE', '_ERRT', '_INST', '_ASK', '_SOBJ', '_PVAL', '_PVALI',
-			'_REDI', '_CHGPRO'
-		],
-		# #
-
-		##
 		# List of indexable DataTypes
 		#
 		# - SMW_FT_BLOB property values of type Blob (Text)
@@ -1074,24 +814,6 @@ return ( static function (): array {
 		'smwgFulltextSearchIndexableDataTypes' => SMW_FT_BLOB | SMW_FT_URI,
 		# #
 
-		##
-		# To detect a possible language candidate from an indexable text element.
-		#
-		# TextCatLanguageDetector, a large list of languages does have a detrimental
-		# influence on the performance when trying to detect a language from a free text.
-		#
-		# Stopwords are only applied after language detection has been enabled.
-		#
-		# @see https://github.com/wikimedia/wikimedia-textcat
-		#
-		# @since 2.5
-		# @default empty list (language detection is disabled by default)
-		##
-		'smwgFulltextLanguageDetection' => [
-			// 'TextCatLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
-		],
-		# #
-
 		###
 		# Support to store a computed subject list that were fetched from the QueryEngine
 		# (not the string result generated from a result printer) and improve general
@@ -1109,62 +831,6 @@ return ( static function (): array {
 		# @default: CACHE_NONE (== feature is disabled)
 		##
 		'smwgQueryResultCacheType' => CACHE_NONE,
-		# #
-
-		##
-		# Property label invalid characters
-		#
-		# Listed characters are categorized as invalid for a property label and will
-		# result in an error.
-		#
-		# @see #1568, #1638, #3134
-		#
-		# @since 2.5
-		##
-		'smwgPropertyInvalidCharacterList' => [
-			// Common characters
-			'[', ']', '|', '<', '>', '{', '}', '+', '–', '%', "\r", "\n",
-			'?', '*', '!'
-		],
-		# #
-
-		##
-		# Properties classified as retired/no longer in use
-		#
-		# Listed properties will be removed from the entity table hereby avoids
-		# references or display of those classified as retired.
-		#
-		# The system normally leaves properties untouched (once created) but this
-		# setting allows them to be marked as retired and eventually removed from
-		# the system.
-		#
-		# @since 3.1
-		##
-		'smwgPropertyRetiredList' => [
-
-			// No longer valid predefined property prefixes
-			'_SF_', '_SD_'
-		],
-		# #
-
-		##
-		# Reserved property names
-		#
-		# Listed names are reserved as they may interfere with Semantic MediaWiki or
-		# MediaWiki itself.
-		#
-		# Removing default names from the list is not recommended (extending the list
-		# is supported and may be used to customize use cases for an individual wiki).
-		#
-		# The list can contain simple names or identifiers that start with
-		# `smw-property-reserved-` to link to a translatable representation that
-		# matches a string in a content language.
-		#
-		# @see #2835, #2840
-		#
-		# @since 3.0
-		##
-		'smwgPropertyReservedNameList' => [ 'Category', 'smw-property-reserved-category' ],
 		# #
 
 		##
@@ -1230,20 +896,6 @@ return ( static function (): array {
 		# @since 3.0
 		##
 		'smwgExperimentalFeatures' => SMW_QUERYRESULT_PREFETCH | SMW_SHOWPARSER_USE_CURTAILMENT,
-		# #
-
-		##
-		# List of supported schemes for a URI typed property
-		#
-		# @see https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
-		# @see https://www.w3.org/wiki/UriSchemes
-		#
-		# @since 3.0
-		##
-		'smwgURITypeSchemeList' => [
-			'http', 'https', 'mailto', 'tel', 'ftp', 'sftp', 'news', 'file', 'urn',
-			'telnet', 'ldap', 'gopher', 'ssh', 'git', 'irc', 'ircs'
-		],
 		# #
 
 		##
@@ -1577,36 +1229,5 @@ return ( static function (): array {
 		],
 		# #
 
-		##
-		# ElasticStore connection settings
-		#
-		# @since 3.0
-		##
-		'smwgElasticsearchEndpoints' => [
-			// [ 'host' => '127.0.0.1', 'port' => 9200, 'scheme' => 'http' ],
-			// [ 'host' => '127.0.0.1', 'port' => 9200, 'scheme' => 'http', 'user' => 'username', 'pass' => 'password!#$?*abc' ]
-			// 'localhost:9200'
-		],
-
-		# #
-		# ElasticSearch basic authentication credentials
-		#
-		# @since 4.2
-		##
-		'smwgElasticsearchCredentials' => [
-			// 'user' => 'foo', 'pass' => 'bar'
-			// 'foo', 'bar'
-		],
-
-		/**
-		 * Sets the keys that will be added to the parser cache key.
-		 * Each key will trigger a cache fragmentation.
-		 *
-		 * @since 5.1
-		 */
-		'smwgSetParserCacheKeys' => [
-			'userlang',
-			'dateformat'
-		],
 	];
 } )();

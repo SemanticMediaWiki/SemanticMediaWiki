@@ -64,6 +64,13 @@ When `true`, protects an active change propagation from being disabled without a
 **Since:** 3.0
 **Default:** `true`
 
+## $smwgChangePropagationWatchlist
+
+Property IDs that trigger full re-processing of dependent pages when their values change.
+
+**Since:** 1.5
+**Default:** `["_PVAL", "_LIST", "_PVAP", "_PVUC", "_PDESC", "_PPLB", "_PREC", "_PDESC", "_SUBP", "_SUBC", "_PVALI"]`
+
 ## $smwgCheckForRemnantEntities
 
 Controls when remnant entity checks run: `"purge"` (on purge only), `true` (every update), or `false` (disabled).
@@ -85,6 +92,13 @@ User right required to create new properties; `false` disables creation protecti
 **Since:** 3.0
 **Default:** `false`
 
+## $smwgDataTypePropertyExemptionList
+
+DataTypes exempted from the automatic corresponding-property registration.
+
+**Since:** 2.5
+**Default:** `["Record", "Reference", "Keyword"]`
+
 ## $smwgDefaultLoggerRole
 
 Logging granularity role (`developer`, `user`, or `production`); controls which SMW events are written to the debug log.
@@ -99,6 +113,13 @@ Default number of recurring-event instances generated when no end date is set.
 **Since:** 1.4.3
 **Default:** `100`
 
+## $smwgDefaultOutputFormatters
+
+Default output formatter overrides keyed by type ID, type name, or property name.
+
+**Since:** 3.0
+**Default:** `[]`
+
 ## $smwgDefaultStore
 
 Default storage backend class; `SQLStore::class` evaluates to this fully-qualified string at compile time.
@@ -106,6 +127,13 @@ Default storage backend class; `SQLStore::class` evaluates to this fully-qualifi
 **Since:** 0.7
 **Default:** `"SMW\\SQLStore\\SQLStore"`
 **Related:** See [`src/Elastic/docs/config.md`](../src/Elastic/docs/config.md) for ElasticStore setup.
+
+## $smwgDeprecationNotices
+
+Registry of deprecation notices shown in the Special:Admin "Deprecation notices" panel.
+
+**Since:** 7.0.0
+**Default:** `[]`
 
 ## $smwgDetectOutdatedData
 
@@ -120,6 +148,22 @@ User right required to edit pages protected via `Is edit protected`; `false` dis
 
 **Since:** 2.5
 **Default:** `false`
+
+## $smwgElasticsearchCredentials
+
+ElasticSearch HTTP basic-authentication credentials (`user`/`pass`).
+
+**Since:** 4.2
+**Default:** `[]`
+**Related:** See [`src/Elastic/docs/config.md`](../src/Elastic/docs/config.md).
+
+## $smwgElasticsearchEndpoints
+
+ElasticSearch node endpoint definitions (host/port/scheme objects or `host:port` strings).
+
+**Since:** 3.0
+**Default:** `[]`
+**Related:** See [`src/Elastic/docs/config.md`](../src/Elastic/docs/config.md).
 
 ## $smwgElasticsearchProfile
 
@@ -156,6 +200,13 @@ When `true`, stores query dependencies to enable parser-cache invalidation when 
 
 **Since:** 2.3
 **Default:** `false`
+
+## $smwgEnabledSpecialPage
+
+Special pages on which SMW annotation and content processing is enabled.
+
+**Since:** 1.9
+**Default:** `["Ask"]`
 
 ## $smwgEnableExportRDFLink
 
@@ -220,6 +271,13 @@ SQLStore field-type modifications (case-insensitive collation / extended field w
 **Since:** 3.0
 **Default:** `false`
 
+## $smwgFixedProperties
+
+Properties managed in their own fixed database table for sharding large value sets.
+
+**Since:** 1.9
+**Default:** `[]`
+
 ## $smwgFulltextDeferredUpdate
 
 When `true`, defers fulltext index updates to a background process decoupled from the storage update.
@@ -227,12 +285,26 @@ When `true`, defers fulltext index updates to a background process decoupled fro
 **Since:** 2.5
 **Default:** `true`
 
+## $smwgFulltextLanguageDetection
+
+Language-detector configurations for fulltext indexing; empty disables language detection.
+
+**Since:** 2.5
+**Default:** `[]`
+
 ## $smwgFulltextSearchMinTokenSize
 
 Minimum token length used to decide between MATCH and LIKE operators in fulltext conditions.
 
 **Since:** 2.5
 **Default:** `3`
+
+## $smwgFulltextSearchPropertyExemptionList
+
+Property keys excluded from fulltext indexing; LIKE/NLIKE is used for these instead.
+
+**Since:** 2.5
+**Default:** `["_ASKFO", "_ASKST", "_ASKPA", "_IMPO", "_LCODE", "_UNIT", "_CONV", "_TYPE", "_ERRT", "_INST", "_ASK", "_SOBJ", "_PVAL", "_PVALI", "_REDI", "_CHGPRO"]`
 
 ## $smwgIgnoreExtensionRegistrationCheck
 
@@ -255,12 +327,27 @@ When `true`, bypasses the `SetupCheck` and `MaintenanceCheck` gates that block e
 **Since:** 4.1.3
 **Default:** `false`
 
+## $smwgImportPerformers
+
+Users reserved exclusively for the import task; they may lock content from alteration by others.
+
+**Since:** 3.2
+**Default:** `["SemanticMediaWikiImporter"]`
+**Related:** See [`src/Importer/README.md`](../src/Importer/README.md).
+
 ## $smwgImportReqVersion
 
 Import-file version required for content to be imported during setup; set to `false` to disable import.
 
 **Since:** 2.5
 **Default:** `1`
+
+## $smwgJobQueueWatchlist
+
+Job types shown in the personal-bar job-queue watchlist; empty disables the feature.
+
+**Since:** 3.0
+**Default:** `[]`
 
 ## $smwgMandatorySubpropertyParentTypeInheritance
 
@@ -297,6 +384,13 @@ URI/IRI namespace for OWL/RDF export resources; auto-derived from the wiki URL w
 **Since:** 0.7
 **Default:** `null`
 
+## $smwgPageSpecialProperties
+
+Special properties automatically tracked and stored for pages (e.g. modification date).
+
+**Since:** 1.7
+**Default:** `["_MDAT"]`
+
 ## $smwgPDefaultType
 
 Internal type ID assumed for properties that have no explicit type declaration; defaults to `Type:Page`.
@@ -311,12 +405,33 @@ When `true`, `format=list` produces plain lists without HTML markup, restoring p
 **Since:** 3.1.2
 **Default:** `false`
 
+## $smwgPropertyInvalidCharacterList
+
+Characters considered invalid in property labels; annotations using them produce an error.
+
+**Since:** 2.5
+**Default:** `["[", "]", "|", "<", ">", "{", "}", "+", "–", "%", "\r", "\n", "?", "*", "!"]`
+
 ## $smwgPropertyLowUsageThreshold
 
 Usage count below which a property is highlighted as "hardly used" on Special:Properties.
 
 **Since:** 1.9
 **Default:** `5`
+
+## $smwgPropertyReservedNameList
+
+Names reserved as property names because they interfere with SMW or MediaWiki internals.
+
+**Since:** 3.0
+**Default:** `["Category", "smw-property-reserved-category"]`
+
+## $smwgPropertyRetiredList
+
+Property prefixes / IDs marked as retired and eligible for removal from the entity table.
+
+**Since:** 3.1
+**Default:** `["_SF_", "_SD_"]`
 
 ## $smwgPropertyZeroCountDisplay
 
@@ -465,6 +580,13 @@ When `true`, forces auto-commit for temporary tables to work around MySQL GTID r
 **Since:** 2.5
 **Default:** `false`
 
+## $smwgQueryDependencyPropertyExemptionList
+
+Property keys excluded from query-dependency detection to avoid spurious cache purges.
+
+**Since:** 2.3
+**Default:** `["_MDAT", "_SOBJ", "_ASKDU", "_ASKDE", "_ASKSI", "_ASKFO", "_ASKST"]`
+
 ## $smwgQueryProfiler
 
 When `false`, disables the query profiler; can be set to a bitmask of `SMW_QPRFL_*` constants for granular control.
@@ -493,6 +615,13 @@ Lifetime in seconds for non-embedded (Special:Ask, API) query result caches; `0`
 **Since:** 2.5
 **Default:** `600`
 
+## $smwgQuerySources
+
+Available external query sources; unknown sources fall back to the local wiki.
+
+**Since:** 1.4.3
+**Default:** `[]`
+
 ## $smwgQUpperbound
 
 Maximum rows printable in an inline query when an offset is applied.
@@ -506,6 +635,20 @@ When `true`, reverts to the pre-7.x `SELECT DISTINCT` query shape instead of the
 
 **Since:** 7.0.0
 **Default:** `false`
+
+## $smwgSearchByPropertyFuzzy
+
+Type IDs for which Special:SearchByProperty displays nearby fuzzy results when exact matches are few.
+
+**Since:** 2.1
+**Default:** `["_num", "_txt", "_dat", "_mlt_rec"]`
+
+## $smwgSetParserCacheKeys
+
+Session keys added to the parser cache key, each causing additional cache fragmentation.
+
+**Since:** 5.1
+**Default:** `["userlang", "dateformat"]`
 
 ## $smwgSetParserCacheTimestamp
 
@@ -535,6 +678,13 @@ Default graph URI for the SPARQL repository, analogous to a database name in rel
 **Since:** 1.7
 **Default:** `""`
 
+## $smwgSparqlReplicationPropertyExemptionList
+
+Properties exempted from the SPARQL replication process.
+
+**Since:** 2.5
+**Default:** `[]`
+
 ## $smwgSparqlRepositoryConnector
 
 Pre-deployed SPARQL repository connector to use (`default`, `4store`, `blazegraph`, `fuseki`, `sesame`, `virtuoso`, or `custom`).
@@ -562,6 +712,13 @@ Version key that verifies a correct upgrade path was run against the DB schema.
 
 **Since:** 3.0
 **Default:** `"smw:2020-04-18"`
+
+## $smwgURITypeSchemeList
+
+URI schemes accepted by the URI datatype.
+
+**Since:** 3.0
+**Default:** `["http", "https", "mailto", "tel", "ftp", "sftp", "news", "file", "urn", "telnet", "ldap", "gopher", "ssh", "git", "irc", "ircs"]`
 
 ## $smwgUseComparableContentHash
 
