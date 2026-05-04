@@ -66,10 +66,15 @@ class PurgeEntityCacheTest extends TestCase {
 
 		$subject = new WikiPage( 'Foo', 0 );
 
+		$this->connection->method( 'addQuotes' )
+			->willReturnArgument( 0 );
+
 		$whereConditions = [];
 		$this->connection->method( 'newSelectQueryBuilder' )
 			->willReturnCallback(
-				fn () => $this->createMockSelectQueryBuilder( [ $row ], $whereConditions )
+				function () use ( $row, &$whereConditions ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+				}
 			);
 
 		$this->store->expects( $this->atLeastOnce() )
@@ -87,6 +92,16 @@ class PurgeEntityCacheTest extends TestCase {
 		);
 
 		$instance->execute();
+
+		$this->assertSame(
+			[
+				[
+					"smw_subobject=''",
+					'smw_iw != ' . SMW_SQL3_SMWDELETEIW,
+				],
+			],
+			$whereConditions
+		);
 	}
 
 }

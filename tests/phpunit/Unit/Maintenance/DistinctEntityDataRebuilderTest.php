@@ -157,8 +157,15 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
 		$database->method( 'newSelectQueryBuilder' )
-			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+			->willReturnCallback(
+				function () use ( $row, &$whereConditions, &$capturedSelects, &$capturedTables ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $whereConditions, $capturedSelects, $capturedTables );
+				}
+			);
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -184,6 +191,7 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 		$this->assertTrue(
 			$instance->doRebuild()
 		);
+		$this->assertSame( [ 'category' ], $capturedTables );
 	}
 
 	public function testRebuildSelectedPagesWithPropertyNamespaceFilter() {
@@ -195,8 +203,15 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
 		$database->method( 'newSelectQueryBuilder' )
-			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+			->willReturnCallback(
+				function () use ( $row, &$whereConditions, &$capturedSelects, &$capturedTables ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $whereConditions, $capturedSelects, $capturedTables );
+				}
+			);
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -222,6 +237,8 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 		$this->assertTrue(
 			$instance->doRebuild()
 		);
+		$this->assertSame( [ 'page' ], $capturedTables );
+		$this->assertContains( [ 'page_namespace' => SMW_NS_PROPERTY ], $whereConditions );
 	}
 
 	public function testRebuildSelectedPagesWithPageOption() {

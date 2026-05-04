@@ -25,15 +25,21 @@ use Wikimedia\ScopedCallback;
  * over MW core's IDatabase. It may only expose:
  *
  * 1. QueryBuilder factories (`new*QueryBuilder()`).
- * 2. Connection-routing helpers (`getType()`, `tableName()`, `tableExists()`,
- *    `addQuotes()`, `expr()`, `conditional()`, `makeList()`, `timestamp()`,
- *    etc.).
+ * 2. Connection-routing helpers (`getType()`, `tableName()`, `tablePrefix()`,
+ *    `tableExists()`, `listTables()`, `addQuotes()`, `expr()`, `conditional()`,
+ *    `makeList()`, `timestamp()`, etc.).
  * 3. Transaction-handler plumbing (`getEmptyTransactionTicket()`,
- *    `commitAndWaitForReplication()`, atomic / section transaction helpers).
+ *    `commitAndWaitForReplication()`, atomic / section transaction helpers,
+ *    `onTransactionCommitOrIdle()`).
  * 4. Platform-quirk escape hatches (`query()` / `readQuery()` for DDL and the
- *    residual planner-side raw SQL, `setFlag()` / `clearFlag()` /
- *    `nextSequenceValue()` / `insertId()` / `affectedRows()` for the few
- *    callers that genuinely need them).
+ *    residual planner-side raw SQL, `setFlag()` / `clearFlag()` / `getFlag()` /
+ *    `nextSequenceValue()` / `insertId()` / `affectedRows()` / `ping()` for
+ *    the few callers that genuinely need them).
+ *
+ * `newQuery()` is grandfathered in as a one-off: it returns a `Query`
+ * formatter object passed to user-supplied `extraCondition` callbacks via
+ * `EntityUniquenessLookup`. It is itself slated for removal in a follow-up
+ * once that callback signature is migrated; do not add new callers.
  *
  * **No new SQL-passing methods, ever.** New consumers must use the
  * QueryBuilder factories. The Phase-2 follow-up drops the wrapper entirely;

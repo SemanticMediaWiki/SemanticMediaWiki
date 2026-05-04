@@ -220,6 +220,10 @@ class updateEntityCollation extends Maintenance {
 			$condition .= ' AND smw_id > ' . $connection->addQuotes( $this->getOption( 's' ) );
 		}
 
+		// $condition is always non-empty here (the two `smw_iw!=` clauses are
+		// unconditional), so wrapping in `[ $condition ]` for ->where() is safe.
+		// If a future change ever makes $condition optional, switch to
+		// conditional ->where() invocation to avoid emitting `WHERE ()`.
 		return $connection->newSelectQueryBuilder()
 			->select( [
 				'smw_id',
