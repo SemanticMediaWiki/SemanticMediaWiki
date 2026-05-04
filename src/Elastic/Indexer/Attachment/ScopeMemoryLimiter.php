@@ -16,9 +16,6 @@ class ScopeMemoryLimiter {
 
 	/**
 	 * @since 3.2
-	 *
-	 *
-	 * @return string
 	 */
 	public function __construct( private $memoryLimit = '1024M' ) {
 	}
