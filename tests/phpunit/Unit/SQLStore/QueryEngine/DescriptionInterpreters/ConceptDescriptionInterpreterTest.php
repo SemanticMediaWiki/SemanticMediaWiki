@@ -11,6 +11,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpret
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use SMW\Utils\CircularReferenceGuard;
 use stdClass;
 
@@ -24,6 +25,8 @@ use stdClass;
  * @author mwjames
  */
 class ConceptDescriptionInterpreterTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $querySegmentValidator;
 	private $descriptionInterpreterFactory;
@@ -125,9 +128,9 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			->method( 'addQuotes' )
 			->willReturnArgument( 0 );
 
-		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( $concept );
+		$concept_rows = $concept === false ? [] : [ $concept ];
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( $concept_rows ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
