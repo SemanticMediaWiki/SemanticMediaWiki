@@ -260,7 +260,7 @@ class QueryEngine implements IQueryEngine {
 		);
 
 		// `... WHERE IN ...` doesn't guarantee to return the same order
-		$listPos = array_flip( $results );
+		$listPos = array_flip( $results ?? [] );
 		$results = [];
 
 		// Relocate to the original position that returned from Elastic

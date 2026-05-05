@@ -299,23 +299,23 @@ class Time extends DataItem implements CalendarModel {
 	 * @since 2.4
 	 */
 	public function asDateTime(): ExtendedDateTime {
-		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
+		$year = str_pad( (string)$this->m_year, 4, '0', STR_PAD_LEFT );
 
 		// Avoid "Failed to parse time string (-900-02-02 00:00:00) at
 		// position 7 (-): Double timezone specification"
 		if ( $this->m_year < 0 ) {
-			$year = '-' . str_pad( $this->m_year * -1, 4, '0', STR_PAD_LEFT );
+			$year = '-' . str_pad( (string)( $this->m_year * -1 ), 4, '0', STR_PAD_LEFT );
 		}
 
 		// Avoid "Failed to parse time string (1300-11-02 12:03:25.888499949) at
 		// at position 11 (1): The timezone could not ..."
-		$seconds = number_format( str_pad( $this->m_seconds, 2, '0', STR_PAD_LEFT ), 7, '.', '' );
+		$seconds = number_format( (float)$this->m_seconds, 7, '.', '' );
 
 		$time = $year . '-' .
-			str_pad( $this->m_month, 2, '0', STR_PAD_LEFT ) . '-' .
-			str_pad( $this->m_day, 2, '0', STR_PAD_LEFT ) . ' ' .
-			str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT ) . ':' .
-			str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT ) . ':' .
+			str_pad( (string)$this->m_month, 2, '0', STR_PAD_LEFT ) . '-' .
+			str_pad( (string)$this->m_day, 2, '0', STR_PAD_LEFT ) . ' ' .
+			str_pad( (string)$this->m_hours, 2, '0', STR_PAD_LEFT ) . ':' .
+			str_pad( (string)$this->m_minutes, 2, '0', STR_PAD_LEFT ) . ':' .
 			$seconds;
 
 		return new ExtendedDateTime( $time );
@@ -359,12 +359,12 @@ class Time extends DataItem implements CalendarModel {
 		return wfTimestamp(
 			$outputtype,
 			implode( '', [
-				str_pad( $this->m_year, 4, '0', STR_PAD_LEFT ),
-				str_pad( $this->m_month, 2, '0', STR_PAD_LEFT ),
-				str_pad( $this->m_day, 2, '0', STR_PAD_LEFT ),
-				str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT ),
-				str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT ),
-				str_pad( $this->m_seconds, 2, '0', STR_PAD_LEFT ),
+				str_pad( (string)$this->m_year, 4, '0', STR_PAD_LEFT ),
+				str_pad( (string)$this->m_month, 2, '0', STR_PAD_LEFT ),
+				str_pad( (string)$this->m_day, 2, '0', STR_PAD_LEFT ),
+				str_pad( (string)$this->m_hours, 2, '0', STR_PAD_LEFT ),
+				str_pad( (string)$this->m_minutes, 2, '0', STR_PAD_LEFT ),
+				str_pad( (string)$this->m_seconds, 2, '0', STR_PAD_LEFT ),
 			] )
 		);
 	}

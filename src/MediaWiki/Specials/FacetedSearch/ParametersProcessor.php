@@ -113,9 +113,9 @@ class ParametersProcessor {
 	 * @since 3.2
 	 *
 	 * @param WebRequest $request
-	 * @param array|null $params
+	 * @param string|null $params
 	 */
-	public function process( WebRequest $request, $params ): void {
+	public function process( WebRequest $request, ?string $params ): void {
 		$this->parameters = [];
 
 		$query = $request->getVal( 'q' );
@@ -164,8 +164,12 @@ class ParametersProcessor {
 		}
 	}
 
-	private function fromQueryParameter( $query ): string|array {
+	private function fromQueryParameter( ?string $query ): string|array {
 		$params = '';
+
+		if ( $query === null ) {
+			return '';
+		}
 
 		// Allow Category:Foo, Property:Bar, Concept:Foobar
 		if ( strpos( $query, ':' ) !== false ) {

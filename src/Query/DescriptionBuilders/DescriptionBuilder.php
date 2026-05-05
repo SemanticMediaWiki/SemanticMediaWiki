@@ -144,7 +144,7 @@ abstract class DescriptionBuilder {
 		if ( $comparator === SMW_CMP_NOT ) {
 			$comparator = SMW_CMP_NLKE;
 
-			$value = str_replace( '!', '', $value );
+			$value = str_replace( '!', '', (string)$value );
 
 			// Opposed to `in:` which includes *, `not:` is intended to match
 			// only the exact entered term. It can be extended using *

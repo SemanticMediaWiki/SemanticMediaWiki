@@ -121,8 +121,9 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	private function doResolveInnerConditionRecursively( Property $property, Description $description ): array {
 		$innerOrderByProperty = null;
 
+		$key = $property->getKey();
 		// Find out if we should order by the values of this property
-		if ( array_key_exists( $property->getKey(), $this->conditionBuilder->getSortKeys() ) ) {
+		if ( array_key_exists( $key, $this->conditionBuilder->getSortKeys() ) ) {
 			$innerOrderByProperty = $property;
 		}
 

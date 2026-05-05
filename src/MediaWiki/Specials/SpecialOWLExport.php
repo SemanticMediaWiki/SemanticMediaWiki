@@ -200,7 +200,7 @@ class SpecialOWLExport extends SpecialPage {
 		}
 
 		if ( $date !== '' ) {
-			$timeint = strtotime( $date );
+			$timeint = strtotime( (string)$date );
 			$stamp = date( "YmdHis", $timeint );
 			$date = $stamp;
 		}

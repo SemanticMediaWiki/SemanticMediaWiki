@@ -54,7 +54,7 @@ class ConfigPreloader {
 	 *
 	 * @since 3.2
 	 *
-	 * @param array ...$files
+	 * @param string ...$files
 	 *
 	 * @return self
 	 */
@@ -78,7 +78,6 @@ class ConfigPreloader {
 			self::$config[$file] = $config;
 		}
 
-		// @phan-suppress-next-line PhanTypeMismatchDimFetch
 		foreach ( self::$config[$file] as $key => $value ) {
 			$GLOBALS[$key] = $value;
 		}

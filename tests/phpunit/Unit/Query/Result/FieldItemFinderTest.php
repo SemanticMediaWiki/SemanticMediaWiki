@@ -107,6 +107,10 @@ class FieldItemFinderTest extends TestCase {
 				return $mode === PrintRequest::PRINT_CATS;
 			} );
 
+		$this->printRequest->expects( $this->any() )
+			->method( 'getParameter' )
+			->willReturn( false );
+
 		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,

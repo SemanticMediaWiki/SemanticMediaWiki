@@ -17,7 +17,7 @@ use SMW\Localizer\Localizer;
  */
 class NamespaceDescription extends Description {
 
-	public function __construct( private $namespace ) {
+	public function __construct( private int $namespace ) {
 	}
 
 	/**
@@ -29,7 +29,7 @@ class NamespaceDescription extends Description {
 	public function getFingerprint(): string {
 		// Avoid a simple `int` which may interfere with an associative array
 		// when compounding hash strings from different descriptions
-		return 'N:' . md5( $this->namespace );
+		return 'N:' . md5( (string)$this->namespace );
 	}
 
 	/**

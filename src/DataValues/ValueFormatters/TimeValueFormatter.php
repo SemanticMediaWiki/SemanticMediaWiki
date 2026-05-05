@@ -123,7 +123,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			}
 			$monthnum = $minimize ? 1 : 12;
 		}
-		$result .= '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );
+		$result .= '-' . str_pad( (string)$monthnum, 2, "0", STR_PAD_LEFT );
 
 		$day = $dataItem->getDay();
 		if ( $precision < Time::PREC_YMD ) {
@@ -132,7 +132,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			}
 			$day = $minimize ? 1 : Time::getDayNumberForMonth( $monthnum, $dataItem->getYear(), Time::CM_GREGORIAN );
 		}
-		$result .= '-' . str_pad( $day, 2, "0", STR_PAD_LEFT );
+		$result .= '-' . str_pad( (string)$day, 2, "0", STR_PAD_LEFT );
 
 		if ( $precision === Time::PREC_YMDT ) {
 			$result .= 'T' . $this->getTimeString();

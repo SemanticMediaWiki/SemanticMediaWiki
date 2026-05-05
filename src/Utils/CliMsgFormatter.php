@@ -279,7 +279,7 @@ class CliMsgFormatter {
 
 		for ( $i = $seconds; $i >= 0; $i-- ) {
 			if ( $i != $seconds ) {
-				echo str_repeat( "\x08", strlen( $i + 1 ) );
+				echo str_repeat( "\x08", strlen( (string)( $i + 1 ) ) );
 			}
 
 			echo $this->twoColsOverride( $message, "$i s" );

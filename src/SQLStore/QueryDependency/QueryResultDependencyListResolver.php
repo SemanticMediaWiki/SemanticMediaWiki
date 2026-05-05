@@ -171,8 +171,10 @@ class QueryResultDependencyListResolver {
 	}
 
 	private function doMatchProperty( array &$subjects, Property $property ): void {
+		$key = $property->getKey();
+
 		if ( $property->isInverse() ) {
-			$property = new Property( $property->getKey() );
+			$property = new Property( $key );
 		}
 
 		$subject = $property->getCanonicalDiWikiPage();
@@ -182,7 +184,7 @@ class QueryResultDependencyListResolver {
 		}
 
 		// Use the key here do match against pre-defined properties (e.g. _MDAT)
-		$key = str_replace( ' ', '_', $property->getKey() );
+		$key = str_replace( ' ', '_', $key );
 
 		if ( !isset( $this->propertyDependencyExemptionlist[$key] ) ) {
 			$subjects[$subject->getHash()] = $subject;

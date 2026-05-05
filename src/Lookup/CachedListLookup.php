@@ -166,7 +166,7 @@ class CachedListLookup implements ListLookup {
 		$optionsKey = '';
 
 		if ( strpos( $id ?? '', '#' ) !== false ) {
-			[ $id, $optionsKey ] = explode( '#', $id, 2 );
+			[ $id, $optionsKey ] = explode( '#', $id ?? '', 2 );
 		}
 
 		return [
