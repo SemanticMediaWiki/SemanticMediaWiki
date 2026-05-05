@@ -187,10 +187,6 @@ class PropertyListByApiRequest {
 		$property = $value[0];
 		$key = $property->getKey();
 
-		if ( $key === null ) {
-			return;
-		}
-
 		if ( strpos( $key, ':' ) !== false ) {
 			$this->namespaces[substr( $key, 0, strpos( $key, ':' ) )] = true;
 		}
