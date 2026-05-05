@@ -146,11 +146,11 @@ class QueryProcessor implements QueryContext {
 			$offset = $params['offset']->getValue();
 		}
 
-		if ( ( array_key_exists( 'limit', $params ) ) && ( is_int( trim( $params['limit']->getValue() ) + 0 ) ) ) {
+		if ( ( array_key_exists( 'limit', $params ) ) && ( is_int( (int)trim( $params['limit']->getValue() ) + 0 ) ) ) {
 			$limit = $params['limit']->getValue();
 
 			// limit < 0: always show further results link only
-			if ( ( trim( $params['limit']->getValue() ) + 0 ) < 0 ) {
+			if ( ( (int)trim( $params['limit']->getValue() ) + 0 ) < 0 ) {
 				$queryMode = Query::MODE_NONE;
 			}
 		}

@@ -211,7 +211,7 @@ class SpecialTypes extends SpecialPage {
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
-		$requestOptions->setLimit( $limit + 1 );
+		$requestOptions->setLimit( (int)$limit + 1 );
 		$requestOptions->setOffset( $offset );
 
 		$dataItems = $store->getPropertySubjects(
