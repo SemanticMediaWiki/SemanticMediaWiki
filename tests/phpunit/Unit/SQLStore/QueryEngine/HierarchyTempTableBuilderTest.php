@@ -42,11 +42,8 @@ class HierarchyTempTableBuilderTest extends TestCase {
 	}
 
 	public function testGetHierarchyTableDefinitionForType() {
-		$this->connection->expects( $this->once() )
-			->method( 'tableName' )
-			->with(
-				$this->stringContains( 'bar' ) )
-			->willReturn( '_bar' );
+		$this->connection->expects( $this->never() )
+			->method( 'tableName' );
 
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
@@ -56,7 +53,7 @@ class HierarchyTempTableBuilderTest extends TestCase {
 		$instance->setTableDefinitions( [ 'property' => [ 'table' => 'bar', 'depth' => 3 ] ] );
 
 		$this->assertEquals(
-			[ '_bar', 3 ],
+			[ 'bar', 3 ],
 			$instance->getTableDefinitionByType( 'property' )
 		);
 	}
@@ -72,11 +69,8 @@ class HierarchyTempTableBuilderTest extends TestCase {
 	}
 
 	public function testFillTempTable() {
-		$this->connection->expects( $this->once() )
-			->method( 'tableName' )
-			->with(
-				$this->stringContains( 'bar' ) )
-			->willReturn( '_bar' );
+		$this->connection->expects( $this->never() )
+			->method( 'tableName' );
 
 		$insertTables = [];
 		$insertRows = [];
@@ -131,10 +125,8 @@ class HierarchyTempTableBuilderTest extends TestCase {
 	}
 
 	public function testFillTempTableUsesCacheOnRepeatComposite() {
-		$this->connection->expects( $this->once() )
-			->method( 'tableName' )
-			->with( 'bar' )
-			->willReturn( '_bar' );
+		$this->connection->expects( $this->never() )
+			->method( 'tableName' );
 
 		// First fill seeds the cache with insertInto + insertSelect calls;
 		// second fill must hit the cache branch and use insertSelect() to

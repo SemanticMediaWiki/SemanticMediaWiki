@@ -24,22 +24,13 @@ class HierarchyTempTableBuilder {
 	 */
 	private $hierarchyCache = [];
 
-	private array $tableDefinitions = [];
-
 	/**
-	 * Bare logical table names (pre-prefix) keyed by definition type. Used
-	 * internally by buildTempTable() to feed insertSelect(), which applies
-	 * the prefix itself. `tableDefinitions` continues to expose the prefix-
-	 * applied/quoted form for callers that compose raw SQL.
-	 *
-	 * Transitional: drop this dual-store once QuerySegmentListProcessor's
-	 * remaining raw `query()` callsites are converted to QueryBuilder. At
-	 * that point `getTableDefinitionByType()` can return bare names and
-	 * the prefix is owned exclusively by Rdbms / TemporaryTableBuilder.
-	 *
-	 * @var string[]
+	 * Hierarchy-table definitions keyed by type (`'class'` / `'property'`),
+	 * each entry shaped as `[ bareTableName, depth ]`. Names are stored
+	 * bare; QueryBuilder consumers (insertSelect, newSelectQueryBuilder)
+	 * apply the prefix internally.
 	 */
-	private array $bareTableNames = [];
+	private array $tableDefinitions = [];
 
 	/**
 	 * @since 2.3
@@ -74,10 +65,9 @@ class HierarchyTempTableBuilder {
 	public function setTableDefinitions( array $tableDefinitions ): void {
 		foreach ( $tableDefinitions as $key => $tableDefinition ) {
 			$this->tableDefinitions[$key] = [
-				$this->connection->tableName( $tableDefinition['table'] ),
+				$tableDefinition['table'],
 				$tableDefinition['depth']
 			];
-			$this->bareTableNames[$key] = $tableDefinition['table'];
 		}
 	}
 
@@ -105,12 +95,7 @@ class HierarchyTempTableBuilder {
 	public function fillTempTable( string $type, string $tablename, string $valueComposite, ?int $depth = null ): void {
 		$this->temporaryTableBuilder->create( $tablename );
 
-		[ , $d ] = $this->getTableDefinitionByType( $type );
-		// `getTableDefinitionByType()` returns the prefix-applied/quoted name
-		// for callers that compose raw SQL. Inside this class we feed
-		// insertSelect(), which applies the prefix itself, so use the bare
-		// logical name captured in setTableDefinitions().
-		$smwtable = $this->bareTableNames[$type];
+		[ $smwtable, $d ] = $this->getTableDefinitionByType( $type );
 
 		if ( $depth === null ) {
 			$depth = $d;
