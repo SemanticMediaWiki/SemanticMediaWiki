@@ -55,10 +55,6 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		$propertyName = $dataValue->getFormattedLabel();
 		$key = $property->getKey();
 
-		if ( $key === null ) {
-			return;
-		}
-
 		// In order to enable a more detailed description for a specific predefined
 		// property a concatenated message key can be used (e.g
 		// 'smw-property-predefined' + <internal property key> => '_asksi' ) but
