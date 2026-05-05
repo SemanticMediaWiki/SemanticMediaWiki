@@ -190,8 +190,8 @@ class ByGroupPropertyValuesLookup {
 				->join( SQLStore::ID_TABLE, 'i', [ 'p.o_id=i.smw_id' ] )
 				->where( [
 					'o.smw_hash' => $subjects,
-					'o.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ),
-					'o.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
+					$connection->expr( 'o.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ),
+					$connection->expr( 'o.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ),
 				] + ( $pid !== '' ? [ 'p.p_id' => $pid ] : [] ) )
 				->groupBy( $groupBy )
 				->orderBy( $orderBy )
@@ -204,8 +204,8 @@ class ByGroupPropertyValuesLookup {
 				->join( $propTable->getName(), 'p', [ 'p.s_id=o.smw_id' ] )
 				->where( [
 					'o.smw_hash' => $subjects,
-					'o.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ),
-					'o.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
+					$connection->expr( 'o.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ),
+					$connection->expr( 'o.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ),
 				] + ( $pid !== '' ? [ 'p.p_id' => $pid ] : [] ) )
 				->groupBy( $groupBy )
 				->orderBy( $orderBy )

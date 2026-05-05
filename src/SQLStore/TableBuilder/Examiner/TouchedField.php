@@ -35,7 +35,7 @@ class TouchedField {
 			->from( SQLStore::ID_TABLE )
 			->where( [
 				'smw_touched IS NULL',
-				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWBORDERIW )
+				$connection->expr( 'smw_iw', '!=', SMW_SQL3_SMWBORDERIW ),
 			] )
 			->caller( __METHOD__ )
 			->fetchRow();

@@ -89,7 +89,7 @@ class UpdateEntityCollationComplete {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$conditions = [
-			"smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED )
+			$connection->expr( 'smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ),
 		];
 
 		$rebuilder->prepare();
