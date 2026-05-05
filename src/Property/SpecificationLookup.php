@@ -390,10 +390,6 @@ class SpecificationLookup {
 		$description = '';
 		$key = $property->getKey();
 
-		if ( $key === null ) {
-			return '';
-		}
-
 		$msgKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key );
 		if ( $msgKey === '' ) {
 			$msgKey = 'smw-property-predefined' . str_replace( '_', '-', strtolower( $key ) );
