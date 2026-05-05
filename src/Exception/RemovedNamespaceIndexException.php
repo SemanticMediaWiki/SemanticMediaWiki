@@ -34,10 +34,12 @@ class RemovedNamespaceIndexException extends RuntimeException {
 
 		parent::__construct(
 			"\$smwgNamespaceIndex (was set to $oldValue) has been removed in SMW 7.0.\n\n" .
+			"Remove the \$smwgNamespaceIndex line from LocalSettings.php. " .
 			"To use non-default namespace IDs, define the constants directly in " .
 			"LocalSettings.php BEFORE wfLoadExtension( 'SemanticMediaWiki' ):\n\n" .
 			$snippets . "\n\n" .
 			"See the SMW 7.0 release notes for details."
+		);
 		);
 	}
 }
