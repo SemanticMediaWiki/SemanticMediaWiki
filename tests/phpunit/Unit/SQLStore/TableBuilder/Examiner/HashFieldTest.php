@@ -105,15 +105,19 @@ class HashFieldTest extends TestCase {
 		$this->connection->method( 'newSelectQueryBuilder' )
 			->willReturn( $selectBuilder );
 
-		$this->connection->method( 'tableName' )
-			->willReturn( 'smw_object_ids' );
-
 		$this->connection->method( 'getType' )
 			->willReturn( 'mysql' );
 
+		$updateTables = [];
+		$updateSets = [];
+		$updateWheres = [];
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
-			->with( $this->stringContains( 'UNHEX(smw_hash)' ) );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback(
+				function () use ( &$updateTables, &$updateSets, &$updateWheres ) {
+					return $this->createMockUpdateQueryBuilder( $updateTables, $updateSets, $updateWheres );
+				}
+			);
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -125,6 +129,11 @@ class HashFieldTest extends TestCase {
 		$instance = new HashField( $this->store );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->migrateHexHashes();
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $updateTables );
+		$this->assertCount( 1, $updateSets );
+		$this->assertSame( 'UNHEX(smw_hash)', $updateSets[0]['smw_hash']->toSql() );
+		$this->assertSame( [ [ 'LENGTH(smw_hash) = 40' ] ], $updateWheres );
 
 		$this->assertStringContainsString(
 			'converting hex hashes to binary',
@@ -144,9 +153,6 @@ class HashFieldTest extends TestCase {
 		$this->connection->method( 'newSelectQueryBuilder' )
 			->willReturn( $selectBuilder );
 
-		$this->connection->method( 'tableName' )
-			->willReturn( 'smw_object_ids' );
-
 		$this->connection->method( 'getType' )
 			->willReturn( 'mysql' );
 
@@ -154,8 +160,12 @@ class HashFieldTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection->method( 'query' )
+		$updateBuilder = $this->createMockUpdateQueryBuilder();
+		$updateBuilder->method( 'execute' )
 			->willThrowException( $dbError );
+
+		$this->connection->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -188,7 +198,7 @@ class HashFieldTest extends TestCase {
 			->willReturn( $selectBuilder );
 
 		$this->connection->expects( $this->never() )
-			->method( 'query' );
+			->method( 'newUpdateQueryBuilder' );
 
 		$instance = new HashField( $this->store );
 		$instance->setMessageReporter( $this->spyMessageReporter );

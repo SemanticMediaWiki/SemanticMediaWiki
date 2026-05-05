@@ -419,26 +419,26 @@ class Database {
 	 * @see removed method IDatabase::nextSequenceValue
 	 *
 	 * @since 1.9
-	 *
-	 * @param string $seqName
-	 *
-	 * @return int|null
 	 */
-	public function nextSequenceValue( $seqName ): ?int {
+	public function nextSequenceValue( string $seqName ): ?int {
 		$this->insertId = null;
 
 		if ( !$this->isType( 'postgres' ) ) {
 			return null;
 		}
 
-		// #3101, #2903
-		// MW 1.31+
-		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
+		// #3101, #2903 — Postgres-only sequence advance.
+		// `nextval()` has no portable Rdbms abstraction, so route a raw
+		// expression through newSelectQueryBuilder()->fetchField(). The
+		// FROMless SELECT is emitted natively by SQLPlatform::selectSQLText
+		// when `tables` is empty.
 		$safeseq = str_replace( "'", "''", $seqName );
-		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
-		$row = $res->fetchRow();
+		$value = $this->connRef->getConnection( 'write' )->newSelectQueryBuilder()
+			->select( "nextval('$safeseq')" )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		$this->insertId = $row[0] === null ? null : (int)$row[0];
+		$this->insertId = $value === false || $value === null ? null : (int)$value;
 		return $this->insertId;
 	}
 

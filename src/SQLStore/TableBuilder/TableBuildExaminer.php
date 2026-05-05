@@ -8,7 +8,8 @@ use SMW\PropertyRegistry;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder as ITableBuilder;
-use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\RawSQLValue;
 
 /**
  * @private
@@ -201,7 +202,12 @@ class TableBuildExaminer {
 
 			$this->messageReporter->reportMessage( "   Table " . SQLStore::ID_TABLE . " ...\n" );
 			$this->messageReporter->reportMessage( "   ... copying $copyField to $emptyField ... " );
-			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [ $emptyField => new RawSQLValue( $copyField ) ] )
+				->where( IDatabase::ALL_ROWS )
+				->caller( __METHOD__ )
+				->execute();
 			$this->messageReporter->reportMessage( "done.\n" );
 		}
 
