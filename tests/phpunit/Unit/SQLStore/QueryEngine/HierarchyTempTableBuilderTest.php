@@ -90,9 +90,16 @@ class HierarchyTempTableBuilderTest extends TestCase {
 		// before the loop breaks.
 		$this->connection->method( 'affectedRows' )->willReturn( 0 );
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'insertSelect' )
-			->willReturn( true );
+		$insertSelectCalls = [];
+		$this->connection->method( 'insertSelect' )
+			->willReturnCallback( static function ( $dest, $src, $varMap, $conds, $fname, $insertOptions ) use ( &$insertSelectCalls ) {
+				$insertSelectCalls[] = [
+					'dest' => $dest,
+					'src' => $src,
+					'insertOptions' => $insertOptions,
+				];
+				return true;
+			} );
 
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
@@ -107,6 +114,13 @@ class HierarchyTempTableBuilderTest extends TestCase {
 		// one targeting $tmpnew ('smw_new'). Each receives a single row.
 		$this->assertSame( [ 'foobar', 'smw_new' ], $insertTables );
 		$this->assertSame( [ [ 'id' => 42 ], [ 'id' => 42 ] ], $insertRows );
+
+		// Pin the depth-loop's insertSelect count: one carryback INSERT into
+		// $tmpres, then affectedRows()=0 breaks the loop before the next call.
+		$this->assertCount( 1, $insertSelectCalls );
+		$this->assertSame( 'smw_res', $insertSelectCalls[0]['dest'] );
+		$this->assertSame( [ 'bar', 'smw_new' ], $insertSelectCalls[0]['src'] );
+		$this->assertSame( [ 'IGNORE' ], $insertSelectCalls[0]['insertOptions'] );
 
 		$expected = [
 			'(42)' => 'foobar'

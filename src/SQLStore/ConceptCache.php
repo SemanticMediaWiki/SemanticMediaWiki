@@ -107,7 +107,7 @@ class ConceptCache {
 			->caller( __METHOD__ )
 			->execute();
 
-		$concCacheTableName = $db->tablename( SQLStore::CONCEPT_CACHE_TABLE );
+		$concCacheTableName = $db->tableName( SQLStore::CONCEPT_CACHE_TABLE );
 
 		// MySQL just uses INSERT IGNORE, no extra conditions
 		$where = $querySegment->where;

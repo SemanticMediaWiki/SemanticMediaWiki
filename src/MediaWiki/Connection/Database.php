@@ -8,6 +8,7 @@ use SMW\Connection\ConnRef;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
@@ -272,7 +273,7 @@ class Database {
 		string $destTable,
 		string|array $srcTable,
 		array $varMap,
-		string|array $conds,
+		string|IExpression|array $conds,
 		string $fname = __METHOD__,
 		array $insertOptions = [],
 		array $selectOptions = [],
