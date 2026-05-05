@@ -151,10 +151,7 @@ class PropertyTableInfoFetcher {
 		}
 
 		$propertyKey = $property->getKey();
-
-		if ( $propertyKey !== null &&
-			array_key_exists( $propertyKey, $this->fixedPropertyTableIds )
-		) {
+		if ( array_key_exists( $propertyKey, $this->fixedPropertyTableIds ) ) {
 			return $this->fixedPropertyTableIds[$propertyKey];
 		}
 
