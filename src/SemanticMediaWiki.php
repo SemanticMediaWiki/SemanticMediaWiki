@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\Exception\RemovedNamespaceIndexException;
 use SMW\Services\ServicesFactory;
 use SMW\Setup\ConfigBootstrap;
 
@@ -21,6 +22,10 @@ class SemanticMediaWiki {
 	 * @since 2.4
 	 */
 	public static function initExtension( array $credits = [] ): void {
+		if ( isset( $GLOBALS['smwgNamespaceIndex'] ) ) {
+			throw new RemovedNamespaceIndexException( (int)$GLOBALS['smwgNamespaceIndex'] );
+		}
+
 		if ( !defined( 'SMW_VERSION' ) && isset( $credits['version'] ) ) {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupDefines();
@@ -37,13 +42,6 @@ class SemanticMediaWiki {
 		Globals::replace(
 			Setup::initExtension( $GLOBALS )
 		);
-
-		// Apparently this is required (1.28+) as the earliest possible execution
-		// point in order for settings that refer to the SMW_NS_PROPERTY namespace
-		// to be available in LocalSettings
-		Globals::replace(
-			NamespaceManager::initCustomNamespace( $GLOBALS )['newVars']
-		);
 	}
 
 	/**
@@ -58,11 +56,6 @@ class SemanticMediaWiki {
 	 * @since  1.9
 	 */
 	public static function onExtensionFunction(): void {
-		$namespace = new NamespaceManager();
-		Globals::replace(
-			$namespace->init( $GLOBALS )
-		);
-
 		$setup = new Setup();
 
 		$setup->setHookDispatcher(

@@ -36,6 +36,21 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * **`src/DefaultSettings.php` removed.** Per-setting documentation that previously lived as inline comments in this file now lives at `docs/config.md` (one section per setting) and in the manifest's `description` field. Authoring `LocalSettings.php` is unchanged — `$smwgFoo = …;` continues to work for every setting that ever did.
 
+* **`$smwgNamespaceIndex` removed; namespace IDs now relocate via PHP constants.** SMW's six custom namespaces (`SMW_NS_PROPERTY`, `SMW_NS_PROPERTY_TALK`, `SMW_NS_CONCEPT`, `SMW_NS_CONCEPT_TALK`, `SMW_NS_SCHEMA`, `SMW_NS_SCHEMA_TALK`) are now declared in `extension.json`'s `namespaces` block, and the `$smwgNamespaceIndex` setting is gone. To use non-default namespace IDs, define the constants directly in `LocalSettings.php` BEFORE `wfLoadExtension( 'SemanticMediaWiki' )` (this is MediaWiki core's documented relocation mechanism since MW 1.30):
+
+  ```php
+  define( 'SMW_NS_PROPERTY',      202 );
+  define( 'SMW_NS_PROPERTY_TALK', 203 );
+  define( 'SMW_NS_CONCEPT',       208 );
+  define( 'SMW_NS_CONCEPT_TALK',  209 );
+  define( 'SMW_NS_SCHEMA',        212 );
+  define( 'SMW_NS_SCHEMA_TALK',   213 );
+
+  wfLoadExtension( 'SemanticMediaWiki' );
+  ```
+
+  Wikis that still set `$smwgNamespaceIndex` in `LocalSettings.php` after upgrading will fail to boot with a `RemovedNamespaceIndexException` containing the matching `define()` block, calculated from the previous offset, ready to copy into `LocalSettings.php`. `\SMW\Exception\NamespaceIndexChangeException` is removed (unreachable).
+
 * **`$smwgSchemaTypes` removed.** Register custom schema types through the
   `SMW::Schema::RegisterSchemaTypes` hook (available since 3.2). Any entries
   left in `$smwgSchemaTypes` after upgrade are silently ignored — port them
@@ -266,6 +281,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 **Run `update.php` after upgrading.** This release changes the `smw_hash` column type from `VARBINARY(40)` to `BINARY(20)`. The update script converts existing hash values automatically via a single server-side `UPDATE` before the column-type change. On wikis with millions of entities, expect this UPDATE to hold a write lock on `smw_object_ids` for the duration of the conversion — plan a maintenance window if needed.
 
 **If you use fulltext search** (`smwgEnabledFulltextSearch`): run `rebuildFulltextSearchTable.php` after upgrading to rebuild the index with the new ICU-based transliteration.
+
+**If you set `$smwgNamespaceIndex`** in `LocalSettings.php`: remove that line and replace it with explicit `define()` calls for the six SMW namespace constants, placed BEFORE `wfLoadExtension( 'SemanticMediaWiki' )`. See the breaking-change entry above for the snippet. Without this change SMW will refuse to boot.
 
 **Get the new version via Composer:**
 
