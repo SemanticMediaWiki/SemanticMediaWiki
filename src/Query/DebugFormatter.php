@@ -185,7 +185,7 @@ class DebugFormatter {
 			$resArray = is_array( $res ) ? $res : iterator_to_array( $res, false );
 			$last = count( $resArray ) - 1;
 
-			foreach ( $res as $k => $row ) {
+			foreach ( $resArray as $k => $row ) {
 
 				// https://www.sqlite.org/eqp.html notes "... output format did change
 				// substantially with the version 3.24.0 release ..."
