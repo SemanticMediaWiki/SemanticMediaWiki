@@ -120,7 +120,7 @@ class Property extends DataItem {
 	/**
 	 * @since 1.6
 	 */
-	public function getSortKey(): ?string {
+	public function getSortKey(): string {
 		return $this->m_key;
 	}
 
