@@ -123,7 +123,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		$key = $property->getKey();
 		// Find out if we should order by the values of this property
-		if ( $key !== null && array_key_exists( $key, $this->conditionBuilder->getSortKeys() ) ) {
+		if ( array_key_exists( $key, $this->conditionBuilder->getSortKeys() ) ) {
 			$innerOrderByProperty = $property;
 		}
 
