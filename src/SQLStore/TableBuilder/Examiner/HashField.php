@@ -7,6 +7,7 @@ use SMW\Maintenance\populateHashField;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\RawSQLValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -76,23 +77,26 @@ class HashField {
 			$cliMsgFormatter->twoCols( "... converting hex hashes to binary ...", "(rows) $count", 3 )
 		);
 
-		$table = $connection->tableName( SQLStore::ID_TABLE );
 		$type = $connection->getType();
 
 		try {
 			if ( $type === 'postgres' ) {
-				$connection->query(
-					"UPDATE $table SET smw_hash = decode(smw_hash, 'hex') WHERE LENGTH(smw_hash) = 40",
-					__METHOD__
-				);
+				$connection->newUpdateQueryBuilder()
+					->update( SQLStore::ID_TABLE )
+					->set( [ 'smw_hash' => new RawSQLValue( "decode(smw_hash, 'hex')" ) ] )
+					->where( [ 'LENGTH(smw_hash) = 40' ] )
+					->caller( __METHOD__ )
+					->execute();
 			} elseif ( $type === 'sqlite' ) {
 				// unhex() requires SQLite 3.38+; fall back to PHP-side conversion
 				$this->migrateHexHashesViaPHP( $connection );
 			} else {
-				$connection->query(
-					"UPDATE $table SET smw_hash = UNHEX(smw_hash) WHERE LENGTH(smw_hash) = 40",
-					__METHOD__
-				);
+				$connection->newUpdateQueryBuilder()
+					->update( SQLStore::ID_TABLE )
+					->set( [ 'smw_hash' => new RawSQLValue( 'UNHEX(smw_hash)' ) ] )
+					->where( [ 'LENGTH(smw_hash) = 40' ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
 		} catch ( DBError $e ) {
 			$this->reportMigrationFailure( $cliMsgFormatter );

@@ -8,13 +8,13 @@ use SMW\Connection\ConnRef;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\ReplaceQueryBuilder;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\Rdbms\UpdateQueryBuilder;
-use Wikimedia\ScopedCallback;
 
 /**
  * This adapter class covers MW DB specific operations. Changes to the
@@ -24,7 +24,9 @@ use Wikimedia\ScopedCallback;
  * **Façade guardrail.** As of 7.0.0 this class is a deliberately slim façade
  * over MW core's IDatabase. It may only expose:
  *
- * 1. QueryBuilder factories (`new*QueryBuilder()`).
+ * 1. QueryBuilder factories (`new*QueryBuilder()`) and the structured
+ *    `insertSelect()` wrapper (no raw SQL — takes column maps and conds, MW
+ *    core emits platform-correct INSERT...SELECT with the IGNORE option).
  * 2. Connection-routing helpers (`getType()`, `tableName()`, `tablePrefix()`,
  *    `tableExists()`, `listTables()`, `addQuotes()`, `expr()`, `conditional()`,
  *    `makeList()`, `timestamp()`, etc.).
@@ -35,11 +37,6 @@ use Wikimedia\ScopedCallback;
  *    residual planner-side raw SQL, `setFlag()` / `clearFlag()` / `getFlag()` /
  *    `nextSequenceValue()` / `insertId()` / `affectedRows()` / `ping()` for
  *    the few callers that genuinely need them).
- *
- * `newQuery()` is grandfathered in as a one-off: it returns a `Query`
- * formatter object passed to user-supplied `extraCondition` callbacks via
- * `EntityUniquenessLookup`. It is itself slated for removal in a follow-up
- * once that callback signature is migrated; do not add new callers.
  *
  * **No new SQL-passing methods, ever.** New consumers must use the
  * QueryBuilder factories. The Phase-2 follow-up drops the wrapper entirely;
@@ -104,15 +101,6 @@ class Database {
 		return true;
 	}
 
-	/**
-	 * @since 3.0
-	 *
-	 * @return Query
-	 */
-	public function newQuery(): Query {
-		return new Query( $this );
-	}
-
 	public function newSelectQueryBuilder(): SelectQueryBuilder {
 		return $this->connRef->getConnection( 'read' )->newSelectQueryBuilder();
 	}
@@ -121,40 +109,28 @@ class Database {
 	 * @since 7.0.0
 	 */
 	public function newInsertQueryBuilder(): InsertQueryBuilder {
-		return new MutedInsertQueryBuilder(
-			$this->connRef->getConnection( 'write' ),
-			$this->transactionHandler
-		);
+		return $this->connRef->getConnection( 'write' )->newInsertQueryBuilder();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newUpdateQueryBuilder(): UpdateQueryBuilder {
-		return new MutedUpdateQueryBuilder(
-			$this->connRef->getConnection( 'write' ),
-			$this->transactionHandler
-		);
+		return $this->connRef->getConnection( 'write' )->newUpdateQueryBuilder();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newDeleteQueryBuilder(): DeleteQueryBuilder {
-		return new MutedDeleteQueryBuilder(
-			$this->connRef->getConnection( 'write' ),
-			$this->transactionHandler
-		);
+		return $this->connRef->getConnection( 'write' )->newDeleteQueryBuilder();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newReplaceQueryBuilder(): ReplaceQueryBuilder {
-		return new MutedReplaceQueryBuilder(
-			$this->connRef->getConnection( 'write' ),
-			$this->transactionHandler
-		);
+		return $this->connRef->getConnection( 'write' )->newReplaceQueryBuilder();
 	}
 
 	/**
@@ -262,6 +238,33 @@ class Database {
 	}
 
 	/**
+	 * @see IDatabase::insertSelect
+	 *
+	 * @since 7.0.0
+	 */
+	public function insertSelect(
+		string $destTable,
+		string|array $srcTable,
+		array $varMap,
+		string|IExpression|array $conds,
+		string $fname = __METHOD__,
+		array $insertOptions = [],
+		array $selectOptions = [],
+		array $selectJoinConds = []
+	): bool {
+		return $this->connRef->getConnection( 'write' )->insertSelect(
+			$destTable,
+			$srcTable,
+			$varMap,
+			$conds,
+			$fname,
+			$insertOptions,
+			$selectOptions,
+			$selectJoinConds
+		);
+	}
+
+	/**
 	 * Execute a given SQL query on the primary DB.
 	 *
 	 * @see IDatabase::query
@@ -271,18 +274,12 @@ class Database {
 	 * @throws RuntimeException
 	 */
 	public function query( string $sql, string $fname = __METHOD__, int $flags = 0 ): bool|IResultWrapper {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$results = $this->executeQuery(
+		return $this->executeQuery(
 			$this->connRef->getConnection( 'write' ),
 			$sql,
 			$fname,
 			$flags
 		);
-
-		ScopedCallback::consume( $scope );
-
-		return $results;
 	}
 
 	/**
@@ -384,26 +381,26 @@ class Database {
 	 * @see removed method IDatabase::nextSequenceValue
 	 *
 	 * @since 1.9
-	 *
-	 * @param string $seqName
-	 *
-	 * @return int|null
 	 */
-	public function nextSequenceValue( $seqName ): ?int {
+	public function nextSequenceValue( string $seqName ): ?int {
 		$this->insertId = null;
 
 		if ( !$this->isType( 'postgres' ) ) {
 			return null;
 		}
 
-		// #3101, #2903
-		// MW 1.31+
-		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
+		// #3101, #2903 — Postgres-only sequence advance.
+		// `nextval()` has no portable Rdbms abstraction, so route a raw
+		// expression through newSelectQueryBuilder()->fetchField(). The
+		// FROMless SELECT is emitted natively by SQLPlatform::selectSQLText
+		// when `tables` is empty.
 		$safeseq = str_replace( "'", "''", $seqName );
-		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
-		$row = $res->fetchRow();
+		$value = $this->connRef->getConnection( 'write' )->newSelectQueryBuilder()
+			->select( "nextval('$safeseq')" )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		$this->insertId = $row[0] === null ? null : (int)$row[0];
+		$this->insertId = $value === false || $value === null ? null : (int)$value;
 		return $this->insertId;
 	}
 

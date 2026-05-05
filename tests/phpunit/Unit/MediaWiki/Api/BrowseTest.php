@@ -8,7 +8,6 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Api\Browse;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\SQLStore;
@@ -100,17 +99,9 @@ class BrowseTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( Query::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( $query );
 
 		$connection->expects( $this->any() )
 			->method( 'query' )
