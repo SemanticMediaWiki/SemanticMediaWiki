@@ -86,7 +86,7 @@ abstract class Job extends MediaWikiJob {
 	/**
 	 * @since  1.9
 	 *
-	 * @return bool
+	 * @return mixed
 	 */
 	public function getParameter( string $key, $default = false ) {
 		return $this->hasParameter( $key ) ? $this->params[$key] : $default;

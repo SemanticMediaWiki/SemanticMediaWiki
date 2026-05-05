@@ -145,7 +145,7 @@ class IntlTimeFormatter {
 		// (N) DateTime => 1 (for Monday) through 7 (for Sunday)
 		// (w) DateTime => 0 (for Sunday) through 6 (for Saturday)
 		// MW => 1 (for Sunday) through 7 (for Saturday)
-		$dayNumber = $dateTime->format( 'w' ) + 1;
+		$dayNumber = (int)$dateTime->format( 'w' ) + 1;
 
 		if ( strpos( $format, 'F' ) !== false ) {
 			$output = str_replace(

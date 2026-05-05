@@ -122,11 +122,11 @@ class QueryCreator implements QueryContext {
 
 		// set sortkeys, limit, and offset
 		$query->setOffset(
-			max( 0, trim( $this->getParam( 'offset', 0 ) ) + 0 )
+			max( 0, (int)trim( $this->getParam( 'offset', 0 ) ) + 0 )
 		);
 
 		$query->setLimit(
-			max( 0, trim( $this->getParam( 'limit', $this->defaultLimit ) ) + 0 ),
+			max( 0, (int)trim( $this->getParam( 'limit', $this->defaultLimit ) ) + 0 ),
 			$queryMode != self::MODE_COUNT
 		);
 
