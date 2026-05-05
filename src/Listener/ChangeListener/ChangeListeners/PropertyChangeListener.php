@@ -98,7 +98,7 @@ class PropertyChangeListener implements ChangeListener {
 
 			$pid = $keyIdMap[$key] ?? null;
 
-			if ( !isset( $this->changes[$pid] ) ) {
+			if ( $pid === null || !isset( $this->changes[$pid] ) ) {
 				continue;
 			}
 
