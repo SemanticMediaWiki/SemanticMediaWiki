@@ -481,7 +481,7 @@ class QueryDependencyLinksStore {
 
 		// https://phabricator.wikimedia.org/T167943
 		if ( !isset( $suppressUpdateCache[$hash] ) && $title !== null ) {
-			$suppressUpdateCache[$hash] = (string)((int)wfTimestamp( TS_MW, $title->getTouched() ) + $this->skewFactorForDependencyUpdateInSeconds);
+			$suppressUpdateCache[$hash] = (string)( (int)wfTimestamp( TS_MW, $title->getTouched() ) + $this->skewFactorForDependencyUpdateInSeconds );
 		}
 
 		// Check whether the query has already been registered and only then
