@@ -183,7 +183,7 @@ class DebugFormatter {
 			$output .= 'QUERY PLAN' . "<br>";
 			$plan = '';
 			$resArray = is_array( $res ) ? $res : iterator_to_array( $res, false );
-			$last = count( $res ) - 1;
+			$last = count( $resArray ) - 1;
 
 			foreach ( $res as $k => $row ) {
 
