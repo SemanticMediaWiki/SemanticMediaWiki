@@ -8,6 +8,7 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\IteratorFactory;
 use SMW\Iterators\MappingIterator;
+use SMW\MediaWiki\Connection\SqlFragmentBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -70,10 +71,9 @@ class EntityUniquenessLookup {
 
 		// The extra-condition callback signature is part of the public API and
 		// expects an object exposing string-formatting helpers like neq/eq/in.
-		// We instantiate a Query purely as a formatter — it never gets executed.
 		foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
 			if ( is_callable( $extraCondition ) ) {
-				$formatter = $connection->newQuery();
+				$formatter = new SqlFragmentBuilder( $connection );
 				$formatter->alias = $alias;
 				$formatter->index = $index;
 				$cond = $extraCondition( $this->store, $formatter, "{$alias}{$index}" );
