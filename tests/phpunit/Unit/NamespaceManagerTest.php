@@ -431,4 +431,18 @@ class NamespaceManagerTest extends TestCase {
 		];
 	}
 
+	public function testInitDoesNotDuplicateContentNamespacesWhenPrePopulated() {
+		// extension.json's "content": true seeds wgContentNamespaces before
+		// init() runs. Verify the runtime merge is idempotent.
+		$vars = $this->default;
+		$vars['wgContentNamespaces'] = [ SMW_NS_PROPERTY, SMW_NS_CONCEPT ];
+
+		$instance = new NamespaceManager( $this->localLanguage );
+		$vars = $instance->init( $vars );
+
+		$counts = array_count_values( $vars['wgContentNamespaces'] );
+		$this->assertSame( 1, $counts[SMW_NS_PROPERTY] );
+		$this->assertSame( 1, $counts[SMW_NS_CONCEPT] );
+	}
+
 }
