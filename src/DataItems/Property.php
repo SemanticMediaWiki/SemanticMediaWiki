@@ -99,7 +99,7 @@ class Property extends DataItem {
 	/**
 	 * @since 1.6
 	 */
-	public function getKey(): ?string {
+	public function getKey(): string {
 		return $this->m_key;
 	}
 
