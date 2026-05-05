@@ -39,10 +39,6 @@ class EntityIdDisposerJobTest extends TestCase {
 			->getMock();
 
 		$this->connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ 'Foo' ] );
-
-		$this->connection->expects( $this->any() )
 			->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 

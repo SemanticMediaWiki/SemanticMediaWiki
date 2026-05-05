@@ -205,12 +205,11 @@ class updateEntityCollation extends Maintenance {
 	private function fetchRows() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$this->lastId = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$this->lastId = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		$condition = '';
 
@@ -221,17 +220,21 @@ class updateEntityCollation extends Maintenance {
 			$condition .= ' AND smw_id > ' . $connection->addQuotes( $this->getOption( 's' ) );
 		}
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		// $condition is always non-empty here (the two `smw_iw!=` clauses are
+		// unconditional), so wrapping in `[ $condition ]` for ->where() is safe.
+		// If a future change ever makes $condition optional, switch to
+		// conditional ->where() invocation to avoid emitting `WHERE ()`.
+		return $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_sortkey'
-			],
-			$condition,
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ $condition ] )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	private function runUpdate( $rows, $count ) {

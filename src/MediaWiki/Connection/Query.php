@@ -269,7 +269,7 @@ class Query {
 	 * @since 3.0
 	 */
 	public function execute( string $fname = __METHOD__ ): bool|IResultWrapper {
-		return $this->connection->readQuery( $this, $fname );
+		return $this->connection->readQuery( $this->build(), $fname );
 	}
 
 	private function sql(): string {

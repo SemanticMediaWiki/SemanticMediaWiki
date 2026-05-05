@@ -100,10 +100,6 @@ class TableBuildExaminerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
-
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'tableName' )
 			->willReturn( 'smw_object_ids' );

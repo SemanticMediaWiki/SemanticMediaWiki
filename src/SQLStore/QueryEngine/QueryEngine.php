@@ -9,6 +9,7 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\OptionsBuilder;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Query;
@@ -256,7 +257,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 
 		if ( $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
-			[ $startOpts, $useIndex, $tailOpts ] = $connection->makeSelectOptions( $sqlOptions );
+			[ $startOpts, $useIndex, $tailOpts ] = OptionsBuilder::makeSelectOptions( $connection, $sqlOptions );
 
 			$sortfields = implode( ',', $qobj->sortfields );
 			$sortfields = $sortfields ? ', ' . $sortfields : '';

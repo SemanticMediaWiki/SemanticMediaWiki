@@ -9,9 +9,9 @@ use SMW\EntityCache;
 use SMW\Maintenance\purgeEntityCache;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 use Wikimedia\Rdbms\Database;
-use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Maintenance\purgeEntityCache
@@ -23,6 +23,8 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class PurgeEntityCacheTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $messageReporter;
@@ -55,11 +57,6 @@ class PurgeEntityCacheTest extends TestCase {
 	}
 
 	public function testExecute() {
-		$fields = [
-			"smw_subobject=''",
-			'smw_iw != '
-		];
-
 		$row = new stdClass;
 		$row->smw_id = 42;
 		$row->smw_title = 'Foo';
@@ -69,14 +66,16 @@ class PurgeEntityCacheTest extends TestCase {
 
 		$subject = new WikiPage( 'Foo', 0 );
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$fields,
-				$this->anything() )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+		$this->connection->method( 'addQuotes' )
+			->willReturnArgument( 0 );
+
+		$whereConditions = [];
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback(
+				function () use ( $row, &$whereConditions ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+				}
+			);
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -93,6 +92,16 @@ class PurgeEntityCacheTest extends TestCase {
 		);
 
 		$instance->execute();
+
+		$this->assertSame(
+			[
+				[
+					"smw_subobject=''",
+					'smw_iw != ' . SMW_SQL3_SMWDELETEIW,
+				],
+			],
+			$whereConditions
+		);
 	}
 
 }

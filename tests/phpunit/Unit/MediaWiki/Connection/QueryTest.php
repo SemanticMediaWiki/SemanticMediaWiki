@@ -300,14 +300,21 @@ class QueryTest extends TestCase {
 	}
 
 	public function testExecute() {
+		$this->connection->method( 'tableName' )
+			->willReturnArgument( 0 );
+
 		$instance = new Query(
 			$this->connection
 		);
 
+		$instance->type( Query::TYPE_SELECT );
+		$instance->table( 'Foo' );
+		$instance->field( '*' );
+
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
 			->with(
-				$instance,
+				$this->stringContains( 'SELECT * FROM Foo' ),
 				'Foo' );
 
 		$instance->execute( 'Foo' );
