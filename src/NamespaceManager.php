@@ -59,7 +59,11 @@ class NamespaceManager {
 			}
 		}
 
-		// Localised names take precedence over canonical names.
+		// Left-wins ordering: localised names beat canonical names beat any
+		// entry already at SMW's IDs. SMW takes precedence at its own IDs;
+		// the previous behaviour preserved third-party registrations at the
+		// same IDs, but extension.json's `namespaces` block has already
+		// claimed them by the time this hook fires.
 		$namespaces = $extraNamespaces + $canonicalNames + $namespaces;
 
 		Globals::replace( [
