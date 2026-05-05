@@ -254,7 +254,7 @@ class SemanticData implements JsonDeserializable {
 	 * @return bool
 	 */
 	public function hasProperty( Property $property ): bool {
-		$key = $property->getKey() ?? '';
+		$key = $property->getKey();
 		return isset( $this->mProperties[$key] ) ||
 			array_key_exists( $key, $this->mProperties );
 	}
@@ -270,8 +270,7 @@ class SemanticData implements JsonDeserializable {
 			return [];
 		}
 
-		$key = $property->getKey() ?? '';
-
+		$key = $property->getKey();
 		if ( array_key_exists( $key, $this->mPropVals ) ) {
 			return array_values( $this->mPropVals[$key] );
 		}
@@ -458,7 +457,7 @@ class SemanticData implements JsonDeserializable {
 			return;
 		}
 
-		$key = $property->getKey() ?? '';
+		$key = $property->getKey();
 
 		if ( !isset( $this->countMap[$key] ) ) {
 			$this->countMap[$key] = $key === '_INST' ? [] : 0;
@@ -615,7 +614,7 @@ class SemanticData implements JsonDeserializable {
 			return;
 		}
 
-		$key = $property->getKey() ?? '';
+		$key = $property->getKey();
 
 		if (
 			!array_key_exists( $key, $this->mPropVals ) ||
