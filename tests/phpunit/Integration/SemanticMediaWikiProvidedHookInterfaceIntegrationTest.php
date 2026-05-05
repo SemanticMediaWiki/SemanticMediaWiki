@@ -117,14 +117,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 				->getMock();
 
 			$connection->expects( $this->any() )
-				->method( 'select' )
-				->willReturn( [] );
-
-			$connection->expects( $this->any() )
-				->method( 'selectRow' )
-				->willReturn( false );
-
-			$connection->expects( $this->any() )
 				->method( 'newSelectQueryBuilder' )
 				->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 

@@ -5,17 +5,13 @@ namespace SMW\MediaWiki\Connection;
 use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
-use UnexpectedValueException;
 use Wikimedia\Rdbms\DBConnRef;
-use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
-use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ReplaceQueryBuilder;
-use Wikimedia\Rdbms\ResultWrapper;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\Rdbms\UpdateQueryBuilder;
 use Wikimedia\ScopedCallback;
@@ -24,6 +20,30 @@ use Wikimedia\ScopedCallback;
  * This adapter class covers MW DB specific operations. Changes to the
  * interface are likely therefore this class should not be used other than by
  * SMW itself.
+ *
+ * **Façade guardrail.** As of 7.0.0 this class is a deliberately slim façade
+ * over MW core's IDatabase. It may only expose:
+ *
+ * 1. QueryBuilder factories (`new*QueryBuilder()`).
+ * 2. Connection-routing helpers (`getType()`, `tableName()`, `tablePrefix()`,
+ *    `tableExists()`, `listTables()`, `addQuotes()`, `expr()`, `conditional()`,
+ *    `makeList()`, `timestamp()`, etc.).
+ * 3. Transaction-handler plumbing (`getEmptyTransactionTicket()`,
+ *    `commitAndWaitForReplication()`, atomic / section transaction helpers,
+ *    `onTransactionCommitOrIdle()`).
+ * 4. Platform-quirk escape hatches (`query()` / `readQuery()` for DDL and the
+ *    residual planner-side raw SQL, `setFlag()` / `clearFlag()` / `getFlag()` /
+ *    `nextSequenceValue()` / `insertId()` / `affectedRows()` / `ping()` for
+ *    the few callers that genuinely need them).
+ *
+ * `newQuery()` is grandfathered in as a one-off: it returns a `Query`
+ * formatter object passed to user-supplied `extraCondition` callbacks via
+ * `EntityUniquenessLookup`. It is itself slated for removal in a follow-up
+ * once that callback signature is migrated; do not add new callers.
+ *
+ * **No new SQL-passing methods, ever.** New consumers must use the
+ * QueryBuilder factories. The Phase-2 follow-up drops the wrapper entirely;
+ * adding methods here makes that landing harder.
  *
  * @license GPL-2.0-or-later
  * @since 1.9
@@ -242,71 +262,6 @@ class Database {
 	}
 
 	/**
-	 * @see IDatabase::select
-	 *
-	 * @since 1.9
-	 *
-	 * @param string $tableName
-	 * @param $fields
-	 * @param array|string $conditions
-	 * @param string $fname
-	 * @param array $options
-	 * @param array $joinConditions
-	 *
-	 * @return ResultWrapper
-	 * @throws UnexpectedValueException
-	 */
-	public function select( string|array $tableName, string|array $fields, string|array $conditions, string $fname, array $options = [], array $joinConditions = [] ) {
-		$tablePrefix = null;
-		$connection = $this->connRef->getConnection( 'read' );
-
-		if ( $this->isType( 'sqlite' ) ) {
-
-			// MW's SQLite implementation adds an auto prefix to the tableName but
-			// not to the conditions and since ::tableName will handle prefixing
-			// consistently ensure that the select doesn't add an extra prefix
-			$tablePrefix = $this->tablePrefix( '' );
-
-			if ( isset( $options['ORDER BY'] ) ) {
-				// Idempotent token replacement: leaves an already-emitted
-				// RANDOM() untouched (RAND() is not a substring of RANDOM()).
-				// QueryEngine::getSQLOptions() now emits RANDOM() directly for
-				// SQLite, so this only fires for legacy callers still passing
-				// raw RAND() through select().
-				$options['ORDER BY'] = str_replace( 'RAND()', 'RANDOM()', $options['ORDER BY'] );
-			}
-		}
-
-		try {
-			$results = $connection->select(
-				$tableName,
-				$fields,
-				$conditions,
-				$fname,
-				$options,
-				$joinConditions
-			);
-		} catch ( DBError $e ) {
-			throw new RuntimeException( $e->getMessage() . "\n" . $e->getTraceAsString() );
-		}
-
-		if ( $tablePrefix !== null ) {
-			$this->tablePrefix( $tablePrefix );
-		}
-
-		if ( $results instanceof ResultWrapper ) {
-			return $results;
-		}
-
-		throw new UnexpectedValueException(
-			'Expected a ResultWrapper for ' . "\n" .
-			$tableName . "\n" .
-			$fields . "\n" .
-			$conditions
-		);
-	}
-
-	/**
 	 * Execute a given SQL query on the primary DB.
 	 *
 	 * @see IDatabase::query
@@ -315,7 +270,7 @@ class Database {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function query( Query|string $sql, string $fname = __METHOD__, int $flags = 0 ): bool|IResultWrapper {
+	public function query( string $sql, string $fname = __METHOD__, int $flags = 0 ): bool|IResultWrapper {
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$results = $this->executeQuery(
@@ -338,7 +293,7 @@ class Database {
 	 *
 	 * @throws Exception
 	 */
-	public function readQuery( Query|string $sql, string $fname = __METHOD__, $flags = 0 ): bool|IResultWrapper {
+	public function readQuery( string $sql, string $fname = __METHOD__, $flags = 0 ): bool|IResultWrapper {
 		return $this->executeQuery(
 			$this->connRef->getConnection( 'read' ),
 			$sql,
@@ -348,47 +303,17 @@ class Database {
 	}
 
 	/**
-	 * Execute a SQL query using the given DB connection handle.
+	 * Execute a SQL query using the given DB connection handle. Wraps the
+	 * passthrough call in `Database::AUTO_COMMIT` flag handling so that a
+	 * caller that requested `AUTO_COMMIT` (e.g. temp-table DDL) gets the
+	 * underlying `DBO_TRX` flag flipped off for the duration of the query
+	 * and restored afterward.
 	 *
 	 * @see IDatabase::query()
 	 *
 	 * @throws Exception
 	 */
-	private function executeQuery( IDatabase $connection, Query|string $sql, ?string $fname, int $flags ): bool|IResultWrapper {
-		if ( $sql instanceof Query ) {
-			$sql = $sql->build();
-		}
-
-		if ( !$this->isType( 'postgres' ) ) {
-			$sql = str_replace( '@INT', '', $sql );
-		}
-
-		if ( $this->isType( 'postgres' ) ) {
-
-			// Requires postgres 9.5+
-			// https://www.postgresql.org/docs/9.5/sql-insert.html
-			if ( strpos( $sql, "INSERT IGNORE INTO" ) !== false ) {
-				$sql = ( str_replace( 'IGNORE ', '', $sql ) ) . " ON CONFLICT DO NOTHING";
-			}
-
-			$sql = str_replace( '@INT', '::integer', $sql );
-			$sql = str_replace( 'IGNORE', '', $sql );
-			$sql = str_replace( 'DROP TEMPORARY TABLE', 'DROP TABLE IF EXISTS', $sql );
-			$sql = str_replace( 'RAND()', ( strpos( $sql, 'DISTINCT' ) !== false ? '' : 'RANDOM()' ), $sql );
-		}
-
-		if ( $this->isType( 'sqlite' ) ) {
-			$sql = str_replace( 'IGNORE', '', $sql );
-			$sql = str_replace( 'TEMPORARY', 'TEMP', $sql );
-			$sql = str_replace( 'ENGINE=MEMORY', '', $sql );
-			$sql = str_replace( 'DROP TEMP', 'DROP', $sql );
-			$sql = str_replace( 'TRUNCATE TABLE', 'DELETE FROM', $sql );
-			// Idempotent token replacement: leaves an already-emitted RANDOM()
-			// untouched. Callsites should now emit the platform-correct token
-			// directly; this stays as a fallback for raw query() callers.
-			$sql = str_replace( 'RAND()', 'RANDOM()', $sql );
-		}
-
+	private function executeQuery( IDatabase $connection, string $sql, ?string $fname, int $flags ): bool|IResultWrapper {
 		// https://github.com/wikimedia/mediawiki/blob/42d5e6f43a00eb8bedc3532876125f74e3188343/includes/deferred/AutoCommitUpdate.php
 		// https://github.com/wikimedia/mediawiki/blob/f7dad57c64db3eb1296894c2d3ae97b9f7f27c4c/includes/installer/DatabaseInstaller.php#L157
 		$autoTrx = null;
@@ -427,22 +352,6 @@ class Database {
 	}
 
 	/**
-	 * @see IDatabase::selectRow
-	 *
-	 * @since 1.9
-	 */
-	public function selectRow( $table, $vars, $conds, $fname = __METHOD__, $options = [], $joinConditions = [] ) {
-		return $this->connRef->getConnection( 'read' )->selectRow(
-			$table,
-			$vars,
-			$conds,
-			$fname,
-			$options,
-			$joinConditions
-		);
-	}
-
-	/**
 	 * @see IDatabase::conditional
 	 *
 	 * @since 5.0
@@ -469,22 +378,6 @@ class Database {
 	 */
 	public function affectedRows() {
 		return $this->connRef->getConnection( 'read' )->affectedRows();
-	}
-
-	/**
-	 * @note Method was made protected in 1.28, hence the need
-	 * for the DatabaseHelper that copies the functionality.
-	 *
-	 * @see SQLPlatform::makeSelectOptions
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $options
-	 *
-	 * @return array
-	 */
-	public function makeSelectOptions( array $options ): array {
-		return OptionsBuilder::makeSelectOptions( $this, $options );
 	}
 
 	/**
@@ -562,81 +455,6 @@ class Database {
 	}
 
 	/**
-	 * @see IDatabase::insert
-	 *
-	 * @since 1.9
-	 */
-	public function insert( $table, $rows, $fname = __METHOD__, $options = [] ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->insert( $table, $rows, $fname, $options );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
-	 * @see IDatabase::update
-	 *
-	 * @since 1.9
-	 */
-	public function update( $table, $values, $conds, $fname = __METHOD__, $options = [] ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->update( $table, $values, $conds, $fname, $options );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
-	 * @see IDatabase::upsert
-	 *
-	 * @since 3.1
-	 */
-	public function upsert( $table, array $rows, $uniqueIndexes, array $set, $fname = __METHOD__ ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->upsert( $table, $rows, $uniqueIndexes, $set, $fname );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
-	 * @see IDatabase::delete
-	 *
-	 * @since 1.9
-	 */
-	public function delete( $table, $conds, $fname = __METHOD__ ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->delete( $table, $conds, $fname );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
-	 * @see IDatabase::replace
-	 *
-	 * @since 2.5
-	 */
-	public function replace( $table, $uniqueIndexes, $rows, $fname = __METHOD__ ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->replace( $table, $uniqueIndexes, $rows, $fname );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
 	 * @see IDatabase::makeList
 	 *
 	 * @since 1.9
@@ -666,24 +484,6 @@ class Database {
 	 */
 	public function listTables( ?string $prefix = null, string $fname = __METHOD__ ): array {
 		return $this->connRef->getConnection( 'read' )->listTables( $prefix, $fname );
-	}
-
-	/**
-	 * @see IDatabase::selectField
-	 *
-	 * @since 1.9.2
-	 */
-	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = [] ) {
-		return $this->connRef->getConnection( 'read' )->selectField( $table, $fieldName, $conditions, $fname, $options );
-	}
-
-	/**
-	 * @see IDatabase::estimateRowCount
-	 *
-	 * @since 2.1
-	 */
-	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = [] ) {
-		return $this->connRef->getConnection( 'read' )->estimateRowCount( $table, $vars, $conditions, $fname, $options );
 	}
 
 	/**
