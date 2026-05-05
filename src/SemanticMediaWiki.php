@@ -42,13 +42,6 @@ class SemanticMediaWiki {
 		Globals::replace(
 			Setup::initExtension( $GLOBALS )
 		);
-
-		// Apparently this is required (1.28+) as the earliest possible execution
-		// point in order for settings that refer to the SMW_NS_PROPERTY namespace
-		// to be available in LocalSettings
-		Globals::replace(
-			NamespaceManager::initCustomNamespace( $GLOBALS )['newVars']
-		);
 	}
 
 	/**
@@ -63,11 +56,6 @@ class SemanticMediaWiki {
 	 * @since  1.9
 	 */
 	public static function onExtensionFunction(): void {
-		$namespace = new NamespaceManager();
-		Globals::replace(
-			$namespace->init( $GLOBALS )
-		);
-
 		$setup = new Setup();
 
 		$setup->setHookDispatcher(

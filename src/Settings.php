@@ -48,16 +48,6 @@ class Settings extends Options {
 			);
 		}
 
-		// #4150
-		// If someone tried to use SMW without proper initialization then something
-		// like "Notice: Undefined index: smwgNamespaceIndex ..." would appear and
-		// to produce a proper error message avoid those by adding a default.
-		if ( !defined( 'SMW_VERSION' ) || !isset( $GLOBALS['smwgNamespaceIndex'] ) ) {
-			Globals::replace(
-				NamespaceManager::initCustomNamespace( $GLOBALS )['newVars']
-			);
-		}
-
 		$this->options = [
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
@@ -81,7 +71,6 @@ class Settings extends Options {
 			'smwgSparqlRepositoryFeatures' => $GLOBALS['smwgSparqlRepositoryFeatures'],
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
-			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgFactboxFeatures' => $GLOBALS['smwgFactboxFeatures'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
