@@ -193,6 +193,11 @@ class HierarchyTempTableBuilderTest extends TestCase {
 		$this->assertSame( [ 'id' => 'id' ], $cacheCopy['varMap'] );
 		$this->assertSame( '*', $cacheCopy['conds'] );
 		$this->assertSame( [], $cacheCopy['insertOptions'] );
+
+		// First fill issues 1 insertSelect (depth-loop carryback, then breaks
+		// because affectedRows()=0); second fill issues 1 insertSelect (cache
+		// copy). Pin the total so silent regressions in either branch fail.
+		$this->assertCount( 2, $insertSelectCalls );
 	}
 
 }

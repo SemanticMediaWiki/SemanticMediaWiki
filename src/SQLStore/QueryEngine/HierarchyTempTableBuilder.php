@@ -32,6 +32,11 @@ class HierarchyTempTableBuilder {
 	 * the prefix itself. `tableDefinitions` continues to expose the prefix-
 	 * applied/quoted form for callers that compose raw SQL.
 	 *
+	 * Transitional: drop this dual-store once QuerySegmentListProcessor's
+	 * remaining raw `query()` callsites are converted to QueryBuilder. At
+	 * that point `getTableDefinitionByType()` can return bare names and
+	 * the prefix is owned exclusively by Rdbms / TemporaryTableBuilder.
+	 *
 	 * @var string[]
 	 */
 	private array $bareTableNames = [];
@@ -95,14 +100,9 @@ class HierarchyTempTableBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param string $type
-	 * @param string $tablename
-	 * @param string $valueComposite
-	 * @param int|null $depth
-	 *
 	 * @throws RuntimeException
 	 */
-	public function fillTempTable( $type, $tablename, $valueComposite, $depth = null ): void {
+	public function fillTempTable( string $type, string $tablename, string $valueComposite, ?int $depth = null ): void {
 		$this->temporaryTableBuilder->create( $tablename );
 
 		[ , $d ] = $this->getTableDefinitionByType( $type );
@@ -143,7 +143,7 @@ class HierarchyTempTableBuilder {
 	 * but then every iteration would use all elements of this table, while only the new ones
 	 * obtained in the previous step are relevant. So this is a performance measure.
 	 */
-	private function buildTempTable( $tablename, $values, $smwtable, $depth ): void {
+	private function buildTempTable( string $tablename, string $values, string $smwtable, int $depth ): void {
 		$db = $this->connection;
 
 		$tmpnew = 'smw_new';
