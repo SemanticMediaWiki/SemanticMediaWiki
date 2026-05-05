@@ -24,7 +24,9 @@ use Wikimedia\ScopedCallback;
  * **Façade guardrail.** As of 7.0.0 this class is a deliberately slim façade
  * over MW core's IDatabase. It may only expose:
  *
- * 1. QueryBuilder factories (`new*QueryBuilder()`).
+ * 1. QueryBuilder factories (`new*QueryBuilder()`) and the structured
+ *    `insertSelect()` wrapper (no raw SQL — takes column maps and conds, MW
+ *    core emits platform-correct INSERT...SELECT with the IGNORE option).
  * 2. Connection-routing helpers (`getType()`, `tableName()`, `tablePrefix()`,
  *    `tableExists()`, `listTables()`, `addQuotes()`, `expr()`, `conditional()`,
  *    `makeList()`, `timestamp()`, etc.).
@@ -259,6 +261,50 @@ class Database {
 	 */
 	public function addQuotes( $value ) {
 		return $this->connRef->getConnection( 'read' )->addQuotes( $value );
+	}
+
+	/**
+	 * @see IDatabase::insertSelect
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string $destTable
+	 * @param string|array $srcTable
+	 * @param array $varMap
+	 * @param string|array $conds
+	 * @param string $fname
+	 * @param array $insertOptions
+	 * @param array $selectOptions
+	 * @param array $selectJoinConds
+	 *
+	 * @return bool
+	 */
+	public function insertSelect(
+		$destTable,
+		$srcTable,
+		$varMap,
+		$conds,
+		$fname = __METHOD__,
+		$insertOptions = [],
+		$selectOptions = [],
+		$selectJoinConds = []
+	) {
+		$scope = $this->transactionHandler->muteTransactionProfiler();
+
+		$result = $this->connRef->getConnection( 'write' )->insertSelect(
+			$destTable,
+			$srcTable,
+			$varMap,
+			$conds,
+			$fname,
+			$insertOptions,
+			$selectOptions,
+			$selectJoinConds
+		);
+
+		ScopedCallback::consume( $scope );
+
+		return $result;
 	}
 
 	/**

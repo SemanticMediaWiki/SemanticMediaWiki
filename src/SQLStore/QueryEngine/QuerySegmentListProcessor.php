@@ -220,7 +220,10 @@ class QuerySegmentListProcessor {
 
 	private function disjunction( QuerySegment &$query ): void {
 		if ( $this->queryMode !== Query::MODE_NONE ) {
-			$this->temporaryTableBuilder->create( $this->connection->tableName( $query->alias ) );
+			// TemporaryTableBuilder applies tableName() internally, so pass
+			// the bare alias here. The raw INSERT...SELECT below keeps its
+			// own tableName() call for the same physical name.
+			$this->temporaryTableBuilder->create( $query->alias );
 		}
 
 		$this->executedQueries[$query->alias] = [];
@@ -326,7 +329,6 @@ class QuerySegmentListProcessor {
 		}
 
 		$res->free();
-		$tablename = $this->connection->tableName( $query->alias );
 		$this->executedQueries[$query->alias] = [
 			"Recursively computed hierarchy for element(s) $values.",
 			"SELECT s_id FROM $smwtable WHERE $valuecond LIMIT 1"
@@ -335,9 +337,12 @@ class QuerySegmentListProcessor {
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
+		// Pass the bare alias: HierarchyTempTableBuilder routes it through
+		// TemporaryTableBuilder (which applies the prefix internally) and
+		// MW core's insertSelect() (which also applies the prefix).
 		$this->hierarchyTempTableBuilder->fillTempTable(
 			$type,
-			$tablename,
+			$query->alias,
 			$values,
 			$depth
 		);
@@ -351,7 +356,9 @@ class QuerySegmentListProcessor {
 	 */
 	public function cleanUp(): void {
 		foreach ( $this->executedQueries as $table => $log ) {
-			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
+			// TemporaryTableBuilder applies tableName() internally; pass the
+			// bare alias key.
+			$this->temporaryTableBuilder->drop( $table );
 		}
 	}
 

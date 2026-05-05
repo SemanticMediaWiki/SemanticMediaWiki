@@ -42,8 +42,13 @@ class TemporaryTableBuilder {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
 
+		// Resolve the bare logical name through tableName() so the temp table
+		// lives at the prefix-applied physical name, matching what MW core's
+		// QueryBuilder produces when consumers reference it later.
+		$resolvedName = $this->connection->tableName( $tableName );
+
 		$this->connection->query(
-			$this->getSQLCodeFor( $tableName ),
+			$this->getSQLCodeFor( $resolvedName ),
 			__METHOD__,
 			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
@@ -59,15 +64,19 @@ class TemporaryTableBuilder {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
 
+		// Resolve the bare logical name through tableName() so we drop the
+		// prefix-applied physical name. See create() for the rationale.
+		$resolvedName = $this->connection->tableName( $tableName );
+
 		// Platform-specific DDL: MySQL has DROP TEMPORARY TABLE; Postgres
 		// uses plain DROP TABLE IF EXISTS (the temp-table scope handles
 		// teardown); SQLite uses plain DROP TABLE.
 		if ( $this->connection->isType( 'postgres' ) ) {
-			$sql = 'DROP TABLE IF EXISTS ' . $tableName;
+			$sql = 'DROP TABLE IF EXISTS ' . $resolvedName;
 		} elseif ( $this->connection->isType( 'sqlite' ) ) {
-			$sql = 'DROP TABLE ' . $tableName;
+			$sql = 'DROP TABLE ' . $resolvedName;
 		} else {
-			$sql = 'DROP TEMPORARY TABLE ' . $tableName;
+			$sql = 'DROP TEMPORARY TABLE ' . $resolvedName;
 		}
 
 		$this->connection->query(
