@@ -93,6 +93,35 @@ class Database {
 	}
 
 	/**
+	 * Read-side connection acquisition matching MW core's
+	 * `IConnectionProvider::getReplicaDatabase()`.
+	 *
+	 * Migration vector for callsites moving off this wrapper. New code
+	 * should acquire `IDatabase` via this accessor (or the primary-side
+	 * counterpart) and stop typing local `$connection` variables as
+	 * SMW's `Database`. The wrapper itself is slated for removal once
+	 * the SMW-specific responsibilities (section transactions, AUTO_COMMIT
+	 * flag handling for temp-table DDL, Postgres-only sequence/bytea
+	 * helpers) are extracted into focused helpers.
+	 *
+	 * @since 7.0.0
+	 */
+	public function getReplicaDatabase(): IDatabase {
+		return $this->connRef->getConnection( 'read' );
+	}
+
+	/**
+	 * Write-side connection acquisition matching MW core's
+	 * `IConnectionProvider::getPrimaryDatabase()`. See
+	 * `getReplicaDatabase()` for migration context.
+	 *
+	 * @since 7.0.0
+	 */
+	public function getPrimaryDatabase(): IDatabase {
+		return $this->connRef->getConnection( 'write' );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return bool

@@ -544,4 +544,30 @@ class DatabaseTest extends TestCase {
 
 		$this->assertSame( $builder, $instance->newReplaceQueryBuilder() );
 	}
+
+	public function testGetReplicaDatabaseReturnsReadConnection(): void {
+		$readDb = $this->createMock( IDatabase::class );
+
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'read' )
+			->willReturn( $readDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertSame( $readDb, $instance->getReplicaDatabase() );
+	}
+
+	public function testGetPrimaryDatabaseReturnsWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertSame( $writeDb, $instance->getPrimaryDatabase() );
+	}
 }
