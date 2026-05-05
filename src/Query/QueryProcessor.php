@@ -142,15 +142,15 @@ class QueryProcessor implements QueryContext {
 		$offset = 0;
 		$limit = $GLOBALS['smwgQDefaultLimit'];
 
-		if ( ( array_key_exists( 'offset', $params ) ) && ( is_int( $params['offset']->getValue() + 0 ) ) ) {
-			$offset = $params['offset']->getValue();
+		if ( array_key_exists( 'offset', $params ) && is_int( (int)$params['offset']->getValue() ) ) {
+			$offset = (int)$params['offset']->getValue();
 		}
 
-		if ( ( array_key_exists( 'limit', $params ) ) && ( is_int( (int)trim( $params['limit']->getValue() ) + 0 ) ) ) {
-			$limit = $params['limit']->getValue();
+		if ( array_key_exists( 'limit', $params ) && is_int( (int)$params['limit']->getValue() ) ) {
+			$limit = (int)$params['limit']->getValue();
 
 			// limit < 0: always show further results link only
-			if ( ( (int)trim( $params['limit']->getValue() ) + 0 ) < 0 ) {
+			if ( $limit < 0 ) {
 				$queryMode = Query::MODE_NONE;
 			}
 		}
