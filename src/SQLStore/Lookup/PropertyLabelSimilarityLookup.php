@@ -222,7 +222,6 @@ class PropertyLabelSimilarityLookup {
 
 		sort( $hashing );
 
-		// @phan-suppress-next-line PhanTypeMismatchArgumentInternal
 		return md5( implode( '', $hashing ) );
 	}
 
