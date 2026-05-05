@@ -31,10 +31,6 @@ class NamespaceRegistrationParityTest extends TestCase {
 	}
 
 	public function testExtraNamespacesContainsAllSixCanonicalNames(): void {
-		// Once the runtime NamespaceManager bootstrap is removed, MW core writes
-		// canonical names to attributes['ExtensionNamespaces'] (consumed by
-		// NamespaceInfo) instead of $wgExtraNamespaces; this assertion will
-		// need to read NamespaceInfo::getCanonicalName() instead.
 		$extra = $GLOBALS['wgExtraNamespaces'] ?? [];
 		$this->assertSame( 'Property', $extra[SMW_NS_PROPERTY] ?? null );
 		$this->assertSame( 'Property_talk', $extra[SMW_NS_PROPERTY_TALK] ?? null );
