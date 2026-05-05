@@ -267,28 +267,17 @@ class Database {
 	 * @see IDatabase::insertSelect
 	 *
 	 * @since 7.0.0
-	 *
-	 * @param string $destTable
-	 * @param string|array $srcTable
-	 * @param array $varMap
-	 * @param string|array $conds
-	 * @param string $fname
-	 * @param array $insertOptions
-	 * @param array $selectOptions
-	 * @param array $selectJoinConds
-	 *
-	 * @return bool
 	 */
 	public function insertSelect(
-		$destTable,
-		$srcTable,
-		$varMap,
-		$conds,
-		$fname = __METHOD__,
-		$insertOptions = [],
-		$selectOptions = [],
-		$selectJoinConds = []
-	) {
+		string $destTable,
+		string|array $srcTable,
+		array $varMap,
+		string|array $conds,
+		string $fname = __METHOD__,
+		array $insertOptions = [],
+		array $selectOptions = [],
+		array $selectJoinConds = []
+	): bool {
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$result = $this->connRef->getConnection( 'write' )->insertSelect(
