@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit\MediaWiki;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\NamespaceManager;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\MwHooksHandler;
 
 /**
@@ -22,58 +21,26 @@ class NamespaceInfoCanonicalNameMatchTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
 		$this->mwHooksHandler = new MwHooksHandler();
 	}
 
-	public function tearDown(): void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
-
 		parent::tearDown();
 	}
 
-	public function testRunNamespaceManagerWithNoConstantsDefined() {
+	public function testCanonicalNames(): void {
 		$this->mwHooksHandler->deregisterListedHooks();
-
-		$default = [
-			'smwgNamespacesWithSemanticLinks' => [],
-			'wgNamespacesWithSubpages' => [],
-			'wgExtraNamespaces'   => [],
-			'wgNamespaceAliases'  => [],
-			'wgContentNamespaces' => [],
-			'wgNamespacesToBeSearchedDefault' => [],
-			'wgLanguageCode'      => 'en'
-		];
-
-		$instance = $this->getMockBuilder( NamespaceManager::class )
-			->setMethods( [ 'isDefinedConstant' ] )
-			->getMock();
-
-		$instance->expects( $this->atLeastOnce() )
-			->method( 'isDefinedConstant' )
-			->willReturn( false );
-
-		$instance->init( $default );
-	}
-
-	public function testCanonicalNames() {
-		$this->mwHooksHandler->deregisterListedHooks();
-		$applicationFactory = ApplicationFactory::getInstance();
 		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 
-		$count = 0;
-		$index = NamespaceManager::buildNamespaceIndex( $applicationFactory->getSettings()->get( 'smwgNamespaceIndex' ) );
 		$names = NamespaceManager::getCanonicalNames();
-
 		$this->assertIsArray( $names );
-		$this->assertIsArray( $index );
 
-		foreach ( $index as $ns => $idx ) {
-
+		$count = 0;
+		foreach ( $names as $idx => $name ) {
 			$mwNamespace = $namespaceInfo->getCanonicalName( $idx );
-
-			if ( $mwNamespace && isset( $names[$idx] ) ) {
-				$this->assertEquals( $mwNamespace, $names[$idx] );
+			if ( $mwNamespace ) {
+				$this->assertEquals( $mwNamespace, $name );
 				$count++;
 			}
 		}
@@ -81,8 +48,11 @@ class NamespaceInfoCanonicalNameMatchTest extends TestCase {
 		$this->assertCount(
 			$count,
 			$names,
-			"Asserts that expected amount of cannonical names have been verified"
+			'Asserts that the expected number of canonical names have been verified'
 		);
 	}
 
+	public function testCanonicalNamesAvailableWithoutBootstrap(): void {
+		$this->assertCount( 6, NamespaceManager::getCanonicalNames() );
+	}
 }
