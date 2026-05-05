@@ -96,6 +96,14 @@
 		"SMW\\SQLStore\\Lookup\\ListLookup": "src/Lookup/ListLookup.php",
 		"SMW\\SQLStore\\Lookup\\CachedListLookup": "src/Lookup/CachedListLookup.php"
 	},
+	"namespaces": [
+		{ "id": 102, "constant": "SMW_NS_PROPERTY",      "name": "Property",        "content": true },
+		{ "id": 103, "constant": "SMW_NS_PROPERTY_TALK", "name": "Property_talk",   "subpages": true },
+		{ "id": 108, "constant": "SMW_NS_CONCEPT",       "name": "Concept",         "content": true },
+		{ "id": 109, "constant": "SMW_NS_CONCEPT_TALK",  "name": "Concept_talk",    "subpages": true },
+		{ "id": 112, "constant": "SMW_NS_SCHEMA",        "name": "smw/schema",      "defaultcontentmodel": "smw/schema" },
+		{ "id": 113, "constant": "SMW_NS_SCHEMA_TALK",   "name": "smw/schema_talk", "subpages": true }
+	],
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [
 		"SemanticMediaWiki::onExtensionFunction"
