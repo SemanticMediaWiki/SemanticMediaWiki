@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Connection;
 
-use Profiler;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
@@ -129,15 +128,9 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function newTransactionHandler(): TransactionHandler {
-		$transactionHandler = new TransactionHandler(
+		return new TransactionHandler(
 			ServicesFactory::getInstance()->create( 'DBLoadBalancerFactory' )
 		);
-
-		$transactionHandler->setTransactionProfiler(
-			Profiler::instance()->getTransactionProfiler()
-		);
-
-		return $transactionHandler;
 	}
 
 }

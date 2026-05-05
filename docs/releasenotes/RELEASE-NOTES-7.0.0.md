@@ -102,6 +102,10 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `SMWUpdateJob` | `smw.update` |
   | `SMWRefreshJob` | `smw.refresh` |
 
+* **Transaction profiler warnings no longer silenced.** SMW previously silenced MediaWiki's `TransactionProfiler` for every database write. As of 7.0.0, warnings (`Suboptimal transaction […]` and similar) reach the standard `rdbms` log channel where site admins can observe them.
+
+  If you see new log spam after upgrading, raise the budget via `$wgTrxProfilerLimits` (e.g. `$wgTrxProfilerLimits['POST']['maxAffected'] = 5000;`) or point `$wgDebugLogGroups['rdbms']` at a discard target.
+
 **Dependencies and autoloading:**
 
 * Removed the `mediawiki/parser-hooks` dependency.
@@ -119,6 +123,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * **Legacy DML methods on `SMW\MediaWiki\Connection\Database` removed.** Removed methods: `select()`, `selectRow()`, `selectField()`, `estimateRowCount()`, `insert()`, `update()`, `delete()`, `upsert()`, `replace()`, and the `makeSelectOptions()` passthrough. `Database::query()` and `Database::readQuery()` also tightened from `Query|string` to `string` only; callers that built SQL via `$db->newQuery()` should call `$query->build()` themselves and pass the resulting string. SMW's database wrapper is internal infrastructure; external code that called these methods directly on `$store->getConnection( 'mw.db' )` should migrate to MediaWiki core's database services. See [Manual:Database access](https://www.mediawiki.org/wiki/Manual:Database_access).
 * Removed `getTextFromContent()`, `replacePrefixes()`, and `textAlreadyUpdatedForIndex()` from `ExtendedSearchEngine`, matching their removal from MediaWiki core's `SearchEngine`.
 * Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
+* Removed internal `MutedInsertQueryBuilder`, `MutedUpdateQueryBuilder`, `MutedDeleteQueryBuilder`, and `MutedReplaceQueryBuilder` (added briefly in the 7.0.0 development cycle). `Database::new*QueryBuilder()` factories now return MediaWiki core's base types directly. See "Transaction profiler warnings no longer silenced" above for the behaviour change.
 * Removed `EntityIdManager::MAX_CACHE_SIZE`. Cache sizes are now per-pool and exposed as `EntityIdManager::DEFAULT_CACHE_SIZES`, configurable via `$smwgEntityCacheSizes`.
 * Removed long-deprecated code originally scheduled for removal:
   * `smwfNormalTitleText()` — use `Localizer::getInstance()->normalizeTitleText()` (deprecated since 3.2)
