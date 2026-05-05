@@ -107,7 +107,7 @@ class ConceptCache {
 			->caller( __METHOD__ )
 			->execute();
 
-		$concCacheTableName = $db->tablename( SQLStore::CONCEPT_CACHE_TABLE );
+		$concCacheTableName = $db->tableName( SQLStore::CONCEPT_CACHE_TABLE );
 
 		// MySQL just uses INSERT IGNORE, no extra conditions
 		$where = $querySegment->where;
@@ -126,6 +126,16 @@ class ConceptCache {
 		// Platform-specific INSERT verb. Postgres dedups via the LEFT JOIN
 		// substitution above, so the INSERT verb has no IGNORE clause. SQLite
 		// uses INSERT OR IGNORE; MySQL uses INSERT IGNORE.
+		//
+		// This is residual planner-side raw SQL: the cache-population query
+		// stitches in `$querySegment->from`, an arbitrary INNER/LEFT JOIN
+		// chain composed by the QuerySegment planner as a stringly-typed SQL
+		// fragment (see SomePropertyInterpreter / DescriptionInterpreter).
+		// `IDatabase::insertSelect()` only accepts structured `$selectJoinConds`
+		// (`[ alias => [ JOIN_TYPE, condition ] ]`), so converting requires
+		// restructuring the planner IR — out of scope for the QueryBuilder
+		// migration. The INSERT verb dispatch stays manual until that
+		// restructuring or an upstream MW core API extension lands.
 		if ( $db->getType() === 'postgres' ) {
 			$insertVerb = 'INSERT INTO';
 		} elseif ( $db->getType() === 'sqlite' ) {

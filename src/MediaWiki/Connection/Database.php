@@ -8,6 +8,7 @@ use SMW\Connection\ConnRef;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
@@ -24,7 +25,9 @@ use Wikimedia\ScopedCallback;
  * **Façade guardrail.** As of 7.0.0 this class is a deliberately slim façade
  * over MW core's IDatabase. It may only expose:
  *
- * 1. QueryBuilder factories (`new*QueryBuilder()`).
+ * 1. QueryBuilder factories (`new*QueryBuilder()`) and the structured
+ *    `insertSelect()` wrapper (no raw SQL — takes column maps and conds, MW
+ *    core emits platform-correct INSERT...SELECT with the IGNORE option).
  * 2. Connection-routing helpers (`getType()`, `tableName()`, `tablePrefix()`,
  *    `tableExists()`, `listTables()`, `addQuotes()`, `expr()`, `conditional()`,
  *    `makeList()`, `timestamp()`, etc.).
@@ -262,6 +265,39 @@ class Database {
 	}
 
 	/**
+	 * @see IDatabase::insertSelect
+	 *
+	 * @since 7.0.0
+	 */
+	public function insertSelect(
+		string $destTable,
+		string|array $srcTable,
+		array $varMap,
+		string|IExpression|array $conds,
+		string $fname = __METHOD__,
+		array $insertOptions = [],
+		array $selectOptions = [],
+		array $selectJoinConds = []
+	): bool {
+		$scope = $this->transactionHandler->muteTransactionProfiler();
+
+		$result = $this->connRef->getConnection( 'write' )->insertSelect(
+			$destTable,
+			$srcTable,
+			$varMap,
+			$conds,
+			$fname,
+			$insertOptions,
+			$selectOptions,
+			$selectJoinConds
+		);
+
+		ScopedCallback::consume( $scope );
+
+		return $result;
+	}
+
+	/**
 	 * Execute a given SQL query on the primary DB.
 	 *
 	 * @see IDatabase::query
@@ -384,26 +420,26 @@ class Database {
 	 * @see removed method IDatabase::nextSequenceValue
 	 *
 	 * @since 1.9
-	 *
-	 * @param string $seqName
-	 *
-	 * @return int|null
 	 */
-	public function nextSequenceValue( $seqName ): ?int {
+	public function nextSequenceValue( string $seqName ): ?int {
 		$this->insertId = null;
 
 		if ( !$this->isType( 'postgres' ) ) {
 			return null;
 		}
 
-		// #3101, #2903
-		// MW 1.31+
-		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
+		// #3101, #2903 — Postgres-only sequence advance.
+		// `nextval()` has no portable Rdbms abstraction, so route a raw
+		// expression through newSelectQueryBuilder()->fetchField(). The
+		// FROMless SELECT is emitted natively by SQLPlatform::selectSQLText
+		// when `tables` is empty.
 		$safeseq = str_replace( "'", "''", $seqName );
-		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
-		$row = $res->fetchRow();
+		$value = $this->connRef->getConnection( 'write' )->newSelectQueryBuilder()
+			->select( "nextval('$safeseq')" )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		$this->insertId = $row[0] === null ? null : (int)$row[0];
+		$this->insertId = $value === false || $value === null ? null : (int)$value;
 		return $this->insertId;
 	}
 

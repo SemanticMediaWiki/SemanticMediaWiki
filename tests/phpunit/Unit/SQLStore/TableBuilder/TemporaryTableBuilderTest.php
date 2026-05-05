@@ -25,6 +25,12 @@ class TemporaryTableBuilderTest extends TestCase {
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		// `create()` and `drop()` resolve the logical name via tableName()
+		// internally so the temp table lives at the prefix-applied physical
+		// name. Stub the resolver as identity so existing assertions on the
+		// emitted SQL keep matching the bare input name.
+		$this->connection->method( 'tableName' )->willReturnArgument( 0 );
 	}
 
 	public function testCanConstruct() {
@@ -171,6 +177,54 @@ class TemporaryTableBuilderTest extends TestCase {
 			);
 
 		$instance = new TemporaryTableBuilder( $this->connection );
+		$instance->drop( 'Foo' );
+	}
+
+	public function testCreatePassesNameThroughTableName(): void {
+		// Fresh mock so we can assert tableName() invocation explicitly
+		// (the shared setUp() stub uses the loose any-args matcher).
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'tableName' )
+			->with( 'Foo' )
+			->willReturn( 'unittest_Foo' );
+
+		$connection->expects( $this->once() )
+			->method( 'query' )
+			->with(
+				$this->stringContains( 'unittest_Foo' ),
+				$this->anything(),
+				$this->anything()
+			);
+
+		$instance = new TemporaryTableBuilder( $connection );
+		$instance->create( 'Foo' );
+	}
+
+	public function testDropPassesNameThroughTableName(): void {
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->method( 'isType' )->willReturn( false );
+
+		$connection->expects( $this->once() )
+			->method( 'tableName' )
+			->with( 'Foo' )
+			->willReturn( 'unittest_Foo' );
+
+		$connection->expects( $this->once() )
+			->method( 'query' )
+			->with(
+				'DROP TEMPORARY TABLE unittest_Foo',
+				$this->anything(),
+				$this->anything()
+			);
+
+		$instance = new TemporaryTableBuilder( $connection );
 		$instance->drop( 'Foo' );
 	}
 
