@@ -10,6 +10,10 @@ use PHPUnit\Framework\TestCase;
  * `CanonicalNamespaces` hook have fired, every globals key the design
  * touches is in the expected state.
  *
+ * Reads live `$GLOBALS` after the MediaWiki + SMW bootstrap has run; relies
+ * on the post-bootstrap state being idempotent so test ordering does not
+ * affect outcomes.
+ *
  * @group medium
  *
  * @license GPL-2.0-or-later
@@ -27,6 +31,10 @@ class NamespaceRegistrationParityTest extends TestCase {
 	}
 
 	public function testExtraNamespacesContainsAllSixCanonicalNames(): void {
+		// Once the runtime NamespaceManager bootstrap is removed, MW core writes
+		// canonical names to attributes['ExtensionNamespaces'] (consumed by
+		// NamespaceInfo) instead of $wgExtraNamespaces; this assertion will
+		// need to read NamespaceInfo::getCanonicalName() instead.
 		$extra = $GLOBALS['wgExtraNamespaces'] ?? [];
 		$this->assertSame( 'Property', $extra[SMW_NS_PROPERTY] ?? null );
 		$this->assertSame( 'Property_talk', $extra[SMW_NS_PROPERTY_TALK] ?? null );
@@ -43,9 +51,14 @@ class NamespaceRegistrationParityTest extends TestCase {
 	}
 
 	public function testContentNamespacesContainsPropertyAndConceptExactlyOnce(): void {
-		$counts = array_count_values( $GLOBALS['wgContentNamespaces'] );
-		$this->assertSame( 1, $counts[SMW_NS_PROPERTY] ?? 0 );
-		$this->assertSame( 1, $counts[SMW_NS_CONCEPT] ?? 0 );
+		$contentNamespaces = $GLOBALS['wgContentNamespaces'];
+
+		// Assert presence and count separately so a regression that drops the
+		// namespace fails differently from one that duplicates it.
+		$this->assertContains( SMW_NS_PROPERTY, $contentNamespaces, 'SMW_NS_PROPERTY missing from wgContentNamespaces' );
+		$this->assertContains( SMW_NS_CONCEPT, $contentNamespaces, 'SMW_NS_CONCEPT missing from wgContentNamespaces' );
+		$this->assertCount( 1, array_keys( $contentNamespaces, SMW_NS_PROPERTY, true ), 'SMW_NS_PROPERTY duplicated in wgContentNamespaces' );
+		$this->assertCount( 1, array_keys( $contentNamespaces, SMW_NS_CONCEPT, true ), 'SMW_NS_CONCEPT duplicated in wgContentNamespaces' );
 	}
 
 	public function testSchemaContentModelIsRegistered(): void {
