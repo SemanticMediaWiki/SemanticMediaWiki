@@ -38,11 +38,6 @@ use Wikimedia\Rdbms\UpdateQueryBuilder;
  *    `nextSequenceValue()` / `insertId()` / `affectedRows()` / `ping()` for
  *    the few callers that genuinely need them).
  *
- * `newQuery()` is grandfathered in as a one-off: it returns a `Query`
- * formatter object passed to user-supplied `extraCondition` callbacks via
- * `EntityUniquenessLookup`. It is itself slated for removal in a follow-up
- * once that callback signature is migrated; do not add new callers.
- *
  * **No new SQL-passing methods, ever.** New consumers must use the
  * QueryBuilder factories. The Phase-2 follow-up drops the wrapper entirely;
  * adding methods here makes that landing harder.
@@ -104,15 +99,6 @@ class Database {
 	 */
 	public function ping(): bool {
 		return true;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return Query
-	 */
-	public function newQuery(): Query {
-		return new Query( $this );
 	}
 
 	public function newSelectQueryBuilder(): SelectQueryBuilder {

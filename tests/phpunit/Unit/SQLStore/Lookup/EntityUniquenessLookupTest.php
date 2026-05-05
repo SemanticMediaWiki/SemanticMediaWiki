@@ -9,7 +9,7 @@ use SMW\DataItems\Property;
 use SMW\IteratorFactory;
 use SMW\Iterators\MappingIterator;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
+use SMW\MediaWiki\Connection\SqlFragmentBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
@@ -256,12 +256,6 @@ class EntityUniquenessLookupTest extends TestCase {
 			->method( 'getLimit' )
 			->willReturn( 42 );
 
-		// Wire the connection's newQuery() so the EntityUniquenessLookup
-		// can build a formatter for the callback.
-		$this->connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->willReturn( new Query( $this->connection ) );
-
 		$whereConditions = [];
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newSelectQueryBuilder' )
@@ -291,9 +285,9 @@ class EntityUniquenessLookupTest extends TestCase {
 		$instance->checkConstraint( $property, $dataItem, $requestOptions );
 
 		// The callback must have been invoked with the alias the lookup uses
-		// internally ('t1' = '$alias' . '$index') and a Query formatter object.
+		// internally ('t1' = '$alias' . '$index') and a SqlFragmentBuilder.
 		$this->assertSame( 't1', $capturedAlias );
-		$this->assertInstanceOf( Query::class, $capturedFormatter );
+		$this->assertInstanceOf( SqlFragmentBuilder::class, $capturedFormatter );
 
 		// The callback's returned condition string must reach the builder via
 		// andWhere() so it ends up in the WHERE clause.

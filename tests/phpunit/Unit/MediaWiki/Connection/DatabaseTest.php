@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\MediaWiki\Connection\TransactionHandler;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\DeleteQueryBuilder;
@@ -48,18 +47,6 @@ class DatabaseTest extends TestCase {
 		$this->assertInstanceOf(
 			Database::class,
 			new Database( $this->connRef, $this->transactionHandler )
-		);
-	}
-
-	public function testNewQuery() {
-		$instance = new Database(
-			$this->connRef,
-			$this->transactionHandler
-		);
-
-		$this->assertInstanceOf(
-			Query::class,
-			$instance->newQuery()
 		);
 	}
 
