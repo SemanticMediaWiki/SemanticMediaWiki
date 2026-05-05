@@ -136,10 +136,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		// TODO: strictly speaking, the DB key is not what we want here,
 		// since sortkey is based on a "wiki value"
 		$sortkey = $property->getKey();
-		if ( $sortkey === null ) {
-			$query->type = QuerySegment::Q_NOQUERY;
-			return;
-		}
 
 		// *** Now construct the query ... ***//
 		$query->joinTable = $proptable->getName();
