@@ -172,9 +172,6 @@ class QueryResultDependencyListResolver {
 
 	private function doMatchProperty( array &$subjects, Property $property ): void {
 		$key = $property->getKey();
-		if ( $key === null ) {
-			return;
-		}
 
 		if ( $property->isInverse() ) {
 			$property = new Property( $key );
