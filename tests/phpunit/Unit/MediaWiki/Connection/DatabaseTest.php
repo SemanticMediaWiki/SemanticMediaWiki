@@ -6,17 +6,17 @@ use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\MutedDeleteQueryBuilder;
-use SMW\MediaWiki\Connection\MutedInsertQueryBuilder;
-use SMW\MediaWiki\Connection\MutedReplaceQueryBuilder;
-use SMW\MediaWiki\Connection\MutedUpdateQueryBuilder;
 use SMW\MediaWiki\Connection\Query;
 use SMW\MediaWiki\Connection\TransactionHandler;
 use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
+use Wikimedia\Rdbms\ReplaceQueryBuilder;
 use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\UpdateQueryBuilder;
 
 /**
  * @covers \SMW\MediaWiki\Connection\Database
@@ -490,8 +490,13 @@ class DatabaseTest extends TestCase {
 		];
 	}
 
-	public function testNewInsertQueryBuilderReturnsMutedSubclassBoundToWriteConnection(): void {
+	public function testNewInsertQueryBuilderDelegatesToWriteConnection(): void {
 		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( InsertQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $builder );
+
 		$this->connRef->expects( $this->once() )
 			->method( 'getConnection' )
 			->with( 'write' )
@@ -499,14 +504,16 @@ class DatabaseTest extends TestCase {
 
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
-		$this->assertInstanceOf(
-			MutedInsertQueryBuilder::class,
-			$instance->newInsertQueryBuilder()
-		);
+		$this->assertSame( $builder, $instance->newInsertQueryBuilder() );
 	}
 
-	public function testNewUpdateQueryBuilderReturnsMutedSubclassBoundToWriteConnection(): void {
+	public function testNewUpdateQueryBuilderDelegatesToWriteConnection(): void {
 		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( UpdateQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $builder );
+
 		$this->connRef->expects( $this->once() )
 			->method( 'getConnection' )
 			->with( 'write' )
@@ -514,14 +521,16 @@ class DatabaseTest extends TestCase {
 
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
-		$this->assertInstanceOf(
-			MutedUpdateQueryBuilder::class,
-			$instance->newUpdateQueryBuilder()
-		);
+		$this->assertSame( $builder, $instance->newUpdateQueryBuilder() );
 	}
 
-	public function testNewDeleteQueryBuilderReturnsMutedSubclassBoundToWriteConnection(): void {
+	public function testNewDeleteQueryBuilderDelegatesToWriteConnection(): void {
 		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( DeleteQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $builder );
+
 		$this->connRef->expects( $this->once() )
 			->method( 'getConnection' )
 			->with( 'write' )
@@ -529,14 +538,16 @@ class DatabaseTest extends TestCase {
 
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
-		$this->assertInstanceOf(
-			MutedDeleteQueryBuilder::class,
-			$instance->newDeleteQueryBuilder()
-		);
+		$this->assertSame( $builder, $instance->newDeleteQueryBuilder() );
 	}
 
-	public function testNewReplaceQueryBuilderReturnsMutedSubclassBoundToWriteConnection(): void {
+	public function testNewReplaceQueryBuilderDelegatesToWriteConnection(): void {
 		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( ReplaceQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newReplaceQueryBuilder' )
+			->willReturn( $builder );
+
 		$this->connRef->expects( $this->once() )
 			->method( 'getConnection' )
 			->with( 'write' )
@@ -544,9 +555,6 @@ class DatabaseTest extends TestCase {
 
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
-		$this->assertInstanceOf(
-			MutedReplaceQueryBuilder::class,
-			$instance->newReplaceQueryBuilder()
-		);
+		$this->assertSame( $builder, $instance->newReplaceQueryBuilder() );
 	}
 }

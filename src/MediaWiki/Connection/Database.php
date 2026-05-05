@@ -15,7 +15,6 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\ReplaceQueryBuilder;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\Rdbms\UpdateQueryBuilder;
-use Wikimedia\ScopedCallback;
 
 /**
  * This adapter class covers MW DB specific operations. Changes to the
@@ -124,40 +123,28 @@ class Database {
 	 * @since 7.0.0
 	 */
 	public function newInsertQueryBuilder(): InsertQueryBuilder {
-		return new MutedInsertQueryBuilder(
-			$this->connRef->getConnection( 'write' ),
-			$this->transactionHandler
-		);
+		return $this->connRef->getConnection( 'write' )->newInsertQueryBuilder();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newUpdateQueryBuilder(): UpdateQueryBuilder {
-		return new MutedUpdateQueryBuilder(
-			$this->connRef->getConnection( 'write' ),
-			$this->transactionHandler
-		);
+		return $this->connRef->getConnection( 'write' )->newUpdateQueryBuilder();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newDeleteQueryBuilder(): DeleteQueryBuilder {
-		return new MutedDeleteQueryBuilder(
-			$this->connRef->getConnection( 'write' ),
-			$this->transactionHandler
-		);
+		return $this->connRef->getConnection( 'write' )->newDeleteQueryBuilder();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newReplaceQueryBuilder(): ReplaceQueryBuilder {
-		return new MutedReplaceQueryBuilder(
-			$this->connRef->getConnection( 'write' ),
-			$this->transactionHandler
-		);
+		return $this->connRef->getConnection( 'write' )->newReplaceQueryBuilder();
 	}
 
 	/**
@@ -279,9 +266,7 @@ class Database {
 		array $selectOptions = [],
 		array $selectJoinConds = []
 	): bool {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$result = $this->connRef->getConnection( 'write' )->insertSelect(
+		return $this->connRef->getConnection( 'write' )->insertSelect(
 			$destTable,
 			$srcTable,
 			$varMap,
@@ -291,10 +276,6 @@ class Database {
 			$selectOptions,
 			$selectJoinConds
 		);
-
-		ScopedCallback::consume( $scope );
-
-		return $result;
 	}
 
 	/**
@@ -307,18 +288,12 @@ class Database {
 	 * @throws RuntimeException
 	 */
 	public function query( string $sql, string $fname = __METHOD__, int $flags = 0 ): bool|IResultWrapper {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$results = $this->executeQuery(
+		return $this->executeQuery(
 			$this->connRef->getConnection( 'write' ),
 			$sql,
 			$fname,
 			$flags
 		);
-
-		ScopedCallback::consume( $scope );
-
-		return $results;
 	}
 
 	/**

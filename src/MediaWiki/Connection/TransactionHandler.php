@@ -4,8 +4,6 @@ namespace SMW\MediaWiki\Connection;
 
 use RuntimeException;
 use Wikimedia\Rdbms\ILBFactory;
-use Wikimedia\Rdbms\TransactionProfiler;
-use Wikimedia\ScopedCallback;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,40 +15,10 @@ class TransactionHandler {
 
 	private ?string $sectionTransaction = null;
 
-	private ?bool $mutedTransactionProfiler = null;
-
-	private ?TransactionProfiler $transactionProfiler = null;
-
 	/**
 	 * @since 3.1
 	 */
 	public function __construct( private readonly ILBFactory $loadBalancerFactory ) {
-	}
-
-	/**
-	 * @since 3.1
-	 */
-	public function setTransactionProfiler( TransactionProfiler $transactionProfiler ): void {
-		$this->transactionProfiler = $transactionProfiler;
-	}
-
-	/**
-	 * @note Only supported with 1.28+
-	 *
-	 * Mute the transaction profiler to avoid reports on master writes or similar
-	 * operations that violates the expectation set in `wgTrxProfilerLimits` hereby
-	 * avoids unnecessary log spam.
-	 *
-	 * @see https://gerrit.wikimedia.org/r/c/mediawiki/core/+/462130/3/includes/objectcache/SqlBagOStuff.php#836
-	 *
-	 * @since 3.1
-	 */
-	public function muteTransactionProfiler(): ?ScopedCallback {
-		if ( $this->transactionProfiler === null ) {
-			return null;
-		}
-
-		return $this->transactionProfiler->silenceForScope();
 	}
 
 	/**
