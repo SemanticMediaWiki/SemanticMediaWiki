@@ -40,6 +40,5 @@ class RemovedNamespaceIndexException extends RuntimeException {
 			$snippets . "\n\n" .
 			"See the SMW 7.0 release notes for details."
 		);
-		);
 	}
 }
