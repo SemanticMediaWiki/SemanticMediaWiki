@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\Exception\RemovedNamespaceIndexException;
 use SMW\Services\ServicesFactory;
 use SMW\Setup\ConfigBootstrap;
 
@@ -21,6 +22,10 @@ class SemanticMediaWiki {
 	 * @since 2.4
 	 */
 	public static function initExtension( array $credits = [] ): void {
+		if ( isset( $GLOBALS['smwgNamespaceIndex'] ) ) {
+			throw new RemovedNamespaceIndexException( (int)$GLOBALS['smwgNamespaceIndex'] );
+		}
+
 		if ( !defined( 'SMW_VERSION' ) && isset( $credits['version'] ) ) {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupDefines();

@@ -41,4 +41,20 @@ class RemovedNamespaceIndexExceptionTest extends TestCase {
 		$this->assertStringContainsString( "define( 'SMW_NS_SCHEMA', 212 )", $message );
 		$this->assertStringContainsString( "define( 'SMW_NS_SCHEMA_TALK', 213 )", $message );
 	}
+
+	public function testInitExtensionThrowsWhenLegacyGlobalIsSet(): void {
+		$saved = $GLOBALS['smwgNamespaceIndex'] ?? null;
+		$GLOBALS['smwgNamespaceIndex'] = 250;
+
+		try {
+			$this->expectException( RemovedNamespaceIndexException::class );
+			\SMW\SemanticMediaWiki::initExtension( [ 'version' => '7.0.0' ] );
+		} finally {
+			if ( $saved === null ) {
+				unset( $GLOBALS['smwgNamespaceIndex'] );
+			} else {
+				$GLOBALS['smwgNamespaceIndex'] = $saved;
+			}
+		}
+	}
 }
