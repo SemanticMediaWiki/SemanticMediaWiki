@@ -94,6 +94,7 @@ class Rollover {
 			$this->connection->deleteIndex( "$index" );
 		}
 
+		$actions = [];
 		// Check v1/v2 and if both exists (which shouldn't happen but most likely
 		// caused by an unfinshed rebuilder run) then use v1 as master
 		if ( $this->connection->indexExists( "$index-v1" ) ) {
@@ -114,7 +115,9 @@ class Rollover {
 			];
 		}
 
-		$params['body'] = [ 'actions' => $actions ];
+		$params = [
+			'body' => [ 'actions' => $actions ]
+		];
 		$this->connection->updateAliases( $params );
 
 		return $index;

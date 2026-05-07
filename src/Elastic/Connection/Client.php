@@ -565,7 +565,9 @@ class Client {
 		try {
 			$results = $this->client->count( $params );
 		} catch ( Exception $e ) {
-			$context['exception'] = $e->getMessage();
+			$context = [
+				'exception' => $e->getMessage()
+			];
 			$this->logger->info( 'Failed the count with: {exception}', $context );
 		}
 
@@ -602,7 +604,9 @@ class Client {
 		} catch ( NoNodesAvailableException $e ) {
 			$errors[] = 'Elasticsearch endpoint returned with "' . $e->getMessage() . '" .';
 		} catch ( Exception $e ) {
-			$context['exception'] = $e->getMessage();
+			$context = [
+				'exception' => $e->getMessage()
+			];
 			$this->logger->info( 'Failed the search with: {exception}', $context );
 		}
 
