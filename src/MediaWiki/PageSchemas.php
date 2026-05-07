@@ -321,13 +321,6 @@ class PageSchemas extends PSExtensionHandler {
 		$typeTag = "[[$hasTypeLabel::$propertyType]]";
 		$text = wfMessage( 'smw-createproperty-isproperty', $typeTag )->inContentLanguage()->text();
 
-		if ( $linkedForm !== '' && defined( 'SF_VERSION' ) ) {
-			global $sfgContLang;
-			$sfPropLabels = $sfgContLang->getPropertyLabels();
-			$defaultFormTag = "[[{$sfPropLabels[SF_SP_HAS_DEFAULT_FORM]}::$linkedForm]]";
-			$text .= ' ' . wfMessage( 'sf_property_linkstoform', $defaultFormTag )->inContentLanguage()->text();
-		}
-
 		if ( $allowedValues != null ) {
 			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', MediaWikiServices::getInstance()->getContentLanguage()->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
 
