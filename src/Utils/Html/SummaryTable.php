@@ -106,6 +106,7 @@ class SummaryTable {
 
 		$size = round( $count / $opts['columns'] );
 
+		$chunks = [];
 		if ( $this->thumbImage !== '' ) {
 			$chunks[] = $this->parameters;
 			$chunks[] = [ '' => $this->thumbImage ];

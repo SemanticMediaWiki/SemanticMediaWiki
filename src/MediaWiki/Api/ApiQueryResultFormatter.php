@@ -179,7 +179,9 @@ class ApiQueryResultFormatter {
 	 */
 	protected function formatErrors( array $errors ): array {
 		$this->type      = 'error';
-		$result['query'] = $errors;
+		$result = [
+			'query' => $errors
+		];
 
 		$this->setIndexedTagName( $result['query'], 'info' );
 

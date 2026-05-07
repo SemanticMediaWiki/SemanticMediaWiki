@@ -138,6 +138,7 @@ class HtmlColumnListRenderer {
 	 * @return HtmlColumnListRenderer
 	 */
 	public function addContentsByNoIndex( array $contentsByNoIndex ): static {
+		$contentsByEmptyIndex = [];
 		$contentsByEmptyIndex[''] = [];
 
 		foreach ( $contentsByNoIndex as $value ) {

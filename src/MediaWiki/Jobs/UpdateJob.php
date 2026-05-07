@@ -244,6 +244,7 @@ class UpdateJob extends Job {
 		// TODO
 		// Rebuild the factbox
 
+		$origin = [];
 		$origin[] = 'UpdateJob';
 
 		if ( $this->hasParameter( 'origin' ) ) {
