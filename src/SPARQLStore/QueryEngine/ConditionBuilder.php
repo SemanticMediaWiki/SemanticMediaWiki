@@ -359,7 +359,7 @@ class ConditionBuilder {
 
 		// Add unknow redirect target/variable for value
 		if ( !isset( $this->redirectByVariableReplacementMap[$valueName] ) ) {
-
+			$namespaces = [];
 			$namespaces[$redirectExpElement->getNamespaceId()] = $redirectExpElement->getNamespace();
 			$redirectByVariable = '?' . $this->getNextVariable( 'r' );
 
@@ -596,6 +596,7 @@ class ConditionBuilder {
 	 */
 	private function addFilterToRemoveEntitiesThatContainRedirectPredicate( Condition &$condition ): void {
 		$rediExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_REDI' );
+		$namespaces = [];
 		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
 
 		$boundVariable = '?' . $this->getNextVariable( 'o' );

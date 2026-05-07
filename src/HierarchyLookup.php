@@ -244,6 +244,7 @@ class HierarchyLookup {
 
 		$key = $objectType === self::TYPE_PROPERTY ? $id->getKey() : $id->getDBKey();
 
+		$hierarchyList = [];
 		if ( !isset( $hierarchyCache[$key] ) ) {
 			$hierarchyCache[$key] = [];
 

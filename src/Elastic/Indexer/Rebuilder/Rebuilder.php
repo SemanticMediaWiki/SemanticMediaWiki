@@ -418,7 +418,9 @@ class Rebuilder {
 				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
 			];
 
-			$params['body'] = [ 'actions' => $actions ];
+			$params = [
+				'body' => [ 'actions' => $actions ]
+			];
 
 			$this->client->updateAliases( $params );
 		}

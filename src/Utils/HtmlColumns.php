@@ -165,8 +165,11 @@ class HtmlColumns {
 	 *
 	 * @param string[] $cnts
 	 * @param string $type
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function setContents( array $cnts, $type = self::PLAIN_LIST ): void {
+		$contents = [];
 		if ( $type === self::PLAIN_LIST ) {
 			$contents[''] = [];
 
