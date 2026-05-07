@@ -248,7 +248,8 @@ class ConceptCacheRebuilder {
 
 	private function getConcepts(): array {
 		if ( $this->concept !== null ) {
-			return [ $this->createConcept() ];
+			$concept = $this->createConcept();
+			return $concept === null ? [] : [ $concept ];
 		}
 
 		return $this->createMultipleConcepts();
