@@ -142,7 +142,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @param array $result First item is Property, second item is int
 	 *
 	 * @return string
-	 * 
+	 *
 	 * @suppress PhanParamSignatureMismatch
 	 */
 	public function formatResult( $skin, $result ) {
