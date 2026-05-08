@@ -139,6 +139,7 @@ class TreeBuilder {
 	}
 
 	public function hasNode( $id ): bool {
+		// @phan-suppress-next-line PhanImpossibleTypeComparison
 		if ( $this->nodes === [] || $this->nodes === null ) {
 			return false;
 		}
@@ -171,6 +172,7 @@ class TreeBuilder {
 	public function getTree(): string {
 		$text = '';
 
+		// @phan-suppress-next-line PhanImpossibleTypeComparison
 		if ( $this->nodes === [] || $this->nodes === null ) {
 			return $text;
 		}

@@ -62,9 +62,7 @@ class QueryLinker {
 			}
 		}
 
-		if ( $query->getMainLabel() !== false ) {
-			$params['mainlabel'] = $query->getMainLabel();
-		}
+		$params['mainlabel'] = $query->getMainLabel();
 
 		if ( $query->getQuerySource() !== '' ) {
 			$params['source'] = $query->getQuerySource();

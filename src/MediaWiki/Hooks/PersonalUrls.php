@@ -77,7 +77,8 @@ class PersonalUrls implements HookListener {
 		$out->addJsConfigVars( 'smwgJobQueueWatchlist', $queue );
 
 		$personalUrl['smw-jobqueue-watchlist'] = [
-			'text'   => 'ⅉ [ ' . ( $queue === [] ? '0' : implode( ' | ', $queue ) ) . ' ]',
+			//
+			'text'   => 'ⅉ [ ' . implode( ' | ', $queue ) . ' ]',
 			'href'   => '#',
 			'class'  => 'smw-personal-jobqueue-watchlist is-disabled',
 			'active' => true

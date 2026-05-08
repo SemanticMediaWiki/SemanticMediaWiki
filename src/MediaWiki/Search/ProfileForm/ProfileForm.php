@@ -229,9 +229,7 @@ class ProfileForm {
 			}
 		}
 
-		if ( $searchEngine !== null ) {
-			$searchEngine->setNamespaces( $activeNamespaces );
-		}
+		$searchEngine->setNamespaces( $activeNamespaces );
 
 		// Contains the copied Advanced namespace form
 		$namespaceForm = $this->formsFactory->newNamespaceForm();

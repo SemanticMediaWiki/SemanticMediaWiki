@@ -171,8 +171,16 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, Property $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
-		return $this->semanticDataLookup->newRequestOptions( $propertyTableDef, $property, $requestOptions );
+	public function newRequestOptions(
+		PropertyTableDefinition $propertyTableDef,
+		Property $property,
+		?RequestOptions $requestOptions = null
+	): ?RequestOptions {
+		return $this->semanticDataLookup->newRequestOptions(
+			$propertyTableDef,
+			$property,
+			$requestOptions
+		);
 	}
 
 	/**
@@ -185,12 +193,15 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return array
 	 */
-	public function prefetchDataFromTable( array $subjects, Property $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function prefetchDataFromTable(
+		array $subjects,
+		Property $dataItem,
+		PropertyTableDefinition $propertyTableDef,
+		?RequestOptions $requestOptions = null
+	) {
 		$hash = '';
 
-		if ( $dataItem !== null ) {
-			$hash .= $dataItem->getSerialization();
-		}
+		$hash .= $dataItem->getSerialization();
 
 		if ( $requestOptions !== null ) {
 			$hash .= $requestOptions->getHash();
@@ -198,7 +209,9 @@ class CachingSemanticDataLookup {
 
 		// Use `PREFETCH_FINGERPRINT` if available otherwise make a fingerprint
 		// to allow for caching possible repeated requests
-		if ( $requestOptions === null || $requestOptions->getOption( RequestOptions::PREFETCH_FINGERPRINT ) === null ) {
+		if ( $requestOptions === null ||
+			$requestOptions->getOption( RequestOptions::PREFETCH_FINGERPRINT ) === null
+		) {
 			foreach ( $subjects as $subject ) {
 				$hash .= $subject->getHash();
 			}
@@ -231,8 +244,18 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return mixed[]
 	 */
-	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ): array {
-		return $this->semanticDataLookup->fetchSemanticDataFromTable( $id, $dataItem, $propertyTableDef, $requestOptions );
+	public function fetchSemanticDataFromTable(
+		$id,
+		?DataItem $dataItem,
+		PropertyTableDefinition $propertyTableDef,
+		?RequestOptions $requestOptions = null
+	): array {
+		return $this->semanticDataLookup->fetchSemanticDataFromTable(
+			$id,
+			$dataItem,
+			$propertyTableDef,
+			$requestOptions
+		);
 	}
 
 	/**
@@ -245,10 +268,20 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function getSemanticData(
+		$id,
+		?DataItem $dataItem,
+		PropertyTableDefinition $propertyTableDef,
+		?RequestOptions $requestOptions = null
+	) {
 		// Avoid the cache when a request is constrainted
 		if ( $requestOptions !== null || !$dataItem instanceof WikiPage ) {
-			return $this->semanticDataLookup->getSemanticData( $id, $dataItem, $propertyTableDef, $requestOptions );
+			return $this->semanticDataLookup->getSemanticData(
+				$id,
+				$dataItem,
+				$propertyTableDef,
+				$requestOptions
+			);
 		}
 
 		return $this->fetchFromCache( $id, $dataItem, $propertyTableDef );
@@ -265,7 +298,11 @@ class CachingSemanticDataLookup {
 		return $this->semanticDataLookup->newStubSemanticData( $subject );
 	}
 
-	private function fetchFromCache( $id, WikiPage $subject, PropertyTableDefinition $propertyTableDef ) {
+	private function fetchFromCache(
+		$id,
+		WikiPage $subject,
+		PropertyTableDefinition $propertyTableDef
+	) {
 		// Do not clear the cache when called recursively.
 		$this->lockCache();
 		$this->initLookupCache( $id, $subject );

@@ -145,9 +145,7 @@ class HtmlForm {
 				$queryLink = QueryLinker::get( $this->query, $this->parameters );
 			} else {
 				$query = $queryResult->getQuery();
-				if ( $query !== null ) {
-					$queryLink = QueryLinker::get( $query, $this->parameters );
-				}
+				$queryLink = QueryLinker::get( $query, $this->parameters );
 			}
 		}
 

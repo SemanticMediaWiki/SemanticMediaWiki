@@ -152,9 +152,11 @@ class DefaultParamDefinition {
 	}
 
 	private static function getSourceParam( array $vars ): array {
-		$sourceValues = is_array( $vars['smwgQuerySources'] ) ? array_keys( $vars['smwgQuerySources'] ) : [];
+		$sourceValues = is_array( $vars['smwgQuerySources'] ) ?
+			array_keys( $vars['smwgQuerySources'] ) : [];
 
 		return [
+			// @phan-suppress-next-line PhanImpossibleTypeComparison
 			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
 			'values' => $sourceValues,
 		];
