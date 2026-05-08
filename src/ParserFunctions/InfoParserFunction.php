@@ -51,7 +51,7 @@ class InfoParserFunction {
 			);
 		}
 
-		if ( $message === '' ) {
+		if ( $message === '' || $message === null ) {
 			return '';
 		}
 
