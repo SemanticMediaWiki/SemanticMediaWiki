@@ -51,7 +51,7 @@ class ConceptMapper implements DataItemMapper {
 	/**
 	 * @since 2.4
 	 *
-	 * @param Concept $concept
+	 * @param DataItem $concept
 	 *
 	 * @return ExpData|null
 	 */

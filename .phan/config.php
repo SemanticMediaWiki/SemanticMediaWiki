@@ -10,7 +10,6 @@ $config['suppress_issue_types'] = array_merge(
 		// This means that Phan initially won't do much, but it allows for
 		// checks to be incrementally fixed and enabled without massive changes.
 		'PhanImpossibleTypeComparison',
-		'PhanParamSignatureMismatch',
 		'PhanPluginRedundantAssignment',
 		'PhanTypeArraySuspiciousNullable',
 		'PhanTypeMismatchArgument',

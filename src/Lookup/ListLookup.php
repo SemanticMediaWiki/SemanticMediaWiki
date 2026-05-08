@@ -34,7 +34,7 @@ interface ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return string|false
 	 */
 	public function getTimestamp();
 

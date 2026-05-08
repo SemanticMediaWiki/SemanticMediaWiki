@@ -142,6 +142,8 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @param array $result First item is Property, second item is int
 	 *
 	 * @return string
+	 * 
+	 * @suppress PhanParamSignatureMismatch
 	 */
 	public function formatResult( $skin, $result ) {
 		// Only display user-defined properties because it can happen that

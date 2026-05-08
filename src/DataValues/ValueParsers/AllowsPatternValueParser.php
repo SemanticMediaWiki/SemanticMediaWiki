@@ -33,7 +33,7 @@ class AllowsPatternValueParser implements ValueParser {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string $userValue
+	 * @param mixed $userValue
 	 *
 	 * @return string|false
 	 */

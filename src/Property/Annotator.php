@@ -28,7 +28,7 @@ interface Annotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return Annotator
+	 * @return Annotator|void
 	 */
 	public function addAnnotation();
 
