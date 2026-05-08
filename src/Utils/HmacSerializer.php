@@ -126,9 +126,9 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string
+	 * @return string|false
 	 */
-	public static function compress( $data, $key = null, $algo = 'md5' ): string {
+	public static function compress( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
