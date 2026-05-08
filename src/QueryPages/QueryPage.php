@@ -52,7 +52,7 @@ abstract class QueryPage extends MWQueryPage {
 	 *
 	 * @suppress PhanTypeMissingReturnReal
 	 */
-	public function recache( $limit, $ignoreErrors = true ): bool {
+	public function recache( $limit, $ignoreErrors = true ): void {
 		/// TODO
 	}
 
