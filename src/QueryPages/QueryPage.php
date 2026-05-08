@@ -50,7 +50,6 @@ abstract class QueryPage extends MWQueryPage {
 	 * Clear the cache and save new results
 	 * @todo Implement caching for SMW query pages
 	 *
-	 * @suppress PhanTypeMissingReturnReal
 	 * @suppress PhanParamSignatureMismatch
 	 */
 	public function recache( $limit, $ignoreErrors = true ): void {
