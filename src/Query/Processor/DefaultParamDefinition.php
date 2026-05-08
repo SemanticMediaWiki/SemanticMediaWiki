@@ -156,8 +156,7 @@ class DefaultParamDefinition {
 			array_keys( $vars['smwgQuerySources'] ) : [];
 
 		return [
-			// @phan-suppress-next-line PhanImpossibleTypeComparison
-			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
+			'default' => in_array( 'default', $sourceValues, true ) ? 'default' : '',
 			'values' => $sourceValues,
 		];
 	}
