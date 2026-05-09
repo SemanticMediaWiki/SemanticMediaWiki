@@ -905,24 +905,51 @@ class SemanticData implements JsonDeserializable {
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ): self {
 		$obj = new self(
-			$deserializer->deserialize( $json['mSubject'] ),
+			self::maybeDeserialize( $deserializer, $json['mSubject'] ),
 			$json['mNoDuplicates']
 		);
 		$obj->stubObject = $json['stubObject'];
 		$obj->mPropVals = array_map( static function ( array $x ) use( $deserializer ): array {
-			return $deserializer->deserializeArray( $x );
+			return self::maybeDeserializeArray( $deserializer, $x );
 		}, $json['mPropVals'] );
-		$obj->mProperties = $deserializer->deserializeArray( $json['mProperties'] );
+		$obj->mProperties = self::maybeDeserializeArray( $deserializer, $json['mProperties'] );
 		$obj->mHasVisibleProps = $json['mHasVisibleProps'];
 		$obj->mHasVisibleSpecs = $json['mHasVisibleSpecs'];
-		$obj->subSemanticData = $json['subSemanticData'] ? $deserializer->deserialize( $json['subSemanticData'] ) : null;
+		$obj->subSemanticData = $json['subSemanticData'] ? self::maybeDeserialize( $deserializer, $json['subSemanticData'] ) : null;
 		$obj->errors = $json['errors'];
 		$obj->hash = $json['hash'];
-		$obj->options = $json['options'] ? $deserializer->deserialize( $json['options'] ) : null;
+		$obj->options = $json['options'] ? self::maybeDeserialize( $deserializer, $json['options'] ) : null;
 		$obj->extensionData = $json['extensionData'];
 		$obj->sequenceMap = $json['sequenceMap'];
 		$obj->countMap = $json['countMap'];
 		return $obj;
+	}
+
+	/**
+	 * MediaWiki's JsonCodec recursively deserializes nested `_type_`-marked
+	 * values while walking a structure, so a field reaching `newFromJsonArray`
+	 * may already be a fully reified object rather than a marked array.
+	 * Passing such a value back through `deserialize()` trips its
+	 * `stdClass|array|string` parameter assert; the resulting JsonException is
+	 * swallowed by `ParserCache::restoreFromJson` and reported as a cache
+	 * miss, defeating the parser cache for every page touched by SMW. Skip
+	 * the redundant call when the value has already been deserialized.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function maybeDeserialize( JsonDeserializer $deserializer, mixed $value ): mixed {
+		return is_object( $value ) ? $value : $deserializer->deserialize( $value );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public static function maybeDeserializeArray( JsonDeserializer $deserializer, array $value ): array {
+		$result = [];
+		foreach ( $value as $k => $v ) {
+			$result[$k] = self::maybeDeserialize( $deserializer, $v );
+		}
+		return $result;
 	}
 
 }
