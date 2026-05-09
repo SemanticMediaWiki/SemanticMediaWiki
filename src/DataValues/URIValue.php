@@ -124,7 +124,6 @@ class URIValue extends DataValue {
 					$query = $parts[0];
 					$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 				} else {
-					$query = '';
 					$parts = explode( '#', $parts[0], 2 ); // try to split "hier-part#frag"
 					$hierpart = $parts[0];
 					$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
