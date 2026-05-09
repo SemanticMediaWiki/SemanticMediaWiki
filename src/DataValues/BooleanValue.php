@@ -194,24 +194,49 @@ class BooleanValue extends DataValue {
 		$contentLanguage = $this->getOption( 'content.language' );
 
 		$lcv = mb_strtolower( $value );
-		$boolvalue = false;
 
 		if ( $lcv === '1' ) {
-			$boolvalue = true;
-		} elseif ( $lcv === '0' ) {
-			$boolvalue = false;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_true_words', $contentLanguage, 'true' ), true ) ) {
-			$boolvalue = true;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_false_words', $contentLanguage, 'false' ), true ) ) {
-			$boolvalue = false;
-		} else {
-			$this->addErrorMsg(
-				[ 'smw_noboolean', $value ],
-				Message::TEXT
-			);
+			return true;
 		}
 
-		return $boolvalue;
+		if ( $lcv === '0' ) {
+			return false;
+		}
+
+		if (
+			in_array(
+				$lcv,
+				$this->getBooleanWordsFrom(
+					'smw_true_words',
+					$contentLanguage,
+					'true'
+				),
+				true
+			)
+		) {
+			return true;
+		}
+
+		if (
+			in_array(
+				$lcv,
+				$this->getBooleanWordsFrom(
+					'smw_false_words',
+					$contentLanguage,
+					'false'
+				),
+				true
+			)
+		) {
+			return false;
+		}
+
+		$this->addErrorMsg(
+			[ 'smw_noboolean', $value ],
+			Message::TEXT
+		);
+
+		return false;
 	}
 
 	private function setLocalizedCaptions( string &$formatstring ): void {
