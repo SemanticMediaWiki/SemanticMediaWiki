@@ -5,6 +5,7 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use SMW\DataValues\DataValue;
+use SMW\DataValues\WikiPageValue,
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 
@@ -73,7 +74,7 @@ class ValueTextsBuilder {
 		$linker = $this->getLinkerForColumn( $column );
 
 		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
-		if ( $dataValue instanceof SMWWikiPageValue ) {
+		if ( $dataValue instanceof WikiPageValue ) {
 			$dataValue->setOption(
 				$useLongText
 					? $dataValue::PREFIXED_FORM
