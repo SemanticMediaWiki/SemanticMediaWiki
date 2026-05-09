@@ -50,7 +50,7 @@ class CachingTermsLookup extends TermsLookup {
 	 * @param $type
 	 * @param Parameters $parameters
 	 *
-	 * @return ?array
+	 * @return array
 	 * @throws RuntimeException
 	 */
 	public function lookup( $type, Parameters $parameters ) {
@@ -76,7 +76,7 @@ class CachingTermsLookup extends TermsLookup {
 	/**
 	 * @since 3.0
 	 */
-	public function concept_lookup( Parameters $parameters ): ?array {
+	public function concept_lookup( Parameters $parameters ): array {
 		// @see Indexer::delete
 		$parameters->set( 'id', md5( $parameters->get( 'id' ) ) );
 		$id = $parameters->get( 'id' );

@@ -299,7 +299,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setup( $options = true ): void {
+	public function setup( $options = true ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -365,7 +365,7 @@ class ElasticStore extends SQLStore {
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		parent::setup( $options );
+		return parent::setup( $options );
 	}
 
 	/**

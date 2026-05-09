@@ -15,7 +15,7 @@ interface ValueParser {
 	 *
 	 * @param mixed $value
 	 *
-	 * @return array|null
+	 * @return mixed
 	 */
 	public function parse( $value );
 

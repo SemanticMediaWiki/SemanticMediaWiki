@@ -405,7 +405,7 @@ class SPARQLStore extends Store {
 	 * @see Store::setup()
 	 * @since 1.8
 	 */
-	public function setup( $options = true ): void {
+	public function setup( $options = true ): bool {
 		$this->baseStore->setMessageReporter( $this->messageReporter );
 
 		$cliMsgFormatter = new CliMsgFormatter();
@@ -442,7 +442,7 @@ class SPARQLStore extends Store {
 			);
 		}
 
-		$this->baseStore->setup( $options );
+		return $this->baseStore->setup( $options );
 	}
 
 	/**
