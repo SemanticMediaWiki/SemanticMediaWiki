@@ -332,7 +332,7 @@ class ElasticStore extends SQLStore {
 				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
 				$setupFile->addIncompleteTask( self::REBUILD_INDEX_RUN_INCOMPLETE );
 			} else {
-				$data = $setupFile->get( 'elasticsearch' );
+				$data = (array)$setupFile->get( 'elasticsearch' );
 
 				if ( $data['latest_version'] !== $version ) {
 					$setupFile->set(
