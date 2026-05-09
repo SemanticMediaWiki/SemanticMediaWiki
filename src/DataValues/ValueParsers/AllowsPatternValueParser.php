@@ -33,7 +33,7 @@ class AllowsPatternValueParser implements ValueParser {
 	/**
 	 * @since 2.4
 	 *
-	 * @param mixed $userValue
+	 * @param string $userValue
 	 *
 	 * @return string|false
 	 */
@@ -51,11 +51,11 @@ class AllowsPatternValueParser implements ValueParser {
 		return $contentList[$userValue];
 	}
 
-	private function doParseContent( $contents ): ?array {
+	private function doParseContent( $contents ): array {
 		$list = [];
 
 		if ( $contents === '' ) {
-			return null;
+			return [];
 		}
 
 		$contents ??= '';

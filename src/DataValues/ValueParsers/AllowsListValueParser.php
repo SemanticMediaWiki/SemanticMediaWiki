@@ -45,9 +45,9 @@ class AllowsListValueParser implements ValueParser {
 	/**
 	 * @since 2.5
 	 *
-	 * @param mixed $userValue
+	 * @param string $userValue
 	 *
-	 * @return array|null
+	 * @return array
 	 */
 	public function parse( $userValue ) {
 		$this->errors = [];
