@@ -123,10 +123,16 @@ class QueryResultDependencyListResolver {
 	 * links to Special:Ask via further results) is not required
 	 */
 	private function canResolve( $queryResult ): bool {
-		return $queryResult instanceof QueryResult && $queryResult->getQuery() !== null && $queryResult->getQuery()->getContextPage() !== null && $queryResult->getQuery()->getLimit() > 0;
+		return $queryResult instanceof QueryResult &&
+			$queryResult->getQuery()->getContextPage() !== null &&
+			$queryResult->getQuery()->getLimit() > 0;
 	}
 
-	private function doResolveDependenciesFromDescription( array &$subjects, $store, $description ): void {
+	private function doResolveDependenciesFromDescription(
+		array &$subjects,
+		$store,
+		$description
+	): void {
 		// Ignore entities that use a comparator other than SMW_CMP_EQ
 		// [[Has page::~Foo*]] or similar is going to be ignored
 		if ( $description instanceof ValueDescription &&
@@ -137,7 +143,7 @@ class QueryResultDependencyListResolver {
 
 		if ( $description instanceof ConceptDescription ) {
 			$concept = $description->getConcept();
-			if ( $concept === null || !isset( $subjects[$concept->getHash()] ) ) {
+			if ( !isset( $subjects[$concept->getHash()] ) ) {
 				$subjects[$concept->getHash()] = $concept;
 				$this->doResolveDependenciesFromDescription(
 					$subjects,
@@ -236,7 +242,10 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doResolveDependenciesFromPrintRequest( array &$subjects, array $printRequests ): void {
+	private function doResolveDependenciesFromPrintRequest(
+		array &$subjects,
+		array $printRequests
+	): void {
 		foreach ( $printRequests as $printRequest ) {
 			$data = $printRequest->getData();
 

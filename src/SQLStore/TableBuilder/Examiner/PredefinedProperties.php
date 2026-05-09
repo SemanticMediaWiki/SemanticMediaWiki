@@ -144,10 +144,6 @@ class PredefinedProperties {
 			->caller( __METHOD__ )
 			->execute();
 
-		if ( $id === null ) {
-			return;
-		}
-
 		$row = $connection->newSelectQueryBuilder()
 			->select( [ 'p_id' ] )
 			->from( SQLStore::PROPERTY_STATISTICS_TABLE )

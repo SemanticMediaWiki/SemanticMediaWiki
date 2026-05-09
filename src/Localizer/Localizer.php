@@ -161,7 +161,7 @@ class Localizer {
 	 * @since 2.4
 	 */
 	public function getLanguage( mixed $languageCode = '' ): Language {
-		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
+		if ( $languageCode === '' || !$languageCode ) {
 			return $this->getContentLanguage();
 		}
 
@@ -179,7 +179,7 @@ class Localizer {
 			$languageCode = $language->getCode();
 		}
 
-		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
+		if ( $languageCode === '' || !$languageCode ) {
 			$languageCode = $this->getContentLanguage()->getCode();
 		}
 

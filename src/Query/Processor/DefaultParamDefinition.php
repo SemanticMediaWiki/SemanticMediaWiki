@@ -152,10 +152,11 @@ class DefaultParamDefinition {
 	}
 
 	private static function getSourceParam( array $vars ): array {
-		$sourceValues = is_array( $vars['smwgQuerySources'] ) ? array_keys( $vars['smwgQuerySources'] ) : [];
+		$sourceValues = is_array( $vars['smwgQuerySources'] ) ?
+			array_keys( $vars['smwgQuerySources'] ) : [];
 
 		return [
-			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
+			'default' => in_array( 'default', $sourceValues, true ) ? 'default' : '',
 			'values' => $sourceValues,
 		];
 	}

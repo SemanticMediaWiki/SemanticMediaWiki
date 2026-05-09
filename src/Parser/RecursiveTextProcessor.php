@@ -225,10 +225,6 @@ class RecursiveTextProcessor {
 	 * @return string
 	 */
 	public function recursiveTagParse( $text ) {
-		if ( $this->parser === null ) {
-			throw new RuntimeException( 'Missing a parser instance!' );
-		}
-
 		$this->recursionDepth++;
 		$isValid = $this->parser->getOptions() && $this->parser->getPage();
 

@@ -238,13 +238,11 @@ class ParserParameterProcessor {
 
 		$nextElement = explode( '=', trim( current( $params ) ), 2 );
 
-		if ( $nextElement !== [] ) {
-			// This allows assignments of type |Has property=Test1,Test2|+sep=,
-			// as a means to support multiple value declaration
-			if ( substr( $nextElement[0], -5 ) === '+sep' ) {
-				$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
-				next( $params );
-			}
+		// This allows assignments of type |Has property=Test1,Test2|+sep=,
+		// as a means to support multiple value declaration
+		if ( substr( $nextElement[0], -5 ) === '+sep' ) {
+			$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
+			next( $params );
 		}
 
 		if ( current( $params ) === '+pipe' ) {

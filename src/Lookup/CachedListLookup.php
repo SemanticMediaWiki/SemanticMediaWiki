@@ -111,7 +111,7 @@ class CachedListLookup implements ListLookup {
 
 		$data = unserialize( $this->cache->fetch( $id ) );
 
-		if ( $data && $data !== [] ) {
+		if ( is_array( $data ) && $data !== [] ) {
 			foreach ( $data as $key => $value ) {
 				$this->cache->delete( $key );
 			}

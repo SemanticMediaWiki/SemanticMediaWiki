@@ -121,7 +121,7 @@ class ConstraintSchemaCompiler {
 			$property
 		);
 
-		if ( $allowed_pattern === '' || $allowed_pattern === null ) {
+		if ( $allowed_pattern === '' ) {
 			return;
 		}
 

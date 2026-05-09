@@ -247,21 +247,16 @@ class ProcessingErrorMsgHandler {
 	}
 
 	private function newContainerSemanticData( string $hash ): ContainerSemanticData {
-		if ( $this->subject === null ) {
-			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
-			$containerSemanticData->skipAnonymousCheck();
-		} else {
-			$subobjectName = '_ERR' . md5( $hash );
+		$subobjectName = '_ERR' . md5( $hash );
 
-			$subject = new WikiPage(
-				$this->subject->getDBkey(),
-				$this->subject->getNamespace(),
-				$this->subject->getInterwiki(),
-				$subobjectName
-			);
+		$subject = new WikiPage(
+			$this->subject->getDBkey(),
+			$this->subject->getNamespace(),
+			$this->subject->getInterwiki(),
+			$subobjectName
+		);
 
-			$containerSemanticData = new ContainerSemanticData( $subject );
-		}
+		$containerSemanticData = new ContainerSemanticData( $subject );
 
 		return $containerSemanticData;
 	}

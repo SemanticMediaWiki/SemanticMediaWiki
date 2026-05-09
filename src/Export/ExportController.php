@@ -185,8 +185,9 @@ class ExportController {
 		}
 
 		if ( $recursiondepth != 0 ) {
-			$subrecdepth = $recursiondepth > 0 ? ( $recursiondepth - 1 ) :
-						   ( $recursiondepth === 0 ? 0 : -1 );
+			$subrecdepth = $recursiondepth > 0
+				? $recursiondepth - 1
+				: -1;
 
 			foreach ( $expData->getProperties() as $property ) {
 				if ( $property->getDataItem() instanceof WikiPageValue ) {

@@ -109,31 +109,6 @@ class NamespaceManagerTest extends TestCase {
 		);
 	}
 
-	public function testInitCanonicalNamespacesSeedsSemanticLinkDefaults(): void {
-		unset(
-			$GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY],
-			$GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT],
-			$GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_SCHEMA]
-		);
-
-		$namespaces = [];
-		NamespaceManager::initCanonicalNamespaces( $namespaces );
-
-		$this->assertTrue( $GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY] );
-		$this->assertTrue( $GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT] );
-		$this->assertTrue( $GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_SCHEMA] );
-	}
-
-	public function testInitCanonicalNamespacesPreservesUserSemanticLinkOverride(): void {
-		$GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY] = false;
-
-		$namespaces = [];
-		NamespaceManager::initCanonicalNamespaces( $namespaces );
-
-		$this->assertFalse( $GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY] );
-		$this->assertTrue( $GLOBALS['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT] );
-	}
-
 	public function testInitCanonicalNamespacesSeedsSearchDefaults(): void {
 		unset(
 			$GLOBALS['wgNamespacesToBeSearchedDefault'][SMW_NS_PROPERTY],

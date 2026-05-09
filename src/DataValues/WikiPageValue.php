@@ -698,7 +698,7 @@ class WikiPageValue extends DataValue {
 			$fragmentText = '';
 		}
 
-		if ( $this->m_caption && $this->m_caption !== '' ) {
+		if ( is_string( $this->m_caption ) && $this->m_caption !== '' ) {
 			return $this->m_caption;
 		}
 
@@ -733,7 +733,7 @@ class WikiPageValue extends DataValue {
 			$fragmentText = '';
 		}
 
-		if ( $this->m_caption && $this->m_caption !== '' ) {
+		if ( is_string( $this->m_caption ) && $this->m_caption !== '' ) {
 			return $this->m_caption;
 		}
 

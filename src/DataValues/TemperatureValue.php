@@ -168,7 +168,7 @@ class TemperatureValue extends NumberValue {
 			$this->getProperty()
 		);
 
-		if ( $units !== null && $units !== [] ) {
+		if ( $units !== [] ) {
 			$unit = $this->getUnitID( end( $units ) );
 		}
 

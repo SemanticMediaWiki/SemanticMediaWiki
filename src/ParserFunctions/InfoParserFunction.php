@@ -41,7 +41,7 @@ class InfoParserFunction {
 		// If the message contains another highlighter (caused by recursive
 		// parsing etc.) remove the tags to allow to show the text without making
 		// the JS go berserk due to having more than one `smw-highlighter`
-		if ( strpos( $message ?? '', 'smw-highlighter' ) !== '' ) {
+		if ( strpos( $message ?? '', 'smw-highlighter' ) !== false ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
 					static function ( $matches ): string {
@@ -51,7 +51,7 @@ class InfoParserFunction {
 			);
 		}
 
-		if ( $message === '' ) {
+		if ( $message === '' || $message === null ) {
 			return '';
 		}
 
@@ -68,7 +68,7 @@ class InfoParserFunction {
 
 		$result = $highlighter->getHtml();
 
-		if ( $parser->getTitle() !== null && $parser->getTitle()->isSpecialPage() ) {
+		if ( $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			Outputs::commitToOutputPage( $wgOut );
 		} else {

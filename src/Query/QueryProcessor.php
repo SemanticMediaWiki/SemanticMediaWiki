@@ -193,10 +193,6 @@ class QueryProcessor implements QueryContext {
 	 * @param array $rawParams
 	 */
 	public static function addThisPrintout( array &$printRequests, array $rawParams ): void {
-		if ( $printRequests === null ) {
-			return;
-		}
-
 		// If THIS is already registered, bail-out!
 		foreach ( $printRequests as $printRequest ) {
 			if ( $printRequest->isMode( PrintRequest::PRINT_THIS ) ) {

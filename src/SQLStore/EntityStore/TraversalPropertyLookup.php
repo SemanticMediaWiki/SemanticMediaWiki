@@ -126,11 +126,9 @@ class TraversalPropertyLookup {
 		$where = '';
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( $dataItem !== null ) {
-			$dataItemHandler = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() );
-			foreach ( $dataItemHandler->getWhereConds( $dataItem ) as $fieldname => $value ) {
-				$where .= ( $where ? ' AND ' : '' ) . "$fieldname=" . $connection->addQuotes( $value );
-			}
+		$dataItemHandler = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() );
+		foreach ( $dataItemHandler->getWhereConds( $dataItem ) as $fieldname => $value ) {
+			$where .= ( $where ? ' AND ' : '' ) . "$fieldname=" . $connection->addQuotes( $value );
 		}
 
 		return $where;

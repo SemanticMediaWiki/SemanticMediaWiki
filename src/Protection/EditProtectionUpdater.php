@@ -91,10 +91,6 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 
 		$title = $this->wikiPage->getTitle();
 
-		if ( $title === null ) {
-			return;
-		}
-
 		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
 		$restrictions = array_flip( $restrictionStore->getRestrictions( $title, 'edit' ) );
 

@@ -195,7 +195,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 			new Property( '_SUBP' )
 		);
 
-		if ( $pv === null || $pv === [] ) {
+		if ( $pv === [] ) {
 			return;
 		}
 
