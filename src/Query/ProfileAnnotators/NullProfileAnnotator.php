@@ -4,6 +4,7 @@ namespace SMW\Query\ProfileAnnotators;
 
 use SMW\DataItems\Container;
 use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\Query\ProfileAnnotator;
 
 /**
@@ -34,7 +35,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return array
+	 * @return Property
 	 */
 	public function getProperty(): Property {
 		return new Property( '_ASK' );

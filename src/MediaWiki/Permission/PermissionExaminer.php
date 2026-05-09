@@ -24,8 +24,6 @@ class PermissionExaminer {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return User $user
 	 */
 	public function setUser( User $user ): void {
 		$this->user = $user;
@@ -33,10 +31,6 @@ class PermissionExaminer {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $right
-	 *
-	 * @return bool
 	 */
 	public function hasPermissionOf( string $right ): bool {
 		if ( $this->user === null ) {

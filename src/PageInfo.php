@@ -20,19 +20,15 @@ interface PageInfo {
 	 * Returns a modification date
 	 *
 	 * @since 1.9
-	 *
-	 * @return int
 	 */
-	public function getModificationDate();
+	public function getModificationDate(): string;
 
 	/**
 	 * Returns a creation date
 	 *
 	 * @since 1.9
-	 *
-	 * @return int
 	 */
-	public function getCreationDate();
+	public function getCreationDate(): string;
 
 	/**
 	 * Whether the page object is new or not
@@ -48,7 +44,7 @@ interface PageInfo {
 	 *
 	 * @since 1.9
 	 *
-	 * @return Title
+	 * @return Title|null
 	 */
 	public function getLastEditor();
 

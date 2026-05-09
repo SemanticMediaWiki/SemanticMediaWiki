@@ -34,6 +34,8 @@ use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\SQLStoreUpdater;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @group semantic-mediawiki
@@ -44,6 +46,9 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $mwHooksHandler;
@@ -112,12 +117,20 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 				->getMock();
 
 			$connection->expects( $this->any() )
-				->method( 'select' )
-				->willReturn( [] );
+				->method( 'newSelectQueryBuilder' )
+				->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 
 			$connection->expects( $this->any() )
-				->method( 'selectRow' )
-				->willReturn( false );
+				->method( 'newInsertQueryBuilder' )
+				->willReturnCallback( fn () => $this->createMockInsertQueryBuilder() );
+
+			$connection->expects( $this->any() )
+				->method( 'newUpdateQueryBuilder' )
+				->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
+
+			$connection->expects( $this->any() )
+				->method( 'newDeleteQueryBuilder' )
+				->willReturnCallback( fn () => $this->createMockDeleteQueryBuilder() );
 		}
 
 		return $connection;

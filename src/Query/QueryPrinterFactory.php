@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use SMW\Query\Exception\ResultFormatNotFoundException;
 
 /**
- * Factory for "result formats", ie classes implementing QueryResultPrinter.
+ * Factory for "result formats", ie classes implementing ResultPrinter.
  *
  * @license GPL-2.0-or-later
  * @since 2.5 (since 1.9, renamed in 2.5)
@@ -142,7 +142,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @param string $formatName
 	 *
-	 * @return QueryResultPrinter
+	 * @return ResultPrinter
 	 * @throws ResultFormatNotFoundException
 	 */
 	public function getPrinter( $formatName ) {
@@ -151,7 +151,7 @@ final class QueryPrinterFactory {
 	}
 
 	/**
-	 * Returns the QueryResultPrinter implementing class that is the printer for the provided format.
+	 * Returns the ResultPrinter implementing class that is the printer for the provided format.
 	 *
 	 * @param string $formatName Format name or alias
 	 *

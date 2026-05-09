@@ -13,66 +13,35 @@ class ImportContents {
 	const CONTENT_TEXT = 'text/plain';
 	const CONTENT_XML = 'text/xml';
 
-	/**
-	 * @var int
-	 */
-	private $version = 0;
+	private int $version = 0;
 
-	/**
-	 * @var string
-	 */
-	private $description = '';
+	private string $description = '';
 
-	/**
-	 * @var string
-	 */
-	private $name = '';
+	private string $name = '';
 
-	/**
-	 * @var string
-	 */
 	private string $importPerformer = '';
 
-	/**
-	 * @var int
-	 */
-	private $namespace = 0;
+	private int $namespace = 0;
 
-	/**
-	 * @var string
-	 */
-	private $contents = '';
+	private string $contents = '';
 
-	/**
-	 * @var string
-	 */
-	private $contentsFile = '';
+	private string $contentsFile = '';
 
-	/**
-	 * @var string
-	 */
-	private $contentType = self::CONTENT_TEXT;
+	private string $contentType = self::CONTENT_TEXT;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	private array $options = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $version
 	 */
-	public function setVersion( $version ): void {
+	public function setVersion( mixed $version ): void {
 		$this->version = intval( $version );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getVersion(): int {
 		return $this->version;
@@ -80,17 +49,13 @@ class ImportContents {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $description
 	 */
-	public function setDescription( $description ): void {
+	public function setDescription( string $description ): void {
 		$this->description = $description;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getDescription(): string {
 		return $this->description;
@@ -98,35 +63,27 @@ class ImportContents {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $contentType
 	 */
-	public function setContentType( $contentType ): void {
+	public function setContentType( string $contentType ): void {
 		$this->contentType = $contentType;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getContentType() {
+	public function getContentType(): string {
 		return $this->contentType;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $name
 	 */
-	public function setName( $name ): void {
+	public function setName( string $name ): void {
 		$this->name = $name;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return $this->name;
@@ -134,8 +91,6 @@ class ImportContents {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $importPerformer
 	 */
 	public function setImportPerformer( string $importPerformer ): void {
 		$this->importPerformer = $importPerformer;
@@ -143,8 +98,6 @@ class ImportContents {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getImportPerformer(): string {
 		return $this->importPerformer;
@@ -152,17 +105,13 @@ class ImportContents {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $namespace
 	 */
-	public function setNamespace( $namespace ): void {
+	public function setNamespace( int $namespace ): void {
 		$this->namespace = $namespace;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getNamespace(): int {
 		return $this->namespace;
@@ -170,17 +119,13 @@ class ImportContents {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $contentsFile
 	 */
-	public function setContentsFile( $contentsFile ): void {
+	public function setContentsFile( string $contentsFile ): void {
 		$this->contentsFile = $contentsFile;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getFingerprint(): string {
 		$fingerprint = md5( $this->contents );
@@ -194,8 +139,6 @@ class ImportContents {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public function getContentsFile(): string {
 		return $this->contentsFile;
@@ -203,17 +146,13 @@ class ImportContents {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $contents
 	 */
-	public function setContents( $contents ): void {
+	public function setContents( string $contents ): void {
 		$this->contents = $contents;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function getContents(): string {
 		return $this->contents;
@@ -221,17 +160,13 @@ class ImportContents {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $error
 	 */
-	public function addError( $error ): void {
+	public function addError( array|string $error ): void {
 		$this->errors[] = $error;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string[]
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -239,17 +174,13 @@ class ImportContents {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $options
 	 */
-	public function setOptions( $options ): void {
+	public function setOptions( mixed $options ): void {
 		$this->options = (array)$options;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return array
 	 */
 	public function getOptions(): array {
 		return $this->options;
@@ -257,13 +188,9 @@ class ImportContents {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $key
-	 *
-	 * @return mixed
 	 */
-	public function getOption( $key ) {
-		return isset( $this->options[$key] ) ? $this->options[$key] : false;
+	public function getOption( string $key ): mixed {
+		return $this->options[$key] ?? false;
 	}
 
 }

@@ -96,7 +96,7 @@ class RequestOptions {
 	 * Whether it is lower or upper is specified by the parameter "ascending"
 	 * (true->lower, false->upper).
 	 *
-	 * @var bool|null
+	 * @var bool|int|string|null
 	 */
 	public $boundary = null;
 

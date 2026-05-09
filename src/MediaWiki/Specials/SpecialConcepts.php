@@ -87,19 +87,19 @@ class SpecialConcepts extends SpecialPage {
 			'OFFSET' => $offset,
 		];
 
-		$res = $connection->select(
-			[
+		$res = $connection->newSelectQueryBuilder()
+			->select( $fields )
+			->tables( [
 				SQLStore::ID_TABLE,
 				SQLStore::CONCEPT_TABLE
-			],
-			$fields,
-			$conditions,
-			__METHOD__,
-			$options,
-			[
+			] )
+			->joinConds( [
 				SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=s_id' ] ]
-			]
-		);
+			] )
+			->where( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $res as $row ) {
 			$results[] = new WikiPage( $row->smw_title, SMW_NS_CONCEPT );

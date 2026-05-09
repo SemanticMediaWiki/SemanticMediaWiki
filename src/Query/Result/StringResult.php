@@ -114,6 +114,8 @@ class StringResult extends QueryResult {
 	 * This override previously returned string|array, violating the parent's
 	 * array return type contract. Use getFormattedResult() for the original
 	 * string|array behavior.
+	 *
+	 * @return array
 	 */
 	public function getResults(): array {
 		$result = $this->getFormattedResult();

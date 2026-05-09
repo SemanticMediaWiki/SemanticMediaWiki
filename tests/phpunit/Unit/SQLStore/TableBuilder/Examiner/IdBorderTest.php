@@ -7,6 +7,8 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\IdBorder
@@ -18,6 +20,9 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class IdBorderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $spyMessageReporter;
 	private $store;
@@ -39,17 +44,19 @@ class IdBorderTest extends TestCase {
 	}
 
 	public function testCheckBorder_HasBorder() {
-		$row = [
-			'smw_id' => 100
+		$rows = [
+			(object)[ 'smw_id' => 100 ]
 		];
+
+		$selectBuilder = $this->createMockSelectQueryBuilder( $rows );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( [ (object)$row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -80,19 +87,23 @@ class IdBorderTest extends TestCase {
 			(object)[ 'smw_id' => 9999 ]
 		];
 
+		$selectBuilder = $this->createMockSelectQueryBuilder( $rows );
+
+		$capturedTables = [];
+		$capturedWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $capturedTables, $capturedWheres );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				$this->anything(),
-				[ 'smw_id' => 9999 ] );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -110,6 +121,13 @@ class IdBorderTest extends TestCase {
 				IdBorder::LEGACY_BOUND => 42
 			]
 		);
+
+		$this->assertSame(
+			[ [ 'smw_id' => 9999 ] ],
+			$capturedWheres
+		);
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedTables );
 
 		$this->assertStringContainsString(
 			'space for internal properties allocated',
@@ -133,19 +151,23 @@ class IdBorderTest extends TestCase {
 			->setMethods( [ 'moveSMWPageID' ] )
 			->getMock();
 
+		$selectBuilder = $this->createMockSelectQueryBuilder( $rows );
+
+		$capturedTables = [];
+		$capturedRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $capturedTables, $capturedRows );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				$this->anything(),
-				$expected );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -167,6 +189,13 @@ class IdBorderTest extends TestCase {
 				IdBorder::LEGACY_BOUND => 42
 			]
 		);
+
+		$this->assertSame(
+			[ $expected ],
+			$capturedRows
+		);
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedTables );
 
 		$this->assertStringContainsString(
 			'allocating space for internal properties',

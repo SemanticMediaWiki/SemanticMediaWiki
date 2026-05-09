@@ -2,7 +2,7 @@
 
 namespace SMW\DataItems;
 
-use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SemanticData;
 use SMW\Exception\DataItemException;
 
 /**
@@ -36,18 +36,16 @@ class Container extends DataItem {
 	/**
 	 * Internal value.
 	 *
-	 * @var SMWSemanticData
+	 * @var SemanticData
 	 */
 	protected $m_semanticData;
 
 	/**
-	 * Constructor. The given ContainerSemanticData object will be owned
+	 * Constructor. The given SemanticData object will be owned
 	 * by the constructed object afterwards, and in particular will not
 	 * allow further changes.
-	 *
-	 * @param $semanticData ContainerSemanticData
 	 */
-	public function __construct( ContainerSemanticData $semanticData ) {
+	public function __construct( SemanticData $semanticData ) {
 		$this->m_semanticData = $semanticData;
 	}
 
@@ -55,7 +53,7 @@ class Container extends DataItem {
 		return DataItem::TYPE_CONTAINER;
 	}
 
-	public function getSemanticData(): ContainerSemanticData {
+	public function getSemanticData(): SemanticData {
 		return $this->m_semanticData;
 	}
 
@@ -65,8 +63,6 @@ class Container extends DataItem {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $sortKey
 	 */
 	public function setSortKey( string $sortKey ): void {
 		$this->m_semanticData->addPropertyObjectValue(
@@ -81,8 +77,6 @@ class Container extends DataItem {
 
 	/**
 	 * Get a hash string for this data item.
-	 *
-	 * @return string
 	 */
 	public function getHash(): string {
 		$hash = $this->getValueHash( $this->m_semanticData );
@@ -118,13 +112,11 @@ class Container extends DataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 *
-	 * @return Container
 	 */
 	public static function doUnserialize( $serialization ): Container {
 		/// TODO May issue an E_NOTICE when problems occur; catch this
 		$data = unserialize( $serialization );
-		if ( !( $data instanceof ContainerSemanticData ) ) {
+		if ( !( $data instanceof SemanticData ) ) {
 			throw new DataItemException( "Could not unserialize Container from the given string." );
 		}
 		return new Container( $data );

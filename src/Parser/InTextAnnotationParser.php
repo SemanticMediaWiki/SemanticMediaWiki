@@ -6,6 +6,7 @@ use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\MagicWordsFinder;
@@ -144,12 +145,9 @@ class InTextAnnotationParser {
 			$text = LinksEncoder::findAndEncodeLinks( $text, $this );
 		}
 
-		// No longer used with 3.0 given that the LinksEncoder is safer and faster
-		$linksInValuesPcre = false;
-
 		$text = preg_replace_callback(
-			$this->getRegexpPattern( $linksInValuesPcre ),
-			$linksInValuesPcre ? self::class . '::process' : self::class . '::preprocess',
+			$this->getRegexpPattern( false ),
+			self::class . '::preprocess',
 			$text
 		);
 
@@ -204,34 +202,22 @@ class InTextAnnotationParser {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ): string {
+	public static function decodeSquareBracket( string $text ): string {
 		return LinksEncoder::decodeSquareBracket( $text );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ): ?string {
+	public static function obfuscateAnnotation( string $text ): ?string {
 		return LinksEncoder::obfuscateAnnotation( $text );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function removeAnnotation( $text ) {
+	public static function removeAnnotation( string $text ): string {
 		return LinksEncoder::removeAnnotation( $text );
 	}
 
@@ -383,24 +369,27 @@ class InTextAnnotationParser {
 			if (
 				$this->isEnabledNamespace &&
 				$this->isAnnotation &&
-				$this->parserData->canUse() ) {
+				$this->parserData->canUse()
+			) {
 				$this->parserData->addDataValue( $dataValue );
 			}
 		}
 
+		$result = '';
 		// Return the wikitext or the unmodified text representation in case of
 		// a strip marker in order for the standard Parser to work its magic since
 		// we were only interested in the value for the annotation
 		if ( $origValue !== $value ) {
 			$result = $origValue;
-		} else {
+		} elseif ( isset( $dataValue ) ) {
 			$result = $dataValue->getShortWikitext( true );
 		}
 
 		// If necessary add an error text
 		if ( ( $this->showErrors &&
 			$this->isEnabledNamespace && $this->isAnnotation ) &&
-			( !$dataValue->isValid() ) ) {
+			( isset( $dataValue ) && !$dataValue->isValid() )
+		) {
 			// Encode `:` to avoid a comment block and instead of the nowiki tag
 			// use &#58; as placeholder
 			$result = str_replace( ':', '&#58;', $result ) . $dataValue->getErrorText();
@@ -458,14 +447,17 @@ class InTextAnnotationParser {
 
 		$dataValue->setLinkAttributes( [ 'class' => $class ] );
 
-		if ( ( $lang = Localizer::getAnnotatedLanguageCodeFrom( $value ) ) !== false ) {
+		$lang = Localizer::getAnnotatedLanguageCodeFrom( $value );
+		if ( $lang !== false ) {
 			$dataValue->setOption( $dataValue::OPT_USER_LANGUAGE, $lang );
 			$dataValue->setCaption(
 				$caption === false ? $dataValue->getWikiValue() : $caption
 			);
 		}
 
-		$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
+		if ( $dataValue instanceof PropertyValue ) {
+			$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
+		}
 
 		return $dataValue->getShortWikitext( $linker );
 	}

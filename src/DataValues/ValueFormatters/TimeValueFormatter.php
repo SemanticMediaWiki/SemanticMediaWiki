@@ -74,8 +74,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @param bool $mindefault determining whether values below the
 	 * precision of our input should be completed with minimal or maximal
 	 * conceivable values
-	 *
-	 * @return string
 	 */
 	public function getISO8601Date( $mindefault = true ): string {
 		return $this->getISO8601DateInternal( $mindefault ? 'minimize' : 'maximize' );
@@ -86,8 +84,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * Compute a string representation as getISO8601Date but also cut off month and day
 	 * if missing
-	 *
-	 * @return string
 	 */
 	public function getPartialISO8601Date(): string {
 		return $this->getISO8601DateInternal( 'cut' );
@@ -106,13 +102,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * as "0000", year 2 BC(E) as "-0001" and so on.
 	 *
 	 * @since 2.4
-	 *
-	 * @param string $belowPrecisionHandling determining how to handle values below the
-	 * precision of our input:
-	 * * 'cut': omit the remaining part (allowing '2022' and '2022-11' as result)
-	 * * 'minimize': complete the value with minimal conceivable value
-	 * * 'maximize': complete the value with maximal conceivable value
-	 * @return string
 	 */
 	private function getISO8601DateInternal( string $belowPrecisionHandling ): string {
 		$cut = $belowPrecisionHandling === 'cut';
@@ -134,7 +123,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			}
 			$monthnum = $minimize ? 1 : 12;
 		}
-		$result .= '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );
+		$result .= '-' . str_pad( (string)$monthnum, 2, "0", STR_PAD_LEFT );
 
 		$day = $dataItem->getDay();
 		if ( $precision < Time::PREC_YMD ) {
@@ -143,7 +132,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			}
 			$day = $minimize ? 1 : Time::getDayNumberForMonth( $monthnum, $dataItem->getYear(), Time::CM_GREGORIAN );
 		}
-		$result .= '-' . str_pad( $day, 2, "0", STR_PAD_LEFT );
+		$result .= '-' . str_pad( (string)$day, 2, "0", STR_PAD_LEFT );
 
 		if ( $precision === Time::PREC_YMDT ) {
 			$result .= 'T' . $this->getTimeString();
@@ -215,10 +204,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * historic dates we support.
 	 *
 	 * @since 2.4
-	 *
-	 * @param Time $dataItem
-	 *
-	 * @return string
 	 */
 	public function getCaptionFromDataItem( Time $dataItem ): string {
 		// If the language code is empty then the content language code is used
@@ -235,8 +220,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			$cestring = $dataItem->getEra() > 0 ? 'AD' : '';
 			$result = ( $cestring ? ( $cestring . ' ' ) : '' ) . number_format( $dataItem->getYear(), 0, '.', '' );
 		} else {
-			$bcestring = 'BC';
-			$result = number_format( -( $dataItem->getYear() ), 0, '.', '' ) . ( $bcestring ? ( ' ' . $bcestring ) : '' );
+			$result = number_format( -( $dataItem->getYear() ), 0, '.', '' ) . ' BC';
 		}
 
 		if ( $dataItem->getPrecision() >= Time::PREC_YM ) {
@@ -290,11 +274,9 @@ class TimeValueFormatter extends DataValueFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param Time|null $dataItem
-	 *
 	 * @return string
 	 */
-	public function getCaptionFromFreeFormat( ?Time $dataItem = null ) {
+	public function getCaptionFromFreeFormat( ?Time $dataItem = null ): string {
 		$language = Localizer::getInstance()->getLanguage(
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
 		);
@@ -304,17 +286,16 @@ class TimeValueFormatter extends DataValueFormatter {
 		if (
 			$dataItem !== null &&
 			$dataItem->getYear() > Time::PREHISTORY &&
-			preg_match( "/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches ) ) {
+			preg_match( "/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches )
+		) {
 			$intlTimeFormatter = new IntlTimeFormatter( $dataItem, $language );
 
-			if ( ( $caption = $intlTimeFormatter->format( $matches[1] ) ) !== false ) {
-
-				if ( $intlTimeFormatter->containsValidDateFormatRule( $matches[1] ) ) {
-					$caption .= $this->hintCalendarModel( $dataItem );
-				}
-
-				return $caption;
+			$caption = $intlTimeFormatter->format( $matches[1] );
+			if ( $intlTimeFormatter->containsValidDateFormatRule( $matches[1] ) ) {
+				$caption .= $this->hintCalendarModel( $dataItem );
 			}
+
+			return $caption;
 		}
 
 		return $this->getISO8601Date();
@@ -324,10 +305,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @private
 	 *
 	 * @since 2.4
-	 *
-	 * @param Time|null $dataItem
-	 *
-	 * @return string
 	 */
 	public function getLocalizedFormat( ?Time $dataItem = null ): string {
 		if ( $dataItem === null ) {
@@ -348,11 +325,12 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		if ( strpos( $outputFormat, 'TZ' ) !== false ) {
-			$formatFlag = $formatFlag | IntlTimeFormatter::LOCL_TIMEZONE;
+			$formatFlag |= IntlTimeFormatter::LOCL_TIMEZONE;
 			$outputFormat = str_replace( '#TZ', '', $outputFormat );
 		}
 
-		if ( ( $language = Localizer::getInstance()->getAnnotatedLanguageCodeFrom( $outputFormat ) ) === false ) {
+		$language = Localizer::getInstance()->getAnnotatedLanguageCodeFrom( $outputFormat );
+		if ( $language === false ) {
 			$language = $this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE );
 		}
 
@@ -370,7 +348,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			$localizedFormat = $intlTimeFormatter->getLocalizedFormat( $formatFlag ) .
 				$this->hintTimeCorrection( $intlTimeFormatter->hasLocalTimeCorrection() ) .
 				$this->hintCalendarModel( $dataItem );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			$localizedFormat = $this->getISO8601Date();
 		}
 

@@ -125,7 +125,7 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function hasEndpoints( $endpoints ): bool {
-		if ( $this->config->isDefaultStore() === false ) {
+		if ( !$this->config->isDefaultStore() ) {
 			return true;
 		}
 
@@ -133,12 +133,13 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function hasAvailableClientBuilder(): bool {
-		if ( $this->config->isDefaultStore() === false ) {
+		if ( !$this->config->isDefaultStore() ) {
 			return false;
 		}
 
 		// Fail hard because someone selected the ElasticStore but forgot to install
 		// the elastic interface!
+		// @phan-suppress-next-line PhanUndeclaredClassReference
 		if ( !class_exists( ClientBuilder::class ) ) {
 			throw new ClientBuilderNotFoundException();
 		}

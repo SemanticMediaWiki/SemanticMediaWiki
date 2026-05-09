@@ -25,22 +25,13 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	private ?PermissionExaminer $permissionExaminer = null;
 
-	/**
-	 * @var
-	 */
 	private array $indicators = [];
 
-	/**
-	 * @var
-	 */
 	private array $modules = [ 'smw.entityexaminer' ];
 
 	private bool $isDeferredMode = false;
 
-	/**
-	 * @var string
-	 */
-	private $languageCode = '';
+	private mixed $languageCode = '';
 
 	private TemplateEngine $templateEngine;
 
@@ -53,8 +44,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @see PermissionExaminerAware::setPermissionExaminer
 	 * @since 3.2
-	 *
-	 * @param PermissionExaminer $permissionExaminer
 	 */
 	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ): void {
 		$this->permissionExaminer = $permissionExaminer;
@@ -62,8 +51,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param bool $isDeferredMode
 	 */
 	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
@@ -71,8 +58,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
@@ -80,8 +65,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return 'deferrablecompoundintegrityexaminer';
@@ -89,11 +72,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
 	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		return $this->checkIndicators( $subject, $options ) !== [];
@@ -101,8 +79,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getIndicators(): array {
 		return $this->indicators;
@@ -110,8 +86,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getModules(): array {
 		return $this->modules;
@@ -119,8 +93,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getInlineStyle(): string {
 		return '';

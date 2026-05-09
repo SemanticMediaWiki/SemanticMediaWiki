@@ -11,6 +11,7 @@ use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @license GPL-2.0-or-later
@@ -44,36 +45,31 @@ class DuplicateFinder {
 		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
 
-		$query->type( 'SELECT' );
-		$query->options( [ 'LIMIT' => 2 ] );
-
-		$query->table( SQLStore::ID_TABLE );
-
-		// Only find entities
-		$query->fields( [ 'smw_id', 'smw_sortkey' ] );
+		$qb = $connection->newSelectQueryBuilder()
+			->from( SQLStore::ID_TABLE )
+			->select( [ 'smw_id', 'smw_sortkey' ] )
+			->limit( 2 );
 
 		if ( $type === DataItem::TYPE_WIKIPAGE ) {
-			$query->condition( $query->eq( 'smw_title', $dataItem->getDBKey() ) );
-			$query->condition( $query->eq( 'smw_namespace', $dataItem->getNamespace() ) );
-			$query->condition( $query->eq( 'smw_subobject', $dataItem->getSubobjectName() ) );
+			$qb->where( [
+				'smw_title' => $dataItem->getDBKey(),
+				'smw_namespace' => $dataItem->getNamespace(),
+				'smw_subobject' => $dataItem->getSubobjectName(),
+			] );
 		} else {
-			$query->condition( $query->eq( 'smw_sortkey', $dataItem->getCanonicalLabel() ) );
-			$query->condition( $query->eq( 'smw_namespace', SMW_NS_PROPERTY ) );
-			$query->condition( $query->eq( 'smw_subobject', '' ) );
+			$qb->where( [
+				'smw_sortkey' => $dataItem->getCanonicalLabel(),
+				'smw_namespace' => SMW_NS_PROPERTY,
+				'smw_subobject' => '',
+			] );
 		}
 
-		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWIW_OUTDATED ) );
-		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWDELETEIW ) );
-		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWREDIIW ) );
+		foreach ( [ SMW_SQL3_SMWIW_OUTDATED, SMW_SQL3_SMWDELETEIW, SMW_SQL3_SMWREDIIW ] as $iw ) {
+			$qb->andWhere( $connection->expr( 'smw_iw', '!=', $iw ) );
+		}
 
-		$res = $connection->readQuery(
-			$query,
-			__METHOD__
-		);
-
-		return $res->numRows() > 1;
+		return $qb->caller( __METHOD__ )->fetchResultSet()->numRows() > 1;
 	}
 
 	/**
@@ -85,26 +81,25 @@ class DuplicateFinder {
 	 */
 	public function findDuplicates( $table = null ): Iterator|array {
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
-
-		$query->type( 'SELECT' );
 
 		if ( $table === null ) {
 			$table = SQLStore::ID_TABLE;
 		}
 
+		$qb = $connection->newSelectQueryBuilder()->from( $table );
+
 		if ( $table === SQLStore::ID_TABLE ) {
-			$this->id_table( $table, $query );
+			$this->id_table( $table, $qb );
 		} elseif ( $table === PropertyTableInfoFetcher::findTableIdForDataItemTypeId( DataItem::TYPE_WIKIPAGE ) ) {
-			$this->common_table( $table, $query );
+			$this->common_table( $table, $qb );
 		} elseif ( $table === RedirectStore::TABLE_NAME ) {
-			$this->common_table( $table, $query );
+			$this->common_table( $table, $qb );
 		}
 
-		$rows = $query->execute( __METHOD__ );
+		$rows = $qb->caller( __METHOD__ )->fetchResultSet();
 		$fname = __METHOD__;
 
-		if ( $rows === false ) {
+		if ( $rows->numRows() === 0 ) {
 			return [];
 		}
 
@@ -113,12 +108,12 @@ class DuplicateFinder {
 			$map = [ 'count' => $row->count ] + $map;
 
 			if ( $table === PropertyTableInfoFetcher::findTableIdForDataItemTypeId( DataItem::TYPE_WIKIPAGE ) ) {
-				$row = $connection->selectRow(
-					SQLStore::ID_TABLE,
-					[ 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject' ],
-					[ 'smw_id' => $row->s_id ],
-					$fname
-				);
+				$row = $connection->newSelectQueryBuilder()
+					->select( [ 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject' ] )
+					->from( SQLStore::ID_TABLE )
+					->where( [ 'smw_id' => $row->s_id ] )
+					->caller( $fname )
+					->fetchRow();
 
 				$map += [
 					'entity' => [
@@ -134,43 +129,29 @@ class DuplicateFinder {
 			return $map;
 		};
 
-		$mappingIterator = $this->iteratorFactory->newMappingIterator(
+		return $this->iteratorFactory->newMappingIterator(
 			$this->iteratorFactory->newResultIterator( $rows ),
 			$callback
 		);
-
-		return $mappingIterator;
 	}
 
-	private function id_table( string $table, $query ): void {
+	private function id_table( string $table, SelectQueryBuilder $qb ): void {
 		$fields = self::fields( $table );
+		$connection = $this->store->getConnection( 'mw.db' );
 
-		$query->table( $table );
-		$query->fields( array_merge( [ 'COUNT(*) as count' ], $fields ) );
-
-		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWIW_OUTDATED ) );
-		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWDELETEIW ) );
-
-		$query->options(
-			[
-				'GROUP BY' => implode( ',', $fields ),
-				'HAVING' => 'count(*) > 1'
-			]
-		);
+		$qb->select( array_merge( [ 'count' => 'COUNT(*)' ], $fields ) )
+			->andWhere( $connection->expr( 'smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ) )
+			->andWhere( $connection->expr( 'smw_iw', '!=', SMW_SQL3_SMWDELETEIW ) )
+			->groupBy( $fields )
+			->having( 'count(*) > 1' );
 	}
 
-	private function common_table( string $table, $query ): void {
+	private function common_table( string $table, SelectQueryBuilder $qb ): void {
 		$fields = self::fields( $table );
 
-		$query->table( $table );
-		$query->fields( array_merge( [ 'COUNT(*) as count' ], $fields ) );
-
-		$query->options(
-			[
-				'GROUP BY' => implode( ',', $fields ),
-				'HAVING' => 'count(*) > 1'
-			]
-		);
+		$qb->select( array_merge( [ 'count' => 'COUNT(*)' ], $fields ) )
+			->groupBy( $fields )
+			->having( 'count(*) > 1' );
 	}
 
 	private static function fields( string $tableName ) {
@@ -195,6 +176,7 @@ class DuplicateFinder {
 
 		$fields = $fieldsDef[$tableName];
 
+		$map = [];
 		foreach ( $fields as $field ) {
 			$map[$field] = $row->{$field};
 		}

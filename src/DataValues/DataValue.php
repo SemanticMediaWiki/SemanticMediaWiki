@@ -22,6 +22,7 @@ use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Options;
 use SMW\ProcessingError;
+use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Query\Language\Description;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;
@@ -102,7 +103,7 @@ abstract class DataValue {
 	 *
 	 * This variable must always be set to some data item, even if there
 	 * have been errors in initialising the data.
-	 * @var DataItem
+	 * @var ?DataItem
 	 */
 	protected $m_dataitem;
 
@@ -111,7 +112,7 @@ abstract class DataValue {
 	 * given. Property pages are used to make settings that affect parsing
 	 * and display, hence it is sometimes needed to know them.
 	 *
-	 * @var Property
+	 * @var ?Property
 	 */
 	protected $m_property = null;
 
@@ -121,15 +122,14 @@ abstract class DataValue {
 	 * parse user values such as "#subsection" which only make sense when
 	 * used on a certain page.
 	 *
-	 * @var WikiPage
+	 * @var ?WikiPage
 	 */
 	protected $m_contextPage = null;
 
 	/**
 	 * The text label to be used for output or false if none given.
-	 * @var string
 	 */
-	protected $m_caption;
+	protected string|int|false|null $m_caption = null;
 
 	/**
 	 * Output formatting string, false when not set.
@@ -161,7 +161,7 @@ abstract class DataValue {
 	private ?Options $options = null;
 
 	/**
-	 * @var InfoLinksProvider
+	 * @var ?InfoLinksProvider
 	 */
 	private $infoLinksProvider = null;
 
@@ -180,9 +180,6 @@ abstract class DataValue {
 	 */
 	private $descriptionBuilderRegistry;
 
-	/**
-	 * @var
-	 */
 	private array $callables = [];
 
 	/**
@@ -542,6 +539,7 @@ abstract class DataValue {
 	 */
 	public function getDataItem() {
 		if ( $this->isValid() ) {
+			// @phan-suppress-next-line PhanTypeMismatchReturnNullable
 			return $this->m_dataitem;
 		}
 
@@ -715,8 +713,6 @@ abstract class DataValue {
 	 * be used to compare different value objects.
 	 * Possibly overwritten by subclasses (e.g. to ensure that returned
 	 * value is normalized first)
-	 *
-	 * @return string
 	 */
 	public function getHash(): string {
 		return $this->isValid() ? $this->m_dataitem->getHash() : implode( "\t", $this->mErrors );
@@ -725,11 +721,9 @@ abstract class DataValue {
 	/**
 	 * Convenience method that checks if the value that is used to sort
 	 * data of this type is numeric. This only works if the value is set.
-	 *
-	 * @return bool
 	 */
 	public function isNumeric(): bool {
-		if ( isset( $this->m_dataitem ) ) {
+		if ( $this->m_dataitem !== null ) {
 			return is_numeric( $this->m_dataitem->getSortKey() );
 		}
 
@@ -739,11 +733,9 @@ abstract class DataValue {
 	/**
 	 * Return true if a value was defined and understood by the given type,
 	 * and false if parsing errors occurred or no value was given.
-	 *
-	 * @return bool
 	 */
 	public function isValid(): bool {
-		return !$this->mHasErrors && isset( $this->m_dataitem );
+		return !$this->mHasErrors && $this->m_dataitem !== null;
 	}
 
 	/**
@@ -825,8 +817,6 @@ abstract class DataValue {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return Options|null $options
 	 */
 	public function copyOptions( ?Options $options = null ): void {
 		if ( $options === null ) {
@@ -894,8 +884,6 @@ abstract class DataValue {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return Options
 	 */
 	protected function getOptions(): ?Options {
 		return $this->options;

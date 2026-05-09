@@ -92,8 +92,18 @@
 		"SMW\\QueryPrinterFactory": "src/Query/QueryPrinterFactory.php",
 		"SMW\\RecurringEvents": "src/Utils/RecurringEvents.php",
 		"SMW\\SemanticData": "src/DataModel/SemanticData.php",
-		"SMW\\Subobject": "src/DataModel/Subobject.php"
+		"SMW\\Subobject": "src/DataModel/Subobject.php",
+		"SMW\\SQLStore\\Lookup\\ListLookup": "src/Lookup/ListLookup.php",
+		"SMW\\SQLStore\\Lookup\\CachedListLookup": "src/Lookup/CachedListLookup.php"
 	},
+	"namespaces": [
+		{ "id": 102, "constant": "SMW_NS_PROPERTY",      "name": "Property",        "content": true },
+		{ "id": 103, "constant": "SMW_NS_PROPERTY_TALK", "name": "Property_talk",   "subpages": true },
+		{ "id": 108, "constant": "SMW_NS_CONCEPT",       "name": "Concept",         "content": true },
+		{ "id": 109, "constant": "SMW_NS_CONCEPT_TALK",  "name": "Concept_talk",    "subpages": true },
+		{ "id": 112, "constant": "SMW_NS_SCHEMA",        "name": "smw/schema",      "defaultcontentmodel": "smw/schema" },
+		{ "id": 113, "constant": "SMW_NS_SCHEMA_TALK",   "name": "smw/schema_talk", "subpages": true }
+	],
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [
 		"SemanticMediaWiki::onExtensionFunction"
@@ -716,5 +726,565 @@
 		"smw-prefs-general-options-show-entity-issue-panel": true
 	},
 	"load_composer_autoloader": true,
+	"config_prefix": "smwg",
+	"config": {
+		"AllowRecursiveExport": {
+			"value": false,
+			"description": "When `true`, normal users can request recursive OWL/RDF exports."
+		},
+		"AutoRefreshOnPageMove": {
+			"value": true,
+			"description": "When `true`, refreshes semantic data in the store when a page is moved."
+		},
+		"AutoRefreshOnPurge": {
+			"value": true,
+			"description": "When `true`, refreshes semantic data in the store when a page is manually purged."
+		},
+		"AutoRefreshSubject": {
+			"value": true,
+			"description": "When `true`, refreshes the semantic store for pages that are edited."
+		},
+		"ChangePropagationProtection": {
+			"value": true,
+			"description": "When `true`, protects an active change propagation from being disabled without administrative intervention."
+		},
+		"CacheUsage": {
+			"value": {
+				"special.wantedproperties": 3600,
+				"special.unusedproperties": 3600,
+				"special.properties": 3600,
+				"special.statistics": 3600,
+				"table.statistics": 3600,
+				"api.browse": 3600,
+				"api.browse.pvalue": 3600,
+				"api.browse.psubject": 3600,
+				"api.task": 3600,
+				"api.table.statistics": 3600
+			},
+			"description": "Defines time to live for in Semantic MediaWiki used cache instances.",
+			"merge_strategy": "array_plus"
+		},
+		"ChangePropagationWatchlist": {
+			"value": ["_PVAL", "_LIST", "_PVAP", "_PVUC", "_PDESC", "_PPLB", "_PREC", "_PDESC", "_SUBP", "_SUBC", "_PVALI"],
+			"description": "Property IDs that trigger full re-processing of dependent pages when their values change.",
+			"merge_strategy": "provide_default"
+		},
+		"CheckForRemnantEntities": {
+			"value": "purge",
+			"description": "Controls when remnant entity checks run: `\"purge\"` (on purge only), `true` (every update), or `false` (disabled)."
+		},
+		"CompactLinkSupport": {
+			"value": false,
+			"description": "When `true`, encodes and compresses Special:Browse / Special:Ask / Special:SearchByProperty links to reduce URL length."
+		},
+		"ConfigFileDir": {
+			"value": "",
+			"description": "Directory used to persistently store SMW configuration files (`.smw.json`, `.smw.maintenance.json`). The directory must be writable. Defaults to the extension root; you may point it to `$wgUploadDirectory` or any other writable location.",
+			"path": true
+		},
+		"CreateProtectionRight": {
+			"value": false,
+			"description": "User right required to create new properties; `false` disables creation protection."
+		},
+		"DataTypePropertyExemptionList": {
+			"value": ["Record", "Reference", "Keyword"],
+			"description": "DataTypes exempted from the automatic corresponding-property registration.",
+			"merge_strategy": "provide_default"
+		},
+		"DefaultLoggerRole": {
+			"value": "production",
+			"description": "Logging granularity role (`developer`, `user`, or `production`); controls which SMW events are written to the debug log."
+		},
+		"DefaultNumRecurringEvents": {
+			"value": 100,
+			"description": "Default number of recurring-event instances generated when no end date is set."
+		},
+		"DefaultOutputFormatters": {
+			"value": [],
+			"description": "Default output formatter overrides keyed by type ID, type name, or property name.",
+			"merge_strategy": "array_plus"
+		},
+		"DefaultStore": {
+			"value": "SMW\\SQLStore\\SQLStore",
+			"description": "Default storage backend class; `SQLStore::class` evaluates to this fully-qualified string at compile time."
+		},
+		"DeprecationNotices": {
+			"value": [],
+			"description": "Registry of deprecation notices shown in the Special:Admin \"Deprecation notices\" panel.",
+			"merge_strategy": "array_plus"
+		},
+		"DetectOutdatedData": {
+			"value": false,
+			"description": "When `true`, verifies semantic data is up to date with the latest revision on every page load."
+		},
+		"Dir": {
+			"value": "",
+			"description": "Alias for `smwgIP`; resolves to the extension root directory. Provided for readability in code that does not use `smwgIP` directly.",
+			"path": true
+		},
+		"EditProtectionRight": {
+			"value": false,
+			"description": "User right required to edit pages protected via `Is edit protected`; `false` disables the feature."
+		},
+		"ElasticsearchCredentials": {
+			"value": [],
+			"description": "ElasticSearch HTTP basic-authentication credentials (`user`/`pass`).",
+			"merge_strategy": "array_plus"
+		},
+		"ElasticsearchEndpoints": {
+			"value": [],
+			"description": "ElasticSearch node endpoint definitions (host/port/scheme objects or `host:port` strings).",
+			"merge_strategy": "provide_default"
+		},
+		"ElasticsearchProfile": {
+			"value": false,
+			"description": "Path to a JSON profile that overrides `smwgElasticsearchConfig` values; `false` disables profile loading."
+		},
+		"EnabledDeferredUpdate": {
+			"value": true,
+			"description": "When `true`, defers store updates via MediaWiki's `DeferredUpdates` mechanism."
+		},
+		"EnabledEditPageHelp": {
+			"value": false,
+			"description": "When `true`, displays SMW help information on the edit page."
+		},
+		"EnabledFulltextSearch": {
+			"value": false,
+			"description": "When `true`, stores text in a separate fulltext-indexed table for SQL fulltext operations."
+		},
+		"EnabledQueryDependencyLinksStore": {
+			"value": false,
+			"description": "When `true`, stores query dependencies to enable parser-cache invalidation when queried entities change."
+		},
+		"EnabledSpecialPage": {
+			"value": ["Ask"],
+			"description": "Special pages on which SMW annotation and content processing is enabled.",
+			"merge_strategy": "provide_default"
+		},
+		"EnableExportRDFLink": {
+			"value": true,
+			"description": "When `true`, adds a `Special:ExportRDF` `<link>` element to every page `<head>`."
+		},
+		"EnableUpdateJobs": {
+			"value": true,
+			"description": "When `false`, disables MediaWiki job-queue updates triggered by semantic data changes."
+		},
+		"EntityCollation": {
+			"value": "identity",
+			"description": "Collation strategy for entity sort values; must match `$wgCategoryCollation`; changes require running `updateEntityCollation.php`."
+		},
+		"ExportBacklinks": {
+			"value": true,
+			"description": "When `true`, backlinks are included by default in OWL/RDF exports."
+		},
+		"ExportBCAuxiliaryUse": {
+			"value": false,
+			"description": "BC: when `true`, retains the legacy `aux`-marker URIs in RDF/Turtle exports."
+		},
+		"ExportBCNonCanonicalFormUse": {
+			"value": false,
+			"description": "BC: when `true`, uses localized rather than canonical identifiers in RDF/Query statements."
+		},
+		"ExportResourcesAsIri": {
+			"value": true,
+			"description": "When `true`, resources are exported as IRIs (RFC 3987) instead of ASCII-encoded URIs."
+		},
+		"ExtraneousLanguageFileDir": {
+			"value": "i18n/extra",
+			"description": "Directory containing SMW-specific i18n files for extraneous language data (unit labels, property aliases, etc.).",
+			"path": true
+		},
+		"FallbackSearchType": {
+			"value": null,
+			"description": "Search engine class to fall back to when SMWSearch cannot parse a query; `null` uses the database default."
+		},
+		"FieldTypeFeatures": {
+			"value": false,
+			"description": "SQLStore field-type modifications (case-insensitive collation / extended field width); `false` (= `SMW_FIELDT_NONE`) disables all flags."
+		},
+		"FixedProperties": {
+			"value": [],
+			"description": "Properties managed in their own fixed database table for sharding large value sets.",
+			"merge_strategy": "provide_default"
+		},
+		"FulltextDeferredUpdate": {
+			"value": true,
+			"description": "When `true`, defers fulltext index updates to a background process decoupled from the storage update."
+		},
+		"FulltextLanguageDetection": {
+			"value": [],
+			"description": "Language-detector configurations for fulltext indexing; empty disables language detection.",
+			"merge_strategy": "array_plus"
+		},
+		"FulltextSearchMinTokenSize": {
+			"value": 3,
+			"description": "Minimum token length used to decide between MATCH and LIKE operators in fulltext conditions."
+		},
+		"FulltextSearchPropertyExemptionList": {
+			"value": ["_ASKFO", "_ASKST", "_ASKPA", "_IMPO", "_LCODE", "_UNIT", "_CONV", "_TYPE", "_ERRT", "_INST", "_ASK", "_SOBJ", "_PVAL", "_PVALI", "_REDI", "_CHGPRO"],
+			"description": "Property keys excluded from fulltext indexing; LIKE/NLIKE is used for these instead.",
+			"merge_strategy": "provide_default"
+		},
+		"FulltextSearchTableOptions": {
+			"value": {
+				"mysql": ["ENGINE=MyISAM, DEFAULT CHARSET=utf8"],
+				"sqlite": ["FTS4"]
+			},
+			"description": "Fulltext search table options.",
+			"merge_strategy": "array_plus"
+		},
+		"IgnoreExtensionRegistrationCheck": {
+			"value": false,
+			"description": "When `true`, suppresses the check that verifies the extension was correctly registered via `wfLoadExtension`."
+		},
+		"IgnoreQueryErrors": {
+			"value": true,
+			"description": "When `true`, queries execute even if errors were detected during parsing."
+		},
+		"IgnoreUpgradeKeyCheck": {
+			"value": false,
+			"description": "When `true`, bypasses the `SetupCheck` and `MaintenanceCheck` gates that block execution when the schema is in an intermediate state."
+		},
+		"ImportFileDirs": {
+			"value": {
+				"smw": "data/import"
+			},
+			"description": "Directories from which SMW reads import-content definitions; users add their own vocabularies by adding entries.",
+			"path": true,
+			"merge_strategy": "array_plus"
+		},
+		"ImportPerformers": {
+			"value": ["SemanticMediaWikiImporter"],
+			"description": "Users reserved exclusively for the import task; they may lock content from alteration by others.",
+			"merge_strategy": "provide_default"
+		},
+		"ImportReqVersion": {
+			"value": 1,
+			"description": "Import-file version required for content to be imported during setup; set to `false` to disable import."
+		},
+		"IP": {
+			"value": "",
+			"description": "Path to the SMW extension root directory as seen on the local filesystem. Used to resolve PHP file paths within the extension.",
+			"path": true
+		},
+		"JobQueueWatchlist": {
+			"value": [],
+			"description": "Job types shown in the personal-bar job-queue watchlist; empty disables the feature.",
+			"merge_strategy": "provide_default"
+		},
+		"MaintenanceDir": {
+			"value": "maintenance",
+			"description": "Directory containing SMW maintenance scripts.",
+			"path": true
+		},
+		"MandatorySubpropertyParentTypeInheritance": {
+			"value": false,
+			"description": "When `true`, enforces type inheritance between a parent property and its subproperties."
+		},
+		"MaxNonExpNumber": {
+			"value": 1000000000000000,
+			"description": "Largest number displayed without scientific notation."
+		},
+		"MaxNumRecurringEvents": {
+			"value": 500,
+			"description": "Maximum number of recurring-event instances that can be defined regardless of end date."
+		},
+		"MaxPropertyValues": {
+			"value": 3,
+			"description": "Maximum number of property values displayed per property on a page's Property page."
+		},
+		"Namespace": {
+			"value": null,
+			"description": "URI/IRI namespace for OWL/RDF export resources; auto-derived from the wiki URL when `null`."
+		},
+		"PageSpecialProperties": {
+			"value": ["_MDAT"],
+			"description": "Special properties automatically tracked and stored for pages (e.g. modification date).",
+			"merge_strategy": "provide_default"
+		},
+		"PagingLimit": {
+			"value": {
+				"type": 50,
+				"concept": 250,
+				"property": 20,
+				"errorlist": 20,
+				"browse": {
+					"valuelist.outgoing": 30,
+					"valuelist.incoming": 20
+				}
+			},
+			"description": "Number of results shown in the listings on pages in the Property and Concept namespaces as well as other services that require a limit.",
+			"merge_strategy": "array_replace_recursive"
+		},
+		"PDefaultType": {
+			"value": "_wpg",
+			"description": "Internal type ID assumed for properties that have no explicit type declaration; defaults to `Type:Page`."
+		},
+		"PlainList": {
+			"value": false,
+			"description": "When `true`, `format=list` produces plain lists without HTML markup, restoring pre-3.0 behaviour."
+		},
+		"PostEditUpdate": {
+			"value": {
+				"check-query": false,
+				"run-jobs": {
+					"smw.fulltextSearchTableUpdate": 1
+				},
+				"purge-page": {
+					"on-outdated-query-dependency": true
+				}
+			},
+			"description": "Regulates task specific settings for the post-edit process.",
+			"merge_strategy": "array_replace_recursive"
+		},
+		"PropertyInvalidCharacterList": {
+			"value": ["[", "]", "|", "<", ">", "{", "}", "+", "–", "%", "\r", "\n", "?", "*", "!"],
+			"description": "Characters considered invalid in property labels; annotations using them produce an error.",
+			"merge_strategy": "provide_default"
+		},
+		"PropertyListLimit": {
+			"value": {
+				"subproperty": 25,
+				"redirect": 25,
+				"error": 10
+			},
+			"description": "Property page list limits.",
+			"merge_strategy": "array_plus"
+		},
+		"PropertyLowUsageThreshold": {
+			"value": 5,
+			"description": "Usage count below which a property is highlighted as \"hardly used\" on Special:Properties."
+		},
+		"PropertyReservedNameList": {
+			"value": ["Category", "smw-property-reserved-category"],
+			"description": "Names reserved as property names because they interfere with SMW or MediaWiki internals.",
+			"merge_strategy": "provide_default"
+		},
+		"PropertyRetiredList": {
+			"value": ["_SF_", "_SD_"],
+			"description": "Property prefixes / IDs marked as retired and eligible for removal from the entity table.",
+			"merge_strategy": "provide_default"
+		},
+		"PropertyZeroCountDisplay": {
+			"value": true,
+			"description": "When `true`, properties with zero usage are shown on Special:Properties."
+		},
+		"QComparators": {
+			"value": "<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|in:|not:|phrase:",
+			"description": "Pipe-delimited list of comparator operators supported in queries."
+		},
+		"QConceptCacheLifetime": {
+			"value": 1440,
+			"description": "Concept cache lifetime in minutes; SMW recomputes an older cache if this threshold is exceeded."
+		},
+		"QConceptMaxDepth": {
+			"value": 8,
+			"description": "Maximum property-chain depth for a concept query."
+		},
+		"QConceptMaxSize": {
+			"value": 20,
+			"description": "Maximum number of conditions permitted in a concept query."
+		},
+		"QDefaultLimit": {
+			"value": 50,
+			"description": "Default number of result rows returned by an inline query."
+		},
+		"QDefaultLinking": {
+			"value": "all",
+			"description": "Default linking behaviour for query results; one of `none`, `subject`, or `all`."
+		},
+		"QDefaultNamespaces": {
+			"value": null,
+			"description": "Default namespaces searched by queries; `null` disables namespace restrictions for faster queries."
+		},
+		"QEnabled": {
+			"value": true,
+			"description": "Master switch to enable or disable all query-related features and interfaces."
+		},
+		"QExpensiveExecutionLimit": {
+			"value": false,
+			"description": "Maximum number of expensive `#ask` / `#show` calls per page; `false` means no limit."
+		},
+		"QExpensiveThreshold": {
+			"value": 10,
+			"description": "Time in seconds above which a `#ask` / `#show` call is classified as expensive."
+		},
+		"QFilterDuplicates": {
+			"value": false,
+			"description": "When `true`, filters duplicate query segments from the query build process (experimental)."
+		},
+		"QMaxDepth": {
+			"value": 4,
+			"description": "Maximum property-chain depth of a query."
+		},
+		"QMaxInlineLimit": {
+			"value": 500,
+			"description": "Maximum number of result rows printed by a single inline query on a page."
+		},
+		"QMaxLimit": {
+			"value": 10000,
+			"description": "Maximum number of results ever retrieved, even on special query pages."
+		},
+		"QMaxSize": {
+			"value": 16,
+			"description": "Maximum number of conditions permitted in a single query."
+		},
+		"QPrintoutLimit": {
+			"value": 100,
+			"description": "Maximum number of printout columns (`?`-statements) supported in a single query."
+		},
+		"QStrictComparators": {
+			"value": false,
+			"description": "Canonical spelling of `smwStrictComparators`; same semantics."
+		},
+		"QSubcategoryDepth": {
+			"value": 10,
+			"description": "Maximum depth for sub-category inclusion steps within the category hierarchy."
+		},
+		"QSubpropertyDepth": {
+			"value": 10,
+			"description": "Maximum depth for sub-property inclusion steps within the property hierarchy."
+		},
+		"QTemporaryTablesAutoCommitMode": {
+			"value": false,
+			"description": "When `true`, forces auto-commit for temporary tables to work around MySQL GTID restrictions."
+		},
+		"QueryDependencyPropertyExemptionList": {
+			"value": ["_MDAT", "_SOBJ", "_ASKDU", "_ASKDE", "_ASKSI", "_ASKFO", "_ASKST"],
+			"description": "Property keys excluded from query-dependency detection to avoid spurious cache purges.",
+			"merge_strategy": "provide_default"
+		},
+		"QueryProfiler": {
+			"value": true,
+			"description": "When `false`, disables the query profiler; can be set to a bitmask of `SMW_QPRFL_*` constants for granular control."
+		},
+		"QueryResultCacheLifetime": {
+			"value": 604800,
+			"description": "Lifetime in seconds for embedded query result caches; default one week."
+		},
+		"QueryResultCacheRefreshOnPurge": {
+			"value": true,
+			"description": "When `true`, embedded query result caches are invalidated when an `action=purge` event fires."
+		},
+		"QueryResultNonEmbeddedCacheLifetime": {
+			"value": 600,
+			"description": "Lifetime in seconds for non-embedded (Special:Ask, API) query result caches; `0` disables."
+		},
+		"QuerySources": {
+			"value": [],
+			"description": "Available external query sources; unknown sources fall back to the local wiki.",
+			"merge_strategy": "array_plus"
+		},
+		"QUpperbound": {
+			"value": 5000,
+			"description": "Maximum rows printable in an inline query when an offset is applied."
+		},
+		"QUseLegacyQuery": {
+			"value": false,
+			"description": "When `true`, reverts to the pre-7.x `SELECT DISTINCT` query shape instead of the derived-table rewrite."
+		},
+		"ResultAliases": {
+			"value": {
+				"feed": ["rss"],
+				"templatefile": ["template file"],
+				"plainlist": ["plain"]
+			},
+			"description": "Predefined aliases for result formats.",
+			"merge_strategy": "array_plus"
+		},
+		"ResultFormats": {
+			"value": {
+				"table": "SMW\\Query\\ResultPrinters\\TableResultPrinter",
+				"broadtable": "SMW\\Query\\ResultPrinters\\TableResultPrinter",
+				"list": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"plainlist": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"ol": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"ul": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"category": "SMW\\Query\\ResultPrinters\\CategoryResultPrinter",
+				"embedded": "SMW\\Query\\ResultPrinters\\EmbeddedResultPrinter",
+				"template": "SMW\\Query\\ResultPrinters\\ListResultPrinter",
+				"count": "SMW\\Query\\ResultPrinters\\NullResultPrinter",
+				"debug": "SMW\\Query\\ResultPrinters\\NullResultPrinter",
+				"feed": "SMW\\Query\\ResultPrinters\\FeedExportPrinter",
+				"csv": "SMW\\Query\\ResultPrinters\\CsvFileExportPrinter",
+				"templatefile": "SMW\\Query\\ResultPrinters\\TemplateFileExportPrinter",
+				"dsv": "SMW\\Query\\ResultPrinters\\DsvResultPrinter",
+				"json": "SMW\\Query\\ResultPrinters\\JsonResultPrinter",
+				"rdf": "SMW\\Query\\ResultPrinters\\RdfResultPrinter"
+			},
+			"description": "Predefined result formats for queries.",
+			"merge_strategy": "array_plus"
+		},
+		"SearchByPropertyFuzzy": {
+			"value": ["_num", "_txt", "_dat", "_mlt_rec"],
+			"description": "Type IDs for which Special:SearchByProperty displays nearby fuzzy results when exact matches are few.",
+			"merge_strategy": "provide_default"
+		},
+		"ServicesFileDir": {
+			"value": "src/Services",
+			"description": "Directory containing SMW service-wiring files loaded by the dependency injection container.",
+			"path": true
+		},
+		"SetParserCacheKeys": {
+			"value": ["userlang", "dateformat"],
+			"description": "Session keys added to the parser cache key, each causing additional cache fragmentation.",
+			"merge_strategy": "provide_default"
+		},
+		"SetParserCacheTimestamp": {
+			"value": true,
+			"description": "When `true`, sets a timestamp on `ParserOutput` to allow immediate parser-cache invalidation."
+		},
+		"SimilarityLookupExemptionProperty": {
+			"value": "owl:differentFrom",
+			"description": "Property whose annotation exempts a property from the similarity lookup."
+		},
+		"SparqlCustomConnector": {
+			"value": "\\SMW\\SPARQLStore\\RepositoryConnectors\\GenericRepositoryConnector",
+			"description": "Custom SPARQL repository connector class used when `smwgSparqlRepositoryConnector` is set to `custom`."
+		},
+		"SparqlEndpoint": {
+			"value": {
+				"query": "http://localhost:8080/sparql/",
+				"update": "http://localhost:8080/update/",
+				"data": "http://localhost:8080/data/"
+			},
+			"description": "Configure SPARQL database connection for Semantic MediaWiki.",
+			"merge_strategy": "array_plus"
+		},
+		"SparqlDefaultGraph": {
+			"value": "",
+			"description": "Default graph URI for the SPARQL repository, analogous to a database name in relational stores."
+		},
+		"SparqlReplicationPropertyExemptionList": {
+			"value": [],
+			"description": "Properties exempted from the SPARQL replication process.",
+			"merge_strategy": "provide_default"
+		},
+		"SparqlRepositoryConnector": {
+			"value": "default",
+			"description": "Pre-deployed SPARQL repository connector to use (`default`, `4store`, `blazegraph`, `fuseki`, `sesame`, `virtuoso`, or `custom`)."
+		},
+		"SupportSectionTag": {
+			"value": true,
+			"description": "When `true`, enables `<section>…</section>` tag support."
+		},
+		"Translate": {
+			"value": false,
+			"description": "(Disabled feature) When `true`, translates browser labels using interwiki links."
+		},
+		"UpgradeKey": {
+			"value": "smw:2020-04-18",
+			"description": "Version key that verifies a correct upgrade path was run against the DB schema."
+		},
+		"URITypeSchemeList": {
+			"value": ["http", "https", "mailto", "tel", "ftp", "sftp", "news", "file", "urn", "telnet", "ldap", "gopher", "ssh", "git", "irc", "ircs"],
+			"description": "URI schemes accepted by the URI datatype.",
+			"merge_strategy": "provide_default"
+		},
+		"UseComparableContentHash": {
+			"value": true,
+			"description": "When `true`, normalises subobject content hashes so property-value order does not affect hash equality."
+		}
+	},
 	"manifest_version": 2
 }

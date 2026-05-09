@@ -5,9 +5,9 @@ namespace SMW\Tests\Unit\MediaWiki\Api;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Error;
 use SMW\DataItems\Property;
+use SMW\Lookup\CachedListLookup;
 use SMW\MediaWiki\Api\PropertyListByApiRequest;
 use SMW\Property\SpecificationLookup;
-use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 

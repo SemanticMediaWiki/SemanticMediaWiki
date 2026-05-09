@@ -43,7 +43,7 @@ class NumberValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::WIKI_LONG || $type === self::HTML_LONG ) {
-			return $this->longFormat( $linker );
+			return $this->longFormat();
 		}
 
 		return 'UNKNOWN';
@@ -114,7 +114,7 @@ class NumberValueFormatter extends DataValueFormatter {
 		return $highlighter->getHtml();
 	}
 
-	private function longFormat( $linker = null ) {
+	private function longFormat() {
 		if ( !$this->dataValue->isValid() ) {
 			return $this->dataValue->getErrorText();
 		}

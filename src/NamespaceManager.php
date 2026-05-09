@@ -2,11 +2,16 @@
 
 namespace SMW;
 
-use SMW\Exception\NamespaceIndexChangeException;
 use SMW\Exception\SiteLanguageChangeException;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
+ * Handles SMW's CanonicalNamespaces hook: localised namespace names,
+ * aliases, search defaults, and the semantic-link defaults seed. Static
+ * namespace registration (constants, canonical English names, subpages,
+ * content flag, default content model) is owned by extension.json's
+ * `namespaces` block.
+ *
  * @license GPL-2.0-or-later
  * @since 1.9
  *
@@ -15,49 +20,15 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
  */
 class NamespaceManager {
 
-	/**
-	 * Defines the default namespace index used as offset for building Semantic
-	 * MediaWiki's specific namespace numbers.
-	 */
-	const DEFAULT_NAMESPACEINDEX = 100;
+	private LocalLanguage $localLanguage;
 
-	private ?LocalLanguage $localLanguage;
-
-	/**
-	 * @var string
-	 */
-	private static $initLanguageCode = '';
-
-	/**
-	 * @var int|null
-	 */
-	private static $initNamespaceIndex = null;
-
-	/**
-	 * @since 1.9
-	 *
-	 * @param LocalLanguage|null $LocalLanguage
-	 */
-	public function __construct( ?LocalLanguage $LocalLanguage = null ) {
-		$this->localLanguage = $LocalLanguage;
-
-		if ( $this->localLanguage === null ) {
-			$this->localLanguage = LocalLanguage::getInstance();
-		}
-	}
+	private static string $initLanguageCode = '';
 
 	/**
 	 * @since 1.9
 	 */
-	public function init( array $vars ): array {
-		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
-			$vars = $this->initCustomNamespace( $vars )['newVars'];
-		}
-
-		$this->addNamespaceSettings( $vars );
-		$this->addExtraNamespaceSettings( $vars );
-
-		return $vars;
+	public function __construct( ?LocalLanguage $localLanguage = null ) {
+		$this->localLanguage = $localLanguage ?? LocalLanguage::getInstance();
 	}
 
 	/**
@@ -65,245 +36,78 @@ class NamespaceManager {
 	 */
 	public static function clear(): void {
 		self::$initLanguageCode = '';
-		self::$initNamespaceIndex = null;
 	}
 
 	/**
 	 * @see Hooks:CanonicalNamespaces
-	 * CanonicalNamespaces initialization
-	 *
-	 * @note According to T104954 registration via wgExtensionFunctions is to late
-	 * and should happen before that
-	 *
-	 * @see https://phabricator.wikimedia.org/T104954#2391291
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
-	 * @Bug 34383
 	 *
 	 * @since 2.5
-	 *
-	 * @param array &$namespaces
 	 */
 	public static function initCanonicalNamespaces( array &$namespaces ): bool {
-		$instance_newVars = self::initCustomNamespace( $GLOBALS );
-		Globals::replace( $instance_newVars['newVars'] );
-		$canonicalNames = $instance_newVars['instance']->getCanonicalNames();
-		$namespacesByName = array_flip( $namespaces );
+		$instance = new self();
+		$vars = $GLOBALS;
+		$localLanguage = $instance->localLanguage->fetch( $instance->getLanguageCode( $vars ) );
+		$extraNamespaces = $localLanguage->getNamespaces();
+		$namespaceAliases = $localLanguage->getNamespaceAliases();
+		$canonicalNames = self::getCanonicalNames();
 
-		// https://phabricator.wikimedia.org/T160665
-		// Find any namespace that uses the same canonical name and remove it
+		// T160665: drop any existing namespace that uses a name we own.
+		$namespacesByName = array_flip( $namespaces );
 		foreach ( $canonicalNames as $id => $name ) {
 			if ( isset( $namespacesByName[$name] ) ) {
 				unset( $namespaces[$namespacesByName[$name]] );
 			}
 		}
 
-		$namespaces += $canonicalNames;
+		// Left-wins ordering: localised names beat canonical names beat any
+		// entry already at SMW's IDs. SMW takes precedence at its own IDs;
+		// the previous behaviour preserved third-party registrations at the
+		// same IDs, but extension.json's `namespaces` block has already
+		// claimed them by the time this hook fires.
+		$namespaces = $extraNamespaces + $canonicalNames + $namespaces;
+
+		// $smwgNamespacesWithSemanticLinks defaults are seeded in
+		// ConfigBootstrap::seedComputedDefaults() so Settings::loadFromGlobals()
+		// (called inside wgExtensionFunctions) sees them before this hook fires.
+		Globals::replace( [
+			'wgNamespaceAliases' => $namespaceAliases
+				+ array_flip( $extraNamespaces )
+				+ array_flip( $canonicalNames )
+				+ ( $vars['wgNamespaceAliases'] ?? [] ),
+			'wgNamespacesToBeSearchedDefault' => ( $vars['wgNamespacesToBeSearchedDefault'] ?? [] ) + [
+				SMW_NS_PROPERTY => true,
+				SMW_NS_CONCEPT  => true,
+			],
+		] );
 
 		return true;
 	}
 
 	/**
-	 * @see Hooks:CanonicalNamespaces
-	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
 	public static function getCanonicalNames(): array {
-		$canonicalNames = [
+		return [
 			SMW_NS_PROPERTY      => 'Property',
 			SMW_NS_PROPERTY_TALK => 'Property_talk',
 			SMW_NS_CONCEPT       => 'Concept',
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk',
 			SMW_NS_SCHEMA        => 'smw/schema',
-			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk'
+			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk',
 		];
-
-		return $canonicalNames;
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @param integer offset
-	 *
-	 * @return array
-	 */
-	public static function buildNamespaceIndex( $offset ): array {
-		// 100 and 101 used to be occupied by SMW's now obsolete namespaces
-		// "Relation" and "Relation_Talk"
-
-		// 106 and 107 are occupied by the Semantic Forms, we define them here
-		// to offer some (easy but useful) support to SF
-
-		$namespaceIndex = [
-			'SMW_NS_PROPERTY'      => $offset + 2,
-			'SMW_NS_PROPERTY_TALK' => $offset + 3,
-			// 'SF_NS_FORM'           => $offset + 6,
-			//'SF_NS_FORM_TALK'      => $offset + 7,
-			'SMW_NS_CONCEPT'       => $offset + 8,
-			'SMW_NS_CONCEPT_TALK'  => $offset + 9,
-
-			// #3019 notes "Conflicts with the DPLforum extension ..."
-			//'SMW_NS_SCHEMA'      => $offset + 10,
-			//'SMW_NS_SCHEMA_TALK' => $offset + 11,
-
-			'SMW_NS_SCHEMA'        => $offset + 12,
-			'SMW_NS_SCHEMA_TALK'   => $offset + 13,
-		];
-
-		return $namespaceIndex;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public static function initCustomNamespace( array $vars, ?LocalLanguage $localLanguage = null ): array {
-		$instance = new self( $localLanguage );
-
-		$vars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );
-
-		$defaultSettings = [
-			'wgNamespaceAliases',
-			'wgExtraNamespaces',
-			'wgNamespacesWithSubpages',
-			'smwgNamespacesWithSemanticLinks',
-			'smwgNamespaceIndex',
-			'wgCanonicalNamespaceNames'
-		];
-
-		foreach ( $defaultSettings as $key ) {
-			$vars[$key] = !isset( $vars[$key] ) ? [] : $vars[$key];
-		}
-
-		foreach ( $instance->buildNamespaceIndex( $vars['smwgNamespaceIndex'] ) as $ns => $index ) {
-			if ( !$instance->isDefinedConstant( $ns ) ) {
-				define( $ns, $index );
-			}
-		}
-
-		$localLanguage = $instance->getLocalLanguage(
-			$instance->getLanguageCode( $vars )
-		);
-
-		$extraNamespaces = $localLanguage->getNamespaces();
-		$namespaceAliases = $localLanguage->getNamespaceAliases();
-
-		$vars['wgCanonicalNamespaceNames'] += $instance->getCanonicalNames();
-		$vars['wgExtraNamespaces'] += $extraNamespaces + $instance->getCanonicalNames();
-		$vars['wgNamespaceAliases'] = $namespaceAliases + array_flip( $extraNamespaces ) + array_flip( $instance->getCanonicalNames() ) + $vars['wgNamespaceAliases'];
-
-		$instance->addNamespaceSettings( $vars );
-
-		return [
-			'instance' => $instance,
-			'newVars' => $vars
-		];
-	}
-
-	private function getNamespaceIndex( array $vars ): int {
-		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
-			self::$initNamespaceIndex = self::DEFAULT_NAMESPACEINDEX;
-			return self::$initNamespaceIndex;
-		} elseif ( self::$initNamespaceIndex === null ) {
-			self::$initNamespaceIndex = $vars['smwgNamespaceIndex'];
-			return self::$initNamespaceIndex;
-		} elseif ( self::$initNamespaceIndex !== null && self::$initNamespaceIndex === $vars['smwgNamespaceIndex'] ) {
-			return self::$initNamespaceIndex;
-		}
-
-		throw new NamespaceIndexChangeException( self::$initNamespaceIndex, $vars['smwgNamespaceIndex'] );
 	}
 
 	private function getLanguageCode( array $vars ): string {
 		if ( self::$initLanguageCode === '' ) {
 			self::$initLanguageCode = $vars['wgLanguageCode'];
 			return self::$initLanguageCode;
-		} elseif ( self::$initLanguageCode !== '' && self::$initLanguageCode === $vars['wgLanguageCode'] ) {
+		}
+
+		if ( self::$initLanguageCode === $vars['wgLanguageCode'] ) {
 			return self::$initLanguageCode;
 		}
 
-		// #4680
-		//
-		// Overrides aren't allowed to prevent issues with others trying to
-		// manipulate the definition after the initialization (`enableSemantics`)
-		// but users may define `wgLanguageCode` after the initialization and expect
-		// it to work which it won't hence we raise an exception to inform the user
-		// about the unexpected change.
+		// #4680: prevent users from changing wgLanguageCode after init.
 		throw new SiteLanguageChangeException( self::$initLanguageCode, $vars['wgLanguageCode'] );
 	}
-
-	private function addNamespaceSettings( array &$vars ): void {
-		/**
-		 * Default settings for the SMW specific NS which can only
-		 * be defined after SMW_NS_PROPERTY is declared
-		 */
-		$smwNamespacesSettings = [
-			SMW_NS_PROPERTY => true,
-			SMW_NS_PROPERTY_TALK => false,
-			SMW_NS_CONCEPT => true,
-			SMW_NS_CONCEPT_TALK => false,
-			SMW_NS_SCHEMA => true,
-			SMW_NS_SCHEMA_TALK => false,
-		];
-
-		// When the CanonicalNamespaces hook fires before src/DefaultSettings.php
-		// has been applied, smwgNamespacesWithSemanticLinks may be empty.
-		// Load the defaults from src/DefaultSettings.php to ensure standard MW
-		// namespaces (NS_MAIN, NS_USER, etc.) are preserved. (#6302)
-		if ( $vars['smwgNamespacesWithSemanticLinks'] === [] ) {
-			$defaults = SemanticMediaWiki::getDefaultSettings();
-			$vars['smwgNamespacesWithSemanticLinks'] = $defaults['smwgNamespacesWithSemanticLinks'];
-		}
-
-		// Combine default values with values specified in other places
-		// (LocalSettings etc.)
-		$vars['smwgNamespacesWithSemanticLinks'] = array_replace(
-			$smwNamespacesSettings,
-			$vars['smwgNamespacesWithSemanticLinks']
-		);
-
-		$vars['wgNamespaceContentModels'][SMW_NS_SCHEMA] = CONTENT_MODEL_SMW_SCHEMA;
-	}
-
-	private function addExtraNamespaceSettings( array &$vars ): void {
-		/**
-		 * Indicating which namespaces allow sub-pages
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:$wgNamespacesWithSubpages
-		 */
-		$vars['wgNamespacesWithSubpages'] = $vars['wgNamespacesWithSubpages'] + [
-			SMW_NS_PROPERTY_TALK => true,
-			SMW_NS_CONCEPT_TALK => true,
-		];
-
-		/**
-		 * Allow custom namespaces to be acknowledged as containing useful content
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:$wgContentNamespaces
-		 */
-		$vars['wgContentNamespaces'] = array_merge( $vars['wgContentNamespaces'], [
-			SMW_NS_PROPERTY,
-			SMW_NS_CONCEPT
-		] );
-
-		/**
-		 * To indicate which namespaces are enabled for searching by default
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:$wgNamespacesToBeSearchedDefault
-		 */
-		$vars['wgNamespacesToBeSearchedDefault'] = $vars['wgNamespacesToBeSearchedDefault'] + [
-			SMW_NS_PROPERTY => true,
-			SMW_NS_CONCEPT => true
-		];
-	}
-
-	protected function isDefinedConstant( $constant ): bool {
-		return defined( $constant );
-	}
-
-	protected function getLocalLanguage( $languageCode ) {
-		return $this->localLanguage->fetch( $languageCode );
-	}
-
 }

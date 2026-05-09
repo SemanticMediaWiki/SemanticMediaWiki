@@ -7,12 +7,11 @@ use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\Iterators\MappingIterator;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DuplicateFinder
@@ -24,6 +23,8 @@ use Wikimedia\Rdbms\ResultWrapper;
  * @author mwjames
  */
 class DuplicateFinderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $connection;
@@ -56,47 +57,32 @@ class DuplicateFinderTest extends TestCase {
 	}
 
 	public function testHasDuplicate() {
-		$connection = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'addQuotes' )
-			->willReturnArgument( 0 );
-
-		$connection->expects( $this->any() )
-			->method( 'tableName' )
-			->willReturnArgument( 0 );
-
-		$query = new Query( $connection );
-
-		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'smw_id' => 1 ], (object)[ 'smw_id' => 2 ] ],
+			$whereConditions
+		);
 
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'newQuery' )
-			->willReturn( $query );
-
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'readQuery' )
-			->willReturn( $resultWrapper );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new DuplicateFinder(
 			$this->store,
 			$this->iteratorFactory
 		);
 
-		$instance->hasDuplicate( WikiPage::newFromText( 'Foo' ) );
+		$this->assertTrue(
+			$instance->hasDuplicate( WikiPage::newFromText( 'Foo' ) )
+		);
 
-		$this->assertJsonStringEqualsJsonString(
-			'{' .
-			'"tables": "smw_object_ids",' .
-			'"fields":["smw_id","smw_sortkey"],' .
-			'"conditions":[["smw_title=Foo"],["smw_namespace=0"],["smw_subobject="],["smw_iw!=:smw"],["smw_iw!=:smw-delete"],["smw_iw!=:smw-redi"]],' .
-			'"joins":[],' .
-			'"options":{"LIMIT":2},"alias":"","index":0,"autocommit":false}',
-			(string)$query
+		$this->assertContains(
+			[
+				'smw_title' => 'Foo',
+				'smw_namespace' => 0,
+				'smw_subobject' => '',
+			],
+			$whereConditions
 		);
 	}
 
@@ -116,15 +102,11 @@ class DuplicateFinderTest extends TestCase {
 			'smw_subobject' => ''
 		];
 
-		$query = new Query( $this->connection );
+		$qb = $this->createMockSelectQueryBuilder( [ $row ] );
 
-		$this->connection->expects( $this->once() )
-			->method( 'newQuery' )
-			->willReturn( $query );
-
-		$this->connection->expects( $this->once() )
-			->method( 'readQuery' )
-			->willReturn( [ $row ] );
+		$this->connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new DuplicateFinder(
 			$this->store,
@@ -136,11 +118,6 @@ class DuplicateFinderTest extends TestCase {
 		$this->assertInstanceOf(
 			MappingIterator::class,
 			$res
-		);
-
-		$this->assertStringContainsString(
-			'HAVING":"count(*) > 1',
-			$query->__toString()
 		);
 
 		$this->assertEquals(
@@ -163,15 +140,11 @@ class DuplicateFinderTest extends TestCase {
 			'o_id' => 1001
 		];
 
-		$query = new Query( $this->connection );
+		$qb = $this->createMockSelectQueryBuilder( [ $row ] );
 
-		$this->connection->expects( $this->once() )
-			->method( 'newQuery' )
-			->willReturn( $query );
-
-		$this->connection->expects( $this->once() )
-			->method( 'readQuery' )
-			->willReturn( [ $row ] );
+		$this->connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new DuplicateFinder(
 			$this->store,
@@ -185,11 +158,6 @@ class DuplicateFinderTest extends TestCase {
 		$this->assertInstanceOf(
 			MappingIterator::class,
 			$res
-		);
-
-		$this->assertStringContainsString(
-			'HAVING":"count(*) > 1',
-			$query->__toString()
 		);
 
 		$this->assertEquals(

@@ -27,7 +27,7 @@ class QueryStringifier {
 	 * @param Query $query
 	 * @param bool $printParameters
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public static function toArray( Query $query, $printParameters = false ): array {
 		$serialized = [];
@@ -106,12 +106,9 @@ class QueryStringifier {
 	private static function printouts( Query $query, $showParams = false ): array {
 		$printouts = [];
 
-		if ( $query->getExtraPrintouts() === null ) {
-			return $printouts;
-		}
-
 		foreach ( $query->getExtraPrintouts() as $printout ) {
-			if ( ( $serialisation = $printout->getSerialisation( $showParams ) ) !== '' ) {
+			$serialisation = $printout->getSerialisation( $showParams );
+			if ( $serialisation !== '' ) {
 				$printouts[] = $serialisation;
 			}
 		}
@@ -125,10 +122,6 @@ class QueryStringifier {
 	private static function sortKeys( Query $query ): array {
 		$sort = [];
 		$order = [];
-
-		if ( $query->getSortKeys() === null ) {
-			return [ $sort, $order ];
-		}
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
 

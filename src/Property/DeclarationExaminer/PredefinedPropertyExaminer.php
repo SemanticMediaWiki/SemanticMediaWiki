@@ -60,7 +60,8 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		// 'smw-property-predefined' + <internal property key> => '_asksi' ) but
 		// because translatewiki.net doesn't handle `_` well, convert `_` to `-`
 		// resulting in 'smw-property-predefined-asksi' as translatable key
-		if ( ( $messageKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) !== '' ) {
+		$messageKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key );
+		if ( $messageKey !== '' ) {
 			$messageKeyLong = $messageKey . '-long';
 		} else {
 			$messageKey = 'smw-property-predefined' . str_replace( '_', '-', strtolower( $key ) );
@@ -103,7 +104,16 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 			[ $url, $type ] = explode( "#", end( $typeValues )->getSerialization() );
 		}
 
-		if ( DataTypeRegistry::getInstance()->isEqualByType( $type, $property->findPropertyTypeID() ) ) {
+		if ( !isset( $type ) ) {
+			return;
+		}
+
+		if (
+			DataTypeRegistry::getInstance()->isEqualByType(
+				$type,
+				$property->findPropertyTypeID()
+			)
+		) {
 			return;
 		}
 

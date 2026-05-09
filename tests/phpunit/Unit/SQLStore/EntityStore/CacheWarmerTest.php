@@ -11,6 +11,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\CacheWarmer
@@ -22,6 +23,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class CacheWarmerTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $idCacheManager;
 	private $store;
@@ -72,13 +75,12 @@ class CacheWarmerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ], $whereConditions );
+
 		$connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 'smw_hash' => [ '7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] )
-			->willReturn( [ (object)$row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -95,6 +97,11 @@ class CacheWarmerTest extends TestCase {
 
 		$instance->setThresholdLimit( 1 );
 		$instance->prepareCache( $list );
+
+		$this->assertContains(
+			[ 'smw_hash' => [ sha1( json_encode( [ 'Bar', 0, '', '' ] ), true ) ] ],
+			$whereConditions
+		);
 	}
 
 	public function testPrepareCache_DisplayTitleFinder() {
@@ -144,13 +151,12 @@ class CacheWarmerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ], $whereConditions );
+
 		$connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 'smw_hash' => [ '909d8ab26ea49adb7e1b106bc47602050d07d19f' ] ] )
-			->willReturn( [ (object)$row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -167,6 +173,11 @@ class CacheWarmerTest extends TestCase {
 
 		$instance->setThresholdLimit( 1 );
 		$instance->prepareCache( $list );
+
+		$this->assertContains(
+			[ 'smw_hash' => [ sha1( json_encode( [ 'Foo', 102, '', '' ] ), true ) ] ],
+			$whereConditions
+		);
 	}
 
 	public function testPrepareCache_UnknownPredefinedProperty() {

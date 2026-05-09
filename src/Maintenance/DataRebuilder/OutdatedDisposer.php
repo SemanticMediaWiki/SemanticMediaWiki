@@ -45,7 +45,8 @@ class OutdatedDisposer {
 
 		$resultIterator = $this->entityIdDisposerJob->newOutdatedEntitiesResultIterator();
 
-		if ( ( $count = $resultIterator->count() ) > 0 ) {
+		$count = $resultIterator->count();
+		if ( $count > 0 ) {
 			$this->disposeOutdatedEntities( $resultIterator, $count );
 		} else {
 			$this->messageReporter->reportMessage(
@@ -59,7 +60,8 @@ class OutdatedDisposer {
 
 		$resultIterator = $this->entityIdDisposerJob->newByNamespaceInvalidEntitiesResultIterator();
 
-		if ( ( $count = $resultIterator->count() ) > 0 ) {
+		$count = $resultIterator->count();
+		if ( $count > 0 ) {
 			$this->disposeOutdatedEntities( $resultIterator, $count );
 		} else {
 			$this->messageReporter->reportMessage(
@@ -79,7 +81,8 @@ class OutdatedDisposer {
 
 		$resultIterator = $this->entityIdDisposerJob->newOutdatedQueryLinksResultIterator();
 
-		if ( ( $count = $resultIterator->count() ) > 0 ) {
+		$count = $resultIterator->count();
+		if ( $count > 0 ) {
 			$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (invalid)' );
 		} else {
 			$this->messageReporter->reportMessage(
@@ -93,7 +96,8 @@ class OutdatedDisposer {
 
 		$resultIterator = $this->entityIdDisposerJob->newUnassignedQueryLinksResultIterator();
 
-		if ( ( $count = $resultIterator->count() ) > 0 ) {
+		$count = $resultIterator->count();
+		if ( $count > 0 ) {
 			$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (unassigned)' );
 		} else {
 			$this->messageReporter->reportMessage(
@@ -104,7 +108,7 @@ class OutdatedDisposer {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function disposeOutdatedEntities( $resultIterator, string $count ): void {
+	private function disposeOutdatedEntities( $resultIterator, int $count ): void {
 		$this->messageReporter->reportMessage( "\n" );
 		$chunkedIterator = $this->iteratorFactory->newChunkedIterator( $resultIterator, 200 );
 
@@ -130,7 +134,7 @@ class OutdatedDisposer {
 		);
 	}
 
-	private function disposeOutdatedQueryLinks( $resultIterator, string $count, string $label ): void {
+	private function disposeOutdatedQueryLinks( $resultIterator, int $count, string $label ): void {
 		$this->messageReporter->reportMessage( "\n" );
 		$counter = 0;
 

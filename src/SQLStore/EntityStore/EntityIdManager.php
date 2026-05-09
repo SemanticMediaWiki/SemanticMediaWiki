@@ -14,6 +14,7 @@ use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\PropertyTableInfoFetcher;
@@ -64,8 +65,27 @@ use SMW\Utils\Flag;
  */
 class EntityIdManager {
 
-	const MAX_CACHE_SIZE = 1000;
 	const POOLCACHE_ID = 'smw.sqlstore';
+
+	/**
+	 * Built-in maximum entry counts for the request-scoped LRU caches that
+	 * back entity ID lookups. Each pool is independent — these values are
+	 * starting points that can be tuned per-pool via the
+	 * `$smwgEntityCacheSizes` setting based on observed hit rates.
+	 *
+	 * @since 7.0.0
+	 */
+	public const DEFAULT_CACHE_SIZES = [
+		'entity.id' => 1000,
+		'entity.sort' => 1000,
+		'entity.lookup' => 2000,
+		'propertytable.hash' => 1000,
+		'warmup.byid' => 1000,
+		'sequence.map' => 1000,
+		IdCacheManager::REDIRECT_SOURCE => 1000,
+		IdCacheManager::REDIRECT_TARGET => 1000,
+		AuxiliaryFields::COUNTMAP_CACHE_ID => 1000,
+	];
 
 	/**
 	 * @var SQLStore
@@ -601,9 +621,9 @@ class EntityIdManager {
 			// #2089 (MySQL 5.7 complained with "Data too long for column")
 			$sortkey = mb_substr( $sortkey, 0, 254 );
 
-			$db->insert(
-				SQLStore::ID_TABLE,
-				[
+			$db->newInsertQueryBuilder()
+				->insertInto( SQLStore::ID_TABLE )
+				->row( [
 					'smw_id' => $sequenceValue,
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
@@ -612,10 +632,10 @@ class EntityIdManager {
 					'smw_sortkey' => $sortkey,
 					'smw_sort' => $collator->getSortKey( $sortkey ),
 					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] ),
-					'smw_touched' => $db->timestamp()
-				],
-				__METHOD__
-			);
+					'smw_touched' => $db->timestamp(),
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			$id = $db->insertId();
 
@@ -713,27 +733,27 @@ class EntityIdManager {
 
 		if ( $title instanceof WikiPage ) {
 			$cond = [
-				"smw_hash" => $title->getSha1()
+				'smw_hash' => $title->getSha1(),
 			];
 		} elseif ( is_int( $title ) ) {
 			$cond = [
-				"smw_id" => $title
+				'smw_id' => $title,
 			];
 		} else {
 			$cond = [
-				"smw_title =" . $connection->addQuotes( $title ),
-				"smw_namespace =" . $connection->addQuotes( $namespace ),
-				"smw_iw =" . $connection->addQuotes( $iw ),
-				"smw_subobject =''"
+				'smw_title' => $title,
+				'smw_namespace' => $namespace,
+				'smw_iw' => $iw,
+				'smw_subobject' => '',
 			];
 		}
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			'smw_rev',
-			$cond,
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( 'smw_rev' )
+			->from( SQLStore::ID_TABLE )
+			->where( $cond )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row === false ? 0 : (int)$row->smw_rev;
 	}
@@ -989,17 +1009,7 @@ class EntityIdManager {
 		// values in some data structure (other than a single string).
 		$this->idCacheManager = $this->factory->newIdCacheManager(
 			self::POOLCACHE_ID,
-			[
-				'entity.id' => self::MAX_CACHE_SIZE,
-				'entity.sort' => self::MAX_CACHE_SIZE,
-				'entity.lookup' => 2000,
-				'propertytable.hash' => self::MAX_CACHE_SIZE,
-				'warmup.byid' => self::MAX_CACHE_SIZE,
-				'sequence.map' => self::MAX_CACHE_SIZE,
-				IdCacheManager::REDIRECT_SOURCE => self::MAX_CACHE_SIZE,
-				IdCacheManager::REDIRECT_TARGET => self::MAX_CACHE_SIZE,
-				AuxiliaryFields::COUNTMAP_CACHE_ID => self::MAX_CACHE_SIZE,
-			]
+			$this->resolveCacheSizes()
 		);
 
 		$this->cacheWarmer = $this->factory->newCacheWarmer(
@@ -1110,6 +1120,16 @@ class EntityIdManager {
 	 */
 	public function loadSequenceMap( array $ids ): void {
 		$this->sequenceMapFinder->prefetchSequenceMap( $ids );
+	}
+
+	private function resolveCacheSizes(): array {
+		$configured = ApplicationFactory::getInstance()->getSettings()->safeGet( 'smwgEntityCacheSizes', [] );
+
+		if ( !is_array( $configured ) || $configured === [] ) {
+			return self::DEFAULT_CACHE_SIZES;
+		}
+
+		return array_merge( self::DEFAULT_CACHE_SIZES, $configured );
 	}
 
 }

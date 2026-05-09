@@ -92,7 +92,7 @@ class ResultFormat extends StringParam {
 	 * @return string Array key in $smwgResultFormats
 	 */
 	protected function getDefaultFormat(): string|bool {
-		if ( empty( $this->printRequests ) ) {
+		if ( $this->printRequests === [] ) {
 			return 'table';
 		}
 
@@ -110,6 +110,7 @@ class ResultFormat extends StringParam {
 		 */
 		$hookContainer->run( 'SMW::ResultFormat::OverrideDefaultFormat', [ &$format, $this->printRequests, [] ] );
 
+		// @phan-suppress-next-line PhanImpossibleValueComparison False positive about $format always being false
 		if ( $format !== false ) {
 			return $format;
 		}
@@ -155,7 +156,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return mixed
 	 */
-	protected function formatValue( $value, IParam $param, array &$definitions, array $params ): string {
+	protected function formatValue( $value, IParam $param, array &$definitions, array $params ): mixed {
 		$value = parent::formatValue( $value, $param, $definitions, $params );
 
 		// Make sure the format value is valid.

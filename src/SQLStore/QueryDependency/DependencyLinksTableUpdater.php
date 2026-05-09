@@ -89,13 +89,11 @@ class DependencyLinksTableUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
-		$connection->delete(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				's_id' => $deleteIdList
-			],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $deleteIdList ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$connection->endAtomicTransaction( __METHOD__ );
 	}
@@ -112,27 +110,21 @@ class DependencyLinksTableUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
-				'smw_touched' => $connection->timestamp()
-			],
-			[
-				'smw_id' => $sid
-			],
-			__METHOD__
-		);
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [ 'smw_touched' => $connection->timestamp() ] )
+			->where( [ 'smw_id' => $sid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		// Before an insert, delete all entries that for the criteria which is
 		// cheaper then doing an individual upsert or selectRow, this also ensures
 		// that entries are self-corrected for dependencies matched
-		$connection->delete(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				's_id' => $sid
-			],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $sid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		if ( $sid == 0 ) {
 			$connection->endAtomicTransaction( __METHOD__ );
@@ -154,8 +146,12 @@ class DependencyLinksTableUpdater {
 			// This can happen when a query is added with object reference that have not
 			// yet been referenced as annotation and therefore do not recognized as
 			// value annotation
-			if ( $oid < 1 && ( ( $oid = $this->createId( $dependency ) ) < 1 ) ) {
-				continue;
+			if ( $oid < 1 ) {
+				$oid = $this->createId( $dependency );
+
+				if ( $oid < 1 ) {
+					continue;
+				}
 			}
 
 			$inserts[$sid . $oid] = [
@@ -178,11 +174,11 @@ class DependencyLinksTableUpdater {
 			[ 'method' => __METHOD__, 'role' => 'developer', 'id' => $sid ]
 		);
 
-		$connection->insert(
-			SQLStore::QUERY_LINKS_TABLE,
-			$inserts,
-			__METHOD__
-		);
+		$connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::QUERY_LINKS_TABLE )
+			->rows( $inserts )
+			->caller( __METHOD__ )
+			->execute();
 
 		$connection->endAtomicTransaction( __METHOD__ );
 	}

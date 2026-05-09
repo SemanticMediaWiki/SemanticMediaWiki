@@ -36,13 +36,13 @@ class PageInfoProviderTest extends TestCase {
 	public function testWikiPage_TYPE_MODIFICATION_DATE() {
 		$instance = $this->constructPageInfoProviderInstance(
 			[
-				'wikiPage' => [ 'getTimestamp' => 1272508903 ],
+				'wikiPage' => [ 'getTimestamp' => '1272508903' ],
 				'revision' => [],
 				'user'     => [],
 			]
 		);
 
-		$this->assertEquals( 1272508903, $instance->getModificationDate() );
+		$this->assertSame( '1272508903', $instance->getModificationDate() );
 	}
 
 	public function testWikiPage_TYPE_CREATION_DATE() {
@@ -52,7 +52,7 @@ class PageInfoProviderTest extends TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getTimestamp' )
-			->willReturn( 1272508903 );
+			->willReturn( '1272508903' );
 
 		$title = MockTitle::buildMock( 'Lula' );
 
@@ -76,7 +76,7 @@ class PageInfoProviderTest extends TestCase {
 			$revisionLookup
 		);
 
-		$this->assertEquals( 1272508903, $instance->getCreationDate() );
+		$this->assertSame( '1272508903', $instance->getCreationDate() );
 	}
 
 	/**

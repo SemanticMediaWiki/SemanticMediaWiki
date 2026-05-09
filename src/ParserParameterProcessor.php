@@ -22,17 +22,12 @@ class ParserParameterProcessor {
 	 */
 	private $parameters;
 
-	/**
-	 * @var null
-	 */
-	private $first = null;
+	private ?string $first = null;
 
 	private array $errors = [];
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $rawParameters
 	 */
 	public function __construct( array $rawParameters = [] ) {
 		$this->rawParameters = $rawParameters;
@@ -43,8 +38,6 @@ class ParserParameterProcessor {
 	 * Returns collected errors
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -63,8 +56,6 @@ class ParserParameterProcessor {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return string
 	 */
 	public function getFirstParameter(): ?string {
 		return $this->first;
@@ -74,8 +65,6 @@ class ParserParameterProcessor {
 	 * Returns raw parameters
 	 *
 	 * @since 1.9
-	 *
-	 * @return string
 	 */
 	public function getRaw(): array {
 		return $this->rawParameters;
@@ -96,8 +85,6 @@ class ParserParameterProcessor {
 	 * @since 2.3
 	 *
 	 * @param string $key
-	 *
-	 * @return bool
 	 */
 	public function hasParameter( $key ): bool {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );
@@ -129,8 +116,6 @@ class ParserParameterProcessor {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $parameters
 	 */
 	public function setParameters( array $parameters ): void {
 		$this->parameters = $parameters;
@@ -176,6 +161,7 @@ class ParserParameterProcessor {
 
 		foreach ( $parameters as $key => &$value ) {
 			if ( is_array( $value ) ) {
+				/** @phan-suppress-next-line PhanRedundantConditionInLoop */
 				self::sort( $value, is_int( $key ) );
 			}
 		}
@@ -252,13 +238,11 @@ class ParserParameterProcessor {
 
 		$nextElement = explode( '=', trim( current( $params ) ), 2 );
 
-		if ( $nextElement !== [] ) {
-			// This allows assignments of type |Has property=Test1,Test2|+sep=,
-			// as a means to support multiple value declaration
-			if ( substr( $nextElement[0], -5 ) === '+sep' ) {
-				$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
-				next( $params );
-			}
+		// This allows assignments of type |Has property=Test1,Test2|+sep=,
+		// as a means to support multiple value declaration
+		if ( substr( $nextElement[0], -5 ) === '+sep' ) {
+			$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
+			next( $params );
 		}
 
 		if ( current( $params ) === '+pipe' ) {

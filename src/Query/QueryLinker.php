@@ -56,14 +56,13 @@ class QueryLinker {
 		$params = [ trim( $query->getQueryString( true ) ?? '' ) ];
 
 		foreach ( $query->getExtraPrintouts() as /* PrintRequest */ $printout ) {
-			if ( ( $serialisation = $printout->getSerialisation( true ) ) !== '' ) {
+			$serialisation = $printout->getSerialisation( true );
+			if ( $serialisation !== '' ) {
 				$params[] = $serialisation;
 			}
 		}
 
-		if ( $query->getMainLabel() !== false ) {
-			$params['mainlabel'] = $query->getMainLabel();
-		}
+		$params['mainlabel'] = $query->getMainLabel();
 
 		if ( $query->getQuerySource() !== '' ) {
 			$params['source'] = $query->getQuerySource();

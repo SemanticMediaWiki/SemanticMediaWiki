@@ -76,9 +76,9 @@ class Query implements QueryContext {
 	 */
 	const SCORE_SORT = 'score.sort';
 
-	public $sort = false;
-	public $sortkeys = []; // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
-	public $querymode = self::MODE_INSTANCES;
+	public bool $sort = false;
+	public array $sortkeys = []; // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
+	public int $querymode = self::MODE_INSTANCES;
 
 	private $limit;
 	private $offset = 0;
@@ -107,6 +107,9 @@ class Query implements QueryContext {
 	 * @var array
 	 */
 	private $options = [];
+
+	// Used in other files
+	public string $native_result = '';
 
 	/**
 	 * @since 1.6
@@ -139,7 +142,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean
+	 * @return bool
 	 */
 	public function isEmbedded(): bool {
 		return $this->isInline;
@@ -147,10 +150,8 @@ class Query implements QueryContext {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param integer
 	 */
-	public function setQueryMode( $queryMode ): void {
+	public function setQueryMode( int $queryMode ): void {
 		// FIXME 3.0; $this->querymode is a public property
 		// declare it private and rename it to $this->queryMode
 		$this->querymode = $queryMode;
@@ -159,7 +160,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer
+	 * @return int
 	 */
 	public function getQueryMode() {
 		return $this->querymode;
@@ -186,7 +187,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string
+	 * @param string $querySource
 	 */
 	public function setQuerySource( $querySource ): void {
 		$this->querySource = $querySource;
@@ -195,7 +196,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 2.4
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getQuerySource(): ?string {
 		return $this->querySource;
@@ -309,7 +310,7 @@ class Query implements QueryContext {
 	 * @return mixed
 	 */
 	public function getOption( $key ) {
-		return isset( $this->options[$key] ) ? $this->options[$key] : false;
+		return $this->options[$key] ?? false;
 	}
 
 	/**
@@ -480,7 +481,8 @@ class Query implements QueryContext {
 		}
 
 		foreach ( $this->getExtraPrintouts() as $printout ) {
-			if ( ( $serialisation = $printout->getSerialisation() ) !== '' ) {
+			$serialisation = $printout->getSerialisation();
+			if ( $serialisation !== '' ) {
 				$serialized['printouts'][] = $serialisation;
 			}
 		}

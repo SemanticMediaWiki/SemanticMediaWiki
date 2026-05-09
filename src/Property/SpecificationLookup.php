@@ -35,7 +35,7 @@ class SpecificationLookup {
 	const CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION = ':propertyspecificationlookup:description';
 
 	/**
-	 * @var Cache
+	 * @var EntityCache
 	 */
 	private $entityCache;
 
@@ -118,10 +118,11 @@ class SpecificationLookup {
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject );
 		$sub_key = $target->getKey();
 
-		if (
-			!$this->skipCache &&
-			( $specification = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
-			return $specification;
+		if ( !$this->skipCache ) {
+			$specification = $this->entityCache->fetchSub( $key, $sub_key );
+			if ( $specification !== false ) {
+				return $specification;
+			}
 		}
 
 		$dataItems = $this->store->getPropertyValues(
@@ -169,7 +170,8 @@ class SpecificationLookup {
 		$subject = $property->getCanonicalDiWikiPage();
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject );
 
-		if ( ( $text = $this->entityCache->fetchSub( $key, $languageCode ) ) !== false ) {
+		$text = $this->entityCache->fetchSub( $key, $languageCode );
+		if ( $text !== false ) {
 			return $text;
 		}
 
@@ -359,7 +361,8 @@ class SpecificationLookup {
 
 		$sub_key = $languageCode . ':' . ( $linker === null ? '0' : '1' );
 
-		if ( ( $text = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
+		$text = $this->entityCache->fetchSub( $key, $sub_key );
+		if ( $text !== false ) {
 			return (string)$text;
 		}
 
@@ -387,7 +390,8 @@ class SpecificationLookup {
 		$description = '';
 		$key = $property->getKey();
 
-		if ( ( $msgKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) === '' ) {
+		$msgKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key );
+		if ( $msgKey === '' ) {
 			$msgKey = 'smw-property-predefined' . str_replace( '_', '-', strtolower( $key ) );
 		}
 
@@ -411,7 +415,7 @@ class SpecificationLookup {
 	}
 
 	/**
-	 * @param WikiPage $subject
+	 * @param WikiPage|null $subject
 	 * @param Property $property
 	 * @param string $languageCode
 	 *
@@ -421,7 +425,7 @@ class SpecificationLookup {
 		// @TODO move in the constructor ?
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
-		} catch ( ServiceNotFoundException $e ) {
+		} catch ( ServiceNotFoundException ) {
 			return '';
 		}
 

@@ -8,7 +8,7 @@ use SMW\NamespaceExaminer;
 use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
 use stdClass;
-use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @private
@@ -244,30 +244,25 @@ class EntityValidator {
 	 *
 	 * @param stdClass $row
 	 *
-	 * @return ResultWrapper
+	 * @return IResultWrapper
 	 */
 	public function findDuplicates( $row ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Use the sortkey (comparing the label and not the "_..." key) in order
 		// to match possible duplicate properties by label (not by key)
-		$duplicates = $connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id',
-				'smw_title'
-			],
-			[
+		$duplicates = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				"smw_id !=" . $connection->addQuotes( $row->smw_id ),
 				"smw_sortkey =" . $connection->addQuotes( $row->smw_sortkey ),
 				"smw_namespace =" . $row->smw_namespace,
-				"smw_subobject =" . $connection->addQuotes( $row->smw_subobject )
-			],
-			__METHOD__,
-			[
-				'ORDER BY' => "smw_id ASC"
-			]
-		);
+				"smw_subobject =" . $connection->addQuotes( $row->smw_subobject ),
+			] )
+			->orderBy( 'smw_id', 'ASC' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $duplicates;
 	}
@@ -280,7 +275,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasLatestRevID( Title $title, $row = false ): bool {
+	public function hasLatestRevID( Title $title, stdClass|false $row = false ): bool {
 		$latestRevID = $this->revisionGuard->getLatestRevID( $title );
 
 		if ( $row !== false ) {

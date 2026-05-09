@@ -80,6 +80,7 @@ class BeforePageDisplay implements HookListener {
 			$title instanceof Title &&
 			!$title->isSpecialPage()
 		) {
+			$link = [];
 			$link['rel']   = 'alternate';
 			$link['type']  = 'application/rdf+xml';
 			$link['title'] = $title->getPrefixedText();

@@ -18,12 +18,11 @@ class AdminLinks implements HookListener {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ALTree $admin_links_tree
-	 *
-	 * @return true
 	 */
-	public function process( ALTree $admin_links_tree ): bool {
+	public function process(
+		// @phan-suppress-next-line PhanUndeclaredTypeParameter
+		ALTree $admin_links_tree
+	): bool {
 		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 
 		$smw_row = new ALRow( 'smw' );

@@ -54,9 +54,6 @@ class PostProcHandler {
 
 	private Cache $cache;
 
-	/**
-	 * @var
-	 */
 	private array $options = [];
 
 	/**
@@ -97,8 +94,6 @@ class PostProcHandler {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array|string
 	 */
 	public function getModules(): array {
 		return [ 'ext.smw.postproc', 'ext.smw.purge' ];
@@ -177,8 +172,11 @@ class PostProcHandler {
 
 		// Was the edit SMW specific or contains it an unrelated (e.g altered
 		// some text unrelated to any property/value annotation) change?
-		if ( $postEdit !== null && ( $changeDiff = ChangeDiff::fetch( $this->cache, $subject ) ) !== false ) {
-			$postEdit = $this->checkDiff( $changeDiff );
+		if ( $postEdit !== null ) {
+			$changeDiff = ChangeDiff::fetch( $this->cache, $subject );
+			if ( $changeDiff !== false ) {
+				$postEdit = $this->checkDiff( $changeDiff );
+			}
 		}
 
 		// Is `@annotation` available as part of a #ask query?
@@ -192,11 +190,11 @@ class PostProcHandler {
 			$attributes['data-ref'] = json_encode( array_keys( $refs ) );
 		}
 
-		if (
-			$postEdit !== null &&
-			isset( $this->options['check-query'] ) &&
-			( $queries = $this->parserOutput->getExtensionData( self::POST_EDIT_CHECK ) ) !== null ) {
-			$attributes['data-query'] = json_encode( $queries );
+		if ( $postEdit !== null && isset( $this->options['check-query'] ) ) {
+			$queries = $this->parserOutput->getExtensionData( self::POST_EDIT_CHECK );
+			if ( $queries !== null ) {
+				$attributes['data-query'] = json_encode( $queries );
+			}
 		}
 
 		// The element is only added temporarily in the event of a postEdit, a

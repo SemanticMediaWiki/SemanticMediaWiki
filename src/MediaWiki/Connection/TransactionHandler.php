@@ -4,8 +4,6 @@ namespace SMW\MediaWiki\Connection;
 
 use RuntimeException;
 use Wikimedia\Rdbms\ILBFactory;
-use Wikimedia\Rdbms\TransactionProfiler;
-use Wikimedia\ScopedCallback;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,17 +13,7 @@ use Wikimedia\ScopedCallback;
  */
 class TransactionHandler {
 
-	/**
-	 * @var string|null
-	 */
-	private $sectionTransaction;
-
-	/**
-	 * @var bool|null
-	 */
-	private $mutedTransactionProfiler;
-
-	private TransactionProfiler $transactionProfiler;
+	private ?string $sectionTransaction = null;
 
 	/**
 	 * @since 3.1
@@ -35,47 +23,13 @@ class TransactionHandler {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param TransactionProfiler $transactionProfiler
 	 */
-	public function setTransactionProfiler( TransactionProfiler $transactionProfiler ): void {
-		$this->transactionProfiler = $transactionProfiler;
-	}
-
-	/**
-	 * @note Only supported with 1.28+
-	 *
-	 * Mute the transaction profiler to avoid reports on master writes or similar
-	 * operations that violates the expectation set in `wgTrxProfilerLimits` hereby
-	 * avoids unnecessary log spam.
-	 *
-	 * @see https://gerrit.wikimedia.org/r/c/mediawiki/core/+/462130/3/includes/objectcache/SqlBagOStuff.php#836
-	 *
-	 * @since 3.1
-	 */
-	public function muteTransactionProfiler(): ?ScopedCallback {
-		if ( $this->transactionProfiler === null ) {
-			return null;
-		}
-
-		return $this->transactionProfiler->silenceForScope();
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $fname
-	 *
-	 * @return bool
-	 */
-	public function inSectionTransaction( $fname = __METHOD__ ): bool {
+	public function inSectionTransaction( string $fname = __METHOD__ ): bool {
 		return $this->sectionTransaction === $fname;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return bool
 	 */
 	public function hasActiveSectionTransaction(): bool {
 		return $this->sectionTransaction !== null;
@@ -95,11 +49,9 @@ class TransactionHandler {
 	 *
 	 * @since 3.1
 	 *
-	 * @param string $fname
-	 *
 	 * @throws RuntimeException
 	 */
-	public function markSectionTransaction( $fname = __METHOD__ ): void {
+	public function markSectionTransaction( string $fname = __METHOD__ ): void {
 		if ( $this->sectionTransaction !== null ) {
 			throw new RuntimeException(
 				"Trying to begin a new section transaction while {$this->sectionTransaction} is still active!"
@@ -111,10 +63,8 @@ class TransactionHandler {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $fname
 	 */
-	public function detachSectionTransaction( $fname = __METHOD__ ): void {
+	public function detachSectionTransaction( string $fname = __METHOD__ ): void {
 		if ( $this->sectionTransaction !== $fname ) {
 			throw new RuntimeException(
 				"Trying to end an invalid section transaction (registered: {$this->sectionTransaction}, requested: {$fname})"
@@ -128,12 +78,8 @@ class TransactionHandler {
 	 * @note Only supported with 1.28+
 	 *
 	 * @since 3.1
-	 *
-	 * @param string $fname Caller name (e.g. __METHOD__)
-	 *
-	 * @return mixed A value to pass to commitAndWaitForReplication
 	 */
-	public function getEmptyTransactionTicket( $fname = __METHOD__ ): ?int {
+	public function getEmptyTransactionTicket( string $fname = __METHOD__ ): ?int {
 		$ticket = null;
 
 		// @see LBFactory::getEmptyTransactionTicket
@@ -155,12 +101,8 @@ class TransactionHandler {
 	 * @note Only supported with 1.28+
 	 *
 	 * @since 3.1
-	 *
-	 * @param string $fname Caller name (e.g. __METHOD__)
-	 * @param mixed $ticket Result of Database::getEmptyTransactionTicket
-	 * @param array $opts Options to waitForReplication
 	 */
-	public function commitAndWaitForReplication( $fname, $ticket, array $opts = [] ) {
+	public function commitAndWaitForReplication( string $fname, mixed $ticket, array $opts = [] ) {
 		if ( !is_int( $ticket ) ) {
 			return;
 		}

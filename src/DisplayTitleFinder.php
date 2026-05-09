@@ -24,9 +24,6 @@ class DisplayTitleFinder {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
 	 */
 	public function __construct( Store $store, EntityCache $entityCache ) {
 		$this->store = $store;
@@ -51,11 +48,9 @@ class DisplayTitleFinder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SemanticData $semanticData
 	 */
 	public function prefetchFromSemanticData( SemanticData $semanticData ): void {
-		if ( $this->canUse === false ) {
+		if ( !$this->canUse ) {
 			return;
 		}
 
@@ -106,7 +101,7 @@ class DisplayTitleFinder {
 	 * @param array $dataItems
 	 */
 	public function prefetchFromList( $dataItems ): void {
-		if ( $this->canUse === false || !is_iterable( $dataItems ) ) {
+		if ( !$this->canUse || !is_iterable( $dataItems ) ) {
 			return;
 		}
 
@@ -141,7 +136,7 @@ class DisplayTitleFinder {
 
 		try {
 			$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
-		} catch ( ServiceNotFoundException $e ) {
+		} catch ( ServiceNotFoundException ) {
 			return;
 		}
 
@@ -183,20 +178,17 @@ class DisplayTitleFinder {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param WikiPage $subject
-	 *
-	 * @return string
 	 */
 	public function findDisplayTitle( WikiPage $subject ): string {
-		if ( $this->canUse === false ) {
+		if ( !$this->canUse ) {
 			return '';
 		}
 
 		$base = $subject->asBase();
 		$key = $this->entityCache->makeKey( 'displaytitle', $subject->getHash() );
 
-		if ( ( $displayTitle = $this->entityCache->fetch( $key ) ) !== false && $displayTitle !== null ) {
+		$displayTitle = $this->entityCache->fetch( $key );
+		if ( $displayTitle !== false && $displayTitle !== null ) {
 			return trim( $displayTitle );
 		}
 

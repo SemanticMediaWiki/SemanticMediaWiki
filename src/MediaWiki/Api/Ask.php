@@ -58,56 +58,26 @@ class Ask extends Query {
 			'query' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-param-query',
 			],
 			'api_version' => [
 				ParamValidator::PARAM_TYPE => [ '2', '3' ],
 				ParamValidator::PARAM_DEFAULT => '2',
-				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-param-api-version',
 			],
 		];
 	}
 
 	/**
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getParamDescription(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'query' => 'The query string in ask-language'
+			'action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc'
+				=> 'apihelp-ask-example-1',
+			'action=ask&query=[[Modification%20date::%2B]]|limit%3D5|offset%3D1'
+				=> 'apihelp-ask-example-2',
 		];
-	}
-
-	/**
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to query SMW by providing a query in the ask language.'
-		];
-	}
-
-	/**
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples(): array {
-		return [
-			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
-			'api.php?action=ask&query=[[Modification%20date::%2B]]|limit%3D5|offset%3D1'
-		];
-	}
-
-	/**
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }

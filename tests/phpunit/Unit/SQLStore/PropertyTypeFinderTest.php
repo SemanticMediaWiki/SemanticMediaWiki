@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\SQLStore;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTypeFinder;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -17,6 +18,8 @@ use stdClass;
  * @author mwjames
  */
 class PropertyTypeFinderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $connection;
 
@@ -39,13 +42,12 @@ class PropertyTypeFinderTest extends TestCase {
 		$row = new stdClass;
 		$row->count = 42;
 
+		$whereConditions = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				'smw_fpt_type',
-				$this->anything(),
-				[ 'o_serialized' => 'http://semantic-mediawiki.org/swivt/1.0#_txt' ] )
-			->willReturn( $row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new PropertyTypeFinder(
 			$this->connection
@@ -54,6 +56,11 @@ class PropertyTypeFinderTest extends TestCase {
 		$this->assertEquals(
 			42,
 			$instance->countByType( '_txt' )
+		);
+
+		$this->assertSame(
+			[ [ 'o_serialized' => 'http://semantic-mediawiki.org/swivt/1.0#_txt' ] ],
+			$whereConditions
 		);
 	}
 

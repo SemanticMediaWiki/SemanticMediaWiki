@@ -51,7 +51,7 @@ class IdCacheManager {
 	 * @return string
 	 */
 	public static function computeSha1( $args = '' ): string {
-		return sha1( json_encode( $args ) );
+		return sha1( json_encode( $args ), true );
 	}
 
 	/**
@@ -135,10 +135,11 @@ class IdCacheManager {
 			[ $title, (int)$namespace, $interwiki, $subobject ]
 		);
 
+		$id = $this->caches['entity.id']->fetch( $hash );
 		$this->caches['entity.id']->delete( $hash );
 		$this->caches['entity.sort']->delete( $hash );
 
-		if ( ( $id = $this->caches['entity.id']->fetch( $hash ) ) !== false ) {
+		if ( $id !== false ) {
 			$this->caches['entity.lookup']->delete( $id );
 		}
 	}
@@ -194,7 +195,8 @@ class IdCacheManager {
 			$hash = $args;
 		}
 
-		if ( ( $id = $this->caches['entity.id']->fetch( $hash ) ) !== false ) {
+		$id = $this->caches['entity.id']->fetch( $hash );
+		if ( $id !== false ) {
 			return (int)$id;
 		}
 
@@ -217,7 +219,8 @@ class IdCacheManager {
 			$hash = $args;
 		}
 
-		if ( ( $sort = $this->caches['entity.sort']->fetch( $hash ) ) !== false ) {
+		$sort = $this->caches['entity.sort']->fetch( $hash );
+		if ( $sort !== false ) {
 			return $sort;
 		}
 

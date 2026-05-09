@@ -12,24 +12,12 @@ use InvalidArgumentException;
  */
 class SearchResult {
 
-	/**
-	 * @var
-	 */
 	private array $errors = [];
 
-	/**
-	 * @var []|null
-	 */
 	private ?array $results = null;
 
-	/**
-	 * @var string
-	 */
-	private $filterField = '_id';
+	private string $filterField = '_id';
 
-	/**
-	 * @var
-	 */
 	private array $container = [
 		'info' => [],
 		'scores' => [],
@@ -46,8 +34,6 @@ class SearchResult {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $errors
 	 */
 	public function setErrors( array $errors ): void {
 		$this->errors = $errors;
@@ -55,17 +41,13 @@ class SearchResult {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $filterField
 	 */
-	public function setFilterField( $filterField ): void {
+	public function setFilterField( string $filterField ): void {
 		$this->filterField = $filterField;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -73,12 +55,8 @@ class SearchResult {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int|null $cutoff
-	 *
-	 * @return array
 	 */
-	public function getResults( $cutoff = null ): ?array {
+	public function getResults( ?int $cutoff = null ): ?array {
 		if ( $this->results === null ) {
 			$this->doFilterResults( $this->raw, $cutoff );
 		}
@@ -102,12 +80,9 @@ class SearchResult {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $results
-	 * @param int|null $cutoff
-	 *
 	 * @return int[]|string[]
 	 */
-	public function doFilterResults( array $results, $cutoff = null ): array {
+	public function doFilterResults( array $results, ?int $cutoff = null ): array {
 		$this->results = [];
 
 		$this->container = [

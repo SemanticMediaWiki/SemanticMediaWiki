@@ -35,8 +35,6 @@ class PropertyValueParser implements ValueParser {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $invalidCharacterList
 	 */
 	public function setInvalidCharacterList( array $invalidCharacterList ): void {
 		$this->invalidCharacterList = $invalidCharacterList;
@@ -81,8 +79,6 @@ class PropertyValueParser implements ValueParser {
 	 * @since 2.5
 	 *
 	 * @param string $userValue
-	 *
-	 * @return array
 	 */
 	public function parse( $userValue ): array {
 		$this->errors = [];
@@ -135,7 +131,7 @@ class PropertyValueParser implements ValueParser {
 		}
 
 		// #676, only on a query context allow Foo.Bar
-		if ( $invalidCharacter === '' && !$this->isQueryContext && strpos( $value, '.' ) !== false ) {
+		if ( !$this->isQueryContext && strpos( $value, '.' ) !== false ) {
 			$this->errors[] = [ 'smw-datavalue-property-invalid-chain', $value ];
 			return false;
 		}
@@ -146,7 +142,6 @@ class PropertyValueParser implements ValueParser {
 	private function getNormalizedValueFrom( string $value ): array {
 		$inverse = false;
 		$capitalizedName = '';
-		$value = (string)$value;
 
 		// slightly normalise label
 		$propertyName = $this->doNormalize(

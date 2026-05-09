@@ -49,18 +49,19 @@ class SequenceMapFinder {
 			$map = null;
 		}
 
-		$this->connection->upsert(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[
+		$this->connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::ID_AUXILIARY_TABLE )
+			->row( [
 				'smw_id' => $sid,
 				'smw_seqmap' => $map
-			],
-			'smw_id',
-			[
+			] )
+			->onDuplicateKeyUpdate()
+			->uniqueIndexFields( [ 'smw_id' ] )
+			->set( [
 				'smw_seqmap' => $map
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
@@ -79,16 +80,12 @@ class SequenceMapFinder {
 			return $map;
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[
-				'smw_seqmap'
-			],
-			[
-				'smw_id' => $sid
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_seqmap' ] )
+			->from( SQLStore::ID_AUXILIARY_TABLE )
+			->where( [ 'smw_id' => $sid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$omap = $row->smw_seqmap;
@@ -124,17 +121,12 @@ class SequenceMapFinder {
 
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
-		$rows = $this->connection->select(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[
-				'smw_id',
-				'smw_seqmap'
-			],
-			[
-				'smw_id' => $ids
-			],
-			__METHOD__
-		);
+		$rows = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_seqmap' ] )
+			->from( SQLStore::ID_AUXILIARY_TABLE )
+			->where( [ 'smw_id' => $ids ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$inverted_ids = array_flip( $ids );
 

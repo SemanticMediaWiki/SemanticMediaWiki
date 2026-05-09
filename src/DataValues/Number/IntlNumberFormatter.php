@@ -142,7 +142,7 @@ class IntlNumberFormatter {
 			return $this->getDefaultFormattedNumberWithPrecision( $value, $precision );
 		}
 
-		return $this->doFormatByHeuristicRuleWith( $value, $precision );
+		return $this->doFormatByHeuristicRuleWith( $value );
 	}
 
 	/**
@@ -151,10 +151,8 @@ class IntlNumberFormatter {
 	 * to format a number that was not hand-formatted by a user.
 	 *
 	 * @param $value
-	 * @param int|false $precision optional positive integer, controls how many digits after
-	 * the decimal point are shown
 	 */
-	private function doFormatByHeuristicRuleWith( $value, bool $precision = false ): string {
+	private function doFormatByHeuristicRuleWith( $value ): string {
 		// BC configuration to keep default behaviour
 		$precision = $this->defaultPrecision;
 
@@ -289,7 +287,8 @@ class IntlNumberFormatter {
 
 		// Don't try to be more precise than the actual value (e.g avoid turning
 		// 72.769482308 into 72.76948230799999350892904)
-		if ( ( $actualPrecision = $this->getPrecisionFrom( $value ) ) < $precision && $actualPrecision > 0 && !$this->isScientific( $value ) ) {
+		$actualPrecision = $this->getPrecisionFrom( $value );
+		if ( $actualPrecision < $precision && $actualPrecision > 0 && !$this->isScientific( $value ) ) {
 			$replacement = $precision - $actualPrecision;
 			$precision = $actualPrecision;
 		}
@@ -351,8 +350,11 @@ class IntlNumberFormatter {
 	}
 
 	private function getPreferredLocalizedSeparator( string $custom, string $standard, $language ) {
-		if ( $this->options->has( $custom ) && ( $separator = $this->options->get( $custom ) ) !== false ) {
-			return $separator;
+		if ( $this->options->has( $custom ) ) {
+			$separator = $this->options->get( $custom );
+			if ( $separator !== false ) {
+				return $separator;
+			}
 		}
 
 		return Message::get( $standard, Message::TEXT, $language );

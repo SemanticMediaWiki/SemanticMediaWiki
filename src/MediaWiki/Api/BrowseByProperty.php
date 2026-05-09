@@ -44,7 +44,8 @@ class BrowseByProperty extends ApiBase {
 			$params['listonly']
 		);
 
-		if ( ( $lang = $params['lang'] ) === null ) {
+		$lang = $params['lang'];
+		if ( $lang === null ) {
 			$lang = Localizer::getInstance()->getUserLanguage()->getCode();
 		}
 
@@ -121,72 +122,43 @@ class BrowseByProperty extends ApiBase {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebyproperty-param-property',
 			],
 			'limit' => [
 				ParamValidator::PARAM_TYPE => 'limit',
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_DEFAULT => 50,
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebyproperty-param-limit',
 			],
 			'lang' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebyproperty-param-lang',
 			],
 			'listonly' => [
 				ParamValidator::PARAM_TYPE => 'boolean',
 				ParamValidator::PARAM_DEFAULT => false,
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebyproperty-param-listonly',
 			]
 		];
 	}
 
 	/**
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getParamDescription(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'property' => 'To match a specific property',
-			'limit'    => 'To specify the size of the list request',
-			'lang'     => 'To specify a specific language used for some attributes (description etc.)',
-			'listonly' => 'To specify that only a property list is returned without further details'
+			'action=browsebyproperty&property=Modification_date'
+				=> 'apihelp-browsebyproperty-example-1',
+			'action=browsebyproperty&limit=50'
+				=> 'apihelp-browsebyproperty-example-2',
+			'action=browsebyproperty&limit=5&listonly=true'
+				=> 'apihelp-browsebyproperty-example-3',
 		];
-	}
-
-	/**
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to query a property list or an individual property.'
-		];
-	}
-
-	/**
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	public function getExamples(): array {
-		return [
-			'api.php?action=browsebyproperty&property=Modification_date',
-			'api.php?action=browsebyproperty&limit=50',
-			'api.php?action=browsebyproperty&limit=5&listonly=true',
-		];
-	}
-
-	/**
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }

@@ -17,15 +17,13 @@ class TestClient extends Client {
 	/**
 	 * @see Client::bulk
 	 * @since 3.0
-	 *
-	 * @param array $params
 	 */
 	public function bulk( array $params ) {
 		if ( $params === [] ) {
 			return;
 		}
 
-		$params = $params + [ 'refresh' => true ];
+		$params += [ 'refresh' => true ];
 
 		return parent::bulk( $params );
 	}
@@ -34,10 +32,6 @@ class TestClient extends Client {
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html
 	 * @see Client::count
 	 * @since 3.0
-	 *
-	 * @param array $params
-	 *
-	 * @return mixed
 	 */
 	public function count( array $params ): array {
 		if ( $params === [] ) {
@@ -54,10 +48,6 @@ class TestClient extends Client {
 	/**
 	 * @see Client::search
 	 * @since 3.0
-	 *
-	 * @param array $params
-	 *
-	 * @return array
 	 */
 	public function search( array $params ): array {
 		if ( $params === [] ) {

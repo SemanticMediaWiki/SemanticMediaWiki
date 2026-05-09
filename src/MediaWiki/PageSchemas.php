@@ -74,6 +74,7 @@ class PageSchemas extends PSExtensionHandler {
 			$psTemplateFields = $psTemplate->getFields();
 			foreach ( $psTemplateFields as $psTemplateField ) {
 				$prop_array = $psTemplateField->getObject( 'semanticmediawiki_Property' );
+				// @phan-suppress-next-line MediaWikiNoEmptyIfDefined
 				if ( empty( $prop_array ) ) {
 					continue;
 				}
@@ -319,13 +320,6 @@ class PageSchemas extends PSExtensionHandler {
 		$hasTypeLabel = $propLabels['_TYPE'];
 		$typeTag = "[[$hasTypeLabel::$propertyType]]";
 		$text = wfMessage( 'smw-createproperty-isproperty', $typeTag )->inContentLanguage()->text();
-
-		if ( $linkedForm !== '' && defined( 'SF_VERSION' ) ) {
-			global $sfgContLang;
-			$sfPropLabels = $sfgContLang->getPropertyLabels();
-			$defaultFormTag = "[[{$sfPropLabels[SF_SP_HAS_DEFAULT_FORM]}::$linkedForm]]";
-			$text .= ' ' . wfMessage( 'sf_property_linkstoform', $defaultFormTag )->inContentLanguage()->text();
-		}
 
 		if ( $allowedValues != null ) {
 			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', MediaWikiServices::getInstance()->getContentLanguage()->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();

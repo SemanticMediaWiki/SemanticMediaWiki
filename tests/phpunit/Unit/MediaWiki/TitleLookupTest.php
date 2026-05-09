@@ -6,6 +6,7 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\TitleLookup;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -18,6 +19,8 @@ use stdClass;
  * @author mwjames
  */
 class TitleLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$database = $this->getMockBuilder( Database::class )
@@ -38,20 +41,23 @@ class TitleLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->stringContains( 'category' ),
-				$this->anything(),
-				$this->anything(),
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $row ] );
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[ $row ], $whereConditions, $capturedSelects, $capturedTables
+		);
+		$database->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles(
 			$instance->setNamespace( NS_CATEGORY )->selectAll()
 		);
+
+		$this->assertSame( [ 'category' ], $capturedTables );
 	}
 
 	public function testSelectAllOnMainNamespace() {
@@ -63,20 +69,23 @@ class TitleLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->anything(),
-				$this->anything(),
-				[ 'page_namespace' => NS_MAIN ],
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $row ] );
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[ $row ], $whereConditions, $capturedSelects, $capturedTables
+		);
+		$database->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles(
 			$instance->setNamespace( NS_MAIN )->selectAll()
 		);
+
+		$this->assertSame( [ 'page' ], $capturedTables );
 	}
 
 	public function testSelectByRangeOnCategoryNamespace() {
@@ -87,19 +96,21 @@ class TitleLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->stringContains( 'category' ),
-				$this->anything(),
-				[ "cat_id BETWEEN 1 AND 5" ],
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $row ] );
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
+		$database->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles(
 			$instance->setNamespace( NS_CATEGORY )->selectByIdRange( 1, 5 )
+		);
+
+		$this->assertSame(
+			[ [ 'cat_id BETWEEN 1 AND 5' ] ],
+			$capturedWheres
 		);
 	}
 
@@ -112,19 +123,24 @@ class TitleLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->anything(),
-				$this->anything(),
-				$this->equalTo( [ "page_id BETWEEN 6 AND 10", 'page_namespace' => NS_MAIN ] ),
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $row ] );
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
+		$database->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles(
 			$instance->setNamespace( NS_MAIN )->selectByIdRange( 6, 10 )
+		);
+
+		$this->assertSame(
+			[ [
+				'page_id BETWEEN 6 AND 10',
+				'page_namespace' => NS_MAIN,
+			] ],
+			$capturedWheres
 		);
 	}
 
@@ -133,14 +149,10 @@ class TitleLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->anything(),
-				$this->anything(),
-				[ 'page_namespace' => NS_MAIN ],
-				$this->anything(),
-				$this->anything() )
-			->willReturn( false );
+		$selectBuilder = $this->createMockSelectQueryBuilder( [] );
+		$database->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new TitleLookup( $database );
 
@@ -154,21 +166,23 @@ class TitleLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with(
-				$this->equalTo( [ 'page', 'redirect' ] ),
-				$this->anything(),
-				$this->anything(),
-				$this->anything(),
-				$this->anything() )
-			->willReturn( false );
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[], $whereConditions, $capturedSelects, $capturedTables
+		);
+		$database->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles(
 			$instance->getRedirectPages()
 		);
+
+		$this->assertSame( [ [ 'page', 'redirect' ] ], $capturedTables );
 	}
 
 	public function testMaxIdForMainNamespace() {
@@ -176,13 +190,15 @@ class TitleLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'value' => 9999 ] ], $whereConditions, $capturedSelects, $capturedTables
+		);
 		$database->expects( $this->once() )
-			->method( 'selectField' )
-			->with( 'page',
-				$this->anything(),
-				$this->anything(),
-				$this->anything() )
-			->willReturn( 9999 );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new TitleLookup( $database );
 
@@ -190,6 +206,8 @@ class TitleLookupTest extends TestCase {
 			9999,
 			$instance->setNamespace( NS_MAIN )->getMaxId()
 		);
+
+		$this->assertSame( [ 'page' ], $capturedTables );
 	}
 
 	public function testgetMaxIdForCategoryNamespace() {
@@ -197,13 +215,15 @@ class TitleLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder(
+			[ (object)[ 'value' => 1111 ] ], $whereConditions, $capturedSelects, $capturedTables
+		);
 		$database->expects( $this->once() )
-			->method( 'selectField' )
-			->with( 'category',
-				$this->anything(),
-				$this->anything(),
-				$this->anything() )
-			->willReturn( 1111 );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new TitleLookup( $database );
 
@@ -211,6 +231,8 @@ class TitleLookupTest extends TestCase {
 			1111,
 			$instance->setNamespace( NS_CATEGORY )->getMaxId()
 		);
+
+		$this->assertSame( [ 'category' ], $capturedTables );
 	}
 
 	public function testSelectAllOnMissingNamespaceThrowsException() {

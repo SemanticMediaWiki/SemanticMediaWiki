@@ -14,6 +14,7 @@ use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\TableBuildExaminer
@@ -25,6 +26,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TableBuildExaminerTest extends TestCase {
+
+	use MockWriteQueryBuilderTrait;
 
 	private $spyMessageReporter;
 	private $hashField;
@@ -100,13 +103,20 @@ class TableBuildExaminerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
-
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'tableName' )
 			->willReturn( 'smw_object_ids' );
+
+		$updateTables = [];
+		$updateSets = [];
+		$updateWheres = [];
+		$connection->expects( $this->once() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback(
+				function () use ( &$updateTables, &$updateSets, &$updateWheres ) {
+					return $this->createMockUpdateQueryBuilder( $updateTables, $updateSets, $updateWheres );
+				}
+			);
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'moveSMWPageID' ] )

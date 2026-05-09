@@ -4,10 +4,14 @@ namespace SMW\Exporter;
 
 use RuntimeException;
 use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
+use SMW\Export\ExpData;
 use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 
 /**
@@ -144,34 +148,22 @@ class ElementFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return ExpData
 	 */
-	public function newFromContainer( DataItem $dataItem ) {
+	public function newFromContainer( DataItem $dataItem ): ExpData {
 		return Exporter::getInstance()->makeExportData( $dataItem->getSemanticData() );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return ExpResource
 	 */
-	public function newFromWikiPage( DataItem $dataItem ) {
+	public function newFromWikiPage( WikiPage $dataItem ): ExpNsResource {
 		return Exporter::getInstance()->getResourceElementForWikiPage( $dataItem );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return ExpResource
 	 */
-	public function newFromProperty( DataItem $dataItem ) {
+	public function newFromProperty( Property $dataItem ): ExpNsResource {
 		return Exporter::getInstance()->getResourceElementForProperty( $dataItem );
 	}
 
@@ -179,8 +171,6 @@ class ElementFactory {
 	 * Not implemented !
 	 *
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
 	 */
 	public function newFromGeo( DataItem $dataItem ): ?ExpElement {
 		return null;

@@ -196,8 +196,10 @@ class ConceptCacheRebuilder {
 		}
 
 		if ( $skip ) {
-			$line = $this->lines !== false ? "($this->lines) " : '';
-			$this->reportMessage( $line . 'Skipping concept "' . $title->getPrefixedText() . "\": $skip\n", $this->verbose );
+			$this->reportMessage(
+				"($this->lines) " . 'Skipping concept "' . $title->getPrefixedText() . "\": $skip\n",
+				$this->verbose
+			);
 		}
 
 		return $skip;
@@ -248,7 +250,8 @@ class ConceptCacheRebuilder {
 
 	private function getConcepts(): array {
 		if ( $this->concept !== null ) {
-			return [ $this->createConcept() ];
+			$concept = $this->createConcept();
+			return $concept === null ? [] : [ $concept ];
 		}
 
 		return $this->createMultipleConcepts();
@@ -293,7 +296,7 @@ class ConceptCacheRebuilder {
 	private function countDown( int $seconds ): void {
 		for ( $i = $seconds; $i >= 0; $i-- ) {
 			if ( $i != $seconds ) {
-				echo str_repeat( "\x08", strlen( $i + 1 ) );
+				echo str_repeat( "\x08", strlen( (string)( $i + 1 ) ) );
 			}
 			echo $i;
 			flush();
@@ -304,8 +307,9 @@ class ConceptCacheRebuilder {
 		echo "\n";
 	}
 
-	private function getCacheDateInfo( $date ): string {
-		return date( 'Y-m-d H:i:s', $date ) . ' (' . floor( ( strtotime( 'now' ) - $date ) / 60 ) . ' minutes old)';
+	private function getCacheDateInfo( string|int $date ): string {
+		$timestamp = (int)$date;
+		return date( 'Y-m-d H:i:s', $timestamp ) . ' (' . floor( ( strtotime( 'now' ) - $timestamp ) / 60 ) . ' minutes old)';
 	}
 
 }

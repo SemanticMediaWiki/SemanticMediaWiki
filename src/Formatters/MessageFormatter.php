@@ -6,6 +6,7 @@ use MediaWiki\Html\Html;
 use MediaWiki\Language\Language;
 use MediaWiki\Message\Message;
 use SMW\ProcessingErrorMsgHandler;
+use Wikimedia\Message\MessageSpecifier;
 
 /**
  * Class implementing message output formatting.
@@ -22,17 +23,13 @@ use SMW\ProcessingErrorMsgHandler;
  */
 class MessageFormatter {
 
-	/** @var array */
-	protected $messages = [];
+	protected array $messages = [];
 
-	/** @var string */
-	protected $type = 'warning';
+	protected string $type = 'warning';
 
-	/** @var string */
-	protected $separator = ' <!--br-->';
+	protected string $separator = ' <!--br-->';
 
-	/** @var bool */
-	protected $escape = true;
+	protected bool $escape = true;
 
 	/**
 	 * @since 1.9
@@ -50,11 +47,6 @@ class MessageFormatter {
 	 * @endcode
 	 *
 	 * @since 1.9
-	 *
-	 * @param Language $language
-	 * @param array|null $messages
-	 *
-	 * @return MessageFormatter
 	 */
 	public static function newFromArray( Language $language, array $messages = [] ): static {
 		$instance = new self( $language );
@@ -65,12 +57,8 @@ class MessageFormatter {
 	 * Creates a Message object from a key and adds it to an internal array
 	 *
 	 * @since 1.9
-	 *
-	 * @param string $key message key
-	 *
-	 * @return MessageFormatter
 	 */
-	public function addFromKey( $key ): static {
+	public function addFromKey( string|array|MessageSpecifier $key ): static {
 		$params = func_get_args();
 		array_shift( $params );
 		$this->addFromArray( [ new Message( $key, $params ) ] );
@@ -88,10 +76,6 @@ class MessageFormatter {
 	 * @endcode
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $messages
-	 *
-	 * @return MessageFormatter
 	 */
 	public function addFromArray( array $messages ): static {
 		$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
@@ -111,8 +95,6 @@ class MessageFormatter {
 	 * Returns unformatted invoked messages
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
 	public function getMessages(): array {
 		return $this->messages;
@@ -125,8 +107,6 @@ class MessageFormatter {
 	 * @see Highlighter::getTypeId
 	 *
 	 * @since 1.9
-	 *
-	 * @return MessageFormatter
 	 */
 	public function setType( $type ): static {
 		$this->type = $type;
@@ -141,13 +121,9 @@ class MessageFormatter {
 	 * invoking escape( false )
 	 *
 	 * @since 1.9
-	 *
-	 * @param bool $escape
-	 *
-	 * @return MessageFormatter
 	 */
-	public function escape( $escape ): static {
-		$this->escape = (bool)$escape;
+	public function escape( bool $escape ): static {
+		$this->escape = $escape;
 		return $this;
 	}
 
@@ -155,8 +131,6 @@ class MessageFormatter {
 	 * Clears the internal message array
 	 *
 	 * @since 1.9
-	 *
-	 * @return MessageFormatter
 	 */
 	public function clear(): static {
 		$this->messages = [];
@@ -167,8 +141,6 @@ class MessageFormatter {
 	 * Returns if the internal message array does contain messages
 	 *
 	 * @since 1.9
-	 *
-	 * @return bool
 	 */
 	public function exists(): bool {
 		return $this->messages !== [];
@@ -178,10 +150,6 @@ class MessageFormatter {
 	 * Overrides invoked language object
 	 *
 	 * @since 1.9
-	 *
-	 * @param Language $language
-	 *
-	 * @return MessageFormatter
 	 */
 	public function setLanguage( Language $language ): static {
 		$this->language = $language;
@@ -197,10 +165,6 @@ class MessageFormatter {
 	 * into a simple text representation using the invoked language
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $messages
-	 *
-	 * @return array
 	 */
 	protected function doFormat( array $messages ): array {
 		$newArray = [];
@@ -226,12 +190,8 @@ class MessageFormatter {
 	 * Converts the message array into a string representation
 	 *
 	 * @since 1.9
-	 *
-	 * @param bool $html
-	 *
-	 * @return string
 	 */
-	protected function getString( $html = true ) {
+	protected function getString( bool $html = true ): string {
 		if ( $this->escape ) {
 			$messages = array_map( 'htmlspecialchars', array_values( $this->doFormat( $this->messages ) ) );
 		} else {
@@ -256,12 +216,9 @@ class MessageFormatter {
 	 * Returns html representation of the formatted messages
 	 *
 	 * @since 1.9
-	 *
-	 * @return string
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		if ( $this->exists() ) {
-
 			$highlighter = Highlighter::factory( $this->type );
 			$highlighter->setContent( [ 'content' => $this->getString( true ) ] );
 
@@ -275,8 +232,6 @@ class MessageFormatter {
 	 * Returns plain text representation of the formatted messages
 	 *
 	 * @since 1.9
-	 *
-	 * @return string
 	 */
 	public function getPlain(): string {
 		return $this->exists() ? $this->getString( false ) : '';

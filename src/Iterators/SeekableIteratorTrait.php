@@ -17,20 +17,14 @@ use ReturnTypeWillChange;
  */
 trait SeekableIteratorTrait {
 
-	/**
-	 * @var
-	 */
-	private $container = [];
+	private array $container = [];
+
+	private int|string|null $position = 0;
 
 	/**
 	 * @var int
 	 */
-	private $position = 0;
-
-	/**
-	 * @var int
-	 */
-	private $count;
+	private ?int $count = null;
 
 	/**
 	 * @see Countable::count

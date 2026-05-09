@@ -11,6 +11,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\EntityIdDisposerJob
@@ -22,6 +23,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class EntityIdDisposerJobTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $connection;
@@ -36,8 +39,8 @@ class EntityIdDisposerJobTest extends TestCase {
 			->getMock();
 
 		$this->connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ 'Foo' ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->getMockForAbstractClass();
@@ -138,9 +141,10 @@ class EntityIdDisposerJobTest extends TestCase {
 			'smw_hash' => ''
 		];
 
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
 		$this->connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$subject = WikiPage::newFromText( __METHOD__ );
 

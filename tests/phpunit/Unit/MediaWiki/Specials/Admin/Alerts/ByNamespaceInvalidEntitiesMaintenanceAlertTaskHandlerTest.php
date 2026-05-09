@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler
@@ -17,6 +18,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 
@@ -41,8 +44,10 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends TestCase
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( (object)[ 'count' => 50000 ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn(
+				$this->createMockSelectQueryBuilder( [ (object)[ 'count' => 50000 ] ] )
+			);
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )

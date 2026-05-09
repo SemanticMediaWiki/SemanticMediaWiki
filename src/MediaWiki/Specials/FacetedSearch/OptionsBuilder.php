@@ -23,10 +23,6 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $profile
-	 *
-	 * @return string
 	 */
 	public function profiles( string $profile = '' ): string {
 		$html = [];
@@ -58,8 +54,6 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $format
 	 */
 	public function format( string $format ): string {
 		$html = [];
@@ -87,8 +81,6 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $size
 	 */
 	public function size( int $size ): string {
 		$html = [];
@@ -115,8 +107,6 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $order
 	 */
 	public function order( string $order ): string {
 		$html = [];
@@ -144,11 +134,6 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $size
-	 * @param int $offset
-	 *
-	 * @return string
 	 */
 	public function previous( int $size, int $offset ): string {
 		if ( $offset < 1 ) {
@@ -170,15 +155,9 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $size
-	 * @param int $offset
-	 * @param bool $hasFurtherResults
-	 *
-	 * @return string
 	 */
 	public function next( int $size, int $offset, bool $hasFurtherResults ): string {
-		if ( $hasFurtherResults === false ) {
+		if ( !$hasFurtherResults ) {
 			return $this->msg( 'smw_result_next' );
 		}
 

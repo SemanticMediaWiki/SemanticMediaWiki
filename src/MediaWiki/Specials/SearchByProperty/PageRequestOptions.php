@@ -35,7 +35,7 @@ class PageRequestOptions {
 	public $valueString;
 
 	/**
-	 * @var DataValue
+	 * @var DataValue|null
 	 */
 	public $value;
 
@@ -75,8 +75,8 @@ class PageRequestOptions {
 		// Remove empty elements
 		$params = array_filter( $params, 'strlen' );
 
-		$property = isset( $this->requestOptions['property'] ) ? $this->requestOptions['property'] : current( $params );
-		$value = isset( $this->requestOptions['value'] ) ? $this->requestOptions['value'] : next( $params );
+		$property = $this->requestOptions['property'] ?? current( $params );
+		$value = $this->requestOptions['value'] ?? next( $params );
 
 		// Auto-generated link is marked with a leading :
 		if ( is_string( $property ) && $property !== '' && $property[0] === ':' ) {
@@ -84,6 +84,7 @@ class PageRequestOptions {
 			$property = $this->urlEncoder->unescape( ltrim( $property, ':' ) );
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$this->property = DataValueFactory::getInstance()->newPropertyValueByLabel(
 			str_replace( [ '_' ], [ ' ' ], $property )
 		);

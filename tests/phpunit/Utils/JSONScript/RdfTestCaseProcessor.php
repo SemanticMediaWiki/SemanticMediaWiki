@@ -4,6 +4,9 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use MediaWikiIntegrationTestCase;
 use SMW\Exporter\ExporterFactory;
+use SMW\Store;
+use SMW\Tests\Utils\Runners\RunnerFactory;
+use SMW\Tests\Utils\Validators\StringValidator;
 
 /**
  * @group semantic-mediawiki
@@ -38,8 +41,9 @@ class RdfTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $debug = false;
 
 	/**
-	 * @param Store
-	 * @param StringValidator
+	 * @param Store $store
+	 * @param StringValidator $stringValidator
+	 * @param RunnerFactory $runnerFactory
 	 */
 	public function __construct( $store, $stringValidator, $runnerFactory ) {
 		$this->store = $store;

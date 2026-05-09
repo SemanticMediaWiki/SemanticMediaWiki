@@ -18,15 +18,9 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 
 	private ?PermissionExaminer $permissionExaminer = null;
 
-	/**
-	 * @var
-	 */
 	private array $indicators = [];
 
-	/**
-	 * @var
-	 */
-	protected $modules = [ 'smw.entityexaminer' ];
+	protected array $modules = [ 'smw.entityexaminer' ];
 
 	/**
 	 * @since 3.2
@@ -40,8 +34,6 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	/**
 	 * @see PermissionExaminerAware::setPermissionExaminer
 	 * @since 3.2
-	 *
-	 * @param PermissionExaminer $permissionExaminer
 	 */
 	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ): void {
 		$this->permissionExaminer = $permissionExaminer;
@@ -49,8 +41,6 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getIndicators(): array {
 		return $this->indicators;
@@ -58,8 +48,6 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getModules(): array {
 		return $this->modules;

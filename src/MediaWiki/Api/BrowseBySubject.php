@@ -145,6 +145,7 @@ class BrowseBySubject extends ApiBase {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebysubject-param-subject',
 			],
 			'ns' => [
 				ParamValidator::PARAM_TYPE => 'integer',
@@ -163,6 +164,7 @@ class BrowseBySubject extends ApiBase {
 				ParamValidator::PARAM_ISMULTI => false,
 				ParamValidator::PARAM_DEFAULT => '',
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-browsebysubject-param-subobject',
 			],
 			'type' => [
 				ParamValidator::PARAM_TYPE => 'string',
@@ -180,50 +182,13 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getParamDescription(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'subject' => 'The subject to be queried',
-			'subobject' => 'A particular subobject id for the related subject'
+			'action=browsebysubject&subject=Main_Page'
+				=> 'apihelp-browsebysubject-example-1',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to query a subject.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples(): array {
-		return [
-			'api.php?action=browsebysubject&subject=Main_Page',
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }

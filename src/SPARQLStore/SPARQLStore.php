@@ -13,6 +13,7 @@ use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
+use SMW\Lookup\ListLookup;
 use SMW\Options;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
@@ -339,7 +340,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getPropertiesSpecial()
 	 * @since 1.8
 	 */
-	public function getPropertiesSpecial( $requestoptions = null ) {
+	public function getPropertiesSpecial( $requestoptions = null ): ListLookup {
 		return $this->baseStore->getPropertiesSpecial( $requestoptions );
 	}
 
@@ -347,7 +348,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getUnusedPropertiesSpecial()
 	 * @since 1.8
 	 */
-	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
+	public function getUnusedPropertiesSpecial( $requestoptions = null ): ListLookup {
 		return $this->baseStore->getUnusedPropertiesSpecial( $requestoptions );
 	}
 
@@ -355,7 +356,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getWantedPropertiesSpecial()
 	 * @since 1.8
 	 */
-	public function getWantedPropertiesSpecial( $requestoptions = null ) {
+	public function getWantedPropertiesSpecial( $requestoptions = null ): ListLookup {
 		return $this->baseStore->getWantedPropertiesSpecial( $requestoptions );
 	}
 

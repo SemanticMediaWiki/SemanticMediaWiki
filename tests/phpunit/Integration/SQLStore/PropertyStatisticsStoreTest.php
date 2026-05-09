@@ -7,6 +7,7 @@ use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\PropertyStatisticsStore
@@ -21,6 +22,8 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
+
+	use MockWriteQueryBuilderTrait;
 
 	protected $statsTable = null;
 
@@ -194,7 +197,8 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 			);
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'update' );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
 
 		$instance = new PropertyStatisticsStore(
 			$connection
@@ -220,7 +224,8 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 			->method( 'onTransactionCommitOrIdle' );
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'update' );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
 
 		$instance = new PropertyStatisticsStore(
 			$connection
@@ -239,34 +244,59 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testUpsertWithInsertUsageCountWithArrayValue() {
-		$tableName = 'Foo';
+		$capturedTables = [];
+		$capturedRows = [];
+		$capturedSets = [];
+		$capturedUniqueIndexFields = [];
+
+		$insertBuilder = $this->createMockInsertQueryBuilder(
+			$capturedTables,
+			$capturedRows,
+			$capturedSets,
+			$capturedUniqueIndexFields
+		);
 
 		$connection = $this->createMock( Database::class );
-
 		$connection->expects( $this->once() )
-			->method( 'upsert' )
-			->with(
-				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
-				[
-					'usage_count' => 1,
-					'null_count'  => 9999,
-					'p_id' => 42
-				],
-				[ [ 'p_id' ] ],
-				[
-					'usage_count' => 1,
-					'null_count' => 9999,
-				],
-				$this->anything() );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$instance = new PropertyStatisticsStore(
 			$connection
 		);
 
 		$instance->insertUsageCount( 42, [ 1, 9999 ] );
+
+		$this->assertSame( [ SQLStore::PROPERTY_STATISTICS_TABLE ], $capturedTables );
+		$this->assertSame(
+			[ [
+				'usage_count' => 1,
+				'null_count'  => 9999,
+				'p_id'        => 42,
+			] ],
+			$capturedRows
+		);
+		$this->assertSame( [ [ 'p_id' ] ], $capturedUniqueIndexFields );
+		$this->assertSame(
+			[ [
+				'usage_count' => 1,
+				'null_count'  => 9999,
+			] ],
+			$capturedSets
+		);
 	}
 
 	public function testAddToUsageCountsWithArrayValue() {
+		$capturedTables = [];
+		$capturedSets = [];
+		$capturedWheres = [];
+
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedTables,
+			$capturedSets,
+			$capturedWheres
+		);
+
 		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->any() )
@@ -274,50 +304,66 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 			->willReturnArgument( 0 );
 
 		$connection->expects( $this->once() )
-			->method( 'update' )
-			->with(
-				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
-				$this->equalTo(
-					[
-						'usage_count = usage_count + 1',
-						'null_count = null_count + 9999'
-					] ),
-				[
-					'p_id' => 42
-				],
-				$this->anything() );
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$instance = new PropertyStatisticsStore(
 			$connection
 		);
 
 		$instance->addToUsageCounts( [ 42 => [ 'usage' => 1, 'null' => 9999 ] ] );
+
+		$this->assertSame( [ SQLStore::PROPERTY_STATISTICS_TABLE ], $capturedTables );
+		$this->assertSame(
+			[ [
+				'usage_count = usage_count + 1',
+				'null_count = null_count + 9999',
+			] ],
+			$capturedSets
+		);
+		$this->assertSame( [ [ 'p_id' => 42 ] ], $capturedWheres );
 	}
 
 	public function testUpsertOnInsertUsageCount() {
-		$connection = $this->createMock( Database::class );
+		$capturedTables = [];
+		$capturedRows = [];
+		$capturedSets = [];
+		$capturedUniqueIndexFields = [];
 
+		$insertBuilder = $this->createMockInsertQueryBuilder(
+			$capturedTables,
+			$capturedRows,
+			$capturedSets,
+			$capturedUniqueIndexFields
+		);
+
+		$connection = $this->createMock( Database::class );
 		$connection->expects( $this->once() )
-			->method( 'upsert' )
-			->with(
-				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
-				$this->equalTo(
-					[
-						'usage_count' => 12,
-						'null_count' => 0,
-						'p_id' => 42
-					] ),
-				[ [ 'p_id' ] ],
-				[
-					'usage_count' => 12,
-					'null_count' => 0,
-				],
-				$this->anything() );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$instance = new PropertyStatisticsStore(
 			$connection
 		);
 
 		$instance->insertUsageCount( 42, 12 );
+
+		$this->assertSame( [ SQLStore::PROPERTY_STATISTICS_TABLE ], $capturedTables );
+		$this->assertSame(
+			[ [
+				'usage_count' => 12,
+				'null_count'  => 0,
+				'p_id'        => 42,
+			] ],
+			$capturedRows
+		);
+		$this->assertSame( [ [ 'p_id' ] ], $capturedUniqueIndexFields );
+		$this->assertSame(
+			[ [
+				'usage_count' => 12,
+				'null_count'  => 0,
+			] ],
+			$capturedSets
+		);
 	}
 }

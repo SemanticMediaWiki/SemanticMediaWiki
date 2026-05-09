@@ -4,12 +4,12 @@ namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\SQLStore\Lookup\CachedListLookup;
-use SMW\SQLStore\Lookup\ListLookup;
+use SMW\Lookup\CachedListLookup;
+use SMW\Lookup\ListLookup;
 use stdClass;
 
 /**
- * @covers \SMW\SQLStore\Lookup\CachedListLookup
+ * @covers \SMW\Lookup\CachedListLookup
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

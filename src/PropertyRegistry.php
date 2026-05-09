@@ -238,7 +238,7 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function findPropertyDescriptionMsgKeyById( $id ): string {
-		return isset( $this->propertyDescriptionMsgKeys[$id] ) ? $this->propertyDescriptionMsgKeys[$id] : '';
+		return $this->propertyDescriptionMsgKeys[$id] ?? '';
 	}
 
 	/**
@@ -260,9 +260,11 @@ class PropertyRegistry {
 		// open a whole new can of worms
 		// '__' indicates predefined properties of extensions that contain alias
 		// and translated labels and if available we want the translated label
-		if ( ( substr( $id, 0, 2 ) === '__' ) &&
-			( $label = $this->propertyAliasFinder->findPropertyAliasById( $id ) ) ) {
-			return $label;
+		if ( substr( $id, 0, 2 ) === '__' ) {
+			$label = $this->propertyAliasFinder->findPropertyAliasById( $id );
+			if ( $label ) {
+				return $label;
+			}
 		}
 
 		// core has dedicated files per language so the label is available over
@@ -363,7 +365,8 @@ class PropertyRegistry {
 		// Language dep. stored as aliases
 		$aliases = $lang->getPropertyLabels() + $lang->getDatatypeLabels();
 
-		if ( ( $id = array_search( $label, $aliases ) ) !== false && !isset( $this->dataTypePropertyExemptionList[$label] ) ) {
+		$id = array_search( $label, $aliases );
+		if ( $id !== false && !isset( $this->dataTypePropertyExemptionList[$label] ) ) {
 			return $id;
 		}
 
@@ -446,7 +449,7 @@ class PropertyRegistry {
 			return false;
 		}
 
-		return isset( $this->propertyList[$id][3] ) ? $this->propertyList[$id][3] : false;
+		return $this->propertyList[$id][3] ?? false;
 	}
 
 	/**

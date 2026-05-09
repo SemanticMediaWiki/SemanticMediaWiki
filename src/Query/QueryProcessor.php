@@ -142,15 +142,19 @@ class QueryProcessor implements QueryContext {
 		$offset = 0;
 		$limit = $GLOBALS['smwgQDefaultLimit'];
 
-		if ( ( array_key_exists( 'offset', $params ) ) && ( is_int( $params['offset']->getValue() + 0 ) ) ) {
-			$offset = $params['offset']->getValue();
+		if ( array_key_exists( 'offset', $params ) &&
+				is_numeric( trim( $params['offset']->getValue() ) )
+		) {
+			$offset = (int)$params['offset']->getValue();
 		}
 
-		if ( ( array_key_exists( 'limit', $params ) ) && ( is_int( trim( $params['limit']->getValue() ) + 0 ) ) ) {
-			$limit = $params['limit']->getValue();
+		if ( array_key_exists( 'limit', $params ) &&
+				is_numeric( trim( $params['limit']->getValue() ) )
+		) {
+			$limit = (int)$params['limit']->getValue();
 
 			// limit < 0: always show further results link only
-			if ( ( trim( $params['limit']->getValue() ) + 0 ) < 0 ) {
+			if ( $limit < 0 ) {
 				$queryMode = Query::MODE_NONE;
 			}
 		}
@@ -189,10 +193,6 @@ class QueryProcessor implements QueryContext {
 	 * @param array $rawParams
 	 */
 	public static function addThisPrintout( array &$printRequests, array $rawParams ): void {
-		if ( $printRequests === null ) {
-			return;
-		}
-
 		// If THIS is already registered, bail-out!
 		foreach ( $printRequests as $printRequest ) {
 			if ( $printRequest->isMode( PrintRequest::PRINT_THIS ) ) {
@@ -228,7 +228,7 @@ class QueryProcessor implements QueryContext {
 	 *
 	 * @param array $rawParams
 	 * @param bool $showMode
-	 * @return array( string, array( string => string ), array( PrintRequest ) )
+	 * @return array ( string, array( string => string ), array( PrintRequest ) )
 	 */
 	public static function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
 		/**
@@ -257,7 +257,7 @@ class QueryProcessor implements QueryContext {
 	 * @param int $outputMode SMW_OUTPUT_WIKI, SMW_OUTPUT_HTML, ...
 	 * @param int $context INLINE_QUERY, SPECIAL_PAGE, CONCEPT_DESC
 	 * @param bool $showMode process like #show parser function?
-	 * @return array( Query, ProcessedParam[] )
+	 * @return array ( Query, ProcessedParam[] )
 	 */
 	public static function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ): array {
 		[ $queryString, $params, $printouts ] = self::getComponentsFromFunctionParams( $rawParams, $showMode );
@@ -311,7 +311,7 @@ class QueryProcessor implements QueryContext {
 			// process is picked-up by the `deferred.js` loader that will
 			// initiate an API request to finalize the query after MW has build
 			// the page.
-			if ( $printer->isDeferrable() !== $printer::DEFERRED_DATA ) {
+			if ( $printer->isDeferrable() ) {
 				return Deferred::buildHTML( $query );
 			}
 
@@ -340,6 +340,7 @@ class QueryProcessor implements QueryContext {
 		$res = $querySource->getQueryResult( $query );
 		$start = microtime( true );
 
+		// @phan-suppress-next-line PhanRedundantCondition
 		if ( $res instanceof QueryResult && $query->getOption( 'calc.result_hash' ) ) {
 			$query->setOption( 'result_hash', $res->getHash( QueryResult::QUICK_HASH ) );
 		}

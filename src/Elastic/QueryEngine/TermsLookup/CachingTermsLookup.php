@@ -19,9 +19,6 @@ class CachingTermsLookup extends TermsLookup {
 	 */
 	const CACHE_NAMESPACE = 'smw:elastic:lookup';
 
-	/**
-	 * @var
-	 */
 	private array $quick_cache = [];
 
 	/**
@@ -42,8 +39,6 @@ class CachingTermsLookup extends TermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public static function makeCacheKey(): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, func_get_args() );
@@ -55,7 +50,7 @@ class CachingTermsLookup extends TermsLookup {
 	 * @param $type
 	 * @param Parameters $parameters
 	 *
-	 * @return array
+	 * @return ?array
 	 * @throws RuntimeException
 	 */
 	public function lookup( $type, Parameters $parameters ) {
@@ -80,12 +75,8 @@ class CachingTermsLookup extends TermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
-	public function concept_lookup( Parameters $parameters ) {
+	public function concept_lookup( Parameters $parameters ): ?array {
 		// @see Indexer::delete
 		$parameters->set( 'id', md5( $parameters->get( 'id' ) ) );
 		$id = $parameters->get( 'id' );
@@ -109,7 +100,8 @@ class CachingTermsLookup extends TermsLookup {
 			return $this->quick_cache[$key]['params'];
 		}
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->fetch( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_concept_lookup' => $parameters->get( 'query.string' ),
@@ -193,7 +185,8 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->fetch( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_chain_lookup' => [
@@ -237,8 +230,6 @@ class CachingTermsLookup extends TermsLookup {
 	 *
 	 * @since 3.0
 	 *
-	 * @param Parameters $parameters
-	 *
 	 * @return array
 	 */
 	public function predef_lookup( Parameters $parameters ) {
@@ -265,7 +256,8 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->fetch( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_predefined_lookup' => $parameters->get( 'query.string' ),
@@ -304,8 +296,6 @@ class CachingTermsLookup extends TermsLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Parameters $parameters
-	 *
 	 * @return array
 	 */
 	public function inverse_lookup( Parameters $parameters ) {
@@ -333,7 +323,8 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->fetch( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_inverse_lookup' => [

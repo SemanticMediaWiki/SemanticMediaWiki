@@ -20,7 +20,6 @@ class ExpDataDeserializer implements Deserializer {
 	 *
 	 * @since 2.2
 	 *
-	 * @return ExpData
 	 * @throws OutOfBoundsException
 	 */
 	public function deserialize( $serialization ): ?ExpData {
@@ -44,6 +43,7 @@ class ExpDataDeserializer implements Deserializer {
 	}
 
 	private function newExpData( array $subject ): ExpData {
+		// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 		return new ExpData( ExpElement::newFromSerialization( $subject ) );
 	}
 
@@ -54,6 +54,7 @@ class ExpDataDeserializer implements Deserializer {
 
 			foreach ( $data['children'] as $child ) {
 				$expData->addPropertyObjectValue(
+					// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 					$property,
 					$this->doDeserializeChild( $child )
 				);

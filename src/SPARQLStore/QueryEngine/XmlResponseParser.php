@@ -74,7 +74,6 @@ class XmlResponseParser implements HttpResponseParser {
 		xml_parser_set_option( $this->parser, XML_OPTION_SKIP_WHITE, 0 );
 		xml_parser_set_option( $this->parser, XML_OPTION_TARGET_ENCODING, 'UTF-8' );
 		xml_parser_set_option( $this->parser, XML_OPTION_CASE_FOLDING, 0 );
-		xml_set_object( $this->parser, $this );
 		xml_set_element_handler( $this->parser, $this->handleOpenElement( ... ), $this->handleCloseElement( ... ) );
 		xml_set_character_data_handler( $this->parser, $this->handleCharacterData( ... ) );
 		xml_set_default_handler( $this->parser, $this->handleDefault( ... ) );
@@ -200,13 +199,16 @@ class XmlResponseParser implements HttpResponseParser {
 
 		// UTF-8 is being split therefore concatenate the string (use row as indicator
 		// to detect a sliced string)
-		if ( isset( $this->data[$rowcount] ) && ( $element = end( $this->data[$rowcount] ) ) !== null ) {
-			switch ( $prevTag ) {
-				case 'uri':
-					$characterData = $element->getUri() . $characterData;
-					break;
-				case 'literal':
-					$characterData = $element->getLexicalForm() . $characterData;
+		if ( isset( $this->data[$rowcount] ) ) {
+			$element = end( $this->data[$rowcount] );
+			if ( $element !== null ) {
+				switch ( $prevTag ) {
+					case 'uri':
+						$characterData = $element->getUri() . $characterData;
+						break;
+					case 'literal':
+						$characterData = $element->getLexicalForm() . $characterData;
+				}
 			}
 		}
 

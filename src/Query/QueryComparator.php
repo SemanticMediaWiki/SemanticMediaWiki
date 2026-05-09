@@ -2,7 +2,7 @@
 
 namespace SMW\Query;
 
-use Exception;
+use InvalidArgumentException;
 
 /**
  * @license GPL-2.0-or-later
@@ -127,6 +127,7 @@ class QueryComparator {
 	 * @param $comparator
 	 *
 	 * @return string
+	 * @throws InvalidArgumentException
 	 */
 	public function getStringForComparator( $comparator ) {
 		if ( $this->reverseCache === [] ) {
@@ -139,7 +140,7 @@ class QueryComparator {
 			return $this->reverseCache[$comparator];
 		}
 
-		throw new Exception( "Comparator $comparator does not have a string representatation" );
+		throw new InvalidArgumentException( "Comparator $comparator does not have a string representatation" );
 	}
 
 	/**

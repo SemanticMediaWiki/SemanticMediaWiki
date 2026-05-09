@@ -16,7 +16,7 @@ interface DeclarationExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @return SemanticData
+	 * @return ?SemanticData
 	 */
 	public function getSemanticData();
 

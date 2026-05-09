@@ -42,8 +42,13 @@ class TemporaryTableBuilder {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
 
+		// Resolve the bare logical name through tableName() so the temp table
+		// lives at the prefix-applied physical name, matching what MW core's
+		// QueryBuilder produces when consumers reference it later.
+		$resolvedName = $this->connection->tableName( $tableName );
+
 		$this->connection->query(
-			$this->getSQLCodeFor( $tableName ),
+			$this->getSQLCodeFor( $resolvedName ),
 			__METHOD__,
 			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
@@ -59,8 +64,23 @@ class TemporaryTableBuilder {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
 
+		// Resolve the bare logical name through tableName() so we drop the
+		// prefix-applied physical name. See create() for the rationale.
+		$resolvedName = $this->connection->tableName( $tableName );
+
+		// Platform-specific DDL: MySQL has DROP TEMPORARY TABLE; Postgres
+		// uses plain DROP TABLE IF EXISTS (the temp-table scope handles
+		// teardown); SQLite uses plain DROP TABLE.
+		if ( $this->connection->isType( 'postgres' ) ) {
+			$sql = 'DROP TABLE IF EXISTS ' . $resolvedName;
+		} elseif ( $this->connection->isType( 'sqlite' ) ) {
+			$sql = 'DROP TABLE ' . $resolvedName;
+		} else {
+			$sql = 'DROP TEMPORARY TABLE ' . $resolvedName;
+		}
+
 		$this->connection->query(
-			"DROP TEMPORARY TABLE " . $tableName,
+			$sql,
 			__METHOD__,
 			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
@@ -98,8 +118,17 @@ class TemporaryTableBuilder {
 				. "END\$\$";
 		}
 
-		// MySQL_ just a temporary table, use INSERT IGNORE later
-		return "CREATE TEMPORARY TABLE IF NOT EXISTS " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
+		// SQLite: TEMP keyword (TEMPORARY also accepted) and no engine clause.
+		// `INTEGER PRIMARY KEY` is a SQLite-specific rowid alias — the column
+		// accepts explicit values supplied via INSERT (HierarchyTempTableBuilder
+		// supplies them) and rejects duplicates, so dedup later via
+		// INSERT OR IGNORE works without an extra constraint clause.
+		if ( $this->connection->isType( 'sqlite' ) ) {
+			return 'CREATE TEMP TABLE IF NOT EXISTS ' . $tableName . ' ( id INTEGER PRIMARY KEY )';
+		}
+
+		// MySQL: temporary memory table; dedup via INSERT IGNORE later.
+		return 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tableName . '( id INT UNSIGNED KEY ) ENGINE=MEMORY';
 	}
 
 }

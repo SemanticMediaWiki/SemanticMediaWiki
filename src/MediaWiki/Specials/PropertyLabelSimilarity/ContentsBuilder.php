@@ -52,12 +52,10 @@ class ContentsBuilder {
 			$requestOptions
 		);
 
-		$resultCount = is_array( $result ) ? count( $result ) : 0;
-
 		$html = $this->getForm(
 			$requestOptions->getLimit(),
 			$requestOptions->getOffset(),
-			$resultCount,
+			count( $result ),
 			$threshold,
 			$type
 		);

@@ -132,7 +132,7 @@ class ConceptParserFunction {
 				wfMessage( 'smw_concept_description', $title->getText() )->text() ) .
 			Html::rawElement( 'span', [ 'class' => 'smwrdflink' ], $this->getRdfLink( $title )->getWikiText() ) .
 			Html::element( 'br', [] ) .
-			Html::element( 'p', [ 'class' => 'concept-documenation' ], $documentation ? $documentation : '' ) .
+			Html::element( 'p', [ 'class' => 'concept-documenation' ], $documentation ?: '' ) .
 			Html::rawElement( 'pre', [], str_replace( '[', '&#91;', $queryString ) ) .
 			Html::element( 'br', [] )
 		);

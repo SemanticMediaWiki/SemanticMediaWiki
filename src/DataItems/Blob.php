@@ -53,9 +53,8 @@ class Blob extends DataItem {
 
 	/**
 	 * @see DataItem::getSortKeyDataItem()
-	 * @return DataItem
 	 */
-	public function getSortKeyDataItem(): static {
+	public function getSortKeyDataItem(): Blob {
 		return $this;
 	}
 

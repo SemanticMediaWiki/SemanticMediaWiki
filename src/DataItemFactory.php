@@ -29,8 +29,6 @@ class DataItemFactory {
 	 * @since 2.4
 	 *
 	 * @param string $error
-	 *
-	 * @return Error
 	 */
 	public function newDIError( $error ): Error {
 		return new Error( $error );
@@ -41,8 +39,6 @@ class DataItemFactory {
 	 *
 	 * @param string $key
 	 * @param bool $inverse
-	 *
-	 * @return Property
 	 */
 	public function newDIProperty( $key, $inverse = false ): Property {
 		return new Property( str_replace( ' ', '_', $key ), $inverse );
@@ -55,10 +51,13 @@ class DataItemFactory {
 	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobjectName
-	 *
-	 * @return WikiPage
 	 */
-	public function newDIWikiPage( $title, $namespace = NS_MAIN, $interwiki = '', $subobjectName = '' ): WikiPage {
+	public function newDIWikiPage(
+		$title,
+		$namespace = NS_MAIN,
+		$interwiki = '',
+		$subobjectName = ''
+	): WikiPage {
 		if ( $title instanceof Title ) {
 			return WikiPage::newFromTitle( $title );
 		}
@@ -79,10 +78,6 @@ class DataItemFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WikiPage $subject
-	 *
-	 * @return ContainerSemanticData
 	 */
 	public function newContainerSemanticData( WikiPage $subject ): ContainerSemanticData {
 		return new ContainerSemanticData( $subject );
@@ -92,8 +87,6 @@ class DataItemFactory {
 	 * @since 2.4
 	 *
 	 * @param int $number
-	 *
-	 * @return Number
 	 */
 	public function newDINumber( $number ): Number {
 		return new Number( $number );
@@ -103,8 +96,6 @@ class DataItemFactory {
 	 * @since 2.4
 	 *
 	 * @param string $text
-	 *
-	 * @return Blob
 	 */
 	public function newDIBlob( $text ): Blob {
 		return new Blob( $text );
@@ -114,8 +105,6 @@ class DataItemFactory {
 	 * @since 2.4
 	 *
 	 * @param bool $boolean
-	 *
-	 * @return bool
 	 */
 	public function newDIBoolean( $boolean ): Boolean {
 		return new Boolean( $boolean );
@@ -129,10 +118,14 @@ class DataItemFactory {
 	 * @param int $queryfeatures
 	 * @param int $size
 	 * @param int $depth
-	 *
-	 * @return Concept
 	 */
-	public function newDIConcept( $concept, $docu = '', $queryfeatures = 0, $size = 0, $depth = 0 ): Concept {
+	public function newDIConcept(
+		$concept,
+		$docu = '',
+		$queryfeatures = 0,
+		$size = 0,
+		$depth = 0
+	): Concept {
 		return new Concept( $concept, $docu, $queryfeatures, $size, $depth );
 	}
 
@@ -143,10 +136,13 @@ class DataItemFactory {
 	 * @param string $hierpart
 	 * @param string $query
 	 * @param string $fragment
-	 *
-	 * @return Uri
 	 */
-	public function newDIUri( $scheme, $hierpart, $query = '', $fragment = '' ): Uri {
+	public function newDIUri(
+		$scheme,
+		$hierpart,
+		$query = '',
+		$fragment = ''
+	): Uri {
 		return new Uri( $scheme, $hierpart, $query, $fragment );
 	}
 
@@ -161,10 +157,17 @@ class DataItemFactory {
 	 * @param int|false $minute
 	 * @param int|false $second
 	 * @param int|false $timezone
-	 *
-	 * @return Time
 	 */
-	public function newDITime( $calendarmodel, $year, $month = false, $day = false, $hour = false, $minute = false, $second = false, $timezone = false ): Time {
+	public function newDITime(
+		$calendarmodel,
+		$year,
+		$month = false,
+		$day = false,
+		$hour = false,
+		$minute = false,
+		$second = false,
+		$timezone = false
+	): Time {
 		return new Time( $calendarmodel, $year, $month, $day, $hour, $minute, $second, $timezone );
 	}
 

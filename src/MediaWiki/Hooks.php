@@ -114,11 +114,7 @@ class Hooks {
 			return;
 		}
 
-		if ( $name !== [] ) {
-			$handlers = [ $name ];
-		} else {
-			$handlers = $this->getHandlerList();
-		}
+		$handlers = $name !== '' ? [ $name ] : $this->getHandlerList();
 
 		foreach ( $handlers as $name ) {
 			$this->hookContainer->clear( $name );
@@ -133,7 +129,7 @@ class Hooks {
 	 * @return callable|false
 	 */
 	public function getHandlerFor( $name ): callable|false {
-		return isset( $this->handlers[$name] ) ? $this->handlers[$name] : false;
+		return $this->handlers[$name] ?? false;
 	}
 
 	/**
@@ -1462,7 +1458,10 @@ class Hooks {
 		return true;
 	}
 
-	public function onAdminLinks( ALTree $admin_links_tree ): bool {
+	public function onAdminLinks(
+		// @phan-suppress-next-line PhanUndeclaredTypeParameter
+		ALTree $admin_links_tree
+	): bool {
 		$adminLinks = new AdminLinks();
 		$adminLinks->process( $admin_links_tree );
 

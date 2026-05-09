@@ -50,9 +50,8 @@ class OutputPageParserOutputTest extends TestCase {
 
 		$this->testEnvironment->withConfiguration(
 			[
-				'smwgShowFactbox'      => SMW_FACTBOX_NONEMPTY,
-				'smwgFactboxUseCache'  => true,
-				'smwgMainCacheType'        => 'hash'
+				'smwgShowFactbox'   => SMW_FACTBOX_NONEMPTY,
+				'smwgMainCacheType' => 'hash'
 			]
 		);
 

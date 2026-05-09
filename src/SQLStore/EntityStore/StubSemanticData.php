@@ -177,7 +177,8 @@ class StubSemanticData extends SemanticData {
 			return [];
 		}
 
-		if ( array_key_exists( $property->getKey(), $this->mStubPropVals ) ) {
+		$key = $property->getKey();
+		if ( array_key_exists( $key, $this->mStubPropVals ) ) {
 			$this->unstubPropertyValues( $property );
 		}
 

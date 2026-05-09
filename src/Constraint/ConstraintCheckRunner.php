@@ -14,25 +14,13 @@ use SMW\Schema\SchemaList;
  */
 class ConstraintCheckRunner {
 
-	/**
-	 * @var
-	 */
 	private array $constraintChecks = [];
 
-	/**
-	 * @var
-	 */
-	private $constraints = [];
+	private array $constraints = [];
 
-	/**
-	 * @var
-	 */
 	private array $constraintSchemas = [];
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	private bool $hasDeferrableConstraint = false;
 
@@ -44,8 +32,6 @@ class ConstraintCheckRunner {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return bool
 	 */
 	public function hasViolation(): bool {
 		return $this->hasViolation;
@@ -53,8 +39,6 @@ class ConstraintCheckRunner {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return bool
 	 */
 	public function hasDeferrableConstraint(): bool {
 		return $this->hasDeferrableConstraint;
@@ -89,8 +73,6 @@ class ConstraintCheckRunner {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return
 	 */
 	public function getConstraints(): array {
 		return $this->constraints;
@@ -98,10 +80,8 @@ class ConstraintCheckRunner {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param mixed $dataValue
 	 */
-	public function check( $dataValue ): void {
+	public function check( mixed $dataValue ): void {
 		$this->hasDeferrableConstraint = false;
 		$this->hasViolation = false;
 

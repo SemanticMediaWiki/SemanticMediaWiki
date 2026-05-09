@@ -58,17 +58,14 @@ class Property extends DataItem {
 	 */
 	private string $m_key;
 
-	/**
-	 * @var string
-	 */
-	private $propertyValueType;
+	private ?string $propertyValueType = null;
 
 	/**
 	 * Interwiki prefix for when a property represents a non-local entity
 	 */
 	private string $interwiki = '';
 
-	public int $id;
+	public ?int $id;
 
 	/**
 	 * Initialise a property. This constructor checks that keys of
@@ -78,11 +75,9 @@ class Property extends DataItem {
 	 * done, the function self::newFromUserLabel() can be used.
 	 */
 	public function __construct(
-		$key,
+		string $key,
 		private $m_inverse = false,
 	) {
-		$key = (string)$key;
-
 		if ( $key === '' || $key[0] == '-' ) {
 			throw new PropertyLabelNotResolvedException( "Illegal property key \"$key\"." );
 		}
@@ -96,8 +91,6 @@ class Property extends DataItem {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return int
 	 */
 	public function getDIType(): int {
 		return DataItem::TYPE_PROPERTY;
@@ -105,17 +98,13 @@ class Property extends DataItem {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return string|null
 	 */
-	public function getKey(): ?string {
+	public function getKey(): string {
 		return $this->m_key;
 	}
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return bool
 	 */
 	public function isInverse(): bool {
 		return $this->m_inverse;
@@ -123,19 +112,15 @@ class Property extends DataItem {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return string
 	 */
 	public function getSha1(): string {
-		return sha1( json_encode( [ $this->m_key, SMW_NS_PROPERTY, '', '' ] ) );
+		return sha1( json_encode( [ $this->m_key, SMW_NS_PROPERTY, '', '' ] ), true );
 	}
 
 	/**
 	 * @since 1.6
-	 *
-	 * @return string|null
 	 */
-	public function getSortKey(): ?string {
+	public function getSortKey(): string {
 		return $this->m_key;
 	}
 
@@ -155,8 +140,6 @@ class Property extends DataItem {
 	 * shown directly on the page anyway).
 	 *
 	 * @since 1.6
-	 *
-	 * @return int
 	 */
 	public function isShown(): bool {
 		if ( $this->isUserDefined() ) {
@@ -171,8 +154,6 @@ class Property extends DataItem {
 	 * wiki page, and not a property that is pre-defined in the wiki.
 	 *
 	 * @since 1.6
-	 *
-	 * @return bool
 	 */
 	public function isUserDefined(): bool {
 		return $this->m_key[0] != '_';
@@ -183,8 +164,6 @@ class Property extends DataItem {
 	 * not.
 	 *
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function isUserAnnotable(): bool {
 		// A user defined property is generally assumed to be unrestricted for
@@ -202,8 +181,6 @@ class Property extends DataItem {
 	 * label starts with a "-".
 	 *
 	 * @since 1.6
-	 *
-	 * @return string
 	 */
 	public function getLabel(): string {
 		$prefix = $this->m_inverse ? '-' : '';
@@ -217,8 +194,6 @@ class Property extends DataItem {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return string|null
 	 */
 	public function getCanonicalLabel(): ?string {
 		$prefix = $this->m_inverse ? '-' : '';
@@ -239,10 +214,6 @@ class Property extends DataItem {
 	 * user language.
 	 *
 	 * @since 2.5
-	 *
-	 * @param string $languageCode
-	 *
-	 * @return string
 	 */
 	public function getPreferredLabel( string $languageCode = '' ): string {
 		$label = PropertyRegistry::getInstance()->findPreferredPropertyLabelFromIdByLanguageCode(
@@ -259,8 +230,6 @@ class Property extends DataItem {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $interwiki
 	 */
 	public function setInterwiki( string $interwiki ): void {
 		$this->interwiki = $interwiki;
@@ -275,10 +244,6 @@ class Property extends DataItem {
 	 * providing an optional subobject name.
 	 *
 	 * @since 1.6
-	 *
-	 * @param string $subobjectName
-	 *
-	 * @return WikiPage|null
 	 */
 	public function getDiWikiPage( string $subobjectName = '' ): ?WikiPage {
 		$dbkey = $this->m_key;
@@ -292,10 +257,6 @@ class Property extends DataItem {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $subobjectName
-	 *
-	 * @return WikiPage|null
 	 */
 	public function getCanonicalDiWikiPage( string $subobjectName = '' ): ?WikiPage {
 		if ( $this->isUserDefined() ) {
@@ -321,8 +282,7 @@ class Property extends DataItem {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return Property
+	 * @suppress PhanTypeMismatchReturnSuperType
 	 */
 	public function getRedirectTarget(): self {
 		if ( $this->m_inverse ) {
@@ -342,9 +302,6 @@ class Property extends DataItem {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $valueType
-	 *
-	 * @return self
 	 * @throws DataTypeLookupException
 	 * @throws RuntimeException
 	 */
@@ -380,11 +337,9 @@ class Property extends DataItem {
 	 * type will be used.
 	 *
 	 * @since 3.0
-	 *
-	 * @return string type ID
 	 */
 	public function findPropertyValueType(): string {
-		if ( isset( $this->propertyValueType ) ) {
+		if ( $this->propertyValueType !== null ) {
 			return $this->propertyValueType;
 		}
 
@@ -425,8 +380,6 @@ class Property extends DataItem {
 	 * @see DataItem::getSerialization
 	 *
 	 * @since 1.6
-	 *
-	 * @return string|null
 	 */
 	public function getSerialization(): ?string {
 		return ( $this->m_inverse ? '-' : '' ) . $this->m_key;
@@ -437,10 +390,6 @@ class Property extends DataItem {
 	 * ID.
 	 *
 	 * @since 1.6
-	 *
-	 * @param ?string $serialization
-	 *
-	 * @return Property
 	 */
 	public static function doUnserialize( ?string $serialization ): self {
 		$inverse = false;
@@ -457,10 +406,6 @@ class Property extends DataItem {
 	 * @see DataItem::equals
 	 *
 	 * @since 1.6
-	 *
-	 * @param DataItem $di
-	 *
-	 * @return bool
 	 */
 	public function equals( DataItem $di ): bool {
 		if ( $di->getDIType() !== DataItem::TYPE_PROPERTY ) {
@@ -484,21 +429,16 @@ class Property extends DataItem {
 	 * @param string $label
 	 * @param bool $inverse = false
 	 * @param $languageCode = false
-	 *
-	 * @return Property
 	 */
 	public static function newFromUserLabel( string $label, bool $inverse = false, $languageCode = false ): self {
-		// Explicitly cast to a string so we are able to return an object from
-		// any user label
-		$label = (string)$label;
-
 		if ( $label !== '' && $label[0] == '-' ) {
 			$label = substr( $label, 1 );
 			$inverse = true;
 		}
 
 		// Special handling for when the user value contains a @LCODE marker
-		if ( ( $annotatedLanguageCode = Localizer::getAnnotatedLanguageCodeFrom( $label ) ) !== false ) {
+		$annotatedLanguageCode = Localizer::getAnnotatedLanguageCodeFrom( $label );
+		if ( $annotatedLanguageCode !== false ) {
 			$languageCode = $annotatedLanguageCode;
 		}
 
@@ -535,8 +475,13 @@ class Property extends DataItem {
 		}
 
 		try {
-			return new WikiPage( str_replace( ' ', '_', $dbkey ), SMW_NS_PROPERTY, $this->interwiki, $subobjectName );
-		} catch ( DataItemException $e ) {
+			return new WikiPage(
+				str_replace( ' ', '_', $dbkey ),
+				SMW_NS_PROPERTY,
+				$this->interwiki,
+				$subobjectName
+			);
+		} catch ( DataItemException ) {
 			return null;
 		}
 	}
@@ -545,8 +490,6 @@ class Property extends DataItem {
 	 * Implements JsonSerializable.
 	 *
 	 * @since 4.0.0
-	 *
-	 * @return array
 	 */
 	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
@@ -560,10 +503,7 @@ class Property extends DataItem {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonDeserializer $deserializer
-	 * @param array $json JSON to be unserialized
-	 *
-	 * @return self
+	 * @return static
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
 		$obj = parent::newFromJsonArray( $deserializer, $json );

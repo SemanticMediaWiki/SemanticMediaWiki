@@ -19,6 +19,8 @@ use SMW\Options;
 use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -31,6 +33,9 @@ use stdClass;
  * @author mwjames
  */
 class ElasticStoreTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $elasticFactory;
@@ -76,6 +81,10 @@ class ElasticStoreTest extends TestCase {
 		$row->smw_hash = 42;
 		$row->smw_rev = null;
 		$row->smw_touched = null;
+		$row->smw_title = '';
+		$row->smw_namespace = 0;
+		$row->smw_iw = '';
+		$row->smw_subobject = '';
 		$row->count = 0;
 
 		$client = $this->getMockBuilder( Client::class )
@@ -89,6 +98,26 @@ class ElasticStoreTest extends TestCase {
 		$connection->expects( $this->any() )
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
+
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+
+		$connection->expects( $this->any() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockInsertQueryBuilder() );
+
+		$connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
+
+		$connection->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockDeleteQueryBuilder() );
+
+		$connection->expects( $this->any() )
+			->method( 'newReplaceQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockReplaceQueryBuilder() );
 
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
@@ -110,12 +139,24 @@ class ElasticStoreTest extends TestCase {
 			->willReturn( [] );
 
 		$database->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ $row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
 
 		$database->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( $row );
+			->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockInsertQueryBuilder() );
+
+		$database->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
+
+		$database->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockDeleteQueryBuilder() );
+
+		$database->expects( $this->any() )
+			->method( 'newReplaceQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockReplaceQueryBuilder() );
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
@@ -309,9 +350,15 @@ class ElasticStoreTest extends TestCase {
 			->method( 'getType' )
 			->willReturn( 'mysql' );
 
+		$qb = $this->createMockSelectQueryBuilder( [] );
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$insertBuilder = $this->createMockInsertQueryBuilder();
+		$connection->expects( $this->any() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()

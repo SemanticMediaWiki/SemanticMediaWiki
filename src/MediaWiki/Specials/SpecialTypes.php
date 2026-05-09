@@ -90,7 +90,9 @@ class SpecialTypes extends SpecialPage {
 				null
 			);
 
+			// @phan-suppress-next-line PhanUndeclaredConstantOfClass
 			$dataValue->setOption( $dataValue::NO_TEXT_TRANSFORMATION, true );
+			// @phan-suppress-next-line PhanUndeclaredConstantOfClass
 			$dataValue->setOption( $dataValue::SHORT_FORM, true );
 
 			return $dataValue->getWikiValue();
@@ -209,7 +211,7 @@ class SpecialTypes extends SpecialPage {
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
-		$requestOptions->setLimit( $limit + 1 );
+		$requestOptions->setLimit( (int)$limit + 1 );
 		$requestOptions->setOffset( $offset );
 
 		$dataItems = $store->getPropertySubjects(

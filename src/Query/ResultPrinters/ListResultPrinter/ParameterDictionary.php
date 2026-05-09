@@ -33,7 +33,7 @@ class ParameterDictionary {
 	 * @return mixed
 	 */
 	public function get( $setting, $default = '' ) {
-		return isset( $this->configuration[$setting] ) ? $this->configuration[$setting] : $default;
+		return $this->configuration[$setting] ?? $default;
 	}
 
 	/**

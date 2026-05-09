@@ -59,7 +59,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @return DataItem[]|null
+	 * @return DataItem[]
 	 */
 	public function getDataItems(): array {
 		if ( !$this->isValid() ) {
@@ -88,16 +88,17 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @param string|int $index
 	 *
-	 * @return DataItem[]|null
+	 * @return DataItem|null
 	 */
 	public function getDataItemByIndex( $index ) {
 		if ( is_numeric( $index ) ) {
 			$pos = $index - 1;
 			$dataItems = $this->getDataItems();
-			return isset( $dataItems[$pos] ) ? $dataItems[$pos] : null;
+			return $dataItems[$pos] ?? null;
 		}
 
-		if ( ( $property = $this->getPropertyDataItemByIndex( $index ) ) !== null ) {
+		$property = $this->getPropertyDataItemByIndex( $index );
+		if ( $property !== null ) {
 			$values = $this->getDataItem()->getSemanticData()->getPropertyValues( $property );
 			return reset( $values );
 		}
@@ -120,7 +121,7 @@ abstract class AbstractMultiValue extends DataValue {
 
 		if ( is_numeric( $index ) ) {
 			$pos = $index - 1;
-			return isset( $properties[$pos] ) ? $properties[$pos] : null;
+			return $properties[$pos] ?? null;
 		}
 
 		foreach ( $properties as $property ) {

@@ -30,12 +30,11 @@ class ConceptDescriptionInterpreter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConceptDescription $description
-	 *
-	 * @return Condition|[]
 	 */
-	public function interpretDescription( ConceptDescription $description, $isConjunction = false ): array|Condition {
+	public function interpretDescription(
+		ConceptDescription $description,
+		bool $isConjunction = false
+	): array|Condition {
 		$concept = $description->getConcept();
 
 		$value = $this->conditionBuilder->getStore()->getPropertyValues(

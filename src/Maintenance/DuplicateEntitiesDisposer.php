@@ -41,10 +41,8 @@ class DuplicateEntitiesDisposer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Iterator|array $duplicates
 	 */
-	public function verifyAndDispose( $duplicates ): void {
+	public function verifyAndDispose( mixed $duplicates ): void {
 		if ( !$this->is_iterable( $duplicates ) ) {
 			return;
 		}
@@ -129,7 +127,7 @@ class DuplicateEntitiesDisposer {
 	 *
 	 * @since 3.0
 	 */
-	private function is_iterable( $obj ): bool {
+	private function is_iterable( mixed $obj ): bool {
 		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 
@@ -137,6 +135,13 @@ class DuplicateEntitiesDisposer {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
+
+		// Each duplicate-tuple needs its own DELETE (composite WHERE varies
+		// per row), but the canonical re-INSERTs accumulate into one shared
+		// builder so they execute as a single statement at the end.
+		$insertBuilder = $connection->newInsertQueryBuilder()
+			->insertInto( $table )
+			->caller( __METHOD__ );
 
 		foreach ( $duplicates as $duplicate ) {
 
@@ -149,27 +154,27 @@ class DuplicateEntitiesDisposer {
 			$this->messageReporter->reportMessage( '.' );
 			$log[] = [ 'DELETE' => $duplicate['s_id'] . ", " . $duplicate['p_id'] . ', ' . $duplicate['o_id'] ];
 
-			$connection->delete(
-				$table,
-				[
+			$connection->newDeleteQueryBuilder()
+				->deleteFrom( $table )
+				->where( [
 					's_id' => $duplicate['s_id'],
 					'p_id' => $duplicate['p_id'],
 					'o_id' => $duplicate['o_id'],
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
-			$connection->insert(
-				$table,
-				[
-					's_id' => $duplicate['s_id'],
-					'p_id' => $duplicate['p_id'],
-					'o_id' => $duplicate['o_id'],
-				],
-				__METHOD__
-			);
+			$insertBuilder->row( [
+				's_id' => $duplicate['s_id'],
+				'p_id' => $duplicate['p_id'],
+				'o_id' => $duplicate['o_id'],
+			] );
 
 			$i++;
+		}
+
+		if ( $i > 0 ) {
+			$insertBuilder->execute();
 		}
 	}
 
@@ -177,6 +182,13 @@ class DuplicateEntitiesDisposer {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
+
+		// Each duplicate-tuple needs its own DELETE (composite WHERE varies
+		// per row), but the canonical re-INSERTs accumulate into one shared
+		// builder so they execute as a single statement at the end.
+		$insertBuilder = $connection->newInsertQueryBuilder()
+			->insertInto( $table )
+			->caller( __METHOD__ );
 
 		foreach ( $duplicates as $duplicate ) {
 
@@ -189,31 +201,31 @@ class DuplicateEntitiesDisposer {
 			$this->messageReporter->reportMessage( '.' );
 			$log[] = [ 'DELETE' => $duplicate['o_id'] . " (" . $duplicate['s_title'] . '#' . $duplicate['s_namespace'] . ")" ];
 
-			$connection->delete(
-				$table,
-				[
+			$connection->newDeleteQueryBuilder()
+				->deleteFrom( $table )
+				->where( [
 					's_title' => $duplicate['s_title'],
 					's_namespace' => $duplicate['s_namespace'],
 					'o_id' => $duplicate['o_id'],
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			if ( $duplicate['s_title'] === '' ) {
 				continue;
 			}
 
-			$connection->insert(
-				$table,
-				[
-					's_title' => $duplicate['s_title'],
-					's_namespace' => $duplicate['s_namespace'],
-					'o_id' => $duplicate['o_id'],
-				],
-				__METHOD__
-			);
+			$insertBuilder->row( [
+				's_title' => $duplicate['s_title'],
+				's_namespace' => $duplicate['s_namespace'],
+				'o_id' => $duplicate['o_id'],
+			] );
 
 			$i++;
+		}
+
+		if ( $i > 0 ) {
+			$insertBuilder->execute();
 		}
 	}
 
@@ -235,19 +247,17 @@ class DuplicateEntitiesDisposer {
 			}
 
 			$this->messageReporter->reportMessage( '.' );
-			$res = $connection->select(
-				SQLStore::ID_TABLE,
-				[
-					'smw_id',
-				],
-				[
+			$res = $connection->newSelectQueryBuilder()
+				->select( [ 'smw_id' ] )
+				->from( SQLStore::ID_TABLE )
+				->where( [
 					'smw_title' => $duplicate['smw_title'],
 					'smw_namespace' => $duplicate['smw_namespace'],
 					'smw_iw' => $duplicate['smw_iw'],
 					'smw_subobject' => $duplicate['smw_subobject']
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 
 			$hash = $duplicate['smw_title'] . '#' . $duplicate['smw_namespace'] . '#' . $duplicate['smw_iw'] . '#' . $duplicate['smw_subobject'];
 

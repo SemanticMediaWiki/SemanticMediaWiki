@@ -4,6 +4,8 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use MediaWikiIntegrationTestCase;
 use SMW\Tests\Utils\File\ContentsReader;
+use SMW\Tests\Utils\MwApiFactory;
+use SMW\Tests\Utils\Validators\StringValidator;
 
 /**
  * @group semantic-mediawiki
@@ -35,8 +37,8 @@ class ApiTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private string $testCaseLocation;
 
 	/**
-	 * @param MwApiFactory mwApiFactory
-	 * @param StringValidator
+	 * @param MwApiFactory $mwApiFactory
+	 * @param StringValidator $stringValidator
 	 */
 	public function __construct( $mwApiFactory, $stringValidator ) {
 		$this->mwApiFactory = $mwApiFactory;
@@ -59,8 +61,6 @@ class ApiTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $case
 	 */
 	public function process( array $case ) {
 		if ( !isset( $case['api'] ) ) {

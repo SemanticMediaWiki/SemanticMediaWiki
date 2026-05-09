@@ -43,8 +43,6 @@ class Queue {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getMembers(): array {
 		return $this->queue;
@@ -52,8 +50,6 @@ class Queue {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $key
 	 */
 	public function remove( string $key ): void {
 		unset( $this->queue[$key] );
@@ -61,8 +57,6 @@ class Queue {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function count(): int {
 		return count( $this->queue );
@@ -77,9 +71,6 @@ class Queue {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WikiPage $dataItem
-	 * @param int $recdepth
 	 */
 	public function add( WikiPage $dataItem, int $recdepth ): void {
 		if ( $this->isDone( $dataItem, $recdepth ) ) {
@@ -93,10 +84,6 @@ class Queue {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WikiPage $dataItem specifying the object to check
-	 *
-	 * @return bool
 	 */
 	public function isNotDone( WikiPage $dataItem ): bool {
 		return !isset( $this->done[$dataItem->getSha1()] );
@@ -107,11 +94,6 @@ class Queue {
 	 * recursion depth.
 	 *
 	 * @since 3.2
-	 *
-	 * @param WikiPage $dataItem specifying the object to check
-	 * @param int $recdepth
-	 *
-	 * @return bool
 	 */
 	public function isDone( WikiPage $dataItem, int $recdepth ): bool {
 		return $this->isHashDone( $dataItem->getSha1(), $recdepth );
@@ -122,9 +104,6 @@ class Queue {
 	 * stays reasonably small. Input is given as an SMWDIWikiPage object.
 	 *
 	 * @since 3.2
-	 *
-	 * @param WikiPage $dataItem specifying the object to check
-	 * @param int $recdepth
 	 */
 	public function done( WikiPage $dataItem, int $recdepth ): void {
 		$hash = $dataItem->getSha1();

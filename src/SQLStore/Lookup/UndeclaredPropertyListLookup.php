@@ -8,6 +8,8 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\Lookup\ListLookup;
+use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -105,20 +107,16 @@ class UndeclaredPropertyListLookup implements ListLookup {
 			}
 		}
 
-		$res = $this->store->getConnection( 'mw.db' )->select(
-			[ $idTable, $propertyTable->getName() ],
-			[ 'smw_id', 'smw_title', 'COUNT(*) as count' ],
-			$conditions,
-			__METHOD__,
-			$options,
-			[
-				$idTable => [
-					'INNER JOIN', "$joinCond=smw_id"
-				]
-			]
-		);
+		$queryBuilder = $this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title', 'COUNT(*) as count' ] )
+			->from( $propertyTable->getName() )
+			->join( $idTable, null, "$joinCond=smw_id" )
+			->where( $conditions )
+			->caller( __METHOD__ );
 
-		return $res;
+		LegacyOptionsApplier::applyTo( $queryBuilder, $options );
+
+		return $queryBuilder->fetchResultSet();
 	}
 
 	/**

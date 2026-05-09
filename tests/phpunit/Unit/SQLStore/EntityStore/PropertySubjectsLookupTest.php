@@ -5,12 +5,11 @@ namespace SMW\Tests\Unit\SQLStore\EntityStore;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
-use Wikimedia\Rdbms\FakeResultWrapper;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\PropertySubjectsLookup
@@ -22,6 +21,8 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class PropertySubjectsLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( SQLStore::class )
@@ -53,21 +54,15 @@ class PropertySubjectsLookupTest extends TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( false );
 
-		$query = $this->getMockBuilder( Query::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$qb = $this->createMockSelectQueryBuilder( [] );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'newQuery' )
-			->willReturn( $query );
-
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'readQuery' )
-			->willReturn( [] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -100,8 +95,6 @@ class PropertySubjectsLookupTest extends TestCase {
 	public function testLookupForFixedPropertyTable() {
 		$dataItem = WikiPage::newFromText( __METHOD__ );
 
-		$resultWrapper = new FakeResultWrapper( [] );
-
 		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -118,21 +111,15 @@ class PropertySubjectsLookupTest extends TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
-		$query = $this->getMockBuilder( Query::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$qb = $this->createMockSelectQueryBuilder( [] );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'newQuery' )
-			->willReturn( $query );
-
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'readQuery' )
-			->willReturn( $resultWrapper );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

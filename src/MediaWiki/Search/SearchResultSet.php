@@ -5,7 +5,9 @@ namespace SMW\MediaWiki\Search;
 use SearchSuggestion;
 use SearchSuggestionSet;
 use SMW\DataItems\WikiPage;
+use SMW\Query\Excerpts;
 use SMW\Query\QueryResult;
+use SMW\Query\QueryToken;
 use SMW\Utils\CharExaminer;
 
 /**
@@ -18,20 +20,11 @@ use SMW\Utils\CharExaminer;
  */
 class SearchResultSet extends \SearchResultSet {
 
-	/**
-	 * @var DIWikiPage[]|[]
-	 */
 	private array $pages;
 
-	/**
-	 * @var QueryToken
-	 */
-	private $queryToken;
+	private ?QueryToken $queryToken;
 
-	/**
-	 * @var Excerpts
-	 */
-	private $excerpts;
+	private ?Excerpts $excerpts;
 
 	public function __construct(
 		QueryResult $result,
@@ -44,8 +37,6 @@ class SearchResultSet extends \SearchResultSet {
 
 	/**
 	 * Return number of rows included in this result set.
-	 *
-	 * @return int|void
 	 */
 	public function numRows(): int {
 		return count( $this->pages );
@@ -75,7 +66,8 @@ class SearchResultSet extends \SearchResultSet {
 
 		// Attempt to use excerpts available from a different back-end
 		if ( $searchResult && $this->excerpts !== null ) {
-			if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
+			$excerpt = $this->excerpts->getExcerpt( $page );
+			if ( $excerpt !== false ) {
 				$searchResult->setExcerpt( $excerpt, $this->excerpts->hasHighlight() );
 			}
 		}
@@ -98,7 +90,8 @@ class SearchResultSet extends \SearchResultSet {
 		$score = count( $this->pages );
 
 		foreach ( $this->pages as $page ) {
-			if ( ( $title = $page->getTitle() ) !== null ) {
+			$title = $page->getTitle();
+			if ( $title !== null ) {
 				$key = $title->getPrefixedDBKey();
 
 				if ( $title->getNamespace() !== SMW_NS_PROPERTY && !$title->exists() ) {
@@ -139,13 +132,19 @@ class SearchResultSet extends \SearchResultSet {
 
 		foreach ( $this->pages as $page ) {
 
+			$searchResult = null;
 			if ( $page instanceof WikiPage ) {
 				$searchResult = new SearchResult( $page->getTitle() );
 			}
 
+			if ( $searchResult === null ) {
+				continue;
+			}
+
 			// Attempt to use excerpts available from a different back-end
 			if ( $searchResult && $this->excerpts !== null ) {
-				if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
+				$excerpt = $this->excerpts->getExcerpt( $page );
+				if ( $excerpt !== false ) {
 					$searchResult->setExcerpt( $excerpt, $this->excerpts->hasHighlight() );
 				}
 			}

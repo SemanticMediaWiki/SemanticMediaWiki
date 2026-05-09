@@ -28,10 +28,6 @@ class ValueFormatter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param DataValue $dataValue
-	 *
-	 * @return string
 	 */
 	public static function getFormattedSubject( DataValue $dataValue ): string {
 		$extra = '';
@@ -61,15 +57,13 @@ class ValueFormatter {
 	 * Displays a value, including all relevant links (browse and search by property)
 	 *
 	 * @since 2.5
-	 *
-	 * @param DataValue $dataValue
-	 * @param PropertyValue $propertyValue
-	 * @param bool $incoming
-	 * @param User|null $user
-	 *
-	 * @return string
 	 */
-	public static function getFormattedValue( DataValue $dataValue, PropertyValue $propertyValue, $incoming = false, $user = null ) {
+	public static function getFormattedValue(
+		DataValue $dataValue,
+		PropertyValue $propertyValue,
+		bool $incoming = false,
+		?User $user = null
+	): string {
 		$linker = smwfGetLinker();
 		$dataItem = $dataValue->getContextPage();
 
@@ -132,14 +126,12 @@ class ValueFormatter {
 	 * either by looking for an explicitly stated one or by creating a default one.
 	 *
 	 * @since 2.5
-	 *
-	 * @param PropertyValue $propertyValue
-	 * @param bool $incoming
-	 * @param bool $showInverse
-	 *
-	 * @return string
 	 */
-	public static function getPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ): ?string {
+	public static function getPropertyLabel(
+		PropertyValue $propertyValue,
+		bool $incoming = false,
+		bool $showInverse = false
+	): ?string {
 		$proptext = null;
 
 		$linker = smwfGetLinker();
@@ -157,7 +149,11 @@ class ValueFormatter {
 		return $proptext;
 	}
 
-	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ): string|array|null {
+	private static function findPropertyLabel(
+		PropertyValue $propertyValue,
+		bool $incoming = false,
+		bool $showInverse = false
+	): string|array|null {
 		$property = $propertyValue->getDataItem();
 		$contextPage = $propertyValue->getContextPage();
 
@@ -190,12 +186,8 @@ class ValueFormatter {
 	 * Replace the last two space characters with unbreakable spaces for beautification.
 	 *
 	 * @since 2.5
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public static function addNonBreakingSpace( $text ): string|null|array {
+	public static function addNonBreakingSpace( ?string $text ): string|null|array {
 		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
 		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text ?? '', -1, $count );
 

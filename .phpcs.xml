@@ -11,10 +11,8 @@
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationProtected" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationPrivate" />
 		<exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />
-		<exclude name="Generic.CodeAnalysis.AssignmentInCondition.Found" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationPrivate" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationProtected" />
-		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationPublic" />
 		<exclude name="MediaWiki.PHPUnit.AssertEmpty.AssertEmptyUsed" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.WrongStyle" />
 		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
@@ -22,19 +20,14 @@
 		<exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
 		<exclude name="MediaWiki.PHPUnit.SetMethods.SetMethods" />
-		<exclude name="MediaWiki.Commenting.FunctionComment.WrongStyle" />
 		<exclude name="MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestClass" />
-		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamName" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTestdox" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.is_resource" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.proc_open" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.exec" />
 		<exclude name="MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals" />
 		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged" />
-		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVarType" />
-		<exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
-		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturnType" />
 		<exclude name="MediaWiki.Usage.ExtendClassUsage.FunctionConfigUsage" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCategoryCollation" />
 	</rule>

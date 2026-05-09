@@ -296,7 +296,8 @@ class DataRebuilder {
 
 			$this->reportMessage( "Detecting an incomplete rebuild run ...\n" );
 
-			if ( ( $last_start = $this->autoRecovery->get( self::AUTO_RECOVERY_LAST_START ) ) ) {
+			$last_start = $this->autoRecovery->get( self::AUTO_RECOVERY_LAST_START );
+			if ( $last_start ) {
 				$this->reportMessage(
 					$this->cliMsgFormatter->twoCols( '   ... rebuild record from', $last_start )
 				);
@@ -352,7 +353,8 @@ class DataRebuilder {
 			$this->doUpdateById( $id );
 
 			// Refresh progressively
-			if ( $this->rebuildCount % round( log10( $this->rebuildCount ) * 100, 0 ) === 0 ) {
+			$modBase = (int)round( log10( $this->rebuildCount ) * 100, 0 );
+			if ( $modBase > 0 && $this->rebuildCount % $modBase === 0 ) {
 				$estimatedProgress = $this->entityRebuildDispatcher->getEstimatedProgress();
 				$max = $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId();
 			}
@@ -581,9 +583,6 @@ class DataRebuilder {
 		}
 	}
 
-	/**
-	 * @param array $options
-	 */
 	private function setFiltersFromOptions( Options $options ): void {
 		$this->filters = [];
 

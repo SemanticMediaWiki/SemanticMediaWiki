@@ -10,7 +10,7 @@ use SMW\DataItems\WikiPage;
 use SMW\Maintenance\DataRebuilder;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
 use SMW\Query\QueryResult;
@@ -18,6 +18,7 @@ use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
 /**
@@ -32,6 +33,8 @@ use stdClass;
  */
 class DataRebuilderTest extends TestCase {
 
+	use MockSelectQueryBuilderTrait;
+
 	protected $obLevel;
 	private $connectionManager;
 	private $testEnvironment;
@@ -40,9 +43,7 @@ class DataRebuilderTest extends TestCase {
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp(): void {
-		$this->markTestSkipped( 'SUT needs refactoring - Store::setupStore cannot be mocked' );
-
-		$nullJob = $this->getMockBuilder( NullJob::class )
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,7 +54,7 @@ class DataRebuilderTest extends TestCase {
 
 		$jobFactory->expects( $this->any() )
 			->method( 'newUpdateJob' )
-			->willReturn( $nullJob );
+			->willReturn( $updateJob );
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
@@ -62,9 +63,8 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 
 		$this->connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
@@ -301,14 +301,15 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->stringContains( 'category' ),
-				$this->anything(),
-				$this->anything(),
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $row ] );
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$database->method( 'newSelectQueryBuilder' )
+			->willReturnCallback(
+				function () use ( $row, &$whereConditions, &$capturedSelects, &$capturedTables ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $whereConditions, $capturedSelects, $capturedTables );
+				}
+			);
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -329,6 +330,7 @@ class DataRebuilderTest extends TestCase {
 		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
+		$this->assertSame( [ 'category' ], $capturedTables );
 	}
 
 	public function testRebuildSelectedPagesWithPropertyNamespaceFilter() {
@@ -340,14 +342,15 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'select' )
-			->with( $this->anything(),
-				$this->anything(),
-				[ 'page_namespace' => SMW_NS_PROPERTY ],
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $row ] );
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$database->method( 'newSelectQueryBuilder' )
+			->willReturnCallback(
+				function () use ( $row, &$whereConditions, &$capturedSelects, &$capturedTables ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $whereConditions, $capturedSelects, $capturedTables );
+				}
+			);
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -368,6 +371,8 @@ class DataRebuilderTest extends TestCase {
 		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
+		$this->assertSame( [ 'page' ], $capturedTables );
+		$this->assertContains( [ 'page_namespace' => SMW_NS_PROPERTY ], $whereConditions );
 	}
 
 	public function testRebuildSelectedPagesWithPageOption() {
@@ -409,6 +414,7 @@ class DataRebuilderTest extends TestCase {
 	 */
 	public function refreshDataOnMockCallback( &$index ) {
 		$index++;
+		return 1;
 	}
 
 }

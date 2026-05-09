@@ -12,13 +12,8 @@ class LinksEncoder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $text
-	 * @param InTextAnnotationParser $parser
-	 *
-	 * @return text
 	 */
-	public static function findAndEncodeLinks( $text, InTextAnnotationParser $parser ): string|array {
+	public static function findAndEncodeLinks( string $text, InTextAnnotationParser $parser ): string|array {
 		// #2193
 		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
 		// who uses the same decode sequence and avoid issues when removing links
@@ -42,12 +37,8 @@ class LinksEncoder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function removeLinkObfuscation( $text ): string {
+	public static function removeLinkObfuscation( string $text ): string {
 		$from = [ '&#x005B;', '&#x005D;', '&#124;' ];
 		$to = [ '[', ']', '|' ];
 
@@ -56,12 +47,8 @@ class LinksEncoder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function encodeLinks( $text ): string {
+	public static function encodeLinks( string $text ): string {
 		return str_replace(
 			[ '[', ']', '|' ],
 			[ '&#x005B;', '&#x005D;', '&#124;' ],
@@ -71,23 +58,15 @@ class LinksEncoder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ): string {
+	public static function decodeSquareBracket( string $text ): string {
 		return str_replace( [ '%5B', '%5D' ], [ '[', ']' ], $text );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ): ?string {
+	public static function obfuscateAnnotation( string $text ): ?string {
 		return preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
 			static function ( array $matches ): string {
@@ -99,12 +78,8 @@ class LinksEncoder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $text
-	 *
-	 * @return text
 	 */
-	public static function removeAnnotation( $text ) {
+	public static function removeAnnotation( string $text ): string {
 		if ( strpos( $text, '::' ) === false && strpos( $text, ':=' ) === false ) {
 			return $text;
 		}
@@ -206,7 +181,7 @@ class LinksEncoder {
 		$match = substr( substr( $match, 2 ), 0, -2 );
 
 		// Restore OFF/ON for the recursive processing
-		if ( $isOffAnnotation === true ) {
+		if ( $isOffAnnotation ) {
 			$match = InTextAnnotationParser::OFF . $match . InTextAnnotationParser::ON;
 		}
 

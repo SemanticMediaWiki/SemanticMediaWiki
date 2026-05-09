@@ -7,6 +7,8 @@ use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\TableFieldUpdater
@@ -18,6 +20,9 @@ use SMW\SQLStore\TableFieldUpdater;
  * @author mwjames
  */
 class TableFieldUpdaterTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( SQLStore::class )
@@ -39,20 +44,21 @@ class TableFieldUpdaterTest extends TestCase {
 			->method( 'getSortKey' )
 			->willReturn( 'Foo' );
 
+		$capturedTables = [];
+		$capturedSets = [];
+		$capturedWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedTables,
+			$capturedSets,
+			$capturedWheres
+		);
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'timestamp' )
-			->willReturn( '1970' );
-
-		$connection->expects( $this->once() )
-			->method( 'update' )
-				->with(
-					$this->anything(),
-					$this->equalTo( [ 'smw_sortkey' => 'Foo', 'smw_sort' => 'Foo', 'smw_touched' => 1970 ] ),
-					[ 'smw_id' => 42 ] );
+		$connection->method( 'timestamp' )->willReturn( '1970' );
+		$connection->method( 'newUpdateQueryBuilder' )->willReturn( $updateBuilder );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -68,23 +74,36 @@ class TableFieldUpdaterTest extends TestCase {
 		);
 
 		$instance->updateSortField( 42, 'Foo' );
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedTables );
+
+		$this->assertSame(
+			[ [ 'smw_sortkey' => 'Foo', 'smw_sort' => 'Foo', 'smw_touched' => '1970' ] ],
+			$capturedSets
+		);
+
+		$this->assertSame(
+			[ [ 'smw_id' => 42 ] ],
+			$capturedWheres
+		);
 	}
 
 	public function testUpdateRevField() {
+		$capturedTables = [];
+		$capturedSets = [];
+		$capturedWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedTables,
+			$capturedSets,
+			$capturedWheres
+		);
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'timestamp' )
-			->willReturn( '1970' );
-
-		$connection->expects( $this->once() )
-			->method( 'update' )
-				->with(
-					$this->anything(),
-					$this->equalTo( [ 'smw_rev' => 1001, 'smw_touched' => 1970 ] ),
-					[ 'smw_id'  => 42 ] );
+		$connection->method( 'timestamp' )->willReturn( '1970' );
+		$connection->method( 'newUpdateQueryBuilder' )->willReturn( $updateBuilder );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -99,23 +118,36 @@ class TableFieldUpdaterTest extends TestCase {
 		);
 
 		$instance->updateRevField( 42, 1001 );
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedTables );
+
+		$this->assertSame(
+			[ [ 'smw_rev' => 1001, 'smw_touched' => '1970' ] ],
+			$capturedSets
+		);
+
+		$this->assertSame(
+			[ [ 'smw_id' => 42 ] ],
+			$capturedWheres
+		);
 	}
 
 	public function testUpdateTouchedField() {
+		$capturedTables = [];
+		$capturedSets = [];
+		$capturedWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedTables,
+			$capturedSets,
+			$capturedWheres
+		);
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'timestamp' )
-			->willReturn( '1970' );
-
-		$connection->expects( $this->once() )
-			->method( 'update' )
-				->with(
-					$this->anything(),
-					[ 'smw_touched' => 1970 ],
-					[ 'smw_id'  => 42 ] );
+		$connection->method( 'timestamp' )->willReturn( '1970' );
+		$connection->method( 'newUpdateQueryBuilder' )->willReturn( $updateBuilder );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -130,19 +162,35 @@ class TableFieldUpdaterTest extends TestCase {
 		);
 
 		$instance->updateTouchedField( 42 );
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedTables );
+
+		$this->assertSame(
+			[ [ 'smw_touched' => '1970' ] ],
+			$capturedSets
+		);
+
+		$this->assertSame(
+			[ [ 'smw_id' => 42 ] ],
+			$capturedWheres
+		);
 	}
 
 	public function testUpdateIwField() {
+		$capturedTables = [];
+		$capturedSets = [];
+		$capturedWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder(
+			$capturedTables,
+			$capturedSets,
+			$capturedWheres
+		);
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'update' )
-				->with(
-					$this->anything(),
-					$this->equalTo( [ 'smw_iw' => 'foo', 'smw_hash' => 'abc1234' ] ),
-					[ 'smw_id'  => 42 ] );
+		$connection->method( 'newUpdateQueryBuilder' )->willReturn( $updateBuilder );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -157,6 +205,18 @@ class TableFieldUpdaterTest extends TestCase {
 		);
 
 		$instance->updateIwField( 42, 'foo', 'abc1234' );
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedTables );
+
+		$this->assertSame(
+			[ [ 'smw_iw' => 'foo', 'smw_hash' => 'abc1234' ] ],
+			$capturedSets
+		);
+
+		$this->assertSame(
+			[ [ 'smw_id' => 42 ] ],
+			$capturedWheres
+		);
 	}
 
 }

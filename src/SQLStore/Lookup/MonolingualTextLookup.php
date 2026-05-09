@@ -103,10 +103,13 @@ class MonolingualTextLookup {
 			$subobjectName = $subject->getSubobjectName();
 
 			// Handle predefined properties
-			if ( $subject->getNamespace() === SMW_NS_PROPERTY && ( $dbKey = $subject->getDBKey() ) && $dbKey[0] === '_' ) {
-				$subject = Property::newFromUserLabel( $dbKey )->getCanonicalDIWikiPage(
-					$subobjectName
-				);
+			if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+				$dbKey = $subject->getDBKey();
+				if ( $dbKey && $dbKey[0] === '_' ) {
+					$subject = Property::newFromUserLabel( $dbKey )->getCanonicalDIWikiPage(
+						$subobjectName
+					);
+				}
 			}
 
 			$h = $subject->getHash();
@@ -198,15 +201,10 @@ class MonolingualTextLookup {
 		 *
 		 */
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
-
-		$query->type( 'SELECT' );
 
 		$propTable = $this->getPropertyTable(
 			$property
 		);
-
-		$query->table( $propTable->getName(), 't0' );
 
 		/**
 		 * In case of a _ML... reference use the o_id (object) field
@@ -243,27 +241,23 @@ class MonolingualTextLookup {
 			);
 		}
 
-		$query->join(
-			'INNER JOIN',
-			[ SQLStore::ID_TABLE => 'o0 ON t0.o_id=o0.smw_id' ]
-		);
+		$qb = $connection->newSelectQueryBuilder()
+			->from( $propTable->getName(), 't0' )
+			->join( SQLStore::ID_TABLE, 'o0', 't0.o_id=o0.smw_id' );
 
 		// Is it a Monolingual representation?
 		if ( $subject->isSubEntityOf( SMW_SUBENTITY_MONOLINGUAL ) ) {
-			$query->condition( $query->eq( "o0.smw_hash", $subject->getSha1() ) );
+			$qb->where( [ 'o0.smw_hash' => $subject->getSha1() ] );
 		} else {
 			// We don't have a _ML entity reference hence we add a JOIN to find
 			// such entity
-			$query->condition( $query->eq( "o1.smw_hash", $subject->getSha1() ) );
+			$qb->where( [ 'o1.smw_hash' => $subject->getSha1() ] );
 
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 'o1 ON t0.s_id=o1.smw_id' ]
-			);
+			$qb->join( SQLStore::ID_TABLE, 'o1', 't0.s_id=o1.smw_id' );
 		}
 
-		$query->condition( $query->neq( "o0.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
-		$query->condition( $query->neq( "o0.smw_iw", SMW_SQL3_SMWDELETEIW ) );
+		$qb->andWhere( $connection->expr( 'o0.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ) );
+		$qb->andWhere( $connection->expr( 'o0.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ) );
 
 		if ( !$propTable->isFixedPropertyTable() ) {
 
@@ -271,12 +265,9 @@ class MonolingualTextLookup {
 				$property
 			);
 
-			$query->condition( $query->eq( "t0.p_id", $pid ) );
+			$qb->andWhere( [ 't0.p_id' => $pid ] );
 
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 't1 ON t0.p_id=t1.smw_id' ]
-			);
+			$qb->join( SQLStore::ID_TABLE, 't1', 't0.p_id=t1.smw_id' );
 		}
 
 		$text = new Property( '_TEXT' );
@@ -285,10 +276,7 @@ class MonolingualTextLookup {
 			$text
 		);
 
-		$query->join(
-			'INNER JOIN',
-			[ $text_table->getName() => 't2 ON t2.s_id=o0.smw_id' ]
-		);
+		$qb->join( $text_table->getName(), 't2', 't2.s_id=o0.smw_id' );
 
 		$lcode = new Property( '_LCODE' );
 
@@ -296,23 +284,22 @@ class MonolingualTextLookup {
 			$lcode
 		);
 
-		$query->join(
-			'INNER JOIN',
-			[ $lcode_table->getName() => 't3 ON t3.s_id=o0.smw_id' ]
-		);
+		$qb->join( $lcode_table->getName(), 't3', 't3.s_id=o0.smw_id' );
 
 		if ( $languageCode !== null ) {
-			$query->condition( $query->eq( "t3.o_hash", $languageCode ) );
+			$qb->andWhere( [ 't3.o_hash' => $languageCode ] );
 		}
 
-		$query->field( 't0.o_id', 'id' );
-		$query->field( 'o0.smw_title', 'v0' );
-		$query->field( 'o0.smw_namespace', 'v1' );
-		$query->field( 'o0.smw_iw', 'v2' );
-		$query->field( 'o0.smw_subobject', 'v3' );
-		$query->field( 't2.o_hash', 'text_short' );
-		$query->field( 't2.o_blob', 'text_long' );
-		$query->field( 't3.o_hash', 'lcode' );
+		$qb->select( [
+			'id' => 't0.o_id',
+			'v0' => 'o0.smw_title',
+			'v1' => 'o0.smw_namespace',
+			'v2' => 'o0.smw_iw',
+			'v3' => 'o0.smw_subobject',
+			'text_short' => 't2.o_hash',
+			'text_long' => 't2.o_blob',
+			'lcode' => 't3.o_hash',
+		] );
 
 		$caller = __METHOD__;
 
@@ -320,7 +307,7 @@ class MonolingualTextLookup {
 			$caller .= " (for " . $this->caller . ")";
 		}
 
-		return $query->execute( $caller );
+		return $qb->caller( $caller )->fetchResultSet();
 	}
 
 	/**

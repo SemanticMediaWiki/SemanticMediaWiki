@@ -36,10 +36,6 @@ class QueryResultLookup {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param QueryOptions $pageRequestOptions
-	 *
-	 * @return array
 	 */
 	public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ): array {
 		$requestOptions = new RequestOptions();
@@ -74,11 +70,6 @@ class QueryResultLookup {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param QueryOptions $pageRequestOptions
-	 *
-	 * @return array of array(WikiPageValue, DataValue) with the
-	 * first being the entity, and the second the value
 	 */
 	public function doQuery( PageRequestOptions $pageRequestOptions ): array {
 		$requestOptions = new RequestOptions();
@@ -111,12 +102,9 @@ class QueryResultLookup {
 	 * on the property, ordered, and sorted by ending with the smallest
 	 * one.
 	 *
-	 * @param QueryOptions $pageRequestOptions
+	 * @param PageRequestOptions $pageRequestOptions
 	 * @param int $count How many entities have the exact same value on the property?
-	 * @param int $greater Should the values be bigger? Set false for smaller values.
-	 *
-	 * @return array of array of WikiPageValue, DataValue with the
-	 * first being the entity, and the second the value
+	 * @param bool $greater Should the values be bigger? Set false for smaller values.
 	 */
 	public function doQueryForNearbyResults( PageRequestOptions $pageRequestOptions, $count, $greater = true ): array {
 		$comparator = $greater ? SMW_CMP_GRTR : SMW_CMP_LESS;

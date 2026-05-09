@@ -9,6 +9,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Lookup\RedirectTargetLookup
@@ -20,6 +21,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class RedirectTargetLookupTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 	private $idCacheManager;
@@ -62,8 +65,8 @@ class RedirectTargetLookupTest extends TestCase {
 		];
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( $rows ) );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
@@ -75,10 +78,10 @@ class RedirectTargetLookupTest extends TestCase {
 				static $calls = [];
 				$calls[] = [ $key, $value ];
 				if ( count( $calls ) === 1 ) {
-					$this->assertEquals( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', $key );
+					$this->assertEquals( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ), $key );
 					$this->assertEquals( 'Bar#0##', $value );
 				} elseif ( count( $calls ) === 2 ) {
-					$this->assertEquals( '7b6b944694382bfab461675f40a2bda7e71e68e3', $key );
+					$this->assertEquals( sha1( json_encode( [ 'Bar', 0, '', '' ] ), true ), $key );
 					$this->assertEquals( 'Foo#0##', $value );
 				}
 			} );
@@ -97,8 +100,8 @@ class RedirectTargetLookupTest extends TestCase {
 		];
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $rows );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( $rows ) );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
@@ -110,10 +113,10 @@ class RedirectTargetLookupTest extends TestCase {
 				static $calls = [];
 				$calls[] = [ $key, $value ];
 				if ( count( $calls ) === 1 ) {
-					$this->assertEquals( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', $key );
+					$this->assertEquals( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ), $key );
 					$this->assertEquals( 'Bar#0##', $value );
 				} elseif ( count( $calls ) === 2 ) {
-					$this->assertEquals( '7b6b944694382bfab461675f40a2bda7e71e68e3', $key );
+					$this->assertEquals( sha1( json_encode( [ 'Bar', 0, '', '' ] ), true ), $key );
 					$this->assertEquals( 'Foo#0##', $value );
 				}
 			} );
@@ -137,7 +140,7 @@ class RedirectTargetLookupTest extends TestCase {
 
 		$this->cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->with( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' )
+			->with( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ) )
 			->willReturn( 'Bar#0##' );
 
 		$instance = new RedirectTargetLookup(

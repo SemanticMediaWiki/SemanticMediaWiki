@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use Psr\Log\LoggerInterface;
@@ -9,6 +10,8 @@ use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\Lookup\CachedListLookup;
+use SMW\Lookup\ListLookup;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\RequestOptions;
@@ -28,6 +31,7 @@ use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\SQLStore\EntityStore\InstrumentedCache;
 use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
@@ -39,11 +43,9 @@ use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
-use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\SQLStore\Lookup\ErrorLookup;
-use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
@@ -582,16 +584,19 @@ class SQLStoreFactory {
 	 */
 	public function newIdCacheManager( $id, array $config ): IdCacheManager {
 		$inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache();
+		$statsFactory = MediaWikiServices::getInstance()
+			->getStatsFactory()
+			->withComponent( 'SemanticMediaWiki' );
 		$caches = [];
 
 		foreach ( $config as $key => $cacheSize ) {
-			$inMemoryPoolCache->resetPoolCacheById(
-				"$id.$key"
-			);
+			$poolId = "$id.$key";
+			$inMemoryPoolCache->resetPoolCacheById( $poolId );
 
-			$caches[$key] = $inMemoryPoolCache->getPoolCacheById(
-				"$id.$key",
-				$cacheSize
+			$caches[$key] = new InstrumentedCache(
+				$inMemoryPoolCache->getPoolCacheById( $poolId, $cacheSize ),
+				$statsFactory,
+				$poolId
 			);
 		}
 

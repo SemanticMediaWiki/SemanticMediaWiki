@@ -35,7 +35,8 @@ class MessageBuilderTest extends TestCase {
 			->getMock();
 
 		$language->expects( $this->once() )
-			->method( 'formatNum' );
+			->method( 'formatNum' )
+			->willReturn( '' );
 
 		$instance = new MessageBuilder();
 
@@ -50,7 +51,8 @@ class MessageBuilderTest extends TestCase {
 			->getMock();
 
 		$language->expects( $this->once() )
-			->method( 'listToText' );
+			->method( 'listToText' )
+			->willReturn( '' );
 
 		$context = $this->getMockBuilder( '\IContextSource' )
 			->disableOriginalConstructor()

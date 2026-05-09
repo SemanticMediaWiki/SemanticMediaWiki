@@ -287,7 +287,7 @@ class PrintRequest {
 	 *
 	 * @param $key string the name of the parameter key
 	 *
-	 * @return string Value of the paramer, if set (else FALSE)
+	 * @return string|false Value of the paramer, if set (else FALSE)
 	 */
 	public function getParameter( $key ) {
 		return array_key_exists( $key, $this->m_params ) ? $this->m_params[$key] : false;
@@ -344,7 +344,7 @@ class PrintRequest {
 	 * @since 2.4
 	 *
 	 * @param string $text
-	 * @param boalean $showMode = false
+	 * @param bool $showMode = false
 	 * @param bool $useCanonicalLabel = false
 	 *
 	 * @return PrintRequest|null

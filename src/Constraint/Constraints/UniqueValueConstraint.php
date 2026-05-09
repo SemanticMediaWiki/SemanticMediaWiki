@@ -99,6 +99,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 		);
 
+		$res = [];
 		$requestOptions->setLimit( 2 );
 		$count = 0;
 
@@ -136,8 +137,12 @@ class UniqueValueConstraint implements Constraint {
 			$val = $dataValue->isValid() ? $dataValue->getWikiValue() : '...';
 			$text = '';
 
-			if ( $dataItem !== null && ( $title = $dataItem->getTitle() ) !== null ) {
-				$text = $title->getPrefixedText();
+			if ( $dataItem !== null ) {
+				$title = $dataItem->getTitle();
+
+				if ( $title !== null ) {
+					$text = $title->getPrefixedText();
+				}
 			}
 
 			$error = [

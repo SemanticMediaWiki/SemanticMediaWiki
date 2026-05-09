@@ -274,7 +274,9 @@ class ReferenceValue extends AbstractMultiValue {
 					$semanticData->findSubSemanticData( $subobjectName )
 				);
 			} else {
+				// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 				$semanticData = new ContainerSemanticData( $dataItem );
+				// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 				$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
 				$this->m_dataitem = new Container( $semanticData );
 			}

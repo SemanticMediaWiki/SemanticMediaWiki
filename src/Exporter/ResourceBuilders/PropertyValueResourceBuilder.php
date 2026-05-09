@@ -2,10 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
+use Onoi\Cache\Cache;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\Export\ExpData;
 use SMW\Export\Exporter;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ResourceBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -21,22 +23,13 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 
 	protected ?Exporter $exporter;
 
-	/**
-	 * @var InMemoryPoolCache
-	 */
-	private $inMemoryPoolCache;
+	private Cache $inMemoryPoolCache;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Exporter|null $exporter
 	 */
 	public function __construct( ?Exporter $exporter = null ) {
-		$this->exporter = $exporter;
-
-		if ( $this->exporter === null ) {
-			$this->exporter = Exporter::getInstance();
-		}
+		$this->exporter = $exporter ?? Exporter::getInstance();
 
 		$this->inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById(
 			Exporter::POOLCACHE_ID
@@ -98,7 +91,8 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	protected function getResourceElementForProperty( $property ) {
 		$key = 'resource:builder:' . $property->getKey();
 
-		if ( ( $resourceElement = $this->inMemoryPoolCache->fetch( $key ) ) !== false ) {
+		$resourceElement = $this->inMemoryPoolCache->fetch( $key );
+		if ( $resourceElement !== false ) {
 			return $resourceElement;
 		}
 
@@ -112,10 +106,11 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 		return $resourceElement;
 	}
 
-	protected function getResourceElementHelperForProperty( $property ) {
+	protected function getResourceElementHelperForProperty( $property ): ExpNsResource {
 		$key = 'resource:builder:aux:' . $property->getKey();
 
-		if ( ( $resourceElement = $this->inMemoryPoolCache->fetch( $key ) ) !== false ) {
+		$resourceElement = $this->inMemoryPoolCache->fetch( $key );
+		if ( $resourceElement !== false ) {
 			return $resourceElement;
 		}
 

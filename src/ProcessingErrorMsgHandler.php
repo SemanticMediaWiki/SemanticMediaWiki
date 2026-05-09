@@ -83,9 +83,12 @@ class ProcessingErrorMsgHandler {
 
 			$exists = false;
 
-			if ( is_string( $message ) && ( $decodedMessage = Message::decode( $message, $type, $language ) ) !== false ) {
-				$message = $decodedMessage;
-				$exists = true;
+			if ( is_string( $message ) ) {
+				$decodedMessage = Message::decode( $message, $type, $language );
+				if ( $decodedMessage !== false ) {
+					$message = $decodedMessage;
+					$exists = true;
+				}
 			}
 
 			if ( !$exists && is_string( $message ) && wfMessage( $message )->exists() ) {
@@ -243,22 +246,17 @@ class ProcessingErrorMsgHandler {
 		}
 	}
 
-	private function newContainerSemanticData( $hash ): ContainerSemanticData {
-		if ( $this->subject === null ) {
-			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
-			$containerSemanticData->skipAnonymousCheck();
-		} else {
-			$subobjectName = '_ERR' . md5( $hash );
+	private function newContainerSemanticData( string $hash ): ContainerSemanticData {
+		$subobjectName = '_ERR' . md5( $hash );
 
-			$subject = new WikiPage(
-				$this->subject->getDBkey(),
-				$this->subject->getNamespace(),
-				$this->subject->getInterwiki(),
-				$subobjectName
-			);
+		$subject = new WikiPage(
+			$this->subject->getDBkey(),
+			$this->subject->getNamespace(),
+			$this->subject->getInterwiki(),
+			$subobjectName
+		);
 
-			$containerSemanticData = new ContainerSemanticData( $subject );
-		}
+		$containerSemanticData = new ContainerSemanticData( $subject );
 
 		return $containerSemanticData;
 	}

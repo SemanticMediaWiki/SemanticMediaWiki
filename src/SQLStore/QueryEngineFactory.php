@@ -12,6 +12,7 @@ use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMW\SQLStore\QueryEngine\SubqueryQueryBuilder;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMW\Utils\CircularReferenceGuard;
 
@@ -110,11 +111,14 @@ class QueryEngineFactory {
 	public function newQueryEngine(): QueryEngine {
 		$applicationFactory = ApplicationFactory::getInstance();
 
+		$connection = $this->store->getConnection( 'mw.db.queryengine' );
+
 		$queryEngine = new QueryEngine(
 			$this->store,
 			$this->newConditionBuilder(),
 			$this->newQuerySegmentListProcessor(),
-			new EngineOptions()
+			new EngineOptions(),
+			new SubqueryQueryBuilder( $connection )
 		);
 
 		$queryEngine->setLogger(

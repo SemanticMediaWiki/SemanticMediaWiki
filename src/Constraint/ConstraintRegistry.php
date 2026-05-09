@@ -23,14 +23,8 @@ class ConstraintRegistry {
 
 	use HookDispatcherAwareTrait;
 
-	/**
-	 * @var
-	 */
-	private $constraints = [];
+	private array $constraints = [];
 
-	/**
-	 * @var
-	 */
 	private array $instances = [];
 
 	private bool $hasViolation = false;
@@ -57,8 +51,6 @@ class ConstraintRegistry {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return
 	 */
 	public function getConstraintKeys(): array {
 		if ( $this->constraints === [] ) {

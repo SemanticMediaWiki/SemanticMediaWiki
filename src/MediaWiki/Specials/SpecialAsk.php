@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Specials;
 
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\SpecialPage;
-use ParamProcessor\Param;
+use ParamProcessor\ProcessedParam;
 use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
@@ -56,7 +56,7 @@ class SpecialAsk extends SpecialPage {
 	private bool $isBorrowedMode = false;
 
 	/**
-	 * @var Param[]
+	 * @var ProcessedParam[]
 	 */
 	private array $params = [];
 
@@ -440,7 +440,8 @@ class SpecialAsk extends SpecialPage {
 				$this->getOutput()->disable();
 				$output = '';
 
-				if ( ( $count = $res->getCount() ) > 0 ) {
+				$count = $res->getCount();
+				if ( $count > 0 ) {
 					$further = $res->hasFurtherResults();
 
 					if ( $request_type === 'raw' ) {
@@ -486,7 +487,8 @@ class SpecialAsk extends SpecialPage {
 			}
 		}
 
-		if ( $this->getRequest()->getVal( 'score_set', false ) && ( $scoreSet = $res->getScoreSet() ) !== null ) {
+		$scoreSet = $res->getScoreSet();
+		if ( $this->getRequest()->getVal( 'score_set', false ) && $scoreSet !== null ) {
 			$table = $scoreSet->asTable( 'sortable wikitable smwtable-striped broadtable' );
 
 			if ( $table !== '' ) {
@@ -533,7 +535,8 @@ class SpecialAsk extends SpecialPage {
 		$code = $this->queryString ? $this->queryString . "\n" : "\n";
 
 		foreach ( $this->printouts as $printout ) {
-			if ( ( $serialization = $printout->getSerialisation( true ) ) !== '' ) {
+			$serialization = $printout->getSerialisation( true );
+			if ( $serialization !== '' ) {
 				$code .= ' |' . $serialization . "\n";
 			}
 		}
@@ -692,7 +695,7 @@ class SpecialAsk extends SpecialPage {
 			$queryobj
 		);
 
-		if ( $this->getRequest()->getVal( 'native_result', false ) && isset( $queryobj->native_result ) ) {
+		if ( $this->getRequest()->getVal( 'native_result', false ) && $queryobj->native_result !== '' ) {
 			$native_result = $queryobj->native_result;
 		}
 

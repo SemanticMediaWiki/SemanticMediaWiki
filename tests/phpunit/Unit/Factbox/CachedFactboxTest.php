@@ -45,8 +45,7 @@ class CachedFactboxTest extends TestCase {
 
 		$this->testEnvironment->withConfiguration(
 			[
-				'smwgFactboxUseCache' => true,
-				'smwgCacheType'       => 'hash'
+				'smwgMainCacheType' => 'hash'
 			]
 		);
 

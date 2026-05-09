@@ -21,7 +21,6 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  */
 class Settings extends Options {
 
-	use ConfigLegacyTrait;
 	use ChangeListenerAwareTrait;
 	use HookDispatcherAwareTrait;
 
@@ -49,21 +48,6 @@ class Settings extends Options {
 			);
 		}
 
-		// #4150
-		// If someone tried to use SMW without proper initialization then something
-		// like "Notice: Undefined index: smwgNamespaceIndex ..." would appear and
-		// to produce a proper error message avoid those by adding a default.
-		if ( !defined( 'SMW_VERSION' ) || !isset( $GLOBALS['smwgNamespaceIndex'] ) ) {
-			Globals::replace(
-				NamespaceManager::initCustomNamespace( $GLOBALS )['newVars']
-			);
-		}
-
-		/**
-		 * IF YOU REMOVE SETTING(S) FROM THIS ARRAY DEFINTION, PLEASE ENSURE
-		 * TO REGISTER THEM WITH THE `ConfigLegacyTrait`.
-		 */
-
 		$this->options = [
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
@@ -87,7 +71,6 @@ class Settings extends Options {
 			'smwgSparqlRepositoryFeatures' => $GLOBALS['smwgSparqlRepositoryFeatures'],
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
-			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgFactboxFeatures' => $GLOBALS['smwgFactboxFeatures'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
@@ -106,6 +89,7 @@ class Settings extends Options {
 			'smwgQDefaultNamespaces' => $GLOBALS['smwgQDefaultNamespaces'],
 			'smwgQComparators' => $GLOBALS['smwgQComparators'],
 			'smwgQFilterDuplicates' => $GLOBALS['smwgQFilterDuplicates'],
+			'smwgQUseLegacyQuery' => $GLOBALS['smwgQUseLegacyQuery'],
 			'smwStrictComparators' => $GLOBALS['smwStrictComparators'],
 			'smwgQStrictComparators' => $GLOBALS['smwgQStrictComparators'],
 			'smwgQMaxSize' => $GLOBALS['smwgQMaxSize'],
@@ -184,6 +168,7 @@ class Settings extends Options {
 			'smwgPropertyRetiredList' => $GLOBALS['smwgPropertyRetiredList'],
 			'smwgPropertyReservedNameList' => $GLOBALS['smwgPropertyReservedNameList'],
 			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
+			'smwgEntityCacheSizes' => $GLOBALS['smwgEntityCacheSizes'],
 			'smwgExperimentalFeatures' => $GLOBALS['smwgExperimentalFeatures'],
 			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
 			'smwgChangePropagationProtection' => $GLOBALS['smwgChangePropagationProtection'],
@@ -191,7 +176,6 @@ class Settings extends Options {
 			'smwgBrowseFeatures' => $GLOBALS['smwgBrowseFeatures'],
 			'smwgCategoryFeatures' => $GLOBALS['smwgCategoryFeatures'],
 			'smwgURITypeSchemeList' => $GLOBALS['smwgURITypeSchemeList'],
-			'smwgSchemaTypes' => $GLOBALS['smwgSchemaTypes'] ?? [],
 			'smwgElasticsearchConfig' => $GLOBALS['smwgElasticsearchConfig'],
 			'smwgElasticsearchProfile' => $GLOBALS['smwgElasticsearchProfile'],
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],
@@ -211,11 +195,6 @@ class Settings extends Options {
 		];
 
 		$this->isLoaded = true;
-
-		/**
-		 * @see ConfigLegacyTrait::loadLegacyMappings
-		 */
-		$this->loadLegacyMappings( $this->options );
 
 		/**
 		 * @see HookDispatcher::onSettingsBeforeInitializationComplete

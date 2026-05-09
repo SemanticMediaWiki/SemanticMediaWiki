@@ -36,14 +36,8 @@ class ProtectionValidator {
 
 	private bool $changePropagationProtection = true;
 
-	/**
-	 * @var
-	 */
 	private array $importPerformers = [];
 
-	/**
-	 * @var
-	 */
 	private array $importPerformerProtectionLookupCache = [];
 
 	/**
@@ -235,7 +229,7 @@ class ProtectionValidator {
 			return false;
 		}
 
-		if ( $this->changePropagationProtection === false ) {
+		if ( !$this->changePropagationProtection ) {
 			return false;
 		}
 

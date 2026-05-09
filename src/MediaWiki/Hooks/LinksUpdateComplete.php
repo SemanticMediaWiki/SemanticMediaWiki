@@ -39,11 +39,9 @@ class LinksUpdateComplete implements HookListener {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isReady
 	 */
-	public function isReady( $isReady ): void {
-		$this->isReady = (bool)$isReady;
+	public function isReady( bool $isReady ): void {
+		$this->isReady = $isReady;
 	}
 
 	/**
@@ -55,13 +53,9 @@ class LinksUpdateComplete implements HookListener {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param LinksUpdate $linksUpdate
-	 *
-	 * @return true
 	 */
-	public function process( $linksUpdate ): bool {
-		if ( $this->isReady === false ) {
+	public function process( LinksUpdate $linksUpdate ): bool {
+		if ( !$this->isReady ) {
 			return $this->doAbort();
 		}
 

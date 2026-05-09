@@ -33,8 +33,7 @@ class ArticlePurgeTest extends TestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = [
-			'smwgFactboxUseCache' => true,
-			'smwgMainCacheType'       => 'hash'
+			'smwgMainCacheType' => 'hash'
 		];
 
 		$this->testEnvironment = new TestEnvironment( $settings );

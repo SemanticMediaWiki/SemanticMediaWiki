@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin\Supplement;
 use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\WebRequest;
+use MediaWiki\User\User;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
@@ -22,10 +23,7 @@ use SMW\Store;
  */
 class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
-	/**
-	 * @var User|null
-	 */
-	private $user;
+	private ?User $user = null;
 
 	/**
 	 * @since 2.5
@@ -125,10 +123,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->addHtml( $this->getForm( $webRequest, $id ) );
 	}
 
-	/**
-	 * @param int $id
-	 */
-	private function doDispose( $id ): void {
+	private function doDispose( string $id ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
@@ -218,22 +213,22 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			$condition = "smw_sortkey $op " . $connection->addQuotes( str_replace( [ '_', '*' ], [ ' ', '%' ], $id ) );
 		}
 
-		$rows = $connection->select(
-				SQLStore::ID_TABLE,
-				[
-					'smw_id',
-					'smw_title',
-					'smw_namespace',
-					'smw_iw',
-					'smw_subobject',
-					'smw_sortkey',
-					'smw_proptable_hash',
-					'smw_rev',
-					'smw_touched'
-				],
-				$condition,
-				__METHOD__
-		);
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [
+				'smw_id',
+				'smw_title',
+				'smw_namespace',
+				'smw_iw',
+				'smw_subobject',
+				'smw_sortkey',
+				'smw_proptable_hash',
+				'smw_rev',
+				'smw_touched'
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ $condition ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->createMessageFromRows( $id, $rows );
 	}
@@ -297,18 +292,16 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			return;
 		}
 
-		$row = $connection->selectRow(
-				SQLStore::FT_SEARCH_TABLE,
-				[
-					's_id',
-					'p_id',
-					'o_text'
-				],
-				[
-					's_id' => $id
-				],
-				__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [
+				's_id',
+				'p_id',
+				'o_text'
+			] )
+			->from( SQLStore::FT_SEARCH_TABLE )
+			->where( [ 's_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$references[$id][SQLStore::FT_SEARCH_TABLE] = (array)$row;

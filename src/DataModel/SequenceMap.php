@@ -15,17 +15,10 @@ use SMW\Services\ServicesFactory;
  */
 class SequenceMap {
 
-	/**
-	 * @var
-	 */
 	private static array $canMap = [];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Property $property
-	 *
-	 * @param boolean
 	 */
 	public function hasSequenceMap( Property $property ): bool {
 		return self::canMap( $property );
@@ -33,8 +26,6 @@ class SequenceMap {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param boolean
 	 */
 	public static function canMap( Property $property ) {
 		$key = $property->getKey();

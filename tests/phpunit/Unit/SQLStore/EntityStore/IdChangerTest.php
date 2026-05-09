@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
@@ -12,6 +11,8 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\IdChanger
@@ -23,6 +24,9 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class IdChangerTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $testEnvironment;
 	private $store;
@@ -63,26 +67,26 @@ class IdChangerTest extends TestCase {
 	}
 
 	public function testMove_NoMatch() {
+		$selectWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [], $selectWheres );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				'*',
-				[ 'smw_id' => 42 ] )
-			->willReturn( false );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new IdChanger(
 			$this->store
 		);
 
 		$instance->move( 42 );
+
+		$this->assertSame(
+			[ [ 'smw_id' => 42 ] ],
+			$selectWheres
+		);
 	}
 
 	public function testMove_ZeroTarget() {
-		if ( !method_exists( InvocationMocker::class, 'withConsecutive' ) ) {
-			$this->markTestSkipped( 'PHPUnit\Framework\MockObject\Builder\InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
-		}
-
 		$row = [
 			'smw_id' => 42,
 			'smw_title' => 'Foo',
@@ -91,36 +95,42 @@ class IdChangerTest extends TestCase {
 			'smw_subobject' => '',
 			'smw_sortkey' => 'FOO',
 			'smw_sort' => 'FOO',
-			'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6'
+			'smw_hash' => sha1( json_encode( [ 'Foo', 0, '', '' ] ), true )
 		];
 
-		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				'*',
-				[ 'smw_id' => 42 ] )
-			->willReturn( (object)$row );
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$this->connection->expects( $this->once() )
 			->method( 'nextSequenceValue' )
 			->willReturn( 1 );
 
+		$insertTables = $insertRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $insertTables, $insertRows );
+
 		$this->connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				$this->anything(),
-				[ 'smw_id' => 1 ] + $row );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$this->connection->expects( $this->once() )
 			->method( 'insertId' )
 			->willReturn( 9999 );
 
+		$deleteTables = $deleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $deleteTables, $deleteWheres );
+
 		$this->connection->expects( $this->any() )
-			->method( 'delete' )
-			->withConsecutive(
-				[ $this->equalTo( 'smw_object_aux' ), $this->equalTo( [ 'smw_id' => 42 ] ) ],
-				[ $this->equalTo( 'smw_object_ids' ), $this->equalTo( [ 'smw_id' => 42 ] ) ] );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$updateBuilder = $this->createMockUpdateQueryBuilder();
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
@@ -141,13 +151,22 @@ class IdChangerTest extends TestCase {
 			(object)$expected,
 			$instance->move( 42, 0 )
 		);
+
+		$this->assertSame(
+			[ [ 'smw_id' => 1 ] + $row ],
+			$insertRows
+		);
+		$this->assertSame(
+			[ SQLStore::ID_AUXILIARY_TABLE, SQLStore::ID_TABLE ],
+			$deleteTables
+		);
+		$this->assertSame(
+			[ [ 'smw_id' => 42 ], [ 'smw_id' => 42 ] ],
+			$deleteWheres
+		);
 	}
 
 	public function testMove_Target() {
-		if ( !method_exists( InvocationMocker::class, 'withConsecutive' ) ) {
-			$this->markTestSkipped( 'PHPUnit\Framework\MockObject\Builder\InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
-		}
-
 		$row = [
 			'smw_id' => 42,
 			'smw_title' => 'Foo',
@@ -156,28 +175,34 @@ class IdChangerTest extends TestCase {
 			'smw_subobject' => '',
 			'smw_sortkey' => 'FOO',
 			'smw_sort' => 'FOO',
-			'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6'
+			'smw_hash' => sha1( json_encode( [ 'Foo', 0, '', '' ] ), true )
 		];
 
-		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				'*',
-				[ 'smw_id' => 42 ] )
-			->willReturn( (object)$row );
-
-		$this->connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				$this->anything(),
-				[ 'smw_id' => 1001 ] + $row );
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ (object)$row ] );
 
 		$this->connection->expects( $this->any() )
-			->method( 'delete' )
-			->withConsecutive(
-				[ $this->equalTo( 'smw_object_aux' ), $this->equalTo( [ 'smw_id' => 42 ] ) ],
-				[ $this->equalTo( 'smw_object_ids' ), $this->equalTo( [ 'smw_id' => 42 ] ) ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$insertTables = $insertRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $insertTables, $insertRows );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
+
+		$deleteTables = $deleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $deleteTables, $deleteWheres );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$updateBuilder = $this->createMockUpdateQueryBuilder();
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
@@ -198,6 +223,19 @@ class IdChangerTest extends TestCase {
 			(object)$expected,
 			$instance->move( 42, 1001 )
 		);
+
+		$this->assertSame(
+			[ [ 'smw_id' => 1001 ] + $row ],
+			$insertRows
+		);
+		$this->assertSame(
+			[ SQLStore::ID_AUXILIARY_TABLE, SQLStore::ID_TABLE ],
+			$deleteTables
+		);
+		$this->assertSame(
+			[ [ 'smw_id' => 42 ], [ 'smw_id' => 42 ] ],
+			$deleteWheres
+		);
 	}
 
 	public function testChange_IdSubject_Fields_NotFixedPropertyTable() {
@@ -206,6 +244,10 @@ class IdChangerTest extends TestCase {
 			->getMock();
 
 		$table->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'smw_foo' );
+
+		$table->expects( $this->any() )
 			->method( 'usesIdSubject' )
 			->willReturn( true );
 
@@ -221,26 +263,28 @@ class IdChangerTest extends TestCase {
 			->method( 'getPropertyTables' )
 			->willReturnOnConsecutiveCalls( [ $table ] );
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->willReturnCallback( static function ( $table, $vars, $conds ) {
-				if ( isset( $conds['s_id'] ) && $conds['s_id'] === 42 ) {
-					return true;
-				}
-				return false;
-			} );
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ (object)[] ] );
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'update' )
-			->willReturnCallback( static function ( $table, $set, $conds ) {
-				// Accepts calls for s_id, p_id, _foo updates
-			} );
+		$this->connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$updateTables = $updateSets = $updateWheres = [];
+		$updateBuilder = $this->createMockUpdateQueryBuilder( $updateTables, $updateSets, $updateWheres );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
 
 		$instance = new IdChanger(
 			$this->store
 		);
 
 		$instance->change( 42, 1001 );
+
+		$this->assertContains( [ 's_id' => 1001 ], $updateSets );
+		$this->assertContains( [ 'p_id' => 1001 ], $updateSets );
+		$this->assertContains( [ '_foo' => 1001 ], $updateSets );
 	}
 
 	public function testChange_IdSubject_PropertyNS_Fields_NotFixedPropertyTable() {
@@ -249,6 +293,10 @@ class IdChangerTest extends TestCase {
 			->getMock();
 
 		$table->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'smw_foo' );
+
+		$table->expects( $this->any() )
 			->method( 'usesIdSubject' )
 			->willReturn( true );
 
@@ -264,38 +312,45 @@ class IdChangerTest extends TestCase {
 			->method( 'getPropertyTables' )
 			->willReturnOnConsecutiveCalls( [ $table ] );
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->willReturnCallback( static function ( $table, $vars, $conds ) {
-				if ( isset( $conds['s_id'] ) && $conds['s_id'] === 42 ) {
-					return true;
-				}
-				return false;
-			} );
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ (object)[] ] );
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'update' )
-			->willReturnCallback( static function ( $table, $set, $conds ) {
-				// Accepts calls for s_id and _foo updates
-			} );
+		$this->connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$updateBuilder = $this->createMockUpdateQueryBuilder();
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
+
+		$deleteTables = $deleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $deleteTables, $deleteWheres );
 
 		$this->connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				$this->anything(),
-				[ 'p_id' => 42 ] );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$instance = new IdChanger(
 			$this->store
 		);
 
 		$instance->change( 42, 1001, SMW_NS_PROPERTY, NS_MAIN );
+
+		$this->assertSame(
+			[ [ 'p_id' => 42 ] ],
+			$deleteWheres
+		);
 	}
 
 	public function testChange_IdSubject_ConceptNS_Fields_NotFixedPropertyTable() {
 		$table = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$table->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'smw_foo' );
 
 		$table->expects( $this->any() )
 			->method( 'usesIdSubject' )
@@ -313,31 +368,40 @@ class IdChangerTest extends TestCase {
 			->method( 'getPropertyTables' )
 			->willReturnOnConsecutiveCalls( [ $table ] );
 
-		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 's_id' => 42 ] )
-			->willReturn( true );
+		$selectWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ (object)[] ], $selectWheres );
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'update' )
-			->willReturnCallback( static function ( $table, $set, $conds ) {
-				// Accepts calls for s_id and o_id updates
-			} );
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$updateBuilder = $this->createMockUpdateQueryBuilder();
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
+
+		$deleteTables = $deleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $deleteTables, $deleteWheres );
 
 		$this->connection->expects( $this->exactly( 2 ) )
-			->method( 'delete' )
-			->with(
-				$this->anything(),
-				[ 's_id' => 42 ] );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$instance = new IdChanger(
 			$this->store
 		);
 
 		$instance->change( 42, 1001, SMW_NS_CONCEPT, NS_MAIN );
+
+		$this->assertSame(
+			[ [ 's_id' => 42 ] ],
+			$selectWheres
+		);
+		$this->assertSame(
+			[ [ 's_id' => 42 ], [ 's_id' => 42 ] ],
+			$deleteWheres
+		);
 	}
 
 }

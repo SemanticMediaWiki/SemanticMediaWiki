@@ -18,30 +18,16 @@ use SMW\MediaWiki\Permission\PermissionExaminerAware;
  */
 class IndicatorRegistry {
 
-	/**
-	 * @var IndicatorProvider[]
-	 */
 	private array $indicatorProviders = [];
 
-	/**
-	 * @var
-	 */
 	private array $indicators = [];
 
-	/**
-	 * @var
-	 */
 	private array $modules = [];
 
-	/**
-	 * @var
-	 */
 	private array $inlineStyles = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param IndicatorProvider|null $indicatorProvider
 	 */
 	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ): void {
 		if ( $indicatorProvider === null ) {
@@ -53,12 +39,6 @@ class IndicatorRegistry {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title $title
-	 * @param PermissionExaminer $permissionExaminer
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
 	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ): bool {
 		$subject = WikiPage::newFromTitle(
@@ -91,8 +71,6 @@ class IndicatorRegistry {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param OutputPage $outputPage
 	 */
 	public function attachIndicators( OutputPage $outputPage ): void {
 		$outputPage->addModules( $this->modules );

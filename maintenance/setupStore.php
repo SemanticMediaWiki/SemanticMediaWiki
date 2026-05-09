@@ -92,8 +92,6 @@ class setupStore extends Maintenance {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -188,6 +186,7 @@ class setupStore extends Maintenance {
 	protected function loadGlobalFunctions() {
 		global $smwgIP;
 
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( !isset( $smwgIP ) ) {
 			$smwgIP = __DIR__ . '/../';
 		}

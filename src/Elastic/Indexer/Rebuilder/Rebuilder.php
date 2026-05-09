@@ -31,10 +31,7 @@ class Rebuilder {
 
 	private array $versions = [];
 
-	/**
-	 * @var array
-	 */
-	private $options = [];
+	private array $options = [];
 
 	/**
 	 * @since 3.0
@@ -69,41 +66,29 @@ class Rebuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param array $conditions
-	 *
-	 * @return array
 	 */
 	public function select( Store $store, array $conditions ): array {
 		$connection = $store->getConnection( 'mw.db' );
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id',
-				'smw_iw',
-				'smw_rev'
-			],
-			$conditions,
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+		$res = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_iw', 'smw_rev' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
-		$last = $connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$last = $connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		return [ $res, $last ];
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function rollover(): bool {
 		if ( $this->versions === [] ) {
@@ -162,8 +147,6 @@ class Rebuilder {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return bool
 	 */
 	public function hasIndices(): bool {
 		return $this->client->hasIndex( ElasticClient::TYPE_DATA ) &&
@@ -228,7 +211,7 @@ class Rebuilder {
 
 		try {
 			$this->client->delete( $params );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			// Do nothing
 		}
 	}
@@ -258,7 +241,7 @@ class Rebuilder {
 
 		$this->indexer->setVersions( $this->versions );
 		$this->indexer->isRebuild();
-	// $this->indexer->setState( Indexer::REBUILD_STATE );
+		// $this->indexer->setState( Indexer::REBUILD_STATE );
 
 		$dataItem = $semanticData->getSubject();
 		$dataItem->setId( $id );
@@ -313,7 +296,8 @@ class Rebuilder {
 			return '';
 		}
 
-		if ( ( $title = $dataItem->getTitle() ) !== null ) {
+		$title = $dataItem->getTitle();
+		if ( $title !== null ) {
 			return $this->indexer->fetchNativeData( $title );
 		}
 
@@ -378,7 +362,9 @@ class Rebuilder {
 		// #4341
 		// ES 5.6 may cause a "Can't update [index.number_of_replicas] on closed
 		// indices" see elastic/elasticsearch#22993 and should be fixed with ES 6.4.
-		if ( !$this->client->isOpenSearch() && version_compare( $this->client->getVersion(), '6.4.0', '<' ) ) {
+		if ( !$this->client->isOpenSearch() &&
+			version_compare( (string)$this->client->getVersion(), '6.4.0', '<' )
+		) {
 			unset( $indexDef['settings']['number_of_replicas'] );
 		}
 
@@ -415,7 +401,8 @@ class Rebuilder {
 	private function createIndexByType( string $type ): void {
 		// If for some reason a recent rebuild didn't finish, use
 		// the locked version as master
-		if ( ( $version = $this->client->getLock( $type ) ) === false ) {
+		$version = $this->client->getLock( $type );
+		if ( $version === false ) {
 			$version = $this->client->createIndex( $type );
 		}
 
@@ -431,7 +418,9 @@ class Rebuilder {
 				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
 			];
 
-			$params['body'] = [ 'actions' => $actions ];
+			$params = [
+				'body' => [ 'actions' => $actions ]
+			];
 
 			$this->client->updateAliases( $params );
 		}
@@ -449,7 +438,11 @@ class Rebuilder {
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->twoCols( sprintf( "... rollover from %s to %s ...", $old, $version ), CliMsgFormatter::OK, 7 )
+			$cliMsgFormatter->twoCols(
+				sprintf( "... rollover from %s to %s ...", $old, $version ),
+				CliMsgFormatter::OK,
+				7
+			)
 		);
 	}
 

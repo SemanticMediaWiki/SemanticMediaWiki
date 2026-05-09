@@ -145,7 +145,7 @@ class Deserializer {
 		try {
 			$printRequest = new PrintRequest( $printmode, $label, $data, trim( $outputFormat ?? '' ) );
 			$printRequest->markThisLabel( $text );
-		} catch ( InvalidArgumentException $e ) {
+		} catch ( InvalidArgumentException ) {
 			// something still went wrong; give up
 			$printRequest = null;
 		}

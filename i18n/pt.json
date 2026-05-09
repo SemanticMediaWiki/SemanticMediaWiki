@@ -952,7 +952,7 @@
 	"apihelp-browsebysubject-summary": "Módulo da API para obter informação sobre um assunto.",
 	"apihelp-smwtask-summary": "Módulo da API para executar tarefas relacionadas com o MediaWiki Semântico (só para uso interno, não para uso público).",
 	"apihelp-smwbrowse-summary": "Módulo da API para suportar atividades de navegação para diferentes tipos de entidades no MediaWiki Semântico.",
-	"apihelp-ask-parameter-api-version": "Formatação da saída:\n;2:Formato compatível com versões anteriores, usando {} para a lista de resultados.\n;3:Formato experimental, usando [] como lista de resultados.",
+	"apihelp-ask-param-api-version": "Formatação da saída:\n;2:Formato compatível com versões anteriores, usando {} para a lista de resultados.\n;3:Formato experimental, usando [] como lista de resultados.",
 	"apihelp-smwtask-param-task": "Define o tipo de tarefa",
 	"apihelp-smwtask-param-params": "Parâmetros codificados JSON que correspondem ao requisito do tipo de tarefa selecionado",
 	"smw-apihelp-smwtask-example-update": "Exemplo da execução de uma tarefa de atualização para um assunto específico:",

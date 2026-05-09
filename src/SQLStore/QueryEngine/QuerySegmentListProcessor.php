@@ -220,7 +220,10 @@ class QuerySegmentListProcessor {
 
 	private function disjunction( QuerySegment &$query ): void {
 		if ( $this->queryMode !== Query::MODE_NONE ) {
-			$this->temporaryTableBuilder->create( $this->connection->tableName( $query->alias ) );
+			// TemporaryTableBuilder applies tableName() internally, so pass
+			// the bare alias here. The raw INSERT...SELECT below keeps its
+			// own tableName() call for the same physical name.
+			$this->temporaryTableBuilder->create( $query->alias );
 		}
 
 		$this->executedQueries[$query->alias] = [];
@@ -228,30 +231,18 @@ class QuerySegmentListProcessor {
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
-			$sql = '';
 
 			if ( $subQuery->joinTable !== '' ) {
+				// Residual planner-side raw SQL: INSERT IGNORE...SELECT pieced
+				// together from the planner's stringly-typed fragments
+				// (`$subQuery->where`, `$subQuery->from`, `$subQuery->joinfield`).
+				// Cannot be translated to insertSelect() without restructuring
+				// the QuerySegment IR; this is the documented escape hatch.
 				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
 					   $this->connection->tableName( $query->alias ) .
-					   " SELECT DISTINCT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
+					   " SELECT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
 					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
-			} elseif ( $subQuery->joinfield !== '' ) {
-				// NOTE: this works only for single "unconditional" values without further
-				// WHERE or FROM. The execution must take care of not creating any others.
-				$values = '';
 
-				// This produces an error on postgres with
-				// pg_query(): Query failed: ERROR:  duplicate key value violates
-				// unique constraint "sunittest_t3_pkey" DETAIL:  Key (id)=(274) already exists.
-
-				foreach ( $subQuery->joinfield as $value ) {
-					$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';
-				}
-
-				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
-			} // else: // interpret empty joinfields as impossible condition (empty result), ignore
-
-			if ( $sql ) {
 				$this->executedQueries[$query->alias][] = $sql;
 
 				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
@@ -262,7 +253,32 @@ class QuerySegmentListProcessor {
 						ISQLPlatform::QUERY_CHANGE_ROWS
 					);
 				}
-			}
+			} elseif ( $subQuery->joinfield !== '' ) {
+				// NOTE: this works only for single "unconditional" values without further
+				// WHERE or FROM. The execution must take care of not creating any others.
+
+				// Diagnostic log entry: canonical form (MW core emits the
+				// platform-correct verb — INSERT IGNORE / OR IGNORE /
+				// ON CONFLICT DO NOTHING — when ->ignore() is set).
+				$values = '';
+				foreach ( $subQuery->joinfield as $value ) {
+					$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';
+				}
+				$this->executedQueries[$query->alias][] =
+					'INSERT IGNORE INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
+
+				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
+				if ( $this->queryMode !== Query::MODE_NONE ) {
+					$insertBuilder = $this->connection->newInsertQueryBuilder()
+						->insertInto( $query->alias )
+						->ignore()
+						->caller( __METHOD__ );
+					foreach ( $subQuery->joinfield as $value ) {
+						$insertBuilder->row( [ 'id' => $value ] );
+					}
+					$insertBuilder->execute();
+				}
+			} // else: interpret empty joinfields as impossible condition (empty result), ignore
 		}
 
 		$query->type = QuerySegment::Q_TABLE;
@@ -284,6 +300,7 @@ class QuerySegmentListProcessor {
 	 * @param QuerySegment &$query
 	 */
 	private function hierarchy( QuerySegment &$query ): void {
+		$type = '';
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
 				$type = 'property';
@@ -315,28 +332,33 @@ class QuerySegmentListProcessor {
 			$valuecond .= ( $valuecond ? ' OR ' : '' ) . 'o_id=' . $this->connection->addQuotes( $value );
 		}
 
-		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
-		$res = $this->connection->query( "SELECT s_id FROM $smwtable WHERE $valuecond LIMIT 1" );
+		// Try to save time (SELECT is cheaper than creating/dropping 3 temp tables):
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( 's_id' )
+			->from( $smwtable )
+			->where( [ 'o_id' => $query->joinfield ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
-		if ( !$res->fetchObject() ) { // no subobjects, we are done!
-			$res->free();
+		if ( !$row ) { // no subobjects, we are done!
 			$query->type = QuerySegment::Q_VALUE;
 			return;
 		}
 
-		$res->free();
-		$tablename = $this->connection->tableName( $query->alias );
 		$this->executedQueries[$query->alias] = [
 			"Recursively computed hierarchy for element(s) $values.",
-			"SELECT s_id FROM $smwtable WHERE $valuecond LIMIT 1"
+			'SELECT s_id FROM ' . $this->connection->tableName( $smwtable ) . " WHERE $valuecond LIMIT 1"
 		];
 
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
+		// Pass the bare alias: HierarchyTempTableBuilder routes it through
+		// TemporaryTableBuilder (which applies the prefix internally) and
+		// MW core's insertSelect() (which also applies the prefix).
 		$this->hierarchyTempTableBuilder->fillTempTable(
 			$type,
-			$tablename,
+			$query->alias,
 			$values,
 			$depth
 		);
@@ -350,7 +372,9 @@ class QuerySegmentListProcessor {
 	 */
 	public function cleanUp(): void {
 		foreach ( $this->executedQueries as $table => $log ) {
-			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
+			// TemporaryTableBuilder applies tableName() internally; pass the
+			// bare alias key.
+			$this->temporaryTableBuilder->drop( $table );
 		}
 	}
 

@@ -143,6 +143,7 @@ class InfoLinksProvider {
 			$value = str_replace( ':', '-3A', $value );
 		}
 
+		$infoLink = null;
 		if ( DataTypeRegistry::getInstance()->isRecordType( $this->dataValue->getTypeID() ) ) {
 			$infoLink = Infolink::newPropertySearchLink( '+', $property->getLabel(), $value );
 			$infoLink->setCompactLink( $this->compactLink );
@@ -154,7 +155,9 @@ class InfoLinksProvider {
 			$infoLink->setCompactLink( $this->compactLink );
 		}
 
-		$this->infoLinks[] = $infoLink;
+		if ( $infoLink !== null ) {
+			$this->infoLinks[] = $infoLink;
+		}
 		$this->hasSearchLink = $this->infoLinks !== [];
 
 		// add further service links

@@ -10,6 +10,9 @@ use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Rebuilder\EntityValidator
@@ -22,6 +25,8 @@ use SMW\Tests\TestEnvironment;
  */
 class EntityValidatorTest extends TestCase {
 
+	use MockSelectQueryBuilderTrait;
+
 	private $testEnvironment;
 	private NamespaceExaminer $namespaceExaminer;
 
@@ -31,7 +36,7 @@ class EntityValidatorTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment(
 			[
 				'smwgAutoRefreshSubject' => true,
-				'smwgCacheType' => 'hash',
+				'smwgMainCacheType' => 'hash',
 				'smwgEnableUpdateJobs' => false,
 			]
 		);
@@ -191,6 +196,49 @@ class EntityValidatorTest extends TestCase {
 			$expected,
 			$instance->isRetiredProperty( $row )
 		);
+	}
+
+	public function testFindDuplicates() {
+		$expectedRows = [
+			(object)[ 'smw_id' => 42, 'smw_title' => 'Foo' ],
+		];
+
+		$connection = $this->getMockBuilder( IDatabase::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnCallback( static fn ( $v ) => "'" . $v . "'" );
+
+		$connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( $expectedRows ) );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->with( 'mw.db' )
+			->willReturn( $connection );
+
+		$instance = new EntityValidator(
+			$store,
+			$this->namespaceExaminer
+		);
+
+		$row = (object)[
+			'smw_id' => 1,
+			'smw_sortkey' => 'Foo',
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_subobject' => '',
+		];
+
+		$result = $instance->findDuplicates( $row );
+
+		$this->assertInstanceOf( IResultWrapper::class, $result );
 	}
 
 	public function propertyRetiredListProvider() {

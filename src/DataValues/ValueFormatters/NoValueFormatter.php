@@ -19,6 +19,7 @@ class NoValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function isFormatterFor( DataValue $dataValue ): bool {
+		// @phan-suppress-next-line PhanRedundantCondition
 		return $dataValue instanceof DataValue;
 	}
 

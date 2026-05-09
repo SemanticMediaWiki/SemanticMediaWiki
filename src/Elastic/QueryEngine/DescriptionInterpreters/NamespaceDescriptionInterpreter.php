@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\NamespaceDescription;
 

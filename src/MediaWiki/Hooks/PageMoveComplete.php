@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Linker\LinkTarget;
+use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
@@ -48,7 +49,7 @@ class PageMoveComplete implements HookListener {
 		// Delete all data for a non-enabled target NS
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $newTitle->getNamespace() ) || $newId == 0 ) {
 			$applicationFactory->getStore()->deleteSubject(
-				$oldTitle
+				Title::newFromLinkTarget( $oldTitle )
 			);
 		}
 

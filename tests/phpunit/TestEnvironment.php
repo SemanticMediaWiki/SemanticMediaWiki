@@ -82,16 +82,20 @@ class TestEnvironment {
 	 * @since 3.2
 	 */
 	public static function loadDefaultSettings( array $defaultSettingKeys = [] ): void {
-		$settings = require $GLOBALS['smwgIP'] . '/src/DefaultSettings.php';
+		if ( $defaultSettingKeys === [] ) {
+			// Historical empty-array form snapshot every entry of DefaultSettings.php
+			// into TestConfig. After the migration to extension.json, defaults are
+			// already in $GLOBALS by extension load time, and no caller currently
+			// uses the empty-array form (verified by grep at PR-5 time). The
+			// empty branch is therefore a no-op.
+			return;
+		}
 
-		if ( $defaultSettingKeys !== [] ) {
-			$copy = [];
-
-			foreach ( $defaultSettingKeys as $key ) {
-				$copy[$key] = $settings[$key];
+		$settings = [];
+		foreach ( $defaultSettingKeys as $key ) {
+			if ( isset( $GLOBALS[$key] ) ) {
+				$settings[$key] = $GLOBALS[$key];
 			}
-
-			$settings = $copy;
 		}
 
 		( new TestConfig() )->set( $settings );

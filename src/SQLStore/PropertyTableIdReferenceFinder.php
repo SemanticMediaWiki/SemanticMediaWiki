@@ -123,12 +123,14 @@ class PropertyTableIdReferenceFinder {
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			$reference = false;
 
-			if ( ( $reference = $this->findReferenceByPropertyTable( $proptable, $id ) ) !== false ) {
+			$reference = $this->findReferenceByPropertyTable( $proptable, $id );
+			if ( $reference !== false ) {
 				$references[$proptable->getName()] = $reference;
 			}
 		}
 
-		if ( ( $reference = $this->findQueryLinksTableReferenceById( $id ) ) !== false ) {
+		$reference = $this->findQueryLinksTableReferenceById( $id );
+		if ( $reference !== false ) {
 			$references[SQLStore::QUERY_LINKS_TABLE] = $reference;
 		}
 
@@ -148,7 +150,8 @@ class PropertyTableIdReferenceFinder {
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 
-			if ( ( $reference = $this->findReferenceByPropertyTable( $proptable, $id ) ) !== false ) {
+			$reference = $this->findReferenceByPropertyTable( $proptable, $id );
+			if ( $reference !== false ) {
 
 				// If null is returned it means that a reference was found but no DI could
 				// be matched therefore is categorized as false positive
@@ -187,12 +190,12 @@ class PropertyTableIdReferenceFinder {
 		$row = false;
 
 		if ( $proptable->usesIdSubject() ) {
-			$row = $this->connection->selectRow(
-				$proptable->getName(),
-				[ 's_id' ],
-				[ 's_id' => $id ],
-				__METHOD__
-			);
+			$row = $this->connection->newSelectQueryBuilder()
+				->select( [ 's_id' ] )
+				->from( $proptable->getName() )
+				->where( [ 's_id' => $id ] )
+				->caller( __METHOD__ )
+				->fetchRow();
 		}
 
 		if ( $row !== false ) {
@@ -207,12 +210,12 @@ class PropertyTableIdReferenceFinder {
 			// This next time someone ... I'm going to Alaska
 			$field = preg_match( '/redi$/', $proptable->getName() ?? '' ) ? [ 's_title', 's_namespace' ] : [ 's_id' ];
 
-			$row = $this->connection->selectRow(
-				$proptable->getName(),
-				$field,
-				[ 'o_id' => $id ],
-				__METHOD__
-			);
+			$row = $this->connection->newSelectQueryBuilder()
+				->select( $field )
+				->from( $proptable->getName() )
+				->where( [ 'o_id' => $id ] )
+				->caller( __METHOD__ )
+				->fetchRow();
 
 			if ( $row !== false && strpos( $proptable->getName(), 'redi' ) ) {
 				$row->s_id = $this->store->getObjectIds()->findRedirect( $row->s_title, $row->s_namespace );
@@ -223,12 +226,12 @@ class PropertyTableIdReferenceFinder {
 		// table to a specific property with the p_id column being suppressed)
 		// then check for the p_id field
 		if ( $row === false && !$proptable->isFixedPropertyTable() ) {
-			$row = $this->connection->selectRow(
-				$proptable->getName(),
-				[ 's_id' ],
-				[ 'p_id' => $id ],
-				__METHOD__
-			);
+			$row = $this->connection->newSelectQueryBuilder()
+				->select( [ 's_id' ] )
+				->from( $proptable->getName() )
+				->where( [ 'p_id' => $id ] )
+				->caller( __METHOD__ )
+				->fetchRow();
 		}
 
 		return $row;
@@ -238,12 +241,12 @@ class PropertyTableIdReferenceFinder {
 		// If the query table contains a reference then we keep the object (could
 		// be a subject, property, or printrequest) where in case the query is
 		// removed the object will also loose its reference
-		$row = $this->connection->selectRow(
-			SQLStore::QUERY_LINKS_TABLE,
-			[ 's_id' ],
-			[ 'o_id' => $id ],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 's_id' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 'o_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row;
 	}

@@ -93,55 +93,20 @@ class Info extends ApiBase {
 					'conceptcount',
 					'subobjectcount',
 					'jobcount'
-				]
+				],
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwinfo-param-info',
 			],
 		];
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getParamDescription(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'info' => 'The info to provide.'
+			'action=smwinfo&info=proppagecount|propcount'
+				=> 'apihelp-smwinfo-example-1',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module get info about this SMW install.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples(): array {
-		return [
-			'api.php?action=smwinfo&info=proppagecount|propcount',
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . ': $Id$';
 	}
 
 	/**

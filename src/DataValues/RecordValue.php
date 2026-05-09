@@ -59,8 +59,6 @@ class RecordValue extends AbstractMultiValue {
 	 * @since 2.3
 	 *
 	 * @param string $value
-	 *
-	 * @return array
 	 */
 	public function getValuesFromString( $value ): array {
 		// #664 / T17732
@@ -143,8 +141,6 @@ class RecordValue extends AbstractMultiValue {
 
 	/**
 	 * @see DataValue::loadDataItem()
-	 * @param $dataItem DataItem
-	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {
@@ -171,7 +167,9 @@ class RecordValue extends AbstractMultiValue {
 					$semanticData->findSubSemanticData( $subobjectName )
 				);
 			} else {
+				// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 				$semanticData = new ContainerSemanticData( $dataItem );
+				// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 				$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
 				$this->m_dataitem = new Container( $semanticData );
 			}
@@ -247,8 +245,6 @@ class RecordValue extends AbstractMultiValue {
 	 * @since 1.6
 	 *
 	 * @todo I18N for error message.
-	 *
-	 * @return array of Property
 	 */
 	public function getPropertyDataItems(): ?array {
 		if ( $this->m_diProperties !== null ) {

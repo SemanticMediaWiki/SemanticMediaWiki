@@ -127,7 +127,7 @@ class IndicatorRegistryTest extends TestCase {
 				return '';
 			}
 
-			public function getInlineStyle() {
+			public function getInlineStyle(): string {
 				return '';
 			}
 
@@ -156,7 +156,7 @@ class IndicatorRegistryTest extends TestCase {
 				return '';
 			}
 
-			public function getInlineStyle() {
+			public function getInlineStyle(): string {
 				return '';
 			}
 

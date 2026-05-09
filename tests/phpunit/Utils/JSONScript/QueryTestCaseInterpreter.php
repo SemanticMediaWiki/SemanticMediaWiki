@@ -307,7 +307,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getExpectedConceptCache() {
 		return isset( $this->contents['conceptcache'] ) ? $this->contents['conceptcache'] : [];

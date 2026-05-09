@@ -16,9 +16,6 @@ use SMW\Store;
  */
 class Hooks {
 
-	/**
-	 * @var
-	 */
 	private array $handlers = [];
 
 	/**
@@ -29,12 +26,12 @@ class Hooks {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getHandlers(): array {
 		return [
-			'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders' => [ $this, 'onRegisterEntityExaminerDeferrableIndicatorProviders' ],
+			'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders' => [
+				$this, 'onRegisterEntityExaminerDeferrableIndicatorProviders'
+			],
 			'SMW::Admin::RegisterTaskHandlers' => [ $this, 'onRegisterTaskHandlers' ],
 		];
 	}
@@ -43,10 +40,14 @@ class Hooks {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Admin::RegisterTaskHandlers
 	 * @since 3.0
 	 */
-	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ): bool {
-		if (
-			( $connection = $store->getConnection( 'elastic' ) ) === null ||
-			$connection instanceof DummyClient ) {
+	public function onRegisterTaskHandlers(
+		TaskHandlerRegistry $taskHandlerRegistry,
+		Store $store,
+		$outputFormatter,
+		$user
+	): bool {
+		$connection = $store->getConnection( 'elastic' );
+		if ( $connection === null || $connection instanceof DummyClient ) {
 			return true;
 		}
 
@@ -66,10 +67,12 @@ class Hooks {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders
 	 * @since 3.2
 	 */
-	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, &$indicatorProviders ): bool {
-		if (
-			( $connection = $store->getConnection( 'elastic' ) ) === null ||
-			$connection instanceof DummyClient ) {
+	public function onRegisterEntityExaminerDeferrableIndicatorProviders(
+		Store $store,
+		&$indicatorProviders
+	): bool {
+		$connection = $store->getConnection( 'elastic' );
+		if ( $connection === null || $connection instanceof DummyClient ) {
 			return true;
 		}
 

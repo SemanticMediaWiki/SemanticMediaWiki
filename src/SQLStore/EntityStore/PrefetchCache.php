@@ -59,9 +59,9 @@ class PrefetchCache {
 	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return ?string
+	 * @return string
 	 */
-	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ): ?string {
+	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ): string {
 		$key = $property->getKey();
 
 		// Use the .dot notation to distingish it from other prrintouts that
@@ -115,7 +115,7 @@ class PrefetchCache {
 			$requestOptions
 		);
 
-		$this->cache[$key] = $result;
+		$this->cache[$key] = $result + ( $this->cache[$key] ?? [] );
 		$this->lookupCache[$lookupKey] = true;
 	}
 

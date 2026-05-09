@@ -19,7 +19,7 @@ use SMW\Query\Language\Description;
 class TimeValueDescriptionBuilder extends DescriptionBuilder {
 
 	/**
-	 * @var DataValue
+	 * @var TimeValue
 	 */
 	private $dataValue;
 
@@ -94,7 +94,7 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 			] );
 		}
 
-		return $description;
+		return $description ?? $this->descriptionFactory->newThingDescription();
 	}
 
 	private function getUpperLimit( $dataItem ) {

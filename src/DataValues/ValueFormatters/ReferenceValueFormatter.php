@@ -92,9 +92,6 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $result;
 	}
 
-	/**
-	 * @return mixed[]
-	 */
 	private function getListOfFormattedPropertyDataItems( $type, $linker, $propertyDataItems ): array {
 		$results = [];
 
@@ -151,7 +148,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		// Turn URI, External identifier, or Page links into a href representation
 		// when not used as (first) value
 		if (
-			$isValue === false && $type !== self::VALUE && (
+			!$isValue && $type !== self::VALUE && (
 			$dataItem instanceof Uri ||
 			$dataItem instanceof WikiPage ||
 			$dataValue->getTypeID() === ExternalIdentifierValue::TYPE_ID ) ) {

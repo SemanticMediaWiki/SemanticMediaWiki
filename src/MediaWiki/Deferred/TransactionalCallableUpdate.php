@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Deferred;
 
-use Closure;
 use Exception;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Site;
@@ -21,10 +20,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 	private bool $onTransactionIdle = false;
 
-	/**
-	 * @var int|null
-	 */
-	private $transactionTicket = null;
+	private ?int $transactionTicket = null;
 
 	private array $preCommitableCallbacks = [];
 
@@ -34,9 +30,6 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param callable $callback
-	 * @param Database $connection
 	 */
 	public static function newUpdate( callable $callback, Database $connection ): self {
 		$transactionalCallableUpdate = new self( $callback, $connection );
@@ -89,7 +82,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @since 3.0
 	 */
 	public function commitWithTransactionTicket(): void {
-		if ( $this->isCommandLineMode === false && $this->isDeferrableUpdate === true ) {
+		if ( !$this->isCommandLineMode && $this->isDeferrableUpdate ) {
 			$this->transactionTicket = $this->connection->getEmptyTransactionTicket( $this->getOrigin() );
 		}
 	}
@@ -99,14 +92,9 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * to be executed before the source callback.
 	 *
 	 * @since 3.0
-	 *
-	 * @param string $fname
-	 * @param Closure $callback
 	 */
-	public function addPreCommitableCallback( $fname, callable $callback ): void {
-		if ( is_callable( $callback ) ) {
-			$this->preCommitableCallbacks[$fname] = $callback;
-		}
+	public function addPreCommitableCallback( string $fname, callable $callback ): void {
+		$this->preCommitableCallbacks[$fname] = $callback;
 	}
 
 	/**
@@ -114,20 +102,16 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * to be executed after the source callback.
 	 *
 	 * @since 3.0
-	 *
-	 * @param string $fname
-	 * @param Closure $callback
 	 */
-	public function addPostCommitableCallback( $fname, callable $callback ): void {
-		if ( is_callable( $callback ) ) {
-			$this->postCommitableCallbacks[$fname] = $callback;
-		}
+	public function addPostCommitableCallback( string $fname, callable $callback ): void {
+		$this->postCommitableCallbacks[$fname] = $callback;
 	}
 
 	/**
 	 * @see DeferrableUpdate::doUpdate
 	 *
 	 * @since 3.0
+	 * @throws Exception
 	 */
 	public function doUpdate(): void {
 		if ( $this->onTransactionIdle ) {

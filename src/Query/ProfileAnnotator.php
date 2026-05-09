@@ -2,6 +2,8 @@
 
 namespace SMW\Query;
 
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
 use SMW\Property\Annotator;
 
 /**
@@ -21,7 +23,7 @@ interface ProfileAnnotator extends Annotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getProperty();
 
@@ -30,7 +32,7 @@ interface ProfileAnnotator extends Annotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIContainer
+	 * @return Container
 	 */
 	public function getContainer();
 

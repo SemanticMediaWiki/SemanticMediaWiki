@@ -138,7 +138,7 @@ class ExternalIdentifierValue extends StringValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DataItem
+	 * @return DataItem|string
 	 */
 	public function getUri() {
 		if ( !$this->isValid() ) {
@@ -228,7 +228,7 @@ class ExternalIdentifierValue extends StringValue {
 	}
 
 	private function makeNonlinkedWikiText( $url ): string|array {
-		return str_replace( ':', '&#58;', $url );
+		return str_replace( ':', '&#58;', $url ?? '' );
 	}
 
 }

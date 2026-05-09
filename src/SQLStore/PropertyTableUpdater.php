@@ -156,6 +156,10 @@ class PropertyTableUpdater {
 				$pid = $row['p_id'];
 			}
 
+			if ( !isset( $pid ) ) {
+				continue;
+			}
+
 			$this->propertyChangeListener->recordChange(
 				$pid,
 				[ 'row' => $row, 'is_insert' => $insert ]
@@ -173,11 +177,11 @@ class PropertyTableUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$tableName = $propertyTable->getName();
 
-		$connection->insert(
-			$tableName,
-			$rows,
-			__METHOD__ . "-$tableName"
-		);
+		$connection->newInsertQueryBuilder()
+			->insertInto( $tableName )
+			->rows( $rows )
+			->caller( __METHOD__ . "-$tableName" )
+			->execute();
 	}
 
 	private function delete( PropertyTableDefinition $propertyTable, array $rows ): void {
@@ -215,11 +219,11 @@ class PropertyTableUpdater {
 
 		$condition = "s_id=" . $connection->addQuotes( $sid ) . " AND ($condition)";
 
-		$connection->delete(
-			$tableName,
-			[ $condition ],
-			__METHOD__ . "-$tableName"
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( $tableName )
+			->where( $condition )
+			->caller( __METHOD__ . "-$tableName" )
+			->execute();
 	}
 
 	private function aggregate_ids( array &$ids, $propertyTable, $rows ): void {
@@ -233,18 +237,17 @@ class PropertyTableUpdater {
 
 			$pid = $this->store->getObjectIds()->makeSMWPropertyID( $property );
 			$isCategory = $property->getKey() === '_INST';
+			$ids[$pid] = true;
 		}
 
 		foreach ( $rows as $row ) {
 			$sid = $isCategory ? $row['o_id'] : $row['s_id'];
 			$ids[$sid] = true;
 
-			// Individual pid? or fixed?
+			// Individual pid for non-fixed tables
 			if ( isset( $row['p_id'] ) ) {
-				$pid = $row['p_id'];
+				$ids[$row['p_id']] = true;
 			}
-
-			$ids[$pid] = true;
 		}
 	}
 
@@ -261,16 +264,12 @@ class PropertyTableUpdater {
 		// onTransctionIdle( ... ) to avoid locking the rows for succeeding
 		// updates?
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
-				'smw_touched' => $touched
-			],
-			[
-				'smw_id' => $ids
-			],
-			__METHOD__
-		);
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [ 'smw_touched' => $touched ] )
+			->where( [ 'smw_id' => $ids ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }

@@ -26,8 +26,6 @@ class ArticleLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|int
 	 */
 	public function getVersion(): string {
 		return 'ArticleLookup:' . self::VERSION;
@@ -35,10 +33,6 @@ class ArticleLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function lookup( array $parameters ): array {
 		$limit = 50;
@@ -57,6 +51,8 @@ class ArticleLookup extends Lookup {
 			$namespace = $parameters['namespace'];
 		}
 
+		$list = [];
+		$continueOffset = 0;
 		if ( isset( $parameters['search'] ) ) {
 			[ $list, $continueOffset ] = $this->search( $limit, $offset, $parameters['search'], $namespace );
 		}
@@ -93,7 +89,7 @@ class ArticleLookup extends Lookup {
 			$search
 		);
 
-		$limit = $limit + 1;
+		$limit += 1;
 		$conditions = '';
 
 		$fields = [
@@ -125,13 +121,13 @@ class ArticleLookup extends Lookup {
 			$conditions = 'page_namespace=' . $this->connection->addQuotes( $namespace ) . ' AND (' . $conditions . ')';
 		}
 
-		$res = $this->connection->select(
-			[ 'page' ],
-			$fields,
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( 'page' )
+			->where( [ $conditions ] )
+			->options( $options )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$count = 0;
 		$continueOffset = 0;
@@ -165,7 +161,8 @@ class ArticleLookup extends Lookup {
 		if ( strpos( $search, ':' ) !== false ) {
 			[ $ns, $term ] = explode( ':', $search );
 
-			if ( ( $namespace = Localizer::getInstance()->getNsIndex( $ns ) ) !== false ) {
+			$namespace = Localizer::getInstance()->getNsIndex( $ns );
+			if ( $namespace !== false ) {
 				$search = $term;
 			} else {
 				$namespace = null;

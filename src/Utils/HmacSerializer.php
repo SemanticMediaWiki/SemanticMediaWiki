@@ -35,11 +35,7 @@ class HmacSerializer {
 		$data = json_encode( $data );
 		$hash = hash_hmac( $algo, $data, $key );
 
-		if ( $hash !== false ) {
-			return json_encode( [ 'hmac' => $hash, 'data' => $data ] );
-		}
-
-		return false;
+		return json_encode( [ 'hmac' => $hash, 'data' => $data ] );
 	}
 
 	/**
@@ -78,9 +74,9 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|false
+	 * @return string
 	 */
-	public static function serialize( $data, $key = null, $algo = 'md5' ): string|false {
+	public static function serialize( $data, $key = null, $algo = 'md5' ): string {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -88,11 +84,7 @@ class HmacSerializer {
 		$data = serialize( $data );
 		$hash = hash_hmac( $algo, $data, $key );
 
-		if ( $hash !== false ) {
-			return "$hash|$data";
-		}
-
-		return false;
+		return "$hash|$data";
 	}
 
 	/**

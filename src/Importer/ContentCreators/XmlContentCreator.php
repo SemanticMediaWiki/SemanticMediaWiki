@@ -3,6 +3,8 @@
 namespace SMW\Importer\ContentCreators;
 
 use Exception;
+use MediaWiki\Title\ForeignTitle;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
@@ -17,10 +19,7 @@ use SMW\Utils\CliMsgFormatter;
  */
 class XmlContentCreator implements ContentCreator {
 
-	/**
-	 * @var ImportContentsIterator
-	 */
-	private $importerServiceFactory;
+	private ImporterServiceFactory $importerServiceFactory;
 
 	private ?MessageReporter $messageReporter = null;
 
@@ -30,8 +29,6 @@ class XmlContentCreator implements ContentCreator {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ImporterServiceFactory $importerServiceFactory
 	 */
 	public function __construct( ImporterServiceFactory $importerServiceFactory ) {
 		$this->importerServiceFactory = $importerServiceFactory;
@@ -41,8 +38,6 @@ class XmlContentCreator implements ContentCreator {
 	 * @see MessageReporterAware::setMessageReporter
 	 *
 	 * @since 3.0
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
@@ -50,8 +45,6 @@ class XmlContentCreator implements ContentCreator {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ImportContents $importContents
 	 */
 	public function canCreateContentsFor( ImportContents $importContents ): bool {
 		return $importContents->getContentType() === ImportContents::CONTENT_XML;
@@ -59,8 +52,6 @@ class XmlContentCreator implements ContentCreator {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ImportContents $importContents
 	 */
 	public function create( ImportContents $importContents ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
@@ -108,7 +99,7 @@ class XmlContentCreator implements ContentCreator {
 	/**
 	 * @see WikiImporter::handlePage
 	 *
-	 * @param Title $title
+	 * @param ?Title $title
 	 * @param ForeignTitle $foreignTitle
 	 * @param int $revisionCount
 	 * @param int $successCount

@@ -138,7 +138,7 @@ class SemanticData implements JsonDeserializable {
 	private $hash = null;
 
 	/**
-	 * @var Options
+	 * @var ?Options
 	 */
 	protected $options;
 
@@ -254,7 +254,9 @@ class SemanticData implements JsonDeserializable {
 	 * @return bool
 	 */
 	public function hasProperty( Property $property ): bool {
-		return isset( $this->mProperties[$property->getKey()] ) || array_key_exists( $property->getKey(), $this->mProperties );
+		$key = $property->getKey();
+		return isset( $this->mProperties[$key] ) ||
+			array_key_exists( $key, $this->mProperties );
 	}
 
 	/**
@@ -268,8 +270,9 @@ class SemanticData implements JsonDeserializable {
 			return [];
 		}
 
-		if ( array_key_exists( $property->getKey(), $this->mPropVals ) ) {
-			return array_values( $this->mPropVals[$property->getKey()] );
+		$key = $property->getKey();
+		if ( array_key_exists( $key, $this->mPropVals ) ) {
+			return array_values( $this->mPropVals[$key] );
 		}
 
 		return [];
@@ -384,16 +387,6 @@ class SemanticData implements JsonDeserializable {
 	 * @return SemanticData[]
 	 */
 	public function getSubSemanticData(): array {
-		// Remove the check in 3.0
-		$subSemanticData = $this->subSemanticData;
-
-		// Avoids an issue where the serialized array from a previous usage is
-		// returned from a __wakeup, where now a SubSemanticData (#2177) is expected.
-		if ( !$subSemanticData instanceof SubSemanticData ) {
-			$this->subSemanticData = new SubSemanticData( $this->mSubject, $this->mNoDuplicates );
-			$this->subSemanticData->copyDataFrom( $subSemanticData );
-		}
-
 		return $this->subSemanticData->getSubSemanticData();
 	}
 
@@ -470,12 +463,12 @@ class SemanticData implements JsonDeserializable {
 			$this->countMap[$key] = $key === '_INST' ? [] : 0;
 		}
 
-		if ( !array_key_exists( $property->getKey(), $this->mPropVals ) ) {
-			$this->mPropVals[$property->getKey()] = [];
-			$this->mProperties[$property->getKey()] = $property;
+		if ( !array_key_exists( $key, $this->mPropVals ) ) {
+			$this->mPropVals[$key] = [];
+			$this->mProperties[$key] = $property;
 
 			if ( SequenceMap::canMap( $property ) ) {
-				$this->sequenceMap[$property->getKey()] = [];
+				$this->sequenceMap[$key] = [];
 			}
 		}
 
@@ -484,12 +477,12 @@ class SemanticData implements JsonDeserializable {
 		// Only store a map for values that are allowed to
 		if (
 			$this->mNoDuplicates &&
-			isset( $this->sequenceMap[$property->getKey()] ) &&
-			!isset( $this->mPropVals[$property->getKey()][$hash] ) ) {
-			$this->sequenceMap[$property->getKey()][] = $hash;
+			isset( $this->sequenceMap[$key] ) &&
+			!isset( $this->mPropVals[$key][$hash] ) ) {
+			$this->sequenceMap[$key][] = $hash;
 		}
 
-		if ( !isset( $this->mPropVals[$property->getKey()][$hash] ) ) {
+		if ( !isset( $this->mPropVals[$key][$hash] ) ) {
 
 			// Count categories differently
 			if ( $key === '_INST' ) {
@@ -500,9 +493,9 @@ class SemanticData implements JsonDeserializable {
 		}
 
 		if ( $this->mNoDuplicates ) {
-			$this->mPropVals[$property->getKey()][$hash] = $dataItem;
+			$this->mPropVals[$key][$hash] = $dataItem;
 		} else {
-			$this->mPropVals[$property->getKey()][] = $dataItem;
+			$this->mPropVals[$key][] = $dataItem;
 		}
 
 		if ( !$property->isUserDefined() ) {
@@ -517,7 +510,7 @@ class SemanticData implements JsonDeserializable {
 		// Account for things like DISPLAYTITLE or DEFAULTSORT which are only set
 		// after #subobject has been processed therefore keep them in-memory
 		// for a post process
-		if ( $this->mSubject->getSubobjectName() === '' && $property->getKey() === Property::TYPE_SORTKEY ) {
+		if ( $this->mSubject->getSubobjectName() === '' && $key === Property::TYPE_SORTKEY ) {
 			foreach ( $this->getSubSemanticData() as $subSemanticData ) {
 				$subSemanticData->setExtensionData( 'sort.extension', $dataItem->getString() );
 			}
@@ -624,14 +617,15 @@ class SemanticData implements JsonDeserializable {
 		$key = $property->getKey();
 
 		if (
-			!array_key_exists( $property->getKey(), $this->mPropVals ) ||
-			!array_key_exists( $property->getKey(), $this->mProperties ) ) {
+			!array_key_exists( $key, $this->mPropVals ) ||
+			!array_key_exists( $key, $this->mProperties )
+		) {
 			return;
 		}
 
 		if ( $this->mNoDuplicates ) {
 			// this didn't get checked for my tests, but should work
-			unset( $this->mPropVals[$property->getKey()][md5( $dataItem->getHash() )] );
+			unset( $this->mPropVals[$key][md5( $dataItem->getHash() )] );
 
 			if ( isset( $this->countMap[$key] ) && $key === '_INST' ) {
 				unset( $this->countMap[$key][$dataItem->getDBKey()] );
@@ -639,9 +633,9 @@ class SemanticData implements JsonDeserializable {
 				$this->countMap[$key]--;
 			}
 		} else {
-			foreach ( $this->mPropVals[$property->getKey()] as $index => $di ) {
+			foreach ( $this->mPropVals[$key] as $index => $di ) {
 				if ( $di->equals( $dataItem ) ) {
-					unset( $this->mPropVals[$property->getKey()][$index] );
+					unset( $this->mPropVals[$key][$index] );
 				}
 
 				if ( isset( $this->countMap[$key] ) && $key === '_INST' ) {
@@ -651,16 +645,16 @@ class SemanticData implements JsonDeserializable {
 				}
 			}
 
-			$this->mPropVals[$property->getKey()] = array_values( $this->mPropVals[$property->getKey()] );
+			$this->mPropVals[$key] = array_values( $this->mPropVals[$key] );
 		}
 
 		if ( isset( $this->countMap[$key] ) && $this->countMap[$key] == 0 ) {
 			unset( $this->countMap[$key] );
 		}
 
-		if ( $this->mPropVals[$property->getKey()] === [] ) {
-			unset( $this->mProperties[$property->getKey()] );
-			unset( $this->mPropVals[$property->getKey()] );
+		if ( $this->mPropVals[$key] === [] ) {
+			unset( $this->mProperties[$key] );
+			unset( $this->mPropVals[$key] );
 		}
 	}
 
@@ -834,7 +828,7 @@ class SemanticData implements JsonDeserializable {
 	 *
 	 * @param string $subobjectName
 	 *
-	 * @return ContainerSemanticData|null
+	 * @return SemanticData|null
 	 */
 	public function findSubSemanticData( $subobjectName ) {
 		return $this->subSemanticData->findSubSemanticData( $subobjectName );
@@ -911,24 +905,51 @@ class SemanticData implements JsonDeserializable {
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ): self {
 		$obj = new self(
-			$deserializer->deserialize( $json['mSubject'] ),
+			self::maybeDeserialize( $deserializer, $json['mSubject'] ),
 			$json['mNoDuplicates']
 		);
 		$obj->stubObject = $json['stubObject'];
 		$obj->mPropVals = array_map( static function ( array $x ) use( $deserializer ): array {
-			return $deserializer->deserializeArray( $x );
+			return self::maybeDeserializeArray( $deserializer, $x );
 		}, $json['mPropVals'] );
-		$obj->mProperties = $deserializer->deserializeArray( $json['mProperties'] );
+		$obj->mProperties = self::maybeDeserializeArray( $deserializer, $json['mProperties'] );
 		$obj->mHasVisibleProps = $json['mHasVisibleProps'];
 		$obj->mHasVisibleSpecs = $json['mHasVisibleSpecs'];
-		$obj->subSemanticData = $json['subSemanticData'] ? $deserializer->deserialize( $json['subSemanticData'] ) : null;
+		$obj->subSemanticData = $json['subSemanticData'] ? self::maybeDeserialize( $deserializer, $json['subSemanticData'] ) : null;
 		$obj->errors = $json['errors'];
 		$obj->hash = $json['hash'];
-		$obj->options = $json['options'] ? $deserializer->deserialize( $json['options'] ) : null;
+		$obj->options = $json['options'] ? self::maybeDeserialize( $deserializer, $json['options'] ) : null;
 		$obj->extensionData = $json['extensionData'];
 		$obj->sequenceMap = $json['sequenceMap'];
 		$obj->countMap = $json['countMap'];
 		return $obj;
+	}
+
+	/**
+	 * MediaWiki's JsonCodec recursively deserializes nested `_type_`-marked
+	 * values while walking a structure, so a field reaching `newFromJsonArray`
+	 * may already be a fully reified object rather than a marked array.
+	 * Passing such a value back through `deserialize()` trips its
+	 * `stdClass|array|string` parameter assert; the resulting JsonException is
+	 * swallowed by `ParserCache::restoreFromJson` and reported as a cache
+	 * miss, defeating the parser cache for every page touched by SMW. Skip
+	 * the redundant call when the value has already been deserialized.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function maybeDeserialize( JsonDeserializer $deserializer, mixed $value ): mixed {
+		return is_object( $value ) ? $value : $deserializer->deserialize( $value );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public static function maybeDeserializeArray( JsonDeserializer $deserializer, array $value ): array {
+		$result = [];
+		foreach ( $value as $k => $v ) {
+			$result[$k] = self::maybeDeserialize( $deserializer, $v );
+		}
+		return $result;
 	}
 
 }

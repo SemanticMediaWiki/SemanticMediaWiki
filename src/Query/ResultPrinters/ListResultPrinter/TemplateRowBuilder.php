@@ -57,13 +57,13 @@ class TemplateRowBuilder extends RowBuilder {
 	 */
 	private function getFieldLabel( ResultArray $field, int|string $column ) {
 		if ( $this->get( 'named args' ) === false ) {
-			return intval( $column + 1 );
+			return (string)( $column + 1 );
 		}
 
 		$label = $field->getPrintRequest()->getLabel();
 
 		if ( $label === '' ) {
-			return intval( $column + 1 );
+			return (string)( $column + 1 );
 		}
 
 		return $label;

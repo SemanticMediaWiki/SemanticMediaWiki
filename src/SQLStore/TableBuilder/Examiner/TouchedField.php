@@ -30,17 +30,15 @@ class TouchedField {
 		$this->messageReporter->reportMessage( "Checking smw_touched field ...\n" );
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			[
-				'COUNT(smw_id) as count'
-			],
-			[
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'COUNT(smw_id) as count' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_touched IS NULL',
-				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWBORDERIW )
-			],
-			__METHOD__
-		);
+				$connection->expr( 'smw_iw', '!=', SMW_SQL3_SMWBORDERIW ),
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false || $row->count == 0 ) {
 			return $this->messageReporter->reportMessage( "   ... done.\n" );
@@ -48,27 +46,19 @@ class TouchedField {
 
 		$this->messageReporter->reportMessage( "   ... updating {$row->count} rows with default date ...\n" );
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
-				'smw_touched' => $connection->timestamp( '1970-01-01 00:00:00' )
-			],
-			[
-				'smw_touched IS NULL'
-			],
-			__METHOD__
-		);
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [ 'smw_touched' => $connection->timestamp( '1970-01-01 00:00:00' ) ] )
+			->where( [ 'smw_touched IS NULL' ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
-				'smw_touched' => null
-			],
-			[
-				'smw_iw' => SMW_SQL3_SMWBORDERIW
-			],
-			__METHOD__
-		);
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [ 'smw_touched' => null ] )
+			->where( [ 'smw_iw' => SMW_SQL3_SMWBORDERIW ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}

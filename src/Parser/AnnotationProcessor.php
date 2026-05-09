@@ -7,6 +7,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 
 /**
  * To allow for an in-memory processing of existing SemanticData references during

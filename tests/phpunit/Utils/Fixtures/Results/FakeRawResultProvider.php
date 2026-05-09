@@ -59,7 +59,8 @@ class FakeRawResultProvider {
 	}
 
 	private function getFixtureContentsFor( $fixture ) {
-		if ( $file = $this->isReadableFile( $this->getFixtureLocation() . $fixture ) ) {
+		$file = $this->isReadableFile( $this->getFixtureLocation() . $fixture );
+		if ( $file ) {
 			return file_get_contents( $file );
 		}
 	}

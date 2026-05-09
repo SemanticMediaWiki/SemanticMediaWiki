@@ -149,12 +149,12 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * do on getWikiValue
 	 */
 	private function findConceptById( $connection, $id ) {
-		return $connection->selectRow(
-			'smw_fpt_conc',
-			[ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ],
-			[ 's_id' => $id ],
-			__METHOD__
-		);
+		return $connection->newSelectQueryBuilder()
+			->select( [ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ] )
+			->from( 'smw_fpt_conc' )
+			->where( [ 's_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 	}
 
 	/**

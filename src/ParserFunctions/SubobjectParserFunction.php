@@ -143,7 +143,8 @@ class SubobjectParserFunction {
 		if (
 			$this->parserData->canUse() &&
 			$this->addDataValuesToSubobject( $parameters ) &&
-			$this->subobject->getSemanticData()->isEmpty() === false ) {
+			!$this->subobject->getSemanticData()->isEmpty()
+		) {
 			$this->parserData->getSemanticData()->addSubobject( $this->subobject );
 		}
 
@@ -214,7 +215,7 @@ class SubobjectParserFunction {
 
 		$this->augment( $this->subobject->getSemanticData() );
 
-		$annotationProcessor->release( SemanticData::class );
+		$annotationProcessor->release();
 
 		return true;
 	}

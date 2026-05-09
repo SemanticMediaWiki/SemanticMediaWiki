@@ -24,7 +24,7 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
 class DataTypeRegistry {
 
 	/**
-	 * @var DataTypeRegistry
+	 * @var ?DataTypeRegistry
 	 */
 	protected static $instance = null;
 
@@ -64,15 +64,9 @@ class DataTypeRegistry {
 	 */
 	private $typeDataItemIds;
 
-	/**
-	 * @var string[]
-	 */
-	private $subTypes = [];
+	private array $subTypes = [];
 
-	/**
-	 * @var
-	 */
-	private $browsableTypes = [];
+	private array $browsableTypes = [];
 
 	/**
 	 * Lookup map that allows finding a datatype id given a label or alias.
@@ -104,9 +98,6 @@ class DataTypeRegistry {
 		//DataItem::TYPE_ERROR => '',
 	];
 
-	/**
-	 * @var
-	 */
 	private array $callables = [];
 
 	/**
@@ -143,8 +134,6 @@ class DataTypeRegistry {
 
 	/**
 	 * @since 1.9.0.2
-	 *
-	 * @param Lang $localLanguage
 	 */
 	public function __construct( LocalLanguage $localLanguage ) {
 		$this->localLanguage = $localLanguage;
@@ -175,9 +164,7 @@ class DataTypeRegistry {
 	/**
 	 * @since  2.0
 	 *
-	 * @param string
-	 *
-	 * @return bool
+	 * @param string $typeId
 	 */
 	public function isRegistered( $typeId ): bool {
 		return isset( $this->typeDataItemIds[$typeId] );
@@ -185,10 +172,6 @@ class DataTypeRegistry {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $typeId
-	 *
-	 * @return bool
 	 */
 	public function isRecordType( string $typeId ): bool {
 		return strpos( $typeId, '_rec' ) !== false;
@@ -198,8 +181,6 @@ class DataTypeRegistry {
 	 * @since 2.4
 	 *
 	 * @param string $typeId
-	 *
-	 * @return bool
 	 */
 	public function isSubDataType( $typeId ): bool {
 		return isset( $this->subTypes[$typeId] ) && $this->subTypes[$typeId];
@@ -209,8 +190,6 @@ class DataTypeRegistry {
 	 * @since 3.0
 	 *
 	 * @param string $typeId
-	 *
-	 * @return bool
 	 */
 	public function isBrowsableType( $typeId ): bool {
 		return isset( $this->browsableTypes[$typeId] ) && $this->browsableTypes[$typeId];
@@ -221,8 +200,6 @@ class DataTypeRegistry {
 	 *
 	 * @param string $srcType
 	 * @param string $tagType
-	 *
-	 * @return bool
 	 */
 	public function isEqualByType( $srcType, $tagType ): bool {
 		return $this->getDataItemByType( $srcType ) === $this->getDataItemByType( $tagType );
@@ -239,7 +216,14 @@ class DataTypeRegistry {
 	 * @param bool $isSubDataType
 	 * @param bool $isBrowsableType
 	 */
-	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ): void {
+	public function registerDataType(
+		$id,
+		$className,
+		$dataItemId,
+		$label = false,
+		$isSubDataType = false,
+		$isBrowsableType = false
+	): void {
 		$this->typeClasses[$id] = $className;
 		$this->typeDataItemIds[$id] = $dataItemId;
 		$this->subTypes[$id] = $isSubDataType;
@@ -382,8 +366,6 @@ class DataTypeRegistry {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return array
 	 */
 	public function getCanonicalDatatypeLabels(): array {
 		return $this->canonicalLabels;
@@ -394,8 +376,6 @@ class DataTypeRegistry {
 	 * a property, and that are internal (i.e. not user defined). No labels are
 	 * returned for internal types without user labels (e.g. the special types
 	 * for some special properties), and for user defined types.
-	 *
-	 * @return array
 	 */
 	public function getKnownTypeLabels(): array {
 		return $this->typeLabels;
@@ -403,8 +383,6 @@ class DataTypeRegistry {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return array
 	 */
 	public function getKnownTypeAliases(): array {
 		return $this->typeAliases;
@@ -450,8 +428,6 @@ class DataTypeRegistry {
 	 * @since 1.9
 	 *
 	 * @param string $typeId
-	 *
-	 * @return bool
 	 */
 	public function hasDataTypeClassById( $typeId ): bool {
 		if ( !isset( $this->typeClasses[$typeId] ) ) {
@@ -532,10 +508,8 @@ class DataTypeRegistry {
 	 * @since 3.1
 	 *
 	 * @param string $typeId
-	 *
-	 * @return
 	 */
-	public function getCallablesByTypeId( $typeId ) {
+	public function getCallablesByTypeId( $typeId ): array {
 		if ( !isset( $this->callables[$typeId] ) ) {
 			return [];
 		}

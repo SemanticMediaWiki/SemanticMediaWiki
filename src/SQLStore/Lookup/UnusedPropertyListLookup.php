@@ -7,6 +7,7 @@ use RuntimeException;
 use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\Lookup\ListLookup;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;

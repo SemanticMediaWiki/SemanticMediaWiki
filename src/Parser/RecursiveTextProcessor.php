@@ -70,8 +70,6 @@ class RecursiveTextProcessor {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getError(): array {
 		return $this->error;
@@ -192,7 +190,7 @@ class RecursiveTextProcessor {
 	 */
 	public function recursivePreprocess( $text ): string {
 		// not during parsing, no preprocessing needed, still protect the result
-		if ( !$this->parser || !$this->parser->getOptions() || !$this->parser->getTitle() ) {
+		if ( !$this->parser || !$this->parser->getOptions() || !$this->parser->getPage() ) {
 			return $this->recursiveAnnotation ? $text : '[[SMW::off]]' . $text . '[[SMW::on]]';
 		}
 
@@ -227,12 +225,8 @@ class RecursiveTextProcessor {
 	 * @return string
 	 */
 	public function recursiveTagParse( $text ) {
-		if ( $this->parser === null ) {
-			throw new RuntimeException( 'Missing a parser instance!' );
-		}
-
 		$this->recursionDepth++;
-		$isValid = $this->parser->getOptions() && $this->parser->getTitle();
+		$isValid = $this->parser->getOptions() && $this->parser->getPage();
 
 		if ( $this->recursionDepth <= $this->maxRecursionDepth && $isValid ) {
 			$text = $this->parser->recursiveTagParse( $text );
@@ -241,7 +235,7 @@ class RecursiveTextProcessor {
 
 			$user = RequestContext::getMain()->getUser();
 			$popt = new ParserOptions( $user );
-			$popt->setSuppressSectionEditLinks( true );
+			$popt->setSuppressSectionEditLinks();
 
 			// Maybe better to use Parser::recursiveTagParseFully ??
 			/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
@@ -265,7 +259,8 @@ class RecursiveTextProcessor {
 			return;
 		}
 
-		if ( ( $track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK ) ) === false ) {
+		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK );
+		if ( $track === false ) {
 			return;
 		}
 
@@ -295,7 +290,7 @@ class RecursiveTextProcessor {
 				return null;
 			}
 			return $this->parser->getOutput();
-		} catch ( Error $e ) {
+		} catch ( Error ) {
 			return null;
 		}
 	}

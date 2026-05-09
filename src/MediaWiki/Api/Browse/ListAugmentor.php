@@ -23,11 +23,6 @@ class ListAugmentor {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array &$res
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function augment( array &$res, array $parameters ): ?array {
 		if ( !isset( $res['query'] ) && $res['query'] === [] ) {
@@ -76,14 +71,12 @@ class ListAugmentor {
 
 		foreach ( $list as $key => $value ) {
 
-			$row = $db->selectRow(
-				SQLStore::PROPERTY_STATISTICS_TABLE,
-				[ 'usage_count' ],
-				[
-					'p_id' => $value['id']
-				],
-				__METHOD__
-			);
+			$row = $db->newSelectQueryBuilder()
+				->select( [ 'usage_count' ] )
+				->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+				->where( [ 'p_id' => $value['id'] ] )
+				->caller( __METHOD__ )
+				->fetchRow();
 
 			$list[$key] = $value + [
 				'usageCount' => $row->usage_count

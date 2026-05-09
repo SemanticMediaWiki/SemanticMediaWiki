@@ -80,7 +80,7 @@ class PropertyValue extends DataValue {
 	 * Cache for wiki page value object associated to this property, or
 	 * null if no such page exists. Use getWikiPageValue() to get the data.
 	 *
-	 * @var WikiPageValue
+	 * @var ?WikiPageValue
 	 */
 	protected $m_wikipage = null;
 
@@ -174,7 +174,7 @@ class PropertyValue extends DataValue {
 				$capitalizedName,
 				$inverse
 			);
-		} catch ( DataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
+		} catch ( DataItemException ) { // happens, e.g., when trying to sort queries by property "-"
 			$this->addErrorMsg( [ 'smw_noproperty', $value ] );
 			$this->m_dataitem = new Property( 'ERROR', false ); // just to have something
 		}
@@ -185,7 +185,7 @@ class PropertyValue extends DataValue {
 				$value
 			);
 
-			$this->m_dataitem = $dataItem ? $dataItem : $this->m_dataitem;
+			$this->m_dataitem = $dataItem ?: $this->m_dataitem;
 		}
 
 		// Copy the original DI to ensure we can compare it against a possible redirect
@@ -220,10 +220,12 @@ class PropertyValue extends DataValue {
 			return false;
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$this->inceptiveProperty = $dataItem;
 		$this->m_dataitem = $dataItem;
 		$this->preferredLabel = $this->m_dataitem->getPreferredLabel();
 
+		// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 		unset( $this->m_wikipage );
 		$this->m_caption = false;
 		$this->linkAttributes = [];
@@ -285,10 +287,9 @@ class PropertyValue extends DataValue {
 	 * Return a wiki page value that can be used for displaying this
 	 * property, or null if no such wiki page exists (for predefined
 	 * properties without any label).
-	 *
-	 * @return WikiPageValue or null
 	 */
 	public function getWikiPageValue(): ?DataValue {
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( isset( $this->m_wikipage ) ) {
 			return $this->m_wikipage;
 		}
@@ -296,6 +297,7 @@ class PropertyValue extends DataValue {
 		$diWikiPage = $this->m_dataitem->getCanonicalDiWikiPage();
 
 		if ( $diWikiPage !== null ) {
+			// @phan-suppress-next-line PhanTypeMismatchProperty
 			$this->m_wikipage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null, $this->m_caption );
 			$this->m_wikipage->setOutputFormat( $this->m_outformat );
 			$this->m_wikipage->setLinkAttributes( $this->linkAttributes );

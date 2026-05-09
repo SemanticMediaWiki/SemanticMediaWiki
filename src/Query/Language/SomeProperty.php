@@ -29,7 +29,7 @@ class SomeProperty extends Description {
 	protected $hierarchyDepth;
 
 	public string $notConditionField;
-	public string $sourceChainMemberField;
+	public ?string $sourceChainMemberField = null;
 
 	/**
 	 * @since 1.6
@@ -182,9 +182,9 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return SomeProperty
+	 * @return SomeProperty|ThingDescription
 	 */
-	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
+	public function prune( &$maxsize, &$maxdepth, &$log ): SomeProperty|ThingDescription {
 		if ( ( $maxsize <= 0 ) || ( $maxdepth <= 0 ) ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

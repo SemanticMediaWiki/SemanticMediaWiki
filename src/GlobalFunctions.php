@@ -23,8 +23,6 @@ use SMW\StoreFactory;
  * Convenience function for external users. Replaces the `smwgContLang` setting.
  *
  * @since 3.2
- *
- * @return LocalLanguage
  */
 function smwfContLang(): LocalLanguage {
 	return LocalLanguage::getInstance()->fetch( $GLOBALS['wgLanguageCode'] );
@@ -53,8 +51,6 @@ function smwfNormalTitleDBKey( $text ): string {
 /**
  * Escapes text in a way that allows it to be used as XML content (e.g. as a
  * string value for some property).
- *
- * @param string|null $text
  */
 function smwfXMLContentEncode( ?string $text ): string {
 	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ?? '' ) );
@@ -63,8 +59,6 @@ function smwfXMLContentEncode( ?string $text ): string {
 /**
  * Decodes character references and inserts Unicode characters instead, using
  * the MediaWiki Sanitizer.
- *
- * @param string|null $text
  */
 function smwfHTMLtoUTF8( ?string $text ): string {
 	return Sanitizer::decodeCharReferences( $text ?? '' );
@@ -75,7 +69,7 @@ function smwfHTMLtoUTF8( ?string $text ): string {
  *
  * @param string $text
  */
-function smwfAbort( $text ): void {
+function smwfAbort( $text ): never {
 	if ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) {
 		$text = strip_tags( $text );
 	}
@@ -146,8 +140,6 @@ function &smwfGetStore() {
  *
  * @param string $namespace
  * @param string|array $key
- *
- * @return string
  */
 function smwfCacheKey( $namespace, $key ): string {
 	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?

@@ -26,64 +26,44 @@ abstract class TaskHandler {
 	const SECTION_SUPPORT = 'section/support';
 	const ACTIONABLE = 'actionable';
 
-	/**
-	 * @var int
-	 */
-	protected $featureSet = 0;
+	protected int $featureSet = 0;
 
 	private ?Store $store = null;
 
-	/**
-	 * @var bool
-	 */
-	protected $isApiTask = false;
+	protected bool $isApiTask = false;
 
 	/**
 	 * @deprecated since 3.1, use TaskHandler::hasFeature
 	 * @since 2.5
-	 *
-	 * @param integer $feature
-	 *
-	 * @return boolean
 	 */
-	public function isEnabledFeature( $feature ): bool {
+	public function isEnabledFeature( int $feature ): bool {
 		return $this->hasFeature( $feature );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $feature
-	 *
-	 * @return bool
 	 */
-	public function hasFeature( $feature ): bool {
-		return ( ( (int)$this->featureSet & $feature ) == $feature );
+	public function hasFeature( int $feature ): bool {
+		return ( ( $this->featureSet & $feature ) == $feature );
 	}
 
 	/**
 	 * @deprecated since 3.1, use TaskHandler::setFeatureSet
 	 * @since 2.5
-	 *
-	 * @param integer $enabledFeatures
 	 */
-	public function setEnabledFeatures( $enabledFeatures ): void {
+	public function setEnabledFeatures( int $enabledFeatures ): void {
 		$this->setFeatureSet( $enabledFeatures );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ): void {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
 	public function setStore( Store $store ): void {
 		$this->store = $store;
@@ -91,8 +71,6 @@ abstract class TaskHandler {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return Store
 	 */
 	public function getStore(): ?Store {
 		return $this->store;
@@ -100,8 +78,6 @@ abstract class TaskHandler {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
 	public function getSection(): string {
 		return '';
@@ -109,8 +85,6 @@ abstract class TaskHandler {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return '';
@@ -118,8 +92,6 @@ abstract class TaskHandler {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
 	public function isApiTask(): bool {
 		return false;

@@ -9,11 +9,13 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataModel\SequenceMap;
+use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @license GPL-2.0-or-later
@@ -315,7 +317,6 @@ class SemanticDataLookup {
 			return [];
 		}
 
-		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 		$this->caller = __METHOD__;
 
@@ -334,26 +335,24 @@ class SemanticDataLookup {
 		// INNER JOIN `smw_object_ids` AS p ON p_id=p.smw_id
 		// WHERE s_id='80' AND p.smw_iw!=':smw' AND p.smw_iw!=':smw-delete'
 
-		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
-
-		$query->type( 'select' );
-		$query->table( $propTable->getName() );
+		$qb = $connection->newSelectQueryBuilder()->from( $propTable->getName() );
 
 		// Restrict to property
 		if ( !$isSubject && !$propTable->isFixedPropertyTable() ) {
-			$query->condition( $query->eq( 'p_id', $id ) );
+			$qb->where( [ 'p_id' => $id ] );
 		}
 
 		// Restrict subject, select property
 		if ( $isSubject && $propTable->usesIdSubject() ) {
-			$query->condition( $query->eq( 's_id', $id ) );
+			$qb->where( [ 's_id' => $id ] );
 		} elseif ( $isSubject ) {
-			$query->condition( $query->eq( 's_title', $dataItem->getDBkey() ) );
-			$query->condition( $query->eq( 's_namespace', $dataItem->getNamespace() ) );
+			$qb->where( [
+				's_title' => $dataItem->getDBkey(),
+				's_namespace' => $dataItem->getNamespace(),
+			] );
 		}
 
-		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
+		return $this->fetchFromTable( $qb, $propTable, $isSubject, $requestOptions );
 	}
 
 	/**
@@ -365,56 +364,52 @@ class SemanticDataLookup {
 		}
 
 		$isSubject = true;
-		$result = [];
 
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
-
-		$query->type( 'select' );
-		$query->table( $propTable->getName() );
+		$qb = $connection->newSelectQueryBuilder()->from( $propTable->getName() );
 
 		// Restrict property only
 		if ( !$propTable->isFixedPropertyTable() ) {
-			$query->condition( $query->eq( 'p_id', $pid ) );
+			$qb->where( [ 'p_id' => $pid ] );
 		}
+
+		$seedFields = [];
 
 		// Restrict subject, select property
 		if ( $propTable->usesIdSubject() ) {
-			$query->condition( $query->in( 's_id', $list ) );
-			$query->field( 's_id' );
+			$qb->where( [ 's_id' => $list ] );
+			$seedFields[] = 's_id';
 		} else {
 			throw new RuntimeException( "Need a table that has an ID subject column (ID: " . $pid . ')!' );
 		}
 
-		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
+		return $this->fetchFromTable( $qb, $propTable, $isSubject, $requestOptions, '', $seedFields );
 	}
 
 	/**
 	 * @return mixed[]
 	 */
-	private function fetchFromTable( $query, PropertyTableDefinition $propTable, bool $isSubject, ?RequestOptions $requestOptions, $field = '' ): array {
+	private function fetchFromTable( SelectQueryBuilder $qb, PropertyTableDefinition $propTable, bool $isSubject, ?RequestOptions $requestOptions, $field = '', array $selectFields = [] ): array {
 		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Select property name
 		// In case of a fixed property, no select needed
 		if ( $isSubject && !$propTable->isFixedPropertyTable() ) {
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 'p ON p_id=p.smw_id' ]
-			);
+			$qb->join( SQLStore::ID_TABLE, 'p', 'p_id=p.smw_id' );
 
-			$query->field( 'p.smw_title', 'prop' );
+			// Equivalent of `$query->field( 'p.smw_title', 'prop' )`.
+			$selectFields['prop'] = 'p.smw_title';
 
 			// Avoid displaying any property that has been marked deleted or outdated
-			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
-			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
+			$qb->andWhere( $connection->expr( 'p.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ) )
+				->andWhere( $connection->expr( 'p.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ) );
 		}
 
 		if ( $requestOptions !== null ) {
 			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
 				if ( isset( $extraCondition['p_id'] ) ) {
-					$query->condition( $query->eq( 'p_id', $extraCondition['p_id'] ) );
+					$qb->andWhere( [ 'p_id' => $extraCondition['p_id'] ] );
 				}
 			}
 		} else {
@@ -436,7 +431,8 @@ class SemanticDataLookup {
 		$map = [];
 
 		$this->addFields(
-			$query,
+			$qb,
+			$selectFields,
 			$map,
 			$fields,
 			$valueField,
@@ -504,35 +500,41 @@ class SemanticDataLookup {
 				false
 			);
 
-			$query->condition( $conds );
+			if ( $conds !== '' ) {
+				$qb->andWhere( $conds );
+			}
 		} else {
 			$valueField = '';
 		}
 
 		if ( $field !== '' ) {
-			$query->field( $field );
+			$selectFields[] = $field;
 		}
 
-		$query->options(
-			$this->store->getSQLOptions( $requestOptions, $valueField )
-		);
+		$opts = $this->store->getSQLOptions( $requestOptions, $valueField );
 
-		if (
-			$requestOptions->getOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false ) ||
-			$requestOptions->getOption( RequestOptions::CONDITION_CONSTRAINT, false ) ) {
-			$sort = 'ASC';
-
-			if ( $requestOptions->sort ) {
-				$sort = $requestOptions->ascending ? 'ASC' : 'DESC';
-				$query->option( 'ORDER BY', $map[$sortField] . " $sort" );
-			}
+		// Preserve Postgres-specific `DISTINCT ON (...)` (a string DISTINCT value),
+		// which the legacy options array supports but `->distinct()` does not.
+		if ( isset( $opts['DISTINCT'] ) && is_string( $opts['DISTINCT'] ) ) {
+			$qb->option( 'DISTINCT', $opts['DISTINCT'] );
+			unset( $opts['DISTINCT'] );
 		}
 
 		// `exclude_limit` indicates an unrestricted query due to use of `WHERE IN`
 		// that is required by the prefetch mode
 		if ( $requestOptions->exclude_limit ) {
-			$query->option( 'LIMIT', null );
-			$query->option( 'OFFSET', null );
+			unset( $opts['LIMIT'], $opts['OFFSET'] );
+		}
+
+		LegacyOptionsApplier::applyTo( $qb, $opts );
+
+		if (
+			$requestOptions->getOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false ) ||
+			$requestOptions->getOption( RequestOptions::CONDITION_CONSTRAINT, false ) ) {
+			if ( $requestOptions->sort ) {
+				$sort = $requestOptions->ascending ? 'ASC' : 'DESC';
+				$qb->orderBy( $map[$sortField] . " $sort" );
+			}
 		}
 
 		$caller = $this->caller;
@@ -541,10 +543,9 @@ class SemanticDataLookup {
 			$caller .= " (for " . $requestOptions->getCaller() . ")";
 		}
 
-		$res = $connection->readQuery(
-			$query,
-			$caller
-		);
+		$qb->select( $selectFields );
+
+		$res = $qb->caller( $caller )->fetchResultSet();
 
 		$warmupCache = [];
 
@@ -610,31 +611,28 @@ class SemanticDataLookup {
 		return $result;
 	}
 
-	private function addFields( &$query, array &$map, $fields, $valueField, $labelField, int &$valueCount, string &$fieldname ): void {
+	private function addFields( SelectQueryBuilder $qb, array &$selectFields, array &$map, $fields, $valueField, $labelField, int &$valueCount, string &$fieldname ): void {
 		// Select dataItem column(s)
 		foreach ( $fields as $fieldname => $fieldType ) {
 
 			// Get data from ID table
 			if ( $fieldType === FieldType::FIELD_ID ) {
-				$query->join(
-					'INNER JOIN',
-					[ SQLStore::ID_TABLE => "o$valueCount ON $fieldname=o$valueCount.smw_id" ]
-				);
+				$qb->join( SQLStore::ID_TABLE, "o$valueCount", "$fieldname=o$valueCount.smw_id" );
 
-				$query->field( "$fieldname AS id$valueCount" );
-				$query->field( "o$valueCount.smw_title AS v$valueCount" );
-				$query->field( "o$valueCount.smw_namespace AS v" . ( $valueCount + 1 ) );
-				$query->field( "o$valueCount.smw_iw AS v" . ( $valueCount + 2 ) );
-				$query->field( "o$valueCount.smw_sortkey AS v" . ( $valueCount + 3 ) );
+				$selectFields[ "id$valueCount" ] = $fieldname;
+				$selectFields[ "v$valueCount" ] = "o$valueCount.smw_title";
+				$selectFields[ 'v' . ( $valueCount + 1 ) ] = "o$valueCount.smw_namespace";
+				$selectFields[ 'v' . ( $valueCount + 2 ) ] = "o$valueCount.smw_iw";
+				$selectFields[ 'v' . ( $valueCount + 3 ) ] = "o$valueCount.smw_sortkey";
 				$map[$fieldname] = "v" . ( $valueCount + 3 );
 
 				// In case of switching the position of v3/v4 (subobject, sortkey/sort)
 				// see below the position reassignment of sort
 				// Row position is important when building an instance using
 				// `DIWikiPageHandler::newDiWikiPage`
-				$query->field( "o$valueCount.smw_subobject AS v" . ( $valueCount + 4 ) );
+				$selectFields[ 'v' . ( $valueCount + 4 ) ] = "o$valueCount.smw_subobject";
 
-				$query->field( "o$valueCount.smw_sort AS v" . ( $valueCount + 5 ) );
+				$selectFields[ 'v' . ( $valueCount + 5 ) ] = "o$valueCount.smw_sort";
 				$map[$fieldname] = "v" . ( $valueCount + 5 );
 
 				if ( $valueField == $fieldname ) {
@@ -647,7 +645,7 @@ class SemanticDataLookup {
 				$valueCount += 5;
 			} else {
 				$map[$fieldname] = "v$valueCount";
-				$query->field( $fieldname, "v$valueCount" );
+				$selectFields[ "v$valueCount" ] = $fieldname;
 			}
 
 			$valueCount += 1;
@@ -656,9 +654,12 @@ class SemanticDataLookup {
 		// Postgres
 		// Function: SMWSQLStore3Readers::fetchSemanticData
 		// Error: 42P10 ERROR: for SELECT DISTINCT, ORDER BY expressions must appear in select list
-		if ( !$query->hasField( $valueField ) ) {
+		// Replicates the legacy `Query::hasField()` check by testing whether the
+		// field already appears either as a select expression (value) or as an
+		// alias (key) in the in-progress select list.
+		if ( !in_array( $valueField, $selectFields, true ) && !array_key_exists( $valueField, $selectFields ) ) {
 			$map[$valueField] = "v" . ( $valueCount + 1 );
-			$query->field( $valueField, "v" . ( $valueCount + 1 ) );
+			$selectFields[ 'v' . ( $valueCount + 1 ) ] = $valueField;
 		}
 	}
 
@@ -747,27 +748,17 @@ class SemanticDataLookup {
 
 	private function fetchPropertiesFromTable( $id, PropertyTableDefinition $propTable ) {
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
 
-		$query->type( 'select' );
-		$query->table( $propTable->getName() );
-
-		$query->condition( $query->eq( 's_id', $id ) );
-
-		$query->join(
-			'INNER JOIN',
-			[ SQLStore::ID_TABLE => 'p ON p_id=p.smw_id' ]
-		);
-
-		$query->field( 'p_id' );
-
-		// Avoid displaying any property that have been marked deleted or outdated
-		$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
-		$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
-
-		$query->option( 'DISTINCT', true );
-
-		return $query->execute( __METHOD__ );
+		return $connection->newSelectQueryBuilder()
+			->from( $propTable->getName() )
+			->join( SQLStore::ID_TABLE, 'p', 'p_id=p.smw_id' )
+			->select( 'p_id' )
+			->where( [ 's_id' => $id ] )
+			->andWhere( $connection->expr( 'p.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ) )
+			->andWhere( $connection->expr( 'p.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ) )
+			->distinct()
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	private function reportDuplicate( array $params ): void {

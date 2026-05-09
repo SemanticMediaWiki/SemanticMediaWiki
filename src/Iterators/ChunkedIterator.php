@@ -4,9 +4,8 @@ namespace SMW\Iterators;
 
 use ArrayIterator;
 use InvalidArgumentException;
+use Iterator;
 use IteratorIterator;
-use RuntimeException;
-use Traversable;
 
 /**
  * @see Guzzle::ChunkedIterator
@@ -22,19 +21,10 @@ class ChunkedIterator extends IteratorIterator {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Traversable|array $iterable
-	 * @param int $chunkSize
 	 */
-	public function __construct( Traversable|array $iterable, $chunkSize = 500 ) {
-		$chunkSize = (int)$chunkSize;
-
+	public function __construct( ResultIterator|Iterator|array $iterable, int $chunkSize = 500 ) {
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
-		}
-
-		if ( !$iterable instanceof Traversable ) {
-			throw new RuntimeException( "ChunkedIterator expected an Traversable" );
 		}
 
 		if ( $chunkSize < 0 ) {

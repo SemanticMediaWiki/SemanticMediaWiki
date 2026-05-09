@@ -36,7 +36,7 @@ class FieldItemFinder {
 	private array $dataItems = [];
 
 	/**
-	 * @var bool|array
+	 * @var bool|string
 	 */
 	private static $catCacheObj = false;
 
@@ -92,7 +92,7 @@ class FieldItemFinder {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @param DataItem[]|[]
+	 * @return DataItem[]|array
 	 */
 	public function findFor( DataItem $dataItem ): array {
 		$content = [];
@@ -125,7 +125,7 @@ class FieldItemFinder {
 
 			$limit = $this->printRequest->getParameter( 'limit' );
 
-			return ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, $limit );
+			return ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, (int)$limit );
 		}
 
 		// Request to whether current element is in given category (Boolean printout).
@@ -182,11 +182,11 @@ class FieldItemFinder {
 			$options = new RequestOptions();
 
 			if ( $limit !== false ) {
-				$options->limit = trim( $limit );
+				$options->limit = (int)trim( $limit );
 			}
 
 			if ( $offset !== false ) {
-				$options->offset = trim( $offset );
+				$options->offset = (int)trim( $offset );
 			}
 
 			// Expecting a natural sort behaviour (n-asc, n-desc)?
@@ -242,8 +242,15 @@ class FieldItemFinder {
 
 			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
 
-			if ( $multiValue instanceof MonolingualTextValue && $lang !== false && ( $textValue = $multiValue->getTextValueByLanguageCode( $lang ) ) !== null ) {
-
+			if ( $multiValue instanceof MonolingualTextValue && $lang !== false ) {
+				$textValue = $multiValue->getTextValueByLanguageCode( $lang );
+			} else {
+				$textValue = null;
+			}
+			if ( $multiValue instanceof MonolingualTextValue &&
+				$lang !== false &&
+				$textValue !== null
+			) {
 				// Return the text representation without a language reference
 				// (tag) since the value has been filtered hence only matches
 				// that language
@@ -253,8 +260,11 @@ class FieldItemFinder {
 				// find the correct PropertyDataItem (_TEXT;_LCODE) position
 				// to match the DI
 				$this->printRequest->setParameter( 'index', 1 );
-			} elseif ( $lang === false && $index !== false && ( $dataItemByRecord = $multiValue->getDataItemByIndex( $index ) ) !== null ) {
-				$newcontent[] = $this->itemFetcher->highlightTokens( $dataItemByRecord );
+			} elseif ( $lang === false && $index !== false ) {
+				$dataItemByRecord = $multiValue->getDataItemByIndex( $index );
+				if ( $dataItemByRecord !== null ) {
+					$newcontent[] = $this->itemFetcher->highlightTokens( $dataItemByRecord );
+				}
 			}
 		}
 
@@ -308,7 +318,7 @@ class FieldItemFinder {
 		// for `Has page` and try to match a Number annotation on the results
 		// retrieved from `Has page`.
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-			$requestOptions->isChain = $dataValue->getDataItem()->getString();
+			$requestOptions->isChain = (bool)$dataValue->getDataItem()->getString();
 			$isFirstChain = true;
 
 			// Output of the previous iteration is the input for the next iteration

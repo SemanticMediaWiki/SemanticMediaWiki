@@ -11,6 +11,7 @@ use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMW\SQLStore\QueryEngine\SubqueryQueryBuilder;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -28,6 +29,7 @@ class QueryEngineTest extends TestCase {
 	private $conditionBuilder;
 	private $querySegmentListProcessor;
 	private $engineOptions;
+	private $subqueryQueryBuilder;
 
 	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( SQLStore::class )
@@ -45,12 +47,16 @@ class QueryEngineTest extends TestCase {
 		$this->engineOptions = $this->getMockBuilder( EngineOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->subqueryQueryBuilder = $this->getMockBuilder( SubqueryQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			QueryEngine::class,
-			new QueryEngine( $this->store, $this->conditionBuilder, $this->querySegmentListProcessor, $this->engineOptions )
+			new QueryEngine( $this->store, $this->conditionBuilder, $this->querySegmentListProcessor, $this->engineOptions, $this->subqueryQueryBuilder )
 		);
 	}
 
@@ -77,7 +83,8 @@ class QueryEngineTest extends TestCase {
 			$this->store,
 			$this->conditionBuilder,
 			$this->querySegmentListProcessor,
-			$this->engineOptions
+			$this->engineOptions,
+			$this->subqueryQueryBuilder
 		);
 
 		$query = new Query( $description );
@@ -108,7 +115,8 @@ class QueryEngineTest extends TestCase {
 			$this->store,
 			$this->conditionBuilder,
 			$this->querySegmentListProcessor,
-			$this->engineOptions
+			$this->engineOptions,
+			$this->subqueryQueryBuilder
 		);
 
 		$query = new Query( $description );

@@ -133,7 +133,8 @@ class OrderCondition {
 				throw new RuntimeException( "Expected a string value as sortkey" );
 			}
 
-			if ( ( $description = $this->findDescription( $querySegment, $label, $order ) ) instanceof Description ) {
+			$description = $this->findDescription( $querySegment, $label, $order );
+			if ( $description instanceof Description ) {
 				$extraDescriptions[] = $description;
 			}
 		}

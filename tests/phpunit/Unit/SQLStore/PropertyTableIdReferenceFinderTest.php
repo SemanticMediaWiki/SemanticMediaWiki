@@ -9,6 +9,7 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableIdReferenceFinder;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableIdReferenceFinder
@@ -20,6 +21,8 @@ use SMW\SQLStore\SQLStore;
  * @author mwjames
  */
 class PropertyTableIdReferenceFinderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
 
 	private $store;
 
@@ -47,13 +50,15 @@ class PropertyTableIdReferenceFinderTest extends TestCase {
 			->method( 'getFields' )
 			->willReturn( [ 'o_id' => 42 ] );
 
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -85,13 +90,15 @@ class PropertyTableIdReferenceFinderTest extends TestCase {
 			->method( 'usesIdSubject' )
 			->willReturn( true );
 
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -113,13 +120,15 @@ class PropertyTableIdReferenceFinderTest extends TestCase {
 	}
 
 	public function testHasResidualPropertyTableReference() {
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -140,13 +149,15 @@ class PropertyTableIdReferenceFinderTest extends TestCase {
 	}
 
 	public function testHasResidualReferenceFor() {
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -167,13 +178,15 @@ class PropertyTableIdReferenceFinderTest extends TestCase {
 	}
 
 	public function testSearchAllTablesToFindAtLeastOneReferenceById() {
+		$qb = $this->createMockSelectQueryBuilder( [] );
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->willReturn( false );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )

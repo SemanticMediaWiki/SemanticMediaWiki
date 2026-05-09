@@ -31,11 +31,11 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param AllowsListValueParser $allowsListValueParser
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( AllowsListValueParser $allowsListValueParser, SpecificationLookup $propertySpecificationLookup ) {
+	public function __construct(
+		AllowsListValueParser $allowsListValueParser,
+		SpecificationLookup $propertySpecificationLookup
+	) {
 		$this->allowsListValueParser = $allowsListValueParser;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
@@ -108,7 +108,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			$allowedValueList
 		);
 
-		if ( $isAllowed === true ) {
+		if ( $isAllowed ) {
 			return;
 		}
 
@@ -134,11 +134,11 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = true;
 	}
 
-	private function checkConstraintViolation( DataValue $dataValue, array $allowedValues, array &$allowedValueList ): bool {
-		if ( !is_array( $allowedValues ) ) {
-			return true;
-		}
-
+	private function checkConstraintViolation(
+		DataValue $dataValue,
+		array $allowedValues,
+		array &$allowedValueList
+	): bool {
 		$hash = $dataValue->getDataItem()->getHash();
 		$value = $dataValue->getWikiValue();
 
@@ -209,7 +209,14 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return $isAllowed;
 	}
 
-	private function check_range( string $exp, $value, Blob $allowedValue, &$range, &$isAllowed, array &$allowedValueList ): bool {
+	private function check_range(
+		string $exp,
+		$value,
+		Blob $allowedValue,
+		&$range,
+		&$isAllowed,
+		array &$allowedValueList
+	): bool {
 		$v = $allowedValue->getString();
 
 		// If a previous range comparison failed then bail-out!
@@ -237,7 +244,12 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return false;
 	}
 
-	private function check_bounds( $value, Blob $allowedValue, &$isAllowed, array &$allowedValueList ): bool {
+	private function check_bounds(
+		$value,
+		Blob $allowedValue,
+		&$isAllowed,
+		array &$allowedValueList
+	): bool {
 		$v = $allowedValue->getString();
 
 		if ( strpos( $v, '...' ) === false ) {

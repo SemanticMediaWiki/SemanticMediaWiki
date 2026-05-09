@@ -90,7 +90,8 @@ class Stats {
 	 * @return array
 	 */
 	public function getStats(): array {
-		if ( ( $stats = $this->cache->fetch( $this->makeCacheKey( $this->id ) ) ) === false ) {
+		$stats = $this->cache->fetch( $this->makeCacheKey( $this->id ) );
+		if ( $stats === false ) {
 			return [];
 		}
 

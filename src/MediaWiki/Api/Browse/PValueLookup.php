@@ -25,8 +25,6 @@ class PValueLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|int
 	 */
 	public function getVersion(): string {
 		return __METHOD__ . self::VERSION;
@@ -34,10 +32,6 @@ class PValueLookup extends Lookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
 	public function lookup( array $parameters ): array {
 		$limit = 20;

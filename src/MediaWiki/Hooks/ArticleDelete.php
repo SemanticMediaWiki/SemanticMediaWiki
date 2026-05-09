@@ -88,6 +88,7 @@ class ArticleDelete implements HookListener {
 			$semanticData->addPropertyObjectValue( $property, $subject );
 		}
 
+		$parameters = [];
 		$parameters['semanticData'] = $semanticDataSerializer->serialize(
 			$semanticData
 		);

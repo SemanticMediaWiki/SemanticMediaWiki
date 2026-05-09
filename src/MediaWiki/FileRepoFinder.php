@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki;
 
+use File;
+use LocalFile;
 use MediaWiki\Title\Title;
 use OldLocalFile;
 use RepoGroup;
@@ -22,11 +24,6 @@ class FileRepoFinder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param array $options
-	 *
-	 * @return File|bool File, or false if the file does not exist
 	 */
 	public function findFile( Title $title, array $options = [] ) {
 		return $this->repoGroup->findFile( $title, $options );
@@ -34,13 +31,8 @@ class FileRepoFinder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $sha1
-	 * @param string $timestamp
-	 *
-	 * @return File|bool File, or false if the file does not exist
 	 */
-	public function findFromArchive( $sha1, $timestamp ) {
+	public function findFromArchive( string $sha1, string $timestamp ): OldLocalFile|LocalFile|File|false {
 		$localRepo = $this->repoGroup->getLocalRepo();
 
 		$file = OldLocalFile::newFromKey(

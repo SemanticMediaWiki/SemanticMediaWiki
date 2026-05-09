@@ -12,8 +12,6 @@ interface BenchmarkReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array
 	 */
 	public function getBenchmarkReport();
 

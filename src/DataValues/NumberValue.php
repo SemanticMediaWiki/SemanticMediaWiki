@@ -6,6 +6,7 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Number;
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\DataValues\ValueFormatters\ValueFormatter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 
@@ -60,7 +61,7 @@ class NumberValue extends DataValue {
 	/**
 	 * Array with entries unit=>value, mapping a normalized unit to the
 	 * converted value. Used for conversion tooltips.
-	 * @var array
+	 * @var array|false
 	 */
 	protected $m_unitvalues;
 
@@ -78,7 +79,7 @@ class NumberValue extends DataValue {
 	 * $m_caption and $m_unitin will be updated as if the formatted string
 	 * had been the original user input, i.e. the two values reflect what
 	 * is currently printed.
-	 * @var string
+	 * @var string|false
 	 */
 	protected $m_unitin;
 
@@ -147,6 +148,7 @@ class NumberValue extends DataValue {
 			PREG_SPLIT_DELIM_CAPTURE
 		);
 
+		$numstring = '';
 		if ( count( $parts ) >= 2 ) {
 			$numstring = str_replace( $kiloseparator, '', preg_replace( '/\s*/u', '', $parts[1] ) ); // simplify
 			if ( $decseparator != '.' ) {
@@ -195,7 +197,7 @@ class NumberValue extends DataValue {
 			$this->addErrorMsg( [ 'smw-datavalue-number-textnotallowed', $unit, $number ] );
 		} elseif ( $number === null ) {
 			$this->addErrorMsg( [ 'smw-datavalue-number-nullnotallowed', $value ] ); // #1628
-		} elseif ( $this->convertToMainUnit( $number, $unit ) === false ) { // so far so good: now convert unit and check if it is allowed
+		} elseif ( !$this->convertToMainUnit( $number, $unit ) ) { // so far so good: now convert unit and check if it is allowed
 			$this->addErrorMsg( [ 'smw_unitnotallowed', $unit ] );
 		} // note that convertToMainUnit() also sets m_dataitem if valid
 	}
@@ -259,7 +261,7 @@ class NumberValue extends DataValue {
 	/**
 	 * @since 2.4
 	 *
-	 * @return float
+	 * @return string
 	 */
 	public function getLocalizedFormattedNumber( $value ) {
 		return $this->getNumberFormatter()->format( $value, $this->getPreferredDisplayPrecision() );
@@ -268,7 +270,7 @@ class NumberValue extends DataValue {
 	/**
 	 * @since 2.4
 	 *
-	 * @return float
+	 * @return string
 	 */
 	public function getNormalizedFormattedNumber( $value ) {
 		return $this->getNumberFormatter()->format( $value, $this->getPreferredDisplayPrecision(), IntlNumberFormatter::VALUE_FORMAT );
@@ -537,7 +539,7 @@ class NumberValue extends DataValue {
 		// has priority over a possible _PREC value
 		foreach ( $parts as $key => $value ) {
 			if ( strpos( $value, 'p' ) !== false && is_numeric( substr( $value, 1 ) ) ) {
-				$this->precision = strval( substr( $value, 1 ) );
+				$this->precision = (int)substr( $value, 1 );
 				unset( $parts[$key] );
 			}
 		}
@@ -573,11 +575,14 @@ class NumberValue extends DataValue {
 
 	private function findPreferredLanguageFrom( &$formatstring ): void {
 		// Localized preferred user language
-		if ( strpos( $formatstring, 'LOCL' ) !== false && ( $languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring ) ) !== false ) {
-			$this->intlNumberFormatter->setOption(
-				IntlNumberFormatter::PREFERRED_LANGUAGE,
-				$languageCode
-			);
+		if ( strpos( $formatstring, 'LOCL' ) !== false ) {
+			$languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring );
+			if ( $languageCode !== false ) {
+				$this->intlNumberFormatter->setOption(
+					IntlNumberFormatter::PREFERRED_LANGUAGE,
+					$languageCode
+				);
+			}
 		}
 
 		// Remove any remaining

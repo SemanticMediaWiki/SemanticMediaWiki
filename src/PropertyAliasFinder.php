@@ -106,7 +106,8 @@ class PropertyAliasFinder {
 			]
 		);
 
-		if ( ( $propertyAliases = $this->cache->fetch( $key ) ) !== false ) {
+		$propertyAliases = $this->cache->fetch( $key );
+		if ( $propertyAliases !== false ) {
 			return $propertyAliases;
 		}
 
@@ -170,7 +171,7 @@ class PropertyAliasFinder {
 	 *
 	 * @param string $id
 	 *
-	 * @return string|bool
+	 * @return int|string|false
 	 */
 	public function findCanonicalPropertyAliasById( $id ): int|string|false {
 		return array_search( $id, $this->canonicalPropertyAliases );
@@ -181,7 +182,7 @@ class PropertyAliasFinder {
 	 *
 	 * @param string $id
 	 *
-	 * @return string|bool
+	 * @return int|string|false
 	 */
 	public function findPropertyAliasById( $id ): int|string|false {
 		return array_search( $id, $this->propertyAliases );

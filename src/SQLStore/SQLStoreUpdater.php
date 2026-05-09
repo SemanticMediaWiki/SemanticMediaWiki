@@ -135,17 +135,17 @@ class SQLStoreUpdater {
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = $this->store->getConnection();
 
-			$db->delete(
-				SQLStore::CONCEPT_TABLE,
-				[ 's_id' => $id ],
-				'SMW::deleteSubject::Conc'
-			);
+			$db->newDeleteQueryBuilder()
+				->deleteFrom( SQLStore::CONCEPT_TABLE )
+				->where( [ 's_id' => $id ] )
+				->caller( 'SMW::deleteSubject::Conc' )
+				->execute();
 
-			$db->delete(
-				SQLStore::CONCEPT_CACHE_TABLE,
-				[ 'o_id' => $id ],
-				'SMW::deleteSubject::Conccache'
-			);
+			$db->newDeleteQueryBuilder()
+				->deleteFrom( SQLStore::CONCEPT_CACHE_TABLE )
+				->where( [ 'o_id' => $id ] )
+				->caller( 'SMW::deleteSubject::Conccache' )
+				->execute();
 		}
 
 		$subject->setId( $id );
@@ -238,7 +238,8 @@ class SQLStoreUpdater {
 			}
 		}
 
-		if ( ( $rev_id = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
+		$rev_id = $semanticData->getExtensionData( 'revision_id' );
+		if ( $rev_id !== null ) {
 			$this->store->getObjectIds()->updateRevField( $sid, $rev_id );
 		}
 

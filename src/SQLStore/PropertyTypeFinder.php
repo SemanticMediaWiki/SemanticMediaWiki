@@ -49,14 +49,12 @@ class PropertyTypeFinder {
 			$type = 'http://semantic-mediawiki.org/swivt/1.0#' . $type;
 		}
 
-		$row = $this->connection->selectRow(
-			PropertyTableDefinitionBuilder::makeTableName( '_TYPE' ),
-			'COUNT(*) AS count',
-			[
-				'o_serialized' => $type
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'COUNT(*) AS count' ] )
+			->from( PropertyTableDefinitionBuilder::makeTableName( '_TYPE' ) )
+			->where( [ 'o_serialized' => $type ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return isset( $row->count ) ? (int)$row->count : 0;
 	}
@@ -71,19 +69,17 @@ class PropertyTypeFinder {
 	 */
 	public function findTypeID( Property $property ) {
 		try {
-			$row = $this->connection->selectRow(
-				SQLStore::ID_TABLE,
-				[
-					'smw_id'
-				],
-				[
+			$row = $this->connection->newSelectQueryBuilder()
+				->select( [ 'smw_id' ] )
+				->from( SQLStore::ID_TABLE )
+				->where( [
 					'smw_namespace' => SMW_NS_PROPERTY,
-					'smw_title' => $property->getKey(),
-					'smw_iw' => '',
-					'smw_subobject' => ''
-				],
-				__METHOD__
-			);
+					'smw_title'     => $property->getKey(),
+					'smw_iw'        => '',
+					'smw_subobject' => '',
+				] )
+				->caller( __METHOD__ )
+				->fetchRow();
 		} catch ( Exception ) {
 			$row = false;
 		}
@@ -103,16 +99,12 @@ class PropertyTypeFinder {
 		//
 		// We expect it to be a URI table with `o_serialized` containing the
 		// type string
-		$row = $this->connection->selectRow(
-			$this->typeTableName,
-			[
-				'o_serialized'
-			],
-			[
-				's_id' => $row->smw_id
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'o_serialized' ] )
+			->from( $this->typeTableName )
+			->where( [ 's_id' => $row->smw_id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false ) {
 			return $GLOBALS['smwgPDefaultType'];

@@ -38,8 +38,6 @@ class updateQueryDependencies extends Maintenance {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -110,7 +108,7 @@ class updateQueryDependencies extends Maintenance {
 		parent::addDefaultParams();
 	}
 
-	private function dieMessage( $message ) {
+	private function dieMessage( $message ): never {
 		$this->reportMessage( $message );
 		exit;
 	}
@@ -126,25 +124,21 @@ class updateQueryDependencies extends Maintenance {
 			new Property( '_ASK' )
 		);
 
-		$res = $connection->select(
-			[ SQLStore::ID_TABLE, 'p' => $tableName ],
-			[
+		$res = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace'
-			],
-			[
+			] )
+			->from( SQLStore::ID_TABLE )
+			->join( $tableName, 'p', [ 'p.s_id=smw_id' ] )
+			->where( [
 				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ),
 				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
-			],
-			__METHOD__,
-			[
-				'GROUP BY' => 'smw_id'
-			],
-			[
-				'p' => [ 'INNER JOIN', [ 'p.s_id=smw_id' ] ],
-			]
-		);
+			] )
+			->groupBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$expected = $res->numRows();
 		$i = 0;

@@ -18,15 +18,9 @@ use Wikimedia\Rdbms\ILBFactory;
 class TransactionHandlerTest extends TestCase {
 
 	private $loadBalancerFactory;
-	private $transactionProfiler;
 
 	protected function setUp(): void {
 		$this->loadBalancerFactory = $this->createMock( ILBFactory::class );
-
-		$this->transactionProfiler = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'setSilenced' ] )
-			->getMock();
 	}
 
 	public function testCanConstruct() {

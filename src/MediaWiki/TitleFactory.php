@@ -62,12 +62,12 @@ class TitleFactory {
 
 		$fields = $container->getPageStore()->getSelectFields();
 
-		$res = $dbr->select(
-			'page',
-			$fields,
-			[ 'page_id' => $ids ],
-			__METHOD__
-		);
+		$res = $dbr->newSelectQueryBuilder()
+			->select( $fields )
+			->from( 'page' )
+			->where( [ 'page_id' => $ids ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$titles = [];
 

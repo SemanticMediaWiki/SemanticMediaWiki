@@ -65,8 +65,6 @@ class updateEntityCollation extends Maintenance {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param HookDispatcher $hookDispatcher
 	 */
 	public function setHookDispatcher( HookDispatcher $hookDispatcher ) {
 		$this->hookDispatcher = $hookDispatcher;
@@ -74,8 +72,6 @@ class updateEntityCollation extends Maintenance {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -94,7 +90,8 @@ class updateEntityCollation extends Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 
@@ -102,6 +99,7 @@ class updateEntityCollation extends Maintenance {
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 		$setupFile = $applicationFactory->singleton( 'SetupFile' );
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$this->store = $applicationFactory->getStore(
 			SQLStore::class
 		);
@@ -207,12 +205,11 @@ class updateEntityCollation extends Maintenance {
 	private function fetchRows() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$this->lastId = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$this->lastId = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		$condition = '';
 
@@ -223,17 +220,21 @@ class updateEntityCollation extends Maintenance {
 			$condition .= ' AND smw_id > ' . $connection->addQuotes( $this->getOption( 's' ) );
 		}
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		// $condition is always non-empty here (the two `smw_iw!=` clauses are
+		// unconditional), so wrapping in `[ $condition ]` for ->where() is safe.
+		// If a future change ever makes $condition optional, switch to
+		// conditional ->where() invocation to avoid emitting `WHERE ()`.
+		return $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_sortkey'
-			],
-			$condition,
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ $condition ] )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	private function runUpdate( $rows, $count ) {
@@ -283,7 +284,7 @@ class updateEntityCollation extends Maintenance {
 
 		try {
 			$property = new Property( $row->smw_title );
-		} catch ( PredefinedPropertyLabelMismatchException $e ) {
+		} catch ( PredefinedPropertyLabelMismatchException ) {
 			return $row->smw_sortkey;
 		}
 

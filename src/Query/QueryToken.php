@@ -33,12 +33,12 @@ class QueryToken {
 	const HL_UNDERLINE = 'HL_UNDERLINE';
 
 	/**
-	 * @var array
+	 * @var int
 	 */
 	private int $minHighlightTokenLength = 4;
 
 	/**
-	 * @var array
+	 * @var int
 	 */
 	private int $highlightType = 4;
 

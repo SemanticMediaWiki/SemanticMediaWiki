@@ -125,7 +125,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends TestCase {
 			NS_MAIN,
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-				'smwgLinksInValues'  => false,
 				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 				'smwgMainCacheType'      => 'hash'
 			],

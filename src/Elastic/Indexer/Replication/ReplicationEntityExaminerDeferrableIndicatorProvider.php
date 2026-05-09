@@ -21,9 +21,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var
-	 */
 	private array $indicators = [];
 
 	private bool $checkReplication = false;
@@ -64,8 +61,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
@@ -73,10 +68,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $severityType
-	 *
-	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -84,8 +75,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return 'smw-entity-examiner-deferred-elastic-replication';
@@ -93,11 +82,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
 	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkReplication ) {
@@ -109,8 +93,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getIndicators(): array {
 		return $this->indicators;
@@ -118,8 +100,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getModules(): array {
 		return [];
@@ -127,8 +107,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
@@ -136,12 +114,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		return '#mw-indicator-mw-helplink {display:none;}';
 	}
 
-	/**
-	 * @param WikiPage $subject
-	 * @param array $options
-	 *
-	 * @return void
-	 */
 	private function checkReplication( WikiPage $subject, array $options ): void {
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
@@ -167,12 +139,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		];
 	}
 
-	/**
-	 * @param $subject
-	 * @param $options
-	 *
-	 * @return null
-	 */
 	private function runCheck( WikiPage $subject, array $options ): void {
 		$html = $this->replicationCheck->checkReplication( $subject, $options );
 

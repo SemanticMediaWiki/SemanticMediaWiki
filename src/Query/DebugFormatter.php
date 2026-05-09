@@ -143,7 +143,7 @@ class DebugFormatter {
 				$possible_keys = $row->possible_keys;
 				$ref = $row->ref;
 
-				if ( strpos( $possible_keys, ',' ) !== false ) {
+				if ( strpos( $possible_keys ?? '', ',' ) !== false ) {
 					$possible_keys = implode( ', ', explode( ',', $possible_keys ) );
 				}
 
@@ -182,9 +182,10 @@ class DebugFormatter {
 		if ( $this->type === 'sqlite' ) {
 			$output .= 'QUERY PLAN' . "<br>";
 			$plan = '';
-			$last = count( $res ) - 1;
+			$resArray = is_array( $res ) ? $res : iterator_to_array( $res, false );
+			$last = count( $resArray ) - 1;
 
-			foreach ( $res as $k => $row ) {
+			foreach ( $resArray as $k => $row ) {
 
 				// https://www.sqlite.org/eqp.html notes "... output format did change
 				// substantially with the version 3.24.0 release ..."

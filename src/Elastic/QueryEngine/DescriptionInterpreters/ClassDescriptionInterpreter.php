@@ -70,7 +70,7 @@ class ClassDescriptionInterpreter {
 
 		// This feature is NOT supported by the SQLStore!!
 		// Encapsulate condition for something like `[[Category:!CatTest1]] ...`
-		if ( isset( $description->isNegation ) && $description->isNegation ) {
+		if ( $description->isNegation ) {
 			$condition = $this->conditionBuilder->newCondition( $params );
 			$condition->type( Condition::TYPE_MUST_NOT );
 		} else {

@@ -26,10 +26,7 @@ class FileAttachment {
 	use MessageReporterAwareTrait;
 	use LoggerAwareTrait;
 
-	/**
-	 * @var string
-	 */
-	private $origin = '';
+	private string $origin = '';
 
 	/**
 	 * @since 3.2
@@ -43,17 +40,13 @@ class FileAttachment {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $origin
 	 */
-	public function setOrigin( $origin ): void {
+	public function setOrigin( string $origin ): void {
 		$this->origin = $origin;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WikiPage $dataItem
 	 */
 	public function createAttachment( WikiPage $dataItem ) {
 		$time = -microtime( true );
@@ -94,7 +87,7 @@ class FileAttachment {
 
 		// Available properties
 		// @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/using-ingest-attachment.html
-		$params = $params + [
+		$params += [
 			'_source_includes' => [
 				'file_sha1',
 				'attachment.date',
@@ -176,8 +169,6 @@ class FileAttachment {
 	 * as expected.
 	 *
 	 * @since 3.2
-	 *
-	 * @param AttachmentAnnotator $attachmentAnnotator
 	 */
 	public function indexAttachmentInfo( AttachmentAnnotator $attachmentAnnotator ): void {
 		$data = [];
@@ -226,11 +217,13 @@ class FileAttachment {
 		$this->indexer->create( $subject, $data );
 
 		// Attach the subobject to the base subject
-		$response = $this->upsertDoc(
+		$this->upsertDoc(
 			$baseDocId,
 			$subject,
 			$attachmentAnnotator->getProperty()
 		);
+
+		$response = $this->bulk->getResponse();
 
 		$context['time'] = microtime( true ) + $time;
 		$context['response'] = $response;
@@ -245,7 +238,7 @@ class FileAttachment {
 		$this->logger->info( $msg, $context );
 	}
 
-	private function upsertDoc( $baseDocId, WikiPage $subject, Property $property ) {
+	private function upsertDoc( int $baseDocId, WikiPage $subject, Property $property ): void {
 		$params = [
 			'_index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA )
 		];
@@ -272,7 +265,7 @@ class FileAttachment {
 		// to work
 		$this->bulk->upsert( [ '_id' => $baseDocId ], $data );
 
-		return $this->bulk->execute();
+		$this->bulk->execute();
 	}
 
 	private function newContainerSemanticData( WikiPage $dataItem, array $doc ): ContainerSemanticData {

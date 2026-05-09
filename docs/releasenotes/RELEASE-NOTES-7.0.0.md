@@ -32,6 +32,74 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
   Note: `enableSemantics()` itself still exists but is deprecated as a no-op (see Deprecations).
 
+* **`SMW\SemanticMediaWiki::getDefaultSettings()` and `SMW\SemanticMediaWiki::setupGlobals()` removed.** SMW's defaults now come from `extension.json`'s `config` block (and a small registration callback for constants/paths) instead of the bespoke `src/DefaultSettings.php` array + `setupGlobals()` seeding. External code that called `getDefaultSettings()` should read globals directly via `$GLOBALS['smwgFoo']` or via `SMW\Settings::getInstance()->get('smwgFoo')`.
+
+* **`src/DefaultSettings.php` removed.** Per-setting documentation that previously lived as inline comments in this file now lives at `docs/config.md` (one section per setting) and in the manifest's `description` field. Authoring `LocalSettings.php` is unchanged — `$smwgFoo = …;` continues to work for every setting that ever did.
+
+* **`$smwgNamespaceIndex` removed; namespace IDs now relocate via PHP constants.** SMW's six custom namespaces (`SMW_NS_PROPERTY`, `SMW_NS_PROPERTY_TALK`, `SMW_NS_CONCEPT`, `SMW_NS_CONCEPT_TALK`, `SMW_NS_SCHEMA`, `SMW_NS_SCHEMA_TALK`) are now declared in `extension.json`'s `namespaces` block, and the `$smwgNamespaceIndex` setting is gone. To use non-default namespace IDs, define the constants directly in `LocalSettings.php` BEFORE `wfLoadExtension( 'SemanticMediaWiki' )` (this is MediaWiki core's documented relocation mechanism since MW 1.30):
+
+  ```php
+  define( 'SMW_NS_PROPERTY',      202 );
+  define( 'SMW_NS_PROPERTY_TALK', 203 );
+  define( 'SMW_NS_CONCEPT',       208 );
+  define( 'SMW_NS_CONCEPT_TALK',  209 );
+  define( 'SMW_NS_SCHEMA',        212 );
+  define( 'SMW_NS_SCHEMA_TALK',   213 );
+
+  wfLoadExtension( 'SemanticMediaWiki' );
+  ```
+
+  Wikis that still set `$smwgNamespaceIndex` in `LocalSettings.php` after upgrading will fail to boot with a `RemovedNamespaceIndexException` containing the matching `define()` block, calculated from the previous offset, ready to copy into `LocalSettings.php`. `\SMW\Exception\NamespaceIndexChangeException` is removed (unreachable).
+
+* **`$smwgSchemaTypes` removed.** Register custom schema types through the
+  `SMW::Schema::RegisterSchemaTypes` hook (available since 3.2). Any entries
+  left in `$smwgSchemaTypes` after upgrade are silently ignored — port them
+  to a hook handler first. Hook signature: `src/Schema/README.md`.
+* **Legacy setting auto-translation removed.** The runtime shim that silently
+  rewrote settings deprecated in SMW 3.1 and 3.2 to their replacements is gone.
+  Update any of these names in `LocalSettings.php` to the replacement below;
+  otherwise the legacy names are silently ignored. Special:Admin no longer
+  surfaces them as deprecation notices.
+
+  | Removed setting | Use instead |
+  |---|---|
+  | `$smwgEnabledInTextAnnotationParserStrictMode` | `$smwgParserFeatures` (`SMW_PARSER_STRICT` bit) |
+  | `$smwgInlineErrors` | `$smwgParserFeatures` (`SMW_PARSER_INL_ERROR` bit) |
+  | `$smwgShowHiddenCategories` | `$smwgParserFeatures` (`SMW_PARSER_HID_CATS` bit) |
+  | `$smwgLinksInValues` | `$smwgParserFeatures` (`SMW_PARSER_LINV` bit) |
+  | `$smwgFactboxUseCache` | `$smwgFactboxFeatures` (`SMW_FACTBOX_CACHE` bit) |
+  | `$smwgFactboxCacheRefreshOnPurge` | `$smwgFactboxFeatures` (`SMW_FACTBOX_PURGE_REFRESH` bit) |
+  | `$smwgUseCategoryRedirect` | `$smwgCategoryFeatures` (`SMW_CAT_REDIRECT` bit) |
+  | `$smwgCategoriesAsInstances` | `$smwgCategoryFeatures` (`SMW_CAT_INSTANCE` bit) |
+  | `$smwgUseCategoryHierarchy` | `$smwgCategoryFeatures` (`SMW_CAT_HIERARCHY` bit) |
+  | `$smwgQSortingSupport` | `$smwgQSortFeatures` (`SMW_QSORT` bit) |
+  | `$smwgQRandSortingSupport` | `$smwgQSortFeatures` (`SMW_QSORT_RANDOM` bit) |
+  | `$smwgToolboxBrowseLink` | `$smwgBrowseFeatures` (`SMW_BROWSE_TLINK` bit) |
+  | `$smwgBrowseShowInverse` | `$smwgBrowseFeatures` (`SMW_BROWSE_SHOW_INVERSE` bit) |
+  | `$smwgBrowseShowAll` | `$smwgBrowseFeatures` (`SMW_BROWSE_SHOW_INCOMING` bit) |
+  | `$smwgBrowseByApi` | `$smwgBrowseFeatures` (`SMW_BROWSE_USE_API` bit) |
+  | `$smwgAdminRefreshStore` | `$smwgAdminFeatures` (`SMW_ADM_REFRESH` bit) |
+  | `$smwgQueryProfiler['smwgQueryDurationEnabled']` | `$smwgQueryProfiler` (`SMW_QPRFL_DUR` bit) |
+  | `$smwgQueryProfiler['smwgQueryParametersEnabled']` | `$smwgQueryProfiler` (`SMW_QPRFL_PARAMS` bit) |
+  | `$smwgCacheType` | `$smwgMainCacheType` |
+  | `$smwgImportFileDir` | `$smwgImportFileDirs` |
+  | `$smwgDeclarationProperties` | `$smwgChangePropagationWatchlist` |
+  | `$smwgQueryDependencyPropertyExemptionlist` | `$smwgQueryDependencyPropertyExemptionList` (capital `L`) |
+  | `$smwgSparqlDatabaseConnector` | `$smwgSparqlRepositoryConnector` |
+  | `$smwgSparqlDatabase` | `$smwgSparqlCustomConnector` |
+  | `$smwgSparqlQueryEndpoint` | `$smwgSparqlEndpoint['query']` |
+  | `$smwgSparqlUpdateEndpoint` | `$smwgSparqlEndpoint['update']` |
+  | `$smwgSparqlDataEndpoint` | `$smwgSparqlEndpoint['data']` |
+  | `$smwgTypePagingLimit` | `$smwgPagingLimit['type']` |
+  | `$smwgConceptPagingLimit` | `$smwgPagingLimit['concept']` |
+  | `$smwgPropertyPagingLimit` | `$smwgPagingLimit['property']` |
+  | `$smwgSubPropertyListLimit` | `$smwgPropertyListLimit['subproperty']` |
+  | `$smwgRedirectPropertyListLimit` | `$smwgPropertyListLimit['redirect']` |
+  | `$smwgCacheUsage['smwgStatisticsCacheExpiry']` | `$smwgCacheUsage['special.statistics']` |
+  | `$smwgCacheUsage['smwgPropertiesCacheExpiry']` | `$smwgCacheUsage['special.properties']` |
+  | `$smwgCacheUsage['smwgUnusedPropertiesCacheExpiry']` | `$smwgCacheUsage['special.unusedproperties']` |
+  | `$smwgCacheUsage['smwgWantedPropertiesCacheExpiry']` | `$smwgCacheUsage['special.wantedproperties']` |
+
 * **Legacy job aliases removed.** All job types must now use their `smw.*` names. The following aliases no longer work:
 
   | Removed alias | Use instead |
@@ -49,6 +117,10 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `SMWUpdateJob` | `smw.update` |
   | `SMWRefreshJob` | `smw.refresh` |
 
+* **Transaction profiler warnings no longer silenced.** SMW previously silenced MediaWiki's `TransactionProfiler` for every database write. As of 7.0.0, warnings (`Suboptimal transaction […]` and similar) reach the standard `rdbms` log channel where site admins can observe them.
+
+  If you see new log spam after upgrading, raise the budget via `$wgTrxProfilerLimits` (e.g. `$wgTrxProfilerLimits['POST']['maxAffected'] = 5000;`) or point `$wgDebugLogGroups['rdbms']` at a discard target.
+
 **Dependencies and autoloading:**
 
 * Removed the `mediawiki/parser-hooks` dependency.
@@ -63,8 +135,12 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 **Removed APIs:**
 
+* **Legacy DML methods on `SMW\MediaWiki\Connection\Database` removed.** Removed methods: `select()`, `selectRow()`, `selectField()`, `estimateRowCount()`, `insert()`, `update()`, `delete()`, `upsert()`, `replace()`, and the `makeSelectOptions()` passthrough. `Database::query()` and `Database::readQuery()` also tightened from `Query|string` to `string` only. SMW's database wrapper is internal infrastructure; external code that called these methods directly on `$store->getConnection( 'mw.db' )` should migrate to MediaWiki core's database services. See [Manual:Database access](https://www.mediawiki.org/wiki/Manual:Database_access).
 * Removed `getTextFromContent()`, `replacePrefixes()`, and `textAlreadyUpdatedForIndex()` from `ExtendedSearchEngine`, matching their removal from MediaWiki core's `SearchEngine`.
 * Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
+* Removed internal `MutedInsertQueryBuilder`, `MutedUpdateQueryBuilder`, `MutedDeleteQueryBuilder`, and `MutedReplaceQueryBuilder` (added briefly in the 7.0.0 development cycle). `Database::new*QueryBuilder()` factories now return MediaWiki core's base types directly. See "Transaction profiler warnings no longer silenced" above for the behaviour change.
+* **`RequestOptions::addExtraCondition` callbacks now receive `SqlFragmentBuilder` instead of `Query`.** The new class exposes the same fragment helpers (`eq`, `neq`, `in`, `like`) and `alias` / `index` properties, so untyped callbacks need no changes. Typed callbacks must update the hint to `SMW\MediaWiki\Connection\SqlFragmentBuilder`. `Query` and `Database::newQuery()` are removed.
+* Removed `EntityIdManager::MAX_CACHE_SIZE`. Cache sizes are now per-pool and exposed as `EntityIdManager::DEFAULT_CACHE_SIZES`, configurable via `$smwgEntityCacheSizes`.
 * Removed long-deprecated code originally scheduled for removal:
   * `smwfNormalTitleText()` — use `Localizer::getInstance()->normalizeTitleText()` (deprecated since 3.2)
   * `smwfNumberFormat()` — use `IntlNumberFormatter::getInstance()->getLocalizedFormattedNumber()` (deprecated since 2.1)
@@ -154,6 +230,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `SMWOutputs` | `SMW\MediaWiki\Outputs` |
   | `SMWPageSchemas` | `SMW\MediaWiki\PageSchemas` |
   | `SMW\ContentParser` | `SMW\Parser\ContentParser` |
+  | `SMW\SQLStore\Lookup\ListLookup` | `SMW\Lookup\ListLookup` |
+  | `SMW\SQLStore\Lookup\CachedListLookup` | `SMW\Lookup\CachedListLookup` |
 
 ### Bug fixes
 
@@ -177,15 +255,22 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed null argument error in entity lookup task handler ([#6228](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6228))
 * Improved wording of the post-edit reload notice ([#6301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6301))
 * Fixed maintenance log entries showing "performed unknown action" instead of a proper message, and improved log comment formatting from raw JSON to human-readable text ([#6146](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6146), [#6554](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6554))
+* Fixed `update.php` failing with "Data too long for column 'smw_hash'" on wikis with more than 200,000 entities. The pre-upgrade hex-to-binary conversion now always runs as a single server-side `UPDATE`, regardless of row count. Setting `$smwgIgnoreUpgradeKeyCheck = true` now also lets maintenance scripts run when the schema is in an intermediate state, providing a documented escape hatch for stalled upgrades. ([#6715](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6715))
 
 ### Enhancements
 
+* Changed `smw_hash` storage from hex-encoded to raw binary, reducing the hash index size and improving query performance on large wikis. Column type changes from `VARBINARY(40)` to `BINARY(20)` on MySQL/MariaDB and SQLite, and from `TEXT` to `BYTEA` on PostgreSQL. Existing hashes are converted automatically during `update.php`. ([#6587](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6587))
 * Improved pagination performance on Special:Properties and Special:UnusedProperties by switching from OFFSET-based to cursor-based pagination. Browsing deep pages is now significantly faster on wikis with many properties. ([#6559](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6559))
   * Navigation links now use `after=` and `before=` URL parameters instead of `offset=`. Existing `offset=` bookmarks continue to work.
   * The numbered result list has been replaced with a bullet list, and the "starting with #N" indicator has been removed, as cursor-based pagination does not track absolute position.
+* `#ask` queries that sort by a property value are now significantly faster on MariaDB and MySQL. The query engine restructures the SQL so the database can choose a more efficient plan; on large wikis the improvement can be orders of magnitude depending on query shape. ([#6559](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6559))
+  * Set `$smwgQUseLegacyQuery = true` in `LocalSettings.php` to fall back to the previous query shape if you encounter a regression after upgrading.
+  * A redundant `DISTINCT` keyword was also dropped from the disjunction-query temp-table insert. Same result, less work for the database; no setting required.
+* On wikis with many distinct entities per page, SMW's internal caches could fill up during a single render and force repeated database lookups for the same pages. Cache sizes are now adjustable via the new `$smwgEntityCacheSizes` setting. Per-pool hit and miss counts are also emitted to MediaWiki's `StatsFactory` service, so wikis already configured to collect MediaWiki metrics (`$wgStatsTarget` and `$wgStatsFormat`) can see cache effectiveness in their existing dashboards and size caches based on real traffic instead of guessing.
 
 ### Internal improvements
 
+* **Config defaults migrated to `extension.json`.** All `$smwg*` defaults are now declared in the manifest's `config` block (with `merge_strategy` declarations on compound arrays so partial writes from `LocalSettings.php` merge cleanly with defaults — fixes #6649 and the partial-write class behind #6726). Settings whose values can't be expressed as static JSON (PHP constants, `$smwgIP`-relative paths, class constants) are seeded by a small `SMW\Setup\ConfigBootstrap` callback at registration time.
 * Native PHP type coverage significantly expanded across the entire codebase, including return types, parameter types, property types, and constructor promotion with `readonly`
 * PHPUnit test suite reorganized into `Unit/` and `Integration/` directories
 * Numerous static analysis (phan) errors fixed
@@ -193,9 +278,11 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Upgrading
 
-No need to run `update.php` or any other migration scripts.
+**Run `update.php` after upgrading.** This release changes the `smw_hash` column type from `VARBINARY(40)` to `BINARY(20)`. The update script converts existing hash values automatically via a single server-side `UPDATE` before the column-type change. On wikis with millions of entities, expect this UPDATE to hold a write lock on `smw_object_ids` for the duration of the conversion — plan a maintenance window if needed.
 
 **If you use fulltext search** (`smwgEnabledFulltextSearch`): run `rebuildFulltextSearchTable.php` after upgrading to rebuild the index with the new ICU-based transliteration.
+
+**If you set `$smwgNamespaceIndex`** in `LocalSettings.php`: remove that line and replace it with explicit `define()` calls for the six SMW namespace constants, placed BEFORE `wfLoadExtension( 'SemanticMediaWiki' )`. See the breaking-change entry above for the snippet. Without this change SMW will refuse to boot.
 
 **Get the new version via Composer:**
 

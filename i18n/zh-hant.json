@@ -973,7 +973,7 @@
 	"apihelp-browsebysubject-summary": "檢索有關主題資訊的 API 模組。",
 	"apihelp-smwtask-summary": "執行 Semantic MediaWiki 相關任務的 API 模組（僅用於內部，不適用公共）。",
 	"apihelp-smwbrowse-summary": "支援在 Semantic MediaWiki 瀏覽不同實體類型行動的 API 模組。",
-	"apihelp-ask-parameter-api-version": "輸出格式：\n;2：用於結果清單，使用 {} 的後端相容格式。\n;3：使用 [] 來作為結果清單的實驗格式。",
+	"apihelp-ask-param-api-version": "輸出格式：\n;2：用於結果清單，使用 {} 的後端相容格式。\n;3：使用 [] 來作為結果清單的實驗格式。",
 	"apihelp-smwtask-param-task": "定義任務類型",
 	"apihelp-smwtask-param-params": "符合所選任務類型需求的 JSON 編碼參數",
 	"smw-apihelp-smwtask-example-update": "針對特定主題之運作更新任務的範例：",

@@ -14,8 +14,9 @@ use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
-use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\RedirectStore
@@ -28,6 +29,9 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class RedirectStoreTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $store;
 	private Database $connection;
@@ -87,15 +91,12 @@ class RedirectStoreTest extends TestCase {
 		$row = new stdClass;
 		$row->o_id = 42;
 
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$this->equalTo( [
-					's_title' => 'Foo',
-					's_namespace' => 0 ] ) )
-			->willReturn( $row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new RedirectStore(
 			$this->store
@@ -104,6 +105,11 @@ class RedirectStoreTest extends TestCase {
 		$this->assertEquals(
 			42,
 			$instance->findRedirect( 'Foo', 0 )
+		);
+
+		$this->assertSame(
+			[ [ 's_title' => 'Foo', 's_namespace' => 0 ] ],
+			$capturedWheres
 		);
 
 		$stats = InMemoryPoolCache::getInstance()->getStats();
@@ -124,15 +130,12 @@ class RedirectStoreTest extends TestCase {
 	}
 
 	public function testFindRedirectIdForNonCachedNonRedirect() {
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [], $capturedWheres );
+
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$this->equalTo( [
-					's_title' => 'Foo',
-					's_namespace' => 0 ] ) )
-			->willReturn( false );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new RedirectStore(
 			$this->store
@@ -142,27 +145,68 @@ class RedirectStoreTest extends TestCase {
 			0,
 			$instance->findRedirect( 'Foo', 0 )
 		);
+
+		$this->assertSame(
+			[ [ 's_title' => 'Foo', 's_namespace' => 0 ] ],
+			$capturedWheres
+		);
 	}
 
 	public function testAddRedirectInfoRecordToFetchFromCache() {
-		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->willReturn( false );
+		// insert() does a selectRow duplicate-check (returns false)
+		$capturedSelectWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [], $capturedSelectWheres );
+
+		$capturedDeleteTables = [];
+		$capturedDeleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedDeleteTables,
+			$capturedDeleteWheres
+		);
+
+		$capturedInsertTables = [];
+		$capturedInsertRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder(
+			$capturedInsertTables,
+			$capturedInsertRows
+		);
 
 		$this->connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [
-					's_title' => 'Foo',
-					's_namespace' => 0,
-					'o_id' => 42 ] ) );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$instance = new RedirectStore(
 			$this->store
 		);
 
 		$instance->addRedirect( 42, 'Foo', 0 );
+
+		$this->assertSame(
+			[ [ 's_title' => 'Foo', 's_namespace' => 0, 'o_id' => 42 ] ],
+			$capturedSelectWheres
+		);
+
+		$this->assertSame(
+			[ [ 's_title' => 'Foo', 's_namespace' => 0 ] ],
+			$capturedDeleteWheres
+		);
+
+		$this->assertSame(
+			[ [
+				's_title' => 'Foo',
+				's_namespace' => 0,
+				'o_id' => 42,
+			] ],
+			$capturedInsertRows
+		);
 
 		$this->assertEquals(
 			42,
@@ -171,19 +215,37 @@ class RedirectStoreTest extends TestCase {
 	}
 
 	public function testDeleteRedirectInfoRecord() {
+		$capturedDeleteTables = [];
+		$capturedDeleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedDeleteTables,
+			$capturedDeleteWheres
+		);
+
+		// findRedirect() after delete() will go to select() (cache was cleared)
+		$selectBuilder = $this->createMockSelectQueryBuilder( [] );
+
 		$this->connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [
-					's_title' => 'Foo',
-					's_namespace' => 9001 ] ) );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$instance = new RedirectStore(
 			$this->store
 		);
 
 		$instance->deleteRedirect( 'Foo', 9001 );
+
+		$this->assertSame(
+			[ [
+				's_title' => 'Foo',
+				's_namespace' => 9001,
+			] ],
+			$capturedDeleteWheres
+		);
 
 		$this->assertSame(
 			0,
@@ -196,13 +258,19 @@ class RedirectStoreTest extends TestCase {
 		$row->ns = NS_MAIN;
 		$row->t = 'Bar';
 
+		// delete() in deleteRedirect() uses newDeleteQueryBuilder()
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+
+		// findUpdateJobs() uses newSelectQueryBuilder()->fetchResultSet()
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
+
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 'Foo' => 42 ] )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -264,9 +332,16 @@ class RedirectStoreTest extends TestCase {
 		$row->ns = NS_MAIN;
 		$row->t = 'Bar';
 
+		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
+
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( new FakeResultWrapper( [ $row ] ) );
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()

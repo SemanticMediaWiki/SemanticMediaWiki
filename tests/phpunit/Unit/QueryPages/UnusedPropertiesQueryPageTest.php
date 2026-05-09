@@ -6,10 +6,10 @@ use PHPUnit\Framework\TestCase;
 use Skin;
 use SMW\DataItemFactory;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\Lookup\ListLookup;
 use SMW\QueryPages\UnusedPropertiesQueryPage;
 use SMW\RequestOptions;
 use SMW\Settings;
-use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
 
 /**

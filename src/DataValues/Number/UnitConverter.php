@@ -107,13 +107,19 @@ class UnitConverter {
 		$this->errors = [];
 		$property = $numberValue->getProperty();
 
-		if ( $property === null || ( $subject = $property->getDiWikiPage() ) === null ) {
+		if ( $property === null ) {
+			return;
+		}
+
+		$subject = $property->getDiWikiPage();
+		if ( $subject === null ) {
 			return;
 		}
 
 		$key = $this->entityCache->makeCacheKey( 'unit', $subject->getHash() );
 
-		if ( ( $data = $this->entityCache->fetch( $key ) ) !== false ) {
+		$data = $this->entityCache->fetch( $key );
+		if ( $data !== false ) {
 			$this->unitIds = $data['ids'];
 			$this->unitFactors = $data['factors'];
 			$this->mainUnit = $data['main'];
@@ -180,6 +186,7 @@ class UnitConverter {
 		// conversion tooltip will still display the main unit for clarity
 		// (the empty unit is never displayed; we filter it when making
 		// conversion values)
+		// @phan-suppress-next-line PhanUselessBinaryAddRight
 		$this->unitFactors = [ '' => 1 ] + $this->unitFactors;
 		$this->unitIds[''] = '';
 	}
@@ -211,6 +218,7 @@ class UnitConverter {
 
 	private function matchUnitAliases( NumberValue $numberValue, $number, $asPrefix, array $unitAliases ): void {
 		$first = true;
+		$unitid = null;
 
 		foreach ( $unitAliases as $unit ) {
 			$unit = $numberValue->normalizeUnit( $unit );
@@ -223,14 +231,17 @@ class UnitConverter {
 
 			if ( $first ) {
 				$unitid = $unit;
+
 				if ( $number == 1 ) { // add main unit to front of array (displayed first)
 					$this->mainUnit = $unit;
 					$this->unitFactors = [ $unit => 1 ] + $this->unitFactors;
 				} else { // non-main units are not ordered (can be modified via display units)
 					$this->unitFactors[$unit] = $number;
 				}
+
 				$first = false;
 			}
+
 			// add all known units to m_unitids to simplify checking for them
 			$this->unitIds[$unit] = $unitid;
 			$this->unitIds[$normalizedUnit] = $unitid;

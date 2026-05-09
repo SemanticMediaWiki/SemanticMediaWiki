@@ -42,7 +42,8 @@ class TextChangeUpdater {
 	}
 
 	/**
-	 * @note See comments in src/DefaultSettings.php on the smwgFulltextDeferredUpdate setting
+	 * @note See `docs/config.md` and the `description` field for the
+	 *  `smwgFulltextDeferredUpdate` setting in `extension.json`.
 	 *
 	 * @since 2.5
 	 *
@@ -269,7 +270,8 @@ class TextChangeUpdater {
 
 		// Find out whether we should actual initiate an update
 		foreach ( $changeOp->getChangedEntityIdSummaryList() as $id ) {
-			if ( ( $dataItem = $searchTable->getDataItemById( $id ) ) instanceof WikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
+			$dataItem = $searchTable->getDataItemById( $id );
+			if ( $dataItem instanceof WikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
 				if ( !$searchTable->isExemptedPropertyById( $id ) ) {
 					$canPostUpdate = true;
 					break;

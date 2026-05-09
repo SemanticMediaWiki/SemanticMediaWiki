@@ -160,7 +160,8 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 			FileIndexer::INGEST_RESPONSE
 		);
 
-		if ( ( $response = $this->entityCache->fetch( $key ) ) !== false ) {
+		$response = $this->entityCache->fetch( $key );
+		if ( $response !== false ) {
 
 			if ( is_string( $response ) ) {
 				$response = json_decode( $response, true );

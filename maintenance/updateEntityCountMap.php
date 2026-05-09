@@ -4,9 +4,10 @@ namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\HmacSerializer;
 
@@ -85,7 +86,8 @@ class updateEntityCountMap extends Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 
@@ -151,25 +153,24 @@ class updateEntityCountMap extends Maintenance {
 	private function getCount() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$this->last = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$this->last = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			[
+		$row = $connection->newSelectQueryBuilder()
+			->select( [
 				'COUNT( smw_id ) AS count',
-			],
-			[
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_proptable_hash IS NOT NULL',
 				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
 				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWINTDEFIW ),
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false ) {
 			return false;
@@ -183,30 +184,30 @@ class updateEntityCountMap extends Maintenance {
 
 		for ( $i = 0; $i <= $this->last; $i++ ) {
 
-			$row = $connection->selectRow(
-				SQLStore::ID_TABLE,
-				[
+			$row = $connection->newSelectQueryBuilder()
+				->select( [
 					'smw_id',
 					'smw_title',
 					'smw_namespace',
 					'smw_iw',
 					'smw_subobject',
 					'smw_rev'
-				],
-				[
+				] )
+				->from( SQLStore::ID_TABLE )
+				->where( [
 					'smw_id' => $i,
 					'smw_proptable_hash IS NOT NULL',
 					'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
 					'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWINTDEFIW ),
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->fetchRow();
 
 			if ( $row === false ) {
 				continue;
 			}
 
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$row->smw_title,
 				$row->smw_namespace,
 				$row->smw_iw,
@@ -224,7 +225,7 @@ class updateEntityCountMap extends Maintenance {
 				);
 
 				if ( $key === '_INST' ) {
-					$countMap[$key] = $countMap[$key] ?? [];
+					$countMap[$key] ??= [];
 
 					foreach ( $pv as $dataItem ) {
 						$countMap[$key] += [ $dataItem->getDBKey() => 1 ];
@@ -239,20 +240,19 @@ class updateEntityCountMap extends Maintenance {
 				HmacSerializer::compress( $countMap )
 			);
 
-			$connection->upsert(
-				SQLStore::ID_AUXILIARY_TABLE,
-				[
+			$connection->newInsertQueryBuilder()
+				->insertInto( SQLStore::ID_AUXILIARY_TABLE )
+				->row( [
 					'smw_id' => $row->smw_id,
 					'smw_countmap' => $countMap
-				],
-				[
-					'smw_id'
-				],
-				[
+				] )
+				->onDuplicateKeyUpdate()
+				->uniqueIndexFields( [ 'smw_id' ] )
+				->set( [
 					'smw_countmap' => $countMap
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			$propgress = $this->cliMsgFormatter->progressCompact( $i, $this->last );
 

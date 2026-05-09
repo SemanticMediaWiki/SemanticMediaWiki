@@ -3,7 +3,6 @@
 namespace SMW\ParserFunctions;
 
 use MediaWiki\Parser\Parser;
-use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
 use SMW\Formatters\Highlighter;
 use SMW\MediaWiki\Outputs;
@@ -18,15 +17,9 @@ use SMW\MediaWiki\Outputs;
  */
 class InfoParserFunction {
 
-	/**
-	 * @param Parser $parser
-	 * @param ProcessingResult $result
-	 *
-	 * @return mixed
-	 */
 	public function handle( Parser $parser, ProcessingResult $result ): string|ProcessingResult {
 		if ( $result->hasFatal() ) {
-			return $this->getOutputForErrors( $result->getErrors() );
+			return $this->getOutputForErrors();
 		}
 
 		$parameters = $result->getParameters();
@@ -48,7 +41,7 @@ class InfoParserFunction {
 		// If the message contains another highlighter (caused by recursive
 		// parsing etc.) remove the tags to allow to show the text without making
 		// the JS go berserk due to having more than one `smw-highlighter`
-		if ( strpos( $message ?? '', 'smw-highlighter' ) !== '' ) {
+		if ( strpos( $message ?? '', 'smw-highlighter' ) !== false ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
 					static function ( $matches ): string {
@@ -58,7 +51,7 @@ class InfoParserFunction {
 			);
 		}
 
-		if ( $message === '' ) {
+		if ( $message === '' || $message === null ) {
 			return '';
 		}
 
@@ -75,7 +68,7 @@ class InfoParserFunction {
 
 		$result = $highlighter->getHtml();
 
-		if ( $parser->getTitle() !== null && $parser->getTitle()->isSpecialPage() ) {
+		if ( $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			Outputs::commitToOutputPage( $wgOut );
 		} else {
@@ -85,12 +78,7 @@ class InfoParserFunction {
 		return $result;
 	}
 
-	/**
-	 * @param ProcessingError[] $errors
-	 *
-	 * @return string
-	 */
-	private function getOutputForErrors( array $errors ): string {
+	private function getOutputForErrors(): string {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #info parser function';
 	}

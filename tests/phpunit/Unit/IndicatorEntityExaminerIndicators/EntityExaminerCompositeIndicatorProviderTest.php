@@ -265,7 +265,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 				return '';
 			}
 
-			public function getInlineStyle() {
+			public function getInlineStyle(): string {
 				return '';
 			}
 

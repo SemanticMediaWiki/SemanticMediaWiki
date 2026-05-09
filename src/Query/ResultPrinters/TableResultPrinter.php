@@ -94,7 +94,7 @@ class TableResultPrinter extends ResultPrinter {
 
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 		$this->isDataTable = false;
-		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
+		$class = $this->params['class'] ?? '';
 
 		if ( strpos( $class, 'datatable' ) !== false && $this->mShowHeaders !== SMW_HEADERS_HIDE ) {
 			$this->isDataTable = true;
@@ -215,19 +215,12 @@ class TableResultPrinter extends ResultPrinter {
 	 * @param int $outputMode
 	 * @param string[] $columnClasses
 	 *
-	 * @return string
+	 * @return void
 	 */
 	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ): void {
 		foreach ( $subject as $i => $field ) {
-			// $columnClasses will be empty if "headers=hide"
-			// was set.
-			if ( array_key_exists( $i, $columnClasses ) ) {
-				$columnClass = $columnClasses[$i];
-			} else {
-				$columnClass = null;
-			}
-
-			$this->getCellForPropVals( $field, $outputMode, $columnClass );
+			// $columnClasses will be empty if "headers=hide" was set.
+			$this->getCellForPropVals( $field, $outputMode, $columnClasses[$i] ?? '' );
 		}
 	}
 
@@ -236,11 +229,11 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param \ $resultArray
+	 * @param ResultArray $resultArray
 	 * @param int $outputMode
 	 * @param string $columnClass
 	 *
-	 * @return string
+	 * @return void
 	 */
 	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, string $columnClass ): void {
 		/** @var DataValue[] $dataValues */
@@ -381,7 +374,7 @@ class TableResultPrinter extends ResultPrinter {
 	 * @see ResultPrinter::getResources
 	 */
 	protected function getResources(): array {
-		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
+		$class = $this->params['class'] ?? '';
 
 		if ( strpos( $class, 'datatable' ) === false ) {
 			return [

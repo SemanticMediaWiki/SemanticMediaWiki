@@ -39,7 +39,7 @@ class StringValueFormatter extends DataValueFormatter {
 		// PHP 7.0 ... "The order that the assignment operations are performed in has changed."
 
 		$type = $options[0];
-		$linker = isset( $options[1] ) ? $options[1] : null;
+		$linker = $options[1] ?? null;
 
 		if ( !$dataValue instanceof StringValue ) {
 			throw new RuntimeException( "The formatter is missing a valid StringValue object" );
@@ -64,15 +64,12 @@ class StringValueFormatter extends DataValueFormatter {
 		return $this->doFormat( $dataValue, $type, $linker );
 	}
 
-	/**
-	 * @param StringValue $dataValue
-	 * @param int $type
-	 * @param mixed $linker
-	 *
-	 * @return string
-	 */
-	protected function doFormat( $dataValue, $type, $linker ): string {
-		$text = (string)$dataValue->getDataItem()->getString();
+	protected function doFormat(
+		StringValue $dataValue,
+		int $type,
+		mixed $linker
+	): string {
+		$text = $dataValue->getDataItem()->getString();
 		$length = mb_strlen( $text );
 
 		// Make a possibly shortened printout string for displaying the value.
@@ -104,7 +101,11 @@ class StringValueFormatter extends DataValueFormatter {
 		return $text;
 	}
 
-	private function getAbbreviatedText( string $text, int $length, $linker ): string {
+	private function getAbbreviatedText(
+		string $text,
+		int $length,
+		mixed $linker
+	): string {
 		if ( $linker === false || $linker === null ) {
 			$ellipsis = ' <span class="smwwarning">…</span> ';
 		} else {
@@ -121,11 +122,13 @@ class StringValueFormatter extends DataValueFormatter {
 		$endOff = 42;
 
 		// Avoid breaking a link (i.e. [[ ... ]])
-		if ( ( $pos = stripos( $text, '[[' ) ) && $pos < 42 ) {
+		$pos = stripos( $text, '[[' );
+		if ( $pos && $pos < 42 ) {
 			$startOff = stripos( $text, ']]' ) + 2;
 		}
 
-		if ( ( $pos = strrpos( $text, ']]' ) ) && $pos > $length - $endOff ) {
+		$pos = strrpos( $text, ']]' );
+		if ( $pos && $pos > $length - $endOff ) {
 			$endOff = $length - strrpos( $text, '[[' );
 		}
 

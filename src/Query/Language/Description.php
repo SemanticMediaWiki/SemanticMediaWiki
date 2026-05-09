@@ -30,8 +30,8 @@ abstract class Description {
 	 */
 	private $membership = '';
 
-	public bool $isPartOfDisjunction;
-	public bool $isNegation;
+	public ?bool $isPartOfDisjunction = null;
+	public ?bool $isNegation = null;
 
 	/**
 	 * Get the (possibly empty) array of all print requests that
@@ -189,8 +189,8 @@ abstract class Description {
 			return $result;
 		}
 
-		$maxsize = $maxsize - $this->getSize();
-		$maxDepth = $maxDepth - $this->getDepth();
+		$maxsize -= $this->getSize();
+		$maxDepth -= $this->getDepth();
 
 		return $this;
 	}

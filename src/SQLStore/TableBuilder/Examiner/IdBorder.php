@@ -64,28 +64,22 @@ class IdBorder {
 		$row = false;
 		$hasUpperBound = false;
 
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id'
-			],
-			[
-				'smw_iw' => SMW_SQL3_SMWBORDERIW
-			],
-			__METHOD__
-		);
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_iw' => SMW_SQL3_SMWBORDERIW ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $rows as $row ) {
 			if ( $row->smw_id == $upperbound ) {
 				$hasUpperBound = true;
 			} else {
-				$connection->delete(
-					SQLStore::ID_TABLE,
-					[
-						'smw_id' => $row->smw_id
-					],
-					__METHOD__
-				);
+				$connection->newDeleteQueryBuilder()
+					->deleteFrom( SQLStore::ID_TABLE )
+					->where( [ 'smw_id' => $row->smw_id ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
 		}
 
@@ -111,18 +105,18 @@ class IdBorder {
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
 
-		$connection->insert(
-			SQLStore::ID_TABLE,
-			[
+		$connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::ID_TABLE )
+			->row( [
 				'smw_id' => $upperbound,
 				'smw_title' => '',
 				'smw_namespace' => 0,
 				'smw_iw' => SMW_SQL3_SMWBORDERIW,
 				'smw_subobject' => '',
 				'smw_sortkey' => ''
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		if ( $currentUpperbound < $upperbound ) {
 			$this->move( $currentUpperbound, $upperbound );

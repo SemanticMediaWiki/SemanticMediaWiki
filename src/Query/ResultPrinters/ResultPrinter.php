@@ -61,7 +61,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @since 1.8
 	 *
-	 * @var
+	 * @var int
 	 */
 	protected $outputMode;
 
@@ -267,9 +267,9 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @note since 1.8 this method is final, since it's the entry point.
 	 * Most logic has been moved out to buildResult, which you can override.
 	 *
-	 * @param $results QueryResult
-	 * @param $fullParams array
-	 * @param $outputMode integer
+	 * @param QueryResult $results
+	 * @param array $fullParams
+	 * @param int $outputMode
 	 *
 	 * @return string
 	 */
@@ -340,7 +340,7 @@ abstract class ResultPrinter implements IResultPrinter {
 			if ( !$results->hasFurtherResults() ) {
 				return $this->escapeText( $this->mDefault, $outputMode )
 					. $this->getErrorString( $results );
-			} elseif ( $this->mInline && $this->isDeferrable() !== self::DEFERRED_DATA ) {
+			} elseif ( $this->mInline && $this->isDeferrable() ) {
 
 				if ( !$this->linkFurtherResults( $results ) ) {
 					return '';
@@ -406,9 +406,9 @@ abstract class ResultPrinter implements IResultPrinter {
 		// Apply outro parameter
 		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
 			if ( $outputmode == SMW_OUTPUT_HTML && $this->isHTML ) {
-				$result = $result . Message::get( [ 'smw-parse', $this->mOutro ], Message::PARSE );
+				$result .= Message::get( [ 'smw-parse', $this->mOutro ], Message::PARSE );
 			} elseif ( $outputmode !== SMW_OUTPUT_RAW ) {
-				$result = $result . $this->mOutro;
+				$result .= $this->mOutro;
 			}
 		}
 
@@ -462,7 +462,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		$this->mOutro = isset( $params['outro'] ) ? str_replace( '_', ' ', $params['outro'] ) : '';
 
 		$this->mSearchlabel = !isset( $params['searchlabel'] ) || $params['searchlabel'] === false ? null : $params['searchlabel'];
-		$link = isset( $params['link'] ) ? $params['link'] : '';
+		$link = $params['link'] ?? '';
 
 		switch ( $link ) {
 			case 'head':
@@ -481,7 +481,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		}
 
 		$this->mDefault = isset( $params['default'] ) ? str_replace( '_', ' ', $params['default'] ) : '';
-		$headers = isset( $params['headers'] ) ? $params['headers'] : '';
+		$headers = $params['headers'] ?? '';
 
 		if ( $headers == 'hide' ) {
 			$this->mShowHeaders = SMW_HEADERS_HIDE;
@@ -491,7 +491,7 @@ abstract class ResultPrinter implements IResultPrinter {
 			$this->mShowHeaders = SMW_HEADERS_SHOW;
 		}
 
-		$this->recursiveAnnotation = isset( $params['import-annotation'] ) ? $params['import-annotation'] : false;
+		$this->recursiveAnnotation = $params['import-annotation'] ?? false;
 	}
 
 	/**
@@ -622,9 +622,9 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * given text. Otherwise return text as is.
 	 *
 	 * @param string $text
-	 * @param $outputmode
+	 * @param string $outputmode
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	protected function escapeText( $text, $outputmode ): ?string {
 		return $outputmode == SMW_OUTPUT_HTML ? htmlspecialchars( $text ?? '' ) : $text;
@@ -634,9 +634,9 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * Get the string the user specified as a text for the "further results" link,
 	 * properly escaped for the current output mode.
 	 *
-	 * @param $outputmode
+	 * @param string $outputmode
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	protected function getSearchLabel( $outputmode ): ?string {
 		return $this->escapeText( $this->mSearchlabel, $outputmode );

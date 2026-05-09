@@ -29,7 +29,6 @@ class SemanticDataDeserializer implements Deserializer {
 	 *
 	 * @since 1.9
 	 *
-	 * @return SemanticData
 	 * @throws OutOfBoundsException
 	 * @throws RuntimeException
 	 */
@@ -53,9 +52,6 @@ class SemanticDataDeserializer implements Deserializer {
 		return $semanticData;
 	}
 
-	/**
-	 * @return null
-	 */
 	private function doDeserialize( array $data, &$semanticData ): void {
 		$property = null;
 
@@ -89,9 +85,6 @@ class SemanticDataDeserializer implements Deserializer {
 		}
 	}
 
-	/**
-	 * @return DataItem
-	 */
 	private function doDeserializeDataItem( ?Property $property, array $data, $value, $semanticData ): void {
 		$dataItem = null;
 
@@ -146,10 +139,12 @@ class SemanticDataDeserializer implements Deserializer {
 	 * @note The serializer has to make sure to provide a complete data set
 	 * otherwise the subobject is neglected (of course one could set an error
 	 * value to the DIContainer but as of now that seems unnecessary)
-	 *
-	 * @return Container|null
 	 */
-	private function doDeserializeSubSemanticData( array $data, $id, ContainerSemanticData $semanticData ): Container {
+	private function doDeserializeSubSemanticData(
+		array $data,
+		$id,
+		ContainerSemanticData $semanticData
+	): Container {
 		if ( !isset( $data['sobj'] ) ) {
 			return new Container( $semanticData );
 		}

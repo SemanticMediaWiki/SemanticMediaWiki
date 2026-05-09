@@ -165,7 +165,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @param QueryResult $res
 	 * @param int $outputMode
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
 		if ( $outputMode !== SMW_OUTPUT_FILE ) {
@@ -185,9 +185,9 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @since 1.8
 	 *
 	 * @param QueryResult $results
-	 * @param $type
+	 * @param string $type
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	protected function getFeed( QueryResult $results, $type ): ?string {
 		global $wgFeedClasses;
@@ -276,7 +276,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @param array $row
 	 *
-	 * @return array
+	 * @return FeedItem|array
 	 */
 	protected function feedItem( array $row ): FeedItem|array {
 		$rowItems = [];
@@ -425,7 +425,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 		$user = RequestContext::getMain()->getUser();
 		$parserOptions = new ParserOptions( $user );
-		$parserOptions->setSuppressSectionEditLinks( true );
+		$parserOptions->setSuppressSectionEditLinks();
 
 		return MediaWikiServices::getInstance()
 			->getParser()->parse( $text, $title, $parserOptions )->getContentHolderText();

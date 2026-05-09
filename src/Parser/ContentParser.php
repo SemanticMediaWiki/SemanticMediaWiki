@@ -33,11 +33,9 @@ class ContentParser {
 
 	protected Parser $parser;
 
-	/** @var ParserOutput */
-	protected $parserOutput = null;
+	protected ?ParserOutput $parserOutput = null;
 
-	/** @var RevisionRecord */
-	protected $revision = null;
+	protected ?RevisionRecord $revision = null;
 
 	/** @var array */
 	protected $errors = [];
@@ -57,8 +55,6 @@ class ContentParser {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return Parser $parser
 	 */
 	public function setParser( Parser $parser ): void {
 		$this->parser = $parser;
@@ -165,7 +161,7 @@ class ContentParser {
 				$this->getTitle(),
 				$revision
 			);
-		} catch ( MWUnknownContentModelException $e ) {
+		} catch ( MWUnknownContentModelException ) {
 			$this->parserOutput = null;
 		}
 
@@ -187,7 +183,7 @@ class ContentParser {
 			}
 		}
 
-		$user = $user ?? RequestContext::getMain()->getUser();
+		$user ??= RequestContext::getMain()->getUser();
 		$parserOptions = new ParserOptions( $user );
 
 		// Use the InterfaceMessage marker to skip InTextAnnotationParser

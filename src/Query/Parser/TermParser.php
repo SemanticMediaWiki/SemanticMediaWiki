@@ -20,12 +20,12 @@ namespace SMW\Query\Parser;
 class TermParser {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private array $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private static array $cache = [];
 

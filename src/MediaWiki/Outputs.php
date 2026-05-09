@@ -36,52 +36,40 @@ class Outputs {
 	 * Protected member for temporarily storing header items.
 	 * Format $id => $headItem where $id is used only to avoid duplicate
 	 * items in the time before they are forwarded to the output.
-	 *
-	 * @var array
 	 */
-	protected static $headItems = [];
+	protected static array $headItems = [];
 
 	/**
 	 * Protected member for temporarily storing additional Javascript
 	 * snippets. Format $id => $scriptText where $id is used only to
 	 * avoid duplicate scripts in the time before they are forwarded
 	 * to the output.
-	 *
-	 * @var array
 	 */
-	protected static $scripts = [];
+	protected static array $scripts = [];
 
 	/**
 	 * Protected member for temporarily storing resource modules.
-	 *
-	 * @var array
 	 */
-	protected static $resourceModules = [];
+	protected static array $resourceModules = [];
 
 	/**
 	 * Protected member for temporarily storing resource modules.
-	 *
-	 * @var array
 	 */
-	protected static $resourceStyles = [];
+	protected static array $resourceStyles = [];
 
 	/**
 	 * Adds a resource module to the parser output.
 	 *
 	 * @since 1.5.3
-	 *
-	 * @param string $moduleName
 	 */
-	public static function requireResource( $moduleName ): void {
+	public static function requireResource( string $moduleName ): void {
 		self::$resourceModules[$moduleName] = $moduleName;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $stylesName
 	 */
-	public static function requireStyle( $stylesName ): void {
+	public static function requireStyle( string $stylesName ): void {
 		self::$resourceStyles[$stylesName] = $stylesName;
 	}
 
@@ -93,11 +81,8 @@ class Outputs {
 	 *
 	 * The id is used to avoid that the requirement for one script is
 	 * recorded multiple times in Outputs.
-	 *
-	 * @param string $id
-	 * @param string $script
 	 */
-	public static function requireScript( $id, $script ): void {
+	public static function requireScript( string $id, string $script ): void {
 		self::$scripts[$id] = $script;
 	}
 
@@ -107,11 +92,8 @@ class Outputs {
 	 *
 	 * The id is used to avoid that the requirement for one script is
 	 * recorded multiple times in Outputs.
-	 *
-	 * @param string $id
-	 * @param string $item
 	 */
-	public static function requireHeadItem( $id, $item = '' ): void {
+	public static function requireHeadItem( string $id, string $item = '' ): void {
 		self::$headItems[$id] = $item;
 	}
 
@@ -127,15 +109,13 @@ class Outputs {
 	 * Note that this is not required if the $parseroutput is further processed by
 	 * MediaWiki, but there are cases where the output is discarded and only its text
 	 * is used.
-	 *
-	 * @param ParserOutput $parserOutput
 	 */
 	public static function requireFromParserOutput( ParserOutput $parserOutput ): void {
 		// Note: we do not attempt to recover which head items where scripts here.
 
 		$parserOutputHeadItems = $parserOutput->getHeadItems();
 
-		self::$headItems = array_merge( (array)self::$headItems, $parserOutputHeadItems );
+		self::$headItems = array_merge( self::$headItems, $parserOutputHeadItems );
 
 		/// TODO Is the following needed?
 		if ( $parserOutput->getModules() ) {
@@ -153,21 +133,15 @@ class Outputs {
 	 * If the parser creates output for a normal wiki page, then the committed items will
 	 * also become part of the page cache so that they will correctly be added to all page
 	 * outputs built from this cache later on.
-	 *
-	 * @param Parser $parser
 	 */
 	public static function commitToParser( Parser $parser ): void {
 		$po = $parser->getOutput();
 
-		if ( isset( $po ) ) {
-			self::commitToParserOutput( $po );
-		}
+		self::commitToParserOutput( $po );
 	}
 
 	/**
 	 * Similar to Outputs::commitToParser() but acting on a ParserOutput object.
-	 *
-	 * @param ParserOutput $parserOutput
 	 */
 	public static function commitToParserOutput( ParserOutput $parserOutput ): void {
 		foreach ( self::$scripts as $key => $script ) {
@@ -193,8 +167,6 @@ class Outputs {
 	 * processing. In particular, data should not be committed to $wgOut in methods
 	 * that run during page parsing, since these would not run next time when the page
 	 * is produced from parser cache.
-	 *
-	 * @param OutputPage $output
 	 */
 	public static function commitToOutputPage( OutputPage $output ): void {
 		foreach ( self::$scripts as $script ) {

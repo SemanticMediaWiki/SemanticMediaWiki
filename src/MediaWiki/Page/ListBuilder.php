@@ -19,29 +19,19 @@ use SMW\Utils\HtmlColumns;
  */
 class ListBuilder {
 
-	/**
-	 * @var callable
-	 */
+	/** @var callable */
 	private $itemFormatter;
 
 	private ?Property $property = null;
 
 	private bool $isRTL = false;
 
-	/**
-	 * @var callable
-	 */
+	/** @var callable */
 	private $lastItemFormatter;
 
-	/**
-	 * @var Linker
-	 */
-	private $linker = false;
+	private Linker|false|null $linker = false;
 
-	/**
-	 * @var int
-	 */
-	private $sort = SORT_NATURAL;
+	private int $sort = SORT_NATURAL;
 
 	/**
 	 * @since 3.0
@@ -54,8 +44,6 @@ class ListBuilder {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Property $property
 	 */
 	public function setProperty( Property $property ): void {
 		$this->property = $property;
@@ -63,17 +51,13 @@ class ListBuilder {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ): void {
-		$this->isRTL = (bool)$isRTL;
+	public function isRTL( bool $isRTL ): void {
+		$this->isRTL = $isRTL;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param callable $itemFormatter
 	 */
 	public function setItemFormatter( callable $itemFormatter ): void {
 		$this->itemFormatter = $itemFormatter;
@@ -90,28 +74,20 @@ class ListBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Linker|false $linker
 	 */
-	public function setLinker( $linker ): void {
+	public function setLinker( Linker|false|null $linker ): void {
 		$this->linker = $linker;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $sort
 	 */
-	public function sort( $sort ): void {
+	public function sort( int $sort ): void {
 		$this->sort = $sort;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DIWikiPage[] $dataItems
-	 *
-	 * @return array
 	 */
 	public function getList( array $dataItems ): array {
 		return $this->buildList( $dataItems );
@@ -119,12 +95,8 @@ class ListBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DIWikiPage[] $dataItems
-	 *
-	 * @return string
 	 */
-	public function getColumnList( array $dataItems, $colsThreshold = 10 ): string {
+	public function getColumnList( array $dataItems, int $colsThreshold = 10 ): string {
 		$htmlColumns = new HtmlColumns();
 
 		$htmlColumns->setResponsiveCols();
@@ -144,9 +116,6 @@ class ListBuilder {
 		return $htmlColumns->getHtml();
 	}
 
-	/**
-	 * @return \non-empty-list<mixed>[]
-	 */
 	private function buildList( array $dataItems ): array {
 		$dataValueFactory = DataValueFactory::getInstance();
 

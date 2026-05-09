@@ -106,11 +106,12 @@ class SummaryTable {
 
 		$size = round( $count / $opts['columns'] );
 
+		$chunks = [];
 		if ( $this->thumbImage !== '' ) {
 			$chunks[] = $this->parameters;
 			$chunks[] = [ '' => $this->thumbImage ];
 		} else {
-			$chunks = array_chunk( $this->parameters, $size, true );
+			$chunks = array_chunk( $this->parameters, (int)$size, true );
 		}
 
 		foreach ( $chunks as $params ) {

@@ -55,71 +55,36 @@ class AskArgs extends Query {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_ISMULTI => true,
 				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-conditions',
 			],
 			'printouts' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_DEFAULT => '',
 				ParamValidator::PARAM_ISMULTI => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-printouts',
 			],
 			'parameters' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_DEFAULT => '',
 				ParamValidator::PARAM_ISMULTI => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-parameters',
 			],
 			'api_version' => [
 				ParamValidator::PARAM_TYPE => [ '2', '3' ],
 				ParamValidator::PARAM_DEFAULT => '2',
-				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-param-api-version',
 			],
 		];
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getParamDescription(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'conditions' => 'The query conditions, i.e. the requirements for a subject to be included',
-			'printouts'  => 'The query printouts, i.e. the properties to show per subject',
-			'parameters' => 'The query parameters, i.e. all non-condition and non-printout arguments',
+			'action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc'
+				=> 'apihelp-askargs-example-1',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples(): array {
-		return [
-			'api.php?action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc',
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }

@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" beStrictAboutTestsThatDoNotTestAnything="true" printerClass="SMW\Tests\PHPUnitResultPrinter" printerFile="tests/phpunit/PHPUnitResultPrinter.php" stderr="true" verbose="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          backupGlobals="false"
+          backupStaticAttributes="false"
+          colors="true" convertErrorsToExceptions="true"
+          convertNoticesToExceptions="true"
+          convertWarningsToExceptions="true"
+          stopOnError="false"
+          stopOnFailure="false"
+          stopOnIncomplete="false"
+          stopOnSkipped="false"
+          beStrictAboutTestsThatDoNotTestAnything="true"
+          printerClass="SMW\Tests\PHPUnitResultPrinter"
+          printerFile="tests/phpunit/PHPUnitResultPrinter.php"
+          stderr="true"
+          verbose="true"
+          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage includeUncoveredFiles="true">
     <include>
       <directory suffix=".php">src</directory>
@@ -46,12 +61,8 @@
   <php>
     <var name="smwgMainCacheType" value="hash"/>
     <var name="wgUseFileCache" value="false"/>
-    <var name="smwgEntityCollation" value="identity"/>
-    <var name="smwgFieldTypeFeatures" value="false"/>
-    <var name="smwgCreateProtectionRight" value="false"/>
     <var name="smwgSparqlDefaultGraph" value="http://example.org/phpunit-testrun"/>
     <var name="smwgSparqlQFeatures" value="false"/>
-    <var name="smwgElasticsearchProfile" value="false"/>
     <var name="smwgEnabledDeferredUpdate" value="false"/>
     <var name="smwgImportReqVersion" value="false"/>
     <var name="smwgEnabledFulltextSearch" value="true"/>
@@ -60,4 +71,7 @@
     <var name="benchmarkPageCopyCount" value="1000"/>
     <var name="benchmarkPageEditRepetitionCount" value="50"/>
   </php>
+  <extensions>
+    <extension class="MediaWikiTeardownPHPUnitExtension" />
+  </extensions>
 </phpunit>

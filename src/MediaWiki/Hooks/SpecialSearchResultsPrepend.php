@@ -104,7 +104,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		return $text;
 	}
 
-	private function section( string $msg, $attributes = [] ) {
+	private function section( string $msg ) {
 		return Html::rawElement(
 			'div',
 			[
@@ -121,7 +121,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		);
 	}
 
-	private function element( string $msg, string $html = '', $attributes = [] ) {
+	private function element( string $msg, string $html = '', array $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[

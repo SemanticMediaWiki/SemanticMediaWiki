@@ -43,6 +43,10 @@ class ResultCacheTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->blobStore
+			->method( 'canUse' )
+			->willReturn( true );
+
 		$this->container = $this->getMockBuilder( Container::class )
 			->disableOriginalConstructor()
 			->getMock();

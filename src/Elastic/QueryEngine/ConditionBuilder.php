@@ -6,6 +6,14 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\HierarchyLookup;
 use SMW\Options;
 use SMW\Query\Language\ClassDescription;
@@ -87,11 +95,6 @@ class ConditionBuilder {
 	 */
 	private $descriptionLog = [];
 
-	/**
-	 * @var bool
-	 */
-	protected $isConstantScore = true;
-
 	private bool $initServices = false;
 
 	/**
@@ -158,8 +161,6 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return FieldMapper
 	 */
 	public function getFieldMapper(): FieldMapper {
 		if ( $this->fieldMapper === null ) {
@@ -171,8 +172,6 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param []
 	 */
 	public function getQueryInfo(): array {
 		return $this->queryInfo;
@@ -189,8 +188,6 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param []
 	 */
 	public function getDescriptionLog(): array {
 		return $this->descriptionLog;
@@ -198,8 +195,6 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -207,8 +202,6 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $error
 	 */
 	public function addError( array $error ): void {
 		$this->errors[] = $error;
@@ -216,8 +209,6 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $dataItems
 	 */
 	public function prepareCache( array $dataItems ): void {
 		$this->store->getObjectIds()->warmUpCache( $dataItems );
@@ -225,8 +216,6 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return int
 	 */
 	public function getID( $dataItem ): int {
 		if ( $dataItem instanceof Property ) {
@@ -251,8 +240,6 @@ class ConditionBuilder {
 	 * @since 3.0
 	 *
 	 * @param Condition|array $params
-	 *
-	 * @return Condition
 	 */
 	public function newCondition( $params ): Condition {
 		return new Condition( $params );
@@ -261,12 +248,12 @@ class ConditionBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Description $description
-	 * @param bool $isConstantScore
-	 *
 	 * @return array
 	 */
-	public function makeFromDescription( Description $description, $isConstantScore = true ) {
+	public function makeFromDescription(
+		Description $description,
+		bool $isConstantScore = true
+	) {
 		$this->errors = [];
 		$this->queryInfo = [];
 
@@ -325,14 +312,17 @@ class ConditionBuilder {
 	 *
 	 * @param DataItem|null $dataItem
 	 * @param int $hierarchyDepth
-	 *
-	 * @return array
 	 */
 	public function findHierarchyMembers( ?DataItem $dataItem, $hierarchyDepth ): array {
 		$ids = [];
 
-		if ( $dataItem !== null && ( $members = $this->hierarchyLookup->getConsecutiveHierarchyList( $dataItem ) ) !== [] ) {
+		if ( $dataItem === null ) {
+			return $ids;
+		}
 
+		// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
+		$members = $this->hierarchyLookup->getConsecutiveHierarchyList( $dataItem );
+		if ( $members !== [] ) {
 			if ( $hierarchyDepth !== null ) {
 				$members = $hierarchyDepth == 0 ? [] : array_slice( $members, 0, $hierarchyDepth );
 			}
@@ -349,15 +339,14 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Description $description
-	 *
-	 * @return array
 	 */
-	public function interpretDescription( Description $description, $isConjunction = false ): Condition|array {
+	public function interpretDescription(
+		Description $description,
+		bool $isConjunction = false
+	): Condition|array {
 		$params = [];
 
-		if ( $this->initServices === false ) {
+		if ( !$this->initServices ) {
 			$this->initServices();
 		}
 
@@ -382,7 +371,7 @@ class ConditionBuilder {
 		}
 
 		if ( $description instanceof Conjunction ) {
-			$params = $this->conjunctionInterpreter->interpretDescription( $description, $isConjunction );
+			$params = $this->conjunctionInterpreter->interpretDescription( $description );
 		}
 
 		if ( $description instanceof Disjunction ) {
@@ -395,13 +384,10 @@ class ConditionBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ValueDescription $description
-	 * @param array &$options
-	 *
 	 * @return Condition
 	 */
 	public function interpretSomeValue( ValueDescription $description, array &$options ) {
-		if ( $this->initServices === false ) {
+		if ( !$this->initServices ) {
 			$this->initServices();
 		}
 

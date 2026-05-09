@@ -7,7 +7,6 @@ use MediaWiki\Html\Html;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\Time;
-use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Formatters\Infolink;
@@ -30,32 +29,17 @@ use Traversable;
  */
 class ValueListBuilder {
 
-	/**
-	 * @var int
-	 */
-	private $pagingLimit = 0;
+	private int $pagingLimit = 0;
 
-	/**
-	 * @var int|null
-	 */
 	private null|int|string $filterCount = null;
 
-	/**
-	 * @var int
-	 */
-	private $maxPropertyValues = 3;
+	private int $maxPropertyValues = 3;
 
-	/**
-	 * @var string
-	 */
-	private $languageCode = 'en';
+	private string $languageCode = 'en';
 
 	private bool $isRTL = false;
 
-	/**
-	 * @var bool
-	 */
-	private $localTimeOffset = false;
+	private bool $localTimeOffset = false;
 
 	/**
 	 * @since 3.0
@@ -65,8 +49,6 @@ class ValueListBuilder {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param integer
 	 */
 	public function getFilterCount(): null|int|string {
 		return $this->filterCount;
@@ -74,63 +56,48 @@ class ValueListBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $pagingLimit
 	 */
-	public function setPagingLimit( $pagingLimit ): void {
+	public function setPagingLimit( int $pagingLimit ): void {
 		$this->pagingLimit = $pagingLimit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ): void {
+	public function setLanguageCode( string $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ): void {
-		$this->isRTL = (bool)$isRTL;
+	public function isRTL( bool $isRTL ): void {
+		$this->isRTL = $isRTL;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param bool $localTimeOffset
 	 */
-	public function applyLocalTimeOffset( $localTimeOffset ): void {
-		$this->localTimeOffset = $localTimeOffset;
+	public function applyLocalTimeOffset( mixed $localTimeOffset ): void {
+		$this->localTimeOffset = (bool)$localTimeOffset;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $maxPropertyValues
 	 */
-	public function setMaxPropertyValues( $maxPropertyValues ): void {
+	public function setMaxPropertyValues( int $maxPropertyValues ): void {
 		$this->maxPropertyValues = $maxPropertyValues;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Property $property
-	 * @param DataItem $dataItem
-	 *
-	 * @return string
 	 */
 	public function createHtml( Property $property, DataItem $dataItem, array $query = [] ): string {
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
-		$from = isset( $query['from'] ) ? $query['from'] : 0;
-		$until = isset( $query['until'] ) ? $query['until'] : 0;
-		$filter = isset( $query['filter'] ) ? $query['filter'] : '';
+		$from = $query['from'] ?? 0;
+		$until = $query['until'] ?? 0;
+		$filter = $query['filter'] ?? '';
 
 		$this->filterCount = null;
 
@@ -261,7 +228,7 @@ class ValueListBuilder {
 				$start = 1;
 			} else {
 				$start = 0;
-				$ac = $ac - 1;
+				$ac -= 1;
 			}
 		} else {
 			$start = 0;
@@ -392,9 +359,6 @@ class ValueListBuilder {
 		);
 	}
 
-	/**
-	 * @return WikiPage[]
-	 */
 	private function filterByValue( Property $property, $value, RequestOptions $options ): array {
 		$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$queryParser = $queryFactory->newQueryParser();

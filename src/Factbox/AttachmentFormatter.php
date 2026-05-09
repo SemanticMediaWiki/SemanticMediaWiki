@@ -7,6 +7,7 @@ use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataValueFactory;
+use SMW\DataValues\WikiPageValue;
 use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
 use SMW\Store;
@@ -53,6 +54,10 @@ class AttachmentFormatter {
 			( new Property( '_MIME' ) )->getDiWikiPage()
 		);
 
+		if ( !$mime instanceof WikiPageValue ) {
+			return '';
+		}
+
 		$mime->setOption( $mime::SHORT_FORM, true );
 		$mime->setOutputFormat( 'LOCL' );
 
@@ -66,6 +71,10 @@ class AttachmentFormatter {
 		$mdat = $dataValueFactory->newDataValueByItem(
 			( new Property( '_MDAT' ) )->getDiWikiPage()
 		);
+
+		if ( !$mdat instanceof WikiPageValue ) {
+			return '';
+		}
 
 		$mdat->setOption( $mime::SHORT_FORM, true );
 		$mdat->setOutputFormat( 'LOCL' );
@@ -109,6 +118,10 @@ class AttachmentFormatter {
 			$dataItem,
 			$property
 		);
+
+		if ( !$dataValue instanceof WikiPageValue ) {
+			return;
+		}
 
 		$dataValue->setOption( $dataValue::NO_IMAGE, true );
 		$attachment = $dataValue->getShortWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );

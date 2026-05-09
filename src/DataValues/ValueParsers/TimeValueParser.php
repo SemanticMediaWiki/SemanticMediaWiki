@@ -44,8 +44,6 @@ class TimeValueParser implements ValueParser {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -67,8 +65,6 @@ class TimeValueParser implements ValueParser {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return Components|false
 	 */
 	public function parse( $userValue ): Components|false {
 		$this->errors = [];
@@ -231,7 +227,7 @@ class TimeValueParser implements ValueParser {
 			return false;
 		}
 
-		$timeoffset = $timeoffset + $timezoneoffset;
+		$timeoffset += $timezoneoffset;
 
 		// Apply am/pm
 		if ( $ampm !== false && ( $hours > 12 || $hours == 0 ) ) {
@@ -479,7 +475,9 @@ class TimeValueParser implements ValueParser {
 	 * Check if the string refers to a month name or abbreviation.
 	 */
 	private function parseMonthString( string $string, string &$monthname ): bool {
-		$monthnum = Localizer::getInstance()->getLang( $this->languageCode )->findMonthNumberByLabel( $string );
+		$monthnum = Localizer::getInstance()->getLang(
+			$this->languageCode
+		)->findMonthNumberByLabel( $string );
 
 		if ( $monthnum !== false ) {
 			$monthnum -= 1;

@@ -22,16 +22,13 @@ class ConjunctionInterpreter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Conjunction $description
-	 *
-	 * @return Condition
 	 */
 	public function interpretDescription( Conjunction $description ): array|Condition {
 		$params = [];
 
 		foreach ( $description->getDescriptions() as $desc ) {
-			if ( ( $cond = $this->conditionBuilder->interpretDescription( $desc, true ) ) instanceof Condition ) {
+			$cond = $this->conditionBuilder->interpretDescription( $desc, true );
+			if ( $cond instanceof Condition ) {
 				$params[] = $cond;
 			}
 		}

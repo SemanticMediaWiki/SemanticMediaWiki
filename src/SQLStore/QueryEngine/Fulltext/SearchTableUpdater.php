@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use SMW\MediaWiki\Connection\Database;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -85,15 +86,13 @@ class SearchTableUpdater {
 	 * @return bool
 	 */
 	public function exists( $sid, $pid ): bool {
-		$row = $this->connection->selectRow(
-			$this->searchTable->getTableName(),
-			[ 's_id' ],
-			[
-				's_id' => (int)$sid,
-				'p_id' => (int)$pid
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 's_id' ] )
+			->from( $this->searchTable->getTableName() )
+			->where( [ 's_id' => (int)$sid, 'p_id' => (int)$pid ] )
+			->limit( 1 )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row !== false;
 	}
@@ -107,15 +106,13 @@ class SearchTableUpdater {
 	 * @return false|string
 	 */
 	public function read( $sid, $pid ): false|string {
-		$row = $this->connection->selectRow(
-			$this->searchTable->getTableName(),
-			[ 'o_text' ],
-			[
-				's_id' => (int)$sid,
-				'p_id' => (int)$pid
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'o_text' ] )
+			->from( $this->searchTable->getTableName() )
+			->where( [ 's_id' => (int)$sid, 'p_id' => (int)$pid ] )
+			->limit( 1 )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false ) {
 			return false;
@@ -132,23 +129,21 @@ class SearchTableUpdater {
 	 * @param string $text
 	 */
 	public function update( $sid, $pid, $text ): void {
-		if ( trim( $text ) === '' || ( $indexableText = $this->textSanitizer->sanitize( $text ) ) === '' ) {
+		$indexableText = $this->textSanitizer->sanitize( $text );
+		if ( trim( $text ) === '' || $indexableText === '' ) {
 			$this->delete( $sid, $pid );
 			return;
 		}
 
-		$this->connection->update(
-			$this->searchTable->getTableName(),
-			[
+		$this->connection->newUpdateQueryBuilder()
+			->update( $this->searchTable->getTableName() )
+			->set( [
 				'o_text' => $indexableText,
-				'o_sort' => mb_substr( $text, 0, 32 )
-			],
-			[
-				's_id' => (int)$sid,
-				'p_id' => (int)$pid
-			],
-			__METHOD__
-		);
+				'o_sort' => mb_substr( $text, 0, 32 ),
+			] )
+			->where( [ 's_id' => (int)$sid, 'p_id' => (int)$pid ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
@@ -158,15 +153,15 @@ class SearchTableUpdater {
 	 * @param int $pid
 	 */
 	public function insert( $sid, $pid ): void {
-		$this->connection->insert(
-			$this->searchTable->getTableName(),
-			[
-				's_id' => (int)$sid,
-				'p_id' => (int)$pid,
-				'o_text' => ''
-			],
-			__METHOD__
-		);
+		$this->connection->newInsertQueryBuilder()
+			->insertInto( $this->searchTable->getTableName() )
+			->row( [
+				's_id'   => (int)$sid,
+				'p_id'   => (int)$pid,
+				'o_text' => '',
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
@@ -176,25 +171,22 @@ class SearchTableUpdater {
 	 * @param int $pid
 	 */
 	public function delete( $sid, $pid ): void {
-		$this->connection->delete(
-			$this->searchTable->getTableName(),
-			[
-				's_id' => (int)$sid,
-				'p_id' => (int)$pid
-			],
-			__METHOD__
-		);
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( $this->searchTable->getTableName() )
+			->where( [ 's_id' => (int)$sid, 'p_id' => (int)$pid ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
 	 * @since 2.5
 	 */
 	public function flushTable(): void {
-		$this->connection->delete(
-			$this->searchTable->getTableName(),
-			'*',
-			__METHOD__
-		);
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( $this->searchTable->getTableName() )
+			->where( IDatabase::ALL_ROWS )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }

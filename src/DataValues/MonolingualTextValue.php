@@ -75,17 +75,15 @@ class MonolingualTextValue extends AbstractMultiValue {
 	/**
 	 * @see AbstractMultiValue::getProperties
 	 */
-	public function getProperties(): void {
-		self::$properties;
+	public function getProperties(): ?array {
+		return self::$properties;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param $text
+	 * @param string $text
 	 * @param string $languageCode
-	 *
-	 * @return string
 	 */
 	public function getTextWithLanguageTag( string $text, $languageCode ): string {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
@@ -175,10 +173,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @see DataValue::loadDataItem
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {
@@ -281,7 +275,8 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return DataValue|null
 	 */
 	public function getTextValueByLanguageCode( $languageCode ) {
-		if ( ( $list = $this->toArray() ) === [] ) {
+		$list = $this->toArray();
+		if ( $list === [] ) {
 			return null;
 		}
 
@@ -305,11 +300,9 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return array
 	 */
 	public function toArray(): array {
-		if ( !$this->isValid() || $this->getDataItem() === [] ) {
+		if ( !$this->isValid() ) {
 			return [];
 		}
 
@@ -339,11 +332,9 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
 	public function toString(): string {
-		if ( !$this->isValid() || $this->getDataItem() === [] ) {
+		if ( !$this->isValid() ) {
 			return '';
 		}
 

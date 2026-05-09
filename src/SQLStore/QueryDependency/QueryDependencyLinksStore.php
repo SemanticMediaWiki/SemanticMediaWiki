@@ -133,7 +133,8 @@ class QueryDependencyLinksStore {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
-		if ( ( $subject = $changeOp->getSubject() ) !== null ) {
+		$subject = $changeOp->getSubject();
+		if ( $subject !== null ) {
 			$hash = $subject->getHash();
 		}
 
@@ -208,16 +209,12 @@ class QueryDependencyLinksStore {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				'COUNT(s_id) AS count'
-			],
-			[
-				'o_id' => $ids
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'COUNT(s_id) AS count' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 'o_id' => $ids ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		$count = $row ? $row->count : $count;
 
@@ -252,11 +249,6 @@ class QueryDependencyLinksStore {
 			return [];
 		}
 
-		$options = [
-			'LIMIT'     => $requestOptions->getLimit(),
-			'OFFSET'    => $requestOptions->getOffset(),
-		] + [ 'DISTINCT' ];
-
 		$conditions = [
 			'o_id' => $idlist
 		];
@@ -267,13 +259,15 @@ class QueryDependencyLinksStore {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$rows = $connection->select(
-			SQLStore::QUERY_LINKS_TABLE,
-			[ 's_id' ],
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [ 's_id' ] )
+			->distinct()
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->where( $conditions )
+			->limit( $requestOptions->getLimit() )
+			->offset( $requestOptions->getOffset() )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$targetLinksIdList = [];
 
@@ -401,7 +395,11 @@ class QueryDependencyLinksStore {
 
 		// SID < 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered)
-		if ( $sid < 1 || ( $sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash ) ) < 1 ) {
+		if ( $sid >= 1 ) {
+			$sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash );
+		}
+
+		if ( $sid < 1 ) {
 			$sid = $this->dependencyLinksTableUpdater->createId( $subject, $hash );
 		}
 
@@ -440,7 +438,8 @@ class QueryDependencyLinksStore {
 			return false;
 		}
 
-		if ( $query === null || ( $subject = $query->getContextPage() ) === null ) {
+		$subject = $query->getContextPage();
+		if ( $subject === null ) {
 			return false;
 		}
 
@@ -467,20 +466,18 @@ class QueryDependencyLinksStore {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				's_id'
-			],
-			[ 's_id' => $sid ],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 's_id' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $sid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		$title = $subject->getTitle();
 
 		// https://phabricator.wikimedia.org/T167943
 		if ( !isset( $suppressUpdateCache[$hash] ) && $title !== null ) {
-			$suppressUpdateCache[$hash] = wfTimestamp( TS_MW, $title->getTouched() ) + $this->skewFactorForDependencyUpdateInSeconds;
+			$suppressUpdateCache[$hash] = (string)( (int)wfTimestamp( TS_MW, $title->getTouched() ) + $this->skewFactorForDependencyUpdateInSeconds );
 		}
 
 		// Check whether the query has already been registered and only then

@@ -35,8 +35,6 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getId(): int {
 		return $this->id;
@@ -44,8 +42,6 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return WikiPage
 	 */
 	public function getSubject(): WikiPage {
 		return WikiPage::doUnserialize( $this->data['subject']['serialization'] );
@@ -53,19 +49,13 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $type
-	 *
-	 * @return bool
 	 */
-	public function isType( $type ): bool {
+	public function isType( string $type ): bool {
 		return $this->type === $type;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $priorityDeleteList
 	 */
 	public function setPriorityDeleteList( array $priorityDeleteList ): void {
 		$this->priorityDeleteList = $priorityDeleteList;
@@ -73,8 +63,6 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getPriorityDeleteList(): array {
 		return $this->priorityDeleteList;
@@ -82,18 +70,13 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $key
-	 * @param mixed $value
 	 */
-	public function setField( $key, $value ): void {
+	public function setField( string $key, mixed $value ): void {
 		$this->data[$key] = $value;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $text
 	 */
 	public function setTextBody( string $text ): void {
 		if ( $text !== '' ) {
@@ -103,8 +86,6 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Document $document
 	 */
 	public function addSubDocument( Document $document ): void {
 		$this->subDocuments[$document->getId()] = $document;
@@ -121,30 +102,22 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $id
-	 *
-	 * @return bool
 	 */
-	public function hasSubDocumentById( $id ): bool {
+	public function hasSubDocumentById( int $id ): bool {
 		return isset( $this->subDocuments[$id] );
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $id
-	 *
-	 * @return Document
 	 */
-	public function getSubDocumentById( $id ) {
+	public function getSubDocumentById( int $id ): Document {
 		return $this->subDocuments[$id];
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @return Document[]|[]
+	 * @return Document[]
 	 */
 	public function getSubDocuments(): array {
 		return $this->subDocuments;
@@ -152,8 +125,6 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function toArray(): array {
 		return [

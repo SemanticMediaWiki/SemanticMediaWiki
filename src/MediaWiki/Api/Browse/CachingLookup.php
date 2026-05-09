@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 use Onoi\Cache\Cache;
+use SMW\Store;
 use SMW\Utils\Timer;
 
 /**
@@ -60,10 +61,13 @@ class CachingLookup {
 			]
 		);
 
-		if ( $this->cacheTTL !== false && ( $res = $this->cache->fetch( $hash ) ) !== false ) {
-			$res['meta']['isFromCache'] = true;
-			$res['meta']['queryTime'] = Timer::getElapsedTime( __METHOD__, 5 );
-			return $res;
+		if ( $this->cacheTTL !== false ) {
+			$res = $this->cache->fetch( $hash );
+			if ( $res !== false ) {
+				$res['meta']['isFromCache'] = true;
+				$res['meta']['queryTime'] = Timer::getElapsedTime( __METHOD__, 5 );
+				return $res;
+			}
 		}
 
 		$res = $this->lookup->lookup(

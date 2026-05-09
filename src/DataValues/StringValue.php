@@ -5,6 +5,7 @@ namespace SMW\DataValues;
 use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\DataValues\ValueFormatters\ValueFormatter;
 
 /**
  * Implements a string/text based datavalue suitable for defining text properties.

@@ -3,17 +3,19 @@
 namespace SMW\Tests\Unit\MediaWiki\Connection;
 
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Connection\Query;
 use SMW\MediaWiki\Connection\TransactionHandler;
 use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
+use Wikimedia\Rdbms\ReplaceQueryBuilder;
 use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\UpdateQueryBuilder;
 
 /**
  * @covers \SMW\MediaWiki\Connection\Database
@@ -45,18 +47,6 @@ class DatabaseTest extends TestCase {
 		$this->assertInstanceOf(
 			Database::class,
 			new Database( $this->connRef, $this->transactionHandler )
-		);
-	}
-
-	public function testNewQuery() {
-		$instance = new Database(
-			$this->connRef,
-			$this->transactionHandler
-		);
-
-		$this->assertInstanceOf(
-			Query::class,
-			$instance->newQuery()
 		);
 	}
 
@@ -130,101 +120,14 @@ class DatabaseTest extends TestCase {
 		);
 	}
 
-	public function testSelectMethod() {
+	public function testQueryPassesSqlThroughToUnderlyingConnection() {
 		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'select' ] )
-			->getMockForAbstractClass();
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->willReturn( $resultWrapper );
-
-		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
-
-		$instance = new Database(
-			new ConnRef(
-				[
-					'read' => $connectionProvider
-				]
-			),
-			$this->transactionHandler
-		);
-
-		$this->assertInstanceOf(
-			ResultWrapper::class,
-			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
-		);
-	}
-
-	public function testSelectFieldMethod() {
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'selectField' ] )
-			->getMockForAbstractClass();
-
-		$database->expects( $this->once() )
-			->method( 'selectField' )
-			->with( 'Foo' )
-			->willReturn( 'Bar' );
-
-		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
-
-		$instance = new Database(
-			new ConnRef(
-				[
-					'read' => $connectionProvider
-				]
-			),
-			$this->transactionHandler
-		);
-
-		$this->assertEquals(
-			'Bar',
-			$instance->selectField( 'Foo', 'Bar', '', __METHOD__, [] )
-		);
-	}
-
-	/**
-	 * @dataProvider querySqliteProvider
-	 */
-	public function testQueryOnSQLite( $query, $expected ) {
-		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getType' ] )
-			->getMockForAbstractClass();
-
-		$read->expects( $this->any() )
-			->method( 'getType' )
-			->willReturn( 'sqlite' );
 
 		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$readConnectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $read );
 
 		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
@@ -233,7 +136,7 @@ class DatabaseTest extends TestCase {
 
 		$write->expects( $this->once() )
 			->method( 'query' )
-			->with( $expected )
+			->with( 'SELECT 1' )
 			->willReturn( $resultWrapper );
 
 		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
@@ -256,53 +159,7 @@ class DatabaseTest extends TestCase {
 
 		$this->assertInstanceOf(
 			ResultWrapper::class,
-			$instance->query( $query )
-		);
-	}
-
-	public function querySqliteProvider() {
-		$provider = [
-			[ 'TEMPORARY', 'TEMP' ],
-			[ 'RAND', 'RANDOM' ],
-			[ 'ENGINE=MEMORY', '' ],
-			[ 'DROP TEMP', 'DROP' ]
-		];
-
-		return $provider;
-	}
-
-	public function testSelectThrowsException() {
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'select' ] )
-			->getMockForAbstractClass();
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->willThrowException( new RuntimeException( 'Database error' ) );
-
-		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
-
-		$instance = new Database(
-			new ConnRef(
-				[
-					'read'  => $connectionProvider
-				]
-			),
-			$this->transactionHandler
-		);
-
-		$this->expectException( 'RuntimeException' );
-
-		$this->assertInstanceOf(
-			ResultWrapper::class,
-			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
+			$instance->query( 'SELECT 1' )
 		);
 	}
 
@@ -515,7 +372,8 @@ class DatabaseTest extends TestCase {
 			->getMock();
 
 		$read->expects( $this->once() )
-			->method( 'listTables' );
+			->method( 'listTables' )
+			->willReturn( [] );
 
 		$readConnectionProvider->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -536,12 +394,8 @@ class DatabaseTest extends TestCase {
 	public function testDoQueryWithAutoCommit() {
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ] )
+			->setMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'query' ] )
 			->getMockForAbstractClass();
-
-		$database->expects( $this->any() )
-			->method( 'getType' )
-			->willReturn( 'mysql' );
 
 		$database->expects( $this->any() )
 			->method( 'getFlag' )
@@ -553,13 +407,13 @@ class DatabaseTest extends TestCase {
 		$database->expects( $this->once() )
 			->method( 'setFlag' );
 
+		$database->expects( $this->once() )
+			->method( 'query' )
+			->willReturn( new FakeResultWrapper( [] ) );
+
 		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$readConnectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
 
 		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
@@ -621,5 +475,73 @@ class DatabaseTest extends TestCase {
 			[ 'sqlite' ],
 			[ 'postgres' ]
 		];
+	}
+
+	public function testNewInsertQueryBuilderDelegatesToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( InsertQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $builder );
+
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertSame( $builder, $instance->newInsertQueryBuilder() );
+	}
+
+	public function testNewUpdateQueryBuilderDelegatesToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( UpdateQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $builder );
+
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertSame( $builder, $instance->newUpdateQueryBuilder() );
+	}
+
+	public function testNewDeleteQueryBuilderDelegatesToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( DeleteQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $builder );
+
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertSame( $builder, $instance->newDeleteQueryBuilder() );
+	}
+
+	public function testNewReplaceQueryBuilderDelegatesToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( ReplaceQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newReplaceQueryBuilder' )
+			->willReturn( $builder );
+
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertSame( $builder, $instance->newReplaceQueryBuilder() );
 	}
 }

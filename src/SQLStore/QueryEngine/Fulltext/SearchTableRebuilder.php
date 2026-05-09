@@ -281,14 +281,13 @@ class SearchTableRebuilder {
 			}
 		}
 
-		$rows = $this->connection->select(
-			$table,
-			$fetchFields,
-			[],
-			__METHOD__
-		);
+		$rows = $this->connection->newSelectQueryBuilder()
+			->select( $fetchFields )
+			->from( $table )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
-		if ( $rows === false || $rows === null ) {
+		if ( !$rows->numRows() ) {
 			$this->skippedTables[$table] = '[EMPTY]';
 			return $this->skippedTables[$table];
 		}

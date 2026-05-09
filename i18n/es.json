@@ -821,7 +821,7 @@
 	"apihelp-browsebysubject-summary": "Módulo de la API para recuperar información sobre algún tema.",
 	"apihelp-smwtask-summary": "Módulo de la API para ejecutar tareas relacionadas con Semantic MediaWiki (para uso interno solamente, no apto para uso público).",
 	"apihelp-smwbrowse-summary": "Módulo API para añadir compatibilidad con las actividades de exploración en diferentes tipos de entidades de Semantic MediaWiki.",
-	"apihelp-ask-parameter-api-version": "Formato de salida:\n;2:Formato compatible con el formato antiguo utilizando {} en la lista de resultados.\n;3:Formato experimental utilizando [] en la lista de resultados.",
+	"apihelp-ask-param-api-version": "Formato de salida:\n;2:Formato compatible con el formato antiguo utilizando {} en la lista de resultados.\n;3:Formato experimental utilizando [] en la lista de resultados.",
 	"smw-api-invalid-parameters": "Parámetros no válidos: \"$1\"",
 	"smw-parser-recursion-level-exceeded": "Se ha excedido el límite de $1 recursiones durante el análisis. Se sugiere validar la estructura de la plantilla o, de ser preciso, ajustar el parámetro <code>$maxRecursionDepth</code>.",
 	"smw-property-page-list-count": "Se {{PLURAL:$1|muestra $1 página que utiliza|muestran $1 páginas que utilizan}} esta propiedad.",

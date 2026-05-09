@@ -48,6 +48,7 @@ class ReplicationStatus {
 			throw new RuntimeException( "`$key` as accessor is unknown!" );
 		}
 
+		// @phan-suppress-next-line PhanParamTooFewUnpack
 		return $this->{$key}( ...$args );
 	}
 
@@ -110,7 +111,6 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return bool|Time
 	 * @throws RuntimeException
 	 */
 	public function getModificationDate( $id ): false|Time {
@@ -219,8 +219,8 @@ class ReplicationStatus {
 			}
 
 			foreach ( $result['hits'] as $key => $value ) {
-				foreach ( $value as $key => $v ) {
-					if ( $key === '_source' ) {
+				foreach ( $value as $k => $v ) {
+					if ( $k === '_source' ) {
 						$time = Time::newFromJD(
 							end( $v[$pid][$field] ),
 							Time::CM_GREGORIAN,

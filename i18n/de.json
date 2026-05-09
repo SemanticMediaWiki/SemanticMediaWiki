@@ -971,7 +971,7 @@
 	"apihelp-browsebysubject-summary": "API-Modul zum Abrufen von Informationen zu einem Objekt (Seite oder Unterobjekt).",
 	"apihelp-smwtask-summary": "API-Modul zum Ausführen Semantic MediaWiki betreffender Aufgaben, das nur von der Software selbst und nicht von Außen genutzt wird.",
 	"apihelp-smwbrowse-summary": "API-Modul zur Unterstützung von Aktivitäten beim Browsen für unterschiedliche Objekttypen in Semantic MediaWiki.",
-	"apihelp-ask-parameter-api-version": "Ausgabeformat:\n;2:Rückwärtskompatibles Format, das {} für Ergebnislisten verwendet.\n;3:Experimentelles Format, das [] für Ergebnislisten verwendet.",
+	"apihelp-ask-param-api-version": "Ausgabeformat:\n;2:Rückwärtskompatibles Format, das {} für Ergebnislisten verwendet.\n;3:Experimentelles Format, das [] für Ergebnislisten verwendet.",
 	"apihelp-smwtask-param-task": "Definiert den Aufgabentyp",
 	"apihelp-smwtask-param-params": "Im JSON-Format codierte Parameter, die mit den Anforderungen des ausgewählten Aufgabentyps übereinstimmen",
 	"smw-apihelp-smwtask-example-update": "Beispiel zur Ausführung einer Aktualisierungsaufgabe bezüglich eines bestimmten Datensubjekts:",

@@ -80,7 +80,8 @@ class SpecialFacetedSearch extends SpecialPage {
 			GetPreferences::FACETEDSEARCH_PROFILE_PREFERENCE, ''
 		);
 
-		if ( ( $profileName = $request->getVal( 'profile', $default_profile ) ) === '' ) {
+		$profileName = $request->getVal( 'profile', $default_profile );
+		if ( $profileName === '' ) {
 			$profileName = $default_profile;
 		}
 

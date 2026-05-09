@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Specials\PageProperty;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\Formatters\Infolink;
@@ -62,12 +63,8 @@ class PageBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DIWikiPage[]|[] $results
-	 *
-	 * @return string
 	 */
-	public function buildHtml( array $results ) {
+	public function buildHtml( array $results ): string {
 		if ( count( $results ) == 0 ) {
 			return Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE );
 		}

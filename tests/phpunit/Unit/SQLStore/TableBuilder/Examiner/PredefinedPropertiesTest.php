@@ -7,6 +7,8 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties
@@ -18,6 +20,9 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class PredefinedPropertiesTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $spyMessageReporter;
 	private $store;
@@ -56,16 +61,28 @@ class PredefinedPropertiesTest extends TestCase {
 			->method( 'getPropertyInterwiki' )
 			->willReturn( 'Foo' );
 
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$capturedReplaceTables = [];
+		$capturedReplaceRows = [];
+		$capturedReplaceUniqueIndexFields = [];
+		$replaceBuilder = $this->createMockReplaceQueryBuilder(
+			$capturedReplaceTables,
+			$capturedReplaceRows,
+			$capturedReplaceUniqueIndexFields
+		);
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'replace' );
+			->method( 'newReplaceQueryBuilder' )
+			->willReturn( $replaceBuilder );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -90,6 +107,9 @@ class PredefinedPropertiesTest extends TestCase {
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->check();
+
+		$this->assertSame( [ SQLStore::ID_TABLE ], $capturedReplaceTables );
+		$this->assertSame( [ [ 'smw_id' ] ], $capturedReplaceUniqueIndexFields );
 	}
 
 	public function testCheckOnValidProperty_NotFixed() {
@@ -106,20 +126,22 @@ class PredefinedPropertiesTest extends TestCase {
 			->setMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
 			->getMock();
 
+		$capturedWheres = [];
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ (object)$row ], $capturedWheres );
+
+		$replaceBuilder = $this->createMockReplaceQueryBuilder();
+
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->willReturnCallback( static function ( $table, $vars, $conds ) use ( $row ) {
-				if ( is_array( $conds ) && isset( $conds['smw_title'] ) && $conds['smw_title'] === 'Foo'
-					&& isset( $conds['smw_namespace'] ) && $conds['smw_namespace'] === SMW_NS_PROPERTY
-					&& isset( $conds['smw_subobject'] ) && $conds['smw_subobject'] === '' ) {
-					return (object)$row;
-				}
-				return (object)$row;
-			} );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newReplaceQueryBuilder' )
+			->willReturn( $replaceBuilder );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -144,6 +166,15 @@ class PredefinedPropertiesTest extends TestCase {
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->check();
+
+		$this->assertContains(
+			[
+				'smw_title' => 'Foo',
+				'smw_namespace' => SMW_NS_PROPERTY,
+				'smw_subobject' => ''
+			],
+			$capturedWheres
+		);
 	}
 
 	public function testCheckOnInvalidProperty() {

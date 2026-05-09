@@ -7,6 +7,7 @@ use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\EntityCache;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
@@ -140,29 +141,28 @@ class purgeEntityCache extends Maintenance {
 	private function fetchRows() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$this->lastId = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$this->lastId = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		return $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject'
-			],
-			[
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				"smw_subobject=''",
 				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
-			],
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+			] )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	private function canExecute() {
@@ -221,7 +221,7 @@ class purgeEntityCache extends Maintenance {
 			try {
 				$property = Property::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				//
 			}
 		}

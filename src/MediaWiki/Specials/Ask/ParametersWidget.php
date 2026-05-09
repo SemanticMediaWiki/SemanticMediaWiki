@@ -22,38 +22,26 @@ class ParametersWidget {
 
 	private static bool $isTooltipDisplay = false;
 
-	/**
-	 * @var int
-	 */
-	private static $defaultLimit = 50;
+	private static int $defaultLimit = 50;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param bool $isTooltipDisplay
 	 */
-	public static function setTooltipDisplay( $isTooltipDisplay ): void {
+	public static function setTooltipDisplay( mixed $isTooltipDisplay ): void {
 		self::$isTooltipDisplay = (bool)$isTooltipDisplay;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $defaultLimit
 	 */
-	public static function setDefaultLimit( $defaultLimit ): void {
+	public static function setDefaultLimit( int $defaultLimit ): void {
 		self::$defaultLimit = $defaultLimit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return string
 	 */
-	public static function fieldset( Title $title, array $parameters ) {
+	public static function fieldset( Title $title, array $parameters ): string {
 		$toggle = Html::rawElement(
 			'span',
 			[
@@ -124,10 +112,6 @@ class ParametersWidget {
 	 * based on the getParameters() value for that format's query printer.
 	 *
 	 * @since 1.8
-	 *
-	 * @param array $values The current values for the parameters (name => value)
-	 *
-	 * @return string
 	 */
 	public static function parameterList( array $values ): string {
 		$format = 'broadtable';
@@ -148,7 +132,7 @@ class ParametersWidget {
 		$resultHtml = '';
 
 		// Top info text for a collapsed option box
-		if ( self::$isTooltipDisplay === true ) {
+		if ( self::$isTooltipDisplay ) {
 			$resultHtml .= Html::element(
 				'div',
 				[
@@ -200,9 +184,6 @@ class ParametersWidget {
 		return $resultHtml;
 	}
 
-	/**
-	 * @return non-falsy-string[]
-	 */
 	private static function optionList( array $definitions, array $values ): array {
 		$html = [];
 
@@ -260,13 +241,11 @@ class ParametersWidget {
 		$info = '';
 		$class = '';
 
-		if ( self::$isTooltipDisplay === true ) {
+		if ( self::$isTooltipDisplay ) {
 			$class = 'smw-ask-info';
 		}
 
-		if ( $definition->getMessage() !== null ) {
-			$info = Message::get( $definition->getMessage(), Message::TEXT, Message::USER_LANGUAGE );
-		}
+		$info = Message::get( $definition->getMessage(), Message::TEXT, Message::USER_LANGUAGE );
 
 		return HtmlDivTable::cell(
 			Html::rawElement(
@@ -329,10 +308,7 @@ class ParametersWidget {
 
 		// Parameters description text
 		if ( !self::$isTooltipDisplay ) {
-
-			if ( $definition->getMessage() !== null ) {
-				$info = Message::get( $definition->getMessage(), Message::PARSE, Message::USER_LANGUAGE );
-			}
+			$info = Message::get( $definition->getMessage(), Message::PARSE, Message::USER_LANGUAGE );
 
 			$description = Html::rawElement(
 				'span',

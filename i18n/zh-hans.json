@@ -996,7 +996,7 @@
 	"apihelp-browsebysubject-summary": "检索主体有关信息的API模块。",
 	"apihelp-smwtask-summary": "执行语义MediaWiki相关任务的API模块（仅供内部使用，不供公开使用）。",
 	"apihelp-smwbrowse-summary": "支持浏览语义MediaWiki内不同实体类型的活动的API模块。",
-	"apihelp-ask-parameter-api-version": "输出格式：\n;2:向后兼容格式，结果列表使用{}。\n;3:实验格式，结果列表使用[]。",
+	"apihelp-ask-param-api-version": "输出格式：\n;2:向后兼容格式，结果列表使用{}。\n;3:实验格式，结果列表使用[]。",
 	"apihelp-smwtask-param-task": "定义任务类型",
 	"apihelp-smwtask-param-params": "匹配所选任务类型要求的JSON编码参数",
 	"smw-apihelp-smwtask-example-update": "给特定主体运行更新任务的示例：",

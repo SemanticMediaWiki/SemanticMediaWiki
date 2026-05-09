@@ -101,18 +101,18 @@ class ConceptCache {
 		}
 
 		// TODO: catch db exception
-		$db->delete(
-			SQLStore::CONCEPT_CACHE_TABLE,
-			[ 'o_id' => $cid ],
-			__METHOD__
-		);
+		$db->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::CONCEPT_CACHE_TABLE )
+			->where( [ 'o_id' => $cid ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$concCacheTableName = $db->tablename( SQLStore::CONCEPT_CACHE_TABLE );
+		$concCacheTableName = $db->tableName( SQLStore::CONCEPT_CACHE_TABLE );
 
 		// MySQL just uses INSERT IGNORE, no extra conditions
 		$where = $querySegment->where;
 
-		if ( $db->getType() == 'postgres' ) {
+		if ( $db->getType() === 'postgres' ) {
 			// PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 			// This code doesn't work and has created all sorts of issues therefore use LEFT JOIN instead
 			// http://people.planetpostgresql.org/dfetter/index.php?/archives/48-Adding-Only-New-Rows-INSERT-IGNORE,-Done-Right.html
@@ -123,8 +123,28 @@ class ConceptCache {
 			$querySegment->from = str_replace( 'INNER JOIN', 'LEFT JOIN', $querySegment->from );
 		}
 
-		$db->query( "INSERT " . ( ( $db->getType() == 'postgres' ) ? '' : 'IGNORE ' ) .
-			"INTO $concCacheTableName" .
+		// Platform-specific INSERT verb. Postgres dedups via the LEFT JOIN
+		// substitution above, so the INSERT verb has no IGNORE clause. SQLite
+		// uses INSERT OR IGNORE; MySQL uses INSERT IGNORE.
+		//
+		// This is residual planner-side raw SQL: the cache-population query
+		// stitches in `$querySegment->from`, an arbitrary INNER/LEFT JOIN
+		// chain composed by the QuerySegment planner as a stringly-typed SQL
+		// fragment (see SomePropertyInterpreter / DescriptionInterpreter).
+		// `IDatabase::insertSelect()` only accepts structured `$selectJoinConds`
+		// (`[ alias => [ JOIN_TYPE, condition ] ]`), so converting requires
+		// restructuring the planner IR — out of scope for the QueryBuilder
+		// migration. The INSERT verb dispatch stays manual until that
+		// restructuring or an upstream MW core API extension lands.
+		if ( $db->getType() === 'postgres' ) {
+			$insertVerb = 'INSERT INTO';
+		} elseif ( $db->getType() === 'sqlite' ) {
+			$insertVerb = 'INSERT OR IGNORE INTO';
+		} else {
+			$insertVerb = 'INSERT IGNORE INTO';
+		}
+
+		$db->query( "$insertVerb $concCacheTableName" .
 			" SELECT DISTINCT {$querySegment->joinfield} AS s_id, $cid AS o_id FROM " .
 			$db->tableName( $querySegment->joinTable ) . " AS {$querySegment->alias}" .
 			$querySegment->from .
@@ -133,12 +153,15 @@ class ConceptCache {
 			ISQLPlatform::QUERY_CHANGE_ROWS
 		);
 
-		$db->update(
-			'smw_fpt_conc',
-			[ 'cache_date' => strtotime( "now" ), 'cache_count' => $db->affectedRows() ],
-			[ 's_id' => $cid ],
-			__METHOD__
-		);
+		$db->newUpdateQueryBuilder()
+			->update( 'smw_fpt_conc' )
+			->set( [
+				'cache_date'  => strtotime( "now" ),
+				'cache_count' => $db->affectedRows(),
+			] )
+			->where( [ 's_id' => $cid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		return [];
 	}
@@ -190,18 +213,18 @@ class ConceptCache {
 
 		$db = $this->store->getConnection();
 
-		$db->delete(
-			SQLStore::CONCEPT_CACHE_TABLE,
-			[ 'o_id' => $conceptId ],
-			__METHOD__
-		);
+		$db->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::CONCEPT_CACHE_TABLE )
+			->where( [ 'o_id' => $conceptId ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$db->update(
-			'smw_fpt_conc',
-			[ 'cache_date' => null, 'cache_count' => null ],
-			[ 's_id' => $conceptId ],
-			__METHOD__
-		);
+		$db->newUpdateQueryBuilder()
+			->update( 'smw_fpt_conc' )
+			->set( [ 'cache_date' => null, 'cache_count' => null ] )
+			->where( [ 's_id' => $conceptId ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
@@ -222,12 +245,12 @@ class ConceptCache {
 
 		// TODO: catch db exception
 
-		$row = $db->selectRow(
-			'smw_fpt_conc',
-			[ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ],
-			[ 's_id' => $cid ],
-			__METHOD__
-		);
+		$row = $db->newSelectQueryBuilder()
+			->select( [ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ] )
+			->from( 'smw_fpt_conc' )
+			->where( [ 's_id' => $cid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false ) {
 			return null;

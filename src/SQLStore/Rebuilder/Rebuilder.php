@@ -14,6 +14,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\Lru;
+use stdClass;
 
 /**
  * @private
@@ -119,19 +120,17 @@ class Rebuilder {
 	public function getMaxId(): int {
 		$db = $this->store->getConnection( 'mw.db' );
 
-		$maxByPageId = (int)$db->selectField(
-			'page',
-			'MAX(page_id)',
-			'',
-			__METHOD__
-		);
+		$maxByPageId = (int)$db->newSelectQueryBuilder()
+			->select( [ 'MAX(page_id)' ] )
+			->from( 'page' )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		$maxBySmwId = (int)$db->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$maxBySmwId = (int)$db->newSelectQueryBuilder()
+			->select( [ 'MAX(smw_id)' ] )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		return max( $maxByPageId, $maxBySmwId );
 	}
@@ -237,9 +236,8 @@ class Rebuilder {
 		// MWCallableUpdate::doUpdate: transaction round 'SMW\MediaWiki\Jobs\RefreshJob::run' already started"
 		$this->propertyTableIdReferenceDisposer->waitOnTransactionIdle();
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		$res = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
@@ -247,14 +245,15 @@ class Rebuilder {
 				'smw_subobject',
 				'smw_sortkey',
 				'smw_proptable_hash',
-				'smw_rev'
-			],
-			[
+				'smw_rev',
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				"smw_id >= $id ",
-				" smw_id < " . $connection->addQuotes( $id + $this->iterationLimit )
-			],
-			__METHOD__
-		);
+				" smw_id < " . $connection->addQuotes( $id + $this->iterationLimit ),
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $res as $row ) {
 
@@ -399,25 +398,21 @@ class Rebuilder {
 		// nothing found, check if there will be more pages later on
 		if ( $emptyRange && $nextPosition > SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 
-			$nextByPageId = (int)$db->selectField(
-				'page',
-				'page_id',
-				"page_id >= $nextPosition",
-				__METHOD__,
-				[
-					'ORDER BY' => "page_id ASC"
-				]
-			);
+			$nextByPageId = (int)$db->newSelectQueryBuilder()
+				->select( [ 'page_id' ] )
+				->from( 'page' )
+				->where( [ "page_id >= $nextPosition" ] )
+				->orderBy( 'page_id', 'ASC' )
+				->caller( __METHOD__ )
+				->fetchField();
 
-			$nextBySmwId = (int)$db->selectField(
-				SQLStore::ID_TABLE,
-				'smw_id',
-				"smw_id >= $nextPosition",
-				__METHOD__,
-				[
-					'ORDER BY' => "smw_id ASC"
-				]
-			);
+			$nextBySmwId = (int)$db->newSelectQueryBuilder()
+				->select( [ 'smw_id' ] )
+				->from( SQLStore::ID_TABLE )
+				->where( [ "smw_id >= $nextPosition" ] )
+				->orderBy( 'smw_id', 'ASC' )
+				->caller( __METHOD__ )
+				->fetchField();
 
 			// Next position is determined by the pool with the maxId
 			$nextPosition = $nextBySmwId != 0 && $nextBySmwId > $nextByPageId ? $nextBySmwId : $nextByPageId;
@@ -426,7 +421,7 @@ class Rebuilder {
 		$id = $nextPosition ?: -1;
 	}
 
-	private function hasSkippableRevision( $title, bool $row = false ): bool {
+	private function hasSkippableRevision( $title, stdClass|false $row = false ): bool {
 		if ( $this->getOption( 'force-update' ) ) {
 			return false;
 		}
@@ -438,7 +433,7 @@ class Rebuilder {
 		$this->dispatchedEntities[] = [ $key => $row->smw_title . '#' . $row->smw_namespace . '#' . $row->smw_subobject ];
 	}
 
-	private function addJob( $title, $row = false ): void {
+	private function addJob( $title, stdClass|false $row = false ): void {
 		$hash = $title->getDBKey() . '#' . $title->getNamespace();
 		$this->lru->set( $hash, true );
 

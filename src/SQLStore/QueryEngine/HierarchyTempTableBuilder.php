@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 use RuntimeException;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
-use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,6 +24,12 @@ class HierarchyTempTableBuilder {
 	 */
 	private $hierarchyCache = [];
 
+	/**
+	 * Hierarchy-table definitions keyed by type (`'class'` / `'property'`),
+	 * each entry shaped as `[ bareTableName, depth ]`. Names are stored
+	 * bare; QueryBuilder consumers (insertSelect, newSelectQueryBuilder)
+	 * apply the prefix internally.
+	 */
 	private array $tableDefinitions = [];
 
 	/**
@@ -59,7 +65,7 @@ class HierarchyTempTableBuilder {
 	public function setTableDefinitions( array $tableDefinitions ): void {
 		foreach ( $tableDefinitions as $key => $tableDefinition ) {
 			$this->tableDefinitions[$key] = [
-				$this->connection->tableName( $tableDefinition['table'] ),
+				$tableDefinition['table'],
 				$tableDefinition['depth']
 			];
 		}
@@ -84,14 +90,9 @@ class HierarchyTempTableBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param string $type
-	 * @param string $tablename
-	 * @param string $valueComposite
-	 * @param int|null $depth
-	 *
 	 * @throws RuntimeException
 	 */
-	public function fillTempTable( $type, $tablename, $valueComposite, $depth = null ): void {
+	public function fillTempTable( string $type, string $tablename, string $valueComposite, ?int $depth = null ): void {
 		$this->temporaryTableBuilder->create( $tablename );
 
 		[ $smwtable, $d ] = $this->getTableDefinitionByType( $type );
@@ -102,10 +103,17 @@ class HierarchyTempTableBuilder {
 
 		if ( array_key_exists( $valueComposite, $this->hierarchyCache ) ) { // Just copy known result.
 
-			$this->connection->query(
-				"INSERT INTO $tablename (id) SELECT id" . ' FROM ' . $this->hierarchyCache[$valueComposite],
+			// No IGNORE: the cache source is already deduped, matching legacy
+			// SQL semantics (a plain INSERT...SELECT with no conflict clause).
+			$this->connection->insertSelect(
+				$tablename,
+				$this->hierarchyCache[$valueComposite],
+				[ 'id' => 'id' ],
+				'*',
 				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
+				[],
+				[],
+				[]
 			);
 
 			return;
@@ -120,7 +128,7 @@ class HierarchyTempTableBuilder {
 	 * but then every iteration would use all elements of this table, while only the new ones
 	 * obtained in the previous step are relevant. So this is a performance measure.
 	 */
-	private function buildTempTable( $tablename, $values, $smwtable, $depth ): void {
+	private function buildTempTable( string $tablename, string $values, string $smwtable, int $depth ): void {
 		$db = $this->connection;
 
 		$tmpnew = 'smw_new';
@@ -129,49 +137,70 @@ class HierarchyTempTableBuilder {
 		$this->temporaryTableBuilder->create( $tmpnew );
 		$this->temporaryTableBuilder->create( $tmpres );
 
-		// Adding multiple values for the same column in sqlite is not supported
+		// Seed both temp tables with the supplied id values. `$values` is a
+		// comma-joined string of parenthesised single literals like
+		// '(123),(456)'. Use one builder per destination, accumulate rows
+		// via row(), then a single execute() per builder. The IGNORE option
+		// produces platform-correct INSERT IGNORE / OR IGNORE / ON CONFLICT
+		// DO NOTHING automatically.
+		$tablenameQb = $db->newInsertQueryBuilder()
+			->insertInto( $tablename )
+			->ignore()
+			->caller( __METHOD__ );
+		$tmpnewQb = $db->newInsertQueryBuilder()
+			->insertInto( $tmpnew )
+			->ignore()
+			->caller( __METHOD__ );
+
 		foreach ( explode( ',', $values ) as $value ) {
-
-			$db->query(
-				"INSERT " . "IGNORE" . " INTO $tablename (id) VALUES $value",
-				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
-			);
-
-			$db->query(
-				"INSERT " . "IGNORE" . " INTO $tmpnew (id) VALUES $value",
-				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
-			);
+			// $value looks like '(123)'. Strip parens/spaces to get the int id.
+			$id = (int)trim( $value, '() ' );
+			$tablenameQb->row( [ 'id' => $id ] );
+			$tmpnewQb->row( [ 'id' => $id ] );
 		}
 
+		$tablenameQb->execute();
+		$tmpnewQb->execute();
+
 		for ( $i = 0; $i < $depth; $i++ ) {
-			$db->query(
-				"INSERT " . 'IGNORE ' . "INTO $tmpres (id) SELECT s_id" . '@INT' . " FROM $smwtable, $tmpnew WHERE o_id=id",
+			// INSERT IGNORE INTO $tmpres (id)
+			//   SELECT CAST(s_id AS INTEGER) FROM $smwtable, $tmpnew WHERE o_id=id
+			$db->insertSelect(
+				$tmpres,
+				[ $smwtable, $tmpnew ],
+				[ 'id' => 'CAST(s_id AS INTEGER)' ],
+				[ 'o_id=id' ],
 				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
+				[ 'IGNORE' ],
+				[],
+				[]
 			);
 
 			if ( $db->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
 
-			$db->query(
-				"INSERT " . 'IGNORE ' . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
+			// INSERT IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres
+			$db->insertSelect(
+				$tablename,
+				$tmpres,
+				[ 'id' => 'id' ],
+				'*',
 				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
+				[ 'IGNORE' ],
+				[],
+				[]
 			);
 
 			if ( $db->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
 
-			// empty "new" table
-			$db->query(
-				'DELETE FROM ' . $tmpnew,
-				__METHOD__,
-				ISQLPlatform::QUERY_CHANGE_ROWS
-			);
+			$db->newDeleteQueryBuilder()
+				->deleteFrom( $tmpnew )
+				->where( IDatabase::ALL_ROWS )
+				->caller( __METHOD__ )
+				->execute();
 
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;

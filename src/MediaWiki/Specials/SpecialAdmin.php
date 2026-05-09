@@ -77,7 +77,8 @@ class SpecialAdmin extends SpecialPage {
 
 		// Some functions require methods only provided by the SQLStore (or any
 		// inherit class thereof)
-		if ( !is_a( ( $store = $applicationFactory->getStore() ), SQLStore::class ) ) {
+		$store = $applicationFactory->getStore();
+		if ( !is_a( $store, SQLStore::class ) ) {
 			$store = $applicationFactory->getStore( SQLStore::class );
 		}
 
@@ -89,7 +90,7 @@ class SpecialAdmin extends SpecialPage {
 
 		// Disable the feature in case the function is not supported
 		if ( $applicationFactory->getSettings()->get( 'smwgEnabledFulltextSearch' ) === false ) {
-			$adminFeatures = $adminFeatures & ~SMW_ADM_FULLT;
+			$adminFeatures &= ~SMW_ADM_FULLT;
 		}
 
 		$taskHandlerFactory = new TaskHandlerFactory(
@@ -172,6 +173,7 @@ class SpecialAdmin extends SpecialPage {
 			]
 		);
 
+		$supportSection = '';
 		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
 			$supportSection = $supportTask->getHtml();
 			$htmlTabs->tab( 'general', $this->msg_text( 'smw-admin-tab-general' ) );

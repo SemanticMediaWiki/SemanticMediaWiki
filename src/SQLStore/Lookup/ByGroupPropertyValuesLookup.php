@@ -183,49 +183,34 @@ class ByGroupPropertyValuesLookup {
 		}
 
 		if ( $isIdField ) {
-			$res = $connection->select(
-				[
-					'o' => SQLStore::ID_TABLE,
-					'p' => $propTable->getName(),
-					'i' => SQLStore::ID_TABLE
-				],
-				$fields,
-				[
+			$res = $connection->newSelectQueryBuilder()
+				->select( $fields )
+				->from( SQLStore::ID_TABLE, 'o' )
+				->join( $propTable->getName(), 'p', [ 'p.s_id=o.smw_id' ] )
+				->join( SQLStore::ID_TABLE, 'i', [ 'p.o_id=i.smw_id' ] )
+				->where( [
 					'o.smw_hash' => $subjects,
-					'o.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ),
-					'o.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
-				] + ( $pid !== '' ? [ 'p.p_id' => $pid ] : [] ),
-				__METHOD__,
-				[
-					'GROUP BY' => $groupBy,
-					'ORDER BY' => $orderBy
-				],
-				[
-					'p' => [ 'INNER JOIN', [ 'p.s_id=o.smw_id' ] ],
-					'i' => [ 'INNER JOIN', [ 'p.o_id=i.smw_id' ] ],
-				]
-			);
+					$connection->expr( 'o.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ),
+					$connection->expr( 'o.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ),
+				] + ( $pid !== '' ? [ 'p.p_id' => $pid ] : [] ) )
+				->groupBy( $groupBy )
+				->orderBy( $orderBy )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 		} else {
-			$res = $connection->select(
-				[
-					'o' => SQLStore::ID_TABLE,
-					'p' => $propTable->getName()
-				],
-				$fields,
-				[
+			$res = $connection->newSelectQueryBuilder()
+				->select( $fields )
+				->from( SQLStore::ID_TABLE, 'o' )
+				->join( $propTable->getName(), 'p', [ 'p.s_id=o.smw_id' ] )
+				->where( [
 					'o.smw_hash' => $subjects,
-					'o.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ),
-					'o.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
-				] + ( $pid !== '' ? [ 'p.p_id' => $pid ] : [] ),
-				__METHOD__,
-				[
-					'GROUP BY' => $groupBy,
-					'ORDER BY' => $orderBy
-				],
-				[
-					'p' => [ 'INNER JOIN', [ 'p.s_id=o.smw_id' ] ],
-				]
-			);
+					$connection->expr( 'o.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ),
+					$connection->expr( 'o.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ),
+				] + ( $pid !== '' ? [ 'p.p_id' => $pid ] : [] ) )
+				->groupBy( $groupBy )
+				->orderBy( $orderBy )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 		}
 
 		return $res;

@@ -52,7 +52,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		$this->dataValue = $dataValue;
 
 		$type = $options[0];
-		$linker = isset( $options[1] ) ? $options[1] : null;
+		$linker = $options[1] ?? null;
 
 		if ( !$this->dataValue->isVisible() ) {
 			return '';
@@ -70,7 +70,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 			return $this->getSearchLabel();
 		}
 
-		$wikiPageValue = $this->prepareWikiPageValue( $linker );
+		$wikiPageValue = $this->prepareWikiPageValue();
 		$text = '';
 
 		if ( $wikiPageValue === null ) {
@@ -116,8 +116,11 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		$label = $preferredLabel;
 
-		if ( $preferredLabel === '' && ( $label = $this->findTranslatedPropertyLabel( $property ) ) === '' ) {
-			$label = $property->getLabel();
+		if ( $preferredLabel === '' ) {
+			$label = $this->findTranslatedPropertyLabel( $property );
+			if ( $label === '' ) {
+				$label = $property->getLabel();
+			}
 		}
 
 		if ( $this->dataValue->getWikiPageValue() !== null ) {
@@ -169,15 +172,19 @@ class PropertyValueFormatter extends DataValueFormatter {
 		$languageCode = $this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE );
 		$asCanonicalLabel = $this->dataValue->getOption( PropertyValue::OPT_CANONICAL_LABEL, false );
 
-		if ( $asCanonicalLabel === false && ( $preferredLabel = $property->getPreferredLabel( $languageCode ) ) !== '' ) {
-			return $preferredLabel;
+		if ( $asCanonicalLabel === false ) {
+			$preferredLabel = $property->getPreferredLabel( $languageCode );
+			if ( $preferredLabel !== '' ) {
+				return $preferredLabel;
+			}
 		}
 
 		if ( $this->dataValue->getWikiPageValue() !== null && $this->dataValue->getWikiPageValue()->getDisplayTitle() !== '' ) {
 			return $this->dataValue->getWikiPageValue()->getDisplayTitle();
 		}
 
-		if ( ( $translatedPropertyLabel = $this->findTranslatedPropertyLabel( $property ) ) !== '' ) {
+		$translatedPropertyLabel = $this->findTranslatedPropertyLabel( $property );
+		if ( $translatedPropertyLabel !== '' ) {
 			return $translatedPropertyLabel;
 		}
 
@@ -192,14 +199,17 @@ class PropertyValueFormatter extends DataValueFormatter {
 	private function getSearchLabel() {
 		$wikiPageValue = $this->dataValue->getWikiPageValue();
 
-		if ( $wikiPageValue !== null && ( $displayTitle = $wikiPageValue->getDisplayTitle() ) !== '' ) {
-			return $displayTitle;
+		if ( $wikiPageValue !== null ) {
+			$displayTitle = $wikiPageValue->getDisplayTitle();
+			if ( $displayTitle !== '' ) {
+				return $displayTitle;
+			}
 		}
 
 		return $this->dataValue->getDataItem()->getLabel();
 	}
 
-	private function prepareWikiPageValue( $linker = null ) {
+	private function prepareWikiPageValue() {
 		$wikiPageValue = $this->dataValue->getWikiPageValue();
 
 		if ( $wikiPageValue === null ) {
@@ -211,16 +221,29 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		if ( $caption !== false && $caption !== '' ) {
 			$wikiPageValue->setCaption( $caption );
-		} elseif ( ( $preferredLabel = $this->dataValue->getPreferredLabel() ) !== '' ) {
+			return $wikiPageValue;
+		}
+
+		$preferredLabel = $this->dataValue->getPreferredLabel();
+		if ( $preferredLabel !== '' ) {
 			$wikiPageValue->setCaption( $preferredLabel );
-		} elseif ( ( $translatedPropertyLabel = $this->findTranslatedPropertyLabel( $property ) ) !== '' ) {
+			return $wikiPageValue;
+		}
+
+		$translatedPropertyLabel = $this->findTranslatedPropertyLabel( $property );
+		if ( $translatedPropertyLabel !== '' ) {
 			$wikiPageValue->setCaption( $translatedPropertyLabel );
-		} elseif ( ( $preferredCaption = $wikiPageValue->getPreferredCaption() ) !== '' ) {
+			return $wikiPageValue;
+		}
+
+		$preferredCaption = $wikiPageValue->getPreferredCaption();
+		if ( $preferredCaption !== '' ) {
 			// Do care for the displaytitle!
 			$wikiPageValue->setCaption( $preferredCaption );
-		} else {
-			$wikiPageValue->setCaption( $property->getLabel() );
+			return $wikiPageValue;
 		}
+
+		$wikiPageValue->setCaption( $property->getLabel() );
 
 		return $wikiPageValue;
 	}

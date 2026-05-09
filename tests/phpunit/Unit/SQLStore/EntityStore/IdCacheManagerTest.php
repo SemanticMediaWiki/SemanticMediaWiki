@@ -38,10 +38,10 @@ class IdCacheManagerTest extends TestCase {
 	}
 
 	public function testComputeSha1() {
-		$this->assertIsString(
+		$result = IdCacheManager::computeSha1( [] );
 
-			IdCacheManager::computeSha1( [] )
-		);
+		$this->assertIsString( $result );
+		$this->assertSame( 20, strlen( $result ), 'SHA-1 raw binary should be 20 bytes' );
 	}
 
 	public function testGet() {

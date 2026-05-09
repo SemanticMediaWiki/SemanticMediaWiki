@@ -13,6 +13,7 @@ use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\SQLStore\Rebuilder\Rebuilder
@@ -25,6 +26,8 @@ use SMW\Tests\TestEnvironment;
  */
 class RebuilderTest extends TestCase {
 
+	use MockSelectQueryBuilderTrait;
+
 	private $testEnvironment;
 	private $titleFactory;
 	private $entityValidator;
@@ -36,7 +39,7 @@ class RebuilderTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment(
 			[
 				'smwgAutoRefreshSubject' => true,
-				'smwgCacheType' => 'hash',
+				'smwgMainCacheType' => 'hash',
 				'smwgEnableUpdateJobs' => false,
 			]
 		);
@@ -112,13 +115,18 @@ class RebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// matchAsSubject() (the first newSelectQueryBuilder() call) needs
+		// fetchResultSet() to iterate empty so emptyRange stays true. The
+		// remaining callsites in next_position() and getMaxId() use
+		// fetchField() and must return $expected.
+		$callIndex = 0;
 		$connection->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [] );
-
-		$connection->expects( $this->any() )
-			->method( 'selectField' )
-			->willReturn( $expected );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( function () use ( $expected, &$callIndex ) {
+				$rows = $callIndex === 0 ? [] : [ [ $expected ] ];
+				$callIndex++;
+				return $this->createMockSelectQueryBuilder( $rows );
+			} );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -196,13 +204,17 @@ class RebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// matchAsSubject() (the first newSelectQueryBuilder() call) feeds the
+		// row into fetchResultSet(); subsequent getMaxId() callsites use
+		// fetchField() and must return 500.
+		$callIndex = 0;
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( [ (object)$row ] );
-
-		$connection->expects( $this->any() )
-			->method( 'selectField' )
-			->willReturn( 500 );
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( function () use ( $row, &$callIndex ) {
+				$rows = $callIndex === 0 ? [ (object)$row ] : [ [ 500 ] ];
+				$callIndex++;
+				return $this->createMockSelectQueryBuilder( $rows );
+			} );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

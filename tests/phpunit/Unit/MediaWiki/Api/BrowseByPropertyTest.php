@@ -4,9 +4,9 @@ namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
+use SMW\Lookup\CachedListLookup;
 use SMW\MediaWiki\Api\BrowseByProperty;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
 

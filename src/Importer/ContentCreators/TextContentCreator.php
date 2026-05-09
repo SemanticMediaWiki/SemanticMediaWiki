@@ -187,10 +187,6 @@ class TextContentCreator implements ContentCreator {
 			->getUserFactory()
 			->newFromId( (int)$page->getUser() );
 
-		if ( !$lastEditor instanceof User ) {
-			return false;
-		}
-
 		$creator = $page->getCreator();
 
 		if ( !$creator instanceof User ) {

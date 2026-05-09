@@ -10,6 +10,8 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use SMW\SQLStore\EntityStore\FieldList;
 use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use SMW\Utils\HmacSerializer;
 
 /**
@@ -22,6 +24,9 @@ use SMW\Utils\HmacSerializer;
  * @author mwjames
  */
 class AuxiliaryFieldsTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
 
 	private $connection;
 	private $idCacheManager;
@@ -56,17 +61,16 @@ class AuxiliaryFieldsTest extends TestCase {
 
 		$row = [
 			'smw_id' => 42,
-			'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
+			'smw_hash' => sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ),
 			'smw_countmap' => 0
 		];
 
+		$whereConditions = [];
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ], $whereConditions );
+
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 't.smw_hash' => [ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ] ] )
-			->willReturn( [ (object)$row ] );
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
 
 		$instance = new AuxiliaryFields(
 			$this->connection,
@@ -77,6 +81,11 @@ class AuxiliaryFieldsTest extends TestCase {
 			FieldList::class,
 			$instance->prefetchFieldList( $subjects )
 		);
+
+		$this->assertContains(
+			[ 't.smw_hash' => [ sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ) ] ],
+			$whereConditions
+		);
 	}
 
 	public function testSetFieldMaps_Empty() {
@@ -85,14 +94,12 @@ class AuxiliaryFieldsTest extends TestCase {
 			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
 			->willReturn( $this->cache );
 
+		$tables = $rows = $sets = $uniqueIndexFields = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $tables, $rows, $sets, $uniqueIndexFields );
+
 		$this->connection->expects( $this->once() )
-			->method( 'upsert' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [
-					'smw_id' => 42,
-					'smw_seqmap' => null,
-					'smw_countmap' => null ] ) );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$instance = new AuxiliaryFields(
 			$this->connection,
@@ -100,6 +107,17 @@ class AuxiliaryFieldsTest extends TestCase {
 		);
 
 		$instance->setFieldMaps( 42, [], [] );
+
+		$this->assertSame( [ 'smw_object_aux' ], $tables );
+		$this->assertSame(
+			[ [ 'smw_id' => 42, 'smw_seqmap' => null, 'smw_countmap' => null ] ],
+			$rows
+		);
+		$this->assertSame( [ [ 'smw_id' ] ], $uniqueIndexFields );
+		$this->assertSame(
+			[ [ 'smw_seqmap' => null, 'smw_countmap' => null ] ],
+			$sets
+		);
 	}
 
 	public function testSetFieldMaps() {
@@ -112,14 +130,12 @@ class AuxiliaryFieldsTest extends TestCase {
 			->method( 'escape_bytea' )
 			->willReturnArgument( 0 );
 
+		$tables = $rows = $sets = $uniqueIndexFields = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $tables, $rows, $sets, $uniqueIndexFields );
+
 		$this->connection->expects( $this->once() )
-			->method( 'upsert' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [
-					'smw_id' => 42,
-					'smw_seqmap' => HmacSerializer::compress( [ 'seqmap' ] ),
-					'smw_countmap' => HmacSerializer::compress( [ 'countmap' ] ) ] ) );
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
 
 		$instance = new AuxiliaryFields(
 			$this->connection,
@@ -127,6 +143,24 @@ class AuxiliaryFieldsTest extends TestCase {
 		);
 
 		$instance->setFieldMaps( 42, [ 'seqmap' ], [ 'countmap' ] );
+
+		$this->assertSame( [ 'smw_object_aux' ], $tables );
+		$this->assertSame(
+			[ [
+				'smw_id' => 42,
+				'smw_seqmap' => HmacSerializer::compress( [ 'seqmap' ] ),
+				'smw_countmap' => HmacSerializer::compress( [ 'countmap' ] )
+			] ],
+			$rows
+		);
+		$this->assertSame( [ [ 'smw_id' ] ], $uniqueIndexFields );
+		$this->assertSame(
+			[ [
+				'smw_seqmap' => HmacSerializer::compress( [ 'seqmap' ] ),
+				'smw_countmap' => HmacSerializer::compress( [ 'countmap' ] )
+			] ],
+			$sets
+		);
 	}
 
 }

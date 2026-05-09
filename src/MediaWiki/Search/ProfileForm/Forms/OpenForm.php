@@ -19,9 +19,6 @@ class OpenForm {
 
 	private bool $isActiveForm = false;
 
-	/**
-	 * @var
-	 */
 	private array $parameters = [];
 
 	/**
@@ -33,8 +30,6 @@ class OpenForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getParameters(): array {
 		return $this->parameters;
@@ -42,19 +37,15 @@ class OpenForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ): void {
-		$this->isActiveForm = (bool)$isActiveForm;
+	public function isActiveForm( bool $isActiveForm ): void {
+		$this->isActiveForm = $isActiveForm;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $definition
 	 */
-	public function makeFields( $definition = [] ): string {
+	public function makeFields(): string {
 		$this->parameters = [];
 
 		$group = '';
@@ -93,7 +84,7 @@ class OpenForm {
 		return $group;
 	}
 
-	private function makeFieldGroup( $property, $value, $op ) {
+	private function makeFieldGroup( $property, $value, $op ): string {
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 
 		$attributes = [

@@ -68,8 +68,6 @@ class ExpNsResource extends ExpResource {
 
 	/**
 	 * Return a qualified name for the element.
-	 *
-	 * @return string
 	 */
 	public function getQName(): string {
 		return $this->namespaceId . ':' . $this->localName;
@@ -77,8 +75,6 @@ class ExpNsResource extends ExpResource {
 
 	/**
 	 * Get the namespace identifier used (the part before :).
-	 *
-	 * @return string
 	 */
 	public function getNamespaceId(): string {
 		return $this->namespaceId;
@@ -86,8 +82,6 @@ class ExpNsResource extends ExpResource {
 
 	/**
 	 * Get the namespace URI that is used in the abbreviation.
-	 *
-	 * @return string
 	 */
 	public function getNamespace(): string {
 		return $this->namespace;
@@ -95,8 +89,6 @@ class ExpNsResource extends ExpResource {
 
 	/**
 	 * Get the local name (the part after :).
-	 *
-	 * @return string
 	 */
 	public function getLocalName(): string {
 		return $this->localName;
@@ -107,8 +99,6 @@ class ExpNsResource extends ExpResource {
 	 * Turtle. The function returns true if this is surely the case, and
 	 * false if it may not be the case. However, we do not check the whole
 	 * range of allowed Unicode entities for performance reasons.
-	 *
-	 * @return bool
 	 */
 	public function hasAllowedLocalName(): int|false {
 		return preg_match( '/^[A-Za-z_][-A-Za-z_0-9]*$/u', $this->localName );
@@ -116,8 +106,6 @@ class ExpNsResource extends ExpResource {
 
 	/**
 	 * @since  2.2
-	 *
-	 * @return array
 	 */
 	public function getSerialization(): array {
 		// Use '|' as divider as it is unlikely that symbol appears within a uri

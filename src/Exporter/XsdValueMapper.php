@@ -68,19 +68,19 @@ class XsdValueMapper {
 
 	private static function mapGregorianCalendarModelTime( Time $dataItem ): array {
 		if ( $dataItem->getYear() > 0 ) {
-			$xsdvalue = str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
+			$xsdvalue = str_pad( (string)$dataItem->getYear(), 4, "0", STR_PAD_LEFT );
 		} else {
-			$xsdvalue = '-' . str_pad( 1 - $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
+			$xsdvalue = '-' . str_pad( (string)( 1 - $dataItem->getYear() ), 4, "0", STR_PAD_LEFT );
 		}
 
 		$xsdtype = 'http://www.w3.org/2001/XMLSchema#gYear';
 
 		if ( $dataItem->getPrecision() >= Time::PREC_YM ) {
 			$xsdtype = 'http://www.w3.org/2001/XMLSchema#gYearMonth';
-			$xsdvalue .= '-' . str_pad( $dataItem->getMonth(), 2, "0", STR_PAD_LEFT );
+			$xsdvalue .= '-' . str_pad( (string)$dataItem->getMonth(), 2, "0", STR_PAD_LEFT );
 			if ( $dataItem->getPrecision() >= Time::PREC_YMD ) {
 				$xsdtype = 'http://www.w3.org/2001/XMLSchema#date';
-				$xsdvalue .= '-' . str_pad( $dataItem->getDay(), 2, "0", STR_PAD_LEFT );
+				$xsdvalue .= '-' . str_pad( (string)$dataItem->getDay(), 2, "0", STR_PAD_LEFT );
 				if ( $dataItem->getPrecision() == Time::PREC_YMDT ) {
 					$xsdtype = 'http://www.w3.org/2001/XMLSchema#dateTime';
 					$xsdvalue .= 'T' .

@@ -8,7 +8,8 @@ use SMW\PropertyRegistry;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder as ITableBuilder;
-use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\RawSQLValue;
 
 /**
  * @private
@@ -71,6 +72,25 @@ class TableBuildExaminer {
 		}
 
 		$this->predefinedPropertyList = $predefinedPropertyList;
+	}
+
+	/**
+	 * Run migrations that must complete before table schemas are altered.
+	 *
+	 * @since 7.0
+	 */
+	public function runPreCreationMigrations(): void {
+		// Skip on fresh install — tables don't exist yet
+		if ( !$this->store->getConnection( 'mw.db' )->tableExists( SQLStore::ID_TABLE, __METHOD__ ) ) {
+			return;
+		}
+
+		$hashField = $this->tableBuildExaminerFactory->newHashField(
+			$this->store
+		);
+
+		$hashField->setMessageReporter( $this->messageReporter );
+		$hashField->migrateHexHashes();
 	}
 
 	/**
@@ -182,7 +202,12 @@ class TableBuildExaminer {
 
 			$this->messageReporter->reportMessage( "   Table " . SQLStore::ID_TABLE . " ...\n" );
 			$this->messageReporter->reportMessage( "   ... copying $copyField to $emptyField ... " );
-			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [ $emptyField => new RawSQLValue( $copyField ) ] )
+				->where( IDatabase::ALL_ROWS )
+				->caller( __METHOD__ )
+				->execute();
 			$this->messageReporter->reportMessage( "done.\n" );
 		}
 

@@ -60,14 +60,14 @@ class SpecialOWLExport extends SpecialPage {
 		} else {
 			$offset = $request->getVal( 'offset' );
 
-			if ( isset( $offset ) ) {
+			if ( $offset !== null ) {
 				$this->startRDFExport();
 				$this->export_controller->printPageList( $offset );
 				return;
 			} else {
 				$stats = $request->getVal( 'stats' );
 
-				if ( isset( $stats ) ) {
+				if ( $stats !== null ) {
 					$this->startRDFExport();
 					$this->export_controller->printWikiInfo();
 					return;
@@ -200,19 +200,18 @@ class SpecialOWLExport extends SpecialPage {
 		}
 
 		if ( $date !== '' ) {
-			$timeint = strtotime( $date );
+			$timeint = strtotime( (string)$date );
 			$stamp = date( "YmdHis", $timeint );
 			$date = $stamp;
 		}
 
 		// If it is a redirect then we don't want to generate triples other than
 		// the redirect target information
-		if (
-			isset( $pages[0] ) &&
-			( $title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $pages[0] ) ) !== null &&
-			$title->isRedirect()
-		) {
-			$backlinks = false;
+		if ( isset( $pages[0] ) ) {
+			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $pages[0] );
+			if ( $title !== null && $title->isRedirect() ) {
+				$backlinks = false;
+			}
 		}
 
 		$this->startRDFExport();

@@ -298,74 +298,53 @@ class Browse extends ApiBase {
 
 					// Equivalent to Special:Browse
 					'subject',
-				]
+				],
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwbrowse-param-browse',
 			],
 			'params' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwbrowse-param-params',
 			],
 		];
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getParamDescription(): array {
+	protected function getExamplesMessages(): array {
 		return [
-			'browse' => 'Specifies the type of browse activity',
-			'params' => 'JSON encoded parameters containing required and optional fields and depend on the selected browse type'
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }'
+				=> 'apihelp-smwbrowse-example-1',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }'
+				=> 'apihelp-smwbrowse-example-2',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-3',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }'
+				=> 'apihelp-smwbrowse-example-4',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }'
+				=> 'apihelp-smwbrowse-example-5',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }'
+				=> 'apihelp-smwbrowse-example-6',
+			'action=smwbrowse&browse=pvalue&params={ "limit": 10, "offset": 0, "property" : "Foo", "search": "Bar" }'
+				=> 'apihelp-smwbrowse-example-7',
+			'action=smwbrowse&browse=psubject&params={ "limit": 10, "offset": 0, "property" : "Foo", "value" : "Bar", "search": "foo" }'
+				=> 'apihelp-smwbrowse-example-8',
+			'action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }'
+				=> 'apihelp-smwbrowse-example-9',
+			'action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-10',
+			'action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }'
+				=> 'apihelp-smwbrowse-example-11',
+			'action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-12',
+			'action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main" }'
+				=> 'apihelp-smwbrowse-example-13',
+			'action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }'
+				=> 'apihelp-smwbrowse-example-14',
+			'action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }'
+				=> 'apihelp-smwbrowse-example-15',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'API module to support browse activties for different entity types in Semantic MediaWiki.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples(): array {
-		return [
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }',
-			'api.php?action=smwbrowse&browse=pvalue&params={ "limit": 10, "offset": 0, "property" : "Foo", "search": "Bar" }',
-			'api.php?action=smwbrowse&browse=psubject&params={ "limit": 10, "offset": 0, "property" : "Foo", "value" : "Bar", "search": "foo" }',
-			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }',
-			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',
-			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main" }',
-			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }',
-			'api.php?action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }',
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . ':' . SMW_VERSION;
 	}
 
 	/**

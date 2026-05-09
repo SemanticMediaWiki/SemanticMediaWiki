@@ -17,10 +17,7 @@ class UpdateEntityCollationComplete {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var int
-	 */
-	private $countDown = 5;
+	private int $countDown = 5;
 
 	/**
 	 * @since 3.1
@@ -30,17 +27,13 @@ class UpdateEntityCollationComplete {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $countDown
 	 */
-	public function setCountDown( $countDown ): void {
+	public function setCountDown( int $countDown ): void {
 		$this->countDown = $countDown;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Rebuilder $rebuilder
 	 */
 	public function runUpdate( Rebuilder $rebuilder ) {
 		$cliMsgFormatter = new CliMsgFormatter();
@@ -96,7 +89,7 @@ class UpdateEntityCollationComplete {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$conditions = [
-			"smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED )
+			$connection->expr( 'smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ),
 		];
 
 		$rebuilder->prepare();
@@ -110,14 +103,14 @@ class UpdateEntityCollationComplete {
 			$this->messageReporter->reportMessage( '   ... no documents to process ...' );
 		}
 
-		$this->rebuild( $rebuilder, $res, $last );
+		$this->rebuild( $rebuilder, $res );
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 
 		return true;
 	}
 
-	private function rebuild( Rebuilder $rebuilder, $res, $last ): void {
+	private function rebuild( Rebuilder $rebuilder, $res ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$rebuilder->set( 'skip-fileindex', true );

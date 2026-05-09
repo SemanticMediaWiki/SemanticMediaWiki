@@ -4,6 +4,7 @@ namespace SMW\Query\Cache;
 
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
+use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -80,7 +81,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * back-end, yet queries with the same signature may have been retrieved
 	 * already therefore allow to recall the result from tempCache.
 	 *
-	 * @var InMemoryCache
+	 * @var Cache
 	 */
 	private $tempCache;
 
@@ -90,7 +91,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * stalled cache on an altered execution plan, use this modifier to generate
 	 * a new hash.
 	 *
-	 * @var string/integer
+	 * @var string|int
 	 */
 	private $cacheKeyExtension = '';
 
@@ -152,9 +153,9 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean
+	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->blobStore->canUse();
 	}
 
@@ -278,13 +279,15 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$incrStats = 'hits.Undefined';
 		$itemJournal = null;
 
-		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
+		$context = $query->getOption( Query::PROC_CONTEXT );
+		if ( $context === false ) {
 			$context = 'Undefined';
 		}
 
 		// Check if the tempCache is available for result that have not yet been
 		// stored to the cache back-end
-		if ( ( $queryResult = $this->tempCache->fetch( $queryId ) ) !== false ) {
+		$queryResult = $this->tempCache->fetch( $queryId );
+		if ( $queryResult !== false ) {
 			$this->log( __METHOD__ . ' using tempCache ' . "($queryId)" );
 
 			if ( !$queryResult instanceof QueryResult ) {
@@ -346,7 +349,8 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function addQueryResultToCache( QueryResult $queryResult, string $queryId, $container, Query $query ): void {
-		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
+		$context = $query->getOption( Query::PROC_CONTEXT );
+		if ( $context === false ) {
 			$context = 'Undefined';
 		}
 
@@ -438,7 +442,8 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	private function getHashFrom( $subject ): string {
 		if ( $subject instanceof WikiPage ) {
 			// In case the we detect a _QUERY subobject, use it directly
-			if ( ( $subobjectName = $subject->getSubobjectName() ) !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
+			$subobjectName = $subject->getSubobjectName();
+			if ( $subobjectName !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
 				$subject = $subobjectName;
 			} else {
 				$subject = $subject->asBase()->getHash();
@@ -471,7 +476,8 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$id = 'noCache.byOption';
 		}
 
-		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) !== false ) {
+		$context = $query->getOption( Query::PROC_CONTEXT );
+		if ( $context !== false ) {
 			$id .= '.' . $context;
 		}
 

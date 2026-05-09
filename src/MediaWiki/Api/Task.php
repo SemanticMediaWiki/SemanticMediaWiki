@@ -81,37 +81,14 @@ class Task extends ApiBase {
 		return [
 			'task' => [
 				ParamValidator::PARAM_REQUIRED => true,
-				ParamValidator::PARAM_TYPE => $taskFactory->getAllowedTypes()
+				ParamValidator::PARAM_TYPE => $taskFactory->getAllowedTypes(),
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwtask-param-task',
 			],
 			'params' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwtask-param-params',
 			],
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
-	 */
-	public function getParamDescription(): array {
-		return [
-			'task' => 'Defines the task type',
-			'params' => 'JSON encoded parameters that matches the selected type requirement'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription(): array {
-		return [
-			'Semantic MediaWiki API module to invoke and execute tasks (for internal use only)'
 		];
 	}
 
@@ -140,19 +117,6 @@ class Task extends ApiBase {
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples(): array {
-		return [
-			'api.php?action=smwtask&task=update&params={ "subject": "Foo" }',
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamplesMessages
 	 *
 	 * @return array
@@ -172,16 +136,6 @@ class Task extends ApiBase {
 	 */
 	public function getHelpUrls(): string {
 		return 'https://www.semantic-mediawiki.org/wiki/Help:API:smwtask';
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion(): string {
-		return __CLASS__ . ':' . SMW_VERSION;
 	}
 
 }
