@@ -62,12 +62,12 @@ class ValueTextsBuilder {
 	}
 
 	/**
-	 * @param DataValue $value
+	 * @param DataValue $dataValue
 	 * @param int $column
 	 *
 	 * @return string
 	 */
-	private function getValueText( DataValue $value, $column = 0 ): string {
+	private function getValueText( DataValue $dataValue, $column = 0 ): string {
 		$isSubject = ( $column === 0 );
 		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
 		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
