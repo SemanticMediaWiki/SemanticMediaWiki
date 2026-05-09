@@ -3,7 +3,10 @@
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Html\Html;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
+use SMW\DataValues\WikiPageValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
@@ -327,12 +330,12 @@ class TableResultPrinter extends ResultPrinter {
 			// - text formatting on string elements including italic, bold etc.
 			$parseAsWikitext =
 				$isHtmlOutput && (
-					( $dataItem instanceof DIWikiPage && $dataItem->getNamespace() === NS_FILE ) ||
-					( $dataItem instanceof DIBlob )
+					( $dataItem instanceof WikiPage && $dataItem->getNamespace() === NS_FILE ) ||
+					( $dataItem instanceof Blob )
 				);
 
 			// @see ListResultPrinter\ValueTextsBuilder -> getValueText
-			if ( $dv instanceof SMWWikiPageValue ) {
+			if ( $dv instanceof WikiPageValue ) {
 				$dv->setOption(
 					$dataValueMethod === 'getLongText'
 						? $dv::PREFIXED_FORM
