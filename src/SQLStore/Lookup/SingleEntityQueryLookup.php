@@ -43,28 +43,26 @@ class SingleEntityQueryLookup implements QueryEngine {
 		// #4349 We only expect a `ValueDescription` instance while other uses such
 		// as `{{ #show: [[someX]][[SomeX]] ...}}` that would produce a non
 		// `ValueDescription` description aren't supported!
-		if ( !$description instanceof ValueDescription ) {
-			$results = [];
-			$furtherResults = false;
-		} elseif ( $query->getLimit() == 0 ) {
-			$results = [];
-			$furtherResults = true;
-		} else {
-			$dataItem = $description->getDataItem();
+		if ( $description instanceof ValueDescription ) {
+			if ( $query->getLimit() == 0 ) {
+				$furtherResults = true;
+			} else {
+				$dataItem = $description->getDataItem();
 
-			// #4370
-			$dataItem = $this->store->getRedirectTarget( $dataItem );
+				// #4370
+				$dataItem = $this->store->getRedirectTarget( $dataItem );
 
-			// Instead of relying on Title::exists, find an associated revision
-			// ID to see whether it is a known page in MW or not
-			$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
-				$dataItem->asBase()
-			);
+				// Instead of relying on Title::exists, find an associated revision
+				// ID to see whether it is a known page in MW or not
+				$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
+					$dataItem->asBase()
+				);
 
-			// #3588
-			// Does the entity exists or not?
-			if ( $associatedRev > 0 ) {
-				$results = [ $dataItem ];
+				// #3588
+				// Does the entity exists or not?
+				if ( $associatedRev > 0 ) {
+					$results = [ $dataItem ];
+				}
 			}
 		}
 
