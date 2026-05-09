@@ -298,7 +298,7 @@ class HierarchyLookup {
 			$property
 		);
 
-		if ( $propertyList === null || $propertyList === [] ) {
+		if ( $propertyList === false || $propertyList === [] ) {
 			return;
 		}
 

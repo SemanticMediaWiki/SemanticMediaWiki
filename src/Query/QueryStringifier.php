@@ -106,10 +106,6 @@ class QueryStringifier {
 	private static function printouts( Query $query, $showParams = false ): array {
 		$printouts = [];
 
-		if ( $query->getExtraPrintouts() === null ) {
-			return $printouts;
-		}
-
 		foreach ( $query->getExtraPrintouts() as $printout ) {
 			$serialisation = $printout->getSerialisation( $showParams );
 			if ( $serialisation !== '' ) {
@@ -126,10 +122,6 @@ class QueryStringifier {
 	private static function sortKeys( Query $query ): array {
 		$sort = [];
 		$order = [];
-
-		if ( $query->getSortKeys() === null ) {
-			return [ $sort, $order ];
-		}
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
 

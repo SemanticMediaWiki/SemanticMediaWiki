@@ -101,7 +101,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 			$property
 		);
 
-		if ( $dataItems === null || $dataItems === [] ) {
+		if ( $dataItems === [] ) {
 			return;
 		}
 

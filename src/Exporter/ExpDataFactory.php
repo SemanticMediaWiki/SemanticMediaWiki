@@ -64,11 +64,8 @@ class ExpDataFactory {
 		);
 
 		$mainpage = MediaWikiServices::getInstance()->getTitleFactory()->newMainPage();
-
-		if ( $mainpage !== null ) {
-			$ed = new ExpData( new ExpResource( $mainpage->getFullURL() ) );
-			$expData->addPropertyObjectValue( $this->exporter->newExpNsResourceById( 'swivt', 'mainPage' ), $ed );
-		}
+		$ed = new ExpData( new ExpResource( $mainpage->getFullURL() ) );
+		$expData->addPropertyObjectValue( $this->exporter->newExpNsResourceById( 'swivt', 'mainPage' ), $ed );
 
 		// statistical information
 		foreach ( Site::stats() as $key => $value ) {

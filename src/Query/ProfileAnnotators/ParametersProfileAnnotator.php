@@ -52,10 +52,6 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 		$sort = [];
 		$order = [];
 
-		if ( $query->getSortKeys() === null ) {
-			return [ $sort, $order ];
-		}
-
 		foreach ( $query->getSortKeys() as $key => $value ) {
 			$sort[] = $key;
 			$order[] = strtolower( $value );

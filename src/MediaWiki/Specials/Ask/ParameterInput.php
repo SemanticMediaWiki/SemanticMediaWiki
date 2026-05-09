@@ -225,9 +225,6 @@ class ParameterInput {
 		$options[] = '<option value=""></option>';
 
 		$currentValues = (array)$this->getValueToUse();
-		if ( $currentValues === null ) {
-			$currentValues = [];
-		}
 
 		foreach ( $valueList as $value ) {
 			$options[] =

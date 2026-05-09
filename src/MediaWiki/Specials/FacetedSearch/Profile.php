@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Specials\FacetedSearch;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\ProfileSourceDefinitionConflictException;
 use SMW\Schema\Compartment;
-use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\SchemaFactory;
 
 /**
@@ -90,10 +89,6 @@ class Profile {
 		$schemaList = $this->schemaFactory->newSchemaFinder()->getSchemaListByType(
 			self::SCHEMA_TYPE
 		);
-
-		if ( $schemaList === null ) {
-			throw new SchemaTypeNotFoundException( self::SCHEMA_TYPE );
-		}
 
 		$compartmentIterator = $schemaList->newCompartmentIteratorByKey( 'profiles' );
 

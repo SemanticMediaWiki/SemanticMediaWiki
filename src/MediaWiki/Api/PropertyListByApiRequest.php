@@ -211,7 +211,7 @@ class PropertyListByApiRequest {
 			$this->languageCode
 		);
 
-		if ( $description === '' || $description === null ) {
+		if ( $description === '' ) {
 			return $description;
 		}
 

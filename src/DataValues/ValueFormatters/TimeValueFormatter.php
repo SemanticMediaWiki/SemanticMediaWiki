@@ -291,13 +291,11 @@ class TimeValueFormatter extends DataValueFormatter {
 			$intlTimeFormatter = new IntlTimeFormatter( $dataItem, $language );
 
 			$caption = $intlTimeFormatter->format( $matches[1] );
-			if ( $caption !== false ) {
-				if ( $intlTimeFormatter->containsValidDateFormatRule( $matches[1] ) ) {
-					$caption .= $this->hintCalendarModel( $dataItem );
-				}
-
-				return $caption;
+			if ( $intlTimeFormatter->containsValidDateFormatRule( $matches[1] ) ) {
+				$caption .= $this->hintCalendarModel( $dataItem );
 			}
+
+			return $caption;
 		}
 
 		return $this->getISO8601Date();

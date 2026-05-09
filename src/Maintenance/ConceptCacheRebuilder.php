@@ -196,8 +196,10 @@ class ConceptCacheRebuilder {
 		}
 
 		if ( $skip ) {
-			$line = $this->lines !== false ? "($this->lines) " : '';
-			$this->reportMessage( $line . 'Skipping concept "' . $title->getPrefixedText() . "\": $skip\n", $this->verbose );
+			$this->reportMessage(
+				"($this->lines) " . 'Skipping concept "' . $title->getPrefixedText() . "\": $skip\n",
+				$this->verbose
+			);
 		}
 
 		return $skip;

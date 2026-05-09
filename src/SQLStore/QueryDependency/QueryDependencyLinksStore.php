@@ -423,10 +423,6 @@ class QueryDependencyLinksStore {
 
 		$query = $queryResult->getQuery();
 
-		if ( $query === null ) {
-			return false;
-		}
-
 		$actions = [
 			// #2484 Avoid any update activities during a stashedit API access
 			'stashedit',
