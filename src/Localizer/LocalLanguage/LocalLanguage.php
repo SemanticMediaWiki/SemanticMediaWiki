@@ -335,10 +335,12 @@ class LocalLanguage {
 		$this->initPropertyIdByLabelMap( $this->languageCode );
 
 		if ( isset( $this->propertyIdByLabelMap[$this->languageCode]['label'][$label] ) ) {
+			// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
 			return $this->propertyIdByLabelMap[$this->languageCode]['label'][$label];
 		}
 
 		if ( isset( $this->propertyIdByLabelMap[$this->languageCode]['alias'][$label] ) ) {
+			// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
 			return $this->propertyIdByLabelMap[$this->languageCode]['alias'][$label];
 		}
 

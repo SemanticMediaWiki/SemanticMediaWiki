@@ -191,9 +191,9 @@ class QueryBuilder {
 		}
 
 		if ( $form === 'open' ) {
-			$properties = $this->request->getArray( 'property' );
-			$pvalues = $this->request->getArray( 'pvalue' );
-			$op = $this->request->getArray( 'op' );
+			$properties = (array)$this->request->getArray( 'property' );
+			$pvalues = (array)$this->request->getArray( 'pvalue' );
+			$op = (array)$this->request->getArray( 'op' );
 
 			foreach ( $properties as $i => $property ) {
 
