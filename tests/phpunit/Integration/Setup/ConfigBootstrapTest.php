@@ -57,12 +57,12 @@ class ConfigBootstrapTest extends TestCase {
 
 		try {
 			ConfigBootstrap::seedComputedDefaults();
-			$this->assertSame( true,  $GLOBALS[$key][SMW_NS_PROPERTY] );
-			$this->assertSame( false, $GLOBALS[$key][SMW_NS_PROPERTY_TALK] );
-			$this->assertSame( true,  $GLOBALS[$key][SMW_NS_CONCEPT] );
-			$this->assertSame( false, $GLOBALS[$key][SMW_NS_CONCEPT_TALK] );
-			$this->assertSame( true,  $GLOBALS[$key][SMW_NS_SCHEMA] );
-			$this->assertSame( false, $GLOBALS[$key][SMW_NS_SCHEMA_TALK] );
+			$this->assertTrue( $GLOBALS[$key][SMW_NS_PROPERTY] );
+			$this->assertFalse( $GLOBALS[$key][SMW_NS_PROPERTY_TALK] );
+			$this->assertTrue( $GLOBALS[$key][SMW_NS_CONCEPT] );
+			$this->assertFalse( $GLOBALS[$key][SMW_NS_CONCEPT_TALK] );
+			$this->assertTrue( $GLOBALS[$key][SMW_NS_SCHEMA] );
+			$this->assertFalse( $GLOBALS[$key][SMW_NS_SCHEMA_TALK] );
 		} finally {
 			$GLOBALS[$key] = $backup;
 		}
