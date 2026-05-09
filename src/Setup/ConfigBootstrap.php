@@ -161,24 +161,33 @@ class ConfigBootstrap {
 		$GLOBALS['smwgLocalConnectionConf'] = $user;
 
 		// smwgNamespacesWithSemanticLinks — array_plus semantics: user keys win,
-		// standard MW namespaces filled from defaults.
+		// standard MW + SMW custom namespaces filled from defaults. SMW NS
+		// keys must be seeded here (not in the CanonicalNamespaces hook
+		// handler) because Settings::loadFromGlobals() runs inside
+		// wgExtensionFunctions, before any Title resolution fires the hook.
 		$defaults = [
-			NS_MAIN             => true,
-			NS_TALK             => false,
-			NS_USER             => true,
-			NS_USER_TALK        => false,
-			NS_PROJECT          => true,
-			NS_PROJECT_TALK     => false,
-			NS_FILE             => true,
-			NS_FILE_TALK        => false,
-			NS_MEDIAWIKI        => false,
-			NS_MEDIAWIKI_TALK   => false,
-			NS_TEMPLATE         => false,
-			NS_TEMPLATE_TALK    => false,
-			NS_HELP             => true,
-			NS_HELP_TALK        => false,
-			NS_CATEGORY         => true,
-			NS_CATEGORY_TALK    => false,
+			NS_MAIN              => true,
+			NS_TALK              => false,
+			NS_USER              => true,
+			NS_USER_TALK         => false,
+			NS_PROJECT           => true,
+			NS_PROJECT_TALK      => false,
+			NS_FILE              => true,
+			NS_FILE_TALK         => false,
+			NS_MEDIAWIKI         => false,
+			NS_MEDIAWIKI_TALK    => false,
+			NS_TEMPLATE          => false,
+			NS_TEMPLATE_TALK     => false,
+			NS_HELP              => true,
+			NS_HELP_TALK         => false,
+			NS_CATEGORY          => true,
+			NS_CATEGORY_TALK     => false,
+			SMW_NS_PROPERTY      => true,
+			SMW_NS_PROPERTY_TALK => false,
+			SMW_NS_CONCEPT       => true,
+			SMW_NS_CONCEPT_TALK  => false,
+			SMW_NS_SCHEMA        => true,
+			SMW_NS_SCHEMA_TALK   => false,
 		];
 		$GLOBALS['smwgNamespacesWithSemanticLinks'] = ( $GLOBALS['smwgNamespacesWithSemanticLinks'] ?? [] ) + $defaults;
 

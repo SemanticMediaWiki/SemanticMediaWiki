@@ -66,6 +66,9 @@ class NamespaceManager {
 		// claimed them by the time this hook fires.
 		$namespaces = $extraNamespaces + $canonicalNames + $namespaces;
 
+		// $smwgNamespacesWithSemanticLinks defaults are seeded in
+		// ConfigBootstrap::seedComputedDefaults() so Settings::loadFromGlobals()
+		// (called inside wgExtensionFunctions) sees them before this hook fires.
 		Globals::replace( [
 			'wgNamespaceAliases' => $namespaceAliases
 				+ array_flip( $extraNamespaces )
@@ -74,14 +77,6 @@ class NamespaceManager {
 			'wgNamespacesToBeSearchedDefault' => ( $vars['wgNamespacesToBeSearchedDefault'] ?? [] ) + [
 				SMW_NS_PROPERTY => true,
 				SMW_NS_CONCEPT  => true,
-			],
-			'smwgNamespacesWithSemanticLinks' => ( $vars['smwgNamespacesWithSemanticLinks'] ?? [] ) + [
-				SMW_NS_PROPERTY      => true,
-				SMW_NS_PROPERTY_TALK => false,
-				SMW_NS_CONCEPT       => true,
-				SMW_NS_CONCEPT_TALK  => false,
-				SMW_NS_SCHEMA        => true,
-				SMW_NS_SCHEMA_TALK   => false,
 			],
 		] );
 
