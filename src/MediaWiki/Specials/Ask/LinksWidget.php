@@ -287,7 +287,7 @@ class LinksWidget {
 			'a',
 			[
 				'class' => '',
-				'href'  => $title->getLocalURL( $urlArgs->toString() ),
+				'href'  => $title->getLocalURL( (string)$urlArgs ),
 				'rel'   => 'nofollow',
 				'title' => Message::get( 'smw-ask-debug-desc', Message::TEXT, Message::USER_LANGUAGE )
 			],
@@ -339,7 +339,7 @@ class LinksWidget {
 				'a',
 				[
 					'class' => '',
-					'href'  => $title->getLocalURL( $urlArgs->toString() ),
+					'href'  => $title->getLocalURL( (string)$urlArgs ),
 					'rel'   => 'nofollow'
 				],
 				Message::get( 'smw-ask-no-cache', Message::TEXT, Message::USER_LANGUAGE )
