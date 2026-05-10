@@ -33,12 +33,14 @@ class SchemaPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		$semanticData->addPropertyObjectValue(
 			new Property( '_SCHEMA_TYPE' ),
-			$this->dataItemFactory->newDIBlob( $this->schema->get( Schema::SCHEMA_TYPE ) )
+			$this->dataItemFactory->newDIBlob(
+				$this->schema->get( Schema::SCHEMA_TYPE, '' )
+			)
 		);
 
 		$semanticData->addPropertyObjectValue(
 			new Property( '_SCHEMA_DEF' ),
-			$this->dataItemFactory->newDIBlob( $this->schema )
+			$this->dataItemFactory->newDIBlob( (string)$this->schema )
 		);
 
 		$desc = $this->schema->get( Schema::SCHEMA_DESCRIPTION, '' );

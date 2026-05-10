@@ -93,8 +93,12 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 
 		$this->logger->info(
-			[ 'Connection', '{provider} : {hosts}' ],
-			[ 'role' => 'developer', 'provider' => 'elastic', 'hosts' => $params['hosts'] ]
+			'Connection {provider} : {hosts}',
+			[
+				'role' => 'developer',
+				'provider' => 'elastic',
+				'hosts' => $params['hosts']
+			]
 		);
 
 		return $this->connection;

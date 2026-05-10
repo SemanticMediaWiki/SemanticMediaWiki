@@ -238,8 +238,8 @@ class DataValueFactory {
 	/**
 	 * Create a value for a data item.
 	 *
-	 * @param $dataItem DataItem
-	 * @param null $property mixed null or DIProperty property object for which this value is made
+	 * @param DataItem $dataItem
+	 * @param Property|null $property mixed null or Property property object for which this value is made
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param WikiPage|null $contextPage
 	 *
@@ -279,10 +279,10 @@ class DataValueFactory {
 	 * object. If no value is given, an empty container is created, the
 	 * value of which can be set later on.
 	 *
-	 * @param $property DIProperty property object for which this value is made
+	 * @param Property $property property object for which this value is made
 	 * @param $valueString mixed user value string, or false if unknown
 	 * @param $caption mixed user-defined caption, or false if none given
-	 * @param null $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null
+	 * @param WikiPage|null $contextPage that provides a context for parsing the value string, or null
 	 *
 	 * @return DataValue|ErrorValue
 	 */

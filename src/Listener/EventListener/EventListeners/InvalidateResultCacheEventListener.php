@@ -60,8 +60,12 @@ class InvalidateResultCacheEventListener implements EventListener {
 		);
 
 		$this->logger->info(
-			[ 'Event', 'InvalidateResultCache', "{caused_by}", "{subject}" ],
-			[ 'role' => 'user', 'caused_by' => $context, 'subject' => $subject ]
+			'Event InvalidateResultCache {caused_by} {subject}',
+			[
+				'role' => 'user',
+				'caused_by' => $context,
+				'subject' => $subject
+			]
 		);
 	}
 

@@ -59,7 +59,7 @@ class ExploreListBuilder {
 				Html::rawElement(
 					'a',
 					[
-						'href' => $title->getLocalUrl( $urlArgs )
+						'href' => $title->getLocalUrl( $urlArgs->toString() )
 					],
 					$link['label']
 				) . $description

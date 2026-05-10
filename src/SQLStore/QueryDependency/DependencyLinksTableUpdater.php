@@ -82,8 +82,12 @@ class DependencyLinksTableUpdater {
 	 */
 	public function deleteDependenciesFromList( array $deleteIdList ): void {
 		$this->logger->info(
-			[ 'QueryDependency', 'Delete dependencies: {list}' ],
-			[ 'method' => __METHOD__, 'role' => 'developer', 'list' => json_encode( $deleteIdList ) ]
+			'QueryDependency Delete dependencies: {list}',
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'list' => json_encode( $deleteIdList )
+			]
 		);
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -170,8 +174,12 @@ class DependencyLinksTableUpdater {
 		$inserts = array_values( $inserts );
 
 		$this->logger->info(
-			[ 'QueryDependency', 'Table insert: {id} ID' ],
-			[ 'method' => __METHOD__, 'role' => 'developer', 'id' => $sid ]
+			'QueryDependency Table insert: {id} ID',
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'id' => $sid
+			]
 		);
 
 		$connection->newInsertQueryBuilder()
@@ -224,8 +232,13 @@ class DependencyLinksTableUpdater {
 		);
 
 		$this->logger->info(
-			[ 'QueryDependency', 'Table update: new {id} ID; {origin}' ],
-			[ 'method' => __METHOD__, 'role' => 'developer', 'id' => $id, 'origin' => $subject->getHash() . $subobjectName ]
+			'QueryDependency Table update: new {id} ID; {origin}',
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'id' => $id,
+				'origin' => $subject->getHash() . $subobjectName
+			]
 		);
 
 		return $id;

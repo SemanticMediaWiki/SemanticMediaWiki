@@ -43,8 +43,12 @@ class InvalidateEntityCacheEventListener implements EventListener {
 		$this->entityCache->invalidate( $subject );
 
 		$this->logger->info(
-			[ 'Event', 'InvalidateEntityCache', "{caused_by}", "{id}" ],
-			[ 'role' => 'user', 'caused_by' => $context, 'id' => $id ]
+			'Event InvalidateEntityCache {caused_by} {id}',
+			[
+				'role' => 'user',
+				'caused_by' => $context,
+				'id' => $id
+			]
 		);
 	}
 

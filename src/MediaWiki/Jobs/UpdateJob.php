@@ -212,14 +212,8 @@ class UpdateJob extends Job {
 
 	private function updateStore( $parserData ): bool {
 		$this->applicationFactory->getMediaWikiLogger()->info(
-			[
-				'Job',
-				'UpdateJob',
-				'{title}',
-				'Type: {updateType}',
-				'Origin: {origin}',
-				'isForcedUpdate: {forcedUpdate}'
-			],
+			'Job UpdateJob {title} Type: {updateType} Origin: {origin} '
+				. 'isForcedUpdate: {forcedUpdate}',
 			[
 				'method' => __METHOD__,
 				'role' => 'user',

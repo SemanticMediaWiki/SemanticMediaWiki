@@ -133,6 +133,7 @@ class FieldItemFinder {
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CCAT ) ) {
 			if ( self::$catCacheObj !== $dataItem->getHash() ) {
 				self::$catCache = $this->store->getPropertyValues(
+					// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 					$dataItem,
 					new Property( '_INST' )
 				);

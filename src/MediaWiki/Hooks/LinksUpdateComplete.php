@@ -113,11 +113,8 @@ class LinksUpdateComplete implements HookListener {
 	 */
 	private function updateSemanticData( &$parserData, Title $title, string $reason = '' ): void {
 		$this->logger->info(
-			[
-				'LinksUpdateConstructed',
-				"Required content re-parse due to $reason",
-				$title->getPrefixedDBKey()
-			]
+			'LinksUpdateConstructed Required content re-parse due to '
+				. $reason . ' ' . $title->getPrefixedDBKey(),
 		);
 
 		$semanticData = $this->reparseAndFetchSemanticData( $title );

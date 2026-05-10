@@ -162,8 +162,12 @@ class CachedFactbox {
 		if ( !$isPreview && $this->hasCachedContent( $subKey, $rev_id, $content, $request ) ) {
 
 			$this->logger->info(
-				[ 'Factbox', 'Using cached factbox', 'rev_id: {rev_id}', '{lang}', 'procTime: {procTime}' ],
-				[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
+				'Factbox Using cached factbox rev_id: {rev_id} {lang} procTime: {procTime}',
+				[
+					'rev_id' => $rev_id,
+					'lang' => $lang,
+					'procTime' => microtime( true ) + $time
+				]
 			);
 
 			$this->factboxText->setText( $content['text'] );
@@ -191,8 +195,12 @@ class CachedFactbox {
 		);
 
 		$this->logger->info(
-			[ 'Factbox', 'Rebuild factbox', 'rev_id: {rev_id}', '{lang}', 'procTime: {procTime}' ],
-			[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
+			'Factbox Rebuild factbox rev_id: {rev_id} {lang} procTime: {procTime}',
+			[
+				'rev_id' => $rev_id,
+				'lang' => $lang,
+				'procTime' => microtime( true ) + $time
+			]
 		);
 
 		$this->entityCache->associate( $title, $key );

@@ -34,7 +34,9 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * @param ConstraintValueValidator $constraintValueValidator
 	 */
-	public function registerConstraintValueValidator( ConstraintValueValidator $constraintValueValidator ): void {
+	public function registerConstraintValueValidator(
+		ConstraintValueValidator $constraintValueValidator
+	): void {
 		$this->constraintValueValidators[] = $constraintValueValidator;
 	}
 
@@ -86,8 +88,14 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 
 	public function __destruct() {
 		$this->logger->info(
-			[ 'CompoundConstraintValueValidator', 'Page: {contextPage}', 'Validation count: {count}', 'procTime (total in sec.): {procTime}' ],
-			[ 'role' => 'developer', 'count' => $this->count, 'procTime' => $this->time, 'contextPage' => $this->contextPage ]
+			'CompoundConstraintValueValidator Page: {contextPage} '
+				. 'Validation count: {count} procTime (total in sec.): {procTime}',
+			[
+				'role' => 'developer',
+				'count' => $this->count,
+				'procTime' => $this->time,
+				'contextPage' => $this->contextPage
+			]
 		);
 	}
 

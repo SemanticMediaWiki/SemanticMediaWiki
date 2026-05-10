@@ -155,12 +155,7 @@ class Indexer {
 		$response = $this->bulk->getResponse();
 
 		$this->logger->info(
-			[
-				'Indexer',
-				'Deleted list',
-				'procTime (in sec): {procTime}',
-				'Response: {response}'
-			],
+			'Indexer Deleted list procTime (in sec): {procTime} Response: {response}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',
@@ -201,11 +196,7 @@ class Indexer {
 		$response = $connection->index( $params + [ 'body' => $data ] );
 
 		$this->logger->info(
-			[
-				'Indexer',
-				'Create ({subject}, {id})',
-				'Response: {response}'
-			],
+			'Indexer Create ({subject}, {id}) Response: {response}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',
@@ -271,11 +262,8 @@ class Indexer {
 		$this->bulk->execute();
 
 		$this->logger->info(
-			[ 'Indexer',
-				'Data index completed ({subject}, {id})',
-				'procTime (in sec): {procTime}',
-				'Response: {response}'
-			],
+			'Indexer Data index completed ({subject}, {id}) '
+				. 'procTime (in sec): {procTime} Response: {response}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',

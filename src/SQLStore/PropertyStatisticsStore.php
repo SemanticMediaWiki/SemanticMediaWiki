@@ -171,7 +171,7 @@ class PropertyStatisticsStore {
 	 * @since 1.9
 	 *
 	 * @param int $propertyId
-	 * @param int $value
+	 * @param int|array $value
 	 *
 	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException

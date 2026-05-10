@@ -97,8 +97,12 @@ class FileHandler {
 		}
 
 		$this->logger->info(
-			[ 'File indexer', 'HTTP/1.1 404 Not Found', '{url}' ],
-			[ 'method' => __METHOD__, 'role' => 'production', 'url' => $url ]
+			'File indexer HTTP/1.1 404 Not Found {url}',
+			[
+				'method' => __METHOD__,
+				'role' => 'production',
+				'url' => $url
+			]
 		);
 
 		return $contents;

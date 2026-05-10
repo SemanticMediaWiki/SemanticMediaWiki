@@ -96,7 +96,7 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param int $type
+	 * @param string $type
 	 * @param string|int $locale
 	 *
 	 * @return string
