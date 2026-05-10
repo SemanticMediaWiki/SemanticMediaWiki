@@ -191,7 +191,7 @@ class UpdateJob extends Job {
 		$contentParser->parse();
 
 		if ( !( $contentParser->getOutput() instanceof ParserOutput ) ) {
-			$this->setLastError( $contentParser->getErrors() );
+			$this->setLastError( implode( ' ', $contentParser->getErrors() ) );
 			return false;
 		}
 

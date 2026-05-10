@@ -50,7 +50,7 @@ class RejectParserCacheValue implements HookListener {
 		}
 
 		$this->logger->info(
-			'RejectParserCacheValue Rejected, found archaic query dependencies {etag}',
+			'RejectParserCacheValue Rejected, found archaic query dependencies',
 			[
 				'role' => 'user'
 			]
