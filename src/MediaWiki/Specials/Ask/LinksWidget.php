@@ -256,7 +256,7 @@ class LinksWidget {
 			], Html::element(
 				'a',
 				[
-					'href'  => $title->getLocalURL( $urlArgs->toString() ),
+					'href'  => $title->getLocalURL( (string)$urlArgs ),
 					'rel'   => 'nofollow'
 				],
 				wfMessage( ( $hideForm ? 'smw_ask_hidequery' : 'smw_ask_editquery' ) )->text()
