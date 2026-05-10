@@ -299,7 +299,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setup( $options = true ): void {
+	public function setup( $options = true ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -332,7 +332,7 @@ class ElasticStore extends SQLStore {
 				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
 				$setupFile->addIncompleteTask( self::REBUILD_INDEX_RUN_INCOMPLETE );
 			} else {
-				$data = $setupFile->get( 'elasticsearch' );
+				$data = (array)$setupFile->get( 'elasticsearch' );
 
 				if ( $data['latest_version'] !== $version ) {
 					$setupFile->set(
@@ -365,7 +365,7 @@ class ElasticStore extends SQLStore {
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		parent::setup( $options );
+		return parent::setup( $options );
 	}
 
 	/**

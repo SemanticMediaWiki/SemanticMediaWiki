@@ -222,7 +222,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 	}
 
-	private function doDropField( string $tableName, int|string $fieldName, ?array $attributes ): void {
+	private function doDropField( string $tableName, int|string $fieldName, array $attributes ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$fields = $attributes['fields'];
@@ -328,7 +328,7 @@ class SQLiteTableBuilder extends TableBuilder {
 
 	private function doDropIndex( int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
-		$this->connection->query( 'DROP INDEX ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
+		$this->connection->query( 'DROP INDEX ' . $this->connection->addIdentifierQuotes( $indexName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 

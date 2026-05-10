@@ -192,6 +192,10 @@ class Highlighter {
 	 * @since 1.9
 	 */
 	private function getContainer(): string {
+		if ( $this->options === null ) {
+			return '';
+		}
+
 		$captionclass = $this->options['captionclass'];
 
 		// 2.4+ can display context for user-defined properties, here we ensure

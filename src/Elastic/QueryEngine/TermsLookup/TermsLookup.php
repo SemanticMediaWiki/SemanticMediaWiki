@@ -68,7 +68,7 @@ class TermsLookup implements ITermsLookup {
 	 * @param $type
 	 * @param Parameters $parameters
 	 *
-	 * @return ?array
+	 * @return array
 	 * @throws RuntimeException
 	 */
 	public function lookup( $type, Parameters $parameters ) {
@@ -94,7 +94,7 @@ class TermsLookup implements ITermsLookup {
 	/**
 	 * @since 3.0
 	 */
-	public function concept_index_lookup( Parameters $parameters ): ?array {
+	public function concept_index_lookup( Parameters $parameters ): array {
 		$params = $parameters->get( 'params' );
 		$query = $params instanceof Condition ? $params->toArray() : $params;
 

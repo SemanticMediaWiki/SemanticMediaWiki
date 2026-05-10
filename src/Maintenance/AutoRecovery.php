@@ -154,6 +154,7 @@ class AutoRecovery {
 			return false;
 		}
 
+		// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
 		return $this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key] !== false;
 	}
 

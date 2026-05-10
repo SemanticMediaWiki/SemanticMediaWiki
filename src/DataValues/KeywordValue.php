@@ -229,6 +229,10 @@ class KeywordValue extends StringValue {
 			true
 		);
 
+		if ( !is_array( $data ) ) {
+			return '';
+		}
+
 		// Schema enforced
 		if ( $data['type'] !== 'LINK_FORMAT_SCHEMA' ) {
 			return '';

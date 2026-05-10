@@ -251,7 +251,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
+		$this->connection->query( "ALTER TABLE $tableName DROP COLUMN " . $this->connection->addIdentifierQuotes( $fieldName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -357,7 +357,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 	private function doDropIndex( string $tableName, int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
-		$this->connection->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
+		$this->connection->query( 'DROP INDEX ' . $this->connection->addIdentifierQuotes( $indexName ) . ' ON ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 

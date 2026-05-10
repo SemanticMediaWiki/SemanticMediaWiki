@@ -27,8 +27,6 @@ interface Annotator {
 	 * Add annotations to the SemanticData container
 	 *
 	 * @since 1.9
-	 *
-	 * @return Annotator
 	 */
 	public function addAnnotation();
 

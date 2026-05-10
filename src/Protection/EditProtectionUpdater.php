@@ -163,8 +163,6 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			];
 		} else {
 			$this->log( __METHOD__ . ' remove protection on edit, move' );
-			$protections = [];
-			$expiry = [];
 		}
 
 		$reason = Message::get( 'smw-edit-protection-auto-update' );

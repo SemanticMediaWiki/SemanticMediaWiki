@@ -54,9 +54,9 @@ class OpenForm {
 		$op = [];
 
 		if ( $this->isActiveForm ) {
-			$properties = $this->request->getArray( 'property', [] );
-			$values = $this->request->getArray( 'pvalue', [] );
-			$op = $this->request->getArray( 'op', [] );
+			$properties = (array)$this->request->getArray( 'property', [] );
+			$values = (array)$this->request->getArray( 'pvalue', [] );
+			$op = (array)$this->request->getArray( 'op', [] );
 		}
 
 		$this->parameters = [

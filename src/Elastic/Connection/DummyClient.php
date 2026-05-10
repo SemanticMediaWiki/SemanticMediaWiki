@@ -194,13 +194,15 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::update
 	 */
-	public function update( array $params ): void {
+	public function update( array $params ): array {
+		return [];
 	}
 
 	/**
 	 * @see Client::index
 	 */
-	public function index( array $params ): void {
+	public function index( array $params ): array {
+		return [];
 	}
 
 	/**
