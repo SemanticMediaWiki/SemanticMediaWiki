@@ -282,7 +282,7 @@ EOT;
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
-		$this->connection->query( 'ALTER TABLE ' . $tableName . ' DROP COLUMN "' . $fieldName . '"', __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
+		$this->connection->query( 'ALTER TABLE ' . $tableName . ' DROP COLUMN ' . $this->connection->addIdentifierQuotes( $fieldName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -406,7 +406,7 @@ EOT;
 
 	private function doDropIndex( int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
-		$this->connection->query( 'DROP INDEX IF EXISTS ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
+		$this->connection->query( 'DROP INDEX IF EXISTS ' . $this->connection->addIdentifierQuotes( $indexName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 

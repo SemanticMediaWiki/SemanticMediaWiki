@@ -328,7 +328,7 @@ class SQLiteTableBuilder extends TableBuilder {
 
 	private function doDropIndex( int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
-		$this->connection->query( 'DROP INDEX ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
+		$this->connection->query( 'DROP INDEX ' . $this->connection->addIdentifierQuotes( $indexName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
