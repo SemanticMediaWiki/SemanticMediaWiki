@@ -6,7 +6,7 @@ use MediaWiki\Html\Html;
 use SMW\DataItems\Blob;
 use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
-use SMW\DataValues\WikiPageValue;
+// use SMW\DataValues\WikiPageValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
