@@ -318,6 +318,44 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
 		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+
+		$values = [];
+		foreach ( $dataValues as $dv ) {
+
+			// Restore output in Special:Ask on:
+			// - file/image parsing
+			// - text formatting on string elements including italic, bold etc.
+			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
+				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof Blob ) ) {
+				// Too lazy to handle the Parser object and besides the Message
+				// parse does the job and ensures no other hook is executed
+				$value = Message::get(
+					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					Message::PARSE
+				);
+			} else {
+				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
+			}
+
+			$values[] = $value === '' ? '&nbsp;' : $value;
+		}
+
+		$sep = strtolower( $this->params['sep'] );
+
+		if ( !$isSubject && $sep === 'ul' && count( $values ) > 1 ) {
+			$html = '<ul><li>' . implode( '</li><li>', $values ) . '</li></ul>';
+		} elseif ( !$isSubject && $sep === 'ol' && count( $values ) > 1 ) {
+			$html = '<ol><li>' . implode( '</li><li>', $values ) . '</li></ol>';
+		} else {
+			$html = implode( $this->params['sep'], $values );
+		}
+
+		return $html;
+	}
+
+	
+	protected function getCellContent_( array $dataValues, $outputMode, $isSubject ): string {
+		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 		$isHtmlOutput = $outputMode === SMW_OUTPUT_HTML;
 
 		$values = [];
