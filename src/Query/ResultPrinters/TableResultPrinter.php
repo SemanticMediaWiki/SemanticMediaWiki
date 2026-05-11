@@ -1,5 +1,6 @@
 <?php
 
+// check test
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Html\Html;
