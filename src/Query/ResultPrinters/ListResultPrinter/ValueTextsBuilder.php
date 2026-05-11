@@ -69,12 +69,14 @@ class ValueTextsBuilder {
 	 */
 	private function getValueText( DataValue $dataValue, $column = 0 ): string {
 		$isSubject = ( $column === 0 );
-		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
-		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
 		$linker = $this->getLinkerForColumn( $column );
+		$dataValueMethod = 'getShortText';
 
 		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
 		if ( $dataValue instanceof WikiPageValue ) {
+			$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
+			$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
+
 			$dataValue->setOption(
 				$useLongText
 					? $dataValue::PREFIXED_FORM
