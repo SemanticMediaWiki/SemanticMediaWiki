@@ -339,7 +339,7 @@ class TableResultPrinter extends ResultPrinter {
 			if ( $dv instanceof WikiPageValue ) {
 				$itemDataValueMethod = $pageDataValueMethod;
 				$dv->setOption(
-					$dataValueMethod === 'getLongText'
+					$pageDataValueMethod === 'getLongText'
 						? $dv::PREFIXED_FORM
 						: $dv::SHORT_FORM,
 					true
