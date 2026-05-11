@@ -76,7 +76,7 @@
 	"smw_printername_rdf": "PDF 내보내기",
 	"smw_printername_category": "분류",
 	"validator-type-class-SMWParamSource": "텍스트",
-	"smw-paramdesc-limit": "반환할 결과의 최대 수",
+	"smw-paramdesc-limit": "반환할 결과의 최대 수입니다.",
 	"smw-paramdesc-offset": "첫 결과의 오프셋",
 	"smw-paramdesc-headers": "머리글/속성 이름 표시",
 	"smw-paramdesc-mainlabel": "대문 이름으로 주어지는 레이블",

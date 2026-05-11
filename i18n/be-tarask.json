@@ -322,7 +322,7 @@
 	"smw-admin-supplementary-elastic-indices-intro": "<u>$1</u> забясьпечвае агляд даступных індэксаў і іх статыстыку",
 	"smw-admin-supplementary-elastic-statistics-title": "Статыстыка",
 	"smw-admin-supplementary-elastic-statistics-intro": "<u>$1</u> паказвае статыстыку ўзроўню індэксу",
-	"smw-admin-supplementary-elastic-status-replication": "Стан рэплікацыі",
+	"smw-admin-supplementary-elastic-status-replication": "Статус рэплікацыі",
 	"smw-admin-supplementary-elastic-status-last-active-replication": "Апошняя актыўная рэплікацыя: $1",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Прамежак абнаўленьня: $1",
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "Затрымка ўзнаўленьня працы: $1 (ацэнка)",
@@ -443,6 +443,8 @@
 	"smw-schema-summary-title": "Падсумаваньне",
 	"smw-es-replication-error-no-connection": "Сачэньне за паўтарэньнем ня можа выканаць праверкі, бо ня можа ўсталяваць сувязь з клястэрам Elasticsearch.",
 	"smw-entity-examiner-indicator": "Панэль праблемаў існасьці",
+	"smw-entity-examiner-associated-revision-mismatch": "Вэрсія",
+	"smw-indicator-revision-mismatch": "Вэрсія",
 	"smw-listingcontinuesabbrev": " (працяг)",
 	"smw-showingresults": "Ніжэй {{PLURAL:$1|пададзены|пададзеныя}} да <strong>$1</strong> {{PLURAL:$1|выніку|вынікаў}}, пачынаючы з #<strong>$2</strong>."
 }
