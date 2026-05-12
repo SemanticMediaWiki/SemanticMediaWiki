@@ -27,13 +27,13 @@ class ConnectionManager {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string|null $id
+	 * @param string|int|null $id
 	 *
 	 * @return mixed
 	 * @throws RuntimeException
 	 */
 	public function getConnection( $id = null ) {
-		$id = strtolower( $id );
+		$id = strtolower( (string)$id );
 
 		if ( self::$isConnectable === null ) {
 			self::$isConnectable = $this->isConnectable();
@@ -58,21 +58,21 @@ class ConnectionManager {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $id
+	 * @param id|string $id
 	 * @param ConnectionProvider $connectionProvider
 	 */
 	public function registerConnectionProvider( $id, ConnectionProvider $connectionProvider ): void {
-		self::$connectionProviders[strtolower( $id )] = $connectionProvider;
+		self::$connectionProviders[strtolower( (string)$id )] = $connectionProvider;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $id
+	 * @param string|int $id
 	 * @param callable $callback
 	 */
 	public function registerCallbackConnection( $id, callable $callback ): void {
-		self::$connectionProviders[strtolower( $id )] = new CallbackConnectionProvider( $callback );
+		self::$connectionProviders[strtolower( (string)$id )] = new CallbackConnectionProvider( $callback );
 	}
 
 	private function isConnectable(): bool {
