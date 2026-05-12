@@ -227,6 +227,13 @@ class Settings extends Options {
 	 * {@inheritDoc}
 	 */
 	public function set( $key, $value ): void {
+		// Mirror Settings::loadFromGlobals(): user-facing string/array config
+		// values must be normalized before reaching change listeners and
+		// internal storage, so that callbacks (e.g. `setEqualitySupport(int)`)
+		// see the integer form regardless of how the caller wrote the value
+		// (#6586).
+		$value = LegacyConstantNormalizer::normalize( $key, $value );
+
 		foreach ( $this->getChangeListeners() as $changeListener ) {
 
 			if ( !$changeListener->canTrigger( $key ) ) {
