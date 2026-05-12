@@ -76,7 +76,7 @@ class FileAttachment {
 
 		if ( !$connection->exists( $params ) ) {
 
-			$msg = 'File indexer Abort annotation update' .
+			$msg = 'File indexer Abort annotation update ' .
 				'Missing {id} document!';
 
 			return $this->logger->info( $msg, $context + [ 'id' => $dataItem->getId() ] );
