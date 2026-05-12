@@ -1,0 +1,200 @@
+<?php
+
+namespace SMW\Setup;
+
+use MediaWiki\Logger\LoggerFactory;
+
+/**
+ * Normalize legacy integer-constant config values to the JSON-clean string /
+ * array-of-strings form used by `extension.json` defaults, while preserving
+ * the internal representation expected by SMW (integer bitmask for flag
+ * settings, integer or string for enum settings).
+ *
+ * Called from {@see \SMW\Settings::loadFromGlobals()} for the registered keys.
+ * Both legacy (integer constants from src/Defines.php) and new (string / array
+ * of strings) user values are accepted. The legacy form emits one
+ * `wfDeprecatedMsg` per setting per request and is scheduled for removal in
+ * SMW 8.0.
+ *
+ * @license GPL-2.0-or-later
+ * @since 7.0.0
+ */
+class LegacyConstantNormalizer {
+
+	/**
+	 * Per-request set of setting keys for which a deprecation notice has
+	 * already been emitted. Reset between requests; resetDeprecationState()
+	 * is exposed for test isolation.
+	 *
+	 * @var array<string, true>
+	 */
+	private static array $deprecationEmitted = [];
+
+	/**
+	 * Enum settings: single-value, internally compared via === or == against
+	 * an SMW_* integer constant. Shape: [ settingKey => [ stringName => internalValue ] ].
+	 *
+	 * Each integer matches the corresponding `define()` in src/Defines.php.
+	 *
+	 * @var array<string, array<string, int>>
+	 */
+	private const ENUM_MAP = [
+		'smwgShowFactbox' => [
+			'hidden'   => 1, // SMW_FACTBOX_HIDDEN
+			'special'  => 2, // SMW_FACTBOX_SPECIAL
+			'nonempty' => 3, // SMW_FACTBOX_NONEMPTY
+			'shown'    => 5, // SMW_FACTBOX_SHOWN
+		],
+	];
+
+	/**
+	 * Default internal value applied when an unknown string is supplied to
+	 * an enum setting (after a structured-log warning). Mirrors the
+	 * documented extension.json default for the same key.
+	 *
+	 * @var array<string, int>
+	 */
+	private const ENUM_DEFAULT = [
+		'smwgShowFactbox' => 1, // SMW_FACTBOX_HIDDEN
+	];
+
+	/**
+	 * Flag settings: combined via bitwise OR, internally tested via & or
+	 * {@see \SMW\Options::isFlagSet()}. Shape: [ settingKey => [ stringName => flagBit ] ].
+	 *
+	 * Each integer matches the corresponding `define()` in src/Defines.php.
+	 *
+	 * @var array<string, array<string, int>>
+	 */
+	private const FLAG_MAP = [
+		'smwgFactboxFeatures' => [
+			'cache'              => 16, // SMW_FACTBOX_CACHE
+			'purge-refresh'      => 32, // SMW_FACTBOX_PURGE_REFRESH
+			'display-subobject'  => 64, // SMW_FACTBOX_DISPLAY_SUBOBJECT
+			'display-attachment' => 128, // SMW_FACTBOX_DISPLAY_ATTACHMENT
+		],
+	];
+
+	/**
+	 * Normalize a user-supplied config value for one of the registered keys.
+	 * Keys not in any map are passed through unchanged.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function normalize( string $key, mixed $value ): mixed {
+		if ( isset( self::ENUM_MAP[$key] ) ) {
+			return self::normalizeEnum( $key, $value );
+		}
+		if ( isset( self::FLAG_MAP[$key] ) ) {
+			return self::normalizeFlags( $key, $value );
+		}
+		return $value;
+	}
+
+	/**
+	 * Whether a deprecation notice has been emitted for the given setting
+	 * key in the current request. Primarily for test introspection.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function wasDeprecationEmitted( string $key ): bool {
+		return isset( self::$deprecationEmitted[$key] );
+	}
+
+	/**
+	 * Reset the per-request deprecation suppression set. Intended for test
+	 * isolation; production callers should never need this.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function resetDeprecationState(): void {
+		self::$deprecationEmitted = [];
+	}
+
+	private static function normalizeEnum( string $key, mixed $value ): mixed {
+		$map = self::ENUM_MAP[$key];
+
+		if ( is_string( $value ) ) {
+			if ( array_key_exists( $value, $map ) ) {
+				return $map[$value];
+			}
+			self::warnUnknown( $key, $value );
+			return self::ENUM_DEFAULT[$key] ?? $value;
+		}
+
+		if ( in_array( $value, $map, true ) ) {
+			self::emitDeprecation( $key );
+			return $value;
+		}
+
+		return $value;
+	}
+
+	private static function normalizeFlags( string $key, mixed $value ): int {
+		$map = self::FLAG_MAP[$key];
+
+		if ( is_int( $value ) ) {
+			if ( $value !== 0 ) {
+				self::emitDeprecation( $key );
+			}
+			return $value;
+		}
+
+		if ( $value === false ) {
+			return 0;
+		}
+
+		if ( is_string( $value ) ) {
+			$value = [ $value ];
+		}
+
+		if ( !is_array( $value ) ) {
+			return 0;
+		}
+
+		$bitmask = 0;
+		$sawLegacy = false;
+		foreach ( $value as $element ) {
+			if ( is_int( $element ) ) {
+				$bitmask |= $element;
+				$sawLegacy = true;
+				continue;
+			}
+			if ( is_string( $element ) && array_key_exists( $element, $map ) ) {
+				$bitmask |= $map[$element];
+				continue;
+			}
+			if ( is_string( $element ) ) {
+				self::warnUnknown( $key, $element );
+			}
+		}
+		if ( $sawLegacy ) {
+			self::emitDeprecation( $key );
+		}
+		return $bitmask;
+	}
+
+	private static function emitDeprecation( string $key ): void {
+		if ( isset( self::$deprecationEmitted[$key] ) ) {
+			return;
+		}
+		self::$deprecationEmitted[$key] = true;
+		if ( function_exists( 'wfDeprecatedMsg' ) ) {
+			wfDeprecatedMsg(
+				"\${$key} using SMW_* integer constants is deprecated; switch to the string/array form documented in RELEASE-NOTES-7.0.0.md. The constants will be removed in SMW 8.0.",
+				'7.0',
+				'SemanticMediaWiki'
+			);
+		}
+	}
+
+	private static function warnUnknown( string $key, string $element ): void {
+		if ( !class_exists( LoggerFactory::class ) ) {
+			return;
+		}
+		LoggerFactory::getInstance( 'SMW' )->warning(
+			"Unknown value '{element}' for \${key}; ignored. See RELEASE-NOTES-7.0.0.md for accepted values.",
+			[ 'element' => $element, 'key' => $key ]
+		);
+	}
+}
