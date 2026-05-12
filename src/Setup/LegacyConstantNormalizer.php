@@ -104,6 +104,94 @@ class LegacyConstantNormalizer {
 			'display-subobject'  => SMW_FACTBOX_DISPLAY_SUBOBJECT,
 			'display-attachment' => SMW_FACTBOX_DISPLAY_ATTACHMENT,
 		],
+		'smwgQFeatures' => [
+			'property'    => SMW_PROPERTY_QUERY,
+			'category'    => SMW_CATEGORY_QUERY,
+			'concept'     => SMW_CONCEPT_QUERY,
+			'namespace'   => SMW_NAMESPACE_QUERY,
+			'conjunction' => SMW_CONJUNCTION_QUERY,
+			'disjunction' => SMW_DISJUNCTION_QUERY,
+		],
+		'smwgQConceptFeatures' => [
+			'property'    => SMW_PROPERTY_QUERY,
+			'category'    => SMW_CATEGORY_QUERY,
+			'concept'     => SMW_CONCEPT_QUERY,
+			'namespace'   => SMW_NAMESPACE_QUERY,
+			'conjunction' => SMW_CONJUNCTION_QUERY,
+			'disjunction' => SMW_DISJUNCTION_QUERY,
+		],
+		'smwgQSortFeatures' => [
+			'sort'          => SMW_QSORT,
+			'random'        => SMW_QSORT_RANDOM,
+			'unconditional' => SMW_QSORT_UNCONDITIONAL,
+		],
+		'smwgSparqlQFeatures' => [
+			'redirects'     => SMW_SPARQL_QF_REDI,
+			'subproperties' => SMW_SPARQL_QF_SUBP,
+			'subcategories' => SMW_SPARQL_QF_SUBC,
+			'collation'     => SMW_SPARQL_QF_COLLATION,
+			'no-case'       => SMW_SPARQL_QF_NOCASE,
+		],
+		'smwgCategoryFeatures' => [
+			'redirect'  => SMW_CAT_REDIRECT,
+			'instance'  => SMW_CAT_INSTANCE,
+			'hierarchy' => SMW_CAT_HIERARCHY,
+		],
+		'smwgBrowseFeatures' => [
+			'toolbox-link'  => SMW_BROWSE_TLINK,
+			'show-inverse'  => SMW_BROWSE_SHOW_INVERSE,
+			'show-incoming' => SMW_BROWSE_SHOW_INCOMING,
+			'show-group'    => SMW_BROWSE_SHOW_GROUP,
+			'show-sortkey'  => SMW_BROWSE_SHOW_SORTKEY,
+			'use-api'       => SMW_BROWSE_USE_API,
+		],
+		'smwgAdminFeatures' => [
+			'refresh'                      => SMW_ADM_REFRESH,
+			'disposal'                     => SMW_ADM_DISPOSAL,
+			'setup'                        => SMW_ADM_SETUP,
+			'pstats'                       => SMW_ADM_PSTATS,
+			'fullt'                        => SMW_ADM_FULLT,
+			'maintenance-script-docs'      => SMW_ADM_MAINTENANCE_SCRIPT_DOCS,
+			'show-overview'                => SMW_ADM_SHOW_OVERVIEW,
+			'alert-last-optimization-run'  => SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN,
+		],
+		'smwgParserFeatures' => [
+			'strict'            => SMW_PARSER_STRICT,
+			'unstrip'           => SMW_PARSER_UNSTRIP,
+			'inline-errors'     => SMW_PARSER_INL_ERROR,
+			'hidden-categories' => SMW_PARSER_HID_CATS,
+			'links-in-values'   => SMW_PARSER_LINKS_IN_VALUES,
+		],
+		'smwgDVFeatures' => [
+			'provider-redirect'      => SMW_DV_PROV_REDI,
+			'monolingual-langcode'   => SMW_DV_MLTV_LCODE,
+			'number-value-usespaces' => SMW_DV_NUMV_USPACE,
+			'pattern-validation'     => SMW_DV_PVAP,
+			'wpv-display-title'      => SMW_DV_WPV_DTITLE,
+			'provider-display-title' => SMW_DV_PROV_DTITLE,
+			'unique-constraint'      => SMW_DV_PVUC,
+			'time-calendar-model'    => SMW_DV_TIMEV_CM,
+			'preferred-label'        => SMW_DV_PPLB,
+			'provider-link-hint'     => SMW_DV_PROV_LHNT,
+			'wpv-pipetrick'          => SMW_DV_WPV_PIPETRICK,
+		],
+		'smwgFulltextSearchIndexableDataTypes' => [
+			'blob'     => SMW_FT_BLOB,
+			'uri'      => SMW_FT_URI,
+			'wikipage' => SMW_FT_WIKIPAGE,
+		],
+		'smwgRemoteReqFeatures' => [
+			'send-response' => SMW_REMOTE_REQ_SEND_RESPONSE,
+			'show-note'     => SMW_REMOTE_REQ_SHOW_NOTE,
+		],
+		'smwgExperimentalFeatures' => [
+			'queryresult-prefetch'   => SMW_QUERYRESULT_PREFETCH,
+			'showparser-curtailment' => SMW_SHOWPARSER_USE_CURTAILMENT,
+		],
+		'smwgFieldTypeFeatures' => [
+			'char-nocase' => SMW_FIELDT_CHAR_NOCASE,
+			'char-long'   => SMW_FIELDT_CHAR_LONG,
+		],
 	];
 
 	/**
@@ -161,7 +249,7 @@ class LegacyConstantNormalizer {
 		return $value;
 	}
 
-	private static function normalizeFlags( string $key, mixed $value ): int {
+	private static function normalizeFlags( string $key, mixed $value ): int|false {
 		$map = self::FLAG_MAP[$key];
 
 		if ( is_int( $value ) ) {
@@ -176,6 +264,13 @@ class LegacyConstantNormalizer {
 		}
 
 		if ( $value === false ) {
+			// `smwgFieldTypeFeatures` distinguishes `false` (sentinel: feature
+			// fully disabled, do not register the component) from `0` (no
+			// flags set) at SetupFile.php's `!== false` check. Preserve the
+			// sentinel so the SQLStore field-type install path is unchanged.
+			if ( $key === 'smwgFieldTypeFeatures' ) {
+				return false;
+			}
 			return 0;
 		}
 

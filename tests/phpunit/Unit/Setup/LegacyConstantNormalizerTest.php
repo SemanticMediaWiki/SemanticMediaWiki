@@ -81,6 +81,121 @@ class LegacyConstantNormalizerTest extends TestCase {
 		$this->assertSame( SMW_FACTBOX_HIDDEN, $value );
 	}
 
+	/**
+	 * @dataProvider provideFlagStringForms
+	 */
+	public function testFlag_stringForm_normalizesToBitmask( string $key, array $stringForm, int $expected ) {
+		$this->assertSame( $expected, LegacyConstantNormalizer::normalize( $key, $stringForm ) );
+	}
+
+	/**
+	 * @dataProvider provideFlagLegacyForms
+	 */
+	public function testFlag_legacyBitmask_passesThroughAndDeprecates( string $key, int $legacyBitmask ) {
+		$this->assertSame( $legacyBitmask, LegacyConstantNormalizer::normalize( $key, $legacyBitmask ) );
+		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( $key ) );
+	}
+
+	public function provideFlagStringForms(): array {
+		return [
+			'smwgQFeatures' => [
+				'smwgQFeatures',
+				[ 'property', 'category', 'concept', 'namespace', 'conjunction', 'disjunction' ],
+				SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY,
+			],
+			'smwgQConceptFeatures' => [
+				'smwgQConceptFeatures',
+				[ 'property', 'category', 'concept', 'namespace', 'conjunction', 'disjunction' ],
+				SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY,
+			],
+			'smwgQSortFeatures' => [
+				'smwgQSortFeatures',
+				[ 'sort', 'random' ],
+				SMW_QSORT | SMW_QSORT_RANDOM,
+			],
+			'smwgSparqlQFeatures' => [
+				'smwgSparqlQFeatures',
+				[ 'redirects', 'subproperties', 'subcategories' ],
+				SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP | SMW_SPARQL_QF_SUBC,
+			],
+			'smwgCategoryFeatures' => [
+				'smwgCategoryFeatures',
+				[ 'redirect', 'instance', 'hierarchy' ],
+				SMW_CAT_REDIRECT | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY,
+			],
+			'smwgBrowseFeatures' => [
+				'smwgBrowseFeatures',
+				[ 'toolbox-link', 'show-incoming', 'show-group', 'use-api' ],
+				SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API,
+			],
+			'smwgAdminFeatures' => [
+				'smwgAdminFeatures',
+				[ 'refresh', 'setup', 'disposal', 'pstats', 'fullt', 'maintenance-script-docs', 'show-overview', 'alert-last-optimization-run' ],
+				SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT | SMW_ADM_MAINTENANCE_SCRIPT_DOCS | SMW_ADM_SHOW_OVERVIEW | SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN,
+			],
+			'smwgParserFeatures' => [
+				'smwgParserFeatures',
+				[ 'strict', 'inline-errors', 'hidden-categories' ],
+				SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR | SMW_PARSER_HID_CATS,
+			],
+			'smwgDVFeatures' => [
+				'smwgDVFeatures',
+				[ 'provider-redirect', 'monolingual-langcode', 'pattern-validation', 'wpv-display-title', 'time-calendar-model', 'preferred-label', 'provider-link-hint' ],
+				SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM | SMW_DV_PPLB | SMW_DV_PROV_LHNT,
+			],
+			'smwgFulltextSearchIndexableDataTypes' => [
+				'smwgFulltextSearchIndexableDataTypes',
+				[ 'blob', 'uri' ],
+				SMW_FT_BLOB | SMW_FT_URI,
+			],
+			'smwgRemoteReqFeatures' => [
+				'smwgRemoteReqFeatures',
+				[ 'send-response', 'show-note' ],
+				SMW_REMOTE_REQ_SEND_RESPONSE | SMW_REMOTE_REQ_SHOW_NOTE,
+			],
+			'smwgExperimentalFeatures' => [
+				'smwgExperimentalFeatures',
+				[ 'queryresult-prefetch', 'showparser-curtailment' ],
+				SMW_QUERYRESULT_PREFETCH | SMW_SHOWPARSER_USE_CURTAILMENT,
+			],
+			'smwgFieldTypeFeatures' => [
+				'smwgFieldTypeFeatures',
+				[ 'char-nocase', 'char-long' ],
+				SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG,
+			],
+		];
+	}
+
+	public function provideFlagLegacyForms(): array {
+		return [
+			'smwgQFeatures'                        => [ 'smwgQFeatures', SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY ],
+			'smwgQSortFeatures'                    => [ 'smwgQSortFeatures', SMW_QSORT | SMW_QSORT_RANDOM ],
+			'smwgSparqlQFeatures'                  => [ 'smwgSparqlQFeatures', SMW_SPARQL_QF_REDI ],
+			'smwgCategoryFeatures'                 => [ 'smwgCategoryFeatures', SMW_CAT_REDIRECT | SMW_CAT_INSTANCE ],
+			'smwgBrowseFeatures'                   => [ 'smwgBrowseFeatures', SMW_BROWSE_TLINK | SMW_BROWSE_USE_API ],
+			'smwgAdminFeatures'                    => [ 'smwgAdminFeatures', SMW_ADM_REFRESH | SMW_ADM_SETUP ],
+			'smwgParserFeatures'                   => [ 'smwgParserFeatures', SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR ],
+			'smwgDVFeatures'                       => [ 'smwgDVFeatures', SMW_DV_PROV_REDI | SMW_DV_PPLB ],
+			'smwgFulltextSearchIndexableDataTypes' => [ 'smwgFulltextSearchIndexableDataTypes', SMW_FT_BLOB | SMW_FT_URI ],
+			'smwgRemoteReqFeatures'                => [ 'smwgRemoteReqFeatures', SMW_REMOTE_REQ_SEND_RESPONSE ],
+			'smwgExperimentalFeatures'             => [ 'smwgExperimentalFeatures', SMW_QUERYRESULT_PREFETCH ],
+			'smwgFieldTypeFeatures'                => [ 'smwgFieldTypeFeatures', SMW_FIELDT_CHAR_NOCASE ],
+		];
+	}
+
+	public function testFlag_fieldTypeFeatures_falseSentinelIsPreserved() {
+		$this->assertFalse(
+			LegacyConstantNormalizer::normalize( 'smwgFieldTypeFeatures', false )
+		);
+	}
+
+	public function testFlag_otherSettings_falseConvertsToZero() {
+		$this->assertSame(
+			0,
+			LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', false )
+		);
+	}
+
 	public function testFlag_allKnownFlagsCombined() {
 		$this->assertSame(
 			SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT | SMW_FACTBOX_DISPLAY_ATTACHMENT,
