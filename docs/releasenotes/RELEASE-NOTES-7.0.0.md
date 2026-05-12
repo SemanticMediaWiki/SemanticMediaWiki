@@ -36,39 +36,48 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * **`src/DefaultSettings.php` removed.** Per-setting documentation that previously lived as inline comments in this file now lives at `docs/config.md` (one section per setting) and in the manifest's `description` field. Authoring `LocalSettings.php` is unchanged — `$smwgFoo = …;` continues to work for every setting that ever did.
 
-* **String-based configuration values introduced; legacy `SMW_*` constants deprecated.** SMW configuration settings that previously required PHP integer constants from `src/Defines.php` (such as `SMW_FACTBOX_*`, `SMW_PARSER_*`, `SMW_EQ_*`) now accept string values or arrays of strings. The legacy constant form continues to work in 7.x with one `wfDeprecatedMsg` per setting per request and will be removed in 8.0. This removes the need for the Composer `autoload.files` workaround introduced in #6585; you can drop that block once your `LocalSettings.php` uses the string form.
+* **String-based configuration values.** Settings that took `SMW_*` constants now accept plain strings; bitmask settings take arrays of strings:
 
-  Migration (extended in subsequent commits as more settings are converted):
+  ```php
+  // Before
+  $smwgShowFactbox     = SMW_FACTBOX_NONEMPTY;
+  $smwgFactboxFeatures = SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH;
 
-  | Setting | Old form (deprecated) | New form |
-  |---|---|---|
-  | `$smwgShowFactbox` | `SMW_FACTBOX_NONEMPTY` | `'nonempty'` |
-  | `$smwgShowFactboxEdit` | `SMW_FACTBOX_NONEMPTY` | `'nonempty'` |
-  | `$smwgFactboxFeatures` | `SMW_FACTBOX_CACHE \| SMW_FACTBOX_PURGE_REFRESH` | `[ 'cache', 'purge-refresh' ]` |
-  | `$smwgQEqualitySupport` | `SMW_EQ_SOME` | `'some'` |
-  | `$smwgQConceptCaching` | `CONCEPT_CACHE_HARD` | `'hard'` |
-  | `$smwgSparqlRepositoryFeatures` | `SMW_SPARQL_NONE` | `'none'` |
-  | `$smwgResultFormatsFeatures` | `SMW_RF_TEMPLATE_OUTSEP` | `'template-outsep'` |
-  | `$smwgQFeatures` | `SMW_PROPERTY_QUERY \| SMW_CATEGORY_QUERY \| ...` | `[ 'property', 'category', 'concept', 'namespace', 'conjunction', 'disjunction' ]` |
-  | `$smwgQConceptFeatures` | (same constant OR-set as `$smwgQFeatures`) | (same string array) |
-  | `$smwgQSortFeatures` | `SMW_QSORT \| SMW_QSORT_RANDOM` | `[ 'sort', 'random' ]` |
-  | `$smwgSparqlQFeatures` | `SMW_SPARQL_QF_REDI \| SMW_SPARQL_QF_SUBP \| SMW_SPARQL_QF_SUBC` | `[ 'redirects', 'subproperties', 'subcategories' ]` |
-  | `$smwgCategoryFeatures` | `SMW_CAT_REDIRECT \| SMW_CAT_INSTANCE \| SMW_CAT_HIERARCHY` | `[ 'redirect', 'instance', 'hierarchy' ]` |
-  | `$smwgBrowseFeatures` | `SMW_BROWSE_TLINK \| ...` | `[ 'toolbox-link', 'show-incoming', 'show-group', 'use-api' ]` |
-  | `$smwgAdminFeatures` | `SMW_ADM_REFRESH \| ...` | `[ 'refresh', 'setup', 'disposal', 'pstats', 'fullt', 'maintenance-script-docs', 'show-overview', 'alert-last-optimization-run' ]` |
-  | `$smwgParserFeatures` | `SMW_PARSER_STRICT \| SMW_PARSER_INL_ERROR \| SMW_PARSER_HID_CATS` | `[ 'strict', 'inline-errors', 'hidden-categories' ]` |
-  | `$smwgDVFeatures` | `SMW_DV_PROV_REDI \| SMW_DV_MLTV_LCODE \| ...` | `[ 'provider-redirect', 'monolingual-langcode', 'pattern-validation', 'wpv-display-title', 'time-calendar-model', 'preferred-label', 'provider-link-hint' ]` |
-  | `$smwgFulltextSearchIndexableDataTypes` | `SMW_FT_BLOB \| SMW_FT_URI` | `[ 'blob', 'uri' ]` |
-  | `$smwgRemoteReqFeatures` | `SMW_REMOTE_REQ_SEND_RESPONSE \| SMW_REMOTE_REQ_SHOW_NOTE` | `[ 'send-response', 'show-note' ]` |
-  | `$smwgExperimentalFeatures` | `SMW_QUERYRESULT_PREFETCH \| SMW_SHOWPARSER_USE_CURTAILMENT` | `[ 'queryresult-prefetch', 'showparser-curtailment' ]` |
-  | `$smwgFieldTypeFeatures` | `false` (off) or `SMW_FIELDT_CHAR_NOCASE \| SMW_FIELDT_CHAR_LONG` | `false` (off) or `[ 'char-nocase', 'char-long' ]` |
+  // After
+  $smwgShowFactbox     = 'nonempty';
+  $smwgFactboxFeatures = [ 'cache', 'purge-refresh' ];
+  ```
 
-  Accepted strings for the factbox enums (`$smwgShowFactbox`, `$smwgShowFactboxEdit`): `'hidden'`, `'special'`, `'nonempty'`, `'shown'`. Accepted flags for `$smwgFactboxFeatures`: `'cache'`, `'purge-refresh'`, `'display-subobject'`, `'display-attachment'`. Accepted values for `$smwgQEqualitySupport`: `'none'`, `'some'`, `'full'`. Accepted values for `$smwgQConceptCaching`: `'none'`, `'hard'`, `'all'`. Accepted values for `$smwgSparqlRepositoryFeatures`: `'none'`, `'connection-ping'`. Accepted values for `$smwgResultFormatsFeatures`: `'none'`, `'template-outsep'`. Unknown strings are ignored with a structured-log warning.
+  The constant form still works in 7.x and emits a deprecation notice; it will be removed in 8.0. The new form fixes the "undefined constant" errors that occurred when `LocalSettings.php` referenced these settings before SMW had loaded, so the Composer `autoload.files` workaround from #6585 is no longer needed.
 
-  Two further settings have moved to `extension.json` without needing the normalizer because their `SMW_*` constants already resolved to string values:
+  Migration:
 
-  - `$smwgSpecialAskFormSubmitMethod`: the `SMW_SASK_SUBMIT_*` constants are aliases for `'get'`, `'get.redirect'`, and `'post'`. Default is now `'post'`. The constants continue to work.
-  - `$smwgCheckForConstraintErrors`: the `SMW_CONSTRAINT_ERR_CHECK_*` constants are aliases for `false`, `'check/main'`, and `'check/all'`. Default is now `'check/all'`. The constants continue to work.
+  | Setting | Legacy form (deprecated) | New default | Accepted values |
+  |---|---|---|---|
+  | `$smwgShowFactbox` | `SMW_FACTBOX_NONEMPTY` | `'nonempty'` | `'hidden'`, `'special'`, `'nonempty'`, `'shown'` |
+  | `$smwgShowFactboxEdit` | `SMW_FACTBOX_NONEMPTY` | `'nonempty'` | `'hidden'`, `'special'`, `'nonempty'`, `'shown'` |
+  | `$smwgFactboxFeatures` | `SMW_FACTBOX_CACHE \| ...` | `[ 'cache', 'purge-refresh', 'display-subobject', 'display-attachment' ]` | `'cache'`, `'purge-refresh'`, `'display-subobject'`, `'display-attachment'` |
+  | `$smwgQEqualitySupport` | `SMW_EQ_SOME` | `'some'` | `'none'`, `'some'`, `'full'` |
+  | `$smwgQConceptCaching` | `CONCEPT_CACHE_HARD` | `'hard'` | `'none'`, `'hard'`, `'all'` |
+  | `$smwgSparqlRepositoryFeatures` | `SMW_SPARQL_NONE` | `'none'` | `'none'`, `'connection-ping'` |
+  | `$smwgResultFormatsFeatures` | `SMW_RF_TEMPLATE_OUTSEP` | `'template-outsep'` | `'none'`, `'template-outsep'` |
+  | `$smwgQFeatures` | `SMW_PROPERTY_QUERY \| SMW_CATEGORY_QUERY \| ...` | `[ 'property', 'category', 'concept', 'namespace', 'conjunction', 'disjunction' ]` | `'property'`, `'category'`, `'concept'`, `'namespace'`, `'conjunction'`, `'disjunction'` |
+  | `$smwgQConceptFeatures` | `SMW_PROPERTY_QUERY \| SMW_CATEGORY_QUERY \| ...` | `[ 'property', 'category', 'concept', 'namespace', 'conjunction', 'disjunction' ]` | `'property'`, `'category'`, `'concept'`, `'namespace'`, `'conjunction'`, `'disjunction'` |
+  | `$smwgQSortFeatures` | `SMW_QSORT \| SMW_QSORT_RANDOM` | `[ 'sort', 'random' ]` | `'sort'`, `'random'`, `'unconditional'` |
+  | `$smwgSparqlQFeatures` | `SMW_SPARQL_QF_REDI \| SMW_SPARQL_QF_SUBP \| SMW_SPARQL_QF_SUBC` | `[ 'redirects', 'subproperties', 'subcategories' ]` | `'redirects'`, `'subproperties'`, `'subcategories'`, `'collation'`, `'no-case'` |
+  | `$smwgCategoryFeatures` | `SMW_CAT_REDIRECT \| SMW_CAT_INSTANCE \| SMW_CAT_HIERARCHY` | `[ 'redirect', 'instance', 'hierarchy' ]` | `'redirect'`, `'instance'`, `'hierarchy'` |
+  | `$smwgBrowseFeatures` | `SMW_BROWSE_TLINK \| ...` | `[ 'toolbox-link', 'show-incoming', 'show-group', 'use-api' ]` | `'toolbox-link'`, `'show-inverse'`, `'show-incoming'`, `'show-group'`, `'show-sortkey'`, `'use-api'` |
+  | `$smwgAdminFeatures` | `SMW_ADM_REFRESH \| ...` | `[ 'refresh', 'setup', 'disposal', 'pstats', 'fullt', 'maintenance-script-docs', 'show-overview', 'alert-last-optimization-run' ]` | `'refresh'`, `'disposal'`, `'setup'`, `'pstats'`, `'fullt'`, `'maintenance-script-docs'`, `'show-overview'`, `'alert-last-optimization-run'` |
+  | `$smwgParserFeatures` | `SMW_PARSER_STRICT \| SMW_PARSER_INL_ERROR \| SMW_PARSER_HID_CATS` | `[ 'strict', 'inline-errors', 'hidden-categories' ]` | `'strict'`, `'unstrip'`, `'inline-errors'`, `'hidden-categories'`, `'links-in-values'` |
+  | `$smwgDVFeatures` | `SMW_DV_PROV_REDI \| SMW_DV_MLTV_LCODE \| ...` | `[ 'provider-redirect', 'monolingual-langcode', 'pattern-validation', 'wpv-display-title', 'time-calendar-model', 'preferred-label', 'provider-link-hint' ]` | `'provider-redirect'`, `'monolingual-langcode'`, `'number-value-usespaces'`, `'pattern-validation'`, `'wpv-display-title'`, `'provider-display-title'`, `'unique-constraint'`, `'time-calendar-model'`, `'preferred-label'`, `'provider-link-hint'`, `'wpv-pipetrick'` |
+  | `$smwgFulltextSearchIndexableDataTypes` | `SMW_FT_BLOB \| SMW_FT_URI` | `[ 'blob', 'uri' ]` | `'blob'`, `'uri'`, `'wikipage'` |
+  | `$smwgRemoteReqFeatures` | `SMW_REMOTE_REQ_SEND_RESPONSE \| SMW_REMOTE_REQ_SHOW_NOTE` | `[ 'send-response', 'show-note' ]` | `'send-response'`, `'show-note'` |
+  | `$smwgExperimentalFeatures` | `SMW_QUERYRESULT_PREFETCH \| SMW_SHOWPARSER_USE_CURTAILMENT` | `[ 'queryresult-prefetch', 'showparser-curtailment' ]` | `'queryresult-prefetch'`, `'showparser-curtailment'` |
+  | `$smwgFieldTypeFeatures` | `false` or `SMW_FIELDT_CHAR_NOCASE \| SMW_FIELDT_CHAR_LONG` | `false` | `false` (component disabled), or any subset of `'char-nocase'`, `'char-long'` |
+  | `$smwgSpecialAskFormSubmitMethod` | `SMW_SASK_SUBMIT_POST` | `'post'` | `'get'`, `'get.redirect'`, `'post'` |
+  | `$smwgCheckForConstraintErrors` | `SMW_CONSTRAINT_ERR_CHECK_ALL` | `'check/all'` | `false`, `'check/main'`, `'check/all'` |
+
+  Unknown strings are ignored with a structured-log warning. The last two settings (`$smwgSpecialAskFormSubmitMethod`, `$smwgCheckForConstraintErrors`) need no normalizer entry because their `SMW_SASK_SUBMIT_*` / `SMW_CONSTRAINT_ERR_CHECK_*` constants already resolve to the listed string values; the constants continue to work.
 
 * **`$smwgNamespaceIndex` removed; namespace IDs now relocate via PHP constants.** SMW's six custom namespaces (`SMW_NS_PROPERTY`, `SMW_NS_PROPERTY_TALK`, `SMW_NS_CONCEPT`, `SMW_NS_CONCEPT_TALK`, `SMW_NS_SCHEMA`, `SMW_NS_SCHEMA_TALK`) are now declared in `extension.json`'s `namespaces` block, and the `$smwgNamespaceIndex` setting is gone. To use non-default namespace IDs, define the constants directly in `LocalSettings.php` BEFORE `wfLoadExtension( 'SemanticMediaWiki' )` (this is MediaWiki core's documented relocation mechanism since MW 1.30):
 
