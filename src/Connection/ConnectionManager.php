@@ -27,7 +27,7 @@ class ConnectionManager {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string|int|null $id
+	 * @param int|string|null $id
 	 *
 	 * @return mixed
 	 * @throws RuntimeException
@@ -58,7 +58,7 @@ class ConnectionManager {
 	/**
 	 * @since 2.1
 	 *
-	 * @param id|string $id
+	 * @param int|string $id
 	 * @param ConnectionProvider $connectionProvider
 	 */
 	public function registerConnectionProvider( $id, ConnectionProvider $connectionProvider ): void {
@@ -68,7 +68,7 @@ class ConnectionManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|int $id
+	 * @param int|string $id
 	 * @param callable $callback
 	 */
 	public function registerCallbackConnection( $id, callable $callback ): void {
