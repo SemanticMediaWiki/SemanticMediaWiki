@@ -151,6 +151,33 @@ class SettingsTest extends TestCase {
 	}
 
 	/**
+	 * Both legacy SMW_* integer constants and the new string / array-of-strings
+	 * form must produce identical internal state once Settings::loadFromGlobals()
+	 * routes the registered keys through LegacyConstantNormalizer (#6586).
+	 */
+	public function testLoadFromGlobals_factboxStringForm_internalRepresentation() {
+		$savedShow = $GLOBALS['smwgShowFactbox'] ?? null;
+		$savedFeatures = $GLOBALS['smwgFactboxFeatures'] ?? null;
+
+		try {
+			$GLOBALS['smwgShowFactbox'] = 'nonempty';
+			$GLOBALS['smwgFactboxFeatures'] = [ 'cache', 'purge-refresh' ];
+
+			$instance = new Settings();
+			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->loadFromGlobals();
+
+			$this->assertSame( SMW_FACTBOX_NONEMPTY, $instance->get( 'smwgShowFactbox' ) );
+			$this->assertTrue( $instance->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_CACHE ) );
+			$this->assertTrue( $instance->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_PURGE_REFRESH ) );
+			$this->assertFalse( $instance->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_DISPLAY_SUBOBJECT ) );
+		} finally {
+			$GLOBALS['smwgShowFactbox'] = $savedShow;
+			$GLOBALS['smwgFactboxFeatures'] = $savedFeatures;
+		}
+	}
+
+	/**
 	 * Locks in the current behaviour of legacy SMW_* integer-constant config values
 	 * for the factbox settings, ahead of the string-config migration (#6586). The
 	 * same assertions must hold after the normalizer is wired in.
