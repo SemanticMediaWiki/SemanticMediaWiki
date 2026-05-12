@@ -137,6 +137,63 @@ class LegacyConstantNormalizerTest extends TestCase {
 		);
 	}
 
+	public function testNonRegisteredKey_legacyShapedIntDoesNotDeprecate() {
+		// Passing what looks like a legacy SMW_* integer to a key the normalizer
+		// doesn't know about must NOT fire a deprecation; the value falls through
+		// untouched and downstream behaviour is whatever it was before this PR.
+		LegacyConstantNormalizer::normalize( 'smwgUnknownSetting', SMW_FACTBOX_NONEMPTY );
+		$this->assertFalse( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgUnknownSetting' ) );
+	}
+
+	public function testDeprecation_keysAreSuppressedIndependently() {
+		// Deprecating one setting must not suppress notices for any other
+		// registered setting. This invariant is the foundation that PRs B and C
+		// extend across all 22 remaining settings; if it ever regressed, the
+		// first legacy-form setting in a wiki's LocalSettings.php would silence
+		// the rest.
+		LegacyConstantNormalizer::normalize( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
+		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgShowFactbox' ) );
+		$this->assertFalse( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgFactboxFeatures' ) );
+
+		LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', SMW_FACTBOX_CACHE );
+		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgShowFactbox' ) );
+		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgFactboxFeatures' ) );
+	}
+
+	public function testDeprecation_messageReachesWfDeprecatedMsg() {
+		// The introspection flag tells us emitDeprecation() ran. This test goes
+		// one level deeper and confirms the call actually reaches MW's
+		// deprecation pipeline (i.e. wfDeprecatedMsg was invoked, not stubbed
+		// out) and that the visible message names the setting so admins can
+		// grep their logs for which `$smwg*` setting tripped the warning.
+		if ( !class_exists( \MWDebug::class ) ) {
+			$this->markTestSkipped( 'MWDebug not available in this test environment.' );
+		}
+
+		// Earlier tests in this suite may have fired the same deprecation; MWDebug
+		// dedupes by (message, caller), so we clear its per-request state first.
+		\MWDebug::clearLog();
+
+		$captured = false;
+		\MWDebug::filterDeprecationForTest(
+			'/\$smwgShowFactbox using SMW_\* integer constants/',
+			static function () use ( &$captured ): void {
+				$captured = true;
+			}
+		);
+
+		try {
+			LegacyConstantNormalizer::normalize( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
+		} finally {
+			\MWDebug::clearDeprecationFilters();
+		}
+
+		$this->assertTrue(
+			$captured,
+			'MWDebug did not see a deprecation message naming $smwgShowFactbox; check emitDeprecation() wiring.'
+		);
+	}
+
 	public function testNullValue_passesThrough() {
 		$this->assertNull(
 			LegacyConstantNormalizer::normalize( 'smwgShowFactbox', null )
