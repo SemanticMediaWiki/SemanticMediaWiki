@@ -55,7 +55,7 @@ return [
 
 	/**
 	 * @param CallbackContainerBuilder $containerBuilder
-	 * @param string $source
+	 * @param resource $source
 	 *
 	 * @return ImportStreamSource
 	 */
