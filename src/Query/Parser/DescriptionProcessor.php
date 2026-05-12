@@ -16,6 +16,7 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\QueryComparator;
+use SMW\Services\ServicesFactory;
 use SMW\Site;
 
 /**
@@ -51,7 +52,13 @@ class DescriptionProcessor {
 	 * @param int|false $queryFeatures
 	 */
 	public function __construct( $queryFeatures = false ) {
-		$this->queryFeatures = $queryFeatures === false ? $GLOBALS['smwgQFeatures'] : $queryFeatures;
+		// Read $smwgQFeatures via Settings (not $GLOBALS directly) so the value
+		// goes through LegacyConstantNormalizer's array-of-strings normalization
+		// (#6586). A direct read would see the unnormalized user value when the
+		// admin adopts the new form, breaking downstream bitwise checks.
+		$this->queryFeatures = $queryFeatures === false
+			? ServicesFactory::getInstance()->getSettings()->get( 'smwgQFeatures' )
+			: $queryFeatures;
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->descriptionFactory = new DescriptionFactory();
 	}

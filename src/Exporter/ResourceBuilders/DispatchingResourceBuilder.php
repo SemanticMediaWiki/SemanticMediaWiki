@@ -6,6 +6,7 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\Export\ExpData;
 use SMW\Exporter\ResourceBuilder;
+use SMW\Services\ServicesFactory;
 
 /**
  * @private
@@ -99,8 +100,13 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 
 		$sortPropertyValueResourceBuilder = new SortPropertyValueResourceBuilder();
 
+		// Read $smwgSparqlQFeatures via Settings (not $GLOBALS directly) so it
+		// goes through LegacyConstantNormalizer's array-of-strings normalization
+		// (#6586). A direct (int)$GLOBALS read would silently disable the
+		// collation feature for admins who adopt the new form.
+		$sparqlQFeatures = (int)ServicesFactory::getInstance()->getSettings()->get( 'smwgSparqlQFeatures' );
 		$sortPropertyValueResourceBuilder->enabledCollationField(
-			( (int)$GLOBALS['smwgSparqlQFeatures'] & SMW_SPARQL_QF_COLLATION ) != 0
+			( $sparqlQFeatures & SMW_SPARQL_QF_COLLATION ) != 0
 		);
 
 		$this->addResourceBuilder( $sortPropertyValueResourceBuilder );

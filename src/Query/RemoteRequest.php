@@ -9,6 +9,7 @@ use RuntimeException;
 use SMW\Localizer\Message;
 use SMW\Query\Result\StringResult;
 use SMW\QueryEngine;
+use SMW\Services\ServicesFactory;
 use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
@@ -46,7 +47,9 @@ class RemoteRequest implements QueryEngine {
 		private ?HttpRequestFactory $httpRequestFactory = null,
 		private ?WANObjectCache $cache = null
 	) {
-		$this->features = $GLOBALS['smwgRemoteReqFeatures'];
+		// Read via Settings (not $GLOBALS directly) so the value goes through
+		// LegacyConstantNormalizer's array-of-strings normalization (#6586).
+		$this->features = ServicesFactory::getInstance()->getSettings()->get( 'smwgRemoteReqFeatures' );
 
 		if ( isset( $this->parameters['smwgRemoteReqFeatures'] ) ) {
 			$this->features = $this->parameters['smwgRemoteReqFeatures'];

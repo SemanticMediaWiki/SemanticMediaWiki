@@ -3,6 +3,7 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use SMW\Options;
+use SMW\Services\ServicesFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,12 +17,17 @@ class EngineOptions extends Options {
 	 * @since 2.2
 	 */
 	public function __construct() {
+		// Read $smwgQSortFeatures and $smwgSparqlQFeatures via Settings (not
+		// $GLOBALS directly) so they go through LegacyConstantNormalizer's
+		// array-of-strings normalization (#6586). The other three keys are
+		// scalars unaffected by the migration.
+		$settings = ServicesFactory::getInstance()->getSettings();
 		parent::__construct( [
 			'smwgIgnoreQueryErrors'   => $GLOBALS['smwgIgnoreQueryErrors'],
-			'smwgQSortFeatures'       => $GLOBALS['smwgQSortFeatures'],
+			'smwgQSortFeatures'       => $settings->get( 'smwgQSortFeatures' ),
 			'smwgQSubpropertyDepth'   => $GLOBALS['smwgQSubpropertyDepth'],
 			'smwgQSubcategoryDepth'   => $GLOBALS['smwgQSubcategoryDepth'],
-			'smwgSparqlQFeatures'     => $GLOBALS['smwgSparqlQFeatures']
+			'smwgSparqlQFeatures'     => $settings->get( 'smwgSparqlQFeatures' )
 		] );
 	}
 
