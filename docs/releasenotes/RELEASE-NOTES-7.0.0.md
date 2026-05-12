@@ -57,8 +57,6 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   - `$smwgSpecialAskFormSubmitMethod`: the `SMW_SASK_SUBMIT_*` constants are aliases for `'get'`, `'get.redirect'`, and `'post'`. Default is now `'post'`. The constants continue to work.
   - `$smwgCheckForConstraintErrors`: the `SMW_CONSTRAINT_ERR_CHECK_*` constants are aliases for `false`, `'check/main'`, and `'check/all'`. Default is now `'check/all'`. The constants continue to work.
 
-  `$smwgMainCacheType` and `$smwgQueryResultCacheType` are intentionally NOT covered by this migration. They use MediaWiki core's `CACHE_*` constants (defined in core's `Defines.php` before `LocalSettings.php` evaluates), so the SMW load-order bug never applied. Their integer values have drifted across MW versions (`CACHE_ANYTHING` was `-2` in older releases, is `-1` in current core), so inlining a literal in `extension.json` would be brittle. Keep using the MW core constants for these.
-
 * **`$smwgNamespaceIndex` removed; namespace IDs now relocate via PHP constants.** SMW's six custom namespaces (`SMW_NS_PROPERTY`, `SMW_NS_PROPERTY_TALK`, `SMW_NS_CONCEPT`, `SMW_NS_CONCEPT_TALK`, `SMW_NS_SCHEMA`, `SMW_NS_SCHEMA_TALK`) are now declared in `extension.json`'s `namespaces` block, and the `$smwgNamespaceIndex` setting is gone. To use non-default namespace IDs, define the constants directly in `LocalSettings.php` BEFORE `wfLoadExtension( 'SemanticMediaWiki' )` (this is MediaWiki core's documented relocation mechanism since MW 1.30):
 
   ```php
