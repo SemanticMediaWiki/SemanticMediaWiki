@@ -43,9 +43,19 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | Setting | Old form (deprecated) | New form |
   |---|---|---|
   | `$smwgShowFactbox` | `SMW_FACTBOX_NONEMPTY` | `'nonempty'` |
+  | `$smwgShowFactboxEdit` | `SMW_FACTBOX_NONEMPTY` | `'nonempty'` |
   | `$smwgFactboxFeatures` | `SMW_FACTBOX_CACHE \| SMW_FACTBOX_PURGE_REFRESH` | `[ 'cache', 'purge-refresh' ]` |
+  | `$smwgQEqualitySupport` | `SMW_EQ_SOME` | `'some'` |
+  | `$smwgQConceptCaching` | `CONCEPT_CACHE_HARD` | `'hard'` |
+  | `$smwgSparqlRepositoryFeatures` | `SMW_SPARQL_NONE` | `'none'` |
+  | `$smwgResultFormatsFeatures` | `SMW_RF_TEMPLATE_OUTSEP` | `'template-outsep'` |
 
-  Accepted strings for `$smwgShowFactbox`: `'hidden'`, `'special'`, `'nonempty'`, `'shown'`. Accepted flags for `$smwgFactboxFeatures`: `'cache'`, `'purge-refresh'`, `'display-subobject'`, `'display-attachment'`. Unknown strings are ignored with a structured-log warning.
+  Accepted strings for the factbox enums (`$smwgShowFactbox`, `$smwgShowFactboxEdit`): `'hidden'`, `'special'`, `'nonempty'`, `'shown'`. Accepted flags for `$smwgFactboxFeatures`: `'cache'`, `'purge-refresh'`, `'display-subobject'`, `'display-attachment'`. Accepted values for `$smwgQEqualitySupport`: `'none'`, `'some'`, `'full'`. Accepted values for `$smwgQConceptCaching`: `'none'`, `'hard'`, `'all'`. Accepted values for `$smwgSparqlRepositoryFeatures`: `'none'`, `'connection-ping'`. Accepted values for `$smwgResultFormatsFeatures`: `'none'`, `'template-outsep'`. Unknown strings are ignored with a structured-log warning.
+
+  Two further settings have moved to `extension.json` without needing the normalizer because their `SMW_*` constants already resolved to string values:
+
+  - `$smwgSpecialAskFormSubmitMethod`: the `SMW_SASK_SUBMIT_*` constants are aliases for `'get'`, `'get.redirect'`, and `'post'`. Default is now `'post'`. The constants continue to work.
+  - `$smwgCheckForConstraintErrors`: the `SMW_CONSTRAINT_ERR_CHECK_*` constants are aliases for `false`, `'check/main'`, and `'check/all'`. Default is now `'check/all'`. The constants continue to work.
 
 * **`$smwgNamespaceIndex` removed; namespace IDs now relocate via PHP constants.** SMW's six custom namespaces (`SMW_NS_PROPERTY`, `SMW_NS_PROPERTY_TALK`, `SMW_NS_CONCEPT`, `SMW_NS_CONCEPT_TALK`, `SMW_NS_SCHEMA`, `SMW_NS_SCHEMA_TALK`) are now declared in `extension.json`'s `namespaces` block, and the `$smwgNamespaceIndex` setting is gone. To use non-default namespace IDs, define the constants directly in `LocalSettings.php` BEFORE `wfLoadExtension( 'SemanticMediaWiki' )` (this is MediaWiki core's documented relocation mechanism since MW 1.30):
 
