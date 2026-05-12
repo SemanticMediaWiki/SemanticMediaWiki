@@ -49,6 +49,19 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `$smwgQConceptCaching` | `CONCEPT_CACHE_HARD` | `'hard'` |
   | `$smwgSparqlRepositoryFeatures` | `SMW_SPARQL_NONE` | `'none'` |
   | `$smwgResultFormatsFeatures` | `SMW_RF_TEMPLATE_OUTSEP` | `'template-outsep'` |
+  | `$smwgQFeatures` | `SMW_PROPERTY_QUERY \| SMW_CATEGORY_QUERY \| ...` | `[ 'property', 'category', 'concept', 'namespace', 'conjunction', 'disjunction' ]` |
+  | `$smwgQConceptFeatures` | (same constant OR-set as `$smwgQFeatures`) | (same string array) |
+  | `$smwgQSortFeatures` | `SMW_QSORT \| SMW_QSORT_RANDOM` | `[ 'sort', 'random' ]` |
+  | `$smwgSparqlQFeatures` | `SMW_SPARQL_QF_REDI \| SMW_SPARQL_QF_SUBP \| SMW_SPARQL_QF_SUBC` | `[ 'redirects', 'subproperties', 'subcategories' ]` |
+  | `$smwgCategoryFeatures` | `SMW_CAT_REDIRECT \| SMW_CAT_INSTANCE \| SMW_CAT_HIERARCHY` | `[ 'redirect', 'instance', 'hierarchy' ]` |
+  | `$smwgBrowseFeatures` | `SMW_BROWSE_TLINK \| ...` | `[ 'toolbox-link', 'show-incoming', 'show-group', 'use-api' ]` |
+  | `$smwgAdminFeatures` | `SMW_ADM_REFRESH \| ...` | `[ 'refresh', 'setup', 'disposal', 'pstats', 'fullt', 'maintenance-script-docs', 'show-overview', 'alert-last-optimization-run' ]` |
+  | `$smwgParserFeatures` | `SMW_PARSER_STRICT \| SMW_PARSER_INL_ERROR \| SMW_PARSER_HID_CATS` | `[ 'strict', 'inline-errors', 'hidden-categories' ]` |
+  | `$smwgDVFeatures` | `SMW_DV_PROV_REDI \| SMW_DV_MLTV_LCODE \| ...` | `[ 'provider-redirect', 'monolingual-langcode', 'pattern-validation', 'wpv-display-title', 'time-calendar-model', 'preferred-label', 'provider-link-hint' ]` |
+  | `$smwgFulltextSearchIndexableDataTypes` | `SMW_FT_BLOB \| SMW_FT_URI` | `[ 'blob', 'uri' ]` |
+  | `$smwgRemoteReqFeatures` | `SMW_REMOTE_REQ_SEND_RESPONSE \| SMW_REMOTE_REQ_SHOW_NOTE` | `[ 'send-response', 'show-note' ]` |
+  | `$smwgExperimentalFeatures` | `SMW_QUERYRESULT_PREFETCH \| SMW_SHOWPARSER_USE_CURTAILMENT` | `[ 'queryresult-prefetch', 'showparser-curtailment' ]` |
+  | `$smwgFieldTypeFeatures` | `false` (off) or `SMW_FIELDT_CHAR_NOCASE \| SMW_FIELDT_CHAR_LONG` | `false` (off) or `[ 'char-nocase', 'char-long' ]` |
 
   Accepted strings for the factbox enums (`$smwgShowFactbox`, `$smwgShowFactboxEdit`): `'hidden'`, `'special'`, `'nonempty'`, `'shown'`. Accepted flags for `$smwgFactboxFeatures`: `'cache'`, `'purge-refresh'`, `'display-subobject'`, `'display-attachment'`. Accepted values for `$smwgQEqualitySupport`: `'none'`, `'some'`, `'full'`. Accepted values for `$smwgQConceptCaching`: `'none'`, `'hard'`, `'all'`. Accepted values for `$smwgSparqlRepositoryFeatures`: `'none'`, `'connection-ping'`. Accepted values for `$smwgResultFormatsFeatures`: `'none'`, `'template-outsep'`. Unknown strings are ignored with a structured-log warning.
 
