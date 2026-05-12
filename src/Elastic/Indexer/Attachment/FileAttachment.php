@@ -102,7 +102,7 @@ class FileAttachment {
 
 		if ( !isset( $doc['_source']['file_sha1'] ) ) {
 
-			$msg = 'File indexer No annotation update' .
+			$msg = 'File indexer No annotation update ' .
 				'Missing file_sha1!';
 
 			return $this->logger->info( $msg, $context );
