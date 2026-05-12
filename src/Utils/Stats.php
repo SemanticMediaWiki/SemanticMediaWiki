@@ -103,7 +103,7 @@ class Stats {
 	 *
 	 * @param string $key
 	 */
-	public function incr( $key ): void {
+	public function incr( string $key ): void {
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = 0;
 		}
