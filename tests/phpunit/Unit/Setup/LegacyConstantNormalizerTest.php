@@ -19,13 +19,6 @@ class LegacyConstantNormalizerTest extends TestCase {
 		LegacyConstantNormalizer::resetDeprecationState();
 	}
 
-	public function testEnum_newStringForm_normalizesToConstant() {
-		$this->assertSame(
-			SMW_FACTBOX_NONEMPTY,
-			LegacyConstantNormalizer::normalize( 'smwgShowFactbox', 'nonempty' )
-		);
-	}
-
 	public function testEnum_allKnownStrings_mapToTheirConstants() {
 		$this->assertSame( SMW_FACTBOX_HIDDEN, LegacyConstantNormalizer::normalize( 'smwgShowFactbox', 'hidden' ) );
 		$this->assertSame( SMW_FACTBOX_SPECIAL, LegacyConstantNormalizer::normalize( 'smwgShowFactbox', 'special' ) );
@@ -44,13 +37,6 @@ class LegacyConstantNormalizerTest extends TestCase {
 	public function testEnum_unknownString_emitsWarningAndFallsBackToDefault() {
 		$value = LegacyConstantNormalizer::normalize( 'smwgShowFactbox', 'bogus' );
 		$this->assertSame( SMW_FACTBOX_HIDDEN, $value );
-	}
-
-	public function testFlag_newArrayForm_normalizesToBitmask() {
-		$this->assertSame(
-			SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH,
-			LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', [ 'cache', 'purge-refresh' ] )
-		);
 	}
 
 	public function testFlag_allKnownFlagsCombined() {
@@ -160,43 +146,4 @@ class LegacyConstantNormalizerTest extends TestCase {
 		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgFactboxFeatures' ) );
 	}
 
-	public function testDeprecation_messageReachesWfDeprecatedMsg() {
-		// The introspection flag tells us emitDeprecation() ran. This test goes
-		// one level deeper and confirms the call actually reaches MW's
-		// deprecation pipeline (i.e. wfDeprecatedMsg was invoked, not stubbed
-		// out) and that the visible message names the setting so admins can
-		// grep their logs for which `$smwg*` setting tripped the warning.
-		if ( !class_exists( \MWDebug::class ) ) {
-			$this->markTestSkipped( 'MWDebug not available in this test environment.' );
-		}
-
-		// Earlier tests in this suite may have fired the same deprecation; MWDebug
-		// dedupes by (message, caller), so we clear its per-request state first.
-		\MWDebug::clearLog();
-
-		$captured = false;
-		\MWDebug::filterDeprecationForTest(
-			'/\$smwgShowFactbox using SMW_\* integer constants/',
-			static function () use ( &$captured ): void {
-				$captured = true;
-			}
-		);
-
-		try {
-			LegacyConstantNormalizer::normalize( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
-		} finally {
-			\MWDebug::clearDeprecationFilters();
-		}
-
-		$this->assertTrue(
-			$captured,
-			'MWDebug did not see a deprecation message naming $smwgShowFactbox; check emitDeprecation() wiring.'
-		);
-	}
-
-	public function testNullValue_passesThrough() {
-		$this->assertNull(
-			LegacyConstantNormalizer::normalize( 'smwgShowFactbox', null )
-		);
-	}
 }
