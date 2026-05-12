@@ -46,24 +46,12 @@ class ConfigBootstrap {
 			$GLOBALS['smwgSparqlQFeatures'] = SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP | SMW_SPARQL_QF_SUBC;
 		}
 
-		if ( !isset( $GLOBALS['smwgSparqlRepositoryFeatures'] ) ) {
-			$GLOBALS['smwgSparqlRepositoryFeatures'] = SMW_SPARQL_NONE;
-		}
-
-		if ( !isset( $GLOBALS['smwgShowFactboxEdit'] ) ) {
-			$GLOBALS['smwgShowFactboxEdit'] = SMW_FACTBOX_NONEMPTY;
-		}
-
 		if ( !isset( $GLOBALS['smwgCategoryFeatures'] ) ) {
 			$GLOBALS['smwgCategoryFeatures'] = SMW_CAT_REDIRECT | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY;
 		}
 
 		if ( !isset( $GLOBALS['smwgBrowseFeatures'] ) ) {
 			$GLOBALS['smwgBrowseFeatures'] = SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API;
-		}
-
-		if ( !isset( $GLOBALS['smwgQEqualitySupport'] ) ) {
-			$GLOBALS['smwgQEqualitySupport'] = SMW_EQ_SOME;
 		}
 
 		if ( !isset( $GLOBALS['smwgQSortFeatures'] ) ) {
@@ -74,16 +62,8 @@ class ConfigBootstrap {
 			$GLOBALS['smwgQFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 		}
 
-		if ( !isset( $GLOBALS['smwgQConceptCaching'] ) ) {
-			$GLOBALS['smwgQConceptCaching'] = CONCEPT_CACHE_HARD;
-		}
-
 		if ( !isset( $GLOBALS['smwgQConceptFeatures'] ) ) {
 			$GLOBALS['smwgQConceptFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY | SMW_CONCEPT_QUERY;
-		}
-
-		if ( !isset( $GLOBALS['smwgResultFormatsFeatures'] ) ) {
-			$GLOBALS['smwgResultFormatsFeatures'] = SMW_RF_TEMPLATE_OUTSEP;
 		}
 
 		if ( !isset( $GLOBALS['smwgRemoteReqFeatures'] ) ) {
@@ -116,14 +96,6 @@ class ConfigBootstrap {
 
 		if ( !isset( $GLOBALS['smwgExperimentalFeatures'] ) ) {
 			$GLOBALS['smwgExperimentalFeatures'] = SMW_QUERYRESULT_PREFETCH | SMW_SHOWPARSER_USE_CURTAILMENT;
-		}
-
-		if ( !isset( $GLOBALS['smwgSpecialAskFormSubmitMethod'] ) ) {
-			$GLOBALS['smwgSpecialAskFormSubmitMethod'] = SMW_SASK_SUBMIT_POST;
-		}
-
-		if ( !isset( $GLOBALS['smwgCheckForConstraintErrors'] ) ) {
-			$GLOBALS['smwgCheckForConstraintErrors'] = SMW_CONSTRAINT_ERR_CHECK_ALL;
 		}
 
 		if ( !isset( $GLOBALS['smwStrictComparators'] ) ) {
