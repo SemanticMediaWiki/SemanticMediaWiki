@@ -148,7 +148,7 @@ class FileAttachment {
 
 		$context['procTime'] = microtime( true ) + $time;
 
-		$msg = 'File indexer Attachment annotation update completed ({subject})' .
+		$msg = 'File indexer Attachment annotation update completed ({subject}) ' .
 			'procTime (in sec): {procTime}';
 
 		$this->logger->info( $msg, $context );
