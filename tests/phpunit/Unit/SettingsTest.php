@@ -150,6 +150,33 @@ class SettingsTest extends TestCase {
 		$instance->loadFromGlobals();
 	}
 
+	/**
+	 * Locks in the current behaviour of legacy SMW_* integer-constant config values
+	 * for the factbox settings, ahead of the string-config migration (#6586). The
+	 * same assertions must hold after the normalizer is wired in.
+	 */
+	public function testLoadFromGlobals_factboxLegacyConstants_internalRepresentation() {
+		$savedShow = $GLOBALS['smwgShowFactbox'] ?? null;
+		$savedFeatures = $GLOBALS['smwgFactboxFeatures'] ?? null;
+
+		try {
+			$GLOBALS['smwgShowFactbox'] = SMW_FACTBOX_NONEMPTY;
+			$GLOBALS['smwgFactboxFeatures'] = SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH;
+
+			$instance = new Settings();
+			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->loadFromGlobals();
+
+			$this->assertSame( SMW_FACTBOX_NONEMPTY, $instance->get( 'smwgShowFactbox' ) );
+			$this->assertTrue( $instance->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_CACHE ) );
+			$this->assertTrue( $instance->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_PURGE_REFRESH ) );
+			$this->assertFalse( $instance->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_DISPLAY_SUBOBJECT ) );
+		} finally {
+			$GLOBALS['smwgShowFactbox'] = $savedShow;
+			$GLOBALS['smwgFactboxFeatures'] = $savedFeatures;
+		}
+	}
+
 	public function testMung() {
 		$instance = Settings::newFromArray( [ 'Foo' => 123 ] );
 
