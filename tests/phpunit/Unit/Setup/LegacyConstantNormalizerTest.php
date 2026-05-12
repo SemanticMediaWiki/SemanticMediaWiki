@@ -99,8 +99,12 @@ class LegacyConstantNormalizerTest extends TestCase {
 		$this->assertSame( 0, LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', [] ) );
 	}
 
-	public function testFlag_zeroInteger_passesThrough() {
+	public function testFlag_zeroInteger_passesThroughWithoutDeprecation() {
+		// `$smwgFactboxFeatures = 0;` is the documented "no flags" form and the
+		// natural value-equivalent of `[]`; it must NOT trigger the legacy
+		// SMW_FACTBOX_* deprecation. Guard the carve-out in normalizeFlags.
 		$this->assertSame( 0, LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', 0 ) );
+		$this->assertFalse( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgFactboxFeatures' ) );
 	}
 
 	public function testDeprecation_firesOnlyOncePerSettingPerRequest() {

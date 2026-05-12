@@ -10,11 +10,17 @@ use MediaWiki\Logger\LoggerFactory;
  * the internal representation expected by SMW (integer bitmask for flag
  * settings, integer or string for enum settings).
  *
- * Called from {@see \SMW\Settings::loadFromGlobals()} for the registered keys.
  * Both legacy (integer constants from src/Defines.php) and new (string / array
  * of strings) user values are accepted. The legacy form emits one
  * `wfDeprecatedMsg` per setting per request and is scheduled for removal in
  * SMW 8.0.
+ *
+ * Boundary contract: normalization happens exactly once, when SMW ingests
+ * `$GLOBALS` via {@see \SMW\Settings::loadFromGlobals()}. Callers that build
+ * `Settings` through {@see \SMW\Settings::newFromArray()} (chiefly tests) are
+ * expected to pass values already in the internal form (integer constants or
+ * integer bitmasks). Pass an unmapped string at that boundary and downstream
+ * `Options::isFlagSet()` / `=== SMW_FOO` comparisons will silently fail.
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
@@ -134,6 +140,10 @@ class LegacyConstantNormalizer {
 		$map = self::FLAG_MAP[$key];
 
 		if ( is_int( $value ) ) {
+			// `$smwgFooFeatures = 0;` is the documented "no flags" form and the
+			// value-equivalent of `[]` in the new form. It is not really a
+			// legacy SMW_* bitmask, so don't bother the admin with a deprecation
+			// notice for it. Any other integer is treated as legacy.
 			if ( $value !== 0 ) {
 				self::emitDeprecation( $key );
 			}
@@ -178,6 +188,9 @@ class LegacyConstantNormalizer {
 		if ( isset( self::$deprecationEmitted[$key] ) ) {
 			return;
 		}
+		// Mark BEFORE the wfDeprecatedMsg call so wasDeprecationEmitted()
+		// returns the right answer in unit tests where wfDeprecatedMsg is a
+		// no-op (the function_exists guard below skips it).
 		self::$deprecationEmitted[$key] = true;
 		if ( function_exists( 'wfDeprecatedMsg' ) ) {
 			wfDeprecatedMsg(
