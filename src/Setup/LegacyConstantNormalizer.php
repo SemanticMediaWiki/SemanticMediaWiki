@@ -38,18 +38,16 @@ class LegacyConstantNormalizer {
 
 	/**
 	 * Enum settings: single-value, internally compared via === or == against
-	 * an SMW_* integer constant. Shape: [ settingKey => [ stringName => internalValue ] ].
-	 *
-	 * Each integer matches the corresponding `define()` in src/Defines.php.
+	 * an SMW_* integer constant. Shape: [ settingKey => [ stringName => SMW_* ] ].
 	 *
 	 * @var array<string, array<string, int>>
 	 */
 	private const ENUM_MAP = [
 		'smwgShowFactbox' => [
-			'hidden'   => 1, // SMW_FACTBOX_HIDDEN
-			'special'  => 2, // SMW_FACTBOX_SPECIAL
-			'nonempty' => 3, // SMW_FACTBOX_NONEMPTY
-			'shown'    => 5, // SMW_FACTBOX_SHOWN
+			'hidden'   => SMW_FACTBOX_HIDDEN,
+			'special'  => SMW_FACTBOX_SPECIAL,
+			'nonempty' => SMW_FACTBOX_NONEMPTY,
+			'shown'    => SMW_FACTBOX_SHOWN,
 		],
 	];
 
@@ -61,23 +59,21 @@ class LegacyConstantNormalizer {
 	 * @var array<string, int>
 	 */
 	private const ENUM_DEFAULT = [
-		'smwgShowFactbox' => 1, // SMW_FACTBOX_HIDDEN
+		'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
 	];
 
 	/**
 	 * Flag settings: combined via bitwise OR, internally tested via & or
-	 * {@see \SMW\Options::isFlagSet()}. Shape: [ settingKey => [ stringName => flagBit ] ].
-	 *
-	 * Each integer matches the corresponding `define()` in src/Defines.php.
+	 * {@see \SMW\Options::isFlagSet()}. Shape: [ settingKey => [ stringName => SMW_* ] ].
 	 *
 	 * @var array<string, array<string, int>>
 	 */
 	private const FLAG_MAP = [
 		'smwgFactboxFeatures' => [
-			'cache'              => 16, // SMW_FACTBOX_CACHE
-			'purge-refresh'      => 32, // SMW_FACTBOX_PURGE_REFRESH
-			'display-subobject'  => 64, // SMW_FACTBOX_DISPLAY_SUBOBJECT
-			'display-attachment' => 128, // SMW_FACTBOX_DISPLAY_ATTACHMENT
+			'cache'              => SMW_FACTBOX_CACHE,
+			'purge-refresh'      => SMW_FACTBOX_PURGE_REFRESH,
+			'display-subobject'  => SMW_FACTBOX_DISPLAY_SUBOBJECT,
+			'display-attachment' => SMW_FACTBOX_DISPLAY_ATTACHMENT,
 		],
 	];
 
