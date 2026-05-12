@@ -53,6 +53,44 @@ class SetupFileTest extends TestCase {
 		);
 	}
 
+	public function testMakeUpgradeKey_FieldTypeFeaturesFormEquivalence() {
+		// Legacy SMW_FIELDT_* bitmask form and the new array-of-strings form
+		// describe the same configuration; admins switching between them must
+		// not trigger a forced maintenance-mode upgrade (#6586).
+		$common = [
+			'smwgUpgradeKey' => '',
+			'smwgDefaultStore' => '',
+			'smwgEnabledFulltextSearch' => '',
+			'smwgFixedProperties' => [],
+			'smwgPageSpecialProperties' => [],
+			'smwgEntityCollation' => '',
+		];
+
+		$legacy = $common + [
+			'smwgFieldTypeFeatures' => SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG,
+		];
+
+		$newForm = $common + [
+			'smwgFieldTypeFeatures' => [ 'char-nocase', 'char-long' ],
+		];
+
+		$this->assertEquals(
+			SetupFile::makeUpgradeKey( $legacy ),
+			SetupFile::makeUpgradeKey( $newForm )
+		);
+
+		// And the false sentinel still produces a different hash than the
+		// flags-set form (component skipped vs. component registered with flags).
+		$disabled = $common + [
+			'smwgFieldTypeFeatures' => false,
+		];
+
+		$this->assertNotEquals(
+			SetupFile::makeUpgradeKey( $legacy ),
+			SetupFile::makeUpgradeKey( $disabled )
+		);
+	}
+
 	public function testMakeUpgradeKey_SpecialFixedProperties() {
 		$var1 = [
 			'smwgUpgradeKey' => '',

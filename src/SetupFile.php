@@ -6,6 +6,7 @@ use FileFetcher\FileFetcher;
 use FileFetcher\SimpleFileFetcher;
 use RuntimeException;
 use SMW\Elastic\ElasticStore;
+use SMW\Setup\LegacyConstantNormalizer;
 use SMW\SQLStore\Installer;
 use SMW\Utils\File;
 
@@ -429,8 +430,17 @@ class SetupFile {
 			$components += [ 'smwgEntityCollation' => $vars['smwgEntityCollation'] ];
 		}
 
-		if ( $vars['smwgFieldTypeFeatures'] !== false ) {
-			$components += [ 'smwgFieldTypeFeatures' => $vars['smwgFieldTypeFeatures'] ];
+		// Normalize before hashing so the upgrade key is stable across the
+		// PR-C migration: an admin switching from the legacy SMW_FIELDT_*
+		// bitmask form to the new ["char-nocase", "char-long"] array form
+		// must not trigger a forced maintenance-mode upgrade for what is
+		// semantically the same configuration (#6586).
+		$fieldTypeFeatures = LegacyConstantNormalizer::normalize(
+			'smwgFieldTypeFeatures',
+			$vars['smwgFieldTypeFeatures']
+		);
+		if ( $fieldTypeFeatures !== false ) {
+			$components += [ 'smwgFieldTypeFeatures' => $fieldTypeFeatures ];
 		}
 
 		// Recognize when the version requirements change and force

@@ -189,6 +189,16 @@ class LegacyConstantNormalizerTest extends TestCase {
 		);
 	}
 
+	public function testFlag_fieldTypeFeatures_emptyArrayIsNotFalse() {
+		// `[]` means "register the component, no flags set" (yields integer 0),
+		// while `false` means "skip the component entirely". SetupFile.php's
+		// `!== false` check distinguishes them, so the normalizer must too.
+		$this->assertSame(
+			0,
+			LegacyConstantNormalizer::normalize( 'smwgFieldTypeFeatures', [] )
+		);
+	}
+
 	public function testFlag_otherSettings_falseConvertsToZero() {
 		$this->assertSame(
 			0,

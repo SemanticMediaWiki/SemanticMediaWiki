@@ -104,12 +104,19 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		// PHP 8's stricter comparison rules make `'hard' == 0` evaluate to false,
 		// so a direct read of the new string form would silently flip the
 		// $may_be_computed decision and break concept caching.
+		// Read $smwgQConceptCaching and $smwgQFeatures via Settings (not $GLOBALS)
+		// so the values go through LegacyConstantNormalizer (#6586). PHP 8's
+		// stricter comparison rules make `'hard' == 0` evaluate to false, and
+		// `array | int` is a TypeError, so a direct read of the new forms would
+		// silently flip the $may_be_computed decision or fatal at the bitwise
+		// expression below.
 		$settings = ServicesFactory::getInstance()->getSettings();
 		$conceptCaching = $settings->get( 'smwgQConceptCaching' );
-		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
+		$queryFeatures = $settings->get( 'smwgQFeatures' );
+		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQConceptCacheLifetime;
 
 		$may_be_computed = ( $conceptCaching == CONCEPT_CACHE_NONE ) ||
-			( ( $conceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
+			( ( $conceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $queryFeatures ) ) == 0 ) &&
 			  ( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
 
 		if ( $row->cache_date &&
