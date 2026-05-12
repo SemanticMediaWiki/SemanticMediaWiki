@@ -220,12 +220,12 @@ final class Setup {
 		$connectionManager = $applicationFactory->getConnectionManager();
 
 		$connectionManager->registerConnectionProvider(
-			(string)DB_PRIMARY,
+			DB_PRIMARY,
 			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_PRIMARY )
 		);
 
 		$connectionManager->registerConnectionProvider(
-			(string)DB_REPLICA,
+			DB_REPLICA,
 			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 
