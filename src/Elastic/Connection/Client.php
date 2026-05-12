@@ -611,10 +611,7 @@ class Client {
 		}
 
 		$this->logger->info(
-			[
-				'Search',
-				'{query}, queryTime: {procTime}'
-			],
+			'Search {query}, queryTime: {procTime}',
 			[
 				'method' => __METHOD__,
 				'role' => 'user',

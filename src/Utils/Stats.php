@@ -101,9 +101,9 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|array $key
+	 * @param string $key
 	 */
-	public function incr( $key ): void {
+	public function incr( string $key ): void {
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = 0;
 		}
@@ -115,8 +115,8 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|array $key
-	 * @param string|int $default
+	 * @param string $key
+	 * @param string|int|array $default
 	 */
 	public function init( $key, $default ): void {
 		$this->stats[$key] = $default;
@@ -126,8 +126,8 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|array $key
-	 * @param string|int $value
+	 * @param string $key
+	 * @param string|int|array $value
 	 */
 	public function set( $key, $value ): void {
 		$this->stats[$key] = $value;
@@ -137,7 +137,7 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|array $key
+	 * @param string $key
 	 * @param int $value
 	 */
 	public function calcMedian( $key, $value ): void {

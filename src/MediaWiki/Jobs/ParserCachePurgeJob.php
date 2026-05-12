@@ -62,8 +62,12 @@ class ParserCachePurgeJob extends Job {
 		);
 
 		$logger->info(
-			[ 'ParserCache', 'Forced update for: {title}', 'causeAction: {causeAction}' ],
-			[ 'causeAction' => $causeAction, 'title' => $title->getPrefixedText(), 'role' => 'production' ]
+			'ParserCache Forced update for: {title} causeAction: {causeAction}',
+			[
+				'causeAction' => $causeAction,
+				'title' => $title->getPrefixedText(),
+				'role' => 'production'
+			]
 		);
 	}
 

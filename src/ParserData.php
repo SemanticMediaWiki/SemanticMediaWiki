@@ -81,7 +81,7 @@ class ParserData {
 	/**
 	 * Identifies the origin of a request.
 	 *
-	 * @var string
+	 * @var string|array
 	 */
 	private $origin = '';
 
@@ -132,7 +132,7 @@ class ParserData {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $origin
+	 * @param string|array $origin
 	 */
 	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
@@ -377,8 +377,11 @@ class ParserData {
 			$dataUpdater->isSkippable( $this->title, $latestRevID ) ) {
 
 			$this->logger->info(
-				[ 'Update', 'Skipping update', 'Found revision', '{revID}' ],
-				[ 'role' => 'user', 'revID' => $latestRevID ]
+				'Update Skipping update Found revision {revID}',
+				[
+					'role' => 'user',
+					'revID' => $latestRevID
+				]
 			);
 
 			return false;

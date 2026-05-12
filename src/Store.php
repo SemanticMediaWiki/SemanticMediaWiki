@@ -66,16 +66,16 @@ abstract class Store implements QueryEngine {
 	 * @see EntityLookup::getSemanticData
 	 *
 	 * @param WikiPage $subject
-	 * @param string[]|bool $filter
+	 * @param RequestOptions|string[]|bool $filter
 	 */
 	abstract public function getSemanticData( WikiPage $subject, $filter = false );
 
 	/**
 	 * @see EntityLookup::getPropertyValues
 	 *
-	 * @param $subject mixed WikiPage or null
+	 * @param WikiPage|null $subject
 	 * @param Property $property
-	 * @param null $requestoptions RequestOptions
+	 * @param RequestOptions|null $requestoptions
 	 *
 	 * @return array of DataItem
 	 */
@@ -165,7 +165,7 @@ abstract class Store implements QueryEngine {
 			$wikipage = $dataItem;
 		}
 
-		if ( !isset( $wikipage ) ) {
+		if ( !isset( $wikipage ) || !$wikipage instanceof WikiPage ) {
 			return $dataItem;
 		}
 
@@ -194,9 +194,7 @@ abstract class Store implements QueryEngine {
 
 		if ( $type === DataItem::TYPE_PROPERTY ) {
 			$entityCache->save( $key, $dataItem->getSerialization(), $entityCache::TTL_DAY );
-			if ( $wikipage instanceof WikiPage || $wikipage instanceof Title ) {
-				$entityCache->associate( $wikipage, $key );
-			}
+			$entityCache->associate( $wikipage, $key );
 		}
 
 		return $dataItem;
@@ -255,12 +253,26 @@ abstract class Store implements QueryEngine {
 		$procTime = Timer::getElapsedTime( __METHOD__, 5 );
 
 		$this->logger->info(
-			[ 'Store', 'Update completed: {hash}', 'rev: {rev}', 'procTime: {procTime}' ],
-			[ 'method' => __METHOD__, 'role' => 'production', 'hash' => $hash, 'rev' => $rev, 'procTime' => $procTime ]
+			'Store Update completed: {hash} rev: {rev} procTime: {procTime}',
+			[
+				'method' => __METHOD__,
+				'role' => 'production',
+				'hash' => $hash,
+				'rev' => $rev,
+				'procTime' => $procTime
+			]
 		);
 
-		if ( !$this->getOption( 'smwgAutoRefreshSubject' ) || $semanticData->getOption( Enum::OPT_SUSPEND_PURGE ) ) {
-			return $this->logger->info( [ 'Store', 'Skipping html, parser cache purge' ], [ 'role' => 'user' ] );
+		if ( !$this->getOption( 'smwgAutoRefreshSubject' ) ||
+			$semanticData->getOption( Enum::OPT_SUSPEND_PURGE )
+		) {
+			$this->logger->info(
+				'Store Skipping html, parser cache purge',
+				[
+					'role' => 'user'
+				]
+			);
+			return;
 		}
 
 		$pageUpdater = $applicationFactory->newPageUpdater();

@@ -49,8 +49,11 @@ trait CallableChangeListenerTrait {
 		}
 
 		$this->logger->info(
-			[ 'Listener', 'ChangeListener', "{key}" ],
-			[ 'role' => 'developer', 'key' => $key ]
+			'Listener ChangeListener {key}',
+			[
+				'role' => 'developer',
+				'key' => $key
+			]
 		);
 
 		$changeRecord = new ChangeRecord( $this->attrs );

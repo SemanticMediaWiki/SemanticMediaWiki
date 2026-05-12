@@ -121,8 +121,10 @@ class FileIndexer {
 
 		if ( $file !== null && isset( $file->file_sha1 ) ) {
 			$this->logger->info(
-				[ 'File indexer', 'Forced file_sha1 change: {file_sha1}' ],
-				[ 'file_sha1' => $file->file_sha1 ]
+				'File indexer Forced file_sha1 change: {file_sha1}',
+				[
+					'file_sha1' => $file->file_sha1
+				]
 			);
 		}
 
@@ -206,7 +208,7 @@ class FileIndexer {
 
 		if ( !$ingest ) {
 			$this->logger->info(
-				[ 'File indexer', 'Skipping the ingest process', 'Found identical file_sha1 ({subject})' ],
+				'File indexer Skipping the ingest process Found identical file_sha1 ({subject})',
 				$context
 			);
 
@@ -234,13 +236,9 @@ class FileIndexer {
 		$context['procTime'] = microtime( true ) + $time;
 		$context['file_sha1'] = $sha1;
 
-		$msg = [
-			'File indexer',
-			'Ingest process completed ({subject})',
-			'procTime (in sec): {procTime}',
-			'Response: {response}',
-			'file_sha1:{file_sha1}'
-		];
+		$msg = 'File indexer Ingest process completed ({subject}) ' .
+			'procTime (in sec): {procTime} Response: {response} ' .
+			'file_sha1:{file_sha1}';
 
 		$this->logger->info( $msg, $context );
 

@@ -311,7 +311,7 @@ class ConditionBuilder {
 	 * @since 3.0
 	 *
 	 * @param DataItem|null $dataItem
-	 * @param int $hierarchyDepth
+	 * @param int|null $hierarchyDepth
 	 */
 	public function findHierarchyMembers( ?DataItem $dataItem, $hierarchyDepth ): array {
 		$ids = [];

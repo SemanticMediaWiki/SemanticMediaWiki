@@ -64,7 +64,7 @@ class DataUpdater {
 	private bool $isDeferrableUpdate = false;
 
 	/**
-	 * @var string
+	 * @var string|array
 	 */
 	private $origin = '';
 
@@ -114,7 +114,7 @@ class DataUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $origin
+	 * @param string|array $origin
 	 */
 	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
