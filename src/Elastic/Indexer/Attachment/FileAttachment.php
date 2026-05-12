@@ -219,7 +219,7 @@ class FileAttachment {
 		$context['time'] = microtime( true ) + $time;
 		$context['response'] = $response;
 
-		$msg = 'File indexer Pushed attachment information to ES ({subject})' .
+		$msg = 'File indexer Pushed attachment information to ES ({subject}) ' .
 			'procTime (in sec): {procTime} Response: {response}';
 
 		$this->logger->info( $msg, $context );
