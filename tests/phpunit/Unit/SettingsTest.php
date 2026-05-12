@@ -151,6 +151,33 @@ class SettingsTest extends TestCase {
 	}
 
 	/**
+	 * The new extension.json defaults (string for the enum, array for the flags)
+	 * must round-trip to the same internal integers as before the migration (#6586).
+	 */
+	public function testLoadFromGlobals_factboxDefaultsFromExtensionJson() {
+		$savedShow = $GLOBALS['smwgShowFactbox'] ?? null;
+		$savedFeatures = $GLOBALS['smwgFactboxFeatures'] ?? null;
+
+		try {
+			$GLOBALS['smwgShowFactbox'] = 'hidden';
+			$GLOBALS['smwgFactboxFeatures'] = [ 'cache', 'purge-refresh', 'display-subobject', 'display-attachment' ];
+
+			$instance = new Settings();
+			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->loadFromGlobals();
+
+			$this->assertSame( SMW_FACTBOX_HIDDEN, $instance->get( 'smwgShowFactbox' ) );
+			$this->assertSame(
+				SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT | SMW_FACTBOX_DISPLAY_ATTACHMENT,
+				$instance->get( 'smwgFactboxFeatures' )
+			);
+		} finally {
+			$GLOBALS['smwgShowFactbox'] = $savedShow;
+			$GLOBALS['smwgFactboxFeatures'] = $savedFeatures;
+		}
+	}
+
+	/**
 	 * Both legacy SMW_* integer constants and the new string / array-of-strings
 	 * form must produce identical internal state once Settings::loadFromGlobals()
 	 * routes the registered keys through LegacyConstantNormalizer (#6586).

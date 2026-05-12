@@ -50,14 +50,6 @@ class ConfigBootstrap {
 			$GLOBALS['smwgSparqlRepositoryFeatures'] = SMW_SPARQL_NONE;
 		}
 
-		if ( !isset( $GLOBALS['smwgFactboxFeatures'] ) ) {
-			$GLOBALS['smwgFactboxFeatures'] = SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT | SMW_FACTBOX_DISPLAY_ATTACHMENT;
-		}
-
-		if ( !isset( $GLOBALS['smwgShowFactbox'] ) ) {
-			$GLOBALS['smwgShowFactbox'] = SMW_FACTBOX_HIDDEN;
-		}
-
 		if ( !isset( $GLOBALS['smwgShowFactboxEdit'] ) ) {
 			$GLOBALS['smwgShowFactboxEdit'] = SMW_FACTBOX_NONEMPTY;
 		}
