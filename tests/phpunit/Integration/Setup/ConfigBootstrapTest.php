@@ -14,31 +14,30 @@ use SMW\Setup\ConfigBootstrap;
 class ConfigBootstrapTest extends TestCase {
 
 	public function testUnsetGlobalGetsSeededDefault(): void {
-		$key    = 'smwgQFeatures';
+		// `smwgMainCacheType` uses MediaWiki core's `CACHE_ANYTHING` constant
+		// and stays in `ConfigBootstrap` because the SMW load-order bug never
+		// applied to MW core constants (#6586 is out of scope).
+		$key    = 'smwgMainCacheType';
 		$backup = $GLOBALS[$key] ?? null;
 		unset( $GLOBALS[$key] );
 
 		try {
 			ConfigBootstrap::seedComputedDefaults();
-			$this->assertSame(
-				SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY
-					| SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY,
-				$GLOBALS[$key]
-			);
+			$this->assertSame( CACHE_ANYTHING, $GLOBALS[$key] );
 		} finally {
 			$GLOBALS[$key] = $backup;
 		}
 	}
 
 	public function testUserPresetValueIsPreserved(): void {
-		$key    = 'smwgShowFactbox';
+		$key    = 'smwgQueryResultCacheType';
 		$backup = $GLOBALS[$key] ?? null;
-		$GLOBALS[$key] = SMW_FACTBOX_SHOWN;
+		$GLOBALS[$key] = CACHE_DB;
 
 		try {
 			ConfigBootstrap::seedComputedDefaults();
-			$this->assertSame( SMW_FACTBOX_SHOWN, $GLOBALS[$key] );
-			$this->assertNotSame( SMW_FACTBOX_HIDDEN, $GLOBALS[$key] );
+			$this->assertSame( CACHE_DB, $GLOBALS[$key] );
+			$this->assertNotSame( CACHE_NONE, $GLOBALS[$key] );
 		} finally {
 			$GLOBALS[$key] = $backup;
 		}

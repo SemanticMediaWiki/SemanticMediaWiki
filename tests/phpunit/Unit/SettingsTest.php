@@ -178,6 +178,51 @@ class SettingsTest extends TestCase {
 	}
 
 	/**
+	 * @dataProvider provideFlagBoundaryDualAcceptCases
+	 */
+	public function testLoadFromGlobals_flagDualAccept( string $key, mixed $userValue, mixed $expected ) {
+		$saved = $GLOBALS[$key] ?? null;
+
+		try {
+			$GLOBALS[$key] = $userValue;
+
+			$instance = new Settings();
+			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->loadFromGlobals();
+
+			$this->assertSame( $expected, $instance->get( $key ) );
+		} finally {
+			$GLOBALS[$key] = $saved;
+		}
+	}
+
+	/**
+	 * Each of the 13 SMW bitmask settings in PR C must accept both the legacy
+	 * SMW_* integer-OR form and the new array-of-strings form, producing
+	 * identical internal integer state (#6586).
+	 */
+	public function provideFlagBoundaryDualAcceptCases(): array {
+		return [
+			'smwgQFeatures array'             => [ 'smwgQFeatures', [ 'property', 'category' ], SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY ],
+			'smwgQFeatures legacy'            => [ 'smwgQFeatures', SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY, SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY ],
+			'smwgQSortFeatures array'         => [ 'smwgQSortFeatures', [ 'sort', 'random' ], SMW_QSORT | SMW_QSORT_RANDOM ],
+			'smwgQSortFeatures legacy'        => [ 'smwgQSortFeatures', SMW_QSORT | SMW_QSORT_RANDOM, SMW_QSORT | SMW_QSORT_RANDOM ],
+			'smwgSparqlQFeatures array'       => [ 'smwgSparqlQFeatures', [ 'redirects', 'subproperties' ], SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP ],
+			'smwgCategoryFeatures array'      => [ 'smwgCategoryFeatures', [ 'redirect', 'instance' ], SMW_CAT_REDIRECT | SMW_CAT_INSTANCE ],
+			'smwgBrowseFeatures array'        => [ 'smwgBrowseFeatures', [ 'toolbox-link', 'use-api' ], SMW_BROWSE_TLINK | SMW_BROWSE_USE_API ],
+			'smwgAdminFeatures array'         => [ 'smwgAdminFeatures', [ 'refresh', 'setup' ], SMW_ADM_REFRESH | SMW_ADM_SETUP ],
+			'smwgParserFeatures array'        => [ 'smwgParserFeatures', [ 'strict', 'inline-errors' ], SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR ],
+			'smwgDVFeatures array'            => [ 'smwgDVFeatures', [ 'provider-redirect', 'preferred-label' ], SMW_DV_PROV_REDI | SMW_DV_PPLB ],
+			'smwgFulltextSearchIDT array'     => [ 'smwgFulltextSearchIndexableDataTypes', [ 'blob', 'uri' ], SMW_FT_BLOB | SMW_FT_URI ],
+			'smwgRemoteReqFeatures array'     => [ 'smwgRemoteReqFeatures', [ 'send-response' ], SMW_REMOTE_REQ_SEND_RESPONSE ],
+			'smwgExperimentalFeatures array'  => [ 'smwgExperimentalFeatures', [ 'queryresult-prefetch' ], SMW_QUERYRESULT_PREFETCH ],
+			'smwgFieldTypeFeatures array'     => [ 'smwgFieldTypeFeatures', [ 'char-nocase', 'char-long' ], SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG ],
+			'smwgFieldTypeFeatures false'     => [ 'smwgFieldTypeFeatures', false, false ],
+			'smwgQConceptFeatures array'      => [ 'smwgQConceptFeatures', [ 'property', 'namespace' ], SMW_PROPERTY_QUERY | SMW_NAMESPACE_QUERY ],
+		];
+	}
+
+	/**
 	 * @dataProvider provideEnumBoundaryDualAcceptCases
 	 */
 	public function testLoadFromGlobals_enumDualAccept( string $key, mixed $userValue, mixed $expected ) {
