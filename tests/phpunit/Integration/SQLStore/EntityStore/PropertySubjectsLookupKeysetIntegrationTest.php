@@ -154,12 +154,9 @@ class PropertySubjectsLookupKeysetIntegrationTest extends SMWIntegrationTestCase
 		$cursorBefore = $startId;
 		$guard = 0;
 
-		while ( $cursorBefore !== null && $guard < 1000 ) {
+		do {
 			$options = $this->buildOptions( null, $cursorBefore );
 			$page = $this->fetchSubjects( $store, $options );
-			if ( $page === [] ) {
-				break;
-			}
 
 			$pageNames = [];
 			foreach ( $page as $subjectName ) {
@@ -173,7 +170,7 @@ class PropertySubjectsLookupKeysetIntegrationTest extends SMWIntegrationTestCase
 
 			$cursorBefore = $options->getFirstCursor();
 			$guard++;
-		}
+		} while ( $cursorBefore !== null && $options->getCursorHasMore() && $guard < 1000 );
 
 		// setCursorBefore is strict less-than; the start row never appears
 		// in any page. Reinstate it to make the sequences directly comparable.

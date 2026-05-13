@@ -354,6 +354,10 @@ class PropertySubjectsLookup {
 			$res = $this->postProcessCursorResult( $res, $callerRequestOptions, $requestOptions );
 		}
 
+		// Clear the transient field so subsequent calls do not pick up a stale
+		// reference from this one if they take the non-cursor path.
+		$this->requestOptions = null;
+
 		return $res;
 	}
 

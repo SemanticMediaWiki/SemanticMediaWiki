@@ -147,4 +147,39 @@ class ValueListBuilderTest extends TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider cursorPaginationProvider
+	 */
+	public function testShouldUseCursorPagination(
+		string $filter,
+		int $after,
+		int $before,
+		int $offset,
+		string $from,
+		string $until,
+		bool $expected
+	): void {
+		$this->assertSame(
+			$expected,
+			ValueListBuilder::shouldUseCursorPagination( $filter, $after, $before, $offset, $from, $until )
+		);
+	}
+
+	public static function cursorPaginationProvider(): array {
+		return [
+			'fresh visit, no params' => [ '', 0, 0, 0, '', '', true ],
+			'explicit after cursor' => [ '', 42, 0, 0, '', '', true ],
+			'explicit before cursor' => [ '', 0, 42, 0, '', '', true ],
+			'cursor wins over offset' => [ '', 42, 0, 50, '', '', true ],
+			'cursor wins over from' => [ '', 42, 0, 0, 'Foo', '', true ],
+			'cursor wins over until' => [ '', 42, 0, 0, '', 'Foo', true ],
+			'legacy offset' => [ '', 0, 0, 50, '', '', false ],
+			'legacy from' => [ '', 0, 0, 0, 'Foo', '', false ],
+			'legacy until' => [ '', 0, 0, 0, '', 'Foo', false ],
+			'filter present, fresh visit' => [ 'Bar', 0, 0, 0, '', '', false ],
+			'filter present with after' => [ 'Bar', 42, 0, 0, '', '', false ],
+			'filter present with offset' => [ 'Bar', 0, 0, 50, '', '', false ],
+		];
+	}
+
 }

@@ -45,6 +45,8 @@ class RequestOptions {
 	 * instance even when `cursorAfter` / `cursorBefore` are not set (i.e.
 	 * the first page of a cursor-paginated UI). Callers that do not consume
 	 * cursor metadata should leave this unset.
+	 *
+	 * @since 7.0.0
 	 */
 	const CURSOR_MODE = 'cursor.mode';
 
