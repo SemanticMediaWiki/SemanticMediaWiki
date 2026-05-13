@@ -104,7 +104,7 @@ class PropertyUsageListLookup implements ListLookup {
 			$queryBuilder->limit( $this->requestOptions->limit + 1 );
 		}
 
-		$this->applyCursorPagination( $queryBuilder, $db );
+		$this->applyCursorPagination( $queryBuilder, $db, $this->requestOptions );
 
 		return $queryBuilder->fetchResultSet();
 	}

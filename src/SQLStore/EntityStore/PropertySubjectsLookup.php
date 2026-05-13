@@ -28,14 +28,6 @@ class PropertySubjectsLookup {
 
 	use KeysetPaginationTrait;
 
-	/**
-	 * Required by `KeysetPaginationTrait`. Set transiently inside `doFetch()`
-	 * to the per-call (already-cloned) RequestOptions before invoking the
-	 * trait's `applyCursorPagination()`. Not exposed; the public entry points
-	 * always provide RequestOptions explicitly.
-	 */
-	private ?RequestOptions $requestOptions = null;
-
 	private IteratorFactory $iteratorFactory;
 
 	/**
@@ -332,8 +324,7 @@ class PropertySubjectsLookup {
 			if ( $requestOptions->limit > 0 ) {
 				$qb->limit( $requestOptions->limit + 1 );
 			}
-			$this->requestOptions = $requestOptions;
-			$this->applyCursorPagination( $qb, $connection );
+			$this->applyCursorPagination( $qb, $connection, $requestOptions );
 		}
 
 		LegacyOptionsApplier::applyTo( $qb, $opts );
@@ -353,10 +344,6 @@ class PropertySubjectsLookup {
 		if ( $cursorMode ) {
 			$res = $this->postProcessCursorResult( $res, $callerRequestOptions, $requestOptions );
 		}
-
-		// Clear the transient field so subsequent calls do not pick up a stale
-		// reference from this one if they take the non-cursor path.
-		$this->requestOptions = null;
 
 		return $res;
 	}

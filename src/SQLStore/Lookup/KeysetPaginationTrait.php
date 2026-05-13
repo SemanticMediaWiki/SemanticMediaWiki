@@ -8,12 +8,24 @@ use SMW\SQLStore\SQLStore;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
- * Shared keyset (cursor-based) pagination logic for property list lookups.
+ * Shared keyset (cursor-based) pagination logic for paginated lookups.
+ *
+ * Consumers must expose `$this->store` (used to resolve cursor sort keys).
+ * `RequestOptions` is passed explicitly to `applyCursorPagination()` rather
+ * than read from a field, so any class with a store reference (Lookup,
+ * SpecialPage, or otherwise) can use the trait without surfacing the
+ * options instance as a field.
+ *
+ * The trait only emits the cursor WHERE predicate and ORDER BY (and falls
+ * back to OFFSET when no cursor is active). Populating cursor metadata
+ * (`firstCursor`, `lastCursor`, `cursorHasMore`) on the caller's
+ * `RequestOptions` after `fetchResultSet()` is the consumer's
+ * responsibility, since only the consumer knows how to trim the lookahead
+ * row and reverse on backward navigation.
  *
  * @since 7.0
  *
  * @property SQLStore $store
- * @property RequestOptions $requestOptions
  */
 trait KeysetPaginationTrait {
 
@@ -49,12 +61,17 @@ trait KeysetPaginationTrait {
 	 *
 	 * @param SelectQueryBuilder $queryBuilder
 	 * @param Database $db
+	 * @param RequestOptions $requestOptions
 	 *
 	 * @return void
 	 */
-	private function applyCursorPagination( SelectQueryBuilder $queryBuilder, Database $db ): void {
-		$cursorAfter = $this->requestOptions->getCursorAfter();
-		$cursorBefore = $this->requestOptions->getCursorBefore();
+	private function applyCursorPagination(
+		SelectQueryBuilder $queryBuilder,
+		Database $db,
+		RequestOptions $requestOptions
+	): void {
+		$cursorAfter = $requestOptions->getCursorAfter();
+		$cursorBefore = $requestOptions->getCursorBefore();
 
 		if ( $cursorAfter !== null ) {
 			$sort = $this->resolveCursorSort( $cursorAfter );
@@ -78,8 +95,8 @@ trait KeysetPaginationTrait {
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_DESC );
 		} else {
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_ASC );
-			if ( $this->requestOptions->offset > 0 ) {
-				$queryBuilder->offset( $this->requestOptions->offset );
+			if ( $requestOptions->offset > 0 ) {
+				$queryBuilder->offset( $requestOptions->offset );
 			}
 		}
 	}
