@@ -50,7 +50,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param WikiPage $subject
+	 * @param string|Title|WikiPage $subject
 	 */
 	public static function makeCacheKey( $subject ): string {
 		if ( $subject instanceof WikiPage ) {

@@ -256,11 +256,7 @@ class ElasticStore extends SQLStore {
 		$this->indexer->indexDocument( $document, Indexer::REQUIRE_SAFE_REPLICATION );
 
 		$this->logger->info(
-			[
-				'ElasticStore',
-				'Data update completed',
-				'procTime in sec: {procTime}',
-			],
+			'ElasticStore Data update completed procTime in sec: {procTime}',
 			[
 				'method' => __METHOD__,
 				'role' => 'production',

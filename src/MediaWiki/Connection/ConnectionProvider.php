@@ -89,10 +89,7 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 
 		$this->logger->info(
-			[
-				'Connection',
-				'{provider}: {conf}',
-			],
+			'Connection {provider}: {conf}',
 			[
 				'role' => 'developer',
 				'provider' => $this->provider,

@@ -110,7 +110,9 @@ class ProximityPropertyValueLookup {
 			// transformed it!
 			if ( $diType === DataItem::TYPE_TIME ) {
 				$value = DataValueFactory::getInstance()->newDataValueByItem(
-					Time::doUnserialize( $value ), $property )->getWikiValue();
+					Time::doUnserialize( $value ),
+					$property
+				)->getWikiValue();
 			}
 
 			$list[] = $value;

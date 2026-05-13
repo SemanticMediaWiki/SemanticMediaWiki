@@ -74,7 +74,7 @@ abstract class DescriptionBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param string $error
+	 * @param string|array $error
 	 */
 	public function addError( $error ) {
 		if ( is_array( $error ) ) {

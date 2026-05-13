@@ -50,8 +50,10 @@ class RejectParserCacheValue implements HookListener {
 		}
 
 		$this->logger->info(
-			[ 'RejectParserCacheValue', 'Rejected, found archaic query dependencies', '{etag}' ],
-			[ 'role' => 'user' ]
+			'RejectParserCacheValue Rejected, found archaic query dependencies',
+			[
+				'role' => 'user'
+			]
 		);
 
 		// Return false to reject an otherwise usable cached value from the

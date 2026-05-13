@@ -163,7 +163,7 @@ class HtmlForm {
 		}
 
 		$isEmpty = $queryLink === null;
-		$editLink = $this->title->getLocalURL( $urlArgs );
+		$editLink = $this->title->getLocalURL( (string)$urlArgs );
 
 		// Submit
 		$html .= LinksWidget::resultSubmitLink(

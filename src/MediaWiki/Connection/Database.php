@@ -194,7 +194,7 @@ class Database {
 	 *
 	 * @since 3.0
 	 *
-	 * @param int $ts
+	 * @param string|int $ts
 	 *
 	 * @return string
 	 */

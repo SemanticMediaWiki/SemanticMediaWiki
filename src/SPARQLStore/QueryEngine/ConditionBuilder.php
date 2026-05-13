@@ -144,7 +144,8 @@ class ConditionBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @param string $error
+	 * @param string|array $error
+	 * @param int|string|null $type
 	 */
 	public function addError( $error, $type = Message::TEXT ): void {
 		$this->errors[Message::getHash( $error, $type )] = Message::encode( $error, $type );

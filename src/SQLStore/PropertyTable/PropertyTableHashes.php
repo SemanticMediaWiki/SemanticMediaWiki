@@ -91,7 +91,6 @@ class PropertyTableHashes {
 			return [];
 		}
 
-		$hash = null;
 		$cache = $this->idCacheManager->get( 'propertytable.hash' );
 
 		$hash = $cache->fetch( $id );
@@ -134,7 +133,7 @@ class PropertyTableHashes {
 	 * @since 3.1
 	 *
 	 * @param $id integer
-	 * @param string|null $hash
+	 * @param string|array|null $hash
 	 *
 	 * @return void
 	 */

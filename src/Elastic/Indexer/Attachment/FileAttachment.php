@@ -76,11 +76,8 @@ class FileAttachment {
 
 		if ( !$connection->exists( $params ) ) {
 
-			$msg = [
-				'File indexer',
-				'Abort annotation update',
-				'Missing {id} document!'
-			];
+			$msg = 'File indexer Abort annotation update ' .
+				'Missing {id} document!';
 
 			return $this->logger->info( $msg, $context + [ 'id' => $dataItem->getId() ] );
 		}
@@ -105,11 +102,8 @@ class FileAttachment {
 
 		if ( !isset( $doc['_source']['file_sha1'] ) ) {
 
-			$msg = [
-				'File indexer',
-				'No annotation update',
-				'Missing file_sha1!'
-			];
+			$msg = 'File indexer No annotation update ' .
+				'Missing file_sha1!';
 
 			return $this->logger->info( $msg, $context );
 		}
@@ -154,11 +148,8 @@ class FileAttachment {
 
 		$context['procTime'] = microtime( true ) + $time;
 
-		$msg = [
-			'File indexer',
-			'Attachment annotation update completed ({subject})',
-			'procTime (in sec): {procTime}'
-		];
+		$msg = 'File indexer Attachment annotation update completed ({subject}) ' .
+			'procTime (in sec): {procTime}';
 
 		$this->logger->info( $msg, $context );
 	}
@@ -228,12 +219,8 @@ class FileAttachment {
 		$context['time'] = microtime( true ) + $time;
 		$context['response'] = $response;
 
-		$msg = [
-			'File indexer',
-			'Pushed attachment information to ES ({subject})',
-			'procTime (in sec): {procTime}',
-			'Response: {response}'
-		];
+		$msg = 'File indexer Pushed attachment information to ES ({subject}) ' .
+			'procTime (in sec): {procTime} Response: {response}';
 
 		$this->logger->info( $msg, $context );
 	}

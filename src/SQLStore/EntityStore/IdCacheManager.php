@@ -175,7 +175,7 @@ class IdCacheManager {
 	 *
 	 * @since 3.0
 	 *
-	 * @param WikiPage|array $args
+	 * @param WikiPage|array|string $args
 	 *
 	 * @return int|false
 	 */

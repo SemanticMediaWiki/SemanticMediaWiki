@@ -157,8 +157,7 @@ class ConceptPage extends Page {
 			'a',
 			[
 				'name' => 'smw-result'
-			],
-			null
+			]
 		) . Html::rawElement(
 			'div',
 			[
