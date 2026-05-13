@@ -6,6 +6,8 @@ use SMW\Schema\Compartment;
 use SMW\Schema\CompartmentIterator;
 use SMW\Schema\SchemaFilter;
 
+// @phan-file-suppress UnusedPluginSuppression
+
 /**
  * @private
  *
