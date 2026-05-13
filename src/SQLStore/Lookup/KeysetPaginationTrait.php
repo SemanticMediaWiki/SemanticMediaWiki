@@ -50,18 +50,26 @@ trait KeysetPaginationTrait {
 		if ( $cursorAfter !== null ) {
 			$sort = $this->resolveCursorSort( $cursorAfter );
 			if ( $sort !== null ) {
+				// MariaDB does not optimise row-constructor comparisons
+				// `(a, b) > (?, ?)` into an index range seek; it falls back
+				// to a full index scan with a WHERE filter. Expressing the
+				// same total order via explicit OR is recognised as a
+				// range predicate and seeks the (smw_sort, smw_id) index
+				// directly. See issue #6559.
+				$quotedSort = $db->addQuotes( $sort );
 				$queryBuilder->andWhere(
-					'(smw_sort, smw_id) > (' .
-					$db->addQuotes( $sort ) . ', ' . $cursorAfter . ')'
+					'smw_sort > ' . $quotedSort .
+					' OR (smw_sort = ' . $quotedSort . ' AND smw_id > ' . $cursorAfter . ')'
 				);
 			}
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_ASC );
 		} elseif ( $cursorBefore !== null ) {
 			$sort = $this->resolveCursorSort( $cursorBefore );
 			if ( $sort !== null ) {
+				$quotedSort = $db->addQuotes( $sort );
 				$queryBuilder->andWhere(
-					'(smw_sort, smw_id) < (' .
-					$db->addQuotes( $sort ) . ', ' . $cursorBefore . ')'
+					'smw_sort < ' . $quotedSort .
+					' OR (smw_sort = ' . $quotedSort . ' AND smw_id < ' . $cursorBefore . ')'
 				);
 			}
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_DESC );
