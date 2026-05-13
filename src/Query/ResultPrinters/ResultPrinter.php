@@ -15,6 +15,7 @@ use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;
+use SMW\Services\ServicesFactory;
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
@@ -229,7 +230,12 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @return bool
 	 */
 	public function isEnabledFeature( $feature ): bool {
-		return ( (int)$GLOBALS['smwgResultFormatsFeatures'] & $feature ) != 0;
+		// Read via Settings (not $GLOBALS directly) so the value goes through
+		// LegacyConstantNormalizer's string->int normalization (#6586). A direct
+		// $GLOBALS read would see `'template-outsep'` when the admin uses the new
+		// form, and `(int)'template-outsep'` evaluates to 0, silently disabling
+		// the feature.
+		return ( (int)ServicesFactory::getInstance()->getSettings()->get( 'smwgResultFormatsFeatures' ) & $feature ) != 0;
 	}
 
 	/**

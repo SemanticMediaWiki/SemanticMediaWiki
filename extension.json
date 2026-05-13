@@ -769,6 +769,10 @@
 			"description": "Property IDs that trigger full re-processing of dependent pages when their values change.",
 			"merge_strategy": "provide_default"
 		},
+		"CheckForConstraintErrors": {
+			"value": "check/all",
+			"description": "Property-constraint error checking. Accepts `false` (= `SMW_CONSTRAINT_ERR_CHECK_NONE`, off), `\"check/main\"` (= `SMW_CONSTRAINT_ERR_CHECK_MAIN`, main-data-only), or `\"check/all\"` (= `SMW_CONSTRAINT_ERR_CHECK_ALL`, all entities). The `SMW_CONSTRAINT_ERR_CHECK_*` constants resolve to these string values and continue to work."
+		},
 		"CheckForRemnantEntities": {
 			"value": "purge",
 			"description": "Controls when remnant entity checks run: `\"purge\"` (on purge only), `true` (every update), or `false` (disabled)."
@@ -1081,6 +1085,10 @@
 			"value": 1440,
 			"description": "Concept cache lifetime in minutes; SMW recomputes an older cache if this threshold is exceeded."
 		},
+		"QConceptCaching": {
+			"value": "hard",
+			"description": "Concept-cache use policy. Accepts `\"none\"`, `\"hard\"`, or `\"all\"`. Legacy `CONCEPT_CACHE_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+		},
 		"QConceptMaxDepth": {
 			"value": 8,
 			"description": "Maximum property-chain depth for a concept query."
@@ -1104,6 +1112,10 @@
 		"QEnabled": {
 			"value": true,
 			"description": "Master switch to enable or disable all query-related features and interfaces."
+		},
+		"QEqualitySupport": {
+			"value": "some",
+			"description": "Inverse / equality property handling: `\"none\"` disables, `\"some\"` enables redirects (default), `\"full\"` enables redirects and owl:sameAs. Legacy `SMW_EQ_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
 		},
 		"QExpensiveExecutionLimit": {
 			"value": false,
@@ -1219,6 +1231,10 @@
 			"description": "Predefined result formats for queries.",
 			"merge_strategy": "array_plus"
 		},
+		"ResultFormatsFeatures": {
+			"value": "template-outsep",
+			"description": "Result-formatter feature. Accepts `\"none\"` or `\"template-outsep\"`. Legacy `SMW_RF_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+		},
 		"SearchByPropertyFuzzy": {
 			"value": ["_num", "_txt", "_dat", "_mlt_rec"],
 			"description": "Type IDs for which Special:SearchByProperty displays nearby fuzzy results when exact matches are few.",
@@ -1241,6 +1257,10 @@
 		"ShowFactbox": {
 			"value": "hidden",
 			"description": "Default factbox visibility on page view. Accepts 'hidden', 'special', 'nonempty', or 'shown'. Legacy `SMW_FACTBOX_HIDDEN`/`SPECIAL`/`NONEMPTY`/`SHOWN` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+		},
+		"ShowFactboxEdit": {
+			"value": "nonempty",
+			"description": "Factbox visibility on the edit form. Accepts the same values as `smwgShowFactbox`. Legacy `SMW_FACTBOX_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
 		},
 		"SimilarityLookupExemptionProperty": {
 			"value": "owl:differentFrom",
@@ -1271,6 +1291,14 @@
 		"SparqlRepositoryConnector": {
 			"value": "default",
 			"description": "Pre-deployed SPARQL repository connector to use (`default`, `4store`, `blazegraph`, `fuseki`, `sesame`, `virtuoso`, or `custom`)."
+		},
+		"SparqlRepositoryFeatures": {
+			"value": "none",
+			"description": "SPARQL repository feature flags. Accepts `\"none\"` or `\"connection-ping\"`. Legacy `SMW_SPARQL_NONE`/`CONNECTION_PING` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+		},
+		"SpecialAskFormSubmitMethod": {
+			"value": "post",
+			"description": "Form submit method on Special:Ask. Accepts `\"get\"`, `\"get.redirect\"`, or `\"post\"`. The `SMW_SASK_SUBMIT_*` constants resolve to these string values and continue to work."
 		},
 		"SupportSectionTag": {
 			"value": true,

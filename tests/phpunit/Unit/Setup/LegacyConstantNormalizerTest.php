@@ -26,6 +26,48 @@ class LegacyConstantNormalizerTest extends TestCase {
 		$this->assertSame( SMW_FACTBOX_SHOWN, LegacyConstantNormalizer::normalize( 'smwgShowFactbox', 'shown' ) );
 	}
 
+	/**
+	 * @dataProvider provideEnumStringForms
+	 */
+	public function testEnum_stringForm_normalizesToConstant( string $key, string $stringForm, mixed $expected ) {
+		$this->assertSame( $expected, LegacyConstantNormalizer::normalize( $key, $stringForm ) );
+	}
+
+	/**
+	 * @dataProvider provideEnumLegacyForms
+	 */
+	public function testEnum_legacyForm_passesThroughAndDeprecates( string $key, mixed $legacyValue ) {
+		$this->assertSame( $legacyValue, LegacyConstantNormalizer::normalize( $key, $legacyValue ) );
+		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( $key ) );
+	}
+
+	public function provideEnumStringForms(): array {
+		return [
+			'smwgShowFactboxEdit/nonempty'            => [ 'smwgShowFactboxEdit', 'nonempty', SMW_FACTBOX_NONEMPTY ],
+			'smwgShowFactboxEdit/shown'               => [ 'smwgShowFactboxEdit', 'shown', SMW_FACTBOX_SHOWN ],
+			'smwgQEqualitySupport/none'               => [ 'smwgQEqualitySupport', 'none', SMW_EQ_NONE ],
+			'smwgQEqualitySupport/some'               => [ 'smwgQEqualitySupport', 'some', SMW_EQ_SOME ],
+			'smwgQEqualitySupport/full'               => [ 'smwgQEqualitySupport', 'full', SMW_EQ_FULL ],
+			'smwgQConceptCaching/none'                => [ 'smwgQConceptCaching', 'none', CONCEPT_CACHE_NONE ],
+			'smwgQConceptCaching/hard'                => [ 'smwgQConceptCaching', 'hard', CONCEPT_CACHE_HARD ],
+			'smwgQConceptCaching/all'                 => [ 'smwgQConceptCaching', 'all', CONCEPT_CACHE_ALL ],
+			'smwgSparqlRepositoryFeatures/none'       => [ 'smwgSparqlRepositoryFeatures', 'none', SMW_SPARQL_NONE ],
+			'smwgSparqlRepositoryFeatures/ping'       => [ 'smwgSparqlRepositoryFeatures', 'connection-ping', SMW_SPARQL_CONNECTION_PING ],
+			'smwgResultFormatsFeatures/none'          => [ 'smwgResultFormatsFeatures', 'none', SMW_RF_NONE ],
+			'smwgResultFormatsFeatures/template'      => [ 'smwgResultFormatsFeatures', 'template-outsep', SMW_RF_TEMPLATE_OUTSEP ],
+		];
+	}
+
+	public function provideEnumLegacyForms(): array {
+		return [
+			'smwgShowFactboxEdit'          => [ 'smwgShowFactboxEdit', SMW_FACTBOX_NONEMPTY ],
+			'smwgQEqualitySupport'         => [ 'smwgQEqualitySupport', SMW_EQ_SOME ],
+			'smwgQConceptCaching'          => [ 'smwgQConceptCaching', CONCEPT_CACHE_HARD ],
+			'smwgSparqlRepositoryFeatures' => [ 'smwgSparqlRepositoryFeatures', SMW_SPARQL_CONNECTION_PING ],
+			'smwgResultFormatsFeatures'    => [ 'smwgResultFormatsFeatures', SMW_RF_TEMPLATE_OUTSEP ],
+		];
+	}
+
 	public function testEnum_legacyConstantForm_passesThroughAndDeprecates() {
 		$this->assertSame(
 			SMW_FACTBOX_NONEMPTY,

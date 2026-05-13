@@ -178,6 +178,44 @@ class SettingsTest extends TestCase {
 	}
 
 	/**
+	 * @dataProvider provideEnumBoundaryDualAcceptCases
+	 */
+	public function testLoadFromGlobals_enumDualAccept( string $key, mixed $userValue, mixed $expected ) {
+		$saved = $GLOBALS[$key] ?? null;
+
+		try {
+			$GLOBALS[$key] = $userValue;
+
+			$instance = new Settings();
+			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->loadFromGlobals();
+
+			$this->assertSame( $expected, $instance->get( $key ) );
+		} finally {
+			$GLOBALS[$key] = $saved;
+		}
+	}
+
+	/**
+	 * Each of the 5 SMW enum settings in PR B must accept both the legacy integer
+	 * constant and the new string form, producing identical internal state (#6586).
+	 */
+	public function provideEnumBoundaryDualAcceptCases(): array {
+		return [
+			'smwgShowFactboxEdit string'           => [ 'smwgShowFactboxEdit', 'nonempty', SMW_FACTBOX_NONEMPTY ],
+			'smwgShowFactboxEdit legacy'           => [ 'smwgShowFactboxEdit', SMW_FACTBOX_NONEMPTY, SMW_FACTBOX_NONEMPTY ],
+			'smwgQEqualitySupport string'          => [ 'smwgQEqualitySupport', 'full', SMW_EQ_FULL ],
+			'smwgQEqualitySupport legacy'          => [ 'smwgQEqualitySupport', SMW_EQ_FULL, SMW_EQ_FULL ],
+			'smwgQConceptCaching string'           => [ 'smwgQConceptCaching', 'all', CONCEPT_CACHE_ALL ],
+			'smwgQConceptCaching legacy'           => [ 'smwgQConceptCaching', CONCEPT_CACHE_ALL, CONCEPT_CACHE_ALL ],
+			'smwgSparqlRepositoryFeatures string'  => [ 'smwgSparqlRepositoryFeatures', 'connection-ping', SMW_SPARQL_CONNECTION_PING ],
+			'smwgSparqlRepositoryFeatures legacy'  => [ 'smwgSparqlRepositoryFeatures', SMW_SPARQL_CONNECTION_PING, SMW_SPARQL_CONNECTION_PING ],
+			'smwgResultFormatsFeatures string'     => [ 'smwgResultFormatsFeatures', 'template-outsep', SMW_RF_TEMPLATE_OUTSEP ],
+			'smwgResultFormatsFeatures legacy'     => [ 'smwgResultFormatsFeatures', SMW_RF_TEMPLATE_OUTSEP, SMW_RF_TEMPLATE_OUTSEP ],
+		];
+	}
+
+	/**
 	 * Locks in the current behaviour of legacy SMW_* integer-constant config values
 	 * for the factbox settings, ahead of the string-config migration (#6586). The
 	 * same assertions must hold after the normalizer is wired in.

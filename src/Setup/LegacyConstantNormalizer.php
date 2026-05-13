@@ -49,6 +49,30 @@ class LegacyConstantNormalizer {
 			'nonempty' => SMW_FACTBOX_NONEMPTY,
 			'shown'    => SMW_FACTBOX_SHOWN,
 		],
+		'smwgShowFactboxEdit' => [
+			'hidden'   => SMW_FACTBOX_HIDDEN,
+			'special'  => SMW_FACTBOX_SPECIAL,
+			'nonempty' => SMW_FACTBOX_NONEMPTY,
+			'shown'    => SMW_FACTBOX_SHOWN,
+		],
+		'smwgQEqualitySupport' => [
+			'none' => SMW_EQ_NONE,
+			'some' => SMW_EQ_SOME,
+			'full' => SMW_EQ_FULL,
+		],
+		'smwgQConceptCaching' => [
+			'none' => CONCEPT_CACHE_NONE,
+			'hard' => CONCEPT_CACHE_HARD,
+			'all'  => CONCEPT_CACHE_ALL,
+		],
+		'smwgSparqlRepositoryFeatures' => [
+			'none'            => SMW_SPARQL_NONE,
+			'connection-ping' => SMW_SPARQL_CONNECTION_PING,
+		],
+		'smwgResultFormatsFeatures' => [
+			'none'            => SMW_RF_NONE,
+			'template-outsep' => SMW_RF_TEMPLATE_OUTSEP,
+		],
 	];
 
 	/**
@@ -59,7 +83,12 @@ class LegacyConstantNormalizer {
 	 * @var array<string, int>
 	 */
 	private const ENUM_DEFAULT = [
-		'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
+		'smwgShowFactbox'              => SMW_FACTBOX_HIDDEN,
+		'smwgShowFactboxEdit'          => SMW_FACTBOX_NONEMPTY,
+		'smwgQEqualitySupport'         => SMW_EQ_SOME,
+		'smwgQConceptCaching'          => CONCEPT_CACHE_HARD,
+		'smwgSparqlRepositoryFeatures' => SMW_SPARQL_NONE,
+		'smwgResultFormatsFeatures'    => SMW_RF_TEMPLATE_OUTSEP,
 	];
 
 	/**
