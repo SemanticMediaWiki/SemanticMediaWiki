@@ -11,8 +11,10 @@ use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Formatters\Infolink;
 use SMW\Formatters\PageLister;
+use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\MessageBuilder;
 use SMW\Query\Language\SomeProperty;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -28,6 +30,14 @@ use Traversable;
  * @author mwjames
  */
 class ValueListBuilder {
+
+	/**
+	 * Query-array keys the cursor-style pager renderer should NOT echo back
+	 * into the generated next/prev URLs; the renderer supplies its own
+	 * `after`/`before` and the legacy boundary/offset params would otherwise
+	 * leak forward into cursor URLs.
+	 */
+	private const PAGINATION_QUERY_KEYS = [ 'after', 'before', 'offset', 'from', 'until', 'filter' ];
 
 	private int $pagingLimit = 0;
 
@@ -95,9 +105,11 @@ class ValueListBuilder {
 	public function createHtml( Property $property, DataItem $dataItem, array $query = [] ): string {
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
-		$from = $query['from'] ?? 0;
-		$until = $query['until'] ?? 0;
-		$filter = $query['filter'] ?? '';
+		$after = (int)( $query['after'] ?? 0 );
+		$before = (int)( $query['before'] ?? 0 );
+		$from = (string)( $query['from'] ?? '' );
+		$until = (string)( $query['until'] ?? '' );
+		$filter = (string)( $query['filter'] ?? '' );
 
 		$this->filterCount = null;
 
@@ -109,13 +121,38 @@ class ValueListBuilder {
 		$dataItems = [];
 		$isValueSearch = false;
 
-		$options = PageLister::getRequestOptions( $limit, $from, $until );
-		$options->setOffset( $offset );
+		$cursorMode = self::shouldUseCursorPagination(
+			$filter,
+			$after,
+			$before,
+			$offset,
+			$from,
+			$until
+		);
 
 		if ( $filter !== '' ) {
+			// `PageLister::getRequestOptions` accepts `string|int` for
+			// `$from`/`$until`; the string form is what the cursor and
+			// search-form code paths produce.
+			$options = PageLister::getRequestOptions( $limit, $from, $until );
+			$options->setOffset( $offset );
 			$dataItems = $this->filterByValue( $property, $filter, $options );
 			$isValueSearch = true;
+		} elseif ( $cursorMode ) {
+			$options = new RequestOptions();
+			$options->limit = $limit;
+			$options->sort = true;
+			$options->ascending = true;
+			$options->setOption( RequestOptions::CURSOR_MODE, true );
+			if ( $after > 0 ) {
+				$options->setCursorAfter( $after );
+			} elseif ( $before > 0 ) {
+				$options->setCursorBefore( $before );
+			}
+			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		} else {
+			$options = PageLister::getRequestOptions( $limit, $from, $until );
+			$options->setOffset( $offset );
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		}
 
@@ -175,6 +212,27 @@ class ValueListBuilder {
 			$until
 		);
 
+		if ( $cursorMode ) {
+			$msgBuilder = new MessageBuilder(
+				Localizer::getInstance()->getLanguage( $this->languageCode )
+			);
+			$isFirstPage = !$options->hasCursor();
+			$paginationHtml = $msgBuilder->cursorPrevNextToText(
+				$title,
+				$limit,
+				$isFirstPage ? null : $options->getFirstCursor(),
+				$options->getLastCursor(),
+				array_diff_key( $query, array_flip( self::PAGINATION_QUERY_KEYS ) ),
+				!$options->getCursorHasMore(),
+				$options->getCursorBefore() !== null
+			);
+		} else {
+			// Legacy path: strip the cursor params introduced by this PR so
+			// they do not echo as `&after=0&before=0` into offset URLs.
+			$legacyQuery = array_diff_key( $query, array_flip( [ 'after', 'before' ] ) );
+			$paginationHtml = Pager::pagination( $title, $limit, $offset, $resultCount, $legacyQuery );
+		}
+
 		$navContainer = Html::rawElement(
 			'div',
 			[
@@ -185,7 +243,7 @@ class ValueListBuilder {
 				[
 					'class' => 'smw-page-nav-left'
 				],
-				Pager::pagination( $title, $limit, $offset, $resultCount, $query )
+				$paginationHtml
 			) . Html::rawElement(
 				'div',
 				[
@@ -409,6 +467,39 @@ class ValueListBuilder {
 		}
 
 		return array_values( $sort );
+	}
+
+	/**
+	 * Decides whether the no-filter branch should render cursor-style
+	 * pagination (`?after=`/`?before=`) or stay on the legacy offset/boundary
+	 * path. Extracted to a static helper so it can be unit-tested without
+	 * spinning up the full lookup; the predicate is the most regression-
+	 * prone part of the cursor flow.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string $filter Value of `?filter=`; empty string for the no-filter branch.
+	 * @param int $after Value of `?after=`; 0 when not set.
+	 * @param int $before Value of `?before=`; 0 when not set.
+	 * @param int $offset Value of `?offset=`; 0 when not set.
+	 * @param string $from Value of `?from=`; empty string when not set.
+	 * @param string $until Value of `?until=`; empty string when not set.
+	 */
+	public static function shouldUseCursorPagination(
+		string $filter,
+		int $after,
+		int $before,
+		int $offset,
+		string $from,
+		string $until
+	): bool {
+		if ( $filter !== '' ) {
+			return false;
+		}
+		if ( $after > 0 || $before > 0 ) {
+			return true;
+		}
+		return $offset === 0 && $from === '' && $until === '';
 	}
 
 }
