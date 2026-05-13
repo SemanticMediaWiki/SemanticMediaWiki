@@ -168,6 +168,7 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 			$guard++;
 		} while ( $cursorAfter !== null && $options->getCursorHasMore() && $guard < 1000 );
 
+		$this->assertLessThan( 1000, $guard, 'forward cursor loop did not terminate' );
 		$this->assertSame( $offsetSequence, $cursorSequence );
 	}
 
@@ -177,7 +178,7 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 		$this->assertNotEmpty( $offsetSequence );
 
 		$lastTitle = end( $offsetSequence );
-		$startId = $this->lookupSmwIdForTitle( $store, $lastTitle );
+		$startId = $this->lookupSmwIdForTitle( $store->getConnection( 'mw.db' ), $lastTitle );
 		$this->assertNotNull( $startId );
 
 		$cursorSequence = [];
@@ -201,6 +202,8 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 			$cursorBefore = $options->getFirstCursor();
 			$guard++;
 		} while ( $cursorBefore !== null && $options->getCursorHasMore() && $guard < 1000 );
+
+		$this->assertLessThan( 1000, $guard, 'backward cursor loop did not terminate' );
 
 		// setCursorBefore is strict less-than; the start row never appears
 		// in any page. Reinstate it for direct comparison with OFFSET.
@@ -274,6 +277,14 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 			$pageTitles,
 			'Stale cursor must fall back to the first page of results'
 		);
+		$this->assertNotNull(
+			$options->getFirstCursor(),
+			'firstCursor must be populated from the fallback page'
+		);
+		$this->assertNotNull(
+			$options->getLastCursor(),
+			'lastCursor must be populated from the fallback page'
+		);
 	}
 
 	private function buildCursorOptions( ?int $cursorAfter, ?int $cursorBefore ): RequestOptions {
@@ -345,12 +356,7 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 		return $titles;
 	}
 
-	private function lookupSmwIdForTitle( $dbOrStore, string $title ): ?int {
-		// Accept either a Store or a Database (parameter name reuse from PR 1).
-		$db = is_object( $dbOrStore ) && method_exists( $dbOrStore, 'getConnection' )
-			? $dbOrStore->getConnection( 'mw.db' )
-			: $dbOrStore;
-
+	private function lookupSmwIdForTitle( $db, string $title ): ?int {
 		$row = $db->newSelectQueryBuilder()
 			->select( 'smw_id' )
 			->from( SQLStore::ID_TABLE )

@@ -56,15 +56,11 @@ class SpecialConcepts extends SpecialPage {
 
 		$this->store = ApplicationFactory::getInstance()->getStore();
 
-		// Cursor mode unless a legacy `?offset=N` URL is in play. Bots and
-		// fresh visitors fall into cursor mode; deep-indexed legacy URLs
-		// continue to render via the offset path.
-		$cursorMode = $offset === 0;
+		$cursorMode = self::shouldUseCursorMode( $request->getVal( 'offset', null ) );
 
 		if ( $cursorMode ) {
 			$options = new RequestOptions();
 			$options->limit = $limit;
-			$options->setOption( RequestOptions::CURSOR_MODE, true );
 			if ( $after > 0 ) {
 				$options->setCursorAfter( $after );
 			} elseif ( $before > 0 ) {
@@ -95,24 +91,7 @@ class SpecialConcepts extends SpecialPage {
 	 */
 	private function doCursorFetch( RequestOptions $options ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
-
-		$qb = $connection->newSelectQueryBuilder()
-			->select( [ 'smw_id', 'smw_title' ] )
-			->tables( [
-				SQLStore::ID_TABLE,
-				SQLStore::CONCEPT_TABLE
-			] )
-			->joinConds( [
-				SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=s_id' ] ]
-			] )
-			->where( [
-				'smw_namespace' => SMW_NS_CONCEPT,
-				'smw_iw' => '',
-				'smw_subobject' => '',
-				'smw_proptable_hash IS NOT NULL',
-				'concept_features > 0'
-			] )
-			->caller( __METHOD__ );
+		$qb = $this->newConceptQueryBuilder( $connection, __METHOD__ );
 
 		if ( $options->limit > 0 ) {
 			$qb->limit( $options->limit + 1 );
@@ -156,28 +135,31 @@ class SpecialConcepts extends SpecialPage {
 	 */
 	public function fetchFromTable( $limit, $offset ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
+
+		$res = $this->newConceptQueryBuilder( $connection, __METHOD__ )
+			->options( [
+				'LIMIT' => $limit + 1,
+				'OFFSET' => $offset,
+			] )
+			->fetchResultSet();
+
 		$results = [];
+		foreach ( $res as $row ) {
+			$results[] = new WikiPage( $row->smw_title, SMW_NS_CONCEPT );
+		}
 
-		$fields = [
-			'smw_id',
-			'smw_title'
-		];
+		return $results;
+	}
 
-		$conditions = [
-			'smw_namespace' => SMW_NS_CONCEPT,
-			'smw_iw' => '',
-			'smw_subobject' => '',
-			'smw_proptable_hash IS NOT NULL',
-			'concept_features > 0'
-		];
-
-		$options = [
-			'LIMIT' => $limit + 1,
-			'OFFSET' => $offset,
-		];
-
-		$res = $connection->newSelectQueryBuilder()
-			->select( $fields )
+	/**
+	 * Shared base query for both `doCursorFetch()` and `fetchFromTable()`:
+	 * the JOIN onto `smw_object_ids` and the production filter. Each caller
+	 * appends its own LIMIT/OFFSET/ORDER BY (legacy via the options array,
+	 * cursor via the trait).
+	 */
+	private function newConceptQueryBuilder( $connection, string $caller ) {
+		return $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title' ] )
 			->tables( [
 				SQLStore::ID_TABLE,
 				SQLStore::CONCEPT_TABLE
@@ -185,16 +167,14 @@ class SpecialConcepts extends SpecialPage {
 			->joinConds( [
 				SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=s_id' ] ]
 			] )
-			->where( $conditions )
-			->options( $options )
-			->caller( __METHOD__ )
-			->fetchResultSet();
-
-		foreach ( $res as $row ) {
-			$results[] = new WikiPage( $row->smw_title, SMW_NS_CONCEPT );
-		}
-
-		return $results;
+			->where( [
+				'smw_namespace' => SMW_NS_CONCEPT,
+				'smw_iw' => '',
+				'smw_subobject' => '',
+				'smw_proptable_hash IS NOT NULL',
+				'concept_features > 0'
+			] )
+			->caller( $caller );
 	}
 
 	/**
@@ -278,6 +258,27 @@ class SpecialConcepts extends SpecialPage {
 			[ 'class' => 'smw-special-concept-docu plainlinks' ],
 			$this->msg( 'smw-special-concept-docu' )->parse()
 		) . $html;
+	}
+
+	/**
+	 * Decides whether the request should be served via the cursor path or
+	 * the legacy offset path. Cursor mode is the default; the legacy path
+	 * is taken whenever the `offset` URL param is present at all, even if
+	 * its value is empty, garbage, or negative. The reasoning: an `offset=`
+	 * param signals offset semantics on the client side, so we honour the
+	 * intent rather than silently switching modes when the value coerces
+	 * to 0.
+	 *
+	 * Extracted as a static helper so the predicate can be unit-tested
+	 * without spinning up the full request context.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string|null $offsetParamValue The raw value of `?offset=` from
+	 *   the request, or null if the param is absent.
+	 */
+	public static function shouldUseCursorMode( ?string $offsetParamValue ): bool {
+		return $offsetParamValue === null;
 	}
 
 	/**
