@@ -209,9 +209,8 @@ them.
 ## $smwgConfigFileDir
 
 Directory used to persistently store SMW configuration files (`.smw.json`,
-`.smw.maintenance.json`). The directory must be writable. You may assign
-the same directory as `$wgUploadDirectory` or select an entirely different
-location.
+`.smw.maintenance.json`). The directory must be writable. Override in
+`LocalSettings.php` with any writable path, for example `$wgUploadDirectory`.
 
 **Since:** 3.0
 **Default:** the extension's root directory
