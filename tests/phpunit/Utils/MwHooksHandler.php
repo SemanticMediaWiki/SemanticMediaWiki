@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
+use ReflectionProperty;
 use RuntimeException;
 use SMW\MediaWiki\Hooks;
 
@@ -19,6 +21,7 @@ class MwHooksHandler {
 	 */
 	private $hookRegistry = null;
 	private $hookContainer = null;
+	private ?ReflectionProperty $handlersProperty = null;
 
 	private $wgHooks = [];
 	private $inTestRegisteredHooks = [];
@@ -89,18 +92,98 @@ class MwHooksHandler {
 	 * @return MwHooksHandler
 	 */
 	public function deregisterListedHooks() {
-		$listOfHooks = array_merge(
-			$this->listOfSmwHooks,
-			$this->getHookRegistry()->getHandlerList()
-		);
-
-		foreach ( $listOfHooks as $hook ) {
+		// SMW-internal hooks (listOfSmwHooks): clear without preservation so tests
+		// see a fresh slate. SMW-shipped wgHooks closures registered through
+		// `data/config/*.php` files are expected to be reset here, and existing
+		// tests (e.g. HookDispatcherTest) rely on that.
+		foreach ( $this->listOfSmwHooks as $hook ) {
 			if ( $this->hookContainer->isRegistered( $hook ) ) {
 				$this->hookContainer->clear( $hook );
 			}
 		}
 
+		// Shared MediaWiki hooks (getHandlerList): preserve non-SMW handlers
+		// across the clear. HookContainer::clear() wipes every handler, not just
+		// SMW's, so without this snapshot third-party handlers on shared hooks
+		// (e.g. Scribunto's ParserFirstCallInit) silently disappear during tests.
+		// Preserved handlers are appended back before invokeHooksFromRegistry()
+		// runs, so SMW's handler ends up last on the chain - a behaviour change
+		// versus pre-fix order, but acceptable for the hooks involved (parser
+		// function registration, etc., none of which depend on order). See
+		// issue #6797.
+		foreach ( $this->getHookRegistry()->getHandlerList() as $hook ) {
+			if ( !$this->hookContainer->isRegistered( $hook ) ) {
+				continue;
+			}
+
+			$preserved = $this->collectNonSmwHandlerEntries( $hook );
+
+			$this->hookContainer->clear( $hook );
+
+			if ( $preserved ) {
+				$this->writeHandlerEntries( $hook, $preserved );
+			}
+		}
+
 		return $this;
+	}
+
+	/**
+	 * Returns the normalized handler entries currently registered for $hook,
+	 * excluding those that target an SMW class. The full entry is kept (not
+	 * just the callback) so metadata such as the `args` field for the deprecated
+	 * `[$callable, $data...]` registration form survives the round-trip.
+	 *
+	 * Reflection is used because HookContainer exposes no non-deprecated way
+	 * to enumerate handlers (getHandlerCallbacks emits a deprecation warning).
+	 *
+	 * @return array[] List of normalized handler entries
+	 */
+	private function collectNonSmwHandlerEntries( string $hook ): array {
+		$handlers = $this->getHandlersProperty()->getValue( $this->hookContainer )[$hook] ?? [];
+
+		$preserved = [];
+		foreach ( $handlers as $entry ) {
+			$callback = $entry['callback'] ?? null;
+			if ( $callback === null || $this->isSmwHandler( $callback ) ) {
+				continue;
+			}
+			$preserved[] = $entry;
+		}
+
+		return $preserved;
+	}
+
+	/**
+	 * Writes the given normalized handler entries directly into HookContainer's
+	 * cache for $hook. Used to restore preserved entries verbatim after a clear,
+	 * since HookContainer::register() would re-normalize them and drop fields
+	 * like `args`.
+	 */
+	private function writeHandlerEntries( string $hook, array $entries ): void {
+		$property = $this->getHandlersProperty();
+		$handlers = $property->getValue( $this->hookContainer );
+		$handlers[$hook] = $entries;
+		$property->setValue( $this->hookContainer, $handlers );
+	}
+
+	private function getHandlersProperty(): ReflectionProperty {
+		if ( $this->handlersProperty === null ) {
+			$this->handlersProperty = new ReflectionProperty( HookContainer::class, 'handlers' );
+		}
+		return $this->handlersProperty;
+	}
+
+	private function isSmwHandler( $callback ): bool {
+		if ( is_string( $callback ) ) {
+			return str_starts_with( $callback, 'SMW\\' );
+		}
+
+		if ( is_array( $callback ) && isset( $callback[0] ) && is_object( $callback[0] ) ) {
+			return str_starts_with( $callback[0]::class, 'SMW\\' );
+		}
+
+		return false;
 	}
 
 	/**
