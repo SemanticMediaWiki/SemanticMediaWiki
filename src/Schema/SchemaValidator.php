@@ -4,7 +4,6 @@ namespace SMW\Schema;
 
 use JsonSchema\Exception\ResourceNotFoundException;
 use JsonSchema\Validator;
-use JsonSerializable;
 
 /**
  * @license GPL-2.0-or-later
