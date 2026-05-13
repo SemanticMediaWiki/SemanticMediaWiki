@@ -11,8 +11,10 @@ use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Formatters\Infolink;
 use SMW\Formatters\PageLister;
+use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\MessageBuilder;
 use SMW\Query\Language\SomeProperty;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -95,6 +97,8 @@ class ValueListBuilder {
 	public function createHtml( Property $property, DataItem $dataItem, array $query = [] ): string {
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
+		$after = (int)( $query['after'] ?? 0 );
+		$before = (int)( $query['before'] ?? 0 );
 		$from = $query['from'] ?? 0;
 		$until = $query['until'] ?? 0;
 		$filter = $query['filter'] ?? '';
@@ -109,13 +113,33 @@ class ValueListBuilder {
 		$dataItems = [];
 		$isValueSearch = false;
 
-		$options = PageLister::getRequestOptions( $limit, $from, $until );
-		$options->setOffset( $offset );
+		// Cursor mode is active for the no-filter branch whenever the page
+		// is reached without legacy boundary or offset params, or when an
+		// explicit `after`/`before` cursor is set. Filter branch keeps
+		// offset-style pagination until QueryEngine cursor support lands.
+		$cursorMode = $filter === ''
+			&& ( $after > 0 || $before > 0 || ( $offset === 0 && $from === 0 && $until === 0 ) );
 
 		if ( $filter !== '' ) {
+			$options = PageLister::getRequestOptions( $limit, $from, $until );
+			$options->setOffset( $offset );
 			$dataItems = $this->filterByValue( $property, $filter, $options );
 			$isValueSearch = true;
+		} elseif ( $cursorMode ) {
+			$options = new RequestOptions();
+			$options->limit = $limit;
+			$options->sort = true;
+			$options->ascending = true;
+			$options->setOption( RequestOptions::CURSOR_MODE, true );
+			if ( $after > 0 ) {
+				$options->setCursorAfter( $after );
+			} elseif ( $before > 0 ) {
+				$options->setCursorBefore( $before );
+			}
+			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		} else {
+			$options = PageLister::getRequestOptions( $limit, $from, $until );
+			$options->setOffset( $offset );
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		}
 
@@ -175,6 +199,24 @@ class ValueListBuilder {
 			$until
 		);
 
+		if ( $cursorMode ) {
+			$msgBuilder = new MessageBuilder(
+				Localizer::getInstance()->getLanguage( $this->languageCode )
+			);
+			$isFirstPage = !$options->hasCursor();
+			$paginationHtml = $msgBuilder->cursorPrevNextToText(
+				$title,
+				$limit,
+				$isFirstPage ? null : $options->getFirstCursor(),
+				$options->getLastCursor(),
+				array_diff_key( $query, array_flip( [ 'after', 'before', 'offset', 'from', 'until' ] ) ),
+				!$options->getCursorHasMore(),
+				$options->getCursorBefore() !== null
+			);
+		} else {
+			$paginationHtml = Pager::pagination( $title, $limit, $offset, $resultCount, $query );
+		}
+
 		$navContainer = Html::rawElement(
 			'div',
 			[
@@ -185,7 +227,7 @@ class ValueListBuilder {
 				[
 					'class' => 'smw-page-nav-left'
 				],
-				Pager::pagination( $title, $limit, $offset, $resultCount, $query )
+				$paginationHtml
 			) . Html::rawElement(
 				'div',
 				[

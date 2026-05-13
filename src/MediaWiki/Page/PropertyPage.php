@@ -402,6 +402,8 @@ class PropertyPage extends Page {
 			[
 				'limit'  => $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) ),
 				'offset' => $request->getVal( 'offset', '0' ),
+				'after'  => $request->getInt( 'after', 0 ),
+				'before' => $request->getInt( 'before', 0 ),
 				'from'   => $request->getVal( 'from', '' ),
 				'until'  => $request->getVal( 'until', '' ),
 				'filter' => $request->getVal( 'filter', '' )
