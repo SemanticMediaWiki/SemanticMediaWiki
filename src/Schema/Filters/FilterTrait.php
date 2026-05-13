@@ -100,8 +100,10 @@ trait FilterTrait {
 				$this->match( $compartment );
 			}
 		} else {
-			// @phan-suppress-next-line PhanTypeMismatchArgument
-			$this->match( $compartments );
+			$this->match(
+				// @phan-suppress-next-line PhanTypeMismatchArgument
+				$compartments
+			);
 		}
 
 		if ( !$this->nodeFilter instanceof SchemaFilter ) {
