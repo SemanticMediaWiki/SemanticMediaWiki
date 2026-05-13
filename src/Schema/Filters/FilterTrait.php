@@ -95,12 +95,12 @@ trait FilterTrait {
 	public function filter( iterable $compartments ): void {
 		$this->matches = [];
 
-		if ( $compartments instanceof CompartmentIterator ) {
-			foreach ( $compartments->find( 'if' ) as $compartment ) {
-				$this->match( $compartment );
-			}
-		} else {
-			$this->match( $compartments );
+		if ( !$compartments instanceof CompartmentIterator ) {
+			return;
+		}
+
+		foreach ( $compartments->find( 'if' ) as $compartment ) {
+			$this->match( $compartment );
 		}
 
 		if ( !$this->nodeFilter instanceof SchemaFilter ) {
