@@ -6,8 +6,6 @@ use SMW\Schema\Compartment;
 use SMW\Schema\CompartmentIterator;
 use SMW\Schema\SchemaFilter;
 
-// @phan-file-suppress UnusedPluginSuppression
-
 /**
  * @private
  *
@@ -102,10 +100,10 @@ trait FilterTrait {
 				$this->match( $compartment );
 			}
 		} else {
-			$this->match(
-				// @phan-suppress-next-line PhanTypeMismatchArgument
-				$compartments
-			);
+			if ( !$compartments instanceof Compartment ) {
+				return;
+			}
+			$this->match( $compartments );
 		}
 
 		if ( !$this->nodeFilter instanceof SchemaFilter ) {
