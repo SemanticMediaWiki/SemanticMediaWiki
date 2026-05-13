@@ -40,6 +40,15 @@ class RequestOptions {
 	const SEARCH_FIELD = 'search_field';
 
 	/**
+	 * Opt-in flag asking a cursor-aware lookup to populate cursor metadata
+	 * (`firstCursor`, `lastCursor`, `cursorHasMore`) on this RequestOptions
+	 * instance even when `cursorAfter` / `cursorBefore` are not set (i.e.
+	 * the first page of a cursor-paginated UI). Callers that do not consume
+	 * cursor metadata should leave this unset.
+	 */
+	const CURSOR_MODE = 'cursor.mode';
+
+	/**
 	 * The maximum number of results that should be returned.
 	 *
 	 * @var int

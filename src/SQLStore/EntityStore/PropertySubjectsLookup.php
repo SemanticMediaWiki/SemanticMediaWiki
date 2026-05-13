@@ -12,6 +12,7 @@ use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\SQLStore\Lookup\KeysetPaginationTrait;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
 use stdClass;
@@ -24,6 +25,16 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * @author mwjames
  */
 class PropertySubjectsLookup {
+
+	use KeysetPaginationTrait;
+
+	/**
+	 * Required by `KeysetPaginationTrait`. Set transiently inside `doFetch()`
+	 * to the per-call (already-cloned) RequestOptions before invoking the
+	 * trait's `applyCursorPagination()`. Not exposed; the public entry points
+	 * always provide RequestOptions explicitly.
+	 */
+	private ?RequestOptions $requestOptions = null;
 
 	private IteratorFactory $iteratorFactory;
 
@@ -159,6 +170,19 @@ class PropertySubjectsLookup {
 		);
 
 		$sortField = $dataItemHandler->getSortField();
+
+		// Capture the caller's RequestOptions so cursor metadata
+		// (firstCursor, lastCursor, cursorHasMore) can be written back to it
+		// after the fetch. The local working copy below is cloned for internal
+		// mutation safety; the cursor branch needs to surface results on the
+		// original.
+		$callerRequestOptions = $requestOptions;
+		$cursorMode = $proptable->usesIdSubject()
+			&& $callerRequestOptions !== null
+			&& (
+				$callerRequestOptions->hasCursor()
+				|| (bool)$callerRequestOptions->getOption( RequestOptions::CURSOR_MODE )
+			);
 
 		if ( $requestOptions === null ) {
 			$requestOptions = new RequestOptions();
@@ -301,6 +325,17 @@ class PropertySubjectsLookup {
 			unset( $opts['LIMIT'], $opts['OFFSET'] );
 		}
 
+		if ( $cursorMode ) {
+			// Cursor path: the trait sets the WHERE predicate and ORDER BY;
+			// we apply LIMIT+1 for lookahead and skip the legacy LIMIT/OFFSET.
+			unset( $opts['LIMIT'], $opts['OFFSET'] );
+			if ( $requestOptions->limit > 0 ) {
+				$qb->limit( $requestOptions->limit + 1 );
+			}
+			$this->requestOptions = $requestOptions;
+			$this->applyCursorPagination( $qb, $connection );
+		}
+
 		LegacyOptionsApplier::applyTo( $qb, $opts );
 
 		$caller = $this->caller;
@@ -315,7 +350,46 @@ class PropertySubjectsLookup {
 			DataItem::TYPE_WIKIPAGE
 		);
 
+		if ( $cursorMode ) {
+			$res = $this->postProcessCursorResult( $res, $callerRequestOptions, $requestOptions );
+		}
+
 		return $res;
+	}
+
+	/**
+	 * Trim the lookahead row, reverse on backward navigation, and surface
+	 * cursor metadata on the caller's RequestOptions so the page renderer
+	 * can build the next/prev links.
+	 *
+	 * @param iterable $res Raw result rows from `fetchResultSet()`.
+	 * @param RequestOptions $callerRequestOptions The caller's instance, which receives the cursor metadata.
+	 * @param RequestOptions $workingRequestOptions The cloned/internal instance (used only for the original `cursorBefore`/`limit` values).
+	 *
+	 * @return array Post-processed rows, ready to be wrapped by the iterator factory.
+	 */
+	private function postProcessCursorResult( $res, RequestOptions $callerRequestOptions, RequestOptions $workingRequestOptions ): array {
+		$rows = [];
+		foreach ( $res as $row ) {
+			$rows[] = $row;
+		}
+
+		$limit = $workingRequestOptions->limit;
+		if ( $limit > 0 && count( $rows ) > $limit ) {
+			array_pop( $rows );
+			$callerRequestOptions->setCursorHasMore( true );
+		}
+
+		if ( $callerRequestOptions->getCursorBefore() !== null ) {
+			$rows = array_reverse( $rows );
+		}
+
+		if ( $rows !== [] ) {
+			$callerRequestOptions->setFirstCursor( (int)$rows[0]->smw_id );
+			$callerRequestOptions->setLastCursor( (int)$rows[count( $rows ) - 1]->smw_id );
+		}
+
+		return $rows;
 	}
 
 	/**
