@@ -513,7 +513,7 @@ class PropertyUsageListLookupTest extends TestCase {
 
 		$instance->fetchList();
 
-		$cursorClause = "(smw_sort, smw_id) > ('Alpha', 42)";
+		$cursorClause = "smw_sort > 'Alpha' OR (smw_sort = 'Alpha' AND smw_id > 42)";
 		$this->assertContains( $cursorClause, $capturedWhereClauses,
 			'Expected cursor WHERE clause not found in andWhere calls' );
 	}

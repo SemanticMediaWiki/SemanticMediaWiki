@@ -38,6 +38,15 @@ trait KeysetPaginationTrait {
 	 *
 	 * When no cursor is active, falls back to offset-based pagination.
 	 *
+	 * Both cursor branches express the (smw_sort, smw_id) total order via an
+	 * explicit OR rather than a row-constructor comparison such as
+	 * `(smw_sort, smw_id) > (?, ?)`. MariaDB does not optimise row-constructor
+	 * comparisons into an index range seek; it plans a full index scan with a
+	 * WHERE filter, so cost grows linearly with cursor depth. The explicit-OR
+	 * form is recognised as a range predicate and seeks the (smw_sort, smw_id)
+	 * index directly. PostgreSQL and SQLite plan the OR form at least as well
+	 * as the tuple form. See issue #6559.
+	 *
 	 * @param SelectQueryBuilder $queryBuilder
 	 * @param Database $db
 	 *
@@ -50,18 +59,20 @@ trait KeysetPaginationTrait {
 		if ( $cursorAfter !== null ) {
 			$sort = $this->resolveCursorSort( $cursorAfter );
 			if ( $sort !== null ) {
+				$quotedSort = $db->addQuotes( $sort );
 				$queryBuilder->andWhere(
-					'(smw_sort, smw_id) > (' .
-					$db->addQuotes( $sort ) . ', ' . $cursorAfter . ')'
+					'smw_sort > ' . $quotedSort .
+					' OR (smw_sort = ' . $quotedSort . ' AND smw_id > ' . $cursorAfter . ')'
 				);
 			}
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_ASC );
 		} elseif ( $cursorBefore !== null ) {
 			$sort = $this->resolveCursorSort( $cursorBefore );
 			if ( $sort !== null ) {
+				$quotedSort = $db->addQuotes( $sort );
 				$queryBuilder->andWhere(
-					'(smw_sort, smw_id) < (' .
-					$db->addQuotes( $sort ) . ', ' . $cursorBefore . ')'
+					'smw_sort < ' . $quotedSort .
+					' OR (smw_sort = ' . $quotedSort . ' AND smw_id < ' . $cursorBefore . ')'
 				);
 			}
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_DESC );
