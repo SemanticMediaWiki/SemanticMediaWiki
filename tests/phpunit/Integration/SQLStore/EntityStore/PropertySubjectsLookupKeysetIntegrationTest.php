@@ -198,6 +198,47 @@ class PropertySubjectsLookupKeysetIntegrationTest extends SMWIntegrationTestCase
 		);
 	}
 
+	public function testCursorWithNonexistentIdFallsBackToFirstPage(): void {
+		$store = $this->getStore();
+		$db = $store->getConnection( 'mw.db' );
+
+		// Pick an smw_id well above anything that could plausibly exist in
+		// the test DB. The cursor row lookup returns null, so the trait
+		// skips the WHERE predicate and the lookup returns the first page
+		// in sort order. This is a deliberate UX choice (matches the
+		// "forgiving" convention used by Twitter, Reddit, Pinterest, and
+		// the existing PR #6564 design): users who hit stale links see
+		// content and can navigate from there, rather than landing on a
+		// confusing empty "no results" page.
+		$maxRow = $db->newSelectQueryBuilder()
+			->select( 'MAX(smw_id) AS max_id' )
+			->from( 'smw_object_ids' )
+			->caller( __METHOD__ )
+			->fetchRow();
+		$staleId = (int)$maxRow->max_id + 1_000_000;
+
+		$offsetSequence = $this->collectOffsetSequence( $store );
+		$firstPageExpected = array_slice( $offsetSequence, 0, self::PAGE_SIZE );
+
+		$options = $this->buildOptions( $staleId, null );
+		$page = $this->fetchSubjects( $store, $options );
+
+		$pageNames = array_values( array_filter( $page, fn ( $n ) => $this->isTestSubject( $n ) ) );
+		$this->assertSame(
+			$firstPageExpected,
+			$pageNames,
+			'Stale cursor must fall back to the first page of results'
+		);
+		$this->assertNotNull(
+			$options->getFirstCursor(),
+			'firstCursor must be populated from the fallback page'
+		);
+		$this->assertNotNull(
+			$options->getLastCursor(),
+			'lastCursor must be populated from the fallback page'
+		);
+	}
+
 	public function testBackwardCursorOnHigherTiedRowReturnsLowerTiedRow(): void {
 		$store = $this->getStore();
 		$tiedLow = $this->subjectNameForIndex( self::TIED_LOW_INDEX );

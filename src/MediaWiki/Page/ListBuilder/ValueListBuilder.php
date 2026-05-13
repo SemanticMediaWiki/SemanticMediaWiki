@@ -227,7 +227,10 @@ class ValueListBuilder {
 				$options->getCursorBefore() !== null
 			);
 		} else {
-			$paginationHtml = Pager::pagination( $title, $limit, $offset, $resultCount, $query );
+			// Legacy path: strip the cursor params introduced by this PR so
+			// they do not echo as `&after=0&before=0` into offset URLs.
+			$legacyQuery = array_diff_key( $query, array_flip( [ 'after', 'before' ] ) );
+			$paginationHtml = Pager::pagination( $title, $limit, $offset, $resultCount, $legacyQuery );
 		}
 
 		$navContainer = Html::rawElement(
