@@ -100,16 +100,6 @@ class PropertyUsageListLookupTest extends TestCase {
 		);
 	}
 
-	public function testTryTofetchListForMissingOptionsThrowsException() {
-		$instance = new PropertyUsageListLookup(
-			$this->store,
-			$this->propertyStatisticsStore
-		);
-
-		$this->expectException( 'RuntimeException' );
-		$instance->fetchList();
-	}
-
 	/**
 	 * @dataProvider usageCountProvider
 	 */

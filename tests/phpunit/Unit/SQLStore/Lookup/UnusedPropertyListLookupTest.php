@@ -47,7 +47,11 @@ class UnusedPropertyListLookupTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			UnusedPropertyListLookup::class,
-			new UnusedPropertyListLookup( $this->store, $this->propertyStatisticsStore, null )
+			new UnusedPropertyListLookup(
+				$this->store,
+				$this->propertyStatisticsStore,
+				new RequestOptions()
+			)
 		);
 	}
 
@@ -96,16 +100,6 @@ class UnusedPropertyListLookupTest extends TestCase {
 			$lookupIdentifier,
 			$instance->getHash()
 		);
-	}
-
-	public function testTryTofetchListForMissingOptionsThrowsException() {
-		$instance = new UnusedPropertyListLookup(
-			$this->store,
-			$this->propertyStatisticsStore
-		);
-
-		$this->expectException( 'RuntimeException' );
-		$instance->fetchList();
 	}
 
 	public function testfetchListForValidProperty() {

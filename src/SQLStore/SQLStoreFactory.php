@@ -214,7 +214,7 @@ class SQLStoreFactory {
 		$propertyUsageListLookup = new PropertyUsageListLookup(
 			$this->store,
 			$this->newPropertyStatisticsStore(),
-			$requestOptions
+			$requestOptions ?? new RequestOptions()
 		);
 
 		return $this->newCachedListLookup(
@@ -237,7 +237,7 @@ class SQLStoreFactory {
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
 			$this->store,
 			$this->newPropertyStatisticsStore(),
-			$requestOptions
+			$requestOptions ?? new RequestOptions()
 		);
 
 		return $this->newCachedListLookup(

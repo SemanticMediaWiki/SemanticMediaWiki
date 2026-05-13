@@ -3,7 +3,6 @@
 namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\Message\Message;
-use RuntimeException;
 use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
@@ -30,7 +29,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	public function __construct(
 		private readonly Store $store,
 		private readonly PropertyStatisticsStore $propertyStatisticsStore,
-		private readonly ?RequestOptions $requestOptions = null,
+		private readonly RequestOptions $requestOptions,
 	) {
 	}
 
@@ -38,13 +37,8 @@ class UnusedPropertyListLookup implements ListLookup {
 	 * @since 2.2
 	 *
 	 * @return Property[]
-	 * @throws RuntimeException
 	 */
 	public function fetchList(): array {
-		if ( $this->requestOptions === null ) {
-			throw new RuntimeException( "Missing requestOptions" );
-		}
-
 		return $this->buildPropertyList( $this->selectPropertiesFromTable() );
 	}
 
@@ -72,7 +66,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	 * @return string
 	 */
 	public function getHash(): string {
-		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
+		return __METHOD__ . '#' . $this->requestOptions->getHash();
 	}
 
 	private function selectPropertiesFromTable() {
@@ -104,7 +98,7 @@ class UnusedPropertyListLookup implements ListLookup {
 			$queryBuilder->limit( $this->requestOptions->limit + 1 );
 		}
 
-		$this->applyCursorPagination( $queryBuilder, $db );
+		$this->applyCursorPagination( $queryBuilder, $db, $this->requestOptions );
 
 		return $queryBuilder->fetchResultSet();
 	}
