@@ -14,7 +14,7 @@ class SchemaDefinition extends Compartment implements Schema {
 	 * @since 3.0
 	 */
 	public function __construct(
-		private $name,
+		private string $name,
 		array $definition,
 		private array $info = [],
 	) {

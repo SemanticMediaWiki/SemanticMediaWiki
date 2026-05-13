@@ -100,6 +100,9 @@ trait FilterTrait {
 				$this->match( $compartment );
 			}
 		} else {
+			if ( !$compartments instanceof Compartment ) {
+				return;
+			}
 			$this->match( $compartments );
 		}
 

@@ -160,7 +160,7 @@ class SchemaFinder {
 			$content = [];
 
 			if ( $definition->getString() !== '' ) {
-				$content = json_decode( $definition->getString(), true );
+				$content = json_decode( $definition->getString(), true ) ?? [];
 			}
 
 			$schemaList[] = new SchemaDefinition(

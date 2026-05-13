@@ -4,7 +4,6 @@ namespace SMW\Schema;
 
 use JsonSchema\Exception\ResourceNotFoundException;
 use JsonSchema\Validator;
-use JsonSerializable;
 
 /**
  * @license GPL-2.0-or-later
@@ -41,7 +40,7 @@ class SchemaValidator {
 		return $this->runValidation( $schema, $schemaFile );
 	}
 
-	private function runValidation( JsonSerializable $data, string $schemaFile ): array {
+	private function runValidation( Schema $data, string $schemaFile ): array {
 		$decoded = json_decode( $data->jsonSerialize() );
 
 		try {
