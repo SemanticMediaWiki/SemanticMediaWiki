@@ -36,6 +36,17 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * **`src/DefaultSettings.php` removed.** Per-setting documentation that previously lived as inline comments in this file now lives at `docs/config.md` (one section per setting) and in the manifest's `description` field. Authoring `LocalSettings.php` is unchanged — `$smwgFoo = …;` continues to work for every setting that ever did.
 
+* **String-based configuration values introduced; legacy `SMW_*` constants deprecated.** SMW configuration settings that previously required PHP integer constants from `src/Defines.php` (such as `SMW_FACTBOX_*`, `SMW_PARSER_*`, `SMW_EQ_*`) now accept string values or arrays of strings. The legacy constant form continues to work in 7.x with one `wfDeprecatedMsg` per setting per request and will be removed in 8.0. This removes the need for the Composer `autoload.files` workaround introduced in #6585; you can drop that block once your `LocalSettings.php` uses the string form.
+
+  Migration (extended in subsequent commits as more settings are converted):
+
+  | Setting | Old form (deprecated) | New form |
+  |---|---|---|
+  | `$smwgShowFactbox` | `SMW_FACTBOX_NONEMPTY` | `'nonempty'` |
+  | `$smwgFactboxFeatures` | `SMW_FACTBOX_CACHE \| SMW_FACTBOX_PURGE_REFRESH` | `[ 'cache', 'purge-refresh' ]` |
+
+  Accepted strings for `$smwgShowFactbox`: `'hidden'`, `'special'`, `'nonempty'`, `'shown'`. Accepted flags for `$smwgFactboxFeatures`: `'cache'`, `'purge-refresh'`, `'display-subobject'`, `'display-attachment'`. Unknown strings are ignored with a structured-log warning.
+
 * **`$smwgNamespaceIndex` removed; namespace IDs now relocate via PHP constants.** SMW's six custom namespaces (`SMW_NS_PROPERTY`, `SMW_NS_PROPERTY_TALK`, `SMW_NS_CONCEPT`, `SMW_NS_CONCEPT_TALK`, `SMW_NS_SCHEMA`, `SMW_NS_SCHEMA_TALK`) are now declared in `extension.json`'s `namespaces` block, and the `$smwgNamespaceIndex` setting is gone. To use non-default namespace IDs, define the constants directly in `LocalSettings.php` BEFORE `wfLoadExtension( 'SemanticMediaWiki' )` (this is MediaWiki core's documented relocation mechanism since MW 1.30):
 
   ```php

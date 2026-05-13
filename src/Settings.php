@@ -7,6 +7,7 @@ use SMW\Exception\SettingNotFoundException;
 use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Setup\LegacyConstantNormalizer;
 
 /**
  * @private
@@ -71,8 +72,8 @@ class Settings extends Options {
 			'smwgSparqlRepositoryFeatures' => $GLOBALS['smwgSparqlRepositoryFeatures'],
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
-			'smwgFactboxFeatures' => $GLOBALS['smwgFactboxFeatures'],
-			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
+			'smwgFactboxFeatures' => LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', $GLOBALS['smwgFactboxFeatures'] ),
+			'smwgShowFactbox' => LegacyConstantNormalizer::normalize( 'smwgShowFactbox', $GLOBALS['smwgShowFactbox'] ),
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
 			'smwgCompactLinkSupport' => $GLOBALS['smwgCompactLinkSupport'],
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],

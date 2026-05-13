@@ -894,6 +894,10 @@
 			"description": "Directory containing SMW-specific i18n files for extraneous language data (unit labels, property aliases, etc.).",
 			"path": true
 		},
+		"FactboxFeatures": {
+			"value": [ "cache", "purge-refresh", "display-subobject", "display-attachment" ],
+			"description": "Factbox feature flags. Array of any of: 'cache', 'purge-refresh', 'display-subobject', 'display-attachment'. Legacy `SMW_FACTBOX_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+		},
 		"FallbackSearchType": {
 			"value": null,
 			"description": "Search engine class to fall back to when SMWSearch cannot parse a query; `null` uses the database default."
@@ -1233,6 +1237,10 @@
 		"SetParserCacheTimestamp": {
 			"value": true,
 			"description": "When `true`, sets a timestamp on `ParserOutput` to allow immediate parser-cache invalidation."
+		},
+		"ShowFactbox": {
+			"value": "hidden",
+			"description": "Default factbox visibility on page view. Accepts 'hidden', 'special', 'nonempty', or 'shown'. Legacy `SMW_FACTBOX_HIDDEN`/`SPECIAL`/`NONEMPTY`/`SHOWN` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
 		},
 		"SimilarityLookupExemptionProperty": {
 			"value": "owl:differentFrom",
