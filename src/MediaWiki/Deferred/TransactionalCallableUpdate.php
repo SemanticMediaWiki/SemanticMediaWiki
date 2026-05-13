@@ -125,7 +125,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		$autoTrx = null;
 
 		if ( $this->autoCommit ) {
-			$this->logger->info( [ 'DeferrableUpdate', 'Transactional, as auto commit', 'Update' ] );
+			$this->logger->info( 'DeferrableUpdate Transactional, as auto commit Update' );
 			$autoTrx = $this->connection->getFlag( DBO_TRX );
 			$this->connection->clearFlag( DBO_TRX );
 		}
@@ -162,8 +162,12 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	protected function registerUpdate( $update ): void {
 		if ( $this->onTransactionIdle ) {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Transactional', 'Added: {origin} (onTransactionIdle)' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
+				'DeferrableUpdate Transactional Added: {origin} (onTransactionIdle)',
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin()
+				]
 			);
 
 			$this->connection->onTransactionCommitOrIdle( function () use( $update ): void {
@@ -186,8 +190,12 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		$fname = __METHOD__;
 		$this->connection->onTransactionCommitOrIdle( function () use ( $fname ): void {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (onTransactionIdle)' ],
-				[ 'method' => $fname, 'role' => 'developer', 'origin' => $this->getOrigin() ]
+				'DeferrableUpdate Transactional Update: {origin} (onTransactionIdle)',
+				[
+					'method' => $fname,
+					'role' => 'developer',
+					'origin' => $this->getOrigin()
+				]
 			);
 			$this->onTransactionIdle = false;
 			$this->doUpdate();
@@ -197,8 +205,14 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private function runPreCommitCallbacks(): void {
 		foreach ( $this->preCommitableCallbacks as $fname => $preCallback ) {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (pre-commitable callback: {fname})' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fname' => $fname ]
+				'DeferrableUpdate Transactional '
+					. 'Update: {origin} (pre-commitable callback: {fname})',
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin(),
+					'fname' => $fname
+				]
 			);
 
 			call_user_func( $preCallback, $this->transactionTicket );
@@ -208,8 +222,14 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private function runPostCommitCallbacks(): void {
 		foreach ( $this->postCommitableCallbacks as $fname => $postCallback ) {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (post-commitable callback: {fname})' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fname' => $fname ]
+				'DeferrableUpdate Transactional '
+					. 'Update: {origin} (post-commitable callback: {fname})',
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin(),
+					'fname' => $fname
+				]
 			);
 
 			call_user_func( $postCallback, $this->transactionTicket );
@@ -218,8 +238,11 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 	protected function emptyCancelCallback(): void {
 		$this->logger->info(
-			[ 'DeferrableUpdate', 'cancelOnRollback' ],
-			[ 'role' => 'developer', 'method' => __METHOD__ ]
+			'DeferrableUpdate cancelOnRollback',
+			[
+				'role' => 'developer',
+				'method' => __METHOD__
+			]
 		);
 	}
 

@@ -369,8 +369,13 @@ class HierarchyLookup {
 		$this->inMemoryCache[$key] = $subjects;
 
 		$this->logger->info(
-			[ 'HierarchyLookup', "Lookup for: {id}, {origin}" ],
-			[ 'method' => __METHOD__, 'role' => 'user', 'id' => $property->getKey(), 'origin' => $subject ]
+			'HierarchyLookup Lookup for: {id}, {origin}',
+			[
+				'method' => __METHOD__,
+				'role' => 'user',
+				'id' => $property->getKey(),
+				'origin' => $subject
+			]
 		);
 
 		return $subjects;

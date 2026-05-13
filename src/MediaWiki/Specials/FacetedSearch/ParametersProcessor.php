@@ -88,7 +88,7 @@ class ParametersProcessor {
 		// the query string was modified
 		if (
 			$request->getVal( 'filtered', '' ) !== '1' &&
-			$request->getInt( 'csum', '' ) !== crc32( $request->getVal( 'q', '' ) ) ) {
+			$request->getInt( 'csum', 0 ) !== crc32( $request->getVal( 'q', '' ) ) ) {
 
 			// Remove the filters that may have remained from a previous
 			// request

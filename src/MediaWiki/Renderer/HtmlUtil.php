@@ -38,7 +38,7 @@ class HtmlUtil {
 		$s = Html::openElement( 'fieldset', $attribs ) . "\n";
 
 		if ( $legend ) {
-			$s .= Html::element( 'legend', null, $legend ) . "\n";
+			$s .= Html::element( 'legend', [], $legend ) . "\n";
 		}
 
 		if ( $content !== false ) {

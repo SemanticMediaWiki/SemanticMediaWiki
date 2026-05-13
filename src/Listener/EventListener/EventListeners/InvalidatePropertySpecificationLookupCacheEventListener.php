@@ -39,8 +39,12 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 		);
 
 		$this->logger->info(
-			[ 'Event', 'InvalidatePropertySpecificationLookupCache', "{triggered_by}", "{id}" ],
-			[ 'role' => 'user', 'triggered_by' => $context, 'id' => $subject->getHash() ]
+			'Event InvalidatePropertySpecificationLookupCache {triggered_by} {id}',
+			[
+				'role' => 'user',
+				'triggered_by' => $context,
+				'id' => $subject->getHash()
+			]
 		);
 	}
 

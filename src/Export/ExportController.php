@@ -420,7 +420,7 @@ class ExportController {
 				continue; // invalid title name given
 			}
 			if ( is_string( $revisionDate ) && $revisionDate !== '' ) { // filter page list by revision date
-				$rev = $revisionStore->getTimeStampFromID( $title, $title->getLatestRevID() );
+				$rev = $revisionStore->getTimeStampFromID( $title->getLatestRevID() );
 				if ( $rev < $revisionDate ) {
 					continue;
 				}

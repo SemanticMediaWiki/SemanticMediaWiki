@@ -48,7 +48,7 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array ...$params
+	 * @param string|Title|WikiPage ...$params
 	 */
 	public static function makeCacheKey( ...$params ): string {
 		$namespace = self::CACHE_NAMESPACE;
@@ -71,7 +71,7 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array ...$params
+	 * @param string|Title|WikiPage ...$params
 	 */
 	public function makeKey( ...$params ): string {
 		return self::makeCacheKey( ...$params );

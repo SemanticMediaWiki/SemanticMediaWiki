@@ -109,12 +109,8 @@ class TextChangeUpdater {
 		$fulltextSearchTableUpdateJob->lazyPush();
 
 		$this->logger->info(
-			[
-				'Fulltext',
-				'TextChangeUpdater',
-				'Table update (as job) scheduled',
-				'procTime in sec: {procTime}'
-			],
+			'Fulltext TextChangeUpdater Table update (as job) scheduled procTime '
+				. 'in sec: {procTime}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',
@@ -144,11 +140,7 @@ class TextChangeUpdater {
 		}
 
 		$this->logger->info(
-			[
-				'Fulltext',
-				'TextChangeUpdater',
-				'Failed update (ChangeDiff) on {id}'
-			],
+			'Fulltext TextChangeUpdater Failed update (ChangeDiff) on {id}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',
@@ -207,12 +199,8 @@ class TextChangeUpdater {
 		}
 
 		$this->logger->info(
-			[
-				'Fulltext',
-				'TextChangeUpdater',
-				'Table update completed',
-				'procTime in sec: {procTime}'
-			],
+			'Fulltext TextChangeUpdater Table update completed '
+				. 'procTime in sec: {procTime}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',

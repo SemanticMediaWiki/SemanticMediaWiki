@@ -82,7 +82,7 @@ class MaintenanceHelper {
 	 * @since 2.2
 	 *
 	 * @param string $key
-	 * @param string $value
+	 * @param string|array $value
 	 */
 	public function setGlobalToValue( $key, $value ): void {
 		if ( !isset( $GLOBALS[$key] ) ) {

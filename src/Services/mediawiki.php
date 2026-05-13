@@ -44,7 +44,7 @@ return [
 
 	/**
 	 * @param CallbackContainerBuilder $containerBuilder
-	 * @param ImportStringSource $source
+	 * @param string $source
 	 *
 	 * @return ImportStringSource
 	 */
@@ -55,7 +55,7 @@ return [
 
 	/**
 	 * @param CallbackContainerBuilder $containerBuilder
-	 * @param ImportStreamSource $source
+	 * @param resource $source
 	 *
 	 * @return ImportStreamSource
 	 */

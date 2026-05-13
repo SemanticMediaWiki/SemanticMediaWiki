@@ -67,8 +67,12 @@ class HashFieldUpdate implements DeferrableUpdate {
 	 */
 	public function doUpdate(): void {
 		$this->logger->info(
-			[ 'DeferrableUpdate', 'HashFieldUpdate', "ID: {id}, sha1:{hash}" ],
-			[ 'role' => 'user', 'id' => $this->id, 'hash' => bin2hex( $this->hash ) ]
+			'DeferrableUpdate HashFieldUpdate ID: {id}, sha1:{hash}',
+			[
+				'role' => 'user',
+				'id' => $this->id,
+				'hash' => bin2hex( $this->hash )
+			]
 		);
 
 		$this->connection->newUpdateQueryBuilder()
