@@ -106,7 +106,110 @@ class QueryCreatorTest extends TestCase {
 		);
 	}
 
-	public function testCursorParamWithCustomSortIsRejectedWithError(): void {
+	public function testCursorParamWithMatchingSortPropIsAccepted(): void {
+		// Phase 3a contract: `sort=SomeProperty` + cursor whose
+		// `sort_prop` matches is allowed. The cursor anchor stays
+		// meaningful under the requested sort.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// base64url of {"v":1,"sort":"value","sort_prop":"SomeProperty","id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjoidmFsdWUiLCJzb3J0X3Byb3AiOiJTb21lUHJvcGVydHkiLCJpZCI6NDJ9';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'SomeProperty' ],
+				'cursor' => $token,
+			]
+		);
+
+		$payload = $query->getCursorAfter();
+		$this->assertIsArray( $payload );
+		$this->assertSame( 'SomeProperty', $payload['sort_prop'] );
+		$this->assertSame( 'value', $payload['sort'] );
+		$this->assertSame( 42, $payload['id'] );
+	}
+
+	public function testCursorParamWithMismatchingSortPropIsRejectedWithError(): void {
+		// Phase 3a contract: cursor anchored at `sort_prop=A` MUST NOT
+		// be applied when the request says `sort=B`. The anchor has no
+		// meaning under a different sort.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$token = 'eyJ2IjoxLCJzb3J0IjoidmFsdWUiLCJzb3J0X3Byb3AiOiJTb21lUHJvcGVydHkiLCJpZCI6NDJ9';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'DifferentProperty' ],
+				'cursor' => $token,
+			]
+		);
+
+		$this->assertNull( $query->getCursorAfter() );
+		$this->assertCursorErrorPresent(
+			$query->getErrors(),
+			'Cursor was minted for'
+		);
+	}
+
+	public function testCursorParamWithEmptyPayloadIsAcceptedForAnySingleSort(): void {
+		// Bootstrap case: a cursor with no `sort_prop` (the
+		// `{"v":1}` empty-payload bootstrap from Phase 3 spike)
+		// matches any single-property sort.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$emptyToken = 'eyJ2IjoxfQ';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'Modification_date' ],
+				'cursor' => $emptyToken,
+			]
+		);
+
+		$this->assertSame( [ 'v' => 1 ], $query->getCursorAfter() );
+	}
+
+	public function testCursorParamWithPagePivotedSortPreservesAnchor(): void {
+		// Regression for the `array_filter` key-preservation bug:
+		// `sort=,SomeProperty` produces `sortKeys = ['' => 'ASC',
+		// 'SomeProperty' => 'ASC']`. Without `array_values` after
+		// the filter, `$customSortKeys[0]` is null and any cursor
+		// minted on page 1 (which correctly emits
+		// `sort_prop=SomeProperty`) is falsely rejected on page 2
+		// onward. The cursor walk must work for this very common
+		// page-pivoted shape.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// {"v":1,"sort":"value","sort_prop":"SomeProperty","id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjoidmFsdWUiLCJzb3J0X3Byb3AiOiJTb21lUHJvcGVydHkiLCJpZCI6NDJ9';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ '', 'SomeProperty' ],
+				'cursor' => $token,
+			]
+		);
+
+		$payload = $query->getCursorAfter();
+		$this->assertIsArray( $payload, 'Cursor with page-pivoted sort must NOT be rejected' );
+		$this->assertSame( 'SomeProperty', $payload['sort_prop'] );
+	}
+
+	public function testCursorParamWithOrderDescIsRejectedWithError(): void {
+		// Phase 3a is ASC-only. DESC support is planned for Phase 3b
+		// (requires `<`-form predicate + reversed ORDER BY).
 		$instance = new QueryCreator(
 			ApplicationFactory::getInstance()->getQueryFactory()
 		);
@@ -115,21 +218,38 @@ class QueryCreatorTest extends TestCase {
 			'[[Foo::Bar]]',
 			[
 				'sort'   => [ 'SomeProperty' ],
-				'cursor' => 'eyJ2IjoxLCJzb3J0IjoiRm9vIiwiaWQiOjQyfQ',
+				'order'  => [ 'desc' ],
+				'cursor' => 'eyJ2IjoxfQ',
 			]
 		);
 
-		// Cursor must NOT be applied when a custom `sort=` is present.
 		$this->assertNull( $query->getCursorAfter() );
-
-		// Error is surfaced so the engine can refuse the query. The
-		// query parser may also push unrelated parsing errors onto the
-		// list (e.g. `smw_noqueryfeature` depending on the test-runner
-		// `smwgQFeatures` config), so search the full list for our
-		// cursor-specific marker rather than asserting position.
 		$this->assertCursorErrorPresent(
 			$query->getErrors(),
-			'Cursor pagination'
+			'requires ascending order'
+		);
+	}
+
+	public function testCursorParamWithMultiSortIsRejectedWithError(): void {
+		// Phase 3b will support compound-sort cursors. Until then,
+		// `sort=A,B` + `cursor=` is rejected so cursor consumers can
+		// rely on the constrained single-sort schema.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'PropertyA', 'PropertyB' ],
+				'cursor' => 'eyJ2IjoxfQ',
+			]
+		);
+
+		$this->assertNull( $query->getCursorAfter() );
+		$this->assertCursorErrorPresent(
+			$query->getErrors(),
+			'multi-property'
 		);
 	}
 
