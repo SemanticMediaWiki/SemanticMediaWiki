@@ -58,6 +58,17 @@ class SpecialOWLExport extends SpecialPage {
 			$this->exportPages( $pages );
 			return;
 		} else {
+			// Cursor mode is opt-in via `?cursor=`. Checked BEFORE `?offset=`
+			// so a request that co-sends both gets cursor semantics (cursor
+			// is the authoritative anchor for keyset pagination).
+			$cursorRaw = $request->getVal( 'cursor' );
+
+			if ( $cursorRaw !== null ) {
+				$this->startRDFExport();
+				$this->export_controller->printPageList( 0, 30, (int)$cursorRaw );
+				return;
+			}
+
 			$offset = $request->getVal( 'offset' );
 
 			if ( $offset !== null ) {
