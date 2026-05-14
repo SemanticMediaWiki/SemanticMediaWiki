@@ -260,6 +260,7 @@ class HooksTest extends TestCase {
 	public function callMethodProvider() {
 		return [
 			[ 'callParserAfterTidy' ],
+			[ 'callParserClearState' ],
 			[ 'callSkinAfterContent' ],
 			[ 'callSidebarBeforeOutput' ],
 			[ 'callOutputPageParserOutput' ],
@@ -335,6 +336,33 @@ class HooksTest extends TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ &$this->parser, &$text ]
+		);
+
+		return $handler;
+	}
+
+	public function callParserClearState( $instance ) {
+		$handler = 'ParserClearState';
+
+		$parserOptions = $this->getMockBuilder( ParserOptions::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOptions->expects( $this->any() )
+			->method( 'getInterfaceMessage' )
+			->willReturn( true );
+
+		$this->parser->expects( $this->any() )
+			->method( 'getOptions' )
+			->willReturn( $parserOptions );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ $this->parser ]
 		);
 
 		return $handler;

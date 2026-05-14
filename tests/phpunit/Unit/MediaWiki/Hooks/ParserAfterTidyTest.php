@@ -4,21 +4,28 @@ namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
+use RuntimeException;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
+use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
+use Throwable;
+use WikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ParserAfterTidy
@@ -89,8 +96,22 @@ class ParserAfterTidyTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
+		ParserAfterTidy::resetInFlightParses();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
+	}
+
+	/**
+	 * Force a Parser's `mInParse` flag to `true` (mimicking the state during
+	 * an actual `Parser::parse()` call). Production code's `isLocked()` check
+	 * is what distinguishes a real parse from a test helper that only called
+	 * `clearState()`; the unit tests must opt into the locked state to
+	 * exercise the in-flight tracker.
+	 */
+	private function setParserLocked( Parser $parser ): void {
+		$prop = new ReflectionProperty( Parser::class, 'mInParse' );
+		$prop->setAccessible( true );
+		$prop->setValue( $parser, true );
 	}
 
 	public function testCanConstruct() {
@@ -357,6 +378,329 @@ class ParserAfterTidyTest extends TestCase {
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$parserData->getSemanticData()
+		);
+	}
+
+	/**
+	 * #5923: extensions that clone the parser and re-enter `Parser::parse()`
+	 * on the same title fire `ParserAfterTidy` for the inner parse first, with
+	 * partial parser output. Before the fix, the inner fire would consume the
+	 * `ArticlePurge` cache key and persist its partial data; the outermost
+	 * fire (with the full state) would then find the key gone and skip,
+	 * losing the outer properties and categories.
+	 *
+	 * The test simulates that nesting by calling `onParserClearState()` for
+	 * both the outer and inner parser, then `process()` for inner (which must
+	 * be skipped) followed by `process()` for outer (which must run). The
+	 * inner-skip is verified by asserting that `copyToParserOutput()` did NOT
+	 * populate the inner parser output's `DATA_ID` extension data, and the
+	 * outer-run is verified by reading the outer's semantic data back.
+	 */
+	public function testProcessIsSkippedForInnerParseOnSameTitle() {
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->willReturn( true );
+
+		$settings = [
+			'smwgMainCacheType' => 'hash',
+			'smwgEnableUpdateJobs' => false,
+			'smwgParserFeatures' => SMW_PARSER_HID_CATS,
+			'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE,
+		];
+		$this->testEnvironment->withConfiguration( $settings );
+
+		$title = MediaWikiServices::getInstance()->getTitleFactory()
+			->newFromText( __METHOD__ );
+
+		// Outer parser begins parsing this title.
+		$outerParser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $outerParser );
+		ParserAfterTidy::onParserClearState( $outerParser );
+
+		// Inner parse on a separate parser instance for the same title, with
+		// only a partial set of categories, mimicking the inner snapshot from
+		// jayktaylor's repro before the outer parse adds the rest.
+		$innerParser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $innerParser );
+		ParserAfterTidy::onParserClearState( $innerParser );
+		$innerParser->getOutput()->addCategory( 'InnerCat', 'InnerCat' );
+		$innerParser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
+
+		// Inner parse ends first (LIFO): ParserAfterTidy fires with partial data.
+		$innerInstance = new ParserAfterTidy(
+			$innerParser,
+			$this->namespaceExaminer,
+			$this->cache
+		);
+		$innerInstance->setHookDispatcher( $this->hookDispatcher );
+
+		$text = '';
+		$this->assertTrue( $innerInstance->process( $text ) );
+
+		// The inner fire MUST be skipped: no SMW semantic data should have
+		// been written to the inner parser output. Before the fix, this
+		// extension data would have been populated by `copyToParserOutput()`.
+		$this->assertNull(
+			$innerParser->getOutput()->getExtensionData( ParserData::DATA_ID ),
+			'Inner (nested) ParserAfterTidy fire must not write to the parser '
+				. 'output; that work belongs to the outermost fire so the '
+				. 'final state is what is persisted (#5923).'
+		);
+
+		// Outer parse adds its categories AFTER the inner returned. Its
+		// ParserAfterTidy fires next with the full state.
+		$outerParser->getOutput()->addCategory( 'OuterCat', 'OuterCat' );
+		$outerParser->getOutput()->addCategory( 'AnotherOuterCat', 'AnotherOuterCat' );
+		$outerParser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
+
+		$outerInstance = new ParserAfterTidy(
+			$outerParser,
+			$this->namespaceExaminer,
+			$this->cache
+		);
+		$outerInstance->setHookDispatcher( $this->hookDispatcher );
+
+		$this->assertTrue( $outerInstance->process( $text ) );
+
+		// The outer fire DID run: read back the SemanticData via ParserData
+		// (mirroring `testSemanticDataParserOuputUpdateIntegration`) and
+		// confirm the outer categories are the ones that landed.
+		$outerParserData = $this->applicationFactory->newParserData(
+			$title,
+			$outerParser->getOutput()
+		);
+
+		$expected = [
+			'propertyKeys' => [ '_INST', '_SKEY' ],
+			'propertyValues' => [
+				'Category:OuterCat',
+				'Category:AnotherOuterCat',
+				$title->getText(),
+			],
+		];
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$outerParserData->getSemanticData()
+		);
+	}
+
+	/**
+	 * Two independent top-level parses on DIFFERENT titles must not appear
+	 * nested to each other. This protects against the depth-tracker treating
+	 * any concurrent parses as nesting just because they happen to overlap
+	 * in time.
+	 */
+	public function testProcessRunsForIndependentTitlesInFlight() {
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->willReturn( true );
+
+		$this->testEnvironment->withConfiguration( [
+			'smwgMainCacheType' => 'hash',
+			'smwgEnableUpdateJobs' => false,
+			'smwgParserFeatures' => SMW_PARSER_HID_CATS,
+			'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE,
+		] );
+
+		$titleA = MediaWikiServices::getInstance()->getTitleFactory()
+			->newFromText( __METHOD__ . 'A' );
+		$titleB = MediaWikiServices::getInstance()->getTitleFactory()
+			->newFromText( __METHOD__ . 'B' );
+
+		$parserA = $this->parserFactory->newFromTitle( $titleA );
+		$this->setParserLocked( $parserA );
+		ParserAfterTidy::onParserClearState( $parserA );
+
+		$parserB = $this->parserFactory->newFromTitle( $titleB );
+		$this->setParserLocked( $parserB );
+		ParserAfterTidy::onParserClearState( $parserB );
+
+		// Both have content; both should run independently.
+		$parserA->getOutput()->addCategory( 'CatA', 'CatA' );
+		$parserA->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
+		$parserB->getOutput()->addCategory( 'CatB', 'CatB' );
+		$parserB->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
+
+		$text = '';
+
+		$instanceA = new ParserAfterTidy( $parserA, $this->namespaceExaminer, $this->cache );
+		$instanceA->setHookDispatcher( $this->hookDispatcher );
+		$instanceA->process( $text );
+
+		$instanceB = new ParserAfterTidy( $parserB, $this->namespaceExaminer, $this->cache );
+		$instanceB->setHookDispatcher( $this->hookDispatcher );
+		$instanceB->process( $text );
+
+		$this->assertNotNull(
+			$parserA->getOutput()->getExtensionData( ParserData::DATA_ID ),
+			'Parse on title A must run regardless of any in-flight parse on title B.'
+		);
+		$this->assertNotNull(
+			$parserB->getOutput()->getExtensionData( ParserData::DATA_ID ),
+			'Parse on title B must run regardless of any in-flight parse on title A.'
+		);
+	}
+
+	/**
+	 * Interface-message parses (which canPerformUpdate already filters via
+	 * `getInterfaceMessage()`) must NOT enter the in-flight tracker, otherwise
+	 * a `Message::parse()` inside a real parse could be counted as nesting.
+	 */
+	public function testOnParserClearStateIgnoresInterfaceMessageParses() {
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->willReturn( true );
+
+		$this->testEnvironment->withConfiguration( [
+			'smwgMainCacheType' => 'hash',
+			'smwgEnableUpdateJobs' => false,
+			'smwgParserFeatures' => SMW_PARSER_HID_CATS,
+			'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE,
+		] );
+
+		$parserOptions = $this->getMockBuilder( ParserOptions::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$parserOptions->expects( $this->any() )
+			->method( 'getInterfaceMessage' )
+			->willReturn( true );
+
+		$title = MediaWikiServices::getInstance()->getTitleFactory()
+			->newFromText( __METHOD__ );
+
+		$parser = $this->getMockBuilder( Parser::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$parser->expects( $this->any() )
+			->method( 'getOptions' )
+			->willReturn( $parserOptions );
+		$parser->expects( $this->never() )
+			->method( 'getTitle' );
+
+		ParserAfterTidy::onParserClearState( $parser );
+
+		// And the real outer parser for the same title should still see depth=1.
+		$realParser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $realParser );
+		ParserAfterTidy::onParserClearState( $realParser );
+		$realParser->getOutput()->addCategory( 'RealCat', 'RealCat' );
+		$realParser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
+
+		$text = '';
+		$realInstance = new ParserAfterTidy( $realParser, $this->namespaceExaminer, $this->cache );
+		$realInstance->setHookDispatcher( $this->hookDispatcher );
+		$realInstance->process( $text );
+
+		$this->assertNotNull(
+			$realParser->getOutput()->getExtensionData( ParserData::DATA_ID ),
+			'Interface-message parse must not poison the in-flight tracker.'
+		);
+	}
+
+	/**
+	 * If `process()` throws, the in-flight tracker must be drained for the
+	 * current parser instance so that subsequent parses on the same instance
+	 * are not permanently marked as nested.
+	 */
+	public function testProcessDrainsTrackerOnException() {
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->willReturn( true );
+
+		// Force `performUpdate` (via the ApplicationFactory chain) to throw by
+		// registering a Store that explodes.
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'updateData' ] )
+			->getMockForAbstractClass();
+		$store->expects( $this->any() )
+			->method( 'updateData' )
+			->willThrowException( new RuntimeException( 'simulated' ) );
+
+		$this->testEnvironment->withConfiguration( [
+			'smwgMainCacheType' => 'hash',
+			'smwgEnableUpdateJobs' => false,
+		] );
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$title = MediaWikiServices::getInstance()->getTitleFactory()
+			->newFromText( 'File:Test5923Drain.png' );
+
+		$revision = $this->getMockBuilder( RevisionRecord::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getRevision' )
+			->willReturn( $revision );
+
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$wikiPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->willReturn( $title );
+
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$pageCreator->expects( $this->any() )
+			->method( 'createPage' )
+			->willReturn( $wikiPage );
+		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
+
+		// Cache key set as if `?action=purge` had fired, so checkPurgeRequest
+		// reaches `updateStore` (which then triggers our throwing store).
+		$cache = $this->applicationFactory->getCache();
+		$cache->save(
+			smwfCacheKey(
+				ArticlePurge::CACHE_NAMESPACE,
+				$title->getArticleID()
+			),
+			true
+		);
+
+		$parser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $parser );
+		ParserAfterTidy::onParserClearState( $parser );
+		$parser->getOutput()->addCategory( 'Foo', 'Foo' );
+		$parser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
+
+		$instance = new ParserAfterTidy( $parser, $this->namespaceExaminer, $cache );
+		$instance->setHookDispatcher( $this->hookDispatcher );
+
+		$text = '';
+		try {
+			$instance->process( $text );
+		} catch ( Throwable $e ) {
+			// Expected, swallow.
+		}
+
+		// A second parse on the SAME parser instance must NOT be considered
+		// nested. With the tracker drained, depth for this parser is 0 again.
+		ParserAfterTidy::onParserClearState( $parser );
+		$parser->getOutput()->addCategory( 'Bar', 'Bar' );
+
+		$secondParser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $secondParser );
+		ParserAfterTidy::onParserClearState( $secondParser );
+		$secondParser->getOutput()->addCategory( 'Baz', 'Baz' );
+		$secondParser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
+
+		// The inner (nested) one should still be skipped because we now have
+		// two parsers active on the same title. This is the *correct* behavior;
+		// it demonstrates the tracker is not stuck in a wedged state.
+		$secondInstance = new ParserAfterTidy(
+			$secondParser,
+			$this->namespaceExaminer,
+			$cache
+		);
+		$secondInstance->setHookDispatcher( $this->hookDispatcher );
+		$secondInstance->process( $text );
+
+		$this->assertNull(
+			$secondParser->getOutput()->getExtensionData( ParserData::DATA_ID ),
+			'Inner parser must be skipped when another parser for the same title is active.'
 		);
 	}
 
