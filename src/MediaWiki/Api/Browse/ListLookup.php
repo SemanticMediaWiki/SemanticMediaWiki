@@ -117,13 +117,11 @@ class ListLookup extends Lookup {
 		$requestOptions->setLimit( $limit );
 		$requestOptions->setOffset( $offset );
 
-		// Cursor mode is opt-in via the `cursor` request param. Presence of
-		// the key (any value, including 0) selects cursor mode; a value > 0
-		// is interpreted as `cursorAfter` (the previous response's
-		// `query-continue-cursor`). The absence of the key keeps the legacy
-		// OFFSET path for backward compatibility with API clients that
-		// follow `query-continue-offset`.
-		if ( array_key_exists( 'cursor', $parameters ) ) {
+		if ( self::shouldUseCursorMode( $parameters ) ) {
+			// Cursor mode is authoritative: any `offset` co-sent with
+			// `cursor` is ignored so the response doesn't accidentally seek
+			// past the cursor by the legacy offset amount.
+			$requestOptions->setOffset( 0 );
 			$requestOptions->setOption( RequestOptions::CURSOR_MODE, true );
 			$cursor = (int)$parameters['cursor'];
 			if ( $cursor > 0 ) {
@@ -185,7 +183,27 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function fetchFromTable( $ns, RequestOptions $requestOptions, array $parameters ): array {
+	/**
+	 * Decides whether the request opts into cursor pagination. Cursor mode
+	 * is triggered by the *presence* of the `cursor` key in the request
+	 * payload (any value, including 0) rather than the absence of `offset`
+	 * (the trigger used by the URL-driven `Special:*` consumers). The
+	 * presence-of-key form is unambiguous for a JSON-payload API where
+	 * clients explicitly opt in.
+	 *
+	 * Extracted as a static helper so the predicate is unit-testable
+	 * without instantiating the lookup or its store.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param array $parameters The decoded `params` payload from the
+	 *   `smwbrowse` API request.
+	 */
+	public static function shouldUseCursorMode( array $parameters ): bool {
+		return array_key_exists( 'cursor', $parameters );
+	}
+
+	private function fetchFromTable( int|string $ns, RequestOptions $requestOptions, array $parameters ): array {
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
 		$options = [];
@@ -241,6 +259,11 @@ class ListLookup extends Lookup {
 
 		$res = $queryBuilder->fetchResultSet();
 
+		// The shared trait's contract expects consumers to write
+		// firstCursor/lastCursor/cursorHasMore back onto the caller's
+		// `RequestOptions`. The API path serializes the cursor anchor
+		// directly into the JSON response field instead, so the local
+		// `$lastCursorId` is sufficient.
 		$count = 0;
 		$continueOffset = 0;
 		$continueCursor = 0;

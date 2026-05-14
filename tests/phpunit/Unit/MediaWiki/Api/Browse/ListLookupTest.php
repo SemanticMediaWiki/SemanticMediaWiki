@@ -177,6 +177,173 @@ class ListLookupTest extends TestCase {
 		$this->assertSame( 0, $res['query-continue-cursor'] );
 	}
 
+	/**
+	 * Locks the cursor-branch wiring: `getSQLOptions` is the legacy
+	 * offset-path entry point; it must NOT be touched when the request
+	 * opts into cursor mode. A regression that accidentally routes cursor
+	 * requests back through the legacy options array would fail here.
+	 */
+	public function testCursorModeNeverCallsGetSQLOptions(): void {
+		$row = $this->newRow( 42, 'Foo' );
+
+		$listAugmentor = $this->getMockBuilder( ListAugmentor::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->never() )
+			->method( 'getSQLOptions' );
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new ListLookup( $store, $listAugmentor );
+
+		$instance->lookup( [
+			'ns' => SMW_NS_PROPERTY,
+			'search' => 'Foo',
+			'cursor' => 0,
+			'sort' => 'asc',
+		] );
+	}
+
+	/**
+	 * Locks the cursor-branch wiring on the other side: when a
+	 * non-zero `cursor` is supplied, the trait's keyset WHERE predicate
+	 * must reach the query builder via `andWhere()`. A regression that
+	 * drops the predicate would silently turn cursor=N requests into
+	 * first-page-of-everything reads.
+	 */
+	public function testCursorWithNonZeroValueEmitsKeysetPredicate(): void {
+		$row = $this->newRow( 42, 'Foo' );
+
+		$capturedWheres = [];
+
+		$listAugmentor = $this->getMockBuilder( ListAugmentor::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnCallback( static fn ( $v ) => "'$v'" );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback(
+				function () use ( $row, &$capturedWheres ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
+				}
+			);
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new ListLookup( $store, $listAugmentor );
+
+		$instance->lookup( [
+			'ns' => SMW_NS_PROPERTY,
+			'search' => 'Foo',
+			'cursor' => 12345,
+		] );
+
+		$predicateFound = false;
+		foreach ( $capturedWheres as $where ) {
+			if ( is_string( $where ) && str_contains( $where, '12345' ) && str_contains( $where, 'smw_sort' ) ) {
+				$predicateFound = true;
+				break;
+			}
+		}
+
+		$this->assertTrue(
+			$predicateFound,
+			'Cursor mode with cursor>0 must emit the keyset WHERE predicate against smw_sort and the cursor id'
+		);
+	}
+
+	/**
+	 * Stale cursor (id that no longer exists in `smw_object_ids`)
+	 * inherits the trait-level behaviour: `resolveCursorSort` returns null,
+	 * the WHERE predicate is silently skipped, and the client receives the
+	 * first page anchored at its own ids. Bot clients that store the new
+	 * cursor and advance forward will not infinite-loop. Locked here so a
+	 * future trait change cannot regress the API behaviour without
+	 * updating this test.
+	 *
+	 * Unit-level reach: this asserts the response shape; the underlying
+	 * trait fallback is covered end-to-end by the keyset integration
+	 * tests in `tests/phpunit/Integration/SQLStore/Lookup/`.
+	 */
+	public function testStaleCursorReturnsResultsWithoutInfiniteLoopRisk(): void {
+		$row = $this->newRow( 42, 'Foo' );
+
+		$listAugmentor = $this->getMockBuilder( ListAugmentor::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnCallback( static fn ( $v ) => "'$v'" );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new ListLookup( $store, $listAugmentor );
+
+		$res = $instance->lookup( [
+			'ns' => SMW_NS_PROPERTY,
+			'search' => 'Foo',
+			'cursor' => 99999999,
+		] );
+
+		// Continue cursor must reflect the first-page result (the only row's
+		// id), not the stale input id — otherwise a bot would loop.
+		$this->assertNotSame( 99999999, $res['query-continue-cursor'] );
+		$this->assertCount( 1, $res['query'] );
+	}
+
+	public function testShouldUseCursorModeRespectsPresenceNotTruthiness(): void {
+		$this->assertTrue( ListLookup::shouldUseCursorMode( [ 'cursor' => 0 ] ) );
+		$this->assertTrue( ListLookup::shouldUseCursorMode( [ 'cursor' => '' ] ) );
+		$this->assertTrue( ListLookup::shouldUseCursorMode( [ 'cursor' => null ] ) );
+		$this->assertTrue( ListLookup::shouldUseCursorMode( [ 'cursor' => 12345 ] ) );
+		$this->assertFalse( ListLookup::shouldUseCursorMode( [] ) );
+		$this->assertFalse( ListLookup::shouldUseCursorMode( [ 'offset' => 50 ] ) );
+	}
+
 	public function testLegacyModeStillEmitsContinueOffsetWhenMoreAvailable(): void {
 		$rows = [
 			$this->newRow( 100, 'AAA' ),
