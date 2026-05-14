@@ -82,6 +82,22 @@ class Query implements QueryContext {
 
 	private $limit;
 	private $offset = 0;
+
+	/**
+	 * Opaque cursor payload (decoded from a `CursorEncoder` token), or
+	 * `null` when not in cursor mode. Set via `setCursorAfter()` by the
+	 * `QueryCreator` after decoding the `cursor=<token>` user parameter.
+	 *
+	 * In cursor mode the query engine ignores `$offset` and applies a
+	 * keyset predicate derived from this payload instead. See
+	 * `KeysetPaginationTrait` (Phase 2) and the `QueryEngine` cursor
+	 * branch (Phase 3 spike) for the application sites.
+	 *
+	 * Stays `null` for all default-mode queries; legacy callers are
+	 * unaffected.
+	 */
+	private ?array $cursorAfter = null;
+
 	private array $errors = []; // keep any errors that occurred so far
 	private $queryString = false; // string (inline query) version (if fixed and known)
 	private bool $isInline; // query used inline? (required for finding right default parameters)
@@ -367,6 +383,34 @@ class Query implements QueryContext {
 		$this->offset = (int)$offset;
 	}
 
+	/**
+	 * Switch the query into keyset cursor mode by storing the decoded
+	 * cursor payload. When non-null, the `QueryEngine` ignores `$offset`
+	 * and applies a keyset WHERE predicate derived from the payload's
+	 * `sort` and `id` fields instead.
+	 *
+	 * Pass `null` (the default) to leave the query in the legacy
+	 * offset-paginated mode.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param array|null $payload The decoded `CursorEncoder` payload,
+	 *   typically `[ 'v' => 1, 'sort' => '...', 'id' => <int> ]`.
+	 */
+	public function setCursorAfter( ?array $payload ): void {
+		$this->cursorAfter = $payload;
+	}
+
+	/**
+	 * The decoded cursor payload, or `null` when the query is in legacy
+	 * offset mode.
+	 *
+	 * @since 7.0.0
+	 */
+	public function getCursorAfter(): ?array {
+		return $this->cursorAfter;
+	}
+
 	public function getLimit() {
 		return $this->limit;
 	}
@@ -519,6 +563,15 @@ class Query implements QueryContext {
 			 // COUNT, DEBUG ...
 			'querymode' => $this->querymode
 		];
+
+		// Cursor mode anchors the result set at a different `(smw_sort,
+		// smw_id)` than the default page-1 query, so a cursor-anchored
+		// request must NOT collide in cache with the same #ask query
+		// run without a cursor. Include the decoded payload directly;
+		// `ResultCache` keys on this hash.
+		if ( $this->cursorAfter !== null ) {
+			$serialized['parameters']['cursor'] = $this->cursorAfter;
+		}
 
 		// Make to sure to distinguish queries and results from a foreign repository
 		if ( $this->querySource !== null && $this->querySource !== '' ) {

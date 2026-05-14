@@ -8,6 +8,7 @@ use SMW\Localizer\Localizer;
 use SMW\Query\Query;
 use SMW\Query\QueryContext;
 use SMW\QueryFactory;
+use SMW\SQLStore\QueryEngine\CursorEncoder;
 
 /**
  * @private
@@ -144,7 +145,60 @@ class QueryCreator implements QueryContext {
 			$sortKeys['keys']
 		);
 
+		$this->applyCursorIfRequested( $query, $sortKeys['keys'] );
+
 		return $query;
+	}
+
+	/**
+	 * Decode the optional `cursor=<token>` user parameter and apply it
+	 * to the query, enforcing the constrained-spike contract: cursor
+	 * mode is only supported when the query has no custom `sort=`
+	 * property. A `cursor=` + `sort=Property` combination is rejected
+	 * by attaching an error message to the query (the engine then
+	 * surfaces it instead of running the query).
+	 *
+	 * A malformed cursor token (any decode failure) is also surfaced
+	 * as an error rather than silently ignored, to avoid the
+	 * "expected next-page got first-page" surprise for bot clients.
+	 *
+	 * @param Query $query
+	 * @param array $sortKeys As returned by `getSortKeys()['keys']`.
+	 *   An empty-string key (`'' => 'ASC'`) is the default "sort by
+	 *   page" and is allowed; any non-empty-string key is a custom
+	 *   property sort and is rejected.
+	 */
+	private function applyCursorIfRequested( Query $query, array $sortKeys ): void {
+		$token = (string)$this->getParam( 'cursor', '' );
+		if ( $token === '' ) {
+			return;
+		}
+
+		foreach ( $sortKeys as $sortKey => $_order ) {
+			if ( $sortKey !== '' ) {
+				$query->addErrors( [
+					'Cursor pagination (`cursor=`) is not supported with a custom `sort=` property in this release. Remove `sort=` or use `offset=` instead.'
+				] );
+				return;
+			}
+		}
+
+		if ( $query->getQueryMode() === self::MODE_COUNT ) {
+			$query->addErrors( [
+				'Cursor pagination (`cursor=`) is not supported with `format=count`. Remove `cursor=` or switch to a non-count format.'
+			] );
+			return;
+		}
+
+		$payload = CursorEncoder::decode( $token );
+		if ( $payload === null ) {
+			$query->addErrors( [
+				'Malformed `cursor=` token (rejected as unrecognised or from a newer schema version).'
+			] );
+			return;
+		}
+
+		$query->setCursorAfter( $payload );
 	}
 
 	/**

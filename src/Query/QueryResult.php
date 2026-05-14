@@ -88,6 +88,16 @@ class QueryResult {
 
 	private FilterMap $filterMap;
 
+	/**
+	 * Opaque next-page cursor token, set by `QueryEngine` when the query
+	 * was run in keyset cursor mode and there are further results. Stays
+	 * `null` for legacy offset-mode queries and for cursor-mode queries
+	 * on the final page.
+	 *
+	 * @since 7.0.0
+	 */
+	private ?string $nextCursor = null;
+
 	public function __construct(
 		array $printRequests,
 		Query $query,
@@ -327,6 +337,29 @@ class QueryResult {
 	 */
 	public function hasFurtherResults(): bool {
 		return $this->mFurtherResults;
+	}
+
+	/**
+	 * Set the opaque next-page cursor token. Called by `QueryEngine`
+	 * when the query was run in keyset cursor mode and there are
+	 * further results to fetch.
+	 *
+	 * @since 7.0.0
+	 */
+	public function setNextCursor( string $token ): void {
+		$this->nextCursor = $token;
+	}
+
+	/**
+	 * The opaque next-page cursor token, or `null` when not applicable
+	 * (legacy offset-mode, or cursor mode but on the final page).
+	 * Consumers (the Ask API renderer) surface this as
+	 * `query-continue-cursor` in the response.
+	 *
+	 * @since 7.0.0
+	 */
+	public function getNextCursor(): ?string {
+		return $this->nextCursor;
 	}
 
 	/**
