@@ -219,6 +219,11 @@ class SettingsTest extends TestCase {
 			'smwgFieldTypeFeatures array'     => [ 'smwgFieldTypeFeatures', [ 'char-nocase', 'char-long' ], SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG ],
 			'smwgFieldTypeFeatures false'     => [ 'smwgFieldTypeFeatures', false, false ],
 			'smwgQConceptFeatures array'      => [ 'smwgQConceptFeatures', [ 'property', 'namespace' ], SMW_PROPERTY_QUERY | SMW_NAMESPACE_QUERY ],
+			'smwgQueryProfiler array'         => [ 'smwgQueryProfiler', [ 'parameters', 'duration' ], SMW_QPRFL_PARAMS | SMW_QPRFL_DUR ],
+			'smwgQueryProfiler legacy'        => [ 'smwgQueryProfiler', SMW_QPRFL_PARAMS | SMW_QPRFL_DUR, SMW_QPRFL_PARAMS | SMW_QPRFL_DUR ],
+			'smwgQueryProfiler false'         => [ 'smwgQueryProfiler', false, false ],
+			'smwgQueryProfiler empty array'   => [ 'smwgQueryProfiler', [], 0 ],
+			'smwgQueryProfiler true legacy'   => [ 'smwgQueryProfiler', true, 0 ],
 		];
 	}
 

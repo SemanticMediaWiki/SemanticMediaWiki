@@ -142,7 +142,7 @@ class Settings extends Options {
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
-			'smwgQueryProfiler' => $GLOBALS['smwgQueryProfiler'],
+			'smwgQueryProfiler' => LegacyConstantNormalizer::normalize( 'smwgQueryProfiler', $GLOBALS['smwgQueryProfiler'] ),
 			'smwgEnabledSpecialPage' => $GLOBALS['smwgEnabledSpecialPage'],
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],

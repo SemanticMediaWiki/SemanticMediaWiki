@@ -74,10 +74,13 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `$smwgRemoteReqFeatures` | `SMW_REMOTE_REQ_SEND_RESPONSE \| SMW_REMOTE_REQ_SHOW_NOTE` | `[ 'send-response', 'show-note' ]` | `'send-response'`, `'show-note'` |
   | `$smwgExperimentalFeatures` | `SMW_QUERYRESULT_PREFETCH \| SMW_SHOWPARSER_USE_CURTAILMENT` | `[ 'queryresult-prefetch', 'showparser-curtailment' ]` | `'queryresult-prefetch'`, `'showparser-curtailment'` |
   | `$smwgFieldTypeFeatures` | `false` or `SMW_FIELDT_CHAR_NOCASE \| SMW_FIELDT_CHAR_LONG` | `false` | `false` (component disabled), or any subset of `'char-nocase'`, `'char-long'` |
+  | `$smwgQueryProfiler` | `true` (basic) or `SMW_QPRFL_DUR \| SMW_QPRFL_PARAMS` | `[]` | `false` (profiling disabled), `[]` (basic, no detail fields), or any subset of `'parameters'`, `'duration'` |
   | `$smwgSpecialAskFormSubmitMethod` | `SMW_SASK_SUBMIT_POST` | `'post'` | `'get'`, `'get.redirect'`, `'post'` |
   | `$smwgCheckForConstraintErrors` | `SMW_CONSTRAINT_ERR_CHECK_ALL` | `'check/all'` | `false`, `'check/main'`, `'check/all'` |
 
   Unknown strings are ignored with a structured-log warning. The last two settings (`$smwgSpecialAskFormSubmitMethod`, `$smwgCheckForConstraintErrors`) need no normalizer entry because their `SMW_SASK_SUBMIT_*` / `SMW_CONSTRAINT_ERR_CHECK_*` constants already resolve to the listed string values; the constants continue to work.
+
+  `$smwgQueryProfiler`'s `extension.json` default changes from `true` to `[]`; behaviour is unchanged because both forms produce zero flag bits in `Options::isFlagSet`. Note that `[]` enables basic profiling (no detail fields), it does NOT disable; use `false` to disable profiling entirely. The legacy `true` form is also accepted with a deprecation notice and will be removed in 8.0.
 
 * **`$smwgNamespaceIndex` removed; namespace IDs now relocate via PHP constants.** SMW's six custom namespaces (`SMW_NS_PROPERTY`, `SMW_NS_PROPERTY_TALK`, `SMW_NS_CONCEPT`, `SMW_NS_CONCEPT_TALK`, `SMW_NS_SCHEMA`, `SMW_NS_SCHEMA_TALK`) are now declared in `extension.json`'s `namespaces` block, and the `$smwgNamespaceIndex` setting is gone. To use non-default namespace IDs, define the constants directly in `LocalSettings.php` BEFORE `wfLoadExtension( 'SemanticMediaWiki' )` (this is MediaWiki core's documented relocation mechanism since MW 1.30):
 
