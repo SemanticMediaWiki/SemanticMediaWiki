@@ -65,7 +65,12 @@ class SpecialOWLExport extends SpecialPage {
 
 			if ( $cursorRaw !== null ) {
 				$this->startRDFExport();
-				$this->export_controller->printPageList( 0, 30, (int)$cursorRaw );
+				// Clamp negative or non-numeric input to 0 (first page in
+				// cursor mode). A negative `(int)` cast would pass the
+				// `$cursor !== null` check but skip the WHERE predicate
+				// in `printPageList()`, silently returning the first page
+				// for malformed requests.
+				$this->export_controller->printPageList( 0, 30, max( 0, (int)$cursorRaw ) );
 				return;
 			}
 

@@ -643,6 +643,10 @@ class ExportController {
 
 		foreach ( $res as $row ) {
 			$foundpages = true;
+			// Advance the cursor before serialization. A row that throws
+			// `DataItemException` below should not be retried on the next
+			// page request; matches the legacy OFFSET behaviour of always
+			// advancing regardless of per-row outcome.
 			$lastPageId = (int)$row->page_id;
 			try {
 				$diPage = new WikiPage( $row->page_title, $row->page_namespace, '' );
