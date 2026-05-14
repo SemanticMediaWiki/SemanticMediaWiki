@@ -399,59 +399,62 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 		$cursorMode = $query->getCursorAfter() !== null;
-		$cursorSortColumn = null;
-		$cursorSortPropKey = '';
+		$cursorSortPropKeys = [];
+		$cursorSortColumns = [];
 		$cursorSortOrder = 'ASC';
 
 		if ( $cursorMode ) {
-			// The active sort key is determined by `$query->sortkeys`
-			// (set by `QueryCreator` from `sort=`), not by the
-			// incoming cursor payload. The cursor's `sort_prop` was
-			// already cross-checked against `sort=` in QueryCreator;
-			// here the engine just needs to know which sortfield
-			// column to anchor the keyset predicate on.
+			// The active sort keys are determined by `$query->sortkeys`
+			// (set by `QueryCreator` from `sort=`), not by the incoming
+			// cursor payload. The cursor's `sort_prop` was already
+			// cross-checked against `sort=` in `QueryCreator`. Phase
+			// 3b-ii allows multiple custom sort keys with a uniform
+			// direction; `QueryCreator` rejected mixed-order requests.
 			foreach ( $query->sortkeys as $propKey => $order ) {
 				if ( $propKey !== '' ) {
-					$cursorSortPropKey = $propKey;
+					$cursorSortPropKeys[] = $propKey;
 					$cursorSortOrder = $order === 'DESC' ? 'DESC' : 'ASC';
-					break;
 				}
 			}
-			if ( $cursorSortPropKey === '' && isset( $query->sortkeys[''] ) ) {
+			if ( $cursorSortPropKeys === [] && isset( $query->sortkeys[''] ) ) {
 				$cursorSortOrder = $query->sortkeys[''] === 'DESC' ? 'DESC' : 'ASC';
 			}
 
-			if ( $cursorSortPropKey !== '' ) {
-				$sortExpr = $qobj->sortfields[$cursorSortPropKey] ?? '';
-				if ( $sortExpr === '' ) {
-					// User asked for `sort=Foo` but `Foo` could not be
-					// resolved to a sortfield column (invalid property,
-					// or the joined table never got set up). Surface
-					// explicitly rather than silently fall back to
-					// default sort, since the next cursor anchor would
-					// be meaningless. `=== ''` rather than `!isset`
-					// also catches the edge case where a future
-					// `OrderCondition` path assigns an empty
-					// expression.
-					$query->addErrors( [
-						"Cursor mode could not resolve `sort=$cursorSortPropKey` to a query sortfield."
-					] );
-					return $this->queryFactory->newQueryResult(
-						$this->store, $query, [], false
-					);
+			if ( $cursorSortPropKeys !== [] ) {
+				foreach ( $cursorSortPropKeys as $key ) {
+					$sortExpr = $qobj->sortfields[$key] ?? '';
+					if ( $sortExpr === '' ) {
+						// User asked for `sort=Foo` but `Foo` could not
+						// be resolved to a sortfield column (invalid
+						// property, or the joined table never got set
+						// up). Surface explicitly rather than silently
+						// fall back, since the next cursor anchor would
+						// be meaningless.
+						$query->addErrors( [
+							"Cursor mode could not resolve `sort=$key` to a query sortfield."
+						] );
+						return $this->queryFactory->newQueryResult(
+							$this->store, $query, [], false
+						);
+					}
+					$cursorSortColumns[] = $sortExpr;
 				}
-				$cursorSortColumn = $sortExpr;
 			} else {
-				// Default sort (Phase 3 spike compatible).
-				$cursorSortColumn = "$qobj->alias.smw_sort";
+				// Default sort (Phase 3 spike compatible). The empty
+				// key maps to `smw_sort` and stays a single column.
+				$cursorSortColumns = [ "$qobj->alias.smw_sort" ];
 			}
 
-			// Override sort and offset for cursor mode. Keyset is total-ordered
-			// on `(<sort_column>, smw_id)`; any pre-existing ORDER BY would
-			// conflict with the predicate semantics, OFFSET is replaced by
-			// the WHERE-anchored seek. Both columns sort in the same direction
-			// so the tiebreak walks consistently with the primary sort.
-			$sql_options['ORDER BY'] = "$cursorSortColumn $cursorSortOrder, $qobj->alias.smw_id $cursorSortOrder";
+			// Override sort and offset for cursor mode. Keyset is
+			// total-ordered on `(<col_1>, ..., <col_n>, smw_id)`; all
+			// levels sort in the same direction so the tiebreak walks
+			// consistently with the primary sort.
+			$orderByParts = [];
+			foreach ( $cursorSortColumns as $col ) {
+				$orderByParts[] = "$col $cursorSortOrder";
+			}
+			$orderByParts[] = "$qobj->alias.smw_id $cursorSortOrder";
+			$sql_options['ORDER BY'] = implode( ', ', $orderByParts );
 			unset( $sql_options['OFFSET'] );
 		}
 
@@ -471,10 +474,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 				'sortkey' => "$qobj->alias.smw_sortkey",
 			];
 			if ( $cursorMode ) {
-				// Alias the sort column under `sort` so the row loop can
-				// read `$row->sort` regardless of whether the user
-				// specified `sort=Property` or accepted the default.
-				$selectFields['sort'] = $cursorSortColumn;
+				// Alias each sort column under `cursor_sort_N` so the
+				// row loop can read `$row->cursor_sort_0`,
+				// `$row->cursor_sort_1`, ... regardless of whether the
+				// user specified one or multiple sort properties.
+				foreach ( $cursorSortColumns as $i => $col ) {
+					$selectFields["cursor_sort_$i"] = $col;
+				}
 			}
 
 			$qb = $connection->newSelectQueryBuilder()
@@ -493,7 +499,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			}
 
 			if ( $cursorMode ) {
-				$this->applyKeysetPredicate( $qb, $query, $qobj, $connection, $cursorSortColumn, $cursorSortOrder );
+				$this->applyKeysetPredicate( $qb, $query, $qobj, $connection, $cursorSortColumns, $cursorSortOrder );
 			}
 
 			$res = $qb->fetchResultSet();
@@ -512,9 +518,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$logToTable = [];
 		$hasFurtherResults = false;
 
-		// Cursor-mode bookkeeping: track the `(smw_sort, smw_id)` of the
-		// last accepted row so we can mint the next-page anchor.
-		$lastCursorSort = null;
+		// Cursor-mode bookkeeping: track the sort values + smw_id of
+		// the last accepted row so we can mint the next-page anchor.
+		// Length matches `$cursorSortColumns` (one value per sort field).
+		$lastCursorSorts = null;
 		$lastCursorId = null;
 
 		// Number of fetched results ( != number of valid results in
@@ -558,7 +565,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					$this->store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
 
 					if ( $cursorMode ) {
-						$lastCursorSort = $row->sort ?? null;
+						$lastCursorSorts = [];
+						foreach ( $cursorSortColumns as $i => $_col ) {
+							$lastCursorSorts[] = $row->{"cursor_sort_$i"} ?? null;
+						}
 						$lastCursorId = (int)$row->id;
 					}
 				} else {
@@ -598,27 +608,36 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		// Cursor minted from a row whose sort value is NULL would be
 		// rejected by `applyKeysetPredicate()` on the next request
 		// (the `isset()` guard there treats null as "no anchor" and
-		// silently serves page 1, looping the crawler). Skip the
-		// cursor emission entirely for that case so the client at
-		// least stops paginating instead of looping. Phase 3b will
-		// add explicit `IS NULL` handling once the cursor format
-		// supports compound sort tuples.
-		if ( $cursorMode && $hasFurtherResults && $lastCursorId !== null && $lastCursorSort !== null ) {
+		// silently serves page 1, looping the crawler). Same for
+		// multi-sort: if ANY sort level is NULL the cursor anchor is
+		// undefined. Skip emission so the client stops paginating
+		// instead of looping. Phase 3c can add explicit `IS NULL`
+		// handling when the cursor format supports nullability flags.
+		$hasNullSort = $lastCursorSorts !== null
+			&& in_array( null, $lastCursorSorts, true );
+		if ( $cursorMode && $hasFurtherResults && $lastCursorId !== null && $lastCursorSorts !== null && !$hasNullSort ) {
+			// Single-sort cursors keep the spike's scalar `sort`
+			// payload shape (round-trippable with Phase 3 spike + 3a
+			// + 3b-i cursors). Multi-sort cursors use array shape.
 			$payload = [
-				'sort' => $lastCursorSort,
+				'sort' => count( $lastCursorSorts ) === 1
+					? $lastCursorSorts[0]
+					: $lastCursorSorts,
 				'id'   => $lastCursorId,
 			];
-			// Round-trip the sort property so the next request can
-			// reject a sort= that doesn't match the cursor's anchor.
-			// Omitted for default-sort queries to keep the spike's
-			// `{"v":1,"sort":...,"id":...}` payload shape compatible.
-			if ( $cursorSortPropKey !== '' ) {
-				$payload['sort_prop'] = $cursorSortPropKey;
+			// `sort_prop` matches the shape of `sort`: scalar for
+			// single-sort (one custom key), array for multi-sort.
+			// Omitted entirely for default-sort queries to keep the
+			// spike's `{"v":1,"sort":...,"id":...}` shape compatible.
+			if ( $cursorSortPropKeys !== [] ) {
+				$payload['sort_prop'] = count( $cursorSortPropKeys ) === 1
+					? $cursorSortPropKeys[0]
+					: $cursorSortPropKeys;
 			}
-			// Round-trip the sort order for the same reason: a cursor
-			// minted for DESC must be rejected by an ASC request (the
-			// predicate would seek in the wrong direction). Omitted for
-			// ASC to keep spike/3a cursors round-trippable as-is.
+			// Round-trip the sort order: a cursor minted for DESC must
+			// be rejected by an ASC request (the predicate would seek
+			// in the wrong direction). Omitted for ASC to keep
+			// spike/3a/3b-i ASC cursors round-trippable as-is.
 			if ( $cursorSortOrder === 'DESC' ) {
 				$payload['sort_order'] = 'DESC';
 			}
@@ -720,22 +739,29 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * just opts into deterministic ordering without seeking past
 	 * anything).
 	 *
-	 * The predicate matches the form used by
-	 * `KeysetPaginationTrait::applyCursorPagination()`. For ASC:
+	 * Generalised compound form (Phase 3b-ii). For N sort columns
+	 * `c_1 ... c_N` with anchor values `v_1 ... v_N`, anchor id `Y`,
+	 * and operator `OP` (`>` for ASC, `<` for DESC), the predicate is:
 	 *
-	 *     <sortCol> > X OR (<sortCol> = X AND smw_id > Y)
+	 *     (c_1 OP v_1)
+	 *     OR (c_1 = v_1 AND c_2 OP v_2)
+	 *     OR ...
+	 *     OR (c_1 = v_1 AND ... AND c_N OP v_N)
+	 *     OR (c_1 = v_1 AND ... AND c_N = v_N AND smw_id OP Y)
 	 *
-	 * For DESC (Phase 3b), the operators invert:
+	 * Each clause peels one level of "tied prefix", expanding the
+	 * range progressively. MariaDB recognises this as an index range
+	 * seek when an index covers the sort columns; the row-constructor
+	 * form `(c_1, ..., c_N, smw_id) OP (v_1, ..., v_N, Y)` plans a
+	 * full index scan instead. See issue #6559 and #6794.
 	 *
-	 *     <sortCol> < X OR (<sortCol> = X AND smw_id < Y)
+	 * For N=1 (Phase 3 spike + 3a + 3b-i compatibility), the form
+	 * collapses to the simple two-clause predicate.
 	 *
-	 * MariaDB recognises both as index range seeks; the row-constructor
-	 * form `(<sortCol>, smw_id) > (X, Y)` plans a full index scan
-	 * instead. See issue #6559 and #6794 for the underlying motivation.
-	 *
-	 * `$sortColumn` is the SQL column expression for the active sort
-	 * field. The caller resolves it from `$qobj->sortfields` (custom
-	 * sort) or hardcodes `<alias>.smw_sort` (default sort).
+	 * `$sortColumns` is the list of SQL column expressions for the
+	 * active sort fields. The caller resolves them from
+	 * `$qobj->sortfields` (custom sort) or hardcodes
+	 * `[<alias>.smw_sort]` (default sort).
 	 *
 	 * TODO Phase 3c: unify with `KeysetPaginationTrait::applyCursorPagination`.
 	 * Once a shared predicate builder exists, both this method and the
@@ -746,7 +772,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		Query $query,
 		QuerySegment $qobj,
 		$connection,
-		string $sortColumn,
+		array $sortColumns,
 		string $sortOrder = 'ASC'
 	): void {
 		$payload = $query->getCursorAfter();
@@ -754,15 +780,50 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			return;
 		}
 
-		$quotedSort = $connection->addQuotes( $payload['sort'] );
+		// Normalise payload `sort` to an array. Phase 3 spike + 3a +
+		// 3b-i cursors carry scalar `sort`; 3b-ii multi-sort cursors
+		// carry an array.
+		$sortValues = is_array( $payload['sort'] ) ? $payload['sort'] : [ $payload['sort'] ];
+		if ( count( $sortValues ) !== count( $sortColumns ) ) {
+			// Cursor shape mismatch: a multi-sort cursor sent to a
+			// single-sort request (or vice versa) made it through
+			// `QueryCreator`'s `sort_prop` check despite that — most
+			// likely a `sort_prop` field that's malformed.
+			// `QueryCreator` should have rejected; defensive
+			// no-op here rather than silently mispaginate.
+			return;
+		}
+
+		$quotedSorts = array_map(
+			static fn ( $v ) => $connection->addQuotes( $v ),
+			$sortValues
+		);
 		$cursorId = (int)$payload['id'];
 		$alias = $qobj->alias;
 		$op = $sortOrder === 'DESC' ? '<' : '>';
+		$n = count( $sortColumns );
 
-		$queryBuilder->where(
-			"$sortColumn $op $quotedSort " .
-			"OR ($sortColumn = $quotedSort AND $alias.smw_id $op $cursorId)"
-		);
+		// Build the N+1 OR clauses: clause k has equality on prior
+		// k levels and inequality on level k; the final clause adds
+		// the smw_id tiebreak after all equalities.
+		$clauses = [];
+		for ( $k = 0; $k < $n; $k++ ) {
+			$parts = [];
+			for ( $j = 0; $j < $k; $j++ ) {
+				$parts[] = "$sortColumns[$j] = $quotedSorts[$j]";
+			}
+			$parts[] = "$sortColumns[$k] $op $quotedSorts[$k]";
+			$clauses[] = '(' . implode( ' AND ', $parts ) . ')';
+		}
+		// Final tiebreak: all sort levels equal, smw_id by direction.
+		$tiebreakParts = [];
+		for ( $j = 0; $j < $n; $j++ ) {
+			$tiebreakParts[] = "$sortColumns[$j] = $quotedSorts[$j]";
+		}
+		$tiebreakParts[] = "$alias.smw_id $op $cursorId";
+		$clauses[] = '(' . implode( ' AND ', $tiebreakParts ) . ')';
+
+		$queryBuilder->where( implode( ' OR ', $clauses ) );
 	}
 
 }
