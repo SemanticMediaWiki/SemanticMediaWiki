@@ -264,9 +264,9 @@ class QueryCreator implements QueryContext {
 	 * default sort (`''` key only), use the empty key's order. Falls
 	 * back to ASC when neither is set.
 	 *
-	 * @return 'ASC'|'DESC'|'RANDOM' Caller string-compares the result
-	 *   to these literals; values are normalised upstream by
-	 *   `normalize_order()`.
+	 * The returned string is always one of "ASC", "DESC", or "RANDOM".
+	 * Callers string-compare against these literals; values are
+	 * normalised upstream by `normalize_order()`.
 	 */
 	private function resolveRequestSortOrder( array $sortKeys, string $requestSortKey ): string {
 		if ( $requestSortKey !== '' && isset( $sortKeys[$requestSortKey] ) ) {
