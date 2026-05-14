@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Api\Browse;
 use Exception;
 use SMW\DataItems\Property;
 use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\KeysetPaginationTrait;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\StringCondition;
@@ -16,6 +17,8 @@ use SMW\StringCondition;
  * @author mwjames
  */
 class ListLookup extends Lookup {
+
+	use KeysetPaginationTrait;
 
 	const VERSION = 1;
 
@@ -46,6 +49,7 @@ class ListLookup extends Lookup {
 		$limit = $requestOptions->getLimit();
 		$res = [];
 		$continueOffset = 0;
+		$continueCursor = 0;
 
 		// Increase by one to look ahead
 		$requestOptions->setLimit( $limit + 1 );
@@ -67,10 +71,14 @@ class ListLookup extends Lookup {
 		}
 
 		if ( isset( $parameters['search'] ) ) {
-			[ $res, $continueOffset ] = $this->fetchFromTable( $ns, $requestOptions, $parameters );
+			[ $res, $continueOffset, $continueCursor ] = $this->fetchFromTable( $ns, $requestOptions, $parameters );
 		}
 
-		// Changing this output format requires to set a new version
+		// Changing this output format requires to set a new version. The
+		// `query-continue-cursor` field is byte-additive: it is only emitted
+		// when the caller opted into cursor mode (by sending `cursor` in
+		// the request payload). Legacy clients that follow
+		// `query-continue-offset` see exactly the pre-cursor response shape.
 		$res = [
 			'query' => $res,
 			'query-continue-offset' => $continueOffset,
@@ -81,6 +89,10 @@ class ListLookup extends Lookup {
 				'count' => count( $res )
 			]
 		];
+
+		if ( self::shouldUseCursorMode( $parameters ) ) {
+			$res['query-continue-cursor'] = $continueCursor;
+		}
 
 		$this->listAugmentor->augment(
 			$res,
@@ -107,6 +119,18 @@ class ListLookup extends Lookup {
 		$requestOptions->sort = true;
 		$requestOptions->setLimit( $limit );
 		$requestOptions->setOffset( $offset );
+
+		if ( self::shouldUseCursorMode( $parameters ) ) {
+			// Cursor mode is authoritative: any `offset` co-sent with
+			// `cursor` is ignored so the response doesn't accidentally seek
+			// past the cursor by the legacy offset amount.
+			$requestOptions->setOffset( 0 );
+			$requestOptions->setOption( RequestOptions::CURSOR_MODE, true );
+			$cursor = (int)$parameters['cursor'];
+			if ( $cursor > 0 ) {
+				$requestOptions->setCursorAfter( $cursor );
+			}
+		}
 
 		if ( isset( $parameters['sort'] ) && strtolower( $parameters['sort'] ) !== 'asc' ) {
 			$requestOptions->ascending = false;
@@ -162,19 +186,44 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function fetchFromTable( $ns, RequestOptions $requestOptions, array $parameters ): array {
+	/**
+	 * Decides whether the request opts into cursor pagination. Cursor mode
+	 * is triggered by the *presence* of the `cursor` key in the request
+	 * payload (any value, including 0) rather than the absence of `offset`
+	 * (the trigger used by the URL-driven `Special:*` consumers). The
+	 * presence-of-key form is unambiguous for a JSON-payload API where
+	 * clients explicitly opt in.
+	 *
+	 * Extracted as a static helper so the predicate is unit-testable
+	 * without instantiating the lookup or its store.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param array $parameters The decoded `params` payload from the
+	 *   `smwbrowse` API request.
+	 */
+	public static function shouldUseCursorMode( array $parameters ): bool {
+		return array_key_exists( 'cursor', $parameters );
+	}
+
+	private function fetchFromTable( int|string $ns, RequestOptions $requestOptions, array $parameters ): array {
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
 		$options = [];
+		$cursorMode = (bool)$requestOptions->getOption( RequestOptions::CURSOR_MODE );
 
 		$fields = [
 			'smw_id',
 			'smw_title'
 		];
 
-		// The query needs to do the filtering for internal properties, else
-		// LIMIT is wrong
-		if ( isset( $parameters['sort'] ) ) {
+		if ( $cursorMode ) {
+			// `smw_sort` is required for the cursor predicate's tiebreak
+			// join and is the column the keyset trait orders by.
+			$fields[] = 'smw_sort';
+		} elseif ( isset( $parameters['sort'] ) ) {
+			// The query needs to do the filtering for internal properties,
+			// else LIMIT is wrong.
 			$options = $this->store->getSQLOptions( $requestOptions, 'smw_sort' );
 			$fields[] = 'smw_sort';
 		} elseif ( isset( $parameters['offset'] ) ) {
@@ -195,16 +244,33 @@ class ListLookup extends Lookup {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$res = $connection->newSelectQueryBuilder()
+		$queryBuilder = $connection->newSelectQueryBuilder()
 			->select( $fields )
 			->from( SQLStore::ID_TABLE )
 			->where( $conditions )
-			->options( $options )
-			->caller( __METHOD__ )
-			->fetchResultSet();
+			->caller( __METHOD__ );
 
+		if ( $cursorMode ) {
+			// The trait emits the keyset WHERE predicate and ORDER BY; the
+			// LIMIT is applied here so the lookahead row (`limit + 1`) is
+			// preserved across both paths.
+			$queryBuilder->limit( $requestOptions->getLimit() );
+			$this->applyCursorPagination( $queryBuilder, $connection, $requestOptions );
+		} else {
+			$queryBuilder->options( $options );
+		}
+
+		$res = $queryBuilder->fetchResultSet();
+
+		// The shared trait's contract expects consumers to write
+		// firstCursor/lastCursor/cursorHasMore back onto the caller's
+		// `RequestOptions`. The API path serializes the cursor anchor
+		// directly into the JSON response field instead, so the local
+		// `$lastCursorId` is sufficient.
 		$count = 0;
 		$continueOffset = 0;
+		$continueCursor = 0;
+		$lastCursorId = 0;
 
 		foreach ( $res as $row ) {
 
@@ -212,7 +278,11 @@ class ListLookup extends Lookup {
 			$count++;
 
 			if ( $count > $limit ) {
-				$continueOffset = $requestOptions->getOffset() + $limit;
+				if ( $cursorMode ) {
+					$continueCursor = $lastCursorId;
+				} else {
+					$continueOffset = $requestOptions->getOffset() + $limit;
+				}
 				break;
 			}
 
@@ -234,9 +304,11 @@ class ListLookup extends Lookup {
 				'label' => $label,
 				'key'   => $key
 			];
+
+			$lastCursorId = (int)$row->smw_id;
 		}
 
-		return [ $list, $continueOffset ];
+		return [ $list, $continueOffset, $continueCursor ];
 	}
 
 }
