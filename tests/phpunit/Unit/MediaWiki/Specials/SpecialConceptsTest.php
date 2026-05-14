@@ -88,4 +88,25 @@ class SpecialConceptsTest extends TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider cursorModeProvider
+	 */
+	public function testShouldUseCursorMode( ?string $offsetParamValue, bool $expected ): void {
+		$this->assertSame(
+			$expected,
+			SpecialConcepts::shouldUseCursorMode( $offsetParamValue )
+		);
+	}
+
+	public static function cursorModeProvider(): array {
+		return [
+			'no offset param at all' => [ null, true ],
+			'explicit offset=0' => [ '0', false ],
+			'explicit offset=5' => [ '5', false ],
+			'empty offset value' => [ '', false ],
+			'negative offset' => [ '-1', false ],
+			'non-numeric garbage' => [ 'garbage', false ],
+		];
+	}
+
 }
