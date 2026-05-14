@@ -217,13 +217,13 @@ class ListLookup extends Lookup {
 			'smw_title'
 		];
 
-		// The query needs to do the filtering for internal properties, else
-		// LIMIT is wrong
 		if ( $cursorMode ) {
-			// `smw_sort` is required for the cursor predicate's tiebreak join
-			// and is the column the keyset trait orders by.
+			// `smw_sort` is required for the cursor predicate's tiebreak
+			// join and is the column the keyset trait orders by.
 			$fields[] = 'smw_sort';
 		} elseif ( isset( $parameters['sort'] ) ) {
+			// The query needs to do the filtering for internal properties,
+			// else LIMIT is wrong.
 			$options = $this->store->getSQLOptions( $requestOptions, 'smw_sort' );
 			$fields[] = 'smw_sort';
 		} elseif ( isset( $parameters['offset'] ) ) {

@@ -274,18 +274,101 @@ class ListLookupTest extends TestCase {
 			'cursor' => 12345,
 		] );
 
-		$predicateFound = false;
-		foreach ( $capturedWheres as $where ) {
-			if ( is_string( $where ) && str_contains( $where, '12345' ) && str_contains( $where, 'smw_sort' ) ) {
-				$predicateFound = true;
-				break;
-			}
-		}
-
-		$this->assertTrue(
-			$predicateFound,
+		$predicate = $this->findKeysetPredicate( $capturedWheres, '12345' );
+		$this->assertNotNull(
+			$predicate,
 			'Cursor mode with cursor>0 must emit the keyset WHERE predicate against smw_sort and the cursor id'
 		);
+
+		// ASC mode (default): predicate uses `>` to step forward in
+		// alphabetical order.
+		$this->assertStringContainsString(
+			'smw_sort > ',
+			$predicate,
+			'ASC cursor predicate must use > operator'
+		);
+	}
+
+	/**
+	 * Locks the DESC cursor predicate. Without this test, a regression
+	 * that ignores `$requestOptions->ascending` in the trait would
+	 * silently return ascending results for a `sort=desc&cursor=N`
+	 * request.
+	 */
+	public function testCursorWithSortDescEmitsLessThanPredicate(): void {
+		$row = $this->newRow( 42, 'Foo' );
+
+		$capturedWheres = [];
+
+		$listAugmentor = $this->getMockBuilder( ListAugmentor::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnCallback( static fn ( $v ) => "'$v'" );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback(
+				function () use ( $row, &$capturedWheres ) {
+					return $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
+				}
+			);
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new ListLookup( $store, $listAugmentor );
+
+		$instance->lookup( [
+			'ns' => SMW_NS_PROPERTY,
+			'search' => 'Foo',
+			'cursor' => 12345,
+			'sort' => 'desc',
+		] );
+
+		$predicate = $this->findKeysetPredicate( $capturedWheres, '12345' );
+		$this->assertNotNull(
+			$predicate,
+			'DESC cursor mode must still emit the keyset WHERE predicate'
+		);
+
+		// DESC mode: predicate must use `<` to step forward in reverse
+		// alphabetical order. `>` would mean "next page in ASC order"
+		// which is the wrong direction.
+		$this->assertStringContainsString(
+			'smw_sort < ',
+			$predicate,
+			'DESC cursor predicate must use < operator'
+		);
+		$this->assertStringNotContainsString(
+			'smw_sort > ',
+			$predicate,
+			'DESC cursor predicate must not use > operator'
+		);
+	}
+
+	private function findKeysetPredicate( array $capturedWheres, string $cursorIdLiteral ): ?string {
+		foreach ( $capturedWheres as $where ) {
+			if (
+				is_string( $where )
+				&& str_contains( $where, $cursorIdLiteral )
+				&& str_contains( $where, 'smw_sort' )
+			) {
+				return $where;
+			}
+		}
+		return null;
 	}
 
 	/**

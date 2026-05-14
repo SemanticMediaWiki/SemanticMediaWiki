@@ -59,6 +59,14 @@ trait KeysetPaginationTrait {
 	 * index directly. PostgreSQL and SQLite plan the OR form at least as well
 	 * as the tuple form. See issue #6559.
 	 *
+	 * The cursor direction (after/before) and the sort direction
+	 * (`$requestOptions->ascending`) compose independently. "After" always
+	 * means "the next page in display order" — when ascending, the next
+	 * page contains values larger than the cursor; when descending, it
+	 * contains values smaller. "Before" inverts the predicate and is
+	 * served in reverse of the display order so the consumer can
+	 * `array_reverse()` for display.
+	 *
 	 * @param SelectQueryBuilder $queryBuilder
 	 * @param Database $db
 	 * @param RequestOptions $requestOptions
@@ -72,29 +80,36 @@ trait KeysetPaginationTrait {
 	): void {
 		$cursorAfter = $requestOptions->getCursorAfter();
 		$cursorBefore = $requestOptions->getCursorBefore();
+		$ascending = $requestOptions->ascending;
+
+		$displayOrder = $ascending ? SelectQueryBuilder::SORT_ASC : SelectQueryBuilder::SORT_DESC;
+		$reverseOrder = $ascending ? SelectQueryBuilder::SORT_DESC : SelectQueryBuilder::SORT_ASC;
+		// "Forward" = larger values in ASC, smaller in DESC.
+		$forwardOp = $ascending ? '>' : '<';
+		$backwardOp = $ascending ? '<' : '>';
 
 		if ( $cursorAfter !== null ) {
 			$sort = $this->resolveCursorSort( $cursorAfter );
 			if ( $sort !== null ) {
 				$quotedSort = $db->addQuotes( $sort );
 				$queryBuilder->andWhere(
-					'smw_sort > ' . $quotedSort .
-					' OR (smw_sort = ' . $quotedSort . ' AND smw_id > ' . $cursorAfter . ')'
+					'smw_sort ' . $forwardOp . ' ' . $quotedSort .
+					' OR (smw_sort = ' . $quotedSort . ' AND smw_id ' . $forwardOp . ' ' . $cursorAfter . ')'
 				);
 			}
-			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_ASC );
+			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], $displayOrder );
 		} elseif ( $cursorBefore !== null ) {
 			$sort = $this->resolveCursorSort( $cursorBefore );
 			if ( $sort !== null ) {
 				$quotedSort = $db->addQuotes( $sort );
 				$queryBuilder->andWhere(
-					'smw_sort < ' . $quotedSort .
-					' OR (smw_sort = ' . $quotedSort . ' AND smw_id < ' . $cursorBefore . ')'
+					'smw_sort ' . $backwardOp . ' ' . $quotedSort .
+					' OR (smw_sort = ' . $quotedSort . ' AND smw_id ' . $backwardOp . ' ' . $cursorBefore . ')'
 				);
 			}
-			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_DESC );
+			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], $reverseOrder );
 		} else {
-			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], SelectQueryBuilder::SORT_ASC );
+			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], $displayOrder );
 			if ( $requestOptions->offset > 0 ) {
 				$queryBuilder->offset( $requestOptions->offset );
 			}
