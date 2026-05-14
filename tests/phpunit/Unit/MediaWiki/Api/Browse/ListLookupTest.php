@@ -129,4 +129,117 @@ class ListLookupTest extends TestCase {
 		return $provider;
 	}
 
+	public function testLegacyResponseAlwaysIncludesContinueCursorZero(): void {
+		$instance = $this->newInstanceWithRows( [ $this->newRow( 42, 'Foo' ) ] );
+
+		$res = $instance->lookup( [
+			'ns' => SMW_NS_PROPERTY,
+			'search' => 'Foo',
+		] );
+
+		$this->assertArrayHasKey( 'query-continue-cursor', $res );
+		$this->assertSame( 0, $res['query-continue-cursor'] );
+	}
+
+	public function testCursorParamPresentOptsIntoCursorMode(): void {
+		// 3 rows with limit=2 -> 2 displayed + 1 lookahead row triggers
+		// the continueCursor population from the last displayed row's id.
+		$rows = [
+			$this->newRow( 100, 'AAA' ),
+			$this->newRow( 101, 'BBB' ),
+			$this->newRow( 102, 'CCC' ),
+		];
+
+		$instance = $this->newInstanceWithRows( $rows );
+
+		$res = $instance->lookup( [
+			'ns' => SMW_NS_PROPERTY,
+			'search' => 'Foo',
+			'cursor' => 0,
+			'limit' => 2,
+		] );
+
+		$this->assertSame( 101, $res['query-continue-cursor'] );
+		$this->assertSame( 0, $res['query-continue-offset'] );
+		$this->assertCount( 2, $res['query'] );
+	}
+
+	public function testCursorModeWithNoFurtherRowsReturnsZeroCursor(): void {
+		$instance = $this->newInstanceWithRows( [ $this->newRow( 42, 'Foo' ) ] );
+
+		$res = $instance->lookup( [
+			'ns' => SMW_NS_PROPERTY,
+			'search' => 'Foo',
+			'cursor' => 0,
+			'limit' => 50,
+		] );
+
+		$this->assertSame( 0, $res['query-continue-cursor'] );
+	}
+
+	public function testLegacyModeStillEmitsContinueOffsetWhenMoreAvailable(): void {
+		$rows = [
+			$this->newRow( 100, 'AAA' ),
+			$this->newRow( 101, 'BBB' ),
+			$this->newRow( 102, 'CCC' ),
+		];
+
+		$instance = $this->newInstanceWithRows( $rows, true );
+
+		// `sort` triggers the legacy options branch (which calls
+		// `getSQLOptions`); the absence of `cursor` keeps the lookup on the
+		// offset path.
+		$res = $instance->lookup( [
+			'ns' => SMW_NS_PROPERTY,
+			'search' => 'Foo',
+			'sort' => 'asc',
+			'limit' => 2,
+		] );
+
+		$this->assertSame( 2, $res['query-continue-offset'] );
+		$this->assertSame( 0, $res['query-continue-cursor'] );
+	}
+
+	private function newRow( int $id, string $title ): stdClass {
+		$row = new stdClass;
+		$row->smw_id = $id;
+		$row->smw_title = $title;
+		$row->smw_sort = $title;
+		return $row;
+	}
+
+	private function newInstanceWithRows( array $rows, bool $expectGetSQLOptions = false ): ListLookup {
+		$listAugmentor = $this->getMockBuilder( ListAugmentor::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( $rows ) );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// `getSQLOptions` is only consulted on the legacy offset path.
+		if ( $expectGetSQLOptions ) {
+			$store->expects( $this->atLeastOnce() )
+				->method( 'getSQLOptions' )
+				->willReturn( [] );
+		}
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		return new ListLookup(
+			$store,
+			$listAugmentor
+		);
+	}
+
 }
