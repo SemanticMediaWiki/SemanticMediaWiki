@@ -77,6 +77,14 @@ class ParserAfterTidy implements HookListener {
 		if ( $parser->getOptions()->getInterfaceMessage() ) {
 			return;
 		}
+		// `Parser::clearState()` can be invoked outside of an actual
+		// `Parser::parse()` (test helpers, manual state resets, etc.); in those
+		// cases `isLocked()` is `false` and the parser is not really competing
+		// for the title, so we must not record it as in-flight or we mark
+		// every later, unrelated parse of the same title as "nested".
+		if ( !$parser->isLocked() ) {
+			return;
+		}
 		if ( self::$inFlightParses === null ) {
 			self::$inFlightParses = new WeakMap();
 		}
@@ -107,9 +115,17 @@ class ParserAfterTidy implements HookListener {
 			if ( $parser === $excluding ) {
 				continue;
 			}
-			if ( $parsedTitleKey === $titleKey ) {
-				$count++;
+			if ( $parsedTitleKey !== $titleKey ) {
+				continue;
 			}
+			// A leftover entry whose Parser is no longer locked is stale: the
+			// parse it represented has long ended (or never started). It must
+			// not be counted as a competing in-flight parse, otherwise the
+			// current outermost fire would be wrongly classified as nested.
+			if ( !$parser->isLocked() ) {
+				continue;
+			}
+			$count++;
 		}
 		return $count;
 	}

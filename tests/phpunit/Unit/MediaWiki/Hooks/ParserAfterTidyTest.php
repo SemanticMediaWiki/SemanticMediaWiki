@@ -11,6 +11,7 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use RuntimeException;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\ArticlePurge;
@@ -98,6 +99,19 @@ class ParserAfterTidyTest extends TestCase {
 		ParserAfterTidy::resetInFlightParses();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
+	}
+
+	/**
+	 * Force a Parser's `mInParse` flag to `true` (mimicking the state during
+	 * an actual `Parser::parse()` call). Production code's `isLocked()` check
+	 * is what distinguishes a real parse from a test helper that only called
+	 * `clearState()`; the unit tests must opt into the locked state to
+	 * exercise the in-flight tracker.
+	 */
+	private function setParserLocked( Parser $parser ): void {
+		$prop = new ReflectionProperty( Parser::class, 'mInParse' );
+		$prop->setAccessible( true );
+		$prop->setValue( $parser, true );
 	}
 
 	public function testCanConstruct() {
@@ -400,12 +414,14 @@ class ParserAfterTidyTest extends TestCase {
 
 		// Outer parser begins parsing this title.
 		$outerParser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $outerParser );
 		ParserAfterTidy::onParserClearState( $outerParser );
 
 		// Inner parse on a separate parser instance for the same title, with
 		// only a partial set of categories, mimicking the inner snapshot from
 		// jayktaylor's repro before the outer parse adds the rest.
 		$innerParser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $innerParser );
 		ParserAfterTidy::onParserClearState( $innerParser );
 		$innerParser->getOutput()->addCategory( 'InnerCat', 'InnerCat' );
 		$innerParser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
@@ -493,9 +509,11 @@ class ParserAfterTidyTest extends TestCase {
 			->newFromText( __METHOD__ . 'B' );
 
 		$parserA = $this->parserFactory->newFromTitle( $titleA );
+		$this->setParserLocked( $parserA );
 		ParserAfterTidy::onParserClearState( $parserA );
 
 		$parserB = $this->parserFactory->newFromTitle( $titleB );
+		$this->setParserLocked( $parserB );
 		ParserAfterTidy::onParserClearState( $parserB );
 
 		// Both have content; both should run independently.
@@ -564,6 +582,7 @@ class ParserAfterTidyTest extends TestCase {
 
 		// And the real outer parser for the same title should still see depth=1.
 		$realParser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $realParser );
 		ParserAfterTidy::onParserClearState( $realParser );
 		$realParser->getOutput()->addCategory( 'RealCat', 'RealCat' );
 		$realParser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
@@ -642,6 +661,7 @@ class ParserAfterTidyTest extends TestCase {
 		);
 
 		$parser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $parser );
 		ParserAfterTidy::onParserClearState( $parser );
 		$parser->getOutput()->addCategory( 'Foo', 'Foo' );
 		$parser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
@@ -662,6 +682,7 @@ class ParserAfterTidyTest extends TestCase {
 		$parser->getOutput()->addCategory( 'Bar', 'Bar' );
 
 		$secondParser = $this->parserFactory->newFromTitle( $title );
+		$this->setParserLocked( $secondParser );
 		ParserAfterTidy::onParserClearState( $secondParser );
 		$secondParser->getOutput()->addCategory( 'Baz', 'Baz' );
 		$secondParser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
