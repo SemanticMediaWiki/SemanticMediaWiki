@@ -227,6 +227,50 @@ class QueryCreatorTest extends TestCase {
 		$this->assertSame( [ 'v' => 1 ], $query->getCursorAfter() );
 	}
 
+	public function testCursorParamWithImplicitAscPayloadIsRejectedByDescRequest(): void {
+		// Phase 3a / spike cursors carry no `sort_order` field; they were
+		// minted under ASC. A DESC request must reject them — the
+		// predicate would seek in the wrong direction. This is the
+		// backward-compat mirror of `testCursorParamWithMismatchedSortOrder`.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// {"v":1,"sort":"value","sort_prop":"SomeProperty","id":42} — no sort_order
+		$token = 'eyJ2IjoxLCJzb3J0IjoidmFsdWUiLCJzb3J0X3Byb3AiOiJTb21lUHJvcGVydHkiLCJpZCI6NDJ9';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'SomeProperty' ],
+				'order'  => [ 'desc' ],
+				'cursor' => $token,
+			]
+		);
+
+		$this->assertNull( $query->getCursorAfter() );
+		$this->assertCursorErrorPresent( $query->getErrors(), 'wrong direction' );
+	}
+
+	public function testCursorParamWithDefaultSortDescIsAccepted(): void {
+		// Contract item 8: `sort=` (default page sort) + `order=desc`
+		// + bootstrap cursor is a valid combination. The engine then
+		// uses `smw_sort` column DESC.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'order'  => [ 'desc' ],
+				'cursor' => 'eyJ2IjoxfQ',
+			]
+		);
+
+		$this->assertSame( [ 'v' => 1 ], $query->getCursorAfter() );
+	}
+
 	public function testCursorParamWithMismatchedSortOrderIsRejectedWithError(): void {
 		// A cursor minted for DESC carries `sort_order=DESC`. Sending
 		// that cursor with an `order=asc` request must be rejected:
