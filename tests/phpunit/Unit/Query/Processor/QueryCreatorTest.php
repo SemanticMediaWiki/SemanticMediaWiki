@@ -207,9 +207,10 @@ class QueryCreatorTest extends TestCase {
 		$this->assertSame( 'SomeProperty', $payload['sort_prop'] );
 	}
 
-	public function testCursorParamWithOrderDescIsRejectedWithError(): void {
-		// Phase 3a is ASC-only. DESC support is planned for Phase 3b
-		// (requires `<`-form predicate + reversed ORDER BY).
+	public function testCursorParamWithOrderDescIsAccepted(): void {
+		// Phase 3b lifts the 3a ASC-only constraint. A bootstrap cursor
+		// (no sort_order) is accepted against an `order=desc` request;
+		// the engine then mints subsequent cursors with `sort_order=DESC`.
 		$instance = new QueryCreator(
 			ApplicationFactory::getInstance()->getQueryFactory()
 		);
@@ -223,10 +224,56 @@ class QueryCreatorTest extends TestCase {
 			]
 		);
 
+		$this->assertSame( [ 'v' => 1 ], $query->getCursorAfter() );
+	}
+
+	public function testCursorParamWithMismatchedSortOrderIsRejectedWithError(): void {
+		// A cursor minted for DESC carries `sort_order=DESC`. Sending
+		// that cursor with an `order=asc` request must be rejected:
+		// the predicate would seek in the wrong direction.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// {"v":1,"sort":"value","sort_prop":"SomeProperty","sort_order":"DESC","id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjoidmFsdWUiLCJzb3J0X3Byb3AiOiJTb21lUHJvcGVydHkiLCJzb3J0X29yZGVyIjoiREVTQyIsImlkIjo0Mn0';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'SomeProperty' ],
+				'order'  => [ 'asc' ],
+				'cursor' => $token,
+			]
+		);
+
 		$this->assertNull( $query->getCursorAfter() );
 		$this->assertCursorErrorPresent(
 			$query->getErrors(),
-			'requires ascending order'
+			'wrong direction'
+		);
+	}
+
+	public function testCursorParamWithOrderRandomIsRejectedWithError(): void {
+		// `order=random` has no stable anchor for keyset to seek past.
+		// Permanent rejection (no future phase will lift this).
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'SomeProperty' ],
+				'order'  => [ 'random' ],
+				'cursor' => 'eyJ2IjoxfQ',
+			]
+		);
+
+		$this->assertNull( $query->getCursorAfter() );
+		$this->assertCursorErrorPresent(
+			$query->getErrors(),
+			'`order=random`'
 		);
 	}
 
