@@ -181,16 +181,37 @@ class QueryCreator implements QueryContext {
 			return;
 		}
 
-		$customSortKeys = array_filter(
+		// `array_values` re-indexes so `[0]` is the first custom-sort
+		// property regardless of any preceding empty-string key (the
+		// `sort=,SomeProperty` page-pivoted form produces a `sortKeys`
+		// array whose `array_keys` is `['', 'SomeProperty']` — without
+		// re-indexing the filter returns `[1 => 'SomeProperty']` and
+		// `[0]` resolves to null, false-rejecting cursors on page 2).
+		$customSortKeys = array_values( array_filter(
 			array_keys( $sortKeys ),
 			static fn ( $key ) => $key !== ''
-		);
+		) );
 
 		if ( count( $customSortKeys ) > 1 ) {
 			$query->addErrors( [
 				'Cursor pagination (`cursor=`) is not supported with multi-property `sort=` in this release. Reduce to a single sort property, or use `offset=` instead.'
 			] );
 			return;
+		}
+
+		// Phase 3a is ASC-only. The keyset predicate is `>`-form;
+		// supporting `DESC` requires `<`-form + reversed ORDER BY
+		// (planned for Phase 3b). Reject `order=desc`/`random`
+		// explicitly so a future lift can extend the contract
+		// without breaking clients that silently ignored the order
+		// parameter today.
+		foreach ( $sortKeys as $_key => $order ) {
+			if ( $order === 'DESC' || $order === 'RANDOM' ) {
+				$query->addErrors( [
+					"Cursor pagination (`cursor=`) requires ascending order; `order=$order` is not supported in this release."
+				] );
+				return;
+			}
 		}
 
 		if ( $query->getQueryMode() === self::MODE_COUNT ) {

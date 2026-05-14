@@ -178,6 +178,58 @@ class QueryCreatorTest extends TestCase {
 		$this->assertSame( [ 'v' => 1 ], $query->getCursorAfter() );
 	}
 
+	public function testCursorParamWithPagePivotedSortPreservesAnchor(): void {
+		// Regression for the `array_filter` key-preservation bug:
+		// `sort=,SomeProperty` produces `sortKeys = ['' => 'ASC',
+		// 'SomeProperty' => 'ASC']`. Without `array_values` after
+		// the filter, `$customSortKeys[0]` is null and any cursor
+		// minted on page 1 (which correctly emits
+		// `sort_prop=SomeProperty`) is falsely rejected on page 2
+		// onward. The cursor walk must work for this very common
+		// page-pivoted shape.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// {"v":1,"sort":"value","sort_prop":"SomeProperty","id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjoidmFsdWUiLCJzb3J0X3Byb3AiOiJTb21lUHJvcGVydHkiLCJpZCI6NDJ9';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ '', 'SomeProperty' ],
+				'cursor' => $token,
+			]
+		);
+
+		$payload = $query->getCursorAfter();
+		$this->assertIsArray( $payload, 'Cursor with page-pivoted sort must NOT be rejected' );
+		$this->assertSame( 'SomeProperty', $payload['sort_prop'] );
+	}
+
+	public function testCursorParamWithOrderDescIsRejectedWithError(): void {
+		// Phase 3a is ASC-only. DESC support is planned for Phase 3b
+		// (requires `<`-form predicate + reversed ORDER BY).
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'SomeProperty' ],
+				'order'  => [ 'desc' ],
+				'cursor' => 'eyJ2IjoxfQ',
+			]
+		);
+
+		$this->assertNull( $query->getCursorAfter() );
+		$this->assertCursorErrorPresent(
+			$query->getErrors(),
+			'requires ascending order'
+		);
+	}
+
 	public function testCursorParamWithMultiSortIsRejectedWithError(): void {
 		// Phase 3b will support compound-sort cursors. Until then,
 		// `sort=A,B` + `cursor=` is rejected so cursor consumers can

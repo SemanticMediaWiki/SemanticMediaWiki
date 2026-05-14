@@ -417,13 +417,17 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			}
 
 			if ( $cursorSortPropKey !== '' ) {
-				if ( !isset( $qobj->sortfields[$cursorSortPropKey] ) ) {
+				$sortExpr = $qobj->sortfields[$cursorSortPropKey] ?? '';
+				if ( $sortExpr === '' ) {
 					// User asked for `sort=Foo` but `Foo` could not be
 					// resolved to a sortfield column (invalid property,
 					// or the joined table never got set up). Surface
 					// explicitly rather than silently fall back to
 					// default sort, since the next cursor anchor would
-					// be meaningless.
+					// be meaningless. `=== ''` rather than `!isset`
+					// also catches the edge case where a future
+					// `OrderCondition` path assigns an empty
+					// expression.
 					$query->addErrors( [
 						"Cursor mode could not resolve `sort=$cursorSortPropKey` to a query sortfield."
 					] );
@@ -431,7 +435,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 						$this->store, $query, [], false
 					);
 				}
-				$cursorSortColumn = $qobj->sortfields[$cursorSortPropKey];
+				$cursorSortColumn = $sortExpr;
 			} else {
 				// Default sort (Phase 3 spike compatible).
 				$cursorSortColumn = "$qobj->alias.smw_sort";
