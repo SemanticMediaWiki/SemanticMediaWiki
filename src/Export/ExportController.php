@@ -573,14 +573,30 @@ class ExportController {
 
 	/**
 	 * Print basic definitions a list of pages ordered by their page id.
-	 * Offset and limit refer to the count of existing pages, not to the
-	 * page id.
+	 *
+	 * Cursor mode is opt-in via the `$cursor` parameter (non-null). The
+	 * keyset predicate `page_id > $cursor` replaces the legacy
+	 * `OFFSET $offset`, avoiding the O(N) cost of deep OFFSET pagination
+	 * for bot crawlers (SPARQL importers, OWL consumers) that walk the
+	 * full export. `page_id` is unique in the MW `page` table so no
+	 * tiebreak is needed. The next-page URL embedded in the RDF output
+	 * reflects the mode of the request: `?cursor=<last_page_id>` in
+	 * cursor mode, `?offset=<next_offset>` in legacy mode. Old crawlers
+	 * that follow legacy `?offset=` URLs continue to work unchanged.
+	 *
 	 * @param int $offset the number of the first (existing) page to
-	 * serialize a declaration for
+	 * serialize a declaration for. Ignored in cursor mode.
 	 * @param int $limit the number of pages to serialize
+	 * @param int|null $cursor when non-null, switches to cursor mode.
+	 *   `0` is the first page (no predicate); `> 0` is the previous
+	 *   response's last `page_id` (the cursor anchor).
+	 *
+	 * @since 7.0.0 The `$cursor` parameter was added.
 	 */
-	public function printPageList( $offset = 0, $limit = 30 ): void {
+	public function printPageList( $offset = 0, $limit = 30, ?int $cursor = null ): void {
 		global $smwgNamespacesWithSemanticLinks;
+
+		$cursorMode = $cursor !== null;
 
 		$dbr = self::getDBHandle();
 		$this->prepareSerialization();
@@ -599,13 +615,23 @@ class ExportController {
 				$query .= 'page_namespace = ' . $dbr->addQuotes( $ns );
 			}
 		}
+
 		$queryBuilder = $dbr->newSelectQueryBuilder()
 			->select( [ 'page_id', 'page_title', 'page_namespace' ] )
 			->from( 'page' )
 			->orderBy( 'page_id', 'ASC' )
-			->offset( $offset )
 			->limit( $limit )
 			->caller( 'SMW::RDF::PrintPageList' );
+
+		if ( $cursorMode ) {
+			if ( $cursor > 0 ) {
+				$queryBuilder->where( 'page_id > ' . (int)$cursor );
+			}
+			// `$cursor === 0` is the first page in cursor mode: no predicate
+			// added, just ORDER BY page_id ASC + LIMIT.
+		} else {
+			$queryBuilder->offset( $offset );
+		}
 
 		if ( $query !== '' ) {
 			$queryBuilder->where( $query );
@@ -613,9 +639,15 @@ class ExportController {
 
 		$res = $queryBuilder->fetchResultSet();
 		$foundpages = false;
+		$lastPageId = 0;
 
 		foreach ( $res as $row ) {
 			$foundpages = true;
+			// Advance the cursor before serialization. A row that throws
+			// `DataItemException` below should not be retried on the next
+			// page request; matches the legacy OFFSET behaviour of always
+			// advancing regardless of per-row outcome.
+			$lastPageId = (int)$row->page_id;
 			try {
 				$diPage = new WikiPage( $row->page_title, $row->page_namespace, '' );
 				$this->serializePage( $diPage, 0 );
@@ -628,11 +660,15 @@ class ExportController {
 
 		if ( $foundpages ) { // add link to next result page
 			$exporter = Exporter::getInstance();
+			$continuationParam = $cursorMode
+				? 'cursor=' . $lastPageId
+				: 'offset=' . ( $offset + $limit );
+
 			// check whether we have title as a first parameter or in URL
 			if ( strpos( $exporter->expandURI( '&wikiurl;' ), '?' ) === false ) {
-				$nexturl = $exporter->expandURI( '&export;?offset=' ) . ( $offset + $limit );
+				$nexturl = $exporter->expandURI( '&export;?' ) . $continuationParam;
 			} else {
-				$nexturl = $exporter->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
+				$nexturl = $exporter->expandURI( '&export;&amp;' ) . $continuationParam;
 			}
 
 			$expData = new ExpData( new ExpResource( $nexturl ) );

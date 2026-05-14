@@ -58,6 +58,22 @@ class SpecialOWLExport extends SpecialPage {
 			$this->exportPages( $pages );
 			return;
 		} else {
+			// Cursor mode is opt-in via `?cursor=`. Checked BEFORE `?offset=`
+			// so a request that co-sends both gets cursor semantics (cursor
+			// is the authoritative anchor for keyset pagination).
+			$cursorRaw = $request->getVal( 'cursor' );
+
+			if ( $cursorRaw !== null ) {
+				$this->startRDFExport();
+				// Clamp negative or non-numeric input to 0 (first page in
+				// cursor mode). A negative `(int)` cast would pass the
+				// `$cursor !== null` check but skip the WHERE predicate
+				// in `printPageList()`, silently returning the first page
+				// for malformed requests.
+				$this->export_controller->printPageList( 0, 30, max( 0, (int)$cursorRaw ) );
+				return;
+			}
+
 			$offset = $request->getVal( 'offset' );
 
 			if ( $offset !== null ) {
