@@ -34,6 +34,22 @@ class ParserAfterTidy implements HookListener {
 
 	const CACHE_NAMESPACE = 'smw:parseraftertidy';
 
+	/**
+	 * In-flight `Parser::parse()` calls, keyed by Parser instance and mapped
+	 * to the title prefixed-DB key being parsed. Used to distinguish the
+	 * outermost ParserAfterTidy fire from inner fires triggered by extensions
+	 * that clone the parser and recurse on the same title (see #5923).
+	 * Populated by `onParserClearState()` and drained in `process()`.
+	 *
+	 * Keyed by Parser instance so that short-lived clones are reclaimed by GC
+	 * automatically if `Parser::parse()` throws between `clearState` and
+	 * `ParserAfterTidy` (no `finally`-equivalent at the parser level). For a
+	 * long-lived parser whose entry survives an exception, the next successful
+	 * `process()` call for that parser re-runs the normal flow and clears the
+	 * entry, so the leak does not compound across requests.
+	 */
+	private static ?\WeakMap $inFlightParses = null;
+
 	private bool $isCommandLineMode = false;
 
 	private bool $isReady = true;
@@ -46,6 +62,59 @@ class ParserAfterTidy implements HookListener {
 		private NamespaceExaminer $namespaceExaminer,
 		private Cache $cache,
 	) {
+	}
+
+	/**
+	 * Hook handler for `ParserClearState`. Called at the start of every
+	 * `Parser::parse()` invocation (when `clearState` is true). Records the
+	 * parser as in-flight so a subsequent inner parse on the same title can
+	 * detect that it is nested and skip the update (see #5923).
+	 *
+	 * @since 7.0.0
+	 */
+	public static function onParserClearState( Parser $parser ): void {
+		if ( $parser->getOptions()->getInterfaceMessage() ) {
+			return;
+		}
+		$title = $parser->getTitle();
+		if ( $title === null ) {
+			return;
+		}
+		if ( self::$inFlightParses === null ) {
+			self::$inFlightParses = new \WeakMap();
+		}
+		// Re-setting for the same Parser is idempotent and self-healing if a
+		// previous parse on this instance leaked an entry by throwing.
+		self::$inFlightParses[$parser] = $title->getPrefixedDBKey();
+	}
+
+	/**
+	 * Reset the in-flight tracker. Intended for tests.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function resetInFlightParses(): void {
+		self::$inFlightParses = null;
+	}
+
+	/**
+	 * Count active in-flight parses for the given title (excluding the
+	 * supplied parser, if any).
+	 */
+	private static function countActiveParsesForTitle( string $titleKey, ?Parser $excluding ): int {
+		if ( self::$inFlightParses === null || $titleKey === '' ) {
+			return 0;
+		}
+		$count = 0;
+		foreach ( self::$inFlightParses as $parser => $parsedTitleKey ) {
+			if ( $parser === $excluding ) {
+				continue;
+			}
+			if ( $parsedTitleKey === $titleKey ) {
+				$count++;
+			}
+		}
+		return $count;
 	}
 
 	/**
@@ -68,8 +137,35 @@ class ParserAfterTidy implements HookListener {
 	 * @since 1.9
 	 */
 	public function process( string &$text ): bool {
-		if ( $this->canPerformUpdate() ) {
-			$this->performUpdate( $text );
+		if ( !$this->isReady ) {
+			$this->doAbort();
+			return true;
+		}
+
+		$title = $this->parser->getTitle();
+		$key = $title !== null ? (string)$title->getPrefixedDBKey() : '';
+
+		// #5923: When an extension clones the parser and re-enters `Parser::parse()`
+		// on the same title (e.g. DPL `<dpl>`, TabberNeue `<tabber>`), the inner
+		// parse fires its own `ParserAfterTidy`. Without this guard, the inner
+		// fire (which only sees a partial `ParserOutput`) would consume the
+		// `ArticlePurge` cache key in `checkPurgeRequest()` and persist incomplete
+		// data, while the outermost fire (with complete data) would skip because
+		// the key has been deleted. Skip processing for inner fires and let the
+		// outermost run with the full state. Interface-message parses are
+		// excluded from the tracker by `onParserClearState`, so they pass
+		// through here untouched.
+		$isNestedParse = $key !== ''
+			&& self::countActiveParsesForTitle( $key, $this->parser ) > 0;
+
+		try {
+			if ( !$isNestedParse && $this->canPerformUpdate() ) {
+				$this->performUpdate( $text );
+			}
+		} finally {
+			if ( self::$inFlightParses !== null ) {
+				unset( self::$inFlightParses[$this->parser] );
+			}
 		}
 
 		return true;
