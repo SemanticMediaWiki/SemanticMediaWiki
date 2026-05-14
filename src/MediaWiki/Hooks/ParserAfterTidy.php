@@ -14,6 +14,7 @@ use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use WeakMap;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -48,7 +49,7 @@ class ParserAfterTidy implements HookListener {
 	 * `process()` call for that parser re-runs the normal flow and clears the
 	 * entry, so the leak does not compound across requests.
 	 */
-	private static ?\WeakMap $inFlightParses = null;
+	private static ?WeakMap $inFlightParses = null;
 
 	private bool $isCommandLineMode = false;
 
@@ -76,16 +77,12 @@ class ParserAfterTidy implements HookListener {
 		if ( $parser->getOptions()->getInterfaceMessage() ) {
 			return;
 		}
-		$title = $parser->getTitle();
-		if ( $title === null ) {
-			return;
-		}
 		if ( self::$inFlightParses === null ) {
-			self::$inFlightParses = new \WeakMap();
+			self::$inFlightParses = new WeakMap();
 		}
 		// Re-setting for the same Parser is idempotent and self-healing if a
 		// previous parse on this instance leaked an entry by throwing.
-		self::$inFlightParses[$parser] = $title->getPrefixedDBKey();
+		self::$inFlightParses[$parser] = $parser->getTitle()->getPrefixedDBKey();
 	}
 
 	/**
@@ -142,8 +139,10 @@ class ParserAfterTidy implements HookListener {
 			return true;
 		}
 
-		$title = $this->parser->getTitle();
-		$key = $title !== null ? (string)$title->getPrefixedDBKey() : '';
+		// `(string)` defends against unit-test mocks where `getTitle()` returns
+		// a Title mock whose `getPrefixedDBKey()` is not stubbed and resolves
+		// to `null` rather than the production `string`.
+		$key = (string)$this->parser->getTitle()->getPrefixedDBKey();
 
 		// #5923: When an extension clones the parser and re-enters `Parser::parse()`
 		// on the same title (e.g. DPL `<dpl>`, TabberNeue `<tabber>`), the inner

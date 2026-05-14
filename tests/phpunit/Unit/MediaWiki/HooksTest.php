@@ -344,7 +344,7 @@ class HooksTest extends TestCase {
 	public function callParserClearState( $instance ) {
 		$handler = 'ParserClearState';
 
-		$parserOptions = $this->getMockBuilder( \MediaWiki\Parser\ParserOptions::class )
+		$parserOptions = $this->getMockBuilder( ParserOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 

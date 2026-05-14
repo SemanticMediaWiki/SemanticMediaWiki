@@ -4,13 +4,16 @@ namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RevisionGuard;
@@ -20,6 +23,8 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
+use Throwable;
+use WikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ParserAfterTidy
@@ -536,7 +541,7 @@ class ParserAfterTidyTest extends TestCase {
 			'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE,
 		] );
 
-		$parserOptions = $this->getMockBuilder( \MediaWiki\Parser\ParserOptions::class )
+		$parserOptions = $this->getMockBuilder( ParserOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$parserOptions->expects( $this->any() )
@@ -592,7 +597,7 @@ class ParserAfterTidyTest extends TestCase {
 			->getMockForAbstractClass();
 		$store->expects( $this->any() )
 			->method( 'updateData' )
-			->willThrowException( new \RuntimeException( 'simulated' ) );
+			->willThrowException( new RuntimeException( 'simulated' ) );
 
 		$this->testEnvironment->withConfiguration( [
 			'smwgMainCacheType' => 'hash',
@@ -610,7 +615,7 @@ class ParserAfterTidyTest extends TestCase {
 			->method( 'getRevision' )
 			->willReturn( $revision );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$wikiPage->expects( $this->any() )
@@ -630,7 +635,7 @@ class ParserAfterTidyTest extends TestCase {
 		$cache = $this->applicationFactory->getCache();
 		$cache->save(
 			smwfCacheKey(
-				\SMW\MediaWiki\Hooks\ArticlePurge::CACHE_NAMESPACE,
+				ArticlePurge::CACHE_NAMESPACE,
 				$title->getArticleID()
 			),
 			true
@@ -647,7 +652,7 @@ class ParserAfterTidyTest extends TestCase {
 		$text = '';
 		try {
 			$instance->process( $text );
-		} catch ( \Throwable $e ) {
+		} catch ( Throwable $e ) {
 			// Expected, swallow.
 		}
 
