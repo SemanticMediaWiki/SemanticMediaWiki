@@ -362,7 +362,9 @@ class Installer implements MessageReporter {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SMW\SQLStore\Installer' );
 
 		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$title,
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			PropertyStatisticsRebuildJob::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 
@@ -377,7 +379,9 @@ class Installer implements MessageReporter {
 		);
 
 		$entityIdDisposerJob = new EntityIdDisposerJob(
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$title,
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			EntityIdDisposerJob::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 

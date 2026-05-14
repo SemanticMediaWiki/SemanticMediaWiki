@@ -629,7 +629,7 @@ class SQLStore extends Store {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $type
+	 * @param int|string $type
 	 *
 	 * @return Database
 	 */

@@ -135,7 +135,7 @@ class PredefinedProperties {
 				'smw_iw' => $iw,
 				'smw_subobject' => '',
 				'smw_sortkey' => $label,
-				'smw_sort' => Collator::singleton()->getSortKey( $label ),
+				'smw_sort' => Collator::singleton()->getSortKey( $label ?? '' ),
 				'smw_proptable_hash' => $row->smw_proptable_hash,
 				'smw_hash' => $row->smw_hash,
 				'smw_rev' => $row->smw_rev,

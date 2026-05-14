@@ -74,6 +74,8 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
  */
 class SQLStoreFactory {
 
+	private MessageReporter $messageReporter;
+
 	private QueryEngineFactory $queryEngineFactory;
 
 	/**
@@ -81,11 +83,9 @@ class SQLStoreFactory {
 	 */
 	public function __construct(
 		private readonly SQLStore $store,
-		private ?MessageReporter $messageReporter = null,
+		?MessageReporter $messageReporter = null,
 	) {
-		if ( $this->messageReporter === null ) {
-			$this->messageReporter = new NullMessageReporter();
-		}
+		$this->messageReporter = $messageReporter ?? new NullMessageReporter();
 
 		$this->queryEngineFactory = new QueryEngineFactory( $this->store );
 	}

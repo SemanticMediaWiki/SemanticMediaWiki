@@ -315,6 +315,7 @@ class QueryDependencyLinksStore {
 		$hash = $queryResult->getQuery()->getQueryId();
 
 		$sid = $this->dependencyLinksTableUpdater->getId(
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$subject,
 			$hash
 		);
@@ -396,10 +397,12 @@ class QueryDependencyLinksStore {
 		// SID < 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered)
 		if ( $sid >= 1 ) {
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash );
 		}
 
 		if ( $sid < 1 ) {
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$sid = $this->dependencyLinksTableUpdater->createId( $subject, $hash );
 		}
 

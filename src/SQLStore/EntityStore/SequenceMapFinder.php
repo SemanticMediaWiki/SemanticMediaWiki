@@ -75,6 +75,7 @@ class SequenceMapFinder {
 		$omap = [];
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
+		// @phan-suppress-next-line PhanTypeMismatchArgument
 		$map = $cache->fetch( $sid );
 		if ( $map !== false ) {
 			return $map;
@@ -101,6 +102,7 @@ class SequenceMapFinder {
 			$map = HmacSerializer::uncompress( $omap );
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchArgument
 		$cache->save( $sid, $map );
 
 		return $map;
@@ -147,6 +149,7 @@ class SequenceMapFinder {
 			// Removes those that found a matching pair
 			unset( $inverted_ids[$id] );
 
+			// @phan-suppress-next-line PhanTypeMismatchArgument
 			$cache->save( $id, $map );
 		}
 

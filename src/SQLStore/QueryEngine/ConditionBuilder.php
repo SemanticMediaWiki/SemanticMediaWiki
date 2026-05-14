@@ -188,6 +188,7 @@ class ConditionBuilder {
 
 		// compile query, build query "plan"
 		$qid = $this->buildFromDescription(
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$query->getDescription()
 		);
 

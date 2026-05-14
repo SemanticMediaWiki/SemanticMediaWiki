@@ -574,7 +574,7 @@ abstract class Store implements QueryEngine {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $type
+	 * @param int|string $type
 	 *
 	 * @return mixed
 	 */

@@ -216,6 +216,7 @@ class CacheWarmer {
 				$sortkey
 			);
 
+			// @phan-suppress-next-line PhanTypeMismatchArgument
 			$cache->save( $row->smw_id, true );
 		}
 	}

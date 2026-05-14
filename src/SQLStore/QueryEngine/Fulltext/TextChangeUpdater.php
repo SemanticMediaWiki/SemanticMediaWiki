@@ -99,8 +99,14 @@ class TextChangeUpdater {
 			return;
 		}
 
+		$title = $changeOp->getSubject()->getTitle();
+
+		if ( $title === null ) {
+			return;
+		}
+
 		$fulltextSearchTableUpdateJob = ApplicationFactory::getInstance()->newJobFactory()->newFulltextSearchTableUpdateJob(
-			$changeOp->getSubject()->getTitle(),
+			$title,
 			[
 				'slot:id' => $changeOp->getSubject()->getHash()
 			]

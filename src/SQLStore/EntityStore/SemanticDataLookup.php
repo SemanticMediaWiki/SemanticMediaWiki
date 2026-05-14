@@ -243,7 +243,7 @@ class SemanticDataLookup {
 
 		$res = $this->fetchSemanticDataFromTableByList(
 			$list,
-			$pid,
+			(string)$pid,
 			$propTable,
 			$requestOptions
 		);

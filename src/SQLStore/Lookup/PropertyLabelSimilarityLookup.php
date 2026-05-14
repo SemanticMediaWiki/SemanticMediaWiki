@@ -196,6 +196,7 @@ class PropertyLabelSimilarityLookup {
 		);
 
 		foreach ( $definedBy as $dataItem ) {
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			if ( $dataItem->equals( $second->getCanonicalDiWikiPage() ) ) {
 				return true;
 			}
@@ -207,6 +208,7 @@ class PropertyLabelSimilarityLookup {
 		);
 
 		foreach ( $definedBy as $dataItem ) {
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			if ( $dataItem->equals( $first->getCanonicalDiWikiPage() ) ) {
 				return true;
 			}

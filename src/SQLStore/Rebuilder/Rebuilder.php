@@ -250,7 +250,7 @@ class Rebuilder {
 			->from( SQLStore::ID_TABLE )
 			->where( [
 				"smw_id >= $id ",
-				" smw_id < " . $connection->addQuotes( $id + $this->iterationLimit ),
+				" smw_id < " . $connection->addQuotes( (string)( $id + $this->iterationLimit ) ),
 			] )
 			->caller( __METHOD__ )
 			->fetchResultSet();

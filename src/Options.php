@@ -58,7 +58,7 @@ class Options implements JsonDeserializable {
 	 * @since 3.0
 	 *
 	 * @param string $key
-	 * @param string $value
+	 * @param mixed $value
 	 *
 	 * @return bool
 	 */

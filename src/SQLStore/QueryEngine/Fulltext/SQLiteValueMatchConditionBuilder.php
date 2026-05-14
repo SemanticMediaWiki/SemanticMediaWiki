@@ -25,6 +25,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 			return false;
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 		if ( $description->getProperty() !== null && $this->isExemptedProperty( $description->getProperty() ) ) {
 			return false;
 		}

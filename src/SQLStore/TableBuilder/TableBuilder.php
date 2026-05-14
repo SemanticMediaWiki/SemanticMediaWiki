@@ -5,6 +5,7 @@ namespace SMW\SQLStore\TableBuilder;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
 use RuntimeException;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder as TableBuilderInterface;
 use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\IDatabase;
@@ -40,7 +41,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	/**
 	 * @since 2.5
 	 *
-	 * @param IDatabase $connection
+	 * @param Database|IDatabase $connection
 	 *
 	 * @return TableBuilder
 	 * @throws RuntimeException

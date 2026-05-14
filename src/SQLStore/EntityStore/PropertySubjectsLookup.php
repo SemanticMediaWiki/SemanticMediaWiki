@@ -341,7 +341,7 @@ class PropertySubjectsLookup {
 			DataItem::TYPE_WIKIPAGE
 		);
 
-		if ( $cursorMode ) {
+		if ( $cursorMode && $callerRequestOptions !== null ) {
 			$res = $this->postProcessCursorResult( $res, $callerRequestOptions, $requestOptions );
 		}
 

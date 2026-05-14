@@ -202,6 +202,7 @@ class ChangeOp implements IteratorAggregate {
 	 */
 	public function newChangeDiff(): ChangeDiff {
 		$changeDiff = new ChangeDiff(
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$this->subject,
 			$this->getTableChangeOps(),
 			$this->getDataOps(),

@@ -124,7 +124,15 @@ class ProximityPropertyValueLookup {
 	/**
 	 * @return mixed[][]|string[]
 	 */
-	private function fetchFromIDTable( SelectQueryBuilder $qb, int $pid, ?string $table, int $limit, int $offset, string $search, string|false $sort ): array {
+	private function fetchFromIDTable(
+		SelectQueryBuilder $qb,
+		int $pid,
+		string $table,
+		int $limit,
+		int $offset,
+		string $search,
+		string|false $sort
+	): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$res = [];
 

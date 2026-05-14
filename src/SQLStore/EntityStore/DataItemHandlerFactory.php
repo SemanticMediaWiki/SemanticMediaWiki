@@ -48,7 +48,7 @@ class DataItemHandlerFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $type
+	 * @param int|string $type
 	 *
 	 * @return DataItemHandler
 	 * @throws RuntimeException

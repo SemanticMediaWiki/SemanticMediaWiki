@@ -112,11 +112,11 @@ class PropertyStatisticsStore {
 		if ( $delta < 0 ) {
 			return $field . '=' . $this->connection->conditional(
 				$this->connection->expr( $field, '>=', abs( $delta ) ),
-				$field . ' - ' . $this->connection->addQuotes( abs( $delta ) ),
+				$field . ' - ' . $this->connection->addQuotes( (string)abs( $delta ) ),
 				0
 			);
 		} else {
-			return "$field = $field + " . $this->connection->addQuotes( abs( $delta ) );
+			return "$field = $field + " . $this->connection->addQuotes( (string)abs( $delta ) );
 		}
 	}
 

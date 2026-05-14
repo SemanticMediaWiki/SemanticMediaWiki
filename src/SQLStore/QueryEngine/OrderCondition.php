@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Query\DescriptionFactory;
@@ -197,6 +198,7 @@ class OrderCondition {
 
 			if ( $sortprop->isValid() ) {
 				$description = $this->descriptionFactory->newSomeProperty(
+					// @phan-suppress-next-line PhanTypeMismatchArgument
 					$sortprop->getDataItem(),
 					$this->descriptionFactory->newThingDescription()
 				);
@@ -206,7 +208,11 @@ class OrderCondition {
 		return $description;
 	}
 
-	private function extendConditions( ConditionBuilder $conditionBuilder, ?QuerySegment $querySegment, array $extraDescriptions ): void {
+	private function extendConditions(
+		ConditionBuilder $conditionBuilder,
+		QuerySegment $querySegment,
+		array $extraDescriptions
+	): void {
 		if ( $extraDescriptions === [] ) {
 			return;
 		}
