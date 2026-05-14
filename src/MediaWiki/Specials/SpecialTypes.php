@@ -15,6 +15,7 @@ use SMW\DataValues\ErrorValue;
 use SMW\DataValues\TypesValue;
 use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -206,13 +207,33 @@ class SpecialTypes extends SpecialPage {
 			return '';
 		}
 
-		$limit = $this->getRequest()->getVal( 'limit', $pagingLimit );
-		$offset = $this->getRequest()->getVal( 'offset', 0 );
+		$request = $this->getRequest();
+		$limit = (int)$request->getVal( 'limit', $pagingLimit );
+		$offset = (int)$request->getVal( 'offset', 0 );
+		$after = $request->getInt( 'after', 0 );
+		$before = $request->getInt( 'before', 0 );
+
+		$cursorMode = self::shouldUseCursorMode( $request->getVal( 'offset', null ) );
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
-		$requestOptions->setLimit( (int)$limit + 1 );
-		$requestOptions->setOffset( $offset );
+
+		if ( $cursorMode ) {
+			// PropertySubjectsLookup applies its own LIMIT+1 lookahead in
+			// cursor mode, so the caller passes the plain page size.
+			$requestOptions->setLimit( $limit );
+			$requestOptions->setOption( RequestOptions::CURSOR_MODE, true );
+			if ( $after > 0 ) {
+				$requestOptions->setCursorAfter( $after );
+			} elseif ( $before > 0 ) {
+				$requestOptions->setCursorBefore( $before );
+			}
+		} else {
+			// Legacy offset path passes LIMIT+1 (existing convention — the
+			// extra row is rendered without trimming).
+			$requestOptions->setLimit( $limit + 1 );
+			$requestOptions->setOffset( $offset );
+		}
 
 		$dataItems = $store->getPropertySubjects(
 			new Property( '_TYPE' ),
@@ -267,18 +288,28 @@ class SpecialTypes extends SpecialPage {
 			return $result;
 		}
 
-		$html = Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-page-navigation'
-			],
-			Pager::pagination(
+		if ( $cursorMode ) {
+			$paginationHtml = $this->renderCursorPager(
+				$typeLabel,
+				$limit,
+				$requestOptions
+			);
+		} else {
+			$paginationHtml = Pager::pagination(
 				$this->getTitleFor( 'Types', $typeLabel ),
 				$limit,
 				$offset,
 				$count,
 				[ '_target' => '#smw-list' ]
-			) . Html::rawElement(
+			);
+		}
+
+		$html = Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-page-navigation'
+			],
+			$paginationHtml . Html::rawElement(
 				'div',
 				[
 					'class' => 'smw-page-nav-note'
@@ -334,6 +365,63 @@ class SpecialTypes extends SpecialPage {
 				'class' => 'smw-types'
 			]
 		);
+	}
+
+	/**
+	 * Renders the cursor-mode prev/next pager. The legacy offset pager uses
+	 * the `_target` convention in `Pager::pagination` to append `#smw-list`
+	 * to each generated href so the user lands on the list rather than the
+	 * intro text after a page-flip. `MessageBuilder::cursorPrevNextToText`
+	 * has no equivalent fragment hook, so the fragment is grafted onto each
+	 * rendered href here. Only the local hrefs emitted by the nav builder
+	 * are affected (they all target `Special:Types/<label>`).
+	 *
+	 * @since 7.0.0
+	 */
+	private function renderCursorPager(
+		string|array $typeLabel,
+		int $limit,
+		RequestOptions $cursorOptions
+	): string {
+		$messageBuilder = new MessageBuilder( $this->getLanguage() );
+		$isFirstPage = !$cursorOptions->hasCursor();
+
+		$html = $messageBuilder->cursorPrevNextToText(
+			$this->getTitleFor( 'Types', $typeLabel ),
+			$limit,
+			$isFirstPage ? null : $cursorOptions->getFirstCursor(),
+			$cursorOptions->getLastCursor(),
+			[],
+			!$cursorOptions->getCursorHasMore(),
+			$cursorOptions->getCursorBefore() !== null
+		);
+
+		return preg_replace(
+			'/(href="[^"#]*)(")/',
+			'$1#smw-list$2',
+			$html
+		);
+	}
+
+	/**
+	 * Decides whether the request should be served via the cursor path or
+	 * the legacy offset path. Cursor mode is the default; the legacy path
+	 * is taken whenever the `offset` URL param is present at all, even if
+	 * its value is empty, garbage, or negative. The reasoning: an `offset=`
+	 * param signals offset semantics on the client side, so we honour the
+	 * intent rather than silently switching modes when the value coerces
+	 * to 0.
+	 *
+	 * Extracted as a static helper so the predicate can be unit-tested
+	 * without spinning up the full request context.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string|null $offsetParamValue The raw value of `?offset=` from
+	 *   the request, or null if the param is absent.
+	 */
+	public static function shouldUseCursorMode( ?string $offsetParamValue ): bool {
+		return $offsetParamValue === null;
 	}
 
 	private function find_errors( $dataValue, $typeId, string $label ) {
