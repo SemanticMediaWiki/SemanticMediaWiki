@@ -399,13 +399,49 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 		$cursorMode = $query->getCursorAfter() !== null;
+		$cursorSortColumn = null;
+		$cursorSortPropKey = '';
 
 		if ( $cursorMode ) {
-			// Override sort and offset for cursor mode. The trait-pattern
-			// keyset predicate is total-ordered on `(smw_sort, smw_id)`;
-			// any pre-existing ORDER BY would conflict with the predicate
-			// semantics, and OFFSET is replaced by the WHERE-anchored seek.
-			$sql_options['ORDER BY'] = "$qobj->alias.smw_sort, $qobj->alias.smw_id";
+			// The active sort key is determined by `$query->sortkeys`
+			// (set by `QueryCreator` from `sort=`), not by the
+			// incoming cursor payload. The cursor's `sort_prop` was
+			// already cross-checked against `sort=` in QueryCreator;
+			// here the engine just needs to know which sortfield
+			// column to anchor the keyset predicate on.
+			foreach ( $query->sortkeys as $propKey => $_order ) {
+				if ( $propKey !== '' ) {
+					$cursorSortPropKey = $propKey;
+					break;
+				}
+			}
+
+			if ( $cursorSortPropKey !== '' ) {
+				if ( !isset( $qobj->sortfields[$cursorSortPropKey] ) ) {
+					// User asked for `sort=Foo` but `Foo` could not be
+					// resolved to a sortfield column (invalid property,
+					// or the joined table never got set up). Surface
+					// explicitly rather than silently fall back to
+					// default sort, since the next cursor anchor would
+					// be meaningless.
+					$query->addErrors( [
+						"Cursor mode could not resolve `sort=$cursorSortPropKey` to a query sortfield."
+					] );
+					return $this->queryFactory->newQueryResult(
+						$this->store, $query, [], false
+					);
+				}
+				$cursorSortColumn = $qobj->sortfields[$cursorSortPropKey];
+			} else {
+				// Default sort (Phase 3 spike compatible).
+				$cursorSortColumn = "$qobj->alias.smw_sort";
+			}
+
+			// Override sort and offset for cursor mode. Keyset is total-ordered
+			// on `(<sort_column>, smw_id)`; any pre-existing ORDER BY would
+			// conflict with the predicate semantics, OFFSET is replaced by
+			// the WHERE-anchored seek.
+			$sql_options['ORDER BY'] = "$cursorSortColumn, $qobj->alias.smw_id";
 			unset( $sql_options['OFFSET'] );
 		}
 
@@ -414,7 +450,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		// the keyset predicate into `SubqueryQueryBuilder`'s derived-table
 		// rewrite, so cursor mode opts out of that optimisation in
 		// exchange for the much larger keyset speedup on the OFFSET side.
-		// Tracked as Phase 3a follow-up in #6795.
+		// Tracked as Phase 3c follow-up in #6795.
 		if ( $cursorMode || $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
 			$selectFields = [
 				'id' => "$qobj->alias.smw_id",
@@ -425,7 +461,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 				'sortkey' => "$qobj->alias.smw_sortkey",
 			];
 			if ( $cursorMode ) {
-				$selectFields['sort'] = "$qobj->alias.smw_sort";
+				// Alias the sort column under `sort` so the row loop can
+				// read `$row->sort` regardless of whether the user
+				// specified `sort=Property` or accepted the default.
+				$selectFields['sort'] = $cursorSortColumn;
 			}
 
 			$qb = $connection->newSelectQueryBuilder()
@@ -444,7 +483,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			}
 
 			if ( $cursorMode ) {
-				$this->applyKeysetPredicate( $qb, $query, $qobj, $connection );
+				$this->applyKeysetPredicate( $qb, $query, $qobj, $connection, $cursorSortColumn );
 			}
 
 			$res = $qb->fetchResultSet();
@@ -546,19 +585,27 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$hasFurtherResults
 		);
 
-		// Cursor minted from a row whose `smw_sort` is NULL would be
+		// Cursor minted from a row whose sort value is NULL would be
 		// rejected by `applyKeysetPredicate()` on the next request
 		// (the `isset()` guard there treats null as "no anchor" and
 		// silently serves page 1, looping the crawler). Skip the
 		// cursor emission entirely for that case so the client at
-		// least stops paginating instead of looping. Phase 3a will
+		// least stops paginating instead of looping. Phase 3b will
 		// add explicit `IS NULL` handling once the cursor format
 		// supports compound sort tuples.
 		if ( $cursorMode && $hasFurtherResults && $lastCursorId !== null && $lastCursorSort !== null ) {
-			$queryResult->setNextCursor( CursorEncoder::encode( [
+			$payload = [
 				'sort' => $lastCursorSort,
 				'id'   => $lastCursorId,
-			] ) );
+			];
+			// Round-trip the sort property so the next request can
+			// reject a sort= that doesn't match the cursor's anchor.
+			// Omitted for default-sort queries to keep the spike's
+			// `{"v":1,"sort":...,"id":...}` payload shape compatible.
+			if ( $cursorSortPropKey !== '' ) {
+				$payload['sort_prop'] = $cursorSortPropKey;
+			}
+			$queryResult->setNextCursor( CursorEncoder::encode( $payload ) );
 		}
 
 		return $queryResult;
@@ -659,25 +706,30 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * The predicate matches the form used by
 	 * `KeysetPaginationTrait::applyCursorPagination()`:
 	 *
-	 *     smw_sort > X OR (smw_sort = X AND smw_id > Y)
+	 *     <sortCol> > X OR (<sortCol> = X AND smw_id > Y)
 	 *
-	 * MariaDB recognises this as an index range seek on
-	 * `(smw_sort, smw_id)`; the row-constructor form
-	 * `(smw_sort, smw_id) > (X, Y)` plans a full index scan instead.
-	 * See issue #6559 and #6794 for the underlying motivation.
+	 * MariaDB recognises this as an index range seek; the row-constructor
+	 * form `(<sortCol>, smw_id) > (X, Y)` plans a full index scan
+	 * instead. See issue #6559 and #6794 for the underlying motivation.
 	 *
-	 * TODO Phase 3a: unify with `KeysetPaginationTrait::applyCursorPagination`.
+	 * `$sortColumn` is the SQL column expression for the active sort
+	 * field — `<alias>.smw_sort` for default sort, the
+	 * `$qobj->sortfields[$propKey]` expression for `sort=Property`
+	 * (Phase 3a). The caller resolves the expression.
+	 *
+	 * TODO Phase 3b/c: unify with `KeysetPaginationTrait::applyCursorPagination`.
 	 * The two diverge in (a) aliased vs unqualified column refs,
 	 * (b) forward-only vs forward+backward, and (c) decoded-payload
-	 * vs RequestOptions-int cursor sources. Once Phase 3a generalises
-	 * the cursor payload to compound sort tuples, the two paths
-	 * should converge on a shared predicate builder.
+	 * vs RequestOptions-int cursor sources. Once Phase 3b adds
+	 * compound sort tuples, the two paths should converge on a shared
+	 * predicate builder.
 	 */
 	private function applyKeysetPredicate(
 		SelectQueryBuilder $queryBuilder,
 		Query $query,
 		QuerySegment $qobj,
-		$connection
+		$connection,
+		string $sortColumn
 	): void {
 		$payload = $query->getCursorAfter();
 		if ( !isset( $payload['sort'] ) || !isset( $payload['id'] ) ) {
@@ -689,8 +741,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$alias = $qobj->alias;
 
 		$queryBuilder->where(
-			"$alias.smw_sort > $quotedSort " .
-			"OR ($alias.smw_sort = $quotedSort AND $alias.smw_id > $cursorId)"
+			"$sortColumn > $quotedSort " .
+			"OR ($sortColumn = $quotedSort AND $alias.smw_id > $cursorId)"
 		);
 	}
 

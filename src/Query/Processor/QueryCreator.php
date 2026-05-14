@@ -152,21 +152,28 @@ class QueryCreator implements QueryContext {
 
 	/**
 	 * Decode the optional `cursor=<token>` user parameter and apply it
-	 * to the query, enforcing the constrained-spike contract: cursor
-	 * mode is only supported when the query has no custom `sort=`
-	 * property. A `cursor=` + `sort=Property` combination is rejected
-	 * by attaching an error message to the query (the engine then
-	 * surfaces it instead of running the query).
+	 * to the query, enforcing the Phase 3a contract:
 	 *
-	 * A malformed cursor token (any decode failure) is also surfaced
-	 * as an error rather than silently ignored, to avoid the
-	 * "expected next-page got first-page" surprise for bot clients.
+	 *   - Default sort (`sortKeys` has only the empty-string key or is
+	 *     empty): always allowed.
+	 *   - Single-property sort (`sort=Foo`, one non-empty key): allowed
+	 *     when the cursor's `sort_prop` field matches the request's
+	 *     sort key, or when the cursor has no `sort_prop` (bootstrap /
+	 *     empty payload for the first cursor-mode page).
+	 *   - Multi-property sort (`sort=A,B`): rejected (Phase 3b).
+	 *   - Custom sort + cursor with mismatching `sort_prop`: rejected.
+	 *     The cursor was minted for a different sort, applying it here
+	 *     would seek to a position that has no meaning in the new
+	 *     ordering.
+	 *
+	 * Malformed cursor tokens (any decode failure) are surfaced as an
+	 * error rather than silently ignored, to avoid the "expected
+	 * next-page got first-page" surprise for bot clients.
 	 *
 	 * @param Query $query
 	 * @param array $sortKeys As returned by `getSortKeys()['keys']`.
-	 *   An empty-string key (`'' => 'ASC'`) is the default "sort by
-	 *   page" and is allowed; any non-empty-string key is a custom
-	 *   property sort and is rejected.
+	 *   An empty-string key (`'' => 'ASC'`) is "sort by page"; a
+	 *   non-empty-string key is a property sort.
 	 */
 	private function applyCursorIfRequested( Query $query, array $sortKeys ): void {
 		$token = (string)$this->getParam( 'cursor', '' );
@@ -174,13 +181,16 @@ class QueryCreator implements QueryContext {
 			return;
 		}
 
-		foreach ( $sortKeys as $sortKey => $_order ) {
-			if ( $sortKey !== '' ) {
-				$query->addErrors( [
-					'Cursor pagination (`cursor=`) is not supported with a custom `sort=` property in this release. Remove `sort=` or use `offset=` instead.'
-				] );
-				return;
-			}
+		$customSortKeys = array_filter(
+			array_keys( $sortKeys ),
+			static fn ( $key ) => $key !== ''
+		);
+
+		if ( count( $customSortKeys ) > 1 ) {
+			$query->addErrors( [
+				'Cursor pagination (`cursor=`) is not supported with multi-property `sort=` in this release. Reduce to a single sort property, or use `offset=` instead.'
+			] );
+			return;
 		}
 
 		if ( $query->getQueryMode() === self::MODE_COUNT ) {
@@ -194,6 +204,19 @@ class QueryCreator implements QueryContext {
 		if ( $payload === null ) {
 			$query->addErrors( [
 				'Malformed `cursor=` token (rejected as unrecognised or from a newer schema version).'
+			] );
+			return;
+		}
+
+		// Reject mismatched sort_prop. The empty-payload bootstrap
+		// cursor has no `sort_prop` and therefore matches any sort,
+		// so a first-page cursor request works for both default- and
+		// custom-sort queries.
+		$payloadSortProp = $payload['sort_prop'] ?? '';
+		$requestSortProp = $customSortKeys[0] ?? '';
+		if ( $payloadSortProp !== '' && $payloadSortProp !== $requestSortProp ) {
+			$query->addErrors( [
+				"Cursor was minted for `sort=$payloadSortProp` but the request specifies `sort=$requestSortProp`. The cursor anchor has no meaning under a different sort; re-issue without `cursor=` or align the `sort=` parameter."
 			] );
 			return;
 		}
