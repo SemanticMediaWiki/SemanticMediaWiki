@@ -199,19 +199,16 @@ class QueryCreator implements QueryContext {
 			return;
 		}
 
-		// Phase 3a is ASC-only. The keyset predicate is `>`-form;
-		// supporting `DESC` requires `<`-form + reversed ORDER BY
-		// (planned for Phase 3b). Reject `order=desc`/`random`
-		// explicitly so a future lift can extend the contract
-		// without breaking clients that silently ignored the order
-		// parameter today.
-		foreach ( $sortKeys as $_key => $order ) {
-			if ( $order === 'DESC' || $order === 'RANDOM' ) {
-				$query->addErrors( [
-					"Cursor pagination (`cursor=`) requires ascending order; `order=$order` is not supported in this release."
-				] );
-				return;
-			}
+		// `order=random` is fundamentally incompatible with keyset
+		// pagination: there's no stable anchor to seek past. Phase 3b
+		// adds `order=desc` support; `random` stays rejected.
+		$requestSortKey = $customSortKeys[0] ?? '';
+		$requestSortOrder = $this->resolveRequestSortOrder( $sortKeys, $requestSortKey );
+		if ( $requestSortOrder === 'RANDOM' ) {
+			$query->addErrors( [
+				'Cursor pagination (`cursor=`) is not supported with `order=random`. Reverse the request to use `order=asc` or `order=desc`.'
+			] );
+			return;
 		}
 
 		if ( $query->getQueryMode() === self::MODE_COUNT ) {
@@ -234,15 +231,48 @@ class QueryCreator implements QueryContext {
 		// so a first-page cursor request works for both default- and
 		// custom-sort queries.
 		$payloadSortProp = $payload['sort_prop'] ?? '';
-		$requestSortProp = $customSortKeys[0] ?? '';
-		if ( $payloadSortProp !== '' && $payloadSortProp !== $requestSortProp ) {
+		if ( $payloadSortProp !== '' && $payloadSortProp !== $requestSortKey ) {
 			$query->addErrors( [
-				"Cursor was minted for `sort=$payloadSortProp` but the request specifies `sort=$requestSortProp`. The cursor anchor has no meaning under a different sort; re-issue without `cursor=` or align the `sort=` parameter."
+				"Cursor was minted for `sort=$payloadSortProp` but the request specifies `sort=$requestSortKey`. The cursor anchor has no meaning under a different sort; re-issue without `cursor=` or align the `sort=` parameter."
 			] );
 			return;
 		}
 
+		// Reject mismatched sort_order, but only when the cursor has
+		// an actual anchor (the `sort` field). Bootstrap cursors
+		// without an anchor (e.g. `{"v":1}`) are direction-agnostic.
+		// Phase 3 spike + 3a cursors carry an anchor but no
+		// `sort_order` field; treat their absence as ASC because
+		// those cursors were minted under ASC (the only mode
+		// available pre-3b).
+		if ( isset( $payload['sort'] ) ) {
+			$payloadSortOrder = $payload['sort_order'] ?? 'ASC';
+			if ( $payloadSortOrder !== $requestSortOrder ) {
+				$query->addErrors( [
+					"Cursor was minted for `order=$payloadSortOrder` but the request specifies `order=$requestSortOrder`. The cursor anchor seeks in the wrong direction under the new order; re-issue without `cursor=` or align the `order=` parameter."
+				] );
+				return;
+			}
+		}
+
 		$query->setCursorAfter( $payload );
+	}
+
+	/**
+	 * Resolve the canonical sort order for the active sort key. For a
+	 * custom-property sort (`sort=Foo`), use that key's order. For
+	 * default sort (`''` key only), use the empty key's order. Falls
+	 * back to ASC when neither is set.
+	 *
+	 * The returned string is always one of "ASC", "DESC", or "RANDOM".
+	 * Callers string-compare against these literals; values are
+	 * normalised upstream by `normalize_order()`.
+	 */
+	private function resolveRequestSortOrder( array $sortKeys, string $requestSortKey ): string {
+		if ( $requestSortKey !== '' && isset( $sortKeys[$requestSortKey] ) ) {
+			return $sortKeys[$requestSortKey];
+		}
+		return $sortKeys[''] ?? 'ASC';
 	}
 
 	/**
