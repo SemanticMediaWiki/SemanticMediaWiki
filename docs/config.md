@@ -31,25 +31,39 @@ beyond the per-setting boxes here:
 
 ## $smwgAdminFeatures
 
-Bitmask of Special:SemanticMediaWiki admin-panel features and alerts. Each
-flag enables or disables a distinct panel section or maintenance alert.
+Array of Special:SemanticMediaWiki admin-panel features and alerts. Each
+entry enables a distinct panel section or maintenance alert.
 
-- `SMW_ADM_REFRESH` — enable the "Refresh/rebuild data" action to initiate
+- `'refresh'`, enables the "Refresh/rebuild data" action to initiate
   repairing or updating all wiki data.
-- `SMW_ADM_SETUP` — allow running database installation and upgrade from the
+- `'setup'`, allows running database installation and upgrade from the
   admin panel.
-- `SMW_ADM_DISPOSAL` — allow access to the "Object ID lookup and disposal"
+- `'disposal'`, allows access to the "Object ID lookup and disposal"
   feature and the "Outdated entities disposal" tool.
-- `SMW_ADM_PSTATS` — allow updating property statistics.
-- `SMW_ADM_FULLT` — allow rebuilding the fulltext search index.
-- `SMW_ADM_MAINTENANCE_SCRIPT_DOCS` — show the maintenance scripts
-  documentation tab.
-- `SMW_ADM_SHOW_OVERVIEW` — show the Overview tab.
-- `SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN` — show a maintenance alert when
-  table optimization is overdue.
+- `'pstats'`, allows updating property statistics.
+- `'fullt'`, allows rebuilding the fulltext search index.
+- `'maintenance-script-docs'`, shows the maintenance scripts documentation tab.
+- `'show-overview'`, shows the Overview tab.
+- `'alert-last-optimization-run'`, shows a maintenance alert when table
+  optimization is overdue.
 
 **Since:** 2.5
-**Default:** `SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT | SMW_ADM_MAINTENANCE_SCRIPT_DOCS | SMW_ADM_SHOW_OVERVIEW | SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN`
+**Default:** `[ 'refresh', 'setup', 'disposal', 'pstats', 'fullt', 'maintenance-script-docs', 'show-overview', 'alert-last-optimization-run' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'refresh'` | `SMW_ADM_REFRESH` |
+| `'setup'` | `SMW_ADM_SETUP` |
+| `'disposal'` | `SMW_ADM_DISPOSAL` |
+| `'pstats'` | `SMW_ADM_PSTATS` |
+| `'fullt'` | `SMW_ADM_FULLT` |
+| `'maintenance-script-docs'` | `SMW_ADM_MAINTENANCE_SCRIPT_DOCS` |
+| `'show-overview'` | `SMW_ADM_SHOW_OVERVIEW` |
+| `'alert-last-optimization-run'` | `SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN` |
 
 ## $smwgAllowRecursiveExport
 
@@ -85,23 +99,35 @@ When `true`, refreshes the semantic store for pages that are edited.
 
 ## $smwgBrowseFeatures
 
-Bitmask of Special:Browse capabilities enabled by default.
+Array of Special:Browse capabilities enabled by default.
 
-- `SMW_BROWSE_TLINK` — show a toolbox link on every content page pointing to
-  Special:Browse for that page (replaces `smwgToolboxBrowseLink`).
-- `SMW_BROWSE_SHOW_INVERSE` — show incoming links via their inverse
-  properties rather than on the "incoming" side (replaces
-  `smwgBrowseShowInverse`).
-- `SMW_BROWSE_SHOW_INCOMING` — always show incoming links and expand the
+- `'toolbox-link'`, shows a toolbox link on every content page pointing
+  to Special:Browse for that page (replaces `smwgToolboxBrowseLink`).
+- `'show-inverse'`, shows incoming links via their inverse properties
+  rather than on the "incoming" side (replaces `smwgBrowseShowInverse`).
+- `'show-incoming'`, always shows incoming links and expands the
   incoming value list (replaces `smwgBrowseShowAll`).
-- `SMW_BROWSE_SHOW_GROUP` — create group sections for properties that belong
-  to the same property group.
-- `SMW_BROWSE_SHOW_SORTKEY` — display the sortkey in the browse view.
-- `SMW_BROWSE_USE_API` — generate the browse display via an API request
-  rather than inline rendering (replaces `smwgBrowseByApi`).
+- `'show-group'`, creates group sections for properties that belong to
+  the same property group.
+- `'show-sortkey'`, displays the sortkey in the browse view.
+- `'use-api'`, generates the browse display via an API request rather
+  than inline rendering (replaces `smwgBrowseByApi`).
 
 **Since:** 3.0
-**Default:** `SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API`
+**Default:** `[ 'toolbox-link', 'show-incoming', 'show-group', 'use-api' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'toolbox-link'` | `SMW_BROWSE_TLINK` |
+| `'show-inverse'` | `SMW_BROWSE_SHOW_INVERSE` |
+| `'show-incoming'` | `SMW_BROWSE_SHOW_INCOMING` |
+| `'show-group'` | `SMW_BROWSE_SHOW_GROUP` |
+| `'show-sortkey'` | `SMW_BROWSE_SHOW_SORTKEY` |
+| `'use-api'` | `SMW_BROWSE_USE_API` |
 
 ## $smwgCacheUsage
 
@@ -140,21 +166,31 @@ Set any key to `false` to disable caching for that lookup entirely. Each key is 
 
 ## $smwgCategoryFeatures
 
-Bitmask of category processing features: redirect resolution,
-category-as-instance, and subcategory-as-hierarchy.
+Array of category processing features (redirect resolution,
+category-as-instance, subcategory-as-hierarchy).
 
-- `SMW_CAT_REDIRECT` — resolve redirects and errors in connection with
+- `'redirect'`, resolves redirects and errors in connection with
   categories.
-- `SMW_CAT_INSTANCE` — treat category pages that carry `[[Category:Foo]]`
-  as elements of category Foo. If disabled, category pages cannot be members
-  of other categories. See also `SMW_CAT_HIERARCHY` (replaces
+- `'instance'`, treats category pages that carry `[[Category:Foo]]` as
+  elements of category Foo. If disabled, category pages cannot be
+  members of other categories. See also `'hierarchy'` (replaces
   `smwgCategoriesAsInstances`).
-- `SMW_CAT_HIERARCHY` — treat subcategories as hierarchy elements: they are
+- `'hierarchy'`, treats subcategories as hierarchy elements: they are
   interpreted as subclasses and automatically annotated with
   `Subcategory of` (replaces `smwgUseCategoryHierarchy`).
 
 **Since:** 3.0
-**Default:** `SMW_CAT_REDIRECT | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY`
+**Default:** `[ 'redirect', 'instance', 'hierarchy' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'redirect'` | `SMW_CAT_REDIRECT` |
+| `'instance'` | `SMW_CAT_INSTANCE` |
+| `'hierarchy'` | `SMW_CAT_HIERARCHY` |
 
 ## $smwgChangePropagationProtection
 
@@ -182,13 +218,24 @@ Scope of constraint-error lookups shown via the page indicator. The
 constraint error lookup is cached, so no negative performance impact is
 expected when viewing a page repeatedly.
 
-- `SMW_CONSTRAINT_ERR_CHECK_NONE` — disable the check and indicator display.
-- `SMW_CONSTRAINT_ERR_CHECK_MAIN` — check only the main subject.
-- `SMW_CONSTRAINT_ERR_CHECK_ALL` — check the main subject and all subobjects
-  attached to it.
+- `false`, disables the check and indicator display.
+- `'check/main'`, checks only the main subject.
+- `'check/all'`, checks the main subject and all subobjects attached to
+  it.
 
 **Since:** 3.1
-**Default:** `SMW_CONSTRAINT_ERR_CHECK_ALL`
+**Default:** `'check/all'`
+
+### Legacy constants
+
+The `SMW_CONSTRAINT_ERR_CHECK_*` constants resolve to these string
+values and continue to work without a deprecation notice. The mapping is:
+
+| Value | Legacy constant |
+|---|---|
+| `false` | `SMW_CONSTRAINT_ERR_CHECK_NONE` |
+| `'check/main'` | `SMW_CONSTRAINT_ERR_CHECK_MAIN` |
+| `'check/all'` | `SMW_CONSTRAINT_ERR_CHECK_ALL` |
 
 ## $smwgCheckForRemnantEntities
 
@@ -321,35 +368,53 @@ for readability in code that does not use `$smwgIP` directly.
 
 ## $smwgDVFeatures
 
-Bitmask of DataValue type-specific features enabled by default.
+Array of DataValue type-specific features enabled by default.
 
-- `SMW_DV_PROV_REDI` — (PropertyValue) follow property redirects (Foo → Bar)
-  automatically so that query results are equivalent for both names. Mainly
-  provided to restore backwards compatibility; enabling it is recommended
-  for better user experience.
-- `SMW_DV_MLTV_LCODE` — (MonolingualTextValue) require a language code for
-  the value to be considered complete.
-- `SMW_DV_PVAP` — allow regular-expression pattern matching when an `Allows
-  pattern` property is assigned to a user-defined property.
-- `SMW_DV_WPV_DTITLE` — (WikiPageValue) look up a display title and use it
-  as caption when present.
-- `SMW_DV_PROV_DTITLE` — (PropertyValue) resolve a property label by
-  matching it against a `Display title of` annotation. Disabled by default
-  due to an uncached lookup that may impact performance.
-- `SMW_DV_PVUC` — (Uniqueness constraint) allow specifying that a property
-  may only hold values with a unique literal representation.
-- `SMW_DV_TIMEV_CM` — (TimeValue) indicate the calendar model when it is not
-  Gregorian.
-- `SMW_DV_NUMV_USPACE` — (Number/QuantityValue) preserve spaces within unit
-  labels.
-- `SMW_DV_PPLB` — support the use of preferred property labels.
-- `SMW_DV_PROV_LHNT` — (PropertyValue) output a `<sup>p</sup>` hint marker
-  on properties that use a preferred label.
-- `SMW_DV_WPV_PIPETRICK` — (WikiPageValue) use a full pipe trick when
+- `'provider-redirect'`, (PropertyValue) follows property redirects (Foo to
+  Bar) automatically so that query results are equivalent for both
+  names. Mainly provided to restore backwards compatibility; enabling
+  it is recommended for better user experience.
+- `'monolingual-langcode'`, (MonolingualTextValue) requires a language
+  code for the value to be considered complete.
+- `'pattern-validation'`, allows regular-expression pattern matching when
+  an `Allows pattern` property is assigned to a user-defined property.
+- `'wpv-display-title'`, (WikiPageValue) looks up a display title and
+  uses it as caption when present.
+- `'provider-display-title'`, (PropertyValue) resolves a property label by
+  matching it against a `Display title of` annotation. Disabled by
+  default due to an uncached lookup that may impact performance.
+- `'unique-constraint'`, (Uniqueness constraint) allows specifying that a
+  property may only hold values with a unique literal representation.
+- `'time-calendar-model'`, (TimeValue) indicates the calendar model when
+  it is not Gregorian.
+- `'number-value-usespaces'`, (Number/QuantityValue) preserves spaces
+  within unit labels.
+- `'preferred-label'`, supports the use of preferred property labels.
+- `'provider-link-hint'`, (PropertyValue) outputs a `<sup>p</sup>` hint
+  marker on properties that use a preferred label.
+- `'wpv-pipetrick'`, (WikiPageValue) uses a full pipe trick when
   rendering its caption.
 
 **Since:** 2.4
-**Default:** `SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM | SMW_DV_PPLB | SMW_DV_PROV_LHNT`
+**Default:** `[ 'provider-redirect', 'monolingual-langcode', 'pattern-validation', 'wpv-display-title', 'time-calendar-model', 'preferred-label', 'provider-link-hint' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'provider-redirect'` | `SMW_DV_PROV_REDI` |
+| `'monolingual-langcode'` | `SMW_DV_MLTV_LCODE` |
+| `'pattern-validation'` | `SMW_DV_PVAP` |
+| `'wpv-display-title'` | `SMW_DV_WPV_DTITLE` |
+| `'provider-display-title'` | `SMW_DV_PROV_DTITLE` |
+| `'unique-constraint'` | `SMW_DV_PVUC` |
+| `'time-calendar-model'` | `SMW_DV_TIMEV_CM` |
+| `'number-value-usespaces'` | `SMW_DV_NUMV_USPACE` |
+| `'preferred-label'` | `SMW_DV_PPLB` |
+| `'provider-link-hint'` | `SMW_DV_PROV_LHNT` |
+| `'wpv-pipetrick'` | `SMW_DV_WPV_PIPETRICK` |
 
 ## $smwgEditProtectionRight
 
@@ -557,18 +622,28 @@ To assess whether tuning is needed, monitor the `mediawiki.SemanticMediaWiki.inm
 
 ## $smwgExperimentalFeatures
 
-Bitmask of experimental features that can be toggled off to revert to a
-previous working state without hot-patching. After a sufficient in-production
-period, features are promoted to permanently enabled and the flag retired.
+Array of experimental features that can be toggled off to revert to a
+previous working state without hot-patching. After a sufficient
+in-production period, features are promoted to permanently enabled and
+the flag retired.
 
-- `SMW_QUERYRESULT_PREFETCH` — use the prefetch method to retrieve
+- `'queryresult-prefetch'`, uses the prefetch method to retrieve
   row-related items for a `QueryResult`.
-- `SMW_SHOWPARSER_USE_CURTAILMENT` — for `#show`, bypass the `QueryEngine`
-  and access the DB directly, since `#show` always requests output for
-  exactly one entity.
+- `'showparser-curtailment'`, for `#show`, bypasses the `QueryEngine`
+  and accesses the DB directly, since `#show` always requests output
+  for exactly one entity.
 
 **Since:** 3.0
-**Default:** `SMW_QUERYRESULT_PREFETCH | SMW_SHOWPARSER_USE_CURTAILMENT`
+**Default:** `[ 'queryresult-prefetch', 'showparser-curtailment' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'queryresult-prefetch'` | `SMW_QUERYRESULT_PREFETCH` |
+| `'showparser-curtailment'` | `SMW_SHOWPARSER_USE_CURTAILMENT` |
 
 ## $smwgExportBacklinks
 
@@ -622,20 +697,29 @@ Directory containing SMW-specific i18n files for extraneous language data
 
 ## $smwgFactboxFeatures
 
-Bitmask of factbox capabilities: caching, purge-refresh, subobject
-display, and attachment display.
+Array of factbox capabilities (caching, purge-refresh, subobject
+display, attachment display).
 
-- `SMW_FACTBOX_CACHE` — use the main cache to avoid reparsing the factbox
+- `'cache'`, uses the main cache to avoid reparsing the factbox
   content on each page view (replaces `smwgFactboxUseCache`).
-- `SMW_FACTBOX_PURGE_REFRESH` — refresh the factbox content on the purge
-  event (replaces `smwgFactboxCacheRefreshOnPurge`).
-- `SMW_FACTBOX_DISPLAY_SUBOBJECT` — display subobject references in the
-  factbox.
-- `SMW_FACTBOX_DISPLAY_ATTACHMENT` — display the attachment list in the
-  factbox.
+- `'purge-refresh'`, refreshes the factbox content on the purge event
+  (replaces `smwgFactboxCacheRefreshOnPurge`).
+- `'display-subobject'`, displays subobject references in the factbox.
+- `'display-attachment'`, displays the attachment list in the factbox.
 
 **Since:** 3.0
-**Default:** `SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT | SMW_FACTBOX_DISPLAY_ATTACHMENT`
+**Default:** `[ 'cache', 'purge-refresh', 'display-subobject', 'display-attachment' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'cache'` | `SMW_FACTBOX_CACHE` |
+| `'purge-refresh'` | `SMW_FACTBOX_PURGE_REFRESH` |
+| `'display-subobject'` | `SMW_FACTBOX_DISPLAY_SUBOBJECT` |
+| `'display-attachment'` | `SMW_FACTBOX_DISPLAY_ATTACHMENT` |
 
 ## $smwgFallbackSearchType
 
@@ -649,27 +733,39 @@ custom search engine.
 
 ## $smwgFieldTypeFeatures
 
-SQLStore field-type modifications; `false` (= `SMW_FIELDT_NONE`) disables
-all flags.
+SQLStore field-type modifications. Accepts `false` (disabled, no
+field-type registration at all) or an array of any of the values
+below. Note that `[]` registers the component but enables no flags; use
+`false` to skip registration entirely.
 
-- `SMW_FIELDT_NONE` — no field-type modifications.
-- `SMW_FIELDT_CHAR_NOCASE` — switch selected search fields to a
-  case-insensitive collation. Requires additional extensions on non-MySQL
-  systems (e.g. Postgres needs `citext`). Replaces `FieldType::FIELD_TITLE`
-  with `FieldType::TYPE_CHAR_NOCASE`. Field definitions: MySQL —
-  `VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci`; Postgres — `citext
-  NOT NULL`; SQLite — `VARCHAR(255) NOT NULL COLLATE NOCASE` (may need a
-  special solution). No performance analysis has been performed.
-- `SMW_FIELDT_CHAR_LONG` — extend DIBlob and DIUri field width to 300
-  characters (from 72) for LIKE/NLIKE matching on a larger text body without
-  a fulltext index. 300 was chosen to fit within MySQL/MariaDB's InnoDB
-  prefix limit of 767 bytes. A larger index may carry a performance penalty.
-  Requires running `rebuildData.php` after enabling.
-- `SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG` — combine both flags for
-  case-insensitive long fields.
+- `'char-nocase'`, switches selected search fields to a case-insensitive
+  collation. Requires additional extensions on non-MySQL systems (e.g.
+  Postgres needs `citext`). Replaces `FieldType::FIELD_TITLE` with
+  `FieldType::TYPE_CHAR_NOCASE`. Field definitions: MySQL
+  (`VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci`), Postgres
+  (`citext NOT NULL`), SQLite (`VARCHAR(255) NOT NULL COLLATE NOCASE`,
+  may need a special solution). No performance analysis has been
+  performed.
+- `'char-long'`, extends DIBlob and DIUri field width to 300 characters
+  (from 72) for LIKE/NLIKE matching on a larger text body without a
+  fulltext index. 300 was chosen to fit within MySQL/MariaDB's InnoDB
+  prefix limit of 767 bytes. A larger index may carry a performance
+  penalty. Requires running `rebuildData.php` after enabling.
+
+Combine flags by listing them: `[ 'char-nocase', 'char-long' ]`.
 
 **Since:** 3.0
 **Default:** `false`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `false` (sentinel: disabled) | `SMW_FIELDT_NONE` (when assigned alone) |
+| `'char-nocase'` | `SMW_FIELDT_CHAR_NOCASE` |
+| `'char-long'` | `SMW_FIELDT_CHAR_LONG` |
 
 ## $smwgFixedProperties
 
@@ -717,18 +813,28 @@ $smwgFulltextLanguageDetection = [
 
 ## $smwgFulltextSearchIndexableDataTypes
 
-Bitmask of DataItem types indexed in the fulltext search table.
+Array of DataItem types indexed in the fulltext search table.
 
-- `SMW_FT_BLOB` — index property values of type Blob (Text).
-- `SMW_FT_URI` — index property values of type URI.
-- `SMW_FT_WIKIPAGE` — index property values of type Page. Not enabled by
-  default because no performance analysis is available for wikis with a
-  large pool of pages (10K+) or extensive page-type value assignments.
-  Enabling it supports the same case-insensitivity and phrase-matching
-  features as Text or URI values when using `~/!~`.
+- `'blob'`, indexes property values of type Blob (Text).
+- `'uri'`, indexes property values of type URI.
+- `'wikipage'`, indexes property values of type Page. Not enabled by
+  default because no performance analysis is available for wikis with
+  a large pool of pages (10K+) or extensive page-type value
+  assignments. Enabling it supports the same case-insensitivity and
+  phrase-matching features as Text or URI values when using `~/!~`.
 
 **Since:** 2.5
-**Default:** `SMW_FT_BLOB | SMW_FT_URI`
+**Default:** `[ 'blob', 'uri' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'blob'` | `SMW_FT_BLOB` |
+| `'uri'` | `SMW_FT_URI` |
+| `'wikipage'` | `SMW_FT_WIKIPAGE` |
 
 ## $smwgFulltextSearchMinTokenSize
 
@@ -1055,29 +1161,41 @@ Number of results shown in the listings on pages in the Property and Concept nam
 
 ## $smwgParserFeatures
 
-Bitmask of annotation-parsing features.
+Array of annotation-parsing features.
 
-- `SMW_PARSER_STRICT` — (strict mode) treat
-  `[[property::value:part::also]]` as a single triple. Without strict mode,
-  `[[p1::p2::value]]` assigns multiple properties, but may cause unexpected
-  interpretations when values contain extra colons.
-- `SMW_PARSER_UNSTRIP` — support decoding (unstripping) of hidden text
-  elements such as `<nowiki>` within an annotation value (can only be stored
+- `'strict'`, strict mode: treats `[[property::value:part::also]]` as a
+  single triple. Without strict mode, `[[p1::p2::value]]` assigns
+  multiple properties, but may cause unexpected interpretations when
+  values contain extra colons.
+- `'unstrip'`, supports decoding (unstripping) of hidden text elements
+  such as `<nowiki>` within an annotation value (can only be stored
   with a `_txt` type property).
-- `SMW_PARSER_INL_ERROR` — display warnings inline in wikitext right after
-  the problematic annotation input (replaces `smwgInlineErrors`; does not
-  affect inline-query warnings).
-- `SMW_PARSER_HID_CATS` — omit hidden categories (marked with
+- `'inline-errors'`, displays warnings inline in wikitext right after
+  the problematic annotation input (replaces `smwgInlineErrors`; does
+  not affect inline-query warnings).
+- `'hidden-categories'`, omits hidden categories (marked with
   `__HIDDENCAT__`) from the annotation process (replaces
   `smwgShowHiddenCategories` from 1.9). Changing this requires a full
   rebuild.
-- `SMW_PARSER_LINV` — support "links in values", e.g.
+- `'links-in-values'`, supports "links in values", e.g.
   `[[SomeProperty::Foo [[link]] in [[Bar::AnotherValue]]]]` (replaces
-  `smwgLinksInValues` with `SMW_LINV_OBFU`; `SMW_LINV_PCRE` is no longer
-  available).
+  `smwgLinksInValues` with `SMW_LINV_OBFU`; `SMW_LINV_PCRE` is no
+  longer available).
 
 **Since:** 3.0
-**Default:** `SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR | SMW_PARSER_HID_CATS`
+**Default:** `[ 'strict', 'inline-errors', 'hidden-categories' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'strict'` | `SMW_PARSER_STRICT` |
+| `'unstrip'` | `SMW_PARSER_UNSTRIP` |
+| `'inline-errors'` | `SMW_PARSER_INL_ERROR` |
+| `'hidden-categories'` | `SMW_PARSER_HID_CATS` |
+| `'links-in-values'` | `SMW_PARSER_LINKS_IN_VALUES` (alias: `SMW_PARSER_LINV`) |
 
 ## $smwgPDefaultType
 
@@ -1218,33 +1336,57 @@ used when available regardless of this threshold.
 
 ## $smwgQConceptCaching
 
-Controls when concepts require a pre-computed cache. Concept queries that
-would not be allowed as normal inline queries will not be executed directly
-but can use pre-computed results instead.
+Controls when concepts require a pre-computed cache. Concept queries
+that would not be allowed as normal inline queries will not be executed
+directly but can use pre-computed results instead.
 
-- `CONCEPT_CACHE_ALL` — show concept elements only if they are cached.
-- `CONCEPT_CACHE_HARD` — show without cache if the concept is no harder
-  than a permitted inline query; otherwise require cache.
-- `CONCEPT_CACHE_NONE` — show all concepts even without any cache.
+- `'all'`, shows concept elements only if they are cached.
+- `'hard'`, shows without cache if the concept is no harder than a
+  permitted inline query; otherwise requires cache.
+- `'none'`, shows all concepts even without any cache.
 
-Cached results are always used when available, regardless of this setting.
+Cached results are always used when available, regardless of this
+setting.
 
 **Since:** 1.0
-**Default:** `CONCEPT_CACHE_HARD`
+**Default:** `'hard'`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'all'` | `CONCEPT_CACHE_ALL` |
+| `'hard'` | `CONCEPT_CACHE_HARD` |
+| `'none'` | `CONCEPT_CACHE_NONE` |
 
 ## $smwgQConceptFeatures
 
-Bitmask of query types available inside concept definitions.
+Array of query types available inside concept definitions.
 
-- `SMW_PROPERTY_QUERY` — property-based conditions.
-- `SMW_CATEGORY_QUERY` — category-based conditions.
-- `SMW_NAMESPACE_QUERY` — namespace-based conditions.
-- `SMW_CONJUNCTION_QUERY` — conjunction (`AND`) conditions.
-- `SMW_DISJUNCTION_QUERY` — disjunction (`OR`) conditions.
-- `SMW_CONCEPT_QUERY` — nested concept conditions.
+- `'property'`, property-based conditions.
+- `'category'`, category-based conditions.
+- `'namespace'`, namespace-based conditions.
+- `'conjunction'`, conjunction (`AND`) conditions.
+- `'disjunction'`, disjunction (`OR`) conditions.
+- `'concept'`, nested concept conditions.
 
 **Since:** 1.0
-**Default:** `SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY | SMW_CONCEPT_QUERY`
+**Default:** `[ 'property', 'category', 'namespace', 'conjunction', 'disjunction', 'concept' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'property'` | `SMW_PROPERTY_QUERY` |
+| `'category'` | `SMW_CATEGORY_QUERY` |
+| `'namespace'` | `SMW_NAMESPACE_QUERY` |
+| `'conjunction'` | `SMW_CONJUNCTION_QUERY` |
+| `'disjunction'` | `SMW_DISJUNCTION_QUERY` |
+| `'concept'` | `SMW_CONCEPT_QUERY` |
 
 ## $smwgQConceptMaxDepth
 
@@ -1302,13 +1444,23 @@ interfaces.
 
 Depth of redirect equality evaluation in queries.
 
-- `SMW_EQ_NONE` — never evaluate redirects as equality between page names.
-- `SMW_EQ_SOME` — evaluate redirects as equality, with possible
+- `'none'`, never evaluates redirects as equality between page names.
+- `'some'`, evaluates redirects as equality, with possible
   performance-relevant restrictions depending on the storage engine.
-- `SMW_EQ_FULL` — evaluate redirects as equality in all cases.
+- `'full'`, evaluates redirects as equality in all cases.
 
 **Since:** 1.0
-**Default:** `SMW_EQ_SOME`
+**Default:** `'some'`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'none'` | `SMW_EQ_NONE` |
+| `'some'` | `SMW_EQ_SOME` |
+| `'full'` | `SMW_EQ_FULL` |
 
 ## $smwgQExpensiveExecutionLimit
 
@@ -1329,30 +1481,46 @@ expensive and counted towards `$smwgQExpensiveExecutionLimit`.
 
 ## $smwgQFeatures
 
-Bitmask of query types available by default.
+Array of query types available by default.
 
-- `SMW_PROPERTY_QUERY` — property-based conditions.
-- `SMW_CATEGORY_QUERY` — category-based conditions.
-- `SMW_CONCEPT_QUERY` — concept-based conditions.
-- `SMW_NAMESPACE_QUERY` — namespace-based conditions.
-- `SMW_CONJUNCTION_QUERY` — conjunction (`AND`) conditions.
-- `SMW_DISJUNCTION_QUERY` — disjunction (`OR`) conditions.
+- `'property'`, property-based conditions.
+- `'category'`, category-based conditions.
+- `'concept'`, concept-based conditions.
+- `'namespace'`, namespace-based conditions.
+- `'conjunction'`, conjunction (`AND`) conditions.
+- `'disjunction'`, disjunction (`OR`) conditions.
 
 Examples:
 
 ```php
 // Only category intersections:
-$smwgQFeatures = SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY;
+$smwgQFeatures = [ 'category', 'conjunction' ];
 
 // Only single concepts:
-$smwgQFeatures = SMW_CONCEPT_QUERY;
+$smwgQFeatures = [ 'concept' ];
 
 // Everything except disjunctions:
-$smwgQFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
+$smwgQFeatures = [ 'property', 'category', 'concept', 'namespace', 'conjunction' ];
 ```
 
 **Since:** 1.2
-**Default:** `SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY`
+**Default:** `[ 'property', 'category', 'concept', 'namespace', 'conjunction', 'disjunction' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'property'` | `SMW_PROPERTY_QUERY` |
+| `'category'` | `SMW_CATEGORY_QUERY` |
+| `'concept'` | `SMW_CONCEPT_QUERY` |
+| `'namespace'` | `SMW_NAMESPACE_QUERY` |
+| `'conjunction'` | `SMW_CONJUNCTION_QUERY` |
+| `'disjunction'` | `SMW_DISJUNCTION_QUERY` |
+
+The `SMW_ANY_QUERY` "all flags" constant is similarly retired: list every
+permitted query type explicitly in the array form.
 
 ## $smwgQFilterDuplicates
 
@@ -1403,19 +1571,28 @@ query.
 
 ## $smwgQSortFeatures
 
-Bitmask of query sort capabilities.
+Array of query sort capabilities.
 
-- `SMW_QSORT` — general sort support for query results (replaces
+- `'sort'`, general sort support for query results (replaces
   `smwgQSortingSupport`).
-- `SMW_QSORT_RANDOM` — random sorting support (replaces
-  `smwgQRandSortingSupport`).
-- `SMW_QSORT_UNCONDITIONAL` — allow unconditional sort of results even if
-  the sort property is not part of the result set. Not implemented for
-  SPARQLStore; ElasticStore requires `sort.property.must.exists` to be
-  disabled for equivalent sorting behaviour.
+- `'random'`, random sorting support (replaces `smwgQRandSortingSupport`).
+- `'unconditional'`, allows unconditional sort of results even if the
+  sort property is not part of the result set. Not implemented for
+  SPARQLStore; ElasticStore requires `sort.property.must.exists` to
+  be disabled for equivalent sorting behaviour.
 
 **Since:** 3.0
-**Default:** `SMW_QSORT | SMW_QSORT_RANDOM`
+**Default:** `[ 'sort', 'random' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'sort'` | `SMW_QSORT` |
+| `'random'` | `SMW_QSORT_RANDOM` |
+| `'unconditional'` | `SMW_QSORT_UNCONDITIONAL` |
 
 ## $smwgQStrictComparators
 
@@ -1469,24 +1646,41 @@ cache purges.
 
 ## $smwgQueryProfiler
 
-When `false`, disables the query profiler entirely. Can also be set to a
-bitmask of `SMW_QPRFL_*` constants for granular control. Disabling it may
-impact secondary processes that rely on profile information (e.g. the
-notification system).
+Query profiler controls. Accepts:
 
-- `SMW_QPRFL_DUR` — record query duration (time between result selection and
-  output).
-- `SMW_QPRFL_PARAMS` — record query parameters needed to regenerate a query
-  result via a background job.
+- `false`, disables profiling entirely. Disabling may impact secondary
+  processes that rely on profile information (e.g. the notification
+  system).
+- `[]`, enables basic profiling with no detail fields. Note that this
+  does NOT disable; use `false` to disable.
+- An array of any of the detail-field strings below, to enable
+  profiling with those extra fields recorded.
+
+Detail-field strings:
+
+- `'duration'`, records query duration (time between result selection
+  and output).
+- `'parameters'`, records query parameters needed to regenerate a
+  query result via a background job.
 
 **Note:** If this setting is changed, run `update.php` / `rebuildData.php`.
 
 ```php
-$smwgQueryProfiler = SMW_QPRFL_DUR | SMW_QPRFL_PARAMS;
+$smwgQueryProfiler = [ 'duration', 'parameters' ];
 ```
 
 **Since:** 1.9
-**Default:** `true`
+**Default:** `[]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| Value | Legacy form |
+|---|---|
+| `[]` | `true` (was the previous default) |
+| `'duration'` | `SMW_QPRFL_DUR` |
+| `'parameters'` | `SMW_QPRFL_PARAMS` |
 
 ## $smwgQueryResultCacheLifetime
 
@@ -1574,19 +1768,28 @@ regressions after upgrading and want to fall back while reporting the issue.
 
 ## $smwgRemoteReqFeatures
 
-Bitmask of remote-request handling features for Special:Ask.
+Array of remote-request handling features for Special:Ask.
 
-- `SMW_REMOTE_REQ_SEND_RESPONSE` — allow Special:Ask to respond to remote
-  requests in combination with `$smwgQuerySources` and the
-  `RemoteRequest` handler.
-- `SMW_REMOTE_REQ_SHOW_NOTE` — show a note for each remote request so users
-  are aware that results were retrieved from an external source.
+- `'send-response'`, allows Special:Ask to respond to remote requests
+  in combination with `$smwgQuerySources` and the `RemoteRequest`
+  handler.
+- `'show-note'`, shows a note for each remote request so users are
+  aware that results were retrieved from an external source.
 
 If `$smwgQuerySources` contains no entries, remote requests are not
 supported regardless of this setting.
 
 **Since:** 3.0
-**Default:** `SMW_REMOTE_REQ_SEND_RESPONSE | SMW_REMOTE_REQ_SHOW_NOTE`
+**Default:** `[ 'send-response', 'show-note' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'send-response'` | `SMW_REMOTE_REQ_SEND_RESPONSE` |
+| `'show-note'` | `SMW_REMOTE_REQ_SHOW_NOTE` |
 
 ## $smwgResultAliases
 
@@ -1654,14 +1857,23 @@ Disabled formats are treated as if the `format` parameter had been omitted.
 
 ## $smwgResultFormatsFeatures
 
-Bitmask of result-printer features.
+Result-printer feature. Accepts one of:
 
-- `SMW_RF_NONE` — no additional features.
-- `SMW_RF_TEMPLATE_OUTSEP` — use the `sep` parameter as the outer separator
+- `'none'`, no additional features.
+- `'template-outsep'`, uses the `sep` parameter as the outer separator
   in template-based result printers.
 
 **Since:** 2.3
-**Default:** `SMW_RF_TEMPLATE_OUTSEP`
+**Default:** `'template-outsep'`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'none'` | `SMW_RF_NONE` |
+| `'template-outsep'` | `SMW_RF_TEMPLATE_OUTSEP` |
 
 ## $smwgSearchByPropertyFuzzy
 
@@ -1703,27 +1915,42 @@ enough to be considered stale.
 
 ## $smwgShowFactbox
 
-Controls factbox visibility on page views.
+Controls factbox visibility on page views. Accepts one of:
 
-- `SMW_FACTBOX_NONEMPTY` — show only factboxes that have some content.
-- `SMW_FACTBOX_SPECIAL` — show only if special properties were set.
-- `SMW_FACTBOX_HIDDEN` — always hide.
-- `SMW_FACTBOX_SHOWN` — always show.
+- `'nonempty'`, shows only factboxes that have some content.
+- `'special'`, shows only if special properties were set.
+- `'hidden'`, always hides.
+- `'shown'`, always shows.
 
 **Note:** The magic words `__SHOWFACTBOX__` and `__HIDEFACTBOX__` can be
 used to control factbox display for individual pages, overriding this
 setting.
 
 **Since:** 0.7
-**Default:** `SMW_FACTBOX_HIDDEN`
+**Default:** `'hidden'`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'hidden'` | `SMW_FACTBOX_HIDDEN` |
+| `'special'` | `SMW_FACTBOX_SPECIAL` |
+| `'nonempty'` | `SMW_FACTBOX_NONEMPTY` |
+| `'shown'` | `SMW_FACTBOX_SHOWN` |
 
 ## $smwgShowFactboxEdit
 
-Controls factbox visibility in edit mode; accepts the same `SMW_FACTBOX_*`
-values as `$smwgShowFactbox`.
+Controls factbox visibility in edit mode; accepts the same values as
+`$smwgShowFactbox` (`'hidden'`, `'special'`, `'nonempty'`, `'shown'`).
 
 **Since:** 1.0
-**Default:** `SMW_FACTBOX_NONEMPTY`
+**Default:** `'nonempty'`
+
+### Legacy constants
+
+Same as `$smwgShowFactbox`. Deprecated in 7.x, removed in 8.0.
 
 ## $smwgSimilarityLookupExemptionProperty
 
@@ -1779,22 +2006,37 @@ the repository is configured to use a default graph or supports it natively.
 
 ## $smwgSparqlQFeatures
 
-SPARQL query features expected to be supported by the repository.
+Array of SPARQL query features expected to be supported by the
+repository.
 
-- `SMW_SPARQL_QF_NONE` — no additional features (basic SPARQL 1.1 only).
-- `SMW_SPARQL_QF_REDI` — support finding redirects using inverse property
+- `'redirects'`, supports finding redirects using inverse property
   paths; requires full SPARQL 1.1 (e.g. Fuseki, Sesame).
-- `SMW_SPARQL_QF_SUBP` — resolve subproperties.
-- `SMW_SPARQL_QF_SUBC` — resolve subcategories.
-- `SMW_SPARQL_QF_COLLATION` — add sorting collation support as configured
-  in `$smwgEntityCollation`.
-- `SMW_SPARQL_QF_NOCASE` — support case-insensitive pattern matches.
+- `'subproperties'`, resolves subproperties.
+- `'subcategories'`, resolves subcategories.
+- `'collation'`, adds sorting collation support as configured in
+  `$smwgEntityCollation`.
+- `'no-case'`, supports case-insensitive pattern matches.
 
-Check with your repository provider whether SPARQL 1.1 is fully supported;
-if not, use `SMW_SPARQL_QF_NONE`.
+Check with your repository provider whether SPARQL 1.1 is fully
+supported; if not, use `[]` (no additional features, basic SPARQL 1.1
+only).
 
 **Since:** 2.3
-**Default:** `SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP | SMW_SPARQL_QF_SUBC`
+**Default:** `[ 'redirects', 'subproperties', 'subcategories' ]`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'redirects'` | `SMW_SPARQL_QF_REDI` |
+| `'subproperties'` | `SMW_SPARQL_QF_SUBP` |
+| `'subcategories'` | `SMW_SPARQL_QF_SUBC` |
+| `'collation'` | `SMW_SPARQL_QF_COLLATION` |
+| `'no-case'` | `SMW_SPARQL_QF_NOCASE` |
+
+`SMW_SPARQL_QF_NONE` (the "all-off" sentinel) is replaced by `[]`.
 
 ## $smwgSparqlReplicationPropertyExemptionList
 
@@ -1819,28 +2061,48 @@ of these is selected): `4store`, `blazegraph`, `fuseki`, `sesame`,
 
 Repository-level SPARQL features such as connection-ping support.
 
-- `SMW_SPARQL_NONE` — no additional repository features.
-- `SMW_SPARQL_CONNECTION_PING` — verify that a connection can be established
-  before starting an update or query process, allowing for an uninterrupted
-  operation.
+- `'none'`, no additional repository features.
+- `'connection-ping'`, verifies that a connection can be established
+  before starting an update or query process, allowing for an
+  uninterrupted operation.
 
 **Since:** 3.2
-**Default:** `SMW_SPARQL_NONE`
+**Default:** `'none'`
+
+### Legacy constants
+
+Deprecated in 7.x, removed in 8.0:
+
+| String | Legacy constant |
+|---|---|
+| `'none'` | `SMW_SPARQL_NONE` |
+| `'connection-ping'` | `SMW_SPARQL_CONNECTION_PING` |
 
 ## $smwgSpecialAskFormSubmitMethod
 
 HTTP method used by the Special:Ask form.
 
-- `SMW_SASK_SUBMIT_POST` — use `POST`; allows jumping directly to the
-  search result but produces no copyable URL (use the result bookmark button
+- `'post'`, uses `POST`; allows jumping directly to the search result
+  but produces no copyable URL (use the result bookmark button
   instead).
-- `SMW_SASK_SUBMIT_GET` — use `GET`; was the default until 2.5; cannot jump
-  directly to the search result after a submit.
-- `SMW_SASK_SUBMIT_GET_REDIRECT` — use `GET` with a redirect; can jump
-  directly to the search result but requires an extra HTTP request.
+- `'get'`, uses `GET`; was the default until 2.5; cannot jump directly
+  to the search result after a submit.
+- `'get.redirect'`, uses `GET` with a redirect; can jump directly to
+  the search result but requires an extra HTTP request.
 
 **Since:** 3.0
-**Default:** `SMW_SASK_SUBMIT_POST`
+**Default:** `'post'`
+
+### Legacy constants
+
+The `SMW_SASK_SUBMIT_*` constants resolve to these string values and
+continue to work without a deprecation notice. The mapping is:
+
+| String | Legacy constant |
+|---|---|
+| `'post'` | `SMW_SASK_SUBMIT_POST` |
+| `'get'` | `SMW_SASK_SUBMIT_GET` |
+| `'get.redirect'` | `SMW_SASK_SUBMIT_GET_REDIRECT` |
 
 ## $smwgSupportSectionTag
 
