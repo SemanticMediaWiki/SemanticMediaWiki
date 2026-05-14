@@ -165,6 +165,14 @@ class QueryProcessor implements QueryContext {
 			$limit = $GLOBALS['smwgQMaxLimit'];
 		}
 
+		// Opaque keyset cursor token (decoded later by `QueryCreator`).
+		// An empty string disables cursor mode and leaves the query on
+		// the legacy offset path.
+		$cursor = '';
+		if ( array_key_exists( 'cursor', $params ) ) {
+			$cursor = (string)$params['cursor']->getValue();
+		}
+
 		$queryCreator = ApplicationFactory::getInstance()->singleton( 'QueryCreator' );
 
 		$params = [
@@ -174,6 +182,7 @@ class QueryProcessor implements QueryContext {
 			'contextPage' => $contextPage,
 			'offset'      => $offset,
 			'limit'       => $limit,
+			'cursor'      => $cursor,
 			'source'      => $params['source']->getValue(),
 			'mainLabel'   => $params['mainlabel']->getValue(),
 			'sort'        => $params['sort']->getValue(),

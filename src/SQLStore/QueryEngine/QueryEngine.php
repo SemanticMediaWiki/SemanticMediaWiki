@@ -397,18 +397,39 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		}
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
+		$cursorMode = $query->getCursorAfter() !== null;
 
-		if ( $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
+		if ( $cursorMode ) {
+			// Override sort and offset for cursor mode. The trait-pattern
+			// keyset predicate is total-ordered on `(smw_sort, smw_id)`;
+			// any pre-existing ORDER BY would conflict with the predicate
+			// semantics, and OFFSET is replaced by the WHERE-anchored seek.
+			$sql_options['ORDER BY'] = "$qobj->alias.smw_sort, $qobj->alias.smw_id";
+			unset( $sql_options['OFFSET'] );
+		}
+
+		// Cursor mode forces the legacy single-query SQL path even when
+		// `smwgQUseLegacyQuery=false`. The Phase 3 spike does not yet wire
+		// the keyset predicate into `SubqueryQueryBuilder`'s derived-table
+		// rewrite, so cursor mode opts out of that optimisation in
+		// exchange for the much larger keyset speedup on the OFFSET side.
+		// Tracked as Phase 3a follow-up in #6795.
+		if ( $cursorMode || $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
+			$selectFields = [
+				'id' => "$qobj->alias.smw_id",
+				't' => "$qobj->alias.smw_title",
+				'ns' => "$qobj->alias.smw_namespace",
+				'iw' => "$qobj->alias.smw_iw",
+				'so' => "$qobj->alias.smw_subobject",
+				'sortkey' => "$qobj->alias.smw_sortkey",
+			];
+			if ( $cursorMode ) {
+				$selectFields['sort'] = "$qobj->alias.smw_sort";
+			}
+
 			$qb = $connection->newSelectQueryBuilder()
 				->select( array_merge(
-					[
-						'id' => "$qobj->alias.smw_id",
-						't' => "$qobj->alias.smw_title",
-						'ns' => "$qobj->alias.smw_namespace",
-						'iw' => "$qobj->alias.smw_iw",
-						'so' => "$qobj->alias.smw_subobject",
-						'sortkey' => "$qobj->alias.smw_sortkey",
-					],
+					$selectFields,
 					array_values( $qobj->sortfields ) # TODO strange to only keep values, but it was like that before rewriting select() with arrays
 				) )
 				->rawTables( array_merge( [ $qobj->alias => $qobj->joinTable ], $qobj->fromTables ) )
@@ -419,6 +440,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 			if ( $qobj->where !== '' ) {
 				$qb->where( [ $qobj->where ] );
+			}
+
+			if ( $cursorMode ) {
+				$this->applyKeysetPredicate( $qb, $query, $qobj, $connection );
 			}
 
 			$res = $qb->fetchResultSet();
@@ -436,6 +461,11 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$logToTable = [];
 		$hasFurtherResults = false;
+
+		// Cursor-mode bookkeeping: track the `(smw_sort, smw_id)` of the
+		// last accepted row so we can mint the next-page anchor.
+		$lastCursorSort = null;
+		$lastCursorId = null;
 
 		// Number of fetched results ( != number of valid results in
 		// array $results)
@@ -476,6 +506,11 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					$results[] = $dataItem;
 					// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
 					$this->store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
+
+					if ( $cursorMode ) {
+						$lastCursorSort = $row->sort ?? null;
+						$lastCursorId = (int)$row->id;
+					}
 				} else {
 					$missedCount++;
 					$logToTable[$row->t] = "skip result for {$row->t} existing cache entry / query " . $query->getHash();
@@ -509,6 +544,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$results,
 			$hasFurtherResults
 		);
+
+		if ( $cursorMode && $hasFurtherResults && $lastCursorId !== null ) {
+			$queryResult->setNextCursor( CursorEncoder::encode( [
+				'sort' => $lastCursorSort,
+				'id'   => $lastCursorId,
+			] ) );
+		}
 
 		return $queryResult;
 	}
@@ -596,6 +638,39 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		}
 
 		$this->logger->info( $message, $context );
+	}
+
+	/**
+	 * Apply the explicit-OR keyset predicate from the query's cursor
+	 * payload to the query builder. Skipped when the payload has no
+	 * anchor (the "first page in cursor mode" case, where the cursor
+	 * just opts into deterministic ordering without seeking past
+	 * anything).
+	 *
+	 * The predicate matches the form used by
+	 * `KeysetPaginationTrait::applyCursorPagination()`:
+	 *
+	 *     smw_sort > X OR (smw_sort = X AND smw_id > Y)
+	 *
+	 * MariaDB recognises this as an index range seek on
+	 * `(smw_sort, smw_id)`; the row-constructor form
+	 * `(smw_sort, smw_id) > (X, Y)` plans a full index scan instead.
+	 * See issue #6559 and #6794 for the underlying motivation.
+	 */
+	private function applyKeysetPredicate( $queryBuilder, Query $query, $qobj, $connection ): void {
+		$payload = $query->getCursorAfter();
+		if ( !isset( $payload['sort'] ) || !isset( $payload['id'] ) ) {
+			return;
+		}
+
+		$quotedSort = $connection->addQuotes( $payload['sort'] );
+		$cursorId = (int)$payload['id'];
+		$alias = $qobj->alias;
+
+		$queryBuilder->where(
+			"$alias.smw_sort > $quotedSort " .
+			"OR ($alias.smw_sort = $quotedSort AND $alias.smw_id > $cursorId)"
+		);
 	}
 
 }

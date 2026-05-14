@@ -80,6 +80,16 @@ abstract class Query extends ApiBase {
 		// $result->enableSizeCheck();
 		}
 
+		// Byte-additive: only emitted when the query ran in keyset cursor
+		// mode and there are further results. Legacy clients that follow
+		// `query-continue-offset` see exactly the pre-cursor response
+		// shape. Mirrors the contract established by the Browse API
+		// keyset PRs (#6804 / #6806 / #6808).
+		$nextCursor = $queryResult->getNextCursor();
+		if ( $nextCursor !== null ) {
+			$result->addValue( null, 'query-continue-cursor', $nextCursor );
+		}
+
 		$result->addValue(
 			null,
 			$resultFormatter->getType(),
