@@ -22,6 +22,18 @@ use MediaWiki\Logger\LoggerFactory;
  * integer bitmasks). Pass an unmapped string at that boundary and downstream
  * `Options::isFlagSet()` / `=== SMW_FOO` comparisons will silently fail.
  *
+ * Adding a new FLAG_MAP or ENUM_MAP entry requires three coordinated edits:
+ *   1. Add the map entry to this class.
+ *   2. Wire the corresponding key into `Settings::loadFromGlobals()` via
+ *      `LegacyConstantNormalizer::normalize( $key, $GLOBALS[$key] )`; an
+ *      un-wrapped read at that boundary leaves the new form silently
+ *      uninterpreted, since downstream callers expect the internal
+ *      representation (integer bitmask or integer constant).
+ *   3. Cover the key in `SettingsTest::provideFlagBoundaryDualAcceptCases`
+ *      (flags) or `provideEnumBoundaryDualAcceptCases` (enums) so the
+ *      integration boundary is exercised; the unit tests on this class
+ *      run `normalize()` in isolation and cannot catch a missing wrap.
+ *
  * @license GPL-2.0-or-later
  * @since 7.0.0
  */
@@ -192,6 +204,10 @@ class LegacyConstantNormalizer {
 			'char-nocase' => SMW_FIELDT_CHAR_NOCASE,
 			'char-long'   => SMW_FIELDT_CHAR_LONG,
 		],
+		'smwgQueryProfiler' => [
+			'parameters' => SMW_QPRFL_PARAMS,
+			'duration'   => SMW_QPRFL_DUR,
+		],
 	];
 
 	/**
@@ -266,11 +282,26 @@ class LegacyConstantNormalizer {
 		if ( $value === false ) {
 			// `smwgFieldTypeFeatures` distinguishes `false` (sentinel: feature
 			// fully disabled, do not register the component) from `0` (no
-			// flags set) at SetupFile.php's `!== false` check. Preserve the
-			// sentinel so the SQLStore field-type install path is unchanged.
-			if ( $key === 'smwgFieldTypeFeatures' ) {
+			// flags set) at SetupFile.php's `!== false` check.
+			// `smwgQueryProfiler` likewise distinguishes `false` (sentinel:
+			// profiling skipped entirely) from `0` (profile created, no
+			// extra detail fields) at AskParserFunction's `=== false`
+			// short-circuit. Both sentinels are preserved so downstream
+			// behaviour is unchanged.
+			if ( $key === 'smwgFieldTypeFeatures' || $key === 'smwgQueryProfiler' ) {
 				return false;
 			}
+			return 0;
+		}
+
+		if ( $value === true && $key === 'smwgQueryProfiler' ) {
+			// `$smwgQueryProfiler = true;` was the historical "enabled, no
+			// detail fields" form. The new canonical form is `[]`; both
+			// yield `(int) $value & FLAG == 0` for every flag, so downstream
+			// `isFlagSet` returns false in either case. Deprecate so admins
+			// migrate before 8.0 drops `true` support along with the SMW_*
+			// constants.
+			self::emitDeprecation( $key );
 			return 0;
 		}
 

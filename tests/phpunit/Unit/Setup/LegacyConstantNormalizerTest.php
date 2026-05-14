@@ -163,6 +163,11 @@ class LegacyConstantNormalizerTest extends TestCase {
 				[ 'char-nocase', 'char-long' ],
 				SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG,
 			],
+			'smwgQueryProfiler' => [
+				'smwgQueryProfiler',
+				[ 'parameters', 'duration' ],
+				SMW_QPRFL_PARAMS | SMW_QPRFL_DUR,
+			],
 		];
 	}
 
@@ -180,6 +185,7 @@ class LegacyConstantNormalizerTest extends TestCase {
 			'smwgRemoteReqFeatures'                => [ 'smwgRemoteReqFeatures', SMW_REMOTE_REQ_SEND_RESPONSE ],
 			'smwgExperimentalFeatures'             => [ 'smwgExperimentalFeatures', SMW_QUERYRESULT_PREFETCH ],
 			'smwgFieldTypeFeatures'                => [ 'smwgFieldTypeFeatures', SMW_FIELDT_CHAR_NOCASE ],
+			'smwgQueryProfiler'                    => [ 'smwgQueryProfiler', SMW_QPRFL_PARAMS | SMW_QPRFL_DUR ],
 		];
 	}
 
@@ -204,6 +210,41 @@ class LegacyConstantNormalizerTest extends TestCase {
 			0,
 			LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', false )
 		);
+	}
+
+	public function testFlag_queryProfiler_falseSentinelIsPreserved() {
+		// AskParserFunction::addQueryProfile does `$settings->get(...) === false`
+		// to short-circuit profiling entirely. The sentinel must reach Settings
+		// untouched, otherwise admin code that disables profiling silently
+		// stops doing so.
+		$this->assertFalse(
+			LegacyConstantNormalizer::normalize( 'smwgQueryProfiler', false )
+		);
+		$this->assertFalse( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgQueryProfiler' ) );
+	}
+
+	public function testFlag_queryProfiler_trueIsDeprecatedAliasForEmpty() {
+		// `true` was the historical "enabled, no detail fields" default. It
+		// maps to bitmask 0 (functionally identical to `[]`) and emits a
+		// deprecation notice; admins migrate to `[]` before 8.0.
+		$this->assertSame(
+			0,
+			LegacyConstantNormalizer::normalize( 'smwgQueryProfiler', true )
+		);
+		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgQueryProfiler' ) );
+	}
+
+	public function testFlag_queryProfiler_emptyArrayIsZeroNotFalse() {
+		// `[]` (enabled, no detail flags) and `false` (disabled entirely)
+		// are semantically distinct: the `=== false` short-circuit treats
+		// the former as "create the profile, no extra fields" but skips
+		// profile creation for the latter. The normalizer must keep them
+		// distinguishable downstream.
+		$this->assertSame(
+			0,
+			LegacyConstantNormalizer::normalize( 'smwgQueryProfiler', [] )
+		);
+		$this->assertFalse( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgQueryProfiler' ) );
 	}
 
 	public function testFlag_allKnownFlagsCombined() {

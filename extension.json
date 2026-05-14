@@ -1211,8 +1211,8 @@
 			"merge_strategy": "provide_default"
 		},
 		"QueryProfiler": {
-			"value": true,
-			"description": "When `false`, disables the query profiler; can be set to a bitmask of `SMW_QPRFL_*` constants for granular control."
+			"value": [],
+			"description": "Query profiler. Accepts `false` to disable profiling entirely, `[]` for basic profiling, or an array of any of `parameters`, `duration` for granular detail fields. Note that `[]` enables basic profiling (it does NOT disable); use `false` to disable. Legacy `true` (alias for `[]`) and `SMW_QPRFL_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
 		},
 		"QueryResultCacheLifetime": {
 			"value": 604800,
