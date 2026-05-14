@@ -186,26 +186,6 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	/**
-	 * Decides whether the request opts into cursor pagination. Cursor mode
-	 * is triggered by the *presence* of the `cursor` key in the request
-	 * payload (any value, including 0) rather than the absence of `offset`
-	 * (the trigger used by the URL-driven `Special:*` consumers). The
-	 * presence-of-key form is unambiguous for a JSON-payload API where
-	 * clients explicitly opt in.
-	 *
-	 * Extracted as a static helper so the predicate is unit-testable
-	 * without instantiating the lookup or its store.
-	 *
-	 * @since 7.0.0
-	 *
-	 * @param array $parameters The decoded `params` payload from the
-	 *   `smwbrowse` API request.
-	 */
-	public static function shouldUseCursorMode( array $parameters ): bool {
-		return array_key_exists( 'cursor', $parameters );
-	}
-
 	private function fetchFromTable( int|string $ns, RequestOptions $requestOptions, array $parameters ): array {
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];

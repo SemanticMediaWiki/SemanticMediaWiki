@@ -103,22 +103,6 @@ class PSubjectLookup extends Lookup {
 		return $res;
 	}
 
-	/**
-	 * Decides whether the request opts into cursor pagination. Mirrors
-	 * the `ListLookup::shouldUseCursorMode()` predicate: cursor mode is
-	 * triggered by *presence* of the `cursor` key (any value, including
-	 * 0), not by truthiness. The presence-of-key form is unambiguous for
-	 * a JSON-payload API where clients explicitly opt in.
-	 *
-	 * @since 7.0.0
-	 *
-	 * @param array $parameters The decoded `params` payload from the
-	 *   `smwbrowse` API request.
-	 */
-	public static function shouldUseCursorMode( array $parameters ): bool {
-		return array_key_exists( 'cursor', $parameters );
-	}
-
 	private function findPropertySubjects( $property, $value, int $limit, int $offset, array $parameters ): array {
 		$list = [];
 		$dataItem = null;
