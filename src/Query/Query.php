@@ -564,6 +564,15 @@ class Query implements QueryContext {
 			'querymode' => $this->querymode
 		];
 
+		// Cursor mode anchors the result set at a different `(smw_sort,
+		// smw_id)` than the default page-1 query, so a cursor-anchored
+		// request must NOT collide in cache with the same #ask query
+		// run without a cursor. Include the decoded payload directly;
+		// `ResultCache` keys on this hash.
+		if ( $this->cursorAfter !== null ) {
+			$serialized['parameters']['cursor'] = $this->cursorAfter;
+		}
+
 		// Make to sure to distinguish queries and results from a foreign repository
 		if ( $this->querySource !== null && $this->querySource !== '' ) {
 			$serialized['parameters']['source'] = $this->querySource;

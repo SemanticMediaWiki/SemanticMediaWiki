@@ -18,6 +18,7 @@ use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
 use SMW\SQLStore\SQLStore;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * Class that implements query answering for SQLStore.
@@ -545,7 +546,15 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$hasFurtherResults
 		);
 
-		if ( $cursorMode && $hasFurtherResults && $lastCursorId !== null ) {
+		// Cursor minted from a row whose `smw_sort` is NULL would be
+		// rejected by `applyKeysetPredicate()` on the next request
+		// (the `isset()` guard there treats null as "no anchor" and
+		// silently serves page 1, looping the crawler). Skip the
+		// cursor emission entirely for that case so the client at
+		// least stops paginating instead of looping. Phase 3a will
+		// add explicit `IS NULL` handling once the cursor format
+		// supports compound sort tuples.
+		if ( $cursorMode && $hasFurtherResults && $lastCursorId !== null && $lastCursorSort !== null ) {
 			$queryResult->setNextCursor( CursorEncoder::encode( [
 				'sort' => $lastCursorSort,
 				'id'   => $lastCursorId,
@@ -656,8 +665,20 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * `(smw_sort, smw_id)`; the row-constructor form
 	 * `(smw_sort, smw_id) > (X, Y)` plans a full index scan instead.
 	 * See issue #6559 and #6794 for the underlying motivation.
+	 *
+	 * TODO Phase 3a: unify with `KeysetPaginationTrait::applyCursorPagination`.
+	 * The two diverge in (a) aliased vs unqualified column refs,
+	 * (b) forward-only vs forward+backward, and (c) decoded-payload
+	 * vs RequestOptions-int cursor sources. Once Phase 3a generalises
+	 * the cursor payload to compound sort tuples, the two paths
+	 * should converge on a shared predicate builder.
 	 */
-	private function applyKeysetPredicate( $queryBuilder, Query $query, $qobj, $connection ): void {
+	private function applyKeysetPredicate(
+		SelectQueryBuilder $queryBuilder,
+		Query $query,
+		QuerySegment $qobj,
+		$connection
+	): void {
 		$payload = $query->getCursorAfter();
 		if ( !isset( $payload['sort'] ) || !isset( $payload['id'] ) ) {
 			return;

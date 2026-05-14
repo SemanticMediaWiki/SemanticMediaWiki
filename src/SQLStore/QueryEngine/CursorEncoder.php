@@ -2,6 +2,8 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use InvalidArgumentException;
+
 /**
  * Opaque base64url-encoded JSON cursors for keyset pagination across the
  * QueryEngine result surface.
@@ -20,14 +22,14 @@ namespace SMW\SQLStore\QueryEngine;
  * decides whether to surface an error or fall back to the legacy offset
  * path.
  *
- * Encoding uses base64url (RFC 4648 §5) — `-` / `_` for `+` / `/` and no
- * `=` padding — so tokens are safe in URL query strings without
- * percent-encoding.
+ * Encoding uses base64url (RFC 4648 §5): `-` / `_` substitute for `+` / `/`
+ * and `=` padding is stripped, so tokens are safe in URL query strings
+ * without percent-encoding.
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
  */
-class CursorEncoder {
+final class CursorEncoder {
 
 	public const CURRENT_VERSION = 1;
 
@@ -51,7 +53,7 @@ class CursorEncoder {
 
 		$json = json_encode( $payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 		if ( $json === false ) {
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				'CursorEncoder: failed to JSON-encode cursor payload'
 			);
 		}

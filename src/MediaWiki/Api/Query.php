@@ -74,20 +74,23 @@ abstract class Query extends ApiBase {
 		$resultFormatter->setIsRawMode( ( strpos( strtolower( $outputFormat ), 'xml' ) !== false ) );
 		$resultFormatter->doFormat();
 
-		if ( $resultFormatter->getContinueOffset() ) {
+		// Cursor mode is authoritative: when the query ran with a cursor
+		// the response uses ONLY `query-continue-cursor` (or omits the
+		// continuation field entirely on the final page). Legacy mode
+		// emits `query-continue-offset` unchanged. Mixing the two would
+		// let a cursor-aware client accidentally chain into a
+		// `?offset=N&cursor=...` request, which has unspecified semantics.
+		$cursorMode = $queryResult->getQuery()->getCursorAfter() !== null;
+		$nextCursor = $queryResult->getNextCursor();
+
+		if ( $cursorMode ) {
+			if ( $nextCursor !== null ) {
+				$result->addValue( null, 'query-continue-cursor', $nextCursor );
+			}
+		} elseif ( $resultFormatter->getContinueOffset() ) {
 		// $result->disableSizeCheck();
 			$result->addValue( null, 'query-continue-offset', $resultFormatter->getContinueOffset() );
 		// $result->enableSizeCheck();
-		}
-
-		// Byte-additive: only emitted when the query ran in keyset cursor
-		// mode and there are further results. Legacy clients that follow
-		// `query-continue-offset` see exactly the pre-cursor response
-		// shape. Mirrors the contract established by the Browse API
-		// keyset PRs (#6804 / #6806 / #6808).
-		$nextCursor = $queryResult->getNextCursor();
-		if ( $nextCursor !== null ) {
-			$result->addValue( null, 'query-continue-cursor', $nextCursor );
 		}
 
 		$result->addValue(

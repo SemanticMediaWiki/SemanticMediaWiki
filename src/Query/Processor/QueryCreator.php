@@ -183,6 +183,13 @@ class QueryCreator implements QueryContext {
 			}
 		}
 
+		if ( $query->getQueryMode() === self::MODE_COUNT ) {
+			$query->addErrors( [
+				'Cursor pagination (`cursor=`) is not supported with `format=count`. Remove `cursor=` or switch to a non-count format.'
+			] );
+			return;
+		}
+
 		$payload = CursorEncoder::decode( $token );
 		if ( $payload === null ) {
 			$query->addErrors( [
