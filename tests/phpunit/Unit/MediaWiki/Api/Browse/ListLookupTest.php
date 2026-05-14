@@ -129,7 +129,7 @@ class ListLookupTest extends TestCase {
 		return $provider;
 	}
 
-	public function testLegacyResponseAlwaysIncludesContinueCursorZero(): void {
+	public function testLegacyResponseOmitsContinueCursorField(): void {
 		$instance = $this->newInstanceWithRows( [ $this->newRow( 42, 'Foo' ) ] );
 
 		$res = $instance->lookup( [
@@ -137,8 +137,13 @@ class ListLookupTest extends TestCase {
 			'search' => 'Foo',
 		] );
 
-		$this->assertArrayHasKey( 'query-continue-cursor', $res );
-		$this->assertSame( 0, $res['query-continue-cursor'] );
+		// Legacy clients (no `cursor` opt-in) must see exactly the
+		// pre-cursor response shape: `query-continue-cursor` MUST NOT
+		// appear in the array. Existing JSONScript fixtures depend on
+		// the contiguous `"query-continue-offset":0,"version":1`
+		// substring; inserting a new field between them breaks them.
+		$this->assertArrayNotHasKey( 'query-continue-cursor', $res );
+		$this->assertArrayHasKey( 'query-continue-offset', $res );
 	}
 
 	public function testCursorParamPresentOptsIntoCursorMode(): void {
@@ -159,12 +164,13 @@ class ListLookupTest extends TestCase {
 			'limit' => 2,
 		] );
 
+		$this->assertArrayHasKey( 'query-continue-cursor', $res );
 		$this->assertSame( 101, $res['query-continue-cursor'] );
 		$this->assertSame( 0, $res['query-continue-offset'] );
 		$this->assertCount( 2, $res['query'] );
 	}
 
-	public function testCursorModeWithNoFurtherRowsReturnsZeroCursor(): void {
+	public function testCursorModeWithNoFurtherRowsEmitsZeroCursor(): void {
 		$instance = $this->newInstanceWithRows( [ $this->newRow( 42, 'Foo' ) ] );
 
 		$res = $instance->lookup( [
@@ -174,6 +180,7 @@ class ListLookupTest extends TestCase {
 			'limit' => 50,
 		] );
 
+		$this->assertArrayHasKey( 'query-continue-cursor', $res );
 		$this->assertSame( 0, $res['query-continue-cursor'] );
 	}
 
@@ -364,7 +371,7 @@ class ListLookupTest extends TestCase {
 		] );
 
 		$this->assertSame( 2, $res['query-continue-offset'] );
-		$this->assertSame( 0, $res['query-continue-cursor'] );
+		$this->assertArrayNotHasKey( 'query-continue-cursor', $res );
 	}
 
 	private function newRow( int $id, string $title ): stdClass {

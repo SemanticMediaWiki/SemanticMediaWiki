@@ -75,14 +75,13 @@ class ListLookup extends Lookup {
 		}
 
 		// Changing this output format requires to set a new version. The
-		// `query-continue-cursor` field is additive: clients that follow the
-		// legacy `query-continue-offset` keep working unchanged. Clients that
-		// opt into cursor mode by passing `cursor` in the request payload
-		// follow `query-continue-cursor` instead (an `smw_id` keyset anchor).
+		// `query-continue-cursor` field is byte-additive: it is only emitted
+		// when the caller opted into cursor mode (by sending `cursor` in
+		// the request payload). Legacy clients that follow
+		// `query-continue-offset` see exactly the pre-cursor response shape.
 		$res = [
 			'query' => $res,
 			'query-continue-offset' => $continueOffset,
-			'query-continue-cursor' => $continueCursor,
 			'version' => self::VERSION,
 			'meta' => [
 				'type'  => $type,
@@ -90,6 +89,10 @@ class ListLookup extends Lookup {
 				'count' => count( $res )
 			]
 		];
+
+		if ( self::shouldUseCursorMode( $parameters ) ) {
+			$res['query-continue-cursor'] = $continueCursor;
+		}
 
 		$this->listAugmentor->augment(
 			$res,
