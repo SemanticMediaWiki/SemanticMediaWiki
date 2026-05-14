@@ -410,10 +410,27 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			// cross-checked against `sort=` in `QueryCreator`. Phase
 			// 3b-ii allows multiple custom sort keys with a uniform
 			// direction; `QueryCreator` rejected mixed-order requests.
+			//
+			// Defensive uniformity check: if a caller constructed the
+			// `Query` programmatically and bypassed `QueryCreator`,
+			// mixed directions could land here. Surface explicitly
+			// rather than emit a predicate that's inverted on prior
+			// levels.
+			$seenOrder = null;
 			foreach ( $query->sortkeys as $propKey => $order ) {
 				if ( $propKey !== '' ) {
+					$normalised = $order === 'DESC' ? 'DESC' : 'ASC';
+					if ( $seenOrder !== null && $seenOrder !== $normalised ) {
+						$query->addErrors( [
+							'Cursor mode requires uniform sort order across all sort keys; mixed `ASC`/`DESC` would invert the keyset predicate on prior levels.'
+						] );
+						return $this->queryFactory->newQueryResult(
+							$this->store, $query, [], false
+						);
+					}
+					$seenOrder = $normalised;
 					$cursorSortPropKeys[] = $propKey;
-					$cursorSortOrder = $order === 'DESC' ? 'DESC' : 'ASC';
+					$cursorSortOrder = $normalised;
 				}
 			}
 			if ( $cursorSortPropKeys === [] && isset( $query->sortkeys[''] ) ) {
@@ -437,12 +454,52 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 							$this->store, $query, [], false
 						);
 					}
+					if ( strpos( $sortExpr, ',' ) !== false ) {
+						// Defensive: `OrderCondition` writes a
+						// comma-separated multi-column expression for
+						// the special `#` sort key (matches multiple
+						// `smw_*` columns at once). The keyset
+						// predicate's `<sortExpr> OP <value>` can't
+						// usefully target a column list. Cursor mode
+						// for `#` is undefined; reject rather than
+						// emit malformed SQL.
+						$query->addErrors( [
+							"Cursor mode is not supported for the multi-column sort expression at `sort=$key`."
+						] );
+						return $this->queryFactory->newQueryResult(
+							$this->store, $query, [], false
+						);
+					}
 					$cursorSortColumns[] = $sortExpr;
 				}
 			} else {
 				// Default sort (Phase 3 spike compatible). The empty
 				// key maps to `smw_sort` and stays a single column.
 				$cursorSortColumns = [ "$qobj->alias.smw_sort" ];
+			}
+
+			// Validate the cursor payload's sort tuple length matches
+			// the active sort column count. `QueryCreator` cross-checks
+			// `sort_prop` shape against `sort=`, so reaching here with
+			// a mismatch means either a malformed payload or a `Query`
+			// constructed bypassing `QueryCreator`. Either way, silently
+			// running without the keyset predicate would return page 1
+			// of the full result set, looping a paginating client.
+			$cursorPayload = $query->getCursorAfter();
+			if ( isset( $cursorPayload['sort'] ) ) {
+				$payloadSortValues = is_array( $cursorPayload['sort'] )
+					? $cursorPayload['sort']
+					: [ $cursorPayload['sort'] ];
+				if ( count( $payloadSortValues ) !== count( $cursorSortColumns ) ) {
+					$query->addErrors( [
+						'Cursor payload shape does not match the query sort: cursor has ' .
+						count( $payloadSortValues ) . ' sort value(s) but query has ' .
+						count( $cursorSortColumns ) . ' sort column(s).'
+					] );
+					return $this->queryFactory->newQueryResult(
+						$this->store, $query, [], false
+					);
+				}
 			}
 
 			// Override sort and offset for cursor mode. Keyset is
@@ -782,17 +839,11 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		// Normalise payload `sort` to an array. Phase 3 spike + 3a +
 		// 3b-i cursors carry scalar `sort`; 3b-ii multi-sort cursors
-		// carry an array.
+		// carry an array. The shape is validated by the caller
+		// (`getInstanceQueryResult`) before reaching here — by the
+		// time `applyKeysetPredicate` runs, the count match is
+		// guaranteed.
 		$sortValues = is_array( $payload['sort'] ) ? $payload['sort'] : [ $payload['sort'] ];
-		if ( count( $sortValues ) !== count( $sortColumns ) ) {
-			// Cursor shape mismatch: a multi-sort cursor sent to a
-			// single-sort request (or vice versa) made it through
-			// `QueryCreator`'s `sort_prop` check despite that — most
-			// likely a `sort_prop` field that's malformed.
-			// `QueryCreator` should have rejected; defensive
-			// no-op here rather than silently mispaginate.
-			return;
-		}
 
 		$quotedSorts = array_map(
 			static fn ( $v ) => $connection->addQuotes( $v ),
