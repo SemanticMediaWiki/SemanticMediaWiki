@@ -2,8 +2,11 @@
 
 Major releases and feature releases are indicated in **bold**.
 
+### Semantic MediaWiki 7.x
+* **[SMW 7.0.0 release notes](RELEASE-NOTES-7.0.0.md)**
+
 ### Semantic MediaWiki 6.x
-* [SMW 6.0.1 release notes](RELEASE-NOTES-6.0.1.md) (current version)
+* [SMW 6.0.1 release notes](RELEASE-NOTES-6.0.1.md)
 * **[SMW 6.0.0 release notes](RELEASE-NOTES-6.0.0.md)**
 
 ### Semantic MediaWiki 5.1
@@ -15,7 +18,6 @@ Major releases and feature releases are indicated in **bold**.
 * **[SMW 5.0.0 release notes](RELEASE-NOTES-5.0.0.md)**
 
 ### Semantic MediaWiki 4.x
-
 * **[SMW 4.2.0 release notes](RELEASE-NOTES-4.2.0.md)**
 * [SMW 4.1.3 release notes](RELEASE-NOTES-4.1.3.md)
 * [SMW 4.1.2 release notes](RELEASE-NOTES-4.1.2.md)
