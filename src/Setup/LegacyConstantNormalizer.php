@@ -237,6 +237,25 @@ class LegacyConstantNormalizer {
 	}
 
 	/**
+	 * Reverse-lookup: given the integer value of a legacy `SMW_*` /
+	 * `CONCEPT_CACHE_*` constant for a registered enum or flag setting,
+	 * return the equivalent kebab-string name. Used by test infrastructure
+	 * that needs to upgrade legacy constant names (e.g. JSONScript test
+	 * fixtures from external extensions) to the new form before they reach
+	 * {@see Settings::set()}, avoiding the deprecation path entirely.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function getStringFormForConstant( string $key, int $constantValue ): ?string {
+		$map = self::ENUM_MAP[$key] ?? self::FLAG_MAP[$key] ?? null;
+		if ( $map === null ) {
+			return null;
+		}
+		$name = array_search( $constantValue, $map, true );
+		return $name === false ? null : $name;
+	}
+
+	/**
 	 * Reset the per-request deprecation suppression set. Intended for test
 	 * isolation; production callers should never need this.
 	 *

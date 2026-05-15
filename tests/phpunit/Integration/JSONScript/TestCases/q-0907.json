@@ -92,11 +92,11 @@
 			"SMW_NS_PROPERTY": true
 		},
 		"smwgSparqlQFeatures": [
-			"SMW_SPARQL_QF_NOCASE"
+			"no-case"
 		],
 		"smwgFieldTypeFeatures": [
-			"SMW_FIELDT_CHAR_NOCASE",
-			"SMW_FIELDT_CHAR_LONG"
+			"char-nocase",
+			"char-long"
 		]
 	},
 	"meta": {

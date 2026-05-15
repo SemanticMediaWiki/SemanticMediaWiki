@@ -271,7 +271,7 @@
 	],
 	"settings": {
 		"smwgDVFeatures": [
-			"SMW_DV_PVUC"
+			"unique-constraint"
 		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"

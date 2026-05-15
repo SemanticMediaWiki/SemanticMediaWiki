@@ -91,9 +91,9 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgCategoryFeatures": [
-			"SMW_CAT_INSTANCE",
-			"SMW_CAT_REDIRECT",
-			"SMW_CAT_HIERARCHY"
+			"instance",
+			"redirect",
+			"hierarchy"
 		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"

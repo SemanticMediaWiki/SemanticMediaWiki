@@ -59,7 +59,7 @@ class FactboxMagicWordsTest extends TestCase {
 		$this->testEnvironment->withConfiguration(
 			[
 				'smwgNamespacesWithSemanticLinks' => [ $title->getNamespace() => true ],
-				'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR
+				'smwgParserFeatures' => [ 'strict', 'inline-errors' ]
 			]
 		);
 
@@ -83,8 +83,8 @@ class FactboxMagicWordsTest extends TestCase {
 		$title = Title::newFromText( __METHOD__ );
 
 		$this->testEnvironment->withConfiguration( [
-			'smwgShowFactboxEdit' => SMW_FACTBOX_HIDDEN,
-			'smwgShowFactbox'     => SMW_FACTBOX_HIDDEN
+			'smwgShowFactboxEdit' => 'hidden',
+			'smwgShowFactbox'     => 'hidden'
 			]
 		);
 

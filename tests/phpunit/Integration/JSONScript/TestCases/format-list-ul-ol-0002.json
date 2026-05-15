@@ -110,7 +110,7 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgDVFeatures": [
-			"SMW_DV_NUMV_USPACE"
+			"number-value-usespaces"
 		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,

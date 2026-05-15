@@ -232,8 +232,8 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgParserFeatures": [
-			"SMW_PARSER_UNSTRIP",
-			"SMW_PARSER_STRICT"
+			"unstrip",
+			"strict"
 		]
 	},
 	"meta": {
