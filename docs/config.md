@@ -1367,13 +1367,13 @@ Array of query types available inside concept definitions.
 
 - `'property'`, property-based conditions.
 - `'category'`, category-based conditions.
+- `'concept'`, nested concept conditions.
 - `'namespace'`, namespace-based conditions.
 - `'conjunction'`, conjunction (`AND`) conditions.
 - `'disjunction'`, disjunction (`OR`) conditions.
-- `'concept'`, nested concept conditions.
 
 **Since:** 1.0
-**Default:** `[ 'property', 'category', 'namespace', 'conjunction', 'disjunction', 'concept' ]`
+**Default:** `[ 'property', 'category', 'concept', 'namespace', 'conjunction', 'disjunction' ]`
 
 ### Legacy constants
 
@@ -1383,10 +1383,10 @@ Deprecated in 7.x, removed in 8.0:
 |---|---|
 | `'property'` | `SMW_PROPERTY_QUERY` |
 | `'category'` | `SMW_CATEGORY_QUERY` |
+| `'concept'` | `SMW_CONCEPT_QUERY` |
 | `'namespace'` | `SMW_NAMESPACE_QUERY` |
 | `'conjunction'` | `SMW_CONJUNCTION_QUERY` |
 | `'disjunction'` | `SMW_DISJUNCTION_QUERY` |
-| `'concept'` | `SMW_CONCEPT_QUERY` |
 
 ## $smwgQConceptMaxDepth
 
@@ -1898,7 +1898,7 @@ fragmentation. Each listed key produces a separate cache entry per distinct
 value of that key.
 
 **Since:** 5.1
-**Default:** `["userlang", "dateformat"]`
+**Default:** `["userlang"]`
 
 ## $smwgSetParserCacheTimestamp
 
