@@ -16,6 +16,7 @@ use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
+use SMW\SQLStore\KeysetPredicateBuilder;
 use SMW\SQLStore\SQLStore;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\SelectQueryBuilder;
@@ -798,47 +799,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Apply the explicit-OR keyset predicate from the query's cursor
-	 * payload to the query builder. Skipped when the payload has no
-	 * anchor (the "first page in cursor mode" case, where the cursor
-	 * just opts into deterministic ordering without seeking past
-	 * anything).
+	 * Attach the keyset predicate for the query's cursor payload to the
+	 * `SelectQueryBuilder` (the legacy single-query path). A no-op when
+	 * the payload has no anchor: that is the first page in cursor mode,
+	 * where the cursor only opts into a deterministic ordering and there
+	 * is nothing to seek past yet.
 	 *
-	 * Generalised compound form (Phase 3b-iii). For N sort columns
-	 * `c_1 ... c_N` with anchor values `v_1 ... v_N`, anchor id `Y`,
-	 * and per-level operators `op_1 ... op_N` (`>` for ASC, `<` for
-	 * DESC), the predicate is:
-	 *
-	 *     (c_1 op_1 v_1)
-	 *     OR (c_1 = v_1 AND c_2 op_2 v_2)
-	 *     OR ...
-	 *     OR (c_1 = v_1 AND ... AND c_N op_N v_N)
-	 *     OR (c_1 = v_1 AND ... AND c_N = v_N AND smw_id op_N Y)
-	 *
-	 * Each clause peels one level of "tied prefix", expanding the
-	 * range progressively. Operator at level k flips per direction so
-	 * mixed `order=asc,desc` walks each level the right way. The
-	 * smw_id tiebreak adopts the LAST level's direction so the
-	 * tied-tuple walk chains naturally off the final sort column.
-	 *
-	 * MariaDB recognises the explicit-OR form as an index range seek
-	 * when an index covers the sort columns; the row-constructor form
-	 * `(c_1, ..., c_N, smw_id) OP (v_1, ..., v_N, Y)` plans a full
-	 * index scan instead. See issue #6559 and #6794.
-	 *
-	 * For N=1 (Phase 3 spike + 3a + 3b-i compatibility), the form
-	 * collapses to the simple two-clause predicate.
-	 *
-	 * `$sortColumns` is the list of SQL column expressions for the
-	 * active sort fields. The caller resolves them from
-	 * `$qobj->sortfields` (custom sort) or hardcodes
-	 * `[<alias>.smw_sort]` (default sort). `$sortOrders` is a parallel
-	 * array of "ASC" or "DESC" strings, one per column, and MUST be
-	 * the same length as `$sortColumns`.
-	 *
-	 * TODO Phase 3c follow-up: unify with `KeysetPaginationTrait::applyCursorPagination`.
-	 * Once a shared predicate builder exists, both this method and the
-	 * trait can delegate to it.
+	 * Thin wrapper over `buildKeysetPredicateString()`.
 	 */
 	private function applyKeysetPredicate(
 		SelectQueryBuilder $queryBuilder,
@@ -857,13 +824,27 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Build the explicit-OR keyset predicate as a raw SQL string. Used
-	 * by `applyKeysetPredicate()` (legacy path, attaches to
-	 * `SelectQueryBuilder`) and by `SubqueryQueryBuilder` (derived-table
-	 * path, ANDs into inner WHERE). Returns an empty string when the
-	 * cursor has no anchor (bootstrap `{"v":1}` payload).
+	 * Build the keyset predicate for the query's cursor payload as a raw
+	 * SQL string. Used by `applyKeysetPredicate()` (legacy path, attaches
+	 * to `SelectQueryBuilder`) and by `SubqueryQueryBuilder` (derived-table
+	 * path, ANDs into the inner WHERE).
 	 *
-	 * See `applyKeysetPredicate()` docblock for the predicate shape.
+	 * Returns an empty string when the cursor has no anchor (the bootstrap
+	 * `{"v":1}` payload), so the first cursor-mode page runs without a
+	 * seek predicate.
+	 *
+	 * `$sortColumns` holds the SQL column expressions for the active sort
+	 * fields, resolved by the caller from `$qobj->sortfields` (custom
+	 * sort) or hardcoded to `[<alias>.smw_sort]` (default sort).
+	 * `$sortOrders` is a parallel array of "ASC"/"DESC", one entry per
+	 * column, so mixed `order=asc,desc` requests seek each level the
+	 * right way. The smw_id tiebreak adopts the last level's direction so
+	 * the tied-tuple walk chains off the final sort column.
+	 *
+	 * This method handles only the cursor-payload extraction; clause
+	 * assembly is delegated to `KeysetPredicateBuilder`, shared with
+	 * `KeysetPaginationTrait` so every SQLStore cursor path emits the
+	 * same predicate form.
 	 */
 	private function buildKeysetPredicateString(
 		Query $query,
@@ -884,42 +865,24 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		// time this method runs, the count match is guaranteed.
 		$sortValues = is_array( $payload['sort'] ) ? $payload['sort'] : [ $payload['sort'] ];
 
-		$quotedSorts = array_map(
-			static fn ( $v ) => $connection->addQuotes( $v ),
-			$sortValues
+		$levels = [];
+		foreach ( $sortColumns as $i => $column ) {
+			$levels[] = [
+				'column' => $column,
+				'value' => $sortValues[$i],
+				'order' => $sortOrders[$i],
+			];
+		}
+
+		// Tiebreak direction is the last sort level's, matching the
+		// `smw_id` term of the ORDER BY built in getInstanceQueryResult().
+		return KeysetPredicateBuilder::build(
+			$connection,
+			$levels,
+			"$qobj->alias.smw_id",
+			(int)$payload['id'],
+			$sortOrders[count( $sortOrders ) - 1]
 		);
-		$cursorId = (int)$payload['id'];
-		$alias = $qobj->alias;
-		$n = count( $sortColumns );
-		$ops = [];
-		for ( $i = 0; $i < $n; $i++ ) {
-			$ops[] = $sortOrders[$i] === 'DESC' ? '<' : '>';
-		}
-		// smw_id tiebreak follows the last level's direction so the
-		// tied-tuple walk is consistent with the ORDER BY clause.
-		$tiebreakOp = $n > 0 ? $ops[$n - 1] : '>';
-
-		// Build the N+1 OR clauses: clause k has equality on prior
-		// k levels and inequality on level k; the final clause adds
-		// the smw_id tiebreak after all equalities.
-		$clauses = [];
-		for ( $k = 0; $k < $n; $k++ ) {
-			$parts = [];
-			for ( $j = 0; $j < $k; $j++ ) {
-				$parts[] = "$sortColumns[$j] = $quotedSorts[$j]";
-			}
-			$parts[] = "$sortColumns[$k] $ops[$k] $quotedSorts[$k]";
-			$clauses[] = '(' . implode( ' AND ', $parts ) . ')';
-		}
-		// Final tiebreak: all sort levels equal, smw_id by tiebreak direction.
-		$tiebreakParts = [];
-		for ( $j = 0; $j < $n; $j++ ) {
-			$tiebreakParts[] = "$sortColumns[$j] = $quotedSorts[$j]";
-		}
-		$tiebreakParts[] = "$alias.smw_id $tiebreakOp $cursorId";
-		$clauses[] = '(' . implode( ' AND ', $tiebreakParts ) . ')';
-
-		return implode( ' OR ', $clauses );
 	}
 
 }
