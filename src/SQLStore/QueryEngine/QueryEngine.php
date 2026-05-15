@@ -833,7 +833,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * active sort fields. The caller resolves them from
 	 * `$qobj->sortfields` (custom sort) or hardcodes
 	 * `[<alias>.smw_sort]` (default sort). `$sortOrders` is a parallel
-	 * array of "ASC" or "DESC" strings, one per column.
+	 * array of "ASC" or "DESC" strings, one per column, and MUST be
+	 * the same length as `$sortColumns`.
 	 *
 	 * TODO Phase 3c follow-up: unify with `KeysetPaginationTrait::applyCursorPagination`.
 	 * Once a shared predicate builder exists, both this method and the
@@ -892,7 +893,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$n = count( $sortColumns );
 		$ops = [];
 		for ( $i = 0; $i < $n; $i++ ) {
-			$ops[] = ( $sortOrders[$i] ?? 'ASC' ) === 'DESC' ? '<' : '>';
+			$ops[] = $sortOrders[$i] === 'DESC' ? '<' : '>';
 		}
 		// smw_id tiebreak follows the last level's direction so the
 		// tied-tuple walk is consistent with the ORDER BY clause.

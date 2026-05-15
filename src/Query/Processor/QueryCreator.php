@@ -195,9 +195,9 @@ class QueryCreator implements QueryContext {
 		) );
 
 		// Phase 3b-iii: mixed per-level directions are supported.
-		// `order=random` remains incompatible — there's no stable
-		// anchor to seek past — and a single RANDOM among other
-		// directions still rejects the whole request.
+		// `order=random` remains incompatible (no stable anchor to seek
+		// past), and a single RANDOM among other directions still
+		// rejects the whole request.
 		$requestSortOrders = $this->resolveRequestSortOrders( $sortKeys, $customSortKeys );
 		if ( in_array( 'RANDOM', $requestSortOrders, true ) ) {
 			$query->addErrors( [
@@ -313,27 +313,49 @@ class QueryCreator implements QueryContext {
 	 *   - array (["ASC","DESC"]): per-level, padded with ASC if
 	 *     shorter than the request's level count (defensive)
 	 *
+	 * Each value is validated against the allowed direction set and
+	 * coerced to "ASC" if it falls outside; this keeps any
+	 * user-controlled cursor payload out of downstream error messages
+	 * and out of the SQL builder's per-level operator selection.
+	 *
 	 * @param string|array|null $payloadSortOrder
 	 * @param int $levelCount Active sort level count from the request
 	 *
 	 * @return string[]
 	 */
-	private function normalisePayloadSortOrders( $payloadSortOrder, int $levelCount ): array {
+	private function normalisePayloadSortOrders( string|array|null $payloadSortOrder, int $levelCount ): array {
 		if ( $payloadSortOrder === null ) {
 			return array_fill( 0, $levelCount, 'ASC' );
 		}
 		if ( is_string( $payloadSortOrder ) ) {
-			return array_fill( 0, $levelCount, $payloadSortOrder );
+			return array_fill( 0, $levelCount, $this->coerceSortDirection( $payloadSortOrder ) );
 		}
 		// Already an array; pad with ASC to match the request length.
 		// A length mismatch will fail the mismatch check downstream
 		// (the values won't line up), surfacing the malformation as
 		// an `order=` mismatch error.
-		$normalised = array_values( $payloadSortOrder );
+		$normalised = [];
+		foreach ( array_values( $payloadSortOrder ) as $value ) {
+			$normalised[] = $this->coerceSortDirection( $value );
+		}
 		while ( count( $normalised ) < $levelCount ) {
 			$normalised[] = 'ASC';
 		}
 		return $normalised;
+	}
+
+	/**
+	 * Map an untrusted sort direction string from a cursor payload
+	 * onto the small allowed set ("ASC", "DESC", "RANDOM"). Anything
+	 * else collapses to "ASC" so attacker-controlled payload values
+	 * cannot reach error messages or the predicate builder.
+	 */
+	private function coerceSortDirection( mixed $value ): string {
+		if ( !is_string( $value ) ) {
+			return 'ASC';
+		}
+		$upper = strtoupper( $value );
+		return in_array( $upper, [ 'ASC', 'DESC', 'RANDOM' ], true ) ? $upper : 'ASC';
 	}
 
 	/**
