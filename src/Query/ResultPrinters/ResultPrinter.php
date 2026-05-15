@@ -703,8 +703,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * to the parser cache for queries using this format.
 	 *
 	 * @since 7.0.0
-	 *
-	 * @return bool
 	 */
 	public function dependsOnUserLanguage(): bool {
 		return true;
