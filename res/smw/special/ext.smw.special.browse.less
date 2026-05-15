@@ -32,13 +32,16 @@
 	margin-block: @spacing-100;
 	display: flex;
 
-	// Remove right border radius to create a seamless connection with the button
-	&-input.mw-ui-input {
+	// The Codex CSS-only TextInput wraps the input in a `div`; the wrapper
+	// carries the border radius, so let it fill the row and drop its right
+	// border radius to create a seamless connection with the button.
+	.cdx-text-input {
+		flex-grow: 1;
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 	}
 
-	&-button.mw-ui-button {
+	&-button.cdx-button {
 		margin-inline-start: -@border-width-base;
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;

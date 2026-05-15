@@ -495,6 +495,12 @@
 			]
 		},
 		"ext.smw.browse.styles": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexStyleOnly": true,
+			"codexComponents": [
+				"CdxButton",
+				"CdxTextInput"
+			],
 			"styles": [
 				"smw/special/ext.smw.special.browse.less"
 			]
