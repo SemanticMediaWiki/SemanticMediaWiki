@@ -242,9 +242,9 @@
 	"settings": {
 		"wgContLang": "en",
 		"smwgParserFeatures": [
-			"SMW_PARSER_STRICT",
-			"SMW_PARSER_INL_ERROR",
-			"SMW_PARSER_HID_CATS"
+			"strict",
+			"inline-errors",
+			"hidden-categories"
 		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"

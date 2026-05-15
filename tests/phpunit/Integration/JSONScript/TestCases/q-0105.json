@@ -318,9 +318,9 @@
 		"smwgEnabledFulltextSearch": true,
 		"smwgFulltextDeferredUpdate": false,
 		"smwgFulltextSearchIndexableDataTypes": [
-			"SMW_FT_BLOB",
-			"SMW_FT_URI",
-			"SMW_FT_WIKIPAGE"
+			"blob",
+			"uri",
+			"wikipage"
 		],
 		"smwgElasticsearchConfig": {
 			"indexer": {

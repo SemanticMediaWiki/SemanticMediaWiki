@@ -54,7 +54,7 @@
 		}
 	],
 	"settings": {
-		"smwgQConceptCaching": "CONCEPT_CACHE_ALL",
+		"smwgQConceptCaching": "all",
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true,

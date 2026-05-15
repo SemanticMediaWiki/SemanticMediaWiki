@@ -42,9 +42,12 @@ class EncodingIntegrationTest extends TestCase {
 			ApplicationFactory::getInstance()->getNamespaceExaminer()
 		);
 
+		// Read post-normalization so isFlagSet sees the integer bitmask
+		// regardless of whether the test supplied the new array form or a
+		// legacy SMW_* integer constant.
 		$instance->setOptions(
 			[
-				'smwgBrowseFeatures' => $setup['settings']['smwgBrowseFeatures']
+				'smwgBrowseFeatures' => ApplicationFactory::getInstance()->getSettings()->get( 'smwgBrowseFeatures' )
 			]
 		);
 
@@ -76,7 +79,7 @@ class EncodingIntegrationTest extends TestCase {
 	private function newSidebarBeforeOutputSetup( $text ) {
 		$settings = [
 			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
+			'smwgBrowseFeatures'           => [ 'toolbox-link' ]
 		];
 
 		$message = $this->getMockBuilder( Message::class )

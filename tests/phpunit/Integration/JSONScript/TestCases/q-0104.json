@@ -255,8 +255,8 @@
 		"smwgEnabledFulltextSearch": true,
 		"smwgFulltextDeferredUpdate": false,
 		"smwgFulltextSearchIndexableDataTypes": [
-			"SMW_FT_BLOB",
-			"SMW_FT_URI"
+			"blob",
+			"uri"
 		],
 		"smwgElasticsearchConfig": {
 			"indexer": {

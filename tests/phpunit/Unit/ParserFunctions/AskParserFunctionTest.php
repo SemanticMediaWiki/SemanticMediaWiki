@@ -42,7 +42,7 @@ class AskParserFunctionTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', true );
+		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', [] );
 		$this->testEnvironment->addConfiguration( 'smwgQMaxLimit', 1000 );
 
 		$this->messageFormatter = $this->getMockBuilder( MessageFormatter::class )
@@ -375,7 +375,7 @@ class AskParserFunctionTest extends TestCase {
 			'propertyCount'  => 0
 		];
 
-		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', true );
+		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', [] );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_SPECIAL ),
@@ -450,7 +450,7 @@ class AskParserFunctionTest extends TestCase {
 				'propertyValues' => [ 'list', 1, 1, '[[Modification date::+]]' ]
 			],
 			[
-				'smwgQueryProfiler' => true
+				'smwgQueryProfiler' => []
 			]
 		];
 
@@ -474,7 +474,7 @@ class AskParserFunctionTest extends TestCase {
 			],
 			[
 				'smwgCreateProtectionRight' => false,
-				'smwgQueryProfiler' => true
+				'smwgQueryProfiler' => []
 			]
 		];
 
@@ -497,7 +497,7 @@ class AskParserFunctionTest extends TestCase {
 				'propertyValues' => [ 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" ]
 			],
 			[
-				'smwgQueryProfiler' => true
+				'smwgQueryProfiler' => []
 			]
 		];
 
@@ -520,7 +520,7 @@ class AskParserFunctionTest extends TestCase {
 				'propertyValues' => [ 'feed', 1, 0, "[[:$fileNS:Fooo]]" ]
 			],
 			[
-				'smwgQueryProfiler' => true
+				'smwgQueryProfiler' => []
 			]
 		];
 
@@ -543,7 +543,7 @@ class AskParserFunctionTest extends TestCase {
 				'propertyValues' => [ 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" ]
 			],
 			[
-				'smwgQueryProfiler' => true
+				'smwgQueryProfiler' => []
 			]
 		];
 
@@ -570,7 +570,7 @@ class AskParserFunctionTest extends TestCase {
 				'propertyValues' => [ 'list', 1, 1, '[[Modification date::+]]', '{"limit":50,"offset":0,"sort":[""],"order":["asc"],"mode":1}' ]
 			],
 			[
-				'smwgQueryProfiler' => SMW_QPRFL_PARAMS
+				'smwgQueryProfiler' => [ 'parameters' ]
 			]
 		];
 

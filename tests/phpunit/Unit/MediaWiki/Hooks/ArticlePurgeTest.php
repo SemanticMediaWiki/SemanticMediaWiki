@@ -71,7 +71,7 @@ class ArticlePurgeTest extends TestCase {
 
 		$this->testEnvironment->addConfiguration(
 			'smwgFactboxFeatures',
-			SMW_FACTBOX_PURGE_REFRESH
+			[ 'purge-refresh' ]
 		);
 
 		$this->testEnvironment->addConfiguration(

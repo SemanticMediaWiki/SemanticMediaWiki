@@ -102,8 +102,11 @@ class CachedFactboxTest extends TestCase {
 
 		$instance->isEnabled( true );
 
+		// Read post-normalization so setShowFactbox sees the integer
+		// regardless of whether the provider supplied the new string form
+		// or a legacy SMW_FACTBOX_* constant.
 		$instance->setShowFactbox(
-			$parameters['smwgShowFactbox']
+			(int)ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowFactbox' )
 		);
 
 		$instance->setLogger(
@@ -278,7 +281,7 @@ class CachedFactboxTest extends TestCase {
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
+				'smwgShowFactbox' => 'nonempty',
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( $semanticData )
@@ -334,7 +337,7 @@ class CachedFactboxTest extends TestCase {
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
+				'smwgShowFactbox' => 'nonempty',
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( $semanticData )
@@ -379,7 +382,7 @@ class CachedFactboxTest extends TestCase {
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => false ],
-				'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
+				'smwgShowFactbox' => 'hidden',
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( $semanticData )
@@ -443,7 +446,7 @@ class CachedFactboxTest extends TestCase {
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
+				'smwgShowFactbox' => 'nonempty',
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),
@@ -487,7 +490,7 @@ class CachedFactboxTest extends TestCase {
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
+				'smwgShowFactbox' => 'nonempty',
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),
@@ -531,7 +534,7 @@ class CachedFactboxTest extends TestCase {
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
+				'smwgShowFactbox' => 'nonempty',
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),

@@ -45,8 +45,8 @@
 		"wgLang": "en",
 		"smwgQueryResultCacheType": "hash",
 		"smwgQueryProfiler" : [
-			"SMW_QPRFL_DUR",
-			"SMW_QPRFL_PARAMS"
+			"duration",
+			"parameters"
 		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
