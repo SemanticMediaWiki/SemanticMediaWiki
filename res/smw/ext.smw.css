@@ -586,7 +586,7 @@ label.smw-form-checkbox {
 	overflow-x: hidden;
 }
 
-.autocomplete-arrow.mw-ui-input {
+.autocomplete-arrow.cdx-text-input__input {
 	background-position-y: 4px;
 }
 
@@ -641,7 +641,7 @@ label.smw-form-checkbox {
 	background-position-y: 5px;
 }
 
-.autocomplete-arrow.mw-ui-input {
+.autocomplete-arrow.cdx-text-input__input {
 	background-position-y: 4px;
 }
 

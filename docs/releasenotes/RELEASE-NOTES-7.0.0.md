@@ -324,6 +324,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Native PHP type coverage significantly expanded across the entire codebase, including return types, parameter types, property types, and constructor promotion with `readonly`
 * PHPUnit test suite reorganized into `Unit/` and `Integration/` directories
 * Numerous static analysis (phan) errors fixed
+* Migrated `Special:Browse`'s search form from the deprecated `mediawiki.ui` ResourceLoader modules to Codex CSS-only components, ahead of `mediawiki.ui`'s removal in MediaWiki 1.46 ([#6476](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6476))
 * CI updated: added MediaWiki 1.45 to the test matrix, added cancellation of in-progress runs on new pushes, removed Travis CI leftovers
 
 ## Upgrading
