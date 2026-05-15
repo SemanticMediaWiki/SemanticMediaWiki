@@ -90,8 +90,8 @@
 			"SMW_NS_PROPERTY": true
 		},
 		"smwgQSortFeatures": [
-			"SMW_QSORT",
-			"SMW_QSORT_UNCONDITIONAL"
+			"sort",
+			"unconditional"
 		],
 		"smwgElasticsearchConfig": {
 			"query": {

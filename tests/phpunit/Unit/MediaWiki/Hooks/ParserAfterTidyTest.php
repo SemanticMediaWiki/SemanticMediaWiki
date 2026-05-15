@@ -334,8 +334,8 @@ class ParserAfterTidyTest extends TestCase {
 		$settings = [
 			'smwgMainCacheType'             => 'hash',
 			'smwgEnableUpdateJobs'      => false,
-			'smwgParserFeatures'        => SMW_PARSER_HID_CATS,
-			'smwgCategoryFeatures'      => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE
+			'smwgParserFeatures'        => [ 'hidden-categories' ],
+			'smwgCategoryFeatures'      => [ 'redirect', 'instance' ]
 		];
 
 		$this->testEnvironment->withConfiguration( $settings );
@@ -404,8 +404,8 @@ class ParserAfterTidyTest extends TestCase {
 		$settings = [
 			'smwgMainCacheType' => 'hash',
 			'smwgEnableUpdateJobs' => false,
-			'smwgParserFeatures' => SMW_PARSER_HID_CATS,
-			'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE,
+			'smwgParserFeatures' => [ 'hidden-categories' ],
+			'smwgCategoryFeatures' => [ 'redirect', 'instance' ],
 		];
 		$this->testEnvironment->withConfiguration( $settings );
 
@@ -499,8 +499,8 @@ class ParserAfterTidyTest extends TestCase {
 		$this->testEnvironment->withConfiguration( [
 			'smwgMainCacheType' => 'hash',
 			'smwgEnableUpdateJobs' => false,
-			'smwgParserFeatures' => SMW_PARSER_HID_CATS,
-			'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE,
+			'smwgParserFeatures' => [ 'hidden-categories' ],
+			'smwgCategoryFeatures' => [ 'redirect', 'instance' ],
 		] );
 
 		$titleA = MediaWikiServices::getInstance()->getTitleFactory()
@@ -555,8 +555,8 @@ class ParserAfterTidyTest extends TestCase {
 		$this->testEnvironment->withConfiguration( [
 			'smwgMainCacheType' => 'hash',
 			'smwgEnableUpdateJobs' => false,
-			'smwgParserFeatures' => SMW_PARSER_HID_CATS,
-			'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE,
+			'smwgParserFeatures' => [ 'hidden-categories' ],
+			'smwgCategoryFeatures' => [ 'redirect', 'instance' ],
 		] );
 
 		$parserOptions = $this->getMockBuilder( ParserOptions::class )

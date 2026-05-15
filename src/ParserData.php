@@ -177,14 +177,26 @@ class ParserData {
 	/**
 	 * @since 3.0
 	 */
-	public function addExtraParserKey( $key ): void {
-		$keysToCache = ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheKeys' ) ?? [];
+	public function addExtraParserKey( string $key ): void {
+		// Preference keys fragment the parser cache by a user preference and are
+		// opt-in via $smwgSetParserCacheKeys. Every other key (functional markers
+		// such as `localTime` and `smwq`, or keys added by other extensions) is
+		// always applied.
+		$configurableKeys = [ 'userlang', 'dateformat' ];
 
-		if ( in_array( $key, $keysToCache ) ) {
-			// Looks odd in 1.30 "Saved in parser cache ... idhash:19989-0!canonical!userlang!dateformat!userlang!dateformat!userlang!dateformat!userlang!dateformat and ..."
-			// therefore use the ParserOutput::recordOption instead
-			$this->parserOutput->recordOption( $key );
-		} elseif ( $this->parserOptions !== null ) {
+		if ( in_array( $key, $configurableKeys, true ) ) {
+			$keysToCache = ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheKeys' ) ?? [];
+
+			if ( in_array( $key, $keysToCache, true ) ) {
+				// recordOption() marks the option as cache-relevant so MediaWiki
+				// hashes its actual value into the parser cache key.
+				$this->parserOutput->recordOption( $key );
+			}
+
+			return;
+		}
+
+		if ( $this->parserOptions !== null ) {
 			$this->parserOptions->addExtraKey( $key );
 		}
 	}

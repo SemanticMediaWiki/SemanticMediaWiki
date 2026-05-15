@@ -59,7 +59,7 @@
 			"_MDAT"
 		],
 		"smwgDVFeatures": [
-			"SMW_DV_WPV_PIPETRICK"
+			"wpv-pipetrick"
 		]
 	},
 	"meta": {

@@ -353,7 +353,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 				'title'    => $title,
 				'settings' => [
 					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-					'smwgParserFeatures' => SMW_PARSER_STRICT
+					'smwgParserFeatures' => [ 'strict' ]
 				],
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
@@ -375,7 +375,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 				'title'    => $title,
 				'settings' => [
 					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-					'smwgParserFeatures' => SMW_PARSER_STRICT
+					'smwgParserFeatures' => [ 'strict' ]
 				],
 				'text'  => '#REDIRECT [[Foo]]',
 				],
@@ -395,7 +395,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 				'title'    => $title,
 				'settings' => [
 					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-					'smwgParserFeatures' => SMW_PARSER_STRICT,
+					'smwgParserFeatures' => [ 'strict' ],
 					'smwgEnabledSpecialPage' => [ 'Ask', 'Foo' ]
 				],
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
@@ -418,7 +418,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 				'title'    => $title,
 				'settings' => [
 					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-					'smwgParserFeatures' => SMW_PARSER_STRICT,
+					'smwgParserFeatures' => [ 'strict' ],
 					'smwgEnabledSpecialPage' => [ 'Ask', 'Foo' ]
 				],
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
@@ -441,7 +441,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 				'title'    => $title,
 				'settings' => [
 					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-					'smwgParserFeatures' => SMW_PARSER_STRICT,
+					'smwgParserFeatures' => [ 'strict' ],
 					'smwgEnabledSpecialPage' => []
 				],
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .

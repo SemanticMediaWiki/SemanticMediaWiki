@@ -71,8 +71,8 @@
 		},
 		"wgRestrictDisplayTitle": false,
 		"smwgDVFeatures": [
-			"SMW_DV_TIMEV_CM",
-			"SMW_DV_WPV_DTITLE"
+			"time-calendar-model",
+			"wpv-display-title"
 		]
 	},
 	"meta": {

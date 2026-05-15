@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use Exception;
 use RuntimeException;
+use SMW\Setup\LegacyConstantNormalizer;
 use SMW\Tests\Utils\File\JsonFileReader;
 
 /**
@@ -333,7 +334,13 @@ class JsonTestCaseFileHandler {
 			return $smwgNamespacesWithSemanticLinks;
 		}
 
-		$constantFeaturesList = [
+		// Flag-bitmask settings. Test cases write values in the new
+		// kebab-string array form (e.g. `[ "strict", "inline-errors" ]`);
+		// older fixtures from external extensions may still use the
+		// legacy `SMW_*` constant names, which we transparently upgrade
+		// so the value reaches Settings::set() in the new form and never
+		// trips LegacyConstantNormalizer's deprecation path.
+		$flagSettings = [
 			'smwgSparqlQFeatures',
 			'smwgDVFeatures',
 			'smwgFulltextSearchIndexableDataTypes',
@@ -342,32 +349,22 @@ class JsonTestCaseFileHandler {
 			'smwgParserFeatures',
 			'smwgCategoryFeatures',
 			'smwgQSortFeatures',
-			'smwgQEqualitySupport'
 		];
 
-		foreach ( $constantFeaturesList as $constantFeatures ) {
-			if ( $key === $constantFeatures && isset( $settings[$key] ) ) {
-				$features = '';
+		if ( in_array( $key, $flagSettings, true ) && isset( $settings[$key] ) ) {
+			return $this->normalizeFlagSettingValue( $key, $settings[$key] );
+		}
 
-				if ( !is_array( $settings[$key] ) ) {
-					return $settings[$key];
-				}
-
-				foreach ( $settings[$key] as $value ) {
-					$features = constant( $value ) | (int)$features;
-				}
-
-				return $features;
-			}
+		if ( $key === 'smwgQEqualitySupport' && isset( $settings[$key] ) ) {
+			return $this->normalizeEnumSettingValue( $key, $settings[$key] );
 		}
 
 		if ( $key === 'wgDefaultUserOptions' && isset( $settings[$key] ) ) {
 			return array_merge( $GLOBALS['wgDefaultUserOptions'], $settings[$key] );
 		}
 
-		// Needs special attention due to constant usage
 		if ( $key === 'smwgQConceptCaching' && isset( $settings[$key] ) ) {
-			return constant( $settings[$key] );
+			return $this->normalizeEnumSettingValue( $key, $settings[$key] );
 		}
 
 		// Needs special attention due to constant usage
@@ -386,6 +383,46 @@ class JsonTestCaseFileHandler {
 
 		// Key is unknown, TestConfig will remove any remains during tearDown
 		return null;
+	}
+
+	/**
+	 * Coerce a flag-bitmask setting value into the new kebab-string array
+	 * form. Pass-through for arrays of kebab strings; for arrays containing
+	 * legacy `SMW_*` constant names (still used by some external-extension
+	 * JSONScript fixtures), reverse-translate each defined constant via
+	 * {@see LegacyConstantNormalizer::getStringFormForConstant()} so the
+	 * resulting value never reaches the deprecation path in Settings::set().
+	 */
+	private function normalizeFlagSettingValue( string $key, mixed $value ) {
+		if ( !is_array( $value ) ) {
+			return $value;
+		}
+		$out = [];
+		foreach ( $value as $element ) {
+			$out[] = $this->resolveLegacyConstantName( $key, $element );
+		}
+		return $out;
+	}
+
+	/**
+	 * Coerce an enum setting value into the new string form. Pass-through
+	 * for already-kebab strings; reverse-translate legacy `SMW_*` /
+	 * `CONCEPT_CACHE_*` constant names via
+	 * {@see LegacyConstantNormalizer::getStringFormForConstant()}.
+	 */
+	private function normalizeEnumSettingValue( string $key, mixed $value ) {
+		return $this->resolveLegacyConstantName( $key, $value );
+	}
+
+	private function resolveLegacyConstantName( string $key, mixed $value ) {
+		if ( !is_string( $value ) || !defined( $value ) ) {
+			return $value;
+		}
+		$resolved = constant( $value );
+		if ( !is_int( $resolved ) ) {
+			return $value;
+		}
+		return LegacyConstantNormalizer::getStringFormForConstant( $key, $resolved ) ?? $value;
 	}
 
 	/**

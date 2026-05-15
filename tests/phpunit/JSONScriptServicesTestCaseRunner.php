@@ -73,11 +73,23 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 				'smwgEnabledFulltextSearch' => false,
 				'smwgSparqlReplicationPropertyExemptionList' => [],
 				'smwgPageSpecialProperties' => [ '_MDAT' ],
-				'smwgFieldTypeFeatures' => SMW_FIELDT_NONE,
-				// Read $smwgDVFeatures via Settings (not $GLOBALS) so the value is
-				// the post-normalization integer regardless of which form
-				// LocalSettings.php or extension.json supplied (#6586).
-				'smwgDVFeatures' => (int)ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' ) & ~SMW_DV_NUMV_USPACE,
+				'smwgFieldTypeFeatures' => [],
+				// Pin smwgDVFeatures to the extension.json default minus
+				// `number-value-usespaces` so JSON test cases that don't
+				// override the key see a stable baseline regardless of
+				// LocalSettings.php (#6586). Expressed in the new string-array
+				// form to avoid the LegacyConstantNormalizer deprecation path.
+				// Keep this list in sync with extension.json's `DVFeatures`
+				// default — adding a new flag there means adding it here too.
+				'smwgDVFeatures' => [
+					'provider-redirect',
+					'monolingual-langcode',
+					'pattern-validation',
+					'wpv-display-title',
+					'time-calendar-model',
+					'preferred-label',
+					'provider-link-hint',
+				],
 				'smwgCacheUsage' => [
 					'api.browse' => false
 				] + $GLOBALS['smwgCacheUsage'],

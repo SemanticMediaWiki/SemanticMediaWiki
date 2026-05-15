@@ -116,10 +116,10 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgParserFeatures": [
-			"SMW_PARSER_STRICT",
-			"SMW_PARSER_INL_ERROR",
-			"SMW_PARSER_HID_CATS",
-			"SMW_PARSER_LINV"
+			"strict",
+			"inline-errors",
+			"hidden-categories",
+			"links-in-values"
 		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"

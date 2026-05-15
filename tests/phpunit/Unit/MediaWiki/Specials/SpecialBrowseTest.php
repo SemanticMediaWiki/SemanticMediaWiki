@@ -26,7 +26,7 @@ class SpecialBrowseTest extends TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [
-			'smwgBrowseFeatures' => SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_USE_API
+			'smwgBrowseFeatures' => [ 'show-incoming', 'use-api' ]
 		] );
 
 		$store = $this->getMockBuilder( Store::class )

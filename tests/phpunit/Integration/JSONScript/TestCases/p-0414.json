@@ -366,7 +366,7 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgDVFeatures": [
-			"SMW_DV_TIMEV_CM"
+			"time-calendar-model"
 		]
 	},
 	"meta": {

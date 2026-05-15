@@ -56,8 +56,8 @@
 		"smwgQSubpropertyDepth": 10,
 		"smwgQSubcategoryDepth": 10,
 		"smwgSparqlQFeatures": [
-			"SMW_SPARQL_QF_SUBP",
-			"SMW_SPARQL_QF_SUBC"
+			"subproperties",
+			"subcategories"
 		]
 	},
 	"meta": {
