@@ -152,7 +152,7 @@ class QueryCreator implements QueryContext {
 
 	/**
 	 * Decode the optional `cursor=<token>` user parameter and apply it
-	 * to the query, enforcing the Phase 3a contract:
+	 * to the query, enforcing the Phase 3b-iii contract:
 	 *
 	 *   - Default sort (`sortKeys` has only the empty-string key or is
 	 *     empty): always allowed.
@@ -160,11 +160,13 @@ class QueryCreator implements QueryContext {
 	 *     when the cursor's `sort_prop` field matches the request's
 	 *     sort key, or when the cursor has no `sort_prop` (bootstrap /
 	 *     empty payload for the first cursor-mode page).
-	 *   - Multi-property sort (`sort=A,B`): rejected (Phase 3b).
+	 *   - Multi-property sort (`sort=A,B`): allowed, including mixed
+	 *     directions per level (`order=asc,desc`).
 	 *   - Custom sort + cursor with mismatching `sort_prop`: rejected.
 	 *     The cursor was minted for a different sort, applying it here
 	 *     would seek to a position that has no meaning in the new
 	 *     ordering.
+	 *   - `order=random`: rejected. No stable anchor to seek past.
 	 *
 	 * Malformed cursor tokens (any decode failure) are surfaced as an
 	 * error rather than silently ignored, to avoid the "expected
@@ -192,29 +194,12 @@ class QueryCreator implements QueryContext {
 			static fn ( $key ) => $key !== ''
 		) );
 
-		// Phase 3b-ii: multi-property sort is allowed when all custom
-		// sort keys share a uniform direction. Mixed direction
-		// (`sort=A,B|order=asc,desc`) is deferred to Phase 3b-iii
-		// because the keyset predicate would need per-level operator
-		// inversion, which complicates the compound-predicate
-		// generation enough to warrant its own PR.
-		if ( $customSortKeys !== [] ) {
-			$firstOrder = $sortKeys[$customSortKeys[0]];
-			foreach ( $customSortKeys as $key ) {
-				if ( $sortKeys[$key] !== $firstOrder ) {
-					$query->addErrors( [
-						'Cursor pagination (`cursor=`) is not supported with mixed `order=` per sort property in this release. Use a uniform `order=` (all ascending or all descending), or use `offset=` instead.'
-					] );
-					return;
-				}
-			}
-		}
-
-		// `order=random` is fundamentally incompatible with keyset
-		// pagination: there's no stable anchor to seek past.
-		$requestSortKey = $customSortKeys[0] ?? '';
-		$requestSortOrder = $this->resolveRequestSortOrder( $sortKeys, $requestSortKey );
-		if ( $requestSortOrder === 'RANDOM' ) {
+		// Phase 3b-iii: mixed per-level directions are supported.
+		// `order=random` remains incompatible (no stable anchor to seek
+		// past), and a single RANDOM among other directions still
+		// rejects the whole request.
+		$requestSortOrders = $this->resolveRequestSortOrders( $sortKeys, $customSortKeys );
+		if ( in_array( 'RANDOM', $requestSortOrders, true ) ) {
 			$query->addErrors( [
 				'Cursor pagination (`cursor=`) is not supported with `order=random`. Reverse the request to use `order=asc` or `order=desc`.'
 			] );
@@ -266,11 +251,24 @@ class QueryCreator implements QueryContext {
 		// `sort_order` field; treat their absence as ASC because
 		// those cursors were minted under ASC (the only mode
 		// available pre-3b).
+		//
+		// Shapes that may appear in `sort_order`:
+		//   - missing: pre-3b cursor, treat as ASC for all levels
+		//   - string (e.g. "DESC"): uniform across all levels
+		//   - array (e.g. ["ASC","DESC"]): one direction per level
+		// Both sides are normalised to per-level arrays for the
+		// comparison so a uniform 3b-i/3b-ii cursor round-trips
+		// against a mixed-direction request would correctly mismatch.
 		if ( isset( $payload['sort'] ) ) {
-			$payloadSortOrder = $payload['sort_order'] ?? 'ASC';
-			if ( $payloadSortOrder !== $requestSortOrder ) {
+			$payloadSortOrders = $this->normalisePayloadSortOrders(
+				$payload['sort_order'] ?? null,
+				count( $requestSortOrders )
+			);
+			if ( $payloadSortOrders !== $requestSortOrders ) {
+				$payloadDesc = implode( ',', $payloadSortOrders );
+				$requestDesc = implode( ',', $requestSortOrders );
 				$query->addErrors( [
-					"Cursor was minted for `order=$payloadSortOrder` but the request specifies `order=$requestSortOrder`. The cursor anchor seeks in the wrong direction under the new order; re-issue without `cursor=` or align the `order=` parameter."
+					"Cursor was minted for `order=$payloadDesc` but the request specifies `order=$requestDesc`. The cursor anchor seeks in the wrong direction under the new order; re-issue without `cursor=` or align the `order=` parameter."
 				] );
 				return;
 			}
@@ -280,20 +278,84 @@ class QueryCreator implements QueryContext {
 	}
 
 	/**
-	 * Resolve the canonical sort order for the active sort key. For a
-	 * custom-property sort (`sort=Foo`), use that key's order. For
-	 * default sort (`''` key only), use the empty key's order. Falls
-	 * back to ASC when neither is set.
+	 * Resolve the per-level sort orders for the active sort keys.
+	 * Returns an array with one direction per level, in declaration
+	 * order. For default sort (no custom sort keys), the returned
+	 * array has one element: the empty-key's order. Falls back to
+	 * ASC when an entry is unset.
 	 *
-	 * The returned string is always one of "ASC", "DESC", or "RANDOM".
-	 * Callers string-compare against these literals; values are
-	 * normalised upstream by `normalize_order()`.
+	 * Each element is one of "ASC", "DESC", or "RANDOM" (values are
+	 * normalised upstream by `normalize_order()`).
+	 *
+	 * @param array $sortKeys
+	 * @param array $customSortKeys Custom (non-empty) sort key names
+	 *   in declaration order, re-indexed from 0.
+	 *
+	 * @return string[]
 	 */
-	private function resolveRequestSortOrder( array $sortKeys, string $requestSortKey ): string {
-		if ( $requestSortKey !== '' && isset( $sortKeys[$requestSortKey] ) ) {
-			return $sortKeys[$requestSortKey];
+	private function resolveRequestSortOrders( array $sortKeys, array $customSortKeys ): array {
+		if ( $customSortKeys === [] ) {
+			return [ $sortKeys[''] ?? 'ASC' ];
 		}
-		return $sortKeys[''] ?? 'ASC';
+		$orders = [];
+		foreach ( $customSortKeys as $key ) {
+			$orders[] = $sortKeys[$key] ?? 'ASC';
+		}
+		return $orders;
+	}
+
+	/**
+	 * Normalise the cursor payload's `sort_order` field to a
+	 * per-level array. Handles three shapes:
+	 *
+	 *   - null (pre-3b cursor, no field): ASC for every level
+	 *   - string ("DESC"): uniform direction across every level
+	 *   - array (["ASC","DESC"]): per-level, padded with ASC if
+	 *     shorter than the request's level count (defensive)
+	 *
+	 * Each value is validated against the allowed direction set and
+	 * coerced to "ASC" if it falls outside; this keeps any
+	 * user-controlled cursor payload out of downstream error messages
+	 * and out of the SQL builder's per-level operator selection.
+	 *
+	 * @param string|array|null $payloadSortOrder
+	 * @param int $levelCount Active sort level count from the request
+	 *
+	 * @return string[]
+	 */
+	private function normalisePayloadSortOrders( string|array|null $payloadSortOrder, int $levelCount ): array {
+		if ( $payloadSortOrder === null ) {
+			return array_fill( 0, $levelCount, 'ASC' );
+		}
+		if ( is_string( $payloadSortOrder ) ) {
+			return array_fill( 0, $levelCount, $this->coerceSortDirection( $payloadSortOrder ) );
+		}
+		// Already an array; pad with ASC to match the request length.
+		// A length mismatch will fail the mismatch check downstream
+		// (the values won't line up), surfacing the malformation as
+		// an `order=` mismatch error.
+		$normalised = [];
+		foreach ( array_values( $payloadSortOrder ) as $value ) {
+			$normalised[] = $this->coerceSortDirection( $value );
+		}
+		while ( count( $normalised ) < $levelCount ) {
+			$normalised[] = 'ASC';
+		}
+		return $normalised;
+	}
+
+	/**
+	 * Map an untrusted sort direction string from a cursor payload
+	 * onto the small allowed set ("ASC", "DESC", "RANDOM"). Anything
+	 * else collapses to "ASC" so attacker-controlled payload values
+	 * cannot reach error messages or the predicate builder.
+	 */
+	private function coerceSortDirection( mixed $value ): string {
+		if ( !is_string( $value ) ) {
+			return 'ASC';
+		}
+		$upper = strtoupper( $value );
+		return in_array( $upper, [ 'ASC', 'DESC', 'RANDOM' ], true ) ? $upper : 'ASC';
 	}
 
 	/**

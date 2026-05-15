@@ -48,19 +48,24 @@ class SubqueryQueryBuilder {
 	 *   keyset WHERE clause, anchored at the inner segment's alias. ANDed
 	 *   into the inner WHERE so the LIMIT'd subset is the cursor-anchored
 	 *   slice. Empty for non-cursor queries AND for bootstrap cursors
-	 *   (which carry no anchor yet); use `$cursorMode` to distinguish.
-	 * @param bool $cursorMode Phase 3c: true when the caller is paginating
-	 *   in cursor mode. Drives the `cursor_sort_N` outer projection
-	 *   aliases the QueryEngine row loop reads to mint the next anchor.
-	 *   Independent of `$cursorPredicate` (which is empty on bootstrap
-	 *   requests, the first page in cursor mode).
+	 *   (which carry no anchor yet); use `$cursorSortColumns` to detect
+	 *   cursor mode itself.
+	 * @param string[] $cursorSortColumns Phase 3c: ordered list of SQL
+	 *   column expressions (e.g. `t0.smw_sort`, `t1.o_serialized`)
+	 *   matching the keyset sort levels declared by the caller. Non-
+	 *   empty array signals cursor mode; the builder emits
+	 *   `cursor_sort_N` aliases (in this list's order) for the
+	 *   QueryEngine row loop to mint the next anchor. Order is
+	 *   independent of `$root->sortfields` iteration order so
+	 *   multi-property queries align correctly with what
+	 *   `$query->sortkeys` declared.
 	 */
 	public function buildInstanceQuerySQL(
 		QuerySegment $root,
 		array $sqlOptions,
 		string $outerWhere,
 		string $cursorPredicate = '',
-		bool $cursorMode = false
+		array $cursorSortColumns = []
 	): string {
 		if ( !isset( $sqlOptions['LIMIT'] ) ) {
 			throw new \InvalidArgumentException( 'sqlOptions[\'LIMIT\'] is required' );
@@ -76,12 +81,13 @@ class SubqueryQueryBuilder {
 			$sortfieldPairs,
 			$orderBy,
 			$this->innerLimit( $outerLimit ),
-			$cursorPredicate
+			$cursorPredicate,
+			$cursorSortColumns
 		);
 
 		$outerProjection = $this->buildOuterProjection(
 			$sortfieldPairs,
-			$cursorMode
+			$cursorSortColumns
 		);
 		$outerOrderBy = $this->rewriteOrderByForOuter(
 			$orderBy,
@@ -187,18 +193,32 @@ class SubqueryQueryBuilder {
 	 * @param string $cursorPredicate Phase 3c: raw SQL fragment ANDed
 	 *   into the inner WHERE. Anchored at the root segment's alias so
 	 *   column refs resolve inside the derived table.
+	 * @param string[] $cursorSortColumns Phase 3c: when non-empty, the
+	 *   inner SELECT projects each as `cursor_sort_N` so the outer
+	 *   query can surface anchor values in the order the engine row
+	 *   loop expects (matches `$query->sortkeys` declaration order,
+	 *   not `$root->sortfields` iteration order).
 	 */
 	private function buildInnerSelect(
 		QuerySegment $root,
 		array $sortfieldPairs,
 		string $orderBy,
 		int $innerLimit,
-		string $cursorPredicate = ''
+		string $cursorPredicate = '',
+		array $cursorSortColumns = []
 	): string {
 		$columns = [ "{$root->joinfield} AS s_id" ];
 
 		foreach ( $sortfieldPairs as [ 'expr' => $expr, 'alias' => $alias ] ) {
 			$columns[] = "$expr AS $alias";
+		}
+
+		// Cursor anchor projections. These are deliberately decoupled
+		// from `$sortfieldPairs` so multi-property queries with
+		// divergent sortfield iteration vs sortkey order still emit
+		// `cursor_sort_N` in the correct sequence.
+		foreach ( $cursorSortColumns as $i => $col ) {
+			$columns[] = "$col AS cursor_sort_$i";
 		}
 
 		// Combine existing WHERE with the cursor predicate. Both come
@@ -229,14 +249,14 @@ class SubqueryQueryBuilder {
 
 	/**
 	 * @param array<int, array{expr: string, alias: string}> $sortfieldPairs
-	 * @param bool $cursorMode When true, sortfield projections are also
-	 *   aliased as `cursor_sort_N`. This matches the column shape the
-	 *   QueryEngine row loop expects under cursor mode, so the loop does
-	 *   not need to branch on which builder produced the result.
+	 * @param string[] $cursorSortColumns Phase 3c: when non-empty, the
+	 *   outer projection surfaces `cursor_sort_N` columns directly from
+	 *   the inner SELECT, in this list's order. Independent of
+	 *   `$sortfieldPairs` ordering.
 	 */
 	private function buildOuterProjection(
 		array $sortfieldPairs,
-		bool $cursorMode = false
+		array $cursorSortColumns = []
 	): string {
 		$outer = self::OUTER_ALIAS;
 		$inner = self::INNER_ALIAS;
@@ -250,12 +270,18 @@ class SubqueryQueryBuilder {
 			"$outer.smw_sortkey AS sortkey",
 		];
 
-		foreach ( $sortfieldPairs as $i => $pair ) {
-			if ( $cursorMode ) {
-				$columns[] = "$inner.{$pair['alias']} AS cursor_sort_$i";
-			} else {
-				$columns[] = "$inner.{$pair['alias']}";
-			}
+		// sortfield aliases (driven by `$sortfieldPairs`) feed the
+		// outer ORDER BY's substitution from raw expression to inner
+		// alias. They are independent of the cursor anchor projection.
+		foreach ( $sortfieldPairs as $pair ) {
+			$columns[] = "$inner.{$pair['alias']}";
+		}
+
+		// cursor_sort_N projections follow `$cursorSortColumns` order
+		// (the engine's keyset sort-level ordering), which may differ
+		// from `$root->sortfields` iteration order.
+		foreach ( $cursorSortColumns as $i => $_col ) {
+			$columns[] = "$inner.cursor_sort_$i";
 		}
 
 		return implode( ', ', $columns );
