@@ -41,4 +41,10 @@ class TableResultPrinterTest extends TestCase {
 		);
 	}
 
+	public function testDependsOnUserLanguage_ReturnsTrue() {
+		$instance = new TableResultPrinter( 'table' );
+
+		$this->assertTrue( $instance->dependsOnUserLanguage() );
+	}
+
 }

@@ -105,6 +105,12 @@ class JsonResultPrinterTest extends TestCase {
 		);
 	}
 
+	public function testDependsOnUserLanguage_ReturnsFalse() {
+		$instance = new JsonResultPrinter( 'json' );
+
+		$this->assertFalse( $instance->dependsOnUserLanguage() );
+	}
+
 	public function filenameDataProvider() {
 		$provider = [];
 
