@@ -64,6 +64,10 @@ class AskParserFunction {
 	 */
 	private array $params;
 
+	// Whether the query output depends on the interface language; set once the
+	// query has executed, in doFetchResultsFromFunctionParameters().
+	private bool $variesByUserLanguage = true;
+
 	/**
 	 * @since 1.9
 	 */
@@ -174,11 +178,12 @@ class AskParserFunction {
 
 		$this->parserData->copyToParserOutput();
 
-		// 'userlang' will trigger a cache fragmentation by user language
-		$this->parserData->addExtraParserKey( 'userlang' );
-
-		// 'dateformat'  will trigger a cache fragmentation by date preference
-		$this->parserData->addExtraParserKey( 'dateformat' );
+		// `userlang` fragments the parser cache by interface language; add it
+		// only when the query output depends on that language (decided in
+		// doFetchResultsFromFunctionParameters).
+		if ( $this->variesByUserLanguage ) {
+			$this->parserData->addExtraParserKey( 'userlang' );
+		}
 
 		return $result;
 	}
@@ -252,6 +257,10 @@ class AskParserFunction {
 		$contextPage = $this->parserData->getSubject();
 		$action = $this->parserData->getOption( 'request.action' );
 		$status = [];
+
+		// Reset to the cache-safe default; the real value is set below once the
+		// query has executed. Early returns keep `userlang` recorded.
+		$this->variesByUserLanguage = true;
 
 		if ( $extraKeys[self::NO_TRACE] === true ) {
 			$contextPage = null;
@@ -333,6 +342,12 @@ class AskParserFunction {
 			SMW_OUTPUT_WIKI,
 			$context
 		);
+
+		// `userlang` is only needed in the parser cache key when the output
+		// actually depends on the interface language: either the result format
+		// renders localised text, or the query produced (localised) errors.
+		$this->variesByUserLanguage = $query->getOption( 'result.depends_on_userlang' ) !== false
+			|| $query->getErrors() !== [];
 
 		if ( $this->postProcHandler !== null && $this->context !== QueryProcessor::DEFERRED_QUERY ) {
 			$this->postProcHandler->addCheck( $query );

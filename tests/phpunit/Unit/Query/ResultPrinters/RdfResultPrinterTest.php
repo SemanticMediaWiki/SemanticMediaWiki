@@ -53,4 +53,10 @@ class RdfResultPrinterTest extends TestCase {
 		);
 	}
 
+	public function testDependsOnUserLanguage_ReturnsFalse() {
+		$instance = new RdfResultPrinter( 'rdf' );
+
+		$this->assertFalse( $instance->dependsOnUserLanguage() );
+	}
+
 }

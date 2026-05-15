@@ -698,6 +698,17 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
+	 * Whether this printer's rendered output varies with the viewing user's
+	 * interface language. When false, SMW can skip adding the `userlang` key
+	 * to the parser cache for queries using this format.
+	 *
+	 * @since 7.0.0
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return true;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return bool

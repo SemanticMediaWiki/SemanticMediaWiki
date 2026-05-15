@@ -427,6 +427,142 @@ class AskParserFunctionTest extends TestCase {
 		$instance->parse( $params );
 	}
 
+	/**
+	 * Characterization / regression guard: format=table (dependsOnUserLanguage=true)
+	 * must still add `userlang` to the parser cache key after the change.
+	 *
+	 * @covers \SMW\ParserFunctions\AskParserFunction::parse
+	 */
+	public function testParseTableFormatAddsUserlangKey() {
+		$this->testEnvironment->addConfiguration( 'smwgSetParserCacheKeys', [ 'userlang' ] );
+
+		$parserOutput = new ParserOutput();
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parserOutput
+		);
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
+
+		$instance->parse( [
+			'[[Modification date::+]]',
+			'format=table',
+		] );
+
+		$this->assertContains(
+			'userlang',
+			$parserOutput->getUsedOptions(),
+			'format=table depends on user language; userlang must be in the parser cache key'
+		);
+	}
+
+	/**
+	 * New behaviour: format=json with no errors must NOT add `userlang`.
+	 *
+	 * @covers \SMW\ParserFunctions\AskParserFunction::parse
+	 */
+	public function testParseJsonFormatWithoutErrorsOmitsUserlangKey() {
+		$this->testEnvironment->addConfiguration( 'smwgSetParserCacheKeys', [ 'userlang' ] );
+
+		$parserOutput = new ParserOutput();
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parserOutput
+		);
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
+
+		$instance->parse( [
+			'[[Modification date::+]]',
+			'format=json',
+		] );
+
+		$this->assertNotContains(
+			'userlang',
+			$parserOutput->getUsedOptions(),
+			'format=json output is language-neutral; userlang must not be in the parser cache key'
+		);
+	}
+
+	/**
+	 * format=count uses NullResultPrinter and takes the count code path; an
+	 * error-free count query is language-neutral and must NOT add `userlang`.
+	 *
+	 * @covers \SMW\ParserFunctions\AskParserFunction::parse
+	 */
+	public function testParseCountFormatOmitsUserlangKey() {
+		$this->testEnvironment->addConfiguration( 'smwgSetParserCacheKeys', [ 'userlang' ] );
+
+		$parserOutput = new ParserOutput();
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parserOutput
+		);
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
+
+		$instance->parse( [
+			'[[Modification date::+]]',
+			'format=count',
+		] );
+
+		$this->assertNotContains(
+			'userlang',
+			$parserOutput->getUsedOptions(),
+			'format=count output is language-neutral; userlang must not be in the parser cache key'
+		);
+	}
+
+	/**
+	 * format=json still adds `userlang` when the query produces errors, since
+	 * error messages are localized even though json output is language-neutral.
+	 *
+	 * @covers \SMW\ParserFunctions\AskParserFunction::parse
+	 */
+	public function testParseJsonFormatWithErrorsAddsUserlangKey() {
+		$this->testEnvironment->addConfiguration( 'smwgSetParserCacheKeys', [ 'userlang' ] );
+
+		$parserOutput = new ParserOutput();
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parserOutput
+		);
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
+
+		// Invalid query condition produces a localized error message; userlang is required.
+		$instance->parse( [
+			'[[--ABC|DEF::123]]',
+			'format=json',
+		] );
+
+		$this->assertContains(
+			'userlang',
+			$parserOutput->getUsedOptions(),
+			'format=json with errors renders localized text; userlang must be in the parser cache key'
+		);
+	}
+
 	public function queryDataProvider() {
 		$categoryNS = Localizer::getInstance()->getNsText( NS_CATEGORY );
 		$fileNS = Localizer::getInstance()->getNsText( NS_FILE );

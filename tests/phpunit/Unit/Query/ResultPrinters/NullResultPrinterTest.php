@@ -40,4 +40,10 @@ class NullResultPrinterTest extends TestCase {
 		);
 	}
 
+	public function testDependsOnUserLanguage_ReturnsFalse() {
+		$instance = new NullResultPrinter( '' );
+
+		$this->assertFalse( $instance->dependsOnUserLanguage() );
+	}
+
 }

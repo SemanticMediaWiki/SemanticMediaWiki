@@ -11,6 +11,7 @@ use SMW\Query\Exception\ResultFormatNotFoundException;
 use SMW\Query\Processor\DefaultParamDefinition;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\ResultPrinters\NullResultPrinter;
+use SMW\Query\ResultPrinters\ResultPrinter as ResultPrinterBase;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -310,7 +311,20 @@ class QueryProcessor implements QueryContext {
 			$context
 		);
 
+		// Record whether the result format's output varies with the interface
+		// language, so AskParserFunction can decide whether the `userlang`
+		// parser cache key is needed. dependsOnUserLanguage() lives on the
+		// abstract ResultPrinter base class, not the interface; a printer that
+		// does not extend the base defaults to the cache-safe `true`.
+		$query->setOption(
+			'result.depends_on_userlang',
+			$printer instanceof ResultPrinterBase ? $printer->dependsOnUserLanguage() : true
+		);
+
 		if ( $printer instanceof ResultPrinterDependency && $printer->hasMissingDependency() ) {
+			// The dependency error is localised, so it must vary by `userlang`
+			// regardless of what the printer reports for its normal output.
+			$query->setOption( 'result.depends_on_userlang', true );
 			return $printer->getDependencyError();
 		}
 
