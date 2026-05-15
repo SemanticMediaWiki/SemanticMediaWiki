@@ -321,10 +321,9 @@ class QueryCreatorTest extends TestCase {
 		);
 	}
 
-	public function testCursorParamWithMultiSortIsRejectedWithError(): void {
-		// Phase 3b will support compound-sort cursors. Until then,
-		// `sort=A,B` + `cursor=` is rejected so cursor consumers can
-		// rely on the constrained single-sort schema.
+	public function testCursorParamWithUniformMultiSortIsAccepted(): void {
+		// Phase 3b-ii: `sort=A,B` with a uniform `order=` is accepted.
+		// Bootstrap cursor matches because it carries no `sort_prop`.
 		$instance = new QueryCreator(
 			ApplicationFactory::getInstance()->getQueryFactory()
 		);
@@ -337,10 +336,82 @@ class QueryCreatorTest extends TestCase {
 			]
 		);
 
+		$this->assertSame( [ 'v' => 1 ], $query->getCursorAfter() );
+	}
+
+	public function testCursorParamWithMixedOrderMultiSortIsRejectedWithError(): void {
+		// Phase 3b-iii will lift this. Mixed direction per sort level
+		// requires per-level operator inversion in the keyset
+		// predicate, which is materially more complex than the
+		// uniform-direction case Phase 3b-ii ships.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'PropertyA', 'PropertyB' ],
+				'order'  => [ 'asc', 'desc' ],
+				'cursor' => 'eyJ2IjoxfQ',
+			]
+		);
+
 		$this->assertNull( $query->getCursorAfter() );
 		$this->assertCursorErrorPresent(
 			$query->getErrors(),
-			'multi-property'
+			'mixed `order=`'
+		);
+	}
+
+	public function testCursorParamWithMatchingArraySortPropIsAccepted(): void {
+		// Phase 3b-ii: a multi-sort cursor carries `sort_prop` as an
+		// array of property keys. The request's sort= must match
+		// element-wise.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// base64url of {"v":1,"sort":["v1","v2"],"sort_prop":["PropertyA","PropertyB"],"id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjpbInYxIiwidjIiXSwic29ydF9wcm9wIjpbIlByb3BlcnR5QSIsIlByb3BlcnR5QiJdLCJpZCI6NDJ9';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'PropertyA', 'PropertyB' ],
+				'cursor' => $token,
+			]
+		);
+
+		$payload = $query->getCursorAfter();
+		$this->assertIsArray( $payload );
+		$this->assertSame( [ 'PropertyA', 'PropertyB' ], $payload['sort_prop'] );
+		$this->assertSame( [ 'v1', 'v2' ], $payload['sort'] );
+	}
+
+	public function testCursorParamWithShapeMismatchSortPropIsRejectedWithError(): void {
+		// A single-sort cursor (scalar `sort_prop`) sent to a multi-sort
+		// request (or vice-versa) must be rejected. The anchor has no
+		// meaning when the sort field set has changed.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// Single-sort cursor (scalar sort_prop)
+		$singleSortToken = 'eyJ2IjoxLCJzb3J0IjoidiIsInNvcnRfcHJvcCI6IlByb3BlcnR5QSIsImlkIjo0Mn0';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'PropertyA', 'PropertyB' ],
+				'cursor' => $singleSortToken,
+			]
+		);
+
+		$this->assertNull( $query->getCursorAfter() );
+		$this->assertCursorErrorPresent(
+			$query->getErrors(),
+			'has no meaning'
 		);
 	}
 

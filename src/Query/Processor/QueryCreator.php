@@ -192,16 +192,26 @@ class QueryCreator implements QueryContext {
 			static fn ( $key ) => $key !== ''
 		) );
 
-		if ( count( $customSortKeys ) > 1 ) {
-			$query->addErrors( [
-				'Cursor pagination (`cursor=`) is not supported with multi-property `sort=` in this release. Reduce to a single sort property, or use `offset=` instead.'
-			] );
-			return;
+		// Phase 3b-ii: multi-property sort is allowed when all custom
+		// sort keys share a uniform direction. Mixed direction
+		// (`sort=A,B|order=asc,desc`) is deferred to Phase 3b-iii
+		// because the keyset predicate would need per-level operator
+		// inversion, which complicates the compound-predicate
+		// generation enough to warrant its own PR.
+		if ( $customSortKeys !== [] ) {
+			$firstOrder = $sortKeys[$customSortKeys[0]];
+			foreach ( $customSortKeys as $key ) {
+				if ( $sortKeys[$key] !== $firstOrder ) {
+					$query->addErrors( [
+						'Cursor pagination (`cursor=`) is not supported with mixed `order=` per sort property in this release. Use a uniform `order=` (all ascending or all descending), or use `offset=` instead.'
+					] );
+					return;
+				}
+			}
 		}
 
 		// `order=random` is fundamentally incompatible with keyset
-		// pagination: there's no stable anchor to seek past. Phase 3b
-		// adds `order=desc` support; `random` stays rejected.
+		// pagination: there's no stable anchor to seek past.
 		$requestSortKey = $customSortKeys[0] ?? '';
 		$requestSortOrder = $this->resolveRequestSortOrder( $sortKeys, $requestSortKey );
 		if ( $requestSortOrder === 'RANDOM' ) {
@@ -228,14 +238,25 @@ class QueryCreator implements QueryContext {
 
 		// Reject mismatched sort_prop. The empty-payload bootstrap
 		// cursor has no `sort_prop` and therefore matches any sort,
-		// so a first-page cursor request works for both default- and
-		// custom-sort queries.
-		$payloadSortProp = $payload['sort_prop'] ?? '';
-		if ( $payloadSortProp !== '' && $payloadSortProp !== $requestSortKey ) {
-			$query->addErrors( [
-				"Cursor was minted for `sort=$payloadSortProp` but the request specifies `sort=$requestSortKey`. The cursor anchor has no meaning under a different sort; re-issue without `cursor=` or align the `sort=` parameter."
-			] );
-			return;
+		// so a first-page cursor request works for default-, single-,
+		// and multi-sort queries.
+		//
+		// Single-sort cursors carry `sort_prop` as a scalar string;
+		// multi-sort cursors (Phase 3b-ii) as an array of property
+		// keys. Both shapes normalise to an array here for comparison.
+		$payloadSortProp = $payload['sort_prop'] ?? null;
+		if ( $payloadSortProp !== null ) {
+			$payloadProps = is_array( $payloadSortProp ) ? $payloadSortProp : [ $payloadSortProp ];
+			if ( $payloadProps !== $customSortKeys ) {
+				$payloadDesc = is_array( $payloadSortProp )
+					? implode( ',', $payloadSortProp )
+					: $payloadSortProp;
+				$requestDesc = implode( ',', $customSortKeys );
+				$query->addErrors( [
+					"Cursor was minted for `sort=$payloadDesc` but the request specifies `sort=$requestDesc`. The cursor anchor has no meaning under a different sort; re-issue without `cursor=` or align the `sort=` parameter."
+				] );
+				return;
+			}
 		}
 
 		// Reject mismatched sort_order, but only when the cursor has
