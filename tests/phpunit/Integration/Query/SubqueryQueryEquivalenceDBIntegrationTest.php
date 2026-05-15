@@ -46,6 +46,10 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private Property $authorProperty;
 
+	private Property $mixedTieNumberProperty;
+
+	private Property $mixedTieAuthorProperty;
+
 	private WikiPage $alice;
 
 	private WikiPage $bob;
@@ -65,6 +69,19 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->authorProperty = new Property( 'EquivalenceAuthor' );
 		$this->authorProperty->setPropertyTypeId( '_wpg' );
+
+		// Dedicated property pair for the mixed-direction cursor walk
+		// test. Kept separate from `numberProperty`/`authorProperty` so
+		// the tied values needed to exercise per-level keyset operator
+		// flipping do not bleed into other tests' expected sequences
+		// (MariaDB does not promise stable tie ordering across query
+		// shapes, so legacy and rewrite paths can disagree on tie
+		// order without it being a real divergence).
+		$this->mixedTieNumberProperty = new Property( 'EquivalenceMixedTieNumber' );
+		$this->mixedTieNumberProperty->setPropertyTypeId( '_num' );
+
+		$this->mixedTieAuthorProperty = new Property( 'EquivalenceMixedTieAuthor' );
+		$this->mixedTieAuthorProperty->setPropertyTypeId( '_wpg' );
 
 		$this->alice = new WikiPage( 'EquivalenceAlice', NS_MAIN );
 		$this->bob = new WikiPage( 'EquivalenceBob', NS_MAIN );
@@ -297,11 +314,11 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 			function ( ?array $cursorPayload ): Query {
 				$description = new Conjunction( [
 					new SomeProperty(
-						$this->numberProperty,
+						$this->mixedTieNumberProperty,
 						new ThingDescription()
 					),
 					new SomeProperty(
-						$this->authorProperty,
+						$this->mixedTieAuthorProperty,
 						new ThingDescription()
 					),
 				] );
@@ -310,8 +327,8 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 				$query->sort = true;
 				$query->setUnboundLimit( 1 );
 				$query->sortkeys = [
-					$this->numberProperty->getKey() => 'ASC',
-					$this->authorProperty->getKey() => 'DESC',
+					$this->mixedTieNumberProperty->getKey() => 'ASC',
+					$this->mixedTieAuthorProperty->getKey() => 'DESC',
 				];
 				$query->setCursorAfter( $cursorPayload );
 				return $query;
@@ -456,9 +473,12 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 
 		// Pages used by the Phase 3b-iii mixed-direction cursor walk
-		// test. They share `numberProperty` ASC with `authorProperty`
-		// DESC: numbers are tied to force the walk through the second
-		// level's DESC operator, then through the smw_id tiebreak.
+		// test. They are scoped to `mixedTieNumberProperty` and
+		// `mixedTieAuthorProperty` so the tied num/author values stay
+		// invisible to other tests' `numberProperty`/`authorProperty`
+		// queries. Numbers are tied (5, 5, 7, 7) to force the walk
+		// through the second level's DESC operator and then through
+		// the smw_id tiebreak.
 		$mixedSet = [
 			[ 'name' => 'mixedA-num5-aliceBob', 'num' => 5, 'authors' => [ $this->alice, $this->bob ] ],
 			[ 'name' => 'mixedB-num5-aliceOnly', 'num' => 5, 'authors' => [ $this->alice ] ],
@@ -470,11 +490,11 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 				->setTitle( __CLASS__ . '-' . $fixture['name'] )
 				->newEmptySemanticData();
 			$semanticData->addPropertyObjectValue(
-				$this->numberProperty,
+				$this->mixedTieNumberProperty,
 				new Number( $fixture['num'] )
 			);
 			foreach ( $fixture['authors'] as $author ) {
-				$semanticData->addPropertyObjectValue( $this->authorProperty, $author );
+				$semanticData->addPropertyObjectValue( $this->mixedTieAuthorProperty, $author );
 			}
 			$this->getStore()->updateData( $semanticData );
 			$this->subjectsToBeCleared[] = $semanticData->getSubject();
