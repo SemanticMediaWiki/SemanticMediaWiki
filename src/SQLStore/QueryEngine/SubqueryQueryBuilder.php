@@ -38,11 +38,29 @@ class SubqueryQueryBuilder {
 
 	/**
 	 * @since 7.0.0
+	 *
+	 * @param QuerySegment $root
+	 * @param array $sqlOptions Requires `LIMIT`; honours `OFFSET` and
+	 *   `ORDER BY`. In cursor mode, `OFFSET` should be unset by the
+	 *   caller (the keyset predicate or bootstrap ORDER BY replaces it).
+	 * @param string $outerWhere Filters applied on the outer SELECT.
+	 * @param string $cursorPredicate Phase 3c: raw SQL fragment for the
+	 *   keyset WHERE clause, anchored at the inner segment's alias. ANDed
+	 *   into the inner WHERE so the LIMIT'd subset is the cursor-anchored
+	 *   slice. Empty for non-cursor queries AND for bootstrap cursors
+	 *   (which carry no anchor yet); use `$cursorMode` to distinguish.
+	 * @param bool $cursorMode Phase 3c: true when the caller is paginating
+	 *   in cursor mode. Drives the `cursor_sort_N` outer projection
+	 *   aliases the QueryEngine row loop reads to mint the next anchor.
+	 *   Independent of `$cursorPredicate` (which is empty on bootstrap
+	 *   requests, the first page in cursor mode).
 	 */
 	public function buildInstanceQuerySQL(
 		QuerySegment $root,
 		array $sqlOptions,
-		string $outerWhere
+		string $outerWhere,
+		string $cursorPredicate = '',
+		bool $cursorMode = false
 	): string {
 		if ( !isset( $sqlOptions['LIMIT'] ) ) {
 			throw new \InvalidArgumentException( 'sqlOptions[\'LIMIT\'] is required' );
@@ -57,13 +75,18 @@ class SubqueryQueryBuilder {
 			$root,
 			$sortfieldPairs,
 			$orderBy,
-			$this->innerLimit( $outerLimit )
+			$this->innerLimit( $outerLimit ),
+			$cursorPredicate
 		);
 
-		$outerProjection = $this->buildOuterProjection( $sortfieldPairs );
+		$outerProjection = $this->buildOuterProjection(
+			$sortfieldPairs,
+			$cursorMode
+		);
 		$outerOrderBy = $this->rewriteOrderByForOuter(
 			$orderBy,
-			$sortfieldPairs
+			$sortfieldPairs,
+			$root->alias
 		);
 
 		$idTable = $this->connection->tableName( self::ID_TABLE );
@@ -161,12 +184,16 @@ class SubqueryQueryBuilder {
 	 * @param array<int, array{expr: string, alias: string}> $sortfieldPairs
 	 * @param string $orderBy
 	 * @param int $innerLimit
+	 * @param string $cursorPredicate Phase 3c: raw SQL fragment ANDed
+	 *   into the inner WHERE. Anchored at the root segment's alias so
+	 *   column refs resolve inside the derived table.
 	 */
 	private function buildInnerSelect(
 		QuerySegment $root,
 		array $sortfieldPairs,
 		string $orderBy,
-		int $innerLimit
+		int $innerLimit,
+		string $cursorPredicate = ''
 	): string {
 		$columns = [ "{$root->joinfield} AS s_id" ];
 
@@ -174,10 +201,22 @@ class SubqueryQueryBuilder {
 			$columns[] = "$expr AS $alias";
 		}
 
+		// Combine existing WHERE with the cursor predicate. Both come
+		// pre-formed; we just AND them. The predicate references the
+		// inner segment's raw columns (e.g. `t0.smw_sort`, `t0.smw_id`),
+		// which resolve inside the derived table because the inner FROM
+		// aliases the root table as `t0`.
+		$where = $root->where;
+		if ( $cursorPredicate !== '' ) {
+			$where = $where !== ''
+				? "($where) AND ($cursorPredicate)"
+				: $cursorPredicate;
+		}
+
 		$sql = 'SELECT DISTINCT ' . implode( ', ', $columns )
 			. ' FROM ' . $this->connection->tableName( $root->joinTable ) . " AS {$root->alias}"
 			. $root->from
-			. ( $root->where !== '' ? " WHERE {$root->where}" : '' );
+			. ( $where !== '' ? " WHERE $where" : '' );
 
 		if ( $orderBy !== '' ) {
 			$sql .= " ORDER BY $orderBy";
@@ -190,8 +229,15 @@ class SubqueryQueryBuilder {
 
 	/**
 	 * @param array<int, array{expr: string, alias: string}> $sortfieldPairs
+	 * @param bool $cursorMode When true, sortfield projections are also
+	 *   aliased as `cursor_sort_N`. This matches the column shape the
+	 *   QueryEngine row loop expects under cursor mode, so the loop does
+	 *   not need to branch on which builder produced the result.
 	 */
-	private function buildOuterProjection( array $sortfieldPairs ): string {
+	private function buildOuterProjection(
+		array $sortfieldPairs,
+		bool $cursorMode = false
+	): string {
 		$outer = self::OUTER_ALIAS;
 		$inner = self::INNER_ALIAS;
 
@@ -204,8 +250,12 @@ class SubqueryQueryBuilder {
 			"$outer.smw_sortkey AS sortkey",
 		];
 
-		foreach ( $sortfieldPairs as $pair ) {
-			$columns[] = "$inner.{$pair['alias']}";
+		foreach ( $sortfieldPairs as $i => $pair ) {
+			if ( $cursorMode ) {
+				$columns[] = "$inner.{$pair['alias']} AS cursor_sort_$i";
+			} else {
+				$columns[] = "$inner.{$pair['alias']}";
+			}
 		}
 
 		return implode( ', ', $columns );
@@ -220,14 +270,23 @@ class SubqueryQueryBuilder {
 	 * to prevent shorter expressions (e.g. "t0.smw_sort") from corrupting
 	 * longer ones that share a prefix (e.g. "t0.smw_sortkey").
 	 *
+	 * Phase 3c: the cursor-mode ORDER BY also references
+	 * `<rootAlias>.smw_id` (the tiebreak column). This rewrites that
+	 * reference to `outer_q.smw_id`, which the outer query has direct
+	 * access to via the JOIN on `smw_object_ids AS outer_q`.
+	 *
 	 * @param string $orderBy
 	 * @param array<int, array{expr: string, alias: string}> $sortfieldPairs
+	 * @param string $rootAlias Inner segment's table alias (e.g. `t0`),
+	 *   used to rewrite the smw_id reference for cursor mode. Empty
+	 *   string skips the smw_id rewrite.
 	 */
 	private function rewriteOrderByForOuter(
 		string $orderBy,
-		array $sortfieldPairs
+		array $sortfieldPairs,
+		string $rootAlias = ''
 	): string {
-		if ( $orderBy === '' || $sortfieldPairs === [] ) {
+		if ( $orderBy === '' ) {
 			return $orderBy;
 		}
 
@@ -240,9 +299,21 @@ class SubqueryQueryBuilder {
 
 		$rewritten = $orderBy;
 		$inner = self::INNER_ALIAS;
+		$outer = self::OUTER_ALIAS;
 
 		foreach ( $sortfieldPairs as [ 'expr' => $expr, 'alias' => $alias ] ) {
 			$rewritten = str_replace( $expr, "$inner.$alias", $rewritten );
+		}
+
+		// Cursor-mode `smw_id` tiebreak: maps from inner segment's
+		// `<alias>.smw_id` to outer `outer_q.smw_id` (which is the
+		// JOINed column the outer query has direct access to).
+		if ( $rootAlias !== '' ) {
+			$rewritten = str_replace(
+				"$rootAlias.smw_id",
+				"$outer.smw_id",
+				$rewritten
+			);
 		}
 
 		return $rewritten;
