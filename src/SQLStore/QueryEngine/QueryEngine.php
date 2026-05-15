@@ -401,40 +401,26 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$cursorMode = $query->getCursorAfter() !== null;
 		$cursorSortPropKeys = [];
 		$cursorSortColumns = [];
-		$cursorSortOrder = 'ASC';
+		$cursorSortOrders = [];
 
 		if ( $cursorMode ) {
 			// The active sort keys are determined by `$query->sortkeys`
 			// (set by `QueryCreator` from `sort=`), not by the incoming
 			// cursor payload. The cursor's `sort_prop` was already
 			// cross-checked against `sort=` in `QueryCreator`. Phase
-			// 3b-ii allows multiple custom sort keys with a uniform
-			// direction; `QueryCreator` rejected mixed-order requests.
-			//
-			// Defensive uniformity check: if a caller constructed the
-			// `Query` programmatically and bypassed `QueryCreator`,
-			// mixed directions could land here. Surface explicitly
-			// rather than emit a predicate that's inverted on prior
-			// levels.
-			$seenOrder = null;
+			// 3b-iii allows per-level directions across multiple custom
+			// sort keys; the engine carries them as a parallel array
+			// to `$cursorSortColumns` so the predicate builder can flip
+			// the operator at each level independently.
 			foreach ( $query->sortkeys as $propKey => $order ) {
 				if ( $propKey !== '' ) {
-					$normalised = $order === 'DESC' ? 'DESC' : 'ASC';
-					if ( $seenOrder !== null && $seenOrder !== $normalised ) {
-						$query->addErrors( [
-							'Cursor mode requires uniform sort order across all sort keys; mixed `ASC`/`DESC` would invert the keyset predicate on prior levels.'
-						] );
-						return $this->queryFactory->newQueryResult(
-							$this->store, $query, [], false
-						);
-					}
-					$seenOrder = $normalised;
 					$cursorSortPropKeys[] = $propKey;
-					$cursorSortOrder = $normalised;
+					$cursorSortOrders[] = $order === 'DESC' ? 'DESC' : 'ASC';
 				}
 			}
-			if ( $cursorSortPropKeys === [] && isset( $query->sortkeys[''] ) ) {
-				$cursorSortOrder = $query->sortkeys[''] === 'DESC' ? 'DESC' : 'ASC';
+			if ( $cursorSortPropKeys === [] ) {
+				$defaultOrder = ( $query->sortkeys[''] ?? 'ASC' ) === 'DESC' ? 'DESC' : 'ASC';
+				$cursorSortOrders = [ $defaultOrder ];
 			}
 
 			if ( $cursorSortPropKeys !== [] ) {
@@ -503,14 +489,18 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			}
 
 			// Override sort and offset for cursor mode. Keyset is
-			// total-ordered on `(<col_1>, ..., <col_n>, smw_id)`; all
-			// levels sort in the same direction so the tiebreak walks
-			// consistently with the primary sort.
+			// total-ordered on `(<col_1>, ..., <col_n>, smw_id)`.
+			// Each level uses its own direction; the smw_id tiebreak
+			// adopts the LAST level's direction so the tied-tuple walk
+			// chains naturally off the final sort column. For uniform
+			// requests, this collapses to "everything in one direction"
+			// (the pre-3b-iii behaviour).
 			$orderByParts = [];
-			foreach ( $cursorSortColumns as $col ) {
-				$orderByParts[] = "$col $cursorSortOrder";
+			foreach ( $cursorSortColumns as $i => $col ) {
+				$orderByParts[] = "$col {$cursorSortOrders[$i]}";
 			}
-			$orderByParts[] = "$qobj->alias.smw_id $cursorSortOrder";
+			$tiebreakDir = $cursorSortOrders[count( $cursorSortOrders ) - 1];
+			$orderByParts[] = "$qobj->alias.smw_id $tiebreakDir";
 			$sql_options['ORDER BY'] = implode( ', ', $orderByParts );
 			unset( $sql_options['OFFSET'] );
 		}
@@ -550,7 +540,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			}
 
 			if ( $cursorMode ) {
-				$this->applyKeysetPredicate( $qb, $query, $qobj, $connection, $cursorSortColumns, $cursorSortOrder );
+				$this->applyKeysetPredicate( $qb, $query, $qobj, $connection, $cursorSortColumns, $cursorSortOrders );
 			}
 
 			$res = $qb->fetchResultSet();
@@ -561,7 +551,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$cursorPredicate = '';
 			if ( $cursorMode ) {
 				$cursorPredicate = $this->buildKeysetPredicateString(
-					$query, $qobj, $connection, $cursorSortColumns, $cursorSortOrder
+					$query, $qobj, $connection, $cursorSortColumns, $cursorSortOrders
 				);
 			}
 			$sql = $this->subqueryQueryBuilder->buildInstanceQuerySQL(
@@ -569,7 +559,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 				$sql_options,
 				'',
 				$cursorPredicate,
-				$cursorMode
+				$cursorMode ? $cursorSortColumns : []
 			);
 			$res = $connection->readQuery( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 		}
@@ -696,12 +686,25 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					? $cursorSortPropKeys[0]
 					: $cursorSortPropKeys;
 			}
-			// Round-trip the sort order: a cursor minted for DESC must
-			// be rejected by an ASC request (the predicate would seek
-			// in the wrong direction). Omitted for ASC to keep
-			// spike/3a/3b-i ASC cursors round-trippable as-is.
-			if ( $cursorSortOrder === 'DESC' ) {
+			// Round-trip the sort order: a cursor minted for a given
+			// direction must be rejected by a request specifying a
+			// different direction (the predicate would seek the wrong
+			// way at that level).
+			//
+			//   - All-ASC: omit `sort_order` (keeps spike/3a ASC
+			//     cursors round-trippable as-is).
+			//   - Uniform DESC: emit `sort_order` as the scalar string
+			//     "DESC" (keeps 3b-i/3b-ii uniform-DESC cursors
+			//     round-trippable as-is).
+			//   - Mixed per-level: emit `sort_order` as a per-level
+			//     array (Phase 3b-iii shape).
+			$uniformOrder = count( array_unique( $cursorSortOrders ) ) === 1
+				? $cursorSortOrders[0]
+				: null;
+			if ( $uniformOrder === 'DESC' ) {
 				$payload['sort_order'] = 'DESC';
+			} elseif ( $uniformOrder === null ) {
+				$payload['sort_order'] = $cursorSortOrders;
 			}
 			$queryResult->setNextCursor( CursorEncoder::encode( $payload ) );
 		}
@@ -801,21 +804,27 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * just opts into deterministic ordering without seeking past
 	 * anything).
 	 *
-	 * Generalised compound form (Phase 3b-ii). For N sort columns
+	 * Generalised compound form (Phase 3b-iii). For N sort columns
 	 * `c_1 ... c_N` with anchor values `v_1 ... v_N`, anchor id `Y`,
-	 * and operator `OP` (`>` for ASC, `<` for DESC), the predicate is:
+	 * and per-level operators `op_1 ... op_N` (`>` for ASC, `<` for
+	 * DESC), the predicate is:
 	 *
-	 *     (c_1 OP v_1)
-	 *     OR (c_1 = v_1 AND c_2 OP v_2)
+	 *     (c_1 op_1 v_1)
+	 *     OR (c_1 = v_1 AND c_2 op_2 v_2)
 	 *     OR ...
-	 *     OR (c_1 = v_1 AND ... AND c_N OP v_N)
-	 *     OR (c_1 = v_1 AND ... AND c_N = v_N AND smw_id OP Y)
+	 *     OR (c_1 = v_1 AND ... AND c_N op_N v_N)
+	 *     OR (c_1 = v_1 AND ... AND c_N = v_N AND smw_id op_N Y)
 	 *
 	 * Each clause peels one level of "tied prefix", expanding the
-	 * range progressively. MariaDB recognises this as an index range
-	 * seek when an index covers the sort columns; the row-constructor
-	 * form `(c_1, ..., c_N, smw_id) OP (v_1, ..., v_N, Y)` plans a
-	 * full index scan instead. See issue #6559 and #6794.
+	 * range progressively. Operator at level k flips per direction so
+	 * mixed `order=asc,desc` walks each level the right way. The
+	 * smw_id tiebreak adopts the LAST level's direction so the
+	 * tied-tuple walk chains naturally off the final sort column.
+	 *
+	 * MariaDB recognises the explicit-OR form as an index range seek
+	 * when an index covers the sort columns; the row-constructor form
+	 * `(c_1, ..., c_N, smw_id) OP (v_1, ..., v_N, Y)` plans a full
+	 * index scan instead. See issue #6559 and #6794.
 	 *
 	 * For N=1 (Phase 3 spike + 3a + 3b-i compatibility), the form
 	 * collapses to the simple two-clause predicate.
@@ -823,9 +832,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * `$sortColumns` is the list of SQL column expressions for the
 	 * active sort fields. The caller resolves them from
 	 * `$qobj->sortfields` (custom sort) or hardcodes
-	 * `[<alias>.smw_sort]` (default sort).
+	 * `[<alias>.smw_sort]` (default sort). `$sortOrders` is a parallel
+	 * array of "ASC" or "DESC" strings, one per column.
 	 *
-	 * TODO Phase 3c: unify with `KeysetPaginationTrait::applyCursorPagination`.
+	 * TODO Phase 3c follow-up: unify with `KeysetPaginationTrait::applyCursorPagination`.
 	 * Once a shared predicate builder exists, both this method and the
 	 * trait can delegate to it.
 	 */
@@ -835,10 +845,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		QuerySegment $qobj,
 		$connection,
 		array $sortColumns,
-		string $sortOrder = 'ASC'
+		array $sortOrders
 	): void {
 		$predicate = $this->buildKeysetPredicateString(
-			$query, $qobj, $connection, $sortColumns, $sortOrder
+			$query, $qobj, $connection, $sortColumns, $sortOrders
 		);
 		if ( $predicate !== '' ) {
 			$queryBuilder->where( $predicate );
@@ -859,7 +869,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		QuerySegment $qobj,
 		$connection,
 		array $sortColumns,
-		string $sortOrder = 'ASC'
+		array $sortOrders
 	): string {
 		$payload = $query->getCursorAfter();
 		if ( !isset( $payload['sort'] ) || !isset( $payload['id'] ) ) {
@@ -867,9 +877,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		}
 
 		// Normalise payload `sort` to an array. Phase 3 spike + 3a +
-		// 3b-i cursors carry scalar `sort`; 3b-ii multi-sort cursors
-		// carry an array. The shape is validated by the caller
-		// (`getInstanceQueryResult`) before reaching here — by the
+		// 3b-i cursors carry scalar `sort`; 3b-ii/3b-iii multi-sort
+		// cursors carry an array. The shape is validated by the caller
+		// (`getInstanceQueryResult`) before reaching here, so by the
 		// time this method runs, the count match is guaranteed.
 		$sortValues = is_array( $payload['sort'] ) ? $payload['sort'] : [ $payload['sort'] ];
 
@@ -879,8 +889,14 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		);
 		$cursorId = (int)$payload['id'];
 		$alias = $qobj->alias;
-		$op = $sortOrder === 'DESC' ? '<' : '>';
 		$n = count( $sortColumns );
+		$ops = [];
+		for ( $i = 0; $i < $n; $i++ ) {
+			$ops[] = ( $sortOrders[$i] ?? 'ASC' ) === 'DESC' ? '<' : '>';
+		}
+		// smw_id tiebreak follows the last level's direction so the
+		// tied-tuple walk is consistent with the ORDER BY clause.
+		$tiebreakOp = $n > 0 ? $ops[$n - 1] : '>';
 
 		// Build the N+1 OR clauses: clause k has equality on prior
 		// k levels and inequality on level k; the final clause adds
@@ -891,15 +907,15 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			for ( $j = 0; $j < $k; $j++ ) {
 				$parts[] = "$sortColumns[$j] = $quotedSorts[$j]";
 			}
-			$parts[] = "$sortColumns[$k] $op $quotedSorts[$k]";
+			$parts[] = "$sortColumns[$k] $ops[$k] $quotedSorts[$k]";
 			$clauses[] = '(' . implode( ' AND ', $parts ) . ')';
 		}
-		// Final tiebreak: all sort levels equal, smw_id by direction.
+		// Final tiebreak: all sort levels equal, smw_id by tiebreak direction.
 		$tiebreakParts = [];
 		for ( $j = 0; $j < $n; $j++ ) {
 			$tiebreakParts[] = "$sortColumns[$j] = $quotedSorts[$j]";
 		}
-		$tiebreakParts[] = "$alias.smw_id $op $cursorId";
+		$tiebreakParts[] = "$alias.smw_id $tiebreakOp $cursorId";
 		$clauses[] = '(' . implode( ' AND ', $tiebreakParts ) . ')';
 
 		return implode( ' OR ', $clauses );

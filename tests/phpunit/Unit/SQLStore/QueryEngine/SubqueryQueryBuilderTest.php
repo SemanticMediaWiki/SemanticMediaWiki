@@ -265,9 +265,10 @@ class SubqueryQueryBuilderTest extends TestCase {
 		];
 
 		$cursorPredicate = "(t0.smw_sort > 'foo') OR (t0.smw_sort = 'foo' AND t0.smw_id > 42)";
+		$cursorSortColumns = [ 't0.smw_sort' ];
 
 		$builder = new SubqueryQueryBuilder( $this->connection );
-		$sql = $builder->buildInstanceQuerySQL( $root, $sqlOptions, '', $cursorPredicate, true );
+		$sql = $builder->buildInstanceQuerySQL( $root, $sqlOptions, '', $cursorPredicate, $cursorSortColumns );
 
 		[ $innerHalf, $outerHalf ] = explode( ') AS inner_q', $sql, 2 );
 
@@ -278,40 +279,49 @@ class SubqueryQueryBuilderTest extends TestCase {
 		$this->assertStringNotContainsString( $cursorPredicate, $outerHalf );
 	}
 
-	public function testInstanceQueryWithCursorAliasesSortfieldsAsCursorSort() {
+	public function testInstanceQueryWithCursorProjectsCursorSortColumnsInDeclaredOrder() {
+		// The cursor anchor projection follows `$cursorSortColumns`
+		// order, NOT `$root->sortfields` iteration order. This matters
+		// for multi-property queries where the property table joins
+		// land in a different order than the user's `sort=` declaration.
 		$root = new QuerySegment();
 		$root->joinTable = 'smw_object_ids';
 		$root->alias = 't0';
 		$root->joinfield = 't0.smw_id';
 		$root->where = '';
+		// Sortfields iterated as _DOB, _DOA (e.g. because the author
+		// property's JOIN landed first), but the user wrote
+		// `sort=DOA,DOB`, so the cursor anchor must lead with _DOA.
 		$root->sortfields = [
-			'_DOA' => 't1.o_sortkey',
 			'_DOB' => 't2.o_sortkey',
+			'_DOA' => 't1.o_sortkey',
 		];
 
 		$sqlOptions = [
 			'LIMIT' => 10,
-			'ORDER BY' => 't1.o_sortkey ASC, t2.o_sortkey ASC, t0.smw_id ASC',
+			'ORDER BY' => 't1.o_sortkey ASC, t2.o_sortkey DESC, t0.smw_id DESC',
 		];
 
-		$cursorPredicate = "(t1.o_sortkey > 'a') OR (t1.o_sortkey = 'a' AND t2.o_sortkey > 'b')"
-			. " OR (t1.o_sortkey = 'a' AND t2.o_sortkey = 'b' AND t0.smw_id > 9)";
+		$cursorPredicate = "(t1.o_sortkey > 'a') OR (t1.o_sortkey = 'a' AND t2.o_sortkey < 'b')"
+			. " OR (t1.o_sortkey = 'a' AND t2.o_sortkey = 'b' AND t0.smw_id < 9)";
+
+		$cursorSortColumns = [ 't1.o_sortkey', 't2.o_sortkey' ];
 
 		$builder = new SubqueryQueryBuilder( $this->connection );
-		$sql = $builder->buildInstanceQuerySQL( $root, $sqlOptions, '', $cursorPredicate, true );
+		$sql = $builder->buildInstanceQuerySQL( $root, $sqlOptions, '', $cursorPredicate, $cursorSortColumns );
 
-		// Outer projection exposes each sortfield under a cursor_sort_N
-		// alias so the QueryEngine row loop reads the anchor values via
-		// `$row->cursor_sort_0`, `$row->cursor_sort_1`, ... regardless of
-		// which builder produced the result set.
-		$this->assertStringContainsString( 'inner_q.sf0 AS cursor_sort_0', $sql );
-		$this->assertStringContainsString( 'inner_q.sf1 AS cursor_sort_1', $sql );
+		// Inner SELECT aliases cursor sort columns in declared order.
+		$this->assertStringContainsString( 't1.o_sortkey AS cursor_sort_0', $sql );
+		$this->assertStringContainsString( 't2.o_sortkey AS cursor_sort_1', $sql );
+		// Outer SELECT surfaces them with the same alias.
+		$this->assertStringContainsString( 'inner_q.cursor_sort_0', $sql );
+		$this->assertStringContainsString( 'inner_q.cursor_sort_1', $sql );
 
 		// The outer ORDER BY rewrites the smw_id tiebreak from the inner
 		// segment's alias to the outer table.
 		[ , $afterJoin ] = explode( ') AS inner_q', $sql, 2 );
 		$orderBy = strstr( $afterJoin, 'ORDER BY' );
-		$this->assertStringContainsString( 'outer_q.smw_id ASC', $orderBy );
+		$this->assertStringContainsString( 'outer_q.smw_id DESC', $orderBy );
 		$this->assertStringNotContainsString( 't0.smw_id', $orderBy );
 	}
 
@@ -333,9 +343,10 @@ class SubqueryQueryBuilderTest extends TestCase {
 		];
 
 		$builder = new SubqueryQueryBuilder( $this->connection );
-		$sql = $builder->buildInstanceQuerySQL( $root, $sqlOptions, '', '', true );
+		$sql = $builder->buildInstanceQuerySQL( $root, $sqlOptions, '', '', [ 't0.smw_sort' ] );
 
-		$this->assertStringContainsString( 'inner_q.sf0 AS cursor_sort_0', $sql );
+		$this->assertStringContainsString( 't0.smw_sort AS cursor_sort_0', $sql );
+		$this->assertStringContainsString( 'inner_q.cursor_sort_0', $sql );
 	}
 
 	public function testInstanceQueryWithoutCursorDoesNotAliasCursorSort() {

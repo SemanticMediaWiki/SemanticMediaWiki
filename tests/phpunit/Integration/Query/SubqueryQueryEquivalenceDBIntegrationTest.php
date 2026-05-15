@@ -287,6 +287,39 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		);
 	}
 
+	public function testCursorWalkMixedDirectionMatchesLegacyPath(): void {
+		// Phase 3b-iii: per-level directions across multiple sort keys.
+		// The keyset predicate flips its operator at each level
+		// independently; the smw_id tiebreak adopts the last level's
+		// direction. Walks under legacy and rewrite must produce
+		// identical subject sequences.
+		$this->assertCursorWalkEquivalent(
+			function ( ?array $cursorPayload ): Query {
+				$description = new Conjunction( [
+					new SomeProperty(
+						$this->numberProperty,
+						new ThingDescription()
+					),
+					new SomeProperty(
+						$this->authorProperty,
+						new ThingDescription()
+					),
+				] );
+				$query = new Query( $description );
+				$query->querymode = Query::MODE_INSTANCES;
+				$query->sort = true;
+				$query->setUnboundLimit( 1 );
+				$query->sortkeys = [
+					$this->numberProperty->getKey() => 'ASC',
+					$this->authorProperty->getKey() => 'DESC',
+				];
+				$query->setCursorAfter( $cursorPayload );
+				return $query;
+			},
+			'mixed-direction cursor walk (asc,desc)'
+		);
+	}
+
 	public function testCursorRejectedForCompoundHashSortUnderBothPaths(): void {
 		// The `#` sort label produces a comma-joined multi-column
 		// expression in `$qobj->sortfields`. Cursor mode cannot emit a
@@ -421,6 +454,31 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		$semanticData->addPropertyObjectValue( $this->authorProperty, $this->alice );
 		$this->getStore()->updateData( $semanticData );
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
+
+		// Pages used by the Phase 3b-iii mixed-direction cursor walk
+		// test. They share `numberProperty` ASC with `authorProperty`
+		// DESC: numbers are tied to force the walk through the second
+		// level's DESC operator, then through the smw_id tiebreak.
+		$mixedSet = [
+			[ 'name' => 'mixedA-num5-aliceBob', 'num' => 5, 'authors' => [ $this->alice, $this->bob ] ],
+			[ 'name' => 'mixedB-num5-aliceOnly', 'num' => 5, 'authors' => [ $this->alice ] ],
+			[ 'name' => 'mixedC-num7-bobOnly', 'num' => 7, 'authors' => [ $this->bob ] ],
+			[ 'name' => 'mixedD-num7-aliceOnly', 'num' => 7, 'authors' => [ $this->alice ] ],
+		];
+		foreach ( $mixedSet as $fixture ) {
+			$semanticData = $this->semanticDataFactory
+				->setTitle( __CLASS__ . '-' . $fixture['name'] )
+				->newEmptySemanticData();
+			$semanticData->addPropertyObjectValue(
+				$this->numberProperty,
+				new Number( $fixture['num'] )
+			);
+			foreach ( $fixture['authors'] as $author ) {
+				$semanticData->addPropertyObjectValue( $this->authorProperty, $author );
+			}
+			$this->getStore()->updateData( $semanticData );
+			$this->subjectsToBeCleared[] = $semanticData->getSubject();
+		}
 	}
 
 	private function runUnderLegacyFlag( bool $legacy, callable $queryFactory ): QueryResult {

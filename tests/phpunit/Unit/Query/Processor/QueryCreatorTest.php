@@ -339,11 +339,11 @@ class QueryCreatorTest extends TestCase {
 		$this->assertSame( [ 'v' => 1 ], $query->getCursorAfter() );
 	}
 
-	public function testCursorParamWithMixedOrderMultiSortIsRejectedWithError(): void {
-		// Phase 3b-iii will lift this. Mixed direction per sort level
-		// requires per-level operator inversion in the keyset
-		// predicate, which is materially more complex than the
-		// uniform-direction case Phase 3b-ii ships.
+	public function testCursorParamWithMixedOrderMultiSortBootstrapIsAccepted(): void {
+		// Phase 3b-iii: mixed per-level directions are allowed. A
+		// bootstrap cursor (no anchor) opts into deterministic ordering
+		// without seeking past anything, so it is accepted against any
+		// direction combination.
 		$instance = new QueryCreator(
 			ApplicationFactory::getInstance()->getQueryFactory()
 		);
@@ -357,10 +357,89 @@ class QueryCreatorTest extends TestCase {
 			]
 		);
 
+		$this->assertNotNull( $query->getCursorAfter() );
+	}
+
+	public function testCursorParamWithMixedOrderMatchingPerLevelArrayIsAccepted(): void {
+		// Phase 3b-iii: a cursor minted under `order=asc,desc` carries
+		// `sort_order=["ASC","DESC"]`. The request's per-level
+		// directions must match element-wise.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// base64url of:
+		// {"v":1,"sort":["v1","v2"],"sort_prop":["PropertyA","PropertyB"],"sort_order":["ASC","DESC"],"id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjpbInYxIiwidjIiXSwic29ydF9wcm9wIjpbIlByb3BlcnR5QSIsIlByb3BlcnR5QiJdLCJzb3J0X29yZGVyIjpbIkFTQyIsIkRFU0MiXSwiaWQiOjQyfQ';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'PropertyA', 'PropertyB' ],
+				'order'  => [ 'asc', 'desc' ],
+				'cursor' => $token,
+			]
+		);
+
+		$payload = $query->getCursorAfter();
+		$this->assertIsArray( $payload );
+		$this->assertSame( [ 'ASC', 'DESC' ], $payload['sort_order'] );
+	}
+
+	public function testCursorParamWithMixedOrderMismatchingPerLevelArrayIsRejected(): void {
+		// Phase 3b-iii: a cursor minted under one mix of per-level
+		// directions cannot be applied against a different mix.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// Cursor minted for ["DESC","ASC"], request asks for ["ASC","DESC"].
+		// base64url of:
+		// {"v":1,"sort":["v1","v2"],"sort_prop":["PropertyA","PropertyB"],"sort_order":["DESC","ASC"],"id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjpbInYxIiwidjIiXSwic29ydF9wcm9wIjpbIlByb3BlcnR5QSIsIlByb3BlcnR5QiJdLCJzb3J0X29yZGVyIjpbIkRFU0MiLCJBU0MiXSwiaWQiOjQyfQ';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'PropertyA', 'PropertyB' ],
+				'order'  => [ 'asc', 'desc' ],
+				'cursor' => $token,
+			]
+		);
+
 		$this->assertNull( $query->getCursorAfter() );
 		$this->assertCursorErrorPresent(
 			$query->getErrors(),
-			'mixed `order=`'
+			'order='
+		);
+	}
+
+	public function testCursorParamWithUniformDescCursorAgainstMixedRequestIsRejected(): void {
+		// A 3b-i/3b-ii uniform-DESC cursor must not be silently accepted
+		// against a mixed-direction request. The string `"DESC"` normalises
+		// to per-level `["DESC","DESC"]`, which mismatches the request's
+		// `["ASC","DESC"]`.
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// base64url of:
+		// {"v":1,"sort":["v1","v2"],"sort_prop":["PropertyA","PropertyB"],"sort_order":"DESC","id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjpbInYxIiwidjIiXSwic29ydF9wcm9wIjpbIlByb3BlcnR5QSIsIlByb3BlcnR5QiJdLCJzb3J0X29yZGVyIjoiREVTQyIsImlkIjo0Mn0';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'PropertyA', 'PropertyB' ],
+				'order'  => [ 'asc', 'desc' ],
+				'cursor' => $token,
+			]
+		);
+
+		$this->assertNull( $query->getCursorAfter() );
+		$this->assertCursorErrorPresent(
+			$query->getErrors(),
+			'order='
 		);
 	}
 
