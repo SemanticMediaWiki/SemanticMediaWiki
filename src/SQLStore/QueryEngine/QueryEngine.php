@@ -515,13 +515,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			unset( $sql_options['OFFSET'] );
 		}
 
-		// Cursor mode forces the legacy single-query SQL path even when
-		// `smwgQUseLegacyQuery=false`. The Phase 3 spike does not yet wire
-		// the keyset predicate into `SubqueryQueryBuilder`'s derived-table
-		// rewrite, so cursor mode opts out of that optimisation in
-		// exchange for the much larger keyset speedup on the OFFSET side.
-		// Tracked as Phase 3c follow-up in #6795.
-		if ( $cursorMode || $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
+		if ( $this->engineOptions->get( 'smwgQUseLegacyQuery' ) ) {
 			$selectFields = [
 				'id' => "$qobj->alias.smw_id",
 				't' => "$qobj->alias.smw_title",
@@ -561,10 +555,21 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 			$res = $qb->fetchResultSet();
 		} else {
+			// Phase 3c: cursor mode now uses `SubqueryQueryBuilder`'s
+			// derived-table rewrite. The cursor predicate is built as a
+			// raw SQL string and ANDed into the inner WHERE.
+			$cursorPredicate = '';
+			if ( $cursorMode ) {
+				$cursorPredicate = $this->buildKeysetPredicateString(
+					$query, $qobj, $connection, $cursorSortColumns, $cursorSortOrder
+				);
+			}
 			$sql = $this->subqueryQueryBuilder->buildInstanceQuerySQL(
 				$qobj,
 				$sql_options,
-				''
+				'',
+				$cursorPredicate,
+				$cursorMode
 			);
 			$res = $connection->readQuery( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 		}
@@ -832,17 +837,40 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		array $sortColumns,
 		string $sortOrder = 'ASC'
 	): void {
+		$predicate = $this->buildKeysetPredicateString(
+			$query, $qobj, $connection, $sortColumns, $sortOrder
+		);
+		if ( $predicate !== '' ) {
+			$queryBuilder->where( $predicate );
+		}
+	}
+
+	/**
+	 * Build the explicit-OR keyset predicate as a raw SQL string. Used
+	 * by `applyKeysetPredicate()` (legacy path, attaches to
+	 * `SelectQueryBuilder`) and by `SubqueryQueryBuilder` (derived-table
+	 * path, ANDs into inner WHERE). Returns an empty string when the
+	 * cursor has no anchor (bootstrap `{"v":1}` payload).
+	 *
+	 * See `applyKeysetPredicate()` docblock for the predicate shape.
+	 */
+	private function buildKeysetPredicateString(
+		Query $query,
+		QuerySegment $qobj,
+		$connection,
+		array $sortColumns,
+		string $sortOrder = 'ASC'
+	): string {
 		$payload = $query->getCursorAfter();
 		if ( !isset( $payload['sort'] ) || !isset( $payload['id'] ) ) {
-			return;
+			return '';
 		}
 
 		// Normalise payload `sort` to an array. Phase 3 spike + 3a +
 		// 3b-i cursors carry scalar `sort`; 3b-ii multi-sort cursors
 		// carry an array. The shape is validated by the caller
 		// (`getInstanceQueryResult`) before reaching here — by the
-		// time `applyKeysetPredicate` runs, the count match is
-		// guaranteed.
+		// time this method runs, the count match is guaranteed.
 		$sortValues = is_array( $payload['sort'] ) ? $payload['sort'] : [ $payload['sort'] ];
 
 		$quotedSorts = array_map(
@@ -874,7 +902,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$tiebreakParts[] = "$alias.smw_id $op $cursorId";
 		$clauses[] = '(' . implode( ' AND ', $tiebreakParts ) . ')';
 
-		$queryBuilder->where( implode( ' OR ', $clauses ) );
+		return implode( ' OR ', $clauses );
 	}
 
 }

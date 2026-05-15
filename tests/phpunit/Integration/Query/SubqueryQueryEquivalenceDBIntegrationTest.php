@@ -12,6 +12,7 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
+use SMW\SQLStore\QueryEngine\CursorEncoder;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -224,6 +225,161 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		};
 
 		$this->assertQueryEquivalent( $factory, 'disjunction across two properties' );
+	}
+
+	public function testCursorWalkOverDefaultSortMatchesLegacyPath(): void {
+		$this->assertCursorWalkEquivalent(
+			function ( ?array $cursorPayload ): Query {
+				// `SomeProperty[+]` against every page that has any value
+				// for the number property, guaranteeing a non-empty
+				// instance set so the cursor walk lands on real rows.
+				$description = new SomeProperty(
+					$this->numberProperty,
+					new ThingDescription()
+				);
+				$query = new Query( $description );
+				$query->querymode = Query::MODE_INSTANCES;
+				$query->sort = true;
+				$query->setUnboundLimit( 2 );
+				$query->sortkeys = [ '' => 'ASC' ];
+				$query->setCursorAfter( $cursorPayload );
+				return $query;
+			},
+			'default-sort cursor walk'
+		);
+	}
+
+	public function testCursorWalkOverPropertySortMatchesLegacyPath(): void {
+		$this->assertCursorWalkEquivalent(
+			function ( ?array $cursorPayload ): Query {
+				$description = new SomeProperty(
+					$this->numberProperty,
+					new ThingDescription()
+				);
+				$query = new Query( $description );
+				$query->querymode = Query::MODE_INSTANCES;
+				$query->sort = true;
+				$query->setUnboundLimit( 2 );
+				$query->sortkeys = [ $this->numberProperty->getKey() => 'ASC' ];
+				$query->setCursorAfter( $cursorPayload );
+				return $query;
+			},
+			'property-sort cursor walk'
+		);
+	}
+
+	public function testCursorWalkDescendingMatchesLegacyPath(): void {
+		$this->assertCursorWalkEquivalent(
+			function ( ?array $cursorPayload ): Query {
+				$description = new SomeProperty(
+					$this->numberProperty,
+					new ThingDescription()
+				);
+				$query = new Query( $description );
+				$query->querymode = Query::MODE_INSTANCES;
+				$query->sort = true;
+				$query->setUnboundLimit( 2 );
+				$query->sortkeys = [ $this->numberProperty->getKey() => 'DESC' ];
+				$query->setCursorAfter( $cursorPayload );
+				return $query;
+			},
+			'property-sort DESC cursor walk'
+		);
+	}
+
+	public function testCursorRejectedForCompoundHashSortUnderBothPaths(): void {
+		// The `#` sort label produces a comma-joined multi-column
+		// expression in `$qobj->sortfields`. Cursor mode cannot emit a
+		// keyset predicate against a column list and must reject the
+		// request explicitly under both query paths. This guards the
+		// rejection edge in the subquery path against silent
+		// regression as the cursor-emission code evolves.
+		$factory = function (): Query {
+			$description = new SomeProperty(
+				$this->numberProperty,
+				new ThingDescription()
+			);
+			$query = new Query( $description );
+			$query->querymode = Query::MODE_INSTANCES;
+			$query->sort = true;
+			$query->setUnboundLimit( 5 );
+			$query->sortkeys = [ '#' => 'ASC' ];
+			$query->setCursorAfter( [ 'v' => 1 ] );
+			return $query;
+		};
+
+		foreach ( [ true, false ] as $legacy ) {
+			$this->testEnvironment->addConfiguration( 'smwgQUseLegacyQuery', $legacy );
+			$query = $factory();
+			$this->getStore()->getQueryResult( $query );
+			$errors = $query->getErrors();
+			$hasRejection = false;
+			foreach ( $errors as $error ) {
+				if ( str_contains( (string)$error, 'multi-column sort expression' ) ) {
+					$hasRejection = true;
+					break;
+				}
+			}
+			$this->assertTrue(
+				$hasRejection,
+				'Expected cursor mode to reject the `#` compound sort under legacy='
+					. ( $legacy ? '1' : '0' ) . '; got errors: ' . print_r( $errors, true )
+			);
+		}
+	}
+
+	/**
+	 * Walks the result set page by page in cursor mode, captures the
+	 * subject sequence under each path, and asserts the two sequences
+	 * match. Bootstrap is `{"v":1}` (no anchor) so the engine takes the
+	 * page-1 branch (no predicate); subsequent pages chain the cursor
+	 * minted from the previous page.
+	 */
+	private function assertCursorWalkEquivalent( callable $queryFactory, string $label ): void {
+		$walk = function ( bool $legacy ) use ( $queryFactory, $label ): array {
+			$this->testEnvironment->addConfiguration( 'smwgQUseLegacyQuery', $legacy );
+			$sequence = [];
+			$payload = [ 'v' => 1 ];
+			// Hard cap on iterations: defensive against an unexpected
+			// infinite loop while walking. A correctly-paginating engine
+			// terminates by returning a result without a next cursor.
+			for ( $i = 0; $i < 10; $i++ ) {
+				$query = $queryFactory( $payload );
+				$result = $this->getStore()->getQueryResult( $query );
+				$this->assertSame(
+					[],
+					$query->getErrors(),
+					"Query errors on iter $i (legacy=" . ( $legacy ? '1' : '0' ) . ") for: $label"
+				);
+				foreach ( $result->getResults() as $dataItem ) {
+					$sequence[] = $dataItem->getHash();
+				}
+				$nextToken = $result->getNextCursor();
+				if ( $nextToken === null ) {
+					break;
+				}
+				$payload = CursorEncoder::decode( $nextToken );
+				$this->assertIsArray( $payload, "Decoded cursor payload should be an array under $label" );
+			}
+			return $sequence;
+		};
+
+		$legacySequence = $walk( true );
+		$rewriteSequence = $walk( false );
+
+		$this->assertSame(
+			$legacySequence,
+			$rewriteSequence,
+			"Cursor walk sequence mismatch between legacy and rewrite for: $label"
+		);
+		// Guard against silent empty walks (would falsely satisfy
+		// equality). The seed includes pages with the number property,
+		// so we expect at least two subjects on every walk.
+		$this->assertGreaterThanOrEqual(
+			2,
+			count( $rewriteSequence ),
+			"Cursor walk produced fewer subjects than expected for: $label"
+		);
 	}
 
 	private function seedFixtures(): void {
