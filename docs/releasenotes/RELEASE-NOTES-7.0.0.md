@@ -314,6 +314,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   * Set `$smwgQUseLegacyQuery = true` in `LocalSettings.php` to fall back to the previous query shape if you encounter a regression after upgrading.
   * A redundant `DISTINCT` keyword was also dropped from the disjunction-query temp-table insert. Same result, less work for the database; no setting required.
 * On wikis with many distinct entities per page, SMW's internal caches could fill up during a single render and force repeated database lookups for the same pages. Cache sizes are now adjustable via the new `$smwgEntityCacheSizes` setting. Per-pool hit and miss counts are also emitted to MediaWiki's `StatsFactory` service, so wikis already configured to collect MediaWiki metrics (`$wgStatsTarget` and `$wgStatsFormat`) can see cache effectiveness in their existing dashboards and size caches based on real traffic instead of guessing.
+* `#ask` queries no longer fragment the parser cache by the user's date format preference. SMW formats dates by language, not by that preference, so the fragmentation produced no benefit. `dateformat` has been removed from the `$smwgSetParserCacheKeys` default, which now contains only `userlang`.
 
 ### Internal improvements
 

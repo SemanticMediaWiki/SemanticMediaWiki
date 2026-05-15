@@ -1290,7 +1290,7 @@
 			"path": true
 		},
 		"SetParserCacheKeys": {
-			"value": ["userlang", "dateformat"],
+			"value": ["userlang"],
 			"description": "Session keys added to the parser cache key, each causing additional cache fragmentation.",
 			"merge_strategy": "provide_default"
 		},

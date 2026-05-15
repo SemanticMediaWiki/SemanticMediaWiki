@@ -177,9 +177,6 @@ class AskParserFunction {
 		// 'userlang' will trigger a cache fragmentation by user language
 		$this->parserData->addExtraParserKey( 'userlang' );
 
-		// 'dateformat'  will trigger a cache fragmentation by date preference
-		$this->parserData->addExtraParserKey( 'dateformat' );
-
 		return $result;
 	}
 
