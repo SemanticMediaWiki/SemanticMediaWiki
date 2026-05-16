@@ -325,7 +325,7 @@ EOT;
 	}
 
 	private function doDropObsoleteIndices( $tableName, array &$indices ): void {
-		$tableName = $this->connection->tableName( $tableName );
+		$tableName = $this->connection->tableName( $tableName, 'raw' );
 		$currentIndices = $this->getIndexInfo( $tableName );
 
 		foreach ( $currentIndices as $indexName => $indexColumn ) {
@@ -350,7 +350,7 @@ EOT;
 			return;
 		}
 
-		$tableName = $this->connection->tableName( $tableName );
+		$tableName = $this->connection->tableName( $tableName, 'raw' );
 		$indexName = $this->getCumulatedIndexName( $tableName, $columns );
 
 		$this->reportMessage( "   ... creating new $indexType $columns ..." );

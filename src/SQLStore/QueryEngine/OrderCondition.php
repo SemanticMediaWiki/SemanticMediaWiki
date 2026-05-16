@@ -213,7 +213,7 @@ class OrderCondition {
 		?QuerySegment $querySegment,
 		array $extraDescriptions
 	): void {
-		if ( $extraDescriptions === [] ) {
+		if ( $extraDescriptions === [] || $querySegment === null ) {
 			return;
 		}
 

@@ -182,11 +182,12 @@ class Database {
 	 * @since 1.9
 	 *
 	 * @param string $tableName
+	 * @param string $format
 	 *
 	 * @return string
 	 */
-	public function tableName( $tableName ) {
-		return $this->connRef->getConnection( 'read' )->tableName( $tableName );
+	public function tableName( $tableName, $format = 'quoted' ) {
+		return $this->connRef->getConnection( 'read' )->tableName( $tableName, $format );
 	}
 
 	/**

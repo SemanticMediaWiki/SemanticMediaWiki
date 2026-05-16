@@ -133,6 +133,10 @@ class ProximityPropertyValueLookup {
 		string $search,
 		string|false $sort
 	): array {
+		if ( $table === null ) {
+			return [];
+		}
+
 		$connection = $this->store->getConnection( 'mw.db' );
 		$res = [];
 
