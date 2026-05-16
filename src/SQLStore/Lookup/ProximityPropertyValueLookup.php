@@ -127,7 +127,7 @@ class ProximityPropertyValueLookup {
 	private function fetchFromIDTable(
 		SelectQueryBuilder $qb,
 		int $pid,
-		string $table,
+		?string $table,
 		int $limit,
 		int $offset,
 		string $search,
