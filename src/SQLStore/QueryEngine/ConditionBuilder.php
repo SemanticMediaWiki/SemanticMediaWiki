@@ -186,7 +186,7 @@ class ConditionBuilder {
 			$rootSegment
 		);
 
-		$qid = 0;
+		$qid = -1;
 
 		$description = $query->getDescription();
 		if ( $description !== null ) {
