@@ -3,7 +3,6 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
-use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Query\DescriptionFactory;
