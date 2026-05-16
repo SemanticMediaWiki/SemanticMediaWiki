@@ -133,9 +133,6 @@ class ProximityPropertyValueLookup {
 		string $search,
 		string|false $sort
 	): array {
-		if ( $table === null ) {
-			return [];
-		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
 		$res = [];
@@ -171,7 +168,7 @@ class ProximityPropertyValueLookup {
 
 			$sub = $qb->newSubquery()
 				->select( 'o_id' )
-				->from( $table )
+				->from( $table ?? '' )
 				->where( [ 'p_id' => $pid ] )
 				->groupBy( 'o_id' );
 
@@ -179,7 +176,7 @@ class ProximityPropertyValueLookup {
 
 		} elseif ( $this->isFixedPropertyTable( $table ) === false ) {
 
-			$qb->from( $table )
+			$qb->from( $table ?? '' )
 				->andWhere( [ 'p_id' => $pid ] );
 
 			// To make the MySQL query planner happy to pick the right index!
@@ -196,7 +193,7 @@ class ProximityPropertyValueLookup {
 			 * WHERE ( smw_sortkey LIKE '%foo%' OR smw_sortkey LIKE '%Foo%' OR smw_sortkey LIKE '%FOO%' )
 			 * LIMIT 11
 			 */
-			$qb->from( $table )
+			$qb->from( $table ?? '' )
 				->join( SQLStore::ID_TABLE, null, 'smw_id=o_id' );
 		}
 
