@@ -71,8 +71,7 @@ class PropertyTableHashes {
 		$this->setPropertyTableHashesCache( $id, $hash );
 
 		if ( $hash === null ) {
-			// @phan-suppress-next-line PhanTypeMismatchArgument
-			$this->idCacheManager->deleteCacheById( $id );
+			$this->idCacheManager->deleteCacheById( (string)$id );
 		}
 	}
 
@@ -94,8 +93,7 @@ class PropertyTableHashes {
 
 		$cache = $this->idCacheManager->get( 'propertytable.hash' );
 
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$hash = $cache->fetch( $id );
+		$hash = $cache->fetch( (string)$id );
 		if ( $hash !== false ) {
 			return $hash;
 		}
@@ -117,8 +115,7 @@ class PropertyTableHashes {
 
 		$hash = $hash === null || $hash === false || strlen( $hash ) <= 1 ? [] : unserialize( $hash );
 
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$cache->save( $id, $hash );
+		$cache->save( (string)$id, $hash );
 
 		return $hash;
 	}
@@ -152,8 +149,7 @@ class PropertyTableHashes {
 			$hash = unserialize( $hash );
 		}
 
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$this->idCacheManager->get( 'propertytable.hash' )->save( $id, $hash );
+		$this->idCacheManager->get( 'propertytable.hash' )->save( (string)$id, $hash );
 	}
 
 }

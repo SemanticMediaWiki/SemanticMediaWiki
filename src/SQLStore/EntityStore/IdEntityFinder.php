@@ -124,8 +124,7 @@ class IdEntityFinder {
 	private function get( int $id ): WikiPage|false {
 		$cache = $this->idCacheManager->get( 'entity.lookup' );
 
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$dataItem = $cache->fetch( $id );
+		$dataItem = $cache->fetch( (string)$id );
 		if ( $dataItem !== false ) {
 			return $dataItem;
 		}
@@ -140,8 +139,7 @@ class IdEntityFinder {
 		}
 
 		$dataItem = $this->newFromRow( $row );
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$cache->save( $id, $dataItem );
+		$cache->save( (string)$id, $dataItem );
 
 		return $dataItem;
 	}

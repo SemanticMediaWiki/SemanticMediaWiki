@@ -344,6 +344,9 @@ class Installer implements MessageReporter {
 		);
 	}
 
+	/**
+	 * @throws RuntimeException
+	 */
 	private function addSupplementJobs() {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
@@ -361,10 +364,14 @@ class Installer implements MessageReporter {
 
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SMW\SQLStore\Installer' );
 
+		if ( $title === null ) {
+			throw new RuntimeException(
+				'Failed to create SMW\SQLStore\Installer title.'
+			);
+		}
+
 		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
-			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$title,
-			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			PropertyStatisticsRebuildJob::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 
@@ -379,9 +386,7 @@ class Installer implements MessageReporter {
 		);
 
 		$entityIdDisposerJob = new EntityIdDisposerJob(
-			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$title,
-			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			EntityIdDisposerJob::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 

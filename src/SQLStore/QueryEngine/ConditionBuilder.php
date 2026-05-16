@@ -186,11 +186,13 @@ class ConditionBuilder {
 			$rootSegment
 		);
 
-		// compile query, build query "plan"
-		$qid = $this->buildFromDescription(
-			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
-			$query->getDescription()
-		);
+		$qid = 0;
+
+		$description = $query->getDescription();
+		if ( $description !== null ) {
+			// compile query, build query "plan"
+			$qid = $this->buildFromDescription( $description );
+		}
 
 		// no valid/supported condition; ensure that at least only proper pages
 		// are delivered

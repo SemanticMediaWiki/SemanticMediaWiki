@@ -4,6 +4,7 @@ namespace SMW\SQLStore\ChangeOp;
 
 use ArrayIterator;
 use IteratorAggregate;
+use RuntimeException;
 use SMW\DataItems\WikiPage;
 
 /**
@@ -199,10 +200,16 @@ class ChangeOp implements IteratorAggregate {
 	 * @since 3.0
 	 *
 	 * @return ChangeDiff
+	 * @throws RuntimeException
 	 */
 	public function newChangeDiff(): ChangeDiff {
+		if ( $this->subject === null ) {
+			throw new RuntimeException(
+				'ChangeDiff requires a subject.'
+			);
+		}
+
 		$changeDiff = new ChangeDiff(
-			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$this->subject,
 			$this->getTableChangeOps(),
 			$this->getDataOps(),
