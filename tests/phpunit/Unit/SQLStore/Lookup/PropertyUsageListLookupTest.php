@@ -503,7 +503,8 @@ class PropertyUsageListLookupTest extends TestCase {
 
 		$instance->fetchList();
 
-		$cursorClause = "smw_sort > 'Alpha' OR (smw_sort = 'Alpha' AND smw_id > 42)";
+		// Each OR clause is fully parenthesised by KeysetPredicateBuilder.
+		$cursorClause = "(smw_sort > 'Alpha') OR (smw_sort = 'Alpha' AND smw_id > 42)";
 		$this->assertContains( $cursorClause, $capturedWhereClauses,
 			'Expected cursor WHERE clause not found in andWhere calls' );
 	}

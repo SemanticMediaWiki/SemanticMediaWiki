@@ -12,6 +12,7 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
+use SMW\SQLStore\QueryEngine\CursorEncoder;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -45,6 +46,10 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private Property $authorProperty;
 
+	private Property $mixedTieNumberProperty;
+
+	private Property $mixedTieAuthorProperty;
+
 	private WikiPage $alice;
 
 	private WikiPage $bob;
@@ -64,6 +69,19 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->authorProperty = new Property( 'EquivalenceAuthor' );
 		$this->authorProperty->setPropertyTypeId( '_wpg' );
+
+		// Dedicated property pair for the mixed-direction cursor walk
+		// test. Kept separate from `numberProperty`/`authorProperty` so
+		// the tied values needed to exercise per-level keyset operator
+		// flipping do not bleed into other tests' expected sequences
+		// (MariaDB does not promise stable tie ordering across query
+		// shapes, so legacy and rewrite paths can disagree on tie
+		// order without it being a real divergence).
+		$this->mixedTieNumberProperty = new Property( 'EquivalenceMixedTieNumber' );
+		$this->mixedTieNumberProperty->setPropertyTypeId( '_num' );
+
+		$this->mixedTieAuthorProperty = new Property( 'EquivalenceMixedTieAuthor' );
+		$this->mixedTieAuthorProperty->setPropertyTypeId( '_wpg' );
 
 		$this->alice = new WikiPage( 'EquivalenceAlice', NS_MAIN );
 		$this->bob = new WikiPage( 'EquivalenceBob', NS_MAIN );
@@ -226,6 +244,194 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->assertQueryEquivalent( $factory, 'disjunction across two properties' );
 	}
 
+	public function testCursorWalkOverDefaultSortMatchesLegacyPath(): void {
+		$this->assertCursorWalkEquivalent(
+			function ( ?array $cursorPayload ): Query {
+				// `SomeProperty[+]` against every page that has any value
+				// for the number property, guaranteeing a non-empty
+				// instance set so the cursor walk lands on real rows.
+				$description = new SomeProperty(
+					$this->numberProperty,
+					new ThingDescription()
+				);
+				$query = new Query( $description );
+				$query->querymode = Query::MODE_INSTANCES;
+				$query->sort = true;
+				$query->setUnboundLimit( 2 );
+				$query->sortkeys = [ '' => 'ASC' ];
+				$query->setCursorAfter( $cursorPayload );
+				return $query;
+			},
+			'default-sort cursor walk'
+		);
+	}
+
+	public function testCursorWalkOverPropertySortMatchesLegacyPath(): void {
+		$this->assertCursorWalkEquivalent(
+			function ( ?array $cursorPayload ): Query {
+				$description = new SomeProperty(
+					$this->numberProperty,
+					new ThingDescription()
+				);
+				$query = new Query( $description );
+				$query->querymode = Query::MODE_INSTANCES;
+				$query->sort = true;
+				$query->setUnboundLimit( 2 );
+				$query->sortkeys = [ $this->numberProperty->getKey() => 'ASC' ];
+				$query->setCursorAfter( $cursorPayload );
+				return $query;
+			},
+			'property-sort cursor walk'
+		);
+	}
+
+	public function testCursorWalkDescendingMatchesLegacyPath(): void {
+		$this->assertCursorWalkEquivalent(
+			function ( ?array $cursorPayload ): Query {
+				$description = new SomeProperty(
+					$this->numberProperty,
+					new ThingDescription()
+				);
+				$query = new Query( $description );
+				$query->querymode = Query::MODE_INSTANCES;
+				$query->sort = true;
+				$query->setUnboundLimit( 2 );
+				$query->sortkeys = [ $this->numberProperty->getKey() => 'DESC' ];
+				$query->setCursorAfter( $cursorPayload );
+				return $query;
+			},
+			'property-sort DESC cursor walk'
+		);
+	}
+
+	public function testCursorWalkMixedDirectionMatchesLegacyPath(): void {
+		// Phase 3b-iii: per-level directions across multiple sort keys.
+		// The keyset predicate flips its operator at each level
+		// independently; the smw_id tiebreak adopts the last level's
+		// direction. Walks under legacy and rewrite must produce
+		// identical subject sequences.
+		$this->assertCursorWalkEquivalent(
+			function ( ?array $cursorPayload ): Query {
+				$description = new Conjunction( [
+					new SomeProperty(
+						$this->mixedTieNumberProperty,
+						new ThingDescription()
+					),
+					new SomeProperty(
+						$this->mixedTieAuthorProperty,
+						new ThingDescription()
+					),
+				] );
+				$query = new Query( $description );
+				$query->querymode = Query::MODE_INSTANCES;
+				$query->sort = true;
+				$query->setUnboundLimit( 1 );
+				$query->sortkeys = [
+					$this->mixedTieNumberProperty->getKey() => 'ASC',
+					$this->mixedTieAuthorProperty->getKey() => 'DESC',
+				];
+				$query->setCursorAfter( $cursorPayload );
+				return $query;
+			},
+			'mixed-direction cursor walk (asc,desc)'
+		);
+	}
+
+	public function testCursorRejectedForCompoundHashSortUnderBothPaths(): void {
+		// The `#` sort label produces a comma-joined multi-column
+		// expression in `$qobj->sortfields`. Cursor mode cannot emit a
+		// keyset predicate against a column list and must reject the
+		// request explicitly under both query paths. This guards the
+		// rejection edge in the subquery path against silent
+		// regression as the cursor-emission code evolves.
+		$factory = function (): Query {
+			$description = new SomeProperty(
+				$this->numberProperty,
+				new ThingDescription()
+			);
+			$query = new Query( $description );
+			$query->querymode = Query::MODE_INSTANCES;
+			$query->sort = true;
+			$query->setUnboundLimit( 5 );
+			$query->sortkeys = [ '#' => 'ASC' ];
+			$query->setCursorAfter( [ 'v' => 1 ] );
+			return $query;
+		};
+
+		foreach ( [ true, false ] as $legacy ) {
+			$this->testEnvironment->addConfiguration( 'smwgQUseLegacyQuery', $legacy );
+			$query = $factory();
+			$this->getStore()->getQueryResult( $query );
+			$errors = $query->getErrors();
+			$hasRejection = false;
+			foreach ( $errors as $error ) {
+				if ( str_contains( (string)$error, 'multi-column sort expression' ) ) {
+					$hasRejection = true;
+					break;
+				}
+			}
+			$this->assertTrue(
+				$hasRejection,
+				'Expected cursor mode to reject the `#` compound sort under legacy='
+					. ( $legacy ? '1' : '0' ) . '; got errors: ' . print_r( $errors, true )
+			);
+		}
+	}
+
+	/**
+	 * Walks the result set page by page in cursor mode, captures the
+	 * subject sequence under each path, and asserts the two sequences
+	 * match. Bootstrap is `{"v":1}` (no anchor) so the engine takes the
+	 * page-1 branch (no predicate); subsequent pages chain the cursor
+	 * minted from the previous page.
+	 */
+	private function assertCursorWalkEquivalent( callable $queryFactory, string $label ): void {
+		$walk = function ( bool $legacy ) use ( $queryFactory, $label ): array {
+			$this->testEnvironment->addConfiguration( 'smwgQUseLegacyQuery', $legacy );
+			$sequence = [];
+			$payload = [ 'v' => 1 ];
+			// Hard cap on iterations: defensive against an unexpected
+			// infinite loop while walking. A correctly-paginating engine
+			// terminates by returning a result without a next cursor.
+			for ( $i = 0; $i < 10; $i++ ) {
+				$query = $queryFactory( $payload );
+				$result = $this->getStore()->getQueryResult( $query );
+				$this->assertSame(
+					[],
+					$query->getErrors(),
+					"Query errors on iter $i (legacy=" . ( $legacy ? '1' : '0' ) . ") for: $label"
+				);
+				foreach ( $result->getResults() as $dataItem ) {
+					$sequence[] = $dataItem->getHash();
+				}
+				$nextToken = $result->getNextCursor();
+				if ( $nextToken === null ) {
+					break;
+				}
+				$payload = CursorEncoder::decode( $nextToken );
+				$this->assertIsArray( $payload, "Decoded cursor payload should be an array under $label" );
+			}
+			return $sequence;
+		};
+
+		$legacySequence = $walk( true );
+		$rewriteSequence = $walk( false );
+
+		$this->assertSame(
+			$legacySequence,
+			$rewriteSequence,
+			"Cursor walk sequence mismatch between legacy and rewrite for: $label"
+		);
+		// Guard against silent empty walks (would falsely satisfy
+		// equality). The seed includes pages with the number property,
+		// so we expect at least two subjects on every walk.
+		$this->assertGreaterThanOrEqual(
+			2,
+			count( $rewriteSequence ),
+			"Cursor walk produced fewer subjects than expected for: $label"
+		);
+	}
+
 	private function seedFixtures(): void {
 		// Three pages with numeric values 10, 20, 30.
 		foreach ( [ 10, 20, 30 ] as $value ) {
@@ -265,6 +471,34 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		$semanticData->addPropertyObjectValue( $this->authorProperty, $this->alice );
 		$this->getStore()->updateData( $semanticData );
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
+
+		// Pages used by the Phase 3b-iii mixed-direction cursor walk
+		// test. They are scoped to `mixedTieNumberProperty` and
+		// `mixedTieAuthorProperty` so the tied num/author values stay
+		// invisible to other tests' `numberProperty`/`authorProperty`
+		// queries. Numbers are tied (5, 5, 7, 7) to force the walk
+		// through the second level's DESC operator and then through
+		// the smw_id tiebreak.
+		$mixedSet = [
+			[ 'name' => 'mixedA-num5-aliceBob', 'num' => 5, 'authors' => [ $this->alice, $this->bob ] ],
+			[ 'name' => 'mixedB-num5-aliceOnly', 'num' => 5, 'authors' => [ $this->alice ] ],
+			[ 'name' => 'mixedC-num7-bobOnly', 'num' => 7, 'authors' => [ $this->bob ] ],
+			[ 'name' => 'mixedD-num7-aliceOnly', 'num' => 7, 'authors' => [ $this->alice ] ],
+		];
+		foreach ( $mixedSet as $fixture ) {
+			$semanticData = $this->semanticDataFactory
+				->setTitle( __CLASS__ . '-' . $fixture['name'] )
+				->newEmptySemanticData();
+			$semanticData->addPropertyObjectValue(
+				$this->mixedTieNumberProperty,
+				new Number( $fixture['num'] )
+			);
+			foreach ( $fixture['authors'] as $author ) {
+				$semanticData->addPropertyObjectValue( $this->mixedTieAuthorProperty, $author );
+			}
+			$this->getStore()->updateData( $semanticData );
+			$this->subjectsToBeCleared[] = $semanticData->getSubject();
+		}
 	}
 
 	private function runUnderLegacyFlag( bool $legacy, callable $queryFactory ): QueryResult {

@@ -30,6 +30,15 @@ class JsonResultPrinter extends FileExportPrinter {
 	}
 
 	/**
+	 * @see ResultPrinter::dependsOnUserLanguage
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return false;
+	}
+
+	/**
 	 * @see FileExportPrinter::getMimeType
 	 *
 	 * @since 1.8

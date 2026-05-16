@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Lookup;
 
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
+use SMW\SQLStore\KeysetPredicateBuilder;
 use SMW\SQLStore\SQLStore;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
@@ -50,22 +51,17 @@ trait KeysetPaginationTrait {
 	 *
 	 * When no cursor is active, falls back to offset-based pagination.
 	 *
-	 * Both cursor branches express the (smw_sort, smw_id) total order via an
-	 * explicit OR rather than a row-constructor comparison such as
-	 * `(smw_sort, smw_id) > (?, ?)`. MariaDB does not optimise row-constructor
-	 * comparisons into an index range seek; it plans a full index scan with a
-	 * WHERE filter, so cost grows linearly with cursor depth. The explicit-OR
-	 * form is recognised as a range predicate and seeks the (smw_sort, smw_id)
-	 * index directly. PostgreSQL and SQLite plan the OR form at least as well
-	 * as the tuple form. See issue #6559.
+	 * The (smw_sort, smw_id) keyset predicate is built by
+	 * `KeysetPredicateBuilder` (shared with the `#ask` query engine); see
+	 * that class for the predicate form and why the explicit-OR shape is
+	 * used over a row-constructor comparison.
 	 *
 	 * The cursor direction (after/before) and the sort direction
 	 * (`$requestOptions->ascending`) compose independently. "After" always
-	 * means "the next page in display order" — when ascending, the next
-	 * page contains values larger than the cursor; when descending, it
-	 * contains values smaller. "Before" inverts the predicate and is
-	 * served in reverse of the display order so the consumer can
-	 * `array_reverse()` for display.
+	 * means the next page in display order: when ascending, that page
+	 * holds values larger than the cursor; when descending, smaller.
+	 * "Before" inverts the predicate and is served in reverse of the
+	 * display order, so the consumer can `array_reverse()` it for display.
 	 *
 	 * @param SelectQueryBuilder $queryBuilder
 	 * @param Database $db
@@ -84,28 +80,34 @@ trait KeysetPaginationTrait {
 
 		$displayOrder = $ascending ? SelectQueryBuilder::SORT_ASC : SelectQueryBuilder::SORT_DESC;
 		$reverseOrder = $ascending ? SelectQueryBuilder::SORT_DESC : SelectQueryBuilder::SORT_ASC;
-		// "Forward" = larger values in ASC, smaller in DESC.
-		$forwardOp = $ascending ? '>' : '<';
-		$backwardOp = $ascending ? '<' : '>';
+		// "Forward" walks the display order: larger values in ASC,
+		// smaller in DESC. "Backward" (the before-cursor) walks the
+		// inverse, so the predicate seeks with the opposite direction.
+		$forwardDir = $ascending ? 'ASC' : 'DESC';
+		$backwardDir = $ascending ? 'DESC' : 'ASC';
 
 		if ( $cursorAfter !== null ) {
 			$sort = $this->resolveCursorSort( $cursorAfter );
 			if ( $sort !== null ) {
-				$quotedSort = $db->addQuotes( $sort );
-				$queryBuilder->andWhere(
-					'smw_sort ' . $forwardOp . ' ' . $quotedSort .
-					' OR (smw_sort = ' . $quotedSort . ' AND smw_id ' . $forwardOp . ' ' . $cursorAfter . ')'
-				);
+				$queryBuilder->andWhere( KeysetPredicateBuilder::build(
+					$db,
+					[ [ 'column' => 'smw_sort', 'value' => $sort, 'order' => $forwardDir ] ],
+					'smw_id',
+					$cursorAfter,
+					$forwardDir
+				) );
 			}
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], $displayOrder );
 		} elseif ( $cursorBefore !== null ) {
 			$sort = $this->resolveCursorSort( $cursorBefore );
 			if ( $sort !== null ) {
-				$quotedSort = $db->addQuotes( $sort );
-				$queryBuilder->andWhere(
-					'smw_sort ' . $backwardOp . ' ' . $quotedSort .
-					' OR (smw_sort = ' . $quotedSort . ' AND smw_id ' . $backwardOp . ' ' . $cursorBefore . ')'
-				);
+				$queryBuilder->andWhere( KeysetPredicateBuilder::build(
+					$db,
+					[ [ 'column' => 'smw_sort', 'value' => $sort, 'order' => $backwardDir ] ],
+					'smw_id',
+					$cursorBefore,
+					$backwardDir
+				) );
 			}
 			$queryBuilder->orderBy( [ 'smw_sort', 'smw_id' ], $reverseOrder );
 		} else {

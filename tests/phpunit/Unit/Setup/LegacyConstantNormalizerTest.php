@@ -17,6 +17,29 @@ class LegacyConstantNormalizerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		LegacyConstantNormalizer::resetDeprecationState();
+		// Many tests in this class deliberately invoke normalize() with
+		// legacy SMW_* integer constants and verify deprecation via
+		// wasDeprecationEmitted(). Suppress the PHP-level user-deprecation
+		// output so CI stderr stays clean; the behavioural assertion is
+		// unaffected because wasDeprecationEmitted() reads our own static
+		// flag, not the error handler.
+		//
+		// Trade-off: the suppression applies to every test in this class,
+		// including ones that don't exercise the deprecation path — so if a
+		// future code change accidentally emits E_USER_DEPRECATED from a
+		// non-legacy code path in LegacyConstantNormalizer, it would be
+		// silently swallowed here. Catching that would require either
+		// per-method wrapping (~20 sites) or moving the deprecation-emitting
+		// tests to their own subclass. Accepted as-is for now.
+		set_error_handler(
+			static fn ( int $severity ) => $severity === E_USER_DEPRECATED,
+			E_USER_DEPRECATED
+		);
+	}
+
+	protected function tearDown(): void {
+		restore_error_handler();
+		parent::tearDown();
 	}
 
 	public function testEnum_allKnownStrings_mapToTheirConstants() {
@@ -352,6 +375,44 @@ class LegacyConstantNormalizerTest extends TestCase {
 		LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', SMW_FACTBOX_CACHE );
 		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgShowFactbox' ) );
 		$this->assertTrue( LegacyConstantNormalizer::wasDeprecationEmitted( 'smwgFactboxFeatures' ) );
+	}
+
+	public function testGetStringFormForConstant_enumKey_returnsKebab() {
+		$this->assertSame(
+			'nonempty',
+			LegacyConstantNormalizer::getStringFormForConstant( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY )
+		);
+		$this->assertSame(
+			'all',
+			LegacyConstantNormalizer::getStringFormForConstant( 'smwgQConceptCaching', CONCEPT_CACHE_ALL )
+		);
+	}
+
+	public function testGetStringFormForConstant_flagKey_returnsKebab() {
+		$this->assertSame(
+			'strict',
+			LegacyConstantNormalizer::getStringFormForConstant( 'smwgParserFeatures', SMW_PARSER_STRICT )
+		);
+		$this->assertSame(
+			'links-in-values',
+			LegacyConstantNormalizer::getStringFormForConstant( 'smwgParserFeatures', SMW_PARSER_LINV )
+		);
+	}
+
+	public function testGetStringFormForConstant_unknownKey_returnsNull() {
+		$this->assertNull(
+			LegacyConstantNormalizer::getStringFormForConstant( 'smwgSomeUnregisteredSetting', 42 )
+		);
+	}
+
+	public function testGetStringFormForConstant_unmappedIntForKnownKey_returnsNull() {
+		// smwgParserFeatures' map doesn't include `SMW_FACTBOX_HIDDEN` (a value
+		// from a different setting's map). Reverse-lookup must stay scoped to
+		// the supplied key and return null rather than a stray kebab name
+		// drawn from another setting that happens to share the integer.
+		$this->assertNull(
+			LegacyConstantNormalizer::getStringFormForConstant( 'smwgParserFeatures', 99999 )
+		);
 	}
 
 }

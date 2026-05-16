@@ -38,11 +38,34 @@ class SubqueryQueryBuilder {
 
 	/**
 	 * @since 7.0.0
+	 *
+	 * @param QuerySegment $root
+	 * @param array $sqlOptions Requires `LIMIT`; honours `OFFSET` and
+	 *   `ORDER BY`. In cursor mode, `OFFSET` should be unset by the
+	 *   caller (the keyset predicate or bootstrap ORDER BY replaces it).
+	 * @param string $outerWhere Filters applied on the outer SELECT.
+	 * @param string $cursorPredicate Phase 3c: raw SQL fragment for the
+	 *   keyset WHERE clause, anchored at the inner segment's alias. ANDed
+	 *   into the inner WHERE so the LIMIT'd subset is the cursor-anchored
+	 *   slice. Empty for non-cursor queries AND for bootstrap cursors
+	 *   (which carry no anchor yet); use `$cursorSortColumns` to detect
+	 *   cursor mode itself.
+	 * @param string[] $cursorSortColumns Phase 3c: ordered list of SQL
+	 *   column expressions (e.g. `t0.smw_sort`, `t1.o_serialized`)
+	 *   matching the keyset sort levels declared by the caller. Non-
+	 *   empty array signals cursor mode; the builder emits
+	 *   `cursor_sort_N` aliases (in this list's order) for the
+	 *   QueryEngine row loop to mint the next anchor. Order is
+	 *   independent of `$root->sortfields` iteration order so
+	 *   multi-property queries align correctly with what
+	 *   `$query->sortkeys` declared.
 	 */
 	public function buildInstanceQuerySQL(
 		QuerySegment $root,
 		array $sqlOptions,
-		string $outerWhere
+		string $outerWhere,
+		string $cursorPredicate = '',
+		array $cursorSortColumns = []
 	): string {
 		if ( !isset( $sqlOptions['LIMIT'] ) ) {
 			throw new \InvalidArgumentException( 'sqlOptions[\'LIMIT\'] is required' );
@@ -57,13 +80,19 @@ class SubqueryQueryBuilder {
 			$root,
 			$sortfieldPairs,
 			$orderBy,
-			$this->innerLimit( $outerLimit )
+			$this->innerLimit( $outerLimit ),
+			$cursorPredicate,
+			$cursorSortColumns
 		);
 
-		$outerProjection = $this->buildOuterProjection( $sortfieldPairs );
+		$outerProjection = $this->buildOuterProjection(
+			$sortfieldPairs,
+			$cursorSortColumns
+		);
 		$outerOrderBy = $this->rewriteOrderByForOuter(
 			$orderBy,
-			$sortfieldPairs
+			$sortfieldPairs,
+			$root->alias
 		);
 
 		$idTable = $this->connection->tableName( self::ID_TABLE );
@@ -161,12 +190,22 @@ class SubqueryQueryBuilder {
 	 * @param array<int, array{expr: string, alias: string}> $sortfieldPairs
 	 * @param string $orderBy
 	 * @param int $innerLimit
+	 * @param string $cursorPredicate Phase 3c: raw SQL fragment ANDed
+	 *   into the inner WHERE. Anchored at the root segment's alias so
+	 *   column refs resolve inside the derived table.
+	 * @param string[] $cursorSortColumns Phase 3c: when non-empty, the
+	 *   inner SELECT projects each as `cursor_sort_N` so the outer
+	 *   query can surface anchor values in the order the engine row
+	 *   loop expects (matches `$query->sortkeys` declaration order,
+	 *   not `$root->sortfields` iteration order).
 	 */
 	private function buildInnerSelect(
 		QuerySegment $root,
 		array $sortfieldPairs,
 		string $orderBy,
-		int $innerLimit
+		int $innerLimit,
+		string $cursorPredicate = '',
+		array $cursorSortColumns = []
 	): string {
 		$columns = [ "{$root->joinfield} AS s_id" ];
 
@@ -174,10 +213,30 @@ class SubqueryQueryBuilder {
 			$columns[] = "$expr AS $alias";
 		}
 
+		// Cursor anchor projections. These are deliberately decoupled
+		// from `$sortfieldPairs` so multi-property queries with
+		// divergent sortfield iteration vs sortkey order still emit
+		// `cursor_sort_N` in the correct sequence.
+		foreach ( $cursorSortColumns as $i => $col ) {
+			$columns[] = "$col AS cursor_sort_$i";
+		}
+
+		// Combine existing WHERE with the cursor predicate. Both come
+		// pre-formed; we just AND them. The predicate references the
+		// inner segment's raw columns (e.g. `t0.smw_sort`, `t0.smw_id`),
+		// which resolve inside the derived table because the inner FROM
+		// aliases the root table as `t0`.
+		$where = $root->where;
+		if ( $cursorPredicate !== '' ) {
+			$where = $where !== ''
+				? "($where) AND ($cursorPredicate)"
+				: $cursorPredicate;
+		}
+
 		$sql = 'SELECT DISTINCT ' . implode( ', ', $columns )
 			. ' FROM ' . $this->connection->tableName( $root->joinTable ) . " AS {$root->alias}"
 			. $root->from
-			. ( $root->where !== '' ? " WHERE {$root->where}" : '' );
+			. ( $where !== '' ? " WHERE $where" : '' );
 
 		if ( $orderBy !== '' ) {
 			$sql .= " ORDER BY $orderBy";
@@ -190,8 +249,15 @@ class SubqueryQueryBuilder {
 
 	/**
 	 * @param array<int, array{expr: string, alias: string}> $sortfieldPairs
+	 * @param string[] $cursorSortColumns Phase 3c: when non-empty, the
+	 *   outer projection surfaces `cursor_sort_N` columns directly from
+	 *   the inner SELECT, in this list's order. Independent of
+	 *   `$sortfieldPairs` ordering.
 	 */
-	private function buildOuterProjection( array $sortfieldPairs ): string {
+	private function buildOuterProjection(
+		array $sortfieldPairs,
+		array $cursorSortColumns = []
+	): string {
 		$outer = self::OUTER_ALIAS;
 		$inner = self::INNER_ALIAS;
 
@@ -204,8 +270,18 @@ class SubqueryQueryBuilder {
 			"$outer.smw_sortkey AS sortkey",
 		];
 
+		// sortfield aliases (driven by `$sortfieldPairs`) feed the
+		// outer ORDER BY's substitution from raw expression to inner
+		// alias. They are independent of the cursor anchor projection.
 		foreach ( $sortfieldPairs as $pair ) {
 			$columns[] = "$inner.{$pair['alias']}";
+		}
+
+		// cursor_sort_N projections follow `$cursorSortColumns` order
+		// (the engine's keyset sort-level ordering), which may differ
+		// from `$root->sortfields` iteration order.
+		foreach ( $cursorSortColumns as $i => $_col ) {
+			$columns[] = "$inner.cursor_sort_$i";
 		}
 
 		return implode( ', ', $columns );
@@ -220,14 +296,23 @@ class SubqueryQueryBuilder {
 	 * to prevent shorter expressions (e.g. "t0.smw_sort") from corrupting
 	 * longer ones that share a prefix (e.g. "t0.smw_sortkey").
 	 *
+	 * Phase 3c: the cursor-mode ORDER BY also references
+	 * `<rootAlias>.smw_id` (the tiebreak column). This rewrites that
+	 * reference to `outer_q.smw_id`, which the outer query has direct
+	 * access to via the JOIN on `smw_object_ids AS outer_q`.
+	 *
 	 * @param string $orderBy
 	 * @param array<int, array{expr: string, alias: string}> $sortfieldPairs
+	 * @param string $rootAlias Inner segment's table alias (e.g. `t0`),
+	 *   used to rewrite the smw_id reference for cursor mode. Empty
+	 *   string skips the smw_id rewrite.
 	 */
 	private function rewriteOrderByForOuter(
 		string $orderBy,
-		array $sortfieldPairs
+		array $sortfieldPairs,
+		string $rootAlias = ''
 	): string {
-		if ( $orderBy === '' || $sortfieldPairs === [] ) {
+		if ( $orderBy === '' ) {
 			return $orderBy;
 		}
 
@@ -240,9 +325,21 @@ class SubqueryQueryBuilder {
 
 		$rewritten = $orderBy;
 		$inner = self::INNER_ALIAS;
+		$outer = self::OUTER_ALIAS;
 
 		foreach ( $sortfieldPairs as [ 'expr' => $expr, 'alias' => $alias ] ) {
 			$rewritten = str_replace( $expr, "$inner.$alias", $rewritten );
+		}
+
+		// Cursor-mode `smw_id` tiebreak: maps from inner segment's
+		// `<alias>.smw_id` to outer `outer_q.smw_id` (which is the
+		// JOINed column the outer query has direct access to).
+		if ( $rootAlias !== '' ) {
+			$rewritten = str_replace(
+				"$rootAlias.smw_id",
+				"$outer.smw_id",
+				$rewritten
+			);
 		}
 
 		return $rewritten;

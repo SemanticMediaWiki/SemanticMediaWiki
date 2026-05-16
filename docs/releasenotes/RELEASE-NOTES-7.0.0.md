@@ -302,6 +302,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Improved wording of the post-edit reload notice ([#6301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6301))
 * Fixed maintenance log entries showing "performed unknown action" instead of a proper message, and improved log comment formatting from raw JSON to human-readable text ([#6146](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6146), [#6554](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6554))
 * Fixed `update.php` failing with "Data too long for column 'smw_hash'" on wikis with more than 200,000 entities. The pre-upgrade hex-to-binary conversion now always runs as a single server-side `UPDATE`, regardless of row count. Setting `$smwgIgnoreUpgradeKeyCheck = true` now also lets maintenance scripts run when the schema is in an intermediate state, providing a documented escape hatch for stalled upgrades. ([#6715](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6715))
+* Removing `userlang` or `dateformat` from `$smwgSetParserCacheKeys` now correctly stops SMW from adding that key to the parser cache key. Previously a removed key was still added through a different mechanism.
 
 ### Enhancements
 
@@ -314,6 +315,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   * Set `$smwgQUseLegacyQuery = true` in `LocalSettings.php` to fall back to the previous query shape if you encounter a regression after upgrading.
   * A redundant `DISTINCT` keyword was also dropped from the disjunction-query temp-table insert. Same result, less work for the database; no setting required.
 * On wikis with many distinct entities per page, SMW's internal caches could fill up during a single render and force repeated database lookups for the same pages. Cache sizes are now adjustable via the new `$smwgEntityCacheSizes` setting. Per-pool hit and miss counts are also emitted to MediaWiki's `StatsFactory` service, so wikis already configured to collect MediaWiki metrics (`$wgStatsTarget` and `$wgStatsFormat`) can see cache effectiveness in their existing dashboards and size caches based on real traffic instead of guessing.
+* `#ask` queries no longer fragment the parser cache by the user's date format preference. SMW formats dates by language, not by that preference, so the fragmentation produced no benefit. `dateformat` has been removed from the `$smwgSetParserCacheKeys` default, which now contains only `userlang`.
+* `#ask` queries whose result format produces language-neutral output (`json`, `rdf`, `count`, `debug`) no longer fragment the parser cache by `userlang`, unless the query produces errors (error messages are localised). Presentation formats such as `table` and `list`, whose output includes localised text, continue to fragment by `userlang` as before. Result printers can declare their own behaviour by overriding `ResultPrinter::dependsOnUserLanguage()`.
 
 ### Internal improvements
 
@@ -321,6 +324,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Native PHP type coverage significantly expanded across the entire codebase, including return types, parameter types, property types, and constructor promotion with `readonly`
 * PHPUnit test suite reorganized into `Unit/` and `Integration/` directories
 * Numerous static analysis (phan) errors fixed
+* Migrated `Special:Browse`'s search form from the deprecated `mediawiki.ui` ResourceLoader modules to Codex CSS-only components, ahead of `mediawiki.ui`'s removal in MediaWiki 1.46 ([#6476](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6476))
 * CI updated: added MediaWiki 1.45 to the test matrix, added cancellation of in-progress runs on new pushes, removed Travis CI leftovers
 
 ## Upgrading

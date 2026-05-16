@@ -85,6 +85,15 @@ class DefaultParamDefinition {
 			'upperbound' => $vars['smwgQUpperbound'],
 		];
 
+		// Opaque keyset cursor token (base64url-encoded JSON produced by
+		// `CursorEncoder`). When present, the query engine switches to
+		// keyset pagination and ignores `offset`. The constrained spike
+		// supports only default-sort queries; `sort=` + `cursor=`
+		// combinations are rejected during query construction.
+		$params['cursor'] = [
+			'default' => '',
+		];
+
 		$params['link'] = [
 			'default' => 'all',
 			'values' => [ 'all', 'subject', 'none' ],

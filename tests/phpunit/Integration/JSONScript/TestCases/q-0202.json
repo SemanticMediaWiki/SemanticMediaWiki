@@ -111,7 +111,7 @@
 	"settings": {
 		"smwgQueryResultCacheType": false,
 		"smwgQFilterDuplicates": false,
-		"smwgQConceptCaching": "CONCEPT_CACHE_NONE",
+		"smwgQConceptCaching": "none",
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true,

@@ -35,9 +35,9 @@
 	var uri = function ( fullurl ) {
 		this.fullurl = fullurl !== '' && fullurl !==  undefined ? fullurl : null;
 
-		// Get mw.Uri inheritance
+		// Parse the URL using the native browser URL class
 		if ( this.fullurl !== null ) {
-			this.uri = new mw.Uri( this.fullurl );
+			this.uri = new URL( this.fullurl );
 		}
 
 		return this;

@@ -8,6 +8,7 @@ use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListener;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\Settings;
+use SMW\Tests\Utils\SilenceUserDeprecationTrait;
 
 /**
  * @covers \SMW\Settings
@@ -20,6 +21,8 @@ use SMW\Settings;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SettingsTest extends TestCase {
+
+	use SilenceUserDeprecationTrait;
 
 	private $hookDispatcher;
 
@@ -188,7 +191,11 @@ class SettingsTest extends TestCase {
 
 			$instance = new Settings();
 			$instance->setHookDispatcher( $this->hookDispatcher );
-			$instance->loadFromGlobals();
+			// Legacy-form rows in the provider deliberately trip the
+			// LegacyConstantNormalizer deprecation; swallow the PHP-level
+			// user-deprecation so CI stderr stays clean. The deprecation
+			// emission itself is covered in LegacyConstantNormalizerTest.
+			$this->withSilencedUserDeprecation( static fn () => $instance->loadFromGlobals() );
 
 			$this->assertSame( $expected, $instance->get( $key ) );
 		} finally {
@@ -238,7 +245,7 @@ class SettingsTest extends TestCase {
 
 			$instance = new Settings();
 			$instance->setHookDispatcher( $this->hookDispatcher );
-			$instance->loadFromGlobals();
+			$this->withSilencedUserDeprecation( static fn () => $instance->loadFromGlobals() );
 
 			$this->assertSame( $expected, $instance->get( $key ) );
 		} finally {
@@ -280,7 +287,7 @@ class SettingsTest extends TestCase {
 
 			$instance = new Settings();
 			$instance->setHookDispatcher( $this->hookDispatcher );
-			$instance->loadFromGlobals();
+			$this->withSilencedUserDeprecation( static fn () => $instance->loadFromGlobals() );
 
 			$this->assertSame( SMW_FACTBOX_NONEMPTY, $instance->get( 'smwgShowFactbox' ) );
 			$this->assertTrue( $instance->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_CACHE ) );
