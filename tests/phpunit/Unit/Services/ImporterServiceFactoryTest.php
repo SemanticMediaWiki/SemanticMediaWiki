@@ -2,16 +2,12 @@
 
 namespace SMW\Tests\Unit\Services;
 
-use Onoi\CallbackContainer\CallbackContainerFactory;
 use PHPUnit\Framework\TestCase;
-use SMW\Connection\ConnectionManager;
 use SMW\Importer\ContentIterator;
 use SMW\Importer\Importer;
 use SMW\Importer\JsonContentIterator;
-use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\TitleFactory;
 use SMW\Services\ImporterServiceFactory;
-use SMW\Settings;
+use SMW\Services\ServicesContainer;
 
 /**
  * @covers \SMW\Services\ImporterServiceFactory
@@ -24,65 +20,45 @@ use SMW\Settings;
  */
 class ImporterServiceFactoryTest extends TestCase {
 
-	private $callbackContainerBuilder;
+	private ServicesContainer $servicesContainer;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$callbackContainerFactory = new CallbackContainerFactory();
-
-		$this->callbackContainerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
-
-		$titleFactory = $this->getMockBuilder( TitleFactory::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->callbackContainerBuilder->registerObject( 'TitleFactory', $titleFactory );
 
 		$importStringSource = $this->getMockBuilder( '\ImportStringSource' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->callbackContainerBuilder->registerObject( 'ImportStringSource', $importStringSource );
-
 		$wikiImporter = $this->getMockBuilder( '\WikiImporter' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->callbackContainerBuilder->registerObject( 'WikiImporter', $wikiImporter );
-
-		$connection = $this->getMockBuilder( Database::class )
+		$importer = $this->getMockBuilder( Importer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
+		$jsonContentIterator = $this->getMockBuilder( JsonContentIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionManager->expects( $this->any() )
-			->method( 'getConnection' )
-			->willReturn( $connection );
-
-		$this->callbackContainerBuilder->registerObject( 'ConnectionManager', $connectionManager );
-
-		$this->callbackContainerBuilder->registerObject( 'Settings', new Settings( [
-			'smwgImportReqVersion' => 1,
-			'smwgImportFileDirs' => 'foo'
-		] ) );
-
-		$this->callbackContainerBuilder->registerFromFile( $GLOBALS['smwgServicesFileDir'] . '/' . 'importer.php' );
+		$this->servicesContainer = new ServicesContainer( [
+			'ImportStringSource' => static fn () => $importStringSource,
+			'WikiImporter' => static fn () => $wikiImporter,
+			'Importer' => static fn () => $importer,
+			'JsonContentIterator' => static fn () => $jsonContentIterator,
+		] );
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ImporterServiceFactory::class,
-			new ImporterServiceFactory( $this->callbackContainerBuilder )
+			new ImporterServiceFactory( $this->servicesContainer )
 		);
 	}
 
 	public function testCanConstructImportStringSource() {
 		$instance = new ImporterServiceFactory(
-			$this->callbackContainerBuilder
+			$this->servicesContainer
 		);
 
 		$this->assertInstanceOf(
@@ -97,7 +73,7 @@ class ImporterServiceFactoryTest extends TestCase {
 			->getMock();
 
 		$instance = new ImporterServiceFactory(
-			$this->callbackContainerBuilder
+			$this->servicesContainer
 		);
 
 		$this->assertInstanceOf(
@@ -112,7 +88,7 @@ class ImporterServiceFactoryTest extends TestCase {
 			->getMock();
 
 		$instance = new ImporterServiceFactory(
-			$this->callbackContainerBuilder
+			$this->servicesContainer
 		);
 
 		$this->assertInstanceOf(
@@ -123,7 +99,7 @@ class ImporterServiceFactoryTest extends TestCase {
 
 	public function testCanConstructJsonContentIterator() {
 		$instance = new ImporterServiceFactory(
-			$this->callbackContainerBuilder
+			$this->servicesContainer
 		);
 
 		$this->assertInstanceOf(

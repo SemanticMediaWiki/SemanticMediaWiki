@@ -3,7 +3,6 @@
 namespace SMW\Services;
 
 use MediaWiki\Context\RequestContext;
-use Onoi\CallbackContainer\ContainerBuilder;
 use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\InfoLinksProvider;
@@ -63,7 +62,38 @@ class DataValueServiceFactory {
 	/**
 	 * @since 2.5
 	 */
-	public function __construct( private readonly ContainerBuilder $containerBuilder ) {
+	public function __construct( private readonly ServicesContainer $servicesContainer ) {
+	}
+
+	/**
+	 * Builds a `ServicesContainer` seeded with the DataValue domain services
+	 * defined in the `datavalues.php` wiring file.
+	 *
+	 * The `StringValue` legacy id alias is preserved by registering the same
+	 * callback under both the canonical and the legacy formatter key.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function newServicesContainer( string $servicesFileDir ): ServicesContainer {
+		$servicesContainer = new ServicesContainer();
+
+		$services = require $servicesFileDir . '/' . self::SERVICE_FILE;
+
+		foreach ( $services as $key => $callback ) {
+			$servicesContainer->add( $key, $callback );
+		}
+
+		// Preserve the legacy StringValue formatter id by delegating to the primary
+		// key's singleton, so both keys resolve to the same shared instance.
+		$servicesContainer->add(
+			self::TYPE_FORMATTER . StringValue::TYPE_LEGACY_ID,
+			static fn ( ServicesContainer $container ) => $container->singleton(
+				self::TYPE_FORMATTER . StringValue::TYPE_ID,
+				$container
+			)
+		);
+
+		return $servicesContainer;
 	}
 
 	/**
@@ -98,8 +128,8 @@ class DataValueServiceFactory {
 		if ( is_callable( $class ) ) {
 			return $class( $typeId );
 		}
-		if ( $this->containerBuilder->isRegistered( $class ) ) {
-			return $this->containerBuilder->create( $class );
+		if ( $this->servicesContainer->isRegistered( $class ) ) {
+			return $this->servicesContainer->create( $class, $this->servicesContainer );
 		}
 
 		// Legacy invocation, for those that have not been defined yet!s
@@ -114,7 +144,10 @@ class DataValueServiceFactory {
 	 * @return ValueParser
 	 */
 	public function getValueParser( DataValue $dataValue ) {
-		return $this->containerBuilder->singleton( self::TYPE_PARSER . $dataValue->getTypeID() );
+		return $this->servicesContainer->singleton(
+			self::TYPE_PARSER . $dataValue->getTypeID(),
+			$this->servicesContainer
+		);
 	}
 
 	/**
@@ -127,8 +160,8 @@ class DataValueServiceFactory {
 	public function getValueFormatter( DataValue $dataValue ) {
 		$id = self::TYPE_FORMATTER . $dataValue->getTypeID();
 
-		if ( $this->containerBuilder->isRegistered( $id ) ) {
-			$dataValueFormatter = $this->containerBuilder->singleton( $id );
+		if ( $this->servicesContainer->isRegistered( $id ) ) {
+			$dataValueFormatter = $this->servicesContainer->singleton( $id, $this->servicesContainer );
 		} else {
 			$dataValueFormatter = $this->getDispatchableValueFormatter( $dataValue );
 		}
@@ -146,7 +179,10 @@ class DataValueServiceFactory {
 	 * @return ConstraintValueValidator
 	 */
 	public function getConstraintValueValidator() {
-		return $this->containerBuilder->singleton( self::TYPE_VALIDATOR . 'CompoundConstraintValueValidator' );
+		return $this->servicesContainer->singleton(
+			self::TYPE_VALIDATOR . 'CompoundConstraintValueValidator',
+			$this->servicesContainer
+		);
 	}
 
 	/**
@@ -155,7 +191,7 @@ class DataValueServiceFactory {
 	 * @return SpecificationLookup
 	 */
 	public function getPropertySpecificationLookup() {
-		return $this->containerBuilder->singleton( 'PropertySpecificationLookup' );
+		return ServicesFactory::getInstance()->singleton( 'PropertySpecificationLookup' );
 	}
 
 	/**
@@ -164,7 +200,7 @@ class DataValueServiceFactory {
 	 * @return UnitConverter
 	 */
 	public function getUnitConverter() {
-		return $this->containerBuilder->singleton( 'UnitConverter' );
+		return $this->servicesContainer->singleton( 'UnitConverter', $this->servicesContainer );
 	}
 
 	/**
@@ -173,7 +209,7 @@ class DataValueServiceFactory {
 	 * @return RestrictionExaminer
 	 */
 	public function getPropertyRestrictionExaminer() {
-		$propertyRestrictionExaminer = $this->containerBuilder->singleton( 'PropertyRestrictionExaminer' );
+		$propertyRestrictionExaminer = ServicesFactory::getInstance()->singleton( 'PropertyRestrictionExaminer' );
 		$propertyRestrictionExaminer->setUser( RequestContext::getMain()->getUser() );
 
 		return $propertyRestrictionExaminer;
@@ -185,7 +221,7 @@ class DataValueServiceFactory {
 	 * @return DescriptionBuilderRegistry
 	 */
 	public function getDescriptionBuilderRegistry() {
-		return $this->containerBuilder->singleton( 'DescriptionBuilderRegistry' );
+		return $this->servicesContainer->singleton( 'DescriptionBuilderRegistry', $this->servicesContainer );
 	}
 
 	private function getDispatchableValueFormatter( DataValue $dataValue ) {
@@ -202,15 +238,15 @@ class DataValueServiceFactory {
 		// To be checked only after DispatchingDataValueFormatter::addDataValueFormatter did
 		// not match any previous registered DataValueFormatters
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
-			$this->containerBuilder->singleton( self::TYPE_FORMATTER . StringValue::TYPE_ID )
+			$this->servicesContainer->singleton( self::TYPE_FORMATTER . StringValue::TYPE_ID, $this->servicesContainer )
 		);
 
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
-			$this->containerBuilder->singleton( self::TYPE_FORMATTER . NumberValue::TYPE_ID )
+			$this->servicesContainer->singleton( self::TYPE_FORMATTER . NumberValue::TYPE_ID, $this->servicesContainer )
 		);
 
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
-			$this->containerBuilder->singleton( self::TYPE_FORMATTER . TimeValue::TYPE_ID )
+			$this->servicesContainer->singleton( self::TYPE_FORMATTER . TimeValue::TYPE_ID, $this->servicesContainer )
 		);
 
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NoValueFormatter() );
