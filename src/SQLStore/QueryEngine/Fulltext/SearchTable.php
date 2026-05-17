@@ -266,7 +266,7 @@ class SearchTable {
 	 * @return string
 	 */
 	public function addQuotes( $value ) {
-		return $this->connection->addQuotes( (string)$value );
+		return $this->connection->addQuotes( $value );
 	}
 
 }

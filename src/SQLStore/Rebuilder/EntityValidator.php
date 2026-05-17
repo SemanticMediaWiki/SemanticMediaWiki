@@ -255,7 +255,7 @@ class EntityValidator {
 			->select( [ 'smw_id', 'smw_title' ] )
 			->from( SQLStore::ID_TABLE )
 			->where( [
-				"smw_id !=" . $connection->addQuotes( (string)$row->smw_id ),
+				"smw_id !=" . $connection->addQuotes( $row->smw_id ),
 				"smw_sortkey =" . $connection->addQuotes( $row->smw_sortkey ),
 				"smw_namespace =" . $row->smw_namespace,
 				"smw_subobject =" . $connection->addQuotes( $row->smw_subobject ),
