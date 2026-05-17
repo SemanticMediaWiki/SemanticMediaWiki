@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Unit\Services;
+namespace SMW\Tests\Integration\Services;
 
 use JobQueueGroup;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Revision\RevisionLookup;
-use PHPUnit\Framework\TestCase;
+use MediaWikiIntegrationTestCase;
 use SMW\Importer\ContentCreators\TextContentCreator;
 use SMW\Importer\ContentCreators\XmlContentCreator;
 use SMW\MediaWiki\JobFactory;
@@ -33,13 +33,14 @@ use SMW\Utils\TempFile;
  * (2) whether two successive retrievals return the SAME instance (singleton path) or
  *     DISTINCT instances (create() path).
  *
- * @covers \SMW\Services\ServicesFactory
- * @group semantic-mediawiki
+ * @coversNothing
+ * @group SMW
+ * @group SMWExtension
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
  */
-class BehaviourSensitiveServiceCharacterizationTest extends TestCase {
+class BehaviourSensitiveServiceCharacterizationTest extends MediaWikiIntegrationTestCase {
 
 	private ServicesFactory $factory;
 
@@ -49,7 +50,7 @@ class BehaviourSensitiveServiceCharacterizationTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->factory->clear();
+		ServicesFactory::clear();
 		parent::tearDown();
 	}
 

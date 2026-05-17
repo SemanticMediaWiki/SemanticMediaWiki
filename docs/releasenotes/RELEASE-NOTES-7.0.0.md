@@ -222,7 +222,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### Deprecations
 
-* `ServicesFactory::singleton()` and `ServicesFactory::create()` are deprecated (since 7.0.0). Use the typed accessor and factory methods on `ServicesFactory` directly ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
+* `ServicesFactory::singleton()` and `ServicesFactory::create()` are deprecated (since 7.0.0). Use the typed accessor and factory methods on `ServicesFactory` directly ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)). Note: for container-managed services, `create()` no longer guarantees a fresh instance; it is now equivalent to `singleton()` for those services.
 * `enableSemantics()` is deprecated and now a no-op. `wfLoadExtension( 'SemanticMediaWiki' )` alone is sufficient to install SMW, aligning with standard MediaWiki extension conventions. The RDF namespace URI is now auto-derived from `Special:URIResolver` when not explicitly set. Users who set a custom `$smwgNamespace` in `LocalSettings.php` are unaffected.
 * The following class aliases are deprecated. They will be removed in a future release. Update any code referencing these to use the new namespaced class names:
 

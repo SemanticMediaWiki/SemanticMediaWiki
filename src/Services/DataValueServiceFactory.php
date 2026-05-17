@@ -83,11 +83,14 @@ class DataValueServiceFactory {
 			$servicesContainer->add( $key, $callback );
 		}
 
-		// Preserve the legacy StringValue formatter id by registering the same
-		// callback under the legacy key.
+		// Preserve the legacy StringValue formatter id by delegating to the primary
+		// key's singleton, so both keys resolve to the same shared instance.
 		$servicesContainer->add(
 			self::TYPE_FORMATTER . StringValue::TYPE_LEGACY_ID,
-			$services[self::TYPE_FORMATTER . StringValue::TYPE_ID]
+			static fn ( ServicesContainer $container ) => $container->singleton(
+				self::TYPE_FORMATTER . StringValue::TYPE_ID,
+				$container
+			)
 		);
 
 		return $servicesContainer;
