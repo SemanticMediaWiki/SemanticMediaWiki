@@ -173,7 +173,7 @@ return [
 
 	'JobQueue' => static function ( ServiceContainer $container ): JobQueue {
 		return new JobQueue(
-			MediaWikiServices::getInstance()->getJobQueueGroup()
+			ServicesFactory::getInstance()->getJobQueueGroup()
 		);
 	},
 
@@ -280,14 +280,6 @@ return [
 
 	'DataItemFactory' => static function ( ServiceContainer $container ): DataItemFactory {
 		return new DataItemFactory();
-	},
-
-	'DataValueServiceFactory' => static function ( ServiceContainer $container ): DataValueServiceFactory {
-		// DataValueServiceFactory is built inside ServicesFactory using SMW's
-		// own ServicesContainer, seeded via DataValueServiceFactory::newServicesContainer().
-		// Delegate to ServicesFactory::singleton() so the same instance is
-		// shared across the full service graph.
-		return ServicesFactory::getInstance()->singleton( 'DataValueServiceFactory' );
 	},
 
 	'QueryDependencyLinksStoreFactory' => static function ( ServiceContainer $container ): QueryDependencyLinksStoreFactory {

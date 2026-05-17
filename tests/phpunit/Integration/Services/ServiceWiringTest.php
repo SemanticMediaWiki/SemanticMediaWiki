@@ -41,7 +41,6 @@ use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\Schema\SchemaFactory;
-use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
 use SMW\SetupFile;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
@@ -123,7 +122,6 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'QuerySourceFactory', QuerySourceFactory::class ],
 			[ 'QueryFactory', QueryFactory::class ],
 			[ 'DataItemFactory', DataItemFactory::class ],
-			[ 'DataValueServiceFactory', DataValueServiceFactory::class ],
 			[ 'QueryDependencyLinksStoreFactory', QueryDependencyLinksStoreFactory::class ],
 			[ 'PropertySpecificationLookup', SpecificationLookup::class ],
 			[ 'ProtectionValidator', ProtectionValidator::class ],

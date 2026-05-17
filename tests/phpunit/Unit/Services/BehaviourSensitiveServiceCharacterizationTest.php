@@ -161,16 +161,17 @@ class BehaviourSensitiveServiceCharacterizationTest extends TestCase {
 	}
 
 	/**
-	 * ProtectionValidator is reached via create('ProtectionValidator') inside the
-	 * TitlePermissions callback. The callback constructs a new ProtectionValidator each time,
-	 * so two create() calls return distinct instances.
+	 * ProtectionValidator is a Bucket-A service: all of its configuration setters
+	 * run at build time and it holds no per-use mutable state. The audit
+	 * (Section 2.6 / Section 3) classifies it as a shared singleton, so the
+	 * private ServiceContainer returns the same instance on repeated retrieval.
 	 */
 	public function testProtectionValidatorTypeAndIdentity(): void {
 		$first = $this->factory->create( 'ProtectionValidator' );
 		$second = $this->factory->create( 'ProtectionValidator' );
 
 		$this->assertInstanceOf( ProtectionValidator::class, $first );
-		$this->assertNotSame( $first, $second, 'ProtectionValidator: create() constructs a new instance each time' );
+		$this->assertSame( $first, $second, 'ProtectionValidator: Bucket-A service shared via the private ServiceContainer' );
 	}
 
 	// -------------------------------------------------------------------------
@@ -243,38 +244,30 @@ class BehaviourSensitiveServiceCharacterizationTest extends TestCase {
 
 	/**
 	 * PropertyRestrictionExaminer is reached via the REAL production path:
-	 * DataValueServiceFactory::getPropertyRestrictionExaminer(). That method:
-	 *   (a) calls singleton('PropertyRestrictionExaminer') (same shared instance every call), and
-	 *   (b) calls setUser( RequestContext::getMain()->getUser() ) on that shared instance every call.
+	 * DataValueServiceFactory::getPropertyRestrictionExaminer(), which delegates to
+	 * ServicesFactory::singleton('PropertyRestrictionExaminer') and then calls
+	 * setUser( RequestContext::getMain()->getUser() ) on the result.
 	 *
-	 * This is a latent bug: setUser() mutates a shared singleton, so the last caller's user leaks
-	 * into the next caller's context.
-	 *
-	 * This test documents the pre-fix state:
-	 * - getPropertyRestrictionExaminer() returns a RestrictionExaminer
-	 * - successive calls return the SAME shared instance (singleton path)
-	 * - each call to getPropertyRestrictionExaminer() calls setUser() on that shared instance
-	 *   (verified via identity: $first === $second, so any setUser() through the production method
-	 *   is immediately visible through both references)
-	 *
-	 * The migration will fix this by switching to create() (fresh instance per call).
+	 * Pre-migration this returned a shared singleton, so setUser() mutated state
+	 * that leaked across call sites (a latent bug). The callback-container
+	 * migration classifies PropertyRestrictionExaminer as Bucket C (fresh instance
+	 * per call); ServicesFactory now routes the name to newPropertyRestrictionExaminer(),
+	 * so each getPropertyRestrictionExaminer() call receives a distinct instance and
+	 * the setUser() mutation no longer leaks.
 	 */
-	public function testPropertyRestrictionExaminerIsSingletonWithSetUserMutation(): void {
+	public function testPropertyRestrictionExaminerIsFreshInstancePerCall(): void {
 		/** @var DataValueServiceFactory $dvFactory */
 		$dvFactory = $this->factory->create( 'DataValueServiceFactory' );
 
-		// Exercise the real production path twice; each call internally does:
-		//   singleton('PropertyRestrictionExaminer') + setUser( RequestContext::getMain()->getUser() )
 		$first = $dvFactory->getPropertyRestrictionExaminer();
 		$second = $dvFactory->getPropertyRestrictionExaminer();
 
 		$this->assertInstanceOf( RestrictionExaminer::class, $first );
 
-		// PRE-FIX STATE: getPropertyRestrictionExaminer() delegates to singleton(), so both calls
-		// return the same shared instance. Because $first === $second, the setUser() called on
-		// every getPropertyRestrictionExaminer() invocation mutates the shared instance, so user
-		// state leaks across call sites.
-		$this->assertSame( $first, $second, 'PropertyRestrictionExaminer: getPropertyRestrictionExaminer() returns the same shared singleton instance (pre-fix state; latent bug)' );
+		// POST-MIGRATION: PropertyRestrictionExaminer is a Bucket-C factory-method
+		// service, so each call returns a fresh instance and the setUser() mutation
+		// is isolated per caller.
+		$this->assertNotSame( $first, $second, 'PropertyRestrictionExaminer: Bucket-C service constructed fresh per call' );
 	}
 
 }
