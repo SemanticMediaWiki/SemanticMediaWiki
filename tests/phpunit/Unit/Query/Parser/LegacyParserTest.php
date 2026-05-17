@@ -11,8 +11,6 @@ use SMW\Query\Parser\DescriptionProcessor;
 use SMW\Query\Parser\LegacyParser as QueryParser;
 use SMW\Query\Parser\Tokenizer;
 use SMW\Query\QueryToken;
-use SMW\Store;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Query\Parser\LegacyParser
@@ -25,32 +23,19 @@ use SMW\Tests\TestEnvironment;
  */
 class LegacyParserTest extends TestCase {
 
-	private $testEnvironment;
 	private $descriptionFactory;
 	private $queryParser;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
 		$this->descriptionFactory = new DescriptionFactory();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->queryParser = new QueryParser(
 			new DescriptionProcessor(),
 			new Tokenizer(),
 			new QueryToken()
 		);
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
