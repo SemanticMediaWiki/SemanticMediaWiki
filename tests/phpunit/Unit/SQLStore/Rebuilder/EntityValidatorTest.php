@@ -8,8 +8,6 @@ use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
@@ -27,52 +25,14 @@ class EntityValidatorTest extends TestCase {
 
 	use MockSelectQueryBuilderTrait;
 
-	private $testEnvironment;
 	private NamespaceExaminer $namespaceExaminer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment(
-			[
-				'smwgAutoRefreshSubject' => true,
-				'smwgMainCacheType' => 'hash',
-				'smwgEnableUpdateJobs' => false,
-			]
-		);
-
 		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'exists' ] )
-			->getMock();
-
-		$idTable->expects( $this->any() )
-			->method( 'exists' )
-			->willReturn( 0 );
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
-			->getMockForAbstractClass();
-
-		$store->expects( $this->any() )
-			->method( 'getPropertyValues' )
-			->willReturn( [] );
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->willReturn( $idTable );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
