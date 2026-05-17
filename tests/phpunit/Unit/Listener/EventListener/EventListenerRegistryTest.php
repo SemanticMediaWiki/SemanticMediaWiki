@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Unit\Listener\EventListener;
 
-use Onoi\EventDispatcher\EventDispatcherFactory;
-use Onoi\EventDispatcher\EventListenerCollection;
 use PHPUnit\Framework\TestCase;
+use SMW\EventDispatcher\EventDispatcherFactory;
+use SMW\EventDispatcher\EventListenerCollection;
 use SMW\Listener\EventListener\EventListenerRegistry;
 use SMW\Tests\TestEnvironment;
 

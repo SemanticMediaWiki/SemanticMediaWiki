@@ -2,7 +2,6 @@
 
 namespace SMW\Elastic;
 
-use Onoi\EventDispatcher\DispatchContext;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
@@ -40,6 +39,7 @@ use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
 use SMW\Elastic\QueryEngine\TermsLookup\TermsLookup;
+use SMW\EventDispatcher\DispatchContext;
 use SMW\Options;
 use SMW\Services\ServicesContainer;
 use SMW\Services\ServicesFactory as ApplicationFactory;

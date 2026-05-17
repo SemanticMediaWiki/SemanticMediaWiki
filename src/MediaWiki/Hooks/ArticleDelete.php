@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;

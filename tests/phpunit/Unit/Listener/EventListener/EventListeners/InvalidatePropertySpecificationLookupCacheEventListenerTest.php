@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Unit\Listener\EventListener\EventListeners;
 
-use Onoi\EventDispatcher\DispatchContext;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\EventDispatcher\DispatchContext;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;

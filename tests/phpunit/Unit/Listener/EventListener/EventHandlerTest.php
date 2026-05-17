@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit\Listener\EventListener;
 
-use Onoi\EventDispatcher\DispatchContext;
-use Onoi\EventDispatcher\Dispatcher\GenericEventDispatcher;
-use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
+use SMW\EventDispatcher\DispatchContext;
+use SMW\EventDispatcher\Dispatcher\GenericEventDispatcher;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\Listener\EventListener\EventHandler;
 
 /**

@@ -3,7 +3,7 @@
 namespace SMW\Listener\EventListener;
 
 use MediaWiki\MediaWikiServices;
-use Onoi\EventDispatcher\EventListenerCollection;
+use SMW\EventDispatcher\EventListenerCollection;
 use SMW\Export\Exporter;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
