@@ -2,15 +2,14 @@
 
 namespace SMW\Tests\Unit\Services;
 
-use Onoi\CallbackContainer\ContainerBuilder;
 use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\Number\UnitConverter;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\Property\RestrictionExaminer;
 use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Services\DataValueServiceFactory;
+use SMW\Services\ServicesContainer;
 
 /**
  * @covers \SMW\Services\DataValueServiceFactory
@@ -23,12 +22,12 @@ use SMW\Services\DataValueServiceFactory;
  */
 class DataValueServiceFactoryTest extends TestCase {
 
-	private $containerBuilder;
+	private $servicesContainer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->containerBuilder = $this->getMockBuilder( ContainerBuilder::class )
+		$this->servicesContainer = $this->getMockBuilder( ServicesContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +35,7 @@ class DataValueServiceFactoryTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			DataValueServiceFactory::class,
-			new DataValueServiceFactory( $this->containerBuilder )
+			new DataValueServiceFactory( $this->servicesContainer )
 		);
 	}
 
@@ -52,13 +51,13 @@ class DataValueServiceFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->containerBuilder->expects( $this->once() )
+		$this->servicesContainer->expects( $this->once() )
 			->method( 'isRegistered' )
 			->with( $this->stringContains( 'bar' ) )
 			->willReturn( true );
 
 		$instance = new DataValueServiceFactory(
-			$this->containerBuilder
+			$this->servicesContainer
 		);
 
 		$instance->newDataValueByTypeOrClass( 'foo', 'bar' );
@@ -66,7 +65,7 @@ class DataValueServiceFactoryTest extends TestCase {
 
 	public function testGetDataValueFactory() {
 		$instance = new DataValueServiceFactory(
-			$this->containerBuilder
+			$this->servicesContainer
 		);
 
 		$this->assertInstanceOf(
@@ -80,12 +79,12 @@ class DataValueServiceFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->containerBuilder->expects( $this->once() )
+		$this->servicesContainer->expects( $this->once() )
 			->method( 'singleton' )
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_PARSER ) );
 
 		$instance = new DataValueServiceFactory(
-			$this->containerBuilder
+			$this->servicesContainer
 		);
 
 		$instance->getValueParser( $dataValue );
@@ -100,17 +99,17 @@ class DataValueServiceFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->containerBuilder->expects( $this->once() )
+		$this->servicesContainer->expects( $this->once() )
 			->method( 'isRegistered' )
 			->willReturn( true );
 
-		$this->containerBuilder->expects( $this->once() )
+		$this->servicesContainer->expects( $this->once() )
 			->method( 'singleton' )
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_FORMATTER ) )
 			->willReturn( $dataValueFormatter );
 
 		$instance = new DataValueServiceFactory(
-			$this->containerBuilder
+			$this->servicesContainer
 		);
 
 		$instance->getValueFormatter( $dataValue );
@@ -125,37 +124,20 @@ class DataValueServiceFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->containerBuilder->expects( $this->once() )
+		$this->servicesContainer->expects( $this->once() )
 			->method( 'isRegistered' )
 			->willReturn( false );
 
-		$this->containerBuilder->expects( $this->atLeastOnce() )
+		$this->servicesContainer->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_FORMATTER ) )
 			->willReturn( $dataValueFormatter );
 
 		$instance = new DataValueServiceFactory(
-			$this->containerBuilder
+			$this->servicesContainer
 		);
 
 		$instance->getValueFormatter( $dataValue );
-	}
-
-	public function testGetPropertyRestrictionExaminer() {
-		$propertyRestrictionExaminer = $this->getMockBuilder( RestrictionExaminer::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->containerBuilder->expects( $this->atLeastOnce() )
-			->method( 'singleton' )
-			->with( $this->stringContains( 'PropertyRestrictionExaminer' ) )
-			->willReturn( $propertyRestrictionExaminer );
-
-		$instance = new DataValueServiceFactory(
-			$this->containerBuilder
-		);
-
-		$instance->getPropertyRestrictionExaminer();
 	}
 
 	public function testGetDescriptionBuilderRegistry() {
@@ -163,13 +145,13 @@ class DataValueServiceFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->containerBuilder->expects( $this->atLeastOnce() )
+		$this->servicesContainer->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( 'DescriptionBuilderRegistry' ) )
 			->willReturn( $descriptionBuilderRegistry );
 
 		$instance = new DataValueServiceFactory(
-			$this->containerBuilder
+			$this->servicesContainer
 		);
 
 		$instance->getDescriptionBuilderRegistry();
@@ -180,13 +162,13 @@ class DataValueServiceFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->containerBuilder->expects( $this->atLeastOnce() )
+		$this->servicesContainer->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( 'UnitConverter' ) )
 			->willReturn( $unitConverter );
 
 		$instance = new DataValueServiceFactory(
-			$this->containerBuilder
+			$this->servicesContainer
 		);
 
 		$instance->getUnitConverter();

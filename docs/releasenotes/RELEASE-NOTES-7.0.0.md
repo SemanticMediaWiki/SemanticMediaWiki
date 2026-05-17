@@ -171,6 +171,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * Removed the `mediawiki/parser-hooks` dependency.
 * Removed `psr/log` from `composer.json`. Extensions that relied on SMW pulling in `psr/log` transitively must declare it in their own `composer.json`.
+* Removed the `mediawiki/callback-container` (`onoi/callback-container`) Composer dependency. The internal DI layer now uses MediaWiki's `Wikimedia\Services\ServiceContainer` directly ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
+* Removed the `@private` internal class `SMW\Services\SharedServicesContainer` and the internal wiring files `src/Services/mediawiki.php`, `src/Services/events.php`, and `src/Services/cache.php`. These were never part of the public API ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
 * Removed the root `DefaultSettings.php` shim (deprecated since 4.0.0). Use `SemanticMediaWiki::getDefaultSettings()` instead.
 * Removed `Defines.php`.
 * **`includes/` directory removed.** All classes have moved to `src/` under new namespaces (`DataItems/`, `DataValues/`, `Export/`, `Formatters/`, `Query/`, `QueryPages/`, `MediaWiki/Specials/`). Class aliases are provided for the transition (see Deprecations below), but code that loaded files by path (e.g., `require .../includes/dataitems/...`) will break.
@@ -220,6 +222,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### Deprecations
 
+* `ServicesFactory::singleton()` and `ServicesFactory::create()` are deprecated (since 7.0.0). Use the typed accessor and factory methods on `ServicesFactory` directly ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)). Note: for container-managed services, `create()` no longer guarantees a fresh instance; it is now equivalent to `singleton()` for those services.
 * `enableSemantics()` is deprecated and now a no-op. `wfLoadExtension( 'SemanticMediaWiki' )` alone is sufficient to install SMW, aligning with standard MediaWiki extension conventions. The RDF namespace URI is now auto-derived from `Special:URIResolver` when not explicitly set. Users who set a custom `$smwgNamespace` in `LocalSettings.php` are unaffected.
 * The following class aliases are deprecated. They will be removed in a future release. Update any code referencing these to use the new namespaced class names:
 
@@ -320,6 +323,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### Internal improvements
 
+* **DI layer migrated to `ServiceContainer`.** The internal dependency-injection layer now uses MediaWiki's `Wikimedia\Services\ServiceContainer` instead of the third-party `onoi/callback-container`. This is a fully internal change with no effect on public APIs ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
 * **Config defaults migrated to `extension.json`.** All `$smwg*` defaults are now declared in the manifest's `config` block (with `merge_strategy` declarations on compound arrays so partial writes from `LocalSettings.php` merge cleanly with defaults — fixes #6649 and the partial-write class behind #6726). Settings whose values can't be expressed as static JSON (PHP constants, `$smwgIP`-relative paths, class constants) are seeded by a small `SMW\Setup\ConfigBootstrap` callback at registration time.
 * Native PHP type coverage significantly expanded across the entire codebase, including return types, parameter types, property types, and constructor promotion with `readonly`
 * PHPUnit test suite reorganized into `Unit/` and `Integration/` directories

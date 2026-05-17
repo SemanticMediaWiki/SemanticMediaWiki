@@ -130,6 +130,111 @@ class ServicesContainerTest extends TestCase {
 		$instance->get( 'test' );
 	}
 
+	public function testIsRegisteredReturnsTrueForKnownKey() {
+		$instance = new ServicesContainer(
+			[
+				'test' => [ $this, 'stdClassService' ]
+			]
+		);
+
+		$this->assertTrue( $instance->isRegistered( 'test' ) );
+	}
+
+	public function testIsRegisteredReturnsFalseForUnknownKey() {
+		$instance = new ServicesContainer();
+
+		$this->assertFalse( $instance->isRegistered( 'unknown' ) );
+	}
+
+	public function testSingletonReturnsSameInstanceForSameArgs() {
+		$instance = new ServicesContainer(
+			[
+				'test' => static function () {
+					return new stdClass();
+				}
+			]
+		);
+
+		$first = $instance->singleton( 'test' );
+		$second = $instance->singleton( 'test' );
+
+		$this->assertSame( $first, $second );
+	}
+
+	public function testSingletonReturnsDifferentInstanceForDifferentArgs() {
+		$instance = new ServicesContainer(
+			[
+				'test' => static function ( $arg ) {
+					return new stdClass();
+				}
+			]
+		);
+
+		$first = $instance->singleton( 'test', 'arg1' );
+		$second = $instance->singleton( 'test', 'arg2' );
+
+		$this->assertNotSame( $first, $second );
+	}
+
+	public function testSingletonReturnsSameInstanceForSameArgsSecondCall() {
+		$instance = new ServicesContainer(
+			[
+				'test' => static function ( $arg ) {
+					return new stdClass();
+				}
+			]
+		);
+
+		$first = $instance->singleton( 'test', 'arg1' );
+		$second = $instance->singleton( 'test', 'arg1' );
+
+		$this->assertSame( $first, $second );
+	}
+
+	public function testCreateAlwaysReturnsFreshInstance() {
+		$instance = new ServicesContainer(
+			[
+				'test' => static function () {
+					return new stdClass();
+				}
+			]
+		);
+
+		$first = $instance->create( 'test' );
+		$second = $instance->create( 'test' );
+
+		$this->assertNotSame( $first, $second );
+	}
+
+	public function testCreateDoesNotShareCacheWithSingleton() {
+		$instance = new ServicesContainer(
+			[
+				'test' => static function () {
+					return new stdClass();
+				}
+			]
+		);
+
+		$singletonInstance = $instance->singleton( 'test' );
+		$createdInstance = $instance->create( 'test' );
+
+		$this->assertNotSame( $singletonInstance, $createdInstance );
+	}
+
+	public function testSingletonThrowsExceptionForUnknownKey() {
+		$instance = new ServicesContainer();
+
+		$this->expectException( ServiceNotFoundException::class );
+		$instance->singleton( 'unknown' );
+	}
+
+	public function testCreateThrowsExceptionForUnknownKey() {
+		$instance = new ServicesContainer();
+
+		$this->expectException( ServiceNotFoundException::class );
+		$instance->create( 'unknown' );
+	}
+
 	public function fakeService( $fake, $arg = '' ) {
 		$fake->runService( $arg );
 	}
