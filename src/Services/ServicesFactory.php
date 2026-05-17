@@ -229,6 +229,10 @@ class ServicesFactory {
 	 *
 	 * @param string $serviceName
 	 * @param mixed ...$args
+	 *
+	 * @return mixed Any registered service; the concrete type depends on
+	 *  $serviceName. Declared as mixed so static analysis does not infer a
+	 *  spurious union type from the routing logic and mismatch call sites.
 	 */
 	public function singleton( $serviceName, ...$args ) {
 		if ( array_key_exists( $serviceName, $this->testOverrides ) ) {
@@ -254,6 +258,10 @@ class ServicesFactory {
 	 *
 	 * @param string $serviceName
 	 * @param mixed ...$args
+	 *
+	 * @return mixed Any registered service; the concrete type depends on
+	 *  $serviceName. Declared as mixed so static analysis does not infer a
+	 *  spurious union type from the routing logic and mismatch call sites.
 	 */
 	public function create( $serviceName, ...$args ) {
 		if ( array_key_exists( $serviceName, $this->testOverrides ) ) {
@@ -271,6 +279,17 @@ class ServicesFactory {
 	 * Routes a legacy `singleton()`/`create()` call for a Bucket-B/C service
 	 * to its dedicated factory method.
 	 *
+	 * The `...$args` spread forwards the variadic arguments collected by the
+	 * deprecated `singleton()`/`create()` shims into fixed-arity factory
+	 * methods. Phan cannot prove the argument count of such a variadic
+	 * dispatch, so the per-line suppressions silence the resulting
+	 * `PhanParamTooFewUnpack`/`PhanParamTooManyUnpack` false positives. Only
+	 * the dispatch lines phan actually flags carry a suppression, to avoid
+	 * triggering `UnusedPluginSuppression`. The dispatch is correct at
+	 * runtime: callers pass the arguments the target factory method expects,
+	 * and `getCacheFactory()` is genuinely argument-less (no caller forwards
+	 * args to the `CacheFactory` service).
+	 *
 	 * @param string $serviceName
 	 * @param array $args
 	 */
@@ -279,24 +298,32 @@ class ServicesFactory {
 			'Store' => fn () => $this->getStore( ...$args ),
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
 			'Cache' => fn () => $this->getCache( ...$args ),
+			// @phan-suppress-next-line PhanParamTooManyUnpack
 			'CacheFactory' => fn () => $this->getCacheFactory( ...$args ),
 			'NamespaceExaminer' => fn () => $this->newNamespaceExaminer(),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'ParserData' => fn () => $this->newParserData( ...$args ),
 			'LinksProcessor' => fn () => $this->newLinksProcessor(),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'MessageFormatter' => fn () => $this->newMessageFormatter( ...$args ),
 			'PageCreator' => fn () => $this->newPageCreator(),
 			'PageUpdater' => fn () => $this->newPageUpdater( ...$args ),
 			'TitleFactory' => fn () => $this->newTitleFactory(),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'ContentParser' => fn () => $this->newContentParser( ...$args ),
 			'DeferredCallableUpdate' => fn () => $this->newDeferredCallableUpdate( ...$args ),
 			'DeferredTransactionalCallableUpdate' => fn () => $this->newDeferredTransactionalCallableUpdate( ...$args ),
 			'TempFile' => fn () => $this->newTempFile(),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'PostProcHandler' => fn () => $this->newPostProcHandler( ...$args ),
 			'DataValueServiceFactory' => fn () => $this->getDataValueServiceFactory(),
 			'ImporterServiceFactory' => fn () => $this->getImporterServiceFactory(),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'BlobStore' => fn () => $this->newBlobStore( ...$args ),
 			'ResultCache' => fn () => $this->getResultCache( ...$args ),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'Stats' => fn () => $this->newStats( ...$args ),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'EditProtectionUpdater' => fn () => $this->newEditProtectionUpdater( ...$args ),
 			'PropertyRestrictionExaminer' => fn () => $this->newPropertyRestrictionExaminer(),
 			'HierarchyLookup' => fn () => $this->newHierarchyLookup( ...$args ),
@@ -306,8 +333,10 @@ class ServicesFactory {
 			'PreferenceExaminer' => fn () => $this->newPreferenceExaminer( ...$args ),
 			'Parser' => fn () => $this->newParser(),
 			'RevisionLookup' => fn () => $this->newRevisionLookup(),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'DefaultSearchEngineTypeForDB' => fn () => $this->getDefaultSearchEngineTypeForDB( ...$args ),
 			'MediaWikiLogger' => fn () => $this->getMediaWikiLogger( ...$args ),
+			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'WikiPage' => fn () => $this->newWikiPage( ...$args ),
 			'FixedInMemoryLruCache' => fn () => $this->newFixedInMemoryLruCache( ...$args ),
 			'JobFactory' => fn () => $this->newJobFactory(),
