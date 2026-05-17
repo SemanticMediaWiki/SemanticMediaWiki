@@ -3,10 +3,10 @@
 namespace SMW\Tests\Unit\Listener\EventListener\EventListeners;
 
 use MediaWiki\Title\Title;
-use Onoi\EventDispatcher\DispatchContext;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
+use SMW\EventDispatcher\DispatchContext;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Tests\TestEnvironment;
 

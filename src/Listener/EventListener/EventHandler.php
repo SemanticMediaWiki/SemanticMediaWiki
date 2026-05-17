@@ -3,9 +3,9 @@
 namespace SMW\Listener\EventListener;
 
 use Closure;
-use Onoi\EventDispatcher\DispatchContext;
-use Onoi\EventDispatcher\EventDispatcher;
-use Onoi\EventDispatcher\EventDispatcherFactory;
+use SMW\EventDispatcher\DispatchContext;
+use SMW\EventDispatcher\EventDispatcher;
+use SMW\EventDispatcher\EventDispatcherFactory;
 
 /**
  * @license GPL-2.0-or-later

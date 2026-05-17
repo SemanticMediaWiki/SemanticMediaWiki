@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
-use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;

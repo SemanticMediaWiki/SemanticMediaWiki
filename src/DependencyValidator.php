@@ -3,8 +3,8 @@
 namespace SMW;
 
 use MediaWiki\Title\Title;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DataItems\WikiPage;
+use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 
 /**

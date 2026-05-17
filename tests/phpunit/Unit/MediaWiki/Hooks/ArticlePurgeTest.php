@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
-use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\Factbox\CachedFactbox;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\Services\ServicesFactory as ApplicationFactory;

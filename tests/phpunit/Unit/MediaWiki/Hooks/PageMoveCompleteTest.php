@@ -3,8 +3,8 @@
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
-use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\NamespaceExaminer;
 use SMW\Store;

@@ -3,8 +3,8 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DataItems\WikiPage;
+use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\LegacyOptionsApplier;
