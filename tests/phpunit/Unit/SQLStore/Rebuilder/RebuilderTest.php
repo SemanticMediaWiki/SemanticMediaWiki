@@ -11,7 +11,6 @@ use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
@@ -44,10 +43,6 @@ class RebuilderTest extends TestCase {
 			]
 		);
 
-		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,32 +54,6 @@ class RebuilderTest extends TestCase {
 		$this->propertyTableIdReferenceDisposer = $this->getMockBuilder( PropertyTableIdReferenceDisposer::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'exists' ] )
-			->getMock();
-
-		$idTable->expects( $this->any() )
-			->method( 'exists' )
-			->willReturn( 0 );
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
-			->getMockForAbstractClass();
-
-		$store->expects( $this->any() )
-			->method( 'getPropertyValues' )
-			->willReturn( [] );
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->willReturn( $idTable );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {
