@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;

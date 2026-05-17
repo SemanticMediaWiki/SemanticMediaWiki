@@ -4,12 +4,12 @@ namespace SMW\Tests\Unit\Updater;
 
 use MediaWiki\Content\Content;
 use MediaWiki\Revision\RevisionRecord;
-use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataUpdater;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\PageCreator;

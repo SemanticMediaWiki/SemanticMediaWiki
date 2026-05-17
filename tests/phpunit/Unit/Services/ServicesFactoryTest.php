@@ -4,7 +4,6 @@ namespace SMW\Tests\Unit\Services;
 
 use MediaWiki\Parser\Parser;
 use MediaWiki\Title\Title;
-use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
@@ -14,6 +13,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataUpdater;
 use SMW\DataValueFactory;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\Factbox\FactboxFactory;
 use SMW\HierarchyLookup;
 use SMW\IteratorFactory;

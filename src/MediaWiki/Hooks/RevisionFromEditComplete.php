@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use Exception;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\PageInfoProvider;

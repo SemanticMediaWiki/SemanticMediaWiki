@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit\SQLStore;
 
-use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTableDefinition;

@@ -3,8 +3,6 @@
 namespace SMW\Tests\Unit\Elastic;
 
 use MediaWiki\Title\Title;
-use Onoi\EventDispatcher\DispatchContext;
-use Onoi\EventDispatcher\Listener\GenericCallbackEventListener;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
@@ -33,6 +31,8 @@ use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpre
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
+use SMW\EventDispatcher\DispatchContext;
+use SMW\EventDispatcher\Listener\GenericCallbackEventListener;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\QueryEngine;
 use SMW\SQLStore\SQLStore;

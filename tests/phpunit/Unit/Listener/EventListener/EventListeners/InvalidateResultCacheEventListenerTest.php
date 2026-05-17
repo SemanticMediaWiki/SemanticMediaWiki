@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\Listener\EventListener\EventListeners;
 
-use Onoi\EventDispatcher\DispatchContext;
 use PHPUnit\Framework\TestCase;
+use SMW\EventDispatcher\DispatchContext;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Query\Cache\ResultCache;
 use SMW\Tests\TestEnvironment;

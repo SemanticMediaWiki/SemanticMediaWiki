@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DataItems\Property;
+use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;

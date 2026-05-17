@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Unit;
 
-use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
 use SMW\EntityCache;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\Tests\TestEnvironment;
