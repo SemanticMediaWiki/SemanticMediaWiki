@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\EventDispatcher\Tests\Exception;
+namespace SMW\Tests\Unit\EventDispatcher\Exception;
 
 use PHPUnit\Framework\TestCase;
 use SMW\EventDispatcher\Exception\EventNotDispatchableException;

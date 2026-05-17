@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\EventDispatcher\Tests\Integration;
+namespace SMW\Tests\Integration\EventDispatcher;
 
 use PHPUnit\Framework\TestCase;
 use SMW\EventDispatcher\DispatchContext;

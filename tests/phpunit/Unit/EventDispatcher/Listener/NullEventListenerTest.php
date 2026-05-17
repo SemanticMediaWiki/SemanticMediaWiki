@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\EventDispatcher\Tests\Listener;
+namespace SMW\Tests\Unit\EventDispatcher\Listener;
 
 use PHPUnit\Framework\TestCase;
 use SMW\EventDispatcher\Listener\NullEventListener;
