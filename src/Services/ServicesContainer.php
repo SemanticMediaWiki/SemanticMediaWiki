@@ -123,10 +123,24 @@ class ServicesContainer {
 	}
 
 	/**
-	 * Builds a stable cache key from the service key and the serialized args.
+	 * Builds a stable cache key from the service key and the args.
+	 *
+	 * Objects are identified by their runtime object id rather than serialized,
+	 * so non-serializable args (for example a container holding closures) can be
+	 * passed to a singleton service.
 	 */
 	private function makeCacheKey( string $key, array $args ): string {
-		return $key . ':' . md5( serialize( $args ) );
+		$parts = [];
+
+		foreach ( $args as $arg ) {
+			if ( is_object( $arg ) ) {
+				$parts[] = 'o:' . spl_object_id( $arg );
+			} else {
+				$parts[] = 's:' . serialize( $arg );
+			}
+		}
+
+		return $key . ':' . md5( implode( '|', $parts ) );
 	}
 
 }

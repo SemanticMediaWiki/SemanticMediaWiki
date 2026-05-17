@@ -191,26 +191,34 @@ class BehaviourSensitiveServiceCharacterizationTest extends TestCase {
 	}
 
 	/**
-	 * XmlContentCreator is reached via create('XmlContentCreator').
-	 * The callback constructs a new XmlContentCreator each time, so two create() calls
-	 * return distinct instances.
+	 * XmlContentCreator is reached via create('XmlContentCreator') on the Importer
+	 * domain ServicesContainer. The callback constructs a new XmlContentCreator each
+	 * time, so two create() calls return distinct instances.
 	 */
 	public function testXmlContentCreatorTypeAndIdentity(): void {
-		$first = $this->factory->create( 'XmlContentCreator' );
-		$second = $this->factory->create( 'XmlContentCreator' );
+		$container = ImporterServiceFactory::newServicesContainer(
+			$this->factory->getSettings()->get( 'smwgServicesFileDir' )
+		);
+
+		$first = $container->create( 'XmlContentCreator', $container );
+		$second = $container->create( 'XmlContentCreator', $container );
 
 		$this->assertInstanceOf( XmlContentCreator::class, $first );
 		$this->assertNotSame( $first, $second, 'XmlContentCreator: create() constructs a new instance each time' );
 	}
 
 	/**
-	 * TextContentCreator is reached via create('TextContentCreator').
-	 * The callback constructs a new TextContentCreator each time, so two create() calls
-	 * return distinct instances.
+	 * TextContentCreator is reached via create('TextContentCreator') on the Importer
+	 * domain ServicesContainer. The callback constructs a new TextContentCreator each
+	 * time, so two create() calls return distinct instances.
 	 */
 	public function testTextContentCreatorTypeAndIdentity(): void {
-		$first = $this->factory->create( 'TextContentCreator' );
-		$second = $this->factory->create( 'TextContentCreator' );
+		$container = ImporterServiceFactory::newServicesContainer(
+			$this->factory->getSettings()->get( 'smwgServicesFileDir' )
+		);
+
+		$first = $container->create( 'TextContentCreator', $container );
+		$second = $container->create( 'TextContentCreator', $container );
 
 		$this->assertInstanceOf( TextContentCreator::class, $first );
 		$this->assertNotSame( $first, $second, 'TextContentCreator: create() constructs a new instance each time' );

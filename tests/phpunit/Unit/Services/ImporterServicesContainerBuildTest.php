@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\Services;
 
-use Onoi\CallbackContainer\CallbackContainerFactory;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\Importer\ContentCreators\TextContentCreator;
@@ -14,6 +13,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Services\ImporterServiceFactory;
 use SMW\Settings;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
@@ -25,13 +25,15 @@ use SMW\Settings;
  */
 class ImporterServicesContainerBuildTest extends TestCase {
 
-	private $callbackContainerFactory;
+	private TestEnvironment $testEnvironment;
 	private $connectionManager;
 	private $servicesFileDir;
 	private $titleFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -49,31 +51,31 @@ class ImporterServicesContainerBuildTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$this->callbackContainerFactory = new CallbackContainerFactory();
 		$this->servicesFileDir = $GLOBALS['smwgServicesFileDir'];
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	/**
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-		array_unshift( $parameters, $service );
+		$this->testEnvironment->registerObject( 'TitleFactory', $this->titleFactory );
+		$this->testEnvironment->registerObject( 'ConnectionManager', $this->connectionManager );
 
-		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
-
-		$containerBuilder->registerObject( 'TitleFactory', $this->titleFactory );
-		$containerBuilder->registerObject( 'ConnectionManager', $this->connectionManager );
-
-		$containerBuilder->registerObject( 'Settings', new Settings( [
+		$this->testEnvironment->registerObject( 'Settings', new Settings( [
 			'smwgImportReqVersion' => 1,
 			'smwgImportFileDirs' => [ 'foo' ]
 		] ) );
 
-		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'importer.php' );
+		$servicesContainer = ImporterServiceFactory::newServicesContainer( $this->servicesFileDir );
 
 		$this->assertInstanceOf(
 			$expected,
-			call_user_func_array( [ $containerBuilder, 'create' ], $parameters )
+			$servicesContainer->create( $service, $servicesContainer, ...$parameters )
 		);
 	}
 
@@ -95,12 +97,6 @@ class ImporterServicesContainerBuildTest extends TestCase {
 		];
 
 		$provider[] = [
-			'ImporterServiceFactory',
-			[],
-			ImporterServiceFactory::class
-		];
-
-		$provider[] = [
 			'XmlContentCreator',
 			[],
 			XmlContentCreator::class
@@ -113,6 +109,15 @@ class ImporterServicesContainerBuildTest extends TestCase {
 		];
 
 		return $provider;
+	}
+
+	public function testNewServicesContainerBuildsImporterServiceFactory() {
+		$servicesContainer = ImporterServiceFactory::newServicesContainer( $this->servicesFileDir );
+
+		$this->assertInstanceOf(
+			ImporterServiceFactory::class,
+			new ImporterServiceFactory( $servicesContainer )
+		);
 	}
 
 }

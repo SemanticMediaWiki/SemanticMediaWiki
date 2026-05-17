@@ -283,10 +283,10 @@ return [
 	},
 
 	'DataValueServiceFactory' => static function ( ServiceContainer $container ): DataValueServiceFactory {
-		// DataValueServiceFactory is constructed from the onoi callback
-		// container (it requires a ContainerBuilder and seeds the
-		// datavalues wiring file via registerFromFile). Resolve it through
-		// ServicesFactory, which owns that container during the migration.
+		// DataValueServiceFactory is built inside ServicesFactory using SMW's
+		// own ServicesContainer, seeded via DataValueServiceFactory::newServicesContainer().
+		// Delegate to ServicesFactory::singleton() so the same instance is
+		// shared across the full service graph.
 		return ServicesFactory::getInstance()->singleton( 'DataValueServiceFactory' );
 	},
 

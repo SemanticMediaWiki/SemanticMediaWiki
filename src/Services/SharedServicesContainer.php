@@ -470,15 +470,25 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'DataValueServiceFactory', static function ( $containerBuilder ): DataValueServiceFactory {
 			$containerBuilder->registerExpectedReturnType( 'DataValueServiceFactory', DataValueServiceFactory::class );
 
-			$containerBuilder->registerFromFile(
-				$containerBuilder->singleton( 'Settings' )->get( 'smwgServicesFileDir' ) . '/' . DataValueServiceFactory::SERVICE_FILE
+			$servicesContainer = DataValueServiceFactory::newServicesContainer(
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgServicesFileDir' )
 			);
 
-			$dataValueServiceFactory = new DataValueServiceFactory(
-				$containerBuilder
+			return new DataValueServiceFactory(
+				$servicesContainer
+			);
+		} );
+
+		$containerBuilder->registerCallback( 'ImporterServiceFactory', static function ( $containerBuilder ): ImporterServiceFactory {
+			$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', ImporterServiceFactory::class );
+
+			$servicesContainer = ImporterServiceFactory::newServicesContainer(
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgServicesFileDir' )
 			);
 
-			return $dataValueServiceFactory;
+			return new ImporterServiceFactory(
+				$servicesContainer
+			);
 		} );
 
 		$containerBuilder->registerCallback( 'QueryDependencyLinksStoreFactory', static function ( $containerBuilder ): QueryDependencyLinksStoreFactory {

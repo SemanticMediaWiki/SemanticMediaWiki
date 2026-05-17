@@ -607,7 +607,6 @@ class ServicesFactory {
 
 		$callbackContainerBuilder->registerCallbackContainer( new SharedServicesContainer() );
 		$callbackContainerBuilder->registerFromFile( $servicesFileDir . '/' . 'mediawiki.php' );
-		$callbackContainerBuilder->registerFromFile( $servicesFileDir . '/' . 'importer.php' );
 		$callbackContainerBuilder->registerFromFile( $servicesFileDir . '/' . 'events.php' );
 		$callbackContainerBuilder->registerFromFile( $servicesFileDir . '/' . 'cache.php' );
 

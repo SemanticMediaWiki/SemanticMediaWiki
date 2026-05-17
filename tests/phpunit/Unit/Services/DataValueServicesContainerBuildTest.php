@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\Services;
 
-use Onoi\CallbackContainer\CallbackContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\ConstraintFactory;
@@ -34,6 +33,7 @@ use SMW\Schema\SchemaFactory;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
 use SMW\Store;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
@@ -45,8 +45,8 @@ use SMW\Store;
  */
 class DataValueServicesContainerBuildTest extends TestCase {
 
+	private TestEnvironment $testEnvironment;
 	private Store $store;
-	private $callbackContainerFactory;
 	private $servicesFileDir;
 	private $mediaWikiNsContentReader;
 	private $propertySpecificationLookup;
@@ -57,6 +57,8 @@ class DataValueServicesContainerBuildTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
@@ -88,35 +90,35 @@ class DataValueServicesContainerBuildTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->callbackContainerFactory = new CallbackContainerFactory();
 		$this->servicesFileDir = $GLOBALS['smwgServicesFileDir'];
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	/**
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-		array_unshift( $parameters, $service );
-
-		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
-
-		$containerBuilder->registerObject( 'Settings', new Settings( [
+		$this->testEnvironment->registerObject( 'Settings', new Settings( [
 			'smwgPropertyInvalidCharacterList' => [ 'Foo' ] ]
 		) );
 
-		$containerBuilder->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
-		$containerBuilder->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
-		$containerBuilder->registerObject( 'Store', $this->store );
-		$containerBuilder->registerObject( 'MediaWikiLogger', $this->logger );
-		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory );
-		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory );
-		$containerBuilder->registerObject( 'EntityCache', $this->entityCache );
+		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
+		$this->testEnvironment->registerObject( 'Store', $this->store );
+		$this->testEnvironment->registerObject( 'MediaWikiLogger', $this->logger );
+		$this->testEnvironment->registerObject( 'SchemaFactory', $this->schemaFactory );
+		$this->testEnvironment->registerObject( 'ConstraintFactory', $this->constraintFactory );
+		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 
-		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'datavalues.php' );
+		$servicesContainer = DataValueServiceFactory::newServicesContainer( $this->servicesFileDir );
 
 		$this->assertInstanceOf(
 			$expected,
-			call_user_func_array( [ $containerBuilder, 'create' ], $parameters )
+			$servicesContainer->create( $service, $servicesContainer, ...$parameters )
 		);
 	}
 
