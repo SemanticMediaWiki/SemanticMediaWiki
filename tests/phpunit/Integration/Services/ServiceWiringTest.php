@@ -5,10 +5,10 @@ namespace SMW\Tests\Integration\Services;
 use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Language\Language;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\MagicWordFactory;
 use MediaWiki\Parser\ParserCache;
 use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWikiIntegrationTestCase;
 use SearchEngineConfig;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
@@ -32,7 +32,6 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
-use SMW\NamespaceExaminer;
 use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
@@ -46,14 +45,14 @@ use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
 use SMW\SetupFile;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
-use SMW\Tests\SMWIntegrationTestCase;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\LBFactory;
+use Wikimedia\Services\ServiceContainer;
 
 /**
  * Verifies that every Bucket-A service registered through
- * `src/Services/ServiceWiring.php` resolves from the global MediaWiki
- * service container under the `SMW.<Name>` key and yields the expected type.
+ * `src/Services/ServiceWiring.php` resolves from SMW's private
+ * ServiceContainer and yields the expected type.
  *
  * @coversNothing
  * @group SMW
@@ -62,64 +61,74 @@ use Wikimedia\Rdbms\LBFactory;
  * @license GPL-2.0-or-later
  * @since 7.0.0
  */
-class ServiceWiringTest extends SMWIntegrationTestCase {
+class ServiceWiringTest extends MediaWikiIntegrationTestCase {
+
+	private ServiceContainer $container;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->container = new ServiceContainer();
+		$this->container->loadWiringFiles( [
+			dirname( __DIR__, 4 ) . '/src/Services/ServiceWiring.php',
+		] );
+	}
 
 	/**
 	 * @dataProvider serviceProvider
 	 */
-	public function testServiceResolvesToExpectedType( string $serviceName, string $expectedType ) {
-		$service = MediaWikiServices::getInstance()->getService( $serviceName );
+	public function testServiceResolvesToExpectedType( string $serviceName, string $expectedType ): void {
+		$service = $this->container->getService( $serviceName );
 
 		$this->assertInstanceOf( $expectedType, $service );
 	}
 
 	public function serviceProvider(): array {
 		return [
-			[ 'SMW.MainConfig', Config::class ],
-			[ 'SMW.SearchEngineConfig', SearchEngineConfig::class ],
-			[ 'SMW.MagicWordFactory', MagicWordFactory::class ],
-			[ 'SMW.PermissionManager', PermissionManager::class ],
-			[ 'SMW.DBLoadBalancerFactory', LBFactory::class ],
-			[ 'SMW.DBLoadBalancer', ILoadBalancer::class ],
-			[ 'SMW.FileRepoFinder', FileRepoFinder::class ],
-			[ 'SMW.JobQueueGroup', JobQueueGroup::class ],
-			[ 'SMW.ContentLanguage', Language::class ],
-			[ 'SMW.ParserCache', ParserCache::class ],
-			[ 'SMW.UserOptionsLookup', UserOptionsLookup::class ],
-			[ 'SMW.InvalidateResultCacheEventListener', InvalidateResultCacheEventListener::class ],
-			[ 'SMW.InvalidateEntityCacheEventListener', InvalidateEntityCacheEventListener::class ],
-			[ 'SMW.InvalidatePropertySpecificationLookupCacheEventListener', InvalidatePropertySpecificationLookupCacheEventListener::class ],
-			[ 'SMW.Settings', Settings::class ],
-			[ 'SMW.ConnectionManager', ConnectionManager::class ],
-			[ 'SMW.SetupFile', SetupFile::class ],
-			[ 'SMW.NamespaceExaminer', NamespaceExaminer::class ],
-			[ 'SMW.MediaWikiNsContentReader', MediaWikiNsContentReader::class ],
-			[ 'SMW.EntityCache', EntityCache::class ],
-			[ 'SMW.JobQueue', JobQueue::class ],
-			[ 'SMW.ManualEntryLogger', ManualEntryLogger::class ],
-			[ 'SMW.HookDispatcher', HookDispatcher::class ],
-			[ 'SMW.RevisionGuard', RevisionGuard::class ],
-			[ 'SMW.InMemoryPoolCache', InMemoryPoolCache::class ],
-			[ 'SMW.PropertyAnnotatorFactory', AnnotatorFactory::class ],
-			[ 'SMW.ConnectionProvider', ConnectionProvider::class ],
-			[ 'SMW.SchemaFactory', SchemaFactory::class ],
-			[ 'SMW.ConstraintFactory', ConstraintFactory::class ],
-			[ 'SMW.ElasticFactory', ElasticFactory::class ],
-			[ 'SMW.QueryCreator', QueryCreator::class ],
-			[ 'SMW.ParamListProcessor', ParamListProcessor::class ],
-			[ 'SMW.FactboxText', FactboxText::class ],
-			[ 'SMW.IteratorFactory', IteratorFactory::class ],
-			[ 'SMW.JobFactory', JobFactory::class ],
-			[ 'SMW.FactboxFactory', FactboxFactory::class ],
-			[ 'SMW.QuerySourceFactory', QuerySourceFactory::class ],
-			[ 'SMW.QueryFactory', QueryFactory::class ],
-			[ 'SMW.DataItemFactory', DataItemFactory::class ],
-			[ 'SMW.DataValueServiceFactory', DataValueServiceFactory::class ],
-			[ 'SMW.QueryDependencyLinksStoreFactory', QueryDependencyLinksStoreFactory::class ],
-			[ 'SMW.PropertySpecificationLookup', SpecificationLookup::class ],
-			[ 'SMW.ProtectionValidator', ProtectionValidator::class ],
-			[ 'SMW.TitlePermissions', TitlePermissions::class ],
-			[ 'SMW.PropertyLabelFinder', PropertyLabelFinder::class ],
+			[ 'MainConfig', Config::class ],
+			[ 'SearchEngineConfig', SearchEngineConfig::class ],
+			[ 'MagicWordFactory', MagicWordFactory::class ],
+			[ 'PermissionManager', PermissionManager::class ],
+			[ 'DBLoadBalancerFactory', LBFactory::class ],
+			[ 'DBLoadBalancer', ILoadBalancer::class ],
+			[ 'FileRepoFinder', FileRepoFinder::class ],
+			[ 'JobQueueGroup', JobQueueGroup::class ],
+			[ 'ContentLanguage', Language::class ],
+			[ 'ParserCache', ParserCache::class ],
+			[ 'UserOptionsLookup', UserOptionsLookup::class ],
+			[ 'InvalidateResultCacheEventListener', InvalidateResultCacheEventListener::class ],
+			[ 'InvalidateEntityCacheEventListener', InvalidateEntityCacheEventListener::class ],
+			[ 'InvalidatePropertySpecificationLookupCacheEventListener', InvalidatePropertySpecificationLookupCacheEventListener::class ],
+			[ 'Settings', Settings::class ],
+			[ 'ConnectionManager', ConnectionManager::class ],
+			[ 'SetupFile', SetupFile::class ],
+			[ 'MediaWikiNsContentReader', MediaWikiNsContentReader::class ],
+			[ 'EntityCache', EntityCache::class ],
+			[ 'JobQueue', JobQueue::class ],
+			[ 'ManualEntryLogger', ManualEntryLogger::class ],
+			[ 'HookDispatcher', HookDispatcher::class ],
+			[ 'RevisionGuard', RevisionGuard::class ],
+			[ 'InMemoryPoolCache', InMemoryPoolCache::class ],
+			[ 'PropertyAnnotatorFactory', AnnotatorFactory::class ],
+			[ 'ConnectionProvider', ConnectionProvider::class ],
+			[ 'SchemaFactory', SchemaFactory::class ],
+			[ 'ConstraintFactory', ConstraintFactory::class ],
+			[ 'ElasticFactory', ElasticFactory::class ],
+			[ 'QueryCreator', QueryCreator::class ],
+			[ 'ParamListProcessor', ParamListProcessor::class ],
+			[ 'FactboxText', FactboxText::class ],
+			[ 'IteratorFactory', IteratorFactory::class ],
+			[ 'JobFactory', JobFactory::class ],
+			[ 'FactboxFactory', FactboxFactory::class ],
+			[ 'QuerySourceFactory', QuerySourceFactory::class ],
+			[ 'QueryFactory', QueryFactory::class ],
+			[ 'DataItemFactory', DataItemFactory::class ],
+			[ 'DataValueServiceFactory', DataValueServiceFactory::class ],
+			[ 'QueryDependencyLinksStoreFactory', QueryDependencyLinksStoreFactory::class ],
+			[ 'PropertySpecificationLookup', SpecificationLookup::class ],
+			[ 'ProtectionValidator', ProtectionValidator::class ],
+			[ 'TitlePermissions', TitlePermissions::class ],
+			[ 'PropertyLabelFinder', PropertyLabelFinder::class ],
 		];
 	}
 

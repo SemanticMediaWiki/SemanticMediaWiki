@@ -33,7 +33,6 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
-use SMW\NamespaceExaminer;
 use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
@@ -48,18 +47,24 @@ use SMW\SetupFile;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\LBFactory;
+use Wikimedia\Services\ServiceContainer;
 
 /**
- * Global MediaWiki service wiring for Semantic MediaWiki.
+ * Wiring file for SMW's private ServiceContainer.
  *
  * Holds the Bucket-A services (no-argument, stateless) of the
- * callback-container migration, registered under the `SMW.<Name>` prefix.
+ * callback-container migration. Keys are plain names (no prefix) matching
+ * the former onoi container keys so that `singleton('Name')` shims are 1:1.
+ *
+ * Each callback receives SMW's private ServiceContainer as its first
+ * argument. Dependency resolution rules:
+ * - Sibling SMW service (defined in this file): `$container->getService('Name')`
+ * - MediaWiki-core service: `MediaWikiServices::getInstance()->getXxx()`
+ * - Bucket-B/C SMW service (factory method): `ServicesFactory::getInstance()->singleton('Name')`
  *
  * Services that take runtime arguments or are constructed fresh per use
  * (Bucket B and Bucket C) are not registered here; those remain factory
- * methods. A dependency on such a service is resolved through
- * `ServicesFactory`, which keeps working during the migration via the onoi
- * container and afterwards via a compatibility shim.
+ * methods on ServicesFactory.
  *
  * @codeCoverageIgnore
  *
@@ -68,73 +73,73 @@ use Wikimedia\Rdbms\LBFactory;
  */
 return [
 
-	'SMW.MainConfig' => static function ( MediaWikiServices $services ): Config {
-		return $services->getMainConfig();
+	'MainConfig' => static function ( ServiceContainer $container ): Config {
+		return MediaWikiServices::getInstance()->getMainConfig();
 	},
 
-	'SMW.SearchEngineConfig' => static function ( MediaWikiServices $services ): SearchEngineConfig {
-		return $services->getSearchEngineConfig();
+	'SearchEngineConfig' => static function ( ServiceContainer $container ): SearchEngineConfig {
+		return MediaWikiServices::getInstance()->getSearchEngineConfig();
 	},
 
-	'SMW.MagicWordFactory' => static function ( MediaWikiServices $services ): MagicWordFactory {
-		return $services->getMagicWordFactory();
+	'MagicWordFactory' => static function ( ServiceContainer $container ): MagicWordFactory {
+		return MediaWikiServices::getInstance()->getMagicWordFactory();
 	},
 
-	'SMW.PermissionManager' => static function ( MediaWikiServices $services ): PermissionManager {
-		return new PermissionManager( $services->getPermissionManager() );
+	'PermissionManager' => static function ( ServiceContainer $container ): PermissionManager {
+		return new PermissionManager( MediaWikiServices::getInstance()->getPermissionManager() );
 	},
 
-	'SMW.DBLoadBalancerFactory' => static function ( MediaWikiServices $services ): LBFactory {
-		return $services->getDBLoadBalancerFactory();
+	'DBLoadBalancerFactory' => static function ( ServiceContainer $container ): LBFactory {
+		return MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 	},
 
-	'SMW.DBLoadBalancer' => static function ( MediaWikiServices $services ): ILoadBalancer {
-		return $services->getDBLoadBalancer();
+	'DBLoadBalancer' => static function ( ServiceContainer $container ): ILoadBalancer {
+		return MediaWikiServices::getInstance()->getDBLoadBalancer();
 	},
 
-	'SMW.FileRepoFinder' => static function ( MediaWikiServices $services ): FileRepoFinder {
-		return new FileRepoFinder( $services->getRepoGroup() );
+	'FileRepoFinder' => static function ( ServiceContainer $container ): FileRepoFinder {
+		return new FileRepoFinder( MediaWikiServices::getInstance()->getRepoGroup() );
 	},
 
-	'SMW.JobQueueGroup' => static function ( MediaWikiServices $services ): JobQueueGroup {
-		return $services->getJobQueueGroup();
+	'JobQueueGroup' => static function ( ServiceContainer $container ): JobQueueGroup {
+		return MediaWikiServices::getInstance()->getJobQueueGroup();
 	},
 
-	'SMW.ContentLanguage' => static function ( MediaWikiServices $services ): Language {
-		return $services->getContentLanguage();
+	'ContentLanguage' => static function ( ServiceContainer $container ): Language {
+		return MediaWikiServices::getInstance()->getContentLanguage();
 	},
 
-	'SMW.ParserCache' => static function ( MediaWikiServices $services ): ParserCache {
-		return $services->getParserCache();
+	'ParserCache' => static function ( ServiceContainer $container ): ParserCache {
+		return MediaWikiServices::getInstance()->getParserCache();
 	},
 
-	'SMW.UserOptionsLookup' => static function ( MediaWikiServices $services ): UserOptionsLookup {
-		return $services->getUserOptionsLookup();
+	'UserOptionsLookup' => static function ( ServiceContainer $container ): UserOptionsLookup {
+		return MediaWikiServices::getInstance()->getUserOptionsLookup();
 	},
 
-	'SMW.InvalidateResultCacheEventListener' => static function ( MediaWikiServices $services ): InvalidateResultCacheEventListener {
+	'InvalidateResultCacheEventListener' => static function ( ServiceContainer $container ): InvalidateResultCacheEventListener {
 		return new InvalidateResultCacheEventListener(
 			ServicesFactory::getInstance()->singleton( 'ResultCache' )
 		);
 	},
 
-	'SMW.InvalidateEntityCacheEventListener' => static function ( MediaWikiServices $services ): InvalidateEntityCacheEventListener {
+	'InvalidateEntityCacheEventListener' => static function ( ServiceContainer $container ): InvalidateEntityCacheEventListener {
 		return new InvalidateEntityCacheEventListener(
-			$services->getService( 'SMW.EntityCache' )
+			$container->getService( 'EntityCache' )
 		);
 	},
 
-	'SMW.InvalidatePropertySpecificationLookupCacheEventListener' => static function ( MediaWikiServices $services ): InvalidatePropertySpecificationLookupCacheEventListener {
+	'InvalidatePropertySpecificationLookupCacheEventListener' => static function ( ServiceContainer $container ): InvalidatePropertySpecificationLookupCacheEventListener {
 		return new InvalidatePropertySpecificationLookupCacheEventListener(
-			$services->getService( 'SMW.PropertySpecificationLookup' )
+			$container->getService( 'PropertySpecificationLookup' )
 		);
 	},
 
-	'SMW.Settings' => static function ( MediaWikiServices $services ): Settings {
+	'Settings' => static function ( ServiceContainer $container ): Settings {
 		$settings = new Settings();
 
 		$settings->setHookDispatcher(
-			$services->getService( 'SMW.HookDispatcher' )
+			$container->getService( 'HookDispatcher' )
 		);
 
 		$settings->loadFromGlobals();
@@ -142,80 +147,65 @@ return [
 		return $settings;
 	},
 
-	'SMW.ConnectionManager' => static function ( MediaWikiServices $services ): ConnectionManager {
+	'ConnectionManager' => static function ( ServiceContainer $container ): ConnectionManager {
 		return new ConnectionManager();
 	},
 
-	'SMW.SetupFile' => static function ( MediaWikiServices $services ): SetupFile {
+	'SetupFile' => static function ( ServiceContainer $container ): SetupFile {
 		return new SetupFile();
 	},
 
-	'SMW.NamespaceExaminer' => static function ( MediaWikiServices $services ): NamespaceExaminer {
-		$settings = $services->getService( 'SMW.Settings' );
-		$namespaceInfo = $services->getNamespaceInfo();
-
-		$namespaceExaminer = new NamespaceExaminer(
-			$settings->get( 'smwgNamespacesWithSemanticLinks' )
-		);
-
-		$namespaceExaminer->setValidNamespaces(
-			$namespaceInfo->getValidNamespaces()
-		);
-
-		return $namespaceExaminer;
-	},
-
-	'SMW.MediaWikiNsContentReader' => static function ( MediaWikiServices $services ): MediaWikiNsContentReader {
+	'MediaWikiNsContentReader' => static function ( ServiceContainer $container ): MediaWikiNsContentReader {
 		$mediaWikiNsContentReader = new MediaWikiNsContentReader();
 
 		$mediaWikiNsContentReader->setRevisionGuard(
-			$services->getService( 'SMW.RevisionGuard' )
+			$container->getService( 'RevisionGuard' )
 		);
 
 		return $mediaWikiNsContentReader;
 	},
 
-	'SMW.EntityCache' => static function ( MediaWikiServices $services ): EntityCache {
+	'EntityCache' => static function ( ServiceContainer $container ): EntityCache {
 		return new EntityCache(
 			ServicesFactory::getInstance()->singleton( 'Cache', $GLOBALS['smwgMainCacheType'] )
 		);
 	},
 
-	'SMW.JobQueue' => static function ( MediaWikiServices $services ): JobQueue {
+	'JobQueue' => static function ( ServiceContainer $container ): JobQueue {
 		return new JobQueue(
-			$services->getJobQueueGroup()
+			MediaWikiServices::getInstance()->getJobQueueGroup()
 		);
 	},
 
-	'SMW.ManualEntryLogger' => static function ( MediaWikiServices $services ): ManualEntryLogger {
+	'ManualEntryLogger' => static function ( ServiceContainer $container ): ManualEntryLogger {
 		return new ManualEntryLogger();
 	},
 
-	'SMW.HookDispatcher' => static function ( MediaWikiServices $services ): HookDispatcher {
+	'HookDispatcher' => static function ( ServiceContainer $container ): HookDispatcher {
 		return new HookDispatcher();
 	},
 
-	'SMW.RevisionGuard' => static function ( MediaWikiServices $services ): RevisionGuard {
+	'RevisionGuard' => static function ( ServiceContainer $container ): RevisionGuard {
 		$revisionGuard = new RevisionGuard(
-			$services->getRevisionLookup()
+			MediaWikiServices::getInstance()->getRevisionLookup()
 		);
 
 		$revisionGuard->setHookDispatcher(
-			$services->getService( 'SMW.HookDispatcher' )
+			$container->getService( 'HookDispatcher' )
 		);
 
 		return $revisionGuard;
 	},
 
-	'SMW.InMemoryPoolCache' => static function ( MediaWikiServices $services ): InMemoryPoolCache {
+	'InMemoryPoolCache' => static function ( ServiceContainer $container ): InMemoryPoolCache {
 		return InMemoryPoolCache::getInstance();
 	},
 
-	'SMW.PropertyAnnotatorFactory' => static function ( MediaWikiServices $services ): AnnotatorFactory {
+	'PropertyAnnotatorFactory' => static function ( ServiceContainer $container ): AnnotatorFactory {
 		return new AnnotatorFactory();
 	},
 
-	'SMW.ConnectionProvider' => static function ( MediaWikiServices $services ): ConnectionProvider {
+	'ConnectionProvider' => static function ( ServiceContainer $container ): ConnectionProvider {
 		$connectionProvider = new ConnectionProvider();
 
 		$connectionProvider->setLogger(
@@ -225,23 +215,23 @@ return [
 		return $connectionProvider;
 	},
 
-	'SMW.SchemaFactory' => static function ( MediaWikiServices $services ): SchemaFactory {
+	'SchemaFactory' => static function ( ServiceContainer $container ): SchemaFactory {
 		return new SchemaFactory();
 	},
 
-	'SMW.ConstraintFactory' => static function ( MediaWikiServices $services ): ConstraintFactory {
+	'ConstraintFactory' => static function ( ServiceContainer $container ): ConstraintFactory {
 		return new ConstraintFactory();
 	},
 
-	'SMW.ElasticFactory' => static function ( MediaWikiServices $services ): ElasticFactory {
+	'ElasticFactory' => static function ( ServiceContainer $container ): ElasticFactory {
 		return new ElasticFactory();
 	},
 
-	'SMW.QueryCreator' => static function ( MediaWikiServices $services ): QueryCreator {
-		$settings = $services->getService( 'SMW.Settings' );
+	'QueryCreator' => static function ( ServiceContainer $container ): QueryCreator {
+		$settings = $container->getService( 'Settings' );
 
 		$queryCreator = new QueryCreator(
-			$services->getService( 'SMW.QueryFactory' ),
+			$container->getService( 'QueryFactory' ),
 			$settings->get( 'smwgQDefaultNamespaces' ),
 			$settings->get( 'smwgQDefaultLimit' )
 		);
@@ -257,42 +247,42 @@ return [
 		return $queryCreator;
 	},
 
-	'SMW.ParamListProcessor' => static function ( MediaWikiServices $services ): ParamListProcessor {
+	'ParamListProcessor' => static function ( ServiceContainer $container ): ParamListProcessor {
 		return new ParamListProcessor();
 	},
 
-	'SMW.FactboxText' => static function ( MediaWikiServices $services ): FactboxText {
+	'FactboxText' => static function ( ServiceContainer $container ): FactboxText {
 		return new FactboxText();
 	},
 
-	'SMW.IteratorFactory' => static function ( MediaWikiServices $services ): IteratorFactory {
+	'IteratorFactory' => static function ( ServiceContainer $container ): IteratorFactory {
 		return new IteratorFactory();
 	},
 
-	'SMW.JobFactory' => static function ( MediaWikiServices $services ): JobFactory {
+	'JobFactory' => static function ( ServiceContainer $container ): JobFactory {
 		return new JobFactory();
 	},
 
-	'SMW.FactboxFactory' => static function ( MediaWikiServices $services ): FactboxFactory {
+	'FactboxFactory' => static function ( ServiceContainer $container ): FactboxFactory {
 		return new FactboxFactory();
 	},
 
-	'SMW.QuerySourceFactory' => static function ( MediaWikiServices $services ): QuerySourceFactory {
+	'QuerySourceFactory' => static function ( ServiceContainer $container ): QuerySourceFactory {
 		return new QuerySourceFactory(
 			ServicesFactory::getInstance()->singleton( 'Store' ),
-			$services->getService( 'SMW.Settings' )->get( 'smwgQuerySources' )
+			$container->getService( 'Settings' )->get( 'smwgQuerySources' )
 		);
 	},
 
-	'SMW.QueryFactory' => static function ( MediaWikiServices $services ): QueryFactory {
+	'QueryFactory' => static function ( ServiceContainer $container ): QueryFactory {
 		return new QueryFactory();
 	},
 
-	'SMW.DataItemFactory' => static function ( MediaWikiServices $services ): DataItemFactory {
+	'DataItemFactory' => static function ( ServiceContainer $container ): DataItemFactory {
 		return new DataItemFactory();
 	},
 
-	'SMW.DataValueServiceFactory' => static function ( MediaWikiServices $services ): DataValueServiceFactory {
+	'DataValueServiceFactory' => static function ( ServiceContainer $container ): DataValueServiceFactory {
 		// DataValueServiceFactory is constructed from the onoi callback
 		// container (it requires a ContainerBuilder and seeds the
 		// datavalues wiring file via registerFromFile). Resolve it through
@@ -300,16 +290,16 @@ return [
 		return ServicesFactory::getInstance()->singleton( 'DataValueServiceFactory' );
 	},
 
-	'SMW.QueryDependencyLinksStoreFactory' => static function ( MediaWikiServices $services ): QueryDependencyLinksStoreFactory {
+	'QueryDependencyLinksStoreFactory' => static function ( ServiceContainer $container ): QueryDependencyLinksStoreFactory {
 		return new QueryDependencyLinksStoreFactory();
 	},
 
-	'SMW.PropertySpecificationLookup' => static function ( MediaWikiServices $services ): SpecificationLookup {
+	'PropertySpecificationLookup' => static function ( ServiceContainer $container ): SpecificationLookup {
 		$contentLanguage = Localizer::getInstance()->getContentLanguage();
 
 		$propertySpecificationLookup = new SpecificationLookup(
 			ServicesFactory::getInstance()->singleton( 'Store' ),
-			$services->getService( 'SMW.EntityCache' )
+			$container->getService( 'EntityCache' )
 		);
 
 		$propertySpecificationLookup->setLanguageCode(
@@ -319,13 +309,13 @@ return [
 		return $propertySpecificationLookup;
 	},
 
-	'SMW.ProtectionValidator' => static function ( MediaWikiServices $services ): ProtectionValidator {
-		$settings = $services->getService( 'SMW.Settings' );
+	'ProtectionValidator' => static function ( ServiceContainer $container ): ProtectionValidator {
+		$settings = $container->getService( 'Settings' );
 
 		$protectionValidator = new ProtectionValidator(
 			ServicesFactory::getInstance()->singleton( 'Store' ),
-			$services->getService( 'SMW.EntityCache' ),
-			$services->getService( 'SMW.PermissionManager' )
+			$container->getService( 'EntityCache' ),
+			$container->getService( 'PermissionManager' )
 		);
 
 		$protectionValidator->setImportPerformers(
@@ -347,14 +337,14 @@ return [
 		return $protectionValidator;
 	},
 
-	'SMW.TitlePermissions' => static function ( MediaWikiServices $services ): TitlePermissions {
+	'TitlePermissions' => static function ( ServiceContainer $container ): TitlePermissions {
 		return new TitlePermissions(
-			$services->getService( 'SMW.ProtectionValidator' ),
-			$services->getService( 'SMW.PermissionManager' )
+			$container->getService( 'ProtectionValidator' ),
+			$container->getService( 'PermissionManager' )
 		);
 	},
 
-	'SMW.PropertyLabelFinder' => static function ( MediaWikiServices $services ): PropertyLabelFinder {
+	'PropertyLabelFinder' => static function ( ServiceContainer $container ): PropertyLabelFinder {
 		$lang = Localizer::getInstance()->getLang();
 
 		return new PropertyLabelFinder(
