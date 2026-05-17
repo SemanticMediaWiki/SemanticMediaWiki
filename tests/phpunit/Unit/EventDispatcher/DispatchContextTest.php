@@ -81,7 +81,7 @@ class DispatchContextTest extends TestCase {
 	public function testUnknownKeyThrowsException() {
 		$instance = new DispatchContext();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->get( 'FOO' );
 	}
 

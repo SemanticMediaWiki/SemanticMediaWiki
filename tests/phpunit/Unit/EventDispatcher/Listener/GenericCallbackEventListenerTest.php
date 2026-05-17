@@ -32,7 +32,7 @@ class GenericCallbackEventListenerTest extends TestCase {
 	public function testTryRegisterNonCallbackThrowsException() {
 		$instance = new GenericCallbackEventListener();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->registerCallback( 'foo' );
 	}
 

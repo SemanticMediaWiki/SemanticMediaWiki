@@ -55,7 +55,7 @@ class GenericEventListenerCollectionTest extends TestCase {
 
 		$instance = new GenericEventListenerCollection();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->registerListener( new \stdClass, $eventListener );
 	}
 
@@ -82,7 +82,7 @@ class GenericEventListenerCollectionTest extends TestCase {
 
 		$instance = new GenericEventListenerCollection();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->registerCallback( new \stdClass, $callback );
 	}
 
@@ -93,7 +93,7 @@ class GenericEventListenerCollectionTest extends TestCase {
 
 		$instance = new GenericEventListenerCollection();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->registerCallback( 'foo', new \stdClass );
 	}
 

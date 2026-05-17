@@ -43,7 +43,7 @@ class GenericEventDispatcherTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->addListener( new stdClass, $eventListener );
 	}
 
@@ -237,7 +237,7 @@ class GenericEventDispatcherTest extends TestCase {
 		$instance = new GenericEventDispatcher();
 		$instance->throwOnMissingEvent( true );
 
-		$this->setExpectedException( EventNotDispatchableException::class );
+		$this->expectException( EventNotDispatchableException::class );
 		$instance->dispatch( 'foo' );
 	}
 
@@ -252,7 +252,7 @@ class GenericEventDispatcherTest extends TestCase {
 			->method( 'getCollection' )
 			->willReturn( false );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->addListenerCollection( $eventListenerCollection );
 	}
 
