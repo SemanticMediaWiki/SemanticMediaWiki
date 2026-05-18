@@ -65,6 +65,24 @@ class purgeEntityCache extends Maintenance {
 	/**
 	 * @since 3.1
 	 *
+	 * @param Store $store
+	 */
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param EntityCache $entityCache
+	 */
+	public function setEntityCache( EntityCache $entityCache ) {
+		$this->entityCache = $entityCache;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
@@ -95,8 +113,8 @@ class purgeEntityCache extends Maintenance {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$this->store = $applicationFactory->getStore();
-		$this->entityCache = $applicationFactory->getEntityCache();
+		$this->store ??= $applicationFactory->getStore();
+		$this->entityCache ??= $applicationFactory->getEntityCache();
 
 		$this->reportMessage(
 			"\n" . $cliMsgFormatter->head()
