@@ -54,8 +54,6 @@ class ElasticStoreTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'SetupFile', $this->setupFile );
-
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->spyMessageReporter = $utilityFactory->newSpyMessageReporter();
