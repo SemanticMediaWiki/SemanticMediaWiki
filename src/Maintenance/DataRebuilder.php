@@ -9,6 +9,7 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DataItems\WikiPage;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -73,9 +74,10 @@ class DataRebuilder {
 	public function __construct(
 		private readonly Store $store,
 		private readonly TitleFactory $titleFactory,
+		private readonly JobFactory $jobFactory,
 	) {
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-		$this->distinctEntityDataRebuilder = new DistinctEntityDataRebuilder( $this->store, $this->titleFactory );
+		$this->distinctEntityDataRebuilder = new DistinctEntityDataRebuilder( $this->store, $this->titleFactory, $this->jobFactory );
 		$this->exceptionFileLogger = new ExceptionFileLogger( 'rebuilddata' );
 		$this->cliMsgFormatter = new CliMsgFormatter();
 	}
@@ -557,12 +559,11 @@ class DataRebuilder {
 			$this->cliMsgFormatter->section( 'Disposal (outdated)', 3, '-', true ) . "\n"
 		);
 
-		$applicationFactory = ApplicationFactory::getInstance();
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$outdatedDisposer = new OutdatedDisposer(
-			$applicationFactory->newJobFactory()->newEntityIdDisposerJob( $title ),
-			$applicationFactory->getIteratorFactory()
+			$this->jobFactory->newEntityIdDisposerJob( $title ),
+			ApplicationFactory::getInstance()->getIteratorFactory()
 		);
 
 		$outdatedDisposer->setMessageReporter( $this->reporter );

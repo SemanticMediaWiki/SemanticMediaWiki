@@ -7,9 +7,11 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\WikiPage;
+use SMW\Iterators\ResultIterator;
 use SMW\Maintenance\DataRebuilder;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
@@ -17,7 +19,6 @@ use SMW\Query\QueryResult;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
@@ -37,7 +38,7 @@ class DataRebuilderTest extends TestCase {
 
 	protected $obLevel;
 	private $connectionManager;
-	private $testEnvironment;
+	private JobFactory $jobFactory;
 
 	// The Store writes to the output buffer during drop/setupStore, to avoid
 	// inappropriate buffer settings which can cause interference during unit
@@ -47,17 +48,46 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobFactory = $this->getMockBuilder( JobFactory::class )
+		$resultIterator = $this->getMockBuilder( ResultIterator::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'newUpdateJob' ] )
 			->getMock();
 
-		$jobFactory->expects( $this->any() )
+		$resultIterator->expects( $this->any() )
+			->method( 'count' )
+			->willReturn( 0 );
+
+		$entityIdDisposerJob = $this->getMockBuilder( EntityIdDisposerJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$entityIdDisposerJob->expects( $this->any() )
+			->method( 'newOutdatedEntitiesResultIterator' )
+			->willReturn( $resultIterator );
+
+		$entityIdDisposerJob->expects( $this->any() )
+			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
+			->willReturn( $resultIterator );
+
+		$entityIdDisposerJob->expects( $this->any() )
+			->method( 'newOutdatedQueryLinksResultIterator' )
+			->willReturn( $resultIterator );
+
+		$entityIdDisposerJob->expects( $this->any() )
+			->method( 'newUnassignedQueryLinksResultIterator' )
+			->willReturn( $resultIterator );
+
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'newUpdateJob', 'newEntityIdDisposerJob' ] )
+			->getMock();
+
+		$this->jobFactory->expects( $this->any() )
 			->method( 'newUpdateJob' )
 			->willReturn( $updateJob );
 
-		$this->testEnvironment = new TestEnvironment();
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
+		$this->jobFactory->expects( $this->any() )
+			->method( 'newEntityIdDisposerJob' )
+			->willReturn( $entityIdDisposerJob );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -82,7 +112,6 @@ class DataRebuilderTest extends TestCase {
 
 	protected function tearDown(): void {
 		parent::tearDown();
-		$this->testEnvironment->tearDown();
 
 		while ( ob_get_level() > $this->obLevel ) {
 			ob_end_clean();
@@ -100,7 +129,7 @@ class DataRebuilderTest extends TestCase {
 
 		$this->assertInstanceOf(
 			DataRebuilder::class,
-			new DataRebuilder( $store, $titleFactory )
+			new DataRebuilder( $store, $titleFactory, $this->jobFactory )
 		);
 	}
 
@@ -139,7 +168,7 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleFactory );
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
 
 		// Needs an end otherwise phpunit is caught up in an infinite loop
 		$instance->setOptions( new Options( [
@@ -189,7 +218,7 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleFactory );
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
 
 		$instance->setOptions( new Options( [
 			'e' => 1,
@@ -235,7 +264,7 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleFactory );
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
 
 		$instance->setOptions( new Options( [
 			's' => 2,
@@ -284,7 +313,7 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleFactory );
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
 
 		$instance->setOptions( new Options( [
 			'query' => '[[Category:Foo]]'
@@ -323,7 +352,7 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleFactory );
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
 
 		$instance->setOptions( new Options( [
 			'categories' => true
@@ -364,7 +393,7 @@ class DataRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleFactory );
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
 
 		$instance->setOptions( new Options( [
 			'p' => true
@@ -395,7 +424,7 @@ class DataRebuilderTest extends TestCase {
 				return $mwTitleFactory->newFromText( $title );
 			} );
 
-		$instance = new DataRebuilder( $store, $titleFactory );
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
 
 		$instance->setOptions( new Options( [
 			'page'  => 'Main page|Some other page|Help:Main page|Main page'
