@@ -8,6 +8,7 @@ use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
+use SMW\Store;
 
 /**
  * This datavalue implements special processing suitable for defining the list
@@ -24,6 +25,15 @@ class PropertyListValue extends DataValue {
 	 * @var array of Property
 	 */
 	protected $m_diProperties;
+
+	private ?Store $store = null;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setStore( Store $store ): void {
+		$this->store = $store;
+	}
 
 	protected function parseUserValue( $value ): void {
 		$this->m_diProperties = [];
@@ -89,8 +99,10 @@ class PropertyListValue extends DataValue {
 			}
 
 			if ( $property instanceof Property ) {
-				 // Find a possible redirect
-				$this->m_diProperties[] = $property->getRedirectTarget();
+				// Find a possible redirect
+				$this->m_diProperties[] = $this->store !== null
+					? $this->store->getRedirectTarget( $property )
+					: $property->getRedirectTarget();
 			}
 		}
 

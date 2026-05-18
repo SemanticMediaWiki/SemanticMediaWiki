@@ -148,13 +148,22 @@ abstract class AbstractMultiValue extends DataValue {
 			return [];
 		}
 
-		$dataItem = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFieldListBy( $property );
+		if ( $this->dataValueServiceFactory !== null ) {
+			$dataItem = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getFieldListBy( $property );
+		} else {
+			$dataItem = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFieldListBy( $property );
+		}
 
 		if ( !$dataItem ) {
 			return [];
 		}
 
 		$propertyListValue = new PropertyListValue( '__pls' );
+
+		if ( $this->dataValueServiceFactory !== null ) {
+			$propertyListValue->setStore( $this->dataValueServiceFactory->getStore() );
+		}
+
 		$propertyListValue->setDataItem( $dataItem );
 
 		if ( !$propertyListValue->isValid() ) {
