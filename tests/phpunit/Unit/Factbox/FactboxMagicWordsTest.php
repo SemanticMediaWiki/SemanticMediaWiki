@@ -33,12 +33,6 @@ class FactboxMagicWordsTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$this->displayTitleFinder = $this->getMockBuilder( DisplayTitleFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
