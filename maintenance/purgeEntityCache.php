@@ -63,18 +63,14 @@ class purgeEntityCache extends Maintenance {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param Store $store
+	 * @since 7.0.0
 	 */
 	public function setStore( Store $store ) {
 		$this->store = $store;
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param EntityCache $entityCache
+	 * @since 7.0.0
 	 */
 	public function setEntityCache( EntityCache $entityCache ) {
 		$this->entityCache = $entityCache;

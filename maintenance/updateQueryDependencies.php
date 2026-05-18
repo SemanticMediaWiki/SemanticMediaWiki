@@ -25,15 +25,9 @@ require_once $basePath . '/maintenance/Maintenance.php';
  */
 class updateQueryDependencies extends Maintenance {
 
-	/**
-	 * @var Store|null
-	 */
-	private $store;
+	private ?Store $store = null;
 
-	/**
-	 * @var JobFactory|null
-	 */
-	private $jobFactory;
+	private ?JobFactory $jobFactory = null;
 
 	/**
 	 * @var MessageReporter
@@ -49,18 +43,14 @@ class updateQueryDependencies extends Maintenance {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param Store $store
+	 * @since 7.0.0
 	 */
 	public function setStore( Store $store ) {
 		$this->store = $store;
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param JobFactory $jobFactory
+	 * @since 7.0.0
 	 */
 	public function setJobFactory( JobFactory $jobFactory ) {
 		$this->jobFactory = $jobFactory;
