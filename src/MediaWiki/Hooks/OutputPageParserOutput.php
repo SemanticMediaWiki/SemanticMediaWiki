@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\IndicatorRegistry;
@@ -40,6 +41,7 @@ class OutputPageParserOutput implements HookListener {
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly PermissionExaminer $permissionExaminer,
 		private readonly FactboxText $factboxText,
+		private readonly FactboxFactory $factboxFactory,
 	) {
 	}
 
@@ -118,9 +120,7 @@ class OutputPageParserOutput implements HookListener {
 			return '';
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$cachedFactbox = $applicationFactory->singleton( 'FactboxFactory' )->newCachedFactbox();
+		$cachedFactbox = $this->factboxFactory->newCachedFactbox();
 
 		$cachedFactbox->prepare(
 			$outputPage,

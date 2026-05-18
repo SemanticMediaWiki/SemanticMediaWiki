@@ -11,14 +11,12 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
-use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -41,6 +39,7 @@ class OutputPageParserOutputTest extends TestCase {
 	private $namespaceExaminer;
 	private $permissionExaminer;
 	private FactboxText $factboxText;
+	private FactboxFactory $factboxFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -72,6 +71,10 @@ class OutputPageParserOutputTest extends TestCase {
 			->getMock();
 
 		$this->factboxText = $this->applicationFactory->getFactboxText();
+
+		$this->factboxFactory = $this->getMockBuilder( FactboxFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -82,7 +85,7 @@ class OutputPageParserOutputTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			OutputPageParserOutput::class,
-			new OutputPageParserOutput( $this->namespaceExaminer, $this->permissionExaminer, $this->factboxText )
+			new OutputPageParserOutput( $this->namespaceExaminer, $this->permissionExaminer, $this->factboxText, $this->factboxFactory )
 		);
 	}
 
@@ -94,39 +97,21 @@ class OutputPageParserOutputTest extends TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( $parameters['smwgNamespacesWithSemanticLinks'] );
 
-		$entityCache = new EntityCache(
-			$this->applicationFactory->newCacheFactory()->newFixedInMemoryCache()
-		);
-
-		$this->testEnvironment->registerObject( 'EntityCache', $entityCache );
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$outputPage   = $parameters['outputPage'];
 		$parserOutput = $parameters['parserOutput'];
+
+		$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
+
+		$this->factboxFactory->expects( $this->any() )
+			->method( 'newCachedFactbox' )
+			->willReturn( $cachedFactbox );
 
 		$instance = new OutputPageParserOutput(
 			$this->namespaceExaminer,
 			$this->permissionExaminer,
-			$this->factboxText
+			$this->factboxText,
+			$this->factboxFactory
 		);
-
-		$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
-
-		$factboxFactory = $this->getMockBuilder( FactboxFactory::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'newCachedFactbox' ] )
-			->getMock();
-
-		$factboxFactory->expects( $this->any() )
-			->method( 'newCachedFactbox' )
-			->willReturn( $cachedFactbox );
-
-		$this->testEnvironment->registerObject( 'FactboxFactory', $factboxFactory );
 
 		$this->assertEmpty(
 			$cachedFactbox->retrieveContent( $outputPage )
