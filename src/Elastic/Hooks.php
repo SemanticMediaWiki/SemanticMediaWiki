@@ -4,8 +4,8 @@ namespace SMW\Elastic;
 
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
+use SMW\EntityCache;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
 /**
@@ -21,7 +21,10 @@ class Hooks {
 	/**
 	 * @since 3.2
 	 */
-	public function __construct( private readonly ElasticFactory $elasticFactory ) {
+	public function __construct(
+		private readonly ElasticFactory $elasticFactory,
+		private readonly EntityCache $entityCache,
+	) {
 	}
 
 	/**
@@ -76,12 +79,11 @@ class Hooks {
 			return true;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
 		$options = $connection->getConfig();
 
 		$replicationEntityExaminerDeferrableIndicatorProvider = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$store,
-			$applicationFactory->getEntityCache(),
+			$this->entityCache,
 			$this->elasticFactory->newReplicationCheck( $store )
 		);
 

@@ -60,7 +60,7 @@ class ElasticFactory {
 	 * @since 3.2
 	 */
 	public function newHooks(): Hooks {
-		return new Hooks( $this );
+		return new Hooks( $this, ApplicationFactory::getInstance()->getEntityCache() );
 	}
 
 	/**

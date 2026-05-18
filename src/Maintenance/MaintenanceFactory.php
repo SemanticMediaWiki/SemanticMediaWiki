@@ -49,10 +49,12 @@ class MaintenanceFactory {
 	 */
 	public function newDataRebuilder( Store $store, $reporterCallback = null ): DataRebuilder {
 		$messageReporter = $this->newMessageReporter( $reporterCallback );
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		$dataRebuilder = new DataRebuilder(
 			$store,
-			ApplicationFactory::getInstance()->newTitleFactory()
+			$applicationFactory->newTitleFactory(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$dataRebuilder->setMessageReporter(

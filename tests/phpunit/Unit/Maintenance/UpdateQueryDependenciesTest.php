@@ -4,14 +4,12 @@ namespace SMW\Tests\Unit\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
-use SMW\EntityCache;
 use SMW\Maintenance\updateQueryDependencies;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
@@ -28,15 +26,11 @@ class UpdateQueryDependenciesTest extends TestCase {
 
 	use MockSelectQueryBuilderTrait;
 
-	private $testEnvironment;
 	private $messageReporter;
 	private $store;
 	private $connection;
-	private $entityCache;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
-
 		$this->messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,17 +42,9 @@ class UpdateQueryDependenciesTest extends TestCase {
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
 	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -81,8 +67,6 @@ class UpdateQueryDependenciesTest extends TestCase {
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
 			->willReturn( $updateJob );
-
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
@@ -109,6 +93,9 @@ class UpdateQueryDependenciesTest extends TestCase {
 			->willReturn( $this->connection );
 
 		$instance = new updateQueryDependencies();
+
+		$instance->setStore( $this->store );
+		$instance->setJobFactory( $jobFactory );
 
 		$instance->setMessageReporter(
 			$this->messageReporter

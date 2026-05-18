@@ -14,7 +14,6 @@ use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\EntityCache;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Hooks
@@ -27,40 +26,32 @@ use SMW\Tests\TestEnvironment;
  */
 class HooksTest extends TestCase {
 
-	private $testEnvironment;
 	private $elasticFactory;
+	private EntityCache $entityCache;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$this->elasticFactory = $this->getMockBuilder( ElasticFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$entityCache = $this->getMockBuilder( EntityCache::class )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'EntityCache', $entityCache );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			Hooks::class,
-			new Hooks( $this->elasticFactory )
+			new Hooks( $this->elasticFactory, $this->entityCache )
 		);
 	}
 
 	public function testGetHandlers() {
 		$instance = new Hooks(
-			$this->elasticFactory
+			$this->elasticFactory,
+			$this->entityCache
 		);
 
 		$this->assertIsArray(
@@ -103,7 +94,8 @@ class HooksTest extends TestCase {
 			->willReturn( $connection );
 
 		$instance = new Hooks(
-			$this->elasticFactory
+			$this->elasticFactory,
+			$this->entityCache
 		);
 
 		$instance->onRegisterTaskHandlers( $taskHandlerRegistry, $store, $outputFormatter, $user );
@@ -141,7 +133,8 @@ class HooksTest extends TestCase {
 			->willReturn( $connection );
 
 		$instance = new Hooks(
-			$this->elasticFactory
+			$this->elasticFactory,
+			$this->entityCache
 		);
 
 		$instance->onRegisterEntityExaminerDeferrableIndicatorProviders( $store, $indicatorProviders );

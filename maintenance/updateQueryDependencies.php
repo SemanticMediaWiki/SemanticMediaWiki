@@ -5,9 +5,11 @@ namespace SMW\Maintenance;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\Property;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -23,6 +25,10 @@ require_once $basePath . '/maintenance/Maintenance.php';
  */
 class updateQueryDependencies extends Maintenance {
 
+	private ?Store $store = null;
+
+	private ?JobFactory $jobFactory = null;
+
 	/**
 	 * @var MessageReporter
 	 */
@@ -34,6 +40,20 @@ class updateQueryDependencies extends Maintenance {
 	public function __construct() {
 		$this->mDescription = 'Update queries and query dependencies.';
 		parent::__construct();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setJobFactory( JobFactory $jobFactory ) {
+		$this->jobFactory = $jobFactory;
 	}
 
 	/**
@@ -115,12 +135,12 @@ class updateQueryDependencies extends Maintenance {
 
 	private function runUpdate() {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore( SQLStore::class );
+		$this->store ??= $applicationFactory->getStore( SQLStore::class );
+		$this->jobFactory ??= $applicationFactory->newJobFactory();
 
-		$jobFactory = $applicationFactory->newJobFactory();
-		$connection = $store->getConnection( 'mw.db' );
+		$connection = $this->store->getConnection( 'mw.db' );
 
-		$tableName = $store->getPropertyTableInfoFetcher()->findTableIdForProperty(
+		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
 			new Property( '_ASK' )
 		);
 
@@ -158,7 +178,7 @@ class updateQueryDependencies extends Maintenance {
 				"\r" . sprintf( "%-55s%s", "   ... update ...", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
 			);
 
-			$updateJob = $jobFactory->newUpdateJob(
+			$updateJob = $this->jobFactory->newUpdateJob(
 				$titleFactory->makeTitleSafe( $row->smw_namespace, $row->smw_title ),
 				[
 					'origin' => 'updateQueryDependencies.php'

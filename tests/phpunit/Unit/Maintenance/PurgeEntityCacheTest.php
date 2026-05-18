@@ -8,7 +8,6 @@ use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Maintenance\purgeEntityCache;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 use Wikimedia\Rdbms\Database;
@@ -26,26 +25,19 @@ class PurgeEntityCacheTest extends TestCase {
 
 	use MockSelectQueryBuilderTrait;
 
-	private $testEnvironment;
 	private $messageReporter;
 	private $store;
 	private $connection;
 	private $entityCache;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
-
 		$this->messageReporter = $this->createMock( MessageReporter::class );
 		$this->store = $this->createMock( SQLStore::class );
 		$this->connection = $this->createMock( Database::class );
 		$this->entityCache = $this->createMock( EntityCache::class );
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
 	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -86,6 +78,9 @@ class PurgeEntityCacheTest extends TestCase {
 			->with( $subject );
 
 		$instance = new purgeEntityCache();
+
+		$instance->setStore( $this->store );
+		$instance->setEntityCache( $this->entityCache );
 
 		$instance->setMessageReporter(
 			$this->messageReporter
