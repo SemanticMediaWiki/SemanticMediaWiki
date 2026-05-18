@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
-use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -31,12 +30,6 @@ class ReferenceValueFormatterTest extends TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
-
-		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 	}
 
 	protected function tearDown(): void {
