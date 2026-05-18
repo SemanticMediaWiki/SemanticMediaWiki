@@ -812,7 +812,8 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$linksUpdateConstructed = new LinksUpdateComplete(
-			$applicationFactory->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory
 		);
 
 		$linksUpdateConstructed->setLogger(
