@@ -24,8 +24,6 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Services\DataValueServiceFactory;
-use SMW\Store;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers SMW\Query\DescriptionFactory
@@ -38,22 +36,10 @@ use SMW\Tests\TestEnvironment;
  */
 class DescriptionFactoryTest extends TestCase {
 
-	private $testEnvironment;
 	private $dataItemFactory;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {

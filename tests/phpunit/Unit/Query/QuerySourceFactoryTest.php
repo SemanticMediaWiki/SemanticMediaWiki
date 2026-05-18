@@ -10,7 +10,6 @@ use SMW\SPARQLStore\SPARQLStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\StoreAware;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers SMW\Query\QuerySourceFactory
@@ -23,22 +22,12 @@ use SMW\Tests\TestEnvironment;
  */
 class QuerySourceFactoryTest extends TestCase {
 
-	private $testEnvironment;
 	private Store $store;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
-
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
