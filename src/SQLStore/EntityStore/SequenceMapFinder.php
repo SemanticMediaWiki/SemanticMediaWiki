@@ -75,7 +75,7 @@ class SequenceMapFinder {
 		$omap = [];
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
-		$map = $cache->fetch( $sid );
+		$map = $cache->fetch( (string)$sid );
 		if ( $map !== false ) {
 			return $map;
 		}
@@ -101,7 +101,7 @@ class SequenceMapFinder {
 			$map = HmacSerializer::uncompress( $omap );
 		}
 
-		$cache->save( $sid, $map );
+		$cache->save( (string)$sid, $map );
 
 		return $map;
 	}
@@ -147,13 +147,13 @@ class SequenceMapFinder {
 			// Removes those that found a matching pair
 			unset( $inverted_ids[$id] );
 
-			$cache->save( $id, $map );
+			$cache->save( (string)$id, $map );
 		}
 
 		// For all leftovers, store them as empty to avoid
 		// running individual SELECTS
 		foreach ( $inverted_ids as $id => $pos ) {
-			$cache->save( $id, [] );
+			$cache->save( (string)$id, [] );
 		}
 
 		$this->preloaded[$hash] = true;

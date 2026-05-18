@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Query\DescriptionFactory;
@@ -195,9 +196,10 @@ class OrderCondition {
 		} else { // Try to extend query.
 			$sortprop = DataValueFactory::getInstance()->newPropertyValueByLabel( $label );
 
-			if ( $sortprop->isValid() ) {
+			$property = $sortprop->getDataItem();
+			if ( $sortprop->isValid() && $property instanceof Property ) {
 				$description = $this->descriptionFactory->newSomeProperty(
-					$sortprop->getDataItem(),
+					$property,
 					$this->descriptionFactory->newThingDescription()
 				);
 			}
@@ -206,8 +208,12 @@ class OrderCondition {
 		return $description;
 	}
 
-	private function extendConditions( ConditionBuilder $conditionBuilder, ?QuerySegment $querySegment, array $extraDescriptions ): void {
-		if ( $extraDescriptions === [] ) {
+	private function extendConditions(
+		ConditionBuilder $conditionBuilder,
+		?QuerySegment $querySegment,
+		array $extraDescriptions
+	): void {
+		if ( $extraDescriptions === [] || $querySegment === null ) {
 			return;
 		}
 

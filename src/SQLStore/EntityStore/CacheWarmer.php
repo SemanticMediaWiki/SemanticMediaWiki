@@ -180,7 +180,7 @@ class CacheWarmer {
 		$cache = $this->idCacheManager->get( 'warmup.byid' );
 
 		foreach ( $idList as $k => $id ) {
-			if ( $cache->contains( $id ) ) {
+			if ( $cache->contains( (string)$id ) ) {
 				unset( $idList[$k] );
 			}
 		}
@@ -216,7 +216,7 @@ class CacheWarmer {
 				$sortkey
 			);
 
-			$cache->save( $row->smw_id, true );
+			$cache->save( (string)$row->smw_id, true );
 		}
 	}
 

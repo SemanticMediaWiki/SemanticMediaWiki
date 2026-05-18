@@ -61,7 +61,7 @@ class AuxiliaryFields {
 				$map = HmacSerializer::uncompress( $countmap );
 			}
 
-			$cache->save( $row->smw_id, $map );
+			$cache->save( (string)$row->smw_id, $map );
 			$countMaps[$hashMap[$row->smw_hash]] = [ $row->smw_id => $map ];
 		}
 
@@ -110,7 +110,7 @@ class AuxiliaryFields {
 			->caller( __METHOD__ )
 			->execute();
 
-		$cache->save( $sid, $countmap );
+		$cache->save( (string)$sid, $countmap );
 	}
 
 	private function fetchCountMap( array $hashes ) {

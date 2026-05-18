@@ -25,7 +25,8 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 			return false;
 		}
 
-		if ( $description->getProperty() !== null && $this->isExemptedProperty( $description->getProperty() ) ) {
+		$property = $description->getProperty();
+		if ( $property !== null && $this->isExemptedProperty( $property ) ) {
 			return false;
 		}
 

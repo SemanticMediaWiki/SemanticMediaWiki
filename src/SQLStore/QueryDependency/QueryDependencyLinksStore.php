@@ -314,6 +314,10 @@ class QueryDependencyLinksStore {
 		$subject = $queryResult->getQuery()->getContextPage();
 		$hash = $queryResult->getQuery()->getQueryId();
 
+		if ( $subject === null ) {
+			return null;
+		}
+
 		$sid = $this->dependencyLinksTableUpdater->getId(
 			$subject,
 			$hash
@@ -391,6 +395,10 @@ class QueryDependencyLinksStore {
 				'[QueryDependency] no update: {origin} (no dependency list available)',
 				$context
 			);
+		}
+
+		if ( !$subject instanceof WikiPage ) {
+			return;
 		}
 
 		// SID < 0 means the storage update/process has not been finalized

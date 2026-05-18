@@ -80,8 +80,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param int $sid
-	 * @param int $pid
+	 * @param int|string $sid
+	 * @param int|string $pid
 	 *
 	 * @return bool
 	 */
@@ -100,8 +100,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param int $sid
-	 * @param int $pid
+	 * @param int|string $sid
+	 * @param int|string $pid
 	 *
 	 * @return false|string
 	 */
@@ -124,8 +124,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param int $sid
-	 * @param int $pid
+	 * @param int|string $sid
+	 * @param int|string $pid
 	 * @param string $text
 	 */
 	public function update( $sid, $pid, $text ): void {
@@ -149,8 +149,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param int $sid
-	 * @param int $pid
+	 * @param int|string $sid
+	 * @param int|string $pid
 	 */
 	public function insert( $sid, $pid ): void {
 		$this->connection->newInsertQueryBuilder()
@@ -167,8 +167,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param int $sid
-	 * @param int $pid
+	 * @param int|string $sid
+	 * @param int|string $pid
 	 */
 	public function delete( $sid, $pid ): void {
 		$this->connection->newDeleteQueryBuilder()

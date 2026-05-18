@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Connection;
 use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
+use Wikimedia\Rdbms\Blob;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\IDatabase;
@@ -12,6 +13,7 @@ use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\RawSQLValue;
 use Wikimedia\Rdbms\ReplaceQueryBuilder;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\Rdbms\UpdateQueryBuilder;
@@ -182,11 +184,12 @@ class Database {
 	 * @since 1.9
 	 *
 	 * @param string $tableName
+	 * @param string $format
 	 *
 	 * @return string
 	 */
-	public function tableName( $tableName ) {
-		return $this->connRef->getConnection( 'read' )->tableName( $tableName );
+	public function tableName( $tableName, $format = 'quoted' ) {
+		return $this->connRef->getConnection( 'read' )->tableName( $tableName, $format );
 	}
 
 	/**
@@ -229,9 +232,10 @@ class Database {
 	 *
 	 * @since 1.9
 	 *
-	 * @param string $value
-	 *
+	 * @param ?scalar|RawSQLValue|Blob $value
+	 * @param-taint $value escapes_sql
 	 * @return string
+	 * @return-taint none
 	 */
 	public function addQuotes( $value ) {
 		return $this->connRef->getConnection( 'read' )->addQuotes( $value );

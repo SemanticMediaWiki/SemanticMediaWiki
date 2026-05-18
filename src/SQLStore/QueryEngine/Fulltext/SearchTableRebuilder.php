@@ -208,7 +208,7 @@ class SearchTableRebuilder {
 		}
 
 		$this->reportMessage(
-			$cliMsgFormatter->secondCol( count( $propertyTables ) )
+			$cliMsgFormatter->secondCol( (string)count( $propertyTables ) )
 		);
 
 		foreach ( $propertyTables as $propertyTable ) {

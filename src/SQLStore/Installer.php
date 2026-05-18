@@ -6,6 +6,7 @@ use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
+use RuntimeException;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
@@ -344,6 +345,9 @@ class Installer implements MessageReporter {
 		);
 	}
 
+	/**
+	 * @throws RuntimeException
+	 */
 	private function addSupplementJobs() {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
@@ -360,6 +364,12 @@ class Installer implements MessageReporter {
 		);
 
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SMW\SQLStore\Installer' );
+
+		if ( $title === null ) {
+			throw new RuntimeException(
+				'Failed to create SMW\SQLStore\Installer title.'
+			);
+		}
 
 		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
 			$title,

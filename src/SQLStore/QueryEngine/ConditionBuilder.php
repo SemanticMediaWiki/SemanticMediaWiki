@@ -186,10 +186,13 @@ class ConditionBuilder {
 			$rootSegment
 		);
 
-		// compile query, build query "plan"
-		$qid = $this->buildFromDescription(
-			$query->getDescription()
-		);
+		$qid = -1;
+
+		$description = $query->getDescription();
+		if ( $description !== null ) {
+			// compile query, build query "plan"
+			$qid = $this->buildFromDescription( $description );
+		}
 
 		// no valid/supported condition; ensure that at least only proper pages
 		// are delivered

@@ -129,7 +129,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DataItem $type
+	 * @param int $type
 	 *
 	 * @return bool
 	 */
@@ -261,7 +261,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $value
+	 * @param int|string $value
 	 *
 	 * @return string
 	 */

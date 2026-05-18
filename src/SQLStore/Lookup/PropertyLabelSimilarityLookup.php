@@ -196,7 +196,8 @@ class PropertyLabelSimilarityLookup {
 		);
 
 		foreach ( $definedBy as $dataItem ) {
-			if ( $dataItem->equals( $second->getCanonicalDiWikiPage() ) ) {
+			$wikiPage = $second->getCanonicalDiWikiPage();
+			if ( $wikiPage !== null && $dataItem->equals( $wikiPage ) ) {
 				return true;
 			}
 		}
@@ -207,7 +208,8 @@ class PropertyLabelSimilarityLookup {
 		);
 
 		foreach ( $definedBy as $dataItem ) {
-			if ( $dataItem->equals( $first->getCanonicalDiWikiPage() ) ) {
+			$wikiPage = $first->getCanonicalDiWikiPage();
+			if ( $wikiPage !== null && $dataItem->equals( $wikiPage ) ) {
 				return true;
 			}
 		}

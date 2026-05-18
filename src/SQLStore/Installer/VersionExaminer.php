@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Installer;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RuntimeException;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\IDatabase;
@@ -27,7 +28,7 @@ class VersionExaminer {
 	/**
 	 * @since 3.2
 	 *
-	 * @param IDatabase $connection
+	 * @param Database|IDatabase $connection
 	 */
 	public function __construct( $connection ) {
 		if ( !$connection instanceof IDatabase ) {

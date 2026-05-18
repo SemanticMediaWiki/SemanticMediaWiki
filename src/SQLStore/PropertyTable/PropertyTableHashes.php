@@ -71,7 +71,7 @@ class PropertyTableHashes {
 		$this->setPropertyTableHashesCache( $id, $hash );
 
 		if ( $hash === null ) {
-			$this->idCacheManager->deleteCacheById( $id );
+			$this->idCacheManager->deleteCacheById( (string)$id );
 		}
 	}
 
@@ -93,7 +93,7 @@ class PropertyTableHashes {
 
 		$cache = $this->idCacheManager->get( 'propertytable.hash' );
 
-		$hash = $cache->fetch( $id );
+		$hash = $cache->fetch( (string)$id );
 		if ( $hash !== false ) {
 			return $hash;
 		}
@@ -115,7 +115,7 @@ class PropertyTableHashes {
 
 		$hash = $hash === null || $hash === false || strlen( $hash ) <= 1 ? [] : unserialize( $hash );
 
-		$cache->save( $id, $hash );
+		$cache->save( (string)$id, $hash );
 
 		return $hash;
 	}
@@ -123,7 +123,7 @@ class PropertyTableHashes {
 	/**
 	 * @since 3.1
 	 *
-	 * @param $id integer
+	 * @param int $id
 	 */
 	public function clearPropertyTableHashCacheById( $id ): void {
 		$this->setPropertyTableHashesCache( $id, null );
@@ -132,7 +132,7 @@ class PropertyTableHashes {
 	/**
 	 * @since 3.1
 	 *
-	 * @param $id integer
+	 * @param int $id
 	 * @param string|array|null $hash
 	 *
 	 * @return void
@@ -149,7 +149,7 @@ class PropertyTableHashes {
 			$hash = unserialize( $hash );
 		}
 
-		$this->idCacheManager->get( 'propertytable.hash' )->save( $id, $hash );
+		$this->idCacheManager->get( 'propertytable.hash' )->save( (string)$id, $hash );
 	}
 
 }

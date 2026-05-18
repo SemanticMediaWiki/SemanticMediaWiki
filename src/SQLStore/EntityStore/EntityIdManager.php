@@ -250,7 +250,7 @@ class EntityIdManager {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
 
-		$this->redirectStore->updateRedirect( $id, $title, $namespace );
+		$this->redirectStore->updateRedirect( (string)$id, $title, $namespace );
 	}
 
 	/**
@@ -925,7 +925,7 @@ class EntityIdManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $list
+	 * @param array|Iterator $list
 	 * @param string|null $flag
 	 */
 	public function warmUpCache( $list = [], $flag = null ): void {

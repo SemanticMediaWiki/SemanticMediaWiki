@@ -327,7 +327,7 @@ class SemanticData implements JsonDeserializable {
 	 * @since 2.5
 	 *
 	 * @param string $key
-	 * @param string $value
+	 * @param bool|string $value
 	 */
 	public function setOption( $key, $value ): void {
 		if ( !$this->options instanceof Options ) {
