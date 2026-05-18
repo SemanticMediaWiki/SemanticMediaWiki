@@ -9,6 +9,9 @@ use SMW\DataValues\DataValue;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\NumberValue;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\ValueFormatters\NumberValueFormatter;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
+use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
@@ -55,7 +58,9 @@ class InfoLinksProviderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getPropertySpecificationLookup' )
+			->willReturn( $this->propertySpecificationLookup );
 	}
 
 	protected function tearDown(): void {
@@ -92,9 +97,18 @@ class InfoLinksProviderTest extends TestCase {
 
 		$instance = new InfoLinksProvider( $numberValue, $this->propertySpecificationLookup );
 
+		$numberValueFormatter = new NumberValueFormatter();
+		$numberValueFormatter->setDataValue( $numberValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->willReturn( $numberValueFormatter );
+
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
+
+		$numberValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
 		$this->assertStringContainsString(
 			'/:Foo/1000.42|+]]</span>',
@@ -125,9 +139,18 @@ class InfoLinksProviderTest extends TestCase {
 
 		$instance = new InfoLinksProvider( $stringValue, $this->propertySpecificationLookup );
 
+		$stringValueFormatter = new StringValueFormatter();
+		$stringValueFormatter->setDataValue( $stringValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->willReturn( $stringValueFormatter );
+
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
+
+		$stringValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
 		$this->assertStringContainsString(
 			'/:Foo/Text-20with-20-2D3A-2D3A-20content|+]]</span>',
@@ -151,6 +174,8 @@ class InfoLinksProviderTest extends TestCase {
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
+
+		$sobValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
 		$stringValidator->assertThatStringContains(
 			'<span class="smwbrowse">[[.*/:Text-20with-20::-20content|+]]</span>',
@@ -185,9 +210,18 @@ class InfoLinksProviderTest extends TestCase {
 
 		$instance = new InfoLinksProvider( $timeValue, $this->propertySpecificationLookup );
 
+		$timeValueFormatter = new TimeValueFormatter();
+		$timeValueFormatter->setDataValue( $timeValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->willReturn( $timeValueFormatter );
+
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
+
+		$timeValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
 		$this->assertStringContainsString(
 			'/:Foo/12-20December-201970|+]]</span>',
@@ -232,9 +266,18 @@ class InfoLinksProviderTest extends TestCase {
 
 		$instance = new InfoLinksProvider( $stringValue, $this->propertySpecificationLookup );
 
+		$stringValueFormatter = new StringValueFormatter();
+		$stringValueFormatter->setDataValue( $stringValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->willReturn( $stringValueFormatter );
+
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
+
+		$stringValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
 		$this->assertStringContainsString(
 			'<span class="smwttcontent">[SERVICELINK-B SERVICELINK-A]</span>',
