@@ -197,8 +197,6 @@ class DataValueServiceFactory {
 
 	/**
 	 * @since 7.0.0
-	 *
-	 * @return Store
 	 */
 	public function getStore(): Store {
 		return ServicesFactory::getInstance()->getStore();
