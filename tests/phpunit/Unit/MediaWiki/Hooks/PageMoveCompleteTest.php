@@ -26,6 +26,7 @@ class PageMoveCompleteTest extends TestCase {
 	private $testEnvironment;
 	private $namespaceExaminer;
 	private $eventDispatcher;
+	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -50,6 +51,10 @@ class PageMoveCompleteTest extends TestCase {
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 	}
 
 	protected function tearDown(): void {
@@ -60,7 +65,7 @@ class PageMoveCompleteTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PageMoveComplete::class,
-			new PageMoveComplete( $this->namespaceExaminer )
+			new PageMoveComplete( $this->namespaceExaminer, $this->store )
 		);
 	}
 
@@ -77,17 +82,12 @@ class PageMoveCompleteTest extends TestCase {
 		$oldTitle = $titleFactory->newFromText( 'Old' );
 		$newTitle = $titleFactory->newFromText( 'New' );
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->never() )
+		$this->store->expects( $this->never() )
 			->method( 'changeTitle' );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$instance = new PageMoveComplete(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->store
 		);
 
 		$instance->setEventDispatcher(
@@ -112,18 +112,13 @@ class PageMoveCompleteTest extends TestCase {
 		$oldTitle = $titleFactory->newFromText( 'Old' );
 		$newTitle = $titleFactory->newFromText( 'New', NS_HELP );
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'deleteSubject' )
 			->with( $oldTitle );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$instance = new PageMoveComplete(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->store
 		);
 
 		$instance->setEventDispatcher(

@@ -744,7 +744,8 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$pageMoveComplete = new PageMoveComplete(
-			$applicationFactory->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->getStore()
 		);
 
 		$pageMoveComplete->setEventDispatcher(
