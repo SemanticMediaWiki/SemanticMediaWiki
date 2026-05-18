@@ -7,9 +7,10 @@ use SMW\DataItemFactory;
 use SMW\DataItems\Container;
 use SMW\DataItems\Error;
 use SMW\DataValues\ReferenceValue;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Property\SpecificationLookup;
+use SMW\Services\DataValueServiceFactory;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ReferenceValue
@@ -22,26 +23,47 @@ use SMW\Tests\TestEnvironment;
  */
 class ReferenceValueTest extends TestCase {
 
-	private $testEnvironment;
-	private $dataItemFactory;
-	private $propertySpecificationLookup;
+	private DataItemFactory $dataItemFactory;
+	private SpecificationLookup $propertySpecificationLookup;
+	private DataValueServiceFactory $dataValueServiceFactory;
+	private Store $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
-	}
+		$this->store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getRedirectTarget' ] )
+			->getMockForAbstractClass();
 
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+		$this->store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->willReturnArgument( 0 );
+
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
+			->getMock();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getPropertySpecificationLookup' )
+			->willReturn( $this->propertySpecificationLookup );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getStore' )
+			->willReturn( $this->store );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->willReturn( $constraintValueValidator );
 	}
 
 	public function testCanConstruct() {
@@ -57,22 +79,12 @@ class ReferenceValueTest extends TestCase {
 			$this->dataItemFactory->newDIProperty( 'Foobar' )
 		];
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
-			->getMockForAbstractClass();
-
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
 			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
-		$store->expects( $this->any() )
-			->method( 'getRedirectTarget' )
-			->willReturnArgument( 0 );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$instance = new ReferenceValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 		$instance->setProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' )
 		);
@@ -89,22 +101,12 @@ class ReferenceValueTest extends TestCase {
 	}
 
 	public function testParseValue() {
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
-			->getMockForAbstractClass();
-
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
 			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
-		$store->expects( $this->any() )
-			->method( 'getRedirectTarget' )
-			->willReturnArgument( 0 );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$instance = new ReferenceValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 		$instance->setProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' )
 		);
@@ -139,22 +141,12 @@ class ReferenceValueTest extends TestCase {
 	}
 
 	public function testParseValueWithErroredDv() {
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
-			->getMockForAbstractClass();
-
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
 			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
-		$store->expects( $this->any() )
-			->method( 'getRedirectTarget' )
-			->willReturnArgument( 0 );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$instance = new ReferenceValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 		$instance->setProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' )
 		);

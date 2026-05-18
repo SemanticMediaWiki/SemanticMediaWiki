@@ -4,6 +4,7 @@ namespace SMW\DataValues\ValueValidators;
 
 use SMW\Constraint\ConstraintCheckRunner;
 use SMW\DataValues\DataValue;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
@@ -32,6 +33,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	public function __construct(
 		private readonly ConstraintCheckRunner $constraintCheckRunner,
 		private readonly SchemaFinder $schemaFinder,
+		private readonly JobQueue $jobQueue,
 	) {
 	}
 
@@ -114,7 +116,17 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 			return;
 		}
 
-		DeferredConstraintCheckUpdateJob::pushJob( $contextPage->getTitle() );
+		$title = $contextPage->getTitle();
+
+		$job = new DeferredConstraintCheckUpdateJob(
+			$title,
+			DeferredConstraintCheckUpdateJob::newRootJobParams(
+				DeferredConstraintCheckUpdateJob::JOB_COMMAND,
+				$title
+			) + [ 'waitOnCommandLine' => true ]
+		);
+
+		$this->jobQueue->push( [ $job ] );
 	}
 
 }

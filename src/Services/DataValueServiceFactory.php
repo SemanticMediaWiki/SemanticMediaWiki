@@ -18,6 +18,7 @@ use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Property\RestrictionExaminer;
 use SMW\Property\SpecificationLookup;
 use SMW\Query\DescriptionBuilderRegistry;
+use SMW\Store;
 
 /**
  * @private
@@ -192,6 +193,13 @@ class DataValueServiceFactory {
 	 */
 	public function getPropertySpecificationLookup() {
 		return ServicesFactory::getInstance()->singleton( 'PropertySpecificationLookup' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getStore(): Store {
+		return ServicesFactory::getInstance()->getStore();
 	}
 
 	/**

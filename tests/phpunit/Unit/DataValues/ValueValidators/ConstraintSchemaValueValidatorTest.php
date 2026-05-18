@@ -11,7 +11,6 @@ use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -48,16 +47,9 @@ class ConstraintSchemaValueValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {
@@ -68,14 +60,15 @@ class ConstraintSchemaValueValidatorTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ConstraintSchemaValueValidator::class,
-			new ConstraintSchemaValueValidator( $this->constraintCheckRunner, $this->schemafinder )
+			new ConstraintSchemaValueValidator( $this->constraintCheckRunner, $this->schemafinder, $this->jobQueue )
 		);
 	}
 
 	public function testHasNoConstraintViolationOnNonRelatedValue() {
 		$instance = new ConstraintSchemaValueValidator(
 			$this->constraintCheckRunner,
-			$this->schemafinder
+			$this->schemafinder,
+			$this->jobQueue
 		);
 
 		$instance->validate( 'Foo' );
@@ -98,7 +91,8 @@ class ConstraintSchemaValueValidatorTest extends TestCase {
 
 		$instance = new ConstraintSchemaValueValidator(
 			$this->constraintCheckRunner,
-			$this->schemafinder
+			$this->schemafinder,
+			$this->jobQueue
 		);
 
 		$instance->validate( $dataValue );
@@ -141,7 +135,8 @@ class ConstraintSchemaValueValidatorTest extends TestCase {
 
 		$instance = new ConstraintSchemaValueValidator(
 			$this->constraintCheckRunner,
-			$this->schemafinder
+			$this->schemafinder,
+			$this->jobQueue
 		);
 
 		$instance->validate( $dataValue );
@@ -193,7 +188,8 @@ class ConstraintSchemaValueValidatorTest extends TestCase {
 
 		$instance = new ConstraintSchemaValueValidator(
 			$this->constraintCheckRunner,
-			$this->schemafinder
+			$this->schemafinder,
+			$this->jobQueue
 		);
 
 		$instance->validate( $dataValue );

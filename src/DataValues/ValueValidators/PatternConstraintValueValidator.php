@@ -4,7 +4,7 @@ namespace SMW\DataValues\ValueValidators;
 
 use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Property\SpecificationLookup;
 
 /**
  * To support regular expressions in connection with the `Allows pattern`
@@ -17,15 +17,15 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class PatternConstraintValueValidator implements ConstraintValueValidator {
 
-	private AllowsPatternValueParser $allowsPatternValueParser;
-
 	private bool $hasConstraintViolation = false;
 
 	/**
 	 * @since 2.4
 	 */
-	public function __construct( AllowsPatternValueParser $allowsPatternValueParser ) {
-		$this->allowsPatternValueParser = $allowsPatternValueParser;
+	public function __construct(
+		private readonly AllowsPatternValueParser $allowsPatternValueParser,
+		private readonly SpecificationLookup $propertySpecificationLookup
+	) {
 	}
 
 	/**
@@ -52,8 +52,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 			return $this->hasConstraintViolation;
 		}
 
-		$reference = ApplicationFactory::getInstance()
-			->getPropertySpecificationLookup()
+		$reference = $this->propertySpecificationLookup
 			->getAllowedPatternBy( $dataValue->getProperty() );
 		if ( $reference === '' ) {
 			return $this->hasConstraintViolation;

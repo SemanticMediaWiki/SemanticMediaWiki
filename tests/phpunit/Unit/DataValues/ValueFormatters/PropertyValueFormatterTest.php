@@ -43,8 +43,6 @@ class PropertyValueFormatterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
-
 		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,8 +50,6 @@ class PropertyValueFormatterTest extends TestCase {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyDescriptionByLanguageCode' )
 			->willReturn( 'Some description' );
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
 		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
@@ -75,7 +71,7 @@ class PropertyValueFormatterTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PropertyValueFormatter::class,
-			new PropertyValueFormatter( $this->propertySpecificationLookup )
+			new PropertyValueFormatter( $this->propertySpecificationLookup, $this->propertyLabelFinder )
 		);
 	}
 
@@ -85,7 +81,8 @@ class PropertyValueFormatterTest extends TestCase {
 			->getMock();
 
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$this->assertTrue(
@@ -103,7 +100,8 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$this->assertSame(
@@ -123,7 +121,8 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$this->assertEquals(
@@ -150,7 +149,8 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$this->assertStringContainsString(
@@ -180,7 +180,8 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$expected = $this->testEnvironment->replaceNamespaceWithLocalizedText(
@@ -234,7 +235,8 @@ class PropertyValueFormatterTest extends TestCase {
 		$propertyValue->setUserValue( $property );
 
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$expected = $this->testEnvironment->replaceNamespaceWithLocalizedText(
@@ -291,7 +293,8 @@ class PropertyValueFormatterTest extends TestCase {
 		$propertyValue->setCaption( $caption );
 
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$expected = $this->testEnvironment->replaceNamespaceWithLocalizedText(
@@ -328,7 +331,8 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$expected = $this->testEnvironment->replaceNamespaceWithLocalizedText(
@@ -344,7 +348,8 @@ class PropertyValueFormatterTest extends TestCase {
 
 	public function testTryToFormatOnMissingDataValueThrowsException() {
 		$instance = new PropertyValueFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
 		);
 
 		$this->expectException( 'RuntimeException' );

@@ -9,7 +9,6 @@ use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Property\SpecificationLookup;
 use SMW\Services\DataValueServiceFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\TemperatureValue
@@ -22,7 +21,6 @@ use SMW\Tests\TestEnvironment;
  */
 class TemperatureValueTest extends TestCase {
 
-	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 	private $dataValueServiceFactory;
@@ -30,14 +28,11 @@ class TemperatureValueTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
 		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
@@ -54,10 +49,6 @@ class TemperatureValueTest extends TestCase {
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getPropertySpecificationLookup' )
 			->willReturn( $this->propertySpecificationLookup );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {

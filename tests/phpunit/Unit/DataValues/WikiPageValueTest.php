@@ -5,8 +5,6 @@ namespace SMW\Tests\Unit\DataValues;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\WikiPageValue;
-use SMW\Property\SpecificationLookup;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\WikiPageValue
@@ -19,27 +17,12 @@ use SMW\Tests\TestEnvironment;
  */
 class WikiPageValueTest extends TestCase {
 
-	private $testEnvironment;
 	private $dataItemFactory;
-
-	private $propertySpecificationLookup;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
-
-		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {

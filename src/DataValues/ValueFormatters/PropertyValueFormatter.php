@@ -10,7 +10,7 @@ use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\PropertyLabelFinder;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,7 +23,10 @@ class PropertyValueFormatter extends DataValueFormatter {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( private readonly SpecificationLookup $propertySpecificationLookup ) {
+	public function __construct(
+		private readonly SpecificationLookup $propertySpecificationLookup,
+		private readonly PropertyLabelFinder $propertyLabelFinder,
+	) {
 	}
 
 	/**
@@ -339,7 +342,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 			$prefix = '-';
 		}
 
-		return $prefix . ApplicationFactory::getInstance()->getPropertyLabelFinder()->findPropertyLabelFromIdByLanguageCode(
+		return $prefix . $this->propertyLabelFinder->findPropertyLabelFromIdByLanguageCode(
 			$property->getKey(),
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);

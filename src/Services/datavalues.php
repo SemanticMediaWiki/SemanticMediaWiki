@@ -95,7 +95,11 @@ return [
 	 * @return PropertyValueFormatter
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . PropertyValue::TYPE_ID => static function ( ServicesContainer $container ): PropertyValueFormatter {
-		return new PropertyValueFormatter( ServicesFactory::getInstance()->singleton( 'PropertySpecificationLookup' ) );
+		$servicesFactory = ServicesFactory::getInstance();
+		return new PropertyValueFormatter(
+			$servicesFactory->singleton( 'PropertySpecificationLookup' ),
+			$servicesFactory->getPropertyLabelFinder()
+		);
 	},
 
 	/**
@@ -134,7 +138,8 @@ return [
 		);
 
 		$patternConstraintValueValidator = new PatternConstraintValueValidator(
-			$container->create( DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID, $container )
+			$container->create( DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID, $container ),
+			$propertySpecificationLookup
 		);
 
 		$compoundConstraintValueValidator->registerConstraintValueValidator(
@@ -156,7 +161,8 @@ return [
 
 		$constraintSchemaValueValidator = new ConstraintSchemaValueValidator(
 			$constraintFactory->newConstraintCheckRunner(),
-			$servicesFactory->singleton( 'SchemaFactory' )->newSchemaFinder( $store )
+			$servicesFactory->singleton( 'SchemaFactory' )->newSchemaFinder( $store ),
+			$servicesFactory->getJobQueue()
 		);
 
 		$constraintSchemaValueValidator->isCommandLineMode(
