@@ -590,7 +590,8 @@ class Hooks {
 			$editInfo,
 			$pageInfoProvider,
 			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
-			$applicationFactory->singleton( 'SchemaFactory' )
+			$applicationFactory->singleton( 'SchemaFactory' ),
+			$applicationFactory->getStore()
 		);
 
 		$revisionFromEditComplete->setEventDispatcher(

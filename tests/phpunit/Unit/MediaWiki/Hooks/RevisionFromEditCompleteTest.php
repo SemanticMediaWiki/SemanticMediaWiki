@@ -36,6 +36,7 @@ class RevisionFromEditCompleteTest extends TestCase {
 	private $editInfo;
 	private $propertyAnnotatorFactory;
 	private $schemaFactory;
+	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -44,11 +45,9 @@ class RevisionFromEditCompleteTest extends TestCase {
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$store = $this->getMockBuilder( Store::class )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
@@ -103,7 +102,7 @@ class RevisionFromEditCompleteTest extends TestCase {
 
 		$this->assertInstanceOf(
 			RevisionFromEditComplete::class,
-			new RevisionFromEditComplete( $this->editInfo, $pageInfoProvider, $this->propertyAnnotatorFactory, $this->schemaFactory )
+			new RevisionFromEditComplete( $this->editInfo, $pageInfoProvider, $this->propertyAnnotatorFactory, $this->schemaFactory, $this->store )
 		);
 	}
 
@@ -130,7 +129,8 @@ class RevisionFromEditCompleteTest extends TestCase {
 			$this->editInfo,
 			$pageInfoProvider,
 			$this->propertyAnnotatorFactory,
-			$this->schemaFactory
+			$this->schemaFactory,
+			$this->store
 		);
 
 		$instance->setEventDispatcher(
@@ -178,7 +178,8 @@ class RevisionFromEditCompleteTest extends TestCase {
 			$this->editInfo,
 			$pageInfoProvider,
 			$this->propertyAnnotatorFactory,
-			$this->schemaFactory
+			$this->schemaFactory,
+			$this->store
 		);
 
 		$instance->setEventDispatcher(
@@ -227,7 +228,8 @@ class RevisionFromEditCompleteTest extends TestCase {
 			$this->editInfo,
 			$pageInfoProvider,
 			$this->propertyAnnotatorFactory,
-			$this->schemaFactory
+			$this->schemaFactory,
+			$this->store
 		);
 
 		$instance->setEventDispatcher(
@@ -244,8 +246,6 @@ class RevisionFromEditCompleteTest extends TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'deleteConceptCache' );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
@@ -284,7 +284,8 @@ class RevisionFromEditCompleteTest extends TestCase {
 			$this->editInfo,
 			$pageInfoProvider,
 			$this->propertyAnnotatorFactory,
-			$this->schemaFactory
+			$this->schemaFactory,
+			$store
 		);
 
 		$instance->setEventDispatcher(
