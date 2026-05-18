@@ -56,8 +56,6 @@ class CachedFactboxTest extends TestCase {
 			->setMethods( [ 'fetch', 'save', 'saveSub', 'fetchSub', 'associate' ] )
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
-
 		$this->factboxText = ApplicationFactory::getInstance()->getFactboxText();
 	}
 
