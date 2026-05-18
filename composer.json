@@ -46,7 +46,7 @@
 		"ext-mbstring": "*",
 		"composer/installers": "^2.2.0|^1.0.1",
 		"param-processor/param-processor": "~1.2",
-		"serialization/serialization": "~3.2|~4.0",
+		"serialization/serialization": "~4.0",
 		"jeroen/message-reporter": "~1.0",
 		"onoi/cache": "~1.2",
 		"onoi/blob-store": "~1.2",
