@@ -39,7 +39,6 @@ class ArticlePurgeTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment( $settings );
 
 		$this->cache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
-		$this->applicationFactory->registerObject( 'Cache', $this->cache );
 
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
@@ -79,7 +78,7 @@ class ArticlePurgeTest extends TestCase {
 			$setup['smwgQueryResultCacheRefreshOnPurge']
 		);
 
-		$instance = new ArticlePurge();
+		$instance = new ArticlePurge( $this->cache );
 
 		$instance->setEventDispatcher(
 			$this->eventDispatcher

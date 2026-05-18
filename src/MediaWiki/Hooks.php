@@ -760,7 +760,7 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$articlePurge = new ArticlePurge();
+		$articlePurge = new ArticlePurge( $applicationFactory->getCache() );
 
 		$articlePurge->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()

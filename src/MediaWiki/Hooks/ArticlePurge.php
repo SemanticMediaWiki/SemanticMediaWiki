@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
+use Onoi\Cache\Cache;
 use SMW\DataItems\Property;
 use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
@@ -33,6 +34,12 @@ class ArticlePurge implements HookListener {
 
 	/**
 	 * @since 1.9
+	 */
+	public function __construct( private readonly Cache $cache ) {
+	}
+
+	/**
+	 * @since 1.9
 	 *
 	 * @return true
 	 */
@@ -43,10 +50,9 @@ class ArticlePurge implements HookListener {
 		$articleID = $title->getArticleID();
 
 		$settings = $applicationFactory->getSettings();
-		$cache = $applicationFactory->getCache();
 
 		if ( $articleID > 0 ) {
-			$cache->save(
+			$this->cache->save(
 				smwfCacheKey( self::CACHE_NAMESPACE, $articleID ),
 				$settings->get( 'smwgAutoRefreshOnPurge' )
 			);
