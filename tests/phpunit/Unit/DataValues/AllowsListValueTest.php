@@ -5,9 +5,7 @@ namespace SMW\Tests\Unit\DataValues;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\AllowsListValue;
-use SMW\Property\SpecificationLookup;
 use SMW\Services\DataValueServiceFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\AllowsListValue
@@ -20,28 +18,15 @@ use SMW\Tests\TestEnvironment;
  */
 class AllowsListValueTest extends TestCase {
 
-	private $testEnvironment;
 	private $dataItemFactory;
 	private $dataValueServiceFactory;
-	private $propertySpecificationLookup;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
