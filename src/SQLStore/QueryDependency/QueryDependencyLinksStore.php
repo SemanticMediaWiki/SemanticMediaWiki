@@ -27,8 +27,6 @@ class QueryDependencyLinksStore {
 
 	private Store $store;
 
-	private NamespaceExaminer $namespaceExaminer;
-
 	private bool $isEnabled = true;
 
 	/**
@@ -50,9 +48,9 @@ class QueryDependencyLinksStore {
 	public function __construct(
 		private QueryResultDependencyListResolver $queryResultDependencyListResolver,
 		private DependencyLinksTableUpdater $dependencyLinksTableUpdater,
+		private readonly NamespaceExaminer $namespaceExaminer,
 	) {
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
-		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
 	/**

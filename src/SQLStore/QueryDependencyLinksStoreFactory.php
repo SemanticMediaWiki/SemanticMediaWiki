@@ -85,7 +85,8 @@ class QueryDependencyLinksStoreFactory {
 
 		$queryDependencyLinksStore = new QueryDependencyLinksStore(
 			$this->newQueryResultDependencyListResolver(),
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$applicationFactory->getNamespaceExaminer()
 		);
 
 		$queryDependencyLinksStore->setLogger(
