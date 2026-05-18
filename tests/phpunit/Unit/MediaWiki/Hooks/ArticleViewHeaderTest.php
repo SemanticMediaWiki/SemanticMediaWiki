@@ -13,7 +13,6 @@ use SMW\MediaWiki\Hooks\ArticleViewHeader;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleViewHeader
@@ -26,15 +25,12 @@ use SMW\Tests\TestEnvironment;
  */
 class ArticleViewHeaderTest extends TestCase {
 
-	private $testEnvironment;
 	private $store;
 	private $namespaceExaminer;
 	private $dependencyValidator;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
@@ -56,13 +52,6 @@ class ArticleViewHeaderTest extends TestCase {
 		$this->dependencyValidator = $this->getMockBuilder( DependencyValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
