@@ -312,7 +312,8 @@ class Hooks {
 		$parserAfterTidy = new ParserAfterTidy(
 			$parser,
 			$applicationFactory->getNamespaceExaminer(),
-			$applicationFactory->getCache()
+			$applicationFactory->getCache(),
+			$applicationFactory
 		);
 
 		$parserAfterTidy->setLogger(
