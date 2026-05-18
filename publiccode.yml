@@ -1,7 +1,7 @@
 publiccodeYmlVersion: 0.5.0
 name: Semantic MediaWiki
 applicationSuite: MediaWiki
-url: https://github.com/SemanticMediaWiki
+url: https://github.com/SemanticMediaWiki/SemanticMediaWiki
 landingURL: https://www.semantic-mediawiki.org
 isBasedOn: https://www.mediawiki.org
 softwareVersion: 6.0.1
@@ -66,7 +66,10 @@ description:
       - Data Export
       - API
     screenshots:
-      - https://www.semantic-mediawiki.org/wiki/Sites_using_Semantic_MediaWiki
+      - https://www.semantic-mediawiki.org/w/images/2/21/WikiApiary.png
+      - https://www.semantic-mediawiki.org/w/images/b/b7/EVA_Wiki_-_Main_page.png
+      - https://www.semantic-mediawiki.org/w/images/7/7d/Free_Software_Directory.png
+      - https://www.semantic-mediawiki.org/w/images/d/d1/FINA_Homepage.png
     videos:
       - https://www.youtube.com/watch?v=Gcdl4iCDJ0Q&list=PLw2YgbWET_pg6tY2KlEUgTmtTZXWil-y6
 legal:
