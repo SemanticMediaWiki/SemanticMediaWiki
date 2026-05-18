@@ -14,7 +14,6 @@ use SMW\EntityCache;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\FileIndexer
@@ -27,7 +26,6 @@ use SMW\Tests\TestEnvironment;
  */
 class FileIndexerTest extends TestCase {
 
-	private $testEnvironment;
 	private $indexer;
 	private $fileHandler;
 	private $fileAttachment;
@@ -37,8 +35,6 @@ class FileIndexerTest extends TestCase {
 	private Store $store;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
-
 		$this->indexer = $this->getMockBuilder( Indexer::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,13 +63,6 @@ class FileIndexerTest extends TestCase {
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
