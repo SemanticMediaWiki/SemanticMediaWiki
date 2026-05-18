@@ -10,7 +10,6 @@ use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\BeforePageDisplay
@@ -29,7 +28,6 @@ class BeforePageDisplayTest extends TestCase {
 	private $title;
 
 	private UserOptionsLookup $userOptionsLookup;
-	private TestEnvironment $testEnvironment;
 
 	protected function setUp(): void {
 		$this->title = $this->getMockBuilder( Title::class )
@@ -65,19 +63,12 @@ class BeforePageDisplayTest extends TestCase {
 			->willReturn( $requestContext );
 
 		$this->userOptionsLookup = $this->createMock( UserOptionsLookup::class );
-		$this->testEnvironment = new TestEnvironment();
-		$this->testEnvironment->registerObject( 'UserOptionsLookup', $this->userOptionsLookup );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			BeforePageDisplay::class,
-			new BeforePageDisplay()
+			new BeforePageDisplay( $this->userOptionsLookup )
 		);
 	}
 
@@ -90,7 +81,7 @@ class BeforePageDisplayTest extends TestCase {
 		$this->outputPage->expects( $this->once() )
 			->method( 'prependHTML' );
 
-		$instance = new BeforePageDisplay();
+		$instance = new BeforePageDisplay( $this->userOptionsLookup );
 
 		$instance->setOptions(
 			[
@@ -105,7 +96,7 @@ class BeforePageDisplayTest extends TestCase {
 		$this->outputPage->expects( $this->never() )
 			->method( 'prependHTML' );
 
-		$instance = new BeforePageDisplay();
+		$instance = new BeforePageDisplay( $this->userOptionsLookup );
 
 		$instance->setOptions(
 			[
@@ -134,7 +125,7 @@ class BeforePageDisplayTest extends TestCase {
 			->method( 'getUser' )
 			->willReturn( $user );
 
-		$instance = new BeforePageDisplay();
+		$instance = new BeforePageDisplay( $this->userOptionsLookup );
 
 		$instance->process( $this->outputPage, $this->skin );
 	}
@@ -151,7 +142,7 @@ class BeforePageDisplayTest extends TestCase {
 			->method( 'getUser' )
 			->willReturn( $user );
 
-		$instance = new BeforePageDisplay();
+		$instance = new BeforePageDisplay( $this->userOptionsLookup );
 
 		$instance->setOptions(
 			[
@@ -184,7 +175,7 @@ class BeforePageDisplayTest extends TestCase {
 			->method( 'getUser' )
 			->willReturn( $user );
 
-		$instance = new BeforePageDisplay();
+		$instance = new BeforePageDisplay( $this->userOptionsLookup );
 
 		$instance->setOptions(
 			[
@@ -220,7 +211,7 @@ class BeforePageDisplayTest extends TestCase {
 		$this->outputPage->expects( $expected )
 			->method( 'addLink' );
 
-		$instance = new BeforePageDisplay();
+		$instance = new BeforePageDisplay( $this->userOptionsLookup );
 
 		$instance->setOptions(
 			[

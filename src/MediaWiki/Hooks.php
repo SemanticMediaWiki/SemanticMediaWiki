@@ -160,7 +160,9 @@ class Hooks {
 	 */
 	public static function registerExtensionCheck( array &$vars ): void {
 		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( OutputPage $outputPage ): bool {
-			$beforePageDisplay = new BeforePageDisplay();
+			$beforePageDisplay = new BeforePageDisplay(
+				MediaWikiServices::getInstance()->getUserOptionsLookup()
+			);
 
 			$beforePageDisplay->setOptions(
 				[
@@ -453,7 +455,9 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 	 */
 	public function onBeforePageDisplay( OutputPage &$outputPage, Skin &$skin ): bool {
-		$beforePageDisplay = new BeforePageDisplay();
+		$beforePageDisplay = new BeforePageDisplay(
+			MediaWikiServices::getInstance()->getUserOptionsLookup()
+		);
 		$setupFile = new SetupFile();
 
 		$beforePageDisplay->setOptions(
@@ -883,7 +887,8 @@ class Hooks {
 	public function onFileUpload( File $file, ?bool $reupload ): bool {
 		$fileUpload = new FileUpload(
 			ApplicationFactory::getInstance()->getNamespaceExaminer(),
-			MediaWikiServices::getInstance()->getHookContainer()
+			MediaWikiServices::getInstance()->getHookContainer(),
+			ApplicationFactory::getInstance()->newPageCreator()
 		);
 
 		return $fileUpload->process( $file, $reupload );
