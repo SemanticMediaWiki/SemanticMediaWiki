@@ -6,7 +6,7 @@ use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
@@ -35,9 +35,10 @@ class TextChangeUpdater {
 	 * @since 2.5
 	 */
 	public function __construct(
-		private Database $connection,
-		private Cache $cache,
-		private SearchTableUpdater $searchTableUpdater,
+		private readonly Database $connection,
+		private readonly Cache $cache,
+		private readonly SearchTableUpdater $searchTableUpdater,
+		private readonly JobFactory $jobFactory,
 	) {
 	}
 
@@ -105,7 +106,7 @@ class TextChangeUpdater {
 			return;
 		}
 
-		$fulltextSearchTableUpdateJob = ApplicationFactory::getInstance()->newJobFactory()->newFulltextSearchTableUpdateJob(
+		$fulltextSearchTableUpdateJob = $this->jobFactory->newFulltextSearchTableUpdateJob(
 			$title,
 			[
 				'slot:id' => $changeOp->getSubject()->getHash()

@@ -32,10 +32,8 @@ class TextChangeUpdaterTest extends TestCase {
 	private $cache;
 	private JobFactory $jobFactory;
 	private $logger;
-	private $testEnvironment;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->logger = TestEnvironment::newSpyLogger();
@@ -55,14 +53,12 @@ class TextChangeUpdaterTest extends TestCase {
 		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			TextChangeUpdater::class,
-			new TextChangeUpdater( $this->connection, $this->cache, $this->searchTableUpdater )
+			new TextChangeUpdater( $this->connection, $this->cache, $this->searchTableUpdater, $this->jobFactory )
 		);
 	}
 
@@ -89,7 +85,8 @@ class TextChangeUpdaterTest extends TestCase {
 		$instance = new TextChangeUpdater(
 			$this->connection,
 			$this->cache,
-			$this->searchTableUpdater
+			$this->searchTableUpdater,
+			$this->jobFactory
 		);
 
 		$instance->setLogger(
@@ -146,7 +143,8 @@ class TextChangeUpdaterTest extends TestCase {
 		$instance = new TextChangeUpdater(
 			$this->connection,
 			$this->cache,
-			$this->searchTableUpdater
+			$this->searchTableUpdater,
+			$this->jobFactory
 		);
 
 		$instance->setLogger(
@@ -189,7 +187,8 @@ class TextChangeUpdaterTest extends TestCase {
 		$instance = new TextChangeUpdater(
 			$this->connection,
 			$this->cache,
-			$this->searchTableUpdater
+			$this->searchTableUpdater,
+			$this->jobFactory
 		);
 
 		$instance->setLogger(
@@ -234,7 +233,8 @@ class TextChangeUpdaterTest extends TestCase {
 		$instance = new TextChangeUpdater(
 			$this->connection,
 			$this->cache,
-			$this->searchTableUpdater
+			$this->searchTableUpdater,
+			$this->jobFactory
 		);
 
 		$instance->setLogger(

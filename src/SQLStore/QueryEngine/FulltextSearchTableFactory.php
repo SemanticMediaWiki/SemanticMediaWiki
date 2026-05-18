@@ -130,7 +130,8 @@ class FulltextSearchTableFactory {
 		$textChangeUpdater = new TextChangeUpdater(
 			$store->getConnection( 'mw.db' ),
 			$applicationFactory->getCache(),
-			$this->newSearchTableUpdater( $store )
+			$this->newSearchTableUpdater( $store ),
+			$applicationFactory->newJobFactory()
 		);
 
 		$textChangeUpdater->setLogger(

@@ -12,7 +12,6 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\PropertyTableIdReferenceFinder;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
@@ -32,13 +31,10 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 	use MockWriteQueryBuilderTrait;
 
 	private $store;
-	private $testEnvironment;
 	private $eventDispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
@@ -59,20 +55,6 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
-
-		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$jobQueueGroup->expects( $this->any() )
-			->method( 'lazyPush' );
-
-		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {

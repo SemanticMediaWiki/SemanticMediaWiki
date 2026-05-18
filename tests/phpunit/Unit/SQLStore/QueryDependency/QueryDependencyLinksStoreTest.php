@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\JobFactory;
 use SMW\NamespaceExaminer;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
@@ -39,7 +38,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 	private $store;
 	private $spyLogger;
-	private $jobFactory;
+	private $namespaceExaminer;
 	private $subject;
 	private $testEnvironment;
 
@@ -57,17 +56,13 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			$this->spyLogger
 		);
 
-		$namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$namespaceExaminer->expects( $this->any() )
+		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
 			->willReturn( true );
-
-		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
@@ -88,10 +83,6 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$this->subject->expects( $this->any() )
 			->method( 'getTitle' )
 			->willReturn( $title );
-
-		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
-		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {
@@ -116,7 +107,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$this->assertInstanceOf(
 			QueryDependencyLinksStore::class,
-			new QueryDependencyLinksStore( $queryResultDependencyListResolver, $dependencyLinksTableUpdater )
+			new QueryDependencyLinksStore( $queryResultDependencyListResolver, $dependencyLinksTableUpdater, $this->namespaceExaminer )
 		);
 	}
 
@@ -159,7 +150,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->setLogger(
@@ -206,7 +198,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->setEnabled( false );
@@ -275,7 +268,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$requestOptions = new RequestOptions();
@@ -350,7 +344,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$requestOptions = new RequestOptions();
@@ -400,7 +395,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->countDependencies( 42 );
@@ -435,7 +431,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->setLogger(
@@ -475,7 +472,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->setLogger(
@@ -546,7 +544,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->setLogger(
@@ -589,8 +588,6 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( false );
 
-		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
-
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -615,7 +612,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$namespaceExaminer
 		);
 
 		$instance->setEnabled( true );
@@ -722,7 +720,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->setLogger(
@@ -799,7 +798,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->setLogger(
@@ -893,7 +893,8 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
-			$dependencyLinksTableUpdater
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
 		);
 
 		$instance->setLogger(
