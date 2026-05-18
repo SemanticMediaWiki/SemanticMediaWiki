@@ -22,7 +22,6 @@ use SMW\Query\QueryResult;
 use SMW\Query\Result\ItemJournal;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver
@@ -35,14 +34,11 @@ use SMW\Tests\TestEnvironment;
  */
 class QueryResultDependencyListResolverTest extends TestCase {
 
-	private $testEnvironment;
 	private $store;
 	private $hierarchyLookup;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
@@ -51,14 +47,6 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
