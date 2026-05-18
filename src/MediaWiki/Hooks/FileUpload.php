@@ -8,6 +8,7 @@ use MediaWiki\Parser\ParserOptions;
 use MediaWiki\User\User;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\PageCreator;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -23,9 +24,13 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class FileUpload implements HookListener {
 
+	/**
+	 * @since 7.0.0
+	 */
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly HookContainer $hookContainer,
+		private readonly PageCreator $pageCreator,
 	) {
 	}
 
@@ -92,7 +97,7 @@ class FileUpload implements HookListener {
 	}
 
 	private function makeFilePage( File $file ) {
-		$filePage = ApplicationFactory::getInstance()->newPageCreator()->createFilePage(
+		$filePage = $this->pageCreator->createFilePage(
 			$file->getTitle()
 		);
 
