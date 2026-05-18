@@ -10,7 +10,6 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -41,12 +40,6 @@ class InternalParseBeforeLinksTest extends TestCase {
 		$this->stripState = $this->getMockBuilder( '\StripState' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {
