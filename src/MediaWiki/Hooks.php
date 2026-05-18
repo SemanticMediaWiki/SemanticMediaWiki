@@ -388,8 +388,11 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
 	 */
 	public function onSkinAfterContent( string &$data, $skin = null ): bool {
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$skinAfterContent = new SkinAfterContent(
-			$skin
+			$skin,
+			$applicationFactory->getFactboxFactory()
 		);
 
 		$skinAfterContent->setOptions(

@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Skin;
+use SMW\Factbox\FactboxFactory;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * SkinAfterContent hook to add text after the page content and
@@ -25,7 +25,10 @@ class SkinAfterContent implements HookListener {
 	/**
 	 * @since  1.9
 	 */
-	public function __construct( private ?Skin $skin = null ) {
+	public function __construct(
+		private readonly ?Skin $skin = null,
+		private readonly ?FactboxFactory $factboxFactory = null,
+	) {
 	}
 
 	/**
@@ -58,7 +61,7 @@ class SkinAfterContent implements HookListener {
 	}
 
 	private function addFactboxTo( string &$data ): void {
-		$cachedFactbox = ApplicationFactory::getInstance()->singleton( 'FactboxFactory' )->newCachedFactbox();
+		$cachedFactbox = $this->factboxFactory->newCachedFactbox();
 
 		$data .= $cachedFactbox->retrieveContent(
 			$this->skin->getOutput()

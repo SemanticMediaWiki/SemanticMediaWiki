@@ -80,13 +80,8 @@ class SkinAfterContentTest extends TestCase {
 
 		$this->factboxText->setText( $parameters['text'] );
 
-		$instance = new SkinAfterContent( $parameters['skin'] );
-
-		$instance->setOption( 'SMW_EXTENSION_LOADED', true );
-
 		// Replace CachedFactbox instance
 		if ( isset( $parameters['title'] ) ) {
-
 			$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
 
 			$cachedFactbox->addContentToCache(
@@ -101,9 +96,13 @@ class SkinAfterContentTest extends TestCase {
 			$factboxFactory->expects( $this->once() )
 				->method( 'newCachedFactbox' )
 				->willReturn( $cachedFactbox );
-
-			$this->applicationFactory->registerObject( 'FactboxFactory', $factboxFactory );
+		} else {
+			$factboxFactory = $this->applicationFactory->getFactboxFactory();
 		}
+
+		$instance = new SkinAfterContent( $parameters['skin'], $factboxFactory );
+
+		$instance->setOption( 'SMW_EXTENSION_LOADED', true );
 
 		$this->assertTrue(
 			$instance->performUpdate( $data )
