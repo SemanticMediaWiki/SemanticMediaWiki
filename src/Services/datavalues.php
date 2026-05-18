@@ -134,7 +134,8 @@ return [
 		);
 
 		$patternConstraintValueValidator = new PatternConstraintValueValidator(
-			$container->create( DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID, $container )
+			$container->create( DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID, $container ),
+			$propertySpecificationLookup
 		);
 
 		$compoundConstraintValueValidator->registerConstraintValueValidator(

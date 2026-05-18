@@ -9,7 +9,6 @@ use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\Property\SpecificationLookup;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ValueValidators\PatternConstraintValueValidator
@@ -22,21 +21,17 @@ use SMW\Tests\TestEnvironment;
  */
 class PatternConstraintValueValidatorTest extends TestCase {
 
-	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 	private $mediaWikiNsContentReader;
 	private $allowsPatternValueParser;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->mediaWikiNsContentReader = $this->getMockBuilder( MediaWikiNsContentReader::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
 
 		$this->allowsPatternValueParser = new AllowsPatternValueParser(
 			$this->mediaWikiNsContentReader
@@ -45,18 +40,12 @@ class PatternConstraintValueValidatorTest extends TestCase {
 		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PatternConstraintValueValidator::class,
-			new PatternConstraintValueValidator( $this->allowsPatternValueParser )
+			new PatternConstraintValueValidator( $this->allowsPatternValueParser, $this->propertySpecificationLookup )
 		);
 	}
 
@@ -92,7 +81,8 @@ class PatternConstraintValueValidatorTest extends TestCase {
 			->willReturn( $this->dataItemFactory->newDIBlob( $testString ) );
 
 		$instance = new PatternConstraintValueValidator(
-			$this->allowsPatternValueParser
+			$this->allowsPatternValueParser,
+			$this->propertySpecificationLookup
 		);
 
 		$dataValue->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
