@@ -8,9 +8,7 @@ use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\MediaWiki\MediaWikiNsContentReader;
-use SMW\Property\SpecificationLookup;
 use SMW\Services\DataValueServiceFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\AllowsPatternValue
@@ -23,27 +21,17 @@ use SMW\Tests\TestEnvironment;
  */
 class AllowsPatternValueTest extends TestCase {
 
-	private $testEnvironment;
 	private $dataItemFactory;
 	private $mediaWikiNsContentReader;
 	private $dataValueServiceFactory;
 	private $constraintValueValidator;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->mediaWikiNsContentReader = $this->getMockBuilder( MediaWikiNsContentReader::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
-
-		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
 		$this->constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
@@ -60,10 +48,6 @@ class AllowsPatternValueTest extends TestCase {
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
 			->willReturn( $this->constraintValueValidator );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
