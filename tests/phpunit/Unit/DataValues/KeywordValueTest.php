@@ -10,7 +10,6 @@ use SMW\DataValues\KeywordValue;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Property\SpecificationLookup;
 use SMW\Services\DataValueServiceFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\KeywordValue
@@ -23,7 +22,6 @@ use SMW\Tests\TestEnvironment;
  */
 class KeywordValueTest extends TestCase {
 
-	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 	private $dataValueServiceFactory;
@@ -31,7 +29,6 @@ class KeywordValueTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
@@ -61,12 +58,6 @@ class KeywordValueTest extends TestCase {
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getDataValueFactory' )
 			->willReturn( DataValueFactory::getInstance() );
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
