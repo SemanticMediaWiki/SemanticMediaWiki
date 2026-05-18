@@ -33,7 +33,7 @@ class ArticlePurge implements HookListener {
 	const CACHE_NAMESPACE = 'smw:arc';
 
 	/**
-	 * @since 1.9
+	 * @since 7.0.0
 	 */
 	public function __construct( private readonly Cache $cache ) {
 	}
