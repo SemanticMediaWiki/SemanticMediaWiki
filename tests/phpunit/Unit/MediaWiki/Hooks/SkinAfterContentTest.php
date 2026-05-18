@@ -55,15 +55,24 @@ class SkinAfterContentTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$factboxFactory = $this->getMockBuilder( FactboxFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
 			SkinAfterContent::class,
-			new SkinAfterContent( $skin )
+			new SkinAfterContent( $skin, $factboxFactory )
 		);
 	}
 
 	public function testTryToPerformUpdateOnNullSkin() {
 		$data = '';
-		$instance = new SkinAfterContent( null );
+
+		$factboxFactory = $this->getMockBuilder( FactboxFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SkinAfterContent( null, $factboxFactory );
 
 		$instance->setOption( 'SMW_EXTENSION_LOADED', true );
 

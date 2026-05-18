@@ -26,8 +26,8 @@ class SkinAfterContent implements HookListener {
 	 * @since  1.9
 	 */
 	public function __construct(
-		private readonly ?Skin $skin = null,
-		private readonly ?FactboxFactory $factboxFactory = null,
+		private readonly ?Skin $skin,
+		private readonly FactboxFactory $factboxFactory,
 	) {
 	}
 
