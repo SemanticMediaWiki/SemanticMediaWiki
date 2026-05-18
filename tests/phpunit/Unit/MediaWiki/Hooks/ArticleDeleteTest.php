@@ -43,13 +43,6 @@ class ArticleDeleteTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
-		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
-
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -65,7 +58,7 @@ class ArticleDeleteTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new ArticleDelete( $store );
+		$instance = new ArticleDelete( $store, $this->jobFactory );
 
 		$this->assertInstanceOf(
 			ArticleDelete::class,
@@ -110,7 +103,8 @@ class ArticleDeleteTest extends TestCase {
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
 		$instance = new ArticleDelete(
-			$store
+			$store,
+			$this->jobFactory
 		);
 
 		$instance->setEventDispatcher(

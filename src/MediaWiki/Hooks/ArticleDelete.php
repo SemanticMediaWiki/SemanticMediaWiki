@@ -7,6 +7,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
@@ -28,7 +29,10 @@ class ArticleDelete implements HookListener {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( private Store $store ) {
+	public function __construct(
+		private Store $store,
+		private readonly JobFactory $jobFactory,
+	) {
 	}
 
 	/**
@@ -68,7 +72,6 @@ class ArticleDelete implements HookListener {
 		$subject = WikiPage::newFromTitle( $title );
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
-		$jobFactory = $applicationFactory->newJobFactory();
 
 		// Instead of Store::getSemanticData, construct the SemanticData by
 		// attaching only the incoming properties indicating which entities
@@ -104,7 +107,7 @@ class ArticleDelete implements HookListener {
 		// Restricted to the available SemanticData
 		$parameters[UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL] = true;
 
-		$updateDispatcherJob = $jobFactory->newUpdateDispatcherJob( $title, $parameters );
+		$updateDispatcherJob = $this->jobFactory->newUpdateDispatcherJob( $title, $parameters );
 		$updateDispatcherJob->insert();
 
 		$this->store->deleteSubject( $title );

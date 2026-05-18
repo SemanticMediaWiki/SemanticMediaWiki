@@ -788,7 +788,8 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$articleDelete = new ArticleDelete(
-			$applicationFactory->getStore()
+			$applicationFactory->getStore(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$articleDelete->setEventDispatcher(
@@ -1236,7 +1237,8 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$articleDelete = new ArticleDelete(
-			$applicationFactory->getStore()
+			$applicationFactory->getStore(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$articleDelete->setEventDispatcher(
