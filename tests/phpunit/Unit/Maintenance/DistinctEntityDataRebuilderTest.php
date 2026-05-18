@@ -8,12 +8,13 @@ use SMW\Connection\ConnectionManager;
 use SMW\DataItems\WikiPage;
 use SMW\Maintenance\DistinctEntityDataRebuilder;
 use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
 use SMW\Query\QueryResult;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
@@ -33,24 +34,23 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 
 	protected $obLevel;
 	private $connectionManager;
-	private $testEnvironment;
+	private JobFactory $jobFactory;
 
 	// The Store writes to the output buffer during drop/setupStore, to avoid
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp(): void {
-		$store = $this->getMockBuilder( Store::class )
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
-		$store->setOption( 'smwgAutoRefreshSubject', true );
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$this->testEnvironment = new TestEnvironment();
-		$spyLogger = $this->testEnvironment->newSpyLogger();
-
-		$store->setLogger( $spyLogger );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->jobFactory->expects( $this->any() )
+			->method( 'newUpdateJob' )
+			->willReturn( $updateJob );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -75,7 +75,6 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 
 	protected function tearDown(): void {
 		parent::tearDown();
-		$this->testEnvironment->tearDown();
 
 		while ( ob_get_level() > $this->obLevel ) {
 			ob_end_clean();
@@ -93,7 +92,7 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 
 		$this->assertInstanceOf(
 			DistinctEntityDataRebuilder::class,
-			new DistinctEntityDataRebuilder( $store, $titleFactory )
+			new DistinctEntityDataRebuilder( $store, $titleFactory, $this->jobFactory )
 		);
 	}
 
@@ -137,7 +136,8 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 
 		$instance = new DistinctEntityDataRebuilder(
 			$store,
-			$titleFactory
+			$titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->setOptions( new Options( [
@@ -181,7 +181,8 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 
 		$instance = new DistinctEntityDataRebuilder(
 			$store,
-			$titleFactory
+			$titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->setOptions( new Options( [
@@ -227,7 +228,8 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 
 		$instance = new DistinctEntityDataRebuilder(
 			$store,
-			$titleFactory
+			$titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->setOptions( new Options( [
@@ -263,7 +265,8 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 
 		$instance = new DistinctEntityDataRebuilder(
 			$store,
-			$titleFactory
+			$titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->setOptions( new Options( [
