@@ -284,8 +284,10 @@ class TurtleSerializer extends Serializer {
 	 * Get the Turtle serialization string for the given ExpElement. The
 	 * method just computes a name, and does not serialize triples, so the
 	 * parameter must be an ExpResource or ExpLiteral, no ExpData.
+	 *
+	 * @throws InvalidArgumentException
 	 */
-	public static function getTurtleNameForExpElement( ExpElement $expElement ): string {
+	public static function getTurtleNameForExpElement( ?ExpElement $expElement ): string {
 		if ( $expElement instanceof ExpResource ) {
 			if ( $expElement->isBlankNode() ) {
 				return '[]';

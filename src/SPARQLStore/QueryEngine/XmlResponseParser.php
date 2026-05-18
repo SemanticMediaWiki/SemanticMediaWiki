@@ -115,7 +115,7 @@ class XmlResponseParser implements HttpResponseParser {
 		}
 
 		throw new XmlParserException(
-			$this->getLastError(),
+			$this->getLastError() ?? '',
 			$this->getLastLineNumber(),
 			$this->getLastColumnNumber()
 		);

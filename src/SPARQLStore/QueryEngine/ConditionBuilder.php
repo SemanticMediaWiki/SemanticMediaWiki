@@ -500,16 +500,23 @@ class ConditionBuilder {
 
 			$lastDataItem = $propertyChainValue->getLastPropertyChainValue()->getDataItem();
 
+			if ( !$lastDataItem instanceof Property ) {
+				return;
+			}
+
 			$description = $this->descriptionFactory->newSomeProperty(
 				$lastDataItem,
 				$this->descriptionFactory->newThingDescription()
 			);
 
 			foreach ( $propertyChainValue->getPropertyChainValues() as $val ) {
-				$description = $this->descriptionFactory->newSomeProperty(
-					$val->getDataItem(),
-					$description
-				);
+				$property = $val->getDataItem();
+				if ( $property instanceof Property ) {
+					$description = $this->descriptionFactory->newSomeProperty(
+						$property,
+						$description
+					);
+				}
 			}
 
 			// Add and replace Foo.Bar=asc with Bar=asc as we ultimately only

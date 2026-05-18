@@ -79,9 +79,12 @@ class QueryEngine implements QueryEngineInterface {
 		$this->sortKeys = $query->sortkeys;
 		$this->conditionBuilder->setSortKeys( $this->sortKeys );
 
-		$compoundCondition = $this->conditionBuilder->getConditionFrom(
-			$query->getDescription()
-		);
+		$description = $query->getDescription();
+		if ( $description === null ) {
+			return $this->queryResultFactory->newEmptyQueryResult( $query, true );
+		}
+
+		$compoundCondition = $this->conditionBuilder->getConditionFrom( $description );
 
 		$query->addErrors(
 			$this->conditionBuilder->getErrors()
