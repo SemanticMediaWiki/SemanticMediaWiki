@@ -11,6 +11,7 @@ use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
 use SMW\ParserData;
+use SMW\Services\ServicesFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
@@ -47,22 +48,6 @@ class LinksUpdateCompleteTest extends TestCase {
 		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
-			->getMock();
-
-		$store = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->willReturn( $idTable );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 	}
 
 	protected function tearDown(): void {
@@ -71,9 +56,11 @@ class LinksUpdateCompleteTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
+		$servicesFactory = $this->createMock( ServicesFactory::class );
+
 		$this->assertInstanceOf(
 			LinksUpdateComplete::class,
-			new LinksUpdateComplete( $this->namespaceExaminer )
+			new LinksUpdateComplete( $this->namespaceExaminer, $servicesFactory )
 		);
 	}
 
@@ -136,7 +123,8 @@ class LinksUpdateCompleteTest extends TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new LinksUpdateComplete(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			ServicesFactory::getInstance()
 		);
 
 		$instance->setLogger( $this->spyLogger );
@@ -171,7 +159,11 @@ class LinksUpdateCompleteTest extends TestCase {
 		$parserData->expects( $this->once() )
 			->method( 'updateStore' );
 
-		$this->testEnvironment->registerObject( 'ParserData', $parserData );
+		$servicesFactory = $this->createMock( ServicesFactory::class );
+
+		$servicesFactory->expects( $this->once() )
+			->method( 'newParserData' )
+			->willReturn( $parserData );
 
 		$linksUpdate = $this->createMock( LinksUpdate::class );
 
@@ -184,7 +176,8 @@ class LinksUpdateCompleteTest extends TestCase {
 			->willReturn( $parserOutput );
 
 		$instance = new LinksUpdateComplete(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$servicesFactory
 		);
 
 		$instance->setRevisionGuard(
@@ -219,7 +212,11 @@ class LinksUpdateCompleteTest extends TestCase {
 		$parserData->expects( $this->once() )
 			->method( 'updateStore' );
 
-		$this->testEnvironment->registerObject( 'ParserData', $parserData );
+		$servicesFactory = $this->createMock( ServicesFactory::class );
+
+		$servicesFactory->expects( $this->once() )
+			->method( 'newParserData' )
+			->willReturn( $parserData );
 
 		$linksUpdate = $this->createMock( LinksUpdate::class );
 
@@ -236,7 +233,8 @@ class LinksUpdateCompleteTest extends TestCase {
 			->willReturn( false );
 
 		$instance = new LinksUpdateComplete(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$servicesFactory
 		);
 
 		$instance->setRevisionGuard(
@@ -256,8 +254,11 @@ class LinksUpdateCompleteTest extends TestCase {
 		$linksUpdate->expects( $this->never() )
 			->method( 'getTitle' );
 
+		$servicesFactory = $this->createMock( ServicesFactory::class );
+
 		$instance = new LinksUpdateComplete(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$servicesFactory
 		);
 
 		$instance->setLogger( $this->spyLogger );

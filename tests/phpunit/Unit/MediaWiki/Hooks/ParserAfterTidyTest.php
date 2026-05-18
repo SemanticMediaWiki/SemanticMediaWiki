@@ -117,7 +117,7 @@ class ParserAfterTidyTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ParserAfterTidy::class,
-			new ParserAfterTidy( $this->parser, $this->namespaceExaminer, $this->cache )
+			new ParserAfterTidy( $this->parser, $this->namespaceExaminer, $this->cache, $this->applicationFactory )
 		);
 	}
 
@@ -128,7 +128,8 @@ class ParserAfterTidyTest extends TestCase {
 		$instance = new ParserAfterTidy(
 			$this->parser,
 			$this->namespaceExaminer,
-			$this->cache
+			$this->cache,
+			$this->applicationFactory
 		);
 
 		$instance->setLogger( $this->spyLogger );
@@ -166,7 +167,8 @@ class ParserAfterTidyTest extends TestCase {
 		$instance = new ParserAfterTidy(
 			$this->parser,
 			$this->namespaceExaminer,
-			$this->cache
+			$this->cache,
+			$this->applicationFactory
 		);
 
 		$text = '';
@@ -264,7 +266,8 @@ class ParserAfterTidyTest extends TestCase {
 		$instance = new ParserAfterTidy(
 			$parser,
 			$this->namespaceExaminer,
-			$cache
+			$cache,
+			$this->applicationFactory
 		);
 
 		$instance->setHookDispatcher(
@@ -316,7 +319,8 @@ class ParserAfterTidyTest extends TestCase {
 		$instance = new ParserAfterTidy(
 			$this->parser,
 			$this->namespaceExaminer,
-			$this->cache
+			$this->cache,
+			$this->applicationFactory
 		);
 
 		$instance->setHookDispatcher(
@@ -353,7 +357,8 @@ class ParserAfterTidyTest extends TestCase {
 		$instance = new ParserAfterTidy(
 			$parser,
 			$this->namespaceExaminer,
-			$this->cache
+			$this->cache,
+			$this->applicationFactory
 		);
 
 		$instance->setHookDispatcher(
@@ -430,7 +435,8 @@ class ParserAfterTidyTest extends TestCase {
 		$innerInstance = new ParserAfterTidy(
 			$innerParser,
 			$this->namespaceExaminer,
-			$this->cache
+			$this->cache,
+			$this->applicationFactory
 		);
 		$innerInstance->setHookDispatcher( $this->hookDispatcher );
 
@@ -456,7 +462,8 @@ class ParserAfterTidyTest extends TestCase {
 		$outerInstance = new ParserAfterTidy(
 			$outerParser,
 			$this->namespaceExaminer,
-			$this->cache
+			$this->cache,
+			$this->applicationFactory
 		);
 		$outerInstance->setHookDispatcher( $this->hookDispatcher );
 
@@ -524,11 +531,11 @@ class ParserAfterTidyTest extends TestCase {
 
 		$text = '';
 
-		$instanceA = new ParserAfterTidy( $parserA, $this->namespaceExaminer, $this->cache );
+		$instanceA = new ParserAfterTidy( $parserA, $this->namespaceExaminer, $this->cache, $this->applicationFactory );
 		$instanceA->setHookDispatcher( $this->hookDispatcher );
 		$instanceA->process( $text );
 
-		$instanceB = new ParserAfterTidy( $parserB, $this->namespaceExaminer, $this->cache );
+		$instanceB = new ParserAfterTidy( $parserB, $this->namespaceExaminer, $this->cache, $this->applicationFactory );
 		$instanceB->setHookDispatcher( $this->hookDispatcher );
 		$instanceB->process( $text );
 
@@ -588,7 +595,7 @@ class ParserAfterTidyTest extends TestCase {
 		$realParser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
 
 		$text = '';
-		$realInstance = new ParserAfterTidy( $realParser, $this->namespaceExaminer, $this->cache );
+		$realInstance = new ParserAfterTidy( $realParser, $this->namespaceExaminer, $this->cache, $this->applicationFactory );
 		$realInstance->setHookDispatcher( $this->hookDispatcher );
 		$realInstance->process( $text );
 
@@ -666,7 +673,7 @@ class ParserAfterTidyTest extends TestCase {
 		$parser->getOutput()->addCategory( 'Foo', 'Foo' );
 		$parser->getOutput()->setExtensionData( 'smw-semanticdata-status', true );
 
-		$instance = new ParserAfterTidy( $parser, $this->namespaceExaminer, $cache );
+		$instance = new ParserAfterTidy( $parser, $this->namespaceExaminer, $cache, $this->applicationFactory );
 		$instance->setHookDispatcher( $this->hookDispatcher );
 
 		$text = '';
@@ -693,7 +700,8 @@ class ParserAfterTidyTest extends TestCase {
 		$secondInstance = new ParserAfterTidy(
 			$secondParser,
 			$this->namespaceExaminer,
-			$cache
+			$cache,
+			$this->applicationFactory
 		);
 		$secondInstance->setHookDispatcher( $this->hookDispatcher );
 		$secondInstance->process( $text );

@@ -10,7 +10,7 @@ use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Services\ServicesFactory;
 
 /**
  * LinksUpdateComplete hook is called at the end of LinksUpdate()
@@ -34,7 +34,10 @@ class LinksUpdateComplete implements HookListener {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( private NamespaceExaminer $namespaceExaminer ) {
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly ServicesFactory $servicesFactory,
+	) {
 	}
 
 	/**
@@ -65,7 +68,7 @@ class LinksUpdateComplete implements HookListener {
 			return true;
 		}
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$parserData = $this->servicesFactory->newParserData(
 			$title,
 			$linksUpdate->getParserOutput()
 		);
@@ -125,7 +128,7 @@ class LinksUpdateComplete implements HookListener {
 	}
 
 	private function reparseAndFetchSemanticData( Title $title ) {
-		$contentParser = ApplicationFactory::getInstance()->newContentParser( $title );
+		$contentParser = $this->servicesFactory->newContentParser( $title );
 		$parserOutput = $contentParser->parse()->getOutput();
 
 		if ( $parserOutput === null ) {

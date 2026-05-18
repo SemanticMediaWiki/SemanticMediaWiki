@@ -6,11 +6,11 @@ use MediaWiki\Html\Html;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsLookup;
 use Skin;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
-use SMW\Services\ServicesFactory;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
@@ -26,6 +26,14 @@ use SMW\Services\ServicesFactory;
 class BeforePageDisplay implements HookListener {
 
 	use OptionsAwareTrait;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly UserOptionsLookup $userOptionsLookup,
+	) {
+	}
 
 	/**
 	 * @since 3.1
@@ -64,8 +72,7 @@ class BeforePageDisplay implements HookListener {
 		$title = $outputPage->getTitle();
 		$user = $outputPage->getUser();
 		// #2726
-		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
-		if ( $userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {
+		if ( $this->userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {
 			$outputPage->addModules( 'ext.smw.suggester.textInput' );
 		}
 

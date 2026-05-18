@@ -8,7 +8,7 @@ use MediaWiki\User\UserIdentity;
 use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * PageMoveComplete occurs whenever a request to move an article
@@ -31,7 +31,10 @@ class PageMoveComplete implements HookListener {
 	/**
 	 * @since  1.9
 	 */
-	public function __construct( private NamespaceExaminer $namespaceExaminer ) {
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly Store $store,
+	) {
 	}
 
 	/**
@@ -44,11 +47,9 @@ class PageMoveComplete implements HookListener {
 		int $oldId,
 		int $newId
 	): bool {
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		// Delete all data for a non-enabled target NS
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $newTitle->getNamespace() ) || $newId == 0 ) {
-			$applicationFactory->getStore()->deleteSubject(
+			$this->store->deleteSubject(
 				Title::newFromLinkTarget( $oldTitle )
 			);
 		}

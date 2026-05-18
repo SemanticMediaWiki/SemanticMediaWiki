@@ -62,6 +62,7 @@ class ParserAfterTidy implements HookListener {
 		private Parser &$parser,
 		private NamespaceExaminer $namespaceExaminer,
 		private Cache $cache,
+		private readonly ApplicationFactory $servicesFactory,
 	) {
 	}
 
@@ -256,9 +257,7 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function performUpdate( string &$text ): void {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$parserData = $applicationFactory->newParserData(
+		$parserData = $this->servicesFactory->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -266,7 +265,7 @@ class ParserAfterTidy implements HookListener {
 		$semanticData = $parserData->getSemanticData();
 
 		$this->addPropertyAnnotations(
-			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
+			$this->servicesFactory->singleton( 'PropertyAnnotatorFactory' ),
 			$semanticData
 		);
 

@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\PageCreator;
 use SMW\NamespaceExaminer;
-use SMW\Property\SpecificationLookup;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -24,8 +22,7 @@ use SMW\Tests\TestEnvironment;
  */
 class FileUploadTest extends TestCase {
 
-	private $testEnvironment;
-	private $propertySpecificationLookup;
+	private TestEnvironment $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -36,27 +33,6 @@ class FileUploadTest extends TestCase {
 			'smwgMainCacheType'  => 'hash',
 			'smwgEnableUpdateJobs' => false
 		] );
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
-			->getMock();
-
-		$store = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->willReturn( $idTable );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
 	protected function tearDown(): void {
@@ -71,10 +47,13 @@ class FileUploadTest extends TestCase {
 		$hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertInstanceOf(
 			FileUpload::class,
-			new FileUpload( $namespaceExaminer, $hookContainer )
+			new FileUpload( $namespaceExaminer, $hookContainer, $pageCreator )
 		);
 	}
 
@@ -119,13 +98,12 @@ class FileUploadTest extends TestCase {
 			->with( $title )
 			->willReturn( $wikiFilePage );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$instance = new FileUpload(
 			$namespaceExaminer,
 			$this->getMockBuilder( HookContainer::class )
 				->disableOriginalConstructor()
-				->getMock()
+				->getMock(),
+			$pageCreator
 		);
 
 		$reUploadStatus = true;
@@ -161,13 +139,12 @@ class FileUploadTest extends TestCase {
 		$pageCreator->expects( $this->never() ) // <-- never
 			->method( 'createFilePage' );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$instance = new FileUpload(
 			$namespaceExaminer,
 			$this->getMockBuilder( HookContainer::class )
 				->disableOriginalConstructor()
-				->getMock()
+				->getMock(),
+			$pageCreator
 		);
 
 		$instance->process( $file, false );

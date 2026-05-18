@@ -10,9 +10,6 @@ use SMW\Localizer\Message;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
-use SMW\Property\SpecificationLookup;
-use SMW\SQLStore\SQLStore;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -40,30 +37,6 @@ class ArticleProtectCompleteTest extends TestCase {
 
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
-
-		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
-			->getMock();
-
-		$store = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->willReturn( $idTable );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
 		$this->editInfo = $this->getMockBuilder( EditInfo::class )
 			->disableOriginalConstructor()

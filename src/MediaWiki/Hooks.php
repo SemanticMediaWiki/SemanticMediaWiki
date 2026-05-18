@@ -160,7 +160,9 @@ class Hooks {
 	 */
 	public static function registerExtensionCheck( array &$vars ): void {
 		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( OutputPage $outputPage ): bool {
-			$beforePageDisplay = new BeforePageDisplay();
+			$beforePageDisplay = new BeforePageDisplay(
+				MediaWikiServices::getInstance()->getUserOptionsLookup()
+			);
 
 			$beforePageDisplay->setOptions(
 				[
@@ -310,7 +312,8 @@ class Hooks {
 		$parserAfterTidy = new ParserAfterTidy(
 			$parser,
 			$applicationFactory->getNamespaceExaminer(),
-			$applicationFactory->getCache()
+			$applicationFactory->getCache(),
+			$applicationFactory
 		);
 
 		$parserAfterTidy->setLogger(
@@ -385,8 +388,11 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
 	 */
 	public function onSkinAfterContent( string &$data, $skin = null ): bool {
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$skinAfterContent = new SkinAfterContent(
-			$skin
+			$skin,
+			$applicationFactory->getFactboxFactory()
 		);
 
 		$skinAfterContent->setOptions(
@@ -413,7 +419,8 @@ class Hooks {
 		$outputPageParserOutput = new OutputPageParserOutput(
 			$applicationFactory->getNamespaceExaminer(),
 			$permissionExaminer,
-			$applicationFactory->getFactboxText()
+			$applicationFactory->getFactboxText(),
+			$applicationFactory->getFactboxFactory()
 		);
 
 		$preferenceExaminer = $applicationFactory->newPreferenceExaminer( $outputPage->getUser() );
@@ -453,7 +460,9 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 	 */
 	public function onBeforePageDisplay( OutputPage &$outputPage, Skin &$skin ): bool {
-		$beforePageDisplay = new BeforePageDisplay();
+		$beforePageDisplay = new BeforePageDisplay(
+			MediaWikiServices::getInstance()->getUserOptionsLookup()
+		);
 		$setupFile = new SetupFile();
 
 		$beforePageDisplay->setOptions(
@@ -584,7 +593,8 @@ class Hooks {
 			$editInfo,
 			$pageInfoProvider,
 			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
-			$applicationFactory->singleton( 'SchemaFactory' )
+			$applicationFactory->singleton( 'SchemaFactory' ),
+			$applicationFactory->getStore()
 		);
 
 		$revisionFromEditComplete->setEventDispatcher(
@@ -739,7 +749,8 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$pageMoveComplete = new PageMoveComplete(
-			$applicationFactory->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->getStore()
 		);
 
 		$pageMoveComplete->setEventDispatcher(
@@ -760,7 +771,7 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$articlePurge = new ArticlePurge();
+		$articlePurge = new ArticlePurge( $applicationFactory->getCache() );
 
 		$articlePurge->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
@@ -788,7 +799,8 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$articleDelete = new ArticleDelete(
-			$applicationFactory->getStore()
+			$applicationFactory->getStore(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$articleDelete->setEventDispatcher(
@@ -807,7 +819,8 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$linksUpdateConstructed = new LinksUpdateComplete(
-			$applicationFactory->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory
 		);
 
 		$linksUpdateConstructed->setLogger(
@@ -882,7 +895,8 @@ class Hooks {
 	public function onFileUpload( File $file, ?bool $reupload ): bool {
 		$fileUpload = new FileUpload(
 			ApplicationFactory::getInstance()->getNamespaceExaminer(),
-			MediaWikiServices::getInstance()->getHookContainer()
+			MediaWikiServices::getInstance()->getHookContainer(),
+			ApplicationFactory::getInstance()->newPageCreator()
 		);
 
 		return $fileUpload->process( $file, $reupload );
@@ -1236,7 +1250,8 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$articleDelete = new ArticleDelete(
-			$applicationFactory->getStore()
+			$applicationFactory->getStore(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$articleDelete->setEventDispatcher(
@@ -1261,8 +1276,11 @@ class Hooks {
 	 * an IP or user has been processed ..."
 	 */
 	public function onBlockIpComplete( $block, $performer, $priorBlock ): bool {
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$userChange = new UserChange(
-			ApplicationFactory::getInstance()->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$userChange->setOrigin( 'BlockIpComplete' );
@@ -1279,8 +1297,11 @@ class Hooks {
 	 * processed ..."
 	 */
 	public function onUnblockUserComplete( $block, $performer ): bool {
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$userChange = new UserChange(
-			ApplicationFactory::getInstance()->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$userChange->setOrigin( 'UnblockUserComplete' );
@@ -1296,8 +1317,11 @@ class Hooks {
 	 * "... called after user groups are changed ..."
 	 */
 	public function onUserGroupsChanged( $user ): bool {
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$userChange = new UserChange(
-			ApplicationFactory::getInstance()->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$userChange->setOrigin( 'UserGroupsChanged' );

@@ -15,6 +15,7 @@ use SMW\Property\AnnotatorFactory as PropertyAnnotatorFactory;
 use SMW\Schema\Schema;
 use SMW\Schema\SchemaFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * Hook: RevisionFromEditComplete called when a revision was inserted
@@ -42,10 +43,11 @@ class RevisionFromEditComplete implements HookListener {
 	 * @since 1.9
 	 */
 	public function __construct(
-		private EditInfo $editInfo,
-		private PageInfoProvider $pageInfoProvider,
-		private PropertyAnnotatorFactory $propertyAnnotatorFactory,
-		private SchemaFactory $schemaFactory,
+		private readonly EditInfo $editInfo,
+		private readonly PageInfoProvider $pageInfoProvider,
+		private readonly PropertyAnnotatorFactory $propertyAnnotatorFactory,
+		private readonly SchemaFactory $schemaFactory,
+		private readonly Store $store,
 	) {
 	}
 
@@ -61,9 +63,7 @@ class RevisionFromEditComplete implements HookListener {
 			return true;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$parserData = $applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$title,
 			$parserOutput
 		);
@@ -82,7 +82,7 @@ class RevisionFromEditComplete implements HookListener {
 
 		// If the concept was altered make sure to delete the cache
 		if ( $title->getNamespace() === SMW_NS_CONCEPT ) {
-			$applicationFactory->getStore()->deleteConceptCache( $title );
+			$this->store->deleteConceptCache( $title );
 		}
 
 		$parserData->copyToParserOutput();
