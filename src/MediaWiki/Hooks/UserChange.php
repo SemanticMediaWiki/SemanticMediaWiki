@@ -5,9 +5,9 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/BlockIpComplete
@@ -32,7 +32,10 @@ class UserChange implements HookListener {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( private readonly NamespaceExaminer $namespaceExaminer ) {
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly JobFactory $jobFactory,
+	) {
 	}
 
 	/**
@@ -64,7 +67,7 @@ class UserChange implements HookListener {
 			$user = $user->getName();
 		}
 
-		$updateJob = ApplicationFactory::getInstance()->newJobFactory()->newUpdateJob(
+		$updateJob = $this->jobFactory->newUpdateJob(
 			Title::newFromText( $user, NS_USER ),
 			[
 				UpdateJob::FORCED_UPDATE => true,

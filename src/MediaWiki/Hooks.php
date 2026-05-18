@@ -1276,8 +1276,11 @@ class Hooks {
 	 * an IP or user has been processed ..."
 	 */
 	public function onBlockIpComplete( $block, $performer, $priorBlock ): bool {
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$userChange = new UserChange(
-			ApplicationFactory::getInstance()->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$userChange->setOrigin( 'BlockIpComplete' );
@@ -1294,8 +1297,11 @@ class Hooks {
 	 * processed ..."
 	 */
 	public function onUnblockUserComplete( $block, $performer ): bool {
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$userChange = new UserChange(
-			ApplicationFactory::getInstance()->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$userChange->setOrigin( 'UnblockUserComplete' );
@@ -1311,8 +1317,11 @@ class Hooks {
 	 * "... called after user groups are changed ..."
 	 */
 	public function onUserGroupsChanged( $user ): bool {
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$userChange = new UserChange(
-			ApplicationFactory::getInstance()->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$userChange->setOrigin( 'UserGroupsChanged' );

@@ -8,7 +8,6 @@ use SMW\MediaWiki\Hooks\UserChange;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\NamespaceExaminer;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\UserChange
@@ -22,13 +21,10 @@ use SMW\Tests\TestEnvironment;
 class UserChangeTest extends TestCase {
 
 	private $namespaceExaminer;
-	private $testEnvironment;
 	private $jobFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
@@ -37,19 +33,12 @@ class UserChangeTest extends TestCase {
 		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			UserChange::class,
-			new UserChange( $this->namespaceExaminer )
+			new UserChange( $this->namespaceExaminer, $this->jobFactory )
 		);
 	}
 
@@ -68,7 +57,8 @@ class UserChangeTest extends TestCase {
 			->willReturn( true );
 
 		$instance = new UserChange(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->jobFactory
 		);
 
 		$instance->setOrigin( 'Foo' );
@@ -101,7 +91,8 @@ class UserChangeTest extends TestCase {
 			->willReturn( true );
 
 		$instance = new UserChange(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->jobFactory
 		);
 
 		$instance->setOrigin( 'Foo' );
@@ -121,7 +112,8 @@ class UserChangeTest extends TestCase {
 			->willReturn( false );
 
 		$instance = new UserChange(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->jobFactory
 		);
 
 		$this->assertFalse(
