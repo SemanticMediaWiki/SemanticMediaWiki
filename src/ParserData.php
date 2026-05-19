@@ -311,13 +311,6 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 3.0, use copyToParserOutput
-	 */
-	public function pushSemanticDataToParserOutput(): void {
-		$this->copyToParserOutput();
-	}
-
-	/**
 	 * @since 3.0
 	 */
 	public function markParserOutput(): void {

@@ -875,14 +875,6 @@ abstract class DataValue {
 	}
 
 	/**
-	 * @deprecated since 3.0, use DataValue::hasFeature
-	 * @since 2.4
-	 */
-	public function isEnabledFeature( $feature ) {
-		return $this->hasFeature( $feature );
-	}
-
-	/**
 	 * @since 2.5
 	 */
 	protected function getOptions(): ?Options {

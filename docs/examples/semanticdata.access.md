@@ -44,7 +44,7 @@ foreach ( $values as $value ) {
 }
 
 // Ensures that objects are pushed to the ParserOutput
-$parserData->pushSemanticDataToParserOutput();
+$parserData->copyToParserOutput();
 ```
 
 ## Access semantic data currently stored in-memory

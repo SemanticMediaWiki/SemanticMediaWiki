@@ -77,7 +77,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 		}
 
 		// Update ParserOutput
-		$this->parserData->pushSemanticDataToParserOutput();
+		$this->parserData->copyToParserOutput();
 
 		$this->messageFormatter->addFromArray(
 			$this->parserData->getErrors()

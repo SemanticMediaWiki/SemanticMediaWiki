@@ -33,14 +33,6 @@ abstract class TaskHandler {
 	protected bool $isApiTask = false;
 
 	/**
-	 * @deprecated since 3.1, use TaskHandler::hasFeature
-	 * @since 2.5
-	 */
-	public function isEnabledFeature( int $feature ): bool {
-		return $this->hasFeature( $feature );
-	}
-
-	/**
 	 * @since 3.1
 	 */
 	public function hasFeature( int $feature ): bool {

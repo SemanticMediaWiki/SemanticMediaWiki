@@ -50,7 +50,7 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 
 	private function doValidateCodifiedPreferredPropertyLabelConstraints( DataValue $dataValue ): void {
 		// Annotated but not enabled
-		if ( !$dataValue->isEnabledFeature( SMW_DV_PPLB ) ) {
+		if ( !$dataValue->hasFeature( SMW_DV_PPLB ) ) {
 			$dataValue->addErrorMsg(
 				[
 					'smw-datavalue-feature-not-supported',
