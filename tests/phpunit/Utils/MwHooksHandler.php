@@ -27,9 +27,7 @@ class MwHooksHandler {
 	private $inTestRegisteredHooks = [];
 
 	private $listOfSmwHooks = [
-		'SMWStore::updateDataBefore',
 		'SMW::Store::BeforeDataUpdateComplete',
-		'SMWStore::updateDataAfter',
 		'SMW::Store::AfterDataUpdateComplete',
 
 		// Those shoudl not be disabled so that extension used

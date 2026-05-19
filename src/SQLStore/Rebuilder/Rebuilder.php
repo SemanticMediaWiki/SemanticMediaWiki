@@ -183,9 +183,6 @@ class Rebuilder {
 
 		$this->matchAsSubject( $id, $emptyRange );
 
-		// Deprecated since 2.3, use 'SMW::SQLStore::BeforeDataRebuildJobInsert'
-		$this->hookContainer->run( 'smwRefreshDataJobs', [ &$this->updateJobs ] );
-
 		$this->hookContainer->run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', [ $this->store, &$this->updateJobs ] );
 
 		if ( $this->getOption( 'use-job' ) ) {

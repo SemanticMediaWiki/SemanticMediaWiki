@@ -72,13 +72,9 @@ Implementing a hook should be made in consideration of the expected performance 
 - `smwInitDatatypes` (since 1.9)
 - `smwInitProperties` (since 2.1)
 - `smwShowFactbox` (since 2.1)
-- `smwRefreshDataJobs` (since 2.3)
 - `smwUpdatePropertySubjects` (since 1.9)
 - `smwAddToRDFExport` (since 3.0)
 - `SMWSQLStore3::updateDataBefore` (since 3.1)
-- `SMWSQLStore3::updateDataAfter` (since 2.3)
-- `SMWStore::updateDataBefore` (since 3.1)
-- `SMWStore::updateDataAfter` (since 3.1)
 - `SMWResultFormat` (since 3.1)
 
 [hooks]: https://www.mediawiki.org/wiki/Hooks "Manual:Hooks"

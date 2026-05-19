@@ -1,5 +1,5 @@
 * Since: 3.1
-* Description: Hook to extend the `SemanticData` object before the update is completed. (`SMWStore::updateDataBefore` was deprecated with 3.1)
+* Description: Hook to extend the `SemanticData` object before the update is completed.
 * Reference class: [`Store.php`][Store.php]
 
 ### Signature
