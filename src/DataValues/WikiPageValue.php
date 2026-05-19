@@ -364,7 +364,7 @@ class WikiPageValue extends DataValue {
 		$caption = $this->m_caption === false ? $this->getShortCaptionText() : $this->m_caption;
 		$caption = Sanitizer::removeSomeTags( $caption );
 
-		if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
+		if ( $this->m_dataitem->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
 		}
 
@@ -448,7 +448,7 @@ class WikiPageValue extends DataValue {
 
 		if ( $linker === null || $linker === false || $this->m_outformat == '-' ) {
 			return call_user_func( $sanitizerCallback, $this->getWikiValue() );
-		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case is really needed
+		} elseif ( $this->m_dataitem->getNamespace() == NS_MEDIA ) { // this extra case is really needed
 			return $linker->makeMediaLinkObj(
 				$this->getTitle(),
 				call_user_func( $sanitizerCallback, $this->getLongCaptionText() )
@@ -567,46 +567,6 @@ class WikiPageValue extends DataValue {
 	}
 
 	/**
-	 * @deprecated since 3.1
-	 *
-	 * Get MediaWiki's ID for this value or 0 if not available.
-	 *
-	 * @return int
-	 */
-	private function getArticleID() {
-		if ( $this->m_id === -1 ) {
-			$this->m_id = $this->getTitle() !== null ? $this->m_title->getArticleID() : 0;
-		}
-
-		return $this->m_id;
-	}
-
-	/**
-	 * @deprecated since 3.1
-	 *
-	 * Get namespace constant for this value.
-	 *
-	 * @return int
-	 */
-	private function getNamespace() {
-		return $this->m_dataitem->getNamespace();
-	}
-
-	/**
-	 * @deprecated since 3.1
-	 *
-	 * Get DBKey for this value. Subclasses that allow for values that do not
-	 * correspond to wiki pages may choose a DB key that is not a legal title
-	 * DB key but rather another suitable internal ID. Thus it is not suitable
-	 * to use this method in places where only MediaWiki Title keys are allowed.
-	 *
-	 * @return string
-	 */
-	private function getDBkey() {
-		return $this->m_dataitem->getDBkey();
-	}
-
-	/**
 	 * Get text label for this value, just like Title::getText().
 	 *
 	 * @return string
@@ -644,17 +604,6 @@ class WikiPageValue extends DataValue {
 		}
 
 		return $this->m_prefixedtext;
-	}
-
-	/**
-	 * @deprecated since 3.1
-	 *
-	 * Get interwiki prefix or empty string.
-	 *
-	 * @return string
-	 */
-	private function getInterwiki() {
-		return $this->m_dataitem->getInterwiki();
 	}
 
 	/**

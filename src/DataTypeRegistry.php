@@ -258,13 +258,6 @@ class DataTypeRegistry {
 	}
 
 	/**
-	 * @deprecated since 3.0, use DataTypeRegistry::findTypeByLabel
-	 */
-	public function findTypeId( $label ) {
-		return $this->findTypeByLabel( $label );
-	}
-
-	/**
 	 * Look up the ID that identifies the datatype of the given label
 	 * internally. This id is used for all internal operations. If the
 	 * label does not belong to a known type, the empty string is returned.

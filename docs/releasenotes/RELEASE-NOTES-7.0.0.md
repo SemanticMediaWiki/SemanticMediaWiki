@@ -219,6 +219,21 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   * `DataTypeRegistry::getDataItemId()` — use `getDataItemByType()`
   * `DataTypeRegistry::getDefaultDataItemTypeId()` — use `getDefaultDataItemByType()`
   * `QueryResult::getLink()` — use `getQueryLink()`
+  * `PropertyRegistry::isKnownPropertyId()` — use `isRegistered()` (deprecated since 3.0)
+  * `PropertyRegistry::getPropertyTypeId()` — use `getPropertyValueTypeById()` (deprecated since 3.0)
+  * `PropertyRegistry::registerPropertyDescriptionMsgKeyById()` — use `registerPropertyDescriptionByMsgKey()` (deprecated since 3.0)
+  * `ParserData::setSemanticDataStateToParserOutputProperty()` — use `copyToParserOutput()` (deprecated since 3.0)
+  * `ChangeOp::getCombinedIdListOfChangedEntities()` — use `getChangedEntityIdSummaryList()` (deprecated since 3.0)
+  * `TableChangeOp::getFixedPropertyValueBy()` — use `getFixedPropertyValByField()` (deprecated since 3.0)
+  * `DataTypeRegistry::findTypeId()` — use `findTypeByLabel()` (deprecated since 3.0)
+  * `DataValue::checkAllowedValues()` — use `checkConstraints()` (deprecated since 3.1)
+  * `EntityIdManager::getDataItemPoolHashListFor()` — use `getDataItemsFromList()` (deprecated since 3.0)
+  * `CallableUpdate::enabledDeferredUpdate()` — use `isDeferrableUpdate()` (deprecated since 3.0)
+  * `TaskHandler::setEnabledFeatures()` — use `setFeatureSet()` (deprecated since 3.1)
+  * `MwCollaboratorFactory::newEditInfoProvider()` — use `newEditInfo()` (deprecated since 3.1)
+  * `LocalLanguage::fetchByLanguageCode()` — use `fetch()` (deprecated since 3.0)
+  * `LocalLanguage::getPropertyId()`, `findMonth()`, `getMonthLabel()` — use `getPropertyIdByLabel()`, `findMonthNumberByLabel()`, `getMonthLabelByNumber()`
+  * `LoadBalancerConnectionProvider::asConnectionRef()` (deprecated since 5.0)
 
 ### Deprecations
 

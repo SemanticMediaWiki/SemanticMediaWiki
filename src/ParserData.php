@@ -332,13 +332,6 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 3.0, use pushSemanticDataToParserOutput
-	 */
-	public function setSemanticDataStateToParserOutputProperty(): void {
-		$this->markParserOutput();
-	}
-
-	/**
 	 * @since 2.5
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ): bool {

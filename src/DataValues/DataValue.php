@@ -927,13 +927,6 @@ abstract class DataValue {
 	}
 
 	/**
-	 * @deprecated since 3.1, use DataValue::checkConstraints
-	 */
-	protected function checkAllowedValues(): void {
-		$this->checkConstraints();
-	}
-
-	/**
 	 * @since 3.1
 	 */
 	public function checkConstraints(): void {

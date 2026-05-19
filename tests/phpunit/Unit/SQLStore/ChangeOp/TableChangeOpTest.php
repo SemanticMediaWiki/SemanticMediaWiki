@@ -45,7 +45,7 @@ class TableChangeOpTest extends TestCase {
 		);
 
 		$this->assertNull(
-			$instance->getFixedPropertyValueBy( 'key' )
+			$instance->getFixedPropertyValByField( 'key' )
 		);
 
 		$this->assertIsArray(
@@ -101,7 +101,7 @@ class TableChangeOpTest extends TestCase {
 
 		$this->assertSame(
 			'_MDAT',
-			$instance->getFixedPropertyValueBy( 'key' )
+			$instance->getFixedPropertyValByField( 'key' )
 		);
 	}
 

@@ -176,7 +176,7 @@ class CallableUpdateTest extends TestCase {
 
 		$instance->setLogger( $this->spyLogger );
 
-		$instance->enabledDeferredUpdate( false );
+		$instance->isDeferrableUpdate( false );
 		$instance->pushUpdate();
 	}
 

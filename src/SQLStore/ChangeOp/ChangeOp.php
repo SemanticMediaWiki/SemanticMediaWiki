@@ -316,16 +316,6 @@ class ChangeOp implements IteratorAggregate {
 		return array_keys( $this->getChangedEntityIdListByType() );
 	}
 
-	/**
-	 * @deprecated since 3.0, use ChangeOp::getChangedEntityIdSummaryList
-	 * @since 2.3
-	 *
-	 * @return array
-	 */
-	public function getCombinedIdListOfChangedEntities(): array {
-		return $this->getChangedEntityIdSummaryList();
-	}
-
 	private function addToIdList( array &$list, $value ): void {
 		foreach ( $value as $element ) {
 

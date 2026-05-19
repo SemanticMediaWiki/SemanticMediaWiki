@@ -48,14 +48,6 @@ abstract class TaskHandler {
 	}
 
 	/**
-	 * @deprecated since 3.1, use TaskHandler::setFeatureSet
-	 * @since 2.5
-	 */
-	public function setEnabledFeatures( int $enabledFeatures ): void {
-		$this->setFeatureSet( $enabledFeatures );
-	}
-
-	/**
 	 * @since 3.1
 	 */
 	public function setFeatureSet( int $featureSet ): void {

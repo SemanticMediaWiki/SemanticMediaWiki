@@ -214,11 +214,11 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$row->s_id = 1001;
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemPoolHashListFor' ] )
+			->setMethods( [ 'getDataItemsFromList' ] )
 			->getMock();
 
 		$idTable->expects( $this->once() )
-			->method( 'getDataItemPoolHashListFor' );
+			->method( 'getDataItemsFromList' );
 
 		$capturedWheres = [];
 		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );
@@ -286,11 +286,11 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$row->s_id = 1001;
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemPoolHashListFor' ] )
+			->setMethods( [ 'getDataItemsFromList' ] )
 			->getMock();
 
 		$idTable->expects( $this->once() )
-			->method( 'getDataItemPoolHashListFor' );
+			->method( 'getDataItemsFromList' );
 
 		$capturedWheres = [];
 		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ], $capturedWheres );

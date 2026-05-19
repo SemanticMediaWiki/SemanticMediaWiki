@@ -339,7 +339,7 @@ class PropertyRegistryTest extends TestCase {
 
 		$this->assertEquals(
 			'__typ',
-			$instance->getPropertyTypeId( '_TYPE' )
+			$instance->getPropertyValueTypeById( '_TYPE' )
 		);
 	}
 
@@ -379,7 +379,7 @@ class PropertyRegistryTest extends TestCase {
 
 		$this->assertSame(
 			'',
-			$instance->getPropertyTypeId( '_UnknownId' )
+			$instance->getPropertyValueTypeById( '_UnknownId' )
 		);
 
 		$this->assertFalse(
@@ -490,7 +490,7 @@ class PropertyRegistryTest extends TestCase {
 			$propertyAliases
 		);
 
-		$instance->registerPropertyDescriptionMsgKeyById( '_foo', 'bar' );
+		$instance->registerPropertyDescriptionByMsgKey( '_foo', 'bar' );
 
 		$this->assertEquals(
 			'bar',

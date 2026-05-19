@@ -218,7 +218,7 @@ class EntityLookupTaskHandlerTest extends TestCase {
 			$this->outputFormatter
 		);
 
-		$instance->setEnabledFeatures( SMW_ADM_DISPOSAL );
+		$instance->setFeatureSet( SMW_ADM_DISPOSAL );
 		$instance->setUser( $user );
 
 		$instance->handleRequest( $webRequest );
