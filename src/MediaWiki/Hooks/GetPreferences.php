@@ -76,7 +76,6 @@ class GetPreferences implements HookListener {
 	public function process( User $user, array &$preferences ): bool {
 		$otherPreferences = [];
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
-		$this->permissionExaminer->setUser( $user );
 
 		$html = $this->makeImage( Logo::get( 'small' ) );
 		$html .= wfMessage( 'smw-prefs-intro-text' )->parseAsBlock();
