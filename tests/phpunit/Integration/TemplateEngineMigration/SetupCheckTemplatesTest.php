@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
  * Renders the SetupCheck Mustache templates through MediaWiki core's
  * TemplateParser to verify their view-model contracts and escaping behaviour.
  *
+ * @coversNothing
  * @group semantic-mediawiki
  * @group medium
  *

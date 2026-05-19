@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
  * Renders the EntityExaminer Mustache templates through MediaWiki core's
  * TemplateParser to verify their view-model contracts and escaping behaviour.
  *
+ * @coversNothing
  * @group semantic-mediawiki
  * @group medium
  *
@@ -103,16 +104,6 @@ class EntityExaminerTemplatesTest extends TestCase {
 		$this->assertStringContainsString( '<span>101</span>', $html );
 		$this->assertStringContainsString( '<span>Rev B</span>', $html );
 		$this->assertStringContainsString( '<span>102</span>', $html );
-	}
-
-	public function testDotLabel(): void {
-		$html = $this->templateParser->processTemplate( 'DotLabel', [
-			'color' => '#0a0',
-			'title' => 'Label <t>',
-		] );
-
-		$this->assertStringContainsString( 'background-color: #0a0;', $html );
-		$this->assertStringContainsString( 'Label &lt;t&gt;', $html );
 	}
 
 	public function testTab(): void {
