@@ -393,10 +393,17 @@ HTML;
 <div class="nav sticky" style=" border-bottom: 4px solid #dd3d31;">
 <span class="nav-info" style="background-color:#dd3d31">Error</span>
 <h1 style="color:#222;margin-left:18px;padding-top:20px;"><img style='margin-top: 2px;margin-right:10px;margin-left:2px;float:left;' src='/extensions/SemanticMediaWiki/res/smw/assets/logo_small.svg' height='25' width='30'>Semantic MediaWiki</h1></div>
-<div class="content"><!--paragraph--><p><a href='https://www.semantic-mediawiki.org/'>Semantic MediaWiki</a> was installed and enabled but is missing an appropriate <a href='https://www.semantic-mediawiki.org/wiki/Help:Upgrade_key'>upgrade key</a>.</p><!--version--><h4>Version</h4><p><div style="margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">Semantic MediaWiki:</div><div>4.0.0&nbsp;(test-upgrade-key)</div></div><!-- ROW --><div style="margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">MediaWiki:</div><div>1.43.0</div></div><!-- ROW --><div style="margin-top:10px;margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">Code:</div><div><a href="https://www.semantic-mediawiki.org/wiki/Help:Setup_check/ERROR_SCHEMA_INVALID_KEY">ERROR_SCHEMA_INVALID_KEY</a></div></div></p>
-<!--section--><h3 class="section"><span class="title">Why do I see this page?</span></h3><!--paragraph--><p>Semantic MediaWiki's internal database structure has changed and requires some adjustments to be fully functional. There can be several reasons including:<ul><li>Changes to the list of fixed properties and may require additional table(s)</li><li>Changes to the overall table structure or indices requirements</li><li>Changes to the selected storage or query engine</li><li>Changes to the required <a href='https://www.semantic-mediawiki.org/wiki/Entity_collation'>entity collation</a></li></ul></p><!--section--><h3 class="section"><span class="title">How can I fix this error?</span></h3><!--paragraph--><p>An administrator (or any person with administrator rights) has to run either MediaWiki's <a href='https://www.mediawiki.org/wiki/Manual:Update.php'>update.php</a> or Semantic MediaWiki's <a href='https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php'>setupStore.php</a> maintenance script.</p><!--paragraph--><p>You may also consult the following pages for further assistance:<ul><li><a href='https://www.semantic-mediawiki.org/wiki/Help:Installation'>Installation</a> instructions</li><li><a href='https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting'>Troubleshooting</a> help page</li></ul></p></div>
+<div class="content"><!--paragraph--><p><a href='https://www.semantic-mediawiki.org/'>Semantic MediaWiki</a> was installed and enabled but is missing an appropriate <a href='https://www.semantic-mediawiki.org/wiki/Help:Upgrade_key'>upgrade key</a>.</p>
+<!--version--><h4>Version</h4><p><div style="margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">Semantic MediaWiki:</div><div>4.0.0&nbsp;(test-upgrade-key)</div></div><!-- ROW --><div style="margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">MediaWiki:</div><div>1.43.0</div></div><!-- ROW --><div style="margin-top:10px;margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">Code:</div><div><a href="https://www.semantic-mediawiki.org/wiki/Help:Setup_check/ERROR_SCHEMA_INVALID_KEY">ERROR_SCHEMA_INVALID_KEY</a></div></div></p>
+<!--section--><h3 class="section"><span class="title">Why do I see this page?</span></h3>
+<!--paragraph--><p>Semantic MediaWiki's internal database structure has changed and requires some adjustments to be fully functional. There can be several reasons including:<ul><li>Changes to the list of fixed properties and may require additional table(s)</li><li>Changes to the overall table structure or indices requirements</li><li>Changes to the selected storage or query engine</li><li>Changes to the required <a href='https://www.semantic-mediawiki.org/wiki/Entity_collation'>entity collation</a></li></ul></p>
+<!--section--><h3 class="section"><span class="title">How can I fix this error?</span></h3>
+<!--paragraph--><p>An administrator (or any person with administrator rights) has to run either MediaWiki's <a href='https://www.mediawiki.org/wiki/Manual:Update.php'>update.php</a> or Semantic MediaWiki's <a href='https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php'>setupStore.php</a> maintenance script.</p>
+<!--paragraph--><p>You may also consult the following pages for further assistance:<ul><li><a href='https://www.semantic-mediawiki.org/wiki/Help:Installation'>Installation</a> instructions</li><li><a href='https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting'>Troubleshooting</a> help page</li></ul></p>
+</div>
 </body>
 </html>
+
 HTML;
 
 	private const SETUP_CHECK_CLI = <<<'HTML'
@@ -405,6 +412,7 @@ Semantic MediaWiki
 
 Semantic MediaWiki was installed and enabled but is missing an
 appropriate upgrade key.
+
 
 Version
 
@@ -415,6 +423,7 @@ Code:ERROR_SCHEMA_INVALID_KEY
 
 Why do I see this page?
 
+
 Semantic MediaWiki's internal database structure has changed and requires
 some adjustments to be fully functional. There can be several reasons
 including:Changes to the list of fixed properties and may require
@@ -422,11 +431,14 @@ additional table(s)Changes to the overall table structure or indices
 requirementsChanges to the selected storage or query engineChanges to the
 required entity collation
 
+
 How can I fix this error?
+
 
 An administrator (or any person with administrator rights) has to run
 either MediaWiki's update.php or Semantic MediaWiki's setupStore.php
 maintenance script.
+
 
 You may also consult the following pages for further
 assistance:Installation instructionsTroubleshooting help page
