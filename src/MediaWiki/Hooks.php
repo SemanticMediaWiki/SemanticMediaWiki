@@ -423,12 +423,14 @@ class Hooks {
 			$applicationFactory->getFactboxFactory()
 		);
 
-		$preferenceExaminer = $applicationFactory->newPreferenceExaminer( $outputPage->getUser() );
-
 		$outputPageParserOutput->setIndicatorRegistry(
 			$applicationFactory->create(
 				'IndicatorRegistry',
-				$preferenceExaminer->hasPreferenceOf( GetPreferences::SHOW_ENTITY_ISSUE_PANEL )
+				(bool)$applicationFactory->getUserOptionsLookup()->getOption(
+					$outputPage->getUser(),
+					GetPreferences::SHOW_ENTITY_ISSUE_PANEL,
+					false
+				)
 			)
 		);
 
@@ -484,12 +486,9 @@ class Hooks {
 	public function onSpecialSearchResultsPrepend( $specialSearch, $outputPage, $term ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
-			$outputPage->getUser()
-		);
-
 		$specialSearchResultsPrepend = new SpecialSearchResultsPrepend(
-			$preferenceExaminer,
+			$applicationFactory->getUserOptionsLookup(),
+			$outputPage->getUser(),
 			$specialSearch,
 			$outputPage
 		);
@@ -974,15 +973,12 @@ class Hooks {
 			$user
 		);
 
-		$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
-			$user
-		);
-
 		$personalUrls = new PersonalUrls(
 			$skinTemplate,
 			$applicationFactory->getJobQueue(),
 			$permissionExaminer,
-			$preferenceExaminer
+			$applicationFactory->getUserOptionsLookup(),
+			$user
 		);
 
 		$personalUrls->setOptions(
@@ -1009,15 +1005,12 @@ class Hooks {
 				$user
 			);
 
-			$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
-				$user
-			);
-
 			$personalUrls = new PersonalUrls(
 				$skinTemplate,
 				$applicationFactory->getJobQueue(),
 				$permissionExaminer,
-				$preferenceExaminer
+				$applicationFactory->getUserOptionsLookup(),
+				$user
 			);
 
 			$personalUrls->setOptions(
@@ -1121,14 +1114,11 @@ class Hooks {
 			$user
 		);
 
-		$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
-			$user
-		);
-
 		$editPageForm = new EditPageForm(
 			$applicationFactory->getNamespaceExaminer(),
 			$permissionExaminer,
-			$preferenceExaminer
+			$applicationFactory->getUserOptionsLookup(),
+			$user
 		);
 
 		$editPageForm->setOptions(
