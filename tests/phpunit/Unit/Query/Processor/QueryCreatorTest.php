@@ -90,6 +90,70 @@ class QueryCreatorTest extends TestCase {
 		return $provider;
 	}
 
+	public function testOrderNoneProducesUnsortedQuery(): void {
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$query = $instance->create( '[[Foo::Bar]]', [ 'order' => [ 'none' ] ] );
+
+		$this->assertSame( [], $query->getSortKeys() );
+	}
+
+	public function testOrderNoneOverridesAnExplicitSort(): void {
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[ 'sort' => [ 'SomeProperty' ], 'order' => [ 'none' ] ]
+		);
+
+		$this->assertSame( [], $query->getSortKeys() );
+	}
+
+	public function testOrderNoneWithCursorIsRejectedWithError(): void {
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// base64url of {"v":1,"sort":"Foo","id":42}
+		$token = 'eyJ2IjoxLCJzb3J0IjoiRm9vIiwiaWQiOjQyfQ';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[ 'order' => [ 'none' ], 'cursor' => $token ]
+		);
+
+		$this->assertNotEmpty( $query->getErrors() );
+		$this->assertNull( $query->getCursorAfter() );
+	}
+
+	public function testOrderNoneInAnySlotDisablesSortingForTheWholeQuery(): void {
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// `none` in any order slot makes the whole query unsorted.
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[ 'sort' => [ '', 'SomeProperty' ], 'order' => [ 'asc', 'none' ] ]
+		);
+
+		$this->assertSame( [], $query->getSortKeys() );
+	}
+
+	public function testOrderNoneSetsTheSortDisabledOption(): void {
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		$query = $instance->create( '[[Foo::Bar]]', [ 'order' => [ 'none' ] ] );
+
+		$this->assertTrue( $query->getOption( Query::SORT_DISABLED ) );
+	}
+
 	public function testCursorParamWithDefaultSortDecodesAndAppliesPayload(): void {
 		$instance = new QueryCreator(
 			ApplicationFactory::getInstance()->getQueryFactory()

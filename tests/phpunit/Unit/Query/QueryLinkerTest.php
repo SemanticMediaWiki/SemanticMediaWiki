@@ -74,6 +74,34 @@ class QueryLinkerTest extends TestCase {
 		);
 	}
 
+	public function testGetParametersFromQueryReEmitsOrderNoneWhenSortDisabled(): void {
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getExtraPrintouts' )
+			->willReturn( [] );
+
+		$query->expects( $this->any() )
+			->method( 'getSortKeys' )
+			->willReturn( [] );
+
+		$query->expects( $this->any() )
+			->method( 'getOption' )
+			->willReturnCallback( static function ( $key ) {
+				return $key === Query::SORT_DISABLED;
+			} );
+
+		$link = QueryLinker::get( $query );
+		$link->setCompactLink( false );
+
+		$this->assertStringContainsString(
+			'order=none',
+			$link->getLocalURL()
+		);
+	}
+
 	public function sortOrderProvider() {
 		yield [
 			[ '_MDAT' => 'DESC' ],

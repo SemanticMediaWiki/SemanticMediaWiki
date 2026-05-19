@@ -120,6 +120,12 @@ class QueryStringifier {
 	 * @return mixed[][][]|string[][]
 	 */
 	private static function sortKeys( Query $query ): array {
+		// `order=none` carries no sort keys; re-emit the directive explicitly
+		// so a re-serialised query stays unsorted.
+		if ( $query->getOption( Query::SORT_DISABLED ) ) {
+			return [ [], [ 'none' ] ];
+		}
+
 		$sort = [];
 		$order = [];
 

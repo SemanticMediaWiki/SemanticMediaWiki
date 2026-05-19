@@ -145,6 +145,10 @@ class QueryCreator implements QueryContext {
 			$sortKeys['keys']
 		);
 
+		if ( $this->isUnsortedRequested() ) {
+			$query->setOption( Query::SORT_DISABLED, true );
+		}
+
 		$this->applyCursorIfRequested( $query, $sortKeys['keys'] );
 
 		return $query;
@@ -180,6 +184,15 @@ class QueryCreator implements QueryContext {
 	private function applyCursorIfRequested( Query $query, array $sortKeys ): void {
 		$token = (string)$this->getParam( 'cursor', '' );
 		if ( $token === '' ) {
+			return;
+		}
+
+		// `order=none` yields an unsorted query; keyset pagination needs a
+		// stable order to seek past, so the combination is rejected.
+		if ( $this->isUnsortedRequested() ) {
+			$query->addErrors( [
+				'Cursor pagination (`cursor=`) is not supported with `order=none`. Remove `cursor=` or choose an explicit sort.'
+			] );
 			return;
 		}
 
@@ -373,6 +386,13 @@ class QueryCreator implements QueryContext {
 
 		$orders = $this->normalize_order( $orderParameters );
 
+		// `order=none` disables sorting entirely. An empty sort-key map
+		// makes the query engine emit no ORDER BY clause, so the result
+		// LIMIT can short-circuit instead of sorting the whole set.
+		if ( in_array( 'NONE', $orders, true ) ) {
+			return [ 'keys' => [], 'errors' => [] ];
+		}
+
 		foreach ( $sortParameters as $sort ) {
 			$sortKey = false;
 
@@ -412,7 +432,14 @@ class QueryCreator implements QueryContext {
 	}
 
 	/**
-	 * @return 'ASC'[]|'DESC'[]|'RANDOM'[]
+	 * Whether the request asked for an unsorted query via `order=none`.
+	 */
+	private function isUnsortedRequested(): bool {
+		return in_array( 'NONE', $this->normalize_order( $this->getParam( 'order', [] ) ), true );
+	}
+
+	/**
+	 * @return 'ASC'[]|'DESC'[]|'RANDOM'[]|'NONE'[]
 	 */
 	private function normalize_order( array $orderParameters ): array {
 		$orders = [];
@@ -423,6 +450,8 @@ class QueryCreator implements QueryContext {
 				$orders[$key] = 'DESC';
 			} elseif ( ( $order == 'random' ) || ( $order == 'rand' ) ) {
 				$orders[$key] = 'RANDOM';
+			} elseif ( $order == 'none' ) {
+				$orders[$key] = 'NONE';
 			} else {
 				$orders[$key] = 'ASC';
 			}
