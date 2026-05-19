@@ -17,6 +17,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
+use UnexpectedValueException;
 
 /**
  * @license GPL-2.0-or-later
@@ -184,6 +185,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		if ( $propertyExpElement instanceof ExpNsResource ) {
 			$namespaces[$propertyExpElement->getNamespaceId()] = $propertyExpElement->getNamespace();
+		}
+
+		if ( $propertyExpElement === null ) {
+			throw new UnexpectedValueException(
+				'Expected ExpElement for property representation'
+			);
 		}
 
 		return TurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
