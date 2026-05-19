@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\IndicatorEntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
@@ -28,6 +29,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestC
 	private $errorLookup;
 	private $messageLocalizer;
 	private $entityCache;
+	private $templateParser;
 	private $testEnvironment;
 
 	protected function setUp(): void {
@@ -59,6 +61,10 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestC
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
 			->willReturn( 'foo' );
+
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -69,17 +75,17 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestC
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ConstraintErrorEntityExaminerDeferrableIndicatorProvider::class,
-			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache )
+			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			DeferrableIndicatorProvider::class,
-			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache )
+			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			IndicatorProvider::class,
-			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache )
+			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->templateParser )
 		);
 	}
 
@@ -88,7 +94,8 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestC
 
 		$instance = new ConstraintErrorEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setDeferredMode( false );
@@ -131,7 +138,8 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestC
 
 		$instance = new ConstraintErrorEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setDeferredMode( true );
@@ -158,7 +166,8 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestC
 
 		$instance = new ConstraintErrorEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setDeferredMode( true );

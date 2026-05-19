@@ -81,7 +81,8 @@ class EntityExaminerIndicatorsFactory {
 	public function newConstraintErrorEntityExaminerIndicatorProvider( Store $store, EntityCache $entityCache ): ConstraintErrorEntityExaminerIndicatorProvider {
 		$constraintErrorEntityExaminerIndicatorProvider = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$store,
-			$entityCache
+			$entityCache,
+			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
 		);
 
 		return $constraintErrorEntityExaminerIndicatorProvider;

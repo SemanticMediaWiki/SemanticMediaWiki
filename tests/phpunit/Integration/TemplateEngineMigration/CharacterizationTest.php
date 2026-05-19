@@ -216,7 +216,7 @@ class CharacterizationTest extends TestCase {
 		$entityCache->method( 'fetch' )
 			->willReturn( false );
 
-		$instance = new ConstraintErrorEntityExaminerIndicatorProvider( $store, $entityCache );
+		$instance = new ConstraintErrorEntityExaminerIndicatorProvider( $store, $entityCache, $this->newEntityExaminerTemplateParser() );
 		$instance->setMessageLocalizer( $this->newMessageLocalizer() );
 
 		$subject = WikiPage::newFromText( 'Foo' );
@@ -367,7 +367,11 @@ HTML;
 <div style="text-align: justify;margin-bottom:10px;"><span style="font-size:12px;">__msg__</span></div>
 ';
 
-	private const CONSTRAINT_ERROR = '<div style="padding-top:10px;"><ul><li></li><li></li><li></li></ul></div><div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="text-align: justify;"><span style="font-size:12px;">__msg__</span></div><div style="position: sticky; bottom: 0px;text-align: justify;background: #fff; padding-bottom: 20px;"><div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="padding-top: 2px;padding-bottom:2px;"><span class="smw-issue-label" style="background-color:#00BCD4;color:#ffffff;">constraint</span></div></div>';
+	private const CONSTRAINT_ERROR = '<div style="padding-top:10px;"><ul><li></li><li></li><li></li></ul></div><div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div>
+<div style="text-align: justify;"><span style="font-size:12px;">__msg__</span></div>
+<div style="position: sticky; bottom: 0px;text-align: justify;background: #fff; padding-bottom: 20px;"><div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="padding-top: 2px;padding-bottom:2px;"><span class="smw-issue-label" style="background-color:#00BCD4;color:#ffffff;">constraint</span></div>
+</div>
+';
 
 	private const DEFERRABLE_COMPOSITE = '<section id="test-deferrable-indicator" class="tab-panel">__deferred_content__</section>';
 
