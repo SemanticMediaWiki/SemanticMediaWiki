@@ -50,7 +50,6 @@ use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
-use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\JobFactory;
@@ -1173,13 +1172,6 @@ class ServicesFactory {
 	 */
 	public function getPermissionManager(): PermissionManager {
 		return $this->getService( 'PermissionManager' );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getFileRepoFinder(): FileRepoFinder {
-		return $this->getService( 'FileRepoFinder' );
 	}
 
 	/**

@@ -49,13 +49,11 @@ class PermissionExaminerTest extends TestCase {
 			->willReturn( false );
 
 		$instance = new PermissionExaminer(
-			$this->permissionManager
+			$this->permissionManager,
+			$this->user
 		);
 
-		$instance->setUser( $this->user );
-
 		$this->assertIsBool(
-
 			$instance->hasPermissionOf( 'foo' )
 		);
 	}

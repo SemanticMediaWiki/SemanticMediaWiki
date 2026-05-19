@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use Onoi\Cache\Cache;
@@ -9,7 +10,6 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\PageInfoProvider;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 use SMW\ParserData;
@@ -231,7 +231,7 @@ class ParserAfterTidy implements HookListener {
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			PageInfoProvider::isProtected( $title, 'edit' ) ||
+			MediaWikiServices::getInstance()->getRestrictionStore()->isProtected( $title, 'edit' ) ||
 			$parserDefaultSort ) {
 			return true;
 		}

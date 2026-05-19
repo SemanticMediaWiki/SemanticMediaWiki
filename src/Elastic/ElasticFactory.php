@@ -3,6 +3,7 @@
 namespace SMW\Elastic;
 
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
@@ -223,7 +224,7 @@ class ElasticFactory {
 		);
 
 		$fileHandler = new FileHandler(
-			$applicationFactory->create( 'FileRepoFinder' )
+			MediaWikiServices::getInstance()->getRepoGroup()
 		);
 
 		$fileHandler->setLogger(

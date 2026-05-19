@@ -25,13 +25,6 @@ class PermissionExaminer {
 	/**
 	 * @since 3.2
 	 */
-	public function setUser( User $user ): void {
-		$this->user = $user;
-	}
-
-	/**
-	 * @since 3.2
-	 */
 	public function hasPermissionOf( string $right ): bool {
 		if ( $this->user === null ) {
 			return false;

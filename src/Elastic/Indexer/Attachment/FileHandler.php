@@ -6,7 +6,7 @@ use File;
 use FileBackend;
 use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\FileRepoFinder;
+use RepoGroup;
 
 /**
  * @license GPL-2.0-or-later
@@ -31,7 +31,7 @@ class FileHandler {
 	/**
 	 * @since 3.2
 	 */
-	public function __construct( private FileRepoFinder $fileRepoFinder ) {
+	public function __construct( private readonly RepoGroup $repoGroup ) {
 	}
 
 	/**
@@ -47,7 +47,7 @@ class FileHandler {
 	 * @since 3.2
 	 */
 	public function findFileByTitle( Title $title ): File|false|null {
-		return $this->fileRepoFinder->findFile( $title );
+		return $this->repoGroup->findFile( $title );
 	}
 
 	/**

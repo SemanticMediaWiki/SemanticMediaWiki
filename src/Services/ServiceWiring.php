@@ -24,7 +24,6 @@ use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLoo
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Connection\ConnectionProvider;
-use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
@@ -95,10 +94,6 @@ return [
 
 	'DBLoadBalancer' => static function ( ServiceContainer $container ): ILoadBalancer {
 		return MediaWikiServices::getInstance()->getDBLoadBalancer();
-	},
-
-	'FileRepoFinder' => static function ( ServiceContainer $container ): FileRepoFinder {
-		return new FileRepoFinder( MediaWikiServices::getInstance()->getRepoGroup() );
 	},
 
 	'JobQueueGroup' => static function ( ServiceContainer $container ): JobQueueGroup {

@@ -23,7 +23,6 @@ use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\MediaWiki\Connection\ConnectionProvider;
-use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
@@ -90,7 +89,6 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'PermissionManager', PermissionManager::class ],
 			[ 'DBLoadBalancerFactory', LBFactory::class ],
 			[ 'DBLoadBalancer', ILoadBalancer::class ],
-			[ 'FileRepoFinder', FileRepoFinder::class ],
 			[ 'JobQueueGroup', JobQueueGroup::class ],
 			[ 'ContentLanguage', Language::class ],
 			[ 'ParserCache', ParserCache::class ],

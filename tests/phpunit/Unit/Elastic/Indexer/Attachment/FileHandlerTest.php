@@ -4,9 +4,9 @@ namespace SMW\Tests\Unit\Elastic\Indexer\Attachment;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use RepoGroup;
 use RuntimeException;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
-use SMW\MediaWiki\FileRepoFinder;
 
 /**
  * @covers \SMW\Elastic\Indexer\Attachment\FileHandler
@@ -19,10 +19,10 @@ use SMW\MediaWiki\FileRepoFinder;
  */
 class FileHandlerTest extends TestCase {
 
-	private $fileRepoFinder;
+	private $repoGroup;
 
 	protected function setUp(): void {
-		$this->fileRepoFinder = $this->getMockBuilder( FileRepoFinder::class )
+		$this->repoGroup = $this->getMockBuilder( RepoGroup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -30,7 +30,7 @@ class FileHandlerTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			FileHandler::class,
-			new FileHandler( $this->fileRepoFinder )
+			new FileHandler( $this->repoGroup )
 		);
 	}
 
@@ -39,11 +39,11 @@ class FileHandlerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->fileRepoFinder->expects( $this->once() )
+		$this->repoGroup->expects( $this->once() )
 			->method( 'findFile' );
 
 		$instance = new FileHandler(
-			$this->fileRepoFinder
+			$this->repoGroup
 		);
 
 		$instance->findFileByTitle( $title );
@@ -53,7 +53,7 @@ class FileHandlerTest extends TestCase {
 		$url = 'http://example.org/Foo.txt';
 
 		$instance = new FileHandler(
-			$this->fileRepoFinder
+			$this->repoGroup
 		);
 
 		$instance->setReadCallback( static function ( $read_url ) use( $url ) {
@@ -72,7 +72,7 @@ class FileHandlerTest extends TestCase {
 
 	public function testFormat() {
 		$instance = new FileHandler(
-			$this->fileRepoFinder
+			$this->repoGroup
 		);
 
 		$this->assertEquals(
@@ -83,7 +83,7 @@ class FileHandlerTest extends TestCase {
 
 	public function testFormat_base64() {
 		$instance = new FileHandler(
-			$this->fileRepoFinder
+			$this->repoGroup
 		);
 
 		$this->assertEquals(
