@@ -97,7 +97,7 @@ class MockObjectBuilder extends TestCase {
 	 * @return array
 	 */
 	public function getInvokedMethods() {
-		return array_keys( $this->configuration->getOptions() );
+		return array_keys( $this->configuration->toArray() );
 	}
 
 	/**
@@ -182,7 +182,7 @@ class MockObjectBuilder extends TestCase {
 
 		if ( $this->configuration instanceof Options ) {
 			$this->configuration = new Options(
-				array_merge( $this->configuration->getOptions(), $configuration->getOptions() )
+				array_merge( $this->configuration->toArray(), $configuration->toArray() )
 			);
 			return $this->configuration;
 		}

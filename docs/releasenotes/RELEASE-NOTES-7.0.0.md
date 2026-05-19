@@ -224,6 +224,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   * `DataTypeRegistry::getDataItemId()` — use `getDataItemByType()`
   * `DataTypeRegistry::getDefaultDataItemTypeId()` — use `getDefaultDataItemByType()`
   * `QueryResult::getLink()` — use `getQueryLink()`
+  * `Options::getOptions()` — use `toArray()` (deprecated since 3.0)
   * `PropertyRegistry::isKnownPropertyId()` — use `isRegistered()` (deprecated since 3.0)
   * `PropertyRegistry::getPropertyTypeId()` — use `getPropertyValueTypeById()` (deprecated since 3.0)
   * `PropertyRegistry::registerPropertyDescriptionMsgKeyById()` — use `registerPropertyDescriptionByMsgKey()` (deprecated since 3.0)

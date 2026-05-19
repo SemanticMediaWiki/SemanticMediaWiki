@@ -128,16 +128,6 @@ class Options implements JsonDeserializable {
 	}
 
 	/**
-	 * @deprecated since 3.0, use Options::toArray
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
-	public function getOptions(): array {
-		return $this->toArray();
-	}
-
-	/**
 	 * @since 3.0
 	 *
 	 * @param array $keys
