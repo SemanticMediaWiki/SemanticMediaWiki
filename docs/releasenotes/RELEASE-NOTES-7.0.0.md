@@ -180,6 +180,16 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 **Hooks:**
 
 * **`SMW::GroupPermissions::BeforeInitializationComplete` hook removed.** Permission rights and group assignments are now declared in `extension.json`. Extensions that modified SMW permissions via this hook should use MediaWiki's standard `$wgGroupPermissions` override in `LocalSettings.php` instead.
+* **Four legacy hook names removed.** SMW previously fired these old hook names alongside their modern replacements; they have been deprecated since 2.3-3.1. Extensions that registered handlers under the old names must move them to the modern hook:
+
+  | Removed | Use instead | Deprecated since |
+  |---|---|---|
+  | `smwRefreshDataJobs` | `SMW::SQLStore::BeforeDataRebuildJobInsert` | 2.3 |
+  | `SMWSQLStore3::updateDataAfter` | `SMW::SQLStore::AfterDataUpdateComplete` | 2.3 |
+  | `SMWStore::updateDataBefore` | `SMW::Store::BeforeDataUpdateComplete` | 3.1 |
+  | `SMWStore::updateDataAfter` | `SMW::Store::AfterDataUpdateComplete` | 3.1 |
+
+  The two `SMW::Store::*` modern hooks accept the same arguments as their predecessors; renaming the registration is sufficient. The two `SMW::SQLStore::*` modern hooks pass different arguments, so handler callback signatures must also be updated: `SMW::SQLStore::BeforeDataRebuildJobInsert` prepends a `Store $store` parameter, and `SMW::SQLStore::AfterDataUpdateComplete` appends a `ChangeOp $changeOp` parameter.
 
 **Removed APIs:**
 

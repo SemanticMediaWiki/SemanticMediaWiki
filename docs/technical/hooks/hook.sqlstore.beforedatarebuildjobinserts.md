@@ -1,5 +1,5 @@
 * Since: 2.3
-* Description: Hook to add update jobs while running the rebuild process. (`smwRefreshDataJobs` was deprecated with 2.3)
+* Description: Hook to add update jobs while running the rebuild process.
 * Reference class: [`Rebuilder.php`][Rebuilder.php]
 
 ### Signature

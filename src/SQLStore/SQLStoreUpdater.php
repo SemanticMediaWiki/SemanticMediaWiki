@@ -255,9 +255,6 @@ class SQLStoreUpdater {
 			]
 		);
 
-		// Deprecated since 2.3, use SMW::SQLStore::AfterDataUpdateComplete
-		$this->hookContainer->run( 'SMWSQLStore3::updateDataAfter', [ $this->store, $semanticData ] );
-
 		$this->hookContainer->run(
 			'SMW::SQLStore::AfterDataUpdateComplete',
 			[

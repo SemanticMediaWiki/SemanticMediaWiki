@@ -237,15 +237,9 @@ abstract class Store implements QueryEngine {
 		$subject = $semanticData->getSubject();
 		$hash = $subject->getHash();
 
-		// Deprecated since 3.1, use SMW::Store::BeforeDataUpdateComplete
-		$hookContainer->run( 'SMWStore::updateDataBefore', [ $this, $semanticData ] );
-
 		$hookContainer->run( 'SMW::Store::BeforeDataUpdateComplete', [ $this, $semanticData ] );
 
 		$this->doDataUpdate( $semanticData );
-
-		// Deprecated since 3.1, use SMW::Store::AfterDataUpdateComplete
-		$hookContainer->run( 'SMWStore::updateDataAfter', [ $this, $semanticData ] );
 
 		$hookContainer->run( 'SMW::Store::AfterDataUpdateComplete', [ $this, $semanticData ] );
 
