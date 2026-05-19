@@ -36,9 +36,7 @@
 		"smwtask": "SMW\\MediaWiki\\Api\\Task",
 		"smwbrowse": "SMW\\MediaWiki\\Api\\Browse",
 		"ask": "SMW\\MediaWiki\\Api\\Ask",
-		"askargs": "SMW\\MediaWiki\\Api\\AskArgs",
-		"browsebysubject": "SMW\\MediaWiki\\Api\\BrowseBySubject",
-		"browsebyproperty": "SMW\\MediaWiki\\Api\\BrowseByProperty"
+		"askargs": "SMW\\MediaWiki\\Api\\AskArgs"
 	},
 	"AutoloadClasses": {
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",
