@@ -59,7 +59,8 @@ class EntityExaminerIndicatorsFactory {
 	 */
 	public function newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( Store $store ): AssociatedRevisionMismatchEntityExaminerIndicatorProvider {
 		$associatedRevisionMismatchEntityExaminerIndicatorProvider = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$store
+			$store,
+			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
 		);
 
 		$associatedRevisionMismatchEntityExaminerIndicatorProvider->setRevisionGuard(

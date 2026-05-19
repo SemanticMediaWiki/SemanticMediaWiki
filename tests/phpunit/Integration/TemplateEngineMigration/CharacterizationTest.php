@@ -174,7 +174,7 @@ class CharacterizationTest extends TestCase {
 		$revisionGuard->method( 'getLatestRevID' )
 			->willReturn( 1001 );
 
-		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $store );
+		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $store, $this->newEntityExaminerTemplateParser() );
 		$instance->setMessageLocalizer( $this->newMessageLocalizer() );
 		$instance->setRevisionGuard( $revisionGuard );
 		$instance->setDeferredMode( true );
@@ -361,7 +361,11 @@ class CharacterizationTest extends TestCase {
 
 HTML;
 
-	private const ASSOCIATED_REVISION_MISMATCH = '<div style="padding-top:10px;text-align: justify;">__msg__</div><div class="smw-indicator-compare-list"><p></p><div class="smw-indicator-compare-list-row"><span>MediaWiki:</span><span>1001</span></div><div class="smw-indicator-compare-list-row"><span>Semantic MediaWiki:</span><span>99</span></div></div><div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="text-align: justify;margin-bottom:10px;"><span style="font-size:12px;">__msg__</span></div>';
+	private const ASSOCIATED_REVISION_MISMATCH = '<div style="padding-top:10px;text-align: justify;">__msg__</div>
+<div class="smw-indicator-compare-list"><p></p><div class="smw-indicator-compare-list-row"><span>MediaWiki:</span><span>1001</span></div><div class="smw-indicator-compare-list-row"><span>Semantic MediaWiki:</span><span>99</span></div></div>
+<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div>
+<div style="text-align: justify;margin-bottom:10px;"><span style="font-size:12px;">__msg__</span></div>
+';
 
 	private const CONSTRAINT_ERROR = '<div style="padding-top:10px;"><ul><li></li><li></li><li></li></ul></div><div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="text-align: justify;"><span style="font-size:12px;">__msg__</span></div><div style="position: sticky; bottom: 0px;text-align: justify;background: #fff; padding-bottom: 20px;"><div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="padding-top: 2px;padding-bottom:2px;"><span class="smw-issue-label" style="background-color:#00BCD4;color:#ffffff;">constraint</span></div></div>';
 
