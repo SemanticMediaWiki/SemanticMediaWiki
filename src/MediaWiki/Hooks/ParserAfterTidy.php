@@ -231,7 +231,7 @@ class ParserAfterTidy implements HookListener {
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			MediaWikiServices::getInstance()->getRestrictionStore()->isProtected( $title, 'edit ' ) ||
+			MediaWikiServices::getInstance()->getRestrictionStore()->isProtected( $title, 'edit' ) ||
 			$parserDefaultSort ) {
 			return true;
 		}
