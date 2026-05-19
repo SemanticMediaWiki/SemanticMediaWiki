@@ -114,7 +114,10 @@ class EntityExaminerIndicatorsFactory {
 
 		$this->hookDispatcher->onRegisterEntityExaminerDeferrableIndicatorProviders( $store, $indicatorProviders );
 
-		return new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders );
+		return new EntityExaminerDeferrableCompositeIndicatorProvider(
+			$indicatorProviders,
+			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
+		);
 	}
 
 	private function newConstraintErrorProvider( Store $store ): ConstraintErrorEntityExaminerIndicatorProvider {
