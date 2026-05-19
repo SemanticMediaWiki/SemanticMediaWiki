@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\SPARQLStore\QueryEngine;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\Exporter\Element;
 use SMW\Query\Language\Description;
 use SMW\Query\Query;
@@ -519,6 +520,29 @@ class QueryEngineTest extends TestCase {
 
 			$instance->getQueryResult( $query )
 		);
+	}
+
+	public function testGetQueryResultThrowsOnMissingDescription() {
+		$connection = $this->getMockBuilder( RepositoryConnection::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new QueryEngine(
+			$connection,
+			$conditionBuilder,
+			new QueryResultFactory( $store )
+		);
+
+		$this->expectException( RuntimeException::class );
+		$instance->getQueryResult( new Query() );
 	}
 
 }

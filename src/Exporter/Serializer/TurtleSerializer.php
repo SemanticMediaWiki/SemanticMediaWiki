@@ -287,7 +287,7 @@ class TurtleSerializer extends Serializer {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public static function getTurtleNameForExpElement( ?ExpElement $expElement ): string {
+	public static function getTurtleNameForExpElement( ExpElement $expElement ): string {
 		if ( $expElement instanceof ExpResource ) {
 			if ( $expElement->isBlankNode() ) {
 				return '[]';

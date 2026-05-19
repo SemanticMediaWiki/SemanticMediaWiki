@@ -80,8 +80,9 @@ class QueryEngine implements QueryEngineInterface {
 		$this->conditionBuilder->setSortKeys( $this->sortKeys );
 
 		$description = $query->getDescription();
+
 		if ( $description === null ) {
-			return $this->queryResultFactory->newEmptyQueryResult( $query, true );
+			throw new RuntimeException( 'Query is missing a description.' );
 		}
 
 		$compoundCondition = $this->conditionBuilder->getConditionFrom( $description );
