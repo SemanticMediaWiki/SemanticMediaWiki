@@ -102,9 +102,16 @@ class RepositoryRedirectLookup {
 	}
 
 	private function lookupResourceUriTargetFromDatabase( ExpNsResource $expNsResource ) {
+		$rediResource = Exporter::getInstance()->getSpecialPropertyResource( '_REDI' );
+		$skeyResource = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
+
+		if ( $rediResource === null || $skeyResource === null ) {
+			throw new RuntimeException( 'Unable to resolve the _REDI or _SKEY special property resource.' );
+		}
+
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expNsResource );
-		$rediUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_REDI' ) );
-		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' ) );
+		$rediUri = TurtleSerializer::getTurtleNameForExpElement( $rediResource );
+		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( $skeyResource );
 
 		$respositoryResult = $this->repositoryConnection->select(
 			'*',
