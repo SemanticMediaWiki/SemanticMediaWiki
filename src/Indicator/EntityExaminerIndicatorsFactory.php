@@ -2,6 +2,7 @@
 
 namespace SMW\Indicator;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\EntityCache;
 use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
@@ -11,7 +12,6 @@ use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndi
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Services\ServicesFactory;
 use SMW\Store;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -143,7 +143,7 @@ class EntityExaminerIndicatorsFactory {
 	 */
 	public function newEntityExaminerCompositeIndicatorProvider( array $indicatorProviders = [] ): EntityExaminerCompositeIndicatorProvider {
 		$compositeIndicatorHtmlBuilder = new CompositeIndicatorHtmlBuilder(
-			new TemplateEngine()
+			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
 		);
 
 		$entityExaminerCompositeIndicatorProvider = new EntityExaminerCompositeIndicatorProvider(

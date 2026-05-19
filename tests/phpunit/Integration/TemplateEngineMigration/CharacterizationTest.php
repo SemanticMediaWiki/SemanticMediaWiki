@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\TemplateEngineMigration;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client;
@@ -63,6 +64,10 @@ class CharacterizationTest extends TestCase {
 		parent::tearDown();
 	}
 
+	private function newEntityExaminerTemplateParser(): TemplateParser {
+		return new TemplateParser( __DIR__ . '/../../../../templates/EntityExaminer' );
+	}
+
 	private function newMessageLocalizer(): MessageLocalizer {
 		$messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
@@ -88,7 +93,7 @@ class CharacterizationTest extends TestCase {
 	}
 
 	public function testCompositeIndicatorHtmlBuilder_EmptyProviders() {
-		$instance = new CompositeIndicatorHtmlBuilder( new TemplateEngine() );
+		$instance = new CompositeIndicatorHtmlBuilder( $this->newEntityExaminerTemplateParser() );
 		$instance->setMessageLocalizer( $this->newMessageLocalizer() );
 
 		$html = $instance->buildHTML( [], $this->newOptions() );
@@ -111,7 +116,7 @@ class CharacterizationTest extends TestCase {
 				]
 			);
 
-		$instance = new CompositeIndicatorHtmlBuilder( new TemplateEngine() );
+		$instance = new CompositeIndicatorHtmlBuilder( $this->newEntityExaminerTemplateParser() );
 		$instance->setMessageLocalizer( $this->newMessageLocalizer() );
 
 		$html = $instance->buildHTML( [ $compositeIndicatorProvider ], $this->newOptions() );
@@ -138,7 +143,7 @@ class CharacterizationTest extends TestCase {
 				]
 			);
 
-		$instance = new CompositeIndicatorHtmlBuilder( new TemplateEngine() );
+		$instance = new CompositeIndicatorHtmlBuilder( $this->newEntityExaminerTemplateParser() );
 		$instance->setMessageLocalizer( $this->newMessageLocalizer() );
 
 		$html = $instance->buildHTML( [ $typableSeverityIndicatorProvider ], $this->newOptions() );
@@ -342,13 +347,18 @@ class CharacterizationTest extends TestCase {
 		$this->assertSame( self::SETUP_CHECK_CLI, $content );
 	}
 
-	private const COMPOSITE_EMPTY = '<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" data-subject="Foo#0##" data-dir="ltr" data-uselang="en" title="__msg__"></div>';
+	private const COMPOSITE_EMPTY = "<div class=\"smw-entity-examiner smw-indicator-vertical-bar-loader\" data-subject=\"Foo#0##\" data-dir=\"ltr\" data-uselang=\"en\" title=\"__msg__\"></div>\n";
 
-	private const COMPOSITE_COMPOSITE_PROVIDER = '<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" data-subject="Foo#0##" data-dir="ltr" data-uselang="en" title="__msg__"></div>';
+	private const COMPOSITE_COMPOSITE_PROVIDER = "<div class=\"smw-entity-examiner smw-indicator-vertical-bar-loader\" data-subject=\"Foo#0##\" data-dir=\"ltr\" data-uselang=\"en\" title=\"__msg__\"></div>\n";
 
 	private const COMPOSITE_NON_COMPOSITE_PROVIDER = <<<'HTML'
-<div class="smw-highlighter smw-icon-entity-examiner-panel-error" data-maxWidth="280" data-tooltipclass="square-border-transparent-arrow" data-deferred="no" data-subject="Foo#0##" data-dir="ltr" data-uselang="en" data-state="persistent" data-placement="auto" data-animation="fade" data-theme="accordion-popup plain" data-count='1' data-options='' data-title='__msg__' data-top='&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size:12px;&quot;&gt;__msg__&lt;/span&gt;&lt;/div&gt;' data-content='&lt;div class=&quot;smw-tabset smw-issue-panel&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;tabset&quot; id=&quot;itabtest-indicator&quot; aria-controls=&quot;&quot; checked&gt;
-&lt;label for=&quot;itabtest-indicator&quot; class=&quot;smw-indicator-severity-error&quot;&gt;&lt;span&gt;__indicator_title__&lt;/span&gt;&lt;/label&gt;&lt;div class=&quot;tab-panels&quot;&gt;&lt;section id=&quot;itabtest-indicator&quot; class=&quot;tab-panel&quot;&gt;__indicator_content__&lt;/section&gt;&lt;/div&gt;&lt;/div&gt;' data-bottom=''></div>
+<div class="smw-highlighter smw-icon-entity-examiner-panel-error" data-maxWidth="280" data-tooltipclass="square-border-transparent-arrow" data-deferred="no" data-subject="Foo#0##" data-dir="ltr" data-uselang="en" data-state="persistent" data-placement="auto" data-animation="fade" data-theme="accordion-popup plain" data-count='1' data-options='' data-title='__msg__' data-top='&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size:12px;&quot;&gt;__msg__&lt;/span&gt;&lt;/div&gt;
+' data-content='&lt;div class=&quot;smw-tabset smw-issue-panel&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;tabset&quot; id=&quot;itabtest-indicator&quot; aria-controls=&quot;&quot; checked&gt;
+&lt;label for=&quot;itabtest-indicator&quot; class=&quot;smw-indicator-severity-error&quot;&gt;&lt;span&gt;__indicator_title__&lt;/span&gt;&lt;/label&gt;
+&lt;div class=&quot;tab-panels&quot;&gt;&lt;section id=&quot;itabtest-indicator&quot; class=&quot;tab-panel&quot;&gt;__indicator_content__&lt;/section&gt;
+&lt;/div&gt;&lt;/div&gt;
+' data-bottom=''></div>
+
 HTML;
 
 	private const ASSOCIATED_REVISION_MISMATCH = '<div style="padding-top:10px;text-align: justify;">__msg__</div><div class="smw-indicator-compare-list"><p></p><div class="smw-indicator-compare-list-row"><span>MediaWiki:</span><span>1001</span></div><div class="smw-indicator-compare-list-row"><span>Semantic MediaWiki:</span><span>99</span></div></div><div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="text-align: justify;margin-bottom:10px;"><span style="font-size:12px;">__msg__</span></div>';
