@@ -305,6 +305,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### Bug fixes
 
+* Fixed a stray trailing space in `'edit '` that caused the edit-protection check in `ParserAfterTidy::process()` to silently match no pages since the migration off the deprecated `Title::isProtected()` API. With the typo removed, edit-protected pages once again trigger continued post-parse processing, matching the behaviour before that migration.
 * Fixed incorrect timezone offset for negative half-hour timezones (e.g., Newfoundland `-3:30`): the 30-minute component was always added positively, producing `-2.5` instead of `-3.5` ([#6478](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6478))
 * Fixed CSV export producing malformed output when values contain the delimiter character ([#6343](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6343))
 * Fixed `#ask` sum format failing when encountering non-numeric values instead of treating them as zero ([#6253](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6253))

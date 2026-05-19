@@ -231,7 +231,7 @@ class ParserAfterTidy implements HookListener {
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			PageInfoProvider::isProtected( $title, 'edit ' ) ||
+			PageInfoProvider::isProtected( $title, 'edit' ) ||
 			$parserDefaultSort ) {
 			return true;
 		}
