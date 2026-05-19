@@ -113,7 +113,7 @@
 	"smw-smwdoc-par-format": "The result format to display parameter documentation for.",
 	"smw-smwdoc-par-parameters": "Which parameters to show. \"specific\" for those added by the format, \"base\" for those available in all formats, and \"all\" for both.",
 	"smw-paramdesc-sort": "Property to sort the query by",
-	"smw-paramdesc-order": "Order of the query sort",
+	"smw-paramdesc-order": "Order of the query sort; use <code>none</code> to disable sorting",
 	"smw-paramdesc-searchlabel": "Text for continuing the search",
 	"smw-paramdesc-named_args": "Name the arguments passed to the template",
 	"smw-paramdesc-template-arguments": "Sets how the named arguments are passed to the template",

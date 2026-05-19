@@ -108,7 +108,7 @@ class DefaultParamDefinition {
 		$params['order'] = [
 			'islist' => true,
 			'default' => [],
-			'values' => [ 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ],
+			'values' => [ 'descending', 'desc', 'asc', 'ascending', 'rand', 'random', 'none' ],
 		];
 
 		$params['headers'] = [

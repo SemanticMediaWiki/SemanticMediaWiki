@@ -76,6 +76,12 @@ class Query implements QueryContext {
 	 */
 	const SCORE_SORT = 'score.sort';
 
+	/**
+	 * Option flag set when `order=none` requested an unsorted query, so the
+	 * directive can be re-serialised into result-continuation links.
+	 */
+	const SORT_DISABLED = 'sort.disabled';
+
 	public bool $sort = false;
 	public array $sortkeys = []; // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
 	public int $querymode = self::MODE_INSTANCES;

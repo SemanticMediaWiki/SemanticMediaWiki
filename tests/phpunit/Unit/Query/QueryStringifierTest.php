@@ -58,6 +58,39 @@ class QueryStringifierTest extends TestCase {
 		);
 	}
 
+	public function testToArrayReEmitsOrderNoneWhenSortDisabled(): void {
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getQueryString' )
+			->willReturn( '[[Foo::bar]]' );
+
+		$query->expects( $this->any() )
+			->method( 'getLimit' )
+			->willReturn( 42 );
+
+		$query->expects( $this->any() )
+			->method( 'getOffset' )
+			->willReturn( 0 );
+
+		$query->expects( $this->any() )
+			->method( 'getSortKeys' )
+			->willReturn( [] );
+
+		$query->expects( $this->any() )
+			->method( 'getOption' )
+			->willReturnCallback( static function ( $key ) {
+				return $key === Query::SORT_DISABLED;
+			} );
+
+		$result = QueryStringifier::toArray( $query );
+
+		$this->assertSame( 'none', $result['parameters']['order'] );
+		$this->assertArrayNotHasKey( 'sort', $result['parameters'] );
+	}
+
 	public function queryProvider() {
 		# 0
 		$query = $this->getMockBuilder( Query::class )
