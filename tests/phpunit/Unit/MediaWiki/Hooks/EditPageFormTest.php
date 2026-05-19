@@ -4,11 +4,12 @@ namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Hooks\EditPageForm;
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\NamespaceExaminer;
 
 /**
@@ -24,7 +25,8 @@ class EditPageFormTest extends TestCase {
 
 	private $namespaceExaminer;
 	private $permissionExaminer;
-	private $preferenceExaminer;
+	private $userOptionsLookup;
+	private $user;
 	private $messageLocalizer;
 
 	protected function setUp(): void {
@@ -38,7 +40,11 @@ class EditPageFormTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->preferenceExaminer = $this->getMockBuilder( PreferenceExaminer::class )
+		$this->userOptionsLookup = $this->getMockBuilder( UserOptionsLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +56,7 @@ class EditPageFormTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			EditPageForm::class,
-			new EditPageForm( $this->namespaceExaminer, $this->permissionExaminer, $this->preferenceExaminer )
+			new EditPageForm( $this->namespaceExaminer, $this->permissionExaminer, $this->userOptionsLookup, $this->user )
 		);
 	}
 
@@ -62,7 +68,8 @@ class EditPageFormTest extends TestCase {
 		$instance = new EditPageForm(
 			$this->namespaceExaminer,
 			$this->permissionExaminer,
-			$this->preferenceExaminer
+			$this->userOptionsLookup,
+			$this->user
 		);
 
 		$instance->setOptions(
@@ -81,9 +88,9 @@ class EditPageFormTest extends TestCase {
 			->method( 'hasPermissionOf' )
 			->willReturn( true );
 
-		$this->preferenceExaminer->expects( $this->once() )
-			->method( 'hasPreferenceOf' )
-			->with( 'smw-prefs-general-options-disable-editpage-info' )
+		$this->userOptionsLookup->expects( $this->once() )
+			->method( 'getOption' )
+			->with( $this->user, 'smw-prefs-general-options-disable-editpage-info', false )
 			->willReturn( true );
 
 		$editPage = $this->getMockBuilder( EditPage::class )
@@ -93,7 +100,8 @@ class EditPageFormTest extends TestCase {
 		$instance = new EditPageForm(
 			$this->namespaceExaminer,
 			$this->permissionExaminer,
-			$this->preferenceExaminer
+			$this->userOptionsLookup,
+			$this->user
 		);
 
 		$instance->setOptions(
@@ -119,9 +127,9 @@ class EditPageFormTest extends TestCase {
 			->method( 'hasPermissionOf' )
 			->willReturn( true );
 
-		$this->preferenceExaminer->expects( $this->once() )
-			->method( 'hasPreferenceOf' )
-			->with( 'smw-prefs-general-options-disable-editpage-info' )
+		$this->userOptionsLookup->expects( $this->once() )
+			->method( 'getOption' )
+			->with( $this->user, 'smw-prefs-general-options-disable-editpage-info', false )
 			->willReturn( false );
 
 		$this->namespaceExaminer->expects( $this->any() )
@@ -142,7 +150,8 @@ class EditPageFormTest extends TestCase {
 		$instance = new EditPageForm(
 			$this->namespaceExaminer,
 			$this->permissionExaminer,
-			$this->preferenceExaminer
+			$this->userOptionsLookup,
+			$this->user
 		);
 
 		$instance->setMessageLocalizer(

@@ -4,13 +4,14 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Html\Html;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
 use SMW\DataItems\Property;
 use SMW\GroupPermissions;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 
@@ -33,7 +34,8 @@ class EditPageForm implements HookListener {
 	public function __construct(
 		private NamespaceExaminer $namespaceExaminer,
 		private PermissionExaminer $permissionExaminer,
-		private PreferenceExaminer $preferenceExaminer,
+		private UserOptionsLookup $userOptionsLookup,
+		private User $user,
 	) {
 	}
 
@@ -50,7 +52,7 @@ class EditPageForm implements HookListener {
 		if (
 			$this->getOption( 'smwgEnabledEditPageHelp', false ) &&
 			$this->permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_EDITPAGE_INFO ) &&
-			!$this->preferenceExaminer->hasPreferenceOf( GetPreferences::DISABLE_EDITPAGE_INFO ) ) {
+			!$this->userOptionsLookup->getOption( $this->user, GetPreferences::DISABLE_EDITPAGE_INFO, false ) ) {
 			$html = $this->buildHTML( $editPage->getTitle() );
 		}
 

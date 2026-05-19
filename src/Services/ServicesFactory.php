@@ -64,7 +64,6 @@ use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
-use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
@@ -330,7 +329,6 @@ class ServicesFactory {
 			'DisplayTitleFinder' => fn () => $this->newDisplayTitleFinder( ...$args ),
 			'MagicWordsFinder' => fn () => $this->newMagicWordsFinder( ...$args ),
 			'DependencyValidator' => fn () => $this->newDependencyValidator( ...$args ),
-			'PreferenceExaminer' => fn () => $this->newPreferenceExaminer( ...$args ),
 			'Parser' => fn () => $this->newParser(),
 			'RevisionLookup' => fn () => $this->newRevisionLookup(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
@@ -359,21 +357,6 @@ class ServicesFactory {
 	 */
 	public function newPermissionExaminer( ?User $user = null ): PermissionExaminer {
 		return new PermissionExaminer( $this->getPermissionManager(), $user );
-	}
-
-	/**
-	 * @since 3.2
-	 *
-	 * @param User|null $user
-	 *
-	 * @return PreferenceExaminer
-	 */
-	public function newPreferenceExaminer( ?User $user = null ): PreferenceExaminer {
-		if ( array_key_exists( 'PreferenceExaminer', $this->testOverrides ) ) {
-			return $this->testOverrides['PreferenceExaminer'];
-		}
-
-		return new PreferenceExaminer( $user, $this->getUserOptionsLookup() );
 	}
 
 	/**

@@ -3,10 +3,11 @@
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\Output\OutputPage;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\PersonalUrls;
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\MediaWiki\Preference\PreferenceExaminer;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\PersonalUrls
@@ -22,7 +23,8 @@ class PersonalUrlsTest extends TestCase {
 	private $skinTemplate;
 	private $jobQueue;
 	private $permissionExaminer;
-	private $preferenceExaminer;
+	private $userOptionsLookup;
+	private $user;
 
 	protected function setUp(): void {
 		$this->skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -37,7 +39,11 @@ class PersonalUrlsTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->preferenceExaminer = $this->getMockBuilder( PreferenceExaminer::class )
+		$this->userOptionsLookup = $this->getMockBuilder( UserOptionsLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -45,14 +51,14 @@ class PersonalUrlsTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PersonalUrls::class,
-			new PersonalUrls( $this->skinTemplate, $this->jobQueue, $this->permissionExaminer, $this->preferenceExaminer )
+			new PersonalUrls( $this->skinTemplate, $this->jobQueue, $this->permissionExaminer, $this->userOptionsLookup, $this->user )
 		);
 	}
 
 	public function testProcessOnJobQueueWatchlist() {
-		$this->preferenceExaminer->expects( $this->once() )
-			->method( 'hasPreferenceOf' )
-			->with( 'smw-prefs-general-options-jobqueue-watchlist' )
+		$this->userOptionsLookup->expects( $this->once() )
+			->method( 'getOption' )
+			->with( $this->user, 'smw-prefs-general-options-jobqueue-watchlist', false )
 			->willReturn( true );
 
 		$output = $this->getMockBuilder( OutputPage::class )
@@ -73,7 +79,8 @@ class PersonalUrlsTest extends TestCase {
 			$this->skinTemplate,
 			$this->jobQueue,
 			$this->permissionExaminer,
-			$this->preferenceExaminer
+			$this->userOptionsLookup,
+			$this->user
 		);
 
 		$instance->setOptions(
