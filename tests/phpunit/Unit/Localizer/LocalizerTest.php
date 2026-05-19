@@ -9,6 +9,7 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\ExtendedDateTime;
@@ -230,6 +231,88 @@ class LocalizerTest extends TestCase {
 			$instance->getContentLanguage(),
 			$instance->getPreferredContentLanguage( null )
 		);
+	}
+
+	public function testGetPreferredContentLanguage_NullArgumentReturnsContentLanguageAndIsStable() {
+		$instance = $this->newLocalizer();
+
+		$first = $instance->getPreferredContentLanguage( null );
+		$second = $instance->getPreferredContentLanguage( null );
+
+		$this->assertSame( $instance->getContentLanguage(), $first );
+		$this->assertSame( $first, $second );
+	}
+
+	public function testGetPreferredContentLanguage_MemoizesPerTitle() {
+		$instance = $this->newLocalizer();
+
+		$pageLanguage = $this->createMock( Language::class );
+
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->method( 'getPrefixedDBkey' )
+			->willReturn( 'Example' );
+
+		// Resolved once even though the public method is called twice.
+		$title->expects( $this->once() )
+			->method( 'getPageLanguage' )
+			->willReturn( $pageLanguage );
+
+		$first = $instance->getPreferredContentLanguage( $title );
+		$second = $instance->getPreferredContentLanguage( $title );
+
+		$this->assertSame( $pageLanguage, $first );
+		$this->assertSame( $pageLanguage, $second );
+	}
+
+	public function testGetPreferredContentLanguage_DistinctTitlesResolveIndependently() {
+		$instance = $this->newLocalizer();
+
+		$languageA = $this->createMock( Language::class );
+		$languageB = $this->createMock( Language::class );
+
+		$titleA = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$titleA->method( 'getPrefixedDBkey' )->willReturn( 'A' );
+		$titleA->method( 'getPageLanguage' )->willReturn( $languageA );
+
+		$titleB = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$titleB->method( 'getPrefixedDBkey' )->willReturn( 'B' );
+		$titleB->method( 'getPageLanguage' )->willReturn( $languageB );
+
+		$this->assertSame( $languageA, $instance->getPreferredContentLanguage( $titleA ) );
+		$this->assertSame( $languageB, $instance->getPreferredContentLanguage( $titleB ) );
+	}
+
+	public function testGetPreferredContentLanguage_MemoizesPerWikiPage() {
+		$instance = $this->newLocalizer();
+
+		$pageLanguage = $this->createMock( Language::class );
+
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$title->method( 'getPageLanguage' )->willReturn( $pageLanguage );
+
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$wikiPage->method( 'getDBkey' )->willReturn( 'Example' );
+		$wikiPage->method( 'getInterwiki' )->willReturn( '' );
+
+		// getTitle() (which builds a fresh Title) runs once across two calls.
+		$wikiPage->expects( $this->once() )
+			->method( 'getTitle' )
+			->willReturn( $title );
+
+		$this->assertSame( $pageLanguage, $instance->getPreferredContentLanguage( $wikiPage ) );
+		$this->assertSame( $pageLanguage, $instance->getPreferredContentLanguage( $wikiPage ) );
 	}
 
 	public function testLang() {
