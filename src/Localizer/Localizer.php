@@ -3,6 +3,7 @@
 namespace SMW\Localizer;
 
 use Exception;
+use MapCacheLRU;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Language\Language;
@@ -29,7 +30,16 @@ use SMW\Site;
  */
 class Localizer {
 
+	/**
+	 * Upper bound on memoized page content languages. Within a single request
+	 * the number of distinct pages is small; the bound only matters for
+	 * long-running maintenance/job processes.
+	 */
+	private const CONTENT_LANGUAGE_CACHE_SIZE = 1000;
+
 	private static ?Localizer $instance = null;
+
+	private readonly MapCacheLRU $contentLanguageCache;
 
 	/**
 	 * @since 2.1
@@ -40,6 +50,7 @@ class Localizer {
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly IContextSource $context,
 	) {
+		$this->contentLanguageCache = new MapCacheLRU( self::CONTENT_LANGUAGE_CACHE_SIZE );
 	}
 
 	/**
@@ -135,6 +146,41 @@ class Localizer {
 		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
 		WikiPage|Title|null $title = null
 	): Language {
+		$key = $this->contentLanguageCacheKey( $title );
+
+		$cached = $this->contentLanguageCache->get( $key );
+		if ( $cached instanceof Language ) {
+			return $cached;
+		}
+
+		$language = $this->resolvePreferredContentLanguage( $title );
+		$this->contentLanguageCache->set( $key, $language );
+
+		return $language;
+	}
+
+	/**
+	 * Cheap, stable cache key identifying the page whose content language is
+	 * requested. The subobject name is deliberately excluded: a subobject
+	 * shares the content language of its base page.
+	 */
+	private function contentLanguageCacheKey( WikiPage|Title|null $title ): string {
+		// The 'w:' / 't:' / 'n:' prefixes keep the three input kinds in
+		// separate key spaces. A WikiPage and a Title for the same page
+		// therefore produce different keys: harmless duplication, never a
+		// collision. Do not merge the branches into a shared key.
+		if ( $title instanceof WikiPage ) {
+			return 'w:' . $title->getNamespace() . '#' . $title->getDBkey() . '#' . $title->getInterwiki();
+		}
+
+		if ( $title instanceof Title ) {
+			return 't:' . $title->getPrefixedDBkey();
+		}
+
+		return 'n:';
+	}
+
+	private function resolvePreferredContentLanguage( WikiPage|Title|null $title ): Language {
 		$language = '';
 
 		if ( $title instanceof WikiPage ) {
