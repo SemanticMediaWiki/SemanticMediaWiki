@@ -1,0 +1,11 @@
+{{!
+  EntityExaminer tabset entry (partial, used by Tabpanel via array-tabset).
+
+  Required data:
+  - data-tab-id: string (escaped) - Tab radio input id, also the label target
+  - is-checked: bool - Whether this tab is the selected one
+  - data-severity-class: string (escaped) - Severity CSS class for the label
+  - title: string (escaped) - Tab title text
+}}
+<input type="radio" name="tabset" id="{{data-tab-id}}" aria-controls="" {{#is-checked}}checked{{/is-checked}}>
+<label for="{{data-tab-id}}" class="{{data-severity-class}}"><span>{{title}}</span></label>
