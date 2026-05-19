@@ -5,10 +5,11 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Html\Html;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\OptionsAwareTrait;
 use SMW\Utils\HtmlModal;
@@ -30,7 +31,8 @@ class SpecialSearchResultsPrepend implements HookListener {
 	 * @since  3.0
 	 */
 	public function __construct(
-		private PreferenceExaminer $preferenceExaminer,
+		private UserOptionsLookup $userOptionsLookup,
+		private User $user,
 		private SpecialSearch $specialSearch,
 		private OutputPage $outputPage,
 	) {
@@ -63,7 +65,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 
 		$html .= $this->msg( 'smw-search-syntax-support', Message::PARSE );
 
-		if ( $this->preferenceExaminer->hasPreferenceOf( GetPreferences::ENABLE_ENTITY_SUGGESTER ) ) {
+		if ( $this->userOptionsLookup->getOption( $this->user, GetPreferences::ENABLE_ENTITY_SUGGESTER, false ) ) {
 			$html .= ' ' . $this->msg( 'smw-search-input-assistance', Message::PARSE );
 		}
 
@@ -77,7 +79,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 			]
 		);
 
-		if ( !$this->preferenceExaminer->hasPreferenceOf( GetPreferences::DISABLE_SEARCH_INFO ) ) {
+		if ( !$this->userOptionsLookup->getOption( $this->user, GetPreferences::DISABLE_SEARCH_INFO, false ) ) {
 			$this->outputPage->addHtml(
 				"<div class='smw-search-results-prepend plainlinks'>$html</div>"
 			);
@@ -93,7 +95,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		$text .= $this->element( 'smw-search-help-structured' );
 		$text .= $this->element( 'smw-search-help-proximity' );
 
-		if ( $this->preferenceExaminer->hasPreferenceOf( GetPreferences::ENABLE_ENTITY_SUGGESTER ) ) {
+		if ( $this->userOptionsLookup->getOption( $this->user, GetPreferences::ENABLE_ENTITY_SUGGESTER, false ) ) {
 			$text .= $this->section( 'smw-ask-input-assistance' );
 			$text .= $this->element( 'smw-search-help-input-assistance' );
 		}
