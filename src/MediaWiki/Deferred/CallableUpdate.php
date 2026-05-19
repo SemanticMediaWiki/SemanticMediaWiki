@@ -97,14 +97,6 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	/**
-	 * @deprecated since 3.0, use DeferredCallableUpdate::isDeferrableUpdate
-	 * @since 2.4
-	 */
-	public function enabledDeferredUpdate( bool $enabledDeferredUpdate = true ): void {
-		$this->isDeferrableUpdate( $enabledDeferredUpdate );
-	}
-
-	/**
 	 * @note Unit/Integration tests in MW 1.26- showed ambiguous behaviour when
 	 * run in deferred mode because not all MW operations were supporting late
 	 * execution.

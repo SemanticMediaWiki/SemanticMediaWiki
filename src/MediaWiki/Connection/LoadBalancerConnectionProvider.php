@@ -35,14 +35,6 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @deprecated since 5.0
-	 */
-	public function asConnectionRef( bool $asConnectionRef ): void {
-	}
-
-	/**
-	 * @since 3.1
 	 */
 	public function setLoadBalancer( ILoadBalancer $loadBalancer ): void {
 		$this->loadBalancer = $loadBalancer;

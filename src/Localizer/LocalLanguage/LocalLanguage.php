@@ -71,14 +71,6 @@ class LocalLanguage {
 	}
 
 	/**
-	 * @deprecated since 3.0, use Lang::fetch
-	 * @since 2.4
-	 */
-	public function fetchByLanguageCode( $languageCode ): static {
-		return $this->fetch( $languageCode );
-	}
-
-	/**
 	 * @since 2.4
 	 */
 	public function fetch( string $languageCode ): static {
@@ -308,23 +300,6 @@ class LocalLanguage {
 	}
 
 	/**
-	 * @deprecated use getPropertyIdByLabel
-	 */
-	protected function getPropertyId( $propertyLabel ): array {
-		$list = (array)$this->languageContents->get(
-			'property.aliases',
-			$this->languageCode
-		);
-
-		$list += (array)$this->languageContents->get(
-			'property.aliases',
-			$this->canonicalFallbackLanguageCode
-		);
-
-		return $list;
-	}
-
-	/**
 	 * Function receives property name (for example, `Modificatino date') and
 	 * returns a property id (for example, `_MDAT'). Property name may be
 	 * localized one. If property name is not recognized, a null value returned.
@@ -400,13 +375,6 @@ class LocalLanguage {
 	}
 
 	/**
-	 * @deprecated use findMonthNumberByLabel
-	 */
-	public function findMonth( $label ): int|float|false {
-		return $this->findMonthNumberByLabel( $label );
-	}
-
-	/**
 	 * Function looks up a month and returns the corresponding number.
 	 *
 	 * @since 2.4
@@ -431,13 +399,6 @@ class LocalLanguage {
 		}
 
 		return false;
-	}
-
-	/**
-	 * @deprecated use getMonthLabelByNumber
-	 */
-	public function getMonthLabel( $number ) {
-		return $this->getMonthLabelByNumber( $number );
 	}
 
 	/**

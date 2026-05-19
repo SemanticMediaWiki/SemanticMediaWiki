@@ -86,7 +86,7 @@ class ChangePropagationEntityLookupTest extends TestCase {
 
 		$entityIdManager = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID', 'getDataItemPoolHashListFor' ] )
+			->setMethods( [ 'getSMWPropertyID', 'getDataItemsFromList' ] )
 			->getMock();
 
 		$entityIdManager->expects( $this->any() )
@@ -94,7 +94,7 @@ class ChangePropagationEntityLookupTest extends TestCase {
 			->willReturn( 42 );
 
 		$entityIdManager->expects( $this->any() )
-			->method( 'getDataItemPoolHashListFor' )
+			->method( 'getDataItemsFromList' )
 			->willReturn( [] );
 
 		$store = $this->getMockBuilder( SQLStore::class )

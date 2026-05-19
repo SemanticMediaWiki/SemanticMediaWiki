@@ -167,7 +167,7 @@ class ChangePropagationEntityLookup {
 			return $idList;
 		}
 
-		return $this->store->getObjectIds()->getDataItemPoolHashListFor( $idList );
+		return $this->store->getObjectIds()->getDataItemsFromList( $idList );
 	}
 
 }
