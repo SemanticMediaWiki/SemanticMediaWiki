@@ -1484,16 +1484,9 @@ class Hooks {
 			$contentIterator
 		);
 
-		if ( defined( 'User::MAINTENANCE_SCRIPT_USER' ) ) {
-			$maintenanceUser = User::MAINTENANCE_SCRIPT_USER;
-		} else {
-			// MW < 1.37
-			$maintenanceUser = 'Maintenance script';
-		}
-
 		$importer->isEnabled( $options->safeGet( Installer::RUN_IMPORT, false ) );
 		$importer->setMessageReporter( $messageReporter );
-		$importer->setImporter( $maintenanceUser );
+		$importer->setImporter( User::MAINTENANCE_SCRIPT_USER );
 		$importer->runImport();
 
 		return true;
