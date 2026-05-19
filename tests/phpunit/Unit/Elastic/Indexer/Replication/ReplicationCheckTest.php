@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Elastic\Indexer\Replication;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
@@ -32,8 +33,11 @@ class ReplicationCheckTest extends TestCase {
 	private $elasticClient;
 	private $messageLocalizer;
 	private $idTable;
+	private TemplateParser $templateParser;
 
 	protected function setUp(): void {
+		$this->templateParser = new TemplateParser( __DIR__ . '/../../../../../../templates/EntityExaminer' );
+
 		$this->idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -71,7 +75,7 @@ class ReplicationCheckTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ReplicationCheck::class,
-			new ReplicationCheck( $this->store, $this->documentReplicationExaminer, $this->entityCache )
+			new ReplicationCheck( $this->store, $this->documentReplicationExaminer, $this->entityCache, $this->templateParser )
 		);
 	}
 
@@ -79,7 +83,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -92,7 +97,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -105,7 +111,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$expected = [
@@ -126,7 +133,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$expected = [
@@ -161,7 +169,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -198,7 +207,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -238,7 +248,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -292,7 +303,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -347,7 +359,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -407,7 +420,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -465,7 +479,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -499,7 +514,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -521,7 +537,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -543,7 +560,8 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(

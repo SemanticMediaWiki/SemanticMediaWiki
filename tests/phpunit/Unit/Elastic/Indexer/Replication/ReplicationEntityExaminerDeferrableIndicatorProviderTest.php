@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Elastic\Indexer\Replication;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client;
@@ -29,11 +30,14 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 	private $connection;
 	private $entityCache;
 	private $replicationCheck;
+	private TemplateParser $templateParser;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->templateParser = new TemplateParser( __DIR__ . '/../../../../../../templates/EntityExaminer' );
 
 		$this->connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
@@ -64,17 +68,17 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ReplicationEntityExaminerDeferrableIndicatorProvider::class,
-			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
+			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			DeferrableIndicatorProvider::class,
-			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
+			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			TypableSeverityIndicatorProvider::class,
-			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
+			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck, $this->templateParser )
 		);
 	}
 
@@ -82,7 +86,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -95,7 +100,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$this->assertIsBool(
@@ -108,7 +114,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$this->assertIsArray(
@@ -121,7 +128,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$this->assertIsBool(
@@ -134,7 +142,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$this->assertIsArray(
@@ -147,7 +156,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -162,7 +172,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$instance->canCheckReplication( false );
@@ -189,7 +200,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$instance->canCheckReplication( true );
@@ -214,7 +226,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$instance->canCheckReplication( true );
@@ -238,7 +251,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$instance->canCheckReplication( true );
@@ -267,7 +281,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$instance->canCheckReplication( true );
@@ -313,7 +328,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
-			$this->replicationCheck
+			$this->replicationCheck,
+			$this->templateParser
 		);
 
 		$instance->canCheckReplication( true );

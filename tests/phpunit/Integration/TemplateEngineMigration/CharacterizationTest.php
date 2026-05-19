@@ -285,7 +285,8 @@ class CharacterizationTest extends TestCase {
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$store,
 			$entityCache,
-			$replicationCheck
+			$replicationCheck,
+			$this->newEntityExaminerTemplateParser()
 		);
 		$instance->setMessageLocalizer( $this->newMessageLocalizer() );
 		$instance->setDeferredMode( true );
@@ -377,7 +378,8 @@ HTML;
 	private const DEFERRABLE_COMPOSITE = '<section id="test-deferrable-indicator" class="tab-panel">__deferred_content__</section>
 ';
 
-	private const REPLICATION_CHECK = '__replication_html__<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="padding-top: 2px;padding-bottom:2px;"><span class="smw-issue-label" style="background-color:#cc317c;color:#ffffff;">elastic</span></div>';
+	private const REPLICATION_CHECK = '__replication_html__<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div><div style="padding-top: 2px;padding-bottom:2px;"><span class="smw-issue-label" style="background-color:#cc317c;color:#ffffff;">elastic</span></div>
+';
 
 	private const SETUP_CHECK_HTML = <<<'HTML'
 <!DOCTYPE html>

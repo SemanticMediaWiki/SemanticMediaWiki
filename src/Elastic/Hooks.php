@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
 use SMW\EntityCache;
@@ -84,7 +85,8 @@ class Hooks {
 		$replicationEntityExaminerDeferrableIndicatorProvider = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$store,
 			$this->entityCache,
-			$this->elasticFactory->newReplicationCheck( $store )
+			$this->elasticFactory->newReplicationCheck( $store ),
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 
 		$replicationEntityExaminerDeferrableIndicatorProvider->canCheckReplication(
