@@ -198,7 +198,7 @@ class InfoLinksProviderTest extends TestCase {
 		$timeValue->setOutputFormat( 'LOCL' );
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_dat' );
+		$property->setPropertyValueType( '_dat' );
 
 		$timeValue->setProperty(
 			$property

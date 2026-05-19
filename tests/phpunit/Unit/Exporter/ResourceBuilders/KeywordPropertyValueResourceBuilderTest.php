@@ -56,7 +56,7 @@ class KeywordPropertyValueResourceBuilderTest extends TestCase {
 
 	public function testAddResourceValueForValidProperty() {
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_keyw' );
+		$property->setPropertyValueType( '_keyw' );
 
 		$dataItem = $this->dataItemFactory->newDIBlob( 'Bar' );
 

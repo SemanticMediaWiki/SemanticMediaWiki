@@ -229,9 +229,9 @@ class PrintRequest {
 		}
 
 		if ( $this->m_mode == self::PRINT_PROP ) {
-			$this->m_typeid = $this->m_data->getDataItem()->findPropertyTypeID();
+			$this->m_typeid = $this->m_data->getDataItem()->findPropertyValueType();
 		} elseif ( $this->m_mode == self::PRINT_CHAIN ) {
-			$this->m_typeid = $this->m_data->getLastPropertyChainValue()->getDataItem()->findPropertyTypeID();
+			$this->m_typeid = $this->m_data->getLastPropertyChainValue()->getDataItem()->findPropertyValueType();
 		} else {
 			$this->m_typeid = '_wpg';
 		}

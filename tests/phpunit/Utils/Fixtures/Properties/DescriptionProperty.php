@@ -17,7 +17,7 @@ class DescriptionProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = new Property( 'Description' );
-		$this->property->setPropertyTypeId( '_txt' );
+		$this->property->setPropertyValueType( '_txt' );
 	}
 
 }

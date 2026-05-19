@@ -296,7 +296,7 @@ class EntityLookup implements IEntityLookup {
 			);
 
 			$result = [];
-			$propertyTypeId = $property->findPropertyTypeID();
+			$propertyTypeId = $property->findPropertyValueType();
 
 			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemByType(
 				$propertyTypeId
@@ -343,7 +343,7 @@ class EntityLookup implements IEntityLookup {
 		$idTable = $this->store->getObjectIds();
 
 		$type = DataTypeRegistry::getInstance()->getDataItemByType(
-			$property->findPropertyTypeID()
+			$property->findPropertyValueType()
 		);
 
 		// #1222, Filter those where types don't match (e.g property = _txt

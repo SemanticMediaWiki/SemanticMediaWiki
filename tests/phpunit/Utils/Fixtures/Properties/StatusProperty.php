@@ -19,7 +19,7 @@ class StatusProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Status' );
-		$this->property->setPropertyTypeId( '_txt' );
+		$this->property->setPropertyValueType( '_txt' );
 	}
 
 	/**

@@ -9,7 +9,7 @@
 ```php
 // Create property instance
 $property = new DIProperty( 'NumericProperty' );
-$property->setPropertyTypeId( '_num' );
+$property->setPropertyValueType( '_num' );
 
 $dataItem = new DINumber( 1111 );
 

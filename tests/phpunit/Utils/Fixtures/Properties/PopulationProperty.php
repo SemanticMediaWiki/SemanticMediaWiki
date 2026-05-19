@@ -17,7 +17,7 @@ class PopulationProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = new Property( 'Population' );
-		$this->property->setPropertyTypeId( '_num' );
+		$this->property->setPropertyValueType( '_num' );
 	}
 
 }

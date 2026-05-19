@@ -79,7 +79,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends TestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$property = new Property( __METHOD__ );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$semanticData->addDataValue(
 			$this->dataValueFactory->newDataValueByProperty( $property, 'Bar' )
@@ -126,7 +126,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends TestCase {
 			->newEmptySemanticData();
 
 		$property = new Property( 'SomePageTypePropertyForNamespaceAnnotation' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$semanticData->addDataValue(
 			$this->dataValueFactory->newDataValueByProperty( $property, 'Bar' )
@@ -164,7 +164,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends TestCase {
 		$subobject->setEmptyContainerForId( 'SubobjectToTestReferenceAfterUpdate' );
 
 		$property = new Property( 'SomeNumericPropertyToCompareReference' );
-		$property->setPropertyTypeId( '_num' );
+		$property->setPropertyValueType( '_num' );
 
 		$dataItem = new Number( 99999 );
 

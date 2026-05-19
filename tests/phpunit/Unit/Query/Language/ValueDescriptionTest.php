@@ -128,7 +128,7 @@ class ValueDescriptionTest extends TestCase {
 			]
 		];
 
-		$property = Property::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
+		$property = Property::newFromUserLabel( 'Foo' )->setPropertyValueType( '_num' );
 		$dataItem = new Number( 9001 );
 
 		$provider['num.1'] = [
@@ -145,7 +145,7 @@ class ValueDescriptionTest extends TestCase {
 			]
 		];
 
-		$property = Property::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
+		$property = Property::newFromUserLabel( 'Foo' )->setPropertyValueType( '_num' );
 		$dataItem = new Number( 9001.356 );
 
 		$provider['num.2'] = [

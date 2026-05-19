@@ -59,7 +59,7 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 
 		$property = new Property( 'SomeWpgPropertyToFilter' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Bar' ) );
 		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Foobar' ) );
@@ -93,7 +93,7 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$this->subjectsToBeCleared[] = $subject;
 
 		$property = new Property( 'SomeWpgPropertyToFilter' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Bar' ) );
 		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Foobar' ) );
@@ -123,7 +123,7 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 
 		$property = new Property( 'SomeWpgPropertySortedFilter' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'FooBar' ) );
 		$semanticData->addPropertyObjectValue( $property, WikiPage::newFromText( 'Bar_9' ) );
@@ -169,7 +169,7 @@ class SemanticDataLookupTest extends SMWIntegrationTestCase {
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 
 		$property = new Property( 'SomeBlobPropertyToFilter' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$semanticData->addPropertyObjectValue( $property, new Blob( 'testfoobar' ) );
 

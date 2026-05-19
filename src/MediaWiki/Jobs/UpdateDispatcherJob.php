@@ -209,7 +209,7 @@ class UpdateDispatcherJob extends Job {
 			// Before doing some work, make sure to only use page type properties
 			// as a means to generate a resource (job) action
 			$type = DataTypeRegistry::getInstance()->getDataItemByType(
-				$property->findPropertyTypeId()
+				$property->findPropertyValueType()
 			);
 
 			if ( $type !== DataItem::TYPE_WIKIPAGE ) {

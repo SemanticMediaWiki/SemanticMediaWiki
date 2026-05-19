@@ -52,32 +52,32 @@ class PropertyTest extends TestCase {
 		);
 	}
 
-	public function testSetPropertyTypeIdOnUserDefinedProperty() {
+	public function testSetPropertyValueTypeOnUserDefinedProperty() {
 		$property = new Property( 'SomeBlobProperty' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
-		$this->assertEquals( '_txt', $property->findPropertyTypeID() );
+		$this->assertEquals( '_txt', $property->findPropertyValueType() );
 	}
 
-	public function testSetPropertyTypeIdOnPredefinedProperty() {
+	public function testSetPropertyValueTypeOnPredefinedProperty() {
 		$property = new Property( '_MDAT' );
-		$property->setPropertyTypeId( '_dat' );
+		$property->setPropertyValueType( '_dat' );
 
-		$this->assertEquals( '_dat', $property->findPropertyTypeID() );
+		$this->assertEquals( '_dat', $property->findPropertyValueType() );
 	}
 
-	public function testSetUnknownPropertyTypeIdThrowsException() {
+	public function testSetUnknownPropertyValueTypeThrowsException() {
 		$property = new Property( 'SomeUnknownTypeIdProperty' );
 
 		$this->expectException( DataTypeLookupException::class );
-		$property->setPropertyTypeId( '_unknownTypeId' );
+		$property->setPropertyValueType( '_unknownTypeId' );
 	}
 
-	public function testSetPropertyTypeIdOnPredefinedPropertyThrowsException() {
+	public function testSetPropertyValueTypeOnPredefinedPropertyThrowsException() {
 		$property = new Property( '_MDAT' );
 
 		$this->expectException( 'RuntimeException' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 	}
 
 	public function testCorrectInversePrefixForPredefinedProperty() {

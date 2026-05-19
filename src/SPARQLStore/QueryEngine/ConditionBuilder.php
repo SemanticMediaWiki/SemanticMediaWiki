@@ -419,7 +419,7 @@ class ConditionBuilder {
 		}
 
 		if ( $diType == DataItem::TYPE_NOTYPE ) {
-			$diType = DataTypeRegistry::getInstance()->getDataItemByType( $orderByProperty->findPropertyTypeID() );
+			$diType = DataTypeRegistry::getInstance()->getDataItemByType( $orderByProperty->findPropertyValueType() );
 		}
 
 		$this->addOrderByData( $sparqlCondition, $mainVariable, $diType );

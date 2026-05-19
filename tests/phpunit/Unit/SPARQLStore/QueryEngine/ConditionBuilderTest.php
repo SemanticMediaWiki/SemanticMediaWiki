@@ -256,7 +256,7 @@ class ConditionBuilderTest extends TestCase {
 
 	public function testQueryForSinglePageTypePropertyWithValueComparator() {
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
@@ -288,7 +288,7 @@ class ConditionBuilderTest extends TestCase {
 
 	public function testQueryForSingleBlobTypePropertyWithNotLikeComparator() {
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$description = new SomeProperty(
 			$property,
@@ -510,7 +510,7 @@ class ConditionBuilderTest extends TestCase {
 
 	public function testSingleDatePropertyWithGreaterEqualConstraint() {
 		$property = new Property( 'SomeDateProperty' );
-		$property->setPropertyTypeId( '_dat' );
+		$property->setPropertyValueType( '_dat' );
 
 		$description = new SomeProperty(
 			$property,
@@ -573,7 +573,7 @@ class ConditionBuilderTest extends TestCase {
 	 */
 	public function testSubqueryDisjunction() {
 		$property = new Property( 'HasSomeProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$disjunction = new Disjunction( [
 			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ), $property ),
@@ -612,7 +612,7 @@ class ConditionBuilderTest extends TestCase {
 	 */
 	public function testNestedPropertyConjunction() {
 		$property = Property::newFromUserLabel( 'Born in' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$category = new WikiPage( 'City', NS_CATEGORY );
 
@@ -772,7 +772,7 @@ class ConditionBuilderTest extends TestCase {
 			->willReturn( $title );
 
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,

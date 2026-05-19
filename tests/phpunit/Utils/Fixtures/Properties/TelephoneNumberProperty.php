@@ -17,7 +17,7 @@ class TelephoneNumberProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Telephone number' );
-		$this->property->setPropertyTypeId( '_tel' );
+		$this->property->setPropertyValueType( '_tel' );
 	}
 
 }

@@ -56,7 +56,7 @@ class GeneralQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testPropertyBeforeAfterDataRemoval() {
 		$property = new Property( 'SomePagePropertyBeforeAfter' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$this->assertEmpty(
 			$this->searchForResultsThatCompareEqualToOnlySingularPropertyOf( $property )->getResults()
@@ -92,7 +92,7 @@ class GeneralQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testUserDefinedPropertyUsedForInvalidValueAssignment() {
 		$property = new Property( 'SomePropertyWithInvalidValueAssignment' );
-		$property->setPropertyTypeId( '_tem' );
+		$property->setPropertyValueType( '_tem' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property, '1 Jan 1970' );
 

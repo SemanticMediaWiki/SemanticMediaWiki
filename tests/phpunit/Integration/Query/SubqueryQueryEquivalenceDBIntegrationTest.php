@@ -65,10 +65,10 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 
 		$this->numberProperty = new Property( 'EquivalenceNumber' );
-		$this->numberProperty->setPropertyTypeId( '_num' );
+		$this->numberProperty->setPropertyValueType( '_num' );
 
 		$this->authorProperty = new Property( 'EquivalenceAuthor' );
-		$this->authorProperty->setPropertyTypeId( '_wpg' );
+		$this->authorProperty->setPropertyValueType( '_wpg' );
 
 		// Dedicated property pair for the mixed-direction cursor walk
 		// test. Kept separate from `numberProperty`/`authorProperty` so
@@ -78,10 +78,10 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		// shapes, so legacy and rewrite paths can disagree on tie
 		// order without it being a real divergence).
 		$this->mixedTieNumberProperty = new Property( 'EquivalenceMixedTieNumber' );
-		$this->mixedTieNumberProperty->setPropertyTypeId( '_num' );
+		$this->mixedTieNumberProperty->setPropertyValueType( '_num' );
 
 		$this->mixedTieAuthorProperty = new Property( 'EquivalenceMixedTieAuthor' );
-		$this->mixedTieAuthorProperty->setPropertyTypeId( '_wpg' );
+		$this->mixedTieAuthorProperty->setPropertyValueType( '_wpg' );
 
 		$this->alice = new WikiPage( 'EquivalenceAlice', NS_MAIN );
 		$this->bob = new WikiPage( 'EquivalenceBob', NS_MAIN );

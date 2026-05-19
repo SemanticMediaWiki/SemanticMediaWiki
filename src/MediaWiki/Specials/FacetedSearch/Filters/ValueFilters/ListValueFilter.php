@@ -59,7 +59,7 @@ class ListValueFilter {
 		$prop = Property::newFromUserLabel( $property );
 
 		$isRecordType = DataTypeRegistry::getInstance()->isRecordType(
-			$prop->findPropertyTypeID()
+			$prop->findPropertyValueType()
 		);
 
 		foreach ( $values as $key => $count ) {

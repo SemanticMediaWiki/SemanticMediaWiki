@@ -17,7 +17,7 @@ class FoundedProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = new Property( 'Founded' );
-		$this->property->setPropertyTypeId( '_dat' );
+		$this->property->setPropertyValueType( '_dat' );
 	}
 
 }

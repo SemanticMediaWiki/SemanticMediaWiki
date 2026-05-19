@@ -113,7 +113,7 @@ class QueryResultSerializerTest extends TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$property = Property::newFromUserLabel( 'Foo' );
-		$property->setPropertyTypeId( '_rec' );
+		$property->setPropertyValueType( '_rec' );
 
 		$printRequestFactory = new PrintRequestFactory();
 
@@ -145,7 +145,7 @@ class QueryResultSerializerTest extends TestCase {
 
 	public function testSerializeFormatForTimeValue() {
 		$property = Property::newFromUserLabel( 'Foo' );
-		$property->setPropertyTypeId( '_dat' );
+		$property->setPropertyValueType( '_dat' );
 
 		$printRequestFactory = new PrintRequestFactory();
 

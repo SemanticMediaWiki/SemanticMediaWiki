@@ -25,7 +25,7 @@ class KeywordPropertyValueResourceBuilder extends PropertyValueResourceBuilder {
 	 * {@inheritDoc}
 	 */
 	public function isResourceBuilderFor( Property $property ): bool {
-		return $property->findPropertyTypeID() === '_keyw';
+		return $property->findPropertyValueType() === '_keyw';
 	}
 
 	/**
