@@ -8,7 +8,6 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use SMW\DataItems\Property;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotator;
 
 /**
@@ -110,11 +109,12 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private function hasEditProtection(): bool {
 		// $this->title->flushRestrictions();
 
-		if ( !PageInfoProvider::isProtected( $this->title, 'edit' ) ) {
+		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
+
+		if ( !$restrictionStore->isProtected( $this->title, 'edit' ) ) {
 			return false;
 		}
 
-		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
 		$restrictions = array_flip( $restrictionStore->getRestrictions( $this->title, 'edit' ) );
 
 		// There could by any edit protections but the `Is edit protected` is

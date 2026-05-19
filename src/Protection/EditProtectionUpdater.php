@@ -11,7 +11,6 @@ use SMW\DataItems\Property;
 use SMW\DataModel\SemanticData;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
-use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use WikiPage;
 
@@ -106,7 +105,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			return;
 		}
 
-		if ( (bool)$isEditProtected === PageInfoProvider::isProtected( $title, 'edit' ) ) {
+		if ( (bool)$isEditProtected === $restrictionStore->isProtected( $title, 'edit' ) ) {
 			$this->log( __METHOD__ . ' Status already set, no update required' );
 			return;
 		}

@@ -51,8 +51,4 @@ class RedirectTargetFinder {
 		return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
 	}
 
-	protected function hasContentHandler(): bool {
-		return defined( 'CONTENT_MODEL_WIKITEXT' );
-	}
-
 }
