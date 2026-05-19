@@ -65,8 +65,8 @@ class LocalLanguageAccessibilityAndIntegrityTest extends TestCase {
 
 		for ( $i = 1; $i <= 12; $i++ ) {
 
-			$label = call_user_func( [ $class, 'getMonthLabel' ], $i );
-			$month = call_user_func( [ $class, 'findMonth' ], $label );
+			$label = call_user_func( [ $class, 'getMonthLabelByNumber' ], $i );
+			$month = call_user_func( [ $class, 'findMonthNumberByLabel' ], $label );
 
 			$this->assertIsString( $label );
 			$this->assertEquals( $i, $month );
