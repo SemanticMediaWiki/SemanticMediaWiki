@@ -1,1 +1,0 @@
-<div class="smw-indicator-compare-list"><p>{{explain}}</p><div class="smw-indicator-compare-list-row"><span>{{first_key}}</span><span>{{first_value}}</span></div><div class="smw-indicator-compare-list-row"><span>{{second_key}}</span><span>{{second_value}}</span></div></div>
