@@ -90,7 +90,7 @@ class FileUpload implements HookListener {
 
 		$parserData->setOrigin( 'FileUpload' );
 
-		$parserData->pushSemanticDataToParserOutput();
+		$parserData->copyToParserOutput();
 		$parserData->updateStore( true );
 
 		return true;

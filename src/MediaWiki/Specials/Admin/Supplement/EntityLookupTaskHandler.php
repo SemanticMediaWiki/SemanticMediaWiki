@@ -116,7 +116,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		$id = $webRequest->getText( 'id' );
 
-		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
+		if ( $this->hasFeature( SMW_ADM_DISPOSAL ) && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
 			$this->doDispose( $id );
 		}
 
@@ -168,7 +168,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			$id = '';
 		}
 
-		if ( !$this->isEnabledFeature( SMW_ADM_DISPOSAL ) ) {
+		if ( !$this->hasFeature( SMW_ADM_DISPOSAL ) ) {
 			return $html;
 		}
 

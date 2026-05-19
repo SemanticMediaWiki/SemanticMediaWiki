@@ -234,6 +234,9 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   * `LocalLanguage::fetchByLanguageCode()` — use `fetch()` (deprecated since 3.0)
   * `LocalLanguage::getPropertyId()`, `findMonth()`, `getMonthLabel()` — use `getPropertyIdByLabel()`, `findMonthNumberByLabel()`, `getMonthLabelByNumber()`
   * `LoadBalancerConnectionProvider::asConnectionRef()` (deprecated since 5.0)
+  * `ParserData::pushSemanticDataToParserOutput()` — use `copyToParserOutput()` (deprecated since 3.0)
+  * `DataValue::isEnabledFeature()` — use `hasFeature()` (deprecated since 3.0)
+  * `TaskHandler::isEnabledFeature()` — use `hasFeature()` (deprecated since 3.1)
 
 ### Deprecations
 

@@ -139,7 +139,7 @@ class NumberValue extends DataValue {
 				')\s*(?:[eE][-+]?\d+)?)/u';
 
 		// #1718 Whether to preserve spaces in unit labels or not (e.g. sq mi, sqmi)
-		$space = $this->isEnabledFeature( SMW_DV_NUMV_USPACE ) ? ' ' : '';
+		$space = $this->hasFeature( SMW_DV_NUMV_USPACE ) ? ' ' : '';
 
 		$parts = preg_split(
 			$regex,

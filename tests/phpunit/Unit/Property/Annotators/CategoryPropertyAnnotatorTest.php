@@ -136,7 +136,7 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 		);
 
 		$instance->addAnnotation();
-		$parserData->pushSemanticDataToParserOutput();
+		$parserData->copyToParserOutput();
 
 		$parserDataAfterAnnotation = new ParserData( $title, $parserOutput );
 

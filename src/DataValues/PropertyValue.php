@@ -180,7 +180,7 @@ class PropertyValue extends DataValue {
 		}
 
 		// @see the SMW_DV_PROV_DTITLE explanation
-		if ( $this->isEnabledFeature( SMW_DV_PROV_DTITLE ) ) {
+		if ( $this->hasFeature( SMW_DV_PROV_DTITLE ) ) {
 			$dataItem = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getPropertyFromDisplayTitle(
 				$value
 			);
@@ -191,7 +191,7 @@ class PropertyValue extends DataValue {
 		// Copy the original DI to ensure we can compare it against a possible redirect
 		$this->inceptiveProperty = $this->m_dataitem;
 
-		if ( $this->isEnabledFeature( SMW_DV_PROV_REDI ) ) {
+		if ( $this->hasFeature( SMW_DV_PROV_REDI ) ) {
 			$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
 		}
 

@@ -108,7 +108,7 @@ class ConceptParserFunction {
 
 		$this->addQueryProfile( $query );
 
-		$this->parserData->pushSemanticDataToParserOutput();
+		$this->parserData->copyToParserOutput();
 
 		if ( $this->messageFormatter->exists() ) {
 			return $this->messageFormatter->getHtml();

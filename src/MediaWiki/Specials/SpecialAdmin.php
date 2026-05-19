@@ -156,7 +156,7 @@ class SpecialAdmin extends SpecialPage {
 		$supportTaskList = $taskHandlerRegistry->get( TaskHandler::SECTION_SUPPORT );
 		$supportTask = end( $supportTaskList );
 
-		$default = $alertsSection === '' ? ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ? 'general' : 'maintenance' ) : 'alerts';
+		$default = $alertsSection === '' ? ( $supportTask->hasFeature( SMW_ADM_SHOW_OVERVIEW ) ? 'general' : 'maintenance' ) : 'alerts';
 
 		// If we want to remain on a specific tab on a GET request, use the `tab`
 		// parameter since we are unable to fetch any #href hash from a request
@@ -174,7 +174,7 @@ class SpecialAdmin extends SpecialPage {
 		);
 
 		$supportSection = '';
-		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
+		if ( $supportTask->hasFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
 			$supportSection = $supportTask->getHtml();
 			$htmlTabs->tab( 'general', $this->msg_text( 'smw-admin-tab-general' ) );
 		}
@@ -182,7 +182,7 @@ class SpecialAdmin extends SpecialPage {
 		$htmlTabs->tab( 'maintenance', $this->msg_text( 'smw-admin-tab-maintenance' ) );
 		$htmlTabs->tab( 'supplement', $this->msg_text( 'smw-admin-tab-supplement' ) );
 
-		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
+		if ( $supportTask->hasFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
 			$htmlTabs->content( 'general', $supportSection );
 		}
 

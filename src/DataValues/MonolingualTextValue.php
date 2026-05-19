@@ -107,7 +107,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 		if (
 			( $languageCode !== '' && $languageCodeValue->getErrors() !== [] ) ||
-			( $languageCode === '' && $this->isEnabledFeature( SMW_DV_MLTV_LCODE ) ) ) {
+			( $languageCode === '' && $this->hasFeature( SMW_DV_MLTV_LCODE ) ) ) {
 			$this->addError( $languageCodeValue->getErrors() );
 			return;
 		}
