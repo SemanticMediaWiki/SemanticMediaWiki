@@ -240,6 +240,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   * `ParserData::pushSemanticDataToParserOutput()` — use `copyToParserOutput()` (deprecated since 3.0)
   * `DataValue::isEnabledFeature()` — use `hasFeature()` (deprecated since 3.0)
   * `TaskHandler::isEnabledFeature()` — use `hasFeature()` (deprecated since 3.1)
+  * `Property::setPropertyTypeId()` — use `setPropertyValueType()` (deprecated since 3.0)
+  * `Property::findPropertyTypeId()` — use `findPropertyValueType()` (deprecated since 3.0)
 
 ### Deprecations
 

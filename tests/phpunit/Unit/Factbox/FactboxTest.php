@@ -352,7 +352,7 @@ class FactboxTest extends TestCase {
 			->willReturn( $test['isUserDefined'] );
 
 		$property->expects( $this->any() )
-			->method( 'findPropertyTypeID' )
+			->method( 'findPropertyValueType' )
 			->willReturn( '_wpg' );
 
 		$property->expects( $this->any() )

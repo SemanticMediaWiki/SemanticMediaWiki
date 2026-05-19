@@ -111,7 +111,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		if (
 			DataTypeRegistry::getInstance()->isEqualByType(
 				$type,
-				$property->findPropertyTypeID()
+				$property->findPropertyValueType()
 			)
 		) {
 			return;

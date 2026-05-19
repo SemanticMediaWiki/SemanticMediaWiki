@@ -174,7 +174,7 @@ class SemanticDataValidator extends Assert {
 		if ( isset( $expected['propertyTypeId'] ) ) {
 			$this->assertEquals(
 				$expected['propertyTypeId'],
-				$property->findPropertyTypeID(),
+				$property->findPropertyValueType(),
 				__METHOD__ . " asserts property typeId for '{$property->getKey()}'"
 			);
 

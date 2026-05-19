@@ -161,7 +161,7 @@ class SemanticDataDeserializer implements Deserializer {
 	/**
 	 * Returns DataItemId for a property
 	 *
-	 * @note findPropertyTypeID is calling the Store to find the
+	 * @note findPropertyValueType is calling the Store to find the
 	 * typeId reference this is costly but at the moment there is no other
 	 * way to determine the typeId
 	 *
@@ -175,7 +175,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 */
 	private function getDataItemId( Property $property ) {
 		if ( !isset( $this->dataItemTypeIdCache[$property->getKey()] ) ) {
-			$this->dataItemTypeIdCache[$property->getKey()] = DataTypeRegistry::getInstance()->getDataItemByType( $property->findPropertyTypeID() );
+			$this->dataItemTypeIdCache[$property->getKey()] = DataTypeRegistry::getInstance()->getDataItemByType( $property->findPropertyValueType() );
 		}
 
 		return $this->dataItemTypeIdCache[$property->getKey()];

@@ -232,7 +232,7 @@ class QueryResultLookup {
 
 		// override $DIProperty for reference datatype
 		// with the first multiValue property
-		if ( DataTypeRegistry::getInstance()->isRecordType( $DIProperty->findPropertyTypeID() ) ) {
+		if ( DataTypeRegistry::getInstance()->isRecordType( $DIProperty->findPropertyValueType() ) ) {
 			[ $DIProperty, $dataItem ] = $this->destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions );
 		}
 

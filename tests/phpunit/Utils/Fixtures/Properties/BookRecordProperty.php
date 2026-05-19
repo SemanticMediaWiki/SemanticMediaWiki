@@ -21,7 +21,7 @@ class BookRecordProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Book record' );
-		$this->property->setPropertyTypeId( '_rec' );
+		$this->property->setPropertyValueType( '_rec' );
 	}
 
 	/**

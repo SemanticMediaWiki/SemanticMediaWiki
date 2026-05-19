@@ -78,7 +78,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$parentProperty = Property::newFromUserLabel( $dataItem->getDBKey() );
 
 		if ( $parentProperty->isUserDefined() ) {
-			$type_id = $parentProperty->findPropertyTypeID();
+			$type_id = $parentProperty->findPropertyValueType();
 		} else {
 			$type_id = $parentProperty->getKey();
 		}

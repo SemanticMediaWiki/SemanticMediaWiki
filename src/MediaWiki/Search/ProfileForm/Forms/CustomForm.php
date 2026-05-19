@@ -126,7 +126,7 @@ class CustomForm {
 		if ( isset( $options['type'] ) ) {
 			$type = $options['type'];
 		} else {
-			$typeID = Property::newFromUserLabel( $property )->findPropertyTypeID();
+			$typeID = Property::newFromUserLabel( $property )->findPropertyValueType();
 			$type = 'text';
 
 			if ( isset( $this->html5TypeMap[$typeID] ) ) {

@@ -444,7 +444,7 @@ class Exporter {
 	 * @todo An improved mechanism for selecting property types here is needed.
 	 */
 	public function getOWLPropertyType( Property $property ): string {
-		return TypesRegistry::getOWLPropertyByType( $property->findPropertyTypeID() );
+		return TypesRegistry::getOWLPropertyByType( $property->findPropertyValueType() );
 	}
 
 	/**
@@ -670,8 +670,8 @@ class Exporter {
 	 * values in the sense of Exporter::getInstance()->newAuxiliaryExpElement().
 	 */
 	public static function hasHelperExpElement( Property $property ): bool {
-		return ( $property->findPropertyTypeID() === '_dat' ||
-			$property->findPropertyTypeID() === '_geo' ) ||
+		return ( $property->findPropertyValueType() === '_dat' ||
+			$property->findPropertyValueType() === '_geo' ) ||
 			( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 

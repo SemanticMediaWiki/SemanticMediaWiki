@@ -39,7 +39,7 @@ abstract class FixtureProperty {
 		$semanticData->addDataValue(
 			DataValueFactory::getInstance()->newDataValueByProperty(
 				new Property( '_TYPE' ),
-				$this->property->findPropertyTypeID()
+				$this->property->findPropertyValueType()
 			)
 		);
 

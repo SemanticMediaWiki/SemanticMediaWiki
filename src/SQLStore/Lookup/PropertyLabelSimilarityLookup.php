@@ -233,7 +233,7 @@ class PropertyLabelSimilarityLookup {
 		if ( $withType ) {
 			$summary[] = [
 				'label' => $first->getLabel(),
-				'type'  => $first->findPropertyTypeID()
+				'type'  => $first->findPropertyValueType()
 			];
 		} else {
 			$summary[] = $first->getLabel();
@@ -242,7 +242,7 @@ class PropertyLabelSimilarityLookup {
 		if ( $withType ) {
 			$summary[] = [
 				'label' => $second->getLabel(),
-				'type'  => $second->findPropertyTypeID()
+				'type'  => $second->findPropertyValueType()
 			];
 		} else {
 			$summary[] = $second->getLabel();

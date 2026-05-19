@@ -291,7 +291,7 @@ class UserdefinedPropertyExaminerTest extends TestCase {
 		$dataItemFactory = new DataItemFactory();
 
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$semanticData = new SemanticData(
 			$property->getDIWikiPage()
@@ -343,7 +343,7 @@ class UserdefinedPropertyExaminerTest extends TestCase {
 		$dataItemFactory = new DataItemFactory();
 
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$semanticData = new SemanticData(
 			$property->getDIWikiPage()

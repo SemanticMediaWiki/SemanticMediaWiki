@@ -59,7 +59,7 @@ class MonolingualTextPropertyValueResourceBuilderTest extends TestCase {
 
 	public function testAddResourceValueForValidProperty() {
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_mlt_rec' );
+		$property->setPropertyValueType( '_mlt_rec' );
 
 		$monolingualTextValue = $this->dataValueFactory->newDataValueByProperty(
 			$property,

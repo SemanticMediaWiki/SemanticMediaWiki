@@ -17,7 +17,7 @@ class UrlProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Url' );
-		$this->property->setPropertyTypeId( '_uri' );
+		$this->property->setPropertyValueType( '_uri' );
 	}
 
 }

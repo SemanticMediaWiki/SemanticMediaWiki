@@ -98,7 +98,7 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 		$property = Property::newFromUserLabel( 'Has record type for single test' );
 		$valueString = 'ForSingleTestAsPage;ForSingleTestAsText;3333';
 
-		if ( $property->findPropertyTypeID() === '_rec' ) {
+		if ( $property->findPropertyValueType() === '_rec' ) {
 			$valueString = 'ForSingleTestAsPage; ForSingleTestAsText; 3333';
 		}
 

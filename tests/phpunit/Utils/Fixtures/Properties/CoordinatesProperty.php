@@ -17,7 +17,7 @@ class CoordinatesProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = new Property( 'Coordinates' );
-		$this->property->setPropertyTypeId( '_geo' );
+		$this->property->setPropertyValueType( '_geo' );
 	}
 
 }

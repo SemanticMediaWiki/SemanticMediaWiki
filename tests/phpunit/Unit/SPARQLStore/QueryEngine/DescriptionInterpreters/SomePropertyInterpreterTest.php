@@ -244,7 +244,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$description = new SomeProperty(
 			$property,
@@ -270,7 +270,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$description = new SomeProperty(
 			$property,
@@ -297,7 +297,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$propertyValue = new WikiPage( 'SomePropertyPageValue', NS_HELP );
 
@@ -330,7 +330,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
@@ -359,7 +359,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
@@ -395,7 +395,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$property = new Property( 'Foo', true );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
@@ -454,7 +454,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$property = new Property( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$description = new SomeProperty(
 			$property,

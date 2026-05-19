@@ -456,7 +456,7 @@ class PropertyValue extends DataValue {
 
 	/**
 	 * Convenience method to find the type id of this property. Most callers
-	 * should rather use Property::findPropertyTypeId() directly. Note
+	 * should rather use Property::findPropertyValueType() directly. Note
 	 * that this is not the same as getTypeID(), which returns the id of
 	 * this property datavalue.
 	 *
@@ -467,7 +467,7 @@ class PropertyValue extends DataValue {
 			return '__err';
 		}
 
-		return $this->m_dataitem->findPropertyTypeId();
+		return $this->m_dataitem->findPropertyValueType();
 	}
 
 	private function createDataItemFrom( bool $reqCapitalizedFirstChar, $propertyName, $capitalizedName, bool $inverse ): Property {

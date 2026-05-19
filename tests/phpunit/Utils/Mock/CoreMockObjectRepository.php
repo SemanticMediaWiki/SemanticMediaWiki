@@ -340,8 +340,8 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 			->willReturn( DataItem::TYPE_WIKIPAGE );
 
 		$diWikiPage->expects( $this->any() )
-			->method( 'findPropertyTypeID' )
-			->willReturn( $this->builder->setValue( 'findPropertyTypeID', '_wpg' ) );
+			->method( 'findPropertyValueType' )
+			->willReturn( $this->builder->setValue( 'findPropertyValueType', '_wpg' ) );
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'getSubobjectName' )
@@ -361,8 +361,8 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 			->getMock();
 
 		$property->expects( $this->any() )
-			->method( 'findPropertyTypeID' )
-			->willReturn( $this->builder->setValue( 'findPropertyTypeID', '_wpg' ) );
+			->method( 'findPropertyValueType' )
+			->willReturn( $this->builder->setValue( 'findPropertyValueType', '_wpg' ) );
 
 		$property->expects( $this->any() )
 			->method( 'getKey' )

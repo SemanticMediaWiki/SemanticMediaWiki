@@ -124,35 +124,35 @@ class SpecialCharactersQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		$provider[] = [
 			'特殊文字',
 			'Nuñez',
-			Property::newFromUserLabel( '特殊文字' )->setPropertyTypeId( '_txt' ),
+			Property::newFromUserLabel( '特殊文字' )->setPropertyValueType( '_txt' ),
 			new Blob( 'Nuñez' )
 		];
 
 		$provider[] = [
 			'特殊字符',
 			'^[0-9]*$',
-			Property::newFromUserLabel( '特殊字符' )->setPropertyTypeId( '_txt' ),
+			Property::newFromUserLabel( '特殊字符' )->setPropertyValueType( '_txt' ),
 			new Blob( '^[0-9]*$' )
 		];
 
 		$provider[] = [
 			'Caractères spéciaux',
 			'Caractères_spéciaux',
-			Property::newFromUserLabel( 'Caractères spéciaux' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'Caractères spéciaux' )->setPropertyValueType( '_wpg' ),
 			new WikiPage( 'âêîôûëïçé', NS_MAIN )
 		];
 
 		$provider[] = [
 			'áéíóúñÑü¡¿',
 			'áéíóúñÑü¡¿',
-			Property::newFromUserLabel( 'áéíóúñÑü¡¿' )->setPropertyTypeId( '_num' ),
+			Property::newFromUserLabel( 'áéíóúñÑü¡¿' )->setPropertyValueType( '_num' ),
 			new Number( 8888 )
 		];
 
 		$provider[] = [
 			'Foo',
 			'{({[[&,,;-]]})}',
-			Property::newFromUserLabel( '{({[[&,,;-]]})}' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( '{({[[&,,;-]]})}' )->setPropertyValueType( '_wpg' ),
 			new WikiPage( '{({[[&,,;-]]})}', NS_MAIN )
 		];
 
