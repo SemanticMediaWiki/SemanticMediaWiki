@@ -1,1 +1,0 @@
-<section id="{{tab_id}}" class="tab-panel">{{content}}</section>

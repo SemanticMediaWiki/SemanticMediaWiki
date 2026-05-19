@@ -1,1 +1,0 @@
-<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" data-subject="{{subject}}" data-dir="{{dir}}" data-uselang="{{uselang}}" title="{{title}}"></div>

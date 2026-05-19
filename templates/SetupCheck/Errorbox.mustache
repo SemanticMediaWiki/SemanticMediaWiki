@@ -1,0 +1,8 @@
+{{!
+  Error box for the SetupCheck error page.
+
+  Required data:
+  - data-template: string (escaped) - template marker, must survive in output as an HTML comment
+  - html-text: string (raw) - pre-rendered error content (markup or raw stack trace)
+}}
+<!--{{data-template}}--><div class="errorbox"><pre>{{{html-text}}}</pre></div>

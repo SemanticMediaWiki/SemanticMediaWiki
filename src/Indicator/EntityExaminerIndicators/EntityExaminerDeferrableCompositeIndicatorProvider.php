@@ -2,6 +2,7 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\DataItems\WikiPage;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
@@ -11,7 +12,6 @@ use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -33,12 +33,10 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	private mixed $languageCode = '';
 
-	private TemplateEngine $templateEngine;
-
 	/**
 	 * @since 3.2
 	 */
-	public function __construct( private array $indicatorProviders ) {
+	public function __construct( private array $indicatorProviders, private TemplateParser $templateParser ) {
 	}
 
 	/**
@@ -140,15 +138,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	}
 
 	private function buildHTML( WikiPage $subject, array $indicatorProviders, array $options ): void {
-		$this->templateEngine = new TemplateEngine();
-
-		$this->templateEngine->bulkLoad(
-			[
-				'/indicator/tabpanel.tab.ms' => 'tabpanel_tab_template',
-				'/indicator/text.ms' => 'text_template'
-			]
-		);
-
 		$count = count( $indicatorProviders );
 
 		foreach ( $indicatorProviders as $key => $indicatorProvider ) {
@@ -198,22 +187,25 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 		} else {
 			$args['title'] = $this->msg( $indicatorProvider->getName(), Message::TEXT, $this->languageCode );
 
-			$this->templateEngine->compile( 'text_template',
+			$args['content'] = $this->templateParser->processTemplate(
+				'Text',
 				[
-					'text' => $this->msg( [ 'smw-entity-examiner-deferred-check-awaiting-response', $args['title'] ], Message::TEXT, $this->languageCode )
+					'html-text' => $this->msg( [ 'smw-entity-examiner-deferred-check-awaiting-response', $args['title'] ], Message::TEXT, $this->languageCode )
 				]
 			);
-
-			$args['content'] = $this->templateEngine->publish( 'text_template' );
 		}
 
 		if ( $args['content'] === '' ) {
 			return '';
 		}
 
-		$this->templateEngine->compile( 'tabpanel_tab_template', $args );
-
-		return $this->templateEngine->publish( 'tabpanel_tab_template' );
+		return $this->templateParser->processTemplate(
+			'Tab',
+			[
+				'data-tab-id' => $args['tab_id'],
+				'html-content' => $args['content']
+			]
+		);
 	}
 
 }

@@ -2,6 +2,7 @@
 
 namespace SMW\Indicator;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\EntityCache;
 use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
@@ -11,7 +12,6 @@ use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndi
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Services\ServicesFactory;
 use SMW\Store;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -59,7 +59,8 @@ class EntityExaminerIndicatorsFactory {
 	 */
 	public function newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( Store $store ): AssociatedRevisionMismatchEntityExaminerIndicatorProvider {
 		$associatedRevisionMismatchEntityExaminerIndicatorProvider = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$store
+			$store,
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 
 		$associatedRevisionMismatchEntityExaminerIndicatorProvider->setRevisionGuard(
@@ -80,7 +81,8 @@ class EntityExaminerIndicatorsFactory {
 	public function newConstraintErrorEntityExaminerIndicatorProvider( Store $store, EntityCache $entityCache ): ConstraintErrorEntityExaminerIndicatorProvider {
 		$constraintErrorEntityExaminerIndicatorProvider = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$store,
-			$entityCache
+			$entityCache,
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 
 		return $constraintErrorEntityExaminerIndicatorProvider;
@@ -112,7 +114,10 @@ class EntityExaminerIndicatorsFactory {
 
 		$this->hookDispatcher->onRegisterEntityExaminerDeferrableIndicatorProviders( $store, $indicatorProviders );
 
-		return new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders );
+		return new EntityExaminerDeferrableCompositeIndicatorProvider(
+			$indicatorProviders,
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
+		);
 	}
 
 	private function newConstraintErrorProvider( Store $store ): ConstraintErrorEntityExaminerIndicatorProvider {
@@ -143,7 +148,7 @@ class EntityExaminerIndicatorsFactory {
 	 */
 	public function newEntityExaminerCompositeIndicatorProvider( array $indicatorProviders = [] ): EntityExaminerCompositeIndicatorProvider {
 		$compositeIndicatorHtmlBuilder = new CompositeIndicatorHtmlBuilder(
-			new TemplateEngine()
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 
 		$entityExaminerCompositeIndicatorProvider = new EntityExaminerCompositeIndicatorProvider(

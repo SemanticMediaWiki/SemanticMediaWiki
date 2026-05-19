@@ -1,0 +1,11 @@
+{{!
+  EntityExaminer elastic indexer compare list (Elasticsearch vs backend rows).
+
+  Required data:
+  - explain: string (escaped) - Explanatory text
+  - es_key: string (escaped) - Elasticsearch row key
+  - es_value: string (escaped) - Elasticsearch row value
+  - backend_key: string (escaped) - Backend row key
+  - backend_value: string (escaped) - Backend row value
+}}
+<div class="smw-indicator-compare-list"><p>{{explain}}</p><div class="smw-indicator-compare-list-row"><span>{{es_key}}</span><span>{{es_value}}</span></div><div class="smw-indicator-compare-list-row"><span>{{backend_key}}</span><span>{{backend_value}}</span></div></div>

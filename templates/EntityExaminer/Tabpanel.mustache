@@ -1,0 +1,8 @@
+{{!
+  EntityExaminer tab panel container.
+
+  Required data:
+  - array-tabset: object[] - Tabset entries (rendered via Tabset partial)
+  - array-panels: object[] - Tab panel entries (rendered via Tab partial)
+}}
+<div class="smw-tabset smw-issue-panel">{{#array-tabset}}{{>Tabset}}{{/array-tabset}}<div class="tab-panels">{{#array-panels}}{{>Tab}}{{/array-panels}}</div></div>

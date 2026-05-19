@@ -166,7 +166,10 @@ class SetupCheckTest extends TestCase {
 		);
 
 		foreach ( $reflectionClass->getConstants() as $constant ) {
-			yield [ $constant ];
+			// Only the error-type string constants are valid setErrorType() input.
+			if ( is_string( $constant ) ) {
+				yield [ $constant ];
+			}
 		}
 	}
 

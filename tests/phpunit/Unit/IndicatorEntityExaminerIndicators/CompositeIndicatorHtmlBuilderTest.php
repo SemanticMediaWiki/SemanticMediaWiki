@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\IndicatorEntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
@@ -10,7 +11,6 @@ use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\MessageLocalizer;
 use SMW\Tests\TestEnvironment;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder
@@ -24,7 +24,7 @@ use SMW\Utils\TemplateEngine;
 class CompositeIndicatorHtmlBuilderTest extends TestCase {
 
 	private $testEnvironment;
-	private $templateEngine;
+	private TemplateParser $templateParser;
 
 	private MessageLocalizer $messageLocalizer;
 
@@ -32,7 +32,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-		$this->templateEngine = new TemplateEngine();
+		$this->templateParser = new TemplateParser( __DIR__ . '/../../../../templates/EntityExaminer' );
 
 		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
@@ -47,7 +47,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			CompositeIndicatorHtmlBuilder::class,
-			new CompositeIndicatorHtmlBuilder( $this->templateEngine )
+			new CompositeIndicatorHtmlBuilder( $this->templateParser )
 		);
 	}
 
@@ -70,7 +70,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		$indicatorProviders = [];
 
 		$instance = new CompositeIndicatorHtmlBuilder(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -117,7 +117,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		];
 
 		$instance = new CompositeIndicatorHtmlBuilder(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -164,7 +164,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		];
 
 		$instance = new CompositeIndicatorHtmlBuilder(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -204,7 +204,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		];
 
 		$instance = new CompositeIndicatorHtmlBuilder(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -252,7 +252,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		];
 
 		$instance = new CompositeIndicatorHtmlBuilder(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
