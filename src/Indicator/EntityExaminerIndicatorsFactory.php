@@ -60,7 +60,7 @@ class EntityExaminerIndicatorsFactory {
 	public function newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( Store $store ): AssociatedRevisionMismatchEntityExaminerIndicatorProvider {
 		$associatedRevisionMismatchEntityExaminerIndicatorProvider = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$store,
-			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 
 		$associatedRevisionMismatchEntityExaminerIndicatorProvider->setRevisionGuard(
@@ -82,7 +82,7 @@ class EntityExaminerIndicatorsFactory {
 		$constraintErrorEntityExaminerIndicatorProvider = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$store,
 			$entityCache,
-			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 
 		return $constraintErrorEntityExaminerIndicatorProvider;
@@ -116,7 +116,7 @@ class EntityExaminerIndicatorsFactory {
 
 		return new EntityExaminerDeferrableCompositeIndicatorProvider(
 			$indicatorProviders,
-			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 	}
 
@@ -148,7 +148,7 @@ class EntityExaminerIndicatorsFactory {
 	 */
 	public function newEntityExaminerCompositeIndicatorProvider( array $indicatorProviders = [] ): EntityExaminerCompositeIndicatorProvider {
 		$compositeIndicatorHtmlBuilder = new CompositeIndicatorHtmlBuilder(
-			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
+			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 
 		$entityExaminerCompositeIndicatorProvider = new EntityExaminerCompositeIndicatorProvider(
