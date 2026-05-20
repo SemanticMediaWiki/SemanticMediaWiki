@@ -346,6 +346,7 @@ class ServicesFactory {
 			'NamespaceExaminer' => fn () => $this->getNamespaceExaminer(),
 			'DataValueServiceFactory' => fn () => $this->getDataValueServiceFactory(),
 			'ImporterServiceFactory' => fn () => $this->getImporterServiceFactory(),
+			'HierarchyLookup' => fn () => $this->newHierarchyLookup( ...$args ),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -370,7 +371,6 @@ class ServicesFactory {
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'EditProtectionUpdater' => fn () => $this->newEditProtectionUpdater( ...$args ),
 			'PropertyRestrictionExaminer' => fn () => $this->newPropertyRestrictionExaminer(),
-			'HierarchyLookup' => fn () => $this->newHierarchyLookup( ...$args ),
 			'DisplayTitleFinder' => fn () => $this->newDisplayTitleFinder( ...$args ),
 			'MagicWordsFinder' => fn () => $this->newMagicWordsFinder( ...$args ),
 			'DependencyValidator' => fn () => $this->newDependencyValidator( ...$args ),
@@ -950,6 +950,13 @@ class ServicesFactory {
 			return $this->testOverrides['HierarchyLookup'];
 		}
 
+		// SMW.HierarchyLookup on the global container uses the default store
+		// and cache; when the caller asks for a non-default combination, build
+		// the instance inline so the override-only entry-points keep working.
+		if ( $store === null && $cacheType === null ) {
+			return $this->getHierarchyLookup();
+		}
+
 		$hierarchyLookup = new HierarchyLookup(
 			$store ?? $this->getStore(),
 			$this->getCache( $cacheType )
@@ -968,6 +975,17 @@ class ServicesFactory {
 		);
 
 		return $hierarchyLookup;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getHierarchyLookup(): HierarchyLookup {
+		if ( array_key_exists( 'HierarchyLookup', $this->testOverrides ) ) {
+			return $this->testOverrides['HierarchyLookup'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.HierarchyLookup' );
 	}
 
 	/**

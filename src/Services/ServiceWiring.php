@@ -11,6 +11,7 @@ use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
+use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
@@ -692,6 +693,35 @@ return [
 		);
 
 		return new ImporterServiceFactory( $servicesContainer );
+	},
+
+	'SMW.HierarchyLookup' => static function ( MediaWikiServices $services ): HierarchyLookup {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'HierarchyLookup' ) ) {
+			return $servicesFactory->getHierarchyLookup();
+		}
+
+		$settings = $servicesFactory->getSettings();
+
+		$hierarchyLookup = new HierarchyLookup(
+			$servicesFactory->getStore(),
+			$servicesFactory->getCache()
+		);
+
+		$hierarchyLookup->setLogger(
+			$servicesFactory->getMediaWikiLogger()
+		);
+
+		$hierarchyLookup->setSubcategoryDepth(
+			$settings->get( 'smwgQSubcategoryDepth' )
+		);
+
+		$hierarchyLookup->setSubpropertyDepth(
+			$settings->get( 'smwgQSubpropertyDepth' )
+		);
+
+		return $hierarchyLookup;
 	},
 
 ];
