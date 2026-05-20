@@ -307,7 +307,11 @@ class RedirectStore {
 			$title = $titleFactory->makeTitleSafe( $row->ns, $row->t );
 
 			if ( $title !== null ) {
-				$jobs[] = new UpdateJob( $title, [ 'origin' => 'RedirectStore' ] );
+				$jobs[] = new UpdateJob(
+					$title,
+					[ 'origin' => 'RedirectStore' ],
+					$this->store
+				);
 			}
 		}
 

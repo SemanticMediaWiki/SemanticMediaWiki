@@ -8,8 +8,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
 use RuntimeException;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
-use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
-use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\MediaWiki\Job;
 use SMW\Options;
 use SMW\Setup;
 use SMW\SetupFile;
@@ -371,9 +370,12 @@ class Installer implements MessageReporter {
 			);
 		}
 
-		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
+		$mwJobFactory = MediaWikiServices::getInstance()->getJobFactory();
+
+		$propertyStatisticsRebuildJob = $mwJobFactory->newJob(
+			'smw.propertyStatisticsRebuild',
 			$title,
-			PropertyStatisticsRebuildJob::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
+			Job::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 
 		$propertyStatisticsRebuildJob->insert();
@@ -386,9 +388,10 @@ class Installer implements MessageReporter {
 			$this->cliMsgFormatter->firstCol( "... Entity disposer job ...", 3 )
 		);
 
-		$entityIdDisposerJob = new EntityIdDisposerJob(
+		$entityIdDisposerJob = $mwJobFactory->newJob(
+			'smw.entityIdDisposer',
 			$title,
-			EntityIdDisposerJob::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
+			Job::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 
 		$entityIdDisposerJob->insert();

@@ -7,6 +7,8 @@ use MediaWiki\JobQueue\JobFactory as MwJobFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use RuntimeException;
+use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
@@ -183,6 +185,24 @@ class JobFactory {
 	public function newParserCachePurgeJob( Title $title, array $parameters = [] ): ParserCachePurgeJob {
 		/** @var ParserCachePurgeJob $job */
 		$job = $this->mwJobFactory->newJob( 'smw.parserCachePurgeJob', $title, $parameters );
+		return $job;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newFileIngestJob( Title $title, array $parameters = [] ): FileIngestJob {
+		/** @var FileIngestJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.elasticFileIngest', $title, $parameters );
+		return $job;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newIndexerRecoveryJob( Title $title, array $parameters = [] ): IndexerRecoveryJob {
+		/** @var IndexerRecoveryJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.elasticIndexerRecovery', $title, $parameters );
 		return $job;
 	}
 
