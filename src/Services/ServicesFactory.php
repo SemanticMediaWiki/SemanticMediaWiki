@@ -338,11 +338,11 @@ class ServicesFactory {
 			'SerializerFactory' => fn () => $this->getSerializerFactory(),
 			'ParserFunctionFactory' => fn () => $this->getParserFunctionFactory(),
 			'MaintenanceFactory' => fn () => $this->getMaintenanceFactory(),
+			// @phan-suppress-next-line PhanParamTooManyUnpack
+			'CacheFactory' => fn () => $this->getCacheFactory( ...$args ),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
-			// @phan-suppress-next-line PhanParamTooManyUnpack
-			'CacheFactory' => fn () => $this->getCacheFactory( ...$args ),
 			'NamespaceExaminer' => fn () => $this->newNamespaceExaminer(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'ParserData' => fn () => $this->newParserData( ...$args ),
@@ -482,14 +482,18 @@ class ServicesFactory {
 	 * @since 2.2
 	 */
 	public function newCacheFactory(): CacheFactory {
-		return new CacheFactory( $this->getSettings()->get( 'smwgMainCacheType' ) );
+		return $this->getCacheFactory();
 	}
 
 	/**
 	 * @since 2.2
 	 */
 	public function getCacheFactory(): CacheFactory {
-		return $this->newCacheFactory();
+		if ( array_key_exists( 'CacheFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['CacheFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.CacheFactory' );
 	}
 
 	/**

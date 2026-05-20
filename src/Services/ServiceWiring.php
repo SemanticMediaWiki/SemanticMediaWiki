@@ -598,4 +598,16 @@ return [
 		return new MaintenanceFactory();
 	},
 
+	'SMW.CacheFactory' => static function ( MediaWikiServices $services ): CacheFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'CacheFactory' ) ) {
+			return $servicesFactory->getCacheFactory();
+		}
+
+		return new CacheFactory(
+			$servicesFactory->getSettings()->get( 'smwgMainCacheType' )
+		);
+	},
+
 ];
