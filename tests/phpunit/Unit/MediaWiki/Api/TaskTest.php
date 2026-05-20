@@ -284,7 +284,7 @@ class TaskTest extends TestCase {
 			->getMock();
 
 		$settings->method( 'get' )
-			->willReturnCallback( fn ( string $key ) => $key === 'smwgCacheUsage' ? [] : null );
+			->willReturnCallback( static fn ( string $key ) => $key === 'smwgCacheUsage' ? [] : null );
 
 		$hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
