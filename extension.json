@@ -202,7 +202,10 @@
 		"PendingTaskList": "SMW\\MediaWiki\\Specials\\SpecialPendingTaskList",
 		"Ask": "SMW\\MediaWiki\\Specials\\SpecialAsk",
 		"FacetedSearch": "SMW\\MediaWiki\\Specials\\SpecialFacetedSearch",
-		"Browse": "SMW\\MediaWiki\\Specials\\SpecialBrowse",
+		"Browse": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialBrowse",
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.SerializerFactory" ]
+		},
 		"Concepts": {
 			"class": "SMW\\MediaWiki\\Specials\\SpecialConcepts",
 			"services": [ "SMW.Store" ]
@@ -211,8 +214,14 @@
 			"class": "SMW\\MediaWiki\\Specials\\SpecialPageProperty",
 			"services": [ "SMW.Store" ]
 		},
-		"SearchByProperty": "SMW\\MediaWiki\\Specials\\SpecialSearchByProperty",
-		"PropertyLabelSimilarity": "SMW\\MediaWiki\\Specials\\SpecialPropertyLabelSimilarity",
+		"SearchByProperty": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialSearchByProperty",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
+		"PropertyLabelSimilarity": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialPropertyLabelSimilarity",
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.QueryFactory" ]
+		},
 		"ProcessingErrorList": {
 			"class": "SMW\\MediaWiki\\Specials\\SpecialProcessingErrorList",
 			"services": [ "SMW.Settings" ]
@@ -225,7 +234,10 @@
 			"class": "SMW\\MediaWiki\\Specials\\SpecialConstraintErrorList",
 			"services": [ "SMW.Settings" ]
 		},
-		"Types": "SMW\\MediaWiki\\Specials\\SpecialTypes",
+		"Types": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialTypes",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
 		"URIResolver": "SMW\\MediaWiki\\Specials\\SpecialURIResolver",
 		"Properties": "SMW\\MediaWiki\\Specials\\SpecialProperties",
 		"UnusedProperties": "SMW\\MediaWiki\\Specials\\SpecialUnusedProperties",

@@ -18,7 +18,8 @@ use SMW\Localizer\Message;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\RequestOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\Store;
 use SMW\TypesRegistry;
 use SMW\Utils\HtmlColumns;
 use SMW\Utils\HtmlTabs;
@@ -37,9 +38,12 @@ use SMW\Utils\Pager;
 class SpecialTypes extends SpecialPage {
 
 	/**
-	 * @see SpecialPage::execute
+	 * @since 7.0.0
 	 */
-	public function __construct() {
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings
+	) {
 		parent::__construct( 'Types' );
 	}
 
@@ -197,10 +201,8 @@ class SpecialTypes extends SpecialPage {
 		}
 
 		$this->addHelpLink( $this->msg( 'smw-specials-bytype-helplink', $typeLabel )->escaped(), true );
-		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore();
 
-		$pagingLimit = $applicationFactory->getSettings()->dotGet( 'smwgPagingLimit.type' );
+		$pagingLimit = $this->settings->dotGet( 'smwgPagingLimit.type' );
 
 		// not too useful, but we comply to this request
 		if ( $pagingLimit <= 0 ) {
@@ -235,7 +237,7 @@ class SpecialTypes extends SpecialPage {
 			$requestOptions->setOffset( $offset );
 		}
 
-		$dataItems = $store->getPropertySubjects(
+		$dataItems = $this->store->getPropertySubjects(
 			new Property( '_TYPE' ),
 			$typeValue->getDataItem(),
 			$requestOptions
@@ -255,7 +257,7 @@ class SpecialTypes extends SpecialPage {
 			$typeId
 		);
 
-		$propertyTypeFinder = $store->service( 'PropertyTypeFinder' );
+		$propertyTypeFinder = $this->store->service( 'PropertyTypeFinder' );
 
 		$count = $propertyTypeFinder->countByType(
 			$typeId
@@ -319,7 +321,7 @@ class SpecialTypes extends SpecialPage {
 		);
 
 		$listBuilder = new ListBuilder(
-			$store
+			$this->store
 		);
 
 		$listBuilder->isRTL(

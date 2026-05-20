@@ -8,6 +8,8 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\Store;
 
 /**
  * A special page to search for entities that have a certain property with
@@ -24,7 +26,13 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class SpecialSearchByProperty extends SpecialPage {
 
-	public function __construct() {
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings
+	) {
 		parent::__construct( 'SearchByProperty' );
 	}
 
@@ -54,17 +62,18 @@ class SpecialSearchByProperty extends SpecialPage {
 			$query = $this->getRequest()->getVal( 'x' );
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		$requestOptions = [
 			'limit'    => $limit,
 			'offset'   => $offset,
 			'property' => $this->getRequest()->getVal( 'property' ),
 			'value'    => $this->getRequest()->getVal( 'value' ),
-			'nearbySearchForType' => $applicationFactory->getSettings()->get( 'smwgSearchByPropertyFuzzy' )
+			'nearbySearchForType' => $this->settings->get( 'smwgSearchByPropertyFuzzy' )
 		];
 
-		$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
+		// Partial DI: MwCollaboratorFactory is still resolved through
+		// ApplicationFactory because it is not registered as a global SMW.X
+		// service.
+		$htmlFormRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
@@ -72,7 +81,7 @@ class SpecialSearchByProperty extends SpecialPage {
 		$pageBuilder = new PageBuilder(
 			$htmlFormRenderer,
 			new PageRequestOptions( $query ?? '', $requestOptions ),
-			new QueryResultLookup( $applicationFactory->getStore() )
+			new QueryResultLookup( $this->store )
 		);
 
 		$output->addHTML( $pageBuilder->getHtml() );

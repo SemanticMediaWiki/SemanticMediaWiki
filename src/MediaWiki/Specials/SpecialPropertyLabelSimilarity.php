@@ -7,9 +7,12 @@ use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
+use SMW\QueryFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,7 +22,14 @@ use SMW\SQLStore\SQLStore;
  */
 class SpecialPropertyLabelSimilarity extends SpecialPage {
 
-	public function __construct() {
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings,
+		private readonly QueryFactory $queryFactory
+	) {
 		parent::__construct( 'PropertyLabelSimilarity' );
 	}
 
@@ -33,18 +43,27 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 
 		$output->addModuleStyles( [ 'ext.smw.styles' ] );
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore( SQLStore::class );
+		// PropertyLabelSimilarityLookup requires the SQLStore-typed surface.
+		// When the injected default Store is not an SQLStore (e.g. SPARQLStore)
+		// the lookup needs a separately-built SQL store; ApplicationFactory's
+		// `getStore( SQLStore::class )` path mirrors the partial-DI pattern
+		// used in the API Browse module.
+		$store = $this->store instanceof SQLStore
+			? $this->store
+			: ApplicationFactory::getInstance()->getStore( SQLStore::class );
 
 		$propertyLabelSimilarityLookup = new PropertyLabelSimilarityLookup(
 			$store
 		);
 
 		$propertyLabelSimilarityLookup->setExemptionProperty(
-			$applicationFactory->getSettings()->get( 'smwgSimilarityLookupExemptionProperty' )
+			$this->settings->get( 'smwgSimilarityLookupExemptionProperty' )
 		);
 
-		$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
+		// Partial DI: MwCollaboratorFactory is still resolved through
+		// ApplicationFactory because it is not registered as a global SMW.X
+		// service.
+		$htmlFormRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
@@ -60,7 +79,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		$offset = (int)$webRequest->getText( 'offset', 0 );
 		$limit = (int)$webRequest->getText( 'limit', 50 );
 
-		$requestOptions = $applicationFactory->getQueryFactory()->newRequestOptions();
+		$requestOptions = $this->queryFactory->newRequestOptions();
 		$requestOptions->setLimit( $limit );
 		$requestOptions->setOffset( $offset );
 
