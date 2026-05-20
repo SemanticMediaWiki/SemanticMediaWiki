@@ -2,12 +2,14 @@
 
 namespace SMW\Elastic\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,12 +26,15 @@ class FileIngestJob extends Job {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store,
+		private readonly ElasticFactory $elasticFactory
+	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
@@ -43,7 +48,10 @@ class FileIngestJob extends Job {
 
 		$params += [ 'waitOnCommandLine' => true ];
 
-		$fileIngestJob = new self(
+		// Use MediaWiki's JobFactory so the JobClasses ObjectFactory spec
+		// resolves the services declared for this job.
+		$fileIngestJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			self::JOB_COMMAND,
 			$title,
 			array_merge( $params, self::newRootJobParams( self::JOB_COMMAND, $title ) )
 		);
@@ -63,8 +71,7 @@ class FileIngestJob extends Job {
 			return true;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$connection = $applicationFactory->getStore()->getConnection( 'elastic' );
+		$connection = $this->store->getConnection( 'elastic' );
 
 		// Make sure a node is available
 		if ( $connection->hasLock( ElasticClient::TYPE_DATA ) || !$connection->ping() ) {
@@ -85,15 +92,11 @@ class FileIngestJob extends Job {
 	 * @since 3.2
 	 */
 	public function runFileIndexer() {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
+		$connection = $this->store->getConnection( 'elastic' );
 
-		$store = $applicationFactory->getStore();
-		$connection = $store->getConnection( 'elastic' );
-
-		$fileIndexer = $elasticFactory->newFileIndexer(
-			$store,
-			$elasticFactory->newIndexer()
+		$fileIndexer = $this->elasticFactory->newFileIndexer(
+			$this->store,
+			$this->elasticFactory->newIndexer()
 		);
 
 		$fileIndexer->setOrigin( __METHOD__ );
@@ -130,7 +133,13 @@ class FileIngestJob extends Job {
 			$this->params['createdAt'] = time();
 		}
 
-		$job = new self( $this->title, $this->params );
+		// Re-enqueue via MediaWiki's JobFactory so the ObjectFactory spec
+		// injects the same service dependencies again.
+		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			self::JOB_COMMAND,
+			$this->title,
+			$this->params
+		);
 		$job->setDelay( 60 * 10 );
 
 		$job->insert();
