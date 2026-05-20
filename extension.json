@@ -198,10 +198,19 @@
 	},
 	"SpecialPages": {
 		"ExportRDF": "SMW\\MediaWiki\\Specials\\SpecialOWLExport",
-		"SMWAdmin": "SMW\\MediaWiki\\Specials\\SpecialAdmin",
+		"SMWAdmin": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialAdmin",
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.HookDispatcher" ]
+		},
 		"PendingTaskList": "SMW\\MediaWiki\\Specials\\SpecialPendingTaskList",
-		"Ask": "SMW\\MediaWiki\\Specials\\SpecialAsk",
-		"FacetedSearch": "SMW\\MediaWiki\\Specials\\SpecialFacetedSearch",
+		"Ask": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialAsk",
+			"services": [ "SMW.QuerySourceFactory", "SMW.Settings" ]
+		},
+		"FacetedSearch": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialFacetedSearch",
+			"services": [ "SMW.Store", "SMW.SchemaFactory" ]
+		},
 		"Browse": {
 			"class": "SMW\\MediaWiki\\Specials\\SpecialBrowse",
 			"services": [ "SMW.Store", "SMW.Settings", "SMW.SerializerFactory" ]
