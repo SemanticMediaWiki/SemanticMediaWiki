@@ -35,11 +35,26 @@
 		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces"
 	},
 	"APIModules": {
-		"smwinfo": "SMW\\MediaWiki\\Api\\Info",
-		"smwtask": "SMW\\MediaWiki\\Api\\Task",
-		"smwbrowse": "SMW\\MediaWiki\\Api\\Browse",
-		"ask": "SMW\\MediaWiki\\Api\\Ask",
-		"askargs": "SMW\\MediaWiki\\Api\\AskArgs"
+		"smwinfo": {
+			"class": "SMW\\MediaWiki\\Api\\Info",
+			"services": [ "SMW.Store", "SMW.JobQueue" ]
+		},
+		"smwtask": {
+			"class": "SMW\\MediaWiki\\Api\\Task",
+			"services": [ "SMW.TaskFactory" ]
+		},
+		"smwbrowse": {
+			"class": "SMW\\MediaWiki\\Api\\Browse",
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.Cache" ]
+		},
+		"ask": {
+			"class": "SMW\\MediaWiki\\Api\\Ask",
+			"services": [ "SMW.QuerySourceFactory" ]
+		},
+		"askargs": {
+			"class": "SMW\\MediaWiki\\Api\\AskArgs",
+			"services": [ "SMW.QuerySourceFactory" ]
+		}
 	},
 	"AutoloadClasses": {
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",

@@ -2,9 +2,15 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Api;
 
+use MediaWiki\HookContainer\HookContainer;
+use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Api\Tasks\Task;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
+use SMW\Settings;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -34,7 +40,7 @@ class TaskFactoryTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$instance = new TaskFactory();
+		$instance = $this->newTaskFactory();
 
 		$this->assertInstanceOf(
 			TaskFactory::class,
@@ -43,7 +49,7 @@ class TaskFactoryTest extends TestCase {
 	}
 
 	public function testGetAllowedTypes() {
-		$instance = new TaskFactory();
+		$instance = $this->newTaskFactory();
 
 		$this->assertIsArray(
 
@@ -55,7 +61,7 @@ class TaskFactoryTest extends TestCase {
 	 * @dataProvider typeProvider
 	 */
 	public function testNewByType( $type ) {
-		$instance = new TaskFactory();
+		$instance = $this->newTaskFactory();
 
 		$this->assertInstanceOf(
 			Task::class,
@@ -64,16 +70,44 @@ class TaskFactoryTest extends TestCase {
 	}
 
 	public function testNewByTypeOnUnknownTypeThrowsException() {
-		$instance = new TaskFactory();
+		$instance = $this->newTaskFactory();
 
 		$this->expectException( '\RuntimeException' );
 		$instance->newByType( '__foo__' );
 	}
 
 	public function typeProvider() {
-		$taskFactory = new TaskFactory();
+		$taskFactory = $this->newTaskFactory();
 
 		yield $taskFactory->getAllowedTypes();
+	}
+
+	private function newTaskFactory(): TaskFactory {
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$jobQueue = $this->getMockBuilder( JobQueue::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache = $this->getMockBuilder( Cache::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$settings = $this->getMockBuilder( Settings::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hookContainer = $this->getMockBuilder( HookContainer::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		return new TaskFactory( $store, $jobQueue, $cache, $settings, $jobFactory, $hookContainer );
 	}
 
 }

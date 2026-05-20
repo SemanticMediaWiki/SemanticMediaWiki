@@ -2,14 +2,18 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Api;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Task;
+use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\NullJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Query\QueryResult;
+use SMW\Settings;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -42,9 +46,14 @@ class TaskTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
+		$taskFactory = $this->getMockBuilder( TaskFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new Task(
 			$this->apiFactory->newApiMain( [] ),
-			'smwtask'
+			'smwtask',
+			$taskFactory
 		);
 
 		$this->assertInstanceOf(
@@ -69,8 +78,6 @@ class TaskTest extends TestCase {
 			->method( 'newUpdateJob' )
 			->willReturn( $updateJob );
 
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
-
 		$instance = new Task(
 			$this->apiFactory->newApiMain( [
 					'action'   => 'smwtask',
@@ -79,7 +86,8 @@ class TaskTest extends TestCase {
 					'token'    => 'foo'
 				]
 			),
-			'smwtask'
+			'smwtask',
+			$this->newRealTaskFactory( null, null, null, $jobFactory )
 		);
 
 		$instance->execute();
@@ -113,9 +121,6 @@ class TaskTest extends TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $entityTable );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-		$this->testEnvironment->registerObject( 'Cache', $cache );
-
 		$instance = new Task(
 			$this->apiFactory->newApiMain(
 				[
@@ -125,7 +130,8 @@ class TaskTest extends TestCase {
 					'token'    => 'foo'
 				]
 			),
-			'smwtask'
+			'smwtask',
+			$this->newRealTaskFactory( $store, null, $cache )
 		);
 
 		$instance->execute();
@@ -151,8 +157,6 @@ class TaskTest extends TestCase {
 				$this->anything() )
 			->willReturn( $nullJob );
 
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
-
 		$instance = new Task(
 			$this->apiFactory->newApiMain(
 				[
@@ -167,7 +171,8 @@ class TaskTest extends TestCase {
 					'token'    => 'foo'
 				]
 			),
-			'smwtask'
+			'smwtask',
+			$this->newRealTaskFactory( null, null, null, $jobFactory )
 		);
 
 		$instance->execute();
@@ -178,7 +183,7 @@ class TaskTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+		$jobQueue = $this->getMockBuilder( JobQueue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -186,8 +191,6 @@ class TaskTest extends TestCase {
 			->method( 'runFromQueue' )
 			->with( [ 'FooJob' => 1 ] )
 			->willReturn( [ '--job-done' ] );
-
-		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$instance = new Task(
 			$this->apiFactory->newApiMain(
@@ -203,7 +206,8 @@ class TaskTest extends TestCase {
 					'token'    => 'foo'
 				]
 			),
-			'smwtask'
+			'smwtask',
+			$this->newRealTaskFactory( null, $jobQueue )
 		);
 
 		$instance->execute();
@@ -221,8 +225,6 @@ class TaskTest extends TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
 			->willReturn( $queryResult );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new Task(
 			$this->apiFactory->newApiMain(
@@ -247,10 +249,55 @@ class TaskTest extends TestCase {
 					'token'    => 'foo'
 				]
 			),
-			'smwtask'
+			'smwtask',
+			$this->newRealTaskFactory( $store )
 		);
 
 		$instance->execute();
+	}
+
+	private function newRealTaskFactory(
+		?Store $store = null,
+		?JobQueue $jobQueue = null,
+		?Cache $cache = null,
+		?JobFactory $jobFactory = null
+	): TaskFactory {
+		if ( $store === null ) {
+			$store = $this->getMockBuilder( Store::class )
+				->disableOriginalConstructor()
+				->getMockForAbstractClass();
+		}
+
+		if ( $jobQueue === null ) {
+			$jobQueue = $this->getMockBuilder( JobQueue::class )
+				->disableOriginalConstructor()
+				->getMock();
+		}
+
+		if ( $cache === null ) {
+			$cache = $this->getMockBuilder( Cache::class )
+				->disableOriginalConstructor()
+				->getMock();
+		}
+
+		if ( $jobFactory === null ) {
+			$jobFactory = $this->getMockBuilder( JobFactory::class )
+				->disableOriginalConstructor()
+				->getMock();
+		}
+
+		$settings = $this->getMockBuilder( Settings::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$settings->method( 'get' )
+			->willReturnCallback( static fn ( string $key ) => $key === 'smwgCacheUsage' ? [] : null );
+
+		$hookContainer = $this->getMockBuilder( HookContainer::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		return new TaskFactory( $store, $jobQueue, $cache, $settings, $jobFactory, $hookContainer );
 	}
 
 }

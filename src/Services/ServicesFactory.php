@@ -46,6 +46,7 @@ use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Maintenance\MaintenanceFactory;
+use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
@@ -319,6 +320,7 @@ class ServicesFactory {
 			'SchemaFactory' => fn () => $this->getSchemaFactory(),
 			'ConstraintFactory' => fn () => $this->getConstraintFactory(),
 			'ElasticFactory' => fn () => $this->getElasticFactory(),
+			'TaskFactory' => fn () => $this->getTaskFactory(),
 			'QueryCreator' => fn () => $this->getQueryCreator(),
 			'ParamListProcessor' => fn () => $this->getParamListProcessor(),
 			'FactboxText' => fn () => $this->getFactboxText(),
@@ -1514,6 +1516,17 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.ElasticFactory' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getTaskFactory(): TaskFactory {
+		if ( array_key_exists( 'TaskFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['TaskFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.TaskFactory' );
 	}
 
 	/**

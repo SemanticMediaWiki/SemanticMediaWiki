@@ -2,8 +2,9 @@
 
 namespace SMW\MediaWiki\Api;
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\User\User;
+use Onoi\Cache\Cache;
 use RuntimeException;
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\MediaWiki\Api\Tasks\CheckQueryTask;
@@ -14,7 +15,11 @@ use SMW\MediaWiki\Api\Tasks\JobListTask;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\MediaWiki\Api\Tasks\UpdateTask;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,17 +29,33 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class TaskFactory {
 
-	private static $services;
+	/**
+	 * Lazily-computed contributions of the `SMW::Api::AddTasks` hook against
+	 * this instance's HookContainer. Memoised because the hook is idempotent
+	 * across calls.
+	 *
+	 * @var array<string,callable>|null
+	 */
+	private ?array $hookServices = null;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly Store $store,
+		private readonly JobQueue $jobQueue,
+		private readonly Cache $cache,
+		private readonly Settings $settings,
+		private readonly JobFactory $jobFactory,
+		private readonly HookContainer $hookContainer
+	) {
+	}
 
 	/**
 	 * @since 3.1
 	 */
 	public function getAllowedTypes(): array {
-		if ( self::$services === null ) {
-			MediaWikiServices::getInstance()
-				->getHookContainer()
-				->run( 'SMW::Api::AddTasks', [ &self::$services ] );
-		}
+		$services = $this->getHookServices();
 
 		$types = [
 			// Run update using the updateJob
@@ -59,9 +80,8 @@ class TaskFactory {
 			'run-joblist'
 		];
 
-		// @phan-suppress-next-line PhanImpossibleCondition
-		if ( is_array( self::$services ) ) {
-			$types = array_merge( $types, array_keys( self::$services ) );
+		if ( $services !== [] ) {
+			$types = array_merge( $types, array_keys( $services ) );
 		}
 
 		return $types;
@@ -73,14 +93,13 @@ class TaskFactory {
 	 * @throws RuntimeException
 	 */
 	public function newByType( string $type, ?User $user = null ): Task {
-		$applicationFactory = ApplicationFactory::getInstance();
 		$service = null;
 
 		switch ( $type ) {
 			case 'update':
-				return new UpdateTask( $applicationFactory->newJobFactory() );
+				return new UpdateTask( $this->jobFactory );
 			case 'check-query':
-				return new CheckQueryTask( $applicationFactory->getStore() );
+				return new CheckQueryTask( $this->store );
 			case 'run-entity-examiner':
 				return $this->newEntityExaminerTask( $user );
 			case 'duplicate-lookup':
@@ -88,13 +107,15 @@ class TaskFactory {
 			case 'table-statistics':
 				return $this->newTableStatisticsTask();
 			case 'insert-job':
-				return new InsertJobTask( $applicationFactory->newJobFactory() );
+				return new InsertJobTask( $this->jobFactory );
 			case 'run-joblist':
-				return new JobListTask( $applicationFactory->getJobQueue() );
+				return new JobListTask( $this->jobQueue );
 		}
 
-		if ( is_array( self::$services ) && isset( self::$services[$type] ) && is_callable( self::$services[$type] ) ) {
-			$service = call_user_func( self::$services[$type] );
+		$services = $this->getHookServices();
+
+		if ( isset( $services[$type] ) && is_callable( $services[$type] ) ) {
+			$service = call_user_func( $services[$type] );
 		}
 
 		if ( $service instanceof Task ) {
@@ -108,15 +129,13 @@ class TaskFactory {
 	 * @since 3.1
 	 */
 	public function newDuplicateLookupTask(): DuplicateLookupTask {
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		$duplicateLookupTask = new DuplicateLookupTask(
-			$applicationFactory->getStore(),
-			$applicationFactory->getCache()
+			$this->store,
+			$this->cache
 		);
 
 		$duplicateLookupTask->setCacheUsage(
-			$applicationFactory->getSettings()->get( 'smwgCacheUsage' )
+			$this->settings->get( 'smwgCacheUsage' )
 		);
 
 		return $duplicateLookupTask;
@@ -126,15 +145,13 @@ class TaskFactory {
 	 * @since 3.1
 	 */
 	public function newTableStatisticsTask(): TableStatisticsTask {
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		$tableStatisticsTask = new TableStatisticsTask(
-			$applicationFactory->getStore(),
-			$applicationFactory->getCache()
+			$this->store,
+			$this->cache
 		);
 
 		$tableStatisticsTask->setCacheUsage(
-			$applicationFactory->getSettings()->get( 'smwgCacheUsage' )
+			$this->settings->get( 'smwgCacheUsage' )
 		);
 
 		return $tableStatisticsTask;
@@ -144,18 +161,36 @@ class TaskFactory {
 	 * @since 3.2
 	 */
 	public function newEntityExaminerTask( ?User $user = null ): EntityExaminerTask {
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		$entityExaminerTask = new EntityExaminerTask(
-			$applicationFactory->getStore(),
+			$this->store,
 			new EntityExaminerIndicatorsFactory()
 		);
 
 		$entityExaminerTask->setPermissionExaminer(
-			$applicationFactory->newPermissionExaminer( $user )
+			ApplicationFactory::getInstance()->newPermissionExaminer( $user )
 		);
 
 		return $entityExaminerTask;
+	}
+
+	/**
+	 * Runs `SMW::Api::AddTasks` against the injected HookContainer on first
+	 * use and memoises the resulting service array on this instance. The
+	 * hook is expected to be idempotent across calls.
+	 *
+	 * @return array<string,callable>
+	 */
+	private function getHookServices(): array {
+		if ( $this->hookServices === null ) {
+			$services = null;
+
+			$this->hookContainer->run( 'SMW::Api::AddTasks', [ &$services ] );
+
+			// @phan-suppress-next-line PhanImpossibleCondition
+			$this->hookServices = is_array( $services ) ? $services : [];
+		}
+
+		return $this->hookServices;
 	}
 
 }

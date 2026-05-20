@@ -20,6 +20,7 @@ use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLoo
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Localizer\Localizer;
 use SMW\Maintenance\MaintenanceFactory;
+use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
@@ -400,6 +401,23 @@ return [
 		}
 
 		return new JobFactory( $services->getJobFactory() );
+	},
+
+	'SMW.TaskFactory' => static function ( MediaWikiServices $services ): TaskFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'TaskFactory' ) ) {
+			return $servicesFactory->getTaskFactory();
+		}
+
+		return new TaskFactory(
+			$servicesFactory->getStore(),
+			$servicesFactory->getJobQueue(),
+			$servicesFactory->getCache(),
+			$servicesFactory->getSettings(),
+			$servicesFactory->getJobFactory(),
+			$services->getHookContainer()
+		);
 	},
 
 	'SMW.FactboxFactory' => static function ( MediaWikiServices $services ): FactboxFactory {

@@ -7,7 +7,9 @@ use ReflectionClass;
 use SMW\MediaWiki\Api\Query;
 use SMW\Query\Query as SMWQuery;
 use SMW\Query\QueryResult;
+use SMW\Query\QuerySourceFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\Utils\MwApiFactory;
 
 /**
@@ -49,9 +51,33 @@ class QueryTest extends TestCase {
 	}
 
 	public function testQueryAndQueryResult() {
-		$instance = $this->getMockBuilder( Query::class )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getQueryResult' )
+			->willReturn( $queryResult );
+
+		$querySourceFactory = $this->getMockBuilder( QuerySourceFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$querySourceFactory->expects( $this->atLeastOnce() )
+			->method( 'get' )
+			->willReturn( $store );
+
+		$instance = $this->getMockBuilder( Query::class )
+			->setConstructorArgs( [
+				$this->apiFactory->newApiMain( [] ),
+				'ask',
+				$querySourceFactory,
+			] )
+			->getMockForAbstractClass();
 
 		$reflector = new ReflectionClass( Query::class );
 		$getQuery  = $reflector->getMethod( 'getQuery' );

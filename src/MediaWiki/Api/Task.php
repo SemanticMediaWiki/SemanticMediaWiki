@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
 use MediaWiki\Context\RequestContext;
 use Wikimedia\ParamValidator\ParamValidator;
 
@@ -18,7 +19,16 @@ class Task extends ApiBase {
 
 	const CACHE_NAMESPACE = 'smw:api:task';
 
-	private TaskFactory $taskFactory;
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		private readonly TaskFactory $taskFactory
+	) {
+		parent::__construct( $main, $action );
+	}
 
 	/**
 	 * @since 3.0
@@ -46,7 +56,6 @@ class Task extends ApiBase {
 			$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
 		}
 
-		$this->taskFactory = new TaskFactory();
 		$task = $this->taskFactory->newByType( $params['task'], $this->getUser() );
 
 		// If the `uselang` isn't set then inject the language from the
@@ -76,12 +85,10 @@ class Task extends ApiBase {
 	 * @return array
 	 */
 	public function getAllowedParams(): array {
-		$taskFactory = new TaskFactory();
-
 		return [
 			'task' => [
 				ParamValidator::PARAM_REQUIRED => true,
-				ParamValidator::PARAM_TYPE => $taskFactory->getAllowedTypes(),
+				ParamValidator::PARAM_TYPE => $this->taskFactory->getAllowedTypes(),
 				ApiBase::PARAM_HELP_MSG => 'apihelp-smwtask-param-task',
 			],
 			'params' => [

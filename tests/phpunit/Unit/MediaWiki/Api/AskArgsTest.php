@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\MediaWiki\Api;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\AskArgs;
 use SMW\Query\QueryResult;
+use SMW\Query\QuerySourceFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\Utils\MwApiFactory;
@@ -37,9 +38,14 @@ class AskArgsTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
+		$querySourceFactory = $this->getMockBuilder( QuerySourceFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new AskArgs(
 			$this->apiFactory->newApiMain( [] ),
-			'askargs'
+			'askargs',
+			$querySourceFactory
 		);
 
 		$this->assertInstanceOf(
@@ -99,11 +105,18 @@ class AskArgsTest extends TestCase {
 			->method( 'getQueryResult' )
 			->willReturnCallback( [ $this, 'mockStoreQueryResultCallback' ] );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$querySourceFactory = $this->getMockBuilder( QuerySourceFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$querySourceFactory->expects( $this->atLeastOnce() )
+			->method( 'get' )
+			->willReturn( $store );
 
 		$instance = new AskArgs(
 			$this->apiFactory->newApiMain( $requestParameters ),
-			'askargs'
+			'askargs',
+			$querySourceFactory
 		);
 
 		$instance->execute();
