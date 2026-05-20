@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Utils\Flag;
@@ -302,15 +301,17 @@ class RedirectStore {
 
 		$res = $queryBuilder->fetchResultSet();
 
-		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$services = MediaWikiServices::getInstance();
+		$titleFactory = $services->getTitleFactory();
+		$jobFactory = $services->getJobFactory();
 		foreach ( $res as $row ) {
 			$title = $titleFactory->makeTitleSafe( $row->ns, $row->t );
 
 			if ( $title !== null ) {
-				$jobs[] = new UpdateJob(
+				$jobs[] = $jobFactory->newJob(
+					'smw.update',
 					$title,
-					[ 'origin' => 'RedirectStore' ],
-					$this->store
+					[ 'origin' => 'RedirectStore' ]
 				);
 			}
 		}
