@@ -365,7 +365,7 @@ class QueryResult {
 	/**
 	 * @since  2.0
 	 *
-	 * @param int $countValue
+	 * @param int|string $countValue
 	 */
 	public function setCountValue( $countValue ): void {
 		$this->countValue = (int)$countValue;

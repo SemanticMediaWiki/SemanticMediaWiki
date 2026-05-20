@@ -33,7 +33,7 @@ class HtmlTable {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $content
+	 * @param ?string $content
 	 * @param array $attributes
 	 */
 	public function cell( $content = '', $attributes = [] ): void {

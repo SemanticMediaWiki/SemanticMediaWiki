@@ -300,7 +300,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$results = $queryResult->getResults();
 
 			$hasFurtherResults = $queryResult->hasFurtherResults();
-			$countValue = $queryResult->getCountValue();
+			$countValue = (int)$queryResult->getCountValue();
 			$excerpts = $queryResult->getExcerpts();
 			$itemJournal = $queryResult->getItemJournal();
 		} else {
@@ -312,7 +312,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			}
 
 			$hasFurtherResults = $container->get( 'continue' );
-			$countValue = $container->get( 'count' );
+			$countValue = (int)$container->get( 'count' );
 			$excerpts = $container->get( 'excerpts' );
 		}
 

@@ -95,8 +95,6 @@ class FieldItemFinder {
 	 * @return DataItem[]|array
 	 */
 	public function findFor( DataItem $dataItem ): array {
-		$content = [];
-
 		if ( $this->printRequest === null ) {
 			throw new RuntimeException( "Missing a `PrintRequest` instance!" );
 		}
@@ -158,7 +156,7 @@ class FieldItemFinder {
 			return $this->getResultsForProperty( $dataItem );
 		}
 
-		return $content;
+		return [];
 	}
 
 	/**
@@ -235,10 +233,15 @@ class FieldItemFinder {
 		// Replace content with specific content from a Container/MultiValue
 		foreach ( $content as $diContainer ) {
 
+			$property = $propertyValue->getDataItem();
+			if ( !$property instanceof Property ) {
+				return [];
+			}
+
 			/* AbstractMultiValue */
 			$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$diContainer,
-				$propertyValue->getDataItem()
+				$property
 			);
 
 			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
@@ -325,7 +328,10 @@ class FieldItemFinder {
 			// Output of the previous iteration is the input for the next iteration
 			foreach ( $dataValue->getPropertyChainValues() as $pv ) {
 				$requestOptions->isFirstChain = $isFirstChain;
-				$dataItems = $this->itemFetcher->fetch( $dataItems, $pv->getDataItem(), $requestOptions );
+				$property = $pv->getDataItem();
+				$dataItems = ( $property instanceof Property ) ?
+					$this->itemFetcher->fetch( $dataItems, $property, $requestOptions ) :
+					[];
 
 				// If the results return empty then it means that for this element
 				// the chain has no matchable items hence we stop
@@ -340,9 +346,14 @@ class FieldItemFinder {
 			$requestOptions->isFirstChain = false;
 		}
 
+		$property = $dataValue->getDataItem();
+		if ( !$property instanceof Property ) {
+			return [];
+		}
+
 		$content = $this->itemFetcher->fetch(
 			$dataItems,
-			$dataValue->getDataItem(),
+			$property,
 			$requestOptions
 		);
 

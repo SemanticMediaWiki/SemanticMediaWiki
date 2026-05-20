@@ -3,6 +3,7 @@
 namespace SMW\Query\Result;
 
 use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
@@ -205,28 +206,37 @@ class ResultArray {
 			$contextPage = $this->result;
 		}
 
+		$diProperty = null;
 		if ( $this->printRequest->getMode() == PrintRequest::PRINT_PROP &&
 			DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
 			$this->printRequest->getParameter( 'index' ) !== false ) {
 
-			/**
-			 * @var RecordValue $recordValue
-			 */
-			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
-				$dataItem,
-				$this->printRequest->getData()->getDataItem(),
-				false,
-				$contextPage
-			);
+			$property = $this->printRequest->getData()->getDataItem();
+			if ( $property instanceof Property ) {
+				/**
+				 * @var RecordValue $recordValue
+				 */
+				$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
+					$dataItem,
+					$property,
+					false,
+					$contextPage
+				);
 
-			$diProperty = $recordValue->getPropertyDataItemByIndex(
-				$this->printRequest->getParameter( 'index' )
-			);
+				$diProperty = $recordValue->getPropertyDataItemByIndex(
+					$this->printRequest->getParameter( 'index' )
+				);
+			}
 		} elseif ( $this->printRequest->isMode( PrintRequest::PRINT_PROP ) ) {
-			$diProperty = $this->printRequest->getData()->getDataItem();
+			$property = $this->printRequest->getData()->getDataItem();
+			if ( $property instanceof Property ) {
+				$diProperty = $property;
+			}
 		} elseif ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
 			$diProperty = $this->printRequest->getData()->getLastPropertyChainValue()->getDataItem();
-		} else {
+		}
+
+		if ( !( $diProperty instanceof Property ) ) {
 			$diProperty = null;
 		}
 

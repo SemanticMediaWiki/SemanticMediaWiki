@@ -168,7 +168,9 @@ class ConceptParserFunction {
 			$this->parserData->getSemanticData()->getSubject()
 		);
 
-		$profileAnnotatorFactory = ApplicationFactory::getInstance()->getQueryFactory()->newProfileAnnotatorFactory();
+		$profileAnnotatorFactory = ApplicationFactory::getInstance()
+			->getQueryFactory()
+			->newProfileAnnotatorFactory();
 
 		$descriptionProfileAnnotator = $profileAnnotatorFactory->newDescriptionProfileAnnotator(
 			$query

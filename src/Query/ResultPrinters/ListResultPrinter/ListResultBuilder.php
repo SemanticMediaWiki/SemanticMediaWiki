@@ -136,7 +136,7 @@ class ListResultBuilder {
 	}
 
 	/**
-	 * @param string|string[] $setting
+	 * @param string|array<string,mixed> $setting
 	 * @param string|null $value
 	 */
 	public function set( $setting, $value = null ): void {

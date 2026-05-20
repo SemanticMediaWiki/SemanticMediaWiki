@@ -4,6 +4,7 @@ namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
 use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Query\Language\Conjunction;
@@ -122,8 +123,14 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 			$description = new ThingDescription();
 		}
 
+		$property = $dataValue->getProperty();
+
+		if ( !$property instanceof Property ) {
+			throw new InvalidArgumentException( 'Expected Property instance' );
+		}
+
 		return new SomeProperty(
-			$dataValue->getProperty(),
+			$property,
 			$description
 		);
 	}
