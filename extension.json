@@ -40,7 +40,10 @@
 			"services": [ "SMW.Store", "SMW.JobQueue" ]
 		},
 		"smwtask": "SMW\\MediaWiki\\Api\\Task",
-		"smwbrowse": "SMW\\MediaWiki\\Api\\Browse",
+		"smwbrowse": {
+			"class": "SMW\\MediaWiki\\Api\\Browse",
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.Cache" ]
+		},
 		"ask": "SMW\\MediaWiki\\Api\\Ask",
 		"askargs": "SMW\\MediaWiki\\Api\\AskArgs"
 	},
