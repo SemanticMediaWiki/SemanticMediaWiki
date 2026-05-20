@@ -342,6 +342,7 @@ class ServicesFactory {
 			'CacheFactory' => fn () => $this->getCacheFactory( ...$args ),
 			'TitleFactory' => fn () => $this->getTitleFactory(),
 			'PageCreator' => fn () => $this->getPageCreator(),
+			'MwCollaboratorFactory' => fn () => $this->getMwCollaboratorFactory(),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -898,7 +899,18 @@ class ServicesFactory {
 	 * @return MwCollaboratorFactory
 	 */
 	public function newMwCollaboratorFactory(): MwCollaboratorFactory {
-		return new MwCollaboratorFactory( $this );
+		return $this->getMwCollaboratorFactory();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getMwCollaboratorFactory(): MwCollaboratorFactory {
+		if ( array_key_exists( 'MwCollaboratorFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['MwCollaboratorFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.MwCollaboratorFactory' );
 	}
 
 	/**

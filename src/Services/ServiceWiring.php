@@ -24,6 +24,7 @@ use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
@@ -630,6 +631,16 @@ return [
 		}
 
 		return new PageCreator();
+	},
+
+	'SMW.MwCollaboratorFactory' => static function ( MediaWikiServices $services ): MwCollaboratorFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'MwCollaboratorFactory' ) ) {
+			return $servicesFactory->getMwCollaboratorFactory();
+		}
+
+		return new MwCollaboratorFactory( $servicesFactory );
 	},
 
 ];
