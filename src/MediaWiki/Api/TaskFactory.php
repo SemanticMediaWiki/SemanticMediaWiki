@@ -184,6 +184,7 @@ class TaskFactory {
 
 			$this->hookContainer->run( 'SMW::Api::AddTasks', [ &$services ] );
 
+			// @phan-suppress-next-line PhanImpossibleCondition
 			$this->hookServices = is_array( $services ) ? $services : [];
 		}
 
