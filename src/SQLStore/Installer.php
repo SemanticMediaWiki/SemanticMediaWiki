@@ -375,8 +375,9 @@ class Installer implements MessageReporter {
 		/** @var Job $propertyStatisticsRebuildJob */
 		$propertyStatisticsRebuildJob = $mwJobFactory->newJob(
 			'smw.propertyStatisticsRebuild',
-			$title,
-			Job::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ]
+				+ Job::newRootJobParams( 'smw.propertyStatisticsRebuild', $title )
+				+ [ 'waitOnCommandLine' => true ]
 		);
 
 		$propertyStatisticsRebuildJob->insert();
@@ -392,8 +393,9 @@ class Installer implements MessageReporter {
 		/** @var Job $entityIdDisposerJob */
 		$entityIdDisposerJob = $mwJobFactory->newJob(
 			'smw.entityIdDisposer',
-			$title,
-			Job::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ]
+				+ Job::newRootJobParams( 'smw.entityIdDisposer', $title )
+				+ [ 'waitOnCommandLine' => true ]
 		);
 
 		$entityIdDisposerJob->insert();

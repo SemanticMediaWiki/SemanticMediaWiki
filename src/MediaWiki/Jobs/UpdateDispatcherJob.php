@@ -160,17 +160,22 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function create_secondary_dispatch_run( $jobs ): void {
-		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
-		$jobFactory = MediaWikiServices::getInstance()->getJobFactory();
+		$services = MediaWikiServices::getInstance();
+		$titleFactory = $services->getTitleFactory();
+		$jobFactory = $services->getJobFactory();
 		$origin = $this->getTitle()->getPrefixedText();
 
 		foreach ( array_chunk( $jobs, self::CHUNK_SIZE, true ) as $jobList ) {
-			// Use MediaWiki's JobFactory so the Store dependency declared
-			// in the JobClasses ObjectFactory spec is wired in.
+			$title = $titleFactory->newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) );
+			if ( $title === null ) {
+				continue;
+			}
+			/** @var Job $job */
 			$job = $jobFactory->newJob(
 				'smw.updateDispatcher',
-				$titleFactory->newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) ),
 				[
+					'namespace' => $title->getNamespace(),
+					'title' => $title->getDBkey(),
 					self::JOB_LIST => $jobList,
 					'origin' => $origin,
 
@@ -362,9 +367,10 @@ class UpdateDispatcherJob extends Job {
 				continue;
 			}
 
-			// Construct each UpdateJob through MediaWiki's JobFactory so the
-			// ObjectFactory spec injects the services UpdateJob requires.
-			$this->jobs[] = $jobFactory->newJob( 'smw.update', $title, $parameters );
+			$this->jobs[] = $jobFactory->newJob(
+				'smw.update',
+				[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+			);
 		}
 
 		$this->pushToJobQueue();

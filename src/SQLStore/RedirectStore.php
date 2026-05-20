@@ -312,8 +312,11 @@ class RedirectStore {
 			if ( $title !== null ) {
 				$jobs[] = $jobFactory->newJob(
 					'smw.update',
-					$title,
-					[ 'origin' => 'RedirectStore' ]
+					[
+						'namespace' => $title->getNamespace(),
+						'title' => $title->getDBkey(),
+						'origin' => 'RedirectStore',
+					]
 				);
 			}
 		}

@@ -201,8 +201,8 @@ abstract class Job extends MediaWikiJob {
 		/** @var self $job */
 		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
 			$this->command,
-			$this->title,
-			$this->params
+			[ 'namespace' => $this->title->getNamespace(), 'title' => $this->title->getDBkey() ]
+				+ $this->params
 		);
 		$job->insert();
 

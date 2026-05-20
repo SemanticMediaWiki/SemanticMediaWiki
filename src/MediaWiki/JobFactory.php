@@ -24,10 +24,15 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 /**
  * Typed wrapper around MediaWiki's JobFactory for the SMW job classes.
  *
- * Each `newXxxJob()` method delegates to `MwJobFactory::newJob()` which in turn
- * resolves the JobClasses ObjectFactory spec (constructing the job with any
- * declared service dependencies). The wrapper exists so call-sites can keep
- * the typed factory methods that pre-date constructor injection.
+ * Each `newXxxJob()` method calls `MwJobFactory::newJob()` which resolves the
+ * JobClasses ObjectFactory spec, constructing the job with any declared
+ * service dependencies. The Title is passed via `namespace`/`title` keys in
+ * `$params` so the call matches MW's modern two-argument signature (the
+ * legacy three-argument back-compat form trips
+ * `PhanTypeMismatchArgumentProbablyReal`). Each return suppresses
+ * `PhanTypeMismatchReturnSuperType`: `JobFactory::newJob()` declares
+ * `: Job`, but the JobClasses spec guarantees the matching subclass at
+ * runtime, so the covariance is safe.
  *
  * @license GPL-2.0-or-later
  * @since 2.0
@@ -85,127 +90,154 @@ class JobFactory {
 			default => throw new RuntimeException( "Unable to match $type to a valid Job type" ),
 		};
 
-		/** @var Job $job */
-		$job = $this->mwJobFactory->newJob( $command, $title, $parameters );
-
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			$command,
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 2.5
 	 */
 	public function newRefreshJob( Title $title, array $parameters = [] ): RefreshJob {
-		/** @var RefreshJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.refresh', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.refresh',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 2.0
 	 */
 	public function newUpdateJob( Title $title, array $parameters = [] ): UpdateJob {
-		/** @var UpdateJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.update', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.update',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 2.0
 	 */
 	public function newUpdateDispatcherJob( Title $title, array $parameters = [] ): UpdateDispatcherJob {
-		/** @var UpdateDispatcherJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.updateDispatcher', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.updateDispatcher',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 2.5
 	 */
 	public function newFulltextSearchTableUpdateJob( Title $title, array $parameters = [] ): FulltextSearchTableUpdateJob {
-		/** @var FulltextSearchTableUpdateJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.fulltextSearchTableUpdate', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.fulltextSearchTableUpdate',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 2.5
 	 */
 	public function newEntityIdDisposerJob( Title $title, array $parameters = [] ): EntityIdDisposerJob {
-		/** @var EntityIdDisposerJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.entityIdDisposer', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.entityIdDisposer',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 2.5
 	 */
 	public function newPropertyStatisticsRebuildJob( Title $title, array $parameters = [] ): PropertyStatisticsRebuildJob {
-		/** @var PropertyStatisticsRebuildJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.propertyStatisticsRebuild', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.propertyStatisticsRebuild',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 2.5
 	 */
 	public function newFulltextSearchTableRebuildJob( Title $title, array $parameters = [] ): FulltextSearchTableRebuildJob {
-		/** @var FulltextSearchTableRebuildJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.fulltextSearchTableRebuild', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.fulltextSearchTableRebuild',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 3.0
 	 */
 	public function newChangePropagationDispatchJob( Title $title, array $parameters = [] ): ChangePropagationDispatchJob {
-		/** @var ChangePropagationDispatchJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.changePropagationDispatch', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.changePropagationDispatch',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 3.0
 	 */
 	public function newChangePropagationUpdateJob( Title $title, array $parameters = [] ): ChangePropagationUpdateJob {
-		/** @var ChangePropagationUpdateJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.changePropagationUpdate', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.changePropagationUpdate',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 3.0
 	 */
 	public function newChangePropagationClassUpdateJob( Title $title, array $parameters = [] ): ChangePropagationClassUpdateJob {
-		/** @var ChangePropagationClassUpdateJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.changePropagationClassUpdate', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.changePropagationClassUpdate',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 3.1
 	 */
 	public function newParserCachePurgeJob( Title $title, array $parameters = [] ): ParserCachePurgeJob {
-		/** @var ParserCachePurgeJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.parserCachePurgeJob', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.parserCachePurgeJob',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newFileIngestJob( Title $title, array $parameters = [] ): FileIngestJob {
-		/** @var FileIngestJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.elasticFileIngest', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.elasticFileIngest',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newIndexerRecoveryJob( Title $title, array $parameters = [] ): IndexerRecoveryJob {
-		/** @var IndexerRecoveryJob $job */
-		$job = $this->mwJobFactory->newJob( 'smw.elasticIndexerRecovery', $title, $parameters );
-		return $job;
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->mwJobFactory->newJob(
+			'smw.elasticIndexerRecovery',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+		);
 	}
 
 }
