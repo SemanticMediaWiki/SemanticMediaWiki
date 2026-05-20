@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,12 +17,14 @@ class PropertyStatisticsRebuildJob extends Job {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store
+	) {
 		parent::__construct( 'smw.propertyStatisticsRebuild', $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
@@ -48,15 +50,13 @@ class PropertyStatisticsRebuildJob extends Job {
 	}
 
 	public function rebuild(): void {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
+		$maintenanceFactory = ApplicationFactory::getInstance()->newMaintenanceFactory();
 
-		// Use a fixed store to avoid issues like "Call to undefined method
-		// SMW\SPARQLStore\SPARQLStore::getDataItemHandlerForDIType" because
-		// the property statistics table and hereby its update is bound to
-		// the SQLStore
+		// The property statistics table and its update are bound to the
+		// SQLStore. The injected Store is the default Store; production
+		// always wires SQLStore here, and tests inject a SQLStore mock.
 		$propertyStatisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
-			$applicationFactory->getStore( SQLStore::class )
+			$this->store
 		);
 
 		$propertyStatisticsRebuilder->rebuild();

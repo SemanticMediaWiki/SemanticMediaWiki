@@ -213,7 +213,10 @@
 			"services": [ "SMW.Store" ]
 		},
 		"smw.entityIdDisposer": "SMW\\MediaWiki\\Jobs\\EntityIdDisposerJob",
-		"smw.propertyStatisticsRebuild": "SMW\\MediaWiki\\Jobs\\PropertyStatisticsRebuildJob",
+		"smw.propertyStatisticsRebuild": {
+			"class": "SMW\\MediaWiki\\Jobs\\PropertyStatisticsRebuildJob",
+			"services": [ "SMW.Store" ]
+		},
 		"smw.fulltextSearchTableRebuild": {
 			"class": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
 			"services": [ "SMW.Store" ]
