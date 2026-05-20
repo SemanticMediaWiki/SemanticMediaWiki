@@ -208,10 +208,16 @@
 			"services": [ "SMW.Store" ]
 		},
 		"smw.updateDispatcher": "SMW\\MediaWiki\\Jobs\\UpdateDispatcherJob",
-		"smw.fulltextSearchTableUpdate": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableUpdateJob",
+		"smw.fulltextSearchTableUpdate": {
+			"class": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableUpdateJob",
+			"services": [ "SMW.Store" ]
+		},
 		"smw.entityIdDisposer": "SMW\\MediaWiki\\Jobs\\EntityIdDisposerJob",
 		"smw.propertyStatisticsRebuild": "SMW\\MediaWiki\\Jobs\\PropertyStatisticsRebuildJob",
-		"smw.fulltextSearchTableRebuild": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
+		"smw.fulltextSearchTableRebuild": {
+			"class": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
+			"services": [ "SMW.Store" ]
+		},
 		"smw.changePropagationDispatch": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
 		"smw.changePropagationUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationUpdateJob",
 		"smw.changePropagationClassUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationClassUpdateJob",
