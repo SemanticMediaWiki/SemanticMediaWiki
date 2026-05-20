@@ -27,24 +27,31 @@ class PropertyStatisticsRebuildJobTest extends TestCase {
 	use MockSelectQueryBuilderTrait;
 	use MockWriteQueryBuilderTrait;
 
-	private $testEnvironment;
+	private TestEnvironment $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$row = new stdClass;
+		// Needed because PropertyStatisticsRebuildJob::rebuild() goes through
+		// ApplicationFactory::newDeferredTransactionalCallableUpdate(); the
+		// test environment ensures no global state leaks.
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	private function newStore(): SQLStore {
+		$row = new stdClass();
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		// PropertyStatisticsRebuilder::rebuild() reads through newSelectQueryBuilder
-		// and the underlying PropertyStatisticsStore writes via
-		// newDeleteQueryBuilder() and newInsertQueryBuilder().
 		$connection->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
 		$connection->method( 'newDeleteQueryBuilder' )
@@ -64,12 +71,7 @@ class PropertyStatisticsRebuildJobTest extends TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [] );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+		return $store;
 	}
 
 	public function testCanConstruct() {
@@ -79,7 +81,7 @@ class PropertyStatisticsRebuildJobTest extends TestCase {
 
 		$this->assertInstanceOf(
 			PropertyStatisticsRebuildJob::class,
-			new PropertyStatisticsRebuildJob( $title )
+			new PropertyStatisticsRebuildJob( $title, [], $this->newStore() )
 		);
 	}
 
@@ -91,7 +93,8 @@ class PropertyStatisticsRebuildJobTest extends TestCase {
 
 		$instance = new PropertyStatisticsRebuildJob(
 			$subject->getTitle(),
-			$parameters
+			$parameters,
+			$this->newStore()
 		);
 
 		$this->assertTrue(

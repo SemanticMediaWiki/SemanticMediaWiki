@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Jobs\RefreshJob;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 
@@ -24,24 +23,10 @@ class RefreshJobTest extends TestCase {
 	/** @var int */
 	protected $controlRefreshDataIndex;
 
-	private $applicationFactory;
-
-	protected function setUp(): void {
-		parent::setUp();
-
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$store = $this->getMockBuilder( Store::class )
+	private function newStore(): Store {
+		return $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-
-		$this->applicationFactory->registerObject( 'Store', $store );
-	}
-
-	protected function tearDown(): void {
-		$this->applicationFactory->clear();
-
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -51,7 +36,7 @@ class RefreshJobTest extends TestCase {
 
 		$this->assertInstanceOf(
 			RefreshJob::class,
-			new RefreshJob( $title )
+			new RefreshJob( $title, [], $this->newStore() )
 		);
 	}
 
@@ -79,9 +64,7 @@ class RefreshJobTest extends TestCase {
 			->method( 'refreshData' )
 			->willReturn( $rebuilder );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
-
-		$instance = new RefreshJob( $title, $parameters );
+		$instance = new RefreshJob( $title, $parameters, $store );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
@@ -93,9 +76,6 @@ class RefreshJobTest extends TestCase {
 		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function parameterDataProvider() {
 		$provider = [];
 

@@ -3,12 +3,15 @@
 namespace SMW\Tests\Integration\Services;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use Onoi\Cache\Cache;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
 use SMW\Elastic\ElasticFactory;
+use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
@@ -19,8 +22,21 @@ use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLoo
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\Job;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
+use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
+use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
+use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
+use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\Permission\TitlePermissions;
@@ -99,6 +115,45 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.InvalidateResultCacheEventListener', InvalidateResultCacheEventListener::class ],
 			[ 'SMW.InvalidateEntityCacheEventListener', InvalidateEntityCacheEventListener::class ],
 			[ 'SMW.InvalidatePropertySpecificationLookupCacheEventListener', InvalidatePropertySpecificationLookupCacheEventListener::class ],
+		];
+	}
+
+	/**
+	 * Resolves each SMW JobClasses command through MediaWiki's JobFactory to
+	 * prove the ObjectFactory spec (and any 'services' array attached to it)
+	 * wires successfully.
+	 *
+	 * @dataProvider jobCommandProvider
+	 */
+	public function testJobCommandResolvesToExpectedType( string $command, string $expectedType ): void {
+		$title = Title::makeTitle( NS_MAIN, 'ServiceWiringTest' );
+
+		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			$command,
+			$title,
+			[]
+		);
+
+		$this->assertInstanceOf( $expectedType, $job );
+		$this->assertInstanceOf( Job::class, $job );
+	}
+
+	public function jobCommandProvider(): array {
+		return [
+			[ 'smw.update', UpdateJob::class ],
+			[ 'smw.refresh', RefreshJob::class ],
+			[ 'smw.updateDispatcher', UpdateDispatcherJob::class ],
+			[ 'smw.fulltextSearchTableUpdate', FulltextSearchTableUpdateJob::class ],
+			[ 'smw.entityIdDisposer', EntityIdDisposerJob::class ],
+			[ 'smw.propertyStatisticsRebuild', PropertyStatisticsRebuildJob::class ],
+			[ 'smw.fulltextSearchTableRebuild', FulltextSearchTableRebuildJob::class ],
+			[ 'smw.changePropagationDispatch', ChangePropagationDispatchJob::class ],
+			[ 'smw.changePropagationUpdate', ChangePropagationUpdateJob::class ],
+			[ 'smw.changePropagationClassUpdate', ChangePropagationClassUpdateJob::class ],
+			[ 'smw.deferredConstraintCheckUpdateJob', DeferredConstraintCheckUpdateJob::class ],
+			[ 'smw.elasticIndexerRecovery', IndexerRecoveryJob::class ],
+			[ 'smw.elasticFileIngest', FileIngestJob::class ],
+			[ 'smw.parserCachePurgeJob', ParserCachePurgeJob::class ],
 		];
 	}
 

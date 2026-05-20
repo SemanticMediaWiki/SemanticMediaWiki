@@ -6,7 +6,7 @@ use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
-use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,12 +18,14 @@ class FulltextSearchTableRebuildJob extends Job {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store
+	) {
 		parent::__construct( 'smw.fulltextSearchTableRebuild', $title, $params );
+		$this->setStore( $store );
 	}
 
 	/**
@@ -38,9 +40,8 @@ class FulltextSearchTableRebuildJob extends Job {
 
 		$fulltextSearchTableFactory = new FulltextSearchTableFactory();
 
-		// Only the SQLStore is supported
 		$searchTableRebuilder = $fulltextSearchTableFactory->newSearchTableRebuilder(
-			ApplicationFactory::getInstance()->getStore( SQLStore::class )
+			$this->store
 		);
 
 		if ( $this->hasParameter( 'table' ) ) {
@@ -60,12 +61,15 @@ class FulltextSearchTableRebuildJob extends Job {
 			return;
 		}
 
-		foreach ( $tableList as $tableName ) {
-			$fulltextSearchTableRebuildJob = new self( $this->getTitle(), [
-				'table' => $tableName
-			] );
+		$jobFactory = ApplicationFactory::getInstance()->getJobFactory();
 
-			$fulltextSearchTableRebuildJob->insert();
+		foreach ( $tableList as $tableName ) {
+			$job = $jobFactory->newFulltextSearchTableRebuildJob(
+				$this->getTitle(),
+				[ 'table' => $tableName ]
+			);
+
+			$job->insert();
 		}
 	}
 

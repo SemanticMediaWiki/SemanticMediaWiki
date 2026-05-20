@@ -388,7 +388,7 @@ return [
 			return $servicesFactory->getJobFactory();
 		}
 
-		return new JobFactory();
+		return new JobFactory( $services->getJobFactory() );
 	},
 
 	'SMW.FactboxFactory' => static function ( MediaWikiServices $services ): FactboxFactory {

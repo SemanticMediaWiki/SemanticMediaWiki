@@ -3,12 +3,14 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
+use SMW\IteratorFactory;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Job;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\QueryDependency\QueryLinksTableDisposer;
+use SMW\Store;
 use stdClass;
 
 /**
@@ -30,35 +32,28 @@ class EntityIdDisposerJob extends Job {
 	 */
 	const BATCH_ROW_SIZE = 5000;
 
-	/**
-	 * @var PropertyTableIdReferenceDisposer
-	 */
-	private $propertyTableIdReferenceDisposer;
+	private ?PropertyTableIdReferenceDisposer $propertyTableIdReferenceDisposer = null;
 
-	/**
-	 * @var QueryLinksTableDisposer
-	 */
-	private $queryLinksTableDisposer;
+	private ?QueryLinksTableDisposer $queryLinksTableDisposer = null;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store,
+		private readonly IteratorFactory $iteratorFactory
+	) {
 		parent::__construct( 'smw.entityIdDisposer', $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param RequestOptions|null $requestOptions
-	 *
-	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
+	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ): ResultIterator {
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
@@ -68,12 +63,8 @@ class EntityIdDisposerJob extends Job {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param RequestOptions|null $requestOptions
-	 *
-	 * @return ResultIterator
 	 */
-	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
+	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ): ResultIterator {
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
@@ -83,10 +74,8 @@ class EntityIdDisposerJob extends Job {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return ResultIterator
 	 */
-	public function newOutdatedQueryLinksResultIterator() {
+	public function newOutdatedQueryLinksResultIterator(): ResultIterator {
 		if ( $this->queryLinksTableDisposer === null ) {
 			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
 		}
@@ -96,10 +85,8 @@ class EntityIdDisposerJob extends Job {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return ResultIterator
 	 */
-	public function newUnassignedQueryLinksResultIterator() {
+	public function newUnassignedQueryLinksResultIterator(): ResultIterator {
 		if ( $this->queryLinksTableDisposer === null ) {
 			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
 		}
@@ -173,19 +160,18 @@ class EntityIdDisposerJob extends Job {
 			return null;
 		}
 
-		// We expect more outdated entities to be contained in the ID_TABLE
-		// therefore reenter the disposal cycle
-		$entityIdDisposerJob = new self(
+		// We expect more outdated entities to be contained in the ID_TABLE,
+		// therefore reenter the disposal cycle.
+		$entityIdDisposerJob = ApplicationFactory::getInstance()->getJobFactory()->newEntityIdDisposerJob(
 			$this->getTitle(),
 			$this->params + [ 'cycle' => ++$cycle ]
 		);
 
 		$entityIdDisposerJob->insert();
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
+		$connection = $this->store->getConnection( 'mw.db' );
 
-		$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
+		$chunkedIterator = $this->iteratorFactory->newChunkedIterator(
 			$outdatedEntitiesResultIterator,
 			self::CHUNK_SIZE
 		);
@@ -204,15 +190,14 @@ class EntityIdDisposerJob extends Job {
 		return null;
 	}
 
-	private function newPropertyTableIdReferenceDisposer() {
-		return ApplicationFactory::getInstance()->getStore()->service( 'PropertyTableIdReferenceDisposer' );
+	private function newPropertyTableIdReferenceDisposer(): PropertyTableIdReferenceDisposer {
+		return $this->store->service( 'PropertyTableIdReferenceDisposer' );
 	}
 
-	private function newQueryLinksTableDisposer() {
-		$store = ApplicationFactory::getInstance()->getStore();
-		$queryDependencyLinksStoreFactory = $store->service( 'QueryDependencyLinksStoreFactory' );
+	private function newQueryLinksTableDisposer(): QueryLinksTableDisposer {
+		$queryDependencyLinksStoreFactory = $this->store->service( 'QueryDependencyLinksStoreFactory' );
 
-		return $queryDependencyLinksStoreFactory->newQueryLinksTableDisposer( $store );
+		return $queryDependencyLinksStoreFactory->newQueryLinksTableDisposer( $this->store );
 	}
 
 }

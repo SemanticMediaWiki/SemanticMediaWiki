@@ -9,7 +9,6 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
-use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\MediaWiki\JobFactory;
@@ -368,7 +367,7 @@ class rebuildElasticMissingDocuments extends Maintenance {
 			$errorCount[$result->getType()]++;
 
 			if ( $result->getType() === ReplicationError::TYPE_FILE_ATTACHMENT_MISSING ) {
-				$job = new FileIngestJob( $title );
+				$job = $this->jobFactory->newFileIngestJob( $title );
 			} else {
 				$job = $this->jobFactory->newUpdateJob( $title );
 			}

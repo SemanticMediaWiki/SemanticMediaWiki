@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
@@ -19,6 +20,16 @@ use SMW\Tests\SMWIntegrationTestCase;
  */
 class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 
+	private function newJob( Title $title, array $params = [] ): FulltextSearchTableRebuildJob {
+		/** @var FulltextSearchTableRebuildJob $job */
+		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			'smw.fulltextSearchTableRebuild',
+			$title,
+			$params
+		);
+		return $job;
+	}
+
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
@@ -26,7 +37,7 @@ class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 
 		$this->assertInstanceOf(
 			FulltextSearchTableRebuildJob::class,
-			new FulltextSearchTableRebuildJob( $title )
+			$this->newJob( $title )
 		);
 	}
 
@@ -36,10 +47,7 @@ class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 	public function testRunJob( $parameters ) {
 		$subject = WikiPage::newFromText( __METHOD__ );
 
-		$instance = new FulltextSearchTableRebuildJob(
-			$subject->getTitle(),
-			$parameters
-		);
+		$instance = $this->newJob( $subject->getTitle(), $parameters );
 
 		$this->assertTrue(
 			$instance->run()

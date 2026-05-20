@@ -12,6 +12,7 @@ use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * UpdateJob is responsible for the asynchronous update of semantic data
@@ -20,6 +21,12 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  * Update jobs are created if, when saving an article,
  * it is detected that the content of other pages must be re-parsed as well (e.g.
  * due to some type change).
+ *
+ * Partial DI: Store is injected via the JobClasses ObjectFactory spec. The
+ * remaining collaborators (PageCreator, PageUpdater, SerializerFactory,
+ * ParserData, ContentParser, MediaWikiLogger) are still resolved through
+ * ApplicationFactory because they are not registered as global SMW.X
+ * services.
  *
  * @note This job does not update the page display or parser cache, so in general
  * it might happen that part of the wiki page still displays old data (e.g.
@@ -54,12 +61,14 @@ class UpdateJob extends Job {
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Title $title
-	 * @param array $params
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store
+	) {
 		parent::__construct( 'smw.update', $title, $params );
+		$this->setStore( $store );
 		$this->title = $title;
 		$this->removeDuplicates = true;
 
@@ -70,8 +79,6 @@ class UpdateJob extends Job {
 
 	/**
 	 * @see Job::run
-	 *
-	 * @return bool
 	 */
 	public function run() {
 		// #2199 ("Invalid or virtual namespace -1 given")
@@ -81,7 +88,7 @@ class UpdateJob extends Job {
 
 		MediaWikiServices::getInstance()->getLinkCache()->clear();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory ??= ApplicationFactory::getInstance();
 
 		if ( !$this->hasParameter( self::FORCED_UPDATE ) && $this->matchesLastModified( $this->getTitle() ) ) {
 			return true;
@@ -91,7 +98,7 @@ class UpdateJob extends Job {
 			return $this->doUpdate();
 		}
 
-		$this->applicationFactory->getStore()->clearData(
+		$this->store->clearData(
 			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
@@ -140,7 +147,7 @@ class UpdateJob extends Job {
 
 		// Read the _CHGPRO property and fetch the serialized
 		// SemanticData object
-		$pv = $this->applicationFactory->getStore()->getPropertyValues(
+		$pv = $this->store->getPropertyValues(
 			$subject,
 			new Property( Property::TYPE_CHANGE_PROP )
 		);
@@ -298,7 +305,7 @@ class UpdateJob extends Job {
 	 * has been added using the storage-engine.
 	 */
 	private function getLastModifiedTimestamp( WikiPage $wikiPage ) {
-		$dataItems = $this->applicationFactory->getStore()->getPropertyValues(
+		$dataItems = $this->store->getPropertyValues(
 			$wikiPage,
 			new Property( '_MDAT' )
 		);
