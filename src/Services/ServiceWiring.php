@@ -42,6 +42,8 @@ use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\Schema\SchemaFactory;
 use SMW\SerializerFactory;
+use SMW\Services\DataValueServiceFactory;
+use SMW\Services\ImporterServiceFactory;
 use SMW\Services\ServicesFactory;
 use SMW\Settings;
 use SMW\SetupFile;
@@ -662,6 +664,34 @@ return [
 		);
 
 		return $namespaceExaminer;
+	},
+
+	'SMW.DataValueServiceFactory' => static function ( MediaWikiServices $services ): DataValueServiceFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'DataValueServiceFactory' ) ) {
+			return $servicesFactory->getDataValueServiceFactory();
+		}
+
+		$servicesContainer = DataValueServiceFactory::newServicesContainer(
+			$servicesFactory->getSettings()->get( 'smwgServicesFileDir' )
+		);
+
+		return new DataValueServiceFactory( $servicesContainer );
+	},
+
+	'SMW.ImporterServiceFactory' => static function ( MediaWikiServices $services ): ImporterServiceFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'ImporterServiceFactory' ) ) {
+			return $servicesFactory->getImporterServiceFactory();
+		}
+
+		$servicesContainer = ImporterServiceFactory::newServicesContainer(
+			$servicesFactory->getSettings()->get( 'smwgServicesFileDir' )
+		);
+
+		return new ImporterServiceFactory( $servicesContainer );
 	},
 
 ];

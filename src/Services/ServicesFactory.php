@@ -344,6 +344,8 @@ class ServicesFactory {
 			'PageCreator' => fn () => $this->getPageCreator(),
 			'MwCollaboratorFactory' => fn () => $this->getMwCollaboratorFactory(),
 			'NamespaceExaminer' => fn () => $this->getNamespaceExaminer(),
+			'DataValueServiceFactory' => fn () => $this->getDataValueServiceFactory(),
+			'ImporterServiceFactory' => fn () => $this->getImporterServiceFactory(),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -360,8 +362,6 @@ class ServicesFactory {
 			'TempFile' => fn () => $this->newTempFile(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'PostProcHandler' => fn () => $this->newPostProcHandler( ...$args ),
-			'DataValueServiceFactory' => fn () => $this->getDataValueServiceFactory(),
-			'ImporterServiceFactory' => fn () => $this->getImporterServiceFactory(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'BlobStore' => fn () => $this->newBlobStore( ...$args ),
 			'ResultCache' => fn () => $this->getResultCache( ...$args ),
@@ -1181,11 +1181,7 @@ class ServicesFactory {
 			return $this->testOverrides['DataValueServiceFactory'];
 		}
 
-		$servicesContainer = DataValueServiceFactory::newServicesContainer(
-			$this->getSettings()->get( 'smwgServicesFileDir' )
-		);
-
-		return new DataValueServiceFactory( $servicesContainer );
+		return MediaWikiServices::getInstance()->getService( 'SMW.DataValueServiceFactory' );
 	}
 
 	/**
@@ -1196,11 +1192,7 @@ class ServicesFactory {
 			return $this->testOverrides['ImporterServiceFactory'];
 		}
 
-		$servicesContainer = ImporterServiceFactory::newServicesContainer(
-			$this->getSettings()->get( 'smwgServicesFileDir' )
-		);
-
-		return new ImporterServiceFactory( $servicesContainer );
+		return MediaWikiServices::getInstance()->getService( 'SMW.ImporterServiceFactory' );
 	}
 
 	/**

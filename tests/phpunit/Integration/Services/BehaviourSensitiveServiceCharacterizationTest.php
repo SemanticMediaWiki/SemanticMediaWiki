@@ -180,16 +180,16 @@ class BehaviourSensitiveServiceCharacterizationTest extends MediaWikiIntegration
 	// -------------------------------------------------------------------------
 
 	/**
-	 * ImporterServiceFactory is reached via create('ImporterServiceFactory').
-	 * The callback constructs a new ImporterServiceFactory each time, so two create() calls
-	 * return distinct instances.
+	 * ImporterServiceFactory is globalised as `SMW.ImporterServiceFactory` on
+	 * the MediaWiki ServiceContainer; two create() retrievals return the same
+	 * shared instance.
 	 */
 	public function testImporterServiceFactoryTypeAndIdentity(): void {
 		$first = $this->factory->create( 'ImporterServiceFactory' );
 		$second = $this->factory->create( 'ImporterServiceFactory' );
 
 		$this->assertInstanceOf( ImporterServiceFactory::class, $first );
-		$this->assertNotSame( $first, $second, 'ImporterServiceFactory: create() constructs a new instance each time' );
+		$this->assertSame( $first, $second, 'ImporterServiceFactory: globalised as SMW.ImporterServiceFactory; both retrievals must return the same instance' );
 	}
 
 	/**
