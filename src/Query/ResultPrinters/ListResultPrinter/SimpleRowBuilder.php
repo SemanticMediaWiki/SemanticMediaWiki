@@ -49,7 +49,7 @@ class SimpleRowBuilder extends RowBuilder {
 	}
 
 	/**
-	 * @param string[] $fields
+	 * @param ResultArray[] $fields
 	 *
 	 * @return array
 	 */

@@ -257,7 +257,7 @@ class TableResultPrinter extends ResultPrinter {
 			'class' => $columnClass . $cellTypeClass
 		];
 
-		$content = null;
+		$content = '';
 
 		if ( count( $dataValues ) > 0 ) {
 			$sortKey = $dataValues[0]->getDataItem()->getSortKey();

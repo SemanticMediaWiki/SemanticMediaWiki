@@ -15,7 +15,7 @@ class ParameterDictionary {
 	private array $configuration = [];
 
 	/**
-	 * @param string|string[] $setting
+	 * @param string|array<string,mixed> $setting
 	 * @param mixed $value
 	 */
 	public function set( $setting, $value = null ): void {

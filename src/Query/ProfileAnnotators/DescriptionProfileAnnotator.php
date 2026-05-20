@@ -21,7 +21,7 @@ class DescriptionProfileAnnotator extends ProfileAnnotatorDecorator {
 	 */
 	public function __construct(
 		ProfileAnnotator $profileAnnotator,
-		private readonly Description $description,
+		private readonly ?Description $description,
 	) {
 		parent::__construct( $profileAnnotator );
 	}
@@ -30,12 +30,18 @@ class DescriptionProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues(): void {
+		if ( $this->description === null ) {
+			return;
+		}
 		$this->addQueryString( $this->description->getQueryString() );
 		$this->addQuerySize( $this->description->getSize() );
 		$this->addQueryDepth( $this->description->getDepth() );
 	}
 
 	private function addQueryString( $queryString ): void {
+		if ( $this->description === null ) {
+			return;
+		}
 		$this->getSemanticData()->addPropertyObjectValue(
 			new Property( '_ASKST' ),
 			new Blob( $queryString )
@@ -43,6 +49,9 @@ class DescriptionProfileAnnotator extends ProfileAnnotatorDecorator {
 	}
 
 	private function addQuerySize( $size ): void {
+		if ( $this->description === null ) {
+			return;
+		}
 		$this->getSemanticData()->addPropertyObjectValue(
 			new Property( '_ASKSI' ),
 			new Number( $size )
@@ -50,6 +59,9 @@ class DescriptionProfileAnnotator extends ProfileAnnotatorDecorator {
 	}
 
 	private function addQueryDepth( $depth ): void {
+		if ( $this->description === null ) {
+			return;
+		}
 		$this->getSemanticData()->addPropertyObjectValue(
 			new Property( '_ASKDE' ),
 			new Number( $depth )

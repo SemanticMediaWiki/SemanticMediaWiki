@@ -153,7 +153,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string[] $cnts
+	 * @param array<string,string>|array<string,array<int,string>> $cnts
 	 * @param string $type
 	 */
 	public function addContents( array $cnts, $type = self::PLAIN_LIST ): void {
@@ -163,7 +163,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string[] $cnts
+	 * @param array<string,string>|array<string,array<int,string>> $cnts
 	 * @param string $type
 	 *
 	 * @throws InvalidArgumentException

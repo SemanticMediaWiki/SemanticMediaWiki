@@ -100,7 +100,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 
 		// The NS has been stripped, use a normal value clause in the MAIN namespace
 		$valueDescription = $this->descriptionFactory->newValueDescription(
-			$this->dataItemFactory->newDIWikiPage( $value, NS_MAIN ),
+			$this->dataItemFactory->newDIWikiPage( $value ?? '', NS_MAIN ),
 			null,
 			$comparator
 		);

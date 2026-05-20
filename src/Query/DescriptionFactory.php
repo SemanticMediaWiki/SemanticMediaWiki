@@ -130,12 +130,13 @@ class DescriptionFactory {
 
 		$description = $dataValue->getQueryDescription( $dataValue->getWikiValue() );
 
-		if ( $dataValue->getProperty() === null ) {
+		$property = $dataValue->getProperty();
+		if ( $property === null ) {
 			return $description;
 		}
 
 		return $this->newSomeProperty(
-			$dataValue->getProperty(),
+			$property,
 			$description
 		);
 	}

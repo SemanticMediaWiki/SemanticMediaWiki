@@ -21,8 +21,8 @@ class Template {
 	/**
 	 * @since 3.1
 	 *
-	 * @param string $key
-	 * @param string $value
+	 * @param int|string $key
+	 * @param int|string $value
 	 */
 	public function field( $key, $value ): void {
 		$this->fields[$key] = $value;

@@ -522,14 +522,14 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @since 1.8
 	 *
 	 * @param QueryResult $res
-	 * @param $outputMode
+	 * @param int $outputMode
 	 * @param string $classAffix
 	 *
 	 * @return Infolink
 	 * @throws Exception
 	 */
 	protected function getLink( QueryResult $res, $outputMode, $classAffix = '' ) {
-		$link = $res->getQueryLink( $this->getSearchLabel( $outputMode ) );
+		$link = $res->getQueryLink( $this->getSearchLabel( $outputMode ) ?? false );
 
 		if ( $classAffix !== '' ) {
 			$link->setStyle( 'smw-' . $this->params['format'] . '-' . Sanitizer::escapeClass( $classAffix ) );
@@ -554,7 +554,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @since 1.8
 	 *
 	 * @param QueryResult $res
-	 * @param $outputMode
+	 * @param int $outputMode
 	 *
 	 * @return Infolink
 	 * @throws Exception
@@ -628,24 +628,24 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * given text. Otherwise return text as is.
 	 *
 	 * @param string $text
-	 * @param string $outputmode
+	 * @param int $outputMode
 	 *
 	 * @return string|null
 	 */
-	protected function escapeText( $text, $outputmode ): ?string {
-		return $outputmode == SMW_OUTPUT_HTML ? htmlspecialchars( $text ?? '' ) : $text;
+	protected function escapeText( $text, $outputMode ): ?string {
+		return $outputMode == SMW_OUTPUT_HTML ? htmlspecialchars( $text ?? '' ) : $text;
 	}
 
 	/**
 	 * Get the string the user specified as a text for the "further results" link,
 	 * properly escaped for the current output mode.
 	 *
-	 * @param string $outputmode
+	 * @param int $outputMode
 	 *
 	 * @return string|null
 	 */
-	protected function getSearchLabel( $outputmode ): ?string {
-		return $this->escapeText( $this->mSearchlabel, $outputmode );
+	protected function getSearchLabel( $outputMode ): ?string {
+		return $this->escapeText( $this->mSearchlabel, $outputMode );
 	}
 
 	/**

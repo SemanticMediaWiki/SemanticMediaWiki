@@ -602,8 +602,14 @@ class LegacyParser implements Parser {
 							$value .= $chunk;
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
+
+					$property = $propertyValue->getDataItem();
+
+					if ( !$property instanceof Property ) {
+						break;
+					}
 					$outerDesription = $this->descriptionProcessor->newDescriptionForPropertyObjectValue(
-						$propertyValue->getDataItem(),
+						$property,
 						$value
 					);
 
@@ -631,7 +637,11 @@ class LegacyParser implements Parser {
 		$propertyValueList = array_reverse( $propertyValueList );
 
 		foreach ( $propertyValueList as $propertyValue ) {
-			$innerdesc = $this->descriptionFactory->newSomeProperty( $propertyValue->getDataItem(), $innerdesc );
+			$property = $propertyValue->getDataItem();
+			if ( !$property instanceof Property || $innerdesc === null ) {
+				continue;
+			}
+			$innerdesc = $this->descriptionFactory->newSomeProperty( $property, $innerdesc );
 		}
 
 		$result = $innerdesc;
