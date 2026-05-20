@@ -3,9 +3,11 @@
 namespace SMW\MediaWiki\Api;
 
 use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
+use SMW\Query\Query as SMWQuery;
 use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Query\QuerySourceFactory;
 
 /**
  * Base for API modules that query SMW
@@ -21,6 +23,17 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 abstract class Query extends ApiBase {
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		private readonly QuerySourceFactory $querySourceFactory
+	) {
+		parent::__construct( $main, $action );
+	}
+
+	/**
 	 * Returns a query object for the provided query string and list of printouts.
 	 *
 	 * @since 1.6.2
@@ -29,7 +42,7 @@ abstract class Query extends ApiBase {
 	 * @param array $printouts
 	 * @param array $parameters
 	 *
-	 * @return \SMW\Query\Query
+	 * @return SMWQuery
 	 */
 	protected function getQuery( $queryString, array $printouts, array $parameters = [] ) {
 		QueryProcessor::addThisPrintout( $printouts, $parameters );
@@ -42,7 +55,7 @@ abstract class Query extends ApiBase {
 			$printouts
 		);
 
-		$query->setOption( \SMW\Query\Query::PROC_CONTEXT, 'API' );
+		$query->setOption( SMWQuery::PROC_CONTEXT, 'API' );
 
 		return $query;
 	}
@@ -52,20 +65,16 @@ abstract class Query extends ApiBase {
 	 *
 	 * @since 1.6.2
 	 *
-	 * @param \SMW\Query\Query $query
-	 *
 	 * @return QueryResult
 	 */
-	protected function getQueryResult( \SMW\Query\Query $query ) {
-		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $query->getQuerySource() )->getQueryResult( $query );
+	protected function getQueryResult( SMWQuery $query ) {
+		return $this->querySourceFactory->get( $query->getQuerySource() )->getQueryResult( $query );
 	}
 
 	/**
 	 * Add the query result to the API output.
 	 *
 	 * @since 1.6.2
-	 *
-	 * @param QueryResult $queryResult
 	 */
 	protected function addQueryResult( QueryResult $queryResult, $outputFormat = 'json' ): void {
 		$result = $this->getResult();

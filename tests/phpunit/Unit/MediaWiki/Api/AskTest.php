@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Ask;
+use SMW\Query\QuerySourceFactory;
 use SMW\Tests\Utils\MwApiFactory;
 
 /**
@@ -26,9 +27,14 @@ class AskTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
+		$querySourceFactory = $this->getMockBuilder( QuerySourceFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new Ask(
 			$this->apiFactory->newApiMain( [ 'query' => 'Foo' ] ),
-			'ask'
+			'ask',
+			$querySourceFactory
 		);
 
 		$this->assertInstanceOf(

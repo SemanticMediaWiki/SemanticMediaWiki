@@ -44,8 +44,14 @@
 			"class": "SMW\\MediaWiki\\Api\\Browse",
 			"services": [ "SMW.Store", "SMW.Settings", "SMW.Cache" ]
 		},
-		"ask": "SMW\\MediaWiki\\Api\\Ask",
-		"askargs": "SMW\\MediaWiki\\Api\\AskArgs"
+		"ask": {
+			"class": "SMW\\MediaWiki\\Api\\Ask",
+			"services": [ "SMW.QuerySourceFactory" ]
+		},
+		"askargs": {
+			"class": "SMW\\MediaWiki\\Api\\AskArgs",
+			"services": [ "SMW.QuerySourceFactory" ]
+		}
 	},
 	"AutoloadClasses": {
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",

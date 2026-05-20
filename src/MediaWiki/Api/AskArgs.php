@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Api;
 
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiFormatXml;
+use MediaWiki\Api\ApiMain;
+use SMW\Query\QuerySourceFactory;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -16,6 +18,17 @@ use Wikimedia\ParamValidator\ParamValidator;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class AskArgs extends Query {
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		QuerySourceFactory $querySourceFactory
+	) {
+		parent::__construct( $main, $action, $querySourceFactory );
+	}
 
 	/**
 	 * @see ApiBase::execute
