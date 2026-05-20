@@ -605,19 +605,18 @@ class LegacyParser implements Parser {
 
 					$property = $propertyValue->getDataItem();
 
-					if ( !$property instanceof Property ) {
-						return;
+					if ( $property instanceof Property ) {
+						$outerDesription = $this->descriptionProcessor->newDescriptionForPropertyObjectValue(
+							$property,
+							$value
+						);
+	
+						$this->queryToken->addFromDescription( $outerDesription );
+						$innerdesc = $this->descriptionProcessor->asOr(
+							$innerdesc,
+							$outerDesription
+						);
 					}
-					$outerDesription = $this->descriptionProcessor->newDescriptionForPropertyObjectValue(
-						$property,
-						$value
-					);
-
-					$this->queryToken->addFromDescription( $outerDesription );
-					$innerdesc = $this->descriptionProcessor->asOr(
-						$innerdesc,
-						$outerDesription
-					);
 
 			}
 			$continue = ( $chunk == '||' );
