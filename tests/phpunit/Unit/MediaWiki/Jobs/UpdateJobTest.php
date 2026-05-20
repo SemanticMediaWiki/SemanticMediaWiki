@@ -28,13 +28,17 @@ use SMW\Tests\TestEnvironment;
  */
 class UpdateJobTest extends TestCase {
 
-	private $testEnvironment;
+	private TestEnvironment $testEnvironment;
 	private $semanticDataFactory;
 	private $semanticDataSerializer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
+		// UpdateJob still resolves ContentParser, PageCreator, PageUpdater,
+		// SerializerFactory, ParserData and MediaWikiLogger through
+		// ApplicationFactory; the test environment lets these collaborators
+		// be swapped via registerObject() without touching global state.
 		$this->testEnvironment = new TestEnvironment( [
 			'smwgMainCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false,
@@ -42,6 +46,22 @@ class UpdateJobTest extends TestCase {
 			'smwgDVFeatures' => '',
 		] );
 
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
+
+		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
+		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	private function newStoreWithIdTable(): SQLStore {
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
@@ -59,21 +79,7 @@ class UpdateJobTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
-
-		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
-		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+		return $store;
 	}
 
 	public function testCanConstruct() {
@@ -83,7 +89,7 @@ class UpdateJobTest extends TestCase {
 
 		$this->assertInstanceOf(
 			UpdateJob::class,
-			new UpdateJob( $title )
+			new UpdateJob( $title, [], $this->newStoreWithIdTable() )
 		);
 	}
 
@@ -96,7 +102,7 @@ class UpdateJobTest extends TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$instance = new UpdateJob( $title );
+		$instance = new UpdateJob( $title, [], $this->newStoreWithIdTable() );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertFalse(	$instance->run() );
@@ -121,7 +127,7 @@ class UpdateJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'ContentParser', null );
 
-		$instance = new UpdateJob( $title );
+		$instance = new UpdateJob( $title, [], $this->newStoreWithIdTable() );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
@@ -146,7 +152,7 @@ class UpdateJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
-		$instance = new UpdateJob( $title );
+		$instance = new UpdateJob( $title, [], $this->newStoreWithIdTable() );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertFalse( $instance->run() );
@@ -203,9 +209,12 @@ class UpdateJobTest extends TestCase {
 		$store->expects( $this->once() )
 			->method( 'clearData' );
 
+		// ParserData::updateStore() goes through ApplicationFactory and uses
+		// the Store registered there; mirror the injected store on the
+		// service locator so DataUpdater sees the same idTable.
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new UpdateJob( $title );
+		$instance = new UpdateJob( $title, [], $store );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
@@ -267,7 +276,7 @@ class UpdateJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new UpdateJob( $title, [ 'shallowUpdate' => true ] );
+		$instance = new UpdateJob( $title, [ 'shallowUpdate' => true ], $store );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
@@ -293,7 +302,8 @@ class UpdateJobTest extends TestCase {
 		$instance = new UpdateJob( $title,
 			[
 				UpdateJob::SEMANTIC_DATA => $semanticData
-			]
+			],
+			$store
 		);
 
 		$instance->isEnabledJobQueue( false );
@@ -327,7 +337,8 @@ class UpdateJobTest extends TestCase {
 		$instance = new UpdateJob( $subject->getTitle(),
 			[
 				UpdateJob::CHANGE_PROP => $subject->getSerialization()
-			]
+			],
+			$store
 		);
 
 		$instance->isEnabledJobQueue( false );

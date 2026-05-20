@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Make sufficient use of the job table by only tracking remaining jobs without
@@ -52,9 +53,14 @@ class ChangePropagationUpdateJob extends Job {
 			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
+		// Construct the inner UpdateJob directly with the current Store
+		// resolved through ApplicationFactory. We cannot route via MediaWiki's
+		// JobFactory here because the JobClasses spec resolves SMW.Store from
+		// the global container, which bypasses testOverrides.
 		$updateJob = new UpdateJob(
 			$this->getTitle(),
-			array_merge( $this->params, [ 'origin' => 'ChangePropagationUpdateJob' ] )
+			array_merge( $this->params, [ 'origin' => 'ChangePropagationUpdateJob' ] ),
+			ApplicationFactory::getInstance()->getStore()
 		);
 
 		$updateJob->run();

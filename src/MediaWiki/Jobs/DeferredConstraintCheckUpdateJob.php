@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -55,9 +56,14 @@ class DeferredConstraintCheckUpdateJob extends Job {
 			return true;
 		}
 
+		// Construct the inner UpdateJob directly with the current Store
+		// resolved through ApplicationFactory. We cannot route via MediaWiki's
+		// JobFactory here because the JobClasses spec resolves SMW.Store from
+		// the global container, which bypasses testOverrides.
 		$updateJob = new UpdateJob(
 			$this->getTitle(),
-			$this->params + [ 'origin' => 'DeferredConstraintCheckUpdateJob' ]
+			$this->params + [ 'origin' => 'DeferredConstraintCheckUpdateJob' ],
+			ApplicationFactory::getInstance()->getStore()
 		);
 
 		$updateJob->run();

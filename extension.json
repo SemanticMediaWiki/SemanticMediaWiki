@@ -202,7 +202,10 @@
 		"WantedProperties": "SMW\\MediaWiki\\Specials\\SpecialWantedProperties"
 	},
 	"JobClasses": {
-		"smw.update": "SMW\\MediaWiki\\Jobs\\UpdateJob",
+		"smw.update": {
+			"class": "SMW\\MediaWiki\\Jobs\\UpdateJob",
+			"services": [ "SMW.Store" ]
+		},
 		"smw.refresh": {
 			"class": "SMW\\MediaWiki\\Jobs\\RefreshJob",
 			"services": [ "SMW.Store" ]
