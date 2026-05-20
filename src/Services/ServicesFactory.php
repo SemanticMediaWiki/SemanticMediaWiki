@@ -348,6 +348,7 @@ class ServicesFactory {
 			'ImporterServiceFactory' => fn () => $this->getImporterServiceFactory(),
 			'HierarchyLookup' => fn () => $this->newHierarchyLookup( ...$args ),
 			'DisplayTitleFinder' => fn () => $this->newDisplayTitleFinder( ...$args ),
+			'DependencyValidator' => fn () => $this->newDependencyValidator( ...$args ),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -373,7 +374,6 @@ class ServicesFactory {
 			'EditProtectionUpdater' => fn () => $this->newEditProtectionUpdater( ...$args ),
 			'PropertyRestrictionExaminer' => fn () => $this->newPropertyRestrictionExaminer(),
 			'MagicWordsFinder' => fn () => $this->newMagicWordsFinder( ...$args ),
-			'DependencyValidator' => fn () => $this->newDependencyValidator( ...$args ),
 			'Parser' => fn () => $this->newParser(),
 			'RevisionLookup' => fn () => $this->newRevisionLookup(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
@@ -1050,13 +1050,31 @@ class ServicesFactory {
 			return $this->testOverrides['DependencyValidator'];
 		}
 
+		// `$store` is accepted for backwards compatibility with the historical
+		// signature but the underlying class never receives it. When the caller
+		// passes nothing, return the globalised instance.
+		if ( $store === null ) {
+			return $this->getDependencyValidator();
+		}
+
 		$queryDependencyLinksStoreFactory = $this->getQueryDependencyLinksStoreFactory();
 
 		return new DependencyValidator(
-			$this->newNamespaceExaminer(),
+			$this->getNamespaceExaminer(),
 			$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
 			$this->getEntityCache()
 		);
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getDependencyValidator(): DependencyValidator {
+		if ( array_key_exists( 'DependencyValidator', $this->testOverrides ) ) {
+			return $this->testOverrides['DependencyValidator'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.DependencyValidator' );
 	}
 
 	/**
