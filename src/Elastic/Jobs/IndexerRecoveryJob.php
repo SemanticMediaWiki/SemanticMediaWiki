@@ -2,7 +2,9 @@
 
 namespace SMW\Elastic\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticStore;
@@ -10,9 +12,14 @@ use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Utils\HmacSerializer;
 
 /**
+ * Partial DI: Store and Cache are injected via the JobClasses ObjectFactory
+ * spec. The MediaWikiLogger is still resolved lazily through
+ * ApplicationFactory because it is not a registered global service.
+ *
  * @license GPL-2.0-or-later
  * @since 3.0
  *
@@ -37,21 +44,20 @@ class IndexerRecoveryJob extends Job {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store,
+		private readonly Cache $cache
+	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param $subject
-	 *
-	 * @return string
 	 */
 	public static function makeCacheKey( $subject ): string {
 		if ( $subject instanceof Title ) {
@@ -63,8 +69,6 @@ class IndexerRecoveryJob extends Job {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Document $document
 	 */
 	public static function pushFromDocument( Document $document ): void {
 		$cache = ApplicationFactory::getInstance()->getCache();
@@ -76,7 +80,10 @@ class IndexerRecoveryJob extends Job {
 			self::TTL_WEEK
 		);
 
-		$indexerRecoveryJob = new IndexerRecoveryJob(
+		// Use MediaWiki's JobFactory so the JobClasses ObjectFactory spec
+		// resolves the services declared for this job.
+		$indexerRecoveryJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			self::JOB_COMMAND,
 			$subject->getTitle(),
 			[ 'index' => $subject->getHash() ]
 		);
@@ -86,12 +93,10 @@ class IndexerRecoveryJob extends Job {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param array $params
 	 */
 	public static function pushFromParams( Title $title, array $params ): void {
-		$indexerRecoveryJob = new IndexerRecoveryJob(
+		$indexerRecoveryJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			self::JOB_COMMAND,
 			$title,
 			$params
 		);
@@ -114,9 +119,11 @@ class IndexerRecoveryJob extends Job {
 	 * @since  3.0
 	 */
 	public function run(): bool {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$store = $applicationFactory->getStore( ElasticStore::class );
+		// The Elastic-specific store accessor falls back to ElasticStore if
+		// the wired Store is not already one (e.g. via test override).
+		$store = $this->store instanceof ElasticStore
+			? $this->store
+			: ApplicationFactory::getInstance()->getStore( ElasticStore::class );
 
 		$connection = $store->getConnection( 'elastic' );
 
@@ -139,7 +146,7 @@ class IndexerRecoveryJob extends Job {
 		$this->indexer->setOrigin( __METHOD__ );
 
 		$this->indexer->setLogger(
-			$applicationFactory->getMediaWikiLogger( 'smw-elastic' )
+			ApplicationFactory::getInstance()->getMediaWikiLogger( 'smw-elastic' )
 		);
 
 		if ( $this->hasParameter( 'delete' ) ) {
@@ -152,7 +159,7 @@ class IndexerRecoveryJob extends Job {
 
 		if ( $this->hasParameter( 'index' ) ) {
 			$this->index(
-				$applicationFactory->getCache(),
+				$this->cache,
 				$this->getParameter( 'index' )
 			);
 		}
@@ -176,7 +183,13 @@ class IndexerRecoveryJob extends Job {
 			$this->params['createdAt'] = time();
 		}
 
-		$job = new self( $this->title, $this->params );
+		// Re-enqueue through MediaWiki's JobFactory so the ObjectFactory spec
+		// injects the same service dependencies again.
+		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			self::JOB_COMMAND,
+			$this->title,
+			$this->params
+		);
 		$job->setDelay( 60 * 10 );
 
 		$job->insert();

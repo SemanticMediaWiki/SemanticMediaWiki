@@ -242,7 +242,10 @@
 		"smw.changePropagationUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationUpdateJob",
 		"smw.changePropagationClassUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationClassUpdateJob",
 		"smw.deferredConstraintCheckUpdateJob": "SMW\\MediaWiki\\Jobs\\DeferredConstraintCheckUpdateJob",
-		"smw.elasticIndexerRecovery": "SMW\\Elastic\\Jobs\\IndexerRecoveryJob",
+		"smw.elasticIndexerRecovery": {
+			"class": "SMW\\Elastic\\Jobs\\IndexerRecoveryJob",
+			"services": [ "SMW.Store", "SMW.Cache" ]
+		},
 		"smw.elasticFileIngest": {
 			"class": "SMW\\Elastic\\Jobs\\FileIngestJob",
 			"services": [ "SMW.Store", "SMW.ElasticFactory" ]
