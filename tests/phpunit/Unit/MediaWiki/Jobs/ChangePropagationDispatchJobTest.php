@@ -154,13 +154,18 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	public function testFindAndDispatchOnNonPropertyEntity() {
 		$subject = WikiPage::newFromText( 'Foo' );
 
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobQueue->expects( $this->never() )
+			->method( 'lazyPush' );
+
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
+
 		$instance = $this->newJob( $subject->getTitle() );
 
 		$instance->run();
-
-		// Reaching here without exception is the assertion; no job pushes
-		// happen for the non-property namespace.
-		$this->expectNotToPerformAssertions();
 	}
 
 	public function testPlanAsJob() {
