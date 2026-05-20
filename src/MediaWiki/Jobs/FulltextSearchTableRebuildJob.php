@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
 
@@ -61,11 +61,10 @@ class FulltextSearchTableRebuildJob extends Job {
 			return;
 		}
 
-		$jobFactory = MediaWikiServices::getInstance()->getJobFactory();
+		$jobFactory = ApplicationFactory::getInstance()->getJobFactory();
 
 		foreach ( $tableList as $tableName ) {
-			$job = $jobFactory->newJob(
-				'smw.fulltextSearchTableRebuild',
+			$job = $jobFactory->newFulltextSearchTableRebuildJob(
 				$this->getTitle(),
 				[ 'table' => $tableName ]
 			);

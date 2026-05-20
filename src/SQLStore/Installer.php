@@ -372,6 +372,7 @@ class Installer implements MessageReporter {
 
 		$mwJobFactory = MediaWikiServices::getInstance()->getJobFactory();
 
+		/** @var Job $propertyStatisticsRebuildJob */
 		$propertyStatisticsRebuildJob = $mwJobFactory->newJob(
 			'smw.propertyStatisticsRebuild',
 			$title,
@@ -388,6 +389,7 @@ class Installer implements MessageReporter {
 			$this->cliMsgFormatter->firstCol( "... Entity disposer job ...", 3 )
 		);
 
+		/** @var Job $entityIdDisposerJob */
 		$entityIdDisposerJob = $mwJobFactory->newJob(
 			'smw.entityIdDisposer',
 			$title,

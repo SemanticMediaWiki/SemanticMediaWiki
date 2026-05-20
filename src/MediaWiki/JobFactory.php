@@ -38,6 +38,9 @@ class JobFactory {
 
 	private MwJobFactory $mwJobFactory;
 
+	/**
+	 * @since 7.0.0
+	 */
 	public function __construct( ?MwJobFactory $mwJobFactory = null ) {
 		$this->mwJobFactory = $mwJobFactory ?? MediaWikiServices::getInstance()->getJobFactory();
 	}

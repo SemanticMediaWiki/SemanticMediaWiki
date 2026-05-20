@@ -6,6 +6,7 @@ use MediaWiki\MediaWikiServices;
 use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\Job;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Utils\Flag;
@@ -203,6 +204,7 @@ class RedirectStore {
 		}
 
 		foreach ( $jobs as $job ) {
+			/** @var Job $job */
 			if ( $immediateMode ) {
 				$job->run();
 			} else {

@@ -196,7 +196,9 @@ abstract class Job extends MediaWikiJob {
 		}
 
 		// Re-enqueue through MediaWiki's JobFactory so service dependencies
-		// declared in the JobClasses ObjectFactory spec are wired in.
+		// declared in the JobClasses ObjectFactory spec are wired in. The
+		// resolved class is always an `SMW\MediaWiki\Job` subclass.
+		/** @var self $job */
 		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
 			$this->command,
 			$this->title,

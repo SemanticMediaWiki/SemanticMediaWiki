@@ -5,7 +5,6 @@ namespace SMW\Tests\Utils;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use RuntimeException;
-use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use WikiPage;
 
@@ -83,7 +82,7 @@ class PageRefresher {
 			throw new RuntimeException( 'Expected a title instance' );
 		}
 
-		$job = new UpdateJob( $title );
+		$job = ApplicationFactory::getInstance()->getJobFactory()->newUpdateJob( $title );
 		$job->run();
 
 		return $this;

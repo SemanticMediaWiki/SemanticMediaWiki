@@ -2,13 +2,13 @@
 
 namespace SMW\Elastic\Jobs;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
 /**
@@ -48,10 +48,7 @@ class FileIngestJob extends Job {
 
 		$params += [ 'waitOnCommandLine' => true ];
 
-		// Use MediaWiki's JobFactory so the JobClasses ObjectFactory spec
-		// resolves the services declared for this job.
-		$fileIngestJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			self::JOB_COMMAND,
+		$fileIngestJob = ApplicationFactory::getInstance()->getJobFactory()->newFileIngestJob(
 			$title,
 			array_merge( $params, self::newRootJobParams( self::JOB_COMMAND, $title ) )
 		);
@@ -133,10 +130,7 @@ class FileIngestJob extends Job {
 			$this->params['createdAt'] = time();
 		}
 
-		// Re-enqueue via MediaWiki's JobFactory so the ObjectFactory spec
-		// injects the same service dependencies again.
-		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			self::JOB_COMMAND,
+		$job = ApplicationFactory::getInstance()->getJobFactory()->newFileIngestJob(
 			$this->title,
 			$this->params
 		);

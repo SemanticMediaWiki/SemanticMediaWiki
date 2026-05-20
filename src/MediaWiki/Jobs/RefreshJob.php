@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
 /**
@@ -110,10 +110,7 @@ class RefreshJob extends Job {
 	}
 
 	protected function createNextJob( array $parameters ): void {
-		// Construct via MediaWiki's JobFactory so the Store dependency
-		// declared in the JobClasses ObjectFactory spec is resolved.
-		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			'smw.refresh',
+		$job = ApplicationFactory::getInstance()->getJobFactory()->newRefreshJob(
 			$this->getTitle(),
 			$parameters
 		);

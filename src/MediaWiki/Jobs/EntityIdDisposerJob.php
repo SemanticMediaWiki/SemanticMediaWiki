@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\IteratorFactory;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Job;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\QueryDependency\QueryLinksTableDisposer;
 use SMW\Store;
@@ -160,12 +160,9 @@ class EntityIdDisposerJob extends Job {
 			return null;
 		}
 
-		// We expect more outdated entities to be contained in the ID_TABLE
-		// therefore reenter the disposal cycle. Build the next job through
-		// MediaWiki's JobFactory so the ObjectFactory spec injects the
-		// services this Job depends on.
-		$entityIdDisposerJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			'smw.entityIdDisposer',
+		// We expect more outdated entities to be contained in the ID_TABLE,
+		// therefore reenter the disposal cycle.
+		$entityIdDisposerJob = ApplicationFactory::getInstance()->getJobFactory()->newEntityIdDisposerJob(
 			$this->getTitle(),
 			$this->params + [ 'cycle' => ++$cycle ]
 		);

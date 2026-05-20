@@ -2,7 +2,6 @@
 
 namespace SMW\Elastic\Jobs;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
@@ -80,10 +79,7 @@ class IndexerRecoveryJob extends Job {
 			self::TTL_WEEK
 		);
 
-		// Use MediaWiki's JobFactory so the JobClasses ObjectFactory spec
-		// resolves the services declared for this job.
-		$indexerRecoveryJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			self::JOB_COMMAND,
+		$indexerRecoveryJob = ApplicationFactory::getInstance()->getJobFactory()->newIndexerRecoveryJob(
 			$subject->getTitle(),
 			[ 'index' => $subject->getHash() ]
 		);
@@ -95,8 +91,7 @@ class IndexerRecoveryJob extends Job {
 	 * @since 3.2
 	 */
 	public static function pushFromParams( Title $title, array $params ): void {
-		$indexerRecoveryJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			self::JOB_COMMAND,
+		$indexerRecoveryJob = ApplicationFactory::getInstance()->getJobFactory()->newIndexerRecoveryJob(
 			$title,
 			$params
 		);
@@ -183,10 +178,7 @@ class IndexerRecoveryJob extends Job {
 			$this->params['createdAt'] = time();
 		}
 
-		// Re-enqueue through MediaWiki's JobFactory so the ObjectFactory spec
-		// injects the same service dependencies again.
-		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			self::JOB_COMMAND,
+		$job = ApplicationFactory::getInstance()->getJobFactory()->newIndexerRecoveryJob(
 			$this->title,
 			$this->params
 		);

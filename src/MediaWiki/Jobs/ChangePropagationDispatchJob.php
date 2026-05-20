@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerInterface;
@@ -88,10 +87,7 @@ class ChangePropagationDispatchJob extends Job {
 			$subject
 		);
 
-		// Use MediaWiki's JobFactory so the JobClasses ObjectFactory spec
-		// resolves the services declared for this job.
-		$changePropagationDispatchJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			'smw.changePropagationDispatch',
+		$changePropagationDispatchJob = ApplicationFactory::getInstance()->getJobFactory()->newChangePropagationDispatchJob(
 			$subject->getTitle(),
 			$params
 		);
@@ -285,8 +281,7 @@ class ChangePropagationDispatchJob extends Job {
 
 		$checkSum = md5( $contents );
 
-		$changePropagationDispatchJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-			'smw.changePropagationDispatch',
+		$changePropagationDispatchJob = ApplicationFactory::getInstance()->getJobFactory()->newChangePropagationDispatchJob(
 			$this->getTitle(),
 			[
 				'data' => $contents
@@ -316,8 +311,7 @@ class ChangePropagationDispatchJob extends Job {
 			$this->cache->save( $key, 1, 60 * 60 * 24 );
 			$params = $this->params;
 
-			$changePropagationDispatchJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-				'smw.changePropagationDispatch',
+			$changePropagationDispatchJob = ApplicationFactory::getInstance()->getJobFactory()->newChangePropagationDispatchJob(
 				$this->getTitle(),
 				$params
 			);
@@ -352,8 +346,7 @@ class ChangePropagationDispatchJob extends Job {
 		// Scheduling the actual dispatch for those properties connected to
 		// the schema change
 		foreach ( $dataItems as $dataItem ) {
-			$changePropagationDispatchJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
-				'smw.changePropagationDispatch',
+			$changePropagationDispatchJob = ApplicationFactory::getInstance()->getJobFactory()->newChangePropagationDispatchJob(
 				$dataItem->getTitle(),
 				[]
 			);
