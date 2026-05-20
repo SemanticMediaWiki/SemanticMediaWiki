@@ -78,8 +78,6 @@ class TaskTest extends TestCase {
 			->method( 'newUpdateJob' )
 			->willReturn( $updateJob );
 
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
-
 		$instance = new Task(
 			$this->apiFactory->newApiMain( [
 					'action'   => 'smwtask',
@@ -89,7 +87,7 @@ class TaskTest extends TestCase {
 				]
 			),
 			'smwtask',
-			$this->newRealTaskFactory()
+			$this->newRealTaskFactory( null, null, null, $jobFactory )
 		);
 
 		$instance->execute();
@@ -159,8 +157,6 @@ class TaskTest extends TestCase {
 				$this->anything() )
 			->willReturn( $nullJob );
 
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
-
 		$instance = new Task(
 			$this->apiFactory->newApiMain(
 				[
@@ -176,7 +172,7 @@ class TaskTest extends TestCase {
 				]
 			),
 			'smwtask',
-			$this->newRealTaskFactory()
+			$this->newRealTaskFactory( null, null, null, $jobFactory )
 		);
 
 		$instance->execute();
@@ -260,7 +256,12 @@ class TaskTest extends TestCase {
 		$instance->execute();
 	}
 
-	private function newRealTaskFactory( ?Store $store = null, ?JobQueue $jobQueue = null, ?Cache $cache = null ): TaskFactory {
+	private function newRealTaskFactory(
+		?Store $store = null,
+		?JobQueue $jobQueue = null,
+		?Cache $cache = null,
+		?JobFactory $jobFactory = null
+	): TaskFactory {
 		if ( $store === null ) {
 			$store = $this->getMockBuilder( Store::class )
 				->disableOriginalConstructor()
@@ -279,6 +280,12 @@ class TaskTest extends TestCase {
 				->getMock();
 		}
 
+		if ( $jobFactory === null ) {
+			$jobFactory = $this->getMockBuilder( JobFactory::class )
+				->disableOriginalConstructor()
+				->getMock();
+		}
+
 		$settings = $this->getMockBuilder( Settings::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -290,7 +297,7 @@ class TaskTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		return new TaskFactory( $store, $jobQueue, $cache, $settings, $hookContainer );
+		return new TaskFactory( $store, $jobQueue, $cache, $settings, $jobFactory, $hookContainer );
 	}
 
 }

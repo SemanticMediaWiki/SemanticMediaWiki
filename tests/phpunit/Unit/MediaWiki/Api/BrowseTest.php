@@ -150,9 +150,6 @@ class BrowseTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$this->testEnvironment->registerObject( 'Cache', $cache );
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-
 		$instance = new Browse(
 			$this->apiFactory->newApiMain(
 				[

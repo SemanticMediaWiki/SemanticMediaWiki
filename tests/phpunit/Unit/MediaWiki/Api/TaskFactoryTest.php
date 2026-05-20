@@ -7,6 +7,7 @@ use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Api\Tasks\Task;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\Settings;
 use SMW\Store;
@@ -102,7 +103,11 @@ class TaskFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		return new TaskFactory( $store, $jobQueue, $cache, $settings, $hookContainer );
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		return new TaskFactory( $store, $jobQueue, $cache, $settings, $jobFactory, $hookContainer );
 	}
 
 }

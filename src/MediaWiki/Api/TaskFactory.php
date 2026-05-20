@@ -15,6 +15,7 @@ use SMW\MediaWiki\Api\Tasks\JobListTask;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\MediaWiki\Api\Tasks\UpdateTask;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
@@ -30,8 +31,8 @@ class TaskFactory {
 
 	/**
 	 * Lazily-computed contributions of the `SMW::Api::AddTasks` hook against
-	 * this instance's HookContainer. Memoised per instance because the hook
-	 * may be expensive and is idempotent across calls.
+	 * this instance's HookContainer. Memoised because the hook is idempotent
+	 * across calls.
 	 *
 	 * @var array<string,callable>|null
 	 */
@@ -45,6 +46,7 @@ class TaskFactory {
 		private readonly JobQueue $jobQueue,
 		private readonly Cache $cache,
 		private readonly Settings $settings,
+		private readonly JobFactory $jobFactory,
 		private readonly HookContainer $hookContainer
 	) {
 	}
@@ -95,7 +97,7 @@ class TaskFactory {
 
 		switch ( $type ) {
 			case 'update':
-				return new UpdateTask( ApplicationFactory::getInstance()->newJobFactory() );
+				return new UpdateTask( $this->jobFactory );
 			case 'check-query':
 				return new CheckQueryTask( $this->store );
 			case 'run-entity-examiner':
@@ -105,7 +107,7 @@ class TaskFactory {
 			case 'table-statistics':
 				return $this->newTableStatisticsTask();
 			case 'insert-job':
-				return new InsertJobTask( ApplicationFactory::getInstance()->newJobFactory() );
+				return new InsertJobTask( $this->jobFactory );
 			case 'run-joblist':
 				return new JobListTask( $this->jobQueue );
 		}

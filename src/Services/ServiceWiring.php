@@ -415,6 +415,7 @@ return [
 			$servicesFactory->getJobQueue(),
 			$servicesFactory->getCache(),
 			$servicesFactory->getSettings(),
+			$servicesFactory->getJobFactory(),
 			$services->getHookContainer()
 		);
 	},
