@@ -7,6 +7,7 @@ use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
+use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
@@ -693,6 +694,27 @@ return [
 		);
 
 		return new ImporterServiceFactory( $servicesContainer );
+	},
+
+	'SMW.DisplayTitleFinder' => static function ( MediaWikiServices $services ): DisplayTitleFinder {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'DisplayTitleFinder' ) ) {
+			return $servicesFactory->getDisplayTitleFinder();
+		}
+
+		$settings = $servicesFactory->getSettings();
+
+		$displayTitleFinder = new DisplayTitleFinder(
+			$servicesFactory->getStore(),
+			$servicesFactory->getEntityCache()
+		);
+
+		$displayTitleFinder->setCanUse(
+			$settings->isFlagSet( 'smwgDVFeatures', SMW_DV_WPV_DTITLE )
+		);
+
+		return $displayTitleFinder;
 	},
 
 	'SMW.HierarchyLookup' => static function ( MediaWikiServices $services ): HierarchyLookup {

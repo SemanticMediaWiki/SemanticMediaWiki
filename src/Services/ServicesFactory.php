@@ -347,6 +347,7 @@ class ServicesFactory {
 			'DataValueServiceFactory' => fn () => $this->getDataValueServiceFactory(),
 			'ImporterServiceFactory' => fn () => $this->getImporterServiceFactory(),
 			'HierarchyLookup' => fn () => $this->newHierarchyLookup( ...$args ),
+			'DisplayTitleFinder' => fn () => $this->newDisplayTitleFinder( ...$args ),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -371,7 +372,6 @@ class ServicesFactory {
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'EditProtectionUpdater' => fn () => $this->newEditProtectionUpdater( ...$args ),
 			'PropertyRestrictionExaminer' => fn () => $this->newPropertyRestrictionExaminer(),
-			'DisplayTitleFinder' => fn () => $this->newDisplayTitleFinder( ...$args ),
 			'MagicWordsFinder' => fn () => $this->newMagicWordsFinder( ...$args ),
 			'DependencyValidator' => fn () => $this->newDependencyValidator( ...$args ),
 			'Parser' => fn () => $this->newParser(),
@@ -996,10 +996,17 @@ class ServicesFactory {
 			return $this->testOverrides['DisplayTitleFinder'];
 		}
 
+		// SMW.DisplayTitleFinder on the global container uses the default
+		// store; when the caller passes a custom store, build the instance
+		// inline so the override-only entry-points keep working.
+		if ( $store === null ) {
+			return $this->getDisplayTitleFinder();
+		}
+
 		$settings = $this->getSettings();
 
 		$displayTitleFinder = new DisplayTitleFinder(
-			$store ?? $this->getStore(),
+			$store,
 			$this->getEntityCache()
 		);
 
@@ -1008,6 +1015,17 @@ class ServicesFactory {
 		);
 
 		return $displayTitleFinder;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getDisplayTitleFinder(): DisplayTitleFinder {
+		if ( array_key_exists( 'DisplayTitleFinder', $this->testOverrides ) ) {
+			return $this->testOverrides['DisplayTitleFinder'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.DisplayTitleFinder' );
 	}
 
 	/**
