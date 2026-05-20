@@ -7,25 +7,33 @@ use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
+use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
+use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Localizer\Localizer;
+use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\TitleFactory;
+use SMW\NamespaceExaminer;
+use SMW\ParserFunctionFactory;
 use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
@@ -35,6 +43,9 @@ use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\Schema\SchemaFactory;
+use SMW\SerializerFactory;
+use SMW\Services\DataValueServiceFactory;
+use SMW\Services\ImporterServiceFactory;
 use SMW\Services\ServicesFactory;
 use SMW\Settings;
 use SMW\SetupFile;
@@ -563,6 +574,176 @@ return [
 		return new InvalidatePropertySpecificationLookupCacheEventListener(
 			$servicesFactory->getPropertySpecificationLookup()
 		);
+	},
+
+	'SMW.SerializerFactory' => static function ( MediaWikiServices $services ): SerializerFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'SerializerFactory' ) ) {
+			return $servicesFactory->getSerializerFactory();
+		}
+
+		return new SerializerFactory();
+	},
+
+	'SMW.ParserFunctionFactory' => static function ( MediaWikiServices $services ): ParserFunctionFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'ParserFunctionFactory' ) ) {
+			return $servicesFactory->getParserFunctionFactory();
+		}
+
+		return new ParserFunctionFactory();
+	},
+
+	'SMW.MaintenanceFactory' => static function ( MediaWikiServices $services ): MaintenanceFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'MaintenanceFactory' ) ) {
+			return $servicesFactory->getMaintenanceFactory();
+		}
+
+		return new MaintenanceFactory();
+	},
+
+	'SMW.CacheFactory' => static function ( MediaWikiServices $services ): CacheFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'CacheFactory' ) ) {
+			return $servicesFactory->getCacheFactory();
+		}
+
+		return new CacheFactory(
+			$servicesFactory->getSettings()->get( 'smwgMainCacheType' )
+		);
+	},
+
+	'SMW.TitleFactory' => static function ( MediaWikiServices $services ): TitleFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'TitleFactory' ) ) {
+			return $servicesFactory->getTitleFactory();
+		}
+
+		return new TitleFactory();
+	},
+
+	'SMW.PageCreator' => static function ( MediaWikiServices $services ): PageCreator {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'PageCreator' ) ) {
+			return $servicesFactory->getPageCreator();
+		}
+
+		return new PageCreator();
+	},
+
+	'SMW.MwCollaboratorFactory' => static function ( MediaWikiServices $services ): MwCollaboratorFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'MwCollaboratorFactory' ) ) {
+			return $servicesFactory->getMwCollaboratorFactory();
+		}
+
+		return new MwCollaboratorFactory( $servicesFactory );
+	},
+
+	'SMW.NamespaceExaminer' => static function ( MediaWikiServices $services ): NamespaceExaminer {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'NamespaceExaminer' ) ) {
+			return $servicesFactory->getNamespaceExaminer();
+		}
+
+		$settings = $servicesFactory->getSettings();
+
+		$namespaceExaminer = new NamespaceExaminer(
+			$settings->get( 'smwgNamespacesWithSemanticLinks' )
+		);
+
+		$namespaceExaminer->setValidNamespaces(
+			$services->getNamespaceInfo()->getValidNamespaces()
+		);
+
+		return $namespaceExaminer;
+	},
+
+	'SMW.DataValueServiceFactory' => static function ( MediaWikiServices $services ): DataValueServiceFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'DataValueServiceFactory' ) ) {
+			return $servicesFactory->getDataValueServiceFactory();
+		}
+
+		$servicesContainer = DataValueServiceFactory::newServicesContainer(
+			$servicesFactory->getSettings()->get( 'smwgServicesFileDir' )
+		);
+
+		return new DataValueServiceFactory( $servicesContainer );
+	},
+
+	'SMW.ImporterServiceFactory' => static function ( MediaWikiServices $services ): ImporterServiceFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'ImporterServiceFactory' ) ) {
+			return $servicesFactory->getImporterServiceFactory();
+		}
+
+		$servicesContainer = ImporterServiceFactory::newServicesContainer(
+			$servicesFactory->getSettings()->get( 'smwgServicesFileDir' )
+		);
+
+		return new ImporterServiceFactory( $servicesContainer );
+	},
+
+	'SMW.DisplayTitleFinder' => static function ( MediaWikiServices $services ): DisplayTitleFinder {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'DisplayTitleFinder' ) ) {
+			return $servicesFactory->getDisplayTitleFinder();
+		}
+
+		$settings = $servicesFactory->getSettings();
+
+		$displayTitleFinder = new DisplayTitleFinder(
+			$servicesFactory->getStore(),
+			$servicesFactory->getEntityCache()
+		);
+
+		$displayTitleFinder->setCanUse(
+			$settings->isFlagSet( 'smwgDVFeatures', SMW_DV_WPV_DTITLE )
+		);
+
+		return $displayTitleFinder;
+	},
+
+	'SMW.HierarchyLookup' => static function ( MediaWikiServices $services ): HierarchyLookup {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'HierarchyLookup' ) ) {
+			return $servicesFactory->getHierarchyLookup();
+		}
+
+		$settings = $servicesFactory->getSettings();
+
+		$hierarchyLookup = new HierarchyLookup(
+			$servicesFactory->getStore(),
+			$servicesFactory->getCache()
+		);
+
+		$hierarchyLookup->setLogger(
+			$servicesFactory->getMediaWikiLogger()
+		);
+
+		$hierarchyLookup->setSubcategoryDepth(
+			$settings->get( 'smwgQSubcategoryDepth' )
+		);
+
+		$hierarchyLookup->setSubpropertyDepth(
+			$settings->get( 'smwgQSubpropertyDepth' )
+		);
+
+		return $hierarchyLookup;
 	},
 
 ];

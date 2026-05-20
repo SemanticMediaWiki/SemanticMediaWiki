@@ -56,10 +56,20 @@ class DependencyValidatorTest extends TestCase {
 		parent::tearDown();
 	}
 
+	private function newInstance( string $eTag = '', int $cacheTTL = 3600 ): DependencyValidator {
+		return new DependencyValidator(
+			$this->namespaceExaminer,
+			$this->dependencyLinksValidator,
+			$this->entityCache,
+			$eTag,
+			$cacheTTL
+		);
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			DependencyValidator::class,
-			new DependencyValidator( $this->namespaceExaminer, $this->dependencyLinksValidator, $this->entityCache )
+			$this->newInstance()
 		);
 	}
 
@@ -97,13 +107,7 @@ class DependencyValidatorTest extends TestCase {
 			->method( 'getCheckedDependencies' )
 			->willReturn( [] );
 
-		$instance = new DependencyValidator(
-			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
-			$this->entityCache
-		);
-
-		$instance->setETag( 'foo-etag' );
+		$instance = $this->newInstance( 'foo-etag' );
 
 		$instance->setEventDispatcher(
 			$eventDispatcher
@@ -133,13 +137,7 @@ class DependencyValidatorTest extends TestCase {
 			->with( $subject )
 			->willReturn( false );
 
-		$instance = new DependencyValidator(
-			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
-			$this->entityCache
-		);
-
-		$instance->setETag( 'foo-etag' );
+		$instance = $this->newInstance( 'foo-etag' );
 
 		$this->assertFalse(
 			$instance->hasArchaicDependencies( $subject )
@@ -156,13 +154,7 @@ class DependencyValidatorTest extends TestCase {
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$instance = new DependencyValidator(
-			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
-			$this->entityCache
-		);
-
-		$instance->setETag( 'foo-etag' );
+		$instance = $this->newInstance( 'foo-etag' );
 
 		$this->assertFalse(
 			$instance->hasArchaicDependencies( $subject )
@@ -173,11 +165,7 @@ class DependencyValidatorTest extends TestCase {
 		$subject = WikiPage::newFromText( 'Foo' );
 		$title = $subject->getTitle();
 
-		$instance = new DependencyValidator(
-			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
-			$this->entityCache
-		);
+		$instance = $this->newInstance();
 
 		$instance->markTitle( $title );
 
@@ -196,11 +184,7 @@ class DependencyValidatorTest extends TestCase {
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$instance = new DependencyValidator(
-			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
-			$this->entityCache
-		);
+		$instance = $this->newInstance();
 
 		$this->assertTrue(
 			$instance->canKeepParserCache( $subject )
@@ -219,13 +203,7 @@ class DependencyValidatorTest extends TestCase {
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$instance = new DependencyValidator(
-			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
-			$this->entityCache
-		);
-
-		$instance->setETag( 'foo-etag' );
+		$instance = $this->newInstance( 'foo-etag' );
 
 		$this->assertTrue(
 			$instance->canKeepParserCache( $subject )
@@ -249,13 +227,7 @@ class DependencyValidatorTest extends TestCase {
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$instance = new DependencyValidator(
-			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
-			$this->entityCache
-		);
-
-		$instance->setETag( 'foo-etag' );
+		$instance = $this->newInstance( 'foo-etag' );
 
 		$this->assertFalse(
 			$instance->canKeepParserCache( $subject )

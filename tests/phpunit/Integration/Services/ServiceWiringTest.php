@@ -6,20 +6,24 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use Onoi\Cache\Cache;
+use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
+use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
+use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
+use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Job;
@@ -39,9 +43,14 @@ use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\TitleFactory;
+use SMW\NamespaceExaminer;
+use SMW\ParserFunctionFactory;
 use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
@@ -51,6 +60,9 @@ use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\Schema\SchemaFactory;
+use SMW\SerializerFactory;
+use SMW\Services\DataValueServiceFactory;
+use SMW\Services\ImporterServiceFactory;
 use SMW\Settings;
 use SMW\SetupFile;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
@@ -115,6 +127,18 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.InvalidateResultCacheEventListener', InvalidateResultCacheEventListener::class ],
 			[ 'SMW.InvalidateEntityCacheEventListener', InvalidateEntityCacheEventListener::class ],
 			[ 'SMW.InvalidatePropertySpecificationLookupCacheEventListener', InvalidatePropertySpecificationLookupCacheEventListener::class ],
+			[ 'SMW.SerializerFactory', SerializerFactory::class ],
+			[ 'SMW.ParserFunctionFactory', ParserFunctionFactory::class ],
+			[ 'SMW.MaintenanceFactory', MaintenanceFactory::class ],
+			[ 'SMW.CacheFactory', CacheFactory::class ],
+			[ 'SMW.TitleFactory', TitleFactory::class ],
+			[ 'SMW.PageCreator', PageCreator::class ],
+			[ 'SMW.MwCollaboratorFactory', MwCollaboratorFactory::class ],
+			[ 'SMW.NamespaceExaminer', NamespaceExaminer::class ],
+			[ 'SMW.DataValueServiceFactory', DataValueServiceFactory::class ],
+			[ 'SMW.ImporterServiceFactory', ImporterServiceFactory::class ],
+			[ 'SMW.HierarchyLookup', HierarchyLookup::class ],
+			[ 'SMW.DisplayTitleFinder', DisplayTitleFinder::class ],
 		];
 	}
 
