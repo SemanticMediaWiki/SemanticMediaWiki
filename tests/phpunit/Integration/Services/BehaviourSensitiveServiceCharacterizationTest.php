@@ -98,16 +98,16 @@ class BehaviourSensitiveServiceCharacterizationTest extends MediaWikiIntegration
 	}
 
 	/**
-	 * NamespaceExaminer is reached via ServicesFactory::getNamespaceExaminer() which calls
-	 * create('NamespaceExaminer'). The callback constructs a new NamespaceExaminer each time,
-	 * so two calls return distinct instances.
+	 * NamespaceExaminer is globalised as `SMW.NamespaceExaminer` on the
+	 * MediaWiki ServiceContainer; two retrievals via ServicesFactory return
+	 * the same shared instance.
 	 */
 	public function testNamespaceExaminerTypeAndIdentity(): void {
 		$first = $this->factory->getNamespaceExaminer();
 		$second = $this->factory->getNamespaceExaminer();
 
 		$this->assertInstanceOf( NamespaceExaminer::class, $first );
-		$this->assertNotSame( $first, $second, 'NamespaceExaminer: getNamespaceExaminer() calls create() which constructs a new instance each time' );
+		$this->assertSame( $first, $second, 'NamespaceExaminer: globalised as SMW.NamespaceExaminer; both retrievals must return the same instance' );
 	}
 
 	/**

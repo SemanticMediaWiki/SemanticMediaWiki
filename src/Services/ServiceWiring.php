@@ -30,6 +30,7 @@ use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\TitleFactory;
+use SMW\NamespaceExaminer;
 use SMW\ParserFunctionFactory;
 use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
@@ -641,6 +642,26 @@ return [
 		}
 
 		return new MwCollaboratorFactory( $servicesFactory );
+	},
+
+	'SMW.NamespaceExaminer' => static function ( MediaWikiServices $services ): NamespaceExaminer {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'NamespaceExaminer' ) ) {
+			return $servicesFactory->getNamespaceExaminer();
+		}
+
+		$settings = $servicesFactory->getSettings();
+
+		$namespaceExaminer = new NamespaceExaminer(
+			$settings->get( 'smwgNamespacesWithSemanticLinks' )
+		);
+
+		$namespaceExaminer->setValidNamespaces(
+			$services->getNamespaceInfo()->getValidNamespaces()
+		);
+
+		return $namespaceExaminer;
 	},
 
 ];

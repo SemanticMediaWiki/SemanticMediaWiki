@@ -343,10 +343,10 @@ class ServicesFactory {
 			'TitleFactory' => fn () => $this->getTitleFactory(),
 			'PageCreator' => fn () => $this->getPageCreator(),
 			'MwCollaboratorFactory' => fn () => $this->getMwCollaboratorFactory(),
+			'NamespaceExaminer' => fn () => $this->getNamespaceExaminer(),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
-			'NamespaceExaminer' => fn () => $this->newNamespaceExaminer(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'ParserData' => fn () => $this->newParserData( ...$args ),
 			'LinksProcessor' => fn () => $this->newLinksProcessor(),
@@ -917,29 +917,18 @@ class ServicesFactory {
 	 * @since 2.1
 	 */
 	public function getNamespaceExaminer(): NamespaceExaminer {
-		return $this->newNamespaceExaminer();
+		if ( array_key_exists( 'NamespaceExaminer', $this->testOverrides ) ) {
+			return $this->testOverrides['NamespaceExaminer'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.NamespaceExaminer' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function newNamespaceExaminer(): NamespaceExaminer {
-		if ( array_key_exists( 'NamespaceExaminer', $this->testOverrides ) ) {
-			return $this->testOverrides['NamespaceExaminer'];
-		}
-
-		$settings = $this->getSettings();
-		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
-
-		$namespaceExaminer = new NamespaceExaminer(
-			$settings->get( 'smwgNamespacesWithSemanticLinks' )
-		);
-
-		$namespaceExaminer->setValidNamespaces(
-			$namespaceInfo->getValidNamespaces()
-		);
-
-		return $namespaceExaminer;
+		return $this->getNamespaceExaminer();
 	}
 
 	/**
