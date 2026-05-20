@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki;
 
-use InvalidArgumentException;
 use MediaWiki\JobQueue\JobFactory as MwJobFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
