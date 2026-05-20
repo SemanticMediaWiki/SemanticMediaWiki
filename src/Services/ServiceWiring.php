@@ -17,6 +17,7 @@ use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Localizer\Localizer;
+use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
@@ -26,6 +27,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\ParserFunctionFactory;
 use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
@@ -574,6 +576,26 @@ return [
 		}
 
 		return new SerializerFactory();
+	},
+
+	'SMW.ParserFunctionFactory' => static function ( MediaWikiServices $services ): ParserFunctionFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'ParserFunctionFactory' ) ) {
+			return $servicesFactory->getParserFunctionFactory();
+		}
+
+		return new ParserFunctionFactory();
+	},
+
+	'SMW.MaintenanceFactory' => static function ( MediaWikiServices $services ): MaintenanceFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'MaintenanceFactory' ) ) {
+			return $servicesFactory->getMaintenanceFactory();
+		}
+
+		return new MaintenanceFactory();
 	},
 
 ];

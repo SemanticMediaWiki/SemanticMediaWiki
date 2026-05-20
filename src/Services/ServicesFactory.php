@@ -336,6 +336,8 @@ class ServicesFactory {
 			'InvalidateEntityCacheEventListener' => fn () => $this->getInvalidateEntityCacheEventListener(),
 			'InvalidatePropertySpecificationLookupCacheEventListener' => fn () => $this->getInvalidatePropertySpecificationLookupCacheEventListener(),
 			'SerializerFactory' => fn () => $this->getSerializerFactory(),
+			'ParserFunctionFactory' => fn () => $this->getParserFunctionFactory(),
+			'MaintenanceFactory' => fn () => $this->getMaintenanceFactory(),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -444,14 +446,36 @@ class ServicesFactory {
 	 * @since 2.1
 	 */
 	public function newParserFunctionFactory(): ParserFunctionFactory {
-		return new ParserFunctionFactory();
+		return $this->getParserFunctionFactory();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getParserFunctionFactory(): ParserFunctionFactory {
+		if ( array_key_exists( 'ParserFunctionFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['ParserFunctionFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ParserFunctionFactory' );
 	}
 
 	/**
 	 * @since 2.2
 	 */
 	public function newMaintenanceFactory(): MaintenanceFactory {
-		return new MaintenanceFactory();
+		return $this->getMaintenanceFactory();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getMaintenanceFactory(): MaintenanceFactory {
+		if ( array_key_exists( 'MaintenanceFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['MaintenanceFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.MaintenanceFactory' );
 	}
 
 	/**
