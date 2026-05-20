@@ -195,6 +195,19 @@ class ServicesFactory {
 	}
 
 	/**
+	 * Whether a test override has been registered for `$objectName`. Wiring
+	 * callbacks in `ServiceWiring.php` consult this so that
+	 * `MediaWikiServices->getService('SMW.X')` honours the same `testOverrides`
+	 * map as the typed accessors; without it, `ObjectFactory`-injected
+	 * dependencies (e.g. `JobClasses` services) would bypass test mocks.
+	 *
+	 * @since 7.0.0
+	 */
+	public function hasTestOverride( string $objectName ): bool {
+		return array_key_exists( $objectName, $this->testOverrides );
+	}
+
+	/**
 	 * @deprecated since 7.0.0, no replacement
 	 * @since 2.5
 	 *
@@ -402,6 +415,17 @@ class ServicesFactory {
 		}
 
 		return new JobFactory();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getJobFactory(): JobFactory {
+		if ( array_key_exists( 'JobFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['JobFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.JobFactory' );
 	}
 
 	/**
