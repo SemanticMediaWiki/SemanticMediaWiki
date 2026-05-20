@@ -124,29 +124,29 @@ class BehaviourSensitiveServiceCharacterizationTest extends MediaWikiIntegration
 	}
 
 	/**
-	 * PageCreator is reached via ServicesFactory::newPageCreator() which calls create('PageCreator').
-	 * The callback constructs a new PageCreator each time, so two calls return distinct instances.
+	 * PageCreator is globalised as `SMW.PageCreator` on the MediaWiki
+	 * ServiceContainer; ServicesFactory::newPageCreator() returns the same
+	 * shared instance on repeated calls.
 	 */
 	public function testPageCreatorTypeAndIdentity(): void {
 		$first = $this->factory->newPageCreator();
 		$second = $this->factory->newPageCreator();
 
 		$this->assertInstanceOf( PageCreator::class, $first );
-		$this->assertNotSame( $first, $second, 'PageCreator: newPageCreator() calls create() which constructs a new instance each time' );
+		$this->assertSame( $first, $second, 'PageCreator: globalised as SMW.PageCreator; both retrievals must return the same instance' );
 	}
 
 	/**
-	 * TitleFactory is reached via ServicesFactory::newTitleFactory() which calls
-	 * create('TitleFactory', ...). The callback constructs a new TitleFactory each time,
-	 * so two calls return distinct instances. The PageCreator argument passed by the caller
-	 * is ignored by the registered callback.
+	 * TitleFactory is globalised as `SMW.TitleFactory` on the MediaWiki
+	 * ServiceContainer; ServicesFactory::newTitleFactory() returns the same
+	 * shared instance on repeated calls.
 	 */
 	public function testTitleFactoryTypeAndIdentity(): void {
 		$first = $this->factory->newTitleFactory();
 		$second = $this->factory->newTitleFactory();
 
 		$this->assertInstanceOf( TitleFactory::class, $first );
-		$this->assertNotSame( $first, $second, 'TitleFactory: newTitleFactory() calls create() which constructs a new instance each time' );
+		$this->assertSame( $first, $second, 'TitleFactory: globalised as SMW.TitleFactory; both retrievals must return the same instance' );
 	}
 
 	/**

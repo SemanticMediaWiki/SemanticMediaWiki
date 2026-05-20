@@ -24,9 +24,11 @@ use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\TitleFactory;
 use SMW\ParserFunctionFactory;
 use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
@@ -608,6 +610,26 @@ return [
 		return new CacheFactory(
 			$servicesFactory->getSettings()->get( 'smwgMainCacheType' )
 		);
+	},
+
+	'SMW.TitleFactory' => static function ( MediaWikiServices $services ): TitleFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'TitleFactory' ) ) {
+			return $servicesFactory->getTitleFactory();
+		}
+
+		return new TitleFactory();
+	},
+
+	'SMW.PageCreator' => static function ( MediaWikiServices $services ): PageCreator {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'PageCreator' ) ) {
+			return $servicesFactory->getPageCreator();
+		}
+
+		return new PageCreator();
 	},
 
 ];

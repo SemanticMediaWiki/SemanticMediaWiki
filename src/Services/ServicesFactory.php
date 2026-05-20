@@ -340,6 +340,8 @@ class ServicesFactory {
 			'MaintenanceFactory' => fn () => $this->getMaintenanceFactory(),
 			// @phan-suppress-next-line PhanParamTooManyUnpack
 			'CacheFactory' => fn () => $this->getCacheFactory( ...$args ),
+			'TitleFactory' => fn () => $this->getTitleFactory(),
+			'PageCreator' => fn () => $this->getPageCreator(),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -349,9 +351,7 @@ class ServicesFactory {
 			'LinksProcessor' => fn () => $this->newLinksProcessor(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'MessageFormatter' => fn () => $this->newMessageFormatter( ...$args ),
-			'PageCreator' => fn () => $this->newPageCreator(),
 			'PageUpdater' => fn () => $this->newPageUpdater( ...$args ),
-			'TitleFactory' => fn () => $this->newTitleFactory(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'ContentParser' => fn () => $this->newContentParser( ...$args ),
 			'DeferredCallableUpdate' => fn () => $this->newDeferredCallableUpdate( ...$args ),
@@ -630,11 +630,18 @@ class ServicesFactory {
 	 * @since 2.0
 	 */
 	public function newTitleFactory(): TitleFactory {
+		return $this->getTitleFactory();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getTitleFactory(): TitleFactory {
 		if ( array_key_exists( 'TitleFactory', $this->testOverrides ) ) {
 			return $this->testOverrides['TitleFactory'];
 		}
 
-		return new TitleFactory();
+		return MediaWikiServices::getInstance()->getService( 'SMW.TitleFactory' );
 	}
 
 	/**
@@ -643,11 +650,18 @@ class ServicesFactory {
 	 * @return PageCreator
 	 */
 	public function newPageCreator() {
+		return $this->getPageCreator();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getPageCreator(): PageCreator {
 		if ( array_key_exists( 'PageCreator', $this->testOverrides ) ) {
 			return $this->testOverrides['PageCreator'];
 		}
 
-		return new PageCreator();
+		return MediaWikiServices::getInstance()->getService( 'SMW.PageCreator' );
 	}
 
 	/**
