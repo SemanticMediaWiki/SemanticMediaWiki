@@ -35,7 +35,10 @@
 		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces"
 	},
 	"APIModules": {
-		"smwinfo": "SMW\\MediaWiki\\Api\\Info",
+		"smwinfo": {
+			"class": "SMW\\MediaWiki\\Api\\Info",
+			"services": [ "SMW.Store", "SMW.JobQueue" ]
+		},
 		"smwtask": "SMW\\MediaWiki\\Api\\Task",
 		"smwbrowse": "SMW\\MediaWiki\\Api\\Browse",
 		"ask": "SMW\\MediaWiki\\Api\\Ask",

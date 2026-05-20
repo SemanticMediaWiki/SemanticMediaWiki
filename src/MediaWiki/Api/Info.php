@@ -3,8 +3,10 @@
 namespace SMW\MediaWiki\Api;
 
 use MediaWiki\Api\ApiBase;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use MediaWiki\Api\ApiMain;
+use SMW\MediaWiki\JobQueue;
 use SMW\Site;
+use SMW\Store;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -19,6 +21,18 @@ use Wikimedia\ParamValidator\ParamValidator;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class Info extends ApiBase {
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		private readonly Store $store,
+		private readonly JobQueue $jobQueue
+	) {
+		parent::__construct( $main, $action );
+	}
 
 	/**
 	 * @see ApiBase::execute
@@ -44,7 +58,7 @@ class Info extends ApiBase {
 			|| in_array( 'subobjectcount', $requestedInfo )
 			|| in_array( 'declaredpropcount', $requestedInfo ) ) {
 
-			$semanticStats = ApplicationFactory::getInstance()->getStore()->getStatistics();
+			$semanticStats = $this->store->getStatistics();
 
 			$map = [
 				'propcount' => 'PROPUSES',
@@ -131,10 +145,9 @@ class Info extends ApiBase {
 
 		if ( in_array( 'jobcount', $requestedInfo ) ) {
 			$resultInfo['jobcount'] = [];
-			$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
 			foreach ( Site::getJobClasses( 'SMW' ) as $type => $class ) {
-				$size = $jobQueue->getQueueSize( $type );
+				$size = $this->jobQueue->getQueueSize( $type );
 
 				if ( $size > 0 ) {
 					$resultInfo['jobcount'][$type] = $size;

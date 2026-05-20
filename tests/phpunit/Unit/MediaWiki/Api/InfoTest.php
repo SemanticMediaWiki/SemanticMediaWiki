@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Info;
+use SMW\MediaWiki\JobQueue;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
@@ -28,7 +29,7 @@ class InfoTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->apiFactory = $this->testEnvironment->getUtilityFactory()->newMwApiFactory();
 
-		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,9 +42,15 @@ class InfoTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
 		$instance = new Info(
 			$this->apiFactory->newApiMain( [] ),
-			'smwinfo'
+			'smwinfo',
+			$store,
+			$this->jobQueue
 		);
 
 		$this->assertInstanceOf(
@@ -83,11 +90,11 @@ class InfoTest extends TestCase {
 			->method( 'getStatistics' )
 			->willReturn( $statistics );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$instance = new Info(
 			$this->apiFactory->newApiMain( [ 'info' => $type ] ),
-			'smwinfo'
+			'smwinfo',
+			$store,
+			$this->jobQueue
 		);
 
 		$instance->execute();
