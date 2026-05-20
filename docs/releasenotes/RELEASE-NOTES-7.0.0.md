@@ -195,6 +195,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * **`browsebyproperty` and `browsebysubject` API modules removed.** Both were deprecated since 3.0. Use the `smwbrowse` API module (`action=smwbrowse`) instead.
 * **`SMW\MediaWiki\Api\PropertyListByApiRequest` removed.** This was an internal helper for the now-removed `browsebyproperty` module; no other code consumed it. External consumers should query the `smwbrowse` API module directly.
+* **`SMW\MediaWiki\Specials\SpecialPage` base class removed**, along with the legacy `SMW\SpecialPage` alias. All in-tree SMW special pages now extend MediaWiki core's `MediaWiki\SpecialPage\SpecialPage` directly and receive `Store` / `Settings` through their constructor (registered via `SpecialPages` ObjectFactory specs in `extension.json`). Third-party special pages that extended the SMW base class must extend MediaWiki core's `SpecialPage` and inject the services they need.
 * **Legacy DML methods on `SMW\MediaWiki\Connection\Database` removed.** Removed methods: `select()`, `selectRow()`, `selectField()`, `estimateRowCount()`, `insert()`, `update()`, `delete()`, `upsert()`, `replace()`, and the `makeSelectOptions()` passthrough. `Database::query()` and `Database::readQuery()` also tightened from `Query|string` to `string` only. SMW's database wrapper is internal infrastructure; external code that called these methods directly on `$store->getConnection( 'mw.db' )` should migrate to MediaWiki core's database services. See [Manual:Database access](https://www.mediawiki.org/wiki/Manual:Database_access).
 * Removed `getTextFromContent()`, `replacePrefixes()`, and `textAlreadyUpdatedForIndex()` from `ExtendedSearchEngine`, matching their removal from MediaWiki core's `SearchEngine`.
 * Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
@@ -300,7 +301,6 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   | `SMWSpecialOWLExport` | `SMW\MediaWiki\Specials\SpecialOWLExport` |
   | `SMWSpecialTypes` | `SMW\MediaWiki\Specials\SpecialTypes` |
   | `SMW\SpecialConcepts` | `SMW\MediaWiki\Specials\SpecialConcepts` |
-  | `SMW\SpecialPage` | `SMW\MediaWiki\Specials\SpecialPage` |
   | `SMW\SpecialProperties` | `SMW\MediaWiki\Specials\SpecialProperties` |
   | `SMW\SpecialUnusedProperties` | `SMW\MediaWiki\Specials\SpecialUnusedProperties` |
   | `SMW\SpecialWantedProperties` | `SMW\MediaWiki\Specials\SpecialWantedProperties` |

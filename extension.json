@@ -94,7 +94,6 @@
 		"SMWSpecialOWLExport": "src/MediaWiki/Specials/SpecialOWLExport.php",
 		"SMWSpecialTypes": "src/MediaWiki/Specials/SpecialTypes.php",
 		"SMW\\SpecialConcepts": "src/MediaWiki/Specials/SpecialConcepts.php",
-		"SMW\\SpecialPage": "src/MediaWiki/Specials/SpecialPage.php",
 		"SMW\\SpecialProperties": "src/MediaWiki/Specials/SpecialProperties.php",
 		"SMW\\SpecialUnusedProperties": "src/MediaWiki/Specials/SpecialUnusedProperties.php",
 		"SMW\\SpecialWantedProperties": "src/MediaWiki/Specials/SpecialWantedProperties.php",
