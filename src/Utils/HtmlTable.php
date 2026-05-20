@@ -37,7 +37,7 @@ class HtmlTable {
 	 * @param array $attributes
 	 */
 	public function cell( $content = '', $attributes = [] ): void {
-		if ( $content !== null ) {
+		if ( $content !== '' ) {
 			$this->cells[] = Html::rawElement( 'td', $attributes, $content );
 		}
 	}
