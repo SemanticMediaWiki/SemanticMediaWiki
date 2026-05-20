@@ -207,7 +207,10 @@
 			"class": "SMW\\MediaWiki\\Jobs\\RefreshJob",
 			"services": [ "SMW.Store" ]
 		},
-		"smw.updateDispatcher": "SMW\\MediaWiki\\Jobs\\UpdateDispatcherJob",
+		"smw.updateDispatcher": {
+			"class": "SMW\\MediaWiki\\Jobs\\UpdateDispatcherJob",
+			"services": [ "SMW.Store" ]
+		},
 		"smw.fulltextSearchTableUpdate": {
 			"class": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableUpdateJob",
 			"services": [ "SMW.Store" ]
