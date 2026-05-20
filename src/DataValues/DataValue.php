@@ -823,7 +823,7 @@ abstract class DataValue {
 			return;
 		}
 
-		foreach ( $options->getOptions() as $key => $value ) {
+		foreach ( $options->toArray() as $key => $value ) {
 			$this->setOption( $key, $value );
 		}
 	}
