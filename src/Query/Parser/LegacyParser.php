@@ -606,7 +606,7 @@ class LegacyParser implements Parser {
 					$property = $propertyValue->getDataItem();
 
 					if ( !$property instanceof Property ) {
-						break;
+						return;
 					}
 					$outerDesription = $this->descriptionProcessor->newDescriptionForPropertyObjectValue(
 						$property,
