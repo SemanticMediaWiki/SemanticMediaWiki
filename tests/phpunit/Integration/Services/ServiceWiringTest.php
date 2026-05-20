@@ -10,7 +10,6 @@ use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
-use SMW\DependencyValidator;
 use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Jobs\FileIngestJob;
@@ -140,7 +139,6 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.ImporterServiceFactory', ImporterServiceFactory::class ],
 			[ 'SMW.HierarchyLookup', HierarchyLookup::class ],
 			[ 'SMW.DisplayTitleFinder', DisplayTitleFinder::class ],
-			[ 'SMW.DependencyValidator', DependencyValidator::class ],
 		];
 	}
 

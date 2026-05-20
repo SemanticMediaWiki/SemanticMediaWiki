@@ -338,8 +338,7 @@ class ServicesFactory {
 			'SerializerFactory' => fn () => $this->getSerializerFactory(),
 			'ParserFunctionFactory' => fn () => $this->getParserFunctionFactory(),
 			'MaintenanceFactory' => fn () => $this->getMaintenanceFactory(),
-			// @phan-suppress-next-line PhanParamTooManyUnpack
-			'CacheFactory' => fn () => $this->getCacheFactory( ...$args ),
+			'CacheFactory' => fn () => $this->getCacheFactory(),
 			'TitleFactory' => fn () => $this->getTitleFactory(),
 			'PageCreator' => fn () => $this->getPageCreator(),
 			'MwCollaboratorFactory' => fn () => $this->getMwCollaboratorFactory(),
@@ -348,7 +347,6 @@ class ServicesFactory {
 			'ImporterServiceFactory' => fn () => $this->getImporterServiceFactory(),
 			'HierarchyLookup' => fn () => $this->newHierarchyLookup( ...$args ),
 			'DisplayTitleFinder' => fn () => $this->newDisplayTitleFinder( ...$args ),
-			'DependencyValidator' => fn () => $this->newDependencyValidator( ...$args ),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -1045,16 +1043,9 @@ class ServicesFactory {
 	/**
 	 * @since 7.0.0
 	 */
-	public function newDependencyValidator( $store = null ): DependencyValidator {
+	public function newDependencyValidator( string $eTag, int $cacheTTL ): DependencyValidator {
 		if ( array_key_exists( 'DependencyValidator', $this->testOverrides ) ) {
 			return $this->testOverrides['DependencyValidator'];
-		}
-
-		// `$store` is accepted for backwards compatibility with the historical
-		// signature but the underlying class never receives it. When the caller
-		// passes nothing, return the globalised instance.
-		if ( $store === null ) {
-			return $this->getDependencyValidator();
 		}
 
 		$queryDependencyLinksStoreFactory = $this->getQueryDependencyLinksStoreFactory();
@@ -1062,19 +1053,10 @@ class ServicesFactory {
 		return new DependencyValidator(
 			$this->getNamespaceExaminer(),
 			$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
-			$this->getEntityCache()
+			$this->getEntityCache(),
+			$eTag,
+			$cacheTTL
 		);
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getDependencyValidator(): DependencyValidator {
-		if ( array_key_exists( 'DependencyValidator', $this->testOverrides ) ) {
-			return $this->testOverrides['DependencyValidator'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.DependencyValidator' );
 	}
 
 	/**

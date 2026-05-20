@@ -256,7 +256,9 @@ class PostProcHandlerTest extends TestCase {
 		$dependencyValidator = new DependencyValidator(
 			$namespaceExaminer,
 			$dependencyLinksValidator,
-			$entityCache
+			$entityCache,
+			'',
+			3600
 		);
 		$dependencyValidator->markTitle( $title );
 

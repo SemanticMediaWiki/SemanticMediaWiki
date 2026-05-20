@@ -17,43 +17,18 @@ class DependencyValidator {
 
 	use EventDispatcherAwareTrait;
 
-	private NamespaceExaminer $namespaceExaminer;
-
-	private DependencyLinksValidator $dependencyLinksValidator;
-
-	private EntityCache $entityCache;
-
-	private int $cacheTTL = 3600;
-
-	private ?string $eTag = null;
-
 	private static array $titles = [];
 
 	/**
 	 * @since 3.1
 	 */
 	public function __construct(
-		NamespaceExaminer $namespaceExaminer,
-		DependencyLinksValidator $dependencyLinksValidator,
-		EntityCache $entityCache
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly DependencyLinksValidator $dependencyLinksValidator,
+		private readonly EntityCache $entityCache,
+		private readonly string $eTag,
+		private readonly int $cacheTTL
 	) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->dependencyLinksValidator = $dependencyLinksValidator;
-		$this->entityCache = $entityCache;
-	}
-
-	/**
-	 * @since 3.1
-	 */
-	public function setCacheTTL( int $cacheTTL ): void {
-		$this->cacheTTL = $cacheTTL;
-	}
-
-	/**
-	 * @since 3.1
-	 */
-	public function setETag( string $eTag ): void {
-		$this->eTag = $eTag;
 	}
 
 	/**

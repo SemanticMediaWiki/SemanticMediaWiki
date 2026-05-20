@@ -7,7 +7,6 @@ use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
-use SMW\DependencyValidator;
 use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
@@ -745,22 +744,6 @@ return [
 		);
 
 		return $hierarchyLookup;
-	},
-
-	'SMW.DependencyValidator' => static function ( MediaWikiServices $services ): DependencyValidator {
-		$servicesFactory = ServicesFactory::getInstance();
-
-		if ( $servicesFactory->hasTestOverride( 'DependencyValidator' ) ) {
-			return $servicesFactory->getDependencyValidator();
-		}
-
-		$queryDependencyLinksStoreFactory = $servicesFactory->getQueryDependencyLinksStoreFactory();
-
-		return new DependencyValidator(
-			$servicesFactory->getNamespaceExaminer(),
-			$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
-			$servicesFactory->getEntityCache()
-		);
 	},
 
 ];

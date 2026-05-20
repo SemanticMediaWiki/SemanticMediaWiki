@@ -654,16 +654,11 @@ class Hooks {
 		// parser cache
 		$parserCache = $applicationFactory->create( 'ParserCache' );
 
-		$dependencyValidator = $applicationFactory->create( 'DependencyValidator' );
-
 		// #4741
 		$wikiPage = $page->getPage();
 
-		$dependencyValidator->setETag(
-			$this->getETag( $parserCache, $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) )
-		);
-
-		$dependencyValidator->setCacheTTL(
+		$dependencyValidator = $applicationFactory->newDependencyValidator(
+			$this->getETag( $parserCache, $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) ),
 			Site::getCacheExpireTime( 'parser' )
 		);
 
@@ -706,10 +701,8 @@ class Hooks {
 		// parser cache
 		$parserCache = $applicationFactory->create( 'ParserCache' );
 
-		$dependencyValidator = $applicationFactory->create( 'DependencyValidator' );
-		$dependencyValidator->setETag( $this->getETag( $parserCache, $page, $popts ) );
-
-		$dependencyValidator->setCacheTTL(
+		$dependencyValidator = $applicationFactory->newDependencyValidator(
+			$this->getETag( $parserCache, $page, $popts ),
 			Site::getCacheExpireTime( 'parser' )
 		);
 
