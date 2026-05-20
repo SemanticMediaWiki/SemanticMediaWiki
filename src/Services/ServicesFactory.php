@@ -294,6 +294,9 @@ class ServicesFactory {
 	private function routeToFactoryMethod( string $serviceName, array $args ) {
 		$handlers = [
 			'Store' => fn () => $this->getStore( ...$args ),
+			'Settings' => fn () => $this->getSettings(),
+			'EntityCache' => fn () => $this->getEntityCache(),
+			'JobQueue' => fn () => $this->getJobQueue(),
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
 			'Cache' => fn () => $this->getCache( ...$args ),
 			// @phan-suppress-next-line PhanParamTooManyUnpack
@@ -425,31 +428,34 @@ class ServicesFactory {
 			return $this->testOverrides['Store'];
 		}
 
-		$settings = $this->getSettings();
+		// Spike: SMW.Store is registered on the global ServiceContainer. When
+		// the caller requests a non-default store class, fall back to the
+		// authoritative construction path (this branch is rare; preserves the
+		// existing signature for callers like Maintenance scripts).
+		if ( $store !== null && $store !== '' ) {
+			$settings = $this->getSettings();
+			$instance = StoreFactory::getStore( $store );
 
-		if ( $store === null || $store === '' ) {
-			$store = $settings->get( 'smwgDefaultStore' );
+			$configs = [
+				'smwgDefaultStore',
+				'smwgAutoRefreshSubject',
+				'smwgEnableUpdateJobs',
+				'smwgQEqualitySupport',
+				'smwgElasticsearchConfig'
+			];
+
+			foreach ( $configs as $config ) {
+				$instance->setOption( $config, $settings->get( $config ) );
+			}
+
+			$instance->setLogger(
+				$this->getMediaWikiLogger()
+			);
+
+			return $instance;
 		}
 
-		$instance = StoreFactory::getStore( $store );
-
-		$configs = [
-			'smwgDefaultStore',
-			'smwgAutoRefreshSubject',
-			'smwgEnableUpdateJobs',
-			'smwgQEqualitySupport',
-			'smwgElasticsearchConfig'
-		];
-
-		foreach ( $configs as $config ) {
-			$instance->setOption( $config, $settings->get( $config ) );
-		}
-
-		$instance->setLogger(
-			$this->getMediaWikiLogger()
-		);
-
-		return $instance;
+		return MediaWikiServices::getInstance()->getService( 'SMW.Store' );
 	}
 
 	/**
@@ -485,7 +491,11 @@ class ServicesFactory {
 	 * @return Settings
 	 */
 	public function getSettings(): Settings {
-		return $this->getService( 'Settings' );
+		if ( array_key_exists( 'Settings', $this->testOverrides ) ) {
+			return $this->testOverrides['Settings'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.Settings' );
 	}
 
 	/**
@@ -599,14 +609,26 @@ class ServicesFactory {
 			return $this->testOverrides['Cache'];
 		}
 
-		return ( new CacheFactory() )->newMediaWikiCompositeCache( $cacheType );
+		// Spike: SMW.Cache is the default-type cache and lives on the global
+		// container. Non-default cache-type requests still build a fresh
+		// MediaWikiCompositeCache (callers depend on type-specific caches and
+		// the global registration only covers the default).
+		if ( $cacheType !== null ) {
+			return ( new CacheFactory() )->newMediaWikiCompositeCache( $cacheType );
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.Cache' );
 	}
 
 	/**
 	 * @since 3.1
 	 */
 	public function getEntityCache(): EntityCache {
-		return $this->getService( 'EntityCache' );
+		if ( array_key_exists( 'EntityCache', $this->testOverrides ) ) {
+			return $this->testOverrides['EntityCache'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.EntityCache' );
 	}
 
 	/**
@@ -1404,7 +1426,11 @@ class ServicesFactory {
 	 * @since 3.0
 	 */
 	public function getJobQueue(): JobQueue {
-		return $this->getService( 'JobQueue' );
+		if ( array_key_exists( 'JobQueue', $this->testOverrides ) ) {
+			return $this->testOverrides['JobQueue'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.JobQueue' );
 	}
 
 	/**

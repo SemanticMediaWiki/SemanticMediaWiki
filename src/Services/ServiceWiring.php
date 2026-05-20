@@ -14,7 +14,6 @@ use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
 use SMW\Elastic\ElasticFactory;
-use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\InMemoryPoolCache;
@@ -26,7 +25,6 @@ use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\Permission\TitlePermissions;
@@ -41,7 +39,6 @@ use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\Schema\SchemaFactory;
-use SMW\Settings;
 use SMW\SetupFile;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use Wikimedia\Rdbms\ILoadBalancer;
@@ -120,7 +117,7 @@ return [
 
 	'InvalidateEntityCacheEventListener' => static function ( ServiceContainer $container ): InvalidateEntityCacheEventListener {
 		return new InvalidateEntityCacheEventListener(
-			$container->getService( 'EntityCache' )
+			ServicesFactory::getInstance()->getEntityCache()
 		);
 	},
 
@@ -128,18 +125,6 @@ return [
 		return new InvalidatePropertySpecificationLookupCacheEventListener(
 			$container->getService( 'PropertySpecificationLookup' )
 		);
-	},
-
-	'Settings' => static function ( ServiceContainer $container ): Settings {
-		$settings = new Settings();
-
-		$settings->setHookDispatcher(
-			$container->getService( 'HookDispatcher' )
-		);
-
-		$settings->loadFromGlobals();
-
-		return $settings;
 	},
 
 	'ConnectionManager' => static function ( ServiceContainer $container ): ConnectionManager {
@@ -158,18 +143,6 @@ return [
 		);
 
 		return $mediaWikiNsContentReader;
-	},
-
-	'EntityCache' => static function ( ServiceContainer $container ): EntityCache {
-		return new EntityCache(
-			ServicesFactory::getInstance()->singleton( 'Cache', $GLOBALS['smwgMainCacheType'] )
-		);
-	},
-
-	'JobQueue' => static function ( ServiceContainer $container ): JobQueue {
-		return new JobQueue(
-			ServicesFactory::getInstance()->getJobQueueGroup()
-		);
 	},
 
 	'ManualEntryLogger' => static function ( ServiceContainer $container ): ManualEntryLogger {
@@ -223,7 +196,7 @@ return [
 	},
 
 	'QueryCreator' => static function ( ServiceContainer $container ): QueryCreator {
-		$settings = $container->getService( 'Settings' );
+		$settings = ServicesFactory::getInstance()->getSettings();
 
 		$queryCreator = new QueryCreator(
 			$container->getService( 'QueryFactory' ),
@@ -264,8 +237,8 @@ return [
 
 	'QuerySourceFactory' => static function ( ServiceContainer $container ): QuerySourceFactory {
 		return new QuerySourceFactory(
-			ServicesFactory::getInstance()->singleton( 'Store' ),
-			$container->getService( 'Settings' )->get( 'smwgQuerySources' )
+			ServicesFactory::getInstance()->getStore(),
+			ServicesFactory::getInstance()->getSettings()->get( 'smwgQuerySources' )
 		);
 	},
 
@@ -285,8 +258,8 @@ return [
 		$contentLanguage = Localizer::getInstance()->getContentLanguage();
 
 		$propertySpecificationLookup = new SpecificationLookup(
-			ServicesFactory::getInstance()->singleton( 'Store' ),
-			$container->getService( 'EntityCache' )
+			ServicesFactory::getInstance()->getStore(),
+			ServicesFactory::getInstance()->getEntityCache()
 		);
 
 		$propertySpecificationLookup->setLanguageCode(
@@ -297,11 +270,11 @@ return [
 	},
 
 	'ProtectionValidator' => static function ( ServiceContainer $container ): ProtectionValidator {
-		$settings = $container->getService( 'Settings' );
+		$settings = ServicesFactory::getInstance()->getSettings();
 
 		$protectionValidator = new ProtectionValidator(
-			ServicesFactory::getInstance()->singleton( 'Store' ),
-			$container->getService( 'EntityCache' ),
+			ServicesFactory::getInstance()->getStore(),
+			ServicesFactory::getInstance()->getEntityCache(),
 			$container->getService( 'PermissionManager' )
 		);
 
@@ -335,7 +308,7 @@ return [
 		$lang = Localizer::getInstance()->getLang();
 
 		return new PropertyLabelFinder(
-			ServicesFactory::getInstance()->singleton( 'Store' ),
+			ServicesFactory::getInstance()->getStore(),
 			$lang->getPropertyLabels(),
 			$lang->getCanonicalPropertyLabels(),
 			$lang->getCanonicalDatatypeLabels()
