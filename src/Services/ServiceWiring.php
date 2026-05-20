@@ -15,6 +15,7 @@ use SMW\Factbox\FactboxText;
 use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
+use SMW\MediaWiki\Api\TaskFactory;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
@@ -400,6 +401,22 @@ return [
 		}
 
 		return new JobFactory( $services->getJobFactory() );
+	},
+
+	'SMW.TaskFactory' => static function ( MediaWikiServices $services ): TaskFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'TaskFactory' ) ) {
+			return $servicesFactory->getTaskFactory();
+		}
+
+		return new TaskFactory(
+			$servicesFactory->getStore(),
+			$servicesFactory->getJobQueue(),
+			$servicesFactory->getCache(),
+			$servicesFactory->getSettings(),
+			$services->getHookContainer()
+		);
 	},
 
 	'SMW.FactboxFactory' => static function ( MediaWikiServices $services ): FactboxFactory {

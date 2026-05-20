@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Integration\Services;
 
+use MediaWiki\Api\ApiMain;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\FauxRequest;
 use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use Onoi\Cache\Cache;
@@ -41,6 +43,12 @@ use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\Api\Ask;
+use SMW\MediaWiki\Api\AskArgs;
+use SMW\MediaWiki\Api\Browse;
+use SMW\MediaWiki\Api\Info;
+use SMW\MediaWiki\Api\Task;
+use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
@@ -115,6 +123,7 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.FactboxText', FactboxText::class ],
 			[ 'SMW.IteratorFactory', IteratorFactory::class ],
 			[ 'SMW.JobFactory', JobFactory::class ],
+			[ 'SMW.TaskFactory', TaskFactory::class ],
 			[ 'SMW.FactboxFactory', FactboxFactory::class ],
 			[ 'SMW.QuerySourceFactory', QuerySourceFactory::class ],
 			[ 'SMW.QueryFactory', QueryFactory::class ],
@@ -178,6 +187,31 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'smw.elasticIndexerRecovery', IndexerRecoveryJob::class ],
 			[ 'smw.elasticFileIngest', FileIngestJob::class ],
 			[ 'smw.parserCachePurgeJob', ParserCachePurgeJob::class ],
+		];
+	}
+
+	/**
+	 * Resolves each SMW APIModules entry through ApiMain's module manager so
+	 * the ObjectFactory spec (and any 'services' array attached to it) wires
+	 * successfully and produces the expected module class.
+	 *
+	 * @dataProvider apiModuleProvider
+	 */
+	public function testApiModuleResolvesToExpectedType( string $moduleName, string $expectedType ): void {
+		$apiMain = new ApiMain( new FauxRequest( [ 'action' => $moduleName ], true ), true );
+
+		$module = $apiMain->getModuleManager()->getModule( $moduleName );
+
+		$this->assertInstanceOf( $expectedType, $module );
+	}
+
+	public function apiModuleProvider(): array {
+		return [
+			[ 'smwinfo', Info::class ],
+			[ 'smwtask', Task::class ],
+			[ 'smwbrowse', Browse::class ],
+			[ 'ask', Ask::class ],
+			[ 'askargs', AskArgs::class ],
 		];
 	}
 
