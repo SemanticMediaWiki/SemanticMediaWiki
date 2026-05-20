@@ -2,7 +2,6 @@
 
 namespace SMW\Services;
 
-use Exception;
 use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Language\Language;
@@ -154,26 +153,22 @@ class ServicesFactory {
 	}
 
 	/**
+	 * Test-only: drops the singleton and resets every `SMW.*` service on
+	 * `MediaWikiServices` so the next test starts with a freshly-constructed
+	 * service tree. Mirrors `MediaWikiIntegrationTestCase::resetServices()`,
+	 * which SMW's unit tests do not inherit because they extend plain
+	 * `TestCase`. Production code never calls this.
+	 *
 	 * @since 2.0
 	 */
 	public static function clear(): void {
 		self::$instance = null;
 
-		// Reset SMW services on the global container so each test starts with
-		// a freshly-built SMW.X service, matching the per-ServicesFactory
-		// reset semantics that tests relied on when SMW had a private
-		// container. This is a test-only API; production code never calls
-		// `clear()`.
 		$mwServices = MediaWikiServices::getInstance();
 
 		foreach ( $mwServices->getServiceNames() as $serviceName ) {
 			if ( str_starts_with( $serviceName, 'SMW.' ) ) {
-				try {
-					$mwServices->resetServiceForTesting( $serviceName );
-				} catch ( Exception $e ) {
-					// Service has already been reset or was never built; safe
-					// to ignore.
-				}
+				$mwServices->resetServiceForTesting( $serviceName );
 			}
 		}
 	}

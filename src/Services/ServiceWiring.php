@@ -44,21 +44,21 @@ use SMW\StoreFactory;
 use SMW\Utils\Logger;
 
 /**
- * Wiring file for SMW services registered on MediaWiki's global
- * `ServiceContainer`.
+ * Service wiring for SMW. Registered via `extension.json`'s
+ * `ServiceWiringFiles`; each callback registers an `SMW.<Name>` service on
+ * MediaWiki's `ServiceContainer`.
  *
  * Each callback constructs the service directly. Dependency-resolution rules:
  *
- * - Sibling globalised SMW service that is rarely test-mocked:
+ * - Sibling SMW service that is rarely test-mocked:
  *   `$services->getService( 'SMW.X' )`.
  *
- * - Sibling globalised SMW service that is commonly test-mocked
- *   (`Store`, `Settings`, `Cache`, `EntityCache`, `JobQueue`, `JobQueueGroup`,
- *   `RevisionGuard`, `HookDispatcher`, `PropertySpecificationLookup`, etc.):
- *   resolve through the matching `ServicesFactory::getX()` accessor so the
- *   `testOverrides` map is honoured at construction time. Going through the
- *   global container would skip the overrides and use the production instance,
- *   defeating the mock.
+ * - Sibling SMW service that is commonly test-mocked (`Store`, `Settings`,
+ *   `Cache`, `EntityCache`, `JobQueue`, `JobQueueGroup`, `RevisionGuard`,
+ *   `HookDispatcher`, `PropertySpecificationLookup`, etc.): resolve through
+ *   the matching `ServicesFactory::getX()` accessor so the `testOverrides`
+ *   map is honoured at construction time. Going through `$services` would
+ *   skip the overrides and use the production instance, defeating the mock.
  *
  * - MediaWiki-core service: `$services->getXxx()`.
  *
@@ -67,7 +67,7 @@ use SMW\Utils\Logger;
  *
  * Callbacks MUST NOT call `ServicesFactory::getInstance()->getX()` for the
  * same service the callback is wiring: `ServicesFactory::getX()` proxies back
- * to the global container, so doing so would recurse infinitely.
+ * to the container, so doing so would recurse infinitely.
  *
  * @codeCoverageIgnore
  *

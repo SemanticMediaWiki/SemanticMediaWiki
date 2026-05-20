@@ -26,7 +26,7 @@
 		"SMW\\Maintenance\\": "maintenance/"
 	},
 	"ServiceWiringFiles": [
-		"src/Services/GlobalServiceWiring.php"
+		"src/Services/ServiceWiring.php"
 	],
 	"TestAutoloadNamespaces": {
 		"SMW\\Tests\\": "tests/phpunit/"
