@@ -165,14 +165,14 @@ class BehaviourSensitiveServiceCharacterizationTest extends MediaWikiIntegration
 	 * ProtectionValidator is a Bucket-A service: all of its configuration setters
 	 * run at build time and it holds no per-use mutable state. The audit
 	 * (Section 2.6 / Section 3) classifies it as a shared singleton, so the
-	 * private ServiceContainer returns the same instance on repeated retrieval.
+	 * global ServiceContainer returns the same instance on repeated retrieval.
 	 */
 	public function testProtectionValidatorTypeAndIdentity(): void {
 		$first = $this->factory->create( 'ProtectionValidator' );
 		$second = $this->factory->create( 'ProtectionValidator' );
 
 		$this->assertInstanceOf( ProtectionValidator::class, $first );
-		$this->assertSame( $first, $second, 'ProtectionValidator: Bucket-A service shared via the private ServiceContainer' );
+		$this->assertSame( $first, $second, 'ProtectionValidator: shared singleton resolved via the global ServiceContainer' );
 	}
 
 	// -------------------------------------------------------------------------
