@@ -2,6 +2,9 @@
 
 namespace SMW\MediaWiki;
 
+use InvalidArgumentException;
+use MediaWiki\JobQueue\JobFactory as MwJobFactory;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
@@ -18,12 +21,25 @@ use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
 
 /**
+ * Typed wrapper around MediaWiki's JobFactory for the SMW job classes.
+ *
+ * Each `newXxxJob()` method delegates to `MwJobFactory::newJob()` which in turn
+ * resolves the JobClasses ObjectFactory spec (constructing the job with any
+ * declared service dependencies). The wrapper exists so call-sites can keep
+ * the typed factory methods that pre-date constructor injection.
+ *
  * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
 class JobFactory {
+
+	private MwJobFactory $mwJobFactory;
+
+	public function __construct( ?MwJobFactory $mwJobFactory = null ) {
+		$this->mwJobFactory = $mwJobFactory ?? MediaWikiServices::getInstance()->getJobFactory();
+	}
 
 	/**
 	 * @since 2.5
@@ -41,7 +57,6 @@ class JobFactory {
 	 * @param Title|null $title
 	 * @param array $parameters
 	 *
-	 * @return Job
 	 * @throws RuntimeException
 	 */
 	public function newByType( $type, ?Title $title = null, array $parameters = [] ): Job {
@@ -49,164 +64,126 @@ class JobFactory {
 			return new NullJob( null );
 		}
 
-		switch ( $type ) {
-			case 'smw.refresh':
-				return $this->newRefreshJob( $title, $parameters );
-			case 'smw.update':
-				return $this->newUpdateJob( $title, $parameters );
-			case 'smw.updateDispatcher':
-				return $this->newUpdateDispatcherJob( $title, $parameters );
-			case 'smw.parserCachePurge':
-				return $this->newParserCachePurgeJob( $title, $parameters );
-			case 'smw.entityIdDisposer':
-				return $this->newEntityIdDisposerJob( $title, $parameters );
-			case 'smw.propertyStatisticsRebuild':
-				return $this->newPropertyStatisticsRebuildJob( $title, $parameters );
-			case 'smw.fulltextSearchTableUpdate':
-				return $this->newFulltextSearchTableUpdateJob( $title, $parameters );
-			case 'smw.fulltextSearchTableRebuild':
-				return $this->newFulltextSearchTableRebuildJob( $title, $parameters );
-			case 'smw.changePropagationDispatch':
-				return $this->newChangePropagationDispatchJob( $title, $parameters );
-			case 'smw.changePropagationUpdate':
-				return $this->newChangePropagationUpdateJob( $title, $parameters );
-			case 'smw.changePropagationClassUpdate':
-				return $this->newChangePropagationClassUpdateJob( $title, $parameters );
-		}
+		// Map the typed names exposed by SMW (and a couple of legacy aliases
+		// kept for back-compat) to the JobClasses commands.
+		$command = match ( $type ) {
+			'smw.refresh' => 'smw.refresh',
+			'smw.update' => 'smw.update',
+			'smw.updateDispatcher' => 'smw.updateDispatcher',
+			'smw.parserCachePurge', 'smw.parserCachePurgeJob' => 'smw.parserCachePurgeJob',
+			'smw.entityIdDisposer' => 'smw.entityIdDisposer',
+			'smw.propertyStatisticsRebuild' => 'smw.propertyStatisticsRebuild',
+			'smw.fulltextSearchTableUpdate' => 'smw.fulltextSearchTableUpdate',
+			'smw.fulltextSearchTableRebuild' => 'smw.fulltextSearchTableRebuild',
+			'smw.changePropagationDispatch' => 'smw.changePropagationDispatch',
+			'smw.changePropagationUpdate' => 'smw.changePropagationUpdate',
+			'smw.changePropagationClassUpdate' => 'smw.changePropagationClassUpdate',
+			default => throw new RuntimeException( "Unable to match $type to a valid Job type" ),
+		};
 
-		throw new RuntimeException( "Unable to match $type to a valid Job type" );
+		/** @var Job $job */
+		$job = $this->mwJobFactory->newJob( $command, $title, $parameters );
+
+		return $job;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return RefreshJob
 	 */
 	public function newRefreshJob( Title $title, array $parameters = [] ): RefreshJob {
-		return new RefreshJob( $title, $parameters );
+		/** @var RefreshJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.refresh', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return UpdateJob
 	 */
 	public function newUpdateJob( Title $title, array $parameters = [] ): UpdateJob {
-		return new UpdateJob( $title, $parameters );
+		/** @var UpdateJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.update', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return UpdateDispatcherJob
 	 */
 	public function newUpdateDispatcherJob( Title $title, array $parameters = [] ): UpdateDispatcherJob {
-		return new UpdateDispatcherJob( $title, $parameters );
+		/** @var UpdateDispatcherJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.updateDispatcher', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return FulltextSearchTableUpdateJob
 	 */
 	public function newFulltextSearchTableUpdateJob( Title $title, array $parameters = [] ): FulltextSearchTableUpdateJob {
-		return new FulltextSearchTableUpdateJob( $title, $parameters );
+		/** @var FulltextSearchTableUpdateJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.fulltextSearchTableUpdate', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return EntityIdDisposerJob
 	 */
 	public function newEntityIdDisposerJob( Title $title, array $parameters = [] ): EntityIdDisposerJob {
-		return new EntityIdDisposerJob( $title, $parameters );
+		/** @var EntityIdDisposerJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.entityIdDisposer', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return PropertyStatisticsRebuildJob
 	 */
 	public function newPropertyStatisticsRebuildJob( Title $title, array $parameters = [] ): PropertyStatisticsRebuildJob {
-		return new PropertyStatisticsRebuildJob( $title, $parameters );
+		/** @var PropertyStatisticsRebuildJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.propertyStatisticsRebuild', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return FulltextSearchTableRebuildJob
 	 */
 	public function newFulltextSearchTableRebuildJob( Title $title, array $parameters = [] ): FulltextSearchTableRebuildJob {
-		return new FulltextSearchTableRebuildJob( $title, $parameters );
+		/** @var FulltextSearchTableRebuildJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.fulltextSearchTableRebuild', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return ChangePropagationDispatchJob
 	 */
 	public function newChangePropagationDispatchJob( Title $title, array $parameters = [] ): ChangePropagationDispatchJob {
-		return new ChangePropagationDispatchJob( $title, $parameters );
+		/** @var ChangePropagationDispatchJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.changePropagationDispatch', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return ChangePropagationUpdateJob
 	 */
 	public function newChangePropagationUpdateJob( Title $title, array $parameters = [] ): ChangePropagationUpdateJob {
-		return new ChangePropagationUpdateJob( $title, $parameters );
+		/** @var ChangePropagationUpdateJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.changePropagationUpdate', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return ChangePropagationClassUpdateJob
 	 */
 	public function newChangePropagationClassUpdateJob( Title $title, array $parameters = [] ): ChangePropagationClassUpdateJob {
-		return new ChangePropagationClassUpdateJob( $title, $parameters );
+		/** @var ChangePropagationClassUpdateJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.changePropagationClassUpdate', $title, $parameters );
+		return $job;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return ParserCachePurgeJob
 	 */
 	public function newParserCachePurgeJob( Title $title, array $parameters = [] ): ParserCachePurgeJob {
-		return new ParserCachePurgeJob( $title, $parameters );
+		/** @var ParserCachePurgeJob $job */
+		$job = $this->mwJobFactory->newJob( 'smw.parserCachePurgeJob', $title, $parameters );
+		return $job;
 	}
 
 }

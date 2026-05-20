@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use Job as MediaWikiJob;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -194,7 +195,13 @@ abstract class Job extends MediaWikiJob {
 			$this->params['waitOnCommandLine'] = 1;
 		}
 
-		$job = new static( $this->title, $this->params );
+		// Re-enqueue through MediaWiki's JobFactory so service dependencies
+		// declared in the JobClasses ObjectFactory spec are wired in.
+		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			$this->command,
+			$this->title,
+			$this->params
+		);
 		$job->insert();
 
 		return true;
