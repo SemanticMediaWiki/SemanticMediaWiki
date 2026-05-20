@@ -2,8 +2,11 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Outputs;
 use SMW\QueryPages\UnusedPropertiesQueryPage;
+use SMW\Settings;
+use SMW\Store;
 
 /**
  * Special page (Special:UnusedProperties) for MediaWiki shows all
@@ -27,9 +30,12 @@ use SMW\QueryPages\UnusedPropertiesQueryPage;
 class SpecialUnusedProperties extends SpecialPage {
 
 	/**
-	 * @see SpecialPage::__construct
+	 * @since 7.0.0
 	 */
-	public function __construct() {
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings
+	) {
 		parent::__construct( 'UnusedProperties' );
 	}
 
@@ -43,7 +49,7 @@ class SpecialUnusedProperties extends SpecialPage {
 
 		$out->setPageTitle( $this->msg( 'unusedproperties' )->text() );
 
-		$page = new UnusedPropertiesQueryPage( $this->getStore(), $this->getSettings() );
+		$page = new UnusedPropertiesQueryPage( $this->store, $this->settings );
 		$page->setContext( $this->getContext() );
 
 		$request = $this->getRequest();

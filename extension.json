@@ -248,9 +248,18 @@
 			"services": [ "SMW.Store", "SMW.Settings" ]
 		},
 		"URIResolver": "SMW\\MediaWiki\\Specials\\SpecialURIResolver",
-		"Properties": "SMW\\MediaWiki\\Specials\\SpecialProperties",
-		"UnusedProperties": "SMW\\MediaWiki\\Specials\\SpecialUnusedProperties",
-		"WantedProperties": "SMW\\MediaWiki\\Specials\\SpecialWantedProperties"
+		"Properties": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialProperties",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
+		"UnusedProperties": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialUnusedProperties",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
+		"WantedProperties": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialWantedProperties",
+			"services": [ "SMW.Store" ]
+		}
 	},
 	"JobClasses": {
 		"smw.update": {
