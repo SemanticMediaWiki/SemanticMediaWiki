@@ -2,6 +2,7 @@
 
 namespace SMW\Services;
 
+use Exception;
 use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Language\Language;
@@ -99,7 +100,6 @@ use SMW\Utils\TempFile;
 use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\LBFactory;
-use Wikimedia\Services\ServiceContainer;
 use WikiPage;
 
 /**
@@ -115,15 +115,9 @@ class ServicesFactory {
 	private static ?ServicesFactory $instance = null;
 
 	/**
-	 * Private container holding the Bucket-A (no-argument, stateless) services
-	 * defined in `ServiceWiring.php`.
-	 */
-	private readonly ServiceContainer $container;
-
-	/**
 	 * Test-override map keyed by service name. When a service name is present
 	 * here the registered object is returned by the matching accessor and by
-	 * the `singleton()`/`create()` shims regardless of bucket. This is how
+	 * the `singleton()`/`create()` shims. This is how
 	 * `TestEnvironment::registerObject()` injects mocked services.
 	 *
 	 * @var array<string, mixed>
@@ -134,8 +128,6 @@ class ServicesFactory {
 	 * @since 2.0
 	 */
 	public function __construct( private $servicesFileDir = '' ) {
-		$this->container = new ServiceContainer();
-		$this->container->loadWiringFiles( [ __DIR__ . '/ServiceWiring.php' ] );
 	}
 
 	/**
@@ -166,6 +158,24 @@ class ServicesFactory {
 	 */
 	public static function clear(): void {
 		self::$instance = null;
+
+		// Reset SMW services on the global container so each test starts with
+		// a freshly-built SMW.X service, matching the per-ServicesFactory
+		// reset semantics that tests relied on when SMW had a private
+		// container. This is a test-only API; production code never calls
+		// `clear()`.
+		$mwServices = MediaWikiServices::getInstance();
+
+		foreach ( $mwServices->getServiceNames() as $serviceName ) {
+			if ( str_starts_with( $serviceName, 'SMW.' ) ) {
+				try {
+					$mwServices->resetServiceForTesting( $serviceName );
+				} catch ( Exception $e ) {
+					// Service has already been reset or was never built; safe
+					// to ignore.
+				}
+			}
+		}
 	}
 
 	/**
@@ -173,9 +183,7 @@ class ServicesFactory {
 	 *
 	 * The injected object is recorded in a test-override map consulted by the
 	 * typed accessors, the factory methods and the `singleton()`/`create()`
-	 * shims. For Bucket-A services it is additionally redefined on the private
-	 * `ServiceContainer` so that sibling wiring callbacks resolve the override
-	 * as well.
+	 * shims.
 	 *
 	 * @since 2.0
 	 *
@@ -189,18 +197,6 @@ class ServicesFactory {
 		}
 
 		$this->testOverrides[$objectName] = $objectSignature;
-
-		if ( $this->container->hasService( $objectName ) ) {
-			// disableService() drops any already-instantiated instance so the
-			// subsequent redefineService() cannot hit CannotReplaceActiveServiceException.
-			$this->container->disableService( $objectName );
-			$this->container->redefineService(
-				$objectName,
-				static function () use ( $objectSignature ) {
-					return $objectSignature;
-				}
-			);
-		}
 	}
 
 	/**
@@ -213,7 +209,7 @@ class ServicesFactory {
 		$services = require $file;
 
 		foreach ( $services as $name => $instantiator ) {
-			$this->registerObject( $name, $instantiator( $this->container ) );
+			$this->registerObject( $name, $instantiator( $this ) );
 		}
 	}
 
@@ -235,10 +231,6 @@ class ServicesFactory {
 	public function singleton( $serviceName, ...$args ) {
 		if ( array_key_exists( $serviceName, $this->testOverrides ) ) {
 			return $this->testOverrides[$serviceName];
-		}
-
-		if ( $this->container->hasService( $serviceName ) ) {
-			return $this->container->getService( $serviceName );
 		}
 
 		return $this->routeToFactoryMethod( $serviceName, $args );
@@ -266,10 +258,6 @@ class ServicesFactory {
 			return $this->testOverrides[$serviceName];
 		}
 
-		if ( $this->container->hasService( $serviceName ) ) {
-			return $this->container->getService( $serviceName );
-		}
-
 		return $this->routeToFactoryMethod( $serviceName, $args );
 	}
 
@@ -293,12 +281,55 @@ class ServicesFactory {
 	 */
 	private function routeToFactoryMethod( string $serviceName, array $args ) {
 		$handlers = [
+			// Globalised SMW services and inlined MW-core passthroughs (all
+			// resolved via the matching `ServicesFactory` accessor so that the
+			// testOverrides map is honoured).
 			'Store' => fn () => $this->getStore( ...$args ),
 			'Settings' => fn () => $this->getSettings(),
 			'EntityCache' => fn () => $this->getEntityCache(),
 			'JobQueue' => fn () => $this->getJobQueue(),
-			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
 			'Cache' => fn () => $this->getCache( ...$args ),
+			'MainConfig' => fn () => $this->getMainConfig(),
+			'SearchEngineConfig' => fn () => $this->getSearchEngineConfig(),
+			'MagicWordFactory' => fn () => $this->getMagicWordFactory(),
+			'DBLoadBalancerFactory' => fn () => $this->getDBLoadBalancerFactory(),
+			'DBLoadBalancer' => fn () => $this->getDBLoadBalancer(),
+			'JobQueueGroup' => fn () => $this->getJobQueueGroup(),
+			'ContentLanguage' => fn () => $this->getContentLanguage(),
+			'ParserCache' => fn () => $this->getParserCache(),
+			'UserOptionsLookup' => fn () => $this->getUserOptionsLookup(),
+			'PermissionManager' => fn () => $this->getPermissionManager(),
+			'HookDispatcher' => fn () => $this->getHookDispatcher(),
+			'RevisionGuard' => fn () => $this->getRevisionGuard(),
+			'ConnectionManager' => fn () => $this->getConnectionManager(),
+			'SetupFile' => fn () => $this->getSetupFile(),
+			'MediaWikiNsContentReader' => fn () => $this->getMediaWikiNsContentReader(),
+			'ManualEntryLogger' => fn () => $this->getManualEntryLogger(),
+			'InMemoryPoolCache' => fn () => $this->getInMemoryPoolCache(),
+			'PropertyAnnotatorFactory' => fn () => $this->getPropertyAnnotatorFactory(),
+			'ConnectionProvider' => fn () => $this->getConnectionProvider(),
+			'SchemaFactory' => fn () => $this->getSchemaFactory(),
+			'ConstraintFactory' => fn () => $this->getConstraintFactory(),
+			'ElasticFactory' => fn () => $this->getElasticFactory(),
+			'QueryCreator' => fn () => $this->getQueryCreator(),
+			'ParamListProcessor' => fn () => $this->getParamListProcessor(),
+			'FactboxText' => fn () => $this->getFactboxText(),
+			'IteratorFactory' => fn () => $this->getIteratorFactory(),
+			'FactboxFactory' => fn () => $this->getFactboxFactory(),
+			'QuerySourceFactory' => fn () => $this->getQuerySourceFactory( ...$args ),
+			'QueryFactory' => fn () => $this->getQueryFactory(),
+			'DataItemFactory' => fn () => $this->getDataItemFactory(),
+			'QueryDependencyLinksStoreFactory' => fn () => $this->getQueryDependencyLinksStoreFactory(),
+			'PropertySpecificationLookup' => fn () => $this->getPropertySpecificationLookup(),
+			'ProtectionValidator' => fn () => $this->getProtectionValidator(),
+			'TitlePermissions' => fn () => $this->getTitlePermissions(),
+			'PropertyLabelFinder' => fn () => $this->getPropertyLabelFinder(),
+			'InvalidateResultCacheEventListener' => fn () => $this->getInvalidateResultCacheEventListener(),
+			'InvalidateEntityCacheEventListener' => fn () => $this->getInvalidateEntityCacheEventListener(),
+			'InvalidatePropertySpecificationLookupCacheEventListener' => fn () => $this->getInvalidatePropertySpecificationLookupCacheEventListener(),
+
+			// Bucket-B/C SMW services constructed fresh per call.
+			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
 			// @phan-suppress-next-line PhanParamTooManyUnpack
 			'CacheFactory' => fn () => $this->getCacheFactory( ...$args ),
 			'NamespaceExaminer' => fn () => $this->newNamespaceExaminer(),
@@ -340,7 +371,6 @@ class ServicesFactory {
 			'WikiPage' => fn () => $this->newWikiPage( ...$args ),
 			'FixedInMemoryLruCache' => fn () => $this->newFixedInMemoryLruCache( ...$args ),
 			'JobFactory' => fn () => $this->newJobFactory(),
-			'JobQueueGroup' => fn () => $this->getJobQueueGroup(),
 		];
 
 		if ( !isset( $handlers[$serviceName] ) ) {
@@ -415,7 +445,11 @@ class ServicesFactory {
 	 * @return QuerySourceFactory
 	 */
 	public function getQuerySourceFactory( $source = null ): QuerySourceFactory {
-		return $this->container->getService( 'QuerySourceFactory' );
+		if ( array_key_exists( 'QuerySourceFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['QuerySourceFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.QuerySourceFactory' );
 	}
 
 	/**
@@ -428,10 +462,10 @@ class ServicesFactory {
 			return $this->testOverrides['Store'];
 		}
 
-		// Spike: SMW.Store is registered on the global ServiceContainer. When
-		// the caller requests a non-default store class, fall back to the
-		// authoritative construction path (this branch is rare; preserves the
-		// existing signature for callers like Maintenance scripts).
+		// SMW.Store on the global container is the default store. When the
+		// caller requests a non-default store class, build it inline; this
+		// branch is rare and preserves the existing signature for callers like
+		// Maintenance scripts.
 		if ( $store !== null && $store !== '' ) {
 			$settings = $this->getSettings();
 			$instance = StoreFactory::getStore( $store );
@@ -504,7 +538,11 @@ class ServicesFactory {
 	 * @return ConnectionManager
 	 */
 	public function getConnectionManager(): ConnectionManager {
-		return $this->getService( 'ConnectionManager' );
+		if ( array_key_exists( 'ConnectionManager', $this->testOverrides ) ) {
+			return $this->testOverrides['ConnectionManager'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ConnectionManager' );
 	}
 
 	/**
@@ -522,7 +560,11 @@ class ServicesFactory {
 	 * @return HookDispatcher
 	 */
 	public function getHookDispatcher(): HookDispatcher {
-		return $this->getService( 'HookDispatcher' );
+		if ( array_key_exists( 'HookDispatcher', $this->testOverrides ) ) {
+			return $this->testOverrides['HookDispatcher'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.HookDispatcher' );
 	}
 
 	/**
@@ -587,7 +629,11 @@ class ServicesFactory {
 	 * @since 2.5
 	 */
 	public function getIteratorFactory(): IteratorFactory {
-		return $this->getService( 'IteratorFactory' );
+		if ( array_key_exists( 'IteratorFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['IteratorFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.IteratorFactory' );
 	}
 
 	/**
@@ -609,8 +655,8 @@ class ServicesFactory {
 			return $this->testOverrides['Cache'];
 		}
 
-		// Spike: SMW.Cache is the default-type cache and lives on the global
-		// container. Non-default cache-type requests still build a fresh
+		// SMW.Cache on the global container is the default-type cache.
+		// Non-default cache-type requests still build a fresh
 		// MediaWikiCompositeCache (callers depend on type-specific caches and
 		// the global registration only covers the default).
 		if ( $cacheType !== null ) {
@@ -815,7 +861,11 @@ class ServicesFactory {
 	 * @since 2.4
 	 */
 	public function getPropertySpecificationLookup(): SpecificationLookup {
-		return $this->getService( 'PropertySpecificationLookup' );
+		if ( array_key_exists( 'PropertySpecificationLookup', $this->testOverrides ) ) {
+			return $this->testOverrides['PropertySpecificationLookup'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.PropertySpecificationLookup' );
 	}
 
 	/**
@@ -1126,21 +1176,33 @@ class ServicesFactory {
 	 * @since 2.4
 	 */
 	public function getPropertyLabelFinder(): PropertyLabelFinder {
-		return $this->getService( 'PropertyLabelFinder' );
+		if ( array_key_exists( 'PropertyLabelFinder', $this->testOverrides ) ) {
+			return $this->testOverrides['PropertyLabelFinder'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.PropertyLabelFinder' );
 	}
 
 	/**
 	 * @since 2.4
 	 */
 	public function getMediaWikiNsContentReader(): MediaWikiNsContentReader {
-		return $this->getService( 'MediaWikiNsContentReader' );
+		if ( array_key_exists( 'MediaWikiNsContentReader', $this->testOverrides ) ) {
+			return $this->testOverrides['MediaWikiNsContentReader'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.MediaWikiNsContentReader' );
 	}
 
 	/**
 	 * @since 2.4
 	 */
 	public function getInMemoryPoolCache(): InMemoryPoolCache {
-		return $this->getService( 'InMemoryPoolCache' );
+		if ( array_key_exists( 'InMemoryPoolCache', $this->testOverrides ) ) {
+			return $this->testOverrides['InMemoryPoolCache'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.InMemoryPoolCache' );
 	}
 
 	/**
@@ -1158,189 +1220,297 @@ class ServicesFactory {
 	 * @return ILoadBalancer
 	 */
 	public function getDBLoadBalancer(): ILoadBalancer {
-		return $this->getService( 'DBLoadBalancer' );
+		if ( array_key_exists( 'DBLoadBalancer', $this->testOverrides ) ) {
+			return $this->testOverrides['DBLoadBalancer'];
+		}
+
+		return MediaWikiServices::getInstance()->getDBLoadBalancer();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getDBLoadBalancerFactory(): LBFactory {
-		return $this->getService( 'DBLoadBalancerFactory' );
+		if ( array_key_exists( 'DBLoadBalancerFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['DBLoadBalancerFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getMainConfig(): Config {
-		return $this->getService( 'MainConfig' );
+		if ( array_key_exists( 'MainConfig', $this->testOverrides ) ) {
+			return $this->testOverrides['MainConfig'];
+		}
+
+		return MediaWikiServices::getInstance()->getMainConfig();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getSearchEngineConfig(): SearchEngineConfig {
-		return $this->getService( 'SearchEngineConfig' );
+		if ( array_key_exists( 'SearchEngineConfig', $this->testOverrides ) ) {
+			return $this->testOverrides['SearchEngineConfig'];
+		}
+
+		return MediaWikiServices::getInstance()->getSearchEngineConfig();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getMagicWordFactory(): MagicWordFactory {
-		return $this->getService( 'MagicWordFactory' );
+		if ( array_key_exists( 'MagicWordFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['MagicWordFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getMagicWordFactory();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getPermissionManager(): PermissionManager {
-		return $this->getService( 'PermissionManager' );
+		if ( array_key_exists( 'PermissionManager', $this->testOverrides ) ) {
+			return $this->testOverrides['PermissionManager'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.PermissionManager' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getJobQueueGroup(): JobQueueGroup {
-		return $this->getService( 'JobQueueGroup' );
+		if ( array_key_exists( 'JobQueueGroup', $this->testOverrides ) ) {
+			return $this->testOverrides['JobQueueGroup'];
+		}
+
+		return MediaWikiServices::getInstance()->getJobQueueGroup();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getContentLanguage(): Language {
-		return $this->getService( 'ContentLanguage' );
+		if ( array_key_exists( 'ContentLanguage', $this->testOverrides ) ) {
+			return $this->testOverrides['ContentLanguage'];
+		}
+
+		return MediaWikiServices::getInstance()->getContentLanguage();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getParserCache(): ParserCache {
-		return $this->getService( 'ParserCache' );
+		if ( array_key_exists( 'ParserCache', $this->testOverrides ) ) {
+			return $this->testOverrides['ParserCache'];
+		}
+
+		return MediaWikiServices::getInstance()->getParserCache();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getUserOptionsLookup(): UserOptionsLookup {
-		return $this->getService( 'UserOptionsLookup' );
+		if ( array_key_exists( 'UserOptionsLookup', $this->testOverrides ) ) {
+			return $this->testOverrides['UserOptionsLookup'];
+		}
+
+		return MediaWikiServices::getInstance()->getUserOptionsLookup();
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getSetupFile(): SetupFile {
-		return $this->getService( 'SetupFile' );
+		if ( array_key_exists( 'SetupFile', $this->testOverrides ) ) {
+			return $this->testOverrides['SetupFile'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.SetupFile' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getManualEntryLogger(): ManualEntryLogger {
-		return $this->getService( 'ManualEntryLogger' );
+		if ( array_key_exists( 'ManualEntryLogger', $this->testOverrides ) ) {
+			return $this->testOverrides['ManualEntryLogger'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ManualEntryLogger' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getRevisionGuard(): RevisionGuard {
-		return $this->getService( 'RevisionGuard' );
+		if ( array_key_exists( 'RevisionGuard', $this->testOverrides ) ) {
+			return $this->testOverrides['RevisionGuard'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.RevisionGuard' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getPropertyAnnotatorFactory(): AnnotatorFactory {
-		return $this->getService( 'PropertyAnnotatorFactory' );
+		if ( array_key_exists( 'PropertyAnnotatorFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['PropertyAnnotatorFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.PropertyAnnotatorFactory' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getConnectionProvider(): ConnectionProvider {
-		return $this->getService( 'ConnectionProvider' );
+		if ( array_key_exists( 'ConnectionProvider', $this->testOverrides ) ) {
+			return $this->testOverrides['ConnectionProvider'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ConnectionProvider' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getSchemaFactory(): SchemaFactory {
-		return $this->getService( 'SchemaFactory' );
+		if ( array_key_exists( 'SchemaFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['SchemaFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.SchemaFactory' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getConstraintFactory(): ConstraintFactory {
-		return $this->getService( 'ConstraintFactory' );
+		if ( array_key_exists( 'ConstraintFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['ConstraintFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ConstraintFactory' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getElasticFactory(): ElasticFactory {
-		return $this->getService( 'ElasticFactory' );
+		if ( array_key_exists( 'ElasticFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['ElasticFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ElasticFactory' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getQueryCreator(): QueryCreator {
-		return $this->getService( 'QueryCreator' );
+		if ( array_key_exists( 'QueryCreator', $this->testOverrides ) ) {
+			return $this->testOverrides['QueryCreator'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.QueryCreator' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getParamListProcessor(): ParamListProcessor {
-		return $this->getService( 'ParamListProcessor' );
+		if ( array_key_exists( 'ParamListProcessor', $this->testOverrides ) ) {
+			return $this->testOverrides['ParamListProcessor'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ParamListProcessor' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getFactboxFactory(): FactboxFactory {
-		return $this->getService( 'FactboxFactory' );
+		if ( array_key_exists( 'FactboxFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['FactboxFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.FactboxFactory' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getQueryDependencyLinksStoreFactory(): QueryDependencyLinksStoreFactory {
-		return $this->getService( 'QueryDependencyLinksStoreFactory' );
+		if ( array_key_exists( 'QueryDependencyLinksStoreFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['QueryDependencyLinksStoreFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.QueryDependencyLinksStoreFactory' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getProtectionValidator(): ProtectionValidator {
-		return $this->getService( 'ProtectionValidator' );
+		if ( array_key_exists( 'ProtectionValidator', $this->testOverrides ) ) {
+			return $this->testOverrides['ProtectionValidator'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ProtectionValidator' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getTitlePermissions(): TitlePermissions {
-		return $this->getService( 'TitlePermissions' );
+		if ( array_key_exists( 'TitlePermissions', $this->testOverrides ) ) {
+			return $this->testOverrides['TitlePermissions'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.TitlePermissions' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getInvalidateResultCacheEventListener(): InvalidateResultCacheEventListener {
-		return $this->getService( 'InvalidateResultCacheEventListener' );
+		if ( array_key_exists( 'InvalidateResultCacheEventListener', $this->testOverrides ) ) {
+			return $this->testOverrides['InvalidateResultCacheEventListener'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.InvalidateResultCacheEventListener' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getInvalidateEntityCacheEventListener(): InvalidateEntityCacheEventListener {
-		return $this->getService( 'InvalidateEntityCacheEventListener' );
+		if ( array_key_exists( 'InvalidateEntityCacheEventListener', $this->testOverrides ) ) {
+			return $this->testOverrides['InvalidateEntityCacheEventListener'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.InvalidateEntityCacheEventListener' );
 	}
 
 	/**
 	 * @since 7.0.0
 	 */
 	public function getInvalidatePropertySpecificationLookupCacheEventListener(): InvalidatePropertySpecificationLookupCacheEventListener {
-		return $this->getService( 'InvalidatePropertySpecificationLookupCacheEventListener' );
+		if ( array_key_exists( 'InvalidatePropertySpecificationLookupCacheEventListener', $this->testOverrides ) ) {
+			return $this->testOverrides['InvalidatePropertySpecificationLookupCacheEventListener'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.InvalidatePropertySpecificationLookupCacheEventListener' );
 	}
 
 	/**
@@ -1401,14 +1571,22 @@ class ServicesFactory {
 	 * @since 2.5
 	 */
 	public function getDataItemFactory(): DataItemFactory {
-		return $this->getService( 'DataItemFactory' );
+		if ( array_key_exists( 'DataItemFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['DataItemFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.DataItemFactory' );
 	}
 
 	/**
 	 * @since 2.5
 	 */
 	public function getQueryFactory(): QueryFactory {
-		return $this->getService( 'QueryFactory' );
+		if ( array_key_exists( 'QueryFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['QueryFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.QueryFactory' );
 	}
 
 	/**
@@ -1437,7 +1615,11 @@ class ServicesFactory {
 	 * @since 4.1.1
 	 */
 	public function getFactboxText(): FactboxText {
-		return $this->getService( 'FactboxText' );
+		if ( array_key_exists( 'FactboxText', $this->testOverrides ) ) {
+			return $this->testOverrides['FactboxText'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.FactboxText' );
 	}
 
 	public function newPostProcHandler( ParserOutput $parserOutput ): PostProcHandler {
@@ -1455,20 +1637,6 @@ class ServicesFactory {
 		);
 
 		return $postProcHandler;
-	}
-
-	/**
-	 * Resolves a Bucket-A service from the private container, honouring any
-	 * test override registered through {@see registerObject}.
-	 *
-	 * @param string $name
-	 */
-	private function getService( string $name ) {
-		if ( array_key_exists( $name, $this->testOverrides ) ) {
-			return $this->testOverrides[$name];
-		}
-
-		return $this->container->getService( $name );
 	}
 
 }
