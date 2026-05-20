@@ -335,6 +335,7 @@ class ServicesFactory {
 			'InvalidateResultCacheEventListener' => fn () => $this->getInvalidateResultCacheEventListener(),
 			'InvalidateEntityCacheEventListener' => fn () => $this->getInvalidateEntityCacheEventListener(),
 			'InvalidatePropertySpecificationLookupCacheEventListener' => fn () => $this->getInvalidatePropertySpecificationLookupCacheEventListener(),
+			'SerializerFactory' => fn () => $this->getSerializerFactory(),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -403,7 +404,18 @@ class ServicesFactory {
 	 * @since 2.0
 	 */
 	public function newSerializerFactory(): SerializerFactory {
-		return new SerializerFactory();
+		return $this->getSerializerFactory();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getSerializerFactory(): SerializerFactory {
+		if ( array_key_exists( 'SerializerFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['SerializerFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.SerializerFactory' );
 	}
 
 	/**

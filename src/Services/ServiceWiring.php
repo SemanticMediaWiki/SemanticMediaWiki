@@ -35,6 +35,7 @@ use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\Schema\SchemaFactory;
+use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory;
 use SMW\Settings;
 use SMW\SetupFile;
@@ -563,6 +564,16 @@ return [
 		return new InvalidatePropertySpecificationLookupCacheEventListener(
 			$servicesFactory->getPropertySpecificationLookup()
 		);
+	},
+
+	'SMW.SerializerFactory' => static function ( MediaWikiServices $services ): SerializerFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'SerializerFactory' ) ) {
+			return $servicesFactory->getSerializerFactory();
+		}
+
+		return new SerializerFactory();
 	},
 
 ];
