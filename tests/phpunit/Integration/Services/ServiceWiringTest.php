@@ -3,12 +3,15 @@
 namespace SMW\Tests\Integration\Services;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use Onoi\Cache\Cache;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
 use SMW\Elastic\ElasticFactory;
+use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
@@ -17,9 +20,6 @@ use SMW\IteratorFactory;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
-use MediaWiki\Title\Title;
-use SMW\Elastic\Jobs\FileIngestJob;
-use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Job;
