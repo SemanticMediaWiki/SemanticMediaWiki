@@ -2,7 +2,7 @@
 
 ```php
 $property = new \SMW\DataItems\Property( 'Foo' );
-$property->setPropertyTypeId( '_txt' );
+$property->setPropertyValueType( '_txt' );
 
 // Using a dedicated property to created a DV
 $dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
@@ -42,7 +42,7 @@ $store->expects( $this->at( 1 ) )
 	->will( $this->returnValue( array(
 		\SMW\DataItems\Uri::doUnserialize( 'http://semantic-mediawiki.org/swivt/1.0#_txt' ) ) ) );
 
-// Inject the store as a mock object due to Property::findPropertyTypeID finding the
+// Inject the store as a mock object due to Property::findPropertyValueType finding the
 // type dynamically when called without explicit declaration
 ApplicationFactory::getInstance()->registerObject( 'Store', $store );
 

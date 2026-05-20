@@ -13,6 +13,7 @@ use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -26,7 +27,7 @@ use SMW\Tests\TestEnvironment;
  */
 class FileIngestJobTest extends TestCase {
 
-	private $testEnvironment;
+	private TestEnvironment $testEnvironment;
 	private $fileIndexer;
 	private $title;
 	private $logger;
@@ -66,6 +67,9 @@ class FileIngestJobTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// pushIngestJob() goes through MediaWiki's JobFactory which resolves
+		// ElasticFactory from the global container; keep the test override
+		// so the lazyPush path is exercised against the same mock.
 		$this->testEnvironment->registerObject( 'ElasticFactory', $this->elasticFactory );
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
@@ -75,10 +79,30 @@ class FileIngestJobTest extends TestCase {
 		parent::tearDown();
 	}
 
+	private function newStore(): Store {
+		return $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	private function newJob(
+		Title $title,
+		array $params = [],
+		?Store $store = null,
+		?ElasticFactory $elasticFactory = null
+	): FileIngestJob {
+		return new FileIngestJob(
+			$title,
+			$params,
+			$store ?? $this->newStore(),
+			$elasticFactory ?? $this->elasticFactory
+		);
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			FileIngestJob::class,
-			new FileIngestJob( $this->title )
+			$this->newJob( $this->title )
 		);
 	}
 
@@ -109,10 +133,6 @@ class FileIngestJobTest extends TestCase {
 			->method( 'newFileIndexer' )
 			->willReturn( $this->fileIndexer );
 
-		$config = $this->getMockBuilder( Config::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -125,8 +145,6 @@ class FileIngestJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $client );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$this->title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->willReturn( 'Foo' );
@@ -135,9 +153,7 @@ class FileIngestJobTest extends TestCase {
 			->method( 'getNamespace' )
 			->willReturn( NS_FILE );
 
-		$instance = new FileIngestJob(
-			$this->title
-		);
+		$instance = $this->newJob( $this->title, [], $store );
 
 		$instance->setLogger( $this->logger );
 		$instance->runFileIndexer();
@@ -177,8 +193,6 @@ class FileIngestJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $client );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$this->title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->willReturn( 'Foo' );
@@ -190,9 +204,7 @@ class FileIngestJobTest extends TestCase {
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' );
 
-		$instance = new FileIngestJob(
-			$this->title
-		);
+		$instance = $this->newJob( $this->title, [], $store );
 
 		$instance->setLogger( $this->logger );
 		$instance->runFileIndexer();

@@ -129,7 +129,7 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testAddUserDefinedBlobPropertyAsObjectToSemanticDataForStorage() {
 		$property = new Property( 'SomeBlobProperty' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$this->subjects[] = $subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );

@@ -25,6 +25,9 @@
 		"SMW\\": "src/",
 		"SMW\\Maintenance\\": "maintenance/"
 	},
+	"ServiceWiringFiles": [
+		"src/Services/ServiceWiring.php"
+	],
 	"TestAutoloadNamespaces": {
 		"SMW\\Tests\\": "tests/phpunit/"
 	},
@@ -36,9 +39,7 @@
 		"smwtask": "SMW\\MediaWiki\\Api\\Task",
 		"smwbrowse": "SMW\\MediaWiki\\Api\\Browse",
 		"ask": "SMW\\MediaWiki\\Api\\Ask",
-		"askargs": "SMW\\MediaWiki\\Api\\AskArgs",
-		"browsebysubject": "SMW\\MediaWiki\\Api\\BrowseBySubject",
-		"browsebyproperty": "SMW\\MediaWiki\\Api\\BrowseByProperty"
+		"askargs": "SMW\\MediaWiki\\Api\\AskArgs"
 	},
 	"AutoloadClasses": {
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",
@@ -201,19 +202,54 @@
 		"WantedProperties": "SMW\\MediaWiki\\Specials\\SpecialWantedProperties"
 	},
 	"JobClasses": {
-		"smw.update": "SMW\\MediaWiki\\Jobs\\UpdateJob",
-		"smw.refresh": "SMW\\MediaWiki\\Jobs\\RefreshJob",
-		"smw.updateDispatcher": "SMW\\MediaWiki\\Jobs\\UpdateDispatcherJob",
-		"smw.fulltextSearchTableUpdate": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableUpdateJob",
-		"smw.entityIdDisposer": "SMW\\MediaWiki\\Jobs\\EntityIdDisposerJob",
-		"smw.propertyStatisticsRebuild": "SMW\\MediaWiki\\Jobs\\PropertyStatisticsRebuildJob",
-		"smw.fulltextSearchTableRebuild": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
-		"smw.changePropagationDispatch": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
+		"smw.update": {
+			"class": "SMW\\MediaWiki\\Jobs\\UpdateJob",
+			"services": [ "SMW.Store" ]
+		},
+		"smw.refresh": {
+			"class": "SMW\\MediaWiki\\Jobs\\RefreshJob",
+			"services": [ "SMW.Store" ]
+		},
+		"smw.updateDispatcher": {
+			"class": "SMW\\MediaWiki\\Jobs\\UpdateDispatcherJob",
+			"services": [ "SMW.Store" ]
+		},
+		"smw.fulltextSearchTableUpdate": {
+			"class": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableUpdateJob",
+			"services": [ "SMW.Store" ]
+		},
+		"smw.entityIdDisposer": {
+			"class": "SMW\\MediaWiki\\Jobs\\EntityIdDisposerJob",
+			"services": [ "SMW.Store", "SMW.IteratorFactory" ]
+		},
+		"smw.propertyStatisticsRebuild": {
+			"class": "SMW\\MediaWiki\\Jobs\\PropertyStatisticsRebuildJob",
+			"services": [ "SMW.Store" ]
+		},
+		"smw.fulltextSearchTableRebuild": {
+			"class": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
+			"services": [ "SMW.Store" ]
+		},
+		"smw.changePropagationDispatch": {
+			"class": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
+			"services": [
+				"SMW.Store",
+				"SMW.Cache",
+				"SMW.PropertySpecificationLookup",
+				"SMW.IteratorFactory"
+			]
+		},
 		"smw.changePropagationUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationUpdateJob",
 		"smw.changePropagationClassUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationClassUpdateJob",
 		"smw.deferredConstraintCheckUpdateJob": "SMW\\MediaWiki\\Jobs\\DeferredConstraintCheckUpdateJob",
-		"smw.elasticIndexerRecovery": "SMW\\Elastic\\Jobs\\IndexerRecoveryJob",
-		"smw.elasticFileIngest": "SMW\\Elastic\\Jobs\\FileIngestJob",
+		"smw.elasticIndexerRecovery": {
+			"class": "SMW\\Elastic\\Jobs\\IndexerRecoveryJob",
+			"services": [ "SMW.Store", "SMW.Cache" ]
+		},
+		"smw.elasticFileIngest": {
+			"class": "SMW\\Elastic\\Jobs\\FileIngestJob",
+			"services": [ "SMW.Store", "SMW.ElasticFactory" ]
+		},
 		"smw.parserCachePurgeJob": "SMW\\MediaWiki\\Jobs\\ParserCachePurgeJob"
 	},
 	"ResourceFileModulePaths": {

@@ -1,5 +1,5 @@
 * Since: 2.3
-* Description: Hook to process information after an update has been completed. Further provides `ChangeOp` to identify entities that have been added/removed during the update. (`SMWSQLStore3::updateDataAfter` was deprecated with 2.3)
+* Description: Hook to process information after an update has been completed. Further provides `ChangeOp` to identify entities that have been added/removed during the update.
 * Reference class: [`SQLStoreUpdater.php`][SQLStoreUpdater.php]
 
 ### Signature

@@ -48,7 +48,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 		if (
 			!$dataValue instanceof DataValue ||
 			$dataValue->getProperty() === null ||
-			!$dataValue->isEnabledFeature( SMW_DV_PVAP ) ) {
+			!$dataValue->hasFeature( SMW_DV_PVAP ) ) {
 			return $this->hasConstraintViolation;
 		}
 

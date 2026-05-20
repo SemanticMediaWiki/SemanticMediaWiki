@@ -1,0 +1,10 @@
+{{!
+  EntityExaminer indicator bottom marker (separator line plus issue label).
+
+  Required data:
+  - margin: string (escaped) - Margin side, left or right
+  - data-background-color: string (escaped) - Label background colour
+  - color: string (escaped) - Label text colour
+  - label: string (escaped) - Issue label text
+}}
+<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-{{margin}}: -10px;width: 280px;"></div><div style="padding-top: 2px;padding-bottom:2px;"><span class="smw-issue-label" style="background-color:{{data-background-color}};color:{{color}};">{{label}}</span></div>

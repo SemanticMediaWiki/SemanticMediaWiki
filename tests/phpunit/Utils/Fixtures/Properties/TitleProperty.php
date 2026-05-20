@@ -17,7 +17,7 @@ class TitleProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Title' );
-		$this->property->setPropertyTypeId( '_wpg' );
+		$this->property->setPropertyValueType( '_wpg' );
 	}
 
 }

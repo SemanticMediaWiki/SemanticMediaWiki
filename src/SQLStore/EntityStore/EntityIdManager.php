@@ -978,13 +978,6 @@ class EntityIdManager {
 	}
 
 	/**
-	 * @deprecated since 3.0, use EntityIdManager::getDataItemsFromList
-	 */
-	public function getDataItemPoolHashListFor( array $idlist, ?RequestOptions $requestOptions = null ): MappingIterator|array {
-		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
-	}
-
-	/**
 	 * Remove any cache entry for the given data. The key consists of the
 	 * parameters $title, $namespace, $interwiki, and $subobject. The
 	 * cached data is $id and $sortkey.

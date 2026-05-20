@@ -24,7 +24,7 @@ class MonolingualTextPropertyValueResourceBuilder extends PropertyValueResourceB
 	 * {@inheritDoc}
 	 */
 	public function isResourceBuilderFor( Property $property ): bool {
-		return $property->findPropertyTypeID() === '_mlt_rec';
+		return $property->findPropertyValueType() === '_mlt_rec';
 	}
 
 	/**

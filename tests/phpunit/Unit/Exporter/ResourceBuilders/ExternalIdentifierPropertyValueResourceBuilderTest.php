@@ -56,7 +56,7 @@ class ExternalIdentifierPropertyValueResourceBuilderTest extends TestCase {
 
 	public function testAddResourceValueForValidProperty() {
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_eid' );
+		$property->setPropertyValueType( '_eid' );
 
 		$dataItem = $this->dataItemFactory->newDIBlob( 'Bar' );
 

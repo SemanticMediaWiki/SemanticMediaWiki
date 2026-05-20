@@ -158,7 +158,7 @@ class SubobjectTest extends TestCase {
 			->getMock();
 
 		$property->expects( $this->atLeastOnce() )
-			->method( 'findPropertyTypeID' )
+			->method( 'findPropertyValueType' )
 			->willReturn( $parameters['property']['typeId'] );
 
 		$property->expects( $this->atLeastOnce() )

@@ -171,7 +171,7 @@ class PrefetchItemLookup {
 		);
 
 		$type = DataTypeRegistry::getInstance()->getDataItemByType(
-			$noninverse->findPropertyTypeID()
+			$noninverse->findPropertyValueType()
 		);
 
 		$tableid = $this->store->findPropertyTableID( $noninverse );

@@ -3,11 +3,11 @@
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\Output\OutputPage;
+use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
-use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 
 /**
@@ -21,11 +21,16 @@ use SMW\MediaWiki\Search\ExtendedSearchEngine;
  */
 class SpecialSearchResultsPrependTest extends TestCase {
 
-	private $preferenceExaminer;
+	private $userOptionsLookup;
+	private $user;
 	private $messageLocalizer;
 
 	protected function setUp(): void {
-		$this->preferenceExaminer = $this->getMockBuilder( PreferenceExaminer::class )
+		$this->userOptionsLookup = $this->getMockBuilder( UserOptionsLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -45,22 +50,18 @@ class SpecialSearchResultsPrependTest extends TestCase {
 
 		$this->assertInstanceOf(
 			SpecialSearchResultsPrepend::class,
-			new SpecialSearchResultsPrepend( $this->preferenceExaminer, $specialSearch, $outputPage )
+			new SpecialSearchResultsPrepend( $this->userOptionsLookup, $this->user, $specialSearch, $outputPage )
 		);
 	}
 
 	public function testProcess() {
-		$this->preferenceExaminer->expects( $this->any() )
-			->method( 'hasPreferenceOf' )
-			->willReturnCallback( static function ( $key ) {
+		$this->userOptionsLookup->expects( $this->any() )
+			->method( 'getOption' )
+			->willReturnCallback( static function ( $user, $key ) {
 				return $key === 'smw-prefs-general-options-suggester-textinput';
 			} );
 
 		$search = $this->getMockBuilder( ExtendedSearchEngine::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +81,8 @@ class SpecialSearchResultsPrependTest extends TestCase {
 			->method( 'addHtml' );
 
 		$instance = new SpecialSearchResultsPrepend(
-			$this->preferenceExaminer,
+			$this->userOptionsLookup,
+			$this->user,
 			$specialSearch,
 			$outputPage
 		);
@@ -95,17 +97,13 @@ class SpecialSearchResultsPrependTest extends TestCase {
 	}
 
 	public function testProcess_DisabledInfo() {
-		$this->preferenceExaminer->expects( $this->any() )
-			->method( 'hasPreferenceOf' )
-			->willReturnCallback( static function ( $key ) {
+		$this->userOptionsLookup->expects( $this->any() )
+			->method( 'getOption' )
+			->willReturnCallback( static function ( $user, $key ) {
 				return $key === 'smw-prefs-general-options-disable-search-info';
 			} );
 
 		$search = $this->getMockBuilder( ExtendedSearchEngine::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +123,8 @@ class SpecialSearchResultsPrependTest extends TestCase {
 			->method( 'addHtml' );
 
 		$instance = new SpecialSearchResultsPrepend(
-			$this->preferenceExaminer,
+			$this->userOptionsLookup,
+			$this->user,
 			$specialSearch,
 			$outputPage
 		);

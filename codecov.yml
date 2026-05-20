@@ -1,2 +1,12 @@
 fixes:
   - "/var/www/html/extensions/SemanticMediaWiki/::"
+
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+        removed_code_behavior: adjust_base
+    patch:
+      default:
+        informational: true

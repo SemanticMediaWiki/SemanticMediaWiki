@@ -18,7 +18,7 @@ class CapitalOfProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Capital of' );
-		$this->property->setPropertyTypeId( '_wpg' );
+		$this->property->setPropertyValueType( '_wpg' );
 	}
 
 	/**

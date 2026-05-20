@@ -1,0 +1,8 @@
+{{!
+  EntityExaminer elastic indexer text block.
+
+  Required data:
+  - error_code: string (escaped) - Error code attribute value
+  - html-text: string (raw) - Text body HTML; may contain markup
+}}
+<div style="padding-top:10px;text-align: justify;" data-error-code="{{error_code}}">{{{html-text}}}</div>

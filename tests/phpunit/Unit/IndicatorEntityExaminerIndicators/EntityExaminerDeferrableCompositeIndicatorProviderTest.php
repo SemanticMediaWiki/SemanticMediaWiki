@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\IndicatorEntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
@@ -24,12 +25,17 @@ use SMW\Tests\TestEnvironment;
 class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 
 	private $permissionExaminer;
+	private $templateParser;
 	private $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,22 +52,22 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 
 		$this->assertInstanceOf(
 			EntityExaminerDeferrableCompositeIndicatorProvider::class,
-			new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders )
+			new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			DeferrableIndicatorProvider::class,
-			new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders )
+			new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			CompositeIndicatorProvider::class,
-			new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders )
+			new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			PermissionExaminerAware::class,
-			new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders )
+			new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders, $this->templateParser )
 		);
 	}
 
@@ -69,7 +75,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
-			$indicatorProviders
+			$indicatorProviders,
+			$this->templateParser
 		);
 
 		$this->assertIsBool(
@@ -82,7 +89,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
-			$indicatorProviders
+			$indicatorProviders,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -95,7 +103,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
-			$indicatorProviders
+			$indicatorProviders,
+			$this->templateParser
 		);
 
 		$this->assertIsArray(
@@ -108,7 +117,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
-			$indicatorProviders
+			$indicatorProviders,
+			$this->templateParser
 		);
 
 		$this->assertIsArray(
@@ -121,7 +131,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
-			$indicatorProviders
+			$indicatorProviders,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -157,7 +168,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 		];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
-			$indicatorProviders
+			$indicatorProviders,
+			$this->templateParser
 		);
 
 		$this->assertIsBool(
@@ -197,7 +209,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 		];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
-			$indicatorProviders
+			$indicatorProviders,
+			$this->templateParser
 		);
 
 		$instance->setDeferredMode( true );
@@ -220,7 +233,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 		];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
-			$indicatorProviders
+			$indicatorProviders,
+			$this->templateParser
 		);
 
 		$instance->setPermissionExaminer(

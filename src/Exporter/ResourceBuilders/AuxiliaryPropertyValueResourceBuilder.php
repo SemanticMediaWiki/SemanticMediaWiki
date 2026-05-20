@@ -39,7 +39,7 @@ class AuxiliaryPropertyValueResourceBuilder extends PredefinedPropertyValueResou
 			return;
 		}
 
-		if ( $property->getKey() === $property->findPropertyTypeID() ) {
+		if ( $property->getKey() === $property->findPropertyValueType() ) {
 			// Ensures that Boolean remains Boolean and not localized canonical
 			// representation such as "Booléen" when the content languageis not
 			// English

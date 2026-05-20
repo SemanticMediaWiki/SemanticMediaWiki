@@ -73,10 +73,10 @@ class InversePropertyRelationshipDBIntegrationTest extends SMWIntegrationTestCas
 		$this->getStore()->updateData( $semanticData );
 
 		$description = new SomeProperty(
-			Property::newFromUserLabel( 'Has mother', true )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'Has mother', true )->setPropertyValueType( '_wpg' ),
 			new ValueDescription(
 				new WikiPage( 'Michael', NS_MAIN, '' ),
-				Property::newFromUserLabel( 'Has mother', true )->setPropertyTypeId( '_wpg' ),
+				Property::newFromUserLabel( 'Has mother', true )->setPropertyValueType( '_wpg' ),
 				SMW_CMP_EQ
 			)
 		);
@@ -117,7 +117,7 @@ class InversePropertyRelationshipDBIntegrationTest extends SMWIntegrationTestCas
 
 	private function newDataValueForPagePropertyValue( $property, $value ) {
 		$property = Property::newFromUserLabel( $property );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$dataItem = new WikiPage( $value, NS_MAIN, '' );
 

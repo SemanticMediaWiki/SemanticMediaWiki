@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
@@ -9,7 +10,6 @@ use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Store;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -29,8 +29,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	private string $severityType = '';
 
-	private TemplateEngine $templateEngine;
-
 	/**
 	 * @since 3.2
 	 */
@@ -38,6 +36,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		private readonly Store $store,
 		private readonly EntityCache $entityCache,
 		private readonly ReplicationCheck $replicationCheck,
+		private readonly TemplateParser $templateParser,
 	) {
 	}
 
@@ -142,29 +141,25 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	private function runCheck( WikiPage $subject, array $options ): void {
 		$html = $this->replicationCheck->checkReplication( $subject, $options );
 
-		$this->templateEngine = new TemplateEngine();
-		$this->templateEngine->load( '/indicator/dot.label.ms', 'dot_label_template' );
-		$this->templateEngine->load( '/indicator/bottom.marker.ms', 'bottom_marker' );
-
 		if ( $this->replicationCheck->getSeverityType() === ReplicationCheck::SEVERITY_TYPE_ERROR ) {
 			$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_ERROR;
 		} else {
 			$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_WARNING;
 		}
 
-		$this->templateEngine->compile(
-			'bottom_marker',
+		$bottomMarker = $this->templateParser->processTemplate(
+			'BottomMarker',
 			[
 				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left',
 				'label' => 'elastic',
-				'background-color' => '#cc317c',
+				'data-background-color' => '#cc317c',
 				'color' => '#ffffff'
 			]
 		);
 
 		$this->indicators = [
 			'id'      => $this->getName(),
-			'content' => $html . ( $html !== '' ? $this->templateEngine->publish( 'bottom_marker' ) : '' )
+			'content' => $html . ( $html !== '' ? $bottomMarker : '' )
 		];
 	}
 

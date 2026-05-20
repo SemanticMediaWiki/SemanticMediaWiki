@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\IndicatorEntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
@@ -27,6 +28,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 	private $errorLookup;
 	private $messageLocalizer;
 	private $entityCache;
+	private $templateParser;
 	private $testEnvironment;
 
 	protected function setUp(): void {
@@ -58,6 +60,10 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
 			->willReturn( 'foo' );
+
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -68,19 +74,20 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ConstraintErrorEntityExaminerIndicatorProvider::class,
-			new ConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache )
+			new ConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			IndicatorProvider::class,
-			new ConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache )
+			new ConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache, $this->templateParser )
 		);
 	}
 
 	public function testGetName() {
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -92,7 +99,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 	public function testGetIndicators() {
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$this->assertIsArray(
@@ -104,7 +112,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 	public function testGetModules() {
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$this->assertIsArray(
@@ -116,7 +125,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 	public function testGetInlineStyle() {
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -130,7 +140,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setConstraintErrorCheck(
@@ -161,7 +172,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -193,7 +205,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(
@@ -223,7 +236,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->templateParser
 		);
 
 		$instance->setMessageLocalizer(

@@ -203,7 +203,7 @@ class StubSemanticData extends SemanticData {
 		foreach ( $this->getProperties() as $property ) {
 
 			// #619 Do not resolve subobjects for redirects
-			if ( !DataTypeRegistry::getInstance()->isSubDataType( $property->findPropertyTypeID() ) ) {
+			if ( !DataTypeRegistry::getInstance()->isSubDataType( $property->findPropertyValueType() ) ) {
 				continue;
 			}
 
@@ -377,7 +377,7 @@ class StubSemanticData extends SemanticData {
 	private function unstubPropertyValues( Property $property ): void {
 		// Not catching exception here; the
 		$this->unstubProperty( $property->getKey(), $property );
-		$propertyTypeId = $property->findPropertyTypeID();
+		$propertyTypeId = $property->findPropertyValueType();
 
 		$propertyDiId = DataTypeRegistry::getInstance()->getDataItemByType( $propertyTypeId );
 		$diHandler = $this->store->getDataItemHandlerForDIType( $propertyDiId );

@@ -173,7 +173,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 			}
 
 		} else {
-			$typeDataValue = TypesValue::newFromTypeId( $property->findPropertyTypeID() );
+			$typeDataValue = TypesValue::newFromTypeId( $property->findPropertyValueType() );
 			$propertyLink  = DataValueFactory::getInstance()
 				->newDataValueByItem( $property, null )
 				->getShortHtmlText( $this->getLinker() );

@@ -129,7 +129,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 
 	public function numericConjunctionFilterProvider() {
 		$property = new Property( 'SomeNumericPropertyToFilter' );
-		$property->setPropertyTypeId( '_num' );
+		$property->setPropertyValueType( '_num' );
 
 		# 0 Numeric Greater Equal, Less Equal
 		$provider[] = [
@@ -216,7 +216,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 
 	public function textConjunctionFilterProvider() {
 		$property = new Property( 'SomeBlobPropertyToFilter' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		# 4 Text, Greater Equal, Less Equal
 		$provider[] = [
@@ -284,7 +284,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 
 	public function dateConjunctionFilterProvider() {
 		$property = new Property( 'SomeDatePropertyToFilter' );
-		$property->setPropertyTypeId( '_dat' );
+		$property->setPropertyValueType( '_dat' );
 
 		# 7 Date, Greater Equal, Less Equal
 		$provider[] = [

@@ -82,7 +82,7 @@ class Factbox {
 		if ( $this->content !== '' || $this->attachments !== [] ) {
 			$this->parserData->getOutput()->addModuleStyles( self::getModuleStyles() );
 			$this->parserData->getOutput()->addModules( self::getModules() );
-			$this->parserData->pushSemanticDataToParserOutput();
+			$this->parserData->copyToParserOutput();
 			$this->isVisible = true;
 		}
 

@@ -533,7 +533,7 @@ class LegacyParser implements Parser {
 			$property = $propertyValue->getDataItem();
 			$propertyValueList[] = $propertyValue;
 
-			$typeid = $property->findPropertyTypeID();
+			$typeid = $property->findPropertyValueType();
 			$inverse = $property->isInverse();
 		}
 

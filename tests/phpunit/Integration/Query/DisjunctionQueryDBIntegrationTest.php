@@ -83,7 +83,7 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData();
 
 		$semanticDataOfDreamland->addPropertyObjectValue(
-			Property::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'LocatedIn' )->setPropertyValueType( '_wpg' ),
 			new WikiPage( 'BananaWonderland', NS_MAIN )
 		);
 
@@ -98,7 +98,7 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData();
 
 		$semanticDataOfWonderland->addPropertyObjectValue(
-			Property::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ),
 			new WikiPage( 'Wonderland', NS_MAIN )
 		);
 
@@ -109,12 +109,12 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		 * Query with [[Category:WickedPlaces]] OR [[LocatedIn.MemberOf::Wonderland]]
 		 */
 		$someProperty = new SomeProperty(
-			Property::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'LocatedIn' )->setPropertyValueType( '_wpg' ),
 			new SomeProperty(
-				Property::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ),
+				Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ),
 				new ValueDescription(
 					new WikiPage( 'Wonderland', NS_MAIN, '' ),
-					Property::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
+					Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ), SMW_CMP_EQ
 				)
 			)
 		);
@@ -165,7 +165,7 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testSubqueryDisjunction() {
 		$property = new Property( 'HasSomeProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		/**
 		 * Page annotated with [[HasSomeProperty:Foo]]

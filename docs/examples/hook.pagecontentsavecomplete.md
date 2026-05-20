@@ -92,7 +92,7 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'PageContentSave
                 new Container( $containerSemanticData )
         );
 
-        $parserData->pushSemanticDataToParserOutput();
+        $parserData->copyToParserOutput();
 
         return true;
 

@@ -230,7 +230,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		foreach ( $semanticData->getProperties() as $property ) {
 
-			if ( $property->findPropertyTypeID() === '_dat' && $property->equals( $expected['property'] ) ) {
+			if ( $property->findPropertyValueType() === '_dat' && $property->equals( $expected['property'] ) ) {
 				$runDateValueAssert = true;
 				$this->semanticDataValidator->assertThatPropertyValuesAreSet(
 					$expected,

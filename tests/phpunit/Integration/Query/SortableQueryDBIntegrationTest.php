@@ -57,7 +57,7 @@ class SortableQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		];
 
 		$property = new Property( 'SomePageProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$query = $this->createQueryForSamplePagesThatContain( $property, $expectedSubjects );
 
@@ -83,7 +83,7 @@ class SortableQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		];
 
 		$property = new Property( 'SomeAscendingPageProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$query = $this->createQueryForSamplePagesThatContain( $property, $expectedSubjects );
 
@@ -105,7 +105,7 @@ class SortableQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		];
 
 		$property = new Property( 'SomeDescendingPageProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$query = $this->createQueryForSamplePagesThatContain( $property, $expectedSubjects );
 

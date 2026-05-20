@@ -159,7 +159,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			->willReturn( true );
 
 		$property->expects( $this->once() )
-			->method( 'findPropertyTypeID' )
+			->method( 'findPropertyValueType' )
 			->willReturn( '_txt' );
 
 		$proptable = $this->getMockBuilder( '\stdClass' )
@@ -301,7 +301,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$indexField = '';
 		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,
@@ -327,7 +327,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$indexField = 'wikipageIndex';
 		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,
@@ -355,7 +355,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$indexField = 'wikipageIndex';
 		$sortKeys = [ 'Foo' => 'DESC' ];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,
@@ -384,7 +384,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$indexField = 'blobIndex';
 		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,
@@ -412,7 +412,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$indexField = 'blobIndex';
 		$sortKeys = [ 'Foo' => 'ASC' ];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,
@@ -441,7 +441,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$indexField = 'blobIndex';
 		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$valueDescription = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
@@ -483,7 +483,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$indexField = '';
 		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,

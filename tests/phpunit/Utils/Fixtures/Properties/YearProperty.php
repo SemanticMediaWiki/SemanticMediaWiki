@@ -17,7 +17,7 @@ class YearProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = new Property( 'Year' );
-		$this->property->setPropertyTypeId( '_dat' );
+		$this->property->setPropertyValueType( '_dat' );
 	}
 
 }

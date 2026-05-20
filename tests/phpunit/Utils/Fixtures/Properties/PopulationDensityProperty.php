@@ -19,7 +19,7 @@ class PopulationDensityProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Population density' );
-		$this->property->setPropertyTypeId( '_rec' );
+		$this->property->setPropertyValueType( '_rec' );
 	}
 
 	/**

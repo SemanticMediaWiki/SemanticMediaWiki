@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\IndicatorEntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
@@ -30,6 +31,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 	private $errorLookup;
 	private $messageLocalizer;
 	private $revisionGuard;
+	private $templateParser;
 	private $testEnvironment;
 
 	protected function setUp(): void {
@@ -61,6 +63,10 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
 			->willReturn( 'foo' );
+
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -71,17 +77,17 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			AssociatedRevisionMismatchEntityExaminerIndicatorProvider::class,
-			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
+			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			IndicatorProvider::class,
-			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
+			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store, $this->templateParser )
 		);
 
 		$this->assertInstanceOf(
 			TypableSeverityIndicatorProvider::class,
-			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
+			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store, $this->templateParser )
 		);
 	}
 
@@ -96,7 +102,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 			->willReturn( true );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$this->assertIsBool(
@@ -107,7 +114,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 
 	public function testGetName() {
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -118,7 +126,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 
 	public function testIsSeverityType() {
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$this->assertIsBool(
@@ -129,7 +138,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 
 	public function testGetIndicators() {
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$this->assertIsArray(
@@ -140,7 +150,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 
 	public function testGetModules() {
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$this->assertIsArray(
@@ -151,7 +162,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 
 	public function testGetInlineStyle() {
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$this->assertIsString(
@@ -172,7 +184,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$instance->setDeferredMode(
@@ -204,7 +217,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$instance->setDeferredMode(
@@ -244,7 +258,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 		$subject = WikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->templateParser
 		);
 
 		$instance->setDeferredMode(

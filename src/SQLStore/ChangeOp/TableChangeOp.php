@@ -56,18 +56,6 @@ class TableChangeOp {
 	}
 
 	/**
-	 * @deprecated since 3.0, use TableChangeOp::getFixedPropertyValByField
-	 * @since 2.4
-	 *
-	 * @param string $field
-	 *
-	 * @return null|string
-	 */
-	public function getFixedPropertyValueBy( $field ) {
-		return $this->getFixedPropertyValByField( $field );
-	}
-
-	/**
 	 * @since 2.4
 	 *
 	 * @param string $opType

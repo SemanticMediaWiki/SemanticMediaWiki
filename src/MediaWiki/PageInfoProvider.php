@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
@@ -129,12 +128,6 @@ class PageInfoProvider implements PageInfo {
 	 */
 	public function setRevisionLookup( RevisionLookup $revisionLookup ): void {
 		$this->revisionLookup = $revisionLookup;
-	}
-
-	public static function isProtected( Title $title, string $action = '' ): bool {
-		return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected(
-			$title, $action
-		);
 	}
 
 }

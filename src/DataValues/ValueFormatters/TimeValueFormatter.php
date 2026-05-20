@@ -224,7 +224,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $dataItem->getPrecision() >= Time::PREC_YM ) {
-			$result = $lang->getMonthLabel( $dataItem->getMonth() ) . " " . $result;
+			$result = $lang->getMonthLabelByNumber( $dataItem->getMonth() ) . " " . $result;
 		}
 
 		if ( $dataItem->getPrecision() >= Time::PREC_YMD ) {
@@ -420,7 +420,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	private function hintCalendarModel( Time $dataItem ): string {
-		if ( $this->dataValue->isEnabledFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== Time::CM_GREGORIAN ) {
+		if ( $this->dataValue->hasFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== Time::CM_GREGORIAN ) {
 			return ' ' . Html::rawElement( 'sup', [], $dataItem->getCalendarModelLiteral() );
 		}
 

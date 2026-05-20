@@ -65,7 +65,7 @@ class DatePropertyValueQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testUserDefinedDateProperty() {
 		$property = new Property( 'SomeDateProperty' );
-		$property->setPropertyTypeId( '_dat' );
+		$property->setPropertyValueType( '_dat' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty(
 			$property,

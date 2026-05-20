@@ -17,7 +17,7 @@ class TemperatureProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = new Property( 'Temperature' );
-		$this->property->setPropertyTypeId( '_tem' );
+		$this->property->setPropertyValueType( '_tem' );
 	}
 
 }

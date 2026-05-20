@@ -245,7 +245,7 @@ class TextChangeUpdater {
 			// Replace s_id for subobjects etc. with the o_id
 			if ( $tableChangeOp->isFixedPropertyOp() ) {
 				$fieldChangeOp->set( 's_id', $fieldChangeOp->has( 'o_id' ) ? $fieldChangeOp->get( 'o_id' ) : $fieldChangeOp->get( 's_id' ) );
-				$fieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
+				$fieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValByField( 'p_id' ) );
 			}
 
 			if ( !$fieldChangeOp->has( 'p_id' ) ) {

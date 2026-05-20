@@ -6,8 +6,10 @@ use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\Property\SpecificationLookup as PropertySpecificationLookup;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
@@ -23,23 +25,58 @@ use SMW\Tests\TestEnvironment;
  */
 class ChangePropagationDispatchJobTest extends TestCase {
 
-	private $testEnvironment;
+	private TestEnvironment $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
 
+		// Static helpers planAsJob() / hasPendingJobs() / cleanUp() still go
+		// through ApplicationFactory; register defaults the test environment
+		// expects.
 		$this->testEnvironment = new TestEnvironment();
-
-		$store = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
+	}
+
+	private function newCache(): Cache {
+		return $this->getMockBuilder( Cache::class )->getMockForAbstractClass();
+	}
+
+	private function newPropertySpecificationLookup(): PropertySpecificationLookup {
+		return $this->getMockBuilder( PropertySpecificationLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	private function newIteratorFactory(): IteratorFactory {
+		return new IteratorFactory();
+	}
+
+	private function newStore(): SQLStore {
+		return $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	private function newJob(
+		Title $title,
+		array $params = [],
+		?SQLStore $store = null,
+		?Cache $cache = null,
+		?PropertySpecificationLookup $propertySpecificationLookup = null,
+		?IteratorFactory $iteratorFactory = null
+	): ChangePropagationDispatchJob {
+		return new ChangePropagationDispatchJob(
+			$title,
+			$params,
+			$store ?? $this->newStore(),
+			$cache ?? $this->newCache(),
+			$propertySpecificationLookup ?? $this->newPropertySpecificationLookup(),
+			$iteratorFactory ?? $this->newIteratorFactory()
+		);
 	}
 
 	public function testCanConstruct() {
@@ -49,7 +86,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$this->assertInstanceOf(
 			ChangePropagationDispatchJob::class,
-			new ChangePropagationDispatchJob( $title )
+			$this->newJob( $title )
 		);
 	}
 
@@ -126,9 +163,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
-		$instance = new ChangePropagationDispatchJob(
-			$subject->getTitle()
-		);
+		$instance = $this->newJob( $subject->getTitle() );
 
 		$instance->run();
 	}
@@ -204,13 +239,16 @@ class ChangePropagationDispatchJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
+		// commitSpecificationChangePropagationAsJob -> newChangePropagationUpdateJob
+		// will construct an inner UpdateJob via ApplicationFactory -> Store.
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new ChangePropagationDispatchJob(
+		$instance = $this->newJob(
 			$subject->getTitle(),
 			[
 				'isTypePropagation' => true
-			]
+			],
+			$store
 		);
 
 		$instance->run();
@@ -226,8 +264,6 @@ class ChangePropagationDispatchJobTest extends TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
 			->willReturn( [ $dataItem ] );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
@@ -248,12 +284,13 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
-		$instance = new ChangePropagationDispatchJob(
+		$instance = $this->newJob(
 			$subject->getTitle(),
 			[
 				'schema_change_propagation' => true,
 				'property_key' => 'Foo'
-			]
+			],
+			$store
 		);
 
 		$instance->run();

@@ -30,7 +30,7 @@ class AreaProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = new Property( 'Area' );
-		$this->property->setPropertyTypeId( '_qty' );
+		$this->property->setPropertyValueType( '_qty' );
 	}
 
 	/**

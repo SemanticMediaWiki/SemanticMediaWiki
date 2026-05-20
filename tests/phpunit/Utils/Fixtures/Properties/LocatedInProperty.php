@@ -17,7 +17,7 @@ class LocatedInProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Located in' );
-		$this->property->setPropertyTypeId( '_wpg' );
+		$this->property->setPropertyValueType( '_wpg' );
 	}
 
 }

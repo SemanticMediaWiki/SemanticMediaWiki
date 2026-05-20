@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\TestEnvironment;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob
@@ -20,22 +20,8 @@ use SMW\Tests\TestEnvironment;
  */
 class FulltextSearchTableUpdateJobTest extends TestCase {
 
-	private $testEnvironment;
-
-	protected function setUp(): void {
-		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
-
-		$this->testEnvironment->registerObject(
-			'Store',
-			$this->getMockBuilder( SQLStore::class )->getMockForAbstractClass()
-		);
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+	private function newStore(): Store {
+		return $this->getMockBuilder( SQLStore::class )->getMockForAbstractClass();
 	}
 
 	public function testCanConstruct() {
@@ -45,7 +31,7 @@ class FulltextSearchTableUpdateJobTest extends TestCase {
 
 		$this->assertInstanceOf(
 			FulltextSearchTableUpdateJob::class,
-			new FulltextSearchTableUpdateJob( $title )
+			new FulltextSearchTableUpdateJob( $title, [], $this->newStore() )
 		);
 	}
 
@@ -57,7 +43,8 @@ class FulltextSearchTableUpdateJobTest extends TestCase {
 
 		$instance = new FulltextSearchTableUpdateJob(
 			$subject->getTitle(),
-			$parameters
+			$parameters,
+			$this->newStore()
 		);
 
 		$this->assertTrue(

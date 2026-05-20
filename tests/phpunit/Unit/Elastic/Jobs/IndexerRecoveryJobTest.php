@@ -54,9 +54,10 @@ class IndexerRecoveryJobTest extends TestCase {
 			->getMock();
 
 		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
+			->getMockForAbstractClass();
 
+		// Cache is also fetched via ApplicationFactory in
+		// pushFromDocument(); mirror the injected cache there.
 		$this->testEnvironment->registerObject( 'Cache', $this->cache );
 
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -87,15 +88,24 @@ class IndexerRecoveryJobTest extends TestCase {
 		parent::tearDown();
 	}
 
+	private function newJob( array $params = [], ?ElasticStore $store = null, ?Cache $cache = null ): IndexerRecoveryJob {
+		return new IndexerRecoveryJob(
+			$this->title,
+			$params,
+			$store ?? $this->store,
+			$cache ?? $this->cache
+		);
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			IndexerRecoveryJob::class,
-			new IndexerRecoveryJob( $this->title )
+			$this->newJob()
 		);
 	}
 
 	public function testAllowRetries() {
-		$instance = new IndexerRecoveryJob( $this->title );
+		$instance = $this->newJob();
 
 		$this->assertFalse(
 			$instance->allowRetries()
@@ -118,12 +128,7 @@ class IndexerRecoveryJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-
-		$instance = new IndexerRecoveryJob(
-			$this->title,
-			[ 'create' => 'Foo#0##' ]
-		);
+		$instance = $this->newJob( [ 'create' => 'Foo#0##' ] );
 
 		$instance->run();
 	}
@@ -144,12 +149,7 @@ class IndexerRecoveryJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-
-		$instance = new IndexerRecoveryJob(
-			$this->title,
-			[ 'delete' => [ 'Foo' ] ]
-		);
+		$instance = $this->newJob( [ 'delete' => [ 'Foo' ] ] );
 
 		$instance->run();
 	}
@@ -167,16 +167,11 @@ class IndexerRecoveryJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->with( $this->stringContains( 'smw:elastic:document:d1ea1c1728561f9d6aeed8c28b9b7617' ) );
 
-		$instance = new IndexerRecoveryJob(
-			$this->title,
-			[ 'index' => 'Foo#0##' ]
-		);
+		$instance = $this->newJob( [ 'index' => 'Foo#0##' ] );
 
 		$instance->run();
 	}
@@ -203,12 +198,7 @@ class IndexerRecoveryJobTest extends TestCase {
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' );
 
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-
-		$instance = new IndexerRecoveryJob(
-			$this->title,
-			[ 'index' => 'Foo#0##' ]
-		);
+		$instance = $this->newJob( [ 'index' => 'Foo#0##' ] );
 
 		$instance->run();
 	}

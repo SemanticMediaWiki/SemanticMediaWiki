@@ -823,7 +823,7 @@ abstract class DataValue {
 			return;
 		}
 
-		foreach ( $options->getOptions() as $key => $value ) {
+		foreach ( $options->toArray() as $key => $value ) {
 			$this->setOption( $key, $value );
 		}
 	}
@@ -875,14 +875,6 @@ abstract class DataValue {
 	}
 
 	/**
-	 * @deprecated since 3.0, use DataValue::hasFeature
-	 * @since 2.4
-	 */
-	public function isEnabledFeature( $feature ) {
-		return $this->hasFeature( $feature );
-	}
-
-	/**
 	 * @since 2.5
 	 */
 	protected function getOptions(): ?Options {
@@ -924,13 +916,6 @@ abstract class DataValue {
 	 */
 	protected function getServiceLinkParams(): array|false {
 		return false;
-	}
-
-	/**
-	 * @deprecated since 3.1, use DataValue::checkConstraints
-	 */
-	protected function checkAllowedValues(): void {
-		$this->checkConstraints();
 	}
 
 	/**

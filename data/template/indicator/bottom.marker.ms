@@ -1,1 +1,0 @@
-<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-{{margin}}: -10px;width: 280px;"></div><div style="padding-top: 2px;padding-bottom:2px;"><span class="smw-issue-label" style="background-color:{{background-color}};color:{{color}};">{{label}}</span></div>

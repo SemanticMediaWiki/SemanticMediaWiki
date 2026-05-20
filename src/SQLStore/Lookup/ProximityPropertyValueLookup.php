@@ -220,7 +220,7 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function getField( Property $property ): array {
-		$typeId = $property->findPropertyTypeID();
+		$typeId = $property->findPropertyValueType();
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType( $typeId );
 
 		$diHandler = $this->store->getDataItemHandlerForDIType(

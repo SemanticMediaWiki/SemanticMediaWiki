@@ -41,7 +41,7 @@ class ByGroupPropertyValuesLookup {
 	 */
 	public function findValueGroups( Property $property, array $subjects ): array {
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
-			$property->findPropertyTypeID()
+			$property->findPropertyValueType()
 		);
 
 		$diHandler = $this->store->getDataItemHandlerForDIType(

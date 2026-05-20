@@ -79,7 +79,7 @@ class PageBuilder {
 		$property = $propertyValue->getDataItem();
 
 		$isBrowsableType = DataTypeRegistry::getInstance()->isBrowsableType(
-			$property->findPropertyTypeID()
+			$property->findPropertyValueType()
 		);
 
 		$list = [];

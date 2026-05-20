@@ -287,7 +287,7 @@ class QueryDependencyLinksStore {
 			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
 		);
 
-		return $this->store->getObjectIds()->getDataItemPoolHashListFor(
+		return $this->store->getObjectIds()->getDataItemsFromList(
 			$targetLinksIdList,
 			$poolRequestOptions
 		);
@@ -349,7 +349,7 @@ class QueryDependencyLinksStore {
 		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
 		$deferredTransactionalUpdate->setFingerprint( $hash );
 
-		$deferredTransactionalUpdate->enabledDeferredUpdate( true );
+		$deferredTransactionalUpdate->isDeferrableUpdate( true );
 		$deferredTransactionalUpdate->waitOnTransactionIdle();
 
 		$deferredTransactionalUpdate->pushUpdate();

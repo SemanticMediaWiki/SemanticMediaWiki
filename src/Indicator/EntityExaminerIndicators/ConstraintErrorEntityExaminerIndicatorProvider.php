@@ -2,6 +2,7 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\Constraint\ConstraintError;
 use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
@@ -10,7 +11,6 @@ use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,14 +34,13 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	private string $errorTitle;
 
-	private TemplateEngine $templateEngine;
-
 	/**
 	 * @since 3.2
 	 */
 	public function __construct(
 		private Store $store,
 		private EntityCache $entityCache,
+		private TemplateParser $templateParser,
 	) {
 	}
 
@@ -121,75 +120,60 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		$this->errorTitle = 'smw-constraint-error';
 		$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_WARNING;
 
-		$this->templateEngine = new TemplateEngine();
-
-		$this->templateEngine->bulkLoad(
-			[
-				'/indicator/composite.line.ms' => 'line_template',
-				'/indicator/bottom.marker.ms' => 'bottom_marker',
-				'/indicator/bottom.sticky.ms' => 'bottom_sticky_template',
-				'/indicator/comment.ms' => 'comment_template',
-				'/constraint/constraint.error.top.line.ms' => 'top_line_template',
-				'/constraint/constraint.sticky.top.ms' => 'sticky_top_template'
-			]
-		);
-
-		$this->templateEngine->compile(
-			'top_line_template',
-			[
-				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left'
-			]
-		);
-
-		$this->templateEngine->compile(
-			'line_template',
-			[
-				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left'
-			]
-		);
-
-		$this->templateEngine->compile(
-			'comment_template',
-			[
-				'comment' => $this->msg( 'smw-constraint-error-suggestions', Message::TEXT, $this->languageCode )
-			]
-		);
-
-		$this->templateEngine->compile(
-			'bottom_marker',
-			[
-				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left',
-				'label' => 'constraint',
-				'background-color' => '#00BCD4',
-				'color' => '#ffffff'
-			]
-		);
+		$margin = isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left';
 
 		if ( count( $errors ) >= self::LOOKUP_LIMIT ) {
 			$top = $this->msg( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ], Message::TEXT, $this->languageCode );
-			$top .= $this->templateEngine->code( 'top_line_template' );
+			$top .= $this->templateParser->processTemplate(
+				'ConstraintTopLine',
+				[
+					'margin' => $margin
+				]
+			);
 
-			$this->templateEngine->compile( 'sticky_top_template', [ 'content' => $top ] );
-			$top = $this->templateEngine->code( 'sticky_top_template' );
+			$top = $this->templateParser->processTemplate(
+				'ConstraintStickyTop',
+				[
+					'html-content' => $top
+				]
+			);
 			$content = '<div><ul><li>' . implode( '</li><li>', $errors ) . '</li></ul></div>';
 		} else {
 			$content = '<div style="padding-top:10px;"><ul><li>' . implode( '</li><li>', $errors ) . '</li></ul></div>';
 		}
 
-		$bottom = $this->templateEngine->code( 'line_template' );
-		$bottom .= $this->templateEngine->code( 'comment_template' );
+		$bottom = $this->templateParser->processTemplate(
+			'Line',
+			[
+				'margin' => $margin
+			]
+		);
+		$bottom .= $this->templateParser->processTemplate(
+			'Comment',
+			[
+				'html-comment' => $this->msg( 'smw-constraint-error-suggestions', Message::TEXT, $this->languageCode )
+			]
+		);
+
+		$bottomMarker = $this->templateParser->processTemplate(
+			'BottomMarker',
+			[
+				'margin' => $margin,
+				'label' => 'constraint',
+				'data-background-color' => '#00BCD4',
+				'color' => '#ffffff'
+			]
+		);
 
 		if ( count( $errors ) >= 3 ) {
-			$this->templateEngine->compile(
-				'bottom_sticky_template',
+			$bottom .= $this->templateParser->processTemplate(
+				'BottomSticky',
 				[
-					'content' => $this->templateEngine->code( 'bottom_marker' )
+					'html-content' => $bottomMarker
 				]
 			);
-
-			$bottom .= $this->templateEngine->code( 'bottom_sticky_template' );
 		} else {
-			$bottom .= $this->templateEngine->code( 'bottom_marker' );
+			$bottom .= $bottomMarker;
 		}
 
 		$title = $this->msg(

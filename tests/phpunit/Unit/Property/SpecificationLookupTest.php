@@ -203,7 +203,7 @@ class SpecificationLookupTest extends TestCase {
 
 	public function testGetPreferredPropertyLabel() {
 		$property = $this->dataItemFactory->newDIProperty( 'SomeProperty' );
-		$property->setPropertyTypeId( '_mlt_rec' );
+		$property->setPropertyValueType( '_mlt_rec' );
 
 		$this->store->expects( $this->once() )
 			->method( 'service' )

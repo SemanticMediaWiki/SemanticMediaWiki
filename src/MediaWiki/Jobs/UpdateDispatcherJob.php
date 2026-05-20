@@ -14,10 +14,15 @@ use SMW\MediaWiki\Job;
 use SMW\RequestOptions;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * Dispatcher to find and create individual UpdateJob instances for a specific
  * subject and its linked entities.
+ *
+ * Partial DI: Store is injected via the JobClasses ObjectFactory spec.
+ * SerializerFactory is still resolved through ApplicationFactory because
+ * it is not registered as a global SMW.X service.
  *
  * @license GPL-2.0-or-later
  * @since 1.9
@@ -42,17 +47,18 @@ class UpdateDispatcherJob extends Job {
 	 */
 	const CHUNK_SIZE = 500;
 
-	private SerializerFactory $serializerFactory;
+	private ?SerializerFactory $serializerFactory = null;
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
-	 * @param int $id job id
 	 */
-	public function __construct( Title $title, $params = [], $id = 0 ) {
-		parent::__construct( 'smw.updateDispatcher', $title, $params, $id );
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store
+	) {
+		parent::__construct( 'smw.updateDispatcher', $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
@@ -60,8 +66,6 @@ class UpdateDispatcherJob extends Job {
 	 * @see Job::run
 	 *
 	 * @since  1.9
-	 *
-	 * @return bool
 	 */
 	public function run(): bool {
 		$this->initServices();
@@ -112,7 +116,6 @@ class UpdateDispatcherJob extends Job {
 
 	private function initServices(): void {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$this->setStore( $applicationFactory->getStore() );
 
 		$this->serializerFactory = $applicationFactory->newSerializerFactory();
 
@@ -122,11 +125,10 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function dispatch_by_id( $id ): void {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
+		$queryDependencyLinksStoreFactory = $this->store->service( 'QueryDependencyLinksStoreFactory' );
 
 		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
-			$applicationFactory->getStore()
+			$this->store
 		);
 
 		$count = $queryDependencyLinksStore->countDependencies(
@@ -158,13 +160,22 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function create_secondary_dispatch_run( $jobs ): void {
-		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$services = MediaWikiServices::getInstance();
+		$titleFactory = $services->getTitleFactory();
+		$jobFactory = $services->getJobFactory();
 		$origin = $this->getTitle()->getPrefixedText();
 
 		foreach ( array_chunk( $jobs, self::CHUNK_SIZE, true ) as $jobList ) {
-			$job = new self(
-				$titleFactory->newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) ),
+			$title = $titleFactory->newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) );
+			if ( $title === null ) {
+				continue;
+			}
+			/** @var Job $job */
+			$job = $jobFactory->newJob(
+				'smw.updateDispatcher',
 				[
+					'namespace' => $title->getNamespace(),
+					'title' => $title->getDBkey(),
 					self::JOB_LIST => $jobList,
 					'origin' => $origin,
 
@@ -209,7 +220,7 @@ class UpdateDispatcherJob extends Job {
 			// Before doing some work, make sure to only use page type properties
 			// as a means to generate a resource (job) action
 			$type = DataTypeRegistry::getInstance()->getDataItemByType(
-				$property->findPropertyTypeId()
+				$property->findPropertyValueType()
 			);
 
 			if ( $type !== DataItem::TYPE_WIKIPAGE ) {
@@ -331,6 +342,8 @@ class UpdateDispatcherJob extends Job {
 			'origin' => $this->getParameter( 'origin', 'UpdateDispatcherJob' )
 		];
 
+		$jobFactory = MediaWikiServices::getInstance()->getJobFactory();
+
 		// We expect non-duplicate subjects in the list and therefore deserialize
 		// without any extra validation
 		foreach ( $subjects as $key => $subject ) {
@@ -354,7 +367,10 @@ class UpdateDispatcherJob extends Job {
 				continue;
 			}
 
-			$this->jobs[] = new UpdateJob( $title, $parameters );
+			$this->jobs[] = $jobFactory->newJob(
+				'smw.update',
+				[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+			);
 		}
 
 		$this->pushToJobQueue();

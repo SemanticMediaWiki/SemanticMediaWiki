@@ -84,7 +84,7 @@ class SearchTableTest extends TestCase {
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_uri' );
+		$property->setPropertyValueType( '_uri' );
 
 		$this->assertFalse(
 			$instance->isExemptedProperty( $property )

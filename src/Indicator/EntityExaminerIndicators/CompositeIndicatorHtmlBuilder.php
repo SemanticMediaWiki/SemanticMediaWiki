@@ -2,13 +2,13 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use RuntimeException;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -28,7 +28,7 @@ class CompositeIndicatorHtmlBuilder {
 	/**
 	 * @since 3.2
 	 */
-	public function __construct( private TemplateEngine $templateEngine ) {
+	public function __construct( private TemplateParser $templateParser ) {
 	}
 
 	/**
@@ -46,10 +46,8 @@ class CompositeIndicatorHtmlBuilder {
 
 		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
 
-		$this->templateEngine->load( '/indicator/tabpanel.tab.ms', 'tabpanel_tab_template' );
-		$this->templateEngine->load( '/indicator/tabpanel.tabset.ms', 'tabpanel_tabset_template' );
-		$content = '';
-		$tabset = '';
+		$panels = [];
+		$tabsetEntries = [];
 
 		$options = [
 			'highlighter_title' => $options['highlighter_title'],
@@ -96,105 +94,113 @@ class CompositeIndicatorHtmlBuilder {
 
 					$indicator['tab_id'] = "itab$k";
 					$indicator['title'] = $value['title'];
-					$indicator['checked'] = $content === '' ? 'checked' : '';
+					$indicator['checked'] = $panels === [];
 					$indicator['severity_class'] = $value['severity_class'] ?? $severityClass;
+					$indicator['content'] = $value['content'];
 
 					$options['error_count'] += $value['error_count'] ?? 0;
 					$options['warning_count'] += $value['warning_count'] ?? 0;
 
-					$content .= $value['content'];
-					$tabset .= $this->tab( $indicator );
+					$panels[] = $this->content( $indicator );
+					$tabsetEntries[] = $this->tab( $indicator );
 				}
 			} else {
 				$options['is_placeholder'] = false;
 				$indicator = $indicatorProvider->getIndicators();
 				$indicator['tab_id'] = "itab" . ( $indicator['id'] ?? 'unkown' );
 
-				$indicator['subject'] = htmlspecialchars( $options['subject'], ENT_QUOTES );
+				$indicator['subject'] = $options['subject'];
 				$indicator['dir'] = $options['dir'];
-				$indicator['checked'] = $content === '' ? 'checked' : '';
+				$indicator['checked'] = $panels === [];
 				$indicator['severity_class'] = $severityClass;
 
-				$content .= $this->content( $indicator );
-				$tabset .= $this->tab( $indicator );
+				$panels[] = $this->content( $indicator );
+				$tabsetEntries[] = $this->tab( $indicator );
 			}
 		}
 
 		if ( $options['is_placeholder'] ) {
 			$content = $this->placeholder( $options );
-		} elseif ( $content !== '' ) {
-			$content = $this->highlighter( $content, $tabset, $options );
+		} elseif ( $panels !== [] ) {
+			$content = $this->highlighter( $panels, $tabsetEntries, $options );
+		} else {
+			$content = '';
 		}
 
 		return $content;
 	}
 
-	private function content( array $indicator ) {
-		$this->templateEngine->compile( 'tabpanel_tab_template', $indicator );
-		return $this->templateEngine->code( 'tabpanel_tab_template' );
+	/**
+	 * Builds a `Tab` partial view-model.
+	 */
+	private function content( array $indicator ): array {
+		return [
+			'data-tab-id' => $indicator['tab_id'],
+			'html-content' => $indicator['content'] ?? ''
+		];
 	}
 
-	private function tab( array $indicator ) {
-		$this->templateEngine->compile( 'tabpanel_tabset_template', $indicator );
-		return $this->templateEngine->code( 'tabpanel_tabset_template' );
+	/**
+	 * Builds a `Tabset` partial view-model.
+	 */
+	private function tab( array $indicator ): array {
+		return [
+			'data-tab-id' => $indicator['tab_id'],
+			'is-checked' => (bool)$indicator['checked'],
+			'data-severity-class' => $indicator['severity_class'],
+			'title' => $indicator['title'] ?? ''
+		];
 	}
 
-	private function highlighter( string $content, string $tabset, array $options ) {
-		$this->templateEngine->load( '/indicator/comment.ms', 'comment_template' );
-
-		$this->templateEngine->compile(
-			'comment_template',
+	private function highlighter( array $panels, array $tabsetEntries, array $options ): string {
+		$top = $this->templateParser->processTemplate(
+			'Comment',
 			[
-				'comment' => $this->msg( [ 'smw-entity-examiner-indicator-suggestions', $options['count'] ], Message::PARSE, $this->languageCode )
+				'html-comment' => $this->msg( [ 'smw-entity-examiner-indicator-suggestions', $options['count'] ], Message::PARSE, $this->languageCode )
 			]
 		);
 
-		$top = $this->templateEngine->code( 'comment_template' );
 		$bottom = '';
 
-		$this->templateEngine->load( '/indicator/tabpanel.ms', 'tabpanel_template' );
-		$this->templateEngine->compile( 'tabpanel_template', [ 'content' => $content, 'tabset' => $tabset ] );
-		$content = $this->templateEngine->code( 'tabpanel_template' );
-
-		$this->templateEngine->load( '/indicator/composite.highlighter.ms', 'highlighter_template' );
-
-		$this->templateEngine->compile(
-			'highlighter_template',
+		$content = $this->templateParser->processTemplate(
+			'Tabpanel',
 			[
-				'title' => $this->msg( [ $options['highlighter_title'], $options['count'] ], Message::PARSE, $this->languageCode ),
-				'content' => htmlspecialchars( $content, ENT_QUOTES ),
-				'top' => htmlspecialchars( $top, ENT_QUOTES ),
-				'bottom' => htmlspecialchars( $bottom, ENT_QUOTES ),
+				'array-tabset' => $tabsetEntries,
+				'array-panels' => $panels
+			]
+		);
+
+		return $this->templateParser->processTemplate(
+			'CompositeHighlighter',
+			[
+				'data-title' => $this->msg( [ $options['highlighter_title'], $options['count'] ], Message::PARSE, $this->languageCode ),
+				'data-content' => $content,
+				'data-top' => $top,
+				'data-bottom' => $bottom,
 				'has_deferred' => $options['has_deferred'] ? 'yes' : 'no',
-				'subject' => htmlspecialchars( $options['subject'], ENT_QUOTES ),
+				'subject' => $options['subject'],
 				'dir' => $options['dir'],
 				'uselang' => $options['uselang'],
 				'count' => $options['count'],
-				'options' => $options['options_raw'],
+				'data-options' => $options['options_raw'],
 
 				// If there is at least one error issue then classify the `issue panel`
 				// as error as well.
 				'severity' => $options['error_count'] > 0 ? 'error' : 'warning'
 			]
 		);
-
-		return $this->templateEngine->code( 'highlighter_template' );
 	}
 
-	private function placeholder( array $options ) {
-		$this->templateEngine->load( '/indicator/composite.placeholder.ms', 'placeholder_template' );
-
-		$this->templateEngine->compile(
-			'placeholder_template',
+	private function placeholder( array $options ): string {
+		return $this->templateParser->processTemplate(
+			'CompositePlaceholder',
 			[
 				'title' => $this->msg( [ $options['placeholder_title'], $options['count'] ], Message::PARSE, $this->languageCode ),
-				'subject' => htmlspecialchars( $options['subject'], ENT_QUOTES ),
+				'subject' => $options['subject'],
 				'dir' => $options['dir'],
 				'uselang' => $options['uselang']
 			]
 		);
-
-		return $this->templateEngine->code( 'placeholder_template' );
 	}
 
 }

@@ -143,7 +143,7 @@ class ParserDataTest extends TestCase {
 		);
 	}
 
-	public function testAddDataValueAndPushSemanticDataToParserOutput() {
+	public function testAddDataValueAndCopyToParserOutput() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		$title = $titleFactory->newFromText( __METHOD__ );
@@ -156,7 +156,7 @@ class ParserDataTest extends TestCase {
 		);
 
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
-		$instance->pushSemanticDataToParserOutput();
+		$instance->copyToParserOutput();
 
 		$title = $titleFactory->newFromText( __METHOD__ . '-1' );
 
@@ -349,7 +349,7 @@ class ParserDataTest extends TestCase {
 			)
 		);
 
-		$import->pushSemanticDataToParserOutput();
+		$import->copyToParserOutput();
 
 		$instance = new ParserData(
 			$titleFactory->newFromText( __METHOD__ ),

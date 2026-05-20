@@ -17,6 +17,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
+use UnexpectedValueException;
 
 /**
  * @license GPL-2.0-or-later
@@ -215,6 +216,12 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			if ( $expElement === null ) {
 				$expElement = $this->exporter->newExpElement( $dataItem );
 			}
+		}
+
+		if ( $expElement === null ) {
+			throw new UnexpectedValueException(
+				'Expected ExpElement for Turtle serialization'
+			);
 		}
 
 		$valueName = TurtleSerializer::getTurtleNameForExpElement( $expElement );

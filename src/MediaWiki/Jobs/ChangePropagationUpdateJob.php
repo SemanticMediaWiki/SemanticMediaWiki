@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Make sufficient use of the job table by only tracking remaining jobs without
@@ -52,7 +53,7 @@ class ChangePropagationUpdateJob extends Job {
 			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
-		$updateJob = new UpdateJob(
+		$updateJob = ApplicationFactory::getInstance()->getJobFactory()->newUpdateJob(
 			$this->getTitle(),
 			array_merge( $this->params, [ 'origin' => 'ChangePropagationUpdateJob' ] )
 		);

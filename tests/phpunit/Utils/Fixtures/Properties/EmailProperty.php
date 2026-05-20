@@ -17,7 +17,7 @@ class EmailProperty extends FixtureProperty {
 	 */
 	public function __construct() {
 		$this->property = Property::newFromUserLabel( 'Email' );
-		$this->property->setPropertyTypeId( '_ema' );
+		$this->property->setPropertyValueType( '_ema' );
 	}
 
 }

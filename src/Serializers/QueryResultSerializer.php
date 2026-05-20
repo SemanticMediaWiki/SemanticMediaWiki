@@ -91,13 +91,13 @@ class QueryResultSerializer implements DispatchableSerializer {
 						$recordDiValues[$label] = [
 							'label'  => $label,
 							'key'    => $property->getKey(),
-							'typeid' => $property->findPropertyTypeID(),
+							'typeid' => $property->findPropertyValueType(),
 							'item'   => []
 						];
 
 						foreach ( $recordValue->getDataItem()->getSemanticData()->getPropertyValues( $property ) as $value ) {
 
-							if ( $property->findPropertyTypeID() === '_qty' ) {
+							if ( $property->findPropertyValueType() === '_qty' ) {
 								$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $value, $property );
 
 								$recordDiValues[$label]['item'][] = [

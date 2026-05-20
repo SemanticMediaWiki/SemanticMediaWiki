@@ -180,12 +180,28 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 **Hooks:**
 
 * **`SMW::GroupPermissions::BeforeInitializationComplete` hook removed.** Permission rights and group assignments are now declared in `extension.json`. Extensions that modified SMW permissions via this hook should use MediaWiki's standard `$wgGroupPermissions` override in `LocalSettings.php` instead.
+* **Four legacy hook names removed.** SMW previously fired these old hook names alongside their modern replacements; they have been deprecated since 2.3-3.1. Extensions that registered handlers under the old names must move them to the modern hook:
+
+  | Removed | Use instead | Deprecated since |
+  |---|---|---|
+  | `smwRefreshDataJobs` | `SMW::SQLStore::BeforeDataRebuildJobInsert` | 2.3 |
+  | `SMWSQLStore3::updateDataAfter` | `SMW::SQLStore::AfterDataUpdateComplete` | 2.3 |
+  | `SMWStore::updateDataBefore` | `SMW::Store::BeforeDataUpdateComplete` | 3.1 |
+  | `SMWStore::updateDataAfter` | `SMW::Store::AfterDataUpdateComplete` | 3.1 |
+
+  The two `SMW::Store::*` modern hooks accept the same arguments as their predecessors; renaming the registration is sufficient. The two `SMW::SQLStore::*` modern hooks pass different arguments, so handler callback signatures must also be updated: `SMW::SQLStore::BeforeDataRebuildJobInsert` prepends a `Store $store` parameter, and `SMW::SQLStore::AfterDataUpdateComplete` appends a `ChangeOp $changeOp` parameter.
 
 **Removed APIs:**
 
+* **`browsebyproperty` and `browsebysubject` API modules removed.** Both were deprecated since 3.0. Use the `smwbrowse` API module (`action=smwbrowse`) instead.
+* **`SMW\MediaWiki\Api\PropertyListByApiRequest` removed.** This was an internal helper for the now-removed `browsebyproperty` module; no other code consumed it. External consumers should query the `smwbrowse` API module directly.
 * **Legacy DML methods on `SMW\MediaWiki\Connection\Database` removed.** Removed methods: `select()`, `selectRow()`, `selectField()`, `estimateRowCount()`, `insert()`, `update()`, `delete()`, `upsert()`, `replace()`, and the `makeSelectOptions()` passthrough. `Database::query()` and `Database::readQuery()` also tightened from `Query|string` to `string` only. SMW's database wrapper is internal infrastructure; external code that called these methods directly on `$store->getConnection( 'mw.db' )` should migrate to MediaWiki core's database services. See [Manual:Database access](https://www.mediawiki.org/wiki/Manual:Database_access).
 * Removed `getTextFromContent()`, `replacePrefixes()`, and `textAlreadyUpdatedForIndex()` from `ExtendedSearchEngine`, matching their removal from MediaWiki core's `SearchEngine`.
 * Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
+* Removed the internal `SMW\Utils\TemplateEngine` class and its bundled `.ms` templates under `data/template/`. All consumers now render through MediaWiki core's `MediaWiki\Html\TemplateParser` with Mustache templates.
+* Removed several internal wrappers around MediaWiki core services. The `SMW\MediaWiki\FileRepoFinder` class (its `findFile()` was a pure `RepoGroup::findFile()` passthrough; `findFromArchive()` had no production callers) and its `ServicesFactory::getFileRepoFinder()` accessor are gone; the single production caller (`SMW\Elastic\Indexer\Attachment\FileHandler`) now takes a `RepoGroup` directly. `SMW\MediaWiki\PageInfoProvider::isProtected()` is removed; callers now use `MediaWikiServices::getInstance()->getRestrictionStore()->isProtected()` directly. The unused `SMW\MediaWiki\RedirectTargetFinder::hasContentHandler()` method is also removed.
+* Removed `SMW\MediaWiki\Permission\PermissionExaminer::setUser()`. The class's `User` is always injected at construction time via `ServicesFactory::newPermissionExaminer()`; the lone caller in `GetPreferences::process()` was redundant. Tests should pass the user as the constructor's second argument.
+* Removed the internal classes `SMW\MediaWiki\Preference\PreferenceExaminer` and `SMW\MediaWiki\Preference\PreferenceAware`, along with `ServicesFactory::newPreferenceExaminer()`. `PreferenceExaminer` was a thin wrapper over MediaWiki core's `UserOptionsLookup`; callers now use `UserOptionsLookup::getOption()` directly. `PreferenceAware` was an interface with no implementors. Neither was part of the public API.
 * Removed internal `MutedInsertQueryBuilder`, `MutedUpdateQueryBuilder`, `MutedDeleteQueryBuilder`, and `MutedReplaceQueryBuilder` (added briefly in the 7.0.0 development cycle). `Database::new*QueryBuilder()` factories now return MediaWiki core's base types directly. See "Transaction profiler warnings no longer silenced" above for the behaviour change.
 * **`RequestOptions::addExtraCondition` callbacks now receive `SqlFragmentBuilder` instead of `Query`.** The new class exposes the same fragment helpers (`eq`, `neq`, `in`, `like`) and `alias` / `index` properties, so untyped callbacks need no changes. Typed callbacks must update the hint to `SMW\MediaWiki\Connection\SqlFragmentBuilder`. `Query` and `Database::newQuery()` are removed.
 * Removed `EntityIdManager::MAX_CACHE_SIZE`. Cache sizes are now per-pool and exposed as `EntityIdManager::DEFAULT_CACHE_SIZES`, configurable via `$smwgEntityCacheSizes`.
@@ -219,6 +235,27 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
   * `DataTypeRegistry::getDataItemId()` — use `getDataItemByType()`
   * `DataTypeRegistry::getDefaultDataItemTypeId()` — use `getDefaultDataItemByType()`
   * `QueryResult::getLink()` — use `getQueryLink()`
+  * `Options::getOptions()` — use `toArray()` (deprecated since 3.0)
+  * `PropertyRegistry::isKnownPropertyId()` — use `isRegistered()` (deprecated since 3.0)
+  * `PropertyRegistry::getPropertyTypeId()` — use `getPropertyValueTypeById()` (deprecated since 3.0)
+  * `PropertyRegistry::registerPropertyDescriptionMsgKeyById()` — use `registerPropertyDescriptionByMsgKey()` (deprecated since 3.0)
+  * `ParserData::setSemanticDataStateToParserOutputProperty()` — use `copyToParserOutput()` (deprecated since 3.0)
+  * `ChangeOp::getCombinedIdListOfChangedEntities()` — use `getChangedEntityIdSummaryList()` (deprecated since 3.0)
+  * `TableChangeOp::getFixedPropertyValueBy()` — use `getFixedPropertyValByField()` (deprecated since 3.0)
+  * `DataTypeRegistry::findTypeId()` — use `findTypeByLabel()` (deprecated since 3.0)
+  * `DataValue::checkAllowedValues()` — use `checkConstraints()` (deprecated since 3.1)
+  * `EntityIdManager::getDataItemPoolHashListFor()` — use `getDataItemsFromList()` (deprecated since 3.0)
+  * `CallableUpdate::enabledDeferredUpdate()` — use `isDeferrableUpdate()` (deprecated since 3.0)
+  * `TaskHandler::setEnabledFeatures()` — use `setFeatureSet()` (deprecated since 3.1)
+  * `MwCollaboratorFactory::newEditInfoProvider()` — use `newEditInfo()` (deprecated since 3.1)
+  * `LocalLanguage::fetchByLanguageCode()` — use `fetch()` (deprecated since 3.0)
+  * `LocalLanguage::getPropertyId()`, `findMonth()`, `getMonthLabel()` — use `getPropertyIdByLabel()`, `findMonthNumberByLabel()`, `getMonthLabelByNumber()`
+  * `LoadBalancerConnectionProvider::asConnectionRef()` (deprecated since 5.0)
+  * `ParserData::pushSemanticDataToParserOutput()` — use `copyToParserOutput()` (deprecated since 3.0)
+  * `DataValue::isEnabledFeature()` — use `hasFeature()` (deprecated since 3.0)
+  * `TaskHandler::isEnabledFeature()` — use `hasFeature()` (deprecated since 3.1)
+  * `Property::setPropertyTypeId()` — use `setPropertyValueType()` (deprecated since 3.0)
+  * `Property::findPropertyTypeId()` — use `findPropertyValueType()` (deprecated since 3.0)
 
 ### Deprecations
 
@@ -284,6 +321,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### Bug fixes
 
+* Fixed a stray trailing space in `'edit '` that caused the edit-protection check in `ParserAfterTidy::process()` to silently match no pages since the migration off the deprecated `Title::isProtected()` API. With the typo removed, edit-protected pages once again trigger continued post-parse processing, matching the behaviour before that migration.
 * Fixed incorrect timezone offset for negative half-hour timezones (e.g., Newfoundland `-3:30`): the 30-minute component was always added positively, producing `-2.5` instead of `-3.5` ([#6478](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6478))
 * Fixed CSV export producing malformed output when values contain the delimiter character ([#6343](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6343))
 * Fixed `#ask` sum format failing when encountering non-numeric values instead of treating them as zero ([#6253](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6253))

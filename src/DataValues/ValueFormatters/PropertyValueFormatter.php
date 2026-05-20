@@ -291,7 +291,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 	}
 
 	private function hintPreferredLabelUse(): string {
-		if ( !$this->dataValue->isEnabledFeature( SMW_DV_PROV_LHNT ) ||
+		if ( !$this->dataValue->hasFeature( SMW_DV_PROV_LHNT ) ||
 			$this->dataValue->getOption( PropertyValue::OPT_NO_PREF_LHNT ) ) {
 			return '';
 		}
