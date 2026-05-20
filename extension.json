@@ -203,13 +203,28 @@
 		"Ask": "SMW\\MediaWiki\\Specials\\SpecialAsk",
 		"FacetedSearch": "SMW\\MediaWiki\\Specials\\SpecialFacetedSearch",
 		"Browse": "SMW\\MediaWiki\\Specials\\SpecialBrowse",
-		"Concepts": "SMW\\MediaWiki\\Specials\\SpecialConcepts",
-		"PageProperty": "SMW\\MediaWiki\\Specials\\SpecialPageProperty",
+		"Concepts": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialConcepts",
+			"services": [ "SMW.Store" ]
+		},
+		"PageProperty": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialPageProperty",
+			"services": [ "SMW.Store" ]
+		},
 		"SearchByProperty": "SMW\\MediaWiki\\Specials\\SpecialSearchByProperty",
 		"PropertyLabelSimilarity": "SMW\\MediaWiki\\Specials\\SpecialPropertyLabelSimilarity",
-		"ProcessingErrorList": "SMW\\MediaWiki\\Specials\\SpecialProcessingErrorList",
-		"MissingRedirectAnnotations": "SMW\\MediaWiki\\Specials\\SpecialMissingRedirectAnnotations",
-		"ConstraintErrorList": "SMW\\MediaWiki\\Specials\\SpecialConstraintErrorList",
+		"ProcessingErrorList": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialProcessingErrorList",
+			"services": [ "SMW.Settings" ]
+		},
+		"MissingRedirectAnnotations": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialMissingRedirectAnnotations",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
+		"ConstraintErrorList": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialConstraintErrorList",
+			"services": [ "SMW.Settings" ]
+		},
 		"Types": "SMW\\MediaWiki\\Specials\\SpecialTypes",
 		"URIResolver": "SMW\\MediaWiki\\Specials\\SpecialURIResolver",
 		"Properties": "SMW\\MediaWiki\\Specials\\SpecialProperties",

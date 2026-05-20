@@ -11,6 +11,7 @@ use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * This special page implements a view on a object-relation pair, i.e. a page that
@@ -26,7 +27,12 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class SpecialPageProperty extends SpecialPage {
 
-	public function __construct() {
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly Store $store
+	) {
 		parent::__construct( 'PageProperty', '', false );
 	}
 
@@ -86,6 +92,9 @@ class SpecialPageProperty extends SpecialPage {
 	}
 
 	private function load( Options $options ): void {
+		// Partial DI: MwCollaboratorFactory is still resolved through
+		// ApplicationFactory because it is not registered as a global SMW.X
+		// service.
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 
@@ -144,7 +153,7 @@ class SpecialPageProperty extends SpecialPage {
 
 			$dataItem = $pagename !== '' ? $subject->getDataItem() : null;
 
-			$results = $applicationFactory->getStore()->getPropertyValues(
+			$results = $this->store->getPropertyValues(
 				$dataItem,
 				$propertyValue->getDataItem(),
 				$requestOptions

@@ -8,7 +8,8 @@ use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\Localizer\Message;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\Store;
 use SMW\Utils\HtmlColumns;
 
 /**
@@ -19,7 +20,13 @@ use SMW\Utils\HtmlColumns;
  */
 class SpecialMissingRedirectAnnotations extends SpecialPage {
 
-	public function __construct() {
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings
+	) {
 		parent::__construct( 'MissingRedirectAnnotations' );
 	}
 
@@ -32,19 +39,17 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 
 		$output->addModuleStyles( [ 'ext.smw.styles' ] );
 
-		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		$store = $applicationFactory->getStore();
 		$linker = smwfGetLinker();
 
-		$sortLetter = $store->service( 'SortLetter' );
-		$missingRedirectLookup = $store->service( 'MissingRedirectLookup' );
+		$sortLetter = $this->store->service( 'SortLetter' );
+		$missingRedirectLookup = $this->store->service( 'MissingRedirectLookup' );
 
 		$missingRedirectLookup->noSort();
 
 		$missingRedirectLookup->setNamespaceMatrix(
-			$applicationFactory->getSettings()->get( 'smwgNamespacesWithSemanticLinks' )
+			$this->settings->get( 'smwgNamespacesWithSemanticLinks' )
 		);
 
 		$rows = $missingRedirectLookup->findMissingRedirects();
