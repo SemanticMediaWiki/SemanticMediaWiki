@@ -2,13 +2,19 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use Onoi\Cache\Cache;
+use Psr\Log\LoggerInterface;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Export\Exporter;
+use SMW\IteratorFactory;
 use SMW\MediaWiki\Job;
+use SMW\Property\SpecificationLookup as PropertySpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
+use SMW\Store;
 
 /**
  * `ChangePropagationDispatchJob` dispatches update jobs via `ChangePropagationUpdateJob`
@@ -33,6 +39,11 @@ use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
  * during tests that would lead to an out-of-memory) to store a list of
  * entities that require an update.
  *
+ * Partial DI: Store, Cache, PropertySpecificationLookup and IteratorFactory
+ * are injected via the JobClasses ObjectFactory spec. The MediaWikiLogger is
+ * still resolved lazily through ApplicationFactory because it is not a
+ * registered global service.
+ *
  * @license GPL-2.0-or-later
  * @since 3.0
  *
@@ -53,8 +64,16 @@ class ChangePropagationDispatchJob extends Job {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( Title $title, array $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store,
+		private readonly Cache $cache,
+		private readonly PropertySpecificationLookup $propertySpecificationLookup,
+		private readonly IteratorFactory $iteratorFactory
+	) {
 		parent::__construct( 'smw.changePropagationDispatch', $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
@@ -69,7 +88,13 @@ class ChangePropagationDispatchJob extends Job {
 			$subject
 		);
 
-		$changePropagationDispatchJob = new self( $subject->getTitle(), $params );
+		// Use MediaWiki's JobFactory so the JobClasses ObjectFactory spec
+		// resolves the services declared for this job.
+		$changePropagationDispatchJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			'smw.changePropagationDispatch',
+			$subject->getTitle(),
+			$params
+		);
 		$changePropagationDispatchJob->lazyPush();
 
 		return true;
@@ -194,16 +219,13 @@ class ChangePropagationDispatchJob extends Job {
 
 		$subject = WikiPage::newFromTitle( $this->getTitle() );
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$iteratorFactory = $applicationFactory->getIteratorFactory();
-
-		$applicationFactory->getMediaWikiLogger()->info(
+		$this->getLogger()->info(
 			'ChangePropagationDispatchJob on ' . $subject->getHash()
 		);
 
 		$changePropagationEntityLookup = new ChangePropagationEntityLookup(
-			$applicationFactory->getStore(),
-			$iteratorFactory
+			$this->store,
+			$this->iteratorFactory
 		);
 
 		$changePropagationEntityLookup->isTypePropagation(
@@ -238,7 +260,7 @@ class ChangePropagationDispatchJob extends Job {
 			$appendIterator->count()
 		);
 
-		$chunkedIterator = $iteratorFactory->newChunkedIterator(
+		$chunkedIterator = $this->iteratorFactory->newChunkedIterator(
 			$appendIterator,
 			self::CHUNK_SIZE
 		);
@@ -263,7 +285,8 @@ class ChangePropagationDispatchJob extends Job {
 
 		$checkSum = md5( $contents );
 
-		$changePropagationDispatchJob = new ChangePropagationDispatchJob(
+		$changePropagationDispatchJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			'smw.changePropagationDispatch',
 			$this->getTitle(),
 			[
 				'data' => $contents
@@ -276,14 +299,11 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function dispatchFromData( WikiPage $subject, $data ): bool {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$cache = $applicationFactory->getCache();
-
 		$property = Property::newFromUserLabel(
 			$this->getTitle()->getText()
 		);
 
-		$semanticData = $applicationFactory->getStore()->getSemanticData(
+		$semanticData = $this->store->getSemanticData(
 			$subject
 		);
 
@@ -291,19 +311,20 @@ class ChangePropagationDispatchJob extends Job {
 
 		// SemanticData hasn't been updated, re-enter the cycle to ensure that
 		// the update of the property took place
-		if ( $cache->fetch( $key ) === false ) {
+		if ( $this->cache->fetch( $key ) === false ) {
 
-			$cache->save( $key, 1, 60 * 60 * 24 );
+			$this->cache->save( $key, 1, 60 * 60 * 24 );
 			$params = $this->params;
 
-			$changePropagationDispatchJob = new ChangePropagationDispatchJob(
+			$changePropagationDispatchJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+				'smw.changePropagationDispatch',
 				$this->getTitle(),
 				$params
 			);
 
 			$changePropagationDispatchJob->insert();
 
-			$applicationFactory->getMediaWikiLogger()->info(
+			$this->getLogger()->info(
 				'ChangePropagationDispatchJob missing update marker, retry on ' . $subject->getHash()
 			);
 
@@ -321,11 +342,9 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function dispatchFromSchema( WikiPage $subject, $property_key ): bool {
-		$store = ApplicationFactory::getInstance()->getStore();
-
 		// Find all properties that point to the schema and hereby require
 		// an update (!! using the inverse relationship)
-		$dataItems = $store->getPropertyValues(
+		$dataItems = $this->store->getPropertyValues(
 			$subject,
 			new Property( $property_key, true )
 		);
@@ -333,9 +352,10 @@ class ChangePropagationDispatchJob extends Job {
 		// Scheduling the actual dispatch for those properties connected to
 		// the schema change
 		foreach ( $dataItems as $dataItem ) {
-
-			$changePropagationDispatchJob = new ChangePropagationDispatchJob(
-				$dataItem->getTitle()
+			$changePropagationDispatchJob = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+				'smw.changePropagationDispatch',
+				$dataItem->getTitle(),
+				[]
 			);
 
 			$changePropagationDispatchJob->insert();
@@ -365,9 +385,7 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function commitSpecificationChangePropagationAsJob( WikiPage $subject, $count ): void {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
+		$connection = $this->store->getConnection( 'mw.db' );
 		$transactionTicket = $connection->getEmptyTransactionTicket( __METHOD__ );
 
 		$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
@@ -390,23 +408,25 @@ class ChangePropagationDispatchJob extends Job {
 		//
 		// The marker will be removed after running the ChangePropagationUpdateJob
 		// on the same subject.
-		$applicationFactory->getCache()->save(
+		$this->cache->save(
 			smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() ),
 			$count,
 			60 * 60 * 24
 		);
 
-		$applicationFactory->getPropertySpecificationLookup()->invalidateCache( $subject );
+		$this->propertySpecificationLookup->invalidateCache( $subject );
 
 		// Make sure the cache is reset in case runJobs.php --wait is used to avoid
 		// reusing outdated type assignments
-		$applicationFactory->getStore()->clear();
+		$this->store->clear();
 	}
 
-	private function newChangePropagationUpdateJob( ?Title $title, array $parameters ): ChangePropagationClassUpdateJob|ChangePropagationUpdateJob {
+	private function newChangePropagationUpdateJob( ?Title $title, array $parameters ): Job {
 		$namespace = $this->getTitle()->getNamespace();
 		$parameters += [ 'origin' => 'ChangePropagationDispatchJob' ];
 
+		// Both targets have no service deps; they are excluded from the
+		// JobClasses spec overhaul and can be constructed directly.
 		if ( $namespace === NS_CATEGORY ) {
 			return new ChangePropagationClassUpdateJob( $title, $parameters );
 		}
@@ -415,6 +435,14 @@ class ChangePropagationDispatchJob extends Job {
 			$title,
 			$parameters
 		);
+	}
+
+	private function getLogger(): LoggerInterface {
+		if ( $this->logger === null ) {
+			$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
+		}
+
+		return $this->logger;
 	}
 
 }

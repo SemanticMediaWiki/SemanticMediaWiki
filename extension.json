@@ -230,7 +230,15 @@
 			"class": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
 			"services": [ "SMW.Store" ]
 		},
-		"smw.changePropagationDispatch": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
+		"smw.changePropagationDispatch": {
+			"class": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
+			"services": [
+				"SMW.Store",
+				"SMW.Cache",
+				"SMW.PropertySpecificationLookup",
+				"SMW.IteratorFactory"
+			]
+		},
 		"smw.changePropagationUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationUpdateJob",
 		"smw.changePropagationClassUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationClassUpdateJob",
 		"smw.deferredConstraintCheckUpdateJob": "SMW\\MediaWiki\\Jobs\\DeferredConstraintCheckUpdateJob",
