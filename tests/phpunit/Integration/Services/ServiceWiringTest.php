@@ -56,6 +56,24 @@ use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\Specials\SpecialAdmin;
+use SMW\MediaWiki\Specials\SpecialAsk;
+use SMW\MediaWiki\Specials\SpecialBrowse;
+use SMW\MediaWiki\Specials\SpecialConcepts;
+use SMW\MediaWiki\Specials\SpecialConstraintErrorList;
+use SMW\MediaWiki\Specials\SpecialFacetedSearch;
+use SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations;
+use SMW\MediaWiki\Specials\SpecialOWLExport;
+use SMW\MediaWiki\Specials\SpecialPageProperty;
+use SMW\MediaWiki\Specials\SpecialPendingTaskList;
+use SMW\MediaWiki\Specials\SpecialProcessingErrorList;
+use SMW\MediaWiki\Specials\SpecialProperties;
+use SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity;
+use SMW\MediaWiki\Specials\SpecialSearchByProperty;
+use SMW\MediaWiki\Specials\SpecialTypes;
+use SMW\MediaWiki\Specials\SpecialUnusedProperties;
+use SMW\MediaWiki\Specials\SpecialURIResolver;
+use SMW\MediaWiki\Specials\SpecialWantedProperties;
 use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\ParserFunctionFactory;
@@ -212,6 +230,43 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'smwbrowse', Browse::class ],
 			[ 'ask', Ask::class ],
 			[ 'askargs', AskArgs::class ],
+		];
+	}
+
+	/**
+	 * Resolves each SMW SpecialPages entry through MediaWiki's
+	 * SpecialPageFactory so the ObjectFactory spec (and any 'services' array
+	 * attached to it) wires successfully and produces the expected
+	 * SpecialPage class.
+	 *
+	 * @dataProvider specialPageProvider
+	 */
+	public function testSpecialPageResolvesToExpectedType( string $specialPageName, string $expectedType ): void {
+		$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage( $specialPageName );
+
+		$this->assertInstanceOf( $expectedType, $specialPage );
+	}
+
+	public function specialPageProvider(): array {
+		return [
+			[ 'ExportRDF', SpecialOWLExport::class ],
+			[ 'SMWAdmin', SpecialAdmin::class ],
+			[ 'PendingTaskList', SpecialPendingTaskList::class ],
+			[ 'Ask', SpecialAsk::class ],
+			[ 'FacetedSearch', SpecialFacetedSearch::class ],
+			[ 'Browse', SpecialBrowse::class ],
+			[ 'Concepts', SpecialConcepts::class ],
+			[ 'PageProperty', SpecialPageProperty::class ],
+			[ 'SearchByProperty', SpecialSearchByProperty::class ],
+			[ 'PropertyLabelSimilarity', SpecialPropertyLabelSimilarity::class ],
+			[ 'ProcessingErrorList', SpecialProcessingErrorList::class ],
+			[ 'MissingRedirectAnnotations', SpecialMissingRedirectAnnotations::class ],
+			[ 'ConstraintErrorList', SpecialConstraintErrorList::class ],
+			[ 'Types', SpecialTypes::class ],
+			[ 'URIResolver', SpecialURIResolver::class ],
+			[ 'Properties', SpecialProperties::class ],
+			[ 'UnusedProperties', SpecialUnusedProperties::class ],
+			[ 'WantedProperties', SpecialWantedProperties::class ],
 		];
 	}
 
