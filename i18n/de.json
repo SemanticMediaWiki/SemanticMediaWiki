@@ -967,8 +967,6 @@
 	"apihelp-smwinfo-summary": "API-Modul zum Abrufen statistischer Daten und weiterer Metainformationen bezüglich der Nutzung von Semantic MediaWiki.",
 	"apihelp-ask-summary": "API-Modul zum Abfragen eines Wikis mit der Abfragesprache von Semantic MediaWiki.",
 	"apihelp-askargs-summary": "API-Modul zum Abfragen eines Wikis mit der Abfragesprache von Semantic MediaWiki als Liste von Bedingungen, Ausgabeanweisungen und Parametern.",
-	"apihelp-browsebyproperty-summary": "API-Modul zum Abrufen von Informationen zu einem Attribut oder einer Liste von Attributen.",
-	"apihelp-browsebysubject-summary": "API-Modul zum Abrufen von Informationen zu einem Objekt (Seite oder Unterobjekt).",
 	"apihelp-smwtask-summary": "API-Modul zum Ausführen Semantic MediaWiki betreffender Aufgaben, das nur von der Software selbst und nicht von Außen genutzt wird.",
 	"apihelp-smwbrowse-summary": "API-Modul zur Unterstützung von Aktivitäten beim Browsen für unterschiedliche Objekttypen in Semantic MediaWiki.",
 	"apihelp-ask-param-api-version": "Ausgabeformat:\n;2:Rückwärtskompatibles Format, das {} für Ergebnislisten verwendet.\n;3:Experimentelles Format, das [] für Ergebnislisten verwendet.",

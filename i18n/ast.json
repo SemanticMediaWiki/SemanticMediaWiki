@@ -621,8 +621,6 @@
 	"smw-category-invalid-redirect-target": "La categoría «$1» contién un destín de redireición inválidu a un espaciu de nomes que nun ye de categoría.",
 	"apihelp-ask-summary": "Módulu de la API pa consultar Semantic MediaWiki usando'l llinguaxe Ask.",
 	"apihelp-askargs-summary": "Módulu de la API pa consultar Semantic MediaWiki usando'l llinguaxe Ask como llista de condiciones, visualizaciones y parámetros.",
-	"apihelp-browsebyproperty-summary": "Módulu de la API pa recuperar información sobre dalguna propiedá o llista de propiedaes.",
-	"apihelp-browsebysubject-summary": "Módulu de la API pa recuperar información sobre dalguna tema.",
 	"apihelp-smwtask-summary": "Módulu de la API pa executar xeres rellacionaes con Semantic MediaWiki.",
 	"apihelp-smwbrowse-summary": "Módulu de la API pa encontu de les actividaes de navegación pa distintos tipos d'entidaes de Semantic MediaWiki.",
 	"smw-property-page-list-count": "Amosando $1 {{PLURAL:$1|páxina qu'usa|páxines qu'usen}} esta propiedá.",

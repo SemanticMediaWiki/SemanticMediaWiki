@@ -948,8 +948,6 @@
 	"apihelp-smwinfo-summary": "Modul API za pridobivanje informacij o statističnih podatkih Semantičnega MediaWikija in drugih metainformacijah.",
 	"apihelp-ask-summary": "Modul API za poizvedovanje po Semantičnem MediaWikiju z uporabo jezika »ask«.",
 	"apihelp-askargs-summary": "Modul API za poizvedovanje po Semantičnem MediaWikiju z uporabo jezika »ask« kot seznama pogojev, izpisov in parametrov.",
-	"apihelp-browsebyproperty-summary": "Modul API za pridobivanje informacij o lastnostih ali seznamu lastnosti.",
-	"apihelp-browsebysubject-summary": "Modul API za pridobivanje informacij o temi.",
 	"apihelp-smwtask-summary": "Modul API za izvajanje opravil, povezanih s Semantićnim MediaWikijem (samo za interno uporabo, ne za javno uporabo).",
 	"apihelp-smwbrowse-summary": "Modul API za podporo dejavnosti brskanja za različne vrste entitet v Semantičnem MediaWikiju.",
 	"apihelp-ask-param-api-version": "Oblikovanje izhoda:\n;2:Vzvratno združljiva oblika z uporabo {} za seznam zadetkov.\n;3:Poskusna oblika z uporabo [] za seznam zadetkov.",

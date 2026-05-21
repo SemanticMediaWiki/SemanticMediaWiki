@@ -833,8 +833,6 @@
 	"apihelp-smwinfo-summary": "Модуль API для получения информации о статистике Semantic MediaWiki и другой метаинформации.",
 	"apihelp-ask-summary": "Модуль API для запроса Semantic MediaWiki с использованием языка запросов.",
 	"apihelp-askargs-summary": "Модуль API для запроса Semantic MediaWiki с использованием языка запросов в качестве списка условий, распечаток и параметров.",
-	"apihelp-browsebyproperty-summary": "Модуль API для получения информации о свойстве или списке свойств.",
-	"apihelp-browsebysubject-summary": "Модуль API для получения информации о предмете.",
 	"apihelp-smwtask-summary": "Модуль API для выполнения задач, связанных с Semantic MediaWiki (только для внутреннего, не для публичного использования).",
 	"apihelp-smwbrowse-summary": "Модуль API для поддержки действий просмотра для различных типов объектов в Semantic MediaWiki.",
 	"smw-api-invalid-parameters": "Недопустимые параметры, \"$1\"",

@@ -992,8 +992,6 @@
 	"apihelp-smwinfo-summary": "检索语义MediaWiki有关统计信息和其他元信息的API模块。",
 	"apihelp-ask-summary": "使用询问语法查询语义MediaWiki的API模块。",
 	"apihelp-askargs-summary": "使用条件、打印输出和参数列表形式的询问语法查询语义MediaWiki的API模块。",
-	"apihelp-browsebyproperty-summary": "检索属性或属性列表有关信息的API模块。",
-	"apihelp-browsebysubject-summary": "检索主体有关信息的API模块。",
 	"apihelp-smwtask-summary": "执行语义MediaWiki相关任务的API模块（仅供内部使用，不供公开使用）。",
 	"apihelp-smwbrowse-summary": "支持浏览语义MediaWiki内不同实体类型的活动的API模块。",
 	"apihelp-ask-param-api-version": "输出格式：\n;2:向后兼容格式，结果列表使用{}。\n;3:实验格式，结果列表使用[]。",

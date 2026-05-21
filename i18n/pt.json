@@ -948,8 +948,6 @@
 	"apihelp-smwinfo-summary": "Módulo da API para obter informação sobre estatísticas e outra metainformação do MediaWiki Semântico.",
 	"apihelp-ask-summary": "Módulo da API para consultar o MediaWiki Semântico usando a linguagem \"ask\".",
 	"apihelp-askargs-summary": "Módulo da API para consultar o MediaWiki Semântico usando a linguagem \"ask\" na forma de lista de condições, propriedades a mostrar e parâmetros.",
-	"apihelp-browsebyproperty-summary": "Módulo da API para obter informação sobre uma propriedade ou lista de propriedades.",
-	"apihelp-browsebysubject-summary": "Módulo da API para obter informação sobre um assunto.",
 	"apihelp-smwtask-summary": "Módulo da API para executar tarefas relacionadas com o MediaWiki Semântico (só para uso interno, não para uso público).",
 	"apihelp-smwbrowse-summary": "Módulo da API para suportar atividades de navegação para diferentes tipos de entidades no MediaWiki Semântico.",
 	"apihelp-ask-param-api-version": "Formatação da saída:\n;2:Formato compatível com versões anteriores, usando {} para a lista de resultados.\n;3:Formato experimental, usando [] como lista de resultados.",

@@ -942,8 +942,6 @@
 	"apihelp-smwinfo-summary": "Semantic MediaWiki istatistikleri ve diğer meta bilgiler hakkında bilgi almak için API modülü.",
 	"apihelp-ask-summary": "Sorgulama dilini kullanarak Semantic MediaWiki'yi sorgulamak için API modülü.",
 	"apihelp-askargs-summary": "Koşullar, çıkışları ve parametreler listesi olarak ask dilini kullanarak Semantic MediaWiki'yi sorgulamak için API modülü.",
-	"apihelp-browsebyproperty-summary": "Bir özellik veya özellik listesi hakkında bilgi almak için API modülü.",
-	"apihelp-browsebysubject-summary": "Bir konu hakkında bilgi almak için API modülü.",
 	"apihelp-smwtask-summary": "Semantic MediaWiki ile ilgili görevleri yürütmek için API modülü (yalnızca dahili kullanım için, genel kullanım için değil).",
 	"apihelp-smwbrowse-summary": "Semantic MediaWiki'deki farklı varlık türleri için göz atma etkinliklerini destekleyen API modülü.",
 	"apihelp-ask-param-api-version": "Çıkış biçimlendirme:\n;2:Sonuç listesi için {} kullanarak geriye dönük uyumlu biçim.\n;3:Sonuç listesi olarak [] kullanılarak deneysel biçim.",

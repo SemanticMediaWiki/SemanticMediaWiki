@@ -567,8 +567,6 @@
 	"smw-category-invalid-redirect-target": "Kategoria „$1” zawiera nieprawidłowy cel przekierowania do przestrzeni nazw innej niż kategoria.",
 	"smw-postproc-queryref": "Semantyczna MediaWiki zainicjuje odświeżanie strony z powodu wymaganego przetwarzania zapytania.",
 	"apihelp-smwinfo-summary": "Moduł API do pobierania informacji o statystykach Semantic MediaWiki i innych metainformacjach.",
-	"apihelp-browsebyproperty-summary": "Moduł API do pobierania informacji o właściwości lub liście właściwości.",
-	"apihelp-browsebysubject-summary": "Moduł API do pobierania informacji o temacie.",
 	"apihelp-smwtask-summary": "Moduł API do wykonywania zadań związanych z Semantic MediaWiki (tylko do użytku wewnętrznego, nie publicznego).",
 	"smw-api-invalid-parameters": "Nieprawidłowe parametry, „$1”",
 	"smw-property-page-list-count": "Wyświetlanie $1 {{PLURAL:$1|strony|stron}} przy użyciu tej właściwości.",

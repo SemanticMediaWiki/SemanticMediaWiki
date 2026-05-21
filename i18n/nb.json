@@ -941,8 +941,6 @@
 	"apihelp-smwinfo-summary": "API-modul for å hente informasjon om Semantic MediaWiki-statistikk og annen metainformasjon.",
 	"apihelp-ask-summary": "API-modul for å kjøre spørringer mot Semantic MediaWiki med ask-språket.",
 	"apihelp-askargs-summary": "API-modul for å kjøre spørringer mot Semantic MediaWiki med ask-språket som en liste over forutsetninger, printouts og parametre.",
-	"apihelp-browsebyproperty-summary": "API-modul for å hente informasjon om en egenskap eller en liste over egenskaper.",
-	"apihelp-browsebysubject-summary": "API-modul for å hente informasjon om et subjekt.",
 	"apihelp-smwtask-summary": "API-modul for å utføre Semantic MediaWiki-relaterte oppgaver (kun for intern bruk, ikke offentlig bruk).",
 	"apihelp-smwbrowse-summary": "API-modul for å støtte leseaktiviteter for forskjellige entitetstyper i Semantic MediaWiki.",
 	"apihelp-ask-param-api-version": "Resultatformat:\n;2:Bakoverkompatibelt format som bruker {} for resultatlista.\n;3:Eksperimentelt format som bruker [] for resultatlista.",

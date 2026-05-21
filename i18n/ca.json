@@ -773,8 +773,6 @@
 	"apihelp-smwinfo-summary": "Mòdul API per recuperar informació d'estadístiques de Semantic MediaWiki i d'altres metadades.",
 	"apihelp-ask-summary": "Mòdul API per consultar Semantic MediaWiki fent servir el llenguatge Ask.",
 	"apihelp-askargs-summary": "Mòdul API per fer consultes a Semantic MediaWiki utilitzant el llenguatge Ask com una llista de condicions, impressions i paràmetres.",
-	"apihelp-browsebyproperty-summary": "Mòdul API per recuperar informació d'una propietat o d'una llista de propietats.",
-	"apihelp-browsebysubject-summary": "Mòdul API per recuperar informació d'un tema.",
 	"apihelp-smwtask-summary": "Mòdul API per executar tasques relacionades amb Semantic MediaWiki (només per a ús intern, no per a ús públic).",
 	"apihelp-smwbrowse-summary": "Mòdul API per permetre les activitats de navegació de diferents tipus d'entitat a Semantic MediaWiki.",
 	"apihelp-ask-param-api-version": "Format de sortida:\n;2:Compatibilitat enrere fent servir {} per a la llista de resultats.\n;3:Format experimental que utilitza [] per a la llista de resultats.",

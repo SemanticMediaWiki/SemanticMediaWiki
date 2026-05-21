@@ -969,8 +969,6 @@
 	"apihelp-smwinfo-summary": "檢索有關 Semantic MediaWiki 統計資訊與其它詮釋資訊的 API 模組。",
 	"apihelp-ask-summary": "使用請求語言來查詢 Semantic MediaWiki 的 API 模組。",
 	"apihelp-askargs-summary": "使用請求語言作為條件、輸出內容、參數的清單，來查詢 Semantic MediaWiki 的 API 模組。",
-	"apihelp-browsebyproperty-summary": "檢索有關屬性或是屬性清單資訊的 API 模組。",
-	"apihelp-browsebysubject-summary": "檢索有關主題資訊的 API 模組。",
 	"apihelp-smwtask-summary": "執行 Semantic MediaWiki 相關任務的 API 模組（僅用於內部，不適用公共）。",
 	"apihelp-smwbrowse-summary": "支援在 Semantic MediaWiki 瀏覽不同實體類型行動的 API 模組。",
 	"apihelp-ask-param-api-version": "輸出格式：\n;2：用於結果清單，使用 {} 的後端相容格式。\n;3：使用 [] 來作為結果清單的實驗格式。",

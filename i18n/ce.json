@@ -926,8 +926,6 @@
 	"apihelp-smwinfo-summary": "API модуль Semantic MediaWiki статистиках а, кхин метаинформацех а лаьцна информаци схьаэца.",
 	"apihelp-ask-summary": "API модуль дехарш дан Semantic MediaWiki дехарийн мотт лелош.",
 	"apihelp-askargs-summary": "API модуль Semantic MediaWiki дехарш дан, дехарийн мотт делош, хьелашна, зорбанашна, параметрашна лерина могӀам санна.",
-	"apihelp-browsebyproperty-summary": "API модуль башхаллех йа башхаллийн могӀамех лаьцна информаци схьаэца.",
-	"apihelp-browsebysubject-summary": "API модуль предметех лаьцна информаци схьаэца.",
 	"apihelp-smwtask-summary": "Semantic MediaWiki-ца доьзна гӀуллакхаш кхочушдаран API модуль (чоьхьара бен, массо а лелош йац).",
 	"apihelp-smwbrowse-summary": "Semantic MediaWiki чохь тайп-тайпанчу объекташна хьажаран гӀуллакхашна гӀо дан API модуль.",
 	"apihelp-ask-param-api-version": "Арахецаран формат:\n;2:ТӀехьа нийса формат {} лелош жамӀийн могӀамна.\n;3:Экспериментан формат [] лелош жамӀийн могӀамна.",
