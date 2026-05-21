@@ -162,10 +162,13 @@ class ElasticFactory {
 		}
 
 		$connection = $store->getConnection( 'elastic' );
+		$mwServices = MediaWikiServices::getInstance();
 
 		$indexer = new Indexer(
 			$store,
-			$this->newBulk( $connection )
+			$this->newBulk( $connection ),
+			$mwServices->getTitleFactory(),
+			$mwServices->getRevisionLookup()
 		);
 
 		if ( $messageReporter === null ) {
@@ -344,6 +347,7 @@ class ElasticFactory {
 		$queryEngine = new QueryEngine(
 			$store,
 			$conditionBuilder,
+			$applicationFactory->getQueryFactory(),
 			$config
 		);
 

@@ -13,7 +13,6 @@ use SMW\Query\Query;
 use SMW\Query\ScoreSet;
 use SMW\QueryEngine as IQueryEngine;
 use SMW\QueryFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
 /**
@@ -25,8 +24,6 @@ use SMW\Store;
 class QueryEngine implements IQueryEngine {
 
 	use LoggerAwareTrait;
-
-	private QueryFactory $queryFactory;
 
 	private FieldMapper $fieldMapper;
 
@@ -42,13 +39,13 @@ class QueryEngine implements IQueryEngine {
 	public function __construct(
 		private Store $store,
 		private ConditionBuilder $conditionBuilder,
+		private readonly QueryFactory $queryFactory,
 		private ?Options $options = null,
 	) {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
 
-		$this->queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$this->fieldMapper = new FieldMapper();
 		$this->sortBuilder = new SortBuilder( $this->store );
 
