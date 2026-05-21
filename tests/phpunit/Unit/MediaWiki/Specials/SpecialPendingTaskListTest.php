@@ -32,7 +32,6 @@ class SpecialPendingTaskListTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 

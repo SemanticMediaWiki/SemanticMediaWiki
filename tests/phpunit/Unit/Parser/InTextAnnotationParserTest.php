@@ -47,8 +47,6 @@ class InTextAnnotationParserTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$this->linksProcessor = new LinksProcessor();
 
 		$this->magicWordsFinder = $this->getMockBuilder( MagicWordsFinder::class )

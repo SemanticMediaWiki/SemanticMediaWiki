@@ -40,8 +40,6 @@ class CacheStatisticsListTaskHandlerTest extends TestCase {
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'encodeAsJson' )
 			->willReturn( '' );
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {

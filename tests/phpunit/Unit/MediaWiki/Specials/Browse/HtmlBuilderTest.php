@@ -38,8 +38,6 @@ class HtmlBuilderTest extends TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {

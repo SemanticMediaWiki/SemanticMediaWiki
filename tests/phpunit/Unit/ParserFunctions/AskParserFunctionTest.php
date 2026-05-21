@@ -76,8 +76,6 @@ class AskParserFunctionTest extends TestCase {
 		$store->expects( $this->any() )
 			->method( 'getQueryResult' )
 			->willReturn( $queryResult );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {

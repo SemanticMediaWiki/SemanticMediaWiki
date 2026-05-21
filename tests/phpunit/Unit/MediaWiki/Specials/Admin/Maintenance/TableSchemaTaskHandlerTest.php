@@ -42,8 +42,6 @@ class TableSchemaTaskHandlerTest extends TestCase {
 		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {

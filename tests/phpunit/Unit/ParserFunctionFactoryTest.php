@@ -42,8 +42,6 @@ class ParserFunctionFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'ParserData', $this->parserData );
-
 		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 	}
 

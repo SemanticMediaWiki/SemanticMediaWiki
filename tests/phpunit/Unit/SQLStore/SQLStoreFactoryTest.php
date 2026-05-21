@@ -91,8 +91,6 @@ class SQLStoreFactoryTest extends TestCase {
 		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'HierarchyLookup', $hierarchyLookup );
 	}
 
 	public function testCanConstruct() {

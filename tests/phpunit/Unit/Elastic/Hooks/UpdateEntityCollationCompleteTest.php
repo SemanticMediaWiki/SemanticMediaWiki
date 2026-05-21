@@ -79,8 +79,6 @@ class UpdateEntityCollationCompleteTest extends TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->willReturnCallback( $callback );
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {

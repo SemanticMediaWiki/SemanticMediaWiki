@@ -30,8 +30,6 @@ class ChangePropagationUpdateJobTest extends TestCase {
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {

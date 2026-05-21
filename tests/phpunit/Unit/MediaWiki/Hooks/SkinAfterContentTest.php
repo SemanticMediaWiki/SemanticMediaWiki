@@ -39,8 +39,6 @@ class SkinAfterContentTest extends TestCase {
 			'smwgShowFactbox' => false
 		] );
 
-		$this->applicationFactory->registerObject( 'Settings', $settings );
-
 		$this->factboxText = $this->applicationFactory->getFactboxText();
 	}
 

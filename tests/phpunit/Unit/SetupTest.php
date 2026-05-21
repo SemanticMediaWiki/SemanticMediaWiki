@@ -65,7 +65,6 @@ class SetupTest extends TestCase {
 		];
 
 		$this->testEnvironment = new TestEnvironment( $this->defaultConfig );
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {
