@@ -63,7 +63,10 @@ class DataValueServiceFactory {
 	/**
 	 * @since 2.5
 	 */
-	public function __construct( private readonly ServicesContainer $servicesContainer ) {
+	public function __construct(
+		private readonly ServicesContainer $servicesContainer,
+		private readonly Store $store,
+	) {
 	}
 
 	/**
@@ -199,7 +202,7 @@ class DataValueServiceFactory {
 	 * @since 7.0.0
 	 */
 	public function getStore(): Store {
-		return ServicesFactory::getInstance()->getStore();
+		return $this->store;
 	}
 
 	/**

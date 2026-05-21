@@ -697,7 +697,7 @@ return [
 			$servicesFactory->getSettings()->get( 'smwgServicesFileDir' )
 		);
 
-		return new DataValueServiceFactory( $servicesContainer );
+		return new DataValueServiceFactory( $servicesContainer, $servicesFactory->getStore() );
 	},
 
 	'SMW.ImporterServiceFactory' => static function ( MediaWikiServices $services ): ImporterServiceFactory {
