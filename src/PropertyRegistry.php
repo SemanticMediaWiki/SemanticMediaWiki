@@ -371,12 +371,12 @@ class PropertyRegistry {
 	 * @since 2.5
 	 *
 	 * @param string $id
-	 * @param string|null $languageCode
+	 * @param string|null|false $languageCode
 	 *
 	 * @return string
 	 */
 	public function findPreferredPropertyLabelFromIdByLanguageCode( $id, $languageCode = '' ) {
-		if ( $languageCode === false || $languageCode === '' ) {
+		if ( !$languageCode ) {
 			$languageCode = Localizer::getInstance()->getUserLanguage()->getCode();
 		}
 
