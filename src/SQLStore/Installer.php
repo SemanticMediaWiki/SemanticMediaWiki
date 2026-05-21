@@ -2,7 +2,8 @@
 
 namespace SMW\SQLStore;
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\JobQueue\JobFactory;
+use MediaWiki\Title\TitleFactory;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -68,6 +69,8 @@ class Installer implements MessageReporter {
 		private TableBuildExaminer $tableBuildExaminer,
 		private VersionExaminer $versionExaminer,
 		private TableOptimizer $tableOptimizer,
+		private readonly TitleFactory $titleFactory,
+		private readonly JobFactory $jobFactory,
 	) {
 		$this->options = new Options();
 		$this->setupFile = new SetupFile();
@@ -362,7 +365,7 @@ class Installer implements MessageReporter {
 			$this->cliMsgFormatter->firstCol( "... Property statistics rebuild job ...", 3 )
 		);
 
-		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SMW\SQLStore\Installer' );
+		$title = $this->titleFactory->newFromText( 'SMW\SQLStore\Installer' );
 
 		if ( $title === null ) {
 			throw new RuntimeException(
@@ -370,10 +373,8 @@ class Installer implements MessageReporter {
 			);
 		}
 
-		$mwJobFactory = MediaWikiServices::getInstance()->getJobFactory();
-
 		/** @var Job $propertyStatisticsRebuildJob */
-		$propertyStatisticsRebuildJob = $mwJobFactory->newJob(
+		$propertyStatisticsRebuildJob = $this->jobFactory->newJob(
 			'smw.propertyStatisticsRebuild',
 			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ]
 				+ Job::newRootJobParams( 'smw.propertyStatisticsRebuild', $title )
@@ -391,7 +392,7 @@ class Installer implements MessageReporter {
 		);
 
 		/** @var Job $entityIdDisposerJob */
-		$entityIdDisposerJob = $mwJobFactory->newJob(
+		$entityIdDisposerJob = $this->jobFactory->newJob(
 			'smw.entityIdDisposer',
 			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ]
 				+ Job::newRootJobParams( 'smw.entityIdDisposer', $title )

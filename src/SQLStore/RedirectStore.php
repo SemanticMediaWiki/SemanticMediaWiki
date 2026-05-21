@@ -2,7 +2,8 @@
 
 namespace SMW\SQLStore;
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\JobQueue\JobFactory;
+use MediaWiki\Title\TitleFactory;
 use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -30,6 +31,8 @@ class RedirectStore {
 	 */
 	public function __construct(
 		private readonly Store $store,
+		private readonly TitleFactory $titleFactory,
+		private readonly JobFactory $jobFactory,
 		private ?Cache $cache = null,
 	) {
 		if ( $this->cache === null ) {
@@ -303,14 +306,11 @@ class RedirectStore {
 
 		$res = $queryBuilder->fetchResultSet();
 
-		$services = MediaWikiServices::getInstance();
-		$titleFactory = $services->getTitleFactory();
-		$jobFactory = $services->getJobFactory();
 		foreach ( $res as $row ) {
-			$title = $titleFactory->makeTitleSafe( $row->ns, $row->t );
+			$title = $this->titleFactory->makeTitleSafe( $row->ns, $row->t );
 
 			if ( $title !== null ) {
-				$jobs[] = $jobFactory->newJob(
+				$jobs[] = $this->jobFactory->newJob(
 					'smw.update',
 					[
 						'namespace' => $title->getNamespace(),

@@ -2,12 +2,15 @@
 
 namespace SMW\Tests\Unit\SQLStore;
 
+use MediaWiki\JobQueue\JobFactory;
+use MediaWiki\Title\TitleFactory;
 use Onoi\Cache\Cache;
 use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
+use SMW\Settings;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\DuplicateFinder;
@@ -52,6 +55,7 @@ class EntityIdManagerTest extends TestCase {
 	private $tableFieldUpdater;
 	private $auxiliaryFields;
 	private $factory;
+	private Settings $settings;
 	private Database $connection;
 
 	protected function setUp(): void {
@@ -119,7 +123,19 @@ class EntityIdManagerTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$redirectStore = new RedirectStore( $this->store );
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$redirectStore = new RedirectStore( $this->store, $titleFactory, $jobFactory );
+
+		$this->settings = $this->getMockBuilder( Settings::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->factory = $this->getMockBuilder( SQLStoreFactory::class )
 			->disableOriginalConstructor()
@@ -178,7 +194,7 @@ class EntityIdManagerTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			EntityIdManager::class,
-			new EntityIdManager( $this->store, $this->factory )
+			new EntityIdManager( $this->store, $this->factory, $this->settings )
 		);
 	}
 
@@ -199,7 +215,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$this->store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$this->assertFalse(
@@ -251,7 +268,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$result = $instance->getSMWPropertyID( new Property( 'Foo' ) );
@@ -285,7 +303,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$sortkey = $parameters['sortkey'];
@@ -340,7 +359,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$instance->setEqualitySupport( SMW_EQ_SOME );
@@ -378,7 +398,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$this->store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$this->assertInstanceOf(
@@ -397,7 +418,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$this->store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$instance->updateInterwikiField(
@@ -428,7 +450,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$this->store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$this->assertEquals(
@@ -464,7 +487,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$this->assertEquals(
@@ -513,7 +537,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$store,
-			$factory
+			$factory,
+			$this->settings
 		);
 
 		$instance->warmUpCache( $list );
@@ -571,7 +596,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$store,
-			$factory
+			$factory,
+			$this->settings
 		);
 
 		$this->assertEquals(
@@ -610,7 +636,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$this->store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$instance->preload( $subjects );
@@ -625,7 +652,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$this->store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$instance->updateFieldMaps( 42, [ 'Foo' ], [ 'F' => 1 ] );
@@ -638,7 +666,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$this->store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$instance->getSequenceMap( 1001 );
@@ -651,7 +680,8 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance = new EntityIdManager(
 			$this->store,
-			$this->factory
+			$this->factory,
+			$this->settings
 		);
 
 		$instance->loadSequenceMap( [ 42, 1001 ] );

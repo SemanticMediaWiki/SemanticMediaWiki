@@ -3,14 +3,12 @@
 namespace SMW\SQLStore\Rebuilder;
 
 use MediaWiki\HookContainer\HookContainer;
-use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\PropertyRegistry;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\Lru;
@@ -29,14 +27,10 @@ use stdClass;
  */
 class Rebuilder {
 
-	private JobFactory $jobFactory;
-
 	/**
 	 * @var NamespaceExaminer
 	 */
 	private $namespaceExaminer;
-
-	private HookContainer $hookContainer;
 
 	private ?array $options = null;
 
@@ -63,9 +57,9 @@ class Rebuilder {
 		private readonly TitleFactory $titleFactory,
 		private readonly EntityValidator $entityValidator,
 		private readonly PropertyTableIdReferenceDisposer $propertyTableIdReferenceDisposer,
+		private readonly JobFactory $jobFactory,
+		private readonly HookContainer $hookContainer,
 	) {
-		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
-		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		$this->lru = new Lru( 10000 );
 	}
 

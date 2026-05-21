@@ -127,7 +127,8 @@ class SQLStoreFactory {
 
 		$entityIdManager = new EntityIdManager(
 			$this->store,
-			$this
+			$this,
+			$settings
 		);
 
 		$entityIdManager->setEqualitySupport(
@@ -348,7 +349,9 @@ class SQLStoreFactory {
 			$this->store,
 			$applicationFactory->newTitleFactory(),
 			$entityValidator,
-			$this->newPropertyTableIdReferenceDisposer()
+			$this->newPropertyTableIdReferenceDisposer(),
+			$applicationFactory->newJobFactory(),
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		return $rebuilder;
@@ -476,12 +479,16 @@ class SQLStoreFactory {
 			$setupFile
 		);
 
+		$mwServices = MediaWikiServices::getInstance();
+
 		$installer = new Installer(
 			$tableSchemaManager,
 			$tableBuilder,
 			$tableBuildExaminer,
 			$versionExaminer,
-			$tableOptimizer
+			$tableOptimizer,
+			$mwServices->getTitleFactory(),
+			$mwServices->getJobFactory()
 		);
 
 		$installer->setHookDispatcher(
@@ -851,9 +858,12 @@ class SQLStoreFactory {
 	 */
 	public function newRedirectStore(): RedirectStore {
 		$settings = ApplicationFactory::getInstance()->getSettings();
+		$mwServices = MediaWikiServices::getInstance();
 
 		$redirectStore = new RedirectStore(
-			$this->store
+			$this->store,
+			$mwServices->getTitleFactory(),
+			$mwServices->getJobFactory()
 		);
 
 		$redirectStore->setCommandLineMode(
