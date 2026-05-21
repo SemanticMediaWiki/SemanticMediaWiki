@@ -12,7 +12,6 @@ use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Localizer\Message;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * ReferenceValue allows to define additional DV to describe the state of a
@@ -277,7 +276,7 @@ class ReferenceValue extends AbstractMultiValue {
 				// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 				$semanticData = new ContainerSemanticData( $dataItem );
 				// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
-				$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
+				$semanticData->copyDataFrom( $this->dataValueServiceFactory->getStore()->getSemanticData( $dataItem ) );
 				$this->m_dataitem = new Container( $semanticData );
 			}
 
