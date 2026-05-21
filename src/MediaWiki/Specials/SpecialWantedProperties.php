@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Outputs;
 use SMW\QueryPages\WantedPropertiesQueryPage;
+use SMW\Store;
 
 /**
  * Special page (Special:WantedProperties) for MediaWiki shows all
@@ -27,9 +29,11 @@ use SMW\QueryPages\WantedPropertiesQueryPage;
 class SpecialWantedProperties extends SpecialPage {
 
 	/**
-	 * @see SpecialPage::__construct
+	 * @since 7.0.0
 	 */
-	public function __construct() {
+	public function __construct(
+		private readonly Store $store
+	) {
 		parent::__construct( 'WantedProperties' );
 	}
 
@@ -47,7 +51,7 @@ class SpecialWantedProperties extends SpecialPage {
 
 		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
 
-		$page = new WantedPropertiesQueryPage( $this->getStore() );
+		$page = new WantedPropertiesQueryPage( $this->store );
 		$page->setContext( $this->getContext() );
 		$page->setTitle( $this->getPageTitle() );
 

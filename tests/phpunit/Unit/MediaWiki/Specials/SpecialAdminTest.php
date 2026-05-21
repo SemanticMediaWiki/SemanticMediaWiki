@@ -6,7 +6,10 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Specials\SpecialAdmin;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
@@ -23,17 +26,23 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
 class SpecialAdminTest extends TestCase {
 
 	private $testEnvironment;
+	private $store;
+	private $settings;
+	private $hookDispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
+		// SpecialAdmin's TaskHandler chain needs an SQLStore-typed surface;
+		// resolve the real store and settings here. Transitive collaborators
+		// reach back through ApplicationFactory but those are stable
+		// services available in the integration test environment.
+		$applicationFactory = ApplicationFactory::getInstance();
+		$this->store = $applicationFactory->getStore();
+		$this->settings = $applicationFactory->getSettings();
+		$this->hookDispatcher = $applicationFactory->getHookDispatcher();
 	}
 
 	protected function tearDown(): void {
@@ -42,9 +51,15 @@ class SpecialAdminTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+		$settings = $this->createMock( Settings::class );
+		$hookDispatcher = $this->createMock( HookDispatcher::class );
+
 		$this->assertInstanceOf(
 			SpecialAdmin::class,
-			new SpecialAdmin()
+			new SpecialAdmin( $store, $settings, $hookDispatcher )
 		);
 	}
 
@@ -60,7 +75,7 @@ class SpecialAdminTest extends TestCase {
 			->method( 'addHtml' );
 
 		$query = '';
-		$instance = new SpecialAdmin();
+		$instance = new SpecialAdmin( $this->store, $this->settings, $this->hookDispatcher );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )
@@ -85,7 +100,7 @@ class SpecialAdminTest extends TestCase {
 		$this->testEnvironment->overrideUserPermissions( $user, [] );
 
 		$query = '';
-		$instance = new SpecialAdmin();
+		$instance = new SpecialAdmin( $this->store, $this->settings, $this->hookDispatcher );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )

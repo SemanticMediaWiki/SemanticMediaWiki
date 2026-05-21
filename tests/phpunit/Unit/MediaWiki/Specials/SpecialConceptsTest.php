@@ -7,6 +7,7 @@ use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Specials\SpecialConcepts;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,6 +20,7 @@ use SMW\Tests\TestEnvironment;
  */
 class SpecialConceptsTest extends TestCase {
 
+	private $store;
 	private $stringValidator;
 	private $testEnvironment;
 
@@ -26,13 +28,23 @@ class SpecialConceptsTest extends TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		// SpecialConcepts now takes the Store via constructor; use the
+		// real default store so ListBuilder::buildList can resolve the
+		// SortLetter service against an SQLStore (the previous mock-based
+		// setup was dead scaffolding once registerObject was removed).
+		$this->store = ApplicationFactory::getInstance()->getStore();
 		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			SpecialConcepts::class,
-			new SpecialConcepts()
+			new SpecialConcepts( $this->store )
 		);
 	}
 
@@ -48,7 +60,7 @@ class SpecialConceptsTest extends TestCase {
 			 ->with( $this->stringContains( $expected ) );
 
 		$query = '';
-		$instance = new SpecialConcepts();
+		$instance = new SpecialConcepts( $this->store );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )
@@ -67,7 +79,7 @@ class SpecialConceptsTest extends TestCase {
 	 * @depends testExecute
 	 */
 	public function testGetHtmlForAnEmptySubject() {
-		$instance = new SpecialConcepts();
+		$instance = new SpecialConcepts( $this->store );
 
 		$this->stringValidator->assertThatStringContains(
 			'div class="smw-special-concept-empty"',
@@ -80,7 +92,7 @@ class SpecialConceptsTest extends TestCase {
 	 */
 	public function testGetHtmlForSingleSubject() {
 		$subject  = WikiPage::newFromText( __METHOD__ );
-		$instance = new SpecialConcepts();
+		$instance = new SpecialConcepts( $this->store );
 
 		$this->stringValidator->assertThatStringContains(
 			'div class="smw-special-concept-count"',

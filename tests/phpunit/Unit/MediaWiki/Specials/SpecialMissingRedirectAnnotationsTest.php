@@ -5,10 +5,10 @@ namespace SMW\Tests\Unit\MediaWiki\Specials;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations;
+use SMW\Settings;
 use SMW\SortLetter;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -22,25 +22,18 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  */
 class SpecialMissingRedirectAnnotationsTest extends TestCase {
 
-	private $testEnvironment;
 	private $store;
+	private $settings;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+		$this->settings = $this->createMock( Settings::class );
 	}
 
 	public function testCanExecute() {
@@ -70,7 +63,12 @@ class SpecialMissingRedirectAnnotationsTest extends TestCase {
 				return $map[$key] ?? null;
 			} );
 
-		$instance = new SpecialMissingRedirectAnnotations();
+		$this->settings->expects( $this->once() )
+			->method( 'get' )
+			->with( 'smwgNamespacesWithSemanticLinks' )
+			->willReturn( [] );
+
+		$instance = new SpecialMissingRedirectAnnotations( $this->store, $this->settings );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialMissingRedirectAnnotations' )

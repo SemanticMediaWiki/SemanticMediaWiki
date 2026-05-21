@@ -25,6 +25,7 @@ use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinterDependency;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\UrlArgs;
 
@@ -43,8 +44,6 @@ use SMW\Utils\UrlArgs;
  */
 class SpecialAsk extends SpecialPage {
 
-	private QuerySourceFactory $querySourceFactory;
-
 	private string $queryString = '';
 
 	private array $parameters = [];
@@ -60,9 +59,14 @@ class SpecialAsk extends SpecialPage {
 	 */
 	private array $params = [];
 
-	public function __construct() {
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly QuerySourceFactory $querySourceFactory,
+		private readonly Settings $settings
+	) {
 		parent::__construct( 'Ask' );
-		$this->querySourceFactory = ApplicationFactory::getInstance()->getQuerySourceFactory();
 	}
 
 	/**
@@ -81,7 +85,7 @@ class SpecialAsk extends SpecialPage {
 	 */
 	public function execute( $p ) {
 		$this->setHeaders();
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$settings = $this->settings;
 
 		$out = $this->getOutput();
 		$request = $this->getRequest();
@@ -203,7 +207,7 @@ class SpecialAsk extends SpecialPage {
 			return $out->addHtml( ErrorWidget::sessionFailure() );
 		}
 
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$settings = $this->settings;
 
 		NavigationLinksWidget::setMaxInlineLimit(
 			$GLOBALS['smwgQMaxInlineLimit']
@@ -213,6 +217,9 @@ class SpecialAsk extends SpecialPage {
 			$GLOBALS['smwgResultFormats']
 		);
 
+		// Partial DI: UserOptionsLookup is a MW core service resolved through
+		// ApplicationFactory's singleton bridge; it is not registered on the
+		// SMW container.
 		$userOptionsLookup = ApplicationFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		ParametersWidget::setTooltipDisplay(
 			$userOptionsLookup->getOption( $this->getUser(), 'smw-prefs-ask-options-tooltip-display' )
@@ -272,7 +279,7 @@ class SpecialAsk extends SpecialPage {
 	protected function makeHTMLResult(): void {
 		$result = '';
 		$res = null;
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$settings = $this->settings;
 		$queryobj = null;
 
 		$navigation = '';

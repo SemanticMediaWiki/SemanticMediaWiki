@@ -94,7 +94,6 @@
 		"SMWSpecialOWLExport": "src/MediaWiki/Specials/SpecialOWLExport.php",
 		"SMWSpecialTypes": "src/MediaWiki/Specials/SpecialTypes.php",
 		"SMW\\SpecialConcepts": "src/MediaWiki/Specials/SpecialConcepts.php",
-		"SMW\\SpecialPage": "src/MediaWiki/Specials/SpecialPage.php",
 		"SMW\\SpecialProperties": "src/MediaWiki/Specials/SpecialProperties.php",
 		"SMW\\SpecialUnusedProperties": "src/MediaWiki/Specials/SpecialUnusedProperties.php",
 		"SMW\\SpecialWantedProperties": "src/MediaWiki/Specials/SpecialWantedProperties.php",
@@ -198,23 +197,68 @@
 	},
 	"SpecialPages": {
 		"ExportRDF": "SMW\\MediaWiki\\Specials\\SpecialOWLExport",
-		"SMWAdmin": "SMW\\MediaWiki\\Specials\\SpecialAdmin",
+		"SMWAdmin": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialAdmin",
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.HookDispatcher" ]
+		},
 		"PendingTaskList": "SMW\\MediaWiki\\Specials\\SpecialPendingTaskList",
-		"Ask": "SMW\\MediaWiki\\Specials\\SpecialAsk",
-		"FacetedSearch": "SMW\\MediaWiki\\Specials\\SpecialFacetedSearch",
-		"Browse": "SMW\\MediaWiki\\Specials\\SpecialBrowse",
-		"Concepts": "SMW\\MediaWiki\\Specials\\SpecialConcepts",
-		"PageProperty": "SMW\\MediaWiki\\Specials\\SpecialPageProperty",
-		"SearchByProperty": "SMW\\MediaWiki\\Specials\\SpecialSearchByProperty",
-		"PropertyLabelSimilarity": "SMW\\MediaWiki\\Specials\\SpecialPropertyLabelSimilarity",
-		"ProcessingErrorList": "SMW\\MediaWiki\\Specials\\SpecialProcessingErrorList",
-		"MissingRedirectAnnotations": "SMW\\MediaWiki\\Specials\\SpecialMissingRedirectAnnotations",
-		"ConstraintErrorList": "SMW\\MediaWiki\\Specials\\SpecialConstraintErrorList",
-		"Types": "SMW\\MediaWiki\\Specials\\SpecialTypes",
+		"Ask": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialAsk",
+			"services": [ "SMW.QuerySourceFactory", "SMW.Settings" ]
+		},
+		"FacetedSearch": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialFacetedSearch",
+			"services": [ "SMW.Store", "SMW.SchemaFactory" ]
+		},
+		"Browse": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialBrowse",
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.SerializerFactory" ]
+		},
+		"Concepts": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialConcepts",
+			"services": [ "SMW.Store" ]
+		},
+		"PageProperty": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialPageProperty",
+			"services": [ "SMW.Store" ]
+		},
+		"SearchByProperty": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialSearchByProperty",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
+		"PropertyLabelSimilarity": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialPropertyLabelSimilarity",
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.QueryFactory" ]
+		},
+		"ProcessingErrorList": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialProcessingErrorList",
+			"services": [ "SMW.Settings" ]
+		},
+		"MissingRedirectAnnotations": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialMissingRedirectAnnotations",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
+		"ConstraintErrorList": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialConstraintErrorList",
+			"services": [ "SMW.Settings" ]
+		},
+		"Types": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialTypes",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
 		"URIResolver": "SMW\\MediaWiki\\Specials\\SpecialURIResolver",
-		"Properties": "SMW\\MediaWiki\\Specials\\SpecialProperties",
-		"UnusedProperties": "SMW\\MediaWiki\\Specials\\SpecialUnusedProperties",
-		"WantedProperties": "SMW\\MediaWiki\\Specials\\SpecialWantedProperties"
+		"Properties": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialProperties",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
+		"UnusedProperties": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialUnusedProperties",
+			"services": [ "SMW.Store", "SMW.Settings" ]
+		},
+		"WantedProperties": {
+			"class": "SMW\\MediaWiki\\Specials\\SpecialWantedProperties",
+			"services": [ "SMW.Store" ]
+		}
 	},
 	"JobClasses": {
 		"smw.update": {

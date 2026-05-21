@@ -9,7 +9,6 @@ use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\RequestOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\KeysetPaginationTrait;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -28,12 +27,12 @@ class SpecialConcepts extends SpecialPage {
 
 	use KeysetPaginationTrait;
 
-	private ?Store $store = null;
-
 	/**
-	 * @see SpecialPage::__construct
+	 * @since 7.0.0
 	 */
-	public function __construct() {
+	public function __construct(
+		private readonly Store $store
+	) {
 		parent::__construct( 'Concepts' );
 	}
 
@@ -53,8 +52,6 @@ class SpecialConcepts extends SpecialPage {
 		$offset = (int)$request->getVal( 'offset', 0 );
 		$after = $request->getInt( 'after', 0 );
 		$before = $request->getInt( 'before', 0 );
-
-		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		$cursorMode = self::shouldUseCursorMode( $request->getVal( 'offset', null ) );
 
@@ -191,10 +188,6 @@ class SpecialConcepts extends SpecialPage {
 	 * @return string
 	 */
 	public function getHtml( array $dataItems, $limit, $offset, ?RequestOptions $cursorOptions = null ): string {
-		if ( $this->store === null ) {
-			$this->store = ApplicationFactory::getInstance()->getStore();
-		}
-
 		$count = count( $dataItems );
 		$resultNumber = min( $limit, $count );
 

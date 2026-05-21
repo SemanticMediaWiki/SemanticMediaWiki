@@ -16,7 +16,9 @@ use SMW\MediaWiki\Specials\FacetedSearch\ParametersProcessor;
 use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
+use SMW\Schema\SchemaFactory;
 use SMW\Services\ServicesFactory;
+use SMW\Store;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -27,7 +29,13 @@ use SMW\Utils\UrlArgs;
  */
 class SpecialFacetedSearch extends SpecialPage {
 
-	public function __construct() {
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly Store $store,
+		private readonly SchemaFactory $schemaFactory
+	) {
 		parent::__construct( 'FacetedSearch', '', true, false, 'default', true );
 	}
 
@@ -67,14 +75,14 @@ class SpecialFacetedSearch extends SpecialPage {
 
 		$title = $this->getPageTitle();
 
-		$servicesFactory = ServicesFactory::getInstance();
-		$store = $servicesFactory->getStore();
-		$userOptionsLookup = $servicesFactory->singleton( 'UserOptionsLookup' );
+		// Partial DI: UserOptionsLookup is a MW core service resolved through
+		// ServicesFactory's singleton bridge; it is not registered on the
+		// SMW container.
+		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
 
 		/**
 		 * Profile information
 		 */
-		$schemaFactory = $servicesFactory->singleton( 'SchemaFactory' );
 		$default_profile = $userOptionsLookup->getOption(
 			$this->getUser(),
 			GetPreferences::FACETEDSEARCH_PROFILE_PREFERENCE, ''
@@ -86,7 +94,7 @@ class SpecialFacetedSearch extends SpecialPage {
 		}
 
 		$profile = new Profile(
-			$schemaFactory,
+			$this->schemaFactory,
 			$profileName
 		);
 
@@ -99,20 +107,20 @@ class SpecialFacetedSearch extends SpecialPage {
 		 * Result fetcher
 		 */
 		$resultFetcher = new ResultFetcher(
-			$store
+			$this->store
 		);
 
 		/**
 		 * Facet/Filter card builder
 		 */
 		$treeBuilder = new TreeBuilder(
-			$store
+			$this->store
 		);
 
 		$filterFactory = new FilterFactory(
 			$templateParser,
 			$treeBuilder,
-			$schemaFactory
+			$this->schemaFactory
 		);
 
 		$facetBuilder = new FacetBuilder(

@@ -5,8 +5,8 @@ namespace SMW\Tests\Unit\MediaWiki\Specials;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialConstraintErrorList;
-use SMW\Store;
-use SMW\Tests\TestEnvironment;
+use SMW\Settings;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialConstraintErrorList
@@ -19,29 +19,23 @@ use SMW\Tests\TestEnvironment;
  */
 class SpecialConstraintErrorListTest extends TestCase {
 
-	private $testEnvironment;
+	private $settings;
 	private $stringValidator;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+		$this->settings = $this->createMock( Settings::class );
+		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testCanExecute() {
-		$instance = new SpecialConstraintErrorList();
+		$this->settings->expects( $this->once() )
+			->method( 'dotGet' )
+			->with( 'smwgPagingLimit.errorlist' )
+			->willReturn( 20 );
+
+		$instance = new SpecialConstraintErrorList( $this->settings );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialConstraintErrorList' )
@@ -53,7 +47,7 @@ class SpecialConstraintErrorListTest extends TestCase {
 	}
 
 	public function testFindRedirectURL() {
-		$instance = new SpecialConstraintErrorList();
+		$instance = new SpecialConstraintErrorList( $this->settings );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialConstraintErrorList' )

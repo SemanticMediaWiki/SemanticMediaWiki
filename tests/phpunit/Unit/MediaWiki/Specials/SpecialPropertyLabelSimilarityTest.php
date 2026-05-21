@@ -5,7 +5,8 @@ namespace SMW\Tests\Unit\MediaWiki\Specials;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity;
-use SMW\Store;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -20,19 +21,24 @@ use SMW\Tests\TestEnvironment;
 class SpecialPropertyLabelSimilarityTest extends TestCase {
 
 	private $testEnvironment;
-	private $stringValidator;
+	private $store;
+	private $settings;
+	private $queryFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
+		// PropertyLabelSimilarityLookup performs SQL via the SQLStore-typed
+		// connection, so the test needs a real SQLStore (the previous setup
+		// registered a non-SQL Store mock but the SUT explicitly resolved an
+		// SQLStore via `getStore( SQLStore::class )`). Use the real default
+		// store here to mirror the same indirection.
+		$applicationFactory = ApplicationFactory::getInstance();
+		$this->store = $applicationFactory->getStore( SQLStore::class );
+		$this->settings = $applicationFactory->getSettings();
+		$this->queryFactory = $applicationFactory->getQueryFactory();
 	}
 
 	protected function tearDown(): void {
@@ -41,7 +47,7 @@ class SpecialPropertyLabelSimilarityTest extends TestCase {
 	}
 
 	public function testCanExecute() {
-		$instance = new SpecialPropertyLabelSimilarity();
+		$instance = new SpecialPropertyLabelSimilarity( $this->store, $this->settings, $this->queryFactory );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialPropertyLabelSimilarity' )

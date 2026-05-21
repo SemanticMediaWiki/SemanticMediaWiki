@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit;
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialAsk;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\RepositoryConnectionProvider;
 use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 use SMW\Tests\TestEnvironment;
@@ -57,7 +58,11 @@ class SpecialAskTest extends TestCase {
 
 		$this->setupGlobals( $params );
 
-		$special = new SpecialAsk();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$special = new SpecialAsk(
+			$applicationFactory->getQuerySourceFactory(),
+			$applicationFactory->getSettings()
+		);
 		$special->execute( null );
 
 		$html = $GLOBALS['wgOut']->getHtml();

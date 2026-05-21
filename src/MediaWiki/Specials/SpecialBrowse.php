@@ -11,7 +11,7 @@ use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Store;
 
@@ -26,9 +26,13 @@ use SMW\Store;
 class SpecialBrowse extends SpecialPage {
 
 	/**
-	 * @see SpecialPage::__construct
+	 * @since 7.0.0
 	 */
-	public function __construct() {
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings,
+		private readonly SerializerFactory $serializerFactory
+	) {
 		parent::__construct( 'Browse', '', true, false, 'default', true );
 	}
 
@@ -115,20 +119,19 @@ class SpecialBrowse extends SpecialPage {
 			return $data;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
 		$dataItem = $dataValue->getDataItem();
 
 		$htmlBuilder = $this->newHtmlBuilder(
 			$webRequest,
 			$dataItem,
-			$applicationFactory->getStore(),
-			$applicationFactory->getSettings()
+			$this->store,
+			$this->settings
 		);
 
 		if ( $webRequest->getVal( 'format' ) === 'json' ) {
-			$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+			$semanticDataSerializer = $this->serializerFactory->newSemanticDataSerializer();
 			$res = $semanticDataSerializer->serialize(
-				$applicationFactory->getStore()->getSemanticData( $dataItem )
+				$this->store->getSemanticData( $dataItem )
 			);
 
 			$this->getOutput()->disable();

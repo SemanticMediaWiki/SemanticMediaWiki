@@ -5,6 +5,8 @@ namespace SMW\Tests\Unit\MediaWiki\Specials;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialBrowse;
+use SMW\SerializerFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
@@ -20,6 +22,9 @@ use SMW\Tests\TestEnvironment;
 class SpecialBrowseTest extends TestCase {
 
 	private $testEnvironment;
+	private $store;
+	private $settings;
+	private $serializerFactory;
 	private $stringValidator;
 
 	protected function setUp(): void {
@@ -29,15 +34,18 @@ class SpecialBrowseTest extends TestCase {
 			'smwgBrowseFeatures' => [ 'show-incoming', 'use-api' ]
 		] );
 
-		$store = $this->getMockBuilder( Store::class )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->settings = ApplicationFactory::getInstance()->getSettings();
+
+		$this->serializerFactory = $this->createMock( SerializerFactory::class );
+
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
@@ -50,7 +58,7 @@ class SpecialBrowseTest extends TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testQueryParameter( $query, $expected ) {
-		$instance = new SpecialBrowse();
+		$instance = new SpecialBrowse( $this->store, $this->settings, $this->serializerFactory );
 		$services = MediaWikiServices::getInstance();
 
 		$instance->getContext()->setTitle(

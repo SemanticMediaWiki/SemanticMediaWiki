@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials;
 
 use MediaWiki\SpecialPage\SpecialPage;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 
 /**
  * Convenience special page that just redirects to Special:Ask with a preset
@@ -16,7 +16,12 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class SpecialProcessingErrorList extends SpecialPage {
 
-	public function __construct() {
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly Settings $settings
+	) {
 		parent::__construct( 'ProcessingErrorList' );
 	}
 
@@ -24,7 +29,7 @@ class SpecialProcessingErrorList extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ): bool {
-		$limit = ApplicationFactory::getInstance()->getSettings()->dotGet( 'smwgPagingLimit.errorlist' );
+		$limit = $this->settings->dotGet( 'smwgPagingLimit.errorlist' );
 
 		$this->getOutput()->redirect(
 			$this->getLocalAskRedirectUrl( $limit )

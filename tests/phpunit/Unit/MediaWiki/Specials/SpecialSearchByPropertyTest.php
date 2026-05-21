@@ -6,7 +6,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialSearchByProperty;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\SQLStore\PropertyTableIdReferenceFinder;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\Utils\UtilityFactory;
@@ -22,50 +22,43 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 class SpecialSearchByPropertyTest extends TestCase {
 
-	private $applicationFactory;
+	private $store;
+	private $settings;
 	private $stringValidator;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
 		$propertyTableIdReferenceFinder = $this->getMockBuilder( PropertyTableIdReferenceFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( SQLStore::class )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTableIdReferenceFinder', 'getPropertyValues', 'getPropertySubjects', 'service' ] )
 			->getMock();
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableIdReferenceFinder' )
 			->willReturn( $propertyTableIdReferenceFinder );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->settings = $this->createMock( Settings::class );
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
-	}
-
-	protected function tearDown(): void {
-		$this->applicationFactory->clear();
-
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			SpecialSearchByProperty::class,
-			new SpecialSearchByProperty()
+			new SpecialSearchByProperty( $this->store, $this->settings )
 		);
 	}
 
@@ -73,7 +66,7 @@ class SpecialSearchByPropertyTest extends TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testQueryParameter( $query, $expected ) {
-		$instance = new SpecialSearchByProperty();
+		$instance = new SpecialSearchByProperty( $this->store, $this->settings );
 		$instance->getContext()->setTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SearchByProperty' ) );
 
 		$instance->execute( $query );
@@ -93,7 +86,7 @@ class SpecialSearchByPropertyTest extends TestCase {
 			'property=Has+subobject', 'value=Foo%23%257B%257D'
 		];
 
-		$instance = new SpecialSearchByProperty();
+		$instance = new SpecialSearchByProperty( $this->store, $this->settings );
 		$instance->getContext()->setTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SearchByProperty' ) );
 		$instance->getContext()->setRequest( new FauxRequest( $request, true ) );
 
