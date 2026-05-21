@@ -77,7 +77,7 @@ class PageFactory {
 	 * @since 3.0
 	 */
 	public function newConceptPage( Title $title ): ConceptPage {
-		$conceptPage = new ConceptPage( $title );
+		$conceptPage = new ConceptPage( $title, $this->store );
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$conceptPage->setOption(

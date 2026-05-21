@@ -9,6 +9,7 @@ use SMW\Property\Annotators\CategoryPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\PredefinedPropertyAnnotator;
 use SMW\Property\Annotators\SortKeyPropertyAnnotator;
+use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -47,7 +48,8 @@ class ChainablePropertyAnnotatorTest extends TestCase {
 
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			$parameters['categories']
+			$parameters['categories'],
+			$this->createMock( Store::class )
 		);
 
 		$categoryPropertyAnnotator->showHiddenCategories(

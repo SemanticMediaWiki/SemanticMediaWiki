@@ -23,6 +23,12 @@ use SMW\Serializers\SemanticDataSerializer;
 class SerializerFactory {
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function __construct( private readonly Store $store ) {
+	}
+
+	/**
 	 * Method that assigns registered serializers to an object
 	 *
 	 * @since 2.2
@@ -84,7 +90,7 @@ class SerializerFactory {
 	 * @return SemanticDataSerializer
 	 */
 	public function newSemanticDataSerializer(): SemanticDataSerializer {
-		return new SemanticDataSerializer();
+		return new SemanticDataSerializer( $this->store );
 	}
 
 	/**

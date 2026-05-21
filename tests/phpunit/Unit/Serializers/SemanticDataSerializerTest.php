@@ -8,6 +8,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
 use SMW\Serializers\SemanticDataSerializer;
+use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -23,18 +24,24 @@ class SemanticDataSerializerTest extends TestCase {
 
 	private $dataValueFactory;
 	private $semanticDataFactory;
+	private Store $store;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->store = $this->createMock( Store::class );
+	}
 
 	public function testCanConstructor() {
 		$this->assertInstanceOf(
 			SemanticDataSerializer::class,
-			new SemanticDataSerializer()
+			new SemanticDataSerializer( $this->store )
 		);
 	}
 
 	public function testInvalidSerializerObjectThrowsException() {
 		$this->expectException( 'OutOfBoundsException' );
 
-		$instance = new SemanticDataSerializer();
+		$instance = new SemanticDataSerializer( $this->store );
 		$instance->serialize( 'Foo' );
 	}
 
@@ -42,7 +49,7 @@ class SemanticDataSerializerTest extends TestCase {
 	 * @dataProvider semanticDataProvider
 	 */
 	public function testSerializerDeserializerRountrip( $data ) {
-		$instance = new SemanticDataSerializer();
+		$instance = new SemanticDataSerializer( $this->store );
 
 		$this->assertIsArray(
 

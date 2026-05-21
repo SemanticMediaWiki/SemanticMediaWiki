@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\MediaWiki\Specials\Browse\ValueFormatter;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
@@ -22,6 +23,7 @@ class HtmlBuilderTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
+	private ValueFormatter $valueFormatter;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -38,6 +40,8 @@ class HtmlBuilderTest extends TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
+
+		$this->valueFormatter = new ValueFormatter( $this->store );
 	}
 
 	protected function tearDown(): void {
@@ -48,7 +52,8 @@ class HtmlBuilderTest extends TestCase {
 	public function testCanConstruct() {
 		$instance = new HtmlBuilder(
 			$this->store,
-			WikiPage::newFromText( 'Foo' )
+			WikiPage::newFromText( 'Foo' ),
+			$this->valueFormatter
 		);
 
 		$this->assertInstanceOf(
@@ -62,7 +67,8 @@ class HtmlBuilderTest extends TestCase {
 
 		$instance = new HtmlBuilder(
 			$this->store,
-			$subject
+			$subject,
+			$this->valueFormatter
 		);
 
 		$options = [
@@ -105,7 +111,8 @@ class HtmlBuilderTest extends TestCase {
 
 		$instance = new HtmlBuilder(
 			$this->store,
-			$subject
+			$subject,
+			$this->valueFormatter
 		);
 
 		$instance->setOptions(
@@ -198,7 +205,8 @@ class HtmlBuilderTest extends TestCase {
 
 		$instance = new HtmlBuilder(
 			$this->store,
-			$subject
+			$subject,
+			$this->valueFormatter
 		);
 
 		$this->assertIsString(
@@ -216,7 +224,8 @@ class HtmlBuilderTest extends TestCase {
 
 		$instance = new HtmlBuilder(
 			$this->store,
-			$subject
+			$subject,
+			$this->valueFormatter
 		);
 
 		$options = [

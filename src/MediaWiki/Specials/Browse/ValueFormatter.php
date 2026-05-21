@@ -10,14 +10,10 @@ use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @private
- *
- * This class should eventually be injected instead of relying on static methods,
- * for now this is the easiest way to unclutter the mammoth Browse class and
- * splitting up responsibilities.
  *
  * @license GPL-2.0-or-later
  * @since   2.5
@@ -27,9 +23,15 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class ValueFormatter {
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function __construct( private readonly Store $store ) {
+	}
+
+	/**
 	 * @since 2.5
 	 */
-	public static function getFormattedSubject( DataValue $dataValue ): string {
+	public function getFormattedSubject( DataValue $dataValue ): string {
 		$extra = '';
 
 		if ( $dataValue->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
@@ -58,7 +60,7 @@ class ValueFormatter {
 	 *
 	 * @since 2.5
 	 */
-	public static function getFormattedValue(
+	public function getFormattedValue(
 		DataValue $dataValue,
 		PropertyValue $propertyValue,
 		bool $incoming = false,
@@ -127,7 +129,7 @@ class ValueFormatter {
 	 *
 	 * @since 2.5
 	 */
-	public static function getPropertyLabel(
+	public function getPropertyLabel(
 		PropertyValue $propertyValue,
 		bool $incoming = false,
 		bool $showInverse = false
@@ -138,7 +140,7 @@ class ValueFormatter {
 		$property = $propertyValue->getDataItem();
 
 		if ( $propertyValue->isVisible() ) {
-			$propertyValue->setCaption( self::findPropertyLabel( $propertyValue, $incoming, $showInverse ) );
+			$propertyValue->setCaption( $this->findPropertyLabel( $propertyValue, $incoming, $showInverse ) );
 			$proptext = $propertyValue->getShortHTMLText( $linker ) . "\n";
 		} elseif ( $property->getKey() == '_INST' ) {
 			$proptext = $linker->specialLink( 'Categories', 'smw-category' );
@@ -149,7 +151,7 @@ class ValueFormatter {
 		return $proptext;
 	}
 
-	private static function findPropertyLabel(
+	private function findPropertyLabel(
 		PropertyValue $propertyValue,
 		bool $incoming = false,
 		bool $showInverse = false
@@ -168,7 +170,7 @@ class ValueFormatter {
 
 		$inverseProperty = DataValueFactory::getInstance()->newPropertyValueByLabel( wfMessage( 'smw_inverse_label_property' )->text() );
 
-		$dataItems = ApplicationFactory::getInstance()->getStore()->getPropertyValues(
+		$dataItems = $this->store->getPropertyValues(
 			$property->getDiWikiPage(),
 			$inverseProperty->getDataItem()
 		);

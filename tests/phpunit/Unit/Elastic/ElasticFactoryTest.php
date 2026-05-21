@@ -52,6 +52,7 @@ class ElasticFactoryTest extends TestCase {
 
 	private MessageReporter $messageReporter;
 	private $store;
+	private $elasticStore;
 	private $outputFormatter;
 	private $conditionBuilder;
 	private $connection;
@@ -86,15 +87,15 @@ class ElasticFactoryTest extends TestCase {
 			->method( 'getConfig' )
 			->willReturn( $options );
 
-		$store = $this->getMockBuilder( ElasticStore::class )
+		$this->elasticStore = $this->getMockBuilder( ElasticStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->any() )
+		$this->elasticStore->expects( $this->any() )
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $this->elasticStore );
 	}
 
 	protected function tearDown(): void {
@@ -347,7 +348,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testOnInvalidateEntityCache_OnSubject() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->elasticStore );
 
 		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
@@ -366,7 +367,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testOnInvalidateEntityCache_OnTitle() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->elasticStore );
 
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()

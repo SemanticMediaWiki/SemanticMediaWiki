@@ -12,6 +12,7 @@ use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\Serializers\SemanticDataSerializer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @group semantic-mediawiki
@@ -24,7 +25,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 
 	private function newSerializerInstance() {
-		return new SemanticDataSerializer();
+		return new SemanticDataSerializer( $this->createMock( Store::class ) );
 	}
 
 	private function newDeserializerInstance() {

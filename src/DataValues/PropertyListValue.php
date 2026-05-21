@@ -100,11 +100,9 @@ class PropertyListValue extends DataValue {
 
 			if ( $property instanceof Property ) {
 				// Find a possible redirect; inverse properties are returned
-				// unchanged (matching Property::getRedirectTarget() behaviour).
+				// unchanged.
 				if ( $this->store !== null && !$property->isInverse() ) {
 					$property = $this->store->getRedirectTarget( $property );
-				} elseif ( $this->store === null ) {
-					$property = $property->getRedirectTarget();
 				}
 				$this->m_diProperties[] = $property;
 			}

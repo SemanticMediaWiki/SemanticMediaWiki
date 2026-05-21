@@ -158,7 +158,7 @@ class ElasticFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
-			$store = $applicationFactory->getStore();
+			$store = ApplicationFactory::getInstance()->getStore();
 		}
 
 		$connection = $store->getConnection( 'elastic' );
@@ -265,10 +265,8 @@ class ElasticFactory {
 	public function newDocumentReplicationExaminer(
 		?Store $store = null
 	): DocumentReplicationExaminer {
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		if ( $store === null ) {
-			$store = $applicationFactory->getStore();
+			$store = ApplicationFactory::getInstance()->getStore();
 		}
 
 		$documentReplicationExaminer = new DocumentReplicationExaminer(
@@ -286,7 +284,7 @@ class ElasticFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
-			$store = $applicationFactory->getStore();
+			$store = ApplicationFactory::getInstance()->getStore();
 		}
 
 		$connection = $store->getConnection( 'elastic' );

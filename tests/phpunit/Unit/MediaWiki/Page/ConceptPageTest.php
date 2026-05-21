@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\MediaWiki\Page;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Page\ConceptPage;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Page\ConceptPage
@@ -29,7 +30,7 @@ class ConceptPageTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ConceptPage::class,
-			new ConceptPage( $this->title )
+			new ConceptPage( $this->title, $this->createMock( Store::class ) )
 		);
 	}
 

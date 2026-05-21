@@ -9,7 +9,6 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * DataValue implements the handling of small sets of property-value pairs.
@@ -170,7 +169,7 @@ class RecordValue extends AbstractMultiValue {
 				// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 				$semanticData = new ContainerSemanticData( $dataItem );
 				// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
-				$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
+				$semanticData->copyDataFrom( $this->dataValueServiceFactory->getStore()->getSemanticData( $dataItem ) );
 				$this->m_dataitem = new Container( $semanticData );
 			}
 

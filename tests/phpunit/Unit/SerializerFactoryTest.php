@@ -15,6 +15,7 @@ use SMW\SerializerFactory;
 use SMW\Serializers\ExpDataSerializer;
 use SMW\Serializers\QueryResultSerializer;
 use SMW\Serializers\SemanticDataSerializer;
+use SMW\Store;
 
 /**
  * @covers \SMW\SerializerFactory
@@ -27,15 +28,22 @@ use SMW\Serializers\SemanticDataSerializer;
  */
 class SerializerFactoryTest extends TestCase {
 
+	private Store $store;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->store = $this->createMock( Store::class );
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			SerializerFactory::class,
-			new SerializerFactory()
+			new SerializerFactory( $this->store )
 		);
 	}
 
 	public function testCanConstructSemanticDataSerializer() {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->assertInstanceOf(
 			SemanticDataSerializer::class,
@@ -44,7 +52,7 @@ class SerializerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructSemanticDataDeserializer() {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->assertInstanceOf(
 			SemanticDataDeserializer::class,
@@ -53,7 +61,7 @@ class SerializerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructQueryResultSerializer() {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->assertInstanceOf(
 			QueryResultSerializer::class,
@@ -62,7 +70,7 @@ class SerializerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructExpDataSerializer() {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ExpDataSerializer::class,
@@ -71,7 +79,7 @@ class SerializerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructExpDataDeserializer() {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ExpDataDeserializer::class,
@@ -83,7 +91,7 @@ class SerializerFactoryTest extends TestCase {
 	 * @dataProvider objectToSerializerProvider
 	 */
 	public function testGetSerializerFor( $object ) {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->assertInstanceOf(
 			Serializer::class,
@@ -95,7 +103,7 @@ class SerializerFactoryTest extends TestCase {
 	 * @dataProvider serializationToDeserializerProvider
 	 */
 	public function testGetDeserializerFor( $serialization ) {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->assertInstanceOf(
 			Deserializer::class,
@@ -104,14 +112,14 @@ class SerializerFactoryTest extends TestCase {
 	}
 
 	public function testGetSerializerForUnregisteredSerializerThrowsException() {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->expectException( 'OutOfBoundsException' );
 		$instance->getSerializerFor( 'Foo' );
 	}
 
 	public function testGetDeserializerForUnregisteredSerializerThrowsException() {
-		$instance = new SerializerFactory();
+		$instance = new SerializerFactory( $this->store );
 
 		$this->expectException( 'OutOfBoundsException' );
 		$instance->getDeserializerFor( [ 'Foo' ] );

@@ -22,7 +22,6 @@ use ParamProcessor\Processor;
 use Skin;
 use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
-use SMW\MediaWiki\Content\SchemaContentHandler;
 use SMW\MediaWiki\Hooks\AdminLinks;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
@@ -243,8 +242,6 @@ class Hooks {
 			'ArticleFromTitle' => [ $this, 'onArticleFromTitle' ],
 			'ArticleProtectComplete' => [ $this, 'onArticleProtectComplete' ],
 			'ArticleViewHeader' => [ $this, 'onArticleViewHeader' ],
-			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
-
 			'RevisionFromEditComplete' => [ $this, 'onRevisionFromEditComplete' ],
 			'LinksUpdateComplete' => [ $this, 'onLinksUpdateComplete' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
@@ -831,20 +828,6 @@ class Hooks {
 		);
 
 		$linksUpdateConstructed->process( $linksUpdate );
-
-		return true;
-	}
-
-	/**
-	 * Hook: Occurs when an articleheader is shown
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ContentHandlerForModelID
-	 */
-	public function onContentHandlerForModelID( $modelId, &$contentHandler ): bool {
-		// 'rule-json' being a legacy model, remove with 3.1
-		if ( $modelId === 'rule-json' || $modelId === 'smw/schema' ) {
-			$contentHandler = new SchemaContentHandler();
-		}
 
 		return true;
 	}

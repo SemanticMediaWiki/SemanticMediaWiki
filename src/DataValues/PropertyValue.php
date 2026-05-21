@@ -191,8 +191,8 @@ class PropertyValue extends DataValue {
 		// Copy the original DI to ensure we can compare it against a possible redirect
 		$this->inceptiveProperty = $this->m_dataitem;
 
-		if ( $this->hasFeature( SMW_DV_PROV_REDI ) ) {
-			$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
+		if ( $this->hasFeature( SMW_DV_PROV_REDI ) && !$this->m_dataitem->isInverse() ) {
+			$this->m_dataitem = $this->dataValueServiceFactory->getStore()->getRedirectTarget( $this->m_dataitem );
 		}
 
 		// If no external caption has been invoked then fetch a preferred label

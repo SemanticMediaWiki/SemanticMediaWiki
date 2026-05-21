@@ -50,9 +50,11 @@ class PageBuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$store = $this->createMock( Store::class );
+
 		$this->assertInstanceOf(
 			PageBuilder::class,
-			new PageBuilder( $HtmlFormRenderer, $PageRequestOptions, $QueryResultLookup )
+			new PageBuilder( $HtmlFormRenderer, $PageRequestOptions, $QueryResultLookup, $store )
 		);
 	}
 
@@ -90,7 +92,8 @@ class PageBuilderTest extends TestCase {
 		$instance =	new PageBuilder(
 			new HtmlFormRenderer( $title, $messageBuilder ),
 			new PageRequestOptions( 'Foo/Bar', [] ),
-			new QueryResultLookup( $store )
+			new QueryResultLookup( $store ),
+			$store
 		);
 
 		$expected = [
@@ -162,7 +165,8 @@ class PageBuilderTest extends TestCase {
 		$instance =	new PageBuilder(
 			new HtmlFormRenderer( $title, $messageBuilder ),
 			new PageRequestOptions( 'Foo/Bar', $requestOptions ),
-			new QueryResultLookup( $store )
+			new QueryResultLookup( $store ),
+			$store
 		);
 
 		$expected = [

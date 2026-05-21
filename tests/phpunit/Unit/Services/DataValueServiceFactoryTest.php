@@ -10,6 +10,7 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Services\ServicesContainer;
+use SMW\Store;
 
 /**
  * @covers \SMW\Services\DataValueServiceFactory
@@ -23,6 +24,7 @@ use SMW\Services\ServicesContainer;
 class DataValueServiceFactoryTest extends TestCase {
 
 	private $servicesContainer;
+	private Store $store;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -30,12 +32,13 @@ class DataValueServiceFactoryTest extends TestCase {
 		$this->servicesContainer = $this->getMockBuilder( ServicesContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
+		$this->store = $this->createMock( Store::class );
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			DataValueServiceFactory::class,
-			new DataValueServiceFactory( $this->servicesContainer )
+			new DataValueServiceFactory( $this->servicesContainer, $this->store )
 		);
 	}
 
@@ -57,7 +60,8 @@ class DataValueServiceFactoryTest extends TestCase {
 			->willReturn( true );
 
 		$instance = new DataValueServiceFactory(
-			$this->servicesContainer
+			$this->servicesContainer,
+			$this->store
 		);
 
 		$instance->newDataValueByTypeOrClass( 'foo', 'bar' );
@@ -65,7 +69,8 @@ class DataValueServiceFactoryTest extends TestCase {
 
 	public function testGetDataValueFactory() {
 		$instance = new DataValueServiceFactory(
-			$this->servicesContainer
+			$this->servicesContainer,
+			$this->store
 		);
 
 		$this->assertInstanceOf(
@@ -84,7 +89,8 @@ class DataValueServiceFactoryTest extends TestCase {
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_PARSER ) );
 
 		$instance = new DataValueServiceFactory(
-			$this->servicesContainer
+			$this->servicesContainer,
+			$this->store
 		);
 
 		$instance->getValueParser( $dataValue );
@@ -109,7 +115,8 @@ class DataValueServiceFactoryTest extends TestCase {
 			->willReturn( $dataValueFormatter );
 
 		$instance = new DataValueServiceFactory(
-			$this->servicesContainer
+			$this->servicesContainer,
+			$this->store
 		);
 
 		$instance->getValueFormatter( $dataValue );
@@ -134,7 +141,8 @@ class DataValueServiceFactoryTest extends TestCase {
 			->willReturn( $dataValueFormatter );
 
 		$instance = new DataValueServiceFactory(
-			$this->servicesContainer
+			$this->servicesContainer,
+			$this->store
 		);
 
 		$instance->getValueFormatter( $dataValue );
@@ -151,7 +159,8 @@ class DataValueServiceFactoryTest extends TestCase {
 			->willReturn( $descriptionBuilderRegistry );
 
 		$instance = new DataValueServiceFactory(
-			$this->servicesContainer
+			$this->servicesContainer,
+			$this->store
 		);
 
 		$instance->getDescriptionBuilderRegistry();
@@ -168,7 +177,8 @@ class DataValueServiceFactoryTest extends TestCase {
 			->willReturn( $unitConverter );
 
 		$instance = new DataValueServiceFactory(
-			$this->servicesContainer
+			$this->servicesContainer,
+			$this->store
 		);
 
 		$instance->getUnitConverter();

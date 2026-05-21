@@ -288,7 +288,7 @@ return [
 			return $servicesFactory->getPropertyAnnotatorFactory();
 		}
 
-		return new AnnotatorFactory();
+		return new AnnotatorFactory( $servicesFactory->getStore() );
 	},
 
 	'SMW.ConnectionProvider' => static function ( MediaWikiServices $services ): ConnectionProvider {
@@ -601,7 +601,7 @@ return [
 			return $servicesFactory->getSerializerFactory();
 		}
 
-		return new SerializerFactory();
+		return new SerializerFactory( $servicesFactory->getStore() );
 	},
 
 	'SMW.ParserFunctionFactory' => static function ( MediaWikiServices $services ): ParserFunctionFactory {

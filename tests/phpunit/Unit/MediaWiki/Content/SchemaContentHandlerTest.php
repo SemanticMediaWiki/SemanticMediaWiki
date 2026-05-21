@@ -14,6 +14,7 @@ use SMW\MediaWiki\Content\SchemaContentHandler;
 use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaFactory;
 use SMW\Schema\SchemaValidator;
+use SMW\Store;
 use WikiPage;
 
 /**
@@ -27,10 +28,17 @@ use WikiPage;
  */
 class SchemaContentHandlerTest extends TestCase {
 
+	private Store $store;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->store = $this->createMock( Store::class );
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceof(
 			'\JsonContentHandler',
-			new SchemaContentHandler()
+			new SchemaContentHandler( CONTENT_MODEL_SMW_SCHEMA, $this->store )
 		);
 	}
 
@@ -75,7 +83,7 @@ class SchemaContentHandlerTest extends TestCase {
 
 		$schemaContent->setServices( $schemaFactory );
 
-		$instance = new SchemaContentHandler();
+		$instance = new SchemaContentHandler( CONTENT_MODEL_SMW_SCHEMA, $this->store );
 		$page = new PageIdentityValue( 0, 1, 'Foo', PageIdentity::LOCAL );
 		$validationParams = new ValidationParams( $page, 0 );
 
@@ -126,7 +134,7 @@ class SchemaContentHandlerTest extends TestCase {
 
 		$schemaContent->setServices( $schemaFactory );
 
-		$instance = new SchemaContentHandler();
+		$instance = new SchemaContentHandler( CONTENT_MODEL_SMW_SCHEMA, $this->store );
 		$page = new PageIdentityValue( 0, 1, 'Foo', PageIdentity::LOCAL );
 		$validationParams = new ValidationParams( $page, 0 );
 
@@ -164,7 +172,7 @@ class SchemaContentHandlerTest extends TestCase {
 		// may cause problems, since the connection is not restored on wakeup."
 		$schemaContent->setServices( new SchemaFactory() );
 
-		$instance = new SchemaContentHandler();
+		$instance = new SchemaContentHandler( CONTENT_MODEL_SMW_SCHEMA, $this->store );
 		$page = new PageIdentityValue( 0, 1, 'Foo', PageIdentity::LOCAL );
 		$validationParams = new ValidationParams( $page, 0 );
 

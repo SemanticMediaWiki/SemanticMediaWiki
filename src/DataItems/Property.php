@@ -281,18 +281,6 @@ class Property extends DataItem {
 	}
 
 	/**
-	 * @since 2.4
-	 * @suppress PhanTypeMismatchReturnSuperType
-	 */
-	public function getRedirectTarget(): self {
-		if ( $this->m_inverse ) {
-			return $this;
-		}
-
-		return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $this );
-	}
-
-	/**
 	 * @since 3.0
 	 *
 	 * @throws DataTypeLookupException

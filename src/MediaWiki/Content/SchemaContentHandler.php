@@ -15,6 +15,8 @@ use SMW\Localizer\Message;
 use SMW\ParserData;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Schema;
+use SMW\Schema\SchemaFactory;
+use SMW\Store;
 use WikiPage;
 
 /**
@@ -25,8 +27,30 @@ use WikiPage;
  */
 class SchemaContentHandler extends JsonContentHandler {
 
-	public function __construct() {
-		parent::__construct( CONTENT_MODEL_SMW_SCHEMA );
+	/**
+	 * Accepts the model id as the first positional argument so that MediaWiki
+	 * core's `ContentHandlerFactory` (which passes `$modelID` via
+	 * `extraArgs`) can construct this handler.
+	 *
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		string $modelId,
+		private readonly Store $store
+	) {
+		parent::__construct( $modelId );
+	}
+
+	private function setContentServices( Content $content ): void {
+		// Only wire services when the content has not been pre-configured (e.g. by tests).
+		if ( $content->getSchemaFactory() !== null && $content->getContentFormatter() !== null ) {
+			return;
+		}
+
+		$content->setServices(
+			$content->getSchemaFactory() ?? new SchemaFactory(),
+			$content->getContentFormatter() ?? new SchemaContentFormatter( $this->store )
+		);
 	}
 
 	/**
@@ -95,6 +119,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 * {@inheritDoc}
 	 */
 	public function validateSave( Content $content, ValidationParams $validationParams ) {
+		$this->setContentServices( $content );
 		$content->initServices();
 
 		$page = $validationParams->getPageIdentity();
@@ -190,6 +215,7 @@ class SchemaContentHandler extends JsonContentHandler {
 			return;
 		}
 
+		$this->setContentServices( $content );
 		$content->initServices();
 		$contentFormatter = $content->getContentFormatter();
 		$schemaFactory = $content->getSchemaFactory();

@@ -288,7 +288,6 @@ class HooksTest extends TestCase {
 			[ 'callBeforeDisplayNoArticleText' ],
 			[ 'callArticleFromTitle' ],
 			[ 'callTitleIsMovable' ],
-			[ 'callContentHandlerForModelID' ],
 			[ 'callEditPageForm' ],
 			[ 'callParserOptionsRegister' ],
 			[ 'callParserFirstCallInit' ],
@@ -1235,24 +1234,6 @@ class HooksTest extends TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ $this->title, &$isMovable ]
-		);
-
-		return $handler;
-	}
-
-	public function callContentHandlerForModelID( $instance ) {
-		$handler = 'ContentHandlerForModelID';
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$modelId = 'smw/schema';
-		$contentHandler = '';
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ $modelId, &$contentHandler ]
 		);
 
 		return $handler;

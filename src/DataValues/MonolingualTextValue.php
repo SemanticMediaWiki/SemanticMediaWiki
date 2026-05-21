@@ -13,7 +13,6 @@ use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Localizer\Localizer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
@@ -193,7 +192,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 					$semanticData->findSubSemanticData( $subobjectName )
 				);
 			} else {
-				$monolingualTextLookup = ApplicationFactory::getInstance()->getStore()->service( 'MonolingualTextLookup' );
+				$monolingualTextLookup = $this->dataValueServiceFactory->getStore()->service( 'MonolingualTextLookup' );
 				$monolingualTextLookup->setCaller( __METHOD__ );
 				$this->m_dataitem = $monolingualTextLookup->newDIContainer( $dataItem, $this->getProperty() );
 			}
