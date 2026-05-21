@@ -15,7 +15,7 @@ use SMW\Formatters\Infolink;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -42,6 +42,7 @@ class PageBuilder {
 		private readonly HtmlFormRenderer $htmlFormRenderer,
 		private readonly PageRequestOptions $pageRequestOptions,
 		private readonly QueryResultLookup $queryResultLookup,
+		private readonly Store $store,
 	) {
 		$this->linker = smwfGetLinker();
 	}
@@ -312,7 +313,7 @@ class PageBuilder {
 		$resultCount = 0;
 		$extra = '';
 
-		$dataItem = ApplicationFactory::getInstance()->getStore()->getPropertyTableIdReferenceFinder()->tryToFindAtLeastOneReferenceForProperty(
+		$dataItem = $this->store->getPropertyTableIdReferenceFinder()->tryToFindAtLeastOneReferenceForProperty(
 			$property
 		);
 
