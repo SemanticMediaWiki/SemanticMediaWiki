@@ -206,6 +206,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Removed internal `MutedInsertQueryBuilder`, `MutedUpdateQueryBuilder`, `MutedDeleteQueryBuilder`, and `MutedReplaceQueryBuilder` (added briefly in the 7.0.0 development cycle). `Database::new*QueryBuilder()` factories now return MediaWiki core's base types directly. See "Transaction profiler warnings no longer silenced" above for the behaviour change.
 * **`RequestOptions::addExtraCondition` callbacks now receive `SqlFragmentBuilder` instead of `Query`.** The new class exposes the same fragment helpers (`eq`, `neq`, `in`, `like`) and `alias` / `index` properties, so untyped callbacks need no changes. Typed callbacks must update the hint to `SMW\MediaWiki\Connection\SqlFragmentBuilder`. `Query` and `Database::newQuery()` are removed.
 * Removed `EntityIdManager::MAX_CACHE_SIZE`. Cache sizes are now per-pool and exposed as `EntityIdManager::DEFAULT_CACHE_SIZES`, configurable via `$smwgEntityCacheSizes`.
+* **`Property::getRedirectTarget()` removed.** Use `Store::getRedirectTarget()` directly; remember to preserve the inverse short-circuit (the removed method returned `$this` when `m_inverse` was true).
 * Removed long-deprecated code originally scheduled for removal:
   * `smwfNormalTitleText()` — use `Localizer::getInstance()->normalizeTitleText()` (deprecated since 3.2)
   * `smwfNumberFormat()` — use `IntlNumberFormatter::getInstance()->getLocalizedFormattedNumber()` (deprecated since 2.1)
