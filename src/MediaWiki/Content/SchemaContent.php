@@ -6,9 +6,9 @@ use MediaWiki\Content\JsonContent;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
+use RuntimeException;
 use SMW\Exception\JSONParseException;
 use SMW\Schema\SchemaFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -150,13 +150,10 @@ class SchemaContent extends JsonContent {
 	}
 
 	public function initServices(): void {
-		if ( $this->schemaFactory === null ) {
-			$this->schemaFactory = new SchemaFactory();
-		}
-
-		if ( $this->contentFormatter === null ) {
-			$this->contentFormatter = new SchemaContentFormatter(
-				ApplicationFactory::getInstance()->getStore()
+		if ( $this->schemaFactory === null || $this->contentFormatter === null ) {
+			throw new RuntimeException(
+				'SchemaContent::setServices() must be called before initServices(). '
+					. 'The SchemaContentHandler wires this automatically; tests must call it explicitly.'
 			);
 		}
 	}
