@@ -2,12 +2,15 @@
 
 namespace SMW\Tests\Unit\SQLStore;
 
+use MediaWiki\JobQueue\JobFactory;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\InMemoryPoolCache;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\JobQueue;
+use SMW\MediaWiki\Job;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
@@ -38,7 +41,8 @@ class RedirectStoreTest extends TestCase {
 	private $cache;
 	private $testEnvironment;
 	private $connectionManager;
-	private JobQueue $jobQueue;
+	private TitleFactory $titleFactory;
+	private JobFactory $jobFactory;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
@@ -66,11 +70,13 @@ class RedirectStoreTest extends TestCase {
 
 		$this->store->setConnectionManager( $this->connectionManager );
 
-		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		InMemoryPoolCache::getInstance()->clear();
 	}
@@ -83,7 +89,7 @@ class RedirectStoreTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			RedirectStore::class,
-			new RedirectStore( $this->store )
+			new RedirectStore( $this->store, $this->titleFactory, $this->jobFactory )
 		);
 	}
 
@@ -99,7 +105,9 @@ class RedirectStoreTest extends TestCase {
 			->willReturn( $selectBuilder );
 
 		$instance = new RedirectStore(
-			$this->store
+			$this->store,
+			$this->titleFactory,
+			$this->jobFactory
 		);
 
 		$this->assertEquals(
@@ -138,7 +146,9 @@ class RedirectStoreTest extends TestCase {
 			->willReturn( $selectBuilder );
 
 		$instance = new RedirectStore(
-			$this->store
+			$this->store,
+			$this->titleFactory,
+			$this->jobFactory
 		);
 
 		$this->assertSame(
@@ -184,7 +194,9 @@ class RedirectStoreTest extends TestCase {
 			->willReturn( $insertBuilder );
 
 		$instance = new RedirectStore(
-			$this->store
+			$this->store,
+			$this->titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->addRedirect( 42, 'Foo', 0 );
@@ -234,7 +246,9 @@ class RedirectStoreTest extends TestCase {
 			->willReturn( $selectBuilder );
 
 		$instance = new RedirectStore(
-			$this->store
+			$this->store,
+			$this->titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->deleteRedirect( 'Foo', 9001 );
@@ -306,11 +320,26 @@ class RedirectStoreTest extends TestCase {
 			true
 		);
 
-		$this->jobQueue->expects( $this->once() )
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$title->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$title->method( 'getDBkey' )->willReturn( 'Bar' );
+
+		$this->titleFactory->method( 'makeTitleSafe' )->willReturn( $title );
+
+		$job = $this->getMockBuilder( Job::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$job->expects( $this->once() )
 			->method( 'lazyPush' );
 
+		$this->jobFactory->method( 'newJob' )->willReturn( $job );
+
 		$instance = new RedirectStore(
-			$store
+			$store,
+			$this->titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->setCommandLineMode( false );
@@ -325,8 +354,21 @@ class RedirectStoreTest extends TestCase {
 			->with( SQLStore::UPDATE_TRANSACTION )
 			->willReturn( true );
 
-		$this->jobQueue->expects( $this->once() )
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$title->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$title->method( 'getDBkey' )->willReturn( 'Bar' );
+
+		$this->titleFactory->method( 'makeTitleSafe' )->willReturn( $title );
+
+		$job = $this->getMockBuilder( Job::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$job->expects( $this->once() )
 			->method( 'lazyPush' );
+
+		$this->jobFactory->method( 'newJob' )->willReturn( $job );
 
 		$row = new stdClass;
 		$row->ns = NS_MAIN;
@@ -378,7 +420,9 @@ class RedirectStoreTest extends TestCase {
 		);
 
 		$instance = new RedirectStore(
-			$store
+			$store,
+			$this->titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->setCommandLineMode( true );
@@ -402,7 +446,9 @@ class RedirectStoreTest extends TestCase {
 		);
 
 		$instance = new RedirectStore(
-			$store
+			$store,
+			$this->titleFactory,
+			$this->jobFactory
 		);
 
 		$instance->setEqualitySupport( SMW_EQ_NONE );

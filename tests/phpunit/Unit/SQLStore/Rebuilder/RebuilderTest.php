@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\Unit\SQLStore\Rebuilder;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\TitleFactory;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
@@ -31,6 +33,8 @@ class RebuilderTest extends TestCase {
 	private $titleFactory;
 	private $entityValidator;
 	private $propertyTableIdReferenceDisposer;
+	private $jobFactory;
+	private $hookContainer;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -54,6 +58,14 @@ class RebuilderTest extends TestCase {
 		$this->propertyTableIdReferenceDisposer = $this->getMockBuilder( PropertyTableIdReferenceDisposer::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -68,7 +80,7 @@ class RebuilderTest extends TestCase {
 
 		$this->assertInstanceOf(
 			Rebuilder::class,
-			new Rebuilder( $store, $this->titleFactory, $this->entityValidator, $this->propertyTableIdReferenceDisposer )
+			new Rebuilder( $store, $this->titleFactory, $this->entityValidator, $this->propertyTableIdReferenceDisposer, $this->jobFactory, $this->hookContainer )
 		);
 	}
 
@@ -110,7 +122,9 @@ class RebuilderTest extends TestCase {
 			$store,
 			$this->titleFactory,
 			$this->entityValidator,
-			$this->propertyTableIdReferenceDisposer
+			$this->propertyTableIdReferenceDisposer,
+			$this->jobFactory,
+			$this->hookContainer
 		);
 
 		$instance->setDispatchRangeLimit( 1 );
@@ -202,7 +216,9 @@ class RebuilderTest extends TestCase {
 			$store,
 			$this->titleFactory,
 			$this->entityValidator,
-			$this->propertyTableIdReferenceDisposer
+			$this->propertyTableIdReferenceDisposer,
+			$this->jobFactory,
+			$this->hookContainer
 		);
 
 		$instance->setDispatchRangeLimit( 1 );

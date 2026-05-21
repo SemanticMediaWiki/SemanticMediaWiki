@@ -14,7 +14,7 @@ use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\PropertyTableInfoFetcher;
@@ -127,6 +127,7 @@ class EntityIdManager {
 	public function __construct(
 		SQLStore $store,
 		private readonly SQLStoreFactory $factory,
+		private readonly Settings $settings,
 	) {
 		$this->store = $store;
 		$this->initCache();
@@ -1116,7 +1117,7 @@ class EntityIdManager {
 	}
 
 	private function resolveCacheSizes(): array {
-		$configured = ApplicationFactory::getInstance()->getSettings()->safeGet( 'smwgEntityCacheSizes', [] );
+		$configured = $this->settings->safeGet( 'smwgEntityCacheSizes', [] );
 
 		if ( !is_array( $configured ) || $configured === [] ) {
 			return self::DEFAULT_CACHE_SIZES;
