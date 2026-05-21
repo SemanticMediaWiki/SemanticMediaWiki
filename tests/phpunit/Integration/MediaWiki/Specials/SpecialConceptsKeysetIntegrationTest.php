@@ -306,12 +306,8 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 	 * cursor-aware method is the unit we want to lock down.
 	 */
 	private function fetchTitlesViaCursor( RequestOptions $options ): array {
-		$instance = new SpecialConcepts();
+		$instance = new SpecialConcepts( $this->getStore() );
 		$reflection = new \ReflectionClass( $instance );
-
-		$storeProp = $reflection->getProperty( 'store' );
-		$storeProp->setAccessible( true );
-		$storeProp->setValue( $instance, $this->getStore() );
 
 		$doFetch = $reflection->getMethod( 'doCursorFetch' );
 		$doFetch->setAccessible( true );

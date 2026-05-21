@@ -29,7 +29,6 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
  * @covers \SMW\MediaWiki\Specials\SpecialUnusedProperties
  * @covers \SMW\MediaWiki\Specials\SpecialProperties
  * @covers \SMW\MediaWiki\Specials\SpecialConcepts
- * @covers \SMW\MediaWiki\Specials\SpecialPage
  * @covers \SMW\MediaWiki\Specials\SpecialAsk
  * @covers \SMW\MediaWiki\Specials\SpecialAdmin
  * @covers \SMW\MediaWiki\Specials\SpecialBrowse
