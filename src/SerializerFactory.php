@@ -22,6 +22,9 @@ use SMW\Serializers\SemanticDataSerializer;
  */
 class SerializerFactory {
 
+	/**
+	 * @since 7.0.0
+	 */
 	public function __construct( private readonly Store $store ) {
 	}
 

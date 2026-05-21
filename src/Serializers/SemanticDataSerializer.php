@@ -16,6 +16,9 @@ use SMW\Store;
  */
 class SemanticDataSerializer implements Serializer {
 
+	/**
+	 * @since 7.0.0
+	 */
 	public function __construct( private readonly Store $store ) {
 	}
 
