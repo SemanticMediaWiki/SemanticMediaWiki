@@ -38,7 +38,7 @@ class SchemaContentHandlerTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceof(
 			'\JsonContentHandler',
-			new SchemaContentHandler( $this->store )
+			new SchemaContentHandler( CONTENT_MODEL_SMW_SCHEMA, $this->store )
 		);
 	}
 
@@ -83,7 +83,7 @@ class SchemaContentHandlerTest extends TestCase {
 
 		$schemaContent->setServices( $schemaFactory );
 
-		$instance = new SchemaContentHandler( $this->store );
+		$instance = new SchemaContentHandler( CONTENT_MODEL_SMW_SCHEMA, $this->store );
 		$page = new PageIdentityValue( 0, 1, 'Foo', PageIdentity::LOCAL );
 		$validationParams = new ValidationParams( $page, 0 );
 
@@ -134,7 +134,7 @@ class SchemaContentHandlerTest extends TestCase {
 
 		$schemaContent->setServices( $schemaFactory );
 
-		$instance = new SchemaContentHandler( $this->store );
+		$instance = new SchemaContentHandler( CONTENT_MODEL_SMW_SCHEMA, $this->store );
 		$page = new PageIdentityValue( 0, 1, 'Foo', PageIdentity::LOCAL );
 		$validationParams = new ValidationParams( $page, 0 );
 
@@ -172,7 +172,7 @@ class SchemaContentHandlerTest extends TestCase {
 		// may cause problems, since the connection is not restored on wakeup."
 		$schemaContent->setServices( new SchemaFactory() );
 
-		$instance = new SchemaContentHandler( $this->store );
+		$instance = new SchemaContentHandler( CONTENT_MODEL_SMW_SCHEMA, $this->store );
 		$page = new PageIdentityValue( 0, 1, 'Foo', PageIdentity::LOCAL );
 		$validationParams = new ValidationParams( $page, 0 );
 

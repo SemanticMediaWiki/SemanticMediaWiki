@@ -27,10 +27,20 @@ use WikiPage;
  */
 class SchemaContentHandler extends JsonContentHandler {
 
+	private readonly Store $store;
+
 	/**
+	 * Accepts the model id as the first positional argument so that MediaWiki
+	 * core's `ContentHandlerFactory` (which passes `$modelID` via
+	 * `extraArgs`) can construct this handler. `$store` is optional to keep
+	 * the deferred `SMW\MediaWiki\Hooks` zero-arg registration working until
+	 * that path is converted; when omitted the Store is resolved from
+	 * MediaWikiServices.
+	 *
 	 * @since 7.0.0
 	 */
-	public function __construct( private readonly Store $store, string $modelId = CONTENT_MODEL_SMW_SCHEMA ) {
+	public function __construct( string $modelId = CONTENT_MODEL_SMW_SCHEMA, ?Store $store = null ) {
+		$this->store = $store ?? MediaWikiServices::getInstance()->getService( 'SMW.Store' );
 		parent::__construct( $modelId );
 	}
 
