@@ -52,6 +52,7 @@ class ElasticFactoryTest extends TestCase {
 
 	private MessageReporter $messageReporter;
 	private $store;
+	private $elasticStore;
 	private $outputFormatter;
 	private $conditionBuilder;
 	private $connection;
@@ -86,15 +87,15 @@ class ElasticFactoryTest extends TestCase {
 			->method( 'getConfig' )
 			->willReturn( $options );
 
-		$store = $this->getMockBuilder( ElasticStore::class )
+		$this->elasticStore = $this->getMockBuilder( ElasticStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->any() )
+		$this->elasticStore->expects( $this->any() )
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $this->elasticStore );
 	}
 
 	protected function tearDown(): void {
@@ -105,12 +106,12 @@ class ElasticFactoryTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ElasticFactory::class,
-			new ElasticFactory()
+			new ElasticFactory( $this->store )
 		);
 	}
 
 	public function testCanConstructConfig() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			Config::class,
@@ -119,7 +120,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructConnectionProvider() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ConnectionProvider::class,
@@ -128,7 +129,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructIndexer() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			Indexer::class,
@@ -141,7 +142,7 @@ class ElasticFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			FileIndexer::class,
@@ -150,7 +151,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructRollover() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			Rollover::class,
@@ -159,7 +160,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructInstaller() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			Installer::class,
@@ -168,7 +169,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructBulk() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			Bulk::class,
@@ -177,7 +178,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructQueryEngine() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			QueryEngine::class,
@@ -194,7 +195,7 @@ class ElasticFactoryTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			Rebuilder::class,
@@ -203,7 +204,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructUpdateEntityCollationComplete() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			UpdateEntityCollationComplete::class,
@@ -212,7 +213,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructReplicationStatus() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ReplicationStatus::class,
@@ -229,7 +230,7 @@ class ElasticFactoryTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ReplicationCheck::class,
@@ -246,7 +247,7 @@ class ElasticFactoryTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ElasticClientTaskHandler::class,
@@ -255,7 +256,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructConceptDescriptionInterpreter() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ConceptDescriptionInterpreter::class,
@@ -264,7 +265,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructSomePropertyInterpreter() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			SomePropertyInterpreter::class,
@@ -273,7 +274,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructSomeValueInterpreter() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			SomeValueInterpreter::class,
@@ -282,7 +283,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructClassDescriptionInterpreter() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ClassDescriptionInterpreter::class,
@@ -291,7 +292,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructNamespaceDescriptionInterpreter() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			NamespaceDescriptionInterpreter::class,
@@ -300,7 +301,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructValueDescriptionInterpreter() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ValueDescriptionInterpreter::class,
@@ -309,7 +310,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructConjunctionInterpreter() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			ConjunctionInterpreter::class,
@@ -318,7 +319,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructDisjunctionInterpreter() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertInstanceOf(
 			DisjunctionInterpreter::class,
@@ -327,7 +328,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testOnEntityReferenceCleanUpComplete() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$this->assertTrue(
 			$instance->onEntityReferenceCleanUpComplete( $this->store, 42, null, false )
@@ -335,7 +336,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testOnRegisterEventListeners() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->store );
 
 		$eventListener = $this->getMockBuilder( GenericCallbackEventListener::class )
 			->disableOriginalConstructor()
@@ -347,7 +348,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testOnInvalidateEntityCache_OnSubject() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->elasticStore );
 
 		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
@@ -366,7 +367,7 @@ class ElasticFactoryTest extends TestCase {
 	}
 
 	public function testOnInvalidateEntityCache_OnTitle() {
-		$instance = new ElasticFactory();
+		$instance = new ElasticFactory( $this->elasticStore );
 
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()

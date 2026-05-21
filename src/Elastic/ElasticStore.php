@@ -57,7 +57,7 @@ class ElasticStore extends SQLStore {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->elasticFactory = new ElasticFactory();
+		$this->elasticFactory = new ElasticFactory( $this );
 	}
 
 	/**

@@ -334,7 +334,7 @@ return [
 			return $servicesFactory->getElasticFactory();
 		}
 
-		return new ElasticFactory();
+		return new ElasticFactory( $servicesFactory->getStore() );
 	},
 
 	'SMW.QueryCreator' => static function ( MediaWikiServices $services ): QueryCreator {
