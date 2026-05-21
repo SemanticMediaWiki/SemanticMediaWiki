@@ -4,7 +4,6 @@ namespace SMW\Tests\Unit;
 
 use MediaWiki\Parser\Parser;
 use PHPUnit\Framework\TestCase;
-use SMW\ParserData;
 use SMW\ParserFunctionFactory;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;
@@ -29,18 +28,12 @@ class ParserFunctionFactoryTest extends TestCase {
 
 	private $testEnvironment;
 
-	private $parserData;
-
 	private $parserFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-
-		$this->parserData = $this->getMockBuilder( ParserData::class )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 	}

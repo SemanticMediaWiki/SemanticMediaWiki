@@ -6,7 +6,6 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -26,10 +25,6 @@ class ChangePropagationClassUpdateJobTest extends TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-
-		$store = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->getMock();
 	}
 
 	protected function tearDown(): void {

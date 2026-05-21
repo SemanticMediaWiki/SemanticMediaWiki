@@ -6,7 +6,6 @@ use MediaWiki\Request\WebRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\Supplement\CacheStatisticsListTaskHandler;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -21,17 +20,12 @@ use SMW\Tests\TestEnvironment;
 class CacheStatisticsListTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
-	private $store;
 	private $outputFormatter;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-
-		$this->store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
 
 		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()

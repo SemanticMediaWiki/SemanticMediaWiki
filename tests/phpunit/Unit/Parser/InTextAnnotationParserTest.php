@@ -15,7 +15,6 @@ use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -42,10 +41,6 @@ class InTextAnnotationParserTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
 
 		$this->linksProcessor = new LinksProcessor();
 

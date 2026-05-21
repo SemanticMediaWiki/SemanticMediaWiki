@@ -7,7 +7,6 @@ use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyValue;
 use SMW\MediaWiki\Specials\Browse\ValueFormatter;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -22,16 +21,11 @@ use SMW\Tests\TestEnvironment;
 class ValueFormatterTest extends TestCase {
 
 	private $testEnvironment;
-	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-
-		$this->store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
 	}
 
 	protected function tearDown(): void {

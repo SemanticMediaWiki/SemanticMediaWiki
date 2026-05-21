@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialPendingTaskList;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -27,10 +26,6 @@ class SpecialPendingTaskListTest extends TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
 
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
