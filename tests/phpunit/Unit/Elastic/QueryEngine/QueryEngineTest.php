@@ -11,6 +11,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Language\Description;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
+use SMW\QueryFactory;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 
@@ -29,6 +30,7 @@ class QueryEngineTest extends TestCase {
 	private $conditionBuilder;
 	private $elasticClient;
 	private $idTable;
+	private QueryFactory $queryFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -68,12 +70,14 @@ class QueryEngineTest extends TestCase {
 		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->queryFactory = new QueryFactory();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			QueryEngine::class,
-			new QueryEngine( $this->store, $this->conditionBuilder )
+			new QueryEngine( $this->store, $this->conditionBuilder, $this->queryFactory )
 		);
 	}
 
@@ -98,7 +102,8 @@ class QueryEngineTest extends TestCase {
 
 		$instance = new QueryEngine(
 			$this->store,
-			$this->conditionBuilder
+			$this->conditionBuilder,
+			$this->queryFactory
 		);
 
 		$this->assertInstanceOf(
@@ -167,7 +172,8 @@ class QueryEngineTest extends TestCase {
 
 		$instance = new QueryEngine(
 			$this->store,
-			$this->conditionBuilder
+			$this->conditionBuilder,
+			$this->queryFactory
 		);
 
 		$this->assertInstanceOf(

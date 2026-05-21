@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Unit\Elastic\Indexer;
 
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use SMW\DataItems\WikiPage;
@@ -30,6 +33,8 @@ class IndexerTest extends TestCase {
 	private $logger;
 	private $jobQueue;
 	private $testEnvironment;
+	private TitleFactory $titleFactory;
+	private RevisionLookup $revisionLookup;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
@@ -67,6 +72,14 @@ class IndexerTest extends TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
+
+		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->revisionLookup = $this->getMockBuilder( RevisionLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -77,7 +90,7 @@ class IndexerTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			Indexer::class,
-			new Indexer( $this->store, $this->bulk )
+			new Indexer( $this->store, $this->bulk, $this->titleFactory, $this->revisionLookup )
 		);
 	}
 
@@ -113,7 +126,9 @@ class IndexerTest extends TestCase {
 
 		$instance = new Indexer(
 			$this->store,
-			$this->bulk
+			$this->bulk,
+			$this->titleFactory,
+			$this->revisionLookup
 		);
 
 		$instance->setLogger( $this->logger );
@@ -132,7 +147,9 @@ class IndexerTest extends TestCase {
 
 		$instance = new Indexer(
 			$this->store,
-			$this->bulk
+			$this->bulk,
+			$this->titleFactory,
+			$this->revisionLookup
 		);
 
 		$instance->setLogger( $this->logger );
@@ -158,7 +175,9 @@ class IndexerTest extends TestCase {
 
 		$instance = new Indexer(
 			$this->store,
-			$this->bulk
+			$this->bulk,
+			$this->titleFactory,
+			$this->revisionLookup
 		);
 
 		$instance->setLogger( $this->logger );
@@ -175,9 +194,17 @@ class IndexerTest extends TestCase {
 			->method( 'ping' )
 			->willReturn( false );
 
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->titleFactory->method( 'newFromText' )->willReturn( $title );
+
 		$instance = new Indexer(
 			$this->store,
-			$this->bulk
+			$this->bulk,
+			$this->titleFactory,
+			$this->revisionLookup
 		);
 
 		$instance->setLogger( $this->logger );
@@ -210,7 +237,9 @@ class IndexerTest extends TestCase {
 
 		$instance = new Indexer(
 			$this->store,
-			$this->bulk
+			$this->bulk,
+			$this->titleFactory,
+			$this->revisionLookup
 		);
 
 		$instance->setLogger( $this->logger );
@@ -237,7 +266,9 @@ class IndexerTest extends TestCase {
 
 		$instance = new Indexer(
 			$this->store,
-			$this->bulk
+			$this->bulk,
+			$this->titleFactory,
+			$this->revisionLookup
 		);
 
 		$instance->setLogger( $this->logger );
