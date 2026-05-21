@@ -13,9 +13,7 @@ use SMW\ParserData;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
 use SMW\PostProcHandler;
-use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Utils\CircularReferenceGuard;
 
@@ -60,24 +58,6 @@ class AskParserFunctionTest extends TestCase {
 		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
 			->willReturn( false );
-
-		$queryResult = $this->getMockBuilder( QueryResult::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult->expects( $this->any() )
-			->method( 'getErrors' )
-			->willReturn( [] );
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->any() )
-			->method( 'getQueryResult' )
-			->willReturn( $queryResult );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {

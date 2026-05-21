@@ -36,8 +36,6 @@ class SupportListTaskHandlerTest extends TestCase {
 		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {

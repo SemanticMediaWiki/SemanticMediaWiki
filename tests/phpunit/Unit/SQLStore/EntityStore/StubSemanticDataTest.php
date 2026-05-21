@@ -34,8 +34,6 @@ class StubSemanticDataTest extends TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
 			->willReturnArgument( 0 );
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {

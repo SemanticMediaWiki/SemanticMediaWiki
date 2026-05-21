@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit\SQLStore;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage;
-use SMW\HierarchyLookup;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Lookup\CachedListLookup;
 use SMW\Lookup\ListLookup;
@@ -87,12 +86,6 @@ class SQLStoreFactoryTest extends TestCase {
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'HierarchyLookup', $hierarchyLookup );
 	}
 
 	public function testCanConstruct() {

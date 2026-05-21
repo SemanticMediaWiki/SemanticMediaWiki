@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\Formatters;
 
-use MediaWiki\Language\Language;
 use PHPUnit\Framework\TestCase;
 use SMW\Formatters\Infolink;
 use SMW\Tests\TestEnvironment;
@@ -22,12 +21,6 @@ class InfolinkTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
-
-		$language = $this->getMockBuilder( Language::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'ContentLanguage', $language );
 	}
 
 	protected function tearDown(): void {

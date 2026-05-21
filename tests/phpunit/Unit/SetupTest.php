@@ -6,7 +6,6 @@ use MediaWiki\Language\Language;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\Setup;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -31,18 +30,6 @@ class SetupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->any() )
-			->method( 'getProperties' )
-			->willReturn( [] );
-
-		$store->expects( $this->any() )
-			->method( 'getInProperties' )
-			->willReturn( [] );
-
 		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -65,7 +52,6 @@ class SetupTest extends TestCase {
 		];
 
 		$this->testEnvironment = new TestEnvironment( $this->defaultConfig );
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {

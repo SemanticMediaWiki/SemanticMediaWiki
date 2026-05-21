@@ -10,7 +10,6 @@ use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Settings;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
@@ -31,15 +30,6 @@ class SkinAfterContentTest extends TestCase {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$settings = Settings::newFromArray( [
-			'smwgFactboxFeatures'  => SMW_FACTBOX_CACHE,
-			'smwgMainCacheType'        => 'hash',
-			'smwgShowFactboxEdit' => false,
-			'smwgShowFactbox' => false
-		] );
-
-		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$this->factboxText = $this->applicationFactory->getFactboxText();
 	}

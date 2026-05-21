@@ -45,8 +45,6 @@ class TaskHandlerRegistryTest extends TestCase {
 		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	public function testCanConstruct() {

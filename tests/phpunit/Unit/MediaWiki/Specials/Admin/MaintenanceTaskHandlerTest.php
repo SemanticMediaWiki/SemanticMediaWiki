@@ -44,8 +44,6 @@ class MaintenanceTaskHandlerTest extends TestCase {
 		$this->fileFetcher = $this->getMockBuilder( FileFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {
