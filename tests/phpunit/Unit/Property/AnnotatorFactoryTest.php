@@ -18,6 +18,7 @@ use SMW\Property\Annotators\RedirectPropertyAnnotator;
 use SMW\Property\Annotators\SchemaPropertyAnnotator;
 use SMW\Property\Annotators\SortKeyPropertyAnnotator;
 use SMW\Property\Annotators\TranslationPropertyAnnotator;
+use SMW\Store;
 
 /**
  * @covers \SMW\Property\AnnotatorFactory
@@ -30,10 +31,17 @@ use SMW\Property\Annotators\TranslationPropertyAnnotator;
  */
 class AnnotatorFactoryTest extends TestCase {
 
+	private Store $store;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->store = $this->createMock( Store::class );
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			AnnotatorFactory::class,
-			new AnnotatorFactory()
+			new AnnotatorFactory( $this->store )
 		);
 	}
 
@@ -42,7 +50,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			NullPropertyAnnotator::class,
@@ -59,7 +67,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			RedirectPropertyAnnotator::class,
@@ -76,7 +84,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			PredefinedPropertyAnnotator::class,
@@ -89,7 +97,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			SortKeyPropertyAnnotator::class,
@@ -102,7 +110,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			TranslationPropertyAnnotator::class,
@@ -115,7 +123,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			CategoryPropertyAnnotator::class,
@@ -128,7 +136,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			MandatoryTypePropertyAnnotator::class,
@@ -141,7 +149,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			SchemaPropertyAnnotator::class,
@@ -154,7 +162,7 @@ class AnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AnnotatorFactory();
+		$instance = new AnnotatorFactory( $this->store );
 
 		$this->assertInstanceOf(
 			AttachmentLinkPropertyAnnotator::class,

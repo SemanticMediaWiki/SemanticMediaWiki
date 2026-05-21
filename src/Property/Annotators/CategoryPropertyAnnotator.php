@@ -10,6 +10,7 @@ use SMW\Parser\AnnotationProcessor;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\Annotator;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * Handling category annotation
@@ -44,6 +45,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	public function __construct(
 		Annotator $propertyAnnotator,
 		private readonly array $categories,
+		private readonly Store $store,
 	) {
 		parent::__construct( $propertyAnnotator );
 	}
@@ -186,7 +188,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	private function getRedirectTarget( WikiPage $subject ) {
 		if ( $this->useCategoryRedirect ) {
-			return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $subject );
+			return $this->store->getRedirectTarget( $subject );
 		}
 
 		return $subject;
