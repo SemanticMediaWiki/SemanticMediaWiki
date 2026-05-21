@@ -334,7 +334,7 @@ return [
 			return $servicesFactory->getElasticFactory();
 		}
 
-		return new ElasticFactory( $servicesFactory->getStore() );
+		return new ElasticFactory();
 	},
 
 	'SMW.QueryCreator' => static function ( MediaWikiServices $services ): QueryCreator {
@@ -697,7 +697,7 @@ return [
 			$servicesFactory->getSettings()->get( 'smwgServicesFileDir' )
 		);
 
-		return new DataValueServiceFactory( $servicesContainer, $servicesFactory->getStore() );
+		return new DataValueServiceFactory( $servicesContainer );
 	},
 
 	'SMW.ImporterServiceFactory' => static function ( MediaWikiServices $services ): ImporterServiceFactory {

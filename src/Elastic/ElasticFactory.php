@@ -59,12 +59,6 @@ class ElasticFactory {
 	private ?Indexer $indexer = null;
 
 	/**
-	 * @since 7.0.0
-	 */
-	public function __construct( private readonly Store $store ) {
-	}
-
-	/**
 	 * @since 3.2
 	 */
 	public function newHooks(): Hooks {
@@ -164,7 +158,7 @@ class ElasticFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
-			$store = $this->store;
+			$store = ApplicationFactory::getInstance()->getStore();
 		}
 
 		$connection = $store->getConnection( 'elastic' );
@@ -272,7 +266,7 @@ class ElasticFactory {
 		?Store $store = null
 	): DocumentReplicationExaminer {
 		if ( $store === null ) {
-			$store = $this->store;
+			$store = ApplicationFactory::getInstance()->getStore();
 		}
 
 		$documentReplicationExaminer = new DocumentReplicationExaminer(
@@ -290,7 +284,7 @@ class ElasticFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
-			$store = $this->store;
+			$store = ApplicationFactory::getInstance()->getStore();
 		}
 
 		$connection = $store->getConnection( 'elastic' );
@@ -521,7 +515,7 @@ class ElasticFactory {
 	 * @param DispatchContext $dispatchContext
 	 */
 	public function onInvalidateEntityCache( $dispatchContext ): bool {
-		$store = $this->store;
+		$store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$store instanceof ElasticStore ) {
 			return true;
