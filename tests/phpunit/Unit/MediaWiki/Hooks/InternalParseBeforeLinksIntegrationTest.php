@@ -54,6 +54,8 @@ class InternalParseBeforeLinksIntegrationTest extends TestCase {
 		$parserData->expects( $this->never() )
 			->method( 'getSemanticData' );
 
+		$this->applicationFactory->registerObject( 'ParserData', $parserData );
+
 		wfMessage( 'properties' )->parse();
 	}
 
