@@ -165,7 +165,10 @@
 		"smw/maintenance": "LogFormatter"
 	},
 	"ContentHandlers": {
-		"smw/schema": "SMW\\MediaWiki\\Content\\SchemaContentHandler"
+		"smw/schema": {
+			"class": "SMW\\MediaWiki\\Content\\SchemaContentHandler",
+			"services": [ "SMW.Store" ]
+		}
 	},
 	"QUnitTestModule": {
 		"ext.smw.tests": {
