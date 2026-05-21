@@ -434,7 +434,7 @@ class QueryResult {
 	 * @return array
 	 */
 	public function serializeToArray(): array {
-		$serializerFactory = new SerializerFactory();
+		$serializerFactory = new SerializerFactory( $this->mStore );
 		$serializer = $serializerFactory->newQueryResultSerializer();
 		$serializer->version( $this->serializer_version );
 

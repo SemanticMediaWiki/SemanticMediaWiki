@@ -6,7 +6,7 @@ use OutOfBoundsException;
 use Serializers\Serializer;
 use SMW\DataItems\Property;
 use SMW\DataModel\SemanticData;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,6 +15,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  * @author mwjames
  */
 class SemanticDataSerializer implements Serializer {
+
+	public function __construct( private readonly Store $store ) {
+	}
 
 	/**
 	 * @see Serializer::serialize
@@ -88,7 +91,7 @@ class SemanticDataSerializer implements Serializer {
 		$inverseData = [];
 		$dataItem = $semanticData->getSubject();
 
-		$store = ApplicationFactory::getInstance()->getStore();
+		$store = $this->store;
 		$incomingProperties = $store->getInProperties( $dataItem );
 		$semanticDataIncoming = new SemanticData( $dataItem );
 

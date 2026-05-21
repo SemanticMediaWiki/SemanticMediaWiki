@@ -601,7 +601,7 @@ return [
 			return $servicesFactory->getSerializerFactory();
 		}
 
-		return new SerializerFactory();
+		return new SerializerFactory( $servicesFactory->getStore() );
 	},
 
 	'SMW.ParserFunctionFactory' => static function ( MediaWikiServices $services ): ParserFunctionFactory {

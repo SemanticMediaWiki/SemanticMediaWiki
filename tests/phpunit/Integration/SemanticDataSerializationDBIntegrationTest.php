@@ -39,7 +39,7 @@ class SemanticDataSerializationDBIntegrationTest extends SMWIntegrationTestCase 
 
 		$semanticDataAfterUpdate = $this->getStore()->getSemanticData( $subject );
 
-		$serializerFactory = new SerializerFactory();
+		$serializerFactory = new SerializerFactory( $this->getStore() );
 
 		$serialization = $serializerFactory->getSerializerFor( $semanticDataAfterUpdate )->serialize( $semanticDataAfterUpdate );
 
