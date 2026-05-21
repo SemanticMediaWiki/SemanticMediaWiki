@@ -68,6 +68,7 @@ class HtmlBuilder {
 	public function __construct(
 		private readonly Store $store,
 		private readonly WikiPage $subject,
+		private readonly ValueFormatter $valueFormatter,
 	) {
 	}
 
@@ -422,7 +423,7 @@ class HtmlBuilder {
 		}
 
 		return [
-			'html-title' => ValueFormatter::getFormattedSubject( $this->dataValue ),
+			'html-title' => $this->valueFormatter->getFormattedSubject( $this->dataValue ),
 			'html-actions' => $actionsHtml
 		];
 	}
@@ -595,7 +596,7 @@ class HtmlBuilder {
 				$contextPage
 			);
 
-			$propertyLabel = ValueFormatter::getPropertyLabel(
+			$propertyLabel = $this->valueFormatter->getPropertyLabel(
 				$dvProperty,
 				$incoming,
 				$showInverse
@@ -640,7 +641,7 @@ class HtmlBuilder {
 					[
 						'class' => 'smw-factbox-value'
 					],
-					ValueFormatter::getFormattedValue( $dv, $dvProperty, $incoming )
+					$this->valueFormatter->getFormattedValue( $dv, $dvProperty, $incoming )
 				);
 			}
 

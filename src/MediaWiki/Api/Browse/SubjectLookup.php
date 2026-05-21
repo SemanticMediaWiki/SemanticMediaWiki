@@ -7,6 +7,7 @@ use SMW\DataItems\WikiPage;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\MediaWiki\Specials\Browse\ValueFormatter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -84,7 +85,8 @@ class SubjectLookup extends Lookup {
 
 		$htmlBuilder = new HtmlBuilder(
 			$this->store,
-			$subject
+			$subject,
+			new ValueFormatter( $this->store )
 		);
 
 		$htmlBuilder->setOptions(

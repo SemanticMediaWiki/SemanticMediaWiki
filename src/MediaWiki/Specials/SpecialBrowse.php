@@ -11,6 +11,7 @@ use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\MediaWiki\Specials\Browse\ValueFormatter;
 use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Store;
@@ -151,7 +152,8 @@ class SpecialBrowse extends SpecialPage {
 	private function newHtmlBuilder( $webRequest, $dataItem, Store $store, Settings $settings ): HtmlBuilder {
 		$htmlBuilder = new HtmlBuilder(
 			$store,
-			$dataItem
+			$dataItem,
+			new ValueFormatter( $store )
 		);
 
 		$htmlBuilder->setOptions(
