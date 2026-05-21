@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Page;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
 use SMW\DataItems\Concept;
 use SMW\Formatters\PageLister;
 use SMW\Localizer\Message;
@@ -18,6 +19,13 @@ use SMW\Utils\Pager;
  * @author mwjames
  */
 class ConceptPage extends Page {
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct( Title $title, private readonly Store $store ) {
+		parent::__construct( $title );
+	}
 
 	/**
 	 * @see Page::initParameters()
@@ -39,7 +47,7 @@ class ConceptPage extends Page {
 		] );
 
 		$request = $context->getRequest();
-		$store = ApplicationFactory::getInstance()->getStore();
+		$store = $this->store;
 
 		$limit = (int)$request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
 		$offset = (int)$request->getVal( 'offset', '0' );
