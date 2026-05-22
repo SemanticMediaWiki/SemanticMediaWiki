@@ -250,8 +250,6 @@ class ChangePropagationDispatchJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$updateJob = $this->getMockBuilder( ChangePropagationUpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();

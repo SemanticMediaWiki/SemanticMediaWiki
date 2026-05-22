@@ -11,7 +11,6 @@ use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndi
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
@@ -39,16 +38,9 @@ class EntityExaminerIndicatorsFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'HookDispatcher', $hookDispatcher );
-		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
 	protected function tearDown(): void {

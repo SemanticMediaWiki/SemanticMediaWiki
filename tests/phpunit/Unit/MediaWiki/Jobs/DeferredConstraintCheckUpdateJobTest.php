@@ -8,7 +8,6 @@ use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -31,10 +30,6 @@ class DeferredConstraintCheckUpdateJobTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +41,6 @@ class DeferredConstraintCheckUpdateJobTest extends TestCase {
 		// pushJob() reaches batchInsert() -> ApplicationFactory->getJobQueue();
 		// keep the global registration so the static path stays covered.
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {

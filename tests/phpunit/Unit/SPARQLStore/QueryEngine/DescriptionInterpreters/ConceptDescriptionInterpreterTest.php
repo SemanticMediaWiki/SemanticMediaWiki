@@ -35,20 +35,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
-			->getMock();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->any() )
-			->method( 'getSemanticData' )
-			->willReturn( $semanticData );
-
 		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
