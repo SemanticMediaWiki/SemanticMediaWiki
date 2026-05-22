@@ -32,10 +32,6 @@ class ChangeTitleUpdateTest extends TestCase {
 			->setMethods( [ 'newUpdateJob' ] )
 			->getMock();
 
-		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 	}
 

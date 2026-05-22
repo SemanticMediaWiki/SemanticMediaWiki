@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Blob;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\RevisionGuard;
 use SMW\Parser\ContentParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
@@ -45,10 +44,6 @@ class UpdateJobTest extends TestCase {
 			'smwgEnabledDeferredUpdate' => false,
 			'smwgDVFeatures' => '',
 		] );
-
-		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();

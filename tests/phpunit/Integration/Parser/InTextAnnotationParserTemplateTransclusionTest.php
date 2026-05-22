@@ -10,7 +10,6 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataModel\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -32,10 +31,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit\Schema;
 
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaFactory;
@@ -33,10 +32,6 @@ class SchemaFactoryTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 

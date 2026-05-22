@@ -97,10 +97,6 @@ class DataUpdaterTest extends TestCase {
 
 		$this->store->setLogger( $this->spyLogger );
 
-		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
@@ -473,10 +469,6 @@ class DataUpdaterTest extends TestCase {
 		$pageCreator->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
-
-		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 		$this->revisionGuard->expects( $this->any() )
