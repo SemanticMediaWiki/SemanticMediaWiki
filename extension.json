@@ -137,6 +137,9 @@
 		"smw-vieweditpageinfo"
 	],
 	"GroupPermissions": {
+		"sysop": {
+			"smw-admin": true
+		},
 		"smwadministrator": {
 			"smw-admin": true
 		},

@@ -349,6 +349,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### Enhancements
 
+* The `smw-admin` right is now granted to the `sysop` group by default, so wiki administrators can reach `Special:SemanticMediaWiki` out of the box without first joining the `smwadministrator` group. The `smwadministrator` group is retained for installs that want SMW administration to be a separate role; revoke the new default with `$wgGroupPermissions['sysop']['smw-admin'] = false;` in `LocalSettings.php`.
 * Changed `smw_hash` storage from hex-encoded to raw binary, reducing the hash index size and improving query performance on large wikis. Column type changes from `VARBINARY(40)` to `BINARY(20)` on MySQL/MariaDB and SQLite, and from `TEXT` to `BYTEA` on PostgreSQL. Existing hashes are converted automatically during `update.php`. ([#6587](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6587))
 * Improved pagination performance on Special:Properties and Special:UnusedProperties by switching from OFFSET-based to cursor-based pagination. Browsing deep pages is now significantly faster on wikis with many properties. ([#6559](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6559))
   * Navigation links now use `after=` and `before=` URL parameters instead of `offset=`. Existing `offset=` bookmarks continue to work.
