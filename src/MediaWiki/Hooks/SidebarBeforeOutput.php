@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Hook\SidebarBeforeOutputHook;
 use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\Title\Title;
 use Skin;
 use SMW\Formatters\Infolink;
-use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
-use SMW\OptionsAwareTrait;
+use SMW\Settings;
 
 /**
  * Called at the end of Skin::buildSidebar().
@@ -19,27 +19,26 @@ use SMW\OptionsAwareTrait;
  *
  * @author StarHeartHunt
  */
-class SidebarBeforeOutput implements HookListener {
+class SidebarBeforeOutput implements SidebarBeforeOutputHook {
 
-	use OptionsAwareTrait;
-
-	public function __construct( private NamespaceExaminer $namespaceExaminer ) {
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly Settings $settings,
+	) {
 	}
 
 	/**
-	 * @param $skin
-	 * @param &$sidebar
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( $skin, array &$sidebar ): bool {
+	public function onSidebarBeforeOutput( $skin, &$sidebar ): void {
 		$title = $skin->getTitle();
 
 		if ( $this->canProcess( $title, $skin ) ) {
 			$this->performUpdate( $title, $skin, $sidebar );
 		}
-
-		return true;
 	}
 
 	private function canProcess( Title $title, Skin $skin ): bool {
@@ -47,7 +46,7 @@ class SidebarBeforeOutput implements HookListener {
 			return false;
 		}
 
-		if ( !$skin->getOutput()->isArticle() || !$this->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_TLINK ) ) {
+		if ( !$skin->getOutput()->isArticle() || !$this->settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_TLINK ) ) {
 			return false;
 		}
 

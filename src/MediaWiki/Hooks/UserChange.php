@@ -4,33 +4,27 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
-use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\NamespaceExaminer;
 
 /**
+ * Helper used by BlockIpComplete, UnblockUserComplete and UserGroupsChanged
+ * to schedule an update of the related user page.
+ *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/BlockIpComplete
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/UnblockUserComplete
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/UserGroupsChanged
- *
- * Act on events that happen outside of the normal parser process to ensure that
- * changes to pre-defined properties related to a user status can be invoked.
  *
  * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class UserChange implements HookListener {
+class UserChange {
 
 	/**
-	 * @var string
-	 */
-	private $origin = '';
-
-	/**
-	 * @since 3.0
+	 * @since 7.0.0
 	 */
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
@@ -39,20 +33,14 @@ class UserChange implements HookListener {
 	}
 
 	/**
-	 * @since 3.0
+	 * Schedule an update job for the user page identified by $user.
 	 *
-	 * @param string $origin
-	 */
-	public function setOrigin( $origin ): void {
-		$this->origin = $origin;
-	}
-
-	/**
-	 * @since 3.0
+	 * @since 7.0.0
 	 *
+	 * @param string $origin Identifier of the hook that triggered the update
 	 * @param UserIdentity|string|null $user
 	 */
-	public function process( $user ): bool {
+	public function notify( string $origin, $user ): bool {
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
 		}
@@ -71,7 +59,7 @@ class UserChange implements HookListener {
 			Title::newFromText( $user, NS_USER ),
 			[
 				UpdateJob::FORCED_UPDATE => true,
-				'origin' => $this->origin
+				'origin' => $origin
 			]
 		);
 

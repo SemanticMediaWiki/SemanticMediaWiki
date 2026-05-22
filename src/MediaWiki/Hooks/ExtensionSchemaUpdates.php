@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Installer\DatabaseUpdater;
+use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporterFactory;
 use ReflectionProperty;
-use SMW\MediaWiki\HookListener;
 use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Installer;
-use SMW\Store;
 
 /**
  * Schema update to set up the needed database tables
@@ -21,18 +21,9 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class ExtensionSchemaUpdates implements HookListener {
+class ExtensionSchemaUpdates implements LoadExtensionSchemaUpdatesHook {
 
-	protected ?DatabaseUpdater $updater;
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param DatabaseUpdater|null $updater = null
-	 */
-	public function __construct( ?DatabaseUpdater $updater = null ) {
-		$this->updater = $updater;
-	}
+	private ?DatabaseUpdater $updater = null;
 
 	/**
 	 * @since 3.1
@@ -47,13 +38,11 @@ class ExtensionSchemaUpdates implements HookListener {
 	}
 
 	/**
-	 * @since 2.0
-	 *
-	 * @param Store $store
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( Store $store ): bool {
+	public function onLoadExtensionSchemaUpdates( $updater ) {
+		$this->updater = $updater;
+
 		$verbose = true;
 
 		$options = new Options(
@@ -78,6 +67,7 @@ class ExtensionSchemaUpdates implements HookListener {
 		// cause problems, since the connection is not restored on wakeup." given
 		// that the `DatabaseUpdater` prior MW 1.31 has issues with serializing
 		// the options array.
+		$store = ApplicationFactory::getInstance()->getStore();
 		$store->setMessageReporter( $messageReporter );
 
 		if ( defined( 'MW_UPDATER' ) ) {

@@ -2,10 +2,11 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Config\Config;
+use MediaWiki\ResourceLoader\Hook\ResourceLoaderGetConfigVarsHook;
 use MediaWiki\Title\NamespaceInfo;
 use SMW\Localizer\Localizer;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
+use SMW\Settings;
 
 /**
  * Hook: ResourceLoaderGetConfigVars called right before
@@ -20,9 +21,7 @@ use SMW\OptionsAwareTrait;
  *
  * @author mwjames
  */
-class ResourceLoaderGetConfigVars implements HookListener {
-
-	use OptionsAwareTrait;
+class ResourceLoaderGetConfigVars implements ResourceLoaderGetConfigVarsHook {
 
 	const OPTION_KEYS = [
 		'smwgQMaxLimit',
@@ -32,43 +31,40 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	];
 
 	/**
-	 * @since 3.1
+	 * @since 7.0.0
 	 */
-	public function __construct( private NamespaceInfo $namespaceInfo ) {
+	public function __construct(
+		private readonly NamespaceInfo $namespaceInfo,
+		private readonly Settings $settings,
+	) {
 	}
 
 	/**
-	 * @since 1.9
-	 *
-	 * @param array &$vars
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( array &$vars ): bool {
+	public function onResourceLoaderGetConfigVars( array &$vars, $skin, Config $config ): void {
 		$vars['smw-config'] = [
 			'version' => SMW_VERSION,
 			'namespaces' => [],
 			'settings' => [
-				'smwgQMaxLimit' => $this->getOption( 'smwgQMaxLimit' ),
-				'smwgQMaxInlineLimit' => $this->getOption( 'smwgQMaxInlineLimit' ),
+				'smwgQMaxLimit' => $this->settings->get( 'smwgQMaxLimit' ),
+				'smwgQMaxInlineLimit' => $this->settings->get( 'smwgQMaxInlineLimit' ),
 			]
 		];
 
 		$localizer = Localizer::getInstance();
 
 		// Available semantic namespaces
-		foreach ( array_keys( $this->getOption( 'smwgNamespacesWithSemanticLinks' ) ) as $ns ) {
+		foreach ( array_keys( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) ) as $ns ) {
 			$name = $this->namespaceInfo->getCanonicalName( $ns );
 			$vars['smw-config']['settings']['namespace'][$name] = $ns;
 			$vars['smw-config']['namespaces']['canonicalName'][$ns] = $name;
 			$vars['smw-config']['namespaces']['localizedName'][$ns] = $localizer->getNsText( $ns );
 		}
 
-		foreach ( array_keys( $this->getOption( 'smwgResultFormats' ) ) as $format ) {
+		foreach ( array_keys( $this->settings->get( 'smwgResultFormats' ) ) as $format ) {
 			$vars['smw-config']['formats'][$format] = htmlspecialchars( $format );
 		}
-
-		return true;
 	}
 
 }

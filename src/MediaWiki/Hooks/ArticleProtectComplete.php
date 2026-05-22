@@ -2,14 +2,12 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\Title\Title;
-use PSr\Log\LoggerAwareTrait;
+use MediaWiki\Page\Hook\ArticleProtectCompleteHook;
+use Psr\Log\LoggerInterface;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\EditInfo;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 
 /**
  * Occurs after the protect article request has been processed
@@ -21,10 +19,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class ArticleProtectComplete implements HookListener {
-
-	use LoggerAwareTrait;
-	use OptionsAwareTrait;
+class ArticleProtectComplete implements ArticleProtectCompleteHook {
 
 	/**
 	 * Whether the update should be restricted or not. Which means that when
@@ -34,44 +29,54 @@ class ArticleProtectComplete implements HookListener {
 	const RESTRICTED_UPDATE = 'articleprotectcomplete.restricted.update';
 
 	/**
-	 * @since  2.5
+	 * @since 7.0.0
 	 */
 	public function __construct(
-		private Title $title,
-		private EditInfo $editInfo,
+		private readonly Settings $settings,
+		private readonly LoggerInterface $logger,
 	) {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param array $protections
-	 * @param string $reason
+	 * @since 7.0.0
 	 */
-	public function process( array $protections, $reason ) {
+	public function onArticleProtectComplete( $wikiPage, $user, $protect, $reason ) {
 		if ( Message::get( 'smw-edit-protection-auto-update' ) === $reason ) {
-			return $this->logger->info( __METHOD__ . ' No changes required, invoked by own process!' );
+			$this->logger->info( __METHOD__ . ' No changes required, invoked by own process!' );
+			return true;
 		}
 
-		$this->editInfo->fetchEditInfo();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
 
-		$output = $this->editInfo->getOutput();
+		$editInfo = $applicationFactory->newMwCollaboratorFactory()->newEditInfo(
+			$wikiPage,
+			$revisionGuard->newRevisionFromPage( $wikiPage ),
+			$user
+		);
+
+		$editInfo->fetchEditInfo();
+
+		$output = $editInfo->getOutput();
 
 		if ( $output === null ) {
-			return $this->logger->info( __METHOD__ . ' Missing ParserOutput!' );
+			$this->logger->info( __METHOD__ . ' Missing ParserOutput!' );
+			return true;
 		}
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->title,
+		$parserData = $applicationFactory->newParserData(
+			$wikiPage->getTitle(),
 			$output
 		);
 
-		$this->doPrepareData( $protections, $parserData );
+		$this->doPrepareData( $protect, $parserData );
 		$parserData->setOrigin( 'ArticleProtectComplete' );
 
 		$parserData->updateStore(
 			true
 		);
+
+		return true;
 	}
 
 	private function doPrepareData( array $protections, $parserData ): void {
@@ -88,7 +93,7 @@ class ArticleProtectComplete implements HookListener {
 			$isAnnotationBySystem = $dataItem->getOption( EditProtectedPropertyAnnotator::SYSTEM_ANNOTATION );
 		}
 
-		$editProtectionRight = $this->getOption( 'smwgEditProtectionRight', false );
+		$editProtectionRight = $this->settings->get( 'smwgEditProtectionRight' );
 
 		// No _EDIP annotation but a selected protection matches the
 		// `EditProtectionRight` setting

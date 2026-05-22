@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
+use MediaWiki\Hook\LinksUpdateCompleteHook;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use MediaWiki\Title\Title;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use SMW\DataModel\SemanticData;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory;
+use SMW\Site;
 
 /**
  * LinksUpdateComplete hook is called at the end of LinksUpdate()
@@ -22,29 +22,19 @@ use SMW\Services\ServicesFactory;
  *
  * @author mwjames
  */
-class LinksUpdateComplete implements HookListener {
-
-	use RevisionGuardAwareTrait;
-	use LoggerAwareTrait;
+class LinksUpdateComplete implements LinksUpdateCompleteHook {
 
 	private bool $enabledDeferredUpdate = true;
 
-	private bool $isReady = true;
-
 	/**
-	 * @since 3.0
+	 * @since 7.0.0
 	 */
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly ServicesFactory $servicesFactory,
+		private readonly RevisionGuard $revisionGuard,
+		private readonly LoggerInterface $logger,
 	) {
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function isReady( bool $isReady ): void {
-		$this->isReady = $isReady;
 	}
 
 	/**
@@ -55,10 +45,10 @@ class LinksUpdateComplete implements HookListener {
 	}
 
 	/**
-	 * @since 1.9
+	 * @since 7.0.0
 	 */
-	public function process( LinksUpdate $linksUpdate ): bool {
-		if ( !$this->isReady ) {
+	public function onLinksUpdateComplete( $linksUpdate, $ticket ) {
+		if ( !Site::isReady() ) {
 			return $this->doAbort();
 		}
 

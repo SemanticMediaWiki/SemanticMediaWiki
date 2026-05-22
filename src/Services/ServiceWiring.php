@@ -11,6 +11,7 @@ use SMW\DataItemFactory;
 use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\HierarchyLookup;
@@ -24,6 +25,7 @@ use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\Hooks\PersonalUrls;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\ContentParserFactory;
@@ -816,6 +818,19 @@ return [
 		);
 
 		return $hierarchyLookup;
+	},
+
+	'SMW.EventDispatcher' => static function ( MediaWikiServices $services ): EventDispatcher {
+		return ServicesFactory::getInstance()->getEventDispatcher();
+	},
+
+	'SMW.PersonalUrls' => static function ( MediaWikiServices $services ): PersonalUrls {
+		$servicesFactory = ServicesFactory::getInstance();
+		return new PersonalUrls(
+			$servicesFactory->getJobQueue(),
+			$services->getUserOptionsLookup(),
+			$servicesFactory->getSettings()
+		);
 	},
 
 ];

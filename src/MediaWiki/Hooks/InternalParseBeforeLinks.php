@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Hook\InternalParseBeforeLinksHook;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Title\Title;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 
 /**
  * The main task for this hook is to parse and replace the Semantic MediaWiki
@@ -35,36 +35,27 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinks implements HookListener {
-
-	use OptionsAwareTrait;
+class InternalParseBeforeLinks implements InternalParseBeforeLinksHook {
 
 	/**
-	 * @since 1.9
+	 * @since 7.0.0
 	 */
-	public function __construct(
-		private Parser &$parser,
-		private $stripState,
-	) {
+	public function __construct( private readonly Settings $settings ) {
 	}
 
 	/**
-	 * @since 1.9
-	 *
-	 * @param string &$text
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( &$text ): bool {
-		if ( !$this->canPerformUpdate( $text, $this->parser->getTitle() ) ) {
+	public function onInternalParseBeforeLinks( $parser, &$text, $stripState ) {
+		if ( !$this->canPerformUpdate( $text, $parser, $parser->getTitle() ) ) {
 			return true;
 		}
 
-		return $this->performUpdate( $text );
+		return $this->performUpdate( $text, $parser, $stripState );
 	}
 
-	private function canPerformUpdate( $text, Title $title ): bool {
-		if ( $this->getRedirectTarget() !== null ) {
+	private function canPerformUpdate( $text, Parser $parser, Title $title ): bool {
+		if ( $parser->getOptions()->getRedirectTarget() !== null ) {
 			return true;
 		}
 
@@ -76,7 +67,7 @@ class InternalParseBeforeLinks implements HookListener {
 
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
-		if ( $text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
+		if ( $text === '' || $parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
 
@@ -85,7 +76,7 @@ class InternalParseBeforeLinks implements HookListener {
 		}
 
 		// #2529
-		foreach ( $this->getOption( 'smwgEnabledSpecialPage', [] ) as $specialPage ) {
+		foreach ( $this->settings->get( 'smwgEnabledSpecialPage' ) ?: [] as $specialPage ) {
 			if ( is_string( $specialPage ) && $title->isSpecial( $specialPage ) ) {
 				return true;
 			}
@@ -94,15 +85,15 @@ class InternalParseBeforeLinks implements HookListener {
 		return false;
 	}
 
-	private function performUpdate( &$text ): bool {
+	private function performUpdate( &$text, Parser $parser, $stripState ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		/**
 		 * @var ParserData $parserData
 		 */
 		$parserData = $applicationFactory->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
 		/**
@@ -116,7 +107,7 @@ class InternalParseBeforeLinks implements HookListener {
 		);
 
 		$stripMarkerDecoder = $applicationFactory->newMwCollaboratorFactory()->newStripMarkerDecoder(
-			$this->stripState
+			$stripState
 		);
 
 		$inTextAnnotationParser->setStripMarkerDecoder(
@@ -124,7 +115,7 @@ class InternalParseBeforeLinks implements HookListener {
 		);
 
 		$inTextAnnotationParser->setRedirectTarget(
-			$this->getRedirectTarget()
+			$parser->getOptions()->getRedirectTarget()
 		);
 
 		$inTextAnnotationParser->parse( $text );
@@ -132,10 +123,6 @@ class InternalParseBeforeLinks implements HookListener {
 		$parserData->markParserOutput();
 
 		return true;
-	}
-
-	private function getRedirectTarget() {
-		return $this->parser->getOptions()->getRedirectTarget();
 	}
 
 }

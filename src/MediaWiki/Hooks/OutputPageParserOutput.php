@@ -2,14 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Output\Hook\OutputPageParserOutputHook;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\IndicatorRegistry;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -30,46 +29,48 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class OutputPageParserOutput implements HookListener {
-
-	private ?IndicatorRegistry $indicatorRegistry = null;
+class OutputPageParserOutput implements OutputPageParserOutputHook {
 
 	/**
-	 * @since 1.9
+	 * @since 7.0.0
 	 */
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
-		private readonly PermissionExaminer $permissionExaminer,
 		private readonly FactboxText $factboxText,
 		private readonly FactboxFactory $factboxFactory,
+		private readonly UserOptionsLookup $userOptionsLookup,
 	) {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param IndicatorRegistry $indicatorRegistry
+	 * @since 7.0.0
 	 */
-	public function setIndicatorRegistry( IndicatorRegistry $indicatorRegistry ): void {
-		$this->indicatorRegistry = $indicatorRegistry;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function process( OutputPage &$outputPage, ParserOutput $parserOutput ) {
+	public function onOutputPageParserOutput( $outputPage, $parserOutput ): void {
 		$title = $outputPage->getTitle();
 
 		if ( $title === null || $title->isSpecialPage() || $title->isRedirect() ) {
-			return true;
+			return;
 		}
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
-			return true;
+			return;
 		}
 
 		$context = $outputPage->getContext();
 		$request = $context->getRequest();
+		$user = $outputPage->getUser();
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$permissionExaminer = $applicationFactory->newPermissionExaminer( $user );
+
+		$indicatorRegistry = $applicationFactory->create(
+			'IndicatorRegistry',
+			(bool)$this->userOptionsLookup->getOption(
+				$user,
+				GetPreferences::SHOW_ENTITY_ISSUE_PANEL,
+				false
+			)
+		);
 
 		$options = [
 			'action' => $request->getVal( 'action' ),
@@ -80,9 +81,8 @@ class OutputPageParserOutput implements HookListener {
 
 		if (
 			$title->exists() &&
-			$this->indicatorRegistry !== null &&
-			$this->indicatorRegistry->hasIndicator( $title, $this->permissionExaminer, $options ) ) {
-			$this->indicatorRegistry->attachIndicators( $outputPage );
+			$indicatorRegistry->hasIndicator( $title, $permissionExaminer, $options ) ) {
+			$indicatorRegistry->attachIndicators( $outputPage );
 		}
 
 		$this->addFactbox( $outputPage, $parserOutput );

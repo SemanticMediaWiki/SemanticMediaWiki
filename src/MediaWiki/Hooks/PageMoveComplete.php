@@ -2,11 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\Linker\LinkTarget;
+use MediaWiki\Hook\PageMoveCompleteHook;
 use MediaWiki\Title\Title;
-use MediaWiki\User\UserIdentity;
-use SMW\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\MediaWiki\HookListener;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\Store;
 
@@ -24,33 +22,26 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class PageMoveComplete implements HookListener {
-
-	use EventDispatcherAwareTrait;
+class PageMoveComplete implements PageMoveCompleteHook {
 
 	/**
-	 * @since  1.9
+	 * @since 7.0.0
 	 */
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly Store $store,
+		private readonly EventDispatcher $eventDispatcher,
 	) {
 	}
 
 	/**
-	 * @since 1.9
+	 * @since 7.0.0
 	 */
-	public function process(
-		LinkTarget $oldTitle,
-		LinkTarget $newTitle,
-		UserIdentity $user,
-		int $oldId,
-		int $newId
-	): bool {
+	public function onPageMoveComplete( $old, $new, $user, $pageid, $redirid, $reason, $revision ) {
 		// Delete all data for a non-enabled target NS
-		if ( !$this->namespaceExaminer->isSemanticEnabled( $newTitle->getNamespace() ) || $newId == 0 ) {
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $new->getNamespace() ) || $pageid == 0 ) {
 			$this->store->deleteSubject(
-				Title::newFromLinkTarget( $oldTitle )
+				Title::newFromLinkTarget( $old )
 			);
 		}
 
@@ -59,8 +50,8 @@ class PageMoveComplete implements HookListener {
 		];
 
 		foreach ( [ 'InvalidateResultCache', 'InvalidateEntityCache' ] as $event ) {
-			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $oldTitle ] );
-			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $newTitle ] );
+			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $old ] );
+			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $new ] );
 		}
 
 		return true;

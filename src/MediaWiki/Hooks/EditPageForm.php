@@ -2,18 +2,16 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\EditPage\EditPage;
+use MediaWiki\Hook\EditPage__showEditForm_initialHook;
 use MediaWiki\Html\Html;
 use MediaWiki\User\Options\UserOptionsLookup;
-use MediaWiki\User\User;
 use SMW\DataItems\Property;
 use SMW\GroupPermissions;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\NamespaceExaminer;
-use SMW\OptionsAwareTrait;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
@@ -23,40 +21,38 @@ use SMW\OptionsAwareTrait;
  *
  * @author mwjames
  */
-class EditPageForm implements HookListener {
+// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+class EditPageForm implements EditPage__showEditForm_initialHook {
 
 	use MessageLocalizerTrait;
-	use OptionsAwareTrait;
 
 	/**
-	 * @since 2.5
+	 * @since 7.0.0
 	 */
 	public function __construct(
-		private NamespaceExaminer $namespaceExaminer,
-		private PermissionExaminer $permissionExaminer,
-		private UserOptionsLookup $userOptionsLookup,
-		private User $user,
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly UserOptionsLookup $userOptionsLookup,
+		private readonly Settings $settings,
 	) {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @param EditPage $editPage
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( EditPage $editPage ): bool {
+	// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+	public function onEditPage__showEditForm_initial( $editor, $out ) {
 		$html = '';
+		$user = $out->getUser();
+		$permissionExaminer = ApplicationFactory::getInstance()->newPermissionExaminer( $user );
 
 		if (
-			$this->getOption( 'smwgEnabledEditPageHelp', false ) &&
-			$this->permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_EDITPAGE_INFO ) &&
-			!$this->userOptionsLookup->getOption( $this->user, GetPreferences::DISABLE_EDITPAGE_INFO, false ) ) {
-			$html = $this->buildHTML( $editPage->getTitle() );
+			$this->settings->get( 'smwgEnabledEditPageHelp' ) &&
+			$permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_EDITPAGE_INFO ) &&
+			!$this->userOptionsLookup->getOption( $user, GetPreferences::DISABLE_EDITPAGE_INFO, false ) ) {
+			$html = $this->buildHTML( $editor->getTitle() );
 		}
 
-		$editPage->editFormPageTop .= $html;
+		$editor->editFormPageTop .= $html;
 
 		return true;
 	}

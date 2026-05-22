@@ -2,17 +2,17 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Article;
 use MediaWiki\Html\Html;
+use MediaWiki\Page\Hook\ArticleViewHeaderHook;
 use MediaWiki\Title\Title;
 use SMW\DataItems\Property;
-use SMW\DataItems\WikiPage;
-use SMW\DependencyValidator;
+use SMW\DataItems\WikiPage as DIWikiPage;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\NamespaceExaminer;
-use SMW\OptionsAwareTrait;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\Site;
 use SMW\Store;
 
 /**
@@ -26,60 +26,70 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class ArticleViewHeader implements HookListener {
-
-	use OptionsAwareTrait;
+class ArticleViewHeader implements ArticleViewHeaderHook {
 
 	/**
-	 * @since 3.0
+	 * @since 7.0.0
 	 */
 	public function __construct(
-		private Store $store,
-		private NamespaceExaminer $namespaceExaminer,
-		private DependencyValidator $dependencyValidator,
+		private readonly Store $store,
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly Settings $settings,
 	) {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param Article $page
-	 * @param bool &$outputDone
-	 * @param bool &$useParserCache
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( Article $page, &$outputDone, &$useParserCache ): bool {
-		$title = $page->getTitle();
+	public function onArticleViewHeader( $article, &$outputDone, &$pcache ) {
+		$title = $article->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return true;
 		}
 
-		$subject = WikiPage::newFromTitle( $title );
+		$subject = DIWikiPage::newFromTitle( $title );
 
 		$changePropagationWatchlist = array_flip(
-			$this->getOption( 'smwgChangePropagationWatchlist', [] )
+			$this->settings->get( 'smwgChangePropagationWatchlist' ) ?: []
 		);
 
 		// Only act when `_SUBC` is maintained as watchable property
 		if ( isset( $changePropagationWatchlist['_SUBC'] ) && $title->getNamespace() === NS_CATEGORY ) {
-			$useParserCache = $this->updateCategoryTop( $title, $page->getContext()->getOutput() );
+			$pcache = $this->updateCategoryTop( $title, $article->getContext()->getOutput() );
 		}
 
-		if ( $this->dependencyValidator->hasArchaicDependencies( $subject ) ) {
-			$this->dependencyValidator->markTitle( $title );
+		$applicationFactory = ApplicationFactory::getInstance();
+		$parserCache = $applicationFactory->create( 'ParserCache' );
+		$wikiPage = $article->getPage();
+
+		$dependencyValidator = $applicationFactory->newDependencyValidator(
+			$this->getETag( $parserCache, $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) ),
+			Site::getCacheExpireTime( 'parser' )
+		);
+
+		$dependencyValidator->setEventDispatcher(
+			$applicationFactory->getEventDispatcher()
+		);
+
+		if ( $dependencyValidator->hasArchaicDependencies( $subject ) ) {
+			$dependencyValidator->markTitle( $title );
 			// Disable the parser cache even before `RejectParserCacheValue` comes into play
-			$useParserCache = false;
+			$pcache = false;
 		}
 
 		return true;
 	}
 
+	private function getETag( $parserCache, $page, $pOpts ): string {
+		return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts ) .
+			"--" . $page->getTouched() . '"';
+	}
+
 	private function updateCategoryTop( Title $title, $output ): bool {
 		$message = '';
 
-		$subject = WikiPage::newFromTitle(
+		$subject = DIWikiPage::newFromTitle(
 			$title
 		);
 
@@ -88,7 +98,7 @@ class ArticleViewHeader implements HookListener {
 		);
 
 		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
-			$severity = $this->getOption( 'smwgChangePropagationProtection', true ) ? 'error' : 'warning';
+			$severity = $this->settings->get( 'smwgChangePropagationProtection' ) ? 'error' : 'warning';
 
 			$message .= $this->message(
 				$severity,

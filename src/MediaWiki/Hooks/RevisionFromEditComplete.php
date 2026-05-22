@@ -3,13 +3,11 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Exception;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
-use SMW\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\MediaWiki\EditInfo;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\PageInfoProvider;
-use SMW\OptionsAwareTrait;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\ParserData;
 use SMW\Property\AnnotatorFactory as PropertyAnnotatorFactory;
 use SMW\Schema\Schema;
@@ -34,33 +32,51 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class RevisionFromEditComplete implements HookListener {
-
-	use OptionsAwareTrait;
-	use EventDispatcherAwareTrait;
+class RevisionFromEditComplete implements RevisionFromEditCompleteHook {
 
 	/**
-	 * @since 1.9
+	 * @since 7.0.0
 	 */
 	public function __construct(
-		private readonly EditInfo $editInfo,
-		private readonly PageInfoProvider $pageInfoProvider,
 		private readonly PropertyAnnotatorFactory $propertyAnnotatorFactory,
 		private readonly SchemaFactory $schemaFactory,
 		private readonly Store $store,
+		private readonly EventDispatcher $eventDispatcher,
 	) {
 	}
 
 	/**
-	 * @since 1.9
+	 * @since 7.0.0
 	 */
-	public function process( Title $title ): bool {
-		$this->editInfo->fetchEditInfo();
+	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
+		$applicationFactory = ApplicationFactory::getInstance();
+		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
-		$parserOutput = $this->editInfo->getOutput();
+		$userObject = MediaWikiServices::getInstance()->getUserFactory()->newFromUserIdentity( $user );
+		$editInfo = $mwCollaboratorFactory->newEditInfo(
+			$wikiPage,
+			$rev,
+			$userObject
+		);
+
+		$pageInfoProvider = $mwCollaboratorFactory->newPageInfoProvider(
+			$wikiPage,
+			$rev,
+			$userObject
+		);
+
+		$this->doProcess( $wikiPage->getTitle(), $editInfo, $pageInfoProvider );
+
+		return true;
+	}
+
+	private function doProcess( Title $title, $editInfo, $pageInfoProvider ): void {
+		$editInfo->fetchEditInfo();
+
+		$parserOutput = $editInfo->getOutput();
 
 		if ( !$parserOutput instanceof ParserOutput ) {
-			return true;
+			return;
 		}
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
@@ -70,7 +86,8 @@ class RevisionFromEditComplete implements HookListener {
 
 		$this->addPredefinedPropertyAnnotation(
 			$parserData,
-			$this->tryCreateSchema( $title )
+			$pageInfoProvider,
+			$this->tryCreateSchema( $title, $pageInfoProvider )
 		);
 
 		$context = [
@@ -88,11 +105,9 @@ class RevisionFromEditComplete implements HookListener {
 		$parserData->copyToParserOutput();
 
 		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
-
-		return true;
 	}
 
-	private function tryCreateSchema( Title $title ) {
+	private function tryCreateSchema( Title $title, $pageInfoProvider ) {
 		if ( $title->getNamespace() !== SMW_NS_SCHEMA ) {
 			return null;
 		}
@@ -100,7 +115,7 @@ class RevisionFromEditComplete implements HookListener {
 		try {
 			$schema = $this->schemaFactory->newSchema(
 				$title->getDBKey(),
-				$this->pageInfoProvider->getNativeData()
+				$pageInfoProvider->getNativeData()
 			);
 		} catch ( Exception ) {
 			return null;
@@ -109,14 +124,14 @@ class RevisionFromEditComplete implements HookListener {
 		return $schema;
 	}
 
-	private function addPredefinedPropertyAnnotation( ParserData $parserData, ?Schema $schema = null ): void {
+	private function addPredefinedPropertyAnnotation( ParserData $parserData, $pageInfoProvider, ?Schema $schema = null ): void {
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()
 		);
 
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
 			$propertyAnnotator,
-			$this->pageInfoProvider
+			$pageInfoProvider
 		);
 
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newSchemaPropertyAnnotator(
