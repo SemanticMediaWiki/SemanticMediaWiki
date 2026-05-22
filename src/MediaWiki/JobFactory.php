@@ -87,6 +87,8 @@ class JobFactory {
 			'smw.changePropagationDispatch' => 'smw.changePropagationDispatch',
 			'smw.changePropagationUpdate' => 'smw.changePropagationUpdate',
 			'smw.changePropagationClassUpdate' => 'smw.changePropagationClassUpdate',
+			'smw.elasticFileIngest' => 'smw.elasticFileIngest',
+			'smw.elasticIndexerRecovery' => 'smw.elasticIndexerRecovery',
 			default => throw new RuntimeException( "Unable to match $type to a valid Job type" ),
 		};
 
