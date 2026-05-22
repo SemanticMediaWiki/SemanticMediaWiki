@@ -300,9 +300,7 @@ class ChangePropagationDispatchJob extends Job {
 			$this->getTitle()->getText()
 		);
 
-		$semanticData = $this->store->getSemanticData(
-			$subject
-		);
+		$this->store->getSemanticData( $subject );
 
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() );
 

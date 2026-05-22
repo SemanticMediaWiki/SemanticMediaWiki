@@ -4,6 +4,8 @@ namespace SMW\Tests\Unit\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
@@ -80,6 +82,8 @@ class JobFactoryTest extends TestCase {
 			[ 'smw.changePropagationUpdate', ChangePropagationUpdateJob::class ],
 			[ 'smw.changePropagationClassUpdate', ChangePropagationClassUpdateJob::class ],
 			[ 'smw.parserCachePurge', ParserCachePurgeJob::class ],
+			[ 'smw.elasticFileIngest', FileIngestJob::class ],
+			[ 'smw.elasticIndexerRecovery', IndexerRecoveryJob::class ],
 		];
 	}
 
