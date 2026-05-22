@@ -13,6 +13,7 @@ use SMW\DataItems\WikiPage as DIWikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
+use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -47,6 +48,8 @@ class DataUpdater {
 
 	private ChangePropagationNotifier $changePropagationNotifier;
 
+	private PageCreator $pageCreator;
+
 	private ?bool $canCreateUpdateJob = null;
 
 	/**
@@ -74,11 +77,13 @@ class DataUpdater {
 	public function __construct(
 		Store $store,
 		SemanticData $semanticData,
-		ChangePropagationNotifier $changePropagationNotifier
+		ChangePropagationNotifier $changePropagationNotifier,
+		PageCreator $pageCreator
 	) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
 		$this->changePropagationNotifier = $changePropagationNotifier;
+		$this->pageCreator = $pageCreator;
 	}
 
 	/**
@@ -240,9 +245,7 @@ class DataUpdater {
 		$user = null;
 		$title = $this->getSubject()->getTitle();
 
-		$wikiPage = $applicationFactory->newPageCreator()->createPage(
-			$title
-		);
+		$wikiPage = $this->pageCreator->createPage( $title );
 
 		// For example, when using `SemanticApprovedRevs` the guard here ensures
 		// that the revision reference is the same that lead to an update during

@@ -10,8 +10,8 @@ use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PermissionManager;
-use SMW\Services\ServicesFactory;
 use SMW\Store;
 
 /**
@@ -47,6 +47,7 @@ class ProtectionValidator {
 		private readonly Store $store,
 		private readonly EntityCache $entityCache,
 		private readonly PermissionManager $permissionManager,
+		private readonly PageCreator $pageCreator,
 	) {
 	}
 
@@ -192,7 +193,7 @@ class ProtectionValidator {
 			return $this->importPerformerProtectionLookupCache[$key];
 		}
 
-		$creator = ServicesFactory::getInstance()->newPageCreator()
+		$creator = $this->pageCreator
 			->createPage( $title )
 			->getCreator();
 

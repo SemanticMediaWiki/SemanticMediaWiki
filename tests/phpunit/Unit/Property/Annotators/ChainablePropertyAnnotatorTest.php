@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
+use SMW\MediaWiki\PageCreator;
 use SMW\PageInfo;
 use SMW\Property\Annotators\CategoryPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
@@ -49,7 +50,8 @@ class ChainablePropertyAnnotatorTest extends TestCase {
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$parameters['categories'],
-			$this->createMock( Store::class )
+			$this->createMock( Store::class ),
+			$this->createMock( PageCreator::class )
 		);
 
 		$categoryPropertyAnnotator->showHiddenCategories(

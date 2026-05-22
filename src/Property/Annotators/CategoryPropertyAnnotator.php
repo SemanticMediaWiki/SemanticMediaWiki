@@ -6,10 +6,10 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\MediaWiki\PageCreator;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\Annotator;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
 /**
@@ -46,6 +46,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		Annotator $propertyAnnotator,
 		private readonly array $categories,
 		private readonly Store $store,
+		private readonly PageCreator $pageCreator,
 	) {
 		parent::__construct( $propertyAnnotator );
 	}
@@ -168,7 +169,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private function isHiddenCategory( $catName ): bool {
 		if ( $this->hiddenCategories === null ) {
 
-			$wikipage = ApplicationFactory::getInstance()->newPageCreator()->createPage(
+			$wikipage = $this->pageCreator->createPage(
 				$this->getSemanticData()->getSubject()->getTitle()
 			);
 

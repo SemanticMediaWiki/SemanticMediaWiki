@@ -41,6 +41,7 @@ class DataUpdaterTest extends TestCase {
 	private $eventDispatcher;
 	private $revisionGuard;
 	private SpecificationLookup $propertySpecificationLookup;
+	private $pageCreator;
 	private $revision;
 
 	protected function setUp(): void {
@@ -71,6 +72,10 @@ class DataUpdaterTest extends TestCase {
 			->getMock();
 
 		$this->changePropagationNotifier = $this->getMockBuilder( ChangePropagationNotifier::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -114,7 +119,7 @@ class DataUpdaterTest extends TestCase {
 
 		$this->assertInstanceOf(
 			DataUpdater::class,
-			new DataUpdater( $this->store, $semanticData, $this->changePropagationNotifier )
+			new DataUpdater( $this->store, $semanticData, $this->changePropagationNotifier, $this->pageCreator )
 		);
 	}
 
@@ -132,7 +137,8 @@ class DataUpdaterTest extends TestCase {
 		$instance = new DataUpdater(
 			$this->store,
 			$semanticData,
-			$this->changePropagationNotifier
+			$this->changePropagationNotifier,
+			$this->pageCreator
 		);
 
 		$instance->setEventDispatcher(
@@ -158,7 +164,8 @@ class DataUpdaterTest extends TestCase {
 		$instance = new DataUpdater(
 			$this->store,
 			$semanticData,
-			$this->changePropagationNotifier
+			$this->changePropagationNotifier,
+			$this->pageCreator
 		);
 
 		$instance->setEventDispatcher(
@@ -217,8 +224,6 @@ class DataUpdaterTest extends TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'newRevisionFromPage' )
 			->willReturn( $revision );
@@ -230,7 +235,8 @@ class DataUpdaterTest extends TestCase {
 		$instance = new DataUpdater(
 			$store,
 			$semanticData,
-			$this->changePropagationNotifier
+			$this->changePropagationNotifier,
+			$pageCreator
 		);
 
 		$instance->setRevisionGuard(
@@ -289,8 +295,6 @@ class DataUpdaterTest extends TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
 			->willReturn( null );
@@ -298,7 +302,8 @@ class DataUpdaterTest extends TestCase {
 		$instance = new DataUpdater(
 			$store,
 			$semanticData,
-			$this->changePropagationNotifier
+			$this->changePropagationNotifier,
+			$pageCreator
 		);
 
 		$instance->canCreateUpdateJob(
@@ -330,7 +335,8 @@ class DataUpdaterTest extends TestCase {
 		$instance = new DataUpdater(
 			$this->store,
 			$semanticData,
-			$this->changePropagationNotifier
+			$this->changePropagationNotifier,
+			$this->pageCreator
 		);
 
 		$instance->setEventDispatcher(
@@ -355,7 +361,8 @@ class DataUpdaterTest extends TestCase {
 		$instance = new DataUpdater(
 			$this->store,
 			$semanticData,
-			$this->changePropagationNotifier
+			$this->changePropagationNotifier,
+			$this->pageCreator
 		);
 
 		$instance->setEventDispatcher(
@@ -416,8 +423,6 @@ class DataUpdaterTest extends TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
 			->willReturn( $revision );
@@ -425,7 +430,8 @@ class DataUpdaterTest extends TestCase {
 		$instance = new DataUpdater(
 			$store,
 			$semanticData,
-			$this->changePropagationNotifier
+			$this->changePropagationNotifier,
+			$pageCreator
 		);
 
 		$instance->setRevisionGuard(
@@ -470,7 +476,6 @@ class DataUpdaterTest extends TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
 			->willReturn( $revision );
@@ -510,7 +515,8 @@ class DataUpdaterTest extends TestCase {
 		$instance = new DataUpdater(
 			$store,
 			$semanticData,
-			$this->changePropagationNotifier
+			$this->changePropagationNotifier,
+			$pageCreator
 		);
 
 		$instance->setEventDispatcher(
