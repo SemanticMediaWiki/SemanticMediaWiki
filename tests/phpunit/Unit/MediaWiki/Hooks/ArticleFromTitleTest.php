@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
+use IContextSource;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
@@ -54,8 +55,10 @@ class ArticleFromTitleTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$context = $this->createMock( IContextSource::class );
+
 		$instance = new ArticleFromTitle( $this->store );
-		$instance->process( $title, $article );
+		$instance->onArticleFromTitle( $title, $article, $context );
 
 		$this->assertInstanceOf(
 			$expected,

@@ -7,6 +7,8 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
+use SkinTemplate;
+use SMW\MediaWiki\Hooks\PersonalUrls;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
 
 /**
@@ -21,15 +23,13 @@ use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
 class SkinTemplateNavigationUniversalTest extends TestCase {
 
 	public function testCanConstruct() {
-		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+		$personalUrls = $this->getMockBuilder( PersonalUrls::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$links = [];
-
 		$this->assertInstanceOf(
 			SkinTemplateNavigationUniversal::class,
-			new SkinTemplateNavigationUniversal( $skinTemplate, $links )
+			new SkinTemplateNavigationUniversal( $personalUrls )
 		);
 	}
 
@@ -54,7 +54,7 @@ class SkinTemplateNavigationUniversalTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+		$skinTemplate = $this->getMockBuilder( SkinTemplate::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,10 +74,14 @@ class SkinTemplateNavigationUniversalTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
+		$personalUrls = $this->getMockBuilder( PersonalUrls::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$links = [];
 
-		$instance = new SkinTemplateNavigationUniversal( $skinTemplate, $links );
-		$instance->process();
+		$instance = new SkinTemplateNavigationUniversal( $personalUrls );
+		$instance->onSkinTemplateNavigation__Universal( $skinTemplate, $links );
 
 		$this->assertArrayHasKey( 'purge', $links['actions'] );
 	}

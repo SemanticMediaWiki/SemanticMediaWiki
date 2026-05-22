@@ -109,7 +109,7 @@ class FileUploadTest extends TestCase {
 		$reUploadStatus = true;
 
 		$this->assertTrue(
-			$instance->process( $file, $reUploadStatus )
+			$instance->onFileUpload( $file, $reUploadStatus, false )
 		);
 	}
 
@@ -147,7 +147,7 @@ class FileUploadTest extends TestCase {
 			$pageCreator
 		);
 
-		$instance->process( $file, false );
+		$instance->onFileUpload( $file, false, false );
 	}
 
 }

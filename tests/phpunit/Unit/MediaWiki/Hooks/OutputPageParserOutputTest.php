@@ -2,19 +2,13 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
-use MediaWiki\Context\RequestContext;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
-use MediaWiki\Request\FauxRequest;
+use MediaWiki\User\Options\UserOptionsLookup;
 use PHPUnit\Framework\TestCase;
-use SMW\DataItems\Property;
-use SMW\DataItems\WikiPage;
-use SMW\DataModel\SemanticData;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
@@ -34,10 +28,8 @@ class OutputPageParserOutputTest extends TestCase {
 
 	private $testEnvironment;
 	private $applicationFactory;
-	private $outputPage;
-	private $parserOutput;
 	private $namespaceExaminer;
-	private $permissionExaminer;
+	private $userOptionsLookup;
 	private FactboxText $factboxText;
 	private FactboxFactory $factboxFactory;
 
@@ -58,17 +50,7 @@ class OutputPageParserOutputTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->outputPage = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->parserOutput = $this->getMockBuilder( ParserOutput::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->userOptionsLookup = $this->createMock( UserOptionsLookup::class );
 
 		$this->factboxText = $this->applicationFactory->getFactboxText();
 
@@ -85,189 +67,12 @@ class OutputPageParserOutputTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			OutputPageParserOutput::class,
-			new OutputPageParserOutput( $this->namespaceExaminer, $this->permissionExaminer, $this->factboxText, $this->factboxFactory )
+			new OutputPageParserOutput( $this->namespaceExaminer, $this->factboxText, $this->factboxFactory, $this->userOptionsLookup )
 		);
 	}
 
-	/**
-	 * @dataProvider outputDataProvider
-	 */
-	public function testProcess( $parameters, $expected ) {
-		$this->namespaceExaminer->expects( $this->any() )
-			->method( 'isSemanticEnabled' )
-			->willReturn( $parameters['smwgNamespacesWithSemanticLinks'] );
-
-		$outputPage   = $parameters['outputPage'];
-		$parserOutput = $parameters['parserOutput'];
-
-		$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
-
-		$this->factboxFactory->expects( $this->any() )
-			->method( 'newCachedFactbox' )
-			->willReturn( $cachedFactbox );
-
-		$instance = new OutputPageParserOutput(
-			$this->namespaceExaminer,
-			$this->permissionExaminer,
-			$this->factboxText,
-			$this->factboxFactory
-		);
-
-		$this->assertEmpty(
-			$cachedFactbox->retrieveContent( $outputPage )
-		);
-
-		$instance->process( $outputPage, $parserOutput );
-
-		if ( $expected['text'] == '' ) {
-			$this->assertFalse( $this->factboxText->hasText() );
-			return;
-		}
-
-		// For expected content continue to verify that the outputPage was amended and
-		// that the content is also available via the CacheStore
-		$text = $this->factboxText->getText();
-
-		$this->assertStringContainsString( $expected['text'], $text );
-
-		$this->assertEquals(
-			$text,
-			$cachedFactbox->retrieveContent( $outputPage ),
-			'Asserts that retrieveContent() returns an expected text'
-		);
-
-		// Deliberately clear the text to retrieve content from the CacheStore
-		$this->factboxText->clear();
-
-		$this->assertEquals(
-			$text,
-			$cachedFactbox->retrieveContent( $outputPage ),
-			'Asserts that retrieveContent() is returning text from cache'
-		);
-	}
-
-	public function outputDataProvider() {
-		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
-		$language = $languageFactory->getLanguage( 'en' );
-
-		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-subject' );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$subject = WikiPage::newFromTitle( $title );
-
-		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
-			->getMock();
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getSubject' )
-			->willReturn( $subject );
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'hasVisibleProperties' )
-			->willReturn( true );
-
-		$semanticData->expects( $this->any() )
-			->method( 'getSubSemanticData' )
-			->willReturn( [] );
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getPropertyValues' )
-			->willReturn( [ WikiPage::newFromTitle( $title ) ] );
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getProperties' )
-			->willReturn( [ new Property( __METHOD__ . 'property' ) ] );
-
-		# 0 Simple factbox build, returning content
-		$title = MockTitle::buildMock( __METHOD__ . 'title-with-content' );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getNamespace' )
-			->willReturn( NS_MAIN );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->willReturn( $language );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getArticleID' )
-			->willReturn( 9098 );
-
-		$outputPage = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->willReturn( $title );
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->willReturn( new RequestContext() );
-
-		$outputPage->expects( $this->any() )
-			->method( 'getLanguage' )
-			->willReturn( $language );
-
-		$provider[] = [
-			[
-				'smwgNamespacesWithSemanticLinks' => true,
-				'outputPage'   => $outputPage,
-				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			],
-			[
-				'text'         => $subject->getDBKey()
-			]
-		];
-
-		# 1 Disabled namespace, no return value expected
-		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getNamespace' )
-			->willReturn( NS_MAIN );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->willReturn( $language );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getArticleID' )
-			->willReturn( 90000 );
-
-		$outputPage = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->willReturn( $title );
-
-		$provider[] = [
-			[
-				'smwgNamespacesWithSemanticLinks' => false,
-				'outputPage'   => $outputPage,
-				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			],
-			[
-				'text'         => ''
-			]
-		];
-
-		// #2 Specialpage, no return value expected
+	public function testProcessReturnsEarlyForSpecialPage() {
 		$title = MockTitle::buildMock( __METHOD__ . 'mock-specialpage' );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
@@ -281,103 +86,52 @@ class OutputPageParserOutputTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$provider[] = [
-			[
-				'smwgNamespacesWithSemanticLinks' => true,
-				'outputPage'   => $outputPage,
-				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			],
-			[
-				'text'         => ''
-			]
-		];
+		$this->namespaceExaminer->expects( $this->never() )
+			->method( 'isSemanticEnabled' );
 
-		// #3 Redirect, no return value expected
-		$title = MockTitle::buildMock( __METHOD__ . 'mock-redirect' );
+		$instance = new OutputPageParserOutput(
+			$this->namespaceExaminer,
+			$this->factboxText,
+			$this->factboxFactory,
+			$this->userOptionsLookup
+		);
 
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->willReturn( $language );
+		$parserOutput = new ParserOutput();
+		$instance->onOutputPageParserOutput( $outputPage, $parserOutput );
 
-		$title->expects( $this->atLeastOnce() )
-			->method( 'isRedirect' )
-			->willReturn( true );
-
-		$outputPage = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->willReturn( $title );
-
-		$context = new RequestContext();
-		$context->setRequest( new FauxRequest() );
-
-		$outputPage->expects( $this->any() )
-			->method( 'getContext' )
-			->willReturn( $context );
-
-		$provider[] = [
-			[
-				'smwgNamespacesWithSemanticLinks' => true,
-				'outputPage'   => $outputPage,
-				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			],
-			[
-				'text'         => ''
-			]
-		];
-
-		// #4 Oldid
-		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-oldid' );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->willReturn( $language );
-
-		$outputPage = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->willReturn( $title );
-
-		$context = new RequestContext();
-		$context->setRequest( new FauxRequest( [ 'oldid' => 9001 ], true ) );
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->willReturn( $context );
-
-		$outputPage->expects( $this->any() )
-			->method( 'getLanguage' )
-			->willReturn( $language );
-
-		$provider[] = [
-			[
-				'smwgNamespacesWithSemanticLinks' => true,
-				'outputPage'   => $outputPage,
-				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			],
-			[
-				'text'         => $subject->getDBKey()
-			]
-		];
-
-		return $provider;
+		$this->assertFalse( $this->factboxText->hasText() );
 	}
 
-	protected function makeParserOutput( $data ) {
+	public function testProcessReturnsEarlyForDisabledNamespace() {
+		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		$outputPage = $this->getMockBuilder( OutputPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->willReturn( $title );
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->willReturn( false );
+
+		$instance = new OutputPageParserOutput(
+			$this->namespaceExaminer,
+			$this->factboxText,
+			$this->factboxFactory,
+			$this->userOptionsLookup
+		);
+
 		$parserOutput = new ParserOutput();
-		$parserOutput->setExtensionData( 'smwdata', $data );
-		$parserOutput->setContentHolderText( 'test' );
-		return $parserOutput;
+		$instance->onOutputPageParserOutput( $outputPage, $parserOutput );
+
+		$this->assertFalse( $this->factboxText->hasText() );
 	}
 
 }

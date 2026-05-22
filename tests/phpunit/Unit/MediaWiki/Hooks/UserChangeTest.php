@@ -61,10 +61,8 @@ class UserChangeTest extends TestCase {
 			$this->jobFactory
 		);
 
-		$instance->setOrigin( 'Foo' );
-
 		$this->assertTrue(
-			$instance->process( 'Foo' )
+			$instance->notify( 'Foo', 'Foo' )
 		);
 	}
 
@@ -95,10 +93,8 @@ class UserChangeTest extends TestCase {
 			$this->jobFactory
 		);
 
-		$instance->setOrigin( 'Foo' );
-
 		$this->assertTrue(
-			$instance->process( $user )
+			$instance->notify( 'Foo', $user )
 		);
 	}
 
@@ -117,7 +113,7 @@ class UserChangeTest extends TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->process( 'Foo' )
+			$instance->notify( 'Foo', 'Foo' )
 		);
 	}
 

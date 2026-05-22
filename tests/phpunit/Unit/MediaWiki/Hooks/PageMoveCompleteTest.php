@@ -65,7 +65,7 @@ class PageMoveCompleteTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PageMoveComplete::class,
-			new PageMoveComplete( $this->namespaceExaminer, $this->store )
+			new PageMoveComplete( $this->namespaceExaminer, $this->store, $this->eventDispatcher )
 		);
 	}
 
@@ -87,15 +87,12 @@ class PageMoveCompleteTest extends TestCase {
 
 		$instance = new PageMoveComplete(
 			$this->namespaceExaminer,
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
 		$this->assertTrue(
-			$instance->process( $oldTitle, $newTitle, $this->user, 0, 0 )
+			$instance->onPageMoveComplete( $oldTitle, $newTitle, $this->user, 0, 0, '', null )
 		);
 	}
 
@@ -118,15 +115,12 @@ class PageMoveCompleteTest extends TestCase {
 
 		$instance = new PageMoveComplete(
 			$this->namespaceExaminer,
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
 		$this->assertTrue(
-			$instance->process( $oldTitle, $newTitle, $this->user, 0, 0 )
+			$instance->onPageMoveComplete( $oldTitle, $newTitle, $this->user, 0, 0, '', null )
 		);
 	}
 

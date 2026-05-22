@@ -27,7 +27,7 @@ class ExtensionTypesTest extends TestCase {
 		$extensionTypes = [];
 
 		$instance = new ExtensionTypes();
-		$instance->process( $extensionTypes );
+		$instance->onExtensionTypes( $extensionTypes );
 
 		$this->assertArrayHasKey(
 			'semantic',

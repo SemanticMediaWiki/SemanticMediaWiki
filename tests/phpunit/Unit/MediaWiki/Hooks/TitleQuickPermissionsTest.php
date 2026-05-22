@@ -81,7 +81,7 @@ class TitleQuickPermissionsTest extends TestCase {
 
 		$error = [];
 
-		$instance->process( $this->title, $this->user, '', $error );
+		$instance->onTitleQuickPermissions( $this->title, $this->user, '', $error, true, false );
 	}
 
 	public function testProcessOnDisabledNamespace() {
@@ -99,7 +99,7 @@ class TitleQuickPermissionsTest extends TestCase {
 
 		$error = [];
 
-		$instance->process( $this->title, $this->user, '', $error );
+		$instance->onTitleQuickPermissions( $this->title, $this->user, '', $error, true, false );
 	}
 
 }

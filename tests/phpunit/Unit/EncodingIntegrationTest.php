@@ -7,6 +7,7 @@ use MediaWiki\Message\Message;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\SpecialPage\SpecialPage;
 use PHPUnit\Framework\TestCase;
+use Skin;
 use SMW\Encoder;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -39,19 +40,11 @@ class EncodingIntegrationTest extends TestCase {
 		}
 
 		$instance = new SidebarBeforeOutput(
-			ApplicationFactory::getInstance()->getNamespaceExaminer()
+			ApplicationFactory::getInstance()->getNamespaceExaminer(),
+			ApplicationFactory::getInstance()->getSettings()
 		);
 
-		// Read post-normalization so isFlagSet sees the integer bitmask
-		// regardless of whether the test supplied the new array form or a
-		// legacy SMW_* integer constant.
-		$instance->setOptions(
-			[
-				'smwgBrowseFeatures' => ApplicationFactory::getInstance()->getSettings()->get( 'smwgBrowseFeatures' )
-			]
-		);
-
-		$instance->process( $setup['skin'], $sidebar );
+		$instance->onSidebarBeforeOutput( $setup['skin'], $sidebar );
 
 		$this->assertStringContainsString(
 			$expected,
@@ -94,7 +87,7 @@ class EncodingIntegrationTest extends TestCase {
 			->method( 'isArticle' )
 			->willReturn( true );
 
-		$skin = $this->getMockBuilder( '\Skin' )
+		$skin = $this->getMockBuilder( Skin::class )
 			->disableOriginalConstructor()
 			->getMock();
 

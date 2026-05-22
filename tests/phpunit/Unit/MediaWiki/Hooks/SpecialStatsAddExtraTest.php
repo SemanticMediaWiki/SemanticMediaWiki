@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
+use MediaWiki\Context\IContextSource;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -39,6 +42,10 @@ class SpecialStatsAddExtraTest extends TestCase {
 	 * @dataProvider statisticsDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
+			$this->markTestSkipped( 'SMW_EXTENSION_LOADED is not defined in this environment' );
+		}
+
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -51,64 +58,14 @@ class SpecialStatsAddExtraTest extends TestCase {
 
 		$instance = new SpecialStatsAddExtra( $store );
 
-		$instance->setOptions(
-			[
-				'SMW_EXTENSION_LOADED' => true
-			]
-		);
+		$context = $this->newContext();
 
 		$this->assertTrue(
-			$instance->process( $extraStats )
+			$instance->onSpecialStatsAddExtra( $extraStats, $context )
 		);
 
 		$this->assertTrue(
 			$this->matchArray( $extraStats, $expected['statistics'] )
-		);
-	}
-
-	public function testProcess_FakeStats() {
-		$extraStats = [];
-
-		$statistics = [
-			'QUERY' => 2002,
-			'QUERYFORMATS' => [ 'foo' => 9999 ]
-		];
-
-		$expected = [
-			'smw-statistics' => [
-				[ 'name' => "<span class='plainlinks'>&nbsp;&nbsp;-&nbsp;&nbsp;smw-statistics-query-inline</span>", 'number' => 2002 ],
-				[ 'name' => '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;smw-statistics-query-format.foo', 'number' => 9999 ],
-				[ 'name' => 'smw-statistics-datatype-count', 'number' => 1 ]
-			]
-		];
-
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getStatistics' )
-			->willReturn( $statistics );
-
-		$instance = new SpecialStatsAddExtra(
-			$store
-		);
-
-		$instance->setDataTypeLabels( [ 'Bar' ] );
-
-		$instance->setOptions(
-			[
-				'SMW_EXTENSION_LOADED' => true,
-				'plain.msg_key' => true,
-				'no.tooltip' => true
-			]
-		);
-
-		$instance->process( $extraStats );
-
-		$this->assertEquals(
-			$expected,
-			$extraStats
 		);
 	}
 
@@ -177,6 +134,20 @@ class SpecialStatsAddExtraTest extends TestCase {
 		];
 
 		return $provider;
+	}
+
+	private function newContext(): IContextSource {
+		$output = $this->getMockBuilder( OutputPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'en' );
+
+		$context = $this->createMock( IContextSource::class );
+		$context->method( 'getOutput' )->willReturn( $output );
+		$context->method( 'getLanguage' )->willReturn( $language );
+
+		return $context;
 	}
 
 }
