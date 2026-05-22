@@ -16,7 +16,6 @@ use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use stdClass;
 
@@ -40,16 +39,6 @@ class SemanticDataTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->addConfiguration( 'smwgCreateProtectionRight', false );
-
-		$store = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getRedirectTarget' )
-			->willReturnArgument( 0 );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->dataValueFactory = DataValueFactory::getInstance();

@@ -221,28 +221,6 @@ class ParserAfterTidyTest extends TestCase {
 			return $revisionLookup;
 		} );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$wikiPage->expects( $this->any() )
-			->method( 'getTitle' )
-			->willReturn( $parameters['title'] );
-
-		$wikiPage->expects( $this->any() )
-			->method( 'getTimestamp' )
-			->willReturn( '' );
-
-		$pageCreator = $this->getMockBuilder( PageCreator::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$pageCreator->expects( $this->any() )
-			->method( 'createPage' )
-			->willReturn( $wikiPage );
-
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$cache = $this->newMockCache(
 			$parameters['title']->getArticleID(),
 			$parameters['cache-contains'],

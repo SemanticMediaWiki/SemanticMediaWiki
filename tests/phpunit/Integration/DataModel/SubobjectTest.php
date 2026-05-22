@@ -13,7 +13,6 @@ use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Exception\SubSemanticDataException;
-use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -38,13 +37,7 @@ class SubobjectTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 	}
 
 	public function testCanConstruct() {
