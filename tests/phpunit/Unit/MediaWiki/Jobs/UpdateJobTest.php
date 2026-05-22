@@ -38,6 +38,7 @@ class UpdateJobTest extends TestCase {
 		// UpdateJob still resolves ContentParser, PageCreator, PageUpdater,
 		// SerializerFactory, ParserData and MediaWikiLogger through
 		// ApplicationFactory; the test environment lets these collaborators
+		// be swapped via registerObject() without touching global state.
 		$this->testEnvironment = new TestEnvironment( [
 			'smwgMainCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false,

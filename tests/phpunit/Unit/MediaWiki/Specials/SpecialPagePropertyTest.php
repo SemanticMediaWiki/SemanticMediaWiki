@@ -38,9 +38,6 @@ class SpecialPagePropertyTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		// MwCollaboratorFactory is still resolved through ApplicationFactory by
-		// the production code (partial DI), so the Store override on the
-		// locator is still required for the collaborators' own dependencies.
 		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 	}
 

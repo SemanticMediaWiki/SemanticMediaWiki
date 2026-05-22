@@ -239,8 +239,6 @@ class ChangePropagationDispatchJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		// commitSpecificationChangePropagationAsJob -> newChangePropagationUpdateJob
-		// will construct an inner UpdateJob via ApplicationFactory -> Store.
 		$instance = $this->newJob(
 			$subject->getTitle(),
 			[
