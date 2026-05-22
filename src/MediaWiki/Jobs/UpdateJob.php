@@ -5,13 +5,16 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use Psr\Log\LoggerInterface;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\MediaWiki\PageCreator;
+use SMW\SerializerFactory;
+use SMW\Settings;
 use SMW\Store;
 
 /**
@@ -21,12 +24,6 @@ use SMW\Store;
  * Update jobs are created if, when saving an article,
  * it is detected that the content of other pages must be re-parsed as well (e.g.
  * due to some type change).
- *
- * Partial DI: Store is injected via the JobClasses ObjectFactory spec. The
- * remaining collaborators (PageCreator, PageUpdater, SerializerFactory,
- * ParserData, ContentParser, MediaWikiLogger) are still resolved through
- * ApplicationFactory because they are not registered as global SMW.X
- * services.
  *
  * @note This job does not update the page display or parser cache, so in general
  * it might happen that part of the wiki page still displays old data (e.g.
@@ -57,7 +54,17 @@ class UpdateJob extends Job {
 	 */
 	const SEMANTIC_DATA = 'semanticData';
 
-	private ?ApplicationFactory $applicationFactory = null;
+	private readonly Settings $settings;
+
+	private readonly PageCreator $pageCreator;
+
+	private readonly PageUpdaterFactory $pageUpdaterFactory;
+
+	private readonly SerializerFactory $serializerFactory;
+
+	private readonly ContentParserFactory $contentParserFactory;
+
+	private readonly ParserDataFactory $parserDataFactory;
 
 	/**
 	 * @since  1.9
@@ -65,16 +72,28 @@ class UpdateJob extends Job {
 	public function __construct(
 		Title $title,
 		array $params,
-		Store $store
+		Store $store,
+		Settings $settings,
+		PageCreator $pageCreator,
+		PageUpdaterFactory $pageUpdaterFactory,
+		SerializerFactory $serializerFactory,
+		ContentParserFactory $contentParserFactory,
+		ParserDataFactory $parserDataFactory,
+		LoggerInterface $logger
 	) {
 		parent::__construct( 'smw.update', $title, $params );
 		$this->setStore( $store );
 		$this->title = $title;
 		$this->removeDuplicates = true;
+		$this->settings = $settings;
+		$this->pageCreator = $pageCreator;
+		$this->pageUpdaterFactory = $pageUpdaterFactory;
+		$this->serializerFactory = $serializerFactory;
+		$this->contentParserFactory = $contentParserFactory;
+		$this->parserDataFactory = $parserDataFactory;
+		$this->setLogger( $logger );
 
-		$this->isEnabledJobQueue(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' )
-		);
+		$this->isEnabledJobQueue( $settings->get( 'smwgEnableUpdateJobs' ) );
 	}
 
 	/**
@@ -87,8 +106,6 @@ class UpdateJob extends Job {
 		}
 
 		MediaWikiServices::getInstance()->getLinkCache()->clear();
-
-		$this->applicationFactory ??= ApplicationFactory::getInstance();
 
 		if ( !$this->hasParameter( self::FORCED_UPDATE ) && $this->matchesLastModified( $this->getTitle() ) ) {
 			return true;
@@ -114,13 +131,13 @@ class UpdateJob extends Job {
 			WikiPage::newFromTitle( $title )
 		);
 
-		$wikiPage = $this->applicationFactory->newPageCreator()->createPage( $title );
+		$wikiPage = $this->pageCreator->createPage( $title );
 
 		if ( $lastModified !== $wikiPage->getTimestamp() ) {
 			return false;
 		}
 
-		$pageUpdater = $this->applicationFactory->newPageUpdater();
+		$pageUpdater = $this->pageUpdaterFactory->newPageUpdater();
 		$pageUpdater->addPage( $title );
 		$pageUpdater->waitOnTransactionIdle();
 		$pageUpdater->doPurgeParserCache();
@@ -168,7 +185,7 @@ class UpdateJob extends Job {
 	private function set_data( $semanticData ): bool {
 		$this->setParameter( 'updateType', 'SemanticData' );
 
-		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
+		$semanticData = $this->serializerFactory->newSemanticDataDeserializer()->deserialize(
 			$semanticData
 		);
 
@@ -176,7 +193,7 @@ class UpdateJob extends Job {
 			new Property( Property::TYPE_CHANGE_PROP )
 		);
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $this->parserDataFactory->newParserData(
 			$this->getTitle(),
 			new ParserOutput()
 		);
@@ -194,7 +211,7 @@ class UpdateJob extends Job {
 	private function parse_content(): bool {
 		$this->setParameter( 'updateType', 'ContentParse' );
 
-		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
+		$contentParser = $this->contentParserFactory->newContentParser( $this->getTitle() );
 		$contentParser->parse();
 
 		if ( !( $contentParser->getOutput() instanceof ParserOutput ) ) {
@@ -202,7 +219,7 @@ class UpdateJob extends Job {
 			return false;
 		}
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $this->parserDataFactory->newParserData(
 			$this->getTitle(),
 			$contentParser->getOutput()
 		);
@@ -218,7 +235,7 @@ class UpdateJob extends Job {
 	}
 
 	private function updateStore( $parserData ): bool {
-		$this->applicationFactory->getMediaWikiLogger()->info(
+		$this->logger->info(
 			'Job UpdateJob {title} Type: {updateType} Origin: {origin} '
 				. 'isForcedUpdate: {forcedUpdate}',
 			[

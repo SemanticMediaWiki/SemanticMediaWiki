@@ -55,6 +55,9 @@ use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
+use SMW\MediaWiki\Jobs\ContentParserFactory;
+use SMW\MediaWiki\Jobs\PageUpdaterFactory;
+use SMW\MediaWiki\Jobs\ParserDataFactory;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
@@ -343,6 +346,10 @@ class ServicesFactory {
 			'CacheFactory' => fn () => $this->getCacheFactory(),
 			'TitleFactory' => fn () => $this->getTitleFactory(),
 			'PageCreator' => fn () => $this->getPageCreator(),
+			'ContentParserFactory' => fn () => $this->getContentParserFactory(),
+			'ParserDataFactory' => fn () => $this->getParserDataFactory(),
+			'PageUpdaterFactory' => fn () => $this->getPageUpdaterFactory(),
+			'Logger' => fn () => $this->getLogger(),
 			'MwCollaboratorFactory' => fn () => $this->getMwCollaboratorFactory(),
 			'NamespaceExaminer' => fn () => $this->getNamespaceExaminer(),
 			'DataValueServiceFactory' => fn () => $this->getDataValueServiceFactory(),
@@ -663,6 +670,50 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.PageCreator' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getContentParserFactory(): ContentParserFactory {
+		if ( array_key_exists( 'ContentParserFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['ContentParserFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ContentParserFactory' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getParserDataFactory(): ParserDataFactory {
+		if ( array_key_exists( 'ParserDataFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['ParserDataFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.ParserDataFactory' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getPageUpdaterFactory(): PageUpdaterFactory {
+		if ( array_key_exists( 'PageUpdaterFactory', $this->testOverrides ) ) {
+			return $this->testOverrides['PageUpdaterFactory'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.PageUpdaterFactory' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getLogger(): LoggerInterface {
+		if ( array_key_exists( 'Logger', $this->testOverrides ) ) {
+			return $this->testOverrides['Logger'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.Logger' );
 	}
 
 	/**
