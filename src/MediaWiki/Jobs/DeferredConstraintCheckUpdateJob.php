@@ -31,6 +31,8 @@ class DeferredConstraintCheckUpdateJob extends Job {
 		?JobFactory $jobFactory = null
 	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
+		// Fallback for the static pushJob() helper which uses `new self(...)` and
+		// bypasses the JobClasses ObjectFactory spec where SMW.JobFactory is wired.
 		$this->jobFactory = $jobFactory ?? ApplicationFactory::getInstance()->getJobFactory();
 		$this->removeDuplicates = true;
 	}

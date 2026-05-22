@@ -37,7 +37,7 @@ class ChangePropagationClassUpdateJob extends ChangePropagationUpdateJob {
 			[ 'origin' => 'ChangePropagationClassUpdateJob' ]
 		);
 
-		parent::__construct( $title, $params, $jobFactory, self::JOB_COMMAND );
+		parent::__construct( $title, $params, $jobFactory );
 	}
 
 }

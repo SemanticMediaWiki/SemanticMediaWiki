@@ -40,14 +40,11 @@ class ChangePropagationUpdateJob extends Job {
 	public function __construct(
 		Title $title,
 		$params = [],
-		?JobFactory $jobFactory = null,
-		$jobType = null
+		?JobFactory $jobFactory = null
 	) {
-		if ( $jobType === null ) {
-			$jobType = self::JOB_COMMAND;
-		}
-
-		parent::__construct( $jobType, $title, $params );
+		parent::__construct( static::JOB_COMMAND, $title, $params );
+		// Fallback for direct `new self(...)` callsites (e.g. ChangePropagationClassUpdateJob)
+		// and ad-hoc instantiation in tests that bypass the JobClasses ObjectFactory spec.
 		$this->jobFactory = $jobFactory ?? ApplicationFactory::getInstance()->getJobFactory();
 		$this->removeDuplicates = true;
 	}
