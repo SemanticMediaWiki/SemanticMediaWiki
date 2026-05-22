@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -28,18 +29,23 @@ class ChangePropagationUpdateJob extends Job {
 	 */
 	const JOB_COMMAND = 'smw.changePropagationUpdate';
 
+	protected JobFactory $jobFactory;
+
 	/**
 	 * @since 3.0
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [], $jobType = null ) {
-		if ( $jobType === null ) {
-			$jobType = self::JOB_COMMAND;
-		}
-
-		parent::__construct( $jobType, $title, $params );
+	public function __construct(
+		Title $title,
+		$params = [],
+		?JobFactory $jobFactory = null
+	) {
+		parent::__construct( static::JOB_COMMAND, $title, $params );
+		// Fallback for direct `new self(...)` callsites (e.g. ChangePropagationClassUpdateJob)
+		// and ad-hoc instantiation in tests that bypass the JobClasses ObjectFactory spec.
+		$this->jobFactory = $jobFactory ?? ApplicationFactory::getInstance()->getJobFactory();
 		$this->removeDuplicates = true;
 	}
 
@@ -53,7 +59,7 @@ class ChangePropagationUpdateJob extends Job {
 			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
-		$updateJob = ApplicationFactory::getInstance()->getJobFactory()->newUpdateJob(
+		$updateJob = $this->jobFactory->newUpdateJob(
 			$this->getTitle(),
 			array_merge( $this->params, [ 'origin' => 'ChangePropagationUpdateJob' ] )
 		);

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
+use SMW\MediaWiki\JobFactory;
 
 /**
  * Isolate instance to count update jobs in connection with a category related
@@ -26,13 +27,17 @@ class ChangePropagationClassUpdateJob extends ChangePropagationUpdateJob {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		$params = [],
+		?JobFactory $jobFactory = null
+	) {
 		$params = array_merge(
 			$params,
 			[ 'origin' => 'ChangePropagationClassUpdateJob' ]
 		);
 
-		parent::__construct( $title, $params, self::JOB_COMMAND );
+		parent::__construct( $title, $params, $jobFactory );
 	}
 
 }

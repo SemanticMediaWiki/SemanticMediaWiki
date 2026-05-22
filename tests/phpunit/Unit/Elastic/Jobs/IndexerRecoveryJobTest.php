@@ -12,6 +12,7 @@ use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
+use SMW\MediaWiki\JobFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -32,6 +33,7 @@ class IndexerRecoveryJobTest extends TestCase {
 	private ElasticStore $store;
 	private $config;
 	private $jobQueue;
+	private $jobFactory;
 	private $indexer;
 
 	protected function setUp(): void {
@@ -66,6 +68,10 @@ class IndexerRecoveryJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->indexer = $this->getMockBuilder( Indexer::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -93,7 +99,8 @@ class IndexerRecoveryJobTest extends TestCase {
 			$this->title,
 			$params,
 			$store ?? $this->store,
-			$cache ?? $this->cache
+			$cache ?? $this->cache,
+			$this->jobFactory
 		);
 	}
 
@@ -194,9 +201,17 @@ class IndexerRecoveryJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		// Check insert with next retry
-		$this->jobQueue->expects( $this->once() )
-			->method( 'push' );
+		// Retry job is constructed via the injected JobFactory and inserted.
+		$retryJob = $this->getMockBuilder( IndexerRecoveryJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$retryJob->expects( $this->once() )
+			->method( 'insert' );
+
+		$this->jobFactory->expects( $this->once() )
+			->method( 'newIndexerRecoveryJob' )
+			->willReturn( $retryJob );
 
 		$instance = $this->newJob( [ 'index' => 'Foo#0##' ] );
 

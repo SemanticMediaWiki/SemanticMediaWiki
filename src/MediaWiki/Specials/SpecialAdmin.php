@@ -6,6 +6,8 @@ use MediaWiki\SpecialPage\SpecialPage;
 use PermissionsError;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
@@ -38,7 +40,9 @@ class SpecialAdmin extends SpecialPage {
 	public function __construct(
 		private readonly Store $store,
 		private readonly Settings $settings,
-		private readonly HookDispatcher $hookDispatcher
+		private readonly HookDispatcher $hookDispatcher,
+		private readonly JobFactory $jobFactory,
+		private readonly JobQueue $jobQueue
 	) {
 		parent::__construct( 'SMWAdmin', 'smw-admin' );
 	}
@@ -110,7 +114,9 @@ class SpecialAdmin extends SpecialPage {
 		$taskHandlerFactory = new TaskHandlerFactory(
 			$store,
 			$htmlFormRenderer,
-			$outputFormatter
+			$outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$taskHandlerFactory->setHookDispatcher(

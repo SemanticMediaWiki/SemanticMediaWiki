@@ -6,11 +6,12 @@ use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -28,6 +29,8 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	public function __construct(
 		private readonly HtmlFormRenderer $htmlFormRenderer,
 		private readonly OutputFormatter $outputFormatter,
+		private readonly JobFactory $jobFactory,
+		private readonly JobQueue $jobQueue,
 	) {
 	}
 
@@ -115,14 +118,13 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 		}
 
 		$sure = $webRequest->getText( 'rfsure' );
-		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $sure == 'yes' ) {
 			$refreshjob = $this->getRefreshJob();
 
 			if ( $refreshjob === null ) { // careful, there might be race conditions here
 
-				$newjob = $applicationFactory->newJobFactory()->newByType(
+				$newjob = $this->jobFactory->newByType(
 					'smw.refresh',
 					SpecialPage::getTitleFor( 'SMWAdmin' ),
 					[ 'spos' => 1, 'prog' => 0, 'rc' => 2 ]
@@ -132,9 +134,8 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 			}
 
 		} elseif ( $sure == 'stop' ) {
-			$jobQueue = $applicationFactory->getJobQueue();
-			$jobQueue->disableCache();
-			$jobQueue->delete( 'smw.refresh' );
+			$this->jobQueue->disableCache();
+			$this->jobQueue->delete( 'smw.refresh' );
 		}
 
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
@@ -157,19 +158,17 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 			return $this->refreshjob;
 		}
 
-		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
-
-		if ( !$jobQueue->hasPendingJob( 'smw.refresh' ) ) {
+		if ( !$this->jobQueue->hasPendingJob( 'smw.refresh' ) ) {
 			return null;
 		}
 
 		// Pop and acknowledge the job to fetch progress details
 		// from itself
-		$refreshJob = $jobQueue->pop( 'smw.refresh' );
+		$refreshJob = $this->jobQueue->pop( 'smw.refresh' );
 
 		if ( $refreshJob instanceof Job ) {
 			$refreshJob->run();
-			$jobQueue->ack( $refreshJob );
+			$this->jobQueue->ack( $refreshJob );
 			$this->refreshjob = $refreshJob;
 		}
 

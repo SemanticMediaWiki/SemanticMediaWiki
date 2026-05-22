@@ -6,8 +6,8 @@ use MediaWiki\Title\Title;
 use SMW\IteratorFactory;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
 use SMW\RequestOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\QueryDependency\QueryLinksTableDisposer;
 use SMW\Store;
@@ -43,7 +43,8 @@ class EntityIdDisposerJob extends Job {
 		Title $title,
 		array $params,
 		Store $store,
-		private readonly IteratorFactory $iteratorFactory
+		private readonly IteratorFactory $iteratorFactory,
+		private readonly JobFactory $jobFactory
 	) {
 		parent::__construct( 'smw.entityIdDisposer', $title, $params );
 		$this->setStore( $store );
@@ -162,7 +163,7 @@ class EntityIdDisposerJob extends Job {
 
 		// We expect more outdated entities to be contained in the ID_TABLE,
 		// therefore reenter the disposal cycle.
-		$entityIdDisposerJob = ApplicationFactory::getInstance()->getJobFactory()->newEntityIdDisposerJob(
+		$entityIdDisposerJob = $this->jobFactory->newEntityIdDisposerJob(
 			$this->getTitle(),
 			$this->params + [ 'cycle' => ++$cycle ]
 		);

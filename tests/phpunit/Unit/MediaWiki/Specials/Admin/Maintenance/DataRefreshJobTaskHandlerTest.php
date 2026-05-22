@@ -26,6 +26,7 @@ class DataRefreshJobTaskHandlerTest extends TestCase {
 	private $testEnvironment;
 	private $htmlFormRenderer;
 	private $outputFormatter;
+	private $jobFactory;
 	private $jobQueue;
 
 	protected function setUp(): void {
@@ -41,11 +42,13 @@ class DataRefreshJobTaskHandlerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
+		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -56,7 +59,7 @@ class DataRefreshJobTaskHandlerTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			DataRefreshJobTaskHandler::class,
-			new DataRefreshJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
+			new DataRefreshJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter, $this->jobFactory, $this->jobQueue )
 		);
 	}
 
@@ -81,7 +84,9 @@ class DataRefreshJobTaskHandlerTest extends TestCase {
 
 		$instance = new DataRefreshJobTaskHandler(
 			$this->htmlFormRenderer,
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$instance->getHtml();
@@ -102,15 +107,9 @@ class DataRefreshJobTaskHandlerTest extends TestCase {
 			->with( 'smw.refresh' )
 			->willReturn( false );
 
-		$jobFactory = $this->getMockBuilder( JobFactory::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$jobFactory->expects( $this->atLeastOnce() )
+		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
 			->willReturn( $refreshJob );
-
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
@@ -122,7 +121,9 @@ class DataRefreshJobTaskHandlerTest extends TestCase {
 
 		$instance = new DataRefreshJobTaskHandler(
 			$this->htmlFormRenderer,
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$instance->setFeatureSet( SMW_ADM_REFRESH );
@@ -144,7 +145,9 @@ class DataRefreshJobTaskHandlerTest extends TestCase {
 
 		$instance = new DataRefreshJobTaskHandler(
 			$this->htmlFormRenderer,
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$instance->setFeatureSet( SMW_ADM_REFRESH );

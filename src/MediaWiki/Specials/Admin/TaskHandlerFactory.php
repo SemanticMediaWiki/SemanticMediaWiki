@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use MediaWiki\User\User;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
@@ -43,6 +45,8 @@ class TaskHandlerFactory {
 		private Store $store,
 		private HtmlFormRenderer $htmlFormRenderer,
 		private OutputFormatter $outputFormatter,
+		private readonly JobFactory $jobFactory,
+		private readonly JobQueue $jobQueue,
 	) {
 	}
 
@@ -210,7 +214,12 @@ class TaskHandlerFactory {
 	 * @return DataRefreshJobTaskHandler
 	 */
 	public function newDataRefreshJobTaskHandler(): DataRefreshJobTaskHandler {
-		return new DataRefreshJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
+		return new DataRefreshJobTaskHandler(
+			$this->htmlFormRenderer,
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
+		);
 	}
 
 	/**
@@ -219,7 +228,12 @@ class TaskHandlerFactory {
 	 * @return DisposeJobTaskHandler
 	 */
 	public function newDisposeJobTaskHandler(): DisposeJobTaskHandler {
-		return new DisposeJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
+		return new DisposeJobTaskHandler(
+			$this->htmlFormRenderer,
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
+		);
 	}
 
 	/**
@@ -228,7 +242,12 @@ class TaskHandlerFactory {
 	 * @return PropertyStatsRebuildJobTaskHandler
 	 */
 	public function newPropertyStatsRebuildJobTaskHandler(): PropertyStatsRebuildJobTaskHandler {
-		return new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
+		return new PropertyStatsRebuildJobTaskHandler(
+			$this->htmlFormRenderer,
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
+		);
 	}
 
 	/**
@@ -237,7 +256,12 @@ class TaskHandlerFactory {
 	 * @return FulltextSearchTableRebuildJobTaskHandler
 	 */
 	public function newFulltextSearchTableRebuildJobTaskHandler(): FulltextSearchTableRebuildJobTaskHandler {
-		return new FulltextSearchTableRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
+		return new FulltextSearchTableRebuildJobTaskHandler(
+			$this->htmlFormRenderer,
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
+		);
 	}
 
 	/**

@@ -12,6 +12,7 @@ use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
@@ -33,6 +34,7 @@ class FileIngestJobTest extends TestCase {
 	private $logger;
 	private $elasticFactory;
 	private $jobQueue;
+	private $jobFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -67,6 +69,10 @@ class FileIngestJobTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		// pushIngestJob() goes through MediaWiki's JobFactory which resolves
 		// ElasticFactory from the global container; keep the test override
 		// so the lazyPush path is exercised against the same mock.
@@ -88,13 +94,15 @@ class FileIngestJobTest extends TestCase {
 		Title $title,
 		array $params = [],
 		?Store $store = null,
-		?ElasticFactory $elasticFactory = null
+		?ElasticFactory $elasticFactory = null,
+		?JobFactory $jobFactory = null
 	): FileIngestJob {
 		return new FileIngestJob(
 			$title,
 			$params,
 			$store ?? $this->newStore(),
-			$elasticFactory ?? $this->elasticFactory
+			$elasticFactory ?? $this->elasticFactory,
+			$jobFactory ?? $this->jobFactory
 		);
 	}
 
@@ -200,8 +208,17 @@ class FileIngestJobTest extends TestCase {
 			->method( 'getNamespace' )
 			->willReturn( NS_FILE );
 
-		$this->jobQueue->expects( $this->once() )
-			->method( 'push' );
+		// Retry job is constructed via the injected JobFactory and inserted.
+		$retryJob = $this->getMockBuilder( FileIngestJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$retryJob->expects( $this->once() )
+			->method( 'insert' );
+
+		$this->jobFactory->expects( $this->once() )
+			->method( 'newFileIngestJob' )
+			->willReturn( $retryJob );
 
 		$instance = $this->newJob( $this->title, [], $store );
 

@@ -8,7 +8,9 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
 use SMW\Property\SpecificationLookup as PropertySpecificationLookup;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
@@ -61,13 +63,20 @@ class ChangePropagationDispatchJobTest extends TestCase {
 			->getMock();
 	}
 
+	private function newJobFactory(): JobFactory {
+		return $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	private function newJob(
 		Title $title,
 		array $params = [],
 		?SQLStore $store = null,
 		?Cache $cache = null,
 		?PropertySpecificationLookup $propertySpecificationLookup = null,
-		?IteratorFactory $iteratorFactory = null
+		?IteratorFactory $iteratorFactory = null,
+		?JobFactory $jobFactory = null
 	): ChangePropagationDispatchJob {
 		return new ChangePropagationDispatchJob(
 			$title,
@@ -75,7 +84,8 @@ class ChangePropagationDispatchJobTest extends TestCase {
 			$store ?? $this->newStore(),
 			$cache ?? $this->newCache(),
 			$propertySpecificationLookup ?? $this->newPropertySpecificationLookup(),
-			$iteratorFactory ?? $this->newIteratorFactory()
+			$iteratorFactory ?? $this->newIteratorFactory(),
+			$jobFactory ?? $this->newJobFactory()
 		);
 	}
 
@@ -163,7 +173,11 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
-		$instance = $this->newJob( $subject->getTitle() );
+		$jobFactory = $this->newJobFactory();
+		$jobFactory->expects( $this->never() )
+			->method( 'newChangePropagationDispatchJob' );
+
+		$instance = $this->newJob( $subject->getTitle(), [], null, null, null, null, $jobFactory );
 
 		$instance->run();
 	}
@@ -189,9 +203,6 @@ class ChangePropagationDispatchJobTest extends TestCase {
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$jobQueue->expects( $this->atLeastOnce() )
-			->method( 'lazyPush' );
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
@@ -239,12 +250,37 @@ class ChangePropagationDispatchJobTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
+		$updateJob = $this->getMockBuilder( ChangePropagationUpdateJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dispatchJob = $this->getMockBuilder( ChangePropagationDispatchJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dispatchJob->expects( $this->atLeastOnce() )
+			->method( 'lazyPush' );
+
+		$jobFactory = $this->newJobFactory();
+
+		$jobFactory->expects( $this->atLeastOnce() )
+			->method( 'newChangePropagationUpdateJob' )
+			->willReturn( $updateJob );
+
+		$jobFactory->expects( $this->atLeastOnce() )
+			->method( 'newChangePropagationDispatchJob' )
+			->willReturn( $dispatchJob );
+
 		$instance = $this->newJob(
 			$subject->getTitle(),
 			[
 				'isTypePropagation' => true
 			],
-			$store
+			$store,
+			null,
+			null,
+			null,
+			$jobFactory
 		);
 
 		$instance->run();
@@ -263,22 +299,24 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		// Check that it is the dataItem from `getPropertyValues`
-		$checkJobParameterCallback = static function ( $jobs ) use( $dataItem ) {
-			foreach ( $jobs as $job ) {
-				return WikiPage::newFromTitle( $job->getTitle() )->equals( $dataItem );
-			}
-		};
-
-		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+		$innerJob = $this->getMockBuilder( ChangePropagationDispatchJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueue->expects( $this->once() )
-			->method( 'push' )
-			->with( $this->callback( $checkJobParameterCallback ) );
+		$innerJob->expects( $this->once() )
+			->method( 'insert' );
 
-		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
+		// Verify the dataItem from `getPropertyValues` is the target Title.
+		$checkTitleCallback = static function ( ?Title $title ) use( $dataItem ) {
+			return $title !== null && WikiPage::newFromTitle( $title )->equals( $dataItem );
+		};
+
+		$jobFactory = $this->newJobFactory();
+
+		$jobFactory->expects( $this->once() )
+			->method( 'newChangePropagationDispatchJob' )
+			->with( $this->callback( $checkTitleCallback ) )
+			->willReturn( $innerJob );
 
 		$instance = $this->newJob(
 			$subject->getTitle(),
@@ -286,7 +324,11 @@ class ChangePropagationDispatchJobTest extends TestCase {
 				'schema_change_propagation' => true,
 				'property_key' => 'Foo'
 			],
-			$store
+			$store,
+			null,
+			null,
+			null,
+			$jobFactory
 		);
 
 		$instance->run();

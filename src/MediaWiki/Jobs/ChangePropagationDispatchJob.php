@@ -10,6 +10,7 @@ use SMW\DataItems\WikiPage;
 use SMW\Export\Exporter;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
 use SMW\Property\SpecificationLookup as PropertySpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
@@ -69,7 +70,8 @@ class ChangePropagationDispatchJob extends Job {
 		Store $store,
 		private readonly Cache $cache,
 		private readonly PropertySpecificationLookup $propertySpecificationLookup,
-		private readonly IteratorFactory $iteratorFactory
+		private readonly IteratorFactory $iteratorFactory,
+		private readonly JobFactory $jobFactory
 	) {
 		parent::__construct( 'smw.changePropagationDispatch', $title, $params );
 		$this->setStore( $store );
@@ -281,7 +283,7 @@ class ChangePropagationDispatchJob extends Job {
 
 		$checkSum = md5( $contents );
 
-		$changePropagationDispatchJob = ApplicationFactory::getInstance()->getJobFactory()->newChangePropagationDispatchJob(
+		$changePropagationDispatchJob = $this->jobFactory->newChangePropagationDispatchJob(
 			$this->getTitle(),
 			[
 				'data' => $contents
@@ -311,7 +313,7 @@ class ChangePropagationDispatchJob extends Job {
 			$this->cache->save( $key, 1, 60 * 60 * 24 );
 			$params = $this->params;
 
-			$changePropagationDispatchJob = ApplicationFactory::getInstance()->getJobFactory()->newChangePropagationDispatchJob(
+			$changePropagationDispatchJob = $this->jobFactory->newChangePropagationDispatchJob(
 				$this->getTitle(),
 				$params
 			);
@@ -346,7 +348,7 @@ class ChangePropagationDispatchJob extends Job {
 		// Scheduling the actual dispatch for those properties connected to
 		// the schema change
 		foreach ( $dataItems as $dataItem ) {
-			$changePropagationDispatchJob = ApplicationFactory::getInstance()->getJobFactory()->newChangePropagationDispatchJob(
+			$changePropagationDispatchJob = $this->jobFactory->newChangePropagationDispatchJob(
 				$dataItem->getTitle(),
 				[]
 			);
@@ -418,13 +420,11 @@ class ChangePropagationDispatchJob extends Job {
 		$namespace = $this->getTitle()->getNamespace();
 		$parameters += [ 'origin' => 'ChangePropagationDispatchJob' ];
 
-		// Both targets have no service deps; they are excluded from the
-		// JobClasses spec overhaul and can be constructed directly.
 		if ( $namespace === NS_CATEGORY ) {
-			return new ChangePropagationClassUpdateJob( $title, $parameters );
+			return $this->jobFactory->newChangePropagationClassUpdateJob( $title, $parameters );
 		}
 
-		return new ChangePropagationUpdateJob(
+		return $this->jobFactory->newChangePropagationUpdateJob(
 			$title,
 			$parameters
 		);

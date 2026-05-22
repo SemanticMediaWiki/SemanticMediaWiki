@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
 
@@ -22,7 +22,8 @@ class FulltextSearchTableRebuildJob extends Job {
 	public function __construct(
 		Title $title,
 		array $params,
-		Store $store
+		Store $store,
+		private readonly JobFactory $jobFactory
 	) {
 		parent::__construct( 'smw.fulltextSearchTableRebuild', $title, $params );
 		$this->setStore( $store );
@@ -61,10 +62,8 @@ class FulltextSearchTableRebuildJob extends Job {
 			return;
 		}
 
-		$jobFactory = ApplicationFactory::getInstance()->getJobFactory();
-
 		foreach ( $tableList as $tableName ) {
-			$job = $jobFactory->newFulltextSearchTableRebuildJob(
+			$job = $this->jobFactory->newFulltextSearchTableRebuildJob(
 				$this->getTitle(),
 				[ 'table' => $tableName ]
 			);

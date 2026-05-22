@@ -5,6 +5,8 @@ namespace SMW\Tests\Unit\MediaWiki\Specials\Admin;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
 use SMW\MediaWiki\Specials\Admin\AlertsTaskHandler;
@@ -42,6 +44,8 @@ class TaskHandlerFactoryTest extends TestCase {
 	private $store;
 	private $htmlFormRenderer;
 	private $outputFormatter;
+	private $jobFactory;
+	private $jobQueue;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -63,12 +67,20 @@ class TaskHandlerFactoryTest extends TestCase {
 		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			TaskHandlerFactory::class,
-			new TaskHandlerFactory( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+			new TaskHandlerFactory( $this->store, $this->htmlFormRenderer, $this->outputFormatter, $this->jobFactory, $this->jobQueue )
 		);
 	}
 
@@ -82,7 +94,9 @@ class TaskHandlerFactoryTest extends TestCase {
 		$instance = new TaskHandlerFactory(
 			$this->store,
 			$this->htmlFormRenderer,
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$instance->setHookDispatcher(
@@ -102,7 +116,9 @@ class TaskHandlerFactoryTest extends TestCase {
 		$instance = new TaskHandlerFactory(
 			$this->store,
 			$this->htmlFormRenderer,
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$this->assertInstanceOf(
