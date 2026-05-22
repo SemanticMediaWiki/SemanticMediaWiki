@@ -33,6 +33,7 @@ class ProtectionValidatorTest extends TestCase {
 	private $store;
 	private $entityCache;
 	private $permissionManager;
+	private $pageCreator;
 	private $testEnvironment;
 
 	protected function setUp(): void {
@@ -53,6 +54,10 @@ class ProtectionValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->pageCreator = $this->getMockBuilder( PageCreator::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->testEnvironment = new TestEnvironment();
 	}
 
@@ -64,7 +69,7 @@ class ProtectionValidatorTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ProtectionValidator::class,
-			new ProtectionValidator( $this->store, $this->entityCache, $this->permissionManager )
+			new ProtectionValidator( $this->store, $this->entityCache, $this->permissionManager, $this->pageCreator )
 		);
 	}
 
@@ -72,7 +77,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$instance->setEditProtectionRight(
@@ -103,7 +109,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$instance->setEditProtectionRight(
@@ -133,7 +140,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$this->assertTrue(
@@ -155,7 +163,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$this->assertFalse(
@@ -177,7 +186,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$this->assertFalse(
@@ -194,7 +204,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$instance->setChangePropagationProtection(
@@ -220,7 +231,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$this->assertTrue(
@@ -237,7 +249,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$instance->setChangePropagationProtection(
@@ -253,7 +266,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$instance->setCreateProtectionRight(
@@ -282,7 +296,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$instance->setCreateProtectionRight(
@@ -298,7 +313,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$this->assertFalse(
@@ -310,7 +326,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$this->assertFalse(
@@ -330,7 +347,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$this->assertFalse(
@@ -367,8 +385,6 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -376,7 +392,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$pageCreator
 		);
 
 		$instance->setImportPerformers(
@@ -417,8 +434,6 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -430,7 +445,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$pageCreator
 		);
 
 		$instance->setImportPerformers(
@@ -456,7 +472,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$instance->registerPropertyChangeListener( $propertyChangeListener );
@@ -492,7 +509,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( '_CHGPRO' );
@@ -530,7 +548,8 @@ class ProtectionValidatorTest extends TestCase {
 		$instance = new ProtectionValidator(
 			$store,
 			$this->entityCache,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->pageCreator
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( '_CHGPRO' );

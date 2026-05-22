@@ -288,7 +288,7 @@ return [
 			return $servicesFactory->getPropertyAnnotatorFactory();
 		}
 
-		return new AnnotatorFactory( $servicesFactory->getStore() );
+		return new AnnotatorFactory( $servicesFactory->getStore(), $servicesFactory->getPageCreator() );
 	},
 
 	'SMW.ConnectionProvider' => static function ( MediaWikiServices $services ): ConnectionProvider {
@@ -506,7 +506,8 @@ return [
 		$protectionValidator = new ProtectionValidator(
 			$servicesFactory->getStore(),
 			$servicesFactory->getEntityCache(),
-			$servicesFactory->getPermissionManager()
+			$servicesFactory->getPermissionManager(),
+			$servicesFactory->getPageCreator()
 		);
 
 		$protectionValidator->setImportPerformers(

@@ -871,7 +871,8 @@ class ServicesFactory {
 		$dataUpdater = new DataUpdater(
 			$this->getStore(),
 			$semanticData,
-			$changePropagationNotifier
+			$changePropagationNotifier,
+			$this->getPageCreator()
 		);
 
 		$dataUpdater->isCommandLineMode(

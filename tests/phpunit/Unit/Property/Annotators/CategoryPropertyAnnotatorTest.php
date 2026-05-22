@@ -29,6 +29,7 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 	private $semanticDataValidator;
 	private $testEnvironment;
 	private $store;
+	private $pageCreator;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -41,6 +42,10 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->pageCreator = $this->getMockBuilder( PageCreator::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -56,7 +61,8 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			[],
-			$this->store
+			$this->store,
+			$this->pageCreator
 		);
 
 		$this->assertInstanceOf(
@@ -76,7 +82,8 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$parameters['categories'],
-			$this->store
+			$this->store,
+			$this->pageCreator
 		);
 
 		$instance->showHiddenCategories(
@@ -118,7 +125,8 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $parserData->getSemanticData() ),
 			$parameters['categories'],
-			$this->store
+			$this->store,
+			$this->pageCreator
 		);
 
 		$instance->showHiddenCategories(
@@ -174,15 +182,11 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 			->setSubject( new WikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
 
-		$this->testEnvironment->registerObject(
-			'PageCreator',
-			$pageCreator
-		);
-
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$parameters['categories'],
-			$this->store
+			$this->store,
+			$pageCreator
 		);
 
 		$instance->showHiddenCategories(
@@ -226,7 +230,8 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			[ 'Bar' ],
-			$store
+			$store,
+			$this->pageCreator
 		);
 
 		$instance->useCategoryRedirect(

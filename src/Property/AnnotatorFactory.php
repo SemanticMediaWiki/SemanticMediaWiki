@@ -4,6 +4,7 @@ namespace SMW\Property;
 
 use MediaWiki\Title\Title;
 use SMW\DataModel\SemanticData;
+use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\PageInfo;
 use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
@@ -32,7 +33,10 @@ class AnnotatorFactory {
 	/**
 	 * @since 7.0.0
 	 */
-	public function __construct( private readonly Store $store ) {
+	public function __construct(
+		private readonly Store $store,
+		private readonly PageCreator $pageCreator,
+	) {
 	}
 
 	/**
@@ -213,7 +217,8 @@ class AnnotatorFactory {
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
 			$propertyAnnotator,
 			$categories,
-			$this->store
+			$this->store,
+			$this->pageCreator
 		);
 
 		$categoryPropertyAnnotator->showHiddenCategories(
