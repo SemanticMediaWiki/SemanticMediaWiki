@@ -10,6 +10,7 @@ use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HmacSerializer;
@@ -48,7 +49,8 @@ class IndexerRecoveryJob extends Job {
 		Title $title,
 		array $params,
 		Store $store,
-		private readonly Cache $cache
+		private readonly Cache $cache,
+		private readonly JobFactory $jobFactory
 	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
 		$this->setStore( $store );
@@ -178,7 +180,7 @@ class IndexerRecoveryJob extends Job {
 			$this->params['createdAt'] = time();
 		}
 
-		$job = ApplicationFactory::getInstance()->getJobFactory()->newIndexerRecoveryJob(
+		$job = $this->jobFactory->newIndexerRecoveryJob(
 			$this->title,
 			$this->params
 		);

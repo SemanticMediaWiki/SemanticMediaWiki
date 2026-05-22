@@ -9,6 +9,7 @@ use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
@@ -61,12 +62,29 @@ class EntityIdDisposerJobTest extends TestCase {
 		return new IteratorFactory();
 	}
 
+	private function newJobFactory(): JobFactory {
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$nextJob = $this->getMockBuilder( EntityIdDisposerJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory->expects( $this->any() )
+			->method( 'newEntityIdDisposerJob' )
+			->willReturn( $nextJob );
+
+		return $jobFactory;
+	}
+
 	private function newJob( Title $title, array $params = [] ): EntityIdDisposerJob {
 		return new EntityIdDisposerJob(
 			$title,
 			$params,
 			$this->newStore(),
-			$this->newIteratorFactory()
+			$this->newIteratorFactory(),
+			$this->newJobFactory()
 		);
 	}
 

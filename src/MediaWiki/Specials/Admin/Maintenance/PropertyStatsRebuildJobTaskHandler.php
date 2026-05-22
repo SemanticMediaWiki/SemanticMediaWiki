@@ -7,11 +7,12 @@ use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -29,6 +30,8 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	public function __construct(
 		private readonly HtmlFormRenderer $htmlFormRenderer,
 		private readonly OutputFormatter $outputFormatter,
+		private readonly JobFactory $jobFactory,
+		private readonly JobQueue $jobQueue,
 	) {
 	}
 
@@ -132,7 +135,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 			return;
 		}
 
-		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+		$job = $this->jobFactory->newByType(
 			'smw.propertyStatisticsRebuild',
 			SpecialPage::getTitleFor( 'SMWAdmin' )
 		);
@@ -143,7 +146,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	}
 
 	private function hasPendingJob(): bool {
-		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.propertyStatisticsRebuild' );
+		return $this->jobQueue->hasPendingJob( 'smw.propertyStatisticsRebuild' );
 	}
 
 }

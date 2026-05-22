@@ -26,6 +26,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends TestCase {
 	private $testEnvironment;
 	private $htmlFormRenderer;
 	private $outputFormatter;
+	private $jobFactory;
 	private $jobQueue;
 
 	protected function setUp(): void {
@@ -41,11 +42,13 @@ class PropertyStatsRebuildJobTaskHandlerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
+		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -56,7 +59,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PropertyStatsRebuildJobTaskHandler::class,
-			new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
+			new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter, $this->jobFactory, $this->jobQueue )
 		);
 	}
 
@@ -81,7 +84,9 @@ class PropertyStatsRebuildJobTaskHandlerTest extends TestCase {
 
 		$instance = new PropertyStatsRebuildJobTaskHandler(
 			$this->htmlFormRenderer,
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$instance->getHtml();
@@ -100,15 +105,9 @@ class PropertyStatsRebuildJobTaskHandlerTest extends TestCase {
 		$propertyStatisticsRebuildJob->expects( $this->once() )
 			->method( 'insert' );
 
-		$jobFactory = $this->getMockBuilder( JobFactory::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$jobFactory->expects( $this->once() )
+		$this->jobFactory->expects( $this->once() )
 			->method( 'newByType' )
 			->willReturn( $propertyStatisticsRebuildJob );
-
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
@@ -116,7 +115,9 @@ class PropertyStatsRebuildJobTaskHandlerTest extends TestCase {
 
 		$instance = new PropertyStatsRebuildJobTaskHandler(
 			$this->htmlFormRenderer,
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$instance->isApiTask = false;
@@ -130,14 +131,8 @@ class PropertyStatsRebuildJobTaskHandlerTest extends TestCase {
 			->with( 'smw.propertyStatisticsRebuild' )
 			->willReturn( true );
 
-		$jobFactory = $this->getMockBuilder( JobFactory::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$jobFactory->expects( $this->never() )
+		$this->jobFactory->expects( $this->never() )
 			->method( 'newByType' );
-
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
@@ -145,7 +140,9 @@ class PropertyStatsRebuildJobTaskHandlerTest extends TestCase {
 
 		$instance = new PropertyStatsRebuildJobTaskHandler(
 			$this->htmlFormRenderer,
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
 		$instance->setFeatureSet( SMW_ADM_PSTATS );

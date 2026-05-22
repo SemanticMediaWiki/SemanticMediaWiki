@@ -7,6 +7,8 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Specials\SpecialAdmin;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
@@ -29,6 +31,8 @@ class SpecialAdminTest extends TestCase {
 	private $store;
 	private $settings;
 	private $hookDispatcher;
+	private $jobFactory;
+	private $jobQueue;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -43,6 +47,8 @@ class SpecialAdminTest extends TestCase {
 		$this->store = $applicationFactory->getStore();
 		$this->settings = $applicationFactory->getSettings();
 		$this->hookDispatcher = $applicationFactory->getHookDispatcher();
+		$this->jobFactory = $applicationFactory->getJobFactory();
+		$this->jobQueue = $applicationFactory->getJobQueue();
 	}
 
 	protected function tearDown(): void {
@@ -56,10 +62,12 @@ class SpecialAdminTest extends TestCase {
 			->getMockForAbstractClass();
 		$settings = $this->createMock( Settings::class );
 		$hookDispatcher = $this->createMock( HookDispatcher::class );
+		$jobFactory = $this->createMock( JobFactory::class );
+		$jobQueue = $this->createMock( JobQueue::class );
 
 		$this->assertInstanceOf(
 			SpecialAdmin::class,
-			new SpecialAdmin( $store, $settings, $hookDispatcher )
+			new SpecialAdmin( $store, $settings, $hookDispatcher, $jobFactory, $jobQueue )
 		);
 	}
 
@@ -75,7 +83,7 @@ class SpecialAdminTest extends TestCase {
 			->method( 'addHtml' );
 
 		$query = '';
-		$instance = new SpecialAdmin( $this->store, $this->settings, $this->hookDispatcher );
+		$instance = new SpecialAdmin( $this->store, $this->settings, $this->hookDispatcher, $this->jobFactory, $this->jobQueue );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )
@@ -100,7 +108,7 @@ class SpecialAdminTest extends TestCase {
 		$this->testEnvironment->overrideUserPermissions( $user, [] );
 
 		$query = '';
-		$instance = new SpecialAdmin( $this->store, $this->settings, $this->hookDispatcher );
+		$instance = new SpecialAdmin( $this->store, $this->settings, $this->hookDispatcher, $this->jobFactory, $this->jobQueue );
 
 		$instance->getContext()->setTitle(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )

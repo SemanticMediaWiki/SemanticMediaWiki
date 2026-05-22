@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -16,14 +17,21 @@ class DeferredConstraintCheckUpdateJob extends Job {
 
 	const JOB_COMMAND = 'smw.deferredConstraintCheckUpdateJob';
 
+	private JobFactory $jobFactory;
+
 	/**
 	 * @since 3.1
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		$params = [],
+		?JobFactory $jobFactory = null
+	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
+		$this->jobFactory = $jobFactory ?? ApplicationFactory::getInstance()->getJobFactory();
 		$this->removeDuplicates = true;
 	}
 
@@ -56,7 +64,7 @@ class DeferredConstraintCheckUpdateJob extends Job {
 			return true;
 		}
 
-		$updateJob = ApplicationFactory::getInstance()->getJobFactory()->newUpdateJob(
+		$updateJob = $this->jobFactory->newUpdateJob(
 			$this->getTitle(),
 			$this->params + [ 'origin' => 'DeferredConstraintCheckUpdateJob' ]
 		);

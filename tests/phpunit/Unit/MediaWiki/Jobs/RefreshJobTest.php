@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\MediaWiki\Jobs;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
@@ -29,6 +30,12 @@ class RefreshJobTest extends TestCase {
 			->getMockForAbstractClass();
 	}
 
+	private function newJobFactory(): JobFactory {
+		return $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
@@ -36,7 +43,7 @@ class RefreshJobTest extends TestCase {
 
 		$this->assertInstanceOf(
 			RefreshJob::class,
-			new RefreshJob( $title, [], $this->newStore() )
+			new RefreshJob( $title, [], $this->newStore(), $this->newJobFactory() )
 		);
 	}
 
@@ -64,7 +71,16 @@ class RefreshJobTest extends TestCase {
 			->method( 'refreshData' )
 			->willReturn( $rebuilder );
 
-		$instance = new RefreshJob( $title, $parameters, $store );
+		$nextJob = $this->getMockBuilder( RefreshJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory = $this->newJobFactory();
+		$jobFactory->expects( $this->any() )
+			->method( 'newRefreshJob' )
+			->willReturn( $nextJob );
+
+		$instance = new RefreshJob( $title, $parameters, $store, $jobFactory );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );

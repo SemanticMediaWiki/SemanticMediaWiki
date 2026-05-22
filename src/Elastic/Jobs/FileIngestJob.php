@@ -8,6 +8,7 @@ use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -31,7 +32,8 @@ class FileIngestJob extends Job {
 		Title $title,
 		array $params,
 		Store $store,
-		private readonly ElasticFactory $elasticFactory
+		private readonly ElasticFactory $elasticFactory,
+		private readonly JobFactory $jobFactory
 	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
 		$this->setStore( $store );
@@ -130,7 +132,7 @@ class FileIngestJob extends Job {
 			$this->params['createdAt'] = time();
 		}
 
-		$job = ApplicationFactory::getInstance()->getJobFactory()->newFileIngestJob(
+		$job = $this->jobFactory->newFileIngestJob(
 			$this->title,
 			$this->params
 		);
