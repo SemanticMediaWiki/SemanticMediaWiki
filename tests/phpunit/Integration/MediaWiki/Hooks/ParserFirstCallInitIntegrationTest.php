@@ -59,8 +59,6 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			->method( 'getQueryResult' )
 			->willReturn( $this->queryResult );
 
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-
 		$this->mwHooksHandler->register(
 			'ParserFirstCallInit',
 			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'ParserFirstCallInit' )

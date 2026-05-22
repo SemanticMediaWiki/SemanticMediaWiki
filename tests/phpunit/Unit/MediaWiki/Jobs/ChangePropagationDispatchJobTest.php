@@ -241,8 +241,6 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		// commitSpecificationChangePropagationAsJob -> newChangePropagationUpdateJob
 		// will construct an inner UpdateJob via ApplicationFactory -> Store.
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$instance = $this->newJob(
 			$subject->getTitle(),
 			[

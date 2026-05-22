@@ -101,9 +101,6 @@ class DataUpdaterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
@@ -482,8 +479,6 @@ class DataUpdaterTest extends TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
-
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
 			->willReturn( $revision );

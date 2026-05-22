@@ -37,8 +37,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 

@@ -37,7 +37,6 @@ class DeferredConstraintCheckUpdateJobTest extends TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
-		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown(): void {

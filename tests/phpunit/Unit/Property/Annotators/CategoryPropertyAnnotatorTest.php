@@ -41,8 +41,6 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown(): void {
@@ -220,8 +218,6 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getRedirectTarget' )
 			->willReturn( new WikiPage( 'Foo', NS_MAIN ) );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new WikiPage( __METHOD__, NS_MAIN ) )

@@ -38,7 +38,6 @@ class UpdateJobTest extends TestCase {
 		// UpdateJob still resolves ContentParser, PageCreator, PageUpdater,
 		// SerializerFactory, ParserData and MediaWikiLogger through
 		// ApplicationFactory; the test environment lets these collaborators
-		// be swapped via registerObject() without touching global state.
 		$this->testEnvironment = new TestEnvironment( [
 			'smwgMainCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false,
@@ -49,8 +48,6 @@ class UpdateJobTest extends TestCase {
 		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
@@ -274,8 +271,6 @@ class UpdateJobTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$instance = new UpdateJob( $title, [ 'shallowUpdate' => true ], $store );
 		$instance->isEnabledJobQueue( false );
 
@@ -292,8 +287,6 @@ class UpdateJobTest extends TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'updateData' );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$semanticData = $this->semanticDataSerializer->serialize(
 			$this->semanticDataFactory->newEmptySemanticData( __METHOD__ )

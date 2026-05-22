@@ -63,9 +63,6 @@ class ImporterServicesContainerBuildTest extends TestCase {
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-		$this->testEnvironment->registerObject( 'TitleFactory', $this->titleFactory );
-		$this->testEnvironment->registerObject( 'ConnectionManager', $this->connectionManager );
-
 		$this->testEnvironment->registerObject( 'Settings', new Settings( [
 			'smwgImportReqVersion' => 1,
 			'smwgImportFileDirs' => [ 'foo' ]

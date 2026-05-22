@@ -49,8 +49,6 @@ class SemanticDataTest extends TestCase {
 			->method( 'getRedirectTarget' )
 			->willReturnArgument( 0 );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}

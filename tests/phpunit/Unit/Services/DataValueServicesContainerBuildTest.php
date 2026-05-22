@@ -106,13 +106,8 @@ class DataValueServicesContainerBuildTest extends TestCase {
 			'smwgPropertyInvalidCharacterList' => [ 'Foo' ] ]
 		) );
 
-		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 		$this->testEnvironment->registerObject( 'Store', $this->store );
-		$this->testEnvironment->registerObject( 'MediaWikiLogger', $this->logger );
-		$this->testEnvironment->registerObject( 'SchemaFactory', $this->schemaFactory );
-		$this->testEnvironment->registerObject( 'ConstraintFactory', $this->constraintFactory );
-		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 
 		$servicesContainer = DataValueServiceFactory::newServicesContainer( $this->servicesFileDir );
 

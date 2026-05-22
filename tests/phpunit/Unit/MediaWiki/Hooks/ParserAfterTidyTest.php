@@ -241,8 +241,6 @@ class ParserAfterTidyTest extends TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
 		$cache = $this->newMockCache(
 			$parameters['title']->getArticleID(),
 			$parameters['cache-contains'],
@@ -655,8 +653,6 @@ class ParserAfterTidyTest extends TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
-
-		// Cache key set as if `?action=purge` had fired, so checkPurgeRequest
 		// reaches `updateStore` (which then triggers our throwing store).
 		$cache = $this->applicationFactory->getCache();
 		$cache->save(

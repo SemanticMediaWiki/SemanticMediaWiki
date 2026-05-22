@@ -43,8 +43,6 @@ class SubobjectTest extends TestCase {
 			->getMock();
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 	}
 
 	public function testCanConstruct() {

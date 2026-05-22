@@ -44,8 +44,6 @@ class ParserDataTest extends TestCase {
 		$this->revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 	}
 
 	protected function tearDown(): void {

@@ -48,7 +48,6 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			->willReturn( $semanticData );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}

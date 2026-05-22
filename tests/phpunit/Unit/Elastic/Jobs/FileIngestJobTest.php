@@ -70,7 +70,6 @@ class FileIngestJobTest extends TestCase {
 		// pushIngestJob() goes through MediaWiki's JobFactory which resolves
 		// ElasticFactory from the global container; keep the test override
 		// so the lazyPush path is exercised against the same mock.
-		$this->testEnvironment->registerObject( 'ElasticFactory', $this->elasticFactory );
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 

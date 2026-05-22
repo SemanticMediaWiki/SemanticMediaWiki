@@ -46,9 +46,6 @@ class EntityExaminerIndicatorsFactoryTest extends TestCase {
 		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'HookDispatcher', $hookDispatcher );
-		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
 	protected function tearDown(): void {

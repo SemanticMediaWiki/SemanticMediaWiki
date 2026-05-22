@@ -37,7 +37,6 @@ class ChangeTitleUpdateTest extends TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
-		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 	}
 
 	protected function tearDown(): void {

@@ -41,7 +41,6 @@ class SchemaFactoryTest extends TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
-		$this->testEnvironment->registerObject( 'HookDispatcher', $hookDispatcher );
 	}
 
 	protected function tearDown(): void {
