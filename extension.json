@@ -269,7 +269,16 @@
 	"JobClasses": {
 		"smw.update": {
 			"class": "SMW\\MediaWiki\\Jobs\\UpdateJob",
-			"services": [ "SMW.Store" ]
+			"services": [
+				"SMW.Store",
+				"SMW.Settings",
+				"SMW.PageCreator",
+				"SMW.PageUpdaterFactory",
+				"SMW.SerializerFactory",
+				"SMW.ContentParserFactory",
+				"SMW.ParserDataFactory",
+				"SMW.Logger"
+			]
 		},
 		"smw.refresh": {
 			"class": "SMW\\MediaWiki\\Jobs\\RefreshJob",

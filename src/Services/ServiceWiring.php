@@ -3,6 +3,7 @@
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use Onoi\Cache\Cache;
+use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
@@ -25,6 +26,9 @@ use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
+use SMW\MediaWiki\Jobs\ContentParserFactory;
+use SMW\MediaWiki\Jobs\PageUpdaterFactory;
+use SMW\MediaWiki\Jobs\ParserDataFactory;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
@@ -540,6 +544,55 @@ return [
 			$servicesFactory->getProtectionValidator(),
 			$servicesFactory->getPermissionManager()
 		);
+	},
+
+	'SMW.ContentParserFactory' => static function ( MediaWikiServices $services ): ContentParserFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'ContentParserFactory' ) ) {
+			return $servicesFactory->getContentParserFactory();
+		}
+
+		return new ContentParserFactory(
+			$services->getParser(),
+			$servicesFactory->getRevisionGuard()
+		);
+	},
+
+	'SMW.ParserDataFactory' => static function ( MediaWikiServices $services ): ParserDataFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'ParserDataFactory' ) ) {
+			return $servicesFactory->getParserDataFactory();
+		}
+
+		return new ParserDataFactory(
+			$servicesFactory->getMediaWikiLogger()
+		);
+	},
+
+	'SMW.PageUpdaterFactory' => static function ( MediaWikiServices $services ): PageUpdaterFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'PageUpdaterFactory' ) ) {
+			return $servicesFactory->getPageUpdaterFactory();
+		}
+
+		return new PageUpdaterFactory( $servicesFactory );
+	},
+
+	'SMW.Logger' => static function ( MediaWikiServices $services ): LoggerInterface {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'Logger' ) ) {
+			return $servicesFactory->getLogger();
+		}
+
+		// Route through getMediaWikiLogger() rather than calling
+		// LoggerFactory::getInstance( 'smw' ) directly, so callers see the
+		// SMW\Utils\Logger role-filter wrapper rather than a raw PSR-3
+		// channel logger.
+		return $servicesFactory->getMediaWikiLogger();
 	},
 
 	'SMW.PropertyLabelFinder' => static function ( MediaWikiServices $services ): PropertyLabelFinder {
