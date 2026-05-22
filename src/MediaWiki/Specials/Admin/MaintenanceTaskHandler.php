@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Specials\Admin;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\Request\WebRequest;
 use ReflectionClass;
 use SMW\Localizer\Message;
@@ -160,9 +161,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 
 			$reflectionClass = new ReflectionClass( $class );
 
-			if (
-				!$reflectionClass->getParentClass() ||
-				$reflectionClass->getParentClass()->getName() !== 'Maintenance' ) {
+			if ( !$reflectionClass->isSubclassOf( Maintenance::class ) ) {
 				continue;
 			}
 
