@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Utils\CliMsgFormatter;
 
@@ -96,7 +97,7 @@ class ConfigPreloadPrimaryKeyTableMutator {
  * profile via `require_once`.
  */
 $GLOBALS['wgExtensionFunctions'][] = static function () {
-	\MediaWiki\MediaWikiServices::getInstance()->getHookContainer()->register(
+	MediaWikiServices::getInstance()->getHookContainer()->register(
 		'SMW::SQLStore::Installer::BeforeCreateTablesComplete',
 		static function ( array $tables, MessageReporter $messageReporter ) {
 			$cliMsgFormatter = new CliMsgFormatter();
