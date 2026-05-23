@@ -37,7 +37,7 @@ class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
 
 		$utilityFactory->newMwHooksHandler()
 			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+			->reregisterAllDeclarative();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
 			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'

@@ -41,7 +41,7 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 		$this->pageCreator = $utilityFactory->newPageCreator();
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 
-		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
+		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 	}
 
 	protected function tearDown(): void {

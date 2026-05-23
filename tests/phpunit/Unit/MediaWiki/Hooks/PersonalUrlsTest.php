@@ -2,12 +2,14 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
-use MediaWiki\Output\OutputPage;
+use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
+use SkinTemplate;
 use SMW\MediaWiki\Hooks\PersonalUrls;
-use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\JobQueue;
+use SMW\Settings;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\PersonalUrls
@@ -22,26 +24,24 @@ class PersonalUrlsTest extends TestCase {
 
 	private $skinTemplate;
 	private $jobQueue;
-	private $permissionExaminer;
 	private $userOptionsLookup;
+	private $settings;
 	private $user;
 
 	protected function setUp(): void {
-		$this->skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+		$this->skinTemplate = $this->getMockBuilder( SkinTemplate::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
+		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->userOptionsLookup = $this->getMockBuilder( UserOptionsLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->settings = $this->createMock( Settings::class );
 
 		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
@@ -51,47 +51,37 @@ class PersonalUrlsTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PersonalUrls::class,
-			new PersonalUrls( $this->skinTemplate, $this->jobQueue, $this->permissionExaminer, $this->userOptionsLookup, $this->user )
+			new PersonalUrls( $this->jobQueue, $this->userOptionsLookup, $this->settings )
 		);
 	}
 
-	public function testProcessOnJobQueueWatchlist() {
+	public function testProcessReturnsTrueWhenUserPreferenceDisabled() {
 		$this->userOptionsLookup->expects( $this->once() )
 			->method( 'getOption' )
 			->with( $this->user, 'smw-prefs-general-options-jobqueue-watchlist', false )
-			->willReturn( true );
-
-		$output = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
+			->willReturn( false );
 
 		$this->skinTemplate->expects( $this->any() )
-			->method( 'getOutput' )
-			->willReturn( $output );
+			->method( 'getUser' )
+			->willReturn( $this->user );
 
-		$this->permissionExaminer->expects( $this->any() )
-			->method( 'hasPermissionOf' )
-			->willReturn( true );
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$personalUrls = [];
 
 		$instance = new PersonalUrls(
-			$this->skinTemplate,
 			$this->jobQueue,
-			$this->permissionExaminer,
 			$this->userOptionsLookup,
-			$this->user
+			$this->settings
 		);
 
-		$instance->setOptions(
-			[
-				'smwgJobQueueWatchlist' => [ 'Foo' ]
-			]
+		$this->assertTrue(
+			$instance->onPersonalUrls( $personalUrls, $title, $this->skinTemplate )
 		);
 
-		$instance->process( $personalUrls );
-
-		$this->assertArrayHasKey(
+		$this->assertArrayNotHasKey(
 			'smw-jobqueue-watchlist',
 			$personalUrls
 		);

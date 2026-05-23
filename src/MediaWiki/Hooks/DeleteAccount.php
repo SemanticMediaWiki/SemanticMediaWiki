@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
-use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
 
 /**
@@ -15,10 +14,10 @@ use SMW\NamespaceExaminer;
  *
  * @author mwjames
  */
-class DeleteAccount implements HookListener {
+class DeleteAccount {
 
 	/**
-	 * @since 3.2
+	 * @since 7.0.0
 	 */
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
@@ -27,11 +26,9 @@ class DeleteAccount implements HookListener {
 	}
 
 	/**
-	 * @since 3.2
-	 *
-	 * @param User|string $user
+	 * @since 7.0.0
 	 */
-	public function process( $user ): bool {
+	public function onDeleteAccount( $user ): bool {
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
 		}
@@ -42,7 +39,7 @@ class DeleteAccount implements HookListener {
 
 		$this->articleDelete->setOrigin( 'DeleteAccount' );
 
-		$this->articleDelete->process(
+		$this->articleDelete->scheduleDeleteFor(
 			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $user, NS_USER )
 		);
 

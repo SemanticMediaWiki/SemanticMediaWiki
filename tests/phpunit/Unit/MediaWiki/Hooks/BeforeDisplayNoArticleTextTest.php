@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
+use Article;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
@@ -18,13 +19,9 @@ use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 class BeforeDisplayNoArticleTextTest extends TestCase {
 
 	public function testCanConstruct() {
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			BeforeDisplayNoArticleText::class,
-			new BeforeDisplayNoArticleText( $wikiPage )
+			new BeforeDisplayNoArticleText()
 		);
 	}
 
@@ -44,17 +41,17 @@ class BeforeDisplayNoArticleTextTest extends TestCase {
 			->method( 'getNamespace' )
 			->willReturn( $namespace );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$article = $this->getMockBuilder( Article::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$wikiPage->expects( $this->any() )
+		$article->expects( $this->any() )
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$instance = new BeforeDisplayNoArticleText( $wikiPage );
+		$instance = new BeforeDisplayNoArticleText();
 
-		$this->assertEquals( $expected, $instance->process() );
+		$this->assertEquals( $expected, $instance->onBeforeDisplayNoArticleText( $article ) );
 	}
 
 	public function titleProvider() {

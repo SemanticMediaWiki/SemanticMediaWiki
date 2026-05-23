@@ -67,14 +67,20 @@ class CategoryInstanceAndCategoryHierarchyTest extends SMWIntegrationTestCase {
 
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'CategoryInstanceAndCategoryHierarchyRegressionTest' );
 
+		// _INST values are formatted via WikiPageValue::getWikiValue() which
+		// returns the prefixed form (`Category:X`) for __sin typed values.
+		// Before #6875, imported-page categorizations were not stored at all
+		// so this assertion ran vacuously; declarative HookHandlers correctly
+		// store them, so the expected list now uses the production-formatted
+		// prefixed strings the validator actually compares against.
 		$expectedCategoryAsWikiValue = [
 			'property' => new Property( '_INST' ),
 			'propertyValues' => [
-				'Regression test',
-				'Regression test category',
-				'Regression test sub category',
-				'Regression test sub sub category',
-				'Category regression test'
+				'Category:Regression test',
+				'Category:Regression test category',
+				'Category:Regression test sub category',
+				'Category:Regression test sub sub category',
+				'Category:Category regression test'
 			]
 		];
 

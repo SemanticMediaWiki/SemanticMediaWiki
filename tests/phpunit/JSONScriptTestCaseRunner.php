@@ -47,7 +47,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
-		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
+		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 
 		$this->fileReader = $utilityFactory->newJsonFileReader();
 
@@ -69,6 +69,16 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	protected function tearDown(): void {
 		try {
 			if ( $this->deletePagesOnTearDown ) {
+				// The MW HookContainer caches the declarative SMW hook handlers
+				// across the test body, so by tearDown time their captured
+				// services (notably ArticleDelete's Store) can be stale relative
+				// to the Store the JSON-script test reconfigured. Re-register
+				// just before flushPages so PageDeleter fires hooks against
+				// handlers built from the current MediaWikiServices state.
+				$utilityFactory = $this->testEnvironment->getUtilityFactory();
+				$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
+				$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
+
 				$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
 			}
 		} finally {

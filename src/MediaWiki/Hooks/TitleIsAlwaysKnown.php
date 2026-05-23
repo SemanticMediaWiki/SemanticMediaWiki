@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\Title\Title;
+use MediaWiki\Hook\TitleIsAlwaysKnownHook;
 use SMW\DataItems\Property;
-use SMW\MediaWiki\HookListener;
 
 /**
  * Allows overriding default behaviour for determining if a page exists
@@ -16,26 +15,12 @@ use SMW\MediaWiki\HookListener;
  *
  * @author mwjames
  */
-class TitleIsAlwaysKnown implements HookListener {
-
-	private ?bool $result = null;
+class TitleIsAlwaysKnown implements TitleIsAlwaysKnownHook {
 
 	/**
-	 * @since  2.0
+	 * @since 7.0.0
 	 */
-	public function __construct(
-		private readonly Title $title,
-		&$result,
-	) {
-		$this->result =& $result;
-	}
-
-	/**
-	 * @since 2.0
-	 *
-	 * @return bool
-	 */
-	public function process(): bool {
+	public function onTitleIsAlwaysKnown( $title, &$isKnown ) {
 		// Two possible ways of going forward:
 		//
 		// The FIRST seen here is to use the hook to override the known status
@@ -49,9 +34,9 @@ class TitleIsAlwaysKnown implements HookListener {
 		//
 		// @see also HooksTest::testOnTitleIsAlwaysKnown
 
-		if ( $this->title->getNamespace() === SMW_NS_PROPERTY ) {
-			if ( !Property::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
-				$this->result = true;
+		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
+			if ( !Property::newFromUserLabel( $title->getText() )->isUserDefined() ) {
+				$isKnown = true;
 			}
 		}
 

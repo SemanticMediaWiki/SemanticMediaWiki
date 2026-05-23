@@ -3,10 +3,11 @@
 namespace SMW;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
-use SMW\MediaWiki\Hooks;
+use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\Query\ResultFormat;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Logo;
@@ -68,7 +69,15 @@ final class Setup {
 			return;
 		}
 
-		Hooks::registerExtensionCheck( $vars );
+		// This hook is registered imperatively (not via extension.json HookHandlers)
+		// because it must fire ONLY when SMW failed to load. A declarative entry
+		// would invoke the handler on every page view; this form skips
+		// registration entirely when SMW loaded successfully (see initExtension()).
+		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( OutputPage $outputPage ): bool {
+			BeforePageDisplay::informAboutExtensionAvailability( $outputPage );
+
+			return true;
+		};
 	}
 
 	/**
@@ -99,7 +108,13 @@ final class Setup {
 	 * @return array
 	 */
 	public static function initExtension( array $vars ): array {
-		Hooks::registerEarly( $vars );
+		// Remove the early-load BeforePageDisplay hook installed in
+		// registerExtensionCheck() now that we know SMW loaded successfully;
+		// the declarative SemanticMediaWiki.BeforePageDisplay handler takes
+		// over from here.
+		if ( defined( 'SMW_EXTENSION_LOADED' ) ) {
+			unset( $vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] );
+		}
 
 		return $vars;
 	}
@@ -149,7 +164,11 @@ final class Setup {
 
 		$this->registerParamDefinitions( $vars );
 		$this->registerFooterIcon( $vars );
-		$this->registerHooks();
+
+		// All hook handlers are wired declaratively via extension.json's
+		// HookHandlers / Hooks blocks. The early-load BeforePageDisplay hook
+		// is installed imperatively from registerExtensionCheck() above; it
+		// is removed in initExtension() once SMW is known to have loaded.
 
 		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
 
@@ -344,19 +363,6 @@ final class Setup {
 			'alt' => 'Powered by Semantic MediaWiki',
 			'class' => 'smw-footer'
 		];
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgHooks
-	 *
-	 * @note $wgHooks contains a list of hooks which specifies for every event an
-	 * array of functions to be called.
-	 *
-	 * @return void
-	 */
-	private function registerHooks(): void {
-		$hooks = new Hooks();
-		$hooks->register();
 	}
 
 }

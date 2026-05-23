@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\Title\Title;
+use MediaWiki\Hook\TitleIsMovableHook;
 use SMW\DataItems\Property;
-use SMW\MediaWiki\HookListener;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
@@ -14,36 +13,26 @@ use SMW\MediaWiki\HookListener;
  *
  * @author mwjames
  */
-class TitleIsMovable implements HookListener {
+class TitleIsMovable implements TitleIsMovableHook {
 
 	/**
-	 * @since  2.1
+	 * @since 7.0.0
 	 */
-	public function __construct( private readonly Title $title ) {
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param bool &$isMovable
-	 *
-	 * @return bool
-	 */
-	public function process( &$isMovable ): bool {
+	public function onTitleIsMovable( $title, &$result ) {
 		// We don't allow rule pages to be moved as we cannot track JSON content
 		// as redirects and therefore invalidate any rule assignment without a
 		// possibility to automatically reassign IDs
-		if ( $this->title->getNamespace() === SMW_NS_SCHEMA ) {
-			$isMovable = false;
+		if ( $title->getNamespace() === SMW_NS_SCHEMA ) {
+			$result = false;
 		}
 
-		if ( $this->title->getNamespace() !== SMW_NS_PROPERTY ) {
+		if ( $title->getNamespace() !== SMW_NS_PROPERTY ) {
 			return true;
 		}
 
 		// Predefined properties cannot be moved!
-		if ( !Property::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
-			$isMovable = false;
+		if ( !Property::newFromUserLabel( $title->getText() )->isUserDefined() ) {
+			$result = false;
 		}
 
 		return true;

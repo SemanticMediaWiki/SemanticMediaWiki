@@ -48,7 +48,7 @@ class DeleteAccountTest extends TestCase {
 			->willReturn( true );
 
 		$this->articleDelete->expects( $this->atLeastOnce() )
-			->method( 'process' );
+			->method( 'scheduleDeleteFor' );
 
 		$instance = new DeleteAccount(
 			$this->namespaceExaminer,
@@ -56,7 +56,7 @@ class DeleteAccountTest extends TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->process( 'Foo' )
+			$instance->onDeleteAccount( 'Foo' )
 		);
 	}
 
@@ -67,7 +67,7 @@ class DeleteAccountTest extends TestCase {
 			->willReturn( true );
 
 		$this->articleDelete->expects( $this->atLeastOnce() )
-			->method( 'process' );
+			->method( 'scheduleDeleteFor' );
 
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
@@ -83,7 +83,7 @@ class DeleteAccountTest extends TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->process( $user )
+			$instance->onDeleteAccount( $user )
 		);
 	}
 

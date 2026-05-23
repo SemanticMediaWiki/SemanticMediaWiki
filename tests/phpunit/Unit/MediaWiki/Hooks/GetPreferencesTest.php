@@ -6,8 +6,8 @@ use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\GetPreferences;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\Schema\SchemaFactory;
+use SMW\Settings;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\GetPreferences
@@ -21,8 +21,8 @@ use SMW\Schema\SchemaFactory;
 class GetPreferencesTest extends TestCase {
 
 	private $hookDispatcher;
-	private $permissionExaminer;
 	private $schemaFactory;
+	private $settings;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -31,25 +31,17 @@ class GetPreferencesTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->schemaFactory = $this->getMockBuilder( SchemaFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->settings = $this->createMock( Settings::class );
 	}
 
 	public function testCanConstruct() {
-		$user = $this->getMockBuilder( User::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$preferences = [];
-
 		$this->assertInstanceOf(
 			GetPreferences::class,
-			new GetPreferences( $this->permissionExaminer, $this->schemaFactory )
+			new GetPreferences( $this->schemaFactory, $this->hookDispatcher, $this->settings )
 		);
 	}
 
@@ -57,10 +49,6 @@ class GetPreferencesTest extends TestCase {
 	 * @dataProvider keyProvider
 	 */
 	public function testProcess( $key ) {
-		$this->permissionExaminer->expects( $this->any() )
-			->method( 'hasPermissionOf' )
-			->willReturn( true );
-
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -68,21 +56,12 @@ class GetPreferencesTest extends TestCase {
 		$preferences = [];
 
 		$instance = new GetPreferences(
-			$this->permissionExaminer,
-			$this->schemaFactory
+			$this->schemaFactory,
+			$this->hookDispatcher,
+			$this->settings
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$instance->setOptions(
-			[
-				'smwgEnabledEditPageHelp' => false
-			]
-		);
-
-		$instance->process( $user, $preferences );
+		$instance->onGetPreferences( $user, $preferences );
 
 		$this->assertArrayHasKey(
 			$key,
@@ -105,10 +84,6 @@ class GetPreferencesTest extends TestCase {
 
 		$provider[] = [
 			'smw-prefs-general-options-disable-editpage-info'
-		];
-
-		$provider[] = [
-			'smw-prefs-general-options-jobqueue-watchlist'
 		];
 
 		return $provider;

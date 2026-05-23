@@ -2,18 +2,19 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Hook\ParserAfterTidyHook;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use Onoi\Cache\Cache;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use SMW\DataModel\SemanticData;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
-use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\NamespaceExaminer;
-use SMW\OptionsAwareTrait;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\Site;
 use WeakMap;
 
 /**
@@ -27,11 +28,7 @@ use WeakMap;
  *
  * @author mwjames
  */
-class ParserAfterTidy implements HookListener {
-
-	use OptionsAwareTrait;
-	use LoggerAwareTrait;
-	use HookDispatcherAwareTrait;
+class ParserAfterTidy implements ParserAfterTidyHook {
 
 	const CACHE_NAMESPACE = 'smw:parseraftertidy';
 
@@ -51,18 +48,16 @@ class ParserAfterTidy implements HookListener {
 	 */
 	private static ?WeakMap $inFlightParses = null;
 
-	private bool $isCommandLineMode = false;
-
-	private bool $isReady = true;
-
 	/**
-	 * @since  1.9
+	 * @since 7.0.0
 	 */
 	public function __construct(
-		private Parser &$parser,
-		private NamespaceExaminer $namespaceExaminer,
-		private Cache $cache,
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly Cache $cache,
 		private readonly ApplicationFactory $servicesFactory,
+		private readonly HookDispatcher $hookDispatcher,
+		private readonly Settings $settings,
+		private readonly LoggerInterface $logger,
 	) {
 	}
 
@@ -132,26 +127,10 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-	 *
-	 * @since 2.5
+	 * @since 7.0.0
 	 */
-	public function isCommandLineMode( bool $isCommandLineMode ): void {
-		$this->isCommandLineMode = $isCommandLineMode;
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function isReady( bool $isReady ): void {
-		$this->isReady = $isReady;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function process( string &$text ): bool {
-		if ( !$this->isReady ) {
+	public function onParserAfterTidy( $parser, &$text ) {
+		if ( !Site::isReady() ) {
 			$this->doAbort();
 			return true;
 		}
@@ -159,7 +138,7 @@ class ParserAfterTidy implements HookListener {
 		// `(string)` defends against unit-test mocks where `getTitle()` returns
 		// a Title mock whose `getPrefixedDBKey()` is not stubbed and resolves
 		// to `null` rather than the production `string`.
-		$key = (string)$this->parser->getTitle()->getPrefixedDBKey();
+		$key = (string)$parser->getTitle()->getPrefixedDBKey();
 
 		// #5923: When an extension clones the parser and re-enters `Parser::parse()`
 		// on the same title (e.g. DPL `<dpl>`, TabberNeue `<tabber>`), the inner
@@ -172,29 +151,29 @@ class ParserAfterTidy implements HookListener {
 		// excluded from the tracker by `onParserClearState`, so they pass
 		// through here untouched.
 		$isNestedParse = $key !== ''
-			&& self::countActiveParsesForTitle( $key, $this->parser ) > 0;
+			&& self::countActiveParsesForTitle( $key, $parser ) > 0;
 
 		try {
-			if ( !$isNestedParse && $this->canPerformUpdate() ) {
-				$this->performUpdate( $text );
+			if ( !$isNestedParse && $this->canPerformUpdate( $parser ) ) {
+				$this->performUpdate( $parser, $text );
 			}
 		} finally {
 			if ( self::$inFlightParses !== null ) {
-				unset( self::$inFlightParses[$this->parser] );
+				unset( self::$inFlightParses[$parser] );
 			}
 		}
 
 		return true;
 	}
 
-	private function canPerformUpdate(): bool {
+	private function canPerformUpdate( Parser $parser ): bool {
 		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
 		// when for example Title::isProtected is accessed
-		if ( !$this->isReady ) {
+		if ( !Site::isReady() ) {
 			return $this->doAbort();
 		}
 
-		$title = $this->parser->getTitle();
+		$title = $parser->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return false;
@@ -208,11 +187,11 @@ class ParserAfterTidy implements HookListener {
 
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
-		if ( $title->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
+		if ( $title->isSpecialPage() || $parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
 
-		$parserOutput = $this->parser->getOutput();
+		$parserOutput = $parser->getOutput();
 
 		// T301915
 		$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
@@ -250,15 +229,16 @@ class ParserAfterTidy implements HookListener {
 		return false;
 	}
 
-	private function performUpdate( string &$text ): void {
+	private function performUpdate( Parser $parser, string &$text ): void {
 		$parserData = $this->servicesFactory->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
 		$semanticData = $parserData->getSemanticData();
 
 		$this->addPropertyAnnotations(
+			$parser,
 			$this->servicesFactory->singleton( 'PropertyAnnotatorFactory' ),
 			$semanticData
 		);
@@ -270,12 +250,12 @@ class ParserAfterTidy implements HookListener {
 		// an appropriate context reference otherwise it is assumed that the hook
 		// call is part of another non SMW related parse
 		if ( $subject->getContextReference() !== null || $subject->getNamespace() === NS_FILE ) {
-			$this->checkPurgeRequest( $parserData );
+			$this->checkPurgeRequest( $parser, $parserData );
 		}
 	}
 
-	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ): void {
-		$parserOutput = $this->parser->getOutput();
+	private function addPropertyAnnotations( Parser $parser, $propertyAnnotatorFactory, $semanticData ): void {
+		$parserOutput = $parser->getOutput();
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$semanticData
@@ -294,7 +274,7 @@ class ParserAfterTidy implements HookListener {
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newEditProtectedPropertyAnnotator(
 			$propertyAnnotator,
-			$this->parser->getTitle()
+			$parser->getTitle()
 		);
 
 		// Special case! belongs to the EditProtectedPropertyAnnotator instance
@@ -343,9 +323,9 @@ class ParserAfterTidy implements HookListener {
 	 * a static variable or any other messaging that is not persistent will not
 	 * work hence the reliance on the cache as temporary persistence marker
 	 */
-	private function checkPurgeRequest( $parserData ): ?bool {
+	private function checkPurgeRequest( Parser $parser, $parserData ): ?bool {
 		$start = microtime( true );
-		$title = $this->parser->getTitle();
+		$title = $parser->getTitle();
 
 		$key = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $title->getArticleID() );
 
@@ -355,7 +335,7 @@ class ParserAfterTidy implements HookListener {
 
 			// Avoid a Parser::lock for when a PurgeRequest remains intact
 			// during an update process while being executed from the cmdLine
-			if ( $this->isCommandLineMode ) {
+			if ( Site::isCommandLineMode() ) {
 				return true;
 			}
 
@@ -370,7 +350,7 @@ class ParserAfterTidy implements HookListener {
 			);
 
 			// #3849
-			if ( $this->getOption( 'smwgCheckForRemnantEntities' ) === 'purge' ) {
+			if ( $this->settings->get( 'smwgCheckForRemnantEntities' ) === 'purge' ) {
 				$semanticData->setOption( SemanticData::OPT_CHECK_REMNANT_ENTITIES, true );
 			}
 

@@ -3,14 +3,13 @@
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\EditPage\EditPage;
-use MediaWiki\Title\Title;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
-use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Hooks\EditPageForm;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\NamespaceExaminer;
+use SMW\Settings;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm
@@ -24,10 +23,8 @@ use SMW\NamespaceExaminer;
 class EditPageFormTest extends TestCase {
 
 	private $namespaceExaminer;
-	private $permissionExaminer;
 	private $userOptionsLookup;
-	private $user;
-	private $messageLocalizer;
+	private $settings;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -36,179 +33,57 @@ class EditPageFormTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->userOptionsLookup = $this->getMockBuilder( UserOptionsLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( User::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->settings = $this->createMock( Settings::class );
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			EditPageForm::class,
-			new EditPageForm( $this->namespaceExaminer, $this->permissionExaminer, $this->userOptionsLookup, $this->user )
+			new EditPageForm( $this->namespaceExaminer, $this->userOptionsLookup, $this->settings )
 		);
 	}
 
 	public function testDisabledHelp() {
+		$this->settings->method( 'get' )
+			->with( 'smwgEnabledEditPageHelp' )
+			->willReturn( false );
+
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$out = $this->getMockBuilder( OutputPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$out->expects( $this->any() )
+			->method( 'getUser' )
+			->willReturn( $user );
+
 		$editPage = $this->getMockBuilder( EditPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$editPage->editFormPageTop = '';
+
 		$instance = new EditPageForm(
 			$this->namespaceExaminer,
-			$this->permissionExaminer,
 			$this->userOptionsLookup,
-			$this->user
-		);
-
-		$instance->setOptions(
-			[
-				'smwgEnabledEditPageHelp' => false
-			]
+			$this->settings
 		);
 
 		$this->assertTrue(
-			$instance->process( $editPage )
-		);
-	}
-
-	public function testDisabledOnUserPreference() {
-		$this->permissionExaminer->expects( $this->once() )
-			->method( 'hasPermissionOf' )
-			->willReturn( true );
-
-		$this->userOptionsLookup->expects( $this->once() )
-			->method( 'getOption' )
-			->with( $this->user, 'smw-prefs-general-options-disable-editpage-info', false )
-			->willReturn( true );
-
-		$editPage = $this->getMockBuilder( EditPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new EditPageForm(
-			$this->namespaceExaminer,
-			$this->permissionExaminer,
-			$this->userOptionsLookup,
-			$this->user
+			$instance->onEditPage__showEditForm_initial( $editPage, $out )
 		);
 
-		$instance->setOptions(
-			[
-				'smwgEnabledEditPageHelp' => true
-			]
-		);
-
-		$editPage->editFormPageTop = '';
-
-		$instance->process( $editPage );
-
-		$this->assertEmpty(
+		$this->assertSame(
+			'',
 			$editPage->editFormPageTop
 		);
-	}
-
-	/**
-	 * @dataProvider titleProvider
-	 */
-	public function testExtendEditFormPageTop( $title, $namespaces, $isSemanticEnabled, $expected ) {
-		$this->permissionExaminer->expects( $this->once() )
-			->method( 'hasPermissionOf' )
-			->willReturn( true );
-
-		$this->userOptionsLookup->expects( $this->once() )
-			->method( 'getOption' )
-			->with( $this->user, 'smw-prefs-general-options-disable-editpage-info', false )
-			->willReturn( false );
-
-		$this->namespaceExaminer->expects( $this->any() )
-			->method( 'isSemanticEnabled' )
-			->with( $namespaces )
-			->willReturn( $isSemanticEnabled );
-
-		$editPage = $this->getMockBuilder( EditPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$editPage->expects( $this->any() )
-			->method( 'getTitle' )
-			->willReturn( $title );
-
-		$editPage->editFormPageTop = '';
-
-		$instance = new EditPageForm(
-			$this->namespaceExaminer,
-			$this->permissionExaminer,
-			$this->userOptionsLookup,
-			$this->user
-		);
-
-		$instance->setMessageLocalizer(
-			$this->messageLocalizer
-		);
-
-		$instance->setOptions(
-			[
-				'smwgEnabledEditPageHelp' => true
-			]
-		);
-
-		$instance->process( $editPage );
-
-		$this->assertStringContainsString(
-			$expected,
-			$editPage->editFormPageTop
-		);
-	}
-
-	public function titleProvider() {
-		$provider[] = [
-			Title::newFromText( 'Foo', SMW_NS_PROPERTY ),
-			SMW_NS_PROPERTY,
-			true,
-			'smw-editpage-property-annotation-enabled'
-		];
-
-		$provider[] = [
-			Title::newFromText( 'Modification date', SMW_NS_PROPERTY ),
-			SMW_NS_PROPERTY,
-			true,
-			'smw-editpage-property-annotation-disabled'
-		];
-
-		$provider[] = [
-			Title::newFromText( 'Foo', SMW_NS_CONCEPT ),
-			SMW_NS_CONCEPT,
-			true,
-			'smw-editpage-concept-annotation-enabled'
-		];
-
-		$provider[] = [
-			Title::newFromText( 'Foo', NS_MAIN ),
-			NS_MAIN,
-			true,
-			'smw-editpage-annotation-enabled'
-		];
-
-		$provider[] = [
-			Title::newFromText( 'Foo', NS_MAIN ),
-			NS_MAIN,
-			false,
-			'smw-editpage-annotation-disabled'
-		];
-
-		return $provider;
 	}
 
 }

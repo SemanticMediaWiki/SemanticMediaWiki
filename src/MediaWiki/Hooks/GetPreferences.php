@@ -2,17 +2,16 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\User\User;
+use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 use SMW\MediaWiki\Specials\FacetedSearch\Profile as FacetedSearchProfile;
-use SMW\OptionsAwareTrait;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\SchemaFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\Utils\Logo;
 
 /**
@@ -25,10 +24,8 @@ use SMW\Utils\Logo;
  *
  * @author mwjames
  */
-class GetPreferences implements HookListener {
+class GetPreferences implements GetPreferencesHook {
 
-	use OptionsAwareTrait;
-	use HookDispatcherAwareTrait;
 	use MessageLocalizerTrait;
 
 	/**
@@ -62,18 +59,23 @@ class GetPreferences implements HookListener {
 	const SHOW_ENTITY_ISSUE_PANEL = 'smw-prefs-general-options-show-entity-issue-panel';
 
 	/**
-	 * @since 3.2
+	 * @since 7.0.0
 	 */
 	public function __construct(
-		private PermissionExaminer $permissionExaminer,
-		private SchemaFactory $schemaFactory,
+		private readonly SchemaFactory $schemaFactory,
+		private readonly HookDispatcher $hookDispatcher,
+		private readonly Settings $settings,
 	) {
 	}
 
 	/**
-	 * @since 2.0
+	 * @since 7.0.0
 	 */
-	public function process( User $user, array &$preferences ): bool {
+	public function onGetPreferences( $user, &$preferences ) {
+		$permissionExaminer = ApplicationFactory::getInstance()->newPermissionExaminer(
+			$user
+		);
+
 		$otherPreferences = [];
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
 
@@ -96,13 +98,13 @@ class GetPreferences implements HookListener {
 			'section' => 'smw/general-options',
 		];
 
-		if ( $this->permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_JOBQUEUE_WATCHLIST ) ) {
+		if ( $permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_JOBQUEUE_WATCHLIST ) ) {
 			$preferences[self::VIEW_JOBQUEUE_WATCHLIST] = [
 				'type' => 'toggle',
 				'label-message' => 'smw-prefs-general-options-jobqueue-watchlist',
 				'help-message' => 'smw-prefs-help-general-options-jobqueue-watchlist',
 				'section' => 'smw/general-options',
-				'disabled' => $this->getOption( 'smwgJobQueueWatchlist', [] ) === []
+				'disabled' => ( $this->settings->get( 'smwgJobQueueWatchlist' ) ?: [] ) === []
 			];
 		}
 
@@ -110,7 +112,7 @@ class GetPreferences implements HookListener {
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-disable-editpage-info',
 			'section' => 'smw/general-options',
-			'disabled' => !$this->getOption( 'smwgEnabledEditPageHelp', false )
+			'disabled' => !$this->settings->get( 'smwgEnabledEditPageHelp' )
 		];
 
 		// Option to enable input assistance
@@ -132,7 +134,7 @@ class GetPreferences implements HookListener {
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-disable-search-info',
 			'section' => 'smw/extended-search-options',
-			'disabled' => $this->getOption( 'wgSearchType' ) !== SMW_SPECIAL_SEARCHTYPE
+			'disabled' => $GLOBALS['wgSearchType'] !== SMW_SPECIAL_SEARCHTYPE
 		];
 
 		// Option to enable tooltip info
@@ -147,7 +149,7 @@ class GetPreferences implements HookListener {
 			'section' => 'smw/ask-options',
 			'label-message' => 'smw-prefs-factedsearch-profile',
 			'options' => $this->getProfileList(),
-			'default' => $this->getOption( 'smw-prefs-factedsearch-profile', 'default' ),
+			'default' => 'default',
 		];
 
 		$preferences += $otherPreferences;

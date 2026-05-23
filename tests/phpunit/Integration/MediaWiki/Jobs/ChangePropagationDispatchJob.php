@@ -34,7 +34,7 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
 
 		$this->mwHooksHandler->deregisterListedHooks();
-		$this->mwHooksHandler->invokeHooksFromRegistry();
+		$this->mwHooksHandler->reregisterAllDeclarative();
 
 		$this->pageCreator = $utilityFactory->newPageCreator();
 

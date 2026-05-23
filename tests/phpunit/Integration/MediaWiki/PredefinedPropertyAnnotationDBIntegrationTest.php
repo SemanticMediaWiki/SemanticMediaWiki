@@ -38,7 +38,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 
 		$this->mwHooksHandler
 			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+			->reregisterAllDeclarative();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();

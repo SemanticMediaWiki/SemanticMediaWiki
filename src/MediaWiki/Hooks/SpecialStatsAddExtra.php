@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\Language\Language;
+use MediaWiki\Hook\SpecialStatsAddExtraHook;
+use SMW\DataTypeRegistry;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
 use SMW\Store;
 
 /**
@@ -18,19 +17,13 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class SpecialStatsAddExtra implements HookListener {
-
-	use OptionsAwareTrait;
+class SpecialStatsAddExtra implements SpecialStatsAddExtraHook {
 
 	/**
 	 * Specifies the point where outdated entities should be removed
 	 * instead of accumulating in the DB.
 	 */
 	const CRITICAL_DELETECOUNT = 5000;
-
-	private Language|string|null $language = null;
-
-	private array $dataTypeLabels = [];
 
 	private array $messageMapper = [
 		'PROPUSES'      => 'smw-statistics-property-instance',
@@ -48,41 +41,30 @@ class SpecialStatsAddExtra implements HookListener {
 	];
 
 	/**
-	 * @since  1.9
+	 * @since 7.0.0
 	 */
-	public function __construct( private Store $store ) {
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
-	 * @since 3.1
+	 * @since 7.0.0
 	 */
-	public function setLanguage( Language|string|null $language ): void {
-		$this->language = $language;
-	}
-
-	/**
-	 * @since 3.1
-	 */
-	public function setDataTypeLabels( array $dataTypeLabels ): void {
-		$this->dataTypeLabels = $dataTypeLabels;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function process( array &$extraStats ): bool {
-		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
+	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return true;
 		}
 
-		$this->copyStatistics( $extraStats );
+		$context->getOutput()->addModules( 'ext.smw.tooltip' );
+
+		$this->copyStatistics( $extraStats, $context->getLanguage() );
 
 		return true;
 	}
 
-	private function copyStatistics( array &$extraStats ): void {
+	private function copyStatistics( array &$extraStats, $language ): void {
 		$statistics = $this->store->getStatistics();
-		$statistics['DATATYPECOUNT'] = count( $this->dataTypeLabels );
+		$dataTypeLabels = DataTypeRegistry::getInstance()->getKnownTypeLabels();
+		$statistics['DATATYPECOUNT'] = count( $dataTypeLabels );
 
 		if ( isset( $statistics['_cache'] ) ) {
 			$header = 'smw-statistics-cached';
@@ -97,10 +79,10 @@ class SpecialStatsAddExtra implements HookListener {
 			}
 
 			$count = $statistics[$key];
-			$message = $this->msg( $msgKey );
+			$message = $this->msg( $msgKey, $language );
 
-			$info = $this->msg( $msgKey . '-info' );
-			if ( $info !== '' && $this->getOption( 'no.tooltip', false ) === false ) {
+			$info = $this->msg( $msgKey . '-info', $language );
+			if ( $info !== '' ) {
 				$message .= "&nbsp;<span class='smw-highlighter' data-content='{$info}'>ⁱ</span>";
 			}
 
@@ -124,13 +106,14 @@ class SpecialStatsAddExtra implements HookListener {
 			if ( $key === 'QUERY' ) {
 				$extraStats[$header] += $this->addFormats(
 					count( $extraStats[$header] ),
-					$statistics
+					$statistics,
+					$language
 				);
 			}
 		}
 	}
 
-	private function addFormats( int $key, array $statistics ): array {
+	private function addFormats( int $key, array $statistics, $language ): array {
 		$i = 0;
 		$formats = [];
 
@@ -138,7 +121,7 @@ class SpecialStatsAddExtra implements HookListener {
 
 			// Add only the top 3 + count/debug
 			if ( $v > 0 && ( $k === 'count' || $k === 'debug' || $i < 3 ) ) {
-				$message = '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;' . $this->msg( [ 'smw-statistics-query-format', $k ] );
+				$message = '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;' . $this->msg( [ 'smw-statistics-query-format', $k ], $language );
 
 				$formats[$key++] = [
 					'name'   => $message,
@@ -152,13 +135,9 @@ class SpecialStatsAddExtra implements HookListener {
 		return $formats;
 	}
 
-	private function msg( $args ): string {
-		if ( $this->getOption( 'plain.msg_key', false ) ) {
-			return is_array( $args ) ? implode( '.', $args ) : $args;
-		}
-
+	private function msg( $args, $language ): string {
 		if ( Message::exists( $args ) ) {
-			return Message::get( $args, Message::PARSE, $this->language );
+			return Message::get( $args, Message::PARSE, $language );
 		}
 
 		return '';

@@ -35,7 +35,7 @@ class InternalParseBeforeLinksIntegrationTest extends TestCase {
 
 		$this->mwHooksHandler->register(
 			'InternalParseBeforeLinks',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'InternalParseBeforeLinks' )
+			$this->mwHooksHandler->getHandlerFor( 'InternalParseBeforeLinks' )
 		);
 	}
 

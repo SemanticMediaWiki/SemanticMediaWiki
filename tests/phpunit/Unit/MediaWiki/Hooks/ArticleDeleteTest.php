@@ -58,7 +58,7 @@ class ArticleDeleteTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new ArticleDelete( $store, $this->jobFactory );
+		$instance = new ArticleDelete( $store, $this->jobFactory, $this->eventDispatcher );
 
 		$this->assertInstanceOf(
 			ArticleDelete::class,
@@ -104,16 +104,11 @@ class ArticleDeleteTest extends TestCase {
 
 		$instance = new ArticleDelete(
 			$store,
-			$this->jobFactory
-		);
-
-		$instance->setEventDispatcher(
+			$this->jobFactory,
 			$this->eventDispatcher
 		);
 
-		$this->assertTrue(
-			$instance->process( $subject->getTitle() )
-		);
+		$instance->doDelete( $subject->getTitle() );
 	}
 
 }

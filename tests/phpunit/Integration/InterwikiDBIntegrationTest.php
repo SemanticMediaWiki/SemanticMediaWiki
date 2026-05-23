@@ -49,10 +49,10 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$utilityFactory->newMwHooksHandler()
 			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+			->reregisterAllDeclarative();
 
 		// Register a test interwiki prefix via the interwiki cache.
-		// Must be set after deregisterListedHooks()/invokeHooksFromRegistry().
+		// Must be set after deregisterListedHooks()/reregisterAllDeclarative().
 		$this->oldInterwikiCache = $GLOBALS['wgInterwikiCache'] ?? false;
 		$GLOBALS['wgInterwikiCache'] = ClassicInterwikiLookup::buildCdbHash( [
 			[

@@ -6,7 +6,6 @@ use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use ReflectionProperty;
 use RuntimeException;
-use SMW\MediaWiki\Hooks;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,17 +15,21 @@ use SMW\MediaWiki\Hooks;
  */
 class MwHooksHandler {
 
-	/**
-	 * @var HookRegistry
-	 */
-	private $hookRegistry = null;
-	private $hookContainer = null;
+	private HookContainer $hookContainer;
 	private ?ReflectionProperty $handlersProperty = null;
 
-	private $wgHooks = [];
-	private $inTestRegisteredHooks = [];
+	/**
+	 * Lazily-loaded snapshot of `extension.json`'s `Hooks` block (mapping
+	 * MW hook name -> HookHandler id) and `HookHandlers` block (HookHandler
+	 * id -> object factory spec). Cached as static so repeated test setUp()
+	 * calls don't re-parse the file.
+	 */
+	private static ?array $extensionJson = null;
 
-	private $listOfSmwHooks = [
+	private array $wgHooks = [];
+	private array $inTestRegisteredHooks = [];
+
+	private array $listOfSmwHooks = [
 		'SMW::Store::BeforeDataUpdateComplete',
 		'SMW::Store::AfterDataUpdateComplete',
 
@@ -100,16 +103,16 @@ class MwHooksHandler {
 			}
 		}
 
-		// Shared MediaWiki hooks (getHandlerList): preserve non-SMW handlers
-		// across the clear. HookContainer::clear() wipes every handler, not just
-		// SMW's, so without this snapshot third-party handlers on shared hooks
-		// (e.g. Scribunto's ParserFirstCallInit) silently disappear during tests.
-		// Preserved handlers are appended back before invokeHooksFromRegistry()
-		// runs, so SMW's handler ends up last on the chain - a behaviour change
-		// versus pre-fix order, but acceptable for the hooks involved (parser
-		// function registration, etc., none of which depend on order). See
-		// issue #6797.
-		foreach ( $this->getHookRegistry()->getHandlerList() as $hook ) {
+		// Shared MediaWiki hooks (extension.json `Hooks`): preserve non-SMW
+		// handlers across the clear. HookContainer::clear() wipes every handler,
+		// not just SMW's, so without this snapshot third-party handlers on shared
+		// hooks (e.g. Scribunto's ParserFirstCallInit) silently disappear during
+		// tests. Preserved handlers are appended back before
+		// reregisterAllDeclarative() runs, so SMW's handler ends up last on the
+		// chain - a behaviour change versus pre-fix order, but acceptable for the
+		// hooks involved (parser function registration, etc., none of which
+		// depend on order). See issue #6797.
+		foreach ( $this->getDeclarativeHookList() as $hook ) {
 			if ( !$this->hookContainer->isRegistered( $hook ) ) {
 				continue;
 			}
@@ -210,7 +213,7 @@ class MwHooksHandler {
 	public function register( $name, callable $callback ) {
 		$listOfHooks = array_merge(
 			$this->listOfSmwHooks,
-			$this->getHookRegistry()->getHandlerList()
+			$this->getDeclarativeHookList()
 		);
 
 		if ( !in_array( $name, $listOfHooks ) ) {
@@ -223,22 +226,107 @@ class MwHooksHandler {
 		return $this;
 	}
 
-	public function invokeHooksFromRegistry() {
-		$this->getHookRegistry()->register();
+	/**
+	 * Re-registers every MW hook that SMW declares in `extension.json`'s
+	 * `Hooks` block. Each handler is built via MediaWikiServices'
+	 * ObjectFactory from the matching `HookHandlers` spec, then registered on
+	 * HookContainer. This mirrors how MediaWiki itself wires declarative
+	 * HookHandlers at boot, and is used by integration tests that need every
+	 * SMW handler back on its hook after a `deregisterListedHooks()` call.
+	 *
+	 * @since  7.0.0
+	 *
+	 * @return MwHooksHandler
+	 */
+	public function reregisterAllDeclarative(): self {
+		foreach ( $this->getDeclarativeHookList() as $hook ) {
+			$this->registerDeclarativeHandler( $hook );
+		}
+
 		return $this;
 	}
 
 	/**
-	 * @since  2.1
+	 * Returns a callable for the SMW-declared handler of $hook, built from
+	 * `extension.json`'s `HookHandlers` spec via ObjectFactory. The returned
+	 * callable is `[$handler, $methodName]` where $methodName is derived using
+	 * MediaWiki's `HookContainer::getHookMethodName()` rule.
 	 *
-	 * @return Hooks
+	 * @since  7.0.0
+	 *
+	 * @return callable|false False when $hook is not declared by SMW
 	 */
-	public function getHookRegistry(): Hooks {
-		if ( $this->hookRegistry === null ) {
-			 $this->hookRegistry = new Hooks();
+	public function getHandlerFor( string $hook ): callable|false {
+		$spec = $this->getHandlerSpecFor( $hook );
+		if ( $spec === null ) {
+			return false;
 		}
 
-		return $this->hookRegistry;
+		$method = $this->deriveHookMethodName( $hook );
+		$handler = MediaWikiServices::getInstance()
+			->getObjectFactory()
+			->createObject( $spec );
+
+		return [ $handler, $method ];
+	}
+
+	private function registerDeclarativeHandler( string $hook ): void {
+		$spec = $this->getHandlerSpecFor( $hook );
+		if ( $spec === null ) {
+			return;
+		}
+
+		// Build the handler eagerly and register `[$handler, $method]` so
+		// MediaWiki's HookContainer dispatches with the original hook
+		// arguments intact, including by-reference ones (e.g. the
+		// `&$result` slot on SMW::Store::BeforeQueryResultLookupComplete).
+		// Wrapping in a closure that takes variadic `...$args` would silently
+		// downgrade references to values, breaking handlers that mutate an
+		// out-parameter through the reference.
+		//
+		// Eager construction matches the pre-HookHandlers `Hooks::register()`
+		// behaviour. Tests that swap a service AFTER setUp's
+		// `reregisterAllDeclarative()` must call `reregisterAllDeclarative()`
+		// again to rebuild handlers against the new service.
+		$method = $this->deriveHookMethodName( $hook );
+		$handler = MediaWikiServices::getInstance()
+			->getObjectFactory()
+			->createObject( $spec );
+
+		$this->hookContainer->register( $hook, [ $handler, $method ] );
+	}
+
+	private function getHandlerSpecFor( string $hook ): ?array {
+		$json = self::getExtensionJson();
+		$handlerId = $json['Hooks'][$hook] ?? null;
+		if ( $handlerId === null ) {
+			return null;
+		}
+
+		return $json['HookHandlers'][$handlerId] ?? null;
+	}
+
+	/**
+	 * Mirror of MediaWiki's `HookContainer::getHookMethodName()`: replaces
+	 * `:`, `\`, and `-` with `_` and prepends `on`. Kept in sync with core.
+	 */
+	private function deriveHookMethodName( string $hook ): string {
+		return 'on' . strtr( $hook, ':\\-', '___' );
+	}
+
+	/**
+	 * @return string[] MW hook names that SMW registers declaratively
+	 */
+	private function getDeclarativeHookList(): array {
+		return array_keys( self::getExtensionJson()['Hooks'] ?? [] );
+	}
+
+	private static function getExtensionJson(): array {
+		if ( self::$extensionJson === null ) {
+			$path = __DIR__ . '/../../../extension.json';
+			self::$extensionJson = json_decode( file_get_contents( $path ), true );
+		}
+		return self::$extensionJson;
 	}
 
 }

@@ -18,15 +18,9 @@ use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 class TitleIsAlwaysKnownTest extends TestCase {
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$result = '';
-
 		$this->assertInstanceOf(
 			TitleIsAlwaysKnown::class,
-			new TitleIsAlwaysKnown( $title, $result )
+			new TitleIsAlwaysKnown()
 		);
 	}
 
@@ -46,10 +40,10 @@ class TitleIsAlwaysKnownTest extends TestCase {
 			->method( 'getText' )
 			->willReturn( $text );
 
-		$result = '';
+		$result = false;
 
-		$instance = new TitleIsAlwaysKnown( $title, $result );
-		$this->assertTrue( $instance->process() );
+		$instance = new TitleIsAlwaysKnown();
+		$this->assertTrue( $instance->onTitleIsAlwaysKnown( $title, $result ) );
 
 		$this->assertEquals( $expected, $result );
 	}

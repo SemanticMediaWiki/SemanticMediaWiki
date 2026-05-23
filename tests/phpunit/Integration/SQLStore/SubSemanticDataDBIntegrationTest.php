@@ -35,7 +35,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 		$utilityFactory = UtilityFactory::getInstance();
 		$utilityFactory->newMwHooksHandler()
 			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+			->reregisterAllDeclarative();
 	}
 
 	protected function tearDown(): void {

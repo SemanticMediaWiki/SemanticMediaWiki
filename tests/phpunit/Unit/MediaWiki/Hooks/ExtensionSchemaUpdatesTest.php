@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
+use DatabaseUpdater;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
-use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ExtensionSchemaUpdates
@@ -17,37 +17,24 @@ use SMW\Store;
  */
 class ExtensionSchemaUpdatesTest extends TestCase {
 
-	private $databaseUpdater;
-	private $store;
-
-	protected function setUp(): void {
-		$databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-	}
-
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ExtensionSchemaUpdates::class,
-			new ExtensionSchemaUpdates( $this->databaseUpdater )
+			new ExtensionSchemaUpdates()
 		);
 	}
 
 	public function testProcess() {
-		$this->databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
+		$databaseUpdater = $this->getMockBuilder( DatabaseUpdater::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'addExtensionUpdate' ] )
+			->setMethods( [ 'addExtensionUpdate', 'output' ] )
 			->getMockForAbstractClass();
 
-		$this->databaseUpdater->expects( $this->once() )
+		$databaseUpdater->expects( $this->once() )
 			->method( 'addExtensionUpdate' );
 
-		$instance = new ExtensionSchemaUpdates( $this->databaseUpdater );
-		$instance->process( $this->store );
+		$instance = new ExtensionSchemaUpdates();
+		$instance->onLoadExtensionSchemaUpdates( $databaseUpdater );
 	}
 
 	public function testAddMaintenanceUpdateParams() {

@@ -54,17 +54,17 @@ class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->mwHooksHandler->register(
 			'FileUpload',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'FileUpload' )
+			$this->mwHooksHandler->getHandlerFor( 'FileUpload' )
 		);
 
 		$this->mwHooksHandler->register(
 			'InternalParseBeforeLinks',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'InternalParseBeforeLinks' )
+			$this->mwHooksHandler->getHandlerFor( 'InternalParseBeforeLinks' )
 		);
 
 		$this->mwHooksHandler->register(
 			'LinksUpdateComplete',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateComplete' )
+			$this->mwHooksHandler->getHandlerFor( 'LinksUpdateComplete' )
 		);
 
 		$this->getStore()->setup( false );

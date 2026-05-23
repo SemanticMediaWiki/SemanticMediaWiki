@@ -7,6 +7,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
@@ -57,10 +58,11 @@ class LinksUpdateCompleteTest extends TestCase {
 
 	public function testCanConstruct() {
 		$servicesFactory = $this->createMock( ServicesFactory::class );
+		$logger = $this->createMock( LoggerInterface::class );
 
 		$this->assertInstanceOf(
 			LinksUpdateComplete::class,
-			new LinksUpdateComplete( $this->namespaceExaminer, $servicesFactory )
+			new LinksUpdateComplete( $this->namespaceExaminer, $servicesFactory, $this->revisionGuard, $logger )
 		);
 	}
 
@@ -124,19 +126,15 @@ class LinksUpdateCompleteTest extends TestCase {
 
 		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer,
-			ServicesFactory::getInstance()
-		);
-
-		$instance->setLogger( $this->spyLogger );
-
-		$instance->setRevisionGuard(
-			$this->revisionGuard
+			ServicesFactory::getInstance(),
+			$this->revisionGuard,
+			$this->spyLogger
 		);
 
 		$instance->disableDeferredUpdate();
 
 		$this->assertTrue(
-			$instance->process( new LinksUpdate( $title, $parserOutput ) )
+			$instance->onLinksUpdateComplete( new LinksUpdate( $title, $parserOutput ), null )
 		);
 	}
 
@@ -177,15 +175,13 @@ class LinksUpdateCompleteTest extends TestCase {
 
 		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer,
-			$servicesFactory
-		);
-
-		$instance->setRevisionGuard(
-			$this->revisionGuard
+			$servicesFactory,
+			$this->revisionGuard,
+			$this->spyLogger
 		);
 
 		$this->assertTrue(
-			$instance->process( $linksUpdate )
+			$instance->onLinksUpdateComplete( $linksUpdate, null )
 		);
 	}
 
@@ -234,14 +230,12 @@ class LinksUpdateCompleteTest extends TestCase {
 
 		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer,
-			$servicesFactory
+			$servicesFactory,
+			$this->revisionGuard,
+			$this->spyLogger
 		);
 
-		$instance->setRevisionGuard(
-			$this->revisionGuard
-		);
-
-		$instance->process( $linksUpdate );
+		$instance->onLinksUpdateComplete( $linksUpdate, null );
 
 		$this->assertTrue(
 			$parserData->getOption( $parserData::OPT_FORCED_UPDATE )
@@ -249,25 +243,30 @@ class LinksUpdateCompleteTest extends TestCase {
 	}
 
 	public function testIsNotReady_DoNothing() {
-		$linksUpdate = $this->createMock( LinksUpdate::class );
+		$wasReady = $GLOBALS['wgFullyInitialised'] ?? false;
+		$GLOBALS['wgFullyInitialised'] = false;
 
-		$linksUpdate->expects( $this->never() )
-			->method( 'getTitle' );
+		try {
+			$linksUpdate = $this->createMock( LinksUpdate::class );
 
-		$servicesFactory = $this->createMock( ServicesFactory::class );
+			$linksUpdate->expects( $this->never() )
+				->method( 'getTitle' );
 
-		$instance = new LinksUpdateComplete(
-			$this->namespaceExaminer,
-			$servicesFactory
-		);
+			$servicesFactory = $this->createMock( ServicesFactory::class );
 
-		$instance->setLogger( $this->spyLogger );
+			$instance = new LinksUpdateComplete(
+				$this->namespaceExaminer,
+				$servicesFactory,
+				$this->revisionGuard,
+				$this->spyLogger
+			);
 
-		$instance->isReady( false );
-
-		$this->assertFalse(
-			$instance->process( $linksUpdate )
-		);
+			$this->assertFalse(
+				$instance->onLinksUpdateComplete( $linksUpdate, null )
+			);
+		} finally {
+			$GLOBALS['wgFullyInitialised'] = $wasReady;
+		}
 	}
 
 }

@@ -37,7 +37,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 
 		$this->mwHooksHandler
 			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+			->reregisterAllDeclarative();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
@@ -69,6 +69,16 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 		$cache = $cacheFactory->newFixedInMemoryCache();
 
 		$this->applicationFactory->registerObject( 'Cache', $cache );
+
+		// reregisterAllDeclarative() in setUp() already built ArticlePurge
+		// with the default Cache. Reset the cached SMW.Cache MediaWikiServices
+		// entry and re-register so the next ObjectFactory pass resolves the
+		// test's fixed-memory cache via the service wiring's hasTestOverride
+		// branch.
+		MediaWikiServices::getInstance()->resetServiceForTesting( 'SMW.Cache' );
+		$this->mwHooksHandler
+			->deregisterListedHooks()
+			->reregisterAllDeclarative();
 
 		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 

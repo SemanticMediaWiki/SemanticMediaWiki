@@ -29,7 +29,7 @@ class RandomQueryResultOrderIntegrationTest extends SMWIntegrationTestCase {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
-		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
+		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 
 		$this->fixturesProvider = $utilityFactory->newFixturesFactory()->newFixturesProvider();
 		$this->fixturesProvider->setupDependencies( $this->getStore() );

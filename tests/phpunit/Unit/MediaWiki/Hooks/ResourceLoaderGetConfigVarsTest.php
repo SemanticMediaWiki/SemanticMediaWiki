@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
+use MediaWiki\Config\Config;
 use MediaWiki\Title\NamespaceInfo;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
+use SMW\Settings;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars
@@ -18,36 +20,42 @@ use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 class ResourceLoaderGetConfigVarsTest extends TestCase {
 
 	private $namespaceInfo;
+	private $settings;
 
 	protected function setUp(): void {
 		$this->namespaceInfo = $this->getMockBuilder( NamespaceInfo::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->settings = $this->createMock( Settings::class );
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ResourceLoaderGetConfigVars::class,
-			new ResourceLoaderGetConfigVars( $this->namespaceInfo )
+			new ResourceLoaderGetConfigVars( $this->namespaceInfo, $this->settings )
 		);
 	}
 
 	public function testProcess() {
 		$vars = [];
 
+		$this->settings->method( 'get' )
+			->willReturnMap( [
+				[ 'smwgQMaxLimit', 100 ],
+				[ 'smwgQMaxInlineLimit', 50 ],
+				[ 'smwgNamespacesWithSemanticLinks', [ NS_MAIN => true ] ],
+				[ 'smwgResultFormats', [] ],
+			] );
+
 		$instance = new ResourceLoaderGetConfigVars(
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->settings
 		);
 
-		$optionKeys = ResourceLoaderGetConfigVars::OPTION_KEYS;
+		$config = $this->createMock( Config::class );
 
-		foreach ( $optionKeys as $key ) {
-			$instance->setOption( $key, [] );
-		}
-
-		$instance->setOption( 'smwgNamespacesWithSemanticLinks', [ NS_MAIN ] );
-
-		$instance->process( $vars );
+		$instance->onResourceLoaderGetConfigVars( $vars, '', $config );
 
 		$this->assertArrayHasKey(
 			'smw-config',

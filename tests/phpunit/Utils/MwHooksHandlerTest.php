@@ -63,12 +63,12 @@ class MwHooksHandlerTest extends TestCase {
 
 		( new MwHooksHandler() )
 			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+			->reregisterAllDeclarative();
 
 		$this->assertContains(
 			$expectedDescription,
 			$this->hookContainer->getHandlerDescriptions( 'ParserFirstCallInit' ),
-			'non-SMW ParserFirstCallInit handler must survive deregisterListedHooks/invokeHooksFromRegistry (see issue #6797)'
+			'non-SMW ParserFirstCallInit handler must survive deregisterListedHooks/reregisterAllDeclarative (see issue #6797)'
 		);
 	}
 
@@ -91,28 +91,28 @@ class MwHooksHandlerTest extends TestCase {
 
 		( new MwHooksHandler() )
 			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+			->reregisterAllDeclarative();
 
 		$this->assertContains(
 			$expectedDescription,
 			$this->hookContainer->getHandlerDescriptions( 'ParserFirstCallInit' ),
-			'non-SMW [obj, method] ParserFirstCallInit handler must survive deregisterListedHooks/invokeHooksFromRegistry'
+			'non-SMW [obj, method] ParserFirstCallInit handler must survive deregisterListedHooks/reregisterAllDeclarative'
 		);
 	}
 
-	public function testInvokeHooksFromRegistryRestoresSmwHandler(): void {
-		( new MwHooksHandler() )
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
-
-		$smwHandlers = array_filter(
+	public function testReregisterAllDeclarativeRestoresSmwHandler(): void {
+		// Pre-condition: after deregisterListedHooks(), the hook has no
+		// handler. After reregisterAllDeclarative(), at least one is back.
+		$handler = ( new MwHooksHandler() )->deregisterListedHooks();
+		$this->assertEmpty(
 			$this->hookContainer->getHandlerDescriptions( 'ParserFirstCallInit' ),
-			static fn ( string $d ): bool => str_starts_with( $d, 'SMW\\' )
+			'precondition: ParserFirstCallInit must have no handler after deregisterListedHooks'
 		);
 
+		$handler->reregisterAllDeclarative();
 		$this->assertNotEmpty(
-			$smwHandlers,
-			'SMW ParserFirstCallInit handler must be re-registered after deregisterListedHooks/invokeHooksFromRegistry'
+			$this->hookContainer->getHandlerDescriptions( 'ParserFirstCallInit' ),
+			'ParserFirstCallInit must be re-registered after reregisterAllDeclarative'
 		);
 	}
 }

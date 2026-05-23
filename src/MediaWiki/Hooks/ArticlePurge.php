@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Page\Hook\ArticlePurgeHook;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use SMW\DataItems\Property;
-use SMW\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
+use SMW\DataItems\WikiPage;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\Store;
-use WikiPage;
 
 /**
  * A function hook being executed before running "&action=purge"
@@ -25,41 +25,36 @@ use WikiPage;
  *
  * @author mwjames
  */
-class ArticlePurge implements HookListener {
-
-	use OptionsAwareTrait;
-	use EventDispatcherAwareTrait;
+class ArticlePurge implements ArticlePurgeHook {
 
 	const CACHE_NAMESPACE = 'smw:arc';
 
 	/**
 	 * @since 7.0.0
 	 */
-	public function __construct( private readonly Cache $cache ) {
+	public function __construct(
+		private readonly Cache $cache,
+		private readonly Settings $settings,
+		private readonly EventDispatcher $eventDispatcher,
+	) {
 	}
 
 	/**
-	 * @since 1.9
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( WikiPage &$wikiPage ): bool {
-		$applicationFactory = ApplicationFactory::getInstance();
-
+	public function onArticlePurge( $wikiPage ) {
 		$title = $wikiPage->getTitle();
 		$articleID = $title->getArticleID();
-
-		$settings = $applicationFactory->getSettings();
 
 		if ( $articleID > 0 ) {
 			$this->cache->save(
 				smwfCacheKey( self::CACHE_NAMESPACE, $articleID ),
-				$settings->get( 'smwgAutoRefreshOnPurge' )
+				$this->settings->get( 'smwgAutoRefreshOnPurge' )
 			);
 		}
 
-		if ( $settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
-			$this->invalidateResultCache( $applicationFactory->getStore(), $title );
+		if ( $this->settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
+			$this->invalidateResultCache( ApplicationFactory::getInstance()->getStore(), $title );
 		}
 
 		$context = [
@@ -74,7 +69,7 @@ class ArticlePurge implements HookListener {
 
 	private function invalidateResultCache( Store $store, Title $title ): void {
 		$dependency_list = $store->getPropertyValues(
-			\SMW\DataItems\WikiPage::newFromTitle( $title ),
+			WikiPage::newFromTitle( $title ),
 			new Property( '_ASK' )
 		);
 

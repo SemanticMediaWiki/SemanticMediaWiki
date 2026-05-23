@@ -2,15 +2,13 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
-use MediaWiki\Parser\ParserOutput;
-use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
-use SMW\DataItemFactory;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
-use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
+use SMW\Settings;
 use SMW\Tests\TestEnvironment;
+use WikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleProtectComplete
@@ -25,20 +23,16 @@ class ArticleProtectCompleteTest extends TestCase {
 
 	private $spyLogger;
 	private $testEnvironment;
-	private $semanticDataFactory;
-	private $dataItemFactory;
-	private $editInfo;
+	private $settings;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-		$this->dataItemFactory = new DataItemFactory();
 
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
-		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 
-		$this->editInfo = $this->getMockBuilder( EditInfo::class )
+		$this->settings = $this->getMockBuilder( Settings::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -49,149 +43,32 @@ class ArticleProtectCompleteTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			ArticleProtectComplete::class,
-			new ArticleProtectComplete( $title, $this->editInfo )
+			new ArticleProtectComplete( $this->settings, $this->spyLogger )
 		);
 	}
 
 	public function testProcessOnSelfInvokedReason() {
-		$title = $this->getMockBuilder( Title::class )
+		$instance = new ArticleProtectComplete( $this->settings, $this->spyLogger );
+
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ArticleProtectComplete(
-			$title,
-			$this->editInfo
-		);
-
-		$instance->setLogger( $this->spyLogger );
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$protections = [];
 		$reason = Message::get( 'smw-edit-protection-auto-update' );
 
-		$instance->process( $protections, $reason );
+		$this->assertTrue(
+			$instance->onArticleProtectComplete( $wikiPage, $user, $protections, $reason )
+		);
 
 		$this->assertStringContainsString(
 			'No changes required, invoked by own process',
-			$this->spyLogger->getMessagesAsString()
-		);
-	}
-
-	public function testProcessOnMatchableEditProtectionToAddAnnotation() {
-		$parserOutput = $this->getMockBuilder( ParserOutput::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->willReturn( 'Foo' );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->willReturn( NS_SPECIAL );
-
-		$title->expects( $this->any() )
-			->method( 'getLatestRevID' )
-			->willReturn( 9900 );
-
-		$this->editInfo->expects( $this->once() )
-			->method( 'getOutput' )
-			->willReturn( $parserOutput );
-
-		$instance = new ArticleProtectComplete(
-			$title,
-			$this->editInfo
-		);
-
-		$instance->setLogger( $this->spyLogger );
-
-		$instance->setOptions(
-			[
-				'smwgEditProtectionRight' => 'Foo'
-			]
-		);
-
-		$protections = [ 'edit' => 'Foo' ];
-		$reason = '';
-
-		$instance->process( $protections, $reason );
-
-		$this->assertStringContainsString(
-			'ArticleProtectComplete addProperty `Is edit protected`',
-			$this->spyLogger->getMessagesAsString()
-		);
-	}
-
-	public function testProcessOnUnmatchableEditProtectionToRemoveAnnotation() {
-		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_SPECIAL )
-		);
-
-		$dataItem = $this->dataItemFactory->newDIBoolean( true );
-		$dataItem->setOption( EditProtectedPropertyAnnotator::SYSTEM_ANNOTATION, true );
-
-		$semanticData->addPropertyObjectValue(
-			$this->dataItemFactory->newDIProperty( '_EDIP' ),
-			$dataItem
-		);
-
-		$parserOutput = $this->getMockBuilder( ParserOutput::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$parserOutput->expects( $this->once() )
-			->method( 'getExtensionData' )
-			->willReturn( $semanticData );
-
-		$title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->willReturn( 'Foo' );
-
-		$title->expects( $this->any() )
-			->method( 'getLatestRevID' )
-			->willReturn( 9901 );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->willReturn( NS_SPECIAL );
-
-		$this->editInfo->expects( $this->once() )
-			->method( 'getOutput' )
-			->willReturn( $parserOutput );
-
-		$instance = new ArticleProtectComplete(
-			$title,
-			$this->editInfo
-		);
-
-		$instance->setLogger( $this->spyLogger );
-
-		$instance->setOptions(
-			[
-				'smwgEditProtectionRight' => 'Foo2'
-			]
-		);
-
-		$protections = [ 'edit' => 'Foo' ];
-		$reason = '';
-
-		$instance->process( $protections, $reason );
-
-		$this->assertStringContainsString(
-			'ArticleProtectComplete removeProperty `Is edit protected`',
 			$this->spyLogger->getMessagesAsString()
 		);
 	}

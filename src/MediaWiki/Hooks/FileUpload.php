@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki\Hooks;
 
 use File;
+use MediaWiki\Hook\FileUploadHook;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\User\User;
 use SMW\Localizer\Localizer;
-use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\PageCreator;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -22,7 +22,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class FileUpload implements HookListener {
+class FileUpload implements FileUploadHook {
 
 	/**
 	 * @since 7.0.0
@@ -35,11 +35,11 @@ class FileUpload implements HookListener {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 7.0.0
 	 */
-	public function process( File $file, ?bool $reUploadStatus = false ): bool {
+	public function onFileUpload( $file, $reupload, $hasDescription ) {
 		if ( $this->canProcess( $file->getTitle() ) ) {
-			$this->doProcess( $file, $reUploadStatus );
+			$this->doProcess( $file, (bool)$reupload );
 		}
 
 		return true;
@@ -49,7 +49,7 @@ class FileUpload implements HookListener {
 		return $title !== null && $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function doProcess( File $file, ?bool $reUploadStatus = false ): bool {
+	private function doProcess( File $file, bool $reUploadStatus = false ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$filePage = $this->makeFilePage( $file );
 

@@ -6,7 +6,6 @@ use ALItem;
 use ALRow;
 use ALSection;
 use ALTree;
-use SMW\MediaWiki\HookListener;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,12 +13,12 @@ use SMW\MediaWiki\HookListener;
  *
  * @author mwjames
  */
-class AdminLinks implements HookListener {
+class AdminLinks {
 
 	/**
-	 * @since 3.1
+	 * @since 7.0.0
 	 */
-	public function process(
+	public function onAdminLinks(
 		// @phan-suppress-next-line PhanUndeclaredTypeParameter
 		ALTree $admin_links_tree
 	): bool {

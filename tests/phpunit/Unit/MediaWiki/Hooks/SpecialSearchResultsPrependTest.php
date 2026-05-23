@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
+use SpecialSearch;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend
@@ -40,17 +41,9 @@ class SpecialSearchResultsPrependTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$outputPage = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			SpecialSearchResultsPrepend::class,
-			new SpecialSearchResultsPrepend( $this->userOptionsLookup, $this->user, $specialSearch, $outputPage )
+			new SpecialSearchResultsPrepend( $this->userOptionsLookup )
 		);
 	}
 
@@ -65,7 +58,7 @@ class SpecialSearchResultsPrependTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
+		$specialSearch = $this->getMockBuilder( SpecialSearch::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,14 +70,15 @@ class SpecialSearchResultsPrependTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$outputPage->expects( $this->any() )
+			->method( 'getUser' )
+			->willReturn( $this->user );
+
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 
 		$instance = new SpecialSearchResultsPrepend(
-			$this->userOptionsLookup,
-			$this->user,
-			$specialSearch,
-			$outputPage
+			$this->userOptionsLookup
 		);
 
 		$instance->setMessageLocalizer(
@@ -92,7 +86,7 @@ class SpecialSearchResultsPrependTest extends TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->process( '' )
+			$instance->onSpecialSearchResultsPrepend( $specialSearch, $outputPage, '' )
 		);
 	}
 
@@ -107,7 +101,7 @@ class SpecialSearchResultsPrependTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
+		$specialSearch = $this->getMockBuilder( SpecialSearch::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,21 +113,22 @@ class SpecialSearchResultsPrependTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$outputPage->expects( $this->any() )
+			->method( 'getUser' )
+			->willReturn( $this->user );
+
 		$outputPage->expects( $this->never() )
 			->method( 'addHtml' );
 
 		$instance = new SpecialSearchResultsPrepend(
-			$this->userOptionsLookup,
-			$this->user,
-			$specialSearch,
-			$outputPage
+			$this->userOptionsLookup
 		);
 
 		$instance->setMessageLocalizer(
 			$this->messageLocalizer
 		);
 
-		$instance->process( '' );
+		$instance->onSpecialSearchResultsPrepend( $specialSearch, $outputPage, '' );
 	}
 
 }

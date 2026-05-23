@@ -2,15 +2,18 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Page\Hook\ArticleDeleteHook;
+use MediaWiki\Status\Status;
 use MediaWiki\Title\Title;
-use SMW\DataItems\WikiPage;
+use MediaWiki\User\User;
+use SMW\DataItems\WikiPage as DIWikiPage;
 use SMW\DataModel\SemanticData;
-use SMW\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\MediaWiki\HookListener;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
+use WikiPage;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
@@ -20,18 +23,17 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class ArticleDelete implements HookListener {
-
-	use EventDispatcherAwareTrait;
+class ArticleDelete implements ArticleDeleteHook {
 
 	private string $origin = 'ArticleDelete';
 
 	/**
-	 * @since 3.0
+	 * @since 7.0.0
 	 */
 	public function __construct(
-		private Store $store,
+		private readonly Store $store,
 		private readonly JobFactory $jobFactory,
+		private readonly EventDispatcher $eventDispatcher,
 	) {
 	}
 
@@ -45,21 +47,26 @@ class ArticleDelete implements HookListener {
 	}
 
 	/**
-	 * @since 2.0
-	 *
-	 * @param Title $title
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( Title $title ): bool {
+	public function onArticleDelete( WikiPage $wikiPage, User $user, &$reason, &$error, Status &$status, $suppress ) {
+		$this->scheduleDeleteFor( $wikiPage->getTitle() );
+
+		return true;
+	}
+
+	/**
+	 * Schedule the SMW-side cleanup for a deleted (or about-to-be-deleted) page.
+	 *
+	 * @since 7.0.0
+	 */
+	public function scheduleDeleteFor( Title $title ): void {
 		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function () use( $title ): void {
 			$this->doDelete( $title );
 		} );
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
 		$deferredCallableUpdate->pushUpdate();
-
-		return true;
 	}
 
 	/**
@@ -69,7 +76,7 @@ class ArticleDelete implements HookListener {
 	 */
 	public function doDelete( Title $title ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$subject = WikiPage::newFromTitle( $title );
+		$subject = DIWikiPage::newFromTitle( $title );
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 

@@ -6,8 +6,10 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Message\Message;
 use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
+use Skin;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\NamespaceExaminer;
+use SMW\Settings;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
@@ -18,6 +20,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
 class SidebarBeforeOutputTest extends TestCase {
 
 	private $namespaceExaminer;
+	private $settings;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -25,6 +28,8 @@ class SidebarBeforeOutputTest extends TestCase {
 		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->settings = $this->createMock( Settings::class );
 	}
 
 	protected function tearDown(): void {
@@ -34,7 +39,7 @@ class SidebarBeforeOutputTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			SidebarBeforeOutput::class,
-			new SidebarBeforeOutput( $this->namespaceExaminer )
+			new SidebarBeforeOutput( $this->namespaceExaminer, $this->settings )
 		);
 	}
 
@@ -46,21 +51,18 @@ class SidebarBeforeOutputTest extends TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( $setup['settings']['isEnabledNamespace'] );
 
+		$this->settings->method( 'isFlagSet' )
+			->with( 'smwgBrowseFeatures', SMW_BROWSE_TLINK )
+			->willReturn( ( $setup['settings']['smwgBrowseFeatures'] & SMW_BROWSE_TLINK ) === SMW_BROWSE_TLINK );
+
 		$sidebar = [];
 
 		$instance = new SidebarBeforeOutput(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->settings
 		);
 
-		$instance->setOptions(
-			[
-				'smwgBrowseFeatures' => $setup['settings']['smwgBrowseFeatures']
-			]
-		);
-
-		$this->assertTrue(
-			$instance->process( $setup['skin'], $sidebar )
-		);
+		$instance->onSidebarBeforeOutput( $setup['skin'], $sidebar );
 
 		if ( $expected['count'] == 0 ) {
 			$this->assertEmpty( $sidebar );
@@ -136,7 +138,7 @@ class SidebarBeforeOutputTest extends TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$skin = $this->getMockBuilder( '\Skin' )
+		$skin = $this->getMockBuilder( Skin::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -168,7 +170,7 @@ class SidebarBeforeOutputTest extends TestCase {
 			->method( 'isArticle' )
 			->willReturn( $isArticle );
 
-		$skin = $this->getMockBuilder( '\Skin' )
+		$skin = $this->getMockBuilder( Skin::class )
 			->disableOriginalConstructor()
 			->getMock();
 
