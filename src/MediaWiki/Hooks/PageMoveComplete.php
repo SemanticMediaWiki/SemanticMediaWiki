@@ -38,8 +38,9 @@ class PageMoveComplete implements PageMoveCompleteHook {
 	 * @since 7.0.0
 	 */
 	public function onPageMoveComplete( $old, $new, $user, $pageid, $redirid, $reason, $revision ) {
-		// Delete all data for a non-enabled target NS
-		if ( !$this->namespaceExaminer->isSemanticEnabled( $new->getNamespace() ) || $pageid == 0 ) {
+		// Delete all data for a non-enabled target NS, or when the move
+		// did not leave a redirect behind ($redirid is 0 in that case).
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $new->getNamespace() ) || $redirid == 0 ) {
 			$this->store->deleteSubject(
 				Title::newFromLinkTarget( $old )
 			);
