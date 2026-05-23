@@ -44,7 +44,7 @@ class DatePropertyValueQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
 		$utilityFactory = UtilityFactory::getInstance();
-		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
+		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 
 		$this->semanticDataFactory = $utilityFactory->newSemanticDataFactory();
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();

@@ -34,7 +34,7 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		parent::setUp();
 
 		$mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-		$mwHooksHandler->invokeHooksFromRegistry();
+		$mwHooksHandler->reregisterAllDeclarative();
 	}
 
 	public function testSearchForPageValueAsTerm() {

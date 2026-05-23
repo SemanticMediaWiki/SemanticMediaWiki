@@ -32,7 +32,7 @@ class ParserAfterTidyIntegrationTest extends TestCase {
 
 		$this->mwHooksHandler->register(
 			'ParserAfterTidy',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'ParserAfterTidy' )
+			$this->mwHooksHandler->getHandlerFor( 'ParserAfterTidy' )
 		);
 	}
 

@@ -28,7 +28,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->mwHooksHandler->register(
 			'ParserFirstCallInit',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'ParserFirstCallInit' )
+			$this->mwHooksHandler->getHandlerFor( 'ParserFirstCallInit' )
 		);
 	}
 

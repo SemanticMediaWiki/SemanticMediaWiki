@@ -46,7 +46,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 
 		$this->mwHooksHandler->deregisterListedHooks();
-		$this->mwHooksHandler->invokeHooksFromRegistry();
+		$this->mwHooksHandler->reregisterAllDeclarative();
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = $this->testEnvironment->getUtilityFactory()->newPageDeleter();

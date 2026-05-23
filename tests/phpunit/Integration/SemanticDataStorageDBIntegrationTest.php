@@ -49,7 +49,7 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->mwHooksHandler
 			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+			->reregisterAllDeclarative();
 
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = $utilityFactory->newPageDeleter();

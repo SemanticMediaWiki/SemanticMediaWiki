@@ -47,7 +47,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
-		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
+		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 
 		$this->fileReader = $utilityFactory->newJsonFileReader();
 

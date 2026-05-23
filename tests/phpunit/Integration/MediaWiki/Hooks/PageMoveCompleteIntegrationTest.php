@@ -43,7 +43,7 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->mwHooksHandler->register(
 			'PageMoveComplete',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'PageMoveComplete' )
+			$this->mwHooksHandler->getHandlerFor( 'PageMoveComplete' )
 		);
 
 		$this->pageCreator = $utilityFactory->newPageCreator();
@@ -97,12 +97,12 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 		// Further hooks required to ensure in-text annotations can be used for queries
 		$this->mwHooksHandler->register(
 			'InternalParseBeforeLinks',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'InternalParseBeforeLinks' )
+			$this->mwHooksHandler->getHandlerFor( 'InternalParseBeforeLinks' )
 		);
 
 		$this->mwHooksHandler->register(
 			'LinksUpdateComplete',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateComplete' )
+			$this->mwHooksHandler->getHandlerFor( 'LinksUpdateComplete' )
 		);
 
 		$title = Title::newFromText( __METHOD__ . '-old' );
@@ -166,7 +166,7 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 	public function testPredefinedPropertyPageIsNotMovable() {
 		$this->mwHooksHandler->register(
 			'TitleIsMovable',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'TitleIsMovable' )
+			$this->mwHooksHandler->getHandlerFor( 'TitleIsMovable' )
 		);
 
 		$title = Title::newFromText( 'Modification date', SMW_NS_PROPERTY );

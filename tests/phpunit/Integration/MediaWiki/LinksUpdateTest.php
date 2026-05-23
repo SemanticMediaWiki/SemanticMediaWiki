@@ -34,7 +34,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
-		$this->mwHooksHandler->invokeHooksFromRegistry();
+		$this->mwHooksHandler->reregisterAllDeclarative();
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
