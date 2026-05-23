@@ -20,20 +20,9 @@ use SMW\Store;
 class AfterDataUpdateComplete {
 
 	/**
-	 * MediaWiki derives this method name from the hook
-	 * `SMW::SQLStore::AfterDataUpdateComplete` when the handler is dispatched
-	 * via the declarative `HookHandlers` registration in `extension.json`.
-	 *
 	 * @since 7.0.0
 	 */
 	public function onSMW__SQLStore__AfterDataUpdateComplete( Store $store, SemanticData $semanticData, ChangeOp $changeOp ): bool {
-		return $this->onSMWSQLStoreAfterDataUpdateComplete( $store, $semanticData, $changeOp );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function onSMWSQLStoreAfterDataUpdateComplete( Store $store, SemanticData $semanticData, ChangeOp $changeOp ): bool {
 		// A delete infused change should trigger an immediate update
 		// without having to wait on the job queue
 		$isPrimaryUpdate = $semanticData->getOption( SemanticData::PROC_DELETE, false );

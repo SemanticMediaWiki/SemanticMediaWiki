@@ -23,20 +23,9 @@ class RegisterEventListeners {
 	}
 
 	/**
-	 * MediaWiki derives this method name from the hook
-	 * `SMW::Event::RegisterEventListeners` when the handler is dispatched via
-	 * the declarative `HookHandlers` registration in `extension.json`.
-	 *
 	 * @since 7.0.0
 	 */
 	public function onSMW__Event__RegisterEventListeners( $eventListener ): bool {
-		return $this->onRegisterEventListeners( $eventListener );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function onRegisterEventListeners( $eventListener ): bool {
 		// Store resolution is deferred: ElasticFactory::onInvalidateEntityCache (the
 		// registered callback) resolves the Store at dispatch time, which keeps this
 		// boot-time-fired hook safe from eager Store construction.

@@ -16,21 +16,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class AfterQueryResultLookupComplete {
 
 	/**
-	 * MediaWiki derives this method name from the hook
-	 * `SMW::Store::AfterQueryResultLookupComplete` when the handler is
-	 * dispatched via the declarative `HookHandlers` registration in
-	 * `extension.json`.
-	 *
 	 * @since 7.0.0
 	 */
 	public function onSMW__Store__AfterQueryResultLookupComplete( $store, &$result ): bool {
-		return $this->onSMWStoreAfterQueryResultLookupComplete( $store, $result );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function onSMWStoreAfterQueryResultLookupComplete( $store, &$result ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
 

@@ -150,7 +150,8 @@
 			"class": "SMW\\MediaWiki\\Hooks\\BeforePageDisplay",
 			"services": [
 				"UserOptionsLookup",
-				"SMW.Settings"
+				"SMW.Settings",
+				"SMW.SetupFile"
 			]
 		},
 		"SemanticMediaWiki.BeforeDisplayNoArticleText": {

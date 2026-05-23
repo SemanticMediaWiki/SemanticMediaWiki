@@ -31,6 +31,7 @@ class BeforePageDisplay implements BeforePageDisplayHook {
 	public function __construct(
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly Settings $settings,
+		private readonly SetupFile $setupFile,
 	) {
 	}
 
@@ -71,9 +72,8 @@ class BeforePageDisplay implements BeforePageDisplayHook {
 			$out->addModules( 'ext.smw.suggester.textInput' );
 		}
 
-		$setupFile = new SetupFile();
-		$incompleteTasks = $setupFile->findIncompleteTasks();
-		$isUpgrade = $setupFile->get( SetupFile::PREVIOUS_VERSION );
+		$incompleteTasks = $this->setupFile->findIncompleteTasks();
+		$isUpgrade = $this->setupFile->get( SetupFile::PREVIOUS_VERSION );
 
 		if ( $incompleteTasks !== [] ) {
 			$out->addModuleStyles( [ 'mediawiki.codex.messagebox.styles' ] );

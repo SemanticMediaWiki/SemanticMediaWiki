@@ -16,21 +16,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class BeforeQueryResultLookupComplete {
 
 	/**
-	 * MediaWiki derives this method name from the hook
-	 * `SMW::Store::BeforeQueryResultLookupComplete` when the handler is
-	 * dispatched via the declarative `HookHandlers` registration in
-	 * `extension.json`.
-	 *
 	 * @since 7.0.0
 	 */
 	public function onSMW__Store__BeforeQueryResultLookupComplete( $store, $query, &$result, $queryEngine ): bool {
-		return $this->onSMWStoreBeforeQueryResultLookupComplete( $store, $query, $result, $queryEngine );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function onSMWStoreBeforeQueryResultLookupComplete( $store, $query, &$result, $queryEngine ): bool {
 		$resultCache = ApplicationFactory::getInstance()->singleton( 'ResultCache' );
 
 		$resultCache->setQueryEngine(

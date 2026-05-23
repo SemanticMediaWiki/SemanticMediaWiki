@@ -26,25 +26,9 @@ class RegisterTaskHandlers {
 	}
 
 	/**
-	 * MediaWiki derives this method name from the hook
-	 * `SMW::Admin::RegisterTaskHandlers` when the handler is dispatched via
-	 * the declarative `HookHandlers` registration in `extension.json`.
-	 *
 	 * @since 7.0.0
 	 */
 	public function onSMW__Admin__RegisterTaskHandlers(
-		TaskHandlerRegistry $taskHandlerRegistry,
-		Store $store,
-		$outputFormatter,
-		$user
-	): bool {
-		return $this->onRegisterTaskHandlers( $taskHandlerRegistry, $store, $outputFormatter, $user );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function onRegisterTaskHandlers(
 		TaskHandlerRegistry $taskHandlerRegistry,
 		Store $store,
 		$outputFormatter,

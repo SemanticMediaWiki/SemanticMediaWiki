@@ -29,21 +29,9 @@ class EntityReferenceCleanUpComplete {
 	}
 
 	/**
-	 * MediaWiki derives this method name from the hook
-	 * `SMW::SQLStore::EntityReferenceCleanUpComplete` when the handler is
-	 * dispatched via the declarative `HookHandlers` registration in
-	 * `extension.json`.
-	 *
 	 * @since 7.0.0
 	 */
 	public function onSMW__SQLStore__EntityReferenceCleanUpComplete( Store $store, $id, $subject, $isRedirect ): bool {
-		return $this->onEntityReferenceCleanUpComplete( $store, $id, $subject, $isRedirect );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function onEntityReferenceCleanUpComplete( Store $store, $id, $subject, $isRedirect ): bool {
 		if ( !$store instanceof ElasticStore || $store->getConnection( 'elastic' ) instanceof DummyClient ) {
 			return true;
 		}

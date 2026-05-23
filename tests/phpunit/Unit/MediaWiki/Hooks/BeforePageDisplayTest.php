@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Skin;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\Settings;
+use SMW\SetupFile;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\BeforePageDisplay
@@ -31,6 +32,7 @@ class BeforePageDisplayTest extends TestCase {
 	private $settings;
 
 	private UserOptionsLookup $userOptionsLookup;
+	private SetupFile $setupFile;
 
 	protected function setUp(): void {
 		$this->title = $this->getMockBuilder( Title::class )
@@ -67,12 +69,13 @@ class BeforePageDisplayTest extends TestCase {
 
 		$this->userOptionsLookup = $this->createMock( UserOptionsLookup::class );
 		$this->settings = $this->createMock( Settings::class );
+		$this->setupFile = $this->createMock( SetupFile::class );
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			BeforePageDisplay::class,
-			new BeforePageDisplay( $this->userOptionsLookup, $this->settings )
+			new BeforePageDisplay( $this->userOptionsLookup, $this->settings, $this->setupFile )
 		);
 	}
 
@@ -120,7 +123,7 @@ class BeforePageDisplayTest extends TestCase {
 			->method( 'getUser' )
 			->willReturn( $user );
 
-		$instance = new BeforePageDisplay( $this->userOptionsLookup, $this->settings );
+		$instance = new BeforePageDisplay( $this->userOptionsLookup, $this->settings, $this->setupFile );
 
 		$instance->onBeforePageDisplay( $this->outputPage, $this->skin );
 	}
@@ -154,7 +157,7 @@ class BeforePageDisplayTest extends TestCase {
 			->with( 'smwgEnableExportRDFLink' )
 			->willReturn( true );
 
-		$instance = new BeforePageDisplay( $this->userOptionsLookup, $this->settings );
+		$instance = new BeforePageDisplay( $this->userOptionsLookup, $this->settings, $this->setupFile );
 
 		$instance->onBeforePageDisplay( $this->outputPage, $this->skin );
 	}

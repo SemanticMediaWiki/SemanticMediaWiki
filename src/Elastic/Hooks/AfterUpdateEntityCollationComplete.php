@@ -26,21 +26,9 @@ class AfterUpdateEntityCollationComplete {
 	}
 
 	/**
-	 * MediaWiki derives this method name from the hook
-	 * `SMW::Maintenance::AfterUpdateEntityCollationComplete` when the handler
-	 * is dispatched via the declarative `HookHandlers` registration in
-	 * `extension.json`.
-	 *
 	 * @since 7.0.0
 	 */
 	public function onSMW__Maintenance__AfterUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ): bool {
-		return $this->onAfterUpdateEntityCollationComplete( $store, $messageReporter );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function onAfterUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ): bool {
 		$connection = $store->getConnection( 'elastic' );
 		if ( $connection === null || $connection instanceof DummyClient ) {
 			return true;
