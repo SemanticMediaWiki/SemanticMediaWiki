@@ -853,6 +853,7 @@ return [
 	'SMW.ArticleDelete' => static function ( MediaWikiServices $services ): ArticleDelete {
 		$servicesFactory = ServicesFactory::getInstance();
 		return new ArticleDelete(
+			$servicesFactory->getStore(),
 			$servicesFactory->newJobFactory(),
 			$servicesFactory->getEventDispatcher()
 		);

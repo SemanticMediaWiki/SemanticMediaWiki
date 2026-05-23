@@ -197,6 +197,7 @@
 		"SemanticMediaWiki.ArticleDelete": {
 			"class": "SMW\\MediaWiki\\Hooks\\ArticleDelete",
 			"services": [
+				"SMW.Store",
 				"SMW.JobFactory",
 				"SMW.EventDispatcher"
 			]
