@@ -25,7 +25,9 @@ use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\PersonalUrls;
+use SMW\MediaWiki\Hooks\UserChange;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\ContentParserFactory;
@@ -830,6 +832,30 @@ return [
 			$servicesFactory->getJobQueue(),
 			$services->getUserOptionsLookup(),
 			$servicesFactory->getSettings()
+		);
+	},
+
+	'SMW.ApplicationFactory' => static function ( MediaWikiServices $services ): ServicesFactory {
+		// ApplicationFactory is the legacy alias for ServicesFactory. A handful of
+		// hook handlers still take it as a constructor dependency while their
+		// internals are being unwound (LinksUpdateComplete, ParserAfterTidy).
+		return ServicesFactory::getInstance();
+	},
+
+	'SMW.UserChange' => static function ( MediaWikiServices $services ): UserChange {
+		$servicesFactory = ServicesFactory::getInstance();
+		return new UserChange(
+			$servicesFactory->getNamespaceExaminer(),
+			$servicesFactory->newJobFactory()
+		);
+	},
+
+	'SMW.ArticleDelete' => static function ( MediaWikiServices $services ): ArticleDelete {
+		$servicesFactory = ServicesFactory::getInstance();
+		return new ArticleDelete(
+			$servicesFactory->getStore(),
+			$servicesFactory->newJobFactory(),
+			$servicesFactory->getEventDispatcher()
 		);
 	},
 

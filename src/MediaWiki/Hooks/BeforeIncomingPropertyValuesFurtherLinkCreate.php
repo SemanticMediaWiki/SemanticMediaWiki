@@ -16,6 +16,18 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class BeforeIncomingPropertyValuesFurtherLinkCreate {
 
 	/**
+	 * MediaWiki derives this method name from the hook
+	 * `SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate` when the
+	 * handler is dispatched via the declarative `HookHandlers` registration
+	 * in `extension.json`.
+	 *
+	 * @since 7.0.0
+	 */
+	public function onSMW__Browse__BeforeIncomingPropertyValuesFurtherLinkCreate( $property, $subject, &$html, $store ): bool {
+		return $this->onSMWBrowseBeforeIncomingPropertyValuesFurtherLinkCreate( $property, $subject, $html, $store );
+	}
+
+	/**
 	 * @since 7.0.0
 	 */
 	public function onSMWBrowseBeforeIncomingPropertyValuesFurtherLinkCreate( $property, $subject, &$html, $store ): bool {

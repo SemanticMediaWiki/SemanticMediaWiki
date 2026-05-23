@@ -19,6 +19,18 @@ use SMW\Utils\CliMsgFormatter;
 class AfterCreateTablesComplete {
 
 	/**
+	 * MediaWiki derives this method name from the hook
+	 * `SMW::SQLStore::Installer::AfterCreateTablesComplete` when the handler
+	 * is dispatched via the declarative `HookHandlers` registration in
+	 * `extension.json`.
+	 *
+	 * @since 7.0.0
+	 */
+	public function onSMW__SQLStore__Installer__AfterCreateTablesComplete( $tableBuilder, $messageReporter, $options ): bool {
+		return $this->onSMWSQLStoreInstallerAfterCreateTablesComplete( $tableBuilder, $messageReporter, $options );
+	}
+
+	/**
 	 * @since 7.0.0
 	 */
 	public function onSMWSQLStoreInstallerAfterCreateTablesComplete( $tableBuilder, $messageReporter, $options ): bool {

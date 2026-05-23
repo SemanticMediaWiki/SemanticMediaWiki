@@ -29,6 +29,21 @@ class RegisterEntityExaminerDeferrableIndicatorProviders {
 	}
 
 	/**
+	 * MediaWiki derives this method name from the hook
+	 * `SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders`
+	 * when the handler is dispatched via the declarative `HookHandlers`
+	 * registration in `extension.json`.
+	 *
+	 * @since 7.0.0
+	 */
+	public function onSMW__Indicator__EntityExaminer__RegisterDeferrableIndicatorProviders(
+		Store $store,
+		&$indicatorProviders
+	): bool {
+		return $this->onRegisterEntityExaminerDeferrableIndicatorProviders( $store, $indicatorProviders );
+	}
+
+	/**
 	 * @since 7.0.0
 	 */
 	public function onRegisterEntityExaminerDeferrableIndicatorProviders(
