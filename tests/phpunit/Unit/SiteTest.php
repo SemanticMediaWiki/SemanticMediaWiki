@@ -17,15 +17,33 @@ use SMW\Site;
  */
 class SiteTest extends TestCase {
 
+	private ?array $originalJobClasses = null;
+
 	protected function setUp(): void {
 		parent::setUp();
 
-		// Mocking global job classes
+		// Mocking global job classes. The original value must be restored in
+		// tearDown so the contamination does not bleed into integration tests
+		// running later in the same process, which rely on the real
+		// $wgJobClasses (populated from extension.json) to resolve job
+		// commands like smw.changePropagationDispatch through MW's JobFactory.
+		$this->originalJobClasses = $GLOBALS['wgJobClasses'] ?? null;
+
 		$GLOBALS['wgJobClasses'] = [
 			'smw.indexer' => 'SMWIndexerJob',
 			'smw.updater' => 'SMWUpdaterJob',
 			// Add more mock job classes as necessary for your tests
 		];
+	}
+
+	protected function tearDown(): void {
+		if ( $this->originalJobClasses === null ) {
+			unset( $GLOBALS['wgJobClasses'] );
+		} else {
+			$GLOBALS['wgJobClasses'] = $this->originalJobClasses;
+		}
+
+		parent::tearDown();
 	}
 
 	public function testIsReadOnly() {
