@@ -144,8 +144,14 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 			// by the constraint error lookup
 			$dataValue->checkConstraints();
 
+			$property = $dataValue->getProperty();
+
+			if ( $property === null ) {
+				return;
+			}
+
 			$semanticData->addPropertyObjectValue(
-				$dataValue->getProperty(),
+				$property,
 				$cat
 			);
 
@@ -168,9 +174,14 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	private function isHiddenCategory( $catName ): bool {
 		if ( $this->hiddenCategories === null ) {
+			$title = $this->getSemanticData()->getSubject()->getTitle();
+
+			if ( $title === null ) {
+				return false;
+			}
 
 			$wikipage = $this->pageCreator->createPage(
-				$this->getSemanticData()->getSubject()->getTitle()
+				$title
 			);
 
 			$this->hiddenCategories = $wikipage->getHiddenCategories();

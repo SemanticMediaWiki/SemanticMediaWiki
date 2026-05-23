@@ -115,6 +115,10 @@ class SpecificationLookup {
 			throw new RuntimeException( "Invalid request instance type" );
 		}
 
+		if ( $subject === null ) {
+			return [];
+		}
+
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject );
 		$sub_key = $target->getKey();
 
@@ -168,6 +172,10 @@ class SpecificationLookup {
 	 */
 	public function getPreferredPropertyLabelByLanguageCode( Property $property, $languageCode = '' ) {
 		$subject = $property->getCanonicalDiWikiPage();
+		if ( $subject === null ) {
+			return '';
+		}
+
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject );
 
 		$text = $this->entityCache->fetchSub( $key, $languageCode );
@@ -357,6 +365,10 @@ class SpecificationLookup {
 	 */
 	public function getPropertyDescriptionByLanguageCode( Property $property, string $languageCode = '', $linker = null ): string {
 		$subject = $property->getCanonicalDiWikiPage();
+		if ( $subject === null ) {
+			return '';
+		}
+
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
 
 		$sub_key = $languageCode . ':' . ( $linker === null ? '0' : '1' );
