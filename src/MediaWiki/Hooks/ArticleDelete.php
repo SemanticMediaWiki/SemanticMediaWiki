@@ -12,7 +12,6 @@ use SMW\EventDispatcher\EventDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use WikiPage;
 
 /**
@@ -31,7 +30,6 @@ class ArticleDelete implements ArticleDeleteHook {
 	 * @since 7.0.0
 	 */
 	public function __construct(
-		private readonly Store $store,
 		private readonly JobFactory $jobFactory,
 		private readonly EventDispatcher $eventDispatcher,
 	) {
@@ -75,7 +73,15 @@ class ArticleDelete implements ArticleDeleteHook {
 	 * @param Title $title
 	 */
 	public function doDelete( Title $title ): void {
+		// Resolve Store lazily inside the deferred update rather than capturing
+		// it in the constructor. The handler is built once when extension.json
+		// HookHandlers is wired (or when MwHooksHandler eager-builds in tests);
+		// JSON-script tests that change property table configurations between
+		// cases would otherwise see a stale Store with outdated table
+		// definitions, producing queries like `SELECT s_id ... WHERE o_id=...`
+		// against tables that no longer have an `o_id` column.
 		$applicationFactory = ApplicationFactory::getInstance();
+		$store = $applicationFactory->getStore();
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
@@ -87,7 +93,7 @@ class ArticleDelete implements ArticleDeleteHook {
 			$subject
 		);
 
-		$properties = $this->store->getInProperties( $subject );
+		$properties = $store->getInProperties( $subject );
 
 		foreach ( $properties as $property ) {
 			// Avoid doing $propertySubjects = $store->getPropertySubjects( $property, $subject );
@@ -107,7 +113,7 @@ class ArticleDelete implements ArticleDeleteHook {
 
 		// Fetch the ID before the delete process marks it as outdated to help
 		// run a dispatch process on secondary tables
-		$parameters['_id'] = $this->store->getObjectIds()->getId(
+		$parameters['_id'] = $store->getObjectIds()->getId(
 			$subject
 		);
 
@@ -117,7 +123,7 @@ class ArticleDelete implements ArticleDeleteHook {
 		$updateDispatcherJob = $this->jobFactory->newUpdateDispatcherJob( $title, $parameters );
 		$updateDispatcherJob->insert();
 
-		$this->store->deleteSubject( $title );
+		$store->deleteSubject( $title );
 
 		$context = [
 			'context' => $this->origin,

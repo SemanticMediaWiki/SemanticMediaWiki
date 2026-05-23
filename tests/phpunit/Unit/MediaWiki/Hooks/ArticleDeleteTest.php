@@ -11,7 +11,6 @@ use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -54,11 +53,7 @@ class ArticleDeleteTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$instance = new ArticleDelete( $store, $this->jobFactory, $this->eventDispatcher );
+		$instance = new ArticleDelete( $this->jobFactory, $this->eventDispatcher );
 
 		$this->assertInstanceOf(
 			ArticleDelete::class,
@@ -102,8 +97,11 @@ class ArticleDeleteTest extends TestCase {
 				[ $this->equalTo( 'InvalidateResultCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
+		// Register the mock Store as the SMW Store override so the lazy
+		// ApplicationFactory::getStore() lookup inside doDelete() returns it.
+		$this->testEnvironment->registerObject( 'Store', $store );
+
 		$instance = new ArticleDelete(
-			$store,
 			$this->jobFactory,
 			$this->eventDispatcher
 		);
