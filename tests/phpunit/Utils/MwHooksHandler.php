@@ -6,7 +6,6 @@ use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use ReflectionProperty;
 use RuntimeException;
-use SMW\Services\ServicesFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -277,39 +276,24 @@ class MwHooksHandler {
 			return;
 		}
 
-		$method = $this->deriveHookMethodName( $hook );
-
-		// Register a closure that builds the handler on every dispatch. This
-		// matches the pre-HookHandlers `Hooks::register()` behaviour where each
-		// fire resolved its services dynamically, so tests that swap a service
-		// via `ServicesFactory::registerObject()` after setUp still see the
-		// swap take effect on dispatch.
+		// Build the handler eagerly and register `[$handler, $method]` so
+		// MediaWiki's HookContainer dispatches with the original hook
+		// arguments intact, including by-reference ones (e.g. the
+		// `&$result` slot on SMW::Store::BeforeQueryResultLookupComplete).
+		// Wrapping in a closure that takes variadic `...$args` would silently
+		// downgrade references to values, breaking handlers that mutate an
+		// out-parameter through the reference.
 		//
-		// For each declared SMW.* service that the test has explicitly
-		// overridden, the matching MediaWikiServices entry is reset before
-		// ObjectFactory runs so the wiring re-runs and returns the override.
-		// Services without an override are left alone; SMW.Settings in
-		// particular holds mutable state that some tests modify in place, and
-		// rebuilding would lose those mutations.
-		$callback = static function ( ...$args ) use ( $spec, $method ) {
-			$services = MediaWikiServices::getInstance();
-			$servicesFactory = ServicesFactory::getInstance();
-			foreach ( $spec['services'] ?? [] as $service ) {
-				if ( !is_string( $service ) || !str_starts_with( $service, 'SMW.' ) ) {
-					continue;
-				}
-				$overrideKey = substr( $service, 4 );
-				if ( $servicesFactory->hasTestOverride( $overrideKey ) ) {
-					$services->resetServiceForTesting( $service );
-				}
-			}
+		// Eager construction matches the pre-HookHandlers `Hooks::register()`
+		// behaviour. Tests that swap a service AFTER setUp's
+		// `reregisterAllDeclarative()` must call `reregisterAllDeclarative()`
+		// again to rebuild handlers against the new service.
+		$method = $this->deriveHookMethodName( $hook );
+		$handler = MediaWikiServices::getInstance()
+			->getObjectFactory()
+			->createObject( $spec );
 
-			$handler = $services->getObjectFactory()->createObject( $spec );
-
-			return $handler->$method( ...$args );
-		};
-
-		$this->hookContainer->register( $hook, $callback );
+		$this->hookContainer->register( $hook, [ $handler, $method ] );
 	}
 
 	private function getHandlerSpecFor( string $hook ): ?array {
