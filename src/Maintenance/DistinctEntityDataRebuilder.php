@@ -159,7 +159,7 @@ class DistinctEntityDataRebuilder {
 			$page,
 			[
 				UpdateJob::FORCED_UPDATE => true,
-				'shallowUpdate' => $this->options->has( 'shallow-update' )
+				UpdateJob::SHALLOW_UPDATE => $this->options->has( 'shallow-update' )
 			]
 		);
 

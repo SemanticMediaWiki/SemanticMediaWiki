@@ -421,10 +421,7 @@ class ChangePropagationDispatchJob extends Job {
 			}
 		}
 
-		// 'shallowUpdate' is the param key inspected by UpdateJob::matchesLastModified
-		// (see src/MediaWiki/Jobs/UpdateJob.php). Kept as a bare string to match the
-		// existing pattern (also used by Rebuilder.php).
-		return 'shallowUpdate';
+		return UpdateJob::SHALLOW_UPDATE;
 	}
 
 	private function commitSpecificationChangePropagationAsJob( WikiPage $subject, $count ): void {
