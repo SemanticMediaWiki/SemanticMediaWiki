@@ -82,7 +82,10 @@ class DependencyValidatorTest extends TestCase {
 			->method( 'overrideSub' )
 			->with(
 				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
-				$this->stringContains( 'foo-etag' ) );
+				'_smw_dirty_',
+				'1',
+				$this->anything()
+			);
 
 		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
@@ -224,6 +227,37 @@ class DependencyValidatorTest extends TestCase {
 			->with(
 				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
 				$this->stringContains( 'foo-etag' ) );
+
+		$subject = WikiPage::newFromText( 'Foo' );
+
+		$instance = $this->newInstance( 'foo-etag' );
+
+		$this->assertFalse(
+			$instance->canKeepParserCache( $subject )
+		);
+	}
+
+	public function testCanKeepParserCache_RejectsAfterDirtyMarker() {
+		$this->entityCache->expects( $this->once() )
+			->method( 'contains' )
+			->willReturn( true );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'fetchSub' )
+			->with(
+				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
+				$this->stringContains( 'foo-etag' )
+			)
+			->willReturn( false );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'saveSub' )
+			->with(
+				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
+				$this->stringContains( 'foo-etag' ),
+				$this->anything(),
+				$this->anything()
+			);
 
 		$subject = WikiPage::newFromText( 'Foo' );
 

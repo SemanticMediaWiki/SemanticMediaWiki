@@ -74,8 +74,6 @@ class ArticleViewHeader implements ArticleViewHeaderHook {
 
 		if ( $dependencyValidator->hasArchaicDependencies( $subject ) ) {
 			$dependencyValidator->markTitle( $title );
-			// Disable the parser cache even before `RejectParserCacheValue` comes into play
-			$pcache = false;
 		}
 
 		return true;

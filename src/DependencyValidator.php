@@ -17,6 +17,8 @@ class DependencyValidator {
 
 	use EventDispatcherAwareTrait;
 
+	private const DIRTY_MARKER = '_smw_dirty_';
+
 	private static array $titles = [];
 
 	/**
@@ -96,10 +98,10 @@ class DependencyValidator {
 		$key = $this->makeCacheKey( $title );
 
 		// Genuine rejection based on `hasArchaicDependencies` therefore override
-		// any previous sub keys
-		$this->entityCache->overrideSub( $key, $this->eTag, 'hasArchaicDependencies', $this->cacheTTL );
+		// any previous sub keys with a fixed dirty marker so the eTag sub-key
+		// remains absent and `canKeepParserCache` correctly rejects
+		$this->entityCache->overrideSub( $key, self::DIRTY_MARKER, '1', $this->cacheTTL );
 
-		// Disable the parser cache even before `RejectParserCacheValue` comes into play
 		return true;
 	}
 
@@ -120,7 +122,8 @@ class DependencyValidator {
 			return true;
 		}
 
-		$this->entityCache->saveSub( $key, $this->eTag, 'hasArchaicDependencies', $this->cacheTTL );
+		// Value is unread; only the sub-key's presence matters.
+		$this->entityCache->saveSub( $key, $this->eTag, '1', $this->cacheTTL );
 
 		return false;
 	}

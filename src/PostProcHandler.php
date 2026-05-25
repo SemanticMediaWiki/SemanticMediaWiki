@@ -9,7 +9,6 @@ use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
-use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 use SMW\Query\Query;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 
@@ -147,19 +146,6 @@ class PostProcHandler {
 			$attributes['data-msg'] = 'smw-purge-update-dependencies';
 			$attributes['data-forcelinkupdate'] = true;
 			return Html::rawElement( 'div', [ 'class' => 'smw-postproc page-purge' ] + $attributes );
-		} elseif (
-			$postEdit === null &&
-			DependencyValidator::hasLikelyOutdatedDependencies( $title ) ) {
-			// We still suspect outdated query dependencies but only
-			// force an update of the parserCache without a purge since
-			// we don't have any `@annotation` queries that would require
-			// to recompute any pending annotations
-			$parameters = [
-				'action' => 'post-processing-query-dependency'
-			];
-
-			$parserCachePurgeJob = new ParserCachePurgeJob( $title, $parameters );
-			$parserCachePurgeJob->updateParserCache();
 		}
 
 		if ( $postEdit !== null && isset( $this->options['run-jobs'] ) ) {
