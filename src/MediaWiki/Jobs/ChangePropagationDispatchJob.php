@@ -398,6 +398,15 @@ class ChangePropagationDispatchJob extends Job {
 	private function scheduleChangePropagationUpdateJobFromList( array $dataItems ): void {
 		$strategy = $this->chooseUpdateStrategy();
 
+		$this->getLogger()->info(
+			'ChangePropagationDispatchJob strategy {strategy} for diffKeys {diffKeys}',
+			[
+				'method' => __METHOD__,
+				'strategy' => $strategy,
+				'diffKeys' => json_encode( $this->getParameter( 'diffKeys' ) ?? [] ),
+			]
+		);
+
 		foreach ( $dataItems as $dataItem ) {
 
 			if ( $dataItem === '' ) {
