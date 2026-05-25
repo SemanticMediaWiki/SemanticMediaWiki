@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\MediaWiki\Jobs;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -399,7 +400,7 @@ class UpdateDispatcherJobTest extends TestCase {
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
-			->setMethods( [
+			->onlyMethods( [
 				'getProperties',
 				'getInProperties',
 			] )
@@ -413,22 +414,34 @@ class UpdateDispatcherJobTest extends TestCase {
 			->method( 'getInProperties' )
 			->willReturn( [] );
 
-		$instance = new UpdateDispatcherJob(
+		$reflector = new ReflectionClass( UpdateDispatcherJob::class );
+		$jobsProp = $reflector->getProperty( 'jobs' );
+		$jobsProp->setAccessible( true );
+
+		// Unrestricted dispatch
+		$unrestricted = new UpdateDispatcherJob(
 			$title,
 			[
 				'_id' => 12345,
 			],
 			$store
 		);
-		$instance->isEnabledJobQueue( false );
+		$unrestricted->isEnabledJobQueue( false );
+		$this->assertTrue( $unrestricted->run() );
+		$this->assertSame( [], $jobsProp->getValue( $unrestricted ) );
 
-		$this->assertTrue( $instance->run() );
-
-		$reflector = new \ReflectionClass( UpdateDispatcherJob::class );
-		$jobsProp = $reflector->getProperty( 'jobs' );
-		$jobsProp->setAccessible( true );
-
-		$this->assertSame( [], $jobsProp->getValue( $instance ) );
+		// Restricted dispatch (mirrors the ArticleDelete production call site)
+		$restricted = new UpdateDispatcherJob(
+			$title,
+			[
+				'_id' => 12345,
+				UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL => true,
+			],
+			$store
+		);
+		$restricted->isEnabledJobQueue( false );
+		$this->assertTrue( $restricted->run() );
+		$this->assertSame( [], $jobsProp->getValue( $restricted ) );
 	}
 
 	/**
