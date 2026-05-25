@@ -187,6 +187,94 @@ class ChangePropagationNotifierTest extends TestCase {
 		];
 	}
 
+	public function testRecordsAllDiffingKeysIncludingNonFirstDiff() {
+		// _TYPE diffs (always-watched) and _PVAL diffs (from setPropertyList).
+		// The callback returns mockedStoreValues for both keys; new values differ.
+		$this->mockedStoreValues = [ new Blob( 'old-value' ) ];
+
+		$subject = new WikiPage( __METHOD__, SMW_NS_PROPERTY );
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+			->disableOriginalConstructor()
+			->getMock();
+		$jobQueueGroup->expects( $this->atLeastOnce() )->method( 'lazyPush' );
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyValues', 'getSemanticData' ] )
+			->getMockForAbstractClass();
+
+		$innerSemanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$store->method( 'getSemanticData' )->willReturn( $innerSemanticData );
+		$store->method( 'getPropertyValues' )
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$semanticData->method( 'getSubject' )->willReturn( $subject );
+		$semanticData->method( 'getPropertyValues' )->willReturn( [
+			new Blob( 'new-value-different-from-old' ),
+		] );
+
+		$instance = new ChangePropagationNotifier( $store, $this->serializerFactory );
+		$instance->setPropertyList( [ '_PVAL' ] );
+		$instance->checkAndNotify( $semanticData );
+
+		$reflector = new \ReflectionClass( ChangePropagationNotifier::class );
+		$diffKeysProp = $reflector->getProperty( 'diffKeys' );
+		$diffKeysProp->setAccessible( true );
+
+		$this->assertContains( '_TYPE', $diffKeysProp->getValue( $instance ) );
+		$this->assertContains( '_PVAL', $diffKeysProp->getValue( $instance ) );
+	}
+
+	public function testIsTypePropagationPreservedWithMixedDiff() {
+		// _TYPE diffs first (per iteration order), _PVAL diffs later.
+		// isTypePropagation must remain true after _PVAL is appended to diffKeys.
+		$this->mockedStoreValues = [ new Blob( 'old-value' ) ];
+
+		$subject = new WikiPage( __METHOD__, SMW_NS_PROPERTY );
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+			->disableOriginalConstructor()
+			->getMock();
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyValues', 'getSemanticData' ] )
+			->getMockForAbstractClass();
+
+		$innerSemanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$store->method( 'getSemanticData' )->willReturn( $innerSemanticData );
+		$store->method( 'getPropertyValues' )
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$semanticData->method( 'getSubject' )->willReturn( $subject );
+		$semanticData->method( 'getPropertyValues' )->willReturn( [
+			new Blob( 'new-value-different-from-old' ),
+		] );
+
+		$instance = new ChangePropagationNotifier( $store, $this->serializerFactory );
+		$instance->setPropertyList( [ '_PVAL' ] );
+		$instance->checkAndNotify( $semanticData );
+
+		$reflector = new \ReflectionClass( ChangePropagationNotifier::class );
+		$isTypeProp = $reflector->getProperty( 'isTypePropagation' );
+		$isTypeProp->setAccessible( true );
+
+		$this->assertTrue( $isTypeProp->getValue( $instance ) );
+	}
+
 	/**
 	 * Returns an array of DataItem and simulates an alternating
 	 * existencance of return values ('_LIST')
