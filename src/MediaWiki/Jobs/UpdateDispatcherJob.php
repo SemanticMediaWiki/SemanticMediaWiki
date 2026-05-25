@@ -79,15 +79,6 @@ class UpdateDispatcherJob extends Job {
 			return $this->push_jobs_from_list( $this->getParameter( self::JOB_LIST ) );
 		}
 
-		/**
-		 * Using an entity ID to initiate some work (which if send from the DELETE
-		 * will have no valid ID_TABLE reference by the time this job is run) on
-		 * some secondary tables.
-		 */
-		if ( $this->hasParameter( '_id' ) ) {
-			$this->dispatch_by_id( $this->getParameter( '_id' ) );
-		}
-
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->dispatchUpdateForProperty(
 				Property::newFromUserLabel( $this->getTitle()->getText() )
@@ -122,41 +113,6 @@ class UpdateDispatcherJob extends Job {
 		$this->isEnabledJobQueue(
 			$applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' )
 		);
-	}
-
-	private function dispatch_by_id( $id ): void {
-		$queryDependencyLinksStoreFactory = $this->store->service( 'QueryDependencyLinksStoreFactory' );
-
-		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
-			$this->store
-		);
-
-		$count = $queryDependencyLinksStore->countDependencies(
-			$id
-		);
-
-		if ( $count === 0 ) {
-			return;
-		}
-
-		$requestOptions = new RequestOptions();
-		$requestOptions->setLimit(
-			$count
-		);
-
-		$dependencyTargetLinks = $queryDependencyLinksStore->findDependencyTargetLinks(
-			[ $id ],
-			$requestOptions
-		);
-
-		foreach ( $dependencyTargetLinks as $targetLink ) {
-			[ $title, $namespace, $iw, $subobjectname ] = explode( '#', $targetLink, 4 );
-
-			// @see WikiPage::doUnserialize
-			if ( !isset( $this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] ) ) {
-				$this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] = true;
-			}
-		}
 	}
 
 	private function create_secondary_dispatch_run( $jobs ): void {

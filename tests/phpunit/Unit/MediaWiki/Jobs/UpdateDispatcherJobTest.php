@@ -392,6 +392,45 @@ class UpdateDispatcherJobTest extends TestCase {
 		return $provider;
 	}
 
+	public function testIdOnlyInvocationProducesNoSecondaryDispatchJobs() {
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
+			__METHOD__, NS_MAIN
+		);
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [
+				'getProperties',
+				'getInProperties',
+			] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getProperties' )
+			->willReturn( [] );
+
+		$store->expects( $this->any() )
+			->method( 'getInProperties' )
+			->willReturn( [] );
+
+		$instance = new UpdateDispatcherJob(
+			$title,
+			[
+				'_id' => 12345,
+			],
+			$store
+		);
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertTrue( $instance->run() );
+
+		$reflector = new \ReflectionClass( UpdateDispatcherJob::class );
+		$jobsProp = $reflector->getProperty( 'jobs' );
+		$jobsProp->setAccessible( true );
+
+		$this->assertSame( [], $jobsProp->getValue( $instance ) );
+	}
+
 	/**
 	 * Returns an array of DIWikiPage objects if the expected property
 	 * and the argument property are identical
