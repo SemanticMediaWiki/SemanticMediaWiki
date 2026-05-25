@@ -65,6 +65,10 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 */
 	protected function validate( Property $property ): void {
 		$subject = $property->getCanonicalDiWikiPage();
+		if ( $subject === null ) {
+			return;
+		}
+
 		$semanticData = $this->store->getSemanticData( $subject );
 
 		if ( $this->semanticData === null ) {
@@ -96,7 +100,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	private function checkForPendingChangePropagationDispatchJob( Property $property ): void {
 		$subject = $property->getCanonicalDiWikiPage();
 
-		if ( !ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {
+		if ( $subject === null || !ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {
 			return;
 		}
 
