@@ -298,11 +298,19 @@ class ChangePropagationDispatchJob extends Job {
 
 		$checkSum = md5( $contents );
 
+		$params = [ 'data' => $contents ];
+
+		// Carry diffKeys forward so the second-stage dispatch can choose the
+		// correct update strategy (shallowUpdate vs forcedUpdate) when it calls
+		// scheduleChangePropagationUpdateJobFromList().
+		$diffKeys = $this->getParameter( 'diffKeys' );
+		if ( is_array( $diffKeys ) && $diffKeys !== [] ) {
+			$params['diffKeys'] = $diffKeys;
+		}
+
 		$changePropagationDispatchJob = $this->jobFactory->newChangePropagationDispatchJob(
 			$this->getTitle(),
-			[
-				'data' => $contents
-			] + self::newRootJobParams(
+			$params + self::newRootJobParams(
 				"ChangePropagationDispatchJob:smw_chgprop_$num\_tmp:$checkSum"
 			)
 		);
