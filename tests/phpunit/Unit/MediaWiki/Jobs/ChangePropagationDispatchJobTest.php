@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
@@ -297,7 +298,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$job = $this->newJob( $title, $params );
 
-		$reflector = new \ReflectionClass( ChangePropagationDispatchJob::class );
+		$reflector = new ReflectionClass( ChangePropagationDispatchJob::class );
 		$method = $reflector->getMethod( 'chooseUpdateStrategy' );
 		$method->setAccessible( true );
 

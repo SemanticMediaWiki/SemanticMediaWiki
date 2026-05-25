@@ -73,8 +73,6 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * Excluded conservatively: _TYPE/_CONV/_UNIT/_REDI/_LIST (storage-affecting),
 	 * _PVAL/_PVUC/_PVALI/_PVAP/_PREC (constraint-adjacent; stored _ERRT may depend).
-	 *
-	 * @since 7.0.0
 	 */
 	private const SHALLOW_SET = [ '_SUBC', '_SUBP', '_PDESC', '_PPLB' ];
 
@@ -401,8 +399,6 @@ class ChangePropagationDispatchJob extends Job {
 	 * current dispatch. When every key in the `diffKeys` parameter is in
 	 * SHALLOW_SET, dependents only need a parser-cache purge; otherwise a full
 	 * re-parse is required.
-	 *
-	 * @since 7.0.0
 	 */
 	private function chooseUpdateStrategy(): string {
 		$diffKeys = $this->getParameter( 'diffKeys' );
@@ -417,6 +413,9 @@ class ChangePropagationDispatchJob extends Job {
 			}
 		}
 
+		// 'shallowUpdate' is the param key inspected by UpdateJob::matchesLastModified
+		// (see src/MediaWiki/Jobs/UpdateJob.php). Kept as a bare string to match the
+		// existing pattern (also used by Rebuilder.php).
 		return 'shallowUpdate';
 	}
 
