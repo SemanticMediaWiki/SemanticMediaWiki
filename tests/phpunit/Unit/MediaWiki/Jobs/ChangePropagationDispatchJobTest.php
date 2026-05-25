@@ -339,10 +339,12 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	}
 
 	public function testDispatchFromDataForwardsDiffKeysToSecondStageJob(): void {
-		// The first dispatch job runs findAndDispatch(), which calls
-		// pushChangePropagationDispatchJob() to create a second dispatch job
-		// with a 'data' param.  That second job must carry 'diffKeys' forward
-		// so that chooseUpdateStrategy() sees them and can select shallowUpdate.
+		// A secondary dispatch job (carrying a 'data' param produced by
+		// pushChangePropagationDispatchJob on a prior pass) runs
+		// dispatchFromData(), which is where scheduleChangePropagationUpdateJobFromList
+		// fires and chooseUpdateStrategy() reads diffKeys. The secondary job must
+		// have carried diffKeys forward from the primary dispatch for the shallow
+		// path to apply.
 		$subject = WikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
 		$cache = $this->getMockBuilder( Cache::class )
