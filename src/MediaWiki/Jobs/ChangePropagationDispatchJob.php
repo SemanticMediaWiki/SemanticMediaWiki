@@ -71,8 +71,13 @@ class ChangePropagationDispatchJob extends Job {
 	 *  - _SUBC, _SUBP: hierarchies walked at query time via HierarchyTempTableBuilder
 	 *  - _PDESC, _PPLB: display-only labels/descriptions
 	 *
-	 * Excluded conservatively: _TYPE/_CONV/_UNIT/_REDI/_LIST (storage-affecting),
-	 * _PVAL/_PVUC/_PVALI/_PVAP/_PREC (constraint-adjacent; stored _ERRT may depend).
+	 * Excluded as storage-affecting: _TYPE/_CONV/_UNIT/_REDI/_LIST. The
+	 * non-obvious case is _LIST: it shapes how record-property values are
+	 * decomposed into sub-property values at store time
+	 * (see Property/SpecificationLookup::getFieldListBy).
+	 *
+	 * Excluded as constraint-adjacent (stored _ERRT may depend):
+	 * _PVAL/_PVUC/_PVALI/_PVAP/_PREC.
 	 */
 	private const SHALLOW_SET = [ '_SUBC', '_SUBP', '_PDESC', '_PPLB' ];
 
