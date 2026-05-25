@@ -6,6 +6,7 @@ use MediaWiki\HookContainer\HookContainer;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\PropertyRegistry;
@@ -438,7 +439,7 @@ class Rebuilder {
 		];
 
 		if ( $this->getOption( 'shallow-update' ) ) {
-			$params += [ 'shallowUpdate' => true ];
+			$params += [ UpdateJob::SHALLOW_UPDATE => true ];
 		} elseif ( $this->getOption( 'force-update' ) ) {
 			$params += [ 'forcedUpdate' => true ];
 		}

@@ -45,6 +45,13 @@ class UpdateJob extends Job {
 	const FORCED_UPDATE = 'forcedUpdate';
 
 	/**
+	 * Bypasses a full content parse and only purges the parser cache if the
+	 * stored last-modified timestamp still matches the page's current revision
+	 * timestamp.
+	 */
+	const SHALLOW_UPDATE = 'shallowUpdate';
+
+	/**
 	 * Indicates the use of the _CHGPRO property as base for the SemanticData
 	 */
 	const CHANGE_PROP = 'changeProp';
@@ -123,7 +130,7 @@ class UpdateJob extends Job {
 	}
 
 	private function matchesLastModified( ?Title $title ): bool {
-		if ( !$this->getParameter( 'shallowUpdate' ) ) {
+		if ( !$this->getParameter( self::SHALLOW_UPDATE ) ) {
 			return false;
 		}
 

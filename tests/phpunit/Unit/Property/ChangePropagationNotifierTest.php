@@ -187,6 +187,174 @@ class ChangePropagationNotifierTest extends TestCase {
 		];
 	}
 
+	public function testDispatchedJobIncludesDiffKeysAndPreservesIsTypePropagation() {
+		// _TYPE diffs (always-watched) and _PVAL diffs (from setPropertyList).
+		// The dispatched job must carry both keys in diffKeys and have
+		// isTypePropagation set to true, since _TYPE is the first diffing key.
+		$this->mockedStoreValues = [ new Blob( 'old-value' ) ];
+
+		$subject = new WikiPage( __METHOD__, SMW_NS_PROPERTY );
+
+		$capturedJob = null;
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'lazyPush' ] )
+			->getMock();
+		$jobQueueGroup->expects( $this->atLeastOnce() )
+			->method( 'lazyPush' )
+			->willReturnCallback( static function ( $job ) use ( &$capturedJob ) {
+				$capturedJob = $job;
+			} );
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getPropertyValues', 'getSemanticData' ] )
+			->getMockForAbstractClass();
+
+		$innerSemanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$store->method( 'getSemanticData' )->willReturn( $innerSemanticData );
+		$store->method( 'getPropertyValues' )
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$semanticData->method( 'getSubject' )->willReturn( $subject );
+		$semanticData->method( 'getPropertyValues' )->willReturn( [
+			new Blob( 'new-value-different-from-old' ),
+		] );
+
+		$instance = new ChangePropagationNotifier( $store, $this->serializerFactory );
+		$instance->setPropertyList( [ '_PVAL' ] );
+		$instance->checkAndNotify( $semanticData );
+
+		$this->assertNotNull( $capturedJob );
+		$this->assertContains( '_TYPE', $capturedJob->getParameter( 'diffKeys' ) );
+		$this->assertContains( '_PVAL', $capturedJob->getParameter( 'diffKeys' ) );
+		$this->assertTrue( $capturedJob->getParameter( 'isTypePropagation' ) );
+	}
+
+	public function testDispatchedJobOmitsIsTypePropagationForNonTypeDiff() {
+		// _PVAL diffs but _TYPE (and other always-watched keys) do NOT diff.
+		// The dispatched job must carry _PVAL in diffKeys but must NOT carry
+		// isTypePropagation (getParameter returns false for absent keys).
+		$matchingBlob = new Blob( 'same-value' );
+		$this->mockedStoreValues = [ $matchingBlob ];
+
+		$subject = new WikiPage( __METHOD__, SMW_NS_PROPERTY );
+
+		$capturedJob = null;
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'lazyPush' ] )
+			->getMock();
+		$jobQueueGroup->expects( $this->atLeastOnce() )
+			->method( 'lazyPush' )
+			->willReturnCallback( static function ( $job ) use ( &$capturedJob ) {
+				$capturedJob = $job;
+			} );
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getPropertyValues', 'getSemanticData' ] )
+			->getMockForAbstractClass();
+
+		$innerSemanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$store->method( 'getSemanticData' )->willReturn( $innerSemanticData );
+		// Store (old values): return the matching blob for every property.
+		$store->method( 'getPropertyValues' )
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$semanticData->method( 'getSubject' )->willReturn( $subject );
+		// New values: return the same blob for _TYPE/_CONV/_UNIT/_REDI (no diff),
+		// but a different blob for _PVAL (diff).
+		$semanticData->method( 'getPropertyValues' )
+			->willReturnCallback( static function ( Property $property ) use ( $matchingBlob ) {
+				return $property->getKey() === '_PVAL'
+					? [ new Blob( 'different-value' ) ]
+					: [ $matchingBlob ];
+			} );
+
+		$instance = new ChangePropagationNotifier( $store, $this->serializerFactory );
+		$instance->setPropertyList( [ '_PVAL' ] );
+		$instance->checkAndNotify( $semanticData );
+
+		$this->assertNotNull( $capturedJob );
+		$diffKeys = $capturedJob->getParameter( 'diffKeys' );
+		$this->assertNotEmpty( $diffKeys );
+		$this->assertNotContains( '_TYPE', $diffKeys );
+		$this->assertContains( '_PVAL', $diffKeys );
+		// getParameter returns false for absent keys; isTypePropagation must not be set.
+		$this->assertFalse( $capturedJob->getParameter( 'isTypePropagation' ) );
+	}
+
+	public function testDispatchedJobIncludesDiffKeysForTypeOnlyDiff() {
+		// Only _TYPE diffs; _PVAL and other always-watched keys do NOT diff.
+		// diffKeys must equal ['_TYPE'] and isTypePropagation must be true.
+		$matchingBlob = new Blob( 'same-value' );
+		$this->mockedStoreValues = [ $matchingBlob ];
+
+		$subject = new WikiPage( __METHOD__, SMW_NS_PROPERTY );
+
+		$capturedJob = null;
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'lazyPush' ] )
+			->getMock();
+		$jobQueueGroup->expects( $this->atLeastOnce() )
+			->method( 'lazyPush' )
+			->willReturnCallback( static function ( $job ) use ( &$capturedJob ) {
+				$capturedJob = $job;
+			} );
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getPropertyValues', 'getSemanticData' ] )
+			->getMockForAbstractClass();
+
+		$innerSemanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$store->method( 'getSemanticData' )->willReturn( $innerSemanticData );
+		// Store (old values): return the matching blob for every property.
+		$store->method( 'getPropertyValues' )
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$semanticData->method( 'getSubject' )->willReturn( $subject );
+		// New values: return a different blob for _TYPE (diff) but the same
+		// blob for all other properties including _PVAL (no diff).
+		$semanticData->method( 'getPropertyValues' )
+			->willReturnCallback( static function ( Property $property ) use ( $matchingBlob ) {
+				return $property->getKey() === '_TYPE'
+					? [ new Blob( 'different-type' ) ]
+					: [ $matchingBlob ];
+			} );
+
+		$instance = new ChangePropagationNotifier( $store, $this->serializerFactory );
+		$instance->setPropertyList( [ '_PVAL' ] );
+		$instance->checkAndNotify( $semanticData );
+
+		$this->assertNotNull( $capturedJob );
+		$this->assertSame( [ '_TYPE' ], $capturedJob->getParameter( 'diffKeys' ) );
+		$this->assertTrue( $capturedJob->getParameter( 'isTypePropagation' ) );
+	}
+
 	/**
 	 * Returns an array of DataItem and simulates an alternating
 	 * existencance of return values ('_LIST')

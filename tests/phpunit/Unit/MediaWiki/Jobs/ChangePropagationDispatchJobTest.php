@@ -5,12 +5,14 @@ namespace SMW\Tests\Unit\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Property\SpecificationLookup as PropertySpecificationLookup;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
@@ -284,6 +286,125 @@ class ChangePropagationDispatchJobTest extends TestCase {
 		);
 
 		$instance->run();
+	}
+
+	/**
+	 * @dataProvider chooseUpdateStrategyProvider
+	 */
+	public function testChooseUpdateStrategy( array $params, string $expected ): void {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$job = $this->newJob( $title, $params );
+
+		$reflector = new ReflectionClass( ChangePropagationDispatchJob::class );
+		$method = $reflector->getMethod( 'chooseUpdateStrategy' );
+		$method->setAccessible( true );
+
+		$this->assertSame( $expected, $method->invoke( $job ) );
+	}
+
+	public function chooseUpdateStrategyProvider(): array {
+		return [
+			'no diffKeys param at all (backward-compat)' => [
+				[],
+				UpdateJob::FORCED_UPDATE,
+			],
+			'empty diffKeys array' => [
+				[ 'diffKeys' => [] ],
+				UpdateJob::FORCED_UPDATE,
+			],
+			'all keys in SHALLOW_SET (_SUBC only)' => [
+				[ 'diffKeys' => [ '_SUBC' ] ],
+				'shallowUpdate',
+			],
+			'all keys in SHALLOW_SET (multi)' => [
+				[ 'diffKeys' => [ '_SUBC', '_PDESC' ] ],
+				'shallowUpdate',
+			],
+			'mixed: one safe, one not' => [
+				[ 'diffKeys' => [ '_PDESC', '_PVAL' ] ],
+				UpdateJob::FORCED_UPDATE,
+			],
+			'all keys outside SHALLOW_SET' => [
+				[ 'diffKeys' => [ '_PVAL', '_TYPE' ] ],
+				UpdateJob::FORCED_UPDATE,
+			],
+			'_LIST is explicitly NOT in SHALLOW_SET' => [
+				[ 'diffKeys' => [ '_LIST' ] ],
+				UpdateJob::FORCED_UPDATE,
+			],
+		];
+	}
+
+	public function testDispatchFromDataForwardsDiffKeysToSecondStageJob(): void {
+		// A secondary dispatch job (carrying a 'data' param produced by
+		// pushChangePropagationDispatchJob on a prior pass) runs
+		// dispatchFromData(), which is where scheduleChangePropagationUpdateJobFromList
+		// fires and chooseUpdateStrategy() reads diffKeys. The secondary job must
+		// have carried diffKeys forward from the primary dispatch for the shallow
+		// path to apply.
+		$subject = WikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
+
+		$cache = $this->getMockBuilder( Cache::class )
+			->getMockForAbstractClass();
+
+		// Return a non-false value so dispatchFromData() passes the cache check.
+		$cache->expects( $this->any() )
+			->method( 'fetch' )
+			->willReturn( 3 );
+
+		$updateJob = $this->getMockBuilder( ChangePropagationUpdateJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$updateJob->expects( $this->once() )
+			->method( 'insert' );
+
+		$capturedParams = null;
+		$jobFactory = $this->newJobFactory();
+
+		$jobFactory->expects( $this->once() )
+			->method( 'newChangePropagationUpdateJob' )
+			->with(
+				$this->anything(),
+				$this->callback( static function ( array $params ) use ( &$capturedParams ) {
+					$capturedParams = $params;
+					return true;
+				} )
+			)
+			->willReturn( $updateJob );
+
+		// Subject serialisation must round-trip through WikiPage::doUnserialize.
+		$dataItem = WikiPage::newFromTitle( $subject->getTitle() );
+		$instance = $this->newJob(
+			$subject->getTitle(),
+			[
+				'data' => $dataItem->asBase()->getHash(),
+				'diffKeys' => [ '_SUBC' ],
+			],
+			null,
+			$cache,
+			null,
+			null,
+			$jobFactory
+		);
+
+		$instance->run();
+
+		$this->assertNotNull( $capturedParams, 'newChangePropagationUpdateJob was not called' );
+		$this->assertArrayHasKey(
+			'shallowUpdate',
+			$capturedParams,
+			'Per-entity job must carry shallowUpdate=true when diffKeys is all-shallow'
+		);
+		$this->assertTrue( $capturedParams['shallowUpdate'] );
+		$this->assertArrayNotHasKey(
+			UpdateJob::FORCED_UPDATE,
+			$capturedParams,
+			'Per-entity job must NOT carry forcedUpdate when diffKeys is all-shallow'
+		);
 	}
 
 	public function testDispatchSchemaChangePropagation() {

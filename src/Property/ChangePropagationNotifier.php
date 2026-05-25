@@ -30,6 +30,8 @@ class ChangePropagationNotifier {
 
 	private bool $isTypePropagation = false;
 
+	private array $diffKeys = [];
+
 	/**
 	 * @var bool
 	 */
@@ -90,6 +92,10 @@ class ChangePropagationNotifier {
 			$params['isTypePropagation'] = true;
 		}
 
+		if ( $this->diffKeys !== [] ) {
+			$params['diffKeys'] = $this->diffKeys;
+		}
+
 		return ChangePropagationDispatchJob::planAsJob( $subject, $params );
 	}
 
@@ -119,6 +125,8 @@ class ChangePropagationNotifier {
 		}
 
 		$this->hasDiff = false;
+		$this->isTypePropagation = false;
+		$this->diffKeys = [];
 
 		// Check the type first
 		$propertyList = array_merge(
@@ -132,13 +140,6 @@ class ChangePropagationNotifier {
 		);
 
 		foreach ( $propertyList as $key ) {
-
-			// No need to keep comparing once a diff has been
-			// detected
-			if ( $this->hasDiff() ) {
-				break;
-			}
-
 			$this->doCompare( $semanticData, $key );
 		}
 
@@ -159,12 +160,16 @@ class ChangePropagationNotifier {
 	}
 
 	private function setDiff( bool $hasDiff, $key ): void {
-		if ( !$hasDiff || $this->hasDiff ) {
+		if ( !$hasDiff ) {
 			return;
 		}
 
-		$this->hasDiff = true;
-		$this->isTypePropagation = $key === '_TYPE';
+		$this->diffKeys[] = $key;
+
+		if ( !$this->hasDiff ) {
+			$this->hasDiff = true;
+			$this->isTypePropagation = $key === '_TYPE';
+		}
 	}
 
 	/**
