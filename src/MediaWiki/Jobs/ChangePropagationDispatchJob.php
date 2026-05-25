@@ -97,6 +97,21 @@ class ChangePropagationDispatchJob extends Job {
 	 * Called from PropertyChangePropagationNotifier
 	 *
 	 * @since 3.0
+	 *
+	 * @param WikiPage $subject The Property or Category page whose spec changed.
+	 * @param array $params Recognized keys:
+	 *  - 'isTypePropagation' (bool): set when the diff was on _TYPE; widens the
+	 *    entity-lookup orphan scan in ChangePropagationEntityLookup.
+	 *  - 'diffKeys' (string[]): every watched-property key that diffed. Used by
+	 *    chooseUpdateStrategy() to decide whether per-entity jobs go shallow.
+	 *  - 'data' (string): newline-separated subject hashes for a chunked
+	 *    secondary-dispatch pass (populated by pushChangePropagationDispatchJob).
+	 *  - 'schema_change_propagation' (mixed): present when the dispatch was
+	 *    triggered by a Schema edit (not a Property/Category page edit);
+	 *    'property_key' is consulted in this branch.
+	 *  - 'property_key' (string): the property key for schema-driven dispatch.
+	 *
+	 * @return bool
 	 */
 	public static function planAsJob( WikiPage $subject, array $params = [] ): bool {
 		Exporter::getInstance()->resetCacheBy( $subject );
