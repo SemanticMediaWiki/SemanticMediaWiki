@@ -11,6 +11,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Property\SpecificationLookup as PropertySpecificationLookup;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
@@ -284,6 +285,56 @@ class ChangePropagationDispatchJobTest extends TestCase {
 		);
 
 		$instance->run();
+	}
+
+	/**
+	 * @dataProvider chooseUpdateStrategyProvider
+	 */
+	public function testChooseUpdateStrategy( array $params, string $expected ): void {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$job = $this->newJob( $title, $params );
+
+		$reflector = new \ReflectionClass( ChangePropagationDispatchJob::class );
+		$method = $reflector->getMethod( 'chooseUpdateStrategy' );
+		$method->setAccessible( true );
+
+		$this->assertSame( $expected, $method->invoke( $job ) );
+	}
+
+	public function chooseUpdateStrategyProvider(): array {
+		return [
+			'no diffKeys param at all (backward-compat)' => [
+				[],
+				UpdateJob::FORCED_UPDATE,
+			],
+			'empty diffKeys array' => [
+				[ 'diffKeys' => [] ],
+				UpdateJob::FORCED_UPDATE,
+			],
+			'all keys in SHALLOW_SET (_SUBC only)' => [
+				[ 'diffKeys' => [ '_SUBC' ] ],
+				'shallowUpdate',
+			],
+			'all keys in SHALLOW_SET (multi)' => [
+				[ 'diffKeys' => [ '_SUBC', '_PDESC' ] ],
+				'shallowUpdate',
+			],
+			'mixed: one safe, one not' => [
+				[ 'diffKeys' => [ '_PDESC', '_PVAL' ] ],
+				UpdateJob::FORCED_UPDATE,
+			],
+			'all keys outside SHALLOW_SET' => [
+				[ 'diffKeys' => [ '_PVAL', '_TYPE' ] ],
+				UpdateJob::FORCED_UPDATE,
+			],
+			'_LIST is explicitly NOT in SHALLOW_SET' => [
+				[ 'diffKeys' => [ '_LIST' ] ],
+				UpdateJob::FORCED_UPDATE,
+			],
+		];
 	}
 
 	public function testDispatchSchemaChangePropagation() {

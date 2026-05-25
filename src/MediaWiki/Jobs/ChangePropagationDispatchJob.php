@@ -62,6 +62,23 @@ class ChangePropagationDispatchJob extends Job {
 	const CACHE_NAMESPACE = 'smw:chgprop';
 
 	/**
+	 * Property keys whose change-propagation diffs do not affect dependents'
+	 * stored SMW data. For these, dependent per-entity update jobs use
+	 * shallowUpdate (parser-cache purge only) instead of forcedUpdate
+	 * (full re-parse + re-store).
+	 *
+	 * Verified against the data model:
+	 *  - _SUBC, _SUBP: hierarchies walked at query time via HierarchyTempTableBuilder
+	 *  - _PDESC, _PPLB: display-only labels/descriptions
+	 *
+	 * Excluded conservatively: _TYPE/_CONV/_UNIT/_REDI/_LIST (storage-affecting),
+	 * _PVAL/_PVUC/_PVALI/_PVAP/_PREC (constraint-adjacent; stored _ERRT may depend).
+	 *
+	 * @since 7.0.0
+	 */
+	private const SHALLOW_SET = [ '_SUBC', '_SUBP', '_PDESC', '_PPLB' ];
+
+	/**
 	 * @since 3.0
 	 */
 	public function __construct(
@@ -358,6 +375,8 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function scheduleChangePropagationUpdateJobFromList( array $dataItems ): void {
+		$strategy = $this->chooseUpdateStrategy();
+
 		foreach ( $dataItems as $dataItem ) {
 
 			if ( $dataItem === '' ) {
@@ -369,12 +388,36 @@ class ChangePropagationDispatchJob extends Job {
 			$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
 				$title,
 				[
-					UpdateJob::FORCED_UPDATE => true
+					$strategy => true
 				]
 			);
 
 			$changePropagationUpdateJob->insert();
 		}
+	}
+
+	/**
+	 * Returns the update strategy to use for per-entity propagation jobs in the
+	 * current dispatch. When every key in the `diffKeys` parameter is in
+	 * SHALLOW_SET, dependents only need a parser-cache purge; otherwise a full
+	 * re-parse is required.
+	 *
+	 * @since 7.0.0
+	 */
+	private function chooseUpdateStrategy(): string {
+		$diffKeys = $this->getParameter( 'diffKeys' );
+
+		if ( !is_array( $diffKeys ) || $diffKeys === [] ) {
+			return UpdateJob::FORCED_UPDATE;
+		}
+
+		foreach ( $diffKeys as $key ) {
+			if ( !in_array( $key, self::SHALLOW_SET, true ) ) {
+				return UpdateJob::FORCED_UPDATE;
+			}
+		}
+
+		return 'shallowUpdate';
 	}
 
 	private function commitSpecificationChangePropagationAsJob( WikiPage $subject, $count ): void {
