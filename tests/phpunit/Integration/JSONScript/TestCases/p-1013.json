@@ -1,5 +1,5 @@
 {
-	"description": "Test change-propagation: shallow update for category _SUBC diff and forced update for property _TYPE diff",
+	"description": "Change-propagation pipeline smoke test: category _SUBC propagation (shallow path) and an unchanged typed property (pipeline survives forced/shallow split)",
 	"setup": [
 		{
 			"namespace": "NS_CATEGORY",
@@ -63,7 +63,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 subject retains typed property value after propagation pipeline (forced update path)",
+			"about": "#1 unchanged typed property retains its value after propagation jobs run (pipeline smoke)",
 			"namespace": "NS_MAIN",
 			"subject": "P1013-Subject",
 			"store": {
