@@ -90,6 +90,8 @@ class updateEntityCollation extends Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
+		global $wgCategoryCollation;
+
 		$maintenanceCheck = new MaintenanceCheck();
 		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
@@ -129,7 +131,6 @@ class updateEntityCollation extends Maintenance {
 		);
 
 		$smwgEntityCollation = $applicationFactory->getSettings()->get( 'smwgEntityCollation' );
-		$wgCategoryCollation = $GLOBALS['wgCategoryCollation'];
 
 		if ( $smwgEntityCollation !== $wgCategoryCollation ) {
 			$this->informAboutDifferences( $smwgEntityCollation, $wgCategoryCollation );
@@ -172,7 +173,7 @@ class updateEntityCollation extends Maintenance {
 		$this->hookDispatcher->onAfterUpdateEntityCollationComplete( $this->store, $this->messageReporter );
 	}
 
-	private function informAboutDifferences( $smwgEntityCollation, $wgCategoryCollation ) {
+	private function informAboutDifferences( $smwgEntityCollation, $categoryCollation ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -198,7 +199,7 @@ class updateEntityCollation extends Maintenance {
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->twoCols( '... `$wgCategoryCollation`', $wgCategoryCollation, 3, '.' )
+			$cliMsgFormatter->twoCols( '... `$wgCategoryCollation`', $categoryCollation, 3, '.' )
 		);
 	}
 
