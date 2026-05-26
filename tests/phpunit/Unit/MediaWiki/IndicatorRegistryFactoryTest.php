@@ -8,6 +8,7 @@ use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\IndicatorRegistryFactory;
 use SMW\Store;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\IndicatorRegistryFactory
@@ -18,23 +19,23 @@ use SMW\Store;
  */
 class IndicatorRegistryFactoryTest extends TestCase {
 
-	private Store $store;
+	private TestEnvironment $testEnvironment;
 	private EntityExaminerIndicatorsFactory $entityExaminerIndicatorsFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		$this->testEnvironment = new TestEnvironment();
 		$this->entityExaminerIndicatorsFactory = $this->createMock( EntityExaminerIndicatorsFactory::class );
 	}
 
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
 	private function newInstance(): IndicatorRegistryFactory {
-		return new IndicatorRegistryFactory(
-			$this->store,
-			$this->entityExaminerIndicatorsFactory
-		);
+		return new IndicatorRegistryFactory( $this->entityExaminerIndicatorsFactory );
 	}
 
 	public function testCanConstruct(): void {
@@ -54,11 +55,17 @@ class IndicatorRegistryFactoryTest extends TestCase {
 	}
 
 	public function testNewForAttachesEntityExaminerProviderWhenRequested(): void {
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
 		$provider = $this->createMock( EntityExaminerCompositeIndicatorProvider::class );
 
 		$this->entityExaminerIndicatorsFactory->expects( $this->once() )
 			->method( 'newEntityExaminerIndicatorProvider' )
-			->with( $this->store )
+			->with( $store )
 			->willReturn( $provider );
 
 		$registry = $this->newInstance()->newFor( true );

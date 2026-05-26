@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki;
 
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
-use SMW\Store;
+use SMW\Services\ServicesFactory;
 
 /**
  * Produces a fully-configured {@link IndicatorRegistry} for the
@@ -11,6 +11,14 @@ use SMW\Store;
  * because whether the user has the entity-issue panel enabled is a per-user
  * preference, and the registry exposes that behaviour by conditionally
  * attaching the `EntityExaminerCompositeIndicatorProvider`.
+ *
+ * `Store` is resolved through `ServicesFactory::getInstance()->getStore()`
+ * inside `newFor()`. `HookContainer` caches handler instances across
+ * service-container resets, and the `EntityExaminerCompositeIndicatorProvider`
+ * transitively captures `Store`. Capturing `Store` at factory-construction
+ * time would let the resulting provider outlive the `Store` it was wired
+ * with. The lazy resolution matches the behaviour of the legacy
+ * `ServicesFactory::newIndicatorRegistry()`.
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
@@ -21,7 +29,6 @@ class IndicatorRegistryFactory {
 	 * @since 7.0.0
 	 */
 	public function __construct(
-		private readonly Store $store,
 		private readonly EntityExaminerIndicatorsFactory $entityExaminerIndicatorsFactory,
 	) {
 	}
@@ -37,7 +44,9 @@ class IndicatorRegistryFactory {
 		}
 
 		$indicatorRegistry->addIndicatorProvider(
-			$this->entityExaminerIndicatorsFactory->newEntityExaminerIndicatorProvider( $this->store )
+			$this->entityExaminerIndicatorsFactory->newEntityExaminerIndicatorProvider(
+				ServicesFactory::getInstance()->getStore()
+			)
 		);
 
 		return $indicatorRegistry;

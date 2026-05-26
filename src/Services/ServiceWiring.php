@@ -729,10 +729,7 @@ return [
 	},
 
 	'SMW.IndicatorRegistryFactory' => static function ( MediaWikiServices $services ): IndicatorRegistryFactory {
-		$servicesFactory = ServicesFactory::getInstance();
-
 		return new IndicatorRegistryFactory(
-			$servicesFactory->getStore(),
 			new EntityExaminerIndicatorsFactory()
 		);
 	},
@@ -750,7 +747,7 @@ return [
 		$servicesFactory = ServicesFactory::getInstance();
 
 		return new InTextAnnotationParserFactory(
-			$servicesFactory->newMwCollaboratorFactory(),
+			$services->getService( 'SMW.MwCollaboratorFactory' ),
 			$servicesFactory->getSettings(),
 			$servicesFactory->getHookDispatcher()
 		);

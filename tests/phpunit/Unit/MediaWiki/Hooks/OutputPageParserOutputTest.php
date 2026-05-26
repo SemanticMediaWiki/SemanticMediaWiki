@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\FauxRequest;
@@ -179,7 +180,7 @@ class OutputPageParserOutputTest extends TestCase {
 	}
 
 	public function testProcessForSimpleFactboxBuild() {
-		$languageFactory = \MediaWiki\MediaWikiServices::getInstance()->getLanguageFactory();
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 		$language = $languageFactory->getLanguage( 'en' );
 
 		$title = $this->makeTitleForFactboxBuild( __METHOD__, $language );
@@ -200,7 +201,7 @@ class OutputPageParserOutputTest extends TestCase {
 	}
 
 	public function testProcessForOldid() {
-		$languageFactory = \MediaWiki\MediaWikiServices::getInstance()->getLanguageFactory();
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 		$language = $languageFactory->getLanguage( 'en' );
 
 		$title = $this->makeTitleForFactboxBuild( __METHOD__, $language );
@@ -220,7 +221,9 @@ class OutputPageParserOutputTest extends TestCase {
 		$this->inTextAnnotationParserFactory->expects( $this->once() )
 			->method( 'newFor' )
 			->willReturn( $this->inTextAnnotationParser );
-		$this->inTextAnnotationParser->expects( $this->once() )->method( 'parse' );
+		$this->inTextAnnotationParser->expects( $this->once() )
+			->method( 'parse' )
+			->with( 'test' );
 
 		$parserOutput = $this->makeParserOutput( $this->newSemanticDataFor( $title ) );
 
