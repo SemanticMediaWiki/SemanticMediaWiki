@@ -7,10 +7,16 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
+use Psr\Log\LoggerInterface;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
+use SMW\MediaWiki\IndicatorRegistryFactory;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\PermissionManager;
+use SMW\MediaWiki\PostProcHandlerFactory;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Parser\InTextAnnotationParserFactory;
+use SMW\ParserData;
 
 /**
  * OutputPageParserOutput hook is called after parse, before the HTML is
@@ -39,6 +45,11 @@ class OutputPageParserOutput implements OutputPageParserOutputHook {
 		private readonly FactboxText $factboxText,
 		private readonly FactboxFactory $factboxFactory,
 		private readonly UserOptionsLookup $userOptionsLookup,
+		private readonly PermissionManager $permissionManager,
+		private readonly IndicatorRegistryFactory $indicatorRegistryFactory,
+		private readonly PostProcHandlerFactory $postProcHandlerFactory,
+		private readonly InTextAnnotationParserFactory $inTextAnnotationParserFactory,
+		private readonly LoggerInterface $logger,
 	) {
 	}
 
@@ -60,11 +71,9 @@ class OutputPageParserOutput implements OutputPageParserOutputHook {
 		$request = $context->getRequest();
 		$user = $outputPage->getUser();
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$permissionExaminer = $applicationFactory->newPermissionExaminer( $user );
+		$permissionExaminer = new PermissionExaminer( $this->permissionManager, $user );
 
-		$indicatorRegistry = $applicationFactory->create(
-			'IndicatorRegistry',
+		$indicatorRegistry = $this->indicatorRegistryFactory->newFor(
 			(bool)$this->userOptionsLookup->getOption(
 				$user,
 				GetPreferences::SHOW_ENTITY_ISSUE_PANEL,
@@ -96,9 +105,7 @@ class OutputPageParserOutput implements OutputPageParserOutputHook {
 			return '';
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$postProcHandler = $applicationFactory->newPostProcHandler( $parserOutput );
+		$postProcHandler = $this->postProcHandlerFactory->newFor( $parserOutput );
 
 		$html = $postProcHandler->getHtml(
 			$title,
@@ -144,12 +151,10 @@ class OutputPageParserOutput implements OutputPageParserOutputHook {
 
 			$text = $parserOutput->getContentHolderText();
 
-			$parserData = ApplicationFactory::getInstance()->newParserData(
-				$outputPage->getTitle(),
-				$parserOutput
-			);
+			$parserData = new ParserData( $outputPage->getTitle(), $parserOutput );
+			$parserData->setLogger( $this->logger );
 
-			$inTextAnnotationParser = ApplicationFactory::getInstance()->newInTextAnnotationParser( $parserData );
+			$inTextAnnotationParser = $this->inTextAnnotationParserFactory->newFor( $parserData );
 			$inTextAnnotationParser->parse( $text );
 
 			return $parserData->getOutput();
