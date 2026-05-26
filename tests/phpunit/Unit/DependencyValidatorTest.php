@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit;
 
+use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage;
@@ -82,7 +83,10 @@ class DependencyValidatorTest extends TestCase {
 			->method( 'overrideSub' )
 			->with(
 				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
-				$this->stringContains( 'foo-etag' ) );
+				'_smw_dirty_',
+				'1',
+				$this->anything()
+			);
 
 		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
@@ -230,6 +234,61 @@ class DependencyValidatorTest extends TestCase {
 		$instance = $this->newInstance( 'foo-etag' );
 
 		$this->assertFalse(
+			$instance->canKeepParserCache( $subject )
+		);
+	}
+
+	public function testHasArchaicDependenciesWriteCausesCanKeepParserCacheRejection() {
+		// Integration-style: hasArchaicDependencies' overrideSub write must
+		// cause canKeepParserCache to reject for the same request's eTag,
+		// because the marker is written under DIRTY_MARKER, not the eTag.
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->willReturn( true );
+
+		$this->dependencyLinksValidator->expects( $this->once() )
+			->method( 'canCheckDependencies' )
+			->willReturn( true );
+
+		$this->dependencyLinksValidator->expects( $this->once() )
+			->method( 'hasArchaicDependencies' )
+			->willReturn( true );
+
+		$this->dependencyLinksValidator->expects( $this->once() )
+			->method( 'getCheckedDependencies' )
+			->willReturn( [] );
+
+		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$realEntityCache = new EntityCache( new FixedInMemoryLruCache() );
+
+		$instance = new DependencyValidator(
+			$this->namespaceExaminer,
+			$this->dependencyLinksValidator,
+			$realEntityCache,
+			'foo-etag',
+			3600
+		);
+		$instance->setEventDispatcher( $eventDispatcher );
+
+		$subject = WikiPage::newFromText( 'Foo' );
+
+		// hasArchaicDependencies writes the dirty marker (not the eTag).
+		$this->assertTrue(
+			$instance->hasArchaicDependencies( $subject )
+		);
+
+		// canKeepParserCache for the same request's eTag must reject:
+		// the parent key now exists but the eTag sub-key does not.
+		$this->assertFalse(
+			$instance->canKeepParserCache( $subject )
+		);
+
+		// A second call with the same eTag finds the saveSub entry from
+		// the prior rejection and keeps the cache (single-rejection-per-eTag).
+		$this->assertTrue(
 			$instance->canKeepParserCache( $subject )
 		);
 	}
