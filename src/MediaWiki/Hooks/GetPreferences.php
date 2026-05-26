@@ -6,11 +6,12 @@ use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 use SMW\MediaWiki\Specials\FacetedSearch\Profile as FacetedSearchProfile;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\SchemaFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 use SMW\Utils\Logo;
 
@@ -65,6 +66,7 @@ class GetPreferences implements GetPreferencesHook {
 		private readonly SchemaFactory $schemaFactory,
 		private readonly HookDispatcher $hookDispatcher,
 		private readonly Settings $settings,
+		private readonly PermissionManager $permissionManager,
 	) {
 	}
 
@@ -72,9 +74,7 @@ class GetPreferences implements GetPreferencesHook {
 	 * @since 7.0.0
 	 */
 	public function onGetPreferences( $user, &$preferences ) {
-		$permissionExaminer = ApplicationFactory::getInstance()->newPermissionExaminer(
-			$user
-		);
+		$permissionExaminer = new PermissionExaminer( $this->permissionManager, $user );
 
 		$otherPreferences = [];
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );

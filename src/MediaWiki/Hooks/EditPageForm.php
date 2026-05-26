@@ -9,8 +9,9 @@ use SMW\DataItems\Property;
 use SMW\GroupPermissions;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\PermissionManager;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 
 /**
@@ -33,6 +34,7 @@ class EditPageForm implements EditPage__showEditForm_initialHook {
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly Settings $settings,
+		private readonly PermissionManager $permissionManager,
 	) {
 	}
 
@@ -43,7 +45,7 @@ class EditPageForm implements EditPage__showEditForm_initialHook {
 	public function onEditPage__showEditForm_initial( $editor, $out ) {
 		$html = '';
 		$user = $out->getUser();
-		$permissionExaminer = ApplicationFactory::getInstance()->newPermissionExaminer( $user );
+		$permissionExaminer = new PermissionExaminer( $this->permissionManager, $user );
 
 		if (
 			$this->settings->get( 'smwgEnabledEditPageHelp' ) &&
