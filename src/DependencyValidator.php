@@ -91,15 +91,11 @@ class DependencyValidator {
 
 		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
 
-		// The parser cache is rejected, store for which key the request has
-		// happened since the `smw_touched` is only updated once and given that
-		// an anon/logged-in user create a different eTag (ParserCache) key
-		// this will allows us to distinguish them later
+		// Write the dirty marker under a fixed sub-key (not the current request's
+		// eTag). canKeepParserCache will then find no eTag sub-key on the next
+		// fetch and correctly reject the cache for each distinct eTag exactly
+		// once, recording the eTag's handled state via its own saveSub call.
 		$key = $this->makeCacheKey( $title );
-
-		// Genuine rejection based on `hasArchaicDependencies` therefore override
-		// any previous sub keys with a fixed dirty marker so the eTag sub-key
-		// remains absent and `canKeepParserCache` correctly rejects
 		$this->entityCache->overrideSub( $key, self::DIRTY_MARKER, '1', $this->cacheTTL );
 
 		return true;
