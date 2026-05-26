@@ -6,7 +6,8 @@ use MediaWiki\User\Options\UserOptionsLookup;
 use SkinTemplate;
 use SMW\GroupPermissions;
 use SMW\MediaWiki\JobQueue;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\PermissionManager;
 use SMW\Settings;
 
 /**
@@ -26,6 +27,7 @@ class PersonalUrls {
 		private readonly JobQueue $jobQueue,
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly Settings $settings,
+		private readonly PermissionManager $permissionManager,
 	) {
 	}
 
@@ -34,7 +36,7 @@ class PersonalUrls {
 	 */
 	public function onPersonalUrls( array &$personal_urls, $title, SkinTemplate $skinTemplate ): bool {
 		$user = $skinTemplate->getUser();
-		$permissionExaminer = ApplicationFactory::getInstance()->newPermissionExaminer( $user );
+		$permissionExaminer = new PermissionExaminer( $this->permissionManager, $user );
 		$watchlist = $this->settings->get( 'smwgJobQueueWatchlist' ) ?: [];
 
 		if (

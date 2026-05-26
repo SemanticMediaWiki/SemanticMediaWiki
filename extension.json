@@ -162,7 +162,8 @@
 			"services": [
 				"SMW.NamespaceExaminer",
 				"UserOptionsLookup",
-				"SMW.Settings"
+				"SMW.Settings",
+				"SMW.PermissionManager"
 			]
 		},
 		"SemanticMediaWiki.PageMoveComplete": {
@@ -264,7 +265,8 @@
 			"services": [
 				"SMW.SchemaFactory",
 				"SMW.HookDispatcher",
-				"SMW.Settings"
+				"SMW.Settings",
+				"SMW.PermissionManager"
 			]
 		},
 		"SemanticMediaWiki.SkinTemplateNavigationUniversal": {

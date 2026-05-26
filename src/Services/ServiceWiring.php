@@ -831,7 +831,8 @@ return [
 		return new PersonalUrls(
 			$servicesFactory->getJobQueue(),
 			$services->getUserOptionsLookup(),
-			$servicesFactory->getSettings()
+			$servicesFactory->getSettings(),
+			$servicesFactory->getPermissionManager()
 		);
 	},
 

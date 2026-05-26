@@ -6,6 +6,7 @@ use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\PermissionManager;
 use SMW\Schema\SchemaFactory;
 use SMW\Settings;
 
@@ -23,25 +24,30 @@ class GetPreferencesTest extends TestCase {
 	private $hookDispatcher;
 	private $schemaFactory;
 	private $settings;
+	private $permissionManager;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->schemaFactory = $this->getMockBuilder( SchemaFactory::class )
-			->disableOriginalConstructor()
-			->getMock();
-
+		$this->hookDispatcher = $this->createMock( HookDispatcher::class );
+		$this->schemaFactory = $this->createMock( SchemaFactory::class );
 		$this->settings = $this->createMock( Settings::class );
+		$this->permissionManager = $this->createMock( PermissionManager::class );
+	}
+
+	private function newInstance(): GetPreferences {
+		return new GetPreferences(
+			$this->schemaFactory,
+			$this->hookDispatcher,
+			$this->settings,
+			$this->permissionManager
+		);
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			GetPreferences::class,
-			new GetPreferences( $this->schemaFactory, $this->hookDispatcher, $this->settings )
+			$this->newInstance()
 		);
 	}
 
@@ -49,44 +55,24 @@ class GetPreferencesTest extends TestCase {
 	 * @dataProvider keyProvider
 	 */
 	public function testProcess( $key ) {
-		$user = $this->getMockBuilder( User::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->permissionManager->method( 'userHasRight' )->willReturn( true );
 
+		$user = $this->createMock( User::class );
 		$preferences = [];
 
-		$instance = new GetPreferences(
-			$this->schemaFactory,
-			$this->hookDispatcher,
-			$this->settings
-		);
+		$this->newInstance()->onGetPreferences( $user, $preferences );
 
-		$instance->onGetPreferences( $user, $preferences );
-
-		$this->assertArrayHasKey(
-			$key,
-			$preferences
-		);
+		$this->assertArrayHasKey( $key, $preferences );
 	}
 
 	public function keyProvider() {
-		$provider[] = [
-			'smw-prefs-intro'
+		return [
+			[ 'smw-prefs-intro' ],
+			[ 'smw-prefs-ask-options-tooltip-display' ],
+			[ 'smw-prefs-general-options-time-correction' ],
+			[ 'smw-prefs-general-options-disable-editpage-info' ],
+			[ 'smw-prefs-general-options-jobqueue-watchlist' ],
 		];
-
-		$provider[] = [
-			'smw-prefs-ask-options-tooltip-display'
-		];
-
-		$provider[] = [
-			'smw-prefs-general-options-time-correction'
-		];
-
-		$provider[] = [
-			'smw-prefs-general-options-disable-editpage-info'
-		];
-
-		return $provider;
 	}
 
 }
