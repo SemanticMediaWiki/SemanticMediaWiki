@@ -3,16 +3,16 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Exception;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use MediaWiki\User\UserFactory;
 use SMW\EventDispatcher\EventDispatcher;
+use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\ParserData;
 use SMW\Property\AnnotatorFactory as PropertyAnnotatorFactory;
 use SMW\Schema\Schema;
 use SMW\Schema\SchemaFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
 /**
@@ -42,6 +42,8 @@ class RevisionFromEditComplete implements RevisionFromEditCompleteHook {
 		private readonly SchemaFactory $schemaFactory,
 		private readonly Store $store,
 		private readonly EventDispatcher $eventDispatcher,
+		private readonly MwCollaboratorFactory $mwCollaboratorFactory,
+		private readonly UserFactory $userFactory,
 	) {
 	}
 
@@ -49,17 +51,15 @@ class RevisionFromEditComplete implements RevisionFromEditCompleteHook {
 	 * @since 7.0.0
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
+		$userObject = $this->userFactory->newFromUserIdentity( $user );
 
-		$userObject = MediaWikiServices::getInstance()->getUserFactory()->newFromUserIdentity( $user );
-		$editInfo = $mwCollaboratorFactory->newEditInfo(
+		$editInfo = $this->mwCollaboratorFactory->newEditInfo(
 			$wikiPage,
 			$rev,
 			$userObject
 		);
 
-		$pageInfoProvider = $mwCollaboratorFactory->newPageInfoProvider(
+		$pageInfoProvider = $this->mwCollaboratorFactory->newPageInfoProvider(
 			$wikiPage,
 			$rev,
 			$userObject
@@ -79,10 +79,7 @@ class RevisionFromEditComplete implements RevisionFromEditCompleteHook {
 			return;
 		}
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$title,
-			$parserOutput
-		);
+		$parserData = new ParserData( $title, $parserOutput );
 
 		$this->addPredefinedPropertyAnnotation(
 			$parserData,

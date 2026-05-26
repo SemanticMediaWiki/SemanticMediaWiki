@@ -125,7 +125,8 @@
 			"class": "SMW\\MediaWiki\\Hooks\\RejectParserCacheValue",
 			"services": [
 				"SMW.NamespaceExaminer",
-				"SMW.Logger"
+				"SMW.Logger",
+				"SMW.DependencyValidatorFactory"
 			]
 		},
 		"SemanticMediaWiki.SkinAfterContent": {
@@ -212,7 +213,10 @@
 			"class": "SMW\\MediaWiki\\Hooks\\ArticleProtectComplete",
 			"services": [
 				"SMW.Settings",
-				"SMW.Logger"
+				"SMW.Logger",
+				"SMW.MwCollaboratorFactory",
+				"SMW.RevisionGuard",
+				"SMW.DataItemFactory"
 			]
 		},
 		"SemanticMediaWiki.ArticleViewHeader": {
@@ -220,7 +224,8 @@
 			"services": [
 				"SMW.Store",
 				"SMW.NamespaceExaminer",
-				"SMW.Settings"
+				"SMW.Settings",
+				"SMW.DependencyValidatorFactory"
 			]
 		},
 		"SemanticMediaWiki.RevisionFromEditComplete": {
@@ -229,7 +234,9 @@
 				"SMW.PropertyAnnotatorFactory",
 				"SMW.SchemaFactory",
 				"SMW.Store",
-				"SMW.EventDispatcher"
+				"SMW.EventDispatcher",
+				"SMW.MwCollaboratorFactory",
+				"UserFactory"
 			]
 		},
 		"SemanticMediaWiki.LinksUpdateComplete": {

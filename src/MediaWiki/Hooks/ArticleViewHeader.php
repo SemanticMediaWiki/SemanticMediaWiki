@@ -7,12 +7,11 @@ use MediaWiki\Page\Hook\ArticleViewHeaderHook;
 use MediaWiki\Title\Title;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage as DIWikiPage;
+use SMW\DependencyValidatorFactory;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
-use SMW\Site;
 use SMW\Store;
 
 /**
@@ -35,6 +34,7 @@ class ArticleViewHeader implements ArticleViewHeaderHook {
 		private readonly Store $store,
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly Settings $settings,
+		private readonly DependencyValidatorFactory $dependencyValidatorFactory,
 	) {
 	}
 
@@ -59,17 +59,11 @@ class ArticleViewHeader implements ArticleViewHeaderHook {
 			$pcache = $this->updateCategoryTop( $title, $article->getContext()->getOutput() );
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$parserCache = $applicationFactory->create( 'ParserCache' );
 		$wikiPage = $article->getPage();
 
-		$dependencyValidator = $applicationFactory->newDependencyValidator(
-			$this->getETag( $parserCache, $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) ),
-			Site::getCacheExpireTime( 'parser' )
-		);
-
-		$dependencyValidator->setEventDispatcher(
-			$applicationFactory->getEventDispatcher()
+		$dependencyValidator = $this->dependencyValidatorFactory->newFor(
+			$wikiPage,
+			$wikiPage->makeParserOptions( 'canonical' )
 		);
 
 		if ( $dependencyValidator->hasArchaicDependencies( $subject ) ) {
@@ -77,11 +71,6 @@ class ArticleViewHeader implements ArticleViewHeaderHook {
 		}
 
 		return true;
-	}
-
-	private function getETag( $parserCache, $page, $pOpts ): string {
-		return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts ) .
-			"--" . $page->getTouched() . '"';
 	}
 
 	private function updateCategoryTop( Title $title, $output ): bool {
