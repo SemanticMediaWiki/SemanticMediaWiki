@@ -83,7 +83,7 @@ class RejectParserCacheValueTest extends TestCase {
 		);
 	}
 
-	public function testProcesCanKeepParserCache() {
+	public function testProcessCanKeepParserCache() {
 		$title = $this->createMock( Title::class );
 		$title->method( 'getNamespace' )->willReturn( NS_MAIN );
 
@@ -104,7 +104,7 @@ class RejectParserCacheValueTest extends TestCase {
 		);
 	}
 
-	public function testProcesCanNOTKeepParserCache() {
+	public function testProcessCanNOTKeepParserCache() {
 		$title = $this->createMock( Title::class );
 		$title->method( 'getNamespace' )->willReturn( NS_MAIN );
 

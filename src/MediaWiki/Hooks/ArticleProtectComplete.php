@@ -68,6 +68,7 @@ class ArticleProtectComplete implements ArticleProtectCompleteHook {
 		}
 
 		$parserData = new ParserData( $wikiPage->getTitle(), $output );
+		$parserData->setLogger( $this->logger );
 
 		$this->doPrepareData( $protect, $parserData );
 		$parserData->setOrigin( 'ArticleProtectComplete' );
