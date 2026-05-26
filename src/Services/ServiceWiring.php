@@ -15,6 +15,7 @@ use SMW\EventDispatcher\EventDispatcher;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\HierarchyLookup;
+use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
@@ -28,6 +29,7 @@ use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\PersonalUrls;
 use SMW\MediaWiki\Hooks\UserChange;
+use SMW\MediaWiki\IndicatorRegistryFactory;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\ContentParserFactory;
@@ -39,9 +41,11 @@ use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
+use SMW\MediaWiki\PostProcHandlerFactory;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
+use SMW\Parser\InTextAnnotationParserFactory;
 use SMW\ParserFunctionFactory;
 use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
@@ -722,6 +726,34 @@ return [
 		}
 
 		return new MwCollaboratorFactory( $servicesFactory );
+	},
+
+	'SMW.IndicatorRegistryFactory' => static function ( MediaWikiServices $services ): IndicatorRegistryFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		return new IndicatorRegistryFactory(
+			$servicesFactory->getStore(),
+			new EntityExaminerIndicatorsFactory()
+		);
+	},
+
+	'SMW.PostProcHandlerFactory' => static function ( MediaWikiServices $services ): PostProcHandlerFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		return new PostProcHandlerFactory(
+			$servicesFactory->getCache(),
+			$servicesFactory->getSettings()
+		);
+	},
+
+	'SMW.InTextAnnotationParserFactory' => static function ( MediaWikiServices $services ): InTextAnnotationParserFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		return new InTextAnnotationParserFactory(
+			$servicesFactory->newMwCollaboratorFactory(),
+			$servicesFactory->getSettings(),
+			$servicesFactory->getHookDispatcher()
+		);
 	},
 
 	'SMW.NamespaceExaminer' => static function ( MediaWikiServices $services ): NamespaceExaminer {

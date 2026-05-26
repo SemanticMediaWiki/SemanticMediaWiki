@@ -140,7 +140,12 @@
 				"SMW.NamespaceExaminer",
 				"SMW.FactboxText",
 				"SMW.FactboxFactory",
-				"UserOptionsLookup"
+				"UserOptionsLookup",
+				"SMW.PermissionManager",
+				"SMW.IndicatorRegistryFactory",
+				"SMW.PostProcHandlerFactory",
+				"SMW.InTextAnnotationParserFactory",
+				"SMW.Logger"
 			]
 		},
 		"SemanticMediaWiki.OutputPageCheckLastModified": {
