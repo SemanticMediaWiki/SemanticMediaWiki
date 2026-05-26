@@ -832,7 +832,7 @@ return [
 
 		return new DependencyValidatorFactory(
 			$servicesFactory->getNamespaceExaminer(),
-			$servicesFactory->getQueryDependencyLinksStoreFactory()->newDependencyLinksValidator(),
+			$servicesFactory->getQueryDependencyLinksStoreFactory(),
 			$servicesFactory->getEntityCache(),
 			$servicesFactory->getEventDispatcher(),
 			$services->getParserCache()

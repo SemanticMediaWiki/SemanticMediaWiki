@@ -11,6 +11,7 @@ use SMW\EntityCache;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use WikiPage;
 
 /**
@@ -23,7 +24,7 @@ use WikiPage;
 class DependencyValidatorFactoryTest extends TestCase {
 
 	private NamespaceExaminer $namespaceExaminer;
-	private DependencyLinksValidator $dependencyLinksValidator;
+	private QueryDependencyLinksStoreFactory $queryDependencyLinksStoreFactory;
 	private EntityCache $entityCache;
 	private EventDispatcher $eventDispatcher;
 	private ParserCache $parserCache;
@@ -32,7 +33,7 @@ class DependencyValidatorFactoryTest extends TestCase {
 		parent::setUp();
 
 		$this->namespaceExaminer = $this->createMock( NamespaceExaminer::class );
-		$this->dependencyLinksValidator = $this->createMock( DependencyLinksValidator::class );
+		$this->queryDependencyLinksStoreFactory = $this->createMock( QueryDependencyLinksStoreFactory::class );
 		$this->entityCache = $this->createMock( EntityCache::class );
 		$this->eventDispatcher = $this->createMock( EventDispatcher::class );
 		$this->parserCache = $this->createMock( ParserCache::class );
@@ -41,7 +42,7 @@ class DependencyValidatorFactoryTest extends TestCase {
 	private function newInstance(): DependencyValidatorFactory {
 		return new DependencyValidatorFactory(
 			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
+			$this->queryDependencyLinksStoreFactory,
 			$this->entityCache,
 			$this->eventDispatcher,
 			$this->parserCache
@@ -66,9 +67,29 @@ class DependencyValidatorFactoryTest extends TestCase {
 			->with( $wikiPage, $parserOptions )
 			->willReturn( 'parsercache-key' );
 
+		$this->queryDependencyLinksStoreFactory->expects( $this->once() )
+			->method( 'newDependencyLinksValidator' )
+			->willReturn( $this->createMock( DependencyLinksValidator::class ) );
+
 		$validator = $this->newInstance()->newFor( $wikiPage, $parserOptions );
 
 		$this->assertInstanceOf( DependencyValidator::class, $validator );
+	}
+
+	public function testNewForBuildsAFreshValidatorPerCall(): void {
+		$wikiPage = $this->createMock( WikiPage::class );
+		$parserOptions = $this->createMock( ParserOptions::class );
+
+		// Each invocation must request a fresh validator from the factory so
+		// that a cached handler instance cannot retain a stale Store-bound
+		// validator across service-container resets.
+		$this->queryDependencyLinksStoreFactory->expects( $this->exactly( 2 ) )
+			->method( 'newDependencyLinksValidator' )
+			->willReturn( $this->createMock( DependencyLinksValidator::class ) );
+
+		$instance = $this->newInstance();
+		$instance->newFor( $wikiPage, $parserOptions );
+		$instance->newFor( $wikiPage, $parserOptions );
 	}
 
 }
