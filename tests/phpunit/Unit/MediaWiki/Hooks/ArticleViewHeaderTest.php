@@ -5,16 +5,19 @@ namespace SMW\Tests\Unit\MediaWiki\Hooks;
 use Article;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\ParserOptions;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\DependencyValidator;
+use SMW\DependencyValidatorFactory;
 use SMW\MediaWiki\Hooks\ArticleViewHeader;
 use SMW\NamespaceExaminer;
 use SMW\Settings;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
-use Throwable;
+use WikiPage as MwWikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleViewHeader
@@ -30,34 +33,54 @@ class ArticleViewHeaderTest extends TestCase {
 	private $store;
 	private $namespaceExaminer;
 	private $settings;
+	private $dependencyValidator;
+	private $dependencyValidatorFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->namespaceExaminer = $this->createMock( NamespaceExaminer::class );
 
-		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$entityIdManager = $this->createMock( EntityIdManager::class );
 
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
-		$this->store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->willReturn( $entityIdManager );
+		$this->store->method( 'getObjectIds' )->willReturn( $entityIdManager );
 
 		$this->settings = $this->createMock( Settings::class );
+
+		$this->dependencyValidator = $this->createMock( DependencyValidator::class );
+
+		$this->dependencyValidatorFactory = $this->createMock( DependencyValidatorFactory::class );
+		$this->dependencyValidatorFactory->method( 'newFor' )->willReturn( $this->dependencyValidator );
+	}
+
+	private function newInstance(): ArticleViewHeader {
+		return new ArticleViewHeader(
+			$this->store,
+			$this->namespaceExaminer,
+			$this->settings,
+			$this->dependencyValidatorFactory
+		);
+	}
+
+	private function newArticleFor( $title ): Article {
+		$wikiPage = $this->createMock( MwWikiPage::class );
+		$wikiPage->method( 'makeParserOptions' )->willReturn( $this->createMock( ParserOptions::class ) );
+
+		$article = $this->createMock( Article::class );
+		$article->method( 'getTitle' )->willReturn( $title );
+		$article->method( 'getPage' )->willReturn( $wikiPage );
+		return $article;
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ArticleViewHeader::class,
-			new ArticleViewHeader( $this->store, $this->namespaceExaminer, $this->settings )
+			$this->newInstance()
 		);
 	}
 
@@ -65,9 +88,7 @@ class ArticleViewHeaderTest extends TestCase {
 		$subject = WikiPage::newFromText( __METHOD__, NS_CATEGORY );
 		$property = new Property( Property::TYPE_CHANGE_PROP );
 
-		$this->namespaceExaminer->expects( $this->any() )
-			->method( 'isSemanticEnabled' )
-			->willReturn( true );
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( true );
 
 		$this->settings->method( 'get' )
 			->willReturnMap( [
@@ -84,90 +105,73 @@ class ArticleViewHeaderTest extends TestCase {
 			->with( $property )
 			->willReturn( true );
 
-		$this->store->expects( $this->any() )
-			->method( 'getSemanticData' )
-			->willReturn( $semanticData );
+		$this->store->method( 'getSemanticData' )->willReturn( $semanticData );
 
-		$output = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$output = $this->createMock( OutputPage::class );
+		$output->expects( $this->once() )->method( 'addHTML' );
 
-		$output->expects( $this->once() )
-			->method( 'addHTML' );
+		$context = $this->createMock( RequestContext::class );
+		$context->method( 'getOutput' )->willReturn( $output );
 
-		$context = $this->getMockBuilder( RequestContext::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$wikiPage = $this->createMock( MwWikiPage::class );
+		$wikiPage->method( 'makeParserOptions' )->willReturn( $this->createMock( ParserOptions::class ) );
 
-		$context->expects( $this->any() )
-			->method( 'getOutput' )
-			->willReturn( $output );
-
-		$page = $this->getMockBuilder( Article::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$page->expects( $this->any() )
-			->method( 'getTitle' )
-			->willReturn( $subject->getTitle() );
-
-		$page->expects( $this->any() )
-			->method( 'getContext' )
-			->willReturn( $context );
-
-		$instance = new ArticleViewHeader(
-			$this->store,
-			$this->namespaceExaminer,
-			$this->settings
-		);
+		$page = $this->createMock( Article::class );
+		$page->method( 'getTitle' )->willReturn( $subject->getTitle() );
+		$page->method( 'getContext' )->willReturn( $context );
+		$page->method( 'getPage' )->willReturn( $wikiPage );
 
 		$outputDone = '';
 		$useParserCache = '';
 
-		// Only the category-top branch is exercised here; the dependency
-		// validator branch needs a fully wired ApplicationFactory and is
-		// covered by HooksTest.
-		try {
-			$instance->onArticleViewHeader( $page, $outputDone, $useParserCache );
-		} catch ( Throwable $e ) {
-			// Downstream dependency-validator branch is not wired in this
-			// unit-test scope.
-		}
+		$this->newInstance()->onArticleViewHeader( $page, $outputDone, $useParserCache );
 
-		$this->assertFalse(
-			$useParserCache
-		);
+		$this->assertFalse( $useParserCache );
 	}
 
 	public function testProcessOnNoCategory() {
 		$subject = WikiPage::newFromText( __METHOD__ );
 
-		$this->namespaceExaminer->expects( $this->any() )
-			->method( 'isSemanticEnabled' )
-			->willReturn( false );
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( false );
 
-		$page = $this->getMockBuilder( Article::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$page->expects( $this->any() )
-			->method( 'getTitle' )
-			->willReturn( $subject->getTitle() );
-
-		$page->expects( $this->never() )
-			->method( 'getContext' );
-
-		$instance = new ArticleViewHeader(
-			$this->store,
-			$this->namespaceExaminer,
-			$this->settings
-		);
+		$page = $this->createMock( Article::class );
+		$page->method( 'getTitle' )->willReturn( $subject->getTitle() );
+		$page->expects( $this->never() )->method( 'getContext' );
 
 		$outputDone = '';
 		$useParserCache = '';
 
 		$this->assertTrue(
-			$instance->onArticleViewHeader( $page, $outputDone, $useParserCache )
+			$this->newInstance()->onArticleViewHeader( $page, $outputDone, $useParserCache )
+		);
+	}
+
+	public function testHasArchaicDependency() {
+		$subject = WikiPage::newFromText( __METHOD__ );
+
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( true );
+
+		$this->settings->method( 'get' )
+			->willReturnMap( [
+				[ 'smwgChangePropagationWatchlist', [ '_SUBC' ] ],
+			] );
+
+		$this->dependencyValidator->expects( $this->once() )
+			->method( 'hasArchaicDependencies' )
+			->willReturn( true );
+
+		$this->dependencyValidator->expects( $this->once() )
+			->method( 'markTitle' );
+
+		$outputDone = '';
+		$useParserCache = '';
+
+		$this->assertTrue(
+			$this->newInstance()->onArticleViewHeader(
+				$this->newArticleFor( $subject->getTitle() ),
+				$outputDone,
+				$useParserCache
+			)
 		);
 	}
 

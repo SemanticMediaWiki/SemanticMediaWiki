@@ -5,9 +5,8 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Hook\RejectParserCacheValueHook;
 use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage as DIWikiPage;
+use SMW\DependencyValidatorFactory;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Site;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
@@ -25,6 +24,7 @@ class RejectParserCacheValue implements RejectParserCacheValueHook {
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly LoggerInterface $logger,
+		private readonly DependencyValidatorFactory $dependencyValidatorFactory,
 	) {
 	}
 
@@ -38,21 +38,9 @@ class RejectParserCacheValue implements RejectParserCacheValueHook {
 			return true;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$parserCache = $applicationFactory->create( 'ParserCache' );
+		$dependencyValidator = $this->dependencyValidatorFactory->newFor( $wikiPage, $parserOptions );
 
-		$dependencyValidator = $applicationFactory->newDependencyValidator(
-			$this->getETag( $parserCache, $wikiPage, $parserOptions ),
-			Site::getCacheExpireTime( 'parser' )
-		);
-
-		$dependencyValidator->setEventDispatcher(
-			$applicationFactory->getEventDispatcher()
-		);
-
-		$subject = DIWikiPage::newFromTitle( $title );
-
-		if ( $dependencyValidator->canKeepParserCache( $subject ) ) {
+		if ( $dependencyValidator->canKeepParserCache( DIWikiPage::newFromTitle( $title ) ) ) {
 			return true;
 		}
 
@@ -66,11 +54,6 @@ class RejectParserCacheValue implements RejectParserCacheValueHook {
 		// Return false to reject an otherwise usable cached value from the
 		// parser cache
 		return false;
-	}
-
-	private function getETag( $parserCache, $page, $pOpts ): string {
-		return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts ) .
-			"--" . $page->getTouched() . '"';
 	}
 
 }

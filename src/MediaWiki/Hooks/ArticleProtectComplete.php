@@ -4,9 +4,12 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Page\Hook\ArticleProtectCompleteHook;
 use Psr\Log\LoggerInterface;
+use SMW\DataItemFactory;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\ParserData;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 
 /**
@@ -34,6 +37,9 @@ class ArticleProtectComplete implements ArticleProtectCompleteHook {
 	public function __construct(
 		private readonly Settings $settings,
 		private readonly LoggerInterface $logger,
+		private readonly MwCollaboratorFactory $mwCollaboratorFactory,
+		private readonly RevisionGuard $revisionGuard,
+		private readonly DataItemFactory $dataItemFactory,
 	) {
 	}
 
@@ -46,12 +52,9 @@ class ArticleProtectComplete implements ArticleProtectCompleteHook {
 			return true;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
-
-		$editInfo = $applicationFactory->newMwCollaboratorFactory()->newEditInfo(
+		$editInfo = $this->mwCollaboratorFactory->newEditInfo(
 			$wikiPage,
-			$revisionGuard->newRevisionFromPage( $wikiPage ),
+			$this->revisionGuard->newRevisionFromPage( $wikiPage ),
 			$user
 		);
 
@@ -64,10 +67,8 @@ class ArticleProtectComplete implements ArticleProtectCompleteHook {
 			return true;
 		}
 
-		$parserData = $applicationFactory->newParserData(
-			$wikiPage->getTitle(),
-			$output
-		);
+		$parserData = new ParserData( $wikiPage->getTitle(), $output );
+		$parserData->setLogger( $this->logger );
 
 		$this->doPrepareData( $protect, $parserData );
 		$parserData->setOrigin( 'ArticleProtectComplete' );
@@ -83,8 +84,7 @@ class ArticleProtectComplete implements ArticleProtectCompleteHook {
 		$isRestrictedUpdate = true;
 		$isAnnotationBySystem = false;
 
-		$dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
-		$property = $dataItemFactory->newDIProperty( '_EDIP' );
+		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
 		$dataItems = $parserData->getSemanticData()->getPropertyValues( $property );
 		$dataItem = end( $dataItems );
@@ -103,7 +103,7 @@ class ArticleProtectComplete implements ArticleProtectCompleteHook {
 			$isRestrictedUpdate = false;
 			$parserData->getSemanticData()->addPropertyObjectValue(
 				$property,
-				$dataItemFactory->newDIBoolean( true )
+				$this->dataItemFactory->newDIBoolean( true )
 			);
 		}
 
@@ -117,7 +117,7 @@ class ArticleProtectComplete implements ArticleProtectCompleteHook {
 			$isRestrictedUpdate = false;
 			$parserData->getSemanticData()->removePropertyObjectValue(
 				$property,
-				$dataItemFactory->newDIBoolean( true )
+				$this->dataItemFactory->newDIBoolean( true )
 			);
 		}
 

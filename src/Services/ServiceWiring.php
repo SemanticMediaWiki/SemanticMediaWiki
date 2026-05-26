@@ -8,6 +8,7 @@ use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
+use SMW\DependencyValidatorFactory;
 use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
@@ -824,6 +825,18 @@ return [
 
 	'SMW.EventDispatcher' => static function ( MediaWikiServices $services ): EventDispatcher {
 		return ServicesFactory::getInstance()->getEventDispatcher();
+	},
+
+	'SMW.DependencyValidatorFactory' => static function ( MediaWikiServices $services ): DependencyValidatorFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		return new DependencyValidatorFactory(
+			$servicesFactory->getNamespaceExaminer(),
+			$servicesFactory->getQueryDependencyLinksStoreFactory(),
+			$servicesFactory->getEntityCache(),
+			$servicesFactory->getEventDispatcher(),
+			$services->getParserCache()
+		);
 	},
 
 	'SMW.PersonalUrls' => static function ( MediaWikiServices $services ): PersonalUrls {
