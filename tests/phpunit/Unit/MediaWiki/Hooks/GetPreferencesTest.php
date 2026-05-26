@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
+use SMW\GroupPermissions;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\PermissionManager;
@@ -55,7 +56,13 @@ class GetPreferencesTest extends TestCase {
 	 * @dataProvider keyProvider
 	 */
 	public function testProcess( $key ) {
-		$this->permissionManager->method( 'userHasRight' )->willReturn( true );
+		// Grant only the permission the production code is expected to check
+		// (`VIEW_JOBQUEUE_WATCHLIST`). A blanket `willReturn( true )` would not
+		// detect a regression that replaced this constant with a different one.
+		$this->permissionManager->method( 'userHasRight' )
+			->willReturnCallback(
+				static fn ( $user, $right ): bool => $right === GroupPermissions::VIEW_JOBQUEUE_WATCHLIST
+			);
 
 		$user = $this->createMock( User::class );
 		$preferences = [];
