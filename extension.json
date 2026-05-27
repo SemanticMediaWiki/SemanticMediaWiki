@@ -317,11 +317,15 @@
 		"SemanticMediaWiki.SpecialSearchProfileForm": {
 			"class": "SMW\\MediaWiki\\Hooks\\SpecialSearchProfileForm",
 			"services": [
-				"SMW.Store"
+				"SMW.Store",
+				"SMW.SearchEngineConfig"
 			]
 		},
 		"SemanticMediaWiki.SpecialSearchProfiles": {
-			"class": "SMW\\MediaWiki\\Hooks\\SpecialSearchProfiles"
+			"class": "SMW\\MediaWiki\\Hooks\\SpecialSearchProfiles",
+			"services": [
+				"SMW.SearchEngineConfig"
+			]
 		},
 		"SemanticMediaWiki.SoftwareInfo": {
 			"class": "SMW\\MediaWiki\\Hooks\\SoftwareInfo"

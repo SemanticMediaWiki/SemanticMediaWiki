@@ -4,8 +4,8 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Search\Hook\SpecialSearchProfileFormHook;
 use MediaWiki\Specials\SpecialSearch;
+use SearchEngineConfig;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
 /**
@@ -19,7 +19,10 @@ class SpecialSearchProfileForm implements SpecialSearchProfileFormHook {
 	/**
 	 * @since 7.0.0
 	 */
-	public function __construct( private readonly Store $store ) {
+	public function __construct(
+		private readonly Store $store,
+		private readonly SearchEngineConfig $searchEngineConfig,
+	) {
 	}
 
 	/**
@@ -34,15 +37,13 @@ class SpecialSearchProfileForm implements SpecialSearchProfileFormHook {
 			return true;
 		}
 
-		$searchEngineConfig = ApplicationFactory::getInstance()->singleton( 'SearchEngineConfig' );
-
 		$profileForm = new ProfileForm(
 			$this->store,
 			$search
 		);
 
 		$profileForm->setSearchableNamespaces(
-			$searchEngineConfig->searchableNamespaces()
+			$this->searchEngineConfig->searchableNamespaces()
 		);
 
 		$profileForm->buildForm( $form, $opts );
