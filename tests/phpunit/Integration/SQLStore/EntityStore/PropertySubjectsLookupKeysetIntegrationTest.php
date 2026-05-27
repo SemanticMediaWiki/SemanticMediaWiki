@@ -41,7 +41,6 @@ class PropertySubjectsLookupKeysetIntegrationTest extends SMWIntegrationTestCase
 
 	private array $subjects = [];
 	private $semanticDataFactory;
-	private $mwHooksHandler;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -52,9 +51,6 @@ class PropertySubjectsLookupKeysetIntegrationTest extends SMWIntegrationTestCase
 		$this->tiedSortValue = $this->subjectPrefix . '02_TIE';
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
-
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
 
 		$store = $this->getStore();
 
@@ -78,7 +74,6 @@ class PropertySubjectsLookupKeysetIntegrationTest extends SMWIntegrationTestCase
 	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}

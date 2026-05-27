@@ -20,20 +20,17 @@ class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
 	private $runnerFactory;
 	private $titleValidator;
 	private $spyMessageReporter;
-	private $mwHooksHandler;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$utilityFactory = $this->testEnvironment->getUtilityFactory();
+		// Disable SMW's InternalParseBeforeLinks handler during the XML
+		// import so a previous testSetupStore_Delete (which drops SMW
+		// tables) does not leave a later setUp's import firing the handler
+		// against missing tables. clearHook auto-restores in tearDown.
+		$this->clearHook( 'InternalParseBeforeLinks' );
 
-		// Disable SMW hooks during the XML import so a previous
-		// testSetupStore_Delete (which drops SMW tables) does not leave a
-		// later setUp's import firing InternalParseBeforeLinks against
-		// missing tables. Other integration tests that import fixtures use
-		// the same pattern.
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->runnerFactory  = $utilityFactory->newRunnerFactory();
 		$this->titleValidator = $utilityFactory->newValidatorFactory()->newTitleValidator();
@@ -50,7 +47,6 @@ class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}
