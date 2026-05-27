@@ -249,8 +249,9 @@
 			"class": "SMW\\MediaWiki\\Hooks\\LinksUpdateComplete",
 			"services": [
 				"SMW.NamespaceExaminer",
-				"SMW.ApplicationFactory",
+				"SMW.ContentParserFactory",
 				"SMW.RevisionGuard",
+				"SMW.SiteReadiness",
 				"SMW.Logger"
 			]
 		},

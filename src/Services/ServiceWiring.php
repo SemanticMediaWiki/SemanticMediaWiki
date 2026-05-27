@@ -64,6 +64,7 @@ use SMW\Services\ImporterServiceFactory;
 use SMW\Services\ServicesFactory;
 use SMW\Settings;
 use SMW\SetupFile;
+use SMW\SiteReadiness;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
 use SMW\StoreFactory;
@@ -257,6 +258,16 @@ return [
 		}
 
 		return new SetupFile();
+	},
+
+	'SMW.SiteReadiness' => static function ( MediaWikiServices $services ): SiteReadiness {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'SiteReadiness' ) ) {
+			return $servicesFactory->getSiteReadiness();
+		}
+
+		return new SiteReadiness();
 	},
 
 	'SMW.MediaWikiNsContentReader' => static function ( MediaWikiServices $services ): MediaWikiNsContentReader {
