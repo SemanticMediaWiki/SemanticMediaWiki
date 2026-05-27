@@ -53,7 +53,6 @@ use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\Protection\ProtectionValidator;
-use SMW\Query\Cache\ResultCache;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
@@ -926,13 +925,6 @@ return [
 			$servicesFactory->getSerializerFactory(),
 			$servicesFactory
 		);
-	},
-
-	'SMW.ResultCache' => static function ( MediaWikiServices $services ): ResultCache {
-		// Construction (Store, Settings, CacheFactory wiring, BlobStore composition)
-		// lives in ServicesFactory::getResultCache(), which also honours its own
-		// testOverrides slot. The wiring is a thin pass-through.
-		return ServicesFactory::getInstance()->getResultCache();
 	},
 
 	'SMW.SearchEngineConfig' => static function ( MediaWikiServices $services ): SearchEngineConfig {

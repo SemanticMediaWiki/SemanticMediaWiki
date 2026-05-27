@@ -372,16 +372,12 @@
 			]
 		},
 		"SemanticMediaWiki.BeforeQueryResultLookupComplete": {
-			"class": "SMW\\MediaWiki\\Hooks\\BeforeQueryResultLookupComplete",
-			"services": [
-				"SMW.ResultCache"
-			]
+			"class": "SMW\\MediaWiki\\Hooks\\BeforeQueryResultLookupComplete"
 		},
 		"SemanticMediaWiki.AfterQueryResultLookupComplete": {
 			"class": "SMW\\MediaWiki\\Hooks\\AfterQueryResultLookupComplete",
 			"services": [
-				"SMW.QueryDependencyLinksStoreFactory",
-				"SMW.ResultCache"
+				"SMW.QueryDependencyLinksStoreFactory"
 			]
 		},
 		"SemanticMediaWiki.AfterIncomingPropertiesLookupComplete": {
