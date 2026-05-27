@@ -7,10 +7,11 @@ use MediaWiki\Parser\ParserOutputLinkTypes;
 use MediaWiki\Title\Title;
 use Psr\Log\LoggerInterface;
 use SMW\DataModel\SemanticData;
+use SMW\MediaWiki\Jobs\ContentParserFactory;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory;
-use SMW\Site;
+use SMW\ParserData;
+use SMW\SiteReadiness;
 
 /**
  * LinksUpdateComplete hook is called at the end of LinksUpdate()
@@ -31,8 +32,9 @@ class LinksUpdateComplete implements LinksUpdateCompleteHook {
 	 */
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
-		private readonly ServicesFactory $servicesFactory,
+		private readonly ContentParserFactory $contentParserFactory,
 		private readonly RevisionGuard $revisionGuard,
+		private readonly SiteReadiness $siteReadiness,
 		private readonly LoggerInterface $logger,
 	) {
 	}
@@ -48,7 +50,7 @@ class LinksUpdateComplete implements LinksUpdateCompleteHook {
 	 * @since 7.0.0
 	 */
 	public function onLinksUpdateComplete( $linksUpdate, $ticket ) {
-		if ( !Site::isReady() ) {
+		if ( !$this->siteReadiness->isReady() ) {
 			return $this->doAbort();
 		}
 
@@ -58,10 +60,8 @@ class LinksUpdateComplete implements LinksUpdateCompleteHook {
 			return true;
 		}
 
-		$parserData = $this->servicesFactory->newParserData(
-			$title,
-			$linksUpdate->getParserOutput()
-		);
+		$parserData = new ParserData( $title, $linksUpdate->getParserOutput() );
+		$parserData->setLogger( $this->logger );
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			// #347 showed that an external process (e.g. RefreshLinksJob) can inject a
@@ -118,7 +118,7 @@ class LinksUpdateComplete implements LinksUpdateCompleteHook {
 	}
 
 	private function reparseAndFetchSemanticData( Title $title ) {
-		$contentParser = $this->servicesFactory->newContentParser( $title );
+		$contentParser = $this->contentParserFactory->newContentParser( $title );
 		$parserOutput = $contentParser->parse()->getOutput();
 
 		if ( $parserOutput === null ) {
