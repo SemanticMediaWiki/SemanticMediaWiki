@@ -17,7 +17,7 @@ use RuntimeException;
  * `MediaWikiIntegrationTestCase::setTemporaryHook` and `clearHook` instead.
  *
  * @license GPL-2.0-or-later
- * @since 7.1.0
+ * @since 7.0.0
  */
 class SMWDeclarativeHookReseater {
 
@@ -49,7 +49,7 @@ class SMWDeclarativeHookReseater {
 	 * exception for `Store` (e.g. inject a `StoreFactory` and resolve
 	 * per-call). ~15 of 54 declarative handlers would need that treatment.
 	 *
-	 * @since 7.1.0
+	 * @since 7.0.0
 	 */
 	public function reseatDeclarativeHandlers(): void {
 		foreach ( $this->getDeclarativeHookList() as $hook ) {
@@ -76,7 +76,7 @@ class SMWDeclarativeHookReseater {
 	 * `[$handler, $methodName]` so by-reference hook args dispatch intact
 	 * (a variadic closure wrapper would silently downgrade refs to values).
 	 *
-	 * @since 7.1.0
+	 * @since 7.0.0
 	 *
 	 * @throws RuntimeException When `$hook` is not declared by SMW.
 	 */
@@ -101,13 +101,19 @@ class SMWDeclarativeHookReseater {
 	private function collectNonSmwHandlerEntries( string $hook ): array {
 		$handlers = $this->getHandlersProperty()->getValue( $this->hookContainer )[$hook] ?? [];
 
+		// Preserve the original array keys. `HookContainer::scopedRegister`
+		// stores temporary handlers under string keys like 'TemporaryHook_N'
+		// and its ScopedCallback cleanup does `unset($handlers[$hook][$id])`
+		// against that same key. Re-keying preserved entries to 0, 1, ...
+		// silently breaks that cleanup and leaks the handler into sibling
+		// tests.
 		$preserved = [];
-		foreach ( $handlers as $entry ) {
+		foreach ( $handlers as $key => $entry ) {
 			$callback = $entry['callback'] ?? null;
 			if ( $callback === null || $this->isSmwHandler( $callback ) ) {
 				continue;
 			}
-			$preserved[] = $entry;
+			$preserved[$key] = $entry;
 		}
 
 		return $preserved;

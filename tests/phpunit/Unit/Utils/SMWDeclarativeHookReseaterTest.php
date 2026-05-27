@@ -18,7 +18,7 @@ use Wikimedia\ScopedCallback;
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
- * @since 7.1.0
+ * @since 7.0.0
  */
 class SMWDeclarativeHookReseaterTest extends TestCase {
 
@@ -83,6 +83,22 @@ class SMWDeclarativeHookReseaterTest extends TestCase {
 		} finally {
 			ScopedCallback::consume( $reset );
 		}
+
+		// The ScopedCallback cleanup must actually release the handler.
+		// scopedRegister stores entries under string keys like
+		// 'TemporaryHook_N'; the reseater must preserve those keys so the
+		// cleanup's `unset` lands on the right entry. Without that the
+		// closure leaks into subsequent tests.
+		$marker->called = false;
+		$this->hookContainer->run(
+			'ParserFirstCallInit',
+			[ $this->createMock( Parser::class ) ],
+			[ 'abortable' => false ]
+		);
+		$this->assertFalse(
+			$marker->called,
+			'ScopedCallback cleanup must unregister the handler after reseat'
+		);
 	}
 
 	/**
