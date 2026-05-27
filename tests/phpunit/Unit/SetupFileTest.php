@@ -3,8 +3,10 @@
 namespace SMW\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use SMW\SetupFile;
 use SMW\Site;
+use SMW\SmwJsonRepo;
 use SMW\SQLStore\Installer;
 use SMW\Utils\File;
 
@@ -431,6 +433,143 @@ class SetupFileTest extends TestCase {
 		$this->assertTrue(
 			$instance->hasDatabaseMinRequirement( $vars )
 		);
+	}
+
+	public function testIncompleteTaskWithArgsRoundTrip() {
+		$repo = $this->makeInMemoryRepo();
+		$vars = $this->makeVars();
+
+		$writer = new SetupFile();
+		$this->withRepo( $writer, $repo );
+		$writer->loadSchema( $vars );
+
+		// Cover both the boolean form (no args) and the array form
+		// (with args) of an incomplete-task entry.
+		$writer->set(
+			[
+				SetupFile::INCOMPLETE_TASKS => [
+					'smw-task-flag' => true,
+					'smw-task-x' => [ 'count' => 42 ],
+				],
+			],
+			$vars
+		);
+
+		// Round-trip via a fresh instance against the same repo.
+		$readerVars = $this->makeVars();
+		$reader = new SetupFile();
+		$this->withRepo( $reader, $repo );
+		$reader->loadSchema( $readerVars );
+
+		$this->assertSame(
+			[
+				'smw-task-flag',
+				[ 'smw-task-x', [ 'count' => 42 ] ],
+			],
+			$reader->findIncompleteTasks( $readerVars )
+		);
+	}
+
+	public function testEntityCollationRoundTrip() {
+		$repo = $this->makeInMemoryRepo();
+		$vars = $this->makeVars();
+
+		$writer = new SetupFile();
+		$this->withRepo( $writer, $repo );
+		$writer->loadSchema( $vars );
+
+		$writer->set( [ SetupFile::ENTITY_COLLATION => 'identity' ], $vars );
+
+		$readerVars = $this->makeVars();
+		$reader = new SetupFile();
+		$this->withRepo( $reader, $repo );
+		$reader->loadSchema( $readerVars );
+
+		$this->assertSame(
+			'identity',
+			$reader->get( SetupFile::ENTITY_COLLATION, $readerVars )
+		);
+	}
+
+	public function testLastOptimizationRunRoundTrip() {
+		$repo = $this->makeInMemoryRepo();
+		$vars = $this->makeVars();
+
+		$writer = new SetupFile();
+		$this->withRepo( $writer, $repo );
+		$writer->loadSchema( $vars );
+
+		$writer->set( [ SetupFile::LAST_OPTIMIZATION_RUN => '2026-05-27 03:06' ], $vars );
+
+		$readerVars = $this->makeVars();
+		$reader = new SetupFile();
+		$this->withRepo( $reader, $repo );
+		$reader->loadSchema( $readerVars );
+
+		$this->assertSame(
+			'2026-05-27 03:06',
+			$reader->get( SetupFile::LAST_OPTIMIZATION_RUN, $readerVars )
+		);
+	}
+
+	public function testHasDatabaseMinRequirementPasses() {
+		$vars = [
+			'smw.json' => [
+				Site::id() => [
+					SetupFile::DB_REQUIREMENTS => [
+						'latest_version' => '5.7',
+						'minimum_version' => '5.5',
+					],
+				],
+			],
+		];
+
+		$file = new SetupFile();
+
+		$this->assertTrue( $file->hasDatabaseMinRequirement( $vars ) );
+	}
+
+	public function testHasDatabaseMinRequirementFails() {
+		$vars = [
+			'smw.json' => [
+				Site::id() => [
+					SetupFile::DB_REQUIREMENTS => [
+						'latest_version' => '5.5',
+						'minimum_version' => '5.7',
+					],
+				],
+			],
+		];
+
+		$file = new SetupFile();
+
+		$this->assertFalse( $file->hasDatabaseMinRequirement( $vars ) );
+	}
+
+	private function makeVars(): array {
+		return [
+			'smwgConfigFileDir' => sys_get_temp_dir(),
+		];
+	}
+
+	private function makeInMemoryRepo(): SmwJsonRepo {
+		return new class implements SmwJsonRepo {
+			public array $data = [];
+
+			public function loadSmwJson( string $configDirectory ): ?array {
+				return $this->data;
+			}
+
+			public function saveSmwJson( string $configDirectory, array $smwJson ): void {
+				$this->data = $smwJson;
+			}
+		};
+	}
+
+	private function withRepo( SetupFile $file, SmwJsonRepo $repo ): void {
+		$ref = new ReflectionProperty( $file, 'repo' );
+		$ref->setAccessible( true );
+		$ref->setValue( $file, $repo );
 	}
 
 }
