@@ -7,6 +7,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
+use RuntimeException;
 use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 use stdClass;
 use Wikimedia\ScopedCallback;
@@ -38,6 +39,11 @@ class SMWDeclarativeHookReseaterTest extends TestCase {
 		$this->assertCount( 2, $callable );
 		$this->assertIsObject( $callable[0] );
 		$this->assertSame( 'onParserFirstCallInit', $callable[1] );
+	}
+
+	public function testBuildSmwHandlerForUndeclaredHookThrows(): void {
+		$this->expectException( RuntimeException::class );
+		$this->reseater->buildSmwHandlerFor( 'DefinitelyNotAnSmwHook' );
 	}
 
 	public function testReseatDeclarativeHandlersRebuildsSmwHandlers(): void {
