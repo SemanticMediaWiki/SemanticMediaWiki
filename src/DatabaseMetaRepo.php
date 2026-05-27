@@ -25,6 +25,9 @@ use Wikimedia\Rdbms\ILoadBalancer;
  */
 class DatabaseMetaRepo implements SmwJsonRepo {
 
+	/**
+	 * @since 7.0.0
+	 */
 	public function __construct(
 		private readonly ILoadBalancer $loadBalancer
 	) {
