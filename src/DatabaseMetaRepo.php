@@ -68,17 +68,34 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 	}
 
 	/**
+	 * Synchronises the `smw_meta` rows with the per-wiki slice in `$smwJson`:
+	 * keys present in the input are upserted, keys present in the table but
+	 * absent from the input are deleted. This mirrors the whole-file rewrite
+	 * semantics of {@see FileSystemSmwJsonRepo::saveSmwJson} so that
+	 * `SetupFile::remove` / `SetupFile::reset` (which `unset` keys before
+	 * saving) propagate to the database.
+	 *
 	 * @since 7.0.0
 	 */
 	public function saveSmwJson( string $configDirectory, array $smwJson ): void {
 		$id = Site::id();
 		$entries = $smwJson[ $id ] ?? [];
 
-		if ( $entries === [] ) {
-			return;
+		$db = $this->loadBalancer->getConnection( DB_PRIMARY );
+
+		$inputKeys = array_map( 'strval', array_keys( $entries ) );
+
+		$deleteBuilder = $db->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::META_TABLE )
+			->caller( __METHOD__ );
+
+		if ( $inputKeys === [] ) {
+			$deleteBuilder->where( '1=1' );
+		} else {
+			$deleteBuilder->where( $db->expr( 'meta_key', '!=', $inputKeys ) );
 		}
 
-		$db = $this->loadBalancer->getConnection( DB_PRIMARY );
+		$deleteBuilder->execute();
 
 		foreach ( $entries as $key => $value ) {
 			if ( $value === null ) {

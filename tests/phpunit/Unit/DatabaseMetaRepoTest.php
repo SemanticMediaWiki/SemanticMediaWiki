@@ -9,8 +9,10 @@ use SMW\DatabaseMetaRepo;
 use SMW\Site;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use Wikimedia\Rdbms\DBQueryError;
+use Wikimedia\Rdbms\Expression;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
@@ -63,21 +65,33 @@ class DatabaseMetaRepoTest extends TestCase {
 	}
 
 	public function testSaveSmwJsonUpsertsEachKey(): void {
-		$capturedTables = [];
-		$capturedRows = [];
-		$capturedUniqueIndexFields = [];
+		$capturedReplaceTables = [];
+		$capturedReplaceRows = [];
+		$capturedReplaceUniqueIndexFields = [];
 		$replaceBuilder = $this->createMockReplaceQueryBuilder(
-			$capturedTables,
-			$capturedRows,
-			$capturedUniqueIndexFields
+			$capturedReplaceTables,
+			$capturedReplaceRows,
+			$capturedReplaceUniqueIndexFields
+		);
+
+		$capturedDeleteTables = [];
+		$capturedDeleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder(
+			$capturedDeleteTables,
+			$capturedDeleteWheres
 		);
 
 		$db = $this->createMock( IDatabase::class );
+		$db->method( 'expr' )->willReturnCallback(
+			static fn ( string $field, string $op, $value ): Expression => new Expression( $field, $op, $value )
+		);
 		$db->expects( $this->exactly( 2 ) )
 			->method( 'newReplaceQueryBuilder' )
 			->willReturn( $replaceBuilder );
-		$db->expects( $this->never() )
-			->method( 'newDeleteQueryBuilder' );
+		// One sync-delete (keys NOT IN input); no per-key null deletes.
+		$db->expects( $this->once() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
 
 		$repo = new DatabaseMetaRepo( $this->makeLoadBalancer( $db ) );
 
@@ -88,15 +102,20 @@ class DatabaseMetaRepoTest extends TestCase {
 			],
 		] );
 
-		$this->assertSame( [ 'smw_meta', 'smw_meta' ], $capturedTables );
+		$this->assertSame( [ 'smw_meta', 'smw_meta' ], $capturedReplaceTables );
 		$this->assertSame(
 			[
 				[ 'meta_key' => 'upgrade_key', 'meta_value' => '"abc123"' ],
 				[ 'meta_key' => 'maintenance_mode', 'meta_value' => 'false' ],
 			],
-			$capturedRows
+			$capturedReplaceRows
 		);
-		$this->assertSame( [ [ 'meta_key' ], [ 'meta_key' ] ], $capturedUniqueIndexFields );
+		$this->assertSame( [ [ 'meta_key' ], [ 'meta_key' ] ], $capturedReplaceUniqueIndexFields );
+
+		// Sync delete targets `smw_meta` with a NOT-IN-the-input-keys expression.
+		$this->assertSame( [ 'smw_meta' ], $capturedDeleteTables );
+		$this->assertCount( 1, $capturedDeleteWheres );
+		$this->assertInstanceOf( IExpression::class, $capturedDeleteWheres[0] );
 	}
 
 	public function testSaveSmwJsonDeletesNullValues(): void {
@@ -108,7 +127,12 @@ class DatabaseMetaRepoTest extends TestCase {
 		);
 
 		$db = $this->createMock( IDatabase::class );
-		$db->expects( $this->once() )
+		$db->method( 'expr' )->willReturnCallback(
+			static fn ( string $field, string $op, $value ): Expression => new Expression( $field, $op, $value )
+		);
+		// Two delete calls: one sync-delete (keys NOT IN input), one per-key
+		// delete for the null value.
+		$db->expects( $this->exactly( 2 ) )
 			->method( 'newDeleteQueryBuilder' )
 			->willReturn( $deleteBuilder );
 		$db->expects( $this->never() )
@@ -122,8 +146,12 @@ class DatabaseMetaRepoTest extends TestCase {
 			],
 		] );
 
-		$this->assertSame( [ 'smw_meta' ], $capturedTables );
-		$this->assertSame( [ [ 'meta_key' => 'maintenance_mode' ] ], $capturedWheres );
+		$this->assertSame( [ 'smw_meta', 'smw_meta' ], $capturedTables );
+		$this->assertCount( 2, $capturedWheres );
+		// First where = sync-delete NOT-IN expression.
+		$this->assertInstanceOf( IExpression::class, $capturedWheres[0] );
+		// Second where = per-key delete by meta_key.
+		$this->assertSame( [ 'meta_key' => 'maintenance_mode' ], $capturedWheres[1] );
 	}
 
 	public function testLoadSmwJsonPropagatesNonMissingTableErrors(): void {
