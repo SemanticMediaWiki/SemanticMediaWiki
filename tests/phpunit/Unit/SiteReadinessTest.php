@@ -22,6 +22,9 @@ class SiteReadinessTest extends TestCase {
 	}
 
 	public function testIsReadyDelegatesToSite(): void {
+		// The `$GLOBALS` mutation is intentional in this single test: it
+		// verifies the wrapper's delegation contract to `Site::isReady()`.
+		// All other call sites should inject this wrapper as a mock instead.
 		$wasReady = $GLOBALS['wgFullyInitialised'] ?? false;
 		$GLOBALS['wgFullyInitialised'] = true;
 

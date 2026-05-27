@@ -261,6 +261,12 @@ return [
 	},
 
 	'SMW.SiteReadiness' => static function ( MediaWikiServices $services ): SiteReadiness {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'SiteReadiness' ) ) {
+			return $servicesFactory->getSiteReadiness();
+		}
+
 		return new SiteReadiness();
 	},
 

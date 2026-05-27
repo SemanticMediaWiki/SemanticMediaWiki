@@ -166,7 +166,14 @@ class LinksUpdateCompleteTest extends TestCase {
 		);
 	}
 
-	public function testTemplateUpdate() {
+	public function testTemplateUpdate_doesNotErrorOut() {
+		// Note: this test previously asserted that `OPT_FORCED_UPDATE` was set
+		// on the `ParserData` after the template-link-with-non-recursive
+		// branch fired. `ParserData` is now constructed inline, so the flag is
+		// not reachable through a mock. The narrower behavioural contract
+		// (`OPT_FORCED_UPDATE=true` bypasses `DataUpdater::isSkippable`) is
+		// covered end-to-end by integration tests under
+		// `tests/phpunit/Integration/MediaWiki/Hooks/`.
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			[ NS_HELP => false ]
@@ -188,9 +195,6 @@ class LinksUpdateCompleteTest extends TestCase {
 		$instance = $this->newInstance();
 		$instance->disableDeferredUpdate();
 
-		// `OPT_FORCED_UPDATE` is set on the inline-built `ParserData` and is no
-		// longer reachable through a mock. Assert the broader contract: the hook
-		// completes without error.
 		$this->assertTrue(
 			$instance->onLinksUpdateComplete( $linksUpdate, null )
 		);

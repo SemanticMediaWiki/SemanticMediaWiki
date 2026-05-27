@@ -95,6 +95,7 @@ use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\SetupFile;
 use SMW\Site;
+use SMW\SiteReadiness;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
 use SMW\StoreFactory;
@@ -609,6 +610,17 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.DataTypeRegistry' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getSiteReadiness(): SiteReadiness {
+		if ( array_key_exists( 'SiteReadiness', $this->testOverrides ) ) {
+			return $this->testOverrides['SiteReadiness'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.SiteReadiness' );
 	}
 
 	/**

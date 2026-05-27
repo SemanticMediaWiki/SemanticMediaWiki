@@ -104,7 +104,7 @@ class LinksUpdateComplete implements LinksUpdateCompleteHook {
 	 * @note Parsing is expensive but it is more expensive to loose data or to
 	 * expect that an external process adheres the object contract
 	 */
-	private function updateSemanticData( &$parserData, Title $title, string $reason = '' ): void {
+	private function updateSemanticData( ParserData $parserData, Title $title, string $reason = '' ): void {
 		$this->logger->info(
 			'LinksUpdateConstructed Required content re-parse due to '
 				. $reason . ' ' . $title->getPrefixedDBKey(),
