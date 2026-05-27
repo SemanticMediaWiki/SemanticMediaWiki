@@ -35,10 +35,6 @@ class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
 		$this->titleValidator = $utilityFactory->newValidatorFactory()->newTitleValidator();
 		$this->pageCreator = $utilityFactory->newPageCreator();
 
-		$utilityFactory->newMwHooksHandler()
-			->deregisterListedHooks()
-			->reregisterAllDeclarative();
-
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
 			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'
 		);

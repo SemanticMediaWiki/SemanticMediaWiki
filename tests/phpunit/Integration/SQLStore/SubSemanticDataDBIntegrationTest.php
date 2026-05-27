@@ -9,7 +9,6 @@ use SMW\DataModel\SemanticData;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
 
 /**
@@ -31,11 +30,6 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$utilityFactory = UtilityFactory::getInstance();
-		$utilityFactory->newMwHooksHandler()
-			->deregisterListedHooks()
-			->reregisterAllDeclarative();
 	}
 
 	protected function tearDown(): void {

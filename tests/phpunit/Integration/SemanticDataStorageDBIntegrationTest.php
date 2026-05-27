@@ -32,7 +32,6 @@ use SMW\Tests\Utils\UtilityFactory;
 class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $applicationFactory;
-	private $mwHooksHandler;
 
 	private $semanticDataValidator;
 	private $subjects = [];
@@ -44,12 +43,6 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
-
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
-
-		$this->mwHooksHandler
-			->deregisterListedHooks()
-			->reregisterAllDeclarative();
 
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = $utilityFactory->newPageDeleter();
@@ -63,7 +56,6 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 			->doDeletePoolOfPages( $this->subjects );
 
 		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}

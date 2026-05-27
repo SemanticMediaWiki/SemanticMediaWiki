@@ -40,8 +40,6 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->pageCreator = $utilityFactory->newPageCreator();
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
-
-		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 	}
 
 	protected function tearDown(): void {
@@ -50,8 +48,6 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 
 		$pageDeleter
 			->doDeletePoolOfPages( $this->deletePoolOfPages );
-
-		$utilityFactory->newMwHooksHandler()->restoreListedHooks();
 
 		parent::tearDown();
 	}

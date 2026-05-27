@@ -23,7 +23,6 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 
 	private $title = null;
 	private $applicationFactory;
-	private $mwHooksHandler;
 	private $semanticDataValidator;
 	private $pageDeleter;
 	private $pageCreator;
@@ -31,10 +30,6 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
-		$this->mwHooksHandler->reregisterAllDeclarative();
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
@@ -50,7 +45,6 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 
 	public function tearDown(): void {
 		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
 
 		$this->testEnvironment->flushPages( [ $this->title ] );
 		$this->testEnvironment->tearDown();

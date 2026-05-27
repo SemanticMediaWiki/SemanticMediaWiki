@@ -53,8 +53,6 @@ class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
-
-		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 	}
 
 	protected function tearDown(): void {
