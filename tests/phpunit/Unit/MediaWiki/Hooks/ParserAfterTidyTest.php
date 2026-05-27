@@ -6,6 +6,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
@@ -50,6 +51,7 @@ class ParserAfterTidyTest extends TestCase {
 	private $cache;
 	private $revisionGuard;
 	private $settings;
+	private $restrictionStore;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -97,6 +99,8 @@ class ParserAfterTidyTest extends TestCase {
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 
 		$this->settings = $this->createMock( Settings::class );
+
+		$this->restrictionStore = $this->createMock( RestrictionStore::class );
 	}
 
 	protected function tearDown(): void {
@@ -125,7 +129,8 @@ class ParserAfterTidyTest extends TestCase {
 			$this->applicationFactory,
 			$this->hookDispatcher,
 			$settings ?? $this->settings,
-			$this->spyLogger
+			$this->spyLogger,
+			$this->restrictionStore
 		);
 	}
 

@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
 use SMW\NamespaceExaminer;
 
@@ -22,6 +22,7 @@ class DeleteAccount {
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly ArticleDelete $articleDelete,
+		private readonly TitleFactory $titleFactory,
 	) {
 	}
 
@@ -40,7 +41,7 @@ class DeleteAccount {
 		$this->articleDelete->setOrigin( 'DeleteAccount' );
 
 		$this->articleDelete->scheduleDeleteFor(
-			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $user, NS_USER )
+			$this->titleFactory->newFromText( $user, NS_USER )
 		);
 
 		return true;

@@ -99,7 +99,8 @@
 				"SMW.ApplicationFactory",
 				"SMW.HookDispatcher",
 				"SMW.Settings",
-				"SMW.Logger"
+				"SMW.Logger",
+				"RestrictionStore"
 			]
 		},
 		"SemanticMediaWiki.ParserClearState": {
@@ -387,7 +388,8 @@
 			"class": "SMW\\MediaWiki\\Hooks\\DeleteAccount",
 			"services": [
 				"SMW.NamespaceExaminer",
-				"SMW.ArticleDelete"
+				"SMW.ArticleDelete",
+				"TitleFactory"
 			]
 		},
 		"SemanticMediaWiki.AdminLinks": {
