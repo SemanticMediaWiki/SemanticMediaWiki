@@ -20,7 +20,6 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 	private $job = null;
 	private $pages = [];
 
-	private $mwHooksHandler;
 	private $pageCreator;
 
 	private $jobQueueRunner;
@@ -30,11 +29,6 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
-
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
-
-		$this->mwHooksHandler->deregisterListedHooks();
-		$this->mwHooksHandler->reregisterAllDeclarative();
 
 		$this->pageCreator = $utilityFactory->newPageCreator();
 
@@ -52,7 +46,6 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 		);
 
 		$this->testEnvironment->tearDown();
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}

@@ -28,17 +28,10 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 	private $semanticDataValidator;
 	private $applicationFactory;
 	private $dataValueFactory;
-	private $mwHooksHandler;
 	private $pageCreator;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-
-		$this->mwHooksHandler
-			->deregisterListedHooks()
-			->reregisterAllDeclarative();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
@@ -49,7 +42,6 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 
 	protected function tearDown(): void {
 		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}

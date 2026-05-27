@@ -54,7 +54,6 @@ class KeysetPaginationIntegrationTest extends SMWIntegrationTestCase {
 
 	private array $subjects = [];
 	private $semanticDataFactory;
-	private $mwHooksHandler;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -63,9 +62,6 @@ class KeysetPaginationIntegrationTest extends SMWIntegrationTestCase {
 		$this->tiedSortValue = $this->keyPrefix . '02_TIE';
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
-
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
 
 		$store = $this->getStore();
 
@@ -88,7 +84,6 @@ class KeysetPaginationIntegrationTest extends SMWIntegrationTestCase {
 	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}

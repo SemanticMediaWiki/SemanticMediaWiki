@@ -69,15 +69,6 @@ class UtilityFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return MwHooksHandler
-	 */
-	public function newMwHooksHandler() {
-		return new MwHooksHandler();
-	}
-
-	/**
-	 * @since 2.1
-	 *
 	 * @return ParserFactory
 	 */
 	public function newParserFactory() {

@@ -1,17 +1,15 @@
 <?php
 
-namespace SMW\Tests\Unit\MediaWiki\Hooks;
+namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use PHPUnit\Framework\TestCase;
+use MediaWiki\MediaWikiServices;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 
 /**
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-integration
- * @group mediawiki-databaseless
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GPL-2.0-or-later
@@ -19,10 +17,8 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinksIntegrationTest extends TestCase {
+class ParserAfterTidyIntegrationTest extends SMWIntegrationTestCase {
 
-	private $mwHooksHandler;
-	private $parserAfterTidyHook;
 	private $applicationFactory;
 
 	protected function setUp(): void {
@@ -30,17 +26,19 @@ class InternalParseBeforeLinksIntegrationTest extends TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
-
-		$this->mwHooksHandler->register(
-			'InternalParseBeforeLinks',
-			$this->mwHooksHandler->getHandlerFor( 'InternalParseBeforeLinks' )
+		$reseater = new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
+		);
+		foreach ( $reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
+		$this->setTemporaryHook(
+			'ParserAfterTidy',
+			$reseater->buildSmwHandlerFor( 'ParserAfterTidy' )
 		);
 	}
 
 	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
 		$this->applicationFactory->clear();
 
 		parent::tearDown();

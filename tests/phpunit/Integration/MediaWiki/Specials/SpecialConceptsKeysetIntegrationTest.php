@@ -6,7 +6,6 @@ use SMW\MediaWiki\Specials\SpecialConcepts;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * Locks the cursor traversal contract for `SpecialConcepts` (the keyset-aware
@@ -41,7 +40,6 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 	private string $tiedSortValue;
 
 	private array $seededIds = [];
-	private $mwHooksHandler;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -49,9 +47,6 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 		$runId = bin2hex( random_bytes( 4 ) );
 		$this->titlePrefix = 'SpecialConceptsKeysetTest_' . $runId . '_Concept_';
 		$this->tiedSortValue = $this->titlePrefix . '02_TIE';
-
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
 
 		$store = $this->getStore();
 		$db = $store->getConnection( 'mw.db' );
@@ -116,8 +111,6 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 				->caller( __METHOD__ )
 				->execute();
 		}
-
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}

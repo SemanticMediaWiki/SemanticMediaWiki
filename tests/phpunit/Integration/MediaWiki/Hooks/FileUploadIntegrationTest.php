@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 
 /**
  * @group SMW
@@ -23,7 +25,6 @@ use SMW\Tests\SMWIntegrationTestCase;
  */
 class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 
-	private $mwHooksHandler;
 	private $fixturesFileProvider;
 	private $semanticDataValidator;
 	private $pageEditor;
@@ -37,9 +38,6 @@ class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageEditor = $utilityFactory->newPageEditor();
 
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
-
 		$this->testEnvironment->withConfiguration( [
 			'smwgPageSpecialProperties' => [ '_MEDIA', '_MIME' ],
 			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true, NS_FILE => true ],
@@ -52,26 +50,24 @@ class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 			'wgVerifyMimeType' => true
 		] );
 
-		$this->mwHooksHandler->register(
-			'FileUpload',
-			$this->mwHooksHandler->getHandlerFor( 'FileUpload' )
+		// Disable every SMW declarative hook, then re-register only the
+		// three SMW handlers this test actually exercises. Other SMW
+		// handlers must stay off; the legacy MwHooksHandler equivalent
+		// (deregisterListedHooks + register-the-three) had that shape.
+		$reseater = new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
-
-		$this->mwHooksHandler->register(
-			'InternalParseBeforeLinks',
-			$this->mwHooksHandler->getHandlerFor( 'InternalParseBeforeLinks' )
-		);
-
-		$this->mwHooksHandler->register(
-			'LinksUpdateComplete',
-			$this->mwHooksHandler->getHandlerFor( 'LinksUpdateComplete' )
-		);
+		foreach ( $reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
+		foreach ( [ 'FileUpload', 'InternalParseBeforeLinks', 'LinksUpdateComplete' ] as $hook ) {
+			$this->setTemporaryHook( $hook, $reseater->buildSmwHandlerFor( $hook ) );
+		}
 
 		$this->getStore()->setup( false );
 	}
 
 	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 
 		parent::tearDown();

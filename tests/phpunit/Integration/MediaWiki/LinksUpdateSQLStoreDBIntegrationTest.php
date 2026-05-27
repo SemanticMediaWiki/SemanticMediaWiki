@@ -26,7 +26,6 @@ use UnexpectedValueException;
 class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $title = null;
-	private $mwHooksHandler;
 	private $semanticDataValidator;
 	private $pageDeleter;
 	private $revisionGuard;
@@ -43,19 +42,12 @@ class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 			 [ '_MDAT' ]
 		);
 
-		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
-
-		$this->mwHooksHandler->deregisterListedHooks();
-		$this->mwHooksHandler->reregisterAllDeclarative();
-
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = $this->testEnvironment->getUtilityFactory()->newPageDeleter();
 		$this->pageCreator = $serviceFactory->newPageCreator();
 	}
 
 	public function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
-
 		if ( $this->title !== null ) {
 			$this->pageDeleter->deletePage( $this->title );
 		}

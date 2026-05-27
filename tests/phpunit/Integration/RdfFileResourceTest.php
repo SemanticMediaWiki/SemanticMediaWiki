@@ -31,7 +31,6 @@ class RdfFileResourceTest extends SMWIntegrationTestCase {
 		}
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
-		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 
 		$this->fixturesFileProvider = $utilityFactory->newFixturesFactory()->newFixturesFileProvider();
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();

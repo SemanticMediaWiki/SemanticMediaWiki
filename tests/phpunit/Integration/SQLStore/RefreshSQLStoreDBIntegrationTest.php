@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\SQLStore;
 
 use MediaWiki\MediaWikiServices;
 use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 
@@ -24,21 +23,17 @@ use SMW\Tests\Utils\PageDeleter;
 class RefreshSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $title;
-	private $mwHooksHandler;
 	private $pageDeleter;
 	private $pageCreator;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->mwHooksHandler = new MwHooksHandler();
 		$this->pageDeleter = new PageDeleter();
 		$this->pageCreator = new PageCreator();
 	}
 
 	public function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
-
 		if ( $this->title !== null ) {
 			$this->pageDeleter->deletePage( $this->title );
 		}
@@ -50,8 +45,6 @@ class RefreshSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testAfterPageCreation_StoreHasDataToRefreshWithoutJobs( $ns, $name, $iw ) {
-		$this->mwHooksHandler->deregisterListedHooks();
-
 		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $name );
 
 		$this->pageCreator->createPage( $this->title );
@@ -63,8 +56,6 @@ class RefreshSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testAfterPageCreation_StoreHasDataToRefreshWitJobs( $ns, $name, $iw ) {
-		$this->mwHooksHandler->deregisterListedHooks();
-
 		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $name );
 
 		$this->pageCreator->createPage( $this->title );

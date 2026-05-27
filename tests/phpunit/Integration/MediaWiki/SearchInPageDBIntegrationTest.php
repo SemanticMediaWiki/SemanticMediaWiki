@@ -10,7 +10,6 @@ use SMW\SPARQLStore\SPARQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use SMW\Tests\Utils\UtilityFactory;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
@@ -32,9 +31,6 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-		$mwHooksHandler->reregisterAllDeclarative();
 	}
 
 	public function testSearchForPageValueAsTerm() {

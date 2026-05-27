@@ -38,7 +38,6 @@ class NamespaceQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
-		$utilityFactory->newMwHooksHandler()->reregisterAllDeclarative();
 
 		$this->semanticDataFactory  = $utilityFactory->newSemanticDataFactory();
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
