@@ -3,7 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\User\User;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Services\ImporterServiceFactory;
+use SMW\Settings;
 use SMW\SQLStore\Installer;
 use SMW\Utils\CliMsgFormatter;
 
@@ -21,19 +22,25 @@ class AfterCreateTablesComplete {
 	/**
 	 * @since 7.0.0
 	 */
+	public function __construct(
+		private readonly ImporterServiceFactory $importerServiceFactory,
+		private readonly Settings $settings,
+	) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
 	public function onSMW__SQLStore__Installer__AfterCreateTablesComplete( $tableBuilder, $messageReporter, $options ): bool {
 		$messageReporter->reportMessage(
 			( new CliMsgFormatter() )->section( 'Import task(s)', 3, '-', true )
 		);
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$importerServiceFactory = $applicationFactory->create( 'ImporterServiceFactory' );
-
-		$contentIterator = $importerServiceFactory->newJsonContentIterator(
-			$applicationFactory->getSettings()->get( 'smwgImportFileDirs' )
+		$contentIterator = $this->importerServiceFactory->newJsonContentIterator(
+			$this->settings->get( 'smwgImportFileDirs' )
 		);
 
-		$importer = $importerServiceFactory->newImporter(
+		$importer = $this->importerServiceFactory->newImporter(
 			$contentIterator
 		);
 

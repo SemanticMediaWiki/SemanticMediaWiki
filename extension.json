@@ -359,7 +359,11 @@
 			]
 		},
 		"SemanticMediaWiki.AfterCreateTablesComplete": {
-			"class": "SMW\\MediaWiki\\Hooks\\AfterCreateTablesComplete"
+			"class": "SMW\\MediaWiki\\Hooks\\AfterCreateTablesComplete",
+			"services": [
+				"SMW.ImporterServiceFactory",
+				"SMW.Settings"
+			]
 		},
 		"SemanticMediaWiki.BeforeQueryResultLookupComplete": {
 			"class": "SMW\\MediaWiki\\Hooks\\BeforeQueryResultLookupComplete",
