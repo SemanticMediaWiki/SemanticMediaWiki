@@ -326,7 +326,8 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$store
+			$store,
+			$this->eventDispatcher
 		);
 
 		$instance->waitOnTransactionIdle();
@@ -385,7 +386,8 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$store
+			$store,
+			$this->eventDispatcher
 		);
 
 		$instance->cleanUpTableEntriesById( 42 );

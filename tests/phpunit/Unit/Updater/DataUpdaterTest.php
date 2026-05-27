@@ -230,7 +230,8 @@ class DataUpdaterTest extends TestCase {
 			$store,
 			$semanticData,
 			$this->changePropagationNotifier,
-			$pageCreator
+			$pageCreator,
+			$this->eventDispatcher
 		);
 
 		$instance->setRevisionGuard(
@@ -293,7 +294,8 @@ class DataUpdaterTest extends TestCase {
 			$store,
 			$semanticData,
 			$this->changePropagationNotifier,
-			$pageCreator
+			$pageCreator,
+			$this->eventDispatcher
 		);
 
 		$instance->canCreateUpdateJob(
@@ -411,7 +413,8 @@ class DataUpdaterTest extends TestCase {
 			$store,
 			$semanticData,
 			$this->changePropagationNotifier,
-			$pageCreator
+			$pageCreator,
+			$this->eventDispatcher
 		);
 
 		$instance->setRevisionGuard(
@@ -492,7 +495,8 @@ class DataUpdaterTest extends TestCase {
 			$store,
 			$semanticData,
 			$this->changePropagationNotifier,
-			$pageCreator
+			$pageCreator,
+			$this->eventDispatcher
 		);
 
 		$instance->setRevisionGuard(
