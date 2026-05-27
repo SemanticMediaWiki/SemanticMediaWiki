@@ -196,6 +196,7 @@
 		"SemanticMediaWiki.ArticlePurge": {
 			"class": "SMW\\MediaWiki\\Hooks\\ArticlePurge",
 			"services": [
+				"SMW.Store",
 				"SMW.Cache",
 				"SMW.Settings",
 				"SMW.EventDispatcher"
@@ -324,7 +325,10 @@
 			"class": "SMW\\MediaWiki\\Hooks\\SpecialSearchProfiles"
 		},
 		"SemanticMediaWiki.SoftwareInfo": {
-			"class": "SMW\\MediaWiki\\Hooks\\SoftwareInfo"
+			"class": "SMW\\MediaWiki\\Hooks\\SoftwareInfo",
+			"services": [
+				"SMW.Store"
+			]
 		},
 		"SemanticMediaWiki.BlockIpComplete": {
 			"class": "SMW\\MediaWiki\\Hooks\\BlockIpComplete",
