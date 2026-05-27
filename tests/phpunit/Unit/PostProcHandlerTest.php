@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
 use SMW\EntityCache;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\PostProcHandler;
 use SMW\Query\Query;
@@ -253,12 +254,14 @@ class PostProcHandlerTest extends TestCase {
 		$dependencyLinksValidator = $this->createMock( DependencyLinksValidator::class );
 		$namespaceExaminer = $this->createMock( NamespaceExaminer::class );
 		$entityCache = $this->createMock( EntityCache::class );
+		$eventDispatcher = $this->createMock( EventDispatcher::class );
 		$dependencyValidator = new DependencyValidator(
 			$namespaceExaminer,
 			$dependencyLinksValidator,
 			$entityCache,
 			'',
-			3600
+			3600,
+			$eventDispatcher
 		);
 		$dependencyValidator->markTitle( $title );
 

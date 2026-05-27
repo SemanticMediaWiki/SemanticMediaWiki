@@ -60,7 +60,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PropertyTableIdReferenceDisposer::class,
-			new PropertyTableIdReferenceDisposer( $this->store )
+			new PropertyTableIdReferenceDisposer( $this->store, $this->eventDispatcher )
 		);
 	}
 
@@ -79,10 +79,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( $propertyTableIdReferenceFinder );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
@@ -123,10 +120,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( $propertyTableIdReferenceFinder );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
@@ -165,10 +159,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( [ $tableDefinition ] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
@@ -191,10 +182,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( $connection );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
@@ -220,10 +208,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( $connection );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
@@ -256,10 +241,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
@@ -293,10 +275,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
-		$instance->setEventDispatcher(
+			$this->store,
 			$this->eventDispatcher
 		);
 
@@ -347,7 +326,8 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$store
+			$store,
+			$this->eventDispatcher
 		);
 
 		$instance->waitOnTransactionIdle();
@@ -406,10 +386,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
-			$store
-		);
-
-		$instance->setEventDispatcher(
+			$store,
 			$this->eventDispatcher
 		);
 

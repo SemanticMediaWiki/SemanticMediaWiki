@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
-use SMW\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\LegacyOptionsApplier;
@@ -27,8 +27,6 @@ use Wikimedia\Rdbms\DBError;
  */
 class PropertyTableIdReferenceDisposer {
 
-	use EventDispatcherAwareTrait;
-
 	/**
 	 * @var Database
 	 */
@@ -48,7 +46,10 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 2.4
 	 */
-	public function __construct( private SQLStore $store ) {
+	public function __construct(
+		private SQLStore $store,
+		private EventDispatcher $eventDispatcher
+	) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 

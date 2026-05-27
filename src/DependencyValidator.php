@@ -4,7 +4,7 @@ namespace SMW;
 
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
-use SMW\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 
 /**
@@ -14,8 +14,6 @@ use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
  * @author mwjames
  */
 class DependencyValidator {
-
-	use EventDispatcherAwareTrait;
 
 	private const DIRTY_MARKER = '_smw_dirty_';
 
@@ -29,7 +27,8 @@ class DependencyValidator {
 		private readonly DependencyLinksValidator $dependencyLinksValidator,
 		private readonly EntityCache $entityCache,
 		private readonly string $eTag,
-		private readonly int $cacheTTL
+		private readonly int $cacheTTL,
+		private readonly EventDispatcher $eventDispatcher
 	) {
 	}
 
