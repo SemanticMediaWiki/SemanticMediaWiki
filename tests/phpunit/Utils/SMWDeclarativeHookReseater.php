@@ -42,7 +42,7 @@ class SMWDeclarativeHookReseater {
 	 * handlers cached at boot hold references to the pre-swap services; this
 	 * forces reconstruction against the current container state.
 	 *
-	 * TODO: removable only once every SMW handler that holds a reference to
+	 * Note: removable only once every SMW handler that holds a reference to
 	 * `SMW.Store` either resolves it dynamically per call or stops capturing
 	 * it at construction time. The current "Complete handler DI" arc is
 	 * converting handlers to constructor-injected dependencies, which makes

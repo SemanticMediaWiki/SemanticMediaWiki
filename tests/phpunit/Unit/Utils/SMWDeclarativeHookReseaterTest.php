@@ -43,6 +43,7 @@ class SMWDeclarativeHookReseaterTest extends TestCase {
 
 	public function testBuildSmwHandlerForUndeclaredHookThrows(): void {
 		$this->expectException( RuntimeException::class );
+		$this->expectExceptionMessage( 'DefinitelyNotAnSmwHook' );
 		$this->reseater->buildSmwHandlerFor( 'DefinitelyNotAnSmwHook' );
 	}
 
