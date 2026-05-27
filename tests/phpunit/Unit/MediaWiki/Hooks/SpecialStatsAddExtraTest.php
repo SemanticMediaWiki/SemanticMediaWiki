@@ -6,6 +6,7 @@ use MediaWiki\Context\IContextSource;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
+use SMW\DataTypeRegistry;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
@@ -21,6 +22,18 @@ use SMW\Store;
  */
 class SpecialStatsAddExtraTest extends TestCase {
 
+	private function newStoreMock(): Store {
+		return $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+	}
+
+	private function newDataTypeRegistryMock( array $knownTypeLabels = [] ): DataTypeRegistry {
+		$registry = $this->createMock( DataTypeRegistry::class );
+		$registry->method( 'getKnownTypeLabels' )->willReturn( $knownTypeLabels );
+		return $registry;
+	}
+
 	protected function tearDown(): void {
 		ApplicationFactory::clear();
 
@@ -28,13 +41,9 @@ class SpecialStatsAddExtraTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$this->assertInstanceOf(
 			SpecialStatsAddExtra::class,
-			new SpecialStatsAddExtra( $store )
+			new SpecialStatsAddExtra( $this->newStoreMock(), $this->newDataTypeRegistryMock() )
 		);
 	}
 
@@ -46,17 +55,14 @@ class SpecialStatsAddExtraTest extends TestCase {
 			$this->markTestSkipped( 'SMW_EXTENSION_LOADED is not defined in this environment' );
 		}
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
+		$store = $this->newStoreMock();
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
 			->willReturn( $setup['statistics'] );
 
 		$extraStats = $setup['extraStats'];
 
-		$instance = new SpecialStatsAddExtra( $store );
+		$instance = new SpecialStatsAddExtra( $store, $this->newDataTypeRegistryMock() );
 
 		$context = $this->newContext();
 
@@ -66,6 +72,54 @@ class SpecialStatsAddExtraTest extends TestCase {
 
 		$this->assertTrue(
 			$this->matchArray( $extraStats, $expected['statistics'] )
+		);
+	}
+
+	public function testProcess_InjectedDataTypeRegistryDrivesDataTypeCount() {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
+			$this->markTestSkipped( 'SMW_EXTENSION_LOADED is not defined in this environment' );
+		}
+
+		$store = $this->newStoreMock();
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getStatistics' )
+			->willReturn( [
+				'QUERY' => 2002,
+				'QUERYFORMATS' => [ 'foo' => 9999 ],
+			] );
+
+		// The fake registry exposes a single type label. The handler must read
+		// the count from the injected registry, not from the global
+		// `DataTypeRegistry::getInstance()`.
+		$instance = new SpecialStatsAddExtra(
+			$store,
+			$this->newDataTypeRegistryMock( [ 'Bar' ] )
+		);
+
+		$extraStats = [];
+		$instance->onSpecialStatsAddExtra( $extraStats, $this->newContext() );
+
+		// `SpecialStatsAddExtra::copyStatistics()` iterates `messageMapper` in
+		// insertion order. For this fixture (only `QUERY`, `QUERYFORMATS`, and
+		// the registry-derived `DATATYPECOUNT` are populated) that ordering
+		// yields exactly three entries under the `smw-statistics` header:
+		// [0] `QUERY`, [1] the `foo` `QUERYFORMATS` row, [2] `DATATYPECOUNT`.
+		// Asserting on position + count locks the seam to its actual slot
+		// rather than "some entry somewhere with that number".
+		$this->assertArrayHasKey( 'smw-statistics', $extraStats );
+		$this->assertCount( 3, $extraStats['smw-statistics'] );
+
+		$this->assertSame( 2002, $extraStats['smw-statistics'][0]['number'] );
+		$this->assertSame( 9999, $extraStats['smw-statistics'][1]['number'] );
+		$this->assertSame( 1, $extraStats['smw-statistics'][2]['number'] );
+
+		// `DATATYPECOUNT` renders the `smw-statistics-datatype-count` message,
+		// which contains the `Special:Types` link target in every locale.
+		// This binds the count-1 entry to the registry-driven row rather than
+		// any other future statistic that happens to evaluate to 1.
+		$this->assertStringContainsString(
+			'Special:Types',
+			$extraStats['smw-statistics'][2]['name']
 		);
 	}
 

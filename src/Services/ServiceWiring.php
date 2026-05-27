@@ -8,6 +8,7 @@ use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
+use SMW\DataTypeRegistry;
 use SMW\DependencyValidatorFactory;
 use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
@@ -474,6 +475,16 @@ return [
 		}
 
 		return new DataItemFactory();
+	},
+
+	'SMW.DataTypeRegistry' => static function ( MediaWikiServices $services ): DataTypeRegistry {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'DataTypeRegistry' ) ) {
+			return $servicesFactory->getDataTypeRegistry();
+		}
+
+		return DataTypeRegistry::getInstance();
 	},
 
 	'SMW.QueryDependencyLinksStoreFactory' => static function ( MediaWikiServices $services ): QueryDependencyLinksStoreFactory {

@@ -303,7 +303,8 @@
 		"SemanticMediaWiki.SpecialStatsAddExtra": {
 			"class": "SMW\\MediaWiki\\Hooks\\SpecialStatsAddExtra",
 			"services": [
-				"SMW.Store"
+				"SMW.Store",
+				"SMW.DataTypeRegistry"
 			]
 		},
 		"SemanticMediaWiki.SpecialSearchResultsPrepend": {

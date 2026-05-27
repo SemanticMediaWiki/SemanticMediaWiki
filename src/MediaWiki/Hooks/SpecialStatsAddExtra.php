@@ -43,7 +43,10 @@ class SpecialStatsAddExtra implements SpecialStatsAddExtraHook {
 	/**
 	 * @since 7.0.0
 	 */
-	public function __construct( private readonly Store $store ) {
+	public function __construct(
+		private readonly Store $store,
+		private readonly DataTypeRegistry $dataTypeRegistry,
+	) {
 	}
 
 	/**
@@ -63,8 +66,7 @@ class SpecialStatsAddExtra implements SpecialStatsAddExtraHook {
 
 	private function copyStatistics( array &$extraStats, $language ): void {
 		$statistics = $this->store->getStatistics();
-		$dataTypeLabels = DataTypeRegistry::getInstance()->getKnownTypeLabels();
-		$statistics['DATATYPECOUNT'] = count( $dataTypeLabels );
+		$statistics['DATATYPECOUNT'] = count( $this->dataTypeRegistry->getKnownTypeLabels() );
 
 		if ( isset( $statistics['_cache'] ) ) {
 			$header = 'smw-statistics-cached';

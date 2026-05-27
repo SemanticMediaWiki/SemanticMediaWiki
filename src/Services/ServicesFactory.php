@@ -27,6 +27,7 @@ use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
 use SMW\DataModel\SemanticData;
+use SMW\DataTypeRegistry;
 use SMW\DataUpdater;
 use SMW\DataValueFactory;
 use SMW\DependencyValidator;
@@ -597,6 +598,17 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.Settings' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getDataTypeRegistry(): DataTypeRegistry {
+		if ( array_key_exists( 'DataTypeRegistry', $this->testOverrides ) ) {
+			return $this->testOverrides['DataTypeRegistry'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.DataTypeRegistry' );
 	}
 
 	/**
