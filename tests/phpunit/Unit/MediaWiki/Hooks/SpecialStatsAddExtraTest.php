@@ -6,6 +6,7 @@ use MediaWiki\Context\IContextSource;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
+use SMW\DataTypeRegistry;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
@@ -21,6 +22,18 @@ use SMW\Store;
  */
 class SpecialStatsAddExtraTest extends TestCase {
 
+	private function newStoreMock(): Store {
+		return $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+	}
+
+	private function newDataTypeRegistryMock( array $knownTypeLabels = [] ): DataTypeRegistry {
+		$registry = $this->createMock( DataTypeRegistry::class );
+		$registry->method( 'getKnownTypeLabels' )->willReturn( $knownTypeLabels );
+		return $registry;
+	}
+
 	protected function tearDown(): void {
 		ApplicationFactory::clear();
 
@@ -28,13 +41,9 @@ class SpecialStatsAddExtraTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$this->assertInstanceOf(
 			SpecialStatsAddExtra::class,
-			new SpecialStatsAddExtra( $store )
+			new SpecialStatsAddExtra( $this->newStoreMock(), $this->newDataTypeRegistryMock() )
 		);
 	}
 
@@ -46,17 +55,14 @@ class SpecialStatsAddExtraTest extends TestCase {
 			$this->markTestSkipped( 'SMW_EXTENSION_LOADED is not defined in this environment' );
 		}
 
-		$store = $this->getMockBuilder( Store::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
+		$store = $this->newStoreMock();
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
 			->willReturn( $setup['statistics'] );
 
 		$extraStats = $setup['extraStats'];
 
-		$instance = new SpecialStatsAddExtra( $store );
+		$instance = new SpecialStatsAddExtra( $store, $this->newDataTypeRegistryMock() );
 
 		$context = $this->newContext();
 
@@ -67,6 +73,54 @@ class SpecialStatsAddExtraTest extends TestCase {
 		$this->assertTrue(
 			$this->matchArray( $extraStats, $expected['statistics'] )
 		);
+	}
+
+	public function testProcess_InjectedDataTypeRegistryDrivesDataTypeCount() {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
+			$this->markTestSkipped( 'SMW_EXTENSION_LOADED is not defined in this environment' );
+		}
+
+		$store = $this->newStoreMock();
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getStatistics' )
+			->willReturn( [
+				'QUERY' => 2002,
+				'QUERYFORMATS' => [ 'foo' => 9999 ],
+			] );
+
+		// The fake registry exposes a single type label. The handler must read
+		// the count from the injected registry, not from the global
+		// `DataTypeRegistry::getInstance()`.
+		$instance = new SpecialStatsAddExtra(
+			$store,
+			$this->newDataTypeRegistryMock( [ 'Bar' ] )
+		);
+
+		$extraStats = [];
+		$instance->onSpecialStatsAddExtra( $extraStats, $this->newContext() );
+
+		$dataTypeEntry = $this->findStatEntryByCount( $extraStats, 1 );
+		$this->assertNotNull(
+			$dataTypeEntry,
+			'expected an entry with number=1 corresponding to count( [ "Bar" ] )'
+		);
+
+		$queryEntry = $this->findStatEntryByCount( $extraStats, 2002 );
+		$this->assertNotNull( $queryEntry, 'expected the QUERY entry' );
+
+		$queryFormatEntry = $this->findStatEntryByCount( $extraStats, 9999 );
+		$this->assertNotNull( $queryFormatEntry, 'expected the QUERYFORMATS "foo" entry' );
+	}
+
+	private function findStatEntryByCount( array $extraStats, int $number ): ?array {
+		foreach ( $extraStats as $entries ) {
+			foreach ( $entries as $entry ) {
+				if ( is_array( $entry ) && ( $entry['number'] ?? null ) === $number ) {
+					return $entry;
+				}
+			}
+		}
+		return null;
 	}
 
 	public function matchArray( array $matcher, $searchValue ) {
