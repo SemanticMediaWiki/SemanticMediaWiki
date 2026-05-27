@@ -53,6 +53,7 @@ use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\Protection\ProtectionValidator;
+use SMW\Query\Cache\ResultCache;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
@@ -66,6 +67,7 @@ use SMW\Settings;
 use SMW\SetupFile;
 use SMW\SiteReadiness;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
 use SMW\StoreFactory;
 use SMW\Utils\Logger;
@@ -922,6 +924,33 @@ return [
 			$servicesFactory->newJobFactory(),
 			$servicesFactory->getEventDispatcher()
 		);
+	},
+
+	'SMW.ResultCache' => static function ( MediaWikiServices $services ): ResultCache {
+		// Construction (Store, Settings, CacheFactory wiring, BlobStore composition)
+		// lives in ServicesFactory::getResultCache(), which also honours its own
+		// testOverrides slot. The wiring is a thin pass-through.
+		return ServicesFactory::getInstance()->getResultCache();
+	},
+
+	'SMW.SearchEngineConfig' => static function ( MediaWikiServices $services ): SearchEngineConfig {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'SearchEngineConfig' ) ) {
+			return $servicesFactory->getSearchEngineConfig();
+		}
+
+		return $services->getSearchEngineConfig();
+	},
+
+	'SMW.FulltextSearchTableFactory' => static function ( MediaWikiServices $services ): FulltextSearchTableFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'FulltextSearchTableFactory' ) ) {
+			return $servicesFactory->singleton( 'FulltextSearchTableFactory' );
+		}
+
+		return new FulltextSearchTableFactory();
 	},
 
 ];
