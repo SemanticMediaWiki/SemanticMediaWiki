@@ -5,7 +5,6 @@ namespace SMW\Tests\Integration;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
-use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\Property;
@@ -33,7 +32,7 @@ use SMW\SQLStore\RedirectUpdater;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\SQLStoreUpdater;
-use SMW\Tests\TestEnvironment;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
@@ -45,13 +44,11 @@ use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
  *
  * @author mwjames
  */
-class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
+class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends SMWIntegrationTestCase {
 
 	use MockSelectQueryBuilderTrait;
 	use MockWriteQueryBuilderTrait;
 
-	private $testEnvironment;
-	private $mwHooksHandler;
 	private $applicationFactory;
 	private $spyLogger;
 
@@ -78,11 +75,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturnCallback( [ $this, 'mockConnection' ] );
 
-		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
-
-		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->testEnvironment->registerObject( 'ConnectionManager', $connectionManager );
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
@@ -91,9 +84,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
 		$this->applicationFactory->clear();
-		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -169,7 +160,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 		$store->expects( $this->once() )
 			->method( 'fetchQueryResult' );
 
-		$this->mwHooksHandler->register( 'SMW::Store::BeforeQueryResultLookupComplete', static function ( $store, $query, &$queryResult ) {
+		$this->setTemporaryHook( 'SMW::Store::BeforeQueryResultLookupComplete', static function ( $store, $query, &$queryResult ) {
 			$queryResult = 'Foo';
 			return true;
 		} );
@@ -195,7 +186,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 		$store->expects( $this->never() )
 			->method( 'fetchQueryResult' );
 
-		$this->mwHooksHandler->register( 'SMW::Store::BeforeQueryResultLookupComplete', static function ( $store, $query, &$queryResult ) {
+		$this->setTemporaryHook( 'SMW::Store::BeforeQueryResultLookupComplete', static function ( $store, $query, &$queryResult ) {
 			$queryResult = 'Foo';
 
 			// Return false to suppress additional calls to fetchQueryResult
@@ -228,7 +219,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->method( 'fetchQueryResult' )
 			->willReturn( $queryResult );
 
-		$this->mwHooksHandler->register( 'SMW::Store::AfterQueryResultLookupComplete', static function ( $store, &$queryResult ) {
+		$this->setTemporaryHook( 'SMW::Store::AfterQueryResultLookupComplete', static function ( $store, &$queryResult ) {
 			if ( !$queryResult instanceof QueryResult ) {
 				throw new RuntimeException( 'Expected a QueryResult instance' );
 			}
@@ -295,7 +286,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$this->mwHooksHandler->register( 'SMW::Factbox::BeforeContentGeneration', static function ( &$text, $semanticData ) {
+		$this->setTemporaryHook( 'SMW::Factbox::BeforeContentGeneration', static function ( &$text, $semanticData ) {
 			$text = $semanticData->getSubject()->getTitle()->getText();
 			return false;
 		} );
@@ -389,7 +380,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 		$null = 0;
 
 		$reachedTheBeforeChangeTitleCompleteHook = false;
-		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeChangeTitleComplete', static function () use ( &$reachedTheBeforeChangeTitleCompleteHook ) {
+		$this->setTemporaryHook( 'SMW::SQLStore::BeforeChangeTitleComplete', static function () use ( &$reachedTheBeforeChangeTitleCompleteHook ) {
 			$reachedTheBeforeChangeTitleCompleteHook = true;
 		} );
 
@@ -425,7 +416,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->willReturn( [] );
 
 		$reachedTheBeforeDeleteSubjectCompleteHook = false;
-		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', static function () use ( &$reachedTheBeforeDeleteSubjectCompleteHook ) {
+		$this->setTemporaryHook( 'SMW::SQLStore::BeforeDeleteSubjectComplete', static function () use ( &$reachedTheBeforeDeleteSubjectCompleteHook ) {
 			$reachedTheBeforeDeleteSubjectCompleteHook = true;
 		} );
 
@@ -463,7 +454,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->willReturn( [] );
 
 		$reachedTheAfterDeleteSubjectCompleteHook = false;
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDeleteSubjectComplete', static function () use ( &$reachedTheAfterDeleteSubjectCompleteHook ) {
+		$this->setTemporaryHook( 'SMW::SQLStore::AfterDeleteSubjectComplete', static function () use ( &$reachedTheAfterDeleteSubjectCompleteHook ) {
 			$reachedTheAfterDeleteSubjectCompleteHook = true;
 		} );
 
@@ -551,7 +542,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->setMethods( null )
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AddCustomFixedPropertyTables', static function ( &$customFixedProperties, &$fixedPropertyTablePrefix ) {
+		$this->setTemporaryHook( 'SMW::SQLStore::AddCustomFixedPropertyTables', static function ( &$customFixedProperties, &$fixedPropertyTablePrefix ) {
 			// Standard table prefix
 			$customFixedProperties['Foo'] = '_Bar';
 
@@ -594,7 +585,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 
 		$store->setLogger( $this->spyLogger );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', static function ( $store, $semanticData, $changeOp ) use ( $test ){
+		$this->setTemporaryHook( 'SMW::SQLStore::AfterDataUpdateComplete', static function ( $store, $semanticData, $changeOp ) use ( $test ){
 			$test->is( $changeOp->getChangedEntityIdSummaryList() );
 
 			return true;
