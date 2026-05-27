@@ -13,9 +13,8 @@ use RuntimeException;
  * mid-test service swaps, and constructing SMW's own declarative handler for
  * a given hook on demand.
  *
- * Replaces the broader `MwHooksHandler` shim. Tests that need to register or
- * clear hooks directly should use `MediaWikiIntegrationTestCase::setTemporaryHook`
- * and `clearHook` instead.
+ * Tests that need to register or clear hooks directly should use
+ * `MediaWikiIntegrationTestCase::setTemporaryHook` and `clearHook` instead.
  *
  * @license GPL-2.0-or-later
  * @since 7.1.0
