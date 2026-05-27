@@ -263,7 +263,10 @@
 			"services": [
 				"SMW.NamespaceExaminer",
 				"HookContainer",
-				"SMW.PageCreator"
+				"SMW.PageCreator",
+				"SMW.ParserDataFactory",
+				"SMW.MwCollaboratorFactory",
+				"SMW.PropertyAnnotatorFactory"
 			]
 		},
 		"SemanticMediaWiki.MaintenanceUpdateAddParams": {
