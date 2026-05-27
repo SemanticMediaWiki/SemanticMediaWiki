@@ -935,7 +935,8 @@ class ServicesFactory {
 			$this->getStore(),
 			$semanticData,
 			$changePropagationNotifier,
-			$this->getPageCreator()
+			$this->getPageCreator(),
+			$this->getEventDispatcher()
 		);
 
 		$dataUpdater->isCommandLineMode(
@@ -944,10 +945,6 @@ class ServicesFactory {
 
 		$dataUpdater->setLogger(
 			$this->getMediaWikiLogger()
-		);
-
-		$dataUpdater->setEventDispatcher(
-			$this->getEventDispatcher()
 		);
 
 		$dataUpdater->setRevisionGuard(

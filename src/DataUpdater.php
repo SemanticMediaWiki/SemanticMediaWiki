@@ -11,7 +11,7 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage as DIWikiPage;
 use SMW\DataModel\SemanticData;
-use SMW\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
@@ -40,7 +40,6 @@ class DataUpdater {
 
 	use RevisionGuardAwareTrait;
 	use LoggerAwareTrait;
-	use EventDispatcherAwareTrait;
 
 	private Store $store;
 
@@ -49,6 +48,8 @@ class DataUpdater {
 	private ChangePropagationNotifier $changePropagationNotifier;
 
 	private PageCreator $pageCreator;
+
+	private EventDispatcher $eventDispatcher;
 
 	private ?bool $canCreateUpdateJob = null;
 
@@ -78,12 +79,14 @@ class DataUpdater {
 		Store $store,
 		SemanticData $semanticData,
 		ChangePropagationNotifier $changePropagationNotifier,
-		PageCreator $pageCreator
+		PageCreator $pageCreator,
+		EventDispatcher $eventDispatcher
 	) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
 		$this->changePropagationNotifier = $changePropagationNotifier;
 		$this->pageCreator = $pageCreator;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**

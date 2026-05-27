@@ -43,17 +43,14 @@ class DependencyValidatorFactory {
 		$eTag = 'W/"' . $this->parserCache->makeParserOutputKey( $page, $options ) .
 			'--' . $page->getTouched() . '"';
 
-		$dependencyValidator = new DependencyValidator(
+		return new DependencyValidator(
 			$this->namespaceExaminer,
 			$this->queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
 			$this->entityCache,
 			$eTag,
-			Site::getCacheExpireTime( 'parser' )
+			Site::getCacheExpireTime( 'parser' ),
+			$this->eventDispatcher
 		);
-
-		$dependencyValidator->setEventDispatcher( $this->eventDispatcher );
-
-		return $dependencyValidator;
 	}
 
 }

@@ -29,6 +29,7 @@ class DependencyValidatorTest extends TestCase {
 	private $namespaceExaminer;
 	private $entityCache;
 	private $logger;
+	private $eventDispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -50,6 +51,10 @@ class DependencyValidatorTest extends TestCase {
 		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -57,13 +62,14 @@ class DependencyValidatorTest extends TestCase {
 		parent::tearDown();
 	}
 
-	private function newInstance( string $eTag = '', int $cacheTTL = 3600 ): DependencyValidator {
+	private function newInstance( string $eTag = '', int $cacheTTL = 3600, ?EventDispatcher $eventDispatcher = null ): DependencyValidator {
 		return new DependencyValidator(
 			$this->namespaceExaminer,
 			$this->dependencyLinksValidator,
 			$this->entityCache,
 			$eTag,
-			$cacheTTL
+			$cacheTTL,
+			$eventDispatcher ?? $this->eventDispatcher
 		);
 	}
 
@@ -98,6 +104,8 @@ class DependencyValidatorTest extends TestCase {
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
+		$instance = $this->newInstance( 'foo-etag', 3600, $eventDispatcher );
+
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'canCheckDependencies' )
 			->willReturn( true );
@@ -110,12 +118,6 @@ class DependencyValidatorTest extends TestCase {
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'getCheckedDependencies' )
 			->willReturn( [] );
-
-		$instance = $this->newInstance( 'foo-etag' );
-
-		$instance->setEventDispatcher(
-			$eventDispatcher
-		);
 
 		$this->assertTrue(
 			$instance->hasArchaicDependencies( $subject )
@@ -269,9 +271,9 @@ class DependencyValidatorTest extends TestCase {
 			$this->dependencyLinksValidator,
 			$realEntityCache,
 			'foo-etag',
-			3600
+			3600,
+			$eventDispatcher
 		);
-		$instance->setEventDispatcher( $eventDispatcher );
 
 		$subject = WikiPage::newFromText( 'Foo' );
 

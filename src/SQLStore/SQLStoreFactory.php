@@ -997,10 +997,7 @@ class SQLStoreFactory {
 		$settings = $applicationFactory->getSettings();
 
 		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
-		$propertyTableIdReferenceDisposer->setEventDispatcher(
+			$this->store,
 			$applicationFactory->getEventDispatcher()
 		);
 
