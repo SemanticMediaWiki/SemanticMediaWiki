@@ -9,6 +9,7 @@ use SMW\Elastic\ElasticStore;
 use SMW\Setup\LegacyConstantNormalizer;
 use SMW\SQLStore\Installer;
 use SMW\Utils\File;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @private
@@ -99,6 +100,23 @@ class SetupFile {
 			return true;
 		}
 
+		$computedKey = self::makeUpgradeKey( $GLOBALS );
+		$cache = null;
+		$cacheKey = null;
+
+		// Cache a known-good gate evaluation on the local server so subsequent
+		// requests short-circuit the repo read. The cache key embeds the
+		// computed upgrade key, so it auto-invalidates when settings change.
+		// Bypassed under PHPUnit to avoid bleed-through between tests.
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
+			$cache = MediaWikiServices::getInstance()->getLocalServerObjectCache();
+			$cacheKey = $cache->makeKey( 'smw', 'gate', $computedKey );
+
+			if ( $cache->get( $cacheKey ) ) {
+				return true;
+			}
+		}
+
 		// #3563, Use the specific wiki-id as identifier for the instance in use
 		$id = Site::id();
 
@@ -106,15 +124,21 @@ class SetupFile {
 			return false;
 		}
 
-		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS[self::SMW_JSON][$id]['upgrade_key'];
-
 		if (
 			isset( $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) &&
 			$GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] !== false ) {
-			$isGoodSchema = false;
+			return false;
 		}
 
-		return $isGoodSchema;
+		if ( $computedKey !== $GLOBALS[self::SMW_JSON][$id]['upgrade_key'] ) {
+			return false;
+		}
+
+		if ( $cache !== null && $cacheKey !== null ) {
+			$cache->set( $cacheKey, 1, BagOStuff::TTL_HOUR );
+		}
+
+		return true;
 	}
 
 	public static function makeUpgradeKey( array $vars ): string {
