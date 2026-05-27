@@ -119,7 +119,10 @@
 		"SemanticMediaWiki.InternalParseBeforeLinks": {
 			"class": "SMW\\MediaWiki\\Hooks\\InternalParseBeforeLinks",
 			"services": [
-				"SMW.Settings"
+				"SMW.Settings",
+				"SMW.ParserDataFactory",
+				"SMW.InTextAnnotationParserFactory",
+				"SMW.MwCollaboratorFactory"
 			]
 		},
 		"SemanticMediaWiki.RejectParserCacheValue": {

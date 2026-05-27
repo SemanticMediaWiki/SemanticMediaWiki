@@ -5,8 +5,10 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Hook\InternalParseBeforeLinksHook;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Title\Title;
+use SMW\MediaWiki\Jobs\ParserDataFactory;
+use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\Parser\InTextAnnotationParser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Parser\InTextAnnotationParserFactory;
 use SMW\Settings;
 
 /**
@@ -40,7 +42,12 @@ class InternalParseBeforeLinks implements InternalParseBeforeLinksHook {
 	/**
 	 * @since 7.0.0
 	 */
-	public function __construct( private readonly Settings $settings ) {
+	public function __construct(
+		private readonly Settings $settings,
+		private readonly ParserDataFactory $parserDataFactory,
+		private readonly InTextAnnotationParserFactory $inTextAnnotationParserFactory,
+		private readonly MwCollaboratorFactory $mwCollaboratorFactory,
+	) {
 	}
 
 	/**
@@ -86,27 +93,14 @@ class InternalParseBeforeLinks implements InternalParseBeforeLinksHook {
 	}
 
 	private function performUpdate( &$text, Parser $parser, $stripState ): bool {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		/**
-		 * @var ParserData $parserData
-		 */
-		$parserData = $applicationFactory->newParserData(
+		$parserData = $this->parserDataFactory->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()
 		);
 
-		/**
-		 * Performs [[link::syntax]] parsing and adding of property annotations
-		 * to the ParserOutput
-		 *
-		 * @var InTextAnnotationParser
-		 */
-		$inTextAnnotationParser = $applicationFactory->newInTextAnnotationParser(
-			$parserData
-		);
+		$inTextAnnotationParser = $this->inTextAnnotationParserFactory->newFor( $parserData );
 
-		$stripMarkerDecoder = $applicationFactory->newMwCollaboratorFactory()->newStripMarkerDecoder(
+		$stripMarkerDecoder = $this->mwCollaboratorFactory->newStripMarkerDecoder(
 			$stripState
 		);
 
