@@ -99,28 +99,28 @@ class SpecialStatsAddExtraTest extends TestCase {
 		$extraStats = [];
 		$instance->onSpecialStatsAddExtra( $extraStats, $this->newContext() );
 
-		$dataTypeEntry = $this->findStatEntryByCount( $extraStats, 1 );
-		$this->assertNotNull(
-			$dataTypeEntry,
-			'expected an entry with number=1 corresponding to count( [ "Bar" ] )'
+		// `SpecialStatsAddExtra::copyStatistics()` iterates `messageMapper` in
+		// insertion order. For this fixture (only `QUERY`, `QUERYFORMATS`, and
+		// the registry-derived `DATATYPECOUNT` are populated) that ordering
+		// yields exactly three entries under the `smw-statistics` header:
+		// [0] `QUERY`, [1] the `foo` `QUERYFORMATS` row, [2] `DATATYPECOUNT`.
+		// Asserting on position + count locks the seam to its actual slot
+		// rather than "some entry somewhere with that number".
+		$this->assertArrayHasKey( 'smw-statistics', $extraStats );
+		$this->assertCount( 3, $extraStats['smw-statistics'] );
+
+		$this->assertSame( 2002, $extraStats['smw-statistics'][0]['number'] );
+		$this->assertSame( 9999, $extraStats['smw-statistics'][1]['number'] );
+		$this->assertSame( 1, $extraStats['smw-statistics'][2]['number'] );
+
+		// `DATATYPECOUNT` renders the `smw-statistics-datatype-count` message,
+		// which contains the `Special:Types` link target in every locale.
+		// This binds the count-1 entry to the registry-driven row rather than
+		// any other future statistic that happens to evaluate to 1.
+		$this->assertStringContainsString(
+			'Special:Types',
+			$extraStats['smw-statistics'][2]['name']
 		);
-
-		$queryEntry = $this->findStatEntryByCount( $extraStats, 2002 );
-		$this->assertNotNull( $queryEntry, 'expected the QUERY entry' );
-
-		$queryFormatEntry = $this->findStatEntryByCount( $extraStats, 9999 );
-		$this->assertNotNull( $queryFormatEntry, 'expected the QUERYFORMATS "foo" entry' );
-	}
-
-	private function findStatEntryByCount( array $extraStats, int $number ): ?array {
-		foreach ( $extraStats as $entries ) {
-			foreach ( $entries as $entry ) {
-				if ( is_array( $entry ) && ( $entry['number'] ?? null ) === $number ) {
-					return $entry;
-				}
-			}
-		}
-		return null;
 	}
 
 	public function matchArray( array $matcher, $searchValue ) {
