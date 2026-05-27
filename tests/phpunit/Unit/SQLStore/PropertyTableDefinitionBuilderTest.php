@@ -7,7 +7,6 @@ use SMW\DataItems\DataItem;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
 use SMW\SQLStore\PropertyTypeFinder;
-use SMW\Tests\Utils\MwHooksHandler;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableDefinitionBuilder
@@ -21,23 +20,13 @@ use SMW\Tests\Utils\MwHooksHandler;
 class PropertyTableDefinitionBuilderTest extends TestCase {
 
 	private $propertyTypeFinder;
-	private $mwHooksHandler;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->mwHooksHandler = new MwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
-
 		$this->propertyTypeFinder = $this->getMockBuilder( PropertyTypeFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
-	}
-
-	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
-
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {

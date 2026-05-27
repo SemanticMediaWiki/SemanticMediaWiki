@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit\MediaWiki;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\NamespaceManager;
-use SMW\Tests\Utils\MwHooksHandler;
 
 /**
  * @group semantic-mediawiki
@@ -17,20 +16,7 @@ use SMW\Tests\Utils\MwHooksHandler;
  */
 class NamespaceInfoCanonicalNameMatchTest extends TestCase {
 
-	private $mwHooksHandler;
-
-	protected function setUp(): void {
-		parent::setUp();
-		$this->mwHooksHandler = new MwHooksHandler();
-	}
-
-	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
-		parent::tearDown();
-	}
-
 	public function testCanonicalNames(): void {
-		$this->mwHooksHandler->deregisterListedHooks();
 		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 
 		$names = NamespaceManager::getCanonicalNames();

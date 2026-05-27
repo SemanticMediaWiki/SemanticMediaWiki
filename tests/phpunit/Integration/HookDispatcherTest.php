@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW\Tests\Unit;
+namespace SMW\Tests\Integration;
 
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporter;
-use PHPUnit\Framework\TestCase;
 use SMW\Constraint\ConstraintRegistry;
 use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
@@ -21,7 +20,7 @@ use SMW\Property\Annotator;
 use SMW\Schema\SchemaTypes;
 use SMW\SQLStore\TableBuilder;
 use SMW\Store;
-use SMW\Tests\TestEnvironment;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
@@ -31,33 +30,14 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HookDispatcherTest extends TestCase {
-
-	private $mwHooksHandler;
-
-	private $testEnvironment;
-
-	protected function setUp(): void {
-		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
-
-		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
-	}
-
-	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
-	}
+class HookDispatcherTest extends SMWIntegrationTestCase {
 
 	public function testOnSettingsBeforeInitializationComplete() {
 		$configuration = [];
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Settings::BeforeInitializationComplete', static function ( &$configuration ) {
+		$this->setTemporaryHook( 'SMW::Settings::BeforeInitializationComplete', static function ( &$configuration ) {
 			$configuration = [ 'Foo' ];
 		} );
 
@@ -74,7 +54,7 @@ class HookDispatcherTest extends TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Setup::AfterInitializationComplete', static function ( &$vars ) {
+		$this->setTemporaryHook( 'SMW::Setup::AfterInitializationComplete', static function ( &$vars ) {
 			$vars = [ 'Foo' ];
 		} );
 
@@ -112,7 +92,7 @@ class HookDispatcherTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->mwHooksHandler->register( 'SMW::Admin::RegisterTaskHandlers', static function ( $taskHandlerRegistry, $store, $outputFormatter, $user ) use ( $taskHandler ) {
+		$this->setTemporaryHook( 'SMW::Admin::RegisterTaskHandlers', static function ( $taskHandlerRegistry, $store, $outputFormatter, $user ) use ( $taskHandler ) {
 			$taskHandlerRegistry->registerTaskHandler( $taskHandler );
 		} );
 
@@ -133,7 +113,7 @@ class HookDispatcherTest extends TestCase {
 		$propertyChangeListener->expects( $this->once() )
 			->method( 'addListenerCallback' );
 
-		$this->mwHooksHandler->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', static function ( $propertyChangeListener ) use ( $property ) {
+		$this->setTemporaryHook( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', static function ( $propertyChangeListener ) use ( $property ) {
 			$propertyChangeListener->addListenerCallback( $property, static function (){
 			} );
 		} );
@@ -151,7 +131,7 @@ class HookDispatcherTest extends TestCase {
 		$constraintRegistry->expects( $this->once() )
 			->method( 'registerConstraint' );
 
-		$this->mwHooksHandler->register( 'SMW::Constraint::initConstraints', static function ( $constraintRegistry ) {
+		$this->setTemporaryHook( 'SMW::Constraint::initConstraints', static function ( $constraintRegistry ) {
 			$constraintRegistry->registerConstraint( 'foo', 'bar' );
 		} );
 
@@ -168,7 +148,7 @@ class HookDispatcherTest extends TestCase {
 		$schemaTypes->expects( $this->once() )
 			->method( 'registerSchemaType' );
 
-		$this->mwHooksHandler->register( 'SMW::Schema::RegisterSchemaTypes', static function ( $schemaTypes ) {
+		$this->setTemporaryHook( 'SMW::Schema::RegisterSchemaTypes', static function ( $schemaTypes ) {
 			$schemaTypes->registerSchemaType( 'Foo', [] );
 		} );
 
@@ -184,7 +164,7 @@ class HookDispatcherTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::GetPreferences', static function ( $user, &$preferences ) {
+		$this->setTemporaryHook( 'SMW::GetPreferences', static function ( $user, &$preferences ) {
 			$preferences = [ 'Foo' ];
 		} );
 
@@ -201,7 +181,7 @@ class HookDispatcherTest extends TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::BeforeMagicWordsFinder', static function ( &$magicWords ) {
+		$this->setTemporaryHook( 'SMW::Parser::BeforeMagicWordsFinder', static function ( &$magicWords ) {
 			$magicWords = [ 'Foo' ];
 		} );
 
@@ -222,7 +202,7 @@ class HookDispatcherTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::AfterLinksProcessingComplete', static function ( &$text, $annotationProcessor ) {
+		$this->setTemporaryHook( 'SMW::Parser::AfterLinksProcessingComplete', static function ( &$text, $annotationProcessor ) {
 			$text = 'Foo';
 		} );
 
@@ -248,7 +228,7 @@ class HookDispatcherTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', static function ( $propertyAnnotator, $parserOutput ) {
+		$this->setTemporaryHook( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', static function ( $propertyAnnotator, $parserOutput ) {
 			$propertyAnnotator->addAnnotation();
 		} );
 
@@ -269,7 +249,7 @@ class HookDispatcherTest extends TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', static function ( $store, $messageReporter ) {
+		$this->setTemporaryHook( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', static function ( $store, $messageReporter ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -285,7 +265,7 @@ class HookDispatcherTest extends TestCase {
 
 		$indicatorProviders = [];
 
-		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', static function ( $store, &$indicatorProviders ) {
+		$this->setTemporaryHook( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', static function ( $store, &$indicatorProviders ) {
 			$indicatorProviders[] = 'Foo';
 		} );
 
@@ -306,7 +286,7 @@ class HookDispatcherTest extends TestCase {
 
 		$indicatorProviders = [];
 
-		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', static function ( $store, &$indicatorProviders ) {
+		$this->setTemporaryHook( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', static function ( $store, &$indicatorProviders ) {
 			$indicatorProviders[] = 'Foo';
 		} );
 
@@ -325,7 +305,7 @@ class HookDispatcherTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::IsApprovedRevision', static function ( $title, $latestRevID ) {
+		$this->setTemporaryHook( 'SMW::RevisionGuard::IsApprovedRevision', static function ( $title, $latestRevID ) {
 			return $latestRevID == 9999 ? false : true;
 		} );
 
@@ -343,7 +323,7 @@ class HookDispatcherTest extends TestCase {
 
 		$latestRevID = 9999;
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevisionID', static function ( $title, &$latestRevID ) {
+		$this->setTemporaryHook( 'SMW::RevisionGuard::ChangeRevisionID', static function ( $title, &$latestRevID ) {
 			$latestRevID = 1001;
 		} );
 
@@ -375,7 +355,7 @@ class HookDispatcherTest extends TestCase {
 			$file
 		);
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeFile', static function ( $title, &$file ) use ( $anotherFile ) {
+		$this->setTemporaryHook( 'SMW::RevisionGuard::ChangeFile', static function ( $title, &$file ) use ( $anotherFile ) {
 			$file = $anotherFile;
 		} );
 
@@ -407,7 +387,7 @@ class HookDispatcherTest extends TestCase {
 			$anotherRevision
 		);
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevision', static function ( $title, &$revision ) use ( $anotherRevision ) {
+		$this->setTemporaryHook( 'SMW::RevisionGuard::ChangeRevision', static function ( $title, &$revision ) use ( $anotherRevision ) {
 			$revision = $anotherRevision;
 		} );
 
@@ -431,7 +411,7 @@ class HookDispatcherTest extends TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', static function ( $tables, $messageReporter ) {
+		$this->setTemporaryHook( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', static function ( $tables, $messageReporter ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -456,7 +436,7 @@ class HookDispatcherTest extends TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', static function ( $tableBuilder, $messageReporter, $options ) {
+		$this->setTemporaryHook( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', static function ( $tableBuilder, $messageReporter, $options ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -481,7 +461,7 @@ class HookDispatcherTest extends TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', static function ( $tableBuilder, $messageReporter, $options ) {
+		$this->setTemporaryHook( 'SMW::SQLStore::Installer::AfterDropTablesComplete', static function ( $tableBuilder, $messageReporter, $options ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
