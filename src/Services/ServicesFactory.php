@@ -1118,7 +1118,8 @@ class ServicesFactory {
 			$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
 			$this->getEntityCache(),
 			$eTag,
-			$cacheTTL
+			$cacheTTL,
+			$this->getEventDispatcher()
 		);
 	}
 
