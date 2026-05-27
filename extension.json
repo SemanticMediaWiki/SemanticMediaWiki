@@ -345,22 +345,39 @@
 			]
 		},
 		"SemanticMediaWiki.AfterDataUpdateComplete": {
-			"class": "SMW\\MediaWiki\\Hooks\\AfterDataUpdateComplete"
+			"class": "SMW\\MediaWiki\\Hooks\\AfterDataUpdateComplete",
+			"services": [
+				"SMW.QueryDependencyLinksStoreFactory",
+				"SMW.FulltextSearchTableFactory"
+			]
 		},
 		"SemanticMediaWiki.AfterCreateTablesComplete": {
 			"class": "SMW\\MediaWiki\\Hooks\\AfterCreateTablesComplete"
 		},
 		"SemanticMediaWiki.BeforeQueryResultLookupComplete": {
-			"class": "SMW\\MediaWiki\\Hooks\\BeforeQueryResultLookupComplete"
+			"class": "SMW\\MediaWiki\\Hooks\\BeforeQueryResultLookupComplete",
+			"services": [
+				"SMW.ResultCache"
+			]
 		},
 		"SemanticMediaWiki.AfterQueryResultLookupComplete": {
-			"class": "SMW\\MediaWiki\\Hooks\\AfterQueryResultLookupComplete"
+			"class": "SMW\\MediaWiki\\Hooks\\AfterQueryResultLookupComplete",
+			"services": [
+				"SMW.QueryDependencyLinksStoreFactory",
+				"SMW.ResultCache"
+			]
 		},
 		"SemanticMediaWiki.AfterIncomingPropertiesLookupComplete": {
-			"class": "SMW\\MediaWiki\\Hooks\\AfterIncomingPropertiesLookupComplete"
+			"class": "SMW\\MediaWiki\\Hooks\\AfterIncomingPropertiesLookupComplete",
+			"services": [
+				"SMW.QueryDependencyLinksStoreFactory"
+			]
 		},
 		"SemanticMediaWiki.BeforeIncomingPropertyValuesFurtherLinkCreate": {
-			"class": "SMW\\MediaWiki\\Hooks\\BeforeIncomingPropertyValuesFurtherLinkCreate"
+			"class": "SMW\\MediaWiki\\Hooks\\BeforeIncomingPropertyValuesFurtherLinkCreate",
+			"services": [
+				"SMW.QueryDependencyLinksStoreFactory"
+			]
 		},
 		"SemanticMediaWiki.DeleteAccount": {
 			"class": "SMW\\MediaWiki\\Hooks\\DeleteAccount",

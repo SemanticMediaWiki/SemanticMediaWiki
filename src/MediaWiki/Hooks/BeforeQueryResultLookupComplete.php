@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Query\Cache\ResultCache;
 
 /**
  * Runs before the regular query result lookup runs, allowing the cache to
@@ -18,18 +18,24 @@ class BeforeQueryResultLookupComplete {
 	/**
 	 * @since 7.0.0
 	 */
-	public function onSMW__Store__BeforeQueryResultLookupComplete( $store, $query, &$result, $queryEngine ): bool {
-		$resultCache = ApplicationFactory::getInstance()->singleton( 'ResultCache' );
+	public function __construct(
+		private readonly ResultCache $resultCache,
+	) {
+	}
 
-		$resultCache->setQueryEngine(
+	/**
+	 * @since 7.0.0
+	 */
+	public function onSMW__Store__BeforeQueryResultLookupComplete( $store, $query, &$result, $queryEngine ): bool {
+		$this->resultCache->setQueryEngine(
 			$queryEngine
 		);
 
-		if ( !$resultCache->isEnabled() ) {
+		if ( !$this->resultCache->isEnabled() ) {
 			return true;
 		}
 
-		$result = $resultCache->getQueryResult(
+		$result = $this->resultCache->getQueryResult(
 			$query
 		);
 
