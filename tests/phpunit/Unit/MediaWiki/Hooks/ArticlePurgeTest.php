@@ -8,6 +8,7 @@ use SMW\Factbox\CachedFactbox;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use WikiPage;
@@ -72,7 +73,9 @@ class ArticlePurgeTest extends TestCase {
 				[ 'smwgQueryResultCacheRefreshOnPurge', $setup['smwgQueryResultCacheRefreshOnPurge'] ],
 			] );
 
-		$instance = new ArticlePurge( $this->cache, $settings, $this->eventDispatcher );
+		$store = $this->createMock( Store::class );
+
+		$instance = new ArticlePurge( $store, $this->cache, $settings, $this->eventDispatcher );
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
 		$factboxCacheKey = CachedFactbox::makeCacheKey( $pageId );

@@ -8,7 +8,6 @@ use Onoi\Cache\Cache;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\EventDispatcher\EventDispatcher;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 use SMW\Store;
 
@@ -33,6 +32,7 @@ class ArticlePurge implements ArticlePurgeHook {
 	 * @since 7.0.0
 	 */
 	public function __construct(
+		private readonly Store $store,
 		private readonly Cache $cache,
 		private readonly Settings $settings,
 		private readonly EventDispatcher $eventDispatcher,
@@ -54,7 +54,7 @@ class ArticlePurge implements ArticlePurgeHook {
 		}
 
 		if ( $this->settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
-			$this->invalidateResultCache( ApplicationFactory::getInstance()->getStore(), $title );
+			$this->invalidateResultCache( $title );
 		}
 
 		$context = [
@@ -67,8 +67,8 @@ class ArticlePurge implements ArticlePurgeHook {
 		return true;
 	}
 
-	private function invalidateResultCache( Store $store, Title $title ): void {
-		$dependency_list = $store->getPropertyValues(
+	private function invalidateResultCache( Title $title ): void {
+		$dependency_list = $this->store->getPropertyValues(
 			WikiPage::newFromTitle( $title ),
 			new Property( '_ASK' )
 		);
