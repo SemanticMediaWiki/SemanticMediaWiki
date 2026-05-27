@@ -11,6 +11,7 @@ use SMW\DataModel\SemanticData;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use WikiPage;
@@ -34,6 +35,8 @@ class ArticleDelete implements ArticleDeleteHook {
 		private readonly Store $store,
 		private readonly JobFactory $jobFactory,
 		private readonly EventDispatcher $eventDispatcher,
+		private readonly SerializerFactory $serializerFactory,
+		private readonly ApplicationFactory $servicesFactory,
 	) {
 	}
 
@@ -61,7 +64,7 @@ class ArticleDelete implements ArticleDeleteHook {
 	 * @since 7.0.0
 	 */
 	public function scheduleDeleteFor( Title $title ): void {
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function () use( $title ): void {
+		$deferredCallableUpdate = $this->servicesFactory->newDeferredCallableUpdate( function () use( $title ): void {
 			$this->doDelete( $title );
 		} );
 
@@ -75,10 +78,9 @@ class ArticleDelete implements ArticleDeleteHook {
 	 * @param Title $title
 	 */
 	public function doDelete( Title $title ): void {
-		$applicationFactory = ApplicationFactory::getInstance();
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+		$semanticDataSerializer = $this->serializerFactory->newSemanticDataSerializer();
 
 		// Instead of Store::getSemanticData, construct the SemanticData by
 		// attaching only the incoming properties indicating which entities

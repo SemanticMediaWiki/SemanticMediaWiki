@@ -207,7 +207,9 @@
 			"services": [
 				"SMW.Store",
 				"SMW.JobFactory",
-				"SMW.EventDispatcher"
+				"SMW.EventDispatcher",
+				"SMW.SerializerFactory",
+				"SMW.ApplicationFactory"
 			]
 		},
 		"SemanticMediaWiki.ArticleFromTitle": {

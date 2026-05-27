@@ -922,7 +922,9 @@ return [
 		return new ArticleDelete(
 			$servicesFactory->getStore(),
 			$servicesFactory->newJobFactory(),
-			$servicesFactory->getEventDispatcher()
+			$servicesFactory->getEventDispatcher(),
+			$servicesFactory->getSerializerFactory(),
+			$servicesFactory
 		);
 	},
 
