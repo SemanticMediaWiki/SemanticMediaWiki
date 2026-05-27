@@ -6,6 +6,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\DataModel\SemanticData;
 use SMW\Services\ServicesFactory;
 use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 
 /**
  * @group semantic-mediawiki
@@ -19,23 +20,17 @@ use SMW\Tests\SMWIntegrationTestCase;
  */
 class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
-	private $mwHooksHandler;
-
 	protected function setUp(): void {
 		parent::setUp();
-		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->mwHooksHandler->register(
-			'ParserFirstCallInit',
-			$this->mwHooksHandler->getHandlerFor( 'ParserFirstCallInit' )
+		$reseater = new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
-	}
-
-	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
-
-		parent::tearDown();
+		$this->clearHook( 'ParserFirstCallInit' );
+		$this->setTemporaryHook(
+			'ParserFirstCallInit',
+			$reseater->buildSmwHandlerFor( 'ParserFirstCallInit' )
+		);
 	}
 
 	/**
