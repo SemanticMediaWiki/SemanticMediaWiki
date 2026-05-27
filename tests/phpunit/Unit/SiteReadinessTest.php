@@ -25,7 +25,8 @@ class SiteReadinessTest extends TestCase {
 		// The `$GLOBALS` mutation is intentional in this single test: it
 		// verifies the wrapper's delegation contract to `Site::isReady()`.
 		// All other call sites should inject this wrapper as a mock instead.
-		$wasReady = $GLOBALS['wgFullyInitialised'] ?? false;
+		$wasSet = array_key_exists( 'wgFullyInitialised', $GLOBALS );
+		$wasReady = $GLOBALS['wgFullyInitialised'] ?? null;
 		$GLOBALS['wgFullyInitialised'] = true;
 
 		try {
@@ -34,7 +35,11 @@ class SiteReadinessTest extends TestCase {
 			$GLOBALS['wgFullyInitialised'] = false;
 			$this->assertFalse( ( new SiteReadiness() )->isReady() );
 		} finally {
-			$GLOBALS['wgFullyInitialised'] = $wasReady;
+			if ( $wasSet ) {
+				$GLOBALS['wgFullyInitialised'] = $wasReady;
+			} else {
+				unset( $GLOBALS['wgFullyInitialised'] );
+			}
 		}
 	}
 
