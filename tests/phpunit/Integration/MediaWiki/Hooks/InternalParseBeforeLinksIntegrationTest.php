@@ -32,7 +32,9 @@ class InternalParseBeforeLinksIntegrationTest extends SMWIntegrationTestCase {
 		$reseater = new SMWDeclarativeHookReseater(
 			MediaWikiServices::getInstance()->getHookContainer()
 		);
-		$this->clearHook( 'InternalParseBeforeLinks' );
+		foreach ( $reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
 		$this->setTemporaryHook(
 			'InternalParseBeforeLinks',
 			$reseater->buildSmwHandlerFor( 'InternalParseBeforeLinks' )

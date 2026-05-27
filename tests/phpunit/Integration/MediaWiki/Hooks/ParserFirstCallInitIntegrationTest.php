@@ -23,10 +23,17 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		// Disable every SMW declarative hook, then re-register only SMW's
+		// ParserFirstCallInit. This matches the legacy "deregisterListedHooks
+		// then re-register the one we care about" shape: other SMW handlers
+		// (ParserAfterTidy etc.) must stay off so they cannot annotate the
+		// parser output the assertion is checking.
 		$reseater = new SMWDeclarativeHookReseater(
 			MediaWikiServices::getInstance()->getHookContainer()
 		);
-		$this->clearHook( 'ParserFirstCallInit' );
+		foreach ( $reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
 		$this->setTemporaryHook(
 			'ParserFirstCallInit',
 			$reseater->buildSmwHandlerFor( 'ParserFirstCallInit' )

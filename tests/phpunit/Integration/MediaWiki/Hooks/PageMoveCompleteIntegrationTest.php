@@ -40,10 +40,17 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
 
+		// Disable every SMW declarative hook, then re-register only the
+		// PageMoveComplete handler this test exercises. Individual tests
+		// re-enable further hooks they need (see testPageMoveWithRemovalOfOldPage
+		// and testPredefinedPropertyPageIsNotMovable below). Other SMW
+		// handlers must stay off so they cannot interfere with the assertions.
 		$this->reseater = new SMWDeclarativeHookReseater(
 			MediaWikiServices::getInstance()->getHookContainer()
 		);
-		$this->clearHook( 'PageMoveComplete' );
+		foreach ( $this->reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
 		$this->setTemporaryHook(
 			'PageMoveComplete',
 			$this->reseater->buildSmwHandlerFor( 'PageMoveComplete' )

@@ -50,11 +50,17 @@ class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 			'wgVerifyMimeType' => true
 		] );
 
+		// Disable every SMW declarative hook, then re-register only the
+		// three SMW handlers this test actually exercises. Other SMW
+		// handlers must stay off; the legacy MwHooksHandler equivalent
+		// (deregisterListedHooks + register-the-three) had that shape.
 		$reseater = new SMWDeclarativeHookReseater(
 			MediaWikiServices::getInstance()->getHookContainer()
 		);
-		foreach ( [ 'FileUpload', 'InternalParseBeforeLinks', 'LinksUpdateComplete' ] as $hook ) {
+		foreach ( $reseater->getDeclarativeHookNames() as $hook ) {
 			$this->clearHook( $hook );
+		}
+		foreach ( [ 'FileUpload', 'InternalParseBeforeLinks', 'LinksUpdateComplete' ] as $hook ) {
 			$this->setTemporaryHook( $hook, $reseater->buildSmwHandlerFor( $hook ) );
 		}
 

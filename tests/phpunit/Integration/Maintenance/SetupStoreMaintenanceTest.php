@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 
 /**
  * @group semantic-mediawiki-integration
@@ -24,11 +26,17 @@ class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		// Disable SMW's InternalParseBeforeLinks handler during the XML
-		// import so a previous testSetupStore_Delete (which drops SMW
-		// tables) does not leave a later setUp's import firing the handler
-		// against missing tables. clearHook auto-restores in tearDown.
-		$this->clearHook( 'InternalParseBeforeLinks' );
+		// Disable every SMW declarative hook during the XML import so a
+		// previous testSetupStore_Delete (which drops SMW tables) does not
+		// leave a later setUp's import firing SMW handlers (ParserAfterTidy,
+		// LinksUpdateComplete, etc.) against missing tables. clearHook
+		// auto-restores in tearDown.
+		$reseater = new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
+		);
+		foreach ( $reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 

@@ -94,6 +94,22 @@ class SMWDeclarativeHookReseater {
 		return [ $handler, $method ];
 	}
 
+	/**
+	 * Returns the names of every MediaWiki hook SMW declares in
+	 * `extension.json`'s `Hooks` block. Callers can iterate this list against
+	 * `MediaWikiIntegrationTestCase::clearHook()` to disable every SMW
+	 * declarative handler for the duration of a test (the equivalent of the
+	 * legacy `MwHooksHandler::deregisterListedHooks()` shape, but expressed
+	 * through MW core primitives).
+	 *
+	 * @since 7.0.0
+	 *
+	 * @return string[]
+	 */
+	public function getDeclarativeHookNames(): array {
+		return $this->getDeclarativeHookList();
+	}
+
 	private function registerDeclarativeHandler( string $hook ): void {
 		$this->hookContainer->register( $hook, $this->buildSmwHandlerFor( $hook ) );
 	}

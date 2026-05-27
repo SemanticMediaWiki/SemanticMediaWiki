@@ -29,7 +29,9 @@ class ParserAfterTidyIntegrationTest extends SMWIntegrationTestCase {
 		$reseater = new SMWDeclarativeHookReseater(
 			MediaWikiServices::getInstance()->getHookContainer()
 		);
-		$this->clearHook( 'ParserAfterTidy' );
+		foreach ( $reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
 		$this->setTemporaryHook(
 			'ParserAfterTidy',
 			$reseater->buildSmwHandlerFor( 'ParserAfterTidy' )
