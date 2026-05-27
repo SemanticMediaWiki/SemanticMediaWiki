@@ -3,7 +3,7 @@
 namespace SMW;
 
 use FileFetcher\FileFetcher;
-use FileFetcher\SimpleFileFetcher;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Elastic\ElasticStore;
 use SMW\Setup\LegacyConstantNormalizer;
@@ -67,9 +67,8 @@ class SetupFile {
 
 	public function __construct( ?File $file = null, ?FileFetcher $fileFetcher = null ) {
 		$this->repo = $GLOBALS['smwgSmwJsonRepo'] ??
-			new FileSystemSmwJsonRepo(
-				$fileFetcher ?? new SimpleFileFetcher(),
-				$file ?? new File()
+			new DatabaseMetaRepo(
+				MediaWikiServices::getInstance()->getDBLoadBalancer()
 			);
 	}
 
