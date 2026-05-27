@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Hook\SpecialSearchProfilesHook;
+use SearchEngineConfig;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 
 /**
@@ -18,11 +18,17 @@ class SpecialSearchProfiles implements SpecialSearchProfilesHook {
 	/**
 	 * @since 7.0.0
 	 */
-	public function onSpecialSearchProfiles( &$profiles ) {
-		$searchEngineConfig = ApplicationFactory::getInstance()->singleton( 'SearchEngineConfig' );
+	public function __construct(
+		private readonly SearchEngineConfig $searchEngineConfig,
+	) {
+	}
 
+	/**
+	 * @since 7.0.0
+	 */
+	public function onSpecialSearchProfiles( &$profiles ) {
 		$options = [
-			'default_namespaces' => $searchEngineConfig->defaultNamespaces()
+			'default_namespaces' => $this->searchEngineConfig->defaultNamespaces()
 		];
 
 		ProfileForm::addProfile(

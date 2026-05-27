@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\DataModel\SemanticData;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
 
@@ -22,15 +22,21 @@ class AfterDataUpdateComplete {
 	/**
 	 * @since 7.0.0
 	 */
+	public function __construct(
+		private readonly QueryDependencyLinksStoreFactory $queryDependencyLinksStoreFactory,
+		private readonly FulltextSearchTableFactory $fulltextSearchTableFactory,
+	) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
 	public function onSMW__SQLStore__AfterDataUpdateComplete( Store $store, SemanticData $semanticData, ChangeOp $changeOp ): bool {
 		// A delete infused change should trigger an immediate update
 		// without having to wait on the job queue
 		$isPrimaryUpdate = $semanticData->getOption( SemanticData::PROC_DELETE, false );
 
-		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()
-			->singleton( 'QueryDependencyLinksStoreFactory' );
-
-		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+		$queryDependencyLinksStore = $this->queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 			$store
 		);
 
@@ -38,9 +44,7 @@ class AfterDataUpdateComplete {
 			$changeOp
 		);
 
-		$fulltextSearchTableFactory = new FulltextSearchTableFactory();
-
-		$textChangeUpdater = $fulltextSearchTableFactory->newTextChangeUpdater(
+		$textChangeUpdater = $this->fulltextSearchTableFactory->newTextChangeUpdater(
 			$store
 		);
 

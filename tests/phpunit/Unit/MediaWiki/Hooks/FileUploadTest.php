@@ -6,9 +6,17 @@ use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Hooks\FileUpload;
+use SMW\MediaWiki\Jobs\ParserDataFactory;
+use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\PageInfoProvider;
 use SMW\NamespaceExaminer;
+use SMW\ParserData;
+use SMW\Property\AnnotatorFactory;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\PredefinedPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -53,7 +61,14 @@ class FileUploadTest extends TestCase {
 
 		$this->assertInstanceOf(
 			FileUpload::class,
-			new FileUpload( $namespaceExaminer, $hookContainer, $pageCreator )
+			new FileUpload(
+				$namespaceExaminer,
+				$hookContainer,
+				$pageCreator,
+				$this->createMock( ParserDataFactory::class ),
+				$this->createMock( MwCollaboratorFactory::class ),
+				$this->createMock( AnnotatorFactory::class )
+			)
 		);
 	}
 
@@ -84,10 +99,6 @@ class FileUploadTest extends TestCase {
 			->method( 'getParserOutput' )
 			->willReturn( new ParserOutput() );
 
-		$wikiFilePage->expects( $this->atLeastOnce() )
-			->method( 'getFile' )
-			->willReturn( $file );
-
 		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'createFilePage' ] )
@@ -98,12 +109,36 @@ class FileUploadTest extends TestCase {
 			->with( $title )
 			->willReturn( $wikiFilePage );
 
+		$semanticData = $this->createMock( SemanticData::class );
+
+		$parserData = $this->createMock( ParserData::class );
+		$parserData->method( 'getSemanticData' )->willReturn( $semanticData );
+
+		$parserDataFactory = $this->createMock( ParserDataFactory::class );
+		$parserDataFactory->method( 'newParserData' )->willReturn( $parserData );
+
+		$mwCollaboratorFactory = $this->createMock( MwCollaboratorFactory::class );
+		$mwCollaboratorFactory->method( 'newPageInfoProvider' )
+			->willReturn( $this->createMock( PageInfoProvider::class ) );
+
+		$nullPropertyAnnotator = $this->createMock( NullPropertyAnnotator::class );
+		$predefinedPropertyAnnotator = $this->createMock( PredefinedPropertyAnnotator::class );
+
+		$propertyAnnotatorFactory = $this->createMock( AnnotatorFactory::class );
+		$propertyAnnotatorFactory->method( 'newNullPropertyAnnotator' )
+			->willReturn( $nullPropertyAnnotator );
+		$propertyAnnotatorFactory->method( 'newPredefinedPropertyAnnotator' )
+			->willReturn( $predefinedPropertyAnnotator );
+
 		$instance = new FileUpload(
 			$namespaceExaminer,
 			$this->getMockBuilder( HookContainer::class )
 				->disableOriginalConstructor()
 				->getMock(),
-			$pageCreator
+			$pageCreator,
+			$parserDataFactory,
+			$mwCollaboratorFactory,
+			$propertyAnnotatorFactory
 		);
 
 		$reUploadStatus = true;
@@ -144,7 +179,10 @@ class FileUploadTest extends TestCase {
 			$this->getMockBuilder( HookContainer::class )
 				->disableOriginalConstructor()
 				->getMock(),
-			$pageCreator
+			$pageCreator,
+			$this->createMock( ParserDataFactory::class ),
+			$this->createMock( MwCollaboratorFactory::class ),
+			$this->createMock( AnnotatorFactory::class )
 		);
 
 		$instance->onFileUpload( $file, false, false );

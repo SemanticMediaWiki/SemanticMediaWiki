@@ -31,6 +31,9 @@ class InternalParseBeforeLinksTest extends TestCase {
 	private $stripState;
 	private $testEnvironment;
 	private $settings;
+	private $parserDataFactory;
+	private $inTextAnnotationParserFactory;
+	private $mwCollaboratorFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -45,6 +48,20 @@ class InternalParseBeforeLinksTest extends TestCase {
 			->getMock();
 
 		$this->settings = $this->createMock( Settings::class );
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$this->parserDataFactory = $applicationFactory->getParserDataFactory();
+		$this->inTextAnnotationParserFactory = MediaWikiServices::getInstance()->getService( 'SMW.InTextAnnotationParserFactory' );
+		$this->mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
+	}
+
+	private function newInstance( ?Settings $settings = null ): InternalParseBeforeLinks {
+		return new InternalParseBeforeLinks(
+			$settings ?? $this->settings,
+			$this->parserDataFactory,
+			$this->inTextAnnotationParserFactory,
+			$this->mwCollaboratorFactory
+		);
 	}
 
 	protected function tearDown(): void {
@@ -55,7 +72,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			InternalParseBeforeLinks::class,
-			new InternalParseBeforeLinks( $this->settings )
+			$this->newInstance()
 		);
 	}
 
@@ -70,7 +87,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 			->method( 'getOptions' )
 			->willReturn( $this->createMock( ParserOptions::class ) );
 
-		$instance = new InternalParseBeforeLinks( $this->settings );
+		$instance = $this->newInstance();
 
 		$this->assertTrue(
 			$instance->onInternalParseBeforeLinks( $parser, $text, $this->stripState )
@@ -108,7 +125,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$instance = new InternalParseBeforeLinks( $this->settings );
+		$instance = $this->newInstance();
 
 		$this->assertTrue(
 			$instance->onInternalParseBeforeLinks( $parser, $text, $this->stripState )
@@ -159,7 +176,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 			->with( 'smwgEnabledSpecialPage' )
 			->willReturn( [ 'Bar' ] );
 
-		$instance = new InternalParseBeforeLinks( $this->settings );
+		$instance = $this->newInstance();
 
 		$instance->onInternalParseBeforeLinks( $parser, $text, $this->stripState );
 	}
@@ -212,7 +229,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$instance = new InternalParseBeforeLinks( $this->settings );
+		$instance = $this->newInstance();
 
 		$instance->onInternalParseBeforeLinks( $parser, $text, $this->stripState );
 	}
@@ -224,7 +241,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 		$text   = 'Foo';
 		$parser = $this->parserFactory->newFromTitle( $title );
 
-		$instance = new InternalParseBeforeLinks( $this->settings );
+		$instance = $this->newInstance();
 
 		$this->assertTrue(
 			$instance->onInternalParseBeforeLinks( $parser, $text, $this->stripState )
@@ -249,7 +266,7 @@ class InternalParseBeforeLinksTest extends TestCase {
 			->with( 'smwgEnabledSpecialPage' )
 			->willReturn( $smwgEnabledSpecialPage );
 
-		$instance = new InternalParseBeforeLinks( $settings );
+		$instance = $this->newInstance( $settings );
 
 		$this->assertTrue(
 			$instance->onInternalParseBeforeLinks( $parser, $text, $this->stripState )

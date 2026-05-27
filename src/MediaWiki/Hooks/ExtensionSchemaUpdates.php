@@ -67,6 +67,13 @@ class ExtensionSchemaUpdates implements LoadExtensionSchemaUpdatesHook {
 		// cause problems, since the connection is not restored on wakeup." given
 		// that the `DatabaseUpdater` prior MW 1.31 has issues with serializing
 		// the options array.
+		//
+		// `Store` is resolved lazily rather than through the declarative
+		// `services:` array. Both paths would resolve the same
+		// `MediaWikiServices` singleton, so the choice does not change which
+		// instance is mutated by `setMessageReporter` below; we keep the
+		// lazy lookup so this installer-only path stays self-contained and
+		// does not pull `SMW.Store` into the HookHandler service graph.
 		$store = ApplicationFactory::getInstance()->getStore();
 		$store->setMessageReporter( $messageReporter );
 

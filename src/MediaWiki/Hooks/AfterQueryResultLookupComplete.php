@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 
 /**
  * Runs after the regular query result lookup completes. Updates the query
@@ -18,17 +19,26 @@ class AfterQueryResultLookupComplete {
 	/**
 	 * @since 7.0.0
 	 */
-	public function onSMW__Store__AfterQueryResultLookupComplete( $store, &$result ): bool {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
+	public function __construct(
+		private readonly QueryDependencyLinksStoreFactory $queryDependencyLinksStoreFactory,
+	) {
+	}
 
-		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+	/**
+	 * @since 7.0.0
+	 */
+	public function onSMW__Store__AfterQueryResultLookupComplete( $store, &$result ): bool {
+		$queryDependencyLinksStore = $this->queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 			$store
 		);
 
 		$queryDependencyLinksStore->updateDependencies( $result );
 
-		$applicationFactory->singleton( 'ResultCache' )->recordStats();
+		// `ResultCache` is resolved lazily rather than via the `services:`
+		// array because its `BlobStore` is built from `smwgQueryResultCacheType`
+		// at construction and `MediaWikiServices` caches the resolved instance.
+		// See `BeforeQueryResultLookupComplete` for the full rationale.
+		ApplicationFactory::getInstance()->singleton( 'ResultCache' )->recordStats();
 
 		$store->getObjectIds()->warmUpCache( $result );
 

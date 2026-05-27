@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Hook\ParserAfterTidyHook;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutputLinkTypes;
+use MediaWiki\Permissions\RestrictionStore;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use SMW\DataModel\SemanticData;
@@ -58,6 +58,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 		private readonly HookDispatcher $hookDispatcher,
 		private readonly Settings $settings,
 		private readonly LoggerInterface $logger,
+		private readonly RestrictionStore $restrictionStore,
 	) {
 	}
 
@@ -210,7 +211,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			MediaWikiServices::getInstance()->getRestrictionStore()->isProtected( $title, 'edit' ) ||
+			$this->restrictionStore->isProtected( $title, 'edit' ) ||
 			$parserDefaultSort ) {
 			return true;
 		}

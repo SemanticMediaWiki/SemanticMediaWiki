@@ -66,6 +66,7 @@ use SMW\Settings;
 use SMW\SetupFile;
 use SMW\SiteReadiness;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
 use SMW\StoreFactory;
 use SMW\Utils\Logger;
@@ -920,8 +921,30 @@ return [
 		return new ArticleDelete(
 			$servicesFactory->getStore(),
 			$servicesFactory->newJobFactory(),
-			$servicesFactory->getEventDispatcher()
+			$servicesFactory->getEventDispatcher(),
+			$servicesFactory->getSerializerFactory(),
+			$servicesFactory
 		);
+	},
+
+	'SMW.SearchEngineConfig' => static function ( MediaWikiServices $services ): SearchEngineConfig {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'SearchEngineConfig' ) ) {
+			return $servicesFactory->getSearchEngineConfig();
+		}
+
+		return $services->getSearchEngineConfig();
+	},
+
+	'SMW.FulltextSearchTableFactory' => static function ( MediaWikiServices $services ): FulltextSearchTableFactory {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'FulltextSearchTableFactory' ) ) {
+			return $servicesFactory->singleton( 'FulltextSearchTableFactory' );
+		}
+
+		return new FulltextSearchTableFactory();
 	},
 
 ];

@@ -8,9 +8,11 @@ use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\User\User;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\Jobs\ParserDataFactory;
+use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Property\AnnotatorFactory;
 
 /**
  * Fires when a local file upload occurs
@@ -31,6 +33,9 @@ class FileUpload implements FileUploadHook {
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly HookContainer $hookContainer,
 		private readonly PageCreator $pageCreator,
+		private readonly ParserDataFactory $parserDataFactory,
+		private readonly MwCollaboratorFactory $mwCollaboratorFactory,
+		private readonly AnnotatorFactory $propertyAnnotatorFactory,
 	) {
 	}
 
@@ -50,35 +55,32 @@ class FileUpload implements FileUploadHook {
 	}
 
 	private function doProcess( File $file, bool $reUploadStatus = false ): bool {
-		$applicationFactory = ApplicationFactory::getInstance();
 		$filePage = $this->makeFilePage( $file );
 
 		// Avoid WikiPage.php: The supplied ParserOptions are not safe to cache.
 		// Fix the options or set $forceParse = true.
 		$forceParse = true;
 
-		$parserData = $applicationFactory->newParserData(
+		$parserData = $this->parserDataFactory->newParserData(
 			$file->getTitle(),
 			$filePage->getParserOutput( $this->makeCanonicalParserOptions(), null, $forceParse )
 		);
 
-		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
+		$pageInfoProvider = $this->mwCollaboratorFactory->newPageInfoProvider(
 			$filePage,
 			null,
 			null,
 			$reUploadStatus
 		);
 
-		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
-
 		$semanticData = $parserData->getSemanticData();
 		$semanticData->setOption( 'is_fileupload', true );
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
+		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$semanticData
 		);
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
+		$propertyAnnotator = $this->propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
 			$propertyAnnotator,
 			$pageInfoProvider
 		);

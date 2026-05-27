@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 
 /**
  * Adds reference backlinks to the result of an incoming-properties lookup.
@@ -17,11 +17,16 @@ class AfterIncomingPropertiesLookupComplete {
 	/**
 	 * @since 7.0.0
 	 */
-	public function onSMW__Browse__AfterIncomingPropertiesLookupComplete( $store, $semanticData, $requestOptions ): bool {
-		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()
-			->singleton( 'QueryDependencyLinksStoreFactory' );
+	public function __construct(
+		private readonly QueryDependencyLinksStoreFactory $queryDependencyLinksStoreFactory,
+	) {
+	}
 
-		$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
+	/**
+	 * @since 7.0.0
+	 */
+	public function onSMW__Browse__AfterIncomingPropertiesLookupComplete( $store, $semanticData, $requestOptions ): bool {
+		$queryReferenceBacklinks = $this->queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
 			$store
 		);
 
