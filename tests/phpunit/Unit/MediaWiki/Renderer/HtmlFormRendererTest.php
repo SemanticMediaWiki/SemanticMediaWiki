@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Renderer;
 
-use MediaWiki\Message\Message;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -33,30 +32,26 @@ class HtmlFormRendererTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
 		$this->assertInstanceOf(
 			HtmlFormRenderer::class,
-			new HtmlFormRenderer( $title, $messageBuilder )
+			new HtmlFormRenderer( $title, $language )
 		);
 	}
 
-	public function testGetMessageBuilder() {
+	public function testGetLanguage() {
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
-		$instance = new HtmlFormRenderer( $title, $messageBuilder );
+		$instance = new HtmlFormRenderer( $title, $language );
 
 		$this->assertSame(
-			$messageBuilder,
-			$instance->getMessageBuilder()
+			$language,
+			$instance->getLanguage()
 		);
 	}
 
@@ -65,42 +60,14 @@ class HtmlFormRendererTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( Message::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
-		$message->expects( $this->any() )
-			->method( 'title' )
-			->willReturnSelf();
-
-		$message->expects( $this->any() )
-			->method( 'numParams' )
-			->willReturnSelf();
-
-		$message->expects( $this->any() )
-			->method( 'rawParams' )
-			->willReturnSelf();
-
-		$message->expects( $this->any() )
-			->method( 'text' )
-			->willReturn( 'SomeText' );
-
-		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->willReturn( $message );
-
-		$instance = new HtmlFormRenderer( $title, $messageBuilder );
+		$instance = new HtmlFormRenderer( $title, $language );
 
 		$instance
 			->setName( 'SomeForm' )
-			->withFieldset()
 			->addParagraph( 'SomeDescription' )
 			->addQueryParameter( 'SomeQueryParameter', 'SomeQueryValue' )
-			->addPaging( 10, 0, 5 )
 			->addHorizontalRule()
 			->addInputField( 'SomeInputFieldLabel', 'foo', 'Foo', 'FooId', 333 )
 			->addLineBreak()
@@ -128,23 +95,9 @@ class HtmlFormRendererTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( Message::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
-		$message->expects( $this->any() )
-			->method( 'text' )
-			->willReturn( 'SomeText' );
-
-		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->willReturn( $message );
-
-		$instance = new HtmlFormRenderer( $title, $messageBuilder );
+		$instance = new HtmlFormRenderer( $title, $language );
 
 		$instance
 			->setName( 'optionsSelecListForm' )
@@ -177,23 +130,9 @@ class HtmlFormRendererTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( Message::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
-		$message->expects( $this->any() )
-			->method( 'text' )
-			->willReturn( 'SomeText' );
-
-		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->willReturn( $message );
-
-		$instance = new HtmlFormRenderer( $title, $messageBuilder );
+		$instance = new HtmlFormRenderer( $title, $language );
 
 		$instance
 			->setName( 'checkboxForm' )

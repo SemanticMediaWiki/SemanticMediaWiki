@@ -2,12 +2,13 @@
 
 namespace SMW\QueryPages;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
+use MediaWiki\Navigation\PagerNavigationBuilder;
 use MediaWiki\SpecialPage\QueryPage as MWQueryPage;
 use MediaWiki\Xml\Xml;
 use SMW\Formatters\MessageFormatter;
-use SMW\MediaWiki\MessageBuilder;
 use SMW\RequestOptions;
 use SMW\StringCondition;
 
@@ -137,20 +138,33 @@ abstract class QueryPage extends MWQueryPage {
 		$limit = $this->selectOptions['limit'];
 		$options = $this->selectOptions['requestOptions'];
 
-		$msgBuilder = new MessageBuilder( $this->getLanguage() );
-
 		$isFirstPage = !$options->hasCursor();
 		$resultCount = $this->msg( 'smw-showingresults-cursor' )->numParams( $limit )->parse();
 
-		$selection = $msgBuilder->cursorPrevNextToText(
-			$this->getContext()->getTitle(),
-			$limit,
-			$isFirstPage ? null : $options->getFirstCursor(),
-			$options->getLastCursor(),
-			$this->linkParameters(),
-			$this->selectOptions['end'],
-			$options->getCursorBefore() !== null
-		);
+		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+		$navBuilder
+			->setPage( $this->getContext()->getTitle() )
+			->setLinkQuery( [ 'limit' => $limit ] + $this->linkParameters() )
+			->setLimitLinkQueryParam( 'limit' )
+			->setCurrentLimit( $limit )
+			->setPrevTooltipMsg( 'prevn-title' )
+			->setNextTooltipMsg( 'nextn-title' )
+			->setLimitTooltipMsg( 'shown-title' );
+
+		$isBackward = $options->getCursorBefore() !== null;
+		$isAtEnd = $this->selectOptions['end'];
+		$showPrev = $isBackward ? !$isAtEnd : true;
+		$showNext = $isBackward ? true : !$isAtEnd;
+
+		if ( $showPrev && !$isFirstPage ) {
+			$navBuilder->setPrevLinkQuery( [ 'before' => (string)$options->getFirstCursor() ] );
+		}
+
+		if ( $showNext && $options->getLastCursor() !== null ) {
+			$navBuilder->setNextLinkQuery( [ 'after' => (string)$options->getLastCursor() ] );
+		}
+
+		$selection = $navBuilder->getHtml();
 
 		if ( $cacheDate !== '' ) {
 			$cacheDate = Xml::tags( 'p', [], $cacheDate );

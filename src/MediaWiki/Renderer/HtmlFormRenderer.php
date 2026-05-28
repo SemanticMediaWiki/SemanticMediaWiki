@@ -2,17 +2,19 @@
 
 namespace SMW\MediaWiki\Renderer;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Navigation\PagerNavigationBuilder;
 use MediaWiki\Title\Title;
 use MediaWiki\Xml\Xml;
-use SMW\MediaWiki\MessageBuilder;
 
 /**
  * Convenience class to build a html form by using a fluid interface
  *
  * @par Example:
  * @code
- * $htmlFormRenderer = new HtmlFormRenderer( $this->title, new MessageBuilder() );
+ * $htmlFormRenderer = new HtmlFormRenderer( $this->title, $this->getLanguage() );
  * $htmlFormRenderer
  * 	->setName( 'Foo' )
  * 	->setParameter( 'foo', 'someValue' )
@@ -49,7 +51,7 @@ class HtmlFormRenderer {
 	 */
 	public function __construct(
 		private readonly Title $title,
-		private readonly MessageBuilder $messageBuilder,
+		private readonly Language $language,
 	) {
 	}
 
@@ -68,10 +70,10 @@ class HtmlFormRenderer {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 7.0.0
 	 */
-	public function getMessageBuilder(): MessageBuilder {
-		return $this->messageBuilder;
+	public function getLanguage(): Language {
+		return $this->language;
 	}
 
 	/**
@@ -333,20 +335,30 @@ class HtmlFormRenderer {
 				$messageCount = ( $count > $limit ? $count - 1 : $count );
 			}
 
-			$resultCount = $instance->getMessageBuilder()
-				->getMessage( 'smw-showingresults' )
+			$resultCount = wfMessage( 'smw-showingresults' )
+				->inLanguage( $instance->getLanguage() )
 				->numParams( $messageCount, $offset + 1 )
 				->parse();
 
-			$paging = $instance->getMessageBuilder()->prevNextToText(
-				$title,
-				$limit,
-				$offset,
-				$instance->getQueryParameter(),
-				$count < $limit
-			);
+			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+			$navBuilder
+				->setPage( $title )
+				->setLinkQuery( [ 'limit' => $limit, 'offset' => $offset ] + $instance->getQueryParameter() )
+				->setLimitLinkQueryParam( 'limit' )
+				->setCurrentLimit( $limit )
+				->setPrevTooltipMsg( 'prevn-title' )
+				->setNextTooltipMsg( 'nextn-title' )
+				->setLimitTooltipMsg( 'shown-title' );
 
-			return Xml::tags( 'p', [], $resultCount ) . Xml::tags( 'p', [], $paging );
+			if ( $offset > 0 ) {
+				$navBuilder->setPrevLinkQuery( [ 'offset' => (string)max( $offset - $limit, 0 ) ] );
+			}
+
+			if ( $count >= $limit ) {
+				$navBuilder->setNextLinkQuery( [ 'offset' => (string)( $offset + $limit ) ] );
+			}
+
+			return Xml::tags( 'p', [], $resultCount ) . Xml::tags( 'p', [], $navBuilder->getHtml() );
 		};
 
 		return $this;
@@ -364,7 +376,7 @@ class HtmlFormRenderer {
 
 		if ( $this->useFieldset ) {
 			$content = HtmlUtil::fieldset(
-				$this->messageBuilder->getMessage( $this->name )->text(),
+				wfMessage( $this->name )->inLanguage( $this->language )->text(),
 				$content,
 				[
 					'id' => $this->defaultPrefix . "-fieldset-{$this->name}"

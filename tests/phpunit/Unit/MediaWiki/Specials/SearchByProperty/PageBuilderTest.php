@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Specials\SearchByProperty;
 
-use MediaWiki\Message\Message;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
-use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
@@ -63,21 +62,7 @@ class PageBuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( Message::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$message->expects( $this->any() )
-			->method( 'numParams' )
-			->willReturnSelf();
-
-		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->willReturn( $message );
+		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
@@ -90,7 +75,7 @@ class PageBuilderTest extends TestCase {
 				new WikiPage( 'ResultTwo', NS_HELP ) ] );
 
 		$instance =	new PageBuilder(
-			new HtmlFormRenderer( $title, $messageBuilder ),
+			new HtmlFormRenderer( $title, $language ),
 			new PageRequestOptions( 'Foo/Bar', [] ),
 			new QueryResultLookup( $store ),
 			$store
@@ -114,25 +99,7 @@ class PageBuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( Message::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$message->expects( $this->any() )
-			->method( 'numParams' )
-			->willReturnSelf();
-
-		$message->expects( $this->any() )
-			->method( 'rawParams' )
-			->willReturnSelf();
-
-		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->willReturn( $message );
+		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
 		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
@@ -163,7 +130,7 @@ class PageBuilderTest extends TestCase {
 		];
 
 		$instance =	new PageBuilder(
-			new HtmlFormRenderer( $title, $messageBuilder ),
+			new HtmlFormRenderer( $title, $language ),
 			new PageRequestOptions( 'Foo/Bar', $requestOptions ),
 			new QueryResultLookup( $store ),
 			$store

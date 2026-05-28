@@ -3,8 +3,10 @@
 namespace SMW\MediaWiki\Specials;
 
 use Iterator;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
+use MediaWiki\Navigation\PagerNavigationBuilder;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -15,7 +17,6 @@ use SMW\DataValues\ErrorValue;
 use SMW\DataValues\TypesValue;
 use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\RequestOptions;
 use SMW\Settings;
@@ -373,8 +374,8 @@ class SpecialTypes extends SpecialPage {
 	 * Renders the cursor-mode prev/next pager. The legacy offset pager uses
 	 * the `_target` convention in `Pager::pagination` to append `#smw-list`
 	 * to each generated href so the user lands on the list rather than the
-	 * intro text after a page-flip. `MessageBuilder::cursorPrevNextToText`
-	 * has no equivalent fragment hook, so the fragment is grafted onto each
+	 * intro text after a page-flip. `PagerNavigationBuilder` has no equivalent
+	 * fragment hook, so the fragment is grafted onto each
 	 * rendered href here. Only the local hrefs emitted by the nav builder
 	 * are affected (they all target `Special:Types/<label>`).
 	 *
@@ -385,18 +386,32 @@ class SpecialTypes extends SpecialPage {
 		int $limit,
 		RequestOptions $cursorOptions
 	): string {
-		$messageBuilder = new MessageBuilder( $this->getLanguage() );
 		$isFirstPage = !$cursorOptions->hasCursor();
 
-		$html = $messageBuilder->cursorPrevNextToText(
-			$this->getTitleFor( 'Types', $typeLabel ),
-			$limit,
-			$isFirstPage ? null : $cursorOptions->getFirstCursor(),
-			$cursorOptions->getLastCursor(),
-			[],
-			!$cursorOptions->getCursorHasMore(),
-			$cursorOptions->getCursorBefore() !== null
-		);
+		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+		$navBuilder
+			->setPage( $this->getTitleFor( 'Types', $typeLabel ) )
+			->setLinkQuery( [ 'limit' => $limit ] )
+			->setLimitLinkQueryParam( 'limit' )
+			->setCurrentLimit( $limit )
+			->setPrevTooltipMsg( 'prevn-title' )
+			->setNextTooltipMsg( 'nextn-title' )
+			->setLimitTooltipMsg( 'shown-title' );
+
+		$isBackward = $cursorOptions->getCursorBefore() !== null;
+		$isAtEnd = !$cursorOptions->getCursorHasMore();
+		$showPrev = $isBackward ? !$isAtEnd : true;
+		$showNext = $isBackward ? true : !$isAtEnd;
+
+		if ( $showPrev && !$isFirstPage ) {
+			$navBuilder->setPrevLinkQuery( [ 'before' => (string)$cursorOptions->getFirstCursor() ] );
+		}
+
+		if ( $showNext && $cursorOptions->getLastCursor() !== null ) {
+			$navBuilder->setNextLinkQuery( [ 'after' => (string)$cursorOptions->getLastCursor() ] );
+		}
+
+		$html = $navBuilder->getHtml();
 
 		return preg_replace(
 			'/(href="[^"#]*)(")/',

@@ -15,7 +15,6 @@ use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\MediaWikiNsContentReader;
-use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageInfoProvider;
@@ -54,26 +53,6 @@ class MwCollaboratorFactoryTest extends TestCase {
 		$this->assertInstanceOf(
 			MwCollaboratorFactory::class,
 			new MwCollaboratorFactory( $this->applicationFactory )
-		);
-	}
-
-	public function testCanConstructMessageBuilder() {
-		$instance = new MwCollaboratorFactory(
-			$this->applicationFactory
-		);
-
-		$this->assertInstanceOf(
-			MessageBuilder::class,
-			$instance->newMessageBuilder()
-		);
-
-		$language = $this->getMockBuilder( Language::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertInstanceOf(
-			MessageBuilder::class,
-			$instance->newMessageBuilder( $language )
 		);
 	}
 

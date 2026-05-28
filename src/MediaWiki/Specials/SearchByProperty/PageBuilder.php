@@ -12,7 +12,6 @@ use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
 use SMW\Formatters\Infolink;
-use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Store;
@@ -27,8 +26,6 @@ use SMW\Store;
  * @author mwjames
  */
 class PageBuilder {
-
-	private ?MessageBuilder $messageBuilder = null;
 
 	/**
 	 * @var Linker
@@ -52,7 +49,6 @@ class PageBuilder {
 	 */
 	public function getHtml(): string {
 		$this->pageRequestOptions->initialize();
-		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
 		[ $resultMessage, $resultList, $resultCount ] = $this->getResultHtml();
 
@@ -65,19 +61,19 @@ class PageBuilder {
 		}
 
 		if ( $resultList === '' || $resultList === null ) {
-			$resultList = $this->messageBuilder->getMessage( 'smw_result_noresults' )->text();
+			$resultList = wfMessage( 'smw_result_noresults' )->text();
 		}
 
 		$pageDescription = Html::rawElement(
 			'p',
 			[ 'class' => 'smw-sp-searchbyproperty-description' ],
-			$this->messageBuilder->getMessage( 'smw-sp-searchbyproperty-description' )->parse()
+			wfMessage( 'smw-sp-searchbyproperty-description' )->parse()
 		);
 
 		$resultListHeader = Html::element(
 			'h2',
 			[],
-			$this->messageBuilder->getMessage( 'smw-sp-searchbyproperty-resultlist-header' )->text()
+			wfMessage( 'smw-sp-searchbyproperty-resultlist-header' )->text()
 		);
 
 		return $pageDescription . $this->getHtmlForm( $resultMessage, $resultCount ) . $resultListHeader . $resultList;
@@ -98,18 +94,18 @@ class PageBuilder {
 				$resultCount )
 			->addHorizontalRule()
 			->addInputField(
-				$this->messageBuilder->getMessage( 'smw_sbv_property' )->text(),
+				wfMessage( 'smw_sbv_property' )->text(),
 				'property',
 				$this->pageRequestOptions->propertyString,
 				'smw-property-input' )
 			->addNonBreakingSpace()
 			->addInputField(
-				$this->messageBuilder->getMessage( 'smw_sbv_value' )->text(),
+				wfMessage( 'smw_sbv_value' )->text(),
 				'value',
 				$this->pageRequestOptions->valueString,
 				'smw-value-input' )
 			->addNonBreakingSpace()
-			->addSubmitButton( $this->messageBuilder->getMessage( 'smw_sbv_submit' )->text() )
+			->addSubmitButton( wfMessage( 'smw_sbv_submit' )->text() )
 			->getForm();
 
 		return $html;
@@ -120,7 +116,7 @@ class PageBuilder {
 		$resultMessage = '';
 
 		if ( $this->pageRequestOptions->propertyString === '' || !$this->pageRequestOptions->propertyString ) {
-			return [ $this->messageBuilder->getMessage( 'smw_sbv_docu' )->text(), '', 0 ];
+			return [ wfMessage( 'smw_sbv_docu' )->text(), '', 0 ];
 		}
 
 		// #1728
@@ -153,7 +149,7 @@ class PageBuilder {
 			$resultMessageKey = 'smw-sp-searchbyproperty-valuequery';
 		}
 
-		$resultMessage = $this->messageBuilder->getMessage(
+		$resultMessage = wfMessage(
 			$resultMessageKey,
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
 			$this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )->text();
@@ -203,7 +199,7 @@ class PageBuilder {
 			return [ '', $resultList, 0 ];
 		}
 
-		$resultMessage = $this->messageBuilder->getMessage(
+		$resultMessage = wfMessage(
 			'smw_sbv_displayresultfuzzy',
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
 			htmlspecialchars( $this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )
@@ -212,7 +208,7 @@ class PageBuilder {
 		$resultList .= $this->makeResultList( $smallerResults, $smallerCount, false );
 
 		if ( $exactCount == 0 ) {
-			$resultList .= "&#160;<em><strong><small>" . $this->messageBuilder->getMessage( 'parentheses' )
+			$resultList .= "&#160;<em><strong><small>" . wfMessage( 'parentheses' )
 				->rawParams( $this->pageRequestOptions->value->getLongHTMLText() )
 				->escaped() . "</small></strong></em>";
 		} else {
@@ -279,7 +275,7 @@ class PageBuilder {
 				$outputFormat = $result[1]->getOutputFormat();
 				$result[1]->setOutputFormat( $outputFormat ?: 'LOCL' );
 
-				$listitem .= "&#160;<em><small>" . $this->messageBuilder->getMessage( 'parentheses' )
+				$listitem .= "&#160;<em><small>" . wfMessage( 'parentheses' )
 					->rawParams( $result[1]->getLongHTMLText( $this->linker ) )
 					->escaped() . "</small></em>";
 			}

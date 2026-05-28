@@ -2,11 +2,12 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
+use MediaWiki\Navigation\PagerNavigationBuilder;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Collator;
-use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\KeysetPaginationTrait;
@@ -181,8 +182,8 @@ class SpecialConcepts extends SpecialPage {
 	 * @param int $limit
 	 * @param int $offset
 	 * @param RequestOptions|null $cursorOptions When non-null, the pager is
-	 *   rendered in cursor mode using `MessageBuilder::cursorPrevNextToText`
-	 *   and the cursor metadata on `$cursorOptions`. When null, the legacy
+	 *   rendered in cursor mode using `PagerNavigationBuilder` and the cursor
+	 *   metadata on `$cursorOptions`. When null, the legacy
 	 *   offset pager (`Pager::pagination`) is rendered.
 	 *
 	 * @return string
@@ -210,17 +211,31 @@ class SpecialConcepts extends SpecialPage {
 		);
 
 		if ( $cursorOptions !== null ) {
-			$msgBuilder = new MessageBuilder( $this->getLanguage() );
 			$isFirstPage = !$cursorOptions->hasCursor();
-			$paginationHtml = $msgBuilder->cursorPrevNextToText(
-				$this->getPageTitle(),
-				$limit,
-				$isFirstPage ? null : $cursorOptions->getFirstCursor(),
-				$cursorOptions->getLastCursor(),
-				[],
-				!$cursorOptions->getCursorHasMore(),
-				$cursorOptions->getCursorBefore() !== null
-			);
+			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+			$navBuilder
+				->setPage( $this->getPageTitle() )
+				->setLinkQuery( [ 'limit' => $limit ] )
+				->setLimitLinkQueryParam( 'limit' )
+				->setCurrentLimit( $limit )
+				->setPrevTooltipMsg( 'prevn-title' )
+				->setNextTooltipMsg( 'nextn-title' )
+				->setLimitTooltipMsg( 'shown-title' );
+
+			$isBackward = $cursorOptions->getCursorBefore() !== null;
+			$isAtEnd = !$cursorOptions->getCursorHasMore();
+			$showPrev = $isBackward ? !$isAtEnd : true;
+			$showNext = $isBackward ? true : !$isAtEnd;
+
+			if ( $showPrev && !$isFirstPage ) {
+				$navBuilder->setPrevLinkQuery( [ 'before' => (string)$cursorOptions->getFirstCursor() ] );
+			}
+
+			if ( $showNext && $cursorOptions->getLastCursor() !== null ) {
+				$navBuilder->setNextLinkQuery( [ 'after' => (string)$cursorOptions->getLastCursor() ] );
+			}
+
+			$paginationHtml = $navBuilder->getHtml();
 		} else {
 			$paginationHtml = Pager::pagination( $this->getPageTitle(), $limit, $offset, $count );
 		}
