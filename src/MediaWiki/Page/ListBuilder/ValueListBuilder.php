@@ -3,7 +3,9 @@
 namespace SMW\MediaWiki\Page\ListBuilder;
 
 use Iterator;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
+use MediaWiki\Navigation\PagerNavigationBuilder;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\Time;
@@ -11,10 +13,8 @@ use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Formatters\Infolink;
 use SMW\Formatters\PageLister;
-use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
-use SMW\MediaWiki\MessageBuilder;
 use SMW\Query\Language\SomeProperty;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -213,19 +213,31 @@ class ValueListBuilder {
 		);
 
 		if ( $cursorMode ) {
-			$msgBuilder = new MessageBuilder(
-				Localizer::getInstance()->getLanguage( $this->languageCode )
-			);
 			$isFirstPage = !$options->hasCursor();
-			$paginationHtml = $msgBuilder->cursorPrevNextToText(
-				$title,
-				$limit,
-				$isFirstPage ? null : $options->getFirstCursor(),
-				$options->getLastCursor(),
-				array_diff_key( $query, array_flip( self::PAGINATION_QUERY_KEYS ) ),
-				!$options->getCursorHasMore(),
-				$options->getCursorBefore() !== null
-			);
+			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+			$navBuilder
+				->setPage( $title )
+				->setLinkQuery( [ 'limit' => $limit ] + array_diff_key( $query, array_flip( self::PAGINATION_QUERY_KEYS ) ) )
+				->setLimitLinkQueryParam( 'limit' )
+				->setCurrentLimit( $limit )
+				->setPrevTooltipMsg( 'prevn-title' )
+				->setNextTooltipMsg( 'nextn-title' )
+				->setLimitTooltipMsg( 'shown-title' );
+
+			$isBackward = $options->getCursorBefore() !== null;
+			$isAtEnd = !$options->getCursorHasMore();
+			$showPrev = $isBackward ? !$isAtEnd : true;
+			$showNext = $isBackward ? true : !$isAtEnd;
+
+			if ( $showPrev && !$isFirstPage && $options->getFirstCursor() !== null ) {
+				$navBuilder->setPrevLinkQuery( [ 'before' => (string)$options->getFirstCursor() ] );
+			}
+
+			if ( $showNext && $options->getLastCursor() !== null ) {
+				$navBuilder->setNextLinkQuery( [ 'after' => (string)$options->getLastCursor() ] );
+			}
+
+			$paginationHtml = $navBuilder->getHtml();
 		} else {
 			// Legacy path: strip the cursor params introduced by this PR so
 			// they do not echo as `&after=0&before=0` into offset URLs.

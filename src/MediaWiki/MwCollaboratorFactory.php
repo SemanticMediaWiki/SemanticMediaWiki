@@ -38,17 +38,6 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Language|null $language
-	 *
-	 * @return MessageBuilder
-	 */
-	public function newMessageBuilder( ?Language $language = null ): MessageBuilder {
-		return new MessageBuilder( $language );
-	}
-
-	/**
-	 * @since 2.1
-	 *
 	 * @return MagicWordsFinder
 	 */
 	public function newMagicWordsFinder() {
@@ -83,12 +72,10 @@ class MwCollaboratorFactory {
 	 */
 	public function newHtmlFormRenderer( Title $title, ?Language $language = null ): HtmlFormRenderer {
 		if ( $language === null ) {
-			$language = $title->getPageLanguage();
+			$language = $title->getPageLanguage() ?? MediaWikiServices::getInstance()->getContentLanguage();
 		}
 
-		$messageBuilder = $this->newMessageBuilder( $language );
-
-		return new HtmlFormRenderer( $title, $messageBuilder );
+		return new HtmlFormRenderer( $title, $language );
 	}
 
 	/**
