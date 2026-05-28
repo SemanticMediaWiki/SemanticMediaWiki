@@ -224,10 +224,13 @@ class Installer implements MessageReporter {
 
 		$this->setupFile->finalize();
 
-		// Run after `finalize()` so the fresh upgrade_key, maintenance_mode,
-		// and latest_version are already in `smw_meta` and INSERT IGNORE
-		// preserves them. Idempotent: a successful run renames `.smw.json`
-		// so the next install/upgrade short-circuits at file presence.
+		// Mark a legacy `.smw.json` consumed. Data transfer happened
+		// earlier in the request via `SetupFile::loadSchema`'s legacy
+		// fallback (it hydrated `$GLOBALS` from the file) combined with
+		// the install pipeline's normal merge-then-save writes, so by
+		// this point `smw_meta` already reflects the user's state. The
+		// rename is the consumed-marker; the next upgrade short-circuits
+		// at file presence.
 		MigrateSmwJsonToDb::run( $this->messageReporter );
 
 		$timer->stop( 'supplement-jobs' )->new( 'hook-execution' );

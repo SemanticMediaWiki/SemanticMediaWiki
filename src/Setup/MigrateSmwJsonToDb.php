@@ -43,6 +43,30 @@ class MigrateSmwJsonToDb {
 			return;
 		}
 
+		// Sanity-check the file before consuming it. If the file is
+		// unreadable or contains invalid JSON, `SetupFile::loadSchema`'s
+		// fallback also failed silently and the user's legacy state was NOT
+		// hydrated into `smw_meta` during this install. Renaming the file
+		// now would lose that data permanently. Warn loudly and bail so the
+		// admin can fix the file and re-run the upgrade.
+		$raw = file_get_contents( $filePath );
+		if ( $raw === false ) {
+			$reporter->reportMessage(
+				"...warning: cannot read {$filePath}; skipping rename so a future"
+				. " upgrade can retry.\n"
+			);
+			return;
+		}
+		json_decode( $raw, true );
+		if ( json_last_error() !== JSON_ERROR_NONE ) {
+			$reporter->reportMessage(
+				"...warning: {$filePath} contains invalid JSON ("
+				. json_last_error_msg() . "); your legacy install-state was NOT"
+				. " migrated. Fix the file and re-run setupStore.php or update.php.\n"
+			);
+			return;
+		}
+
 		$renamed = $filePath . '.migrated';
 		if ( @rename( $filePath, $renamed ) ) {
 			$reporter->reportMessage(

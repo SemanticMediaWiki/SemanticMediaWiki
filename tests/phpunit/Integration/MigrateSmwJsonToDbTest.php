@@ -74,6 +74,19 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 		$this->assertFileDoesNotExist( $this->jsonPath . '.migrated' );
 	}
 
+	public function testRefusesToConsumeMalformedJson(): void {
+		// A malformed `.smw.json` means `SetupFile::loadSchema`'s fallback
+		// could not hydrate the user's state into `$GLOBALS`, so renaming
+		// the file now would lose it permanently. Migration must leave the
+		// file in place so the admin can fix it and re-run.
+		file_put_contents( $this->jsonPath, '{invalid: json' );
+
+		MigrateSmwJsonToDb::run( $this->makeReporter() );
+
+		$this->assertFileExists( $this->jsonPath );
+		$this->assertFileDoesNotExist( $this->jsonPath . '.migrated' );
+	}
+
 	private function makeReporter(): MessageReporter {
 		return $this->createMock( MessageReporter::class );
 	}
