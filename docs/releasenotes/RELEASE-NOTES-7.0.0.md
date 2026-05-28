@@ -177,7 +177,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Removed `psr/log` from `composer.json`. Extensions that relied on SMW pulling in `psr/log` transitively must declare it in their own `composer.json`.
 * Removed the `mediawiki/callback-container` (`onoi/callback-container`) Composer dependency. The internal DI layer now uses MediaWiki's `Wikimedia\Services\ServiceContainer` directly ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
 * Removed the `@private` internal class `SMW\Services\SharedServicesContainer` and the internal wiring files `src/Services/mediawiki.php`, `src/Services/events.php`, and `src/Services/cache.php`. These were never part of the public API ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
-* Removed the root `DefaultSettings.php` shim (deprecated since 4.0.0). Use `SemanticMediaWiki::getDefaultSettings()` instead.
+* Removed the root `DefaultSettings.php` shim (deprecated since 4.0.0). Use `$GLOBALS['smwgFoo']` or `SMW\Settings::getInstance()->get('smwgFoo')` instead.
 * Removed `Defines.php`.
 * **`includes/` directory removed.** All classes have moved to `src/` under new namespaces (`DataItems/`, `DataValues/`, `Export/`, `Formatters/`, `Query/`, `QueryPages/`, `MediaWiki/Specials/`). Class aliases are provided for the transition (see Deprecations below), but code that loaded files by path (e.g., `require .../includes/dataitems/...`) will break.
 
