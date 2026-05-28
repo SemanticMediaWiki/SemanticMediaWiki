@@ -33,8 +33,6 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->tablesUsed[] = SQLStore::META_TABLE;
-
 		$this->tmpDir = sys_get_temp_dir() . '/smw-migrate-test-' . uniqid();
 		mkdir( $this->tmpDir );
 		$this->jsonPath = $this->tmpDir . '/.smw.json';
