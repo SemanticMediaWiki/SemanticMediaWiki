@@ -120,6 +120,15 @@ class SQLStore extends Store {
 	const ID_AUXILIARY_TABLE = 'smw_object_aux';
 
 	/**
+	 * Name of the table that holds install-state metadata previously stored
+	 * in `.smw.json` (upgrade key, maintenance mode, incomplete-task flags,
+	 * etc).
+	 *
+	 * @since 7.0.0
+	 */
+	const META_TABLE = 'smw_meta';
+
+	/**
 	 * Identifies the UPDATE transaction
 	 */
 	const UPDATE_TRANSACTION = 'sql/transaction/update';

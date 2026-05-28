@@ -167,6 +167,10 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
   If you see new log spam after upgrading, raise the budget via `$wgTrxProfilerLimits` (e.g. `$wgTrxProfilerLimits['POST']['maxAffected'] = 5000;`) or point `$wgDebugLogGroups['rdbms']` at a discard target.
 
+* **Install-state metadata moved from `.smw.json` to the database.** Upgrade key, maintenance mode, incomplete-task flags, version tracking, database requirements, last optimization run, and entity collation now live in a new `smw_meta` table. The upgrade run merges your existing `.smw.json` state into the table (preserving incomplete-task flags and other survivor keys) and then renames the file to `.smw.json.migrated`. Re-running the upgrade is safe. Multi-server deployments no longer need shared filesystem storage for install state. The legacy setting `$smwgConfigFileDir` is kept only so the upgrade can find non-default file locations (see Deprecations). Resolves [#3506](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3506).
+
+  When the database is unreachable, the install-state gate can no longer fall back to the file. A database outage now surfaces as MediaWiki's standard database error page instead of SMW's "service unavailable" page; monitoring and runbooks keyed on the SMW-specific page should be updated.
+
 **Dependencies and autoloading:**
 
 * Removed the `mediawiki/parser-hooks` dependency.
@@ -262,6 +266,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### Deprecations
 
+* `$smwgConfigFileDir` is deprecated (since 7.0.0) and will be removed in 8.0.0. Install-state metadata now lives in the `smw_meta` database table (see Breaking changes). The setting is kept so the `update.php` migration can find a pre-existing `.smw.json` at a non-default location; it has no further effect once the file has been renamed to `.smw.json.migrated`.
 * `ServicesFactory::singleton()` and `ServicesFactory::create()` are deprecated (since 7.0.0). Use the typed accessor and factory methods on `ServicesFactory` directly ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)). Note: for container-managed services, `create()` no longer guarantees a fresh instance; it is now equivalent to `singleton()` for those services.
 * `enableSemantics()` is deprecated and now a no-op. `wfLoadExtension( 'SemanticMediaWiki' )` alone is sufficient to install SMW, aligning with standard MediaWiki extension conventions. The RDF namespace URI is now auto-derived from `Special:URIResolver` when not explicitly set. Users who set a custom `$smwgNamespace` in `LocalSettings.php` are unaffected.
 * The following class aliases are deprecated. They will be removed in a future release. Update any code referencing these to use the new namespaced class names:

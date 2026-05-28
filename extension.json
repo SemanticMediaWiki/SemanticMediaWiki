@@ -1329,7 +1329,7 @@
 		},
 		"ConfigFileDir": {
 			"value": "",
-			"description": "Directory used to persistently store SMW configuration files (`.smw.json`, `.smw.maintenance.json`). The directory must be writable. Defaults to the extension root; you may point it to `$wgUploadDirectory` or any other writable location.",
+			"description": "Deprecated since 7.0.0; will be removed in 8.0.0. Install-state metadata is now stored in the `smw_meta` database table. This setting is kept only so that the one-shot migration of any pre-existing `.smw.json` file can find its source location. Historical default: the extension root; sites that overrode it (for example to `$wgUploadDirectory`) must keep the override in place until `update.php` has run once and migrated the file to `.smw.json.migrated`.",
 			"path": true
 		},
 		"CreateProtectionRight": {

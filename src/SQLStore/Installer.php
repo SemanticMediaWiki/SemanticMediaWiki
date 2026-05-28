@@ -12,6 +12,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Job;
 use SMW\Options;
 use SMW\Setup;
+use SMW\Setup\MigrateSmwJsonToDb;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
@@ -222,6 +223,15 @@ class Installer implements MessageReporter {
 		$this->addSupplementJobs();
 
 		$this->setupFile->finalize();
+
+		// Mark a legacy `.smw.json` consumed. Data transfer happened
+		// earlier in the request via `SetupFile::loadSchema`'s legacy
+		// fallback (it hydrated `$GLOBALS` from the file) combined with
+		// the install pipeline's normal merge-then-save writes, so by
+		// this point `smw_meta` already reflects the user's state. The
+		// rename is the consumed-marker; the next upgrade short-circuits
+		// at file presence.
+		MigrateSmwJsonToDb::run( $this->messageReporter );
 
 		$timer->stop( 'supplement-jobs' )->new( 'hook-execution' );
 
