@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Unit\Parser;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\DataItems\Property;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\StripMarkerDecoder;
@@ -33,7 +33,7 @@ class InTextAnnotationParserTest extends TestCase {
 	private $testEnvironment;
 	private $linksProcessor;
 	private $magicWordsFinder;
-	private $hookDispatcher;
+	private $hookContainer;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -48,7 +48,7 @@ class InTextAnnotationParserTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -117,8 +117,8 @@ class InTextAnnotationParserTest extends TestCase {
 			new RedirectTargetFinder()
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->parse( $text );
@@ -154,8 +154,8 @@ class InTextAnnotationParserTest extends TestCase {
 			new RedirectTargetFinder()
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->showErrors( $parserFeatures );
@@ -210,8 +210,8 @@ class InTextAnnotationParserTest extends TestCase {
 			$redirectTargetFinder
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->parse( $text );
@@ -257,8 +257,8 @@ class InTextAnnotationParserTest extends TestCase {
 			$redirectTargetFinder
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->setRedirectTarget( $redirectTarget );
@@ -307,8 +307,8 @@ class InTextAnnotationParserTest extends TestCase {
 
 		$text = '[[Foo::<nowiki>Bar</nowiki>]]';
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->setStripMarkerDecoder( $stripMarkerDecoder );

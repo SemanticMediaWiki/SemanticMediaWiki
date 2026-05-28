@@ -97,7 +97,7 @@
 				"SMW.NamespaceExaminer",
 				"SMW.Cache",
 				"SMW.ApplicationFactory",
-				"SMW.HookDispatcher",
+				"HookContainer",
 				"SMW.Settings",
 				"SMW.Logger",
 				"RestrictionStore"
@@ -287,7 +287,7 @@
 			"class": "SMW\\MediaWiki\\Hooks\\GetPreferences",
 			"services": [
 				"SMW.SchemaFactory",
-				"SMW.HookDispatcher",
+				"HookContainer",
 				"SMW.Settings",
 				"SMW.PermissionManager"
 			]
@@ -613,7 +613,7 @@
 		"ExportRDF": "SMW\\MediaWiki\\Specials\\SpecialOWLExport",
 		"SMWAdmin": {
 			"class": "SMW\\MediaWiki\\Specials\\SpecialAdmin",
-			"services": [ "SMW.Store", "SMW.Settings", "SMW.HookDispatcher", "SMW.JobFactory", "SMW.JobQueue" ]
+			"services": [ "SMW.Store", "SMW.Settings", "HookContainer", "SMW.JobFactory", "SMW.JobQueue" ]
 		},
 		"PendingTaskList": "SMW\\MediaWiki\\Specials\\SpecialPendingTaskList",
 		"Ask": {

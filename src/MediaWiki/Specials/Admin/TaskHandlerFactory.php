@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\User\User;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
@@ -36,7 +36,7 @@ use SMW\Utils\FileFetcher;
  */
 class TaskHandlerFactory {
 
-	use HookDispatcherAwareTrait;
+	private HookContainer $hookContainer;
 
 	/**
 	 * @since 2.5
@@ -48,6 +48,13 @@ class TaskHandlerFactory {
 		private readonly JobFactory $jobFactory,
 		private readonly JobQueue $jobQueue,
 	) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -64,8 +71,8 @@ class TaskHandlerFactory {
 			$this->outputFormatter
 		);
 
-		$taskHandlerRegistry->setHookDispatcher(
-			$this->hookDispatcher
+		$taskHandlerRegistry->setHookContainer(
+			$this->hookContainer
 		);
 
 		$taskHandlerRegistry->setFeatureSet(

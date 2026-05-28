@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
@@ -12,7 +13,6 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\MagicWordsFinder;
@@ -544,18 +544,20 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->setMethods( null )
 			->getMock();
 
-		$hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$hookDispatcher->expects( $this->once() )
-			->method( 'onBeforeMagicWordsFinder' )
-			->willReturnCallback( static function ( &$magicWords ) {
-				$magicWords = [ 'Foo' ];
+		$hookContainer->expects( $this->once() )
+			->method( 'run' )
+			->with( 'SMW::Parser::BeforeMagicWordsFinder' )
+			->willReturnCallback( static function ( $hook, $args ) {
+				$args[0] = [ 'Foo' ];
+				return true;
 			} );
 
-		$inTextAnnotationParser->setHookDispatcher(
-			$hookDispatcher
+		$inTextAnnotationParser->setHookContainer(
+			$hookContainer
 		);
 
 		$text = '';

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Constraint;
 
+use MediaWiki\HookContainer\HookContainer;
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintRegistry;
@@ -13,7 +14,6 @@ use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\ConstraintFactory;
-use SMW\MediaWiki\HookDispatcher;
 
 /**
  * @covers \SMW\Constraint\ConstraintRegistry
@@ -27,14 +27,14 @@ use SMW\MediaWiki\HookDispatcher;
 class ConstraintRegistryTest extends TestCase {
 
 	private $constraintFactory;
-	private $hookDispatcher;
+	private $hookContainer;
 
 	protected function setUp(): void {
 		$this->constraintFactory = $this->getMockBuilder( ConstraintFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -51,8 +51,8 @@ class ConstraintRegistryTest extends TestCase {
 			$this->constraintFactory
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$this->assertIsArray(
@@ -62,15 +62,16 @@ class ConstraintRegistryTest extends TestCase {
 	}
 
 	public function testRunHookOnInitConstraints() {
-		$this->hookDispatcher->expects( $this->once() )
-			->method( 'onInitConstraints' );
+		$this->hookContainer->expects( $this->once() )
+			->method( 'run' )
+			->with( 'SMW::Constraint::initConstraints', $this->isType( 'array' ) );
 
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->getConstraintKeys();
@@ -90,8 +91,8 @@ class ConstraintRegistryTest extends TestCase {
 			$this->constraintFactory
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->getConstraintByKey( '__unknown__' );
@@ -106,8 +107,8 @@ class ConstraintRegistryTest extends TestCase {
 			$this->constraintFactory
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->registerConstraint( 'foo', $constraint );
@@ -127,8 +128,8 @@ class ConstraintRegistryTest extends TestCase {
 			$this->constraintFactory
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->registerConstraint( 'foo', static function () use( $constraint ) {
@@ -156,8 +157,8 @@ class ConstraintRegistryTest extends TestCase {
 			$this->constraintFactory
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->registerConstraint( 'foo', '__class__' );
@@ -185,8 +186,8 @@ class ConstraintRegistryTest extends TestCase {
 			$this->constraintFactory
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->getConstraintByKey( $key );

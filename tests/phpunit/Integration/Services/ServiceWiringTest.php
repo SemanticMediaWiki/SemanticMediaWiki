@@ -33,7 +33,6 @@ use SMW\MediaWiki\Api\Info;
 use SMW\MediaWiki\Api\Task;
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Job;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
@@ -124,7 +123,6 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.EntityCache', EntityCache::class ],
 			[ 'SMW.JobQueue', JobQueue::class ],
 			[ 'SMW.PermissionManager', PermissionManager::class ],
-			[ 'SMW.HookDispatcher', HookDispatcher::class ],
 			[ 'SMW.RevisionGuard', RevisionGuard::class ],
 			[ 'SMW.ConnectionManager', ConnectionManager::class ],
 			[ 'SMW.SetupFile', SetupFile::class ],

@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\JobQueue\JobFactory;
 use MediaWiki\Title\TitleFactory;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
 use RuntimeException;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Job;
 use SMW\Options;
 use SMW\Setup;
@@ -32,7 +32,15 @@ use SMW\Utils\Timer;
 class Installer implements MessageReporter {
 
 	use MessageReporterAwareTrait;
-	use HookDispatcherAwareTrait;
+
+	private HookContainer $hookContainer;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
 
 	/**
 	 * Optimize option
@@ -170,10 +178,10 @@ class Installer implements MessageReporter {
 
 		$this->setupFile->setMaintenanceMode( [ 'create-tables' => 20 ] );
 
-		/**
-		 * @see HookDispatcher::onInstallerBeforeCreateTablesComplete
-		 */
-		$this->hookDispatcher->onInstallerBeforeCreateTablesComplete( $tables, $this->messageReporter );
+		$this->hookContainer->run(
+			'SMW::SQLStore::Installer::BeforeCreateTablesComplete',
+			[ $tables, $this->messageReporter ]
+		);
 
 		$this->messageReporter->reportMessage(
 			$this->cliMsgFormatter->section( 'Core table(s)', 6, '-', true ) . "\n"
@@ -238,10 +246,10 @@ class Installer implements MessageReporter {
 			"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
-		/**
-		 * @see HookDispatcher::onInstallerAfterCreateTablesComplete
-		 */
-		$this->hookDispatcher->onInstallerAfterCreateTablesComplete( $this->tableBuilder, $this->messageReporter, $this->options );
+		$this->hookContainer->run(
+			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
+			[ $this->tableBuilder, $this->messageReporter, $this->options ]
+		);
 
 		$timer->stop( 'hook-execution' );
 
@@ -286,10 +294,10 @@ class Installer implements MessageReporter {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 		$this->tableBuildExaminer->checkOnPostDestruction( $this->tableBuilder );
 
-		/**
-		 * @see HookDispatcher::onInstallerAfterDropTablesComplete
-		 */
-		$this->hookDispatcher->onInstallerAfterDropTablesComplete( $this->tableBuilder, $this->messageReporter, $this->options );
+		$this->hookContainer->run(
+			'SMW::SQLStore::Installer::AfterDropTablesComplete',
+			[ $this->tableBuilder, $this->messageReporter, $this->options ]
+		);
 
 		$text = [
 			'Standard and auxiliary tables with all corresponding data',

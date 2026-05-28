@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Unit;
 
+use MediaWiki\HookContainer\HookContainer;
 use PHPUnit\Framework\TestCase;
 use SMW\Exception\SettingNotFoundException;
 use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListener;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\Settings;
 use SMW\Tests\Utils\SilenceUserDeprecationTrait;
 
@@ -24,12 +24,12 @@ class SettingsTest extends TestCase {
 
 	use SilenceUserDeprecationTrait;
 
-	private $hookDispatcher;
+	private $hookContainer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -127,8 +127,8 @@ class SettingsTest extends TestCase {
 	public function testNewFromGlobals( $setting ) {
 		$instance = new Settings();
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->loadFromGlobals();
@@ -143,8 +143,8 @@ class SettingsTest extends TestCase {
 	public function testReloadAttemptThrowsException() {
 		$instance = new Settings();
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->loadFromGlobals();
@@ -167,7 +167,7 @@ class SettingsTest extends TestCase {
 			$GLOBALS['smwgFactboxFeatures'] = [ 'cache', 'purge-refresh' ];
 
 			$instance = new Settings();
-			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->setHookContainer( $this->hookContainer );
 			$instance->loadFromGlobals();
 
 			$this->assertSame( SMW_FACTBOX_NONEMPTY, $instance->get( 'smwgShowFactbox' ) );
@@ -190,7 +190,7 @@ class SettingsTest extends TestCase {
 			$GLOBALS[$key] = $userValue;
 
 			$instance = new Settings();
-			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->setHookContainer( $this->hookContainer );
 			// Legacy-form rows in the provider deliberately trip the
 			// LegacyConstantNormalizer deprecation; swallow the PHP-level
 			// user-deprecation so CI stderr stays clean. The deprecation
@@ -244,7 +244,7 @@ class SettingsTest extends TestCase {
 			$GLOBALS[$key] = $userValue;
 
 			$instance = new Settings();
-			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->setHookContainer( $this->hookContainer );
 			$this->withSilencedUserDeprecation( static fn () => $instance->loadFromGlobals() );
 
 			$this->assertSame( $expected, $instance->get( $key ) );
@@ -286,7 +286,7 @@ class SettingsTest extends TestCase {
 			$GLOBALS['smwgFactboxFeatures'] = SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH;
 
 			$instance = new Settings();
-			$instance->setHookDispatcher( $this->hookDispatcher );
+			$instance->setHookContainer( $this->hookContainer );
 			$this->withSilencedUserDeprecation( static fn () => $instance->loadFromGlobals() );
 
 			$this->assertSame( SMW_FACTBOX_NONEMPTY, $instance->get( 'smwgShowFactbox' ) );
