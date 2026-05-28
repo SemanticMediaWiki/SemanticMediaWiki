@@ -10,7 +10,6 @@ use SMW\Importer\ContentCreators\TextContentCreator;
 use SMW\Importer\ContentCreators\XmlContentCreator;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\PageCreator;
-use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
 use SMW\Property\RestrictionExaminer;
@@ -134,19 +133,6 @@ class BehaviourSensitiveServiceCharacterizationTest extends MediaWikiIntegration
 
 		$this->assertInstanceOf( PageCreator::class, $first );
 		$this->assertSame( $first, $second, 'PageCreator: globalised as SMW.PageCreator; both retrievals must return the same instance' );
-	}
-
-	/**
-	 * TitleFactory is globalised as `SMW.TitleFactory` on the MediaWiki
-	 * ServiceContainer; ServicesFactory::newTitleFactory() returns the same
-	 * shared instance on repeated calls.
-	 */
-	public function testTitleFactoryTypeAndIdentity(): void {
-		$first = $this->factory->newTitleFactory();
-		$second = $this->factory->newTitleFactory();
-
-		$this->assertInstanceOf( TitleFactory::class, $first );
-		$this->assertSame( $first, $second, 'TitleFactory: globalised as SMW.TitleFactory; both retrievals must return the same instance' );
 	}
 
 	/**

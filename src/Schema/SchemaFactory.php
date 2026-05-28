@@ -3,6 +3,7 @@
 namespace SMW\Schema;
 
 use JsonSchema\Validator;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
@@ -183,8 +184,8 @@ class SchemaFactory {
 			$settings->mung( 'smwgDir', '/data/schema' )
 		);
 
-		$schemaTypes->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$schemaTypes->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		$schemaTypes->registerSchemaTypes( $types );

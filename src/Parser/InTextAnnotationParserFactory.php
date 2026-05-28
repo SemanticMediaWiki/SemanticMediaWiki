@@ -2,7 +2,7 @@
 
 namespace SMW\Parser;
 
-use SMW\MediaWiki\HookDispatcher;
+use MediaWiki\HookContainer\HookContainer;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\ParserData;
 use SMW\Settings;
@@ -24,7 +24,7 @@ class InTextAnnotationParserFactory {
 	public function __construct(
 		private readonly MwCollaboratorFactory $mwCollaboratorFactory,
 		private readonly Settings $settings,
-		private readonly HookDispatcher $hookDispatcher,
+		private readonly HookContainer $hookContainer,
 	) {
 	}
 
@@ -52,7 +52,7 @@ class InTextAnnotationParserFactory {
 			$this->settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
 		);
 
-		$inTextAnnotationParser->setHookDispatcher( $this->hookDispatcher );
+		$inTextAnnotationParser->setHookContainer( $this->hookContainer );
 
 		return $inTextAnnotationParser;
 	}

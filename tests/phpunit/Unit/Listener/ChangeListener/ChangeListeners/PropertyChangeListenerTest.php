@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Unit\Listener\ChangeListener\ChangeListeners;
 
+use MediaWiki\HookContainer\HookContainer;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 
@@ -24,7 +24,7 @@ class PropertyChangeListenerTest extends TestCase {
 
 	private $store;
 	private $logger;
-	private $hookDispatcher;
+	private $hookContainer;
 	private $property;
 	private $changeRecord;
 
@@ -39,7 +39,7 @@ class PropertyChangeListenerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -96,8 +96,8 @@ class PropertyChangeListenerTest extends TestCase {
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->loadListeners();
@@ -140,13 +140,14 @@ class PropertyChangeListenerTest extends TestCase {
 	}
 
 	public function testLoadListeners() {
-		$this->hookDispatcher->expects( $this->once() )
-			->method( 'onRegisterPropertyChangeListeners' );
+		$this->hookContainer->expects( $this->once() )
+			->method( 'run' )
+			->with( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', $this->isType( 'array' ) );
 
 		$instance = new PropertyChangeListener( $this->store );
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->loadListeners();

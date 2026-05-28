@@ -2,11 +2,12 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\Property;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
@@ -42,10 +43,7 @@ class updateEntityCollation extends Maintenance {
 	 */
 	private $store;
 
-	/**
-	 * @var HookDispatcher
-	 */
-	private $hookDispatcher;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @var MessageReporter
@@ -64,10 +62,10 @@ class updateEntityCollation extends Maintenance {
 	}
 
 	/**
-	 * @since 3.2
+	 * @since 7.0.0
 	 */
-	public function setHookDispatcher( HookDispatcher $hookDispatcher ) {
-		$this->hookDispatcher = $hookDispatcher;
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -106,8 +104,8 @@ class updateEntityCollation extends Maintenance {
 			SQLStore::class
 		);
 
-		if ( $this->hookDispatcher === null ) {
-			$this->hookDispatcher = $applicationFactory->getHookDispatcher();
+		if ( $this->hookContainer === null ) {
+			$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		}
 
 		if ( $this->messageReporter === null ) {
@@ -170,7 +168,10 @@ class updateEntityCollation extends Maintenance {
 			]
 		);
 
-		$this->hookDispatcher->onAfterUpdateEntityCollationComplete( $this->store, $this->messageReporter );
+		$this->hookContainer->run(
+			'SMW::Maintenance::AfterUpdateEntityCollationComplete',
+			[ $this->store, $this->messageReporter ]
+		);
 	}
 
 	private function informAboutDifferences( $smwgEntityCollation, $categoryCollation ) {

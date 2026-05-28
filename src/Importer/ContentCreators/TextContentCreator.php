@@ -4,13 +4,14 @@ namespace SMW\Importer\ContentCreators;
 
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\TitleFactory;
 use SMW\Utils\CliMsgFormatter;
 use WikiPage;
 
@@ -32,6 +33,7 @@ class TextContentCreator implements ContentCreator {
 	public function __construct(
 		private TitleFactory $titleFactory,
 		private Database $connection,
+		private WikiPageFactory $wikiPageFactory,
 	) {
 	}
 
@@ -73,7 +75,7 @@ class TextContentCreator implements ContentCreator {
 			);
 		}
 
-		$page = $this->titleFactory->createPage( $title );
+		$page = $this->wikiPageFactory->newFromTitle( $title );
 		$prefixedText = $title->getPrefixedText();
 
 		$replaceable = false;

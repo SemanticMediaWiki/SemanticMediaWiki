@@ -3,11 +3,12 @@
 namespace SMW\SQLStore\Rebuilder;
 
 use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\PropertyRegistry;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
@@ -195,6 +196,36 @@ class Rebuilder {
 		return $this->progress;
 	}
 
+	/**
+	 * Bulk-fetches Title objects for a list of MediaWiki page IDs.
+	 *
+	 * @param int[] $ids
+	 *
+	 * @return Title[]
+	 */
+	private function newTitlesFromIDs( array $ids ): array {
+		if ( $ids === [] ) {
+			return [];
+		}
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$res = $connection->newSelectQueryBuilder()
+			->select( [ 'page_id', 'page_namespace', 'page_title' ] )
+			->from( 'page' )
+			->where( [ 'page_id' => $ids ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+
+		$titles = [];
+
+		foreach ( $res as $row ) {
+			$titles[] = $this->titleFactory->newFromRow( $row );
+		}
+
+		return $titles;
+	}
+
 	private function matchAsTitle( $id ): void {
 		// Update by MediaWiki page id --> make sure we get all pages.
 		$tids = [];
@@ -204,7 +235,7 @@ class Rebuilder {
 			$tids[] = $i;
 		}
 
-		$titles = $this->titleFactory->newFromIDs( $tids );
+		$titles = $this->newTitlesFromIDs( $tids );
 
 		foreach ( $titles as $title ) {
 

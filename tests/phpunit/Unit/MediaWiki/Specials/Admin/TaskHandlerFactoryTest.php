@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Specials\Admin;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
@@ -40,7 +40,7 @@ use SMW\Tests\TestEnvironment;
 class TaskHandlerFactoryTest extends TestCase {
 
 	private $testEnvironment;
-	private $hookDispatcher;
+	private $hookContainer;
 	private $store;
 	private $htmlFormRenderer;
 	private $outputFormatter;
@@ -52,7 +52,7 @@ class TaskHandlerFactoryTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,8 +99,8 @@ class TaskHandlerFactoryTest extends TestCase {
 			$this->jobQueue
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$this->assertInstanceOf(

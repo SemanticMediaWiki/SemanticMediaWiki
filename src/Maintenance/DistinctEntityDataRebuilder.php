@@ -4,12 +4,12 @@ namespace SMW\Maintenance;
 
 use Exception;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Options;
 use SMW\Query\QueryProcessor;

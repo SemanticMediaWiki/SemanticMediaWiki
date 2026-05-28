@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiMain;
+use MediaWiki\Title\TitleFactory;
 use Onoi\Cache\Cache;
 use SMW\Exception\JSONParseException;
 use SMW\Exception\ParameterNotFoundException;
@@ -40,7 +41,8 @@ class Browse extends ApiBase {
 		string $action,
 		private readonly Store $store,
 		private readonly Settings $settings,
-		private readonly Cache $cache
+		private readonly Cache $cache,
+		private readonly TitleFactory $titleFactory
 	) {
 		parent::__construct( $main, $action );
 	}
@@ -222,7 +224,7 @@ class Browse extends ApiBase {
 		$articleLookup = new ArticleLookup(
 			$connection,
 			new ArticleAugmentor(
-				$applicationFactory->create( 'TitleFactory' )
+				$this->titleFactory
 			)
 		);
 

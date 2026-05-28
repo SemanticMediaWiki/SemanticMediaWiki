@@ -3,9 +3,9 @@
 namespace SMW\Tests\Unit\MediaWiki\Api\Browse;
 
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
-use SMW\MediaWiki\TitleFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ArticleAugmentor

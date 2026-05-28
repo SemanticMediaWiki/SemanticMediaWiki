@@ -2,12 +2,12 @@
 
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
+use MediaWiki\HookContainer\HookContainer;
 use RuntimeException;
 use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
 use SMW\Listener\ChangeListener\ChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Store;
 
 /**
@@ -19,7 +19,8 @@ use SMW\Store;
 class PropertyChangeListener implements ChangeListener {
 
 	use CallableChangeListenerTrait;
-	use HookDispatcherAwareTrait;
+
+	private ?HookContainer $hookContainer = null;
 
 	private array $propertyIdKeyMap = [];
 
@@ -34,6 +35,13 @@ class PropertyChangeListener implements ChangeListener {
 	}
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
+
+	/**
 	 * @since 3.2
 	 */
 	public function loadListeners(): void {
@@ -42,7 +50,7 @@ class PropertyChangeListener implements ChangeListener {
 		}
 
 		$this->initListeners = true;
-		$this->hookDispatcher->onRegisterPropertyChangeListeners( $this );
+		$this->hookContainer->run( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', [ $this ] );
 	}
 
 	/**

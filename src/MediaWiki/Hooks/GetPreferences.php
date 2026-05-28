@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
@@ -64,7 +64,7 @@ class GetPreferences implements GetPreferencesHook {
 	 */
 	public function __construct(
 		private readonly SchemaFactory $schemaFactory,
-		private readonly HookDispatcher $hookDispatcher,
+		private readonly HookContainer $hookContainer,
 		private readonly Settings $settings,
 		private readonly PermissionManager $permissionManager,
 	) {
@@ -77,7 +77,7 @@ class GetPreferences implements GetPreferencesHook {
 		$permissionExaminer = new PermissionExaminer( $this->permissionManager, $user );
 
 		$otherPreferences = [];
-		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
+		$this->hookContainer->run( 'SMW::GetPreferences', [ $user, &$otherPreferences ] );
 
 		$html = $this->makeImage( Logo::get( 'small' ) );
 		$html .= wfMessage( 'smw-prefs-intro-text' )->parseAsBlock();

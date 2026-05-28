@@ -21,6 +21,7 @@ composer.lock
 
 .idea/
 .smw.json
+.smw.json.migrated
 .phpunit.result.cache
 
 composer

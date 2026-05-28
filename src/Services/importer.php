@@ -75,9 +75,12 @@ return [
 		$servicesFactory = ServicesFactory::getInstance();
 		$connectionManager = $servicesFactory->getConnectionManager();
 
+		$mwServices = MediaWikiServices::getInstance();
+
 		return new TextContentCreator(
-			$servicesFactory->newTitleFactory(),
-			$connectionManager->getConnection( 'mw.db' )
+			$mwServices->getTitleFactory(),
+			$connectionManager->getConnection( 'mw.db' ),
+			$mwServices->getWikiPageFactory()
 		);
 	},
 

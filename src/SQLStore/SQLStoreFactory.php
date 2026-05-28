@@ -345,13 +345,14 @@ class SQLStoreFactory {
 			$applicationFactory->singleton( 'RevisionGuard' )
 		);
 
+		$mwServices = MediaWikiServices::getInstance();
 		$rebuilder = new Rebuilder(
 			$this->store,
-			$applicationFactory->newTitleFactory(),
+			$mwServices->getTitleFactory(),
 			$entityValidator,
 			$this->newPropertyTableIdReferenceDisposer(),
 			$applicationFactory->newJobFactory(),
-			MediaWikiServices::getInstance()->getHookContainer()
+			$mwServices->getHookContainer()
 		);
 
 		return $rebuilder;
@@ -491,8 +492,8 @@ class SQLStoreFactory {
 			$mwServices->getJobFactory()
 		);
 
-		$installer->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$installer->setHookContainer(
+			$mwServices->getHookContainer()
 		);
 
 		$installer->setSetupFile(
@@ -901,8 +902,8 @@ class SQLStoreFactory {
 			$this->getLogger()
 		);
 
-		$propertyChangeListener->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$propertyChangeListener->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		$propertyChangeListener->loadListeners();

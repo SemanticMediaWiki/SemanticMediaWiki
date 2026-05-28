@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Specials\Admin;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
@@ -25,7 +25,7 @@ use SMW\Tests\TestEnvironment;
 class TaskHandlerRegistryTest extends TestCase {
 
 	private $testEnvironment;
-	private $hookDispatcher;
+	private $hookContainer;
 	private $store;
 	private $outputFormatter;
 
@@ -34,7 +34,7 @@ class TaskHandlerRegistryTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,8 +55,9 @@ class TaskHandlerRegistryTest extends TestCase {
 	}
 
 	public function testRegisterTaskHandlers() {
-		$this->hookDispatcher->expects( $this->once() )
-			->method( 'onRegisterTaskHandlers' );
+		$this->hookContainer->expects( $this->once() )
+			->method( 'run' )
+			->with( 'SMW::Admin::RegisterTaskHandlers', $this->isType( 'array' ) );
 
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
@@ -71,8 +72,8 @@ class TaskHandlerRegistryTest extends TestCase {
 			$this->outputFormatter
 		);
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$instance->registerTaskHandlers( [ $taskHandler ], $user );

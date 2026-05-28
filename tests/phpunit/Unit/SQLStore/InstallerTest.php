@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Unit\SQLStore;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\JobQueue\JobFactory;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Job;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer;
@@ -39,7 +39,7 @@ class InstallerTest extends TestCase {
 	private $tableOptimizer;
 	private TitleFactory $titleFactory;
 	private JobFactory $jobFactory;
-	private $hookDispatcher;
+	private $hookContainer;
 	private $setupFile;
 
 	protected function setUp(): void {
@@ -75,7 +75,7 @@ class InstallerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -135,7 +135,7 @@ class InstallerTest extends TestCase {
 			$this->jobFactory
 		);
 
-		$instance->setHookDispatcher( $this->hookDispatcher );
+		$instance->setHookContainer( $this->hookContainer );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
@@ -159,7 +159,7 @@ class InstallerTest extends TestCase {
 			$this->jobFactory
 		);
 
-		$instance->setHookDispatcher( $this->hookDispatcher );
+		$instance->setHookContainer( $this->hookContainer );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
@@ -215,7 +215,7 @@ class InstallerTest extends TestCase {
 			$this->jobFactory
 		);
 
-		$instance->setHookDispatcher( $this->hookDispatcher );
+		$instance->setHookContainer( $this->hookContainer );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
@@ -256,7 +256,7 @@ class InstallerTest extends TestCase {
 			$this->jobFactory
 		);
 
-		$instance->setHookDispatcher( $this->hookDispatcher );
+		$instance->setHookContainer( $this->hookContainer );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
@@ -292,7 +292,7 @@ class InstallerTest extends TestCase {
 			$this->jobFactory
 		);
 
-		$instance->setHookDispatcher( $this->hookDispatcher );
+		$instance->setHookContainer( $this->hookContainer );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 

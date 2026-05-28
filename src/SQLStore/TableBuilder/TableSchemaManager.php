@@ -143,6 +143,7 @@ class TableSchemaManager {
 		$this->addTable( $this->newFulltextSearchTable() );
 
 		$this->addTable( $this->newPropertyStatisticsTable() );
+		$this->addTable( $this->newMetaTable() );
 
 		foreach ( $this->store->getPropertyTables() as $propertyTable ) {
 
@@ -308,6 +309,21 @@ class TableSchemaManager {
 		$table->addIndex( [ 'p_id', 'UNIQUE INDEX' ] );
 		$table->addIndex( 'usage_count' );
 		$table->addIndex( 'null_count' );
+
+		return $table;
+	}
+
+	private function newMetaTable(): Table {
+		// META_TABLE: per-key install-state metadata previously stored in
+		// `.smw.json`. `meta_key` is a length-bounded binary string so it
+		// can serve as the primary key on MySQL/SQLite (where a MEDIUMBLOB
+		// would need a key length); `meta_value` holds arbitrary JSON.
+		$table = new Table( SQLStore::META_TABLE );
+
+		$table->addColumn( 'meta_key', [ FieldType::TYPE_CHAR_LONG, 'NOT NULL' ] );
+		$table->addColumn( 'meta_value', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+
+		$table->setPrimaryKey( 'meta_key' );
 
 		return $table;
 	}

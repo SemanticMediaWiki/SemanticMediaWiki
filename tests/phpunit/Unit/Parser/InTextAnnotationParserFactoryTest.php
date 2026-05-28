@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\Parser;
 
+use MediaWiki\HookContainer\HookContainer;
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\RedirectTargetFinder;
@@ -23,21 +23,21 @@ class InTextAnnotationParserFactoryTest extends TestCase {
 
 	private MwCollaboratorFactory $mwCollaboratorFactory;
 	private Settings $settings;
-	private HookDispatcher $hookDispatcher;
+	private HookContainer $hookContainer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwCollaboratorFactory = $this->createMock( MwCollaboratorFactory::class );
 		$this->settings = $this->createMock( Settings::class );
-		$this->hookDispatcher = $this->createMock( HookDispatcher::class );
+		$this->hookContainer = $this->createMock( HookContainer::class );
 	}
 
 	private function newInstance(): InTextAnnotationParserFactory {
 		return new InTextAnnotationParserFactory(
 			$this->mwCollaboratorFactory,
 			$this->settings,
-			$this->hookDispatcher
+			$this->hookContainer
 		);
 	}
 

@@ -27,7 +27,6 @@ use SMW\Localizer\Localizer;
 use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\PersonalUrls;
 use SMW\MediaWiki\Hooks\UserChange;
@@ -44,7 +43,6 @@ use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\PostProcHandlerFactory;
 use SMW\MediaWiki\RevisionGuard;
-use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\Parser\InTextAnnotationParserFactory;
 use SMW\ParserFunctionFactory;
@@ -122,8 +120,8 @@ return [
 
 		$settings = new Settings();
 
-		$settings->setHookDispatcher(
-			$servicesFactory->getHookDispatcher()
+		$settings->setHookContainer(
+			$services->getHookContainer()
 		);
 
 		$settings->loadFromGlobals();
@@ -212,16 +210,6 @@ return [
 		return new PermissionManager( $services->getPermissionManager() );
 	},
 
-	'SMW.HookDispatcher' => static function ( MediaWikiServices $services ): HookDispatcher {
-		$servicesFactory = ServicesFactory::getInstance();
-
-		if ( $servicesFactory->hasTestOverride( 'HookDispatcher' ) ) {
-			return $servicesFactory->getHookDispatcher();
-		}
-
-		return new HookDispatcher();
-	},
-
 	'SMW.RevisionGuard' => static function ( MediaWikiServices $services ): RevisionGuard {
 		$servicesFactory = ServicesFactory::getInstance();
 
@@ -233,8 +221,8 @@ return [
 			$services->getRevisionLookup()
 		);
 
-		$revisionGuard->setHookDispatcher(
-			$servicesFactory->getHookDispatcher()
+		$revisionGuard->setHookContainer(
+			$services->getHookContainer()
 		);
 
 		return $revisionGuard;
@@ -711,16 +699,6 @@ return [
 		);
 	},
 
-	'SMW.TitleFactory' => static function ( MediaWikiServices $services ): TitleFactory {
-		$servicesFactory = ServicesFactory::getInstance();
-
-		if ( $servicesFactory->hasTestOverride( 'TitleFactory' ) ) {
-			return $servicesFactory->getTitleFactory();
-		}
-
-		return new TitleFactory();
-	},
-
 	'SMW.PageCreator' => static function ( MediaWikiServices $services ): PageCreator {
 		$servicesFactory = ServicesFactory::getInstance();
 
@@ -762,7 +740,7 @@ return [
 		return new InTextAnnotationParserFactory(
 			$services->getService( 'SMW.MwCollaboratorFactory' ),
 			$servicesFactory->getSettings(),
-			$servicesFactory->getHookDispatcher()
+			$services->getHookContainer()
 		);
 	},
 
