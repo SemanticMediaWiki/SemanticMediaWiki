@@ -52,9 +52,9 @@ class EntityIdFinderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// HashFieldUpdate::doUpdate() (deferred from EntityIdFinder)
-		// calls newUpdateQueryBuilder(); default to an empty builder so
-		// tests don't NPE on the ->update()->set()->where() chain.
+		// EntityIdFinder::deferHashUpdate() calls newUpdateQueryBuilder() on
+		// the connection; default to an empty builder so tests don't NPE on
+		// the ->update()->set()->where() chain.
 		$this->connection->method( 'newUpdateQueryBuilder' )
 			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
 
