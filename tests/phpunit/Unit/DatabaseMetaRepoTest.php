@@ -12,9 +12,9 @@ use Wikimedia\Rdbms\DBQueryError;
 use Wikimedia\Rdbms\Expression;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
-use Wikimedia\Rdbms\IMaintainableDatabase;
 use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IMaintainableDatabase;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
