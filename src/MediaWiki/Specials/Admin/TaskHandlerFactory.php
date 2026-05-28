@@ -36,7 +36,7 @@ use SMW\Utils\FileFetcher;
  */
 class TaskHandlerFactory {
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @since 2.5

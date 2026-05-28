@@ -33,7 +33,7 @@ use SMW\Utils\Timer;
  */
 class InTextAnnotationParser {
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @since 7.0.0

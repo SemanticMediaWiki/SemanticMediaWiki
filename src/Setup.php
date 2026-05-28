@@ -22,7 +22,7 @@ use SMW\Utils\Logo;
  */
 final class Setup {
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @since 7.0.0

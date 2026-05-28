@@ -14,7 +14,7 @@ use SMW\Store;
  */
 class TaskHandlerRegistry {
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	private array $taskHandlers = [];
 

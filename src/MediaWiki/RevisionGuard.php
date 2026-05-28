@@ -25,7 +25,7 @@ use WikiPage;
  */
 class RevisionGuard {
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @since 3.2

@@ -33,7 +33,7 @@ class Installer implements MessageReporter {
 
 	use MessageReporterAwareTrait;
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @since 7.0.0

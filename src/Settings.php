@@ -24,7 +24,7 @@ class Settings extends Options {
 
 	use ChangeListenerAwareTrait;
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	private bool $isLoaded = false;
 

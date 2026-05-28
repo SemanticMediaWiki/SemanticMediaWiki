@@ -14,7 +14,7 @@ use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
  */
 class SchemaTypes implements JsonSerializable {
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	private array $schemaTypes = [];
 

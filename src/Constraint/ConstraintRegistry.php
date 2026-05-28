@@ -21,7 +21,7 @@ use SMW\ConstraintFactory;
  */
 class ConstraintRegistry {
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	private array $constraints = [];
 

@@ -20,7 +20,7 @@ class PropertyChangeListener implements ChangeListener {
 
 	use CallableChangeListenerTrait;
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	private array $propertyIdKeyMap = [];
 
