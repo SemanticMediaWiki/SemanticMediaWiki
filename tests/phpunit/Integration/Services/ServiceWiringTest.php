@@ -48,7 +48,6 @@ use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
@@ -126,7 +125,6 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.ConnectionManager', ConnectionManager::class ],
 			[ 'SMW.SetupFile', SetupFile::class ],
 			[ 'SMW.MediaWikiNsContentReader', MediaWikiNsContentReader::class ],
-			[ 'SMW.ManualEntryLogger', ManualEntryLogger::class ],
 			[ 'SMW.InMemoryPoolCache', InMemoryPoolCache::class ],
 			[ 'SMW.PropertyAnnotatorFactory', AnnotatorFactory::class ],
 			[ 'SMW.ConnectionProvider', ConnectionProvider::class ],

@@ -2,8 +2,10 @@
 
 namespace SMW\Maintenance;
 
+use ManualLogEntry;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use RuntimeException;
-use SMW\MediaWiki\ManualEntryLogger;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,9 +25,7 @@ class MaintenanceLogger {
 	 */
 	public function __construct(
 		private $performer,
-		private readonly ManualEntryLogger $manualEntryLogger,
 	) {
-		$this->manualEntryLogger->registerLoggableEventType( 'maintenance' );
 	}
 
 	/**
@@ -110,7 +110,16 @@ class MaintenanceLogger {
 			throw new RuntimeException( 'wgMaxNameChars requires at least ' . strlen( $target ) );
 		}
 
-		$this->manualEntryLogger->log( 'maintenance', $this->performer, $target, $message );
+		$performer = is_string( $this->performer )
+			? User::newSystemUser( $this->performer, [ 'steal' => true ] )
+			: $this->performer;
+
+		$logEntry = new ManualLogEntry( 'smw', 'maintenance' );
+		$logEntry->setTarget( Title::newFromText( $target ) );
+		$logEntry->setPerformer( $performer );
+		$logEntry->setParameters( [] );
+		$logEntry->setComment( $message );
+		$logEntry->insert();
 	}
 
 }

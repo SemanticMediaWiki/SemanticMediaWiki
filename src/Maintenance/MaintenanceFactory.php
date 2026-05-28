@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Localizer\LocalMessageProvider;
-use SMW\MediaWiki\ManualEntryLogger;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\Store;
@@ -146,7 +145,7 @@ class MaintenanceFactory {
 	 * @return MaintenanceLogger
 	 */
 	public function newMaintenanceLogger( $performer ): MaintenanceLogger {
-		$maintenanceLogger = new MaintenanceLogger( $performer, new ManualEntryLogger() );
+		$maintenanceLogger = new MaintenanceLogger( $performer );
 		$maintenanceLogger->setMaxNameChars( $GLOBALS['wgMaxNameChars'] );
 
 		return $maintenanceLogger;
