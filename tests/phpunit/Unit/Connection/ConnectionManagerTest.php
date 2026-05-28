@@ -88,4 +88,25 @@ class ConnectionManagerTest extends TestCase {
 		$instance->getConnection( 'FOO' );
 	}
 
+	public function testRegisterCallbackConnectionMemoizesAcrossCalls() {
+		$invocations = 0;
+		$callback = static function () use ( &$invocations ) {
+			$invocations++;
+			return new \stdClass();
+		};
+
+		$instance = new ConnectionManager();
+		$instance->registerCallbackConnection( 'memo', $callback );
+
+		$first = $instance->getConnection( 'memo' );
+
+		$this->assertSame( $first, $instance->getConnection( 'memo' ) );
+		$this->assertSame( 1, $invocations );
+
+		$instance->releaseConnections();
+
+		$this->assertNotSame( $first, $instance->getConnection( 'memo' ) );
+		$this->assertSame( 2, $invocations );
+	}
+
 }

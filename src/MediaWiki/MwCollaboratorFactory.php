@@ -9,14 +9,15 @@ use MediaWiki\Parser\StripState;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
+use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\MediaWiki\Connection\ConnectionProvider;
-use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Renderer\HtmlTableRenderer;
 use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\Rdbms\IDatabase;
 use WikiPage;
 
 /**
@@ -114,15 +115,27 @@ class MwCollaboratorFactory {
 	 * @param bool $asConnectionRef Deprecated parameter since 5.0
 	 *
 	 * @note The parameter $asConnectionRef is deprecated since 5.0
-	 *
-	 * @return LoadBalancerConnectionProvider
 	 */
-	public function newLoadBalancerConnectionProvider( $connectionType, $asConnectionRef = true ): LoadBalancerConnectionProvider {
-		$loadBalancerConnectionProvider = new LoadBalancerConnectionProvider(
-			$connectionType
-		);
+	public function newLoadBalancerConnectionProvider( $connectionType, $asConnectionRef = true ): IConnectionProvider {
+		return new class( $connectionType ) implements IConnectionProvider {
+			private ?IDatabase $connection = null;
 
-		return $loadBalancerConnectionProvider;
+			public function __construct( private $id ) {
+			}
+
+			public function getConnection(): IDatabase {
+				if ( $this->connection === null ) {
+					$loadBalancer = ApplicationFactory::getInstance()->create( 'DBLoadBalancer' );
+					$this->connection = $loadBalancer->getConnection( $this->id );
+				}
+
+				return $this->connection;
+			}
+
+			public function releaseConnection(): void {
+				$this->connection = null;
+			}
+		};
 	}
 
 	/**

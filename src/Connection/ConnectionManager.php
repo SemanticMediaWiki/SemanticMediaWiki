@@ -72,7 +72,24 @@ class ConnectionManager {
 	 * @param callable $callback
 	 */
 	public function registerCallbackConnection( $id, callable $callback ): void {
-		self::$connectionProviders[strtolower( (string)$id )] = new CallbackConnectionProvider( $callback );
+		self::$connectionProviders[strtolower( (string)$id )] = new class( $callback ) implements ConnectionProvider {
+			private $connection = null;
+
+			public function __construct( private $callback ) {
+			}
+
+			public function getConnection() {
+				if ( $this->connection === null ) {
+					$this->connection = ( $this->callback )();
+				}
+
+				return $this->connection;
+			}
+
+			public function releaseConnection(): void {
+				$this->connection = null;
+			}
+		};
 	}
 
 	private function isConnectable(): bool {

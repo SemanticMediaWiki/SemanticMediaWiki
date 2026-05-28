@@ -7,6 +7,7 @@ use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\Services\ServicesFactory;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GPL-2.0-or-later
@@ -120,8 +121,26 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 	}
 
-	private function newLoadBalancerConnectionProvider( $id ): LoadBalancerConnectionProvider {
-		return new LoadBalancerConnectionProvider( $id );
+	private function newLoadBalancerConnectionProvider( $id ): IConnectionProvider {
+		return new class( $id ) implements IConnectionProvider {
+			private ?IDatabase $connection = null;
+
+			public function __construct( private $id ) {
+			}
+
+			public function getConnection(): IDatabase {
+				if ( $this->connection === null ) {
+					$loadBalancer = ServicesFactory::getInstance()->create( 'DBLoadBalancer' );
+					$this->connection = $loadBalancer->getConnection( $this->id );
+				}
+
+				return $this->connection;
+			}
+
+			public function releaseConnection(): void {
+				$this->connection = null;
+			}
+		};
 	}
 
 	private function newTransactionHandler(): TransactionHandler {
