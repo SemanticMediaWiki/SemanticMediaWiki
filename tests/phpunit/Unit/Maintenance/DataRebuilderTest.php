@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Maintenance;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\WikiPage;
@@ -13,7 +14,6 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
 use SMW\Query\QueryResult;
 use SMW\SQLStore\Rebuilder\Rebuilder;

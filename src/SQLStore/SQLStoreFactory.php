@@ -345,13 +345,14 @@ class SQLStoreFactory {
 			$applicationFactory->singleton( 'RevisionGuard' )
 		);
 
+		$mwServices = MediaWikiServices::getInstance();
 		$rebuilder = new Rebuilder(
 			$this->store,
-			$applicationFactory->newTitleFactory(),
+			$mwServices->getTitleFactory(),
 			$entityValidator,
 			$this->newPropertyTableIdReferenceDisposer(),
 			$applicationFactory->newJobFactory(),
-			MediaWikiServices::getInstance()->getHookContainer()
+			$mwServices->getHookContainer()
 		);
 
 		return $rebuilder;

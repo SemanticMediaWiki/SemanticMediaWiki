@@ -2,15 +2,16 @@
 
 namespace SMW\Tests\Unit\Importer\ContentCreators;
 
+use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Storage\PageUpdateStatus;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\Importer\ContentCreators\TextContentCreator;
 use SMW\Importer\ImportContents;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\TitleFactory;
 
 /**
  * @covers \SMW\Importer\ContentCreators\TextContentCreator
@@ -26,6 +27,7 @@ class TextContentCreatorTest extends TestCase {
 	private $titleFactory;
 	private $connection;
 	private $messageReporter;
+	private $wikiPageFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -41,19 +43,24 @@ class TextContentCreatorTest extends TestCase {
 		$this->messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->wikiPageFactory = $this->getMockBuilder( WikiPageFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			TextContentCreator::class,
-			new TextContentCreator( $this->titleFactory, $this->connection )
+			new TextContentCreator( $this->titleFactory, $this->connection, $this->wikiPageFactory )
 		);
 	}
 
 	public function testCanCreateContentsFor() {
 		$instance = new TextContentCreator(
 			$this->titleFactory,
-			$this->connection
+			$this->connection,
+			$this->wikiPageFactory
 		);
 
 		$importContents = new ImportContents();
@@ -104,13 +111,14 @@ class TextContentCreatorTest extends TestCase {
 			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
-		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'createPage' )
+		$this->wikiPageFactory->expects( $this->atLeastOnce() )
+			->method( 'newFromTitle' )
 			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
-			$this->connection
+			$this->connection,
+			$this->wikiPageFactory
 		);
 
 		$instance->setMessageReporter(
@@ -168,13 +176,14 @@ class TextContentCreatorTest extends TestCase {
 			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
-		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'createPage' )
+		$this->wikiPageFactory->expects( $this->atLeastOnce() )
+			->method( 'newFromTitle' )
 			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
-			$this->connection
+			$this->connection,
+			$this->wikiPageFactory
 		);
 
 		$instance->setMessageReporter(
@@ -216,13 +225,14 @@ class TextContentCreatorTest extends TestCase {
 			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
-		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'createPage' )
+		$this->wikiPageFactory->expects( $this->atLeastOnce() )
+			->method( 'newFromTitle' )
 			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
-			$this->connection
+			$this->connection,
+			$this->wikiPageFactory
 		);
 
 		$instance->setMessageReporter(
@@ -293,13 +303,14 @@ class TextContentCreatorTest extends TestCase {
 			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
-		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'createPage' )
+		$this->wikiPageFactory->expects( $this->atLeastOnce() )
+			->method( 'newFromTitle' )
 			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
-			$this->connection
+			$this->connection,
+			$this->wikiPageFactory
 		);
 
 		$instance->setMessageReporter(
@@ -362,13 +373,14 @@ class TextContentCreatorTest extends TestCase {
 			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
-		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'createPage' )
+		$this->wikiPageFactory->expects( $this->atLeastOnce() )
+			->method( 'newFromTitle' )
 			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
-			$this->connection
+			$this->connection,
+			$this->wikiPageFactory
 		);
 
 		$instance->setMessageReporter(

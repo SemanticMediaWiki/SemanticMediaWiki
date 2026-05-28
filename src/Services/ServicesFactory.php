@@ -69,7 +69,6 @@ use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
-use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\Parser\ContentParser;
 use SMW\Parser\InTextAnnotationParser;
@@ -346,7 +345,6 @@ class ServicesFactory {
 			'ParserFunctionFactory' => fn () => $this->getParserFunctionFactory(),
 			'MaintenanceFactory' => fn () => $this->getMaintenanceFactory(),
 			'CacheFactory' => fn () => $this->getCacheFactory(),
-			'TitleFactory' => fn () => $this->getTitleFactory(),
 			'PageCreator' => fn () => $this->getPageCreator(),
 			'ContentParserFactory' => fn () => $this->getContentParserFactory(),
 			'ParserDataFactory' => fn () => $this->getParserDataFactory(),
@@ -656,24 +654,6 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.HookDispatcher' );
-	}
-
-	/**
-	 * @since 2.0
-	 */
-	public function newTitleFactory(): TitleFactory {
-		return $this->getTitleFactory();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getTitleFactory(): TitleFactory {
-		if ( array_key_exists( 'TitleFactory', $this->testOverrides ) ) {
-			return $this->testOverrides['TitleFactory'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.TitleFactory' );
 	}
 
 	/**

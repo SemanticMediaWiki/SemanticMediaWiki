@@ -4,10 +4,10 @@ namespace SMW\Tests\Unit\SQLStore\Rebuilder;
 
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\TitleFactory;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\Rebuilder\EntityValidator;
@@ -88,23 +88,19 @@ class RebuilderTest extends TestCase {
 	 * @dataProvider idProvider
 	 */
 	public function testDispatchRebuildForSingleIteration( $id, $expected ) {
-		$this->titleFactory->expects( $this->any() )
-			->method( 'newFromIDs' )
-			->willReturn( [] );
-
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		// matchAsSubject() (the first newSelectQueryBuilder() call) needs
-		// fetchResultSet() to iterate empty so emptyRange stays true. The
-		// remaining callsites in next_position() and getMaxId() use
-		// fetchField() and must return $expected.
+		// matchAsTitle()'s newTitlesFromIDs() (call 0) and matchAsSubject()
+		// (call 1) both need fetchResultSet() to iterate empty so emptyRange
+		// stays true. The remaining callsites in next_position() and
+		// getMaxId() use fetchField() and must return $expected.
 		$callIndex = 0;
 		$connection->expects( $this->any() )
 			->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( function () use ( $expected, &$callIndex ) {
-				$rows = $callIndex === 0 ? [] : [ [ $expected ] ];
+				$rows = ( $callIndex === 0 || $callIndex === 1 ) ? [] : [ [ $expected ] ];
 				$callIndex++;
 				return $this->createMockSelectQueryBuilder( $rows );
 			} );
@@ -166,8 +162,8 @@ class RebuilderTest extends TestCase {
 			->willReturn( 'Foo' );
 
 		$this->titleFactory->expects( $this->any() )
-			->method( 'newFromIDs' )
-			->willReturn( [ $title ] );
+			->method( 'newFromRow' )
+			->willReturn( $title );
 
 		$row = [
 			'smw_id' => 9999999999999999,
@@ -187,14 +183,21 @@ class RebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// matchAsSubject() (the first newSelectQueryBuilder() call) feeds the
-		// row into fetchResultSet(); subsequent getMaxId() callsites use
-		// fetchField() and must return 500.
+		// matchAsTitle()'s newTitlesFromIDs() (call 0) feeds a minimal page
+		// row into fetchResultSet() so titleFactory->newFromRow() resolves to
+		// $title. matchAsSubject() (call 1) feeds the smw_object_ids row.
+		// Subsequent getMaxId() callsites use fetchField() and must return 500.
 		$callIndex = 0;
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( function () use ( $row, &$callIndex ) {
-				$rows = $callIndex === 0 ? [ (object)$row ] : [ [ 500 ] ];
+				if ( $callIndex === 0 ) {
+					$rows = [ (object)[ 'page_id' => 1, 'page_namespace' => 0, 'page_title' => 'Foo' ] ];
+				} elseif ( $callIndex === 1 ) {
+					$rows = [ (object)$row ];
+				} else {
+					$rows = [ [ 500 ] ];
+				}
 				$callIndex++;
 				return $this->createMockSelectQueryBuilder( $rows );
 			} );
