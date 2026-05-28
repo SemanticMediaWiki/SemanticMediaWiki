@@ -37,7 +37,6 @@ use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\ContentParserFactory;
 use SMW\MediaWiki\Jobs\PageUpdaterFactory;
 use SMW\MediaWiki\Jobs\ParserDataFactory;
-use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
@@ -285,16 +284,6 @@ return [
 		);
 
 		return $mediaWikiNsContentReader;
-	},
-
-	'SMW.ManualEntryLogger' => static function ( MediaWikiServices $services ): ManualEntryLogger {
-		$servicesFactory = ServicesFactory::getInstance();
-
-		if ( $servicesFactory->hasTestOverride( 'ManualEntryLogger' ) ) {
-			return $servicesFactory->getManualEntryLogger();
-		}
-
-		return new ManualEntryLogger();
 	},
 
 	'SMW.InMemoryPoolCache' => static function ( MediaWikiServices $services ): InMemoryPoolCache {

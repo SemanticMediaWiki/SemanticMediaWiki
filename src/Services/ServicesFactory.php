@@ -60,7 +60,6 @@ use SMW\MediaWiki\Jobs\ContentParserFactory;
 use SMW\MediaWiki\Jobs\PageUpdaterFactory;
 use SMW\MediaWiki\Jobs\ParserDataFactory;
 use SMW\MediaWiki\MagicWordsFinder;
-use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
@@ -318,7 +317,6 @@ class ServicesFactory {
 			'ConnectionManager' => fn () => $this->getConnectionManager(),
 			'SetupFile' => fn () => $this->getSetupFile(),
 			'MediaWikiNsContentReader' => fn () => $this->getMediaWikiNsContentReader(),
-			'ManualEntryLogger' => fn () => $this->getManualEntryLogger(),
 			'InMemoryPoolCache' => fn () => $this->getInMemoryPoolCache(),
 			'PropertyAnnotatorFactory' => fn () => $this->getPropertyAnnotatorFactory(),
 			'ConnectionProvider' => fn () => $this->getConnectionProvider(),
@@ -1513,17 +1511,6 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.SetupFile' );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getManualEntryLogger(): ManualEntryLogger {
-		if ( array_key_exists( 'ManualEntryLogger', $this->testOverrides ) ) {
-			return $this->testOverrides['ManualEntryLogger'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.ManualEntryLogger' );
 	}
 
 	/**
