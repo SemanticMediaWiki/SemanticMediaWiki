@@ -895,16 +895,6 @@ return [
 		);
 	},
 
-	'SMW.SearchEngineConfig' => static function ( MediaWikiServices $services ): SearchEngineConfig {
-		$servicesFactory = ServicesFactory::getInstance();
-
-		if ( $servicesFactory->hasTestOverride( 'SearchEngineConfig' ) ) {
-			return $servicesFactory->getSearchEngineConfig();
-		}
-
-		return $services->getSearchEngineConfig();
-	},
-
 	'SMW.FulltextSearchTableFactory' => static function ( MediaWikiServices $services ): FulltextSearchTableFactory {
 		$servicesFactory = ServicesFactory::getInstance();
 

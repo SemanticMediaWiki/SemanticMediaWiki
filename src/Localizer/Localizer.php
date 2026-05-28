@@ -19,7 +19,6 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\LocalTime;
 use SMW\NamespaceManager;
-use SMW\Services\ServicesFactory;
 use SMW\Site;
 
 /**
@@ -61,12 +60,12 @@ class Localizer {
 			return self::$instance;
 		}
 
-		$servicesFactory = ServicesFactory::getInstance();
+		$mwServices = MediaWikiServices::getInstance();
 
 		self::$instance = new self(
-			$servicesFactory->singleton( 'ContentLanguage' ),
-			MediaWikiServices::getInstance()->getNamespaceInfo(),
-			$servicesFactory->singleton( 'UserOptionsLookup' ),
+			$mwServices->getContentLanguage(),
+			$mwServices->getNamespaceInfo(),
+			$mwServices->getUserOptionsLookup(),
 			RequestContext::getMain()
 		);
 

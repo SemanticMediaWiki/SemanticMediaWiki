@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Page;
 
 use Article;
+use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Outputs;
 use SMW\Options;
-use SMW\Services\ServicesFactory;
 
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of
@@ -69,7 +69,7 @@ abstract class Page extends Article {
 		$request = $this->getContext()->getRequest();
 
 		$diff = $request->getVal( 'diff' );
-		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$diffOnly = $request->getBool( 'diffonly', $userOptionsLookup->getOption( $user, 'diffonly' ) );
 
 		if ( $diff === null || !$diffOnly ) {

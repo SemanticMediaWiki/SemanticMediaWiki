@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Specials;
 
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Outputs;
@@ -17,7 +18,6 @@ use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
 use SMW\Schema\SchemaFactory;
-use SMW\Services\ServicesFactory;
 use SMW\Store;
 use SMW\Utils\UrlArgs;
 
@@ -75,10 +75,7 @@ class SpecialFacetedSearch extends SpecialPage {
 
 		$title = $this->getPageTitle();
 
-		// Partial DI: UserOptionsLookup is a MW core service resolved through
-		// ServicesFactory's singleton bridge; it is not registered on the
-		// SMW container.
-		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 
 		/**
 		 * Profile information

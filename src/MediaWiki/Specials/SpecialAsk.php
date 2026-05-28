@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Specials;
 
 use MediaWiki\Html\Html;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\SpecialPage;
 use ParamProcessor\ProcessedParam;
 use SMW\Formatters\Infolink;
@@ -24,7 +25,6 @@ use SMW\Query\QuerySourceFactory;
 use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinterDependency;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\UrlArgs;
@@ -217,10 +217,7 @@ class SpecialAsk extends SpecialPage {
 			$GLOBALS['smwgResultFormats']
 		);
 
-		// Partial DI: UserOptionsLookup is a MW core service resolved through
-		// ApplicationFactory's singleton bridge; it is not registered on the
-		// SMW container.
-		$userOptionsLookup = ApplicationFactory::getInstance()->singleton( 'UserOptionsLookup' );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		ParametersWidget::setTooltipDisplay(
 			$userOptionsLookup->getOption( $this->getUser(), 'smw-prefs-ask-options-tooltip-display' )
 		);
