@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use File;
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
@@ -24,12 +25,19 @@ use WikiPage;
  */
 class RevisionGuard {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @since 3.2
 	 */
 	public function __construct( private RevisionLookup $revisionLookup ) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -49,7 +57,7 @@ class RevisionGuard {
 
 		// If for some reason an extension decides that the current used revision
 		// isn't approved then the hook should return `false`
-		if ( !$this->hookDispatcher->onIsApprovedRevision( $title, $latestRevID ) ) {
+		if ( !$this->hookContainer->run( 'SMW::RevisionGuard::IsApprovedRevision', [ $title, $latestRevID ] ) ) {
 			return true;
 		}
 
@@ -69,7 +77,7 @@ class RevisionGuard {
 		$latestRevID = $title->getLatestRevID( $flag );
 		$origLatestRevID = $latestRevID;
 
-		$this->hookDispatcher->onChangeRevisionID( $title, $latestRevID );
+		$this->hookContainer->run( 'SMW::RevisionGuard::ChangeRevisionID', [ $title, &$latestRevID ] );
 
 		if ( is_int( $latestRevID ) ) {
 			return $latestRevID;
@@ -121,7 +129,7 @@ class RevisionGuard {
 
 		$origRevision = $revision;
 
-		$this->hookDispatcher->onChangeRevision( $title, $revision );
+		$this->hookContainer->run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
 
 		if ( $revision instanceof RevisionRecord ) {
 			return $revision;
@@ -141,7 +149,7 @@ class RevisionGuard {
 	public function getFile( Title $title, ?File $file = null ): ?File {
 		$origFile = $file;
 
-		$this->hookDispatcher->onChangeFile( $title, $file );
+		$this->hookContainer->run( 'SMW::RevisionGuard::ChangeFile', [ $title, &$file ] );
 
 		if ( $file instanceof File ) {
 			return $file;

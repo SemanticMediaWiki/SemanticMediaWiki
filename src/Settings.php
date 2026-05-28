@@ -2,11 +2,11 @@
 
 namespace SMW;
 
+use MediaWiki\HookContainer\HookContainer;
 use RuntimeException;
 use SMW\Exception\SettingNotFoundException;
 use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Setup\LegacyConstantNormalizer;
 
 /**
@@ -23,9 +23,17 @@ use SMW\Setup\LegacyConstantNormalizer;
 class Settings extends Options {
 
 	use ChangeListenerAwareTrait;
-	use HookDispatcherAwareTrait;
+
+	private ?HookContainer $hookContainer = null;
 
 	private bool $isLoaded = false;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
 
 	/**
 	 * Assemble individual SMW related settings into one accessible array for
@@ -197,10 +205,9 @@ class Settings extends Options {
 
 		$this->isLoaded = true;
 
-		/**
-		 * @see HookDispatcher::onSettingsBeforeInitializationComplete
-		 */
-		$this->hookDispatcher->onSettingsBeforeInitializationComplete( $this->options );
+		// Deprecated since 3.1, fired for backward compatibility.
+		$this->hookContainer->run( 'SMW::Config::BeforeCompletion', [ &$this->options ] );
+		$this->hookContainer->run( 'SMW::Settings::BeforeInitializationComplete', [ &$this->options ] );
 	}
 
 	/**

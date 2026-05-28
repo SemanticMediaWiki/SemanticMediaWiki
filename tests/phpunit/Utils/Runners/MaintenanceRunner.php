@@ -4,9 +4,9 @@ namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
 use Maintenance;
+use MediaWiki\HookContainer\HookContainer;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RuntimeException;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -25,10 +25,18 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class MaintenanceRunner {
 
 	use MessageReporterAwareTrait;
-	use HookDispatcherAwareTrait;
+
+	private ?HookContainer $hookContainer = null;
 
 	protected $output = null;
 	protected $quiet = false;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
 
 	/**
 	 * @since 1.9.2
@@ -97,8 +105,8 @@ class MaintenanceRunner {
 			$maintenance->setMessageReporter( $this->messageReporter );
 		}
 
-		if ( $this->hookDispatcher !== null && method_exists( $maintenance, 'setHookDispatcher' ) ) {
-			$maintenance->setHookDispatcher( $this->hookDispatcher );
+		if ( $this->hookContainer !== null && method_exists( $maintenance, 'setHookContainer' ) ) {
+			$maintenance->setHookContainer( $this->hookContainer );
 		}
 
 		ob_start();

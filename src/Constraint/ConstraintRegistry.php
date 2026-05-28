@@ -2,6 +2,7 @@
 
 namespace SMW\Constraint;
 
+use MediaWiki\HookContainer\HookContainer;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
 use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\Constraint\Constraints\NamespaceConstraint;
@@ -11,7 +12,6 @@ use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\ConstraintFactory;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,7 +21,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  */
 class ConstraintRegistry {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
 
 	private array $constraints = [];
 
@@ -33,6 +33,13 @@ class ConstraintRegistry {
 	 * @since 3.1
 	 */
 	public function __construct( private ConstraintFactory $constraintFactory ) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -91,7 +98,7 @@ class ConstraintRegistry {
 			'shape_constraint' => ShapeConstraint::class
 		];
 
-		$this->hookDispatcher->onInitConstraints( $this );
+		$this->hookContainer->run( 'SMW::Constraint::initConstraints', [ $this ] );
 	}
 
 	private function loadInstance( $class ) {

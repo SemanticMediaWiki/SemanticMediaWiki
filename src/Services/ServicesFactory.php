@@ -52,7 +52,6 @@ use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
@@ -313,7 +312,6 @@ class ServicesFactory {
 			'ParserCache' => fn () => $this->getParserCache(),
 			'UserOptionsLookup' => fn () => $this->getUserOptionsLookup(),
 			'PermissionManager' => fn () => $this->getPermissionManager(),
-			'HookDispatcher' => fn () => $this->getHookDispatcher(),
 			'RevisionGuard' => fn () => $this->getRevisionGuard(),
 			'ConnectionManager' => fn () => $this->getConnectionManager(),
 			'SetupFile' => fn () => $this->getSetupFile(),
@@ -646,19 +644,6 @@ class ServicesFactory {
 	}
 
 	/**
-	 * @since 3.2
-	 *
-	 * @return HookDispatcher
-	 */
-	public function getHookDispatcher(): HookDispatcher {
-		if ( array_key_exists( 'HookDispatcher', $this->testOverrides ) ) {
-			return $this->testOverrides['HookDispatcher'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.HookDispatcher' );
-	}
-
-	/**
 	 * @since 2.0
 	 */
 	public function newTitleFactory(): TitleFactory {
@@ -856,8 +841,8 @@ class ServicesFactory {
 			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
 		);
 
-		$inTextAnnotationParser->setHookDispatcher(
-			$this->getHookDispatcher()
+		$inTextAnnotationParser->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		return $inTextAnnotationParser;

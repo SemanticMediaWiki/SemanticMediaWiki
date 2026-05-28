@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Hook\ParserAfterTidyHook;
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use MediaWiki\Permissions\RestrictionStore;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use SMW\DataModel\SemanticData;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -55,7 +55,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly Cache $cache,
 		private readonly ApplicationFactory $servicesFactory,
-		private readonly HookDispatcher $hookDispatcher,
+		private readonly HookContainer $hookContainer,
 		private readonly Settings $settings,
 		private readonly LoggerInterface $logger,
 		private readonly RestrictionStore $restrictionStore,
@@ -312,7 +312,10 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 
 		$propertyAnnotator->addAnnotation();
 
-		$this->hookDispatcher->onParserAfterTidyPropertyAnnotationComplete( $propertyAnnotator, $parserOutput );
+		$this->hookContainer->run(
+			'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete',
+			[ $propertyAnnotator, $parserOutput ]
+		);
 	}
 
 	/**

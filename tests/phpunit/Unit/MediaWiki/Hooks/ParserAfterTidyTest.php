@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOptions;
@@ -14,7 +15,6 @@ use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use RuntimeException;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\PageCreator;
@@ -47,7 +47,7 @@ class ParserAfterTidyTest extends TestCase {
 	private $testEnvironment;
 	private $parser;
 	private $namespaceExaminer;
-	private $hookDispatcher;
+	private $hookContainer;
 	private $cache;
 	private $revisionGuard;
 	private $settings;
@@ -84,7 +84,7 @@ class ParserAfterTidyTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +127,7 @@ class ParserAfterTidyTest extends TestCase {
 			$this->namespaceExaminer,
 			$cache ?? $this->cache,
 			$this->applicationFactory,
-			$this->hookDispatcher,
+			$this->hookContainer,
 			$settings ?? $this->settings,
 			$this->spyLogger,
 			$this->restrictionStore
