@@ -71,7 +71,8 @@ class ConfigPreloadPrimaryKeyTableMutator {
 		'smw_prop_stats'  => 'p_id',
 		'smw_query_links' => 's_id,o_id',
 		'smw_ft_search'   => 's_id,p_id',
-		'smw_concept_cache' => 's_id,o_id'
+		'smw_concept_cache' => 's_id,o_id',
+		'smw_meta'        => 'meta_key'
 	];
 
 	/**
