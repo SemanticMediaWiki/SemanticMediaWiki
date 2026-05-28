@@ -453,7 +453,7 @@
 		},
 		"smwbrowse": {
 			"class": "SMW\\MediaWiki\\Api\\Browse",
-			"services": [ "SMW.Store", "SMW.Settings", "SMW.Cache" ]
+			"services": [ "SMW.Store", "SMW.Settings", "SMW.Cache", "TitleFactory" ]
 		},
 		"ask": {
 			"class": "SMW\\MediaWiki\\Api\\Ask",

@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Localizer\LocalMessageProvider;
@@ -53,7 +54,7 @@ class MaintenanceFactory {
 
 		$dataRebuilder = new DataRebuilder(
 			$store,
-			$applicationFactory->newTitleFactory(),
+			MediaWikiServices::getInstance()->getTitleFactory(),
 			$applicationFactory->newJobFactory()
 		);
 

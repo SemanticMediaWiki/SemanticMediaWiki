@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\MediaWiki\TitleFactory;
+use MediaWiki\Title\TitleFactory;
 
 /**
  * @license GPL-2.0-or-later

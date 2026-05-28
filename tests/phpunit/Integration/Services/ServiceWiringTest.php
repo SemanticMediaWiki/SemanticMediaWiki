@@ -73,7 +73,6 @@ use SMW\MediaWiki\Specials\SpecialTypes;
 use SMW\MediaWiki\Specials\SpecialUnusedProperties;
 use SMW\MediaWiki\Specials\SpecialURIResolver;
 use SMW\MediaWiki\Specials\SpecialWantedProperties;
-use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\ParserFunctionFactory;
 use SMW\Property\AnnotatorFactory;
@@ -156,7 +155,6 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.ParserFunctionFactory', ParserFunctionFactory::class ],
 			[ 'SMW.MaintenanceFactory', MaintenanceFactory::class ],
 			[ 'SMW.CacheFactory', CacheFactory::class ],
-			[ 'SMW.TitleFactory', TitleFactory::class ],
 			[ 'SMW.PageCreator', PageCreator::class ],
 			[ 'SMW.MwCollaboratorFactory', MwCollaboratorFactory::class ],
 			[ 'SMW.NamespaceExaminer', NamespaceExaminer::class ],
