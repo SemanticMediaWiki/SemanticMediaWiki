@@ -12,6 +12,7 @@ use Wikimedia\Rdbms\DBQueryError;
 use Wikimedia\Rdbms\Expression;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IMaintainableDatabase;
 use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\SelectQueryBuilder;
@@ -28,12 +29,19 @@ class DatabaseMetaRepoTest extends TestCase {
 	use MockWriteQueryBuilderTrait;
 
 	public function testLoadSmwJsonReturnsNullWhenTableMissing(): void {
-		$db = $this->createMock( IDatabase::class );
+		// IMaintainableDatabase is needed for the tableExists() fallback;
+		// the production code receives one from the load balancer at
+		// runtime (concrete Database classes implement it).
+		$db = $this->createMock( IMaintainableDatabase::class );
 		$sqb = $this->createSelectBuilderMock( $db );
 		$sqb->method( 'fetchResultSet' )->willThrowException(
-			new DBQueryError( $db, '42S02 base table or view not found', 1146, '', '' )
+			// MySQL surfaces the contracted "doesn't exist"; SQLITE
+			// surfaces "no such table". `tableExists` is the source
+			// of truth, so the exact message text does not matter here.
+			new DBQueryError( $db, "Table 'wiki.smw_meta' doesn't exist", 1146, '', '' )
 		);
 		$db->method( 'newSelectQueryBuilder' )->willReturn( $sqb );
+		$db->method( 'tableExists' )->willReturn( false );
 
 		$repo = new DatabaseMetaRepo( $this->makeLoadBalancer( $db ) );
 
@@ -81,7 +89,8 @@ class DatabaseMetaRepoTest extends TestCase {
 			$capturedDeleteWheres
 		);
 
-		$db = $this->createMock( IDatabase::class );
+		$db = $this->createMock( IMaintainableDatabase::class );
+		$db->method( 'tableExists' )->willReturn( true );
 		$db->method( 'expr' )->willReturnCallback(
 			static fn ( string $field, string $op, $value ): Expression => new Expression( $field, $op, $value )
 		);
@@ -126,7 +135,8 @@ class DatabaseMetaRepoTest extends TestCase {
 			$capturedWheres
 		);
 
-		$db = $this->createMock( IDatabase::class );
+		$db = $this->createMock( IMaintainableDatabase::class );
+		$db->method( 'tableExists' )->willReturn( true );
 		$db->method( 'expr' )->willReturnCallback(
 			static fn ( string $field, string $op, $value ): Expression => new Expression( $field, $op, $value )
 		);
@@ -154,13 +164,33 @@ class DatabaseMetaRepoTest extends TestCase {
 		$this->assertSame( [ 'meta_key' => 'maintenance_mode' ], $capturedWheres[1] );
 	}
 
+	public function testSaveSmwJsonNoopsWhenTableMissing(): void {
+		// During `Installer::install`, `setMaintenanceMode(true)` fires
+		// before the SMW tables are created. The DB-backed repo silently
+		// drops the write and lets the next checkpoint (issued after
+		// tables exist) persist the state.
+		$db = $this->createMock( IMaintainableDatabase::class );
+		$db->method( 'tableExists' )->willReturn( false );
+		$db->expects( $this->never() )->method( 'newReplaceQueryBuilder' );
+		$db->expects( $this->never() )->method( 'newDeleteQueryBuilder' );
+
+		$repo = new DatabaseMetaRepo( $this->makeLoadBalancer( $db ) );
+
+		$repo->saveSmwJson( '/tmp', [
+			Site::id() => [ 'upgrade_key' => 'abc123' ],
+		] );
+	}
+
 	public function testLoadSmwJsonPropagatesNonMissingTableErrors(): void {
-		$db = $this->createMock( IDatabase::class );
+		$db = $this->createMock( IMaintainableDatabase::class );
 		$sqb = $this->createSelectBuilderMock( $db );
 		$sqb->method( 'fetchResultSet' )->willThrowException(
 			new DBQueryError( $db, 'connection lost', 2002, '', '' )
 		);
 		$db->method( 'newSelectQueryBuilder' )->willReturn( $sqb );
+		// Table exists, so the SELECT failure is a real error and must
+		// surface to the caller.
+		$db->method( 'tableExists' )->willReturn( true );
 
 		$repo = new DatabaseMetaRepo( $this->makeLoadBalancer( $db ) );
 

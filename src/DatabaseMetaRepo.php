@@ -49,7 +49,12 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 				->caller( __METHOD__ )
 				->fetchResultSet();
 		} catch ( DBQueryError $e ) {
-			if ( $this->isMissingTable( $e ) ) {
+			// `tableExists` is the source of truth across MySQL/MariaDB,
+			// SQLite, and Postgres. Substring-matching the error message
+			// is brittle (e.g. MySQL says "Table 'x' doesn't exist", with
+			// the contracted form). Only call it when the SELECT has
+			// failed, so the happy path stays one query.
+			if ( !$db->tableExists( SQLStore::META_TABLE, __METHOD__ ) ) {
 				return null;
 			}
 			throw $e;
@@ -82,6 +87,16 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 		$entries = $smwJson[ $id ] ?? [];
 
 		$db = $this->loadBalancer->getConnection( DB_PRIMARY );
+
+		// `Installer::install` calls `SetupFile::setMaintenanceMode(true)`
+		// before it has created the SMW tables (the first checkpoint write
+		// fires before `TableBuilder::create` runs). With file-backed
+		// storage this wrote to disk and the missing-table problem did not
+		// arise; with `smw_meta` we silently drop the write and let the
+		// next checkpoint (issued after tables exist) persist the state.
+		if ( !$db->tableExists( SQLStore::META_TABLE, __METHOD__ ) ) {
+			return;
+		}
 
 		$inputKeys = array_map( 'strval', array_keys( $entries ) );
 
@@ -125,20 +140,6 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 
 	private function decode( string $value ) {
 		return json_decode( $value, true );
-	}
-
-	/**
-	 * Recognises the table-doesn't-exist condition across the database
-	 * backends MediaWiki supports. SQLSTATE 42S02 covers MySQL/MariaDB and
-	 * SQLite via PDO; SQLite also surfaces "no such table" in the message;
-	 * Postgres surfaces "does not exist".
-	 */
-	private function isMissingTable( DBQueryError $e ): bool {
-		$message = $e->getMessage();
-
-		return str_contains( $message, '42S02' )
-			|| stripos( $message, 'no such table' ) !== false
-			|| stripos( $message, 'does not exist' ) !== false;
 	}
 
 }
