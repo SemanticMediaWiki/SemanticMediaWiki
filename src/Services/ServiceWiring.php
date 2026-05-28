@@ -2,6 +2,7 @@
 
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
@@ -563,7 +564,7 @@ return [
 		}
 
 		return new ContentParserFactory(
-			$services->getParser(),
+			static fn (): Parser => $services->getParser(),
 			$servicesFactory->getRevisionGuard()
 		);
 	},
