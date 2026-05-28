@@ -57,8 +57,8 @@ class MigrateSmwJsonToDb {
 			);
 			return;
 		}
-		json_decode( $raw, true );
-		if ( json_last_error() !== JSON_ERROR_NONE ) {
+		$parsed = json_decode( $raw, true );
+		if ( $parsed === null && json_last_error() !== JSON_ERROR_NONE ) {
 			$reporter->reportMessage(
 				"...warning: {$filePath} contains invalid JSON ("
 				. json_last_error_msg() . "); your legacy install-state was NOT"
@@ -66,6 +66,7 @@ class MigrateSmwJsonToDb {
 			);
 			return;
 		}
+		unset( $parsed );
 
 		$renamed = $filePath . '.migrated';
 		if ( @rename( $filePath, $renamed ) ) {
