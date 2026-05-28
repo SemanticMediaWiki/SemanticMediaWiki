@@ -9,7 +9,8 @@ This document collects technical resources to help improve the understanding of 
 
 ### Migration guide
 
-- [2.5.x to 3.0.0](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/migration-guide-3.0.md) contains information about the migration from 2.x to 3.x
+- [2.5.x to 3.0.0](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/migration/3.0.md) contains information about the migration from 2.x to 3.x
+- [6.x to 7.0.0](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/migration/7.0.md) contains the detailed migration tables for the 7.0 release
 
 ## Overview
 
