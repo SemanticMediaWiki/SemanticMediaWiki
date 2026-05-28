@@ -2,11 +2,13 @@
 
 namespace SMW;
 
+use FileFetcher\SimpleFileFetcher;
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Elastic\ElasticStore;
 use SMW\Setup\LegacyConstantNormalizer;
 use SMW\SQLStore\Installer;
+use SMW\Utils\File;
 use Wikimedia\ObjectCache\BagOStuff;
 
 /**
@@ -81,6 +83,22 @@ class SetupFile {
 		}
 
 		$smwJson = $this->repo->loadSmwJson( $vars['smwgConfigFileDir'] );
+
+		// Pre-7.0 legacy-file fallback. When the primary repo is empty
+		// (typically `smw_meta` on a wiki that hasn't been migrated yet),
+		// hydrate `$vars` from `.smw.json` if it is still present. The
+		// install/upgrade run then preserves the user's keys via
+		// `SetupFile::write`'s merge-then-save semantics, and
+		// {@see \SMW\Setup\MigrateSmwJsonToDb} renames the file at the
+		// end of the install to mark it consumed. Once renamed (or never
+		// present), this branch never fires again.
+		if ( $smwJson === null ) {
+			$legacy = ( new FileSystemSmwJsonRepo( new SimpleFileFetcher(), new File() ) )
+				->loadSmwJson( $vars['smwgConfigFileDir'] );
+			if ( $legacy !== null ) {
+				$smwJson = $legacy;
+			}
+		}
 
 		if ( $smwJson !== null ) {
 			$vars[self::SMW_JSON] = $smwJson;

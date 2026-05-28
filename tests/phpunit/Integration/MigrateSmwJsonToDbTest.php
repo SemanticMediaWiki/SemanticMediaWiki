@@ -4,23 +4,19 @@ declare( strict_types = 1 );
 
 namespace SMW\Tests\Integration;
 
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DatabaseMetaRepo;
 use SMW\Setup\MigrateSmwJsonToDb;
-use SMW\Site;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
- * Exercises {@see MigrateSmwJsonToDb} end-to-end against the real `smw_meta`
- * table created by SMW's `TableSchemaManager`. The migration is additive:
- * survivor keys from `.smw.json` are inserted via `INSERT IGNORE` so that
- * fresh schema-state rows written by `Store::setupStore` are preserved.
+ * Exercises {@see MigrateSmwJsonToDb} end-to-end. The migration's role is
+ * narrow: rename a present `.smw.json` to `.smw.json.migrated` so future
+ * loadSchema calls fall through to `smw_meta` instead of re-hydrating from
+ * disk. Data transfer is the responsibility of `SetupFile::loadSchema`'s
+ * legacy-file fallback combined with the install pipeline's normal writes.
  *
  * @covers \SMW\Setup\MigrateSmwJsonToDb
  * @group semantic-mediawiki
- * @group Database
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
@@ -38,15 +34,6 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 		$this->jsonPath = $this->tmpDir . '/.smw.json';
 
 		$this->setMwGlobals( 'smwgConfigFileDir', $this->tmpDir );
-
-		// Start each test with an empty smw_meta. Prior tests in the same
-		// DB-group (e.g. SetupFileDatabaseIntegrationTest) may have left rows
-		// behind, and individual tests pre-populate the rows they need.
-		$this->getDb()->newDeleteQueryBuilder()
-			->deleteFrom( SQLStore::META_TABLE )
-			->where( '1=1' )
-			->caller( __METHOD__ )
-			->execute();
 	}
 
 	protected function tearDown(): void {
@@ -57,95 +44,34 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 		parent::tearDown();
 	}
 
-	public function testMigratesSurvivorKeysWithoutOverwritingFreshSchemaState(): void {
-		// Simulate what `Store::setupStore` writes before the migration runs:
-		// fresh schema-state keys for the upgrade currently in progress.
-		$this->insertMetaRow( 'upgrade_key', 'FRESH' );
-		$this->insertMetaRow( 'maintenance_mode', false );
-
-		// `.smw.json` carries stale schema state plus survivor keys that
-		// `setupStore` does not touch.
+	public function testRenamesLegacyFile(): void {
 		file_put_contents( $this->jsonPath, json_encode( [
-			Site::id() => [
-				'upgrade_key' => 'STALE',
-				'incomplete_tasks' => [ 'smw-test' => true ],
-				'last_optimization_run' => '2026-01-01 00:00',
-			],
+			'wiki' => [ 'upgrade_key' => 'legacy' ],
 		] ) );
 
 		MigrateSmwJsonToDb::run( $this->makeReporter() );
-
-		$repo = new DatabaseMetaRepo(
-			MediaWikiServices::getInstance()->getDBLoadBalancer()
-		);
-		$loaded = $repo->loadSmwJson( $this->tmpDir );
-
-		$this->assertIsArray( $loaded );
-		$entries = $loaded[Site::id()];
-
-		// Fresh values written by setupStore must survive.
-		$this->assertSame( 'FRESH', $entries['upgrade_key'] );
-		$this->assertFalse( $entries['maintenance_mode'] );
-
-		// Survivor keys must be inserted from .smw.json.
-		$this->assertSame( [ 'smw-test' => true ], $entries['incomplete_tasks'] );
-		$this->assertSame( '2026-01-01 00:00', $entries['last_optimization_run'] );
 
 		$this->assertFileDoesNotExist( $this->jsonPath );
 		$this->assertFileExists( $this->jsonPath . '.migrated' );
 	}
 
 	public function testIsIdempotent(): void {
-		file_put_contents( $this->jsonPath, json_encode( [
-			Site::id() => [ 'upgrade_key' => 'abc123' ],
-		] ) );
+		file_put_contents( $this->jsonPath, '{}' );
 
 		MigrateSmwJsonToDb::run( $this->makeReporter() );
-
-		$firstRunCount = $this->getDb()->newSelectQueryBuilder()
-			->select( 'meta_key' )
-			->from( SQLStore::META_TABLE )
-			->caller( __METHOD__ )
-			->fetchRowCount();
-
-		// Second invocation: the source file has been renamed by the first
-		// call, so the file-presence guard must short-circuit without
-		// touching the table.
+		// Second call: the source file no longer exists; the file-presence
+		// guard makes it a silent no-op.
 		MigrateSmwJsonToDb::run( $this->makeReporter() );
 
-		$secondRunCount = $this->getDb()->newSelectQueryBuilder()
-			->select( 'meta_key' )
-			->from( SQLStore::META_TABLE )
-			->caller( __METHOD__ )
-			->fetchRowCount();
-
-		$this->assertSame( $firstRunCount, $secondRunCount );
 		$this->assertFileDoesNotExist( $this->jsonPath );
 		$this->assertFileExists( $this->jsonPath . '.migrated' );
 	}
 
-	public function testSkipsWhenFileMissing(): void {
-		// No .smw.json on disk; the migration must be a silent no-op.
+	public function testNoopWhenFileMissing(): void {
 		MigrateSmwJsonToDb::run( $this->makeReporter() );
 
-		$rowCount = $this->getDb()->newSelectQueryBuilder()
-			->select( 'meta_key' )
-			->from( SQLStore::META_TABLE )
-			->caller( __METHOD__ )
-			->fetchRowCount();
-
-		$this->assertSame( 0, $rowCount );
-	}
-
-	private function insertMetaRow( string $key, mixed $value ): void {
-		$this->getDb()->newInsertQueryBuilder()
-			->insertInto( SQLStore::META_TABLE )
-			->row( [
-				'meta_key' => $key,
-				'meta_value' => json_encode( $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
-			] )
-			->caller( __METHOD__ )
-			->execute();
+		$this->assertFileDoesNotExist( $this->jsonPath );
+		$this->assertFileDoesNotExist( $this->jsonPath . '.migrated' );
 	}
 
 	private function makeReporter(): MessageReporter {
