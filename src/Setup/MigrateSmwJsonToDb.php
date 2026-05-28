@@ -5,10 +5,11 @@ declare( strict_types = 1 );
 namespace SMW\Setup;
 
 use Onoi\MessageReporter\MessageReporter;
+use SMW\Site;
 
 /**
- * One-shot migration: marks a legacy `.smw.json` consumed by renaming it to
- * `.smw.json.migrated`.
+ * One-shot migration: consumes a legacy `.smw.json` slice for the current
+ * wiki by removing it from the file, leaving any other wiki slices intact.
  *
  * Invoked from {@see \SMW\SQLStore\Installer::install} at the end of the
  * install pipeline. Data transfer is not the migration's job: when a
@@ -19,11 +20,14 @@ use Onoi\MessageReporter\MessageReporter;
  * the time this callback runs, `smw_meta` already reflects the user's
  * legacy state plus the fresh schema-state keys written by the installer.
  *
- * The rename here marks the file consumed so that subsequent loadSchema
- * calls fall through to `smw_meta` instead of re-hydrating from disk.
+ * The file is keyed by `Site::id()` at the top level, so a shared-codebase
+ * multi-wiki setup may have several wiki slices in the same file. This
+ * callback removes only the slice for the wiki being upgraded and
+ * rewrites the file. When the last slice is consumed, the file is
+ * renamed to `.smw.json.migrated` as a tombstone.
  *
- * The callback is idempotent: a missing file is a no-op (fresh installs,
- * or any run after the first successful migration).
+ * The callback is idempotent: a missing file or a file with no slice for
+ * the current wiki is a no-op.
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
@@ -43,47 +47,70 @@ class MigrateSmwJsonToDb {
 			return;
 		}
 
-		// Sanity-check the file before consuming it. If the file is
-		// unreadable or contains invalid JSON, `SetupFile::loadSchema`'s
-		// fallback also failed silently and the user's legacy state was NOT
-		// hydrated into `smw_meta` during this install. Renaming the file
-		// now would lose that data permanently. Warn loudly and bail so the
-		// admin can fix the file and re-run the upgrade.
+		// `SetupFile::loadSchema`'s fallback throws on an unreadable or
+		// invalid file before the installer ever writes, so by the time
+		// this callback runs the file is guaranteed parseable. We re-read
+		// here only to remove the current wiki's slice.
 		$raw = file_get_contents( $filePath );
 		if ( $raw === false ) {
 			$reporter->reportMessage(
-				"...warning: cannot read {$filePath}; skipping rename so a future"
-				. " upgrade can retry.\n"
+				"...warning: cannot read {$filePath}; leaving in place for manual cleanup.\n"
 			);
 			return;
 		}
 		$parsed = json_decode( $raw, true );
-		if ( $parsed === null && json_last_error() !== JSON_ERROR_NONE ) {
+		if ( !is_array( $parsed ) ) {
 			$reporter->reportMessage(
-				"...warning: {$filePath} contains invalid JSON ("
-				. json_last_error_msg() . "); your legacy install-state was NOT"
-				. " migrated. Fix the file and re-run setupStore.php or update.php.\n"
+				"...warning: {$filePath} is not a JSON object; leaving in place for manual cleanup.\n"
 			);
 			return;
 		}
-		unset( $parsed );
 
-		$renamed = $filePath . '.migrated';
-		if ( @rename( $filePath, $renamed ) ) {
-			$reporter->reportMessage(
-				"...migrated legacy {$filePath} to {$renamed};"
-				. " state is now persisted in `smw_meta`.\n"
-			);
+		$id = Site::id();
+		if ( !array_key_exists( $id, $parsed ) ) {
+			// No slice for this wiki; nothing to consume. Leave the file
+			// alone so other wikis sharing this config can still migrate.
+			return;
+		}
+
+		unset( $parsed[$id] );
+
+		if ( $parsed === [] ) {
+			// Last slice consumed: rename as a tombstone so future
+			// `loadSchema` calls short-circuit at the `is_file` check.
+			$renamed = $filePath . '.migrated';
+			if ( @rename( $filePath, $renamed ) ) {
+				$reporter->reportMessage(
+					"...migrated legacy {$filePath} to {$renamed};"
+					. " all wiki slices have been consumed.\n"
+				);
+			} else {
+				$reporter->reportMessage(
+					"...warning: could not rename {$filePath}; please remove it manually.\n"
+				);
+			}
 		} else {
-			$reporter->reportMessage(
-				"...warning: could not rename {$filePath}; please remove or rename it manually.\n"
+			$rewritten = file_put_contents(
+				$filePath,
+				json_encode( $parsed, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
 			);
+			if ( $rewritten === false ) {
+				$reporter->reportMessage(
+					"...warning: could not rewrite {$filePath} without the slice for '{$id}';"
+					. " other wikis sharing this file may see stale data.\n"
+				);
+			} else {
+				$reporter->reportMessage(
+					"...consumed slice for wiki id '{$id}' from {$filePath};"
+					. " " . count( $parsed ) . " other wiki slice(s) remain.\n"
+				);
+			}
 		}
 
 		// Surface a deprecation notice for admins who explicitly set the
-		// legacy config path; the setting has no further effect after this
-		// migration and can be removed from LocalSettings.php. The
-		// extension.json default ("") resolves to the SMW root via
+		// legacy config path; the setting has no further effect after the
+		// last slice is consumed and can be removed from LocalSettings.php.
+		// The extension.json default ("") resolves to the SMW root via
 		// path: true, so compare resolved paths to distinguish a
 		// customised value from the default.
 		$extensionRoot = realpath( dirname( __DIR__, 2 ) );
@@ -91,7 +118,8 @@ class MigrateSmwJsonToDb {
 		if ( $resolvedConfigDir !== false && $resolvedConfigDir !== $extensionRoot ) {
 			$reporter->reportMessage(
 				"...notice: \$smwgConfigFileDir is deprecated (since 7.0.0) and will be"
-				. " removed in 8.0.0. It is safe to remove from LocalSettings.php now.\n"
+				. " removed in 8.0.0. It is safe to remove from LocalSettings.php once"
+				. " all wiki slices have been migrated.\n"
 			);
 		}
 	}
