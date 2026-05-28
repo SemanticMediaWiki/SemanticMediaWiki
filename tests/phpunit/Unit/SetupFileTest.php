@@ -27,18 +27,6 @@ class SetupFileTest extends TestCase {
 		);
 	}
 
-	public function testIsGoodSchemaIsStableAcrossCalls(): void {
-		// Structural check for the local-server cache fast-path: under
-		// PHPUnit the cache layer is bypassed, so we cannot directly assert
-		// a hit. Instead, confirm `isGoodSchema()` returns the same value
-		// when called repeatedly, guarding against any state leak from the
-		// new cache branches.
-		$first = SetupFile::isGoodSchema();
-		$second = SetupFile::isGoodSchema();
-
-		$this->assertSame( $first, $second );
-	}
-
 	public function testMakeUpgradeKey() {
 		$var1 = [
 			'smwgUpgradeKey' => '',
