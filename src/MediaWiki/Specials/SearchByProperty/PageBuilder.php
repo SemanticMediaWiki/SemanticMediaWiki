@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
+use MediaWiki\Message\Message;
 use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -45,6 +46,17 @@ class PageBuilder {
 	}
 
 	/**
+	 * Build a message in the renderer's language so the form labels match the
+	 * surrounding form's language (`HtmlFormRenderer` is constructed with the
+	 * page's content language by default) rather than defaulting to the user
+	 * language.
+	 */
+	private function msg( string $key, ...$params ): Message {
+		return wfMessage( $key, ...$params )
+			->inLanguage( $this->htmlFormRenderer->getLanguage() );
+	}
+
+	/**
 	 * @since 2.1
 	 */
 	public function getHtml(): string {
@@ -61,19 +73,19 @@ class PageBuilder {
 		}
 
 		if ( $resultList === '' || $resultList === null ) {
-			$resultList = wfMessage( 'smw_result_noresults' )->text();
+			$resultList = $this->msg( 'smw_result_noresults' )->text();
 		}
 
 		$pageDescription = Html::rawElement(
 			'p',
 			[ 'class' => 'smw-sp-searchbyproperty-description' ],
-			wfMessage( 'smw-sp-searchbyproperty-description' )->parse()
+			$this->msg( 'smw-sp-searchbyproperty-description' )->parse()
 		);
 
 		$resultListHeader = Html::element(
 			'h2',
 			[],
-			wfMessage( 'smw-sp-searchbyproperty-resultlist-header' )->text()
+			$this->msg( 'smw-sp-searchbyproperty-resultlist-header' )->text()
 		);
 
 		return $pageDescription . $this->getHtmlForm( $resultMessage, $resultCount ) . $resultListHeader . $resultList;
@@ -94,18 +106,18 @@ class PageBuilder {
 				$resultCount )
 			->addHorizontalRule()
 			->addInputField(
-				wfMessage( 'smw_sbv_property' )->text(),
+				$this->msg( 'smw_sbv_property' )->text(),
 				'property',
 				$this->pageRequestOptions->propertyString,
 				'smw-property-input' )
 			->addNonBreakingSpace()
 			->addInputField(
-				wfMessage( 'smw_sbv_value' )->text(),
+				$this->msg( 'smw_sbv_value' )->text(),
 				'value',
 				$this->pageRequestOptions->valueString,
 				'smw-value-input' )
 			->addNonBreakingSpace()
-			->addSubmitButton( wfMessage( 'smw_sbv_submit' )->text() )
+			->addSubmitButton( $this->msg( 'smw_sbv_submit' )->text() )
 			->getForm();
 
 		return $html;
@@ -116,7 +128,7 @@ class PageBuilder {
 		$resultMessage = '';
 
 		if ( $this->pageRequestOptions->propertyString === '' || !$this->pageRequestOptions->propertyString ) {
-			return [ wfMessage( 'smw_sbv_docu' )->text(), '', 0 ];
+			return [ $this->msg( 'smw_sbv_docu' )->text(), '', 0 ];
 		}
 
 		// #1728
@@ -149,7 +161,7 @@ class PageBuilder {
 			$resultMessageKey = 'smw-sp-searchbyproperty-valuequery';
 		}
 
-		$resultMessage = wfMessage(
+		$resultMessage = $this->msg(
 			$resultMessageKey,
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
 			$this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )->text();
@@ -199,7 +211,7 @@ class PageBuilder {
 			return [ '', $resultList, 0 ];
 		}
 
-		$resultMessage = wfMessage(
+		$resultMessage = $this->msg(
 			'smw_sbv_displayresultfuzzy',
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
 			htmlspecialchars( $this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )
@@ -208,7 +220,7 @@ class PageBuilder {
 		$resultList .= $this->makeResultList( $smallerResults, $smallerCount, false );
 
 		if ( $exactCount == 0 ) {
-			$resultList .= "&#160;<em><strong><small>" . wfMessage( 'parentheses' )
+			$resultList .= "&#160;<em><strong><small>" . $this->msg( 'parentheses' )
 				->rawParams( $this->pageRequestOptions->value->getLongHTMLText() )
 				->escaped() . "</small></strong></em>";
 		} else {
@@ -275,7 +287,7 @@ class PageBuilder {
 				$outputFormat = $result[1]->getOutputFormat();
 				$result[1]->setOutputFormat( $outputFormat ?: 'LOCL' );
 
-				$listitem .= "&#160;<em><small>" . wfMessage( 'parentheses' )
+				$listitem .= "&#160;<em><small>" . $this->msg( 'parentheses' )
 					->rawParams( $result[1]->getLongHTMLText( $this->linker ) )
 					->escaped() . "</small></em>";
 			}

@@ -403,7 +403,7 @@ class SpecialTypes extends SpecialPage {
 		$showPrev = $isBackward ? !$isAtEnd : true;
 		$showNext = $isBackward ? true : !$isAtEnd;
 
-		if ( $showPrev && !$isFirstPage ) {
+		if ( $showPrev && !$isFirstPage && $cursorOptions->getFirstCursor() !== null ) {
 			$navBuilder->setPrevLinkQuery( [ 'before' => (string)$cursorOptions->getFirstCursor() ] );
 		}
 

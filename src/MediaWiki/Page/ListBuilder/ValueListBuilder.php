@@ -229,7 +229,7 @@ class ValueListBuilder {
 			$showPrev = $isBackward ? !$isAtEnd : true;
 			$showNext = $isBackward ? true : !$isAtEnd;
 
-			if ( $showPrev && !$isFirstPage ) {
+			if ( $showPrev && !$isFirstPage && $options->getFirstCursor() !== null ) {
 				$navBuilder->setPrevLinkQuery( [ 'before' => (string)$options->getFirstCursor() ] );
 			}
 
