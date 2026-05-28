@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace SMW;
 
 use SMW\SQLStore\SQLStore;
+use Throwable;
 use Wikimedia\Rdbms\DBQueryError;
 use Wikimedia\Rdbms\ILoadBalancer;
 
@@ -98,39 +99,51 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 			return;
 		}
 
-		$inputKeys = array_map( 'strval', array_keys( $entries ) );
+		// Wrap the sync-delete + per-key writes in a single atomic section
+		// so a partial failure cannot leave `smw_meta` half-updated (which
+		// would silently flip install-state checks).
+		$db->startAtomic( __METHOD__ );
 
-		$deleteBuilder = $db->newDeleteQueryBuilder()
-			->deleteFrom( SQLStore::META_TABLE )
-			->caller( __METHOD__ );
+		try {
+			$inputKeys = array_map( 'strval', array_keys( $entries ) );
 
-		if ( $inputKeys === [] ) {
-			$deleteBuilder->where( '1=1' );
-		} else {
-			$deleteBuilder->where( $db->expr( 'meta_key', '!=', $inputKeys ) );
-		}
+			$deleteBuilder = $db->newDeleteQueryBuilder()
+				->deleteFrom( SQLStore::META_TABLE )
+				->caller( __METHOD__ );
 
-		$deleteBuilder->execute();
-
-		foreach ( $entries as $key => $value ) {
-			if ( $value === null ) {
-				$db->newDeleteQueryBuilder()
-					->deleteFrom( SQLStore::META_TABLE )
-					->where( [ 'meta_key' => (string)$key ] )
-					->caller( __METHOD__ )
-					->execute();
-				continue;
+			if ( $inputKeys === [] ) {
+				$deleteBuilder->where( '1=1' );
+			} else {
+				$deleteBuilder->where( $db->expr( 'meta_key', '!=', $inputKeys ) );
 			}
 
-			$db->newReplaceQueryBuilder()
-				->replaceInto( SQLStore::META_TABLE )
-				->uniqueIndexFields( [ 'meta_key' ] )
-				->row( [
-					'meta_key' => (string)$key,
-					'meta_value' => $this->encode( $value ),
-				] )
-				->caller( __METHOD__ )
-				->execute();
+			$deleteBuilder->execute();
+
+			foreach ( $entries as $key => $value ) {
+				if ( $value === null ) {
+					$db->newDeleteQueryBuilder()
+						->deleteFrom( SQLStore::META_TABLE )
+						->where( [ 'meta_key' => (string)$key ] )
+						->caller( __METHOD__ )
+						->execute();
+					continue;
+				}
+
+				$db->newReplaceQueryBuilder()
+					->replaceInto( SQLStore::META_TABLE )
+					->uniqueIndexFields( [ 'meta_key' ] )
+					->row( [
+						'meta_key' => (string)$key,
+						'meta_value' => $this->encode( $value ),
+					] )
+					->caller( __METHOD__ )
+					->execute();
+			}
+
+			$db->endAtomic( __METHOD__ );
+		} catch ( Throwable $e ) {
+			$db->cancelAtomic( __METHOD__ );
+			throw $e;
 		}
 	}
 
