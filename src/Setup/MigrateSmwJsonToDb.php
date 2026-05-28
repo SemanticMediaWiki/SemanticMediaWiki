@@ -81,6 +81,21 @@ class MigrateSmwJsonToDb {
 				"...warning: could not rename {$filePath}; please remove or rename it manually.\n"
 			);
 		}
+
+		// Surface a deprecation notice for admins who explicitly set the
+		// legacy config path; the setting has no further effect after this
+		// migration and can be removed from LocalSettings.php. The
+		// extension.json default ("") resolves to the SMW root via
+		// path: true, so compare resolved paths to distinguish a
+		// customised value from the default.
+		$extensionRoot = realpath( dirname( __DIR__, 2 ) );
+		$resolvedConfigDir = $configDir !== '' ? realpath( $configDir ) : false;
+		if ( $resolvedConfigDir !== false && $resolvedConfigDir !== $extensionRoot ) {
+			$updater->output(
+				"...notice: \$smwgConfigFileDir is deprecated (since 7.0.0) and will be"
+				. " removed in 8.0.0. It is safe to remove from LocalSettings.php now.\n"
+			);
+		}
 	}
 
 }
