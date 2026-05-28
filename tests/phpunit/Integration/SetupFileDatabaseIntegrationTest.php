@@ -4,7 +4,10 @@ declare( strict_types = 1 );
 
 namespace SMW\Tests\Integration;
 
+use SMW\Globals;
 use SMW\SetupFile;
+use SMW\Site;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -50,6 +53,87 @@ class SetupFileDatabaseIntegrationTest extends SMWIntegrationTestCase {
 			[ 'smw-test-task' => true ],
 			$reader->get( SetupFile::INCOMPLETE_TASKS, $readerVars )
 		);
+	}
+
+	public function testLegacyFileFallbackPreservesSurvivorKeysAcrossInstallWrites(): void {
+		// Regression guard for the smoke-discovered data-loss bug:
+		// `HashField::check` -> `populateHashField::setComplete(true)` ->
+		// `removeIncompleteTask` fires during install and used to write a
+		// fresh `incomplete_tasks: []` on a legacy upgrade, shadowing the
+		// user's real tasks. The option-B fix in `loadSchema` hydrates
+		// `$GLOBALS['smw.json']` from `.smw.json` first, so the defensive
+		// remove operates on the user's actual array and preserves the
+		// other entries.
+		$tmpDir = sys_get_temp_dir() . '/smw-legacy-upgrade-' . uniqid();
+		mkdir( $tmpDir );
+		$legacyFile = $tmpDir . '/.smw.json';
+
+		file_put_contents( $legacyFile, json_encode( [
+			Site::id() => [
+				'upgrade_key' => 'STALE_FROM_PRE_7_0',
+				'incomplete_tasks' => [
+					'smw-rebuildelasticindex-incomplete' => true,
+					'smw-populatehashfield-incomplete' => true,
+				],
+				'entity_collation' => 'identity',
+			],
+		] ) );
+
+		// Truncate smw_meta and clear $GLOBALS so the legacy fallback is
+		// what populates state. `SetupFile`'s default-vars methods read
+		// from `$GLOBALS` in production, so we mirror that here.
+		$this->getDb()->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::META_TABLE )
+			->where( '1=1' )
+			->caller( __METHOD__ )
+			->execute();
+		unset( $GLOBALS[ 'smw.json' ] );
+		$this->setMwGlobals( 'smwgConfigFileDir', $tmpDir );
+
+		// Mirror `Setup::init`'s pattern: local `$vars` passed by reference,
+		// then write back into `$GLOBALS` via the production helper. PHP 8
+		// forbids passing `$GLOBALS` itself by reference.
+		$vars = $GLOBALS;
+		$setupFile = new SetupFile();
+		$setupFile->loadSchema( $vars );
+		Globals::replace( $vars );
+
+		// Confirm the fallback hydrated the survivor keys.
+		$this->assertSame(
+			[
+				'smw-rebuildelasticindex-incomplete' => true,
+				'smw-populatehashfield-incomplete' => true,
+			],
+			$setupFile->get( SetupFile::INCOMPLETE_TASKS )
+		);
+
+		// Simulate the install pipeline's defensive remove for one of the
+		// keys. Pre-option-B this would have shadowed everything with [];
+		// post-fix it only removes the named entry and preserves the rest.
+		$setupFile->removeIncompleteTask( 'smw-populatehashfield-incomplete' );
+
+		// Fresh instance reads from `smw_meta` (file fallback only fires
+		// when the DB has no rows; the write above populated it).
+		unset( $GLOBALS[ 'smw.json' ] );
+		$readerVars = $GLOBALS;
+		$reader = new SetupFile();
+		$reader->loadSchema( $readerVars );
+		Globals::replace( $readerVars );
+
+		$this->assertSame(
+			[ 'smw-rebuildelasticindex-incomplete' => true ],
+			$reader->get( SetupFile::INCOMPLETE_TASKS ),
+			'survivor incomplete_tasks must persist into smw_meta after a defensive remove'
+		);
+		$this->assertSame(
+			'identity',
+			$reader->get( SetupFile::ENTITY_COLLATION ),
+			'survivor entity_collation must persist'
+		);
+
+		@unlink( $legacyFile );
+		@unlink( $legacyFile . '.migrated' );
+		@rmdir( $tmpDir );
 	}
 
 	public function testRemoveDeletesKey(): void {
