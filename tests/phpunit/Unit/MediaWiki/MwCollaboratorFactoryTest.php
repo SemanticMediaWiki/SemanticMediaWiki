@@ -9,8 +9,8 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\MediaWiki\Connection\ConnectionProvider;
-use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\MagicWordsFinder;
@@ -162,7 +162,7 @@ class MwCollaboratorFactoryTest extends TestCase {
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
-			LoadBalancerConnectionProvider::class,
+			IConnectionProvider::class,
 			$instance->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 	}
