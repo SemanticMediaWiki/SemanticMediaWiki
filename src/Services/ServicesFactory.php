@@ -3,17 +3,13 @@
 namespace SMW\Services;
 
 use JobQueueGroup;
-use MediaWiki\Config\Config;
 use MediaWiki\Language\Language;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Parser\MagicWordFactory;
 use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\ParserCache;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Title\Title;
-use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use Onoi\BlobStore\BlobStore;
 use Onoi\Cache\Cache;
@@ -21,7 +17,6 @@ use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use Onoi\Cache\FixedInMemoryLruCache;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SearchEngineConfig;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
@@ -100,8 +95,6 @@ use SMW\Utils\Logger;
 use SMW\Utils\Stats;
 use SMW\Utils\TempFile;
 use Wikimedia\Rdbms\IConnectionProvider;
-use Wikimedia\Rdbms\ILoadBalancer;
-use Wikimedia\Rdbms\LBFactory;
 use WikiPage;
 
 /**
@@ -300,15 +293,7 @@ class ServicesFactory {
 			'EntityCache' => fn () => $this->getEntityCache(),
 			'JobQueue' => fn () => $this->getJobQueue(),
 			'Cache' => fn () => $this->getCache( ...$args ),
-			'MainConfig' => fn () => $this->getMainConfig(),
-			'SearchEngineConfig' => fn () => $this->getSearchEngineConfig(),
-			'MagicWordFactory' => fn () => $this->getMagicWordFactory(),
-			'DBLoadBalancerFactory' => fn () => $this->getDBLoadBalancerFactory(),
-			'DBLoadBalancer' => fn () => $this->getDBLoadBalancer(),
 			'JobQueueGroup' => fn () => $this->getJobQueueGroup(),
-			'ContentLanguage' => fn () => $this->getContentLanguage(),
-			'ParserCache' => fn () => $this->getParserCache(),
-			'UserOptionsLookup' => fn () => $this->getUserOptionsLookup(),
 			'PermissionManager' => fn () => $this->getPermissionManager(),
 			'RevisionGuard' => fn () => $this->getRevisionGuard(),
 			'ConnectionManager' => fn () => $this->getConnectionManager(),
@@ -1074,7 +1059,7 @@ class ServicesFactory {
 
 		return new MagicWordsFinder(
 			$parserOutput,
-			$this->getMagicWordFactory()
+			MediaWikiServices::getInstance()->getMagicWordFactory()
 		);
 	}
 
@@ -1347,72 +1332,6 @@ class ServicesFactory {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @return ILoadBalancer
-	 */
-	public function getLoadBalancer() {
-		return $this->getDBLoadBalancer();
-	}
-
-	/**
-	 * @since 7.0.0
-	 *
-	 * @return ILoadBalancer
-	 */
-	public function getDBLoadBalancer(): ILoadBalancer {
-		if ( array_key_exists( 'DBLoadBalancer', $this->testOverrides ) ) {
-			return $this->testOverrides['DBLoadBalancer'];
-		}
-
-		return MediaWikiServices::getInstance()->getDBLoadBalancer();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getDBLoadBalancerFactory(): LBFactory {
-		if ( array_key_exists( 'DBLoadBalancerFactory', $this->testOverrides ) ) {
-			return $this->testOverrides['DBLoadBalancerFactory'];
-		}
-
-		return MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getMainConfig(): Config {
-		if ( array_key_exists( 'MainConfig', $this->testOverrides ) ) {
-			return $this->testOverrides['MainConfig'];
-		}
-
-		return MediaWikiServices::getInstance()->getMainConfig();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getSearchEngineConfig(): SearchEngineConfig {
-		if ( array_key_exists( 'SearchEngineConfig', $this->testOverrides ) ) {
-			return $this->testOverrides['SearchEngineConfig'];
-		}
-
-		return MediaWikiServices::getInstance()->getSearchEngineConfig();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getMagicWordFactory(): MagicWordFactory {
-		if ( array_key_exists( 'MagicWordFactory', $this->testOverrides ) ) {
-			return $this->testOverrides['MagicWordFactory'];
-		}
-
-		return MediaWikiServices::getInstance()->getMagicWordFactory();
-	}
-
-	/**
 	 * @since 7.0.0
 	 */
 	public function getPermissionManager(): PermissionManager {
@@ -1432,39 +1351,6 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getJobQueueGroup();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getContentLanguage(): Language {
-		if ( array_key_exists( 'ContentLanguage', $this->testOverrides ) ) {
-			return $this->testOverrides['ContentLanguage'];
-		}
-
-		return MediaWikiServices::getInstance()->getContentLanguage();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getParserCache(): ParserCache {
-		if ( array_key_exists( 'ParserCache', $this->testOverrides ) ) {
-			return $this->testOverrides['ParserCache'];
-		}
-
-		return MediaWikiServices::getInstance()->getParserCache();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getUserOptionsLookup(): UserOptionsLookup {
-		if ( array_key_exists( 'UserOptionsLookup', $this->testOverrides ) ) {
-			return $this->testOverrides['UserOptionsLookup'];
-		}
-
-		return MediaWikiServices::getInstance()->getUserOptionsLookup();
 	}
 
 	/**

@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Language\Language;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\StripState;
 use MediaWiki\Revision\RevisionRecord;
@@ -125,7 +126,7 @@ class MwCollaboratorFactory {
 
 			public function getConnection(): IDatabase {
 				if ( $this->connection === null ) {
-					$loadBalancer = ApplicationFactory::getInstance()->create( 'DBLoadBalancer' );
+					$loadBalancer = MediaWikiServices::getInstance()->getDBLoadBalancer();
 					$this->connection = $loadBalancer->getConnection( $this->id );
 				}
 

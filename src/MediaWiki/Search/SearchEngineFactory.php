@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Search;
 
+use MediaWiki\MediaWikiServices;
 use SearchEngine;
 use SMW\Exception\ClassNotFoundException;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
@@ -35,7 +36,7 @@ class SearchEngineFactory {
 			$connection = $applicationFactory->getConnectionManager()->getConnection( DB_REPLICA );
 		}
 
-		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancerFactory' );
+		$dbLoadBalancer = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
 		$type = $settings->get( 'smwgFallbackSearchType' );
 		$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
@@ -64,7 +65,7 @@ class SearchEngineFactory {
 	 */
 	public function newExtendedSearch( SearchEngine $fallbackSearchEngine ): ExtendedSearch {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$searchEngineConfig = $applicationFactory->create( 'SearchEngineConfig' );
+		$searchEngineConfig = MediaWikiServices::getInstance()->getSearchEngineConfig();
 
 		$store = $applicationFactory->getStore();
 

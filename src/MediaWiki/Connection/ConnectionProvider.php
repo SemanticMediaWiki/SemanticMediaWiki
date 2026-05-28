@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Connection;
 
+use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Connection\ConnRef;
-use SMW\Services\ServicesFactory;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
@@ -130,7 +130,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 			public function getConnection(): IDatabase {
 				if ( $this->connection === null ) {
-					$loadBalancer = ServicesFactory::getInstance()->create( 'DBLoadBalancer' );
+					$loadBalancer = MediaWikiServices::getInstance()->getDBLoadBalancer();
 					$this->connection = $loadBalancer->getConnection( $this->id );
 				}
 
@@ -145,7 +145,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 	private function newTransactionHandler(): TransactionHandler {
 		return new TransactionHandler(
-			ServicesFactory::getInstance()->create( 'DBLoadBalancerFactory' )
+			MediaWikiServices::getInstance()->getDBLoadBalancerFactory()
 		);
 	}
 
