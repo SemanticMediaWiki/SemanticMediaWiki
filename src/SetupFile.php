@@ -88,13 +88,28 @@ class SetupFile {
 		// hydrate `$vars` from `.smw.json` if it is still present. The
 		// install/upgrade run then preserves the user's keys via
 		// `SetupFile::write`'s merge-then-save semantics, and
-		// {@see \SMW\Setup\MigrateSmwJsonToDb} renames the file at the
-		// end of the install to mark it consumed. Once renamed (or never
-		// present), this branch never fires again.
+		// {@see \SMW\Setup\MigrateSmwJsonToDb} consumes the current wiki's
+		// slice from the file at the end of the install. Once the slice
+		// is consumed (or the file was never present), this branch never
+		// fires again.
 		if ( $smwJson === null ) {
-			$legacy = ( new FileSystemSmwJsonRepo( new SimpleFileFetcher(), new File() ) )
-				->loadSmwJson( $vars['smwgConfigFileDir'] );
-			if ( $legacy !== null ) {
+			$legacyPath = rtrim( $vars['smwgConfigFileDir'], '/' ) . '/' . self::FILE_NAME;
+			if ( is_file( $legacyPath ) ) {
+				$legacy = ( new FileSystemSmwJsonRepo( new SimpleFileFetcher(), new File() ) )
+					->loadSmwJson( $vars['smwgConfigFileDir'] );
+				if ( $legacy === null ) {
+					// The file exists but `FileSystemSmwJsonRepo` could not
+					// decode it. Aborting here is the only way to surface
+					// the failure before the installer writes fresh rows to
+					// `smw_meta` and permanently blocks the retry path: on
+					// the next run `smw_meta` would be non-empty, this
+					// fallback would not fire, and the legacy file (even
+					// after the admin repairs it) would be silently ignored.
+					throw new RuntimeException(
+						"SMW: legacy {$legacyPath} exists but cannot be decoded as JSON."
+						. " Fix or remove the file before retrying setup."
+					);
+				}
 				$smwJson = $legacy;
 			}
 		}

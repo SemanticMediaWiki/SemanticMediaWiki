@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace SMW\Tests\Integration;
 
+use RuntimeException;
 use SMW\Globals;
 use SMW\SetupFile;
 use SMW\Site;
@@ -134,6 +135,40 @@ class SetupFileDatabaseIntegrationTest extends SMWIntegrationTestCase {
 		@unlink( $legacyFile );
 		@unlink( $legacyFile . '.migrated' );
 		@rmdir( $tmpDir );
+	}
+
+	public function testLegacyFileFallbackThrowsOnUnreadableFile(): void {
+		// Regression guard for the silent-data-loss path identified by
+		// CodeRabbit: a present-but-malformed `.smw.json` used to collapse
+		// to `null` in the fallback, the installer wrote fresh rows to
+		// `smw_meta`, and the next run found `smw_meta` non-empty so the
+		// fallback never fired again. Even if the admin fixed the file,
+		// it would be silently ignored forever. `loadSchema` must now
+		// throw before any install writes happen.
+		$tmpDir = sys_get_temp_dir() . '/smw-legacy-malformed-' . uniqid();
+		mkdir( $tmpDir );
+		$legacyFile = $tmpDir . '/.smw.json';
+		file_put_contents( $legacyFile, '{invalid: json' );
+
+		$this->getDb()->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::META_TABLE )
+			->where( '1=1' )
+			->caller( __METHOD__ )
+			->execute();
+		unset( $GLOBALS[ 'smw.json' ] );
+		$this->setMwGlobals( 'smwgConfigFileDir', $tmpDir );
+
+		$vars = $GLOBALS;
+		$setupFile = new SetupFile();
+
+		try {
+			$this->expectException( RuntimeException::class );
+			$this->expectExceptionMessageMatches( '/cannot be decoded as JSON/' );
+			$setupFile->loadSchema( $vars );
+		} finally {
+			@unlink( $legacyFile );
+			@rmdir( $tmpDir );
+		}
 	}
 
 	public function testRemoveDeletesKey(): void {
