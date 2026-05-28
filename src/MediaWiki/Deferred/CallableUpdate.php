@@ -21,16 +21,6 @@ class CallableUpdate implements DeferrableUpdate {
 	use LoggerAwareTrait;
 
 	/**
-	 * Updates that should run before flushing output buffer
-	 */
-	const STAGE_PRESEND = 'pre';
-
-	/**
-	 * Updates that should run after flushing output buffer
-	 */
-	const STAGE_POSTSEND = 'post';
-
-	/**
 	 * @var Closure|callable
 	 */
 	protected $callback;
@@ -49,8 +39,6 @@ class CallableUpdate implements DeferrableUpdate {
 
 	private static array $queueList = [];
 
-	private string $stage;
-
 	private bool $catchExceptionAndRethrow = false;
 
 	/**
@@ -62,7 +50,6 @@ class CallableUpdate implements DeferrableUpdate {
 		}
 
 		$this->callback = $callback;
-		$this->stage = self::STAGE_POSTSEND;
 	}
 
 	/**
@@ -73,20 +60,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 */
 	public function isCommandLineMode( bool $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function asPresend(): void {
-		$this->stage = self::STAGE_PRESEND;
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function getStage(): string {
-		return $this->stage;
 	}
 
 	/**
@@ -264,21 +237,11 @@ class CallableUpdate implements DeferrableUpdate {
 			]
 		);
 
-		$stage = null;
-
-		if ( $update->getStage() === self::STAGE_POSTSEND && defined( 'DeferredUpdates::POSTSEND' ) ) {
-			$stage = DeferredUpdates::POSTSEND;
-		}
-
-		if ( $update->getStage() === self::STAGE_PRESEND && defined( 'DeferredUpdates::PRESEND' ) ) {
-			$stage = DeferredUpdates::PRESEND;
-		}
-
-		DeferredUpdates::addUpdate( $update, $stage );
+		DeferredUpdates::addUpdate( $update );
 	}
 
 	protected function loggableContext(): array {
-		return [ 'origin' => $this->origin, 'fingerprint' => $this->fingerprint, 'stage' => $this->stage ];
+		return [ 'origin' => $this->origin, 'fingerprint' => $this->fingerprint ];
 	}
 
 	protected function emptyCallback(): void {

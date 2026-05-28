@@ -232,20 +232,4 @@ class CallableUpdateTest extends TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
-	public function testStage() {
-		$instance = new CallableUpdate();
-
-		$this->assertEquals(
-			'post',
-			$instance->getStage()
-		);
-
-		$instance->asPresend();
-
-		$this->assertEquals(
-			'pre',
-			$instance->getStage()
-		);
-	}
-
 }
