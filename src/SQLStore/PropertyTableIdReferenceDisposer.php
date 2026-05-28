@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
 use SMW\EventDispatcher\EventDispatcher;
@@ -9,7 +10,6 @@ use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use stdClass;
 use Wikimedia\Rdbms\DBError;
 
@@ -308,7 +308,7 @@ class PropertyTableIdReferenceDisposer {
 				$tableExists = $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ );
 			}
 		} catch ( DBError $e ) {
-			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
+			LoggerFactory::getInstance( 'smw' )->info( __METHOD__ . ' reported: ' . $e->getMessage() );
 		}
 
 		if ( $tableExists ) {

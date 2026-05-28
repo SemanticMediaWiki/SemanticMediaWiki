@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\Jobs;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
@@ -17,8 +18,9 @@ use SMW\Utils\HmacSerializer;
 
 /**
  * Partial DI: Store and Cache are injected via the JobClasses ObjectFactory
- * spec. The MediaWikiLogger is still resolved lazily through
- * ApplicationFactory because it is not a registered global service.
+ * spec. The PSR-3 logger is still resolved lazily via
+ * `LoggerFactory::getInstance( 'smw-elastic' )` rather than constructor
+ * injection.
  *
  * @license GPL-2.0-or-later
  * @since 3.0
@@ -143,7 +145,7 @@ class IndexerRecoveryJob extends Job {
 		$this->indexer->setOrigin( __METHOD__ );
 
 		$this->indexer->setLogger(
-			ApplicationFactory::getInstance()->getMediaWikiLogger( 'smw-elastic' )
+			LoggerFactory::getInstance( 'smw-elastic' )
 		);
 
 		if ( $this->hasParameter( 'delete' ) ) {

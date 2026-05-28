@@ -2,6 +2,7 @@
 
 namespace SMW\Listener\EventListener;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use SMW\EventDispatcher\EventListenerCollection;
 use SMW\Export\Exporter;
@@ -32,7 +33,7 @@ class EventListenerRegistry implements EventListenerCollection {
 	 */
 	public function getCollection() {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$logger = $applicationFactory->getMediaWikiLogger();
+		$logger = LoggerFactory::getInstance( 'smw' );
 
 		$invalidateResultCacheEventListener = $applicationFactory->create(
 			'InvalidateResultCacheEventListener'

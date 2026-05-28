@@ -3,6 +3,7 @@
 namespace SMW\Elastic;
 
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
@@ -101,7 +102,7 @@ class ElasticFactory {
 		);
 
 		$connectionProvider->setLogger(
-			$applicationFactory->getMediaWikiLogger( 'smw-elastic' )
+			LoggerFactory::getInstance( 'smw-elastic' )
 		);
 
 		return $connectionProvider;
@@ -166,7 +167,7 @@ class ElasticFactory {
 		}
 
 		$indexer->setLogger(
-			$applicationFactory->getMediaWikiLogger( 'smw-elastic' )
+			LoggerFactory::getInstance( 'smw-elastic' )
 		);
 
 		$indexer->setRevisionGuard(
@@ -200,7 +201,7 @@ class ElasticFactory {
 	public function newFileIndexer( Store $store, Indexer $indexer ): FileIndexer {
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$logger = $applicationFactory->getMediaWikiLogger( 'smw-elastic' );
+		$logger = LoggerFactory::getInstance( 'smw-elastic' );
 		$connection = $store->getConnection( 'elastic' );
 
 		// Don't use the `ElasticStore` instance otherwise we index fields
@@ -340,7 +341,7 @@ class ElasticFactory {
 		);
 
 		$queryEngine->setLogger(
-			$applicationFactory->getMediaWikiLogger( 'smw-elastic' )
+			LoggerFactory::getInstance( 'smw-elastic' )
 		);
 
 		return $queryEngine;

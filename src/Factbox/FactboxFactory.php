@@ -2,6 +2,7 @@
 
 namespace SMW\Factbox;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -59,7 +60,7 @@ class FactboxFactory {
 		);
 
 		$cachedFactbox->setLogger(
-			$applicationFactory->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $cachedFactbox;

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit\Services;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use SMW\ConstraintFactory;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
@@ -50,7 +49,6 @@ class DataValueServicesContainerBuildTest extends TestCase {
 	private $servicesFileDir;
 	private $mediaWikiNsContentReader;
 	private $propertySpecificationLookup;
-	private $logger;
 	private $schemaFactory;
 	private ConstraintFactory $constraintFactory;
 	private $entityCache;
@@ -69,10 +67,6 @@ class DataValueServicesContainerBuildTest extends TestCase {
 			->getMock();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,7 +103,6 @@ class DataValueServicesContainerBuildTest extends TestCase {
 		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 		$this->testEnvironment->registerObject( 'Store', $this->store );
-		$this->testEnvironment->registerObject( 'MediaWikiLogger', $this->logger );
 		$this->testEnvironment->registerObject( 'SchemaFactory', $this->schemaFactory );
 		$this->testEnvironment->registerObject( 'ConstraintFactory', $this->constraintFactory );
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );

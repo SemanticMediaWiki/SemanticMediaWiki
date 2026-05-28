@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\Logger\LoggerFactory;
 use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
@@ -122,7 +123,7 @@ class QueryEngineFactory {
 		);
 
 		$queryEngine->setLogger(
-			$applicationFactory->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $queryEngine;

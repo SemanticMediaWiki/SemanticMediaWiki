@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerInterface;
@@ -40,9 +41,9 @@ use SMW\Store;
  * entities that require an update.
  *
  * Partial DI: Store, Cache, PropertySpecificationLookup and IteratorFactory
- * are injected via the JobClasses ObjectFactory spec. The MediaWikiLogger is
- * still resolved lazily through ApplicationFactory because it is not a
- * registered global service.
+ * are injected via the JobClasses ObjectFactory spec. The PSR-3 logger is
+ * still resolved lazily via `LoggerFactory::getInstance( 'smw' )` rather than
+ * constructor injection.
  *
  * @license GPL-2.0-or-later
  * @since 3.0
@@ -506,7 +507,7 @@ class ChangePropagationDispatchJob extends Job {
 
 	private function getLogger(): LoggerInterface {
 		if ( $this->logger === null ) {
-			$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
+			$this->logger = LoggerFactory::getInstance( 'smw' );
 		}
 
 		return $this->logger;

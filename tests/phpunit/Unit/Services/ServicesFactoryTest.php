@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit\Services;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItemFactory;
@@ -263,13 +262,6 @@ class ServicesFactoryTest extends TestCase {
 		$this->assertInstanceOf(
 			TransactionalCallableUpdate::class,
 			$this->servicesFactory->newDeferredTransactionalCallableUpdate( null )
-		);
-	}
-
-	public function testCanConstructMediaWikiLogger() {
-		$this->assertInstanceOf(
-			LoggerInterface::class,
-			$this->servicesFactory->getMediaWikiLogger()
 		);
 	}
 

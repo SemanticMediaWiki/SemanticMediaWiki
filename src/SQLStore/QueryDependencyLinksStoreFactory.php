@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\Logger\LoggerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
@@ -39,7 +40,7 @@ class QueryDependencyLinksStoreFactory {
 		);
 
 		$dependencyLinksValidator->setLogger(
-			$applicationFactory->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $dependencyLinksValidator;
@@ -73,7 +74,7 @@ class QueryDependencyLinksStoreFactory {
 	 */
 	public function newQueryDependencyLinksStore( Store $store ): QueryDependencyLinksStore {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$logger = $applicationFactory->getMediaWikiLogger();
+		$logger = LoggerFactory::getInstance( 'smw' );
 
 		$dependencyLinksTableUpdater = new DependencyLinksTableUpdater(
 			$store
