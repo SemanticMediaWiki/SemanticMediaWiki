@@ -22,7 +22,7 @@ use SMW\Store;
  */
 class EntityExaminerIndicatorsFactory {
 
-	private HookContainer $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @since 7.0.0
@@ -43,7 +43,7 @@ class EntityExaminerIndicatorsFactory {
 			$this->newEntityExaminerDeferrableCompositeIndicatorProvider( $store )
 		];
 
-		if ( !isset( $this->hookContainer ) ) {
+		if ( $this->hookContainer === null ) {
 			$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		}
 
@@ -117,7 +117,7 @@ class EntityExaminerIndicatorsFactory {
 		// be used as model for how to add other types of examinations
 		// $indicatorProviders[] = new BlankEntityExaminerDeferrableIndicatorProvider()
 
-		if ( !isset( $this->hookContainer ) ) {
+		if ( $this->hookContainer === null ) {
 			$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		}
 
