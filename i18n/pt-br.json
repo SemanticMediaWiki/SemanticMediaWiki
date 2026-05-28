@@ -141,7 +141,7 @@
 	"smw-smwdoc-par-format": "O formato de resultados para o qual será apresentada a documentação dos parâmetros.",
 	"smw-smwdoc-par-parameters": "Quais parâmetros mostrar. \"specific\" para aqueles adicionados pelo formato, \"base\" para aqueles disponíveis em todos os formatos e \"all\" para ambos.",
 	"smw-paramdesc-sort": "Propriedade para classificar a consulta",
-	"smw-paramdesc-order": "Ordem da classificação da consulta",
+	"smw-paramdesc-order": "Ordem da classificação da consulta; use <code>none</code> para desabilitar a classificação",
 	"smw-paramdesc-searchlabel": "Texto para continuar a busca",
 	"smw-paramdesc-named_args": "Nomeie os argumentos passados para a predefinição",
 	"smw-paramdesc-template-arguments": "Configura como os argumentos nomeados são passados à predefinição",
