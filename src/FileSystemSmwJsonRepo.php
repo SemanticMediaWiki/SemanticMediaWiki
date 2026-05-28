@@ -10,6 +10,13 @@ use SMW\Utils\File;
 
 /**
  * @private
+ *
+ * @deprecated since 7.0.0 — install-state metadata now lives in the
+ *   `smw_meta` database table via {@see DatabaseMetaRepo}. This
+ *   filesystem-backed implementation is retained only for the
+ *   `$smwgSmwJsonRepo` override hook, which lets third parties keep
+ *   file-backed storage during the 7.x deprecation window. Scheduled
+ *   for removal in 8.0.0.
  */
 class FileSystemSmwJsonRepo implements SmwJsonRepo {
 
