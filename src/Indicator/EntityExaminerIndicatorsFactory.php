@@ -2,14 +2,15 @@
 
 namespace SMW\Indicator;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\MediaWikiServices;
 use SMW\EntityCache;
 use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
 use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider as ConstraintErrorEntityExaminerIndicatorProvider;
 use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
 use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Services\ServicesFactory;
 use SMW\Store;
 
@@ -21,7 +22,14 @@ use SMW\Store;
  */
 class EntityExaminerIndicatorsFactory {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
 
 	/**
 	 * @since 3.2
@@ -31,17 +39,18 @@ class EntityExaminerIndicatorsFactory {
 	 * @return EntityExaminerCompositeIndicatorProvider
 	 */
 	public function newEntityExaminerIndicatorProvider( Store $store ): EntityExaminerCompositeIndicatorProvider {
-		$servicesFactory = ServicesFactory::getInstance();
-
 		$indicatorProviders = [
 			$this->newEntityExaminerDeferrableCompositeIndicatorProvider( $store )
 		];
 
-		if ( $this->hookDispatcher === null ) {
-			$this->hookDispatcher = $servicesFactory->getHookDispatcher();
+		if ( $this->hookContainer === null ) {
+			$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		}
 
-		$this->hookDispatcher->onRegisterEntityExaminerIndicatorProviders( $store, $indicatorProviders );
+		$this->hookContainer->run(
+			'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders',
+			[ $store, &$indicatorProviders ]
+		);
 
 		$entityExaminerIndicatorProvider = $this->newEntityExaminerCompositeIndicatorProvider(
 			$indicatorProviders
@@ -108,11 +117,14 @@ class EntityExaminerIndicatorsFactory {
 		// be used as model for how to add other types of examinations
 		// $indicatorProviders[] = new BlankEntityExaminerDeferrableIndicatorProvider()
 
-		if ( $this->hookDispatcher === null ) {
-			$this->hookDispatcher = $this->getServicesFactory()->getHookDispatcher();
+		if ( $this->hookContainer === null ) {
+			$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		}
 
-		$this->hookDispatcher->onRegisterEntityExaminerDeferrableIndicatorProviders( $store, $indicatorProviders );
+		$this->hookContainer->run(
+			'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders',
+			[ $store, &$indicatorProviders ]
+		);
 
 		return new EntityExaminerDeferrableCompositeIndicatorProvider(
 			$indicatorProviders,

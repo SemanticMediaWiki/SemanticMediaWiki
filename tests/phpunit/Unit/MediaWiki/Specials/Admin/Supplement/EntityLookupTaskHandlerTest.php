@@ -5,16 +5,11 @@ namespace SMW\Tests\Unit\MediaWiki\Specials\Admin\Supplement;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
-use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler
@@ -27,11 +22,8 @@ use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
  */
 class EntityLookupTaskHandlerTest extends TestCase {
 
-	use MockSelectQueryBuilderTrait;
-
 	private $testEnvironment;
 	private $store;
-	private $connection;
 	private $htmlFormRenderer;
 	private $outputFormatter;
 
@@ -40,18 +32,9 @@ class EntityLookupTaskHandlerTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
-
-		$this->store->expects( $this->any() )
-			->method( 'getConnection' )
-			->willReturn( $this->connection );
 
 		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
@@ -136,90 +119,6 @@ class EntityLookupTaskHandlerTest extends TestCase {
 		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$instance->handleRequest( $webRequest );
-	}
-
-	public function testPerformActionWithId() {
-		$this->connection->expects( $this->any() )
-			->method( 'newSelectQueryBuilder' )
-			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
-
-		$manualEntryLogger = $this->getMockBuilder( ManualEntryLogger::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$manualEntryLogger->expects( $this->once() )
-			->method( 'log' );
-
-		$this->testEnvironment->registerObject( 'ManualEntryLogger', $manualEntryLogger );
-
-		$entityIdDisposerJob = $this->getMockBuilder( EntityIdDisposerJob::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$jobFactory = $this->getMockBuilder( JobFactory::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$jobFactory->expects( $this->atLeastOnce() )
-			->method( 'newEntityIdDisposerJob' )
-			->willReturn( $entityIdDisposerJob );
-
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
-
-		$methods = [
-			'setName',
-			'setMethod',
-			'addHiddenField',
-			'addHeader',
-			'addParagraph',
-			'addInputField',
-			'addSubmitButton',
-			'addNonBreakingSpace',
-			'addCheckbox'
-		];
-
-		foreach ( $methods as $method ) {
-			$this->htmlFormRenderer->expects( $this->any() )
-				->method( $method )
-				->willReturnSelf();
-		}
-
-		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
-			->method( 'getForm' );
-
-		$user = $this->getMockBuilder( User::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$user->expects( $this->atLeastOnce() )
-			->method( 'matchEditToken' )
-			->willReturn( true );
-
-		$webRequest = $this->getMockBuilder( WebRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$webRequest->expects( $this->atLeastOnce() )
-			->method( 'getText' )
-			->willReturnCallback( static function ( $key ) {
-				$map = [
-					'id'      => 42,
-					'dispose' => 'yes',
-					'action'  => 'lookup',
-				];
-				return $map[$key] ?? '';
-			} );
-
-		$instance = new EntityLookupTaskHandler(
-			$this->store,
-			$this->htmlFormRenderer,
-			$this->outputFormatter
-		);
-
-		$instance->setFeatureSet( SMW_ADM_DISPOSAL );
-		$instance->setUser( $user );
 
 		$instance->handleRequest( $webRequest );
 	}

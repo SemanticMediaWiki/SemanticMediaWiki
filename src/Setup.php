@@ -2,11 +2,11 @@
 
 namespace SMW;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\Query\ResultFormat;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -22,7 +22,14 @@ use SMW\Utils\Logo;
  */
 final class Setup {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
 
 	/**
 	 * Describes the minimum requirements for the database version that Semantic
@@ -170,7 +177,7 @@ final class Setup {
 		// is installed imperatively from registerExtensionCheck() above; it
 		// is removed in initExtension() once SMW is known to have loaded.
 
-		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
+		$this->hookContainer->run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
 
 		return $vars;
 	}

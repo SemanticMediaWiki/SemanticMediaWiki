@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintCheckRunner;
@@ -32,14 +33,12 @@ class ConstraintFactory {
 	 * @return ConstraintRegistry
 	 */
 	public function newConstraintRegistry(): ConstraintRegistry {
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		$constraintRegistry = new ConstraintRegistry(
 			$this
 		);
 
-		$constraintRegistry->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$constraintRegistry->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		return $constraintRegistry;

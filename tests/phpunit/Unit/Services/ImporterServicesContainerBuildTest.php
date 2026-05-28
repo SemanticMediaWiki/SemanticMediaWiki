@@ -10,7 +10,6 @@ use SMW\Importer\ContentIterator;
 use SMW\Importer\Importer;
 use SMW\Importer\JsonContentIterator;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\TitleFactory;
 use SMW\Services\ImporterServiceFactory;
 use SMW\Settings;
 use SMW\Tests\TestEnvironment;
@@ -28,7 +27,6 @@ class ImporterServicesContainerBuildTest extends TestCase {
 	private TestEnvironment $testEnvironment;
 	private $connectionManager;
 	private $servicesFileDir;
-	private $titleFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -36,10 +34,6 @@ class ImporterServicesContainerBuildTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment();
 
 		$connection = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +57,6 @@ class ImporterServicesContainerBuildTest extends TestCase {
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-		$this->testEnvironment->registerObject( 'TitleFactory', $this->titleFactory );
 		$this->testEnvironment->registerObject( 'ConnectionManager', $this->connectionManager );
 
 		$this->testEnvironment->registerObject( 'Settings', new Settings( [

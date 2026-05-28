@@ -33,7 +33,6 @@ use SMW\MediaWiki\Api\Info;
 use SMW\MediaWiki\Api\Task;
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Connection\ConnectionProvider;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Job;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
@@ -49,7 +48,6 @@ use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
@@ -74,7 +72,6 @@ use SMW\MediaWiki\Specials\SpecialTypes;
 use SMW\MediaWiki\Specials\SpecialUnusedProperties;
 use SMW\MediaWiki\Specials\SpecialURIResolver;
 use SMW\MediaWiki\Specials\SpecialWantedProperties;
-use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\ParserFunctionFactory;
 use SMW\Property\AnnotatorFactory;
@@ -124,12 +121,10 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.EntityCache', EntityCache::class ],
 			[ 'SMW.JobQueue', JobQueue::class ],
 			[ 'SMW.PermissionManager', PermissionManager::class ],
-			[ 'SMW.HookDispatcher', HookDispatcher::class ],
 			[ 'SMW.RevisionGuard', RevisionGuard::class ],
 			[ 'SMW.ConnectionManager', ConnectionManager::class ],
 			[ 'SMW.SetupFile', SetupFile::class ],
 			[ 'SMW.MediaWikiNsContentReader', MediaWikiNsContentReader::class ],
-			[ 'SMW.ManualEntryLogger', ManualEntryLogger::class ],
 			[ 'SMW.InMemoryPoolCache', InMemoryPoolCache::class ],
 			[ 'SMW.PropertyAnnotatorFactory', AnnotatorFactory::class ],
 			[ 'SMW.ConnectionProvider', ConnectionProvider::class ],
@@ -158,7 +153,6 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.ParserFunctionFactory', ParserFunctionFactory::class ],
 			[ 'SMW.MaintenanceFactory', MaintenanceFactory::class ],
 			[ 'SMW.CacheFactory', CacheFactory::class ],
-			[ 'SMW.TitleFactory', TitleFactory::class ],
 			[ 'SMW.PageCreator', PageCreator::class ],
 			[ 'SMW.MwCollaboratorFactory', MwCollaboratorFactory::class ],
 			[ 'SMW.NamespaceExaminer', NamespaceExaminer::class ],

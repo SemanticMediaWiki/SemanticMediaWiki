@@ -2,13 +2,13 @@
 
 namespace SMW\Parser;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\RedirectTargetFinder;
@@ -33,7 +33,14 @@ use SMW\Utils\Timer;
  */
 class InTextAnnotationParser {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
 
 	/**
 	 * Internal state for switching SMW link annotations off/on during parsing
@@ -155,7 +162,7 @@ class InTextAnnotationParser {
 			$this->parserData->canUse()
 		);
 
-		$this->hookDispatcher->onAfterLinksProcessingComplete( $text, $this->annotationProcessor );
+		$this->hookContainer->run( 'SMW::Parser::AfterLinksProcessingComplete', [ &$text, $this->annotationProcessor ] );
 
 		// Ensure remaining encoded entities are decoded again
 		$text = LinksEncoder::removeLinkObfuscation( $text );
@@ -411,7 +418,7 @@ class InTextAnnotationParser {
 			'SMW_SHOWFACTBOX'
 		];
 
-		$this->hookDispatcher->onBeforeMagicWordsFinder( $magicWords );
+		$this->hookContainer->run( 'SMW::Parser::BeforeMagicWordsFinder', [ &$magicWords ] );
 
 		foreach ( $magicWords as $magicWord ) {
 			$words[] = $this->magicWordsFinder->findMagicWordInText( $magicWord, $text );

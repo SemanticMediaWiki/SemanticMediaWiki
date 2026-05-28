@@ -52,7 +52,6 @@ use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
@@ -60,7 +59,6 @@ use SMW\MediaWiki\Jobs\ContentParserFactory;
 use SMW\MediaWiki\Jobs\PageUpdaterFactory;
 use SMW\MediaWiki\Jobs\ParserDataFactory;
 use SMW\MediaWiki\MagicWordsFinder;
-use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
@@ -69,7 +67,6 @@ use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\RevisionGuard;
-use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\Parser\ContentParser;
 use SMW\Parser\InTextAnnotationParser;
@@ -313,12 +310,10 @@ class ServicesFactory {
 			'ParserCache' => fn () => $this->getParserCache(),
 			'UserOptionsLookup' => fn () => $this->getUserOptionsLookup(),
 			'PermissionManager' => fn () => $this->getPermissionManager(),
-			'HookDispatcher' => fn () => $this->getHookDispatcher(),
 			'RevisionGuard' => fn () => $this->getRevisionGuard(),
 			'ConnectionManager' => fn () => $this->getConnectionManager(),
 			'SetupFile' => fn () => $this->getSetupFile(),
 			'MediaWikiNsContentReader' => fn () => $this->getMediaWikiNsContentReader(),
-			'ManualEntryLogger' => fn () => $this->getManualEntryLogger(),
 			'InMemoryPoolCache' => fn () => $this->getInMemoryPoolCache(),
 			'PropertyAnnotatorFactory' => fn () => $this->getPropertyAnnotatorFactory(),
 			'ConnectionProvider' => fn () => $this->getConnectionProvider(),
@@ -346,7 +341,6 @@ class ServicesFactory {
 			'ParserFunctionFactory' => fn () => $this->getParserFunctionFactory(),
 			'MaintenanceFactory' => fn () => $this->getMaintenanceFactory(),
 			'CacheFactory' => fn () => $this->getCacheFactory(),
-			'TitleFactory' => fn () => $this->getTitleFactory(),
 			'PageCreator' => fn () => $this->getPageCreator(),
 			'ContentParserFactory' => fn () => $this->getContentParserFactory(),
 			'ParserDataFactory' => fn () => $this->getParserDataFactory(),
@@ -646,37 +640,6 @@ class ServicesFactory {
 	}
 
 	/**
-	 * @since 3.2
-	 *
-	 * @return HookDispatcher
-	 */
-	public function getHookDispatcher(): HookDispatcher {
-		if ( array_key_exists( 'HookDispatcher', $this->testOverrides ) ) {
-			return $this->testOverrides['HookDispatcher'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.HookDispatcher' );
-	}
-
-	/**
-	 * @since 2.0
-	 */
-	public function newTitleFactory(): TitleFactory {
-		return $this->getTitleFactory();
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getTitleFactory(): TitleFactory {
-		if ( array_key_exists( 'TitleFactory', $this->testOverrides ) ) {
-			return $this->testOverrides['TitleFactory'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.TitleFactory' );
-	}
-
-	/**
 	 * @since 2.0
 	 *
 	 * @return PageCreator
@@ -856,8 +819,8 @@ class ServicesFactory {
 			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
 		);
 
-		$inTextAnnotationParser->setHookDispatcher(
-			$this->getHookDispatcher()
+		$inTextAnnotationParser->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		return $inTextAnnotationParser;
@@ -1513,17 +1476,6 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.SetupFile' );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getManualEntryLogger(): ManualEntryLogger {
-		if ( array_key_exists( 'ManualEntryLogger', $this->testOverrides ) ) {
-			return $this->testOverrides['ManualEntryLogger'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.ManualEntryLogger' );
 	}
 
 	/**

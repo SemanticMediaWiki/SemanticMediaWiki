@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 use Exception;
+use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
@@ -100,7 +101,7 @@ class SubjectLookup extends Lookup {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$subobject = $params['subobject'] ?? '';
 
-		$title = $applicationFactory->newTitleFactory()->newFromText(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
 			$params['subject'],
 			$params['ns']
 		);

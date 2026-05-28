@@ -24,7 +24,6 @@ use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
-use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
 use SMW\Parser\ContentParser;
 use SMW\Parser\InTextAnnotationParser;
@@ -122,13 +121,6 @@ class ServicesFactoryTest extends TestCase {
 		$this->assertInstanceOf(
 			ConnectionManager::class,
 			$this->servicesFactory->getConnectionManager()
-		);
-	}
-
-	public function testCanConstructTitleFactory() {
-		$this->assertInstanceOf(
-			TitleFactory::class,
-			$this->servicesFactory->newTitleFactory()
 		);
 	}
 

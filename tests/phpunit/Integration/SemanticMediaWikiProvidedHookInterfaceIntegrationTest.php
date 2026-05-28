@@ -12,7 +12,6 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\MagicWordsFinder;
@@ -544,18 +543,13 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->setMethods( null )
 			->getMock();
 
-		$hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->setHookCallback( 'SMW::Parser::BeforeMagicWordsFinder', static function ( &$magicWords ) {
+			$magicWords = [ 'Foo' ];
+			return true;
+		} );
 
-		$hookDispatcher->expects( $this->once() )
-			->method( 'onBeforeMagicWordsFinder' )
-			->willReturnCallback( static function ( &$magicWords ) {
-				$magicWords = [ 'Foo' ];
-			} );
-
-		$inTextAnnotationParser->setHookDispatcher(
-			$hookDispatcher
+		$inTextAnnotationParser->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		$text = '';

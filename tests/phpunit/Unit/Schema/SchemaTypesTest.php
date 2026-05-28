@@ -3,8 +3,8 @@
 namespace SMW\Tests\Unit\Schema;
 
 use JsonSerializable;
+use MediaWiki\HookContainer\HookContainer;
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 use SMW\Schema\SchemaTypes;
 use SMW\Tests\TestEnvironment;
@@ -21,14 +21,14 @@ use SMW\Tests\TestEnvironment;
 class SchemaTypesTest extends TestCase {
 
 	private $testEnvironment;
-	private $hookDispatcher;
+	private $hookContainer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -53,11 +53,12 @@ class SchemaTypesTest extends TestCase {
 	}
 
 	public function testRegisterSchemaTypes() {
-		$this->hookDispatcher->expects( $this->once() )
-			->method( 'onRegisterSchemaTypes' );
+		$this->hookContainer->expects( $this->once() )
+			->method( 'run' )
+			->with( 'SMW::Schema::RegisterSchemaTypes', $this->isType( 'array' ) );
 
 		$instance = new SchemaTypes();
-		$instance->setHookDispatcher( $this->hookDispatcher );
+		$instance->setHookContainer( $this->hookContainer );
 
 		$instance->registerSchemaTypes( [] );
 	}
@@ -135,7 +136,7 @@ class SchemaTypesTest extends TestCase {
 	 */
 	public function testRegisterDefaultTypes( $type ) {
 		$instance = new SchemaTypes( __DIR__ );
-		$instance->setHookDispatcher( $this->hookDispatcher );
+		$instance->setHookContainer( $this->hookContainer );
 
 		$instance->registerSchemaTypes();
 

@@ -3,7 +3,7 @@
 namespace SMW\Schema;
 
 use JsonSerializable;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
+use MediaWiki\HookContainer\HookContainer;
 use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 
 /**
@@ -14,7 +14,7 @@ use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
  */
 class SchemaTypes implements JsonSerializable {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
 
 	private array $schemaTypes = [];
 
@@ -74,6 +74,13 @@ class SchemaTypes implements JsonSerializable {
 	}
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
+
+	/**
 	 * @since 3.2
 	 *
 	 * @param string $dir
@@ -105,7 +112,7 @@ class SchemaTypes implements JsonSerializable {
 			$this->registerSchemaType( $key, $value );
 		}
 
-		$this->hookDispatcher->onRegisterSchemaTypes( $this );
+		$this->hookContainer->run( 'SMW::Schema::RegisterSchemaTypes', [ $this ] );
 	}
 
 	/**

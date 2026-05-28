@@ -2,8 +2,8 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Exception\RemovedNamespaceIndexException;
-use SMW\Services\ServicesFactory;
 use SMW\Setup\ConfigBootstrap;
 
 /**
@@ -58,8 +58,8 @@ class SemanticMediaWiki {
 	public static function onExtensionFunction(): void {
 		$setup = new Setup();
 
-		$setup->setHookDispatcher(
-			ServicesFactory::getInstance()->getHookDispatcher()
+		$setup->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		Globals::replace(

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Api;
 
+use MediaWiki\Title\TitleFactory;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
@@ -32,6 +33,7 @@ class BrowseTest extends TestCase {
 	private $store;
 	private $apiFactory;
 	private $testEnvironment;
+	private $titleFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -56,6 +58,10 @@ class BrowseTest extends TestCase {
 			->method( 'service' )
 			->with( 'ProximityPropertyValueLookup' )
 			->willReturn( $proximityPropertyValueLookup );
+
+		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown(): void {
@@ -77,7 +83,8 @@ class BrowseTest extends TestCase {
 			'smwbrowse',
 			$this->store,
 			$settings,
-			$cache
+			$cache,
+			$this->titleFactory
 		);
 
 		$this->assertInstanceOf(
@@ -161,7 +168,8 @@ class BrowseTest extends TestCase {
 			'smwbrowse',
 			$this->store,
 			Settings::newFromArray( [ 'smwgCacheUsage' => [ 'api.browse' => true ] ] ),
-			$cache
+			$cache,
+			$this->titleFactory
 		);
 
 		$instance->execute();
@@ -216,7 +224,8 @@ class BrowseTest extends TestCase {
 			'smwbrowse',
 			$this->store,
 			$settings,
-			$cache
+			$cache,
+			$this->titleFactory
 		);
 
 		$instance->execute();

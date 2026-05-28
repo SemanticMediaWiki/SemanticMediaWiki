@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Unit\MediaWiki;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\RevisionGuard;
 
 /**
@@ -20,12 +20,12 @@ use SMW\MediaWiki\RevisionGuard;
  */
 class RevisionGuardTest extends TestCase {
 
-	private $hookDispatcher;
+	private $hookContainer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
+		$this->hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -48,8 +48,8 @@ class RevisionGuardTest extends TestCase {
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$this->assertIsBool(
@@ -70,8 +70,8 @@ class RevisionGuardTest extends TestCase {
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$this->assertIsBool(
@@ -91,8 +91,8 @@ class RevisionGuardTest extends TestCase {
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$this->assertEquals(
@@ -112,15 +112,12 @@ class RevisionGuardTest extends TestCase {
 
 		$instance = new RevisionGuard( $revisionLookup );
 
-		$instance->setHookDispatcher( $this->hookDispatcher );
+		$instance->setHookContainer( $this->hookContainer );
 
 		$instance->newRevisionFromTitle( $title );
 	}
 
 	public function testGetRevision() {
-		$this->hookDispatcher->expects( $this->once() )
-			->method( 'onChangeRevision' );
-
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -129,10 +126,14 @@ class RevisionGuardTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->hookContainer->expects( $this->once() )
+			->method( 'run' )
+			->with( 'SMW::RevisionGuard::ChangeRevision', [ $title, $revision ] );
+
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$this->assertInstanceOf(
@@ -150,16 +151,14 @@ class RevisionGuardTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher->expects( $this->once() )
-			->method( 'onChangeFile' )
-			->with(
-				$title,
-				$file );
+		$this->hookContainer->expects( $this->once() )
+			->method( 'run' )
+			->with( 'SMW::RevisionGuard::ChangeFile', [ $title, $file ] );
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
+		$instance->setHookContainer(
+			$this->hookContainer
 		);
 
 		$this->assertInstanceOf(

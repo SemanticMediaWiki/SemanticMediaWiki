@@ -2,9 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
+use ManualLogEntry;
 use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
@@ -132,9 +134,12 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		$entityIdDisposerJob->dispose( intval( $id ) );
 
-		$manualEntryLogger = $applicationFactory->create( 'ManualEntryLogger' );
-		$manualEntryLogger->registerLoggableEventType( 'admin' );
-		$manualEntryLogger->log( 'admin', $this->user, 'Special:SMWAdmin', 'Forced removal of ID ' . $id );
+		$logEntry = new ManualLogEntry( 'smw', 'admin' );
+		$logEntry->setTarget( Title::newFromText( 'Special:SMWAdmin' ) );
+		$logEntry->setPerformer( $this->user );
+		$logEntry->setParameters( [] );
+		$logEntry->setComment( 'Forced removal of ID ' . $id );
+		$logEntry->insert();
 	}
 
 	private function getForm( WebRequest $webRequest, $id ): string {
