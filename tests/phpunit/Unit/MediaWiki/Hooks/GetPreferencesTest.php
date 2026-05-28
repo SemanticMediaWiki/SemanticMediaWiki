@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\GroupPermissions;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\PermissionManager;
 use SMW\Schema\SchemaFactory;
@@ -22,7 +22,7 @@ use SMW\Settings;
  */
 class GetPreferencesTest extends TestCase {
 
-	private $hookDispatcher;
+	private $hookContainer;
 	private $schemaFactory;
 	private $settings;
 	private $permissionManager;
@@ -30,7 +30,7 @@ class GetPreferencesTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->createMock( HookDispatcher::class );
+		$this->hookContainer = $this->createMock( HookContainer::class );
 		$this->schemaFactory = $this->createMock( SchemaFactory::class );
 		$this->settings = $this->createMock( Settings::class );
 		$this->permissionManager = $this->createMock( PermissionManager::class );
@@ -39,7 +39,7 @@ class GetPreferencesTest extends TestCase {
 	private function newInstance(): GetPreferences {
 		return new GetPreferences(
 			$this->schemaFactory,
-			$this->hookDispatcher,
+			$this->hookContainer,
 			$this->settings,
 			$this->permissionManager
 		);

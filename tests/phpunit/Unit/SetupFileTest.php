@@ -3,10 +3,11 @@
 namespace SMW\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use SMW\SetupFile;
 use SMW\Site;
+use SMW\SmwJsonRepo;
 use SMW\SQLStore\Installer;
-use SMW\Utils\File;
 
 /**
  * @covers \SMW\SetupFile
@@ -119,16 +120,10 @@ class SetupFileTest extends TestCase {
 	}
 
 	public function testFinalize() {
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$repo = $this->makeInMemoryRepo();
 
-		$file->expects( $this->once() )
-			->method( 'write' );
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $repo );
 
 		$vars = [
 			'smwgConfigFileDir' => 'Foo/',
@@ -143,30 +138,20 @@ class SetupFileTest extends TestCase {
 		];
 
 		$instance->finalize( $vars );
+
+		$id = Site::id();
+		$this->assertSame(
+			SetupFile::makeUpgradeKey( $vars ),
+			$repo->data[$id][SetupFile::UPGRADE_KEY]
+		);
+		$this->assertFalse( $repo->data[$id][SetupFile::MAINTENANCE_MODE] );
 	}
 
 	public function testSetMaintenanceMode() {
-		$fields = [
-			'upgrade_key' => '2fefe0755c8b2d1b13b22a0a0c0677a24982ad3e',
-			SetupFile::MAINTENANCE_MODE => true,
-			// "upgrade_key_base" => '["",[],"",[]]'
-		];
+		$repo = $this->makeInMemoryRepo();
 
-		$expected = json_encode( [ Site::id() => $fields ], JSON_PRETTY_PRINT );
-
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$file->expects( $this->once() )
-			->method( 'write' )
-			->with(
-				$this->anything(),
-				$expected );
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $repo );
 
 		$vars = [
 			'smwgConfigFileDir' => 'Foo/',
@@ -181,31 +166,22 @@ class SetupFileTest extends TestCase {
 		];
 
 		$instance->setMaintenanceMode( true, $vars );
+
+		$id = Site::id();
+		$this->assertSame(
+			[
+				'upgrade_key' => '2fefe0755c8b2d1b13b22a0a0c0677a24982ad3e',
+				SetupFile::MAINTENANCE_MODE => true,
+			],
+			$repo->data[$id]
+		);
 	}
 
 	public function testSetUpgradeFile() {
-		$configFile = File::dir( 'Foo_dir/.smw.json' );
+		$repo = $this->makeInMemoryRepo();
 
-		$fields = [
-			'Foo' => 42,
-			// "upgrade_key_base" => '["",[],"",[]]'
-		];
-
-		$expected = json_encode( [ Site::id() => $fields ], JSON_PRETTY_PRINT );
-
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$file->expects( $this->once() )
-			->method( 'write' )
-			->with(
-				$configFile,
-				$expected );
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $repo );
 
 		$vars = [
 			'smwgConfigFileDir' => 'Foo_dir',
@@ -219,31 +195,19 @@ class SetupFileTest extends TestCase {
 		];
 
 		$instance->write( [ 'Foo' => 42 ], $vars );
+
+		$this->assertSame(
+			[ Site::id() => [ 'Foo' => 42 ] ],
+			$repo->data
+		);
 	}
 
 	public function testReset() {
-		$configFile = File::dir( 'Foo_dir/.smw.json' );
+		$repo = $this->makeInMemoryRepo();
 		$id = Site::id();
 
-		$fields = [
-			'Foo' => 42
-		];
-
-		$expected = json_encode( [ $id => [] ], JSON_PRETTY_PRINT );
-
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$file->expects( $this->once() )
-			->method( 'write' )
-			->with(
-				$configFile,
-				$expected );
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $repo );
 
 		$vars = [
 			'smwgConfigFileDir' => 'Foo_dir',
@@ -252,29 +216,19 @@ class SetupFileTest extends TestCase {
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
 			'smwgPageSpecialProperties' => [],
-			'smw.json' => [ $id => $fields ]
+			'smw.json' => [ $id => [ 'Foo' => 42 ] ]
 		];
 
 		$instance->reset( $vars );
+
+		$this->assertSame( [ $id => [] ], $repo->data );
 	}
 
 	public function testRemove() {
-		$configFile = File::dir( 'Foo_dir/.smw.json' );
-		$expected = '[]';
+		$repo = $this->makeInMemoryRepo();
 
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$file->expects( $this->once() )
-			->method( 'write' )
-			->with(
-				$configFile,
-				$expected );
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $repo );
 
 		$vars = [
 			'smwgConfigFileDir' => 'Foo_dir',
@@ -286,18 +240,16 @@ class SetupFileTest extends TestCase {
 		];
 
 		$instance->remove( 'Foo', $vars );
+
+		// `remove` should not create an entry for the key being removed.
+		$this->assertSame( [], $repo->data );
 	}
 
 	public function testGet() {
 		$id = Site::id();
 
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $this->makeInMemoryRepo() );
 
 		$vars = [
 			'smw.json' => [ $id => [ 'Foo' => 42 ] ]
@@ -310,13 +262,8 @@ class SetupFileTest extends TestCase {
 	}
 
 	public function testAddRemoveIncompleteTask() {
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $this->makeInMemoryRepo() );
 
 		$instance->addIncompleteTask( 'foo-incomplete' );
 
@@ -334,13 +281,8 @@ class SetupFileTest extends TestCase {
 	}
 
 	public function testIncompleteTasks() {
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $this->makeInMemoryRepo() );
 
 		$vars = [
 			'smw.json' => [ Site::id() => [ Installer::POPULATE_HASH_FIELD_COMPLETE => false ] ]
@@ -358,15 +300,8 @@ class SetupFileTest extends TestCase {
 	}
 
 	public function testSetLatestVersion() {
-		$id = Site::id();
-
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $this->makeInMemoryRepo() );
 
 		// No previous version is known
 		$instance->setLatestVersion( 123 );
@@ -397,13 +332,8 @@ class SetupFileTest extends TestCase {
 	public function testHasDatabaseMinRequirement() {
 		$id = Site::id();
 
-		$file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new SetupFile(
-			$file
-		);
+		$instance = new SetupFile();
+		$this->withRepo( $instance, $this->makeInMemoryRepo() );
 
 		$vars = [
 			'smw.json' => [ $id => [ 'Foo' => 42 ] ]
@@ -431,6 +361,143 @@ class SetupFileTest extends TestCase {
 		$this->assertTrue(
 			$instance->hasDatabaseMinRequirement( $vars )
 		);
+	}
+
+	public function testIncompleteTaskWithArgsRoundTrip() {
+		$repo = $this->makeInMemoryRepo();
+		$vars = $this->makeVars();
+
+		$writer = new SetupFile();
+		$this->withRepo( $writer, $repo );
+		$writer->loadSchema( $vars );
+
+		// Cover both the boolean form (no args) and the array form
+		// (with args) of an incomplete-task entry.
+		$writer->set(
+			[
+				SetupFile::INCOMPLETE_TASKS => [
+					'smw-task-flag' => true,
+					'smw-task-x' => [ 'count' => 42 ],
+				],
+			],
+			$vars
+		);
+
+		// Round-trip via a fresh instance against the same repo.
+		$readerVars = $this->makeVars();
+		$reader = new SetupFile();
+		$this->withRepo( $reader, $repo );
+		$reader->loadSchema( $readerVars );
+
+		$this->assertSame(
+			[
+				'smw-task-flag',
+				[ 'smw-task-x', [ 'count' => 42 ] ],
+			],
+			$reader->findIncompleteTasks( $readerVars )
+		);
+	}
+
+	public function testEntityCollationRoundTrip() {
+		$repo = $this->makeInMemoryRepo();
+		$vars = $this->makeVars();
+
+		$writer = new SetupFile();
+		$this->withRepo( $writer, $repo );
+		$writer->loadSchema( $vars );
+
+		$writer->set( [ SetupFile::ENTITY_COLLATION => 'identity' ], $vars );
+
+		$readerVars = $this->makeVars();
+		$reader = new SetupFile();
+		$this->withRepo( $reader, $repo );
+		$reader->loadSchema( $readerVars );
+
+		$this->assertSame(
+			'identity',
+			$reader->get( SetupFile::ENTITY_COLLATION, $readerVars )
+		);
+	}
+
+	public function testLastOptimizationRunRoundTrip() {
+		$repo = $this->makeInMemoryRepo();
+		$vars = $this->makeVars();
+
+		$writer = new SetupFile();
+		$this->withRepo( $writer, $repo );
+		$writer->loadSchema( $vars );
+
+		$writer->set( [ SetupFile::LAST_OPTIMIZATION_RUN => '2026-05-27 03:06' ], $vars );
+
+		$readerVars = $this->makeVars();
+		$reader = new SetupFile();
+		$this->withRepo( $reader, $repo );
+		$reader->loadSchema( $readerVars );
+
+		$this->assertSame(
+			'2026-05-27 03:06',
+			$reader->get( SetupFile::LAST_OPTIMIZATION_RUN, $readerVars )
+		);
+	}
+
+	public function testHasDatabaseMinRequirementPasses() {
+		$vars = [
+			'smw.json' => [
+				Site::id() => [
+					SetupFile::DB_REQUIREMENTS => [
+						'latest_version' => '5.7',
+						'minimum_version' => '5.5',
+					],
+				],
+			],
+		];
+
+		$file = new SetupFile();
+
+		$this->assertTrue( $file->hasDatabaseMinRequirement( $vars ) );
+	}
+
+	public function testHasDatabaseMinRequirementFails() {
+		$vars = [
+			'smw.json' => [
+				Site::id() => [
+					SetupFile::DB_REQUIREMENTS => [
+						'latest_version' => '5.5',
+						'minimum_version' => '5.7',
+					],
+				],
+			],
+		];
+
+		$file = new SetupFile();
+
+		$this->assertFalse( $file->hasDatabaseMinRequirement( $vars ) );
+	}
+
+	private function makeVars(): array {
+		return [
+			'smwgConfigFileDir' => sys_get_temp_dir(),
+		];
+	}
+
+	private function makeInMemoryRepo(): SmwJsonRepo {
+		return new class implements SmwJsonRepo {
+			public array $data = [];
+
+			public function loadSmwJson( string $configDirectory ): ?array {
+				return $this->data;
+			}
+
+			public function saveSmwJson( string $configDirectory, array $smwJson ): void {
+				$this->data = $smwJson;
+			}
+		};
+	}
+
+	private function withRepo( SetupFile $file, SmwJsonRepo $repo ): void {
+		$ref = new ReflectionProperty( $file, 'repo' );
+		$ref->setAccessible( true );
+		$ref->setValue( $file, $repo );
 	}
 
 }

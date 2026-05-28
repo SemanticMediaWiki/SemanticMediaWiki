@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\User\User;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Store;
 
 /**
@@ -14,7 +14,7 @@ use SMW\Store;
  */
 class TaskHandlerRegistry {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
 
 	private array $taskHandlers = [];
 
@@ -32,6 +32,13 @@ class TaskHandlerRegistry {
 	}
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
+
+	/**
 	 * @since 3.2
 	 */
 	public function registerTaskHandlers( array $taskHandlers, User $user ): void {
@@ -42,7 +49,10 @@ class TaskHandlerRegistry {
 		$this->onRegisterTaskHandlers = true;
 		$this->taskHandlers = $taskHandlers;
 
-		$this->hookDispatcher->onRegisterTaskHandlers( $this, $this->store, $this->outputFormatter, $user );
+		$this->hookContainer->run(
+			'SMW::Admin::RegisterTaskHandlers',
+			[ $this, $this->store, $this->outputFormatter, $user ]
+		);
 	}
 
 	/**

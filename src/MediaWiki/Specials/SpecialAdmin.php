@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\SpecialPage\SpecialPage;
 use PermissionsError;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
@@ -40,7 +40,7 @@ class SpecialAdmin extends SpecialPage {
 	public function __construct(
 		private readonly Store $store,
 		private readonly Settings $settings,
-		private readonly HookDispatcher $hookDispatcher,
+		private readonly HookContainer $hookContainer,
 		private readonly JobFactory $jobFactory,
 		private readonly JobQueue $jobQueue
 	) {
@@ -119,8 +119,8 @@ class SpecialAdmin extends SpecialPage {
 			$this->jobQueue
 		);
 
-		$taskHandlerFactory->setHookDispatcher(
-			$this->hookDispatcher
+		$taskHandlerFactory->setHookContainer(
+			$this->hookContainer
 		);
 
 		$taskHandlerRegistry = $taskHandlerFactory->newTaskHandlerRegistry(

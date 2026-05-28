@@ -492,8 +492,8 @@ class SQLStoreFactory {
 			$mwServices->getJobFactory()
 		);
 
-		$installer->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$installer->setHookContainer(
+			$mwServices->getHookContainer()
 		);
 
 		$installer->setSetupFile(
@@ -902,8 +902,8 @@ class SQLStoreFactory {
 			$this->getLogger()
 		);
 
-		$propertyChangeListener->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$propertyChangeListener->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		$propertyChangeListener->loadListeners();

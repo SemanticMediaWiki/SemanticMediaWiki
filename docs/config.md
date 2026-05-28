@@ -255,11 +255,18 @@ them.
 
 ## $smwgConfigFileDir
 
-Directory used to persistently store SMW configuration files (`.smw.json`,
-`.smw.maintenance.json`). The directory must be writable. Override in
-`LocalSettings.php` with any writable path, for example `$wgUploadDirectory`.
+Directory that historically held the legacy `.smw.json` and
+`.smw.maintenance.json` files. As of SMW 7.0.0, install-state metadata
+is stored in the `smw_meta` database table. This setting is now only
+consulted by the one-shot migration that runs during `update.php`: if
+a pre-existing `.smw.json` file is found at this location, its entries
+are imported into `smw_meta` and the file is renamed to
+`.smw.json.migrated`. Sites that previously overrode this setting (for
+example to `$wgUploadDirectory`) should keep the override in place
+until `update.php` has run once.
 
 **Since:** 3.0
+**Deprecated since:** 7.0.0; will be removed in 8.0.0.
 **Default:** the extension's root directory
 
 ## $smwgCompactLinkSupport

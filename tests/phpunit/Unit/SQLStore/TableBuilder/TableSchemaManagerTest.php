@@ -209,6 +209,50 @@ class TableSchemaManagerTest extends TestCase {
 		);
 	}
 
+	public function testFindTableMetaTable() {
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->willReturn( [] );
+
+		$instance = new TableSchemaManager(
+			$this->store
+		);
+
+		$table = $instance->findTable( SQLStore::META_TABLE );
+
+		$this->assertInstanceOf(
+			Table::class,
+			$table
+		);
+
+		$this->assertSame(
+			'smw_meta',
+			$table->getName()
+		);
+
+		$fields = $table->get( 'fields' );
+
+		$this->assertArrayHasKey( 'meta_key', $fields );
+		$this->assertArrayHasKey( 'meta_value', $fields );
+
+		$this->assertSame(
+			[ FieldType::TYPE_CHAR_LONG, 'NOT NULL' ],
+			$fields['meta_key']
+		);
+
+		$this->assertSame(
+			[ FieldType::TYPE_BLOB, 'NOT NULL' ],
+			$fields['meta_value']
+		);
+
+		$indices = $table->get( 'indices' );
+
+		$this->assertSame(
+			[ 'meta_key', 'PRIMARY KEY' ],
+			$indices['pri']
+		);
+	}
+
 	public function testPropertyTable_FixedTable() {
 		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()

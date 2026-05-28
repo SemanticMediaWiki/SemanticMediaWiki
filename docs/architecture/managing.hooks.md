@@ -1,68 +1,54 @@
-The [`HookDispatcher`][dispatcher] is provided to inject a hook event handler into a class that triggers a specific hook event with the objective to isolate the MediaWiki `Hooks::run` static caller from a class instance.
-
-The removal of the `Hooks::run` static caller from an individual class follows mainly the problem of leaking global state into an instance which would persist during testing and hereby may alter results in a manner unpredictable based on hooks enabled at the time of the test run.
+Semantic MediaWiki triggers its own hook events through MediaWiki's [`HookContainer`][hookcontainer], the injectable service introduced in MediaWiki 1.35. Injecting `HookContainer` into a class avoids leaking global state from the legacy `Hooks::run` static caller, keeping hook firings isolated and mockable in tests.
 
 ### Register and trigger a hook event
 
-#### HookDispatcher
-
-Extend the [`HookDispatcher`][dispatcher] class with a particular method that is considered the public interface to trigger a hook event.
+Inject `HookContainer` into the class that fires the hook (constructor injection is preferred; setter injection is also supported where the consumer is created via a factory or service wiring).
 
 ```php
-class HookDispatcher {
-
-	/**
-	 * @see ...
-	 * @since 3.2
-	 *
-	 * @param $bar
-	 */
-	public function onChangingSomething( $bar ) {
-		Hooks::run( 'SMW::Fake::ChangingSomething', [ $bar ] );
-	}
-
-}
-```
-
-#### HookDispatcherAwareTrait
-
-The [`HookDispatcherAwareTrait`][trait] has been introduced to help extend a class that is expected to trigger a specific hook event.
-
-It requires to inject the `HookDispatcher` upon creation of an instance of that class (which should be done using a factory) hereby removes global state that would otherwise be leaking into the instance via `Hooks::run`.
-
-```php
-use SMW\MediaWiki\HookDispatcherAwareTrait;
+use MediaWiki\HookContainer\HookContainer;
 
 class Foo {
 
-	use HookDispatcherAwareTrait;
+	public function __construct( private HookContainer $hookContainer ) {
+	}
 
-	public function doSomethingAndTriggerAnEvent( $bar ) {
-
-		// Trigger the hook event
-		$this->hookDispatcher->onChangingSomething( $bar );
+	public function doSomethingAndTriggerAnEvent( $bar ): void {
+		$this->hookContainer->run( 'SMW::Fake::ChangingSomething', [ $bar ] );
 	}
 
 }
 ```
+
+In `ServiceWiring.php` or any factory, obtain `HookContainer` from `MediaWikiServices`:
+
 ```php
-use SMW\Services\ServicesFactory;
+use MediaWiki\MediaWikiServices;
 
-$servicesFactory = ServicesFactory::getInstance();
-
-$foo = new Foo();
-
-$foo->setHookDispatcher(
-	$servicesFactory->getHookDispatcher()
+$foo = new Foo(
+	MediaWikiServices::getInstance()->getHookContainer()
 );
 
 $foo->doSomethingAndTriggerAnEvent( 'abc' );
 ```
 
+For hooks that take arguments by reference, pass them with `&` inside the args array:
+
+```php
+$this->hookContainer->run( 'SMW::Fake::ChangingSomething', [ $title, &$mutableValue ] );
+```
+
+In tests, mock `HookContainer` and assert against the `run` method:
+
+```php
+$hookContainer = $this->createMock( HookContainer::class );
+$hookContainer->expects( $this->once() )
+	->method( 'run' )
+	->with( 'SMW::Fake::ChangingSomething', [ $bar ] );
+```
+
 ## List of hooks
 
-A list of [hook events][hook-list] provided by Semantic MediaWiki to help users to extend its core functionality.
+A list of [hook events][hook-list] provided by Semantic MediaWiki to help users extend its core functionality.
 
-[hook-list]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks.md
-[dispatcher]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/MediaWiki/HookDispatcher.php
-[trait]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/MediaWiki/HookDispatcherAwareTrait.php
+[hook-list]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks.md
+[hookcontainer]: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/core/+/refs/heads/master/includes/HookContainer/HookContainer.php
