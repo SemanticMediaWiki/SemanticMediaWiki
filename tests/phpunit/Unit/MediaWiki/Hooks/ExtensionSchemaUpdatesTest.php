@@ -30,9 +30,7 @@ class ExtensionSchemaUpdatesTest extends TestCase {
 			->setMethods( [ 'addExtensionUpdate', 'output' ] )
 			->getMockForAbstractClass();
 
-		// Two registrations: Store::setupStore (table creation + install) and
-		// MigrateSmwJsonToDb::run (one-shot .smw.json to smw_meta migration).
-		$databaseUpdater->expects( $this->exactly( 2 ) )
+		$databaseUpdater->expects( $this->once() )
 			->method( 'addExtensionUpdate' );
 
 		$instance = new ExtensionSchemaUpdates();

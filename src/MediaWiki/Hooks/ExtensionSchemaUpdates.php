@@ -93,11 +93,6 @@ class ExtensionSchemaUpdates implements LoadExtensionSchemaUpdatesHook {
 			]
 		);
 
-		// Runs after setupStore so smw_meta exists; idempotent on re-run.
-		$this->updater->addExtensionUpdate(
-			[ '\SMW\Setup\MigrateSmwJsonToDb::run' ]
-		);
-
 		return true;
 	}
 

@@ -12,6 +12,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Job;
 use SMW\Options;
 use SMW\Setup;
+use SMW\Setup\MigrateSmwJsonToDb;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
@@ -222,6 +223,12 @@ class Installer implements MessageReporter {
 		$this->addSupplementJobs();
 
 		$this->setupFile->finalize();
+
+		// Run after `finalize()` so the fresh upgrade_key, maintenance_mode,
+		// and latest_version are already in `smw_meta` and INSERT IGNORE
+		// preserves them. Idempotent: a successful run renames `.smw.json`
+		// so the next install/upgrade short-circuits at file presence.
+		MigrateSmwJsonToDb::run( $this->messageReporter );
 
 		$timer->stop( 'supplement-jobs' )->new( 'hook-execution' );
 

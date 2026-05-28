@@ -4,8 +4,8 @@ declare( strict_types = 1 );
 
 namespace SMW\Tests\Integration;
 
-use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\MediaWikiServices;
+use Onoi\MessageReporter\MessageReporter;
 use SMW\DatabaseMetaRepo;
 use SMW\Setup\MigrateSmwJsonToDb;
 use SMW\Site;
@@ -75,7 +75,7 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 			],
 		] ) );
 
-		MigrateSmwJsonToDb::run( $this->makeDatabaseUpdater() );
+		MigrateSmwJsonToDb::run( $this->makeReporter() );
 
 		$repo = new DatabaseMetaRepo(
 			MediaWikiServices::getInstance()->getDBLoadBalancer()
@@ -102,7 +102,7 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 			Site::id() => [ 'upgrade_key' => 'abc123' ],
 		] ) );
 
-		MigrateSmwJsonToDb::run( $this->makeDatabaseUpdater() );
+		MigrateSmwJsonToDb::run( $this->makeReporter() );
 
 		$firstRunCount = $this->getDb()->newSelectQueryBuilder()
 			->select( 'meta_key' )
@@ -113,7 +113,7 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 		// Second invocation: the source file has been renamed by the first
 		// call, so the file-presence guard must short-circuit without
 		// touching the table.
-		MigrateSmwJsonToDb::run( $this->makeDatabaseUpdater() );
+		MigrateSmwJsonToDb::run( $this->makeReporter() );
 
 		$secondRunCount = $this->getDb()->newSelectQueryBuilder()
 			->select( 'meta_key' )
@@ -128,7 +128,7 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 
 	public function testSkipsWhenFileMissing(): void {
 		// No .smw.json on disk; the migration must be a silent no-op.
-		MigrateSmwJsonToDb::run( $this->makeDatabaseUpdater() );
+		MigrateSmwJsonToDb::run( $this->makeReporter() );
 
 		$rowCount = $this->getDb()->newSelectQueryBuilder()
 			->select( 'meta_key' )
@@ -150,12 +150,8 @@ class MigrateSmwJsonToDbTest extends SMWIntegrationTestCase {
 			->execute();
 	}
 
-	private function makeDatabaseUpdater(): DatabaseUpdater {
-		$updater = $this->createMock( DatabaseUpdater::class );
-		$updater->method( 'getDB' )->willReturn( $this->getDb() );
-		$updater->method( 'output' )->willReturn( null );
-
-		return $updater;
+	private function makeReporter(): MessageReporter {
+		return $this->createMock( MessageReporter::class );
 	}
 
 }
