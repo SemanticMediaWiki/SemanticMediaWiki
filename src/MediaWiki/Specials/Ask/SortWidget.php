@@ -104,7 +104,7 @@ class SortWidget {
 						'name' => "sort_num[]",
 						'size' => '35',
 						'class' => 'smw-property-input autocomplete-arrow',
-						'value' => htmlspecialchars( $sorts[$i] )
+						'value' => $sorts[$i]
 					]
 			);
 

@@ -151,14 +151,14 @@ class Pager {
 		if ( $offset > 0 ) {
 			$plink = self::numLink( $title, max( $offset - $limit, 0 ), $limit, $query, $prev, 'prevn-title', $language );
 		} else {
-			$plink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $prev ) );
+			$plink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], $prev );
 		}
 
 		# Make 'next' link
 		$next = wfMessage( 'smw-next' )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
 
 		if ( $atend ) {
-			$nlink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $next ) );
+			$nlink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], $next );
 		} else {
 			$nlink = self::numLink( $title, $offset + $limit, $limit, $query, $next, 'nextn-title', $language );
 		}

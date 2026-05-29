@@ -90,6 +90,10 @@ class HtmlTable {
 		$rows = [];
 
 		foreach ( $this->headers as $i => $header ) {
+			// $header['attributes'] holds caller-supplied HTML attributes (e.g. a CSS
+			// class derived from a query label); Html::rawElement escapes them once.
+			// Phan over-taints the value through the print-request label source.
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			$headers[] = Html::rawElement( 'th', $header['attributes'], $header['content'] );
 		}
 
@@ -105,6 +109,9 @@ class HtmlTable {
 
 		foreach ( $this->headers as $hIndex => $header ) {
 			$cells = [];
+			// See buildTable(): the attributes are caller-supplied and escaped once by
+			// Html::rawElement; phan over-taints them via the print-request label.
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			$headerItem = Html::rawElement( 'th', $header['attributes'], $header['content'] );
 
 			foreach ( $this->rows as $rIndex => $row ) {

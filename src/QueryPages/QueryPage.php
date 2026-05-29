@@ -191,7 +191,7 @@ abstract class QueryPage extends MWQueryPage {
 
 		return Xml::tags( 'form', [
 			'method' => 'get',
-			'action' => htmlspecialchars( $GLOBALS['wgScript'] ),
+			'action' => $GLOBALS['wgScript'],
 			'class' => 'plainlinks'
 		], Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
 			Xml::fieldset( $this->msg( 'smw-special-property-searchform-options' )->text(),

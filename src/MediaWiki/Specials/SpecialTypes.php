@@ -201,7 +201,7 @@ class SpecialTypes extends SpecialPage {
 			);
 		}
 
-		$this->addHelpLink( $this->msg( 'smw-specials-bytype-helplink', $typeLabel )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-specials-bytype-helplink', $typeLabel )->text(), true );
 
 		$pagingLimit = $this->settings->dotGet( 'smwgPagingLimit.type' );
 

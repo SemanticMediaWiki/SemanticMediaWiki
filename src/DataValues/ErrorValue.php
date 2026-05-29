@@ -54,7 +54,11 @@ class ErrorValue extends DataValue {
 	}
 
 	public function getShortHTMLText( $linker = null ): string {
-		return htmlspecialchars( $this->getShortWikiText( $linker ) );
+		// Errors are always rendered as the encoded error tooltip, which is already-safe
+		// HTML built (and internally escaped) by smwfEncodeMessages(). Mirror
+		// getLongHTMLText() and return it directly. Routing through getShortWikiText()
+		// would return the raw, unescaped m_caption on the construction path.
+		return $this->getErrorText();
 	}
 
 	public function getLongWikiText( $linked = null ) {

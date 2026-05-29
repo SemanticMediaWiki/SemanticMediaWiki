@@ -127,6 +127,10 @@ class TableResultPrinter extends ResultPrinter {
 				$mode = $this->isHTML && $isPlain ? SMW_OUTPUT_WIKI : $outputMode;
 				$text = $pr->getText( $mode, ( $isPlain ? null : $this->mLinker ) );
 				$headerList[] = $pr->getCanonicalLabel();
+				// $attributes['class'] is a CSS class built from the (stripped) column
+				// label; HtmlTable escapes attributes once. Phan over-taints it via the
+				// print-request label source.
+				// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
 		}
@@ -136,6 +140,9 @@ class TableResultPrinter extends ResultPrinter {
 		$subject = $res->getNext();
 		while ( $subject ) {
 			$rowNumber++;
+			// $columnClasses are CSS classes built from the (stripped) column labels and
+			// escaped once at the cell sink; phan over-taints them via the label source.
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
 
 			$this->htmlTable->row(
@@ -273,7 +280,7 @@ class TableResultPrinter extends ResultPrinter {
 			}
 
 			if ( $this->isDataTable && $sortKey !== '' ) {
-				$attributes['data-order'] = htmlspecialchars( $sortKey );
+				$attributes['data-order'] = $sortKey;
 			}
 
 			$alignment = trim( $printRequest->getParameter( 'align' ) );
@@ -282,10 +289,7 @@ class TableResultPrinter extends ResultPrinter {
 				$attributes['style'] = "text-align:$alignment;";
 			}
 
-			$width = htmlspecialchars(
-				trim( $printRequest->getParameter( 'width' ) ),
-				ENT_QUOTES
-			);
+			$width = trim( $printRequest->getParameter( 'width' ) );
 
 			if ( $width ) {
 				$attributes['style'] = ( isset( $attributes['style'] ) ? $attributes['style'] . ' ' : '' ) . "width:$width;";

@@ -219,7 +219,7 @@ class LinksWidget {
 					[
 						'id' => 'search-action',
 						'type'  => 'submit',
-						'value' => wfMessage( 'smw_ask_submit' )->escaped()
+						'value' => wfMessage( 'smw_ask_submit' )->text()
 					]
 				) .
 				Html::element(

@@ -27,11 +27,17 @@ class Field {
 			$attributes['class'] .= " smw-$type-tooltip";
 		}
 
+		// create() may set $attributes['tooltip'] to rendered (escaped) Highlighter HTML.
+		// input() pulls it out into element content (never into an attribute); select()
+		// has no tooltip support and no caller passes one. Phan taints the whole array and
+		// cannot track the per-key handling, so it reports a double escape that cannot occur.
 		if ( $type === 'input' ) {
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			return $this->input( $attributes );
 		}
 
 		if ( $type === 'select' ) {
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			return $this->select( $attributes );
 		}
 

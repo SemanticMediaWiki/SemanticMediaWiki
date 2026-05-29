@@ -139,6 +139,11 @@ class ConceptParserFunction {
 	}
 
 	private function getRdfLink( Title $title ): Infolink {
+		// The caption is a static i18n message and this Infolink is only ever rendered
+		// as wikitext (getRdfLink()->getWikiText()), where the caption is link display
+		// text, not raw HTML. Phan flags the caption via Infolink's HTML-output sink,
+		// which this call path never reaches.
+		// @phan-suppress-next-line SecurityCheck-XSS
 		return Infolink::newInternalLink(
 			wfMessage( 'smw_viewasrdf' )->text(),
 			$title->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink'
