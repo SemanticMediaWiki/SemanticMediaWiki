@@ -142,6 +142,19 @@ class UpdateJobTest extends TestCase {
 		);
 	}
 
+	public function testIgnoresDuplicates() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// RedirectUpdater::triggerChangeTitleUpdate (and others) rely on identical
+		// same-target update jobs collapsing in the queue, so a change-title /
+		// redirect re-parse cannot be amplified into a flood. See #5619.
+		$this->assertTrue(
+			$this->newUpdateJob( $title, [], $this->newStoreWithIdTable() )->ignoreDuplicates()
+		);
+	}
+
 	public function testJobWithMissingParserOutput() {
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
