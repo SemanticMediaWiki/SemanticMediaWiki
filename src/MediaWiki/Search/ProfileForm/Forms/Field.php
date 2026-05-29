@@ -28,9 +28,9 @@ class Field {
 		}
 
 		// create() may set $attributes['tooltip'] to rendered (escaped) Highlighter HTML.
-		// input() pulls it out into element content (never into an attribute); select()
-		// has no tooltip support and no caller passes one. Phan taints the whole array and
-		// cannot track the per-key handling, so it reports a double escape that cannot occur.
+		// input() pulls it out into element content and select() unsets it; neither emits
+		// it as an attribute. Phan taints the whole array and cannot track the per-key
+		// handling, so it reports a double escape that cannot occur.
 		if ( $type === 'input' ) {
 			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			return $this->input( $attributes );
@@ -85,6 +85,10 @@ class Field {
 			$selected = $attributes['selected'];
 			unset( $attributes['selected'] );
 		}
+
+		// Selects have no tooltip support; drop any rendered tooltip so it cannot
+		// leak into a literal tooltip="..." attribute on the <select>.
+		unset( $attributes['tooltip'] );
 
 		foreach ( $list as $key => $value ) {
 

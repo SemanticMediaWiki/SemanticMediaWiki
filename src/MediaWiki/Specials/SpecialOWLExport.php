@@ -122,7 +122,7 @@ class SpecialOWLExport extends SpecialPage {
 
 		if ( $user->isAllowed( 'delete' ) || $smwgExportAll ) {
 			$html .= '<br />';
-			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&#160;<label for="ea">' . $this->msg( 'smw_exportrdf_lastdate' )->escaped() . '</label></input><br />' . "\n";
+			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&#160;<label for="date">' . $this->msg( 'smw_exportrdf_lastdate' )->escaped() . '</label></input><br />' . "\n";
 		}
 
 		$html .= '<br /><input type="submit"  value="' . $this->msg( 'smw_exportrdf_submit' )->escaped() . "\"/>\n</form>";
