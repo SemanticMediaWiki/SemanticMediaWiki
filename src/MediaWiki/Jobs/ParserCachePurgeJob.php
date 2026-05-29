@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Title\Title;
 use Psr\Log\LoggerInterface;
 use SMW\MediaWiki\Job;
@@ -10,10 +11,10 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use WikiPage;
 
 /**
- * Partial DI: ParserCachePurgeJob still resolves its logger and page-creator
- * lazily through `ApplicationFactory` because neither is registered as a
- * global SMW.X service yet. Constructor injection will follow once
- * `MediaWikiLogger` and `PageCreator` move onto the container.
+ * Partial DI: ParserCachePurgeJob still resolves its PSR-3 logger and
+ * page-creator lazily (via `LoggerFactory::getInstance( 'smw' )` and
+ * `ApplicationFactory`) because `PageCreator` is not yet registered on the
+ * global container.
  *
  * @license GPL-2.0-or-later
  * @since 3.1
@@ -93,7 +94,7 @@ class ParserCachePurgeJob extends Job {
 
 	private function getLogger(): LoggerInterface {
 		if ( $this->logger === null ) {
-			$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
+			$this->logger = LoggerFactory::getInstance( 'smw' );
 		}
 
 		return $this->logger;

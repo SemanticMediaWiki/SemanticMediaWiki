@@ -67,7 +67,6 @@ use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
 use SMW\StoreFactory;
-use SMW\Utils\Logger;
 
 /**
  * Service wiring for SMW. Registered via `extension.json`'s
@@ -155,7 +154,7 @@ return [
 		}
 
 		$instance->setLogger(
-			new Logger( LoggerFactory::getInstance( 'smw' ), Logger::ROLE_DEVELOPER )
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $instance;
@@ -305,7 +304,7 @@ return [
 		$connectionProvider = new ConnectionProvider();
 
 		$connectionProvider->setLogger(
-			$servicesFactory->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $connectionProvider;
@@ -577,7 +576,7 @@ return [
 		}
 
 		return new ParserDataFactory(
-			$servicesFactory->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 	},
 
@@ -598,11 +597,7 @@ return [
 			return $servicesFactory->getLogger();
 		}
 
-		// Route through getMediaWikiLogger() rather than calling
-		// LoggerFactory::getInstance( 'smw' ) directly, so callers see the
-		// SMW\Utils\Logger role-filter wrapper rather than a raw PSR-3
-		// channel logger.
-		return $servicesFactory->getMediaWikiLogger();
+		return LoggerFactory::getInstance( 'smw' );
 	},
 
 	'SMW.PropertyLabelFinder' => static function ( MediaWikiServices $services ): PropertyLabelFinder {
@@ -829,7 +824,7 @@ return [
 		);
 
 		$hierarchyLookup->setLogger(
-			$servicesFactory->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		$hierarchyLookup->setSubcategoryDepth(

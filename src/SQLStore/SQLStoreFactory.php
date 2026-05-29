@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
@@ -532,7 +533,7 @@ class SQLStoreFactory {
 	 * @return LoggerInterface
 	 */
 	public function getLogger(): LoggerInterface {
-		return ApplicationFactory::getInstance()->getMediaWikiLogger();
+		return LoggerFactory::getInstance( 'smw' );
 	}
 
 	/**

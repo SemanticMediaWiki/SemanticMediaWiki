@@ -2,6 +2,7 @@
 
 namespace SMW\Services;
 
+use MediaWiki\Logger\LoggerFactory;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ConstraintSchemaValue;
@@ -174,7 +175,7 @@ return [
 		);
 
 		$compoundConstraintValueValidator->setLogger(
-			$servicesFactory->singleton( 'MediaWikiLogger' )
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $compoundConstraintValueValidator;

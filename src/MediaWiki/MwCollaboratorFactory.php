@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Language\Language;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\StripState;
@@ -143,7 +144,7 @@ class MwCollaboratorFactory {
 		);
 
 		$connectionProvider->setLogger(
-			$this->applicationFactory->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $connectionProvider;

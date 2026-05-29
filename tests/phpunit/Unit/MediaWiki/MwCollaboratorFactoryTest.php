@@ -8,7 +8,6 @@ use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
@@ -151,10 +150,6 @@ class MwCollaboratorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$logger = $this->getMockBuilder( LoggerInterface::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$settings->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->willReturn( [] );
@@ -162,10 +157,6 @@ class MwCollaboratorFactoryTest extends TestCase {
 		$this->applicationFactory->expects( $this->atLeastOnce() )
 			->method( 'getSettings' )
 			->willReturn( $settings );
-
-		$this->applicationFactory->expects( $this->atLeastOnce() )
-			->method( 'getMediaWikiLogger' )
-			->willReturn( $logger );
 
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory

@@ -91,7 +91,6 @@ use SMW\SiteReadiness;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
 use SMW\StoreFactory;
-use SMW\Utils\Logger;
 use SMW\Utils\Stats;
 use SMW\Utils\TempFile;
 use Wikimedia\Rdbms\IConnectionProvider;
@@ -366,7 +365,6 @@ class ServicesFactory {
 			'RevisionLookup' => fn () => $this->newRevisionLookup(),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'DefaultSearchEngineTypeForDB' => fn () => $this->getDefaultSearchEngineTypeForDB( ...$args ),
-			'MediaWikiLogger' => fn () => $this->getMediaWikiLogger( ...$args ),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'WikiPage' => fn () => $this->newWikiPage( ...$args ),
 			'FixedInMemoryLruCache' => fn () => $this->newFixedInMemoryLruCache( ...$args ),
@@ -531,7 +529,7 @@ class ServicesFactory {
 			}
 
 			$instance->setLogger(
-				$this->getMediaWikiLogger()
+				LoggerFactory::getInstance( 'smw' )
 			);
 
 			return $instance;
@@ -707,7 +705,7 @@ class ServicesFactory {
 		$pageUpdater = new PageUpdater( $connection, $transactionalCallableUpdate );
 
 		$pageUpdater->setLogger(
-			$this->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		// https://phabricator.wikimedia.org/T154427
@@ -838,7 +836,7 @@ class ServicesFactory {
 		$parserData = new ParserData( $title, $parserOutput );
 
 		$parserData->setLogger(
-			$this->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $parserData;
@@ -904,7 +902,7 @@ class ServicesFactory {
 		);
 
 		$dataUpdater->setLogger(
-			$this->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		$dataUpdater->setRevisionGuard(
@@ -984,7 +982,7 @@ class ServicesFactory {
 		);
 
 		$hierarchyLookup->setLogger(
-			$this->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		$hierarchyLookup->setSubcategoryDepth(
@@ -1101,7 +1099,7 @@ class ServicesFactory {
 		);
 
 		$editProtectionUpdater->setLogger(
-			$this->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		return $editProtectionUpdater;
@@ -1206,7 +1204,7 @@ class ServicesFactory {
 		);
 
 		$resultCache->setLogger(
-			$this->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		$resultCache->setNonEmbeddedCacheLifetime(
@@ -1557,7 +1555,7 @@ class ServicesFactory {
 		);
 
 		$deferredCallableUpdate->setLogger(
-			$this->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		$deferredCallableUpdate->isCommandLineMode(
@@ -1584,7 +1582,7 @@ class ServicesFactory {
 		);
 
 		$deferredTransactionalUpdate->setLogger(
-			$this->getMediaWikiLogger()
+			LoggerFactory::getInstance( 'smw' )
 		);
 
 		$deferredTransactionalUpdate->isCommandLineMode(
@@ -1619,13 +1617,6 @@ class ServicesFactory {
 	/**
 	 * @since 2.5
 	 */
-	public function getMediaWikiLogger( $channel = 'smw', $role = Logger::ROLE_DEVELOPER ): LoggerInterface {
-		if ( array_key_exists( 'MediaWikiLogger', $this->testOverrides ) ) {
-			return $this->testOverrides['MediaWikiLogger'];
-		}
-
-		return new Logger( LoggerFactory::getInstance( $channel ), $role );
-	}
 
 	/**
 	 * @since 3.0
