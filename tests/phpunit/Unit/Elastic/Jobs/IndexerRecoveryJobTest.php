@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit\Elastic\Jobs;
 
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
@@ -14,6 +13,7 @@ use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\MediaWiki\JobFactory;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Elastic\Jobs\IndexerRecoveryJob
@@ -55,12 +55,9 @@ class IndexerRecoveryJobTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->getMockForAbstractClass();
-
-		// Cache is also fetched via ApplicationFactory in
-		// pushFromDocument(); mirror the injected cache there.
-		$this->testEnvironment->registerObject( 'Cache', $this->cache );
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -94,7 +91,7 @@ class IndexerRecoveryJobTest extends TestCase {
 		parent::tearDown();
 	}
 
-	private function newJob( array $params = [], ?ElasticStore $store = null, ?Cache $cache = null ): IndexerRecoveryJob {
+	private function newJob( array $params = [], ?ElasticStore $store = null, ?BagOStuff $cache = null ): IndexerRecoveryJob {
 		return new IndexerRecoveryJob(
 			$this->title,
 			$params,
@@ -175,7 +172,7 @@ class IndexerRecoveryJobTest extends TestCase {
 			->willReturn( $this->connection );
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->with( $this->stringContains( 'smw:elastic:document:d1ea1c1728561f9d6aeed8c28b9b7617' ) );
 
 		$instance = $this->newJob( [ 'index' => 'Foo#0##' ] );
@@ -221,10 +218,6 @@ class IndexerRecoveryJobTest extends TestCase {
 	public function testPushFromDocument() {
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'push' );
-
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with( $this->stringContains( 'smw:elastic:document:d1ea1c1728561f9d6aeed8c28b9b7617' ) );
 
 		$data = [
 			'subject' => [ 'serialization' => 'Foo#0##' ]

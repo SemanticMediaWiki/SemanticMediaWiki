@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Unit\Localizer\LocalLanguage;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Localizer\LocalLanguage\JsonContentsFileReader
@@ -40,16 +40,12 @@ class JsonContentsFileReaderTest extends TestCase {
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testReadByLanguageCodeWithCache( $languageCode ) {
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$cache->expects( $this->atLeastOnce() )
-			->method( 'contains' )
-			->willReturn( true );
-
-		$cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( [] );
 
 		$instance = new JsonContentsFileReader( $cache );
