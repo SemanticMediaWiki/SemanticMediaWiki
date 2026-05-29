@@ -719,7 +719,8 @@ class SQLStoreFactory {
 
 		$cacheWarmer = new CacheWarmer(
 			$this->store,
-			$idCacheManager
+			$idCacheManager,
+			$applicationFactory->getLinkBatch()
 		);
 
 		$cacheWarmer->setDisplayTitleFinder(
@@ -1059,7 +1060,8 @@ class SQLStoreFactory {
 		return new PrefetchItemLookup(
 			$this->store,
 			$this->newSemanticDataLookup(),
-			$this->newPropertySubjectsLookup()
+			$this->newPropertySubjectsLookup(),
+			ApplicationFactory::getInstance()->getLinkBatch()
 		);
 	}
 
