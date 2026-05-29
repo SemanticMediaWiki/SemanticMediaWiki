@@ -295,7 +295,7 @@ class SQLStoreFactory {
 
 		$cachedListLookup = new CachedListLookup(
 			$listLookup,
-			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			ApplicationFactory::getInstance()->getObjectCache(),
 			$cacheOptions
 		);
 

@@ -3,10 +3,10 @@
 namespace SMW\Localizer\LocalLanguage;
 
 use Exception;
-use Onoi\Cache\Cache;
-use Onoi\Cache\NullCache;
 use RuntimeException;
 use SMW\Utils\ErrorCodeFormatter;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\EmptyBagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -26,11 +26,11 @@ class JsonContentsFileReader {
 	 * @since 2.5
 	 */
 	public function __construct(
-		private ?Cache $cache = null,
+		private ?BagOStuff $cache = null,
 		private $languageFileDir = '',
 	) {
 		if ( $this->cache === null ) {
-			$this->cache = new NullCache();
+			$this->cache = new EmptyBagOStuff();
 		}
 
 		if ( $this->languageFileDir === '' ) {
@@ -107,8 +107,12 @@ class JsonContentsFileReader {
 			]
 		);
 
-		if ( !$readFromFile && !$this->skipCache && !isset( self::$contents[$languageCode] ) && $this->cache->contains( $cacheKey ) ) {
-			self::$contents[$languageCode] = $this->cache->fetch( $cacheKey );
+		if ( !$readFromFile && !$this->skipCache && !isset( self::$contents[$languageCode] ) ) {
+			$cached = $this->cache->get( $cacheKey );
+
+			if ( $cached !== false ) {
+				self::$contents[$languageCode] = $cached;
+			}
 		}
 
 		if ( $readFromFile || !isset( self::$contents[$languageCode] ) ) {
@@ -125,7 +129,7 @@ class JsonContentsFileReader {
 		);
 
 		if ( $contents !== null && json_last_error() === JSON_ERROR_NONE ) {
-			$this->cache->save( $cacheKey, $contents, $this->ttl );
+			$this->cache->set( $cacheKey, $contents, $this->ttl );
 			return $contents;
 		}
 

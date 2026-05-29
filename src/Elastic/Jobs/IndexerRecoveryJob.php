@@ -4,7 +4,6 @@ namespace SMW\Elastic\Jobs;
 
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticStore;
@@ -15,6 +14,7 @@ use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HmacSerializer;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Partial DI: Store and Cache are injected via the JobClasses ObjectFactory
@@ -51,7 +51,7 @@ class IndexerRecoveryJob extends Job {
 		Title $title,
 		array $params,
 		Store $store,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly JobFactory $jobFactory
 	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
@@ -74,10 +74,10 @@ class IndexerRecoveryJob extends Job {
 	 * @since 3.2
 	 */
 	public static function pushFromDocument( Document $document ): void {
-		$cache = ApplicationFactory::getInstance()->getCache();
+		$cache = ApplicationFactory::getInstance()->getObjectCache();
 		$subject = $document->getSubject();
 
-		$cache->save(
+		$cache->set(
 			self::makeCacheKey( $subject ),
 			HmacSerializer::compress( $document ),
 			self::TTL_WEEK
@@ -208,7 +208,7 @@ class IndexerRecoveryJob extends Job {
 
 		$document = null;
 
-		$data = $cache->fetch( $key );
+		$data = $cache->get( $key );
 		if ( $data !== false ) {
 			$document = HmacSerializer::uncompress( $data );
 		}

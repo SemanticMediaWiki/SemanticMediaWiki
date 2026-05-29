@@ -736,7 +736,7 @@
 		},
 		"smw.elasticIndexerRecovery": {
 			"class": "SMW\\Elastic\\Jobs\\IndexerRecoveryJob",
-			"services": [ "SMW.Store", "SMW.Cache", "SMW.JobFactory" ]
+			"services": [ "SMW.Store", "SMW.ObjectCache", "SMW.JobFactory" ]
 		},
 		"smw.elasticFileIngest": {
 			"class": "SMW\\Elastic\\Jobs\\FileIngestJob",

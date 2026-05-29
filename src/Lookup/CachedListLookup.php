@@ -2,9 +2,9 @@
 
 namespace SMW\Lookup;
 
-use Onoi\Cache\Cache;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use stdClass;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -30,7 +30,7 @@ class CachedListLookup implements ListLookup {
 	 */
 	public function __construct(
 		private readonly ListLookup $listLookup,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly stdClass $cacheOptions,
 	) {
 	}
@@ -109,7 +109,7 @@ class CachedListLookup implements ListLookup {
 			$this->listLookup->getHash()
 		);
 
-		$data = unserialize( $this->cache->fetch( $id ) );
+		$data = unserialize( $this->cache->get( $id ) );
 
 		if ( is_array( $data ) && $data !== [] ) {
 			foreach ( $data as $key => $value ) {
@@ -121,11 +121,11 @@ class CachedListLookup implements ListLookup {
 	}
 
 	private function tryFetchFromCache( $key, $optionsKey ) {
-		if ( !$this->cache->contains( $key ) ) {
+		if ( $this->cache->get( $key ) === false ) {
 			return null;
 		}
 
-		$data = unserialize( $this->cache->fetch( $optionsKey ) );
+		$data = unserialize( $this->cache->get( $optionsKey ) );
 
 		if ( !is_array( $data ) || $data === [] ) {
 			return null;
@@ -149,17 +149,17 @@ class CachedListLookup implements ListLookup {
 		$this->isFromCache = false;
 
 		// Collect the options keys
-		$data = unserialize( $this->cache->fetch( $key ) ?? '' );
+		$data = unserialize( $this->cache->get( $key ) ?? '' );
 		$data = $data === false ? [] : $data;
 		$data[$optionsKey] = true;
-		$this->cache->save( $key, serialize( $data ), $ttl );
+		$this->cache->set( $key, serialize( $data ), $ttl );
 
 		$data = [
 			'time' => $this->timestamp,
 			'list' => $list
 		];
 
-		$this->cache->save( $optionsKey, serialize( $data ), $ttl );
+		$this->cache->set( $optionsKey, serialize( $data ), $ttl );
 	}
 
 	private function getCacheKey( ?string $id ): array {

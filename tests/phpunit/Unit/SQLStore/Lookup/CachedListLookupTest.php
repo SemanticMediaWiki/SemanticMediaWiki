@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Unit\SQLStore\Lookup;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\Lookup\CachedListLookup;
 use SMW\Lookup\ListLookup;
 use stdClass;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Lookup\CachedListLookup
@@ -24,7 +24,7 @@ class CachedListLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,17 +48,13 @@ class CachedListLookupTest extends TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Bar#123' );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache->expects( $this->once() )
-			->method( 'contains' )
-			->with(	$this->stringContains( 'cacheprefix-foobar:smw:store:lookup:' ) )
-			->willReturn( true );
-
-		$cache->expects( $this->once() )
-			->method( 'fetch' )
+		$cache->expects( $this->exactly( 2 ) )
+			->method( 'get' )
+			->with( $this->stringContains( 'cacheprefix-foobar:smw:store:lookup:' ) )
 			->willReturn( serialize( $expectedCachedItem ) );
 
 		$cacheOptions = new stdClass;
@@ -109,16 +105,16 @@ class CachedListLookupTest extends TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Foo#123' );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->any() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$cache->expects( $this->atLeastOnce() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->stringContains( 'smw:store:lookup' ),
 				$this->anything(),
@@ -154,12 +150,12 @@ class CachedListLookupTest extends TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Foo#123' );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( serialize( [ 'smw:store:lookup:6283479db90b04ad3a6db333a3c89766' => true ] ) );
 
 		$cache->expects( $this->atLeastOnce() )
