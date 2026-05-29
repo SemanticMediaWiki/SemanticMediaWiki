@@ -37,6 +37,7 @@ use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\ContentParserFactory;
 use SMW\MediaWiki\Jobs\PageUpdaterFactory;
 use SMW\MediaWiki\Jobs\ParserDataFactory;
+use SMW\MediaWiki\LinkBatch;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
@@ -197,6 +198,12 @@ return [
 		// resolving it through ServicesFactory honours the testOverrides map.
 		return new JobQueue(
 			$servicesFactory->getJobQueueGroup()
+		);
+	},
+
+	'SMW.LinkBatch' => static function ( MediaWikiServices $services ): LinkBatch {
+		return new LinkBatch(
+			$services->getLinkBatchFactory()->newLinkBatch()
 		);
 	},
 
