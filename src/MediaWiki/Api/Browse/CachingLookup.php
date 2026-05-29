@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use Onoi\Cache\Cache;
 use SMW\Store;
 use SMW\Utils\Timer;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -28,7 +28,7 @@ class CachingLookup {
 	 * @since 3.0
 	 */
 	public function __construct(
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly Lookup $lookup,
 	) {
 		$this->cacheTTL = self::CACHE_TTL;
@@ -62,7 +62,7 @@ class CachingLookup {
 		);
 
 		if ( $this->cacheTTL !== false ) {
-			$res = $this->cache->fetch( $hash );
+			$res = $this->cache->get( $hash );
 			if ( $res !== false ) {
 				$res['meta']['isFromCache'] = true;
 				$res['meta']['queryTime'] = Timer::getElapsedTime( __METHOD__, 5 );
@@ -75,7 +75,7 @@ class CachingLookup {
 		);
 
 		if ( $this->cacheTTL !== false ) {
-			$this->cache->save( $hash, $res, $this->cacheTTL );
+			$this->cache->set( $hash, $res, $this->cacheTTL );
 		}
 
 		$res['meta']['isFromCache'] = false;

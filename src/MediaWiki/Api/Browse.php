@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Api;
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiMain;
 use MediaWiki\Title\TitleFactory;
-use Onoi\Cache\Cache;
 use SMW\Exception\JSONParseException;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
@@ -21,6 +20,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -41,7 +41,7 @@ class Browse extends ApiBase {
 		string $action,
 		private readonly Store $store,
 		private readonly Settings $settings,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly TitleFactory $titleFactory
 	) {
 		parent::__construct( $main, $action );

@@ -4,7 +4,6 @@ namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Task;
 use SMW\MediaWiki\Api\TaskFactory;
@@ -18,6 +17,7 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\MediaWiki\Api\Task
@@ -94,16 +94,16 @@ class TaskTest extends TestCase {
 	}
 
 	public function testDupLookupTask() {
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$cache->expects( $this->once() )
-			->method( 'save' );
+			->method( 'set' );
 
 		$entityTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
@@ -259,7 +259,7 @@ class TaskTest extends TestCase {
 	private function newRealTaskFactory(
 		?Store $store = null,
 		?JobQueue $jobQueue = null,
-		?Cache $cache = null,
+		?BagOStuff $cache = null,
 		?JobFactory $jobFactory = null
 	): TaskFactory {
 		if ( $store === null ) {
@@ -275,7 +275,7 @@ class TaskTest extends TestCase {
 		}
 
 		if ( $cache === null ) {
-			$cache = $this->getMockBuilder( Cache::class )
+			$cache = $this->getMockBuilder( BagOStuff::class )
 				->disableOriginalConstructor()
 				->getMock();
 		}

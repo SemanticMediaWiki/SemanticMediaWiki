@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use Onoi\Cache\Cache;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,7 +22,7 @@ class TableStatisticsTask extends Task {
 	 */
 	public function __construct(
 		private readonly Store $store,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 	) {
 	}
 
@@ -47,7 +47,7 @@ class TableStatisticsTask extends Task {
 
 		// Guard against repeated API calls (or fuzzing)
 		if ( $cacheTTL !== false ) {
-			$result = $this->cache->fetch( $key );
+			$result = $this->cache->get( $key );
 			if ( $result !== false ) {
 				return $result + [ 'isFromCache' => true, 'cacheTTL' => $cacheTTL ];
 			}
@@ -60,7 +60,7 @@ class TableStatisticsTask extends Task {
 			'time' => date( 'Y-m-d H:i:s' )
 		];
 
-		$this->cache->save( $key, $result, $cacheTTL );
+		$this->cache->set( $key, $result, $cacheTTL );
 
 		return $result;
 	}

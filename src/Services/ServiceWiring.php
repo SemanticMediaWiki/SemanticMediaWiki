@@ -67,6 +67,7 @@ use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
 use SMW\StoreFactory;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Service wiring for SMW. Registered via `extension.json`'s
@@ -172,6 +173,13 @@ return [
 		// that need a non-default cache type still go through
 		// CacheFactory::newMediaWikiCompositeCache() directly.
 		return ( new CacheFactory() )->newMediaWikiCompositeCache();
+	},
+
+	'SMW.ObjectCache' => static function ( MediaWikiServices $services ): BagOStuff {
+		// MediaWiki-native BagOStuff for consumers migrated off the Onoi cache.
+		// Resolved through ServicesFactory so it shares the same backing store
+		// (the configured $smwgMainCacheType) as the SMW.Cache composite.
+		return ServicesFactory::getInstance()->getObjectCache();
 	},
 
 	'SMW.EntityCache' => static function ( MediaWikiServices $services ): EntityCache {
@@ -416,7 +424,7 @@ return [
 		return new TaskFactory(
 			$servicesFactory->getStore(),
 			$servicesFactory->getJobQueue(),
-			$servicesFactory->getCache(),
+			$servicesFactory->getObjectCache(),
 			$servicesFactory->getSettings(),
 			$servicesFactory->getJobFactory(),
 			$services->getHookContainer()
