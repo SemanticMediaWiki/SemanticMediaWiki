@@ -30,6 +30,7 @@ class PrefetchItemLookupTest extends TestCase {
 	private $store;
 	private $semanticDataLookup;
 	private $propertySubjectsLookup;
+	private $linkBatch;
 	private $requestOptions;
 
 	protected function setUp(): void {
@@ -45,6 +46,10 @@ class PrefetchItemLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->linkBatch = $this->getMockBuilder( LinkBatch::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -53,7 +58,7 @@ class PrefetchItemLookupTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PrefetchItemLookup::class,
-			new PrefetchItemLookup( $this->store, $this->semanticDataLookup, $this->propertySubjectsLookup )
+			new PrefetchItemLookup( $this->store, $this->semanticDataLookup, $this->propertySubjectsLookup, $this->linkBatch )
 		);
 	}
 
@@ -67,10 +72,6 @@ class PrefetchItemLookupTest extends TestCase {
 			WikiPage::newFromText( 'Bar_2' ),
 			WikiPage::newFromText( 'Bar_3' )
 		];
-
-		$linkBatch = $this->getMockBuilder( LinkBatch::class )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$sequenceMap = $this->getMockBuilder( SequenceMap::class )
 			->disableOriginalConstructor()
@@ -124,7 +125,7 @@ class PrefetchItemLookupTest extends TestCase {
 			$this->store,
 			$this->semanticDataLookup,
 			$this->propertySubjectsLookup,
-			$linkBatch,
+			$this->linkBatch,
 			$sequenceMap
 		);
 
@@ -173,7 +174,8 @@ class PrefetchItemLookupTest extends TestCase {
 		$instance = new PrefetchItemLookup(
 			$this->store,
 			$this->semanticDataLookup,
-			$this->propertySubjectsLookup
+			$this->propertySubjectsLookup,
+			$this->linkBatch
 		);
 
 		$res = $instance->getPropertyValues( $subjects, new Property( 'Foo', true ), $this->requestOptions );
@@ -223,7 +225,8 @@ class PrefetchItemLookupTest extends TestCase {
 		$instance = new PrefetchItemLookup(
 			$this->store,
 			$this->semanticDataLookup,
-			$this->propertySubjectsLookup
+			$this->propertySubjectsLookup,
+			$this->linkBatch
 		);
 
 		$requestOptions = new RequestOptions();

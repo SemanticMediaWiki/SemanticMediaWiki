@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\MediaWiki;
 
+use MediaWiki\Cache\LinkBatch as MwLinkBatch;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Blob;
 use SMW\DataItems\WikiPage;
@@ -25,41 +26,42 @@ class LinkBatchTest extends TestCase {
 		);
 	}
 
-	public function testCanConstructSingleton() {
-		$instance = LinkBatch::singleton();
-
-		$this->assertSame(
-			$instance,
-			LinkBatch::singleton()
-		);
-
-		$instance->reset();
-	}
-
 	public function testAdd_NoPage() {
-		$instance = new LinkBatch();
-		$instance->add( new Blob( 'Foo' ) );
+		$linkBatch = $this->getMockBuilder( MwLinkBatch::class )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$this->assertFalse(
-			$instance->has( new Blob( 'Foo' ) )
-		);
+		$linkBatch->expects( $this->never() )
+			->method( 'add' );
+
+		$linkBatch->expects( $this->never() )
+			->method( 'execute' );
+
+		$instance = new LinkBatch( $linkBatch );
+		$instance->add( new Blob( 'Foo' ) );
+		$instance->execute();
 	}
 
 	public function testAdd_PageButRefuseFirstUnderscore() {
-		$subject = WikiPage::newFromText( '_ASK' );
+		$linkBatch = $this->getMockBuilder( MwLinkBatch::class )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$instance = new LinkBatch();
-		$instance->add( $subject );
+		$linkBatch->expects( $this->never() )
+			->method( 'add' );
 
-		$this->assertFalse(
-			$instance->has( $subject )
-		);
+		$linkBatch->expects( $this->never() )
+			->method( 'execute' );
+
+		$instance = new LinkBatch( $linkBatch );
+		$instance->add( WikiPage::newFromText( '_ASK' ) );
+		$instance->execute();
 	}
 
 	public function testExecute() {
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$linkBatch = $this->getMockBuilder( '\LinkBatch' )
+		$linkBatch = $this->getMockBuilder( MwLinkBatch::class )
 			->disableOriginalConstructor()
 			->getMock();
 

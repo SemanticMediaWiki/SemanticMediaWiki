@@ -33,6 +33,7 @@ class CacheWarmer {
 	public function __construct(
 		private readonly SQLStore $store,
 		private readonly IdCacheManager $idCacheManager,
+		private readonly LinkBatch $linkBatch,
 	) {
 	}
 
@@ -61,7 +62,7 @@ class CacheWarmer {
 	 */
 	public function prepareCache( $list = [] ): void {
 		$hashList = [];
-		$linkBatch = LinkBatch::singleton();
+		$linkBatch = $this->linkBatch;
 		$linkBatch->setCaller( __METHOD__ );
 
 		if ( $list instanceof QueryResult ) {

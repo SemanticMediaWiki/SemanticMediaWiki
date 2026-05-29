@@ -53,6 +53,7 @@ use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\ContentParserFactory;
 use SMW\MediaWiki\Jobs\PageUpdaterFactory;
 use SMW\MediaWiki\Jobs\ParserDataFactory;
+use SMW\MediaWiki\LinkBatch;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
@@ -786,6 +787,17 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.EntityCache' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getLinkBatch(): LinkBatch {
+		if ( array_key_exists( 'LinkBatch', $this->testOverrides ) ) {
+			return $this->testOverrides['LinkBatch'];
+		}
+
+		return MediaWikiServices::getInstance()->getService( 'SMW.LinkBatch' );
 	}
 
 	/**
