@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
@@ -10,6 +9,7 @@ use SMW\PropertyAliasFinder;
 use SMW\PropertyLabelFinder;
 use SMW\PropertyRegistry;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\PropertyRegistry
@@ -28,7 +28,7 @@ class PropertyRegistryTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

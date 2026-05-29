@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\PropertyAliasFinder;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\PropertyAliasFinder
@@ -24,7 +24,7 @@ class PropertyAliasFinderTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +106,7 @@ class PropertyAliasFinderTest extends TestCase {
 
 	public function testGetKnownPropertyAliasesByLanguageCodeCached() {
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( [ '⧼smw-bar⧽' => '_Foo' ] );
 
 		$instance = new PropertyAliasFinder(
@@ -129,7 +129,7 @@ class PropertyAliasFinderTest extends TestCase {
 
 	public function testGetKnownPropertyAliasesByLanguageCode() {
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$instance = new PropertyAliasFinder(

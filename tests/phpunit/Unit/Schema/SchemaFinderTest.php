@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\Schema;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Blob;
 use SMW\DataItems\Property;
@@ -13,6 +12,7 @@ use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Schema\SchemaFinder
@@ -27,7 +27,7 @@ class SchemaFinderTest extends TestCase {
 
 	private $store;
 	private $propertySpecificationLookup;
-	private Cache $cache;
+	private $cache;
 
 	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( Store::class )
@@ -38,7 +38,7 @@ class SchemaFinderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -55,7 +55,7 @@ class SchemaFinderTest extends TestCase {
 		$data[] = new Blob( json_encode( [ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ] ) );
 
 		$this->cache->expects( $this->any() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$this->store->expects( $this->any() )

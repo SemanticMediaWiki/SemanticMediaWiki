@@ -93,6 +93,7 @@ use SMW\Store;
 use SMW\StoreFactory;
 use SMW\Utils\Stats;
 use SMW\Utils\TempFile;
+use Wikimedia\ObjectCache\BagOStuff;
 use Wikimedia\Rdbms\IConnectionProvider;
 use WikiPage;
 
@@ -759,6 +760,21 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.Cache' );
+	}
+
+	/**
+	 * Resolve a MediaWiki-native BagOStuff for the configured main cache type.
+	 *
+	 * Unlike getCache(), which returns the Onoi composite still consumed by
+	 * EntityCache and other callers, this returns the bare BagOStuff that
+	 * consumers migrate onto as the onoi/cache dependency is removed.
+	 *
+	 * @since 7.0.0
+	 */
+	public function getObjectCache( $cacheType = null ): BagOStuff {
+		return MediaWikiServices::getInstance()->getObjectCacheFactory()->getInstance(
+			$cacheType ?? ( new CacheFactory() )->getMainCacheType()
+		);
 	}
 
 	/**

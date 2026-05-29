@@ -2,7 +2,6 @@
 
 namespace SMW\Schema;
 
-use Onoi\Cache\Cache;
 use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
@@ -11,6 +10,7 @@ use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\Property\SpecificationLookup;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @private
@@ -40,7 +40,7 @@ class SchemaFinder {
 	public function __construct(
 		private readonly Store $store,
 		private readonly SpecificationLookup $propertySpecificationLookup,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 	) {
 		$this->cacheTTL = 60 * 60 * 24 * 7;
 	}
@@ -121,7 +121,7 @@ class SchemaFinder {
 		$schemaList = [];
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_LIST, $type ] );
 
-		$subjects = $this->cache->fetch( $key );
+		$subjects = $this->cache->get( $key );
 		if ( $subjects === false ) {
 			$subjects = [];
 
@@ -134,7 +134,7 @@ class SchemaFinder {
 				$subjects[] = $dataItem->getSerialization();
 			}
 
-			$this->cache->save( $key, $subjects, $this->cacheTTL );
+			$this->cache->set( $key, $subjects, $this->cacheTTL );
 		}
 
 		foreach ( $subjects as $subject ) {
