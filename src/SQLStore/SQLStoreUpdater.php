@@ -246,7 +246,7 @@ class SQLStoreUpdater {
 		// Store the diff in cache so any post processing has a chance to find
 		// what entities and values were changed
 		$changeDiff = $changeOp->newChangeDiff();
-		$changeDiff->save( ApplicationFactory::getInstance()->getCache() );
+		$changeDiff->save( ApplicationFactory::getInstance()->getObjectCache() );
 
 		$status = new Status(
 			[

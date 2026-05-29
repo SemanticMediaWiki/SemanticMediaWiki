@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore\ChangeOp;
 
-use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
 use SMW\Utils\HmacSerializer;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -205,31 +205,31 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Cache $cache
+	 * @param BagOStuff $cache
 	 */
-	public function save( Cache $cache ): void {
+	public function save( BagOStuff $cache ): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$this->subject->getHash()
 		);
 
 		// Keep it a week
-		$cache->save( $key, HmacSerializer::compress( $this ), self::CACHE_TTL );
+		$cache->set( $key, HmacSerializer::compress( $this ), self::CACHE_TTL );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param Cache $cache
+	 * @param BagOStuff $cache
 	 * @param WikiPage $subject
 	 */
-	public static function fetch( Cache $cache, WikiPage $subject ) {
+	public static function fetch( BagOStuff $cache, WikiPage $subject ) {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$subject->getHash()
 		);
 
-		$diff = $cache->fetch( $key );
+		$diff = $cache->get( $key );
 		if ( $diff !== false ) {
 			return HmacSerializer::uncompress( $diff );
 		}

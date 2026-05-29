@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki;
 
 use MediaWiki\Parser\ParserOutput;
-use Onoi\Cache\Cache;
 use SMW\PostProcHandler;
 use SMW\Settings;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Produces a {@link PostProcHandler} for the `OutputPageParserOutput` hook.
@@ -22,7 +22,7 @@ class PostProcHandlerFactory {
 	 * @since 7.0.0
 	 */
 	public function __construct(
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly Settings $settings,
 	) {
 	}

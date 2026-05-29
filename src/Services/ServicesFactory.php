@@ -1658,7 +1658,7 @@ class ServicesFactory {
 
 		$postProcHandler = new PostProcHandler(
 			$parserOutput,
-			$this->getCache()
+			$this->getObjectCache()
 		);
 
 		$postProcHandler->setOptions(
