@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Api\Tasks;
 
 use Iterator;
-use Onoi\Cache\Cache;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,7 +21,7 @@ class DuplicateLookupTask extends Task {
 	 */
 	public function __construct(
 		private readonly Store $store,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 	) {
 	}
 
@@ -45,7 +45,7 @@ class DuplicateLookupTask extends Task {
 		$key = self::makeCacheKey( 'duplicate-lookup' );
 
 		// Guard against repeated API calls (or fuzzing)
-		$result = $this->cache->fetch( $key );
+		$result = $this->cache->get( $key );
 		if ( $result !== false && $cacheTTL !== false ) {
 			return $result + [ 'isFromCache' => true ];
 		}
@@ -63,7 +63,7 @@ class DuplicateLookupTask extends Task {
 			'time'  => date( 'Y-m-d H:i:s' )
 		];
 
-		$this->cache->save( $key, $result, $cacheTTL );
+		$this->cache->set( $key, $result, $cacheTTL );
 
 		return $result;
 	}

@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Api\Tasks;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Tasks\DuplicateLookupTask;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\MediaWiki\Api\Tasks\DuplicateLookupTask
@@ -34,7 +34,7 @@ class DuplicateLookupTaskTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -54,16 +54,16 @@ class DuplicateLookupTaskTest extends TestCase {
 	}
 
 	public function testProcess() {
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' );
+			->method( 'set' );
 
 		$entityTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()

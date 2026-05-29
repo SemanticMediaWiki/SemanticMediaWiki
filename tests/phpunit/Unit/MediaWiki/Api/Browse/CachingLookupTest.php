@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Api\Browse;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\CachingLookup;
 use SMW\MediaWiki\Api\Browse\Lookup;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\CachingLookup
@@ -19,7 +19,7 @@ use SMW\MediaWiki\Api\Browse\Lookup;
 class CachingLookupTest extends TestCase {
 
 	public function testCanConstruct() {
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -36,16 +36,16 @@ class CachingLookupTest extends TestCase {
 	public function testLookupWithoutCache() {
 		$cacheTTL = 42;
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$cache->expects( $this->atLeastOnce() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->anything(),
 				$this->anything(),
@@ -73,16 +73,16 @@ class CachingLookupTest extends TestCase {
 	}
 
 	public function testLookupWithCache() {
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( [] );
 
 		$cache->expects( $this->never() )
-			->method( 'save' );
+			->method( 'set' );
 
 		$lookup = $this->getMockBuilder( Lookup::class )
 			->disableOriginalConstructor()
@@ -103,15 +103,15 @@ class CachingLookupTest extends TestCase {
 	}
 
 	public function testLookupWithCacheBeingDisabled() {
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->never() )
-			->method( 'fetch' );
+			->method( 'get' );
 
 		$cache->expects( $this->never() )
-			->method( 'save' );
+			->method( 'set' );
 
 		$lookup = $this->getMockBuilder( Lookup::class )
 			->disableOriginalConstructor()

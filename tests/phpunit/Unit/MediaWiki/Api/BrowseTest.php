@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use MediaWiki\Title\TitleFactory;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -15,6 +14,7 @@ use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use Wikimedia\ObjectCache\BagOStuff;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -74,7 +74,7 @@ class BrowseTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,12 +106,12 @@ class BrowseTest extends TestCase {
 			->method( 'getSMWPropertyID' )
 			->willReturn( false );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$resultWrapper = $this->getMockBuilder( FakeResultWrapper::class )
@@ -204,7 +204,7 @@ class BrowseTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 

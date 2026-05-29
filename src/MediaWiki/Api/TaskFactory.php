@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Api;
 
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\User\User;
-use Onoi\Cache\Cache;
 use RuntimeException;
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\MediaWiki\Api\Tasks\CheckQueryTask;
@@ -20,6 +19,7 @@ use SMW\MediaWiki\JobQueue;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -44,7 +44,7 @@ class TaskFactory {
 	public function __construct(
 		private readonly Store $store,
 		private readonly JobQueue $jobQueue,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly Settings $settings,
 		private readonly JobFactory $jobFactory,
 		private readonly HookContainer $hookContainer

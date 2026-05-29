@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use MediaWiki\HookContainer\HookContainer;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\MediaWiki\Api\Tasks\Task;
@@ -12,6 +11,7 @@ use SMW\MediaWiki\JobQueue;
 use SMW\Settings;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\MediaWiki\Api\TaskFactory
@@ -91,7 +91,7 @@ class TaskFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Api\Tasks;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 use SMW\SQLStore\Lookup\TableStatisticsLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\MediaWiki\Api\Tasks\TableStatisticsTask
@@ -34,7 +34,7 @@ class TableStatisticsTaskTest extends TestCase {
 			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -63,16 +63,16 @@ class TableStatisticsTaskTest extends TestCase {
 			->with( 'TableStatisticsLookup' )
 			->willReturn( $tableStatisticsLookup );
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' );
+			->method( 'set' );
 
 		$instance = new TableStatisticsTask(
 			$this->store,
