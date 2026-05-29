@@ -72,7 +72,7 @@ class ParametersWidget {
 			Html::rawElement(
 				'span',
 				[],
-				Message::get( 'smw-ask-parameters', Message::TEXT, Message::USER_LANGUAGE ) . $toggle
+				Message::get( 'smw-ask-parameters', Message::ESCAPED, Message::USER_LANGUAGE ) . $toggle
 			)
 		) . Html::rawElement(
 			'div',

@@ -39,7 +39,7 @@ class LinksWidget {
 			Html::rawElement(
 				'legend',
 				[],
-				Message::get( 'smw-ask-search', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-search', Message::ESCAPED, Message::USER_LANGUAGE )
 			) . $html
 		);
 	}

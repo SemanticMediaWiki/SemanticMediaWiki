@@ -119,7 +119,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 				[
 					'class' => 'smw-breadcrumb-arrow-right'
 				]
-			) . Html::rawElement(
+			) . Html::element(
 				'a',
 				[
 					'href' => SkinComponentUtils::makeSpecialUrl( 'Specialpages', $query ) . '#Semantic_MediaWiki'

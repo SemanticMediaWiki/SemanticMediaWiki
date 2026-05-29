@@ -192,7 +192,7 @@ class HtmlForm {
 
 		$htmlTabs->tab(
 			'smw-askt-result',
-			wfMessage( 'smw-ask-tab-result' )->text(),
+			wfMessage( 'smw-ask-tab-result' )->escaped(),
 			[
 				'hide' => $isEmpty,
 				'class' => $isFromCache ? ' result-cache' : ''
@@ -203,7 +203,7 @@ class HtmlForm {
 
 		$htmlTabs->tab(
 			'smw-askt-code',
-			wfMessage( 'smw-ask-tab-code' )->text(),
+			wfMessage( 'smw-ask-tab-code' )->escaped(),
 			[
 				'hide' => $this->isBorrowedMode || $isEmpty
 			]
@@ -248,7 +248,7 @@ class HtmlForm {
 		if ( !$isEmpty ) {
 			$htmlTabs->tab(
 				'smw-askt-extra',
-				wfMessage( 'smw-ask-tab-extra' )->text(),
+				wfMessage( 'smw-ask-tab-extra' )->escaped(),
 				[
 					'class' => 'smw-tab-right'
 				]

@@ -44,7 +44,7 @@ class FormatListWidget {
 			}
 		}
 
-		$defaultLocalizedName = htmlspecialchars( $printer->getName() ) . ' (' . Message::get( 'smw_ask_defaultformat', Message::TEXT, Message::USER_LANGUAGE ) . ')';
+		$defaultLocalizedName = htmlspecialchars( $printer->getName() ) . ' (' . Message::get( 'smw_ask_defaultformat', Message::ESCAPED, Message::USER_LANGUAGE ) . ')';
 		$defaultName = $printer->getName();
 
 		$default = '';

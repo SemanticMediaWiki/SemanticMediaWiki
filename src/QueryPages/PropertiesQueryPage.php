@@ -166,7 +166,7 @@ class PropertiesQueryPage extends QueryPage {
 
 			// @todo Should use numParams for $useCount?
 			return $this->msg( 'smw_property_template_notype' )
-				->rawParams( $proplink )->numParams( $useCount )->text() . ' ' .
+				->rawParams( $proplink )->numParams( $useCount )->escaped() . ' ' .
 				$this->getMessageFormatter()
 					->setType( 'warning' )
 					->escape( false )->getHtml();

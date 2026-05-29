@@ -560,7 +560,7 @@ class SpecialTypes extends SpecialPage {
 
 		// Add human readable group label
 		foreach ( $contents as $group => $values ) {
-			$groupLabel = Message::get( "smw-type-$group", Message::TEXT, Message::USER_LANGUAGE );
+			$groupLabel = Message::get( "smw-type-$group", Message::ESCAPED, Message::USER_LANGUAGE );
 			$contents[$groupLabel] = $values;
 			unset( $contents[$group] );
 		}

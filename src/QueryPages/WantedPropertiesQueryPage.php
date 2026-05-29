@@ -106,7 +106,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 			[
 				'class' => 'smw-special-filter'
 			],
-			$this->msg( 'smw-special-wantedproperties-filter-label' )->text() .
+			$this->msg( 'smw-special-wantedproperties-filter-label' )->escaped() .
 			'&nbsp;' .
 			Html::rawElement(
 				'span',

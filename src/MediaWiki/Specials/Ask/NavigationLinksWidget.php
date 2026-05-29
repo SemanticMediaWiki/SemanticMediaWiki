@@ -48,7 +48,7 @@ class NavigationLinksWidget {
 			[
 				'href' => '#options'
 			],
-			Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( 'smw-ask-options', Message::ESCAPED, Message::USER_LANGUAGE )
 		);
 
 		$lLinks['search'] = Html::rawElement(
@@ -56,7 +56,7 @@ class NavigationLinksWidget {
 			[
 				'href' => '#search'
 			],
-			Message::get( 'smw-ask-search', Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( 'smw-ask-search', Message::ESCAPED, Message::USER_LANGUAGE )
 		);
 
 		$lLinks['result'] = Html::rawElement(
@@ -64,7 +64,7 @@ class NavigationLinksWidget {
 			[
 				'href' => '#result'
 			],
-			Message::get( 'smw-ask-result', Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( 'smw-ask-result', Message::ESCAPED, Message::USER_LANGUAGE )
 		);
 
 		$rLinks['empty'] = Html::rawElement(
@@ -72,7 +72,7 @@ class NavigationLinksWidget {
 			[
 				'href' => $title->getLocalURL()
 			],
-			Message::get( 'smw-ask-empty', Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( 'smw-ask-empty', Message::ESCAPED, Message::USER_LANGUAGE )
 		);
 
 		$rLinks['help'] = HtmlModal::link(
@@ -169,7 +169,7 @@ class NavigationLinksWidget {
 		$userLanguage = Localizer::getInstance()->getUserLanguage();
 
 		$html =	'<b>' .
-				Message::get( 'smw_result_results', Message::TEXT, Message::USER_LANGUAGE ) . ' ' . $userLanguage->formatNum( $offset + 1 ) .
+				Message::get( 'smw_result_results', Message::ESCAPED, Message::USER_LANGUAGE ) . ' ' . $userLanguage->formatNum( $offset + 1 ) .
 			' &#150; ' .
 				$userLanguage->formatNum( $offset + $count ) .
 			'</b>&#160;';
