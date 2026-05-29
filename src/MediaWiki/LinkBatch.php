@@ -18,8 +18,6 @@ use SMW\DataItems\WikiPage;
  */
 class LinkBatch {
 
-	private static ?LinkBatch $instance = null;
-
 	private array $log = [];
 
 	private array $batch = [];
@@ -28,26 +26,6 @@ class LinkBatch {
 	 * @since 3.1
 	 */
 	public function __construct( private ?MwLinkBatch $linkBatch = null ) {
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @return LinkBatch
-	 */
-	public static function singleton(): LinkBatch {
-		if ( self::$instance === null ) {
-			self::$instance = new self( MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch() );
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * @since 3.1
-	 */
-	public static function reset(): void {
-		self::$instance = null;
 	}
 
 	/**
@@ -87,21 +65,10 @@ class LinkBatch {
 			return;
 		}
 
-		// Track which have already been registered because \LinkBatch doesn't
-		// check for it
+		// Track which have already been registered because
+		// MediaWiki\Cache\LinkBatch doesn't check for it
 		$this->log[$dataItem->getSha1()] = true;
 		$this->batch[] = $dataItem;
-	}
-
-	/**
-	 * @since 3.1
-	 */
-	public function has( DataItem|null|bool $dataItem ): bool {
-		if ( $dataItem instanceof WikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**

@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use SMW\DataValueFactory;
 use SMW\Export\Exporter;
-use SMW\MediaWiki\LinkBatch;
 use SMW\PropertyRegistry;
 use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory;
@@ -82,7 +81,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	  * Reset Semantic MediaWiki-related services and caches.
 	  */
 	private function resetSMWServices(): void {
-		LinkBatch::reset();
 		DataValueFactory::getInstance()->clear();
 		Exporter::clear();
 		CachingSemanticDataLookup::clear();
