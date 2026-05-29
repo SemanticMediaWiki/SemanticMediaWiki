@@ -746,7 +746,7 @@ return [
 		$servicesFactory = ServicesFactory::getInstance();
 
 		return new PostProcHandlerFactory(
-			$servicesFactory->getCache(),
+			$servicesFactory->getObjectCache(),
 			$servicesFactory->getSettings()
 		);
 	},

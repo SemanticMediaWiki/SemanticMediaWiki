@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\SQLStore\QueryEngine\Fulltext;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\MediaWiki\Connection\Database;
@@ -14,6 +13,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater
@@ -46,7 +46,7 @@ class TextChangeUpdaterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -7,10 +7,10 @@ use MediaWiki\Html\Html;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
 use SMW\Query\Query;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Some updates need to be handled in via post processing,
@@ -51,7 +51,7 @@ class PostProcHandler {
 
 	private ParserOutput $parserOutput;
 
-	private Cache $cache;
+	private BagOStuff $cache;
 
 	private array $options = [];
 
@@ -59,9 +59,9 @@ class PostProcHandler {
 	 * @since 3.0
 	 *
 	 * @param ParserOutput $parserOutput
-	 * @param Cache $cache
+	 * @param BagOStuff $cache
 	 */
-	public function __construct( ParserOutput $parserOutput, Cache $cache ) {
+	public function __construct( ParserOutput $parserOutput, BagOStuff $cache ) {
 		$this->parserOutput = $parserOutput;
 		$this->cache = $cache;
 	}

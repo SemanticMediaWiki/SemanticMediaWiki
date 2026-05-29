@@ -3,11 +3,11 @@
 namespace SMW\Tests\Unit\MediaWiki;
 
 use MediaWiki\Parser\ParserOutput;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\PostProcHandlerFactory;
 use SMW\PostProcHandler;
 use SMW\Settings;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\MediaWiki\PostProcHandlerFactory
@@ -18,13 +18,13 @@ use SMW\Settings;
  */
 class PostProcHandlerFactoryTest extends TestCase {
 
-	private Cache $cache;
+	private $cache;
 	private Settings $settings;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->cache = $this->createMock( Cache::class );
+		$this->cache = $this->createMock( BagOStuff::class );
 		$this->settings = $this->createMock( Settings::class );
 	}
 

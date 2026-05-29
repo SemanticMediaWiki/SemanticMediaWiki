@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
@@ -18,6 +17,7 @@ use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\FieldChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\PostProcHandler
@@ -38,7 +38,7 @@ class PostProcHandlerTest extends TestCase {
 
 		$this->parserOutput = $this->createMock( ParserOutput::class );
 
-		$this->cache = $this->createMock( Cache::class );
+		$this->cache = $this->createMock( BagOStuff::class );
 	}
 
 	public function testCanConstruct() {
@@ -87,7 +87,7 @@ class PostProcHandlerTest extends TestCase {
 
 	public function testGetHtml_CheckQuery() {
 		$this->cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( true );
 
 		$this->parserOutput->expects( $this->exactly( 2 ) )
@@ -141,7 +141,7 @@ class PostProcHandlerTest extends TestCase {
 	public function testGetHtml_DifferentExtensionData() {
 		// inverse testing - Mocking the data to ensure that the html has DifferentExtensionData
 		$this->cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( true );
 
 		$this->parserOutput->expects( $this->exactly( 2 ) )
@@ -305,7 +305,7 @@ class PostProcHandlerTest extends TestCase {
 		);
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $changeDiff->serialize() );
 
 		$this->parserOutput->expects( $this->once() )

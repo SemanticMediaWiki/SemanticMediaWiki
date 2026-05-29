@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Unit\SQLStore\ChangeOp;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\ChangeDiff
@@ -76,7 +76,7 @@ class ChangeDiffTest extends TestCase {
 	}
 
 	public function testSave() {
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +92,7 @@ class ChangeDiffTest extends TestCase {
 		);
 
 		$cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->stringContains( ChangeDiff::CACHE_NAMESPACE ),
 				$instance->serialize() );
@@ -103,7 +103,7 @@ class ChangeDiffTest extends TestCase {
 	public function testFetch() {
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,7 +119,7 @@ class ChangeDiffTest extends TestCase {
 		);
 
 		$cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $instance->serialize() );
 
 		$this->assertEquals(
@@ -162,7 +162,7 @@ class ChangeDiffTest extends TestCase {
 
 	public function FetchFromCache() {
 		$changeDiff = ChangeDiff::fetch(
-			ApplicationFactory::getInstance()->getCache(),
+			ApplicationFactory::getInstance()->getObjectCache(),
 			WikiPage::newFromText( 'DifferentSort' )
 		);
 

@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
@@ -11,6 +10,7 @@ use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\Utils\Timer;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -36,7 +36,7 @@ class TextChangeUpdater {
 	 */
 	public function __construct(
 		private readonly Database $connection,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly SearchTableUpdater $searchTableUpdater,
 		private readonly JobFactory $jobFactory,
 	) {
