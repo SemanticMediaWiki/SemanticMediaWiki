@@ -71,17 +71,17 @@ class HelpWidget {
 			Html::rawElement(
 				'li',
 				[],
-				Message::get( 'smw-ask-condition-input-assistance-property', Message::ESCAPED, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-condition-input-assistance-property', Message::PARSE, Message::USER_LANGUAGE )
 			) .
 			Html::rawElement(
 				'li',
 				[],
-				Message::get( 'smw-ask-condition-input-assistance-category', Message::ESCAPED, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-condition-input-assistance-category', Message::PARSE, Message::USER_LANGUAGE )
 			) .
 			Html::rawElement(
 				'li',
 				[],
-				Message::get( 'smw-ask-condition-input-assistance-concept', Message::ESCAPED, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-condition-input-assistance-concept', Message::PARSE, Message::USER_LANGUAGE )
 			)
 		);
 

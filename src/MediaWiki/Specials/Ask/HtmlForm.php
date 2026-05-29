@@ -268,7 +268,7 @@ class HtmlForm {
 				}
 
 				if ( $links !== [] ) {
-					$infoText .= '<h3>' . wfMessage( 'smw-ask-extra-other' )->text() . '</h3>';
+					$infoText .= '<h3>' . wfMessage( 'smw-ask-extra-other' )->escaped() . '</h3>';
 					$infoText .= '<ul><li>' . implode( '</li><li>', $links ) . '</li></ul>';
 				}
 			} else {
