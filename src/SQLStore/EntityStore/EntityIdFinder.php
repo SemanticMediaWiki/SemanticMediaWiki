@@ -2,9 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use MediaWiki\Deferred\DeferredUpdates;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Deferred\HashFieldUpdate;
+use SMW\Site;
 use SMW\SQLStore\propertyTable\propertyTableHashes;
 use SMW\SQLStore\SQLStore;
 
@@ -134,7 +135,7 @@ class EntityIdFinder {
 
 			// Prevent any irregularities caused by a delayed, or redirect update
 			if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
-				HashFieldUpdate::addUpdate( $this->connection, $id, $sha1 );
+				$this->deferHashUpdate( $id, $sha1 );
 			}
 		} else { // inconsistent DB; just recover somehow
 			$sortkey = str_replace( '_', ' ', $title );
@@ -214,7 +215,7 @@ class EntityIdFinder {
 
 			// Prevent any irregularities caused by a delayed, or redirect update
 			if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
-				HashFieldUpdate::addUpdate( $this->connection, $id, $sha1 );
+				$this->deferHashUpdate( $id, $sha1 );
 			}
 		} else {
 			$id = 0;
@@ -270,6 +271,31 @@ class EntityIdFinder {
 		}
 
 		return $matches;
+	}
+
+	/**
+	 * Defer an `smw_hash` rewrite for the given entity ID. Runs immediately
+	 * under CLI to avoid relying on `DeferredUpdates::tryOpportunisticExecute`
+	 * in maintenance scripts; otherwise queues the UPDATE for post-send.
+	 */
+	private function deferHashUpdate( int $id, string $sha1 ): void {
+		$connection = $this->connection;
+		$caller = __METHOD__;
+
+		$update = static function () use ( $connection, $id, $sha1, $caller ): void {
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [ 'smw_hash' => $sha1 ] )
+				->where( [ 'smw_id' => $id ] )
+				->caller( $caller )
+				->execute();
+		};
+
+		if ( Site::isCommandLineMode() ) {
+			$update();
+		} else {
+			DeferredUpdates::addCallableUpdate( $update );
+		}
 	}
 
 }

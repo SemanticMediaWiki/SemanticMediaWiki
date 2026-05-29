@@ -2,11 +2,14 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Title\Title;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Site;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\Store;
@@ -164,11 +167,27 @@ class RedirectUpdater {
 	 * @param array $options
 	 */
 	public function triggerChangeTitleUpdate( Title $source, Title $target, array $options ): void {
-		if ( $options['redirect_id'] == 0 ) {
-			$source = null;
-		}
+		$oldTitle = $options['redirect_id'] == 0 ? null : $source;
 
-		ChangeTitleUpdate::addUpdate( $source, $target );
+		$update = static function () use ( $oldTitle, $target ): void {
+			$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+			$parameters = [
+				UpdateJob::FORCED_UPDATE => true,
+				'origin' => 'ChangeTitleUpdate',
+			];
+
+			if ( $oldTitle !== null ) {
+				$jobFactory->newUpdateJob( $oldTitle, $parameters )->run();
+			}
+
+			$jobFactory->newUpdateJob( $target, $parameters )->run();
+		};
+
+		if ( Site::isCommandLineMode() ) {
+			$update();
+		} else {
+			DeferredUpdates::addCallableUpdate( $update );
+		}
 	}
 
 	/**

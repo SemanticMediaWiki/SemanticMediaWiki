@@ -108,7 +108,7 @@ class EntityIdManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// HashFieldUpdate::doUpdate() (fired through real EntityIdFinder
+		// EntityIdFinder::deferHashUpdate() (fired through real EntityIdFinder
 		// via setMethods(null) below) calls newUpdateQueryBuilder() on the
 		// connection. Default to an empty builder so tests that don't
 		// override don't NPE on the ->update()->set()->where() chain.
