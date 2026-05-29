@@ -191,7 +191,7 @@ return [
 		}
 
 		return new EntityCache(
-			$servicesFactory->getCache()
+			$servicesFactory->getObjectCache()
 		);
 	},
 

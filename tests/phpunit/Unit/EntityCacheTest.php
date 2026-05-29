@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\EntityCache
@@ -18,25 +18,24 @@ use SMW\EntityCache;
  */
 class EntityCacheTest extends TestCase {
 
-	private $cache;
-
-	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+	/**
+	 * A real in-memory cache backing so the characterization tests exercise the
+	 * actual store/retrieve/delete behaviour rather than replaying mock
+	 * expectations.
+	 */
+	private function newCache() {
+		return new HashBagOStuff();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			EntityCache::class,
-			new EntityCache( $this->cache )
+			new EntityCache( $this->newCache() )
 		);
 	}
 
 	public function testMakeCacheKey() {
-		$instance = new EntityCache(
-			$this->cache
-		);
+		$instance = new EntityCache( $this->newCache() );
 
 		$this->assertStringContainsString(
 			EntityCache::CACHE_NAMESPACE,
@@ -62,10 +61,6 @@ class EntityCacheTest extends TestCase {
 	}
 
 	public function testMakeCacheKey_SubNamespace() {
-		$instance = new EntityCache(
-			$this->cache
-		);
-
 		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->assertStringContainsString(
@@ -79,197 +74,129 @@ class EntityCacheTest extends TestCase {
 		);
 	}
 
-	public function testContains() {
-		$this->cache->expects( $this->once() )
-			->method( 'contains' )
-			->with( 'Foo' );
+	public function testSaveFetchContainsDelete() {
+		$instance = new EntityCache( $this->newCache() );
 
-		$instance = new EntityCache(
-			$this->cache
-		);
-
-		$instance->contains( 'Foo' );
-	}
-
-	public function testFetch() {
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->with( 'Foo' )
-			->willReturn( 'bar' );
-
-		$instance = new EntityCache(
-			$this->cache
-		);
-
-		$instance->fetch( 'Foo' );
-	}
-
-	public function testSave() {
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				'Foo',
-				'bar' );
-
-		$instance = new EntityCache(
-			$this->cache
-		);
+		$this->assertFalse( $instance->contains( 'Foo' ) );
+		$this->assertFalse( $instance->fetch( 'Foo' ) );
 
 		$instance->save( 'Foo', 'bar' );
-	}
 
-	public function testDelete() {
-		$this->cache->expects( $this->once() )
-			->method( 'delete' )
-			->with( 'Foo' );
-
-		$instance = new EntityCache(
-			$this->cache
-		);
+		$this->assertTrue( $instance->contains( 'Foo' ) );
+		$this->assertSame( 'bar', $instance->fetch( 'Foo' ) );
 
 		$instance->delete( 'Foo' );
+
+		$this->assertFalse( $instance->contains( 'Foo' ) );
+		$this->assertFalse( $instance->fetch( 'Foo' ) );
 	}
 
-	public function testFetchSub() {
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->with( 'Foo' )
-			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
+	public function testFetchSub_MissingKeyOrSub() {
+		$instance = new EntityCache( $this->newCache() );
 
-		$instance = new EntityCache(
-			$this->cache
-		);
+		// Absent key: the underlying value is not an array.
+		$this->assertFalse( $instance->fetchSub( 'Foo', 'bar' ) );
 
-		$this->assertEquals(
-			'Foobar',
-			$instance->fetchSub( 'Foo', 'bar' )
-		);
+		$instance->save( 'Foo', [ md5( 'bar' ) => 'Foobar' ] );
+
+		// Present key, missing sub.
+		$this->assertFalse( $instance->fetchSub( 'Foo', 'missing' ) );
+
+		// Present key and sub.
+		$this->assertSame( 'Foobar', $instance->fetchSub( 'Foo', 'bar' ) );
 	}
 
-	public function tesSaveSub() {
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->with( 'Foo' )
-			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
+	public function testSaveSub_MergesIntoExistingRecord() {
+		$instance = new EntityCache( $this->newCache() );
 
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				'Foo',
-				[ md5( 'bar' ) => '123' ] );
+		$instance->saveSub( 'Foo', 'bar', '1' );
+		$instance->saveSub( 'Foo', 'baz', '2' );
 
-		$instance = new EntityCache(
-			$this->cache
-		);
-
-		$instance->saveSub( 'Foo', 'bar', '123' );
+		// Both subs coexist; the second save merges rather than replaces.
+		$this->assertSame( '1', $instance->fetchSub( 'Foo', 'bar' ) );
+		$this->assertSame( '2', $instance->fetchSub( 'Foo', 'baz' ) );
 	}
 
-	public function tesOverrideSub() {
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				'Foo',
-				[ md5( 'bar' ) => '123' ] );
+	public function testOverrideSub_ReplacesWholeRecord() {
+		$instance = new EntityCache( $this->newCache() );
 
-		$instance = new EntityCache(
-			$this->cache
-		);
+		$instance->saveSub( 'Foo', 'bar', '1' );
+		$instance->overrideSub( 'Foo', 'baz', '2' );
 
-		$instance->overrideSub( 'Foo', 'bar', '123' );
+		// overrideSub discards any prior subs and keeps only the new one.
+		$this->assertFalse( $instance->fetchSub( 'Foo', 'bar' ) );
+		$this->assertSame( '2', $instance->fetchSub( 'Foo', 'baz' ) );
 	}
 
-	public function tesDeleteSub() {
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->with( 'Foo' )
-			->willReturn( [ md5( 'bar' ) => 'Foobar', md5( 'foobar' ) => '123' ] );
+	public function testDeleteSub_RemovesOnlyTheNamedSub() {
+		$instance = new EntityCache( $this->newCache() );
 
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				'Foo',
-				[ md5( 'foobar' ) => '123' ] );
-
-		$instance = new EntityCache(
-			$this->cache
-		);
+		$instance->saveSub( 'Foo', 'bar', '1' );
+		$instance->saveSub( 'Foo', 'baz', '2' );
 
 		$instance->deleteSub( 'Foo', 'bar' );
+
+		$this->assertFalse( $instance->fetchSub( 'Foo', 'bar' ) );
+		$this->assertSame( '2', $instance->fetchSub( 'Foo', 'baz' ) );
 	}
 
-	public function testAssociate() {
+	public function testAssociate_BuildsAnchorRecord() {
 		$subject = WikiPage::newFromText( 'Foo' );
+		$instance = new EntityCache( $this->newCache() );
 
-		$expected = [
-			md5( 'bar' ) => 'Foobar',
-			'__assoc' => [ 'Foo' => true ],
-			'__subject' => $subject->getHash()
-		];
+		$instance->associate( $subject, 'assocKey' );
 
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
+		$anchor = $instance->fetch( EntityCache::makeCacheKey( $subject ) );
 
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				$this->stringContains( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5' ),
-				$expected );
-
-		$instance = new EntityCache(
-			$this->cache
-		);
-
-		$instance->associate( $subject, 'Foo' );
+		$this->assertSame( $subject->getHash(), $anchor['__subject'] );
+		$this->assertTrue( $anchor['__assoc']['assocKey'] );
 	}
 
-	public function testAssociate_NoValidSubject() {
-		$this->cache->expects( $this->never() )
-			->method( 'fetch' );
+	public function testAssociate_NoValidSubjectIsNoOp() {
+		$instance = new EntityCache( $this->newCache() );
 
-		$instance = new EntityCache(
-			$this->cache
+		$instance->associate( 'notASubject', 'assocKey' );
+
+		// No anchor record is created for a non-WikiPage subject.
+		$this->assertFalse(
+			$instance->contains( EntityCache::makeCacheKey( 'notASubject' ) )
 		);
-
-		$instance->associate( 'notASubject', 'Foo' );
 	}
 
-	public function testInvalidate() {
+	public function testInvalidate_DeletesAssociatesAndAnchorOnly() {
 		$subject = WikiPage::newFromText( 'Foo' );
+		$instance = new EntityCache( $this->newCache() );
 
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( [ md5( 'bar' ) => 'Foobar', '__assoc' => [ 'Foo' => true ] ] );
+		$assocKeyOne = $instance->makeCacheKey( 'assoc', 'one' );
+		$assocKeyTwo = $instance->makeCacheKey( 'assoc', 'two' );
+		$unrelatedKey = $instance->makeCacheKey( 'unrelated' );
 
-		$this->cache->expects( $this->exactly( 2 ) )
-			->method( 'delete' )
-			->willReturnCallback( function ( $key ) {
-				static $calls = [];
-				$calls[] = $key;
-				if ( count( $calls ) === 1 ) {
-					$this->assertStringContainsString( 'Foo', $key );
-				} elseif ( count( $calls ) === 2 ) {
-					$this->assertStringContainsString( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5', $key );
-				}
-			} );
+		$instance->save( $assocKeyOne, 'a' );
+		$instance->save( $assocKeyTwo, 'b' );
+		$instance->save( $unrelatedKey, 'u' );
+		$instance->associate( $subject, $assocKeyOne );
+		$instance->associate( $subject, $assocKeyTwo );
 
-		$instance = new EntityCache(
-			$this->cache
-		);
+		$anchorKey = EntityCache::makeCacheKey( $subject );
+		$this->assertTrue( $instance->contains( $anchorKey ) );
 
 		$instance->invalidate( $subject );
+
+		// Every associated key and the anchor are removed; an unrelated entry
+		// survives (the cascade deletes N associates + 1 anchor, no more).
+		$this->assertFalse( $instance->contains( $assocKeyOne ) );
+		$this->assertFalse( $instance->contains( $assocKeyTwo ) );
+		$this->assertFalse( $instance->contains( $anchorKey ) );
+		$this->assertTrue( $instance->contains( $unrelatedKey ) );
 	}
 
-	public function testInvalidate_NoValidSubject() {
-		$this->cache->expects( $this->never() )
-			->method( 'fetch' );
+	public function testInvalidate_NoValidSubjectIsNoOp() {
+		$instance = new EntityCache( $this->newCache() );
 
-		$instance = new EntityCache(
-			$this->cache
-		);
-
+		$instance->save( 'survivor', 'v' );
 		$instance->invalidate( 'notASubject' );
+
+		$this->assertTrue( $instance->contains( 'survivor' ) );
 	}
 
 }

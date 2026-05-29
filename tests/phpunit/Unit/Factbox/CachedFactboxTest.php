@@ -18,6 +18,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\Factbox\CachedFactbox
@@ -41,7 +42,7 @@ class CachedFactboxTest extends TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-		$this->memoryCache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache();
+		$this->memoryCache = new HashBagOStuff();
 
 		$this->testEnvironment->withConfiguration(
 			[

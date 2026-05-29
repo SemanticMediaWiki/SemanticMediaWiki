@@ -767,8 +767,8 @@ class ServicesFactory {
 	 * Resolve a MediaWiki-native BagOStuff for the configured main cache type.
 	 *
 	 * Unlike getCache(), which returns the Onoi composite still consumed by
-	 * EntityCache and other callers, this returns the bare BagOStuff that
-	 * consumers migrate onto as the onoi/cache dependency is removed.
+	 * the remaining callers, this returns the bare BagOStuff that consumers
+	 * migrate onto as the onoi/cache dependency is removed.
 	 *
 	 * @since 7.0.0
 	 */

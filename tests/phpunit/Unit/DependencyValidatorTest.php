@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit;
 
-use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage;
@@ -12,6 +11,7 @@ use SMW\EventDispatcher\EventDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\DependencyValidator
@@ -264,7 +264,7 @@ class DependencyValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$realEntityCache = new EntityCache( new FixedInMemoryLruCache() );
+		$realEntityCache = new EntityCache( new HashBagOStuff() );
 
 		$instance = new DependencyValidator(
 			$this->namespaceExaminer,
