@@ -202,6 +202,12 @@ return [
 	},
 
 	'SMW.LinkBatch' => static function ( MediaWikiServices $services ): LinkBatch {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'LinkBatch' ) ) {
+			return $servicesFactory->getLinkBatch();
+		}
+
 		return new LinkBatch(
 			$services->getLinkBatchFactory()->newLinkBatch()
 		);

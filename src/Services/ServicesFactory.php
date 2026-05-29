@@ -793,6 +793,10 @@ class ServicesFactory {
 	 * @since 7.0.0
 	 */
 	public function getLinkBatch(): LinkBatch {
+		if ( array_key_exists( 'LinkBatch', $this->testOverrides ) ) {
+			return $this->testOverrides['LinkBatch'];
+		}
+
 		return MediaWikiServices::getInstance()->getService( 'SMW.LinkBatch' );
 	}
 
