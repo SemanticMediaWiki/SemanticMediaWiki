@@ -78,9 +78,16 @@ class RedirectUpdaterTest extends TestCase {
 	}
 
 	public function testTriggerChangeTitleUpdate() {
+		// CLI (PHPUnit) context: the job runs synchronously, never queued.
 		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$updateJob->expects( $this->once() )
+			->method( 'run' );
+
+		$updateJob->expects( $this->never() )
+			->method( 'lazyPush' );
 
 		$this->jobFactory->expects( $this->once() )
 			->method( 'newUpdateJob' )
@@ -98,6 +105,114 @@ class RedirectUpdaterTest extends TestCase {
 			WikiPage::newFromText( __METHOD__ . '-new', NS_MAIN )->getTitle(),
 			[ 'redirect_id' => 0 ]
 		);
+	}
+
+	public function testTriggerChangeTitleUpdatePushesJobToQueueWhenOnline() {
+		$source = WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN )->getTitle();
+		$target = WikiPage::newFromText( __METHOD__ . '-new', NS_MAIN )->getTitle();
+
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$updateJob->expects( $this->once() )
+			->method( 'lazyPush' );
+
+		$updateJob->expects( $this->never() )
+			->method( 'run' );
+
+		$pushed = [];
+
+		$this->jobFactory->expects( $this->once() )
+			->method( 'newUpdateJob' )
+			->willReturnCallback( static function ( $title, $parameters ) use ( &$pushed, $updateJob ) {
+				$pushed[$title->getPrefixedText()] = $parameters;
+				return $updateJob;
+			} );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getOption' )
+			->with( 'smwgEnableUpdateJobs' )
+			->willReturn( true );
+
+		$instance = $this->newOnlineRedirectUpdater();
+
+		// redirect_id == 0 -> only the target is refreshed.
+		$instance->triggerChangeTitleUpdate( $source, $target, [ 'redirect_id' => 0 ] );
+
+		$this->assertSame( [ $target->getPrefixedText() ], array_keys( $pushed ) );
+		$this->assertSame(
+			[ UpdateJob::FORCED_UPDATE => true, 'origin' => 'ChangeTitleUpdate' ],
+			$pushed[$target->getPrefixedText()]
+		);
+	}
+
+	public function testTriggerChangeTitleUpdatePushesBothTitlesToQueueWhenRedirectIdSet() {
+		$source = WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN )->getTitle();
+		$target = WikiPage::newFromText( __METHOD__ . '-new', NS_MAIN )->getTitle();
+
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// redirect_id != 0 -> both the old title and the target are refreshed.
+		$updateJob->expects( $this->exactly( 2 ) )
+			->method( 'lazyPush' );
+
+		$updateJob->expects( $this->never() )
+			->method( 'run' );
+
+		$pushed = [];
+
+		$this->jobFactory->expects( $this->exactly( 2 ) )
+			->method( 'newUpdateJob' )
+			->willReturnCallback( static function ( $title, $parameters ) use ( &$pushed, $updateJob ) {
+				$pushed[$title->getPrefixedText()] = $parameters;
+				return $updateJob;
+			} );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getOption' )
+			->with( 'smwgEnableUpdateJobs' )
+			->willReturn( true );
+
+		$instance = $this->newOnlineRedirectUpdater();
+
+		$instance->triggerChangeTitleUpdate( $source, $target, [ 'redirect_id' => 42 ] );
+
+		// Both the source and the target are queued (not the same title twice),
+		// each with the static parameters that the queue dedup relies on (no
+		// per-edit data that would defeat collapsing repeated same-target jobs).
+		$this->assertEqualsCanonicalizing(
+			[ $source->getPrefixedText(), $target->getPrefixedText() ],
+			array_keys( $pushed )
+		);
+
+		$expectedParameters = [
+			UpdateJob::FORCED_UPDATE => true,
+			'origin' => 'ChangeTitleUpdate',
+		];
+
+		$this->assertSame( $expectedParameters, $pushed[$source->getPrefixedText()] );
+		$this->assertSame( $expectedParameters, $pushed[$target->getPrefixedText()] );
+	}
+
+	/**
+	 * A RedirectUpdater that reports a non-CLI (web request) context, so the
+	 * queue branch of triggerChangeTitleUpdate is exercised. PHPUnit otherwise
+	 * always runs as CLI.
+	 */
+	private function newOnlineRedirectUpdater(): RedirectUpdater {
+		return new class(
+			$this->store,
+			$this->idChanger,
+			$this->tableFieldUpdater,
+			$this->propertyStatisticsStore
+		) extends RedirectUpdater {
+			protected function isCommandLineMode(): bool {
+				return false;
+			}
+		};
 	}
 
 	public function testInvalidateLookupCache() {

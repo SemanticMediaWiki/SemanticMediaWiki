@@ -168,26 +168,55 @@ class RedirectUpdater {
 	 */
 	public function triggerChangeTitleUpdate( Title $source, Title $target, array $options ): void {
 		$oldTitle = $options['redirect_id'] == 0 ? null : $source;
+		$titles = $oldTitle !== null ? [ $oldTitle, $target ] : [ $target ];
 
-		$update = static function () use ( $oldTitle, $target ): void {
+		$parameters = [
+			UpdateJob::FORCED_UPDATE => true,
+			'origin' => 'ChangeTitleUpdate',
+		];
+
+		$cli = $this->isCommandLineMode();
+
+		// Online with the update-job queue enabled (the default): push
+		// deduplicated jobs to the queue so the (potentially heavy) target
+		// re-parse runs on a worker instead of synchronously on the webserver.
+		// `UpdateJob` sets `removeDuplicates`, so identical jobs collapse while
+		// still queued. See #5619.
+		if ( !$cli && $this->store->getOption( 'smwgEnableUpdateJobs' ) ) {
 			$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
-			$parameters = [
-				UpdateJob::FORCED_UPDATE => true,
-				'origin' => 'ChangeTitleUpdate',
-			];
 
-			if ( $oldTitle !== null ) {
-				$jobFactory->newUpdateJob( $oldTitle, $parameters )->run();
+			foreach ( $titles as $title ) {
+				$jobFactory->newUpdateJob( $title, $parameters )->lazyPush();
 			}
 
-			$jobFactory->newUpdateJob( $target, $parameters )->run();
+			return;
+		}
+
+		// CLI / job-runner, or wikis with the update-job queue disabled: run
+		// synchronously as before (immediately in CLI, otherwise post-send) so
+		// the #895 redirect cleanup is never silently skipped. `UpdateJob::run()`
+		// ignores `smwgEnableUpdateJobs`.
+		$update = static function () use ( $titles, $parameters ): void {
+			$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+
+			foreach ( $titles as $title ) {
+				$jobFactory->newUpdateJob( $title, $parameters )->run();
+			}
 		};
 
-		if ( Site::isCommandLineMode() ) {
+		if ( $cli ) {
 			$update();
 		} else {
 			DeferredUpdates::addCallableUpdate( $update );
 		}
+	}
+
+	/**
+	 * Seam over `Site::isCommandLineMode()` so the queue-vs-inline branch in
+	 * `triggerChangeTitleUpdate()` is unit-testable; PHPUnit always runs as CLI.
+	 */
+	protected function isCommandLineMode(): bool {
+		return Site::isCommandLineMode();
 	}
 
 	/**
