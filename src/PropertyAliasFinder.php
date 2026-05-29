@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use Onoi\Cache\Cache;
 use SMW\Localizer\Message;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,7 +23,7 @@ class PropertyAliasFinder {
 	 */
 	const CACHE_TTL = 604800;
 
-	private Cache $cache;
+	private BagOStuff $cache;
 
 	/**
 	 * Array with entries "property alias" => "property id"
@@ -50,11 +50,11 @@ class PropertyAliasFinder {
 	/**
 	 * @since 2.4
 	 *
-	 * @param Cache $cache
+	 * @param BagOStuff $cache
 	 * @param array $propertyAliases
 	 * @param array $canonicalPropertyAliases
 	 */
-	public function __construct( Cache $cache, array $propertyAliases = [], array $canonicalPropertyAliases = [] ) {
+	public function __construct( BagOStuff $cache, array $propertyAliases = [], array $canonicalPropertyAliases = [] ) {
 		$this->cache = $cache;
 		$this->canonicalPropertyAliases = $canonicalPropertyAliases;
 
@@ -106,7 +106,7 @@ class PropertyAliasFinder {
 			]
 		);
 
-		$propertyAliases = $this->cache->fetch( $key );
+		$propertyAliases = $this->cache->get( $key );
 		if ( $propertyAliases !== false ) {
 			return $propertyAliases;
 		}
@@ -117,7 +117,7 @@ class PropertyAliasFinder {
 			$propertyAliases[Message::get( $msgKey, Message::TEXT, $languageCode )] = $id;
 		}
 
-		$this->cache->save( $key, $propertyAliases, self::CACHE_TTL );
+		$this->cache->set( $key, $propertyAliases, self::CACHE_TTL );
 
 		return $propertyAliases;
 	}

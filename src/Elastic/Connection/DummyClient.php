@@ -3,10 +3,10 @@
 namespace SMW\Elastic\Connection;
 
 use Elasticsearch\Client as ElasticClient;
-use Onoi\Cache\Cache;
-use Onoi\Cache\NullCache;
 use Psr\Log\NullLogger;
 use SMW\Elastic\Config;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\EmptyBagOStuff;
 
 /**
  * @private
@@ -24,11 +24,11 @@ class DummyClient extends Client {
 	public function __construct(
 		// @phan-suppress-next-line PhanUndeclaredTypeParameter,PhanUndeclaredTypeProperty
 		protected ?ElasticClient $client = null,
-		private ?Cache $cache = null,
+		private ?BagOStuff $cache = null,
 		private ?Config $config = null,
 	) {
 		if ( $this->cache === null ) {
-			$this->cache = new NullCache();
+			$this->cache = new EmptyBagOStuff();
 		}
 
 		if ( $this->config === null ) {

@@ -66,7 +66,7 @@ class PropertyRegistry {
 		$lang = $localizer->getLang();
 
 		$propertyAliasFinder = new PropertyAliasFinder(
-			$applicationFactory->getCache(),
+			$applicationFactory->getObjectCache(),
 			$lang->getPropertyAliases(),
 			$lang->getCanonicalPropertyAliases()
 		);
