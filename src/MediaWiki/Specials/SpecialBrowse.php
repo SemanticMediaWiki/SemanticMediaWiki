@@ -214,7 +214,7 @@ class SpecialBrowse extends SpecialPage {
 			] );
 		}
 
-		$this->addHelpLink( $this->msg( 'smw-specials-browse-helplink' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-specials-browse-helplink' )->text(), true );
 	}
 
 	/**

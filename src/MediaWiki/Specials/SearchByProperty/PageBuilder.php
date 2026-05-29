@@ -73,7 +73,7 @@ class PageBuilder {
 		}
 
 		if ( $resultList === '' || $resultList === null ) {
-			$resultList = $this->msg( 'smw_result_noresults' )->text();
+			$resultList = $this->msg( 'smw_result_noresults' )->escaped();
 		}
 
 		$pageDescription = Html::rawElement(

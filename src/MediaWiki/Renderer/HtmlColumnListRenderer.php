@@ -57,7 +57,7 @@ class HtmlColumnListRenderer {
 	 * @return HtmlColumnListRenderer
 	 */
 	public function setColumnListClass( $columnListClass ): static {
-		$this->columnListClass = htmlspecialchars( $columnListClass );
+		$this->columnListClass = $columnListClass;
 		return $this;
 	}
 

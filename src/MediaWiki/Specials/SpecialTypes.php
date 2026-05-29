@@ -201,7 +201,7 @@ class SpecialTypes extends SpecialPage {
 			);
 		}
 
-		$this->addHelpLink( $this->msg( 'smw-specials-bytype-helplink', $typeLabel )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-specials-bytype-helplink', $typeLabel )->text(), true );
 
 		$pagingLimit = $this->settings->dotGet( 'smwgPagingLimit.type' );
 
@@ -560,7 +560,7 @@ class SpecialTypes extends SpecialPage {
 
 		// Add human readable group label
 		foreach ( $contents as $group => $values ) {
-			$groupLabel = Message::get( "smw-type-$group", Message::TEXT, Message::USER_LANGUAGE );
+			$groupLabel = Message::get( "smw-type-$group", Message::ESCAPED, Message::USER_LANGUAGE );
 			$contents[$groupLabel] = $values;
 			unset( $contents[$group] );
 		}

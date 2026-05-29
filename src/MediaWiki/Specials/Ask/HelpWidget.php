@@ -34,7 +34,7 @@ class HelpWidget {
 				[
 					'style' => 'font-size: 1.2em; margin-left:0px'
 				],
-				Message::get( 'smw-ask-format', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-format', Message::ESCAPED, Message::USER_LANGUAGE )
 			) . Html::rawElement(
 				'ul',
 				[],
@@ -59,7 +59,7 @@ class HelpWidget {
 				[
 					'style' => 'font-size: 1.2em; margin-left:0px'
 				],
-				Message::get( 'smw-ask-input-assistance', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-input-assistance', Message::ESCAPED, Message::USER_LANGUAGE )
 			)
 		);
 
@@ -71,22 +71,22 @@ class HelpWidget {
 			Html::rawElement(
 				'li',
 				[],
-				Message::get( 'smw-ask-condition-input-assistance-property', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-condition-input-assistance-property', Message::PARSE, Message::USER_LANGUAGE )
 			) .
 			Html::rawElement(
 				'li',
 				[],
-				Message::get( 'smw-ask-condition-input-assistance-category', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-condition-input-assistance-category', Message::PARSE, Message::USER_LANGUAGE )
 			) .
 			Html::rawElement(
 				'li',
 				[],
-				Message::get( 'smw-ask-condition-input-assistance-concept', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-condition-input-assistance-concept', Message::PARSE, Message::USER_LANGUAGE )
 			)
 		);
 
 		$html = HtmlModal::modal(
-			Message::get( 'smw-cheat-sheet', Message::TEXT, Message::USER_LANGUAGE ),
+			Message::get( 'smw-cheat-sheet', Message::ESCAPED, Message::USER_LANGUAGE ),
 			$text,
 			[
 				'id' => 'ask-help',

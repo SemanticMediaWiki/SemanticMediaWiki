@@ -108,6 +108,10 @@ class HtmlTabs {
 			$attributes['dir'] = 'rtl';
 		}
 
+		// The 'data-mw-subtab' attribute holds JSON-encoded tab HTML for JS consumption;
+		// the inner HTML is intentionally escaped both as JSON and as an HTML attribute
+		// (two distinct layers), which phan reports as a double escape.
+		// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 		return Html::rawElement(
 			'div',
 			$attributes,

@@ -71,7 +71,7 @@ class SpecialConcepts extends SpecialPage {
 			$html = $this->getHtml( $diWikiPages, $limit, $offset );
 		}
 
-		$this->addHelpLink( $this->msg( 'smw-helplink-concepts' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-helplink-concepts' )->text(), true );
 
 		$out->setPageTitle( $this->msg( 'concepts' )->text() );
 		$out->addHTML( $html );
@@ -247,7 +247,7 @@ class SpecialConcepts extends SpecialPage {
 				'div',
 				[ 'class' => 'smw-page-navigation' ],
 				$paginationHtml
-			) . Html::element(
+			) . Html::rawElement(
 				'div',
 				[ 'class' => $key, 'style' => 'margin-top:10px;margin-bottom:10px;' ],
 				$this->msg( $key, $resultNumber )->parse()

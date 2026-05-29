@@ -63,7 +63,7 @@ class ContentsBuilder {
 		if ( $result !== [] ) {
 			$html .= '<pre>' . json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</pre>';
 		} else {
-			$html .= $this->msg( 'smw-property-label-similarity-noresult' );
+			$html .= $this->msg( 'smw-property-label-similarity-noresult', Message::ESCAPED );
 		}
 
 		return $html;

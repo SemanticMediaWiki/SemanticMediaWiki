@@ -39,7 +39,7 @@ class LinksWidget {
 			Html::rawElement(
 				'legend',
 				[],
-				Message::get( 'smw-ask-search', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-search', Message::ESCAPED, Message::USER_LANGUAGE )
 			) . $html
 		);
 	}
@@ -219,7 +219,7 @@ class LinksWidget {
 					[
 						'id' => 'search-action',
 						'type'  => 'submit',
-						'value' => wfMessage( 'smw_ask_submit' )->escaped()
+						'value' => wfMessage( 'smw_ask_submit' )->text()
 					]
 				) .
 				Html::element(

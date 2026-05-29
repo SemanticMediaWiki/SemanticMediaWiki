@@ -113,7 +113,7 @@ class BeforePageDisplay implements BeforePageDisplayHook {
 		$isUpgradeFlag = $isUpgrade !== null ? 2 : 1;
 		$count = count( $incompleteTasks );
 
-		$titleHtml = Html::rawElement( 'strong', [], Message::get( 'smw-title' ) );
+		$titleHtml = Html::element( 'strong', [], Message::get( 'smw-title' ) );
 		$note = Html::rawElement( 'span',
 			[
 				'style' => 'color: var( --color-subtle, #54595d ); font-size: 0.75rem;'

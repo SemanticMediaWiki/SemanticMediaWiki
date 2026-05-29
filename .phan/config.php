@@ -19,8 +19,6 @@ $config['suppress_issue_types'] = array_merge(
 		'PhanUndeclaredTypeThrowsType',
 		'PhanUndeclaredVariable',
 		'PhanUndeclaredVariableAssignOp',
-		'SecurityCheck-DoubleEscaped',
-		'SecurityCheck-XSS',
 
 		// Both local and global vendor directories have to be analysed
 		'PhanRedefinedClassReference',

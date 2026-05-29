@@ -47,7 +47,7 @@ class SpecialFacetedSearch extends SpecialPage {
 		$output = $this->getOutput();
 		$request = $this->getRequest();
 
-		$this->addHelpLink( $this->msg( 'smw-specials-facetedsearch-helplink' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-specials-facetedsearch-helplink' )->text(), true );
 
 		$output->addModuleStyles(
 			[

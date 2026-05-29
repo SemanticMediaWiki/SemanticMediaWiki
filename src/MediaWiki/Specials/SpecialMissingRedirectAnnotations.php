@@ -109,17 +109,17 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 				[
 					'style' => 'font-style:normal;margin-top:20px;'
 				],
-				$this->msg( 'smw-missingredirects-noresult' )->text()
+				$this->msg( 'smw-missingredirects-noresult' )->escaped()
 			);
 		} else {
 			$html .= Html::rawElement(
 				'h2',
 				[],
-				$this->msg( 'smw-missingredirects-list' )->text()
+				$this->msg( 'smw-missingredirects-list' )->escaped()
 			) . Html::rawElement(
 				'p',
 				[],
-				$this->msg( 'smw-missingredirects-list-intro', $count )->text()
+				$this->msg( 'smw-missingredirects-list-intro', $count )->escaped()
 			) . Html::rawElement(
 				'div',
 				[],
@@ -141,7 +141,7 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 				[
 					'class' => 'smw-breadcrumb-arrow-right'
 				]
-			) . Html::rawElement(
+			) . Html::element(
 				'a',
 				[
 					'href' => SkinComponentUtils::makeSpecialUrl( 'Specialpages', $query ) . '#Semantic_MediaWiki'

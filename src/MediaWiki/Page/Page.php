@@ -53,7 +53,7 @@ abstract class Page extends Article {
 
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			$outputPage->setPageTitle( $this->getTitle()->getPrefixedText() );
-			$outputPage->addHTML( wfMessage( 'smw-semantics-not-enabled' )->text() );
+			$outputPage->addHTML( wfMessage( 'smw-semantics-not-enabled' )->escaped() );
 			return;
 		}
 

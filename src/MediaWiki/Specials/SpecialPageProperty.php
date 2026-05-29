@@ -77,7 +77,7 @@ class SpecialPageProperty extends SpecialPage {
 		);
 
 		$this->addHelpLink(
-			$this->msg( 'smw-special-pageproperty-helplink' )->escaped(),
+			$this->msg( 'smw-special-pageproperty-helplink' )->text(),
 			true
 		);
 
@@ -137,7 +137,7 @@ class SpecialPageProperty extends SpecialPage {
 		// No property given, no results
 		if ( $propname === '' ) {
 			$html .= $pageBuilder->buildForm();
-			$html .= $this->msg( 'smw_result_noresults' )->text();
+			$html .= $this->msg( 'smw_result_noresults' )->escaped();
 		} else {
 
 			$requestOptions = new RequestOptions();

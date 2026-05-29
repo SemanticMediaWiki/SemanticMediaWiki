@@ -58,8 +58,6 @@ class SectionTag {
 		$title = $this->parser->getTitle();
 
 		foreach ( $args as $name => $value ) {
-			$value = htmlspecialchars( $value );
-
 			if ( $name === 'class' ) {
 				$attributes['class'] = $value;
 			}

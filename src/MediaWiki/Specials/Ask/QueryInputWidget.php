@@ -26,7 +26,7 @@ class QueryInputWidget {
 
 		$table .= HtmlDivTable::row(
 			HtmlDivTable::cell(
-				"<fieldset><legend>" . Message::get( 'smw_ask_queryhead', Message::TEXT, Message::USER_LANGUAGE ) . "</legend>" .
+				"<fieldset><legend>" . Message::get( 'smw_ask_queryhead', Message::ESCAPED, Message::USER_LANGUAGE ) . "</legend>" .
 				'<textarea id="ask-query-condition" class="smw-ask-query-condition" name="q" rows="6" placeholder="...">' .
 				htmlspecialchars( $queryString ) . '</textarea></fieldset>',
 				[ 'class' => 'smw-ask-condition slowfade' ]
@@ -36,7 +36,7 @@ class QueryInputWidget {
 					'style' => 'width:10px; border:0px; padding: 0px;'
 				]
 			) . HtmlDivTable::cell(
-				"<fieldset><legend>" . Message::get( 'smw_ask_printhead', Message::TEXT, Message::USER_LANGUAGE ) . "</legend>" .
+				"<fieldset><legend>" . Message::get( 'smw_ask_printhead', Message::ESCAPED, Message::USER_LANGUAGE ) . "</legend>" .
 				'<textarea id="smw-property-input" class="smw-ask-query-printout" name="po" rows="6" placeholder="...">' .
 				htmlspecialchars( $printoutString ?? '' ) . '</textarea></fieldset>',
 				[ 'class' => 'smw-ask-printhead slowfade' ]
