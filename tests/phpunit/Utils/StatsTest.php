@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\Utils\Stats;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Utils\Stats
@@ -20,7 +20,7 @@ class StatsTest extends TestCase {
 	private $cache;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -38,11 +38,11 @@ class StatsTest extends TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->anything(),
 				[ 'Foo.bar' => 11 ] );
@@ -58,7 +58,7 @@ class StatsTest extends TestCase {
 
 	public function testSet() {
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->anything(),
 				[ 'Foo.bar' => 10 ] );
@@ -78,11 +78,11 @@ class StatsTest extends TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->anything(),
 				[ 'Foo.bar' => 7.5 ] );
@@ -108,7 +108,7 @@ class StatsTest extends TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$instance = new Stats(
@@ -134,7 +134,7 @@ class StatsTest extends TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$instance = new Stats(
@@ -161,7 +161,7 @@ class StatsTest extends TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$instance = new Stats(

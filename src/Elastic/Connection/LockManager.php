@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\Connection;
 
-use Onoi\Cache\Cache;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,7 +22,7 @@ class LockManager {
 	/**
 	 * @since 3.1
 	 */
-	public function __construct( private readonly Cache $cache ) {
+	public function __construct( private readonly BagOStuff $cache ) {
 	}
 
 	/**
@@ -34,7 +34,7 @@ class LockManager {
 			self::TYPE_MAINTENANCE
 		);
 
-		return $this->cache->fetch( $key ) !== false;
+		return $this->cache->get( $key ) !== false;
 	}
 
 	/**
@@ -46,7 +46,7 @@ class LockManager {
 			self::TYPE_MAINTENANCE
 		);
 
-		$this->cache->save( $key, true );
+		$this->cache->set( $key, true );
 	}
 
 	/**
@@ -61,7 +61,7 @@ class LockManager {
 			[ 'lock', $type ]
 		);
 
-		$this->cache->save( $key, $version );
+		$this->cache->set( $key, $version );
 	}
 
 	/**
@@ -77,7 +77,7 @@ class LockManager {
 			[ 'lock', $type ]
 		);
 
-		return $this->cache->fetch( $key ) !== false;
+		return $this->cache->get( $key ) !== false;
 	}
 
 	/**
@@ -93,7 +93,7 @@ class LockManager {
 			[ 'lock', $type ]
 		);
 
-		return $this->cache->fetch( $key );
+		return $this->cache->get( $key );
 	}
 
 	/**

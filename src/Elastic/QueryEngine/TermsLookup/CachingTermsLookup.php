@@ -2,9 +2,9 @@
 
 namespace SMW\Elastic\QueryEngine\TermsLookup;
 
-use Onoi\Cache\Cache;
 use RuntimeException;
 use SMW\Elastic\QueryEngine\Condition;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -26,7 +26,7 @@ class CachingTermsLookup extends TermsLookup {
 	 */
 	public function __construct(
 		private readonly TermsLookup $termsLookup,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 	) {
 	}
 
@@ -100,7 +100,7 @@ class CachingTermsLookup extends TermsLookup {
 			return $this->quick_cache[$key]['params'];
 		}
 
-		$count = $this->cache->fetch( $key );
+		$count = $this->cache->get( $key );
 		if ( $count !== false ) {
 
 			$info = [
@@ -136,7 +136,7 @@ class CachingTermsLookup extends TermsLookup {
 		$count = $parameters->get( 'count' );
 
 		if ( $count >= $threshold ) {
-			$this->cache->save( $key, $count, $ttl );
+			$this->cache->set( $key, $count, $ttl );
 		}
 
 		$this->quick_cache[$key] = [
@@ -185,7 +185,7 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		$count = $this->cache->fetch( $key );
+		$count = $this->cache->get( $key );
 		if ( $count !== false ) {
 
 			$info = [
@@ -219,7 +219,7 @@ class CachingTermsLookup extends TermsLookup {
 		$count = $parameters->get( 'count' );
 
 		if ( $count >= $threshold ) {
-			$this->cache->save( $key, $count, $ttl );
+			$this->cache->set( $key, $count, $ttl );
 		}
 
 		return $params;
@@ -256,7 +256,7 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		$count = $this->cache->fetch( $key );
+		$count = $this->cache->get( $key );
 		if ( $count !== false ) {
 
 			$info = [
@@ -287,7 +287,7 @@ class CachingTermsLookup extends TermsLookup {
 		$count = $parameters->get( 'count' );
 
 		if ( $count >= $threshold ) {
-			$this->cache->save( $key, $count, $ttl );
+			$this->cache->set( $key, $count, $ttl );
 		}
 
 		return $params;
@@ -323,7 +323,7 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		$count = $this->cache->fetch( $key );
+		$count = $this->cache->get( $key );
 		if ( $count !== false ) {
 
 			$info = [
@@ -358,7 +358,7 @@ class CachingTermsLookup extends TermsLookup {
 		$count = $parameters->get( 'count' );
 
 		if ( $count >= $threshold ) {
-			$this->cache->save( $key, $count, $ttl );
+			$this->cache->set( $key, $count, $ttl );
 		}
 
 		return $params;

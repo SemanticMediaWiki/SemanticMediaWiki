@@ -2,7 +2,6 @@
 
 namespace SMW\Maintenance;
 
-use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\DataItems\DataItem;
 use SMW\MediaWiki\Api\Tasks\Task;
@@ -12,6 +11,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use Traversable;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -28,7 +28,7 @@ class DuplicateEntitiesDisposer {
 	 */
 	public function __construct(
 		private Store $store,
-		private ?Cache $cache = null,
+		private ?BagOStuff $cache = null,
 	) {
 	}
 

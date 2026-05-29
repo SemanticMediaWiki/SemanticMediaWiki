@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -10,6 +9,7 @@ use SMW\HierarchyLookup;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\HierarchyLookup
@@ -33,7 +33,7 @@ class HierarchyLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -83,7 +83,7 @@ class HierarchyLookupTest extends TestCase {
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,7 +124,7 @@ class HierarchyLookupTest extends TestCase {
 				$this->anything() )
 			->willReturn( $expected );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -170,11 +170,11 @@ class HierarchyLookupTest extends TestCase {
 			} );
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->stringContains( ':smw:hierarchy:2d440b72499319439ab5f466701f13fa' ),
 				$this->anything() );
@@ -205,11 +205,11 @@ class HierarchyLookupTest extends TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( [ 'Foo' => [ 'Bar', 'Foobar' ] ] );
 
 		$this->cache->expects( $this->never() )
-			->method( 'save' );
+			->method( 'set' );
 
 		$instance = new HierarchyLookup(
 			$this->store,
@@ -255,11 +255,11 @@ class HierarchyLookupTest extends TestCase {
 			} );
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->stringContains( ':smw:hierarchy:78c9d3ed63c959981731afeef22cc8e9' ),
 				$this->anything() );
@@ -308,11 +308,11 @@ class HierarchyLookupTest extends TestCase {
 			} );
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->stringContains( ':smw:hierarchy:c61e6ee84187efaafbb31878af471432' ),
 				$this->anything() );
@@ -343,11 +343,11 @@ class HierarchyLookupTest extends TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( [ 'Foo' => [ 'Bar', 'Foobar' ] ] );
 
 		$this->cache->expects( $this->never() )
-			->method( 'save' );
+			->method( 'set' );
 
 		$instance = new HierarchyLookup(
 			$this->store,
@@ -396,7 +396,7 @@ class HierarchyLookupTest extends TestCase {
 				$this->anything() )
 			->willReturn( $expected );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -434,7 +434,7 @@ class HierarchyLookupTest extends TestCase {
 				$this->anything() )
 			->willReturn( $expected );
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -458,13 +458,12 @@ class HierarchyLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->never() )
-			->method( 'contains' )
-			->willReturn( false );
+			->method( 'get' );
 
 		$instance = new HierarchyLookup( $store, $cache );
 		$instance->setSubpropertyDepth( 0 );
@@ -479,13 +478,12 @@ class HierarchyLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$cache = $this->getMockBuilder( Cache::class )
+		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->never() )
-			->method( 'contains' )
-			->willReturn( false );
+			->method( 'get' );
 
 		$instance = new HierarchyLookup( $store, $cache );
 		$instance->setSubcategoryDepth( 0 );

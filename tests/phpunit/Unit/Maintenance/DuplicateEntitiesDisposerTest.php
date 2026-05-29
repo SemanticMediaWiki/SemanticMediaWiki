@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\Maintenance;
 
-use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\DuplicateEntitiesDisposer;
@@ -13,6 +12,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Maintenance\DuplicateEntitiesDisposer
@@ -55,7 +55,7 @@ class DuplicateEntitiesDisposerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
