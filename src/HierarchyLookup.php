@@ -4,11 +4,11 @@ namespace SMW;
 
 use InvalidArgumentException;
 use Iterator;
-use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -39,7 +39,7 @@ class HierarchyLookup {
 
 	private Store $store;
 
-	private Cache $cache;
+	private BagOStuff $cache;
 
 	private array $inMemoryCache = [];
 
@@ -58,7 +58,7 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 */
-	public function __construct( Store $store, Cache $cache ) {
+	public function __construct( Store $store, BagOStuff $cache ) {
 		$this->store = $store;
 		$this->cache = $cache;
 	}
@@ -237,7 +237,7 @@ class HierarchyLookup {
 		$reqCacheUpdate = false;
 		$hierarchyMembers = [];
 
-		$hierarchyCache = $this->cache->fetch( $cacheKey );
+		$hierarchyCache = $this->cache->get( $cacheKey );
 		if ( !$hierarchyCache ) {
 			$hierarchyCache = [];
 		}
@@ -283,7 +283,7 @@ class HierarchyLookup {
 		}
 
 		if ( $reqCacheUpdate ) {
-			$this->cache->save( $cacheKey, $hierarchyCache, $this->cacheTTL );
+			$this->cache->set( $cacheKey, $hierarchyCache, $this->cacheTTL );
 		}
 
 		return $hierarchyList[$key];

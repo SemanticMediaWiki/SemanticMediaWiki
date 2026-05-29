@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Unit\Elastic\Connection;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Connection\LockManager;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Elastic\Connection\LockManager
@@ -20,7 +20,7 @@ class LockManagerTest extends TestCase {
 	private $cache;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -34,7 +34,7 @@ class LockManagerTest extends TestCase {
 
 	public function testHasMaintenanceLock() {
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) )
 			->willReturn( true );
 
@@ -47,7 +47,7 @@ class LockManagerTest extends TestCase {
 
 	public function testSetMaintenanceLock() {
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) );
 
 		$instance = new LockManager(
@@ -59,7 +59,7 @@ class LockManagerTest extends TestCase {
 
 	public function testSetLock() {
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->anything(),
 				2 );
@@ -73,7 +73,7 @@ class LockManagerTest extends TestCase {
 
 	public function testHasLock() {
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( '123' );
 
 		$instance = new LockManager(
@@ -87,7 +87,7 @@ class LockManagerTest extends TestCase {
 
 	public function testGetLock() {
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( 2 );
 
 		$instance = new LockManager(

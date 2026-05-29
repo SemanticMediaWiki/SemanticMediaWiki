@@ -820,7 +820,7 @@ return [
 
 		$hierarchyLookup = new HierarchyLookup(
 			$servicesFactory->getStore(),
-			$servicesFactory->getCache()
+			$servicesFactory->getObjectCache()
 		);
 
 		$hierarchyLookup->setLogger(

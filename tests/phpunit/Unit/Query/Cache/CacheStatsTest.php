@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Unit\Query\Cache;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Cache\CacheStats;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Query\Cache\CacheStats
@@ -20,7 +20,7 @@ class CacheStatsTest extends TestCase {
 	private $cache;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( Cache::class )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -40,7 +40,7 @@ class CacheStatsTest extends TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$instance = new CacheStats(
@@ -61,7 +61,7 @@ class CacheStatsTest extends TestCase {
 
 	public function testGetStatsEmpty() {
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( false );
 
 		$instance = new CacheStats(

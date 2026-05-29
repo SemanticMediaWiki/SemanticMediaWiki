@@ -994,7 +994,7 @@ class ServicesFactory {
 
 		$hierarchyLookup = new HierarchyLookup(
 			$store ?? $this->getStore(),
-			$this->getCache( $cacheType )
+			$this->getObjectCache( $cacheType )
 		);
 
 		$hierarchyLookup->setLogger(
@@ -1183,15 +1183,14 @@ class ServicesFactory {
 			return $this->testOverrides['ResultCache'];
 		}
 
-		$cacheFactory = $this->getCacheFactory();
 		$settings = $this->getSettings();
 
 		$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
 
-		// Explicitly use the CACHE_DB to access a SqlBagOstuff instance
+		// Explicitly use the CACHE_DB to access a SqlBagOStuff instance
 		// for a bit more persistence
 		$cacheStats = new CacheStats(
-			$cacheFactory->newMediaWikiCache( CACHE_DB ),
+			$this->getObjectCache( CACHE_DB ),
 			ResultCache::STATSD_ID
 		);
 
@@ -1238,11 +1237,9 @@ class ServicesFactory {
 			return $this->testOverrides['Stats'];
 		}
 
-		$cacheFactory = $this->getCacheFactory();
-
-		// Explicitly use the DB to access a SqlBagOstuff instance
+		// Explicitly use the DB to access a SqlBagOStuff instance
 		return new Stats(
-			$cacheFactory->newMediaWikiCache( CACHE_DB ),
+			$this->getObjectCache( CACHE_DB ),
 			$id
 		);
 	}

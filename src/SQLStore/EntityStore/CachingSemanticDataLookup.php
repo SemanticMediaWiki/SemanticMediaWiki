@@ -2,8 +2,6 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
-use Onoi\Cache\NullCache;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\DataItems\DataItem;
@@ -47,11 +45,7 @@ class CachingSemanticDataLookup {
 	 */
 	public function __construct(
 		private SemanticDataLookup $semanticDataLookup,
-		private ?Cache $cache = null,
 	) {
-		if ( $this->cache === null ) {
-			$this->cache = new NullCache();
-		}
 	}
 
 	/**

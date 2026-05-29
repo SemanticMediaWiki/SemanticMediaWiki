@@ -97,7 +97,7 @@ class ElasticFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connectionProvider = new ConnectionProvider(
-			new LockManager( $applicationFactory->getCache() ),
+			new LockManager( $applicationFactory->getObjectCache() ),
 			$this->newConfig()
 		);
 
@@ -308,7 +308,7 @@ class ElasticFactory {
 
 		$termsLookup = new CachingTermsLookup(
 			new TermsLookup( $store, $queryOptions ),
-			$applicationFactory->getCache()
+			$applicationFactory->getObjectCache()
 		);
 
 		$servicesContainer = new ServicesContainer(

@@ -833,8 +833,7 @@ class SQLStoreFactory {
 		);
 
 		$cachingSemanticDataLookup = new CachingSemanticDataLookup(
-			$semanticDataLookup,
-			ApplicationFactory::getInstance()->getCache()
+			$semanticDataLookup
 		);
 
 		return $cachingSemanticDataLookup;
