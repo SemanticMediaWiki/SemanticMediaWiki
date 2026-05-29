@@ -294,6 +294,10 @@ class PropertyValue extends DataValue {
 			return $this->m_wikipage;
 		}
 
+		if ( $this->m_dataitem === null ) {
+			return null;
+		}
+
 		$diWikiPage = $this->m_dataitem->getCanonicalDiWikiPage();
 
 		if ( $diWikiPage !== null ) {
