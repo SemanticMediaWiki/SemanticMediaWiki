@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -16,6 +15,7 @@ use SMW\Property\SpecificationLookup as PropertySpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * `ChangePropagationDispatchJob` dispatches update jobs via `ChangePropagationUpdateJob`
@@ -89,7 +89,7 @@ class ChangePropagationDispatchJob extends Job {
 		Title $title,
 		array $params,
 		Store $store,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly PropertySpecificationLookup $propertySpecificationLookup,
 		private readonly IteratorFactory $iteratorFactory,
 		private readonly JobFactory $jobFactory
@@ -144,7 +144,7 @@ class ChangePropagationDispatchJob extends Job {
 			return;
 		}
 
-		ApplicationFactory::getInstance()->getCache()->delete(
+		ApplicationFactory::getInstance()->getObjectCache()->delete(
 			smwfCacheKey(
 				self::CACHE_NAMESPACE,
 				$subject->getHash()
@@ -180,7 +180,7 @@ class ChangePropagationDispatchJob extends Job {
 			$subject->getHash()
 		);
 
-		return $applicationFactory->getCache()->fetch( $key ) > 0;
+		return $applicationFactory->getObjectCache()->get( $key ) > 0;
 	}
 
 	/**
@@ -217,7 +217,7 @@ class ChangePropagationDispatchJob extends Job {
 				$subject->getHash()
 			);
 
-			$count = $applicationFactory->getCache()->fetch( $key );
+			$count = $applicationFactory->getObjectCache()->get( $key );
 		}
 
 		return $count;
@@ -350,9 +350,9 @@ class ChangePropagationDispatchJob extends Job {
 
 		// SemanticData hasn't been updated, re-enter the cycle to ensure that
 		// the update of the property took place
-		if ( $this->cache->fetch( $key ) === false ) {
+		if ( $this->cache->get( $key ) === false ) {
 
-			$this->cache->save( $key, 1, 60 * 60 * 24 );
+			$this->cache->set( $key, 1, 60 * 60 * 24 );
 			$params = $this->params;
 
 			$changePropagationDispatchJob = $this->jobFactory->newChangePropagationDispatchJob(
@@ -478,7 +478,12 @@ class ChangePropagationDispatchJob extends Job {
 		//
 		// The marker will be removed after running the ChangePropagationUpdateJob
 		// on the same subject.
-		$this->cache->save(
+		//
+		// $count is always >= 1 here (the dispatched subject is always counted),
+		// so the marker value is never 0. That invariant is what keeps the
+		// `get( $key ) === false` absence check below behaviour-preserving: a 0
+		// marker would read back as a present 0, not as absent.
+		$this->cache->set(
 			smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() ),
 			$count,
 			60 * 60 * 24

@@ -716,7 +716,7 @@
 			"class": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
 			"services": [
 				"SMW.Store",
-				"SMW.Cache",
+				"SMW.ObjectCache",
 				"SMW.PropertySpecificationLookup",
 				"SMW.IteratorFactory",
 				"SMW.JobFactory"
