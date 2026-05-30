@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
-use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\SQLStore\EntityStore\IdCacheManager;
@@ -24,10 +23,10 @@ class IdCacheManagerTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->caches = [
-			'entity.id' => new FixedInMemoryLruCache(),
-			'entity.sort' => new FixedInMemoryLruCache(),
-			'entity.lookup' => new FixedInMemoryLruCache(),
-			'propertytable.hash' => new FixedInMemoryLruCache()
+			'entity.id' => new InMemoryLruCache(),
+			'entity.sort' => new InMemoryLruCache(),
+			'entity.lookup' => new InMemoryLruCache(),
+			'propertytable.hash' => new InMemoryLruCache()
 		];
 	}
 
@@ -140,7 +139,7 @@ class IdCacheManagerTest extends TestCase {
 		$instance = new IdCacheManager( $this->caches );
 
 		$this->assertInstanceOf(
-			FixedInMemoryLruCache::class,
+			InMemoryLruCache::class,
 			$instance->get( 'entity.sort' )
 		);
 	}
@@ -229,20 +228,21 @@ class IdCacheManagerTest extends TestCase {
 	}
 
 	public function testDeleteCacheById() {
-		$cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$cache->expects( $this->once() )
-			->method( 'delete' )
-			->with( IdCacheManager::computeSha1( [ 'foo', 0, '', '' ] ) );
-
-		$this->caches['entity.id'] = $cache;
-
 		$instance = new IdCacheManager( $this->caches );
 		$instance->setCache( 'foo', 0, '', '', '42', 'bar' );
 
+		$key = IdCacheManager::computeSha1( [ 'foo', 0, '', '' ] );
+		$this->assertNotFalse(
+			$this->caches['entity.id']->fetch( $key ),
+			'precondition: the id is cached under entity.id'
+		);
+
 		$instance->deleteCacheById( 42 );
+
+		$this->assertFalse(
+			$this->caches['entity.id']->fetch( $key ),
+			'deleteCacheById removes the entity.id entry'
+		);
 	}
 
 	public function testSetCacheOnTitleWithSpace_ThrowsException() {

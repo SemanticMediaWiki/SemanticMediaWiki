@@ -118,11 +118,4 @@ final class InMemoryLruCache {
 		];
 	}
 
-	/**
-	 * @since 7.0.0
-	 */
-	public function getName(): string {
-		return self::class;
-	}
-
 }

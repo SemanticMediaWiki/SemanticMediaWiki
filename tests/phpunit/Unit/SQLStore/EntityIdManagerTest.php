@@ -4,9 +4,8 @@ namespace SMW\Tests\Unit\SQLStore;
 
 use MediaWiki\JobQueue\JobFactory;
 use MediaWiki\Title\TitleFactory;
-use Onoi\Cache\Cache;
-use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
@@ -61,16 +60,14 @@ class EntityIdManagerTest extends TestCase {
 	protected function setUp(): void {
 		$idCacheManager = new IdCacheManager(
 			[
-				'entity.id' => new FixedInMemoryLruCache(),
-				'entity.sort' => new FixedInMemoryLruCache(),
-				'entity.lookup' => new FixedInMemoryLruCache(),
-				'propertytable.hash' => new FixedInMemoryLruCache()
+				'entity.id' => new InMemoryLruCache(),
+				'entity.sort' => new InMemoryLruCache(),
+				'entity.lookup' => new InMemoryLruCache(),
+				'propertytable.hash' => new InMemoryLruCache()
 			]
 		);
 
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->cache = new InMemoryLruCache();
 
 		$propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()

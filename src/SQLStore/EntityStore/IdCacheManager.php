@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
 use RuntimeException;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\WikiPage;
 
 /**
@@ -59,7 +59,7 @@ class IdCacheManager {
 	 *
 	 * @param string $key
 	 *
-	 * @return Cache
+	 * @return InstrumentedCache|InMemoryLruCache
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->caches[$key] ) ) {

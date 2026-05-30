@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
-use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
@@ -30,7 +29,7 @@ class AuxiliaryFieldsTest extends TestCase {
 
 	private $connection;
 	private $idCacheManager;
-	private Cache $cache;
+	private InMemoryLruCache $cache;
 
 	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( Database::class )
@@ -41,7 +40,7 @@ class AuxiliaryFieldsTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = new FixedInMemoryLruCache();
+		$this->cache = new InMemoryLruCache();
 	}
 
 	public function testCanConstruct() {

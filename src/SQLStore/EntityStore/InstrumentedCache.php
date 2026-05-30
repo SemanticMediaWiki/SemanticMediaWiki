@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
 use SMW\Cache\InMemoryLruCache;
 use Wikimedia\Stats\StatsFactory;
 
@@ -15,7 +14,7 @@ use Wikimedia\Stats\StatsFactory;
  * @license GPL-2.0-or-later
  * @since 7.0.0
  */
-class InstrumentedCache implements Cache {
+class InstrumentedCache {
 
 	public function __construct(
 		private readonly InMemoryLruCache $inner,
@@ -44,10 +43,9 @@ class InstrumentedCache implements Cache {
 		return $this->inner->contains( $id );
 	}
 
-	public function save( $id, $data, $ttl = 0 ) {
+	public function save( $id, $data, $ttl = 0 ): void {
 		$this->inner->save( $id, $data, $ttl );
 		$this->updateSizeGauge();
-		return null;
 	}
 
 	public function delete( $id ) {
@@ -58,10 +56,6 @@ class InstrumentedCache implements Cache {
 
 	public function getStats() {
 		return $this->inner->getStats();
-	}
-
-	public function getName() {
-		return $this->inner->getName();
 	}
 
 	private function updateSizeGauge(): void {
