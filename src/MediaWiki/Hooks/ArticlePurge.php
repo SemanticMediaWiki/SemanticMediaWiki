@@ -4,12 +4,12 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Page\Hook\ArticlePurgeHook;
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\Settings;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * A function hook being executed before running "&action=purge"
@@ -33,7 +33,7 @@ class ArticlePurge implements ArticlePurgeHook {
 	 */
 	public function __construct(
 		private readonly Store $store,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly Settings $settings,
 		private readonly EventDispatcher $eventDispatcher,
 	) {
@@ -47,7 +47,7 @@ class ArticlePurge implements ArticlePurgeHook {
 		$articleID = $title->getArticleID();
 
 		if ( $articleID > 0 ) {
-			$this->cache->save(
+			$this->cache->set(
 				smwfCacheKey( self::CACHE_NAMESPACE, $articleID ),
 				$this->settings->get( 'smwgAutoRefreshOnPurge' )
 			);

@@ -95,7 +95,7 @@
 			"class": "SMW\\MediaWiki\\Hooks\\ParserAfterTidy",
 			"services": [
 				"SMW.NamespaceExaminer",
-				"SMW.Cache",
+				"SMW.ObjectCache",
 				"SMW.ApplicationFactory",
 				"HookContainer",
 				"SMW.Settings",
@@ -201,7 +201,7 @@
 			"class": "SMW\\MediaWiki\\Hooks\\ArticlePurge",
 			"services": [
 				"SMW.Store",
-				"SMW.Cache",
+				"SMW.ObjectCache",
 				"SMW.Settings",
 				"SMW.EventDispatcher"
 			]
