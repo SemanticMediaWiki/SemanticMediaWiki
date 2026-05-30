@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
-use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DisplayTitleFinder;
@@ -41,7 +41,7 @@ class CacheWarmerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = new FixedInMemoryLruCache();
+		$this->cache = new InMemoryLruCache();
 
 		$this->linkBatch = $this->getMockBuilder( LinkBatch::class )
 			->disableOriginalConstructor()

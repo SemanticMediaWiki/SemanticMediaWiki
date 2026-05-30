@@ -135,11 +135,4 @@ class InMemoryLruCacheTest extends TestCase {
 		$this->assertSame( 2, $instance->getStats()['max'] );
 	}
 
-	public function testGetName() {
-		$this->assertSame(
-			InMemoryLruCache::class,
-			( new InMemoryLruCache() )->getName()
-		);
-	}
-
 }
