@@ -18,8 +18,8 @@ use Wikimedia\ObjectCache\BagOStuff;
  * encoding are preserved byte-for-byte from the former blob store so entries it
  * wrote remain readable. `delete()` reimplements the enumerable `@linkedList`
  * bulk-purge: it reads the container, hard-deletes every linked id and then the
- * anchor (N+1 true deletes), never a WAN tombstone/check-key, because SMW
- * invalidates query results by precise deletion.
+ * anchor from both tiers (N+1 true deletes), never a WAN tombstone/check-key,
+ * because SMW invalidates query results by precise deletion.
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
@@ -139,13 +139,21 @@ class QueryResultStore {
 	 */
 	public function delete( $id ): void {
 		$container = $this->read( $id );
+		$keys = [];
 
 		foreach ( $container->getLinkedList() as $lid ) {
-			$this->cache->delete( $this->getKey( $lid ) );
+			$linkedKey = $this->getKey( $lid );
+			$this->cache->delete( $linkedKey );
+			$keys[] = $linkedKey;
 		}
 
-		$this->cache->delete( $this->getKey( $id ) );
-		$this->internalCache->clear( [ $this->getKey( $id ) ] );
+		$anchorKey = $this->getKey( $id );
+		$this->cache->delete( $anchorKey );
+		$keys[] = $anchorKey;
+
+		// Evict the anchor and every linked id from the fast tier as well, so a
+		// later read in the same request cannot return a stale promoted entry.
+		$this->internalCache->clear( $keys );
 	}
 
 	private function getKey( $id ): string {

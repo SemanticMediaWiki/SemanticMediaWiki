@@ -119,6 +119,32 @@ class QueryResultStoreTest extends TestCase {
 		$this->assertFalse( $store->exists( 'dep' ) );
 	}
 
+	public function testDeleteEvictsLinkedEntryFromFastTier() {
+		// One store instance keeps its request-scoped fast tier across the calls.
+		$store = $this->newStore();
+
+		$main = $store->read( 'main' );
+		$main->addToLinkedList( 'dep' );
+		$store->save( $main );
+
+		$dep = $store->read( 'dep' );
+		$dep->set( 'results', [ 'D' ] );
+		$store->save( $dep );
+
+		// Promote 'dep' into the fast tier, mirroring an embedded query that was
+		// already rendered earlier in the same request.
+		$this->assertSame( [ 'D' ], $store->read( 'dep' )->get( 'results' ) );
+
+		// Deleting the anchor must cascade-evict 'dep' from the fast tier too,
+		// not only the durable backend, or this later read returns stale data.
+		$store->delete( 'main' );
+
+		$this->assertFalse(
+			$store->read( 'dep' )->get( 'results' ),
+			'a linked entry must be evicted from the fast tier on cascade delete'
+		);
+	}
+
 	public function testCanUseReflectsUsageState() {
 		$store = $this->newStore();
 		$this->assertTrue( $store->canUse() );
