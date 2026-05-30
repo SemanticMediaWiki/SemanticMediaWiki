@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\EntityIdFinder;
@@ -36,9 +36,10 @@ class EntityIdFinderTest extends TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		// A real in-process cache rather than a mock: IdCacheManager::get()
+		// hands it back, but EntityIdFinder routes through getId()/setCache()
+		// here, so the cache is never exercised directly by these tests.
+		$this->cache = new InMemoryLruCache();
 
 		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()

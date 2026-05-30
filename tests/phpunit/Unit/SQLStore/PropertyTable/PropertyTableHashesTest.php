@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\SQLStore\PropertyTable;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
@@ -37,9 +37,9 @@ class PropertyTableHashesTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		// A real in-process cache rather than a mock: the methods under test
+		// round-trip through it, so behaviour is asserted on the cached state.
+		$this->cache = new InMemoryLruCache();
 	}
 
 	public function testCanConstruct() {
@@ -50,9 +50,6 @@ class PropertyTableHashesTest extends TestCase {
 	}
 
 	public function testSetPropertyTableHashes() {
-		$this->cache->expects( $this->once() )
-			->method( 'save' );
-
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'get' )
 			->willReturn( $this->cache );
@@ -77,13 +74,6 @@ class PropertyTableHashesTest extends TestCase {
 	}
 
 	public function testGetPropertyTableHashes() {
-		$this->cache->expects( $this->once() )
-			->method( 'save' );
-
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'get' )
 			->willReturn( $this->cache );
@@ -108,6 +98,7 @@ class PropertyTableHashesTest extends TestCase {
 			$this->idCacheManager
 		);
 
+		// An empty cache forces the database read path.
 		$this->assertEquals(
 			[ 'foo' ],
 			$instance->getPropertyTableHashesById( 42 )
@@ -117,12 +108,6 @@ class PropertyTableHashesTest extends TestCase {
 	}
 
 	public function testSetPropertyTableHashesCache() {
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				42,
-				[ 'foo' ] );
-
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'get' )
 			->willReturn( $this->cache );
@@ -133,12 +118,13 @@ class PropertyTableHashesTest extends TestCase {
 		);
 
 		$instance->setPropertyTableHashesCache( 42, 'a:1:{i:0;s:3:"foo";}' );
+
+		$this->assertSame( [ 'foo' ], $this->cache->fetch( '42' ) );
 	}
 
 	public function testSetPropertyTableHashesCache_Zero() {
 		$this->idCacheManager->expects( $this->never() )
-			->method( 'get' )
-			->willReturn( $this->cache );
+			->method( 'get' );
 
 		$instance = new PropertyTableHashes(
 			$this->connection,
@@ -153,18 +139,14 @@ class PropertyTableHashesTest extends TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				42,
-				[] );
-
 		$instance = new PropertyTableHashes(
 			$this->connection,
 			$this->idCacheManager
 		);
 
 		$instance->clearPropertyTableHashCacheById( 42 );
+
+		$this->assertSame( [], $this->cache->fetch( '42' ) );
 	}
 
 }

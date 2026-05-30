@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\SequenceMapFinder;
@@ -30,9 +30,9 @@ class SequenceMapFinderTest extends TestCase {
 	private Database $connection;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		// A real in-process cache rather than a mock: the methods under test
+		// round-trip through it, so behaviour is asserted on the cached state.
+		$this->cache = new InMemoryLruCache();
 
 		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
@@ -93,10 +93,7 @@ class SequenceMapFinderTest extends TestCase {
 			'smw_seqmap' => $map
 		];
 
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
+		// An empty cache forces the database read path (a natural miss).
 		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
 
 		$this->connection->expects( $this->once() )
@@ -116,6 +113,9 @@ class SequenceMapFinderTest extends TestCase {
 			[ 'Foo' ],
 			$instance->findMapById( 1001 )
 		);
+
+		// The resolved map is written back to the cache.
+		$this->assertSame( [ 'Foo' ], $this->cache->fetch( '1001' ) );
 	}
 
 	public function testPrefetchSequenceMap() {
@@ -125,9 +125,6 @@ class SequenceMapFinderTest extends TestCase {
 			'smw_id' => 1001,
 			'smw_seqmap' => $map
 		];
-
-		$this->cache->expects( $this->atLeastOnce() )
-			->method( 'save' );
 
 		$whereConditions = [];
 		$capturedSelects = [];
@@ -150,6 +147,11 @@ class SequenceMapFinderTest extends TestCase {
 
 		$this->assertContains( [ 'smw_id', 'smw_seqmap' ], $capturedSelects );
 		$this->assertContains( [ 'smw_id' => [ 42, 1001 ] ], $whereConditions );
+
+		// The matched row is cached under its id, and the leftover id (with no
+		// matching row) is cached as an empty map to avoid individual SELECTs.
+		$this->assertSame( [ 'Foo' ], $this->cache->fetch( '1001' ) );
+		$this->assertSame( [], $this->cache->fetch( '42' ) );
 	}
 
 }
