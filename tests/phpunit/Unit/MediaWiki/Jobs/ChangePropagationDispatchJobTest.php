@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\DataItems\WikiPage;
@@ -14,9 +13,11 @@ use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Property\SpecificationLookup as PropertySpecificationLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\ChangePropagationDispatchJob
@@ -45,8 +46,10 @@ class ChangePropagationDispatchJobTest extends TestCase {
 		parent::tearDown();
 	}
 
-	private function newCache(): Cache {
-		return $this->getMockBuilder( Cache::class )->getMockForAbstractClass();
+	private function newCache(): BagOStuff {
+		return $this->getMockBuilder( BagOStuff::class )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	private function newPropertySpecificationLookup(): PropertySpecificationLookup {
@@ -75,7 +78,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 		Title $title,
 		array $params = [],
 		?SQLStore $store = null,
-		?Cache $cache = null,
+		?BagOStuff $cache = null,
 		?PropertySpecificationLookup $propertySpecificationLookup = null,
 		?IteratorFactory $iteratorFactory = null,
 		?JobFactory $jobFactory = null
@@ -105,42 +108,33 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	public function testCleanUp() {
 		$subject = WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
-		$cache = $this->getMockBuilder( Cache::class )
-			->getMockForAbstractClass();
-
-		$cache->expects( $this->once() )
-			->method( 'delete' );
-
-		$this->testEnvironment->registerObject( 'Cache', $cache );
+		// cleanUp() resolves its cache from the global service, which has no
+		// test-override seam, so exercise it against the real object cache.
+		$cache = ApplicationFactory::getInstance()->getObjectCache();
+		$key = smwfCacheKey( ChangePropagationDispatchJob::CACHE_NAMESPACE, $subject->getHash() );
+		$cache->set( $key, 1 );
 
 		ChangePropagationDispatchJob::cleanUp( $subject );
+
+		$this->assertFalse( $cache->get( $key ) );
 	}
 
 	public function testHasPendingJobs() {
-		$subject = WikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'ChangePropPending' );
 
-		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
-
-		$cache = $this->getMockBuilder( Cache::class )
-			->getMockForAbstractClass();
-
-		$cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( 42 );
-
-		$this->testEnvironment->registerObject( 'Cache', $cache );
+		$cache = ApplicationFactory::getInstance()->getObjectCache();
+		$key = smwfCacheKey( ChangePropagationDispatchJob::CACHE_NAMESPACE, $subject->getHash() );
+		$cache->set( $key, 42 );
 
 		$this->assertTrue(
 			ChangePropagationDispatchJob::hasPendingJobs( $subject )
 		);
+
+		$cache->delete( $key );
 	}
 
 	public function testGetPendingJobsCount() {
-		$subject = WikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'ChangePropCount' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -148,19 +142,18 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
-		$cache = $this->getMockBuilder( Cache::class )
-			->getMockForAbstractClass();
-
-		$cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
-			->willReturn( 42 );
-
-		$this->testEnvironment->registerObject( 'Cache', $cache );
+		// With no queued jobs, getPendingJobsCount() falls back to the cache
+		// marker, which is resolved from the unmockable global object cache.
+		$cache = ApplicationFactory::getInstance()->getObjectCache();
+		$key = smwfCacheKey( ChangePropagationDispatchJob::CACHE_NAMESPACE, $subject->getHash() );
+		$cache->set( $key, 42 );
 
 		$this->assertSame(
 			42,
 			ChangePropagationDispatchJob::getPendingJobsCount( $subject )
 		);
+
+		$cache->delete( $key );
 	}
 
 	public function testFindAndDispatchOnNonPropertyEntity() {
@@ -347,12 +340,13 @@ class ChangePropagationDispatchJobTest extends TestCase {
 		// path to apply.
 		$subject = WikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
-		$cache = $this->getMockBuilder( Cache::class )
-			->getMockForAbstractClass();
+		$cache = $this->getMockBuilder( BagOStuff::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		// Return a non-false value so dispatchFromData() passes the cache check.
 		$cache->expects( $this->any() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( 3 );
 
 		$updateJob = $this->getMockBuilder( ChangePropagationUpdateJob::class )
