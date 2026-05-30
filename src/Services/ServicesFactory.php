@@ -12,9 +12,6 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
-use Onoi\Cache\Cache;
-use Onoi\Cache\CacheFactory as OnoiCacheFactory;
-use Onoi\Cache\FixedInMemoryLruCache;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SMW\CacheFactory;
@@ -294,7 +291,6 @@ class ServicesFactory {
 			'Settings' => fn () => $this->getSettings(),
 			'EntityCache' => fn () => $this->getEntityCache(),
 			'JobQueue' => fn () => $this->getJobQueue(),
-			'Cache' => fn () => $this->getCache( ...$args ),
 			'JobQueueGroup' => fn () => $this->getJobQueueGroup(),
 			'PermissionManager' => fn () => $this->getPermissionManager(),
 			'RevisionGuard' => fn () => $this->getRevisionGuard(),
@@ -370,7 +366,6 @@ class ServicesFactory {
 			'DefaultSearchEngineTypeForDB' => fn () => $this->getDefaultSearchEngineTypeForDB( ...$args ),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'WikiPage' => fn () => $this->newWikiPage( ...$args ),
-			'FixedInMemoryLruCache' => fn () => $this->newFixedInMemoryLruCache( ...$args ),
 			'JobFactory' => fn () => $this->newJobFactory(),
 		];
 
@@ -744,32 +739,7 @@ class ServicesFactory {
 	}
 
 	/**
-	 * @since 2.0
-	 *
-	 * @return Cache
-	 */
-	public function getCache( $cacheType = null ) {
-		if ( array_key_exists( 'Cache', $this->testOverrides ) ) {
-			return $this->testOverrides['Cache'];
-		}
-
-		// SMW.Cache on the global container is the default-type cache.
-		// Non-default cache-type requests still build a fresh
-		// MediaWikiCompositeCache (callers depend on type-specific caches and
-		// the global registration only covers the default).
-		if ( $cacheType !== null ) {
-			return ( new CacheFactory() )->newMediaWikiCompositeCache( $cacheType );
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.Cache' );
-	}
-
-	/**
 	 * Resolve a MediaWiki-native BagOStuff for the configured main cache type.
-	 *
-	 * Unlike getCache(), which returns the Onoi composite still consumed by
-	 * the remaining callers, this returns the bare BagOStuff that consumers
-	 * migrate onto as the onoi/cache dependency is removed.
 	 *
 	 * @since 7.0.0
 	 */
@@ -1303,13 +1273,6 @@ class ServicesFactory {
 	 */
 	public function newWikiPage( Title $title ) {
 		return $this->newPageCreator()->createPage( $title );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function newFixedInMemoryLruCache( int $cacheSize = 500 ): FixedInMemoryLruCache {
-		return OnoiCacheFactory::getInstance()->newFixedInMemoryLruCache( $cacheSize );
 	}
 
 	/**

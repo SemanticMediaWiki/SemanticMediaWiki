@@ -30,7 +30,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 
 **Built on MediaWiki core.**
 
-* [Bundled third-party libraries dropped](#removed) in favor of MediaWiki core services (`Onoi\Tesa`, `Onoi\HttpRequest`, `onoi/callback-container`), and a large batch of long-deprecated APIs removed. Extension authors: see the [migration guide](../migration/7.0.md).
+* [Bundled third-party libraries dropped](#removed) in favor of MediaWiki core services (`Onoi\Tesa`, `Onoi\HttpRequest`, `onoi/callback-container`, `onoi/cache`, `onoi/blob-store`), and a large batch of long-deprecated APIs removed. Extension authors: see the [migration guide](../migration/7.0.md).
 
 ## For users and administrators
 
@@ -153,6 +153,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 * Removed `psr/log` from `composer.json`. Extensions that relied on SMW pulling in `psr/log` transitively must declare it in their own `composer.json`.
 * Removed the `mediawiki/callback-container` (`onoi/callback-container`) Composer dependency. The internal DI layer now uses MediaWiki's `Wikimedia\Services\ServiceContainer` directly ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
 * Removed the `onoi/blob-store` Composer dependency. SMW's durable query-result cache now uses the in-tree `SMW\Query\Cache\QueryResultStore` and `QueryResultContainer` over MediaWiki's `Wikimedia\ObjectCache\BagOStuff`, with the cache key format and payload encoding preserved so existing entries round-trip unchanged. This was internal infrastructure and never part of the public API.
+* Removed the `onoi/cache` Composer dependency. SMW's caches now use MediaWiki-native primitives directly: `Wikimedia\ObjectCache\BagOStuff` over the configured `$smwgMainCacheType`, and the in-tree `SMW\Cache\InMemoryLruCache` (over `MapCacheLRU`) for the in-process pool caches. The `SMW.Cache` composite service, `ServicesFactory::getCache()`, and `CacheFactory`'s Onoi cache-minting methods are gone. This was internal infrastructure and never part of the public API.
 * Removed the `@private` internal class `SMW\Services\SharedServicesContainer` and the internal wiring files `src/Services/mediawiki.php`, `src/Services/events.php`, and `src/Services/cache.php`. These were never part of the public API ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
 * Removed the root `DefaultSettings.php` shim (deprecated since 4.0.0). Use `$GLOBALS['smwgFoo']` or `SMW\Settings::getInstance()->get('smwgFoo')` instead.
 * Removed `Defines.php`.

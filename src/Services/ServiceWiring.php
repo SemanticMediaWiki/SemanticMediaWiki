@@ -3,7 +3,6 @@
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
-use Onoi\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
@@ -162,24 +161,9 @@ return [
 		return $instance;
 	},
 
-	'SMW.Cache' => static function ( MediaWikiServices $services ): Cache {
-		$servicesFactory = ServicesFactory::getInstance();
-
-		if ( $servicesFactory->hasTestOverride( 'Cache' ) ) {
-			return $servicesFactory->getCache();
-		}
-
-		// Mirror ServicesFactory::getCache() default-path behaviour: build a
-		// MediaWikiCompositeCache for the global $smwgMainCacheType. Callers
-		// that need a non-default cache type still go through
-		// CacheFactory::newMediaWikiCompositeCache() directly.
-		return ( new CacheFactory() )->newMediaWikiCompositeCache();
-	},
-
 	'SMW.ObjectCache' => static function ( MediaWikiServices $services ): BagOStuff {
-		// MediaWiki-native BagOStuff for consumers migrated off the Onoi cache.
-		// Resolved through ServicesFactory so it shares the same backing store
-		// (the configured $smwgMainCacheType) as the SMW.Cache composite.
+		// MediaWiki-native BagOStuff over the configured $smwgMainCacheType,
+		// resolved through ServicesFactory.
 		return ServicesFactory::getInstance()->getObjectCache();
 	},
 

@@ -48,7 +48,6 @@
 		"param-processor/param-processor": "~1.13",
 		"serialization/serialization": "~4.0",
 		"jeroen/message-reporter": "~1.0",
-		"onoi/cache": "~1.2",
 		"jeroen/file-fetcher": "^6|^5|^4.4",
 		"wikimedia/textcat": "^2|^1.1"
 	},
