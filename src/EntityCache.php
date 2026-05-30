@@ -3,8 +3,8 @@
 namespace SMW;
 
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
 use SMW\DataItems\WikiPage;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Class provides a simple interface the link independent cache entries as
@@ -36,13 +36,11 @@ class EntityCache {
 	const TTL_WEEK = 604800; // 7 * 24 * 3600
 	const TTL_MONTH = 2592000; // 30 * 24 * 3600
 	const TTL_YEAR = 31536000; // 365 * 24 * 3600
-	private Cache $cache;
 
 	/**
 	 * @since 3.1
 	 */
-	public function __construct( Cache $cache ) {
-		$this->cache = $cache;
+	public function __construct( private readonly BagOStuff $cache ) {
 	}
 
 	/**
@@ -79,20 +77,13 @@ class EntityCache {
 
 	/**
 	 * @since 3.1
-	 */
-	public function getStats() {
-		return $this->cache->getStats();
-	}
-
-	/**
-	 * @since 3.1
 	 *
 	 * @param string $key
 	 *
 	 * @return bool
 	 */
 	public function contains( $key ) {
-		return $this->cache->contains( $key );
+		return $this->cache->get( $key ) !== false;
 	}
 
 	/**
@@ -101,7 +92,7 @@ class EntityCache {
 	 * @param string $key
 	 */
 	public function fetch( $key ) {
-		return $this->cache->fetch( $key );
+		return $this->cache->get( $key );
 	}
 
 	/**
@@ -111,7 +102,7 @@ class EntityCache {
 	 * @param mixed $value
 	 */
 	public function save( $key, $value = null, $ttl = 0 ): void {
-		$this->cache->save( $key, $value, $ttl );
+		$this->cache->set( $key, $value, $ttl );
 	}
 
 	/**
@@ -130,7 +121,7 @@ class EntityCache {
 	 * @param mixed $sub
 	 */
 	public function fetchSub( $key, $sub ) {
-		$res = $this->cache->fetch( $key );
+		$res = $this->cache->get( $key );
 		$sub = md5( $sub );
 
 		if ( !is_array( $res ) ) {
@@ -149,7 +140,7 @@ class EntityCache {
 	 * @param int $ttl
 	 */
 	public function saveSub( $key, $sub, $value = null, $ttl = 0 ): void {
-		$res = $this->cache->fetch( $key );
+		$res = $this->cache->get( $key );
 		$sub = md5( $sub );
 
 		if ( !is_array( $res ) ) {
@@ -158,7 +149,7 @@ class EntityCache {
 
 		$res[$sub] = $value;
 
-		$this->cache->save( $key, $res, $ttl );
+		$this->cache->set( $key, $res, $ttl );
 	}
 
 	/**
@@ -174,7 +165,7 @@ class EntityCache {
 			md5( $sub ) => $value
 		];
 
-		$this->cache->save( $key, $res, $ttl );
+		$this->cache->set( $key, $res, $ttl );
 	}
 
 	/**
@@ -185,7 +176,7 @@ class EntityCache {
 	 * @param int $ttl
 	 */
 	public function deleteSub( $key, $sub, $ttl = 0 ): void {
-		$res = $this->cache->fetch( $key );
+		$res = $this->cache->get( $key );
 		$sub = md5( $sub );
 
 		if ( !is_array( $res ) ) {
@@ -194,7 +185,7 @@ class EntityCache {
 
 		unset( $res[$sub] );
 
-		$this->cache->save( $key, $res, $ttl );
+		$this->cache->set( $key, $res, $ttl );
 	}
 
 	/**
@@ -222,7 +213,7 @@ class EntityCache {
 		$subject = $subject->asBase();
 
 		$k = $this->makeCacheKey( $subject );
-		$res = $this->cache->fetch( $k );
+		$res = $this->cache->get( $k );
 		$res = $res === false ? [] : $res;
 
 		// Initialize the record that binds the "page" entity to all associated
@@ -238,7 +229,7 @@ class EntityCache {
 		$res['__assoc'][$key] = true;
 
 		// Store without expiry
-		$this->cache->save( $k, $res );
+		$this->cache->set( $k, $res );
 	}
 
 	/**
@@ -262,7 +253,7 @@ class EntityCache {
 		$subject = $subject->asBase();
 
 		$k = $this->makeCacheKey( $subject );
-		$res = $this->cache->fetch( $k );
+		$res = $this->cache->get( $k );
 
 		if ( isset( $res['__assoc'] ) ) {
 			foreach ( $res['__assoc'] as $key => $bool ) {
