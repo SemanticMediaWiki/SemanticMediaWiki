@@ -33,9 +33,14 @@ final class InMemoryLruCache {
 
 	/**
 	 * @since 7.0.0
+	 *
+	 * @param int|string $maxCacheCount Cast to int to match the tolerance of
+	 *  the former Onoi cache, which accepted string pool sizes from config. A
+	 *  non-positive size is clamped to 1, since MapCacheLRU requires a positive
+	 *  capacity where the former cache treated a 0 size as "hold nothing".
 	 */
-	public function __construct( int $maxCacheCount = 500 ) {
-		$this->cache = new MapCacheLRU( $maxCacheCount );
+	public function __construct( $maxCacheCount = 500 ) {
+		$this->cache = new MapCacheLRU( max( 1, (int)$maxCacheCount ) );
 	}
 
 	/**

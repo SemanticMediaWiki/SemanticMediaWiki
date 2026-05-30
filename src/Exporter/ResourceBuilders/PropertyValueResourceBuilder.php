@@ -2,7 +2,7 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use Onoi\Cache\Cache;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\Export\ExpData;
@@ -23,7 +23,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 
 	protected ?Exporter $exporter;
 
-	private Cache $inMemoryPoolCache;
+	private InMemoryLruCache $inMemoryPoolCache;
 
 	/**
 	 * @since 2.5

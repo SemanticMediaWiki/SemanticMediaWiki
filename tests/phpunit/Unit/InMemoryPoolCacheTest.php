@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\CacheFactory;
 use SMW\InMemoryPoolCache;
 
@@ -43,7 +43,7 @@ class InMemoryPoolCacheTest extends TestCase {
 		$instance = InMemoryPoolCache::getInstance();
 
 		$this->assertInstanceOf(
-			Cache::class,
+			InMemoryLruCache::class,
 			$instance->getPoolCacheById( 'Foo' )
 		);
 

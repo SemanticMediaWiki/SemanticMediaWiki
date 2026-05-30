@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use Onoi\Cache\Cache;
+use SMW\Cache\InMemoryLruCache;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\StatsFormatter;
 
@@ -97,11 +97,11 @@ class InMemoryPoolCache {
 	 * @param string $poolCacheId
 	 * @param int $cacheSize
 	 *
-	 * @return Cache
+	 * @return InMemoryLruCache
 	 */
 	public function getPoolCacheById( $poolCacheId, $cacheSize = 500 ) {
 		if ( !isset( $this->poolCacheList[$poolCacheId] ) ) {
-			$this->poolCacheList[$poolCacheId] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
+			$this->poolCacheList[$poolCacheId] = new InMemoryLruCache( $cacheSize );
 		}
 
 		return $this->poolCacheList[$poolCacheId];

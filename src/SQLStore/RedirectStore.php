@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use MediaWiki\JobQueue\JobFactory;
 use MediaWiki\Title\TitleFactory;
-use Onoi\Cache\Cache;
+use SMW\Cache\InMemoryLruCache;
 use SMW\InMemoryPoolCache;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Job;
@@ -33,7 +33,7 @@ class RedirectStore {
 		private readonly Store $store,
 		private readonly TitleFactory $titleFactory,
 		private readonly JobFactory $jobFactory,
-		private ?Cache $cache = null,
+		private ?InMemoryLruCache $cache = null,
 	) {
 		if ( $this->cache === null ) {
 			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );

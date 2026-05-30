@@ -4,10 +4,10 @@ namespace SMW\Query\Cache;
 
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
-use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\WikiPage;
 use SMW\Query\Excerpts;
 use SMW\Query\Query;
@@ -81,7 +81,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * back-end, yet queries with the same signature may have been retrieved
 	 * already therefore allow to recall the result from tempCache.
 	 *
-	 * @var Cache
+	 * @var InMemoryLruCache
 	 */
 	private $tempCache;
 
