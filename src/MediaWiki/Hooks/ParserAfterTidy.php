@@ -7,7 +7,6 @@ use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use MediaWiki\Permissions\RestrictionStore;
-use Onoi\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use SMW\DataModel\SemanticData;
 use SMW\NamespaceExaminer;
@@ -16,6 +15,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 use SMW\Site;
 use WeakMap;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -53,7 +53,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 	 */
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
-		private readonly Cache $cache,
+		private readonly BagOStuff $cache,
 		private readonly ApplicationFactory $servicesFactory,
 		private readonly HookContainer $hookContainer,
 		private readonly Settings $settings,
@@ -223,7 +223,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 		// through the annotation and update process as part of a programtic
 		// purge request.
 		// @see SemanticApprovedRevs#2
-		if ( $this->cache->fetch( $key ) !== false ) {
+		if ( $this->cache->get( $key ) !== false ) {
 			return true;
 		}
 
@@ -333,7 +333,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 
 		$key = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $title->getArticleID() );
 
-		if ( $this->cache->contains( $key ) && $this->cache->fetch( $key ) ) {
+		if ( $this->cache->get( $key ) ) {
 			$this->cache->delete( $key );
 			$this->cache->delete( smwfCacheKey( self::CACHE_NAMESPACE, $title->getPrefixedDBKey() ) );
 

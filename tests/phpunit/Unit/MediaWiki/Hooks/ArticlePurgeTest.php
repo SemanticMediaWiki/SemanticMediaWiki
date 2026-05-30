@@ -11,6 +11,7 @@ use SMW\Settings;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
+use Wikimedia\ObjectCache\HashBagOStuff;
 use WikiPage;
 
 /**
@@ -40,7 +41,7 @@ class ArticlePurgeTest extends TestCase {
 
 		$this->testEnvironment = new TestEnvironment( $settings );
 
-		$this->cache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
+		$this->cache = new HashBagOStuff();
 
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
@@ -83,12 +84,12 @@ class ArticlePurgeTest extends TestCase {
 
 		$this->assertEquals(
 			$expected['autorefreshPreProcess'],
-			$this->cache->fetch( $purgeCacheKey ),
+			$this->cache->get( $purgeCacheKey ),
 			'Asserts the autorefresh cache status before processing'
 		);
 
 		// Travis 210.5, 305.3
-		$travis = $this->cache->fetch( $factboxCacheKey );
+		$travis = $this->cache->get( $factboxCacheKey );
 		$travisText = json_encode( $travis );
 		$this->assertEquals(
 			$expected['factboxPreProcess'],
@@ -97,7 +98,7 @@ class ArticlePurgeTest extends TestCase {
 		);
 
 		$this->assertFalse(
-			$this->cache->fetch( $purgeCacheKey ),
+			$this->cache->get( $purgeCacheKey ),
 			'Asserts that before processing ...'
 		);
 
@@ -110,13 +111,13 @@ class ArticlePurgeTest extends TestCase {
 
 		$this->assertEquals(
 			$expected['autorefreshPostProcess'],
-			$this->cache->fetch( $purgeCacheKey ),
+			$this->cache->get( $purgeCacheKey ),
 			'Asserts the autorefresh cache status after processing'
 		);
 
 		$this->assertEquals(
 			$expected['factboxPostProcess'],
-			$this->cache->fetch( $factboxCacheKey ),
+			$this->cache->get( $factboxCacheKey ),
 			'Asserts the factbox cache status after processing'
 		);
 	}
