@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
@@ -37,9 +37,9 @@ class IdEntityFinderTest extends TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		// A real in-process cache rather than a mock: getDataItemById()
+		// round-trips through it, so behaviour is asserted on the cached state.
+		$this->cache = new InMemoryLruCache();
 
 		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
@@ -85,16 +85,7 @@ class IdEntityFinderTest extends TestCase {
 		$row->smw_sort = '';
 		$row->smw_hash = 'x99w';
 
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				42,
-				$this->anything() );
-
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
+		// The cache starts empty, so the lookup misses and reads from the table.
 		$whereConditions = [];
 		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
 
@@ -108,18 +99,24 @@ class IdEntityFinderTest extends TestCase {
 			$this->idCacheManager
 		);
 
+		$dataItem = $instance->getDataItemById( 42 );
+
 		$this->assertInstanceOf(
 			WikiPage::class,
-			$instance->getDataItemById( 42 )
+			$dataItem
 		);
 
 		$this->assertContains( [ 'smw_id' => 42 ], $whereConditions );
+
+		// The freshly fetched row is written back into the cache under its id.
+		$this->assertSame( $dataItem, $this->cache->fetch( '42' ) );
 	}
 
 	public function testGetDataItemForCachedId() {
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( new WikiPage( 'Foo', NS_MAIN ) );
+		$cached = new WikiPage( 'Foo', NS_MAIN );
+
+		// Pre-populate the cache so the lookup is served without a table read.
+		$this->cache->save( '42', $cached );
 
 		$this->connection->expects( $this->never() )
 			->method( 'newSelectQueryBuilder' );
@@ -130,8 +127,8 @@ class IdEntityFinderTest extends TestCase {
 			$this->idCacheManager
 		);
 
-		$this->assertInstanceOf(
-			WikiPage::class,
+		$this->assertSame(
+			$cached,
 			$instance->getDataItemById( 42 )
 		);
 	}
@@ -152,10 +149,7 @@ class IdEntityFinderTest extends TestCase {
 		$row->smw_sort = 'BAR';
 		$row->smw_hash = 'x99w';
 
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
+		// The cache starts empty, so the lookup misses and reads from the table.
 		$whereConditions = [];
 		$qb = $this->createMockSelectQueryBuilder( [ $row ], $whereConditions );
 
@@ -178,10 +172,7 @@ class IdEntityFinderTest extends TestCase {
 	}
 
 	public function testNullForUnknownId() {
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
+		// The cache starts empty, so the lookup misses and reads from the table.
 		$qb = $this->createMockSelectQueryBuilder( [] );
 
 		$this->connection->expects( $this->once() )

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit\SQLStore\Lookup;
 
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
@@ -47,9 +47,9 @@ class RedirectTargetLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		// A real in-process cache rather than a mock: the methods under test
+		// round-trip through it, so behaviour is asserted on the cached state.
+		$this->cache = new InMemoryLruCache();
 	}
 
 	public function testCanConstruct() {
@@ -72,26 +72,24 @@ class RedirectTargetLookupTest extends TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$this->cache->expects( $this->exactly( 2 ) )
-			->method( 'save' )
-			->willReturnCallback( function ( $key, $value ) {
-				static $calls = [];
-				$calls[] = [ $key, $value ];
-				if ( count( $calls ) === 1 ) {
-					$this->assertEquals( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ), $key );
-					$this->assertEquals( 'Bar#0##', $value );
-				} elseif ( count( $calls ) === 2 ) {
-					$this->assertEquals( sha1( json_encode( [ 'Bar', 0, '', '' ] ), true ), $key );
-					$this->assertEquals( 'Foo#0##', $value );
-				}
-			} );
-
 		$instance = new RedirectTargetLookup(
 			$this->store,
 			$this->idCacheManager
 		);
 
 		$instance->prepareCache( [ 42 => 'Foo#0##' ] );
+
+		// Two saves: target->source and source->target, both landing in the
+		// shared cache returned by IdCacheManager::get().
+		$this->assertSame( 2, $this->cache->getStats()['count'] );
+		$this->assertSame(
+			'Bar#0##',
+			$this->cache->fetch( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ) )
+		);
+		$this->assertSame(
+			'Foo#0##',
+			$this->cache->fetch( sha1( json_encode( [ 'Bar', 0, '', '' ] ), true ) )
+		);
 	}
 
 	public function testPrepareCache_FromInstance() {
@@ -107,26 +105,24 @@ class RedirectTargetLookupTest extends TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$this->cache->expects( $this->exactly( 2 ) )
-			->method( 'save' )
-			->willReturnCallback( function ( $key, $value ) {
-				static $calls = [];
-				$calls[] = [ $key, $value ];
-				if ( count( $calls ) === 1 ) {
-					$this->assertEquals( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ), $key );
-					$this->assertEquals( 'Bar#0##', $value );
-				} elseif ( count( $calls ) === 2 ) {
-					$this->assertEquals( sha1( json_encode( [ 'Bar', 0, '', '' ] ), true ), $key );
-					$this->assertEquals( 'Foo#0##', $value );
-				}
-			} );
-
 		$instance = new RedirectTargetLookup(
 			$this->store,
 			$this->idCacheManager
 		);
 
 		$instance->prepareCache( [ 42 => WikiPage::newFromText( 'Foo' ) ] );
+
+		// Two saves: target->source and source->target, both landing in the
+		// shared cache returned by IdCacheManager::get().
+		$this->assertSame( 2, $this->cache->getStats()['count'] );
+		$this->assertSame(
+			'Bar#0##',
+			$this->cache->fetch( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ) )
+		);
+		$this->assertSame(
+			'Foo#0##',
+			$this->cache->fetch( sha1( json_encode( [ 'Bar', 0, '', '' ] ), true ) )
+		);
 	}
 
 	public function testFindRedirectSource() {
@@ -138,10 +134,8 @@ class RedirectTargetLookupTest extends TestCase {
 			->with( IdCacheManager::REDIRECT_SOURCE )
 			->willReturn( $this->cache );
 
-		$this->cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
-			->with( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ) )
-			->willReturn( 'Bar#0##' );
+		// A pre-populated cache entry drives the CACHE_ONLY hit path.
+		$this->cache->save( sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ), 'Bar#0##' );
 
 		$instance = new RedirectTargetLookup(
 			$this->store,
