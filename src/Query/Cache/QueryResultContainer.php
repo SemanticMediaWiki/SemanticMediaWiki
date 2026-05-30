@@ -8,9 +8,10 @@ namespace SMW\Query\Cache;
  * `@linkedList` set of dependent query ids that `QueryResultStore` enumerates
  * to cascade-purge a subject and all queries embedded on it.
  *
- * This is the SMW-owned replacement for `Onoi\BlobStore\Container`. The array
- * payload shape, including the `@linkedList` magic key, is preserved
- * byte-for-byte so entries written by the former store round-trip unchanged.
+ * This is the SMW-owned replacement for the container value object from the
+ * former bundled `onoi/blob-store`. The array payload shape, including the
+ * `@linkedList` magic key, is preserved byte-for-byte so entries written by the
+ * former store round-trip unchanged.
  *
  * `get()` returns `false` (not `null`) for an absent key, matching the former
  * container so callers can distinguish a stored falsy value from a miss.

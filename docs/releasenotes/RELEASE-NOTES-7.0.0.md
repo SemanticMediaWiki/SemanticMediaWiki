@@ -152,6 +152,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 * Removed the `mediawiki/parser-hooks` dependency.
 * Removed `psr/log` from `composer.json`. Extensions that relied on SMW pulling in `psr/log` transitively must declare it in their own `composer.json`.
 * Removed the `mediawiki/callback-container` (`onoi/callback-container`) Composer dependency. The internal DI layer now uses MediaWiki's `Wikimedia\Services\ServiceContainer` directly ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
+* Removed the `onoi/blob-store` Composer dependency. SMW's durable query-result cache now uses the in-tree `SMW\Query\Cache\QueryResultStore` and `QueryResultContainer` over MediaWiki's `Wikimedia\ObjectCache\BagOStuff`, with the cache key format and payload encoding preserved so existing entries round-trip unchanged. This was internal infrastructure and never part of the public API.
 * Removed the `@private` internal class `SMW\Services\SharedServicesContainer` and the internal wiring files `src/Services/mediawiki.php`, `src/Services/events.php`, and `src/Services/cache.php`. These were never part of the public API ([#6428](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6428)).
 * Removed the root `DefaultSettings.php` shim (deprecated since 4.0.0). Use `$GLOBALS['smwgFoo']` or `SMW\Settings::getInstance()->get('smwgFoo')` instead.
 * Removed `Defines.php`.
