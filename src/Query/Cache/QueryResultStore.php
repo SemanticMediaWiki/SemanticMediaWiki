@@ -6,8 +6,8 @@ use MapCacheLRU;
 use Wikimedia\ObjectCache\BagOStuff;
 
 /**
- * Durable store for cached query results, the SMW-owned replacement for
- * `Onoi\BlobStore\BlobStore`.
+ * Durable store for cached query results, the SMW-owned replacement for the
+ * former bundled `onoi/blob-store`.
  *
  * Two tiers: a request-scoped {@link MapCacheLRU} fast tier holding the raw
  * (unserialized) payload to avoid repeated unserialization, over a
