@@ -4,7 +4,7 @@ namespace SMW\Localizer;
 
 use Closure;
 use MediaWiki\Language\Language;
-use Onoi\Cache\Cache;
+use SMW\Cache\InMemoryLruCache;
 use SMW\InMemoryPoolCache;
 use Wikimedia\Message\MessageSpecifier;
 
@@ -22,7 +22,7 @@ use Wikimedia\Message\MessageSpecifier;
  */
 class Message {
 
-	private static ?Cache $messageCache = null;
+	private static ?InMemoryLruCache $messageCache = null;
 
 	/**
 	 * PoolCache ID
@@ -68,7 +68,7 @@ class Message {
 	/**
 	 * @since 2.4
 	 */
-	public static function getCache(): Cache {
+	public static function getCache(): InMemoryLruCache {
 		if ( self::$messageCache === null ) {
 			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID, 1000 );
 		}

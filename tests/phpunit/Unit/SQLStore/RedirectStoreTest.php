@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit\SQLStore;
 use MediaWiki\JobQueue\JobFactory;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
-use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\InMemoryPoolCache;
@@ -38,7 +37,6 @@ class RedirectStoreTest extends TestCase {
 
 	private $store;
 	private Database $connection;
-	private $cache;
 	private $testEnvironment;
 	private $connectionManager;
 	private TitleFactory $titleFactory;
@@ -46,10 +44,6 @@ class RedirectStoreTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
-
-		$this->cache = $this->getMockBuilder( Cache::class )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()

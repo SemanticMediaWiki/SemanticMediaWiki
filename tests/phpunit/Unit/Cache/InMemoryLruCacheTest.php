@@ -23,6 +23,30 @@ class InMemoryLruCacheTest extends TestCase {
 		);
 	}
 
+	/**
+	 * The former Onoi cache cast its size argument to int and tolerated a 0
+	 * (or empty-string) size from config without erroring; the adapter keeps
+	 * that tolerance over MapCacheLRU, which requires a positive capacity.
+	 *
+	 * @dataProvider degenerateSizeProvider
+	 */
+	public function testConstructsWithDegenerateOrStringSize( $size ) {
+		$instance = new InMemoryLruCache( $size );
+
+		$instance->save( 'k', 'v' );
+
+		$this->assertInstanceOf( InMemoryLruCache::class, $instance );
+	}
+
+	public function degenerateSizeProvider() {
+		return [
+			'empty string' => [ '' ],
+			'numeric string' => [ '1000' ],
+			'zero' => [ 0 ],
+			'negative' => [ -5 ],
+		];
+	}
+
 	public function testSaveFetchContainsDelete() {
 		$instance = new InMemoryLruCache();
 

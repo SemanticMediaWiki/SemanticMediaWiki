@@ -3,7 +3,7 @@
 namespace SMW\SPARQLStore;
 
 use LogicException;
-use Onoi\Cache\Cache;
+use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\Export\ExpData;
@@ -49,7 +49,7 @@ class TurtleTriplesBuilder {
 	 */
 	public function __construct(
 		private readonly RepositoryRedirectLookup $repositoryRedirectLookup,
-		private readonly ?Cache $cache = null,
+		private readonly ?InMemoryLruCache $cache = null,
 	) {
 	}
 
