@@ -3,12 +3,12 @@
 namespace SMW\Tests\Unit;
 
 use MediaWiki\Title\Title;
-use Onoi\BlobStore\BlobStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use PHPUnit\Framework\TestCase;
 use SMW\CacheFactory;
 use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\Query\Cache\QueryResultStore;
 
 /**
  * @covers \SMW\CacheFactory
@@ -162,7 +162,7 @@ class CacheFactoryTest extends TestCase {
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
-			BlobStore::class,
+			QueryResultStore::class,
 			$instance->newBlobStore( 'foo', CACHE_NONE )
 		);
 	}

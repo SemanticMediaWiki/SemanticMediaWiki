@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Unit\Query\Cache;
 
-use Onoi\BlobStore\BlobStore;
-use Onoi\BlobStore\Container;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Query\Cache\CacheStats;
+use SMW\Query\Cache\QueryResultContainer;
+use SMW\Query\Cache\QueryResultStore;
 use SMW\Query\Cache\ResultCache;
 use SMW\Query\Query;
 use SMW\QueryEngine;
@@ -27,7 +27,7 @@ class ResultCacheTest extends TestCase {
 	private $store;
 	private $queryFactory;
 	private $blobStore;
-	private Container $container;
+	private QueryResultContainer $container;
 	private $cacheStats;
 
 	protected function setUp(): void {
@@ -39,7 +39,7 @@ class ResultCacheTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->blobStore = $this->getMockBuilder( BlobStore::class )
+		$this->blobStore = $this->getMockBuilder( QueryResultStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,7 +47,7 @@ class ResultCacheTest extends TestCase {
 			->method( 'canUse' )
 			->willReturn( true );
 
-		$this->container = $this->getMockBuilder( Container::class )
+		$this->container = $this->getMockBuilder( QueryResultContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 

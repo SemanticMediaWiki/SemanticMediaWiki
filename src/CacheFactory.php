@@ -5,10 +5,10 @@ namespace SMW;
 use MediaWiki\Title\Title;
 use MediaWiki\WikiMap\WikiMap;
 use ObjectCache;
-use Onoi\BlobStore\BlobStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
+use SMW\Query\Cache\QueryResultStore;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use stdClass;
 
@@ -152,7 +152,7 @@ class CacheFactory {
 	 * @param string|int|null $cacheType
 	 * @param int $cacheLifetime
 	 *
-	 * @return BlobStore
+	 * @return QueryResultStore
 	 */
 	public function newBlobStore( $namespace, $cacheType = null, $cacheLifetime = 0 ) {
 		return ApplicationFactory::getInstance()->create( 'BlobStore', $namespace, $cacheType, $cacheLifetime );
