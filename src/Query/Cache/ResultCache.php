@@ -2,8 +2,6 @@
 
 namespace SMW\Query\Cache;
 
-use Onoi\BlobStore\BlobStore;
-use Onoi\BlobStore\Container;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -101,7 +99,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	public function __construct(
 		private readonly Store $store,
 		private readonly QueryFactory $queryFactory,
-		private readonly BlobStore $blobStore,
+		private readonly QueryResultStore $blobStore,
 		private readonly CacheStats $cacheStats,
 	) {
 		$this->tempCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
@@ -385,7 +383,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$deferredTransactionalUpdate->pushUpdate();
 	}
 
-	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, Container $container, Query $query ): QueryResult {
+	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, QueryResultContainer $container, Query $query ): QueryResult {
 		$results = [];
 
 		// Keep the simple string representation to avoid unnecessary data cruft

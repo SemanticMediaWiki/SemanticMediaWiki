@@ -3,6 +3,7 @@
 namespace SMW\Services;
 
 use JobQueueGroup;
+use MapCacheLRU;
 use MediaWiki\Language\Language;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
@@ -11,7 +12,6 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
-use Onoi\BlobStore\BlobStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use Onoi\Cache\FixedInMemoryLruCache;
@@ -78,6 +78,7 @@ use SMW\PropertyLabelFinder;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\Protection\ProtectionValidator;
 use SMW\Query\Cache\CacheStats;
+use SMW\Query\Cache\QueryResultStore;
 use SMW\Query\Cache\ResultCache;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\Processor\QueryCreator;
@@ -1160,16 +1161,17 @@ class ServicesFactory {
 	/**
 	 * @since 7.0.0
 	 */
-	public function newBlobStore( $namespace, $cacheType = null, $ttl = 0 ): BlobStore {
+	public function newBlobStore( $namespace, $cacheType = null, $ttl = 0 ): QueryResultStore {
 		if ( array_key_exists( 'BlobStore', $this->testOverrides ) ) {
 			return $this->testOverrides['BlobStore'];
 		}
 
 		$cacheFactory = $this->getCacheFactory();
 
-		$blobStore = new BlobStore(
+		$blobStore = new QueryResultStore(
 			$namespace,
-			$cacheFactory->newMediaWikiCompositeCache( $cacheType )
+			$this->getObjectCache( $cacheType ),
+			new MapCacheLRU( 500 )
 		);
 
 		$blobStore->setNamespacePrefix(
