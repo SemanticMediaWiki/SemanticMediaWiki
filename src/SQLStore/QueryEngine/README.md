@@ -9,7 +9,7 @@ responsible to return query results from the `SQL` back-end with the help of the
 - The `QuerySegmentListProcessor` flattens and transforms a list of `QuerySegment`'s into a non-recursive
   tree of `SQL` statements (including resolving of property/category hierarchies)
 - The `ConceptQueryResolver` encapsulates query processing of a concept description in connection
-  with the `ConceptCache` class
+  with the `ConceptMaterializer` class
 
 ## Overview
 
