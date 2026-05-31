@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\SQLStore\QueryDependency;
 
+use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
@@ -21,6 +22,7 @@ use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
+use Wikimedia\ScopedCallback;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore
@@ -844,12 +846,12 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		// pending updates synchronously in the test scope, which would drain
 		// the buffer between the two calls and produce per-callback flushes,
 		// hiding the bug the fix targets.
-		$scope = \MediaWiki\Deferred\DeferredUpdates::preventOpportunisticUpdates();
+		$scope = DeferredUpdates::preventOpportunisticUpdates();
 
 		$instance->updateDependencies( $queryResult );
 		$instance->updateDependencies( $queryResult );
 
-		\Wikimedia\ScopedCallback::consume( $scope );
+		ScopedCallback::consume( $scope );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
