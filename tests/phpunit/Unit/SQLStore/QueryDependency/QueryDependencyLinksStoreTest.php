@@ -872,11 +872,11 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$this->assertLessThan( $flushIndex, max( $addIndices ),
 			'Every addToUpdateList call must precede the first doUpdate flush so dep lists accumulate in $updateList before the DELETE-then-INSERT write; got: ' . json_encode( $callOrder ) );
 
-		// At most one `flush` should run for a single-request batch (one or
-		// more drains may be queued but only the first does real work).
+		// At most one `flush` for a single-request batch — the `$flushScheduled`
+		// guard keeps the second registration from queueing a redundant drain.
 		$flushCount = count( array_keys( $callOrder, 'flush', true ) );
-		$this->assertLessThanOrEqual( 1, count( array_filter( array_slice( $callOrder, 0, $flushIndex + 1 ), static fn ( $c ): bool => $c === 'flush' ) ),
-			'Only one effective flush should run before the deferred queue is drained; got: ' . json_encode( $callOrder ) );
+		$this->assertSame( 1, $flushCount,
+			'Exactly one flush should run per request; got: ' . json_encode( $callOrder ) );
 	}
 
 	public function testUpdateDependenciesCoalescesFlushAcrossDistinctSids() {

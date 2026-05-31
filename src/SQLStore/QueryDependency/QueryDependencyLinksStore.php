@@ -14,6 +14,7 @@ use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\Timer;
+use Throwable;
 
 /**
  * @license GPL-2.0-or-later
@@ -31,15 +32,31 @@ class QueryDependencyLinksStore {
 
 	/**
 	 * Per-request buffer of dependency-update work registered by
-	 * `updateDependencies()`. Every registration queues a deferred drain
-	 * (see `runPendingDependencyUpdates()`) that processes the buffer and
-	 * flushes the accumulated `$updateList` in `DependencyLinksTableUpdater`
-	 * once. Buffering lets two `#ask` queries that share a query-id hash
-	 * (same conditions, different printouts) both contribute their
-	 * printout-derived dependencies to `smw_query_links` rather than have
-	 * the second `DELETE`-then-`INSERT` overwrite the first.
+	 * `updateDependencies()`. The first registration in a request queues a
+	 * single deferred drain (see `runPendingDependencyUpdates()`) that
+	 * processes the buffer and flushes the accumulated `$updateList` in
+	 * `DependencyLinksTableUpdater` once. Buffering lets two `#ask` queries
+	 * that share a query-id hash (same conditions, different printouts) both
+	 * contribute their printout-derived dependencies to `smw_query_links`
+	 * rather than have the second `DELETE`-then-`INSERT` overwrite the first.
+	 *
+	 * Caveat: in CLI/maintenance scripts where `tryOpportunisticExecute()`
+	 * may fire the drain synchronously between successive registrations
+	 * (no active DB transaction), the buffer can be drained before the
+	 * second registration appends. Within `runJobs.php` and inside any
+	 * `Store::updateData` section transaction this is moot; bare maintenance
+	 * loops calling the resolver outside a transaction may still observe
+	 * per-call flushes.
 	 */
 	private static array $pendingDependencyUpdates = [];
+
+	/**
+	 * Set to true once a drain is queued for the current request and
+	 * cleared from the drain's `finally` so the next registration after a
+	 * successful (or thrown) drain can queue a fresh one. Guards against
+	 * scheduling N redundant drains in a single request.
+	 */
+	private static bool $flushScheduled = false;
 
 	/**
 	 * Time factor to be used to determine whether an update should actually occur
@@ -339,17 +356,21 @@ class QueryDependencyLinksStore {
 		// would have the second callback's `DELETE`-then-`INSERT` overwrite
 		// the first callback's deps.
 		//
-		// The drain is scheduled unconditionally rather than gated on a
-		// "first registration" flag: if a prior drain leaks (e.g. the process
-		// aborts after `addUpdate` but before `doUpdates`), the next call
-		// queues a fresh drain that finds the leaked entries and flushes them.
-		// Multiple queued drains for the same request are harmless: the first
-		// drains the buffer, the rest see it empty and short-circuit.
+		// `$flushScheduled` keeps a single drain queued per request; the
+		// drain's `finally` resets it so a thrown drain does not deadlock
+		// subsequent registrations (self-healing on leaked schedules).
 		self::$pendingDependencyUpdates[] = [ $queryResult, $subject, $sid, $hash ];
 
-		DeferredUpdates::addCallableUpdate( function (): void {
-			$this->runPendingDependencyUpdates();
-		} );
+		if ( !self::$flushScheduled ) {
+			self::$flushScheduled = true;
+			DeferredUpdates::addCallableUpdate( function (): void {
+				try {
+					$this->runPendingDependencyUpdates();
+				} finally {
+					self::$flushScheduled = false;
+				}
+			} );
+		}
 
 		$context = [
 			'method' => __METHOD__,
@@ -375,9 +396,8 @@ class QueryDependencyLinksStore {
 	 * queues its own fresh drain rather than re-entering this one. After
 	 * every buffered item's deps are merged into
 	 * `DependencyLinksTableUpdater::$updateList`, a single flush writes the
-	 * union to `smw_query_links`. Subsequent drains queued for the same
-	 * request find an empty buffer and short-circuit (the flush is also a
-	 * no-op when `$updateList` is empty).
+	 * union to `smw_query_links`. Per-item exceptions are caught and logged
+	 * so one failing query does not silently drop the rest of the batch.
 	 */
 	private function runPendingDependencyUpdates(): void {
 		if ( self::$pendingDependencyUpdates === [] ) {
@@ -388,7 +408,19 @@ class QueryDependencyLinksStore {
 		self::$pendingDependencyUpdates = [];
 
 		foreach ( $batch as [ $queryResult, $subject, $sid, $hash ] ) {
-			$this->doUpdate( $queryResult, $subject, $sid, $hash );
+			try {
+				$this->doUpdate( $queryResult, $subject, $sid, $hash );
+			} catch ( Throwable $e ) {
+				$this->logger->error(
+					'[QueryDependency] doUpdate failed for {origin}: {message}',
+					[
+						'method' => __METHOD__,
+						'role' => 'production',
+						'origin' => $hash,
+						'message' => $e->getMessage(),
+					]
+				);
+			}
 		}
 
 		$this->dependencyLinksTableUpdater->doUpdate();
