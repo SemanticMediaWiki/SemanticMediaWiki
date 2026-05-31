@@ -14,7 +14,7 @@ use SMW\QueryEngine;
 use SMW\Services\ServicesContainer;
 use SMW\SortLetter;
 use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\SQLStore\ConceptCache;
+use SMW\SQLStore\ConceptMaterializer;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
@@ -126,7 +126,7 @@ class SQLStoreFactoryTest extends TestCase {
 		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
-			ConceptCache::class,
+			ConceptMaterializer::class,
 			$instance->newMasterConceptCache()
 		);
 	}
@@ -135,7 +135,7 @@ class SQLStoreFactoryTest extends TestCase {
 		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
-			ConceptCache::class,
+			ConceptMaterializer::class,
 			$instance->newSlaveConceptCache()
 		);
 	}

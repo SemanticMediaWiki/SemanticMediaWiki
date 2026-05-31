@@ -517,7 +517,8 @@
 		"SMW\\SemanticData": "src/DataModel/SemanticData.php",
 		"SMW\\Subobject": "src/DataModel/Subobject.php",
 		"SMW\\SQLStore\\Lookup\\ListLookup": "src/Lookup/ListLookup.php",
-		"SMW\\SQLStore\\Lookup\\CachedListLookup": "src/Lookup/CachedListLookup.php"
+		"SMW\\SQLStore\\Lookup\\CachedListLookup": "src/Lookup/CachedListLookup.php",
+		"SMW\\SQLStore\\ConceptCache": "src/SQLStore/ConceptMaterializer.php"
 	},
 	"namespaces": [
 		{ "id": 102, "constant": "SMW_NS_PROPERTY",      "name": "Property",        "content": true },
