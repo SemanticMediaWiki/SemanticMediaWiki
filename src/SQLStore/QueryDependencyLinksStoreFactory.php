@@ -4,7 +4,6 @@ namespace SMW\SQLStore;
 
 use MediaWiki\Logger\LoggerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Site;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
@@ -96,10 +95,6 @@ class QueryDependencyLinksStoreFactory {
 
 		$queryDependencyLinksStore->setEnabled(
 			$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
-		);
-
-		$queryDependencyLinksStore->isCommandLineMode(
-			Site::isCommandLineMode()
 		);
 
 		return $queryDependencyLinksStore;

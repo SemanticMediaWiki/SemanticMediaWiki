@@ -30,19 +30,14 @@ class QueryDependencyLinksStore {
 	private bool $isEnabled = true;
 
 	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
-
-	/**
 	 * Per-request buffer of dependency-update work registered by
-	 * `updateDependencies()`. The first registration in a request schedules a
-	 * single deferred batch processor (see `runPendingDependencyUpdates()`)
-	 * that drains the buffer and flushes the accumulated `$updateList` in
-	 * `DependencyLinksTableUpdater` once. Buffering lets two `#ask` queries
-	 * that share a query-id hash (same conditions, different printouts) both
-	 * contribute their printout-derived dependencies to `smw_query_links`
-	 * rather than have the second `DELETE`-then-`INSERT` overwrite the first.
+	 * `updateDependencies()`. Every registration queues a deferred drain
+	 * (see `runPendingDependencyUpdates()`) that processes the buffer and
+	 * flushes the accumulated `$updateList` in `DependencyLinksTableUpdater`
+	 * once. Buffering lets two `#ask` queries that share a query-id hash
+	 * (same conditions, different printouts) both contribute their
+	 * printout-derived dependencies to `smw_query_links` rather than have
+	 * the second `DELETE`-then-`INSERT` overwrite the first.
 	 */
 	private static array $pendingDependencyUpdates = [];
 
@@ -72,18 +67,6 @@ class QueryDependencyLinksStore {
 	 */
 	public function setStore( Store $store ): void {
 		$this->store = $store;
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-	 * Indicates whether MW is running in command-line mode.
-	 *
-	 * @since 2.5
-	 *
-	 * @param bool $isCommandLineMode
-	 */
-	public function isCommandLineMode( $isCommandLineMode ): void {
-		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
@@ -348,20 +331,25 @@ class QueryDependencyLinksStore {
 
 		$origin = $subject->getHash();
 
-		// Buffer this work and schedule ONE batch processor per request. Same
-		// `$sid` registrations from sibling `#ask` queries (same conditions,
-		// different printouts -> same query-id hash -> same `$sid`) all land
-		// in the buffer; the batch processor calls `doUpdate()` for each,
-		// then flushes the accumulated `DependencyLinksTableUpdater::$updateList`
-		// once. A per-callback flush would have the second callback's
-		// `DELETE`-then-`INSERT` overwrite the first callback's deps.
+		// Buffer this work and schedule a batch drain. Same-`$sid` registrations
+		// from sibling `#ask` queries (same conditions, different printouts ->
+		// same query-id hash -> same `$sid`) all land in the buffer; the drain
+		// calls `doUpdate()` for each, then flushes the accumulated
+		// `DependencyLinksTableUpdater::$updateList` once. A per-callback flush
+		// would have the second callback's `DELETE`-then-`INSERT` overwrite
+		// the first callback's deps.
+		//
+		// The drain is scheduled unconditionally rather than gated on a
+		// "first registration" flag: if a prior drain leaks (e.g. the process
+		// aborts after `addUpdate` but before `doUpdates`), the next call
+		// queues a fresh drain that finds the leaked entries and flushes them.
+		// Multiple queued drains for the same request are harmless: the first
+		// drains the buffer, the rest see it empty and short-circuit.
 		self::$pendingDependencyUpdates[] = [ $queryResult, $subject, $sid, $hash ];
 
-		if ( count( self::$pendingDependencyUpdates ) === 1 ) {
-			DeferredUpdates::addCallableUpdate( function (): void {
-				$this->runPendingDependencyUpdates();
-			} );
-		}
+		DeferredUpdates::addCallableUpdate( function (): void {
+			$this->runPendingDependencyUpdates();
+		} );
 
 		$context = [
 			'method' => __METHOD__,
@@ -378,7 +366,24 @@ class QueryDependencyLinksStore {
 		return true;
 	}
 
+	/**
+	 * Drain the per-request `$pendingDependencyUpdates` buffer.
+	 *
+	 * Ordering is drain-then-clear-then-iterate so a recursive
+	 * `updateDependencies()` triggered from inside `doUpdate()` (e.g. via
+	 * lazy resolution of `getDependencyListFrom`) sees an empty buffer and
+	 * queues its own fresh drain rather than re-entering this one. After
+	 * every buffered item's deps are merged into
+	 * `DependencyLinksTableUpdater::$updateList`, a single flush writes the
+	 * union to `smw_query_links`. Subsequent drains queued for the same
+	 * request find an empty buffer and short-circuit (the flush is also a
+	 * no-op when `$updateList` is empty).
+	 */
 	private function runPendingDependencyUpdates(): void {
+		if ( self::$pendingDependencyUpdates === [] ) {
+			return;
+		}
+
 		$batch = self::$pendingDependencyUpdates;
 		self::$pendingDependencyUpdates = [];
 
