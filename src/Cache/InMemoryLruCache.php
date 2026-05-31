@@ -7,9 +7,8 @@ use MapCacheLRU;
 /**
  * Request-scoped, bounded in-process LRU cache backed by MediaWiki core's
  * {@link MapCacheLRU}. It reproduces the small surface SMW's in-process pool
- * caches rely on (the methods of the former `Onoi\Cache\FixedInMemoryLruCache`:
- * `fetch`/`contains`/`save`/`delete` plus `getStats`) without depending on
- * onoi/cache.
+ * caches rely on (`fetch`/`contains`/`save`/`delete` plus `getStats`, the
+ * surface of the former bundled fixed-size in-memory cache).
  *
  * This is deliberately a concrete, final adapter rather than a general cache
  * interface: it exposes only the methods its pool consumers call, is never

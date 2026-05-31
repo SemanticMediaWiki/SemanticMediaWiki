@@ -42,8 +42,6 @@ class LocalLanguage {
 			return self::$instance;
 		}
 
-		// $cache = ApplicationFactory::getInstance()->getCache()
-
 		$jsonContentsFileReader = new JsonContentsFileReader();
 
 		self::$instance = new self(

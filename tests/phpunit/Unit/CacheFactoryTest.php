@@ -3,8 +3,6 @@
 namespace SMW\Tests\Unit;
 
 use MediaWiki\Title\Title;
-use Onoi\Cache\Cache;
-use Onoi\Cache\NullCache;
 use PHPUnit\Framework\TestCase;
 use SMW\CacheFactory;
 use SMW\MediaWiki\Hooks\ArticlePurge;
@@ -101,61 +99,6 @@ class CacheFactoryTest extends TestCase {
 		$cacheOptions = $instance->newCacheOptions( [
 			'useCache' => true
 		] );
-	}
-
-	public function testCanConstructFixedInMemoryCache() {
-		$instance = new CacheFactory( 'hash' );
-
-		$this->assertInstanceOf(
-			Cache::class,
-			$instance->newFixedInMemoryCache()
-		);
-	}
-
-	public function testCanConstructNullCache() {
-		$instance = new CacheFactory( 'hash' );
-
-		$this->assertInstanceOf(
-			Cache::class,
-			$instance->newNullCache()
-		);
-	}
-
-	public function testCanConstructMediaWikiCompositeCache() {
-		$instance = new CacheFactory( 'hash' );
-
-		$this->assertInstanceOf(
-			Cache::class,
-			$instance->newMediaWikiCompositeCache( CACHE_NONE )
-		);
-
-		$this->assertInstanceOf(
-			Cache::class,
-			$instance->newMediaWikiCompositeCache( $instance->getMainCacheType() )
-		);
-	}
-
-	public function testCanConstructMediaWikiCache() {
-		$instance = new CacheFactory();
-
-		$this->assertInstanceOf(
-			Cache::class,
-			$instance->newMediaWikiCache( 'hash' )
-		);
-	}
-
-	public function testCanConstructCacheByType() {
-		$instance = new CacheFactory();
-
-		$this->assertInstanceOf(
-			NullCache::class,
-			$instance->newCacheByType( CACHE_NONE )
-		);
-
-		$this->assertInstanceOf(
-			Cache::class,
-			$instance->newCacheByType( 'hash' )
-		);
 	}
 
 	public function testCanConstructBlobStore() {
