@@ -12,7 +12,6 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
@@ -328,7 +327,6 @@ class ServicesFactory {
 			'ContentParserFactory' => fn () => $this->getContentParserFactory(),
 			'ParserDataFactory' => fn () => $this->getParserDataFactory(),
 			'PageUpdaterFactory' => fn () => $this->getPageUpdaterFactory(),
-			'Logger' => fn () => $this->getLogger(),
 			'MwCollaboratorFactory' => fn () => $this->getMwCollaboratorFactory(),
 			'NamespaceExaminer' => fn () => $this->getNamespaceExaminer(),
 			'DataValueServiceFactory' => fn () => $this->getDataValueServiceFactory(),
@@ -671,17 +669,6 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.PageUpdaterFactory' );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getLogger(): LoggerInterface {
-		if ( array_key_exists( 'Logger', $this->testOverrides ) ) {
-			return $this->testOverrides['Logger'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.Logger' );
 	}
 
 	/**
