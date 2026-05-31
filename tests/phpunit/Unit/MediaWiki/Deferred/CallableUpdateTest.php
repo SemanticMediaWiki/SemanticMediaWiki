@@ -196,40 +196,4 @@ class CallableUpdateTest extends TestCase {
 		);
 	}
 
-	public function testFilterDuplicateQueueEntryByFingerprint() {
-		$test = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
-			->getMock();
-
-		$test->expects( $this->once() )
-			->method( 'doTest' );
-
-		$callback = static function () use ( $test ) {
-			$test->doTest();
-		};
-
-		$instance = new CallableUpdate(
-			$callback
-		);
-
-		$instance->setLogger( $this->spyLogger );
-
-		$instance->setFingerprint( __METHOD__ );
-		$instance->markAsPending( true );
-		$instance->pushUpdate();
-
-		$instance = new CallableUpdate(
-			$callback
-		);
-
-		$instance->setLogger( $this->spyLogger );
-
-		$instance->setFingerprint( __METHOD__ );
-		$instance->markAsPending( true );
-		$instance->pushUpdate();
-
-		$this->testEnvironment->executePendingDeferredUpdates();
-	}
-
 }

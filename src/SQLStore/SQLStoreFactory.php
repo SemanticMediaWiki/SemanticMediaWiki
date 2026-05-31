@@ -159,27 +159,27 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @return ConceptCache
+	 * @return ConceptMaterializer
 	 */
-	public function newMasterConceptCache(): ConceptCache {
-		$conceptCache = new ConceptCache(
+	public function newMasterConceptCache(): ConceptMaterializer {
+		$conceptMaterializer = new ConceptMaterializer(
 			$this->store,
 			$this->queryEngineFactory->newConceptQuerySegmentBuilder()
 		);
 
-		$conceptCache->setUpperLimit(
+		$conceptMaterializer->setUpperLimit(
 			$GLOBALS['smwgQMaxLimit']
 		);
 
-		return $conceptCache;
+		return $conceptMaterializer;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return ConceptCache
+	 * @return ConceptMaterializer
 	 */
-	public function newSlaveConceptCache(): ConceptCache {
+	public function newSlaveConceptCache(): ConceptMaterializer {
 		return $this->newMasterConceptCache();
 	}
 

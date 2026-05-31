@@ -12,7 +12,6 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
@@ -328,7 +327,6 @@ class ServicesFactory {
 			'ContentParserFactory' => fn () => $this->getContentParserFactory(),
 			'ParserDataFactory' => fn () => $this->getParserDataFactory(),
 			'PageUpdaterFactory' => fn () => $this->getPageUpdaterFactory(),
-			'Logger' => fn () => $this->getLogger(),
 			'MwCollaboratorFactory' => fn () => $this->getMwCollaboratorFactory(),
 			'NamespaceExaminer' => fn () => $this->getNamespaceExaminer(),
 			'DataValueServiceFactory' => fn () => $this->getDataValueServiceFactory(),
@@ -352,7 +350,7 @@ class ServicesFactory {
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'PostProcHandler' => fn () => $this->newPostProcHandler( ...$args ),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
-			'BlobStore' => fn () => $this->newBlobStore( ...$args ),
+			'QueryResultStore' => fn () => $this->newQueryResultStore( ...$args ),
 			'ResultCache' => fn () => $this->getResultCache( ...$args ),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'Stats' => fn () => $this->newStats( ...$args ),
@@ -671,17 +669,6 @@ class ServicesFactory {
 		}
 
 		return MediaWikiServices::getInstance()->getService( 'SMW.PageUpdaterFactory' );
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function getLogger(): LoggerInterface {
-		if ( array_key_exists( 'Logger', $this->testOverrides ) ) {
-			return $this->testOverrides['Logger'];
-		}
-
-		return MediaWikiServices::getInstance()->getService( 'SMW.Logger' );
 	}
 
 	/**
@@ -1131,32 +1118,32 @@ class ServicesFactory {
 	/**
 	 * @since 7.0.0
 	 */
-	public function newBlobStore( $namespace, $cacheType = null, $ttl = 0 ): QueryResultStore {
-		if ( array_key_exists( 'BlobStore', $this->testOverrides ) ) {
-			return $this->testOverrides['BlobStore'];
+	public function newQueryResultStore( $namespace, $cacheType = null, $ttl = 0 ): QueryResultStore {
+		if ( array_key_exists( 'QueryResultStore', $this->testOverrides ) ) {
+			return $this->testOverrides['QueryResultStore'];
 		}
 
 		$cacheFactory = $this->getCacheFactory();
 
-		$blobStore = new QueryResultStore(
+		$store = new QueryResultStore(
 			$namespace,
 			$this->getObjectCache( $cacheType ),
 			new MapCacheLRU( 500 )
 		);
 
-		$blobStore->setNamespacePrefix(
+		$store->setNamespacePrefix(
 			$cacheFactory->getCachePrefix()
 		);
 
-		$blobStore->setExpiryInSeconds(
+		$store->setExpiryInSeconds(
 			$ttl
 		);
 
-		$blobStore->setUsageState(
+		$store->setUsageState(
 			$cacheType !== CACHE_NONE && $cacheType !== false
 		);
 
-		return $blobStore;
+		return $store;
 	}
 
 	/**
@@ -1181,7 +1168,7 @@ class ServicesFactory {
 		$resultCache = new ResultCache(
 			$this->getStore(),
 			$this->getQueryFactory(),
-			$this->newBlobStore(
+			$this->newQueryResultStore(
 				ResultCache::CACHE_NAMESPACE,
 				$cacheType,
 				$settings->get( 'smwgQueryResultCacheLifetime' )

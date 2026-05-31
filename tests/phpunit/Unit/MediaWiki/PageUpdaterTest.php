@@ -217,10 +217,6 @@ class PageUpdaterTest extends TestCase {
 			->method( 'pushUpdate' );
 
 		$transactionalCallableUpdate->expects( $this->once() )
-			->method( 'setFingerprint' )
-			->with( 'Foobar' );
-
-		$transactionalCallableUpdate->expects( $this->once() )
 			->method( 'waitOnTransactionIdle' );
 
 		$transactionalCallableUpdate->expects( $this->once() )
@@ -240,7 +236,6 @@ class PageUpdaterTest extends TestCase {
 		);
 
 		$instance->addPage( $title );
-		$instance->setFingerprint( 'Foobar' );
 
 		$instance->markAsPending();
 		$instance->waitOnTransactionIdle();

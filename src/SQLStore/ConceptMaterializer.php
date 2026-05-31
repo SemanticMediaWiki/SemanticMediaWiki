@@ -12,12 +12,20 @@ use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
+ * Materializes concept query results into the concept cache table and reports
+ * their cache status.
+ *
+ * @note This is an internal class and should not be used outside of smw-core.
+ * The supported entry points are the `Store::refreshConceptCache()`,
+ * `Store::deleteConceptCache()`, and `Store::getConceptCacheStatus()`
+ * delegators.
+ *
  * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ConceptCache {
+class ConceptMaterializer {
 
 	private int $upperLimit = 50;
 
@@ -276,3 +284,8 @@ class ConceptCache {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0, use \SMW\SQLStore\ConceptMaterializer
+ */
+class_alias( ConceptMaterializer::class, 'SMW\SQLStore\ConceptCache' );

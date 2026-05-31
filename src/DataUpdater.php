@@ -202,10 +202,6 @@ class DataUpdater {
 			]
 		);
 
-		$deferredUpdate->setFingerprint(
-			$hash
-		);
-
 		$deferredUpdate->setLogger(
 			$this->logger
 		);

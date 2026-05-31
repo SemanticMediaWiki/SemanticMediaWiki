@@ -596,12 +596,6 @@ return [
 	},
 
 	'SMW.Logger' => static function ( MediaWikiServices $services ): LoggerInterface {
-		$servicesFactory = ServicesFactory::getInstance();
-
-		if ( $servicesFactory->hasTestOverride( 'Logger' ) ) {
-			return $servicesFactory->getLogger();
-		}
-
 		return LoggerFactory::getInstance( 'smw' );
 	},
 

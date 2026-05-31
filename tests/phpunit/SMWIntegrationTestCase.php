@@ -130,13 +130,20 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$this->testEnvironment->tearDown();
 		}
 
-		// Commit or rollback any open transactions from page deletions
-		// (flushPages) before MW's tearDown truncates tables. Without this,
-		// delete transactions can hold row locks that block TRUNCATE,
-		// causing "Lock wait timeout" errors.
-		MediaWikiServices::getInstance()
-			->getDBLoadBalancerFactory()
-			->commitPrimaryChanges( __METHOD__ );
+		// Before MediaWiki's own teardown truncates the test tables, make sure no
+		// database connection still holds an open transaction or session-level
+		// lock that could block the TRUNCATE and surface as a "Lock wait timeout"
+		// (1205). The truncation runs in MediaWikiIntegrationTestCase's @after
+		// hook, after this method returns, so the cleanup must happen here.
+		//
+		// commitPrimaryChanges() commits pending primary writes (for example the
+		// transactions left open by page deletions in flushPages) and flushes
+		// replica snapshots. flushPrimarySessions() additionally releases any
+		// lingering named or table locks on the primary connections, which
+		// commitPrimaryChanges() does not do.
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$lbFactory->commitPrimaryChanges( __METHOD__ );
+		$lbFactory->flushPrimarySessions( __METHOD__ );
 
 		parent::tearDown();
 	}

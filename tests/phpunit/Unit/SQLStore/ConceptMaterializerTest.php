@@ -6,14 +6,14 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Connection\Database;
-use SMW\SQLStore\ConceptCache;
+use SMW\SQLStore\ConceptMaterializer;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 
 /**
- * @covers \SMW\SQLStore\ConceptCache
+ * @covers \SMW\SQLStore\ConceptMaterializer
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -21,7 +21,7 @@ use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
  *
  * @author mwjames
  */
-class ConceptCacheTest extends TestCase {
+class ConceptMaterializerTest extends TestCase {
 
 	use MockSelectQueryBuilderTrait;
 	use MockWriteQueryBuilderTrait;
@@ -43,8 +43,8 @@ class ConceptCacheTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			ConceptCache::class,
-			new ConceptCache( $this->store, $this->conceptQuerySegmentBuilder )
+			ConceptMaterializer::class,
+			new ConceptMaterializer( $this->store, $this->conceptQuerySegmentBuilder )
 		);
 	}
 
@@ -53,7 +53,7 @@ class ConceptCacheTest extends TestCase {
 			->method( 'getErrors' )
 			->willReturn( [] );
 
-		$instance = new ConceptCache(
+		$instance = new ConceptMaterializer(
 			new SQLStore(),
 			$this->conceptQuerySegmentBuilder
 		);
@@ -101,7 +101,7 @@ class ConceptCacheTest extends TestCase {
 		$store = new SQLStore();
 		$store->setConnectionManager( $connectionManager );
 
-		$instance = new ConceptCache(
+		$instance = new ConceptMaterializer(
 			$store,
 			$this->conceptQuerySegmentBuilder
 		);
