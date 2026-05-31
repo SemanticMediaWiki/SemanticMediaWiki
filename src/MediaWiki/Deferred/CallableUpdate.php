@@ -35,10 +35,6 @@ class CallableUpdate implements DeferrableUpdate {
 
 	private static array $pendingUpdates = [];
 
-	private ?string $fingerprint = null;
-
-	private static array $queueList = [];
-
 	private bool $catchExceptionAndRethrow = false;
 
 	/**
@@ -104,23 +100,6 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	/**
-	 * @note Set a fingerprint allowing it to track and detect duplicate update
-	 * requests while being unprocessed.
-	 *
-	 * @since 2.5
-	 */
-	public function setFingerprint( ?string $fingerprint = null ): void {
-		$this->fingerprint = md5( $fingerprint ?? '' );
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function getFingerprint(): ?string {
-		return $this->fingerprint;
-	}
-
-	/**
 	 * @since 2.5
 	 */
 	public function setOrigin( string|array $origin ): void {
@@ -174,12 +153,11 @@ class CallableUpdate implements DeferrableUpdate {
 		}
 
 		$this->logger->info(
-			'DeferrableUpdate Update completed: {origin} (fingerprint:{fingerprint})',
+			'DeferrableUpdate Update completed: {origin}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',
 				'origin' => $this->getOrigin(),
-				'fingerprint' => $this->fingerprint
 			]
 		);
 	}
@@ -188,22 +166,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @since 2.5
 	 */
 	public function pushUpdate(): void {
-		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
-			$this->logger->info(
-				'DeferrableUpdate '
-					. 'Push: {origin} (fingerprint: {fingerprint} is already listed, skip)',
-				[
-					'method' => __METHOD__,
-					'role' => 'developer',
-					'origin' => $this->getOrigin(),
-					'fingerprint' => $this->fingerprint
-				]
-			);
-			return;
-		}
-
-		self::$queueList[$this->fingerprint] = true;
-
 		if ( $this->isPending && $this->isDeferrableUpdate ) {
 			$this->logger->info(
 				'DeferrableUpdate Push: {origin} (as pending DeferredCallableUpdate)',
@@ -211,7 +173,6 @@ class CallableUpdate implements DeferrableUpdate {
 					'method' => __METHOD__,
 					'role' => 'developer',
 					'origin' => $this->getOrigin(),
-					'fingerprint' => $this->fingerprint
 				]
 			);
 
@@ -241,7 +202,7 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	protected function loggableContext(): array {
-		return [ 'origin' => $this->origin, 'fingerprint' => $this->fingerprint ];
+		return [ 'origin' => $this->origin ];
 	}
 
 	protected function emptyCallback(): void {
@@ -286,7 +247,6 @@ class CallableUpdate implements DeferrableUpdate {
 
 	private function runUpdate(): void {
 		( $this->callback )();
-		unset( self::$queueList[$this->fingerprint] );
 	}
 
 }

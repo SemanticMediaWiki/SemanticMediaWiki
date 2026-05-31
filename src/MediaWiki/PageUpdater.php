@@ -31,11 +31,6 @@ class PageUpdater implements DeferrableUpdate {
 	private $origin = '';
 
 	/**
-	 * @var string|null
-	 */
-	private $fingerprint = null;
-
-	/**
 	 * @var bool
 	 */
 	private $isHtmlCacheUpdate = true;
@@ -64,15 +59,6 @@ class PageUpdater implements DeferrableUpdate {
 	 */
 	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string|null $fingerprint
-	 */
-	public function setFingerprint( $fingerprint = null ): void {
-		$this->fingerprint = $fingerprint;
 	}
 
 	/**
@@ -169,10 +155,6 @@ class PageUpdater implements DeferrableUpdate {
 		if ( $this->isPending ) {
 			$this->transactionalCallableUpdate->markAsPending();
 		}
-
-		$this->transactionalCallableUpdate->setFingerprint(
-			$this->fingerprint
-		);
 
 		$this->transactionalCallableUpdate->setOrigin( [
 			__METHOD__,

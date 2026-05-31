@@ -370,7 +370,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		);
 
 		$deferredTransactionalUpdate->setOrigin( __METHOD__ );
-		$deferredTransactionalUpdate->setFingerprint( __METHOD__ . $queryId );
 		$deferredTransactionalUpdate->waitOnTransactionIdle();
 
 		// Make sure that in any event the collector is executed after
