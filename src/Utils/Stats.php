@@ -42,13 +42,6 @@ class Stats {
 	 */
 	private $stats = [];
 
-	/**
-	 * Identifies an update fingerprint to compare invoked deferred updates
-	 * against each other and filter those with the same print to avoid recording
-	 * duplicate stats.
-	 */
-	private ?string $fingerprint = null;
-
 	private array $operations = [];
 
 	/**
@@ -72,7 +65,6 @@ class Stats {
 	 * @since 3.0
 	 */
 	public function initRecord(): void {
-		$this->fingerprint = $this->id . uniqid();
 	}
 
 	/**
@@ -219,10 +211,6 @@ class Stats {
 
 		$deferredUpdate->setOrigin( $fname );
 		$deferredUpdate->waitOnTransactionIdle();
-
-		$deferredUpdate->setFingerprint(
-			$fname . $this->fingerprint
-		);
 
 		$deferredUpdate->markAsPending( $asPending );
 		$deferredUpdate->pushUpdate();

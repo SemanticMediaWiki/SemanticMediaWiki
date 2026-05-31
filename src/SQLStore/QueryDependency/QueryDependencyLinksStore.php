@@ -347,7 +347,6 @@ class QueryDependencyLinksStore {
 
 		$deferredTransactionalUpdate->setOrigin( [ __METHOD__, $origin ] );
 		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
-		$deferredTransactionalUpdate->setFingerprint( $hash );
 
 		$deferredTransactionalUpdate->isDeferrableUpdate( true );
 		$deferredTransactionalUpdate->waitOnTransactionIdle();

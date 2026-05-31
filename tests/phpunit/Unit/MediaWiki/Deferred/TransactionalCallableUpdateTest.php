@@ -197,44 +197,6 @@ class TransactionalCallableUpdateTest extends TestCase {
 		);
 	}
 
-	public function testFilterDuplicateQueueEntryByFingerprint() {
-		$test = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
-			->getMock();
-
-		$test->expects( $this->once() )
-			->method( 'doTest' );
-
-		$callback = static function () use ( $test ) {
-			$test->doTest();
-		};
-
-		$instance = new TransactionalCallableUpdate(
-			$callback,
-			$this->connection
-		);
-
-		$instance->setLogger( $this->spyLogger );
-
-		$instance->setFingerprint( __METHOD__ );
-		$instance->markAsPending( true );
-		$instance->pushUpdate();
-
-		$instance = new TransactionalCallableUpdate(
-			$callback,
-			$this->connection
-		);
-
-		$instance->setLogger( $this->spyLogger );
-
-		$instance->setFingerprint( __METHOD__ );
-		$instance->markAsPending( true );
-		$instance->pushUpdate();
-
-		$this->testEnvironment->executePendingDeferredUpdates();
-	}
-
 	public function testUpdateOnTransactionIdle() {
 		$callback = static function ( $callback ) {
 			return call_user_func( $callback );
