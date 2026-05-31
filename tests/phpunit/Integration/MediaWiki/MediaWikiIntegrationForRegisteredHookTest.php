@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -66,8 +67,6 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPagePurge() {
-		$cacheFactory = $this->applicationFactory->newCacheFactory();
-
 		// ArticlePurge writes the purge marker through SMW.ObjectCache, i.e.
 		// ServicesFactory::getObjectCache(); read it back from that same
 		// instance rather than an injected Cache override.
@@ -81,7 +80,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 			->createPage( $this->title )
 			->doEdit( '[[Has function hook test::page purge]]' );
 
-		$key = $cacheFactory->getPurgeCacheKey( $this->title->getArticleID() );
+		$key = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $this->title->getArticleID() );
 
 		$pageCreator
 			->getPage()

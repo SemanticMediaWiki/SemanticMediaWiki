@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\Unit;
 
-use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\CacheFactory;
-use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\Query\Cache\QueryResultStore;
 
 /**
@@ -51,33 +49,6 @@ class CacheFactoryTest extends TestCase {
 		);
 	}
 
-	public function testGetPurgeCacheKey() {
-		$title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getArticleID' )
-			->willReturn( 42 );
-
-		$instance = new CacheFactory( 'hash' );
-
-		$this->assertIsString(
-
-			$instance->getPurgeCacheKey( $title )
-		);
-
-		$this->assertSame(
-			smwfCacheKey( 'smw:arc', 42 ),
-			$instance->getPurgeCacheKey( $title )
-		);
-
-		$this->assertSame(
-			smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, 42 ),
-			$instance->getPurgeCacheKey( $title )
-		);
-	}
-
 	public function testCanConstructCacheOptions() {
 		$instance = new CacheFactory( 'hash' );
 
@@ -101,12 +72,12 @@ class CacheFactoryTest extends TestCase {
 		] );
 	}
 
-	public function testCanConstructBlobStore() {
+	public function testCanConstructQueryResultStore() {
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
 			QueryResultStore::class,
-			$instance->newBlobStore( 'foo', CACHE_NONE )
+			$instance->newQueryResultStore( 'foo', CACHE_NONE )
 		);
 	}
 

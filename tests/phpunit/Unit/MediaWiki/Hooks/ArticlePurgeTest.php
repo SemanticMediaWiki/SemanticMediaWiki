@@ -78,9 +78,8 @@ class ArticlePurgeTest extends TestCase {
 
 		$instance = new ArticlePurge( $store, $this->cache, $settings, $this->eventDispatcher );
 
-		$cacheFactory = $this->applicationFactory->newCacheFactory();
 		$factboxCacheKey = CachedFactbox::makeCacheKey( $pageId );
-		$purgeCacheKey = $cacheFactory->getPurgeCacheKey( $pageId );
+		$purgeCacheKey = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $pageId );
 
 		$this->assertEquals(
 			$expected['autorefreshPreProcess'],

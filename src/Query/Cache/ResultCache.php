@@ -43,7 +43,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	const VERSION = '1';
 
 	/**
-	 * Namespace occupied by the BlobStore
+	 * Namespace occupied by the query-result store
 	 */
 	const CACHE_NAMESPACE = 'smw:query:store';
 
@@ -99,7 +99,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	public function __construct(
 		private readonly Store $store,
 		private readonly QueryFactory $queryFactory,
-		private readonly QueryResultStore $blobStore,
+		private readonly QueryResultStore $resultStore,
 		private readonly CacheStats $cacheStats,
 	) {
 		$this->tempCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
@@ -154,7 +154,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * @return bool
 	 */
 	public function isEnabled(): bool {
-		return $this->blobStore->canUse();
+		return $this->resultStore->canUse();
 	}
 
 	/**
@@ -200,7 +200,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 
 		$queryId = $this->getHashFrom( $query->getQueryId() );
 
-		$container = $this->blobStore->read(
+		$container = $this->resultStore->read(
 			$queryId
 		);
 
@@ -233,7 +233,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * @param string $context
 	 */
 	public function invalidateCache( $items, $context = '' ): void {
-		if ( !$this->blobStore->canUse() ) {
+		if ( !$this->resultStore->canUse() ) {
 			return;
 		}
 
@@ -252,10 +252,10 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$id = $this->getHashFrom( $item );
 			$this->tempCache->delete( $id );
 
-			if ( $this->blobStore->exists( $id ) ) {
+			if ( $this->resultStore->exists( $id ) ) {
 				$recordStats = true;
 				$this->cacheStats->incr( 'deletes.on' . $context );
-				$this->blobStore->delete( $id );
+				$this->resultStore->delete( $id );
 			}
 		}
 
@@ -265,7 +265,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function canUse( Query $query ): bool {
-		if ( !$this->enabledCache || !$this->blobStore->canUse() ) {
+		if ( !$this->enabledCache || !$this->resultStore->canUse() ) {
 			return false;
 		}
 
@@ -408,7 +408,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$hash = $contextPage->getHash();
 		}
 
-		$this->blobStore->save(
+		$this->resultStore->save(
 			$container
 		);
 
@@ -424,7 +424,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	private function addToLinkedList( WikiPage $contextPage, string $queryId ): void {
 		// Ensure that without QueryDependencyLinksStore being enabled recorded
 		// subjects related to a query can be discoverable and purged separately
-		$container = $this->blobStore->read(
+		$container = $this->resultStore->read(
 			$this->getHashFrom( $contextPage )
 		);
 
@@ -432,7 +432,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		// with that subject allows for an immediate associated removal
 		$container->addToLinkedList( $queryId );
 
-		$this->blobStore->save(
+		$this->resultStore->save(
 			$container
 		);
 	}

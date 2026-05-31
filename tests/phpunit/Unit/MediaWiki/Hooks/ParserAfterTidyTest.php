@@ -172,7 +172,7 @@ class ParserAfterTidyTest extends TestCase {
 	}
 
 	private function newMockCache( $id, $getStatus ) {
-		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey( $id );
+		$key = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $id );
 
 		$cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()

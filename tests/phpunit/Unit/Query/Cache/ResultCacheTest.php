@@ -26,7 +26,7 @@ class ResultCacheTest extends TestCase {
 
 	private $store;
 	private $queryFactory;
-	private $blobStore;
+	private $resultStore;
 	private QueryResultContainer $container;
 	private $cacheStats;
 
@@ -39,11 +39,11 @@ class ResultCacheTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->blobStore = $this->getMockBuilder( QueryResultStore::class )
+		$this->resultStore = $this->getMockBuilder( QueryResultStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->blobStore
+		$this->resultStore
 			->method( 'canUse' )
 			->willReturn( true );
 
@@ -59,7 +59,7 @@ class ResultCacheTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ResultCache::class,
-			new ResultCache( $this->store, $this->queryFactory, $this->blobStore, $this->cacheStats )
+			new ResultCache( $this->store, $this->queryFactory, $this->resultStore, $this->cacheStats )
 		);
 	}
 
@@ -79,7 +79,7 @@ class ResultCacheTest extends TestCase {
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
@@ -89,11 +89,11 @@ class ResultCacheTest extends TestCase {
 	}
 
 	public function testGetQueryResultFromTempCache() {
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'read' )
 			->willReturn( $this->container );
 
@@ -124,7 +124,7 @@ class ResultCacheTest extends TestCase {
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
@@ -137,21 +137,21 @@ class ResultCacheTest extends TestCase {
 	}
 
 	public function testPurgeCacheByQueryList() {
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
@@ -159,10 +159,10 @@ class ResultCacheTest extends TestCase {
 	}
 
 	public function testNoCache() {
-		$this->blobStore->expects( $this->never() )
+		$this->resultStore->expects( $this->never() )
 			->method( 'read' );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->willReturn( true );
 
@@ -194,7 +194,7 @@ class ResultCacheTest extends TestCase {
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
@@ -210,7 +210,7 @@ class ResultCacheTest extends TestCase {
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
@@ -221,15 +221,15 @@ class ResultCacheTest extends TestCase {
 	public function testPurgeCacheBySubject() {
 		$subject = new WikiPage( 'Foo', NS_MAIN );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->with( '1d1e1d94a78b9476c8213a16febe2c9b' );
 
@@ -239,7 +239,7 @@ class ResultCacheTest extends TestCase {
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
@@ -249,15 +249,15 @@ class ResultCacheTest extends TestCase {
 	public function testPurgeCacheBySubjectWithHasHMutation() {
 		$subject = new WikiPage( 'Foo', NS_MAIN );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->with( '1e5509cfde15f1f569db295e845ce997' );
 
@@ -267,7 +267,7 @@ class ResultCacheTest extends TestCase {
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
@@ -287,15 +287,15 @@ class ResultCacheTest extends TestCase {
 		$subject->expects( $this->never() )
 			->method( 'asBase' );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->willReturn( true );
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->resultStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->with( 'dc63f8b4cab1bb1214979932b637cdec' );
 
@@ -305,7 +305,7 @@ class ResultCacheTest extends TestCase {
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
@@ -319,7 +319,7 @@ class ResultCacheTest extends TestCase {
 		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
-			$this->blobStore,
+			$this->resultStore,
 			$this->cacheStats
 		);
 
