@@ -753,6 +753,116 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
+	public function testUpdateDependenciesCoalescesFlushAcrossCallbacksForSameSid() {
+		// Two `#ask` queries on the same page that share a query-id hash
+		// (same conditions, different printouts: `Query::getHash()` deliberately
+		// excludes printouts, see Query.php:587-589) both resolve to the same
+		// `$sid` in `smw_query_links`. The per-callback `doUpdate()` flush did
+		// a DELETE-then-INSERT keyed on `s_id`, so the second callback's write
+		// overwrote the first, dropping its printout-derived dependencies. The
+		// flush is now deferred so both callbacks' `addToUpdateList` invocations
+		// accumulate in the static `$updateList` and a single later flush writes
+		// the union.
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$title->method( 'exists' )->willReturn( true );
+		$title->method( 'getTouched' )->willReturn( 10 );
+
+		$subject = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$subject->method( 'getTitle' )->willReturn( $title );
+		$subject->method( 'getHash' )->willReturn( 'SharedHashSubject' );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
+
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$connectionManager->method( 'getConnection' )->willReturn( $connection );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyValues' ] )
+			->getMock();
+		$store->setConnectionManager( $connectionManager );
+		$store->method( 'getPropertyValues' )->willReturn( [] );
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$queryResultDependencyListResolver->method( 'getDependencyListByLateRetrievalFrom' )
+			->willReturn( [] );
+		$queryResultDependencyListResolver->method( 'getDependencyListFrom' )
+			->willReturnOnConsecutiveCalls(
+				[ WikiPage::newFromText( 'PrintoutAlpha', SMW_NS_PROPERTY ) ],
+				[ WikiPage::newFromText( 'PrintoutBeta', SMW_NS_PROPERTY ) ]
+			);
+
+		$callOrder = [];
+
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$dependencyLinksTableUpdater->method( 'getId' )->willReturn( 42 );
+		$dependencyLinksTableUpdater->method( 'addToUpdateList' )
+			->willReturnCallback( static function () use ( &$callOrder ): void {
+				$callOrder[] = 'add';
+			} );
+		$dependencyLinksTableUpdater->method( 'doUpdate' )
+			->willReturnCallback( static function () use ( &$callOrder ): void {
+				$callOrder[] = 'flush';
+			} );
+		$dependencyLinksTableUpdater->method( 'getStore' )->willReturn( $store );
+
+		$instance = new QueryDependencyLinksStore(
+			$queryResultDependencyListResolver,
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
+		);
+		$instance->setLogger( $this->spyLogger );
+
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$query->method( 'getContextPage' )->willReturn( $subject );
+		$query->method( 'getLimit' )->willReturn( 1 );
+
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$queryResult->method( 'getQuery' )->willReturn( $query );
+
+		// Suppress opportunistic deferred-update execution so the two
+		// `updateDependencies()` calls both land in the buffer before the
+		// flush. Without this guard, `DeferredUpdates::addUpdate()` may run
+		// pending updates synchronously in the test scope, which would drain
+		// the buffer between the two calls and produce per-callback flushes,
+		// hiding the bug the fix targets.
+		$scope = \MediaWiki\Deferred\DeferredUpdates::preventOpportunisticUpdates();
+
+		$instance->updateDependencies( $queryResult );
+		$instance->updateDependencies( $queryResult );
+
+		\Wikimedia\ScopedCallback::consume( $scope );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+
+		$flushIndex = array_search( 'flush', $callOrder, true );
+		$this->assertNotFalse( $flushIndex, 'doUpdate must be called at least once via the deferred flush' );
+
+		$addIndices = array_keys( $callOrder, 'add', true );
+		$this->assertGreaterThanOrEqual( 2, count( $addIndices ),
+			'Both updateDependencies invocations must reach addToUpdateList; got: ' . json_encode( $callOrder ) );
+		$this->assertLessThan( $flushIndex, max( $addIndices ),
+			'Every addToUpdateList call must precede the first doUpdate flush so dep lists accumulate in $updateList before the DELETE-then-INSERT write; got: ' . json_encode( $callOrder ) );
+	}
+
 	public function testdoUpdateDependenciesByFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

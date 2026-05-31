@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use MediaWiki\Deferred\DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -9,7 +10,6 @@ use SMW\NamespaceExaminer;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -33,6 +33,18 @@ class QueryDependencyLinksStore {
 	 * @var bool
 	 */
 	private $isCommandLineMode = false;
+
+	/**
+	 * Per-request buffer of dependency-update work registered by
+	 * `updateDependencies()`. The first registration in a request schedules a
+	 * single deferred batch processor (see `runPendingDependencyUpdates()`)
+	 * that drains the buffer and flushes the accumulated `$updateList` in
+	 * `DependencyLinksTableUpdater` once. Buffering lets two `#ask` queries
+	 * that share a query-id hash (same conditions, different printouts) both
+	 * contribute their printout-derived dependencies to `smw_query_links`
+	 * rather than have the second `DELETE`-then-`INSERT` overwrite the first.
+	 */
+	private static array $pendingDependencyUpdates = [];
 
 	/**
 	 * Time factor to be used to determine whether an update should actually occur
@@ -334,25 +346,22 @@ class QueryDependencyLinksStore {
 			);
 		}
 
-		// Executed as DeferredTransactionalUpdate
-		$callback = function () use( $queryResult, $subject, $sid, $hash ): void {
-			$this->doUpdate( $queryResult, $subject, $sid, $hash );
-		};
-
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
-			$callback
-		);
-
 		$origin = $subject->getHash();
 
-		$deferredTransactionalUpdate->setOrigin( [ __METHOD__, $origin ] );
-		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
-		$deferredTransactionalUpdate->setFingerprint( $hash );
+		// Buffer this work and schedule ONE batch processor per request. Same
+		// `$sid` registrations from sibling `#ask` queries (same conditions,
+		// different printouts -> same query-id hash -> same `$sid`) all land
+		// in the buffer; the batch processor calls `doUpdate()` for each,
+		// then flushes the accumulated `DependencyLinksTableUpdater::$updateList`
+		// once. A per-callback flush would have the second callback's
+		// `DELETE`-then-`INSERT` overwrite the first callback's deps.
+		self::$pendingDependencyUpdates[] = [ $queryResult, $subject, $sid, $hash ];
 
-		$deferredTransactionalUpdate->isDeferrableUpdate( true );
-		$deferredTransactionalUpdate->waitOnTransactionIdle();
-
-		$deferredTransactionalUpdate->pushUpdate();
+		if ( count( self::$pendingDependencyUpdates ) === 1 ) {
+			DeferredUpdates::addCallableUpdate( function (): void {
+				$this->runPendingDependencyUpdates();
+			} );
+		}
 
 		$context = [
 			'method' => __METHOD__,
@@ -367,6 +376,17 @@ class QueryDependencyLinksStore {
 		);
 
 		return true;
+	}
+
+	private function runPendingDependencyUpdates(): void {
+		$batch = self::$pendingDependencyUpdates;
+		self::$pendingDependencyUpdates = [];
+
+		foreach ( $batch as [ $queryResult, $subject, $sid, $hash ] ) {
+			$this->doUpdate( $queryResult, $subject, $sid, $hash );
+		}
+
+		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
 	private function doUpdate( $queryResult, $subject, $sid, $hash ) {
@@ -418,8 +438,6 @@ class QueryDependencyLinksStore {
 			$sid,
 			$dependencyListByLateRetrieval
 		);
-
-		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
 	private function canUpdateDependencies( $queryResult ): bool {
