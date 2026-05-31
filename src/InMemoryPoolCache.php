@@ -3,7 +3,6 @@
 namespace SMW;
 
 use SMW\Cache\InMemoryLruCache;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\StatsFormatter;
 
 /**
@@ -34,18 +33,7 @@ class InMemoryPoolCache {
 
 	private static ?InMemoryPoolCache $instance = null;
 
-	private CacheFactory $cacheFactory;
-
 	private array $poolCacheList = [];
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param CacheFactory $cacheFactory
-	 */
-	public function __construct( CacheFactory $cacheFactory ) {
-		$this->cacheFactory = $cacheFactory;
-	}
 
 	/**
 	 * @since 2.3
@@ -54,7 +42,7 @@ class InMemoryPoolCache {
 	 */
 	public static function getInstance(): InMemoryPoolCache {
 		if ( self::$instance === null ) {
-			self::$instance = new self( ApplicationFactory::getInstance()->newCacheFactory() );
+			self::$instance = new self();
 		}
 
 		return self::$instance;

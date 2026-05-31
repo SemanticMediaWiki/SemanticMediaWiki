@@ -20,7 +20,7 @@ class BeforeQueryResultLookupComplete {
 	 */
 	public function onSMW__Store__BeforeQueryResultLookupComplete( $store, $query, &$result, $queryEngine ): bool {
 		// `ResultCache` cannot be injected through the declarative `services:`
-		// array because its `BlobStore` is constructed from
+		// array because its query-result store is constructed from
 		// `smwgQueryResultCacheType` at instantiation, and `MediaWikiServices`
 		// caches the resolved instance for the container's lifetime. JSONScript
 		// tests vary that setting per test case, so the cached instance would

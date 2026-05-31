@@ -166,6 +166,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 
 **Removed APIs:**
 
+* **Cache factory naming cleanup.** `ServicesFactory::newBlobStore()` and `CacheFactory::newBlobStore()` are renamed to `newQueryResultStore()`, and the `'BlobStore'` service route is now `'QueryResultStore'`, reflecting that they construct a `SMW\Query\Cache\QueryResultStore` (the former `onoi/blob-store` is gone). `CacheFactory::getPurgeCacheKey()` is removed; build the key with `smwfCacheKey( SMW\MediaWiki\Hooks\ArticlePurge::CACHE_NAMESPACE, $articleId )`. `SMW\InMemoryPoolCache`'s constructor no longer takes a `CacheFactory` argument. These were internal infrastructure.
 * **`browsebyproperty` and `browsebysubject` API modules removed.** Both were deprecated since 3.0. Use the `smwbrowse` API module (`action=smwbrowse`) instead.
 * **`SMW\MediaWiki\Api\PropertyListByApiRequest` removed.** This was an internal helper for the now-removed `browsebyproperty` module; no other code consumed it. External consumers should query the `smwbrowse` API module directly.
 * **`SMW\MediaWiki\Specials\SpecialPage` base class removed**, along with the legacy `SMW\SpecialPage` alias. All in-tree SMW special pages now extend MediaWiki core's `MediaWiki\SpecialPage\SpecialPage` directly and receive `Store` / `Settings` through their constructor (registered via `SpecialPages` ObjectFactory specs in `extension.json`). Third-party special pages that extended the SMW base class must extend MediaWiki core's `SpecialPage` and inject the services they need.

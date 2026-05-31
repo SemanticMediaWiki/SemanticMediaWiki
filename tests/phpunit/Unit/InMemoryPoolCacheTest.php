@@ -4,7 +4,6 @@ namespace SMW\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Cache\InMemoryLruCache;
-use SMW\CacheFactory;
 use SMW\InMemoryPoolCache;
 
 /**
@@ -24,13 +23,9 @@ class InMemoryPoolCacheTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$cacheFactory = $this->getMockBuilder( CacheFactory::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			InMemoryPoolCache::class,
-			new InMemoryPoolCache( $cacheFactory )
+			new InMemoryPoolCache()
 		);
 
 		$this->assertInstanceOf(

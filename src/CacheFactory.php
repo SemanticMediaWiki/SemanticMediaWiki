@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use MediaWiki\Title\Title;
 use MediaWiki\WikiMap\WikiMap;
 use RuntimeException;
 use SMW\Query\Cache\QueryResultStore;
@@ -53,19 +52,6 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param Title|int|string $key
-	 */
-	public static function getPurgeCacheKey( $key ): string {
-		if ( $key instanceof Title ) {
-			$key = $key->getArticleID();
-		}
-
-		return self::getCachePrefix() . ':smw:arc:' . md5( $key ?? '' );
-	}
-
-	/**
-	 * @since 2.2
-	 *
 	 * @throws RuntimeException
 	 */
 	public function newCacheOptions( array $cacheOptions ): stdClass {
@@ -77,7 +63,7 @@ class CacheFactory {
 	}
 
 	/**
-	 * @since 2.4
+	 * @since 7.0.0
 	 *
 	 * @param string $namespace
 	 * @param string|int|null $cacheType
@@ -85,8 +71,8 @@ class CacheFactory {
 	 *
 	 * @return QueryResultStore
 	 */
-	public function newBlobStore( $namespace, $cacheType = null, $cacheLifetime = 0 ) {
-		return ApplicationFactory::getInstance()->create( 'BlobStore', $namespace, $cacheType, $cacheLifetime );
+	public function newQueryResultStore( $namespace, $cacheType = null, $cacheLifetime = 0 ) {
+		return ApplicationFactory::getInstance()->create( 'QueryResultStore', $namespace, $cacheType, $cacheLifetime );
 	}
 
 }
