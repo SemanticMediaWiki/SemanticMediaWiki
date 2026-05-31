@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\SQLStore\QueryDependency;
 
+use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
@@ -21,6 +22,7 @@ use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
+use Wikimedia\ScopedCallback;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore
@@ -751,6 +753,225 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$instance->updateDependencies( $queryResult );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
+	public function testUpdateDependenciesCoalescesFlushAcrossCallbacksForSameSid() {
+		// Two `#ask` queries on the same page that share a query-id hash
+		// (same conditions, different printouts: `Query::getHash()` deliberately
+		// excludes printouts, see Query.php:587-589) both resolve to the same
+		// `$sid` in `smw_query_links`. The per-callback `doUpdate()` flush did
+		// a DELETE-then-INSERT keyed on `s_id`, so the second callback's write
+		// overwrote the first, dropping its printout-derived dependencies. The
+		// flush is now deferred so both callbacks' `addToUpdateList` invocations
+		// accumulate in the static `$updateList` and a single later flush writes
+		// the union.
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$title->method( 'exists' )->willReturn( true );
+		$title->method( 'getTouched' )->willReturn( 10 );
+
+		$subject = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$subject->method( 'getTitle' )->willReturn( $title );
+		$subject->method( 'getHash' )->willReturn( 'SharedHashSubject' );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
+
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$connectionManager->method( 'getConnection' )->willReturn( $connection );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyValues' ] )
+			->getMock();
+		$store->setConnectionManager( $connectionManager );
+		$store->method( 'getPropertyValues' )->willReturn( [] );
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$queryResultDependencyListResolver->method( 'getDependencyListByLateRetrievalFrom' )
+			->willReturn( [] );
+		$queryResultDependencyListResolver->method( 'getDependencyListFrom' )
+			->willReturnOnConsecutiveCalls(
+				[ WikiPage::newFromText( 'PrintoutAlpha', SMW_NS_PROPERTY ) ],
+				[ WikiPage::newFromText( 'PrintoutBeta', SMW_NS_PROPERTY ) ]
+			);
+
+		$callOrder = [];
+
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$dependencyLinksTableUpdater->method( 'getId' )->willReturn( 42 );
+		$dependencyLinksTableUpdater->method( 'addToUpdateList' )
+			->willReturnCallback( static function () use ( &$callOrder ): void {
+				$callOrder[] = 'add';
+			} );
+		$dependencyLinksTableUpdater->method( 'doUpdate' )
+			->willReturnCallback( static function () use ( &$callOrder ): void {
+				$callOrder[] = 'flush';
+			} );
+		$dependencyLinksTableUpdater->method( 'getStore' )->willReturn( $store );
+
+		$instance = new QueryDependencyLinksStore(
+			$queryResultDependencyListResolver,
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
+		);
+		$instance->setLogger( $this->spyLogger );
+
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$query->method( 'getContextPage' )->willReturn( $subject );
+		$query->method( 'getLimit' )->willReturn( 1 );
+
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$queryResult->method( 'getQuery' )->willReturn( $query );
+
+		// Suppress opportunistic deferred-update execution so the two
+		// `updateDependencies()` calls both land in the buffer before the
+		// flush. Without this guard, `DeferredUpdates::addUpdate()` may run
+		// pending updates synchronously in the test scope, which would drain
+		// the buffer between the two calls and produce per-callback flushes,
+		// hiding the bug the fix targets.
+		$scope = DeferredUpdates::preventOpportunisticUpdates();
+
+		$instance->updateDependencies( $queryResult );
+		$instance->updateDependencies( $queryResult );
+
+		ScopedCallback::consume( $scope );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+
+		$flushIndex = array_search( 'flush', $callOrder, true );
+		$this->assertNotFalse( $flushIndex, 'doUpdate must be called at least once via the deferred flush' );
+
+		$addIndices = array_keys( $callOrder, 'add', true );
+
+		// Four `add` calls (`addToUpdateList` runs twice per invocation: once
+		// for `$dependencyList`, once for `$dependencyListByLateRetrieval`).
+		// Pre-fix the `CallableUpdate` fingerprint dedup at `pushUpdate`
+		// would short-circuit the second invocation entirely, leaving only
+		// two `add` calls and the original "first wins" data-loss shape.
+		// This assertion is the regression sentinel against the dedup
+		// re-appearing at this layer.
+		$this->assertCount( 4, $addIndices,
+			'Both invocations must reach addToUpdateList twice each; got: ' . json_encode( $callOrder ) );
+		$this->assertLessThan( $flushIndex, max( $addIndices ),
+			'Every addToUpdateList call must precede the first doUpdate flush so dep lists accumulate in $updateList before the DELETE-then-INSERT write; got: ' . json_encode( $callOrder ) );
+
+		// At most one `flush` for a single-request batch — the `$flushScheduled`
+		// guard keeps the second registration from queueing a redundant drain.
+		$flushCount = count( array_keys( $callOrder, 'flush', true ) );
+		$this->assertSame( 1, $flushCount,
+			'Exactly one flush should run per request; got: ' . json_encode( $callOrder ) );
+	}
+
+	public function testUpdateDependenciesCoalescesFlushAcrossDistinctSids() {
+		// Two `#ask` queries on the same page with different conditions
+		// (different `$hash` -> different `$sid`) should both register
+		// dependencies, and both batches should flush in a single
+		// `DependencyLinksTableUpdater::doUpdate()` call. The batched
+		// flush path must not be `$sid`-specific.
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$title->method( 'exists' )->willReturn( true );
+		$title->method( 'getTouched' )->willReturn( 10 );
+
+		$subject = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$subject->method( 'getTitle' )->willReturn( $title );
+		$subject->method( 'getHash' )->willReturn( 'SubjectWithTwoDistinctQueries' );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
+
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$connectionManager->method( 'getConnection' )->willReturn( $connection );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyValues' ] )
+			->getMock();
+		$store->setConnectionManager( $connectionManager );
+		$store->method( 'getPropertyValues' )->willReturn( [] );
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$queryResultDependencyListResolver->method( 'getDependencyListByLateRetrievalFrom' )
+			->willReturn( [] );
+		$queryResultDependencyListResolver->method( 'getDependencyListFrom' )
+			->willReturnOnConsecutiveCalls(
+				[ WikiPage::newFromText( 'DistinctA', SMW_NS_PROPERTY ) ],
+				[ WikiPage::newFromText( 'DistinctB', SMW_NS_PROPERTY ) ]
+			);
+
+		$flushCount = 0;
+
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$dependencyLinksTableUpdater->method( 'getId' )
+			->willReturnOnConsecutiveCalls( 100, 200 );
+		$dependencyLinksTableUpdater->method( 'doUpdate' )
+			->willReturnCallback( static function () use ( &$flushCount ): void {
+				$flushCount++;
+			} );
+		$dependencyLinksTableUpdater->method( 'getStore' )->willReturn( $store );
+
+		$instance = new QueryDependencyLinksStore(
+			$queryResultDependencyListResolver,
+			$dependencyLinksTableUpdater,
+			$this->namespaceExaminer
+		);
+		$instance->setLogger( $this->spyLogger );
+
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$query->method( 'getContextPage' )->willReturn( $subject );
+		$query->method( 'getLimit' )->willReturn( 1 );
+
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$queryResult->method( 'getQuery' )->willReturn( $query );
+
+		$scope = DeferredUpdates::preventOpportunisticUpdates();
+
+		$instance->updateDependencies( $queryResult );
+		$instance->updateDependencies( $queryResult );
+
+		ScopedCallback::consume( $scope );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+
+		// One effective flush, even though both registrations queue their own
+		// drain — the second drain finds the buffer empty (cleared by the
+		// first drain's drain-then-clear-then-iterate ordering) and skips
+		// the redundant write.
+		$this->assertSame( 1, $flushCount,
+			'Two updateDependencies invocations must produce exactly one effective doUpdate flush per request' );
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {

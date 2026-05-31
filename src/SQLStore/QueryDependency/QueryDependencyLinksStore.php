@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use MediaWiki\Deferred\DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -9,11 +10,11 @@ use SMW\NamespaceExaminer;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\Timer;
+use Throwable;
 
 /**
  * @license GPL-2.0-or-later
@@ -30,9 +31,32 @@ class QueryDependencyLinksStore {
 	private bool $isEnabled = true;
 
 	/**
-	 * @var bool
+	 * Per-request buffer of dependency-update work registered by
+	 * `updateDependencies()`. The first registration in a request queues a
+	 * single deferred drain (see `runPendingDependencyUpdates()`) that
+	 * processes the buffer and flushes the accumulated `$updateList` in
+	 * `DependencyLinksTableUpdater` once. Buffering lets two `#ask` queries
+	 * that share a query-id hash (same conditions, different printouts) both
+	 * contribute their printout-derived dependencies to `smw_query_links`
+	 * rather than have the second `DELETE`-then-`INSERT` overwrite the first.
+	 *
+	 * Caveat: in CLI/maintenance scripts where `tryOpportunisticExecute()`
+	 * may fire the drain synchronously between successive registrations
+	 * (no active DB transaction), the buffer can be drained before the
+	 * second registration appends. Within `runJobs.php` and inside any
+	 * `Store::updateData` section transaction this is moot; bare maintenance
+	 * loops calling the resolver outside a transaction may still observe
+	 * per-call flushes.
 	 */
-	private $isCommandLineMode = false;
+	private static array $pendingDependencyUpdates = [];
+
+	/**
+	 * Set to true once a drain is queued for the current request and
+	 * cleared from the drain's `finally` so the next registration after a
+	 * successful (or thrown) drain can queue a fresh one. Guards against
+	 * scheduling N redundant drains in a single request.
+	 */
+	private static bool $flushScheduled = false;
 
 	/**
 	 * Time factor to be used to determine whether an update should actually occur
@@ -60,18 +84,6 @@ class QueryDependencyLinksStore {
 	 */
 	public function setStore( Store $store ): void {
 		$this->store = $store;
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-	 * Indicates whether MW is running in command-line mode.
-	 *
-	 * @since 2.5
-	 *
-	 * @param bool $isCommandLineMode
-	 */
-	public function isCommandLineMode( $isCommandLineMode ): void {
-		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
@@ -334,24 +346,31 @@ class QueryDependencyLinksStore {
 			);
 		}
 
-		// Executed as DeferredTransactionalUpdate
-		$callback = function () use( $queryResult, $subject, $sid, $hash ): void {
-			$this->doUpdate( $queryResult, $subject, $sid, $hash );
-		};
-
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
-			$callback
-		);
-
 		$origin = $subject->getHash();
 
-		$deferredTransactionalUpdate->setOrigin( [ __METHOD__, $origin ] );
-		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
+		// Buffer this work and schedule a batch drain. Same-`$sid` registrations
+		// from sibling `#ask` queries (same conditions, different printouts ->
+		// same query-id hash -> same `$sid`) all land in the buffer; the drain
+		// calls `doUpdate()` for each, then flushes the accumulated
+		// `DependencyLinksTableUpdater::$updateList` once. A per-callback flush
+		// would have the second callback's `DELETE`-then-`INSERT` overwrite
+		// the first callback's deps.
+		//
+		// `$flushScheduled` keeps a single drain queued per request; the
+		// drain's `finally` resets it so a thrown drain does not deadlock
+		// subsequent registrations (self-healing on leaked schedules).
+		self::$pendingDependencyUpdates[] = [ $queryResult, $subject, $sid, $hash ];
 
-		$deferredTransactionalUpdate->isDeferrableUpdate( true );
-		$deferredTransactionalUpdate->waitOnTransactionIdle();
-
-		$deferredTransactionalUpdate->pushUpdate();
+		if ( !self::$flushScheduled ) {
+			self::$flushScheduled = true;
+			DeferredUpdates::addCallableUpdate( function (): void {
+				try {
+					$this->runPendingDependencyUpdates();
+				} finally {
+					self::$flushScheduled = false;
+				}
+			} );
+		}
 
 		$context = [
 			'method' => __METHOD__,
@@ -366,6 +385,45 @@ class QueryDependencyLinksStore {
 		);
 
 		return true;
+	}
+
+	/**
+	 * Drain the per-request `$pendingDependencyUpdates` buffer.
+	 *
+	 * Ordering is drain-then-clear-then-iterate so a recursive
+	 * `updateDependencies()` triggered from inside `doUpdate()` (e.g. via
+	 * lazy resolution of `getDependencyListFrom`) sees an empty buffer and
+	 * queues its own fresh drain rather than re-entering this one. After
+	 * every buffered item's deps are merged into
+	 * `DependencyLinksTableUpdater::$updateList`, a single flush writes the
+	 * union to `smw_query_links`. Per-item exceptions are caught and logged
+	 * so one failing query does not silently drop the rest of the batch.
+	 */
+	private function runPendingDependencyUpdates(): void {
+		if ( self::$pendingDependencyUpdates === [] ) {
+			return;
+		}
+
+		$batch = self::$pendingDependencyUpdates;
+		self::$pendingDependencyUpdates = [];
+
+		foreach ( $batch as [ $queryResult, $subject, $sid, $hash ] ) {
+			try {
+				$this->doUpdate( $queryResult, $subject, $sid, $hash );
+			} catch ( Throwable $e ) {
+				$this->logger->error(
+					'[QueryDependency] doUpdate failed for {origin}: {message}',
+					[
+						'method' => __METHOD__,
+						'role' => 'production',
+						'origin' => $hash,
+						'message' => $e->getMessage(),
+					]
+				);
+			}
+		}
+
+		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
 	private function doUpdate( $queryResult, $subject, $sid, $hash ) {
@@ -417,8 +475,6 @@ class QueryDependencyLinksStore {
 			$sid,
 			$dependencyListByLateRetrieval
 		);
-
-		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
 	private function canUpdateDependencies( $queryResult ): bool {
