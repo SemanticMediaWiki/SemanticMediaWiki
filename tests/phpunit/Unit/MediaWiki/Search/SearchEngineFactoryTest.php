@@ -8,6 +8,7 @@ use SMW\Exception\ClassNotFoundException;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ExtendedSearch;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\MediaWiki\Search\SearchEngineFactory;
 use SMW\Tests\Fixtures\MediaWiki\Search\DummySearchDatabase;
 use SMW\Tests\Fixtures\MediaWiki\Search\DummySearchEngine;
@@ -157,6 +158,24 @@ class SearchEngineFactoryTest extends TestCase {
 		$searchEngineFactory = new SearchEngineFactory();
 
 		$this->expectException( ClassNotFoundException::class );
+		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
+	}
+
+	public function testNewFallbackSearchEngine_RejectsExtendedSearchEngineType() {
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', ExtendedSearchEngine::class );
+
+		$searchEngineFactory = new SearchEngineFactory();
+
+		$this->expectException( SearchEngineInvalidTypeException::class );
+		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
+	}
+
+	public function testNewFallbackSearchEngine_RejectsDeprecatedSmwSearchAlias() {
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'SMWSearch' );
+
+		$searchEngineFactory = new SearchEngineFactory();
+
+		$this->expectException( SearchEngineInvalidTypeException::class );
 		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
 	}
 

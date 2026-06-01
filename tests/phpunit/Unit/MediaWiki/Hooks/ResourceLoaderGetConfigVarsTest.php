@@ -3,9 +3,11 @@
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use MediaWiki\Config\Config;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Title\NamespaceInfo;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Settings;
 
 /**
@@ -70,6 +72,34 @@ class ResourceLoaderGetConfigVarsTest extends TestCase {
 		$this->assertArrayHasKey(
 			'settings',
 			$vars['smw-config']
+		);
+	}
+
+	public function testExportsExtendedSearchActiveFlag() {
+		$vars = [];
+
+		$this->settings->method( 'get' )
+			->willReturnMap( [
+				[ 'smwgQMaxLimit', 100 ],
+				[ 'smwgQMaxInlineLimit', 50 ],
+				[ 'smwgNamespacesWithSemanticLinks', [] ],
+				[ 'smwgResultFormats', [] ],
+			] );
+
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )
+			->with( MainConfigNames::SearchType )
+			->willReturn( ExtendedSearchEngine::class );
+
+		$instance = new ResourceLoaderGetConfigVars(
+			$this->namespaceInfo,
+			$this->settings
+		);
+
+		$instance->onResourceLoaderGetConfigVars( $vars, '', $config );
+
+		$this->assertTrue(
+			$vars['smwgExtendedSearchActive']
 		);
 	}
 

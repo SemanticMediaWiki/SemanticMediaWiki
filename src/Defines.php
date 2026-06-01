@@ -24,7 +24,7 @@ if ( defined( 'SMW_SPECIAL_SEARCHTYPE' ) ) {
 }
 
 // Search type
-define( 'SMW_SPECIAL_SEARCHTYPE', 'SMW\MediaWiki\Search\ExtendedSearchEngine' );
+define( 'SMW_SPECIAL_SEARCHTYPE', 'SMWSearch' );
 
 // Exporter/OWL serializer
 define( 'SMW_SERIALIZER_DECL_CLASS', 1 );

@@ -3,9 +3,11 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Config\Config;
+use MediaWiki\MainConfigNames;
 use MediaWiki\ResourceLoader\Hook\ResourceLoaderGetConfigVarsHook;
 use MediaWiki\Title\NamespaceInfo;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Settings;
 
 /**
@@ -43,6 +45,12 @@ class ResourceLoaderGetConfigVars implements ResourceLoaderGetConfigVarsHook {
 	 * @since 7.0.0
 	 */
 	public function onResourceLoaderGetConfigVars( array &$vars, $skin, Config $config ): void {
+		// Resolve the active search engine once on the server so client code
+		// can gate on a boolean instead of string-matching a class name.
+		$vars['smwgExtendedSearchActive'] = ExtendedSearchEngine::isActiveSearchType(
+			$config->get( MainConfigNames::SearchType )
+		);
+
 		$vars['smw-config'] = [
 			'version' => SMW_VERSION,
 			'namespaces' => [],

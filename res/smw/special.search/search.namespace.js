@@ -64,11 +64,7 @@
 
 	// Only load when it is Special:Search and the search type supports
 	// https://www.semantic-mediawiki.org/wiki/Help:SMWSearch
-	if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'Search' &&
-		( mw.config.get( 'wgSearchType' ) == 'SMWSearch' ||
-			 mw.config.get( 'wgSearchType' ) == 'SMW\MediaWiki\Search\ExtendedSearchEngine'
-		)
-	) {
+	if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'Search' && mw.config.get( 'smwgExtendedSearchActive' ) ) {
 		smw.load( namespace );
 	};
 

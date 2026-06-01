@@ -413,4 +413,22 @@ class ExtendedSearchEngineTest extends TestCase {
 		$searchEngine->completionSearchWithVariants( 'Foo_Variants' );
 	}
 
+	/**
+	 * @dataProvider activeSearchTypeProvider
+	 */
+	public function testIsActiveSearchType( ?string $type, bool $expected ) {
+		$this->assertSame(
+			$expected,
+			ExtendedSearchEngine::isActiveSearchType( $type )
+		);
+	}
+
+	public function activeSearchTypeProvider() {
+		yield 'canonical class name' => [ ExtendedSearchEngine::class, true ];
+		yield 'deprecated SMWSearch alias' => [ 'SMWSearch', true ];
+		yield 'search type unset' => [ null, false ];
+		yield 'unrelated engine' => [ 'SearchMySQL', false ];
+		yield 'empty string' => [ '', false ];
+	}
+
 }
