@@ -99,6 +99,11 @@ class NumberValueFormatter extends DataValueFormatter {
 			return $this->dataValue->getCaption();
 		}
 
+		// The tooltip title and converted-unit numbers are rendered in the
+		// viewer's interface language, so the rendered output is not
+		// cache-stable across languages.
+		$this->dataValue->recordUserLanguageOutput();
+
 		$highlighter = Highlighter::factory(
 			Highlighter::TYPE_QUANTITY,
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )

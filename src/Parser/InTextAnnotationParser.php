@@ -169,7 +169,10 @@ class InTextAnnotationParser {
 
 		if ( $this->isEnabledNamespace ) {
 			$this->parserData->getOutput()->addModules( $this->getModules() );
-			$this->parserData->addExtraParserKey( 'userlang' );
+
+			if ( $this->parserData->variesByUserLanguage() ) {
+				$this->parserData->addExtraParserKey( 'userlang' );
+			}
 		}
 
 		$this->parserData->copyToParserOutput();
@@ -400,6 +403,17 @@ class InTextAnnotationParser {
 			// Encode `:` to avoid a comment block and instead of the nowiki tag
 			// use &#58; as placeholder
 			$result = str_replace( ':', '&#58;', $result ) . $dataValue->getErrorText();
+		}
+
+		// The rendered output varies by the viewer's interface language when
+		// the value is invalid (the error message is localized) or when the
+		// value formatter reported user-language output (e.g. a localized
+		// unit-conversion tooltip). Record this so the `userlang` parser-cache
+		// key is added (see InTextAnnotationParser::parse()).
+		if ( isset( $dataValue ) &&
+			( !$dataValue->isValid() || $dataValue->hasUserLanguageOutput() )
+		) {
+			$this->parserData->markVariesByUserLanguage();
 		}
 
 		return $result;

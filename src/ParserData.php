@@ -87,6 +87,8 @@ class ParserData {
 
 	private ?Options $options = null;
 
+	private bool $variesByUserLanguage = false;
+
 	/**
 	 * @since 1.9
 	 *
@@ -172,6 +174,24 @@ class ParserData {
 	 */
 	public function setParserOptions( ParserOptions $parserOptions ): void {
 		$this->parserOptions = $parserOptions;
+	}
+
+	/**
+	 * Record that something rendered into this ParserOutput depends on the
+	 * viewer's interface language (e.g. an in-text annotation error or a
+	 * unit-conversion tooltip), so the `userlang` parser-cache key is needed.
+	 *
+	 * @since 7.0.0
+	 */
+	public function markVariesByUserLanguage(): void {
+		$this->variesByUserLanguage = true;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function variesByUserLanguage(): bool {
+		return $this->variesByUserLanguage;
 	}
 
 	/**

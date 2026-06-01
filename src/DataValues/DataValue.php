@@ -190,10 +190,30 @@ abstract class DataValue {
 
 	private array $callables = [];
 
+	private bool $userLanguageOutput = false;
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct( protected $m_typeid ) {
+	}
+
+	/**
+	 * Called by a value formatter when it has rendered output that depends on
+	 * the viewer's interface language (e.g. a localized unit-conversion tooltip),
+	 * so callers can decide whether the `userlang` parser-cache key is needed.
+	 *
+	 * @since 7.0.0
+	 */
+	public function recordUserLanguageOutput(): void {
+		$this->userLanguageOutput = true;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function hasUserLanguageOutput(): bool {
+		return $this->userLanguageOutput;
 	}
 
 	/**

@@ -222,6 +222,75 @@ class InTextAnnotationParserTest extends TestCase {
 		);
 	}
 
+	public function testPlainValidAnnotationDoesNotVaryByUserLanguage() {
+		$namespace = NS_MAIN;
+		$text      = 'Foo [[Bar::tincidunt semper]] baz';
+
+		$settings = [
+			'smwgNamespacesWithSemanticLinks' => [ $namespace => true ],
+			'smwgParserFeatures' => [ 'inline-errors' ],
+		];
+
+		$this->testEnvironment->withConfiguration( $settings );
+
+		$parserData = new ParserData(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, $namespace ),
+			new ParserOutput()
+		);
+
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			$this->linksProcessor,
+			$this->magicWordsFinder,
+			new RedirectTargetFinder()
+		);
+
+		$instance->setHookContainer( $this->hookContainer );
+		$instance->showErrors( true );
+
+		$instance->parse( $text );
+
+		$this->assertFalse(
+			$parserData->variesByUserLanguage(),
+			'A valid in-text annotation that renders content-language output must not record userlang'
+		);
+	}
+
+	public function testInvalidAnnotationVariesByUserLanguage() {
+		$namespace = NS_MAIN;
+		// `-FooBar` is an invalid property name and renders a localized error.
+		$text = 'Foo [[-FooBar::dictumst]] baz';
+
+		$settings = [
+			'smwgNamespacesWithSemanticLinks' => [ $namespace => true ],
+			'smwgParserFeatures' => [ 'inline-errors' ],
+		];
+
+		$this->testEnvironment->withConfiguration( $settings );
+
+		$parserData = new ParserData(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, $namespace ),
+			new ParserOutput()
+		);
+
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			$this->linksProcessor,
+			$this->magicWordsFinder,
+			new RedirectTargetFinder()
+		);
+
+		$instance->setHookContainer( $this->hookContainer );
+		$instance->showErrors( true );
+
+		$instance->parse( $text );
+
+		$this->assertTrue(
+			$parserData->variesByUserLanguage(),
+			'An invalid in-text annotation that renders a localized error must record userlang'
+		);
+	}
+
 	public function testRedirectAnnotationFromInjectedRedirectTarget() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$namespace = NS_MAIN;
