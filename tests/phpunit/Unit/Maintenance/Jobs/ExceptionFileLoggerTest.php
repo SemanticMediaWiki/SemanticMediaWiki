@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\ExceptionFileLogger;
 use SMW\Options;
 use SMW\Utils\File;
+use TypeError;
 
 /**
  * @covers \SMW\Maintenance\ExceptionFileLogger
@@ -71,6 +72,23 @@ class ExceptionFileLoggerTest extends TestCase {
 		);
 
 		$instance->doWrite();
+	}
+
+	public function testRecordExceptionAcceptsThrowableError() {
+		$instance = new ExceptionFileLogger( 'foo', $this->file );
+
+		// A PHP Error (here TypeError) is a Throwable but not an Exception.
+		// rebuildData.php must be able to log these, e.g. a parser tag hook
+		// declaring a string return type but returning an array (#6218).
+		$instance->recordException(
+			'Foo',
+			new TypeError( 'Bar' )
+		);
+
+		$this->assertSame(
+			1,
+			$instance->getExceptionCount()
+		);
 	}
 
 }

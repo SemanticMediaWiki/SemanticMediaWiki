@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\WikiPage;
 use SMW\Maintenance\DistinctEntityDataRebuilder;
+use SMW\Maintenance\ExceptionFileLogger;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
@@ -17,6 +18,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
+use TypeError;
 
 /**
  * @covers \SMW\Maintenance\DistinctEntityDataRebuilder
@@ -279,6 +281,70 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 
 		$this->assertEquals(
 			3,
+			$instance->getRebuildCount()
+		);
+	}
+
+	public function testRebuildSelectedPagesWithIgnoreExceptionsContinuesPastError() {
+		// A PHP Error (TypeError) escapes a catch ( Exception ) and would abort
+		// the rebuild of the remaining selected pages (#6218).
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$updateJob->method( 'run' )
+			->willReturnCallback( static function () {
+				throw new TypeError( 'Return value must be of type string, array returned' );
+			} );
+
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory->method( 'newUpdateJob' )
+			->willReturn( $updateJob );
+
+		$exceptionFileLogger = $this->getMockBuilder( ExceptionFileLogger::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$exceptionFileLogger->expects( $this->exactly( 2 ) )
+			->method( 'recordException' );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$mwTitleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$titleFactory->method( 'newFromText' )
+			->willReturnCallback( static function ( $title ) use ( $mwTitleFactory ) {
+				return $mwTitleFactory->newFromText( $title );
+			} );
+
+		$instance = new DistinctEntityDataRebuilder(
+			$store,
+			$titleFactory,
+			$jobFactory
+		);
+
+		$instance->setExceptionFileLogger( $exceptionFileLogger );
+
+		$instance->setOptions( new Options( [
+			'page' => 'Main page|Some other page',
+			'ignore-exceptions' => true
+		] ) );
+
+		$this->assertTrue(
+			$instance->doRebuild()
+		);
+
+		$this->assertEquals(
+			2,
 			$instance->getRebuildCount()
 		);
 	}

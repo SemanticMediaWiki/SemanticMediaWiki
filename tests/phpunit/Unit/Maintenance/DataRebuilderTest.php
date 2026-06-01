@@ -21,6 +21,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
+use TypeError;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder
@@ -436,6 +437,85 @@ class DataRebuilderTest extends TestCase {
 			3,
 			$instance->getRebuildCount()
 		);
+	}
+
+	/**
+	 * @depends testCanConstruct
+	 */
+	public function testRebuildAllWithIgnoreExceptionsContinuesPastError() {
+		$seenIds = [];
+
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Mirror Rebuilder::rebuild() throwing from a job before next_position()
+		// runs: the id is left unadvanced when the call throws. A PHP Error
+		// (TypeError) is used because that is what escapes a catch ( Exception )
+		// and aborts the whole rebuild (#6218). The safety net stops the loop
+		// after far more iterations than the [1,3] range needs, so a regression
+		// that fails to advance the id fails the assertion below instead of
+		// looping forever.
+		$rebuilder->expects( $this->any() )
+			->method( 'rebuild' )
+			->willReturnCallback( static function ( &$id ) use ( &$seenIds ) {
+				$seenIds[] = $id;
+
+				if ( count( $seenIds ) > 20 ) {
+					$id = -1;
+					return 1;
+				}
+
+				throw new TypeError( 'Return value must be of type string, array returned' );
+			} );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getMaxId' )
+			->willReturn( 1000 );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$exceptionLogDir = sys_get_temp_dir() . '/smw-6218-' . uniqid();
+		mkdir( $exceptionLogDir );
+
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
+
+		$instance->setOptions( new Options( [
+			's' => 1,
+			'e' => 3,
+			'ignore-exceptions' => true,
+			'exception-log' => $exceptionLogDir
+		] ) );
+
+		try {
+			$this->assertTrue( $instance->rebuild() );
+
+			// Each failing id in the [1,3] range is visited exactly once and the
+			// run advances past it, proving the loop does not reprocess the same
+			// id forever.
+			$this->assertSame( [ 1, 2, 3 ], $seenIds );
+			$this->assertSame( 3, $instance->getExceptionCount() );
+		} finally {
+			array_map( 'unlink', glob( "$exceptionLogDir/*" ) ?: [] );
+			rmdir( $exceptionLogDir );
+		}
 	}
 
 	/**

@@ -101,7 +101,7 @@ class rebuildData extends Maintenance {
 		$this->addOption( 'force-update', 'Force an update even when an associated revision is known', false );
 		$this->addOption( 'revision-mode', 'Skip entities where its associated revision matches the latests referenced revision of an associated page', false );
 
-		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and log exception to a file', false );
+		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and errors (e.g. a parser TypeError on a single page) and log them to a file instead of aborting the run', false );
 		$this->addOption( 'exception-log', 'Exception log file location (e.g. /tmp/logs/)', false, true );
 		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 
