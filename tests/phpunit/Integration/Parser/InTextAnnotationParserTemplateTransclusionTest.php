@@ -110,6 +110,95 @@ class InTextAnnotationParserTemplateTransclusionTest extends TestCase {
 		);
 	}
 
+	public function testPropertyLinkWithTooltipVariesByUserLanguage() {
+		$this->testEnvironment->withConfiguration( [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+			'smwgParserFeatures' => [ 'inline-errors' ],
+			'smwgMainCacheType' => 'hash'
+		] );
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$parserData = $this->applicationFactory->newParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$instance = $this->applicationFactory->newInTextAnnotationParser(
+			$parserData
+		);
+
+		// The `@@@` syntax renders a property link. `Modification date` is a
+		// predefined property whose link carries a tooltip with a localized
+		// title and description, so the rendered output (returned directly by
+		// makePropertyLink) varies by the viewer's interface language.
+		$text = 'Foo [[Modification date::@@@]] baz';
+		$instance->parse( $text );
+
+		$this->assertTrue(
+			$parserData->variesByUserLanguage(),
+			'A `@@@` property link that renders a localized tooltip must record userlang'
+		);
+	}
+
+	public function testPlainPropertyLinkWithoutTooltipDoesNotVaryByUserLanguage() {
+		$this->testEnvironment->withConfiguration( [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+			'smwgParserFeatures' => [ 'inline-errors' ],
+			'smwgMainCacheType' => 'hash'
+		] );
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$parserData = $this->applicationFactory->newParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$instance = $this->applicationFactory->newInTextAnnotationParser(
+			$parserData
+		);
+
+		// A user-defined property without a description carries no tooltip, so
+		// the property link is content-stable across languages.
+		$text = 'Foo [[Has unknown property::@@@]] baz';
+		$instance->parse( $text );
+
+		$this->assertFalse(
+			$parserData->variesByUserLanguage(),
+			'A `@@@` property link without a tooltip must not record userlang'
+		);
+	}
+
+	public function testPropertyLinkWithAnnotatedLanguageDoesNotVaryByUserLanguage() {
+		$this->testEnvironment->withConfiguration( [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+			'smwgParserFeatures' => [ 'inline-errors' ],
+			'smwgMainCacheType' => 'hash'
+		] );
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$parserData = $this->applicationFactory->newParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$instance = $this->applicationFactory->newInTextAnnotationParser(
+			$parserData
+		);
+
+		// `@@@en` pins the tooltip to a fixed language, so the rendered output
+		// is content-stable across languages and must not record userlang.
+		$text = 'Foo [[Modification date::@@@en]] baz';
+		$instance->parse( $text );
+
+		$this->assertFalse(
+			$parserData->variesByUserLanguage(),
+			'A `@@@<lang>` property link with an annotated language must not record userlang'
+		);
+	}
+
 	public function templateDataProvider() {
 		$provider = [];
 

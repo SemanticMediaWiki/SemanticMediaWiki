@@ -408,12 +408,13 @@ class AskParserFunctionTest extends TestCase {
 	}
 
 	/**
-	 * Characterization / regression guard: format=table (dependsOnUserLanguage=true)
-	 * must still add `userlang` to the parser cache key after the change.
+	 * New behaviour: format=table with no errors must NOT add `userlang`. The
+	 * localized further-results caption is deferred via a
+	 * `smw-localized-message` marker, so the inline output is language-neutral.
 	 *
 	 * @covers \SMW\ParserFunctions\AskParserFunction::parse
 	 */
-	public function testParseTableFormatAddsUserlangKey() {
+	public function testParseTableFormatWithoutErrorsOmitsUserlangKey() {
 		$this->testEnvironment->addConfiguration( 'smwgSetParserCacheKeys', [ 'userlang' ] );
 
 		$parserOutput = new ParserOutput();
@@ -434,10 +435,46 @@ class AskParserFunctionTest extends TestCase {
 			'format=table',
 		] );
 
+		$this->assertNotContains(
+			'userlang',
+			$parserOutput->getUsedOptions(),
+			'format=table output is language-neutral; userlang must not be in the parser cache key'
+		);
+	}
+
+	/**
+	 * format=table still adds `userlang` when the query produces errors, since
+	 * error messages are localized even though successful table output is
+	 * language-neutral.
+	 *
+	 * @covers \SMW\ParserFunctions\AskParserFunction::parse
+	 */
+	public function testParseTableFormatWithErrorsAddsUserlangKey() {
+		$this->testEnvironment->addConfiguration( 'smwgSetParserCacheKeys', [ 'userlang' ] );
+
+		$parserOutput = new ParserOutput();
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parserOutput
+		);
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
+
+		// Invalid query condition produces a localized error message; userlang is required.
+		$instance->parse( [
+			'[[--ABC|DEF::123]]',
+			'format=table',
+		] );
+
 		$this->assertContains(
 			'userlang',
 			$parserOutput->getUsedOptions(),
-			'format=table depends on user language; userlang must be in the parser cache key'
+			'format=table with errors renders localized text; userlang must be in the parser cache key'
 		);
 	}
 

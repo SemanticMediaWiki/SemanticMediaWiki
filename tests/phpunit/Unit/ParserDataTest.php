@@ -443,6 +443,38 @@ class ParserDataTest extends TestCase {
 		);
 	}
 
+	public function testVariesByUserLanguageDefaultsToFalse() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$this->assertFalse(
+			$instance->variesByUserLanguage()
+		);
+	}
+
+	public function testMarkVariesByUserLanguage() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$instance->markVariesByUserLanguage();
+
+		$this->assertTrue(
+			$instance->variesByUserLanguage()
+		);
+	}
+
 	public function testAddExtraParserKey() {
 		$parserOptions = $this->getMockBuilder( ParserOptions::class )
 			->disableOriginalConstructor()

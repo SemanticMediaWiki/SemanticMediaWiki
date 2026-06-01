@@ -40,6 +40,7 @@
 		"RejectParserCacheValue": "SemanticMediaWiki.RejectParserCacheValue",
 		"SkinAfterContent": "SemanticMediaWiki.SkinAfterContent",
 		"OutputPageParserOutput": "SemanticMediaWiki.OutputPageParserOutput",
+		"ParserOutputPostCacheTransform": "SemanticMediaWiki.ParserOutputPostCacheTransform",
 		"OutputPageCheckLastModified": "SemanticMediaWiki.OutputPageCheckLastModified",
 		"BeforePageDisplay": "SemanticMediaWiki.BeforePageDisplay",
 		"BeforeDisplayNoArticleText": "SemanticMediaWiki.BeforeDisplayNoArticleText",
@@ -148,6 +149,9 @@
 				"SMW.InTextAnnotationParserFactory",
 				"SMW.Logger"
 			]
+		},
+		"SemanticMediaWiki.ParserOutputPostCacheTransform": {
+			"class": "SMW\\MediaWiki\\Hooks\\ParserOutputPostCacheTransform"
 		},
 		"SemanticMediaWiki.OutputPageCheckLastModified": {
 			"class": "SMW\\MediaWiki\\Hooks\\OutputPageCheckLastModified"

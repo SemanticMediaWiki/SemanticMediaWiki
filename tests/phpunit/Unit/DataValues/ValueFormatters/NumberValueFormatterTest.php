@@ -73,6 +73,65 @@ class NumberValueFormatterTest extends TestCase {
 		);
 	}
 
+	public function testUserLanguageOutputDefaultsToFalse() {
+		$numberValue = new NumberValue( '_num' );
+
+		$this->assertFalse(
+			$numberValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testShortFormatWithConversionTooltipRecordsUserLanguageOutput() {
+		$temperatureValue = new TemperatureValue( '_num' );
+		$temperatureValue->setUserValue( '100 K' );
+		$temperatureValue->setOption( 'user.language', 'en' );
+		$temperatureValue->setOption( 'content.language', 'en' );
+
+		$instance = new NumberValueFormatter( $temperatureValue );
+
+		// The short format with a linker renders a localized unit-conversion
+		// tooltip, which depends on the viewer's interface language.
+		$instance->format( NumberValueFormatter::WIKI_SHORT, 'notNull' );
+
+		$this->assertTrue(
+			$temperatureValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testShortFormatWithoutLinkerDoesNotRecordUserLanguageOutput() {
+		$temperatureValue = new TemperatureValue( '_num' );
+		$temperatureValue->setUserValue( '100 K' );
+		$temperatureValue->setOption( 'user.language', 'en' );
+		$temperatureValue->setOption( 'content.language', 'en' );
+
+		$instance = new NumberValueFormatter( $temperatureValue );
+
+		// Without a linker no tooltip is produced; the content-language
+		// caption is returned, so no user-language output is recorded.
+		$instance->format( NumberValueFormatter::WIKI_SHORT, null );
+
+		$this->assertFalse(
+			$temperatureValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testPlainNumberShortFormatDoesNotRecordUserLanguageOutput() {
+		$numberValue = new NumberValue( '_num' );
+		$numberValue->setUserValue( '100' );
+		$numberValue->setOption( 'user.language', 'en' );
+		$numberValue->setOption( 'content.language', 'en' );
+
+		$instance = new NumberValueFormatter( $numberValue );
+
+		// A plain number without unit conversions has no tooltip, so the
+		// rendered output is content-language and cache-stable.
+		$instance->format( NumberValueFormatter::WIKI_SHORT, 'notNull' );
+
+		$this->assertFalse(
+			$numberValue->hasUserLanguageOutput()
+		);
+	}
+
 	public function testTryToFormatOnMissingDataValueThrowsException() {
 		$instance = new NumberValueFormatter();
 

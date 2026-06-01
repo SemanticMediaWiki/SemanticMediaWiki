@@ -8,6 +8,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\Outputs;
@@ -169,7 +170,10 @@ class InTextAnnotationParser {
 
 		if ( $this->isEnabledNamespace ) {
 			$this->parserData->getOutput()->addModules( $this->getModules() );
-			$this->parserData->addExtraParserKey( 'userlang' );
+
+			if ( $this->parserData->variesByUserLanguage() ) {
+				$this->parserData->addExtraParserKey( 'userlang' );
+			}
 		}
 
 		$this->parserData->copyToParserOutput();
@@ -402,6 +406,17 @@ class InTextAnnotationParser {
 			$result = str_replace( ':', '&#58;', $result ) . $dataValue->getErrorText();
 		}
 
+		// The rendered output varies by the viewer's interface language when
+		// the value is invalid (the error message is localized) or when the
+		// value formatter reported user-language output (e.g. a localized
+		// unit-conversion tooltip). Record this so the `userlang` parser-cache
+		// key is added (see InTextAnnotationParser::parse()).
+		if ( isset( $dataValue ) &&
+			( !$dataValue->isValid() || $dataValue->hasUserLanguageOutput() )
+		) {
+			$this->parserData->markVariesByUserLanguage();
+		}
+
 		return $result;
 	}
 
@@ -466,7 +481,23 @@ class InTextAnnotationParser {
 			$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
 		}
 
-		return $dataValue->getShortWikitext( $linker );
+		$result = $dataValue->getShortWikitext( $linker );
+
+		// The `@@@` property-link path returns its output directly rather than
+		// going through addPropertyValue(), so the user-language signal must be
+		// recorded here. A property link renders a tooltip (title and, for
+		// predefined properties, a localized description) in the viewer's
+		// interface language, unless an explicit language was annotated
+		// (`@@@<lang>`), in which case the output is content-stable. An invalid
+		// property renders a localized error. Record this so the `userlang`
+		// parser-cache key is added (see InTextAnnotationParser::parse()).
+		if ( !$dataValue->isValid() ||
+			( $lang === false && Highlighter::hasHighlighterClass( $result ) )
+		) {
+			$this->parserData->markVariesByUserLanguage();
+		}
+
+		return $result;
 	}
 
 }

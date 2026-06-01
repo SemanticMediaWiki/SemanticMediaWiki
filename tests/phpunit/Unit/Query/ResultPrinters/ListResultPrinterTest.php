@@ -57,6 +57,16 @@ class ListResultPrinterTest extends TestCase {
 		$this->assertEquals( Message::get( 'smw_printername_' . $format ), $listResultPrinter->getName() );
 	}
 
+	/**
+	 * @dataProvider allFormatsProvider
+	 * @param string $format
+	 */
+	public function testDependsOnUserLanguage_ReturnsFalse( $format ) {
+		$listResultPrinter = new ListResultPrinter( $format );
+
+		$this->assertFalse( $listResultPrinter->dependsOnUserLanguage() );
+	}
+
 	public function allFormatsProvider() {
 		yield [ 'ul' ];
 		yield [ 'ol' ];

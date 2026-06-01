@@ -163,6 +163,10 @@ class TimeValueFormatter extends DataValueFormatter {
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
 		);
 
+		// The MEDIAWIKI output format renders the date in the viewer's interface
+		// language, so the output is not cache-stable across languages.
+		$this->dataValue->recordUserLanguageOutput();
+
 		$year = $dataItem->getYear();
 
 		if ( $year < 0 || $year > 9999 ) {
@@ -289,6 +293,11 @@ class TimeValueFormatter extends DataValueFormatter {
 			$dataItem->getYear() > Time::PREHISTORY &&
 			preg_match( "/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches )
 		) {
+			// The free format renders month and day names in the viewer's
+			// interface language, so the output is not cache-stable across
+			// languages.
+			$this->dataValue->recordUserLanguageOutput();
+
 			$intlTimeFormatter = new IntlTimeFormatter( $dataItem, $language );
 
 			$caption = $intlTimeFormatter->format( $matches[1] );
@@ -347,6 +356,11 @@ class TimeValueFormatter extends DataValueFormatter {
 		$language = Localizer::getInstance()->getAnnotatedLanguageCodeFrom( $outputFormat );
 		if ( $language === false ) {
 			$language = $this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE );
+
+			// Without an annotated language code the LOCL format renders the
+			// date in the viewer's interface language, so the output is not
+			// cache-stable across languages.
+			$this->dataValue->recordUserLanguageOutput();
 		}
 
 		$language = Localizer::getInstance()->getLanguage( $language );

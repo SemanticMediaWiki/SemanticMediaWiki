@@ -417,6 +417,68 @@ class TimeValueFormatterTest extends TestCase {
 		);
 	}
 
+	public function testBareLOCLFormatRecordsUserLanguageOutput() {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$timeValue->setUserValue( '2015-02-28' );
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
+		$timeValue->setOutputFormat( 'LOCL' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		// A bare LOCL format renders the date in the viewer's interface
+		// language, so the output is not cache-stable across languages.
+		$instance->getLocalizedFormat( $timeValue->getDataItem() );
+
+		$this->assertTrue(
+			$timeValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testAnnotatedLOCLFormatDoesNotRecordUserLanguageOutput() {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$timeValue->setUserValue( '2015-02-28' );
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
+		$timeValue->setOutputFormat( 'LOCL@ja' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		// An annotated LOCL format (`LOCL@ja`) renders a fixed language, so the
+		// output is cache-stable across languages.
+		$instance->getLocalizedFormat( $timeValue->getDataItem() );
+
+		$this->assertFalse(
+			$timeValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testMediaWikiDateRecordsUserLanguageOutput() {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$timeValue->setUserValue( '2015-02-28' );
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		// The MEDIAWIKI format renders the date in the viewer's interface
+		// language, so the output is not cache-stable across languages.
+		$instance->getMediaWikiDate();
+
+		$this->assertTrue(
+			$timeValue->hasUserLanguageOutput()
+		);
+	}
+
 	public function timeInputProvider() {
 		# 0
 		$provider[] = [

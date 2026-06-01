@@ -71,6 +71,11 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		$result = array_shift( $results );
 		$class = 'smw-reference-otiose';
 
+		// The tooltip title attribute below is rendered in the viewer's
+		// interface language, so the rendered output is not cache-stable across
+		// languages.
+		$this->dataValue->recordUserLanguageOutput();
+
 		// "smw-highlighter smwttinline" signals to invoke the tooltip
 		if ( count( $results ) > 0 ) {
 			$class = 'smw-reference smw-reference-indicator smw-highlighter smwttinline';

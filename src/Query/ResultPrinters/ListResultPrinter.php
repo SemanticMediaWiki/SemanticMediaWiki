@@ -48,6 +48,15 @@ class ListResultPrinter extends ResultPrinter {
 	}
 
 	/**
+	 * @see ResultPrinter::dependsOnUserLanguage
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return false;
+	}
+
+	/**
 	 * @see ResultPrinter::getResultText
 	 *
 	 * @param QueryResult $queryResult

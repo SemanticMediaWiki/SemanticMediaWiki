@@ -98,6 +98,56 @@ class ReferenceValueFormatterTest extends TestCase {
 		);
 	}
 
+	public function testTooltipShortFormatRecordsUserLanguageOutput() {
+		$referenceValue = new ReferenceValue();
+
+		$referenceValue->setFieldProperties( [
+			$this->dataItemFactory->newDIProperty( 'Foo' ),
+			$this->dataItemFactory->newDIProperty( 'Date' ),
+			$this->dataItemFactory->newDIProperty( 'URL' )
+		] );
+
+		$referenceValue->setOption( ReferenceValue::OPT_CONTENT_LANGUAGE, 'en' );
+		$referenceValue->setOption( ReferenceValue::OPT_USER_LANGUAGE, 'en' );
+
+		$referenceValue->setUserValue( 'abc' );
+
+		$instance = new ReferenceValueFormatter( $referenceValue );
+
+		// The short format with a linker renders a tooltip whose title attribute
+		// is in the viewer's interface language.
+		$instance->format( ReferenceValueFormatter::WIKI_SHORT, false );
+
+		$this->assertTrue(
+			$referenceValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testValueOutputDoesNotRecordUserLanguageOutput() {
+		$referenceValue = new ReferenceValue();
+
+		$referenceValue->setFieldProperties( [
+			$this->dataItemFactory->newDIProperty( 'Foo' ),
+			$this->dataItemFactory->newDIProperty( 'Date' ),
+			$this->dataItemFactory->newDIProperty( 'URL' )
+		] );
+
+		$referenceValue->setOption( ReferenceValue::OPT_CONTENT_LANGUAGE, 'en' );
+		$referenceValue->setOption( ReferenceValue::OPT_USER_LANGUAGE, 'en' );
+
+		$referenceValue->setUserValue( 'abc;12;3' );
+
+		$instance = new ReferenceValueFormatter( $referenceValue );
+
+		// The plain value output carries no tooltip, so the rendered output is
+		// cache-stable across languages.
+		$instance->format( ReferenceValueFormatter::VALUE, null );
+
+		$this->assertFalse(
+			$referenceValue->hasUserLanguageOutput()
+		);
+	}
+
 	public function testTryToFormatOnMissingDataValueThrowsException() {
 		$instance = new ReferenceValueFormatter();
 
