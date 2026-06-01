@@ -28,9 +28,13 @@ class SkinTemplateNavigationUniversal implements SkinTemplateNavigation__Univers
 	 */
 	// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
-		if ( isset( $links['user-interface-preferences'] ) ) {
+		// Add the job queue watchlist to the notifications menu. It renders
+		// inline next to the user links in modern skins (e.g. Vector 2022) and
+		// merges into the personal tools in legacy skins, so the indicator stays
+		// visible at a glance rather than being hidden inside a dropdown.
+		if ( isset( $links['notifications'] ) ) {
 			$this->personalUrls->onPersonalUrls(
-				$links['user-interface-preferences'],
+				$links['notifications'],
 				$sktemplate->getTitle(),
 				$sktemplate
 			);

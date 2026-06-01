@@ -262,7 +262,18 @@
 		};
 
 		options.target = target;
-		tippy.delegate( context, options );
+
+		// An empty target means the tooltip is bound directly to the context
+		// element (the show() path, e.g. the personal bar job queue watchlist or
+		// Special:Ask info icons). tippy.delegate() expects a non-empty child
+		// selector and runs context.closest( '' ) on hover, which throws and
+		// silently prevents the tooltip from ever appearing. Bind directly in
+		// that case and reserve tippy.delegate() for genuine child delegation.
+		if ( target === '' ) {
+			tippy( context, options );
+		} else {
+			tippy.delegate( context, options );
+		}
 	};
 
 	/**
