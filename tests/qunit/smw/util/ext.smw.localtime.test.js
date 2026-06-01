@@ -20,7 +20,7 @@
 		mw.smw.localtime.convert( el, { minutes: 120 } );
 
 		// 14:00 UTC + 120 min = 16:00
-		assert.true( /16:00/.test( el.textContent ), 'shows shifted time' );
+		assert.ok( /16:00/.test( el.textContent ), 'shows shifted time' );
 	} );
 
 	QUnit.test( 'convert applies a named zone', function ( assert ) {
@@ -31,7 +31,7 @@
 		mw.smw.localtime.convert( el, { zone: 'Europe/Berlin' } );
 
 		// 14:00 UTC in CEST (UTC+2 on 2024-06-01) = 16:00
-		assert.true( /16:00/.test( el.textContent ), 'shows zone-adjusted time' );
+		assert.ok( /16:00/.test( el.textContent ), 'shows zone-adjusted time' );
 	} );
 
 	QUnit.test( 'convert leaves an invalid anchor untouched', function ( assert ) {
