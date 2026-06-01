@@ -121,6 +121,22 @@ class Localizer {
 	}
 
 	/**
+	 * Wiki-local time (the System offset, $wgLocalTZoffset), independent of any
+	 * viewing user's `timecorrection` preference. Used as the user-agnostic
+	 * baseline for client-deferred local time (#6820), mirroring MediaWiki
+	 * core's wiki-local {{LOCALTIME}} semantics.
+	 *
+	 * @since 7.0.0
+	 */
+	public function getWikiLocalTime( ExtendedDateTime $dateTime ): ExtendedDateTime {
+		LocalTime::setLocalTimeOffset(
+			$GLOBALS['wgLocalTZoffset'] ?? 0
+		);
+
+		return LocalTime::getLocalizedTime( $dateTime, 'System' );
+	}
+
+	/**
 	 * @note
 	 *
 	 * 1. If the page content language is available use it as preferred language

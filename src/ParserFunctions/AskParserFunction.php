@@ -218,11 +218,6 @@ class AskParserFunction {
 				continue;
 			}
 
-			// @see ParserOptionsRegister hook, use registered `localTime` key
-			if ( strpos( $value, '#LOCL#TO' ) !== false ) {
-				$this->parserData->addExtraParserKey( 'localTime' );
-			}
-
 			// Skip the first (being the condition) and other marked
 			// printrequests
 			if ( $key == 0 || ( $value !== '' && $value[0] === '?' ) ) {

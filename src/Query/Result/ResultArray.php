@@ -251,6 +251,14 @@ class ResultArray {
 			$dataValue->setOutputFormat( $this->printRequest->getOutputFormat() );
 		}
 
+		// #6820: embedded (parser-cached) queries must not bake the viewing
+		// user's local time into the shared parser cache. Mark the value so
+		// the formatter defers #LOCL#TO conversion to the client. Special:Ask
+		// and the API (contextPage === null) keep server-side rendering.
+		if ( $this->contextPage !== null ) {
+			$dataValue->setOption( DataValue::OPT_DEFER_LOCAL_TIME, true );
+		}
+
 		if ( $this->itemJournal !== null && $dataItem instanceof DataItem ) {
 			$this->itemJournal->recordItem( $dataItem );
 			$this->itemJournal->recordProperty( $diProperty );

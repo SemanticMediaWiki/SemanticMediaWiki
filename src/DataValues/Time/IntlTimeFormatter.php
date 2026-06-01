@@ -19,6 +19,7 @@ class IntlTimeFormatter {
 	const LOCL_DEFAULT = 0;
 	const LOCL_TIMEZONE = 0x2;
 	const LOCL_TIMEOFFSET = 0x4;
+	const LOCL_WIKI_TIMEOFFSET = 0x8;
 
 	private bool $hasLocalTimeCorrection = false;
 
@@ -46,7 +47,7 @@ class IntlTimeFormatter {
 	 *
 	 * @param int $formatFlag
 	 */
-	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ): string|array {
+	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ): string {
 		$dateTime = $this->dataItem->asDateTime();
 		$timezone = '';
 
@@ -54,7 +55,10 @@ class IntlTimeFormatter {
 
 		$localizer = Localizer::getInstance();
 
-		if ( ( self::LOCL_TIMEOFFSET & $formatFlag ) != 0 ) {
+		if ( ( self::LOCL_WIKI_TIMEOFFSET & $formatFlag ) != 0 ) {
+			$dateTime = $localizer->getWikiLocalTime( $dateTime );
+			$this->hasLocalTimeCorrection = $dateTime->hasLocalTimeCorrection ?? false;
+		} elseif ( ( self::LOCL_TIMEOFFSET & $formatFlag ) != 0 ) {
 			$dateTime = $localizer->getLocalTime( $dateTime );
 			$this->hasLocalTimeCorrection = $dateTime->hasLocalTimeCorrection ?? false;
 		}

@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Time;
 use SMW\DataValues\Time\IntlTimeFormatter;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\LocalTime;
 
 /**
  * @covers \SMW\DataValues\Time\IntlTimeFormatter
@@ -62,6 +63,29 @@ class IntlTimeFormatterTest extends TestCase {
 			$expected,
 			$instance->getLocalizedFormat( $flag )
 		);
+	}
+
+	public function testGetLocalizedFormatWithWikiTimeOffset() {
+		$reset = $GLOBALS['wgLocalTZoffset'] ?? 0;
+		$GLOBALS['wgLocalTZoffset'] = 60;
+
+		try {
+			$instance = new IntlTimeFormatter(
+				Time::doUnserialize( '1/2024/06/01/14/00/00/00' ),
+				Localizer::getInstance()->getLanguage( 'en' )
+			);
+
+			// 14:00 + 60 min wiki offset = 15:00, independent of any user pref.
+			$this->assertStringContainsString(
+				'15:00',
+				$instance->getLocalizedFormat( IntlTimeFormatter::LOCL_WIKI_TIMEOFFSET )
+			);
+		} finally {
+			$GLOBALS['wgLocalTZoffset'] = $reset;
+			// getWikiLocalTime mutated the LocalTime static offset; reset it to
+			// the class default so it does not leak into later test classes.
+			LocalTime::setLocalTimeOffset( 0 );
+		}
 	}
 
 	public function testContainsValidDateFormatRule() {

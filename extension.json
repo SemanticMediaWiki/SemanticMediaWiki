@@ -35,7 +35,6 @@
 		"CanonicalNamespaces": "SemanticMediaWiki.CanonicalNamespaces",
 		"ParserAfterTidy": "SemanticMediaWiki.ParserAfterTidy",
 		"ParserClearState": "SemanticMediaWiki.ParserClearState",
-		"ParserOptionsRegister": "SemanticMediaWiki.ParserOptionsRegister",
 		"ParserFirstCallInit": "SemanticMediaWiki.ParserFirstCallInit",
 		"InternalParseBeforeLinks": "SemanticMediaWiki.InternalParseBeforeLinks",
 		"RejectParserCacheValue": "SemanticMediaWiki.RejectParserCacheValue",
@@ -105,9 +104,6 @@
 		},
 		"SemanticMediaWiki.ParserClearState": {
 			"class": "SMW\\MediaWiki\\Hooks\\ParserClearState"
-		},
-		"SemanticMediaWiki.ParserOptionsRegister": {
-			"class": "SMW\\MediaWiki\\Hooks\\ParserOptionsRegister"
 		},
 		"SemanticMediaWiki.ParserFirstCallInit": {
 			"class": "SMW\\MediaWiki\\Hooks\\ParserFirstCallInit",
@@ -596,7 +592,8 @@
 				"tests/qunit/smw/data/ext.smw.dataValue.quantity.test.js",
 				"tests/qunit/smw/data/ext.smw.data.test.js",
 				"tests/qunit/smw/api/ext.smw.api.test.js",
-				"tests/qunit/smw/query/ext.smw.query.test.js"
+				"tests/qunit/smw/query/ext.smw.query.test.js",
+				"tests/qunit/smw/util/ext.smw.localtime.test.js"
 			],
 			"dependencies": [
 				"mediawiki.language.months",
@@ -604,7 +601,8 @@
 				"ext.smw.tooltip",
 				"ext.smw.query",
 				"ext.smw.data",
-				"ext.smw.api"
+				"ext.smw.api",
+				"ext.smw.localtime"
 			],
 			"position": "top",
 			"localBasePath": "",
@@ -811,6 +809,14 @@
 			"dependencies": [
 				"ext.smw",
 				"mediawiki.util"
+			]
+		},
+		"ext.smw.localtime": {
+			"scripts": [
+				"smw/util/ext.smw.localtime.js"
+			],
+			"dependencies": [
+				"mediawiki.user"
 			]
 		},
 		"ext.smw.api": {

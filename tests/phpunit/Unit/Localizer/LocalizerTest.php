@@ -13,6 +13,7 @@ use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\ExtendedDateTime;
+use SMW\MediaWiki\LocalTime;
 
 /**
  * @covers \SMW\Localizer\Localizer
@@ -456,6 +457,31 @@ class LocalizerTest extends TestCase {
 			ExtendedDateTime::class,
 			$instance->getLocalTime( $dataTime, $user )
 		);
+	}
+
+	public function testGetWikiLocalTime() {
+		$reset = $GLOBALS['wgLocalTZoffset'] ?? 0;
+		$GLOBALS['wgLocalTZoffset'] = 60;
+
+		try {
+			$instance = $this->newLocalizer();
+			$result = $instance->getWikiLocalTime( new ExtendedDateTime() );
+
+			$this->assertInstanceOf(
+				ExtendedDateTime::class,
+				$result
+			);
+
+			// The wiki offset (60 min) was applied, independent of any user.
+			$this->assertTrue(
+				$result->hasLocalTimeCorrection ?? false
+			);
+		} finally {
+			$GLOBALS['wgLocalTZoffset'] = $reset;
+			// getWikiLocalTime mutated the LocalTime static offset; reset it to
+			// the class default so it does not leak into later test classes.
+			LocalTime::setLocalTimeOffset( 0 );
+		}
 	}
 
 }
