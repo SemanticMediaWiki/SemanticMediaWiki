@@ -45,17 +45,45 @@ class TimeValueFormatter extends DataValueFormatter {
 		if (
 			$this->dataValue->isValid() &&
 			( $type === self::WIKI_SHORT || $type === self::HTML_SHORT ) ) {
-			return ( $this->dataValue->getCaption() !== false ) ? $this->dataValue->getCaption() : $this->getPreferredCaption();
+			$caption = ( $this->dataValue->getCaption() !== false ) ? $this->dataValue->getCaption() : $this->getPreferredCaption();
+			return $type === self::HTML_SHORT ? $this->wrapInTimeElement( $caption ) : $caption;
 		}
 
 		if (
 			$this->dataValue->isValid() &&
 			( $type === self::WIKI_LONG || $type === self::HTML_LONG ) ) {
-			return $this->getPreferredCaption();
+			$caption = $this->getPreferredCaption();
+			return $type === self::HTML_LONG ? $this->wrapInTimeElement( $caption ) : $caption;
 		}
 
 		// #1074
 		return $this->dataValue->getCaption() !== false ? $this->dataValue->getCaption() : '';
+	}
+
+	/**
+	 * Wrap a rendered date caption in a semantic <time> element carrying a
+	 * machine-readable ISO 8601 datetime, so HTML output exposes the date to
+	 * assistive technology and other consumers. Wiki output is left plain.
+	 *
+	 * BCE dates are returned unwrapped: the HTML <time> datetime attribute has
+	 * no representation for year 0 or negative years, which the partial ISO
+	 * string signals with a leading "-".
+	 */
+	private function wrapInTimeElement( string $caption ): string {
+		// The caption may already carry a <time> element (for example the
+		// deferred local-time conversion in getLocalizedFormat); don't nest a
+		// second one.
+		if ( str_contains( $caption, '<time' ) ) {
+			return $caption;
+		}
+
+		$datetime = $this->getPartialISO8601Date();
+
+		if ( $datetime === '' || $datetime[0] === '-' ) {
+			return $caption;
+		}
+
+		return Html::rawElement( 'time', [ 'datetime' => $datetime ], $caption );
 	}
 
 	/**

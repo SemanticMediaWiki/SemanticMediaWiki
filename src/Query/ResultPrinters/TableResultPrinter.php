@@ -350,15 +350,25 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
-		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
+		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
 
+			// Dates use the HTML accessor so the formatter's semantic <time>
+			// element is emitted even when the table is produced in wiki output
+			// mode (inline #ask). The <time> markup is valid in the parsed
+			// wikitext, and HTML output (Special:Ask) is unchanged.
+			if ( $dv instanceof TimeValue ) {
+				$value = $useLongText
+					? $dv->getLongHTMLText( $this->getLinker( $isSubject ) )
+					: $dv->getShortHTMLText( $this->getLinker( $isSubject ) );
+
 			// Restore output in Special:Ask on:
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
-			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
+			} elseif ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
 				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof Blob ) ) {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed

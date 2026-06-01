@@ -10,6 +10,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\DataValues\TimeValue;
 use SMW\DisplayTitleFinder;
 use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
@@ -394,12 +395,19 @@ class Factbox {
 				$dataValue->setOutputFormat( $outputFormat ?: 'LOCL' );
 				$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
 
+				// Dates render through the HTML accessor so they pick up the
+				// semantic <time> element; other value types keep their wiki
+				// rendering. The <time> markup is valid in the parsed wikitext.
+				$valueText = $dataValue instanceof TimeValue
+					? $dataValue->getLongHTMLText( true )
+					: $dataValue->getLongWikiText( true );
+
 				$list[] = Html::rawElement(
 					'span',
 					[
 						'class' => 'smw-factbox-value'
 					],
-					$dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI )
+					$valueText . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI )
 				);
 			}
 

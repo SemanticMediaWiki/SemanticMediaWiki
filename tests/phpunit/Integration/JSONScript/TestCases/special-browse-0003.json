@@ -62,7 +62,7 @@
 				"to-contain": [
 					"<span class=\"smw-factbox-value\">verdadero&#160;&#160;",
 					"SearchByProperty/:Has-20boolean/true",
-					"<span class=\"smw-factbox-value\">08:56:00 12 ene 1991&#160;&#160;"
+					"<span class=\"smw-factbox-value\"><time datetime=\"1991-01-12T08:56:00\">08:56:00 12 ene 1991</time>&#160;&#160;"
 				]
 			}
 		},

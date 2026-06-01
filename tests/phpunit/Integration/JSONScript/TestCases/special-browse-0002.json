@@ -32,9 +32,9 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-factbox-value\">08:56:00, 12 January 1991&#160;&#160;",
+					"<span class=\"smw-factbox-value\"><time datetime=\"1991-01-12T08:56:00\">08:56:00, 12 January 1991</time>&#160;&#160;",
 					"title=\"Special:SearchByProperty/:Has-20date/12-20January-201991-2008:56:00\">+</a></span>",
-					"<span class=\"smw-factbox-value\">January 12, 1345 <sup>JL</sup>&#160;&#160;",
+					"<span class=\"smw-factbox-value\"><time datetime=\"1345-01-20\">January 12, 1345 <sup>JL</sup></time>&#160;&#160;",
 					"title=\"Special:SearchByProperty/:Has-20date/12-20January-201345-20JL\">+</a></span>"
 				]
 			}

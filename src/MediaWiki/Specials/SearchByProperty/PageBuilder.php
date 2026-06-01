@@ -214,7 +214,10 @@ class PageBuilder {
 		$resultMessage = $this->msg(
 			'smw_sbv_displayresultfuzzy',
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
-			htmlspecialchars( $this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )
+			// This value is htmlspecialchars-escaped, so strip_tags first to keep
+			// the plain caption rather than rendering the date <time> markup as
+			// a literal &lt;time&gt;.
+			htmlspecialchars( strip_tags( $this->pageRequestOptions->value->getShortHTMLText( $this->linker ) ) )
 		)->text();
 
 		$resultList .= $this->makeResultList( $smallerResults, $smallerCount, false );
