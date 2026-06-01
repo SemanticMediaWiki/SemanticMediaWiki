@@ -182,6 +182,60 @@ class DataRebuilderTest extends TestCase {
 	/**
 	 * @depends testCanConstruct
 	 */
+	public function testRebuildAllForwardsUseJobOptionToDispatcher() {
+		$capturedOptions = [];
+
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rebuilder->expects( $this->once() )
+			->method( 'rebuild' )
+			->willReturnCallback( [ $this, 'refreshDataOnMockCallback' ] );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getMaxId' )
+			->willReturn( 1000 );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$rebuilder->expects( $this->once() )
+			->method( 'setOptions' )
+			->willReturnCallback( static function ( $options ) use ( &$capturedOptions ) {
+				$capturedOptions = $options;
+			} );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
+
+		$instance->setOptions( new Options( [
+			'e' => 1,
+			'use-job' => true
+		] ) );
+
+		$this->assertTrue( $instance->rebuild() );
+		$this->assertTrue( $capturedOptions['use-job'] );
+	}
+
+	/**
+	 * @depends testCanConstruct
+	 */
 	public function testRebuildAllWithFullDelete() {
 		$rebuilder = $this->getMockBuilder( Rebuilder::class )
 			->disableOriginalConstructor()
