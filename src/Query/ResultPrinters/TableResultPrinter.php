@@ -59,6 +59,15 @@ class TableResultPrinter extends ResultPrinter {
 	}
 
 	/**
+	 * @see ResultPrinter::dependsOnUserLanguage
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return false;
+	}
+
+	/**
 	 * @see ResultPrinter::getParamDefinitions
 	 *
 	 * @since 1.8

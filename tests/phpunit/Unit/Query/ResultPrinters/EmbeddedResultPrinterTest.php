@@ -44,4 +44,10 @@ class EmbeddedResultPrinterTest extends TestCase {
 		);
 	}
 
+	public function testDependsOnUserLanguage_ReturnsFalse() {
+		$instance = new EmbeddedResultPrinter( 'embedded' );
+
+		$this->assertFalse( $instance->dependsOnUserLanguage() );
+	}
+
 }

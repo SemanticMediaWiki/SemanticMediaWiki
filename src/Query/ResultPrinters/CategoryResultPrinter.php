@@ -62,6 +62,15 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	/**
+	 * @see ResultPrinter::dependsOnUserLanguage
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return false;
+	}
+
+	/**
 	 * @see ResultPrinter::supportsRecursiveAnnotation
 	 *
 	 * @since 3.0

@@ -42,6 +42,12 @@ class CategoryResultPrinterTest extends TestCase {
 		);
 	}
 
+	public function testDependsOnUserLanguage_ReturnsFalse() {
+		$instance = new CategoryResultPrinter( 'category' );
+
+		$this->assertFalse( $instance->dependsOnUserLanguage() );
+	}
+
 	public function testContinueAbbrevIsDeferredMarkerForInlineQuery() {
 		$instance = $this->newAccessiblePrinter();
 		$instance->setContext( QueryContext::INLINE_QUERY );
