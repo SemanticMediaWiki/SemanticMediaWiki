@@ -54,7 +54,7 @@ class ProfileForm {
 	 * @since 3.0
 	 */
 	public static function addProfile( ?string $type, array &$profiles, array $options ): void {
-		if ( $type !== SMW_SPECIAL_SEARCHTYPE ) {
+		if ( $type !== SMW_SPECIAL_SEARCHTYPE && $type !== 'SMWSearch' ) {
 			return;
 		}
 
