@@ -119,6 +119,53 @@ class TimeValueFormatterTest extends TestCase {
 		);
 	}
 
+	public function testHtmlOutputIsWrappedInTimeElementWhileWikiStaysPlain() {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
+		$timeValue->setUserValue( '2000-02-23 12:02:00' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		// HTML output carries a machine-readable datetime for assistive technology
+		$this->assertStringContainsString(
+			'<time datetime="2000-02-23T12:02:00">',
+			$instance->format( TimeValueFormatter::HTML_SHORT )
+		);
+		$this->assertStringContainsString(
+			'<time datetime="2000-02-23T12:02:00">',
+			$instance->format( TimeValueFormatter::HTML_LONG )
+		);
+
+		// Wiki output stays plain so exports and other machine consumers are unaffected
+		$this->assertStringNotContainsString(
+			'<time',
+			$instance->format( TimeValueFormatter::WIKI_SHORT )
+		);
+		$this->assertStringNotContainsString(
+			'<time',
+			$instance->format( TimeValueFormatter::WIKI_LONG )
+		);
+	}
+
+	public function testTimeElementIsOmittedForBceDates() {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
+		$timeValue->setUserValue( '300 BC' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		// The HTML <time> datetime attribute cannot represent BCE years, so the
+		// caption is left unwrapped rather than emitting an invalid datetime.
+		$this->assertStringNotContainsString(
+			'<time',
+			$instance->format( TimeValueFormatter::HTML_SHORT )
+		);
+		$this->assertStringNotContainsString(
+			'<time',
+			$instance->format( TimeValueFormatter::HTML_LONG )
+		);
+	}
+
 	/**
 	 * @testdox getISO8601Date($mindefault): $userValue -> $expected
 	 * @testWith [true, "2000", "2000-01-01"]
@@ -286,8 +333,8 @@ class TimeValueFormatterTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			$instance->format( TimeValueFormatter::HTML_LONG ),
-			$instance->getLocalizedFormat( $timeValue->getDataItem() )
+			'<time datetime="2015-02-28">' . $instance->getLocalizedFormat( $timeValue->getDataItem() ) . '</time>',
+			$instance->format( TimeValueFormatter::HTML_LONG )
 		);
 	}
 
@@ -324,7 +371,7 @@ class TimeValueFormatterTest extends TestCase {
 		$instance = new TimeValueFormatter( $timeValue );
 
 		$this->assertEquals(
-			'12:12:00 A, 28 February 2015',
+			'<time datetime="2015-02-28T11:12:00">12:12:00 A, 28 February 2015</time>',
 			$instance->format( TimeValueFormatter::HTML_LONG )
 		);
 
@@ -348,7 +395,7 @@ class TimeValueFormatterTest extends TestCase {
 		$instance = new TimeValueFormatter( $timeValue );
 
 		$this->assertEquals(
-			'2015年2月28日 (土) 12:12:00 A',
+			'<time datetime="2015-02-28T11:12:00">2015年2月28日 (土) 12:12:00 A</time>',
 			$instance->format( TimeValueFormatter::HTML_LONG )
 		);
 
@@ -395,24 +442,29 @@ class TimeValueFormatterTest extends TestCase {
 		}
 	}
 
-	public function testNonDeferredLocalTimeHasNoTimeElement() {
+	public function testNonDeferredLocalTimeHasNoLocaltimeElement() {
 		$instance = new TimeValueFormatter(
 			$this->newTimeValue( '2024-06-01 14:00:00', 'LOCL#TO', false )
 		);
 
+		// Without deferral there is no client-side local-time conversion element.
+		// The value still carries the general <time> date markup, so assert on the
+		// smw-localtime marker rather than any <time>.
 		$this->assertStringNotContainsString(
-			'<time ',
+			'smw-localtime',
 			$instance->format( TimeValueFormatter::HTML_LONG )
 		);
 	}
 
-	public function testDeferredDateOnlyHasNoTimeElement() {
+	public function testDeferredDateOnlyHasNoLocaltimeElement() {
 		$instance = new TimeValueFormatter(
 			$this->newTimeValue( '2024-06-01', 'LOCL#TO', true )
 		);
 
+		// A date without a time component is not deferred for local-time conversion;
+		// it still carries the general <time> date markup.
 		$this->assertStringNotContainsString(
-			'<time ',
+			'smw-localtime',
 			$instance->format( TimeValueFormatter::HTML_LONG )
 		);
 	}
@@ -455,7 +507,7 @@ class TimeValueFormatterTest extends TestCase {
 			'ISO',
 			null,
 			'',
-			'2000'
+			'<time datetime="2000">2000</time>'
 		];
 
 		# 4
@@ -475,7 +527,7 @@ class TimeValueFormatterTest extends TestCase {
 			'ISO',
 			null,
 			'',
-			'2000-01-01'
+			'<time datetime="2000">2000-01-01</time>'
 		];
 
 		# 6
@@ -495,7 +547,7 @@ class TimeValueFormatterTest extends TestCase {
 			'MEDIAWIKI',
 			null,
 			'',
-			'2000'
+			'<time datetime="2000">2000</time>'
 		];
 
 		# 8
@@ -535,7 +587,7 @@ class TimeValueFormatterTest extends TestCase {
 			'ISO',
 			null,
 			'',
-			'2000-02'
+			'<time datetime="2000-02">2000-02</time>'
 		];
 
 		# 12
@@ -555,7 +607,7 @@ class TimeValueFormatterTest extends TestCase {
 			'ISO',
 			null,
 			'',
-			'2000-02-01'
+			'<time datetime="2000-02">2000-02-01</time>'
 		];
 
 		# 14
@@ -565,7 +617,7 @@ class TimeValueFormatterTest extends TestCase {
 			'LOCL',
 			null,
 			'en',
-			'February 2000'
+			'<time datetime="2000-02">February 2000</time>'
 		];
 
 		return $provider;

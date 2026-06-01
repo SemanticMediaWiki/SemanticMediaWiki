@@ -141,7 +141,7 @@ class ValueListBuilderTest extends TestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			[
-				'<div class="smw-table-cell smwprops">1970&#160;&#160;'
+				'<div class="smw-table-cell smwprops"><time datetime="1970">1970</time>&#160;&#160;'
 			],
 			$instance->createHtml( $property, $dataItem, [ 'limit' => 10 ] )
 		);

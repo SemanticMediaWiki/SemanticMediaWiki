@@ -62,9 +62,9 @@
 			"subject": "Example/P0420/1a",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\">21 March 1685 <sup>JL</sup></td>",
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\">31 March 1685</td>",
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\">21 March 1685 <sup>JL</sup></td>"
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\"><time datetime=\"1685-03-31\">21 March 1685 <sup>JL</sup></time></td>",
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\"><time datetime=\"1685-03-31\">31 March 1685</time></td>",
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\"><time datetime=\"1685-03-31\">21 March 1685 <sup>JL</sup></time></td>"
 				]
 			}
 		},
@@ -74,9 +74,9 @@
 			"subject": "Example/P0420/2a",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\">21 March 1685 <sup>JL</sup></td>",
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\">31 March 1685</td>",
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\">21 March 1685 <sup>JL</sup></td>"
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\"><time datetime=\"1685-03-31\">21 March 1685 <sup>JL</sup></time></td>",
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\"><time datetime=\"1685-03-31\">31 March 1685</time></td>",
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365835000000\"><time datetime=\"1685-03-31\">21 March 1685 <sup>JL</sup></time></td>"
 				]
 			}
 		},
@@ -86,9 +86,9 @@
 			"subject": "Example/P0420/3a",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365735000000\">21 March 1685</td>",
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365735000000\">21 March 1685</td>",
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365735000000\">11 March 1685 <sup>JL</sup></td>"
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365735000000\"><time datetime=\"1685-03-21\">21 March 1685</time></td>",
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365735000000\"><time datetime=\"1685-03-21\">21 March 1685</time></td>",
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"23365735000000\"><time datetime=\"1685-03-21\">11 March 1685 <sup>JL</sup></time></td>"
 				]
 			}
 		}
