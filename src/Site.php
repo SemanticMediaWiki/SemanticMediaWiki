@@ -65,15 +65,6 @@ class Site {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @return string
-	 */
-	public static function searchType() {
-		return $GLOBALS['wgSearchType'];
-	}
-
-	/**
 	 * @since 3.0
 	 *
 	 * @return string

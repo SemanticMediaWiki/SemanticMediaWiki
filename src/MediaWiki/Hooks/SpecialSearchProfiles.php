@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Hook\SpecialSearchProfilesHook;
 use SearchEngineConfig;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
-use SMW\Site;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchProfiles
@@ -32,7 +31,7 @@ class SpecialSearchProfiles implements SpecialSearchProfilesHook {
 		];
 
 		ProfileForm::addProfile(
-			Site::searchType(),
+			$this->searchEngineConfig->getSearchType(),
 			$profiles,
 			$options
 		);
