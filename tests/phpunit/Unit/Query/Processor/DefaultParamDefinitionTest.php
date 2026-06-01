@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Query\Processor;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Processor\DefaultParamDefinition;
+use SMW\Query\QueryContext;
 
 /**
  * @covers \SMW\Query\Processor\DefaultParamDefinition
@@ -43,6 +44,21 @@ class DefaultParamDefinitionTest extends TestCase {
 
 			DefaultParamDefinition::getParamDefinitions()
 		);
+	}
+
+	public function testSearchlabelDefaultIsMarkerForInlineQuery() {
+		$params = DefaultParamDefinition::getParamDefinitions( QueryContext::INLINE_QUERY );
+		$this->assertStringContainsString( 'smw-localized-message', $params['searchlabel']->getDefault() );
+	}
+
+	public function testSearchlabelDefaultIsTextForSpecialPage() {
+		$params = DefaultParamDefinition::getParamDefinitions( QueryContext::SPECIAL_PAGE );
+		$this->assertStringNotContainsString( 'smw-localized-message', $params['searchlabel']->getDefault() );
+	}
+
+	public function testSearchlabelDefaultIsTextForDefaultContext() {
+		$params = DefaultParamDefinition::getParamDefinitions();
+		$this->assertStringNotContainsString( 'smw-localized-message', $params['searchlabel']->getDefault() );
 	}
 
 }

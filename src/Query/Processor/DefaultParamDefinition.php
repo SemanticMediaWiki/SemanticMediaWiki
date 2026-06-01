@@ -3,6 +3,7 @@
 namespace SMW\Query\Processor;
 
 use ParamProcessor\ParamDefinition;
+use SMW\Localizer\DeferredLocalizedMessage;
 use SMW\Localizer\Message;
 use SMW\Query\QueryContext;
 use SMW\Query\ResultPrinter;
@@ -129,7 +130,9 @@ class DefaultParamDefinition {
 		];
 
 		$params['searchlabel'] = [
-			'default' => Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
+			'default' => $context === QueryContext::INLINE_QUERY
+				? DeferredLocalizedMessage::newMarker( 'further-results' )
+				: Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
 		];
 
 		$params['default'] = [
