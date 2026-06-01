@@ -96,6 +96,12 @@
 			"@lint",
 			"@phpcs"
 		],
+		"analyze:ci": [
+			"@lint",
+			"@phpcs",
+			"@minus-x",
+			"@phan"
+		],
 		"fix": [
 			"@phpcs-fix"
 		],
