@@ -373,6 +373,16 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			return;
 		}
 
+		// A test case may set `wgSearchType` (e.g. to `SMWSearch`) via the
+		// settings block, which TestConfig applies as a $GLOBALS write. MediaWiki's
+		// SearchEngineConfig copies `wgSearchType` into a ServiceOptions snapshot at
+		// construction, so a value snapshotted earlier in the run (the test bootstrap
+		// defaults it to SearchEngineDummy) would otherwise mask the override. Reset
+		// the config and the factory that consumes it so Special:Search resolves the
+		// configured engine instead of the stale default.
+		$this->testEnvironment->resetMediaWikiService( 'SearchEngineConfig' );
+		$this->testEnvironment->resetMediaWikiService( 'SearchEngineFactory' );
+
 		$specialPageTestCaseProcessor = new SpecialPageTestCaseProcessor(
 			$this->getStore(),
 			$this->validatorFactory->newStringValidator()
