@@ -228,6 +228,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 * PHPUnit test suite reorganized into `Unit/` and `Integration/` directories
 * Numerous static analysis (phan) errors fixed
 * Migrated `Special:Browse`'s search form from the deprecated `mediawiki.ui` ResourceLoader modules to Codex CSS-only components, ahead of `mediawiki.ui`'s removal in MediaWiki 1.46 ([#6476](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6476))
+* Migrated client-side date rendering off MediaWiki's internal `wgMonthNames` JavaScript config variable to the `mediawiki.language.months` module ([#3851](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3851))
 * CI updated: added MediaWiki 1.45 to the test matrix, added cancellation of in-progress runs on new pushes, removed Travis CI leftovers
 
 ## Upgrading

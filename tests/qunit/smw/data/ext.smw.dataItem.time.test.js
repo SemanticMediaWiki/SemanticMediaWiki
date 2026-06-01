@@ -116,12 +116,7 @@
 		var result;
 
 		// Use as helper to fetch language dep. month name
-		var monthNames = [];
-		$.map ( mw.config.get( 'wgMonthNames' ), function( index ) {
-			if( index !== '' ){
-				monthNames.push( index );
-			}
-		} );
+		var monthNames = mw.language.months.names;
 
 		result = new smw.dataItem.time( '1362200400' );
 		assert.equal( result.getMediaWikiDate(), '2 ' + monthNames[2] + ' 2013 05:00:00', pass + 'returned a MW date and time formatted string' );

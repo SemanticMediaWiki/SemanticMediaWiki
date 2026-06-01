@@ -182,12 +182,7 @@
 		assert.expect( 4 );
 
 		// Use as helper to fetch language dep. month name
-		var monthNames = [];
-		$.map ( mw.config.get( 'wgMonthNames' ), function( value ) {
-			if( value !== '' ){
-				monthNames.push( value );
-			}
-		} );
+		var monthNames = mw.language.months.names;
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
