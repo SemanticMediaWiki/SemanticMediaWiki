@@ -387,6 +387,7 @@ Note that MS SQL Server and Oracle are not supported as database backends.
         <td>7.10.2</td>
         <td>1.3.x+</td>
         <td></td>
+        </tr>
     </tr>
     </tr>
         <tr>
