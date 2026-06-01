@@ -96,6 +96,14 @@ abstract class DataValue {
 	const OPT_COMPACT_INFOLINKS = 'compact.infolinks';
 
 	/**
+	 * Defer viewing-user local time conversion to the client so that
+	 * parser-cached output stays user-independent (#6820).
+	 *
+	 * @since 7.0.0
+	 */
+	const OPT_DEFER_LOCAL_TIME = 'defer.local.time';
+
+	/**
 	 * Associated data item. This is the reference to the immutable object
 	 * that represents the current data content. All other data stored here
 	 * is only about presentation and parsing, but is not relevant to the
