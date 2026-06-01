@@ -382,12 +382,13 @@ Note that MS SQL Server and Oracle are not supported as database backends.
         <th>OpenSearch</th>
         <th>Notes</th>
     </tr>
+    <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_7.0.0">7.0.x</a></th>
         <td>7.10.2</td>
         <td>1.3.x+</td>
         <td></td>
     </tr>
-    </tr>
+    <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_6.0.0">6.0.x</a></th>
         <td>7.10.2</td>
         <td>1.3.x+</td>
@@ -398,6 +399,7 @@ Note that MS SQL Server and Oracle are not supported as database backends.
         <td>7.10.2</td>
         <td>1.3.x+</td>
         <td></td>
+    </tr>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_5.0.0">5.0.x</a></th>
         <td>7.10.2</td>
