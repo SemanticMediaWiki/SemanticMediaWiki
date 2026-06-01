@@ -221,10 +221,6 @@ class ElasticFactory {
 			MediaWikiServices::getInstance()->getRepoGroup()
 		);
 
-		$fileHandler->setLogger(
-			$logger
-		);
-
 		$fileIndexer = new FileIndexer(
 			$store,
 			$applicationFactory->getEntityCache(),
