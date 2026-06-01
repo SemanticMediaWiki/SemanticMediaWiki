@@ -164,6 +164,58 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 	}
 
+	public function testHighlightedShortFormatRecordsUserLanguageOutput() {
+		$propertyValue = new PropertyValue();
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, false );
+		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+
+		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+		$propertyValue->setCaption( 'ABC' );
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance = new PropertyValueFormatter(
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
+		);
+
+		// The highlighted property link renders a tooltip (title and localized
+		// description) in the viewer's interface language.
+		$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] );
+
+		$this->assertTrue(
+			$propertyValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testShortFormatWithoutHighlightDoesNotRecordUserLanguageOutput() {
+		$propertyValue = new PropertyValue();
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
+		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+
+		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+		$propertyValue->setCaption( 'ABC' );
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance = new PropertyValueFormatter(
+			$this->propertySpecificationLookup,
+			$this->propertyLabelFinder
+		);
+
+		// Without a tooltip the rendered output is the content-language caption,
+		// so no user-language output is recorded.
+		$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] );
+
+		$this->assertFalse(
+			$propertyValue->hasUserLanguageOutput()
+		);
+	}
+
 	/**
 	 * @dataProvider propertyValueProvider
 	 */

@@ -258,6 +258,11 @@ class PropertyValueFormatter extends DataValueFormatter {
 			return $text;
 		}
 
+		// The tooltip title and (for predefined properties) the localized
+		// property description are rendered in the viewer's interface language,
+		// so the rendered output is not cache-stable across languages.
+		$this->dataValue->recordUserLanguageOutput();
+
 		$highlighter = Highlighter::factory(
 			Highlighter::TYPE_PROPERTY,
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )

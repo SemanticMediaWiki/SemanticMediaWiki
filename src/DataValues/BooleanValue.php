@@ -243,6 +243,12 @@ class BooleanValue extends DataValue {
 		$languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring );
 		if ( !$languageCode ) {
 			$languageCode = $this->getOption( 'user.language' );
+
+			// Without an annotated language code the caption is rendered in the
+			// viewer's interface language (e.g. a `LOCL` output format applied
+			// via $smwgDefaultOutputFormatters), so the output is not
+			// cache-stable across languages.
+			$this->recordUserLanguageOutput();
 		}
 
 		$this->trueCaption = $this->getFirstBooleanCaptionFrom(

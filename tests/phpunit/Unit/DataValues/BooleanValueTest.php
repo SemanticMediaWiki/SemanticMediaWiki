@@ -194,4 +194,55 @@ class BooleanValueTest extends TestCase {
 		);
 	}
 
+	public function testUserLanguageOutputDefaultsToFalse() {
+		$instance = new BooleanValue();
+		$instance->setUserValue( 'true' );
+
+		$this->assertFalse(
+			$instance->hasUserLanguageOutput()
+		);
+	}
+
+	public function testBareLocalizedOutputFormatRecordsUserLanguageOutput() {
+		$instance = new BooleanValue();
+		$instance->setOption( BooleanValue::OPT_USER_LANGUAGE, 'fr' );
+
+		$instance->setUserValue( 'true' );
+
+		// A bare LOCL format renders the caption in the viewer's interface
+		// language, so the output is not cache-stable across languages.
+		$instance->setOutputFormat( 'LOCL' );
+
+		$this->assertTrue(
+			$instance->hasUserLanguageOutput()
+		);
+	}
+
+	public function testAnnotatedLocalizedOutputFormatDoesNotRecordUserLanguageOutput() {
+		$instance = new BooleanValue();
+		$instance->setOption( BooleanValue::OPT_USER_LANGUAGE, 'en' );
+
+		$instance->setUserValue( 'true' );
+
+		// An annotated LOCL format (`LOCL@fr`) renders a fixed language, so the
+		// output is cache-stable across languages.
+		$instance->setOutputFormat( 'LOCL@fr' );
+
+		$this->assertFalse(
+			$instance->hasUserLanguageOutput()
+		);
+	}
+
+	public function testPlainOutputFormatDoesNotRecordUserLanguageOutput() {
+		$instance = new BooleanValue();
+		$instance->setOption( BooleanValue::OPT_USER_LANGUAGE, 'fr' );
+
+		$instance->setUserValue( 'true' );
+		$instance->setOutputFormat( 'tick' );
+
+		$this->assertFalse(
+			$instance->hasUserLanguageOutput()
+		);
+	}
+
 }

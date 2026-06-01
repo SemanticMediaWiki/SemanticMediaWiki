@@ -8,6 +8,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\Outputs;
@@ -480,7 +481,23 @@ class InTextAnnotationParser {
 			$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
 		}
 
-		return $dataValue->getShortWikitext( $linker );
+		$result = $dataValue->getShortWikitext( $linker );
+
+		// The `@@@` property-link path returns its output directly rather than
+		// going through addPropertyValue(), so the user-language signal must be
+		// recorded here. A property link renders a tooltip (title and, for
+		// predefined properties, a localized description) in the viewer's
+		// interface language, unless an explicit language was annotated
+		// (`@@@<lang>`), in which case the output is content-stable. An invalid
+		// property renders a localized error. Record this so the `userlang`
+		// parser-cache key is added (see InTextAnnotationParser::parse()).
+		if ( !$dataValue->isValid() ||
+			( $lang === false && Highlighter::hasHighlighterClass( $result ) )
+		) {
+			$this->parserData->markVariesByUserLanguage();
+		}
+
+		return $result;
 	}
 
 }
