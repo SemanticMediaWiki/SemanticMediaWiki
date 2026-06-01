@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Search;
 
 use SearchEngine;
 use SMW\Formatters\InfoLink;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory
@@ -25,7 +26,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * @since 3.1
 	 */
-	public function __construct( $connection = null ) {
+	public function __construct( ?IConnectionProvider $connection = null ) {
 		// It is common practice to avoid construction work in the constructor
 		// but we are unable to define a factory or callable and this is the only
 		// place to create an instance.

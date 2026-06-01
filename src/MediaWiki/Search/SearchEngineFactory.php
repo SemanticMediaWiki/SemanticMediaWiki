@@ -9,6 +9,7 @@ use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,19 +22,14 @@ class SearchEngineFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param mixed $connection Either IConnectionProvider (MW 1.41+) or IDatabase (MW 1.40)
-	 *
-	 * @return SearchEngine
 	 * @throws SearchEngineInvalidTypeException
 	 */
-	public function newFallbackSearchEngine( $connection = null ) {
+	public function newFallbackSearchEngine( ?IConnectionProvider $connection = null ): SearchEngine {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
 		if ( $connection === null ) {
-			// For MW 1.41+, getConnectionManager()->getConnection() returns IConnectionProvider
-			// For MW 1.40, it returns IDatabase
-			$connection = $applicationFactory->getConnectionManager()->getConnection( DB_REPLICA );
+			$connection = MediaWikiServices::getInstance()->getConnectionProvider();
 		}
 
 		$dbLoadBalancer = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
