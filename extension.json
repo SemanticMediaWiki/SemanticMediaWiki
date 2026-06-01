@@ -35,7 +35,6 @@
 		"CanonicalNamespaces": "SemanticMediaWiki.CanonicalNamespaces",
 		"ParserAfterTidy": "SemanticMediaWiki.ParserAfterTidy",
 		"ParserClearState": "SemanticMediaWiki.ParserClearState",
-		"ParserOptionsRegister": "SemanticMediaWiki.ParserOptionsRegister",
 		"ParserFirstCallInit": "SemanticMediaWiki.ParserFirstCallInit",
 		"InternalParseBeforeLinks": "SemanticMediaWiki.InternalParseBeforeLinks",
 		"RejectParserCacheValue": "SemanticMediaWiki.RejectParserCacheValue",
@@ -105,9 +104,6 @@
 		},
 		"SemanticMediaWiki.ParserClearState": {
 			"class": "SMW\\MediaWiki\\Hooks\\ParserClearState"
-		},
-		"SemanticMediaWiki.ParserOptionsRegister": {
-			"class": "SMW\\MediaWiki\\Hooks\\ParserOptionsRegister"
 		},
 		"SemanticMediaWiki.ParserFirstCallInit": {
 			"class": "SMW\\MediaWiki\\Hooks\\ParserFirstCallInit",

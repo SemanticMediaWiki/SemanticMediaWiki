@@ -123,6 +123,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 * Removing `userlang` or `dateformat` from `$smwgSetParserCacheKeys` now correctly stops SMW from adding that key to the parser cache key. Previously a removed key was still added through a different mechanism.
 * Fixed dependency tracking for pages embedding multiple `#ask` queries that share conditions but request different printouts. Changes to a printout-only property now correctly invalidate the embedding page's cached query results.
 * Fixed date columns in the `table` and `broadtable` result formats not sorting chronologically under locales that use `.` as a digit-group separator, such as German ([#6830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6830))
+* Local time in `#ask` / `#show` output (`#LOCL#TO`) is now converted to each viewer's time zone in the browser. Previously it was rendered server-side and shared through the parser cache, so every viewer saw the time zone of whoever first populated the cache. Without JavaScript the wiki's local time is shown. The non-functional per-user parser-cache key (`localTime`) registered by the previous mechanism has been removed. ([#6820](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6820))
 
 ### Configuration changes
 

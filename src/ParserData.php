@@ -180,8 +180,7 @@ class ParserData {
 	public function addExtraParserKey( string $key ): void {
 		// Preference keys fragment the parser cache by a user preference and are
 		// opt-in via $smwgSetParserCacheKeys. Every other key (functional markers
-		// such as `localTime` and `smwq`, or keys added by other extensions) is
-		// always applied.
+		// such as `smwq`, or keys added by other extensions) is always applied.
 		$configurableKeys = [ 'userlang', 'dateformat' ];
 
 		if ( in_array( $key, $configurableKeys, true ) ) {
