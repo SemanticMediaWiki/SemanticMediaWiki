@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\Maintenance;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
+use Onoi\MessageReporter\SpyMessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\WikiPage;
@@ -182,6 +183,113 @@ class DataRebuilderTest extends TestCase {
 	/**
 	 * @depends testCanConstruct
 	 */
+	public function testRebuildAllForwardsUseJobOptionToDispatcher() {
+		$capturedOptions = [];
+
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rebuilder->expects( $this->once() )
+			->method( 'rebuild' )
+			->willReturnCallback( [ $this, 'refreshDataOnMockCallback' ] );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getMaxId' )
+			->willReturn( 1000 );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$rebuilder->expects( $this->once() )
+			->method( 'setOptions' )
+			->willReturnCallback( static function ( $options ) use ( &$capturedOptions ) {
+				$capturedOptions = $options;
+			} );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
+
+		$instance->setOptions( new Options( [
+			'e' => 1,
+			'use-job' => true
+		] ) );
+
+		$this->assertTrue( $instance->rebuild() );
+		$this->assertTrue( $capturedOptions['use-job'] );
+	}
+
+	/**
+	 * @depends testCanConstruct
+	 */
+	public function testUseJobRebuildReportsRunJobsCommand() {
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rebuilder->expects( $this->once() )
+			->method( 'rebuild' )
+			->willReturnCallback( [ $this, 'refreshDataOnMockCallback' ] );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getMaxId' )
+			->willReturn( 1000 );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$spyMessageReporter = new SpyMessageReporter();
+
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
+		$instance->setMessageReporter( $spyMessageReporter );
+
+		$instance->setOptions( new Options( [
+			'e' => 1,
+			'use-job' => true
+		] ) );
+
+		$this->assertTrue( $instance->rebuild() );
+
+		$this->assertStringContainsString(
+			'runJobs.php --type smw.update --procs',
+			$spyMessageReporter->getMessagesAsString()
+		);
+	}
+
+	/**
+	 * @depends testCanConstruct
+	 */
 	public function testRebuildAllWithFullDelete() {
 		$rebuilder = $this->getMockBuilder( Rebuilder::class )
 			->disableOriginalConstructor()
@@ -321,6 +429,62 @@ class DataRebuilderTest extends TestCase {
 		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
+	}
+
+	/**
+	 * @depends testCanConstruct
+	 */
+	public function testUseJobWithQuerySelectionReportsInlineNotice() {
+		$subject = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subject->expects( $this->once() )
+			->method( 'getTitle' )
+			->willReturn( Title::newFromText( __METHOD__ ) );
+
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->once() )
+			->method( 'getResults' )
+			->willReturn( [ $subject ] );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$callCount = 0;
+		$store->expects( $this->exactly( 2 ) )
+			->method( 'getQueryResult' )
+			->willReturnCallback( static function () use ( &$callCount, $queryResult ) {
+				$callCount++;
+				return $callCount === 1 ? 1 : $queryResult;
+			} );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$spyMessageReporter = new SpyMessageReporter();
+
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
+		$instance->setMessageReporter( $spyMessageReporter );
+
+		$instance->setOptions( new Options( [
+			'query' => '[[Category:Foo]]',
+			'use-job' => true
+		] ) );
+
+		$this->assertTrue( $instance->rebuild() );
+
+		$this->assertStringContainsString(
+			'--use-job applies to full rebuilds only',
+			$spyMessageReporter->getMessagesAsString()
+		);
 	}
 
 	public function testRebuildSelectedPagesWithCategoryNamespaceFilter() {

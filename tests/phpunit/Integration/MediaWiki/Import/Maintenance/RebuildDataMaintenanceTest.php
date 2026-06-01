@@ -106,6 +106,42 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 //		$this->assertRunWithSparqlStoreForQueryOption( $expectedSomeProperties );
 	}
 
+	public function testRebuildDataWithUseJobEnqueuesUpdateJobs() {
+		$this->importedTitles = [
+			'Category:Lorem ipsum',
+			'Lorem ipsum',
+			'Elit Aliquam urna interdum',
+			'Platea enim hendrerit',
+			'Property:Has Url',
+			'Property:Has annotation uri',
+			'Property:Has boolean',
+			'Property:Has date',
+			'Property:Has email',
+			'Property:Has number',
+			'Property:Has page',
+			'Property:Has quantity',
+			'Property:Has temperature',
+			'Property:Has text'
+		];
+
+		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
+
+		$jobQueueGroup = MediaWikiServices::getInstance()->getJobQueueGroup();
+		$jobQueueGroup->get( 'smw.update' )->delete();
+
+		$this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildData' );
+		$this->maintenanceRunner->setQuiet();
+		$this->maintenanceRunner->setOptions( [ 'use-job' => true, 'quiet' => true ] )->run();
+
+		$this->assertFalse(
+			$jobQueueGroup->get( 'smw.update' )->isEmpty(),
+			'Expected --use-job to enqueue smw.update jobs'
+		);
+
+		// Drain so queued jobs do not leak into sibling tests.
+		$jobQueueGroup->get( 'smw.update' )->delete();
+	}
+
 	protected function assertRunWithoutOptions( $expectedSomeProperties ) {
 		$this->assertThatPropertiesAreSet(
 			$expectedSomeProperties,

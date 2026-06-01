@@ -97,6 +97,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 * Creating a redirect to a page, or moving a page onto an existing title, no longer re-parses the target page synchronously on the web server. Previously the forced re-parse ran in a post-send deferred update in the same web request, so creating many redirects to one expensive target in quick succession (for example via the API) could saturate the server with repeated parses. The re-parse is now pushed to the job queue, where MediaWiki's job deduplication collapses repeated updates to the same target into a single job. This applies when `smwgEnableUpdateJobs` is enabled (the default); command-line invocations and wikis with the update-job queue disabled keep the previous synchronous behavior, so the redirect cleanup from [#895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/895) is preserved in all configurations. ([#5619](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5619))
 * `$wgSearchType` can now be set to `SMW\MediaWiki\Search\ExtendedSearchEngine` to enable the extended search, alongside the deprecated `SMWSearch` alias. ([#6944](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6944))
 * Date values rendered in HTML (result tables, the factbox, `Special:Browse`, `Special:SearchByProperty`) are now wrapped in a semantic `<time datetime>` element, exposing a machine-readable date to assistive technology and other consumers while the displayed text is unchanged. Exports (CSV, JSON, RDF) stay plain. ([#6830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6830))
+* `rebuildData.php` accepts a new `--use-job` option that queues its update jobs instead of running them inline, so a full rebuild can be processed in parallel with `runJobs.php --type smw.update --procs N`. The per-entity parse cost is unchanged, so set the worker count to what your database can absorb. ([#6952](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6952))
 
 ### Bug fixes
 
@@ -224,6 +225,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 
 * Removed `EntityIdManager::MAX_CACHE_SIZE`. Cache sizes are now per-pool and exposed as `EntityIdManager::DEFAULT_CACHE_SIZES`, configurable via `$smwgEntityCacheSizes`.
 * **`Property::getRedirectTarget()` removed.** Use `Store::getRedirectTarget()` directly; remember to preserve the inverse short-circuit (the removed method returned `$this` when `m_inverse` was true).
+* `SMW\MediaWiki\JobFactory::batchInsert()` is now an instance method instead of a static method. Call it on an injected `JobFactory` instance (`$jobFactory->batchInsert( $jobs )`) rather than statically.
 
 ### Deprecated
 

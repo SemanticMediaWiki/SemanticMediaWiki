@@ -189,6 +189,13 @@ class DataRebuilder {
 			$this->options->has( 'query' ) ||
 			$this->hasFilters() ||
 			$this->options->has( 'redirects' ) ) {
+
+			if ( $this->options->safeGet( 'use-job', false ) ) {
+				$this->reportMessage(
+					"\nNote: --use-job applies to full rebuilds only; the selected pages are processed inline.\n"
+				);
+			}
+
 			return $this->rebuildFromSelection();
 		}
 
@@ -272,7 +279,7 @@ class DataRebuilder {
 				'shallow-update' => $this->options->safeGet( 'shallow-update', false ),
 				'force-update' => $this->options->safeGet( 'force-update', false ),
 				'revision-mode' => $this->options->safeGet( 'revision-mode', false ),
-				'use-job' => false
+				'use-job' => $this->options->safeGet( 'use-job', false )
 			]
 		);
 
@@ -411,6 +418,23 @@ class DataRebuilder {
 		);
 
 		$this->reportMessage( "   ... done.\n" );
+
+		if ( $this->options->safeGet( 'use-job', false ) ) {
+			$text = [
+				'Update jobs have been queued instead of run inline.',
+				"\n\n",
+				'Process them in parallel with the MediaWiki job runner, for example:',
+				"\n\n",
+				'   php maintenance/runJobs.php --type smw.update --procs <N>',
+				"\n\n",
+				'Tune <N> to what your database can absorb; more workers is not always',
+				'faster because all workers write the same tables.'
+			];
+
+			$this->reportMessage(
+				"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
+			);
+		}
 
 		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCount() > 0 ) {
 			$this->reportMessage(
