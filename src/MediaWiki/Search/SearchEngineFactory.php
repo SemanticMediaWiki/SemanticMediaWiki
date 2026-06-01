@@ -93,6 +93,10 @@ class SearchEngineFactory {
 			throw new SearchEngineInvalidTypeException( 'SMWSearch is not a valid fallback search engine type.' );
 		}
 
+		if ( $type === 'SMW\MediaWiki\Search\ExtendedSearchEngine' ) {
+			throw new SearchEngineInvalidTypeException( 'SMW\MediaWiki\Search\ExtendedSearchEngine is not a valid fallback search engine type.' );
+		}
+
 		if ( $type !== 'SearchEngine' && !is_subclass_of( $type, 'SearchDatabase' ) ) {
 			throw new SearchDatabaseInvalidTypeException( $type );
 		}
