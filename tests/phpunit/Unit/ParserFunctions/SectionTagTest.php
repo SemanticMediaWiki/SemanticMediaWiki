@@ -40,7 +40,8 @@ class SectionTagTest extends TestCase {
 
 	public function testRegister_Enabled() {
 		$this->parser->expects( $this->once() )
-			->method( 'setHook' );
+			->method( 'setHook' )
+			->with( 'smwsection', $this->anything() );
 
 		$this->assertTrue(
 			SectionTag::register( $this->parser )

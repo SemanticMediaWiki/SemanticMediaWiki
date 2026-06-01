@@ -7,7 +7,7 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
 
 /**
- * To support the generation of <section> ... </section>
+ * To support the generation of <smwsection> ... </smwsection>
  *
  * @license GPL-2.0-or-later
  * @since 3.0
@@ -38,7 +38,7 @@ class SectionTag {
 			return false;
 		}
 
-		$parser->setHook( 'section', static function ( ?string $input, array $args, Parser $parser, PPFrame $frame ) {
+		$parser->setHook( 'smwsection', static function ( ?string $input, array $args, Parser $parser, PPFrame $frame ) {
 			return ( new self( $parser, $frame ) )->parse( $input, $args );
 		} );
 

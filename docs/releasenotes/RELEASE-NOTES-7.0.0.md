@@ -69,6 +69,8 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 
   Note: `enableSemantics()` itself still exists but is deprecated as a no-op (see Deprecated).
 
+* **SMW's `<section>` parser tag renamed to `<smwsection>`.** The tag that marks up property-page specification content is now `<smwsection>…</smwsection>`, so it no longer collides with the `<section>` tag registered by extensions such as [LabeledSectionTransclusion](https://www.mediawiki.org/wiki/Extension:Labeled_Section_Transclusion). The rendered output is unchanged (still an HTML `<section class="smw-property-specification">` element), so styling and property-page tabs behave exactly as before; only the wikitext you type changes. Saved pages are not migrated automatically: update any page (typically in the `Property:` namespace) that uses `<section>` for SMW by replacing the opening and closing tags with `<smwsection>` and `</smwsection>`. The `$smwgSupportSectionTag` setting still controls whether SMW registers its tag, and most wikis no longer need to disable it. ([#5687](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5687))
+
 ### New features and enhancements
 
 * The `smw-admin` right is now granted to the `sysop` group by default, so wiki administrators can reach `Special:SemanticMediaWiki` out of the box without first joining the `smwadministrator` group. The `smwadministrator` group is retained for installs that want SMW administration to be a separate role; revoke the new default with `$wgGroupPermissions['sysop']['smw-admin'] = false;` in `LocalSettings.php`.
