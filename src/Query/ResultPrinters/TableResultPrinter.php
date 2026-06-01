@@ -6,6 +6,7 @@ use MediaWiki\Html\Html;
 use SMW\DataItems\Blob;
 use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
+use SMW\DataValues\WikiPageValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
@@ -78,7 +79,7 @@ class TableResultPrinter extends ResultPrinter {
 
 		$params['prefix'] = [
 			'message' => 'smw-paramdesc-prefix',
-			'default' => 'none',
+			'default' => 'auto',
 			'values' => [ 'all', 'subject', 'none', 'auto' ],
 		];
 
@@ -320,24 +321,46 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
-		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+		$pageDataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+		$isHtmlOutput = $outputMode === SMW_OUTPUT_HTML;
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
+			$linker = $this->getLinker( $isSubject );
+			$dataItem = $dv->getDataItem();
+			$itemDataValueMethod = 'getShortText';
 
 			// Restore output in Special:Ask on:
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
-			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
-				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof Blob ) ) {
+			$parseAsWikitext =
+				$isHtmlOutput && (
+					( $dataItem instanceof WikiPage && $dataItem->getNamespace() === NS_FILE ) ||
+					( $dataItem instanceof Blob )
+				);
+
+			// @see ListResultPrinter\ValueTextsBuilder -> getValueText
+			if ( $dv instanceof WikiPageValue ) {
+				$itemDataValueMethod = $pageDataValueMethod;
+				$dv->setOption(
+					$pageDataValueMethod === 'getLongText'
+						? $dv::PREFIXED_FORM
+						: $dv::SHORT_FORM,
+					true
+				);
+			}
+
+			if ( $parseAsWikitext ) {
+				$raw = $dv->$itemDataValueMethod( SMW_OUTPUT_WIKI, $linker );
+
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					[ 'smw-parse', $raw ],
 					Message::PARSE
 				);
 			} else {
-				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
+				$value = $dv->$itemDataValueMethod( $outputMode, $linker );
 			}
 
 			$values[] = $value === '' ? '&nbsp;' : $value;

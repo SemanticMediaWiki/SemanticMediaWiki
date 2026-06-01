@@ -26,15 +26,22 @@ class PrefixParameterProcessor {
 	}
 
 	public function useLongText( bool $isSubject ): bool {
-		$prefix = $this->prefix;
-
-		if ( $prefix === 'all'
-			|| ( $prefix === 'subject' && $isSubject )
-			|| ( $prefix === 'auto' && $isSubject && $this->mixedResults ) ) {
+		// prefix can be 'all', 'subject', 'none', 'auto'
+		if ( $this->prefix === 'all' ) {
 			return true;
 		}
 
-		return false;
+		if ( $this->prefix === 'none' ) {
+			return false;
+		}
+
+		// add prefix to subject
+		if ( $this->prefix === 'subject' && $isSubject ) {
+			return true;
+		}
+
+		// prefix is auto
+		return $this->mixedResults;
 	}
 
 }
