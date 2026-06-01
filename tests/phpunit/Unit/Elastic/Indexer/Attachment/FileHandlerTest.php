@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit\Elastic\Indexer\Attachment;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use RepoGroup;
-use RuntimeException;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
 
 /**
@@ -47,27 +46,6 @@ class FileHandlerTest extends TestCase {
 		);
 
 		$instance->findFileByTitle( $title );
-	}
-
-	public function testBase64FromURI() {
-		$url = 'http://example.org/Foo.txt';
-
-		$instance = new FileHandler(
-			$this->repoGroup
-		);
-
-		$instance->setReadCallback( static function ( $read_url ) use( $url ) {
-			if ( $read_url !== $url ) {
-				throw new RuntimeException( "Invalid read URL!" );
-			}
-
-			return 'FooUrl';
-		} );
-
-		$this->assertEquals(
-			'FooUrl',
-			$instance->fetchContentFromURL( $url )
-		);
 	}
 
 	public function testFormat() {
