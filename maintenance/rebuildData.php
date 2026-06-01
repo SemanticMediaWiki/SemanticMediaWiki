@@ -57,6 +57,9 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * --server=<server> The protocol and server name to as base URLs, e.g.
  *              http://en.wikipedia.org. This is sometimes necessary because
  *              server name detection may fail in command line scripts.
+ * --use-job    Enqueue update jobs into the job queue instead of running them inline,
+ *              so they can be processed in parallel with
+ *              `runJobs.php --type smw.update --procs N`. Applies to full rebuilds.
  *
  * @author Yaron Koren
  * @author Markus Krötzsch
@@ -100,6 +103,7 @@ class rebuildData extends Maintenance {
 
 		$this->addOption( 'force-update', 'Force an update even when an associated revision is known', false );
 		$this->addOption( 'revision-mode', 'Skip entities where its associated revision matches the latests referenced revision of an associated page', false );
+		$this->addOption( 'use-job', 'Enqueue update jobs into the job queue instead of running them inline, so they can be processed in parallel with `runJobs.php --type smw.update --procs N`. Applies to full rebuilds.', false );
 
 		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and errors (e.g. a parser TypeError on a single page) and log them to a file instead of aborting the run', false );
 		$this->addOption( 'exception-log', 'Exception log file location (e.g. /tmp/logs/)', false, true );
