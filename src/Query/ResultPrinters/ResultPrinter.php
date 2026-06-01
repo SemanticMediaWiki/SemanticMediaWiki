@@ -12,6 +12,7 @@ use SMW\Localizer\Message;
 use SMW\MediaWiki\Outputs;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Query;
+use SMW\Query\QueryContext;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;
@@ -179,6 +180,13 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @var bool
 	 */
 	protected $transcludeAnnotation = true;
+
+	/**
+	 * Query context (one of the QueryContext constants). Defaults to the
+	 * cache-safe SPECIAL_PAGE so no deferred markers are emitted unless the
+	 * printer is explicitly rendering an inline (parser-cached) query.
+	 */
+	private int $context = QueryContext::SPECIAL_PAGE;
 
 	/**
 	 * Return serialised results in specified format.
@@ -706,6 +714,23 @@ abstract class ResultPrinter implements IResultPrinter {
 	 */
 	public function dependsOnUserLanguage(): bool {
 		return true;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setContext( int $context ): void {
+		$this->context = $context;
+	}
+
+	/**
+	 * Whether this printer is rendering an inline `#ask` query whose output
+	 * goes through the parser cache (and is later resolved post-cache).
+	 *
+	 * @since 7.0.0
+	 */
+	protected function isParserCacheRender(): bool {
+		return $this->context === QueryContext::INLINE_QUERY;
 	}
 
 	/**

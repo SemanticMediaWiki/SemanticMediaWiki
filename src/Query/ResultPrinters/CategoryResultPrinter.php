@@ -4,6 +4,7 @@ namespace SMW\Query\ResultPrinters;
 
 use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
+use SMW\Localizer\DeferredLocalizedMessage;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
@@ -156,7 +157,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		$language = Localizer::getInstance()->getUserLanguage();
 
-		$this->htmlColumns->setContinueAbbrev( wfMessage( 'smw-listingcontinuesabbrev' )->text() );
+		$this->htmlColumns->setContinueAbbrev( $this->getContinueAbbrev() );
 		$this->htmlColumns->setColumns( $this->numColumns );
 		$this->htmlColumns->isRTL( $language->isRTL() );
 
@@ -169,6 +170,19 @@ class CategoryResultPrinter extends ResultPrinter {
 		$this->htmlColumns->addContents( $contents, HtmlColumns::INDEXED_LIST );
 
 		return $this->htmlColumns->getHtml();
+	}
+
+	/**
+	 * The column-continuation abbreviation. Deferred to a post-cache marker for
+	 * inline (parser-cached) queries so the format stays language-neutral;
+	 * rendered directly in the user language for live (Special:Ask) output.
+	 *
+	 * @since 7.0.0
+	 */
+	protected function getContinueAbbrev(): string {
+		return $this->isParserCacheRender()
+			? DeferredLocalizedMessage::newMarker( 'category-continues' )
+			: wfMessage( 'smw-listingcontinuesabbrev' )->text();
 	}
 
 	/**

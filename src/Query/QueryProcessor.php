@@ -429,6 +429,7 @@ class QueryProcessor implements QueryContext {
 		 * @var ResultPrinter $printer
 		 */
 		$printer = new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
+		$printer->setContext( $context );
 
 		if ( self::$recursiveTextProcessor === null ) {
 			self::$recursiveTextProcessor = new RecursiveTextProcessor();
