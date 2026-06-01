@@ -25,16 +25,16 @@ Increases of minimum requirements are indicated in bold.
     </tr>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_7.0.0">7.0.x</a></th>
-        <td>Development</td>
-        <td>TBD</td>
-        <td>TBD</td>
-        <td>8.1 - 8.4</td>
-        <td>1.43 - 1.45</td>
+        <td><strong>Stable release</strong></td>
+        <td>2026-06-04</td>
+        <td>2026-06-04</td>
+        <td>8.1 - 8.5</td>
+        <td>1.43 - 1.46</td>
         <td></td>
     </tr>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_6.0.0">6.0.x</a></th>
-        <td><strong>Stable release</strong></td>
+        <td>Obsolete release</td>
         <td>2025-08-12</td>
         <td>2025-08-26</td>
         <td>8.1 - 8.4</td>
