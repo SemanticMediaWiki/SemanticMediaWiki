@@ -2,7 +2,6 @@
 
 namespace SMW\Maintenance;
 
-use Exception;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
@@ -16,6 +15,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use Throwable;
 
 /**
  * Is part of the `rebuildData.php` maintenance script to rebuild existing data
@@ -440,8 +440,16 @@ class DataRebuilder {
 
 			try {
 				$this->entityRebuildDispatcher->rebuild( $id );
-			} catch ( Exception $e ) {
+			} catch ( Throwable $e ) {
 				$this->exceptionFileLogger->recordException( $id, $e );
+
+				// Rebuilder::rebuild() advances $id only via next_position() at
+				// the very end, after running its jobs; when a job throws that
+				// step is skipped and $id keeps pointing at the failing entity.
+				// Advance past it (the dispatch range is fixed to 1 in
+				// rebuildAll()) so the run continues instead of reprocessing the
+				// same id indefinitely.
+				$id++;
 			}
 		}
 

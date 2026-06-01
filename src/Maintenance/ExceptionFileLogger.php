@@ -3,10 +3,10 @@
 namespace SMW\Maintenance;
 
 use DateTimeZone;
-use Exception;
 use SMW\MediaWiki\ExtendedDateTime;
 use SMW\Options;
 use SMW\Utils\File;
+use Throwable;
 
 /**
  * @private
@@ -70,7 +70,7 @@ class ExceptionFileLogger {
 	/**
 	 * @since 2.4
 	 */
-	public function recordException( int|string $id, Exception $exception ): void {
+	public function recordException( int|string $id, Throwable $exception ): void {
 		$this->exceptionCount++;
 
 		$this->exceptionLogMessages[$id] = [
