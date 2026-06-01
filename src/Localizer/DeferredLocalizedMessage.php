@@ -64,7 +64,8 @@ class DeferredLocalizedMessage {
 			},
 			static function ( SerializerNode $node ) use ( $language ) {
 				$key = self::ALLOWED[$node->attrs['data-smw-msg']];
-				// Returning a string replaces the element's outer HTML.
+				// HtmlHelper splices the returned string in as raw outer HTML, and the
+				// message is plain text, so it must be escaped here to avoid markup injection.
 				return htmlspecialchars(
 					wfMessage( $key )->inLanguage( $language )->text()
 				);

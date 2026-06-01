@@ -54,4 +54,25 @@ class DeferredLocalizedMessageTest extends TestCase {
 		$this->assertStringContainsString( 'data-smw-msg="bogus"', $out );
 	}
 
+	public function testResolveIsIdempotent() {
+		$lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'de' );
+		$once = DeferredLocalizedMessage::resolve(
+			DeferredLocalizedMessage::newMarker( 'further-results' ),
+			$lang
+		);
+		$twice = DeferredLocalizedMessage::resolve( $once, $lang );
+		$this->assertSame( $once, $twice );
+	}
+
+	public function testResolveHandlesMultipleMarkers() {
+		$lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'de' );
+		$html = '<div>'
+			. DeferredLocalizedMessage::newMarker( 'further-results' )
+			. ' and '
+			. DeferredLocalizedMessage::newMarker( 'category-continues' )
+			. '</div>';
+		$out = DeferredLocalizedMessage::resolve( $html, $lang );
+		$this->assertStringNotContainsString( 'smw-localized-message', $out );
+	}
+
 }
