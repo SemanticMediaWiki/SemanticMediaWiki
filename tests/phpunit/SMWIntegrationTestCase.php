@@ -36,11 +36,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		// Load default settings specific to SMW
 		TestEnvironment::loadDefaultSettings( [ 'smwgQEqualitySupport' ] );
-
-		// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql.
-		// Must be set before maybeSetupDB() reads this flag.
-		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
-		static::setCliArg( 'use-normal-tables', true );
 	}
 
 	/**
@@ -129,21 +124,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		if ( $this->testEnvironment !== null ) {
 			$this->testEnvironment->tearDown();
 		}
-
-		// Before MediaWiki's own teardown truncates the test tables, make sure no
-		// database connection still holds an open transaction or session-level
-		// lock that could block the TRUNCATE and surface as a "Lock wait timeout"
-		// (1205). The truncation runs in MediaWikiIntegrationTestCase's @after
-		// hook, after this method returns, so the cleanup must happen here.
-		//
-		// commitPrimaryChanges() commits pending primary writes (for example the
-		// transactions left open by page deletions in flushPages) and flushes
-		// replica snapshots. flushPrimarySessions() additionally releases any
-		// lingering named or table locks on the primary connections, which
-		// commitPrimaryChanges() does not do.
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-		$lbFactory->commitPrimaryChanges( __METHOD__ );
-		$lbFactory->flushPrimarySessions( __METHOD__ );
 
 		parent::tearDown();
 	}
