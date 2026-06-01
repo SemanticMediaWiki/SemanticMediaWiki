@@ -599,6 +599,7 @@
 				"tests/qunit/smw/query/ext.smw.query.test.js"
 			],
 			"dependencies": [
+				"mediawiki.language.months",
 				"ext.smw",
 				"ext.smw.tooltip",
 				"ext.smw.query",
@@ -830,6 +831,7 @@
 				"mediawiki.Title",
 				"mediawiki.storage",
 				"mediawiki.util",
+				"mediawiki.language.months",
 				"ext.smw",
 				"ext.smw.query"
 			]
