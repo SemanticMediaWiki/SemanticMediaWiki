@@ -1885,7 +1885,7 @@
 		},
 		"SupportSectionTag": {
 			"value": true,
-			"description": "When `true`, enables `<section>…</section>` tag support."
+			"description": "When `true`, enables `<smwsection>…</smwsection>` tag support."
 		},
 		"Translate": {
 			"value": false,

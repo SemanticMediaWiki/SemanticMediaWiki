@@ -2113,7 +2113,7 @@ continue to work without a deprecation notice. The mapping is:
 
 ## $smwgSupportSectionTag
 
-When `true`, enables `<section>…</section>` tag support.
+When `true`, enables `<smwsection>…</smwsection>` tag support.
 
 **Since:** 3.0
 **Default:** `true`

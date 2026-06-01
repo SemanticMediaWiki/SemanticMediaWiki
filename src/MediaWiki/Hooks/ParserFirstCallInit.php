@@ -87,7 +87,7 @@ class ParserFirstCallInit implements ParserFirstCallInitHook {
 			return $parser->recursiveTagParse( $resultText, $frame );
 		} );
 
-		// Support for <section> ... </section>
+		// Support for <smwsection> ... </smwsection>
 		SectionTag::register(
 			$parser,
 			$this->settings->get( 'smwgSupportSectionTag' )
