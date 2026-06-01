@@ -765,10 +765,17 @@
 /**
  * Result output
  */
-.smwtable-clean.broadtable thead th,
-.dataTable thead th {
+.smwtable-clean.broadtable thead th {
 	position: sticky;
 	top: 50px;
+	background-color: #fff;
+	border-bottom: 1px solid #ddd;
+}
+
+/* DataTables forces position:relative on sortable headers, which defeats
+   position:sticky here; a top offset would then push the header down over the
+   result rows and hide them (issue #6260). Keep these headers in normal flow. */
+.dataTable thead th {
 	background-color: #fff;
 	border-bottom: 1px solid #ddd;
 }
@@ -820,9 +827,10 @@
 		margin-bottom: 5px;
 	}
 
-	/* We need some extra space no this this option have been folded */
-	.smwtable-clean.broadtable thead th,
-	.dataTable thead th {
+	/* We need some extra space now this option has been folded. Only the plain
+	   sticky broadtable header needs the larger offset; DataTable headers are
+	   not sticky (issue #6260). */
+	.smwtable-clean.broadtable thead th {
 		top: 79px;
 	}
 
