@@ -64,6 +64,26 @@ class IntlTimeFormatterTest extends TestCase {
 		);
 	}
 
+	public function testGetLocalizedFormatWithWikiTimeOffset() {
+		$reset = $GLOBALS['wgLocalTZoffset'] ?? 0;
+		$GLOBALS['wgLocalTZoffset'] = 60;
+
+		try {
+			$instance = new IntlTimeFormatter(
+				Time::doUnserialize( '1/2024/06/01/14/00/00/00' ),
+				Localizer::getInstance()->getLanguage( 'en' )
+			);
+
+			// 14:00 + 60 min wiki offset = 15:00, independent of any user pref.
+			$this->assertStringContainsString(
+				'15:00',
+				$instance->getLocalizedFormat( IntlTimeFormatter::LOCL_WIKI_TIMEOFFSET )
+			);
+		} finally {
+			$GLOBALS['wgLocalTZoffset'] = $reset;
+		}
+	}
+
 	public function testContainsValidDateFormatRule() {
 		$formatOption = 'F Y/m/d H:i:s';
 

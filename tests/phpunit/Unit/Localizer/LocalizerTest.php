@@ -458,4 +458,26 @@ class LocalizerTest extends TestCase {
 		);
 	}
 
+	public function testGetWikiLocalTime() {
+		$reset = $GLOBALS['wgLocalTZoffset'] ?? 0;
+		$GLOBALS['wgLocalTZoffset'] = 60;
+
+		try {
+			$instance = $this->newLocalizer();
+			$result = $instance->getWikiLocalTime( new ExtendedDateTime() );
+
+			$this->assertInstanceOf(
+				ExtendedDateTime::class,
+				$result
+			);
+
+			// The wiki offset (60 min) was applied, independent of any user.
+			$this->assertTrue(
+				$result->hasLocalTimeCorrection ?? false
+			);
+		} finally {
+			$GLOBALS['wgLocalTZoffset'] = $reset;
+		}
+	}
+
 }
