@@ -730,7 +730,7 @@ Deprecated in 7.x, removed in 8.0:
 
 ## $smwgFallbackSearchType
 
-Search engine class to fall back to when SMWSearch cannot parse a query;
+Search engine class to fall back to when SMW\MediaWiki\Search\ExtendedSearchEngine cannot parse a query;
 `null` uses the database default (e.g. `SearchMySQL`, `SearchPostgres`, or
 `SearchOracle`). Set to a fully-qualified class name to override with a
 custom search engine.

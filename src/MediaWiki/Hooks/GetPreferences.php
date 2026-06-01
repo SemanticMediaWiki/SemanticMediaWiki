@@ -8,6 +8,7 @@ use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\PermissionManager;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 use SMW\MediaWiki\Specials\FacetedSearch\Profile as FacetedSearchProfile;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
@@ -134,7 +135,7 @@ class GetPreferences implements GetPreferencesHook {
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-disable-search-info',
 			'section' => 'smw/extended-search-options',
-			'disabled' => $GLOBALS['wgSearchType'] !== SMW_SPECIAL_SEARCHTYPE
+			'disabled' => !ExtendedSearchEngine::isActiveSearchType( $GLOBALS['wgSearchType'] )
 		];
 
 		// Option to enable tooltip info

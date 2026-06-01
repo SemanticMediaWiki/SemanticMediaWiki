@@ -45,6 +45,17 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
+	 * Whether the given `$wgSearchType` value selects this extended search
+	 * engine, accepting both the canonical class name and the deprecated
+	 * `SMWSearch` alias.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function isActiveSearchType( ?string $type ): bool {
+		return $type === self::class || $type === 'SMWSearch';
+	}
+
+	/**
 	 * @since 3.1
 	 */
 	public function setExtendedSearch( ExtendedSearch $extendedSearch ): void {

@@ -98,6 +98,34 @@ class ProfileFormTest extends TestCase {
 		);
 	}
 
+	public function testAddProfileForExtendedSearchEngineClassName() {
+		$profile = [];
+		$options = [
+			'default_namespaces' => []
+		];
+
+		ProfileForm::addProfile( ExtendedSearchEngine::class, $profile, $options );
+
+		$this->assertArrayHasKey(
+			'smw',
+			$profile
+		);
+	}
+
+	public function testAddProfileIsSkippedForNonSmwSearchType() {
+		$profile = [];
+		$options = [
+			'default_namespaces' => []
+		];
+
+		ProfileForm::addProfile( 'SearchMySQL', $profile, $options );
+
+		$this->assertArrayNotHasKey(
+			'smw',
+			$profile
+		);
+	}
+
 	public function testBuildForm() {
 		$form = '';
 		$opts = [];

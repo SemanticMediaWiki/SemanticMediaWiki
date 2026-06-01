@@ -89,8 +89,8 @@ class SearchEngineFactory {
 			throw new ClassNotFoundException( "$type does not exist." );
 		}
 
-		if ( $type === 'SMWSearch' ) {
-			throw new SearchEngineInvalidTypeException( 'SMWSearch is not a valid fallback search engine type.' );
+		if ( ExtendedSearchEngine::isActiveSearchType( $type ) ) {
+			throw new SearchEngineInvalidTypeException( "$type is not a valid fallback search engine type." );
 		}
 
 		if ( $type !== 'SearchEngine' && !is_subclass_of( $type, 'SearchDatabase' ) ) {

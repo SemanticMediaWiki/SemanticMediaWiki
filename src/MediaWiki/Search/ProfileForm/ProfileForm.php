@@ -9,6 +9,7 @@ use MediaWiki\Title\Title;
 use SearchEngine;
 use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Schema\SchemaFactory;
 use SMW\Store;
@@ -54,7 +55,7 @@ class ProfileForm {
 	 * @since 3.0
 	 */
 	public static function addProfile( ?string $type, array &$profiles, array $options ): void {
-		if ( $type !== SMW_SPECIAL_SEARCHTYPE ) {
+		if ( !ExtendedSearchEngine::isActiveSearchType( $type ) ) {
 			return;
 		}
 
