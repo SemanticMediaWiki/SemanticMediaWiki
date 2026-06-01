@@ -121,6 +121,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 * Fixed `update.php` failing with "Data too long for column 'smw_hash'" on wikis with more than 200,000 entities. The pre-upgrade hex-to-binary conversion now always runs as a single server-side `UPDATE`, regardless of row count. Setting `$smwgIgnoreUpgradeKeyCheck = true` now also lets maintenance scripts run when the schema is in an intermediate state, providing a documented escape hatch for stalled upgrades. ([#6715](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6715))
 * Removing `userlang` or `dateformat` from `$smwgSetParserCacheKeys` now correctly stops SMW from adding that key to the parser cache key. Previously a removed key was still added through a different mechanism.
 * Fixed dependency tracking for pages embedding multiple `#ask` queries that share conditions but request different printouts. Changes to a printout-only property now correctly invalidate the embedding page's cached query results.
+* Fixed date columns in the `table` and `broadtable` result formats not sorting chronologically under locales that use `.` as a digit-group separator, such as German ([#6830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6830))
 
 ### Configuration changes
 

@@ -28,9 +28,9 @@
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Modification-date smwtype&#95;dat\" data-sort-value=.*T.*</td>",
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"2440587.5\">1 January 1970</td>",
-					"<td class=\"Has-date-2 smwtype&#95;dat\" data-sort-value=\"2451545.5\">2451545.5</td>",
-					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"2440587.5\">1970-01-01</td>"
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"24405875000000\">1 January 1970</td>",
+					"<td class=\"Has-date-2 smwtype&#95;dat\" data-sort-value=\"24515455000000\">2451545.5</td>",
+					"<td class=\"Has-date smwtype&#95;dat\" data-sort-value=\"24405875000000\">1970-01-01</td>"
 				]
 			}
 		}
