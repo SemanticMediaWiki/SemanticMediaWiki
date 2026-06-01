@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Time;
 use SMW\DataValues\Time\IntlTimeFormatter;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\LocalTime;
 
 /**
  * @covers \SMW\DataValues\Time\IntlTimeFormatter
@@ -81,6 +82,9 @@ class IntlTimeFormatterTest extends TestCase {
 			);
 		} finally {
 			$GLOBALS['wgLocalTZoffset'] = $reset;
+			// getWikiLocalTime mutated the LocalTime static offset; reset it to
+			// the class default so it does not leak into later test classes.
+			LocalTime::setLocalTimeOffset( 0 );
 		}
 	}
 
