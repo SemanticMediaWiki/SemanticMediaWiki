@@ -86,4 +86,42 @@ class SkinTemplateNavigationUniversalTest extends TestCase {
 		$this->assertArrayHasKey( 'purge', $links['actions'] );
 	}
 
+	public function testJobQueueWatchlistIsDelegatedToNotificationsMenu() {
+		$title = $this->createMock( Title::class );
+
+		$user = $this->createMock( User::class );
+		$user->method( 'isAllowed' )->willReturn( false );
+
+		$skinTemplate = $this->createMock( SkinTemplate::class );
+		$skinTemplate->method( 'getUser' )->willReturn( $user );
+		$skinTemplate->method( 'getTitle' )->willReturn( $title );
+
+		$personalUrls = $this->createMock( PersonalUrls::class );
+		$personalUrls->expects( $this->once() )
+			->method( 'onPersonalUrls' )
+			->with( [], $title, $skinTemplate );
+
+		$links = [ 'notifications' => [] ];
+
+		$instance = new SkinTemplateNavigationUniversal( $personalUrls );
+		$instance->onSkinTemplateNavigation__Universal( $skinTemplate, $links );
+	}
+
+	public function testJobQueueWatchlistIsSkippedWithoutNotificationsMenu() {
+		$user = $this->createMock( User::class );
+		$user->method( 'isAllowed' )->willReturn( false );
+
+		$skinTemplate = $this->createMock( SkinTemplate::class );
+		$skinTemplate->method( 'getUser' )->willReturn( $user );
+
+		$personalUrls = $this->createMock( PersonalUrls::class );
+		$personalUrls->expects( $this->never() )
+			->method( 'onPersonalUrls' );
+
+		$links = [];
+
+		$instance = new SkinTemplateNavigationUniversal( $personalUrls );
+		$instance->onSkinTemplateNavigation__Universal( $skinTemplate, $links );
+	}
+
 }
