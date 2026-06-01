@@ -6,6 +6,7 @@ use MediaWiki\Html\Html;
 use SMW\DataItems\Blob;
 use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
+use SMW\DataValues\TimeValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
@@ -24,6 +25,14 @@ use SMW\Utils\HtmlTable;
  * @author mwjames
  */
 class TableResultPrinter extends ResultPrinter {
+
+	/**
+	 * Scaling factor used to turn the Julian Day date sort key into a
+	 * decimal-free integer for `data-sort-value`. It matches the seven decimal
+	 * places that JulianDay::format() keeps, so the integer is exact and
+	 * preserves the original ordering. See #6830.
+	 */
+	private const DATE_SORT_FACTOR = 10000000;
 
 	private ?HtmlTable $htmlTable = null;
 
@@ -275,12 +284,24 @@ class TableResultPrinter extends ResultPrinter {
 				$attributes['class'] = "$columnClass smwtype$dataValueType";
 			}
 
+			// Dates expose their sort key as a Julian Day float (e.g. "2440618.5").
+			// MediaWiki's locale-aware tablesorter treats the "." as a group
+			// separator under locales such as German, strips it, and so sorts the
+			// column by the number of fractional digits rather than chronologically
+			// (#6830). Emit a decimal-free, locale-proof integer that preserves the
+			// exact ordering of the Julian Day sort key instead.
+			$sortValue = $sortKey;
+
+			if ( $dataValues[0] instanceof TimeValue && is_numeric( $sortKey ) ) {
+				$sortValue = (string)(int)round( (float)$sortKey * self::DATE_SORT_FACTOR );
+			}
+
 			if ( is_numeric( $sortKey ) ) {
-				$attributes['data-sort-value'] = $sortKey;
+				$attributes['data-sort-value'] = $sortValue;
 			}
 
 			if ( $this->isDataTable && $sortKey !== '' ) {
-				$attributes['data-order'] = $sortKey;
+				$attributes['data-order'] = $sortValue;
 			}
 
 			$alignment = trim( $printRequest->getParameter( 'align' ) );
