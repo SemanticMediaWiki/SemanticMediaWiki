@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\DataValues\ValueFormatters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\TimeValue;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMW\DataValues\ValueParsers\TimeValueParser;
@@ -354,6 +355,65 @@ class TimeValueFormatterTest extends TestCase {
 		$this->assertEquals(
 			'2015-02-28 12:12:00 A',
 			$instance->format( TimeValueFormatter::WIKI_SHORT )
+		);
+	}
+
+	private function newTimeValue( string $userValue, string $outputFormat, bool $defer ) {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
+		$timeValue->setUserValue( $userValue );
+		$timeValue->setOutputFormat( $outputFormat );
+		$timeValue->setOption( DataValue::OPT_USER_LANGUAGE, 'en' );
+
+		if ( $defer ) {
+			$timeValue->setOption( DataValue::OPT_DEFER_LOCAL_TIME, true );
+		}
+
+		return $timeValue;
+	}
+
+	public function testDeferredLocalTimeEmitsTimeElement() {
+		$reset = $GLOBALS['wgLocalTZoffset'] ?? 0;
+		$GLOBALS['wgLocalTZoffset'] = 0;
+
+		try {
+			$instance = new TimeValueFormatter(
+				$this->newTimeValue( '2024-06-01 14:00:00', 'LOCL#TO', true )
+			);
+
+			// Derive the expected anchor the same way the formatter does, so the
+			// test is robust to the exact ISO time-string format.
+			$expectedAnchor = $instance->getISO8601Date() . 'Z';
+
+			$output = $instance->format( TimeValueFormatter::HTML_LONG );
+
+			$this->assertStringContainsString( '<time ', $output );
+			$this->assertStringContainsString( 'class="smw-localtime"', $output );
+			$this->assertStringContainsString( 'datetime="' . $expectedAnchor . '"', $output );
+		} finally {
+			$GLOBALS['wgLocalTZoffset'] = $reset;
+		}
+	}
+
+	public function testNonDeferredLocalTimeHasNoTimeElement() {
+		$instance = new TimeValueFormatter(
+			$this->newTimeValue( '2024-06-01 14:00:00', 'LOCL#TO', false )
+		);
+
+		$this->assertStringNotContainsString(
+			'<time ',
+			$instance->format( TimeValueFormatter::HTML_LONG )
+		);
+	}
+
+	public function testDeferredDateOnlyHasNoTimeElement() {
+		$instance = new TimeValueFormatter(
+			$this->newTimeValue( '2024-06-01', 'LOCL#TO', true )
+		);
+
+		$this->assertStringNotContainsString(
+			'<time ',
+			$instance->format( TimeValueFormatter::HTML_LONG )
 		);
 	}
 

@@ -10,6 +10,7 @@ use SMW\DataValues\DataValue;
 use SMW\DataValues\Time\IntlTimeFormatter;
 use SMW\DataValues\TimeValue;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\Outputs;
 
 /**
  * @license GPL-2.0-or-later
@@ -317,7 +318,6 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		$outputFormat = $this->dataValue->getOutputFormat();
 		$formatFlag = IntlTimeFormatter::LOCL_DEFAULT;
-		$hasTimeCorrection = false;
 
 		if ( strpos( $outputFormat, 'TO' ) !== false ) {
 			$formatFlag = IntlTimeFormatter::LOCL_TIMEOFFSET;
@@ -327,6 +327,21 @@ class TimeValueFormatter extends DataValueFormatter {
 		if ( strpos( $outputFormat, 'TZ' ) !== false ) {
 			$formatFlag |= IntlTimeFormatter::LOCL_TIMEZONE;
 			$outputFormat = str_replace( '#TZ', '', $outputFormat );
+		}
+
+		// #6820: for embedded (parser-cached) output, defer the viewing-user
+		// offset to the client. Render a wiki-local baseline and wrap it in a
+		// <time> element carrying the absolute UTC instant; only for a pure #TO value
+		// (no stored timezone) that actually has a time component.
+		$deferLocalTime =
+			$this->dataValue->getOption( DataValue::OPT_DEFER_LOCAL_TIME ) === true &&
+			( IntlTimeFormatter::LOCL_TIMEOFFSET & $formatFlag ) !== 0 &&
+			( IntlTimeFormatter::LOCL_TIMEZONE & $formatFlag ) === 0 &&
+			$dataItem->getPrecision() === Time::PREC_YMDT;
+
+		if ( $deferLocalTime ) {
+			$formatFlag = ( $formatFlag & ~IntlTimeFormatter::LOCL_TIMEOFFSET )
+				| IntlTimeFormatter::LOCL_WIKI_TIMEOFFSET;
 		}
 
 		$language = Localizer::getInstance()->getAnnotatedLanguageCodeFrom( $outputFormat );
@@ -345,7 +360,21 @@ class TimeValueFormatter extends DataValueFormatter {
 		// string (2147483647-01-01 00:00:0.0000000) at position 17 (0): Double
 		// time specification" for an annotation like [[Date::Jan 10000000000]]
 		try {
-			$localizedFormat = $intlTimeFormatter->getLocalizedFormat( $formatFlag ) .
+			$timeText = $intlTimeFormatter->getLocalizedFormat( $formatFlag );
+
+			if ( $deferLocalTime ) {
+				Outputs::requireResource( 'ext.smw.localtime' );
+				$timeText = Html::rawElement(
+					'time',
+					[
+						'datetime' => $this->getISO8601Date() . 'Z',
+						'class' => 'smw-localtime',
+					],
+					$timeText
+				);
+			}
+
+			$localizedFormat = $timeText .
 				$this->hintTimeCorrection( $intlTimeFormatter->hasLocalTimeCorrection() ) .
 				$this->hintCalendarModel( $dataItem );
 		} catch ( Exception ) {
