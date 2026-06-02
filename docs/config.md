@@ -352,7 +352,7 @@ notices" panel. Extensions populate this array (keyed by section name) to
 inform administrators about settings or features planned for removal or
 already removed in the running version.
 
-**Since:** 7.0.0
+**Since:** 3.2.0
 **Default:** `[]`
 
 ## $smwgDetectOutdatedData
