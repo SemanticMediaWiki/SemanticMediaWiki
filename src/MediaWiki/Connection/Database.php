@@ -179,6 +179,15 @@ class Database {
 	}
 
 	/**
+	 * @see ISQLPlatform::buildIntegerCast
+	 *
+	 * @since 7.0.0
+	 */
+	public function buildIntegerCast( string $field ): string {
+		return $this->connRef->getConnection( 'read' )->buildIntegerCast( $field );
+	}
+
+	/**
 	 * @see IDatabase::tableName
 	 *
 	 * @since 1.9

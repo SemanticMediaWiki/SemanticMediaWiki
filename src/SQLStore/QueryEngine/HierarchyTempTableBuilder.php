@@ -162,13 +162,18 @@ class HierarchyTempTableBuilder {
 		$tablenameQb->execute();
 		$tmpnewQb->execute();
 
+		// MySQL rejects CAST( ... AS INTEGER ) and requires SIGNED, while SQLite
+		// and PostgreSQL want INTEGER; buildIntegerCast() emits the form matching
+		// the connection's platform.
+		$idCast = $db->buildIntegerCast( 's_id' );
+
 		for ( $i = 0; $i < $depth; $i++ ) {
 			// INSERT IGNORE INTO $tmpres (id)
-			//   SELECT CAST(s_id AS INTEGER) FROM $smwtable, $tmpnew WHERE o_id=id
+			//   SELECT <integer cast of s_id> FROM $smwtable, $tmpnew WHERE o_id=id
 			$db->insertSelect(
 				$tmpres,
 				[ $smwtable, $tmpnew ],
-				[ 'id' => 'CAST(s_id AS INTEGER)' ],
+				[ 'id' => $idCast ],
 				[ 'o_id=id' ],
 				__METHOD__,
 				[ 'IGNORE' ],
