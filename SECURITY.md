@@ -22,12 +22,18 @@ towards a fix, and may ask for additional information.
 ## Disclosure process
 
 To minimise the risk of exploitation, please give us a reasonable opportunity to
-release a fix before any public disclosure. We aim to:
+release a fix before any public disclosure. After a report is submitted, we aim
+to:
 
-- Confirm the report and assess its impact.
-- Prepare and release a fixed version.
+- Acknowledge the report within 15 days.
+- Confirm the issue and assess its severity and impact.
+- Prepare and release a fix, prioritised by severity, keeping the reporter
+  informed of progress.
 - Publish a security advisory once a fix is available, crediting the reporter
   unless they prefer to remain anonymous.
+
+Remediation time depends on the severity and complexity of the issue. For
+coordinated disclosure we aim to release a fix within 90 days where feasible.
 
 Because the repository is public and can be watched by potential attackers,
 please avoid describing the vulnerability in public channels, including commit
