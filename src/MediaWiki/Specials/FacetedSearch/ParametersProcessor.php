@@ -229,8 +229,8 @@ class ParametersProcessor {
 		// Categories
 		if ( $request->getVal( 'c' ) !== '' ) {
 
-			$clear = $request->getArray( 'clear' );
-			$c = $request->getArray( 'c' );
+			$clear = (array)$request->getArray( 'clear' );
+			$c = (array)$request->getArray( 'c' );
 
 			if ( isset( $clear['c'] ) && isset( $c[$clear['c']] ) ) {
 				unset( $c[$clear['c']] );
