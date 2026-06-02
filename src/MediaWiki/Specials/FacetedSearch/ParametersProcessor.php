@@ -221,7 +221,7 @@ class ParametersProcessor {
 
 			$this->valueFilterConditions(
 				$pv,
-				$request->getArray( 'vc' ),
+				(array)$request->getArray( 'vc' ),
 				$clear
 			);
 		}
