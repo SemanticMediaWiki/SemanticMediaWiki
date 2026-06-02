@@ -1900,9 +1900,11 @@ injection container.
 
 ## $smwgSetParserCacheKeys
 
-Session keys added to the parser cache key, each causing additional cache
-fragmentation. Each listed key produces a separate cache entry per distinct
-value of that key.
+Controls whether the parser cache is fragmented by the viewer's interface
+language. The only recognized key is `userlang` (the default), which varies the
+cache for language-dependent output such as errors and localized tooltips. Set
+to `[]` to disable this; on a multilingual wiki that can serve such output in
+the wrong language.
 
 **Since:** 5.1
 **Default:** `["userlang"]`
