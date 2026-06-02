@@ -204,8 +204,8 @@ class ParametersProcessor {
 		// Properties, property values, ranges
 		if ( $request->getVal( 'pv' ) !== '' ) {
 
-			$clear = $request->getArray( 'clear' );
-			$pv = $request->getArray( 'pv' );
+			$clear = (array)$request->getArray( 'clear' );
+			$pv = (array)$request->getArray( 'pv' );
 
 			if ( isset( $clear['p'] ) && isset( $pv[$clear['p']] ) ) {
 				unset( $pv[$clear['p']] );
