@@ -198,10 +198,11 @@ class ParserData {
 	 * @since 3.0
 	 */
 	public function addExtraParserKey( string $key ): void {
-		// Preference keys fragment the parser cache by a user preference and are
-		// opt-in via $smwgSetParserCacheKeys. Every other key (functional markers
-		// such as `smwq`, or keys added by other extensions) is always applied.
-		$configurableKeys = [ 'userlang', 'dateformat' ];
+		// `userlang` fragments the parser cache by the viewer's interface
+		// language and is opt-in via $smwgSetParserCacheKeys. Every other key
+		// (functional markers such as `smwq`, or keys added by other extensions)
+		// is always applied.
+		$configurableKeys = [ 'userlang' ];
 
 		if ( in_array( $key, $configurableKeys, true ) ) {
 			$keysToCache = ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheKeys' ) ?? [];
