@@ -179,7 +179,7 @@ class Database {
 	}
 
 	/**
-	 * @see IDatabase::buildIntegerCast
+	 * @see ISQLPlatform::buildIntegerCast
 	 *
 	 * @since 7.0.0
 	 */
