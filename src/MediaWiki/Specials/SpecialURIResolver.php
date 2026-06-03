@@ -22,7 +22,16 @@ class SpecialURIResolver extends SpecialPage {
 	 * @see SpecialPage::__construct
 	 */
 	public function __construct() {
-		parent::__construct( 'URIResolver', '', false );
+		// MediaWiki 1.46 deprecated the SpecialPage constructor flags; the
+		// page stays unlisted via the isListed() override below.
+		parent::__construct( 'URIResolver' );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isListed(): bool {
+		return false;
 	}
 
 	/**

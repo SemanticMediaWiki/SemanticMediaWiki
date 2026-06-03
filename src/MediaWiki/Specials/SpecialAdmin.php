@@ -44,7 +44,22 @@ class SpecialAdmin extends SpecialPage {
 		private readonly JobFactory $jobFactory,
 		private readonly JobQueue $jobQueue
 	) {
-		parent::__construct( 'SMWAdmin', 'smw-admin' );
+		// MediaWiki 1.46 deprecated passing the restriction through the
+		// SpecialPage constructor in favour of overriding getRestriction().
+		// Versions before 1.46 enforce the restriction via the
+		// constructor-set property, so keep passing it there for them.
+		if ( version_compare( MW_VERSION, '1.46', '<' ) ) {
+			parent::__construct( 'SMWAdmin', 'smw-admin' );
+		} else {
+			parent::__construct( 'SMWAdmin' );
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getRestriction(): string {
+		return 'smw-admin';
 	}
 
 	/**

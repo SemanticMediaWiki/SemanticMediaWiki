@@ -36,7 +36,16 @@ class SpecialFacetedSearch extends SpecialPage {
 		private readonly Store $store,
 		private readonly SchemaFactory $schemaFactory
 	) {
-		parent::__construct( 'FacetedSearch', '', true, false, 'default', true );
+		// MediaWiki 1.46 deprecated the SpecialPage constructor flags; the
+		// page stays transcludable via the isIncludable() override below.
+		parent::__construct( 'FacetedSearch' );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isIncludable(): bool {
+		return true;
 	}
 
 	/**

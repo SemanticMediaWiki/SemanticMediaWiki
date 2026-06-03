@@ -18,7 +18,16 @@ use SMW\Utils\HtmlTabs;
 class SpecialPendingTaskList extends SpecialPage {
 
 	public function __construct() {
-		parent::__construct( 'PendingTaskList', '', false );
+		// MediaWiki 1.46 deprecated the SpecialPage constructor flags; the
+		// page stays unlisted via the isListed() override below.
+		parent::__construct( 'PendingTaskList' );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isListed(): bool {
+		return false;
 	}
 
 	/**
