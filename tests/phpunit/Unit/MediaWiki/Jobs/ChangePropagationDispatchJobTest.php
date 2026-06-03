@@ -293,7 +293,6 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$reflector = new ReflectionClass( ChangePropagationDispatchJob::class );
 		$method = $reflector->getMethod( 'chooseUpdateStrategy' );
-		$method->setAccessible( true );
 
 		$this->assertSame( $expected, $method->invoke( $job ) );
 	}

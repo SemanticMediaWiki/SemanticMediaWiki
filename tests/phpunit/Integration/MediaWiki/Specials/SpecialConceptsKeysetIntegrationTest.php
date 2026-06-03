@@ -303,7 +303,6 @@ class SpecialConceptsKeysetIntegrationTest extends SMWIntegrationTestCase {
 		$reflection = new \ReflectionClass( $instance );
 
 		$doFetch = $reflection->getMethod( 'doCursorFetch' );
-		$doFetch->setAccessible( true );
 		$result = $doFetch->invoke( $instance, $options );
 
 		$titles = [];
