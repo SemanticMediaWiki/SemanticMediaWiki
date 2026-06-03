@@ -95,6 +95,7 @@ class rebuildData extends Maintenance {
 		$this->addOption( 'namespace', 'Only refresh pages in the selected namespace. Example: --namespace="NS_MAIN"', false, false );
 		$this->addOption( 'redirects', 'Only refresh redirect pages', false );
 		$this->addOption( 'dispose-outdated', 'Only Remove outdated marked entities (including pending references).', false );
+		$this->addOption( 'skip-dispose', 'Skip the outdated-entity disposal prologue (run disposeOutdatedEntities.php separately, e.g. for parallel ranged rebuilds).', false );
 		$this->addOption( 'remove-remnantentities', 'Check and remove remnant entities (ghosts) from tables without a corresponding hash field entry', false );
 
 		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
