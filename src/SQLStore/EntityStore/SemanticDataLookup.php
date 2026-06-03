@@ -102,10 +102,16 @@ class SemanticDataLookup {
 		$state = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
-			// findPropertyTableID() returns '' (not null) when a property has no
-			// dedicated table; coerce defensively so a null is never used as an
-			// array offset, which is deprecated as of PHP 8.4.
-			$state[$this->store->findPropertyTableID( $property ) ?? ''] = true;
+			$tableId = $this->store->findPropertyTableID( $property );
+
+			// null = not stored in any property table (e.g. sortkeys);
+			// '' = no dedicated table / unregistered type. Neither is a real
+			// table id, so skip rather than fabricate a $state[''] bucket.
+			if ( $tableId === null || $tableId === '' ) {
+				continue;
+			}
+
+			$state[$tableId] = true;
 		}
 
 		return $state;

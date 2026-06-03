@@ -147,6 +147,88 @@ class SemanticDataLookupTest extends TestCase {
 		);
 	}
 
+	public function testGetTableUsageInfoSkipsSortkeyProperty() {
+		$property = new Property( '_SKEY' );
+
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->with( $property )
+			->willReturn( null );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->willReturn( [ $property ] );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		// _SKEY is never stored in a property table; findPropertyTableID()
+		// returns null for it, so it must not appear in the usage set.
+		$this->assertSame(
+			[],
+			$instance->getTableUsageInfo( $semanticData )
+		);
+	}
+
+	public function testGetTableUsageInfoSkipsPropertyWithoutDedicatedTable() {
+		$property = new Property( 'Foo' );
+
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->with( $property )
+			->willReturn( '' );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->willReturn( [ $property ] );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertSame(
+			[],
+			$instance->getTableUsageInfo( $semanticData )
+		);
+	}
+
+	public function testGetTableUsageInfoKeepsRealTableWhenSentinelPropertyPresent() {
+		$tabled = new Property( 'Foo' );
+		$sortkey = new Property( '_SKEY' );
+
+		$this->store->method( 'findPropertyTableID' )
+			->willReturnCallback( static function ( Property $property ) {
+				return $property->getKey() === 'Foo' ? '__bar__' : null;
+			} );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->willReturn( [ $tabled, $sortkey ] );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		// A real table id is retained even when a sentinel property is skipped.
+		$this->assertSame(
+			[ '__bar__' => true ],
+			$instance->getTableUsageInfo( $semanticData )
+		);
+	}
+
 	public function testNewRequestOptions_NULL() {
 		$property = new Property( 'Foo' );
 

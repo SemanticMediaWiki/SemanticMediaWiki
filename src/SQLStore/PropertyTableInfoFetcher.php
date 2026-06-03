@@ -143,7 +143,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @param Property $property
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function findTableIdForProperty( Property $property ) {
 		if ( $this->fixedPropertyTableIds === null ) {
