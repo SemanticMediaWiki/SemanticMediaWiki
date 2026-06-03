@@ -60,7 +60,7 @@ class ElementFactory {
 	}
 
 	private function newElement( DataItem $dataItem ) {
-		$type = $dataItem->getDIType();
+		$type = $dataItem->getDIType() ?? '';
 
 		if ( isset( $this->dataItemMappers[$type] ) && is_callable( $this->dataItemMappers[$type] ) ) {
 			return $this->dataItemMappers[$type]( $dataItem );

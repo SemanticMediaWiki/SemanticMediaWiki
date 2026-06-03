@@ -54,7 +54,7 @@ class ConnectionProvider implements IConnectionProvider {
 			'write' => DB_PRIMARY
 		];
 
-		if ( isset( $this->localConnectionConf[$this->provider] ) ) {
+		if ( isset( $this->localConnectionConf[$this->provider ?? ''] ) ) {
 			$conf = $this->localConnectionConf[$this->provider];
 		}
 

@@ -150,7 +150,7 @@ class TableStatisticsLookup {
 					'unassigned_count' => $unassigned_query_links_count,
 				],
 			],
-			$blobTable => [
+			( $blobTable ?? '' ) => [
 				'total_row_count' => $rows_blob_table_total_count,
 				'unique_terms_occurrence_in_percent' => $unique_hash_field_terms_in_percent,
 				'rows' => [

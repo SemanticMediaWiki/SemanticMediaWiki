@@ -204,7 +204,7 @@ class PropertyTableRowMapper {
 					continue;
 				}
 
-				$tableName = $propertyTable->getName();
+				$tableName = $propertyTable->getName() ?? '';
 
 				if ( !array_key_exists( $tableName, $rows ) ) {
 					$rows[$tableName] = [];

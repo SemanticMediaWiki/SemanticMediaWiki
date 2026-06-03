@@ -73,7 +73,7 @@ class ConceptQuerySegmentBuilder {
 
 		$this->querySegmentListProcessor->process( $qid );
 
-		return $querySegmentList[$qid] ?? null;
+		return $querySegmentList[$qid ?? ''] ?? null;
 	}
 
 	/**

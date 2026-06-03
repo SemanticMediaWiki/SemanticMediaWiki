@@ -153,7 +153,7 @@ class SchemaTypes implements JsonSerializable {
 	 * @return bool
 	 */
 	public function isRegisteredType( ?string $type ): bool {
-		return isset( $this->schemaTypes[$type] );
+		return isset( $this->schemaTypes[$type ?? ''] );
 	}
 
 	/**

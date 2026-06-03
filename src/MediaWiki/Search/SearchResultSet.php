@@ -92,7 +92,7 @@ class SearchResultSet extends \SearchResultSet {
 		foreach ( $this->pages as $page ) {
 			$title = $page->getTitle();
 			if ( $title !== null ) {
-				$key = $title->getPrefixedDBKey();
+				$key = $title->getPrefixedDBKey() ?? '';
 
 				if ( $title->getNamespace() !== SMW_NS_PROPERTY && !$title->exists() ) {
 					continue;

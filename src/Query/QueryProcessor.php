@@ -469,7 +469,7 @@ class QueryProcessor implements QueryContext {
 	public static function getFormatParameters( $format ): array {
 		ResultFormat::resolveFormatAliases( $format );
 
-		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
+		if ( !array_key_exists( $format ?? '', $GLOBALS['smwgResultFormats'] ) ) {
 			return [];
 		}
 

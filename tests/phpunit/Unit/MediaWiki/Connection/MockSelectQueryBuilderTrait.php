@@ -105,7 +105,7 @@ trait MockSelectQueryBuilderTrait {
 		$firstField = false;
 		if ( is_object( $firstRow ) ) {
 			$vars = get_object_vars( $firstRow );
-			$firstField = $vars[array_key_first( $vars )] ?? false;
+			$firstField = $vars[array_key_first( $vars ) ?? ''] ?? false;
 		} elseif ( is_array( $firstRow ) ) {
 			$firstField = reset( $firstRow );
 		}

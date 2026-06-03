@@ -302,7 +302,7 @@ class CachingSemanticDataLookup {
 		$this->initLookupCache( $id, $subject );
 
 		// @see also setLookupCache
-		$name = $propertyTableDef->getName();
+		$name = $propertyTableDef->getName() ?? '';
 
 		if ( isset( self::$state[$id][$name] ) ) {
 			$this->unlockCache();
