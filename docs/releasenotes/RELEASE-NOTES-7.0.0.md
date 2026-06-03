@@ -100,6 +100,9 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 * `$wgSearchType` can now be set to `SMW\MediaWiki\Search\ExtendedSearchEngine` to enable the extended search, alongside the deprecated `SMWSearch` alias. ([#6944](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6944))
 * Date values rendered in HTML (result tables, the factbox, `Special:Browse`, `Special:SearchByProperty`) are now wrapped in a semantic `<time datetime>` element, exposing a machine-readable date to assistive technology and other consumers while the displayed text is unchanged. Exports (CSV, JSON, RDF) stay plain. ([#6830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6830))
 * `rebuildData.php` accepts a new `--use-job` option that queues its update jobs instead of running them inline, so a full rebuild can be processed in parallel with `runJobs.php --type smw.update --procs N`. The per-entity parse cost is unchanged, so set the worker count to what your database can absorb. ([#6952](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6952))
+* Outdated-entity disposal now removes references in batched IN-list deletes, making `disposeOutdatedEntities.php` and the rebuild disposal prologue substantially faster on large wikis. ([#6968](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6968))
+* `disposeOutdatedEntities.php` accepts new `--of`/`--shard` options to run disposal across several parallel processes over disjoint `smw_id` shards (query-link cleanup runs on shard 0). ([#6968](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6968))
+* `rebuildData.php` accepts a new `--skip-dispose` option to skip the disposal prologue, enabling parallel ranged rebuilds after a single (optionally sharded) disposal run. ([#6968](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6968))
 
 ### Bug fixes
 
