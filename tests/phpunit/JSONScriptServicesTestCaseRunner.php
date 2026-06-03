@@ -233,6 +233,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			'wgEnableUploads',
 			'wgFileExtensions',
 			'wgDefaultUserOptions',
+			'wgThumbLimits',
 			'wgLocalTZoffset'
 		];
 	}
