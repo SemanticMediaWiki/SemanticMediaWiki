@@ -573,7 +573,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Property $property
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function findPropertyTableID( Property $property ) {
 		return $this->getPropertyTableInfoFetcher()->findTableIdForProperty( $property );
