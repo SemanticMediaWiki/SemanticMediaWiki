@@ -9,7 +9,9 @@ use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\ValueDescription;
 use SMW\Query\Query;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\OrderCondition;
@@ -231,6 +233,156 @@ class ConditionBuilderTest extends TestCase {
 			$expected,
 			$instance->getQuerySegmentList()
 		);
+	}
+
+	public function testBuildConditionWarmsEntityCacheForLargeConditionEntitySet() {
+		// A condition carrying many page-typed entities (here: a category
+		// disjunction past the warm-up threshold) should resolve their ids in a
+		// single batch up front rather than one lookup per value (#6559).
+		$disjunction = new Disjunction();
+		$categories = [];
+
+		for ( $i = 1; $i <= 10; $i++ ) {
+			$category = new WikiPage( "Cat $i", NS_CATEGORY );
+			$categories[] = $category;
+			$disjunction->addDescription( new ClassDescription( $category ) );
+		}
+
+		$warmed = null;
+
+		$objectIds = $this->getMockBuilder( EntityIdManager::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getSMWPageID', 'warmUpCache' ] )
+			->getMock();
+
+		$objectIds->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->willReturn( 42 );
+
+		$objectIds->expects( $this->once() )
+			->method( 'warmUpCache' )
+			->willReturnCallback( static function ( $list ) use ( &$warmed ) {
+				$warmed = $list;
+			} );
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $objectIds );
+
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getDescription' )
+			->willReturn( $disjunction );
+
+		$instance = new ConditionBuilder(
+			$this->store,
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
+		);
+
+		$instance->buildCondition( $query );
+
+		$this->assertSame( $categories, $warmed );
+	}
+
+	public function testBuildConditionWarmsEntityCacheForWikiPageValueDisjunction() {
+		// The primary target shape: [[Property::A||B||...]] parses to
+		// SomeProperty( Disjunction( ValueDescription, ... ) ); here the
+		// disjunction of WikiPage values is exercised directly.
+		$disjunction = new Disjunction();
+		$values = [];
+
+		for ( $i = 1; $i <= 10; $i++ ) {
+			$value = new WikiPage( "Value $i", NS_MAIN );
+			$values[] = $value;
+			$disjunction->addDescription( new ValueDescription( $value ) );
+		}
+
+		$warmed = null;
+
+		$objectIds = $this->getMockBuilder( EntityIdManager::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getSMWPageID', 'warmUpCache' ] )
+			->getMock();
+
+		$objectIds->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->willReturn( 42 );
+
+		$objectIds->expects( $this->once() )
+			->method( 'warmUpCache' )
+			->willReturnCallback( static function ( $list ) use ( &$warmed ) {
+				$warmed = $list;
+			} );
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $objectIds );
+
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getDescription' )
+			->willReturn( $disjunction );
+
+		$instance = new ConditionBuilder(
+			$this->store,
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
+		);
+
+		$instance->buildCondition( $query );
+
+		$this->assertSame( $values, $warmed );
+	}
+
+	public function testBuildConditionDoesNotWarmEntityCacheBelowThreshold() {
+		// One below the threshold of ten pins the `>=` boundary.
+		$disjunction = new Disjunction();
+
+		for ( $i = 1; $i <= 9; $i++ ) {
+			$disjunction->addDescription( new ClassDescription( new WikiPage( "Cat $i", NS_CATEGORY ) ) );
+		}
+
+		$objectIds = $this->getMockBuilder( EntityIdManager::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getSMWPageID', 'warmUpCache' ] )
+			->getMock();
+
+		$objectIds->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->willReturn( 42 );
+
+		$objectIds->expects( $this->never() )
+			->method( 'warmUpCache' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $objectIds );
+
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getDescription' )
+			->willReturn( $disjunction );
+
+		$instance = new ConditionBuilder(
+			$this->store,
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
+		);
+
+		$instance->buildCondition( $query );
 	}
 
 	public function testGivenNonInteger_getQuerySegmentThrowsException() {
