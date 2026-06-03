@@ -1,0 +1,51 @@
+{
+	"description": "Test output from `Special:PageProperty` listing the distinct values of a text property (`_txt`, covering fast path)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "SP0002 text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/SP0002/1",
+			"contents": "[[SP0002 text::AlphaSmoke]]"
+		},
+		{
+			"page": "Example/SP0002/2",
+			"contents": "[[SP0002 text::BetaSmoke]]"
+		},
+		{
+			"page": "Example/SP0002/3",
+			"contents": "[[SP0002 text::AlphaSmoke]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 lists each distinct value once",
+			"special-page": {
+				"page": "PageProperty",
+				"query-parameters": "",
+				"request-parameters": {
+					"type": "SP0002 text"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<li>AlphaSmoke&#160;&#160;<span class=\"smwsearch\"><a href=\".*:SP0002-20text/AlphaSmoke\" title=\"AlphaSmoke\">+</a></span></li>",
+					"<li>BetaSmoke&#160;&#160;<span class=\"smwsearch\"><a href=\".*:SP0002-20text/BetaSmoke\" title=\"BetaSmoke\">+</a></span></li>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

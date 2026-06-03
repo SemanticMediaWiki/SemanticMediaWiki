@@ -9,6 +9,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataModel\SequenceMap;
+use SMW\DataValues\KeywordValue;
 use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
@@ -355,7 +356,156 @@ class SemanticDataLookup {
 			] );
 		}
 
+		// Fast path for listing the distinct values of a non-keyword blob
+		// property (e.g. Special:PageProperty). The generic DISTINCT over
+		// [ o_blob, o_hash ] cannot use the (p_id, o_hash) index because o_blob
+		// is a non-indexed MEDIUMBLOB, so a property with many subjects but few
+		// distinct values turns into a full partition scan that reads every
+		// blob body. For non-keyword blob values o_hash determines the value
+		// (it is the value when it fits inline; otherwise a truncated + md5 key
+		// mapping to exactly one o_blob), so the distinct set is found with a
+		// covering DISTINCT over o_hash and the rare long-value bodies fetched
+		// by an indexed point lookup. Keyword properties are excluded because
+		// their o_hash is a lossy (lowercased/transliterated) form of a still
+		// distinct o_blob, so dedup must remain on the [ o_blob, o_hash ] pair.
+		if ( !$isSubject
+			&& $propTable->getDIType() === DataItem::TYPE_BLOB
+			&& $dataItem->findPropertyValueType() !== KeywordValue::TYPE_ID
+		) {
+			return $this->fetchDistinctBlobValuesFromTable( $qb, $propTable, $id, $requestOptions );
+		}
+
 		return $this->fetchFromTable( $qb, $propTable, $isSubject, $requestOptions );
+	}
+
+	/**
+	 * Covering fast path for `fetchSemanticDataFromTable` when listing the
+	 * distinct values of a non-keyword blob property. See the call site for the
+	 * rationale.
+	 *
+	 * @return array<array{0: string|null, 1: string}> list of [ o_blob, o_hash ]
+	 *  pairs in the same shape `fetchFromTable` returns for the non-subject case
+	 */
+	private function fetchDistinctBlobValuesFromTable( SelectQueryBuilder $qb, PropertyTableDefinition $propTable, $id, ?RequestOptions $requestOptions ): array {
+		if ( $requestOptions === null ) {
+			$requestOptions = new RequestOptions();
+		}
+
+		$diHandler = $this->store->getDataItemHandlerForDIType( $propTable->getDIType() );
+		$maxLength = $diHandler->getMaxLength();
+
+		// o_hash is the value, sort and label field for a blob data item.
+		$valueField = 'o_hash';
+
+		// A string match (value search) and its sort apply to o_hash, mirroring
+		// the non-subject branch of fetchFromTable.
+		$explicitOrder = $requestOptions->getStringConditions() !== [] && $requestOptions->sort;
+
+		if ( $explicitOrder ) {
+			$sort = $requestOptions->ascending ? 'ASC' : 'DESC';
+			$requestOptions->setOption( 'ORDER BY', $valueField . " $sort" );
+		}
+
+		$conds = $this->store->getSQLConditions( $requestOptions, $valueField, $valueField, false );
+
+		if ( $conds !== '' ) {
+			$qb->andWhere( $conds );
+		}
+
+		// Covering DISTINCT over o_hash only.
+		$requestOptions->setOption( 'DISTINCT', true );
+		$opts = $this->store->getSQLOptions( $requestOptions, $valueField );
+
+		// Preserve a Postgres-specific `DISTINCT ON (...)` value as fetchFromTable does.
+		if ( isset( $opts['DISTINCT'] ) && is_string( $opts['DISTINCT'] ) ) {
+			$qb->option( 'DISTINCT', $opts['DISTINCT'] );
+			unset( $opts['DISTINCT'] );
+		}
+
+		if ( $requestOptions->exclude_limit ) {
+			unset( $opts['LIMIT'], $opts['OFFSET'] );
+		}
+
+		LegacyOptionsApplier::applyTo( $qb, $opts );
+
+		if (
+			$requestOptions->getOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false ) ||
+			$requestOptions->getOption( RequestOptions::CONDITION_CONSTRAINT, false ) ) {
+			if ( $requestOptions->sort ) {
+				$sort = $requestOptions->ascending ? 'ASC' : 'DESC';
+				$qb->orderBy( $valueField . " $sort" );
+			}
+		}
+
+		$qb->select( [ 'v1' => $valueField ] );
+
+		$hashes = [];
+		$res = $qb->caller( __METHOD__ )->fetchResultSet();
+
+		foreach ( $res as $row ) {
+			$hashes[$row->v1] = true;
+		}
+
+		$res->free();
+
+		// Reconstruct [ o_blob, o_hash ]. A value whose o_hash is shorter than
+		// the field length is stored inline (o_blob is NULL) and needs no
+		// lookup. Only an o_hash at (near) the field length can belong to a
+		// truncated long value: makeHash() keeps maxLength-32 bytes plus a
+		// 32-byte md5, and multibyte truncation can drop up to 3 bytes, so any
+		// o_hash within 3 bytes of the field length may have a stored body.
+		//
+		// This issues at most one indexed point lookup per distinct long value,
+		// i.e. bounded by the request limit, and none for the common case of
+		// inline values. The worst case (a property dominated by distinct long
+		// values) stays within the same order as the original single-statement
+		// scan it replaces, while the common many-subjects/few-values case
+		// avoids reading every blob body in the partition.
+		$threshold = $maxLength - 3;
+		$result = [];
+
+		foreach ( array_keys( $hashes ) as $hash ) {
+			$hash = (string)$hash;
+			$blob = null;
+
+			if ( strlen( $hash ) >= $threshold ) {
+				$blob = $this->fetchBlobByHash( $propTable, $id, $hash );
+			}
+
+			$result[] = [ $blob, $hash ];
+		}
+
+		// Mirror fetchFromTable: when no explicit ORDER BY was requested, apply
+		// a deterministic lexical order so a retrieved range is stable.
+		if ( !$explicitOrder ) {
+			sort( $result );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Point lookup for the o_blob body of a single (long) value, reached by the
+	 * (p_id, o_hash) index. Returns null when the value is stored inline.
+	 *
+	 * @return string|null
+	 */
+	private function fetchBlobByHash( PropertyTableDefinition $propTable, $id, string $hash ) {
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$qb = $connection->newSelectQueryBuilder()
+			->from( $propTable->getName() )
+			->select( 'o_blob' )
+			->where( [ 'o_hash' => $hash ] )
+			->limit( 1 );
+
+		if ( !$propTable->isFixedPropertyTable() ) {
+			$qb->andWhere( [ 'p_id' => $id ] );
+		}
+
+		$blob = $qb->caller( __METHOD__ )->fetchField();
+
+		return $blob === false ? null : $blob;
 	}
 
 	/**

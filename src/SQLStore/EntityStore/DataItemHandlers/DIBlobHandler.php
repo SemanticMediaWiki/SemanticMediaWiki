@@ -217,8 +217,12 @@ class DIBlobHandler extends DataItemHandler {
 	 * string length to 300-32 for LIKE/NLIKE queries.
 	 *
 	 * @since 3.0
+	 *
+	 * @since 7.0.0 exposed as public so callers can distinguish an inline
+	 * value (stored in `o_hash`) from a truncated long value (stored in
+	 * `o_blob`) by the length of `o_hash`.
 	 */
-	private function getMaxLength(): int {
+	public function getMaxLength(): int {
 		$length = 72;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {
