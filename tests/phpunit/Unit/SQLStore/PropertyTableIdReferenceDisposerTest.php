@@ -404,4 +404,114 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 		);
 	}
 
+	public function testCleanUpTableEntriesByIdList_NonRedirect() {
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'getDataItemById' ] )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getDataItemById' )
+			->willReturn( new WikiPage( 'Foo', NS_MAIN, '' ) );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$capturedTables = [];
+		$capturedWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $capturedTables, $capturedWheres );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->willReturn( [] );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$store,
+			$this->eventDispatcher
+		);
+
+		$instance->cleanUpTableEntriesByIdList( [ 42, 43 ] );
+
+		$this->assertSame(
+			[
+				SQLStore::ID_TABLE,
+				SQLStore::ID_AUXILIARY_TABLE,
+				SQLStore::PROPERTY_STATISTICS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
+			],
+			$capturedTables
+		);
+
+		$this->assertSame( [ 'smw_id' => [ 42, 43 ] ], $capturedWheres[0] );
+	}
+
+	public function testCleanUpTableEntriesByIdList_ExcludesRedirectFromIdTable() {
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'getDataItemById' ] )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getDataItemById' )
+			->willReturnCallback( static function ( $id ) {
+				return $id === 42
+					? new WikiPage( 'Foo', NS_MAIN, SMW_SQL3_SMWREDIIW )
+					: new WikiPage( 'Bar', NS_MAIN, '' );
+			} );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$capturedTables = [];
+		$capturedWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $capturedTables, $capturedWheres );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->willReturn( [] );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$store,
+			$this->eventDispatcher
+		);
+
+		$instance->cleanUpTableEntriesByIdList( [ 42, 43 ] );
+
+		// ID_TABLE delete only for the non-redirect id (43).
+		$this->assertSame( [ 'smw_id' => [ 43 ] ], $capturedWheres[0] );
+	}
+
 }
