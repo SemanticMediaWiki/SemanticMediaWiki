@@ -311,4 +311,124 @@ class TableSchemaManagerTest extends TestCase {
 		);
 	}
 
+	public function testPropertyTable_RedundantObjectIndexIsDropped() {
+		// When the handler declares a composite index that begins with the
+		// object index field, the auto-generated single-column "po" index is a
+		// redundant left-prefix and must not be created. See issue #6559.
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'getName' )
+			->willReturn( 'foo_wikipage_table' );
+
+		$propertyTableDefinition->method( 'usesIdSubject' )
+			->willReturn( true );
+
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getTableIndexes' ] )
+			->getMockForAbstractClass();
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableFields' )
+			->willReturn( [] );
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getIndexField' )
+			->willReturn( 'o_id' );
+
+		// The real DIWikiPage index set. Only the standalone 'o_id' must drop;
+		// the composites that merely contain o_id in a non-leading position
+		// (s_id,o_id and s_id,p_id,o_id) must survive.
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableIndexes' )
+			->willReturn( [ 'o_id', 'p_id,s_id', 's_id,o_id', 's_id,p_id,o_id', 'o_id,s_id', 'o_id,p_id' ] );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->willReturn( [ $propertyTableDefinition ] );
+
+		$this->store->expects( $this->once() )
+			->method( 'getDataItemHandlerForDIType' )
+			->willReturn( $dataItemHandler );
+
+		$instance = new TableSchemaManager(
+			$this->store
+		);
+
+		$table = $instance->findTable( 'foo_wikipage_table' );
+
+		$this->assertEquals(
+			[
+				'sp' => 's_id,p_id',
+				'p_id,s_id',
+				's_id,o_id',
+				's_id,p_id,o_id',
+				'o_id,s_id',
+				'o_id,p_id',
+			],
+			$table->get( 'indices' )
+		);
+	}
+
+	public function testPropertyTable_ObjectIndexRetainedWhenNoCompositeLeadsWithIt() {
+		// Counterpart to the drop case: when the object index field only appears
+		// in a non-leading position of a composite (the blob/number/uri shape),
+		// the single-column "po" index is the sole index serving that column and
+		// must be retained. Guards the left-prefix (not substring) semantics.
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'getName' )
+			->willReturn( 'foo_blob_table' );
+
+		$propertyTableDefinition->method( 'usesIdSubject' )
+			->willReturn( true );
+
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getTableIndexes' ] )
+			->getMockForAbstractClass();
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableFields' )
+			->willReturn( [] );
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getIndexField' )
+			->willReturn( 'o_hash' );
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableIndexes' )
+			->willReturn( [ 's_id,o_hash', 'p_id,o_hash' ] );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->willReturn( [ $propertyTableDefinition ] );
+
+		$this->store->expects( $this->once() )
+			->method( 'getDataItemHandlerForDIType' )
+			->willReturn( $dataItemHandler );
+
+		$instance = new TableSchemaManager(
+			$this->store
+		);
+
+		$table = $instance->findTable( 'foo_blob_table' );
+
+		$this->assertEquals(
+			[
+				'sp' => 's_id,p_id',
+				'po' => 'o_hash',
+				's_id,o_hash',
+				'p_id,o_hash',
+			],
+			$table->get( 'indices' )
+		);
+	}
+
 }

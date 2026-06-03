@@ -393,6 +393,26 @@ class TableSchemaManager {
 			$indexes = array_merge( $indexes, [ $value ] );
 		}
 
+		// Drop the auto-generated single-column object index ("po") when a
+		// declared composite index already begins with that same column. In
+		// that case the standalone index is a redundant left-prefix: the
+		// optimizer satisfies every lookup from the composite, which also
+		// covers the trailing column, so keeping it only adds write and storage
+		// overhead. This affects the wikipage data-item tables, whose handler
+		// declares (o_id,s_id) and (o_id,p_id). See issue #6559.
+		if ( isset( $indexes['po'] ) ) {
+			$objectFieldPrefix = $indexes['po'] . ',';
+
+			foreach ( $indexes as $key => $index ) {
+				$columns = is_array( $index ) ? $index[0] : $index;
+
+				if ( $key !== 'po' && str_starts_with( $columns, $objectFieldPrefix ) ) {
+					unset( $indexes['po'] );
+					break;
+				}
+			}
+		}
+
 		foreach ( $diHandler->getTableFields() as $fieldname => $fieldType ) {
 			$fieldarray[$fieldname] = $fieldType;
 		}
