@@ -284,12 +284,24 @@ class DataRebuilder {
 		);
 
 		// By default we expect the disposal action to take place whenever the
-		// script is run
-		$this->runOutdatedDisposer();
+		// script is run; --skip-dispose opts out so disposal can be run separately
+		// (e.g. sharded) without colliding with parallel ranged rebuilds.
+		$skipDispose = $this->options->safeGet( 'skip-dispose', false );
 
-		// Only expected the disposal action?
 		if ( $this->options->has( 'dispose-outdated' ) ) {
+			if ( $skipDispose ) {
+				$this->reportMessage(
+					"\nNote: --skip-dispose with --dispose-outdated does nothing; no disposal performed.\n"
+				);
+				return true;
+			}
+
+			$this->runOutdatedDisposer();
 			return true;
+		}
+
+		if ( !$skipDispose ) {
+			$this->runOutdatedDisposer();
 		}
 
 		if ( !$this->options->has( 'skip-properties' ) ) {

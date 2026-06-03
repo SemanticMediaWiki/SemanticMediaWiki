@@ -683,6 +683,160 @@ class DataRebuilderTest extends TestCase {
 	}
 
 	/**
+	 * @depends testCanConstruct
+	 */
+	public function testRebuildAll_SkipDispose_DoesNotRunDisposer() {
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rebuilder->expects( $this->once() )
+			->method( 'rebuild' )
+			->willReturnCallback( [ $this, 'refreshDataOnMockCallback' ] );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getMaxId' )
+			->willReturn( 1000 );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// The disposer is built via jobFactory->newEntityIdDisposerJob(); with
+		// --skip-dispose set it must never be constructed.
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'newUpdateJob', 'newEntityIdDisposerJob' ] )
+			->getMock();
+
+		$jobFactory->expects( $this->any() )
+			->method( 'newUpdateJob' )
+			->willReturn(
+				$this->getMockBuilder( UpdateJob::class )
+					->disableOriginalConstructor()
+					->getMock()
+			);
+
+		$jobFactory->expects( $this->never() )
+			->method( 'newEntityIdDisposerJob' );
+
+		$instance = new DataRebuilder( $store, $titleFactory, $jobFactory );
+
+		$instance->setOptions( new Options( [
+			'e' => 1,
+			'skip-dispose' => true
+		] ) );
+
+		$this->assertTrue( $instance->rebuild() );
+	}
+
+	/**
+	 * @depends testCanConstruct
+	 */
+	public function testRebuildAll_Default_RunsDisposer() {
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rebuilder->expects( $this->once() )
+			->method( 'rebuild' )
+			->willReturnCallback( [ $this, 'refreshDataOnMockCallback' ] );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getMaxId' )
+			->willReturn( 1000 );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Without --skip-dispose the disposer is built via
+		// jobFactory->newEntityIdDisposerJob() and run.
+		$entityIdDisposerJob = $this->getMockBuilder( EntityIdDisposerJob::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$resultIterator = $this->getMockBuilder( ResultIterator::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$resultIterator->expects( $this->any() )
+			->method( 'count' )
+			->willReturn( 0 );
+
+		$entityIdDisposerJob->expects( $this->any() )
+			->method( 'newOutdatedEntitiesResultIterator' )
+			->willReturn( $resultIterator );
+
+		$entityIdDisposerJob->expects( $this->any() )
+			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
+			->willReturn( $resultIterator );
+
+		$entityIdDisposerJob->expects( $this->any() )
+			->method( 'newOutdatedQueryLinksResultIterator' )
+			->willReturn( $resultIterator );
+
+		$entityIdDisposerJob->expects( $this->any() )
+			->method( 'newUnassignedQueryLinksResultIterator' )
+			->willReturn( $resultIterator );
+
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'newUpdateJob', 'newEntityIdDisposerJob' ] )
+			->getMock();
+
+		$jobFactory->expects( $this->any() )
+			->method( 'newUpdateJob' )
+			->willReturn(
+				$this->getMockBuilder( UpdateJob::class )
+					->disableOriginalConstructor()
+					->getMock()
+			);
+
+		$jobFactory->expects( $this->once() )
+			->method( 'newEntityIdDisposerJob' )
+			->willReturn( $entityIdDisposerJob );
+
+		$instance = new DataRebuilder( $store, $titleFactory, $jobFactory );
+
+		$instance->setOptions( new Options( [
+			'e' => 1
+		] ) );
+
+		$this->assertTrue( $instance->rebuild() );
+	}
+
+	/**
 	 * @see Store::refreshData
 	 */
 	public function refreshDataOnMockCallback( &$index ) {

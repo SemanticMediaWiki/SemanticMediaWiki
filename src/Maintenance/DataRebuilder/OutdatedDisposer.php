@@ -5,6 +5,8 @@ namespace SMW\Maintenance\DataRebuilder;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\RequestOptions;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -20,6 +22,8 @@ class OutdatedDisposer {
 	use MessageReporterAwareTrait;
 
 	private CliMsgFormatter $cliMsgFormatter;
+	private int $shard = 0;
+	private int $of = 1;
 
 	/**
 	 * @since 3.1
@@ -32,9 +36,25 @@ class OutdatedDisposer {
 	}
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function setShard( int $shard, int $of ): void {
+		$this->shard = $shard;
+		$this->of = $of;
+	}
+
+	/**
 	 * @since 3.1
 	 */
 	public function run(): void {
+		$requestOptions = null;
+
+		if ( $this->of > 1 ) {
+			$requestOptions = new RequestOptions();
+			$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_OF, $this->of );
+			$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_INDEX, $this->shard );
+		}
+
 		$this->messageReporter->reportMessage(
 			"Removing outdated and invalid entities ...\n"
 		);
@@ -43,7 +63,7 @@ class OutdatedDisposer {
 			$this->cliMsgFormatter->firstCol( '   ... checking outdated entities ...' )
 		);
 
-		$resultIterator = $this->entityIdDisposerJob->newOutdatedEntitiesResultIterator();
+		$resultIterator = $this->entityIdDisposerJob->newOutdatedEntitiesResultIterator( $requestOptions );
 
 		$count = $resultIterator->count();
 		if ( $count > 0 ) {
@@ -58,7 +78,7 @@ class OutdatedDisposer {
 			$this->cliMsgFormatter->firstCol( '   ... checking invalid entities by namespace ...' )
 		);
 
-		$resultIterator = $this->entityIdDisposerJob->newByNamespaceInvalidEntitiesResultIterator();
+		$resultIterator = $this->entityIdDisposerJob->newByNamespaceInvalidEntitiesResultIterator( $requestOptions );
 
 		$count = $resultIterator->count();
 		if ( $count > 0 ) {
@@ -71,41 +91,47 @@ class OutdatedDisposer {
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 
-		$this->messageReporter->reportMessage(
-			"\nRemoving query links ...\n"
-		);
+		if ( $this->shard === 0 ) {
+			$this->messageReporter->reportMessage(
+				"\nRemoving query links ...\n"
+			);
 
-		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->firstCol( '   ... checking query links (invalid) ...' )
-		);
+			$this->messageReporter->reportMessage(
+				$this->cliMsgFormatter->firstCol( '   ... checking query links (invalid) ...' )
+			);
 
-		$resultIterator = $this->entityIdDisposerJob->newOutdatedQueryLinksResultIterator();
+			$resultIterator = $this->entityIdDisposerJob->newOutdatedQueryLinksResultIterator();
 
-		$count = $resultIterator->count();
-		if ( $count > 0 ) {
-			$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (invalid)' );
+			$count = $resultIterator->count();
+			if ( $count > 0 ) {
+				$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (invalid)' );
+			} else {
+				$this->messageReporter->reportMessage(
+					$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+				);
+			}
+
+			$this->messageReporter->reportMessage(
+				$this->cliMsgFormatter->firstCol( '   ... checking query links (unassigned) ...' )
+			);
+
+			$resultIterator = $this->entityIdDisposerJob->newUnassignedQueryLinksResultIterator();
+
+			$count = $resultIterator->count();
+			if ( $count > 0 ) {
+				$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (unassigned)' );
+			} else {
+				$this->messageReporter->reportMessage(
+					$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+				);
+			}
+
+			$this->messageReporter->reportMessage( "   ... done.\n" );
 		} else {
 			$this->messageReporter->reportMessage(
-				$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+				"\nRemoving query links ... (skipped on shard {$this->shard}; runs on shard 0)\n"
 			);
 		}
-
-		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->firstCol( '   ... checking query links (unassigned) ...' )
-		);
-
-		$resultIterator = $this->entityIdDisposerJob->newUnassignedQueryLinksResultIterator();
-
-		$count = $resultIterator->count();
-		if ( $count > 0 ) {
-			$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (unassigned)' );
-		} else {
-			$this->messageReporter->reportMessage(
-				$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
-			);
-		}
-
-		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
 	private function disposeOutdatedEntities( $resultIterator, int $count ): void {
@@ -115,16 +141,19 @@ class OutdatedDisposer {
 		$counter = 0;
 
 		foreach ( $chunkedIterator as $chunk ) {
+			$rows = [];
+
 			foreach ( $chunk as $row ) {
 				$counter++;
+				$rows[] = $row;
 				$msg = sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $count * 100 ) );
 
 				$this->messageReporter->reportMessage(
 					$this->cliMsgFormatter->twoColsOverride( '       ... cleaning up entity', $msg )
 				);
-
-				$this->entityIdDisposerJob->dispose( $row );
 			}
+
+			$this->entityIdDisposerJob->disposeList( $rows );
 		}
 
 		$this->messageReporter->reportMessage( "\n" );

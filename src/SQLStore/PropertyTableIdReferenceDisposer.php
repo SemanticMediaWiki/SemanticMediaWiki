@@ -12,6 +12,7 @@ use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use stdClass;
 use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @private
@@ -26,6 +27,19 @@ use Wikimedia\Rdbms\DBError;
  * @author mwjames
  */
 class PropertyTableIdReferenceDisposer {
+
+	/**
+	 * RequestOptions key holding the total number of modulo shards (N) for the
+	 * outdated-entity selection. When greater than 1, the selection is
+	 * restricted to a single shard.
+	 */
+	const OPT_SHARD_OF = 'shard.of';
+
+	/**
+	 * RequestOptions key holding this shard's index (k) within the modulo
+	 * sharding scheme (`smw_id % N = k`).
+	 */
+	const OPT_SHARD_INDEX = 'shard.index';
 
 	/**
 	 * @var Database
@@ -131,16 +145,21 @@ class PropertyTableIdReferenceDisposer {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
-			$options = [
-				'LIMIT'  => $requestOptions->getLimit(),
-				'OFFSET' => $requestOptions->getOffset(),
-			];
+			if ( $requestOptions->getLimit() > 0 ) {
+				$options['LIMIT'] = $requestOptions->getLimit();
+			}
+
+			if ( $requestOptions->getOffset() > 0 ) {
+				$options['OFFSET'] = $requestOptions->getOffset();
+			}
 		}
 
 		$qb = $this->connection->newSelectQueryBuilder()
 			->select( [ 'smw_id' ] )
 			->from( SQLStore::ID_TABLE )
 			->where( [ 'smw_iw' => SMW_SQL3_SMWDELETEIW ] );
+
+		$this->applyShard( $qb, $requestOptions );
 
 		LegacyOptionsApplier::applyTo( $qb, $options );
 
@@ -158,10 +177,13 @@ class PropertyTableIdReferenceDisposer {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
-			$options = [
-				'LIMIT'  => $requestOptions->getLimit(),
-				'OFFSET' => $requestOptions->getOffset(),
-			];
+			if ( $requestOptions->getLimit() > 0 ) {
+				$options['LIMIT'] = $requestOptions->getLimit();
+			}
+
+			if ( $requestOptions->getOffset() > 0 ) {
+				$options['OFFSET'] = $requestOptions->getOffset();
+			}
 		}
 
 		$qb = $this->connection->newSelectQueryBuilder()
@@ -169,9 +191,29 @@ class PropertyTableIdReferenceDisposer {
 			->from( SQLStore::ID_TABLE )
 			->where( 'smw_namespace NOT IN (' . $this->connection->makeList( array_keys( $this->namespacesWithSemanticLinks ) ) . ')' );
 
+		$this->applyShard( $qb, $requestOptions );
+
 		LegacyOptionsApplier::applyTo( $qb, $options );
 
 		return new ResultIterator( $qb->caller( __METHOD__ )->fetchResultSet() );
+	}
+
+	/**
+	 * Restrict the selection to a single modulo shard (`smw_id % N = k`) when
+	 * shard options are present on the request, letting an operator run N
+	 * disjoint disposal processes. The unsharded path is left untouched.
+	 */
+	private function applyShard( SelectQueryBuilder $qb, ?RequestOptions $requestOptions ): void {
+		if ( $requestOptions === null ) {
+			return;
+		}
+
+		$of = (int)$requestOptions->getOption( self::OPT_SHARD_OF, 1 );
+		$shard = (int)$requestOptions->getOption( self::OPT_SHARD_INDEX, 0 );
+
+		if ( $of > 1 ) {
+			$qb->andWhere( 'smw_id % ' . $of . ' = ' . $shard );
+		}
 	}
 
 	/**
@@ -196,108 +238,122 @@ class PropertyTableIdReferenceDisposer {
 	 * @param int $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
-		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionCommitOrIdle( function () use ( $id ): void {
-				$this->cleanUpReferencesById( $id );
-			} );
-		} else {
-			$this->cleanUpReferencesById( $id );
-		}
+		$this->cleanUpTableEntriesByIdList( [ $id ] );
 	}
 
-	private function cleanUpReferencesById( $id ): void {
-		$subject = $this->store->getObjectIds()->getDataItemById( $id );
-		$isRedirect = false;
+	/**
+	 * Batched disposal: one IN-list DELETE per (table, column) for the whole id
+	 * list, inside a single atomic transaction. Per-id cache-invalidation events
+	 * and the per-id completion hook are preserved.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param int[] $ids
+	 */
+	public function cleanUpTableEntriesByIdList( array $ids ): void {
+		$ids = array_values( array_unique( array_map( 'intval', $ids ) ) );
 
-		if ( $subject instanceof WikiPage ) {
-			$isRedirect = $subject->getInterwiki() === SMW_SQL3_SMWREDIIW;
-
-			// Use the subject without an internal 'smw-delete' iw marker
-			$subject = new WikiPage(
-				$subject->getDBKey(),
-				$subject->getNamespace(),
-				'',
-				$subject->getSubobjectName()
-			);
+		if ( $ids === [] ) {
+			return;
 		}
 
-		$this->triggerCleanUpEvents( $subject );
+		if ( $this->onTransactionIdle ) {
+			$this->connection->onTransactionCommitOrIdle( function () use ( $ids ): void {
+				$this->cleanUpReferencesByIdList( $ids );
+			} );
+			return;
+		}
+
+		$this->cleanUpReferencesByIdList( $ids );
+	}
+
+	private function cleanUpReferencesByIdList( array $ids ): void {
+		$subjects = [];
+		$isRedirect = [];
+		$nonRedirectIds = [];
+
+		foreach ( $ids as $id ) {
+			$subject = $this->store->getObjectIds()->getDataItemById( $id );
+			$redirect = false;
+
+			if ( $subject instanceof WikiPage ) {
+				$redirect = $subject->getInterwiki() === SMW_SQL3_SMWREDIIW;
+
+				// Use the subject without an internal 'smw-delete' iw marker
+				$subject = new WikiPage(
+					$subject->getDBKey(),
+					$subject->getNamespace(),
+					'',
+					$subject->getSubobjectName()
+				);
+			}
+
+			$subjects[$id] = $subject;
+			$isRedirect[$id] = $redirect;
+
+			if ( !$redirect || $this->redirectRemoval ) {
+				$nonRedirectIds[] = $id;
+			}
+
+			$this->triggerCleanUpEvents( $subject );
+		}
 
 		$this->connection->beginAtomicTransaction( __METHOD__ );
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			if ( $proptable->usesIdSubject() ) {
-				$this->connection->newDeleteQueryBuilder()
-					->deleteFrom( $proptable->getName() )
-					->where( [ 's_id' => $id ] )
-					->caller( __METHOD__ )
-					->execute();
+				$this->deleteByIdList( $proptable->getName(), 's_id', $ids );
 			}
 
 			if ( !$proptable->isFixedPropertyTable() ) {
-				$this->connection->newDeleteQueryBuilder()
-					->deleteFrom( $proptable->getName() )
-					->where( [ 'p_id' => $id ] )
-					->caller( __METHOD__ )
-					->execute();
+				$this->deleteByIdList( $proptable->getName(), 'p_id', $ids );
 			}
 
 			$fields = $proptable->getFields( $this->store );
 
 			// Match tables (including ftp_redi) that contain an object reference
 			if ( isset( $fields['o_id'] ) ) {
-				$this->connection->newDeleteQueryBuilder()
-					->deleteFrom( $proptable->getName() )
-					->where( [ 'o_id' => $id ] )
-					->caller( __METHOD__ )
-					->execute();
+				$this->deleteByIdList( $proptable->getName(), 'o_id', $ids );
 			}
 		}
 
-		$this->cleanUpSecondaryReferencesById( $id, $isRedirect );
+		$this->cleanUpSecondaryReferencesByIdList( $ids, $nonRedirectIds );
 		$this->connection->endAtomicTransaction( __METHOD__ );
 
-		MediaWikiServices::getInstance()
-			->getHookContainer()
-			->run(
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+
+		foreach ( $ids as $id ) {
+			$hookContainer->run(
 				'SMW::SQLStore::EntityReferenceCleanUpComplete',
-				[ $this->store, $id, $subject, $isRedirect ]
+				[ $this->store, $id, $subjects[$id], $isRedirect[$id] ]
 			);
+		}
 	}
 
-	private function cleanUpSecondaryReferencesById( $id, bool $isRedirect ): void {
-		// When marked as redirect, don't remove the reference
-		if ( !$isRedirect || $this->redirectRemoval ) {
-			$this->connection->newDeleteQueryBuilder()
-				->deleteFrom( SQLStore::ID_TABLE )
-				->where( [ 'smw_id' => $id ] )
-				->caller( __METHOD__ )
-				->execute();
+	private function deleteByIdList( string $table, string $field, array $ids ): void {
+		if ( $ids === [] ) {
+			return;
 		}
 
 		$this->connection->newDeleteQueryBuilder()
-			->deleteFrom( SQLStore::ID_AUXILIARY_TABLE )
-			->where( [ 'smw_id' => $id ] )
+			->deleteFrom( $table )
+			->where( [ $field => $ids ] )
 			->caller( __METHOD__ )
 			->execute();
+	}
 
-		$this->connection->newDeleteQueryBuilder()
-			->deleteFrom( SQLStore::PROPERTY_STATISTICS_TABLE )
-			->where( [ 'p_id' => $id ] )
-			->caller( __METHOD__ )
-			->execute();
+	private function cleanUpSecondaryReferencesById( $id, bool $isRedirect ): void {
+		$nonRedirectIds = ( !$isRedirect || $this->redirectRemoval ) ? [ (int)$id ] : [];
+		$this->cleanUpSecondaryReferencesByIdList( [ (int)$id ], $nonRedirectIds );
+	}
 
-		$this->connection->newDeleteQueryBuilder()
-			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
-			->where( [ 's_id' => $id ] )
-			->caller( __METHOD__ )
-			->execute();
-
-		$this->connection->newDeleteQueryBuilder()
-			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
-			->where( [ 'o_id' => $id ] )
-			->caller( __METHOD__ )
-			->execute();
+	private function cleanUpSecondaryReferencesByIdList( array $ids, array $nonRedirectIds ): void {
+		// When marked as redirect, don't remove the reference (nonRedirectIds omits it)
+		$this->deleteByIdList( SQLStore::ID_TABLE, 'smw_id', $nonRedirectIds );
+		$this->deleteByIdList( SQLStore::ID_AUXILIARY_TABLE, 'smw_id', $ids );
+		$this->deleteByIdList( SQLStore::PROPERTY_STATISTICS_TABLE, 'p_id', $ids );
+		$this->deleteByIdList( SQLStore::QUERY_LINKS_TABLE, 's_id', $ids );
+		$this->deleteByIdList( SQLStore::QUERY_LINKS_TABLE, 'o_id', $ids );
 
 		$tableExists = false;
 
@@ -312,11 +368,7 @@ class PropertyTableIdReferenceDisposer {
 		}
 
 		if ( $tableExists ) {
-			$this->connection->newDeleteQueryBuilder()
-				->deleteFrom( SQLStore::FT_SEARCH_TABLE )
-				->where( [ 's_id' => $id ] )
-				->caller( __METHOD__ )
-				->execute();
+			$this->deleteByIdList( SQLStore::FT_SEARCH_TABLE, 's_id', $ids );
 		}
 	}
 

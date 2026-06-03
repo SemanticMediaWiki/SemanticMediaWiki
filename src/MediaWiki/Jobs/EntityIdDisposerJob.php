@@ -126,6 +126,28 @@ class EntityIdDisposerJob extends Job {
 	}
 
 	/**
+	 * Batched counterpart to dispose(); resolves the disposer once and removes a
+	 * whole chunk of ids in IN-list deletes.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param array $rows Array of stdClass rows (with smw_id) or ints
+	 */
+	public function disposeList( array $rows ): void {
+		if ( $this->propertyTableIdReferenceDisposer === null ) {
+			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
+		}
+
+		$ids = [];
+
+		foreach ( $rows as $row ) {
+			$ids[] = is_int( $row ) ? $row : (int)$row->smw_id;
+		}
+
+		$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesByIdList( $ids );
+	}
+
+	/**
 	 * @see Job::run
 	 *
 	 * @since 2.5
@@ -181,9 +203,7 @@ class EntityIdDisposerJob extends Job {
 
 			$transactionTicket = $connection->getEmptyTransactionTicket( __METHOD__ );
 
-			foreach ( $chunk as $row ) {
-				$this->dispose( $row );
-			}
+			$this->disposeList( $chunk );
 
 			$connection->commitAndWaitForReplication( __METHOD__, $transactionTicket );
 		}

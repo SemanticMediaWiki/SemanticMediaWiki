@@ -73,6 +73,18 @@ Usage:
 php maintenance/run.php SemanticMediaWiki:disposeOutdatedEntities
 ```
 
+To split disposal across N parallel processes (each handling a disjoint `smw_id % N` shard), run one process per shard:
+
+```sh
+php maintenance/run.php SemanticMediaWiki:disposeOutdatedEntities --of 4 --shard 0 &
+php maintenance/run.php SemanticMediaWiki:disposeOutdatedEntities --of 4 --shard 1 &
+php maintenance/run.php SemanticMediaWiki:disposeOutdatedEntities --of 4 --shard 2 &
+php maintenance/run.php SemanticMediaWiki:disposeOutdatedEntities --of 4 --shard 3 &
+wait
+```
+
+Tune N to what the database absorbs (disposal is write-bound). Query-link cleanup runs only on shard 0.
+
 ### dumpRDF.php
 
 Allows to do a complete RDF export of existing triples. Available since SMW 2.0.0
@@ -126,8 +138,10 @@ See also: [Help:Maintenance_script_rebuildData.php](https://www.semantic-mediawi
 
 Usage:
 ```sh
-php maintenance/run.php SemanticMediaWiki:rebuildData [-d|-s|-e|-f|-n|--startidfile|-b|-v|-c|-p|-t|--page|--redirects|--query|-f|--no-cache|--report-runtime|--debug|--skip-properties|--shallow-update|--ignore-exceptions|--exception-log|--with-maintenance-log|--revision-mode|--force-update|--dispose-outdated]
+php maintenance/run.php SemanticMediaWiki:rebuildData [-d|-s|-e|-f|-n|--startidfile|-b|-v|-c|-p|-t|--page|--redirects|--query|-f|--no-cache|--report-runtime|--debug|--skip-properties|--shallow-update|--ignore-exceptions|--exception-log|--with-maintenance-log|--revision-mode|--force-update|--dispose-outdated|--skip-dispose]
 ```
+
+Use `--skip-dispose` to skip the disposal prologue so several ranged rebuilds can run in parallel; run disposeOutdatedEntities.php (optionally sharded) once beforehand.
 
 ### rebuildElasticIndex.php
 

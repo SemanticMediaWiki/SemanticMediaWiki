@@ -35,13 +35,17 @@ trait MockSelectQueryBuilderTrait {
 	 *   order. Each invocation appends one entry. Lets tests verify whether (and
 	 *   with which index) an index hint was applied. Subqueries share the same
 	 *   array.
+	 * @param array &$capturedLimits Captures limit() arguments in call order.
+	 *   Each invocation appends one entry. Lets tests verify that no negative
+	 *   (or otherwise invalid) LIMIT is applied. Subqueries share the same array.
 	 */
 	private function createMockSelectQueryBuilder(
 		array $rows = [],
 		array &$whereConditions = [],
 		array &$capturedSelects = [],
 		array &$capturedTables = [],
-		array &$capturedUseIndex = []
+		array &$capturedUseIndex = [],
+		array &$capturedLimits = []
 	): SelectQueryBuilder {
 		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
 			->disableOriginalConstructor()
@@ -50,7 +54,7 @@ trait MockSelectQueryBuilderTrait {
 		$chainMethods = [ 'fields', 'field',
 			'join', 'leftJoin', 'straightJoin', 'joinConds',
 			'groupBy', 'having', 'orderBy', 'caller', 'distinct',
-			'limit', 'offset', 'options', 'option', 'conds',
+			'offset', 'options', 'option', 'conds',
 			'ignoreIndex', 'recency', 'clearFields',
 			'lockInShareMode', 'forUpdate' ];
 
@@ -59,6 +63,13 @@ trait MockSelectQueryBuilderTrait {
 				->method( $method )
 				->willReturnSelf();
 		}
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'limit' )
+			->willReturnCallback( static function ( $limit ) use ( $queryBuilder, &$capturedLimits ) {
+				$capturedLimits[] = $limit;
+				return $queryBuilder;
+			} );
 
 		$captureWhere = static function ( $conds ) use ( $queryBuilder, &$whereConditions ) {
 			$whereConditions[] = $conds;
@@ -101,7 +112,7 @@ trait MockSelectQueryBuilderTrait {
 			->method( 'newSubquery' )
 			->willReturnCallback(
 				fn () => $this->createMockSelectQueryBuilder(
-					$rows, $whereConditions, $capturedSelects, $capturedTables, $capturedUseIndex
+					$rows, $whereConditions, $capturedSelects, $capturedTables, $capturedUseIndex, $capturedLimits
 				)
 			);
 

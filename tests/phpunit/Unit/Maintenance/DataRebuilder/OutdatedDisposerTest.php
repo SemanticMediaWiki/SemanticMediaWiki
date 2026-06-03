@@ -8,6 +8,8 @@ use SMW\Iterators\ChunkedIterator;
 use SMW\Iterators\ResultIterator;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\RequestOptions;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use stdClass;
@@ -87,8 +89,8 @@ class OutdatedDisposerTest extends TestCase {
 			->method( 'newUnassignedQueryLinksResultIterator' )
 			->willReturn( $this->resultIterator );
 
-		$this->entityIdDisposerJob->expects( $this->exactly( 2 ) )
-			->method( 'dispose' );
+		$this->entityIdDisposerJob->expects( $this->atLeastOnce() )
+			->method( 'disposeList' );
 
 		$this->iteratorFactory->expects( $this->exactly( 2 ) )
 			->method( 'newChunkedIterator' )
@@ -117,6 +119,69 @@ class OutdatedDisposerTest extends TestCase {
 		$this->assertStringContainsString(
 			'1001 (2%)',
 			$messages
+		);
+	}
+
+	public function testShardSkipsQueryLinksOnNonZeroShard() {
+		$resultIterator = $this->getMockBuilder( ResultIterator::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$resultIterator->expects( $this->exactly( 2 ) )
+			->method( 'count' )
+			->willReturn( 0 );
+
+		$capturedRequestOptions = [];
+
+		$this->entityIdDisposerJob->expects( $this->once() )
+			->method( 'newOutdatedEntitiesResultIterator' )
+			->willReturnCallback( static function ( $requestOptions ) use ( &$capturedRequestOptions, $resultIterator ) {
+				$capturedRequestOptions[] = $requestOptions;
+				return $resultIterator;
+			} );
+
+		$this->entityIdDisposerJob->expects( $this->once() )
+			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
+			->willReturnCallback( static function ( $requestOptions ) use ( &$capturedRequestOptions, $resultIterator ) {
+				$capturedRequestOptions[] = $requestOptions;
+				return $resultIterator;
+			} );
+
+		$this->entityIdDisposerJob->expects( $this->never() )
+			->method( 'newOutdatedQueryLinksResultIterator' );
+
+		$this->entityIdDisposerJob->expects( $this->never() )
+			->method( 'newUnassignedQueryLinksResultIterator' );
+
+		$instance = new OutdatedDisposer(
+			$this->entityIdDisposerJob,
+			$this->iteratorFactory
+		);
+
+		$instance->setShard( 1, 4 );
+		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->run();
+
+		foreach ( $capturedRequestOptions as $requestOptions ) {
+			$this->assertInstanceOf(
+				RequestOptions::class,
+				$requestOptions
+			);
+
+			$this->assertSame(
+				4,
+				$requestOptions->getOption( PropertyTableIdReferenceDisposer::OPT_SHARD_OF )
+			);
+
+			$this->assertSame(
+				1,
+				$requestOptions->getOption( PropertyTableIdReferenceDisposer::OPT_SHARD_INDEX )
+			);
+		}
+
+		$this->assertStringContainsString(
+			'skipped on shard 1',
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 

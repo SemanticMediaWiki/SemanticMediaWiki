@@ -41,6 +41,8 @@ class disposeOutdatedEntities extends Maintenance {
 		parent::__construct();
 		$this->addDescription( "Dispose of outdated entities." );
 		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
+		$this->addOption( 'of', '<N> Total number of parallel shards to split the disposal across.', false, true );
+		$this->addOption( 'shard', '<k> Zero-based index (0..N-1) of this shard; requires --of.', false, true );
 	}
 
 	/**
@@ -62,6 +64,28 @@ class disposeOutdatedEntities extends Maintenance {
 	}
 
 	/**
+	 * Validates the --of/--shard option pair. Returned as a string (rather than
+	 * calling fatalError directly) so the rule is unit-testable without driving
+	 * the maintenance harness, whose fatalError behaviour varies across
+	 * MediaWiki versions.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @return string|null Error message when the configuration is invalid, null when acceptable
+	 */
+	public function getShardConfigError( bool $hasOf, bool $hasShard, int $of, int $shard ): ?string {
+		if ( $hasOf !== $hasShard ) {
+			return '--of and --shard must be used together.';
+		}
+
+		if ( $of < 1 || $shard < 0 || $shard >= $of ) {
+			return 'Invalid shard configuration: require --of >= 1 and 0 <= --shard < --of.';
+		}
+
+		return null;
+	}
+
+	/**
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
@@ -77,10 +101,26 @@ class disposeOutdatedEntities extends Maintenance {
 
 		$title = $this->getServiceContainer()->getTitleFactory()->newFromText( __METHOD__ );
 
+		$of = $this->hasOption( 'of' ) ? (int)$this->getOption( 'of' ) : 1;
+		$shard = $this->hasOption( 'shard' ) ? (int)$this->getOption( 'shard' ) : 0;
+
+		$error = $this->getShardConfigError(
+			$this->hasOption( 'of' ),
+			$this->hasOption( 'shard' ),
+			$of,
+			$shard
+		);
+
+		if ( $error !== null ) {
+			$this->fatalError( $error . "\n" );
+		}
+
 		$outdatedDisposer = new OutdatedDisposer(
 			$applicationFactory->newJobFactory()->newEntityIdDisposerJob( $title ),
 			$applicationFactory->getIteratorFactory()
 		);
+
+		$outdatedDisposer->setShard( $shard, $of );
 
 		if ( $this->messageReporter === null ) {
 			$this->messageReporter = new CallbackMessageReporter( [ $this, 'reportMessage' ] );
