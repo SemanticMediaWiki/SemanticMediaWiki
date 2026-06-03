@@ -28,6 +28,20 @@ class PropertySubjectsLookup {
 
 	use KeysetPaginationTrait;
 
+	/**
+	 * Usage count at or below which the property-subjects join is never
+	 * index-hinted. Preserves the historical behaviour on small wikis, where
+	 * the table-relative threshold falls below this value.
+	 */
+	private const INDEX_HINT_USAGE_FLOOR = 5000;
+
+	/**
+	 * Multiplier for the table-size-relative index-hint threshold. The hint's
+	 * break-even usage scales as sqrt( PAGE_FACTOR * entity count ); the value
+	 * approximates a typical result-page size.
+	 */
+	private const INDEX_HINT_PAGE_FACTOR = 50;
+
 	private IteratorFactory $iteratorFactory;
 
 	/**
@@ -446,37 +460,22 @@ class PropertySubjectsLookup {
 			return $index;
 		}
 
-		// For tables with only a few entries, the index hint seems to create
-		// a disadvantage, yet when the amount reaches a certain level the
-		// index hint becomes necessary to retain an acceptable response
-		// time.
+		// Forcing the join index makes the planner drive the id table in
+		// `smw_sort` order and stop once the page is filled, which avoids a
+		// filesort over a large match set. That only pays off when the property
+		// is used by enough subjects that the ordered scan reaches a full page
+		// quickly; for a sparse property the same scan walks most of the id
+		// table before finding matches and is far slower than letting the
+		// planner read the property rows by `p_id` and sort them.
 		//
-		// Table with < 100 entries
-		//
-		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
-		// FROM `smw_object_ids` INNER JOIN `smw_di_number` AS t1 ON t1.s_id=smw_id
-		// WHERE (t1.p_id='196959') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
-		// GROUP BY smw_sort, smw_id LIMIT 21	8.2510ms (without index hint)
-		//
-		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
-		// FROM `smw_object_ids` INNER JOIN `smw_di_number` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
-		// WHERE (t1.p_id='196959') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
-		// GROUP BY smw_sort, smw_id LIMIT 21	7548.6171ms (with index hint)
-		//
-		// vs.
-		//
-		// Table with > 5000 entries
-		//
-		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
-		// FROM `smw_object_ids` INNER JOIN `smw_di_blob` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
-		// WHERE (t1.p_id='310170') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
-		// GROUP BY smw_sort, smw_id LIMIT 21	62.6249ms (with index hint)
-		//
-		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
-		// FROM `smw_object_ids` INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
-		// WHERE (t1.p_id='310170') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
-		// GROUP BY smw_sort, smw_id LIMIT 21	8856.1242ms (without index hint)
-		//
+		// The break-even usage is not a constant: it grows with the size of the
+		// id table (roughly its square root), because a sparser slice of a
+		// larger table must be scanned further before a page is filled. A fixed
+		// threshold therefore mis-fires on large wikis by hinting properties
+		// that are numerous in absolute terms yet sparse relative to the table
+		// (issue 6559). The threshold below scales with the table size and keeps
+		// the historical value as a floor, so behaviour on small wikis is
+		// unchanged.
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->newSelectQueryBuilder()
@@ -486,9 +485,22 @@ class PropertySubjectsLookup {
 			->caller( __METHOD__ )
 			->fetchRow();
 
-		// 5000? It just showed to be a sweet spot while doing some
-		// exploratory queries
-		if ( $row !== false && $row->usage_count > 5000 ) {
+		if ( $row === false || $row->usage_count <= self::INDEX_HINT_USAGE_FLOOR ) {
+			return $index;
+		}
+
+		$totalEntities = (int)$connection->newSelectQueryBuilder()
+			->field( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
+
+		$threshold = max(
+			self::INDEX_HINT_USAGE_FLOOR,
+			(int)sqrt( self::INDEX_HINT_PAGE_FACTOR * $totalEntities )
+		);
+
+		if ( $row->usage_count > $threshold ) {
 			$index = 'FORCE INDEX(' . $dataItemHandler->getIndexHint( $dataItemHandler::IHINT_PSUBJECTS ) . ')';
 		}
 
