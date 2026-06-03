@@ -310,6 +310,123 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 		);
 	}
 
+	public function testOutdatedEntitiesResultIterator_ShardedRequestAppliesNoNegativeLimit() {
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$capturedUseIndex = [];
+		$capturedLimits = [];
+		$queryBuilder = $this->createMockSelectQueryBuilder( [], $whereConditions, $capturedSelects, $capturedTables, $capturedUseIndex, $capturedLimits );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store,
+			$this->eventDispatcher
+		);
+
+		// Sharded selection without an explicit limit: RequestOptions::$limit
+		// defaults to -1 ("no limit"). The iterator must NOT translate that
+		// into `LIMIT -1`, which MariaDB rejects (error 1064).
+		$requestOptions = new RequestOptions();
+		$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_OF, 2 );
+		$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_INDEX, 0 );
+
+		$instance->newOutdatedEntitiesResultIterator( $requestOptions );
+
+		$this->assertSame(
+			[],
+			$capturedLimits,
+			'No LIMIT clause should be applied for a sharded/no-limit request.'
+		);
+	}
+
+	public function testByNamespaceInvalidEntitiesResultIterator_ShardedRequestAppliesNoNegativeLimit() {
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$capturedUseIndex = [];
+		$capturedLimits = [];
+		$queryBuilder = $this->createMockSelectQueryBuilder( [], $whereConditions, $capturedSelects, $capturedTables, $capturedUseIndex, $capturedLimits );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store,
+			$this->eventDispatcher
+		);
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_OF, 2 );
+		$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_INDEX, 0 );
+
+		$instance->newByNamespaceInvalidEntitiesResultIterator( $requestOptions );
+
+		$this->assertSame(
+			[],
+			$capturedLimits,
+			'No LIMIT clause should be applied for a sharded/no-limit request.'
+		);
+	}
+
+	public function testOutdatedEntitiesResultIterator_PositiveLimitIsApplied() {
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$capturedUseIndex = [];
+		$capturedLimits = [];
+		$queryBuilder = $this->createMockSelectQueryBuilder( [], $whereConditions, $capturedSelects, $capturedTables, $capturedUseIndex, $capturedLimits );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store,
+			$this->eventDispatcher
+		);
+
+		// The EntityIdDisposerJob path sets an explicit positive limit which
+		// must still be applied verbatim.
+		$requestOptions = new RequestOptions();
+		$requestOptions->setLimit( 5000 );
+
+		$instance->newOutdatedEntitiesResultIterator( $requestOptions );
+
+		$this->assertSame(
+			[ 5000 ],
+			$capturedLimits
+		);
+	}
+
 	public function testCleanUpTableEntriesByRow() {
 		$row = new stdClass;
 		$row->smw_id = 42;

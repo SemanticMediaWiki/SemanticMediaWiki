@@ -145,10 +145,13 @@ class PropertyTableIdReferenceDisposer {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
-			$options = [
-				'LIMIT'  => $requestOptions->getLimit(),
-				'OFFSET' => $requestOptions->getOffset(),
-			];
+			if ( $requestOptions->getLimit() > 0 ) {
+				$options['LIMIT'] = $requestOptions->getLimit();
+			}
+
+			if ( $requestOptions->getOffset() > 0 ) {
+				$options['OFFSET'] = $requestOptions->getOffset();
+			}
 		}
 
 		$qb = $this->connection->newSelectQueryBuilder()
@@ -174,10 +177,13 @@ class PropertyTableIdReferenceDisposer {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
-			$options = [
-				'LIMIT'  => $requestOptions->getLimit(),
-				'OFFSET' => $requestOptions->getOffset(),
-			];
+			if ( $requestOptions->getLimit() > 0 ) {
+				$options['LIMIT'] = $requestOptions->getLimit();
+			}
+
+			if ( $requestOptions->getOffset() > 0 ) {
+				$options['OFFSET'] = $requestOptions->getOffset();
+			}
 		}
 
 		$qb = $this->connection->newSelectQueryBuilder()
