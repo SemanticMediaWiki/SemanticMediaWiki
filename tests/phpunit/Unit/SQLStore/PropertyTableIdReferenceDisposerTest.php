@@ -8,6 +8,7 @@ use SMW\DataItems\WikiPage;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
+use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\PropertyTableIdReferenceFinder;
@@ -215,6 +216,97 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 		$this->assertInstanceOf(
 			ResultIterator::class,
 			$instance->newByNamespaceInvalidEntitiesResultIterator()
+		);
+	}
+
+	public function testOutdatedEntitiesResultIterator_AppliesShardModulo() {
+		$whereConditions = [];
+		$queryBuilder = $this->createMockSelectQueryBuilder( [], $whereConditions );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store,
+			$this->eventDispatcher
+		);
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_OF, 4 );
+		$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_INDEX, 1 );
+
+		$instance->newOutdatedEntitiesResultIterator( $requestOptions );
+
+		$this->assertContains( 'smw_id % 4 = 1', $whereConditions );
+	}
+
+	public function testByNamespaceInvalidEntitiesResultIterator_AppliesShardModulo() {
+		$whereConditions = [];
+		$queryBuilder = $this->createMockSelectQueryBuilder( [], $whereConditions );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store,
+			$this->eventDispatcher
+		);
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_OF, 3 );
+		$requestOptions->setOption( PropertyTableIdReferenceDisposer::OPT_SHARD_INDEX, 2 );
+
+		$instance->newByNamespaceInvalidEntitiesResultIterator( $requestOptions );
+
+		$this->assertContains( 'smw_id % 3 = 2', $whereConditions );
+	}
+
+	public function testOutdatedEntitiesResultIterator_NoShardLeavesWhereUnchanged() {
+		$whereConditions = [];
+		$queryBuilder = $this->createMockSelectQueryBuilder( [], $whereConditions );
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $queryBuilder );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store,
+			$this->eventDispatcher
+		);
+
+		// Without shard options (OPT_SHARD_OF defaults to 1), no modulo
+		// condition is added; only the base where() remains.
+		$instance->newOutdatedEntitiesResultIterator( new RequestOptions() );
+
+		$this->assertSame(
+			[ [ 'smw_iw' => SMW_SQL3_SMWDELETEIW ] ],
+			$whereConditions
 		);
 	}
 

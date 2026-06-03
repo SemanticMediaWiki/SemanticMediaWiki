@@ -12,6 +12,7 @@ use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use stdClass;
 use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @private
@@ -26,6 +27,19 @@ use Wikimedia\Rdbms\DBError;
  * @author mwjames
  */
 class PropertyTableIdReferenceDisposer {
+
+	/**
+	 * RequestOptions key holding the total number of modulo shards (N) for the
+	 * outdated-entity selection. When greater than 1, the selection is
+	 * restricted to a single shard.
+	 */
+	const OPT_SHARD_OF = 'shard.of';
+
+	/**
+	 * RequestOptions key holding this shard's index (k) within the modulo
+	 * sharding scheme (`smw_id % N = k`).
+	 */
+	const OPT_SHARD_INDEX = 'shard.index';
 
 	/**
 	 * @var Database
@@ -142,6 +156,8 @@ class PropertyTableIdReferenceDisposer {
 			->from( SQLStore::ID_TABLE )
 			->where( [ 'smw_iw' => SMW_SQL3_SMWDELETEIW ] );
 
+		$this->applyShard( $qb, $requestOptions );
+
 		LegacyOptionsApplier::applyTo( $qb, $options );
 
 		return new ResultIterator( $qb->caller( __METHOD__ )->fetchResultSet() );
@@ -169,9 +185,29 @@ class PropertyTableIdReferenceDisposer {
 			->from( SQLStore::ID_TABLE )
 			->where( 'smw_namespace NOT IN (' . $this->connection->makeList( array_keys( $this->namespacesWithSemanticLinks ) ) . ')' );
 
+		$this->applyShard( $qb, $requestOptions );
+
 		LegacyOptionsApplier::applyTo( $qb, $options );
 
 		return new ResultIterator( $qb->caller( __METHOD__ )->fetchResultSet() );
+	}
+
+	/**
+	 * Restrict the selection to a single modulo shard (`smw_id % N = k`) when
+	 * shard options are present on the request, letting an operator run N
+	 * disjoint disposal processes. The unsharded path is left untouched.
+	 */
+	private function applyShard( SelectQueryBuilder $qb, ?RequestOptions $requestOptions ): void {
+		if ( $requestOptions === null ) {
+			return;
+		}
+
+		$of = (int)$requestOptions->getOption( self::OPT_SHARD_OF, 1 );
+		$shard = (int)$requestOptions->getOption( self::OPT_SHARD_INDEX, 0 );
+
+		if ( $of > 1 ) {
+			$qb->andWhere( 'smw_id % ' . $of . ' = ' . $shard );
+		}
 	}
 
 	/**
