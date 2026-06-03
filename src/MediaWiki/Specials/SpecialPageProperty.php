@@ -33,7 +33,16 @@ class SpecialPageProperty extends SpecialPage {
 	public function __construct(
 		private readonly Store $store
 	) {
-		parent::__construct( 'PageProperty', '', false );
+		// MediaWiki 1.46 deprecated the SpecialPage constructor flags; the
+		// page stays unlisted via the isListed() override below.
+		parent::__construct( 'PageProperty' );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isListed(): bool {
+		return false;
 	}
 
 	/**

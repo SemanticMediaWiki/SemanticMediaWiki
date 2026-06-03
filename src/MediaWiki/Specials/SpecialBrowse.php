@@ -34,7 +34,16 @@ class SpecialBrowse extends SpecialPage {
 		private readonly Settings $settings,
 		private readonly SerializerFactory $serializerFactory
 	) {
-		parent::__construct( 'Browse', '', true, false, 'default', true );
+		// MediaWiki 1.46 deprecated the SpecialPage constructor flags; the
+		// page stays transcludable via the isIncludable() override below.
+		parent::__construct( 'Browse' );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isIncludable(): bool {
+		return true;
 	}
 
 	/**
