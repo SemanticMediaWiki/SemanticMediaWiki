@@ -115,16 +115,19 @@ class OutdatedDisposer {
 		$counter = 0;
 
 		foreach ( $chunkedIterator as $chunk ) {
+			$rows = [];
+
 			foreach ( $chunk as $row ) {
 				$counter++;
+				$rows[] = $row;
 				$msg = sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $count * 100 ) );
 
 				$this->messageReporter->reportMessage(
 					$this->cliMsgFormatter->twoColsOverride( '       ... cleaning up entity', $msg )
 				);
-
-				$this->entityIdDisposerJob->dispose( $row );
 			}
+
+			$this->entityIdDisposerJob->disposeList( $rows );
 		}
 
 		$this->messageReporter->reportMessage( "\n" );

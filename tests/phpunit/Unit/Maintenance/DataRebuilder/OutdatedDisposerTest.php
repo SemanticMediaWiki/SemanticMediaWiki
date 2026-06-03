@@ -87,8 +87,8 @@ class OutdatedDisposerTest extends TestCase {
 			->method( 'newUnassignedQueryLinksResultIterator' )
 			->willReturn( $this->resultIterator );
 
-		$this->entityIdDisposerJob->expects( $this->exactly( 2 ) )
-			->method( 'dispose' );
+		$this->entityIdDisposerJob->expects( $this->atLeastOnce() )
+			->method( 'disposeList' );
 
 		$this->iteratorFactory->expects( $this->exactly( 2 ) )
 			->method( 'newChunkedIterator' )

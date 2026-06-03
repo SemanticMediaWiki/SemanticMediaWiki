@@ -11,6 +11,7 @@ use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 
@@ -178,6 +179,54 @@ class EntityIdDisposerJobTest extends TestCase {
 		$this->assertTrue(
 			$instance->run()
 		);
+	}
+
+	public function testDisposeList() {
+		$disposer = $this->getMockBuilder( PropertyTableIdReferenceDisposer::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$disposer->expects( $this->once() )
+			->method( 'cleanUpTableEntriesByIdList' )
+			->with( [ 1, 2 ] );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->onlyMethods( [ 'service' ] )
+			->getMockForAbstractClass();
+
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $this->connection );
+
+		$store->setConnectionManager( $connectionManager );
+
+		$store->expects( $this->any() )
+			->method( 'service' )
+			->with( 'PropertyTableIdReferenceDisposer' )
+			->willReturn( $disposer );
+
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$row1 = new \stdClass;
+		$row1->smw_id = 1;
+		$row2 = new \stdClass;
+		$row2->smw_id = 2;
+
+		$instance = new EntityIdDisposerJob(
+			$title,
+			[],
+			$store,
+			$this->newIteratorFactory(),
+			$this->newJobFactory()
+		);
+
+		$instance->disposeList( [ $row1, $row2 ] );
 	}
 
 	public function parametersProvider() {
