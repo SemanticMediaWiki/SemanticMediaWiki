@@ -1,5 +1,5 @@
 {
-	"description": "Test `#ask`/ NS_FILE option, `noimage` (`wgEnableUploads`, `wgFileExtensions`, `wgDefaultUserOptions`)",
+	"description": "Test `#ask`/ NS_FILE option, `noimage` (`wgEnableUploads`, `wgFileExtensions`, `wgDefaultUserOptions`, `wgThumbLimits`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -113,6 +113,7 @@
 		"wgDefaultUserOptions": {
 			"thumbsize": 5
 		},
+		"wgThumbLimits": [ 120, 150, 180, 200, 250, 300 ],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		],

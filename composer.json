@@ -111,7 +111,7 @@
 		"phpcs-fix": "phpcbf",
 		"phpunit": [
 			"Composer\\Config::disableProcessTimeout",
-			"cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 vendor/bin/phpunit -c extensions/SemanticMediaWiki/phpunit.xml.dist --bootstrap tests/phpunit/bootstrap.php"
+			"cd ${MW_INSTALL_PATH:-../..} && { [ -f tests/phpunit/generatePHPUnitConfig.php ] && { php tests/phpunit/generatePHPUnitConfig.php >/dev/null 2>&1 || true; [ -f phpunit.xml ] || printf '%s' '<phpunit><!-- generatePHPUnitConfig --></phpunit>' > phpunit.xml; } || true; } && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 vendor/bin/phpunit -c extensions/SemanticMediaWiki/phpunit.xml.dist --bootstrap tests/phpunit/bootstrap.php"
 		],
 		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
 		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
