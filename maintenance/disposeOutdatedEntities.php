@@ -64,6 +64,28 @@ class disposeOutdatedEntities extends Maintenance {
 	}
 
 	/**
+	 * Validates the --of/--shard option pair. Returned as a string (rather than
+	 * calling fatalError directly) so the rule is unit-testable without driving
+	 * the maintenance harness, whose fatalError behaviour varies across
+	 * MediaWiki versions.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @return string|null Error message when the configuration is invalid, null when acceptable
+	 */
+	public function getShardConfigError( bool $hasOf, bool $hasShard, int $of, int $shard ): ?string {
+		if ( $hasOf !== $hasShard ) {
+			return '--of and --shard must be used together.';
+		}
+
+		if ( $of < 1 || $shard < 0 || $shard >= $of ) {
+			return 'Invalid shard configuration: require --of >= 1 and 0 <= --shard < --of.';
+		}
+
+		return null;
+	}
+
+	/**
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
@@ -82,12 +104,15 @@ class disposeOutdatedEntities extends Maintenance {
 		$of = $this->hasOption( 'of' ) ? (int)$this->getOption( 'of' ) : 1;
 		$shard = $this->hasOption( 'shard' ) ? (int)$this->getOption( 'shard' ) : 0;
 
-		if ( $this->hasOption( 'of' ) !== $this->hasOption( 'shard' ) ) {
-			$this->fatalError( "--of and --shard must be used together.\n" );
-		}
+		$error = $this->getShardConfigError(
+			$this->hasOption( 'of' ),
+			$this->hasOption( 'shard' ),
+			$of,
+			$shard
+		);
 
-		if ( $of < 1 || $shard < 0 || $shard >= $of ) {
-			$this->fatalError( "Invalid shard configuration: require --of >= 1 and 0 <= --shard < --of.\n" );
+		if ( $error !== null ) {
+			$this->fatalError( $error . "\n" );
 		}
 
 		$outdatedDisposer = new OutdatedDisposer(

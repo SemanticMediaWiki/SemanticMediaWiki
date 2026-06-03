@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\Maintenance;
 
-use MediaWiki\Maintenance\MaintenanceFatalError;
 use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\disposeOutdatedEntities;
 use SMW\Tests\TestEnvironment;
@@ -55,31 +54,31 @@ class DisposeOutdatedEntitiesTest extends TestCase {
 		);
 	}
 
-	public function testExecuteAbortsOnShardWithoutOf() {
+	/**
+	 * @dataProvider shardConfigProvider
+	 */
+	public function testGetShardConfigError( bool $hasOf, bool $hasShard, int $of, int $shard, ?string $expected ) {
 		$instance = new disposeOutdatedEntities();
 
-		$instance->setMessageReporter(
-			$this->spyMessageReporter
+		$this->assertSame(
+			$expected,
+			$instance->getShardConfigError( $hasOf, $hasShard, $of, $shard )
 		);
-
-		$instance->setOption( 'shard', '1' );
-
-		$this->expectException( MaintenanceFatalError::class );
-		$instance->execute();
 	}
 
-	public function testExecuteAbortsOnShardOutsideRange() {
-		$instance = new disposeOutdatedEntities();
+	public function shardConfigProvider() {
+		$together = '--of and --shard must be used together.';
+		$range = 'Invalid shard configuration: require --of >= 1 and 0 <= --shard < --of.';
 
-		$instance->setMessageReporter(
-			$this->spyMessageReporter
-		);
-
-		$instance->setOption( 'of', '2' );
-		$instance->setOption( 'shard', '5' );
-
-		$this->expectException( MaintenanceFatalError::class );
-		$instance->execute();
+		yield 'unsharded default (neither option)' => [ false, false, 1, 0, null ];
+		yield 'valid shard 0 of 4' => [ true, true, 4, 0, null ];
+		yield 'valid shard 3 of 4' => [ true, true, 4, 3, null ];
+		yield 'shard without of' => [ false, true, 1, 1, $together ];
+		yield 'of without shard' => [ true, false, 4, 0, $together ];
+		yield 'of below 1' => [ true, true, 0, 0, $range ];
+		yield 'shard equals of' => [ true, true, 4, 4, $range ];
+		yield 'shard above range' => [ true, true, 2, 5, $range ];
+		yield 'negative shard' => [ true, true, 4, -1, $range ];
 	}
 
 }
