@@ -31,6 +31,7 @@ jobs:
           - { mw: '1.43', php: 8.2, db: "mariadb:10.11", full: true }
           - { mw: '1.44', php: 8.3, db: "mariadb:11.8", full: false }
           - { mw: '1.45', php: 8.4, db: "mariadb:12.3", full: false }
+          - { mw: '1.46-dev-26e9b33', php: 8.5, db: "mariadb:12.3", full: false }
     env:
       MW_VERSION: ${{ matrix.mw }}
       PHP_VERSION: ${{ matrix.php }}
@@ -77,6 +78,7 @@ jobs:
           - { mw: '1.43', php: 8.2, db: "mariadb:10.11" }
           - { mw: '1.44', php: 8.3, db: "mariadb:11.8" }
           - { mw: '1.45', php: 8.4, db: "mariadb:12.3" }
+          - { mw: '1.46-dev-26e9b33', php: 8.5, db: "mariadb:12.3" }
     env:
       MW_VERSION: ${{ matrix.mw }}
       PHP_VERSION: ${{ matrix.php }}
