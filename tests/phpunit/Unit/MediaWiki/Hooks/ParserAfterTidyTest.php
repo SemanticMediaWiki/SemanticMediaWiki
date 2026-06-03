@@ -118,7 +118,6 @@ class ParserAfterTidyTest extends TestCase {
 	 */
 	private function setParserLocked( Parser $parser ): void {
 		$prop = new ReflectionProperty( Parser::class, 'mInParse' );
-		$prop->setAccessible( true );
 		$prop->setValue( $parser, true );
 	}
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Unit\MediaWiki;
 
-use MediaWiki\Content\Content;
+use MediaWiki\Content\TextContent;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\User\User;
@@ -289,12 +289,12 @@ class PageInfoProviderTest extends TestCase {
 	}
 
 	public function testWikiPage_NativeData() {
-		$content = $this->getMockBuilder( Content::class )
+		$content = $this->getMockBuilder( TextContent::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$content->expects( $this->any() )
-			->method( 'getNativeData' )
+			->method( 'getText' )
 			->willReturn( 'Foo' );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )

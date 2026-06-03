@@ -48,7 +48,7 @@ class DependencyValidator {
 	 * @param Title $title
 	 */
 	public function markTitle( Title $title ): void {
-		self::$titles[$title->getPrefixedText()] = true;
+		self::$titles[$title->getPrefixedText() ?? ''] = true;
 	}
 
 	/**
@@ -59,7 +59,7 @@ class DependencyValidator {
 	 * @return bool
 	 */
 	public static function hasLikelyOutdatedDependencies( Title $title ): bool {
-		return self::$titles[$title->getPrefixedText()] ?? false;
+		return self::$titles[$title->getPrefixedText() ?? ''] ?? false;
 	}
 
 	/**

@@ -138,7 +138,7 @@ class PropertyTableRowDiffer {
 				continue;
 			}
 
-			$tableName = $propertyTable->getName();
+			$tableName = $propertyTable->getName() ?? '';
 			$fixedProperty = [];
 
 			// Fixed property tables have no p_id declared, the auxiliary

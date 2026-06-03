@@ -816,8 +816,8 @@ class SemanticDataLookup {
 		// Replicates the legacy `Query::hasField()` check by testing whether the
 		// field already appears either as a select expression (value) or as an
 		// alias (key) in the in-progress select list.
-		if ( !in_array( $valueField, $selectFields, true ) && !array_key_exists( $valueField, $selectFields ) ) {
-			$map[$valueField] = "v" . ( $valueCount + 1 );
+		if ( !in_array( $valueField, $selectFields, true ) && !array_key_exists( $valueField ?? '', $selectFields ) ) {
+			$map[$valueField ?? ''] = "v" . ( $valueCount + 1 );
 			$selectFields[ 'v' . ( $valueCount + 1 ) ] = $valueField;
 		}
 	}

@@ -148,6 +148,7 @@ class ListBuilder {
 			if ( $startChar === '' ) {
 				$startChar = '...';
 			}
+			$startChar ??= '';
 
 			if ( !isset( $contents[$startChar] ) ) {
 				$contents[$startChar] = [];

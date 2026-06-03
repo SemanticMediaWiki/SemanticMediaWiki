@@ -496,7 +496,6 @@ class SetupFileTest extends TestCase {
 
 	private function withRepo( SetupFile $file, SmwJsonRepo $repo ): void {
 		$ref = new ReflectionProperty( $file, 'repo' );
-		$ref->setAccessible( true );
 		$ref->setValue( $file, $repo );
 	}
 

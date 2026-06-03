@@ -416,7 +416,6 @@ class UpdateDispatcherJobTest extends TestCase {
 
 		$reflector = new ReflectionClass( UpdateDispatcherJob::class );
 		$jobsProp = $reflector->getProperty( 'jobs' );
-		$jobsProp->setAccessible( true );
 
 		// Unrestricted dispatch
 		$unrestricted = new UpdateDispatcherJob(

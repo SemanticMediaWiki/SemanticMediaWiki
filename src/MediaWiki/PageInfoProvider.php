@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Content\TextContent;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
@@ -98,7 +99,7 @@ class PageInfoProvider implements PageInfo {
 			return '';
 		}
 
-		return $content->getNativeData();
+		return $content instanceof TextContent ? $content->getText() : '';
 	}
 
 	/**

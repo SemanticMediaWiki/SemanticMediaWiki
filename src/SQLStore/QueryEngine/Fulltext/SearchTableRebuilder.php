@@ -200,7 +200,7 @@ class SearchTableRebuilder {
 
 			// Only care for Blob/Uri tables
 			if ( !$this->getSearchTable()->isValidByType( $proptable->getDiType() ) ) {
-				$this->skippedTables[$proptable->getName()] = '[INVALID]';
+				$this->skippedTables[$proptable->getName() ?? ''] = '[INVALID]';
 				continue;
 			}
 

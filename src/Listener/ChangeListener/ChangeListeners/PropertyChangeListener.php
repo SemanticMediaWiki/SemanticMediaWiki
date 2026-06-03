@@ -63,7 +63,12 @@ class PropertyChangeListener implements ChangeListener {
 			$property
 		);
 
-		$this->propertyIdKeyMap[$pid] = $key;
+		// A property without a stored id (getSMWPropertyID() returns null) has
+		// no entry to match against later, so skip it rather than coerce the
+		// null into an array offset (deprecated as of PHP 8.5).
+		if ( $pid !== null ) {
+			$this->propertyIdKeyMap[$pid] = $key;
+		}
 
 		if ( !isset( $this->changeListeners[$key] ) ) {
 			$this->changeListeners[$key] = [];

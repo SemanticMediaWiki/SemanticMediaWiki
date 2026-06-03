@@ -49,7 +49,7 @@ class CountMapField {
 		);
 
 		$connection = $this->store->getConnection( DB_PRIMARY );
-		$tableName = $connection->tableName( SQLStore::ID_AUXILIARY_TABLE );
+		$tableName = $connection->tableName( SQLStore::ID_AUXILIARY_TABLE ) ?? '';
 
 		if (
 			isset( $log[$tableName]['smw_countmap'] ) &&

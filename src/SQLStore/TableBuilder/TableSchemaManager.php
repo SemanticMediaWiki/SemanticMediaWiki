@@ -54,7 +54,7 @@ class TableSchemaManager {
 		$hash = [];
 
 		foreach ( $this->getTables() as $table ) {
-			$hash[$table->getName()] = $table->getHash();
+			$hash[$table->getName() ?? ''] = $table->getHash();
 		}
 
 		// Avoid by-chance sorting with an eventual differing hash
@@ -438,7 +438,7 @@ class TableSchemaManager {
 			return;
 		}
 
-		$this->tables[$table->getName()] = $table;
+		$this->tables[$table->getName() ?? ''] = $table;
 	}
 
 }
