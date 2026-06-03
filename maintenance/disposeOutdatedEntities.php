@@ -41,6 +41,8 @@ class disposeOutdatedEntities extends Maintenance {
 		parent::__construct();
 		$this->addDescription( "Dispose of outdated entities." );
 		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
+		$this->addOption( 'of', '<N> Total number of parallel shards to split the disposal across.', false, true );
+		$this->addOption( 'shard', '<k> Zero-based index (0..N-1) of this shard; requires --of.', false, true );
 	}
 
 	/**
@@ -77,10 +79,23 @@ class disposeOutdatedEntities extends Maintenance {
 
 		$title = $this->getServiceContainer()->getTitleFactory()->newFromText( __METHOD__ );
 
+		$of = $this->hasOption( 'of' ) ? (int)$this->getOption( 'of' ) : 1;
+		$shard = $this->hasOption( 'shard' ) ? (int)$this->getOption( 'shard' ) : 0;
+
+		if ( $this->hasOption( 'of' ) !== $this->hasOption( 'shard' ) ) {
+			$this->fatalError( "--of and --shard must be used together.\n" );
+		}
+
+		if ( $of < 1 || $shard < 0 || $shard >= $of ) {
+			$this->fatalError( "Invalid shard configuration: require --of >= 1 and 0 <= --shard < --of.\n" );
+		}
+
 		$outdatedDisposer = new OutdatedDisposer(
 			$applicationFactory->newJobFactory()->newEntityIdDisposerJob( $title ),
 			$applicationFactory->getIteratorFactory()
 		);
+
+		$outdatedDisposer->setShard( $shard, $of );
 
 		if ( $this->messageReporter === null ) {
 			$this->messageReporter = new CallbackMessageReporter( [ $this, 'reportMessage' ] );

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Maintenance;
 
+use MediaWiki\Maintenance\MaintenanceFatalError;
 use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\disposeOutdatedEntities;
 use SMW\Tests\TestEnvironment;
@@ -52,6 +53,33 @@ class DisposeOutdatedEntitiesTest extends TestCase {
 			'Outdated entitie(s)',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
+	}
+
+	public function testExecuteAbortsOnShardWithoutOf() {
+		$instance = new disposeOutdatedEntities();
+
+		$instance->setMessageReporter(
+			$this->spyMessageReporter
+		);
+
+		$instance->setOption( 'shard', '1' );
+
+		$this->expectException( MaintenanceFatalError::class );
+		$instance->execute();
+	}
+
+	public function testExecuteAbortsOnShardOutsideRange() {
+		$instance = new disposeOutdatedEntities();
+
+		$instance->setMessageReporter(
+			$this->spyMessageReporter
+		);
+
+		$instance->setOption( 'of', '2' );
+		$instance->setOption( 'shard', '5' );
+
+		$this->expectException( MaintenanceFatalError::class );
+		$instance->execute();
 	}
 
 }
