@@ -2,6 +2,7 @@
 
 namespace SMW\DataItems;
 
+use AllowDynamicProperties;
 use InvalidArgumentException;
 use MediaWiki\Json\JsonDeserializable;
 use MediaWiki\Json\JsonDeserializer;
@@ -29,10 +30,25 @@ use SMW\Options;
  * property values may be influences by settings made for their property. This
  * aspect, however, is not part of the data item API.
  *
+ * Data items are routinely PHP-serialized into the object cache, both directly
+ * (property specifications via EntityCache) and as part of cached query results
+ * (QueryResultStore, which intentionally keeps pre-7.0 entries readable). Cache
+ * blobs written before this hierarchy moved into the SMW\DataItems namespace
+ * (#6453) encode the inherited private `$options` property under the old
+ * declaring-class mangle (`SMWDataItem`). Unserializing such a blob can no
+ * longer match that name to the renamed property and would otherwise create a
+ * dynamic property, which PHP 8.2 reports as a deprecation (#6965). Because the
+ * data items are shared across all of these caches, the tolerance belongs on
+ * the data item itself: AllowDynamicProperties keeps the legacy entries readable
+ * without the warning (the stray value is ignored by the declared accessors).
+ * This allowance is transitional and may be removed once upgrading directly from
+ * a pre-7.0 release is no longer supported.
+ *
  * @since 1.6
  *
  * @ingroup DataItems
  */
+#[AllowDynamicProperties]
 abstract class DataItem implements JsonDeserializable {
 
 	/// Data item ID that can be used to indicate that no data item class is appropriate
