@@ -115,6 +115,10 @@ class FileIndexer {
 	public function index( WikiPage $dataItem, ?File $file = null ): void {
 		$title = $dataItem->getTitle();
 
+		if ( $title === null ) {
+			return;
+		}
+
 		// Allow any third-party extension to modify the file used as base for
 		// the index process
 		$file = $this->revisionGuard->getFile( $title, $file );
