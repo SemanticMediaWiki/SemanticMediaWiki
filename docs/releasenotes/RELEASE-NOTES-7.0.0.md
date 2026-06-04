@@ -1,19 +1,20 @@
 # Semantic MediaWiki 7.0.0
 
-Released on TBD.
+Released on June 4, 2026.
 
-This release makes Semantic MediaWiki easier to install and run, brings significant query and indexing performance improvements, and adds MediaWiki 1.45 support. Installation now follows standard MediaWiki conventions, configuration accepts plain strings instead of `SMW_*` constants, and install-state metadata moves into the database. If you maintain an extension or integration that depends on SMW, see [For developers and extension authors](#for-developers-and-extension-authors) and the [migration guide](../migration/7.0.md) for the removed and changed APIs.
+This release makes Semantic MediaWiki easier to install and run, brings significant query and indexing performance improvements, and adds MediaWiki 1.45 and 1.46 support. Installation now follows standard MediaWiki conventions, configuration accepts plain strings instead of `SMW_*` constants, and install-state metadata moves into the database. If you maintain an extension or integration that depends on SMW, see [For developers and extension authors](#for-developers-and-extension-authors) and the [migration guide](../migration/7.0.md) for the removed and changed APIs.
 
 ## Compatibility
 
-* Added support for MediaWiki 1.45 (new compared to SMW 6.0.x, which supported up to 1.44)
-* Compatible with PHP 8.1 up to 8.4 and MediaWiki 1.43 up to 1.45
+* Added support for MediaWiki 1.45 and 1.46 (new compared to SMW 6.0.x, which supported up to 1.44)
+* Added support for PHP 8.5 (new compared to SMW 6.0.x, which supported up to 8.4)
+* Compatible with PHP 8.1 up to 8.5 and MediaWiki 1.43 up to 1.46
 
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
 ## Highlights
 
-Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
+Adds MediaWiki 1.45 and 1.46 support (see [Compatibility](#compatibility)).
 
 **Easier to install and run, aligned with MediaWiki conventions.** SMW now uses the standard MediaWiki mechanisms instead of its own bespoke ones.
 
@@ -27,6 +28,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 
 * [Query sort speedups](#faster-property-queries) (orders of magnitude on large wikis), `order=none`, and cursor-based pagination.
 * [Lazy dependency refresh](#lazy-dependency-refresh) and reduced job queue load on edits and deletes of widely-referenced pages.
+* [Parser cache defragmentation](#parser-cache-defragmentation): pages with language-neutral `#ask` output or in-text annotations are now cached once and shared across all interface languages instead of stored separately per language. The cache holds far fewer redundant copies of the same page, raising the hit rate and reducing the eviction of still-useful entries.
 
 **Built on MediaWiki core.**
 
@@ -85,6 +87,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
   * Set `$smwgQUseLegacyQuery = true` in `LocalSettings.php` to fall back to the previous query shape if you encounter a regression after upgrading.
   * A redundant `DISTINCT` keyword was also dropped from the disjunction-query temp-table insert. Same result, less work for the database; no setting required.
 * On wikis with many distinct entities per page, SMW's internal caches could fill up during a single render and force repeated database lookups for the same pages. Cache sizes are now adjustable via the new `$smwgEntityCacheSizes` setting. Per-pool hit and miss counts are also emitted to MediaWiki's `StatsFactory` service, so wikis already configured to collect MediaWiki metrics (`$wgStatsTarget` and `$wgStatsFormat`) can see cache effectiveness in their existing dashboards and size caches based on real traffic instead of guessing.
+<a id="parser-cache-defragmentation"></a>
 * `#ask` queries no longer fragment the parser cache by the user's date format preference. SMW formats dates by language, not by that preference, so the fragmentation produced no benefit. `dateformat` has been removed from the `$smwgSetParserCacheKeys` default, which now contains only `userlang`.
 * `#ask` queries whose result format produces language-neutral output (`json`, `rdf`, `count`, `debug`) no longer fragment the parser cache by `userlang`, unless the query produces errors (error messages are localised). Result printers can declare their own behaviour by overriding `ResultPrinter::dependsOnUserLanguage()`.
 * On multilingual wikis, the common `#ask` presentation formats (`table`, `broadtable`, `list`, `ul`, `ol`, `plainlist`, `template`, `embedded` and `category`) no longer store a separate parser cache entry for each interface language. A successful result is cached once and reused across all languages, improving the parser cache hit rate. Queries that produce errors still vary by language, because error messages are localised.
@@ -108,6 +111,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 
 * Fixed `Special:FacetedSearch` not showing the result row when a query returns a single result ([#6260](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6260))
 * Fixed a fatal error on `Special:Search` when `$wgSearchType` is set to `SMWSearch` ([#6915](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6915))
+* Fixed SMW tooltips and popups not appearing since 5.0.0 (`Special:Ask` info icons, property page value tooltips, and the job queue watchlist popup), and restored the job queue watchlist indicator's visibility in modern skins ([#6075](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6075))
 * `rebuildData.php --ignore-exceptions` now also skips and logs PHP errors (such as a `TypeError` raised while parsing a single page), so one un-parseable page no longer aborts the whole rebuild ([#6218](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6218))
 * Fixed a stray trailing space in `'edit '` that caused the edit-protection check in `ParserAfterTidy::process()` to silently match no pages since the migration off the deprecated `Title::isProtected()` API. With the typo removed, edit-protected pages once again trigger continued post-parse processing, matching the behaviour before that migration.
 * Fixed incorrect timezone offset for negative half-hour timezones (e.g., Newfoundland `-3:30`): the 30-minute component was always added positively, producing `-2.5` instead of `-3.5` ([#6478](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6478))
@@ -252,7 +256,7 @@ Adds MediaWiki 1.45 support (see [Compatibility](#compatibility)).
 * Numerous static analysis (phan) errors fixed
 * Migrated `Special:Browse`'s search form from the deprecated `mediawiki.ui` ResourceLoader modules to Codex CSS-only components, ahead of `mediawiki.ui`'s removal in MediaWiki 1.46 ([#6476](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6476))
 * Migrated client-side date rendering off MediaWiki's internal `wgMonthNames` JavaScript config variable to the `mediawiki.language.months` module ([#3851](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3851))
-* CI updated: added MediaWiki 1.45 to the test matrix, added cancellation of in-progress runs on new pushes, removed Travis CI leftovers
+* CI updated: added MediaWiki 1.45 and 1.46, and PHP 8.5, to the test matrix, added cancellation of in-progress runs on new pushes, removed Travis CI leftovers
 
 ## Upgrading
 
