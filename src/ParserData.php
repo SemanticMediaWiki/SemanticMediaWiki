@@ -335,7 +335,7 @@ class ParserData {
 	 */
 	public function markParserOutput(): void {
 		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheTimestamp' ) ) {
-			$this->parserOutput->setRevisionTimestamp( wfTimestampNow() );
+			$this->parserOutput->setCacheTime( wfTimestampNow() );
 		}
 
 		$this->parserOutput->setExtensionData(
