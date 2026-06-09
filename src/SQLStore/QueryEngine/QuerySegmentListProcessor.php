@@ -6,7 +6,6 @@ use RuntimeException;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Query;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
-use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GPL-2.0-or-later
@@ -233,24 +232,35 @@ class QuerySegmentListProcessor {
 			$this->segment( $subQuery );
 
 			if ( $subQuery->joinTable !== '' ) {
-				// Residual planner-side raw SQL: INSERT IGNORE...SELECT pieced
-				// together from the planner's stringly-typed fragments
-				// (`$subQuery->where`, `$subQuery->from`, `$subQuery->joinfield`).
-				// Cannot be translated to insertSelect() without restructuring
-				// the QuerySegment IR; this is the documented escape hatch.
-				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
-					   $this->connection->tableName( $query->alias ) .
-					   " SELECT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
-					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
-
-				$this->executedQueries[$query->alias][] = $sql;
+				// Diagnostic log entry: canonical MySQL-style form. The actual
+				// execution goes through insertSelect() below, which emits the
+				// platform-correct ignore verb (INSERT IGNORE / INSERT OR
+				// IGNORE / ON CONFLICT DO NOTHING). Emitting the raw
+				// "INSERT IGNORE ... SELECT" directly broke SQLite and
+				// PostgreSQL (#6979).
+				$this->executedQueries[$query->alias][] = 'INSERT IGNORE INTO ' .
+					$this->connection->tableName( $query->alias ) .
+					" SELECT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
+					" AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
 
 				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
 				if ( $this->queryMode !== Query::MODE_NONE ) {
-					$this->connection->query(
-						$sql,
+					// The planner's string fragments ($subQuery->from,
+					// $subQuery->where) have structured equivalents
+					// ($subQuery->fromTables, $subQuery->joinConditions) that
+					// table() maintains in parallel; feed those to
+					// insertSelect() so MW core builds portable SQL. The source
+					// table list mirrors QueryEngine's final SELECT: the anchor
+					// table/alias prepended to the accumulated fromTables.
+					$this->connection->insertSelect(
+						$query->alias,
+						array_merge( [ $subQuery->alias => $subQuery->joinTable ], $subQuery->fromTables ),
+						[ 'id' => $subQuery->joinfield ],
+						( $subQuery->where !== '' && $subQuery->where !== null ) ? [ $subQuery->where ] : '*',
 						__METHOD__,
-						ISQLPlatform::QUERY_CHANGE_ROWS
+						[ 'IGNORE' ],
+						[],
+						$subQuery->joinConditions
 					);
 				}
 			} elseif ( $subQuery->joinfield !== '' ) {
