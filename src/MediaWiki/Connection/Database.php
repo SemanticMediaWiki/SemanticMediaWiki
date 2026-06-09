@@ -537,7 +537,10 @@ class Database {
 			$fname
 		);
 
-		$this->connRef->getConnection( 'write' )->startAtomic( $fname );
+		// Use a cancelable atomic section so the writes can be rolled back via
+		// `cancelSectionTransaction` when the update throws, instead of leaving
+		// the section (and the underlying atomic) dangling.
+		$this->connRef->getConnection( 'write' )->startAtomic( $fname, IDatabase::ATOMIC_CANCELABLE );
 	}
 
 	/**
@@ -551,6 +554,27 @@ class Database {
 		);
 
 		$this->connRef->getConnection( 'write' )->endAtomic( $fname );
+	}
+
+	/**
+	 * Roll back a section transaction started with `beginSectionTransaction`,
+	 * discarding its writes via `cancelAtomic` and clearing the registered
+	 * section so a subsequent section transaction can be started.
+	 *
+	 * @since 7.1.0
+	 *
+	 * @param string $fname
+	 */
+	public function cancelSectionTransaction( $fname = __METHOD__ ): void {
+		// A rollback path must not raise a secondary error. The section may
+		// already have been detached (e.g. endSectionTransaction() cleared the
+		// flag and then its endAtomic() threw), so only detach when this section
+		// is still registered; the atomic is rolled back either way.
+		if ( $this->transactionHandler->inSectionTransaction( $fname ) ) {
+			$this->transactionHandler->detachSectionTransaction( $fname );
+		}
+
+		$this->connRef->getConnection( 'write' )->cancelAtomic( $fname );
 	}
 
 	/**

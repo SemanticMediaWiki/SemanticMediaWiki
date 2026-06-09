@@ -16,6 +16,7 @@ use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\Status;
 use SMW\Store;
+use Throwable;
 
 /**
  * Class Handling all the write and update methods for SQLStore.
@@ -181,90 +182,101 @@ class SQLStoreUpdater {
 		// MW 1.33+, #3780
 		$connection->beginSectionTransaction( SQLStore::UPDATE_TRANSACTION );
 
-		$subobjectListFinder = $this->factory->newSubobjectListFinder();
+		try {
+			$subobjectListFinder = $this->factory->newSubobjectListFinder();
 
-		$changeOp = $this->factory->newChangeOp(
-			$subject
-		);
+			$changeOp = $this->factory->newChangeOp(
+				$subject
+			);
 
-		$this->propertyTableRowDiffer->setChangeOp(
-			$changeOp
-		);
-
-		$propertyChangeListener = $this->factory->newPropertyChangeListener();
-
-		$this->propertyTableUpdater->setPropertyChangeListener(
-			$propertyChangeListener
-		);
-
-		if ( $semanticData->getOption( SemanticData::OPT_CHECK_REMNANT_ENTITIES ) ) {
-			$this->propertyTableRowDiffer->checkRemnantEntities( true );
-		}
-
-		// Update data about our main subject
-		$this->doFlatDataUpdate( $semanticData );
-		$sid = $subject->getId();
-
-		// Update data about our subobjects
-		$subSemanticData = $semanticData->getSubSemanticData();
-		$connection = $this->store->getConnection( 'mw.db' );
-		$isForcedUpdate = $semanticData->getOption( Enum::FORCED_UPDATE, false );
-
-		foreach ( $subSemanticData as $subobjectData ) {
-
-			// Inherit the option from the parent to ensure all associated
-			// entities are going to be updated
-			if ( $isForcedUpdate ) {
-				$subobjectData->setOption( Enum::FORCED_UPDATE, $isForcedUpdate );
-			}
-
-			$this->doFlatDataUpdate( $subobjectData );
-		}
-
-		$deleteList = [];
-
-		// Mark subobjects without reference to be deleted
-		foreach ( $subobjectListFinder->find( $subject ) as $subobject ) {
-			if ( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
-
-				$this->doFlatDataUpdate( new SemanticData( $subobject ) );
-				$deleteList[] = $subobject->getId();
-
-				$this->store->getObjectIds()->updateInterwikiField(
-					$subobject->getId(),
-					$subobject,
-					SMW_SQL3_SMWDELETEIW
-				);
-			}
-		}
-
-		$rev_id = $semanticData->getExtensionData( 'revision_id' );
-		if ( $rev_id !== null ) {
-			$this->store->getObjectIds()->updateRevField( $sid, $rev_id );
-		}
-
-		// Store the diff in cache so any post processing has a chance to find
-		// what entities and values were changed
-		$changeDiff = $changeOp->newChangeDiff();
-		$changeDiff->save( ApplicationFactory::getInstance()->getObjectCache() );
-
-		$status = new Status(
-			[
-				'delete_list' => $deleteList,
-				'change_diff' => $changeDiff
-			]
-		);
-
-		$this->hookContainer->run(
-			'SMW::SQLStore::AfterDataUpdateComplete',
-			[
-				$this->store,
-				$semanticData,
+			$this->propertyTableRowDiffer->setChangeOp(
 				$changeOp
-			]
-		);
+			);
 
-		$connection->endSectionTransaction( SQLStore::UPDATE_TRANSACTION );
+			$propertyChangeListener = $this->factory->newPropertyChangeListener();
+
+			$this->propertyTableUpdater->setPropertyChangeListener(
+				$propertyChangeListener
+			);
+
+			if ( $semanticData->getOption( SemanticData::OPT_CHECK_REMNANT_ENTITIES ) ) {
+				$this->propertyTableRowDiffer->checkRemnantEntities( true );
+			}
+
+			// Update data about our main subject
+			$this->doFlatDataUpdate( $semanticData );
+			$sid = $subject->getId();
+
+			// Update data about our subobjects
+			$subSemanticData = $semanticData->getSubSemanticData();
+			$connection = $this->store->getConnection( 'mw.db' );
+			$isForcedUpdate = $semanticData->getOption( Enum::FORCED_UPDATE, false );
+
+			foreach ( $subSemanticData as $subobjectData ) {
+
+				// Inherit the option from the parent to ensure all associated
+				// entities are going to be updated
+				if ( $isForcedUpdate ) {
+					$subobjectData->setOption( Enum::FORCED_UPDATE, $isForcedUpdate );
+				}
+
+				$this->doFlatDataUpdate( $subobjectData );
+			}
+
+			$deleteList = [];
+
+			// Mark subobjects without reference to be deleted
+			foreach ( $subobjectListFinder->find( $subject ) as $subobject ) {
+				if ( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
+
+					$this->doFlatDataUpdate( new SemanticData( $subobject ) );
+					$deleteList[] = $subobject->getId();
+
+					$this->store->getObjectIds()->updateInterwikiField(
+						$subobject->getId(),
+						$subobject,
+						SMW_SQL3_SMWDELETEIW
+					);
+				}
+			}
+
+			$rev_id = $semanticData->getExtensionData( 'revision_id' );
+			if ( $rev_id !== null ) {
+				$this->store->getObjectIds()->updateRevField( $sid, $rev_id );
+			}
+
+			// Store the diff in cache so any post processing has a chance to find
+			// what entities and values were changed
+			$changeDiff = $changeOp->newChangeDiff();
+			$changeDiff->save( ApplicationFactory::getInstance()->getObjectCache() );
+
+			$status = new Status(
+				[
+					'delete_list' => $deleteList,
+					'change_diff' => $changeDiff
+				]
+			);
+
+			$this->hookContainer->run(
+				'SMW::SQLStore::AfterDataUpdateComplete',
+				[
+					$this->store,
+					$semanticData,
+					$changeOp
+				]
+			);
+
+			$connection->endSectionTransaction( SQLStore::UPDATE_TRANSACTION );
+		} catch ( Throwable $e ) {
+			// Without this, an exception mid-update leaves the section
+			// transaction (and its atomic) open: every following update then
+			// throws "section transaction still active" and the run crashes at
+			// shutdown with "Explicit transaction still active". Roll the
+			// section back and rethrow so callers (e.g. rebuildData
+			// --ignore-exceptions) can log and skip this entity and continue.
+			$connection->cancelSectionTransaction( SQLStore::UPDATE_TRANSACTION );
+			throw $e;
+		}
 
 		$propertyChangeListener->runChangeListeners();
 
