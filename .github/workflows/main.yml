@@ -71,6 +71,7 @@ jobs:
   tests:
     name: Test (MW ${{ matrix.mw }}, PHP ${{ matrix.php }}, ${{ matrix.db }})
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental == true }}
     strategy:
       fail-fast: false
       matrix:
@@ -79,6 +80,7 @@ jobs:
           - { mw: '1.44', php: 8.3, db: "mariadb:11.8" }
           - { mw: '1.45', php: 8.4, db: "mariadb:12.3" }
           - { mw: '1.46-dev-26e9b33', php: 8.5, db: "mariadb:12.3" }
+          - { mw: '1.43', php: 8.2, db: "mysql:8", experimental: true }
     env:
       MW_VERSION: ${{ matrix.mw }}
       PHP_VERSION: ${{ matrix.php }}
