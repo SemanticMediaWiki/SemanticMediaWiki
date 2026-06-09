@@ -80,7 +80,7 @@ class SubqueryQueryBuilder {
 			$root,
 			$sortfieldPairs,
 			$orderBy,
-			$this->innerLimit( $outerLimit ),
+			$this->innerLimit( $outerLimit, $offset ),
 			$cursorPredicate,
 			$cursorSortColumns
 		);
@@ -157,8 +157,14 @@ class SubqueryQueryBuilder {
 		return $sql;
 	}
 
-	private function innerLimit( int $outerLimit ): int {
-		return max( $outerLimit + 5, (int)ceil( $outerLimit * 1.2 ) + 10 );
+	private function innerLimit( int $outerLimit, int $offset ): int {
+		// The outer query pages the derived table with LIMIT/OFFSET, so the
+		// inner LIMIT must cover the offset as well as the page. Without the
+		// offset term the outer OFFSET skips past the entire inner result and
+		// any page beyond `innerLimit - 1` comes back empty (#6983). The
+		// headroom term (outer filter-loss / dedup buffer) is preserved and
+		// applied on top of the offset.
+		return $offset + max( $outerLimit + 5, (int)ceil( $outerLimit * 1.2 ) + 10 );
 	}
 
 	/**

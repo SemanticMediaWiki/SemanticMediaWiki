@@ -29,3 +29,4 @@ This is only for those who have installed SMW via Git.
 
 * Fixed the `smwgSetParserCacheTimestamp` feature overwriting a page's revision date with the current time; it now sets the parser cache time instead ([#6982](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6982))
 * Fixed read-only requests on SQLite being recorded as having made primary database writes, caused by SMW's query temporary tables not being recognised as temporary by MediaWiki ([#6984](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6984))
+* Fixed `#ask` queries with an `offset` being capped to a small number of results; deeper result pages now return correctly ([#6983](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6983))
