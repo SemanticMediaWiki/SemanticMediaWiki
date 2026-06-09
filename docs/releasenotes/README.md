@@ -3,6 +3,7 @@
 Major releases and feature releases are indicated in **bold**.
 
 ### Semantic MediaWiki 7.x
+* **[SMW 7.1.0 release notes](RELEASE-NOTES-7.1.0.md)**
 * **[SMW 7.0.0 release notes](RELEASE-NOTES-7.0.0.md)**
 
 ### Semantic MediaWiki 6.x

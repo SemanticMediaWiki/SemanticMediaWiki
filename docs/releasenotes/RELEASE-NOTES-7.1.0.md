@@ -1,0 +1,30 @@
+# Semantic MediaWiki 7.1.0
+
+Released on TBD.
+
+## Summary
+
+This is a [minor release](../RELEASE-POLICY.md). Thus, it contains no breaking changes, only new features and fixes.
+
+Like SMW 7.0.x, this version is compatible with MediaWiki 1.43 up to 1.46 and PHP 8.1 up to 8.5.
+For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
+
+## Upgrading
+
+No need to run "update.php" or any other migration scripts.
+
+**Get the new version via Composer:**
+
+* Step 1: if you are upgrading from SMW older than 7.0.0, ensure the SMW version in `composer.local.json` is `^7.1.0`
+* Step 2: run composer in your MediaWiki directory: `composer update --no-dev --optimize-autoloader`
+
+**Get the new version via Git:**
+
+This is only for those who have installed SMW via Git.
+
+* Step 1: do a `git pull` in the SemanticMediaWiki directory
+* Step 2: run `composer update --no-dev --optimize-autoloader` in the MediaWiki directory
+
+## Changes
+
+* Fixed the `smwgSetParserCacheTimestamp` feature overwriting a page's revision date with the current time; it now sets the parser cache time instead ([#6982](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6982))
