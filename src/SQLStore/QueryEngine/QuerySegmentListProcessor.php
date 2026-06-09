@@ -256,7 +256,7 @@ class QuerySegmentListProcessor {
 						$query->alias,
 						array_merge( [ $subQuery->alias => $subQuery->joinTable ], $subQuery->fromTables ),
 						[ 'id' => $subQuery->joinfield ],
-						$subQuery->where !== '' ? [ $subQuery->where ] : '*',
+						( $subQuery->where !== '' && $subQuery->where !== null ) ? [ $subQuery->where ] : '*',
 						__METHOD__,
 						[ 'IGNORE' ],
 						[],

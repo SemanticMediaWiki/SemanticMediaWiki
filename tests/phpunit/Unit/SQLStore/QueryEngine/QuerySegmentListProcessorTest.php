@@ -251,4 +251,67 @@ class QuerySegmentListProcessorTest extends TestCase {
 		$instance->process( $disjunction->queryNumber );
 	}
 
+	public function testProcessDisjunctionTreatsNullWhereAsAllRows() {
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->method( 'tableName' )
+			->willReturnArgument( 0 );
+
+		// `where` is an untyped, nullable property in the planner flow (see the
+		// `=== null` guards in table()). A null `where` must fall back to
+		// ALL_ROWS ('*') and never reach insertSelect() as `[ null ]`.
+		$connection->expects( $this->once() )
+			->method( 'insertSelect' )
+			->with(
+				't1',
+				[ 't0' => 'smw_ft_search' ],
+				[ 'id' => 't0.s_id' ],
+				'*',
+				$this->anything(),
+				[ 'IGNORE' ],
+				[],
+				[]
+			);
+
+		$connection->expects( $this->never() )
+			->method( 'query' );
+
+		$temporaryTableBuilder = $this->getMockBuilder( TemporaryTableBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyTempTableBuilder = $this->getMockBuilder( HierarchyTempTableBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		QuerySegment::$qnum = 0;
+
+		$subQuery = new QuerySegment();
+		$subQuery->type = QuerySegment::Q_TABLE;
+		$subQuery->joinTable = 'smw_ft_search';
+		$subQuery->joinfield = "{$subQuery->alias}.s_id";
+		$subQuery->where = null;
+
+		$disjunction = new QuerySegment();
+		$disjunction->type = QuerySegment::Q_DISJUNCTION;
+		$disjunction->components = [ $subQuery->queryNumber => "{$disjunction->alias}.id" ];
+
+		$querySegmentList = [
+			$disjunction->queryNumber => $disjunction,
+			$subQuery->queryNumber => $subQuery,
+		];
+
+		$instance = new QuerySegmentListProcessor(
+			$connection,
+			$temporaryTableBuilder,
+			$hierarchyTempTableBuilder
+		);
+
+		$instance->setQueryMode( Query::MODE_INSTANCES );
+		$instance->setQuerySegmentList( $querySegmentList );
+		$instance->process( $disjunction->queryNumber );
+	}
+
 }
