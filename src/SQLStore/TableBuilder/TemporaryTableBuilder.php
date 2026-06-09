@@ -118,13 +118,17 @@ class TemporaryTableBuilder {
 				. "END\$\$";
 		}
 
-		// SQLite: TEMP keyword (TEMPORARY also accepted) and no engine clause.
-		// `INTEGER PRIMARY KEY` is a SQLite-specific rowid alias — the column
+		// SQLite: use TEMPORARY rather than the TEMP synonym SQLite also
+		// accepts, and no engine clause. MediaWiki's rdbms Query verb parser
+		// only recognises `CREATE TEMPORARY` as temporary-table creation; with
+		// `CREATE TEMP` the table is never registered as temporary, so later
+		// INSERT/DELETE into it are accounted as permanent primary writes.
+		// `INTEGER PRIMARY KEY` is a SQLite-specific rowid alias: the column
 		// accepts explicit values supplied via INSERT (HierarchyTempTableBuilder
 		// supplies them) and rejects duplicates, so dedup later via
 		// INSERT OR IGNORE works without an extra constraint clause.
 		if ( $this->connection->isType( 'sqlite' ) ) {
-			return 'CREATE TEMP TABLE IF NOT EXISTS ' . $tableName . ' ( id INTEGER PRIMARY KEY )';
+			return 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tableName . ' ( id INTEGER PRIMARY KEY )';
 		}
 
 		// MySQL: temporary memory table; dedup via INSERT IGNORE later.

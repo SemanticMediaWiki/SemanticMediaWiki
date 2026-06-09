@@ -136,10 +136,13 @@ class TemporaryTableBuilderTest extends TestCase {
 		$this->connection->method( 'isType' )
 			->willReturnCallback( static fn ( $type ) => $type === 'sqlite' );
 
+		// Must be CREATE TEMPORARY (not the TEMP synonym): MediaWiki's rdbms
+		// Query verb parser only registers `CREATE TEMPORARY` tables as
+		// temporary, otherwise later inserts count as permanent primary writes.
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with(
-				$this->stringContains( 'CREATE TEMP TABLE IF NOT EXISTS Foo' ),
+				$this->stringContains( 'CREATE TEMPORARY TABLE IF NOT EXISTS Foo' ),
 				$this->anything(),
 				$this->anything()
 			);
