@@ -362,6 +362,10 @@ class DataRebuilder {
 		$current_id = 0;
 		$max = ( $this->end ? "$this->end" : $maxId );
 
+		// Snapshot the exception count so the data-step failures can be
+		// distinguished from any logged during the preceding property rebuild.
+		$exceptionsBefore = $this->exceptionFileLogger->getExceptionCount();
+
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			if ( $this->autoRecovery !== null ) {
@@ -421,15 +425,25 @@ class DataRebuilder {
 
 		$this->write_to_file( $id );
 
+		$failed = $this->exceptionFileLogger->getExceptionCount() - $exceptionsBefore;
+
 		$this->reportMessage(
-			$this->cliMsgFormatter->twoCols( '   ... refreshed (IDs)', sprintf( "%s", ( $this->rebuildCount - $this->start ) ) )
+			$this->cliMsgFormatter->twoCols( '   ... refreshed (IDs)', sprintf( "%s", ( $this->rebuildCount - $this->start ) - $failed ) )
 		);
 
 		$this->reportMessage(
 			$this->cliMsgFormatter->twoCols( '   ... skipped (IDs)', sprintf( "%s", $skipped_update ) )
 		);
 
-		$this->reportMessage( "   ... done.\n" );
+		if ( $failed > 0 ) {
+			$this->reportMessage(
+				$this->cliMsgFormatter->twoCols( '   ... failed (IDs)', sprintf( "%s", $failed ) )
+			);
+
+			$this->reportMessage( "   ... completed with errors.\n" );
+		} else {
+			$this->reportMessage( "   ... done.\n" );
+		}
 
 		if ( $this->options->safeGet( 'use-job', false ) ) {
 			$text = [
