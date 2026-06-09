@@ -11,6 +11,7 @@ use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ILBFactory;
 use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\ReplaceQueryBuilder;
@@ -265,7 +266,8 @@ class DatabaseTest extends TestCase {
 			->getMock();
 
 		$write->expects( $this->once() )
-			->method( 'startAtomic' );
+			->method( 'startAtomic' )
+			->with( $this->anything(), IDatabase::ATOMIC_CANCELABLE );
 
 		$write->expects( $this->never() )
 			->method( 'endAtomic' );
@@ -320,7 +322,8 @@ class DatabaseTest extends TestCase {
 			->getMock();
 
 		$write->expects( $this->once() )
-			->method( 'startAtomic' );
+			->method( 'startAtomic' )
+			->with( $this->anything(), IDatabase::ATOMIC_CANCELABLE );
 
 		$write->expects( $this->once() )
 			->method( 'endAtomic' );
@@ -360,6 +363,157 @@ class DatabaseTest extends TestCase {
 		);
 
 		$instance->endSectionTransaction( __METHOD__ );
+	}
+
+	public function testCancelSectionTransaction() {
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$read = $this->getMockBuilder( IDatabase::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$readConnectionProvider->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $read );
+
+		$write = $this->getMockBuilder( IDatabase::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write->expects( $this->once() )
+			->method( 'startAtomic' )
+			->with( $this->anything(), IDatabase::ATOMIC_CANCELABLE );
+
+		// A cancelled section rolls back via cancelAtomic, never endAtomic.
+		$write->expects( $this->once() )
+			->method( 'cancelAtomic' );
+
+		$write->expects( $this->never() )
+			->method( 'endAtomic' );
+
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $write );
+
+		$this->transactionHandler->expects( $this->atLeastOnce() )
+			->method( 'markSectionTransaction' );
+
+		$this->transactionHandler->expects( $this->atLeastOnce() )
+			->method( 'inSectionTransaction' )
+			->willReturn( true );
+
+		$this->transactionHandler->expects( $this->atLeastOnce() )
+			->method( 'detachSectionTransaction' );
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			),
+			$this->transactionHandler
+		);
+
+		$instance->beginSectionTransaction( __METHOD__ );
+		$instance->cancelSectionTransaction( __METHOD__ );
+	}
+
+	public function testCancelSectionTransactionToleratesAlreadyClearedSection() {
+		// Mirrors endSectionTransaction() having cleared the section flag just
+		// before its endAtomic() threw: the rollback path must still cancel the
+		// atomic without raising a secondary "invalid section" error that would
+		// mask the original failure and leave the atomic dangling.
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write = $this->getMockBuilder( IDatabase::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write->expects( $this->once() )
+			->method( 'cancelAtomic' );
+
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $write );
+
+		// A real handler whose section flag was never set for this name.
+		$transactionHandler = new TransactionHandler(
+			$this->createMock( ILBFactory::class )
+		);
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			),
+			$transactionHandler
+		);
+
+		$instance->cancelSectionTransaction( __METHOD__ );
+	}
+
+	public function testCancelSectionTransactionAllowsANewSectionToStart() {
+		// After a failed entity rolls its section back, the next entity must be
+		// able to start a fresh section instead of hitting "section transaction
+		// still active" (the #6975 cascade).
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write = $this->getMockBuilder( IDatabase::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $write );
+
+		// A real handler so the "section still active" guard is genuinely run.
+		$transactionHandler = new TransactionHandler(
+			$this->createMock( ILBFactory::class )
+		);
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			),
+			$transactionHandler
+		);
+
+		$instance->beginSectionTransaction( 'first-entity' );
+		$instance->cancelSectionTransaction( 'first-entity' );
+
+		// Would throw "section transaction still active" if cancel had not
+		// cleared the section flag.
+		$instance->beginSectionTransaction( 'second-entity' );
+
+		$this->assertTrue(
+			$instance->inSectionTransaction( 'second-entity' )
+		);
+
+		$instance->endSectionTransaction( 'second-entity' );
 	}
 
 	public function testListTables() {

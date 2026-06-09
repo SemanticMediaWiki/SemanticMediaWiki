@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\SQLStore;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
@@ -238,6 +239,50 @@ class SQLStoreUpdaterTest extends TestCase {
 			->willReturn( new Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
+		$instance->doDataUpdate( $semanticData );
+	}
+
+	public function testDoDataUpdateCancelsSectionTransactionWhenUpdateThrows() {
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
+
+		// A failing entity: the property lookup inside the section throws, mirroring
+		// e.g. a charset error while writing a 4-byte UTF-8 title to a non-utf8mb4 DB.
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromTitle( $title ) ] )
+			->setMethods( [ 'getPropertyValues' ] )
+			->getMock();
+
+		$semanticData->method( 'getPropertyValues' )
+			->willThrowException( new RuntimeException( 'charset failure' ) );
+
+		$database = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->once() )
+			->method( 'beginSectionTransaction' )
+			->with( SQLStore::UPDATE_TRANSACTION );
+
+		// The thrown update must roll the section back, not commit it, so the
+		// connection is left clean for the next entity (no dangling section).
+		$database->expects( $this->once() )
+			->method( 'cancelSectionTransaction' )
+			->with( SQLStore::UPDATE_TRANSACTION );
+
+		$database->expects( $this->never() )
+			->method( 'endSectionTransaction' );
+
+		$parentStore = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $database );
+
+		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
+
+		$this->expectException( RuntimeException::class );
 		$instance->doDataUpdate( $semanticData );
 	}
 
