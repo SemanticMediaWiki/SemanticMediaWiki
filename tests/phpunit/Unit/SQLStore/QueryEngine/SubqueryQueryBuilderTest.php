@@ -57,6 +57,53 @@ class SubqueryQueryBuilderTest extends TestCase {
 		$this->assertMatchesRegularExpression( '/ORDER BY inner_q\.\w+ ASC/', $sql );
 	}
 
+	public function testInnerLimitCoversOffsetSoDeepPagesAreNotCapped() {
+		// Regression for #6983 ("Offset capped at 45"). The derived table
+		// must contain every row the outer query pages over, so the inner
+		// LIMIT has to cover the OFFSET, not just the page size. When the
+		// offset was ignored the inner LIMIT was max(L+5, ceil(L*1.2)+10)
+		// and any OFFSET at or beyond that value paged past the entire
+		// inner result, capping results at `innerLimit - 1` rows.
+		$root = new QuerySegment();
+		$root->joinTable = 'smw_object_ids';
+		$root->alias = 't0';
+		$root->joinfield = 't0.smw_id';
+		$root->from = ' INNER JOIN `smw_fpt_inst` AS t1 ON t0.smw_id=t1.s_id';
+		$root->where = 't1.o_id=8536';
+		$root->sortfields = [ '_SKEY' => 't0.smw_sort' ];
+
+		$sqlOptions = [
+			'LIMIT' => 30,
+			'OFFSET' => 46,
+			'ORDER BY' => 't0.smw_sort ASC',
+		];
+
+		$builder = new SubqueryQueryBuilder( $this->connection );
+		$sql = $builder->buildInstanceQuerySQL( $root, $sqlOptions, '' );
+
+		// Inner LIMIT = offset + max(30+5, ceil(30*1.2)+10) = 46 + 46 = 92.
+		$this->assertMatchesRegularExpression(
+			'/INNER JOIN \(.*LIMIT 92\) AS inner_q/s',
+			$sql
+		);
+
+		// The invariant the bug violated: the inner LIMIT must exceed the
+		// outer OFFSET, otherwise the outer slice is guaranteed empty.
+		$this->assertSame(
+			1,
+			preg_match( '/INNER JOIN \(.*LIMIT (\d+)\) AS inner_q/s', $sql, $matches ),
+			'Could not locate the inner LIMIT in the generated SQL.'
+		);
+		$this->assertGreaterThan(
+			46,
+			(int)$matches[1],
+			'Inner LIMIT must exceed the outer OFFSET so the page is not capped.'
+		);
+
+		// Outer pagination is unchanged.
+		$this->assertMatchesRegularExpression( '/LIMIT 30 OFFSET 46\s*$/', $sql );
+	}
+
 	public function testInstanceQueryWithoutSort() {
 		$root = new QuerySegment();
 		$root->joinTable = 'smw_fpt_askdu';
