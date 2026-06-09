@@ -244,6 +244,61 @@ class SubqueryQueryEquivalenceDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->assertQueryEquivalent( $factory, 'disjunction across two properties' );
 	}
 
+	public function testOffsetPaginationBeyondInnerLimitMatchesLegacyPath(): void {
+		// Regression for #6983 ("Offset capped at 45"). The derived-table
+		// rewrite sized the inner subquery LIMIT from the page size alone,
+		// ignoring the offset. Any page whose offset reached that inner cap
+		// returned an empty slice while the legacy path still paged
+		// correctly. Seed more rows than the (old) inner cap and page past
+		// it: legacy and rewrite must agree, and the page must be non-empty.
+		$paginationProperty = new Property( 'EquivalencePaginationNumber' );
+		$paginationProperty->setPropertyValueType( '_num' );
+
+		// 25 distinct, totally-ordered values. The old inner LIMIT for a
+		// page size of 2 was max((2+5)+5, ceil((2+5)*1.2)+10) = 19, so an
+		// offset of 20 paged past every inner row under the bug.
+		for ( $value = 1; $value <= 25; $value++ ) {
+			$semanticData = $this->semanticDataFactory
+				->setTitle( __CLASS__ . '-pagination-' . sprintf( '%02d', $value ) )
+				->newEmptySemanticData();
+			$semanticData->addPropertyObjectValue(
+				$paginationProperty,
+				new Number( $value )
+			);
+			$this->getStore()->updateData( $semanticData );
+			$this->subjectsToBeCleared[] = $semanticData->getSubject();
+		}
+
+		$factory = static function () use ( $paginationProperty ): Query {
+			$description = new SomeProperty(
+				$paginationProperty,
+				new ThingDescription()
+			);
+			$query = new Query( $description );
+			$query->querymode = Query::MODE_INSTANCES;
+			$query->sort = true;
+			$query->sortkeys = [ $paginationProperty->getKey() => 'ASC' ];
+			$query->setUnboundLimit( 2 );
+			$query->setUnboundOffset( 20 );
+			return $query;
+		};
+
+		$this->assertQueryEquivalent( $factory, 'offset pagination beyond inner limit' );
+
+		// Guard against the degenerate case where both paths return an
+		// empty slice (which would falsely satisfy equivalence). With 25
+		// totally-ordered rows, offset 20 + limit 2 yields the 21st and
+		// 22nd values on the rewrite path.
+		$rewriteHashes = $this->subjectHashes(
+			$this->runUnderLegacyFlag( false, $factory )
+		);
+		$this->assertCount(
+			2,
+			$rewriteHashes,
+			'Offset page beyond the old inner cap returned a short/empty slice'
+		);
+	}
+
 	public function testCursorWalkOverDefaultSortMatchesLegacyPath(): void {
 		$this->assertCursorWalkEquivalent(
 			function ( ?array $cursorPayload ): Query {
