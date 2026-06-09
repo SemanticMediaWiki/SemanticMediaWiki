@@ -682,6 +682,127 @@ class DataRebuilderTest extends TestCase {
 		}
 	}
 
+	public function testRebuildAllReportsFailedIdsAndCompletedWithErrors() {
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Every id in the [1,3] range fails, mirroring a run dominated by
+		// per-entity errors under --ignore-exceptions.
+		$rebuilder->expects( $this->any() )
+			->method( 'rebuild' )
+			->willReturnCallback( static function ( &$id ) {
+				throw new TypeError( 'Return value must be of type string, array returned' );
+			} );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getMaxId' )
+			->willReturn( 1000 );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$exceptionLogDir = sys_get_temp_dir() . '/smw-6975-' . uniqid();
+		mkdir( $exceptionLogDir );
+
+		$spyMessageReporter = new SpyMessageReporter();
+
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
+		$instance->setMessageReporter( $spyMessageReporter );
+
+		$instance->setOptions( new Options( [
+			's' => 1,
+			'e' => 3,
+			'ignore-exceptions' => true,
+			'exception-log' => $exceptionLogDir
+		] ) );
+
+		try {
+			$instance->rebuild();
+
+			$output = $spyMessageReporter->getMessagesAsString();
+
+			// The data-step summary must surface the failures and must not claim
+			// a plain successful completion.
+			$this->assertStringContainsString( 'failed (IDs)', $output );
+			$this->assertStringContainsString( 'completed with errors', $output );
+			$this->assertSame( 3, $instance->getExceptionCount() );
+		} finally {
+			array_map( 'unlink', glob( "$exceptionLogDir/*" ) ?: [] );
+			rmdir( $exceptionLogDir );
+		}
+	}
+
+	public function testRebuildAllCleanRunReportsDone() {
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Every id processes cleanly; the dispatcher advances the id.
+		$rebuilder->expects( $this->any() )
+			->method( 'rebuild' )
+			->willReturnCallback( static function ( &$id ) {
+				$id++;
+				return 1;
+			} );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getMaxId' )
+			->willReturn( 1000 );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$spyMessageReporter = new SpyMessageReporter();
+
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
+		$instance->setMessageReporter( $spyMessageReporter );
+
+		$instance->setOptions( new Options( [ 's' => 1, 'e' => 3 ] ) );
+
+		$this->assertTrue( $instance->rebuild() );
+
+		$output = $spyMessageReporter->getMessagesAsString();
+
+		// A clean run keeps the plain success wording and no failure lines.
+		$this->assertStringContainsString( '... done.', $output );
+		$this->assertStringNotContainsString( 'completed with errors', $output );
+		$this->assertStringNotContainsString( 'failed (IDs)', $output );
+		$this->assertSame( 0, $instance->getExceptionCount() );
+	}
+
 	/**
 	 * @depends testCanConstruct
 	 */

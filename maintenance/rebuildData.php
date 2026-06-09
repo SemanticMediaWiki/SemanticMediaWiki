@@ -257,6 +257,13 @@ class rebuildData extends Maintenance {
 			}
 		}
 
+		// A run that logged one or more exceptions under --ignore-exceptions did
+		// not complete cleanly. Return false so MediaWiki exits with a non-zero
+		// status and cron/CI can detect the incomplete rebuild.
+		if ( $result && $dataRebuilder->getExceptionCount() > 0 ) {
+			$result = false;
+		}
+
 		return $result;
 	}
 
