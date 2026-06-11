@@ -14,7 +14,7 @@
 	},
 	"smw-desc": "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
 	"smw-error": "Памылка",
-	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Сэмантычная МэдыяВікі] была ўсталяваная і задзейнічаная, аднак бракуе неабходнага [https://www.semantic-mediawiki.org/wiki/Help:Upgrade ключу абнаўленьня].",
+	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Сэмантычная МэдыяВікі] была ўсталяваная і ўжытая, аднак бракуе належнага [https://www.semantic-mediawiki.org/wiki/Help:Upgrade ключу абнаўленьня].",
 	"smw-upgrade-release": "Выданьне",
 	"smw-upgrade-progress": "Прагрэс",
 	"smw-upgrade-error-why-title": "Чаму я бачу гэтую старонку?",
