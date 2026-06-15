@@ -445,6 +445,7 @@
 	"smw-entity-examiner-indicator": "Панэль праблемаў існасьці",
 	"smw-entity-examiner-associated-revision-mismatch": "Вэрсія",
 	"smw-indicator-revision-mismatch": "Вэрсія",
+	"smw-facetedsearch-input-filter-placeholder": "Фільтар...",
 	"smw-listingcontinuesabbrev": " (працяг)",
 	"smw-showingresults": "Ніжэй {{PLURAL:$1|пададзены|пададзеныя}} да <strong>$1</strong> {{PLURAL:$1|выніку|вынікаў}}, пачынаючы з #<strong>$2</strong>."
 }
