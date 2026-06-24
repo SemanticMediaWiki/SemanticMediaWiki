@@ -288,16 +288,18 @@ class PropertySubjectsLookup {
 			// Avoid a "... 42803 ERROR:  column "s....smw_title" must appear in
 			// the GROUP BY clause or be used in an aggregate function ..."
 			// https://stackoverflow.com/questions/1769361/postgresql-group-by-different-from-mysql
+			// DISTINCT ON keeps one row per (smw_sort, smw_id); the matching
+			// ORDER BY makes both the kept row and the output order deterministic.
 			$requestOptions->setOption( 'DISTINCT', 'ON (smw_sort, smw_id)' );
-			$requestOptions->setOption( 'ORDER BY', false );
+			$requestOptions->setOption( 'ORDER BY', $sortField . ', smw_id' );
 		} elseif ( $group ) {
-			// Using GROUP BY will sort on the field and since we disinguish smw_sort
-			// and the ID at the end of the field, we ensure
-			// the filter duplicates while sorting the list without using DISTINCT which
-			// would cause a filesort
-			// http://www.mysqltutorial.org/mysql-distinct.aspx
+			// GROUP BY (smw_sort, smw_id) collapses duplicate subjects. An
+			// explicit ORDER BY on the same columns is required for a stable
+			// sort order: MySQL 8 no longer orders GROUP BY output implicitly
+			// (MariaDB still does), so without it the subject list comes back
+			// unordered on MySQL.
 			$requestOptions->setOption( 'GROUP BY', $sortField . ', smw_id' );
-			$requestOptions->setOption( 'ORDER BY', false );
+			$requestOptions->setOption( 'ORDER BY', $sortField . ', smw_id' );
 		} elseif ( $requestOptions->getOption( 'NO_DISTINCT' ) ) {
 			$requestOptions->setOption( 'DISTINCT', false );
 		} else {
@@ -332,9 +334,12 @@ class PropertySubjectsLookup {
 		}
 
 		if ( $cursorMode ) {
-			// Cursor path: the trait sets the WHERE predicate and ORDER BY;
-			// we apply LIMIT+1 for lookahead and skip the legacy LIMIT/OFFSET.
-			unset( $opts['LIMIT'], $opts['OFFSET'] );
+			// Cursor path: the trait sets the WHERE predicate and ORDER BY, so
+			// drop the legacy LIMIT/OFFSET and ORDER BY here and apply LIMIT+1
+			// for lookahead. The trait stays the single source of cursor
+			// ordering (its orderBy() is additive, so leaving the group-branch
+			// ORDER BY in $opts would append redundant trailing terms).
+			unset( $opts['LIMIT'], $opts['OFFSET'], $opts['ORDER BY'] );
 			if ( $requestOptions->limit > 0 ) {
 				$qb->limit( $requestOptions->limit + 1 );
 			}
