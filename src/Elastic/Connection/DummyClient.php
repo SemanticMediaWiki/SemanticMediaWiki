@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\Connection;
 
-use Elasticsearch\Client as ElasticClient;
+use Elastic\Elasticsearch\Client as ElasticClient;
 use Psr\Log\NullLogger;
 use SMW\Elastic\Config;
 use Wikimedia\ObjectCache\BagOStuff;

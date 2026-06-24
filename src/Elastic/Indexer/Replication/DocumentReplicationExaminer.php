@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException as BadRequest400Exception;
 use Exception;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;

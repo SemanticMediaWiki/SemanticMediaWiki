@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\Connection;
 
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\ClientBuilder;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Elastic\Config;
