@@ -27,6 +27,7 @@ This is only for those who have installed SMW via Git.
 
 ## Changes
 
+* Fixed queries combining a concept with a single-page restriction (for example `[[Concept:Foo]] [[Bar]]`) returning pages that are not members of the concept ([#6994](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6994))
 * Fixed the `smwgSetParserCacheTimestamp` feature overwriting a page's revision date with the current time; it now sets the parser cache time instead ([#6982](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6982))
 * Fixed read-only requests on SQLite being recorded as having made primary database writes, caused by SMW's query temporary tables not being recognised as temporary by MediaWiki ([#6984](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6984))
 * Fixed queries combining subqueries with `OR` (for example `[[Has color::Brown]] OR [[Has color::Black]]`) failing on SQLite and PostgreSQL with an `INSERT IGNORE` syntax error ([#6987](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6987))
