@@ -27,6 +27,7 @@ This is only for those who have installed SMW via Git.
 
 ## Changes
 
+* Fixed queries combining a concept with a single-page restriction (for example `[[Concept:Foo]] [[Bar]]`) returning pages that are not members of the concept ([#6994](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6994))
 * Fixed the `smwgSetParserCacheTimestamp` feature overwriting a page's revision date with the current time; it now sets the parser cache time instead ([#6982](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6982))
 * Fixed read-only requests on SQLite being recorded as having made primary database writes, caused by SMW's query temporary tables not being recognised as temporary by MediaWiki ([#6984](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6984))
 * Fixed queries combining subqueries with `OR` (for example `[[Has color::Brown]] OR [[Has color::Black]]`) failing on SQLite and PostgreSQL with an `INSERT IGNORE` syntax error ([#6987](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6987))
@@ -34,3 +35,4 @@ This is only for those who have installed SMW via Git.
 * `rebuildData` now reports the number of failed pages and exits with a non-zero status when errors are logged under `--ignore-exceptions`, instead of reporting `done` ([#6975](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6975))
 * Fixed `rebuildData` with `--ignore-exceptions` aborting the rest of the run and failing at shutdown with a database transaction error after the first page that errors during its update; the failing page is now rolled back and skipped so the run continues ([#6975](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6975))
 * Fixed `Property` page subject lists appearing in an arbitrary order on MySQL 8, where the lookup relied on implicit `GROUP BY` ordering that MySQL 8 no longer provides ([#7002](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7002))
+* Fixed the MySQL `FORCE INDEX` hint for heavily-used Date property queries being silently dropped, restoring the intended query optimisation ([#6998](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6998))

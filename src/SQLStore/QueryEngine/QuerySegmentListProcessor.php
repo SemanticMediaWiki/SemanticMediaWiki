@@ -189,15 +189,35 @@ class QuerySegmentListProcessor {
 
 	private function conjunction( QuerySegment &$query ): void {
 		reset( $query->components );
-		$key = false;
 
-		// Pick one subquery as anchor point ...
+		// Pick one subquery as the anchor that the remaining conjuncts are
+		// joined onto. A component that owns a join table is ideal. Otherwise
+		// prefer a non-value component: a nested conjunction or disjunction
+		// resolves to a real table on its first processing pass, after which
+		// the other conjuncts join onto it correctly. A Q_VALUE has no join
+		// table and its processing ignores appended components, so anchoring
+		// on it silently drops all the other conjuncts, for example a concept
+		// combined with a single-page restriction (#6994). Fall back to the
+		// last component only when every component is a bare value restriction.
+		$key = false;
+		$nonValueKey = false;
+		$lastKey = false;
+
 		foreach ( $query->components as $qkey => $qid ) {
-			$key = $qkey;
+			$lastKey = $qkey;
 
 			if ( $this->querySegmentList[$qkey]->joinTable !== '' ) {
+				$key = $qkey;
 				break;
 			}
+
+			if ( $nonValueKey === false && $this->querySegmentList[$qkey]->type !== QuerySegment::Q_VALUE ) {
+				$nonValueKey = $qkey;
+			}
+		}
+
+		if ( $key === false ) {
+			$key = $nonValueKey !== false ? $nonValueKey : $lastKey;
 		}
 
 		$result = $this->querySegmentList[$key];
