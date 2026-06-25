@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GPL-2.0-or-later
@@ -162,30 +163,64 @@ class HierarchyTempTableBuilder {
 		$tablenameQb->execute();
 		$tmpnewQb->execute();
 
-		// MySQL rejects CAST( ... AS INTEGER ) and requires SIGNED, while SQLite
-		// and PostgreSQL want INTEGER; buildIntegerCast() emits the form matching
-		// the connection's platform.
-		$idCast = $db->buildIntegerCast( 's_id' );
+		// Resolve the persistent source table's physical (prefix-applied) name
+		// once. The temp-table names are resolved per iteration because $tmpnew
+		// and $tmpres are swapped at the end of each pass.
+		$smwtableName = $db->tableName( $smwtable );
 
 		for ( $i = 0; $i < $depth; $i++ ) {
-			// INSERT IGNORE INTO $tmpres (id)
-			//   SELECT <integer cast of s_id> FROM $smwtable, $tmpnew WHERE o_id=id
-			$db->insertSelect(
-				$tmpres,
-				[ $smwtable, $tmpnew ],
-				[ 'id' => $idCast ],
-				[ 'o_id=id' ],
+			// Read the next hierarchy frontier with a PLAIN, non-locking SELECT
+			// (no FOR UPDATE) and re-insert the ids as literals. Splitting the
+			// read from the write keeps the persistent $smwtable lock-free:
+			// IDatabase::insertSelect() takes a locking SELECT ... FOR UPDATE on
+			// the web-request path (and a shared-lock INSERT ... SELECT on the
+			// native path), which under concurrent writes to $smwtable (rebuild /
+			// ChangePropagation jobs) caused Error 1205 lock-wait timeouts
+			// (issue #4527). A standalone SELECT is a non-locking snapshot read,
+			// so it takes no locks on $smwtable on any path. It runs on the write
+			// connection because $tmpnew is a session-local temporary table that
+			// exists only there.
+			$res = $db->query(
+				"SELECT s_id FROM $smwtableName," . $db->tableName( $tmpnew ) . ' WHERE o_id=id',
 				__METHOD__,
-				[ 'IGNORE' ],
-				[],
-				[]
+				ISQLPlatform::QUERY_CHANGE_NONE
 			);
 
-			if ( $db->affectedRows() == 0 ) { // no change, exit loop
+			$ids = [];
+			foreach ( $res as $row ) {
+				$ids[] = (int)$row->s_id;
+			}
+
+			// A child reachable from several parents appears once per parent;
+			// dedupe so the literal INSERT below stays compact (INSERT IGNORE
+			// would drop the duplicates anyway).
+			$ids = array_unique( $ids );
+
+			if ( $ids === [] ) { // no new ids, exit loop
 				break;
 			}
 
-			// INSERT IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres
+			// INSERT IGNORE the frontier ids into $tmpres, in bounded batches so
+			// a very wide hierarchy level cannot produce an oversized statement
+			// (max_allowed_packet) or an unbounded PHP buffer. The IGNORE option
+			// produces platform-correct INSERT IGNORE / OR IGNORE / ON CONFLICT
+			// DO NOTHING automatically.
+			foreach ( array_chunk( $ids, 1000 ) as $chunk ) {
+				$tmpresQb = $db->newInsertQueryBuilder()
+					->insertInto( $tmpres )
+					->ignore()
+					->caller( __METHOD__ );
+
+				foreach ( $chunk as $id ) {
+					$tmpresQb->row( [ 'id' => $id ] );
+				}
+
+				$tmpresQb->execute();
+			}
+
+			// INSERT IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres.
+			// Both are temporary tables, so insertSelect()'s FOR UPDATE is
+			// session-local and harmless here.
 			$db->insertSelect(
 				$tablename,
 				$tmpres,
