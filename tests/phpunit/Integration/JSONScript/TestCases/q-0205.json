@@ -1,0 +1,138 @@
+{
+	"description": "Test concept (live-computed) combined with a single-page restriction (#6994, skip virtuoso)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has author",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Member",
+			"contents": "[[Has author::Jane]] [[Category:Book]]"
+		},
+		{
+			"page": "Nonmember",
+			"contents": "[[Has author::Jane]]"
+		},
+		{
+			"page": "Plain page",
+			"contents": "[[Category:Book]]"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Multi part concept",
+			"contents": "{{#concept: [[Has author::+]] [[Category:Book]] }}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Single part concept",
+			"contents": "{{#concept: [[Category:Book]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 multi-part concept and a single-page restriction matching a member returns the member",
+			"condition": "[[Concept:Multi part concept]] [[Member]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Member#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 multi-part concept and a single-page restriction for a non-member returns nothing (#6994)",
+			"condition": "[[Concept:Multi part concept]] [[Nonmember]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [],
+				"count": "0"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 single-part concept and a single-page restriction for a non-member returns nothing",
+			"condition": "[[Concept:Single part concept]] [[Nonmember]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [],
+				"count": "0"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 single-page restriction written before the multi-part concept returns nothing",
+			"condition": "[[Nonmember]] [[Concept:Multi part concept]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [],
+				"count": "0"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 category hierarchy (depth=0) and a single-page restriction for a non-member returns nothing",
+			"condition": "[[Category:Book|+depth=0]] [[Nonmember]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [],
+				"count": "0"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 property hierarchy (depth=0) and a single-page restriction for a non-member returns nothing",
+			"condition": "[[Has author::+|+depth=0]] [[Plain page]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [],
+				"count": "0"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 category hierarchy (depth=0) and a single-page restriction for a member returns the member",
+			"condition": "[[Category:Book|+depth=0]] [[Member]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Member#0##"
+				],
+				"count": "1"
+			}
+		}
+	],
+	"settings": {
+		"smwgQueryResultCacheType": false,
+		"smwgQConceptCaching": "none",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_CONCEPT": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
+		},
+		"version": "2",
+		"is-incomplete": false
+	}
+}
