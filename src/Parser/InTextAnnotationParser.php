@@ -7,6 +7,7 @@ use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
@@ -394,6 +395,7 @@ class InTextAnnotationParser {
 			$result = $origValue;
 		} elseif ( isset( $dataValue ) ) {
 			$result = $dataValue->getShortWikitext( true );
+			$this->addFileUsage( $dataValue );
 		}
 
 		// If necessary add an error text
@@ -418,6 +420,27 @@ class InTextAnnotationParser {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Records a file referenced through a property value (e.g.
+	 * `[[Has file::File:Example.mp4]]`) as a dependency of the parsed page, so
+	 * the page shows up in the file's usage tracking. An embedded image already
+	 * registers this link through its `[[File:...]]` markup, but a non-image
+	 * file is rendered as a plain link whose dependency would otherwise be
+	 * missing (#6141).
+	 */
+	private function addFileUsage( DataValue $dataValue ): void {
+		$dataItem = $dataValue->getDataItem();
+
+		if (
+			$dataItem instanceof WikiPage &&
+			$dataItem->getNamespace() === NS_FILE &&
+			$dataItem->getInterwiki() === '' &&
+			$dataItem->getSubobjectName() === ''
+		) {
+			$this->parserData->getOutput()->addImage( $dataItem->getDBkey() );
+		}
 	}
 
 	/**
