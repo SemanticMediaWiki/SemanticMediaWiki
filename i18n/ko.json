@@ -145,7 +145,7 @@
 	"smw-paramdesc-feeddescription": "피드의 설명으로 사용할 텍스트",
 	"smw-paramdesc-feedpagecontent": "피드에 보여줄 문서 내용",
 	"smw-label-feed-description": "$1 $2 피드",
-	"smw-paramdesc-mimetype": "출력 파일의 미디어 타입(MIME 타입)",
+	"smw-paramdesc-mimetype": "출력 파일의 미디어 유형(MIME 유형)",
 	"smw_iq_disabled": "시맨틱 쿼리는 이 위키에 비활성화되었습니다.",
 	"smw_iq_moreresults": "… 다른 결과",
 	"smw_parseerror": "지정한 값은 이해할 수 없습니다.",
