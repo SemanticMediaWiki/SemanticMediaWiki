@@ -188,6 +188,41 @@ class Database {
 	}
 
 	/**
+	 * Whether the connected database server supports recursive common table
+	 * expressions (`WITH RECURSIVE`). True for PostgreSQL (>= 8.4) and SQLite
+	 * (>= 3.8.3), which covers every version in practical use under MediaWiki,
+	 * and for MariaDB; for plain MySQL it requires 8.0+, as 5.7 has no
+	 * `WITH RECURSIVE`.
+	 *
+	 * @since 7.1.0
+	 */
+	public function supportsRecursiveCommonTableExpressions(): bool {
+		$type = $this->getType();
+
+		if ( $type === 'postgres' || $type === 'sqlite' ) {
+			return true;
+		}
+
+		if ( $type !== 'mysql' ) {
+			return false;
+		}
+
+		$connection = $this->connRef->getConnection( 'read' );
+
+		// Detect MariaDB explicitly so the numeric gate below only governs plain
+		// MySQL. MariaDB (10.3 is the MediaWiki minimum) has had WITH RECURSIVE
+		// since 10.2; matching the server info string also stays correct even for
+		// a version that exposes the legacy "5.5.5-" MySQL-compatibility prefix,
+		// which version_compare would otherwise misread as 5.5.
+		if ( strpos( $connection->getServerInfo(), 'MariaDB' ) !== false ) {
+			return true;
+		}
+
+		// Plain MySQL: recursive CTEs require 8.0.
+		return version_compare( $connection->getServerVersion(), '8.0', '>=' );
+	}
+
+	/**
 	 * @see IDatabase::tableName
 	 *
 	 * @since 1.9

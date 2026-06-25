@@ -76,6 +76,10 @@ class HierarchyTempTableBuilderTest extends TestCase {
 		$this->connection->method( 'tableName' )
 			->willReturnCallback( static fn ( $table ) => $table );
 
+		// Exercise the iterative fallback (no recursive CTE support).
+		$this->connection->method( 'supportsRecursiveCommonTableExpressions' )
+			->willReturn( false );
+
 		$insertTables = [];
 		$insertRows = [];
 		$this->connection->method( 'newInsertQueryBuilder' )
@@ -161,6 +165,10 @@ class HierarchyTempTableBuilderTest extends TestCase {
 		$this->connection->method( 'tableName' )
 			->willReturnCallback( static fn ( $table ) => $table );
 
+		// Exercise the iterative fallback (no recursive CTE support).
+		$this->connection->method( 'supportsRecursiveCommonTableExpressions' )
+			->willReturn( false );
+
 		$insertTables = [];
 		$insertRows = [];
 		$this->connection->method( 'newInsertQueryBuilder' )
@@ -204,6 +212,10 @@ class HierarchyTempTableBuilderTest extends TestCase {
 	public function testFillTempTableUsesCacheOnRepeatComposite() {
 		$this->connection->method( 'tableName' )
 			->willReturnCallback( static fn ( $table ) => $table );
+
+		// Exercise the iterative fallback (no recursive CTE support).
+		$this->connection->method( 'supportsRecursiveCommonTableExpressions' )
+			->willReturn( false );
 
 		// First fill seeds the cache with insertInto + (frontier SELECT +
 		// temp->temp carryback) calls; second fill must hit the cache branch
@@ -273,6 +285,67 @@ class HierarchyTempTableBuilderTest extends TestCase {
 		// because affectedRows()=0); second fill issues 1 insertSelect (cache
 		// copy). Pin the total so silent regressions in either branch fail.
 		$this->assertCount( 2, $insertSelectCalls );
+	}
+
+	public function testFillTempTableUsesRecursiveCteWhenSupported() {
+		$this->connection->method( 'supportsRecursiveCommonTableExpressions' )
+			->willReturn( true );
+		$this->connection->method( 'tableName' )
+			->willReturnCallback( static fn ( $table ) => $table );
+		$this->connection->method( 'buildIntegerCast' )
+			->willReturnCallback( static fn ( $field ) => "CAST($field AS SIGNED)" );
+
+		// The recursion is a STANDALONE, non-locking SELECT; return the resolved
+		// ids. The CTE path must not use the locking insertSelect.
+		$queryCalls = [];
+		$this->connection->method( 'query' )
+			->willReturnCallback( static function ( $sql, $fname, $flags ) use ( &$queryCalls ) {
+				$queryCalls[] = [ 'sql' => $sql, 'flags' => $flags ];
+				return new FakeResultWrapper( [
+					(object)[ 'id' => '42' ], (object)[ 'id' => '43' ], (object)[ 'id' => '77' ]
+				] );
+			} );
+		$this->connection->expects( $this->never() )->method( 'insertSelect' );
+
+		// Resolved ids are re-inserted as literals into the result table.
+		$insertTables = [];
+		$insertRows = [];
+		$this->connection->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( function () use ( &$insertTables, &$insertRows ) {
+				return $this->createMockInsertQueryBuilder( $insertTables, $insertRows );
+			} );
+
+		$instance = new HierarchyTempTableBuilder(
+			$this->connection,
+			$this->temporaryTableBuilder
+		);
+
+		$instance->setTableDefinitions( [ 'class' => [ 'table' => 'bar', 'depth' => 4 ] ] );
+		$instance->fillTempTable( 'class', 'foobar', '(42),(43)' );
+
+		$this->assertCount( 1, $queryCalls );
+		$sql = $queryCalls[0]['sql'];
+
+		// One STANDALONE recursive SELECT (not a coupled INSERT ... SELECT, which
+		// would take shared locks on the source), with both seed anchors at level
+		// 0, the recursive join, the depth cap, DISTINCT, and no FOR UPDATE; it is
+		// flagged QUERY_CHANGE_NONE (a read).
+		$this->assertStringStartsWith( 'WITH RECURSIVE smw_cte (id, lvl)', $sql );
+		$this->assertStringNotContainsString( 'INSERT', $sql );
+		$this->assertStringContainsString( 'SELECT CAST(42 AS SIGNED) AS id, 0 AS lvl', $sql );
+		$this->assertStringContainsString( 'SELECT CAST(43 AS SIGNED) AS id, 0 AS lvl', $sql );
+		$this->assertStringContainsString( 'CAST(t.s_id AS SIGNED), smw_cte.lvl + 1', $sql );
+		$this->assertStringContainsString( 'FROM bar AS t JOIN smw_cte ON t.o_id = smw_cte.id', $sql );
+		$this->assertStringContainsString( 'WHERE smw_cte.lvl < 4', $sql );
+		$this->assertStringContainsString( 'SELECT DISTINCT id FROM smw_cte', $sql );
+		$this->assertStringNotContainsStringIgnoringCase( 'FOR UPDATE', $sql );
+		$this->assertSame( ISQLPlatform::QUERY_CHANGE_NONE, $queryCalls[0]['flags'] );
+
+		// The resolved ids are inserted as literals into the result table.
+		$this->assertSame( [ 'foobar' ], $insertTables );
+		$this->assertSame( [ [ 'id' => 42 ], [ 'id' => 43 ], [ 'id' => 77 ] ], $insertRows );
+
+		$this->assertSame( [ '(42),(43)' => 'foobar' ], $instance->getHierarchyCache() );
 	}
 
 }
