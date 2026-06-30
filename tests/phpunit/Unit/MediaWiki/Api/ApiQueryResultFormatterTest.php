@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\ApiQueryResultFormatter;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 
 /**
@@ -112,6 +113,14 @@ class ApiQueryResultFormatterTest extends TestCase {
 	}
 
 	public function testCountFormat() {
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getQueryMode' )
+			->willReturn( Query::MODE_COUNT );
+
 		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,6 +128,10 @@ class ApiQueryResultFormatterTest extends TestCase {
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
 			->willReturn( [] );
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getQuery' )
+			->willReturn( $query );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getCountValue' )

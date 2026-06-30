@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use InvalidArgumentException;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 
 /**
@@ -103,7 +104,7 @@ class ApiQueryResultFormatter {
 			$this->result = $this->formatErrors(
 				ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $this->queryResult->getErrors() )
 			);
-		} elseif ( $this->queryResult->getCountValue() !== null ) {
+		} elseif ( $this->queryResult->getQuery()->getQueryMode() === Query::MODE_COUNT ) {
 			$this->type = 'query';
 			$this->result = [
 				'count' => $this->queryResult->getCountValue(),
