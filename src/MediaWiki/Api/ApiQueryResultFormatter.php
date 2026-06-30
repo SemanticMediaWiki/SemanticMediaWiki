@@ -103,6 +103,12 @@ class ApiQueryResultFormatter {
 			$this->result = $this->formatErrors(
 				ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $this->queryResult->getErrors() )
 			);
+		} elseif ( $this->queryResult->getCountValue() !== null ) {
+			$this->type = 'query';
+			$this->result = [
+				'count' => $this->queryResult->getCountValue(),
+				'meta'  => [ 'type' => 'count' ]
+			];
 		} else {
 			$this->result = $this->formatResults( $this->queryResult->toArray() );
 

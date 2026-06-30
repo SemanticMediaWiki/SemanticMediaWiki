@@ -111,6 +111,30 @@ class ApiQueryResultFormatterTest extends TestCase {
 		);
 	}
 
+	public function testCountFormat() {
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->willReturn( [] );
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getCountValue' )
+			->willReturn( 42 );
+
+		$instance = new ApiQueryResultFormatter( $queryResult );
+		$instance->doFormat();
+
+		$this->assertSame( 'query', $instance->getType() );
+		$this->assertSame(
+			[ 'count' => 42, 'meta' => [ 'type' => 'count' ] ],
+			$instance->getResult()
+		);
+		$this->assertFalse( $instance->getContinueOffset() );
+	}
+
 	public function resultDataProvider() {
 		$result = [
 			'results' => [
