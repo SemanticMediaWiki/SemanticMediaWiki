@@ -252,11 +252,11 @@ class QuerySegmentListProcessor {
 			$this->segment( $subQuery );
 
 			if ( $subQuery->joinTable !== '' ) {
-				// Diagnostic log entry: canonical MySQL-style form. The actual
-				// execution goes through insertSelect() below, which emits the
-				// platform-correct ignore verb (INSERT IGNORE / INSERT OR
-				// IGNORE / ON CONFLICT DO NOTHING). Emitting the raw
-				// "INSERT IGNORE ... SELECT" directly broke SQLite and
+				// Diagnostic log entry: canonical MySQL-style form describing
+				// the logical operation. The real execution is a non-locking
+				// SELECT followed by literal INSERTs (below); this single line
+				// keeps the debug log readable. Emitting a raw
+				// "INSERT IGNORE ... SELECT" for execution broke SQLite and
 				// PostgreSQL (#6979).
 				$this->executedQueries[$query->alias][] = 'INSERT IGNORE INTO ' .
 					$this->connection->tableName( $query->alias ) .
@@ -265,23 +265,59 @@ class QuerySegmentListProcessor {
 
 				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
 				if ( $this->queryMode !== Query::MODE_NONE ) {
-					// The planner's string fragments ($subQuery->from,
-					// $subQuery->where) have structured equivalents
-					// ($subQuery->fromTables, $subQuery->joinConditions) that
-					// table() maintains in parallel; feed those to
-					// insertSelect() so MW core builds portable SQL. The source
-					// table list mirrors QueryEngine's final SELECT: the anchor
-					// table/alias prepended to the accumulated fromTables.
-					$this->connection->insertSelect(
-						$query->alias,
-						array_merge( [ $subQuery->alias => $subQuery->joinTable ], $subQuery->fromTables ),
-						[ 'id' => $subQuery->joinfield ],
-						( $subQuery->where !== '' && $subQuery->where !== null ) ? [ $subQuery->where ] : '*',
-						__METHOD__,
-						[ 'IGNORE' ],
-						[],
-						$subQuery->joinConditions
-					);
+					// Read the disjunct's matching ids with a plain, non-locking
+					// SELECT and re-insert them as literals, rather than a
+					// locking insertSelect(). insertSelect() routes through
+					// core's generic path on web requests (and on CLI unless a
+					// native INSERT...SELECT is replication-safe), which appends
+					// FOR UPDATE and takes exclusive next-key locks on the
+					// *persistent* property tables a leaf disjunct reads
+					// (smw_fpt_inst, smw_di_wikipage) merely to fill a
+					// session-local temp table; under concurrent writes those
+					// surface as Error 1205 lock-wait timeouts / Error 1213
+					// deadlocks (#7007). A standalone SELECT is a non-locking
+					// snapshot read on every path; this mirrors the
+					// HierarchyTempTableBuilder fix (#7004). It runs on the
+					// primary because a nested disjunct's source is a
+					// session-local temp table that exists only there.
+					//
+					// The structured $fromTables/$joinConditions (kept in
+					// parallel with the raw $from by table()) build portable
+					// SQL, matching the insertSelect() they replace (#6987). The
+					// source table list mirrors QueryEngine's final SELECT: the
+					// anchor table/alias prepended to the accumulated
+					// fromTables; rawTables() reproduces insertSelect()'s
+					// handling of that array, including nested join groups.
+					$ids = $this->connection->newPrimarySelectQueryBuilder()
+						->rawTables( array_merge( [ $subQuery->alias => $subQuery->joinTable ], $subQuery->fromTables ) )
+						->select( $subQuery->joinfield )
+						->where( ( $subQuery->where !== '' && $subQuery->where !== null ) ? $subQuery->where : [] )
+						->joinConds( $subQuery->joinConditions )
+						->caller( __METHOD__ )
+						->fetchFieldValues();
+
+					// A row can be reached under several joins; dedupe so the
+					// literal INSERT stays compact (INSERT IGNORE drops the
+					// duplicates anyway).
+					$ids = array_unique( array_map( 'intval', $ids ) );
+
+					// INSERT the ids as literals in bounded batches so a very
+					// large disjunct cannot produce an oversized statement
+					// (max_allowed_packet). ignore() emits the platform-correct
+					// verb (INSERT IGNORE / INSERT OR IGNORE / ON CONFLICT DO
+					// NOTHING).
+					foreach ( array_chunk( $ids, 1000 ) as $chunk ) {
+						$insertBuilder = $this->connection->newInsertQueryBuilder()
+							->insertInto( $query->alias )
+							->ignore()
+							->caller( __METHOD__ );
+
+						foreach ( $chunk as $id ) {
+							$insertBuilder->row( [ 'id' => $id ] );
+						}
+
+						$insertBuilder->execute();
+					}
 				}
 			} elseif ( $subQuery->joinfield !== '' ) {
 				// NOTE: this works only for single "unconditional" values without further
