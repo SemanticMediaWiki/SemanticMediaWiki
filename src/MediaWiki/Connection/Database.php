@@ -108,6 +108,20 @@ class Database {
 	}
 
 	/**
+	 * Returns a SelectQueryBuilder bound to the primary (write) connection.
+	 *
+	 * Unlike newSelectQueryBuilder(), which reads from a replica, this reads
+	 * from the primary so it can see session-local temporary tables (which
+	 * exist only on the primary) and writes made earlier in the same request.
+	 * It is still a plain, non-locking SELECT.
+	 *
+	 * @since 7.1.0
+	 */
+	public function newPrimarySelectQueryBuilder(): SelectQueryBuilder {
+		return $this->connRef->getConnection( 'write' )->newSelectQueryBuilder();
+	}
+
+	/**
 	 * @since 7.0.0
 	 */
 	public function newInsertQueryBuilder(): InsertQueryBuilder {

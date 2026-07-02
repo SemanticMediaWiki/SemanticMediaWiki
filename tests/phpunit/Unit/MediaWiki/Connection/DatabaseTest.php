@@ -16,6 +16,7 @@ use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\ReplaceQueryBuilder;
 use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\Rdbms\UpdateQueryBuilder;
 
 /**
@@ -646,6 +647,23 @@ class DatabaseTest extends TestCase {
 		$instance = new Database( $this->connRef, $this->transactionHandler );
 
 		$this->assertSame( $builder, $instance->newInsertQueryBuilder() );
+	}
+
+	public function testNewPrimarySelectQueryBuilderDelegatesToWriteConnection(): void {
+		$writeDb = $this->createMock( IDatabase::class );
+		$builder = $this->createMock( SelectQueryBuilder::class );
+		$writeDb->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $builder );
+
+		$this->connRef->expects( $this->once() )
+			->method( 'getConnection' )
+			->with( 'write' )
+			->willReturn( $writeDb );
+
+		$instance = new Database( $this->connRef, $this->transactionHandler );
+
+		$this->assertSame( $builder, $instance->newPrimarySelectQueryBuilder() );
 	}
 
 	public function testNewUpdateQueryBuilderDelegatesToWriteConnection(): void {
