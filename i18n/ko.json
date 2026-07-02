@@ -417,7 +417,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "예, {{GENDER:$1|확실합니다}}.",
 	"smw-admin-job-scheduler-note": "이 문단에서 활성화된 작업은 실행 중 교착 상태를 방지하기 위해 작업 큐를 통해 수행됩니다. [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue 작업 큐]가 처리를 담당하며, <code>runJobs.php</code> 유지 관리 스크립트가 적절한 용량을 확보하는 것이 중요합니다(구성 매개변수 <code>$wgRunJobsAsync</code>도 참조).",
 	"smw-admin-outdateddisposal-title": "오래된 개체 폐기",
-	"smw-admin-outdateddisposal-intro": "일부 활동(속성 유형 변경, 위키 문서 삭제 또는 오류 값 수정)은 [https://www.semantic-mediawiki.org/wiki/Outdated_entities 오래된 개체]를 생성하며, 관련 테이블 공간을 확보하기 위해 이러한 개체를 주기적으로 삭제하는 것이 좋습니다.",
+	"smw-admin-outdateddisposal-intro": "일부 활동(속성 유형 변경, 위키 문서 제거 또는 오류 값 수정)은 [https://www.semantic-mediawiki.org/wiki/Outdated_entities 오래된 개체]를 생성하며, 관련 테이블 공간을 확보하기 위해 이러한 개체를 주기적으로 제거하는 것이 좋습니다.",
 	"smw-admin-outdateddisposal-active": "오래된 개체의 제거 작업이 예약되었습니다.",
 	"smw-admin-outdateddisposal-button": "제거 예약",
 	"smw-admin-feature-disabled": "이 기능은 이 위키에서 비활성화되어 있으므로 <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures\">설정</a> 도움말 페이지를 참조하거나 시스템 관리자에게 문의하십시오.",
