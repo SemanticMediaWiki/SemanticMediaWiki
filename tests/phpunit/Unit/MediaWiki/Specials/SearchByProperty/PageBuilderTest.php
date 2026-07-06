@@ -58,9 +58,7 @@ class PageBuilderTest extends TestCase {
 	}
 
 	public function testGetHtmlForExactValueSearch() {
-		$title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
 
 		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
@@ -95,9 +93,7 @@ class PageBuilderTest extends TestCase {
 	}
 
 	public function testGetHtmlForNearbyResultsSearch() {
-		$title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
 
 		$language = MediaWikiServices::getInstance()->getContentLanguage();
 
