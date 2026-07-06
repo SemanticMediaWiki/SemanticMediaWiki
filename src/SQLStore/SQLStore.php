@@ -441,6 +441,21 @@ class SQLStore extends Store {
 		return $installer->uninstall( $verbose );
 	}
 
+	/**
+	 * Runs storage backend table optimization independently of the setup routine.
+	 *
+	 * @since 7.1.0
+	 */
+	public function optimize(): bool {
+		$tableOptimizer = $this->factory->newTableOptimizer( $this->messageReporter );
+
+		$tableOptimizer->runForTables(
+			$this->factory->newTableSchemaManager()->getTables()
+		);
+
+		return true;
+	}
+
 	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ): Rebuilder {
 		$rebuilder = $this->factory->newRebuilder();
 

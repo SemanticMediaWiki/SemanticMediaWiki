@@ -431,7 +431,6 @@ class SQLStoreFactory {
 	 */
 	public function newInstaller(): Installer {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$settings = $applicationFactory->getSettings();
 
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
@@ -448,20 +447,7 @@ class SQLStoreFactory {
 			new TableBuildExaminerFactory()
 		);
 
-		$tableSchemaManager = new TableSchemaManager(
-			$this->store
-		);
-
-		$tableSchemaManager->setOptions(
-			[
-				'smwgEnabledFulltextSearch' => $settings->get( 'smwgEnabledFulltextSearch' ),
-				'smwgFulltextSearchTableOptions' => $settings->get( 'smwgFulltextSearchTableOptions' )
-			]
-		);
-
-		$tableSchemaManager->setFeatureFlags(
-			$settings->get( 'smwgFieldTypeFeatures' )
-		);
+		$tableSchemaManager = $this->newTableSchemaManager();
 
 		$setupFile = $applicationFactory->singleton( 'SetupFile' );
 
@@ -506,6 +492,63 @@ class SQLStoreFactory {
 		);
 
 		return $installer;
+	}
+
+	/**
+	 * @since 7.1.0
+	 */
+	public function newTableSchemaManager(): TableSchemaManager {
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$tableSchemaManager = new TableSchemaManager(
+			$this->store
+		);
+
+		$tableSchemaManager->setOptions(
+			[
+				'smwgEnabledFulltextSearch' => $settings->get( 'smwgEnabledFulltextSearch' ),
+				'smwgFulltextSearchTableOptions' => $settings->get( 'smwgFulltextSearchTableOptions' )
+			]
+		);
+
+		$tableSchemaManager->setFeatureFlags(
+			$settings->get( 'smwgFieldTypeFeatures' )
+		);
+
+		return $tableSchemaManager;
+	}
+
+	/**
+	 * Builds a self-contained table optimizer for standalone optimization runs
+	 * (see SQLStore::optimize). This deliberately does NOT share newInstaller()'s
+	 * TableBuilder: the install path relies on the Installer re-propagating the
+	 * reporter onto its own shared builder, so newInstaller() keeps its inline
+	 * optimizer wiring and only newTableSchemaManager() is reused.
+	 *
+	 * @since 7.1.0
+	 */
+	public function newTableOptimizer( MessageReporter $messageReporter ): TableOptimizer {
+		$tableBuilder = TableBuilder::factory(
+			$this->store->getConnection( DB_PRIMARY )
+		);
+
+		$tableBuilder->setMessageReporter(
+			$messageReporter
+		);
+
+		$tableOptimizer = new TableOptimizer(
+			$tableBuilder
+		);
+
+		$tableOptimizer->setSetupFile(
+			ApplicationFactory::getInstance()->singleton( 'SetupFile' )
+		);
+
+		$tableOptimizer->setMessageReporter(
+			$messageReporter
+		);
+
+		return $tableOptimizer;
 	}
 
 	/**
