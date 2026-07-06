@@ -16,6 +16,7 @@ MediaWiki installation first. This is also required if you use a symbolic link f
 - [Maintenance Scripts](#maintenance-scripts)
   - [disposeOutdatedEntities.php](#disposeoutdatedentitiesphp)
   - [dumpRDF.php](#dumprdfphp)
+  - [optimizeStore.php](#optimizestorephp)
   - [populateHashField.php](#populatehashfieldphp)
   - [purgeEntityCache.php](#purgeentitycachephp)
   - [rebuildConceptCache.php](#rebuildconceptcachephp)
@@ -94,6 +95,17 @@ See also: [Help:Maintenance_script_dumpRDF.php](https://www.semantic-mediawiki.o
 Usage:
 ```sh
 php maintenance/run.php SemanticMediaWiki:dumpRDF [--file|--categories|--classes|--concepts|--types|--individuals|--page|--properties|--d|--e]
+```
+
+### optimizeStore.php
+
+Allows to optimize the data backend/store tables independently of the setup process. Available since SMW 7.1.0
+
+See also: [Help:Maintenance_script_optimizeStore.php](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_optimizeStore.php)
+
+Usage:
+```sh
+php maintenance/run.php SemanticMediaWiki:optimizeStore [--backend|--with-maintenance-log]
 ```
 
 ### populateHashField.php
