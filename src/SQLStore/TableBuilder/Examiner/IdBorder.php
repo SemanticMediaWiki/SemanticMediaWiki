@@ -28,17 +28,9 @@ class IdBorder {
 	const UPPER_BOUND = 'upper.bound';
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**
@@ -46,7 +38,7 @@ class IdBorder {
 	 *
 	 * @param array $params
 	 */
-	public function check( array $params = [] ) {
+	public function check( array $params = [] ): void {
 		if ( !isset( $params[self::UPPER_BOUND] ) ) {
 			throw new RuntimeException( "Missing an upper bound!" );
 		}
@@ -72,28 +64,22 @@ class IdBorder {
 		$row = false;
 		$hasUpperBound = false;
 
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id'
-			],
-			[
-				'smw_iw' => SMW_SQL3_SMWBORDERIW
-			],
-			__METHOD__
-		);
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_iw' => SMW_SQL3_SMWBORDERIW ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $rows as $row ) {
 			if ( $row->smw_id == $upperbound ) {
 				$hasUpperBound = true;
 			} else {
-				$connection->delete(
-					SQLStore::ID_TABLE,
-					[
-						'smw_id' => $row->smw_id
-					],
-					__METHOD__
-				);
+				$connection->newDeleteQueryBuilder()
+					->deleteFrom( SQLStore::ID_TABLE )
+					->where( [ 'smw_id' => $row->smw_id ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
 		}
 
@@ -119,25 +105,25 @@ class IdBorder {
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
 
-		$connection->insert(
-			SQLStore::ID_TABLE,
-			[
+		$connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::ID_TABLE )
+			->row( [
 				'smw_id' => $upperbound,
 				'smw_title' => '',
 				'smw_namespace' => 0,
 				'smw_iw' => SMW_SQL3_SMWBORDERIW,
 				'smw_subobject' => '',
 				'smw_sortkey' => ''
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		if ( $currentUpperbound < $upperbound ) {
 			$this->move( $currentUpperbound, $upperbound );
 		}
 	}
 
-	private function move( $old, $new ) {
+	private function move( $old, $new ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

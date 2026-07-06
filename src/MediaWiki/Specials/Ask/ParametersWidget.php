@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
 use ParamProcessor\ParamDefinition;
 use SMW\Localizer\Message;
+use SMW\Query\QueryProcessor;
 use SMW\Utils\HtmlDivTable;
-use SMWQueryProcessor as QueryProcessor;
-use Title;
 
 /**
  * @private
@@ -20,43 +20,28 @@ use Title;
  */
 class ParametersWidget {
 
-	/**
-	 * @var bool
-	 */
-	private static $isTooltipDisplay = false;
+	private static bool $isTooltipDisplay = false;
 
-	/**
-	 * @var int
-	 */
-	private static $defaultLimit = 50;
+	private static int $defaultLimit = 50;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param bool $isTooltipDisplay
 	 */
-	public static function setTooltipDisplay( $isTooltipDisplay ) {
+	public static function setTooltipDisplay( mixed $isTooltipDisplay ): void {
 		self::$isTooltipDisplay = (bool)$isTooltipDisplay;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $defaultLimit
 	 */
-	public static function setDefaultLimit( $defaultLimit ) {
+	public static function setDefaultLimit( int $defaultLimit ): void {
 		self::$defaultLimit = $defaultLimit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return string
 	 */
-	public static function fieldset( Title $title, array $parameters ) {
+	public static function fieldset( Title $title, array $parameters ): string {
 		$toggle = Html::rawElement(
 			'span',
 			[
@@ -87,7 +72,7 @@ class ParametersWidget {
 			Html::rawElement(
 				'span',
 				[],
-				Message::get( 'smw-ask-parameters', Message::TEXT, Message::USER_LANGUAGE ) . $toggle
+				Message::get( 'smw-ask-parameters', Message::ESCAPED, Message::USER_LANGUAGE ) . $toggle
 			)
 		) . Html::rawElement(
 			'div',
@@ -127,12 +112,8 @@ class ParametersWidget {
 	 * based on the getParameters() value for that format's query printer.
 	 *
 	 * @since 1.8
-	 *
-	 * @param array $values The current values for the parameters (name => value)
-	 *
-	 * @return string
 	 */
-	public static function parameterList( array $values ) {
+	public static function parameterList( array $values ): string {
 		$format = 'broadtable';
 
 		if ( isset( $values['format'] ) ) {
@@ -151,7 +132,7 @@ class ParametersWidget {
 		$resultHtml = '';
 
 		// Top info text for a collapsed option box
-		if ( self::$isTooltipDisplay === true ) {
+		if ( self::$isTooltipDisplay ) {
 			$resultHtml .= Html::element(
 				'div',
 				[
@@ -169,7 +150,8 @@ class ParametersWidget {
 			]
 		);
 
-		while ( $option = array_shift( $optionList ) ) {
+		$option = array_shift( $optionList );
+		while ( $option ) {
 			$i++;
 
 			// Collect elements for a row
@@ -186,6 +168,7 @@ class ParametersWidget {
 				$rowHtml = '';
 				$n++;
 			}
+			$option = array_shift( $optionList );
 		}
 
 		// Ensure left over elements are collected as well
@@ -201,11 +184,11 @@ class ParametersWidget {
 		return $resultHtml;
 	}
 
-	private static function optionList( $definitions, $values ) {
+	private static function optionList( array $definitions, array $values ): array {
 		$html = [];
 
 		/**
-		 * @var \ParamProcessor\ParamDefinition $definition
+		 * @var ParamDefinition $definition
 		 */
 		foreach ( $definitions as $name => $definition ) {
 
@@ -254,17 +237,15 @@ class ParametersWidget {
 		return $html;
 	}
 
-	private static function field( ParamDefinition $definition, $name ) {
+	private static function field( ParamDefinition $definition, int|string $name ) {
 		$info = '';
 		$class = '';
 
-		if ( self::$isTooltipDisplay === true ) {
+		if ( self::$isTooltipDisplay ) {
 			$class = 'smw-ask-info';
 		}
 
-		if ( $definition->getMessage() !== null ) {
-			$info = Message::get( $definition->getMessage(), Message::TEXT, Message::USER_LANGUAGE );
-		}
+		$info = Message::get( $definition->getMessage(), Message::TEXT, Message::USER_LANGUAGE );
 
 		return HtmlDivTable::cell(
 			Html::rawElement(
@@ -327,10 +308,7 @@ class ParametersWidget {
 
 		// Parameters description text
 		if ( !self::$isTooltipDisplay ) {
-
-			if ( $definition->getMessage() !== null ) {
-				$info = Message::get( $definition->getMessage(), Message::PARSE, Message::USER_LANGUAGE );
-			}
+			$info = Message::get( $definition->getMessage(), Message::PARSE, Message::USER_LANGUAGE );
 
 			$description = Html::rawElement(
 				'span',

@@ -2,9 +2,9 @@
 
 namespace SMW\Elastic\QueryEngine\TermsLookup;
 
-use Onoi\Cache\Cache;
 use RuntimeException;
 use SMW\Elastic\QueryEngine\Condition;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,45 +19,28 @@ class CachingTermsLookup extends TermsLookup {
 	 */
 	const CACHE_NAMESPACE = 'smw:elastic:lookup';
 
-	/**
-	 * @var TermsLookup
-	 */
-	private $termsLookup;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var
-	 */
-	private $quick_cache = [];
+	private array $quick_cache = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param TermsLookup $termsLookup
-	 * @param Cache $cache
 	 */
-	public function __construct( TermsLookup $termsLookup, Cache $cache ) {
-		$this->termsLookup = $termsLookup;
-		$this->cache = $cache;
+	public function __construct(
+		private readonly TermsLookup $termsLookup,
+		private readonly BagOStuff $cache,
+	) {
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->quick_cache = [];
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public static function makeCacheKey() {
+	public static function makeCacheKey(): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, func_get_args() );
 	}
 
@@ -92,12 +75,8 @@ class CachingTermsLookup extends TermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
-	public function concept_lookup( Parameters $parameters ) {
+	public function concept_lookup( Parameters $parameters ): array {
 		// @see Indexer::delete
 		$parameters->set( 'id', md5( $parameters->get( 'id' ) ) );
 		$id = $parameters->get( 'id' );
@@ -121,7 +100,8 @@ class CachingTermsLookup extends TermsLookup {
 			return $this->quick_cache[$key]['params'];
 		}
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->get( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_concept_lookup' => $parameters->get( 'query.string' ),
@@ -156,7 +136,7 @@ class CachingTermsLookup extends TermsLookup {
 		$count = $parameters->get( 'count' );
 
 		if ( $count >= $threshold ) {
-			$this->cache->save( $key, $count, $ttl );
+			$this->cache->set( $key, $count, $ttl );
 		}
 
 		$this->quick_cache[$key] = [
@@ -205,7 +185,8 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->get( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_chain_lookup' => [
@@ -238,7 +219,7 @@ class CachingTermsLookup extends TermsLookup {
 		$count = $parameters->get( 'count' );
 
 		if ( $count >= $threshold ) {
-			$this->cache->save( $key, $count, $ttl );
+			$this->cache->set( $key, $count, $ttl );
 		}
 
 		return $params;
@@ -248,8 +229,6 @@ class CachingTermsLookup extends TermsLookup {
 	 * `[[Has monolingual text:: <q>[[Text::two]] [[Language code::fr]]</q> ]] [[Has number::123]]`
 	 *
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
 	 *
 	 * @return array
 	 */
@@ -277,7 +256,8 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->get( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_predefined_lookup' => $parameters->get( 'query.string' ),
@@ -307,7 +287,7 @@ class CachingTermsLookup extends TermsLookup {
 		$count = $parameters->get( 'count' );
 
 		if ( $count >= $threshold ) {
-			$this->cache->save( $key, $count, $ttl );
+			$this->cache->set( $key, $count, $ttl );
 		}
 
 		return $params;
@@ -315,8 +295,6 @@ class CachingTermsLookup extends TermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
 	 *
 	 * @return array
 	 */
@@ -345,7 +323,8 @@ class CachingTermsLookup extends TermsLookup {
 			$threshold
 		);
 
-		if ( ( $count = $this->cache->fetch( $key ) ) !== false ) {
+		$count = $this->cache->get( $key );
+		if ( $count !== false ) {
 
 			$info = [
 				'cached_inverse_lookup' => [
@@ -379,7 +358,7 @@ class CachingTermsLookup extends TermsLookup {
 		$count = $parameters->get( 'count' );
 
 		if ( $count >= $threshold ) {
-			$this->cache->save( $key, $count, $ttl );
+			$this->cache->set( $key, $count, $ttl );
 		}
 
 		return $params;

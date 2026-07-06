@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -14,9 +14,7 @@ use SMW\Utils\UrlArgs;
  *
  * @author mwjames
  */
-class UrlArgsTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
+class UrlArgsTest extends TestCase {
 
 	public function testToString() {
 		$instance = new UrlArgs();
@@ -25,7 +23,7 @@ class UrlArgsTest extends \PHPUnit\Framework\TestCase {
 		$instance->set( 'bar', 1001 );
 		$instance->setFragment( 'foobar' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'foo=42&bar=1001#foobar',
 			$instance->__toString()
 		);

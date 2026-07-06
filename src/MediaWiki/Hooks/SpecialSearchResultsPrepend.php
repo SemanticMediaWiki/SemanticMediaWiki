@@ -2,16 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Html;
-use OutputPage;
+use MediaWiki\Hook\SpecialSearchResultsPrependHook;
+use MediaWiki\Html\Html;
+use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
-use SMW\OptionsAwareTrait;
 use SMW\Utils\HtmlModal;
-use SpecialSearch;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend
@@ -21,56 +18,31 @@ use SpecialSearch;
  *
  * @author mwjames
  */
-class SpecialSearchResultsPrepend implements HookListener {
+class SpecialSearchResultsPrepend implements SpecialSearchResultsPrependHook {
 
-	use OptionsAwareTrait;
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var PreferenceExaminer
+	 * @since 7.0.0
 	 */
-	private $preferenceExaminer;
-
-	/**
-	 * @var SpecialSearch
-	 */
-	private $specialSearch;
-
-	/**
-	 * @var OutputPage
-	 */
-	private $outputPage;
-
-	/**
-	 * @since  3.0
-	 *
-	 * @param PreferenceExaminer $preferenceExaminer
-	 * @param SpecialSearch $specialSearch
-	 * @param OutputPage $outputPage
-	 */
-	public function __construct( PreferenceExaminer $preferenceExaminer, SpecialSearch $specialSearch, OutputPage $outputPage ) {
-		$this->preferenceExaminer = $preferenceExaminer;
-		$this->specialSearch = $specialSearch;
-		$this->outputPage = $outputPage;
+	public function __construct( private readonly UserOptionsLookup $userOptionsLookup ) {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param string $term
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( $term ) {
-		if ( !$this->specialSearch->getSearchEngine() instanceof ExtendedSearchEngine ) {
+	public function onSpecialSearchResultsPrepend( $specialSearch, $output, $term ) {
+		if ( !$specialSearch->getSearchEngine() instanceof ExtendedSearchEngine ) {
 			return true;
 		}
 
-		$this->outputPage->addModuleStyles( [ 'smw.ui.styles', 'smw.special.search.styles' ] );
-		$this->outputPage->addModules( [ 'smw.special.search', 'smw.ui' ] );
+		$user = $output->getUser();
 
-		$this->outputPage->addModuleStyles( HtmlModal::getModuleStyles() );
-		$this->outputPage->addModules( HtmlModal::getModules() );
+		$output->addModuleStyles( [ 'smw.ui.styles', 'smw.special.search.styles' ] );
+		$output->addModules( [ 'smw.special.search', 'smw.ui' ] );
+
+		$output->addModuleStyles( HtmlModal::getModuleStyles() );
+		$output->addModules( HtmlModal::getModules() );
 
 		$html = HtmlModal::link(
 			'<span class="smw-icon-info" style="margin-left: -5px; padding: 10px 12px 12px 12px;"></span>',
@@ -81,13 +53,13 @@ class SpecialSearchResultsPrepend implements HookListener {
 
 		$html .= $this->msg( 'smw-search-syntax-support', Message::PARSE );
 
-		if ( $this->preferenceExaminer->hasPreferenceOf( GetPreferences::ENABLE_ENTITY_SUGGESTER ) ) {
+		if ( $this->userOptionsLookup->getOption( $user, GetPreferences::ENABLE_ENTITY_SUGGESTER, false ) ) {
 			$html .= ' ' . $this->msg( 'smw-search-input-assistance', Message::PARSE );
 		}
 
 		$html .= HtmlModal::modal(
 			$this->msg( 'smw-cheat-sheet' ),
-			$this->search_sheet(),
+			$this->search_sheet( $user ),
 			[
 				'id' => 'smw-search-cheat-sheet',
 				'class' => 'plainlinks',
@@ -95,8 +67,8 @@ class SpecialSearchResultsPrepend implements HookListener {
 			]
 		);
 
-		if ( !$this->preferenceExaminer->hasPreferenceOf( GetPreferences::DISABLE_SEARCH_INFO ) ) {
-			$this->outputPage->addHtml(
+		if ( !$this->userOptionsLookup->getOption( $user, GetPreferences::DISABLE_SEARCH_INFO, false ) ) {
+			$output->addHtml(
 				"<div class='smw-search-results-prepend plainlinks'>$html</div>"
 			);
 		}
@@ -104,14 +76,14 @@ class SpecialSearchResultsPrepend implements HookListener {
 		return true;
 	}
 
-	private function search_sheet() {
+	private function search_sheet( $user ): string {
 		$text = $this->element( 'smw-search-help-intro' );
 		$text .= $this->section( 'smw-search-input' );
 
 		$text .= $this->element( 'smw-search-help-structured' );
 		$text .= $this->element( 'smw-search-help-proximity' );
 
-		if ( $this->preferenceExaminer->hasPreferenceOf( GetPreferences::ENABLE_ENTITY_SUGGESTER ) ) {
+		if ( $this->userOptionsLookup->getOption( $user, GetPreferences::ENABLE_ENTITY_SUGGESTER, false ) ) {
 			$text .= $this->section( 'smw-ask-input-assistance' );
 			$text .= $this->element( 'smw-search-help-input-assistance' );
 		}
@@ -122,7 +94,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		return $text;
 	}
 
-	private function section( $msg, $attributes = [] ) {
+	private function section( string $msg ) {
 		return Html::rawElement(
 			'div',
 			[
@@ -139,7 +111,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		);
 	}
 
-	private function element( $msg, $html = '', $attributes = [] ) {
+	private function element( string $msg, string $html = '', array $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[

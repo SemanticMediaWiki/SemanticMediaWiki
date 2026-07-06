@@ -1,0 +1,8 @@
+{{!
+  EntityExaminer tab panel (partial, used by Tabpanel via array-panels).
+
+  Required data:
+  - data-tab-id: string (escaped) - Tab section id
+  - html-content: string (raw) - Pre-rendered panel content HTML
+}}
+<section id="{{data-tab-id}}" class="tab-panel">{{{html-content}}}</section>

@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
-use DateTime;
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\SetupFile;
 
@@ -20,20 +20,12 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 	 * Defines the threshold in days, exceeding the threholds will trigger the
 	 * alert.
 	 */
-	const DAYS_THRESHOLD = 90; // 3 Month;
-
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	const DAYS_THRESHOLD = 90;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SetupFile $setupFile
 	 */
-	public function __construct( SetupFile $setupFile ) {
-		$this->setupFile = $setupFile;
+	public function __construct( private readonly SetupFile $setupFile ) {
 	}
 
 	/**
@@ -52,13 +44,13 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 			return '';
 		}
 
-		$dateTime = new DateTime( $lastRun );
-		$daysDiff = (int)$dateTime->diff( new DateTime( 'now' ) )->format( '%R%a' );
+		$dateTime = new ExtendedDateTime( $lastRun );
+		$daysDiff = (int)$dateTime->diff( new ExtendedDateTime( 'now' ) )->format( '%R%a' );
 
 		return $this->buildHTML( $lastRun, $daysDiff );
 	}
 
-	private function buildHTML( $lastRun, $daysDiff ) {
+	private function buildHTML( $lastRun, int $daysDiff ) {
 		if ( $daysDiff < self::DAYS_THRESHOLD ) {
 			return '';
 		}

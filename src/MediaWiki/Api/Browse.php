@@ -2,7 +2,9 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
+use MediaWiki\Title\TitleFactory;
 use SMW\Exception\JSONParseException;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
@@ -15,6 +17,11 @@ use SMW\MediaWiki\Api\Browse\PSubjectLookup;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Api\Browse\SubjectLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * Module to support selected browse activties including:
@@ -27,9 +34,23 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class Browse extends ApiBase {
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		private readonly Store $store,
+		private readonly Settings $settings,
+		private readonly BagOStuff $cache,
+		private readonly TitleFactory $titleFactory
+	) {
+		parent::__construct( $main, $action );
+	}
+
+	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 
 		$parameters = json_decode( $params['params'], true );
@@ -89,10 +110,8 @@ class Browse extends ApiBase {
 		}
 	}
 
-	private function callListLookup( $ns, $parameters ) {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$cacheUsage = $applicationFactory->getSettings()->get(
+	private function callListLookup( $ns, array $parameters ) {
+		$cacheUsage = $this->settings->get(
 			'smwgCacheUsage'
 		);
 
@@ -102,14 +121,7 @@ class Browse extends ApiBase {
 			$cacheTTL = $cacheUsage['api.browse'];
 		}
 
-		$store = $applicationFactory->getStore();
-
-		// We explicitly want the SQLStore here to avoid
-		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
-		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
-		}
+		$store = $this->getSQLStore();
 
 		$listLookup = new ListLookup(
 			$store,
@@ -117,7 +129,7 @@ class Browse extends ApiBase {
 		);
 
 		$cachingLookup = new CachingLookup(
-			$applicationFactory->getCache(),
+			$this->cache,
 			$listLookup
 		);
 
@@ -132,10 +144,8 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPValueLookup( $parameters ) {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$cacheUsage = $applicationFactory->getSettings()->get(
+	private function callPValueLookup( array $parameters ) {
+		$cacheUsage = $this->settings->get(
 			'smwgCacheUsage'
 		);
 
@@ -145,21 +155,14 @@ class Browse extends ApiBase {
 			$cacheTTL = $cacheUsage['api.browse.pvalue'];
 		}
 
-		$store = $applicationFactory->getStore();
-
-		// We explicitly want the SQLStore here to avoid
-		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
-		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
-		}
+		$store = $this->getSQLStore();
 
 		$listLookup = new PValueLookup(
 			$store
 		);
 
 		$cachingLookup = new CachingLookup(
-			$applicationFactory->getCache(),
+			$this->cache,
 			$listLookup
 		);
 
@@ -172,10 +175,8 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPSubjectLookup( $parameters ) {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$cacheUsage = $applicationFactory->getSettings()->get(
+	private function callPSubjectLookup( array $parameters ) {
+		$cacheUsage = $this->settings->get(
 			'smwgCacheUsage'
 		);
 
@@ -185,21 +186,14 @@ class Browse extends ApiBase {
 			$cacheTTL = $cacheUsage['api.browse.psubject'];
 		}
 
-		$store = $applicationFactory->getStore();
-
-		// We explicitly want the SQLStore here to avoid
-		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
-		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
-		}
+		$store = $this->getSQLStore();
 
 		$listLookup = new PSubjectLookup(
 			$store
 		);
 
 		$cachingLookup = new CachingLookup(
-			$applicationFactory->getCache(),
+			$this->cache,
 			$listLookup
 		);
 
@@ -212,10 +206,10 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callPageLookup( $parameters ) {
+	private function callPageLookup( array $parameters ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$cacheUsage = $applicationFactory->getSettings()->get(
+		$cacheUsage = $this->settings->get(
 			'smwgCacheUsage'
 		);
 
@@ -225,17 +219,17 @@ class Browse extends ApiBase {
 			$cacheTTL = $cacheUsage['api.browse'];
 		}
 
-		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		$articleLookup = new ArticleLookup(
 			$connection,
 			new ArticleAugmentor(
-				$applicationFactory->create( 'TitleFactory' )
+				$this->titleFactory
 			)
 		);
 
 		$cachingLookup = new CachingLookup(
-			$applicationFactory->getCache(),
+			$this->cache,
 			$articleLookup
 		);
 
@@ -248,9 +242,9 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callSubjectLookup( $parameters ) {
+	private function callSubjectLookup( array $parameters ): array {
 		$subjectLookup = new SubjectLookup(
-			ApplicationFactory::getInstance()->getStore()
+			$this->store
 		);
 
 		try {
@@ -265,16 +259,31 @@ class Browse extends ApiBase {
 	}
 
 	/**
+	 * The list lookups need the SQLStore-typed surface (e.g. `getSQLOptions`).
+	 * When the default store is a non-SQL backend (notably SPARQLStore) we
+	 * fall back to the registered SQLStore via `ApplicationFactory` because
+	 * it is not exposed as a separate global service. This mirrors the
+	 * partial-DI pattern used by slice 6's UpdateJob `$store !== null` branch.
+	 */
+	private function getSQLStore(): Store {
+		if ( $this->store instanceof SQLStore ) {
+			return $this->store;
+		}
+
+		return ApplicationFactory::getInstance()->getStore( SQLStore::class );
+	}
+
+	/**
 	 * @codeCoverageIgnore
 	 * @see ApiBase::getAllowedParams
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'browse' => [
-				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => [
 
 					// List, browse of properties
 					'property',
@@ -296,63 +305,52 @@ class Browse extends ApiBase {
 
 					// Equivalent to Special:Browse
 					'subject',
-				]
+				],
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwbrowse-param-browse',
 			],
 			'params' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-smwbrowse-param-params',
 			],
 		];
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getParamDescription() {
+	protected function getExamplesMessages(): array {
 		return [
-			'browse' => 'Specifies the type of browse activity',
-			'params' => 'JSON encoded parameters containing required and optional fields and depend on the selected browse type'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription() {
-		return [
-			'API module to support browse activties for different entity types in Semantic MediaWiki.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples() {
-		return [
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }',
-			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }',
-			'api.php?action=smwbrowse&browse=pvalue&params={ "limit": 10, "offset": 0, "property" : "Foo", "search": "Bar" }',
-			'api.php?action=smwbrowse&browse=psubject&params={ "limit": 10, "offset": 0, "property" : "Foo", "value" : "Bar", "search": "foo" }',
-			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }',
-			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',
-			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main" }',
-			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }',
-			'api.php?action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }'
+				=> 'apihelp-smwbrowse-example-1',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }'
+				=> 'apihelp-smwbrowse-example-2',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-3',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }'
+				=> 'apihelp-smwbrowse-example-4',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }'
+				=> 'apihelp-smwbrowse-example-5',
+			'action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }'
+				=> 'apihelp-smwbrowse-example-6',
+			'action=smwbrowse&browse=pvalue&params={ "limit": 10, "offset": 0, "property" : "Foo", "search": "Bar" }'
+				=> 'apihelp-smwbrowse-example-7',
+			'action=smwbrowse&browse=psubject&params={ "limit": 10, "offset": 0, "property" : "Foo", "value" : "Bar", "search": "foo" }'
+				=> 'apihelp-smwbrowse-example-8',
+			'action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }'
+				=> 'apihelp-smwbrowse-example-9',
+			'action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-10',
+			'action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }'
+				=> 'apihelp-smwbrowse-example-11',
+			'action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }'
+				=> 'apihelp-smwbrowse-example-12',
+			'action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main" }'
+				=> 'apihelp-smwbrowse-example-13',
+			'action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }'
+				=> 'apihelp-smwbrowse-example-14',
+			'action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }'
+				=> 'apihelp-smwbrowse-example-15',
 		];
 	}
 
@@ -362,17 +360,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
-		return __CLASS__ . ':' . SMW_VERSION;
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getHelpUrls() {
+	public function getHelpUrls(): string {
 		return 'https://www.semantic-mediawiki.org/wiki/Help:API';
 	}
 

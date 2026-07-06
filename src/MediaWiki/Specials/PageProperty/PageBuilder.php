@@ -2,14 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\PageProperty;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Options;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,29 +20,17 @@ use SMWInfolink as Infolink;
 class PageBuilder {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
 	 * @var Linker
 	 */
 	private $linker;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param Options $options
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, Options $options ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->options = $options;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly Options $options,
+	) {
 		$this->linker = smwfGetLinker();
 	}
 
@@ -53,7 +41,7 @@ class PageBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildForm( $count = 0 ) {
+	public function buildForm( $count = 0 ): string {
 		$html = Html::rawElement(
 			'p',
 			[
@@ -75,12 +63,8 @@ class PageBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DIWikiPage[]|[] $results
-	 *
-	 * @return string
 	 */
-	public function buildHtml( array $results ) {
+	public function buildHtml( array $results ): string {
 		if ( count( $results ) == 0 ) {
 			return Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE );
 		}
@@ -95,7 +79,7 @@ class PageBuilder {
 		$property = $propertyValue->getDataItem();
 
 		$isBrowsableType = DataTypeRegistry::getInstance()->isBrowsableType(
-			$property->findPropertyTypeID()
+			$property->findPropertyValueType()
 		);
 
 		$list = [];
@@ -145,7 +129,7 @@ class PageBuilder {
 		$this->htmlFormRenderer
 			->setName( 'pageproperty' )
 			->withFieldset()
-			->addParagraph( Message::get( 'smw_pp_docu', Message::TEXT, Message::USER_LANGUAGE ) )
+			->addParagraph( Message::get( 'smw_pp_docu', Message::ESCAPED, Message::USER_LANGUAGE ) )
 			->addPaging(
 				(int)$this->options->safeGet( 'limit', 20 ),
 				(int)$this->options->safeGet( 'offset', 0 ),

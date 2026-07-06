@@ -3,12 +3,12 @@
 namespace SMW\MediaWiki;
 
 use Job as MediaWikiJob;
-use JobQueueGroup;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\Store;
-use Title;
 
 /**
  * @ingroup SMW
@@ -22,32 +22,19 @@ abstract class Job extends MediaWikiJob {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	protected $isEnabledJobQueue = true;
+	protected bool $isEnabledJobQueue = true;
 
-	/**
-	 * @var JobQueue
-	 */
-	protected $jobQueue;
+	protected ?JobQueue $jobQueue = null;
 
-	/**
-	 * @var Job
-	 */
-	protected $jobs = [];
+	/** @var array<int|string, mixed> */
+	protected array $jobs = [];
 
-	/**
-	 * @var Store
-	 */
-	protected $store = null;
+	protected ?Store $store = null;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
 	}
 
@@ -55,13 +42,9 @@ abstract class Job extends MediaWikiJob {
 	 * Whether to insert jobs into the JobQueue is enabled or not
 	 *
 	 * @since 1.9
-	 *
-	 * @param bool|true $enableJobQueue
-	 *
-	 * @return AbstractJob
 	 */
-	public function isEnabledJobQueue( $enableJobQueue = true ) {
-		$this->isEnabledJobQueue = (bool)$enableJobQueue;
+	public function isEnabledJobQueue( bool $enableJobQueue = true ): static {
+		$this->isEnabledJobQueue = $enableJobQueue;
 		return $this;
 	}
 
@@ -72,36 +55,28 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @since 1.9
 	 */
-	public function pushToJobQueue() {
+	public function pushToJobQueue(): void {
 		$this->isEnabledJobQueue ? self::batchInsert( $this->jobs ) : null;
 	}
 
 	/**
 	 * @note Job::getType was introduced with MW 1.21
-	 *
-	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		return $this->command;
 	}
 
 	/**
 	 * @since  2.0
-	 *
-	 * @return int
 	 */
-	public function getJobCount() {
+	public function getJobCount(): int {
 		return count( $this->jobs );
 	}
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param mixed $key
-	 *
-	 * @return bool
 	 */
-	public function hasParameter( $key ) {
+	public function hasParameter( string $key ): bool {
 		if ( !is_array( $this->params ) ) {
 			return false;
 		}
@@ -112,41 +87,32 @@ abstract class Job extends MediaWikiJob {
 	/**
 	 * @since  1.9
 	 *
-	 * @param mixed $key
-	 *
-	 * @return bool
+	 * @return mixed
 	 */
-	public function getParameter( $key, $default = false ) {
+	public function getParameter( string $key, $default = false ) {
 		return $this->hasParameter( $key ) ? $this->params[$key] : $default;
 	}
 
 	/**
 	 * @since  3.0
-	 *
-	 * @param mixed $key
-	 * @param mixed $value
 	 */
-	public function setParameter( $key, $value ) {
+	public function setParameter( string $key, mixed $value ): void {
 		$this->params[$key] = $value;
 	}
 
 	/**
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009
-	 *
-	 * @param self[] $jobs
-	 *
-	 * @return bool
 	 */
-	public static function batchInsert( $jobs ) {
-		return ApplicationFactory::getInstance()->getJobQueue()->push( $jobs );
+	public static function batchInsert( array $jobs ): void {
+		ApplicationFactory::getInstance()->getJobQueue()->push( $jobs );
 	}
 
 	/**
 	 * @see Job::insert
 	 */
-	public function insert() {
+	public function insert(): void {
 		if ( $this->isEnabledJobQueue ) {
-			return self::batchInsert( [ $this ] );
+			self::batchInsert( [ $this ] );
 		}
 	}
 
@@ -158,19 +124,17 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @since 3.0
 	 */
-	public function lazyPush() {
+	public function lazyPush(): void {
 		if ( $this->isEnabledJobQueue ) {
-			return $this->getJobQueue()->lazyPush( $this );
+			$this->getJobQueue()->lazyPush( $this );
 		}
 	}
 
 	/**
 	 * @see Translate::TTMServerMessageUpdateJob
 	 * @since 3.0
-	 *
-	 * @param int $delay
 	 */
-	public function setDelay( $delay ) {
+	public function setDelay( int $delay ): void {
 		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(
 			$this->getType()
 		);
@@ -192,6 +156,9 @@ abstract class Job extends MediaWikiJob {
 	/**
 	 * @see Job::newRootJobParams
 	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param string|Title $title
 	 */
 	public static function newRootJobParams( $key = '', $title = '' ) {
 		if ( $title instanceof Title ) {
@@ -205,7 +172,7 @@ abstract class Job extends MediaWikiJob {
 	 * @see Job::ignoreDuplicates
 	 * @since 3.0
 	 */
-	public function ignoreDuplicates() {
+	public function ignoreDuplicates(): bool {
 		if ( isset( $this->params['waitOnCommandLine'] ) ) {
 			return $this->params['waitOnCommandLine'] > 1;
 		}
@@ -217,7 +184,7 @@ abstract class Job extends MediaWikiJob {
 	 * Only run the job via commandLine or the cronJob and avoid execution via
 	 * Special:RunJobs as it can cause the script to timeout.
 	 */
-	public function waitOnCommandLineMode() {
+	public function waitOnCommandLineMode(): bool {
 		if ( !$this->hasParameter( 'waitOnCommandLine' ) || Site::isCommandLineMode() ) {
 			return false;
 		}
@@ -228,7 +195,15 @@ abstract class Job extends MediaWikiJob {
 			$this->params['waitOnCommandLine'] = 1;
 		}
 
-		$job = new static( $this->title, $this->params );
+		// Re-enqueue through MediaWiki's JobFactory so service dependencies
+		// declared in the JobClasses ObjectFactory spec are wired in. The
+		// resolved class is always an `SMW\MediaWiki\Job` subclass.
+		/** @var self $job */
+		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(
+			$this->command,
+			[ 'namespace' => $this->title->getNamespace(), 'title' => $this->title->getDBkey() ]
+				+ $this->params
+		);
 		$job->insert();
 
 		return true;

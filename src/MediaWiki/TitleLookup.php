@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\MediaWiki\Connection\Database;
-use Title;
 
 /**
  * A convenience class to encapsulate MW related database interaction
@@ -21,22 +21,14 @@ use Title;
 class TitleLookup {
 
 	/**
-	 * @var Database
-	 */
-	private $connection = null;
-
-	/**
 	 * @var int
 	 */
 	private $namespace = null;
 
 	/**
 	 * @since 1.9.2
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly Database $connection ) {
 	}
 
 	/**
@@ -46,7 +38,7 @@ class TitleLookup {
 	 *
 	 * @return TitleLookup
 	 */
-	public function setNamespace( $namespace ) {
+	public function setNamespace( $namespace ): static {
 		$this->namespace = $namespace;
 		return $this;
 	}
@@ -57,7 +49,7 @@ class TitleLookup {
 	 * @return Title[]
 	 * @throws RuntimeException
 	 */
-	public function selectAll() {
+	public function selectAll(): array {
 		if ( $this->namespace === null ) {
 			throw new RuntimeException( 'Unrestricted selection without a namespace is not supported' );
 		}
@@ -74,13 +66,20 @@ class TitleLookup {
 			$options = [ 'USE INDEX' => 'PRIMARY' ];
 		}
 
-		$res = $this->connection->select(
-			$tableName,
-			$fields,
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$qb = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( $tableName )
+			->options( $options )
+			->caller( __METHOD__ );
+
+		// $conditions is '' on the category branch (no WHERE clause); only
+		// invoke where() when there is something to add. where([]) is a no-op
+		// so the array branch does not need a guard.
+		if ( $conditions !== '' ) {
+			$qb->where( $conditions );
+		}
+
+		$res = $qb->fetchResultSet();
 
 		return $this->makeTitlesFromSelection( $res );
 	}
@@ -90,18 +89,13 @@ class TitleLookup {
 	 *
 	 * @return Title[]
 	 */
-	public function getRedirectPages() {
-		$conditions = [];
-		$options = [];
-
-		$res = $this->connection->select(
-			[ 'page', 'redirect' ],
-			[ 'page_namespace', 'page_title' ],
-			$conditions,
-			__METHOD__,
-			$options,
-			[ 'page' => [ 'INNER JOIN', [ 'page_id=rd_from' ] ] ]
-		);
+	public function getRedirectPages(): array {
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( [ 'page_namespace', 'page_title' ] )
+			->rawTables( [ 'page', 'redirect' ] )
+			->joinConds( [ 'page' => [ 'INNER JOIN', [ 'page_id=rd_from' ] ] ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->makeTitlesFromSelection( $res );
 	}
@@ -115,7 +109,7 @@ class TitleLookup {
 	 * @return Title[]
 	 * @throws RuntimeException
 	 */
-	public function selectByIdRange( $startId = 0, $endId = 0 ) {
+	public function selectByIdRange( $startId = 0, $endId = 0 ): array {
 		if ( $this->namespace === null ) {
 			throw new RuntimeException( 'Unrestricted selection without a namespace is not supported' );
 		}
@@ -132,13 +126,13 @@ class TitleLookup {
 			$options = [ 'ORDER BY' => 'page_id ASC', 'USE INDEX' => 'PRIMARY' ];
 		}
 
-		$res = $this->connection->select(
-			$tableName,
-			$fields,
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( $tableName )
+			->where( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->makeTitlesFromSelection( $res );
 	}
@@ -148,7 +142,7 @@ class TitleLookup {
 	 *
 	 * @return int
 	 */
-	public function getMaxId() {
+	public function getMaxId(): int {
 		if ( $this->namespace === NS_CATEGORY ) {
 			$tableName = 'category';
 			$var = 'MAX(cat_id)';
@@ -157,15 +151,17 @@ class TitleLookup {
 			$var = 'MAX(page_id)';
 		}
 
-		return (int)$this->connection->selectField(
-			$tableName,
-			$var,
-			false,
-			__METHOD__
-		);
+		return (int)$this->connection->newSelectQueryBuilder()
+			->select( [ $var ] )
+			->from( $tableName )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	protected function makeTitlesFromSelection( $res ) {
+	/**
+	 * @return mixed[]
+	 */
+	protected function makeTitlesFromSelection( $res ): array {
 		$pages = [];
 
 		if ( $res === false ) {

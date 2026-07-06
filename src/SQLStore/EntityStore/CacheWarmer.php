@@ -3,9 +3,9 @@
 namespace SMW\SQLStore\EntityStore;
 
 use Iterator;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\MediaWiki\LinkBatch;
@@ -20,20 +20,7 @@ use SMW\SQLStore\SQLStore;
  */
 class CacheWarmer {
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
-	 * @var DisplayTitleFinder
-	 */
-	private $displayTitleFinder;
+	private ?DisplayTitleFinder $displayTitleFinder = null;
 
 	/**
 	 * @var int
@@ -42,13 +29,12 @@ class CacheWarmer {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( SQLStore $store, IdCacheManager $idCacheManager ) {
-		$this->store = $store;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly IdCacheManager $idCacheManager,
+		private readonly LinkBatch $linkBatch,
+	) {
 	}
 
 	/**
@@ -56,7 +42,7 @@ class CacheWarmer {
 	 *
 	 * @param DisplayTitleFinder $displayTitleFinder
 	 */
-	public function setDisplayTitleFinder( DisplayTitleFinder $displayTitleFinder ) {
+	public function setDisplayTitleFinder( DisplayTitleFinder $displayTitleFinder ): void {
 		$this->displayTitleFinder = $displayTitleFinder;
 	}
 
@@ -65,7 +51,7 @@ class CacheWarmer {
 	 *
 	 * @param int $thresholdLimit
 	 */
-	public function setThresholdLimit( $thresholdLimit ) {
+	public function setThresholdLimit( $thresholdLimit ): void {
 		$this->thresholdLimit = $thresholdLimit;
 	}
 
@@ -74,9 +60,9 @@ class CacheWarmer {
 	 *
 	 * @param array $list
 	 */
-	public function prepareCache( $list = [] ) {
+	public function prepareCache( $list = [] ): void {
 		$hashList = [];
-		$linkBatch = LinkBatch::singleton();
+		$linkBatch = $this->linkBatch;
 		$linkBatch->setCaller( __METHOD__ );
 
 		if ( $list instanceof QueryResult ) {
@@ -91,22 +77,20 @@ class CacheWarmer {
 
 			$hash = null;
 
-			if ( $item instanceof DIWikiPage ) {
+			if ( $item instanceof WikiPage ) {
 				$linkBatch->add( $item );
 
 				if ( $item->getNamespace() === SMW_NS_PROPERTY ) {
 					try {
-						$property = DIProperty::newFromUserLabel( $item->getDBKey() );
-					} catch ( PredefinedPropertyLabelMismatchException $e ) {
-						continue;
-					} catch ( PropertyLabelNotResolvedException $e ) {
+						$property = Property::newFromUserLabel( $item->getDBKey() );
+					} catch ( PredefinedPropertyLabelMismatchException | PropertyLabelNotResolvedException ) {
 						continue;
 					}
 					$hash = $item->getSha1();
 				} else {
 					$hash = $item->getSha1();
 				}
-			} elseif ( $item instanceof DIProperty ) {
+			} elseif ( $item instanceof Property ) {
 				$linkBatch->add( $item->getDIWikiPage() );
 
 				// Avoid _SKEY as it is not used during an entity lookup to
@@ -138,7 +122,7 @@ class CacheWarmer {
 	 *
 	 * @param array $hashList
 	 */
-	public function prefetchFromList( $hashList = [] ) {
+	public function prefetchFromList( array $hashList = [] ): void {
 		if ( $hashList === [] ) {
 			return;
 		}
@@ -155,9 +139,8 @@ class CacheWarmer {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
@@ -165,12 +148,11 @@ class CacheWarmer {
 				'smw_subobject',
 				'smw_sortkey',
 				'smw_sort'
-			],
-			[
-				'smw_hash' => $hashList
-			],
-			__METHOD__
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_hash' => $hashList ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 		foreach ( $rows as $row ) {
 			$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
 
@@ -190,7 +172,7 @@ class CacheWarmer {
 	 *
 	 * @param array $idList
 	 */
-	public function loadByIds( $idList = [] ) {
+	public function loadByIds( array $idList = [] ): void {
 		if ( $idList === [] ) {
 			return;
 		}
@@ -199,7 +181,7 @@ class CacheWarmer {
 		$cache = $this->idCacheManager->get( 'warmup.byid' );
 
 		foreach ( $idList as $k => $id ) {
-			if ( $cache->contains( $id ) ) {
+			if ( $cache->contains( (string)$id ) ) {
 				unset( $idList[$k] );
 			}
 		}
@@ -208,9 +190,8 @@ class CacheWarmer {
 			return;
 		}
 
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
@@ -218,12 +199,11 @@ class CacheWarmer {
 				'smw_subobject',
 				'smw_sortkey',
 				'smw_sort'
-			],
-			[
-				'smw_id' => $idList
-			],
-			__METHOD__
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $idList ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $rows as $row ) {
 			$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
@@ -237,7 +217,7 @@ class CacheWarmer {
 				$sortkey
 			);
 
-			$cache->save( $row->smw_id, true );
+			$cache->save( (string)$row->smw_id, true );
 		}
 	}
 

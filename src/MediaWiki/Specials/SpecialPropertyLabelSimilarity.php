@@ -2,12 +2,17 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
+use SMW\QueryFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
-use SpecialPage;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,34 +23,47 @@ use SpecialPage;
 class SpecialPropertyLabelSimilarity extends SpecialPage {
 
 	/**
-	 * @codeCoverageIgnore
+	 * @since 7.0.0
 	 */
-	public function __construct() {
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings,
+		private readonly QueryFactory $queryFactory
+	) {
 		parent::__construct( 'PropertyLabelSimilarity' );
 	}
 
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): bool {
 		$this->setHeaders();
 		$output = $this->getOutput();
 		$webRequest = $this->getRequest();
 
 		$output->addModuleStyles( [ 'ext.smw.styles' ] );
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		// PropertyLabelSimilarityLookup requires the SQLStore-typed surface.
+		// When the injected default Store is not an SQLStore (e.g. SPARQLStore)
+		// the lookup needs a separately-built SQL store; ApplicationFactory's
+		// `getStore( SQLStore::class )` path mirrors the partial-DI pattern
+		// used in the API Browse module.
+		$store = $this->store instanceof SQLStore
+			? $this->store
+			: ApplicationFactory::getInstance()->getStore( SQLStore::class );
 
 		$propertyLabelSimilarityLookup = new PropertyLabelSimilarityLookup(
 			$store
 		);
 
 		$propertyLabelSimilarityLookup->setExemptionProperty(
-			$applicationFactory->getSettings()->get( 'smwgSimilarityLookupExemptionProperty' )
+			$this->settings->get( 'smwgSimilarityLookupExemptionProperty' )
 		);
 
-		$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
+		// Partial DI: MwCollaboratorFactory is still resolved through
+		// ApplicationFactory because it is not registered as a global SMW.X
+		// service.
+		$htmlFormRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
@@ -61,7 +79,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		$offset = (int)$webRequest->getText( 'offset', 0 );
 		$limit = (int)$webRequest->getText( 'limit', 50 );
 
-		$requestOptions = $applicationFactory->getQueryFactory()->newRequestOptions();
+		$requestOptions = $this->queryFactory->newRequestOptions();
 		$requestOptions->setLimit( $limit );
 		$requestOptions->setOffset( $offset );
 
@@ -86,7 +104,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/properties-concepts-types';
 	}
 
@@ -101,10 +119,10 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 				[
 					'class' => 'smw-breadcrumb-arrow-right'
 				]
-			) . Html::rawElement(
+			) . Html::element(
 				'a',
 				[
-					'href' => \SpecialPage::getTitleFor( 'Specialpages' )->getFullURL( $query ) . '#Semantic_MediaWiki'
+					'href' => SkinComponentUtils::makeSpecialUrl( 'Specialpages', $query ) . '#Semantic_MediaWiki'
 				],
 				Message::get( 'specialpages', Message::TEXT, Message::USER_LANGUAGE )
 		) );

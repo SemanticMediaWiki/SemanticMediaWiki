@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
 
 /**
  * @private
@@ -21,7 +21,7 @@ class UniquenessConstraintPropertyValueResourceBuilder extends PropertyValueReso
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return $property->getKey() === '_PVUC';
 	}
 
@@ -30,7 +30,7 @@ class UniquenessConstraintPropertyValueResourceBuilder extends PropertyValueReso
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		parent::addResourceValue( $expData, $property, $dataItem );
 
 		// https://www.w3.org/TR/2004/REC-owl-ref-20040210/#FunctionalProperty-def
@@ -39,8 +39,8 @@ class UniquenessConstraintPropertyValueResourceBuilder extends PropertyValueReso
 		// value y for each instance x ..."
 
 		$expData->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
-			$this->exporter->getSpecialNsResource( 'owl', 'FunctionalProperty' )
+			$this->exporter->newExpNsResourceById( 'rdf', 'type' ),
+			$this->exporter->newExpNsResourceById( 'owl', 'FunctionalProperty' )
 		);
 	}
 

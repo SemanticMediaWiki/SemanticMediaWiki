@@ -19,10 +19,7 @@ use SMW\Query\QueryResult;
  */
 class TemplateFileExportPrinter extends FileExportPrinter {
 
-	/**
-	 * @var int
-	 */
-	private $numRows = 0;
+	private int $numRows = 0;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -55,7 +52,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		return $this->params['filename'];
 	}
 
@@ -66,7 +63,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['searchlabel']->setDefault( 'templateFile' );
@@ -154,7 +151,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function newTemplateSet( $queryResult ) {
+	private function newTemplateSet( QueryResult $queryResult ): TemplateSet {
 		$templateSet = new TemplateSet();
 
 		$link = $this->getLink(
@@ -174,7 +171,8 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			$templateSet->addTemplate( $template );
 		}
 
-		while ( $row = $queryResult->getNext() ) {
+		$row = $queryResult->getNext();
+		while ( $row ) {
 			$template = new Template(
 				$this->params['template']
 			);
@@ -182,6 +180,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			$template->field( '#userparam', $this->params['userparam'] );
 			$this->addFields( $template, $row );
 			$templateSet->addTemplate( $template );
+			$row = $queryResult->getNext();
 		}
 
 		if ( $this->params['outrotemplate'] !== '' ) {
@@ -197,8 +196,8 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 		return $templateSet;
 	}
 
-	private function addFields( $template, array $row ) {
-		$this->numRows + 1;
+	private function addFields( Template $template, array $row ): void {
+		$this->numRows += 1;
 
 		foreach ( $row as $i => $field ) {
 
@@ -215,8 +214,10 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 				$fieldName = intval( $i + 1 );
 			}
 
-			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {
+			$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) );
+			while ( $text !== false ) {
 				$value .= $value === '' ? $text : $this->params['valuesep'] . ' ' . $text;
+				$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) );
 			}
 
 			$template->field( $fieldName, $value );

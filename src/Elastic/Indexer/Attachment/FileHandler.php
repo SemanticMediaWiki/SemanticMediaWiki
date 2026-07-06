@@ -2,9 +2,10 @@
 
 namespace SMW\Elastic\Indexer\Attachment;
 
-use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\FileRepoFinder;
-use Title;
+use File;
+use FileBackend;
+use MediaWiki\Title\Title;
+use RepoGroup;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,85 +15,41 @@ use Title;
  */
 class FileHandler {
 
-	use LoggerAwareTrait;
-
 	/**
 	 * Transform the content to base64
 	 */
 	const FORMAT_BASE64 = 'format/base64';
 
 	/**
-	 * @var FileRepoFinder
-	 */
-	private $fileRepoFinder;
-
-	/**
-	 * @var callable
-	 */
-	private $readCallback;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param FileRepoFinder $fileRepoFinder
 	 */
-	public function __construct( FileRepoFinder $fileRepoFinder ) {
-		$this->fileRepoFinder = $fileRepoFinder;
+	public function __construct( private readonly RepoGroup $repoGroup ) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param callable $readCallback
 	 */
-	public function setReadCallback( callable $readCallback ) {
-		$this->readCallback = $readCallback;
+	public function findFileByTitle( Title $title ): File|false|null {
+		return $this->repoGroup->findFile( $title );
 	}
 
 	/**
-	 * @since 3.2
+	 * @since 6.0
 	 *
-	 * @param Title $title
+	 * @param File $file
 	 *
 	 * @return string
 	 */
-	public function findFileByTitle( Title $title ) {
-		return $this->fileRepoFinder->findFile( $title );
-	}
+	public function fetchContentFromFile( File $file ): string {
+		$be = $file->getRepo()->getBackend();
 
-	/**
-	 * @since 3.2
-	 *
-	 * @param string $url
-	 *
-	 * @return string
-	 */
-	public function fetchContentFromURL( string $url ): string {
-		// PHP 7.1+
-		$readCallback = $this->readCallback;
+		$content = '';
 
-		if ( $this->readCallback !== null ) {
-			return $readCallback( $url );
+		if ( $be instanceof FileBackend ) {
+			$content = $be->getFileContents( [ 'src' => $file->getPath() ] ) ?: '';
 		}
 
-		$contents = '';
-
-		// Avoid a "failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found"
-		$file_headers = @get_headers( $url );
-
-		if (
-			$file_headers !== false &&
-			$file_headers[0] !== 'HTTP/1.1 404 Not Found' &&
-			$file_headers[0] !== 'HTTP/1.0 404 Not Found' ) {
-			return file_get_contents( $url );
-		}
-
-		$this->logger->info(
-			[ 'File indexer', 'HTTP/1.1 404 Not Found', '{url}' ],
-			[ 'method' => __METHOD__, 'role' => 'production', 'url' => $url ]
-		);
-
-		return $contents;
+		return $content;
 	}
 
 	/**

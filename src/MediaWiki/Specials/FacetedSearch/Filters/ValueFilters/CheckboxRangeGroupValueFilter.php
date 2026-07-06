@@ -2,14 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
+use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Schema\CompartmentIterator;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,47 +21,20 @@ class CheckboxRangeGroupValueFilter {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
-
-	/**
-	 * @var CompartmentIterator
-	 */
-	private $compartmentIterator;
-
-	/**
-	 * @var UrlArgs
-	 */
-	private $urlArgs;
-
-	/**
-	 * @var
-	 */
-	private $params;
+	private ?UrlArgs $urlArgs = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateEngine $templateEngine
-	 * @param CompartmentIterator $compartmentIterator
-	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, CompartmentIterator $compartmentIterator, array $params ) {
-		$this->templateEngine = $templateEngine;
-		$this->compartmentIterator = $compartmentIterator;
-		$this->params = $params;
+	public function __construct(
+		private TemplateParser $templateParser,
+		private CompartmentIterator $compartmentIterator,
+		private array $params,
+	) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param UrlArgs $urlArgs
-	 * @param string $property
-	 * @param array $values
-	 *
-	 * @return string
 	 */
 	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ): string {
 		if ( $values === [] ) {
@@ -88,8 +61,8 @@ class CheckboxRangeGroupValueFilter {
 			$this->matchFilter( $property, $range, $valueFilters, $list, $isClear );
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-option',
+		$option = $this->templateParser->processTemplate(
+			'items.option',
 			[
 				'input' => $this->createInputField( $property, $ranges ),
 				'condition' => $this->createConditionField( $property )
@@ -100,20 +73,18 @@ class CheckboxRangeGroupValueFilter {
 			$list['linked'] = [ $this->msg( 'smw-facetedsearch-no-filters' ) ];
 		}
 
-		$this->templateEngine->compile(
-			'filter-items',
+		return $this->templateParser->processTemplate(
+			'items',
 			[
-				'option' => $this->templateEngine->publish( 'filter-items-option' ),
+				'option' => $option,
 				'unlinked' => implode( '', $list['unlinked'] ),
 				'linked' => implode( '', $list['linked'] ),
 				'css-class' => ''
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items' );
 	}
 
-	private function matchFilter( $property, $range, $valueFilters, &$list, $isClear ) {
+	private function matchFilter( string $property, array $range, array $valueFilters, array &$list, $isClear ): void {
 		$key = $range['min'] . '|' . $range['max'];
 
 		if ( $key === '' ) {
@@ -131,36 +102,32 @@ class CheckboxRangeGroupValueFilter {
 		if ( isset( $valueFilters[$key] ) && $isClear === false ) {
 			$attr['checked'] = 'checked';
 
-			$this->templateEngine->compile(
-				'filter-item-checkbox',
+			$list['unlinked'][] = $this->templateParser->processTemplate(
+				'item.checkbox',
 				$attr
 			);
-
-			$list['unlinked'][] = $this->templateEngine->publish( 'filter-item-checkbox' );
 		} else {
-			$this->templateEngine->compile(
-				'filter-item-checkbox',
+			$list['linked'][] = $this->templateParser->processTemplate(
+				'item.checkbox',
 				$attr
 			);
-
-			$list['linked'][] = $this->templateEngine->publish( 'filter-item-checkbox' );
 		}
 	}
 
-	private function getValueFilters( $property ) {
+	private function getValueFilters( string $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	private function buildRangeGroups( $property, $values, $raw ) {
+	private function buildRangeGroups( string $property, array $values, array $raw ): array {
 		$ranges = [];
 
-		$property = DIProperty::newFromUserLabel( $property );
+		$property = Property::newFromUserLabel( $property );
 
-		$diType = DataTypeRegistry::getInstance()->getDataItemId(
-			$property->findPropertyTypeID()
+		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
+			$property->findPropertyValueType()
 		);
 
 		foreach ( $this->compartmentIterator as $compartment ) {
@@ -198,7 +165,7 @@ class CheckboxRangeGroupValueFilter {
 		return $ranges;
 	}
 
-	private function range( $diType, $property, $key, $value ) {
+	private function range( $diType, Property $property, $key, $value ): array {
 		[ $min, $max ] = explode( '...', $value );
 
 		$msg = $this->msg( $key );
@@ -253,15 +220,15 @@ class CheckboxRangeGroupValueFilter {
 		];
 	}
 
-	private function createConditionField( $property ) {
+	private function createConditionField( string $property ) {
 		if ( $this->params['condition_field'] === false ) {
 			return '';
 		}
 
 		$condition = $this->urlArgs->find( "vc.$property", 'or' );
 
-		$this->templateEngine->compile(
-			'filter-items-condition',
+		return $this->templateParser->processTemplate(
+			'items.condition',
 			[
 				'property' => $property,
 				'or-selected' => $condition === 'or' ? 'selected' : '',
@@ -269,26 +236,22 @@ class CheckboxRangeGroupValueFilter {
 				'not-selected' => $condition === 'not' ? 'selected' : ''
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-condition' );
 	}
 
-	private function createInputField( $property, array $values ) {
+	private function createInputField( string $property, array $values ) {
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-input',
+		return $this->templateParser->processTemplate(
+			'items.input',
 			[
 				'placeholder' => $this->msg( [ 'smw-facetedsearch-input-filter-placeholder', $property ] ),
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-input' );
 	}
 
-	private function getJD( $property, $value ) {
+	private function getJD( Property $property, $value ) {
 		return DataValueFactory::getInstance()->newDataValueByProperty( $property, $value )->getDataItem()->getJD();
 	}
 

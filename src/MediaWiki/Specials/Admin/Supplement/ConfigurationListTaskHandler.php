@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
@@ -11,7 +12,6 @@ use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,17 +22,9 @@ use WebRequest;
 class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( OutputFormatter $outputFormatter ) {
-		$this->outputFormatter = $outputFormatter;
+	public function __construct( private readonly OutputFormatter $outputFormatter ) {
 	}
 
 	/**
@@ -40,7 +32,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -92,7 +84,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-settings-title' ) ] )
 		);
@@ -160,7 +152,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 		);
 	}
 
-	private function cleanPath( array &$options ) {
+	private function cleanPath( array &$options ): array {
 		foreach ( $options as $key => &$value ) {
 			if ( is_array( $value ) ) {
 				$this->cleanPath( $value );

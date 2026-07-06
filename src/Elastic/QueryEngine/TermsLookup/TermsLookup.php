@@ -22,32 +22,16 @@ class TermsLookup implements ITermsLookup {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private FieldMapper $fieldMapper;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param Options|null $options
 	 */
-	public function __construct( Store $store, ?Options $options = null ) {
-		$this->store = $store;
-		$this->options = $options;
-
-		if ( $options === null ) {
+	public function __construct(
+		private Store $store,
+		private ?Options $options = null,
+	) {
+		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
 
@@ -57,17 +41,13 @@ class TermsLookup implements ITermsLookup {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return Parameters
 	 */
-	public function newParameters( array $parameters = [] ) {
+	public function newParameters( array $parameters = [] ): Parameters {
 		return new Parameters( $parameters );
 	}
 
@@ -113,12 +93,8 @@ class TermsLookup implements ITermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
-	public function concept_index_lookup( Parameters $parameters ) {
+	public function concept_index_lookup( Parameters $parameters ): array {
 		$params = $parameters->get( 'params' );
 		$query = $params instanceof Condition ? $params->toArray() : $params;
 
@@ -155,12 +131,8 @@ class TermsLookup implements ITermsLookup {
 	 * return a list of matchable `_id` to can be fed to the source query.
 	 *
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
-	public function chain_index_lookup( Parameters $parameters ) {
+	public function chain_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
 
 		$query = $this->fieldMapper->bool( 'must', $parameters->get( 'params' ) );
@@ -186,12 +158,8 @@ class TermsLookup implements ITermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
-	public function predef_index_lookup( Parameters $parameters ) {
+	public function predef_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
 		$params = $parameters->get( 'params' );
 
@@ -219,12 +187,8 @@ class TermsLookup implements ITermsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Parameters $parameters
-	 *
-	 * @return array
 	 */
-	public function inverse_index_lookup( Parameters $parameters ) {
+	public function inverse_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
 		$params = $parameters->get( 'params' );
 
@@ -267,10 +231,8 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @param string $field
 	 * @param array $params
-	 *
-	 * @return array
 	 */
-	public function terms_filter( $field, $params ) {
+	public function terms_filter( $field, $params ): array {
 		if ( $params === [] ) {
 			// Fail with a non existing condition to avoid a " ...
 			// query malformed, must start with start_object ..."
@@ -282,9 +244,9 @@ class TermsLookup implements ITermsLookup {
 			$params
 		);
 
-	// if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
-	//		$params = $this->fieldMapper->constant_score( $params );
-	//	}
+		// if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
+		//		$params = $this->fieldMapper->constant_score( $params );
+		//	}
 
 		return $params;
 	}
@@ -293,10 +255,8 @@ class TermsLookup implements ITermsLookup {
 	 * @since 3.0
 	 *
 	 * @param array $params
-	 *
-	 * @return array
 	 */
-	public function ids_filter( $params ) {
+	public function ids_filter( $params ): array {
 		if ( $params === [] ) {
 			// Fail with a non existing condition to avoid a " ...
 			// query malformed, must start with start_object ..."
@@ -314,10 +274,8 @@ class TermsLookup implements ITermsLookup {
 	 * @since 3.0
 	 *
 	 * @param string $id
-	 *
-	 * @return array
 	 */
-	public function path_filter( $id ) {
+	public function path_filter( $id ): array {
 		$connection = $this->store->getConnection( 'elastic' );
 
 		$params = [
@@ -329,9 +287,9 @@ class TermsLookup implements ITermsLookup {
 		return $params + [ 'path' => 'id' ];
 	}
 
-	private function query_result( Parameters $parameters ) {
+	private function query_result( Parameters $parameters ): ?array {
 		$connection = $this->store->getConnection( 'elastic' );
-		$info = $parameters->get( 'query.info' );
+		$info = (array)$parameters->get( 'query.info' );
 
 		$params = [
 			'index' => $connection->getIndexName( ElasticClient::TYPE_DATA ),
@@ -347,7 +305,7 @@ class TermsLookup implements ITermsLookup {
 
 		$parameters->set( 'query.info', $info );
 
-		if ( $parameters->get( 'params' ) === [] ) {
+		if ( (array)$parameters->get( 'params' ) === [] ) {
 			return [];
 		}
 
@@ -362,7 +320,7 @@ class TermsLookup implements ITermsLookup {
 		$results = $searchResult->getResults();
 		$count = $searchResult->get( 'count' );
 
-		if ( $count >= $parameters->get( 'threshold' ) ) {
+		if ( (int)$count >= (int)$parameters->get( 'threshold' ) ) {
 			$results = $this->terms_index( $parameters->get( 'id' ), $results );
 		}
 
@@ -377,7 +335,7 @@ class TermsLookup implements ITermsLookup {
 	/**
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.1/query-dsl-terms-query.html
 	 */
-	private function terms_index( $id, $results ) {
+	private function terms_index( $id, ?array $results ): array {
 		$connection = $this->store->getConnection( 'elastic' );
 
 		$params = [

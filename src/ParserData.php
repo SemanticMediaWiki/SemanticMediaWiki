@@ -2,12 +2,14 @@
 
 namespace SMW;
 
-use ParserOptions;
-use ParserOutput;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
-use Title;
 
 /**
  * Handling semantic data exchange with a ParserOutput object
@@ -61,47 +63,31 @@ class ParserData {
 	 */
 	const ANNOTATION_BLOCK = 'smw-blockannotation';
 
-	/**
-	 * @var Title
-	 */
-	private $title;
+	private Title $title;
 
-	/**
-	 * @var ParserOutput
-	 */
-	private $parserOutput;
+	private ParserOutput $parserOutput;
 
-	/**
-	 * @var ParserOptions
-	 */
-	private $parserOptions;
+	private ?ParserOptions $parserOptions = null;
 
 	/**
 	 * @var SemanticData
 	 */
 	private $semanticData;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
-	/**
-	 * @var
-	 */
-	private $canCreateUpdateJob = true;
+	private bool $canCreateUpdateJob = true;
 
 	/**
 	 * Identifies the origin of a request.
 	 *
-	 * @var string
+	 * @var string|array
 	 */
 	private $origin = '';
 
-	/**
-	 * @var Options
-	 */
-	private $options = null;
+	private ?Options $options = null;
+
+	private bool $variesByUserLanguage = false;
 
 	/**
 	 * @since 1.9
@@ -137,7 +123,7 @@ class ParserData {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -148,9 +134,9 @@ class ParserData {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $origin
+	 * @param string|array $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -159,16 +145,16 @@ class ParserData {
 	 *
 	 * @return Title
 	 */
-	public function getTitle() {
+	public function getTitle(): Title {
 		return $this->title;
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->getSemanticData()->getSubject();
 	}
 
@@ -177,7 +163,7 @@ class ParserData {
 	 *
 	 * @return ParserOutput
 	 */
-	public function getOutput() {
+	public function getOutput(): ParserOutput {
 		return $this->parserOutput;
 	}
 
@@ -186,21 +172,51 @@ class ParserData {
 	 *
 	 * @param ParserOptions $parserOptions
 	 */
-	public function setParserOptions( ParserOptions $parserOptions ) {
+	public function setParserOptions( ParserOptions $parserOptions ): void {
 		$this->parserOptions = $parserOptions;
 	}
 
 	/**
-	 * @since 3.0
+	 * Record that something rendered into this ParserOutput depends on the
+	 * viewer's interface language (e.g. an in-text annotation error or a
+	 * unit-conversion tooltip), so the `userlang` parser-cache key is needed.
 	 *
-	 * @return ParserOptions|null
+	 * @since 7.0.0
 	 */
-	public function addExtraParserKey( $key ) {
-		// Looks odd in 1.30 "Saved in parser cache ... idhash:19989-0!canonical!userlang!dateformat!userlang!dateformat!userlang!dateformat!userlang!dateformat and ..."
-		// threfore use the ParserOutput::recordOption instead
-		if ( $key === 'userlang' || $key === 'dateformat' ) {
-			$this->parserOutput->recordOption( $key );
-		} elseif ( $this->parserOptions !== null ) {
+	public function markVariesByUserLanguage(): void {
+		$this->variesByUserLanguage = true;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function variesByUserLanguage(): bool {
+		return $this->variesByUserLanguage;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function addExtraParserKey( string $key ): void {
+		// `userlang` fragments the parser cache by the viewer's interface
+		// language and is opt-in via $smwgSetParserCacheKeys. Every other key
+		// (functional markers such as `smwq`, or keys added by other extensions)
+		// is always applied.
+		$configurableKeys = [ 'userlang' ];
+
+		if ( in_array( $key, $configurableKeys, true ) ) {
+			$keysToCache = ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheKeys' ) ?? [];
+
+			if ( in_array( $key, $keysToCache, true ) ) {
+				// recordOption() marks the option as cache-relevant so MediaWiki
+				// hashes its actual value into the parser cache key.
+				$this->parserOutput->recordOption( $key );
+			}
+
+			return;
+		}
+
+		if ( $this->parserOptions !== null ) {
 			$this->parserOptions->addExtraKey( $key );
 		}
 	}
@@ -210,7 +226,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function isBlocked() {
+	public function isBlocked(): bool {
 		return $this->hasAnnotationBlock();
 	}
 
@@ -219,7 +235,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function hasAnnotationBlock() {
+	public function hasAnnotationBlock(): bool {
 		// ParserOutput::getExtensionData returns null if no value was set for this key
 		if ( $this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) !== null &&
 			$this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) ) {
@@ -231,10 +247,8 @@ class ParserData {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
-	public function canUse() {
+	public function canUse(): bool {
 		return !$this->hasAnnotationBlock();
 	}
 
@@ -242,34 +256,23 @@ class ParserData {
 	 * Returns collected errors occurred during processing
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
 	/**
 	 * @since  1.9
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		$this->errors = array_merge( $this->errors, (array)$error );
 	}
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param SemanticData $semanticData
 	 */
-	public function setSemanticData( SemanticData $semanticData ) {
+	public function setSemanticData( SemanticData $semanticData ): void {
 		$this->semanticData = $semanticData;
-	}
-
-	/**
-	 * @deprecated since 2.0, use setSemanticData
-	 */
-	public function setData( SemanticData $semanticData ) {
-		$this->setSemanticData( $semanticData );
 	}
 
 	/**
@@ -282,25 +285,16 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 2.0, use getSemanticData
+	 * @since 2.1
 	 */
-	public function getData() {
-		return $this->getSemanticData();
+	public function setEmptySemanticData(): void {
+		$this->setSemanticData( new SemanticData( WikiPage::newFromTitle( $this->title ) ) );
 	}
 
 	/**
 	 * @since 2.1
 	 */
-	public function setEmptySemanticData() {
-		$this->setSemanticData( new SemanticData( DIWikiPage::newFromTitle( $this->title ) ) );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param ParserOutput|null
-	 */
-	public function importFromParserOutput( ?ParserOutput $parserOutput = null ) {
+	public function importFromParserOutput( ?ParserOutput $parserOutput = null ): void {
 		if ( $parserOutput === null ) {
 			return;
 		}
@@ -319,7 +313,7 @@ class ParserData {
 	/**
 	 * @since 3.0
 	 */
-	public function copyToParserOutput() {
+	public function copyToParserOutput(): void {
 		// Ensure that errors are reported and recorded
 		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
 			$this->getSubject()
@@ -337,17 +331,12 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 3.0, use copyToParserOutput
-	 */
-	public function pushSemanticDataToParserOutput() {
-		$this->copyToParserOutput();
-	}
-
-	/**
 	 * @since 3.0
 	 */
-	public function markParserOutput() {
-		$this->parserOutput->setTimestamp( wfTimestampNow() );
+	public function markParserOutput(): void {
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheTimestamp' ) ) {
+			$this->parserOutput->setCacheTime( wfTimestampNow() );
+		}
 
 		$this->parserOutput->setExtensionData(
 			'smw-semanticdata-status',
@@ -356,20 +345,9 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 3.0, use pushSemanticDataToParserOutput
-	 */
-	public function setSemanticDataStateToParserOutputProperty() {
-		$this->markParserOutput();
-	}
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param ParserOutput $parserOutput
-	 *
-	 * @return bool
 	 */
-	public static function hasSemanticData( ParserOutput $parserOutput ) {
+	public static function hasSemanticData( ParserOutput $parserOutput ): bool {
 		return $parserOutput->getExtensionData( 'smw-semanticdata-status' ) ?? false;
 	}
 
@@ -377,10 +355,8 @@ class ParserData {
 	 * @see SemanticData::addDataValue
 	 *
 	 * @since 1.9
-	 *
-	 * @param DataValue $dataValue
 	 */
-	public function addDataValue( DataValue $dataValue ) {
+	public function addDataValue( DataValue $dataValue ): void {
 		$this->semanticData->addDataValue( $dataValue );
 	}
 
@@ -388,14 +364,12 @@ class ParserData {
 	 * @private This method is not for public use
 	 *
 	 * @since 1.9
-	 *
-	 * @return bool
 	 */
-	public function updateStore( $opts = [] ) {
+	public function updateStore( bool|array $opts = [] ): bool {
 		$isDeferrableUpdate = false;
 
 		// @legacy
-		if ( $opts === true ) {
+		if ( is_bool( $opts ) && $opts ) {
 			$isDeferrableUpdate = true;
 		}
 
@@ -421,8 +395,11 @@ class ParserData {
 			$dataUpdater->isSkippable( $this->title, $latestRevID ) ) {
 
 			$this->logger->info(
-				[ 'Update', 'Skipping update', 'Found revision', '{revID}' ],
-				[ 'role' => 'user', 'revID' => $latestRevID ]
+				'Update Skipping update Found revision {revID}',
+				[
+					'role' => 'user',
+					'revID' => $latestRevID
+				]
 			);
 
 			return false;
@@ -457,7 +434,7 @@ class ParserData {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function addLimitReport( $key, $value ) {
+	public function addLimitReport( string $key, $value ): void {
 		$this->parserOutput->setLimitReportData( 'smw-limitreport-' . $key, $value );
 	}
 
@@ -465,7 +442,7 @@ class ParserData {
 	 * Setup the semantic data container either from the ParserOutput or
 	 * if not available create an empty container
 	 */
-	private function initSemanticData() {
+	private function initSemanticData(): void {
 		$this->semanticData = $this->parserOutput->getExtensionData( self::DATA_ID );
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {

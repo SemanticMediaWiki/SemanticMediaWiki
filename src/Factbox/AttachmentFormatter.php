@@ -2,15 +2,16 @@
 
 namespace SMW\Factbox;
 
-use Html;
+use MediaWiki\Html\Html;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\DataValues\WikiPageValue;
 use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
 use SMW\Store;
 use SMW\Utils\HtmlTable;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,20 +21,12 @@ use SMWDIBlob as DIBlob;
  */
 class AttachmentFormatter {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
 	private HtmlTable $htmlTable;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -48,7 +41,7 @@ class AttachmentFormatter {
 
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		$property = new DIProperty( '_ATTCH_LINK' );
+		$property = new Property( '_ATTCH_LINK' );
 		$this->htmlTable = new HtmlTable();
 
 		foreach ( $attachments as $dataItem ) {
@@ -58,8 +51,12 @@ class AttachmentFormatter {
 		$propertyRegistry = PropertyRegistry::getInstance();
 
 		$mime = $dataValueFactory->newDataValueByItem(
-			( new DIProperty( '_MIME' ) )->getDiWikiPage()
+			( new Property( '_MIME' ) )->getDiWikiPage()
 		);
+
+		if ( !$mime instanceof WikiPageValue ) {
+			return '';
+		}
 
 		$mime->setOption( $mime::SHORT_FORM, true );
 		$mime->setOutputFormat( 'LOCL' );
@@ -72,8 +69,12 @@ class AttachmentFormatter {
 		);
 
 		$mdat = $dataValueFactory->newDataValueByItem(
-			( new DIProperty( '_MDAT' ) )->getDiWikiPage()
+			( new Property( '_MDAT' ) )->getDiWikiPage()
 		);
+
+		if ( !$mdat instanceof WikiPageValue ) {
+			return '';
+		}
 
 		$mdat->setOption( $mime::SHORT_FORM, true );
 		$mdat->setOutputFormat( 'LOCL' );
@@ -106,7 +107,7 @@ class AttachmentFormatter {
 		);
 	}
 
-	private function buildRow( $property, $dataItem ): void {
+	private function buildRow( Property $property, $dataItem ): void {
 		$unknown = Message::get(
 			'smw-factbox-attachments-value-unknown',
 			Message::TEXT,
@@ -118,19 +119,23 @@ class AttachmentFormatter {
 			$property
 		);
 
+		if ( !$dataValue instanceof WikiPageValue ) {
+			return;
+		}
+
 		$dataValue->setOption( $dataValue::NO_IMAGE, true );
 		$attachment = $dataValue->getShortWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
 
 		$this->htmlTable->cell( $attachment );
 
-		$pv = $this->store->getPropertyValues( $dataItem, new DIProperty( '_MIME' ) );
+		$pv = $this->store->getPropertyValues( $dataItem, new Property( '_MIME' ) );
 		$pv = is_array( $pv ) ? end( $pv ) : '';
 
 		$this->htmlTable->cell(
-			$pv instanceof DIBlob ? $pv->getString() : $unknown
+			$pv instanceof Blob ? $pv->getString() : $unknown
 		);
 
-		$prop = new DIProperty( '_MDAT' );
+		$prop = new Property( '_MDAT' );
 		$text = $unknown;
 
 		$pv = $this->store->getPropertyValues( $dataItem, $prop );

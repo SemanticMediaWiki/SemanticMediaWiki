@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Hook\SidebarBeforeOutputHook;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\Title\Title;
 use Skin;
-use SMW\MediaWiki\HookListener;
+use SMW\Formatters\Infolink;
 use SMW\NamespaceExaminer;
-use SMW\OptionsAwareTrait;
-use SMWInfolink as Infolink;
-use SpecialPage;
-use Title;
+use SMW\Settings;
 
 /**
  * Called at the end of Skin::buildSidebar().
@@ -19,53 +19,41 @@ use Title;
  *
  * @author StarHeartHunt
  */
-class SidebarBeforeOutput implements HookListener {
-
-	use OptionsAwareTrait;
+class SidebarBeforeOutput implements SidebarBeforeOutputHook {
 
 	/**
-	 * @var NamespaceExaminer
+	 * @since 7.0.0
 	 */
-	private $namespaceExaminer;
-
-	/**
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly Settings $settings,
+	) {
 	}
 
 	/**
-	 *
-	 * @param $skin
-	 * @param &$sidebar
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( $skin, &$sidebar ) {
+	public function onSidebarBeforeOutput( $skin, &$sidebar ): void {
 		$title = $skin->getTitle();
 
 		if ( $this->canProcess( $title, $skin ) ) {
 			$this->performUpdate( $title, $skin, $sidebar );
 		}
-
-		return true;
 	}
 
-	private function canProcess( Title $title, Skin $skin ) {
+	private function canProcess( Title $title, Skin $skin ): bool {
 		if ( $title->isSpecialPage() || !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return false;
 		}
 
-		if ( !$skin->getOutput()->isArticle() || !$this->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_TLINK ) ) {
+		if ( !$skin->getOutput()->isArticle() || !$this->settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_TLINK ) ) {
 			return false;
 		}
 
 		return true;
 	}
 
-	private function performUpdate( Title $title, Skin $skin, &$sidebar ) {
+	private function performUpdate( Title $title, Skin $skin, array &$sidebar ): void {
 		$link = Infolink::encodeParameters(
 			[
 				$title->getPrefixedDBkey()
@@ -75,7 +63,7 @@ class SidebarBeforeOutput implements HookListener {
 
 		$sidebar["TOOLBOX"]['smwbrowselink'] = [
 			'text' => $skin->msg( 'smw_browselink' )->text(),
-			'href' => SpecialPage::getTitleFor( 'Browse', ':' . $link )->getLocalUrl(),
+			'href' => SkinComponentUtils::makeSpecialUrl( "Browse" ) . "/:$link",
 			'icon' => 'database',
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'search'

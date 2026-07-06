@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
 
 /**
  * @private
@@ -21,7 +21,7 @@ class PredefinedPropertyValueResourceBuilder extends PropertyValueResourceBuilde
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return !$property->isUserDefined();
 	}
 
@@ -30,7 +30,7 @@ class PredefinedPropertyValueResourceBuilder extends PropertyValueResourceBuilde
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		$diSubject = $expData->getSubject()->getDataItem();
 
 		if ( $diSubject === null ) {

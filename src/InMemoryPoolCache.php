@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Cache\InMemoryLruCache;
 use SMW\Utils\StatsFormatter;
 
 /**
@@ -31,38 +31,18 @@ class InMemoryPoolCache {
 	 */
 	const FORMAT_HTML = StatsFormatter::FORMAT_HTML;
 
-	/**
-	 * @var InMemoryPoolCache
-	 */
-	private static $instance = null;
+	private static ?InMemoryPoolCache $instance = null;
 
-	/**
-	 * @var CacheFactory
-	 */
-	private $cacheFactory = null;
-
-	/**
-	 * @var array
-	 */
-	private $poolCacheList = [];
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param CacheFactory $cacheFactory
-	 */
-	public function __construct( CacheFactory $cacheFactory ) {
-		$this->cacheFactory = $cacheFactory;
-	}
+	private array $poolCacheList = [];
 
 	/**
 	 * @since 2.3
 	 *
 	 * @return InMemoryPoolCache
 	 */
-	public static function getInstance() {
+	public static function getInstance(): InMemoryPoolCache {
 		if ( self::$instance === null ) {
-			self::$instance = new self( ApplicationFactory::getInstance()->newCacheFactory() );
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -71,7 +51,7 @@ class InMemoryPoolCache {
 	/**
 	 * @since 2.3
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -80,7 +60,7 @@ class InMemoryPoolCache {
 	 *
 	 * @param string $poolCacheName
 	 */
-	public function resetPoolCacheById( $poolCacheName = '' ) {
+	public function resetPoolCacheById( $poolCacheName = '' ): void {
 		foreach ( $this->poolCacheList as $key => $value ) {
 			if ( $key === $poolCacheName || $poolCacheName === '' ) {
 				unset( $this->poolCacheList[$key] );
@@ -95,21 +75,8 @@ class InMemoryPoolCache {
 	 *
 	 * @return string|array
 	 */
-	public function getStats( $format = null ) {
+	public function getStats( $format = null ): string|array {
 		return StatsFormatter::format( $this->computeStats(), $format );
-	}
-
-	/**
-	 * @deprecated since 2.5, use InMemoryPoolCache::getPoolCacheById
-	 * @since 2.3
-	 *
-	 * @param string $poolCacheName
-	 * @param integer $cacheSize
-	 *
-	 * @return Cache
-	 */
-	public function getPoolCacheFor( $poolCacheName, $cacheSize = 500 ) {
-		return $this->getPoolCacheById( $poolCacheName, $cacheSize );
 	}
 
 	/**
@@ -118,17 +85,20 @@ class InMemoryPoolCache {
 	 * @param string $poolCacheId
 	 * @param int $cacheSize
 	 *
-	 * @return Cache
+	 * @return InMemoryLruCache
 	 */
 	public function getPoolCacheById( $poolCacheId, $cacheSize = 500 ) {
 		if ( !isset( $this->poolCacheList[$poolCacheId] ) ) {
-			$this->poolCacheList[$poolCacheId] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
+			$this->poolCacheList[$poolCacheId] = new InMemoryLruCache( $cacheSize );
 		}
 
 		return $this->poolCacheList[$poolCacheId];
 	}
 
-	private function computeStats() {
+	/**
+	 * @return non-empty-array[]
+	 */
+	private function computeStats(): array {
 		ksort( $this->poolCacheList );
 		$stats = [];
 

@@ -5,9 +5,9 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
-use SMW\SemanticData;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,17 +22,14 @@ class SingleValueConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'single_value_constraint';
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 
@@ -41,7 +38,7 @@ class SingleValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -50,7 +47,7 @@ class SingleValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraint, $dataValue ) {
+	public function checkConstraint( array $constraint, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -60,11 +57,12 @@ class SingleValueConstraint implements Constraint {
 		$key = key( $constraint );
 
 		if ( $key === self::CONSTRAINT_KEY ) {
-			return $this->check( $constraint[$key], $dataValue );
+			$this->check( $constraint[$key], $dataValue );
+			return;
 		}
 	}
 
-	private function check( $single_value, $dataValue ) {
+	private function check( $single_value, DataValue $dataValue ): void {
 		if ( $single_value === false ) {
 			return;
 		}
@@ -82,7 +80,7 @@ class SingleValueConstraint implements Constraint {
 		}
 	}
 
-	private function reportError( $dataValue, $property ) {
+	private function reportError( DataValue $dataValue, $property ): void {
 		$this->hasViolation = true;
 
 		$error = [

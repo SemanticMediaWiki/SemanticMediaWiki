@@ -1,5 +1,5 @@
 {
-	"description": "Test `#ask`/ NS_FILE option, `noimage` (`wgEnableUploads`, `wgFileExtensions`, `wgDefaultUserOptions`)",
+	"description": "Test `#ask`/ NS_FILE option, `noimage` (`wgEnableUploads`, `wgFileExtensions`, `wgDefaultUserOptions`, `wgThumbLimits`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -54,7 +54,7 @@
 			"subject": "Example/P0705/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"href=\"/index.php/File:P0705.png\"",
+					"href=\"/wiki/File:P0705.png\"",
 					"300px-P0705.png",
 					"width=\"300\" height=\"300\""
 				],
@@ -95,7 +95,7 @@
 			"subject": "Example/P0705/Q.4",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\"><a href=\".*Example/P0705/4\" title=\"Example/P0705/4\">Example/P0705/4</a></td><td class=\"Has-page smwtype_wpg\"><a href=\".*P0705.png\" title=\".*P0705.png\">P0705.png</a></td>"
+					"<td class=\"smwtype&#95;wpg\"><a href=\".*Example/P0705/4\" title=\"Example/P0705/4\">Example/P0705/4</a></td><td class=\"Has-page smwtype&#95;wpg\"><a href=\".*P0705.png\" title=\".*P0705.png\">P0705.png</a></td>"
 				],
 				"not-contain": [
 					"P0705.png\" width=\"480\" height=\"480\""
@@ -113,6 +113,7 @@
 		"wgDefaultUserOptions": {
 			"thumbsize": 5
 		},
+		"wgThumbLimits": [ 120, 150, 180, 200, 250, 300 ],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		],

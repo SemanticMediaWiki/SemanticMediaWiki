@@ -2,14 +2,14 @@
 
 namespace SMW\Factbox;
 
-use OutputPage;
-use ParserOutput;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\EntityCache;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HmacSerializer;
-use Title;
 
 /**
  * Factbox output caching
@@ -26,127 +26,82 @@ class CachedFactbox {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
+	private bool $isCached = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isCached = false;
+	private int $featureSet = 0;
 
-	/**
-	 * @var int
-	 */
-	private $featureSet = 0;
+	private int $showFactboxEdit = 0;
 
-	/**
-	 * @var int
-	 */
-	private $showFactboxEdit = 0;
+	private int $showFactbox = 0;
 
-	/**
-	 * @var int
-	 */
-	private $showFactbox = 0;
+	private bool $isEnabled = true;
 
-	/**
-	 * @var bool
-	 */
-	private $isEnabled = true;
+	private int $cacheTTL = 0;
 
-	/**
-	 * @var int
-	 */
-	private $cacheTTL = 0;
-
-	/**
-	 * @var int
-	 */
-	private $timestamp;
-
-	private FactboxText $factboxText;
+	private string $timestamp = '';
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( EntityCache $entityCache, FactboxText $factboxText ) {
-		$this->entityCache = $entityCache;
-		$this->factboxText = $factboxText;
+	public function __construct(
+		private EntityCache $entityCache,
+		private FactboxText $factboxText,
+	) {
 	}
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return bool
 	 */
-	public function isCached() {
+	public function isCached(): bool {
 		return $this->isCached;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $showFactboxEdit
 	 */
-	public function setShowFactboxEdit( $showFactboxEdit ) {
+	public function setShowFactboxEdit( int $showFactboxEdit ): void {
 		$this->showFactboxEdit = $showFactboxEdit;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $showFactbox
 	 */
-	public function setShowFactbox( $showFactbox ) {
+	public function setShowFactbox( int $showFactbox ): void {
 		$this->showFactbox = $showFactbox;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ) {
+	public function setCacheTTL( int $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return bool
 	 */
-	public function isEnabled( $isEnabled ) {
+	public function isEnabled( bool $isEnabled ): void {
 		$this->isEnabled = $isEnabled;
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return int
 	 */
-	public function getTimestamp() {
+	public function getTimestamp(): string {
 		return $this->timestamp;
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return int
 	 */
-	public static function makeCacheKey( $id ) {
+	public static function makeCacheKey( $id ): string {
 		if ( $id instanceof Title ) {
 			$id = $id->getArticleID();
 		}
@@ -168,7 +123,7 @@ class CachedFactbox {
 	 * @param OutputPage &$outputPage
 	 * @param ParserOutput $parserOutput
 	 */
-	public function prepare( OutputPage &$outputPage, ParserOutput $parserOutput ) {
+	public function prepare( OutputPage &$outputPage, ParserOutput $parserOutput ): void {
 		$this->factboxText->clear();
 		$time = -microtime( true );
 
@@ -199,15 +154,20 @@ class CachedFactbox {
 		$key = $this->makeCacheKey( $title );
 		$subKey = $this->makeSubCacheKey( $rev_id, $lang, $this->featureSet );
 
-		if ( ( $data = $this->entityCache->fetchSub( $key, $subKey ) ) !== false ) {
+		$data = $this->entityCache->fetchSub( $key, $subKey );
+		if ( $data !== false ) {
 			$content = $this->findContentFromCache( $data );
 		}
 
-		if ( !$isPreview && $this->hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) ) {
+		if ( !$isPreview && $this->hasCachedContent( $subKey, $rev_id, $content, $request ) ) {
 
 			$this->logger->info(
-				[ 'Factbox', 'Using cached factbox', 'rev_id: {rev_id}', '{lang}', 'procTime: {procTime}' ],
-				[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
+				'Factbox Using cached factbox rev_id: {rev_id} {lang} procTime: {procTime}',
+				[
+					'rev_id' => $rev_id,
+					'lang' => $lang,
+					'procTime' => microtime( true ) + $time
+				]
 			);
 
 			$this->factboxText->setText( $content['text'] );
@@ -235,8 +195,12 @@ class CachedFactbox {
 		);
 
 		$this->logger->info(
-			[ 'Factbox', 'Rebuild factbox', 'rev_id: {rev_id}', '{lang}', 'procTime: {procTime}' ],
-			[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
+			'Factbox Rebuild factbox rev_id: {rev_id} {lang} procTime: {procTime}',
+			[
+				'rev_id' => $rev_id,
+				'lang' => $lang,
+				'procTime' => microtime( true ) + $time
+			]
 		);
 
 		$this->entityCache->associate( $title, $key );
@@ -251,7 +215,7 @@ class CachedFactbox {
 	 * @param string $lang
 	 * @param mixed|null $feature_set
 	 */
-	public function addContentToCache( $key, $text, $rev_id = null, $lang = 'en', $feature_set = null ) {
+	public function addContentToCache( $key, $text, $rev_id = null, $lang = 'en', $feature_set = null ): void {
 		$this->saveToCache(
 			$key,
 			$this->makeSubCacheKey( $rev_id, $lang, $this->featureSet ),
@@ -269,12 +233,8 @@ class CachedFactbox {
 	 * or from the Cache
 	 *
 	 * @since 1.9
-	 *
-	 * @param OutputPage $outputPage
-	 *
-	 * @return string
 	 */
-	public function retrieveContent( OutputPage $outputPage ) {
+	public function retrieveContent( OutputPage $outputPage ): string {
 		$text = '';
 		$content = [];
 		$title = $outputPage->getTitle();
@@ -308,13 +268,13 @@ class CachedFactbox {
 			}
 		}
 
-		return $text;
+		return $text ?? '';
 	}
 
 	/**
 	 * Processing and re-parsing of the Factbox content
 	 */
-	private function rebuild( Title $title, ParserOutput $parserOutput, $checkMagicWords ) {
+	private function rebuild( Title $title, ParserOutput $parserOutput, CheckMagicWords $checkMagicWords ) {
 		$text = null;
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -335,42 +295,49 @@ class CachedFactbox {
 
 		$contentParser = $applicationFactory->newContentParser( $title );
 
-		if ( ( $content = $factbox->getContent() ) !== '' ) {
+		$content = $factbox->getContent();
+		if ( $content !== '' ) {
 			$contentParser->parse( $content, false );
 			$content = InTextAnnotationParser::removeAnnotation(
-				$contentParser->getOutput()->getText()
+				$contentParser->getOutput()->getContentHolderText()
 			);
 		}
 
-		if ( ( $attachmentContent = $factbox->getAttachmentHTML() ) !== '' ) {
+		$attachmentContent = $factbox->getAttachmentHTML();
+		if ( $attachmentContent !== '' ) {
 			$contentParser->parse( $attachmentContent, false );
-			$attachmentContent = $contentParser->getOutput()->getText();
+			$attachmentContent = $contentParser->getOutput()->getContentHolderText();
 		}
 
 		return $factbox->tabs( $content, $attachmentContent );
 	}
 
-	private function hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) {
+	private function hasCachedContent( string $subKey, $rev_id, string|array $content, $request ): bool {
 		if ( $request->getVal( 'action' ) === 'edit' ) {
-			return $this->isCached = false;
+			$this->isCached = false;
+			return false;
 		}
 
 		if ( $rev_id == 0 || !isset( $content['rev_id'] ) || $content['text'] === null ) {
-			return $this->isCached = false;
+			$this->isCached = false;
+			return false;
 		}
 
 		if ( !isset( $content['lang'] ) || !isset( $content['feature_set'] ) ) {
-			return $this->isCached = false;
+			$this->isCached = false;
+			return false;
 		}
 
 		if ( $subKey === $this->makeSubCacheKey( $content['rev_id'], $content['lang'], $content['feature_set'] ) ) {
-			return $this->isCached = true;
+			$this->isCached = true;
+			return true;
 		}
 
-		return $this->isCached = false;
+		$this->isCached = false;
+		return false;
 	}
 
-	private function findContentFromCache( $data ) {
+	private function findContentFromCache( array|false $data ) {
 		if ( $data === false || !$this->isEnabled ) {
 			return [];
 		}
@@ -385,7 +352,7 @@ class CachedFactbox {
 	 * Cached content is serialized in an associative array following:
 	 * { 'rev_id' => $revisionId, 'text' => (...) }
 	 */
-	private function saveToCache( $key, $subKey, array $content ) {
+	private function saveToCache( $key, string $subKey, array $content ): void {
 		$this->timestamp = wfTimestamp( TS_UNIX );
 		$this->isCached = false;
 
@@ -400,7 +367,7 @@ class CachedFactbox {
 		$this->entityCache->saveSub( $key, $subKey, $data, $this->cacheTTL );
 	}
 
-	private function makeSubCacheKey( ...$args ) {
+	private function makeSubCacheKey( ...$args ): string {
 		return md5( json_encode( $args ) );
 	}
 

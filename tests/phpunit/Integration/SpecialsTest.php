@@ -2,12 +2,15 @@
 
 namespace SMW\Tests\Integration;
 
-use FauxRequest;
+use ErrorPageError;
+use Exception;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use RequestContext;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\SpecialPage\SpecialPage;
+use PermissionsError;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use SpecialPage;
 
 /**
  * Tests for registered special pages
@@ -22,11 +25,10 @@ use SpecialPage;
  */
 
 /**
- * @covers \SMW\SpecialWantedProperties
- * @covers \SMW\SpecialUnusedProperties
- * @covers \SMW\SpecialProperties
- * @covers \SMW\SpecialConcepts
- * @covers \SMW\SpecialPage
+ * @covers \SMW\MediaWiki\Specials\SpecialWantedProperties
+ * @covers \SMW\MediaWiki\Specials\SpecialUnusedProperties
+ * @covers \SMW\MediaWiki\Specials\SpecialProperties
+ * @covers \SMW\MediaWiki\Specials\SpecialConcepts
  * @covers \SMW\MediaWiki\Specials\SpecialAsk
  * @covers \SMW\MediaWiki\Specials\SpecialAdmin
  * @covers \SMW\MediaWiki\Specials\SpecialBrowse
@@ -58,8 +60,8 @@ class SpecialsTest extends SMWIntegrationTestCase {
 	public function testSpecial( callable $specialPageProvider ) {
 		try {
 			$specialPageProvider()->execute( '' );
-		} catch ( \Exception $exception ) {
-			if ( !( $exception instanceof \PermissionsError ) && !( $exception instanceof \ErrorPageError ) ) {
+		} catch ( Exception $exception ) {
+			if ( !( $exception instanceof PermissionsError ) && !( $exception instanceof ErrorPageError ) ) {
 				throw $exception;
 			}
 		}
@@ -68,7 +70,6 @@ class SpecialsTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	 * @test SpecialPageFactory::getLocalNameFor
 	 * @dataProvider specialPageProvider
 	 *
 	 * Test created in response to bug 44191

@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DumpRDFTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $runnerFactory;
 	private $spyMessageReporter;
@@ -49,7 +46,7 @@ class DumpRDFTest extends SMWIntegrationTestCase {
 			$maintenanceRunner->run()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'writting OWL/RDF information',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

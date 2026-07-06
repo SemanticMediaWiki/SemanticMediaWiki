@@ -2,14 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\Pager;
 use SMW\Utils\UrlArgs;
-use SMWInfolink as Infolink;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,29 +19,23 @@ use Title;
  */
 class NavigationLinksWidget {
 
-	/**
-	 * @var int
-	 */
-	private static $maxInlineLimit = 500;
+	private static int $maxInlineLimit = 500;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $maxInlineLimit
 	 */
-	public static function setMaxInlineLimit( $maxInlineLimit ) {
+	public static function setMaxInlineLimit( int $maxInlineLimit ): void {
 		self::$maxInlineLimit = $maxInlineLimit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $visibleLinks
-	 *
-	 * @return string
 	 */
-	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ) {
+	public static function topLinks(
+		Title $title,
+		array $visibleLinks = [],
+		bool $isEditMode = true
+	): string {
 		if ( $visibleLinks === [] ) {
 			return '';
 		}
@@ -54,7 +48,7 @@ class NavigationLinksWidget {
 			[
 				'href' => '#options'
 			],
-			Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( 'smw-ask-options', Message::ESCAPED, Message::USER_LANGUAGE )
 		);
 
 		$lLinks['search'] = Html::rawElement(
@@ -62,7 +56,7 @@ class NavigationLinksWidget {
 			[
 				'href' => '#search'
 			],
-			Message::get( 'smw-ask-search', Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( 'smw-ask-search', Message::ESCAPED, Message::USER_LANGUAGE )
 		);
 
 		$lLinks['result'] = Html::rawElement(
@@ -70,7 +64,7 @@ class NavigationLinksWidget {
 			[
 				'href' => '#result'
 			],
-			Message::get( 'smw-ask-result', Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( 'smw-ask-result', Message::ESCAPED, Message::USER_LANGUAGE )
 		);
 
 		$rLinks['empty'] = Html::rawElement(
@@ -78,7 +72,7 @@ class NavigationLinksWidget {
 			[
 				'href' => $title->getLocalURL()
 			],
-			Message::get( 'smw-ask-empty', Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( 'smw-ask-empty', Message::ESCAPED, Message::USER_LANGUAGE )
 		);
 
 		$rLinks['help'] = HtmlModal::link(
@@ -153,7 +147,12 @@ class NavigationLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function navigationLinks( Title $title, UrlArgs $urlArgs, $count, $hasFurtherResults = false ) {
+	public static function navigationLinks(
+		Title $title,
+		UrlArgs $urlArgs,
+		int $count,
+		bool $hasFurtherResults = false
+	) {
 		if ( $count == 0 ) {
 			return '';
 		}
@@ -170,7 +169,7 @@ class NavigationLinksWidget {
 		$userLanguage = Localizer::getInstance()->getUserLanguage();
 
 		$html =	'<b>' .
-				Message::get( 'smw_result_results', Message::TEXT, Message::USER_LANGUAGE ) . ' ' . $userLanguage->formatNum( $offset + 1 ) .
+				Message::get( 'smw_result_results', Message::ESCAPED, Message::USER_LANGUAGE ) . ' ' . $userLanguage->formatNum( $offset + 1 ) .
 			' &#150; ' .
 				$userLanguage->formatNum( $offset + $count ) .
 			'</b>&#160;';
@@ -186,13 +185,8 @@ class NavigationLinksWidget {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $navigation
-	 * @param Infolink|null $infoLink
-	 *
-	 * @return string
 	 */
-	public static function basicLinks( $navigation = '', ?Infolink $infoLink = null ) {
+	public static function basicLinks( string $navigation = '', ?Infolink $infoLink = null ): string {
 		if ( $navigation === '' ) {
 			return '';
 		}

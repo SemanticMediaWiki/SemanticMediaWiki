@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -18,28 +18,17 @@ class DependencyLinksValidator {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private bool $checkDependencies = false;
 
 	/**
-	 * @var bool
+	 * @var array
 	 */
-	private $checkDependencies = false;
-
-	/**
-	 * @var
-	 */
-	private $checkedDependencies = [];
+	private array $checkedDependencies = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**
@@ -47,7 +36,7 @@ class DependencyLinksValidator {
 	 *
 	 * @param bool $checkDependencies
 	 */
-	public function setCheckDependencies( $checkDependencies ) {
+	public function setCheckDependencies( $checkDependencies ): void {
 		$this->checkDependencies = (bool)$checkDependencies;
 	}
 
@@ -56,16 +45,16 @@ class DependencyLinksValidator {
 	 *
 	 * @return bool
 	 */
-	public function canCheckDependencies() {
+	public function canCheckDependencies(): bool {
 		return $this->checkDependencies;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getCheckedDependencies() {
+	public function getCheckedDependencies(): array {
 		return $this->checkedDependencies;
 	}
 
@@ -86,14 +75,14 @@ class DependencyLinksValidator {
 	 *
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function hasArchaicDependencies( DIWikiPage $subject ) {
+	public function hasArchaicDependencies( WikiPage $subject ): bool {
 		$this->checkedDependencies = [];
 
-		if ( $this->checkDependencies === false ) {
+		if ( !$this->checkDependencies ) {
 			return false;
 		}
 
@@ -101,7 +90,7 @@ class DependencyLinksValidator {
 		$propertyTableInfoFetcher = $this->store->getPropertyTableInfoFetcher();
 
 		$tableid = $propertyTableInfoFetcher->findTableIdForProperty(
-			new DIProperty( '_ASK' )
+			new Property( '_ASK' )
 		);
 
 		if ( !isset( $proptables[$tableid] ) ) {
@@ -116,25 +105,18 @@ class DependencyLinksValidator {
 		// INNER JOIN smw_object_ids AS p ON ((s_id=p.smw_id))
 		// INNER JOIN smw_object_ids AS v ON ((o_id=v.smw_id))
 		// WHERE p.smw_hash = 'xxx' AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')
-		$rows = $connection->select(
-			[ $proptables[$tableid]->getName(), "p" => SQLStore::ID_TABLE, "v" => SQLStore::ID_TABLE ],
-			[
-				'v.smw_id', 'v.smw_subobject', 'v.smw_touched'
-			],
-			[
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [ 'v.smw_id', 'v.smw_subobject', 'v.smw_touched' ] )
+			->from( $proptables[$tableid]->getName() )
+			->join( SQLStore::ID_TABLE, 'p', [ 's_id=p.smw_id' ] )
+			->join( SQLStore::ID_TABLE, 'v', [ 'o_id=v.smw_id' ] )
+			->where( [
 				'p.smw_hash' => $subject->getSha1(),
-				'p.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ),
-				'p.smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
-			],
-			__METHOD__,
-			[
-			// 'ORDER BY' => 'v.smw_touched'
-			],
-			[
-				"p" => [ 'INNER JOIN', [ 's_id=p.smw_id' ] ],
-				"v" => [ 'INNER JOIN', [ 'o_id=v.smw_id' ] ]
-			]
-		);
+				$connection->expr( 'p.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ),
+				$connection->expr( 'p.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ),
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$list = [];
 		$touched = 0;
@@ -164,21 +146,16 @@ class DependencyLinksValidator {
 		// INNER JOIN smw_query_links AS p ON ((p.o_id=smw_id))
 		// WHERE p.s_id = '18341' AND (smw_touched > '2019-01-08 17:45:03')
 		// LIMIT 1
-		$row = $connection->selectRow(
-			[ SQLStore::ID_TABLE, "p" => SQLStore::QUERY_LINKS_TABLE ],
-			[
-				'smw_id'
-			],
-			[
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->join( SQLStore::QUERY_LINKS_TABLE, 'p', [ 'p.o_id=smw_id' ] )
+			->where( [
 				'p.s_id' => $list,
 				'smw_touched > ' . $connection->addQuotes( $touched ),
-			],
-			__METHOD__,
-			[],
-			[
-				"p" => [ 'INNER JOIN', [ 'p.o_id=smw_id' ] ],
-			]
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		// Something matched? If yes, an outdated reference was detected and we
 		// use this as a decision parameter to declare a "archaic" dependency (or

@@ -43,25 +43,25 @@
 		"en": "Why do I see this page?"
 	},
 	"smw-setupcheck-temporarily-disable": {
-		"en": "To temporarily disable this error output and return to a working MediaWiki (without Semantic MediaWiki), remove the <code>enableSemantics</code> from your <code>LocalSettings.php</code>."
+		"en": "To temporarily disable this error output and return to a working MediaWiki (without Semantic MediaWiki), remove <code>wfLoadExtension( 'SemanticMediaWiki' )</code> from your <code>LocalSettings.php</code>."
 	},
 	"smw-setupcheck-requires-db-minimum-version": {
 		"en": "During the installation, the setup check found that the minimum requirement for the database environment defined by Semantic MediaWiki didn't match with the version available and is the reason why the installation of Semantic MediaWiki was aborted."
 	},
 	"smw-setupcheck-dependency-requires-semanticmediawiki":{
-		"en": "The reported extension requires Semantic MediaWiki to be enabled which is currently <b>not</b> the case thus adding <code>enableSemantics</code> to <code>LocalSettings.php</code> should resolve the dependency error."
+		"en": "The reported extension requires Semantic MediaWiki to be enabled which is currently <b>not</b> the case thus adding <code>wfLoadExtension( 'SemanticMediaWiki' )</code> to <code>LocalSettings.php</code> should resolve the dependency error."
 	},
 	"smw-setupcheck-dependency-multiple-requires-semanticmediawiki":{
-		"en": "The reported extensions require Semantic MediaWiki to be enabled which is currently <b>not</b> the case thus adding <code>enableSemantics</code> to <code>LocalSettings.php</code> should resolve the dependency error."
+		"en": "The reported extensions require Semantic MediaWiki to be enabled which is currently <b>not</b> the case thus adding <code>wfLoadExtension( 'SemanticMediaWiki' )</code> to <code>LocalSettings.php</code> should resolve the dependency error."
 	},
 	"smw-setupcheck-dependency-error-multiple": {
 		"en": "It was reported that multiple extensions have failed their dependencies including:"
 	},
 	"smw-setupcheck-enablesemantics-assistance": {
-		"en": "Information about <a href='https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics'>enableSemantics</a> is available on the corresponding help page, you may also ask the <a href='https://www.semantic-mediawiki.org/wiki/Help:Getting_support'>project support</a> for assistance."
+		"en": "Information about <a href='https://www.semantic-mediawiki.org/wiki/Help:Installation'>installation</a> is available on the corresponding help page, you may also ask the <a href='https://www.semantic-mediawiki.org/wiki/Help:Getting_support'>project support</a> for assistance."
 	},
 	"smw-setupcheck-remove-wfloadextension": {
-		"en": "Removing <code>wfLoadExtension( 'SemanticMediaWiki' )</code> from <code>LocalSettings.php</code> is sufficient to avoid any conflicts with <code>enableSemantics</code> and ensures that required variables and parameters are setup correctly."
+		"en": "<code>enableSemantics</code> is deprecated. Remove it from <code>LocalSettings.php</code> and use only <code>wfLoadExtension( 'SemanticMediaWiki' )</code>."
 	},
 	"smw-setupcheck-administrator-assistance":{
 		"en": "An administrator (or any person with administrator rights) has to run either MediaWiki's <a href='https://www.mediawiki.org/wiki/Manual:Update.php'>update.php</a> or Semantic MediaWiki's <a href='https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php'>setupStore.php</a> maintenance script."
@@ -94,10 +94,10 @@
 		"en": "Some program (or extension) tried to access function(s) of Semantic MediaWiki without being correctly enabled."
 	},
 	"smw-setupcheck-registry-requires-enablesemantics": {
-		"en": "To use Semantic MediaWiki or functions of it, it is necessary to add <code>enableSemantics</code> to your <code>LocalSettings.php</code> which will ensure required variables and parameters are setup before programs can continue to work and make use of it."
+		"en": "To use Semantic MediaWiki or functions of it, it is necessary to add <code>wfLoadExtension( 'SemanticMediaWiki' )</code> to your <code>LocalSettings.php</code>."
 	},
 	"smw-setupcheck-config-profile": {
-		"en": "Please check the spelling and location of available <a href='https://www.semantic-mediawiki.org/wiki/Config_preloading'>default profiles</a> used as part of the <code>enableSemantics</code> declaration in your <code>LocalSettings.php</code>."
+		"en": "Please check the spelling and location of available <a href='https://www.semantic-mediawiki.org/wiki/Config_preloading'>default profiles</a> in your <code>LocalSettings.php</code>."
 	},
 	"smw-setupcheck-in-maintenance-mode": {
 		"en": "The system is currently undergoing an <a href='https://www.semantic-mediawiki.org/wiki/Help:Upgrade'>upgrade</a> of the <a href='https://www.semantic-mediawiki.org/'>Semantic MediaWiki</a> extension together with its data repository and we would like to ask you for your patience and allow the maintenance to continue before the wiki can be made accessible again."

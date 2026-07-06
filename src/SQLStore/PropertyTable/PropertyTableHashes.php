@@ -18,24 +18,12 @@ use SMW\SQLStore\SQLStore;
 class PropertyTableHashes {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
@@ -44,9 +32,9 @@ class PropertyTableHashes {
 	 * @since 3.1
 	 *
 	 * @param int $id ID of the page as stored in SMW IDs table
-	 * @param string[] of hash values with table names as keys
+	 * @param string[]|null $hash of hash values with table names as keys
 	 */
-	public function setPropertyTableHashes( $id, $hash = null ) {
+	public function setPropertyTableHashes( $id, $hash = null ): void {
 		$update = [];
 
 		if ( $hash === null ) {
@@ -57,14 +45,12 @@ class PropertyTableHashes {
 			throw new RuntimeException( "Expected a null or an array as value!" );
 		}
 
-		$this->connection->update(
-			SQLStore::ID_TABLE,
-			$update,
-			[
-				'smw_id' => $id
-			],
-			__METHOD__
-		);
+		$this->connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( $update )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
 /*
 		$smw_proptable = $hash === null ? null : serialize( $hash );
@@ -85,7 +71,7 @@ class PropertyTableHashes {
 		$this->setPropertyTableHashesCache( $id, $hash );
 
 		if ( $hash === null ) {
-			$this->idCacheManager->deleteCacheById( $id );
+			$this->idCacheManager->deleteCacheById( (string)$id );
 		}
 	}
 
@@ -98,30 +84,26 @@ class PropertyTableHashes {
 	 *
 	 * @param int $id ID of the page as stored in the SMW IDs table
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function getPropertyTableHashesById( $id ) {
+	public function getPropertyTableHashesById( $id ): mixed {
 		if ( $id == 0 ) {
 			return [];
 		}
 
-		$hash = null;
 		$cache = $this->idCacheManager->get( 'propertytable.hash' );
 
-		if ( ( $hash = $cache->fetch( $id ) ) !== false ) {
+		$hash = $cache->fetch( (string)$id );
+		if ( $hash !== false ) {
 			return $hash;
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_TABLE,
-			[
-				'smw_proptable_hash'
-			],
-			[
-				'smw_id' => $id
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_proptable_hash' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$hash = $row->smw_proptable_hash;
@@ -131,8 +113,9 @@ class PropertyTableHashes {
 			$hash = $this->connection->unescape_bytea( $hash );
 		}
 
-		$hash = $hash === null || $hash === false ? [] : unserialize( $hash );
-		$cache->save( $id, $hash );
+		$hash = $hash === null || $hash === false || strlen( $hash ) <= 1 ? [] : unserialize( $hash );
+
+		$cache->save( (string)$id, $hash );
 
 		return $hash;
 	}
@@ -140,19 +123,21 @@ class PropertyTableHashes {
 	/**
 	 * @since 3.1
 	 *
-	 * @param $id integer
+	 * @param int $id
 	 */
-	public function clearPropertyTableHashCacheById( $id ) {
+	public function clearPropertyTableHashCacheById( $id ): void {
 		$this->setPropertyTableHashesCache( $id, null );
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param $id integer
-	 * @param string|null $hash
+	 * @param int $id
+	 * @param string|array|null $hash
+	 *
+	 * @return void
 	 */
-	public function setPropertyTableHashesCache( $id, $hash = null ) {
+	public function setPropertyTableHashesCache( $id, $hash = null ): void {
 		// never cache 0
 		if ( $id == 0 ) {
 			return;
@@ -164,7 +149,7 @@ class PropertyTableHashes {
 			$hash = unserialize( $hash );
 		}
 
-		$this->idCacheManager->get( 'propertytable.hash' )->save( $id, $hash );
+		$this->idCacheManager->get( 'propertytable.hash' )->save( (string)$id, $hash );
 	}
 
 }

@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore\Exception;
 
+use Exception;
+
 /**
  * Class to escalate SPARQL query errors to the interface. We only do this for
  * malformed queries, permission issues, etc. Connection problems are usually
@@ -14,7 +16,7 @@ namespace SMW\SPARQLStore\Exception;
  *
  * @author Markus Krötzsch
  */
-class BadHttpEndpointResponseException extends \Exception {
+class BadHttpEndpointResponseException extends Exception {
 
 	/// Error code: malformed query
 	const ERROR_MALFORMED = 1;
@@ -49,7 +51,7 @@ class BadHttpEndpointResponseException extends \Exception {
 	 * @param $endpoint string URL of the endpoint
 	 * @param $httpCode mixed integer HTTP error code or some string to print there
 	 */
-	function __construct( $errorCode, $queryText, $endpoint, $httpCode = '<not given>' ) {
+	public function __construct( $errorCode, $queryText, $endpoint, $httpCode = '<not given>' ) {
 		switch ( $errorCode ) {
 			case self::ERROR_MALFORMED:
 				$errorName = 'Malformed query';

@@ -25,9 +25,9 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
-	public static function encode( $data, $key = null, $algo = 'md5' ) {
+	public static function encode( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -35,11 +35,7 @@ class HmacSerializer {
 		$data = json_encode( $data );
 		$hash = hash_hmac( $algo, $data, $key );
 
-		if ( $hash !== false ) {
-			return json_encode( [ 'hmac' => $hash, 'data' => $data ] );
-		}
-
-		return false;
+		return json_encode( [ 'hmac' => $hash, 'data' => $data ] );
 	}
 
 	/**
@@ -49,9 +45,9 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return mixed
 	 */
-	public static function decode( $data, $key = null, $algo = 'md5' ) {
+	public static function decode( $data, $key = null, $algo = 'md5' ): mixed {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -78,9 +74,9 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return string
 	 */
-	public static function serialize( $data, $key = null, $algo = 'md5' ) {
+	public static function serialize( $data, $key = null, $algo = 'md5' ): string {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -88,11 +84,7 @@ class HmacSerializer {
 		$data = serialize( $data );
 		$hash = hash_hmac( $algo, $data, $key );
 
-		if ( $hash !== false ) {
-			return "$hash|$data";
-		}
-
-		return false;
+		return "$hash|$data";
 	}
 
 	/**
@@ -104,7 +96,7 @@ class HmacSerializer {
 	 *
 	 * @return mixed|bool
 	 */
-	public static function unserialize( $data, $key = null, $algo = 'md5' ) {
+	public static function unserialize( $data, $key = null, $algo = 'md5' ): mixed {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -134,14 +126,14 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
-	public static function compress( $data, $key = null, $algo = 'md5' ) {
+	public static function compress( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
 
-		$key = $key . 'compress';
+		$key .= 'compress';
 
 		return gzcompress( self::serialize( $data, $key, $algo ), 9 );
 	}
@@ -160,7 +152,7 @@ class HmacSerializer {
 			$key = $GLOBALS['wgSecretKey'];
 		}
 
-		$key = $key . 'compress';
+		$key .= 'compress';
 
 		return self::unserialize( @gzuncompress( $data ), $key, $algo );
 	}

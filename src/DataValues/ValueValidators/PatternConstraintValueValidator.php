@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues\ValueValidators;
 
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
+use SMW\Property\SpecificationLookup;
 
 /**
  * To support regular expressions in connection with the `Allows pattern`
@@ -17,23 +17,15 @@ use SMWDataValue as DataValue;
  */
 class PatternConstraintValueValidator implements ConstraintValueValidator {
 
-	/**
-	 * @var AllowsPatternContentParser
-	 */
-	private $allowsPatternValueParser;
-
-	/**
-	 * @var bool
-	 */
-	private $hasConstraintViolation = false;
+	private bool $hasConstraintViolation = false;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param AllowsPatternValueParser $allowsPatternValueParser
 	 */
-	public function __construct( AllowsPatternValueParser $allowsPatternValueParser ) {
-		$this->allowsPatternValueParser = $allowsPatternValueParser;
+	public function __construct(
+		private readonly AllowsPatternValueParser $allowsPatternValueParser,
+		private readonly SpecificationLookup $propertySpecificationLookup
+	) {
 	}
 
 	/**
@@ -41,7 +33,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasConstraintViolation() {
+	public function hasConstraintViolation(): bool {
 		return $this->hasConstraintViolation;
 	}
 
@@ -56,11 +48,13 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 		if (
 			!$dataValue instanceof DataValue ||
 			$dataValue->getProperty() === null ||
-			!$dataValue->isEnabledFeature( SMW_DV_PVAP ) ) {
+			!$dataValue->hasFeature( SMW_DV_PVAP ) ) {
 			return $this->hasConstraintViolation;
 		}
 
-		if ( ( $reference = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getAllowedPatternBy( $dataValue->getProperty() ) ) === '' ) {
+		$reference = $this->propertySpecificationLookup
+			->getAllowedPatternBy( $dataValue->getProperty() );
+		if ( $reference === '' ) {
 			return $this->hasConstraintViolation;
 		}
 
@@ -83,7 +77,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 		);
 	}
 
-	private function doPregMatch( $pattern, $dataValue, $reference ) {
+	private function doPregMatch( string|array $pattern, DataValue $dataValue, $reference ): void {
 		// Convert escaping as in /\d{4}
 		$pattern = str_replace( "/\\", "\\", (string)$pattern );
 
@@ -93,7 +87,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 		}
 
 		if ( substr( $pattern, -1 ) !== '/' ) {
-			$pattern = $pattern . '/';
+			$pattern .= '/';
 		}
 
 		// @to suppress any errors caused by an invalid regex, the user should

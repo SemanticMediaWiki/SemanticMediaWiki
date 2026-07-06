@@ -2,6 +2,11 @@
 
 namespace SMW\Services;
 
+use ImportSource;
+use ImportStreamSource;
+use ImportStringSource;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
 use SMW\Importer\ContentCreators\DispatchingContentCreator;
 use SMW\Importer\ContentCreators\TextContentCreator;
 use SMW\Importer\ContentCreators\XmlContentCreator;
@@ -12,14 +17,18 @@ use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Utils\File;
 use SMW\Utils\FileFetcher;
+use WikiImporter;
 
 /**
  * @codeCoverageIgnore
  *
- * Services defined in this file SHOULD only be accessed either via the
- * ApplicationFactory or a different factory instance.
+ * Services defined in this file SHOULD only be accessed via ImporterServiceFactory.
  *
- * @license GNU GPL v2
+ * Each callback receives the Importer domain `ServicesContainer` so it can resolve
+ * sibling importer services. Global SMW services are resolved through
+ * `ServicesFactory::getInstance()`.
+ *
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -27,55 +36,62 @@ use SMW\Utils\FileFetcher;
 return [
 
 	/**
-	 * ImporterServiceFactory
-	 *
-	 * @return callable
+	 * @return ImportStringSource
 	 */
-	'ImporterServiceFactory' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
-		return new ImporterServiceFactory( $containerBuilder );
+	'ImportStringSource' => static function ( ServicesContainer $container, string $source ): ImportStringSource {
+		return new ImportStringSource( $source );
 	},
 
 	/**
-	 * XmlContentCreator
+	 * @param resource $source
 	 *
-	 * @return callable
+	 * @return ImportStreamSource
 	 */
-	'XmlContentCreator' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', '\SMW\Importer\ContentCreators\XmlContentCreator' );
-		return new XmlContentCreator( $containerBuilder->create( 'ImporterServiceFactory' ) );
+	'ImportStreamSource' => static function ( ServicesContainer $container, $source ): ImportStreamSource {
+		return new ImportStreamSource( $source );
 	},
 
 	/**
-	 * TextContentCreator
-	 *
-	 * @return callable
+	 * @return WikiImporter
 	 */
-	'TextContentCreator' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', '\SMW\Importer\ContentCreators\TextContentCreator' );
-
-		$connectionManager = $containerBuilder->singleton( 'ConnectionManager' );
-
-		$textContentCreator = new TextContentCreator(
-			$containerBuilder->create( 'TitleFactory' ),
-			$connectionManager->getConnection( 'mw.db' )
+	'WikiImporter' => static function ( ServicesContainer $container, ImportSource $importSource ): WikiImporter {
+		return MediaWikiServices::getInstance()->getWikiImporterFactory()->getWikiImporter(
+			$importSource,
+			RequestContext::getMain()->getAuthority()
 		);
-
-		return $textContentCreator;
 	},
 
 	/**
-	 * Importer
-	 *
-	 * @return callable
+	 * @return XmlContentCreator
 	 */
-	'Importer' => static function ( $containerBuilder, ContentIterator $contentIterator ) {
-		$containerBuilder->registerExpectedReturnType( 'Importer', '\SMW\Importer\Importer' );
+	'XmlContentCreator' => static function ( ServicesContainer $container ): XmlContentCreator {
+		return new XmlContentCreator( new ImporterServiceFactory( $container ) );
+	},
 
+	/**
+	 * @return TextContentCreator
+	 */
+	'TextContentCreator' => static function ( ServicesContainer $container ): TextContentCreator {
+		$servicesFactory = ServicesFactory::getInstance();
+		$connectionManager = $servicesFactory->getConnectionManager();
+
+		$mwServices = MediaWikiServices::getInstance();
+
+		return new TextContentCreator(
+			$mwServices->getTitleFactory(),
+			$connectionManager->getConnection( 'mw.db' ),
+			$mwServices->getWikiPageFactory()
+		);
+	},
+
+	/**
+	 * @return Importer
+	 */
+	'Importer' => static function ( ServicesContainer $container, ContentIterator $contentIterator ): Importer {
 		$dispatchingContentCreator = new DispatchingContentCreator(
 			[
-				$containerBuilder->create( 'XmlContentCreator' ),
-				$containerBuilder->create( 'TextContentCreator' )
+				$container->create( 'XmlContentCreator', $container ),
+				$container->create( 'TextContentCreator', $container )
 			]
 		);
 
@@ -85,20 +101,16 @@ return [
 		);
 
 		$importer->setReqVersion(
-			$containerBuilder->singleton( 'Settings' )->get( 'smwgImportReqVersion' )
+			ServicesFactory::getInstance()->getSettings()->get( 'smwgImportReqVersion' )
 		);
 
 		return $importer;
 	},
 
 	/**
-	 * JsonContentIterator
-	 *
-	 * @return callable
+	 * @return JsonContentIterator
 	 */
-	'JsonContentIterator' => static function ( $containerBuilder, $importFileDirs ) {
-		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', '\SMW\Importer\JsonContentIterator' );
-
+	'JsonContentIterator' => static function ( ServicesContainer $container, $importFileDirs ): JsonContentIterator {
 		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(
 			new ContentModeller(),
 			new FileFetcher(),

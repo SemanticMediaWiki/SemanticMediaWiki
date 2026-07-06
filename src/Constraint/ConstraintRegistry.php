@@ -2,6 +2,7 @@
 
 namespace SMW\Constraint;
 
+use MediaWiki\HookContainer\HookContainer;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
 use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\Constraint\Constraints\NamespaceConstraint;
@@ -11,7 +12,6 @@ use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\ConstraintFactory;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,35 +21,25 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  */
 class ConstraintRegistry {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
 
-	/**
-	 * @var ConstraintFactory
-	 */
-	private $constraintFactory;
+	private array $constraints = [];
 
-	/**
-	 * @var
-	 */
-	private $constraints = [];
+	private array $instances = [];
 
-	/**
-	 * @var
-	 */
-	private $instances = [];
-
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ConstraintFactory $constraintFactory
 	 */
-	public function __construct( ConstraintFactory $constraintFactory ) {
-		$this->constraintFactory = $constraintFactory;
+	public function __construct( private ConstraintFactory $constraintFactory ) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -58,7 +48,7 @@ class ConstraintRegistry {
 	 * @param string $key
 	 * @param Constraint|string $constraint
 	 */
-	public function registerConstraint( $key, $constraint ) {
+	public function registerConstraint( $key, $constraint ): void {
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();
 		}
@@ -68,10 +58,8 @@ class ConstraintRegistry {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return
 	 */
-	public function getConstraintKeys() {
+	public function getConstraintKeys(): array {
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();
 		}
@@ -98,7 +86,7 @@ class ConstraintRegistry {
 		return $this->loadInstance( $this->constraints['null'] );
 	}
 
-	private function initConstraints() {
+	private function initConstraints(): void {
 		$this->constraints = [
 			'null' => NullConstraint::class,
 			'allowed_namespaces' => NamespaceConstraint::class,
@@ -110,7 +98,7 @@ class ConstraintRegistry {
 			'shape_constraint' => ShapeConstraint::class
 		];
 
-		$this->hookDispatcher->onInitConstraints( $this );
+		$this->hookContainer->run( 'SMW::Constraint::initConstraints', [ $this ] );
 	}
 
 	private function loadInstance( $class ) {

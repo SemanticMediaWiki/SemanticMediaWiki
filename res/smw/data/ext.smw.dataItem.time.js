@@ -99,15 +99,11 @@
 	};
 
 	/**
-	 * Map wgMonthNames and create an indexed array
-	 *
+	 * Zero-indexed array of localised month names in the user interface
+	 * language, provided by the mediawiki.language.months module (declared
+	 * as a dependency of the ext.smw.api module).
 	 */
-	var monthNames = [];
-	$.map ( mw.config.get( 'wgMonthNames' ), function( index ) {
-		if( index !== '' ) {
-			monthNames.push( index );
-		}
-	} );
+	var monthNames = mw.language.months.names;
 
 	/**
 	 * Constructor
@@ -168,7 +164,7 @@
 		/**
 		 * Returns an ISO string
 		 *
-		 * @see SMWTimeValue::getISO8601Date()
+		 * @see TimeValue::getISO8601Date()
 		 *
 		 * @since 1.9
 		 *

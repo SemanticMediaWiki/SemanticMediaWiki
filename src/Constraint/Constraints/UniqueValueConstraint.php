@@ -5,10 +5,10 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\DataValues\DataValue;
 use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataValue as DataValue;
 
 /**
  * The `unique_value_constraint` implicitly requires a `GLOBAL_SCOPE` (instead
@@ -26,38 +26,21 @@ class UniqueValueConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'unique_value_constraint';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * Tracks annotations for the current context to verify that a subject only
 	 * contains unique assignments.
-	 *
-	 * @var array
 	 */
-	private $annotations = [];
+	private array $annotations = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup ) {
-		$this->store = $store;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**
@@ -65,7 +48,7 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 
@@ -74,7 +57,7 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -83,7 +66,7 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraint, $dataValue ) {
+	public function checkConstraint( array $constraint, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -97,7 +80,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 	}
 
-	private function check( $dataValue ) {
+	private function check( DataValue $dataValue ): void {
 		$property = $dataValue->getProperty();
 		$contextPage = $dataValue->getContextPage();
 
@@ -116,6 +99,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 		);
 
+		$res = [];
 		$requestOptions->setLimit( 2 );
 		$count = 0;
 
@@ -153,8 +137,12 @@ class UniqueValueConstraint implements Constraint {
 			$val = $dataValue->isValid() ? $dataValue->getWikiValue() : '...';
 			$text = '';
 
-			if ( $dataItem !== null && ( $title = $dataItem->getTitle() ) !== null ) {
-				$text = $title->getPrefixedText();
+			if ( $dataItem !== null ) {
+				$title = $dataItem->getTitle();
+
+				if ( $title !== null ) {
+					$text = $title->getPrefixedText();
+				}
 			}
 
 			$error = [
@@ -168,7 +156,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 	}
 
-	private function isKnown( $dataValue ) {
+	private function isKnown( DataValue $dataValue ): bool {
 		$contextPage = $dataValue->getContextPage();
 		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
@@ -186,14 +174,14 @@ class UniqueValueConstraint implements Constraint {
 		return false;
 	}
 
-	private function hasAnnotation( $dataValue ) {
+	private function hasAnnotation( DataValue $dataValue ): bool {
 		$key = $dataValue->getProperty()->getKey();
 		$hash = $dataValue->getContextPage()->getHash();
 
 		return isset( $this->annotations[$hash][$key] );
 	}
 
-	private function reportError( $dataValue, $error ) {
+	private function reportError( DataValue $dataValue, array $error ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

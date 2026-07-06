@@ -21,21 +21,19 @@ class ConnectionManager {
 	/**
 	 * By design this variable is static to ensure that ConnectionProvider
 	 * instances are only initialized once per request.
-	 *
-	 * @var array
 	 */
-	private static $connectionProviders = [];
+	private static array $connectionProviders = [];
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param string|null $id
+	 * @param int|string|null $id
 	 *
 	 * @return mixed
 	 * @throws RuntimeException
 	 */
 	public function getConnection( $id = null ) {
-		$id = strtolower( $id );
+		$id = strtolower( (string)$id );
 
 		if ( self::$isConnectable === null ) {
 			self::$isConnectable = $this->isConnectable();
@@ -51,7 +49,7 @@ class ConnectionManager {
 	/**
 	 * @since 2.1
 	 */
-	public function releaseConnections() {
+	public function releaseConnections(): void {
 		foreach ( self::$connectionProviders as $connectionProvider ) {
 			$connectionProvider->releaseConnection();
 		}
@@ -60,24 +58,41 @@ class ConnectionManager {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $id
+	 * @param int|string $id
 	 * @param ConnectionProvider $connectionProvider
 	 */
-	public function registerConnectionProvider( $id, ConnectionProvider $connectionProvider ) {
-		self::$connectionProviders[strtolower( $id )] = $connectionProvider;
+	public function registerConnectionProvider( $id, ConnectionProvider $connectionProvider ): void {
+		self::$connectionProviders[strtolower( (string)$id )] = $connectionProvider;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $id
+	 * @param int|string $id
 	 * @param callable $callback
 	 */
-	public function registerCallbackConnection( $id, callable $callback ) {
-		self::$connectionProviders[strtolower( $id )] = new CallbackConnectionProvider( $callback );
+	public function registerCallbackConnection( $id, callable $callback ): void {
+		self::$connectionProviders[strtolower( (string)$id )] = new class( $callback ) implements ConnectionProvider {
+			private $connection = null;
+
+			public function __construct( private $callback ) {
+			}
+
+			public function getConnection() {
+				if ( $this->connection === null ) {
+					$this->connection = ( $this->callback )();
+				}
+
+				return $this->connection;
+			}
+
+			public function releaseConnection(): void {
+				$this->connection = null;
+			}
+		};
 	}
 
-	private function isConnectable() {
+	private function isConnectable(): bool {
 		if ( defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return true;
 		}
@@ -97,7 +112,7 @@ class ConnectionManager {
 			( new RuntimeException() )->getTraceAsString()
 		);
 
-		return $setupCheck->showErrorAndAbort( $setupCheck->isCli() );
+		$setupCheck->showErrorAndAbort( $setupCheck->isCli() );
 	}
 
 }

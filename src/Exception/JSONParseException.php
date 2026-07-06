@@ -2,6 +2,7 @@
 
 namespace SMW\Exception;
 
+use Exception;
 use RuntimeException;
 use Seld\JsonLint\JsonParser;
 
@@ -39,19 +40,19 @@ class JSONParseException extends RuntimeException {
 	 * and allow users to make an informed decision about the state of the
 	 * JSON.
 	 */
-	protected function getParseError( $json ) {
+	protected function getParseError( $json ): string {
 		$parser = new JsonParser();
 
 		try {
 			$parser->parse( $json );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			return $e->getMessage();
 		}
 
 		return '';
 	}
 
-	private function buildMessage( $json ) {
+	private function buildMessage( $json ): string {
 		return $this->getParseError( $json );
 	}
 

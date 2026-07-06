@@ -2,7 +2,7 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\MessageLocalizerTrait;
@@ -23,34 +23,21 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var
-	 */
-	private $indicators = [];
+	private array $indicators = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
-	/**
-	 * @var string
-	 */
-	private $severityType = TypableSeverityIndicatorProvider::SEVERITY_WARNING;
+	private string $severityType = TypableSeverityIndicatorProvider::SEVERITY_WARNING;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
@@ -58,10 +45,6 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $severityType
-	 *
-	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -69,8 +52,6 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return 'smw-entity-examiner-deferred-void';
@@ -78,50 +59,39 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param DIWikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->isDeferredMode ) {
-			return $this->runCheck( $subject, $options );
+			$this->runCheck( $options );
+		} else {
+			$this->indicators = [ 'id' => $this->getName() ];
 		}
-
-		$this->indicators = [ 'id' => $this->getName() ];
 
 		return $this->indicators !== [];
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 
-	private function runCheck( $subject, $options ) {
+	private function runCheck( array $options ): void {
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		// Doing some checks here ...

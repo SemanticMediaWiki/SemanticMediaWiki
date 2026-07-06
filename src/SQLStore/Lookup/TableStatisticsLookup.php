@@ -2,9 +2,10 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use SMW\DataItems\DataItem;
+use SMW\MediaWiki\ExtendedDateTime;
+use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,17 +16,9 @@ use SMWQuery as Query;
 class TableStatisticsLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -33,7 +26,7 @@ class TableStatisticsLookup {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
+	public function getStats(): array {
 		return $this->loadFromDB( $this->store->getConnection( 'mw.db' ) );
 	}
 
@@ -46,7 +39,10 @@ class TableStatisticsLookup {
 		return $this->{$key}( $this->store->getConnection( 'mw.db' ) );
 	}
 
-	private function loadFromDB( $connection ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function loadFromDB( $connection ): array {
 		$start_time = -microtime( true );
 		$duplicates = $this->store->getObjectIds()->findDuplicates();
 
@@ -126,7 +122,7 @@ class TableStatisticsLookup {
 			);
 		}
 
-		$snapshot_date = new \DateTime( 'now' );
+		$snapshot_date = new ExtendedDateTime( 'now' );
 
 		$stats = [
 			SQLStore::ID_TABLE => [
@@ -154,7 +150,7 @@ class TableStatisticsLookup {
 					'unassigned_count' => $unassigned_query_links_count,
 				],
 			],
-			$blobTable => [
+			( $blobTable ?? '' ) => [
 				'total_row_count' => $rows_blob_table_total_count,
 				'unique_terms_occurrence_in_percent' => $unique_hash_field_terms_in_percent,
 				'rows' => [
@@ -174,70 +170,68 @@ class TableStatisticsLookup {
 		return $stats;
 	}
 
-	private function last_id( $connection ) {
-		return (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+	private function last_id( $connection ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function rows_total_count( $connection ) {
-		return (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'Count(*)',
-			'',
-			__METHOD__
-		);
+	private function rows_total_count( $connection ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(*)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function rows_delete_count( $connection ) {
-		return (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'Count(*)',
-			[
+	private function rows_delete_count( $connection ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_iw' => SMW_SQL3_SMWDELETEIW
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function rows_redirect_count( $connection ) {
-		return (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'Count(*)',
-			[
+	private function rows_redirect_count( $connection ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_iw' => SMW_SQL3_SMWREDIIW
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function rows_rev_count( $connection ) {
-		return (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'Count(*)',
-			[
+	private function rows_rev_count( $connection ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_rev IS NOT NULL'
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function rows_group_by_namespace( $connection ) {
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[
+	/**
+	 * @return int[]
+	 */
+	private function rows_group_by_namespace( $connection ): array {
+		$res = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_namespace',
 				'Count(*) as count'
-			],
-			[],
-			__METHOD__,
-			[
-				'GROUP BY' => 'smw_namespace'
-			]
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->groupBy( 'smw_namespace' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$rows_group_by_namespace = [];
 
@@ -248,117 +242,100 @@ class TableStatisticsLookup {
 		return $rows_group_by_namespace;
 	}
 
-	private function rows_query_links_total_count( $connection ) {
-		return (int)$connection->selectField(
-			SQLStore::QUERY_LINKS_TABLE,
-			'Count(*)',
-			'',
-			__METHOD__
-		);
+	private function rows_query_links_total_count( $connection ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(*)' )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function unlinked_query_proptable_hash_count( $connection ) {
-		return (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'Count(*)',
-			[
+	private function unlinked_query_proptable_hash_count( $connection ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_subobject LIKE ' . $connection->addQuotes( Query::ID_PREFIX . '%' ),
 				'smw_proptable_hash IS NULL'
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function linked_query_proptable_hash_count( $connection ) {
-		return (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'Count(*)',
-			[
+	private function linked_query_proptable_hash_count( $connection ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_subobject LIKE ' . $connection->addQuotes( Query::ID_PREFIX . '%' ),
 				'smw_proptable_hash IS NOT NULL'
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function active_query_links_count( $connection ) {
-		$row = $connection->selectRow(
-			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
-			'COUNT(*) as count',
-			[
+	private function active_query_links_count( $connection ): int {
+		$row = $connection->newSelectQueryBuilder()
+			->select( 'COUNT(*) as count' )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->join( SQLStore::ID_TABLE, null, 's_id=smw_id' )
+			->where( [
 				'smw_subobject LIKE ' . $connection->addQuotes( Query::ID_PREFIX . '%' ),
-			],
-			__METHOD__,
-			[],
-			[
-				SQLStore::QUERY_LINKS_TABLE => [
-					'INNER JOIN', "s_id=smw_id"
-				]
-			]
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return (int)$row->count;
 	}
 
-	private function invalid_query_links_count( $connection ) {
-		$row = $connection->selectRow(
-			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
-			'COUNT(*) as count',
-			[
+	private function invalid_query_links_count( $connection ): int {
+		$row = $connection->newSelectQueryBuilder()
+			->select( 'COUNT(*) as count' )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->join( SQLStore::ID_TABLE, null, 's_id=smw_id' )
+			->where( [
 				"smw_subobject=''"
-			],
-			__METHOD__,
-			[],
-			[
-				SQLStore::QUERY_LINKS_TABLE => [
-					'INNER JOIN', "s_id=smw_id"
-				]
-			]
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return (int)$row->count;
 	}
 
-	private function unassigned_query_links_count( $connection ) {
-		$row = $connection->selectRow(
-			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
-			'COUNT(*) as count',
-			[
+	private function unassigned_query_links_count( $connection ): int {
+		$row = $connection->newSelectQueryBuilder()
+			->select( 'COUNT(*) as count' )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->leftJoin( SQLStore::ID_TABLE, null, 'smw_id=s_id' )
+			->where( [
 				"smw_id IS NULL"
-			],
-			__METHOD__,
-			[],
-			[
-				SQLStore::ID_TABLE => [
-					'LEFT JOIN', "smw_id=s_id"
-				]
-			]
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return (int)$row->count;
 	}
 
-	private function rows_blob_table_total_count( $connection, $blobTable ) {
-		return (int)$connection->selectField(
-			$blobTable,
-			'Count(o_hash)',
-			[],
-			__METHOD__
-		);
+	private function rows_blob_table_total_count( $connection, $blobTable ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(o_hash)' )
+			->from( $blobTable )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function blob_field_null_row_count( $connection, $blobTable ) {
-		return (int)$connection->selectField(
-			$blobTable,
-			'Count(o_hash)',
-			[
+	private function blob_field_null_row_count( $connection, $blobTable ): int {
+		return (int)$connection->newSelectQueryBuilder()
+			->select( 'Count(o_hash)' )
+			->from( $blobTable )
+			->where( [
 				'o_blob' => null
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function hash_field_count( $connection, $blobTable ) {
+	private function hash_field_count( $connection, $blobTable ): array {
 		$hash_field_multi_occurrence_total_count = 0;
 		$hash_field_single_occurrence_total_count = 0;
 
@@ -373,25 +350,18 @@ class TableStatisticsLookup {
 		 *    SELECT COUNT(o_hash) AS count FROM `smw_di_blob` GROUP BY o_hash HAVING COUNT(*) > 1
 		 *  ) AS t1
 		 */
-		$sub_query = $connection->newQuery();
-		$sub_query->type( 'SELECT' );
-		$sub_query->table( $blobTable );
-		$sub_query->field( 'COUNT(o_hash)', 'count' );
-		$sub_query->options(
-			[
-				'GROUP BY' => 'o_hash',
-				'HAVING' => 'COUNT(*) > 1'
-			]
-		);
+		$outer = $connection->newSelectQueryBuilder();
+		$sub = $outer->newSubquery()
+			->select( [ 'count' => 'COUNT(o_hash)' ] )
+			->from( $blobTable )
+			->groupBy( 'o_hash' )
+			->having( 'COUNT(*) > 1' );
 
-		$query = $connection->newQuery();
-		$query->type( 'SELECT' );
-		$query->table( $sub_query->getSQL(), 't1' );
-		$query->field( 'COUNT(count) as count' );
-
-		foreach ( $query->execute( __METHOD__ ) as $row ) {
-			$hash_field_multi_occurrence_total_count = (int)$row->count;
-		}
+		$hash_field_multi_occurrence_total_count = (int)$outer
+			->select( [ 'count' => 'COUNT(count)' ] )
+			->from( $sub, 't1' )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		/**
 		 * Count the rows of those that have been grouped with a single
@@ -402,25 +372,18 @@ class TableStatisticsLookup {
 		 *    SELECT COUNT(o_hash) AS count FROM `smw_di_blob` GROUP BY o_hash HAVING COUNT(*) = 1
 		 *  ) AS t1
 		 */
-		$sub_query = $connection->newQuery();
-		$sub_query->type( 'SELECT' );
-		$sub_query->table( $blobTable );
-		$sub_query->field( 'COUNT(o_hash)', 'count' );
-		$sub_query->options(
-			[
-				'GROUP BY' => 'o_hash',
-				'HAVING' => 'COUNT(*) = 1'
-			]
-		);
+		$outer = $connection->newSelectQueryBuilder();
+		$sub = $outer->newSubquery()
+			->select( [ 'count' => 'COUNT(o_hash)' ] )
+			->from( $blobTable )
+			->groupBy( 'o_hash' )
+			->having( 'COUNT(*) = 1' );
 
-		$query = $connection->newQuery();
-		$query->type( 'SELECT' );
-		$query->table( $sub_query->getSQL(), 't1' );
-		$query->field( 'COUNT(count) as count' );
-
-		foreach ( $query->execute( __METHOD__ ) as $row ) {
-			$hash_field_single_occurrence_total_count = (int)$row->count;
-		}
+		$hash_field_single_occurrence_total_count = (int)$outer
+			->select( [ 'count' => 'COUNT(count)' ] )
+			->from( $sub, 't1' )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		return [
 			$hash_field_multi_occurrence_total_count,

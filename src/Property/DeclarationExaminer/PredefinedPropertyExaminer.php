@@ -2,11 +2,11 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use ExtensionRegistry;
+use MediaWiki\Registration\ExtensionRegistry;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;
-use SMW\DIProperty;
 use SMW\Localizer\Message;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\PropertyRegistry;
@@ -33,7 +33,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ): void {
 		if ( $property->isUserDefined() ) {
 			return;
 		}
@@ -43,7 +43,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		$this->checkGeoProperty( $property );
 	}
 
-	private function checkMessages( DIProperty $property ) {
+	private function checkMessages( Property $property ): void {
 		if ( Message::exists( 'smw-property-introductory-message-special' ) ) {
 			$this->messages[] = [ 'info', 'smw-property-introductory-message-special', $property->getLabel() ];
 		}
@@ -60,7 +60,8 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		// 'smw-property-predefined' + <internal property key> => '_asksi' ) but
 		// because translatewiki.net doesn't handle `_` well, convert `_` to `-`
 		// resulting in 'smw-property-predefined-asksi' as translatable key
-		if ( ( $messageKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) !== '' ) {
+		$messageKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key );
+		if ( $messageKey !== '' ) {
 			$messageKeyLong = $messageKey . '-long';
 		} else {
 			$messageKey = 'smw-property-predefined' . str_replace( '_', '-', strtolower( $key ) );
@@ -88,26 +89,35 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'plain', '_merge' => $messages ];
 	}
 
-	private function checkTypeDeclaration( DIProperty $property ) {
+	private function checkTypeDeclaration( Property $property ): void {
 		$semanticData = $this->getSemanticData();
 
-		if ( !$semanticData->hasProperty( new DIProperty( '_TYPE' ) ) ) {
+		if ( !$semanticData->hasProperty( new Property( '_TYPE' ) ) ) {
 			return;
 		}
 
 		$typeValues = $semanticData->getPropertyValues(
-			new DIProperty( '_TYPE' )
+			new Property( '_TYPE' )
 		);
 
 		if ( $typeValues !== [] ) {
 			[ $url, $type ] = explode( "#", end( $typeValues )->getSerialization() );
 		}
 
-		if ( DataTypeRegistry::getInstance()->isEqualByType( $type, $property->findPropertyTypeID() ) ) {
+		if ( !isset( $type ) ) {
 			return;
 		}
 
-		$prop = new DIProperty( $type );
+		if (
+			DataTypeRegistry::getInstance()->isEqualByType(
+				$type,
+				$property->findPropertyValueType()
+			)
+		) {
+			return;
+		}
+
+		$prop = new Property( $type );
 
 		// A violation occurs when a predefined property contains a `Has type`
 		// annotation that is incompatible with the default type.
@@ -119,7 +129,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkGeoProperty( DIProperty $property ) {
+	private function checkGeoProperty( Property $property ): void {
 		if ( $property->getKey() !== '_geo' || ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			return;
 		}

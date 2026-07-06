@@ -2,10 +2,12 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,25 +18,12 @@ use SMW\SQLStore\TableBuilder\FieldType;
 class IdChanger {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var JobFactory
-	 */
-	private $jobFactory;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
-	 * @param JobFactory|null $jobFactory
 	 */
-	public function __construct( SQLStore $store, ?JobFactory $jobFactory = null ) {
-		$this->store = $store;
-		$this->jobFactory = $jobFactory;
-
+	public function __construct(
+		private readonly SQLStore $store,
+		private ?JobFactory $jobFactory = null,
+	) {
 		if ( $this->jobFactory === null ) {
 			$this->jobFactory = new JobFactory();
 		}
@@ -53,19 +42,17 @@ class IdChanger {
 	 * @param int $curid
 	 * @param int $targetid
 	 *
-	 * @return \stdClass
+	 * @return stdClass|void
 	 */
 	public function move( $curid, $targetid = 0 ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			'*',
-			[
-				'smw_id' => $curid
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( '*' )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $curid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		// No id at current position, ignore
 		if ( $row === false ) {
@@ -85,9 +72,9 @@ class IdChanger {
 			$row->smw_subobject
 		];
 
-		$connection->insert(
-			SQLStore::ID_TABLE,
-			[
+		$connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::ID_TABLE )
+			->row( [
 				'smw_id' => $id,
 				'smw_title' => $row->smw_title,
 				'smw_namespace' => $row->smw_namespace,
@@ -96,27 +83,23 @@ class IdChanger {
 				'smw_sortkey' => $row->smw_sortkey,
 				'smw_sort' => $row->smw_sort,
 				'smw_hash' => IdCacheManager::computeSha1( $hash )
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$targetid = $targetid == 0 ? $connection->insertId() : $targetid;
 
-		$connection->delete(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[
-				'smw_id' => $curid
-			],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::ID_AUXILIARY_TABLE )
+			->where( [ 'smw_id' => $curid ] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$connection->delete(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id' => $curid
-			],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $curid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$row->smw_id = $targetid;
 
@@ -129,7 +112,11 @@ class IdChanger {
 
 		$connection->endAtomicTransaction( __METHOD__ );
 
-		if ( ( $title = \Title::newFromText( $row->smw_title, $row->smw_namespace ) ) !== null ) {
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
+			$row->smw_title,
+			$row->smw_namespace
+		);
+		if ( $title !== null ) {
 			$updateJob = $this->jobFactory->newUpdateJob( $title, [ 'origin' => __METHOD__ ] );
 			$updateJob->insert();
 		}
@@ -161,7 +148,7 @@ class IdChanger {
 	 * @param bool $s_data stating whether to update subject references
 	 * @param bool $po_data stating if to update property/object references
 	 */
-	public function change( $old_id, $new_id, $old_ns = -1, $new_ns = -1, $s_data = true, $po_data = true ) {
+	public function change( $old_id, $new_id, $old_ns = -1, $new_ns = -1, $s_data = true, $po_data = true ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Change all id entries in property tables:
@@ -169,40 +156,40 @@ class IdChanger {
 
 			if ( $s_data && $proptable->usesIdSubject() ) {
 
-				$row = $connection->selectRow(
-					$proptable->getName(),
-					[ 's_id' ],
-					[ 's_id' => $old_id ],
-					__METHOD__
-				);
+				$row = $connection->newSelectQueryBuilder()
+					->select( [ 's_id' ] )
+					->from( $proptable->getName() )
+					->where( [ 's_id' => $old_id ] )
+					->caller( __METHOD__ )
+					->fetchRow();
 
 				if ( $row === false ) {
 					continue;
 				}
 
-				$connection->update(
-					$proptable->getName(),
-					[ 's_id' => $new_id ],
-					[ 's_id' => $old_id ],
-					__METHOD__
-				);
+				$connection->newUpdateQueryBuilder()
+					->update( $proptable->getName() )
+					->set( [ 's_id' => $new_id ] )
+					->where( [ 's_id' => $old_id ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
 
 			if ( $po_data ) {
 				if ( ( ( $old_ns == -1 ) || ( $old_ns == SMW_NS_PROPERTY ) ) && ( !$proptable->isFixedPropertyTable() ) ) {
 					if ( ( $new_ns == -1 ) || ( $new_ns == SMW_NS_PROPERTY ) ) {
-						$connection->update(
-							$proptable->getName(),
-							[ 'p_id' => $new_id ],
-							[ 'p_id' => $old_id ],
-							__METHOD__
-						);
+						$connection->newUpdateQueryBuilder()
+							->update( $proptable->getName() )
+							->set( [ 'p_id' => $new_id ] )
+							->where( [ 'p_id' => $old_id ] )
+							->caller( __METHOD__ )
+							->execute();
 					} else {
-						$connection->delete(
-							$proptable->getName(),
-							[ 'p_id' => $old_id ],
-							__METHOD__
-						);
+						$connection->newDeleteQueryBuilder()
+							->deleteFrom( $proptable->getName() )
+							->where( [ 'p_id' => $old_id ] )
+							->caller( __METHOD__ )
+							->execute();
 					}
 				}
 
@@ -212,23 +199,23 @@ class IdChanger {
 						continue;
 					}
 
-					$row = $connection->selectRow(
-						$proptable->getName(),
-						[ $fieldName ],
-						[ $fieldName => $old_id ],
-						__METHOD__
-					);
+					$row = $connection->newSelectQueryBuilder()
+						->select( [ $fieldName ] )
+						->from( $proptable->getName() )
+						->where( [ $fieldName => $old_id ] )
+						->caller( __METHOD__ )
+						->fetchRow();
 
 					if ( $row === false ) {
 						continue;
 					}
 
-					$connection->update(
-						$proptable->getName(),
-						[ $fieldName => $new_id ],
-						[ $fieldName => $old_id ],
-						__METHOD__
-					);
+					$connection->newUpdateQueryBuilder()
+						->update( $proptable->getName() )
+						->set( [ $fieldName => $new_id ] )
+						->where( [ $fieldName => $old_id ] )
+						->caller( __METHOD__ )
+						->execute();
 				}
 			}
 		}
@@ -236,46 +223,46 @@ class IdChanger {
 		$this->update_concept( $old_id, $new_id, $old_ns, $new_ns, $s_data, $po_data );
 	}
 
-	private function update_concept( $old_id, $new_id, $old_ns, $new_ns, $s_data, $po_data ) {
+	private function update_concept( $old_id, $new_id, $old_ns, $new_ns, $s_data, $po_data ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( $s_data && ( ( $old_ns == -1 ) || ( $old_ns == SMW_NS_CONCEPT ) ) ) {
 			if ( ( $new_ns == -1 ) || ( $new_ns == SMW_NS_CONCEPT ) ) {
-				$connection->update(
-					SQLStore::CONCEPT_TABLE,
-					[ 's_id' => $new_id ],
-					[ 's_id' => $old_id ],
-					__METHOD__
-				);
+				$connection->newUpdateQueryBuilder()
+					->update( SQLStore::CONCEPT_TABLE )
+					->set( [ 's_id' => $new_id ] )
+					->where( [ 's_id' => $old_id ] )
+					->caller( __METHOD__ )
+					->execute();
 
-				$connection->update(
-					SQLStore::CONCEPT_CACHE_TABLE,
-					[ 's_id' => $new_id ],
-					[ 's_id' => $old_id ],
-					__METHOD__
-				);
+				$connection->newUpdateQueryBuilder()
+					->update( SQLStore::CONCEPT_CACHE_TABLE )
+					->set( [ 's_id' => $new_id ] )
+					->where( [ 's_id' => $old_id ] )
+					->caller( __METHOD__ )
+					->execute();
 			} else {
-				$connection->delete(
-					SQLStore::CONCEPT_TABLE,
-					[ 's_id' => $old_id ],
-					__METHOD__
-				);
+				$connection->newDeleteQueryBuilder()
+					->deleteFrom( SQLStore::CONCEPT_TABLE )
+					->where( [ 's_id' => $old_id ] )
+					->caller( __METHOD__ )
+					->execute();
 
-				$connection->delete(
-					SQLStore::CONCEPT_CACHE_TABLE,
-					[ 's_id' => $old_id ],
-					__METHOD__
-				);
+				$connection->newDeleteQueryBuilder()
+					->deleteFrom( SQLStore::CONCEPT_CACHE_TABLE )
+					->where( [ 's_id' => $old_id ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
 		}
 
 		if ( $po_data ) {
-			$connection->update(
-				SQLStore::CONCEPT_CACHE_TABLE,
-				[ 'o_id' => $new_id ],
-				[ 'o_id' => $old_id ],
-				__METHOD__
-			);
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::CONCEPT_CACHE_TABLE )
+				->set( [ 'o_id' => $new_id ] )
+				->where( [ 'o_id' => $old_id ] )
+				->caller( __METHOD__ )
+				->execute();
 		}
 	}
 

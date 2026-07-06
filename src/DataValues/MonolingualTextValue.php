@@ -2,18 +2,19 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Language\LanguageCode;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
-use SMW\SemanticData;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
-use SMWDIContainer as DIContainer;
+
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
 /**
  * MonolingualTextValue requires two components, a language code and a
@@ -43,12 +44,12 @@ class MonolingualTextValue extends AbstractMultiValue {
 	const TYPE_ID = '_mlt_rec';
 
 	/**
-	 * @var DIProperty[]|null
+	 * @var Property[]|null
 	 */
-	private static $properties = null;
+	private static ?array $properties = null;
 
 	/**
-	 * nonstandardLanguageCodeMapping
+	 * @var string[]|null
 	 */
 	private $nonstandardLanguageCodeMapping;
 
@@ -57,40 +58,35 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( self::TYPE_ID );
-		$this->nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
+		$this->nonstandardLanguageCodeMapping = LanguageCode::getNonstandardLanguageCodeMapping();
 	}
 
 	/**
 	 * @see AbstractMultiValue::setFieldProperties
 	 *
-	 * @param DIProperty[] $properties
+	 * @param Property[] $properties
 	 */
-	public function setFieldProperties( array $properties ) {
+	public function setFieldProperties( array $properties ): void {
 		// Keep the interface while the properties for this type
 		// are fixed.
 	}
 
 	/**
 	 * @see AbstractMultiValue::getProperties
-	 *
-	 * @param DIProperty[] $properties
 	 */
-	public function getProperties() {
-		self::$properties;
+	public function getProperties(): ?array {
+		return self::$properties;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param $text
+	 * @param string $text
 	 * @param string $languageCode
-	 *
-	 * @return string
 	 */
-	public function getTextWithLanguageTag( $text, $languageCode ) {
+	public function getTextWithLanguageTag( string $text, $languageCode ): string {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
 
-		// @TODO test de-formal with PropertyListByApiRequest
 		$mappedLanguageCode = array_search( $languageCode, $this->nonstandardLanguageCodeMapping ) ?: $languageCode;
 
 		return $text . '@' . $mappedLanguageCode;
@@ -102,14 +98,14 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @param string $userValue
 	 */
-	protected function parseUserValue( $userValue ) {
+	protected function parseUserValue( $userValue ): void {
 		[ $text, $languageCode ] = $this->getValuesFromString( $userValue );
 
 		$languageCodeValue = $this->newLanguageCodeValue( $languageCode );
 
 		if (
 			( $languageCode !== '' && $languageCodeValue->getErrors() !== [] ) ||
-			( $languageCode === '' && $this->isEnabledFeature( SMW_DV_MLTV_LCODE ) ) ) {
+			( $languageCode === '' && $this->hasFeature( SMW_DV_MLTV_LCODE ) ) ) {
 			$this->addError( $languageCodeValue->getErrors() );
 			return;
 		}
@@ -153,7 +149,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 		// Remember the data to extend the sortkey
 		$containerSemanticData->setExtensionData( 'sort.data', implode( ';', [ $text, $languageCode ] ) );
 
-		$this->m_dataitem = new DIContainer( $containerSemanticData );
+		$this->m_dataitem = new Container( $containerSemanticData );
 	}
 
 	/**
@@ -175,12 +171,8 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @see DataValue::loadDataItem
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;
 			return true;
@@ -196,11 +188,11 @@ class MonolingualTextValue extends AbstractMultiValue {
 			if (
 				$semanticData instanceof SemanticData &&
 				$semanticData->hasSubSemanticData( $subobjectName ) ) {
-				$this->m_dataitem = new DIContainer(
+				$this->m_dataitem = new Container(
 					$semanticData->findSubSemanticData( $subobjectName )
 				);
 			} else {
-				$monolingualTextLookup = ApplicationFactory::getInstance()->getStore()->service( 'MonolingualTextLookup' );
+				$monolingualTextLookup = $this->dataValueServiceFactory->getStore()->service( 'MonolingualTextLookup' );
 				$monolingualTextLookup->setCaller( __METHOD__ );
 				$this->m_dataitem = $monolingualTextLookup->newDIContainer( $dataItem, $this->getProperty() );
 			}
@@ -250,15 +242,15 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @since 2.4
 	 * @note called by AbstractRecordValue::getPropertyDataItems
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 */
-	public function getPropertyDataItems() {
+	public function getPropertyDataItems(): array {
 		if ( self::$properties !== null && self::$properties !== [] ) {
 			return self::$properties;
 		}
 
 		foreach ( [ '_TEXT', '_LCODE' ] as $id ) {
-			self::$properties[] = new DIProperty( $id );
+			self::$properties[] = new Property( $id );
 		}
 
 		return self::$properties;
@@ -269,7 +261,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getDataItems() {
+	public function getDataItems(): array {
 		return parent::getDataItems();
 	}
 
@@ -281,7 +273,8 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return DataValue|null
 	 */
 	public function getTextValueByLanguageCode( $languageCode ) {
-		if ( ( $list = $this->toArray() ) === [] ) {
+		$list = $this->toArray();
+		if ( $list === [] ) {
 			return null;
 		}
 
@@ -296,8 +289,8 @@ class MonolingualTextValue extends AbstractMultiValue {
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-			new DIBlob( $list['_TEXT'] ),
-			new DIProperty( '_TEXT' )
+			new Blob( $list['_TEXT'] ),
+			new Property( '_TEXT' )
 		);
 
 		return $dataValue;
@@ -305,11 +298,9 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return array
 	 */
-	public function toArray() {
-		if ( !$this->isValid() || $this->getDataItem() === [] ) {
+	public function toArray(): array {
+		if ( !$this->isValid() ) {
 			return [];
 		}
 
@@ -320,14 +311,14 @@ class MonolingualTextValue extends AbstractMultiValue {
 			'_LCODE' => ''
 		];
 
-		$dataItems = $semanticData->getPropertyValues( new DIProperty( '_TEXT' ) );
+		$dataItems = $semanticData->getPropertyValues( new Property( '_TEXT' ) );
 		$dataItem = reset( $dataItems );
 
 		if ( $dataItem !== false ) {
 			$list['_TEXT'] = $dataItem->getString();
 		}
 
-		$dataItems = $semanticData->getPropertyValues( new DIProperty( '_LCODE' ) );
+		$dataItems = $semanticData->getPropertyValues( new Property( '_LCODE' ) );
 		$dataItem = reset( $dataItems );
 
 		if ( $dataItem !== false ) {
@@ -339,11 +330,9 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
-	public function toString() {
-		if ( !$this->isValid() || $this->getDataItem() === [] ) {
+	public function toString(): string {
+		if ( !$this->isValid() ) {
 			return '';
 		}
 
@@ -352,14 +341,14 @@ class MonolingualTextValue extends AbstractMultiValue {
 		return $list['_TEXT'] . '@' . $list['_LCODE'];
 	}
 
-	private function newContainerSemanticData( $value ) {
+	private function newContainerSemanticData( string $value ): ContainerSemanticData {
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();
 		} else {
 			$subobjectName = SMW_SUBENTITY_MONOLINGUAL . md5( $value );
 
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$this->m_contextPage->getDBkey(),
 				$this->m_contextPage->getNamespace(),
 				$this->m_contextPage->getInterwiki(),
@@ -372,7 +361,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 		return $containerSemanticData;
 	}
 
-	private function newLanguageCodeValue( $languageCode ) {
+	private function newLanguageCodeValue( $languageCode ): LanguageCodeValue {
 		$languageCodeValue = new LanguageCodeValue();
 
 		if ( $this->m_property !== null ) {

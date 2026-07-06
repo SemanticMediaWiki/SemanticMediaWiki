@@ -3,6 +3,7 @@
 namespace SMW\Query\Processor;
 
 use ParamProcessor\ParamDefinition;
+use SMW\Localizer\DeferredLocalizedMessage;
 use SMW\Localizer\Message;
 use SMW\Query\QueryContext;
 use SMW\Query\ResultPrinter;
@@ -27,7 +28,7 @@ class DefaultParamDefinition {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function getParamDefinitions( $context = null, ?ResultPrinter $resultPrinter = null ) {
+	public static function getParamDefinitions( $context = null, ?ResultPrinter $resultPrinter = null ): array {
 		return self::buildParamDefinitions( $GLOBALS, $context, $resultPrinter );
 	}
 
@@ -50,7 +51,7 @@ class DefaultParamDefinition {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function buildParamDefinitions( $vars, $context = null, ?ResultPrinter $resultPrinter = null ) {
+	public static function buildParamDefinitions( array $vars, $context = null, ?ResultPrinter $resultPrinter = null ): array {
 		$params = [];
 
 		$allowedFormats = $vars['smwgResultFormats'];
@@ -85,6 +86,15 @@ class DefaultParamDefinition {
 			'upperbound' => $vars['smwgQUpperbound'],
 		];
 
+		// Opaque keyset cursor token (base64url-encoded JSON produced by
+		// `CursorEncoder`). When present, the query engine switches to
+		// keyset pagination and ignores `offset`. The constrained spike
+		// supports only default-sort queries; `sort=` + `cursor=`
+		// combinations are rejected during query construction.
+		$params['cursor'] = [
+			'default' => '',
+		];
+
 		$params['link'] = [
 			'default' => 'all',
 			'values' => [ 'all', 'subject', 'none' ],
@@ -99,7 +109,7 @@ class DefaultParamDefinition {
 		$params['order'] = [
 			'islist' => true,
 			'default' => [],
-			'values' => [ 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ],
+			'values' => [ 'descending', 'desc', 'asc', 'ascending', 'rand', 'random', 'none' ],
 		];
 
 		$params['headers'] = [
@@ -120,7 +130,9 @@ class DefaultParamDefinition {
 		];
 
 		$params['searchlabel'] = [
-			'default' => Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
+			'default' => $context === QueryContext::INLINE_QUERY
+				? DeferredLocalizedMessage::newMarker( 'further-results' )
+				: Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
 		];
 
 		$params['default'] = [
@@ -151,11 +163,12 @@ class DefaultParamDefinition {
 		return ParamDefinition::getCleanDefinitions( $params );
 	}
 
-	private static function getSourceParam( $vars ) {
-		$sourceValues = is_array( $vars['smwgQuerySources'] ) ? array_keys( $vars['smwgQuerySources'] ) : [];
+	private static function getSourceParam( array $vars ): array {
+		$sourceValues = is_array( $vars['smwgQuerySources'] ) ?
+			array_keys( $vars['smwgQuerySources'] ) : [];
 
 		return [
-			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
+			'default' => in_array( 'default', $sourceValues, true ) ? 'default' : '',
 			'values' => $sourceValues,
 		];
 	}

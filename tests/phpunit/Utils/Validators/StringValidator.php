@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils\Validators;
 
-use SMW\Tests\PHPUnitCompat;
+use PHPUnit\Framework\Assert;
 
 /**
  * @license GPL-2.0-or-later
@@ -10,9 +10,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class StringValidator extends \PHPUnit\Framework\Assert {
-
-	use PHPUnitCompat;
+class StringValidator extends Assert {
 
 	/**
 	 * @since 2.1
@@ -63,8 +61,7 @@ class StringValidator extends \PHPUnit\Framework\Assert {
 			return self::assertTrue( true, $message );
 		}
 
-		self::assertInternalType(
-			'string',
+		self::assertIsString(
 			$actual
 		);
 

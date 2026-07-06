@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\MessageLocalizer;
 use SMW\Utils\JsonView;
 
 /**
@@ -14,9 +15,7 @@ use SMW\Utils\JsonView;
  *
  * @author mwjames
  */
-class JsonViewTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
+class JsonViewTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -26,7 +25,7 @@ class JsonViewTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCreate() {
-		$messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 

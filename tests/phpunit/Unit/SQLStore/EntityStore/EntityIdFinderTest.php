@@ -1,0 +1,208 @@
+<?php
+
+namespace SMW\Tests\Unit\SQLStore\EntityStore;
+
+use PHPUnit\Framework\TestCase;
+use SMW\Cache\InMemoryLruCache;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\EntityIdFinder;
+use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\PropertyTable\PropertyTableHashes;
+use SMW\Tests\TestEnvironment;
+use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
+use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
+
+/**
+ * @covers \SMW\SQLStore\EntityStore\EntityIdFinder
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since   3.1
+ *
+ * @author mwjames
+ */
+class EntityIdFinderTest extends TestCase {
+
+	use MockSelectQueryBuilderTrait;
+	use MockWriteQueryBuilderTrait;
+
+	private $testEnvironment;
+	private $cache;
+	private $propertyTableHashes;
+	private $idCacheManager;
+	private Database $connection;
+
+	protected function setUp(): void {
+		$this->testEnvironment = new TestEnvironment();
+
+		// A real in-process cache rather than a mock: IdCacheManager::get()
+		// hands it back, but EntityIdFinder routes through getId()/setCache()
+		// here, so the cache is never exercised directly by these tests.
+		$this->cache = new InMemoryLruCache();
+
+		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->willReturn( $this->cache );
+
+		$this->connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// EntityIdFinder::deferHashUpdate() calls newUpdateQueryBuilder() on
+		// the connection; default to an empty builder so tests don't NPE on
+		// the ->update()->set()->where() chain.
+		$this->connection->method( 'newUpdateQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
+
+		$this->propertyTableHashes = $this->getMockBuilder( PropertyTableHashes::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			EntityIdFinder::class,
+			new EntityIdFinder( $this->connection, $this->propertyTableHashes, $this->idCacheManager )
+		);
+	}
+
+	public function testFindIdByItem() {
+		$row = [
+			'smw_id' => 42
+		];
+
+		$dataItem = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idCacheManager->expects( $this->once() )
+			->method( 'getId' )
+			->willReturn( false );
+
+		$this->idCacheManager->expects( $this->once() )
+			->method( 'setCache' );
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$instance = new EntityIdFinder(
+			$this->connection,
+			$this->propertyTableHashes,
+			$this->idCacheManager
+		);
+
+		$this->assertEquals(
+			42,
+			$instance->findIdByItem( $dataItem )
+		);
+	}
+
+	public function testFetchFieldsFromTableById() {
+		$row = [
+			'smw_id' => 42,
+			'smw_hash' => '00000000000',
+			'smw_sort' => 'sort_a',
+			'smw_sortkey' => 'sort_b'
+		];
+
+		$dataItem = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idCacheManager->expects( $this->once() )
+			->method( 'setCache' );
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$instance = new EntityIdFinder(
+			$this->connection,
+			$this->propertyTableHashes,
+			$this->idCacheManager
+		);
+
+		$sortkey = '';
+
+		$this->assertEquals(
+			[ 42, 'sort_b' ],
+			$instance->fetchFieldsFromTableById( 42, 'foo', 0, '', '', $sortkey )
+		);
+	}
+
+	public function testFetchFromTableByTitle() {
+		$row = [
+			'smw_id' => 42,
+			'smw_hash' => '00000000000',
+			'smw_sort' => 'sort_a',
+			'smw_sortkey' => 'sort_b'
+		];
+
+		$dataItem = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idCacheManager->expects( $this->once() )
+			->method( 'setCache' );
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$instance = new EntityIdFinder(
+			$this->connection,
+			$this->propertyTableHashes,
+			$this->idCacheManager
+		);
+
+		$sortkey = '';
+
+		$this->assertEquals(
+			[ 42, 'sort_b' ],
+			$instance->fetchFromTableByTitle( 'foo', 0, '', '', $sortkey )
+		);
+	}
+
+	public function testFindIdsByTitle() {
+		$rows = [
+			(object)[ 'smw_id' => 42 ],
+			(object)[ 'smw_id' => 1001 ],
+		];
+
+		$dataItem = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$qb = $this->createMockSelectQueryBuilder( $rows );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$instance = new EntityIdFinder(
+			$this->connection,
+			$this->propertyTableHashes,
+			$this->idCacheManager
+		);
+
+		$sortkey = '';
+
+		$this->assertEquals(
+			[ 42, 1001 ],
+			$instance->findIdsByTitle( 'foo', 0, '', '' )
+		);
+	}
+
+}

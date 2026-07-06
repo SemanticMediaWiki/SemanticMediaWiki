@@ -2,16 +2,18 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\Deferred\DeferredUpdates;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Site;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\Store;
 use SMW\Utils\Flag;
-use Title;
-use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,48 +24,22 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class RedirectUpdater {
 
 	/**
-	 * @var Store
+	 * @var array
 	 */
-	private $store;
+	private array $lookupCache = [];
 
-	/**
-	 * @var IdChanger
-	 */
-	private $idChanger;
-
-	/**
-	 * @var TableFieldUpdater
-	 */
-	private $tableFieldUpdater;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
-	 * @var
-	 */
-	private $lookupCache = [];
-
-	/**
-	 * @var bool
-	 */
-	private $equalitySupport = 0;
+	private Flag $equalitySupport;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param IdChanger $idChanger
-	 * @param TableFieldUpdater $tableFieldUpdater
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, IdChanger $idChanger, TableFieldUpdater $tableFieldUpdater, PropertyStatisticsStore $propertyStatisticsStore ) {
-		$this->store = $store;
-		$this->idChanger = $idChanger;
-		$this->tableFieldUpdater = $tableFieldUpdater;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IdChanger $idChanger,
+		private readonly TableFieldUpdater $tableFieldUpdater,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+	) {
+		$this->equalitySupport = new Flag( 0 );
 	}
 
 	/**
@@ -71,7 +47,7 @@ class RedirectUpdater {
 	 *
 	 * @param int $equalitySupport
 	 */
-	public function setEqualitySupport( int $equalitySupport ) {
+	public function setEqualitySupport( int $equalitySupport ): void {
 		$this->equalitySupport = new Flag( $equalitySupport );
 	}
 
@@ -84,7 +60,7 @@ class RedirectUpdater {
 	 * @param string $key
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ): void {
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
@@ -103,7 +79,7 @@ class RedirectUpdater {
 	 * @param string $target
 	 * @param int $newnamespace
 	 */
-	public function moveSubobjects( $source, $oldnamespace, $target, $newnamespace ) {
+	public function moveSubobjects( $source, $oldnamespace, $target, $newnamespace ): void {
 		$idTable = $this->store->getObjectIds();
 
 		// Currently we have no way to change title and namespace across all entries.
@@ -139,11 +115,11 @@ class RedirectUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIWikiPage $source
-	 * @param DIWikiPage $target
+	 * @param WikiPage $source
+	 * @param WikiPage $target
 	 * @param array $options
 	 */
-	public function doUpdate( DIWikiPage $source, DIWikiPage $target, array $options ) {
+	public function doUpdate( WikiPage $source, WikiPage $target, array $options ): void {
 		$idTable = $this->store->getObjectIds();
 		$this->lookupCache = [];
 
@@ -177,7 +153,7 @@ class RedirectUpdater {
 	 *
 	 * @param CachingSemanticDataLookup $semanticDataLookup
 	 */
-	public function invalidateLookupCache( CachingSemanticDataLookup $semanticDataLookup ) {
+	public function invalidateLookupCache( CachingSemanticDataLookup $semanticDataLookup ): void {
 		foreach ( $this->lookupCache as $id ) {
 			$semanticDataLookup->invalidateCache( $id );
 		}
@@ -190,12 +166,57 @@ class RedirectUpdater {
 	 * @param Title $target
 	 * @param array $options
 	 */
-	public function triggerChangeTitleUpdate( Title $source, Title $target, array $options ) {
-		if ( $options['redirect_id'] == 0 ) {
-			$source = null;
+	public function triggerChangeTitleUpdate( Title $source, Title $target, array $options ): void {
+		$oldTitle = $options['redirect_id'] == 0 ? null : $source;
+		$titles = $oldTitle !== null ? [ $oldTitle, $target ] : [ $target ];
+
+		$parameters = [
+			UpdateJob::FORCED_UPDATE => true,
+			'origin' => 'ChangeTitleUpdate',
+		];
+
+		$cli = $this->isCommandLineMode();
+
+		// Online with the update-job queue enabled (the default): push
+		// deduplicated jobs to the queue so the (potentially heavy) target
+		// re-parse runs on a worker instead of synchronously on the webserver.
+		// `UpdateJob` sets `removeDuplicates`, so identical jobs collapse while
+		// still queued. See #5619.
+		if ( !$cli && $this->store->getOption( 'smwgEnableUpdateJobs' ) ) {
+			$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+
+			foreach ( $titles as $title ) {
+				$jobFactory->newUpdateJob( $title, $parameters )->lazyPush();
+			}
+
+			return;
 		}
 
-		ChangeTitleUpdate::addUpdate( $source, $target );
+		// CLI / job-runner, or wikis with the update-job queue disabled: run
+		// synchronously as before (immediately in CLI, otherwise post-send) so
+		// the #895 redirect cleanup is never silently skipped. `UpdateJob::run()`
+		// ignores `smwgEnableUpdateJobs`.
+		$update = static function () use ( $titles, $parameters ): void {
+			$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+
+			foreach ( $titles as $title ) {
+				$jobFactory->newUpdateJob( $title, $parameters )->run();
+			}
+		};
+
+		if ( $cli ) {
+			$update();
+		} else {
+			DeferredUpdates::addCallableUpdate( $update );
+		}
+	}
+
+	/**
+	 * Seam over `Site::isCommandLineMode()` so the queue-vs-inline branch in
+	 * `triggerChangeTitleUpdate()` is unit-testable; PHPUnit always runs as CLI.
+	 */
+	protected function isCommandLineMode(): bool {
+		return Site::isCommandLineMode();
 	}
 
 	/**
@@ -216,19 +237,19 @@ class RedirectUpdater {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $redirects
 	 */
-	public function cleanUpAnnotationsAndRedirects( DIWikiPage $subject, array $redirects ) {
+	public function cleanUpAnnotationsAndRedirects( WikiPage $subject, array $redirects ): void {
 		$this->updateRedirects( $subject, end( $redirects ) );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function discardRemnantRedirects( DIWikiPage $subject ) {
+	public function discardRemnantRedirects( WikiPage $subject ): void {
 		$entityIdManager = $this->store->getObjectIds();
 		$target_id = 0;
 
@@ -271,12 +292,12 @@ class RedirectUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIWikiPage $source
-	 * @param DIWikiPage|null $target
+	 * @param WikiPage $source
+	 * @param WikiPage|null $target
 	 *
 	 * @return int the new canonical ID of the subject
 	 */
-	public function updateRedirects( DIWikiPage $source, ?DIWikiPage $target = null ) {
+	public function updateRedirects( WikiPage $source, ?WikiPage $target = null ) {
 		// Track count changes for redi property
 		$count = 0;
 
@@ -451,14 +472,14 @@ class RedirectUpdater {
 		$this->lookupCache = [ $sid, $new_tid, $old_tid ];
 
 		$this->propertyStatisticsStore->addToUsageCount(
-			$idTable->getSMWPropertyID( new DIProperty( '_REDI' ) ),
+			$idTable->getSMWPropertyID( new Property( '_REDI' ) ),
 			$count
 		);
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
 	}
 
-	private function updateTarget( $source, $target, &$sid ) {
+	private function updateTarget( WikiPage $source, WikiPage $target, &$sid ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 
@@ -468,20 +489,20 @@ class RedirectUpdater {
 		// does too much; fall back to general case below.
 		if ( $sid != 0 ) { // change id entry to refer to the new title
 			// Note that this also changes the reference for internal objects (subobjects)
-			$connection->update(
-				SQLStore::ID_TABLE,
-				[
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [
 					'smw_title' => $target->getDBkey(),
 					'smw_namespace' => $target->getNamespace(),
-					'smw_iw' => ''
-				],
-				[
+					'smw_iw' => '',
+				] )
+				->where( [
 					'smw_title' => $source->getDBkey(),
 					'smw_namespace' => $source->getNamespace(),
-					'smw_iw' => ''
-				],
-				__METHOD__
-			);
+					'smw_iw' => '',
+				] )
+				->caller( __METHOD__ )
+				->execute();
 
 			$this->moveSubobjects(
 				$source->getDBkey(),
@@ -532,7 +553,7 @@ class RedirectUpdater {
 		);
 
 		$this->propertyStatisticsStore->addToUsageCount(
-			$idTable->getSMWPropertyID( new DIProperty( '_REDI' ) ),
+			$idTable->getSMWPropertyID( new Property( '_REDI' ) ),
 			1
 		);
 
@@ -544,7 +565,7 @@ class RedirectUpdater {
 		// which will hopefully be done to fix the double redirect.
 	}
 
-	private function moveAsRedirect( $source, $target, $sid, $tid, $options ) {
+	private function moveAsRedirect( WikiPage $source, WikiPage $target, $sid, $tid, array $options ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 
@@ -565,21 +586,21 @@ class RedirectUpdater {
 		}
 
 		// Associate internal objects (subobjects) with the new title:
-		$table = $connection->tableName( SQLStore::ID_TABLE );
-
-		$values = [
-			'smw_title' => $target->getDBkey(),
-			'smw_namespace' => $target->getNamespace(),
-			'smw_iw' => ''
-		];
-
-		$sql = "UPDATE $table SET " . $connection->makeList( $values, LIST_SET ) .
-			' WHERE smw_title = ' . $connection->addQuotes( $source->getDBkey() ) . ' AND ' .
-			'smw_namespace = ' . $connection->addQuotes( $source->getNamespace() ) . ' AND ' .
-			'smw_iw = ' . $connection->addQuotes( '' ) . ' AND ' .
-			'smw_subobject != ' . $connection->addQuotes( '' ); // The "!=" is why we cannot use MW array syntax here
-
-		$connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [
+				'smw_title' => $target->getDBkey(),
+				'smw_namespace' => $target->getNamespace(),
+				'smw_iw' => '',
+			] )
+			->where( [
+				'smw_title' => $source->getDBkey(),
+				'smw_namespace' => $source->getNamespace(),
+				'smw_iw' => '',
+				$connection->expr( 'smw_subobject', '!=', '' ),
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$this->moveSubobjects(
 			$source->getDBkey(),

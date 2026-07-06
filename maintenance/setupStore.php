@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Options;
@@ -57,7 +58,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author James Hong Kong
  */
-class setupStore extends \Maintenance {
+class setupStore extends Maintenance {
 
 	/**
 	 * Name of the store class configured in the "LocalSettings.php" file. Stored to
@@ -91,8 +92,6 @@ class setupStore extends \Maintenance {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -104,7 +103,7 @@ class setupStore extends \Maintenance {
 	 * @since 3.0
 	 */
 	public function getDbType() {
-		return \Maintenance::DB_ADMIN;
+		return Maintenance::DB_ADMIN;
 	}
 
 	/**
@@ -187,11 +186,12 @@ class setupStore extends \Maintenance {
 	protected function loadGlobalFunctions() {
 		global $smwgIP;
 
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( !isset( $smwgIP ) ) {
 			$smwgIP = __DIR__ . '/../';
 		}
 
-		require_once $smwgIP . 'includes/GlobalFunctions.php';
+		require_once $smwgIP . 'src/GlobalFunctions.php';
 	}
 
 	protected function getStore() {
@@ -229,8 +229,6 @@ class setupStore extends \Maintenance {
 	}
 
 	/**
-	 * @param string $storeName
-	 *
 	 * @return bool
 	 */
 	protected function hasDeletionVerification() {

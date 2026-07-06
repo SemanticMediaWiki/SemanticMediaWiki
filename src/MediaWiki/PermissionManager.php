@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
-use RequestContext;
-use Title;
-use User;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,17 +16,9 @@ use User;
 class PermissionManager {
 
 	/**
-	 * @var MwPermissionManager
-	 */
-	private $permissionManager;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param MwPermissionManager $permissionManager
 	 */
-	public function __construct( MwPermissionManager $permissionManager ) {
-		$this->permissionManager = $permissionManager;
+	public function __construct( private readonly MwPermissionManager $permissionManager ) {
 	}
 
 	/**

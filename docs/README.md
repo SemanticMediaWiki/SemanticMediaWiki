@@ -16,5 +16,6 @@ View [all release notes](releasenotes/README.md)
 
 ## For developers
 
+* [Development environment](DEVELOPMENT.md) — setting up and running tests locally
 * [Developing Semantic MediaWiki](architecture/README.md)
 * [Technical documentation](technical/README.md)

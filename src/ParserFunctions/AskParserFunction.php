@@ -2,19 +2,19 @@
 
 namespace SMW\ParserFunctions;
 
+use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessedParam;
-use Parser;
-use SMW\DIProperty;
-use SMW\MessageFormatter;
+use SMW\DataItems\Property;
+use SMW\Formatters\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Query\Deferred;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Provides the {{#ask}} parser function
@@ -47,68 +47,36 @@ class AskParserFunction {
 	const IS_ANNOTATION = '@annotation';
 
 	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var MessageFormatter
-	 */
-	private $messageFormatter;
-
-	/**
-	 * @var CircularReferenceGuard
-	 */
-	private $circularReferenceGuard;
-
-	/**
-	 * @var ExpensiveFuncExecutionWatcher
-	 */
-	private $expensiveFuncExecutionWatcher;
-
-	/**
 	 * @var bool
 	 */
 	private $showMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $curtailmentMode = false;
+	private bool $curtailmentMode = false;
 
-	/**
-	 * @var int
-	 */
-	private $context = QueryProcessor::INLINE_QUERY;
+	private int $context = QueryProcessor::INLINE_QUERY;
 
-	/**
-	 * @var PostProcHandler
-	 */
-	private $postProcHandler;
+	private ?PostProcHandler $postProcHandler = null;
 
-	/**
-	 * @var RecursiveTextProcessor
-	 */
-	private $recursiveTextProcessor;
+	private ?RecursiveTextProcessor $recursiveTextProcessor = null;
 
 	/**
 	 * @var ProcessedParam[]
 	 */
 	private array $params;
 
+	// Whether the query output depends on the interface language; set once the
+	// query has executed, in doFetchResultsFromFunctionParameters().
+	private bool $variesByUserLanguage = true;
+
 	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param MessageFormatter $messageFormatter
-	 * @param CircularReferenceGuard $circularReferenceGuard
-	 * @param ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard, ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher ) {
-		$this->parserData = $parserData;
-		$this->messageFormatter = $messageFormatter;
-		$this->circularReferenceGuard = $circularReferenceGuard;
-		$this->expensiveFuncExecutionWatcher = $expensiveFuncExecutionWatcher;
+	public function __construct(
+		private readonly ParserData $parserData,
+		private readonly MessageFormatter $messageFormatter,
+		private readonly CircularReferenceGuard $circularReferenceGuard,
+		private readonly ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher,
+	) {
 	}
 
 	/**
@@ -116,7 +84,7 @@ class AskParserFunction {
 	 *
 	 * @param PostProcHandler $postProcHandler
 	 */
-	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+	public function setPostProcHandler( PostProcHandler $postProcHandler ): void {
 		$this->postProcHandler = $postProcHandler;
 	}
 
@@ -125,7 +93,7 @@ class AskParserFunction {
 	 *
 	 * @param RecursiveTextProcessor $recursiveTextProcessor
 	 */
-	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ) {
+	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ): void {
 		$this->recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
@@ -136,7 +104,7 @@ class AskParserFunction {
 	 *
 	 * @return AskParserFunction
 	 */
-	public function setShowMode( $mode ) {
+	public function setShowMode( $mode ): static {
 		$this->showMode = $mode;
 		return $this;
 	}
@@ -146,7 +114,7 @@ class AskParserFunction {
 	 *
 	 * @param bool $curtailmentMode
 	 */
-	public function setCurtailmentMode( $curtailmentMode ) {
+	public function setCurtailmentMode( $curtailmentMode ): void {
 		$this->curtailmentMode = (bool)$curtailmentMode;
 	}
 
@@ -171,6 +139,8 @@ class AskParserFunction {
 	 *
 	 * @todo $rawParams should be of IParameterFormatter
 	 * QueryParameterFormatter class
+	 *
+	 * Note: Datatable in SRF can return array
 	 *
 	 * @since 1.9
 	 *
@@ -208,16 +178,17 @@ class AskParserFunction {
 
 		$this->parserData->copyToParserOutput();
 
-		// 'userlang' will trigger a cache fragmentation by user language
-		$this->parserData->addExtraParserKey( 'userlang' );
-
-		// 'dateformat'  will trigger a cache fragmentation by date preference
-		$this->parserData->addExtraParserKey( 'dateformat' );
+		// `userlang` fragments the parser cache by interface language; add it
+		// only when the query output depends on that language (decided in
+		// doFetchResultsFromFunctionParameters).
+		if ( $this->variesByUserLanguage ) {
+			$this->parserData->addExtraParserKey( 'userlang' );
+		}
 
 		return $result;
 	}
 
-	private function prepareFunctionParameters( array $functionParams ) {
+	private function prepareFunctionParameters( array $functionParams ): array {
 		// Remove parser object from parameters array
 		if ( isset( $functionParams[0] ) && $functionParams[0] instanceof Parser ) {
 			array_shift( $functionParams );
@@ -247,14 +218,9 @@ class AskParserFunction {
 				continue;
 			}
 
-			// @see ParserOptionsRegister hook, use registered `localTime` key
-			if ( strpos( $value, '#LOCL#TO' ) !== false ) {
-				$this->parserData->addExtraParserKey( 'localTime' );
-			}
-
 			// Skip the first (being the condition) and other marked
 			// printrequests
-			if ( $key == 0 || ( $value !== '' && ( $value[0] === '?' || $value[0] === '+' ) ) ) {
+			if ( $key == 0 || ( $value !== '' && $value[0] === '?' ) ) {
 				continue;
 			}
 
@@ -287,6 +253,10 @@ class AskParserFunction {
 		$action = $this->parserData->getOption( 'request.action' );
 		$status = [];
 
+		// Reset to the cache-safe default; the real value is set below once the
+		// query has executed. Early returns keep `userlang` recorded.
+		$this->variesByUserLanguage = true;
+
 		if ( $extraKeys[self::NO_TRACE] === true ) {
 			$contextPage = null;
 		}
@@ -299,7 +269,8 @@ class AskParserFunction {
 			$contextPage
 		);
 
-		if ( ( $result = $this->hasReachedExpensiveExecutionLimit( $query ) ) !== false ) {
+		$result = $this->hasReachedExpensiveExecutionLimit( $query );
+		if ( $result !== false ) {
 			return $result;
 		}
 
@@ -367,6 +338,12 @@ class AskParserFunction {
 			$context
 		);
 
+		// `userlang` is only needed in the parser cache key when the output
+		// actually depends on the interface language: either the result format
+		// renders localised text, or the query produced (localised) errors.
+		$this->variesByUserLanguage = $query->getOption( 'result.depends_on_userlang' ) !== false
+			|| $query->getErrors() !== [];
+
 		if ( $this->postProcHandler !== null && $this->context !== QueryProcessor::DEFERRED_QUERY ) {
 			$this->postProcHandler->addCheck( $query );
 		}
@@ -397,7 +374,7 @@ class AskParserFunction {
 	}
 
 	private function hasReachedExpensiveExecutionLimit( $query ) {
-		if ( $this->expensiveFuncExecutionWatcher->hasReachedExpensiveLimit( $query ) === false ) {
+		if ( !$this->expensiveFuncExecutionWatcher->hasReachedExpensiveLimit( $query ) ) {
 			return false;
 		}
 
@@ -407,7 +384,7 @@ class AskParserFunction {
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
 
-	private function addQueryProfile( $query, $format, $extraKeys ) {
+	private function addQueryProfile( Query $query, $format, array $extraKeys ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -440,7 +417,7 @@ class AskParserFunction {
 		);
 	}
 
-	private function addProcessingError( $errors ) {
+	private function addProcessingError( $errors ): void {
 		if ( $errors === [] ) {
 			return;
 		}
@@ -451,8 +428,9 @@ class AskParserFunction {
 
 		foreach ( $errors as $error ) {
 
-			if ( ( $property = $processingErrorMsgHandler->grepPropertyFromRestrictionErrorMsg( $error ) ) === null ) {
-				$property = new DIProperty( '_ASK' );
+			$property = $processingErrorMsgHandler->grepPropertyFromRestrictionErrorMsg( $error );
+			if ( $property === null ) {
+				$property = new Property( '_ASK' );
 			}
 
 			$container = $processingErrorMsgHandler->newErrorContainerFromMsg(

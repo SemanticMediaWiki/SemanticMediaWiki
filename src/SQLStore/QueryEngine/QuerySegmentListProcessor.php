@@ -4,9 +4,8 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\MediaWiki\Connection\Database;
+use SMW\Query\Query;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
-use SMWQuery as Query;
-use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,30 +17,11 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class QuerySegmentListProcessor {
 
-	// ConditionTreeProcessor
-
-	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var TemporaryTableBuilder
-	 */
-	private $temporaryTableBuilder;
-
-	/**
-	 * @var HierarchyTempTableBuilder
-	 */
-	private $hierarchyTempTableBuilder;
-
 	/**
 	 * Array of arrays of executed queries, indexed by the temporary table names
 	 * results were fed into.
-	 *
-	 * @var array
 	 */
-	private $executedQueries = [];
+	private array $executedQueries = [];
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when
@@ -49,22 +29,15 @@ class QuerySegmentListProcessor {
 	 *
 	 * @var int
 	 */
-	private $queryMode;
+	private $queryMode = 0;
 
-	/**
-	 * @var array
-	 */
-	private $querySegmentList = [];
+	private array $querySegmentList = [];
 
-	/**
-	 * @param Database $connection
-	 * @param TemporaryTableBuilder $temporaryTableBuilder
-	 * @param HierarchyTempTableBuilder $hierarchyTempTableBuilder
-	 */
-	public function __construct( Database $connection, TemporaryTableBuilder $temporaryTableBuilder, HierarchyTempTableBuilder $hierarchyTempTableBuilder ) {
-		$this->connection = $connection;
-		$this->temporaryTableBuilder = $temporaryTableBuilder;
-		$this->hierarchyTempTableBuilder = $hierarchyTempTableBuilder;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly TemporaryTableBuilder $temporaryTableBuilder,
+		private readonly HierarchyTempTableBuilder $hierarchyTempTableBuilder,
+	) {
 	}
 
 	/**
@@ -72,7 +45,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @return array
 	 */
-	public function getExecutedQueries() {
+	public function getExecutedQueries(): array {
 		return $this->executedQueries;
 	}
 
@@ -81,16 +54,18 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param &$querySegmentList
 	 */
-	public function setQuerySegmentList( &$querySegmentList ) {
+	public function setQuerySegmentList( &$querySegmentList ): void {
 		$this->querySegmentList =& $querySegmentList;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer
+	 * @param int $queryMode
+	 *
+	 * @return void
 	 */
-	public function setQueryMode( $queryMode ) {
+	public function setQueryMode( $queryMode ): void {
 		$this->queryMode = $queryMode;
 	}
 
@@ -103,7 +78,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function process( $id ) {
+	public function process( $id ): void {
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
 		$this->executedQueries = [];
 
@@ -115,7 +90,7 @@ class QuerySegmentListProcessor {
 		$this->segment( $this->querySegmentList[$id] );
 	}
 
-	private function segment( QuerySegment &$query ) {
+	private function segment( QuerySegment &$query ): void {
 		switch ( $query->type ) {
 			case QuerySegment::Q_TABLE: // .
 				$this->table( $query );
@@ -138,7 +113,7 @@ class QuerySegmentListProcessor {
 	/**
 	 * Resolves normal queries with possible conjunctive subconditions
 	 */
-	private function table( QuerySegment &$query ) {
+	private function table( QuerySegment &$query ): void {
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
@@ -147,7 +122,7 @@ class QuerySegmentListProcessor {
 			if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 				$op = $subQuery->not ? '!' : '';
 
-				$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
+				$joinType = $subQuery->joinType ?: 'INNER';
 				$t = $this->connection->tableName( $subQuery->joinTable ) . " AS $subQuery->alias";
 				// If the alias is the same as the table name and if there is a prefix, MediaWiki does not declare the unprefixed alias
 				$joinTable = $subQuery->joinTable === $subQuery->alias ? $this->connection->tableName( $subQuery->joinTable ) : $subQuery->joinTable;
@@ -212,17 +187,37 @@ class QuerySegmentListProcessor {
 		$query->components = [];
 	}
 
-	private function conjunction( QuerySegment &$query ) {
+	private function conjunction( QuerySegment &$query ): void {
 		reset( $query->components );
-		$key = false;
 
-		// Pick one subquery as anchor point ...
+		// Pick one subquery as the anchor that the remaining conjuncts are
+		// joined onto. A component that owns a join table is ideal. Otherwise
+		// prefer a non-value component: a nested conjunction or disjunction
+		// resolves to a real table on its first processing pass, after which
+		// the other conjuncts join onto it correctly. A Q_VALUE has no join
+		// table and its processing ignores appended components, so anchoring
+		// on it silently drops all the other conjuncts, for example a concept
+		// combined with a single-page restriction (#6994). Fall back to the
+		// last component only when every component is a bare value restriction.
+		$key = false;
+		$nonValueKey = false;
+		$lastKey = false;
+
 		foreach ( $query->components as $qkey => $qid ) {
-			$key = $qkey;
+			$lastKey = $qkey;
 
 			if ( $this->querySegmentList[$qkey]->joinTable !== '' ) {
+				$key = $qkey;
 				break;
 			}
+
+			if ( $nonValueKey === false && $this->querySegmentList[$qkey]->type !== QuerySegment::Q_VALUE ) {
+				$nonValueKey = $qkey;
+			}
+		}
+
+		if ( $key === false ) {
+			$key = $nonValueKey !== false ? $nonValueKey : $lastKey;
 		}
 
 		$result = $this->querySegmentList[$key];
@@ -242,9 +237,12 @@ class QuerySegmentListProcessor {
 		$query = $result;
 	}
 
-	private function disjunction( QuerySegment &$query ) {
+	private function disjunction( QuerySegment &$query ): void {
 		if ( $this->queryMode !== Query::MODE_NONE ) {
-			$this->temporaryTableBuilder->create( $this->connection->tableName( $query->alias ) );
+			// TemporaryTableBuilder applies tableName() internally, so pass
+			// the bare alias here. The raw INSERT...SELECT below keeps its
+			// own tableName() call for the same physical name.
+			$this->temporaryTableBuilder->create( $query->alias );
 		}
 
 		$this->executedQueries[$query->alias] = [];
@@ -252,40 +250,101 @@ class QuerySegmentListProcessor {
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
-			$sql = '';
 
 			if ( $subQuery->joinTable !== '' ) {
-				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
-					   $this->connection->tableName( $query->alias ) .
-					   " SELECT DISTINCT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
-					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
+				// Diagnostic log entry: canonical MySQL-style form describing
+				// the logical operation. The real execution is a non-locking
+				// SELECT followed by literal INSERTs (below); this single line
+				// keeps the debug log readable. Emitting a raw
+				// "INSERT IGNORE ... SELECT" for execution broke SQLite and
+				// PostgreSQL (#6979).
+				$this->executedQueries[$query->alias][] = 'INSERT IGNORE INTO ' .
+					$this->connection->tableName( $query->alias ) .
+					" SELECT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
+					" AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
+
+				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
+				if ( $this->queryMode !== Query::MODE_NONE ) {
+					// Read the disjunct's matching ids with a plain, non-locking
+					// SELECT and re-insert them as literals, rather than a
+					// locking insertSelect(). insertSelect() routes through
+					// core's generic path on web requests (and on CLI unless a
+					// native INSERT...SELECT is replication-safe), which appends
+					// FOR UPDATE and takes exclusive next-key locks on the
+					// *persistent* property tables a leaf disjunct reads
+					// (smw_fpt_inst, smw_di_wikipage) merely to fill a
+					// session-local temp table; under concurrent writes those
+					// surface as Error 1205 lock-wait timeouts / Error 1213
+					// deadlocks (#7007). A standalone SELECT is a non-locking
+					// snapshot read on every path; this mirrors the
+					// HierarchyTempTableBuilder fix (#7004). It runs on the
+					// primary because a nested disjunct's source is a
+					// session-local temp table that exists only there.
+					//
+					// The structured $fromTables/$joinConditions (kept in
+					// parallel with the raw $from by table()) build portable
+					// SQL, matching the insertSelect() they replace (#6987). The
+					// source table list mirrors QueryEngine's final SELECT: the
+					// anchor table/alias prepended to the accumulated
+					// fromTables; rawTables() reproduces insertSelect()'s
+					// handling of that array, including nested join groups.
+					$ids = $this->connection->newPrimarySelectQueryBuilder()
+						->rawTables( array_merge( [ $subQuery->alias => $subQuery->joinTable ], $subQuery->fromTables ) )
+						->select( $subQuery->joinfield )
+						->where( ( $subQuery->where !== '' && $subQuery->where !== null ) ? $subQuery->where : [] )
+						->joinConds( $subQuery->joinConditions )
+						->caller( __METHOD__ )
+						->fetchFieldValues();
+
+					// A row can be reached under several joins; dedupe so the
+					// literal INSERT stays compact (INSERT IGNORE drops the
+					// duplicates anyway).
+					$ids = array_unique( array_map( 'intval', $ids ) );
+
+					// INSERT the ids as literals in bounded batches so a very
+					// large disjunct cannot produce an oversized statement
+					// (max_allowed_packet). ignore() emits the platform-correct
+					// verb (INSERT IGNORE / INSERT OR IGNORE / ON CONFLICT DO
+					// NOTHING).
+					foreach ( array_chunk( $ids, 1000 ) as $chunk ) {
+						$insertBuilder = $this->connection->newInsertQueryBuilder()
+							->insertInto( $query->alias )
+							->ignore()
+							->caller( __METHOD__ );
+
+						foreach ( $chunk as $id ) {
+							$insertBuilder->row( [ 'id' => $id ] );
+						}
+
+						$insertBuilder->execute();
+					}
+				}
 			} elseif ( $subQuery->joinfield !== '' ) {
 				// NOTE: this works only for single "unconditional" values without further
 				// WHERE or FROM. The execution must take care of not creating any others.
+
+				// Diagnostic log entry: canonical form (MW core emits the
+				// platform-correct verb — INSERT IGNORE / OR IGNORE /
+				// ON CONFLICT DO NOTHING — when ->ignore() is set).
 				$values = '';
-
-				// This produces an error on postgres with
-				// pg_query(): Query failed: ERROR:  duplicate key value violates
-				// unique constraint "sunittest_t3_pkey" DETAIL:  Key (id)=(274) already exists.
-
 				foreach ( $subQuery->joinfield as $value ) {
 					$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';
 				}
+				$this->executedQueries[$query->alias][] =
+					'INSERT IGNORE INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
 
-				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
-			} // else: // interpret empty joinfields as impossible condition (empty result), ignore
-
-			if ( $sql ) {
-				$this->executedQueries[$query->alias][] = $sql;
-
+				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
 				if ( $this->queryMode !== Query::MODE_NONE ) {
-					$this->connection->query(
-						$sql,
-						__METHOD__,
-						ISQLPlatform::QUERY_CHANGE_ROWS
-					);
+					$insertBuilder = $this->connection->newInsertQueryBuilder()
+						->insertInto( $query->alias )
+						->ignore()
+						->caller( __METHOD__ );
+					foreach ( $subQuery->joinfield as $value ) {
+						$insertBuilder->row( [ 'id' => $value ] );
+					}
+					$insertBuilder->execute();
 				}
-			}
+			} // else: interpret empty joinfields as impossible condition (empty result), ignore
 		}
 
 		$query->type = QuerySegment::Q_TABLE;
@@ -306,7 +365,8 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param QuerySegment &$query
 	 */
-	private function hierarchy( QuerySegment &$query ) {
+	private function hierarchy( QuerySegment &$query ): void {
+		$type = '';
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
 				$type = 'property';
@@ -338,34 +398,33 @@ class QuerySegmentListProcessor {
 			$valuecond .= ( $valuecond ? ' OR ' : '' ) . 'o_id=' . $this->connection->addQuotes( $value );
 		}
 
-		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
-		$res = $this->connection->select(
-			$smwtable,
-			's_id',
-			$valuecond,
-			__METHOD__,
-			[ 'LIMIT' => 1 ]
-		);
+		// Try to save time (SELECT is cheaper than creating/dropping 3 temp tables):
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( 's_id' )
+			->from( $smwtable )
+			->where( [ 'o_id' => $query->joinfield ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
-		if ( !$res->fetchObject() ) { // no subobjects, we are done!
-			$res->free();
+		if ( !$row ) { // no subobjects, we are done!
 			$query->type = QuerySegment::Q_VALUE;
 			return;
 		}
 
-		$res->free();
-		$tablename = $this->connection->tableName( $query->alias );
 		$this->executedQueries[$query->alias] = [
 			"Recursively computed hierarchy for element(s) $values.",
-			"SELECT s_id FROM $smwtable WHERE $valuecond LIMIT 1"
+			'SELECT s_id FROM ' . $this->connection->tableName( $smwtable ) . " WHERE $valuecond LIMIT 1"
 		];
 
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
+		// Pass the bare alias: HierarchyTempTableBuilder routes it through
+		// TemporaryTableBuilder (which applies the prefix internally) and
+		// MW core's insertSelect() (which also applies the prefix).
 		$this->hierarchyTempTableBuilder->fillTempTable(
 			$type,
-			$tablename,
+			$query->alias,
 			$values,
 			$depth
 		);
@@ -377,9 +436,11 @@ class QuerySegmentListProcessor {
 	 * @todo I might be better to keep the tables and possibly reuse them later
 	 * on. Being temporary, the tables will vanish with the session anyway.
 	 */
-	public function cleanUp() {
+	public function cleanUp(): void {
 		foreach ( $this->executedQueries as $table => $log ) {
-			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
+			// TemporaryTableBuilder applies tableName() internally; pass the
+			// bare alias key.
+			$this->temporaryTableBuilder->drop( $table );
 		}
 	}
 

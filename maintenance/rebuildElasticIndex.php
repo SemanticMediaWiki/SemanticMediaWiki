@@ -2,10 +2,15 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use SMW\Elastic\ElasticStore;
+use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\MediaWiki\JobQueue;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SetupFile;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -25,7 +30,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class rebuildElasticIndex extends \Maintenance {
+class rebuildElasticIndex extends Maintenance {
 
 	/**
 	 * @var Store
@@ -122,7 +127,7 @@ class rebuildElasticIndex extends \Maintenance {
 		);
 
 		$this->jobQueue = $applicationFactory->getJobQueue();
-		$this->store = $applicationFactory->getStore( 'SMW\SQLStore\SQLStore' );
+		$this->store = $applicationFactory->getStore( SQLStore::class );
 		$elasticFactory = $applicationFactory->create( 'ElasticFactory' );
 		$messageReporter = $maintenanceFactory->newMessageReporter( [ $this, 'reportMessage' ] );
 
@@ -222,7 +227,7 @@ class rebuildElasticIndex extends \Maintenance {
 		parent::addDefaultParams();
 	}
 
-	protected function handleTermSignal( $signal ) {
+	protected function handleTermSignal( $signal ): never {
 		$this->reportMessage( "\n" . '   ... rebuild was terminated, start recovery process ...' );
 		$this->rebuilder->setDefaults();
 		$this->rebuilder->refresh();
@@ -433,7 +438,8 @@ class rebuildElasticIndex extends \Maintenance {
 
 		$this->reportMessage( '   ... done.' . "\n" );
 
-		if ( ( $count = $this->jobQueue->getQueueSize( 'smw.elasticIndexerRecovery' ) ) > 0 ) {
+		$count = $this->jobQueue->getQueueSize( 'smw.elasticIndexerRecovery' );
+		if ( $count > 0 ) {
 			$this->reportMessage(
 				$this->cliMsgFormatter->section( 'Job queue' )
 			);
@@ -500,9 +506,10 @@ class rebuildElasticIndex extends \Maintenance {
 
 		if ( $this->hasOption( 'page' ) ) {
 			$pages = explode( '|', $this->getOption( 'page' ) );
+			$titleFactory = $this->getServiceContainer()->getTitleFactory();
 
 			foreach ( $pages as $page ) {
-				$title = \Title::newFromText( $page );
+				$title = $titleFactory->newFromText( $page );
 
 				if ( $title === null ) {
 					continue;

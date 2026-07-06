@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later

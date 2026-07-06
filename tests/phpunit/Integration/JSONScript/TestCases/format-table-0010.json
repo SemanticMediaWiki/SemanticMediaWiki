@@ -42,7 +42,7 @@
 			"subject": "Example/FT0010/Q1.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\">Example/FT0010/1</td>"
+					"<td class=\"smwtype&#95;wpg\">Example/FT0010/1</td>"
 				]
 			}
 		},
@@ -52,7 +52,7 @@
 			"subject": "Example/FT0010/Q1.3",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\">Example/FT0010/1</td>"
+					"<td class=\"smwtype&#95;wpg\">Example/FT0010/1</td>"
 				]
 			}
 		}
@@ -61,7 +61,7 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgDVFeatures": [
-			"SMW_DV_NUMV_USPACE"
+			"number-value-usespaces"
 		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,

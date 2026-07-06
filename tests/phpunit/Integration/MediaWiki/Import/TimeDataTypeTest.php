@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
-use SMW\DIProperty;
-use SMW\Tests\PHPUnitCompat;
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\Property;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -23,8 +22,6 @@ use Title;
  * @author mwjames
  */
 class TimeDataTypeTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -77,10 +74,10 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$title = Title::newFromText( 'TimeDataTypeRegressionTest' );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'TimeDataTypeRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
-			'property' => new DIProperty( '_INST' ),
+			'property' => new Property( '_INST' ),
 			'propertyValues' => [
 				'Regression test'
 			]
@@ -88,20 +85,20 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$expectedPropertiesFromImport = [
 			'properties' => [
-				DIProperty::newFromUserLabel( 'Has date' ),
-				DIProperty::newFromUserLabel( 'Has calendar date' ),
-				DIProperty::newFromUserLabel( 'Has query date' ),
-				new DIProperty( '_ASK' ),
-				new DIProperty( '_MDAT' ),
-				new DIProperty( '_SKEY' ),
-				new DIProperty( '_SOBJ' ),
-				new DIProperty( '_INST' )
+				Property::newFromUserLabel( 'Has date' ),
+				Property::newFromUserLabel( 'Has calendar date' ),
+				Property::newFromUserLabel( 'Has query date' ),
+				new Property( '_ASK' ),
+				new Property( '_MDAT' ),
+				new Property( '_SKEY' ),
+				new Property( '_SOBJ' ),
+				new Property( '_INST' )
 			]
 		];
 
 		$expectedDateValuesAsISO = [
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
-			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
+			'property'       => Property::newFromUserLabel( 'Has query date' ),
 			'propertyValues' => [
 				'2010-01-04T19:00:00',
 				'2011-06-08',
@@ -113,7 +110,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$expectedDateValuesAsMediaWiki = [
 			'valueFormatter' => $this->setMediaWikiDateValueFormatter(),
-			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
+			'property'       => Property::newFromUserLabel( 'Has query date' ),
 			'propertyValues' => [
 				'19:00, 4 January 2010',
 				'8 June 2011',
@@ -125,7 +122,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$expectedDateValuesAsWikiValue = [
 			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
-			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
+			'property'       => Property::newFromUserLabel( 'Has query date' ),
 			'propertyValues' => [
 				'4 January 2010 19:00:00',
 				'8 June 2011',
@@ -140,7 +137,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$expectedCalendarSpecificDateValuesAsISO = [
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
-			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
+			'property'       => Property::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => [
 				'--301-12-28', // 1 January 300 BC
 				'--2147483647-01-01', // 2147483647 BC
@@ -152,7 +149,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$expectedCalendarSpecificDateValuesAsWikiValue = [
 			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
-			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
+			'property'       => Property::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => [
 				'1 January 300 BC JL', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
@@ -164,7 +161,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$expectedCalendarSpecificDateValuesAsWikiValueWithGRCalendarModel = [
 			'valueFormatter' => $this->setWikiValueDateWithGRCalendarModelValueFormatter(),
-			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
+			'property'       => Property::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => [
 				'28 December 301 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
@@ -176,7 +173,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$expectedCalendarSpecificDateValuesAsWikiValueWithJLCalendarModel = [
 			'valueFormatter' => $this->setWikiValueDateWithJLCalendarModelValueFormatter(),
-			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
+			'property'       => Property::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => [
 				'1 January 300 BC JL', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
@@ -233,7 +230,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		foreach ( $semanticData->getProperties() as $property ) {
 
-			if ( $property->findPropertyTypeID() === '_dat' && $property->equals( $expected['property'] ) ) {
+			if ( $property->findPropertyValueType() === '_dat' && $property->equals( $expected['property'] ) ) {
 				$runDateValueAssert = true;
 				$this->semanticDataValidator->assertThatPropertyValuesAreSet(
 					$expected,

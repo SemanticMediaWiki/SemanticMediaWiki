@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\Disjunction;
 
@@ -14,27 +15,18 @@ use SMW\Query\Language\Disjunction;
 class DisjunctionInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Disjunction $description
-	 *
-	 * @return Condition|[]
 	 */
-	public function interpretDescription( Disjunction $description, $isConjunction = false ) {
+	public function interpretDescription(
+		Disjunction $description,
+		bool $isConjunction = false
+	): array|Condition {
 		$params = [];
 		$notConditionFields = [];
 
@@ -47,7 +39,8 @@ class DisjunctionInterpreter {
 			// [[Foo.bar::123]] OR [[Foobar::123]]
 			$desc->isPartOfDisjunction = true;
 
-			if ( ( $param = $this->conditionBuilder->interpretDescription( $desc, true ) ) !== [] ) {
+			$param = $this->conditionBuilder->interpretDescription( $desc, true );
+			if ( $param !== [] ) {
 
 				// @see SomePropertyInterpreter
 				// Collect a possible negation condition in case `must_not.property.exists`

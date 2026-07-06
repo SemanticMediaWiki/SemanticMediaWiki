@@ -1,0 +1,61 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki\Hooks;
+
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
+
+/**
+ * @covers \SMW\MediaWiki\Hooks\TitleIsAlwaysKnown
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 1.9
+ *
+ * @author mwjames
+ */
+class TitleIsAlwaysKnownTest extends TestCase {
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			TitleIsAlwaysKnown::class,
+			new TitleIsAlwaysKnown()
+		);
+	}
+
+	/**
+	 * @dataProvider titleProvider
+	 */
+	public function testPerformUpdate( $namespace, $text, $expected ) {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->willReturn( $namespace );
+
+		$title->expects( $this->any() )
+			->method( 'getText' )
+			->willReturn( $text );
+
+		$result = false;
+
+		$instance = new TitleIsAlwaysKnown();
+		$this->assertTrue( $instance->onTitleIsAlwaysKnown( $title, $result ) );
+
+		$this->assertEquals( $expected, $result );
+	}
+
+	public function titleProvider() {
+		$provider = [
+			[ SMW_NS_PROPERTY, 'Modification date', true ],
+			[ SMW_NS_PROPERTY, 'Foo', false ],
+			[ NS_MAIN, 'Modification date', false ],
+		];
+
+		return $provider;
+	}
+
+}

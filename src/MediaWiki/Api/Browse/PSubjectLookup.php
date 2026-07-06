@@ -2,12 +2,13 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,36 +21,22 @@ class PSubjectLookup extends Lookup {
 	const VERSION = 1;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __METHOD__ . self::VERSION;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$limit = 20;
 		$offset = 0;
 
@@ -85,7 +72,7 @@ class PSubjectLookup extends Lookup {
 			return [];
 		}
 
-		[ $list, $continueOffset ] = $this->findPropertySubjects(
+		[ $list, $continueOffset, $continueCursor ] = $this->findPropertySubjects(
 			$property,
 			$value,
 			$limit,
@@ -93,7 +80,11 @@ class PSubjectLookup extends Lookup {
 			$parameters
 		);
 
-		// Changing this output format requires to set a new version
+		// Changing this output format requires to set a new version. The
+		// `query-continue-cursor` field is byte-additive: it is only emitted
+		// when the caller opted into cursor mode (by sending `cursor` in
+		// the request payload). Legacy clients that follow
+		// `query-continue-offset` see exactly the pre-cursor response shape.
 		$res = [
 			'query' => $list,
 			'query-continue-offset' => $continueOffset,
@@ -105,22 +96,28 @@ class PSubjectLookup extends Lookup {
 			]
 		];
 
+		if ( self::shouldUseCursorMode( $parameters ) ) {
+			$res['query-continue-cursor'] = $continueCursor;
+		}
+
 		return $res;
 	}
 
-	private function findPropertySubjects( $property, $value, $limit, $offset, $parameters ) {
+	private function findPropertySubjects( $property, $value, int $limit, int $offset, array $parameters ): array {
 		$list = [];
 		$dataItem = null;
 
-		$property = DIProperty::newFromUserLabel( $property );
+		$property = Property::newFromUserLabel( $property );
 
 		if ( $value !== '' && $value !== null ) {
 			$dataItem = DataValueFactory::getInstance()->newDataValueByProperty( $property, $value )->getDataItem();
 		}
 
 		$continueOffset = 0;
+		$continueCursor = 0;
 		$count = 0;
 		$requestOptions = $this->newRequestOptions( $parameters );
+		$cursorMode = (bool)$requestOptions->getOption( RequestOptions::CURSOR_MODE );
 
 		$res = $this->store->getPropertySubjects(
 			$property,
@@ -130,11 +127,11 @@ class PSubjectLookup extends Lookup {
 
 		foreach ( $res as $dataItem ) {
 
-			if ( !$dataItem instanceof DIWikiPage ) {
+			if ( !$dataItem instanceof WikiPage ) {
 				continue;
 			}
 
-			if ( isset( $parameters['title-prefix'] ) && (bool)$parameters['title-prefix'] === false ) {
+			if ( isset( $parameters['title-prefix'] ) && !( (bool)( $parameters['title-prefix'] ) ) ) {
 				$list[] = $dataItem->getTitle()->getText();
 			} else {
 				$list[] = $dataItem->getTitle()->getPrefixedText();
@@ -145,15 +142,23 @@ class PSubjectLookup extends Lookup {
 			$count = count( $res );
 		}
 
-		if ( $count > $limit ) {
+		if ( $cursorMode ) {
+			// `PropertySubjectsLookup::postProcessCursorResult()` already
+			// trimmed the lookahead row and wrote the cursor metadata back
+			// onto `$requestOptions`. The trimmed list arrives ready to
+			// display; we just surface the cursor anchor for the next page.
+			if ( $requestOptions->getCursorHasMore() ) {
+				$continueCursor = $requestOptions->getLastCursor() ?? 0;
+			}
+		} elseif ( $count > $limit ) {
 			$continueOffset = $offset + $count;
 			array_pop( $list );
 		}
 
-		return [ $list, $continueOffset ];
+		return [ $list, $continueOffset, $continueCursor ];
 	}
 
-	private function newRequestOptions( $parameters ) {
+	private function newRequestOptions( array $parameters ): RequestOptions {
 		$limit = 20;
 		$offset = 0;
 		$search = '';
@@ -168,8 +173,25 @@ class PSubjectLookup extends Lookup {
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
-		$requestOptions->setLimit( $limit + 1 );
-		$requestOptions->setOffset( $offset );
+
+		if ( self::shouldUseCursorMode( $parameters ) ) {
+			// Cursor mode is authoritative: any `offset` co-sent with
+			// `cursor` is ignored so the response doesn't accidentally seek
+			// past the cursor by the legacy offset amount.
+			// `PropertySubjectsLookup` adds its own `LIMIT + 1` lookahead in
+			// cursor mode, so the caller passes the plain page size.
+			$requestOptions->setLimit( $limit );
+			$requestOptions->setOption( RequestOptions::CURSOR_MODE, true );
+			$cursor = (int)$parameters['cursor'];
+			if ( $cursor > 0 ) {
+				$requestOptions->setCursorAfter( $cursor );
+			}
+		} else {
+			// Legacy offset path: `+1` lookahead is manually trimmed in
+			// `findPropertySubjects()`.
+			$requestOptions->setLimit( $limit + 1 );
+			$requestOptions->setOffset( $offset );
+		}
 
 		if ( isset( $parameters['search'] ) && $parameters['search'] !== '' ) {
 			$search = (string)$parameters['search'];
@@ -207,8 +229,8 @@ class PSubjectLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function is_iterable( $obj ) {
-		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
+	private function is_iterable( $obj ): bool {
+		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 
 }

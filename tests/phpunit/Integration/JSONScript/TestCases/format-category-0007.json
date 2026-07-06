@@ -216,10 +216,10 @@
 	"settings": {
 		"smwgEntityCollation": "uca-default-u-kn",
 		"smwgSparqlQFeatures": [
-			"SMW_SPARQL_QF_REDI",
-			"SMW_SPARQL_QF_SUBP",
-			"SMW_SPARQL_QF_SUBC",
-			"SMW_SPARQL_QF_COLLATION"
+			"redirects",
+			"subproperties",
+			"subcategories",
+			"collation"
 		],
 		"wgContLang": "en",
 		"wgLang": "en",

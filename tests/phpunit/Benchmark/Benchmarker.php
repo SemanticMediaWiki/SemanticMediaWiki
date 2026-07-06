@@ -21,15 +21,9 @@ class Benchmarker {
 	private $useAsSample = false;
 
 	/**
-	 * @var int
-	 */
-	private $roundFactor;
-
-	/**
 	 * @since 2.1
 	 */
-	public function __construct( $roundFactor = 7 ) {
-		$this->roundFactor = $roundFactor;
+	public function __construct( private $roundFactor = 7 ) {
 	}
 
 	/**

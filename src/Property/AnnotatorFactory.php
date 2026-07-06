@@ -2,6 +2,9 @@
 
 namespace SMW\Property;
 
+use MediaWiki\Title\Title;
+use SMW\DataModel\SemanticData;
+use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\PageInfo;
 use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
@@ -16,9 +19,8 @@ use SMW\Property\Annotators\SchemaPropertyAnnotator;
 use SMW\Property\Annotators\SortKeyPropertyAnnotator;
 use SMW\Property\Annotators\TranslationPropertyAnnotator;
 use SMW\Schema\Schema;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -29,13 +31,22 @@ use Title;
 class AnnotatorFactory {
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		private readonly Store $store,
+		private readonly PageCreator $pageCreator,
+	) {
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param SemanticData $semanticData
 	 *
 	 * @return NullPropertyAnnotator
 	 */
-	public function newNullPropertyAnnotator( SemanticData $semanticData ) {
+	public function newNullPropertyAnnotator( SemanticData $semanticData ): NullPropertyAnnotator {
 		return new NullPropertyAnnotator( $semanticData );
 	}
 
@@ -47,7 +58,7 @@ class AnnotatorFactory {
 	 *
 	 * @return RedirectPropertyAnnotator
 	 */
-	public function newRedirectPropertyAnnotator( Annotator $propertyAnnotator, RedirectTargetFinder $redirectTargetFinder ) {
+	public function newRedirectPropertyAnnotator( Annotator $propertyAnnotator, RedirectTargetFinder $redirectTargetFinder ): RedirectPropertyAnnotator {
 		return new RedirectPropertyAnnotator(
 			$propertyAnnotator,
 			$redirectTargetFinder
@@ -62,7 +73,7 @@ class AnnotatorFactory {
 	 *
 	 * @return SchemaPropertyAnnotator
 	 */
-	public function newSchemaPropertyAnnotator( Annotator $propertyAnnotator, ?Schema $schema = null ) {
+	public function newSchemaPropertyAnnotator( Annotator $propertyAnnotator, ?Schema $schema = null ): SchemaPropertyAnnotator {
 		$schemaPropertyAnnotator = new SchemaPropertyAnnotator(
 			$propertyAnnotator,
 			$schema
@@ -79,7 +90,7 @@ class AnnotatorFactory {
 	 *
 	 * @return AttachmentLinkPropertyAnnotator
 	 */
-	public function newAttachmentLinkPropertyAnnotator( Annotator $propertyAnnotator, array $images = [] ) {
+	public function newAttachmentLinkPropertyAnnotator( Annotator $propertyAnnotator, array $images = [] ): AttachmentLinkPropertyAnnotator {
 		$attachmentLinkPropertyAnnotator = new AttachmentLinkPropertyAnnotator(
 			$propertyAnnotator,
 			$images
@@ -100,7 +111,7 @@ class AnnotatorFactory {
 	 *
 	 * @return PredefinedPropertyAnnotator
 	 */
-	public function newPredefinedPropertyAnnotator( Annotator $propertyAnnotator, PageInfo $pageInfo ) {
+	public function newPredefinedPropertyAnnotator( Annotator $propertyAnnotator, PageInfo $pageInfo ): PredefinedPropertyAnnotator {
 		$predefinedPropertyAnnotator = new PredefinedPropertyAnnotator(
 			$propertyAnnotator,
 			$pageInfo
@@ -121,7 +132,7 @@ class AnnotatorFactory {
 	 *
 	 * @return EditProtectedPropertyAnnotator
 	 */
-	public function newEditProtectedPropertyAnnotator( Annotator $propertyAnnotator, Title $title ) {
+	public function newEditProtectedPropertyAnnotator( Annotator $propertyAnnotator, Title $title ): EditProtectedPropertyAnnotator {
 		$editProtectedPropertyAnnotator = new EditProtectedPropertyAnnotator(
 			$propertyAnnotator,
 			$title
@@ -142,7 +153,7 @@ class AnnotatorFactory {
 	 *
 	 * @return SortKeyPropertyAnnotator
 	 */
-	public function newSortKeyPropertyAnnotator( Annotator $propertyAnnotator, $sortkey ) {
+	public function newSortKeyPropertyAnnotator( Annotator $propertyAnnotator, $sortkey ): SortKeyPropertyAnnotator {
 		return new SortKeyPropertyAnnotator(
 			$propertyAnnotator,
 			$sortkey
@@ -157,7 +168,7 @@ class AnnotatorFactory {
 	 *
 	 * @return TranslationPropertyAnnotator
 	 */
-	public function newTranslationPropertyAnnotator( Annotator $propertyAnnotator, $translation ) {
+	public function newTranslationPropertyAnnotator( Annotator $propertyAnnotator, $translation ): TranslationPropertyAnnotator {
 		$translationPropertyAnnotator = new TranslationPropertyAnnotator(
 			$propertyAnnotator,
 			$translation
@@ -179,7 +190,7 @@ class AnnotatorFactory {
 	 *
 	 * @return DisplayTitlePropertyAnnotator
 	 */
-	public function newDisplayTitlePropertyAnnotator( Annotator $propertyAnnotator, $displayTitle, $defaultSort ) {
+	public function newDisplayTitlePropertyAnnotator( Annotator $propertyAnnotator, $displayTitle, $defaultSort ): DisplayTitlePropertyAnnotator {
 		$displayTitlePropertyAnnotator = new DisplayTitlePropertyAnnotator(
 			$propertyAnnotator,
 			$displayTitle,
@@ -200,12 +211,14 @@ class AnnotatorFactory {
 	 *
 	 * @return CategoryPropertyAnnotator
 	 */
-	public function newCategoryPropertyAnnotator( Annotator $propertyAnnotator, array $categories ) {
+	public function newCategoryPropertyAnnotator( Annotator $propertyAnnotator, array $categories ): CategoryPropertyAnnotator {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
 			$propertyAnnotator,
-			$categories
+			$categories,
+			$this->store,
+			$this->pageCreator
 		);
 
 		$categoryPropertyAnnotator->showHiddenCategories(
@@ -234,7 +247,7 @@ class AnnotatorFactory {
 	 *
 	 * @return MandatoryTypePropertyAnnotator
 	 */
-	public function newMandatoryTypePropertyAnnotator( Annotator $propertyAnnotator ) {
+	public function newMandatoryTypePropertyAnnotator( Annotator $propertyAnnotator ): MandatoryTypePropertyAnnotator {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$mandatoryTypePropertyAnnotator = new MandatoryTypePropertyAnnotator(

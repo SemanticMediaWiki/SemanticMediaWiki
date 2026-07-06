@@ -2,14 +2,15 @@
 
 namespace SMW\SQLStore;
 
-use Onoi\Cache\Cache;
+use MediaWiki\JobQueue\JobFactory;
+use MediaWiki\Title\TitleFactory;
+use SMW\Cache\InMemoryLruCache;
 use SMW\InMemoryPoolCache;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\Job;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Utils\Flag;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,39 +22,23 @@ class RedirectStore {
 
 	const TABLE_NAME = 'smw_fpt_redi';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Flag $equalitySupport;
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var int
-	 */
-	private $equalitySupport = 0;
-
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
+	private bool $isCommandLineMode = false;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Store $store
-	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store, ?Cache $cache = null ) {
-		$this->store = $store;
-		$this->cache = $cache;
-
+	public function __construct(
+		private readonly Store $store,
+		private readonly TitleFactory $titleFactory,
+		private readonly JobFactory $jobFactory,
+		private ?InMemoryLruCache $cache = null,
+	) {
 		if ( $this->cache === null ) {
 			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );
 		}
+		$this->equalitySupport = new Flag( 0 );
 	}
 
 	/**
@@ -61,7 +46,7 @@ class RedirectStore {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function setCommandLineMode( $isCommandLineMode ) {
+	public function setCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
@@ -70,7 +55,7 @@ class RedirectStore {
 	 *
 	 * @param int $equalitySupport
 	 */
-	public function setEqualitySupport( int $equalitySupport ) {
+	public function setEqualitySupport( int $equalitySupport ): void {
 		$this->equalitySupport = new Flag( $equalitySupport );
 	}
 
@@ -83,7 +68,7 @@ class RedirectStore {
 	 * @param string $key
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ): void {
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
@@ -97,7 +82,7 @@ class RedirectStore {
 	 *
 	 * @return bool
 	 */
-	public function isRedirect( $title, $namespace ) {
+	public function isRedirect( $title, $namespace ): bool {
 		return $this->findRedirect( $title, $namespace ) != 0;
 	}
 
@@ -135,7 +120,7 @@ class RedirectStore {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function addRedirect( $id, $title, $namespace ) {
+	public function addRedirect( $id, $title, $namespace ): void {
 		$this->insert( $id, $title, $namespace );
 
 		$hash = $this->makeHash(
@@ -153,7 +138,7 @@ class RedirectStore {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function updateRedirect( $id, $title, $namespace ) {
+	public function updateRedirect( $id, $title, $namespace ): void {
 		$this->deleteRedirect( $title, $namespace );
 
 		if ( !$this->canCreateUpdateJobs() || $this->equalitySupport->is( SMW_EQ_NONE ) ) {
@@ -222,6 +207,7 @@ class RedirectStore {
 		}
 
 		foreach ( $jobs as $job ) {
+			/** @var Job $job */
 			if ( $immediateMode ) {
 				$job->run();
 			} else {
@@ -236,7 +222,7 @@ class RedirectStore {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function deleteRedirect( $title, $namespace ) {
+	public function deleteRedirect( $title, $namespace ): void {
 		$this->delete( $title, $namespace );
 
 		$hash = $this->makeHash(
@@ -247,37 +233,28 @@ class RedirectStore {
 		$this->cache->delete( $hash );
 	}
 
-	private function select( $title, $namespace ) {
+	private function select( $title, $namespace ): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			self::TABLE_NAME,
-			'o_id',
-			[
-				's_title' => $title,
-				's_namespace' => $namespace
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'o_id' ] )
+			->from( self::TABLE_NAME )
+			->where( [ 's_title' => $title, 's_namespace' => $namespace ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row !== false && isset( $row->o_id ) ? (int)$row->o_id : 0;
 	}
 
-	private function insert( $id, $title, $namespace ) {
+	private function insert( $id, $title, $namespace ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			self::TABLE_NAME,
-			[
-				'o_id'
-			],
-			[
-				's_title' => $title,
-				's_namespace' => $namespace,
-				'o_id' => $id
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'o_id' ] )
+			->from( self::TABLE_NAME )
+			->where( [ 's_title' => $title, 's_namespace' => $namespace, 'o_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		// Found a match, avoid duplicates!
 		if ( $row !== false ) {
@@ -287,55 +264,67 @@ class RedirectStore {
 		// Only allow one active redirection from source to target
 		$this->delete( $title, $namespace );
 
-		$connection->insert(
-			self::TABLE_NAME,
-			[
-				's_title' => $title,
+		$connection->newInsertQueryBuilder()
+			->insertInto( self::TABLE_NAME )
+			->row( [
+				's_title'     => $title,
 				's_namespace' => $namespace,
-				'o_id' => $id
-			],
-			__METHOD__
-		);
+				'o_id'        => $id,
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
-	private function delete( $title, $namespace ) {
+	private function delete( $title, $namespace ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$connection->delete(
-			self::TABLE_NAME,
-			[
-				's_title' => $title,
-				's_namespace' => $namespace ],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( self::TABLE_NAME )
+			->where( [ 's_title' => $title, 's_namespace' => $namespace ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
-	private function canCreateUpdateJobs() {
+	private function canCreateUpdateJobs(): bool {
 		return $this->store->getOption( Store::OPT_CREATE_UPDATE_JOB, true ) && $this->store->getOption( 'smwgEnableUpdateJobs' );
 	}
 
-	private function findUpdateJobs( $connection, $query, &$jobs ) {
-		$res = $connection->select(
-			$query['from'],
-			$query['fields'],
-			$query['condition'],
-			__METHOD__,
-			$query['options'],
-			$query['join']
-		);
+	private function findUpdateJobs( $connection, array $query, &$jobs ): void {
+		$queryBuilder = $connection->newSelectQueryBuilder()
+			->select( $query['fields'] )
+			->from( $query['from'][0] )
+			->where( $query['condition'] )
+			->caller( __METHOD__ );
+
+		if ( in_array( SQLStore::ID_TABLE, $query['from'], true ) ) {
+			$queryBuilder->join( SQLStore::ID_TABLE, null, [ 's_id=smw_id' ] );
+		}
+
+		if ( in_array( 'DISTINCT', $query['options'], true ) ) {
+			$queryBuilder->distinct();
+		}
+
+		$res = $queryBuilder->fetchResultSet();
 
 		foreach ( $res as $row ) {
-			$title = Title::makeTitleSafe( $row->ns, $row->t );
+			$title = $this->titleFactory->makeTitleSafe( $row->ns, $row->t );
 
 			if ( $title !== null ) {
-				$jobs[] = new UpdateJob( $title, [ 'origin' => 'RedirectStore' ] );
+				$jobs[] = $this->jobFactory->newJob(
+					'smw.update',
+					[
+						'namespace' => $title->getNamespace(),
+						'title' => $title->getDBkey(),
+						'origin' => 'RedirectStore',
+					]
+				);
 			}
 		}
 
 		$res->free();
 	}
 
-	private function makeHash( $title, $namespace ) {
+	private function makeHash( $title, $namespace ): string {
 		return "$title#$namespace";
 	}
 

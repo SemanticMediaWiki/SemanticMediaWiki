@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,8 +16,8 @@ class LocatedInProperty extends FixtureProperty {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = DIProperty::newFromUserLabel( 'Located in' );
-		$this->property->setPropertyTypeId( '_wpg' );
+		$this->property = Property::newFromUserLabel( 'Located in' );
+		$this->property->setPropertyValueType( '_wpg' );
 	}
 
 }

@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Schema\CompartmentIterator;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -18,48 +18,20 @@ class RangeValueFilter {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
-
-	/**
-	 * @var CompartmentIterator
-	 */
-	private $compartmentIterator;
-
-	/**
-	 * @var UrlArgs
-	 */
-	private $urlArgs;
-
-	/**
-	 * @var
-	 */
-	private $params;
+	private ?UrlArgs $urlArgs = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateEngine $templateEngine
-	 * @param CompartmentIterator $compartmentIterator
-	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, CompartmentIterator $compartmentIterator, array $params ) {
-		$this->templateEngine = $templateEngine;
-		$this->compartmentIterator = $compartmentIterator;
-		$this->params = $params;
+	public function __construct(
+		private TemplateParser $templateParser,
+		private CompartmentIterator $compartmentIterator,
+		private array $params,
+	) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param UrlArgs $urlArgs
-	 * @param string $property
-	 * @param array $values
-	 * @param array $raw
-	 *
-	 * @return string
 	 */
 	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ): string {
 		if ( $values === [] ) {
@@ -69,7 +41,7 @@ class RangeValueFilter {
 		$this->urlArgs = $urlArgs;
 		$defaults = $this->findDefaults();
 
-		$ranges = $this->urlArgs->getArray( 'pv', [] );
+		$ranges = $this->urlArgs->getArray( 'pv' );
 		$ranges = $ranges[$property] ?? [];
 
 		$rangeFilters = [];
@@ -99,7 +71,7 @@ class RangeValueFilter {
 				$v = $raw[$key];
 			}
 
-			$numbers[] = round( $v, $defaults['precision'] );
+			$numbers[] = round( $v ?? 0, $defaults['precision'] );
 		}
 
 		$min = min( $numbers ) - $defaults['uncertainty'];
@@ -143,7 +115,7 @@ class RangeValueFilter {
 		);
 	}
 
-	private function findDefaults() {
+	private function findDefaults(): array {
 		$defaults = [
 			'step_size' => 1,
 			'min_interval' => 5,

@@ -13,15 +13,10 @@ class LinksProcessor {
 	/**
 	 * Internal state for switching SMW link annotations off/on during parsing
 	 * ([[SMW::on]] and [[SMW:off]])
-	 *
-	 * @var bool
 	 */
-	private $isAnnotation = true;
+	private bool $isAnnotation = true;
 
-	/**
-	 * @var bool
-	 */
-	private $isStrictMode = true;
+	private bool $isStrictMode = true;
 
 	/**
 	 * Whether a strict interpretation (e.g [[property::value:partOfTheValue::alsoPartOfTheValue]])
@@ -32,7 +27,7 @@ class LinksProcessor {
 	 *
 	 * @param bool $isStrictMode
 	 */
-	public function isStrictMode( $isStrictMode ) {
+	public function isStrictMode( $isStrictMode ): void {
 		$this->isStrictMode = (bool)$isStrictMode;
 	}
 
@@ -41,7 +36,7 @@ class LinksProcessor {
 	 *
 	 * @return bool
 	 */
-	public function isAnnotation() {
+	public function isAnnotation(): bool {
 		return $this->isAnnotation;
 	}
 
@@ -62,7 +57,7 @@ class LinksProcessor {
 	 *
 	 * @return string
 	 */
-	public static function getRegexpPattern( $linksInValues = false ) {
+	public static function getRegexpPattern( $linksInValues = false ): string {
 		if ( $linksInValues ) {
 			return '/\[\[             # Beginning of the link
 				(?:([^:][^]]*):[=:])+ # Property name (or a list of those)
@@ -88,12 +83,8 @@ class LinksProcessor {
 	 * value and caption (instead of leaving this to a more complex regexp).
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $semanticLink expects (linktext, properties, value|caption)
-	 *
-	 * @return string
 	 */
-	public function preprocess( array $semanticLink ) {
+	public function preprocess( array $semanticLink ): string|array {
 		$value = '';
 		$caption = false;
 
@@ -127,12 +118,8 @@ class LinksProcessor {
 	 * Function strips out the semantic attributes from a wiki link.
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $semanticLink expects (linktext, properties, value|caption)
-	 *
-	 * @return string
 	 */
-	public function process( array $semanticLink ) {
+	public function process( array $semanticLink ): string|array {
 		$valueCaption = false;
 		$property = '';
 		$value = '';
@@ -186,7 +173,7 @@ class LinksProcessor {
 		return [ $properties, $value, $valueCaption ];
 	}
 
-	private function setAnnotation( $value ) {
+	private function setAnnotation( string $value ): string {
 		switch ( $value ) {
 			case 'on':
 				$this->isAnnotation = true;

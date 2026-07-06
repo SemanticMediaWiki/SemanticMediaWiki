@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author mwjames
  */
 class DisposeOutdatedEntitiesTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $runnerFactory;
 	private $spyMessageReporter;
@@ -49,12 +46,12 @@ class DisposeOutdatedEntitiesTest extends SMWIntegrationTestCase {
 			$maintenanceRunner->run()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Removing outdated and invalid entities',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Removing query links',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

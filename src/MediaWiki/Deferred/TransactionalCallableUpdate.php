@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Deferred;
 
-use Closure;
+use Exception;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Site;
 
@@ -18,43 +18,20 @@ use SMW\Site;
  */
 class TransactionalCallableUpdate extends CallableUpdate {
 
-	/**
-	 * @var Database|null
-	 */
-	private $connection;
+	private bool $onTransactionIdle = false;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private ?int $transactionTicket = null;
 
-	/**
-	 * @var int|null
-	 */
-	private $transactionTicket = null;
+	private array $preCommitableCallbacks = [];
 
-	/**
-	 * @var array
-	 */
-	private $preCommitableCallbacks = [];
+	private array $postCommitableCallbacks = [];
 
-	/**
-	 * @var array
-	 */
-	private $postCommitableCallbacks = [];
-
-	/**
-	 * @var bool
-	 */
-	private $autoCommit = false;
+	private bool $autoCommit = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param callable $callback
-	 * @param Database $connection
 	 */
-	public static function newUpdate( callable $callback, Database $connection ) {
+	public static function newUpdate( callable $callback, Database $connection ): self {
 		$transactionalCallableUpdate = new self( $callback, $connection );
 
 		$transactionalCallableUpdate->isCommandLineMode(
@@ -66,13 +43,12 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param callable|null $callback
-	 * @param Database|null $connection
 	 */
-	public function __construct( ?callable $callback = null, ?Database $connection = null ) {
+	public function __construct(
+		?callable $callback = null,
+		private readonly ?Database $connection = null,
+	) {
 		parent::__construct( $callback );
-		$this->connection = $connection;
 		$this->connection->onTransactionResolution( [ $this, 'cancelOnRollback' ], __METHOD__ );
 	}
 
@@ -83,14 +59,14 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 *
 	 * @since 2.5
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function runAsAutoCommit() {
+	public function runAsAutoCommit(): void {
 		$this->autoCommit = true;
 	}
 
@@ -105,8 +81,8 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function commitWithTransactionTicket() {
-		if ( $this->isCommandLineMode === false && $this->isDeferrableUpdate === true ) {
+	public function commitWithTransactionTicket(): void {
+		if ( !$this->isCommandLineMode && $this->isDeferrableUpdate ) {
 			$this->transactionTicket = $this->connection->getEmptyTransactionTicket( $this->getOrigin() );
 		}
 	}
@@ -116,14 +92,9 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * to be executed before the source callback.
 	 *
 	 * @since 3.0
-	 *
-	 * @param string $fname
-	 * @param Closure $callback
 	 */
-	public function addPreCommitableCallback( $fname, callable $callback ) {
-		if ( is_callable( $callback ) ) {
-			$this->preCommitableCallbacks[$fname] = $callback;
-		}
+	public function addPreCommitableCallback( string $fname, callable $callback ): void {
+		$this->preCommitableCallbacks[$fname] = $callback;
 	}
 
 	/**
@@ -131,24 +102,21 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * to be executed after the source callback.
 	 *
 	 * @since 3.0
-	 *
-	 * @param string $fname
-	 * @param Closure $callback
 	 */
-	public function addPostCommitableCallback( $fname, callable $callback ) {
-		if ( is_callable( $callback ) ) {
-			$this->postCommitableCallbacks[$fname] = $callback;
-		}
+	public function addPostCommitableCallback( string $fname, callable $callback ): void {
+		$this->postCommitableCallbacks[$fname] = $callback;
 	}
 
 	/**
 	 * @see DeferrableUpdate::doUpdate
 	 *
 	 * @since 3.0
+	 * @throws Exception
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		if ( $this->onTransactionIdle ) {
-			return $this->runOnTransactionIdle();
+			$this->runOnTransactionIdle();
+			return;
 		}
 
 		$this->runPreCommitCallbacks();
@@ -157,14 +125,14 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		$autoTrx = null;
 
 		if ( $this->autoCommit ) {
-			$this->logger->info( [ 'DeferrableUpdate', 'Transactional, as auto commit', 'Update' ] );
+			$this->logger->info( 'DeferrableUpdate Transactional, as auto commit Update' );
 			$autoTrx = $this->connection->getFlag( DBO_TRX );
 			$this->connection->clearFlag( DBO_TRX );
 		}
 
 		try {
 			parent::doUpdate();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 		}
 
 		if ( $this->autoCommit && $autoTrx ) {
@@ -185,72 +153,96 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	/**
 	 * @since 3.0
 	 */
-	public function cancelOnRollback( $trigger ) {
+	public function cancelOnRollback( $trigger ): void {
 		if ( $trigger === Database::TRIGGER_ROLLBACK ) {
 			$this->callback = [ $this, 'emptyCancelCallback' ];
 		}
 	}
 
-	protected function registerUpdate( $update ) {
+	protected function registerUpdate( $update ): void {
 		if ( $this->onTransactionIdle ) {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Transactional', 'Added: {origin} (onTransactionIdle)' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
+				'DeferrableUpdate Transactional Added: {origin} (onTransactionIdle)',
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin()
+				]
 			);
 
-			return $this->connection->onTransactionCommitOrIdle( function () use( $update ) {
+			$this->connection->onTransactionCommitOrIdle( function () use( $update ): void {
 				$update->onTransactionIdle = false;
 				parent::registerUpdate( $update );
 			} );
+			return;
 		}
 
 		parent::registerUpdate( $update );
 	}
 
-	protected function loggableContext() {
+	protected function loggableContext(): array {
 		return parent::loggableContext() + [
 			'transactionTicket' => $this->transactionTicket
 		];
 	}
 
-	private function runOnTransactionIdle() {
+	private function runOnTransactionIdle(): void {
 		$fname = __METHOD__;
-		$this->connection->onTransactionCommitOrIdle( function () use ( $fname ) {
+		$this->connection->onTransactionCommitOrIdle( function () use ( $fname ): void {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (onTransactionIdle)' ],
-				[ 'method' => $fname, 'role' => 'developer', 'origin' => $this->getOrigin() ]
+				'DeferrableUpdate Transactional Update: {origin} (onTransactionIdle)',
+				[
+					'method' => $fname,
+					'role' => 'developer',
+					'origin' => $this->getOrigin()
+				]
 			);
 			$this->onTransactionIdle = false;
 			$this->doUpdate();
 		} );
 	}
 
-	private function runPreCommitCallbacks() {
+	private function runPreCommitCallbacks(): void {
 		foreach ( $this->preCommitableCallbacks as $fname => $preCallback ) {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (pre-commitable callback: {fname})' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fname' => $fname ]
+				'DeferrableUpdate Transactional '
+					. 'Update: {origin} (pre-commitable callback: {fname})',
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin(),
+					'fname' => $fname
+				]
 			);
 
 			call_user_func( $preCallback, $this->transactionTicket );
 		}
 	}
 
-	private function runPostCommitCallbacks() {
+	private function runPostCommitCallbacks(): void {
 		foreach ( $this->postCommitableCallbacks as $fname => $postCallback ) {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (post-commitable callback: {fname})' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fname' => $fname ]
+				'DeferrableUpdate Transactional '
+					. 'Update: {origin} (post-commitable callback: {fname})',
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin(),
+					'fname' => $fname
+				]
 			);
 
 			call_user_func( $postCallback, $this->transactionTicket );
 		}
 	}
 
-	protected function emptyCancelCallback() {
+	protected function emptyCancelCallback(): void {
 		$this->logger->info(
-			[ 'DeferrableUpdate', 'cancelOnRollback' ],
-			[ 'role' => 'developer', 'method' => __METHOD__ ]
+			'DeferrableUpdate cancelOnRollback',
+			[
+				'role' => 'developer',
+				'method' => __METHOD__
+			]
 		);
 	}
 

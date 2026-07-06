@@ -2,17 +2,18 @@
 
 namespace SMW\Query\Result;
 
+use RuntimeException;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * Returns the result content (DI objects) for a single PrintRequest, representing
@@ -27,33 +28,15 @@ use SMWDIBoolean as DIBoolean;
  */
 class FieldItemFinder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ?QueryToken $queryToken = null;
 
 	/**
-	 * @var PrintRequest
+	 * @var WikiPage[]
 	 */
-	private $printRequest;
+	private array $dataItems = [];
 
 	/**
-	 * @var QueryToken
-	 */
-	private $queryToken;
-
-	/**
-	 * @var DIWikiPage[]
-	 */
-	private $dataItems = [];
-
-	/**
-	 * @var ItemFetcher
-	 */
-	private $itemFetcher;
-
-	/**
-	 * @var bool|array
+	 * @var bool|string
 	 */
 	private static $catCacheObj = false;
 
@@ -64,18 +47,14 @@ class FieldItemFinder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param ItemFetcher|null $itemFetcher
-	 * @param PrintRequest|null $printRequest
 	 */
-	public function __construct( Store $store, ?ItemFetcher $itemFetcher = null, ?PrintRequest $printRequest = null ) {
-		$this->store = $store;
-		$this->printRequest = $printRequest;
-		$this->itemFetcher = $itemFetcher;
-
+	public function __construct(
+		private readonly Store $store,
+		private ?ItemFetcher $itemFetcher = null,
+		private ?PrintRequest $printRequest = null,
+	) {
 		if ( $this->itemFetcher === null ) {
-			$this->itemFetcher = new ItemFetcher( $store );
+			$this->itemFetcher = new ItemFetcher( $this->store );
 		}
 	}
 
@@ -84,7 +63,7 @@ class FieldItemFinder {
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function setPrintRequest( PrintRequest $printRequest ) {
+	public function setPrintRequest( PrintRequest $printRequest ): void {
 		$this->printRequest = $printRequest;
 		$this->itemFetcher->setPrintRequest( $this->printRequest );
 	}
@@ -94,7 +73,7 @@ class FieldItemFinder {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( ?QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ): void {
 		if ( $queryToken === null ) {
 			return;
 		}
@@ -113,11 +92,9 @@ class FieldItemFinder {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @param DataItem[]|[]
+	 * @return DataItem[]|array
 	 */
-	public function findFor( DataItem $dataItem ) {
-		$content = [];
-
+	public function findFor( DataItem $dataItem ): array {
 		if ( $this->printRequest === null ) {
 			throw new RuntimeException( "Missing a `PrintRequest` instance!" );
 		}
@@ -138,7 +115,7 @@ class FieldItemFinder {
 			// Rely on the prefetch
 			self::$catCache = $this->itemFetcher->fetch(
 				[ $dataItem ],
-				new DIProperty( '_INST' ),
+				new Property( '_INST' ),
 				$options
 			);
 
@@ -146,7 +123,7 @@ class FieldItemFinder {
 
 			$limit = $this->printRequest->getParameter( 'limit' );
 
-			return ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, $limit );
+			return ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, (int)$limit );
 		}
 
 		// Request to whether current element is in given category (Boolean printout).
@@ -154,8 +131,9 @@ class FieldItemFinder {
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CCAT ) ) {
 			if ( self::$catCacheObj !== $dataItem->getHash() ) {
 				self::$catCache = $this->store->getPropertyValues(
+					// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 					$dataItem,
-					new DIProperty( '_INST' )
+					new Property( '_INST' )
 				);
 				self::$catCacheObj = $dataItem->getHash();
 			}
@@ -170,7 +148,7 @@ class FieldItemFinder {
 				}
 			}
 
-			return [ new DIBoolean( $found ) ];
+			return [ new Boolean( $found ) ];
 		}
 
 		// Request all property values of a certain attribute of the current element.
@@ -178,7 +156,7 @@ class FieldItemFinder {
 			return $this->getResultsForProperty( $dataItem );
 		}
 
-		return $content;
+		return [];
 	}
 
 	/**
@@ -191,7 +169,7 @@ class FieldItemFinder {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function getRequestOptions( $useLimit = true ) {
+	public function getRequestOptions( $useLimit = true ): ?RequestOptions {
 		$limit = $useLimit ? $this->printRequest->getParameter( 'limit' ) : false;
 		$offset = $useLimit ? $this->printRequest->getParameter( 'offset' ) : false;
 		$order = trim( $this->printRequest->getParameter( 'order' ) );
@@ -203,11 +181,11 @@ class FieldItemFinder {
 			$options = new RequestOptions();
 
 			if ( $limit !== false ) {
-				$options->limit = trim( $limit );
+				$options->limit = (int)trim( $limit );
 			}
 
 			if ( $offset !== false ) {
-				$options->offset = trim( $offset );
+				$options->offset = (int)trim( $offset );
 			}
 
 			// Expecting a natural sort behaviour (n-asc, n-desc)?
@@ -228,7 +206,7 @@ class FieldItemFinder {
 		return $options;
 	}
 
-	private function getResultsForProperty( $dataItem ) {
+	private function getResultsForProperty( DataItem $dataItem ): array {
 		$content = $this->fetchContent(
 			$dataItem
 		);
@@ -255,16 +233,28 @@ class FieldItemFinder {
 		// Replace content with specific content from a Container/MultiValue
 		foreach ( $content as $diContainer ) {
 
+			$property = $propertyValue->getDataItem();
+			if ( !$property instanceof Property ) {
+				return [];
+			}
+
 			/* AbstractMultiValue */
 			$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$diContainer,
-				$propertyValue->getDataItem()
+				$property
 			);
 
 			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
 
-			if ( $multiValue instanceof MonolingualTextValue && $lang !== false && ( $textValue = $multiValue->getTextValueByLanguageCode( $lang ) ) !== null ) {
-
+			if ( $multiValue instanceof MonolingualTextValue && $lang !== false ) {
+				$textValue = $multiValue->getTextValueByLanguageCode( $lang );
+			} else {
+				$textValue = null;
+			}
+			if ( $multiValue instanceof MonolingualTextValue &&
+				$lang !== false &&
+				$textValue !== null
+			) {
 				// Return the text representation without a language reference
 				// (tag) since the value has been filtered hence only matches
 				// that language
@@ -274,8 +264,11 @@ class FieldItemFinder {
 				// find the correct PropertyDataItem (_TEXT;_LCODE) position
 				// to match the DI
 				$this->printRequest->setParameter( 'index', 1 );
-			} elseif ( $lang === false && $index !== false && ( $dataItemByRecord = $multiValue->getDataItemByIndex( $index ) ) !== null ) {
-				$newcontent[] = $this->itemFetcher->highlightTokens( $dataItemByRecord );
+			} elseif ( $lang === false && $index !== false ) {
+				$dataItemByRecord = $multiValue->getDataItemByIndex( $index );
+				if ( $dataItemByRecord !== null ) {
+					$newcontent[] = $this->itemFetcher->highlightTokens( $dataItemByRecord );
+				}
 			}
 		}
 
@@ -295,12 +288,12 @@ class FieldItemFinder {
 		return $content;
 	}
 
-	private function isMultiValueWithParameter( $parameter ) {
+	private function isMultiValueWithParameter( string $parameter ): bool {
 		return DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
 		$this->printRequest->getParameter( $parameter ) !== false;
 	}
 
-	private function fetchContent( DataItem $dataItem ) {
+	private function fetchContent( DataItem $dataItem ): array {
 		$dataValue = $this->printRequest->getData();
 		$dataItems = [ $dataItem ];
 
@@ -320,22 +313,25 @@ class FieldItemFinder {
 		$requestOptions->isChain = false;
 		$requestOptions->isFirstChain = false;
 
-		// If it is a chain then try to find a connected DIWikiPage subject that
+		// If it is a chain then try to find a connected WikiPage subject that
 		// matches the property on the chained PrintRequest.
 		// For example, Number.Date.SomeThing will not return any meaningful results
-		// because Number will return a DINumber object and not a DIWikiPage.
+		// because Number will return a DINumber object and not a WikiPage.
 		// If on the other hand Has page.Number (with Number being the Last and
 		// `Has page` is of type Page) then the iteration will lookup on results
 		// for `Has page` and try to match a Number annotation on the results
 		// retrieved from `Has page`.
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-			$requestOptions->isChain = $dataValue->getDataItem()->getString();
+			$requestOptions->isChain = (bool)$dataValue->getDataItem()->getString();
 			$isFirstChain = true;
 
 			// Output of the previous iteration is the input for the next iteration
 			foreach ( $dataValue->getPropertyChainValues() as $pv ) {
 				$requestOptions->isFirstChain = $isFirstChain;
-				$dataItems = $this->itemFetcher->fetch( $dataItems, $pv->getDataItem(), $requestOptions );
+				$property = $pv->getDataItem();
+				$dataItems = ( $property instanceof Property ) ?
+					$this->itemFetcher->fetch( $dataItems, $property, $requestOptions ) :
+					[];
 
 				// If the results return empty then it means that for this element
 				// the chain has no matchable items hence we stop
@@ -350,9 +346,14 @@ class FieldItemFinder {
 			$requestOptions->isFirstChain = false;
 		}
 
+		$property = $dataValue->getDataItem();
+		if ( !$property instanceof Property ) {
+			return [];
+		}
+
 		$content = $this->itemFetcher->fetch(
 			$dataItems,
-			$dataValue->getDataItem(),
+			$property,
 			$requestOptions
 		);
 

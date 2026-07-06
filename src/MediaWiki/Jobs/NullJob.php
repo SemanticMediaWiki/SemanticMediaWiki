@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,7 +27,7 @@ class NullJob extends Job {
 	 *
 	 * @since  2.5
 	 */
-	public function run() {
+	public function run(): bool {
 		return true;
 	}
 
@@ -36,7 +36,7 @@ class NullJob extends Job {
 	 *
 	 * @since  2.5
 	 */
-	public function insert() {
+	public function insert(): void {
 	}
 
 }

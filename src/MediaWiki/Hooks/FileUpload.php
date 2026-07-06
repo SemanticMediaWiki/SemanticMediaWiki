@@ -3,14 +3,16 @@
 namespace SMW\MediaWiki\Hooks;
 
 use File;
-use Hooks;
+use MediaWiki\Hook\FileUploadHook;
 use MediaWiki\HookContainer\HookContainer;
-use ParserOptions;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\User\User;
 use SMW\Localizer\Localizer;
-use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\Jobs\ParserDataFactory;
+use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\MediaWiki\PageCreator;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use User;
+use SMW\Property\AnnotatorFactory;
 
 /**
  * Fires when a local file upload occurs
@@ -22,73 +24,63 @@ use User;
  *
  * @author mwjames
  */
-class FileUpload implements HookListener {
+class FileUpload implements FileUploadHook {
 
 	/**
-	 * @var NamespaceExaminer
+	 * @since 7.0.0
 	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var HookContainer
-	 */
-	private $hookContainer;
-
 	public function __construct(
-		NamespaceExaminer $namespaceExaminer,
-		HookContainer $hookContainer
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly HookContainer $hookContainer,
+		private readonly PageCreator $pageCreator,
+		private readonly ParserDataFactory $parserDataFactory,
+		private readonly MwCollaboratorFactory $mwCollaboratorFactory,
+		private readonly AnnotatorFactory $propertyAnnotatorFactory,
 	) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->hookContainer = $hookContainer;
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param File $file
-	 * @param bool $reUploadStatus
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( File $file, $reUploadStatus = false ) {
+	public function onFileUpload( $file, $reupload, $hasDescription ) {
 		if ( $this->canProcess( $file->getTitle() ) ) {
-			$this->doProcess( $file, $reUploadStatus );
+			$this->doProcess( $file, (bool)$reupload );
 		}
 
 		return true;
 	}
 
-	private function canProcess( $title ) {
+	private function canProcess( $title ): bool {
 		return $title !== null && $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function doProcess( $file, $reUploadStatus = false ) {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$filePage = $this->makeFilePage( $file, $reUploadStatus );
+	private function doProcess( File $file, bool $reUploadStatus = false ): bool {
+		$filePage = $this->makeFilePage( $file );
 
 		// Avoid WikiPage.php: The supplied ParserOptions are not safe to cache.
 		// Fix the options or set $forceParse = true.
 		$forceParse = true;
 
-		$parserData = $applicationFactory->newParserData(
+		$parserData = $this->parserDataFactory->newParserData(
 			$file->getTitle(),
 			$filePage->getParserOutput( $this->makeCanonicalParserOptions(), null, $forceParse )
 		);
 
-		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
-			$filePage
+		$pageInfoProvider = $this->mwCollaboratorFactory->newPageInfoProvider(
+			$filePage,
+			null,
+			null,
+			$reUploadStatus
 		);
-
-		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
 		$semanticData = $parserData->getSemanticData();
 		$semanticData->setOption( 'is_fileupload', true );
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
+		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$semanticData
 		);
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
+		$propertyAnnotator = $this->propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
 			$propertyAnnotator,
 			$pageInfoProvider
 		);
@@ -100,20 +92,18 @@ class FileUpload implements HookListener {
 
 		$parserData->setOrigin( 'FileUpload' );
 
-		$parserData->pushSemanticDataToParserOutput();
+		$parserData->copyToParserOutput();
 		$parserData->updateStore( true );
 
 		return true;
 	}
 
-	private function makeFilePage( $file, $reUploadStatus ) {
-		$filePage = ApplicationFactory::getInstance()->newPageCreator()->createFilePage(
+	private function makeFilePage( File $file ) {
+		$filePage = $this->pageCreator->createFilePage(
 			$file->getTitle()
 		);
 
 		$filePage->setFile( $file );
-		// TODO: Illegal dynamic property (#5421)
-		$filePage->smwFileReUploadStatus = $reUploadStatus;
 
 		return $filePage;
 	}

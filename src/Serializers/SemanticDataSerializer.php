@@ -4,7 +4,9 @@ namespace SMW\Serializers;
 
 use OutOfBoundsException;
 use Serializers\Serializer;
-use SMW\SemanticData;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,19 +17,35 @@ use SMW\SemanticData;
 class SemanticDataSerializer implements Serializer {
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function __construct( private readonly Store $store ) {
+	}
+
+	/**
 	 * @see Serializer::serialize
 	 *
 	 * @since  1.9
 	 */
-	public function serialize( $semanticData ) {
+	public function serialize( $semanticData, $includeInverse = false ): array {
 		if ( !$semanticData instanceof SemanticData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
-		return $this->doSerialize( $semanticData ) + [ 'serializer' => __CLASS__, 'version' => 2 ];
+		$data = $this->doSerialize( $semanticData );
+
+		// If inverse properties are requested, we serialize them as well.
+		if ( $includeInverse ) {
+			$data['data'] = array_merge(
+				$data['data'],
+				$this->doSerializeInverseProperties( $semanticData )
+			);
+		}
+
+		return $data + [ 'serializer' => __CLASS__, 'version' => 2 ];
 	}
 
-	private function doSerialize( SemanticData $semanticData ) {
+	private function doSerialize( SemanticData $semanticData ): array {
 		$data = [
 			'subject' => $semanticData->getSubject()->getSerialization(),
 			'data'    => $this->doSerializeProperty( $semanticData )
@@ -45,21 +63,64 @@ class SemanticDataSerializer implements Serializer {
 	}
 
 	/**
-	 * Build property and dataItem serialization record
+	 * Serializes all direct properties of a given semantic subject,
+	 * including the property name, its associated data item and direction flag.
 	 *
-	 * @return array
+	 * @param SemanticData $semanticData The semantic data of the current subject.
+	 * @return array List of serialized direct properties with their values.
 	 */
-	private function doSerializeProperty( $semanticData ) {
+	private function doSerializeProperty( SemanticData $semanticData ): array {
 		$properties = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
 			$properties[] = [
 				'property' => $property->getSerialization(),
-				'dataitem' => $this->doSerializeDataItem( $semanticData, $property )
+				'dataitem' => $this->doSerializeDataItem( $semanticData, $property ),
+				'direction'	=> 'direct'
 			];
 		}
 
 		return $properties;
+	}
+
+	/**
+	 * Serializes all inverse properties for which the current subject
+	 * is the object, including property name, subjects and direction flag.
+	 *
+	 * @param SemanticData $semanticData The semantic data of the current subject.
+	 * @return array List of serialized inverse properties and referencing subjects.
+	 */
+	private function doSerializeInverseProperties( SemanticData $semanticData ): array {
+		$inverseData = [];
+		$dataItem = $semanticData->getSubject();
+
+		$store = $this->store;
+		$incomingProperties = $store->getInProperties( $dataItem );
+		$semanticDataIncoming = new SemanticData( $dataItem );
+
+		if ( count( $incomingProperties ?? [] ) > 0 ) {
+			foreach ( $incomingProperties as $property ) {
+				$subjects = $store->getPropertySubjects( $property, $dataItem );
+
+				if ( $subjects === [] ) {
+					continue;
+				}
+
+				foreach ( $subjects as $subject ) {
+					$semanticDataIncoming->addPropertyObjectValue( $property, $subject );
+				}
+			}
+
+			foreach ( $semanticDataIncoming->getProperties() as $property ) {
+				$inverseData[] = [
+					'property' => $property->getSerialization(),
+					'dataitem' => $this->doSerializeDataItem( $semanticDataIncoming, $property ),
+					'direction' => 'inverse'
+				];
+			}
+		}
+
+		return $inverseData;
 	}
 
 	/**
@@ -72,7 +133,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	private function doSerializeDataItem( $semanticData, $property ) {
+	private function doSerializeDataItem( SemanticData $semanticData, Property $property ): array {
 		$dataItems = [];
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
@@ -90,7 +151,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	protected function doSerializeSubSemanticData( $subSemanticData ) {
+	protected function doSerializeSubSemanticData( $subSemanticData ): array {
 		$subobjects = [];
 
 		foreach ( $subSemanticData as $semanticData ) {

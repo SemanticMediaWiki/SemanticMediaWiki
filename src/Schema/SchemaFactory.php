@@ -2,8 +2,10 @@
 
 namespace SMW\Schema;
 
+use JsonSchema\Validator;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\Schema\Exception\SchemaConstructionFailedException;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
@@ -18,23 +20,12 @@ use SMW\Store;
  */
 class SchemaFactory {
 
-	/**
-	 * @var
-	 */
-	private $types = [];
-
-	/**
-	 * @var SchemaTypes
-	 */
-	private $schemaTypes;
+	private ?SchemaTypes $schemaTypes = null;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $types
 	 */
-	public function __construct( array $types = [] ) {
-		$this->types = $types;
+	public function __construct( private readonly array $types = [] ) {
 	}
 
 	/**
@@ -55,9 +46,9 @@ class SchemaFactory {
 	 *
 	 * @param string $type
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getType( $type ) {
+	public function getType( string $type ): array {
 		return $this->getSchemaTypes()->getType( $type );
 	}
 
@@ -66,12 +57,17 @@ class SchemaFactory {
 	 *
 	 * @param Schema|null $schema
 	 */
-	public function pushChangePropagationDispatchJob( ?Schema $schema = null ) {
+	public function pushChangePropagationDispatchJob( ?Schema $schema = null ): void {
 		if ( $schema === null ) {
 			return;
 		}
 
-		$type = $this->getType( $schema->get( 'type' ) );
+		$typeName = $schema->get( 'type' );
+		if ( !is_string( $typeName ) || $typeName === '' ) {
+			return;
+		}
+
+		$type = $this->getType( $typeName );
 
 		if ( !isset( $type['change_propagation'] ) || $type['change_propagation'] === false ) {
 			return;
@@ -81,7 +77,7 @@ class SchemaFactory {
 			$type['change_propagation'] = (array)$type['change_propagation'];
 		}
 
-		$subject = DIWikiPage::newFromText( $schema->getName(), SMW_NS_SCHEMA );
+		$subject = WikiPage::newFromText( $schema->getName(), SMW_NS_SCHEMA );
 
 		foreach ( $type['change_propagation'] as $property ) {
 			$params = [
@@ -105,7 +101,8 @@ class SchemaFactory {
 	 */
 	public function newSchema( $name, $data ) {
 		if ( is_string( $data ) ) {
-			if ( ( $data = json_decode( $data, true ) ) === null || json_last_error() !== JSON_ERROR_NONE ) {
+			$data = json_decode( $data, true );
+			if ( $data === null || json_last_error() !== JSON_ERROR_NONE ) {
 				throw new RuntimeException( "Invalid JSON format." );
 			}
 		}
@@ -155,7 +152,7 @@ class SchemaFactory {
 		return new SchemaFinder(
 			$store,
 			$applicationFactory->getPropertySpecificationLookup(),
-			$applicationFactory->getCache()
+			$applicationFactory->getObjectCache()
 		);
 	}
 
@@ -164,9 +161,9 @@ class SchemaFactory {
 	 *
 	 * @return SchemaValidator
 	 */
-	public function newSchemaValidator() {
+	public function newSchemaValidator(): SchemaValidator {
 		return new SchemaValidator(
-			ApplicationFactory::getInstance()->create( 'JsonSchemaValidator' )
+			new Validator()
 		);
 	}
 
@@ -179,20 +176,16 @@ class SchemaFactory {
 		return new SchemaFilterFactory();
 	}
 
-	private function newSchemaTypes( array $types ) {
+	private function newSchemaTypes( array $types ): SchemaTypes {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
-
-		if ( $types === [] ) {
-			$types = $settings->get( 'smwgSchemaTypes' );
-		}
 
 		$schemaTypes = new SchemaTypes(
 			$settings->mung( 'smwgDir', '/data/schema' )
 		);
 
-		$schemaTypes->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$schemaTypes->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		$schemaTypes->registerSchemaTypes( $types );

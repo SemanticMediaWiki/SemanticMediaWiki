@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\Linker\LinkTarget;
-use MediaWiki\User\UserIdentity;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\MediaWiki\HookListener;
+use MediaWiki\Hook\PageMoveCompleteHook;
+use MediaWiki\Title\Title;
+use SMW\EventDispatcher\EventDispatcher;
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * PageMoveComplete occurs whenever a request to move an article
@@ -23,40 +22,27 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class PageMoveComplete implements HookListener {
-
-	use EventDispatcherAwareTrait;
+class PageMoveComplete implements PageMoveCompleteHook {
 
 	/**
-	 * @var NamespaceExaminer
+	 * @since 7.0.0
 	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @since  1.9
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly Store $store,
+		private readonly EventDispatcher $eventDispatcher,
+	) {
 	}
 
 	/**
-	 * @since 1.9
+	 * @since 7.0.0
 	 */
-	public function process(
-		LinkTarget $oldTitle,
-		LinkTarget $newTitle,
-		UserIdentity $user,
-		int $oldId,
-		int $newId
-	): bool {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		// Delete all data for a non-enabled target NS
-		if ( !$this->namespaceExaminer->isSemanticEnabled( $newTitle->getNamespace() ) || $newId == 0 ) {
-			$applicationFactory->getStore()->deleteSubject(
-				$oldTitle
+	public function onPageMoveComplete( $old, $new, $user, $pageid, $redirid, $reason, $revision ) {
+		// Delete all data for a non-enabled target NS, or when the move
+		// did not leave a redirect behind ($redirid is 0 in that case).
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $new->getNamespace() ) || $redirid == 0 ) {
+			$this->store->deleteSubject(
+				Title::newFromLinkTarget( $old )
 			);
 		}
 
@@ -65,8 +51,8 @@ class PageMoveComplete implements HookListener {
 		];
 
 		foreach ( [ 'InvalidateResultCache', 'InvalidateEntityCache' ] as $event ) {
-			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $oldTitle ] );
-			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $newTitle ] );
+			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $old ] );
+			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $new ] );
 		}
 
 		return true;

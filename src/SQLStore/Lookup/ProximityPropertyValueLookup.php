@@ -2,15 +2,16 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDITime as DITime;
-use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,43 +22,34 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class ProximityPropertyValueLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
-	 * @param $search
+	 * @param Property $property
+	 * @param string $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
 	 */
-	public function lookup( DIProperty $property, $search, RequestOptions $opts ) {
+	public function lookup( Property $property, string $search, RequestOptions $opts ): array {
 		return $this->fetchFromTable( $property, $search, $opts );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
 	 */
-	public function fetchFromTable( DIProperty $property, $search, RequestOptions $opts ) {
-		$options = [];
+	public function fetchFromTable( Property $property, string $search, RequestOptions $opts ): array {
 		$list = [];
 
 		$table = $this->store->findPropertyTableID(
@@ -65,13 +57,9 @@ class ProximityPropertyValueLookup {
 		);
 
 		$pid = $this->store->getObjectIds()->getSMWPropertyID( $property );
-		$continueOffset = 0;
 
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
-
-		$query->type( 'SELECT' );
-		$query->table( $table );
+		$qb = $connection->newSelectQueryBuilder();
 
 		[ $field, $diType ] = $this->getField( $property );
 
@@ -80,47 +68,39 @@ class ProximityPropertyValueLookup {
 		$offset = $opts->getOffset();
 		$sort = $opts->sort;
 
-		$options = [
-			'LIMIT' => $limit,
-			'OFFSET' => $offset
-		];
-
 		if ( $diType === DataItem::TYPE_WIKIPAGE ) {
-			return $this->fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset );
+			return $this->fetchFromIDTable( $qb, $pid, $table, $limit, $offset, $search, $sort );
 		}
 
-		$query->field( $field );
+		$qb->from( $table )
+			->select( $field );
 
 		if ( trim( $search ) !== '' ) {
 			if ( $diType === DataItem::TYPE_BLOB || $diType === DataItem::TYPE_URI ) {
-				$this->build_like( $query, $field, $search );
+				$this->build_like( $qb, $connection, $field, $search );
 			} else {
-				$query->condition( $query->like( $field, '%' . $search . '%' ) );
+				$qb->andWhere( "$field LIKE " . $connection->addQuotes( '%' . $search . '%' ) );
 			}
 		} else {
-			$query->condition( $query->neq( $field, 'NULL' ) );
+			$qb->andWhere( "$field IS NOT NULL" );
 		}
 
 		if ( $this->isFixedPropertyTable( $table ) === false ) {
-			$query->condition( $query->asAnd( $query->eq( 'p_id', $pid ) ) );
+			$qb->andWhere( [ 'p_id' => $pid ] );
 
 			// To make the MySQL query planner happy to pick the right index!
-			$query->field( 'p_id' );
+			$qb->select( 'p_id' );
 		}
 
 		if ( $sort ) {
-			$options['ORDER BY'] = "$field $sort";
+			$qb->orderBy( $field, $sort );
 		}
 
-		$options['DISTINCT'] = true;
+		$qb->distinct()
+			->limit( $limit )
+			->offset( $offset );
 
-		$query->options( $options );
-
-		$res = $connection->query(
-			$query,
-			__METHOD__,
-			ISQLPlatform::QUERY_CHANGE_NONE
-		);
+		$res = $qb->caller( __METHOD__ )->fetchResultSet();
 
 		foreach ( $res as $row ) {
 
@@ -130,7 +110,9 @@ class ProximityPropertyValueLookup {
 			// transformed it!
 			if ( $diType === DataItem::TYPE_TIME ) {
 				$value = DataValueFactory::getInstance()->newDataValueByItem(
-					DITime::doUnserialize( $value ), $property )->getWikiValue();
+					Time::doUnserialize( $value ),
+					$property
+				)->getWikiValue();
 			}
 
 			$list[] = $value;
@@ -139,23 +121,33 @@ class ProximityPropertyValueLookup {
 		return $list;
 	}
 
-	private function fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset ) {
+	/**
+	 * @return mixed[][]|string[]
+	 */
+	private function fetchFromIDTable(
+		SelectQueryBuilder $qb,
+		int $pid,
+		?string $table,
+		int $limit,
+		int $offset,
+		string $search,
+		string|false $sort
+	): array {
 		$connection = $this->store->getConnection( 'mw.db' );
-		$continueOffset = 0;
 		$res = [];
 
 		if ( trim( $search ) !== '' ) {
-			$this->build_like( $query, 'smw_sortkey', $search );
+			$this->build_like( $qb, $connection, 'smw_sortkey', $search );
 		}
 
-		if ( $sort ) {
-			$options['ORDER BY'] = "smw_title $sort";
+		if ( is_string( $sort ) && $sort !== '' ) {
+			$qb->orderBy( 'smw_title', $sort );
 		}
 
-		$options['DISTINCT'] = true;
-
-		$query->options( $options );
-		$query->fields( [ 'smw_id', 'smw_title', 'smw_sortkey' ] );
+		$qb->distinct()
+			->limit( $limit )
+			->offset( $offset )
+			->select( [ 'smw_id', 'smw_title', 'smw_sortkey' ] );
 
 		// Benchmarks showed that different select schema yield better results
 		// for the following use cases
@@ -171,27 +163,25 @@ class ProximityPropertyValueLookup {
 			 * 	LIMIT 11
 			 */
 
-			$query->table( SQLStore::ID_TABLE );
+			$qb->from( SQLStore::ID_TABLE );
 
-			$query->join(
-				'INNER JOIN',
-				'( SELECT o_id FROM ' . $connection->tableName( $table ) .
-					' WHERE p_id=' . $connection->addQuotes( $pid ) .
-					' GROUP BY o_id )' .
-				' AS t1 ON t1.o_id=smw_id'
-			);
+			$sub = $qb->newSubquery()
+				->select( 'o_id' )
+				->from( $table ?? '' )
+				->where( [ 'p_id' => $pid ] )
+				->groupBy( 'o_id' );
+
+			$qb->join( $sub, 't1', 't1.o_id=smw_id' );
 
 		} elseif ( $this->isFixedPropertyTable( $table ) === false ) {
 
-			$query->condition( $query->asAnd( $query->eq( 'p_id', $pid ) ) );
+			$qb->from( $table ?? '' )
+				->andWhere( [ 'p_id' => $pid ] );
 
 			// To make the MySQL query planner happy to pick the right index!
-			$query->field( 'p_id' );
+			$qb->select( 'p_id' );
 
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 'ON (smw_id=o_id)' ]
-			);
+			$qb->join( SQLStore::ID_TABLE, null, 'smw_id=o_id' );
 
 		} else {
 
@@ -202,17 +192,11 @@ class ProximityPropertyValueLookup {
 			 * WHERE ( smw_sortkey LIKE '%foo%' OR smw_sortkey LIKE '%Foo%' OR smw_sortkey LIKE '%FOO%' )
 			 * LIMIT 11
 			 */
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 'ON (smw_id=o_id)' ]
-			);
+			$qb->from( $table ?? '' )
+				->join( SQLStore::ID_TABLE, null, 'smw_id=o_id' );
 		}
 
-		$res = $connection->query(
-			$query,
-			__METHOD__,
-			ISQLPlatform::QUERY_CHANGE_NONE
-		);
+		$res = $qb->caller( __METHOD__ )->fetchResultSet();
 
 		$list = [];
 
@@ -235,9 +219,9 @@ class ProximityPropertyValueLookup {
 		return false;
 	}
 
-	private function getField( $property ) {
-		$typeId = $property->findPropertyTypeID();
-		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
+	private function getField( Property $property ): array {
+		$typeId = $property->findPropertyValueType();
+		$diType = DataTypeRegistry::getInstance()->getDataItemByType( $typeId );
 
 		$diHandler = $this->store->getDataItemHandlerForDIType(
 			$diType
@@ -246,18 +230,21 @@ class ProximityPropertyValueLookup {
 		return [ $diHandler->getLabelField(), $diType ];
 	}
 
-	private function build_like( $query, $field, $search ) {
+	private function build_like( SelectQueryBuilder $qb, Database $connection, string $field, string $search ): void {
 		$conds = [
+			// @phan-suppress-next-line PhanUselessBinaryAddRight
 			'%' . $search . '%',
 			'%' . ucfirst( $search ) . '%',
 			'%' . strtoupper( $search ) . '%'
 		] + ( $search !== strtolower( $search ) ? [ '%' . strtolower( $search ) . '%' ] : [] );
 
-		$cond = [];
+		$ors = [];
 
 		foreach ( $conds as $c ) {
-			$query->condition( $query->asOr( $query->like( $field, $c ) ) );
+			$ors[] = "$field LIKE " . $connection->addQuotes( $c );
 		}
+
+		$qb->andWhere( '(' . implode( ' OR ', $ors ) . ')' );
 	}
 
 }

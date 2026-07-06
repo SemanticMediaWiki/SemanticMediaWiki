@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use MagicWord;
-use MagicWordFactory;
-use ParserOutput;
+use MediaWiki\Parser\MagicWordFactory;
+use MediaWiki\Parser\ParserOutput;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,24 +15,12 @@ use ParserOutput;
 class MagicWordsFinder {
 
 	/**
-	 * @var ParserOutput
-	 */
-	private $parserOutput;
-
-	/**
-	 * @var MagicWordFactory
-	 */
-	private $magicWordFactory;
-
-	/**
 	 * @since 2.0
-	 *
-	 * @param ParserOutput|null $parserOutput
-	 * @param MagicWordFactory|null $magicWordFactory
 	 */
-	public function __construct( ?ParserOutput $parserOutput = null, ?MagicWordFactory $magicWordFactory = null ) {
-		$this->parserOutput = $parserOutput;
-		$this->magicWordFactory = $magicWordFactory;
+	public function __construct(
+		private ?ParserOutput $parserOutput = null,
+		private readonly ?MagicWordFactory $magicWordFactory = null,
+	) {
 	}
 
 	/**
@@ -42,7 +30,7 @@ class MagicWordsFinder {
 	 *
 	 * @return self
 	 */
-	public function setOutput( ParserOutput $parserOutput ) {
+	public function setOutput( ParserOutput $parserOutput ): static {
 		$this->parserOutput = $parserOutput;
 		return $this;
 	}
@@ -58,14 +46,7 @@ class MagicWordsFinder {
 	 * @return string
 	 */
 	public function findMagicWordInText( $magicWord, &$text ) {
-		// https://github.com/wikimedia/mediawiki/commit/07628545608ec742dd21fd83f47b1552b898d3b4
-		if ( $this->magicWordFactory !== null ) {
-			$mw = $this->magicWordFactory->get( $magicWord );
-		} else {
-			$mw = MagicWord::get( $magicWord );
-		}
-
-		if ( $mw->matchAndRemove( $text ) ) {
+		if ( $this->magicWordFactory->get( $magicWord )->matchAndRemove( $text ) ) {
 			return $magicWord;
 		}
 
@@ -78,7 +59,9 @@ class MagicWordsFinder {
 	 * @param array $words
 	 */
 	public function pushMagicWordsToParserOutput( array $words ) {
-		$this->parserOutput->setTimestamp( wfTimestampNow() );
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheTimestamp' ) ) {
+			$this->parserOutput->setCacheTime( wfTimestampNow() );
+		}
 
 		// Filter empty lines
 		$words = array_values( array_filter( $words ) );

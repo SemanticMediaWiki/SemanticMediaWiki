@@ -2,11 +2,12 @@
 
 namespace SMW\MediaWiki\Connection;
 
+use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Connection\ConnRef;
-use SMW\Services\ServicesFactory;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,38 +19,22 @@ class ConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var string
-	 */
-	private $provider;
+	private ?Database $connection = null;
 
-	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var array
-	 */
-	private $localConnectionConf = [];
+	private array $localConnectionConf = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string|null $provider
 	 */
-	public function __construct( $provider = null ) {
-		$this->provider = $provider;
+	public function __construct( private $provider = null ) {
 	}
 
 	/**
 	 * @see #2532
 	 *
-	 * @param array $localConnectionConf
-	 *
 	 * @since 3.0
 	 */
-	public function setLocalConnectionConf( array $localConnectionConf ) {
+	public function setLocalConnectionConf( array $localConnectionConf ): void {
 		$this->localConnectionConf = $localConnectionConf;
 	}
 
@@ -57,10 +42,8 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @see IConnectionProvider::getConnection
 	 *
 	 * @since 2.1
-	 *
-	 * @return Database
 	 */
-	public function getConnection() {
+	public function getConnection(): Database {
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -71,11 +54,12 @@ class ConnectionProvider implements IConnectionProvider {
 			'write' => DB_PRIMARY
 		];
 
-		if ( isset( $this->localConnectionConf[$this->provider] ) ) {
+		if ( isset( $this->localConnectionConf[$this->provider ?? ''] ) ) {
 			$conf = $this->localConnectionConf[$this->provider];
 		}
 
-		return $this->connection = $this->createConnection( $conf );
+		$this->connection = $this->createConnection( $conf );
+		return $this->connection;
 	}
 
 	/**
@@ -83,7 +67,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 2.1
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		if ( $this->connection !== null ) {
 			$this->connection->releaseConnection();
 		}
@@ -91,7 +75,7 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function createConnection( $conf ) {
+	private function createConnection( array $conf ) {
 		if ( isset( $conf['callback'] ) && is_callable( $conf['callback'] ) ) {
 			return call_user_func( $conf['callback'] );
 		}
@@ -106,10 +90,7 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 
 		$this->logger->info(
-			[
-				'Connection',
-				'{provider}: {conf}',
-			],
+			'Connection {provider}: {conf}',
 			[
 				'role' => 'developer',
 				'provider' => $this->provider,
@@ -123,7 +104,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return $connection;
 	}
 
-	private function newConnRef( $conf ) {
+	private function newConnRef( array $conf ): ConnRef {
 		$read = $this->newLoadBalancerConnectionProvider( $conf['read'] );
 
 		if ( $conf['read'] !== $conf['write'] ) {
@@ -140,20 +121,32 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 	}
 
-	private function newLoadBalancerConnectionProvider( $id ) {
-		return new LoadBalancerConnectionProvider( $id );
+	private function newLoadBalancerConnectionProvider( $id ): IConnectionProvider {
+		return new class( $id ) implements IConnectionProvider {
+			private ?IDatabase $connection = null;
+
+			public function __construct( private $id ) {
+			}
+
+			public function getConnection(): IDatabase {
+				if ( $this->connection === null ) {
+					$loadBalancer = MediaWikiServices::getInstance()->getDBLoadBalancer();
+					$this->connection = $loadBalancer->getConnection( $this->id );
+				}
+
+				return $this->connection;
+			}
+
+			public function releaseConnection(): void {
+				$this->connection = null;
+			}
+		};
 	}
 
-	private function newTransactionHandler() {
-		$transactionHandler = new TransactionHandler(
-			ServicesFactory::getInstance()->create( 'DBLoadBalancerFactory' )
+	private function newTransactionHandler(): TransactionHandler {
+		return new TransactionHandler(
+			MediaWikiServices::getInstance()->getDBLoadBalancerFactory()
 		);
-
-		$transactionHandler->setTransactionProfiler(
-			\Profiler::instance()->getTransactionProfiler()
-		);
-
-		return $transactionHandler;
 	}
 
 }

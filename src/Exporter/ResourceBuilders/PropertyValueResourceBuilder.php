@@ -2,12 +2,14 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
+use SMW\Cache\InMemoryLruCache;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ResourceBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @private
@@ -19,27 +21,15 @@ use SMWExporter as Exporter;
  */
 class PropertyValueResourceBuilder implements ResourceBuilder {
 
-	/**
-	 * @var Exporter
-	 */
-	protected $exporter;
+	protected ?Exporter $exporter;
 
-	/**
-	 * @var InMemoryPoolCache
-	 */
-	private $inMemoryPoolCache;
+	private InMemoryLruCache $inMemoryPoolCache;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Exporter|null $exporter
 	 */
 	public function __construct( ?Exporter $exporter = null ) {
-		$this->exporter = $exporter;
-
-		if ( $this->exporter === null ) {
-			$this->exporter = Exporter::getInstance();
-		}
+		$this->exporter = $exporter ?? Exporter::getInstance();
 
 		$this->inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById(
 			Exporter::POOLCACHE_ID
@@ -51,7 +41,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return true;
 	}
 
@@ -60,7 +50,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);
@@ -79,11 +69,11 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 		);
 	}
 
-	protected function addResourceHelperValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-		return $this->addAuxiliaryResourceValue( $expData, $property, $dataItem );
+	protected function addResourceHelperValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
+		$this->addAuxiliaryResourceValue( $expData, $property, $dataItem );
 	}
 
-	protected function addAuxiliaryResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	protected function addAuxiliaryResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		$auxiliaryExpElement = $this->exporter->newAuxiliaryExpElement(
 			$dataItem
 		);
@@ -101,7 +91,8 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	protected function getResourceElementForProperty( $property ) {
 		$key = 'resource:builder:' . $property->getKey();
 
-		if ( ( $resourceElement = $this->inMemoryPoolCache->fetch( $key ) ) !== false ) {
+		$resourceElement = $this->inMemoryPoolCache->fetch( $key );
+		if ( $resourceElement !== false ) {
 			return $resourceElement;
 		}
 
@@ -115,10 +106,11 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 		return $resourceElement;
 	}
 
-	protected function getResourceElementHelperForProperty( $property ) {
+	protected function getResourceElementHelperForProperty( $property ): ExpNsResource {
 		$key = 'resource:builder:aux:' . $property->getKey();
 
-		if ( ( $resourceElement = $this->inMemoryPoolCache->fetch( $key ) ) !== false ) {
+		$resourceElement = $this->inMemoryPoolCache->fetch( $key );
+		if ( $resourceElement !== false ) {
 			return $resourceElement;
 		}
 

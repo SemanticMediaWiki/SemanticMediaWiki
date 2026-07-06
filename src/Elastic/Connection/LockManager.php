@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\Connection;
 
-use Onoi\Cache\Cache;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,41 +20,33 @@ class LockManager {
 	const TYPE_MAINTENANCE = 'maintenance';
 
 	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Cache $cache
 	 */
-	public function __construct( Cache $cache ) {
-		$this->cache = $cache;
+	public function __construct( private readonly BagOStuff $cache ) {
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			self::TYPE_MAINTENANCE
 		);
 
-		return $this->cache->fetch( $key ) !== false;
+		return $this->cache->get( $key ) !== false;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function setMaintenanceLock() {
+	public function setMaintenanceLock(): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			self::TYPE_MAINTENANCE
 		);
 
-		$this->cache->save( $key, true );
+		$this->cache->set( $key, true );
 	}
 
 	/**
@@ -63,13 +55,13 @@ class LockManager {
 	 * @param string $type
 	 * @param string $version
 	 */
-	public function setLock( $type, $version ) {
+	public function setLock( $type, $version ): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]
 		);
 
-		$this->cache->save( $key, $version );
+		$this->cache->set( $key, $version );
 	}
 
 	/**
@@ -79,13 +71,13 @@ class LockManager {
 	 *
 	 * @return bool
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]
 		);
 
-		return $this->cache->fetch( $key ) !== false;
+		return $this->cache->get( $key ) !== false;
 	}
 
 	/**
@@ -101,7 +93,7 @@ class LockManager {
 			[ 'lock', $type ]
 		);
 
-		return $this->cache->fetch( $key );
+		return $this->cache->get( $key );
 	}
 
 	/**
@@ -109,7 +101,7 @@ class LockManager {
 	 *
 	 * @param string $type
 	 */
-	public function releaseLock( $type ) {
+	public function releaseLock( $type ): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]

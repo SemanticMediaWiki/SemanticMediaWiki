@@ -15,20 +15,12 @@ class BulkFileProvider {
 	/**
 	 * @var string
 	 */
-	private $path = null;
-
-	/**
-	 * @var string
-	 */
 	private $extension = 'json';
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $path
 	 */
-	public function __construct( string $path ) {
-		$this->path = $path;
+	public function __construct( private readonly string $path ) {
 	}
 
 	/**

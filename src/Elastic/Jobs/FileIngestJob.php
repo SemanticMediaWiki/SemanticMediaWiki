@@ -2,15 +2,18 @@
 
 namespace SMW\Elastic\Jobs;
 
-use SMW\DIWikiPage;
+use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -24,29 +27,30 @@ class FileIngestJob extends Job {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store,
+		private readonly ElasticFactory $elasticFactory,
+		private readonly JobFactory $jobFactory
+	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param array $params
 	 */
-	public static function pushIngestJob( Title $title, array $params = [] ) {
+	public static function pushIngestJob( Title $title, array $params = [] ): void {
 		if ( $title->getNamespace() !== NS_FILE ) {
 			return;
 		}
 
-		$params = $params + [ 'waitOnCommandLine' => true ];
+		$params += [ 'waitOnCommandLine' => true ];
 
-		$fileIngestJob = new self(
+		$fileIngestJob = ApplicationFactory::getInstance()->getJobFactory()->newFileIngestJob(
 			$title,
 			array_merge( $params, self::newRootJobParams( self::JOB_COMMAND, $title ) )
 		);
@@ -59,15 +63,14 @@ class FileIngestJob extends Job {
 	 *
 	 * @since  3.0
 	 */
-	public function run() {
+	public function run(): bool {
 		// Make sure the script is only executed from the command line to avoid
 		// Special:RunJobs to execute a queued job
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$connection = $applicationFactory->getStore()->getConnection( 'elastic' );
+		$connection = $this->store->getConnection( 'elastic' );
 
 		// Make sure a node is available
 		if ( $connection->hasLock( ElasticClient::TYPE_DATA ) || !$connection->ping() ) {
@@ -88,15 +91,11 @@ class FileIngestJob extends Job {
 	 * @since 3.2
 	 */
 	public function runFileIndexer() {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
+		$connection = $this->store->getConnection( 'elastic' );
 
-		$store = $applicationFactory->getStore();
-		$connection = $store->getConnection( 'elastic' );
-
-		$fileIndexer = $elasticFactory->newFileIndexer(
-			$store,
-			$elasticFactory->newIndexer()
+		$fileIndexer = $this->elasticFactory->newFileIndexer(
+			$this->store,
+			$this->elasticFactory->newIndexer()
 		);
 
 		$fileIndexer->setOrigin( __METHOD__ );
@@ -110,14 +109,14 @@ class FileIngestJob extends Job {
 			return $this->requeueRetry( $connection->getConfig() );
 		}
 
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$this->getTitle()
 		);
 
 		$fileIndexer->index( $subject, $file );
 	}
 
-	private function requeueRetry( $config ) {
+	private function requeueRetry( $config ): bool {
 		// Give up!
 		if ( $this->getParameter( 'retryCount' ) >= $config->dotGet( 'indexer.job.file.ingest.retries' ) ) {
 			return true;
@@ -133,10 +132,15 @@ class FileIngestJob extends Job {
 			$this->params['createdAt'] = time();
 		}
 
-		$job = new self( $this->title, $this->params );
+		$job = $this->jobFactory->newFileIngestJob(
+			$this->title,
+			$this->params
+		);
 		$job->setDelay( 60 * 10 );
 
 		$job->insert();
+
+		return true;
 	}
 
 }

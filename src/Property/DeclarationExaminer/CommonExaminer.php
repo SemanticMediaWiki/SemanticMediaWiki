@@ -2,10 +2,10 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer\Message;
-use SMW\SemanticData;
 use SMW\Store;
 
 /**
@@ -16,35 +16,17 @@ use SMW\Store;
  */
 class CommonExaminer extends DeclarationExaminer {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private array $namespacesWithSemanticLinks = [];
 
-	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
-
-	/**
-	 * @var array
-	 */
-	private $namespacesWithSemanticLinks = [];
-
-	/**
-	 * @var array
-	 */
-	private $propertyReservedNameList = [];
+	private array $propertyReservedNameList = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param SemanticData|null $semanticData
 	 */
-	public function __construct( Store $store, ?SemanticData $semanticData = null ) {
-		$this->store = $store;
-		$this->semanticData = $semanticData;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ?SemanticData $semanticData = null,
+	) {
 	}
 
 	/**
@@ -52,7 +34,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * @param array $namespacesWithSemanticLinks
 	 */
-	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ) {
+	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ): void {
 		$this->namespacesWithSemanticLinks = $namespacesWithSemanticLinks;
 	}
 
@@ -61,7 +43,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * @param array $propertyReservedNameList
 	 */
-	public function setPropertyReservedNameList( array $propertyReservedNameList ) {
+	public function setPropertyReservedNameList( array $propertyReservedNameList ): void {
 		foreach ( $propertyReservedNameList as $name ) {
 
 			if ( strpos( $name, 'smw-property-reserved' ) !== false ) {
@@ -77,7 +59,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function check( DIProperty $property ) {
+	public function check( Property $property ): void {
 		$this->validate( $property );
 	}
 
@@ -86,7 +68,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ): void {
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$property
 		);
@@ -101,7 +83,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->checkCommonMessage( $propertyName );
 	}
 
-	private function checkNamespace() {
+	private function checkNamespace(): void {
 		if (
 			isset( $this->namespacesWithSemanticLinks[SMW_NS_PROPERTY] ) &&
 			$this->namespacesWithSemanticLinks[SMW_NS_PROPERTY] ) {
@@ -111,7 +93,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', 'smw-property-namespace-disabled' ];
 	}
 
-	private function checkReservedName( $propertyName ) {
+	private function checkReservedName( $propertyName ): void {
 		if ( !isset( $this->propertyReservedNameList[$propertyName] ) ) {
 			return;
 		}
@@ -119,7 +101,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', 'smw-property-name-reserved', $propertyName ];
 	}
 
-	private function checkUniqueness( $property ) {
+	private function checkUniqueness( Property $property ): void {
 		if ( $this->store->getObjectIds()->isUnique( $property ) ) {
 			return;
 		}
@@ -127,14 +109,14 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', 'smw-property-label-uniqueness', $property->getLabel() ];
 	}
 
-	private function checkErrorMessages() {
-		$property = new DIProperty( '_ERRC' );
+	private function checkErrorMessages(): void {
+		$property = new Property( '_ERRC' );
 
 		if ( $this->semanticData === null || !$this->semanticData->hasProperty( $property ) ) {
 			return;
 		}
 
-		$pv = $this->semanticData->getPropertyValues( new DIProperty( '_ERRC' ) );
+		$pv = $this->semanticData->getPropertyValues( new Property( '_ERRC' ) );
 		$messages = [];
 
 		foreach ( $pv as $v ) {
@@ -142,7 +124,7 @@ class CommonExaminer extends DeclarationExaminer {
 				$v->getSubobjectName()
 			);
 
-			foreach ( $subSemanticData->getPropertyValues( new DIProperty( '_ERRT' ) ) as $error ) {
+			foreach ( $subSemanticData->getPropertyValues( new Property( '_ERRT' ) ) as $error ) {
 				$messages[] = Message::decode( $error->getString(), Message::PARSE, Message::USER_LANGUAGE );
 			}
 		}
@@ -150,8 +132,8 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', '_msgkey' => 'smw-property-req-error-list', '_list' => $messages ];
 	}
 
-	private function checkTypeDeclaration() {
-		$property = new DIProperty( '_TYPE' );
+	private function checkTypeDeclaration(): void {
+		$property = new Property( '_TYPE' );
 
 		if ( $this->semanticData === null ) {
 			return;
@@ -166,7 +148,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'warning', 'smw-property-req-violation-type' ];
 	}
 
-	private function checkCommonMessage( $propertyName ) {
+	private function checkCommonMessage( $propertyName ): void {
 		if ( Message::exists( 'smw-property-introductory-message' ) ) {
 			$this->messages[] = [ 'info', 'smw-property-introductory-message', $propertyName ];
 		}

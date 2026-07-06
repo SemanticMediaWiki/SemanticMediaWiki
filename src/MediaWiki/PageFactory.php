@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\MediaWiki\Page\ConceptPage;
 use SMW\MediaWiki\Page\PropertyPage;
 use SMW\Property\DeclarationExaminerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,28 +19,15 @@ use Title;
 class PageFactory {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 *
-	 * @return PageView
-	 * @throws RuntimeException
 	 */
-	public function newPageFromTitle( Title $title ) {
+	public function newPageFromTitle( Title $title ): PropertyPage|ConceptPage {
 		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
 			return $this->newPropertyPage( $title );
 		} elseif ( $title->getNamespace() === SMW_NS_CONCEPT ) {
@@ -52,12 +39,8 @@ class PageFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 *
-	 * @return PropertyPage
 	 */
-	public function newPropertyPage( Title $title ) {
+	public function newPropertyPage( Title $title ): PropertyPage {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -92,13 +75,9 @@ class PageFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 *
-	 * @return ConceptPage
 	 */
-	public function newConceptPage( Title $title ) {
-		$conceptPage = new ConceptPage( $title );
+	public function newConceptPage( Title $title ): ConceptPage {
+		$conceptPage = new ConceptPage( $title, $this->store );
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$conceptPage->setOption(

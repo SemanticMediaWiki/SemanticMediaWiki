@@ -10,28 +10,14 @@ namespace SMW\Elastic\QueryEngine;
  */
 class Aggregations {
 
-	/**
-	 * @var array
-	 */
-	private $parameters = [];
+	private array $subAggregations = [];
 
-	/**
-	 * @var array
-	 */
-	private $subAggregations = [];
-
-	/**
-	 * @var bool
-	 */
-	private $plain = false;
+	private bool $plain = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Aggregations|array $parameters
 	 */
-	public function __construct( $parameters = [] ) {
-		$this->parameters = $parameters;
+	public function __construct( private $parameters = [] ) {
 	}
 
 	/**
@@ -39,14 +25,14 @@ class Aggregations {
 	 *
 	 * @param Aggregations $aggregations
 	 */
-	public function addSubAggregations( Aggregations $aggregations ) {
+	public function addSubAggregations( Aggregations $aggregations ): void {
 		$this->subAggregations[] = $aggregations;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function plain() {
+	public function plain(): void {
 		$this->plain = true;
 	}
 
@@ -105,7 +91,7 @@ class Aggregations {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return json_encode( $this->toArray() );
 	}
 

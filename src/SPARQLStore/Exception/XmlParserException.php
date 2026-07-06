@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore\Exception;
 
+use Exception;
+
 /**
  * @ingroup Sparql
  *
@@ -10,7 +12,7 @@ namespace SMW\SPARQLStore\Exception;
  *
  * @author mwjames
  */
-class XmlParserException extends \Exception {
+class XmlParserException extends Exception {
 
 	/**
 	 * @since  2.1

@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use ContentHandler;
-use Title;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Title\Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -13,19 +13,12 @@ use Title;
  */
 class RedirectTargetFinder {
 
-	/**
-	 * @var Title|null
-	 */
-	private $redirectTarget = null;
+	private ?Title $redirectTarget = null;
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param string $text
-	 *
-	 * @return Title|null
 	 */
-	public function findRedirectTargetFromText( $text ) {
+	public function findRedirectTargetFromText( string $text ): static {
 		if ( $this->redirectTarget === null ) {
 			$this->redirectTarget = $this->findFromText( $text );
 		}
@@ -35,41 +28,27 @@ class RedirectTargetFinder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Title|null
 	 */
-	public function setRedirectTarget( ?Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ): void {
 		$this->redirectTarget = $redirectTarget;
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return Title|null
 	 */
-	public function getRedirectTarget() {
+	public function getRedirectTarget(): ?Title {
 		return $this->redirectTarget;
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return bool
 	 */
-	public function hasRedirectTarget() {
+	public function hasRedirectTarget(): bool {
 		return $this->redirectTarget instanceof Title;
 	}
 
-	private function findFromText( $text ) {
-		if ( $this->hasContentHandler() ) {
-			return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
-		}
-
-		return Title::newFromRedirect( $text );
-	}
-
-	protected function hasContentHandler() {
-		return defined( 'CONTENT_MODEL_WIKITEXT' );
+	private function findFromText( string $text ): ?Title {
+		return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
 	}
 
 }

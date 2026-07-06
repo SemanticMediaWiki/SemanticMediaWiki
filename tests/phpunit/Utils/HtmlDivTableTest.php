@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\HtmlDivTable;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\HtmlDivTable;
  *
  * @author mwjames
  */
-class HtmlDivTableTest extends \PHPUnit\Framework\TestCase {
+class HtmlDivTableTest extends TestCase {
 
 	public function testOpenClose() {
 		$this->assertEquals(

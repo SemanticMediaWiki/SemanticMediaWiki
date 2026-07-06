@@ -2,9 +2,12 @@
 
 namespace SMW\Maintenance;
 
+use Iterator;
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\EntityCache;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
@@ -29,7 +32,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class purgeEntityCache extends \Maintenance {
+class purgeEntityCache extends Maintenance {
 
 	/**
 	 * @var Store
@@ -57,6 +60,20 @@ class purgeEntityCache extends \Maintenance {
 	public function __construct() {
 		parent::__construct();
 		$this->addDescription( "Purge cache entries for known entities and their associated data." );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setEntityCache( EntityCache $entityCache ) {
+		$this->entityCache = $entityCache;
 	}
 
 	/**
@@ -92,8 +109,8 @@ class purgeEntityCache extends \Maintenance {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$this->store = $applicationFactory->getStore();
-		$this->entityCache = $applicationFactory->getEntityCache();
+		$this->store ??= $applicationFactory->getStore();
+		$this->entityCache ??= $applicationFactory->getEntityCache();
 
 		$this->reportMessage(
 			"\n" . $cliMsgFormatter->head()
@@ -138,29 +155,28 @@ class purgeEntityCache extends \Maintenance {
 	private function fetchRows() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$this->lastId = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$this->lastId = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		return $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject'
-			],
-			[
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				"smw_subobject=''",
 				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
-			],
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+			] )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	private function canExecute() {
@@ -180,7 +196,7 @@ class purgeEntityCache extends \Maintenance {
 		return true;
 	}
 
-	private function doPurge( \Iterator $rows ) {
+	private function doPurge( Iterator $rows ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -217,14 +233,14 @@ class purgeEntityCache extends \Maintenance {
 
 		if ( $namespace === SMW_NS_PROPERTY ) {
 			try {
-				$property = DIProperty::newFromUserLabel( $row->smw_title );
+				$property = Property::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				//
 			}
 		}
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$title,
 			$namespace,
 			$row->smw_iw,

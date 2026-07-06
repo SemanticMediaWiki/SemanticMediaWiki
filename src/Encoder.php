@@ -11,7 +11,7 @@ namespace SMW;
 class Encoder {
 
 	/**
-	 * @see SMWInfolink::encodeParameters
+	 * @see Infolink::encodeParameters
 	 *
 	 * Escape certain problematic values. Use SMW-escape
 	 * (like URLencode but - instead of % to prevent double encoding by later MW actions)
@@ -36,7 +36,7 @@ class Encoder {
 	 *
 	 * @return string
 	 */
-	public static function escape( $string ) {
+	public static function escape( $string ): array|string {
 		$value = str_replace(
 			[ '-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%', '?', '$', "\\", ";", '_' ],
 			[ '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", '-5F' ],
@@ -55,7 +55,7 @@ class Encoder {
 	 *
 	 * @return string
 	 */
-	public static function unescape( $string ) {
+	public static function unescape( $string ): array|string {
 		$value = str_replace(
 			[ '-20', '-23', '-0A', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", "-3A", '-5F', '-2D' ],
 			[ ' ', '#', "\n", '/', '[', ']', '<', '>', '&lt;', '&gt;', '&', '\'\'', '|', '&', '%', '?', '$', "\\", ";", ":", "_", '-' ],
@@ -66,7 +66,7 @@ class Encoder {
 	}
 
 	/**
-	 * @see SMWInfolink::encodeParameters
+	 * @see Infolink::encodeParameters
 	 *
 	 * @since 2.2
 	 *
@@ -74,7 +74,7 @@ class Encoder {
 	 *
 	 * @return string
 	 */
-	public static function encode( $string ) {
+	public static function encode( $string ): string {
 		return rawurlencode( $string );
 	}
 
@@ -85,8 +85,8 @@ class Encoder {
 	 *
 	 * @return string
 	 */
-	public static function decode( $string ) {
-		// Apply decoding for SMW's own url encoding strategy (see SMWInfolink)
+	public static function decode( $string ): array|string {
+		// Apply decoding for SMW's own url encoding strategy (see Infolink)
 		$string = str_replace( '%', '-', rawurldecode( str_replace( '-', '%', $string ) ) );
 
 		$string = str_replace( [ '-2D', '-3A' ], [ '-', ':' ], $string );

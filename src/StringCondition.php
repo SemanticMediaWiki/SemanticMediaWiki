@@ -65,7 +65,7 @@ class StringCondition {
 	/**
 	 * @since 1.0
 	 *
-	 * @param srting $string
+	 * @param string $string
 	 * @param int $condition
 	 * @param bool $isOr
 	 */
@@ -81,8 +81,8 @@ class StringCondition {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
-		return $this->string . '#' . $this->condition . '#' . $this->isOr . '#' . $this->isNot;
+	public function getHash(): string {
+		return $this->string . '#' . (string)$this->condition . '#' . (string)$this->isOr . '#' . (string)$this->isNot;
 	}
 
 }

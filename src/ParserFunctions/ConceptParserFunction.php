@@ -2,17 +2,18 @@
 
 namespace SMW\ParserFunctions;
 
-use Html;
-use Parser;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\MessageFormatter;
+use MediaWiki\Html\Html;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Property;
+use SMW\Formatters\Infolink;
+use SMW\Formatters\MessageFormatter;
 use SMW\ParserData;
 use SMW\PostProcHandler;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink;
-use SMWQueryProcessor as QueryProcessor;
-use Title;
 
 /**
  * Class that provides the {{#concept}} parser function
@@ -26,30 +27,15 @@ use Title;
  */
 class ConceptParserFunction {
 
-	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var MessageFormatter
-	 */
-	private $messageFormatter;
-
-	/**
-	 * @var PostProcHandler
-	 */
-	private $postProcHandler;
+	private ?PostProcHandler $postProcHandler = null;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param MessageFormatter $messageFormatter
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
-		$this->parserData = $parserData;
-		$this->messageFormatter = $messageFormatter;
+	public function __construct(
+		private readonly ParserData $parserData,
+		private readonly MessageFormatter $messageFormatter,
+	) {
 	}
 
 	/**
@@ -57,7 +43,7 @@ class ConceptParserFunction {
 	 *
 	 * @param PostProcHandler $postProcHandler
 	 */
-	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+	public function setPostProcHandler( PostProcHandler $postProcHandler ): void {
 		$this->postProcHandler = $postProcHandler;
 	}
 
@@ -78,7 +64,7 @@ class ConceptParserFunction {
 		] );
 
 		$title = $this->parserData->getTitle();
-		$property = new DIProperty( '_CONC' );
+		$property = new Property( '_CONC' );
 
 		if ( !( $title->getNamespace() === SMW_NS_CONCEPT ) ) {
 			return $this->messageFormatter->addFromKey( 'smw_no_concept_namespace' )->getHtml();
@@ -103,7 +89,7 @@ class ConceptParserFunction {
 
 		$this->parserData->getSemanticData()->addPropertyObjectValue(
 			$property,
-			new DIConcept(
+			new Concept(
 				$conceptQueryString,
 				$conceptDocu,
 				$query->getDescription()->getQueryFeatures(),
@@ -122,7 +108,7 @@ class ConceptParserFunction {
 
 		$this->addQueryProfile( $query );
 
-		$this->parserData->pushSemanticDataToParserOutput();
+		$this->parserData->copyToParserOutput();
 
 		if ( $this->messageFormatter->exists() ) {
 			return $this->messageFormatter->getHtml();
@@ -131,7 +117,7 @@ class ConceptParserFunction {
 		return $this->createHtml( $title, $conceptQueryString, $conceptDocu );
 	}
 
-	private function createHtml( Title $title, $queryString, $documentation ) {
+	private function createHtml( Title $title, $queryString, $documentation ): string {
 		$message = '';
 
 		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {
@@ -146,14 +132,19 @@ class ConceptParserFunction {
 				wfMessage( 'smw_concept_description', $title->getText() )->text() ) .
 			Html::rawElement( 'span', [ 'class' => 'smwrdflink' ], $this->getRdfLink( $title )->getWikiText() ) .
 			Html::element( 'br', [] ) .
-			Html::element( 'p', [ 'class' => 'concept-documenation' ], $documentation ? $documentation : '' ) .
+			Html::element( 'p', [ 'class' => 'concept-documenation' ], $documentation ?: '' ) .
 			Html::rawElement( 'pre', [], str_replace( '[', '&#91;', $queryString ) ) .
 			Html::element( 'br', [] )
 		);
 	}
 
-	private function getRdfLink( Title $title ) {
-		return SMWInfolink::newInternalLink(
+	private function getRdfLink( Title $title ): Infolink {
+		// The caption is a static i18n message and this Infolink is only ever rendered
+		// as wikitext (getRdfLink()->getWikiText()), where the caption is link display
+		// text, not raw HTML. Phan flags the caption via Infolink's HTML-output sink,
+		// which this call path never reaches.
+		// @phan-suppress-next-line SecurityCheck-XSS
+		return Infolink::newInternalLink(
 			wfMessage( 'smw_viewasrdf' )->text(),
 			$title->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink'
 		);
@@ -172,7 +163,7 @@ class ConceptParserFunction {
 		return $query;
 	}
 
-	private function addQueryProfile( $query ) {
+	private function addQueryProfile( Query $query ): void {
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
 		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryProfiler' ) === false ) {
 			return;
@@ -182,7 +173,9 @@ class ConceptParserFunction {
 			$this->parserData->getSemanticData()->getSubject()
 		);
 
-		$profileAnnotatorFactory = ApplicationFactory::getInstance()->getQueryFactory()->newProfileAnnotatorFactory();
+		$profileAnnotatorFactory = ApplicationFactory::getInstance()
+			->getQueryFactory()
+			->newProfileAnnotatorFactory();
 
 		$descriptionProfileAnnotator = $profileAnnotatorFactory->newDescriptionProfileAnnotator(
 			$query

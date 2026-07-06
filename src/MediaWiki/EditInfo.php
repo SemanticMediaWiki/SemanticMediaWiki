@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use ParserOutput;
+use MediaWiki\User\User;
+use SMW\DataModel\SemanticData;
 use SMW\ParserData;
-use SMW\SemanticData;
-use User;
 use WikiPage;
 
 /**
@@ -21,21 +21,6 @@ class EditInfo {
 	use RevisionGuardAwareTrait;
 
 	/**
-	 * @var WikiPage
-	 */
-	private $page;
-
-	/**
-	 * @var RevisionRecord|null
-	 */
-	private $revision;
-
-	/**
-	 * @var User
-	 */
-	private $user;
-
-	/**
 	 * @var ParserOutput
 	 */
 	private $parserOutput;
@@ -43,10 +28,11 @@ class EditInfo {
 	/**
 	 * @since 1.9
 	 */
-	public function __construct( WikiPage $page, ?RevisionRecord $revision, User $user ) {
-		$this->page = $page;
-		$this->revision = $revision;
-		$this->user = $user;
+	public function __construct(
+		private WikiPage $page,
+		private ?RevisionRecord $revision,
+		private User $user,
+	) {
 	}
 
 	/**
@@ -77,7 +63,7 @@ class EditInfo {
 	 * @since 2.0
 	 */
 	public function fetchEditInfo(): self {
-		if ( $this->page !== null && $this->revision === null ) {
+		if ( $this->revision === null ) {
 			$this->revision = $this->revisionGuard->newRevisionFromPage( $this->page );
 		}
 

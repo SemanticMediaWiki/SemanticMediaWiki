@@ -2,16 +2,17 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use Html;
-use SMW\DIWikiPage;
+use MediaWiki\Html\Html;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\TimeValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\QueryStringifier;
 use SMW\Query\Result\ResultArray;
 use SMW\Utils\HtmlTable;
-use SMWDataValue;
-use SMWDIBlob as DIBlob;
 
 /**
  * Print query results in tables
@@ -26,13 +27,18 @@ use SMWDIBlob as DIBlob;
 class TableResultPrinter extends ResultPrinter {
 
 	/**
-	 * @var HtmlTable
+	 * Scaling factor used to turn the Julian Day date sort key into a
+	 * decimal-free integer for `data-sort-value`. It matches the seven decimal
+	 * places that JulianDay::format() keeps, so the integer is exact and
+	 * preserves the original ordering. See #6830.
 	 */
-	private $htmlTable;
+	private const DATE_SORT_FACTOR = 10000000;
 
-	private $isDataTable;
+	private ?HtmlTable $htmlTable = null;
 
-	private $prefixParameterProcessor;
+	private ?bool $isDataTable = null;
+
+	private ?PrefixParameterProcessor $prefixParameterProcessor = null;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -48,8 +54,17 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return true;
+	}
+
+	/**
+	 * @see ResultPrinter::dependsOnUserLanguage
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return false;
 	}
 
 	/**
@@ -59,7 +74,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['class'] = [
@@ -99,7 +114,7 @@ class TableResultPrinter extends ResultPrinter {
 
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 		$this->isDataTable = false;
-		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
+		$class = $this->params['class'] ?? '';
 
 		if ( strpos( $class, 'datatable' ) !== false && $this->mShowHeaders !== SMW_HEADERS_HIDE ) {
 			$this->isDataTable = true;
@@ -120,32 +135,8 @@ class TableResultPrinter extends ResultPrinter {
 			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
 			foreach ( $res->getPrintRequests() as $pr ) {
 				$attributes = [];
-				$parameters = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
-				// check outputFormat for thclass option use
-				// if outputFormat has class defined as an option, take the value which class holds and set it as class attribute
-				// example outputFormat = 40px;class=unsortable
-				$outputFormat = $pr->getOutputFormat();
-				if ( str_contains( $outputFormat, 'class=' ) ) {
-					if ( str_contains( $outputFormat, ';' ) ) {
-						$parts = explode( ';', $outputFormat );
-						foreach ( $parts as $part ) {
-							if ( str_contains( $part, 'class=' ) ) {
-								$headerFormatSplitted = explode( '=', $part );
-								if ( count( $headerFormatSplitted ) >= 2 ) {
-									$attributes['class'] = htmlspecialchars( $headerFormatSplitted[1], ENT_QUOTES );
-								} else {
-									continue;
-								}
-							}
-						}
-					} elseif ( str_contains( $outputFormat, 'class=' ) ) {
-						$parts = explode( '=', $outputFormat );
-						$attributes['class'] = $parts[1];
-					}
-				} else {
-					$attributes['class'] = $columnClass;
-				}
+				$attributes['class'] = $columnClass;
 				// Also add this to the array of classes, for
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;
@@ -154,14 +145,22 @@ class TableResultPrinter extends ResultPrinter {
 				$mode = $this->isHTML && $isPlain ? SMW_OUTPUT_WIKI : $outputMode;
 				$text = $pr->getText( $mode, ( $isPlain ? null : $this->mLinker ) );
 				$headerList[] = $pr->getCanonicalLabel();
+				// $attributes['class'] is a CSS class built from the (stripped) column
+				// label; HtmlTable escapes attributes once. Phan over-taints it via the
+				// print-request label source.
+				// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
 		}
 
 		$rowNumber = 0;
 
-		while ( $subject = $res->getNext() ) {
+		$subject = $res->getNext();
+		while ( $subject ) {
 			$rowNumber++;
+			// $columnClasses are CSS classes built from the (stripped) column labels and
+			// escaped once at the cell sink; phan over-taints them via the label source.
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
 
 			$this->htmlTable->row(
@@ -169,6 +168,7 @@ class TableResultPrinter extends ResultPrinter {
 					'data-row-number' => $rowNumber
 				]
 			);
+			$subject = $res->getNext();
 		}
 
 		// print further results footer
@@ -242,19 +242,12 @@ class TableResultPrinter extends ResultPrinter {
 	 * @param int $outputMode
 	 * @param string[] $columnClasses
 	 *
-	 * @return string
+	 * @return void
 	 */
-	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ) {
+	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ): void {
 		foreach ( $subject as $i => $field ) {
-			// $columnClasses will be empty if "headers=hide"
-			// was set.
-			if ( array_key_exists( $i, $columnClasses ) ) {
-				$columnClass = $columnClasses[$i];
-			} else {
-				$columnClass = null;
-			}
-
-			$this->getCellForPropVals( $field, $outputMode, $columnClass );
+			// $columnClasses will be empty if "headers=hide" was set.
+			$this->getCellForPropVals( $field, $outputMode, $columnClasses[$i] ?? '' );
 		}
 	}
 
@@ -263,18 +256,20 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param \ $resultArray
+	 * @param ResultArray $resultArray
 	 * @param int $outputMode
 	 * @param string $columnClass
 	 *
-	 * @return string
+	 * @return void
 	 */
-	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, $columnClass ) {
-		/** @var SMWDataValue[] $dataValues */
+	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, string $columnClass ): void {
+		/** @var DataValue[] $dataValues */
 		$dataValues = [];
 
-		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
+		$dv = $resultArray->getNextDataValue();
+		while ( $dv !== false ) {
 			$dataValues[] = $dv;
+			$dv = $resultArray->getNextDataValue();
 		}
 
 		$printRequest = $resultArray->getPrintRequest();
@@ -298,12 +293,24 @@ class TableResultPrinter extends ResultPrinter {
 				$attributes['class'] = "$columnClass smwtype$dataValueType";
 			}
 
+			// Dates expose their sort key as a Julian Day float (e.g. "2440618.5").
+			// MediaWiki's locale-aware tablesorter treats the "." as a group
+			// separator under locales such as German, strips it, and so sorts the
+			// column by the number of fractional digits rather than chronologically
+			// (#6830). Emit a decimal-free, locale-proof integer that preserves the
+			// exact ordering of the Julian Day sort key instead.
+			$sortValue = $sortKey;
+
+			if ( $dataValues[0] instanceof TimeValue && is_numeric( $sortKey ) ) {
+				$sortValue = (string)(int)round( (float)$sortKey * self::DATE_SORT_FACTOR );
+			}
+
 			if ( is_numeric( $sortKey ) ) {
-				$attributes['data-sort-value'] = $sortKey;
+				$attributes['data-sort-value'] = $sortValue;
 			}
 
 			if ( $this->isDataTable && $sortKey !== '' ) {
-				$attributes['data-order'] = htmlspecialchars( $sortKey );
+				$attributes['data-order'] = $sortValue;
 			}
 
 			$alignment = trim( $printRequest->getParameter( 'align' ) );
@@ -312,10 +319,7 @@ class TableResultPrinter extends ResultPrinter {
 				$attributes['style'] = "text-align:$alignment;";
 			}
 
-			$width = htmlspecialchars(
-				trim( $printRequest->getParameter( 'width' ) ),
-				ENT_QUOTES
-			);
+			$width = trim( $printRequest->getParameter( 'width' ) );
 
 			if ( $width ) {
 				$attributes['style'] = ( isset( $attributes['style'] ) ? $attributes['style'] . ' ' : '' ) . "width:$width;";
@@ -339,23 +343,33 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWDataValue[] $dataValues
+	 * @param DataValue[] $dataValues
 	 * @param $outputMode
 	 * @param bool $isSubject
 	 *
 	 * @return string
 	 */
-	protected function getCellContent( array $dataValues, $outputMode, $isSubject ) {
-		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
+		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
+		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
 
+			// Dates use the HTML accessor so the formatter's semantic <time>
+			// element is emitted even when the table is produced in wiki output
+			// mode (inline #ask). The <time> markup is valid in the parsed
+			// wikitext, and HTML output (Special:Ask) is unchanged.
+			if ( $dv instanceof TimeValue ) {
+				$value = $useLongText
+					? $dv->getLongHTMLText( $this->getLinker( $isSubject ) )
+					: $dv->getShortHTMLText( $this->getLinker( $isSubject ) );
+
 			// Restore output in Special:Ask on:
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
-			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
-				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIBlob ) ) {
+			} elseif ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
+				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof Blob ) ) {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
@@ -385,8 +399,8 @@ class TableResultPrinter extends ResultPrinter {
 	/**
 	 * @see ResultPrinter::getResources
 	 */
-	protected function getResources() {
-		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
+	protected function getResources(): array {
+		$class = $this->params['class'] ?? '';
 
 		if ( strpos( $class, 'datatable' ) === false ) {
 			return [
@@ -408,7 +422,7 @@ class TableResultPrinter extends ResultPrinter {
 		];
 	}
 
-	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
+	private function addDataTableAttrs( QueryResult $res, array $headerList, array &$tableAttrs ): void {
 		$tableAttrs['width'] = '100%';
 		$tableAttrs['style'] = 'opacity:.0; display:none;';
 

@@ -2,9 +2,11 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\DIWikiPage;
+use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Job;
-use Title;
+use SMW\MediaWiki\JobFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Make sufficient use of the job table by only tracking remaining jobs without
@@ -13,7 +15,7 @@ use Title;
  * Use `ChangePropagationUpdateJob` to easily count the jobs and distinguish them
  * from other `UpdateJob`.
  *
- * `MediaWikiServices::getInstance()->getJobQueueGroup()->get( 'SMW\ChangePropagationUpdateJob' )->getSize()`
+ * `MediaWikiServices::getInstance()->getJobQueueGroup()->get( 'smw.changePropagationUpdate' )->getSize()`
  *
  * @license GPL-2.0-or-later
  * @since 3.0
@@ -27,18 +29,23 @@ class ChangePropagationUpdateJob extends Job {
 	 */
 	const JOB_COMMAND = 'smw.changePropagationUpdate';
 
+	protected JobFactory $jobFactory;
+
 	/**
 	 * @since 3.0
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [], $jobType = null ) {
-		if ( $jobType === null ) {
-			$jobType = self::JOB_COMMAND;
-		}
-
-		parent::__construct( $jobType, $title, $params );
+	public function __construct(
+		Title $title,
+		$params = [],
+		?JobFactory $jobFactory = null
+	) {
+		parent::__construct( static::JOB_COMMAND, $title, $params );
+		// Fallback for direct `new self(...)` callsites (e.g. ChangePropagationClassUpdateJob)
+		// and ad-hoc instantiation in tests that bypass the JobClasses ObjectFactory spec.
+		$this->jobFactory = $jobFactory ?? ApplicationFactory::getInstance()->getJobFactory();
 		$this->removeDuplicates = true;
 	}
 
@@ -47,12 +54,12 @@ class ChangePropagationUpdateJob extends Job {
 	 *
 	 * @since 3.0
 	 */
-	public function run() {
+	public function run(): bool {
 		ChangePropagationDispatchJob::cleanUp(
-			DIWikiPage::newFromTitle( $this->getTitle() )
+			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
-		$updateJob = new UpdateJob(
+		$updateJob = $this->jobFactory->newUpdateJob(
 			$this->getTitle(),
 			array_merge( $this->params, [ 'origin' => 'ChangePropagationUpdateJob' ] )
 		);

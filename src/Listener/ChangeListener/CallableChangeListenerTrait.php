@@ -14,39 +14,27 @@ trait CallableChangeListenerTrait {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var
-	 */
-	private $changeListeners = [];
+	private array $changeListeners = [];
 
-	/**
-	 * @var
-	 */
-	private $attrs = [];
+	private array $attrs = [];
 
 	/**
 	 * @since 3.2
 	 */
-	public function clearListeners() {
+	public function clearListeners(): void {
 		$this->changeListeners = [];
 		$this->attrs = [];
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $attrs
 	 */
-	public function setAttrs( array $attrs ) {
+	public function setAttrs( array $attrs ): void {
 		$this->attrs = $attrs;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $key
-	 *
-	 * @return bool
 	 */
 	public function canTrigger( string $key ): bool {
 		return isset( $this->changeListeners[$key] );
@@ -54,24 +42,25 @@ trait CallableChangeListenerTrait {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $key
 	 */
-	public function trigger( string $key ) {
+	public function trigger( string $key ): void {
 		if ( !isset( $this->changeListeners[$key] ) ) {
 			return;
 		}
 
 		$this->logger->info(
-			[ 'Listener', 'ChangeListener', "{key}" ],
-			[ 'role' => 'developer', 'key' => $key ]
+			'Listener ChangeListener {key}',
+			[
+				'role' => 'developer',
+				'key' => $key
+			]
 		);
 
 		$changeRecord = new ChangeRecord( $this->attrs );
 		$this->triggerByKey( $key, $changeRecord );
 	}
 
-	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {
+	protected function triggerByKey( string $key, ChangeRecord $changeRecord ): void {
 		foreach ( $this->changeListeners[$key] as $changeListener ) {
 
 			if ( !is_callable( $changeListener ) ) {

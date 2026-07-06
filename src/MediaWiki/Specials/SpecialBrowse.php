@@ -2,16 +2,19 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataValueFactory;
 use SMW\Encoder;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink as Infolink;
-use SpecialPage;
-use TemplateParser;
+use SMW\MediaWiki\Specials\Browse\ValueFormatter;
+use SMW\SerializerFactory;
+use SMW\Settings;
+use SMW\Store;
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it
@@ -24,10 +27,23 @@ use TemplateParser;
 class SpecialBrowse extends SpecialPage {
 
 	/**
-	 * @see SpecialPage::__construct
+	 * @since 7.0.0
 	 */
-	public function __construct() {
-		parent::__construct( 'Browse', '', true, false, 'default', true );
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings,
+		private readonly SerializerFactory $serializerFactory
+	) {
+		// MediaWiki 1.46 deprecated the SpecialPage constructor flags; the
+		// page stays transcludable via the isIncludable() override below.
+		parent::__construct( 'Browse' );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isIncludable(): bool {
+		return true;
 	}
 
 	/**
@@ -35,7 +51,7 @@ class SpecialBrowse extends SpecialPage {
 	 *
 	 * @param string $query string
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$this->setHeaders();
 		$webRequest = $this->getRequest();
 
@@ -50,7 +66,7 @@ class SpecialBrowse extends SpecialPage {
 
 		$isEmptyRequest = $query === null && ( $webRequest->getVal( 'article' ) === '' || $webRequest->getVal( 'article' ) === null );
 
-		// @see SMWInfolink::encodeParameters
+		// @see Infolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
 			$query = $this->getRequest()->getVal( 'x' );
 		}
@@ -62,7 +78,7 @@ class SpecialBrowse extends SpecialPage {
 			$articletext = $query;
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByType(
 			'_wpg',
 			$articletext ?? false
 		);
@@ -71,9 +87,6 @@ class SpecialBrowse extends SpecialPage {
 		$out->setHTMLTitle( $dataValue->getWikiValue() );
 
 		$out->addModuleStyles( [
-			'mediawiki.ui',
-			'mediawiki.ui.button',
-			'mediawiki.ui.input',
 			'ext.smw.factbox.styles',
 			'ext.smw.browse.styles',
 			'mediawiki.codex.messagebox.styles'
@@ -92,7 +105,7 @@ class SpecialBrowse extends SpecialPage {
 		$this->addExternalHelpLinks( $dataValue );
 	}
 
-	private function getTemplateData( $webRequest, $dataValue, $isEmptyRequest ): array {
+	private function getTemplateData( $webRequest, $dataValue, bool $isEmptyRequest ): array {
 		$data = [];
 		if ( $isEmptyRequest && !$this->including() ) {
 			$data['html-output'] = Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE );
@@ -116,20 +129,19 @@ class SpecialBrowse extends SpecialPage {
 			return $data;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
 		$dataItem = $dataValue->getDataItem();
 
 		$htmlBuilder = $this->newHtmlBuilder(
 			$webRequest,
 			$dataItem,
-			$applicationFactory->getStore(),
-			$applicationFactory->getSettings()
+			$this->store,
+			$this->settings
 		);
 
 		if ( $webRequest->getVal( 'format' ) === 'json' ) {
-			$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+			$semanticDataSerializer = $this->serializerFactory->newSemanticDataSerializer();
 			$res = $semanticDataSerializer->serialize(
-				$applicationFactory->getStore()->getSemanticData( $dataItem )
+				$this->store->getSemanticData( $dataItem )
 			);
 
 			$this->getOutput()->disable();
@@ -146,10 +158,11 @@ class SpecialBrowse extends SpecialPage {
 		return $htmlBuilder->getPlaceholderData();
 	}
 
-	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ) {
+	private function newHtmlBuilder( $webRequest, $dataItem, Store $store, Settings $settings ): HtmlBuilder {
 		$htmlBuilder = new HtmlBuilder(
 			$store,
-			$dataItem
+			$dataItem,
+			new ValueFormatter( $store )
 		);
 
 		$htmlBuilder->setOptions(
@@ -183,9 +196,9 @@ class SpecialBrowse extends SpecialPage {
 		return $htmlBuilder;
 	}
 
-	private function addExternalHelpLinks( $dataValue ) {
+	private function addExternalHelpLinks( $dataValue ): void {
 		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
-			return null;
+			return;
 		}
 
 		if ( $dataValue->isValid() ) {
@@ -210,13 +223,13 @@ class SpecialBrowse extends SpecialPage {
 			] );
 		}
 
-		$this->addHelpLink( $this->msg( 'smw-specials-browse-helplink' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-specials-browse-helplink' )->text(), true );
 	}
 
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 

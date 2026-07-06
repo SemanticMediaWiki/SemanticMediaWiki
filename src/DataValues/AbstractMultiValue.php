@@ -2,10 +2,9 @@
 
 namespace SMW\DataValues;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
-use SMWPropertyListValue as PropertyListValue;
 
 /**
  * @private
@@ -29,16 +28,16 @@ abstract class AbstractMultiValue extends DataValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty[] $properties
+	 * @param Property[] $properties
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function setFieldProperties( array $properties );
 
 	/**
 	 * @since 2.5
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function getProperties();
 
@@ -48,7 +47,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function getPropertyDataItems();
 
@@ -60,9 +59,9 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @return DataItem[]|null
+	 * @return DataItem[]
 	 */
-	public function getDataItems() {
+	public function getDataItems(): array {
 		if ( !$this->isValid() ) {
 			return [];
 		}
@@ -80,7 +79,7 @@ abstract class AbstractMultiValue extends DataValue {
 	}
 
 	/**
-	 * @note called by \SMW\Query\Result\ResultArray::loadContent for matching an index as denoted
+	 * @note called by ResultArray::loadContent for matching an index as denoted
 	 * in |?Foo=Bar|+index=1 OR |?Foo=Bar|+index=Bar
 	 *
 	 * @see https://www.semantic-mediawiki.org/wiki/Help:Type_Record#Semantic_search
@@ -89,16 +88,17 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @param string|int $index
 	 *
-	 * @return DataItem[]|null
+	 * @return DataItem|null
 	 */
 	public function getDataItemByIndex( $index ) {
 		if ( is_numeric( $index ) ) {
 			$pos = $index - 1;
 			$dataItems = $this->getDataItems();
-			return isset( $dataItems[$pos] ) ? $dataItems[$pos] : null;
+			return $dataItems[$pos] ?? null;
 		}
 
-		if ( ( $property = $this->getPropertyDataItemByIndex( $index ) ) !== null ) {
+		$property = $this->getPropertyDataItemByIndex( $index );
+		if ( $property !== null ) {
 			$values = $this->getDataItem()->getSemanticData()->getPropertyValues( $property );
 			return reset( $values );
 		}
@@ -107,21 +107,21 @@ abstract class AbstractMultiValue extends DataValue {
 	}
 
 	/**
-	 * @note called by \SMW\Query\Result\ResultArray::getNextDataValue to match an index
+	 * @note called by ResultArray::getNextDataValue to match an index
 	 * that has been denoted using |?Foo=Bar|+index=1 OR |?Foo=Bar|+index=Bar
 	 *
 	 * @since 2.5
 	 *
 	 * @param string|int $index
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getPropertyDataItemByIndex( $index ) {
 		$properties = $this->getPropertyDataItems();
 
 		if ( is_numeric( $index ) ) {
 			$pos = $index - 1;
-			return isset( $properties[$pos] ) ? $properties[$pos] : null;
+			return $properties[$pos] ?? null;
 		}
 
 		foreach ( $properties as $property ) {
@@ -139,22 +139,31 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param DIProperty|null $property
+	 * @param Property|null $property
 	 *
-	 * @return DIProperty[]|[]
+	 * @return Property[]|array
 	 */
-	protected function getFieldProperties( ?DIProperty $property = null ) {
+	protected function getFieldProperties( ?Property $property = null ) {
 		if ( $property === null || $property->getDiWikiPage() === null ) {
 			return [];
 		}
 
-		$dataItem = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFieldListBy( $property );
+		if ( $this->dataValueServiceFactory !== null ) {
+			$dataItem = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getFieldListBy( $property );
+		} else {
+			$dataItem = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFieldListBy( $property );
+		}
 
 		if ( !$dataItem ) {
 			return [];
 		}
 
 		$propertyListValue = new PropertyListValue( '__pls' );
+
+		if ( $this->dataValueServiceFactory !== null ) {
+			$propertyListValue->setStore( $this->dataValueServiceFactory->getStore() );
+		}
+
 		$propertyListValue->setDataItem( $dataItem );
 
 		if ( !$propertyListValue->isValid() ) {

@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\DIWikiPage;
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\Utils\Image;
 
 /**
@@ -14,23 +15,23 @@ use SMW\Utils\Image;
  *
  * @author mwjames
  */
-class ImageTest extends \PHPUnit\Framework\TestCase {
+class ImageTest extends TestCase {
 
 	public function testIsImage() {
 		$this->assertTrue(
-			Image::isImage( DIWikiPage::newFromText( 'Foo.png', NS_FILE ) )
+			Image::isImage( WikiPage::newFromText( 'Foo.png', NS_FILE ) )
 		);
 
 		$this->assertTrue(
-			Image::isImage( DIWikiPage::newFromText( '一二三.png', NS_FILE ) )
+			Image::isImage( WikiPage::newFromText( '一二三.png', NS_FILE ) )
 		);
 
 		$this->assertFalse(
-			Image::isImage( DIWikiPage::newFromText( 'Foo.png', NS_MAIN ) )
+			Image::isImage( WikiPage::newFromText( 'Foo.png', NS_MAIN ) )
 		);
 
 		$this->assertFalse(
-			Image::isImage( DIWikiPage::newFromText( 'Foo', NS_FILE ) )
+			Image::isImage( WikiPage::newFromText( 'Foo', NS_FILE ) )
 		);
 	}
 

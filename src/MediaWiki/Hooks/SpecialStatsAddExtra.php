@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Hook\SpecialStatsAddExtraHook;
+use SMW\DataTypeRegistry;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
 use SMW\Store;
 
 /**
@@ -17,9 +17,7 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class SpecialStatsAddExtra implements HookListener {
-
-	use OptionsAwareTrait;
+class SpecialStatsAddExtra implements SpecialStatsAddExtraHook {
 
 	/**
 	 * Specifies the point where outdated entities should be removed
@@ -27,25 +25,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 */
 	const CRITICAL_DELETECOUNT = 5000;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Language|string
-	 */
-	private $language;
-
-	/**
-	 * @var
-	 */
-	private $dataTypeLabels = [];
-
-	/**
-	 * @var string[]
-	 */
-	private $messageMapper = [
+	private array $messageMapper = [
 		'PROPUSES'      => 'smw-statistics-property-instance',
 		'ERRORUSES'     => 'smw-statistics-error-count',
 		'TOTALPROPS'    => 'smw-statistics-property-total',
@@ -61,52 +41,32 @@ class SpecialStatsAddExtra implements HookListener {
 	];
 
 	/**
-	 * @since  1.9
-	 *
-	 * @param Store $store
+	 * @since 7.0.0
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly Store $store,
+		private readonly DataTypeRegistry $dataTypeRegistry,
+	) {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param Language|string $language
+	 * @since 7.0.0
 	 */
-	public function setLanguage( $language ) {
-		$this->language = $language;
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param array
-	 */
-	public function setDataTypeLabels( $dataTypeLabels ) {
-		$this->dataTypeLabels = $dataTypeLabels;
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @param array &$extraStats
-	 *
-	 * @return true
-	 */
-	public function process( array &$extraStats ) {
-		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
+	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return true;
 		}
 
-		$this->copyStatistics( $extraStats );
+		$context->getOutput()->addModules( 'ext.smw.tooltip' );
+
+		$this->copyStatistics( $extraStats, $context->getLanguage() );
 
 		return true;
 	}
 
-	private function copyStatistics( &$extraStats ) {
+	private function copyStatistics( array &$extraStats, $language ): void {
 		$statistics = $this->store->getStatistics();
-		$statistics['DATATYPECOUNT'] = count( $this->dataTypeLabels );
+		$statistics['DATATYPECOUNT'] = count( $this->dataTypeRegistry->getKnownTypeLabels() );
 
 		if ( isset( $statistics['_cache'] ) ) {
 			$header = 'smw-statistics-cached';
@@ -121,9 +81,10 @@ class SpecialStatsAddExtra implements HookListener {
 			}
 
 			$count = $statistics[$key];
-			$message = $this->msg( $msgKey );
+			$message = $this->msg( $msgKey, $language );
 
-			if ( ( $info = $this->msg( $msgKey . '-info' ) ) !== '' && $this->getOption( 'no.tooltip', false ) === false ) {
+			$info = $this->msg( $msgKey . '-info', $language );
+			if ( $info !== '' ) {
 				$message .= "&nbsp;<span class='smw-highlighter' data-content='{$info}'>ⁱ</span>";
 			}
 
@@ -147,13 +108,14 @@ class SpecialStatsAddExtra implements HookListener {
 			if ( $key === 'QUERY' ) {
 				$extraStats[$header] += $this->addFormats(
 					count( $extraStats[$header] ),
-					$statistics
+					$statistics,
+					$language
 				);
 			}
 		}
 	}
 
-	private function addFormats( $key, $statistics ) {
+	private function addFormats( int $key, array $statistics, $language ): array {
 		$i = 0;
 		$formats = [];
 
@@ -161,7 +123,7 @@ class SpecialStatsAddExtra implements HookListener {
 
 			// Add only the top 3 + count/debug
 			if ( $v > 0 && ( $k === 'count' || $k === 'debug' || $i < 3 ) ) {
-				$message = '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;' . $this->msg( [ 'smw-statistics-query-format', $k ] );
+				$message = '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;' . $this->msg( [ 'smw-statistics-query-format', $k ], $language );
 
 				$formats[$key++] = [
 					'name'   => $message,
@@ -175,13 +137,9 @@ class SpecialStatsAddExtra implements HookListener {
 		return $formats;
 	}
 
-	private function msg( $args ) {
-		if ( $this->getOption( 'plain.msg_key', false ) ) {
-			return is_array( $args ) ? implode( '.', $args ) : $args;
-		}
-
+	private function msg( $args, $language ): string {
 		if ( Message::exists( $args ) ) {
-			return Message::get( $args, Message::PARSE, $this->language );
+			return Message::get( $args, Message::PARSE, $language );
 		}
 
 		return '';

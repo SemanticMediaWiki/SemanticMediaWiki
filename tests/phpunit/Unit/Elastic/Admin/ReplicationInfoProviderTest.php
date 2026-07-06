@@ -1,0 +1,133 @@
+<?php
+
+namespace SMW\Tests\Unit\Elastic\Admin;
+
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Admin\ReplicationInfoProvider;
+use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
+use SMW\EntityCache;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Store;
+
+/**
+ * @covers \SMW\Elastic\Admin\ReplicationInfoProvider
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.0
+ *
+ * @author mwjames
+ */
+class ReplicationInfoProviderTest extends TestCase {
+
+	private $outputFormatter;
+	private $webRequest;
+	private $replicationCheck;
+	private $entityCache;
+	private $store;
+
+	protected function setUp(): void {
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->replicationCheck = $this->getMockBuilder( ReplicationCheck::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'fetch' ] )
+			->getMock();
+
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection' ] )
+			->getMockForAbstractClass();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( new DummyClient() );
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			ReplicationInfoProvider::class,
+			new ReplicationInfoProvider( $this->outputFormatter, $this->replicationCheck, $this->entityCache )
+		);
+	}
+
+	public function testGetTask() {
+		$instance = new ReplicationInfoProvider(
+			$this->outputFormatter,
+			$this->replicationCheck,
+			$this->entityCache
+		);
+
+		$this->assertEquals(
+			'replication',
+			$instance->getSupplementTask()
+		);
+
+		$this->assertEquals(
+			'elastic/replication',
+			$instance->getTask()
+		);
+	}
+
+	public function testGetHtml() {
+		$instance = new ReplicationInfoProvider(
+			$this->outputFormatter,
+			$this->replicationCheck,
+			$this->entityCache
+		);
+
+		$this->assertIsString(
+
+			$instance->getHtml()
+		);
+	}
+
+	public function tesHandleRequest_NoFailures() {
+		$this->outputFormatter->expects( $this->once() )
+			->method( 'addParentLink' )
+			->with(	[ 'action' => 'elastic' ] );
+
+		$this->replicationCheck->expects( $this->once() )
+			->method( 'getReplicationFailures' )
+			->willReturn( [] );
+
+		$instance = new ReplicationInfoProvider(
+			$this->outputFormatter,
+			$this->replicationCheck,
+			$this->entityCache
+		);
+
+		$instance->setStore( $this->store );
+		$instance->handleRequest( $this->webRequest );
+	}
+
+	public function testHandleRequest_WithFailuresOnPages() {
+		$ns = NS_FILE;
+
+		$this->replicationCheck->expects( $this->once() )
+			->method( 'getReplicationFailures' )
+			->willReturn( [ 'Foo#0##', "Bar#$ns##" ] );
+
+		$instance = new ReplicationInfoProvider(
+			$this->outputFormatter,
+			$this->replicationCheck,
+			$this->entityCache
+		);
+
+		$instance->setStore( $this->store );
+		$instance->handleRequest( $this->webRequest );
+	}
+
+}

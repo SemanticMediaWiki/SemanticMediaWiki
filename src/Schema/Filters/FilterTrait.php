@@ -22,7 +22,7 @@ trait FilterTrait {
 	private $matches = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $options = [];
 
@@ -54,7 +54,7 @@ trait FilterTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addOption( string $key, $value ) {
+	public function addOption( string $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -65,8 +65,10 @@ trait FilterTrait {
 	 * @since 3.2
 	 */
 	public function getLog(): iterable {
+		$matches = $this->getMatches();
+		$matchArray = is_array( $matches ) ? $matches : iterator_to_array( $matches );
 		$log = [
-			$this->getName() => count( $this->getMatches() )
+			$this->getName() => count( $matchArray )
 		];
 
 		if ( $this->nodeFilter instanceof SchemaFilter ) {
@@ -81,7 +83,7 @@ trait FilterTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setNodeFilter( SchemaFilter $nodeFilter ) {
+	public function setNodeFilter( SchemaFilter $nodeFilter ): void {
 		$this->nodeFilter = $nodeFilter;
 	}
 
@@ -90,7 +92,7 @@ trait FilterTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function filter( iterable $compartments ) {
+	public function filter( iterable $compartments ): void {
 		$this->matches = [];
 
 		if ( $compartments instanceof CompartmentIterator ) {
@@ -98,6 +100,9 @@ trait FilterTrait {
 				$this->match( $compartment );
 			}
 		} else {
+			if ( !$compartments instanceof Compartment ) {
+				return;
+			}
 			$this->match( $compartments );
 		}
 

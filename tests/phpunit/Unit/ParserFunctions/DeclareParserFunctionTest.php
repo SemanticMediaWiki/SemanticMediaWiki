@@ -1,0 +1,100 @@
+<?php
+
+namespace SMW\Tests\Unit\ParserFunctions;
+
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
+use SMW\ParserData;
+use SMW\ParserFunctions\DeclareParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\ParserFunctions\DeclareParserFunction
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since   2.1
+ *
+ * @author mwjames
+ */
+class DeclareParserFunctionTest extends TestCase {
+
+	private $testEnvironment;
+	private $semanticDataValidator;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$parserData = $this->getMockBuilder( ParserData::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			DeclareParserFunction::class,
+			new DeclareParserFunction( $parserData )
+		);
+	}
+
+	/**
+	 * @dataProvider argumentProvider
+	 */
+	public function testParse( $args, $expected ) {
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$ppframe = $this->getMockBuilder( '\PPFrame' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$ppframe->expects( $this->any() )
+			->method( 'isTemplate' )
+			->willReturn( true );
+
+		$ppframe->expects( $this->any() )
+			->method( 'expand' )
+			->willReturnArgument( 0 );
+
+		$ppframe->expects( $this->any() )
+			->method( 'getArgument' )
+			->willReturnArgument( 0 );
+
+		$instance = new DeclareParserFunction( $parserData );
+
+		$this->assertIsString(
+
+			$instance->parse( $ppframe, $args )
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getSemanticData()
+		);
+	}
+
+	public function argumentProvider() {
+		$provider[] = [
+			[ 'Has foo=Bar' ],
+			[
+				'propertyLabel'  => [ 'Has foo' ],
+				'propertyValues' => [ 'Bar' ]
+			]
+		];
+
+		return $provider;
+	}
+
+}

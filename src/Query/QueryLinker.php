@@ -2,10 +2,9 @@
 
 namespace SMW\Query;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
-use SMWInfolink as Infolink;
-use SMWQuery as Query;
 
 /**
  * Representing a Special:Ask query link to further query results
@@ -24,7 +23,7 @@ class QueryLinker {
 	 *
 	 * @return Infolink
 	 */
-	public static function get( Query $query, array $parameters = [] ) {
+	public static function get( Query $query, array $parameters = [] ): Infolink {
 		$link = Infolink::newInternalLink( '', ':Special:Ask', false, [] );
 		$link->setCompactLink( $GLOBALS['smwgCompactLinkSupport'] );
 
@@ -50,18 +49,20 @@ class QueryLinker {
 		return $link;
 	}
 
-	private static function getParameters( $query ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function getParameters( Query $query ): array {
 		$params = [ trim( $query->getQueryString( true ) ?? '' ) ];
 
 		foreach ( $query->getExtraPrintouts() as /* PrintRequest */ $printout ) {
-			if ( ( $serialisation = $printout->getSerialisation( true ) ) !== '' ) {
+			$serialisation = $printout->getSerialisation( true );
+			if ( $serialisation !== '' ) {
 				$params[] = $serialisation;
 			}
 		}
 
-		if ( $query->getMainLabel() !== false ) {
-			$params['mainlabel'] = $query->getMainLabel();
-		}
+		$params['mainlabel'] = $query->getMainLabel();
 
 		if ( $query->getQuerySource() !== '' ) {
 			$params['source'] = $query->getQuerySource();
@@ -81,6 +82,11 @@ class QueryLinker {
 		$count = count( $sortKeys );
 
 		if ( $count == 0 ) {
+			// `order=none` produces no sort keys; re-emit it so the
+			// result-continuation link stays unsorted.
+			if ( $query->getOption( Query::SORT_DISABLED ) ) {
+				$params['order'] = 'none';
+			}
 			return $params;
 		}
 
@@ -99,7 +105,7 @@ class QueryLinker {
 
 			// Avoid predefined properties to appear as key as in _MDAT
 			if ( $key !== '' && $key[0] === '_' ) {
-				$key = DIProperty::newFromUserLabel( $key )->getLabel();
+				$key = Property::newFromUserLabel( $key )->getLabel();
 			} else {
 				$key = str_replace( '_', ' ', $key );
 			}

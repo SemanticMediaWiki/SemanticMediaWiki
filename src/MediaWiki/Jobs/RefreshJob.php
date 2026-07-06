@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\MediaWiki\JobFactory;
+use SMW\Store;
 
 /**
  * RefreshJob iterates over all page ids of the wiki, to perform an update
@@ -35,20 +37,21 @@ class RefreshJob extends Job {
 	 * If more than one run is done, then the first run will restrict to properties
 	 * and types. The progress indication refers to the current run, not to the
 	 * overall job.
-	 *
-	 * @param Title $title
-	 * @param array $params
 	 */
-	public function __construct( $title, $params = [ 'spos' => 1, 'prog' => 0, 'rc' => 1 ] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store,
+		private readonly JobFactory $jobFactory
+	) {
 		parent::__construct( 'smw.refresh', $title, $params );
+		$this->setStore( $store );
 	}
 
 	/**
 	 * @see Job::run
-	 *
-	 * @return bool
 	 */
-	public function run() {
+	public function run(): bool {
 		if ( $this->hasParameter( 'spos' ) ) {
 			$this->refreshData( $this->getParameter( 'spos' ) );
 		}
@@ -60,10 +63,8 @@ class RefreshJob extends Job {
 	 * Report the estimated progress status of this job as a number between
 	 * 0 and 1 (0% to 100%). The progress refers to the state before
 	 * processing this job.
-	 *
-	 * @return double
 	 */
-	public function getProgress() {
+	public function getProgress(): float {
 		$prog = $this->hasParameter( 'prog' ) ? $this->getParameter( 'prog' ) : 0;
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 		$rc   = $this->hasParameter( 'rc' ) ? $this->getParameter( 'rc' ) : 1;
@@ -74,10 +75,10 @@ class RefreshJob extends Job {
 	/**
 	 * @param $spos start index
 	 */
-	protected function refreshData( $spos ) {
+	protected function refreshData( $spos ): bool {
 		$run = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 
-		$entityRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
+		$entityRebuildDispatcher = $this->store->refreshData(
 			$spos,
 			20,
 			$this->getNamespace( $run )
@@ -109,8 +110,8 @@ class RefreshJob extends Job {
 		return true;
 	}
 
-	protected function createNextJob( array $parameters ) {
-		$job = new self(
+	protected function createNextJob( array $parameters ): void {
+		$job = $this->jobFactory->newRefreshJob(
 			$this->getTitle(),
 			$parameters
 		);
@@ -119,7 +120,7 @@ class RefreshJob extends Job {
 		$job->insert();
 	}
 
-	protected function getNamespace( $run ) {
+	protected function getNamespace( $run ): false|array {
 		if ( !$this->hasParameter( 'rc' ) ) {
 			return false;
 		}

@@ -2,7 +2,8 @@
 
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
@@ -11,7 +12,6 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,35 +23,17 @@ use SMWDIBlob as DIBlob;
  */
 class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ComparatorMapper $comparatorMapper;
 
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var ComparatorMapper
-	 */
-	private $comparatorMapper;
-
-	/**
-	 * @var FulltextSearchTableFactory
-	 */
-	private $fulltextSearchTableFactory;
+	private FulltextSearchTableFactory $fulltextSearchTableFactory;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ConditionBuilder $conditionBuilder,
+	) {
 		$this->comparatorMapper = new ComparatorMapper();
 		$this->fulltextSearchTableFactory = new FulltextSearchTableFactory();
 	}
@@ -61,7 +43,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ValueDescription;
 	}
 
@@ -74,10 +56,10 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 
-		if ( !$description->getDataItem() instanceof DIWikiPage ) {
+		if ( !$description instanceof ValueDescription || !$description->getDataItem() instanceof WikiPage ) {
 			return $query;
 		}
 
@@ -131,7 +113,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $query;
 	}
 
-	private function addFulltextSearchCondition( $description, $query, $comparator, &$value ) {
+	private function addFulltextSearchCondition( ValueDescription $description, QuerySegment $query, $comparator, &$value ): false|QuerySegment {
 		// Uses ~~ wide proximity?
 		$usesWidePromixity = false;
 
@@ -166,7 +148,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$query->components = [];
 
 		$query->where = $valueMatchConditionBuilder->getWhereCondition(
-			new ValueDescription( new DIBlob( $value ), null, $comparator ),
+			new ValueDescription( new Blob( $value ), null, $comparator ),
 			$query->alias
 		);
 

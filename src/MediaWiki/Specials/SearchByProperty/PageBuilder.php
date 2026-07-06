@@ -2,18 +2,20 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Message\Message;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\MediaWiki\MessageBuilder;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
-use SMWInfolink as Infolink;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,57 +29,43 @@ use SMWInfolink as Infolink;
 class PageBuilder {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var PageRequestOptions
-	 */
-	private $pageRequestOptions;
-
-	/**
-	 * @var QueryResultLookup
-	 */
-	private $queryResultLookup;
-
-	/**
-	 * @var MessageBuilder
-	 */
-	private $messageBuilder;
-
-	/**
 	 * @var Linker
 	 */
 	private $linker;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param PageRequestOptions $pageRequestOptions
-	 * @param QueryResultLookup $queryResultLookup
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, PageRequestOptions $pageRequestOptions, QueryResultLookup $queryResultLookup ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->pageRequestOptions = $pageRequestOptions;
-		$this->queryResultLookup = $queryResultLookup;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly PageRequestOptions $pageRequestOptions,
+		private readonly QueryResultLookup $queryResultLookup,
+		private readonly Store $store,
+	) {
 		$this->linker = smwfGetLinker();
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @return string
+	 * Build a message in the renderer's language so the form labels match the
+	 * surrounding form's language (`HtmlFormRenderer` is constructed with the
+	 * page's content language by default) rather than defaulting to the user
+	 * language.
 	 */
-	public function getHtml() {
+	private function msg( string $key, ...$params ): Message {
+		return wfMessage( $key, ...$params )
+			->inLanguage( $this->htmlFormRenderer->getLanguage() );
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public function getHtml(): string {
 		$this->pageRequestOptions->initialize();
-		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
 		[ $resultMessage, $resultList, $resultCount ] = $this->getResultHtml();
 
 		if ( ( $resultList === '' || $resultList === null ) &&
-			$this->pageRequestOptions->property->getDataItem() instanceof DIProperty &&
+			$this->pageRequestOptions->property->getDataItem() instanceof Property &&
 			$this->pageRequestOptions->valueString === '' ) {
 			[ $resultMessage, $resultList, $resultCount ] = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
 				$this->pageRequestOptions->property->getDataItem()
@@ -85,19 +73,19 @@ class PageBuilder {
 		}
 
 		if ( $resultList === '' || $resultList === null ) {
-			$resultList = $this->messageBuilder->getMessage( 'smw_result_noresults' )->text();
+			$resultList = $this->msg( 'smw_result_noresults' )->escaped();
 		}
 
 		$pageDescription = Html::rawElement(
 			'p',
 			[ 'class' => 'smw-sp-searchbyproperty-description' ],
-			$this->messageBuilder->getMessage( 'smw-sp-searchbyproperty-description' )->parse()
+			$this->msg( 'smw-sp-searchbyproperty-description' )->parse()
 		);
 
 		$resultListHeader = Html::element(
 			'h2',
 			[],
-			$this->messageBuilder->getMessage( 'smw-sp-searchbyproperty-resultlist-header' )->text()
+			$this->msg( 'smw-sp-searchbyproperty-resultlist-header' )->text()
 		);
 
 		return $pageDescription . $this->getHtmlForm( $resultMessage, $resultCount ) . $resultListHeader . $resultList;
@@ -118,29 +106,29 @@ class PageBuilder {
 				$resultCount )
 			->addHorizontalRule()
 			->addInputField(
-				$this->messageBuilder->getMessage( 'smw_sbv_property' )->text(),
+				$this->msg( 'smw_sbv_property' )->text(),
 				'property',
 				$this->pageRequestOptions->propertyString,
 				'smw-property-input' )
 			->addNonBreakingSpace()
 			->addInputField(
-				$this->messageBuilder->getMessage( 'smw_sbv_value' )->text(),
+				$this->msg( 'smw_sbv_value' )->text(),
 				'value',
 				$this->pageRequestOptions->valueString,
 				'smw-value-input' )
 			->addNonBreakingSpace()
-			->addSubmitButton( $this->messageBuilder->getMessage( 'smw_sbv_submit' )->text() )
+			->addSubmitButton( $this->msg( 'smw_sbv_submit' )->text() )
 			->getForm();
 
 		return $html;
 	}
 
-	private function getResultHtml() {
+	private function getResultHtml(): array {
 		$resultList = '';
 		$resultMessage = '';
 
 		if ( $this->pageRequestOptions->propertyString === '' || !$this->pageRequestOptions->propertyString ) {
-			return [ $this->messageBuilder->getMessage( 'smw_sbv_docu' )->text(), '', 0 ];
+			return [ $this->msg( 'smw_sbv_docu' )->text(), '', 0 ];
 		}
 
 		// #1728
@@ -173,7 +161,7 @@ class PageBuilder {
 			$resultMessageKey = 'smw-sp-searchbyproperty-valuequery';
 		}
 
-		$resultMessage = $this->messageBuilder->getMessage(
+		$resultMessage = $this->msg(
 			$resultMessageKey,
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
 			$this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )->text();
@@ -185,7 +173,7 @@ class PageBuilder {
 		return [ str_replace( '_', ' ', $resultMessage ?? '' ), $resultList, $exactCount ];
 	}
 
-	private function getNearbyResults( $exactResults, $exactCount ) {
+	private function getNearbyResults( array $exactResults, int $exactCount ): array {
 		$resultList = '';
 
 		$greaterResults = $this->queryResultLookup->doQueryForNearbyResults(
@@ -223,16 +211,19 @@ class PageBuilder {
 			return [ '', $resultList, 0 ];
 		}
 
-		$resultMessage = $this->messageBuilder->getMessage(
+		$resultMessage = $this->msg(
 			'smw_sbv_displayresultfuzzy',
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
-			htmlspecialchars( $this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )
+			// This value is htmlspecialchars-escaped, so strip_tags first to keep
+			// the plain caption rather than rendering the date <time> markup as
+			// a literal &lt;time&gt;.
+			htmlspecialchars( strip_tags( $this->pageRequestOptions->value->getShortHTMLText( $this->linker ) ) )
 		)->text();
 
 		$resultList .= $this->makeResultList( $smallerResults, $smallerCount, false );
 
 		if ( $exactCount == 0 ) {
-			$resultList .= "&#160;<em><strong><small>" . $this->messageBuilder->getMessage( 'parentheses' )
+			$resultList .= "&#160;<em><strong><small>" . $this->msg( 'parentheses' )
 				->rawParams( $this->pageRequestOptions->value->getLongHTMLText() )
 				->escaped() . "</small></strong></em>";
 		} else {
@@ -248,17 +239,8 @@ class PageBuilder {
 	 * Creates the HTML for a bullet list with all the results of the set
 	 * query. Values can be highlighted to show exact matches among nearby
 	 * ones.
-	 *
-	 * @param array $results (array of (array of one or two SMWDataValues))
-	 * @param int $number How many results should be displayed? -1 for all
-	 * @param bool $first If less results should be displayed than
-	 * 	given, should they show the first $number results, or the last
-	 * 	$number results?
-	 * @param bool $highlight Should the results be highlighted?
-	 *
-	 * @return string HTML with the bullet list, including header
 	 */
-	private function makeResultList( $results, $number, $first, $highlight = false ) {
+	private function makeResultList( array $results, $number, bool $first, bool $highlight = false ): string {
 		if ( $number > 0 ) {
 			$results = $first ?
 				array_slice( $results, 0, $number ) :
@@ -270,7 +252,7 @@ class PageBuilder {
 		foreach ( $results as $result ) {
 
 			$outputFormat = $result[0]->getOutputFormat();
-			$result[0]->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+			$result[0]->setOutputFormat( $outputFormat ?: 'LOCL' );
 
 			$listitem = $result[0]->getLongHTMLText( $this->linker );
 
@@ -301,14 +283,14 @@ class PageBuilder {
 			// or if the current results are to be highlighted:
 			if ( array_key_exists( 1, $result ) &&
 				( $result[1] instanceof DataValue ) &&
-				( !$result[1]->getDataItem() instanceof \SMWDIError ) &&
+				( !$result[1]->getDataItem() instanceof Error ) &&
 				( !$this->pageRequestOptions->value->getDataItem()->equals( $result[1]->getDataItem() )
 					|| $highlight ) ) {
 
 				$outputFormat = $result[1]->getOutputFormat();
-				$result[1]->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+				$result[1]->setOutputFormat( $outputFormat ?: 'LOCL' );
 
-				$listitem .= "&#160;<em><small>" . $this->messageBuilder->getMessage( 'parentheses' )
+				$listitem .= "&#160;<em><small>" . $this->msg( 'parentheses' )
 					->rawParams( $result[1]->getLongHTMLText( $this->linker ) )
 					->escaped() . "</small></em>";
 			}
@@ -324,11 +306,11 @@ class PageBuilder {
 		return "<ul>$html</ul>";
 	}
 
-	private function canQueryNearbyResults( $exactCount ) {
+	private function canQueryNearbyResults( int $exactCount ): bool {
 		return $exactCount < ( $this->pageRequestOptions->limit / 3 ) && $this->pageRequestOptions->nearbySearch && $this->pageRequestOptions->valueString !== '';
 	}
 
-	private function canShowSearchByPropertyLink( DataValue $dataValue ) {
+	private function canShowSearchByPropertyLink( DataValue $dataValue ): bool {
 		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById(
 			$dataValue->getTypeID()
 		);
@@ -336,17 +318,17 @@ class PageBuilder {
 		return $this->pageRequestOptions->value instanceof $dataTypeClass && $this->pageRequestOptions->valueString === '';
 	}
 
-	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ) {
+	private function tryToFindAtLeastOnePropertyTableReferenceFor( Property $property ): array {
 		$resultList = '';
 		$resultMessage = '';
 		$resultCount = 0;
 		$extra = '';
 
-		$dataItem = ApplicationFactory::getInstance()->getStore()->getPropertyTableIdReferenceFinder()->tryToFindAtLeastOneReferenceForProperty(
+		$dataItem = $this->store->getPropertyTableIdReferenceFinder()->tryToFindAtLeastOneReferenceForProperty(
 			$property
 		);
 
-		if ( !$dataItem instanceof DIWikiPage ) {
+		if ( !$dataItem instanceof WikiPage ) {
 			$resultMessage = 'No reference found.';
 			return [ $resultMessage, $resultList, $resultCount ];
 		}
@@ -355,7 +337,7 @@ class PageBuilder {
 		// for removal
 		if ( $dataItem->getInterWiki() === ':smw-delete' ) {
 			$resultMessage = 'Item reference "' . $dataItem->getSubobjectName() . '" has already been marked for removal.';
-			$dataItem = new DIWikiPage( $dataItem->getDBKey(), $dataItem->getNamespace() );
+			$dataItem = new WikiPage( $dataItem->getDBKey(), $dataItem->getNamespace() );
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -363,7 +345,7 @@ class PageBuilder {
 		);
 
 		$outputFormat = $dataValue->getOutputFormat();
-		$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+		$dataValue->setOutputFormat( $outputFormat ?: 'LOCL' );
 
 		if ( $dataValue->isValid() ) {
 			// $resultMessage = 'Item reference for a zero-marked property.';
@@ -379,7 +361,7 @@ class PageBuilder {
 		return [ $resultMessage, $resultList, $resultCount ];
 	}
 
-	private function isAskQueryLinksRelatedRequest() {
+	private function isAskQueryLinksRelatedRequest(): bool {
 		return $this->pageRequestOptions->property !== '' &&
 			$this->pageRequestOptions->property->getDataItem()->getKey() === '_ASK' &&
 			$this->pageRequestOptions->value->isValid() &&

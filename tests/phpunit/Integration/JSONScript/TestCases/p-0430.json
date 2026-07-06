@@ -70,7 +70,7 @@
 			"subject": "Example/P0430/Q1.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"NDL-ID smwtype_eid\" data-sort-value=\"00564222\">00564222</td>"
+					"<td class=\"NDL-ID smwtype&#95;eid\" data-sort-value=\"00564222\">00564222</td>"
 				]
 			}
 		},
@@ -80,7 +80,7 @@
 			"subject": "Example/P0430/Q1.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"NDL-ID smwtype_eid\" data-sort-value=\"00564222\"><span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://id.ndl.go.jp/auth/ndlna/00564222\">00564222</a></span></td>"
+					"<td class=\"NDL-ID smwtype&#95;eid\" data-sort-value=\"00564222\"><span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://id.ndl.go.jp/auth/ndlna/00564222\">00564222</a></span></td>"
 				]
 			}
 		},

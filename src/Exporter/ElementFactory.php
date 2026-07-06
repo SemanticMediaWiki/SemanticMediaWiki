@@ -3,11 +3,16 @@
 namespace SMW\Exporter;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
+use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
-use SMWDataItem as DataItem;
-use SMWDITime as DITime;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,10 +23,7 @@ use SMWExporter as Exporter;
  */
 class ElementFactory {
 
-	/**
-	 * @var array
-	 */
-	private $dataItemMappers = [];
+	private array $dataItemMappers = [];
 
 	/**
 	 * @since 2.2
@@ -29,7 +31,7 @@ class ElementFactory {
 	 * @param int $type
 	 * @param callable $dataItemMapper
 	 */
-	public function registerCallableMapper( $type, callable $dataItemMapper ) {
+	public function registerCallableMapper( $type, callable $dataItemMapper ): void {
 		$this->dataItemMappers[$type] = $dataItemMapper;
 	}
 
@@ -43,7 +45,7 @@ class ElementFactory {
 	 * @return Element|null
 	 * @throws RuntimeException
 	 */
-	public function newFromDataItem( DataItem $dataItem ) {
+	public function newFromDataItem( DataItem $dataItem ): ?Element {
 		if ( $this->dataItemMappers === [] ) {
 			$this->initDefaultMappers();
 		}
@@ -58,7 +60,7 @@ class ElementFactory {
 	}
 
 	private function newElement( DataItem $dataItem ) {
-		$type = $dataItem->getDIType();
+		$type = $dataItem->getDIType() ?? '';
 
 		if ( isset( $this->dataItemMappers[$type] ) && is_callable( $this->dataItemMappers[$type] ) ) {
 			return $this->dataItemMappers[$type]( $dataItem );
@@ -78,7 +80,7 @@ class ElementFactory {
 	 *
 	 * @return ExpLiteral
 	 */
-	public function newFromNumber( DataItem $dataItem ) {
+	public function newFromNumber( DataItem $dataItem ): ExpLiteral {
 		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem
 		);
@@ -93,7 +95,7 @@ class ElementFactory {
 	 *
 	 * @return ExpLiteral
 	 */
-	public function newFromBlob( DataItem $dataItem ) {
+	public function newFromBlob( DataItem $dataItem ): ExpLiteral {
 		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem
 		);
@@ -108,7 +110,7 @@ class ElementFactory {
 	 *
 	 * @return ExpLiteral
 	 */
-	public function newFromBoolean( DataItem $dataItem ) {
+	public function newFromBoolean( DataItem $dataItem ): ExpLiteral {
 		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem
 		);
@@ -123,7 +125,7 @@ class ElementFactory {
 	 *
 	 * @return ExpResource
 	 */
-	public function newFromURI( DataItem $dataItem ) {
+	public function newFromURI( DataItem $dataItem ): ExpResource {
 		return new ExpResource( $dataItem->getURI(), $dataItem );
 	}
 
@@ -134,8 +136,8 @@ class ElementFactory {
 	 *
 	 * @return ExpLiteral
 	 */
-	public function newFromTime( DataItem $dataItem ) {
-		$dataItem = $dataItem->getForCalendarModel( DITime::CM_GREGORIAN );
+	public function newFromTime( DataItem $dataItem ): ExpLiteral {
+		$dataItem = $dataItem->getForCalendarModel( Time::CM_GREGORIAN );
 
 		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem
@@ -146,34 +148,22 @@ class ElementFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return ExpData
 	 */
-	public function newFromContainer( DataItem $dataItem ) {
+	public function newFromContainer( DataItem $dataItem ): ExpData {
 		return Exporter::getInstance()->makeExportData( $dataItem->getSemanticData() );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return ExpResource
 	 */
-	public function newFromWikiPage( DataItem $dataItem ) {
+	public function newFromWikiPage( WikiPage $dataItem ): ExpNsResource {
 		return Exporter::getInstance()->getResourceElementForWikiPage( $dataItem );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return ExpResource
 	 */
-	public function newFromProperty( DataItem $dataItem ) {
+	public function newFromProperty( Property $dataItem ): ExpNsResource {
 		return Exporter::getInstance()->getResourceElementForProperty( $dataItem );
 	}
 
@@ -181,14 +171,12 @@ class ElementFactory {
 	 * Not implemented !
 	 *
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
 	 */
-	public function newFromGeo( DataItem $dataItem ) {
+	public function newFromGeo( DataItem $dataItem ): ?ExpElement {
 		return null;
 	}
 
-	private function initDefaultMappers() {
+	private function initDefaultMappers(): void {
 		$this->dataItemMappers[DataItem::TYPE_NUMBER] = [ $this, 'newFromNumber' ];
 		$this->dataItemMappers[DataItem::TYPE_BLOB] = [ $this, 'newFromBlob' ];
 		$this->dataItemMappers[DataItem::TYPE_BOOLEAN] = [ $this, 'newFromBoolean' ];

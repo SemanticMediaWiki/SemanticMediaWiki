@@ -1,1 +1,0 @@
-<div class="smw-tabset smw-issue-panel">{{tabset}}<div class="tab-panels">{{content}}</div></div>

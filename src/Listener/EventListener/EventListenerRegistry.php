@@ -2,14 +2,15 @@
 
 namespace SMW\Listener\EventListener;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use Onoi\EventDispatcher\EventListenerCollection;
+use SMW\EventDispatcher\EventListenerCollection;
+use SMW\Export\Exporter;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Query\QueryComparator;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,22 +21,9 @@ use SMWExporter as Exporter;
 class EventListenerRegistry implements EventListenerCollection {
 
 	/**
-	 * @var EventListenerCollection
-	 */
-	private $eventListenerCollection = null;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param EventListenerCollection $eventListenerCollection
 	 */
-	public function __construct( EventListenerCollection $eventListenerCollection ) {
-		$this->eventListenerCollection = $eventListenerCollection;
+	public function __construct( private readonly EventListenerCollection $eventListenerCollection ) {
 	}
 
 	/**
@@ -45,7 +33,7 @@ class EventListenerRegistry implements EventListenerCollection {
 	 */
 	public function getCollection() {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$logger = $applicationFactory->getMediaWikiLogger();
+		$logger = LoggerFactory::getInstance( 'smw' );
 
 		$invalidateResultCacheEventListener = $applicationFactory->create(
 			'InvalidateResultCacheEventListener'
@@ -95,17 +83,15 @@ class EventListenerRegistry implements EventListenerCollection {
 		return $this->eventListenerCollection->getCollection();
 	}
 
-	private function addListenersToCollection() {
-		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
-
+	private function addListenersToCollection(): EventListenerCollection {
 		$this->eventListenerCollection->registerCallback(
-			'exporter.reset', static function () {
+			'exporter.reset', static function (): void {
 				Exporter::getInstance()->clear();
 			}
 		);
 
 		$this->eventListenerCollection->registerCallback(
-			'query.comparator.reset', static function () {
+			'query.comparator.reset', static function (): void {
 				QueryComparator::getInstance()->clear();
 			}
 		);

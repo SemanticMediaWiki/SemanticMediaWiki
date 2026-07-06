@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use IDBAccessObject;
 use MediaWiki\Revision\SlotRecord;
-use Title;
+use MediaWiki\Title\Title;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,26 +16,19 @@ class MediaWikiNsContentReader {
 
 	use RevisionGuardAwareTrait;
 
-	/**
-	 * @var bool
-	 */
-	private $skipMessageCache = false;
+	private bool $skipMessageCache = false;
 
 	/**
 	 * @since 2.3
 	 */
-	public function skipMessageCache() {
+	public function skipMessageCache(): void {
 		$this->skipMessageCache = true;
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param string $name
-	 *
-	 * @return string|false
 	 */
-	public function read( $name ) {
+	public function read( string $name ): string {
 		$content = '';
 
 		if ( !$this->skipMessageCache && wfMessage( $name )->exists() ) {
@@ -49,7 +42,7 @@ class MediaWikiNsContentReader {
 		return $content;
 	}
 
-	private function readFromDatabase( $name ) {
+	private function readFromDatabase( string $name ) {
 		$title = Title::makeTitleSafe( NS_MEDIAWIKI, ucfirst( $name ) );
 
 		if ( $title === null ) {

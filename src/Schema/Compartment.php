@@ -26,10 +26,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 */
 	const ASSOCIATED_SECTION = '___assoc_section';
 
-	/**
-	 * @var array
-	 */
-	protected $data = [];
+	protected array $data;
 
 	/**
 	 * @since 3.1
@@ -56,7 +53,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		return $this->get( $key, false ) !== false;
 	}
 
@@ -86,7 +83,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->jsonSerialize();
 	}
 
@@ -95,7 +92,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		return sha1( $this->jsonSerialize() );
 	}
 

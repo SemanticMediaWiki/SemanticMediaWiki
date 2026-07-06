@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Search;
 
-use Content;
 use SearchEngine;
-use Title;
+use SMW\Formatters\InfoLink;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory
@@ -17,22 +17,16 @@ use Title;
  */
 class ExtendedSearchEngine extends SearchEngine {
 
-	/**
-	 * @var ExtendedSearch
-	 */
-	private $extendedSearch;
+	private ExtendedSearch $extendedSearch;
 
-	/**
-	 * @var SearchEngine
-	 */
-	private $fallbackSearchEngine;
+	private ?SearchEngine $fallbackSearchEngine = null;
 
 	/**
 	 * @see SearchEngineFactory::create
 	 *
 	 * @since 3.1
 	 */
-	public function __construct( $connection = null ) {
+	public function __construct( ?IConnectionProvider $connection = null ) {
 		// It is common practice to avoid construction work in the constructor
 		// but we are unable to define a factory or callable and this is the only
 		// place to create an instance.
@@ -51,29 +45,34 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @since 3.1
+	 * Whether the given `$wgSearchType` value selects this extended search
+	 * engine, accepting both the canonical class name and the deprecated
+	 * `SMWSearch` alias.
 	 *
-	 * @param ExtendedSearch $extendedSearch
+	 * @since 7.0.0
 	 */
-	public function setExtendedSearch( ExtendedSearch $extendedSearch ) {
+	public static function isActiveSearchType( ?string $type ): bool {
+		return $type === self::class || $type === 'SMWSearch';
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public function setExtendedSearch( ExtendedSearch $extendedSearch ): void {
 		$this->extendedSearch = $extendedSearch;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param null|SearchEngine $fallbackSearchEngine
 	 */
-	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ) {
+	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ): void {
 		$this->fallbackSearchEngine = $fallbackSearchEngine;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return SearchEngine
 	 */
-	public function getFallbackSearchEngine() {
+	public function getFallbackSearchEngine(): ?SearchEngine {
 		return $this->fallbackSearchEngine;
 	}
 
@@ -82,7 +81,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getValidSorts() {
+	public function getValidSorts(): array {
 		return $this->extendedSearch->getValidSorts();
 	}
 
@@ -131,29 +130,11 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @see SearchEngine::getTextFromContent
-	 *
-	 * {@inheritDoc}
-	 */
-	public function getTextFromContent( Title $t, ?Content $c = null ) {
-		return $this->fallbackSearchEngine->getTextFromContent( $t, $c );
-	}
-
-	/**
-	 * @see SearchEngine::textAlreadyUpdatedForIndex
-	 *
-	 * {@inheritDoc}
-	 */
-	public function textAlreadyUpdatedForIndex() {
-		return $this->fallbackSearchEngine->textAlreadyUpdatedForIndex();
-	}
-
-	/**
 	 * @see SearchEngine::update
 	 *
 	 * {@inheritDoc}
 	 */
-	public function update( $id, $title, $text ) {
+	public function update( $id, $title, $text ): void {
 		$this->fallbackSearchEngine->update( $id, $title, $text );
 	}
 
@@ -162,7 +143,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function updateTitle( $id, $title ) {
+	public function updateTitle( $id, $title ): void {
 		$this->fallbackSearchEngine->updateTitle( $id, $title );
 	}
 
@@ -171,7 +152,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function delete( $id, $title ) {
+	public function delete( $id, $title ): void {
 		$this->fallbackSearchEngine->delete( $id, $title );
 	}
 
@@ -180,7 +161,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setFeatureData( $feature, $data ) {
+	public function setFeatureData( $feature, $data ): void {
 		parent::setFeatureData( $feature, $data );
 		$this->fallbackSearchEngine->setFeatureData( $feature, $data );
 	}
@@ -201,15 +182,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @see SearchEngine::replacePrefixes
-	 *
-	 * {@inheritDoc}
-	 */
-	public function replacePrefixes( $query ) {
-		return $query;
-	}
-
-	/**
 	 * @see SearchEngine::transformSearchTerm
 	 *
 	 * {@inheritDoc}
@@ -223,7 +195,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setLimitOffset( $limit, $offset = 0 ) {
+	public function setLimitOffset( $limit, $offset = 0 ): void {
 		parent::setLimitOffset( $limit, $offset );
 		$this->extendedSearch->setLimitOffset( $limit, $offset );
 		$this->fallbackSearchEngine->setLimitOffset( $limit, $offset );
@@ -234,7 +206,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setNamespaces( $namespaces ) {
+	public function setNamespaces( $namespaces ): void {
 		parent::setNamespaces( $namespaces );
 
 		$this->extendedSearch->setNamespaces(
@@ -249,7 +221,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setShowSuggestion( $showSuggestion ) {
+	public function setShowSuggestion( $showSuggestion ): void {
 		parent::setShowSuggestion( $showSuggestion );
 		$this->fallbackSearchEngine->setShowSuggestion( $showSuggestion );
 	}
@@ -295,52 +267,40 @@ class ExtendedSearchEngine extends SearchEngine {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->extendedSearch->getErrors();
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getQueryString() {
+	public function getQueryString(): ?string {
 		return $this->extendedSearch->getQueryString();
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getQueryLink() {
+	public function getQueryLink(): ?InfoLink {
 		return $this->extendedSearch->getQueryLink();
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getLimit() {
+	public function getLimit(): int {
 		return $this->limit;
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getOffset() {
+	public function getOffset(): int {
 		return $this->offset;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function getShowSuggestion() {
+	public function getShowSuggestion(): bool {
 		return $this->showSuggestion;
 	}
 
 }
 
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( ExtendedSearchEngine::class, 'SMWSearch' );

@@ -12,25 +12,16 @@ use SMW\Property\Annotator;
  */
 class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/**
-	 * @var
-	 */
-	private $attachments;
-
-	/**
-	 * @var array
-	 */
-	private $predefinedPropertyList = [];
+	private array $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param array|null $attachments
 	 */
-	public function __construct( Annotator $propertyAnnotator, $attachments ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private $attachments,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->attachments = $attachments;
 	}
 
 	/**
@@ -38,11 +29,11 @@ class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param array $predefinedPropertyList
 	 */
-	public function setPredefinedPropertyList( array $predefinedPropertyList ) {
+	public function setPredefinedPropertyList( array $predefinedPropertyList ): void {
 		$this->predefinedPropertyList = array_flip( $predefinedPropertyList );
 	}
 
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( !is_array( $this->attachments ) || !isset( $this->predefinedPropertyList['_ATTCH_LINK'] ) ) {
 			return;
 		}

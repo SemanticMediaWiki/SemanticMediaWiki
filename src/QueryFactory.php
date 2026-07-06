@@ -2,18 +2,18 @@
 
 namespace SMW;
 
+use SMW\DataItems\WikiPage;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
-use SMW\Query\Parser as QueryParser;
 use SMW\Query\Parser\DescriptionProcessor;
 use SMW\Query\Parser\LegacyParser;
 use SMW\Query\Parser\Tokenizer;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\ProfileAnnotatorFactory;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\QueryToken;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -28,7 +28,7 @@ class QueryFactory {
 	 *
 	 * @return ProfileAnnotatorFactory
 	 */
-	public function newProfileAnnotatorFactory() {
+	public function newProfileAnnotatorFactory(): ProfileAnnotatorFactory {
 		return new ProfileAnnotatorFactory();
 	}
 
@@ -40,7 +40,7 @@ class QueryFactory {
 	 *
 	 * @return Query
 	 */
-	public function newQuery( Description $description, $context = false ) {
+	public function newQuery( Description $description, $context = false ): Query {
 		return new Query( $description, $context );
 	}
 
@@ -49,7 +49,7 @@ class QueryFactory {
 	 *
 	 * @return DescriptionFactory
 	 */
-	public function newDescriptionFactory() {
+	public function newDescriptionFactory(): DescriptionFactory {
 		return new DescriptionFactory();
 	}
 
@@ -58,7 +58,7 @@ class QueryFactory {
 	 *
 	 * @return PrintRequestFactory
 	 */
-	public function newPrintRequestFactory() {
+	public function newPrintRequestFactory(): PrintRequestFactory {
 		return new PrintRequestFactory();
 	}
 
@@ -67,7 +67,7 @@ class QueryFactory {
 	 *
 	 * @return RequestOptions
 	 */
-	public function newRequestOptions() {
+	public function newRequestOptions(): RequestOptions {
 		return new RequestOptions();
 	}
 
@@ -80,7 +80,7 @@ class QueryFactory {
 	 *
 	 * @return StringCondition
 	 */
-	public function newStringCondition( $string, $condition, $isDisjunctiveCondition = false ) {
+	public function newStringCondition( $string, $condition, $isDisjunctiveCondition = false ): StringCondition {
 		return new StringCondition( $string, $condition, $isDisjunctiveCondition );
 	}
 
@@ -89,9 +89,9 @@ class QueryFactory {
 	 *
 	 * @param int|bool $queryFeatures
 	 *
-	 * @return QueryParser
+	 * @return LegacyParser
 	 */
-	public function newQueryParser( $queryFeatures = false ) {
+	public function newQueryParser( $queryFeatures = false ): LegacyParser {
 		return $this->newLegacyQueryParser( $queryFeatures );
 	}
 
@@ -100,9 +100,9 @@ class QueryFactory {
 	 *
 	 * @param int|bool $queryFeatures
 	 *
-	 * @return QueryParser
+	 * @return LegacyParser
 	 */
-	public function newLegacyQueryParser( $queryFeatures = false ) {
+	public function newLegacyQueryParser( $queryFeatures = false ): LegacyParser {
 		if ( $queryFeatures === false ) {
 			$queryFeatures = Applicationfactory::getInstance()->getSettings()->get( 'smwgQFeatures' );
 		}
@@ -119,12 +119,12 @@ class QueryFactory {
 	 *
 	 * @param Store $store
 	 * @param Query $query
-	 * @param DIWikiPage[]|[] $results = array()
+	 * @param WikiPage[]|array $results = array()
 	 * @param bool $continue
 	 *
 	 * @return QueryResult
 	 */
-	public function newQueryResult( Store $store, Query $query, $results = [], $continue = false ) {
+	public function newQueryResult( Store $store, Query $query, $results = [], $continue = false ): QueryResult {
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,

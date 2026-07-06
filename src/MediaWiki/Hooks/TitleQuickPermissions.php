@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\HookListener;
+use MediaWiki\Permissions\Hook\TitleQuickPermissionsHook;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\NamespaceExaminer;
-use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleQuickPermissions
@@ -15,41 +14,22 @@ use Title;
  *
  * @author mwjames
  */
-class TitleQuickPermissions implements HookListener {
-
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var TitlePermissions
-	 */
-	private $titlePermissions;
+class TitleQuickPermissions implements TitleQuickPermissionsHook {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param TitlePermissions $titlePermissions
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, TitlePermissions $titlePermissions ) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->titlePermissions = $titlePermissions;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly TitlePermissions $titlePermissions,
+	) {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param Title $title
-	 * @param $user
-	 * @param $action
-	 * @param &$errors
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( Title $title, $user, $action, &$errors ) {
-		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
+	public function onTitleQuickPermissions( $title, $user, $action, &$errors, $doExpensiveQueries, $short ) {
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return true;
 		}
 

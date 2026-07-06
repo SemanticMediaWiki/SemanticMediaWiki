@@ -5,7 +5,6 @@ namespace SMW\Tests\Utils\Fixtures\Results;
 use RuntimeException;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-sparql
@@ -60,7 +59,8 @@ class FakeRawResultProvider {
 	}
 
 	private function getFixtureContentsFor( $fixture ) {
-		if ( $file = $this->isReadableFile( $this->getFixtureLocation() . $fixture ) ) {
+		$file = $this->isReadableFile( $this->getFixtureLocation() . $fixture );
+		if ( $file ) {
 			return file_get_contents( $file );
 		}
 	}

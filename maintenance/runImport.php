@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -24,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class runImport extends \Maintenance {
+class runImport extends Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -41,8 +42,6 @@ class runImport extends \Maintenance {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -61,7 +60,8 @@ class runImport extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 

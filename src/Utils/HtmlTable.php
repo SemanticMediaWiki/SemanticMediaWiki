@@ -2,7 +2,7 @@
 
 namespace SMW\Utils;
 
-use Html;
+use MediaWiki\Html\Html;
 
 /**
  * @license GPL-2.0-or-later
@@ -12,20 +12,11 @@ use Html;
  */
 class HtmlTable {
 
-	/**
-	 * @var array
-	 */
-	private $headers = [];
+	private array $headers = [];
 
-	/**
-	 * @var array
-	 */
-	private $cells = [];
+	private array $cells = [];
 
-	/**
-	 * @var array
-	 */
-	private $rows = [];
+	private array $rows = [];
 
 	/**
 	 * @since 3.0
@@ -33,7 +24,7 @@ class HtmlTable {
 	 * @param string $content
 	 * @param array $attributes
 	 */
-	public function header( $content = '', $attributes = [] ) {
+	public function header( $content = '', $attributes = [] ): void {
 		if ( $content !== '' ) {
 			$this->headers[] = [ 'content' => $content, 'attributes' => $attributes ];
 		}
@@ -42,10 +33,10 @@ class HtmlTable {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $content
+	 * @param ?string $content
 	 * @param array $attributes
 	 */
-	public function cell( $content = '', $attributes = [] ) {
+	public function cell( $content = '', $attributes = [] ): void {
 		if ( $content !== '' ) {
 			$this->cells[] = Html::rawElement( 'td', $attributes, $content );
 		}
@@ -56,9 +47,9 @@ class HtmlTable {
 	 *
 	 * @param array $attributes
 	 *
-	 * @return TableBuilder
+	 * @return void
 	 */
-	public function row( $attributes = [] ) {
+	public function row( $attributes = [] ): void {
 		if ( $this->cells !== [] ) {
 			$this->rows[] = [ 'cells' => $this->cells, 'attributes' => $attributes ];
 			$this->cells = [];
@@ -72,7 +63,7 @@ class HtmlTable {
 	 *
 	 * @return string
 	 */
-	public function table( $attributes = [], $transpose = false, $htmlContext = false ) {
+	public function table( array $attributes = [], $transpose = false, $htmlContext = false ) {
 		$table = $this->buildTable( $transpose, $htmlContext );
 
 		if ( $transpose ) {
@@ -99,6 +90,10 @@ class HtmlTable {
 		$rows = [];
 
 		foreach ( $this->headers as $i => $header ) {
+			// $header['attributes'] holds caller-supplied HTML attributes (e.g. a CSS
+			// class derived from a query label); Html::rawElement escapes them once.
+			// Phan over-taints the value through the print-request label source.
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			$headers[] = Html::rawElement( 'th', $header['attributes'], $header['content'] );
 		}
 
@@ -114,6 +109,9 @@ class HtmlTable {
 
 		foreach ( $this->headers as $hIndex => $header ) {
 			$cells = [];
+			// See buildTable(): the attributes are caller-supplied and escaped once by
+			// Html::rawElement; phan over-taints them via the print-request label.
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			$headerItem = Html::rawElement( 'th', $header['attributes'], $header['content'] );
 
 			foreach ( $this->rows as $rIndex => $row ) {
@@ -127,7 +125,7 @@ class HtmlTable {
 		return $this->concatenateRows( $rows, $htmlContext );
 	}
 
-	private function createRow( $content, $attributes, $count ) {
+	private function createRow( string $content, array $attributes, int $count ) {
 		$alternate = $count % 2 == 0 ? 'row-odd' : 'row-even';
 
 		if ( isset( $attributes['class'] ) ) {
@@ -139,7 +137,7 @@ class HtmlTable {
 		return Html::rawElement( 'tr', $attributes, $content );
 	}
 
-	private function concatenateHeaders( $headers, $htmlContext ) {
+	private function concatenateHeaders( array $headers, $htmlContext ) {
 		if ( $htmlContext ) {
 			return Html::rawElement( 'thead', [], implode( '', $headers ) );
 		}
@@ -147,7 +145,7 @@ class HtmlTable {
 		return implode( '', $headers );
 	}
 
-	private function concatenateRows( $rows, $htmlContext ) {
+	private function concatenateRows( array $rows, $htmlContext ) {
 		if ( $htmlContext ) {
 			return Html::rawElement( 'tbody', [], implode( '', $rows ) );
 		}
@@ -155,7 +153,7 @@ class HtmlTable {
 		return implode( '', $rows );
 	}
 
-	private function getTransposedCell( $index, $row ) {
+	private function getTransposedCell( int|string $index, array $row ) {
 		if ( isset( $row['cells'][$index] ) ) {
 			return $row['cells'][$index];
 		}

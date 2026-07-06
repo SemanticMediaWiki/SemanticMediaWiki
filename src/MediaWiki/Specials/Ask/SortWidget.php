@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 
 /**
@@ -15,43 +15,29 @@ use SMW\Localizer\Message;
  */
 class SortWidget {
 
-	/**
-	 * @var bool
-	 */
-	private static $sortingSupport = false;
+	private static bool $sortingSupport = false;
 
-	/**
-	 * @var bool
-	 */
-	private static $randSortingSupport = false;
+	private static bool $randSortingSupport = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $sortingSupport
 	 */
-	public static function setSortingSupport( $sortingSupport ) {
-		self::$sortingSupport = (bool)$sortingSupport;
+	public static function setSortingSupport( bool $sortingSupport ): void {
+		self::$sortingSupport = $sortingSupport;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $randSortingSupport
 	 */
-	public static function setRandSortingSupport( $randSortingSupport ) {
-		self::$randSortingSupport = (bool)$randSortingSupport;
+	public static function setRandSortingSupport( bool $randSortingSupport ): void {
+		self::$randSortingSupport = $randSortingSupport;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $params
-	 *
-	 * @return string
 	 */
-	public static function sortSection( array $params ) {
-		if ( self::$sortingSupport === false ) {
+	public static function sortSection( array $params ): string {
+		if ( !self::$sortingSupport ) {
 			return '';
 		}
 
@@ -78,7 +64,7 @@ class SortWidget {
 				Html::rawElement(
 					'span',
 					[],
-					Message::get( 'smw-ask-options-sort', Message::TEXT, Message::USER_LANGUAGE )
+					Message::get( 'smw-ask-options-sort', Message::ESCAPED, Message::USER_LANGUAGE )
 				)
 			) . Html::rawElement(
 				'div',
@@ -90,7 +76,7 @@ class SortWidget {
 		);
 	}
 
-	private static function sortingOptions( array $sorts, array $orders ) {
+	private static function sortingOptions( array $sorts, array $orders ): string {
 		$result = '';
 
 		foreach ( $orders as $i => $order ) {
@@ -118,7 +104,7 @@ class SortWidget {
 						'name' => "sort_num[]",
 						'size' => '35',
 						'class' => 'smw-property-input autocomplete-arrow',
-						'value' => htmlspecialchars( $sorts[$i] )
+						'value' => $sorts[$i]
 					]
 			);
 
@@ -128,13 +114,13 @@ class SortWidget {
 				$html .= 'selected="selected" ';
 			}
 
-			$html .= 'value="asc">' . Message::get( 'smw_ask_ascorder', Message::TEXT, Message::USER_LANGUAGE ) . '</option><option ';
+			$html .= 'value="asc">' . Message::get( 'smw_ask_ascorder', Message::ESCAPED, Message::USER_LANGUAGE ) . '</option><option ';
 
 			if ( $order == 'desc' ) {
 				$html .= 'selected="selected" ';
 			}
 
-			$html .= 'value="desc">' . Message::get( 'smw_ask_descorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>";
+			$html .= 'value="desc">' . Message::get( 'smw_ask_descorder', Message::ESCAPED, Message::USER_LANGUAGE ) . "</option>";
 
 			if ( self::$randSortingSupport ) {
 				$html .= '<option ';
@@ -143,22 +129,22 @@ class SortWidget {
 					$html .= 'selected="selected" ';
 				}
 
-				$html .= 'value="rand">' . Message::get( 'smw-ask-order-rand', Message::TEXT, Message::USER_LANGUAGE ) . '</option>';
+				$html .= 'value="rand">' . Message::get( 'smw-ask-order-rand', Message::ESCAPED, Message::USER_LANGUAGE ) . '</option>';
 			}
 
 			$html .= '</select>';
-			$html .= '<span class="smw-ask-sort-delete"><a class="smw-ask-sort-delete-action" data-target="sort_div_' . $i . '" >' . Message::get( 'delete', Message::TEXT, Message::USER_LANGUAGE ) . '</a></span>';
+			$html .= '<span class="smw-ask-sort-delete"><a class="smw-ask-sort-delete-action" data-target="sort_div_' . $i . '" >' . Message::get( 'delete', Message::ESCAPED, Message::USER_LANGUAGE ) . '</a></span>';
 
 			$result .= Html::rawElement( 'div', [ 'id' => "sort_div_$i", 'class' => "smw-ask-sort-input" ], $html );
 		}
 
 		$result .= '<div id="sorting_starter" style="display: none"><input type="text" name="sort_num[]" size="35" class="smw-property-input autocomplete-arrow" />';
 		$result .= '<select name="order_num[]">' . "\n";
-		$result .= '	<option value="asc">' . Message::get( 'smw_ask_ascorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>\n";
-		$result .= '	<option value="desc">' . Message::get( 'smw_ask_descorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>\n";
+		$result .= '	<option value="asc">' . Message::get( 'smw_ask_ascorder', Message::ESCAPED, Message::USER_LANGUAGE ) . "</option>\n";
+		$result .= '	<option value="desc">' . Message::get( 'smw_ask_descorder', Message::ESCAPED, Message::USER_LANGUAGE ) . "</option>\n";
 
 		if ( self::$randSortingSupport ) {
-			$result .= '	<option value="rand">' . Message::get( 'smw-ask-order-rand', Message::TEXT, Message::USER_LANGUAGE ) . "</option>\n";
+			$result .= '	<option value="rand">' . Message::get( 'smw-ask-order-rand', Message::ESCAPED, Message::USER_LANGUAGE ) . "</option>\n";
 		}
 
 		$result .= "</select>";
@@ -175,7 +161,7 @@ class SortWidget {
 				[
 					'class' => 'smw-ask-sort-add-action'
 				],
-				Message::get( 'smw-ask-sort-add-action', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-sort-add-action', Message::ESCAPED, Message::USER_LANGUAGE )
 			)
 		);
 	}

@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Title\NamespaceInfo;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\MediaWiki\NamespaceInfo;
-use SpecialSearch;
-use Xml;
+use SMW\MediaWiki\Renderer\HtmlUtil;
 
 /**
  * @note Copied from SearchFormWidget::powerSearchBox, #3126 contains the reason
@@ -23,85 +23,50 @@ class NamespaceForm {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var NamespaceInfo
-	 */
-	private $namespaceInfo;
+	private array $activeNamespaces = [];
 
-	/**
-	 * @var Localizer
-	 */
-	private $localizer;
+	private array $hiddenNamespaces = [];
 
-	/**
-	 * @var
-	 */
-	private $activeNamespaces = [];
+	private array $searchableNamespaces = [];
 
-	/**
-	 * @var
-	 */
-	private $hiddenNamespaces = [];
+	private ?string $token = null;
 
-	/**
-	 * @var
-	 */
-	private $searchableNamespaces = [];
-
-	/**
-	 * @var null|string
-	 */
-	private $token;
-
-	/**
-	 * @var null|string
-	 */
-	private $hideList = false;
+	private bool $hideList = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param NamespaceInfo $namespaceInfo
-	 * @param Localizer $localizer
 	 */
-	public function __construct( NamespaceInfo $namespaceInfo, Localizer $localizer ) {
-		$this->namespaceInfo = $namespaceInfo;
-		$this->localizer = $localizer;
+	public function __construct(
+		private NamespaceInfo $namespaceInfo,
+		private Localizer $localizer,
+	) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $activeNamespaces
 	 */
-	public function setActiveNamespaces( array $activeNamespaces ) {
+	public function setActiveNamespaces( array $activeNamespaces ): void {
 		$this->activeNamespaces = $activeNamespaces;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $hideList
 	 */
-	public function setHideList( $hideList ) {
-		$this->hideList = (bool)$hideList;
+	public function setHideList( bool $hideList ): void {
+		$this->hideList = $hideList;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $hiddenNamespaces
 	 */
-	public function setHiddenNamespaces( array $hiddenNamespaces ) {
+	public function setHiddenNamespaces( array $hiddenNamespaces ): void {
 		$this->hiddenNamespaces = $hiddenNamespaces;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $searchableNamespaces
 	 */
-	public function setSearchableNamespaces( array $searchableNamespaces ) {
+	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
 	}
 
@@ -109,10 +74,8 @@ class NamespaceForm {
 	 * @see SearchFormWidget
 	 *
 	 * @since 3.0
-	 *
-	 * @param SpecialSearch $specialSearch
 	 */
-	public function checkNamespaceEditToken( SpecialSearch $specialSearch ) {
+	public function checkNamespaceEditToken( SpecialSearch $specialSearch ): void {
 		$user = $specialSearch->getUser();
 
 		if ( !$user->isRegistered() ) {
@@ -124,10 +87,8 @@ class NamespaceForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function makeFields() {
+	public function makeFields(): string {
 		$divider = "<div class='divider'></div>";
 		$rows = [];
 		$tableRows = [];
@@ -156,7 +117,7 @@ class NamespaceForm {
 			$rows[$subject] .= Html::rawElement(
 				'td',
 				[],
-				Xml::checkLabel( $name, "ns{$namespace}", "mw-search-ns{$namespace}", $isChecked )
+				HtmlUtil::checkLabel( $name, "ns{$namespace}", "mw-search-ns{$namespace}", $isChecked )
 			);
 		}
 
@@ -181,7 +142,7 @@ class NamespaceForm {
 		$remember = '';
 
 		if ( $this->token ) {
-			$remember = $divider . Xml::checkLabel(
+			$remember = $divider . HtmlUtil::checkLabel(
 				$this->msg( 'powersearch-remember', Message::TEXT, Message::USER_LANGUAGE ),
 				'nsRemember',
 				'mw-search-powersearch-remember',

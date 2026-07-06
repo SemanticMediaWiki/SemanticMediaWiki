@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
-use Html;
-use SMW\Highlighter;
+use MediaWiki\Html\Html;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Message;
 
 /**
@@ -18,13 +18,8 @@ class Field {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 * @param array $attributes
-	 *
-	 * @return string
 	 */
-	public function create( $type, $attributes = [] ) {
+	public function create( string $type, array $attributes = [] ): string {
 		$attributes['class'] = "smw-$type" . ( isset( $attributes['class'] ) ? ' ' . $attributes['class'] : '' );
 
 		if ( isset( $attributes['tooltip'] ) ) {
@@ -32,11 +27,17 @@ class Field {
 			$attributes['class'] .= " smw-$type-tooltip";
 		}
 
+		// create() may set $attributes['tooltip'] to rendered (escaped) Highlighter HTML.
+		// input() pulls it out into element content and select() unsets it; neither emits
+		// it as an attribute. Phan taints the whole array and cannot track the per-key
+		// handling, so it reports a double escape that cannot occur.
 		if ( $type === 'input' ) {
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			return $this->input( $attributes );
 		}
 
 		if ( $type === 'select' ) {
+			// @phan-suppress-next-line SecurityCheck-DoubleEscaped
 			return $this->select( $attributes );
 		}
 
@@ -45,12 +46,8 @@ class Field {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $attributes
-	 *
-	 * @return string
 	 */
-	public function tooltip( $attributes = [] ) {
+	public function tooltip( array $attributes = [] ): string {
 		$highlighter = Highlighter::factory( Highlighter::TYPE_NOTE );
 		$msg = '';
 
@@ -73,12 +70,8 @@ class Field {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $attributes
-	 *
-	 * @return string
 	 */
-	public function select( $attributes = [] ) {
+	public function select( array $attributes = [] ): string {
 		$list = [];
 		$html = [];
 		$selected = false;
@@ -92,6 +85,10 @@ class Field {
 			$selected = $attributes['selected'];
 			unset( $attributes['selected'] );
 		}
+
+		// Selects have no tooltip support; drop any rendered tooltip so it cannot
+		// leak into a literal tooltip="..." attribute on the <select>.
+		unset( $attributes['tooltip'] );
 
 		foreach ( $list as $key => $value ) {
 
@@ -156,13 +153,9 @@ class Field {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $attributes
-	 *
-	 * @return string
 	 */
-	public function input( $attributes = [] ) {
-		$class = isset( $attributes['class'] ) ? $attributes['class'] : '';
+	public function input( array $attributes = [] ): string {
+		$class = $attributes['class'] ?? '';
 		$type = 'text';
 		$tooltip = '';
 		$required = false;

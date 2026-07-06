@@ -143,7 +143,7 @@
 			"subject": "Example/P0446/Q.1.0",
 			"assert-output": {
 				"to-contain": [
-					"smwtype_uri\"><a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
+					"smwtype&#95;uri\"><a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
 				]
 			}
 		},
@@ -153,7 +153,7 @@
 			"subject": "Example/P0446/Q.1.1",
 			"assert-output": {
 				"to-contain": [
-					"smwtype_uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo_bar\">http://example.org/Foo_bar</a>"
+					"smwtype&#95;uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo_bar\">http://example.org/Foo_bar</a>"
 				]
 			}
 		},

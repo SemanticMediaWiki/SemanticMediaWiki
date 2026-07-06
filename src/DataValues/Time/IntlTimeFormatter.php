@@ -2,9 +2,11 @@
 
 namespace SMW\DataValues\Time;
 
-use Language;
+use DateTime;
+use MediaWiki\Language\Language;
+use SMW\DataItems\Time;
 use SMW\Localizer\Localizer;
-use SMWDITime as DITime;
+use SMW\MediaWiki\ExtendedDateTime;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,32 +19,17 @@ class IntlTimeFormatter {
 	const LOCL_DEFAULT = 0;
 	const LOCL_TIMEZONE = 0x2;
 	const LOCL_TIMEOFFSET = 0x4;
+	const LOCL_WIKI_TIMEOFFSET = 0x8;
 
-	/**
-	 * @var DITime
-	 */
-	private $dataItem;
-
-	/**
-	 * @var Language
-	 */
-	private $language;
-
-	/**
-	 * @var bool
-	 */
-	private $hasLocalTimeCorrection = false;
+	private bool $hasLocalTimeCorrection = false;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param DITime $dataItem
-	 * @param Language|null $language
 	 */
-	public function __construct( DITime $dataItem, ?Language $language = null ) {
-		$this->dataItem = $dataItem;
-		$this->language = $language;
-
+	public function __construct(
+		private readonly Time $dataItem,
+		private ?Language $language = null,
+	) {
 		if ( $this->language === null ) {
 			$this->language = Localizer::getInstance()->getContentLanguage();
 		}
@@ -50,10 +37,8 @@ class IntlTimeFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
-	public function hasLocalTimeCorrection() {
+	public function hasLocalTimeCorrection(): bool {
 		return $this->hasLocalTimeCorrection;
 	}
 
@@ -61,24 +46,21 @@ class IntlTimeFormatter {
 	 * @since 2.4
 	 *
 	 * @param int $formatFlag
-	 *
-	 * @return string|bool
 	 */
-	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ) {
+	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ): string {
 		$dateTime = $this->dataItem->asDateTime();
 		$timezone = '';
 
 		$this->hasLocalTimeCorrection = false;
 
-		if ( !$dateTime ) {
-			return false;
-		}
-
 		$localizer = Localizer::getInstance();
 
-		if ( ( self::LOCL_TIMEOFFSET & $formatFlag ) != 0 ) {
+		if ( ( self::LOCL_WIKI_TIMEOFFSET & $formatFlag ) != 0 ) {
+			$dateTime = $localizer->getWikiLocalTime( $dateTime );
+			$this->hasLocalTimeCorrection = $dateTime->hasLocalTimeCorrection ?? false;
+		} elseif ( ( self::LOCL_TIMEOFFSET & $formatFlag ) != 0 ) {
 			$dateTime = $localizer->getLocalTime( $dateTime );
-			$this->hasLocalTimeCorrection = isset( $dateTime->hasLocalTimeCorrection ) ? $dateTime->hasLocalTimeCorrection : false;
+			$this->hasLocalTimeCorrection = $dateTime->hasLocalTimeCorrection ?? false;
 		}
 
 		if ( ( self::LOCL_TIMEZONE & $formatFlag ) != 0 ) {
@@ -119,15 +101,9 @@ class IntlTimeFormatter {
 	 * @since 2.4
 	 *
 	 * @param string $format
-	 *
-	 * @return string|bool
 	 */
-	public function format( $format ) {
+	public function format( $format ): string {
 		$dateTime = $this->dataItem->asDateTime();
-
-		if ( !$dateTime ) {
-			return false;
-		}
 
 		$output = $this->formatWithLocalizedTextReplacement(
 			$dateTime,
@@ -144,7 +120,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return bool
 	 */
-	public function containsValidDateFormatRule( $format ) {
+	public function containsValidDateFormatRule( $format ): bool {
 		foreach ( str_split( $format ) as $value ) {
 			if ( in_array( $value, [ 'd', 'D', 'j', 'l', 'N', 'w', 'W', 'F', 'M', 'm', 'n', 't', 'L', 'o', 'Y', 'y', "c", 'r' ] ) ) {
 				return true;
@@ -164,7 +140,7 @@ class IntlTimeFormatter {
 	 * - a	Lowercase Ante meridiem and Post meridiem am or pm
 	 * - A	Uppercase Ante meridiem and Post meridiem
 	 */
-	private function formatWithLocalizedTextReplacement( $dateTime, $format ) {
+	private function formatWithLocalizedTextReplacement( DateTime|ExtendedDateTime $dateTime, $format ): string {
 		$output = $dateTime->format( $format );
 
 		// (n) DateTime => 1 through 12
@@ -173,7 +149,7 @@ class IntlTimeFormatter {
 		// (N) DateTime => 1 (for Monday) through 7 (for Sunday)
 		// (w) DateTime => 0 (for Sunday) through 6 (for Saturday)
 		// MW => 1 (for Sunday) through 7 (for Saturday)
-		$dayNumber = $dateTime->format( 'w' ) + 1;
+		$dayNumber = (int)$dateTime->format( 'w' ) + 1;
 
 		if ( strpos( $format, 'F' ) !== false ) {
 			$output = str_replace(

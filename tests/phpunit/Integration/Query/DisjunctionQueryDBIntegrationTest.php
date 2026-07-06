@@ -2,19 +2,18 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
@@ -69,8 +68,8 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData();
 
 		$semanticDataOfDangerland->addPropertyObjectValue(
-			new DIProperty( '_INST' ),
-			new DIWikiPage( 'WickedPlaces', NS_CATEGORY )
+			new Property( '_INST' ),
+			new WikiPage( 'WickedPlaces', NS_CATEGORY )
 		);
 
 		$this->subjectsToBeCleared[] = $semanticDataOfDangerland->getSubject();
@@ -84,8 +83,8 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData();
 
 		$semanticDataOfDreamland->addPropertyObjectValue(
-			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
-			new DIWikiPage( 'BananaWonderland', NS_MAIN )
+			Property::newFromUserLabel( 'LocatedIn' )->setPropertyValueType( '_wpg' ),
+			new WikiPage( 'BananaWonderland', NS_MAIN )
 		);
 
 		$this->subjectsToBeCleared[] = $semanticDataOfDreamland->getSubject();
@@ -99,8 +98,8 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData();
 
 		$semanticDataOfWonderland->addPropertyObjectValue(
-			DIProperty::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ),
-			new DIWikiPage( 'Wonderland', NS_MAIN )
+			Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ),
+			new WikiPage( 'Wonderland', NS_MAIN )
 		);
 
 		$this->subjectsToBeCleared[] = $semanticDataOfWonderland->getSubject();
@@ -110,18 +109,18 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		 * Query with [[Category:WickedPlaces]] OR [[LocatedIn.MemberOf::Wonderland]]
 		 */
 		$someProperty = new SomeProperty(
-			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'LocatedIn' )->setPropertyValueType( '_wpg' ),
 			new SomeProperty(
-				DIProperty::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ),
+				Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ),
 				new ValueDescription(
-					new DIWikiPage( 'Wonderland', NS_MAIN, '' ),
-					DIProperty::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
+					new WikiPage( 'Wonderland', NS_MAIN, '' ),
+					Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ), SMW_CMP_EQ
 				)
 			)
 		);
 
 		$classDescription = new ClassDescription(
-			new DIWikiPage( 'WickedPlaces', NS_CATEGORY, '' )
+			new WikiPage( 'WickedPlaces', NS_CATEGORY, '' )
 		);
 
 		$description = new Disjunction();
@@ -165,8 +164,8 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testSubqueryDisjunction() {
-		$property = new DIProperty( 'HasSomeProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property = new Property( 'HasSomeProperty' );
+		$property->setPropertyValueType( '_wpg' );
 
 		/**
 		 * Page annotated with [[HasSomeProperty:Foo]]
@@ -175,7 +174,7 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$expectedSubjects[] = $semanticData->getSubject();
@@ -190,7 +189,7 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( 'Bar', NS_MAIN )
+			new WikiPage( 'Bar', NS_MAIN )
 		);
 
 		$expectedSubjects[] = $semanticData->getSubject();
@@ -202,8 +201,8 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		 * Query with [[HasSomeProperty::Foo||Bar]]
 		 */
 		$disjunction = new Disjunction( [
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ), $property ),
+			new ValueDescription( new WikiPage( 'Bar', NS_MAIN ), $property )
 		] );
 
 		$description = new SomeProperty(

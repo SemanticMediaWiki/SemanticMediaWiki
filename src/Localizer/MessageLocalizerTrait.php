@@ -22,7 +22,7 @@ trait MessageLocalizerTrait {
 	 *
 	 * @param MessageLocalizer $messageLocalizer
 	 */
-	public function setMessageLocalizer( MessageLocalizer $messageLocalizer ) {
+	public function setMessageLocalizer( MessageLocalizer $messageLocalizer ): void {
 		$this->messageLocalizer = $messageLocalizer;
 	}
 

@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use Html;
+use MediaWiki\Html\Html;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\FilterMap;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,93 +20,45 @@ use SMWQueryProcessor as QueryProcessor;
  */
 class ResultFetcher {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ?int $totalCount = 0;
 
-	/**
-	 * @var int
-	 */
-	private $totalCount = 0;
+	private int $limit = 0;
 
-	/**
-	 * @var int
-	 */
-	private $limit = 0;
+	private int $offset = 0;
 
-	/**
-	 * @var int
-	 */
-	private $offset = 0;
+	private bool $hasFurtherResults = false;
 
-	/**
-	 * @var bool
-	 */
-	private $hasFurtherResults = false;
+	private string $queryString = '';
 
-	/**
-	 * @var string
-	 */
-	private $queryString = '';
+	private ?QueryResult $queryResult = null;
 
-	/**
-	 * @var QueryResult
-	 */
-	private $queryResult;
+	private ?array $params = null;
 
-	/**
-	 * @var
-	 */
-	private $params;
+	private string $format = '';
 
-	/**
-	 * @var string
-	 */
-	private $format = '';
+	private array $valueFilters = [];
 
-	/**
-	 * @var
-	 */
-	private $valueFilters = [];
+	private array $propertyFilters = [];
 
-	/**
-	 * @var
-	 */
-	private $propertyFilters = [];
+	private array $categoryFilters = [];
 
-	/**
-	 * @var
-	 */
-	private $categoryFilters = [];
-
-	/**
-	 * @var
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
-	public function getTotalCount(): int {
+	public function getTotalCount(): ?int {
 		return $this->totalCount;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getLimit(): int {
 		return $this->limit;
@@ -114,8 +66,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getOffset(): int {
 		return $this->offset;
@@ -123,8 +73,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return bool
 	 */
 	public function hasFurtherResults(): bool {
 		return $this->hasFurtherResults;
@@ -132,8 +80,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getQueryString(): string {
 		return $this->queryString;
@@ -141,8 +87,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return QueryResult|null
 	 */
 	public function getQueryResult(): ?QueryResult {
 		return $this->queryResult;
@@ -150,8 +94,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
@@ -159,8 +101,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
 	public function getCategoryFilters(): array {
 		return $this->categoryFilters;
@@ -168,8 +108,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getValueFilters(): array {
 		return $this->valueFilters;
@@ -177,8 +115,6 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getHtml(): string {
 		if ( $this->errors !== [] ) {
@@ -213,10 +149,8 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param ParametersProcessor $parametersProcessor
 	 */
-	public function fetchQueryResult( ParametersProcessor $parametersProcessor ) {
+	public function fetchQueryResult( ParametersProcessor $parametersProcessor ): void {
 		[ $queryString, $parameters, $printRequests ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parametersProcessor->getParameters(),
 			false
@@ -347,7 +281,7 @@ class ResultFetcher {
 		$this->findValueFilters( $results, $valueFilterResult, $parametersProcessor->getPropertyFilters() );
 	}
 
-	private function findValueFilters( $results, $valueFilterResult, array $propertyFilters ) {
+	private function findValueFilters( $results, array $valueFilterResult, array $propertyFilters ): void {
 		if ( $propertyFilters === [] ) {
 			return;
 		}
@@ -366,7 +300,7 @@ class ResultFetcher {
 		foreach ( $propertyFilters as $label ) {
 			$list = $valueFilterResult[$label] ?? $subjects;
 
-			$property = DIProperty::newFromUserLabel( $label );
+			$property = Property::newFromUserLabel( $label );
 
 			$valuesGroup = $byGroupPropertyValuesLookup->findValueGroups(
 				$property,

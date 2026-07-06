@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Search;
 
+use MediaWiki\Request\WebRequest;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Query\Language\Conjunction;
@@ -9,10 +10,9 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\TermParser;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
-use WebRequest;
 
 /**
  * @private
@@ -24,31 +24,15 @@ use WebRequest;
  */
 class QueryBuilder {
 
-	/**
-	 * @var WebRequest
-	 */
-	private $request;
-
-	/**
-	 * @var array
-	 */
-	private $data = [];
-
-	/**
-	 * @var array
-	 */
-	private $queryCache = [];
+	private array $queryCache = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest|null $request
-	 * @param array|null $data
 	 */
-	public function __construct( ?WebRequest $request = null, array $data = [] ) {
-		$this->request = $request;
-		$this->data = $data;
-
+	public function __construct(
+		private ?WebRequest $request = null,
+		private readonly array $data = [],
+	) {
 		if ( $this->request === null ) {
 			$this->request = $GLOBALS['wgRequest'];
 		}
@@ -58,10 +42,8 @@ class QueryBuilder {
 	 * @since 3.0
 	 *
 	 * @param string $term
-	 *
-	 * @return Query|null
 	 */
-	public function getQuery( $term ) {
+	public function getQuery( $term ): ?Query {
 		if ( !is_string( $term ) || trim( $term ) === '' ) {
 			return null;
 		}
@@ -85,11 +67,11 @@ class QueryBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Query|null $query
-	 * @param array $searchableNamespaces
 	 */
-	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ) {
+	public function addNamespaceCondition(
+		?Query $query = null,
+		array $searchableNamespaces = []
+	): void {
 		if ( $query === null ) {
 			return;
 		}
@@ -103,7 +85,7 @@ class QueryBuilder {
 		}
 
 		$namespacesDisjunction = new Disjunction(
-			array_map( static function ( $ns ) {
+			array_map( static function ( int $ns ): NamespaceDescription {
 				return new NamespaceDescription( $ns );
 			}, $namespaces )
 		);
@@ -114,10 +96,8 @@ class QueryBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Query|null $query
 	 */
-	public function addSort( ?Query $query = null ) {
+	public function addSort( ?Query $query = null ): void {
 		if ( $query === null ) {
 			return;
 		}
@@ -138,10 +118,8 @@ class QueryBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getQueryString( Store $store, $term ) {
+	public function getQueryString( Store $store, string $term ): string {
 		// Special invisible char which is set by the JS component to allow to
 		// push a forms submit through the SearchEngine without an actual "search
 		// term" to avoid being blocked on an empty request which only contains
@@ -162,7 +140,8 @@ class QueryBuilder {
 
 		$form = $this->request->getVal( 'smw-form' );
 
-		if ( ( $data = $this->fetchFieldValues( $form, $data ) ) === [] && trim( $term ) ) {
+		$data = $this->fetchFieldValues( $form, $data );
+		if ( $data === [] && trim( $term ) ) {
 			return $term;
 		}
 
@@ -203,13 +182,8 @@ class QueryBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $form
-	 * @param array $data
-	 *
-	 * @return
 	 */
-	public function fetchFieldValues( $form, array $data ) {
+	public function fetchFieldValues( ?string $form, array $data ): array {
 		$fieldValues = [];
 
 		if ( !isset( $data['forms'] ) ) {
@@ -217,9 +191,9 @@ class QueryBuilder {
 		}
 
 		if ( $form === 'open' ) {
-			$properties = $this->request->getArray( 'property' );
-			$pvalues = $this->request->getArray( 'pvalue' );
-			$op = $this->request->getArray( 'op' );
+			$properties = (array)$this->request->getArray( 'property' );
+			$pvalues = (array)$this->request->getArray( 'pvalue' );
+			$op = (array)$this->request->getArray( 'op' );
 
 			foreach ( $properties as $i => $property ) {
 

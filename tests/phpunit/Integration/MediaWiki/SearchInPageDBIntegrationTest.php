@@ -2,13 +2,15 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use ExtensionRegistry;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Registration\ExtensionRegistry;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
+use SMW\MediaWiki\Search\SearchResultSet;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use SMW\Tests\Utils\UtilityFactory;
-use Title;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @group SMW
@@ -29,24 +31,16 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-		$mwHooksHandler->invokeHooksFromRegistry();
 	}
 
 	public function testSearchForPageValueAsTerm() {
-		$propertyPage = Title::newFromText( 'Has some page value', SMW_NS_PROPERTY );
-		$targetPage = Title::newFromText( __METHOD__ );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$propertyPage = $titleFactory->newFromText( 'Has some page value', SMW_NS_PROPERTY );
+		$targetPage = $titleFactory->newFromText( __METHOD__ );
 
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+		$connection = $this->getMockBuilder( IConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-		} else {
-			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-		}
 
 		$pageCreator = new PageCreator();
 
@@ -64,7 +58,7 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		$results = $search->searchText( '[[Has some page value::Foo]]' );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Search\SearchResultSet',
+			SearchResultSet::class,
 			$results
 		);
 
@@ -83,8 +77,10 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 			$this->markTestSkipped( "Requires 'Geographic coordinate' to be a supported data type (see Semantic Maps)" );
 		}
 
-		$propertyPage = Title::newFromText( 'Has coordinates', SMW_NS_PROPERTY );
-		$targetPage = Title::newFromText( __METHOD__ );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$propertyPage = $titleFactory->newFromText( 'Has coordinates', SMW_NS_PROPERTY );
+		$targetPage = $titleFactory->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -102,11 +98,11 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		$results = $search->searchText( "[[Has coordinates::52°31'N, 13°24'E]]" );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Search\SearchResultSet',
+			SearchResultSet::class,
 			$results
 		);
 
-		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' ) ) {
+		if ( is_a( $this->getStore(), SPARQLStore::class ) ) {
 			$this->markTestIncomplete( "Test was marked as incomplete because the SPARQLStore doesn't support the Geo data type" );
 		}
 

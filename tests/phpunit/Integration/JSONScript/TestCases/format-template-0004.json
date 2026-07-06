@@ -57,7 +57,7 @@
 			"assert-output": {
 				"to-contain": [
 					"title=\"Example/FT0004/A\">Mitteilungen aus irischen Handschriften. V. Aus Egerton 1782. <em>Dūan in chōicat cest inn</em></a>’</span></div>",
-					"<td class=\"Text smwtype_txt\">Extra text by #set: <div>Meyer (Kuno), <span>‘"
+					"<td class=\"Text smwtype&#95;txt\">Extra text by #set: <div>Meyer (Kuno), <span>‘"
 				]
 			}
 		}

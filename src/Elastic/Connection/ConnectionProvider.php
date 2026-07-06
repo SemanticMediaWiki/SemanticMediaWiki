@@ -21,30 +21,15 @@ class ConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var LockManager
-	 */
-	private $lockManager;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var Client
-	 */
-	private $connection;
+	private ?Client $connection = null;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param LockManager $lockManager
-	 * @param config $config
 	 */
-	public function __construct( LockManager $lockManager, Config $config ) {
-		$this->lockManager = $lockManager;
-		$this->config = $config;
+	public function __construct(
+		private LockManager $lockManager,
+		private Config $config,
+	) {
 	}
 
 	/**
@@ -54,7 +39,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @return Client
 	 */
-	public function getConnection() {
+	public function getConnection(): Client {
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -108,8 +93,12 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 
 		$this->logger->info(
-			[ 'Connection', '{provider} : {hosts}' ],
-			[ 'role' => 'developer', 'provider' => 'elastic', 'hosts' => $params['hosts'] ]
+			'Connection {provider} : {hosts}',
+			[
+				'role' => 'developer',
+				'provider' => 'elastic',
+				'hosts' => $params['hosts']
+			]
 		);
 
 		return $this->connection;
@@ -120,11 +109,11 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 3.0
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		$this->connection = null;
 	}
 
-	private function newClient( $clientBuilder = null ) {
+	private function newClient( $clientBuilder = null ): DummyClient|TestClient|Client {
 		if ( $clientBuilder === null ) {
 			return new DummyClient();
 		}
@@ -139,22 +128,23 @@ class ConnectionProvider implements IConnectionProvider {
 		return new Client( $clientBuilder, $this->lockManager, $this->config );
 	}
 
-	private function hasEndpoints( $endpoints ) {
-		if ( $this->config->isDefaultStore() === false ) {
+	private function hasEndpoints( $endpoints ): bool {
+		if ( !$this->config->isDefaultStore() ) {
 			return true;
 		}
 
 		return $endpoints !== [];
 	}
 
-	private function hasAvailableClientBuilder() {
-		if ( $this->config->isDefaultStore() === false ) {
+	private function hasAvailableClientBuilder(): bool {
+		if ( !$this->config->isDefaultStore() ) {
 			return false;
 		}
 
 		// Fail hard because someone selected the ElasticStore but forgot to install
 		// the elastic interface!
-		if ( !class_exists( 'Elasticsearch\ClientBuilder' ) ) {
+		// @phan-suppress-next-line PhanUndeclaredClassReference
+		if ( !class_exists( ClientBuilder::class ) ) {
 			throw new ClientBuilderNotFoundException();
 		}
 

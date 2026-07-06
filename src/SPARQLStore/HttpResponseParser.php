@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\SPARQLStore\QueryEngine\RepositoryResult;
+
 /**
  * Provides an interface for which responses from a http client (repositor
  * connection) are parsed into a unified format

@@ -2,15 +2,21 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\SpecialPage\SpecialPage;
 use PermissionsError;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\HtmlTabs;
-use SpecialPage;
 
 /**
  * This special page for MediaWiki provides an administrative interface
@@ -29,16 +35,37 @@ use SpecialPage;
 class SpecialAdmin extends SpecialPage {
 
 	/**
-	 * @codeCoverageIgnore
+	 * @since 7.0.0
 	 */
-	public function __construct() {
-		parent::__construct( 'SMWAdmin', 'smw-admin' );
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings,
+		private readonly HookContainer $hookContainer,
+		private readonly JobFactory $jobFactory,
+		private readonly JobQueue $jobQueue
+	) {
+		// MediaWiki 1.46 deprecated passing the restriction through the
+		// SpecialPage constructor in favour of overriding getRestriction().
+		// Versions before 1.46 enforce the restriction via the
+		// constructor-set property, so keep passing it there for them.
+		if ( version_compare( MW_VERSION, '1.46', '<' ) ) {
+			parent::__construct( 'SMWAdmin', 'smw-admin' );
+		} else {
+			parent::__construct( 'SMWAdmin' );
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function doesWrites() {
+	public function getRestriction(): string {
+		return 'smw-admin';
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function doesWrites(): bool {
 		return true;
 	}
 
@@ -69,8 +96,10 @@ class SpecialAdmin extends SpecialPage {
 		] );
 		$output->addModules( 'ext.smw.admin' );
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
+		// Partial DI: MwCollaboratorFactory is still resolved through
+		// ApplicationFactory because it is not registered as a global SMW.X
+		// service.
+		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
 
 		$htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),
@@ -78,30 +107,35 @@ class SpecialAdmin extends SpecialPage {
 		);
 
 		// Some functions require methods only provided by the SQLStore (or any
-		// inherit class thereof)
-		if ( !is_a( ( $store = $applicationFactory->getStore() ), '\SMW\SQLStore\SQLStore' ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
-		}
+		// inherit class thereof). When the injected default Store is not an
+		// SQLStore (e.g. SPARQLStore) the admin tasks need a separately-built
+		// SQL store; resolving it through ApplicationFactory mirrors the
+		// partial-DI pattern used by SpecialPropertyLabelSimilarity.
+		$store = $this->store instanceof SQLStore
+			? $this->store
+			: ApplicationFactory::getInstance()->getStore( SQLStore::class );
 
 		$outputFormatter = new OutputFormatter(
 			$this->getOutput()
 		);
 
-		$adminFeatures = $applicationFactory->getSettings()->get( 'smwgAdminFeatures' );
+		$adminFeatures = $this->settings->get( 'smwgAdminFeatures' );
 
 		// Disable the feature in case the function is not supported
-		if ( $applicationFactory->getSettings()->get( 'smwgEnabledFulltextSearch' ) === false ) {
-			$adminFeatures = $adminFeatures & ~SMW_ADM_FULLT;
+		if ( $this->settings->get( 'smwgEnabledFulltextSearch' ) === false ) {
+			$adminFeatures &= ~SMW_ADM_FULLT;
 		}
 
 		$taskHandlerFactory = new TaskHandlerFactory(
 			$store,
 			$htmlFormRenderer,
-			$outputFormatter
+			$outputFormatter,
+			$this->jobFactory,
+			$this->jobQueue
 		);
 
-		$taskHandlerFactory->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$taskHandlerFactory->setHookContainer(
+			$this->hookContainer
 		);
 
 		$taskHandlerRegistry = $taskHandlerFactory->newTaskHandlerRegistry(
@@ -129,7 +163,7 @@ class SpecialAdmin extends SpecialPage {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group';
 	}
 
@@ -157,7 +191,7 @@ class SpecialAdmin extends SpecialPage {
 		$supportTaskList = $taskHandlerRegistry->get( TaskHandler::SECTION_SUPPORT );
 		$supportTask = end( $supportTaskList );
 
-		$default = $alertsSection === '' ? ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ? 'general' : 'maintenance' ) : 'alerts';
+		$default = $alertsSection === '' ? ( $supportTask->hasFeature( SMW_ADM_SHOW_OVERVIEW ) ? 'general' : 'maintenance' ) : 'alerts';
 
 		// If we want to remain on a specific tab on a GET request, use the `tab`
 		// parameter since we are unable to fetch any #href hash from a request
@@ -174,7 +208,8 @@ class SpecialAdmin extends SpecialPage {
 			]
 		);
 
-		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
+		$supportSection = '';
+		if ( $supportTask->hasFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
 			$supportSection = $supportTask->getHtml();
 			$htmlTabs->tab( 'general', $this->msg_text( 'smw-admin-tab-general' ) );
 		}
@@ -182,7 +217,7 @@ class SpecialAdmin extends SpecialPage {
 		$htmlTabs->tab( 'maintenance', $this->msg_text( 'smw-admin-tab-maintenance' ) );
 		$htmlTabs->tab( 'supplement', $this->msg_text( 'smw-admin-tab-supplement' ) );
 
-		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
+		if ( $supportTask->hasFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
 			$htmlTabs->content( 'general', $supportSection );
 		}
 
@@ -197,7 +232,7 @@ class SpecialAdmin extends SpecialPage {
 		return $html;
 	}
 
-	private function msg_text( $key, $type = Message::TEXT ) {
+	private function msg_text( string $key, $type = Message::TEXT ): string {
 		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ClassDescription;
@@ -16,17 +16,9 @@ use SMW\Query\Language\ClassDescription;
 class ClassDescriptionInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**
@@ -37,7 +29,7 @@ class ClassDescriptionInterpreter {
 	 * @return Condition
 	 */
 	public function interpretDescription( ClassDescription $description, $isConjunction = false ) {
-		$pid = 'P:' . $this->conditionBuilder->getID( new DIProperty( '_INST' ) );
+		$pid = 'P:' . $this->conditionBuilder->getID( new Property( '_INST' ) );
 		$field = 'wpgID';
 
 		$dataItems = $description->getCategories();
@@ -78,7 +70,7 @@ class ClassDescriptionInterpreter {
 
 		// This feature is NOT supported by the SQLStore!!
 		// Encapsulate condition for something like `[[Category:!CatTest1]] ...`
-		if ( isset( $description->isNegation ) && $description->isNegation ) {
+		if ( $description->isNegation ) {
 			$condition = $this->conditionBuilder->newCondition( $params );
 			$condition->type( Condition::TYPE_MUST_NOT );
 		} else {

@@ -20,10 +20,10 @@ The recommended way to install Semantic MediaWiki is with [Composer](https://get
 Change to the base directory of your MediaWiki installation. If you do not have a "composer.local.json" file yet,
 create one and add the following content to it:
 
-```
+```json
 {
 	"require": {
-			"mediawiki/semantic-media-wiki": "^5.0.0"
+			"mediawiki/semantic-media-wiki": "^7.0.0"
 		}
 }
 ```
@@ -31,7 +31,9 @@ create one and add the following content to it:
 If you already have a "composer.local.json" file add the following line to the end of the "require"
 section in your file:
 
-	"mediawiki/semantic-media-wiki": "^5.0.0"
+```
+"mediawiki/semantic-media-wiki": "^7.0.0"
+```
 
 Remember to add a comma to the end of the preceding line in this section.
 
@@ -39,33 +41,36 @@ Remember to add a comma to the end of the preceding line in this section.
 
 Run the following command in your shell:
 
-    php composer.phar update --no-dev
-
-Note if you have Git installed on your system add the `--prefer-source` flag to the above command.
+```sh
+php composer.phar update --no-dev
+```
 
 #### Step 3
 
-Add the following two lines to the end of your "LocalSettings.php" file:
+Add the following line to the end of your "LocalSettings.php" file:
 
-    wfLoadExtension( 'SemanticMediaWiki' );
-    enableSemantics( 'example.org' );
-
-Note that "example.org" should be replaced by your wiki's domain.
+```php
+wfLoadExtension( 'SemanticMediaWiki' );
+```
 
 #### Step 4
 
-Run the MediaWiki [update script](https://www.mediawiki.org/wiki/Manual:Update.php). The location of
-this script is `maintenance/update.php`. It can be run as follows in your shell:
+Run the MediaWiki [update script](https://www.mediawiki.org/wiki/Manual:Update.php).
+It can be run as follows in your shell:
 
-    php maintenance/update.php
+```sh
+php maintenance/run.php update
+```
 
 #### Step 5
 
 If you are installing SMW on a freshly installed wiki then you are done. If the wiki already has content
-pages run the Semantic MediaWiki [data rebuild script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_"rebuildData.php"). The location of this script
-is `extensions/SemanticMediaWiki/maintenance/rebuildData.php`. It can be run as follows in your shell:
+pages run the Semantic MediaWiki [data rebuild script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_"rebuildData.php").
+It can be run as follows in your shell:
 
-    php extensions/SemanticMediaWiki/maintenance/rebuildData.php -v
+```sh
+php maintenance/run.php SemanticMediaWiki:rebuildData -v
+```
 
 ### Installation without shell access
 
@@ -83,11 +88,11 @@ Transfer the code thus compiled to the appropriate folders on your webspace.
 
 #### Step 3
 
-Add the following lines to the end of your "LocalSettings.php" file:
+Add the following line to the end of your "LocalSettings.php" file:
 
-    enableSemantics( 'example.org' );
-
-Note that "example.org" should be replaced by your wiki's domain.
+```php
+wfLoadExtension( 'SemanticMediaWiki' );
+```
 
 #### Step 4
 
@@ -110,8 +115,8 @@ If you would like to install a development version or release candidate then rep
 "Installation with Composer" section with the following line
 
 * master: `"mediawiki/semantic-media-wiki": "dev-master"`
-* legacy branch: `"mediawiki/semantic-media-wiki": "~5.0.0@dev"`
-* release candidate: `"mediawiki/semantic-media-wiki": "~5.0@rc"`
+* legacy branch: `"mediawiki/semantic-media-wiki": "~7.0.0@dev"`
+* release candidate: `"mediawiki/semantic-media-wiki": "~7.0@rc"`
 
 ## More instructions
 

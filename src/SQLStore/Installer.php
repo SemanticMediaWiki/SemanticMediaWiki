@@ -2,17 +2,21 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\JobQueue\JobFactory;
+use MediaWiki\Title\TitleFactory;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
-use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
-use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use RuntimeException;
+use SMW\MediaWiki\Job;
 use SMW\Options;
 use SMW\Setup;
+use SMW\Setup\MigrateSmwJsonToDb;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\Utils\CliMsgFormatter;
@@ -29,7 +33,15 @@ use SMW\Utils\Timer;
 class Installer implements MessageReporter {
 
 	use MessageReporterAwareTrait;
-	use HookDispatcherAwareTrait;
+
+	private ?HookContainer $hookContainer = null;
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
 
 	/**
 	 * Optimize option
@@ -51,61 +63,24 @@ class Installer implements MessageReporter {
 	 */
 	const POPULATE_HASH_FIELD_COMPLETE = 'populate.smw_hash_field_complete';
 
-	/**
-	 * @var TableSchemaManager
-	 */
-	private $tableSchemaManager;
+	private Options $options;
 
-	/**
-	 * @var TableBuilder
-	 */
-	private $tableBuilder;
+	private SetupFile $setupFile;
 
-	/**
-	 * @var TableBuildExaminer
-	 */
-	private $tableBuildExaminer;
-
-	/**
-	 * @var VersionExaminer
-	 */
-	private $versionExaminer;
-
-	/**
-	 * @var TableOptimizer
-	 */
-	private $tableOptimizer;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
-
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param TableSchemaManager $tableSchemaManager
-	 * @param TableBuilder $tableBuilder
-	 * @param TableBuildExaminer $tableBuildExaminer
-	 * @param VersionExaminer VersionExaminer
-	 * @param TableOptimizer $tableOptimizer
 	 */
-	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableBuildExaminer $tableBuildExaminer, VersionExaminer $versionExaminer, TableOptimizer $tableOptimizer ) {
-		$this->tableSchemaManager = $tableSchemaManager;
-		$this->tableBuilder = $tableBuilder;
-		$this->tableBuildExaminer = $tableBuildExaminer;
-		$this->versionExaminer = $versionExaminer;
-		$this->tableOptimizer = $tableOptimizer;
+	public function __construct(
+		private TableSchemaManager $tableSchemaManager,
+		private TableBuilder $tableBuilder,
+		private TableBuildExaminer $tableBuildExaminer,
+		private VersionExaminer $versionExaminer,
+		private TableOptimizer $tableOptimizer,
+		private readonly TitleFactory $titleFactory,
+		private readonly JobFactory $jobFactory,
+	) {
 		$this->options = new Options();
 		$this->setupFile = new SetupFile();
 	}
@@ -115,7 +90,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param Options|array $options
 	 */
-	public function setOptions( $options ) {
+	public function setOptions( $options ): void {
 		if ( !$options instanceof Options ) {
 			$options = new Options( $options );
 		}
@@ -128,7 +103,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -137,7 +112,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param Options|bool $verbose
 	 */
-	public function install( $verbose = true ) {
+	public function install( $verbose = true ): bool {
 		if ( $verbose instanceof Options ) {
 			$this->options = $verbose;
 		}
@@ -192,18 +167,22 @@ class Installer implements MessageReporter {
 			$this->messageReporter
 		);
 
-		if ( $this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) === false ) {
+		if ( !$this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) ) {
 			return $this->printBottom();
 		}
 
 		// #3559
 		$tables = $this->tableSchemaManager->getTables();
+
+		// Run data migrations that must complete before column types change
+		$this->tableBuildExaminer->runPreCreationMigrations();
+
 		$this->setupFile->setMaintenanceMode( [ 'create-tables' => 20 ] );
 
-		/**
-		 * @see HookDispatcher::onInstallerBeforeCreateTablesComplete
-		 */
-		$this->hookDispatcher->onInstallerBeforeCreateTablesComplete( $tables, $this->messageReporter );
+		$this->hookContainer->run(
+			'SMW::SQLStore::Installer::BeforeCreateTablesComplete',
+			[ $tables, $this->messageReporter ]
+		);
 
 		$this->messageReporter->reportMessage(
 			$this->cliMsgFormatter->section( 'Core table(s)', 6, '-', true ) . "\n"
@@ -253,6 +232,15 @@ class Installer implements MessageReporter {
 
 		$this->setupFile->finalize();
 
+		// Mark a legacy `.smw.json` consumed. Data transfer happened
+		// earlier in the request via `SetupFile::loadSchema`'s legacy
+		// fallback (it hydrated `$GLOBALS` from the file) combined with
+		// the install pipeline's normal merge-then-save writes, so by
+		// this point `smw_meta` already reflects the user's state. The
+		// rename is the consumed-marker; the next upgrade short-circuits
+		// at file presence.
+		MigrateSmwJsonToDb::run( $this->messageReporter );
+
 		$timer->stop( 'supplement-jobs' )->new( 'hook-execution' );
 
 		$this->messageReporter->reportMessage(
@@ -268,10 +256,10 @@ class Installer implements MessageReporter {
 			"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
-		/**
-		 * @see HookDispatcher::onInstallerAfterCreateTablesComplete
-		 */
-		$this->hookDispatcher->onInstallerAfterCreateTablesComplete( $this->tableBuilder, $this->messageReporter, $this->options );
+		$this->hookContainer->run(
+			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
+			[ $this->tableBuilder, $this->messageReporter, $this->options ]
+		);
 
 		$timer->stop( 'hook-execution' );
 
@@ -290,7 +278,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param bool $verbose
 	 */
-	public function uninstall( $verbose = true ) {
+	public function uninstall( $verbose = true ): bool {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->initMessageReporter( $verbose );
@@ -316,10 +304,10 @@ class Installer implements MessageReporter {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 		$this->tableBuildExaminer->checkOnPostDestruction( $this->tableBuilder );
 
-		/**
-		 * @see HookDispatcher::onInstallerAfterDropTablesComplete
-		 */
-		$this->hookDispatcher->onInstallerAfterDropTablesComplete( $this->tableBuilder, $this->messageReporter, $this->options );
+		$this->hookContainer->run(
+			'SMW::SQLStore::Installer::AfterDropTablesComplete',
+			[ $this->tableBuilder, $this->messageReporter, $this->options ]
+		);
 
 		$text = [
 			'Standard and auxiliary tables with all corresponding data',
@@ -340,7 +328,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		ob_start();
 		print $message;
 		ob_flush();
@@ -377,6 +365,9 @@ class Installer implements MessageReporter {
 		);
 	}
 
+	/**
+	 * @throws RuntimeException
+	 */
 	private function addSupplementJobs() {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
@@ -392,11 +383,20 @@ class Installer implements MessageReporter {
 			$this->cliMsgFormatter->firstCol( "... Property statistics rebuild job ...", 3 )
 		);
 
-		$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
+		$title = $this->titleFactory->newFromText( 'SMW\SQLStore\Installer' );
 
-		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
-			$title,
-			PropertyStatisticsRebuildJob::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
+		if ( $title === null ) {
+			throw new RuntimeException(
+				'Failed to create SMW\SQLStore\Installer title.'
+			);
+		}
+
+		/** @var Job $propertyStatisticsRebuildJob */
+		$propertyStatisticsRebuildJob = $this->jobFactory->newJob(
+			'smw.propertyStatisticsRebuild',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ]
+				+ Job::newRootJobParams( 'smw.propertyStatisticsRebuild', $title )
+				+ [ 'waitOnCommandLine' => true ]
 		);
 
 		$propertyStatisticsRebuildJob->insert();
@@ -409,9 +409,12 @@ class Installer implements MessageReporter {
 			$this->cliMsgFormatter->firstCol( "... Entity disposer job ...", 3 )
 		);
 
-		$entityIdDisposerJob = new EntityIdDisposerJob(
-			$title,
-			EntityIdDisposerJob::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
+		/** @var Job $entityIdDisposerJob */
+		$entityIdDisposerJob = $this->jobFactory->newJob(
+			'smw.entityIdDisposer',
+			[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ]
+				+ Job::newRootJobParams( 'smw.entityIdDisposer', $title )
+				+ [ 'waitOnCommandLine' => true ]
 		);
 
 		$entityIdDisposerJob->insert();
@@ -423,7 +426,7 @@ class Installer implements MessageReporter {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function outputReport( $timer ) {
+	private function outputReport( Timer $timer ): void {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$keys = $timer->keys;
 
@@ -446,7 +449,7 @@ class Installer implements MessageReporter {
 		}
 	}
 
-	private function printHead() {
+	private function printHead(): void {
 		if (
 			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
 			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
@@ -456,7 +459,7 @@ class Installer implements MessageReporter {
 		}
 	}
 
-	private function printBottom() {
+	private function printBottom(): bool {
 		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
 			$this->messageReporter->reportMessage( $this->cliMsgFormatter->section( '', 0, '=' ) );
 			$this->messageReporter->reportMessage( "\n" );

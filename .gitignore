@@ -21,11 +21,12 @@ composer.lock
 
 .idea/
 .smw.json
+.smw.json.migrated
 .phpunit.result.cache
-src/Tesa/.phpunit.result.cache
 
 composer
 installer
+.env
 .envrc
 conf
 expected

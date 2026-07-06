@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HmacSerializer;
@@ -9,7 +10,7 @@ use SMW\Utils\HmacSerializer;
 /**
  * @private
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -19,30 +20,18 @@ class AuxiliaryFields {
 	const COUNTMAP_CACHE_ID = 'count.map';
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Database $connection
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage[] $subjects
+	 * @param WikiPage[] $subjects
 	 *
 	 * @return FieldList
 	 */
@@ -72,7 +61,7 @@ class AuxiliaryFields {
 				$map = HmacSerializer::uncompress( $countmap );
 			}
 
-			$cache->save( $row->smw_id, $map );
+			$cache->save( (string)$row->smw_id, $map );
 			$countMaps[$hashMap[$row->smw_hash]] = [ $row->smw_id => $map ];
 		}
 
@@ -86,7 +75,7 @@ class AuxiliaryFields {
 	 * @param array|null $seqmap
 	 * @param array|null $countmap
 	 */
-	public function setFieldMaps( $sid, ?array $seqmap = null, ?array $countmap = null ) {
+	public function setFieldMaps( $sid, ?array $seqmap = null, ?array $countmap = null ): void {
 		$cache = $this->idCacheManager->get( self::COUNTMAP_CACHE_ID );
 
 		if ( $seqmap !== [] ) {
@@ -105,45 +94,33 @@ class AuxiliaryFields {
 			$countmap = null;
 		}
 
-		$this->connection->upsert(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[
+		$this->connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::ID_AUXILIARY_TABLE )
+			->row( [
 				'smw_id' => $sid,
 				'smw_seqmap' => $seqmap,
 				'smw_countmap' => $countmap
-			],
-			'smw_id',
-			[
+			] )
+			->onDuplicateKeyUpdate()
+			->uniqueIndexFields( [ 'smw_id' ] )
+			->set( [
 				'smw_seqmap' => $seqmap,
 				'smw_countmap' => $countmap
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$cache->save( $sid, $countmap );
+		$cache->save( (string)$sid, $countmap );
 	}
 
 	private function fetchCountMap( array $hashes ) {
-		return $this->connection->select(
-			[
-				// tableName conversion required by SQlite otherwise the
-				// integration tests fail
-				't' => $this->connection->tableName( SQLStore::ID_TABLE ),
-				'p' => $this->connection->tableName( SQLStore::ID_AUXILIARY_TABLE ) ],
-			[
-				't.smw_id',
-				't.smw_hash',
-				'p.smw_countmap',
-			],
-			[
-				't.smw_hash' => $hashes
-			],
-			__METHOD__,
-			[],
-			[
-				'p' => [ 'INNER JOIN', [ 'p.smw_id=t.smw_id' ] ],
-			]
-		);
+		return $this->connection->newSelectQueryBuilder()
+			->select( [ 't.smw_id', 't.smw_hash', 'p.smw_countmap' ] )
+			->from( SQLStore::ID_TABLE, 't' )
+			->join( SQLStore::ID_AUXILIARY_TABLE, 'p', 'p.smw_id=t.smw_id' )
+			->where( [ 't.smw_hash' => $hashes ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 }

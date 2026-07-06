@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use Onoi\Cache\Cache;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,46 +15,28 @@ class TableStatisticsTask extends Task {
 
 	const CACHE_KEY = 'table-statistics';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var
-	 */
-	private $cacheUsage;
-
-	private Cache $cache;
+	private ?array $cacheUsage = null;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param Cache $cache
 	 */
-	public function __construct( Store $store, Cache $cache ) {
-		$this->store = $store;
-		$this->cache = $cache;
+	public function __construct(
+		private readonly Store $store,
+		private readonly BagOStuff $cache,
+	) {
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $cacheUsage
 	 */
-	public function setCacheUsage( array $cacheUsage ) {
+	public function setCacheUsage( array $cacheUsage ): void {
 		$this->cacheUsage = $cacheUsage;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
-	public function process( array $parameters ) {
+	public function process( array $parameters ): array {
 		$cacheTTL = 3600;
 
 		if ( isset( $this->cacheUsage['api.table.statistics'] ) ) {
@@ -64,8 +46,11 @@ class TableStatisticsTask extends Task {
 		$key = self::makeCacheKey( self::CACHE_KEY );
 
 		// Guard against repeated API calls (or fuzzing)
-		if ( $cacheTTL !== false && ( $result = $this->cache->fetch( $key ) ) !== false ) {
-			return $result + [ 'isFromCache' => true, 'cacheTTL' => $cacheTTL ];
+		if ( $cacheTTL !== false ) {
+			$result = $this->cache->get( $key );
+			if ( $result !== false ) {
+				return $result + [ 'isFromCache' => true, 'cacheTTL' => $cacheTTL ];
+			}
 		}
 
 		$tableStatisticsLookup = $this->store->service( 'TableStatisticsLookup' );
@@ -75,7 +60,7 @@ class TableStatisticsTask extends Task {
 			'time' => date( 'Y-m-d H:i:s' )
 		];
 
-		$this->cache->save( $key, $result, $cacheTTL );
+		$this->cache->set( $key, $result, $cacheTTL );
 
 		return $result;
 	}

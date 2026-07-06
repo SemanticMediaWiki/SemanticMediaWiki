@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use SMW\Query\Query;
 use SMW\Query\QueryLinker;
 use SMW\Query\QueryResult;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\UrlArgs;
-use SMWQuery as Query;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,127 +18,84 @@ use Title;
  */
 class HtmlForm {
 
-	/**
-	 * @var Title
-	 */
-	private $title;
+	private array $parameters = [];
 
-	/**
-	 * @var array
-	 */
-	private $parameters = [];
+	private string $queryString = '';
 
-	/**
-	 * @var string
-	 */
-	private $queryString = '';
+	private ?Query $query = null;
 
-	/**
-	 * @var Query
-	 */
-	private $query;
+	private array $callbacks = [];
 
-	/**
-	 * @var array
-	 */
-	private $callbacks = [];
+	private bool $isEditMode = true;
 
-	/**
-	 * @var bool
-	 */
-	private $isEditMode = true;
+	private bool $isBorrowedMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isBorrowedMode = false;
-
-	/**
-	 * @var bool
-	 */
-	private $isPostSubmit = false;
+	private bool $isPostSubmit = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
 	 */
-	public function __construct( Title $title ) {
-		$this->title = $title;
+	public function __construct( private readonly Title $title ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
 	 */
-	public function setParameters( array $parameters ) {
+	public function setParameters( array $parameters ): void {
 		$this->parameters = $parameters;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $queryString
 	 */
-	public function setQueryString( $queryString ) {
+	public function setQueryString( string $queryString ): void {
 		$this->queryString = $queryString;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Query|null $query
 	 */
-	public function setQuery( ?Query $query = null ) {
+	public function setQuery( ?Query $query = null ): void {
 		$this->query = $query;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $callbacks
 	 */
-	public function setCallbacks( array $callbacks ) {
+	public function setCallbacks( array $callbacks ): void {
 		$this->callbacks = $callbacks;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isEditMode
 	 */
-	public function isEditMode( $isEditMode ) {
-		$this->isEditMode = (bool)$isEditMode;
+	public function isEditMode( bool $isEditMode ): void {
+		$this->isEditMode = $isEditMode;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isBorrowedMode
 	 */
-	public function isBorrowedMode( $isBorrowedMode ) {
-		$this->isBorrowedMode = (bool)$isBorrowedMode;
+	public function isBorrowedMode( bool $isBorrowedMode ): void {
+		$this->isBorrowedMode = $isBorrowedMode;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isPostSubmit
 	 */
-	public function isPostSubmit( $isPostSubmit ) {
-		$this->isPostSubmit = (bool)$isPostSubmit;
+	public function isPostSubmit( bool $isPostSubmit ): void {
+		$this->isPostSubmit = $isPostSubmit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param UrlArgs $urlArgs
-	 * @param QueryResult|string|null $queryResult
-	 *
-	 * @return string
 	 */
-	public function getForm( UrlArgs $urlArgs, $queryResult = null, array $queryLog = [] ) {
+	public function getForm(
+		UrlArgs $urlArgs,
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
+		QueryResult|string|null $queryResult = null,
+		array $queryLog = []
+	): string {
 		$html = $this->buildHTML( $urlArgs, $queryResult, $queryLog );
 
 		if ( $this->isPostSubmit ) {
@@ -158,7 +115,12 @@ class HtmlForm {
 		return Html::rawElement( 'form', $params, $html );
 	}
 
-	private function buildHTML( $urlArgs, $queryResult, array $queryLog ) {
+	private function buildHTML(
+		UrlArgs $urlArgs,
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
+		QueryResult|string|null $queryResult = null,
+		array $queryLog = []
+	): string {
 		$navigation = '';
 		$queryLink = null;
 		$isFromCache = false;
@@ -181,7 +143,8 @@ class HtmlForm {
 
 			if ( $this->query !== null ) {
 				$queryLink = QueryLinker::get( $this->query, $this->parameters );
-			} elseif ( ( $query = $queryResult->getQuery() ) !== null ) {
+			} else {
+				$query = $queryResult->getQuery();
 				$queryLink = QueryLinker::get( $query, $this->parameters );
 			}
 		}
@@ -200,7 +163,7 @@ class HtmlForm {
 		}
 
 		$isEmpty = $queryLink === null;
-		$editLink = $this->title->getLocalURL( $urlArgs );
+		$editLink = $this->title->getLocalURL( (string)$urlArgs );
 
 		// Submit
 		$html .= LinksWidget::resultSubmitLink(
@@ -229,7 +192,7 @@ class HtmlForm {
 
 		$htmlTabs->tab(
 			'smw-askt-result',
-			wfMessage( 'smw-ask-tab-result' )->text(),
+			wfMessage( 'smw-ask-tab-result' )->escaped(),
 			[
 				'hide' => $isEmpty,
 				'class' => $isFromCache ? ' result-cache' : ''
@@ -240,7 +203,7 @@ class HtmlForm {
 
 		$htmlTabs->tab(
 			'smw-askt-code',
-			wfMessage( 'smw-ask-tab-code' )->text(),
+			wfMessage( 'smw-ask-tab-code' )->escaped(),
 			[
 				'hide' => $this->isBorrowedMode || $isEmpty
 			]
@@ -285,12 +248,13 @@ class HtmlForm {
 		if ( !$isEmpty ) {
 			$htmlTabs->tab(
 				'smw-askt-extra',
-				wfMessage( 'smw-ask-tab-extra' )->text(),
+				wfMessage( 'smw-ask-tab-extra' )->escaped(),
 				[
 					'class' => 'smw-tab-right'
 				]
 			);
 
+			// @phan-suppress-next-line PhanRedundantCondition
 			if ( is_array( $links ) ) {
 
 				// External source cannot disable the cache
@@ -298,12 +262,13 @@ class HtmlForm {
 					$isFromCache = false;
 				}
 
-				if ( ( $noCacheLink = LinksWidget::noQCacheLink( $this->title, $urlArgs, $isFromCache ) ) !== '' ) {
+				$noCacheLink = LinksWidget::noQCacheLink( $this->title, $urlArgs, $isFromCache );
+				if ( $noCacheLink !== '' ) {
 					$links[] = $noCacheLink;
 				}
 
 				if ( $links !== [] ) {
-					$infoText .= '<h3>' . wfMessage( 'smw-ask-extra-other' )->text() . '</h3>';
+					$infoText .= '<h3>' . wfMessage( 'smw-ask-extra-other' )->escaped() . '</h3>';
 					$infoText .= '<ul><li>' . implode( '</li><li>', $links ) . '</li></ul>';
 				}
 			} else {
@@ -326,7 +291,7 @@ class HtmlForm {
 		return $html;
 	}
 
-	private function editElements( $urlArgs ) {
+	private function editElements( UrlArgs $urlArgs ): string {
 		$html = '';
 
 		$html .= Html::hidden( 'title', $this->title->getPrefixedDBKey() );

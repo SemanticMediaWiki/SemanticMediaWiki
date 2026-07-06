@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Tokenizer;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\Tokenizer;
  *
  * @author mwjames
  */
-class TokenizerTest extends \PHPUnit\Framework\TestCase {
+class TokenizerTest extends TestCase {
 
 	/**
 	 * @dataProvider textProvider

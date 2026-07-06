@@ -2,11 +2,12 @@
 
 namespace SMW;
 
+use MediaWiki\HookContainer\HookContainer;
 use RuntimeException;
 use SMW\Exception\SettingNotFoundException;
 use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Setup\LegacyConstantNormalizer;
 
 /**
  * @private
@@ -21,14 +22,18 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  */
 class Settings extends Options {
 
-	use ConfigLegacyTrait;
 	use ChangeListenerAwareTrait;
-	use HookDispatcherAwareTrait;
+
+	private ?HookContainer $hookContainer = null;
+
+	private bool $isLoaded = false;
 
 	/**
-	 * @var bool
+	 * @since 7.0.0
 	 */
-	private $isLoaded = false;
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
 
 	/**
 	 * Assemble individual SMW related settings into one accessible array for
@@ -40,7 +45,7 @@ class Settings extends Options {
 	 *
 	 * @throws SettingsAlreadyLoadedException
 	 */
-	public function loadFromGlobals() {
+	public function loadFromGlobals(): void {
 		// This function is never expected to be called more than once per active
 		// instance which should only happen via the service factory, yet, if
 		// someone attempted to call this function then we want to know by what
@@ -52,26 +57,10 @@ class Settings extends Options {
 			);
 		}
 
-		// #4150
-		// If someone tried to use SMW without proper initialization then something
-		// like "Notice: Undefined index: smwgNamespaceIndex ..." would appear and
-		// to produce a proper error message avoid those by adding a default.
-		if ( !defined( 'SMW_VERSION' ) || !isset( $GLOBALS['smwgNamespaceIndex'] ) ) {
-			Globals::replace(
-				NamespaceManager::initCustomNamespace( $GLOBALS )['newVars']
-			);
-		}
-
-		/**
-		 * IF YOU REMOVE SETTING(S) FROM THIS ARRAY DEFINTION, PLEASE ENSURE
-		 * TO REGISTER THEM WITH THE `ConfigLegacyTrait`.
-		 */
-
 		$this->options = [
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
-			'smwgResourceLoaderDefFiles' => $GLOBALS['smwgResourceLoaderDefFiles'],
 			'smwgMaintenanceDir' => $GLOBALS['smwgMaintenanceDir'],
 			'smwgDir' => $GLOBALS['smwgDir'],
 			'smwgConfigFileDir' => $GLOBALS['smwgConfigFileDir'],
@@ -88,14 +77,12 @@ class Settings extends Options {
 			'smwgSparqlCustomConnector' => $GLOBALS['smwgSparqlCustomConnector'],
 			'smwgSparqlEndpoint' => $GLOBALS['smwgSparqlEndpoint'],
 			'smwgSparqlDefaultGraph' => $GLOBALS['smwgSparqlDefaultGraph'],
-			'smwgSparqlRepositoryFeatures' => $GLOBALS['smwgSparqlRepositoryFeatures'],
-			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
+			'smwgSparqlRepositoryFeatures' => LegacyConstantNormalizer::normalize( 'smwgSparqlRepositoryFeatures', $GLOBALS['smwgSparqlRepositoryFeatures'] ),
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
-			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
-			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
-			'smwgFactboxFeatures' => $GLOBALS['smwgFactboxFeatures'],
-			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
-			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
+			'smwgSparqlQFeatures' => LegacyConstantNormalizer::normalize( 'smwgSparqlQFeatures', $GLOBALS['smwgSparqlQFeatures'] ),
+			'smwgFactboxFeatures' => LegacyConstantNormalizer::normalize( 'smwgFactboxFeatures', $GLOBALS['smwgFactboxFeatures'] ),
+			'smwgShowFactbox' => LegacyConstantNormalizer::normalize( 'smwgShowFactbox', $GLOBALS['smwgShowFactbox'] ),
+			'smwgShowFactboxEdit' => LegacyConstantNormalizer::normalize( 'smwgShowFactboxEdit', $GLOBALS['smwgShowFactboxEdit'] ),
 			'smwgCompactLinkSupport' => $GLOBALS['smwgCompactLinkSupport'],
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
@@ -107,33 +94,34 @@ class Settings extends Options {
 			'smwgIgnoreQueryErrors' => $GLOBALS['smwgIgnoreQueryErrors'],
 			'smwgQSubcategoryDepth' => $GLOBALS['smwgQSubcategoryDepth'],
 			'smwgQSubpropertyDepth' => $GLOBALS['smwgQSubpropertyDepth'],
-			'smwgQEqualitySupport' => $GLOBALS['smwgQEqualitySupport'],
+			'smwgQEqualitySupport' => LegacyConstantNormalizer::normalize( 'smwgQEqualitySupport', $GLOBALS['smwgQEqualitySupport'] ),
 			'smwgQDefaultNamespaces' => $GLOBALS['smwgQDefaultNamespaces'],
 			'smwgQComparators' => $GLOBALS['smwgQComparators'],
 			'smwgQFilterDuplicates' => $GLOBALS['smwgQFilterDuplicates'],
+			'smwgQUseLegacyQuery' => $GLOBALS['smwgQUseLegacyQuery'],
 			'smwStrictComparators' => $GLOBALS['smwStrictComparators'],
 			'smwgQStrictComparators' => $GLOBALS['smwgQStrictComparators'],
 			'smwgQMaxSize' => $GLOBALS['smwgQMaxSize'],
 			'smwgQMaxDepth' => $GLOBALS['smwgQMaxDepth'],
-			'smwgQFeatures' => $GLOBALS['smwgQFeatures'],
+			'smwgQFeatures' => LegacyConstantNormalizer::normalize( 'smwgQFeatures', $GLOBALS['smwgQFeatures'] ),
 			'smwgQDefaultLimit' => $GLOBALS['smwgQDefaultLimit'],
 			'smwgQUpperbound' => $GLOBALS['smwgQUpperbound'],
 			'smwgQMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
 			'smwgQPrintoutLimit' => $GLOBALS['smwgQPrintoutLimit'],
 			'smwgQDefaultLinking' => $GLOBALS['smwgQDefaultLinking'],
-			'smwgQConceptCaching' => $GLOBALS['smwgQConceptCaching'],
+			'smwgQConceptCaching' => LegacyConstantNormalizer::normalize( 'smwgQConceptCaching', $GLOBALS['smwgQConceptCaching'] ),
 			'smwgQConceptMaxSize' => $GLOBALS['smwgQConceptMaxSize'],
 			'smwgQConceptMaxDepth' => $GLOBALS['smwgQConceptMaxDepth'],
-			'smwgQConceptFeatures' => $GLOBALS['smwgQConceptFeatures'],
+			'smwgQConceptFeatures' => LegacyConstantNormalizer::normalize( 'smwgQConceptFeatures', $GLOBALS['smwgQConceptFeatures'] ),
 			'smwgQConceptCacheLifetime' => $GLOBALS['smwgQConceptCacheLifetime'],
 			'smwgQExpensiveThreshold' => $GLOBALS['smwgQExpensiveThreshold'],
 			'smwgQExpensiveExecutionLimit' => $GLOBALS['smwgQExpensiveExecutionLimit'],
-			'smwgRemoteReqFeatures' => $GLOBALS['smwgRemoteReqFeatures'],
+			'smwgRemoteReqFeatures' => LegacyConstantNormalizer::normalize( 'smwgRemoteReqFeatures', $GLOBALS['smwgRemoteReqFeatures'] ),
 			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
 			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
-			'smwgQSortFeatures' => $GLOBALS['smwgQSortFeatures'],
+			'smwgQSortFeatures' => LegacyConstantNormalizer::normalize( 'smwgQSortFeatures', $GLOBALS['smwgQSortFeatures'] ),
 			'smwgResultFormats' => $GLOBALS['smwgResultFormats'],
-			'smwgResultFormatsFeatures' => $GLOBALS['smwgResultFormatsFeatures'],
+			'smwgResultFormatsFeatures' => LegacyConstantNormalizer::normalize( 'smwgResultFormatsFeatures', $GLOBALS['smwgResultFormatsFeatures'] ),
 			'smwgResultAliases' => $GLOBALS['smwgResultAliases'],
 			'smwgPDefaultType' => $GLOBALS['smwgPDefaultType'],
 			'smwgAllowRecursiveExport' => $GLOBALS['smwgAllowRecursiveExport'],
@@ -150,34 +138,34 @@ class Settings extends Options {
 			'smwgDefaultOutputFormatters' => $GLOBALS['smwgDefaultOutputFormatters'],
 			'smwgTranslate' => $GLOBALS['smwgTranslate'],
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
-			'smwgAdminFeatures' => $GLOBALS['smwgAdminFeatures'],
+			'smwgAdminFeatures' => LegacyConstantNormalizer::normalize( 'smwgAdminFeatures', $GLOBALS['smwgAdminFeatures'] ),
 			'smwgAutoRefreshOnPurge' => $GLOBALS['smwgAutoRefreshOnPurge'],
 			'smwgAutoRefreshOnPageMove' => $GLOBALS['smwgAutoRefreshOnPageMove'],
 			'smwgMaxPropertyValues' => $GLOBALS['smwgMaxPropertyValues'],
 			'smwgNamespace' => $GLOBALS['smwgNamespace'],
-			'smwgMasterStore' => isset( $GLOBALS['smwgMasterStore'] ) ? $GLOBALS['smwgMasterStore'] : '',
-			'smwgIQRunningNumber' => isset( $GLOBALS['smwgIQRunningNumber'] ) ? $GLOBALS['smwgIQRunningNumber'] : 0,
+			'smwgMasterStore' => $GLOBALS['smwgMasterStore'] ?? '',
+			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'] ?? 0,
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
-			'smwgQueryProfiler' => $GLOBALS['smwgQueryProfiler'],
+			'smwgQueryProfiler' => LegacyConstantNormalizer::normalize( 'smwgQueryProfiler', $GLOBALS['smwgQueryProfiler'] ),
 			'smwgEnabledSpecialPage' => $GLOBALS['smwgEnabledSpecialPage'],
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
 			'smwgEnabledDeferredUpdate' => $GLOBALS['smwgEnabledDeferredUpdate'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
 			'smwgQueryDependencyPropertyExemptionList' => $GLOBALS['smwgQueryDependencyPropertyExemptionList'],
-			'smwgParserFeatures' => $GLOBALS['smwgParserFeatures'],
-			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
+			'smwgParserFeatures' => LegacyConstantNormalizer::normalize( 'smwgParserFeatures', $GLOBALS['smwgParserFeatures'] ),
+			'smwgDVFeatures' => LegacyConstantNormalizer::normalize( 'smwgDVFeatures', $GLOBALS['smwgDVFeatures'] ),
 			'smwgEnabledFulltextSearch' => $GLOBALS['smwgEnabledFulltextSearch'],
 			'smwgFulltextDeferredUpdate' => $GLOBALS['smwgFulltextDeferredUpdate'],
 			'smwgFulltextSearchTableOptions' => $GLOBALS['smwgFulltextSearchTableOptions'],
 			'smwgFulltextSearchPropertyExemptionList' => $GLOBALS['smwgFulltextSearchPropertyExemptionList'],
 			'smwgFulltextSearchMinTokenSize' => $GLOBALS['smwgFulltextSearchMinTokenSize'],
 			'smwgFulltextLanguageDetection' => $GLOBALS['smwgFulltextLanguageDetection'],
-			'smwgFulltextSearchIndexableDataTypes' => $GLOBALS['smwgFulltextSearchIndexableDataTypes'],
+			'smwgFulltextSearchIndexableDataTypes' => LegacyConstantNormalizer::normalize( 'smwgFulltextSearchIndexableDataTypes', $GLOBALS['smwgFulltextSearchIndexableDataTypes'] ),
 			'smwgQueryResultCacheType' => $GLOBALS['smwgQueryResultCacheType'],
 			'smwgQueryResultCacheLifetime' => $GLOBALS['smwgQueryResultCacheLifetime'],
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
@@ -189,14 +177,14 @@ class Settings extends Options {
 			'smwgPropertyRetiredList' => $GLOBALS['smwgPropertyRetiredList'],
 			'smwgPropertyReservedNameList' => $GLOBALS['smwgPropertyReservedNameList'],
 			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
-			'smwgExperimentalFeatures' => $GLOBALS['smwgExperimentalFeatures'],
-			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
+			'smwgEntityCacheSizes' => $GLOBALS['smwgEntityCacheSizes'],
+			'smwgExperimentalFeatures' => LegacyConstantNormalizer::normalize( 'smwgExperimentalFeatures', $GLOBALS['smwgExperimentalFeatures'] ),
+			'smwgFieldTypeFeatures' => LegacyConstantNormalizer::normalize( 'smwgFieldTypeFeatures', $GLOBALS['smwgFieldTypeFeatures'] ),
 			'smwgChangePropagationProtection' => $GLOBALS['smwgChangePropagationProtection'],
 			'smwgUseComparableContentHash' => $GLOBALS['smwgUseComparableContentHash'],
-			'smwgBrowseFeatures' => $GLOBALS['smwgBrowseFeatures'],
-			'smwgCategoryFeatures' => $GLOBALS['smwgCategoryFeatures'],
+			'smwgBrowseFeatures' => LegacyConstantNormalizer::normalize( 'smwgBrowseFeatures', $GLOBALS['smwgBrowseFeatures'] ),
+			'smwgCategoryFeatures' => LegacyConstantNormalizer::normalize( 'smwgCategoryFeatures', $GLOBALS['smwgCategoryFeatures'] ),
 			'smwgURITypeSchemeList' => $GLOBALS['smwgURITypeSchemeList'],
-			'smwgSchemaTypes' => $GLOBALS['smwgSchemaTypes'] ?? [],
 			'smwgElasticsearchConfig' => $GLOBALS['smwgElasticsearchConfig'],
 			'smwgElasticsearchProfile' => $GLOBALS['smwgElasticsearchProfile'],
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],
@@ -210,20 +198,16 @@ class Settings extends Options {
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 			'smwgDetectOutdatedData' => $GLOBALS['smwgDetectOutdatedData'],
 			'smwgIgnoreUpgradeKeyCheck' => $GLOBALS['smwgIgnoreUpgradeKeyCheck'],
-			'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink']
+			'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink'],
+			'smwgSetParserCacheTimestamp' => $GLOBALS['smwgSetParserCacheTimestamp'],
+			'smwgSetParserCacheKeys' => $GLOBALS['smwgSetParserCacheKeys'],
 		];
 
 		$this->isLoaded = true;
 
-		/**
-		 * @see ConfigLegacyTrait::loadLegacyMappings
-		 */
-		$this->loadLegacyMappings( $this->options );
-
-		/**
-		 * @see HookDispatcher::onSettingsBeforeInitializationComplete
-		 */
-		$this->hookDispatcher->onSettingsBeforeInitializationComplete( $this->options );
+		// Deprecated since 3.1, fired for backward compatibility.
+		$this->hookContainer->run( 'SMW::Config::BeforeCompletion', [ &$this->options ] );
+		$this->hookContainer->run( 'SMW::Settings::BeforeInitializationComplete', [ &$this->options ] );
 	}
 
 	/**
@@ -240,7 +224,7 @@ class Settings extends Options {
 	 *
 	 * @return Settings
 	 */
-	public static function newFromArray( array $settings ) {
+	public static function newFromArray( array $settings ): self {
 		return new self( $settings );
 	}
 
@@ -249,7 +233,14 @@ class Settings extends Options {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
+		// Mirror Settings::loadFromGlobals(): user-facing string/array config
+		// values must be normalized before reaching change listeners and
+		// internal storage, so that callbacks (e.g. `setEqualitySupport(int)`)
+		// see the integer form regardless of how the caller wrote the value
+		// (#6586).
+		$value = LegacyConstantNormalizer::normalize( $key, $value );
+
 		foreach ( $this->getChangeListeners() as $changeListener ) {
 
 			if ( !$changeListener->canTrigger( $key ) ) {
@@ -290,7 +281,7 @@ class Settings extends Options {
 	public function safeGet( $key, $default = false ) {
 		try {
 			$r = $this->get( $key );
-		} catch ( SettingNotFoundException $e ) {
+		} catch ( SettingNotFoundException ) {
 			return $default;
 		}
 
@@ -303,10 +294,10 @@ class Settings extends Options {
 	 * @param string $key
 	 * @param mixed $mung
 	 *
-	 * @return mixed
+	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function mung( string $key, $mung ) {
+	public function mung( string $key, mixed $mung ): string {
 		if ( is_string( $mung ) ) {
 			return (string)$this->get( $key ) . $mung;
 		}

@@ -1,0 +1,70 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki\Search\ProfileForm\Forms;
+
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
+
+/**
+ * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.0
+ *
+ * @author mwjames
+ */
+class CustomFormTest extends TestCase {
+
+	private $webRequest;
+
+	protected function setUp(): void {
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			CustomForm::class,
+			new CustomForm( $this->webRequest )
+		);
+	}
+
+	public function testMakeFields() {
+		$this->webRequest->expects( $this->once() )
+			->method( 'getArray' )
+			->with( 'barproperty' )
+			->willReturn( [ 1001 ] );
+
+		$instance = new CustomForm(
+			$this->webRequest
+		);
+
+		$instance->isActiveForm( true );
+
+		$form = [
+			'<div class="smw-input-field" style="display:inline-block;">',
+			'<input class="smw-input" name="barproperty[]" value="1001" placeholder="Bar property ..." ',
+			'data-property="Bar property" title="Bar property"></div>'
+		];
+
+		$actual = $instance->makeFields( [ 'Bar property' ] );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $actual );
+
+		$this->assertStringContainsString(
+			implode( '', $form ),
+			$actual
+		);
+
+		$this->assertEquals(
+			[
+				'barproperty' => 1001
+			],
+			$instance->getParameters()
+		);
+	}
+
+}

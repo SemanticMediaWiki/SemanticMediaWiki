@@ -23,12 +23,16 @@ if ( !class_exists( 'SemanticMediaWiki' ) || !defined( 'SMW_VERSION' ) ) {
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
-if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
+$path = __DIR__ . '/../vendor/autoload.php';
+if ( is_readable( $path ) ) {
 	$autoloadType = "Extension vendor autoloader";
-} elseif ( is_readable( $path = $basePath . '/vendor/autoload.php' ) ) {
-	$autoloadType = "MediaWiki vendor autoloader";
 } else {
-	die( 'To run the test suite it is required that packages are installed using Composer.' );
+	$path = $basePath . '/vendor/autoload.php';
+	if ( is_readable( $path ) ) {
+		$autoloadType = "MediaWiki vendor autoloader";
+	} else {
+		die( 'To run the test suite it is required that packages are installed using Composer.' );
+	}
 }
 
 // Extensions are able to define this in case the output requires an extended
@@ -37,7 +41,7 @@ if ( !defined( 'SMW_PHPUNIT_FIRST_COLUMN_WIDTH' ) ) {
 	define( 'SMW_PHPUNIT_FIRST_COLUMN_WIDTH', 20 );
 }
 
-require __DIR__ . '/phpUnitEnvironment.php';
+require __DIR__ . '/PHPUnitEnvironment.php';
 $phpUnitEnvironment = new PHPUnitEnvironment();
 
 if ( $phpUnitEnvironment->hasDebugRequest( $GLOBALS['argv'] ) === false ) {
@@ -68,20 +72,10 @@ unset( $phpUnitEnvironment );
  */
 $autoloader = require $path;
 
-$autoloader->addPsr4( 'SMW\\Tests\\Utils\\', __DIR__ . '/phpunit/Utils' );
-$autoloader->addPsr4( 'SMW\\Tests\\Fixtures\\', __DIR__ . '/phpunit/Fixtures' );
-
+// Class map entries kept for backward compatibility with third-party extensions
+// (e.g. SRF) that depend on these aliases. All other test classes are resolved
+// via TestAutoloadNamespaces in extension.json.
 $autoloader->addClassMap( [
-	'SMW\Tests\TestEnvironment'                     => __DIR__ . '/phpunit/TestEnvironment.php',
-	'SMW\Tests\TestConfig'                          => __DIR__ . '/phpunit/TestConfig.php',
-	'SMW\Tests\PHPUnitCompat'                       => __DIR__ . '/phpunit/PHPUnitCompat.php',
-	'SMW\Tests\DatabaseTestCase'                    => __DIR__ . '/phpunit/DatabaseTestCase.php',
-	'SMW\Tests\JSONScriptTestCaseRunner'            => __DIR__ . '/phpunit/JSONScriptTestCaseRunner.php',
-	'SMW\Tests\JSONScriptServicesTestCaseRunner'    => __DIR__ . '/phpunit/JSONScriptServicesTestCaseRunner.php',
-	'SMW\Tests\QueryPrinterTestCase'                => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
-	'SMW\Tests\QueryPrinterRegistryTestCase'        => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
-	'SMW\Tests\SPARQLStore\RepositoryConnectors\ElementaryRepositoryConnectorTest' => __DIR__ . '/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php',
-
 	// Reference needed for SRF as it inherits from this class (or better its alias)!!
 	// TODO: make sure to use `JSONScriptServicesTestCaseRunner`
 	'SMW\Tests\Integration\JSONScript\JSONScriptTestCaseRunnerTest' => __DIR__ . '/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php',

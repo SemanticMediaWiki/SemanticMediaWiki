@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Utils\Validators;
 
-use Title;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\Assert;
 
 /**
  * @license GPL-2.0-or-later
@@ -10,7 +12,7 @@ use Title;
  *
  * @author mwjames
  */
-class TitleValidator extends \PHPUnit\Framework\Assert {
+class TitleValidator extends Assert {
 
 	/**
 	 * @since 2.1
@@ -31,10 +33,11 @@ class TitleValidator extends \PHPUnit\Framework\Assert {
 			$titles = [ $titles ];
 		}
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		foreach ( $titles as $title ) {
 
 			if ( !$title instanceof Title && is_string( $title ) ) {
-				$title = Title::newFromText( $title );
+				$title = $titleFactory->newFromText( $title );
 			}
 
 			$this->assertEquals( $isExpected, $title->exists(), $title->getPrefixedText() );

@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
+use SMW\DataModel\SemanticData;
 use SMW\Services\ServicesFactory;
 use SMW\Tests\SMWIntegrationTestCase;
-use Title;
+use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 
 /**
  * @group semantic-mediawiki
@@ -18,89 +20,36 @@ use Title;
  */
 class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
-	private $mwHooksHandler;
-
-	private $store;
-	private $queryResult;
-
 	protected function setUp(): void {
 		parent::setUp();
-		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->queryResult->expects( $this->any() )
-			->method( 'getErrors' )
-			->willReturn( [] );
-
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
-			->getMockForAbstractClass();
-
-		$this->store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->willReturn( $idTable );
-
-		$this->store->expects( $this->any() )
-			->method( 'getQueryResult' )
-			->willReturn( $this->queryResult );
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
-
-		$this->mwHooksHandler->register(
-			'ParserFirstCallInit',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'ParserFirstCallInit' )
+		// Disable every SMW declarative hook, then re-register only SMW's
+		// ParserFirstCallInit. This matches the legacy "deregisterListedHooks
+		// then re-register the one we care about" shape: other SMW handlers
+		// (ParserAfterTidy etc.) must stay off so they cannot annotate the
+		// parser output the assertion is checking.
+		$reseater = new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
-	}
-
-	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
-
-		parent::tearDown();
+		foreach ( $reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
+		$this->setTemporaryHook(
+			'ParserFirstCallInit',
+			$reseater->buildSmwHandlerFor( 'ParserFirstCallInit' )
+		);
 	}
 
 	/**
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
-		$singleEntityQueryLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\SingleEntityQueryLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$singleEntityQueryLookup->expects( $this->any() )
-			->method( 'getQueryResult' )
-			->willReturn( $this->queryResult );
-
-		$monolingualTextLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MonolingualTextLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->store->expects( $this->any() )
-			->method( 'service' )
-			->willReturnCallback( static function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
-				if ( $service === 'SingleEntityQueryLookup' ) {
-					return $singleEntityQueryLookup;
-				}
-
-				if ( $service === 'MonolingualTextLookup' ) {
-					return $monolingualTextLookup;
-				}
-			} );
-
 		$expectedNullOutputFor = [
 			'concept',
 			'declare'
 		];
 
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$this->testEnvironment->addConfiguration( 'smwgQEnabled', true );
 
 		$instance = ServicesFactory::getInstance()->newContentParser( $title );
@@ -113,7 +62,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 		}
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$this->findSemanticataFromOutput( $instance->getOutput() )
 		);
 	}
@@ -129,7 +78,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			'show'
 		];
 
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$this->testEnvironment->addConfiguration( 'smwgQEnabled', false );
 
 		$instance = ServicesFactory::getInstance()->newContentParser( $title );
@@ -142,7 +91,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 		}
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$this->findSemanticataFromOutput( $instance->getOutput() )
 		);
 	}

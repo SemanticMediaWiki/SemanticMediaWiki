@@ -17,17 +17,14 @@ use Traversable;
  */
 class AppendIterator extends \AppendIterator implements Countable {
 
-	/**
-	 * @var int
-	 */
-	private $count = 0;
+	private int $count = 0;
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param Traversable|array $iterable
 	 */
-	public function add( $iterable ) {
+	public function add( $iterable ): void {
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
 		}

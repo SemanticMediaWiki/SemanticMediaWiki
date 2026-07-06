@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use SMW\EntityCache;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
@@ -11,7 +12,6 @@ use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Utils\HtmlTabs;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,24 +22,12 @@ use WebRequest;
 class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( OutputFormatter $outputFormatter, EntityCache $entityCache ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->entityCache = $entityCache;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly EntityCache $entityCache,
+	) {
 	}
 
 	/**
@@ -47,7 +35,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -97,7 +85,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-table-statistics-title' ) ] )
 		);
@@ -110,7 +98,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputStatistics();
 	}
 
-	private function outputStatistics() {
+	private function outputStatistics(): void {
 		$this->outputFormatter->addHTML(
 			Html::rawElement( 'p', [], $this->msg( 'smw-admin-supplementary-operational-table-statistics-explain' ) )
 		);

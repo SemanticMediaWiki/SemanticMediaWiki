@@ -1,8 +1,0 @@
-# third-party libs
-res/jquery/
-
-# Those files need overall re-factoring and qunit tests
-res/smw/special/ext.smw.special.ask.js
-res/smw/special/ext.smw.special.browse.js
-res/smw/special/ext.smw.special.property.js
-res/smw/util/ext.smw.util.autocomplete.js

@@ -2,7 +2,11 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiFormatXml;
+use MediaWiki\Api\ApiMain;
+use SMW\Query\QuerySourceFactory;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module to query SMW by providing a query specified as
@@ -16,9 +20,20 @@ use ApiBase;
 class AskArgs extends Query {
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		QuerySourceFactory $querySourceFactory
+	) {
+		parent::__construct( $main, $action, $querySourceFactory );
+	}
+
+	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
@@ -30,7 +45,7 @@ class AskArgs extends Query {
 			$parameterFormatter->getAskArgsApiParameter( 'parameters' )
 		) );
 
-		if ( $this->getMain()->getPrinter() instanceof \ApiFormatXml ) {
+		if ( $this->getMain()->getPrinter() instanceof ApiFormatXml ) {
 			$outputFormat = 'xml';
 		}
 
@@ -47,77 +62,42 @@ class AskArgs extends Query {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'conditions' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_REQUIRED => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-conditions',
 			],
 			'printouts' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_DFLT => '',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_DEFAULT => '',
+				ParamValidator::PARAM_ISMULTI => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-printouts',
 			],
 			'parameters' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_DFLT => '',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_DEFAULT => '',
+				ParamValidator::PARAM_ISMULTI => true,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-askargs-param-parameters',
 			],
 			'api_version' => [
-				ApiBase::PARAM_TYPE => [ '2', '3' ],
-				ApiBase::PARAM_DFLT => '2',
-				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
+				ParamValidator::PARAM_TYPE => [ '2', '3' ],
+				ParamValidator::PARAM_DEFAULT => '2',
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-param-api-version',
 			],
 		];
 	}
 
 	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getParamDescription
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	public function getParamDescription() {
+	protected function getExamplesMessages(): array {
 		return [
-			'conditions' => 'The query conditions, i.e. the requirements for a subject to be included',
-			'printouts'  => 'The query printouts, i.e. the properties to show per subject',
-			'parameters' => 'The query parameters, i.e. all non-condition and non-printout arguments',
+			'action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc'
+				=> 'apihelp-askargs-example-1',
 		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getDescription
-	 *
-	 * @return array
-	 */
-	public function getDescription() {
-		return [
-			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.'
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getExamples
-	 *
-	 * @return array
-	 */
-	protected function getExamples() {
-		return [
-			'api.php?action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc',
-		];
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 * @see ApiBase::getVersion
-	 *
-	 * @return string
-	 */
-	public function getVersion() {
-		return __CLASS__ . '-' . SMW_VERSION;
 	}
 
 }

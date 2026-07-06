@@ -3,14 +3,17 @@
 namespace SMW\SQLStore\Lookup;
 
 use InvalidArgumentException;
+use RuntimeException;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIBlob as DIBlob;
-use SMWDIContainer as DIContainer;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,33 +24,25 @@ use SMWDIContainer as DIContainer;
 class MonolingualTextLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var string
 	 */
 	private $caller = '';
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private static $lookupCache = [];
+	private static array $lookupCache = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function clearLookupCache() {
+	public function clearLookupCache(): void {
 		self::$lookupCache = [];
 	}
 
@@ -56,18 +51,18 @@ class MonolingualTextLookup {
 	 *
 	 * @param string $caller
 	 */
-	public function setCaller( $caller ) {
+	public function setCaller( $caller ): void {
 		$this->caller = $caller;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
-	 * @return DIContainer|null
+	 * @return Container|null
 	 */
-	public function newDIContainer( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
+	public function newDIContainer( WikiPage $subject, Property $property, $languageCode = null ): ?Container {
 		if ( $subject->getSubobjectName() !== '' && $languageCode !== null ) {
 			throw new InvalidArgumentException( "Expected for a container reference no language code." );
 		}
@@ -84,13 +79,13 @@ class MonolingualTextLookup {
 				$this->store->getSemanticData( $subject )
 			);
 
-			return new DIContainer( $containerSemanticData );
+			return new Container( $containerSemanticData );
 		}
 
 		$hash = $subject->getHash();
 
 		if ( isset( self::$lookupCache[$hash] ) ) {
-			return new DIContainer( self::$lookupCache[$hash] );
+			return new Container( self::$lookupCache[$hash] );
 		}
 
 		$res = $this->fetchFromTable( $subject, $property, $languageCode );
@@ -108,10 +103,13 @@ class MonolingualTextLookup {
 			$subobjectName = $subject->getSubobjectName();
 
 			// Handle predefined properties
-			if ( $subject->getNamespace() === SMW_NS_PROPERTY && ( $dbKey = $subject->getDBKey() ) && $dbKey[0] === '_' ) {
-				$subject = DIProperty::newFromUserLabel( $dbKey )->getCanonicalDIWikiPage(
-					$subobjectName
-				);
+			if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+				$dbKey = $subject->getDBKey();
+				if ( $dbKey && $dbKey[0] === '_' ) {
+					$subject = Property::newFromUserLabel( $dbKey )->getCanonicalDIWikiPage(
+						$subobjectName
+					);
+				}
 			}
 
 			$h = $subject->getHash();
@@ -122,20 +120,20 @@ class MonolingualTextLookup {
 			}
 
 			$containerSemanticData->addPropertyObjectValue(
-				new DIProperty( '_TEXT' ),
-				new DIBlob( $text )
+				new Property( '_TEXT' ),
+				new Blob( $text )
 			);
 
 			$containerSemanticData->addPropertyObjectValue(
-				new DIProperty( '_LCODE' ),
-				new DIBlob( $row->lcode )
+				new Property( '_LCODE' ),
+				new Blob( $row->lcode )
 			);
 
 			self::$lookupCache[$h] = $containerSemanticData;
 		}
 
 		if ( isset( self::$lookupCache[$hash] ) ) {
-			$container = new DIContainer( self::$lookupCache[$hash] );
+			$container = new Container( self::$lookupCache[$hash] );
 		}
 
 		return $container;
@@ -144,11 +142,11 @@ class MonolingualTextLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
-	 * @return
+	 * @return DataValue|null
 	 */
-	public function newDataValue( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
+	public function newDataValue( WikiPage $subject, Property $property, $languageCode = null ): ?DataValue {
 		$res = $this->fetchFromTable( $subject, $property, $languageCode );
 		$dataValue = null;
 
@@ -167,13 +165,13 @@ class MonolingualTextLookup {
 			}
 
 			$containerSemanticData->addPropertyObjectValue(
-				new DIProperty( '_TEXT' ),
-				new DIBlob( $text )
+				new Property( '_TEXT' ),
+				new Blob( $text )
 			);
 
 			$containerSemanticData->addPropertyObjectValue(
-				new DIProperty( '_LCODE' ),
-				new DIBlob( $row->lcode )
+				new Property( '_LCODE' ),
+				new Blob( $row->lcode )
 			);
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -182,7 +180,7 @@ class MonolingualTextLookup {
 			);
 
 			$dataValue->setDataItem(
-				new DIContainer( $containerSemanticData )
+				new Container( $containerSemanticData )
 			);
 		}
 
@@ -192,26 +190,21 @@ class MonolingualTextLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
-	 * @return
+	 * @return iterable
 	 */
-	public function fetchFromTable( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
+	public function fetchFromTable( WikiPage $subject, Property $property, $languageCode = null ) {
 		/**
 		 * This method avoids access to `Store::getSemanticData` in order to
 		 * optimize the query and produce something like:
 		 *
 		 */
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
-
-		$query->type( 'SELECT' );
 
 		$propTable = $this->getPropertyTable(
 			$property
 		);
-
-		$query->table( $propTable->getName(), 't0' );
 
 		/**
 		 * In case of a _ML... reference use the o_id (object) field
@@ -238,9 +231,9 @@ class MonolingualTextLookup {
 
 		// Account for special properties
 		if ( $subject->inNamespace( SMW_NS_PROPERTY ) ) {
-			$prop = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$prop = Property::newFromUserLabel( $subject->getDBKey() );
 
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$prop->getKey(),
 				$subject->getNamespace(),
 				$subject->getInterWiki(),
@@ -248,27 +241,23 @@ class MonolingualTextLookup {
 			);
 		}
 
-		$query->join(
-			'INNER JOIN',
-			[ SQLStore::ID_TABLE => 'o0 ON t0.o_id=o0.smw_id' ]
-		);
+		$qb = $connection->newSelectQueryBuilder()
+			->from( $propTable->getName(), 't0' )
+			->join( SQLStore::ID_TABLE, 'o0', 't0.o_id=o0.smw_id' );
 
 		// Is it a Monolingual representation?
 		if ( $subject->isSubEntityOf( SMW_SUBENTITY_MONOLINGUAL ) ) {
-			$query->condition( $query->eq( "o0.smw_hash", $subject->getSha1() ) );
+			$qb->where( [ 'o0.smw_hash' => $subject->getSha1() ] );
 		} else {
 			// We don't have a _ML entity reference hence we add a JOIN to find
 			// such entity
-			$query->condition( $query->eq( "o1.smw_hash", $subject->getSha1() ) );
+			$qb->where( [ 'o1.smw_hash' => $subject->getSha1() ] );
 
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 'o1 ON t0.s_id=o1.smw_id' ]
-			);
+			$qb->join( SQLStore::ID_TABLE, 'o1', 't0.s_id=o1.smw_id' );
 		}
 
-		$query->condition( $query->neq( "o0.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
-		$query->condition( $query->neq( "o0.smw_iw", SMW_SQL3_SMWDELETEIW ) );
+		$qb->andWhere( $connection->expr( 'o0.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ) );
+		$qb->andWhere( $connection->expr( 'o0.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ) );
 
 		if ( !$propTable->isFixedPropertyTable() ) {
 
@@ -276,48 +265,41 @@ class MonolingualTextLookup {
 				$property
 			);
 
-			$query->condition( $query->eq( "t0.p_id", $pid ) );
+			$qb->andWhere( [ 't0.p_id' => $pid ] );
 
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 't1 ON t0.p_id=t1.smw_id' ]
-			);
+			$qb->join( SQLStore::ID_TABLE, 't1', 't0.p_id=t1.smw_id' );
 		}
 
-		$text = new DIProperty( '_TEXT' );
+		$text = new Property( '_TEXT' );
 
 		$text_table = $this->getPropertyTable(
 			$text
 		);
 
-		$query->join(
-			'INNER JOIN',
-			[ $text_table->getName() => 't2 ON t2.s_id=o0.smw_id' ]
-		);
+		$qb->join( $text_table->getName(), 't2', 't2.s_id=o0.smw_id' );
 
-		$lcode = new DIProperty( '_LCODE' );
+		$lcode = new Property( '_LCODE' );
 
 		$lcode_table = $this->getPropertyTable(
 			$lcode
 		);
 
-		$query->join(
-			'INNER JOIN',
-			[ $lcode_table->getName() => 't3 ON t3.s_id=o0.smw_id' ]
-		);
+		$qb->join( $lcode_table->getName(), 't3', 't3.s_id=o0.smw_id' );
 
 		if ( $languageCode !== null ) {
-			$query->condition( $query->eq( "t3.o_hash", $languageCode ) );
+			$qb->andWhere( [ 't3.o_hash' => $languageCode ] );
 		}
 
-		$query->field( 't0.o_id', 'id' );
-		$query->field( 'o0.smw_title', 'v0' );
-		$query->field( 'o0.smw_namespace', 'v1' );
-		$query->field( 'o0.smw_iw', 'v2' );
-		$query->field( 'o0.smw_subobject', 'v3' );
-		$query->field( 't2.o_hash', 'text_short' );
-		$query->field( 't2.o_blob', 'text_long' );
-		$query->field( 't3.o_hash', 'lcode' );
+		$qb->select( [
+			'id' => 't0.o_id',
+			'v0' => 'o0.smw_title',
+			'v1' => 'o0.smw_namespace',
+			'v2' => 'o0.smw_iw',
+			'v3' => 'o0.smw_subobject',
+			'text_short' => 't2.o_hash',
+			'text_long' => 't2.o_blob',
+			'lcode' => 't3.o_hash',
+		] );
 
 		$caller = __METHOD__;
 
@@ -325,10 +307,14 @@ class MonolingualTextLookup {
 			$caller .= " (for " . $this->caller . ")";
 		}
 
-		return $query->execute( $caller );
+		return $qb->caller( $caller )->fetchResultSet();
 	}
 
-	private function getPropertyTable( DIProperty $property ) {
+	/**
+	 * @return PropertyTableDefinition
+	 * @throws RuntimeException
+	 */
+	private function getPropertyTable( Property $property ) {
 		$propTableId = $this->store->findPropertyTableID(
 			$property
 		);
@@ -336,17 +322,17 @@ class MonolingualTextLookup {
 		$propTables = $this->store->getPropertyTables();
 
 		if ( !isset( $propTables[$propTableId] ) ) {
-			return [];
+			throw new RuntimeException( "Unknown property table for ID $propTableId" );
 		}
 
 		return $propTables[$propTableId];
 	}
 
-	private function newContainerSemanticData( $row ) {
-		if ( $row instanceof DIWikiPage ) {
+	private function newContainerSemanticData( $row ): ContainerSemanticData {
+		if ( $row instanceof WikiPage ) {
 			$subject = $row;
 		} else {
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$row->v0,
 				$row->v1,
 				$row->v2,

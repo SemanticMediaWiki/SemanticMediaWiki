@@ -14,15 +14,9 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class Sequence {
 
-	/**
-	 * @var Database|IDatabase
-	 */
-	private $connection;
+	private Database|IDatabase $connection;
 
-	/**
-	 * @var string
-	 */
-	private $tablePrefix;
+	private ?string $tablePrefix = null;
 
 	/**
 	 * @since 3.0
@@ -40,47 +34,41 @@ class Sequence {
 	/**
 	 * @since 3.0
 	 */
-	public function tablePrefix( $tablePrefix = '' ) {
+	public function tablePrefix( string $tablePrefix = '' ): void {
 		$this->tablePrefix = $tablePrefix;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $table
-	 * @param string $field
-	 *
-	 * @return string
 	 */
-	public static function makeSequence( $table, $field ) {
+	public static function makeSequence( string $table, string $field ): string {
 		return "{$table}_{$field}_seq";
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $table
-	 * @param string $field
-	 *
-	 * @return int
 	 */
-	public function restart( $table, $field ) {
+	public function restart( string $table, string $field ): ?int {
 		$fname = __METHOD__;
 
 		if ( $this->connection->getType() !== 'postgres' ) {
-			return;
+			return null;
 		}
 
 		if ( $this->tablePrefix !== null ) {
 			$this->connection->tablePrefix( $this->tablePrefix );
 		}
 
-		$seq_num = $this->connection->selectField( $table, "max({$field})", [], __METHOD__ );
+		$seq_num = $this->connection->newSelectQueryBuilder()
+			->select( "max({$field})" )
+			->from( $table )
+			->caller( __METHOD__ )
+			->fetchField();
 		$seq_num += 1;
 
 		$sequence = self::makeSequence( $table, $field );
 
-		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num, $fname ) {
+		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num, $fname ): void {
 			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", $fname, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		} );
 

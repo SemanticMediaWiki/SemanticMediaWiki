@@ -2,16 +2,14 @@
 
 namespace SMW\DataValues;
 
-use Linker;
+use MediaWiki\Linker\Linker;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\ValueFormatter;
-use SMW\DIProperty;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Message;
-use SMWDataItem as DataItem;
-use SMWDataValue;
-use SMWWikiPageValue;
 
 /**
  * Objects of this class represent properties in SMW.
@@ -41,7 +39,7 @@ use SMWWikiPageValue;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class PropertyValue extends SMWDataValue {
+class PropertyValue extends DataValue {
 
 	/**
 	 * DV identifier
@@ -82,7 +80,7 @@ class PropertyValue extends SMWDataValue {
 	 * Cache for wiki page value object associated to this property, or
 	 * null if no such page exists. Use getWikiPageValue() to get the data.
 	 *
-	 * @var SMWWikiPageValue
+	 * @var ?WikiPageValue
 	 */
 	protected $m_wikipage = null;
 
@@ -97,7 +95,7 @@ class PropertyValue extends SMWDataValue {
 	private $preferredLabel = '';
 
 	/**
-	 * @var DIProperty
+	 * @var Property
 	 */
 	private $inceptiveProperty;
 
@@ -120,7 +118,7 @@ class PropertyValue extends SMWDataValue {
 	 * Clone it to make sure that data can be modified independently from the
 	 * original object's content.
 	 */
-	public function __clone() {
+	public function __clone(): void {
 		if ( $this->m_wikipage !== null ) {
 			$this->m_wikipage = clone $this->m_wikipage;
 		}
@@ -133,7 +131,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @since 2.4
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getInceptiveProperty() {
 		return $this->inceptiveProperty;
@@ -145,7 +143,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @todo Accept/enforce property namespace.
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$this->m_wikipage = null;
 
 		$propertyValueParser = $this->dataValueServiceFactory->getValueParser(
@@ -165,7 +163,8 @@ class PropertyValue extends SMWDataValue {
 		[ $propertyName, $capitalizedName, $inverse ] = $propertyValueParser->parse( $value );
 
 		foreach ( $propertyValueParser->getErrors() as $error ) {
-			return $this->addErrorMsg( $error, Message::PARSE );
+			$this->addErrorMsg( $error, Message::PARSE );
+			return;
 		}
 
 		try {
@@ -175,25 +174,25 @@ class PropertyValue extends SMWDataValue {
 				$capitalizedName,
 				$inverse
 			);
-		} catch ( DataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
+		} catch ( DataItemException ) { // happens, e.g., when trying to sort queries by property "-"
 			$this->addErrorMsg( [ 'smw_noproperty', $value ] );
-			$this->m_dataitem = new DIProperty( 'ERROR', false ); // just to have something
+			$this->m_dataitem = new Property( 'ERROR', false ); // just to have something
 		}
 
 		// @see the SMW_DV_PROV_DTITLE explanation
-		if ( $this->isEnabledFeature( SMW_DV_PROV_DTITLE ) ) {
+		if ( $this->hasFeature( SMW_DV_PROV_DTITLE ) ) {
 			$dataItem = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getPropertyFromDisplayTitle(
 				$value
 			);
 
-			$this->m_dataitem = $dataItem ? $dataItem : $this->m_dataitem;
+			$this->m_dataitem = $dataItem ?: $this->m_dataitem;
 		}
 
 		// Copy the original DI to ensure we can compare it against a possible redirect
 		$this->inceptiveProperty = $this->m_dataitem;
 
-		if ( $this->isEnabledFeature( SMW_DV_PROV_REDI ) ) {
-			$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
+		if ( $this->hasFeature( SMW_DV_PROV_REDI ) && !$this->m_dataitem->isInverse() ) {
+			$this->m_dataitem = $this->dataValueServiceFactory->getStore()->getRedirectTarget( $this->m_dataitem );
 		}
 
 		// If no external caption has been invoked then fetch a preferred label
@@ -210,21 +209,23 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
+	 * @see DataValue::loadDataItem()
 	 *
 	 * @param $dataItem DataItem
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$this->inceptiveProperty = $dataItem;
 		$this->m_dataitem = $dataItem;
 		$this->preferredLabel = $this->m_dataitem->getPreferredLabel();
 
+		// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 		unset( $this->m_wikipage );
 		$this->m_caption = false;
 		$this->linkAttributes = [];
@@ -241,7 +242,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @return string
 	 */
-	public function getPreferredLabel() {
+	public function getPreferredLabel(): string {
 		return $this->preferredLabel;
 	}
 
@@ -250,52 +251,57 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $linkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
 
-		if ( $this->getWikiPageValue() instanceof SMWDataValue ) {
+		if ( $this->getWikiPageValue() instanceof DataValue ) {
 			$this->m_wikipage->setLinkAttributes( $linkAttributes );
 		}
 	}
 
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		parent::setCaption( $caption );
-		if ( $this->getWikiPageValue() instanceof SMWDataValue ) { // pass caption to embedded datavalue (used for printout)
+		if ( $this->getWikiPageValue() instanceof DataValue ) { // pass caption to embedded datavalue (used for printout)
 			$this->m_wikipage->setCaption( $caption );
 		}
 	}
 
-	public function setOutputFormat( $formatstring ) {
+	public function setOutputFormat( $formatstring ): void {
 		if ( $formatstring === false || $formatstring === '' ) {
 			return;
 		}
 
 		$this->m_outformat = $formatstring;
 
-		if ( $this->getWikiPageValue() instanceof SMWDataValue ) {
+		if ( $this->getWikiPageValue() instanceof DataValue ) {
 			$this->m_wikipage->setOutputFormat( $formatstring );
 		}
 	}
 
 	public function setInverse( $isinverse ) {
-		return $this->m_dataitem = new DIProperty( $this->m_dataitem->getKey(), ( $isinverse == true ) );
+		$this->m_dataitem = new Property( $this->m_dataitem->getKey(), ( $isinverse == true ) );
+		return $this->m_dataitem;
 	}
 
 	/**
 	 * Return a wiki page value that can be used for displaying this
 	 * property, or null if no such wiki page exists (for predefined
 	 * properties without any label).
-	 *
-	 * @return SMWWikiPageValue or null
 	 */
-	public function getWikiPageValue() {
+	public function getWikiPageValue(): ?DataValue {
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( isset( $this->m_wikipage ) ) {
 			return $this->m_wikipage;
+		}
+
+		if ( $this->m_dataitem === null ) {
+			return null;
 		}
 
 		$diWikiPage = $this->m_dataitem->getCanonicalDiWikiPage();
 
 		if ( $diWikiPage !== null ) {
+			// @phan-suppress-next-line PhanTypeMismatchProperty
 			$this->m_wikipage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null, $this->m_caption );
 			$this->m_wikipage->setOutputFormat( $this->m_outformat );
 			$this->m_wikipage->setLinkAttributes( $this->linkAttributes );
@@ -314,7 +320,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @note Every user defined property is necessarily visible.
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isValid() && ( $this->m_dataitem->isUserDefined() || $this->m_dataitem->getCanonicalLabel() !== '' );
 	}
 
@@ -323,7 +329,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @return bool
 	 */
-	public function isRestricted() {
+	public function isRestricted(): bool {
 		if ( !$this->isValid() ) {
 			return true;
 		}
@@ -349,7 +355,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getShortWikiText
+	 * @see DataValue::getShortWikiText
 	 *
 	 * @return string
 	 */
@@ -362,7 +368,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getShortHTMLText
+	 * @see DataValue::getShortHTMLText
 	 *
 	 * @return string
 	 */
@@ -375,7 +381,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getLongWikiText
+	 * @see DataValue::getLongWikiText
 	 *
 	 * @return string
 	 */
@@ -388,7 +394,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getLongHTMLText
+	 * @see DataValue::getLongHTMLText
 	 *
 	 * @return string
 	 */
@@ -401,7 +407,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getWikiValue
+	 * @see DataValue::getWikiValue
 	 *
 	 * @return string
 	 */
@@ -454,7 +460,7 @@ class PropertyValue extends SMWDataValue {
 
 	/**
 	 * Convenience method to find the type id of this property. Most callers
-	 * should rather use DIProperty::findPropertyTypeId() directly. Note
+	 * should rather use Property::findPropertyValueType() directly. Note
 	 * that this is not the same as getTypeID(), which returns the id of
 	 * this property datavalue.
 	 *
@@ -465,21 +471,21 @@ class PropertyValue extends SMWDataValue {
 			return '__err';
 		}
 
-		return $this->m_dataitem->findPropertyTypeId();
+		return $this->m_dataitem->findPropertyValueType();
 	}
 
-	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ) {
+	private function createDataItemFrom( bool $reqCapitalizedFirstChar, $propertyName, $capitalizedName, bool $inverse ): Property {
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 
 		// Probe on capitalizedFirstChar because we only want predefined
 		// properties (e.g. Has type vs. has type etc.) to adhere the rule while
 		// custom (user) defined properties can appear in any form
 		if ( $reqCapitalizedFirstChar ) {
-			$dataItem = DIProperty::newFromUserLabel( $capitalizedName, $inverse, $contentLanguage );
+			$dataItem = Property::newFromUserLabel( $capitalizedName, $inverse, $contentLanguage );
 			$propertyName = $dataItem->isUserDefined() ? $propertyName : $capitalizedName;
 		}
 
-		return DIProperty::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
+		return Property::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
 	}
 
 }

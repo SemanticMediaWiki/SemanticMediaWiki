@@ -1,5 +1,6 @@
 <?php
 
+// phpcs:disable Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 namespace SMW\MediaWiki;
 
 use Collation;
@@ -19,42 +20,23 @@ class Collator {
 	const base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	const base64hex = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz{}';
 
-	/**
-	 * @var Collator
-	 */
-	private static $instance = [];
-
-	/**
-	 * @var Collation
-	 */
-	private $collation;
-
-	/**
-	 * @var string
-	 */
-	private $collationName;
+	private static array $instance = [];
 
 	/**
 	 * @private
 	 *
 	 * @since 3.0
-	 *
-	 * @param Collation $collation
-	 * @param string $collationName
 	 */
-	public function __construct( Collation $collation, $collationName = '' ) {
-		$this->collation = $collation;
-		$this->collationName = $collationName;
+	public function __construct(
+		private readonly Collation $collation,
+		private $collationName = '',
+	) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $collationName
-	 *
-	 * @return Collator
 	 */
-	public static function singleton( $collationName = '' ) {
+	public static function singleton( string $collationName = '' ): Collator {
 		$collationName = $collationName === '' ? $GLOBALS['smwgEntityCollation'] : $collationName;
 
 		if ( !isset( self::$instance[$collationName] ) ) {
@@ -77,12 +59,8 @@ class Collator {
 	 * bit-per-bit.
 	 *
 	 * @since 3.0
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function armor( $text, $source = '' ) {
+	public function armor( string $text ): string {
 		if ( strpos( $this->collationName, 'uca' ) === false ) {
 			return $text;
 		}
@@ -94,23 +72,15 @@ class Collator {
 	 * @since 3.0
 	 *
 	 * The output could be a binary string, it can be armored with the method `armor`.
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function getSortKey( $text ) {
+	public function getSortKey( string $text ): string {
 		return $this->collation->getSortKey( $text );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function getFirstLetter( $text ) {
+	public function getFirstLetter( string $text ): string {
 		// Add check otherwise the Collation instance returns with a
 		// "Uninitialized string offset: 0"
 		if ( $text === '' ) {
@@ -122,13 +92,8 @@ class Collator {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $old
-	 * @param string $new
-	 *
-	 * @return bool
 	 */
-	public function isIdentical( $old, $new ) {
+	public function isIdentical( string $old, string $new ): bool {
 		return $this->collation->getSortKey( $old ) === $this->collation->getSortKey( $new );
 	}
 

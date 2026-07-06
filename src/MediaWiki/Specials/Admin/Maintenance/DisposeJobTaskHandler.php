@@ -2,15 +2,17 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
-use Html;
-use SMW\DIWikiPage;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\SpecialPage\SpecialPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,35 +22,17 @@ use WebRequest;
  */
 class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 
-	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var null|Job
-	 */
-	private $refreshjob = null;
-
-	/**
-	 * @var bool
-	 */
-	public $isApiTask = true;
+	public bool $isApiTask = true;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly OutputFormatter $outputFormatter,
+		private readonly JobFactory $jobFactory,
+		private readonly JobQueue $jobQueue,
+	) {
 	}
 
 	/**
@@ -56,7 +40,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_MAINTENANCE;
 	}
 
@@ -65,7 +49,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return $this->isApiTask;
 	}
 
@@ -93,7 +77,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-		$subject = DIWikiPage::newFromTitle( \SpecialPage::getTitleFor( 'SMWAdmin' ) );
+		$subject = WikiPage::newFromTitle( SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
 		// smw-admin-outdateddisposal
 		$this->htmlFormRenderer
@@ -152,14 +136,15 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		if ( !$this->hasFeature( SMW_ADM_DISPOSAL ) || $this->hasPendingJob() || $this->isApiTask() ) {
-			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
+			$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
+			return;
 		}
 
-		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+		$job = $this->jobFactory->newByType(
 			'smw.entityIdDisposer',
-			\SpecialPage::getTitleFor( 'SMWAdmin' )
+			SpecialPage::getTitleFor( 'SMWAdmin' )
 		);
 
 		$job->insert();
@@ -167,8 +152,8 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
-	private function hasPendingJob() {
-		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.entityIdDisposer' );
+	private function hasPendingJob(): bool {
+		return $this->jobQueue->hasPendingJob( 'smw.entityIdDisposer' );
 	}
 
 }

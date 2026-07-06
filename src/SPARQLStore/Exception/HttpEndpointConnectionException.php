@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore\Exception;
 
+use Exception;
+
 /**
  * @ingroup Sparql
  *
@@ -10,18 +12,15 @@ namespace SMW\SPARQLStore\Exception;
  *
  * @author mwjames
  */
-class HttpEndpointConnectionException extends \Exception {
+class HttpEndpointConnectionException extends Exception {
 
 	/**
 	 * @since  2.1
-	 *
-	 * @param string $endpoint
-	 * @param int $errorCode
-	 * @param string $errorText
 	 */
-	public function __construct( $endpoint, $errorCode, $errorText = '' ) {
+	public function __construct( ?string $endpoint, int $errorCode, string $errorText = '' ) {
+		$endpoint ??= '(unknown)';
 		parent::__construct(
-			"Failed to communicate with $endpoint (endpoint), due to cURL error: $errorCode" .
+			"Failed to communicate with $endpoint (endpoint), HTTP error: $errorCode" .
 			( $errorText !== '' ? " ($errorText)" : '' ) . "\n"
 		);
 	}

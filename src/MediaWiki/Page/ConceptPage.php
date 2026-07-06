@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki\Page;
 
-use Html;
-use SMW\DIConcept;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Concept;
+use SMW\Formatters\PageLister;
 use SMW\Localizer\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
@@ -17,6 +19,13 @@ use SMW\Utils\Pager;
  * @author mwjames
  */
 class ConceptPage extends Page {
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function __construct( Title $title, private readonly Store $store ) {
+		parent::__construct( $title );
+	}
 
 	/**
 	 * @see Page::initParameters()
@@ -38,7 +47,7 @@ class ConceptPage extends Page {
 		] );
 
 		$request = $context->getRequest();
-		$store = ApplicationFactory::getInstance()->getStore();
+		$store = $this->store;
 
 		$limit = (int)$request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
 		$offset = (int)$request->getVal( 'offset', '0' );
@@ -49,7 +58,7 @@ class ConceptPage extends Page {
 			$descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
 
 			$description = $descriptionFactory->newConceptDescription( $dataItem );
-			$query = \SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
+			$query = PageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 
 			$query->setLimit( $limit );
 			$query->setOffset( $offset );
@@ -156,8 +165,7 @@ class ConceptPage extends Page {
 			'a',
 			[
 				'name' => 'smw-result'
-			],
-			null
+			]
 		) . Html::rawElement(
 			'div',
 			[
@@ -172,7 +180,7 @@ class ConceptPage extends Page {
 			$this->getDataItem()
 		);
 
-		if ( !$concept instanceof DIConcept || $concept->getCacheStatus() !== 'full' ) {
+		if ( !$concept instanceof Concept || $concept->getCacheStatus() !== 'full' ) {
 			return '';
 		}
 
@@ -192,7 +200,7 @@ class ConceptPage extends Page {
 		);
 	}
 
-	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
+	private function msg( string $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $params, $type, $lang );
 	}
 

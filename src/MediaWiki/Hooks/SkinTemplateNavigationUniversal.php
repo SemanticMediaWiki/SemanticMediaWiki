@@ -2,8 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SkinTemplate;
-use SMW\MediaWiki\HookListener;
+use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 
 /**
  * Alter the structured navigation links in SkinTemplates.
@@ -15,45 +14,40 @@ use SMW\MediaWiki\HookListener;
  *
  * @author mwjames
  */
-class SkinTemplateNavigationUniversal implements HookListener {
+// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+class SkinTemplateNavigationUniversal implements SkinTemplateNavigation__UniversalHook {
 
 	/**
-	 * @var SkinTemplate
+	 * @since 7.0.0
 	 */
-	private $skinTemplate = null;
-
-	/**
-	 * @var array
-	 */
-	private $links;
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param SkinTemplate &$skinTemplate
-	 * @param array &$links
-	 */
-	public function __construct( SkinTemplate &$skinTemplate, array &$links ) {
-		$this->skinTemplate = $skinTemplate;
-		$this->links =& $links;
+	public function __construct( private readonly PersonalUrls $personalUrls ) {
 	}
 
 	/**
-	 * @since 2.0
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process() {
-		if ( $this->skinTemplate->getUser()->isAllowed( 'purge' ) ) {
-			$this->skinTemplate->getOutput()->addModules( 'ext.smw.purge' );
-			$this->links['actions']['purge'] = [
-				'class' => 'is-disabled',
-				'text' => $this->skinTemplate->msg( 'smw_purge' )->text(),
-				'href' => $this->skinTemplate->getTitle()->getLocalUrl( [ 'action' => 'purge' ] )
-			];
+	// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
+		// Add the job queue watchlist to the notifications menu. It renders
+		// inline next to the user links in modern skins (e.g. Vector 2022) and
+		// merges into the personal tools in legacy skins, so the indicator stays
+		// visible at a glance rather than being hidden inside a dropdown.
+		if ( isset( $links['notifications'] ) ) {
+			$this->personalUrls->onPersonalUrls(
+				$links['notifications'],
+				$sktemplate->getTitle(),
+				$sktemplate
+			);
 		}
 
-		return true;
+		if ( $sktemplate->getUser()->isAllowed( 'purge' ) ) {
+			$sktemplate->getOutput()->addModules( 'ext.smw.purge' );
+			$links['actions']['purge'] = [
+				'class' => 'is-disabled',
+				'text' => $sktemplate->msg( 'smw_purge' )->text(),
+				'href' => $sktemplate->getTitle()->getLocalUrl( [ 'action' => 'purge' ] )
+			];
+		}
 	}
 
 }

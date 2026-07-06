@@ -8,6 +8,7 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Parser as QueryParser;
+use SMW\Services\ServicesFactory;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
@@ -25,37 +26,16 @@ use SMW\Utils\CircularReferenceGuard;
  */
 class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var CircularReferenceGuard
-	 */
-	private $circularReferenceGuard;
-
-	/**
-	 * @var QueryParser
-	 */
-	private $queryParser;
+	private ?QueryParser $queryParser = null;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder, CircularReferenceGuard $circularReferenceGuard ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
-		$this->circularReferenceGuard = $circularReferenceGuard;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly CircularReferenceGuard $circularReferenceGuard,
+	) {
 	}
 
 	/**
@@ -63,7 +43,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ConceptDescription;
 	}
 
@@ -72,7 +52,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param QueryParser $queryParser
 	 */
-	public function setQueryParser( QueryParser $queryParser ) {
+	public function setQueryParser( QueryParser $queryParser ): void {
 		$this->queryParser = $queryParser;
 	}
 
@@ -83,7 +63,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 		$concept = $description->getConcept();
 
@@ -119,10 +99,24 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 			return $query;
 		}
 
-		global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
+		// Read $smwgQConceptCaching via Settings (not $GLOBALS) so the value goes
+		// through LegacyConstantNormalizer's string->int normalization (#6586).
+		// PHP 8's stricter comparison rules make `'hard' == 0` evaluate to false,
+		// so a direct read of the new string form would silently flip the
+		// $may_be_computed decision and break concept caching.
+		// Read $smwgQConceptCaching and $smwgQFeatures via Settings (not $GLOBALS)
+		// so the values go through LegacyConstantNormalizer (#6586). PHP 8's
+		// stricter comparison rules make `'hard' == 0` evaluate to false, and
+		// `array | int` is a TypeError, so a direct read of the new forms would
+		// silently flip the $may_be_computed decision or fatal at the bitwise
+		// expression below.
+		$settings = ServicesFactory::getInstance()->getSettings();
+		$conceptCaching = $settings->get( 'smwgQConceptCaching' );
+		$queryFeatures = $settings->get( 'smwgQFeatures' );
+		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQConceptCacheLifetime;
 
-		$may_be_computed = ( $smwgQConceptCaching == CONCEPT_CACHE_NONE ) ||
-			( ( $smwgQConceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
+		$may_be_computed = ( $conceptCaching == CONCEPT_CACHE_NONE ) ||
+			( ( $conceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $queryFeatures ) ) == 0 ) &&
 			  ( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
 
 		if ( $row->cache_date &&
@@ -170,12 +164,12 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * do on getWikiValue
 	 */
 	private function findConceptById( $connection, $id ) {
-		return $connection->selectRow(
-			'smw_fpt_conc',
-			[ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ],
-			[ 's_id' => $id ],
-			__METHOD__
-		);
+		return $connection->newSelectQueryBuilder()
+			->select( [ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ] )
+			->from( 'smw_fpt_conc' )
+			->where( [ 's_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 	}
 
 	/**
@@ -192,7 +186,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		);
 	}
 
-	private function findCircularDescription( $concept, &$description ) {
+	private function findCircularDescription( $concept, &$description ): void {
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError(

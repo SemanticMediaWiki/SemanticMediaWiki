@@ -3,11 +3,12 @@
 namespace SMW\Tests\Utils\Validators;
 
 use Closure;
+use PHPUnit\Framework\Assert;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Query\QueryResult;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,7 +16,7 @@ use SMWDataValue as DataValue;
  *
  * @author mwjames
  */
-class QueryResultValidator extends \PHPUnit\Framework\Assert {
+class QueryResultValidator extends Assert {
 
 	private $dataValueValidationMethod = null;
 
@@ -64,16 +65,20 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 			$this->useWikiValueForDataValueValidation();
 		}
 
-		while ( $resultArray = $queryResult->getNext() ) {
+		$resultArray = $queryResult->getNext();
+		while ( $resultArray ) {
 			foreach ( $resultArray as $result ) {
-				while ( ( $dataValue = $result->getNextDataValue() ) !== false ) {
+				$dataValue = $result->getNextDataValue();
+				while ( $dataValue !== false ) {
 					foreach ( $expected as $key => $exp ) {
 						if ( call_user_func_array( $this->dataValueValidationMethod, [ $exp, $dataValue ] ) ) {
 							unset( $expected[$key] );
 						}
 					}
+					$dataValue = $result->getNextDataValue();
 				}
 			}
+			$resultArray = $queryResult->getNext();
 		}
 
 		$this->assertEmpty(
@@ -107,17 +112,21 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 			"Failed on {$message} with error(s): " . implode( ',', $errors )
 		);
 
-		while ( $resultArray = $queryResult->getNext() ) {
+		$resultArray = $queryResult->getNext();
+		while ( $resultArray ) {
 			foreach ( $resultArray as $k => $result ) {
-				while ( ( $dataItem = $result->getNextDataItem() ) !== false ) {
+				$dataItem = $result->getNextDataItem();
+				while ( $dataItem !== false ) {
 					$sorting[] = $dataItem;
 					foreach ( $expected as $key => $exp ) {
 						if ( $exp->equals( $dataItem ) ) {
 							unset( $expected[$key] );
 						}
 					}
+					$dataItem = $result->getNextDataItem();
 				}
 			}
+			$resultArray = $queryResult->getNext();
 		}
 
 		if ( $checkSorting && $expected === [] ) {
@@ -162,7 +171,7 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 		foreach ( $resultSubjects as $rKey => $resultSubject ) {
 			foreach ( $expectedSubjects as $ekey => $expectedSubject ) {
 
-				if ( $expectedSubject instanceof DIWikiPage && $expectedSubject->equals( $resultSubject ) ) {
+				if ( $expectedSubject instanceof WikiPage && $expectedSubject->equals( $resultSubject ) ) {
 					$actualComparedToCount++;
 					unset( $expectedSubjects[$ekey] );
 					unset( $resultSubjects[$rKey] );

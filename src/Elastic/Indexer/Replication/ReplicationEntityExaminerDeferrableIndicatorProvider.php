@@ -2,14 +2,14 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Store;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,54 +21,23 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private array $indicators = [];
 
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
+	private bool $checkReplication = false;
 
-	/**
-	 * @var ReplicationCheck
-	 */
-	private $replicationCheck;
+	private bool $isDeferredMode = false;
 
-	/**
-	 * @var
-	 */
-	private $indicators = [];
-
-	/**
-	 * @var bool
-	 */
-	private $checkReplication = false;
-
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
-
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
-
-	private TemplateEngine $templateEngine;
+	private string $severityType = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
-	 * @param ReplicationCheck $replicationCheck
 	 */
-	public function __construct( Store $store, EntityCache $entityCache, ReplicationCheck $replicationCheck ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
-		$this->replicationCheck = $replicationCheck;
+	public function __construct(
+		private readonly Store $store,
+		private readonly EntityCache $entityCache,
+		private readonly ReplicationCheck $replicationCheck,
+		private readonly TemplateParser $templateParser,
+	) {
 	}
 
 	/**
@@ -76,7 +45,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @param bool $checkReplication
 	 */
-	public function canCheckReplication( $checkReplication ) {
+	public function canCheckReplication( $checkReplication ): void {
 		$this->checkReplication = (bool)$checkReplication;
 	}
 
@@ -85,14 +54,12 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
@@ -100,10 +67,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $severityType
-	 *
-	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -111,8 +74,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return 'smw-entity-examiner-deferred-elastic-replication';
@@ -120,13 +81,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param DIWikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkReplication ) {
 			$this->checkReplication( $subject, $options );
 		}
@@ -136,47 +92,35 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
 		// component) therefore disabled it when indicators are present
 		return '#mw-indicator-mw-helplink {display:none;}';
 	}
 
-	/**
-	 * @param DIWikiPage $subject
-	 * @param array $options
-	 *
-	 * @return void
-	 */
-	private function checkReplication( $subject, $options ) {
+	private function checkReplication( WikiPage $subject, array $options ): void {
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$property = Property::newFromUserLabel( $subject->getDBKey() );
 
 			if ( !$property->isUserDefined() ) {
-				$subject = new DIWikiPage( $property->getKey(), SMW_NS_PROPERTY );
+				$subject = new WikiPage( $property->getKey(), SMW_NS_PROPERTY );
 			}
 		}
 
@@ -185,7 +129,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		}
 
 		if ( $this->isDeferredMode ) {
-			return $this->runCheck( $subject, $options );
+			$this->runCheck( $subject, $options );
+			return;
 		}
 
 		$this->indicators = [
@@ -193,18 +138,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		];
 	}
 
-	/**
-	 * @param $subject
-	 * @param $options
-	 *
-	 * @return null
-	 */
-	private function runCheck( $subject, $options ) {
+	private function runCheck( WikiPage $subject, array $options ): void {
 		$html = $this->replicationCheck->checkReplication( $subject, $options );
-
-		$this->templateEngine = new TemplateEngine();
-		$this->templateEngine->load( '/indicator/dot.label.ms', 'dot_label_template' );
-		$this->templateEngine->load( '/indicator/bottom.marker.ms', 'bottom_marker' );
 
 		if ( $this->replicationCheck->getSeverityType() === ReplicationCheck::SEVERITY_TYPE_ERROR ) {
 			$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_ERROR;
@@ -212,23 +147,23 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 			$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_WARNING;
 		}
 
-		$this->templateEngine->compile(
-			'bottom_marker',
+		$bottomMarker = $this->templateParser->processTemplate(
+			'BottomMarker',
 			[
 				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left',
 				'label' => 'elastic',
-				'background-color' => '#cc317c',
+				'data-background-color' => '#cc317c',
 				'color' => '#ffffff'
 			]
 		);
 
 		$this->indicators = [
 			'id'      => $this->getName(),
-			'content' => $html . ( $html !== '' ? $this->templateEngine->publish( 'bottom_marker' ) : '' )
+			'content' => $html . ( $html !== '' ? $bottomMarker : '' )
 		];
 	}
 
-	private function wasChecked( $subject ) {
+	private function wasChecked( WikiPage $subject ): bool {
 		$connection = $this->store->getConnection( 'elastic' );
 		$wasChecked = false;
 

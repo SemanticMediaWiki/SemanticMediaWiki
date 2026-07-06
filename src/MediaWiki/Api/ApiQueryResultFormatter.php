@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use InvalidArgumentException;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 
 /**
@@ -33,11 +34,7 @@ class ApiQueryResultFormatter {
 	 */
 	protected $isRawMode = false;
 
-	/**
-	 *
-	 * @var QueryResult
-	 */
-	protected $queryResult = null;
+	protected QueryResult $queryResult;
 
 	protected array $result;
 
@@ -60,7 +57,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @param bool $isRawMode
 	 */
-	public function setIsRawMode( $isRawMode ) {
+	public function setIsRawMode( $isRawMode ): void {
 		$this->isRawMode = $isRawMode;
 	}
 
@@ -71,7 +68,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @return int
 	 */
-	public function getContinueOffset() {
+	public function getContinueOffset(): int|false {
 		return $this->continueOffset;
 	}
 
@@ -93,7 +90,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @return array
 	 */
-	public function getResult() {
+	public function getResult(): array {
 		return $this->result;
 	}
 
@@ -102,11 +99,17 @@ class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 */
-	public function doFormat() {
+	public function doFormat(): void {
 		if ( $this->queryResult->getErrors() !== [] ) {
 			$this->result = $this->formatErrors(
 				ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $this->queryResult->getErrors() )
 			);
+		} elseif ( $this->queryResult->getQuery()->getQueryMode() === Query::MODE_COUNT ) {
+			$this->type = 'query';
+			$this->result = [
+				'count' => $this->queryResult->getCountValue(),
+				'meta'  => [ 'type' => 'count' ]
+			];
 		} else {
 			$this->result = $this->formatResults( $this->queryResult->toArray() );
 
@@ -125,7 +128,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @return array
 	 */
-	protected function formatResults( array $queryResult ) {
+	protected function formatResults( array $queryResult ): array {
 		$this->type = 'query';
 		$results    = [];
 
@@ -183,7 +186,9 @@ class ApiQueryResultFormatter {
 	 */
 	protected function formatErrors( array $errors ): array {
 		$this->type      = 'error';
-		$result['query'] = $errors;
+		$result = [
+			'query' => $errors
+		];
 
 		$this->setIndexedTagName( $result['query'], 'info' );
 
@@ -203,7 +208,7 @@ class ApiQueryResultFormatter {
 	 * @param array &$arr
 	 * @param string|null $tag
 	 */
-	public function setIndexedTagName( &$arr, $tag = null ) {
+	public function setIndexedTagName( &$arr, $tag = null ): void {
 		if ( !$this->isRawMode ) {
 			return;
 		}

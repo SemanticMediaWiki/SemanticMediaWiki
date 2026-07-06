@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\SQLStore\SQLStore;
@@ -23,17 +23,9 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 	const MAXCOUNT_THRESHOLD = 20000;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -51,22 +43,20 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 		return $this->buildHTML( $count );
 	}
 
-	private function fetchCount() {
+	private function fetchCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			'COUNT(smw_id) AS count',
-			[
-				'smw_iw' => SMW_SQL3_SMWDELETEIW
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'count' => 'COUNT(smw_id)' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_iw' => SMW_SQL3_SMWDELETEIW ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return $row !== false ? (int)$row->count : 0;
 	}
 
-	private function buildHTML( $count ) {
+	private function buildHTML( int $count ) {
 		$html = Html::rawElement(
 			'fieldset',
 			[

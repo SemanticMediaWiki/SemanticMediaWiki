@@ -32,37 +32,6 @@ class PropertyTableDefinition {
 	const TYPE_CUSTOM = 'type/custom';
 
 	/**
-	 * Name of the table in the DB.
-	 *
-	 * @since 1.8
-	 * @var string
-	 */
-	protected $name;
-
-	/**
-	 * DIType of this table.
-	 *
-	 * @since 1.8
-	 * @var int
-	 */
-	protected $diType;
-
-	/**
-	 * If the table is only for one property, this field holds its key.
-	 * Empty otherwise. Tables without a fixed property have a column "p_id"
-	 * for storing the SMW page id of the property.
-	 *
-	 * @note It is important that this is the DB key form or special
-	 * property key, not the label. This is not checked eagerly in SMW but
-	 * can lead to spurious errors when properties are compared to each
-	 * other or to the contents of the store.
-	 *
-	 * @since 1.8
-	 * @var string|bool false
-	 */
-	protected $fixedProperty;
-
-	/**
 	 * Boolean that states how subjects are stored. If true, a column "s_id"
 	 * with an SMW page id is used. If false, two columns "s_title" and
 	 * "s_namespace" are used. The latter de-normalized form cannot store
@@ -74,25 +43,19 @@ class PropertyTableDefinition {
 	 */
 	protected $idSubject = true;
 
-	/**
-	 * @var string
-	 */
-	private $tableType = '';
+	private string $tableType = '';
 
 	/**
 	 * Factory method to create an instance for a given
 	 * DI type and the given table name.
 	 *
 	 * @since 1.8
-	 *
-	 * @param int $DIType constant
-	 * @param string $tableName logocal table name (not the DB version)
-	 * @param string|false $fixedProperty property key if any
 	 */
-	public function __construct( $DIType, $tableName, $fixedProperty = false ) {
-		$this->name = $tableName;
-		$this->fixedProperty = $fixedProperty;
-		$this->diType = $DIType;
+	public function __construct(
+		protected $diType,
+		protected $name,
+		protected $fixedProperty = false,
+	) {
 	}
 
 	/**
@@ -116,7 +79,7 @@ class PropertyTableDefinition {
 	 *
 	 * @return bool
 	 */
-	public function usesIdSubject() {
+	public function usesIdSubject(): bool {
 		return $this->idSubject;
 	}
 
@@ -127,7 +90,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 */
-	public function setUsesIdSubject( $usesIdSubject ) {
+	public function setUsesIdSubject( $usesIdSubject ): void {
 		$this->idSubject = $usesIdSubject;
 	}
 
@@ -147,7 +110,7 @@ class PropertyTableDefinition {
 	 *
 	 * @param string $tableType
 	 */
-	public function setTableType( string $tableType ) {
+	public function setTableType( string $tableType ): void {
 		$this->tableType = $tableType;
 	}
 
@@ -163,7 +126,7 @@ class PropertyTableDefinition {
 	 * @return string
 	 * @throws OutOfBoundsException
 	 */
-	public function getFixedProperty() {
+	public function getFixedProperty(): string {
 		if ( $this->fixedProperty === false ) {
 			throw new OutOfBoundsException( 'Attempt to get the fixed property from a table that does not hold one' );
 		}
@@ -180,7 +143,7 @@ class PropertyTableDefinition {
 	 *
 	 * @return bool
 	 */
-	public function isFixedPropertyTable() {
+	public function isFixedPropertyTable(): bool {
 		return $this->fixedProperty !== false;
 	}
 

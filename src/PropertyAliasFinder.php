@@ -2,11 +2,11 @@
 
 namespace SMW;
 
-use Onoi\Cache\Cache;
 use SMW\Localizer\Message;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -23,10 +23,7 @@ class PropertyAliasFinder {
 	 */
 	const CACHE_TTL = 604800;
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
+	private BagOStuff $cache;
 
 	/**
 	 * Array with entries "property alias" => "property id"
@@ -43,7 +40,7 @@ class PropertyAliasFinder {
 	/**
 	 * @var string[]
 	 */
-	private $canonicalPropertyAliases = [];
+	private array $canonicalPropertyAliases;
 
 	/**
 	 * @var string
@@ -53,11 +50,11 @@ class PropertyAliasFinder {
 	/**
 	 * @since 2.4
 	 *
-	 * @param Cache $cache
+	 * @param BagOStuff $cache
 	 * @param array $propertyAliases
 	 * @param array $canonicalPropertyAliases
 	 */
-	public function __construct( Cache $cache, array $propertyAliases = [], array $canonicalPropertyAliases = [] ) {
+	public function __construct( BagOStuff $cache, array $propertyAliases = [], array $canonicalPropertyAliases = [] ) {
 		$this->cache = $cache;
 		$this->canonicalPropertyAliases = $canonicalPropertyAliases;
 
@@ -71,7 +68,7 @@ class PropertyAliasFinder {
 	 *
 	 * @param string $contentLanguageCode
 	 */
-	public function setContentLanguageCode( $contentLanguageCode ) {
+	public function setContentLanguageCode( $contentLanguageCode ): void {
 		$this->contentLanguageCode = $contentLanguageCode;
 	}
 
@@ -80,7 +77,7 @@ class PropertyAliasFinder {
 	 *
 	 * @return array
 	 */
-	public function getKnownPropertyAliases() {
+	public function getKnownPropertyAliases(): array {
 		return $this->propertyAliases;
 	}
 
@@ -89,7 +86,7 @@ class PropertyAliasFinder {
 	 *
 	 * @return array
 	 */
-	public function getKnownPropertyAliasesWithMsgKey() {
+	public function getKnownPropertyAliasesWithMsgKey(): array {
 		return $this->propertyAliasesByMsgKey;
 	}
 
@@ -100,7 +97,7 @@ class PropertyAliasFinder {
 	 *
 	 * @return array
 	 */
-	public function getKnownPropertyAliasesByLanguageCode( $languageCode = 'en' ) {
+	public function getKnownPropertyAliasesByLanguageCode( $languageCode = 'en' ): array {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[
@@ -109,7 +106,8 @@ class PropertyAliasFinder {
 			]
 		);
 
-		if ( ( $propertyAliases = $this->cache->fetch( $key ) ) !== false ) {
+		$propertyAliases = $this->cache->get( $key );
+		if ( $propertyAliases !== false ) {
 			return $propertyAliases;
 		}
 
@@ -119,7 +117,7 @@ class PropertyAliasFinder {
 			$propertyAliases[Message::get( $msgKey, Message::TEXT, $languageCode )] = $id;
 		}
 
-		$this->cache->save( $key, $propertyAliases, self::CACHE_TTL );
+		$this->cache->set( $key, $propertyAliases, self::CACHE_TTL );
 
 		return $propertyAliases;
 	}
@@ -131,7 +129,7 @@ class PropertyAliasFinder {
 	 * @param string $id string
 	 * @param string $label
 	 */
-	public function registerAliasByFixedLabel( $id, $label ) {
+	public function registerAliasByFixedLabel( $id, $label ): void {
 		$label = (string)$label;
 
 		// Prevent an extension to register an already known
@@ -142,7 +140,7 @@ class PropertyAliasFinder {
 
 		// Indicates an untranslated MW message key
 		if ( $label !== '' && $label[0] === '<' ) {
-			return null;
+			return;
 		}
 
 		$this->propertyAliases[$label] = $id;
@@ -157,7 +155,7 @@ class PropertyAliasFinder {
 	 * @param string $id
 	 * @param string $msgKey
 	 */
-	public function registerAliasByMsgKey( $id, $msgKey ) {
+	public function registerAliasByMsgKey( $id, $msgKey ): void {
 		$this->propertyAliasesByMsgKey[$msgKey] = $id;
 
 		// Make sure the label is resolved and registered immediately
@@ -173,9 +171,9 @@ class PropertyAliasFinder {
 	 *
 	 * @param string $id
 	 *
-	 * @return string|bool
+	 * @return int|string|false
 	 */
-	public function findCanonicalPropertyAliasById( $id ) {
+	public function findCanonicalPropertyAliasById( $id ): int|string|false {
 		return array_search( $id, $this->canonicalPropertyAliases );
 	}
 
@@ -184,9 +182,9 @@ class PropertyAliasFinder {
 	 *
 	 * @param string $id
 	 *
-	 * @return string|bool
+	 * @return int|string|false
 	 */
-	public function findPropertyAliasById( $id ) {
+	public function findPropertyAliasById( $id ): int|string|false {
 		return array_search( $id, $this->propertyAliases );
 	}
 

@@ -3,10 +3,12 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
+use SMW\Query\Language\SomeProperty;
 
 /**
  * Modifies a given query object at $qid to account for all ordering conditions
@@ -22,15 +24,7 @@ use SMW\Query\Language\Description;
  */
 class OrderCondition {
 
-	/**
-	 * @var QuerySegmentListBuilder
-	 */
-	private $querySegmentListBuilder;
-
-	/**
-	 * @var DescriptionFactory
-	 */
-	private $descriptionFactory;
+	private DescriptionFactory $descriptionFactory;
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -63,7 +57,7 @@ class OrderCondition {
 	 *
 	 * @param array $sortKeys
 	 */
-	public function setSortKeys( $sortKeys ) {
+	public function setSortKeys( $sortKeys ): void {
 		$this->sortKeys = $sortKeys;
 	}
 
@@ -72,7 +66,7 @@ class OrderCondition {
 	 *
 	 * @return string[]
 	 */
-	public function getSortKeys() {
+	public function getSortKeys(): array {
 		return $this->sortKeys;
 	}
 
@@ -81,7 +75,7 @@ class OrderCondition {
 	 *
 	 * @param bool $isSupported
 	 */
-	public function isSupported( $isSupported ) {
+	public function isSupported( $isSupported ): void {
 		$this->isSupported = $isSupported;
 	}
 
@@ -90,7 +84,7 @@ class OrderCondition {
 	 *
 	 * @param bool $asUnconditional
 	 */
-	public function asUnconditional( $asUnconditional ) {
+	public function asUnconditional( $asUnconditional ): void {
 		$this->asUnconditional = $asUnconditional;
 	}
 
@@ -128,7 +122,10 @@ class OrderCondition {
 		$conditionBuilder->getQuerySegmentList();
 	}
 
-	private function findDescriptionsFromSortKeys( $querySegment ) {
+	/**
+	 * @return Description[]
+	 */
+	private function findDescriptionsFromSortKeys( $querySegment ): array {
 		$extraDescriptions = [];
 
 		foreach ( $this->sortKeys as $label => $order ) {
@@ -137,7 +134,8 @@ class OrderCondition {
 				throw new RuntimeException( "Expected a string value as sortkey" );
 			}
 
-			if ( ( $description = $this->findDescription( $querySegment, $label, $order ) ) instanceof Description ) {
+			$description = $this->findDescription( $querySegment, $label, $order );
+			if ( $description instanceof Description ) {
 				$extraDescriptions[] = $description;
 			}
 		}
@@ -145,7 +143,7 @@ class OrderCondition {
 		return $extraDescriptions;
 	}
 
-	private function findDescription( $querySegment, $label, $order ) {
+	private function findDescription( $querySegment, string $label, $order ): ?SomeProperty {
 		$description = null;
 
 		// Is assigned, leave ...
@@ -198,9 +196,10 @@ class OrderCondition {
 		} else { // Try to extend query.
 			$sortprop = DataValueFactory::getInstance()->newPropertyValueByLabel( $label );
 
-			if ( $sortprop->isValid() ) {
+			$property = $sortprop->getDataItem();
+			if ( $sortprop->isValid() && $property instanceof Property ) {
 				$description = $this->descriptionFactory->newSomeProperty(
-					$sortprop->getDataItem(),
+					$property,
 					$this->descriptionFactory->newThingDescription()
 				);
 			}
@@ -209,8 +208,12 @@ class OrderCondition {
 		return $description;
 	}
 
-	private function extendConditions( $conditionBuilder, $querySegment, array $extraDescriptions ) {
-		if ( $extraDescriptions === [] ) {
+	private function extendConditions(
+		ConditionBuilder $conditionBuilder,
+		?QuerySegment $querySegment,
+		array $extraDescriptions
+	): void {
+		if ( $extraDescriptions === [] || $querySegment === null ) {
 			return;
 		}
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class I18nMsgKeyIntegrityTest extends \PHPUnit\Framework\TestCase {
+class I18nMsgKeyIntegrityTest extends TestCase {
 
 	/**
 	 * @dataProvider mediawikiI18nFileProvider

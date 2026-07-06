@@ -5,19 +5,44 @@ namespace SMW\MediaWiki\Connection;
 use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
-use UnexpectedValueException;
-use Wikimedia\Rdbms\Database as MWDatabase;
-use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\Blob;
+use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\DeleteQueryBuilder;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\InsertQueryBuilder;
+use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
-use Wikimedia\Rdbms\Platform\SQLPlatform;
-use Wikimedia\Rdbms\ResultWrapper;
-use Wikimedia\ScopedCallback;
+use Wikimedia\Rdbms\RawSQLValue;
+use Wikimedia\Rdbms\ReplaceQueryBuilder;
+use Wikimedia\Rdbms\SelectQueryBuilder;
+use Wikimedia\Rdbms\UpdateQueryBuilder;
 
 /**
  * This adapter class covers MW DB specific operations. Changes to the
  * interface are likely therefore this class should not be used other than by
  * SMW itself.
+ *
+ * **Façade guardrail.** As of 7.0.0 this class is a deliberately slim façade
+ * over MW core's IDatabase. It may only expose:
+ *
+ * 1. QueryBuilder factories (`new*QueryBuilder()`) and the structured
+ *    `insertSelect()` wrapper (no raw SQL — takes column maps and conds, MW
+ *    core emits platform-correct INSERT...SELECT with the IGNORE option).
+ * 2. Connection-routing helpers (`getType()`, `tableName()`, `tablePrefix()`,
+ *    `tableExists()`, `listTables()`, `addQuotes()`, `expr()`, `conditional()`,
+ *    `makeList()`, `timestamp()`, etc.).
+ * 3. Transaction-handler plumbing (`getEmptyTransactionTicket()`,
+ *    `commitAndWaitForReplication()`, atomic / section transaction helpers,
+ *    `onTransactionCommitOrIdle()`).
+ * 4. Platform-quirk escape hatches (`query()` / `readQuery()` for DDL and the
+ *    residual planner-side raw SQL, `setFlag()` / `clearFlag()` / `getFlag()` /
+ *    `nextSequenceValue()` / `insertId()` / `affectedRows()` / `ping()` for
+ *    the few callers that genuinely need them).
+ *
+ * **No new SQL-passing methods, ever.** New consumers must use the
+ * QueryBuilder factories. The Phase-2 follow-up drops the wrapper entirely;
+ * adding methods here makes that landing harder.
  *
  * @license GPL-2.0-or-later
  * @since 1.9
@@ -39,28 +64,14 @@ class Database {
 	 */
 	const TRIGGER_ROLLBACK = IDatabase::TRIGGER_ROLLBACK;
 
-	/** @var ISQLPlatform::LIST_COMMA (Combine list with comma delimeters) */
+	/**
+	 * @see ISQLPlatform::LIST_COMMA
+	 */
 	const LIST_COMMA = ISQLPlatform::LIST_COMMA;
 
-	/**
-	 * @var ConnRef
-	 */
-	private $connRef;
+	private int|string|false $flags = 0;
 
-	/**
-	 * @var TransactionHandler
-	 */
-	private $transactionHandler;
-
-	/**
-	 * @var int
-	 */
-	private $flags = 0;
-
-	/**
-	 * @var int
-	 */
-	private $insertId = null;
+	private ?int $insertId = null;
 
 	/**
 	 * @var string
@@ -69,23 +80,17 @@ class Database {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ConnRef $connRef
-	 * @param TransactionHandler $transactionHandler
 	 */
-	public function __construct( ConnRef $connRef, TransactionHandler $transactionHandler ) {
-		$this->connRef = $connRef;
-		$this->transactionHandler = $transactionHandler;
+	public function __construct(
+		private readonly ConnRef $connRef,
+		private readonly TransactionHandler $transactionHandler,
+	) {
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $type
-	 *
-	 * @return bool
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		$this->connRef->releaseConnections();
 	}
 
@@ -94,17 +99,54 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return true;
 	}
 
+	public function newSelectQueryBuilder(): SelectQueryBuilder {
+		return $this->connRef->getConnection( 'read' )->newSelectQueryBuilder();
+	}
+
 	/**
-	 * @since 3.0
+	 * Returns a SelectQueryBuilder bound to the primary (write) connection.
 	 *
-	 * @return Query
+	 * Unlike newSelectQueryBuilder(), which reads from a replica, this reads
+	 * from the primary so it can see session-local temporary tables (which
+	 * exist only on the primary) and writes made earlier in the same request.
+	 * It is still a plain, non-locking SELECT.
+	 *
+	 * @since 7.1.0
 	 */
-	public function newQuery() {
-		return new Query( $this );
+	public function newPrimarySelectQueryBuilder(): SelectQueryBuilder {
+		return $this->connRef->getConnection( 'write' )->newSelectQueryBuilder();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newInsertQueryBuilder(): InsertQueryBuilder {
+		return $this->connRef->getConnection( 'write' )->newInsertQueryBuilder();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newUpdateQueryBuilder(): UpdateQueryBuilder {
+		return $this->connRef->getConnection( 'write' )->newUpdateQueryBuilder();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newDeleteQueryBuilder(): DeleteQueryBuilder {
+		return $this->connRef->getConnection( 'write' )->newDeleteQueryBuilder();
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function newReplaceQueryBuilder(): ReplaceQueryBuilder {
+		return $this->connRef->getConnection( 'write' )->newReplaceQueryBuilder();
 	}
 
 	/**
@@ -114,7 +156,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}
@@ -129,7 +171,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function getInfo() {
+	public function getInfo(): array {
 		return [
 			$this->getType() => $this->connRef->getConnection( 'read' )->getServerInfo()
 		];
@@ -142,7 +184,7 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}
@@ -151,16 +193,61 @@ class Database {
 	}
 
 	/**
+	 * @see ISQLPlatform::buildIntegerCast
+	 *
+	 * @since 7.0.0
+	 */
+	public function buildIntegerCast( string $field ): string {
+		return $this->connRef->getConnection( 'read' )->buildIntegerCast( $field );
+	}
+
+	/**
+	 * Whether the connected database server supports recursive common table
+	 * expressions (`WITH RECURSIVE`). True for PostgreSQL (>= 8.4) and SQLite
+	 * (>= 3.8.3), which covers every version in practical use under MediaWiki,
+	 * and for MariaDB; for plain MySQL it requires 8.0+, as 5.7 has no
+	 * `WITH RECURSIVE`.
+	 *
+	 * @since 7.1.0
+	 */
+	public function supportsRecursiveCommonTableExpressions(): bool {
+		$type = $this->getType();
+
+		if ( $type === 'postgres' || $type === 'sqlite' ) {
+			return true;
+		}
+
+		if ( $type !== 'mysql' ) {
+			return false;
+		}
+
+		$connection = $this->connRef->getConnection( 'read' );
+
+		// Detect MariaDB explicitly so the numeric gate below only governs plain
+		// MySQL. MariaDB (10.3 is the MediaWiki minimum) has had WITH RECURSIVE
+		// since 10.2; matching the server info string also stays correct even for
+		// a version that exposes the legacy "5.5.5-" MySQL-compatibility prefix,
+		// which version_compare would otherwise misread as 5.5.
+		if ( strpos( $connection->getServerInfo(), 'MariaDB' ) !== false ) {
+			return true;
+		}
+
+		// Plain MySQL: recursive CTEs require 8.0.
+		return version_compare( $connection->getServerVersion(), '8.0', '>=' );
+	}
+
+	/**
 	 * @see IDatabase::tableName
 	 *
 	 * @since 1.9
 	 *
 	 * @param string $tableName
+	 * @param string $format
 	 *
 	 * @return string
 	 */
-	public function tableName( $tableName ) {
-		return $this->connRef->getConnection( 'read' )->tableName( $tableName );
+	public function tableName( $tableName, $format = 'quoted' ) {
+		return $this->connRef->getConnection( 'read' )->tableName( $tableName, $format );
 	}
 
 	/**
@@ -168,7 +255,7 @@ class Database {
 	 *
 	 * @since 3.0
 	 *
-	 * @param int $ts
+	 * @param string|int $ts
 	 *
 	 * @return string
 	 */
@@ -191,7 +278,7 @@ class Database {
 		// https://github.com/wikimedia/mediawiki/commit/6ab57b9c2424d9cc01b29908658b273a6ce75489
 		// Avoid "DBUnexpectedError ... DBConnRef.php: Database selection is
 		// disallowed to enable reuse ..."
-		if ( $connection instanceof \Wikimedia\Rdbms\DBConnRef ) {
+		if ( $connection instanceof DBConnRef ) {
 			return $connection->__call( __FUNCTION__, [ $prefix ] );
 		}
 
@@ -203,71 +290,39 @@ class Database {
 	 *
 	 * @since 1.9
 	 *
-	 * @param string $value
-	 *
+	 * @param ?scalar|RawSQLValue|Blob $value
+	 * @param-taint $value escapes_sql
 	 * @return string
+	 * @return-taint none
 	 */
 	public function addQuotes( $value ) {
 		return $this->connRef->getConnection( 'read' )->addQuotes( $value );
 	}
 
 	/**
-	 * @see IDatabase::select
+	 * @see IDatabase::insertSelect
 	 *
-	 * @since 1.9
-	 *
-	 * @param string $tableName
-	 * @param $fields
-	 * @param array|string $conditions
-	 * @param string $fname
-	 * @param array $options
-	 * @param array $joinConditions
-	 *
-	 * @return ResultWrapper
-	 * @throws UnexpectedValueException
+	 * @since 7.0.0
 	 */
-	public function select( $tableName, $fields, $conditions, $fname, array $options = [], $joinConditions = [] ) {
-		$tablePrefix = null;
-		$connection = $this->connRef->getConnection( 'read' );
-
-		if ( $this->isType( 'sqlite' ) ) {
-
-			// MW's SQLite implementation adds an auto prefix to the tableName but
-			// not to the conditions and since ::tableName will handle prefixing
-			// consistently ensure that the select doesn't add an extra prefix
-			$tablePrefix = $this->tablePrefix( '' );
-
-			if ( isset( $options['ORDER BY'] ) ) {
-				$options['ORDER BY'] = str_replace( 'RAND', 'RANDOM', $options['ORDER BY'] );
-			}
-		}
-
-		try {
-			$results = $connection->select(
-				$tableName,
-				$fields,
-				$conditions,
-				$fname,
-				$options,
-				$joinConditions
-			);
-		} catch ( DBError $e ) {
-			throw new RuntimeException( $e->getMessage() . "\n" . $e->getTraceAsString() );
-		}
-
-		if ( $tablePrefix !== null ) {
-			$this->tablePrefix( $tablePrefix );
-		}
-
-		if ( $results instanceof ResultWrapper ) {
-			return $results;
-		}
-
-		throw new UnexpectedValueException(
-			'Expected a ResultWrapper for ' . "\n" .
-			$tableName . "\n" .
-			$fields . "\n" .
-			$conditions
+	public function insertSelect(
+		string $destTable,
+		string|array $srcTable,
+		array $varMap,
+		string|IExpression|array $conds,
+		string $fname = __METHOD__,
+		array $insertOptions = [],
+		array $selectOptions = [],
+		array $selectJoinConds = []
+	): bool {
+		return $this->connRef->getConnection( 'write' )->insertSelect(
+			$destTable,
+			$srcTable,
+			$varMap,
+			$conds,
+			$fname,
+			$insertOptions,
+			$selectOptions,
+			$selectJoinConds
 		);
 	}
 
@@ -278,26 +333,15 @@ class Database {
 	 *
 	 * @since 1.9
 	 *
-	 * @param Query|string $sql
-	 * @param string $fname
-	 * @param int $flags
-	 *
-	 * @return ResultWrapper
 	 * @throws RuntimeException
 	 */
-	public function query( $sql, $fname = __METHOD__, $flags = 0 ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$results = $this->executeQuery(
+	public function query( string $sql, string $fname = __METHOD__, int $flags = 0 ): bool|IResultWrapper {
+		return $this->executeQuery(
 			$this->connRef->getConnection( 'write' ),
 			$sql,
 			$fname,
 			$flags
 		);
-
-		ScopedCallback::consume( $scope );
-
-		return $results;
 	}
 
 	/**
@@ -306,13 +350,9 @@ class Database {
 	 * @see IDatabase::query()
 	 * @since 4.0.0
 	 *
-	 * @param Query|string $sql
-	 * @param string $fname
-	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
 	 * @throws Exception
 	 */
-	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
+	public function readQuery( string $sql, string $fname = __METHOD__, $flags = 0 ): bool|IResultWrapper {
 		return $this->executeQuery(
 			$this->connRef->getConnection( 'read' ),
 			$sql,
@@ -322,51 +362,20 @@ class Database {
 	}
 
 	/**
-	 * Execute a SQL query using the given DB connection handle.
+	 * Execute a SQL query using the given DB connection handle. Wraps the
+	 * passthrough call in `Database::AUTO_COMMIT` flag handling so that a
+	 * caller that requested `AUTO_COMMIT` (e.g. temp-table DDL) gets the
+	 * underlying `DBO_TRX` flag flipped off for the duration of the query
+	 * and restored afterward.
 	 *
 	 * @see IDatabase::query()
 	 *
-	 * @param IDatabase $connection
-	 * @param Query|string $sql
-	 * @param $fname
-	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
 	 * @throws Exception
 	 */
-	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {
-		if ( $sql instanceof Query ) {
-			$sql = $sql->build();
-		}
-
-		if ( !$this->isType( 'postgres' ) ) {
-			$sql = str_replace( '@INT', '', $sql );
-		}
-
-		if ( $this->isType( 'postgres' ) ) {
-
-			// Requires postgres 9.5+
-			// https://www.postgresql.org/docs/9.5/sql-insert.html
-			if ( strpos( $sql, "INSERT IGNORE INTO" ) !== false ) {
-				$sql = ( str_replace( 'IGNORE ', '', $sql ) ) . " ON CONFLICT DO NOTHING";
-			}
-
-			$sql = str_replace( '@INT', '::integer', $sql );
-			$sql = str_replace( 'IGNORE', '', $sql );
-			$sql = str_replace( 'DROP TEMPORARY TABLE', 'DROP TABLE IF EXISTS', $sql );
-			$sql = str_replace( 'RAND()', ( strpos( $sql, 'DISTINCT' ) !== false ? '' : 'RANDOM()' ), $sql );
-		}
-
-		if ( $this->isType( 'sqlite' ) ) {
-			$sql = str_replace( 'IGNORE', '', $sql );
-			$sql = str_replace( 'TEMPORARY', 'TEMP', $sql );
-			$sql = str_replace( 'ENGINE=MEMORY', '', $sql );
-			$sql = str_replace( 'DROP TEMP', 'DROP', $sql );
-			$sql = str_replace( 'TRUNCATE TABLE', 'DELETE FROM', $sql );
-			$sql = str_replace( 'RAND', 'RANDOM', $sql );
-		}
-
+	private function executeQuery( IDatabase $connection, string $sql, ?string $fname, int $flags ): bool|IResultWrapper {
 		// https://github.com/wikimedia/mediawiki/blob/42d5e6f43a00eb8bedc3532876125f74e3188343/includes/deferred/AutoCommitUpdate.php
 		// https://github.com/wikimedia/mediawiki/blob/f7dad57c64db3eb1296894c2d3ae97b9f7f27c4c/includes/installer/DatabaseInstaller.php#L157
+		$autoTrx = null;
 		if ( $this->flags === self::AUTO_COMMIT ) {
 			$autoTrx = $connection->getFlag( DBO_TRX );
 			$connection->clearFlag( DBO_TRX );
@@ -376,8 +385,8 @@ class Database {
 			}
 		}
 
+		$exception = null;
 		try {
-			$exception = null;
 			$results = $connection->query(
 				$sql,
 				$fname,
@@ -397,23 +406,8 @@ class Database {
 			throw $exception;
 		}
 
+		// @phan-suppress-next-line PhanPossiblyUndeclaredVariable
 		return $results;
-	}
-
-	/**
-	 * @see IDatabase::selectRow
-	 *
-	 * @since 1.9
-	 */
-	public function selectRow( $table, $vars, $conds, $fname = __METHOD__, $options = [], $joinConditions = [] ) {
-		return $this->connRef->getConnection( 'read' )->selectRow(
-			$table,
-			$vars,
-			$conds,
-			$fname,
-			$options,
-			$joinConditions
-		);
 	}
 
 	/**
@@ -441,50 +435,35 @@ class Database {
 	 *
 	 * @return int
 	 */
-	function affectedRows() {
+	public function affectedRows() {
 		return $this->connRef->getConnection( 'read' )->affectedRows();
-	}
-
-	/**
-	 * @note Method was made protected in 1.28, hence the need
-	 * for the DatabaseHelper that copies the functionality.
-	 *
-	 * @see SQLPlatform::makeSelectOptions
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $options
-	 *
-	 * @return array
-	 */
-	public function makeSelectOptions( $options ) {
-		return OptionsBuilder::makeSelectOptions( $this, $options );
 	}
 
 	/**
 	 * @see removed method IDatabase::nextSequenceValue
 	 *
 	 * @since 1.9
-	 *
-	 * @param string $seqName
-	 *
-	 * @return int|null
 	 */
-	public function nextSequenceValue( $seqName ) {
+	public function nextSequenceValue( string $seqName ): ?int {
 		$this->insertId = null;
 
 		if ( !$this->isType( 'postgres' ) ) {
 			return null;
 		}
 
-		// #3101, #2903
-		// MW 1.31+
-		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
+		// #3101, #2903 — Postgres-only sequence advance.
+		// `nextval()` has no portable Rdbms abstraction, so route a raw
+		// expression through newSelectQueryBuilder()->fetchField(). The
+		// FROMless SELECT is emitted natively by SQLPlatform::selectSQLText
+		// when `tables` is empty.
 		$safeseq = str_replace( "'", "''", $seqName );
-		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
-		$row = $res->fetchRow();
+		$value = $this->connRef->getConnection( 'write' )->newSelectQueryBuilder()
+			->select( "nextval('$safeseq')" )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		return $this->insertId = $row[0] === null ? null : (int)$row[0];
+		$this->insertId = $value === false || $value === null ? null : (int)$value;
+		return $this->insertId;
 	}
 
 	/**
@@ -494,7 +473,7 @@ class Database {
 	 *
 	 * @return int
 	 */
-	function insertId() {
+	public function insertId(): int {
 		if ( $this->insertId !== null ) {
 			return $this->insertId;
 		}
@@ -507,7 +486,7 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	function clearFlag( $flag ) {
+	public function clearFlag( $flag ): void {
 		$this->connRef->getConnection( 'write' )->clearFlag( $flag );
 	}
 
@@ -516,7 +495,7 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	function getFlag( $flag ) {
+	public function getFlag( $flag ) {
 		return $this->connRef->getConnection( 'write' )->getFlag( $flag );
 	}
 
@@ -525,87 +504,13 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	function setFlag( $flag ) {
+	public function setFlag( $flag ): void {
 		if ( $flag === self::AUTO_COMMIT ) {
-			return $this->flags = self::AUTO_COMMIT;
+			$this->flags = self::AUTO_COMMIT;
+			return;
 		}
 
 		$this->connRef->getConnection( 'write' )->setFlag( $flag );
-	}
-
-	/**
-	 * @see IDatabase::insert
-	 *
-	 * @since 1.9
-	 */
-	public function insert( $table, $rows, $fname = __METHOD__, $options = [] ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->insert( $table, $rows, $fname, $options );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
-	 * @see IDatabase::update
-	 *
-	 * @since 1.9
-	 */
-	function update( $table, $values, $conds, $fname = __METHOD__, $options = [] ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->update( $table, $values, $conds, $fname, $options );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
-	 * @see IDatabase::upsert
-	 *
-	 * @since 3.1
-	 */
-	public function upsert( $table, array $rows, $uniqueIndexes, array $set, $fname = __METHOD__ ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->upsert( $table, $rows, $uniqueIndexes, $set, $fname );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
-	 * @see IDatabase::delete
-	 *
-	 * @since 1.9
-	 */
-	public function delete( $table, $conds, $fname = __METHOD__ ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->delete( $table, $conds, $fname );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
-	}
-
-	/**
-	 * @see IDatabase::replace
-	 *
-	 * @since 2.5
-	 */
-	public function replace( $table, $uniqueIndexes, $rows, $fname = __METHOD__ ) {
-		$scope = $this->transactionHandler->muteTransactionProfiler();
-
-		$res = $this->connRef->getConnection( 'write' )->replace( $table, $uniqueIndexes, $rows, $fname );
-
-		ScopedCallback::consume( $scope );
-
-		return $res;
 	}
 
 	/**
@@ -635,32 +540,9 @@ class Database {
 	 * @see IDatabase::listTables
 	 *
 	 * @since 3.1
-	 *
-	 * @param string|null $prefix
-	 * @param string $fname
-	 *
-	 * @return
 	 */
-	public function listTables( $prefix = null, $fname = __METHOD__ ) {
+	public function listTables( ?string $prefix = null, string $fname = __METHOD__ ): array {
 		return $this->connRef->getConnection( 'read' )->listTables( $prefix, $fname );
-	}
-
-	/**
-	 * @see IDatabase::selectField
-	 *
-	 * @since 1.9.2
-	 */
-	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = [] ) {
-		return $this->connRef->getConnection( 'read' )->selectField( $table, $fieldName, $conditions, $fname, $options );
-	}
-
-	/**
-	 * @see IDatabase::estimateRowCount
-	 *
-	 * @since 2.1
-	 */
-	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = [] ) {
-		return $this->connRef->getConnection( 'read' )->estimateRowCount( $table, $vars, $conditions, $fname, $options );
 	}
 
 	/**
@@ -693,20 +575,21 @@ class Database {
 	}
 
 	/**
-	 * @TransactionHandler::beginSectionTransaction
-	 *
 	 * @since 3.1
 	 *
 	 * @param string $fname
 	 *
 	 * @throws RuntimeException
 	 */
-	public function beginSectionTransaction( $fname = __METHOD__ ) {
+	public function beginSectionTransaction( $fname = __METHOD__ ): void {
 		$this->transactionHandler->markSectionTransaction(
 			$fname
 		);
 
-		$this->connRef->getConnection( 'write' )->startAtomic( $fname );
+		// Use a cancelable atomic section so the writes can be rolled back via
+		// `cancelSectionTransaction` when the update throws, instead of leaving
+		// the section (and the underlying atomic) dangling.
+		$this->connRef->getConnection( 'write' )->startAtomic( $fname, IDatabase::ATOMIC_CANCELABLE );
 	}
 
 	/**
@@ -714,12 +597,33 @@ class Database {
 	 *
 	 * @param string $fname
 	 */
-	public function endSectionTransaction( $fname = __METHOD__ ) {
+	public function endSectionTransaction( $fname = __METHOD__ ): void {
 		$this->transactionHandler->detachSectionTransaction(
 			$fname
 		);
 
 		$this->connRef->getConnection( 'write' )->endAtomic( $fname );
+	}
+
+	/**
+	 * Roll back a section transaction started with `beginSectionTransaction`,
+	 * discarding its writes via `cancelAtomic` and clearing the registered
+	 * section so a subsequent section transaction can be started.
+	 *
+	 * @since 7.1.0
+	 *
+	 * @param string $fname
+	 */
+	public function cancelSectionTransaction( $fname = __METHOD__ ): void {
+		// A rollback path must not raise a secondary error. The section may
+		// already have been detached (e.g. endSectionTransaction() cleared the
+		// flag and then its endAtomic() threw), so only detach when this section
+		// is still registered; the atomic is rolled back either way.
+		if ( $this->transactionHandler->inSectionTransaction( $fname ) ) {
+			$this->transactionHandler->detachSectionTransaction( $fname );
+		}
+
+		$this->connRef->getConnection( 'write' )->cancelAtomic( $fname );
 	}
 
 	/**
@@ -729,7 +633,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
+	public function inSectionTransaction( $fname = __METHOD__ ): bool {
 		return $this->transactionHandler->inSectionTransaction( $fname );
 	}
 
@@ -738,7 +642,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 */
-	public function beginAtomicTransaction( $fname = __METHOD__ ) {
+	public function beginAtomicTransaction( $fname = __METHOD__ ): void {
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
 		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
@@ -755,7 +659,7 @@ class Database {
 	 *
 	 * @return void
 	 */
-	public function endAtomicTransaction( $fname = __METHOD__ ) {
+	public function endAtomicTransaction( $fname = __METHOD__ ): void {
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
 		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
@@ -770,7 +674,7 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ) {
+	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ): void {
 		$connection = $this->connRef->getConnection( 'write' );
 
 		if ( $connection->trxLevel() ) {
@@ -783,7 +687,7 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionCommitOrIdle( callable $callback ) {
+	public function onTransactionCommitOrIdle( callable $callback ): void {
 		$connection = $this->connRef->getConnection( 'write' );
 		$connection->onTransactionCommitOrIdle( $callback );
 	}
@@ -795,9 +699,14 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function escape_bytea( $text ) {
+	public function escape_bytea( $text ): string {
 		if ( $this->isType( 'postgres' ) ) {
-			$text = pg_escape_bytea( $text );
+			// normally one uses pg_escape_bytea PHP function to do this
+			// unfortunately pg_escape_bytea requires a PgSql\Connection as of PHP 8.1+
+			// this seems to be quite hard to get so here is a PHP alternative
+			// Emit the bytea-hex input format instead (uniform since PostgreSQL 9.0+)
+			$text = (string)( $text ?? '' );
+			return '\\x' . bin2hex( $text );
 		}
 
 		return $text;
@@ -805,14 +714,10 @@ class Database {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function unescape_bytea( $text ) {
+	public function unescape_bytea( ?string $text ): ?string {
 		if ( $this->isType( 'postgres' ) ) {
-			$text = pg_unescape_bytea( $text );
+			$text = pg_unescape_bytea( $text ?? '' );
 		}
 
 		return $text;

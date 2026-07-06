@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils\Validators;
 
-use SMW\DIWikiPage;
+use PHPUnit\Framework\Assert;
+use SMW\DataItems\WikiPage;
 use SMW\Store;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
@@ -14,32 +14,22 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class IncomingSemanticDataValidator extends \PHPUnit\Framework\Assert {
-
-	use PHPUnitCompat;
-
-	/**
-	 * @var Store
-	 */
-	private $store;
+class IncomingSemanticDataValidator extends Assert {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param array $incomingSemanticData [description]
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string $message
 	 */
-	public function assertThatIncomingDataAreSet( array $incomingSemanticData, DIWikiPage $subject, $message ) {
+	public function assertThatIncomingDataAreSet( array $incomingSemanticData, WikiPage $subject, $message ) {
 		if ( !isset( $incomingSemanticData['propertyKeys'] ) ) {
 			return;
 		}

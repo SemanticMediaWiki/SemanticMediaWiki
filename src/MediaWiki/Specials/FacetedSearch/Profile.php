@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Specials\FacetedSearch;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\ProfileSourceDefinitionConflictException;
 use SMW\Schema\Compartment;
-use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\SchemaFactory;
 
 /**
@@ -21,46 +20,26 @@ class Profile {
 	 */
 	const SCHEMA_TYPE = 'FACETEDSEARCH_PROFILE_SCHEMA';
 
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
+	private ?Compartment $profile = null;
 
-	/**
-	 * @var Compartment
-	 */
-	private $profile;
+	private array $profileList = [];
 
-	/**
-	 * @var
-	 */
-	private $profileList = [];
+	private ?Compartment $defaultProfile = null;
 
-	/**
-	 * @var Compartment
-	 */
-	private $defaultProfile;
-
-	/**
-	 * @var string
-	 */
-	private $profileName = '';
+	private string $profileName = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SchemaFactory $schemaFactory
-	 * @param string $profileName
 	 */
-	public function __construct( SchemaFactory $schemaFactory, string $profileName = '' ) {
-		$this->schemaFactory = $schemaFactory;
+	public function __construct(
+		private readonly SchemaFactory $schemaFactory,
+		string $profileName = '',
+	) {
 		$this->profileName = str_replace( '_profile', '', $profileName );
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getProfileName(): string {
 		return $this->profileName;
@@ -68,8 +47,6 @@ class Profile {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getProfileCount(): int {
 		return count( $this->getProfileList() );
@@ -77,8 +54,6 @@ class Profile {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getProfileList(): array {
 		if ( $this->profileList === [] ) {
@@ -110,14 +85,10 @@ class Profile {
 		return $this->defaultProfile->get( $key, $default );
 	}
 
-	private function loadProfile() {
+	private function loadProfile(): void {
 		$schemaList = $this->schemaFactory->newSchemaFinder()->getSchemaListByType(
 			self::SCHEMA_TYPE
 		);
-
-		if ( $schemaList === null ) {
-			throw new SchemaTypeNotFoundException( self::SCHEMA_TYPE );
-		}
 
 		$compartmentIterator = $schemaList->newCompartmentIteratorByKey( 'profiles' );
 
@@ -136,7 +107,7 @@ class Profile {
 		}
 	}
 
-	private function addProfile( Compartment $profile ) {
+	private function addProfile( Compartment $profile ): void {
 		$name = str_replace( '_profile', '', $profile->get( Compartment::ASSOCIATED_SECTION ) );
 
 		$this->profileList[$name] = $profile->get( 'message_key' );

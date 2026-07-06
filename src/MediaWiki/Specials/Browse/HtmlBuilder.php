@@ -2,18 +2,19 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Skin\SkinComponentUtils;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMWDataValue;
-use TemplateParser;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,122 +25,78 @@ use TemplateParser;
  */
 class HtmlBuilder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
-
-	/**
-	 * @var bool
-	 */
-	private $showoutgoing = true;
+	private bool $showoutgoing = true;
 
 	/**
 	 * To display incoming values?
-	 *
-	 * @var bool
 	 */
-	private $showincoming = false;
+	private bool $showincoming = false;
 
 	/**
 	 * At which incoming property are we currently?
-	 *
-	 * @var int
 	 */
-	private $offset = 0;
+	private int $offset = 0;
 
 	/**
 	 * How many incoming values should be asked for
-	 *
-	 * @var int
 	 */
-	private $incomingValuesCount = 8;
+	private int $incomingValuesCount = 8;
 
 	/**
 	 * How many outgoing values should be asked for
-	 *
-	 * @var int
 	 */
-	private $outgoingValuesCount = 200;
+	private int $outgoingValuesCount = 200;
 
 	/**
 	 * How many incoming properties should be asked for
-	 *
-	 * @var int
 	 */
-	private $incomingPropertiesCount = 21;
+	private int $incomingPropertiesCount = 21;
 
-	/**
-	 * @var array
-	 */
-	private $extraModules = [];
+	private array $extraModules = [];
 
-	/**
-	 * @var array
-	 */
-	private $options = [];
+	private array $options = [];
 
-	/**
-	 * @var array
-	 */
-	private $language = 'en';
+	private string|int $language = 'en';
 
-	private SMWDataValue $dataValue;
+	private DataValue $dataValue;
 
 	private string $articletext;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param DIWikiPage $subject
 	 */
-	public function __construct( Store $store, DIWikiPage $subject ) {
-		$this->store = $store;
-		$this->subject = $subject;
+	public function __construct(
+		private readonly Store $store,
+		private readonly WikiPage $subject,
+		private readonly ValueFormatter $valueFormatter,
+	) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
-	public function getOptions() {
+	public function getOptions(): array {
 		return $this->options;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $key
-	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( string $key, mixed $value ): void {
 		$this->options[$key] = $value;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $key
-	 *
-	 * @return mixed
 	 */
-	public function getOption( $key, $default = null ) {
+	public function getOption( string $key, mixed $default = null ): mixed {
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
@@ -149,10 +106,8 @@ class HtmlBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function legacy() {
+	public function legacy(): string {
 		$subject = [
 			'dbkey' => $this->subject->getDBKey(),
 			'ns' => $this->subject->getNamespace(),
@@ -183,7 +138,7 @@ class HtmlBuilder {
 			'subobject' => $this->subject->getSubobjectName(),
 		];
 
-		$this->language = $this->getOption( 'lang' ) !== null ? $this->getOption( 'lang' ) : Message::USER_LANGUAGE;
+		$this->language = $this->getOption( 'lang' ) ?? Message::USER_LANGUAGE;
 
 		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$this->subject
@@ -225,15 +180,14 @@ class HtmlBuilder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
-	public function buildHTML() {
-		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
+	public function buildHTML(): string {
+		$offset = $this->getOption( 'offset' );
+		if ( $offset ) {
 			$this->offset = $offset;
 		}
 
-		$this->language = $this->getOption( 'lang' ) !== null ? $this->getOption( 'lang' ) : Message::USER_LANGUAGE;
+		$this->language = $this->getOption( 'lang' ) ?? Message::USER_LANGUAGE;
 
 		$this->outgoingValuesCount = $this->getOption( 'valuelistlimit.out', 200 );
 
@@ -469,7 +423,7 @@ class HtmlBuilder {
 		}
 
 		return [
-			'html-title' => ValueFormatter::getFormattedSubject( $this->dataValue ),
+			'html-title' => $this->valueFormatter->getFormattedSubject( $this->dataValue ),
 			'html-actions' => $actionsHtml
 		];
 	}
@@ -484,7 +438,7 @@ class HtmlBuilder {
 	 */
 	private function getPaginationData( bool $more ): array {
 		if (
-			$more === false ||
+			!$more ||
 			$this->offset <= 0 ||
 			$this->getOption( 'showAll' )
 		) {
@@ -626,7 +580,7 @@ class HtmlBuilder {
 
 		// Sort by label instead of the key which may start with `_` or `__`
 		// and thereby distorts the lexicographical order
-		usort( $properties, static function ( $a, $b ) {
+		usort( $properties, static function ( $a, $b ): int {
 			return strnatcmp( $a->getLabel(), $b->getLabel() );
 		} );
 
@@ -642,7 +596,7 @@ class HtmlBuilder {
 				$contextPage
 			);
 
-			$propertyLabel = ValueFormatter::getPropertyLabel(
+			$propertyLabel = $this->valueFormatter->getPropertyLabel(
 				$dvProperty,
 				$incoming,
 				$showInverse
@@ -687,7 +641,7 @@ class HtmlBuilder {
 					[
 						'class' => 'smw-factbox-value'
 					],
-					ValueFormatter::getFormattedValue( $dv, $dvProperty, $incoming )
+					$this->valueFormatter->getFormattedValue( $dv, $dvProperty, $incoming )
 				);
 			}
 
@@ -724,7 +678,7 @@ class HtmlBuilder {
 				$value_html .= Html::element(
 					'a',
 					[
-						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( [
+						'href' => SkinComponentUtils::makeSpecialUrl( 'SearchByProperty', [
 							 'property' => $dvProperty->getWikiValue(),
 							 'value' => $this->dataValue->getWikiValue()
 						] )
@@ -737,7 +691,7 @@ class HtmlBuilder {
 				$value_html .= Html::element(
 					'a',
 					[
-						'href' => \SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( [
+						'href' => SkinComponentUtils::makeSpecialUrl( 'PageProperty', [
 							 'type' => $dvProperty->getWikiValue(),
 							 'from' => $this->dataValue->getWikiValue()
 						] )
@@ -761,11 +715,11 @@ class HtmlBuilder {
 	 * Returns the Mustache data to build the HTML for message classes
 	 * in connection with categories linked to a property group.
 	 */
-	private function getGroupMessageClassLinksData( $groupFormatter, $semanticData ): array {
+	private function getGroupMessageClassLinksData( GroupFormatter $groupFormatter, SemanticData $semanticData ): array {
 		$data = [];
 		$contextPage = $semanticData->getSubject();
 
-		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new DIProperty( '_PPGR' ) ) ) {
+		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new Property( '_PPGR' ) ) ) {
 			return $data;
 		}
 

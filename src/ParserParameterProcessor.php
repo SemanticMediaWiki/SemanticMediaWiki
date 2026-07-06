@@ -13,35 +13,21 @@ use SMW\Utils\ErrorCodeFormatter;
  */
 class ParserParameterProcessor {
 
-	/**
-	 * @var string
-	 */
-	private $defaultSeparator = ',';
+	private string $defaultSeparator = ',';
 
-	/**
-	 * @var array
-	 */
-	private $rawParameters;
+	private array $rawParameters;
 
 	/**
 	 * @var array
 	 */
 	private $parameters;
 
-	/**
-	 * @var null
-	 */
-	private $first = null;
+	private ?string $first = null;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $rawParameters
 	 */
 	public function __construct( array $rawParameters = [] ) {
 		$this->rawParameters = $rawParameters;
@@ -52,10 +38,8 @@ class ParserParameterProcessor {
 	 * Returns collected errors
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -66,23 +50,14 @@ class ParserParameterProcessor {
 	 *
 	 * @param mixed $error
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		$this->errors = array_merge( (array)$error === $error ? $error : [ $error ], $this->errors );
 	}
 
 	/**
-	 * @deprecated since 2.3, use ParserParameterProcessor::getFirstParameter
-	 */
-	public function getFirst() {
-		return $this->getFirstParameter();
-	}
-
-	/**
 	 * @since 2.3
-	 *
-	 * @return string
 	 */
-	public function getFirstParameter() {
+	public function getFirstParameter(): ?string {
 		return $this->first;
 	}
 
@@ -90,10 +65,8 @@ class ParserParameterProcessor {
 	 * Returns raw parameters
 	 *
 	 * @since 1.9
-	 *
-	 * @return string
 	 */
-	public function getRaw() {
+	public function getRaw(): array {
 		return $this->rawParameters;
 	}
 
@@ -112,10 +85,8 @@ class ParserParameterProcessor {
 	 * @since 2.3
 	 *
 	 * @param string $key
-	 *
-	 * @return bool
 	 */
-	public function hasParameter( $key ) {
+	public function hasParameter( $key ): bool {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );
 	}
 
@@ -124,18 +95,8 @@ class ParserParameterProcessor {
 	 *
 	 * @param string $key
 	 */
-	public function removeParameterByKey( $key ) {
+	public function removeParameterByKey( $key ): void {
 		unset( $this->parameters[$key] );
-	}
-
-	/**
-	 * @deprecated since 2.5, use ParserParameterProcessor::getParameterValuesByKey
-	 * @since 2.3
-	 *
-	 * @return array
-	 */
-	public function getParameterValuesFor( $key ) {
-		return $this->getParameterValuesByKey( $key );
 	}
 
 	/**
@@ -155,10 +116,8 @@ class ParserParameterProcessor {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $parameters
 	 */
-	public function setParameters( array $parameters ) {
+	public function setParameters( array $parameters ): void {
 		$this->parameters = $parameters;
 	}
 
@@ -168,7 +127,7 @@ class ParserParameterProcessor {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function addParameter( $key, $value ) {
+	public function addParameter( $key, $value ): void {
 		if ( $key !== '' && $value !== '' ) {
 			$this->parameters[$key][] = $value;
 		}
@@ -180,7 +139,7 @@ class ParserParameterProcessor {
 	 * @param string $key
 	 * @param array $values
 	 */
-	public function setParameter( $key, array $values ) {
+	public function setParameter( $key, array $values ): void {
 		if ( $key !== '' && $values !== [] ) {
 			$this->parameters[$key] = $values;
 		}
@@ -192,7 +151,7 @@ class ParserParameterProcessor {
 	 * @param array &$parameters
 	 * @param bool $associative
 	 */
-	public static function sort( array &$parameters, $associative = true ) {
+	public static function sort( array &$parameters, $associative = true ): void {
 		// Associative vs. simple index array sort
 		if ( $associative ) {
 			ksort( $parameters );
@@ -202,6 +161,7 @@ class ParserParameterProcessor {
 
 		foreach ( $parameters as $key => &$value ) {
 			if ( is_array( $value ) ) {
+				/** @phan-suppress-next-line PhanRedundantConditionInLoop */
 				self::sort( $value, is_int( $key ) );
 			}
 		}
@@ -211,7 +171,7 @@ class ParserParameterProcessor {
 	 * Map raw parameters array into an 2n-array for simplified
 	 * via [key] => [value1, value2]
 	 */
-	private function doMap( array $params ) {
+	private function doMap( array $params ): array {
 		$results = [];
 		$previousProperty = null;
 
@@ -269,7 +229,7 @@ class ParserParameterProcessor {
 		return $this->parseFromJson( $results );
 	}
 
-	private function lookAheadOnNextElement( &$params, &$pipe ) {
+	private function lookAheadOnNextElement( &$params, bool &$pipe ): string {
 		$separator = '';
 
 		if ( !next( $params ) ) {
@@ -278,13 +238,11 @@ class ParserParameterProcessor {
 
 		$nextElement = explode( '=', trim( current( $params ) ), 2 );
 
-		if ( $nextElement !== [] ) {
-			// This allows assignments of type |Has property=Test1,Test2|+sep=,
-			// as a means to support multiple value declaration
-			if ( substr( $nextElement[0], -5 ) === '+sep' ) {
-				$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
-				next( $params );
-			}
+		// This allows assignments of type |Has property=Test1,Test2|+sep=,
+		// as a means to support multiple value declaration
+		if ( substr( $nextElement[0], -5 ) === '+sep' ) {
+			$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
+			next( $params );
 		}
 
 		if ( current( $params ) === '+pipe' ) {
@@ -295,7 +253,7 @@ class ParserParameterProcessor {
 		return $separator;
 	}
 
-	private function parseFromJson( $results ) {
+	private function parseFromJson( array $results ): array {
 		if ( !isset( $results['@json'] ) || !isset( $results['@json'][0] ) ) {
 			return $results;
 		}
@@ -315,7 +273,7 @@ class ParserParameterProcessor {
 			return $results;
 		}
 
-		array_walk( $params, static function ( &$value, $key ) {
+		array_walk( $params, static function ( &$value, $key ): void {
 			if ( $value === '' ) {
 				$value = [];
 			}

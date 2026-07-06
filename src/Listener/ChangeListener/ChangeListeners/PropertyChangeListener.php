@@ -2,12 +2,12 @@
 
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
+use MediaWiki\HookContainer\HookContainer;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
 use SMW\Listener\ChangeListener\ChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Store;
 
 /**
@@ -19,63 +19,56 @@ use SMW\Store;
 class PropertyChangeListener implements ChangeListener {
 
 	use CallableChangeListenerTrait;
-	use HookDispatcherAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ?HookContainer $hookContainer = null;
 
-	/**
-	 * @var
-	 */
-	private $propertyIdKeyMap = [];
+	private array $propertyIdKeyMap = [];
 
-	/**
-	 * @var
-	 */
-	private $changes = [];
+	private array $changes = [];
 
-	/**
-	 * @var bool
-	 */
-	private $initListeners = false;
+	private bool $initListeners = false;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
 	 * @since 3.2
 	 */
-	public function loadListeners() {
-		if ( $this->initListeners === true ) {
+	public function loadListeners(): void {
+		if ( $this->initListeners ) {
 			return;
 		}
 
 		$this->initListeners = true;
-		$this->hookDispatcher->onRegisterPropertyChangeListeners( $this );
+		$this->hookContainer->run( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', [ $this ] );
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param DIProperty $property
-	 * @param callable $callback
 	 */
-	public function addListenerCallback( DIProperty $property, callable $callback ) {
+	public function addListenerCallback( Property $property, callable $callback ): void {
 		$key = $property->getKey();
 
 		$pid = $this->store->getObjectIds()->getSMWPropertyID(
 			$property
 		);
 
-		$this->propertyIdKeyMap[$pid] = $key;
+		// A property without a stored id (getSMWPropertyID() returns null) has
+		// no entry to match against later, so skip it rather than coerce the
+		// null into an array offset (deprecated as of PHP 8.5).
+		if ( $pid !== null ) {
+			$this->propertyIdKeyMap[$pid] = $key;
+		}
 
 		if ( !isset( $this->changeListeners[$key] ) ) {
 			$this->changeListeners[$key] = [];
@@ -87,13 +80,10 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 *
-	 * @param int $pid
-	 * @param array $record
-	 *
 	 * @throws RuntimeException
 	 */
-	public function recordChange( int $pid, array $record ) {
-		if ( $this->initListeners === false ) {
+	public function recordChange( int $pid, array $record ): void {
+		if ( !$this->initListeners ) {
 			throw new RuntimeException(
 				"Hook wasn't run, possible listeners weren't registered from the available hook!"
 			);
@@ -114,14 +104,14 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 */
-	public function triggerChangeListeners() {
+	public function triggerChangeListeners(): void {
 		$keyIdMap = array_flip( $this->propertyIdKeyMap );
 
 		foreach ( $this->changeListeners as $key => $changeListeners ) {
 
 			$pid = $keyIdMap[$key] ?? null;
 
-			if ( !isset( $this->changes[$pid] ) ) {
+			if ( $pid === null || !isset( $this->changes[$pid] ) ) {
 				continue;
 			}
 
@@ -139,15 +129,15 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 */
-	public function runChangeListeners() {
+	public function runChangeListeners(): void {
 		$this->store->getConnection( 'mw.db' )->onTransactionCommitOrIdle( [ $this, 'triggerChangeListeners' ] );
 	}
 
 	/**
 	 * @see CallableChangeListenerTrait::triggerByKey
 	 */
-	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {
-		$property = new DIProperty( $key );
+	protected function triggerByKey( string $key, ChangeRecord $changeRecord ): void {
+		$property = new Property( $key );
 
 		foreach ( $this->changeListeners[$key] as $changeListener ) {
 			$changeListener( $property, $changeRecord );

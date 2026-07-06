@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils\Fixtures\Facts;
 
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
 use SMW\Tests\Utils\Fixtures\Properties\CountryCategory;
 use SMW\Tests\Utils\Fixtures\Properties\LocatedInProperty;
 use SMW\Tests\Utils\UtilityFactory;
@@ -18,23 +18,14 @@ use SMW\Tests\Utils\UtilityFactory;
 class FranceFactsheet {
 
 	/**
-	 * @var DIWikiPage
-	 */
-	private $targetSubject = null;
-
-	/**
 	 * @var DataValueFactory
 	 */
 	private $dataValueFactory;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param DIWikiPage|null $targetSubject
 	 */
-	public function __construct( ?DIWikiPage $targetSubject = null ) {
-		$this->targetSubject = $targetSubject;
-
+	public function __construct( private ?WikiPage $targetSubject = null ) {
 		if ( $this->targetSubject === null ) {
 			$this->targetSubject = $this->asSubject();
 		}
@@ -45,19 +36,19 @@ class FranceFactsheet {
 	/**
 	 * @since 2.1
 	 *
-	 * @param DIWikiPage $targetSubject
+	 * @param WikiPage $targetSubject
 	 */
-	public function setTargetSubject( DIWikiPage $targetSubject ) {
+	public function setTargetSubject( WikiPage $targetSubject ) {
 		$this->targetSubject = $targetSubject;
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function asSubject() {
-		return new DIWikiPage( 'France', NS_MAIN );
+		return new WikiPage( 'France', NS_MAIN );
 	}
 
 	/**
@@ -85,7 +76,7 @@ class FranceFactsheet {
 		$locatedInProperty = new LocatedInProperty();
 
 		return $this->dataValueFactory->newDataValueByItem(
-			DIWikiPage::newFromText( 'European Union', NS_MAIN ),
+			WikiPage::newFromText( 'European Union', NS_MAIN ),
 			$locatedInProperty->getProperty(),
 			'EU'
 		);
@@ -105,7 +96,7 @@ class FranceFactsheet {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 
 		foreach ( $subjects as $subject ) {
-			if ( $subject instanceof DIWikiPage ) {
+			if ( $subject instanceof WikiPage ) {
 				$pageDeleter->deletePage( $subject->getTitle() );
 			}
 		}

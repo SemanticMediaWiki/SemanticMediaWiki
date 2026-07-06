@@ -2,9 +2,12 @@
 
 namespace SMW\Maintenance;
 
+use Iterator;
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
+use SMW\SQLStore\Installer;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
@@ -26,7 +29,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class populateHashField extends \Maintenance {
+class populateHashField extends Maintenance {
 
 	/**
 	 * Threshold as the when the `populateHashField.php` should be used by an
@@ -87,7 +90,7 @@ class populateHashField extends \Maintenance {
 		}
 
 		// Remove legacy by 3.3
-		$setupFile->remove( \SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE );
+		$setupFile->remove( Installer::POPULATE_HASH_FIELD_COMPLETE );
 
 		$this->reportMessage(
 			$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
@@ -96,8 +99,6 @@ class populateHashField extends \Maintenance {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
 	public function setStore( Store $store ) {
 		$this->store = $store;
@@ -105,8 +106,6 @@ class populateHashField extends \Maintenance {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -129,7 +128,8 @@ class populateHashField extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 
@@ -190,26 +190,26 @@ class populateHashField extends \Maintenance {
 			unset( $conditions['smw_hash' ] );
 		}
 
-		$this->last = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			$conditions,
-			__METHOD__
-		);
+		$this->last = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->caller( __METHOD__ )
+			->fetchField();
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		return $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject'
-			],
-			$conditions,
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	/**
@@ -217,7 +217,7 @@ class populateHashField extends \Maintenance {
 	 *
 	 * @param Iterator|null $rows
 	 */
-	public function populate( ?\Iterator $rows = null ) {
+	public function populate( ?Iterator $rows = null ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$this->cliMsgFormatter->setStartTime( (int)microtime( true ) );
 
@@ -266,16 +266,16 @@ class populateHashField extends \Maintenance {
 				$this->cliMsgFormatter->twoColsOverride( "... updating the `smw_hash` field ...", "$progress", 3 )
 			);
 
-			$connection->update(
-				SQLStore::ID_TABLE,
-				[
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [
 					'smw_hash' => $hash
-				],
-				[
+				] )
+				->where( [
 					'smw_id' => $row->smw_id
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->execute();
 		}
 
 		$this->reportMessage( "\n" );

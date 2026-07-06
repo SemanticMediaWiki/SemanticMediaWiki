@@ -15,10 +15,7 @@ class WikitextTemplateRenderer {
 	 */
 	private $fields = [];
 
-	/**
-	 * @var string
-	 */
-	private $template = '';
+	private string $template = '';
 
 	/**
 	 * @since 2.2
@@ -26,7 +23,7 @@ class WikitextTemplateRenderer {
 	 * @param string $field
 	 * @param mixed $value
 	 */
-	public function addField( $field, $value ) {
+	public function addField( $field, $value ): void {
 		$this->fields[$field] = $value;
 	}
 
@@ -35,11 +32,11 @@ class WikitextTemplateRenderer {
 	 *
 	 * @param string $templateName
 	 */
-	public function packFieldsForTemplate( $templateName ) {
+	public function packFieldsForTemplate( string $templateName ): void {
 		$this->template .= '{{' . $templateName;
 
 		foreach ( $this->fields as $key => $value ) {
-			$this->template .= "\n|$key=$value";
+			$this->template .= "\n|$key=" . str_replace( '|', '{{!}}', $value );
 		}
 
 		$this->template .= '}}';
@@ -51,7 +48,7 @@ class WikitextTemplateRenderer {
 	 *
 	 * @return string
 	 */
-	public function render() {
+	public function render(): string {
 		$wikiText = $this->template;
 		$this->template = '';
 		$this->fields = [];

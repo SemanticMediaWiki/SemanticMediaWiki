@@ -2,8 +2,9 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use Onoi\Cache\Cache;
+use SMW\Store;
 use SMW\Utils\Timer;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,27 +22,15 @@ class CachingLookup {
 	 */
 	private $store;
 
-	/**
-	 * @var Lookup
-	 */
-	private $lookup;
-
-	/**
-	 * @var int|bool
-	 */
-	private $cacheTTL;
-
-	private Cache $cache;
+	private int|false $cacheTTL;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Cache $cache
-	 * @param Lookup $lookup
 	 */
-	public function __construct( Cache $cache, Lookup $lookup ) {
-		$this->cache = $cache;
-		$this->lookup = $lookup;
+	public function __construct(
+		private readonly BagOStuff $cache,
+		private readonly Lookup $lookup,
+	) {
 		$this->cacheTTL = self::CACHE_TTL;
 	}
 
@@ -50,7 +39,7 @@ class CachingLookup {
 	 *
 	 * @param int|bool $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ) {
+	public function setCacheTTL( int|bool $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL;
 	}
 
@@ -72,10 +61,13 @@ class CachingLookup {
 			]
 		);
 
-		if ( $this->cacheTTL !== false && ( $res = $this->cache->fetch( $hash ) ) !== false ) {
-			$res['meta']['isFromCache'] = true;
-			$res['meta']['queryTime'] = Timer::getElapsedTime( __METHOD__, 5 );
-			return $res;
+		if ( $this->cacheTTL !== false ) {
+			$res = $this->cache->get( $hash );
+			if ( $res !== false ) {
+				$res['meta']['isFromCache'] = true;
+				$res['meta']['queryTime'] = Timer::getElapsedTime( __METHOD__, 5 );
+				return $res;
+			}
 		}
 
 		$res = $this->lookup->lookup(
@@ -83,7 +75,7 @@ class CachingLookup {
 		);
 
 		if ( $this->cacheTTL !== false ) {
-			$this->cache->save( $hash, $res, $this->cacheTTL );
+			$this->cache->set( $hash, $res, $this->cacheTTL );
 		}
 
 		$res['meta']['isFromCache'] = false;

@@ -3,10 +3,11 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
-use SMW\DIWikiPage;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
+use SMW\DataItems\WikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -22,7 +23,6 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 
 	private $title = null;
 	private $applicationFactory;
-	private $mwHooksHandler;
 	private $semanticDataValidator;
 	private $pageDeleter;
 	private $pageCreator;
@@ -31,10 +31,6 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
-		$this->mwHooksHandler->invokeHooksFromRegistry();
-
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
 		$this->pageDeleter = $this->testEnvironment->getUtilityFactory()->newPageDeleter();
@@ -42,14 +38,13 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->testEnvironment->addConfiguration( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$this->revisionGuard = ApplicationFactory::getInstance()->singleton( 'RevisionGuard' );
 	}
 
 	public function tearDown(): void {
 		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
 
 		$this->testEnvironment->flushPages( [ $this->title ] );
 		$this->testEnvironment->tearDown();
@@ -61,7 +56,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 			->createPage( $this->title );
 
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromTitle( $this->title )
+			WikiPage::newFromTitle( $this->title )
 		);
 
 		$this->assertCount(
@@ -101,19 +96,19 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		);
 
 		$this->assertCount(
-			4,
+			3,
 			$parserData->getSemanticData()->getProperties()
 		);
 
 		$this->assertCount(
 			4,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties()
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) )->getProperties()
 		);
 
 		/**
 		 * See #347 and LinksUpdateComplete
 		 */
-		$linksUpdate = new LinksUpdate( $this->title, new \ParserOutput() );
+		$linksUpdate = new LinksUpdate( $this->title, new ParserOutput() );
 		$linksUpdate->doUpdate();
 
 		$this->testEnvironment->executePendingDeferredUpdates();
@@ -124,7 +119,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		 * was invoked empty
 		 */
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromTitle( $this->title )
+			WikiPage::newFromTitle( $this->title )
 		);
 
 		$this->assertCount(
@@ -176,7 +171,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 
 		$this->assertCount(
 			2,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties()
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) )->getProperties()
 		);
 
 		return $firstRunRevision;

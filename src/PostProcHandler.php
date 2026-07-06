@@ -2,14 +2,15 @@
 
 namespace SMW;
 
-use Html;
-use Onoi\Cache\Cache;
-use ParserOutput;
-use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
+use MediaWiki\EditPage\EditPage;
+use MediaWiki\Html\Html;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
+use SMW\Query\Query;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMWQuery as Query;
-use Title;
-use WebRequest;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Some updates need to be handled in via post processing,
@@ -48,28 +49,19 @@ class PostProcHandler {
 	 */
 	const POST_UPDATE_TTL = 86400;
 
-	/**
-	 * @var ParserOutput
-	 */
-	private $parserOutput;
+	private ParserOutput $parserOutput;
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
+	private BagOStuff $cache;
 
-	/**
-	 * @var
-	 */
-	private $options = [];
+	private array $options = [];
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param ParserOutput $parserOutput
-	 * @param Cache $cache
+	 * @param BagOStuff $cache
 	 */
-	public function __construct( ParserOutput $parserOutput, Cache $cache ) {
+	public function __construct( ParserOutput $parserOutput, BagOStuff $cache ) {
 		$this->parserOutput = $parserOutput;
 		$this->cache = $cache;
 	}
@@ -79,7 +71,7 @@ class PostProcHandler {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -101,10 +93,8 @@ class PostProcHandler {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array|string
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [ 'ext.smw.postproc', 'ext.smw.purge' ];
 	}
 
@@ -117,7 +107,7 @@ class PostProcHandler {
 	 * @return string
 	 */
 	public function getHtml( Title $title, WebRequest $webRequest ) {
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -132,7 +122,7 @@ class PostProcHandler {
 		// page is reloaded using an API request
 		// @see Article::view
 		$postEdit = $webRequest->getCookie(
-			\EditPage::POST_EDIT_COOKIE_KEY_PREFIX . $title->getLatestRevID()
+			EditPage::POST_EDIT_COOKIE_KEY_PREFIX . $title->getLatestRevID()
 		);
 
 		$jobs = [];
@@ -156,19 +146,6 @@ class PostProcHandler {
 			$attributes['data-msg'] = 'smw-purge-update-dependencies';
 			$attributes['data-forcelinkupdate'] = true;
 			return Html::rawElement( 'div', [ 'class' => 'smw-postproc page-purge' ] + $attributes );
-		} elseif (
-			$postEdit === null &&
-			DependencyValidator::hasLikelyOutdatedDependencies( $title ) ) {
-			// We still suspect outdated query dependencies but only
-			// force an update of the parserCache without a purge since
-			// we don't have any `@annotation` queries that would require
-			// to recompute any pending annotations
-			$parameters = [
-				'action' => 'post-processing-query-dependency'
-			];
-
-			$parserCachePurgeJob = new ParserCachePurgeJob( $title, $parameters );
-			$parserCachePurgeJob->updateParserCache();
 		}
 
 		if ( $postEdit !== null && isset( $this->options['run-jobs'] ) ) {
@@ -181,8 +158,11 @@ class PostProcHandler {
 
 		// Was the edit SMW specific or contains it an unrelated (e.g altered
 		// some text unrelated to any property/value annotation) change?
-		if ( $postEdit !== null && ( $changeDiff = ChangeDiff::fetch( $this->cache, $subject ) ) !== false ) {
-			$postEdit = $this->checkDiff( $changeDiff );
+		if ( $postEdit !== null ) {
+			$changeDiff = ChangeDiff::fetch( $this->cache, $subject );
+			if ( $changeDiff !== false ) {
+				$postEdit = $this->checkDiff( $changeDiff );
+			}
 		}
 
 		// Is `@annotation` available as part of a #ask query?
@@ -196,11 +176,11 @@ class PostProcHandler {
 			$attributes['data-ref'] = json_encode( array_keys( $refs ) );
 		}
 
-		if (
-			$postEdit !== null &&
-			isset( $this->options['check-query'] ) &&
-			( $queries = $this->parserOutput->getExtensionData( self::POST_EDIT_CHECK ) ) !== null ) {
-			$attributes['data-query'] = json_encode( $queries );
+		if ( $postEdit !== null && isset( $this->options['check-query'] ) ) {
+			$queries = $this->parserOutput->getExtensionData( self::POST_EDIT_CHECK );
+			if ( $queries !== null ) {
+				$attributes['data-query'] = json_encode( $queries );
+			}
 		}
 
 		// The element is only added temporarily in the event of a postEdit, a
@@ -218,7 +198,7 @@ class PostProcHandler {
 	 *
 	 * @param Query $query
 	 */
-	public function addUpdate( Query $query ) {
+	public function addUpdate( Query $query ): void {
 		// Query:getHash returns a hash based on a fingerprint
 		// (when $smwgQueryResultCacheType is set) that eliminates duplicate
 		// queries, yet for the post processing it is necessary to know each
@@ -245,7 +225,7 @@ class PostProcHandler {
 	 *
 	 * @param Query $query
 	 */
-	public function addCheck( Query $query ) {
+	public function addCheck( Query $query ): void {
 		if ( !isset( $this->options['check-query'] ) || $this->options['check-query'] === false ) {
 			return;
 		}
@@ -274,48 +254,7 @@ class PostProcHandler {
 		);
 	}
 
-	private function checkRef( $title, $postEdit ) {
-		$key = DependencyLinksUpdateJournal::makeKey( $title );
-
-		// Is a postEdit, mark the update to avoid running in circles
-		// when the pageCache is purged, use the latestRevID to distinguish
-		// content changes
-		if ( $postEdit !== null ) {
-
-			$record = [
-				$title->getLatestRevID() => true
-			];
-
-			$this->cache->save( $key . ':post', $record, self::POST_UPDATE_TTL );
-
-			return $postEdit;
-		}
-
-		// Run outside of a postEdit, check if the dependency journal contains an
-		// active reference to the article and run once (== hash that set by the
-		// dependency journal which is == revID that initiated the change)
-		$hash = $this->cache->fetch( $key );
-		$record = $this->cache->fetch( $key . ':post' );
-
-		if ( $hash !== false && ( $record === false || !isset( $record[$hash] ) ) ) {
-			$postEdit = true;
-
-			if ( !is_array( $record ) ) {
-				$record = [];
-			}
-
-			$record[$hash] = true;
-
-			// Add an update marker (1h) to avoid running twice in case the
-			// journal reference hasn't been deleted yet as result of an existing
-			// PostProcHandler update request.
-			$this->cache->save( $key . ':post', $record, self::POST_UPDATE_TTL );
-		}
-
-		return $postEdit;
-	}
-
-	private function checkDiff( $changeDiff ) {
+	private function checkDiff( $changeDiff ): ?bool {
 		$propertyList = $changeDiff->getPropertyList(
 			'flip'
 		);
@@ -354,7 +293,7 @@ class PostProcHandler {
 		return null;
 	}
 
-	private function find_jobs( $jobs ) {
+	private function find_jobs( array $jobs ): array {
 		// Not enabled, no need to invoke a job!
 		if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
 			unset( $jobs['smw.parserCachePurge'] );

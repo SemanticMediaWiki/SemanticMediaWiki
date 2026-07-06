@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\DIProperty;
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\Property;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\Runners\MaintenanceRunner;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -75,20 +75,20 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 
 		 $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		 $main = Title::newFromText( 'Lorem ipsum' );
+		 $main = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Lorem ipsum' );
 
 		 $expectedSomeProperties = [
 			'properties' => [
-				new DIProperty( 'Has boolean' ),
-				new DIProperty( 'Has date' ),
-				new DIProperty( 'Has email' ),
-				new DIProperty( 'Has number' ),
-				new DIProperty( 'Has page' ),
-				new DIProperty( 'Has quantity' ),
-				new DIProperty( 'Has temperature' ),
-				new DIProperty( 'Has text' ),
-				new DIProperty( 'Has Url' ),
-				new DIProperty( 'Has annotation uri' )
+				new Property( 'Has boolean' ),
+				new Property( 'Has date' ),
+				new Property( 'Has email' ),
+				new Property( 'Has number' ),
+				new Property( 'Has page' ),
+				new Property( 'Has quantity' ),
+				new Property( 'Has temperature' ),
+				new Property( 'Has text' ),
+				new Property( 'Has Url' ),
+				new Property( 'Has annotation uri' )
 			]
 		 ];
 
@@ -104,6 +104,42 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 // $this->assertRunWithCategoryOption( $expectedSomeProperties );
 //		$this->assertRunWithSparqlStoreForPropertyOption( $expectedSomeProperties );
 //		$this->assertRunWithSparqlStoreForQueryOption( $expectedSomeProperties );
+	}
+
+	public function testRebuildDataWithUseJobEnqueuesUpdateJobs() {
+		$this->importedTitles = [
+			'Category:Lorem ipsum',
+			'Lorem ipsum',
+			'Elit Aliquam urna interdum',
+			'Platea enim hendrerit',
+			'Property:Has Url',
+			'Property:Has annotation uri',
+			'Property:Has boolean',
+			'Property:Has date',
+			'Property:Has email',
+			'Property:Has number',
+			'Property:Has page',
+			'Property:Has quantity',
+			'Property:Has temperature',
+			'Property:Has text'
+		];
+
+		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
+
+		$jobQueueGroup = MediaWikiServices::getInstance()->getJobQueueGroup();
+		$jobQueueGroup->get( 'smw.update' )->delete();
+
+		$this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildData' );
+		$this->maintenanceRunner->setQuiet();
+		$this->maintenanceRunner->setOptions( [ 'use-job' => true, 'quiet' => true ] )->run();
+
+		$this->assertFalse(
+			$jobQueueGroup->get( 'smw.update' )->isEmpty(),
+			'Expected --use-job to enqueue smw.update jobs'
+		);
+
+		// Drain so queued jobs do not leak into sibling tests.
+		$jobQueueGroup->get( 'smw.update' )->delete();
 	}
 
 	protected function assertRunWithoutOptions( $expectedSomeProperties ) {

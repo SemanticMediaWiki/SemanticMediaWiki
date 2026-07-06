@@ -2,13 +2,15 @@
 
 namespace SMW\Property\Annotators;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\MediaWiki\PageCreator;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\Annotator;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * Handling category annotation
@@ -23,46 +25,30 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var array
-	 */
-	private $categories;
-
-	/**
 	 * @var array|null
 	 */
 	private $hiddenCategories = null;
 
-	/**
-	 * @var bool
-	 */
-	private $showHiddenCategories = true;
+	private bool $showHiddenCategories = true;
 
-	/**
-	 * @var bool
-	 */
-	private $useCategoryInstance = true;
+	private bool $useCategoryInstance = true;
 
-	/**
-	 * @var bool
-	 */
-	private $useCategoryHierarchy = true;
+	private bool $useCategoryHierarchy = true;
 
-	/**
-	 * @var bool
-	 */
-	private $useCategoryRedirect = true;
+	private bool $useCategoryRedirect = true;
 
 	private ProcessingErrorMsgHandler $processingErrorMsgHandler;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param array $categories
 	 */
-	public function __construct( Annotator $propertyAnnotator, array $categories ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private readonly array $categories,
+		private readonly Store $store,
+		private readonly PageCreator $pageCreator,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->categories = $categories;
 	}
 
 	/**
@@ -70,7 +56,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $showHiddenCategories
 	 */
-	public function showHiddenCategories( $showHiddenCategories ) {
+	public function showHiddenCategories( $showHiddenCategories ): void {
 		$this->showHiddenCategories = (bool)$showHiddenCategories;
 	}
 
@@ -79,7 +65,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryInstance
 	 */
-	public function useCategoryInstance( $useCategoryInstance ) {
+	public function useCategoryInstance( $useCategoryInstance ): void {
 		$this->useCategoryInstance = (bool)$useCategoryInstance;
 	}
 
@@ -88,7 +74,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryHierarchy
 	 */
-	public function useCategoryHierarchy( $useCategoryHierarchy ) {
+	public function useCategoryHierarchy( $useCategoryHierarchy ): void {
 		$this->useCategoryHierarchy = (bool)$useCategoryHierarchy;
 	}
 
@@ -97,14 +83,14 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryRedirect
 	 */
-	public function useCategoryRedirect( $useCategoryRedirect ) {
+	public function useCategoryRedirect( $useCategoryRedirect ): void {
 		$this->useCategoryRedirect = (bool)$useCategoryRedirect;
 	}
 
 	/**
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		$subject = $this->getSemanticData()->getSubject();
 		$namespace = $subject->getNamespace();
 		$property = null;
@@ -114,11 +100,11 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 
 		if ( $this->useCategoryInstance && ( $namespace !== NS_CATEGORY ) ) {
-			$property = new DIProperty( DIProperty::TYPE_CATEGORY );
+			$property = new Property( Property::TYPE_CATEGORY );
 		}
 
 		if ( $this->useCategoryHierarchy && ( $namespace === NS_CATEGORY ) ) {
-			$property = new DIProperty( DIProperty::TYPE_SUBCATEGORY );
+			$property = new Property( Property::TYPE_SUBCATEGORY );
 		}
 
 		$semanticData = $this->getSemanticData();
@@ -140,10 +126,11 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$annotationProcessor->release();
 	}
 
-	private function modifySemanticData( $semanticData, $annotationProcessor, $subject, $property, $catname ) {
-		$cat = new DIWikiPage( $catname, NS_CATEGORY );
+	private function modifySemanticData( SemanticData $semanticData, AnnotationProcessor $annotationProcessor, $subject, Property $property, $catname ): void {
+		$cat = new WikiPage( $catname, NS_CATEGORY );
 
-		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
+		$cat = $this->getRedirectTarget( $cat );
+		if ( $cat && $cat->getNamespace() === NS_CATEGORY ) {
 
 			$dataValue = $annotationProcessor->newDataValueByItem(
 				$cat,
@@ -157,12 +144,19 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 			// by the constraint error lookup
 			$dataValue->checkConstraints();
 
+			$property = $dataValue->getProperty();
+
+			if ( $property === null ) {
+				return;
+			}
+
 			$semanticData->addPropertyObjectValue(
-				$dataValue->getProperty(),
+				$property,
 				$cat
 			);
 
-			return $semanticData->addDataValue( $dataValue );
+			$semanticData->addDataValue( $dataValue );
+			return;
 		}
 
 		$container = $this->processingErrorMsgHandler->newErrorContainerFromMsg(
@@ -178,11 +172,16 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 	}
 
-	private function isHiddenCategory( $catName ) {
+	private function isHiddenCategory( $catName ): bool {
 		if ( $this->hiddenCategories === null ) {
+			$title = $this->getSemanticData()->getSubject()->getTitle();
 
-			$wikipage = ApplicationFactory::getInstance()->newPageCreator()->createPage(
-				$this->getSemanticData()->getSubject()->getTitle()
+			if ( $title === null ) {
+				return false;
+			}
+
+			$wikipage = $this->pageCreator->createPage(
+				$title
 			);
 
 			$this->hiddenCategories = $wikipage->getHiddenCategories();
@@ -199,9 +198,9 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		return false;
 	}
 
-	private function getRedirectTarget( $subject ) {
+	private function getRedirectTarget( WikiPage $subject ) {
 		if ( $this->useCategoryRedirect ) {
-			return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $subject );
+			return $this->store->getRedirectTarget( $subject );
 		}
 
 		return $subject;

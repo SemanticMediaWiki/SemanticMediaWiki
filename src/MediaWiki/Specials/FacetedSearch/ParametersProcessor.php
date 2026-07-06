@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Request\WebRequest;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
-use SMWInfolink as Infolink;
-use WebRequest;
 
 /**
  * @private
@@ -27,56 +27,26 @@ use WebRequest;
  */
 class ParametersProcessor {
 
-	// RequestParameters
+	private string $queryString = '';
 
-	/**
-	 * @var Profile
-	 */
-	private $profile;
+	private string $format = '';
 
-	/**
-	 * @var string
-	 */
-	private $queryString = '';
+	private array $parameters = [];
 
-	/**
-	 * @var string
-	 */
-	private $format = '';
+	private array $filterConditions = [];
 
-	/**
-	 * @var
-	 */
-	private $parameters = [];
+	private array $propertyFilters = [];
 
-	/**
-	 * @var
-	 */
-	private $filterConditions = [];
-
-	/**
-	 * @var
-	 */
-	private $propertyFilters = [];
-
-	/**
-	 * @var
-	 */
-	private $valueFilters = [];
+	private array $valueFilters = [];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
 	 */
-	public function __construct( Profile $profile ) {
-		$this->profile = $profile;
+	public function __construct( private readonly Profile $profile ) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getParameters(): array {
 		return $this->parameters;
@@ -84,8 +54,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getFormat(): string {
 		return $this->format;
@@ -93,8 +61,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getFilterConditions(): array {
 		return $this->filterConditions;
@@ -102,8 +68,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getValueFilters(): array {
 		return $this->valueFilters;
@@ -111,8 +75,6 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return array
 	 */
 	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
@@ -120,15 +82,13 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param WebRequest $request
 	 */
-	public function checkRequest( WebRequest $request ) {
+	public function checkRequest( WebRequest $request ): void {
 		// Was not filtered and the query checksum is different which means
 		// the query string was modified
 		if (
 			$request->getVal( 'filtered', '' ) !== '1' &&
-			$request->getInt( 'csum', '' ) !== crc32( $request->getVal( 'q', '' ) ) ) {
+			$request->getInt( 'csum', 0 ) !== crc32( $request->getVal( 'q', '' ) ) ) {
 
 			// Remove the filters that may have remained from a previous
 			// request
@@ -153,9 +113,9 @@ class ParametersProcessor {
 	 * @since 3.2
 	 *
 	 * @param WebRequest $request
-	 * @param array|null $params
+	 * @param string|null $params
 	 */
-	public function process( WebRequest $request, $params ) {
+	public function process( WebRequest $request, ?string $params ): void {
 		$this->parameters = [];
 
 		$query = $request->getVal( 'q' );
@@ -204,8 +164,12 @@ class ParametersProcessor {
 		}
 	}
 
-	private function fromQueryParameter( $query ) {
+	private function fromQueryParameter( ?string $query ): string|array {
 		$params = '';
+
+		if ( $query === null ) {
+			return '';
+		}
 
 		// Allow Category:Foo, Property:Bar, Concept:Foobar
 		if ( strpos( $query, ':' ) !== false ) {
@@ -231,7 +195,7 @@ class ParametersProcessor {
 		return $params;
 	}
 
-	private function makeParameters( $query, $request ) {
+	private function makeParameters( array $query, WebRequest $request ): array {
 		$this->queryString = $query[0] ?? '';
 
 		$parameters = [];
@@ -240,8 +204,8 @@ class ParametersProcessor {
 		// Properties, property values, ranges
 		if ( $request->getVal( 'pv' ) !== '' ) {
 
-			$clear = $request->getArray( 'clear' );
-			$pv = $request->getArray( 'pv' );
+			$clear = (array)$request->getArray( 'clear' );
+			$pv = (array)$request->getArray( 'pv' );
 
 			if ( isset( $clear['p'] ) && isset( $pv[$clear['p']] ) ) {
 				unset( $pv[$clear['p']] );
@@ -257,7 +221,7 @@ class ParametersProcessor {
 
 			$this->valueFilterConditions(
 				$pv,
-				$request->getArray( 'vc' ),
+				(array)$request->getArray( 'vc' ),
 				$clear
 			);
 		}
@@ -265,8 +229,8 @@ class ParametersProcessor {
 		// Categories
 		if ( $request->getVal( 'c' ) !== '' ) {
 
-			$clear = $request->getArray( 'clear' );
-			$c = $request->getArray( 'c' );
+			$clear = (array)$request->getArray( 'clear' );
+			$c = (array)$request->getArray( 'c' );
 
 			if ( isset( $clear['c'] ) && isset( $c[$clear['c']] ) ) {
 				unset( $c[$clear['c']] );
@@ -304,7 +268,7 @@ class ParametersProcessor {
 		return $parameters;
 	}
 
-	private function fieldConditions( $fields ) {
+	private function fieldConditions( $fields ): array {
 		if ( !is_array( $fields ) || $fields === [] ) {
 			return [];
 		}
@@ -337,7 +301,7 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	private function propertyFilterConditions( $values, $clear ) {
+	private function propertyFilterConditions( $values, array $clear ): array {
 		$filters = array_keys( (array)$values );
 		$this->propertyFilters = $filters;
 
@@ -364,7 +328,7 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	private function categoryFilterConditions( $values, $clear ) {
+	private function categoryFilterConditions( $values, array $clear ): array {
 		$filters = (array)$values;
 		$conditions = [];
 		$printRequests = [];
@@ -386,7 +350,7 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	private function valueFilterConditions( $values, $cond, $clear ) {
+	private function valueFilterConditions( $values, array $cond, array $clear ): void {
 		if ( is_string( $values ) ) {
 			$filters = array_filter( explode( '|', $values ) );
 		} else {
@@ -471,7 +435,7 @@ class ParametersProcessor {
 		}
 	}
 
-	private function addDefaultPrintRequests( string $query ) {
+	private function addDefaultPrintRequests( string $query ): array {
 		preg_match_all( '/\[\[(.*?)\]\]/i', $query, $matches );
 		$printRequests = [];
 

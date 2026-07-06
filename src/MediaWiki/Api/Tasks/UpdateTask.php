@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Enum;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
@@ -16,32 +16,20 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 class UpdateTask extends Task {
 
 	/**
-	 * @var JobFactory
-	 */
-	private $jobFactory;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param JobFactory $jobFactory
 	 */
-	public function __construct( JobFactory $jobFactory ) {
-		$this->jobFactory = $jobFactory;
+	public function __construct( private readonly JobFactory $jobFactory ) {
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
-	public function process( array $parameters ) {
+	public function process( array $parameters ): array {
 		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}
 
-		$subject = DIWikiPage::doUnserialize( $parameters['subject'] );
+		$subject = WikiPage::doUnserialize( $parameters['subject'] );
 		$title = $subject->getTitle();
 		$log = [];
 
@@ -57,7 +45,7 @@ class UpdateTask extends Task {
 			$parameters['ref'] = [ $subject->getHash() ];
 		}
 
-		$isPost = isset( $parameters['post'] ) ? $parameters['post'] : false;
+		$isPost = $parameters['post'] ?? false;
 		$origin = [];
 
 		if ( isset( $parameters['origin'] ) ) {

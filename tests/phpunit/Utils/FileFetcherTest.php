@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\FileFetcher;
 
 /**
@@ -14,9 +14,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class FileFetcherTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
+class FileFetcherTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new FileFetcher();

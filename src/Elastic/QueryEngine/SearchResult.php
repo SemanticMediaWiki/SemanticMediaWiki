@@ -12,30 +12,13 @@ use InvalidArgumentException;
  */
 class SearchResult {
 
-	/**
-	 * @var
-	 */
-	private $raw = [];
+	private array $errors = [];
 
-	/**
-	 * @var
-	 */
-	private $errors = [];
+	private ?array $results = null;
 
-	/**
-	 * @var []|null
-	 */
-	private $results;
+	private string $filterField = '_id';
 
-	/**
-	 * @var string
-	 */
-	private $filterField = '_id';
-
-	/**
-	 * @var
-	 */
-	private $container = [
+	private array $container = [
 		'info' => [],
 		'scores' => [],
 		'excerpts' => [],
@@ -45,48 +28,35 @@ class SearchResult {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $raw
 	 */
-	public function __construct( array $raw = [] ) {
-		$this->raw = $raw;
+	public function __construct( private readonly array $raw = [] ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $errors
 	 */
-	public function setErrors( array $errors ) {
+	public function setErrors( array $errors ): void {
 		$this->errors = $errors;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $filterField
 	 */
-	public function setFilterField( $filterField ) {
+	public function setFilterField( string $filterField ): void {
 		$this->filterField = $filterField;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int|null $cutoff
-	 *
-	 * @return array
 	 */
-	public function getResults( $cutoff = null ) {
+	public function getResults( ?int $cutoff = null ): ?array {
 		if ( $this->results === null ) {
 			$this->doFilterResults( $this->raw, $cutoff );
 		}
@@ -110,12 +80,9 @@ class SearchResult {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $results
-	 * @param int|null $cutoff
-	 *
-	 * @return
+	 * @return int[]|string[]
 	 */
-	public function doFilterResults( array $results, $cutoff = null ) {
+	public function doFilterResults( array $results, ?int $cutoff = null ): array {
 		$this->results = [];
 
 		$this->container = [
@@ -148,8 +115,9 @@ class SearchResult {
 
 	/**
 	 * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/6.0/_search_operations.html
+	 * @return true[]
 	 */
-	private function filterByField( $results, $cutoff, $field ) {
+	private function filterByField( array $results, $cutoff, $field ): array {
 		$res = [];
 		$continue = false;
 

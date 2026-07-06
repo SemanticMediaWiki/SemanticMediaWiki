@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki;
 
-use OutputPage;
-use SMW\DIWikiPage;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\IndicatorProvider;
 use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,32 +18,18 @@ use Title;
  */
 class IndicatorRegistry {
 
-	/**
-	 * @var IndicatorProvider[]
-	 */
-	private $indicatorProviders = [];
+	private array $indicatorProviders = [];
 
-	/**
-	 * @var
-	 */
-	private $indicators = [];
+	private array $indicators = [];
 
-	/**
-	 * @var
-	 */
-	private $modules = [];
+	private array $modules = [];
 
-	/**
-	 * @var
-	 */
-	private $inlineStyles = [];
+	private array $inlineStyles = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param IndicatorProvider|null $indicatorProvider
 	 */
-	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ) {
+	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ): void {
 		if ( $indicatorProvider === null ) {
 			return;
 		}
@@ -53,15 +39,9 @@ class IndicatorRegistry {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title $title
-	 * @param PermissionExaminer $permissionExaminer
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
-	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ) {
-		$subject = DIWikiPage::newFromTitle(
+	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ): bool {
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -91,10 +71,8 @@ class IndicatorRegistry {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param OutputPage $outputPage
 	 */
-	public function attachIndicators( OutputPage $outputPage ) {
+	public function attachIndicators( OutputPage $outputPage ): void {
 		$outputPage->addModules( $this->modules );
 		$outputPage->setIndicators( $this->indicators );
 		$outputPage->addInlineStyle( implode( '', $this->inlineStyles ) );

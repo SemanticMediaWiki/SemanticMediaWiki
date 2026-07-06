@@ -2,18 +2,18 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use ParserOutput;
-use SMW\MediaWiki\EditInfo;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\PageInfoProvider;
-use SMW\OptionsAwareTrait;
+use Exception;
+use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use MediaWiki\User\UserFactory;
+use SMW\EventDispatcher\EventDispatcher;
+use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\ParserData;
 use SMW\Property\AnnotatorFactory as PropertyAnnotatorFactory;
 use SMW\Schema\Schema;
 use SMW\Schema\SchemaFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
+use SMW\Store;
 
 /**
  * Hook: RevisionFromEditComplete called when a revision was inserted
@@ -32,72 +32,59 @@ use Title;
  *
  * @author mwjames
  */
-class RevisionFromEditComplete implements HookListener {
-
-	use OptionsAwareTrait;
-	use EventDispatcherAwareTrait;
+class RevisionFromEditComplete implements RevisionFromEditCompleteHook {
 
 	/**
-	 * @var EditInfo
+	 * @since 7.0.0
 	 */
-	private $editInfo;
-
-	/**
-	 * @var PageInfoProvider
-	 */
-	private $pageInfoProvider;
-
-	/**
-	 * @var PropertyAnnotatorFactory
-	 */
-	private $propertyAnnotatorFactory;
-
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
-
-	/**
-	 * @since 1.9
-	 *
-	 * @param EditInfo $editInfo
-	 * @param PageInfoProvider $pageInfoProvider
-	 * @param PropertyAnnotatorFactory $propertyAnnotatorFactory
-	 * @param SchemaFactory $schemaFactory
-	 */
-	public function __construct( EditInfo $editInfo, PageInfoProvider $pageInfoProvider, PropertyAnnotatorFactory $propertyAnnotatorFactory, SchemaFactory $schemaFactory ) {
-		$this->editInfo = $editInfo;
-		$this->pageInfoProvider = $pageInfoProvider;
-		$this->propertyAnnotatorFactory = $propertyAnnotatorFactory;
-		$this->schemaFactory = $schemaFactory;
+	public function __construct(
+		private readonly PropertyAnnotatorFactory $propertyAnnotatorFactory,
+		private readonly SchemaFactory $schemaFactory,
+		private readonly Store $store,
+		private readonly EventDispatcher $eventDispatcher,
+		private readonly MwCollaboratorFactory $mwCollaboratorFactory,
+		private readonly UserFactory $userFactory,
+	) {
 	}
 
 	/**
-	 * @since 1.9
-	 *
-	 * @param Title $title
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( Title $title ) {
-		$this->editInfo->fetchEditInfo();
+	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
+		$userObject = $this->userFactory->newFromUserIdentity( $user );
 
-		$parserOutput = $this->editInfo->getOutput();
+		$editInfo = $this->mwCollaboratorFactory->newEditInfo(
+			$wikiPage,
+			$rev,
+			$userObject
+		);
+
+		$pageInfoProvider = $this->mwCollaboratorFactory->newPageInfoProvider(
+			$wikiPage,
+			$rev,
+			$userObject
+		);
+
+		$this->doProcess( $wikiPage->getTitle(), $editInfo, $pageInfoProvider );
+
+		return true;
+	}
+
+	private function doProcess( Title $title, $editInfo, $pageInfoProvider ): void {
+		$editInfo->fetchEditInfo();
+
+		$parserOutput = $editInfo->getOutput();
 
 		if ( !$parserOutput instanceof ParserOutput ) {
-			return true;
+			return;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$parserData = $applicationFactory->newParserData(
-			$title,
-			$parserOutput
-		);
+		$parserData = new ParserData( $title, $parserOutput );
 
 		$this->addPredefinedPropertyAnnotation(
 			$parserData,
-			$this->tryCreateSchema( $title )
+			$pageInfoProvider,
+			$this->tryCreateSchema( $title, $pageInfoProvider )
 		);
 
 		$context = [
@@ -109,17 +96,15 @@ class RevisionFromEditComplete implements HookListener {
 
 		// If the concept was altered make sure to delete the cache
 		if ( $title->getNamespace() === SMW_NS_CONCEPT ) {
-			$applicationFactory->getStore()->deleteConceptCache( $title );
+			$this->store->deleteConceptCache( $title );
 		}
 
 		$parserData->copyToParserOutput();
 
 		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
-
-		return true;
 	}
 
-	private function tryCreateSchema( $title ) {
+	private function tryCreateSchema( Title $title, $pageInfoProvider ) {
 		if ( $title->getNamespace() !== SMW_NS_SCHEMA ) {
 			return null;
 		}
@@ -127,23 +112,23 @@ class RevisionFromEditComplete implements HookListener {
 		try {
 			$schema = $this->schemaFactory->newSchema(
 				$title->getDBKey(),
-				$this->pageInfoProvider->getNativeData()
+				$pageInfoProvider->getNativeData()
 			);
-		} catch ( \Exception $e ) {
+		} catch ( Exception ) {
 			return null;
 		}
 
 		return $schema;
 	}
 
-	private function addPredefinedPropertyAnnotation( ParserData $parserData, ?Schema $schema = null ) {
+	private function addPredefinedPropertyAnnotation( ParserData $parserData, $pageInfoProvider, ?Schema $schema = null ): void {
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()
 		);
 
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
 			$propertyAnnotator,
-			$this->pageInfoProvider
+			$pageInfoProvider
 		);
 
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newSchemaPropertyAnnotator(

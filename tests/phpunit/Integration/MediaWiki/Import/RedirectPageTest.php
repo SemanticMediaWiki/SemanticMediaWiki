@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
-use Title;
 
 /**
  * @group SMW
@@ -23,8 +22,6 @@ use Title;
  * @author mwjames
  */
 class RedirectPageTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -66,10 +63,10 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$main = Title::newFromText( 'SimplePageRedirectRegressionTest' );
+		$main = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SimplePageRedirectRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
-			'property' => new DIProperty( DIProperty::TYPE_CATEGORY ),
+			'property' => new Property( Property::TYPE_CATEGORY ),
 			'propertyValues' => [
 				'Regression test',
 				'Redirect test',
@@ -79,12 +76,12 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 
 		$expectedSomeProperties = [
 			'properties' => [
-				new DIProperty( 'Has regression test' )
+				new Property( 'Has regression test' )
 			]
 		];
 
 		$expectedRedirectAsWikiValue = [
-			'property' => new DIProperty( '_REDI' ),
+			'property' => new Property( '_REDI' ),
 			'propertyValues' => [
 				'ToBeSimplePageRedirect',
 				'NewPageRedirectRegressionTest',
@@ -115,7 +112,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$semanticDataBatches = [
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $main ) ),
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $main ) ),
 		];
 
 		// Something changed in MW since 1.28 that causes a
@@ -135,7 +132,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 		);
 
 		$inSemanticDataFetcher = new InSemanticDataFetcher( $this->getStore() );
-		$inSemanticData = $inSemanticDataFetcher->getSemanticData( DIWikiPage::newFromTitle( $main ) );
+		$inSemanticData = $inSemanticDataFetcher->getSemanticData( WikiPage::newFromTitle( $main ) );
 
 		// When running sqlite, the database select returns an empty result which
 		// is probably due to some DB-prefix issues in MW's DatabaseSqlite
@@ -191,7 +188,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 
 	protected function createPageWithRedirectFor( $source, $target ) {
 		$this->pageCreator
-			->createPage( Title::newFromText( $source ) )
+			->createPage( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $source ) )
 			->doEdit( "#REDIRECT [[{$target}]]" );
 
 		return $this->pageCreator->getPage();
@@ -199,7 +196,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 
 	protected function movePageToTargetRedirect( $page, $target ) {
 		$this->pageCreator->setPage( $page );
-		$this->pageCreator->doMoveTo( Title::newFromText( $target ), true );
+		$this->pageCreator->doMoveTo( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $target ), true );
 	}
 
 }

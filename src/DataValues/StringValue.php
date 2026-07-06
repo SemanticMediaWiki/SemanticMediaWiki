@@ -2,10 +2,10 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
+use SMW\DataValues\ValueFormatters\ValueFormatter;
 
 /**
  * Implements a string/text based datavalue suitable for defining text properties.
@@ -122,7 +122,7 @@ class StringValue extends DataValue {
 	 *
 	 * @return int
 	 */
-	public function getLength() {
+	public function getLength(): int {
 		if ( !$this->isValid() ) {
 			return 0;
 		}
@@ -135,12 +135,12 @@ class StringValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
 
-		$this->m_dataitem = new DIBlob( $value );
+		$this->m_dataitem = new Blob( $value );
 	}
 
 	/**
@@ -148,8 +148,8 @@ class StringValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 
@@ -164,7 +164,7 @@ class StringValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): false|array {
 		if ( !$this->isValid() ) {
 			return false;
 		}

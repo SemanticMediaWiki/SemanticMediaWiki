@@ -3,7 +3,8 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\Cache\InMemoryLruCache;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,18 +23,9 @@ class IdCacheManager {
 	const REDIRECT_TARGET = 'redirect.target.lookup';
 
 	/**
-	 * @var
-	 */
-	private $caches;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param array $caches
 	 */
-	public function __construct( array $caches ) {
-		$this->caches = $caches;
-
+	public function __construct( private array $caches ) {
 		if ( !isset( $this->caches['entity.id'] ) ) {
 			throw new RuntimeException( "Missing 'entity.id' instance." );
 		}
@@ -58,8 +50,8 @@ class IdCacheManager {
 	 *
 	 * @return string
 	 */
-	public static function computeSha1( $args = '' ) {
-		return sha1( json_encode( $args ) );
+	public static function computeSha1( $args = '' ): string {
+		return sha1( json_encode( $args ), true );
 	}
 
 	/**
@@ -67,7 +59,7 @@ class IdCacheManager {
 	 *
 	 * @param string $key
 	 *
-	 * @return bool
+	 * @return InstrumentedCache|InMemoryLruCache
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->caches[$key] ) ) {
@@ -102,7 +94,7 @@ class IdCacheManager {
 	 * @param int $id
 	 * @param string $sortkey
 	 */
-	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
+	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ): void {
 		if ( is_array( $title ) ) {
 			throw new RuntimeException( "Expected a string instead an array was detected!" );
 		}
@@ -118,7 +110,7 @@ class IdCacheManager {
 		$this->caches['entity.id']->save( $hash, $id );
 		$this->caches['entity.sort']->save( $hash, $sortkey );
 
-		$dataItem = new DIWikiPage( $title, $namespace, $interwiki, $subobject );
+		$dataItem = new WikiPage( $title, $namespace, $interwiki, $subobject );
 		$dataItem->setId( $id );
 		$dataItem->setSortKey( $sortkey );
 
@@ -138,15 +130,16 @@ class IdCacheManager {
 	 * @param string $interwiki
 	 * @param string $subobject
 	 */
-	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
+	public function deleteCache( $title, $namespace, $interwiki, $subobject ): void {
 		$hash = $this->computeSha1(
 			[ $title, (int)$namespace, $interwiki, $subobject ]
 		);
 
+		$id = $this->caches['entity.id']->fetch( $hash );
 		$this->caches['entity.id']->delete( $hash );
 		$this->caches['entity.sort']->delete( $hash );
 
-		if ( ( $id = $this->caches['entity.id']->fetch( $hash ) ) !== false ) {
+		if ( $id !== false ) {
 			$this->caches['entity.lookup']->delete( $id );
 		}
 	}
@@ -156,17 +149,17 @@ class IdCacheManager {
 	 *
 	 * @param string $id
 	 */
-	public function deleteCacheById( $id ) {
+	public function deleteCacheById( $id ): void {
 		$dataItem = $this->caches['entity.lookup']->fetch( $id );
 
-		if ( !$dataItem instanceof DIWikiPage ) {
+		if ( !$dataItem instanceof WikiPage ) {
 			return;
 		}
 
 		$hash = $this->computeSha1(
 			[
 				$dataItem->getDBKey(),
-				(int)$dataItem->getNamespace(),
+				$dataItem->getNamespace(),
 				$dataItem->getInterwiki(),
 				$dataItem->getSubobjectName()
 			]
@@ -182,15 +175,15 @@ class IdCacheManager {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|array $args
+	 * @param WikiPage|array|string $args
 	 *
-	 * @return int|bool
+	 * @return int|false
 	 */
-	public function getId( $args ) {
-		if ( $args instanceof DIWikiPage ) {
+	public function getId( $args ): int|false {
+		if ( $args instanceof WikiPage ) {
 			$args = [
 				$args->getDBKey(),
-				(int)$args->getNamespace(),
+				$args->getNamespace(),
 				$args->getInterwiki(),
 				$args->getSubobjectName()
 			];
@@ -202,7 +195,8 @@ class IdCacheManager {
 			$hash = $args;
 		}
 
-		if ( ( $id = $this->caches['entity.id']->fetch( $hash ) ) !== false ) {
+		$id = $this->caches['entity.id']->fetch( $hash );
+		if ( $id !== false ) {
 			return (int)$id;
 		}
 
@@ -225,7 +219,8 @@ class IdCacheManager {
 			$hash = $args;
 		}
 
-		if ( ( $sort = $this->caches['entity.sort']->fetch( $hash ) ) !== false ) {
+		$sort = $this->caches['entity.sort']->fetch( $hash );
+		if ( $sort !== false ) {
 			return $sort;
 		}
 

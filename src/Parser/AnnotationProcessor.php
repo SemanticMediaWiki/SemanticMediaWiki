@@ -2,11 +2,12 @@
 
 namespace SMW\Parser;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
-use SMWDataItem as DataItem;
+use SMW\DataValues\DataValue;
 
 /**
  * To allow for an in-memory processing of existing SemanticData references during
@@ -24,30 +25,17 @@ use SMWDataItem as DataItem;
 class AnnotationProcessor {
 
 	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
-
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
-
-	/**
 	 * @var bool
 	 */
 	private $canAnnotate = true;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SemanticData $semanticData
-	 * @param DataValueFactory|null $dataValueFactory
 	 */
-	public function __construct( SemanticData $semanticData, ?DataValueFactory $dataValueFactory = null ) {
-		$this->semanticData = $semanticData;
-		$this->dataValueFactory = $dataValueFactory;
-
+	public function __construct(
+		private readonly SemanticData $semanticData,
+		private ?DataValueFactory $dataValueFactory = null,
+	) {
 		if ( $this->dataValueFactory === null ) {
 			$this->dataValueFactory = DataValueFactory::getInstance();
 		}
@@ -60,7 +48,7 @@ class AnnotationProcessor {
 	 *
 	 * @param bool $canAnnotate
 	 */
-	public function setCanAnnotate( $canAnnotate ) {
+	public function setCanAnnotate( $canAnnotate ): void {
 		$this->canAnnotate = $canAnnotate;
 	}
 
@@ -69,14 +57,14 @@ class AnnotationProcessor {
 	 *
 	 * @return bool
 	 */
-	public function canAnnotate() {
+	public function canAnnotate(): bool {
 		return $this->canAnnotate;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function release() {
+	public function release(): void {
 		$this->dataValueFactory->clearCallable( SemanticData::class );
 	}
 
@@ -85,7 +73,7 @@ class AnnotationProcessor {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData() {
+	public function getSemanticData(): SemanticData {
 		return $this->semanticData;
 	}
 
@@ -94,7 +82,7 @@ class AnnotationProcessor {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?DIWikiPage $contextPage = null ) {
+	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?WikiPage $contextPage = null ) {
 		return $this->dataValueFactory->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
 	}
 
@@ -103,7 +91,7 @@ class AnnotationProcessor {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByItem( DataItem $dataItem, ?DIProperty $property = null, $caption = false, $contextPage = null ) {
+	public function newDataValueByItem( DataItem $dataItem, ?Property $property = null, $caption = false, $contextPage = null ) {
 		return $this->dataValueFactory->newDataValueByItem( $dataItem, $property, $caption, $contextPage );
 	}
 

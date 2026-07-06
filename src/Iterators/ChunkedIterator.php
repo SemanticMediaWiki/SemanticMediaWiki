@@ -4,9 +4,8 @@ namespace SMW\Iterators;
 
 use ArrayIterator;
 use InvalidArgumentException;
+use Iterator;
 use IteratorIterator;
-use RuntimeException;
-use Traversable;
 
 /**
  * @see Guzzle::ChunkedIterator
@@ -16,31 +15,16 @@ use Traversable;
  */
 class ChunkedIterator extends IteratorIterator {
 
-	/**
-	 * @var int
-	 */
-	private $chunkSize = 0;
+	private int $chunkSize = 0;
 
-	/**
-	 * @var array
-	 */
-	private $chunk;
+	private ?array $chunk = null;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Traversable|array $iterable
-	 * @param int $chunkSize
 	 */
-	public function __construct( $iterable, $chunkSize = 500 ) {
-		$chunkSize = (int)$chunkSize;
-
+	public function __construct( ResultIterator|Iterator|array $iterable, int $chunkSize = 500 ) {
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
-		}
-
-		if ( !$iterable instanceof Traversable ) {
-			throw new RuntimeException( "ChunkedIterator expected an Traversable" );
 		}
 
 		if ( $chunkSize < 0 ) {
@@ -56,8 +40,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function rewind() {
+	public function rewind(): void {
 		parent::rewind();
 		$this->next();
 	}
@@ -67,8 +50,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function next() {
+	public function next(): void {
 		$this->chunk = [];
 
 		for ( $i = 0; $i < $this->chunkSize && parent::valid(); $i++ ) {
@@ -82,8 +64,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function current() {
+	public function current(): ?array {
 		return $this->chunk;
 	}
 
@@ -92,8 +73,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function valid() {
+	public function valid(): bool {
 		return (bool)$this->chunk;
 	}
 

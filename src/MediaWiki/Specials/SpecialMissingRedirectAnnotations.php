@@ -2,13 +2,15 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use SMW\Store;
 use SMW\Utils\HtmlColumns;
-use SpecialPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,34 +21,35 @@ use SpecialPage;
 class SpecialMissingRedirectAnnotations extends SpecialPage {
 
 	/**
-	 * @codeCoverageIgnore
+	 * @since 7.0.0
 	 */
-	public function __construct() {
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings
+	) {
 		parent::__construct( 'MissingRedirectAnnotations' );
 	}
 
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): bool {
 		$this->setHeaders();
 		$output = $this->getOutput();
 
 		$output->addModuleStyles( [ 'ext.smw.styles' ] );
 
-		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		$store = $applicationFactory->getStore();
 		$linker = smwfGetLinker();
 
-		$sortLetter = $store->service( 'SortLetter' );
-		$missingRedirectLookup = $store->service( 'MissingRedirectLookup' );
+		$sortLetter = $this->store->service( 'SortLetter' );
+		$missingRedirectLookup = $this->store->service( 'MissingRedirectLookup' );
 
 		$missingRedirectLookup->noSort();
 
 		$missingRedirectLookup->setNamespaceMatrix(
-			$applicationFactory->getSettings()->get( 'smwgNamespacesWithSemanticLinks' )
+			$this->settings->get( 'smwgNamespacesWithSemanticLinks' )
 		);
 
 		$rows = $missingRedirectLookup->findMissingRedirects();
@@ -55,7 +58,7 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 		$contents = [];
 
 		foreach ( $rows as $row ) {
-			$dataItem = new DIWikiPage( $row->page_title, $row->page_namespace );
+			$dataItem = new WikiPage( $row->page_title, $row->page_namespace );
 			$startChar = $sortLetter->getFirstLetter( $dataItem );
 
 			if ( !isset( $contents[$startChar] ) ) {
@@ -84,11 +87,11 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/maintenance';
 	}
 
-	private function buildHTML( $count, $contents ) {
+	private function buildHTML( $count, array $contents ): string {
 		$htmlColumns = new HtmlColumns();
 		$htmlColumns->setContents( $contents, HtmlColumns::INDEXED_LIST );
 
@@ -106,17 +109,17 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 				[
 					'style' => 'font-style:normal;margin-top:20px;'
 				],
-				$this->msg( 'smw-missingredirects-noresult' )->text()
+				$this->msg( 'smw-missingredirects-noresult' )->escaped()
 			);
 		} else {
 			$html .= Html::rawElement(
 				'h2',
 				[],
-				$this->msg( 'smw-missingredirects-list' )->text()
+				$this->msg( 'smw-missingredirects-list' )->escaped()
 			) . Html::rawElement(
 				'p',
 				[],
-				$this->msg( 'smw-missingredirects-list-intro', $count )->text()
+				$this->msg( 'smw-missingredirects-list-intro', $count )->escaped()
 			) . Html::rawElement(
 				'div',
 				[],
@@ -138,10 +141,10 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 				[
 					'class' => 'smw-breadcrumb-arrow-right'
 				]
-			) . Html::rawElement(
+			) . Html::element(
 				'a',
 				[
-					'href' => \SpecialPage::getTitleFor( 'Specialpages' )->getFullURL( $query ) . '#Semantic_MediaWiki'
+					'href' => SkinComponentUtils::makeSpecialUrl( 'Specialpages', $query ) . '#Semantic_MediaWiki'
 				],
 				Message::get( 'specialpages', Message::TEXT, Message::USER_LANGUAGE )
 		) );

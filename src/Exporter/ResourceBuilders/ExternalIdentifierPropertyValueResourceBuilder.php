@@ -2,11 +2,11 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Uri;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMWDIUri as DIUri;
-use SMWExpData as ExpData;
+use SMW\Export\ExpData;
 
 /**
  * @private
@@ -23,8 +23,8 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
-		return $property->findPropertyTypeID() === '_eid';
+	public function isResourceBuilderFor( Property $property ): bool {
+		return $property->findPropertyValueType() === '_eid';
 	}
 
 	/**
@@ -40,7 +40,7 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		parent::addResourceValue( $expData, $property, $dataItem );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -50,9 +50,9 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 
 		$uri = $dataValue->getUri();
 
-		if ( $uri instanceof DIUri ) {
+		if ( $uri instanceof Uri ) {
 			$expData->addPropertyObjectValue(
-				$this->exporter->getSpecialNsResource( 'skos', 'exactMatch' ),
+				$this->exporter->newExpNsResourceById( 'skos', 'exactMatch' ),
 				$this->exporter->newExpElement( $uri )
 			);
 		}

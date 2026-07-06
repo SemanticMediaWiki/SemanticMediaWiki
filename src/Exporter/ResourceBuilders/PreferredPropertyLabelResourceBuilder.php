@@ -2,11 +2,11 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpLiteral;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
 
 /**
  * @private
@@ -23,7 +23,7 @@ class PreferredPropertyLabelResourceBuilder extends PropertyValueResourceBuilder
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return $property->getKey() === '_PPLB';
 	}
 
@@ -32,7 +32,7 @@ class PreferredPropertyLabelResourceBuilder extends PropertyValueResourceBuilder
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		parent::addResourceValue( $expData, $property, $dataItem );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -54,7 +54,7 @@ class PreferredPropertyLabelResourceBuilder extends PropertyValueResourceBuilder
 		// language tag ..."
 
 		$expData->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'skos', 'prefLabel' ),
+			$this->exporter->newExpNsResourceById( 'skos', 'prefLabel' ),
 			new ExpLiteral(
 				(string)$list['_TEXT'],
 				'http://www.w3.org/2001/XMLSchema#string',

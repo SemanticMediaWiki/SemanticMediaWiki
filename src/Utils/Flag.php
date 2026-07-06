@@ -11,17 +11,9 @@ namespace SMW\Utils;
 class Flag {
 
 	/**
-	 * @var int
-	 */
-	private $flag = 0;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param int $flag
 	 */
-	public function __construct( int $flag ) {
-		$this->flag = $flag;
+	public function __construct( private readonly int $flag ) {
 	}
 
 	/**
@@ -31,8 +23,8 @@ class Flag {
 	 *
 	 * @return bool
 	 */
-	public function is( $flag ): bool {
-		return ( ( (int)$this->flag & $flag ) == $flag );
+	public function is( int $flag ): bool {
+		return ( ( $this->flag & $flag ) == $flag );
 	}
 
 	/**
@@ -42,7 +34,7 @@ class Flag {
 	 *
 	 * @return bool
 	 */
-	public function not( $flag ): bool {
+	public function not( int $flag ): bool {
 		return !$this->is( $flag );
 	}
 

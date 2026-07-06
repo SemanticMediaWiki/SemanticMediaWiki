@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+
 /**
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -12,14 +14,14 @@ namespace SMW\Tests\Utils\Mock;
  *
  * @author mwjames
  */
-class MockTitle extends \PHPUnit\Framework\TestCase {
+class MockTitle extends TestCase {
 
 	public static function buildMock( $text = __METHOD__ ) {
 		$instance = new self();
 
 		$contentModel = defined( 'CONTENT_MODEL_WIKITEXT' ) ? CONTENT_MODEL_WIKITEXT : null;
 
-		$title = $instance->getMockBuilder( 'Title' )
+		$title = $instance->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

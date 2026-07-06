@@ -2,13 +2,10 @@
 
 namespace SMW\ParserFunctions;
 
-use ParamProcessor\ProcessingError;
+use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessingResult;
-use Parser;
-use ParserHooks\HookDefinition;
-use ParserHooks\HookHandler;
-use SMW\Highlighter;
-use SMWOutputs;
+use SMW\Formatters\Highlighter;
+use SMW\MediaWiki\Outputs;
 
 /**
  * Class that provides the {{#info}} parser function
@@ -18,17 +15,11 @@ use SMWOutputs;
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class InfoParserFunction implements HookHandler {
+class InfoParserFunction {
 
-	/**
-	 * @param Parser $parser
-	 * @param ProcessingResult $result
-	 *
-	 * @return mixed
-	 */
-	public function handle( Parser $parser, ProcessingResult $result ) {
+	public function handle( Parser $parser, ProcessingResult $result ): string|ProcessingResult {
 		if ( $result->hasFatal() ) {
-			return $this->getOutputForErrors( $result->getErrors() );
+			return $this->getOutputForErrors();
 		}
 
 		$parameters = $result->getParameters();
@@ -50,17 +41,17 @@ class InfoParserFunction implements HookHandler {
 		// If the message contains another highlighter (caused by recursive
 		// parsing etc.) remove the tags to allow to show the text without making
 		// the JS go berserk due to having more than one `smw-highlighter`
-		if ( strpos( $message ?? '', 'smw-highlighter' ) !== '' ) {
+		if ( strpos( $message ?? '', 'smw-highlighter' ) !== false ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
-					static function ( $matches ) {
+					static function ( $matches ): string {
 						return strip_tags( $matches[0] );
 					},
 					$message ?? ''
 			);
 		}
 
-		if ( $message === '' ) {
+		if ( $message === '' || $message === null ) {
 			return '';
 		}
 
@@ -77,57 +68,49 @@ class InfoParserFunction implements HookHandler {
 
 		$result = $highlighter->getHtml();
 
-		if ( $parser->getTitle() !== null && $parser->getTitle()->isSpecialPage() ) {
+		if ( $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
-			SMWOutputs::commitToOutputPage( $wgOut );
+			Outputs::commitToOutputPage( $wgOut );
 		} else {
-			SMWOutputs::commitToParser( $parser );
+			Outputs::commitToParser( $parser );
 		}
 
 		return $result;
 	}
 
-	/**
-	 * @param ProcessingError[] $errors
-	 *
-	 * @return string
-	 */
-	private function getOutputForErrors( $errors ) {
+	private function getOutputForErrors(): string {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #info parser function';
 	}
 
-	public static function getHookDefinition() {
-		return new HookDefinition(
-			'info',
+	public static function getParamDefinitions(): array {
+		return [
 			[
-				[
-					'name' => 'message',
-					'message' => 'smw-info-par-message',
-				],
-				[
-					'name' => 'icon',
-					'message' => 'smw-info-par-icon',
-					'default' => 'info',
-					'values' => [ 'info', 'warning', 'error', 'note' ],
-				],
-				[
-					'name' => 'max-width',
-					'default' => '',
-					'message' => 'smw-info-par-max-width',
-				],
-				[
-					'name' => 'theme',
-					'default' => '',
-					'values' => [ 'square-border', 'square-border-light' ],
-					'message' => 'smw-info-par-theme',
-				]
+				'name' => 'message',
+				'message' => 'smw-info-par-message',
 			],
 			[
-				'message',
-				'icon'
-			]
-		);
+				'name' => 'icon',
+				'message' => 'smw-info-par-icon',
+				'default' => 'info',
+				'values' => [ 'info', 'warning', 'error', 'note' ],
+			],
+			[
+				'name' => 'max-width',
+				'default' => '',
+				'message' => 'smw-info-par-max-width',
+			],
+			[
+				'name' => 'theme',
+				'default' => '',
+				'values' => [ 'square-border', 'square-border-light' ],
+				'message' => 'smw-info-par-theme',
+			],
+		];
+	}
+
+	public static function getDefaultParams(): array {
+		return [ 'message', 'icon' ];
 	}
 
 }

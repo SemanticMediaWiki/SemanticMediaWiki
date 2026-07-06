@@ -2,21 +2,24 @@
 
 namespace SMW\Localizer;
 
-use DateTime;
-use IContextSource;
-use Language;
+use Exception;
+use MapCacheLRU;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Language\Language;
+use MediaWiki\Language\LanguageCode;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\User\UserOptionsLookup;
-use RequestContext;
-use SMW\DIWikiPage;
+use MediaWiki\StubObject\StubUserLang;
+use MediaWiki\Title\NamespaceInfo;
+use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\LocalTime;
-use SMW\MediaWiki\NamespaceInfo;
 use SMW\NamespaceManager;
-use SMW\Services\ServicesFactory;
 use SMW\Site;
-use Title;
-use User;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,57 +30,42 @@ use User;
 class Localizer {
 
 	/**
-	 * @var Localizer
+	 * Upper bound on memoized page content languages. Within a single request
+	 * the number of distinct pages is small; the bound only matters for
+	 * long-running maintenance/job processes.
 	 */
-	private static $instance = null;
+	private const CONTENT_LANGUAGE_CACHE_SIZE = 1000;
 
-	/**
-	 * @var Language
-	 */
-	private $contentLanguage = null;
+	private static ?Localizer $instance = null;
 
-	private NamespaceInfo $namespaceInfo;
-
-	/** @var IContextSource */
-	private $context = null;
-
-	/** @var UserOptionsLookup */
-	private $userOptionsLookup = null;
+	private readonly MapCacheLRU $contentLanguageCache;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Language $contentLanguage
-	 * @param NamespaceInfo $namespaceInfo
 	 */
 	public function __construct(
-		Language $contentLanguage,
-		NamespaceInfo $namespaceInfo,
-		UserOptionsLookup $userOptionsLookup,
-		IContextSource $context
+		private readonly Language $contentLanguage,
+		private readonly NamespaceInfo $namespaceInfo,
+		private readonly UserOptionsLookup $userOptionsLookup,
+		private readonly IContextSource $context,
 	) {
-		$this->contentLanguage = $contentLanguage;
-		$this->namespaceInfo = $namespaceInfo;
-		$this->userOptionsLookup = $userOptionsLookup;
-		$this->context = $context;
+		$this->contentLanguageCache = new MapCacheLRU( self::CONTENT_LANGUAGE_CACHE_SIZE );
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return Localizer
 	 */
-	public static function getInstance() {
+	public static function getInstance(): Localizer {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
 
-		$servicesFactory = ServicesFactory::getInstance();
+		$mwServices = MediaWikiServices::getInstance();
 
 		self::$instance = new self(
-			$servicesFactory->singleton( 'ContentLanguage' ),
-			$servicesFactory->singleton( 'NamespaceInfo' ),
-			$servicesFactory->singleton( 'UserOptionsLookup' ),
+			$mwServices->getContentLanguage(),
+			$mwServices->getNamespaceInfo(),
+			$mwServices->getUserOptionsLookup(),
 			RequestContext::getMain()
 		);
 
@@ -87,36 +75,28 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return Language
 	 */
-	public function getContentLanguage() {
+	public function getContentLanguage(): Language {
 		return $this->contentLanguage;
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return Language
 	 */
-	public function getUserLanguage() {
+	public function getUserLanguage(): Language|StubUserLang {
 		return $GLOBALS['wgLang'];
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param User|null $user
-	 *
-	 * @return bool
 	 */
-	public function hasLocalTimeOffsetPreference( $user = null ) {
+	public function hasLocalTimeOffsetPreference( ?User $user = null ): ?bool {
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
@@ -126,13 +106,8 @@ class Localizer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DateTime $dateTime
-	 * @param User|null $user
-	 *
-	 * @return DateTime
 	 */
-	public function getLocalTime( DateTime $dateTime, $user = null ) {
+	public function getLocalTime( ExtendedDateTime $dateTime, ?User $user = null ): ExtendedDateTime {
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
@@ -143,6 +118,22 @@ class Localizer {
 
 		$timeCorrection = $this->userOptionsLookup->getOption( $user, 'timecorrection' );
 		return LocalTime::getLocalizedTime( $dateTime, $timeCorrection );
+	}
+
+	/**
+	 * Wiki-local time (the System offset, $wgLocalTZoffset), independent of any
+	 * viewing user's `timecorrection` preference. Used as the user-agnostic
+	 * baseline for client-deferred local time (#6820), mirroring MediaWiki
+	 * core's wiki-local {{LOCALTIME}} semantics.
+	 *
+	 * @since 7.0.0
+	 */
+	public function getWikiLocalTime( ExtendedDateTime $dateTime ): ExtendedDateTime {
+		LocalTime::setLocalTimeOffset(
+			$GLOBALS['wgLocalTZoffset'] ?? 0
+		);
+
+		return LocalTime::getLocalizedTime( $dateTime, 'System' );
 	}
 
 	/**
@@ -165,15 +156,49 @@ class Localizer {
 	 * written in wikitext
 	 *
 	 * @since 2.4
-	 *
-	 * @param DIWikiPage|Title|null $title
-	 *
-	 * @return Language
 	 */
-	public function getPreferredContentLanguage( $title = null ) {
+	public function getPreferredContentLanguage(
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
+		WikiPage|Title|null $title = null
+	): Language {
+		$key = $this->contentLanguageCacheKey( $title );
+
+		$cached = $this->contentLanguageCache->get( $key );
+		if ( $cached instanceof Language ) {
+			return $cached;
+		}
+
+		$language = $this->resolvePreferredContentLanguage( $title );
+		$this->contentLanguageCache->set( $key, $language );
+
+		return $language;
+	}
+
+	/**
+	 * Cheap, stable cache key identifying the page whose content language is
+	 * requested. The subobject name is deliberately excluded: a subobject
+	 * shares the content language of its base page.
+	 */
+	private function contentLanguageCacheKey( WikiPage|Title|null $title ): string {
+		// The 'w:' / 't:' / 'n:' prefixes keep the three input kinds in
+		// separate key spaces. A WikiPage and a Title for the same page
+		// therefore produce different keys: harmless duplication, never a
+		// collision. Do not merge the branches into a shared key.
+		if ( $title instanceof WikiPage ) {
+			return 'w:' . $title->getNamespace() . '#' . $title->getDBkey() . '#' . $title->getInterwiki();
+		}
+
+		if ( $title instanceof Title ) {
+			return 't:' . $title->getPrefixedDBkey();
+		}
+
+		return 'n:';
+	}
+
+	private function resolvePreferredContentLanguage( WikiPage|Title|null $title ): Language {
 		$language = '';
 
-		if ( $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage ) {
 			$title = $title->getTitle();
 		}
 
@@ -186,8 +211,7 @@ class Localizer {
 			// is not registered
 			try {
 				$language = $title->getPageLanguage();
-			} catch ( \Exception $e ) {
-
+			} catch ( Exception ) {
 			}
 		}
 
@@ -196,13 +220,9 @@ class Localizer {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $languageCode
-	 *
-	 * @return Language
 	 */
-	public function getLanguage( $languageCode = '' ) {
-		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
+	public function getLanguage( mixed $languageCode = '' ): Language {
+		if ( $languageCode === '' || !$languageCode ) {
 			return $this->getContentLanguage();
 		}
 
@@ -212,19 +232,15 @@ class Localizer {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Language|string $language
-	 *
-	 * @return LocalLanguage
 	 */
-	public function getLang( $language = '' ) {
+	public function getLang( mixed $language = '' ): LocalLanguage {
 		$languageCode = $language;
 
 		if ( $language instanceof Language ) {
 			$languageCode = $language->getCode();
 		}
 
-		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
+		if ( $languageCode === '' || !$languageCode ) {
 			$languageCode = $this->getContentLanguage()->getCode();
 		}
 
@@ -233,23 +249,15 @@ class Localizer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param int $index
-	 *
-	 * @return string
 	 */
-	public function getNsText( $index ) {
+	public function getNsText( int $index ): string {
 		return str_replace( '_', ' ', $this->contentLanguage->getNsText( $index ) );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $index
-	 *
-	 * @return string
 	 */
-	public function getCanonicalNamespaceTextById( $index ) {
+	public function getCanonicalNamespaceTextById( int $index ): string {
 		$canonicalNames = NamespaceManager::getCanonicalNames();
 
 		if ( isset( $canonicalNames[$index] ) ) {
@@ -261,12 +269,8 @@ class Localizer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $namespaceName
-	 *
-	 * @return int|bool
 	 */
-	public function getNsIndex( $namespaceName ) {
+	public function getNsIndex( string $namespaceName ): int|false {
 		return $this->contentLanguage->getNsIndex( str_replace( ' ', '_', $namespaceName ) );
 	}
 
@@ -276,13 +280,8 @@ class Localizer {
 	 * @since 3.2
 	 *
 	 * @deprecated since 1.35 use LanguageConverter::convertNamespace instead
-	 *
-	 * @param int $ns namespace
-	 * @param string|null $variant
-	 *
-	 * @return string a string representation of the namespace
 	 */
-	public function convertNamespace( $ns, $variant = null ): string {
+	public function convertNamespace( int $ns, ?string $variant = null ): string {
 		$services = MediaWikiServices::getInstance();
 		$langConverter = $services->getLanguageConverterFactory()->getLanguageConverter( $this->contentLanguage );
 		return $langConverter->convertNamespace( $ns, $variant );
@@ -295,7 +294,7 @@ class Localizer {
 	 *
 	 * @return bool
 	 */
-	public static function isKnownLanguageTag( $languageCode ) {
+	public static function isKnownLanguageTag( string $languageCode ): bool {
 		$languageCode = mb_strtolower( $languageCode );
 		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
@@ -306,48 +305,22 @@ class Localizer {
 	 * @see IETF language tag / BCP 47 standards
 	 *
 	 * @since 2.4
-	 *
-	 * @param string $languageCode
-	 *
-	 * @return string
 	 */
-	public static function asBCP47FormattedLanguageCode( $languageCode ) {
-		return \LanguageCode::bcp47( $languageCode );
-	}
-
-	/**
-	 * @deprecated 2.5, use Localizer::getAnnotatedLanguageCodeFrom instead
-	 * @since 2.4
-	 *
-	 * @param string &$value
-	 *
-	 * @return string|false
-	 */
-	public static function getLanguageCodeFrom( &$value ) {
-		return self::getAnnotatedLanguageCodeFrom( $value );
+	public static function asBCP47FormattedLanguageCode( string $languageCode ): string {
+		return LanguageCode::bcp47( $languageCode );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $index
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function createTextWithNamespacePrefix( $index, $text ) {
+	public function createTextWithNamespacePrefix( int $index, string $text ): string {
 		return $this->getNsText( $index ) . ':' . $text;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $index
-	 * @param string $url
-	 *
-	 * @return string
 	 */
-	public function getCanonicalizedUrlByNamespace( $index, $url ) {
+	public function getCanonicalizedUrlByNamespace( int $index, string $url ): string {
 		$namespace = $this->getNsText( $index );
 
 		if ( strpos( $url, 'title=' ) !== false ) {
@@ -373,17 +346,14 @@ class Localizer {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string &$value
-	 *
-	 * @return string|false
 	 */
-	public static function getAnnotatedLanguageCodeFrom( &$value ) {
+	public static function getAnnotatedLanguageCodeFrom( string &$value ): false|string {
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
 		}
 
-		if ( ( $langCode = mb_substr( strrchr( $value, "@" ), 1 ) ) !== '' ) {
+		$langCode = mb_substr( strrchr( $value, "@" ), 1 );
+		if ( $langCode !== '' ) {
 			$value = str_replace( '_', ' ', substr_replace( $value, '', ( mb_strlen( $langCode ) + 1 ) * -1 ) );
 		}
 
@@ -402,10 +372,6 @@ class Localizer {
 	 * here if more advanced normalization is needed.
 	 *
 	 * @since 3.2
-	 *
-	 * @param string $text
-	 *
-	 * @return string
 	 */
 	public function normalizeTitleText( string $text ): string {
 		$text = trim( $text );
@@ -425,12 +391,8 @@ class Localizer {
 	 *
 	 * Convert double-width roman characters to single-width.
 	 * range: ff00-ff5f ~= 0020-007f
-	 *
-	 * @param string $string
-	 *
-	 * @return string
 	 */
-	public static function convertDoubleWidth( $string ) {
+	public static function convertDoubleWidth( string $string ): string {
 		static $full = null;
 		static $half = null;
 

@@ -17,7 +17,7 @@ class ParameterProcessorFactory {
 	 *
 	 * @return ParserParameterProcessor
 	 */
-	public static function newFromArray( array $parameters ) {
+	public static function newFromArray( array $parameters ): ParserParameterProcessor {
 		$instance = new self();
 		return $instance->newParserParameterProcessor( $parameters );
 	}
@@ -29,7 +29,7 @@ class ParameterProcessorFactory {
 	 *
 	 * @return ParserParameterProcessor
 	 */
-	public function newParserParameterProcessor( array $parameters ) {
+	public function newParserParameterProcessor( array $parameters ): ParserParameterProcessor {
 		if ( isset( $parameters[0] ) && is_object( $parameters[0] ) ) {
 			array_shift( $parameters );
 		}

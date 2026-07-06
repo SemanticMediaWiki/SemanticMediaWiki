@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\Lookup;
 
 use Exception;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -20,40 +20,24 @@ use SMW\Store;
 class PropertyLabelSimilarityLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
-	 * @var integer/float
+	 * @var int|float
 	 */
 	private $threshold = 50;
 
 	/**
-	 * @var DIProperty|null
+	 * @var mixed
 	 */
 	private $exemptionProperty;
 
-	/**
-	 * @var int
-	 */
-	private $lookupCount = 0;
+	private int $lookupCount = 0;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param SpecificationLookup|null $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, ?SpecificationLookup $propertySpecificationLookup = null ) {
-		$this->store = $store;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
-
+	public function __construct(
+		private readonly Store $store,
+		private ?SpecificationLookup $propertySpecificationLookup = null,
+	) {
 		if ( $this->propertySpecificationLookup === null ) {
 			$this->propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 		}
@@ -64,9 +48,9 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @param int $threshold
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function setThreshold( $threshold ) {
+	public function setThreshold( $threshold ): void {
 		$this->threshold = $threshold;
 	}
 
@@ -78,7 +62,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @param string $exemptionProperty
 	 */
-	public function setExemptionProperty( $exemptionProperty ) {
+	public function setExemptionProperty( $exemptionProperty ): void {
 		if ( $exemptionProperty === '' ) {
 			return;
 		}
@@ -89,7 +73,7 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getExemptionProperty() {
 		return $this->exemptionProperty;
@@ -100,7 +84,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return int
 	 */
-	public function getLookupCount() {
+	public function getLookupCount(): int {
 		return $this->lookupCount;
 	}
 
@@ -126,7 +110,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return array
 	 */
-	public function compareAndFindLabels( ?RequestOptions $requestOptions = null ) {
+	public function compareAndFindLabels( ?RequestOptions $requestOptions = null ): array {
 		$withType = false;
 		$propertyList = $this->getPropertyList( $requestOptions );
 
@@ -141,14 +125,17 @@ class PropertyLabelSimilarityLookup {
 		$this->lookupCount = count( $propertyList );
 		$similarities = $this->matchLabels( $propertyList, $withType );
 
-		usort( $similarities, static function ( $a, $b ) {
+		usort( $similarities, static function ( array $a, array $b ): int {
 			return $b['similarity'] <=> $a['similarity'];
 		} );
 
 		return $similarities;
 	}
 
-	private function matchLabels( $propertyList, $withType ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function matchLabels( array $propertyList, $withType ): array {
 		$similarities = [];
 		$lookupComplete = [];
 
@@ -193,12 +180,12 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $first
-	 * @param DIProperty $second
+	 * @param Property $first
+	 * @param Property $second
 	 *
 	 * @return bool
 	 */
-	private function isExempted( DIProperty $first, DIProperty $second ) {
+	private function isExempted( Property $first, Property $second ): bool {
 		if ( $this->exemptionProperty === null ) {
 			return false;
 		}
@@ -209,7 +196,8 @@ class PropertyLabelSimilarityLookup {
 		);
 
 		foreach ( $definedBy as $dataItem ) {
-			if ( $dataItem->equals( $second->getCanonicalDiWikiPage() ) ) {
+			$wikiPage = $second->getCanonicalDiWikiPage();
+			if ( $wikiPage !== null && $dataItem->equals( $wikiPage ) ) {
 				return true;
 			}
 		}
@@ -220,7 +208,8 @@ class PropertyLabelSimilarityLookup {
 		);
 
 		foreach ( $definedBy as $dataItem ) {
-			if ( $dataItem->equals( $first->getCanonicalDiWikiPage() ) ) {
+			$wikiPage = $first->getCanonicalDiWikiPage();
+			if ( $wikiPage !== null && $dataItem->equals( $wikiPage ) ) {
 				return true;
 			}
 		}
@@ -228,7 +217,7 @@ class PropertyLabelSimilarityLookup {
 		return false;
 	}
 
-	private function getHash( DIProperty $first, DIProperty $second ) {
+	private function getHash( Property $first, Property $second ): string {
 		$hashing = [];
 		$hashing[] = $first->getKey();
 		$hashing[] = $second->getKey();
@@ -238,13 +227,13 @@ class PropertyLabelSimilarityLookup {
 		return md5( implode( '', $hashing ) );
 	}
 
-	private function getSummary( DIProperty $first, DIProperty $second, $percent, $withType ) {
+	private function getSummary( Property $first, Property $second, float $percent, $withType ): array {
 		$summary = [];
 
 		if ( $withType ) {
 			$summary[] = [
 				'label' => $first->getLabel(),
-				'type'  => $first->findPropertyTypeID()
+				'type'  => $first->findPropertyValueType()
 			];
 		} else {
 			$summary[] = $first->getLabel();
@@ -253,7 +242,7 @@ class PropertyLabelSimilarityLookup {
 		if ( $withType ) {
 			$summary[] = [
 				'label' => $second->getLabel(),
-				'type'  => $second->findPropertyTypeID()
+				'type'  => $second->findPropertyValueType()
 			];
 		} else {
 			$summary[] = $second->getLabel();
@@ -265,11 +254,11 @@ class PropertyLabelSimilarityLookup {
 		];
 	}
 
-	private function getPropertyList( ?RequestOptions $requestOptions = null ) {
+	/**
+	 * @return Property[]
+	 */
+	private function getPropertyList( ?RequestOptions $requestOptions = null ): array {
 		$propertyList = [];
-
-		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = [ 'ORDER BY' => 'smw_sort' ];
 
 		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
@@ -277,30 +266,32 @@ class PropertyLabelSimilarityLookup {
 			'smw_subobject' => ''
 		];
 
-		if ( $requestOptions !== null && $requestOptions->getLimit() > 0 ) {
-			$options['LIMIT'] = $requestOptions->getLimit();
-			$options['OFFSET'] = max( $requestOptions->getOffset(), 0 );
-		}
-
 		if ( $requestOptions !== null && $requestOptions->getStringConditions() ) {
 			$conditions[] = $this->store->getSQLConditions( $requestOptions, '', 'smw_sortkey', false );
 		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[ 'smw_id', 'smw_title' ],
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		// the query needs to do the filtering of internal properties, else LIMIT is wrong
+		$queryBuilder = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->orderBy( 'smw_sort' )
+			->caller( __METHOD__ );
+
+		if ( $requestOptions !== null && $requestOptions->getLimit() > 0 ) {
+			$queryBuilder->limit( $requestOptions->getLimit() );
+			$queryBuilder->offset( max( $requestOptions->getOffset(), 0 ) );
+		}
+
+		$res = $queryBuilder->fetchResultSet();
 
 		foreach ( $res as $row ) {
 
 			try {
-				$propertyList[] = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
-			} catch ( Exception $e ) {
+				$propertyList[] = new Property( str_replace( ' ', '_', $row->smw_title ) );
+			} catch ( Exception ) {
 				// Do nothing ...
 			}
 		}

@@ -3,10 +3,11 @@
 namespace SMW\MediaWiki;
 
 use File;
-use IDBAccessObject;
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
-use Title;
+use MediaWiki\Title\Title;
+use Wikimedia\Rdbms\IDBAccessObject;
 use WikiPage;
 
 /**
@@ -24,20 +25,19 @@ use WikiPage;
  */
 class RevisionGuard {
 
-	use HookDispatcherAwareTrait;
-
-	/**
-	 * @var RevisionLookup
-	 */
-	private $revisionLookup;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param RevisionLookup $revisionLookup
 	 */
-	public function __construct( RevisionLookup $revisionLookup ) {
-		$this->revisionLookup = $revisionLookup;
+	public function __construct( private RevisionLookup $revisionLookup ) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -48,7 +48,7 @@ class RevisionGuard {
 	 *
 	 * @return bool
 	 */
-	public function isSkippableUpdate( Title $title, &$latestRevID = null ) {
+	public function isSkippableUpdate( Title $title, &$latestRevID = null ): bool {
 		$flag = IDBAccessObject::READ_LATEST;
 
 		if ( $latestRevID === null ) {
@@ -57,7 +57,7 @@ class RevisionGuard {
 
 		// If for some reason an extension decides that the current used revision
 		// isn't approved then the hook should return `false`
-		if ( $this->hookDispatcher->onIsApprovedRevision( $title, $latestRevID ) === false ) {
+		if ( !$this->hookContainer->run( 'SMW::RevisionGuard::IsApprovedRevision', [ $title, $latestRevID ] ) ) {
 			return true;
 		}
 
@@ -77,7 +77,7 @@ class RevisionGuard {
 		$latestRevID = $title->getLatestRevID( $flag );
 		$origLatestRevID = $latestRevID;
 
-		$this->hookDispatcher->onChangeRevisionID( $title, $latestRevID );
+		$this->hookContainer->run( 'SMW::RevisionGuard::ChangeRevisionID', [ $title, &$latestRevID ] );
 
 		if ( is_int( $latestRevID ) ) {
 			return $latestRevID;
@@ -129,7 +129,7 @@ class RevisionGuard {
 
 		$origRevision = $revision;
 
-		$this->hookDispatcher->onChangeRevision( $title, $revision );
+		$this->hookContainer->run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
 
 		if ( $revision instanceof RevisionRecord ) {
 			return $revision;
@@ -146,10 +146,10 @@ class RevisionGuard {
 	 *
 	 * @return File|null
 	 */
-	public function getFile( Title $title, ?File $file = null ) {
+	public function getFile( Title $title, ?File $file = null ): ?File {
 		$origFile = $file;
 
-		$this->hookDispatcher->onChangeFile( $title, $file );
+		$this->hookContainer->run( 'SMW::RevisionGuard::ChangeFile', [ $title, &$file ] );
 
 		if ( $file instanceof File ) {
 			return $file;

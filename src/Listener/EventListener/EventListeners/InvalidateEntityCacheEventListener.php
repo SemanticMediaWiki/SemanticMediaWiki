@@ -2,10 +2,10 @@
 
 namespace SMW\Listener\EventListener\EventListeners;
 
-use Onoi\EventDispatcher\DispatchContext;
-use Onoi\EventDispatcher\EventListener;
 use Psr\Log\LoggerAwareTrait;
 use SMW\EntityCache;
+use SMW\EventDispatcher\DispatchContext;
+use SMW\EventDispatcher\EventListener;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,17 +20,9 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	const EVENT_ID = 'InvalidateEntityCache';
 
 	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( EntityCache $entityCache ) {
-		$this->entityCache = $entityCache;
+	public function __construct( private EntityCache $entityCache ) {
 	}
 
 	/**
@@ -38,7 +30,7 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function execute( ?DispatchContext $dispatchContext = null ) {
+	public function execute( ?DispatchContext $dispatchContext = null ): void {
 		if ( $dispatchContext->has( 'subject' ) ) {
 			$subject = $dispatchContext->get( 'subject' );
 			$id = $subject->getHash();
@@ -51,8 +43,12 @@ class InvalidateEntityCacheEventListener implements EventListener {
 		$this->entityCache->invalidate( $subject );
 
 		$this->logger->info(
-			[ 'Event', 'InvalidateEntityCache', "{caused_by}", "{id}" ],
-			[ 'role' => 'user', 'caused_by' => $context, 'id' => $id ]
+			'Event InvalidateEntityCache {caused_by} {id}',
+			[
+				'role' => 'user',
+				'caused_by' => $context,
+				'id' => $id
+			]
 		);
 	}
 
@@ -61,7 +57,7 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isPropagationStopped() {
+	public function isPropagationStopped(): bool {
 		return false;
 	}
 

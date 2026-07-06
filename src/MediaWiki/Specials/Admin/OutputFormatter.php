@@ -2,9 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use FormatJson;
-use Html;
-use OutputPage;
+use MediaWiki\Html\Html;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Localizer\Message;
 
 /**
@@ -16,17 +18,9 @@ use SMW\Localizer\Message;
 class OutputFormatter {
 
 	/**
-	 * @var OutputPage
-	 */
-	private $outputPage;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param OutputPage $outputPage
 	 */
-	public function __construct( OutputPage $outputPage ) {
-		$this->outputPage = $outputPage;
+	public function __construct( private readonly OutputPage $outputPage ) {
 	}
 
 	/**
@@ -34,7 +28,7 @@ class OutputFormatter {
 	 *
 	 * @param array $query
 	 */
-	public function addParentLink( $query = [], $title = 'smw-admin-tab-supplement' ) {
+	public function addParentLink( $query = [], $title = 'smw-admin-tab-supplement' ): void {
 		$this->outputPage->prependHTML( $this->createParentLink( $query, $title ) );
 	}
 
@@ -43,7 +37,7 @@ class OutputFormatter {
 	 *
 	 * @param string $url
 	 */
-	public function addHelpLink( $url ) {
+	public function addHelpLink( $url ): void {
 		$this->outputPage->addHelpLink( $url, true );
 	}
 
@@ -52,7 +46,7 @@ class OutputFormatter {
 	 *
 	 * @param string $title
 	 */
-	public function setPageTitle( $title ) {
+	public function setPageTitle( $title ): void {
 		$this->outputPage->setArticleRelated( false );
 		$this->outputPage->setPageTitle( $title );
 	}
@@ -62,7 +56,7 @@ class OutputFormatter {
 	 *
 	 * @param string $html
 	 */
-	public function addAsPreformattedText( $html ) {
+	public function addAsPreformattedText( string $html ): void {
 		$this->outputPage->addHTML( '<pre>' . $html . '</pre>' );
 	}
 
@@ -71,7 +65,7 @@ class OutputFormatter {
 	 *
 	 * @param string $css
 	 */
-	public function addInlineStyle( $css ) {
+	public function addInlineStyle( $css ): void {
 		$this->outputPage->addInlineStyle( $css );
 	}
 
@@ -80,7 +74,7 @@ class OutputFormatter {
 	 *
 	 * @param string|array $modules
 	 */
-	public function addModules( $modules ) {
+	public function addModules( $modules ): void {
 		$this->outputPage->addModules( $modules );
 	}
 
@@ -89,7 +83,7 @@ class OutputFormatter {
 	 *
 	 * @param string $html
 	 */
-	public function addHTML( $html ) {
+	public function addHTML( $html ): void {
 		$this->outputPage->addHTML( $html );
 	}
 
@@ -98,7 +92,7 @@ class OutputFormatter {
 	 *
 	 * @param string $text
 	 */
-	public function addWikiText( $text ) {
+	public function addWikiText( $text ): void {
 		$this->outputPage->addWikiTextAsInterface( $text );
 	}
 
@@ -107,8 +101,8 @@ class OutputFormatter {
 	 *
 	 * @param string $fragment
 	 */
-	public function redirectToRootPage( $fragment = '', $query = [] ) {
-		$title = \SpecialPage::getTitleFor( 'SMWAdmin' );
+	public function redirectToRootPage( string $fragment = '', $query = [] ): void {
+		$title = SpecialPage::getTitleFor( 'SMWAdmin' );
 		$title->setFragment( ' ' . $fragment );
 
 		$this->outputPage->redirect( $title->getFullURL( $query ) );
@@ -131,7 +125,11 @@ class OutputFormatter {
 	 * @param array $query
 	 */
 	public function createSpecialPageLink( $caption = '', $query = [] ) {
-		return '<a href="' . htmlspecialchars( \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ) . '">' . $caption . '</a>';
+		return Html::rawElement(
+			'a',
+			[ 'href' => SkinComponentUtils::makeSpecialUrl( 'SMWAdmin', $query ) ],
+			$caption
+		);
 	}
 
 	/**
@@ -139,7 +137,7 @@ class OutputFormatter {
 	 *
 	 * @param callable $text
 	 */
-	public function formatAsRaw( callable $text ) {
+	public function formatAsRaw( callable $text ): void {
 		$this->outputPage->disable(); // raw output
 		ob_start();
 
@@ -185,11 +183,11 @@ class OutputFormatter {
 				[ 'class' => 'smw-breadcrumb-arrow-right' ],
 				''
 			) .
-			Html::rawElement(
-				'a',
-				[ 'href' => \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ],
-				Message::get( $title, Message::TEXT, Message::USER_LANGUAGE )
-		) );
+			$this->createSpecialPageLink(
+				Message::get( $title, Message::TEXT, Message::USER_LANGUAGE ),
+				$query
+			)
+		);
 	}
 
 }

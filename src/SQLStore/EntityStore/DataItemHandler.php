@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * Classes extending this represent all store layout that is known about a certain dataitem
@@ -20,15 +20,12 @@ abstract class DataItemHandler {
 	 */
 	const IHINT_PSUBJECTS = 'ihint.psubjects';
 
-	/**
-	 * @var SQLStore
-	 */
-	protected $store;
+	protected SQLStore $store;
 
 	/**
 	 * @var int
 	 */
-	protected $fieldTypeFeatures = false;
+	protected $fieldTypeFeatures = 0;
 
 	/**
 	 * @var null|string
@@ -49,7 +46,7 @@ abstract class DataItemHandler {
 	 *
 	 * @param int $fieldTypeFeatures
 	 */
-	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
+	public function setFieldTypeFeatures( $fieldTypeFeatures ): void {
 		$this->fieldTypeFeatures = $fieldTypeFeatures;
 	}
 
@@ -60,16 +57,18 @@ abstract class DataItemHandler {
 	 *
 	 * @return bool
 	 */
-	public function hasFeature( $feature ) {
+	public function hasFeature( $feature ): bool {
 		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean
+	 * @param string $dbType
+	 *
+	 * @return bool
 	 */
-	public function isDbType( $dbType ) {
+	public function isDbType( $dbType ): bool {
 		if ( $this->dbType === null ) {
 			$this->dbType = $this->store->getConnection( 'mw.db' )->getType();
 		}
@@ -113,7 +112,7 @@ abstract class DataItemHandler {
 
 	/**
 	 * Return an array of additional indexes that should be provided for
-	 * the table using this DI handler. By default, \SMW\SQLStore\SQLStore will
+	 * the table using this DI handler. By default, SQLStore will
 	 * already create indexes for all standard select operations, based
 	 * on the indexfield provided by getIndexField(). Hence, most handlers
 	 * do not need to define any indexes.
@@ -121,7 +120,7 @@ abstract class DataItemHandler {
 	 * @since 1.8
 	 * @return array
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [];
 	}
 
@@ -134,7 +133,7 @@ abstract class DataItemHandler {
 	 *
 	 * @return string
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 		return '';
 	}
 
@@ -198,7 +197,7 @@ abstract class DataItemHandler {
 	 *
 	 * @return string
 	 */
-	public function getSortField() {
+	public function getSortField(): string {
 		return '';
 	}
 

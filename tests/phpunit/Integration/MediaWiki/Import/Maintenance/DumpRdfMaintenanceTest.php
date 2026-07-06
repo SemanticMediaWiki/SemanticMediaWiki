@@ -37,10 +37,6 @@ class DumpRdfMaintenanceTest extends SMWIntegrationTestCase {
 		ApplicationFactory::getInstance()->getSettings()->set( 'smwgExportBCAuxiliaryUse', true );
 		EventHandler::getInstance()->getEventDispatcher()->dispatch( 'exporter.reset' );
 
-		$utilityFactory->newMwHooksHandler()
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
-
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
 			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'
 		);

@@ -2,21 +2,22 @@
 
 namespace SMW\Factbox;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\DataValues\TimeValue;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Store;
 use SMW\Utils\HtmlTabs;
-use SMWInfolink;
-use TemplateParser;
-use Title;
 
 /**
  * Class handling the "Factbox" content rendering
@@ -28,81 +29,41 @@ use Title;
  */
 class Factbox {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private DataValueFactory $dataValueFactory;
 
-	/**
-	 * @var ParserData
-	 */
-	private $parserData;
+	private int $featureSet = 0;
 
-	/**
-	 * @var DisplayTitleFinder
-	 */
-	private $displayTitleFinder;
+	protected bool $isVisible = false;
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
+	protected ?string $content = null;
 
-	/**
-	 * @var int
-	 */
-	private $featureSet = 0;
+	private array $attachments = [];
 
-	/**
-	 * @var bool
-	 */
-	protected $isVisible = false;
+	private ?CheckMagicWords $checkMagicWords = null;
 
-	/**
-	 * @var string
-	 */
-	protected $content = null;
-
-	/**
-	 * @var array
-	 */
-	private $attachments = [];
-
-	/**
-	 * @var CheckMagicWords
-	 */
-	private $checkMagicWords;
-
-	private AttachmentFormatter $attachmentFormatter;
+	private readonly AttachmentFormatter $attachmentFormatter;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param ParserData $parserData
-	 * @param DisplayTitleFinder $displayTitleFinder
 	 */
-	public function __construct( Store $store, ParserData $parserData, DisplayTitleFinder $displayTitleFinder ) {
-		$this->store = $store;
-		$this->parserData = $parserData;
-		$this->displayTitleFinder = $displayTitleFinder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ParserData $parserData,
+		private readonly DisplayTitleFinder $displayTitleFinder,
+	) {
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->attachmentFormatter = new AttachmentFormatter( $store );
+		$this->attachmentFormatter = new AttachmentFormatter( $this->store );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ): void {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param CheckMagicWords $checkMagicWords
 	 */
 	public function setCheckMagicWords( CheckMagicWords $checkMagicWords ): void {
 		$this->checkMagicWords = $checkMagicWords;
@@ -113,10 +74,8 @@ class Factbox {
 	 * updating the ParserOutput accordingly
 	 *
 	 * @since 1.9
-	 *
-	 * @return Factbox
 	 */
-	public function doBuild() {
+	public function doBuild(): static {
 		$this->content = $this->fetchContent(
 			$this->getMagicWords()
 		);
@@ -124,7 +83,7 @@ class Factbox {
 		if ( $this->content !== '' || $this->attachments !== [] ) {
 			$this->parserData->getOutput()->addModuleStyles( self::getModuleStyles() );
 			$this->parserData->getOutput()->addModules( self::getModules() );
-			$this->parserData->pushSemanticDataToParserOutput();
+			$this->parserData->copyToParserOutput();
 			$this->isVisible = true;
 		}
 
@@ -142,17 +101,13 @@ class Factbox {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @return string|null
 	 */
-	public function getContent() {
+	public function getContent(): ?string {
 		return $this->content;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $attachments
 	 */
 	public function setAttachments( array $attachments ): void {
 		$this->attachments = $attachments;
@@ -168,7 +123,7 @@ class Factbox {
 
 		$templateParser = new TemplateParser( __DIR__ . '/../../templates' );
 		$data = [
-			'data-header' => $this->getHeaderData( DIWikiPage::newFromTitle( $this->getTitle() ) ),
+			'data-header' => $this->getHeaderData( WikiPage::newFromTitle( $this->getTitle() ) ),
 			'array-sections' => [
 				'html-section' => $this->attachmentFormatter->buildHTML(
 					$this->attachments
@@ -194,7 +149,7 @@ class Factbox {
 	 * @param string $attachment
 	 * @param string $derived
 	 */
-	public static function tabs( $list, $attachment = '', $derived = '' ): string {
+	public static function tabs( $list, string $attachment = '', string $derived = '' ): string {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setActiveTab(
 			$list !== '' ? 'facts-list' : 'facts-attachment'
@@ -249,10 +204,8 @@ class Factbox {
 	 * Returns magic words attached to the ParserOutput object
 	 *
 	 * @since 1.9
-	 *
-	 * @return string|null
 	 */
-	protected function getMagicWords() {
+	protected function getMagicWords(): int|string|null {
 		if ( $this->checkMagicWords === null ) {
 			return SMW_FACTBOX_HIDDEN;
 		}
@@ -350,20 +303,20 @@ class Factbox {
 		// MW's internal Parser does iterate the ParserOutput object several times
 		// which can leave a '_SKEY' property while in fact the container is empty.
 		$semanticData->removeProperty(
-			new DIProperty( '_SKEY' )
+			new Property( '_SKEY' )
 		);
 
-		return (bool)$semanticData->isEmpty();
+		return $semanticData->isEmpty();
 	}
 
-	private function hasFeature( ?int $feature ): bool {
-		return ( (int)$this->featureSet & $feature ) != 0;
+	private function hasFeature( int $feature ): bool {
+		return ( $this->featureSet & $feature ) != 0;
 	}
 
-	private function getHeaderData( DIWikiPage $subject ): array {
+	private function getHeaderData( WikiPage $subject ): array {
 		$dataValue = $this->dataValueFactory->newDataValueByItem( $subject, null );
 
-		$browselink = SMWInfolink::newBrowsingLink(
+		$browselink = Infolink::newBrowsingLink(
 			$dataValue->getPreferredCaption(),
 			$dataValue->getWikiValue(),
 			''
@@ -371,7 +324,7 @@ class Factbox {
 
 		return [
 			'html-title' => Message::get( [ 'smw-factbox-head', $browselink->getWikiText() ], Message::TEXT, Message::USER_LANGUAGE ),
-			'html-actions' => SMWInfolink::newInternalLink(
+			'html-actions' => Infolink::newInternalLink(
 				Message::get( 'smw_viewasrdf', Message::TEXT, Message::USER_LANGUAGE ),
 				Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
 				'rdflink'
@@ -382,7 +335,7 @@ class Factbox {
 	private function getPropertiesData( SemanticData $semanticData ): array {
 		$data = [];
 		$properties = $semanticData->getProperties();
-		if ( empty( $properties ) ) {
+		if ( $properties === [] ) {
 			/**
 			 * @todo: Should we show an empty state if there are no data?
 			 * We can do it by setting 'html-section' with the HTML of a notice box
@@ -439,15 +392,22 @@ class Factbox {
 				}
 
 				$outputFormat = $dataValue->getOutputFormat();
-				$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+				$dataValue->setOutputFormat( $outputFormat ?: 'LOCL' );
 				$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
+
+				// Dates render through the HTML accessor so they pick up the
+				// semantic <time> element; other value types keep their wiki
+				// rendering. The <time> markup is valid in the parsed wikitext.
+				$valueText = $dataValue instanceof TimeValue
+					? $dataValue->getLongHTMLText( true )
+					: $dataValue->getLongWikiText( true );
 
 				$list[] = Html::rawElement(
 					'span',
 					[
 						'class' => 'smw-factbox-value'
 					],
-					$dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI )
+					$valueText . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI )
 				);
 			}
 

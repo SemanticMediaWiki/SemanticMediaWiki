@@ -4,7 +4,8 @@ namespace SMW\SQLStore\ChangeOp;
 
 use ArrayIterator;
 use IteratorAggregate;
-use SMW\DIWikiPage;
+use RuntimeException;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,55 +21,25 @@ class ChangeOp implements IteratorAggregate {
 	const OP_INSERT = 'insert';
 	const OP_DELETE = 'delete';
 
-	/**
-	 * @var array
-	 */
-	private $diff = [];
+	private array $data = [];
 
-	/**
-	 * @var array
-	 */
-	private $data = [];
+	private array $textItems = [];
 
-	/**
-	 * @var array
-	 */
-	private $textItems = [];
+	private array $orderedDiff = [];
 
-	/**
-	 * @var array
-	 */
-	private $orderedDiff = [];
+	private array $fixedPropertyRecords = [];
 
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
+	private array $propertyList = [];
 
-	/**
-	 * @var array
-	 */
-	private $fixedPropertyRecords = [];
-
-	/**
-	 * @var array
-	 */
-	private $propertyList = [];
-
-	/**
-	 * @var bool
-	 */
-	private $textItemsFlag = false;
+	private bool $textItemsFlag = false;
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param DIWikiPage|null $subject
-	 * @param array $diff
 	 */
-	public function __construct( ?DIWikiPage $subject = null, array $diff = [] ) {
-		$this->subject = $subject;
-		$this->diff = $diff;
+	public function __construct(
+		private readonly ?WikiPage $subject = null,
+		private array $diff = [],
+	) {
 	}
 
 	/**
@@ -76,16 +47,16 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @param bool $textItemsFlag
 	 */
-	public function setTextItemsFlag( $textItemsFlag ) {
+	public function setTextItemsFlag( $textItemsFlag ): void {
 		$this->textItemsFlag = (bool)$textItemsFlag;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @return DIWikiPage
+	 * @return ?WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): ?WikiPage {
 		return $this->subject;
 	}
 
@@ -113,7 +84,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param string $tableName
 	 * @param array $fixedPropertyRecord
 	 */
-	public function addFixedPropertyRecord( $tableName, array $fixedPropertyRecord ) {
+	public function addFixedPropertyRecord( $tableName, array $fixedPropertyRecord ): void {
 		$this->fixedPropertyRecords[$tableName] = $fixedPropertyRecord;
 	}
 
@@ -122,16 +93,18 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getFixedPropertyRecords() {
+	public function getFixedPropertyRecords(): array {
 		return $this->fixedPropertyRecords;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return array
+	 * @param array $propertyList
+	 *
+	 * @return void
 	 */
-	public function addPropertyList( $propertyList ) {
+	public function addPropertyList( $propertyList ): void {
 		$this->propertyList = array_merge( $this->propertyList, $propertyList );
 	}
 
@@ -140,7 +113,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getPropertyList() {
+	public function getPropertyList(): array {
 		return $this->propertyList;
 	}
 
@@ -150,7 +123,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param string $hash
 	 * @param array $data
 	 */
-	public function addDataOp( $hash, array $data ) {
+	public function addDataOp( $hash, array $data ): void {
 		$this->data[$hash] = $data;
 	}
 
@@ -159,7 +132,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return TableChangeOp[]
 	 */
-	public function getDataOps() {
+	public function getDataOps(): array {
 		$dataChangeOps = [];
 
 		foreach ( $this->data as $hash => $data ) {
@@ -182,7 +155,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param int $id
 	 * @param array $textItems
 	 */
-	public function addTextItems( $id, array $textItems ) {
+	public function addTextItems( $id, array $textItems ): void {
 		if ( $this->textItemsFlag ) {
 			$this->textItems[$id] = $textItems;
 		}
@@ -194,7 +167,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param array $insertOp
 	 * @param array $deleteOp
 	 */
-	public function addDiffOp( array $insertOp, array $deleteOp ) {
+	public function addDiffOp( array $insertOp, array $deleteOp ): void {
 		$diff = [
 			'insert' => $insertOp,
 			'delete' => $deleteOp
@@ -211,9 +184,9 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @param string|null $table
 	 *
-	 * @return TableChangeOp[]|[]
+	 * @return TableChangeOp[]
 	 */
-	public function getTableChangeOps( $table = null ) {
+	public function getTableChangeOps( $table = null ): array {
 		$tableChangeOps = [];
 
 		foreach ( $this->getOrderedDiffByTable( $table ) as $tableName => $diff ) {
@@ -227,8 +200,15 @@ class ChangeOp implements IteratorAggregate {
 	 * @since 3.0
 	 *
 	 * @return ChangeDiff
+	 * @throws RuntimeException
 	 */
-	public function newChangeDiff() {
+	public function newChangeDiff(): ChangeDiff {
+		if ( $this->subject === null ) {
+			throw new RuntimeException(
+				'ChangeDiff requires a subject.'
+			);
+		}
+
 		$changeDiff = new ChangeDiff(
 			$this->subject,
 			$this->getTableChangeOps(),
@@ -258,7 +238,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getOrderedDiffByTable( $table = null ) {
+	public function getOrderedDiffByTable( $table = null ): array {
 		if ( $table === null && $this->orderedDiff !== [] ) {
 			return $this->orderedDiff;
 		}
@@ -306,7 +286,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getChangedEntityIdListByType( $type = null ) {
+	public function getChangedEntityIdListByType( $type = null ): array {
 		$changedEntities = [];
 
 		foreach ( $this->getOrderedDiffByTable() as $diff ) {
@@ -332,21 +312,11 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getChangedEntityIdSummaryList() {
+	public function getChangedEntityIdSummaryList(): array {
 		return array_keys( $this->getChangedEntityIdListByType() );
 	}
 
-	/**
-	 * @deprecated since 3.0, use ChangeOp::getChangedEntityIdSummaryList
-	 * @since 2.3
-	 *
-	 * @return array
-	 */
-	public function getCombinedIdListOfChangedEntities() {
-		return $this->getChangedEntityIdSummaryList();
-	}
-
-	private function addToIdList( &$list, $value ) {
+	private function addToIdList( array &$list, $value ): void {
 		foreach ( $value as $element ) {
 
 			if ( isset( $element['p_id'] ) ) {

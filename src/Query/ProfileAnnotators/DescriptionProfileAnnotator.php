@@ -2,11 +2,11 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
 use SMW\Query\Language\Description;
 use SMW\Query\ProfileAnnotator;
-use SMWDIBlob as DIBlob;
-use SMWDINumber as DINumber;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,48 +17,54 @@ use SMWDINumber as DINumber;
 class DescriptionProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var Description
-	 */
-	private $description;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param Description $description
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, Description $description ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private readonly ?Description $description,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->description = $description;
 	}
 
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
+		if ( $this->description === null ) {
+			return;
+		}
 		$this->addQueryString( $this->description->getQueryString() );
 		$this->addQuerySize( $this->description->getSize() );
 		$this->addQueryDepth( $this->description->getDepth() );
 	}
 
-	private function addQueryString( $queryString ) {
+	private function addQueryString( $queryString ): void {
+		if ( $this->description === null ) {
+			return;
+		}
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKST' ),
-			new DIBlob( $queryString )
+			new Property( '_ASKST' ),
+			new Blob( $queryString )
 		);
 	}
 
-	private function addQuerySize( $size ) {
+	private function addQuerySize( $size ): void {
+		if ( $this->description === null ) {
+			return;
+		}
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKSI' ),
-			new DINumber( $size )
+			new Property( '_ASKSI' ),
+			new Number( $size )
 		);
 	}
 
-	private function addQueryDepth( $depth ) {
+	private function addQueryDepth( $depth ): void {
+		if ( $this->description === null ) {
+			return;
+		}
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKDE' ),
-			new DINumber( $depth )
+			new Property( '_ASKDE' ),
+			new Number( $depth )
 		);
 	}
 

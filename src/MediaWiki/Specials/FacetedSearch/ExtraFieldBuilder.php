@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -17,24 +17,12 @@ class ExtraFieldBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var Profile
-	 */
-	private $profile;
-
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
-	 * @param TemplateEngine $templateEngine
 	 */
-	public function __construct( Profile $profile, TemplateEngine $templateEngine ) {
-		$this->profile = $profile;
-		$this->templateEngine = $templateEngine;
+	public function __construct(
+		private Profile $profile,
+		private TemplateParser $templateParser,
+	) {
 	}
 
 	/**
@@ -45,7 +33,8 @@ class ExtraFieldBuilder {
 	 * @return string
 	 */
 	public function buildHTML( ?UrlArgs $urlArgs = null ): string {
-		if ( ( $fieldList = $this->profile->get( 'search.extra_fields.field_list', [] ) ) === [] ) {
+		$fieldList = $this->profile->get( 'search.extra_fields.field_list', [] );
+		if ( $fieldList === [] ) {
 			return '';
 		}
 
@@ -76,8 +65,8 @@ class ExtraFieldBuilder {
 				$isAutocomplete = true;
 			}
 
-			$this->templateEngine->compile(
-				'search-extra-field-input',
+			$html .= $this->templateParser->processTemplate(
+				'search.extrafield.input',
 				[
 					'label' => $definition['label'],
 					'type' => $isAutocomplete ? 'text' : 'search',
@@ -90,11 +79,10 @@ class ExtraFieldBuilder {
 			);
 
 			$i++;
-			$html .= $this->templateEngine->publish( 'search-extra-field-input' );
 		}
 
-		$this->templateEngine->compile(
-			'search-extra-fields',
+		return $this->templateParser->processTemplate(
+			'search.extrafields',
 			[
 				'fields' => $html,
 				'css-class' => $cssClass,
@@ -102,8 +90,6 @@ class ExtraFieldBuilder {
 				'theme' => $this->profile->get( 'theme' )
 			]
 		);
-
-		return $this->templateEngine->publish( 'search-extra-fields' );
 	}
 
 }

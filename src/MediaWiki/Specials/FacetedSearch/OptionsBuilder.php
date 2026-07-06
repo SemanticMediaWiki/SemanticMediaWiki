@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\MessageLocalizerTrait;
 
 /**
@@ -16,25 +16,13 @@ class OptionsBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var Profile
-	 */
-	private $profile;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
 	 */
-	public function __construct( Profile $profile ) {
-		$this->profile = $profile;
+	public function __construct( private Profile $profile ) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $profile
-	 *
-	 * @return string
 	 */
 	public function profiles( string $profile = '' ): string {
 		$html = [];
@@ -66,10 +54,8 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $format
 	 */
-	public function format( string $format ) {
+	public function format( string $format ): string {
 		$html = [];
 		$list = [
 			'table' => $this->msg( "smw-facetedsearch-format-table" )
@@ -95,10 +81,8 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $size
 	 */
-	public function size( int $size ) {
+	public function size( int $size ): string {
 		$html = [];
 		$list = $this->profile->get( 'result.paging_limit' );
 
@@ -123,10 +107,8 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $order
 	 */
-	public function order( string $order ) {
+	public function order( string $order ): string {
 		$html = [];
 
 		$list = [
@@ -152,11 +134,6 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $size
-	 * @param int $offset
-	 *
-	 * @return string
 	 */
 	public function previous( int $size, int $offset ): string {
 		if ( $offset < 1 ) {
@@ -178,15 +155,9 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $size
-	 * @param int $offset
-	 * @param bool $hasFurtherResults
-	 *
-	 * @return string
 	 */
 	public function next( int $size, int $offset, bool $hasFurtherResults ): string {
-		if ( $hasFurtherResults === false ) {
+		if ( !$hasFurtherResults ) {
 			return $this->msg( 'smw_result_next' );
 		}
 

@@ -15,6 +15,9 @@ use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
 use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
+use SMW\Tests\Utils\MwApiFactory;
+use SMW\Tests\Utils\Runners\RunnerFactory;
+use SMW\Tests\Utils\Validators\ValidatorFactory;
 
 /**
  * It is provided for external extensions that seek a simple way of creating tests
@@ -31,30 +34,19 @@ use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
  */
 abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner {
 
-	/**
-	 * @var ValidatorFactory
-	 */
-	protected $validatorFactory;
-
-	/**
-	 * @var RunnerFactory
-	 */
-	protected $runnerFactory;
-
-	/**
-	 * @var ApiFactory
-	 */
-	private $apiFactory;
+	protected ValidatorFactory $validatorFactory;
+	protected RunnerFactory $runnerFactory;
+	private MwApiFactory $apiFactory;
 
 	/**
 	 * @see JSONScriptTestCaseRunner::$deletePagesOnTearDown
 	 */
-	protected $deletePagesOnTearDown = true;
+	protected bool $deletePagesOnTearDown = true;
 
 	/**
 	 * Defines set of assertation services to be available by the runner
 	 */
-	protected $defaultAssertionTypes = [
+	protected array $defaultAssertionTypes = [
 		'parser',
 		'parser-html',
 		'special'
@@ -81,8 +73,23 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 				'smwgEnabledFulltextSearch' => false,
 				'smwgSparqlReplicationPropertyExemptionList' => [],
 				'smwgPageSpecialProperties' => [ '_MDAT' ],
-				'smwgFieldTypeFeatures' => SMW_FIELDT_NONE,
-				'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE,
+				'smwgFieldTypeFeatures' => [],
+				// Pin smwgDVFeatures to the extension.json default minus
+				// `number-value-usespaces` so JSON test cases that don't
+				// override the key see a stable baseline regardless of
+				// LocalSettings.php (#6586). Expressed in the new string-array
+				// form to avoid the LegacyConstantNormalizer deprecation path.
+				// Keep this list in sync with extension.json's `DVFeatures`
+				// default — adding a new flag there means adding it here too.
+				'smwgDVFeatures' => [
+					'provider-redirect',
+					'monolingual-langcode',
+					'pattern-validation',
+					'wpv-display-title',
+					'time-calendar-model',
+					'preferred-label',
+					'provider-link-hint',
+				],
 				'smwgCacheUsage' => [
 					'api.browse' => false
 				] + $GLOBALS['smwgCacheUsage'],
@@ -92,21 +99,14 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		);
 	}
 
-	/**
-	 * @param string $type
-	 *
-	 * @return bool
-	 */
 	protected function runTestAssertionForType( string $type ): bool {
 		return in_array( $type, $this->defaultAssertionTypes );
 	}
 
 	/**
 	 * @see JSONScriptTestCaseRunner::runTestCaseFile
-	 *
-	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
-	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ): void {
 		$this->checkEnvironmentToSkipCurrentTest( $jsonTestCaseFileHandler );
 
 		// Setup
@@ -152,7 +152,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 	/**
 	 * @see JSONScriptTestCaseRunner::getPermittedSettings
 	 */
-	protected function getPermittedSettings() {
+	protected function getPermittedSettings(): array {
 		parent::getPermittedSettings();
 
 		$elasticsearchConfig = function ( $val ) {
@@ -201,7 +201,6 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			'smwgFixedProperties',
 			'smwgPropertyZeroCountDisplay',
 			'smwgQueryResultCacheType',
-			'smwgLinksInValues',
 			'smwgQFilterDuplicates',
 			'smwgQueryProfiler',
 			'smwgEntityCollation',
@@ -234,6 +233,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			'wgEnableUploads',
 			'wgFileExtensions',
 			'wgDefaultUserOptions',
+			'wgThumbLimits',
 			'wgLocalTZoffset'
 		];
 	}
@@ -374,6 +374,16 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			return;
 		}
 
+		// A test case may set `wgSearchType` (e.g. to `SMWSearch`) via the
+		// settings block, which TestConfig applies as a $GLOBALS write. MediaWiki's
+		// SearchEngineConfig copies `wgSearchType` into a ServiceOptions snapshot at
+		// construction, so a value snapshotted earlier in the run (the test bootstrap
+		// defaults it to SearchEngineDummy) would otherwise mask the override. Reset
+		// the config and the factory that consumes it so Special:Search resolves the
+		// configured engine instead of the stale default.
+		$this->testEnvironment->resetMediaWikiService( 'SearchEngineConfig' );
+		$this->testEnvironment->resetMediaWikiService( 'SearchEngineFactory' );
+
 		$specialPageTestCaseProcessor = new SpecialPageTestCaseProcessor(
 			$this->getStore(),
 			$this->validatorFactory->newStringValidator()
@@ -437,7 +447,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		}
 	}
 
-	private function doRunQueryTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+	private function doRunQueryTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
 		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'query' );
 		$count += count( $testCases );
 
@@ -445,20 +455,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			return;
 		}
 
-		$queryTestCaseProcessor = new QueryTestCaseProcessor(
-			$this->getStore(),
-			$this->validatorFactory->newQueryResultValidator(),
-			$this->validatorFactory->newStringValidator(),
-			$this->validatorFactory->newNumberValidator()
-		);
-
-		$queryTestCaseProcessor->setQueryParser(
-			$queryParser
-		);
-
-		$queryTestCaseProcessor->setDebugMode(
-			$jsonTestCaseFileHandler->getDebugMode()
-		);
+		$queryTestCaseProcessor = $this->newQueryTestCaseProcessor( $queryParser, $jsonTestCaseFileHandler );
 
 		foreach ( $testCases as $case ) {
 
@@ -471,7 +468,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		}
 	}
 
-	private function doRunConceptTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+	private function doRunConceptTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
 		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'concept' );
 		$count += count( $testCases );
 
@@ -479,20 +476,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			return;
 		}
 
-		$queryTestCaseProcessor = new QueryTestCaseProcessor(
-			$this->getStore(),
-			$this->validatorFactory->newQueryResultValidator(),
-			$this->validatorFactory->newStringValidator(),
-			$this->validatorFactory->newNumberValidator()
-		);
-
-		$queryTestCaseProcessor->setQueryParser(
-			$queryParser
-		);
-
-		$queryTestCaseProcessor->setDebugMode(
-			$jsonTestCaseFileHandler->getDebugMode()
-		);
+		$queryTestCaseProcessor = $this->newQueryTestCaseProcessor( $queryParser, $jsonTestCaseFileHandler );
 
 		foreach ( $testCases as $case ) {
 			$queryTestCaseProcessor->processConceptCase( new QueryTestCaseInterpreter( $case ) );
@@ -500,7 +484,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		}
 	}
 
-	private function doRunFormatTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+	private function doRunFormatTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
 		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'format' );
 		$count += count( $testCases );
 
@@ -508,20 +492,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			return;
 		}
 
-		$queryTestCaseProcessor = new QueryTestCaseProcessor(
-			$this->getStore(),
-			$this->validatorFactory->newQueryResultValidator(),
-			$this->validatorFactory->newStringValidator(),
-			$this->validatorFactory->newNumberValidator()
-		);
-
-		$queryTestCaseProcessor->setQueryParser(
-			$queryParser
-		);
-
-		$queryTestCaseProcessor->setDebugMode(
-			$jsonTestCaseFileHandler->getDebugMode()
-		);
+		$queryTestCaseProcessor = $this->newQueryTestCaseProcessor( $queryParser, $jsonTestCaseFileHandler );
 
 		foreach ( $testCases as $case ) {
 
@@ -532,6 +503,23 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			$queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $case ) );
 			$i++;
 		}
+	}
+
+	private function newQueryTestCaseProcessor(
+		$queryParser,
+		JsonTestCaseFileHandler $jsonTestCaseFileHandler
+	): QueryTestCaseProcessor {
+		$queryTestCaseProcessor = new QueryTestCaseProcessor(
+			$this->getStore(),
+			$this->validatorFactory->newQueryResultValidator(),
+			$this->validatorFactory->newStringValidator(),
+			$this->validatorFactory->newNumberValidator()
+		);
+
+		$queryTestCaseProcessor->setQueryParser( $queryParser );
+		$queryTestCaseProcessor->setDebugMode( $jsonTestCaseFileHandler->getDebugMode() );
+
+		return $queryTestCaseProcessor;
 	}
 
 	private function doRunApiTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {

@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use SMW\MediaWiki\HookDispatcherAwareTrait;
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\User\User;
 use SMW\Store;
-use User;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,51 +14,34 @@ use User;
  */
 class TaskHandlerRegistry {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private array $taskHandlers = [];
 
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
+	private int $featureSet = 0;
 
-	/**
-	 * @var
-	 */
-	private $taskHandlers = [];
-
-	/**
-	 * @var int
-	 */
-	private $featureSet = 0;
-
-	/**
-	 * @var bool
-	 */
-	private $onRegisterTaskHandlers = false;
+	private bool $onRegisterTaskHandlers = false;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private Store $store,
+		private OutputFormatter $outputFormatter,
+	) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $taskHandlers
-	 * @param User $user
 	 */
-	public function registerTaskHandlers( array $taskHandlers, User $user ) {
+	public function registerTaskHandlers( array $taskHandlers, User $user ): void {
 		if ( $this->onRegisterTaskHandlers ) {
 			return;
 		}
@@ -66,33 +49,28 @@ class TaskHandlerRegistry {
 		$this->onRegisterTaskHandlers = true;
 		$this->taskHandlers = $taskHandlers;
 
-		$this->hookDispatcher->onRegisterTaskHandlers( $this, $this->store, $this->outputFormatter, $user );
+		$this->hookContainer->run(
+			'SMW::Admin::RegisterTaskHandlers',
+			[ $this, $this->store, $this->outputFormatter, $user ]
+		);
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TaskHandler $taskHandler
 	 */
-	public function registerTaskHandler( TaskHandler $taskHandler ) {
+	public function registerTaskHandler( TaskHandler $taskHandler ): void {
 		$this->taskHandlers[] = $taskHandler;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $type
-	 *
-	 * @return TaskHandler[]
 	 */
 	public function get( string $type ): array {
 		$taskHandlers = [];

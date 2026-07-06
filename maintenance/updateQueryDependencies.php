@@ -2,12 +2,14 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\SQLStore;
-use Title;
+use SMW\Store;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -21,7 +23,11 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class updateQueryDependencies extends \Maintenance {
+class updateQueryDependencies extends Maintenance {
+
+	private ?Store $store = null;
+
+	private ?JobFactory $jobFactory = null;
 
 	/**
 	 * @var MessageReporter
@@ -37,9 +43,21 @@ class updateQueryDependencies extends \Maintenance {
 	}
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setJobFactory( JobFactory $jobFactory ) {
+		$this->jobFactory = $jobFactory;
+	}
+
+	/**
 	 * @since 3.1
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -110,41 +128,37 @@ class updateQueryDependencies extends \Maintenance {
 		parent::addDefaultParams();
 	}
 
-	private function dieMessage( $message ) {
+	private function dieMessage( $message ): never {
 		$this->reportMessage( $message );
 		exit;
 	}
 
 	private function runUpdate() {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore( SQLStore::class );
+		$this->store ??= $applicationFactory->getStore( SQLStore::class );
+		$this->jobFactory ??= $applicationFactory->newJobFactory();
 
-		$jobFactory = $applicationFactory->newJobFactory();
-		$connection = $store->getConnection( 'mw.db' );
+		$connection = $this->store->getConnection( 'mw.db' );
 
-		$tableName = $store->getPropertyTableInfoFetcher()->findTableIdForProperty(
-			new DIProperty( '_ASK' )
+		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
+			new Property( '_ASK' )
 		);
 
-		$res = $connection->select(
-			[ SQLStore::ID_TABLE, 'p' => $tableName ],
-			[
+		$res = $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace'
-			],
-			[
+			] )
+			->from( SQLStore::ID_TABLE )
+			->join( $tableName, 'p', [ 'p.s_id=smw_id' ] )
+			->where( [
 				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ),
 				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
-			],
-			__METHOD__,
-			[
-				'GROUP BY' => 'smw_id'
-			],
-			[
-				'p' => [ 'INNER JOIN', [ 'p.s_id=smw_id' ] ],
-			]
-		);
+			] )
+			->groupBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$expected = $res->numRows();
 		$i = 0;
@@ -156,6 +170,7 @@ class updateQueryDependencies extends \Maintenance {
 		$this->reportMessage( "\n   ... found $expected entities ..." );
 		$this->reportMessage( "\n" );
 
+		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 		foreach ( $res as $row ) {
 			$i++;
 
@@ -163,8 +178,8 @@ class updateQueryDependencies extends \Maintenance {
 				"\r" . sprintf( "%-55s%s", "   ... update ...", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
 			);
 
-			$updateJob = $jobFactory->newUpdateJob(
-				Title::makeTitleSafe( $row->smw_namespace, $row->smw_title ),
+			$updateJob = $this->jobFactory->newUpdateJob(
+				$titleFactory->makeTitleSafe( $row->smw_namespace, $row->smw_title ),
 				[
 					'origin' => 'updateQueryDependencies.php'
 				]

@@ -2,21 +2,27 @@
 
 namespace SMW\SPARQLStore;
 
+use LogicException;
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\Title\Title;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\Export\Exporter;
+use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
+use SMW\Lookup\ListLookup;
 use SMW\Options;
-use SMW\SemanticData;
+use SMW\Query\Query;
+use SMW\Query\QueryResult;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
+use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\Rebuilder\Rebuilder;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
-use SMWQuery as Query;
-use Title;
 
 /**
  * Storage and query access point for a SPARQL supported RepositoryConnector to
@@ -33,10 +39,7 @@ use Title;
  */
 class SPARQLStore extends Store {
 
-	/**
-	 * @var SPARQLStoreFactory
-	 */
-	private $factory;
+	private SPARQLStoreFactory $factory;
 
 	/**
 	 * Class to be used as an underlying base store. This can be changed in
@@ -46,7 +49,7 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 * @var string
 	 */
-	public static $baseStoreClass = '\SMW\SQLStore\SQLStore';
+	public static $baseStoreClass = SQLStore::class;
 
 	/**
 	 * Underlying store to use for basic read operations.
@@ -64,11 +67,8 @@ class SPARQLStore extends Store {
 	 */
 	public function __construct( ?Store $baseStore = null ) {
 		$this->factory = new SPARQLStoreFactory( $this );
-		$this->baseStore = $baseStore;
 
-		if ( $this->baseStore === null ) {
-			$this->baseStore = $this->factory->getBaseStore( self::$baseStoreClass );
-		}
+		$this->baseStore = $baseStore ?? $this->factory->getBaseStore( self::$baseStoreClass );
 
 		$this->connectionManager = $this->factory->getConnectionManager();
 	}
@@ -77,7 +77,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getSemanticData()
 	 * @since 1.8
 	 */
-	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
+	public function getSemanticData( WikiPage $subject, $filter = false ) {
 		return $this->baseStore->getSemanticData( $subject, $filter );
 	}
 
@@ -85,7 +85,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getPropertyValues()
 	 * @since 1.8
 	 */
-	public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null ) {
+	public function getPropertyValues( $subject, Property $property, $requestoptions = null ) {
 		return $this->baseStore->getPropertyValues( $subject, $property, $requestoptions );
 	}
 
@@ -93,7 +93,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getPropertySubjects()
 	 * @since 1.8
 	 */
-	public function getPropertySubjects( DIProperty $property, $value, $requestoptions = null ) {
+	public function getPropertySubjects( Property $property, $value, $requestoptions = null ) {
 		return $this->baseStore->getPropertySubjects( $property, $value, $requestoptions );
 	}
 
@@ -101,7 +101,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getAllPropertySubjects()
 	 * @since 1.8
 	 */
-	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
+	public function getAllPropertySubjects( Property $property, $requestoptions = null ) {
 		return $this->baseStore->getAllPropertySubjects( $property, $requestoptions );
 	}
 
@@ -109,7 +109,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getProperties()
 	 * @since 1.8
 	 */
-	public function getProperties( DIWikiPage $subject, $requestoptions = null ) {
+	public function getProperties( WikiPage $subject, $requestoptions = null ) {
 		return $this->baseStore->getProperties( $subject, $requestoptions );
 	}
 
@@ -125,20 +125,31 @@ class SPARQLStore extends Store {
 	 * @see Store::deleteSubject()
 	 * @since 1.6
 	 */
-	public function deleteSubject( Title $subject ) {
-		$this->doSparqlDataDelete( DIWikiPage::newFromTitle( $subject ) );
+	public function deleteSubject( Title $subject ): void {
+		$this->doSparqlDataDelete( WikiPage::newFromTitle( $subject ) );
 		$this->baseStore->deleteSubject( $subject );
 	}
 
 	/**
 	 * @see Store::changeTitle()
 	 * @since 1.6
+	 *
+	 * @return void
+	 * @throws LogicException
 	 */
-	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
-		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
+	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ): void {
+		$oldWikiPage = WikiPage::newFromTitle( $oldtitle );
+		$newWikiPage = WikiPage::newFromTitle( $newtitle );
 		$oldExpResource = Exporter::getInstance()->newExpElement( $oldWikiPage );
 		$newExpResource = Exporter::getInstance()->newExpElement( $newWikiPage );
+
+		if (
+			!$oldExpResource instanceof ExpElement ||
+			!$newExpResource instanceof ExpElement
+		) {
+			throw new LogicException( 'Expected ExpElement' );
+		}
+
 		$namespaces = [ $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() ];
 		$namespaces[$newExpResource->getNamespaceId()] = $newExpResource->getNamespace();
 		$oldUri = TurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
@@ -183,8 +194,11 @@ class SPARQLStore extends Store {
 	 * @since 2.0
 	 *
 	 * @param SemanticData $semanticData
+	 *
+	 * @return void
+	 * @throws HttpEndpointConnectionException
 	 */
-	public function doSparqlDataUpdate( SemanticData $semanticData ) {
+	public function doSparqlDataUpdate( SemanticData $semanticData ): void {
 		$connection = $this->getConnection( 'sparql' );
 
 		if (
@@ -218,7 +232,7 @@ class SPARQLStore extends Store {
 	 * @param SemanticData $semanticData
 	 * @param TurtleTriplesBuilder $turtleTriplesBuilder
 	 */
-	private function doSparqlFlatDataUpdate( SemanticData $semanticData, TurtleTriplesBuilder $turtleTriplesBuilder ) {
+	private function doSparqlFlatDataUpdate( SemanticData $semanticData, TurtleTriplesBuilder $turtleTriplesBuilder ): void {
 		$turtleTriplesBuilder->doBuildTriplesFrom( $semanticData );
 
 		if ( !$turtleTriplesBuilder->hasTriples() ) {
@@ -241,7 +255,7 @@ class SPARQLStore extends Store {
 	 * @see Store::doDataUpdate()
 	 * @since 1.6
 	 */
-	protected function doDataUpdate( SemanticData $semanticData ) {
+	protected function doDataUpdate( SemanticData $semanticData ): void {
 		$this->baseStore->doDataUpdate( $semanticData );
 		$this->doSparqlDataUpdate( $semanticData );
 	}
@@ -258,15 +272,21 @@ class SPARQLStore extends Store {
 	 */
 	public function doSparqlDataDelete( DataItem $dataItem ) {
 		$extraNamespaces = [];
+		$exporter = Exporter::getInstance();
 
-		$expResource = Exporter::getInstance()->newExpElement( $dataItem );
+		$expResource = $exporter->newExpElement( $dataItem );
+
+		if ( !$expResource instanceof ExpElement ) {
+			throw new LogicException( 'Expected ExpElement' );
+		}
+
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
 		if ( $expResource instanceof ExpNsResource ) {
 			$extraNamespaces = [ $expResource->getNamespaceId() => $expResource->getNamespace() ];
 		}
 
-		$masterPageProperty = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'masterPage' );
+		$masterPageProperty = $exporter->newExpNsResourceById( 'swivt', 'masterPage' );
 		$masterPagePropertyUri = TurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
 		$success = $this->getConnection()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );
@@ -283,6 +303,8 @@ class SPARQLStore extends Store {
 	 *
 	 * @see Store::getQueryResult
 	 * @since 1.6
+	 *
+	 * @return mixed
 	 */
 	public function getQueryResult( Query $query ) {
 		// Use a fallback QueryEngine in case the QueryEndpoint is inaccessible
@@ -310,7 +332,7 @@ class SPARQLStore extends Store {
 		return $result;
 	}
 
-	protected function fetchQueryResult( Query $query ) {
+	protected function fetchQueryResult( Query $query ): QueryResult|string|int {
 		return $this->factory->newMasterQueryEngine()->getQueryResult( $query );
 	}
 
@@ -318,7 +340,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getPropertiesSpecial()
 	 * @since 1.8
 	 */
-	public function getPropertiesSpecial( $requestoptions = null ) {
+	public function getPropertiesSpecial( $requestoptions = null ): ListLookup {
 		return $this->baseStore->getPropertiesSpecial( $requestoptions );
 	}
 
@@ -326,7 +348,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getUnusedPropertiesSpecial()
 	 * @since 1.8
 	 */
-	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
+	public function getUnusedPropertiesSpecial( $requestoptions = null ): ListLookup {
 		return $this->baseStore->getUnusedPropertiesSpecial( $requestoptions );
 	}
 
@@ -334,7 +356,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getWantedPropertiesSpecial()
 	 * @since 1.8
 	 */
-	public function getWantedPropertiesSpecial( $requestoptions = null ) {
+	public function getWantedPropertiesSpecial( $requestoptions = null ): ListLookup {
 		return $this->baseStore->getWantedPropertiesSpecial( $requestoptions );
 	}
 
@@ -383,7 +405,7 @@ class SPARQLStore extends Store {
 	 * @see Store::setup()
 	 * @since 1.8
 	 */
-	public function setup( $options = true ) {
+	public function setup( $options = true ): bool {
 		$this->baseStore->setMessageReporter( $this->messageReporter );
 
 		$cliMsgFormatter = new CliMsgFormatter();
@@ -420,14 +442,14 @@ class SPARQLStore extends Store {
 			);
 		}
 
-		$this->baseStore->setup( $options );
+		return $this->baseStore->setup( $options );
 	}
 
 	/**
 	 * @see Store::drop()
 	 * @since 1.6
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): void {
 		$this->baseStore->setMessageReporter( $this->messageReporter );
 		$this->baseStore->drop( $verbose );
 		$this->getConnection()->deleteAll();
@@ -474,7 +496,7 @@ class SPARQLStore extends Store {
 	/**
 	 * @since  1.9.2
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->baseStore->clear();
 	}
 
@@ -485,7 +507,7 @@ class SPARQLStore extends Store {
 	 *
 	 * @return array
 	 */
-	public function getInfo( $type = null ) {
+	public function getInfo( $type = null ): array {
 		$respositoryConnetion = $this->getConnection( 'sparql' );
 		$repositoryClient = $respositoryConnetion->getRepositoryClient();
 
@@ -515,7 +537,7 @@ class SPARQLStore extends Store {
 		return parent::getConnection( $type );
 	}
 
-	private function hasQueryEndpoint() {
+	private function hasQueryEndpoint(): bool {
 		return $this->getConnection( 'sparql' )->getRepositoryClient()->getQueryEndpoint() !== false;
 	}
 

@@ -20,46 +20,29 @@ use SMW\Utils\CliMsgFormatter;
  */
 class PropertyStatisticsRebuilder {
 
-	/**
-	 * @var Store
-	 */
-	private $store = null;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private MessageReporter $messageReporter;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
-		$this->store = $store;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+	) {
 		$this->messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
 	/**
 	 * @since  2.2
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function rebuild() {
+	public function rebuild(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -103,15 +86,15 @@ class PropertyStatisticsRebuilder {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$res = $connection->select(
-			SQLStore::ID_TABLE,
-			[ 'smw_id', 'smw_title' ],
-			[
+		$res = $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_namespace' => SMW_NS_PROPERTY,
 				'smw_subobject' => ''
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$propCount = $res->numRows();
 
@@ -140,7 +123,7 @@ class PropertyStatisticsRebuilder {
 		$this->reportMessage( "\n   ... done.\n" );
 	}
 
-	private function getCountFormRow( $row ) {
+	private function getCountFormRow( $row ): array {
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -163,7 +146,7 @@ class PropertyStatisticsRebuilder {
 		return [ $usageCount, $nullCount ];
 	}
 
-	private function getPropertyTableRowCount( $propertyTable, $pid ) {
+	private function getPropertyTableRowCount( $propertyTable, $pid ): array {
 		$condition = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -179,12 +162,12 @@ class PropertyStatisticsRebuilder {
 
 		// Select all (incl. NULL since for example blob table can have a null
 		// for when only the hash field is used, substract NULL in a second step)
-		$row = $connection->selectRow(
-			$tableName,
-			'Count(*) as count',
-			$condition,
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( 'Count(*) as count' )
+			->from( $tableName )
+			->where( $condition )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$usageCount = $row->count;
@@ -195,25 +178,25 @@ class PropertyStatisticsRebuilder {
 			$condition[] = "$field IS NULL";
 		}
 
-		$nRow = $connection->selectRow(
-			$tableName,
-			'Count(*) as count',
-			$condition,
-			__METHOD__
-		);
+		$nRow = $connection->newSelectQueryBuilder()
+			->select( 'Count(*) as count' )
+			->from( $tableName )
+			->where( $condition )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $nRow !== false ) {
 			$nullCount = $nRow->count;
 		}
 
 		if ( $usageCount > 0 ) {
-			$usageCount = $usageCount - $nullCount;
+			$usageCount -= $nullCount;
 		}
 
 		return [ $usageCount, $nullCount ];
 	}
 
-	protected function reportMessage( $message ) {
+	protected function reportMessage( $message ): void {
 		$this->messageReporter->reportMessage( $message );
 	}
 

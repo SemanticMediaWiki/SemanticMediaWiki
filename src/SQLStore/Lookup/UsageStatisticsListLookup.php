@@ -3,10 +3,10 @@
 namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\Lookup\ListLookup;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,24 +17,12 @@ use SMW\Store;
 class UsageStatisticsListLookup implements ListLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
-		$this->store = $store;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+	) {
 	}
 
 	/**
@@ -57,7 +45,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		return [
 			'OWNPAGE' => $this->getPropertyPageCount(),
 			'QUERY' => $this->getQueryCount(),
@@ -80,14 +68,14 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return false|string
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -98,64 +86,64 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return 'statistics-lookup';
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getImproperValueForCount() {
+	public function getImproperValueForCount(): int {
 		return $this->propertyStatisticsStore->getUsageCount(
-			$this->store->getObjectIds()->getSMWPropertyID( new DIProperty( '_ERRP' ) )
+			$this->store->getObjectIds()->getSMWPropertyID( new Property( '_ERRP' ) )
 		);
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getQueryCount() {
+	public function getQueryCount(): int {
 		return $this->count( '_ASK' );
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getQuerySize() {
+	public function getQuerySize(): int {
 		return $this->count( '_ASKSI' );
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getConceptCount() {
+	public function getConceptCount(): int {
 		return $this->count( '_CONC' );
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getSubobjectCount() {
-		return $this->count( DIProperty::TYPE_SUBOBJECT );
+	public function getSubobjectCount(): int {
+		return $this->count( Property::TYPE_SUBOBJECT );
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getDeclaredPropertiesCount() {
-		return $this->count( DIProperty::TYPE_HAS_TYPE );
+	public function getDeclaredPropertiesCount(): int {
+		return $this->count( Property::TYPE_HAS_TYPE );
 	}
 
 	/**
@@ -163,19 +151,16 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return int[]
 	 */
-	public function getQueryFormatsCount() {
+	public function getQueryFormatsCount(): array {
 		$count = [];
 
-		$res = $this->store->getConnection()->select(
-			$this->findPropertyTableByType( '_ASKFO' )->getName(),
-			'o_hash, COUNT(s_id) AS count',
-			[],
-			__METHOD__,
-			[
-				'ORDER BY' => 'count DESC',
-				'GROUP BY' => 'o_hash'
-			]
-		);
+		$res = $this->store->getConnection()->newSelectQueryBuilder()
+			->select( 'o_hash, COUNT(s_id) AS count' )
+			->from( $this->findPropertyTableByType( '_ASKFO' )->getName() )
+			->groupBy( 'o_hash' )
+			->orderBy( 'count DESC' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $res as $row ) {
 			$count[$row->o_hash] = (int)$row->count;
@@ -187,11 +172,9 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getPropertyPageCount() {
-		$options = [];
-
 		// Only match entities that have a NOT null smw_proptable_hash entry
 		// which indicates that it is not a object but a subject value (has
 		// annotations such as `has type` == page was created with ... etc.)
@@ -205,14 +188,13 @@ class UsageStatisticsListLookup implements ListLookup {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		// Select object ID's against known property ID's that match the conditions
-		$res = $db->select(
-			[ $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
-			'smw_id',
-			$conditions,
-			__METHOD__,
-			$options,
-			[ $db->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
-		);
+		$res = $db->newSelectQueryBuilder()
+			->select( 'smw_id' )
+			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->join( SQLStore::ID_TABLE, null, [ 'smw_id=p_id' ] )
+			->where( $conditions )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $res->numRows();
 	}
@@ -226,17 +208,16 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getPropertyUsageCount() {
+	public function getPropertyUsageCount(): int {
 		$count = 0;
 
-		$row = $this->store->getConnection()->selectRow(
-			[ SQLStore::PROPERTY_STATISTICS_TABLE ],
-			'SUM( usage_count ) AS count',
-			[],
-			__METHOD__
-		);
+		$row = $this->store->getConnection()->newSelectQueryBuilder()
+			->select( 'SUM( usage_count ) AS count' )
+			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		$count = $row ? $row->count : $count;
 
@@ -246,9 +227,9 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getTotalPropertiesCount() {
+	public function getTotalPropertiesCount(): int {
 		$count = 0;
 
 		$conditions = [
@@ -257,12 +238,12 @@ class UsageStatisticsListLookup implements ListLookup {
 			'smw_subobject' => ''
 		];
 
-		$row = $this->store->getConnection()->selectRow(
-			SQLStore::ID_TABLE,
-			'Count( * ) AS count',
-			$conditions,
-			__METHOD__
-		);
+		$row = $this->store->getConnection()->newSelectQueryBuilder()
+			->select( 'Count( * ) AS count' )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		$count = $row ? $row->count : $count;
 
@@ -272,17 +253,16 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getTotalEntitiesCount() {
+	public function getTotalEntitiesCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			'Count( * ) AS count',
-			[],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( 'Count( * ) AS count' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		return isset( $row->count ) ? (int)$row->count : 0;
 	}
@@ -290,11 +270,9 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getUsedPropertiesCount() {
-		$options = [];
-
 		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
@@ -305,16 +283,13 @@ class UsageStatisticsListLookup implements ListLookup {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		// Select object ID's against known property ID's that match the conditions
-		$res = $db->select(
-			[ $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
-			'smw_id',
-			$conditions,
-			__METHOD__,
-			$options,
-			[
-				$db->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=p_id' ] ]
-			]
-		);
+		$res = $db->newSelectQueryBuilder()
+			->select( 'smw_id' )
+			->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+			->join( SQLStore::ID_TABLE, null, [ 'smw_id=p_id' ] )
+			->where( $conditions )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $res->numRows();
 	}
@@ -322,40 +297,35 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 2.4
 	 *
-	 * @return number
+	 * @return int
 	 */
-	public function getDeleteCount() {
+	public function getDeleteCount(): int {
 		$count = 0;
 
-		$row = $this->store->getConnection()->selectRow(
-			SQLStore::ID_TABLE,
-			'Count( * ) AS count',
-			[ 'smw_iw' => ':smw-delete' ],
-			__METHOD__
-		);
+		$row = $this->store->getConnection()->newSelectQueryBuilder()
+			->select( 'Count( * ) AS count' )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_iw' => ':smw-delete' ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		$count = $row ? $row->count : $count;
 
 		return (int)$count;
 	}
 
-	private function count( $type ) {
-		$res = $this->store->getConnection()->select(
-			$this->findPropertyTableByType( $type )->getName(),
-			'COUNT(s_id) AS count',
-			[],
-			__METHOD__
-		);
-
-		$row = $res->fetchObject();
-
-		return isset( $row->count ) ? (int)$row->count : 0;
+	private function count( string $type ): int {
+		return (int)$this->store->getConnection()->newSelectQueryBuilder()
+			->select( 'COUNT(s_id)' )
+			->from( $this->findPropertyTableByType( $type )->getName() )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
-	private function findPropertyTableByType( $type ) {
+	private function findPropertyTableByType( string $type ) {
 		$propertyTables = $this->store->getPropertyTables();
 
-		$tableIdForType = $this->store->findPropertyTableID( new DIProperty( $type ) );
+		$tableIdForType = $this->store->findPropertyTableID( new Property( $type ) );
 
 		if ( isset( $propertyTables[$tableIdForType] ) ) {
 			return $propertyTables[$tableIdForType];

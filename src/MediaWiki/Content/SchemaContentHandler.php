@@ -2,18 +2,21 @@
 
 namespace SMW\MediaWiki\Content;
 
-use Content;
-use JsonContentHandler;
+use MediaWiki\Content\Content;
+use MediaWiki\Content\JsonContentHandler;
 use MediaWiki\Content\Renderer\ContentParseParams;
 use MediaWiki\Content\Transform\PreSaveTransformParams;
 use MediaWiki\Content\ValidationParams;
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Status\Status;
+use MediaWiki\Title\Title;
+use SMW\Localizer\Message;
 use SMW\ParserData;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Schema;
-use Status;
-use Title;
+use SMW\Schema\SchemaFactory;
+use SMW\Store;
 use WikiPage;
 
 /**
@@ -24,8 +27,30 @@ use WikiPage;
  */
 class SchemaContentHandler extends JsonContentHandler {
 
-	public function __construct() {
-		parent::__construct( CONTENT_MODEL_SMW_SCHEMA, [ CONTENT_FORMAT_JSON ] );
+	/**
+	 * Accepts the model id as the first positional argument so that MediaWiki
+	 * core's `ContentHandlerFactory` (which passes `$modelID` via
+	 * `extraArgs`) can construct this handler.
+	 *
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		string $modelId,
+		private readonly Store $store
+	) {
+		parent::__construct( $modelId );
+	}
+
+	private function setContentServices( Content $content ): void {
+		// Only wire services when the content has not been pre-configured (e.g. by tests).
+		if ( $content->getSchemaFactory() !== null && $content->getContentFormatter() !== null ) {
+			return;
+		}
+
+		$content->setServices(
+			$content->getSchemaFactory() ?? new SchemaFactory(),
+			$content->getContentFormatter() ?? new SchemaContentFormatter( $this->store )
+		);
 	}
 
 	/**
@@ -34,11 +59,9 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * @since 1.21
 	 *
-	 * @return bool Always true.
-	 *
 	 * @see ContentHandler::isParserCacheSupported
 	 */
-	public function isParserCacheSupported() {
+	public function isParserCacheSupported(): bool {
 		return true;
 	}
 
@@ -47,7 +70,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function getContentClass() {
+	protected function getContentClass(): string {
 		return SchemaContent::class;
 	}
 
@@ -56,7 +79,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsSections() {
+	public function supportsSections(): bool {
 		return false;
 	}
 
@@ -65,7 +88,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsCategories() {
+	public function supportsCategories(): bool {
 		return false;
 	}
 
@@ -74,12 +97,11 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsRedirects() {
+	public function supportsRedirects(): bool {
 		return false;
 	}
 
 	/**
-	 *
 	 * {@inheritDoc}
 	 */
 	public function preSaveTransform( Content $content, PreSaveTransformParams $pstParams ): Content {
@@ -97,6 +119,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 * {@inheritDoc}
 	 */
 	public function validateSave( Content $content, ValidationParams $validationParams ) {
+		$this->setContentServices( $content );
 		$content->initServices();
 
 		$page = $validationParams->getPageIdentity();
@@ -123,13 +146,14 @@ class SchemaContentHandler extends JsonContentHandler {
 		} catch ( SchemaTypeNotFoundException $e ) {
 			if ( !$content->isValid() && $content->getErrorMsg() !== '' ) {
 				$errors[] = [ 'smw-schema-error-json', $content->getErrorMsg() ];
-			} elseif ( $e->getType() === '' || $e->getType() === null ) {
+			} elseif ( $e->getType() === '' ) {
 				$errors[] = [ 'smw-schema-error-type-missing' ];
 			} else {
 				$errors[] = [ 'smw-schema-error-type-unknown', $e->getType() ];
 			}
 		}
 
+		$schema_link = '';
 		if ( $schema !== null ) {
 			$errors = $content->getSchemaFactory()->newSchemaValidator()->validate(
 				$schema
@@ -169,6 +193,7 @@ class SchemaContentHandler extends JsonContentHandler {
 			} elseif ( is_string( $error ) ) {
 				$status->fatal( $error );
 			} else {
+				// @phan-suppress-next-line PhanParamTooFewUnpack
 				$status->fatal( ...$error );
 			}
 		}
@@ -177,20 +202,20 @@ class SchemaContentHandler extends JsonContentHandler {
 	}
 
 	/**
-	 *
 	 * {@inheritDoc}
 	 */
 	protected function fillParserOutput(
 		Content $content,
 		ContentParseParams $cpoParams,
 		ParserOutput &$output
-	) {
+	): void {
 		$title = Title::castFromPageReference( $cpoParams->getPage() );
 
 		if ( !$cpoParams->getGenerateHtml() || !$content->isValid() ) {
 			return;
 		}
 
+		$this->setContentServices( $content );
 		$content->initServices();
 		$contentFormatter = $content->getContentFormatter();
 		$schemaFactory = $content->getSchemaFactory();
@@ -223,7 +248,7 @@ class SchemaContentHandler extends JsonContentHandler {
 				$e->getType()
 			);
 
-			$output->setText(
+			$output->setContentHolderText(
 				$contentFormatter->getText( $content->getText() )
 			);
 
@@ -270,11 +295,12 @@ class SchemaContentHandler extends JsonContentHandler {
 			}
 		}
 
+		$schemaType = $schema->get( 'type' );
 		$contentFormatter->setType(
-			$schemaFactory->getType( $schema->get( 'type' ) )
+			is_string( $schemaType ) ? $schemaFactory->getType( $schemaType ) : []
 		);
 
-		$output->setText(
+		$output->setContentHolderText(
 			$contentFormatter->getText( $content->getText(), $schema, $errors )
 		);
 

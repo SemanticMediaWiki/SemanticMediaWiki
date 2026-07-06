@@ -2,13 +2,17 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
-use FauxRequest;
+use HttpStatus;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
 use MediaWikiIntegrationTestCase;
-use OutputPage;
-use RequestContext;
+use SMW\Store;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\Mock\MockSuperUser;
+use SMW\Tests\Utils\Validators\StringValidator;
 
 /**
  * @group semantic-mediawiki
@@ -43,8 +47,8 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $testCaseLocation = '';
 
 	/**
-	 * @param Store
-	 * @param StringValidator
+	 * @param Store $store
+	 * @param StringValidator $stringValidator
 	 */
 	public function __construct( $store, $stringValidator ) {
 		$this->store = $store;
@@ -69,18 +73,16 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array $case
 	 */
 	public function process( array $case ) {
 		if ( !isset( $case['special-page'] ) ) {
 			return;
 		}
 
-		if ( isset( $case['special-page']['query-parameters'] ) ) {
+		if ( isset( $case['special-page']['query-parameters'] ) && is_string( $case['special-page']['query-parameters'] ) ) {
 			$queryParameters = $case['special-page']['query-parameters'];
 		} else {
-			$queryParameters = [];
+			$queryParameters = '';
 		}
 
 		$text = $this->getTextForRequestBy(
@@ -127,7 +129,7 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		$code = $response->getStatusCode();
 
 		if ( $code > 0 ) {
-			$response->header( "Status: " . $code . ' ' . \HttpStatus::getMessage( $code ) );
+			$response->header( "Status: " . $code . ' ' . HttpStatus::getMessage( $code ) );
 		}
 
 		return $text;
@@ -175,7 +177,7 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	/**
 	 * @return RequestContext
 	 */
-	private function makeRequestContext( \WebRequest $request, $user, $title ) {
+	private function makeRequestContext( WebRequest $request, $user, $title ) {
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 
 		$context = new RequestContext();

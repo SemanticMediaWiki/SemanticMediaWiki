@@ -2,6 +2,8 @@
 
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
+use SMW\Query\Result\ResultArray;
+
 /**
  * Class RowBuilder
  *
@@ -17,7 +19,7 @@ abstract class RowBuilder {
 	private $valueTextsBuilder;
 
 	/**
-	 * @param \SMW\Query\Result\ResultArray[] $fields
+	 * @param ResultArray[] $fields
 	 *
 	 * @param int $rownum
 	 *
@@ -35,7 +37,7 @@ abstract class RowBuilder {
 	/**
 	 * @param mixed $valueTextsBuilder
 	 */
-	public function setValueTextsBuilder( $valueTextsBuilder ) {
+	public function setValueTextsBuilder( $valueTextsBuilder ): void {
 		$this->valueTextsBuilder = $valueTextsBuilder;
 	}
 

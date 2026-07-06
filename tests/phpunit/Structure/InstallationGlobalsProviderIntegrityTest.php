@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\GlobalsProvider;
 
@@ -17,7 +18,7 @@ use SMW\Tests\Utils\GlobalsProvider;
  *
  * @author mwjames
  */
-class InstallationGlobalsProviderIntegrityTest extends \PHPUnit\Framework\TestCase {
+class InstallationGlobalsProviderIntegrityTest extends TestCase {
 
 	private $globalsProvider;
 	private $applicationFactory;
@@ -46,55 +47,6 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit\Framework\TestCa
 			$this->globalsProvider->get( 'smwgNamespace' ),
 			$this->applicationFactory->getSettings()->get( 'smwgNamespace' )
 		);
-	}
-
-	/**
-	 * @dataProvider smwgNamespacesWithSemanticLinksProvider
-	 */
-	public function testNamespacesWithSemanticLinksOnTravisCustomNamespace( $type, $container ) {
-		if ( !defined( 'NS_TRAVIS' ) ) {
-			$this->markTestSkipped( 'Test can only be executed with a specified NS_TRAVIS' );
-		}
-
-		$namespace = NS_TRAVIS;
-		$extraNamespaces = $this->globalsProvider->get( 'wgExtraNamespaces' );
-
-		$this->assertTrue(
-			isset( $extraNamespaces[$namespace] )
-		);
-
-		$foundNamespaceEntry = false;
-
-		foreach ( $container as $key => $value ) {
-			if ( $key === $namespace ) {
-				$foundNamespaceEntry = true;
-				break;
-			}
-		}
-
-		$this->assertTrue(
-			$foundNamespaceEntry,
-			"Asserts that smwgNamespacesWithSemanticLinks retrieved from {$type} contains the expected {$namespace} NS"
-		);
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function smwgNamespacesWithSemanticLinksProvider() {
-		$provider = [];
-
-		$provider[] = [
-			'GLOBALS',
-			GlobalsProvider::getInstance()->get( 'smwgNamespacesWithSemanticLinks' )
-		];
-
-		$provider[] = [
-			'Settings',
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' )
-		];
-
-		return $provider;
 	}
 
 }

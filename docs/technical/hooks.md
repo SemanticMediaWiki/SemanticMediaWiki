@@ -12,7 +12,6 @@ Implementing a hook should be made in consideration of the expected performance 
 - [`SMW::GetPreferences`][hook.getpreferences] to add extra preferences that are ordered on the Semantic MediaWiki user preference tab
 - [`SMW::Setup::AfterInitializationComplete`][hook.setup.afterinitializationcomplete] to modify global configuration after initialization of Semantic MediaWiki is completed
 - [`SMW::Settings::BeforeInitializationComplete`][hook.settings.beforeinitializationcomplete] to modify the Semantic MediaWiki configuration before the initialization is completed
-- [`SMW::GroupPermissions::BeforeInitializationComplete`][hook.grouppermissions.beforeinitializationcomplete] to modify the Semantic MediaWiki permissions before the initialization is completed
 - [`SMW::Event::RegisterEventListeners`][hook.event.registereventlisteners] to register additional event listeners
 - [`SMW::Listener::ChangeListener::RegisterPropertyChangeListeners`][hook.listener.registerpropertychangelisteners] allows to register and listen to individual property changes
 - [`SMW::Schema::RegisterSchemaTypes`][hook.schema.registerschematypes] allows to register additional schema types
@@ -73,13 +72,9 @@ Implementing a hook should be made in consideration of the expected performance 
 - `smwInitDatatypes` (since 1.9)
 - `smwInitProperties` (since 2.1)
 - `smwShowFactbox` (since 2.1)
-- `smwRefreshDataJobs` (since 2.3)
 - `smwUpdatePropertySubjects` (since 1.9)
 - `smwAddToRDFExport` (since 3.0)
 - `SMWSQLStore3::updateDataBefore` (since 3.1)
-- `SMWSQLStore3::updateDataAfter` (since 2.3)
-- `SMWStore::updateDataBefore` (since 3.1)
-- `SMWStore::updateDataAfter` (since 3.1)
 - `SMWResultFormat` (since 3.1)
 
 [hooks]: https://www.mediawiki.org/wiki/Hooks "Manual:Hooks"
@@ -125,4 +120,3 @@ Implementing a hook should be made in consideration of the expected performance 
 [hook.schema.registerschematypes]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.schema.registerschematypes.md
 [hook.listener.registerpropertychangelisteners]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.listener.registerpropertychangelisteners.md
 [hook.settings.beforeinitializationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.settings.beforeinitializationcomplete.md
-[hook.grouppermissions.beforeinitializationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.grouppermissions.beforeinitializationcomplete.md

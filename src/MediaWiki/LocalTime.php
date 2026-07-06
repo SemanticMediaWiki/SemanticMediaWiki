@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki;
 
 use DateInterval;
-use DateTime;
 use DateTimeZone;
+use Exception;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,7 +25,7 @@ class LocalTime {
 	 *
 	 * @param int $localTimeOffset
 	 */
-	public static function setLocalTimeOffset( $localTimeOffset ) {
+	public static function setLocalTimeOffset( $localTimeOffset ): void {
 		self::$localTimeOffset = $localTimeOffset;
 	}
 
@@ -38,17 +38,16 @@ class LocalTime {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DateTime $dateTime
+	 * @param ExtendedDateTime $dateTime
 	 * @param string|null $timeCorrection
 	 *
-	 * @return DateTime
+	 * @return ExtendedDateTime
 	 */
-	public static function getLocalizedTime( DateTime $dateTime, ?string $timeCorrection = null ) {
+	public static function getLocalizedTime( ExtendedDateTime $dateTime, ?string $timeCorrection = null ): ExtendedDateTime {
 		$tz = $timeCorrection ?? false;
 		$data = explode( '|', $tz, 3 );
 
 		// DateTime is mutable, keep track of possible changes
-		// TODO: Illegal dynamic property (#5421)
 		$dateTime->hasLocalTimeCorrection = false;
 
 		if ( $data[0] == 'ZoneInfo' ) {
@@ -57,7 +56,7 @@ class LocalTime {
 				$dateTime->setTimezone( $userTZ );
 				$dateTime->hasLocalTimeCorrection = true;
 				return $dateTime;
-			} catch ( \Exception $e ) {
+			} catch ( Exception ) {
 				// Unrecognized timezone, default to 'Offset' with the stored offset.
 				$data[0] = 'Offset';
 			}

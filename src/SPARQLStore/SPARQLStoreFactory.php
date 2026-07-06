@@ -22,17 +22,9 @@ use SMW\Utils\CircularReferenceGuard;
 class SPARQLStoreFactory {
 
 	/**
-	 * @var SPARQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param SPARQLStore $store
 	 */
-	public function __construct( SPARQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SPARQLStore $store ) {
 	}
 
 	/**
@@ -51,7 +43,7 @@ class SPARQLStoreFactory {
 	 *
 	 * @return QueryEngine
 	 */
-	public function newMasterQueryEngine() {
+	public function newMasterQueryEngine(): QueryEngine {
 		$engineOptions = new EngineOptions();
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-queryengine' );
@@ -85,7 +77,7 @@ class SPARQLStoreFactory {
 	 *
 	 * @return RepositoryRedirectLookup
 	 */
-	public function newRepositoryRedirectLookup() {
+	public function newRepositoryRedirectLookup(): RepositoryRedirectLookup {
 		return new RepositoryRedirectLookup( $this->store->getConnection( 'sparql' ) );
 	}
 
@@ -94,7 +86,7 @@ class SPARQLStoreFactory {
 	 *
 	 * @return TurtleTriplesBuilder
 	 */
-	public function newTurtleTriplesBuilder() {
+	public function newTurtleTriplesBuilder(): TurtleTriplesBuilder {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$turtleTriplesBuilder = new TurtleTriplesBuilder(
@@ -112,7 +104,7 @@ class SPARQLStoreFactory {
 	 *
 	 * @return ReplicationDataTruncator
 	 */
-	public function newReplicationDataTruncator() {
+	public function newReplicationDataTruncator(): ReplicationDataTruncator {
 		$replicationDataTruncator = new ReplicationDataTruncator();
 
 		$replicationDataTruncator->setPropertyExemptionList(
@@ -127,7 +119,7 @@ class SPARQLStoreFactory {
 	 *
 	 * @return ConnectionManager
 	 */
-	public function getConnectionManager() {
+	public function getConnectionManager(): ConnectionManager {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -137,10 +129,6 @@ class SPARQLStoreFactory {
 			$settings->dotGet( 'smwgSparqlEndpoint.query' ),
 			$settings->dotGet( 'smwgSparqlEndpoint.update', '' ),
 			$settings->dotGet( 'smwgSparqlEndpoint.data', '' )
-		);
-
-		$repositoryConnectionProvider->setHttpVersionTo(
-			$settings->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
 		);
 
 		$repositoryConnectionProvider->setFeatureSet(

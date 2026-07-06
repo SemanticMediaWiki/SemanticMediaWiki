@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter;
 
+use MediaWiki\MediaWikiServices;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Site;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,17 +18,9 @@ use Title;
 class ExpDataFactory {
 
 	/**
-	 * @var Exporter
-	 */
-	private $exporter;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Exporter $exporter
 	 */
-	public function __construct( Exporter $exporter ) {
-		$this->exporter = $exporter;
+	public function __construct( private readonly Exporter $exporter ) {
 	}
 
 	/**
@@ -71,12 +63,9 @@ class ExpDataFactory {
 			new ExpLiteral( Site::languageCode(), 'http://www.w3.org/2001/XMLSchema#string' )
 		);
 
-		$mainpage = Title::newMainPage();
-
-		if ( $mainpage !== null ) {
-			$ed = new ExpData( new ExpResource( $mainpage->getFullURL() ) );
-			$expData->addPropertyObjectValue( $this->exporter->newExpNsResourceById( 'swivt', 'mainPage' ), $ed );
-		}
+		$mainpage = MediaWikiServices::getInstance()->getTitleFactory()->newMainPage();
+		$ed = new ExpData( new ExpResource( $mainpage->getFullURL() ) );
+		$expData->addPropertyObjectValue( $this->exporter->newExpNsResourceById( 'swivt', 'mainPage' ), $ed );
 
 		// statistical information
 		foreach ( Site::stats() as $key => $value ) {
@@ -117,7 +106,7 @@ class ExpDataFactory {
 	}
 
 	/**
-	 * Create an SMWExpData container that encodes the ontology header for an
+	 * Create an ExpData container that encodes the ontology header for an
 	 * SMW exported OWL file.
 	 *
 	 * @param string $ontologyuri specifying the URI of the ontology, possibly

@@ -18,28 +18,14 @@ class EntityCollation {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
+	private ?SetupFile $setupFile = null;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
-
-	/**
-	 * @var string
-	 */
-	private $entityCollation = '';
+	private string $entityCollation = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**
@@ -47,7 +33,7 @@ class EntityCollation {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -56,14 +42,14 @@ class EntityCollation {
 	 *
 	 * @param string $entityCollation
 	 */
-	public function setEntityCollation( string $entityCollation ) {
+	public function setEntityCollation( string $entityCollation ): void {
 		$this->entityCollation = $entityCollation;
 	}
 
 	/**
 	 * @since 3.2
 	 */
-	public function check() {
+	public function check(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

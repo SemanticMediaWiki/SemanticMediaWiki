@@ -15,31 +15,18 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  */
 class AllowsPatternValueParser implements ValueParser {
 
-	/**
-	 * @var MediaWikiNsContentReader
-	 */
-	private $mediaWikiNsContentReader;
-
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param MediaWikiNsContentReader $mediaWikiNsContentReader
 	 */
-	public function __construct( MediaWikiNsContentReader $mediaWikiNsContentReader ) {
-		$this->mediaWikiNsContentReader = $mediaWikiNsContentReader;
+	public function __construct( private readonly MediaWikiNsContentReader $mediaWikiNsContentReader ) {
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -64,14 +51,14 @@ class AllowsPatternValueParser implements ValueParser {
 		return $contentList[$userValue];
 	}
 
-	private function doParseContent( $contents ) {
+	private function doParseContent( $contents ): array {
 		$list = [];
 
 		if ( $contents === '' ) {
-			return null;
+			return [];
 		}
 
-		$contents = $contents ?? '';
+		$contents ??= '';
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
 
 		// Get definition from first line

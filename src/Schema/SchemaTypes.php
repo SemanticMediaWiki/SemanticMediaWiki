@@ -3,7 +3,7 @@
 namespace SMW\Schema;
 
 use JsonSerializable;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
+use MediaWiki\HookContainer\HookContainer;
 use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 
 /**
@@ -14,29 +14,16 @@ use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
  */
 class SchemaTypes implements JsonSerializable {
 
-	use HookDispatcherAwareTrait;
+	private ?HookContainer $hookContainer = null;
 
-	/**
-	 * @var array
-	 */
-	private $schemaTypes = [];
+	private array $schemaTypes = [];
 
-	/**
-	 * @var string
-	 */
-	private $dir = '';
-
-	/**
-	 * @var bool
-	 */
-	private $onRegisterSchemaTypes = false;
+	private bool $onRegisterSchemaTypes = false;
 
 	/**
 	 * Default types
-	 *
-	 * @var
 	 */
-	private static $defaultTypes = [
+	private static array $defaultTypes = [
 		'LINK_FORMAT_SCHEMA' => [
 			'group' => SMW_SCHEMA_GROUP_FORMAT,
 			'validation_schema' => 'link-format-schema.v1.json',
@@ -82,11 +69,15 @@ class SchemaTypes implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $dir
 	 */
-	public function __construct( string $dir = '' ) {
-		$this->dir = $dir;
+	public function __construct( private string $dir = '' ) {
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -105,7 +96,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param array $schemaTypes
 	 */
-	public function registerSchemaTypes( array $schemaTypes = [] ) {
+	public function registerSchemaTypes( array $schemaTypes = [] ): void {
 		if ( $this->onRegisterSchemaTypes ) {
 			return;
 		}
@@ -121,7 +112,7 @@ class SchemaTypes implements JsonSerializable {
 			$this->registerSchemaType( $key, $value );
 		}
 
-		$this->hookDispatcher->onRegisterSchemaTypes( $this );
+		$this->hookContainer->run( 'SMW::Schema::RegisterSchemaTypes', [ $this ] );
 	}
 
 	/**
@@ -135,7 +126,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @throws SchemaTypeAlreadyExistsException
 	 */
-	public function registerSchemaType( string $type, array $params ) {
+	public function registerSchemaType( string $type, array $params ): void {
 		if ( isset( $this->schemaTypes[$type] ) ) {
 			throw new SchemaTypeAlreadyExistsException( $type );
 		}
@@ -148,7 +139,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param string $type
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getType( string $type ): array {
 		return $this->schemaTypes[$type] ?? [];
@@ -162,13 +153,13 @@ class SchemaTypes implements JsonSerializable {
 	 * @return bool
 	 */
 	public function isRegisteredType( ?string $type ): bool {
-		return isset( $this->schemaTypes[$type] );
+		return isset( $this->schemaTypes[$type ?? ''] );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getRegisteredTypes(): array {
 		return array_keys( $this->schemaTypes );
@@ -179,7 +170,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param string $group
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getRegisteredTypesByGroup( string $group ): array {
 		$registeredTypes = [];

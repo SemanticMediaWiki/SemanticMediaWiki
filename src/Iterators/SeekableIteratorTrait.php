@@ -3,6 +3,7 @@
 namespace SMW\Iterators;
 
 use OutOfBoundsException;
+use ReturnTypeWillChange;
 
 /**
  * @note Traits cannot implement interfaces which means the class that uses this
@@ -16,20 +17,14 @@ use OutOfBoundsException;
  */
 trait SeekableIteratorTrait {
 
-	/**
-	 * @var
-	 */
-	private $container = [];
+	private array $container = [];
+
+	private int|string|null $position = 0;
 
 	/**
 	 * @var int
 	 */
-	private $position = 0;
-
-	/**
-	 * @var int
-	 */
-	private $count;
+	private ?int $count = null;
 
 	/**
 	 * @see Countable::count
@@ -38,7 +33,11 @@ trait SeekableIteratorTrait {
 	 * {@inheritDoc}
 	 */
 	public function count(): int {
-		return $this->count ?? $this->count = count( $this->container );
+		if ( $this->count === null ) {
+			$this->count = count( $this->container );
+		}
+
+		return $this->count;
 	}
 
 	/**
@@ -71,7 +70,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		if ( $this->position !== null ) {
 			return $this->container[$this->position];
@@ -86,8 +85,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function key() {
+	public function key(): int|string {
 		return $this->position;
 	}
 

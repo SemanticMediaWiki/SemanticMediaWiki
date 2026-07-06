@@ -2,11 +2,14 @@
 
 namespace SMW\Services;
 
-use Onoi\CallbackContainer\ContainerBuilder;
-use RequestContext;
+use MediaWiki\Context\RequestContext;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\InfoLinksProvider;
+use SMW\DataValues\Number\UnitConverter;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\TimeValue;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\DataValues\ValueFormatters\ValueFormatter;
@@ -14,9 +17,8 @@ use SMW\DataValues\ValueParsers\ValueParser;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Property\RestrictionExaminer;
 use SMW\Property\SpecificationLookup;
-use SMWDataValue as DataValue;
-use SMWNumberValue as NumberValue;
-use SMWTimeValue as TimeValue;
+use SMW\Query\DescriptionBuilderRegistry;
+use SMW\Store;
 
 /**
  * @private
@@ -56,21 +58,43 @@ class DataValueServiceFactory {
 	 */
 	const TYPE_VALIDATOR = '__dv.validator.';
 
-	/**
-	 * @var ContainerBuilder
-	 */
-	private $containerBuilder;
-
-	/**
-	 * @var DispatchingDataValueFormatter
-	 */
-	private $dispatchingDataValueFormatter = null;
+	private ?DispatchingDataValueFormatter $dispatchingDataValueFormatter = null;
 
 	/**
 	 * @since 2.5
 	 */
-	public function __construct( ContainerBuilder $containerBuilder ) {
-		$this->containerBuilder = $containerBuilder;
+	public function __construct( private readonly ServicesContainer $servicesContainer ) {
+	}
+
+	/**
+	 * Builds a `ServicesContainer` seeded with the DataValue domain services
+	 * defined in the `datavalues.php` wiring file.
+	 *
+	 * The `StringValue` legacy id alias is preserved by registering the same
+	 * callback under both the canonical and the legacy formatter key.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function newServicesContainer( string $servicesFileDir ): ServicesContainer {
+		$servicesContainer = new ServicesContainer();
+
+		$services = require $servicesFileDir . '/' . self::SERVICE_FILE;
+
+		foreach ( $services as $key => $callback ) {
+			$servicesContainer->add( $key, $callback );
+		}
+
+		// Preserve the legacy StringValue formatter id by delegating to the primary
+		// key's singleton, so both keys resolve to the same shared instance.
+		$servicesContainer->add(
+			self::TYPE_FORMATTER . StringValue::TYPE_LEGACY_ID,
+			static fn ( ServicesContainer $container ) => $container->singleton(
+				self::TYPE_FORMATTER . StringValue::TYPE_ID,
+				$container
+			)
+		);
+
+		return $servicesContainer;
 	}
 
 	/**
@@ -80,7 +104,7 @@ class DataValueServiceFactory {
 	 *
 	 * @return InfoLinksProvider
 	 */
-	public function newInfoLinksProvider( DataValue $dataValue ) {
+	public function newInfoLinksProvider( DataValue $dataValue ): InfoLinksProvider {
 		return new InfoLinksProvider( $dataValue, $this->getPropertySpecificationLookup() );
 	}
 
@@ -89,7 +113,7 @@ class DataValueServiceFactory {
 	 *
 	 * @return DataValueFactory
 	 */
-	public function getDataValueFactory() {
+	public function getDataValueFactory(): DataValueFactory {
 		return DataValueFactory::getInstance();
 	}
 
@@ -105,8 +129,8 @@ class DataValueServiceFactory {
 		if ( is_callable( $class ) ) {
 			return $class( $typeId );
 		}
-		if ( $this->containerBuilder->isRegistered( $class ) ) {
-			return $this->containerBuilder->create( $class );
+		if ( $this->servicesContainer->isRegistered( $class ) ) {
+			return $this->servicesContainer->create( $class, $this->servicesContainer );
 		}
 
 		// Legacy invocation, for those that have not been defined yet!s
@@ -121,7 +145,10 @@ class DataValueServiceFactory {
 	 * @return ValueParser
 	 */
 	public function getValueParser( DataValue $dataValue ) {
-		return $this->containerBuilder->singleton( self::TYPE_PARSER . $dataValue->getTypeID() );
+		return $this->servicesContainer->singleton(
+			self::TYPE_PARSER . $dataValue->getTypeID(),
+			$this->servicesContainer
+		);
 	}
 
 	/**
@@ -134,8 +161,8 @@ class DataValueServiceFactory {
 	public function getValueFormatter( DataValue $dataValue ) {
 		$id = self::TYPE_FORMATTER . $dataValue->getTypeID();
 
-		if ( $this->containerBuilder->isRegistered( $id ) ) {
-			$dataValueFormatter = $this->containerBuilder->singleton( $id );
+		if ( $this->servicesContainer->isRegistered( $id ) ) {
+			$dataValueFormatter = $this->servicesContainer->singleton( $id, $this->servicesContainer );
 		} else {
 			$dataValueFormatter = $this->getDispatchableValueFormatter( $dataValue );
 		}
@@ -153,7 +180,10 @@ class DataValueServiceFactory {
 	 * @return ConstraintValueValidator
 	 */
 	public function getConstraintValueValidator() {
-		return $this->containerBuilder->singleton( self::TYPE_VALIDATOR . 'CompoundConstraintValueValidator' );
+		return $this->servicesContainer->singleton(
+			self::TYPE_VALIDATOR . 'CompoundConstraintValueValidator',
+			$this->servicesContainer
+		);
 	}
 
 	/**
@@ -162,7 +192,14 @@ class DataValueServiceFactory {
 	 * @return SpecificationLookup
 	 */
 	public function getPropertySpecificationLookup() {
-		return $this->containerBuilder->singleton( 'PropertySpecificationLookup' );
+		return ServicesFactory::getInstance()->singleton( 'PropertySpecificationLookup' );
+	}
+
+	/**
+	 * @since 7.0.0
+	 */
+	public function getStore(): Store {
+		return ServicesFactory::getInstance()->getStore();
 	}
 
 	/**
@@ -171,7 +208,7 @@ class DataValueServiceFactory {
 	 * @return UnitConverter
 	 */
 	public function getUnitConverter() {
-		return $this->containerBuilder->singleton( 'UnitConverter' );
+		return $this->servicesContainer->singleton( 'UnitConverter', $this->servicesContainer );
 	}
 
 	/**
@@ -180,7 +217,7 @@ class DataValueServiceFactory {
 	 * @return RestrictionExaminer
 	 */
 	public function getPropertyRestrictionExaminer() {
-		$propertyRestrictionExaminer = $this->containerBuilder->singleton( 'PropertyRestrictionExaminer' );
+		$propertyRestrictionExaminer = ServicesFactory::getInstance()->singleton( 'PropertyRestrictionExaminer' );
 		$propertyRestrictionExaminer->setUser( RequestContext::getMain()->getUser() );
 
 		return $propertyRestrictionExaminer;
@@ -192,10 +229,10 @@ class DataValueServiceFactory {
 	 * @return DescriptionBuilderRegistry
 	 */
 	public function getDescriptionBuilderRegistry() {
-		return $this->containerBuilder->singleton( 'DescriptionBuilderRegistry' );
+		return $this->servicesContainer->singleton( 'DescriptionBuilderRegistry', $this->servicesContainer );
 	}
 
-	private function getDispatchableValueFormatter( $dataValue ) {
+	private function getDispatchableValueFormatter( DataValue $dataValue ) {
 		if ( $this->dispatchingDataValueFormatter === null ) {
 			$this->dispatchingDataValueFormatter = $this->newDispatchingDataValueFormatter();
 		}
@@ -203,21 +240,21 @@ class DataValueServiceFactory {
 		return $this->dispatchingDataValueFormatter->getDataValueFormatterFor( $dataValue );
 	}
 
-	private function newDispatchingDataValueFormatter() {
+	private function newDispatchingDataValueFormatter(): DispatchingDataValueFormatter {
 		$dispatchingDataValueFormatter = new DispatchingDataValueFormatter();
 
 		// To be checked only after DispatchingDataValueFormatter::addDataValueFormatter did
 		// not match any previous registered DataValueFormatters
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
-			$this->containerBuilder->singleton( self::TYPE_FORMATTER . StringValue::TYPE_ID )
+			$this->servicesContainer->singleton( self::TYPE_FORMATTER . StringValue::TYPE_ID, $this->servicesContainer )
 		);
 
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
-			$this->containerBuilder->singleton( self::TYPE_FORMATTER . NumberValue::TYPE_ID )
+			$this->servicesContainer->singleton( self::TYPE_FORMATTER . NumberValue::TYPE_ID, $this->servicesContainer )
 		);
 
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
-			$this->containerBuilder->singleton( self::TYPE_FORMATTER . TimeValue::TYPE_ID )
+			$this->servicesContainer->singleton( self::TYPE_FORMATTER . TimeValue::TYPE_ID, $this->servicesContainer )
 		);
 
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NoValueFormatter() );

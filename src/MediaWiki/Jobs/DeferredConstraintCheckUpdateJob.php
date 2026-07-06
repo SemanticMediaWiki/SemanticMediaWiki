@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
-use Title;
+use SMW\MediaWiki\JobFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,14 +17,23 @@ class DeferredConstraintCheckUpdateJob extends Job {
 
 	const JOB_COMMAND = 'smw.deferredConstraintCheckUpdateJob';
 
+	private JobFactory $jobFactory;
+
 	/**
 	 * @since 3.1
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		$params = [],
+		?JobFactory $jobFactory = null
+	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
+		// Fallback for the static pushJob() helper which uses `new self(...)` and
+		// bypasses the JobClasses ObjectFactory spec where SMW.JobFactory is wired.
+		$this->jobFactory = $jobFactory ?? ApplicationFactory::getInstance()->getJobFactory();
 		$this->removeDuplicates = true;
 	}
 
@@ -34,7 +45,7 @@ class DeferredConstraintCheckUpdateJob extends Job {
 	 *
 	 * @return bool
 	 */
-	public static function pushJob( Title $title, $params = [] ) {
+	public static function pushJob( Title $title, $params = [] ): bool {
 		$deferredConstraintCheckUpdateJob = new self(
 			$title,
 			self::newRootJobParams( self::JOB_COMMAND, $title ) + [ 'waitOnCommandLine' => true ] + $params
@@ -50,12 +61,12 @@ class DeferredConstraintCheckUpdateJob extends Job {
 	 *
 	 * @since 3.1
 	 */
-	public function run() {
+	public function run(): bool {
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}
 
-		$updateJob = new UpdateJob(
+		$updateJob = $this->jobFactory->newUpdateJob(
 			$this->getTitle(),
 			$this->params + [ 'origin' => 'DeferredConstraintCheckUpdateJob' ]
 		);

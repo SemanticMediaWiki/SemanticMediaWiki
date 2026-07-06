@@ -2,12 +2,15 @@
 
 namespace SMW\MediaWiki\Page\ListBuilder;
 
-use SMW\DIProperty;
+use Iterator;
+use MediaWiki\Html\Html;
+use MediaWiki\Skin\SkinComponentUtils;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder as ColsListBuilder;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,19 +21,11 @@ use SMWDataItem as DataItem;
 class ItemListBuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var string
 	 */
 	private $languageCode = 'en';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
 	/**
 	 * @var int
@@ -52,18 +47,12 @@ class ItemListBuilder {
 	 */
 	private $checkProperty = true;
 
-	/**
-	 * @var int
-	 */
-	private $itemCount = 0;
+	private int $itemCount = 0;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -71,7 +60,7 @@ class ItemListBuilder {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ) {
+	public function setLanguageCode( $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
@@ -80,7 +69,7 @@ class ItemListBuilder {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
+	public function isRTL( $isRTL ): void {
 		$this->isRTL = (bool)$isRTL;
 	}
 
@@ -89,7 +78,7 @@ class ItemListBuilder {
 	 *
 	 * @param bool $isUserDefined
 	 */
-	public function isUserDefined( $isUserDefined ) {
+	public function isUserDefined( $isUserDefined ): void {
 		$this->isUserDefined = $isUserDefined;
 	}
 
@@ -98,7 +87,7 @@ class ItemListBuilder {
 	 *
 	 * @param int $listLimit
 	 */
-	public function setListLimit( $listLimit ) {
+	public function setListLimit( $listLimit ): void {
 		$this->listLimit = $listLimit;
 	}
 
@@ -107,7 +96,7 @@ class ItemListBuilder {
 	 *
 	 * @param string $listHeader
 	 */
-	public function setListHeader( $listHeader ) {
+	public function setListHeader( $listHeader ): void {
 		$this->listHeader = $listHeader;
 	}
 
@@ -116,7 +105,7 @@ class ItemListBuilder {
 	 *
 	 * @param bool $checkProperty
 	 */
-	public function checkProperty( $checkProperty ) {
+	public function checkProperty( $checkProperty ): void {
 		$this->checkProperty = $checkProperty;
 	}
 
@@ -125,20 +114,20 @@ class ItemListBuilder {
 	 *
 	 * @return int
 	 */
-	public function getItemCount() {
+	public function getItemCount(): int {
 		return $this->itemCount;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param DataItem $dataItem
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return string
 	 */
-	public function buildHTML( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
+	public function buildHTML( Property $property, DataItem $dataItem, RequestOptions $requestOptions ): string {
 		$subjectList = $this->store->getPropertySubjects(
 			$property,
 			$dataItem,
@@ -146,7 +135,7 @@ class ItemListBuilder {
 		);
 
 		// May return an iterator
-		if ( $subjectList instanceof \Iterator ) {
+		if ( $subjectList instanceof Iterator ) {
 			$subjectList = iterator_to_array( $subjectList );
 		}
 
@@ -188,24 +177,22 @@ class ItemListBuilder {
 		return "\n<p>" . $message . $colsListBuilder->getColumnList( $subjectList, 5 );
 	}
 
-	private function getLastItemFormatter( $property, $dataItem ) {
+	private function getLastItemFormatter( Property $property, DataItem $dataItem ) {
 		return function () use ( $property, $dataItem ) {
-			return \Html::element(
+			return Html::element(
 				'a',
 				[
-					'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL(
-						[
-							'property' => $property->getLabel(),
-							'value' => $dataItem->getDBKey()
-						]
-					)
+					'href' => SkinComponentUtils::makeSpecialUrl( 'SearchByProperty', [
+						'property' => $property->getLabel(),
+						'value' => $dataItem->getDBKey()
+					] )
 				],
 				$this->msg( 'smw_browse_more' )
 			);
 		};
 	}
 
-	private function msg( $key, $type = Message::TEXT ) {
+	private function msg( array|string $key, $type = Message::TEXT ): string {
 		return Message::get( $key, $type, $this->languageCode );
 	}
 }

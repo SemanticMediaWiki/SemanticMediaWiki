@@ -46,9 +46,9 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Test:FT0002/1</td>",
-					"<td class=\"Has-page smwtype_wpg\">Foo<br />42</td>",
-					"<td class=\"Has-text smwtype_txt\" data-sort-value=\"1001\">1001<br />bar</td></tr>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Test:FT0002/1</td>",
+					"<td class=\"Has-page smwtype&#95;wpg\">Foo<br />42</td>",
+					"<td class=\"Has-text smwtype&#95;txt\" data-sort-value=\"1001\">1001<br />bar</td></tr>",
 					"</table>"
 				]
 			}
@@ -62,9 +62,9 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Test:FT0002/1</td>",
-					"<td class=\"Has-page smwtype_wpg\">Foo;42</td>",
-					"<td class=\"Has-text smwtype_txt\">bar;1001</td></tr>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Test:FT0002/1</td>",
+					"<td class=\"Has-page smwtype&#95;wpg\">Foo;42</td>",
+					"<td class=\"Has-text smwtype&#95;txt\">bar;1001</td></tr>",
 					"</table>"
 				]
 			}
@@ -78,9 +78,9 @@
 					"<table class=\"sortable wikitable smwtable broadtable\" width=\"100%\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Test:FT0002/1</td>",
-					"<td class=\"Has-page smwtype_wpg\">Foo;42</td>",
-					"<td class=\"Has-text smwtype_txt\" data-sort-value=\"1001\">1001;bar</td></tr>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Test:FT0002/1</td>",
+					"<td class=\"Has-page smwtype&#95;wpg\">Foo;42</td>",
+					"<td class=\"Has-text smwtype&#95;txt\" data-sort-value=\"1001\">1001;bar</td></tr>",
 					"</table>"
 				]
 			}
@@ -94,9 +94,9 @@
 					"<table class=\"sortable wikitable smwtable broadtable\" width=\"100%\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Test:FT0002/1</td>",
-					"<td class=\"Has-page smwtype_wpg\"><ul><li>Foo</li><li>42</li></ul></td>",
-					"<td class=\"Has-text smwtype_txt\" data-sort-value=\"1001\"><ul><li>1001</li><li>bar</li></ul></td></tr>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Test:FT0002/1</td>",
+					"<td class=\"Has-page smwtype&#95;wpg\"><ul><li>Foo</li><li>42</li></ul></td>",
+					"<td class=\"Has-text smwtype&#95;txt\" data-sort-value=\"1001\"><ul><li>1001</li><li>bar</li></ul></td></tr>",
 					"</table>"
 				]
 			}
@@ -110,9 +110,9 @@
 					"<table class=\"sortable wikitable smwtable broadtable\" width=\"100%\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Test:FT0002/1</td>",
-					"<td class=\"Has-page smwtype_wpg\"><ol><li>Foo</li><li>42</li></ol></td>",
-					"<td class=\"Has-text smwtype_txt\"><ol><li>bar</li><li>1001</li></ol></td></tr>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Test:FT0002/1</td>",
+					"<td class=\"Has-page smwtype&#95;wpg\"><ol><li>Foo</li><li>42</li></ol></td>",
+					"<td class=\"Has-text smwtype&#95;txt\"><ol><li>bar</li><li>1001</li></ol></td></tr>",
 					"</table>"
 				]
 			}

@@ -2,8 +2,10 @@
 
 namespace SMW\Listener\EventListener;
 
-use Onoi\EventDispatcher\EventDispatcher;
-use Onoi\EventDispatcher\EventDispatcherFactory;
+use Closure;
+use SMW\EventDispatcher\DispatchContext;
+use SMW\EventDispatcher\EventDispatcher;
+use SMW\EventDispatcher\EventDispatcherFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -13,31 +15,18 @@ use Onoi\EventDispatcher\EventDispatcherFactory;
  */
 class EventHandler {
 
-	/**
-	 * @var EventHandler
-	 */
-	private static $instance = null;
-
-	/**
-	 * @var EventDispatcher
-	 */
-	private $eventDispatcher = null;
+	private static ?EventHandler $instance = null;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct( EventDispatcher $eventDispatcher ) {
-		$this->eventDispatcher = $eventDispatcher;
+	public function __construct( private readonly EventDispatcher $eventDispatcher ) {
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance(): EventHandler {
 		if ( self::$instance === null ) {
 			self::$instance = new self( self::newEventDispatcher() );
 		}
@@ -48,35 +37,28 @@ class EventHandler {
 	/**
 	 * @since 2.2
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return EventDispatcher
 	 */
-	public function getEventDispatcher() {
+	public function getEventDispatcher(): EventDispatcher {
 		return $this->eventDispatcher;
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return DispatchContext
 	 */
-	public function newDispatchContext() {
+	public function newDispatchContext(): DispatchContext {
 		return EventDispatcherFactory::getInstance()->newDispatchContext();
 	}
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param string $event
-	 * @param Closure $callback
 	 */
-	public function addCallbackListener( $event, \Closure $callback ) {
+	public function addCallbackListener( string $event, Closure $callback ): void {
 		$listener = EventDispatcherFactory::getInstance()->newGenericCallbackEventListener();
 		$listener->registerCallback( $callback );
 

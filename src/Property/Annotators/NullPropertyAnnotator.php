@@ -2,8 +2,8 @@
 
 namespace SMW\Property\Annotators;
 
+use SMW\DataModel\SemanticData;
 use SMW\Property\Annotator;
-use SMW\SemanticData;
 
 /**
  * Root object representing the initial data transfer object to interact with
@@ -19,17 +19,9 @@ use SMW\SemanticData;
 class NullPropertyAnnotator implements Annotator {
 
 	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param SemanticData $semanticData
 	 */
-	public function __construct( SemanticData $semanticData ) {
-		$this->semanticData = $semanticData;
+	public function __construct( private readonly SemanticData $semanticData ) {
 	}
 
 	/**
@@ -37,7 +29,7 @@ class NullPropertyAnnotator implements Annotator {
 	 *
 	 * @since 1.9
 	 */
-	public function getSemanticData() {
+	public function getSemanticData(): SemanticData {
 		return $this->semanticData;
 	}
 
@@ -46,7 +38,7 @@ class NullPropertyAnnotator implements Annotator {
 	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation() {
+	public function addAnnotation(): static {
 		return $this;
 	}
 

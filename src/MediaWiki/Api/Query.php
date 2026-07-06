@@ -2,11 +2,12 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
+use SMW\Query\Query as SMWQuery;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWQuery;
-use SMWQueryProcessor;
+use SMW\Query\QuerySourceFactory;
 
 /**
  * Base for API modules that query SMW
@@ -22,6 +23,17 @@ use SMWQueryProcessor;
 abstract class Query extends ApiBase {
 
 	/**
+	 * @since 7.0.0
+	 */
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		private readonly QuerySourceFactory $querySourceFactory
+	) {
+		parent::__construct( $main, $action );
+	}
+
+	/**
 	 * Returns a query object for the provided query string and list of printouts.
 	 *
 	 * @since 1.6.2
@@ -33,12 +45,12 @@ abstract class Query extends ApiBase {
 	 * @return SMWQuery
 	 */
 	protected function getQuery( $queryString, array $printouts, array $parameters = [] ) {
-		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
+		QueryProcessor::addThisPrintout( $printouts, $parameters );
 
-		$query = SMWQueryProcessor::createQuery(
+		$query = QueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( $parameters, $printouts ),
-			SMWQueryProcessor::SPECIAL_PAGE,
+			QueryProcessor::getProcessedParams( $parameters, $printouts ),
+			QueryProcessor::SPECIAL_PAGE,
 			'',
 			$printouts
 		);
@@ -53,29 +65,38 @@ abstract class Query extends ApiBase {
 	 *
 	 * @since 1.6.2
 	 *
-	 * @param SMWQuery $query
-	 *
 	 * @return QueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $query->getQuerySource() )->getQueryResult( $query );
+		return $this->querySourceFactory->get( $query->getQuerySource() )->getQueryResult( $query );
 	}
 
 	/**
 	 * Add the query result to the API output.
 	 *
 	 * @since 1.6.2
-	 *
-	 * @param QueryResult $queryResult
 	 */
-	protected function addQueryResult( QueryResult $queryResult, $outputFormat = 'json' ) {
+	protected function addQueryResult( QueryResult $queryResult, $outputFormat = 'json' ): void {
 		$result = $this->getResult();
 
 		$resultFormatter = new ApiQueryResultFormatter( $queryResult );
 		$resultFormatter->setIsRawMode( ( strpos( strtolower( $outputFormat ), 'xml' ) !== false ) );
 		$resultFormatter->doFormat();
 
-		if ( $resultFormatter->getContinueOffset() ) {
+		// Cursor mode is authoritative: when the query ran with a cursor
+		// the response uses ONLY `query-continue-cursor` (or omits the
+		// continuation field entirely on the final page). Legacy mode
+		// emits `query-continue-offset` unchanged. Mixing the two would
+		// let a cursor-aware client accidentally chain into a
+		// `?offset=N&cursor=...` request, which has unspecified semantics.
+		$cursorMode = $queryResult->getQuery()->getCursorAfter() !== null;
+		$nextCursor = $queryResult->getNextCursor();
+
+		if ( $cursorMode ) {
+			if ( $nextCursor !== null ) {
+				$result->addValue( null, 'query-continue-cursor', $nextCursor );
+			}
+		} elseif ( $resultFormatter->getContinueOffset() ) {
 		// $result->disableSizeCheck();
 			$result->addValue( null, 'query-continue-offset', $resultFormatter->getContinueOffset() );
 		// $result->enableSizeCheck();

@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\MediaWiki\TitleFactory;
+use MediaWiki\Title\TitleFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -13,30 +13,17 @@ use SMW\MediaWiki\TitleFactory;
 class ArticleAugmentor {
 
 	/**
-	 * @var TitleFactory
-	 */
-	private $titleFactory;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( TitleFactory $titleFactory ) {
-		$this->titleFactory = $titleFactory;
+	public function __construct( private readonly TitleFactory $titleFactory ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array &$res
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
-	public function augment( array &$res, array $parameters ) {
+	public function augment( array &$res, array $parameters ): ?array {
 		if ( !isset( $res['query'] ) && $res['query'] === [] ) {
-			return;
+			return null;
 		}
 
 		if ( isset( $parameters['fullText'] ) || isset( $parameters['fullURL'] ) ) {

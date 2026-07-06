@@ -2,12 +2,14 @@
 
 namespace SMW\MediaWiki\Search;
 
+use MediaWiki\MediaWikiServices;
 use SearchEngine;
 use SMW\Exception\ClassNotFoundException;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,22 +22,17 @@ class SearchEngineFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param mixed $connection Either IConnectionProvider (MW 1.41+) or IDatabase (MW 1.40)
-	 *
-	 * @return SearchEngine
 	 * @throws SearchEngineInvalidTypeException
 	 */
-	public function newFallbackSearchEngine( $connection = null ) {
+	public function newFallbackSearchEngine( ?IConnectionProvider $connection = null ): SearchEngine {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
 		if ( $connection === null ) {
-			// For MW 1.41+, getConnectionManager()->getConnection() returns IConnectionProvider
-			// For MW 1.40, it returns IDatabase
-			$connection = $applicationFactory->getConnectionManager()->getConnection( DB_REPLICA );
+			$connection = MediaWikiServices::getInstance()->getConnectionProvider();
 		}
 
-		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
+		$dbLoadBalancer = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
 		$type = $settings->get( 'smwgFallbackSearchType' );
 		$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
@@ -62,9 +59,9 @@ class SearchEngineFactory {
 	 *
 	 * @return ExtendedSearch
 	 */
-	public function newExtendedSearch( \SearchEngine $fallbackSearchEngine ) {
+	public function newExtendedSearch( SearchEngine $fallbackSearchEngine ): ExtendedSearch {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$searchEngineConfig = $applicationFactory->create( 'SearchEngineConfig' );
+		$searchEngineConfig = MediaWikiServices::getInstance()->getSearchEngineConfig();
 
 		$store = $applicationFactory->getStore();
 
@@ -87,13 +84,13 @@ class SearchEngineFactory {
 	/**
 	 * @param $type
 	 */
-	private function isValidSearchDatabaseType( $type ) {
+	private function isValidSearchDatabaseType( $type ): bool {
 		if ( !class_exists( $type ) ) {
 			throw new ClassNotFoundException( "$type does not exist." );
 		}
 
-		if ( $type === 'SMWSearch' ) {
-			throw new SearchEngineInvalidTypeException( 'SMWSearch is not a valid fallback search engine type.' );
+		if ( ExtendedSearchEngine::isActiveSearchType( $type ) ) {
+			throw new SearchEngineInvalidTypeException( "$type is not a valid fallback search engine type." );
 		}
 
 		if ( $type !== 'SearchEngine' && !is_subclass_of( $type, 'SearchDatabase' ) ) {

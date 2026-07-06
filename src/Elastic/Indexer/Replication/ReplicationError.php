@@ -46,32 +46,18 @@ class ReplicationError {
 	const TYPE_FILE_ATTACHMENT_MISSING = 'document/file_attachment/missing';
 
 	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
-	 * @var array
-	 */
-	private $data = [];
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param string $type
-	 * @param array $data
 	 */
-	public function __construct( $type, array $data = [] ) {
-		$this->type = $type;
-		$this->data = $data;
+	public function __construct(
+		private $type,
+		private array $data = [],
+	) {
 	}
 
 	/**
 	 * @since 3.2
 	 *
 	 * @param string $type
-	 *
-	 * @return bool
 	 */
 	public function is( $type ): bool {
 		return $this->type === $type;
@@ -82,10 +68,9 @@ class ReplicationError {
 	 *
 	 * @param string $key
 	 *
-	 * @return mixed
 	 * @throws InvalidArgumentException
 	 */
-	public function get( $key ) {
+	public function get( $key ): mixed {
 		if ( !isset( $this->data[$key] ) ) {
 			throw new InvalidArgumentException( "Key: `$key` is unknown!" );
 		}
@@ -95,8 +80,6 @@ class ReplicationError {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getType(): string {
 		return $this->type;
@@ -104,8 +87,6 @@ class ReplicationError {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return mixed
 	 */
 	public function getData(): array {
 		return $this->data;

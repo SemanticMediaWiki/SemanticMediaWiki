@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\Query\ResultPrinters\ResultPrinter;
 
@@ -23,7 +24,7 @@ use SMW\Query\ResultPrinters\ResultPrinter;
  * @group SMW
  * @group SMWExtension
  */
-abstract class QueryPrinterTestCase extends \PHPUnit\Framework\TestCase {
+abstract class QueryPrinterTestCase extends TestCase {
 
 	/**
 	 * Helper method sets result printer parameters
@@ -36,18 +37,15 @@ abstract class QueryPrinterTestCase extends \PHPUnit\Framework\TestCase {
 	protected function setParameters( ResultPrinter $instance, array $parameters ) {
 		$reflector = new ReflectionClass( $this->getClass() );
 		$params = $reflector->getProperty( 'params' );
-		$params->setAccessible( true );
 		$params->setValue( $instance, $parameters );
 
 		if ( isset( $parameters['searchlabel'] ) ) {
 			$searchlabel = $reflector->getProperty( 'mSearchlabel' );
-			$searchlabel->setAccessible( true );
 			$searchlabel->setValue( $instance, $parameters['searchlabel'] );
 		}
 
 		if ( isset( $parameters['headers'] ) ) {
 			$searchlabel = $reflector->getProperty( 'mShowHeaders' );
-			$searchlabel->setAccessible( true );
 			$searchlabel->setValue( $instance, $parameters['headers'] );
 		}
 

@@ -14,17 +14,9 @@ class CliOutputFormatter {
 	const FORMAT_JSON = 'format.json';
 
 	/**
-	 * @var string
-	 */
-	private $formatType;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param string $formatType
 	 */
-	public function __construct( $formatType = self::FORMAT_TREE ) {
-		$this->formatType = $formatType;
+	public function __construct( private $formatType = self::FORMAT_TREE ) {
 	}
 
 	/**

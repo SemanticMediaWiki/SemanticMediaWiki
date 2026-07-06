@@ -19,10 +19,8 @@ class OptionsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public static function toString( array $options ) {
+	public static function toString( array $options ): string {
 		$string = '';
 
 		if ( isset( $options['GROUP BY'] ) ) {
@@ -45,7 +43,7 @@ class OptionsBuilder {
 	/**
 	 * @see SQLPlatform::makeSelectOptions
 	 */
-	public static function makeSelectOptions( Database $connection, $options ) {
+	public static function makeSelectOptions( Database $connection, array $options ): array {
 		$preLimitTail = $postLimitTail = '';
 		$startOpts = '';
 
@@ -118,7 +116,7 @@ class OptionsBuilder {
 		return [ $startOpts, $useIndex, $preLimitTail, $postLimitTail, $ignoreIndex ];
 	}
 
-	protected static function makeGroupByWithHaving( $connection, $options ) {
+	protected static function makeGroupByWithHaving( $connection, array $options ): string {
 		$sql = '';
 
 		if ( isset( $options['GROUP BY'] ) ) {
@@ -130,7 +128,7 @@ class OptionsBuilder {
 
 		if ( isset( $options['HAVING'] ) ) {
 			$having = is_array( $options['HAVING'] )
-				? $connection->makeList( $options['HAVING'], self::LIST_AND )
+				? $connection->makeList( $options['HAVING'], SQLPlatform::LIST_AND )
 				: $options['HAVING'];
 			$sql .= ' HAVING ' . $having;
 		}
@@ -138,7 +136,7 @@ class OptionsBuilder {
 		return $sql;
 	}
 
-	protected static function makeOrderBy( $options ) {
+	protected static function makeOrderBy( array $options ): string {
 		if ( isset( $options['ORDER BY'] ) ) {
 			$ob = is_array( $options['ORDER BY'] )
 				? implode( ',', $options['ORDER BY'] )

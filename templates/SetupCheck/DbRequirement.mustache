@@ -1,0 +1,17 @@
+{{!
+  Database requirement block for the SetupCheck error page.
+
+  Required data:
+  - data-template: string (escaped) - template marker, must survive in output as an HTML comment
+  - version-title: string (escaped) - heading for the requirement block
+  - db-title: string (escaped) - label for the database type row
+  - db-type: string (escaped) - database type identifier
+  - db-minimum-title: string (escaped) - label for the minimum version row
+  - db-minimum-version: string (escaped) - minimum required database version
+  - db-current-title: string (escaped) - label for the current version row
+  - db-current-version: string (escaped) - current database version
+
+  Note: the <!-- ROW --> markers are consumed by the SetupCheck CLI rendering
+  path (str_replace to newlines) and must survive verbatim.
+}}
+<!--{{data-template}}--><h4>{{version-title}}</h4><p><div style="margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">{{db-title}}:</div><div>{{db-type}}</div></div><!-- ROW --><div style="margin-top:10px;margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">{{db-minimum-title}}:</div><div>{{db-minimum-version}}</div></div><!-- ROW --><div style="margin-left:10px;display: flex; width: 90%;"><div style="flex-basis:30%;">{{db-current-title}}:</div><div>{{db-current-version}}</div></div></p>

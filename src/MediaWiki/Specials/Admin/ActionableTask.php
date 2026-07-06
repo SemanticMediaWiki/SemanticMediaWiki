@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use WebRequest;
+use MediaWiki\Request\WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -33,6 +33,6 @@ interface ActionableTask {
 	 *
 	 * @param WebRequest $webRequest
 	 */
-	public function handleRequest( WebRequest $webRequest );
+	public function handleRequest( WebRequest $webRequest ): void;
 
 }

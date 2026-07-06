@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Benchmark;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\MediaWiki\JobFactory;
 use SMW\Tests\Utils\Runners\JobQueueRunner;
-use Title;
 
 /**
  * @group semantic-mediawiki-benchmark
@@ -16,21 +16,6 @@ use Title;
  * @author mwjames
  */
 class JobQueueBenchmarkRunner implements BenchmarkReporter {
-
-	/**
-	 * @var JobFactory
-	 */
-	private $jobFactory;
-
-	/**
-	 * @var JobQueueRunner
-	 */
-	private $jobQueueRunner;
-
-	/**
-	 * @var Benchmarker
-	 */
-	private $benchmarker;
 
 	/**
 	 * @var array
@@ -44,21 +29,16 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param JobFactory $jobFactory
-	 * @param JobQueueRunner $jobQueueRunner
-	 * @param Benchmarker $benchmarker
 	 */
-	public function __construct( JobFactory $jobFactory, JobQueueRunner $jobQueueRunner, Benchmarker $benchmarker ) {
-		$this->jobFactory = $jobFactory;
-		$this->jobQueueRunner = $jobQueueRunner;
-		$this->benchmarker = $benchmarker;
+	public function __construct(
+		private readonly JobFactory $jobFactory,
+		private readonly JobQueueRunner $jobQueueRunner,
+		private readonly Benchmarker $benchmarker,
+	) {
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array
 	 */
 	public function getBenchmarkReport() {
 		return $this->benchmarkReport;
@@ -66,8 +46,6 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $case
 	 */
 	public function run( array $case ) {
 		$this->benchmarkReport = [];
@@ -81,9 +59,10 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 			throw new RuntimeException( 'No repetitionCount is available.' );
 		}
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$job = $this->jobFactory->newByType(
 			$case['job'],
-			Title::newFromText( __METHOD__ . $case['job'] )
+			$titleFactory->newFromText( __METHOD__ . $case['job'] )
 		);
 
 		$job->insert();

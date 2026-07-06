@@ -2,9 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use MediaWiki\Deferred\DeferredUpdates;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
-use SMW\MediaWiki\Deferred\HashFieldUpdate;
+use SMW\Site;
 use SMW\SQLStore\propertyTable\propertyTableHashes;
 use SMW\SQLStore\SQLStore;
 
@@ -19,36 +20,18 @@ use SMW\SQLStore\SQLStore;
 class EntityIdFinder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var PropertyTableHashes
-	 */
-	private $propertyTableHashes;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @var bool
 	 */
 	private $fetchPropertyTableHashes = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param PropertyTableHashes $propertyTableHashes
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, PropertyTableHashes $propertyTableHashes, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->propertyTableHashes = $propertyTableHashes;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly PropertyTableHashes $propertyTableHashes,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
@@ -56,37 +39,36 @@ class EntityIdFinder {
 	 *
 	 * @param bool $fetchPropertyTableHashes
 	 */
-	public function setFetchPropertyTableHashes( $fetchPropertyTableHashes ) {
+	public function setFetchPropertyTableHashes( $fetchPropertyTableHashes ): void {
 		$this->fetchPropertyTableHashes = $fetchPropertyTableHashes;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return int
 	 */
-	public function findIdByItem( DIWikiPage $dataItem ) {
-		if ( ( $id = $this->idCacheManager->getId( $dataItem ) ) !== false ) {
+	public function findIdByItem( WikiPage $dataItem ): int {
+		$id = $this->idCacheManager->getId( $dataItem );
+		if ( $id !== false ) {
 			return $id;
 		}
 
 		$id = 0;
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id'
-			],
-			[
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_title' => $dataItem->getDBKey(),
 				'smw_namespace' => $dataItem->getNamespace(),
 				'smw_iw' => $dataItem->getInterWiki(),
 				'smw_subobject' => $dataItem->getSubobjectName()
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$id = (int)$row->smw_id;
@@ -116,7 +98,7 @@ class EntityIdFinder {
 	 *
 	 * @return array
 	 */
-	public function fetchFieldsFromTableById( $id, $title, $namespace, $iw, $subobjectName, &$sortkey ) {
+	public function fetchFieldsFromTableById( $id, $title, $namespace, $iw, $subobjectName, &$sortkey ): array {
 		if ( $id == 0 ) {
 			return [ $id, '' ];
 		}
@@ -136,14 +118,12 @@ class EntityIdFinder {
 			$fields = [ 'smw_sortkey', 'smw_sort', 'smw_hash' ];
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_TABLE,
-			$fields,
-			[
-				'smw_id' => $id
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			// Make sure that smw_sort is being re-computed in case it is null
@@ -155,7 +135,7 @@ class EntityIdFinder {
 
 			// Prevent any irregularities caused by a delayed, or redirect update
 			if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
-				HashFieldUpdate::addUpdate( $this->connection, $id, $sha1 );
+				$this->deferHashUpdate( $id, $sha1 );
 			}
 		} else { // inconsistent DB; just recover somehow
 			$sortkey = str_replace( '_', ' ', $title );
@@ -184,7 +164,7 @@ class EntityIdFinder {
 	 *
 	 * @return array
 	 */
-	public function fetchFromTableByTitle( $title, $namespace, $iw, $subobjectName, &$sortkey ) {
+	public function fetchFromTableByTitle( $title, $namespace, $iw, $subobjectName, &$sortkey ): array {
 		$sha1 = IdCacheManager::computeSha1(
 			[
 				$title,
@@ -212,17 +192,17 @@ class EntityIdFinder {
 			$subobjectName = mb_substr( $subobjectName, 0, 255 );
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_TABLE,
-			$fields,
-			[
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( SQLStore::ID_TABLE )
+			->where( [
 				'smw_title' => $title,
 				'smw_namespace' => $namespace,
 				'smw_iw' => $iw,
 				'smw_subobject' => $subobjectName
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$id = $row->smw_id;
@@ -235,7 +215,7 @@ class EntityIdFinder {
 
 			// Prevent any irregularities caused by a delayed, or redirect update
 			if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
-				HashFieldUpdate::addUpdate( $this->connection, $id, $sha1 );
+				$this->deferHashUpdate( $id, $sha1 );
 			}
 		} else {
 			$id = 0;
@@ -264,7 +244,7 @@ class EntityIdFinder {
 	 *
 	 * @return array
 	 */
-	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ) {
+	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
 		$matches = [];
 
 		$conditions = [
@@ -279,21 +259,43 @@ class EntityIdFinder {
 			unset( $conditions['smw_iw'] );
 		}
 
-		$rows = $this->connection->select(
-			// This should be necessary but somehow `SQLite` fails here
-			$this->connection->tableName( SQLStore::ID_TABLE ),
-			[
-				'smw_id'
-			],
-			$conditions,
-			__METHOD__
-		);
+		$rows = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_id' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $rows as $row ) {
 			$matches[] = (int)$row->smw_id;
 		}
 
 		return $matches;
+	}
+
+	/**
+	 * Defer an `smw_hash` rewrite for the given entity ID. Runs immediately
+	 * under CLI to avoid relying on `DeferredUpdates::tryOpportunisticExecute`
+	 * in maintenance scripts; otherwise queues the UPDATE for post-send.
+	 */
+	private function deferHashUpdate( int $id, string $sha1 ): void {
+		$connection = $this->connection;
+		$caller = __METHOD__;
+
+		$update = static function () use ( $connection, $id, $sha1, $caller ): void {
+			$connection->newUpdateQueryBuilder()
+				->update( SQLStore::ID_TABLE )
+				->set( [ 'smw_hash' => $sha1 ] )
+				->where( [ 'smw_id' => $id ] )
+				->caller( $caller )
+				->execute();
+		};
+
+		if ( Site::isCommandLineMode() ) {
+			$update();
+		} else {
+			DeferredUpdates::addCallableUpdate( $update );
+		}
 	}
 
 }

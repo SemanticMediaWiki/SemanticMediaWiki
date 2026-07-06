@@ -38,8 +38,8 @@
 			"subject": "FT0012/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>"
 				]
 			}
 		},
@@ -49,8 +49,8 @@
 			"subject": "FT0012/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>"
 				]
 			}
 		},
@@ -60,8 +60,8 @@
 			"subject": "FT0012/Q.3",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>"
 				]
 			}
 		},
@@ -71,8 +71,8 @@
 			"subject": "FT0012/Q.4",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>"
 				]
 			}
 		}

@@ -11,13 +11,15 @@ use MediaWiki\MediaWikiServices;
 
 MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
 
-	// #2565
-	// It is suggested to use `SMW::GroupPermissions::BeforeInitializationComplete` for
-	// the following case:
-	unset( $vars['wgGroupPermissions']['smwcurator'] );
-
 	return true;
 } );
+```
+
+To modify SMW's permissions, use standard `$wgGroupPermissions` overrides
+in `LocalSettings.php` (permissions are declared in `extension.json` since SMW 7.0):
+
+```php
+$wgGroupPermissions['smwcurator']['smw-patternedit'] = false;
 ```
 
 [Setup.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/Setup.php

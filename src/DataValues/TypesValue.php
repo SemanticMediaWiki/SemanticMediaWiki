@@ -2,17 +2,16 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Uri;
 use SMW\DataTypeRegistry;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIUri as DIUri;
-use Title;
 
 /**
  * This datavalue implements special processing suitable for defining types of
- * properties. Types behave largely like values of type SMWWikiPageValue
+ * properties. Types behave largely like values of type WikiPageValue
  * with three main differences. First, they actively check if a value is an
  * alias for another type, modifying the internal representation accordingly.
  * Second, they have a modified display for emphasizing if some type is defined
@@ -58,15 +57,13 @@ class TypesValue extends DataValue {
 	 * @since 1.6
 	 *
 	 * @param string $typeId
-	 *
-	 * @return TypesValue
 	 */
-	public static function newFromTypeId( $typeId ) {
+	public static function newFromTypeId( $typeId ): TypesValue {
 		$result = new TypesValue( self::TYPE_ID );
 
 		try {
 			$dataItem = self::getTypeUriFromTypeId( $typeId );
-		} catch ( DataItemException $e ) {
+		} catch ( DataItemException ) {
 			$dataItem = self::getTypeUriFromTypeId( 'notype' );
 		}
 
@@ -79,11 +76,9 @@ class TypesValue extends DataValue {
 	 * @since 1.6
 	 *
 	 * @param string $typeId
-	 *
-	 * @return DIUri
 	 */
-	public static function getTypeUriFromTypeId( $typeId ) {
-		return new DIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
+	public static function getTypeUriFromTypeId( $typeId ): Uri {
+		return new Uri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
 	}
 
 	/**
@@ -119,7 +114,7 @@ class TypesValue extends DataValue {
 			return htmlspecialchars( $this->m_caption );
 		}
 
-		$title = Title::makeTitle(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->makeTitle(
 			NS_SPECIAL,
 			$this->getSpecialPageTitleText()
 		);
@@ -160,7 +155,7 @@ class TypesValue extends DataValue {
 			return htmlspecialchars( $this->typeLabel );
 		}
 
-		$title = Title::makeTitle(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->makeTitle(
 			NS_SPECIAL,
 			$this->getSpecialPageTitleText()
 		);
@@ -182,7 +177,7 @@ class TypesValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = (string)$value;
 
 		if ( $this->m_caption === false ) {
@@ -208,7 +203,7 @@ class TypesValue extends DataValue {
 
 		try {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
-		} catch ( DataItemException $e ) {
+		} catch ( DataItemException ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
 			$this->addErrorMsg( [ 'smw-datavalue-type-invalid-typeuri', $this->m_typeId ] );
 		}
@@ -219,8 +214,8 @@ class TypesValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
-		if ( ( $dataItem instanceof DIUri ) && ( $dataItem->getScheme() == 'http' ) &&
+	protected function loadDataItem( DataItem $dataItem ): bool {
+		if ( ( $dataItem instanceof Uri ) && ( $dataItem->getScheme() == 'http' ) &&
 			( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
 			( $dataItem->getQuery() === '' ) ) {
 
@@ -235,7 +230,7 @@ class TypesValue extends DataValue {
 		return false;
 	}
 
-	private function getSpecialPageTitleText() {
+	private function getSpecialPageTitleText(): string {
 		return "Types/$this->typeLabel";
 	}
 

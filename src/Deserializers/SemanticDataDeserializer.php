@@ -5,14 +5,14 @@ namespace SMW\Deserializers;
 use Deserializers\Deserializer;
 use OutOfBoundsException;
 use RuntimeException;
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
-use SMWDataItem as DataItem;
-use SMWDIContainer as DIContainer;
-use SMWErrorValue as ErrorValue;
+use SMW\DataValues\ErrorValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,21 +22,17 @@ use SMWErrorValue as ErrorValue;
  */
 class SemanticDataDeserializer implements Deserializer {
 
-	/**
-	 * @var array
-	 */
-	private $dataItemTypeIdCache = [];
+	private array $dataItemTypeIdCache = [];
 
 	/**
 	 * @see Deserializers::deserialize
 	 *
 	 * @since 1.9
 	 *
-	 * @return SemanticData
 	 * @throws OutOfBoundsException
 	 * @throws RuntimeException
 	 */
-	public function deserialize( $data ) {
+	public function deserialize( $data ): ?SemanticData {
 		$semanticData = null;
 
 		if ( isset( $data['version'] ) && $data['version'] !== 0.1 && $data['version'] !== 2 ) {
@@ -44,7 +40,7 @@ class SemanticDataDeserializer implements Deserializer {
 		}
 
 		if ( isset( $data['subject'] ) ) {
-			$semanticData = new SemanticData( DIWikiPage::doUnserialize( $data['subject'] ) );
+			$semanticData = new SemanticData( WikiPage::doUnserialize( $data['subject'] ) );
 		}
 
 		if ( !$semanticData instanceof SemanticData ) {
@@ -56,10 +52,7 @@ class SemanticDataDeserializer implements Deserializer {
 		return $semanticData;
 	}
 
-	/**
-	 * @return null
-	 */
-	private function doDeserialize( $data, &$semanticData ) {
+	private function doDeserialize( array $data, &$semanticData ): void {
 		$property = null;
 
 		if ( !isset( $data['data'] ) ) {
@@ -73,10 +66,10 @@ class SemanticDataDeserializer implements Deserializer {
 				foreach ( $values as $key => $value ) {
 
 					/**
-					 * @var DIProperty $property
+					 * @var Property $property
 					 */
 					if ( $key === 'property' ) {
-						$property = DIProperty::doUnserialize( $value );
+						$property = Property::doUnserialize( $value );
 					}
 
 					/**
@@ -92,10 +85,7 @@ class SemanticDataDeserializer implements Deserializer {
 		}
 	}
 
-	/**
-	 * @return DataItem
-	 */
-	private function doDeserializeDataItem( $property, $data, $value, $semanticData ) {
+	private function doDeserializeDataItem( ?Property $property, array $data, $value, $semanticData ): void {
 		$dataItem = null;
 
 		if ( !is_array( $value ) ) {
@@ -113,7 +103,7 @@ class SemanticDataDeserializer implements Deserializer {
 			$dataItem = DataItem::newFromSerialization( $value['type'], $value['item'] );
 		} else {
 			$dataItem = $property->getDiWikiPage();
-			$property = new DIProperty( DIProperty::TYPE_ERROR );
+			$property = new Property( Property::TYPE_ERROR );
 
 			$semanticData->addError( [
 				new ErrorValue( $type, 'type mismatch', $property->getLabel() )
@@ -134,7 +124,7 @@ class SemanticDataDeserializer implements Deserializer {
 
 		// Ensure that errors are collected from a subobject level as well and
 		// made available at the top
-		if ( $dataItem instanceof DIContainer ) {
+		if ( $dataItem instanceof Container ) {
 			$semanticData->addError( $dataItem->getSemanticData()->getErrors() );
 		}
 
@@ -149,12 +139,14 @@ class SemanticDataDeserializer implements Deserializer {
 	 * @note The serializer has to make sure to provide a complete data set
 	 * otherwise the subobject is neglected (of course one could set an error
 	 * value to the DIContainer but as of now that seems unnecessary)
-	 *
-	 * @return DIContainer|null
 	 */
-	private function doDeserializeSubSemanticData( $data, $id, $semanticData ) {
+	private function doDeserializeSubSemanticData(
+		array $data,
+		$id,
+		ContainerSemanticData $semanticData
+	): Container {
 		if ( !isset( $data['sobj'] ) ) {
-			return new DIContainer( $semanticData );
+			return new Container( $semanticData );
 		}
 
 		foreach ( $data['sobj'] as $subobject ) {
@@ -163,13 +155,13 @@ class SemanticDataDeserializer implements Deserializer {
 			}
 		}
 
-		return new DIContainer( $semanticData );
+		return new Container( $semanticData );
 	}
 
 	/**
 	 * Returns DataItemId for a property
 	 *
-	 * @note findPropertyTypeID is calling the Store to find the
+	 * @note findPropertyValueType is calling the Store to find the
 	 * typeId reference this is costly but at the moment there is no other
 	 * way to determine the typeId
 	 *
@@ -181,9 +173,9 @@ class SemanticDataDeserializer implements Deserializer {
 	 *
 	 * @return int
 	 */
-	private function getDataItemId( DIProperty $property ) {
+	private function getDataItemId( Property $property ) {
 		if ( !isset( $this->dataItemTypeIdCache[$property->getKey()] ) ) {
-			$this->dataItemTypeIdCache[$property->getKey()] = DataTypeRegistry::getInstance()->getDataItemId( $property->findPropertyTypeID() );
+			$this->dataItemTypeIdCache[$property->getKey()] = DataTypeRegistry::getInstance()->getDataItemByType( $property->findPropertyValueType() );
 		}
 
 		return $this->dataItemTypeIdCache[$property->getKey()];

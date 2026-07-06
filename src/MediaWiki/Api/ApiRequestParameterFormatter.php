@@ -16,33 +16,20 @@ use SMW\Query\PrintRequest;
  */
 final class ApiRequestParameterFormatter {
 
-	/**
-	 * @var array
-	 */
-	protected $requestParameters = [];
-
-	/**
-	 * @var ObjectDictionary
-	 */
-	protected $results = null;
+	protected Options|array|null $results = null;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $requestParameters
 	 */
-	public function __construct( array $requestParameters ) {
-		$this->requestParameters = $requestParameters;
+	public function __construct( protected array $requestParameters ) {
 	}
 
 	/**
 	 * Return formatted request parameters for the AskApi
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
-	public function getAskApiParameters() {
+	public function getAskApiParameters(): array {
 		if ( $this->results === null ) {
 			$this->results = isset( $this->requestParameters['query'] ) ? preg_split( "/(?<=[^\|])\|(?=[^\|])(?=[^\+])/", $this->requestParameters['query'] ) : [];
 		}
@@ -54,10 +41,8 @@ final class ApiRequestParameterFormatter {
 	 * Return formatted request parameters AskArgsApi
 	 *
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
-	public function getAskArgsApiParameter( $key ) {
+	public function getAskArgsApiParameter( $key ): mixed {
 		if ( $this->results === null ) {
 			$this->results = $this->formatAskArgs();
 		}
@@ -69,10 +54,8 @@ final class ApiRequestParameterFormatter {
 	 * Return formatted request parameters
 	 *
 	 * @since 1.9
-	 *
-	 * @return ObjectDictionary
 	 */
-	protected function formatAskArgs() {
+	protected function formatAskArgs(): Options {
 		$result = new Options();
 
 		// Set defaults
@@ -99,10 +82,8 @@ final class ApiRequestParameterFormatter {
 	 * Format parameters
 	 *
 	 * @since  1.9
-	 *
-	 * @return string
 	 */
-	protected function formatParameters() {
+	protected function formatParameters(): array {
 		$parameters = [];
 
 		foreach ( $this->requestParameters['parameters'] as $param ) {
@@ -125,7 +106,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return string
 	 */
-	protected function formatConditions( $condition ) {
+	protected function formatConditions( $condition ): string {
 		return "[[$condition]]";
 	}
 
@@ -138,7 +119,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return PrintRequest
 	 */
-	protected function formatPrintouts( $printout ) {
+	protected function formatPrintouts( $printout ): PrintRequest {
 		return new PrintRequest(
 			PrintRequest::PRINT_PROP,
 			$printout,

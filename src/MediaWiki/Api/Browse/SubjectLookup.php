@@ -2,10 +2,13 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIWikiPage;
+use Exception;
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\MediaWiki\Specials\Browse\ValueFormatter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -17,37 +20,25 @@ use SMW\Store;
  */
 class SubjectLookup extends Lookup {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	const VERSION = 1;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'SubjectLookup:' . self::VERSION;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		if ( !isset( $parameters['subject'] ) ) {
 			throw new ParameterNotFoundException( 'subject' );
 		}
@@ -81,12 +72,12 @@ class SubjectLookup extends Lookup {
 		return $res;
 	}
 
-	private function buildHTML( $params ) {
+	private function buildHTML( array $params ): string {
 		if ( !isset( $params['options'] ) ) {
 			throw new ParameterNotFoundException( 'options' );
 		}
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$params['subject'],
 			$params['ns'],
 			$params['iw'],
@@ -95,7 +86,8 @@ class SubjectLookup extends Lookup {
 
 		$htmlBuilder = new HtmlBuilder(
 			$this->store,
-			$subject
+			$subject,
+			new ValueFormatter( $this->store )
 		);
 
 		$htmlBuilder->setOptions(
@@ -105,24 +97,25 @@ class SubjectLookup extends Lookup {
 		return $htmlBuilder->buildHTML();
 	}
 
-	private function doSerialize( $params ) {
+	private function doSerialize( array $params ) {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$subobject = isset( $params['subobject'] ) ? $params['subobject'] : '';
+		$subobject = $params['subobject'] ?? '';
 
-		$title = $applicationFactory->newTitleFactory()->newFromText(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
 			$params['subject'],
 			$params['ns']
 		);
 
 		$deepRedirectTargetResolver = $applicationFactory->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
+		$serializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			throw new RedirectTargetUnresolvableException( $e->getMessage() );
 		}
 
-		$dataItem = new DIWikiPage(
+		$dataItem = new WikiPage(
 			$title->getDBkey(),
 			$title->getNamespace(),
 			$title->getInterwiki(),
@@ -132,10 +125,8 @@ class SubjectLookup extends Lookup {
 		$semanticData = $applicationFactory->getStore()->getSemanticData(
 			$dataItem
 		);
-
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 
-		return $semanticDataSerializer->serialize( $semanticData );
+		return $semanticDataSerializer->serialize( $semanticData, true );
 	}
-
 }

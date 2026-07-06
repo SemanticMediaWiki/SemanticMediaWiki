@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,8 +16,8 @@ class PopulationProperty extends FixtureProperty {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = new DIProperty( 'Population' );
-		$this->property->setPropertyTypeId( '_num' );
+		$this->property = new Property( 'Population' );
+		$this->property->setPropertyValueType( '_num' );
 	}
 
 }

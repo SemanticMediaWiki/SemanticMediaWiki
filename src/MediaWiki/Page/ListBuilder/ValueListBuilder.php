@@ -2,9 +2,17 @@
 
 namespace SMW\MediaWiki\Page\ListBuilder;
 
-use Html;
+use Iterator;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Html\Html;
+use MediaWiki\Navigation\PagerNavigationBuilder;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\DataValues\DataValue;
+use SMW\Formatters\Infolink;
+use SMW\Formatters\PageLister;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
 use SMW\Query\Language\SomeProperty;
@@ -13,11 +21,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlDivTable;
 use SMW\Utils\Pager;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDITime as DITime;
-use SMWInfolink as Infolink;
-use SMWPageLister as PageLister;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -28,117 +32,84 @@ use SMWPageLister as PageLister;
 class ValueListBuilder {
 
 	/**
-	 * @var Store
+	 * Query-array keys the cursor-style pager renderer should NOT echo back
+	 * into the generated next/prev URLs; the renderer supplies its own
+	 * `after`/`before` and the legacy boundary/offset params would otherwise
+	 * leak forward into cursor URLs.
 	 */
-	private $store;
+	private const PAGINATION_QUERY_KEYS = [ 'after', 'before', 'offset', 'from', 'until', 'filter' ];
 
-	/**
-	 * @var int
-	 */
-	private $pagingLimit = 0;
+	private int $pagingLimit = 0;
 
-	/**
-	 * @var int|null
-	 */
-	private $filterCount;
+	private null|int|string $filterCount = null;
 
-	/**
-	 * @var int
-	 */
-	private $maxPropertyValues = 3;
+	private int $maxPropertyValues = 3;
 
-	/**
-	 * @var string
-	 */
-	private $languageCode = 'en';
+	private string $languageCode = 'en';
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
-	/**
-	 * @var bool
-	 */
-	private $localTimeOffset = false;
+	private bool $localTimeOffset = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param integer
 	 */
-	public function getFilterCount() {
+	public function getFilterCount(): null|int|string {
 		return $this->filterCount;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $pagingLimit
 	 */
-	public function setPagingLimit( $pagingLimit ) {
+	public function setPagingLimit( int $pagingLimit ): void {
 		$this->pagingLimit = $pagingLimit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ) {
+	public function setLanguageCode( string $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
-		$this->isRTL = (bool)$isRTL;
+	public function isRTL( bool $isRTL ): void {
+		$this->isRTL = $isRTL;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param bool $localTimeOffset
 	 */
-	public function applyLocalTimeOffset( $localTimeOffset ) {
-		$this->localTimeOffset = $localTimeOffset;
+	public function applyLocalTimeOffset( mixed $localTimeOffset ): void {
+		$this->localTimeOffset = (bool)$localTimeOffset;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $maxPropertyValues
 	 */
-	public function setMaxPropertyValues( $maxPropertyValues ) {
+	public function setMaxPropertyValues( int $maxPropertyValues ): void {
 		$this->maxPropertyValues = $maxPropertyValues;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DIProperty $property
-	 * @param DataItem $dataItem
-	 *
-	 * @return string
 	 */
-	public function createHtml( DIProperty $property, DataItem $dataItem, array $query = [] ) {
+	public function createHtml( Property $property, DataItem $dataItem, array $query = [] ): string {
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
-		$from = isset( $query['from'] ) ? $query['from'] : 0;
-		$until = isset( $query['until'] ) ? $query['until'] : 0;
-		$filter = isset( $query['filter'] ) ? $query['filter'] : '';
+		$after = (int)( $query['after'] ?? 0 );
+		$before = (int)( $query['before'] ?? 0 );
+		$from = (string)( $query['from'] ?? '' );
+		$until = (string)( $query['until'] ?? '' );
+		$filter = (string)( $query['filter'] ?? '' );
 
 		$this->filterCount = null;
 
@@ -150,17 +121,42 @@ class ValueListBuilder {
 		$dataItems = [];
 		$isValueSearch = false;
 
-		$options = PageLister::getRequestOptions( $limit, $from, $until );
-		$options->setOffset( $offset );
+		$cursorMode = self::shouldUseCursorPagination(
+			$filter,
+			$after,
+			$before,
+			$offset,
+			$from,
+			$until
+		);
 
 		if ( $filter !== '' ) {
+			// `PageLister::getRequestOptions` accepts `string|int` for
+			// `$from`/`$until`; the string form is what the cursor and
+			// search-form code paths produce.
+			$options = PageLister::getRequestOptions( $limit, $from, $until );
+			$options->setOffset( $offset );
 			$dataItems = $this->filterByValue( $property, $filter, $options );
 			$isValueSearch = true;
+		} elseif ( $cursorMode ) {
+			$options = new RequestOptions();
+			$options->limit = $limit;
+			$options->sort = true;
+			$options->ascending = true;
+			$options->setOption( RequestOptions::CURSOR_MODE, true );
+			if ( $after > 0 ) {
+				$options->setCursorAfter( $after );
+			} elseif ( $before > 0 ) {
+				$options->setCursorBefore( $before );
+			}
+			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		} else {
+			$options = PageLister::getRequestOptions( $limit, $from, $until );
+			$options->setOffset( $offset );
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		}
 
-		if ( $dataItems instanceof \Traversable ) {
+		if ( $dataItems instanceof Traversable ) {
 			$dataItems = iterator_to_array( $dataItems );
 		}
 
@@ -216,6 +212,39 @@ class ValueListBuilder {
 			$until
 		);
 
+		if ( $cursorMode ) {
+			$isFirstPage = !$options->hasCursor();
+			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+			$navBuilder
+				->setPage( $title )
+				->setLinkQuery( [ 'limit' => $limit ] + array_diff_key( $query, array_flip( self::PAGINATION_QUERY_KEYS ) ) )
+				->setLimitLinkQueryParam( 'limit' )
+				->setCurrentLimit( $limit )
+				->setPrevTooltipMsg( 'prevn-title' )
+				->setNextTooltipMsg( 'nextn-title' )
+				->setLimitTooltipMsg( 'shown-title' );
+
+			$isBackward = $options->getCursorBefore() !== null;
+			$isAtEnd = !$options->getCursorHasMore();
+			$showPrev = $isBackward ? !$isAtEnd : true;
+			$showNext = $isBackward ? true : !$isAtEnd;
+
+			if ( $showPrev && !$isFirstPage && $options->getFirstCursor() !== null ) {
+				$navBuilder->setPrevLinkQuery( [ 'before' => (string)$options->getFirstCursor() ] );
+			}
+
+			if ( $showNext && $options->getLastCursor() !== null ) {
+				$navBuilder->setNextLinkQuery( [ 'after' => (string)$options->getLastCursor() ] );
+			}
+
+			$paginationHtml = $navBuilder->getHtml();
+		} else {
+			// Legacy path: strip the cursor params introduced by this PR so
+			// they do not echo as `&after=0&before=0` into offset URLs.
+			$legacyQuery = array_diff_key( $query, array_flip( [ 'after', 'before' ] ) );
+			$paginationHtml = Pager::pagination( $title, $limit, $offset, $resultCount, $legacyQuery );
+		}
+
 		$navContainer = Html::rawElement(
 			'div',
 			[
@@ -226,7 +255,7 @@ class ValueListBuilder {
 				[
 					'class' => 'smw-page-nav-left'
 				],
-				Pager::pagination( $title, $limit, $offset, $resultCount, $query )
+				$paginationHtml
 			) . Html::rawElement(
 				'div',
 				[
@@ -255,8 +284,8 @@ class ValueListBuilder {
 		);
 	}
 
-	private function createValueList( DIProperty $property, DataItem $dataItem, $diWikiPages, $limit, $until ) {
-		if ( $diWikiPages instanceof \Iterator ) {
+	private function createValueList( Property $property, DataItem $dataItem, $diWikiPages, int $limit, $until ): string {
+		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
 
@@ -269,7 +298,7 @@ class ValueListBuilder {
 				$start = 1;
 			} else {
 				$start = 0;
-				$ac = $ac - 1;
+				$ac -= 1;
 			}
 		} else {
 			$start = 0;
@@ -330,7 +359,7 @@ class ValueListBuilder {
 			}
 
 			// May return an iterator
-			if ( $values instanceof \Iterator ) {
+			if ( $values instanceof Iterator ) {
 				$values = iterator_to_array( $values );
 			}
 
@@ -357,7 +386,7 @@ class ValueListBuilder {
 						$outputFormat = 'LOCL';
 					}
 
-					if ( $di instanceof DITime && $this->localTimeOffset ) {
+					if ( $di instanceof Time && $this->localTimeOffset ) {
 						$outputFormat .= '#TO';
 					}
 
@@ -400,7 +429,7 @@ class ValueListBuilder {
 		);
 	}
 
-	private function filterByValue( $property, $value, $options ) {
+	private function filterByValue( Property $property, $value, RequestOptions $options ): array {
 		$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$queryParser = $queryFactory->newQueryParser();
 
@@ -450,6 +479,39 @@ class ValueListBuilder {
 		}
 
 		return array_values( $sort );
+	}
+
+	/**
+	 * Decides whether the no-filter branch should render cursor-style
+	 * pagination (`?after=`/`?before=`) or stay on the legacy offset/boundary
+	 * path. Extracted to a static helper so it can be unit-tested without
+	 * spinning up the full lookup; the predicate is the most regression-
+	 * prone part of the cursor flow.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string $filter Value of `?filter=`; empty string for the no-filter branch.
+	 * @param int $after Value of `?after=`; 0 when not set.
+	 * @param int $before Value of `?before=`; 0 when not set.
+	 * @param int $offset Value of `?offset=`; 0 when not set.
+	 * @param string $from Value of `?from=`; empty string when not set.
+	 * @param string $until Value of `?until=`; empty string when not set.
+	 */
+	public static function shouldUseCursorPagination(
+		string $filter,
+		int $after,
+		int $before,
+		int $offset,
+		string $from,
+		string $until
+	): bool {
+		if ( $filter !== '' ) {
+			return false;
+		}
+		if ( $after > 0 || $before > 0 ) {
+			return true;
+		}
+		return $offset === 0 && $from === '' && $until === '';
 	}
 
 }

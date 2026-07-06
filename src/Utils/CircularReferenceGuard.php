@@ -10,28 +10,14 @@ namespace SMW\Utils;
  */
 class CircularReferenceGuard {
 
-	/**
-	 * @var array
-	 */
-	private static $circularRefGuard = [];
+	private static array $circularRefGuard = [];
 
-	/**
-	 * @var string
-	 */
-	private $namespace = '';
-
-	/**
-	 * @var int
-	 */
-	private $maxRecursionDepth = 1;
+	private int $maxRecursionDepth = 1;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param string $namespace
 	 */
-	public function __construct( $namespace = '' ) {
-		$this->namespace = $namespace;
+	public function __construct( private $namespace = '' ) {
 	}
 
 	/**
@@ -39,7 +25,7 @@ class CircularReferenceGuard {
 	 *
 	 * @param int $maxRecursionDepth
 	 */
-	public function setMaxRecursionDepth( $maxRecursionDepth ) {
+	public function setMaxRecursionDepth( $maxRecursionDepth ): void {
 		$this->maxRecursionDepth = (int)$maxRecursionDepth;
 	}
 
@@ -48,7 +34,7 @@ class CircularReferenceGuard {
 	 *
 	 * @param string $hash
 	 */
-	public function mark( $hash ) {
+	public function mark( $hash ): void {
 		if ( !isset( self::$circularRefGuard[$this->namespace][$hash] ) ) {
 			self::$circularRefGuard[$this->namespace][$hash] = 0;
 		}
@@ -76,7 +62,7 @@ class CircularReferenceGuard {
 	 *
 	 * @return bool
 	 */
-	public function isCircular( $hash ) {
+	public function isCircular( $hash ): bool {
 		return $this->get( $hash ) > $this->maxRecursionDepth;
 	}
 
@@ -100,7 +86,7 @@ class CircularReferenceGuard {
 	 *
 	 * @param string $namespace
 	 */
-	public function reset( $namespace ) {
+	public function reset( $namespace ): void {
 		self::$circularRefGuard[$namespace] = [];
 	}
 

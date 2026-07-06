@@ -20,8 +20,8 @@ class JSONFileParseException extends JSONParseException {
 		$this->message = $this->buildMessage( $file, $errMsg );
 	}
 
-	private function buildMessage( $file, $errMsg ) {
-		if ( $errMsg === !'' ) {
+	private function buildMessage( $file, $errMsg ): string {
+		if ( $errMsg !== '' ) {
 			$message = "$errMsg in file $file caused by:";
 		} else {
 			$message = "JSON error in file $file caused by:";

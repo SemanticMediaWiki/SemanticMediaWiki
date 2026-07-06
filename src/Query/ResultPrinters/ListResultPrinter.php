@@ -2,6 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use Exception;
 use ParamProcessor\ParamDefinition;
 use SMW\Localizer\Message;
 use SMW\Query\QueryResult;
@@ -31,7 +32,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		// Give grep a chance to find the usages:
 		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_plainlist, smw_printername_template
 		return Message::get( 'smw_printername_' . $this->mFormat, Message::TEXT, Message::USER_LANGUAGE );
@@ -42,8 +43,17 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return true;
+	}
+
+	/**
+	 * @see ResultPrinter::dependsOnUserLanguage
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return false;
 	}
 
 	/**
@@ -73,7 +83,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return ListResultBuilder
 	 */
-	private function getBuilder( QueryResult $queryResult ) {
+	private function getBuilder( QueryResult $queryResult ): ListResultBuilder {
 		$builder = new ListResultBuilder( $queryResult, $this->mLinker, $GLOBALS['smwgPlainList'] );
 
 		$builder->set( $this->params );
@@ -84,7 +94,7 @@ class ListResultPrinter extends ResultPrinter {
 			'show-headers' => $this->mShowHeaders,
 		] );
 
-		if ( $this->params['template'] !== '' && isset( $this->fullParams['sep'] ) && $this->fullParams['sep']->wasSetToDefault() === true ) {
+		if ( $this->params['template'] !== '' && isset( $this->fullParams['sep'] ) && $this->fullParams['sep']->wasSetToDefault() ) {
 			$builder->set( 'sep', '' );
 		}
 
@@ -94,7 +104,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @return bool
 	 */
-	private function hasTemplates() {
+	private function hasTemplates(): bool {
 		return $this->params['template'] !== '' || $this->params['introtemplate'] !== '' || $this->params['outrotemplate'] !== '';
 	}
 
@@ -124,7 +134,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return bool
 	 */
-	public function supportsRecursiveAnnotation() {
+	public function supportsRecursiveAnnotation(): bool {
 		return true;
 	}
 
@@ -136,9 +146,9 @@ class ListResultPrinter extends ResultPrinter {
 	 * @param ParamDefinition[] $definitions
 	 *
 	 * @return ParamDefinition[]
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$listFormatDefinitions = [
 
 			'propsep' => [

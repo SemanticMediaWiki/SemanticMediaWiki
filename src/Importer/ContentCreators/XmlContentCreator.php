@@ -2,6 +2,9 @@
 
 namespace SMW\Importer\ContentCreators;
 
+use Exception;
+use MediaWiki\Title\ForeignTitle;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
@@ -16,30 +19,16 @@ use SMW\Utils\CliMsgFormatter;
  */
 class XmlContentCreator implements ContentCreator {
 
-	/**
-	 * @var ImportContentsIterator
-	 */
-	private $importerServiceFactory;
+	private ImporterServiceFactory $importerServiceFactory;
 
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private ?MessageReporter $messageReporter = null;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
-	/**
-	 * @var string
-	 */
-	private $action = '';
+	private string $action = '';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ImporterServiceFactory $importerServiceFactory
 	 */
 	public function __construct( ImporterServiceFactory $importerServiceFactory ) {
 		$this->importerServiceFactory = $importerServiceFactory;
@@ -49,26 +38,20 @@ class XmlContentCreator implements ContentCreator {
 	 * @see MessageReporterAware::setMessageReporter
 	 *
 	 * @since 3.0
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ImportContents $importContents
 	 */
-	public function canCreateContentsFor( ImportContents $importContents ) {
+	public function canCreateContentsFor( ImportContents $importContents ): bool {
 		return $importContents->getContentType() === ImportContents::CONTENT_XML;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ImportContents $importContents
 	 */
 	public function create( ImportContents $importContents ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
@@ -105,7 +88,7 @@ class XmlContentCreator implements ContentCreator {
 
 		try {
 			$importer->doImport();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->action = 'FAILED';
 			$importContents->addError( $e->getMessage() );
 		}
@@ -116,13 +99,13 @@ class XmlContentCreator implements ContentCreator {
 	/**
 	 * @see WikiImporter::handlePage
 	 *
-	 * @param Title $title
+	 * @param ?Title $title
 	 * @param ForeignTitle $foreignTitle
 	 * @param int $revisionCount
 	 * @param int $successCount
 	 * @param array $pageInfo
 	 */
-	public function reportPage( $title, $foreignTitle, $revisionCount, $successCount, $pageInfo ) {
+	public function reportPage( $title, $foreignTitle, $revisionCount, $successCount, $pageInfo ): void {
 		// Invalid or non-importable title
 		if ( $title === null ) {
 			return;
@@ -140,7 +123,7 @@ class XmlContentCreator implements ContentCreator {
 		);
 	}
 
-	private function reportAction() {
+	private function reportAction(): void {
 		if ( $this->action === '' ) {
 			return;
 		}

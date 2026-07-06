@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Html;
-use OutputPage;
-use Skin;
+use MediaWiki\Html\Html;
+use MediaWiki\Output\Hook\BeforePageDisplayHook;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\Services\ServicesFactory;
-use SpecialPage;
-use Title;
+use SMW\Settings;
+use SMW\SetupFile;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
@@ -23,19 +23,28 @@ use Title;
  *
  * @author mwjames
  */
-class BeforePageDisplay implements HookListener {
-
-	use OptionsAwareTrait;
+class BeforePageDisplay implements BeforePageDisplayHook {
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param OutputPage $outputPage
+	 * @since 7.0.0
 	 */
-	public function informAboutExtensionAvailability( OutputPage $outputPage ) {
+	public function __construct(
+		private readonly UserOptionsLookup $userOptionsLookup,
+		private readonly Settings $settings,
+		private readonly SetupFile $setupFile,
+	) {
+	}
+
+	/**
+	 * Static handler used during extension boot to inform the user when
+	 * the extension was loaded but not enabled.
+	 *
+	 * @since 7.0.0
+	 */
+	public static function informAboutExtensionAvailability( OutputPage $outputPage ): void {
 		if (
-			$this->getOption( 'SMW_EXTENSION_LOADED' ) ||
-			$this->getOption( 'smwgIgnoreExtensionRegistrationCheck' ) ) {
+			defined( 'SMW_EXTENSION_LOADED' ) ||
+			!empty( $GLOBALS['smwgIgnoreExtensionRegistrationCheck'] ) ) {
 			return;
 		}
 
@@ -53,44 +62,40 @@ class BeforePageDisplay implements HookListener {
 	}
 
 	/**
-	 * @since 1.9
-	 *
-	 * @param OutputPage $outputPage
-	 * @param Skin $skin
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( OutputPage $outputPage, Skin $skin ) {
-		$title = $outputPage->getTitle();
-		$user = $outputPage->getUser();
+	public function onBeforePageDisplay( $out, $skin ): void {
+		$title = $out->getTitle();
+		$user = $out->getUser();
 		// #2726
-		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
-		if ( $userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {
-			$outputPage->addModules( 'ext.smw.suggester.textInput' );
+		if ( $this->userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {
+			$out->addModules( 'ext.smw.suggester.textInput' );
 		}
 
-		if ( $this->getOption( 'incomplete_tasks', [] ) !== [] ) {
-			$outputPage->addModuleStyles( [ 'mediawiki.codex.messagebox.styles' ] );
-			$outputPage->prependHTML( $this->createIncompleteSetupTaskNotification( $title ) );
+		$incompleteTasks = $this->setupFile->findIncompleteTasks();
+		$isUpgrade = $this->setupFile->get( SetupFile::PREVIOUS_VERSION );
+
+		if ( $incompleteTasks !== [] ) {
+			$out->addModuleStyles( [ 'mediawiki.codex.messagebox.styles' ] );
+			$out->prependHTML( $this->createIncompleteSetupTaskNotification( $title, $incompleteTasks, $isUpgrade ) );
 		}
 
 		// Add export link to the head
 		if (
-			$this->getOption( 'smwgEnableExportRDFLink' ) &&
+			$this->settings->get( 'smwgEnableExportRDFLink' ) &&
 			$title instanceof Title &&
 			!$title->isSpecialPage()
 		) {
+			$link = [];
 			$link['rel']   = 'alternate';
 			$link['type']  = 'application/rdf+xml';
 			$link['title'] = $title->getPrefixedText();
-			$link['href']  = SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
-			$outputPage->addLink( $link );
+			$link['href']  = SkinComponentUtils::makeSpecialUrl( 'ExportRDF', [ 'xmlmime' => 'rdf' ] );
+			$out->addLink( $link );
 		}
-
-		return true;
 	}
 
-	private function createIncompleteSetupTaskNotification( $title ) {
+	private function createIncompleteSetupTaskNotification( $title, array $incompleteTasks, $isUpgrade ): string {
 		$disallowSpecialPages = [
 			'Userlogin',
 			'PendingTaskList',
@@ -105,11 +110,10 @@ class BeforePageDisplay implements HookListener {
 			}
 		}
 
-		$is_upgrade = $this->getOption( 'is_upgrade' ) !== null ? 2 : 1;
-		$count = count( $this->getOption( 'incomplete_tasks' ) );
+		$isUpgradeFlag = $isUpgrade !== null ? 2 : 1;
+		$count = count( $incompleteTasks );
 
-		// TODO: Refactor message content HTML generation into Mustache or another class
-		$title = Html::rawElement( 'strong', [], Message::get( 'smw-title' ) );
+		$titleHtml = Html::element( 'strong', [], Message::get( 'smw-title' ) );
 		$note = Html::rawElement( 'span',
 			[
 				'style' => 'color: var( --color-subtle, #54595d ); font-size: 0.75rem;'
@@ -120,9 +124,9 @@ class BeforePageDisplay implements HookListener {
 			[
 				'style' => 'display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 0.5rem;'
 			],
-			$title . $note
+			$titleHtml . $note
 		);
-		$content = Message::get( [ 'smw-install-incomplete-intro', $is_upgrade, $count ], Message::PARSE, Message::USER_LANGUAGE );
+		$content = Message::get( [ 'smw-install-incomplete-intro', $isUpgradeFlag, $count ], Message::PARSE, Message::USER_LANGUAGE );
 
 		return Html::errorBox(
 			$header .

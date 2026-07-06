@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Number;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDINumber as DINumber;
 
 /**
  * This class implements Store access to Number data items.
@@ -23,7 +23,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE,
 			'o_sortkey' => FieldType::TYPE_DOUBLE
@@ -35,7 +35,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE
 		];
@@ -46,7 +46,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 
 			// API module pvalue lookup
@@ -63,7 +63,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 		// Store::getPropertySubjects has seen to choose the wrong index
 
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
@@ -96,7 +96,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		return [
 			'o_sortkey' => floatval( $dataItem->getNumber() )
 			];
@@ -107,7 +107,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		return [
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_sortkey' => floatval( $dataItem->getNumber() )
@@ -119,7 +119,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_sortkey';
 	}
 
@@ -128,7 +128,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_serialized';
 	}
 
@@ -137,9 +137,9 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Number {
 		if ( is_string( $dbkeys ) ) {
-			return DINumber::doUnserialize( $dbkeys );
+			return Number::doUnserialize( $dbkeys );
 		}
 
 		throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );

@@ -2,10 +2,12 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\MediaWiki\HookDispatcher;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
@@ -29,7 +31,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class updateEntityCollation extends \Maintenance {
+class updateEntityCollation extends Maintenance {
 
 	/**
 	 * Incomplete task message
@@ -37,14 +39,11 @@ class updateEntityCollation extends \Maintenance {
 	const ENTITY_COLLATION_INCOMPLETE = 'smw-updateentitycollation-incomplete';
 
 	/**
-	 * @var Store
+	 * @var SQLStore
 	 */
 	private $store;
 
-	/**
-	 * @var HookDispatcher
-	 */
-	private $hookDispatcher;
+	private ?HookContainer $hookContainer = null;
 
 	/**
 	 * @var MessageReporter
@@ -63,18 +62,14 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	/**
-	 * @since 3.2
-	 *
-	 * @param HookDispatcher $hookDispatcher
+	 * @since 7.0.0
 	 */
-	public function setHookDispatcher( HookDispatcher $hookDispatcher ) {
-		$this->hookDispatcher = $hookDispatcher;
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -93,7 +88,10 @@ class updateEntityCollation extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		global $wgCategoryCollation;
+
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 
@@ -101,12 +99,13 @@ class updateEntityCollation extends \Maintenance {
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 		$setupFile = $applicationFactory->singleton( 'SetupFile' );
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$this->store = $applicationFactory->getStore(
 			SQLStore::class
 		);
 
-		if ( $this->hookDispatcher === null ) {
-			$this->hookDispatcher = $applicationFactory->getHookDispatcher();
+		if ( $this->hookContainer === null ) {
+			$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		}
 
 		if ( $this->messageReporter === null ) {
@@ -130,7 +129,6 @@ class updateEntityCollation extends \Maintenance {
 		);
 
 		$smwgEntityCollation = $applicationFactory->getSettings()->get( 'smwgEntityCollation' );
-		$wgCategoryCollation = $GLOBALS['wgCategoryCollation'];
 
 		if ( $smwgEntityCollation !== $wgCategoryCollation ) {
 			$this->informAboutDifferences( $smwgEntityCollation, $wgCategoryCollation );
@@ -170,10 +168,13 @@ class updateEntityCollation extends \Maintenance {
 			]
 		);
 
-		$this->hookDispatcher->onAfterUpdateEntityCollationComplete( $this->store, $this->messageReporter );
+		$this->hookContainer->run(
+			'SMW::Maintenance::AfterUpdateEntityCollationComplete',
+			[ $this->store, $this->messageReporter ]
+		);
 	}
 
-	private function informAboutDifferences( $smwgEntityCollation, $wgCategoryCollation ) {
+	private function informAboutDifferences( $smwgEntityCollation, $categoryCollation ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -199,19 +200,18 @@ class updateEntityCollation extends \Maintenance {
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->twoCols( '... `$wgCategoryCollation`', $wgCategoryCollation, 3, '.' )
+			$cliMsgFormatter->twoCols( '... `$wgCategoryCollation`', $categoryCollation, 3, '.' )
 		);
 	}
 
 	private function fetchRows() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$this->lastId = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$this->lastId = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		$condition = '';
 
@@ -222,17 +222,21 @@ class updateEntityCollation extends \Maintenance {
 			$condition .= ' AND smw_id > ' . $connection->addQuotes( $this->getOption( 's' ) );
 		}
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		// $condition is always non-empty here (the two `smw_iw!=` clauses are
+		// unconditional), so wrapping in `[ $condition ]` for ->where() is safe.
+		// If a future change ever makes $condition optional, switch to
+		// conditional ->where() invocation to avoid emitting `WHERE ()`.
+		return $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_sortkey'
-			],
-			$condition,
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ $condition ] )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	private function runUpdate( $rows, $count ) {
@@ -241,7 +245,7 @@ class updateEntityCollation extends \Maintenance {
 		);
 
 		$cliMsgFormatter = new CliMsgFormatter();
-		$property = new DIProperty( '_SKEY' );
+		$property = new Property( '_SKEY' );
 		$i = 0;
 
 		foreach ( $rows as $row ) {
@@ -281,8 +285,8 @@ class updateEntityCollation extends \Maintenance {
 		}
 
 		try {
-			$property = new DIProperty( $row->smw_title );
-		} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			$property = new Property( $row->smw_title );
+		} catch ( PredefinedPropertyLabelMismatchException ) {
 			return $row->smw_sortkey;
 		}
 

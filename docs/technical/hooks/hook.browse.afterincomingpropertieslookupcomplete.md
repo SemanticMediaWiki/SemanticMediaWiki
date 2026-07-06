@@ -6,8 +6,8 @@
 
 ```php
 use MediaWiki\MediaWikiServices;
+use SMW\DataModel\SemanticData;
 use SMW\Store;
-use SMW\SemanticData;
 use SMW\RequestOptions
 
 MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', function( Store $store, SemanticData $semanticData, RequestOptions $requestOptions ) {

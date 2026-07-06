@@ -2,13 +2,20 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use RequestContext;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\Title\Title;
+use Psr\Log\LoggerInterface;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 use WikiPage;
 
 /**
+ * Partial DI: ParserCachePurgeJob still resolves its PSR-3 logger and
+ * page-creator lazily (via `LoggerFactory::getInstance( 'smw' )` and
+ * `ApplicationFactory`) because `PageCreator` is not yet registered on the
+ * global container.
+ *
  * @license GPL-2.0-or-later
  * @since 3.1
  *
@@ -32,10 +39,7 @@ class ParserCachePurgeJob extends Job {
 	 *
 	 * @param WikiPage|null $page
 	 */
-	public function updateParserCache( ?WikiPage $page = null ) {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$logger = $applicationFactory->getMediaWikiLogger();
-
+	public function updateParserCache( ?WikiPage $page = null ): void {
 		if ( $this->hasParameter( 'action' ) ) {
 			$causeAction = $this->getParameter( 'action' );
 		} else {
@@ -61,9 +65,13 @@ class ParserCachePurgeJob extends Job {
 			]
 		);
 
-		$logger->info(
-			[ 'ParserCache', 'Forced update for: {title}', 'causeAction: {causeAction}' ],
-			[ 'causeAction' => $causeAction, 'title' => $title->getPrefixedText(), 'role' => 'production' ]
+		$this->getLogger()->info(
+			'ParserCache Forced update for: {title} causeAction: {causeAction}',
+			[
+				'causeAction' => $causeAction,
+				'title' => $title->getPrefixedText(),
+				'role' => 'production'
+			]
 		);
 	}
 
@@ -72,7 +80,7 @@ class ParserCachePurgeJob extends Job {
 	 *
 	 * @since 3.1
 	 */
-	public function run() {
+	public function run(): bool {
 		$page = $this->newWikiPage( $this->getTitle() );
 		$page->doPurge();
 		$this->updateParserCache( $page );
@@ -80,7 +88,15 @@ class ParserCachePurgeJob extends Job {
 		return true;
 	}
 
-	protected function newWikiPage( $title ) {
+	protected function newWikiPage( Title $title ): WikiPage {
 		return ApplicationFactory::getInstance()->newPageCreator()->createPage( $title );
+	}
+
+	private function getLogger(): LoggerInterface {
+		if ( $this->logger === null ) {
+			$this->logger = LoggerFactory::getInstance( 'smw' );
+		}
+
+		return $this->logger;
 	}
 }

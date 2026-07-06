@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Alfredie",
+			"Sahran",
 			"Tel'et",
 			"Uzdil"
 		]
@@ -16,7 +17,7 @@
 	"smw-ask-result": "نەتىجە",
 	"smw-ask-empty": "بوش",
 	"smw-ask-format": "فورمات",
-	"browse": "ۋىكىنى زىيارەت قىلىش",
+	"browse": "ۋىكى زىيارەت",
 	"smw_browse_go": "كۆچۈش",
 	"smw-livepreview-loading": "يۈكلەۋاتىدۇ…",
 	"smw-listingcontinuesabbrev": "داۋاملاشتۇر",

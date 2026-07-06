@@ -2,15 +2,17 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use RequestContext;
-use SMW\DIWikiPage;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
+use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -27,17 +29,14 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	private $title;
 	private $semanticDataValidator;
 	private $applicationFactory;
-	private $mwHooksHandler;
 	private $pageDeleter;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-
-		$this->mwHooksHandler
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+		( new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
+		) )->reseatDeclarativeHandlers();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
@@ -59,18 +58,21 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 
 	protected function tearDown(): void {
 		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
+
+		( new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
+		) )->reseatDeclarativeHandlers();
 
 		parent::tearDown();
 	}
 
 	public function testPagePurge() {
-		$cacheFactory = $this->applicationFactory->newCacheFactory();
-		$cache = $cacheFactory->newFixedInMemoryCache();
+		// ArticlePurge writes the purge marker through SMW.ObjectCache, i.e.
+		// ServicesFactory::getObjectCache(); read it back from that same
+		// instance rather than an injected Cache override.
+		$cache = $this->applicationFactory->getObjectCache();
 
-		$this->applicationFactory->registerObject( 'Cache', $cache );
-
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -78,19 +80,19 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 			->createPage( $this->title )
 			->doEdit( '[[Has function hook test::page purge]]' );
 
-		$key = $cacheFactory->getPurgeCacheKey( $this->title->getArticleID() );
+		$key = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $this->title->getArticleID() );
 
 		$pageCreator
 			->getPage()
 			->doPurge();
 
 		$this->assertTrue(
-			$cache->fetch( $key )
+			$cache->get( $key )
 		);
 	}
 
 	public function testPageDelete() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -99,18 +101,18 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 			->doEdit( '[[Has function hook test::page delete]]' );
 
 		$this->semanticDataValidator->assertThatSemanticDataIsNotEmpty(
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) )
 		);
 
 		$this->pageDeleter->deletePage( $this->title );
 
 		$this->semanticDataValidator->assertThatSemanticDataIsEmpty(
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) )
 		);
 	}
 
 	public function testEditPageToGetNewRevision() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -141,7 +143,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	}
 
 	public function testOnOutputPageParserOutputeOnDatabase() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 

@@ -3,9 +3,9 @@
 namespace SMW\DataValues\Number;
 
 use InvalidArgumentException;
+use SMW\DataValues\NumberValue;
 use SMW\Localizer\Message;
 use SMW\Options;
-use SMWNumberValue as NumberValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -35,33 +35,16 @@ class IntlNumberFormatter {
 	const DEFAULT_FORMAT = 'default.format';
 	const VALUE_FORMAT = 'value.format';
 
-	/**
-	 * @var IntlNumberFormatter
-	 */
-	private static $instance = null;
+	private static ?IntlNumberFormatter $instance = null;
 
-	/**
-	 * @var Options
-	 */
-	private $options = null;
+	private Options $options;
 
-	/**
-	 * @var int
-	 */
-	private $maxNonExpNumber = null;
-
-	/**
-	 * @var int
-	 */
-	private $defaultPrecision = 3;
+	private int $defaultPrecision = 3;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param int $maxNonExpNumber
 	 */
-	public function __construct( $maxNonExpNumber ) {
-		$this->maxNonExpNumber = $maxNonExpNumber;
+	public function __construct( private $maxNonExpNumber ) {
 		$this->options = new Options();
 	}
 
@@ -70,7 +53,7 @@ class IntlNumberFormatter {
 	 *
 	 * @return IntlNumberFormatter
 	 */
-	public static function getInstance() {
+	public static function getInstance(): IntlNumberFormatter {
 		if ( self::$instance === null ) {
 			self::$instance = new self(
 				$GLOBALS['smwgMaxNonExpNumber']
@@ -83,14 +66,14 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.1
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$instance = null;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function reset() {
+	public function reset(): void {
 		$this->options->set( self::DECIMAL_SEPARATOR, false );
 		$this->options->set( self::THOUSANDS_SEPARATOR, false );
 		$this->options->set( self::USER_LANGUAGE, false );
@@ -106,14 +89,14 @@ class IntlNumberFormatter {
 	 *
 	 * @return void
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options->set( $key, $value );
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param int $type
+	 * @param string $type
 	 * @param string|int $locale
 	 *
 	 * @return string
@@ -147,6 +130,10 @@ class IntlNumberFormatter {
 	 * @return string
 	 */
 	public function format( $value, $precision = false, $format = '' ) {
+		if ( !is_numeric( $value ) ) {
+			$value = 0;
+		}
+
 		if ( $format === self::VALUE_FORMAT ) {
 			return $this->getValueFormattedNumberWithPrecision( $value, $precision );
 		}
@@ -155,7 +142,7 @@ class IntlNumberFormatter {
 			return $this->getDefaultFormattedNumberWithPrecision( $value, $precision );
 		}
 
-		return $this->doFormatByHeuristicRuleWith( $value, $precision );
+		return $this->doFormatByHeuristicRuleWith( $value );
 	}
 
 	/**
@@ -164,10 +151,8 @@ class IntlNumberFormatter {
 	 * to format a number that was not hand-formatted by a user.
 	 *
 	 * @param $value
-	 * @param int|false $precision optional positive integer, controls how many digits after
-	 * the decimal point are shown
 	 */
-	private function doFormatByHeuristicRuleWith( $value, $precision = false ): string {
+	private function doFormatByHeuristicRuleWith( $value ): string {
 		// BC configuration to keep default behaviour
 		$precision = $this->defaultPrecision;
 
@@ -240,7 +225,7 @@ class IntlNumberFormatter {
 		return $value;
 	}
 
-	private function getValueFormattedNumberWithPrecision( $value, $precision = false ) {
+	private function getValueFormattedNumberWithPrecision( $value, $precision = false ): string|array {
 		// The decimal are in ISO format (.), the separator as plain representation
 		// may collide with the content language (FR) therefore use the content language
 		// to match the decimal separator
@@ -260,7 +245,7 @@ class IntlNumberFormatter {
 		);
 	}
 
-	private function getDefaultFormattedNumberWithPrecision( $value, $precision = false ) {
+	private function getDefaultFormattedNumberWithPrecision( $value, $precision = false ): float|string {
 		if ( $precision === false ) {
 			return $this->isDecimal( $value ) ? $this->applyDefaultPrecision( $value ) : floatval( $value );
 		}
@@ -273,23 +258,23 @@ class IntlNumberFormatter {
 		);
 	}
 
-	private function isDecimal( $value ) {
+	private function isDecimal( $value ): bool {
 		return floor( $value ) !== $value;
 	}
 
-	private function isScientific( $value ) {
+	private function isScientific( $value ): bool {
 		return strpos( $value, 'E' ) !== false || strpos( $value, 'e' ) !== false;
 	}
 
-	private function applyDefaultPrecision( $value ) {
+	private function applyDefaultPrecision( $value ): float {
 		return round( $value, $this->defaultPrecision );
 	}
 
-	private function getPrecisionFrom( $value ) {
+	private function getPrecisionFrom( $value ): int {
 		return strlen( strrchr( $value, "." ) ) - 1;
 	}
 
-	private function doFormatExponentialNotation( $value ) {
+	private function doFormatExponentialNotation( $value ): string|array {
 		return str_replace(
 			[ '.', 'E' ],
 			[ $this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ],
@@ -297,12 +282,13 @@ class IntlNumberFormatter {
 		);
 	}
 
-	private function doFormatWithPrecision( $value, $precision, $decimal, $thousand ) {
+	private function doFormatWithPrecision( $value, $precision, $decimal, $thousand ): string {
 		$replacement = 0;
 
 		// Don't try to be more precise than the actual value (e.g avoid turning
 		// 72.769482308 into 72.76948230799999350892904)
-		if ( ( $actualPrecision = $this->getPrecisionFrom( $value ) ) < $precision && $actualPrecision > 0 && !$this->isScientific( $value ) ) {
+		$actualPrecision = $this->getPrecisionFrom( $value );
+		if ( $actualPrecision < $precision && $actualPrecision > 0 && !$this->isScientific( $value ) ) {
 			$replacement = $precision - $actualPrecision;
 			$precision = $actualPrecision;
 		}
@@ -313,7 +299,7 @@ class IntlNumberFormatter {
 		// Format to some level of precision; number_format does rounding and
 		// locale formatting, x and y are used temporarily since number_format
 		// supports only single characters for either
-		$precision = $precision ?? 0;
+		$precision = max( 0, $precision );
 		$value = number_format( $value, $precision, 'x', 'y' );
 
 		// Due to https://bugs.php.net/bug.php?id=76824
@@ -363,9 +349,12 @@ class IntlNumberFormatter {
 		return $language;
 	}
 
-	private function getPreferredLocalizedSeparator( $custom, $standard, $language ) {
-		if ( $this->options->has( $custom ) && ( $separator = $this->options->get( $custom ) ) !== false ) {
-			return $separator;
+	private function getPreferredLocalizedSeparator( string $custom, string $standard, $language ) {
+		if ( $this->options->has( $custom ) ) {
+			$separator = $this->options->get( $custom );
+			if ( $separator !== false ) {
+				return $separator;
+			}
 		}
 
 		return Message::get( $standard, Message::TEXT, $language );

@@ -12,10 +12,7 @@ use InvalidArgumentException;
  */
 class Status {
 
-	/**
-	 * @var array
-	 */
-	protected $options = [];
+	protected array $options;
 
 	/**
 	 * @since 2.3

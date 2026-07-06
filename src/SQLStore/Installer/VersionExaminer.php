@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Installer;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RuntimeException;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\IDatabase;
@@ -20,20 +21,14 @@ class VersionExaminer {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var IDatabase
-	 */
-	private $connection;
+	private IDatabase $connection;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private ?SetupFile $setupFile = null;
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param IDatabase $connection
+	 * @param Database|IDatabase $connection
 	 */
 	public function __construct( $connection ) {
 		if ( !$connection instanceof IDatabase ) {
@@ -48,7 +43,7 @@ class VersionExaminer {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -102,7 +97,7 @@ class VersionExaminer {
 		return true;
 	}
 
-	private function throwFalseAndNotice( $requirements = [] ) {
+	private function throwFalseAndNotice( string|array $requirements = [] ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

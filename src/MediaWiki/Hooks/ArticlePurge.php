@@ -2,13 +2,14 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use WikiPage;
+use MediaWiki\Page\Hook\ArticlePurgeHook;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\EventDispatcher\EventDispatcher;
+use SMW\Settings;
+use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * A function hook being executed before running "&action=purge"
@@ -23,36 +24,37 @@ use WikiPage;
  *
  * @author mwjames
  */
-class ArticlePurge implements HookListener {
-
-	use OptionsAwareTrait;
-	use EventDispatcherAwareTrait;
+class ArticlePurge implements ArticlePurgeHook {
 
 	const CACHE_NAMESPACE = 'smw:arc';
 
 	/**
-	 * @since 1.9
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( WikiPage &$wikiPage ) {
-		$applicationFactory = ApplicationFactory::getInstance();
+	public function __construct(
+		private readonly Store $store,
+		private readonly BagOStuff $cache,
+		private readonly Settings $settings,
+		private readonly EventDispatcher $eventDispatcher,
+	) {
+	}
 
+	/**
+	 * @since 7.0.0
+	 */
+	public function onArticlePurge( $wikiPage ) {
 		$title = $wikiPage->getTitle();
 		$articleID = $title->getArticleID();
 
-		$settings = $applicationFactory->getSettings();
-		$cache = $applicationFactory->getCache();
-
 		if ( $articleID > 0 ) {
-			$cache->save(
+			$this->cache->set(
 				smwfCacheKey( self::CACHE_NAMESPACE, $articleID ),
-				$settings->get( 'smwgAutoRefreshOnPurge' )
+				$this->settings->get( 'smwgAutoRefreshOnPurge' )
 			);
 		}
 
-		if ( $settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
-			$this->invalidateResultCache( $applicationFactory->getStore(), $title );
+		if ( $this->settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
+			$this->invalidateResultCache( $title );
 		}
 
 		$context = [
@@ -65,10 +67,10 @@ class ArticlePurge implements HookListener {
 		return true;
 	}
 
-	private function invalidateResultCache( $store, $title ) {
-		$dependency_list = $store->getPropertyValues(
-			DIWikiPage::newFromTitle( $title ),
-			new DIProperty( '_ASK' )
+	private function invalidateResultCache( Title $title ): void {
+		$dependency_list = $this->store->getPropertyValues(
+			WikiPage::newFromTitle( $title ),
+			new Property( '_ASK' )
 		);
 
 		$context = [

@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use SMW\Utils\HtmlTabs;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,24 +15,12 @@ use WebRequest;
 class AlertsTaskHandler extends TaskHandler {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var TaskHandler[]
-	 */
-	private $taskHandlers = [];
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param TaskHandler[] $taskHandlers
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $taskHandlers = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->taskHandlers = $taskHandlers;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly array $taskHandlers = [],
+	) {
 	}
 
 	/**
@@ -40,7 +28,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_ALERTS;
 	}
 
@@ -49,7 +37,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
+	public function hasAction(): bool {
 		return false;
 	}
 
@@ -58,7 +46,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $action ) {
+	public function isTaskFor( $action ): bool {
 		return false;
 	}
 
@@ -67,7 +55,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '';
 		$tabs = [];
 
@@ -126,7 +114,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 	}
 
 }

@@ -36,9 +36,9 @@
 			"assert-output": {
 				"to-contain": [
 					"<a href=\".*/P0917/1\" title=\"P0917/1\">P0917/1</a>",
-					"<td class=\"P0917 smwtype_boo\" data-sort-value=\"1\"><span style=\"font-family: sans-serif;\">X</span></td>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=\".*/P0917/2\" title=\"P0917/2\">P0917/2</a></td>",
-					"<td class=\"P0917 smwtype_boo\" data-sort-value=\"0\">&#160;</td>"
+					"<td class=\"P0917 smwtype&#95;boo\" data-sort-value=\"1\"><span style=\"font-family: sans-serif;\">X</span></td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\"><a href=\".*/P0917/2\" title=\"P0917/2\">P0917/2</a></td>",
+					"<td class=\"P0917 smwtype&#95;boo\" data-sort-value=\"0\">&#160;</td>"
 				]
 			}
 		},
@@ -48,10 +48,10 @@
 			"subject": "P0917/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\"><a href=\".*/P0917/1\" title=\"P0917/1\">P0917/1</a></td>",
-					"<td class=\"Category smwtype_wpg\"><a href=\".*/Category:P0917\" title=\"Category:P0917\">P0917</a>",
-					"<td class=\"smwtype_wpg\"><a href=\".*/P0917/2\" title=\"P0917/2\">P0917/2</a></td>",
-					"<td class=\"Category smwtype_wpg\"></td></tr>"
+					"<td class=\"smwtype&#95;wpg\"><a href=\".*/P0917/1\" title=\"P0917/1\">P0917/1</a></td>",
+					"<td class=\"Category smwtype&#95;wpg\"><a href=\".*/Category:P0917\" title=\"Category:P0917\">P0917</a>",
+					"<td class=\"smwtype&#95;wpg\"><a href=\".*/P0917/2\" title=\"P0917/2\">P0917/2</a></td>",
+					"<td class=\"Category smwtype&#95;wpg\"></td></tr>"
 				]
 			}
 		}

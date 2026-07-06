@@ -2,11 +2,13 @@
 
 namespace SMW\Utils;
 
-use Html;
-use SMW\Highlighter;
+use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Title\Title;
+use MediaWiki\Xml\Xml;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,6 +25,13 @@ class Pager {
 
 	/**
 	 * @since 2.4
+	 *
+	 * @param Title $title Title object to link
+	 * @param int $limit
+	 * @param int $offset
+	 * @param int $count
+	 * @param array $query Optional URL query parameter string
+	 * @param string $prefix
 	 */
 	public static function pagination( Title $title, $limit, $offset = 0, $count = 0, array $query = [], $prefix = '' ) {
 		return Html::rawElement(
@@ -40,11 +49,12 @@ class Pager {
 	 * @param Title $title
 	 * @param int $limit
 	 * @param int $offset
+	 * @param string $filter
 	 *
 	 * @return string
 	 */
 	public static function filter( Title $title, $limit = 0, $offset = 0, $filter = '' ) {
-		$form = \Xml::tags(
+		$form = Xml::tags(
 			'form',
 			[
 				'id'     => 'search',
@@ -117,14 +127,13 @@ class Pager {
 	 *
 	 * @return string
 	 */
-	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ) {
+	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ): string {
 		$list = [];
 		$limit = (int)$limit;
 		$offset = (int)$offset;
 		$count = (int)$count;
 
 		$atend = $count < $limit;
-		$disabled = $count > 0 ? '' : ' disabled';
 
 		if ( self::$language === '' ) {
 			$language = Localizer::getInstance()->getUserLanguage();
@@ -140,18 +149,18 @@ class Pager {
 		$prev = wfMessage( 'smw-prev' )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
 
 		if ( $offset > 0 ) {
-			$plink = self::numLink( $title, max( $offset - $limit, 0 ), $limit, $query, $prev, 'prevn-title', 'mw-prevlink', $disabled, $language );
+			$plink = self::numLink( $title, max( $offset - $limit, 0 ), $limit, $query, $prev, 'prevn-title', $language );
 		} else {
-			$plink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $prev ) );
+			$plink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], $prev );
 		}
 
 		# Make 'next' link
 		$next = wfMessage( 'smw-next' )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
 
 		if ( $atend ) {
-			$nlink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $next ) );
+			$nlink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], $next );
 		} else {
-			$nlink = self::numLink( $title, $offset + $limit, $limit, $query, $next, 'nextn-title', 'mw-nextlink', $disabled, $language );
+			$nlink = self::numLink( $title, $offset + $limit, $limit, $query, $next, 'nextn-title', $language );
 		}
 
 		# Make links to set number of items per page
@@ -164,8 +173,6 @@ class Pager {
 				$query,
 				$language->formatNum( $num ),
 				'shown-title',
-				'mw-numlink',
-				$disabled,
 				$language,
 				$num === $limit
 			);
@@ -183,11 +190,12 @@ class Pager {
 	 * @param array $query Extra query parameters
 	 * @param string $link Text to use for the link; will be escaped
 	 * @param string $tooltipMsg Name of the message to use as tooltip
-	 * @param string $class Value of the "class" attribute of the link
+	 * @param Language $language
+	 * @param bool $active
 	 *
 	 * @return string HTML fragment
 	 */
-	private static function numLink( Title $title, $offset, $limit, array $query, $link, $tooltipMsg, $class, $disabled, $language, $active = false ) {
+	private static function numLink( Title $title, int $offset, int $limit, array $query, $link, string $tooltipMsg, $language, bool $active = false ) {
 		$query = [ 'limit' => $limit, 'offset' => $offset ] + $query;
 
 		$tooltip = wfMessage( $tooltipMsg )->inLanguage( $language )->title( $title )->numParams( $limit )->text();

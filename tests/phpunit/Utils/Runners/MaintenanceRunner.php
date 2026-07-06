@@ -3,9 +3,10 @@
 namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
+use Maintenance;
+use MediaWiki\HookContainer\HookContainer;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RuntimeException;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -24,22 +25,26 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class MaintenanceRunner {
 
 	use MessageReporterAwareTrait;
-	use HookDispatcherAwareTrait;
 
-	protected $maintenanceClass = null;
-	protected $options = [];
+	private ?HookContainer $hookContainer = null;
+
 	protected $output = null;
 	protected $quiet = false;
 
 	/**
-	 * @since 1.9.2
-	 *
-	 * @param string $maintenanceClass
-	 * @param array $options
+	 * @since 7.0.0
 	 */
-	public function __construct( $maintenanceClass, $options = [] ) {
-		$this->maintenanceClass = $maintenanceClass;
-		$this->options = $options;
+	public function setHookContainer( HookContainer $hookContainer ): void {
+		$this->hookContainer = $hookContainer;
+	}
+
+	/**
+	 * @since 1.9.2
+	 */
+	public function __construct(
+		protected $maintenanceClass,
+		protected $options = [],
+	) {
 	}
 
 	/**
@@ -82,7 +87,7 @@ class MaintenanceRunner {
 		ApplicationFactory::getInstance()->clear();
 		$maintenance = new $this->maintenanceClass;
 
-		if ( !( $maintenance instanceof \Maintenance ) ) {
+		if ( !( $maintenance instanceof Maintenance ) ) {
 			throw new DomainException( "Expected a Maintenance instance" );
 		}
 
@@ -100,8 +105,8 @@ class MaintenanceRunner {
 			$maintenance->setMessageReporter( $this->messageReporter );
 		}
 
-		if ( $this->hookDispatcher !== null && method_exists( $maintenance, 'setHookDispatcher' ) ) {
-			$maintenance->setHookDispatcher( $this->hookDispatcher );
+		if ( $this->hookContainer !== null && method_exists( $maintenance, 'setHookContainer' ) ) {
+			$maintenance->setHookContainer( $this->hookContainer );
 		}
 
 		ob_start();

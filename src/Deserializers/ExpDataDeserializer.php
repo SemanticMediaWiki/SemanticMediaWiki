@@ -4,8 +4,8 @@ namespace SMW\Deserializers;
 
 use Deserializers\Deserializer;
 use OutOfBoundsException;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpElement;
-use SMWExpData as ExpData;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,10 +20,9 @@ class ExpDataDeserializer implements Deserializer {
 	 *
 	 * @since 2.2
 	 *
-	 * @return ExpData
 	 * @throws OutOfBoundsException
 	 */
-	public function deserialize( $serialization ) {
+	public function deserialize( $serialization ): ?ExpData {
 		$expData = null;
 
 		if ( isset( $serialization['version'] ) && $serialization['version'] !== 0.1 ) {
@@ -43,17 +42,19 @@ class ExpDataDeserializer implements Deserializer {
 		return $expData;
 	}
 
-	private function newExpData( $subject ) {
+	private function newExpData( array $subject ): ExpData {
+		// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 		return new ExpData( ExpElement::newFromSerialization( $subject ) );
 	}
 
-	private function doDeserialize( $serialization, $expData ) {
+	private function doDeserialize( array $serialization, ExpData $expData ): void {
 		foreach ( $serialization['data'] as $data ) {
 
 			$property = ExpElement::newFromSerialization( $data['property'] );
 
 			foreach ( $data['children'] as $child ) {
 				$expData->addPropertyObjectValue(
+					// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
 					$property,
 					$this->doDeserializeChild( $child )
 				);
@@ -61,7 +62,7 @@ class ExpDataDeserializer implements Deserializer {
 		}
 	}
 
-	private function doDeserializeChild( $serialization ) {
+	private function doDeserializeChild( array $serialization ) {
 		if ( !isset( $serialization['subject'] ) ) {
 			return ExpElement::newFromSerialization( $serialization );
 		}

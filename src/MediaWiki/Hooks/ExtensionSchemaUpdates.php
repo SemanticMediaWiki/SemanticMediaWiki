@@ -2,14 +2,14 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use DatabaseUpdater;
-use Maintenance;
+use MediaWiki\Installer\DatabaseUpdater;
+use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporterFactory;
 use ReflectionProperty;
-use SMW\MediaWiki\HookListener;
 use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Installer;
-use SMW\Store;
 
 /**
  * Schema update to set up the needed database tables
@@ -21,28 +21,16 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class ExtensionSchemaUpdates implements HookListener {
+class ExtensionSchemaUpdates implements LoadExtensionSchemaUpdatesHook {
 
-	/**
-	 * @var DatabaseUpdater
-	 */
-	protected $updater = null;
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param DatabaseUpdater|null $updater = null
-	 */
-	public function __construct( ?DatabaseUpdater $updater = null ) {
-		$this->updater = $updater;
-	}
+	private ?DatabaseUpdater $updater = null;
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param array &$params
 	 */
-	public static function addMaintenanceUpdateParams( &$params ) {
+	public static function addMaintenanceUpdateParams( array &$params ): void {
 		// For details, see https://github.com/wikimedia/mediawiki/commit/a6facc8a0a4f9b54e0cfb1e5ef6f3991de752342
 		$params['skip-optimize'] = [
 			'desc' => 'SMW, allow to skip the table optimization during the Store setup'
@@ -50,13 +38,11 @@ class ExtensionSchemaUpdates implements HookListener {
 	}
 
 	/**
-	 * @since 2.0
-	 *
-	 * @param Store $store
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( Store $store ) {
+	public function onLoadExtensionSchemaUpdates( $updater ) {
+		$this->updater = $updater;
+
 		$verbose = true;
 
 		$options = new Options(
@@ -81,6 +67,14 @@ class ExtensionSchemaUpdates implements HookListener {
 		// cause problems, since the connection is not restored on wakeup." given
 		// that the `DatabaseUpdater` prior MW 1.31 has issues with serializing
 		// the options array.
+		//
+		// `Store` is resolved lazily rather than through the declarative
+		// `services:` array. Both paths would resolve the same
+		// `MediaWikiServices` singleton, so the choice does not change which
+		// instance is mutated by `setMessageReporter` below; we keep the
+		// lazy lookup so this installer-only path stays self-contained and
+		// does not pull `SMW.Store` into the HookHandler service graph.
+		$store = ApplicationFactory::getInstance()->getStore();
 		$store->setMessageReporter( $messageReporter );
 
 		if ( defined( 'MW_UPDATER' ) ) {
@@ -109,7 +103,7 @@ class ExtensionSchemaUpdates implements HookListener {
 		return true;
 	}
 
-	private function hasMaintenanceArg( $key ) {
+	private function hasMaintenanceArg( string $key ): bool {
 		$maintenance = null;
 
 		// We don't have access to the `update.php` internals due to lack
@@ -118,13 +112,11 @@ class ExtensionSchemaUpdates implements HookListener {
 		// Check required due to missing property in MW 1.29-
 		if ( property_exists( $this->updater, 'maintenance' ) ) {
 			$reflectionProperty = new ReflectionProperty( $this->updater, 'maintenance' );
-			$reflectionProperty->setAccessible( true );
 			$maintenance = $reflectionProperty->getValue( $this->updater );
 		}
 
 		if ( $maintenance instanceof Maintenance ) {
 			$reflectionProperty = new ReflectionProperty( $maintenance, 'mOptions' );
-			$reflectionProperty->setAccessible( true );
 			$options = $reflectionProperty->getValue( $maintenance );
 			return isset( $options[$key] );
 		}

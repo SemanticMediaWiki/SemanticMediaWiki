@@ -2,14 +2,19 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\DIWikiPage;
-use SMW\MediaWiki\HookListener;
+use MediaWiki\Page\Hook\ArticleDeleteHook;
+use MediaWiki\Status\Status;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use SMW\DataItems\WikiPage as DIWikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\EventDispatcher\EventDispatcher;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
-use SMW\SemanticData;
+use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use Title;
+use WikiPage;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
@@ -19,27 +24,20 @@ use Title;
  *
  * @author mwjames
  */
-class ArticleDelete implements HookListener {
+class ArticleDelete implements ArticleDeleteHook {
 
-	use EventDispatcherAwareTrait;
-
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private string $origin = 'ArticleDelete';
 
 	/**
-	 * @var string
+	 * @since 7.0.0
 	 */
-	private $origin = 'ArticleDelete';
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param Store $store
-	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly Store $store,
+		private readonly JobFactory $jobFactory,
+		private readonly EventDispatcher $eventDispatcher,
+		private readonly SerializerFactory $serializerFactory,
+		private readonly ApplicationFactory $servicesFactory,
+	) {
 	}
 
 	/**
@@ -47,26 +45,31 @@ class ArticleDelete implements HookListener {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( string $origin ) {
+	public function setOrigin( string $origin ): void {
 		$this->origin = $origin;
 	}
 
 	/**
-	 * @since 2.0
-	 *
-	 * @param Title $title
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( Title $title ) {
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function () use( $title ) {
+	public function onArticleDelete( WikiPage $wikiPage, User $user, &$reason, &$error, Status &$status, $suppress ) {
+		$this->scheduleDeleteFor( $wikiPage->getTitle() );
+
+		return true;
+	}
+
+	/**
+	 * Schedule the SMW-side cleanup for a deleted (or about-to-be-deleted) page.
+	 *
+	 * @since 7.0.0
+	 */
+	public function scheduleDeleteFor( Title $title ): void {
+		$deferredCallableUpdate = $this->servicesFactory->newDeferredCallableUpdate( function () use( $title ): void {
 			$this->doDelete( $title );
 		} );
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
 		$deferredCallableUpdate->pushUpdate();
-
-		return true;
 	}
 
 	/**
@@ -74,12 +77,10 @@ class ArticleDelete implements HookListener {
 	 *
 	 * @param Title $title
 	 */
-	public function doDelete( Title $title ) {
-		$applicationFactory = ApplicationFactory::getInstance();
+	public function doDelete( Title $title ): void {
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
-		$jobFactory = $applicationFactory->newJobFactory();
+		$semanticDataSerializer = $this->serializerFactory->newSemanticDataSerializer();
 
 		// Instead of Store::getSemanticData, construct the SemanticData by
 		// attaching only the incoming properties indicating which entities
@@ -99,6 +100,7 @@ class ArticleDelete implements HookListener {
 			$semanticData->addPropertyObjectValue( $property, $subject );
 		}
 
+		$parameters = [];
 		$parameters['semanticData'] = $semanticDataSerializer->serialize(
 			$semanticData
 		);
@@ -114,7 +116,7 @@ class ArticleDelete implements HookListener {
 		// Restricted to the available SemanticData
 		$parameters[UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL] = true;
 
-		$updateDispatcherJob = $jobFactory->newUpdateDispatcherJob( $title, $parameters );
+		$updateDispatcherJob = $this->jobFactory->newUpdateDispatcherJob( $title, $parameters );
 		$updateDispatcherJob->insert();
 
 		$this->store->deleteSubject( $title );

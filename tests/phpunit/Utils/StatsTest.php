@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Stats;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @covers \SMW\Utils\Stats
@@ -13,12 +15,12 @@ use SMW\Utils\Stats;
  *
  * @author mwjames
  */
-class StatsTest extends \PHPUnit\Framework\TestCase {
+class StatsTest extends TestCase {
 
 	private $cache;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,11 +38,11 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->anything(),
 				[ 'Foo.bar' => 11 ] );
@@ -56,7 +58,7 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSet() {
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->anything(),
 				[ 'Foo.bar' => 10 ] );
@@ -76,11 +78,11 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$this->cache->expects( $this->once() )
-			->method( 'save' )
+			->method( 'set' )
 			->with(
 				$this->anything(),
 				[ 'Foo.bar' => 7.5 ] );
@@ -106,7 +108,7 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$instance = new Stats(
@@ -132,7 +134,7 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$instance = new Stats(
@@ -159,7 +161,7 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
+			->method( 'get' )
 			->willReturn( $container );
 
 		$instance = new Stats(

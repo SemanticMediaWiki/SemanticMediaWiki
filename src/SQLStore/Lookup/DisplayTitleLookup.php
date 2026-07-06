@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -17,27 +17,19 @@ class DisplayTitleLookup {
 	private const MAX_ITEMS_PER_QUERY = 2000;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param Iterator|array $dataItems
+	 * @param array $dataItems
 	 *
-	 * @return Iterator|array
+	 * @return array
 	 */
-	public function prefetchFromList( array $dataItems ) {
+	public function prefetchFromList( array $dataItems ): array {
 		$list = [];
 		$prefetch = [];
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -55,19 +47,19 @@ class DisplayTitleLookup {
 			// - $dataItems[] expects to be of the format [ sha1 => DataItem ]
 			// - Adding smw_title, smw_namespace to ensure a `Using index condition`
 			//   during the select
-			$rows = $connection->select(
-				SQLStore::ID_TABLE,
-				[
+			$rows = $connection->newSelectQueryBuilder()
+				->select( [
 					'smw_id',
 					'smw_title',
 					'smw_namespace',
 					'smw_hash'
-				],
-				[
+				] )
+				->from( SQLStore::ID_TABLE )
+				->where( [
 					'smw_hash' => array_keys( $chunk )
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 
 			foreach ( $rows as $row ) {
 				$hashes[$row->smw_hash] = $row->smw_id;
@@ -105,8 +97,8 @@ class DisplayTitleLookup {
 		return $prefetch;
 	}
 
-	private function fetchFromTable( $list ) {
-		$property = new DIProperty( '_DTITLE' );
+	private function fetchFromTable( array $list ) {
+		$property = new Property( '_DTITLE' );
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$propTableId = $this->store->findPropertyTableID(
@@ -121,18 +113,18 @@ class DisplayTitleLookup {
 
 		$propTable = $propTables[$propTableId];
 
-		$rows = $connection->select(
-			$connection->tablename( $propTable->getName() ),
-			[
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [
 				's_id',
 				'o_hash',
 				'o_blob'
-			],
-			[
+			] )
+			->from( $propTable->getName() )
+			->where( [
 				's_id' => array_keys( $list )
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $rows;
 	}

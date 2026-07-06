@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintCheckRunner;
@@ -31,15 +32,13 @@ class ConstraintFactory {
 	 *
 	 * @return ConstraintRegistry
 	 */
-	public function newConstraintRegistry() {
-		$applicationFactory = ApplicationFactory::getInstance();
-
+	public function newConstraintRegistry(): ConstraintRegistry {
 		$constraintRegistry = new ConstraintRegistry(
 			$this
 		);
 
-		$constraintRegistry->setHookDispatcher(
-			$applicationFactory->getHookDispatcher()
+		$constraintRegistry->setHookContainer(
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		return $constraintRegistry;
@@ -50,7 +49,7 @@ class ConstraintFactory {
 	 *
 	 * @return ConstraintCheckRunner
 	 */
-	public function newConstraintCheckRunner() {
+	public function newConstraintCheckRunner(): ConstraintCheckRunner {
 		return new ConstraintCheckRunner( $this->newConstraintRegistry() );
 	}
 
@@ -62,7 +61,7 @@ class ConstraintFactory {
 	 * @return Constraint
 	 * @throws RuntimeException
 	 */
-	public function newConstraintByClass( $class ) {
+	public function newConstraintByClass( $class ): Constraint {
 		if ( !class_exists( $class ) ) {
 			throw new ClassNotFoundException( $class );
 		}
@@ -109,7 +108,7 @@ class ConstraintFactory {
 	 *
 	 * @return NamespaceConstraint
 	 */
-	public function newNamespaceConstraint() {
+	public function newNamespaceConstraint(): NamespaceConstraint {
 		return new NamespaceConstraint();
 	}
 
@@ -118,7 +117,7 @@ class ConstraintFactory {
 	 *
 	 * @return MandatoryPropertiesConstraint
 	 */
-	public function newMandatoryPropertiesConstraint() {
+	public function newMandatoryPropertiesConstraint(): MandatoryPropertiesConstraint {
 		return new MandatoryPropertiesConstraint();
 	}
 
@@ -127,7 +126,7 @@ class ConstraintFactory {
 	 *
 	 * @return ShapeConstraint
 	 */
-	public function newShapeConstraint() {
+	public function newShapeConstraint(): ShapeConstraint {
 		return new ShapeConstraint();
 	}
 
@@ -136,7 +135,7 @@ class ConstraintFactory {
 	 *
 	 * @return UniqueValueConstraint
 	 */
-	public function newUniqueValueConstraint() {
+	public function newUniqueValueConstraint(): UniqueValueConstraint {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$uniqueValueConstraint = new UniqueValueConstraint(
@@ -152,7 +151,7 @@ class ConstraintFactory {
 	 *
 	 * @return NonNegativeIntegerConstraint
 	 */
-	public function newNonNegativeIntegerConstraint() {
+	public function newNonNegativeIntegerConstraint(): NonNegativeIntegerConstraint {
 		return new NonNegativeIntegerConstraint();
 	}
 
@@ -161,7 +160,7 @@ class ConstraintFactory {
 	 *
 	 * @return MustExistsConstraint
 	 */
-	public function newMustExistsConstraint() {
+	public function newMustExistsConstraint(): MustExistsConstraint {
 		return new MustExistsConstraint();
 	}
 
@@ -170,7 +169,7 @@ class ConstraintFactory {
 	 *
 	 * @return SingleValueConstraint
 	 */
-	public function newSingleValueConstraint() {
+	public function newSingleValueConstraint(): SingleValueConstraint {
 		return new SingleValueConstraint();
 	}
 
@@ -179,7 +178,7 @@ class ConstraintFactory {
 	 *
 	 * @return NullConstraint
 	 */
-	public function newNullConstraint() {
+	public function newNullConstraint(): NullConstraint {
 		return new NullConstraint();
 	}
 
@@ -190,7 +189,7 @@ class ConstraintFactory {
 	 *
 	 * @return ConstraintSchemaCompiler
 	 */
-	public function newConstraintSchemaCompiler( Store $store ) {
+	public function newConstraintSchemaCompiler( Store $store ): ConstraintSchemaCompiler {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
 

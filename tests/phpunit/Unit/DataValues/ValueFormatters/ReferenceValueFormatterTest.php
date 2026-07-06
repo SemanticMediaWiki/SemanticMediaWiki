@@ -1,0 +1,260 @@
+<?php
+
+namespace SMW\Tests\Unit\DataValues\ValueFormatters;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItemFactory;
+use SMW\DataValues\ReferenceValue;
+use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\DataValues\ValueFormatters\ReferenceValueFormatter
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class ReferenceValueFormatterTest extends TestCase {
+
+	private $testEnvironment;
+	private $dataItemFactory;
+	private $stringValidator;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->dataItemFactory = new DataItemFactory();
+
+		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			ReferenceValueFormatter::class,
+			new ReferenceValueFormatter()
+		);
+	}
+
+	public function testIsFormatterForValidation() {
+		$referenceValue = $this->getMockBuilder( ReferenceValue::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ReferenceValueFormatter();
+
+		$this->assertTrue(
+			$instance->isFormatterFor( $referenceValue )
+		);
+	}
+
+	public function testToUseCaptionOutput() {
+		$referenceValue = new ReferenceValue();
+		$referenceValue->setCaption( 'ABC' );
+
+		$instance = new ReferenceValueFormatter( $referenceValue );
+
+		$this->assertEquals(
+			'ABC',
+			$instance->format( ReferenceValueFormatter::WIKI_SHORT )
+		);
+
+		$this->assertEquals(
+			'ABC',
+			$instance->format( ReferenceValueFormatter::HTML_SHORT )
+		);
+	}
+
+	/**
+	 * @dataProvider stringValueProvider
+	 */
+	public function testFormat( $suserValue, $type, $linker, $expected ) {
+		$referenceValue = new ReferenceValue();
+
+		$referenceValue->setFieldProperties( [
+			$this->dataItemFactory->newDIProperty( 'Foo' ),
+			$this->dataItemFactory->newDIProperty( 'Date' ),
+			$this->dataItemFactory->newDIProperty( 'URL' )
+		] );
+
+		$referenceValue->setOption( ReferenceValue::OPT_CONTENT_LANGUAGE, 'en' );
+		$referenceValue->setOption( ReferenceValue::OPT_USER_LANGUAGE, 'en' );
+
+		$referenceValue->setUserValue( $suserValue );
+
+		$instance = new ReferenceValueFormatter( $referenceValue );
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$instance->format( $type, $linker )
+		);
+	}
+
+	public function testTooltipShortFormatRecordsUserLanguageOutput() {
+		$referenceValue = new ReferenceValue();
+
+		$referenceValue->setFieldProperties( [
+			$this->dataItemFactory->newDIProperty( 'Foo' ),
+			$this->dataItemFactory->newDIProperty( 'Date' ),
+			$this->dataItemFactory->newDIProperty( 'URL' )
+		] );
+
+		$referenceValue->setOption( ReferenceValue::OPT_CONTENT_LANGUAGE, 'en' );
+		$referenceValue->setOption( ReferenceValue::OPT_USER_LANGUAGE, 'en' );
+
+		$referenceValue->setUserValue( 'abc' );
+
+		$instance = new ReferenceValueFormatter( $referenceValue );
+
+		// The short format with a linker renders a tooltip whose title attribute
+		// is in the viewer's interface language.
+		$instance->format( ReferenceValueFormatter::WIKI_SHORT, false );
+
+		$this->assertTrue(
+			$referenceValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testValueOutputDoesNotRecordUserLanguageOutput() {
+		$referenceValue = new ReferenceValue();
+
+		$referenceValue->setFieldProperties( [
+			$this->dataItemFactory->newDIProperty( 'Foo' ),
+			$this->dataItemFactory->newDIProperty( 'Date' ),
+			$this->dataItemFactory->newDIProperty( 'URL' )
+		] );
+
+		$referenceValue->setOption( ReferenceValue::OPT_CONTENT_LANGUAGE, 'en' );
+		$referenceValue->setOption( ReferenceValue::OPT_USER_LANGUAGE, 'en' );
+
+		$referenceValue->setUserValue( 'abc;12;3' );
+
+		$instance = new ReferenceValueFormatter( $referenceValue );
+
+		// The plain value output carries no tooltip, so the rendered output is
+		// cache-stable across languages.
+		$instance->format( ReferenceValueFormatter::VALUE, null );
+
+		$this->assertFalse(
+			$referenceValue->hasUserLanguageOutput()
+		);
+	}
+
+	public function testTryToFormatOnMissingDataValueThrowsException() {
+		$instance = new ReferenceValueFormatter();
+
+		$this->expectException( 'RuntimeException' );
+		$instance->format( ReferenceValueFormatter::VALUE );
+	}
+
+	public function stringValueProvider() {
+		$provider[] = [
+			'abc;12;3',
+			ReferenceValueFormatter::VALUE,
+			null,
+			'Abc'
+		];
+
+		$provider[] = [
+			'abc;12;3',
+			ReferenceValueFormatter::VALUE,
+			false,
+			'Abc;12;3'
+		];
+
+		$provider[] = [
+			'abc',
+			ReferenceValueFormatter::WIKI_SHORT,
+			null,
+			'Abc'
+		];
+
+		$provider[] = [
+			'abc',
+			ReferenceValueFormatter::WIKI_SHORT,
+			false,
+			[
+				'Abc',
+				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
+				'data-title="Reference"',
+				'title="Date: ?, URL: ?"'
+			]
+		];
+
+		$provider[] = [
+			'abc',
+			ReferenceValueFormatter::HTML_SHORT,
+			null,
+			'Abc'
+		];
+
+		$provider[] = [
+			'abc',
+			ReferenceValueFormatter::HTML_SHORT,
+			false,
+			[
+				'Abc',
+				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
+				'data-title="Reference"',
+				'title="Date: ?, URL: ?"'
+			]
+		];
+
+		$provider[] = [
+			'abc',
+			ReferenceValueFormatter::WIKI_LONG,
+			null,
+			'Abc'
+		];
+
+		$provider[] = [
+			'abc',
+			ReferenceValueFormatter::WIKI_LONG,
+			false,
+			[
+				'Abc',
+				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
+				'data-title="Reference"',
+				'title="Date: ?, URL: ?"'
+			]
+		];
+
+		$provider[] = [
+			'abc',
+			ReferenceValueFormatter::HTML_LONG,
+			null,
+			'Abc'
+		];
+
+		$provider[] = [
+			'abc',
+			ReferenceValueFormatter::HTML_LONG,
+			false,
+			[
+				'Abc',
+				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
+				'data-title="Reference"',
+				'title="Date: ?, URL: ?"'
+			]
+		];
+
+		// Notice: Undefined variable: dataValue in
+		$provider[] = [
+			'?;12;3',
+			ReferenceValueFormatter::VALUE,
+			null,
+			''
+		];
+
+		return $provider;
+	}
+
+}

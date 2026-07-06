@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\Services\ServicesFactory;
 use SMW\SQLStore\SQLStore;
@@ -15,7 +16,7 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
  *
  * @author mwjames
  */
-class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit\Framework\TestCase {
+class ConfigPreloadTableListPrimaryKeysCompleteTest extends TestCase {
 
 	const FILENAME = 'db-primary-keys.php';
 

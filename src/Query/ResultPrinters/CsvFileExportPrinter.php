@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use Sanitizer;
+use MediaWiki\Parser\Sanitizer;
 use SMW\Query\QueryResult;
 use SMW\Utils\Csv;
 
@@ -34,7 +34,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return 'text/csv';
 	}
 
@@ -45,7 +45,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		return $this->params['filename'];
 	}
 
@@ -56,7 +56,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$definitions['searchlabel']->setDefault(
@@ -134,7 +134,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function getCsv( Csv $csv, $res ) {
+	private function getCsv( Csv $csv, QueryResult $res ): string|false {
 		$sep = str_replace( '_', ' ', $this->params['sep'] );
 		$vsep = str_replace( '_', ' ', $this->params['valuesep'] );
 
@@ -147,20 +147,24 @@ class CsvFileExportPrinter extends FileExportPrinter {
 			}
 		}
 
-		while ( $row = $res->getNext() ) {
+		$row = $res->getNext();
+		while ( $row ) {
 			$row_items = [];
 
 			foreach ( $row as /* ResultArray */ $field ) {
 				$growing = [];
 
-				while ( ( $object = $field->getNextDataValue() ) !== false ) {
+				$object = $field->getNextDataValue();
+				while ( $object !== false ) {
 					$growing[] = Sanitizer::decodeCharReferences( $object->getShortWikiText() );
+					$object = $field->getNextDataValue();
 				}
 
 				$row_items[] = implode( $vsep, $growing );
 			}
 
 			$rows[] = $row_items;
+			$row = $res->getNext();
 		}
 
 		if ( $this->params['merge'] === true ) {

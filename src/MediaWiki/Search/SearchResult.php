@@ -2,10 +2,11 @@
 
 namespace SMW\MediaWiki\Search;
 
+use File;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use Title;
 
 /**
  * @ingroup SMW
@@ -18,35 +19,51 @@ use Title;
 class SearchResult extends \SearchResult {
 
 	/**
+	 * @var string|null
+	 */
+	protected $mText;
+
+	/**
 	 * @var bool
 	 */
 	private $hasHighlight = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title|null $title
 	 */
-	public function __construct( $title ) {
-		$this->initFromTitle( $title );
+	public function __construct( protected $mTitle ) {
+	}
+
+	/**
+	 * @return Title|null
+	 */
+	public function getTitle() {
+		return $this->mTitle;
+	}
+
+	/**
+	 * @return File|null
+	 */
+	public function getFile(): ?File {
+		return null;
 	}
 
 	/**
 	 * @see SearchResult::getTextSnippet
 	 */
-	function getTextSnippet( $terms = [] ) {
+	public function getTextSnippet( $terms = [] ): string {
 		if ( $this->hasHighlight ) {
 			return str_replace( [ '<em>', '</em>' ], [ "<span class='searchmatch'>", '</span>' ], $this->mText );
 		}
 
-		return parent::getTextSnippet( $terms );
+		return $this->mText ?? '';
 	}
 
 	/**
 	 * @see SearchResult::getSectionTitle
 	 */
-	function getSectionTitle() {
-		if ( !isset( $this->mTitle ) || $this->mTitle->getFragment() === '' ) {
+	public function getSectionTitle() {
+		if ( $this->mTitle === null || $this->mTitle->getFragment() === '' ) {
 			return null;
 		}
 
@@ -56,20 +73,20 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::isBrokenTitle
 	 */
-	function isBrokenTitle() {
+	public function isBrokenTitle(): bool {
 		return $this->mTitle === null;
 	}
 
 	/**
 	 * @see SearchResult::isMissingRevision
 	 */
-	function isMissingRevision() {
+	public function isMissingRevision(): bool {
 		if ( $this->mTitle == null ) {
 			return true;
 		}
 
 		if ( $this->mTitle->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $this->mTitle->getDBKey() );
+			$property = Property::newFromUserLabel( $this->mTitle->getDBKey() );
 
 			// Predefined properties do not necessarily have a page and hereby a
 			// a revision in MediaWiki, anyway the page exists so allow it
@@ -88,7 +105,7 @@ class SearchResult extends \SearchResult {
 	 * @param string|null $text
 	 * @param bool $hasHighlight
 	 */
-	public function setExcerpt( $text = null, $hasHighlight = false ) {
+	public function setExcerpt( $text = null, $hasHighlight = false ): void {
 		$this->mText = $text;
 		$this->hasHighlight = $hasHighlight;
 	}
@@ -104,16 +121,86 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getTitleSnippet
 	 */
 	public function getTitleSnippet() {
-		if ( !isset( $this->mTitle ) ) {
+		if ( $this->mTitle === null ) {
 			return '';
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-			DIWikiPage::newFromTitle( $this->mTitle )
+			WikiPage::newFromTitle( $this->mTitle )
 		);
 
 		// Will return the DISPLAYTITLE, if available
 		return $dataValue->getPreferredCaption();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRedirectSnippet(): string {
+		return '';
+	}
+
+	/**
+	 * @return Title|null
+	 */
+	public function getRedirectTitle(): ?Title {
+		return null;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSectionSnippet(): string {
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCategorySnippet(): string {
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTimestamp(): string {
+		return '';
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getWordCount(): int {
+		return 0;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getByteSize(): int {
+		return 0;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getInterwikiPrefix(): string {
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getInterwikiNamespaceText(): string {
+		return '';
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isFileMatch(): bool {
+		return false;
 	}
 
 }

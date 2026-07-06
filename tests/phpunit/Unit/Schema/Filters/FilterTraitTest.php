@@ -1,0 +1,82 @@
+<?php
+
+namespace SMW\Tests\Unit\Schema\Filters;
+
+use PHPUnit\Framework\TestCase;
+use SMW\Schema\Compartment;
+use SMW\Schema\Filters\FilterTrait;
+
+/**
+ * @covers \SMW\Schema\Filters\FilterTrait
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.2
+ *
+ * @author mwjames
+ */
+class FilterTraitTest extends TestCase {
+
+	public function testHasMatches() {
+		$instance = $this->newFilterTrait();
+
+		$this->assertIsBool(
+
+			$instance->hasMatches()
+		);
+	}
+
+	public function testGetMatches() {
+		$instance = $this->newFilterTrait();
+
+		$this->assertIsArray(
+
+			$instance->getMatches()
+		);
+	}
+
+	public function testGetLog() {
+		$instance = $this->newFilterTrait();
+
+		$this->assertIsArray(
+
+			$instance->getLog()
+		);
+	}
+
+	public function testSetNodeFilter() {
+		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFilter = $this->getMockBuilder( '\SMW\Schema\SchemaFilter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFilter->expects( $this->once() )
+			->method( 'filter' );
+
+		$instance = $this->newFilterTrait();
+
+		$instance->setNodeFilter(
+			$schemaFilter
+		);
+
+		$instance->filter( $compartment );
+	}
+
+	private function newFilterTrait() {
+		return new class() {
+
+			use FilterTrait;
+
+			public function getName() {
+				return 'Foo';
+			}
+
+			protected function match( Compartment $compartment ) {
+			}
+		};
+	}
+
+}

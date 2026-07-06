@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Page;
 
 use Article;
-use SMW\DIWikiPage;
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Outputs;
 use SMW\Options;
-use SMW\Services\ServicesFactory;
-use SMWOutputs as Outputs;
 
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of
@@ -24,43 +24,27 @@ abstract class Page extends Article {
 
 	/**
 	 * Limit for results per page.
-	 *
-	 * @var int
 	 */
-	protected $limit;
+	protected int $limit;
 
 	/**
 	 * Start string: print $limit results from here.
-	 *
-	 * @var string
 	 */
-	protected $from;
+	protected string $from;
 
 	/**
 	 * End string: print $limit results strictly before this article.
-	 *
-	 * @var string
 	 */
-	protected $until;
+	protected string $until;
 
-	/**
-	 * Cache for the current skin, obtained from $wgUser.
-	 *
-	 * @var Skin
-	 */
-	protected $skin;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
 	/**
 	 * Overwrite Article::view to add additional HTML to the output.
 	 *
 	 * @see Article::view
 	 */
-	public function view() {
+	public function view(): void {
 		$outputPage = $this->getContext()->getOutput();
 		$outputPage->addModuleStyles( [
 			'ext.smw.styles',
@@ -69,11 +53,12 @@ abstract class Page extends Article {
 
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			$outputPage->setPageTitle( $this->getTitle()->getPrefixedText() );
-			$outputPage->addHTML( wfMessage( 'smw-semantics-not-enabled' )->text() );
+			$outputPage->addHTML( wfMessage( 'smw-semantics-not-enabled' )->escaped() );
 			return;
 		}
 
-		if ( ( $redirectTargetURL = $this->getRedirectTargetURL() ) !== false ) {
+		$redirectTargetURL = $this->getRedirectTargetURL();
+		if ( $redirectTargetURL !== false ) {
 			$outputPage->redirect( $redirectTargetURL );
 		}
 
@@ -84,19 +69,19 @@ abstract class Page extends Article {
 		$request = $this->getContext()->getRequest();
 
 		$diff = $request->getVal( 'diff' );
-		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$diffOnly = $request->getBool( 'diffonly', $userOptionsLookup->getOption( $user, 'diffonly' ) );
 
-		if ( !isset( $diff ) || !$diffOnly ) {
+		if ( $diff === null || !$diffOnly ) {
 			$outputPage->addHTML( $this->initHtml() );
 			$outputPage->addHTML( $this->beforeView() );
 		}
 
-		if ( $this->isLockedView() === false ) {
+		if ( !$this->isLockedView() ) {
 			parent::view();
 		}
 
-		if ( !isset( $diff ) || !$diffOnly ) {
+		if ( $diff === null || !$diffOnly ) {
 			$this->showList();
 		}
 
@@ -105,12 +90,8 @@ abstract class Page extends Article {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $key
-	 *
-	 * @return mixed
 	 */
-	public function getOption( $key ) {
+	public function getOption( string $key ): mixed {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -120,33 +101,26 @@ abstract class Page extends Article {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $key
-	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( string $key, mixed $value ): void {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
 
-		return $this->options->set( $key, $value );
+		$this->options->set( $key, $value );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string|bool
 	 */
-	protected function getRedirectTargetURL() {
+	protected function getRedirectTargetURL(): string|bool {
 		return false;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	protected function initHtml() {
+	protected function initHtml(): string {
 		return '';
 	}
 
@@ -155,14 +129,14 @@ abstract class Page extends Article {
 	 *
 	 * @return bool
 	 */
-	protected function isLockedView() {
+	protected function isLockedView(): bool {
 		return false;
 	}
 
 	/**
 	 * Main method for adding all additional HTML to the output stream.
 	 */
-	protected function showList() {
+	protected function showList(): void {
 		$outputPage = $this->getContext()->getOutput();
 		$request = $this->getContext()->getRequest();
 
@@ -179,35 +153,27 @@ abstract class Page extends Article {
 	 * (e.g. $limit). Method can be overwritten in this case.
 	 * If the method returns false, nothing will be printed besides
 	 * the original article.
-	 *
-	 * @return true
 	 */
-	protected function initParameters() {
+	protected function initParameters(): void {
 		$this->limit = 20;
 	}
 
 	/**
 	 * Returns HTML to be displayed before the article text.
-	 *
-	 * @return string
 	 */
-	protected function beforeView() {
+	protected function beforeView(): string {
 		return '';
 	}
 
 	/**
 	 * Returns HTML to be displayed after the list display.
-	 *
-	 * @return string
 	 */
-	protected function afterHtml() {
+	protected function afterHtml(): string {
 		return '';
 	}
 
 	/**
 	 * Returns the HTML which is added to $wgOut after the article text.
-	 *
-	 * @return string
 	 */
 	abstract protected function getHtml();
 
@@ -215,11 +181,9 @@ abstract class Page extends Article {
 	 * Like Article's getTitle(), but returning a suitable SMWDIWikiPage.
 	 *
 	 * @since 1.6
-	 *
-	 * @return DIWikiPage
 	 */
-	protected function getDataItem() {
-		return DIWikiPage::newFromTitle( $this->getTitle() );
+	protected function getDataItem(): WikiPage {
+		return WikiPage::newFromTitle( $this->getTitle() );
 	}
 
 }

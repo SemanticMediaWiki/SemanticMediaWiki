@@ -2,13 +2,17 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use MediaWiki\Message\Message;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\Lookup\ListLookup;
+use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIError as DIError;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,40 +24,22 @@ use SMWDIError as DIError;
 class UndeclaredPropertyListLookup implements ListLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var string
-	 */
-	private $defaultPropertyType;
-
-	/**
-	 * @var RequestOptions
-	 */
-	private $requestOptions;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param string $defaultPropertyType
-	 * @param RequestOptions|null $requestOptions
 	 */
-	public function __construct( Store $store, $defaultPropertyType, ?RequestOptions $requestOptions = null ) {
-		$this->store = $store;
-		$this->defaultPropertyType = $defaultPropertyType;
-		$this->requestOptions = $requestOptions;
+	public function __construct(
+		private readonly Store $store,
+		private $defaultPropertyType,
+		private readonly ?RequestOptions $requestOptions = null,
+	) {
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]|Error[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
@@ -73,14 +59,14 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return false|string
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -91,7 +77,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 
@@ -121,23 +107,22 @@ class UndeclaredPropertyListLookup implements ListLookup {
 			}
 		}
 
-		$res = $this->store->getConnection( 'mw.db' )->select(
-			[ $idTable, $propertyTable->getName() ],
-			[ 'smw_id', 'smw_title', 'COUNT(*) as count' ],
-			$conditions,
-			__METHOD__,
-			$options,
-			[
-				$idTable => [
-					'INNER JOIN', "$joinCond=smw_id"
-				]
-			]
-		);
+		$queryBuilder = $this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title', 'COUNT(*) as count' ] )
+			->from( $propertyTable->getName() )
+			->join( $idTable, null, "$joinCond=smw_id" )
+			->where( $conditions )
+			->caller( __METHOD__ );
 
-		return $res;
+		LegacyOptionsApplier::applyTo( $queryBuilder, $options );
+
+		return $queryBuilder->fetchResultSet();
 	}
 
-	private function buildPropertyList( $res ) {
+	/**
+	 * @return Property[]|Error[]
+	 */
+	private function buildPropertyList( $res ): array {
 		$result = [];
 
 		foreach ( $res as $row ) {
@@ -147,11 +132,11 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		return $result;
 	}
 
-	private function addPropertyFor( $title ) {
+	private function addPropertyFor( $title ): DataItem {
 		try {
-			$property = new DIProperty( $title );
-		} catch ( PropertyLabelNotResolvedException $e ) {
-			$property = new DIError( new \Message( 'smw_noproperty', [ $title ] ) );
+			$property = new Property( $title );
+		} catch ( PropertyLabelNotResolvedException ) {
+			$property = new Error( new Message( 'smw_noproperty', [ $title ] ) );
 		}
 
 		return $property;

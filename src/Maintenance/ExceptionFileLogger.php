@@ -2,9 +2,11 @@
 
 namespace SMW\Maintenance;
 
-use Exception;
+use DateTimeZone;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\Options;
 use SMW\Utils\File;
+use Throwable;
 
 /**
  * @private
@@ -16,41 +18,19 @@ use SMW\Utils\File;
  */
 class ExceptionFileLogger {
 
-	/**
-	 * @var string
-	 */
-	private $namespace;
+	private string $exceptionFile = '';
 
-	/**
-	 * @var File
-	 */
-	private $file;
+	private int $exceptionCount = 0;
 
-	/**
-	 * @var string
-	 */
-	private $exceptionFile;
-
-	/**
-	 * @var int
-	 */
-	private $exceptionCount = 0;
-
-	/**
-	 * @var array
-	 */
-	private $exceptionLogMessages = [];
+	private array $exceptionLogMessages = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $namespace
-	 * @param File|null $file
 	 */
-	public function __construct( $namespace = 'smw', ?File $file = null ) {
-		$this->namespace = $namespace;
-		$this->file = $file;
-
+	public function __construct(
+		private $namespace = 'smw',
+		private ?File $file = null,
+	) {
 		if ( $this->file === null ) {
 			$this->file = new File();
 		}
@@ -58,17 +38,15 @@ class ExceptionFileLogger {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Options $options
 	 */
-	public function setOptions( Options $options ) {
-		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+	public function setOptions( Options $options ): void {
+		$dateTimeUtc = new ExtendedDateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$this->exceptionFile = __DIR__ . "/../../../";
 
 		if ( $options->has( 'exception-log' ) ) {
 			$this->exceptionFile = $options->get( 'exception-log' );
 			if ( !str_ends_with( $this->exceptionFile, '/' ) ) {
-				$this->exceptionFile = $this->exceptionFile . '/';
+				$this->exceptionFile .= '/';
 			}
 		}
 
@@ -77,29 +55,22 @@ class ExceptionFileLogger {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return string
 	 */
-	public function getExceptionFile() {
+	public function getExceptionFile(): string|false {
 		return realpath( $this->exceptionFile );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return int
 	 */
-	public function getExceptionCount() {
+	public function getExceptionCount(): int {
 		return $this->exceptionCount;
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $id
-	 * @param Exception $exception
 	 */
-	public function recordException( $id, Exception $exception ) {
+	public function recordException( int|string $id, Throwable $exception ): void {
 		$this->exceptionCount++;
 
 		$this->exceptionLogMessages[$id] = [
@@ -111,7 +82,7 @@ class ExceptionFileLogger {
 	/**
 	 * @since 3.0
 	 */
-	public function doWrite() {
+	public function doWrite(): void {
 		foreach ( $this->exceptionLogMessages as $id => $exception ) {
 			$this->put( $id, $exception );
 		}
@@ -120,7 +91,7 @@ class ExceptionFileLogger {
 		$this->exceptionCount = 0;
 	}
 
-	private function put( $id, $exception ) {
+	private function put( int|string $id, array $exception ): void {
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .

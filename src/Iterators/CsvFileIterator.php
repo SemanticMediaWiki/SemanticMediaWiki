@@ -4,6 +4,7 @@ namespace SMW\Iterators;
 
 use Countable;
 use Iterator;
+use ReturnTypeWillChange;
 use RuntimeException;
 use SMW\Exception\FileNotFoundException;
 use SplFileObject;
@@ -16,71 +17,29 @@ use SplFileObject;
  */
 class CsvFileIterator implements Iterator, Countable {
 
-	/**
-	 * @var SplFileObject
-	 */
-	private $file;
+	private ?SplFileObject $file = null;
 
-	/**
-	 * @var Resource
-	 */
-	private $handle;
+	private array $header = [];
 
-	/**
-	 * @var bool
-	 */
-	private $parseHeader;
+	private int $key = 0;
 
-	/**
-	 * @var
-	 */
-	private $header = [];
-
-	/**
-	 * @var string
-	 */
-	private $delimiter;
-
-	/**
-	 * @var int
-	 */
-	private $length;
-
-	/**
-	 * @var int
-	 */
-	private $key = 0;
-
-	/**
-	 * @var bool
-	 */
-	private $count = false;
+	private int $count = 0;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $file
-	 * @param bool $parseHeader
-	 * @param string $delimiter
-	 * @param int $length
 	 */
-	public function __construct( $file, $parseHeader = false, $delimiter = ",", $length = 8000 ) {
+	public function __construct(
+		string $file,
+		private bool $parseHeader = false,
+		private string $delimiter = ",
+		",
+		private int $length = 8000,
+	) {
 		try {
 			$this->file = new SplFileObject( $file, 'r' );
-		} catch ( RuntimeException $e ) {
+		} catch ( RuntimeException ) {
 			throw new FileNotFoundException( 'File "' . $file . '" is not accessible.' );
 		}
-
-		$this->parseHeader = $parseHeader;
-		$this->delimiter = $delimiter;
-		$this->length = $length;
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function __destruct() {
-		$this->handle = null;
 	}
 
 	/**
@@ -89,8 +48,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function count() {
+	public function count(): int {
 		if ( $this->count ) {
 			return $this->count;
 		}
@@ -105,10 +63,8 @@ class CsvFileIterator implements Iterator, Countable {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getHeader() {
+	public function getHeader(): array {
 		return $this->header;
 	}
 
@@ -131,14 +87,15 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		// First iteration to match the header
 		if ( $this->parseHeader && $this->key == 0 ) {
-			$this->header = $this->file->fgetcsv( $this->delimiter );
+			$header = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
+			$this->header = is_array( $header ) ? $header : [];
 		}
 
-		$currentElement = $this->file->fgetcsv( $this->delimiter );
+		$currentElement = $this->file->fgetcsv( $this->delimiter, '"', '\\' );
 		$this->key++;
 
 		return $currentElement;
@@ -151,8 +108,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
-	public function key() {
+	public function key(): int {
 		return $this->key;
 	}
 
@@ -162,9 +118,10 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
+	 * @suppress PhanParamSignatureMismatchInternal
 	 */
-	#[\ReturnTypeWillChange]
-	public function next() {
+	#[ReturnTypeWillChange]
+	public function next(): bool {
 		return !$this->file->eof();
 	}
 

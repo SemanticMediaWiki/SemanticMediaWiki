@@ -3,9 +3,12 @@
 namespace SMW;
 
 use InvalidArgumentException;
-use Onoi\Cache\Cache;
+use Iterator;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,59 +37,38 @@ class HierarchyLookup {
 	const TYPE_SUPER = 'type/super';
 	const TYPE_SUB = 'type/sub';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
-	/**
-	 * @var Cache|null
-	 */
-	private $cache;
+	private BagOStuff $cache;
 
-	/**
-	 * @var
-	 */
-	private $inMemoryCache = [];
+	private array $inMemoryCache = [];
 
-	/**
-	 * @var int
-	 */
-	private $cacheTTL = 60 * 60 * 24 * 7;
+	private int $cacheTTL = 60 * 60 * 24 * 7;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
-	 *
-	 * @var int
 	 */
-	private $subcategoryDepth = 10;
+	private int $subcategoryDepth = 10;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
-	 *
-	 * @var int
 	 */
-	private $subpropertyDepth = 10;
+	private int $subpropertyDepth = 10;
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param Store $store
-	 * @param Cache $cache
 	 */
-	public function __construct( Store $store, Cache $cache ) {
+	public function __construct( Store $store, BagOStuff $cache ) {
 		$this->store = $store;
 		$this->cache = $cache;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param PropertyChangeListener $changeListener
 	 */
-	public function registerPropertyChangeListener( PropertyChangeListener $changeListener ) {
-		$changeListener->addListenerCallback( new DIProperty( '_SUBP' ), [ $this, 'invalidateCache' ] );
-		$changeListener->addListenerCallback( new DIProperty( '_SUBC' ), [ $this, 'invalidateCache' ] );
+	public function registerPropertyChangeListener( PropertyChangeListener $changeListener ): void {
+		$changeListener->addListenerCallback( new Property( '_SUBP' ), [ $this, 'invalidateCache' ] );
+		$changeListener->addListenerCallback( new Property( '_SUBC' ), [ $this, 'invalidateCache' ] );
 	}
 
 	/**
@@ -97,10 +79,8 @@ class HierarchyLookup {
 	 * caching strategy.
 	 *
 	 * @since 3.2
-	 *
-	 * @param DIProperty $property
 	 */
-	public function invalidateCache( DIProperty $property ) {
+	public function invalidateCache( Property $property ): void {
 		if ( $property->getKey() === '_SUBP' ) {
 			$this->cache->delete(
 				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_PROPERTY, self::TYPE_SUB, $this->subpropertyDepth ] )
@@ -124,30 +104,22 @@ class HierarchyLookup {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param int $subcategoryDepth
 	 */
-	public function setSubcategoryDepth( $subcategoryDepth ) {
+	public function setSubcategoryDepth( mixed $subcategoryDepth ): void {
 		$this->subcategoryDepth = (int)$subcategoryDepth;
 	}
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param int $subpropertyDepth
 	 */
-	public function setSubpropertyDepth( $subpropertyDepth ) {
+	public function setSubpropertyDepth( mixed $subpropertyDepth ): void {
 		$this->subpropertyDepth = (int)$subpropertyDepth;
 	}
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param DIProperty $property
-	 *
-	 * @return bool
 	 */
-	public function hasSubproperty( DIProperty $property ) {
+	public function hasSubproperty( Property $property ): bool {
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
 		}
@@ -161,12 +133,8 @@ class HierarchyLookup {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param DIWikiPage $category
-	 *
-	 * @return bool
 	 */
-	public function hasSubcategory( DIWikiPage $category ) {
+	public function hasSubcategory( WikiPage $category ): bool {
 		if ( $this->subcategoryDepth < 1 ) {
 			return false;
 		}
@@ -181,26 +149,25 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 *
-	 * @param DIProperty $property
-	 *
-	 * @return DIWikiPage[]|[]
+	 * @return WikiPage[]|array|Iterator|false
 	 */
-	public function findSubpropertyList( DIProperty $property ) {
+	public function findSubpropertyList( Property $property ): array|Iterator|false {
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
 		}
 
-		return $this->lookup( '_SUBP', $property->getKey(), $property->getDiWikiPage(), new RequestOptions() );
+		return $this->lookup(
+			'_SUBP',
+			$property->getKey(),
+			$property->getDiWikiPage(),
+			new RequestOptions()
+		);
 	}
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param DIWikiPage $category
-	 *
-	 * @return DIWikiPage[]|[]
 	 */
-	public function findSubcategoryList( DIWikiPage $category ) {
+	public function findSubcategoryList( WikiPage $category ): array|Iterator {
 		if ( $this->subcategoryDepth < 1 ) {
 			return [];
 		}
@@ -211,31 +178,35 @@ class HierarchyLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $category
-	 *
-	 * @return DIWikiPage[]|[]
+	 * @return WikiPage[]|Iterator
 	 */
-	public function findNearbySuperCategories( DIWikiPage $category ) {
+	public function findNearbySuperCategories( WikiPage $category ): array|Iterator {
 		if ( $this->subcategoryDepth < 1 ) {
 			return [];
 		}
 
-		return $this->lookup( new DIProperty( '_SUBC', true ), $category->getDBKey(), $category, new RequestOptions() );
+		return $this->lookup(
+			new Property( '_SUBC', true ),
+			$category->getDBKey(),
+			$category,
+			new RequestOptions()
+		);
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty|DIWikiPage $id
-	 *
-	 * @return DIProperty[]|DIWikiPage[]|[]
+	 * @return Property[]|WikiPage[]
 	 */
-	public function getConsecutiveHierarchyList( $id, $hierarchyType = self::TYPE_SUB ) {
+	public function getConsecutiveHierarchyList(
+		Property|WikiPage $id,
+		string $hierarchyType = self::TYPE_SUB
+	): array {
 		$objectType = null;
 
-		if ( $id instanceof DIProperty ) {
+		if ( $id instanceof Property ) {
 			$objectType = self::TYPE_PROPERTY;
-		} elseif ( $id instanceof DIWikiPage && $id->getNamespace() === NS_CATEGORY ) {
+		} elseif ( $id->getNamespace() === NS_CATEGORY ) {
 			$objectType = self::TYPE_CATEGORY;
 		}
 
@@ -266,12 +237,14 @@ class HierarchyLookup {
 		$reqCacheUpdate = false;
 		$hierarchyMembers = [];
 
-		if ( ( $hierarchyCache = $this->cache->fetch( $cacheKey ) ) === false ) {
+		$hierarchyCache = $this->cache->get( $cacheKey );
+		if ( !$hierarchyCache ) {
 			$hierarchyCache = [];
 		}
 
 		$key = $objectType === self::TYPE_PROPERTY ? $id->getKey() : $id->getDBKey();
 
+		$hierarchyList = [];
 		if ( !isset( $hierarchyCache[$key] ) ) {
 			$hierarchyCache[$key] = [];
 
@@ -302,21 +275,21 @@ class HierarchyLookup {
 
 			foreach ( $hierarchyCache[$key] as $k ) {
 				if ( $objectType === self::TYPE_PROPERTY ) {
-					$hierarchyList[$key][] = new DIProperty( $k );
+					$hierarchyList[$key][] = new Property( $k );
 				} else {
-					$hierarchyList[$key][] = new DIWikiPage( $k, NS_CATEGORY );
+					$hierarchyList[$key][] = new WikiPage( $k, NS_CATEGORY );
 				}
 			}
 		}
 
 		if ( $reqCacheUpdate ) {
-			$this->cache->save( $cacheKey, $hierarchyCache, $this->cacheTTL );
+			$this->cache->set( $cacheKey, $hierarchyCache, $this->cacheTTL );
 		}
 
 		return $hierarchyList[$key];
 	}
 
-	private function findSubproperties( &$hierarchyMembers, DIProperty $property, $depth ) {
+	private function findSubproperties( &$hierarchyMembers, Property $property, int|float $depth ): void {
 		if ( $depth++ > $this->subpropertyDepth ) {
 			return;
 		}
@@ -325,12 +298,12 @@ class HierarchyLookup {
 			$property
 		);
 
-		if ( $propertyList === null || $propertyList === [] ) {
+		if ( $propertyList === false || $propertyList === [] ) {
 			return;
 		}
 
 		foreach ( $propertyList as $property ) {
-			$property = DIProperty::newFromUserLabel(
+			$property = Property::newFromUserLabel(
 				$property->getDBKey()
 			);
 
@@ -339,7 +312,7 @@ class HierarchyLookup {
 		}
 	}
 
-	private function findSubcategories( &$hierarchyMembers, DIWikiPage $category, $depth ) {
+	private function findSubcategories( &$hierarchyMembers, WikiPage $category, int|float $depth ): void {
 		if ( $depth++ > $this->subcategoryDepth ) {
 			return;
 		}
@@ -354,7 +327,7 @@ class HierarchyLookup {
 		}
 	}
 
-	private function findSuperCategoriesByDepth( &$hierarchyMembers, DIWikiPage $category, $depth ) {
+	private function findSuperCategoriesByDepth( &$hierarchyMembers, WikiPage $category, int|float $depth ): void {
 		if ( $depth++ > $this->subcategoryDepth ) {
 			return;
 		}
@@ -369,14 +342,14 @@ class HierarchyLookup {
 		}
 	}
 
-	private function lookup( $property, $key, DIWikiPage $subject, $requestOptions ) {
+	private function lookup( string|Property $property, $key, WikiPage $subject, RequestOptions $requestOptions ): array|Iterator {
 		if ( is_string( $property ) ) {
-			$property = new DIProperty( $property );
+			$property = new Property( $property );
 		}
 
 		$key = md5(
 			$property->getKey() . '#' .
-			$property->isInverse() . '#' .
+			(string)$property->isInverse() . '#' .
 			$key . '#' .
 			$requestOptions->getHash()
 		);
@@ -396,8 +369,13 @@ class HierarchyLookup {
 		$this->inMemoryCache[$key] = $subjects;
 
 		$this->logger->info(
-			[ 'HierarchyLookup', "Lookup for: {id}, {origin}" ],
-			[ 'method' => __METHOD__, 'role' => 'user', 'id' => $property->getKey(), 'origin' => $subject ]
+			'HierarchyLookup Lookup for: {id}, {origin}',
+			[
+				'method' => __METHOD__,
+				'role' => 'user',
+				'id' => $property->getKey(),
+				'origin' => $subject
+			]
 		);
 
 		return $subjects;

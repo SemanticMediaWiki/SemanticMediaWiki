@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -19,37 +19,16 @@ class PropertyFilter {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
-
-	/**
-	 * @var TreeBuilder
-	 */
-	private $treeBuilder;
-
-	/**
-	 * @var
-	 */
-	private $params;
-
-	/**
-	 * @var UrlArgs
-	 */
-	private $urlArgs;
+	private ?UrlArgs $urlArgs = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateEngine $templateEngine
-	 * @param TreeBuilder $treeBuilder
-	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, TreeBuilder $treeBuilder, array $params ) {
-		$this->templateEngine = $templateEngine;
-		$this->treeBuilder = $treeBuilder;
-		$this->params = $params;
+	public function __construct(
+		private TemplateParser $templateParser,
+		private TreeBuilder $treeBuilder,
+		private array $params,
+	) {
 	}
 
 	/**
@@ -72,7 +51,7 @@ class PropertyFilter {
 		];
 
 		foreach ( $propertyFilters as $key => $count ) {
-			$key = DIProperty::newFromUserLabel( $key )->getLabel();
+			$key = Property::newFromUserLabel( $key )->getLabel();
 			$filters[$key] = $count;
 		}
 
@@ -92,8 +71,8 @@ class PropertyFilter {
 			$properties[] = $this->matchFilter( $key, $count, $list );
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-option',
+		$option = $this->templateParser->processTemplate(
+			'items.option',
 			[
 				'input' => $this->createInputField( $propertyFilters ),
 				'condition' => ''
@@ -116,21 +95,19 @@ class PropertyFilter {
 			$cssClass = '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items',
+		return $this->templateParser->processTemplate(
+			'items',
 			[
-				'option' => $this->templateEngine->publish( 'filter-items-option' ),
+				'option' => $option,
 				'unlinked' => $unlinked,
 				'linked' => $linked,
 				'css-class' => $cssClass
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items' );
 	}
 
-	private function matchFilter( $key, $count, &$list ) {
-		$property = DIWikiPage::newFromText( $key, SMW_NS_PROPERTY );
+	private function matchFilter( int|string $key, $count, array &$list ): ?WikiPage {
+		$property = WikiPage::newFromText( $key, SMW_NS_PROPERTY );
 		$propertyFilters = $this->urlArgs->getArray( 'pv' );
 
 		$clear = $this->urlArgs->find( 'clear.p' );
@@ -138,8 +115,8 @@ class PropertyFilter {
 		if ( isset( $propertyFilters[$key] ) && $clear !== $key ) {
 			unset( $propertyFilters[$key] );
 
-			$this->templateEngine->compile(
-				'filter-item-unlink-button',
+			$list['unlinked'][$key] = $this->templateParser->processTemplate(
+				'item.unlink.button',
 				[
 					'label' => $key,
 					'count' => $count,
@@ -149,11 +126,9 @@ class PropertyFilter {
 					'hidden-value' => ''
 				]
 			);
-
-			$list['unlinked'][$key] = $this->templateEngine->publish( 'filter-item-unlink-button' );
 		} else {
-			$this->templateEngine->compile(
-				'filter-item-linked-button',
+			$list['linked'][$key] = $this->templateParser->processTemplate(
+				'item.linked.button',
 				[
 					'name' => "pv[$key][]",
 					'value' => '',
@@ -161,8 +136,6 @@ class PropertyFilter {
 					'count' => $count
 				]
 			);
-
-			$list['linked'][$key] = $this->templateEngine->publish( 'filter-item-linked-button' );
 		}
 
 		return $property;
@@ -173,14 +146,12 @@ class PropertyFilter {
 			return '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-input',
+		return $this->templateParser->processTemplate(
+			'items.input',
 			[
 				'placeholder' => $this->msg( [ 'smw-facetedsearch-input-filter-placeholder' ] ),
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-input' );
 	}
 
 }

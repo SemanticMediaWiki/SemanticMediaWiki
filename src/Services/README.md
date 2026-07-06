@@ -1,4 +1,4 @@
-Services contain object definitions that with the help of a [builder](https://github.com/onoi/callback-container) will handle the object build process and provides instance reuse, if necessary.
+Services contain object definitions that handle the object build process and provide instance reuse, if necessary.
 
 [`$smwgServicesFileDir`](https://www.semantic-mediawiki.org/wiki/Help:$smwgServicesFileDir) describes the location of the services directory.
 
@@ -6,33 +6,23 @@ Services contain object definitions that with the help of a [builder](https://gi
 
 Object instances are generally accessed using the `ServicesFactory` locator and its public methods.
 
+`ServicesFactory` owns a private `Wikimedia\Services\ServiceContainer` populated from the `ServiceWiring.php` wiring file. That container holds the no-argument, stateless services (Bucket A). Services that take runtime arguments or are constructed fresh per use (Bucket B and C) are exposed as factory methods on `ServicesFactory` instead.
+
 ## Service files and containers
 
 ### Files
 
-* `importer.php` provides services for the [Importer](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/src/Importer)
-* `mediawiki.php` isolates MediaWiki specific functions and services
-* `events.php` isolates event services
+* `ServiceWiring.php` wiring file for the private `ServiceContainer`; defines the Bucket-A services
+* `importer.php` provides services for the [Importer](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/src/Importer), consumed by `ImporterServiceFactory`
+* `datavalues.php` provides services for `DataValue` objects, consumed by `DataValueServiceFactory`
 
 ### Containers
 
-* `SharedServicesContainer.php` contains common and shared object definitions used throughout the Semantic MediaWiki code base and are accessible via `ServicesFactory`
-* `ServicesContainer` temporary container to be used to inject services into a object instance
+* `ServicesContainer` lightweight container used to inject services into the `DataValueServiceFactory` and `ImporterServiceFactory` domains
 
 ### Service specific factories
 
 * `DataValueServiceFactory` provides service and factory functions for
   `DataValue` objects that are specified in `datavalues.php`
-* `ImporterServiceFactory`
-
-### Services registration
-
-<pre>
-$containerBuilder = new CallbackContainerFactory();
-$containerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
-
-$containerBuilder->registerCallbackContainer( new SharedServicesContainer() );
-$containerBuilder->registerFromFile(
-	$GLOBALS['smwgServicesFileDir'] . '/' . 'mediawiki.php'
-);
-</pre>
+* `ImporterServiceFactory` provides service and factory functions for
+  `Importer` objects that are specified in `importer.php`

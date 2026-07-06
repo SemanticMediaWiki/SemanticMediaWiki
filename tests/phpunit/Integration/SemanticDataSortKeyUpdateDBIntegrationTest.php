@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
 
 /**
  * @group SMW
@@ -24,22 +24,17 @@ use SMWDIBlob as DIBlob;
 class SemanticDataSortKeyUpdateDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataFactory;
-	private $mwHooksHandler;
 	private $subjects = [];
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
-
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
 	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}
@@ -59,7 +54,7 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends SMWIntegrationTestCase 
 			$semanticDataFromDB->getSubject()->getSortKey()
 		);
 
-		foreach ( $semanticDataFromDB->getPropertyValues( new DIProperty( '_SKEY' ) ) as $value ) {
+		foreach ( $semanticDataFromDB->getPropertyValues( new Property( '_SKEY' ) ) as $value ) {
 			$this->assertEquals(
 				'a b c',
 				$value->getString()
@@ -77,8 +72,8 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends SMWIntegrationTestCase 
 		$subject->setSortKey( '1_2_3' );
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_SKEY' ),
-			new DIBlob( 'x_y_z' )
+			new Property( '_SKEY' ),
+			new Blob( 'x_y_z' )
 		);
 
 		$this->getStore()->updateData( $semanticData );
@@ -91,7 +86,7 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends SMWIntegrationTestCase 
 			$semanticDataFromDB->getSubject()->getSortKey()
 		);
 
-		foreach ( $semanticDataFromDB->getPropertyValues( new DIProperty( '_SKEY' ) ) as $value ) {
+		foreach ( $semanticDataFromDB->getPropertyValues( new Property( '_SKEY' ) ) as $value ) {
 			$this->assertEquals(
 				'x y z',
 				$value->getString()

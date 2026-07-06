@@ -3,21 +3,26 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Enum;
 use SMW\Exception\DataItemDeserializationException;
 use SMW\MediaWiki\Job;
 use SMW\RequestOptions;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use Title;
+use SMW\Store;
 
 /**
  * Dispatcher to find and create individual UpdateJob instances for a specific
  * subject and its linked entities.
+ *
+ * Partial DI: Store is injected via the JobClasses ObjectFactory spec.
+ * SerializerFactory is still resolved through ApplicationFactory because
+ * it is not registered as a global SMW.X service.
  *
  * @license GPL-2.0-or-later
  * @since 1.9
@@ -42,17 +47,18 @@ class UpdateDispatcherJob extends Job {
 	 */
 	const CHUNK_SIZE = 500;
 
-	private SerializerFactory $serializerFactory;
+	private ?SerializerFactory $serializerFactory = null;
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
-	 * @param int $id job id
 	 */
-	public function __construct( Title $title, $params = [], $id = 0 ) {
-		parent::__construct( 'smw.updateDispatcher', $title, $params, $id );
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store
+	) {
+		parent::__construct( 'smw.updateDispatcher', $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
@@ -60,10 +66,8 @@ class UpdateDispatcherJob extends Job {
 	 * @see Job::run
 	 *
 	 * @since  1.9
-	 *
-	 * @return bool
 	 */
-	public function run() {
+	public function run(): bool {
 		$this->initServices();
 
 		/**
@@ -75,24 +79,15 @@ class UpdateDispatcherJob extends Job {
 			return $this->push_jobs_from_list( $this->getParameter( self::JOB_LIST ) );
 		}
 
-		/**
-		 * Using an entity ID to initiate some work (which if send from the DELETE
-		 * will have no valid ID_TABLE reference by the time this job is run) on
-		 * some secondary tables.
-		 */
-		if ( $this->hasParameter( '_id' ) ) {
-			$this->dispatch_by_id( $this->getParameter( '_id' ) );
-		}
-
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->dispatchUpdateForProperty(
-				DIProperty::newFromUserLabel( $this->getTitle()->getText() )
+				Property::newFromUserLabel( $this->getTitle()->getText() )
 			);
 
-			$this->jobs[] = DIWikiPage::newFromTitle( $this->getTitle() )->getHash();
+			$this->jobs[] = WikiPage::newFromTitle( $this->getTitle() )->getHash();
 		} else {
 			$this->dispatchUpdateForSubject(
-				DIWikiPage::newFromTitle( $this->getTitle() )
+				WikiPage::newFromTitle( $this->getTitle() )
 			);
 		}
 
@@ -110,9 +105,8 @@ class UpdateDispatcherJob extends Job {
 		return true;
 	}
 
-	private function initServices() {
+	private function initServices(): void {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$this->setStore( $applicationFactory->getStore() );
 
 		$this->serializerFactory = $applicationFactory->newSerializerFactory();
 
@@ -121,49 +115,23 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function dispatch_by_id( $id ) {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
-
-		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
-			$applicationFactory->getStore()
-		);
-
-		$count = $queryDependencyLinksStore->countDependencies(
-			$id
-		);
-
-		if ( $count === 0 ) {
-			return;
-		}
-
-		$requestOptions = new RequestOptions();
-		$requestOptions->setLimit(
-			$count
-		);
-
-		$dependencyTargetLinks = $queryDependencyLinksStore->findDependencyTargetLinks(
-			[ $id ],
-			$requestOptions
-		);
-
-		foreach ( $dependencyTargetLinks as $targetLink ) {
-			[ $title, $namespace, $iw, $subobjectname ] = explode( '#', $targetLink, 4 );
-
-			// @see DIWikiPage::doUnserialize
-			if ( !isset( $this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] ) ) {
-				$this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] = true;
-			}
-		}
-	}
-
-	private function create_secondary_dispatch_run( $jobs ) {
+	private function create_secondary_dispatch_run( $jobs ): void {
+		$services = MediaWikiServices::getInstance();
+		$titleFactory = $services->getTitleFactory();
+		$jobFactory = $services->getJobFactory();
 		$origin = $this->getTitle()->getPrefixedText();
 
 		foreach ( array_chunk( $jobs, self::CHUNK_SIZE, true ) as $jobList ) {
-			$job = new self(
-				Title::newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) ),
+			$title = $titleFactory->newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) );
+			if ( $title === null ) {
+				continue;
+			}
+			/** @var Job $job */
+			$job = $jobFactory->newJob(
+				'smw.updateDispatcher',
 				[
+					'namespace' => $title->getNamespace(),
+					'title' => $title->getDBkey(),
 					self::JOB_LIST => $jobList,
 					'origin' => $origin,
 
@@ -178,7 +146,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function dispatchUpdateForSubject( DIWikiPage $subject ) {
+	private function dispatchUpdateForSubject( WikiPage $subject ): void {
 		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
 			$this->addUpdateJobsForProperties(
 				$this->store->getProperties( $subject )
@@ -192,13 +160,13 @@ class UpdateDispatcherJob extends Job {
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	private function dispatchUpdateForProperty( DIProperty $property ) {
+	private function dispatchUpdateForProperty( Property $property ): void {
 		$this->addUpdateJobsForProperties( [ $property ] );
 		$this->addUpdateJobsForSubjectsThatContainTypeError();
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	private function addUpdateJobsForProperties( array $properties ) {
+	private function addUpdateJobsForProperties( array $properties ): void {
 		foreach ( $properties as $property ) {
 
 			if ( !$property->isUserDefined() ) {
@@ -208,7 +176,7 @@ class UpdateDispatcherJob extends Job {
 			// Before doing some work, make sure to only use page type properties
 			// as a means to generate a resource (job) action
 			$type = DataTypeRegistry::getInstance()->getDataItemByType(
-				$property->findPropertyTypeId()
+				$property->findPropertyValueType()
 			);
 
 			if ( $type !== DataItem::TYPE_WIKIPAGE ) {
@@ -240,7 +208,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function apply_filter( $property, $subjects ) {
+	private function apply_filter( Property $property, $subjects ) {
 		// If the an ID was provided it already restricted the list of references
 		// hence avoid any further work
 		if ( $this->hasParameter( '_id' ) ) {
@@ -254,7 +222,7 @@ class UpdateDispatcherJob extends Job {
 		$list = [];
 
 		// Identify the source as base for a comparison
-		$source = DIWikiPage::newFromTitle( $this->getTitle() );
+		$source = WikiPage::newFromTitle( $this->getTitle() );
 
 		foreach ( $subjects as $subject ) {
 
@@ -266,7 +234,7 @@ class UpdateDispatcherJob extends Job {
 			foreach ( $dataItems as $dataItem ) {
 				// Make a judgment based on a literal comparison for the
 				// values assigned and the now deleted entity
-				if ( $dataItem instanceof DIWikiPage && $dataItem->equals( $source ) ) {
+				if ( $dataItem instanceof WikiPage && $dataItem->equals( $source ) ) {
 					$list[] = $subject;
 				}
 			}
@@ -275,10 +243,10 @@ class UpdateDispatcherJob extends Job {
 		return $list;
 	}
 
-	private function addUpdateJobsForSubjectsThatContainTypeError() {
+	private function addUpdateJobsForSubjectsThatContainTypeError(): void {
 		$subjects = $this->store->getPropertySubjects(
-			new DIProperty( DIProperty::TYPE_ERROR ),
-			DIWikiPage::newFromTitle( $this->getTitle() )
+			new Property( Property::TYPE_ERROR ),
+			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
 		$this->add_job(
@@ -286,7 +254,7 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function addUpdateJobsFromDeserializedSemanticData() {
+	private function addUpdateJobsFromDeserializedSemanticData(): void {
 		if ( !$this->hasParameter( 'semanticData' ) ) {
 			return;
 		}
@@ -300,14 +268,14 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function add_job( $subjects = [] ) {
+	private function add_job( $subjects = [] ): void {
 		foreach ( $subjects as $subject ) {
 
 			// Not trying to get the title here as it is waste of resources
 			// as makeTitleSafe is expensive for large lists
 			// $title = $subject->getTitle();
 
-			if ( !$subject instanceof DIWikiPage ) {
+			if ( !$subject instanceof WikiPage ) {
 				continue;
 			}
 
@@ -322,13 +290,15 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function push_jobs_from_list( array $subjects ) {
+	private function push_jobs_from_list( array $subjects ): bool {
 		$check_exists = $this->getParameter( 'check_exists', false );
 
 		$parameters = [
 			UpdateJob::FORCED_UPDATE => true,
 			'origin' => $this->getParameter( 'origin', 'UpdateDispatcherJob' )
 		];
+
+		$jobFactory = MediaWikiServices::getInstance()->getJobFactory();
 
 		// We expect non-duplicate subjects in the list and therefore deserialize
 		// without any extra validation
@@ -339,8 +309,8 @@ class UpdateDispatcherJob extends Job {
 			}
 
 			try {
-				$subject = DIWikiPage::doUnserialize( $subject );
-			} catch ( DataItemDeserializationException $e ) {
+				$subject = WikiPage::doUnserialize( $subject );
+			} catch ( DataItemDeserializationException ) {
 				continue;
 			}
 
@@ -348,11 +318,15 @@ class UpdateDispatcherJob extends Job {
 				continue;
 			}
 
-			if ( ( $title = $subject->getTitle() ) === null ) {
+			$title = $subject->getTitle();
+			if ( $title === null ) {
 				continue;
 			}
 
-			$this->jobs[] = new UpdateJob( $title, $parameters );
+			$this->jobs[] = $jobFactory->newJob(
+				'smw.update',
+				[ 'namespace' => $title->getNamespace(), 'title' => $title->getDBkey() ] + $parameters
+			);
 		}
 
 		$this->pushToJobQueue();

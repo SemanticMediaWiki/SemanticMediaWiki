@@ -3,8 +3,8 @@
 namespace SMW;
 
 use InvalidArgumentException;
-use MediaWiki\Json\JsonUnserializable;
-use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\Json\JsonDeserializable;
+use MediaWiki\Json\JsonDeserializer;
 use SMW\Utils\DotArray;
 
 /**
@@ -13,12 +13,9 @@ use SMW\Utils\DotArray;
  *
  * @author mwjames
  */
-class Options implements JsonUnserializable {
+class Options implements JsonDeserializable {
 
-	/**
-	 * @var array
-	 */
-	protected $options = [];
+	protected array $options;
 
 	/**
 	 * @since 2.3
@@ -33,7 +30,7 @@ class Options implements JsonUnserializable {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -42,7 +39,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @param string $key
 	 */
-	public function delete( $key ) {
+	public function delete( $key ): void {
 		unset( $this->options[$key] );
 	}
 
@@ -53,7 +50,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		return isset( $this->options[$key] ) || array_key_exists( $key, $this->options );
 	}
 
@@ -61,11 +58,11 @@ class Options implements JsonUnserializable {
 	 * @since 3.0
 	 *
 	 * @param string $key
-	 * @param string $value
+	 * @param mixed $value
 	 *
 	 * @return bool
 	 */
-	public function is( $key, $value ) {
+	public function is( $key, $value ): bool {
 		return $this->get( $key ) === $value;
 	}
 
@@ -117,7 +114,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return bool
 	 */
-	public function isFlagSet( $key, $flag ) {
+	public function isFlagSet( $key, $flag ): bool {
 		return ( ( (int)$this->safeGet( $key, 0 ) & $flag ) == $flag );
 	}
 
@@ -126,18 +123,8 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return $this->options;
-	}
-
-	/**
-	 * @deprecated since 3.0, use Options::toArray
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
-	public function getOptions() {
-		return $this->toArray();
 	}
 
 	/**
@@ -147,7 +134,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function filter( array $keys ) {
+	public function filter( array $keys ): array {
 		$options = [];
 
 		foreach ( $keys as $key ) {
@@ -174,16 +161,16 @@ class Options implements JsonUnserializable {
 	}
 
 	/**
-	 * Implements JsonUnserializable.
+	 * Implements JsonDeserializable.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param JsonDeserializer $deserializer
 	 * @param array $json JSON to be unserialized
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ): self {
 		return new self( $json['options'] );
 	}
 

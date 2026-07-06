@@ -9,7 +9,7 @@ use SMW\Utils\HmacSerializer;
 /**
  * @private
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -17,29 +17,17 @@ use SMW\Utils\HmacSerializer;
 class SequenceMapFinder {
 
 	/**
-	 * @var Database
+	 * @var array
 	 */
-	private $connection;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
-	 * @var
-	 */
-	private $preloaded = [];
+	private array $preloaded = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
@@ -50,7 +38,7 @@ class SequenceMapFinder {
 	 * @param int $sid
 	 * @param array|null $map
 	 */
-	public function setMap( $sid, ?array $map = null ) {
+	public function setMap( $sid, ?array $map = null ): void {
 		if ( $map === null ) {
 			return;
 		}
@@ -61,18 +49,19 @@ class SequenceMapFinder {
 			$map = null;
 		}
 
-		$this->connection->upsert(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[
+		$this->connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::ID_AUXILIARY_TABLE )
+			->row( [
 				'smw_id' => $sid,
 				'smw_seqmap' => $map
-			],
-			'smw_id',
-			[
+			] )
+			->onDuplicateKeyUpdate()
+			->uniqueIndexFields( [ 'smw_id' ] )
+			->set( [
 				'smw_seqmap' => $map
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
@@ -82,24 +71,21 @@ class SequenceMapFinder {
 	 *
 	 * @return array
 	 */
-	public function findMapById( $sid ) {
+	public function findMapById( $sid ): array {
 		$omap = [];
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
-		if ( ( $map = $cache->fetch( $sid ) ) !== false ) {
+		$map = $cache->fetch( (string)$sid );
+		if ( $map !== false ) {
 			return $map;
 		}
 
-		$row = $this->connection->selectRow(
-			SQLStore::ID_AUXILIARY_TABLE,
-			[
-				'smw_seqmap'
-			],
-			[
-				'smw_id' => $sid
-			],
-			__METHOD__
-		);
+		$row = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_seqmap' ] )
+			->from( SQLStore::ID_AUXILIARY_TABLE )
+			->where( [ 'smw_id' => $sid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row !== false ) {
 			$omap = $row->smw_seqmap;
@@ -115,7 +101,7 @@ class SequenceMapFinder {
 			$map = HmacSerializer::uncompress( $omap );
 		}
 
-		$cache->save( $sid, $map );
+		$cache->save( (string)$sid, $map );
 
 		return $map;
 	}
@@ -125,7 +111,7 @@ class SequenceMapFinder {
 	 *
 	 * @param array $ids
 	 */
-	public function prefetchSequenceMap( array $ids ) {
+	public function prefetchSequenceMap( array $ids ): void {
 		sort( $ids );
 		$hash = md5( json_encode( $ids ) );
 
@@ -135,17 +121,12 @@ class SequenceMapFinder {
 
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
-		$rows = $this->connection->select(
-			$this->connection->tablename( SQLStore::ID_AUXILIARY_TABLE ),
-			[
-				'smw_id',
-				'smw_seqmap'
-			],
-			[
-				'smw_id' => $ids
-			],
-			__METHOD__
-		);
+		$rows = $this->connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_seqmap' ] )
+			->from( SQLStore::ID_AUXILIARY_TABLE )
+			->where( [ 'smw_id' => $ids ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$inverted_ids = array_flip( $ids );
 
@@ -166,13 +147,13 @@ class SequenceMapFinder {
 			// Removes those that found a matching pair
 			unset( $inverted_ids[$id] );
 
-			$cache->save( $id, $map );
+			$cache->save( (string)$id, $map );
 		}
 
 		// For all leftovers, store them as empty to avoid
 		// running individual SELECTS
 		foreach ( $inverted_ids as $id => $pos ) {
-			$cache->save( $id, [] );
+			$cache->save( (string)$id, [] );
 		}
 
 		$this->preloaded[$hash] = true;

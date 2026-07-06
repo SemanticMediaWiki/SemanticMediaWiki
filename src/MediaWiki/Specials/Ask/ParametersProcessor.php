@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use SMWInfolink as Infolink;
-use SMWQueryProcessor as QueryProcessor;
-use WebRequest;
+use MediaWiki\Request\WebRequest;
+use SMW\Formatters\Infolink;
+use SMW\Query\QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,43 +14,31 @@ use WebRequest;
  */
 class ParametersProcessor {
 
-	/**
-	 * @var int
-	 */
-	private static $defaultLimit = 50;
+	private static int $defaultLimit = 50;
 
-	/**
-	 * @var int
-	 */
-	private static $maxInlineLimit = 500;
+	private static int $maxInlineLimit = 500;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $defaultLimit
 	 */
-	public static function setDefaultLimit( $defaultLimit ) {
+	public static function setDefaultLimit( int $defaultLimit ): void {
 		self::$defaultLimit = $defaultLimit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $maxInlineLimit
 	 */
-	public static function setMaxInlineLimit( $maxInlineLimit ) {
+	public static function setMaxInlineLimit( int $maxInlineLimit ): void {
 		self::$maxInlineLimit = $maxInlineLimit;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
-	 * @param array|null $params
-	 *
-	 * @return string
 	 */
-	public static function process( WebRequest $request, $params ) {
+	public static function process(
+		WebRequest $request,
+		string|null|array $params
+	): array {
 		// First make all inputs into a simple parameter list that can again be
 		// parsed into components later.
 		$parameterList = self::getParameterList( $request, $params );
@@ -58,20 +46,21 @@ class ParametersProcessor {
 
 		// Check for q= query string, used whenever this special page calls
 		// itself (via submit or plain link):
-		if ( ( $q = $request->getText( 'q' ) ) !== '' ) {
+		$q = $request->getText( 'q' );
+		if ( $q !== '' ) {
 			$parameterList[] = $q;
 		}
 
 		// Parameters separated by newlines here (compatible with text-input for
 		// printouts)
-		if ( ( $po = $request->getText( 'po' ) ) !== '' ) {
+		$po = $request->getText( 'po' );
+		if ( $po !== '' ) {
 			$printouts = explode( "\n", $po ?? '' );
 		}
 
 		// Check for param strings in po (printouts), appears in some links
 		// and in submits:
 		$parameterList = self::checkParameterList(
-			$request,
 			$parameterList,
 			$printouts
 		);
@@ -93,7 +82,8 @@ class ParametersProcessor {
 
 		// First check whether the sorting options input send an
 		// request data as array
-		if ( ( $sort_values = $request->getArray( 'sort_num', [] ) ) !== [] ) {
+		$sort_values = $request->getArray( 'sort_num', [] );
+		if ( $sort_values !== [] ) {
 
 			if ( is_array( $sort_values ) ) {
 
@@ -122,7 +112,8 @@ class ParametersProcessor {
 
 		// First check whether the order options input send an
 		// request data as array
-		if ( ( $order_values = $request->getArray( 'order_num', [] ) ) !== [] ) {
+		$order_values = $request->getArray( 'order_num', [] );
+		if ( $order_values !== [] ) {
 
 			// Count doesn't match means we have a order from an
 			// empty (#subject) carrying around which we don't permit when
@@ -156,13 +147,10 @@ class ParametersProcessor {
 		return [ $queryString, $parameters, $printouts ];
 	}
 
-	/**
-	 * @param WebRequest $request
-	 * @param array|null $params
-	 *
-	 * @return array
-	 */
-	private static function getParameterList( $request, $params ) {
+	private static function getParameterList(
+		WebRequest $request,
+		string|null|array $params
+	): array {
 		// Called from wiki, get all parameters
 		if ( !$request->getCheck( 'q' ) ) {
 			return Infolink::decodeParameters( $params ?? '', true );
@@ -171,6 +159,7 @@ class ParametersProcessor {
 		// Called by own Special, ignore full param string in that case
 		$query_val = $request->getVal( 'p' );
 
+		// @phan-suppress-next-line MediaWikiNoEmptyIfDefined
 		if ( !empty( $query_val ) ) {
 			// p is used for any additional parameters in certain links.
 			$parameterList = Infolink::decodeParameters( $query_val, false );
@@ -179,6 +168,7 @@ class ParametersProcessor {
 
 			if ( is_array( $query_values ) ) {
 				foreach ( $query_values as $key => $val ) {
+					// @phan-suppress-next-line MediaWikiNoEmptyIfDefined
 					if ( empty( $val ) ) {
 						unset( $query_values[$key] );
 					}
@@ -199,7 +189,7 @@ class ParametersProcessor {
 		return $parameterList;
 	}
 
-	private static function checkParameterList( $request, $parameterList, $printouts ) {
+	private static function checkParameterList( array $parameterList, array $printouts ): array {
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );
@@ -250,7 +240,7 @@ class ParametersProcessor {
 		return $parameters;
 	}
 
-	private static function hasPipe( $key, $value ) {
+	private static function hasPipe( int|string $key, $value ): bool {
 		if ( is_string( $key ) && $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
 			return true;
 		}
@@ -262,14 +252,14 @@ class ParametersProcessor {
 		return false;
 	}
 
-	private static function hasLink( $value ) {
+	private static function hasLink( $value ): bool {
 		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false;
 	}
 
-	private static function replace( $source, $target, $value ) {
+	private static function replace( string $source, string $target, $value ): string|array|null {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			static function ( array $matches ) use ( $source, $target ) {
+			static function ( array $matches ) use ( $source, $target ): string {
 				return str_replace( [ $source ], [ $target ], $matches[0] );
 			},
 			$value

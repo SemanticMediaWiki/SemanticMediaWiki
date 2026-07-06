@@ -5,6 +5,7 @@ namespace SMW\SQLStore\TableBuilder;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
 use RuntimeException;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder as TableBuilderInterface;
 use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\IDatabase;
@@ -17,15 +18,7 @@ use Wikimedia\Rdbms\IDatabase;
  */
 abstract class TableBuilder implements TableBuilderInterface, MessageReporterAware, MessageReporter {
 
-	/**
-	 * @var IDatabase
-	 */
-	protected $connection;
-
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private ?MessageReporter $messageReporter = null;
 
 	/**
 	 * @var array
@@ -37,26 +30,23 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 */
 	protected $activityLog = [];
 
-	protected array $droppedTables;
+	protected ?array $droppedTables;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param IDatabase $connection
 	 */
-	protected function __construct( $connection ) {
-		$this->connection = $connection;
+	protected function __construct( protected $connection ) {
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param IDatabase $connection
+	 * @param Database|IDatabase $connection
 	 *
 	 * @return TableBuilder
 	 * @throws RuntimeException
 	 */
-	public static function factory( $connection ) {
+	public static function factory( $connection ): TableBuilder {
 		if ( !$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
@@ -93,9 +83,9 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @since 2.5
 	 *
 	 * @param string|int $key
-	 * @param mixed
+	 * @param mixed $value
 	 */
-	public function setConfig( $key, $value ) {
+	public function setConfig( $key, $value ): void {
 		$this->config[$key] = $value;
 	}
 
@@ -106,7 +96,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -117,7 +107,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		if ( $this->messageReporter === null ) {
 			return;
 		}
@@ -130,7 +120,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $fieldType ) {
+	public function getStandardFieldType( $fieldType ): string|false {
 		return false;
 	}
 
@@ -139,7 +129,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function create( Table $table ) {
+	public function create( Table $table ): void {
 		$attributes = $table->getAttributes();
 		$tableName = $table->getName();
 
@@ -156,7 +146,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		$this->reportMessage( "   ... done.\n" );
 
 		if ( !isset( $attributes['indices'] ) ) {
-			return $this->reportMessage( "No index structures for table $tableName ...\n" );
+			$this->reportMessage( "No index structures for table $tableName ...\n" );
+			return;
 		}
 
 		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
@@ -170,7 +161,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( Table $table ) {
+	public function drop( Table $table ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !isset( $this->droppedTables ) ) {
@@ -186,9 +177,10 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		$this->droppedTables[$tableName] = true;
 
 		if ( $this->connection->tableExists( $tableName, __METHOD__ ) === false ) { // create new table
-			return $this->reportMessage(
+			$this->reportMessage(
 				$cliMsgFormatter->twoCols( "... $tableName (not found) ...", 'SKIPPED', 3 )
 			);
+			return;
 		}
 
 		$this->reportMessage(
@@ -207,7 +199,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function optimize( Table $table ) {
+	public function optimize( Table $table ): void {
 		$this->doOptimize( $table->getName() );
 	}
 
@@ -225,40 +217,42 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLog() {
+	public function getLog(): array {
 		return $this->activityLog;
 	}
 
 	/**
 	 * @param string $tableName
-	 * @param array|null $tableOptions
+	 * @param array $tableOptions
 	 */
-	abstract protected function doCreateTable( $tableName, ?array $tableOptions = null );
+	abstract protected function doCreateTable( $tableName, array $tableOptions ): void;
 
 	/**
 	 * @param string $tableName
-	 * @param array|null $tableOptions
+	 * @param array $tableOptions
 	 */
-	abstract protected function doUpdateTable( $tableName, ?array $tableOptions = null );
+	abstract protected function doUpdateTable( $tableName, array $tableOptions ): void;
 
 	/**
 	 * @param string $tableName
-	 * @param array|null $indexOptions
+	 * @param array $indexOptions
 	 */
-	abstract protected function doCreateIndices( $tableName, ?array $indexOptions = null );
-
-	/**
-	 * @param string $tableName
-	 */
-	abstract protected function doDropTable( $tableName );
+	abstract protected function doCreateIndices( $tableName, array $indexOptions ): void;
 
 	/**
 	 * @param string $tableName
 	 */
-	abstract protected function doOptimize( $tableName );
+	abstract protected function doDropTable( $tableName ): void;
 
-	// #1978
-	// http://php.net/manual/en/function.array-search.php
+	/**
+	 * @param string $tableName
+	 */
+	abstract protected function doOptimize( $tableName ): void;
+
+	/**
+	 * #1978
+	 * http://php.net/manual/en/function.array-search.php
+	 */
 	protected function recursive_array_search( $needle, $haystack ) {
 		foreach ( $haystack as $key => $value ) {
 			$current_key = $key;

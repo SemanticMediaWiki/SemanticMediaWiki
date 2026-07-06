@@ -14,60 +14,33 @@ use SMW\Schema\SchemaList;
  */
 class ConstraintCheckRunner {
 
-	/**
-	 * @var ConstraintRegistry
-	 */
-	private $constraintRegistry;
+	private array $constraintChecks = [];
 
-	/**
-	 * @var
-	 */
-	private $constraintChecks = [];
+	private array $constraints = [];
 
-	/**
-	 * @var
-	 */
-	private $constraints = [];
+	private array $constraintSchemas = [];
 
-	/**
-	 * @var
-	 */
-	private $constraintSchemas = [];
+	private bool $hasViolation = false;
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
-
-	/**
-	 * @var bool
-	 */
-	private $hasDeferrableConstraint = false;
+	private bool $hasDeferrableConstraint = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ConstraintRegistry $constraintRegistry
 	 */
-	public function __construct( ConstraintRegistry $constraintRegistry ) {
-		$this->constraintRegistry = $constraintRegistry;
+	public function __construct( private readonly ConstraintRegistry $constraintRegistry ) {
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return bool
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return bool
 	 */
-	public function hasDeferrableConstraint() {
+	public function hasDeferrableConstraint(): bool {
 		return $this->hasDeferrableConstraint;
 	}
 
@@ -77,7 +50,7 @@ class ConstraintCheckRunner {
 	 * @param string $key
 	 * @param Schema|SchemaList $schema
 	 */
-	public function load( $key, $schema ) {
+	public function load( $key, $schema ): void {
 		$this->hasViolation = false;
 		$this->constraints = [];
 
@@ -100,19 +73,15 @@ class ConstraintCheckRunner {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return
 	 */
-	public function getConstraints() {
+	public function getConstraints(): array {
 		return $this->constraints;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param mixed $dataValue
 	 */
-	public function check( $dataValue ) {
+	public function check( mixed $dataValue ): void {
 		$this->hasDeferrableConstraint = false;
 		$this->hasViolation = false;
 
@@ -143,7 +112,8 @@ class ConstraintCheckRunner {
 		}
 
 		if ( $constraint->getType() === Constraint::TYPE_DEFERRED ) {
-			return $this->hasDeferrableConstraint = true;
+			$this->hasDeferrableConstraint = true;
+			return $this->hasDeferrableConstraint;
 		}
 
 		$constraint->checkConstraint( [ $key => $value ], $dataValue );

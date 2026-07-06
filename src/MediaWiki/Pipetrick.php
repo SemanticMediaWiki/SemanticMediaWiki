@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
+
 /**
  * @license GPL-2.0-or-later
  * @since   3.1
@@ -21,19 +23,15 @@ class Pipetrick {
 	 * Doesn't attempt to apply the reverse pipe trick.
 	 *
 	 * @since 3.0
-	 *
-	 * @param $title string
-	 *
-	 * @return string
 	 */
-	public static function apply( $title ) {
+	public static function apply( string $title ): string|array|null {
 		# Turn it into a link so we can use the MediaWiki regexes un-changed.
 		$link = '[[' . $title . '|]]';
 
 		# Regexes taken from MediaWiki parser.php. Maybe some day they'll factor it
 		# into its own function!
 
-		$tc = '[' . \Title::legalChars() . ']';
+		$tc = '[' . Title::legalChars() . ']';
 		$nc = '[ _0-9A-Za-z\x80-\xff-]'; # Namespaces can use non-ascii!
 		// [[ns:page (context)|]]
 		$p1 = "/\[\[(:?$nc+:|:|)($tc+?)( ?\\($tc+\\))\\|]]/";

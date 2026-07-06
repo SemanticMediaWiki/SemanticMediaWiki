@@ -59,7 +59,7 @@
 			"subject": "Example/FT0011/Q.1.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">1.4.4.8.3.1<br />1.4.4.8.3.10<br />1.4.4.8.3.1001<br />1.4.4.8.3.11<br />1.4.4.8.3.12<br />1.4.4.8.3.2<br />1.4.4.8.3.3<br />1.4.4.8.3.4<br />1.4.4.8.3.5<br />1.4.4.8.3.6<br />1.4.4.8.3.7<br />1.4.4.8.3.8<br />1.4.4.8.3.9</td>"
+					"<td class=\"Has-text smwtype&#95;txt\">1.4.4.8.3.1<br />1.4.4.8.3.10<br />1.4.4.8.3.1001<br />1.4.4.8.3.11<br />1.4.4.8.3.12<br />1.4.4.8.3.2<br />1.4.4.8.3.3<br />1.4.4.8.3.4<br />1.4.4.8.3.5<br />1.4.4.8.3.6<br />1.4.4.8.3.7<br />1.4.4.8.3.8<br />1.4.4.8.3.9</td>"
 				]
 			}
 		},
@@ -69,7 +69,7 @@
 			"subject": "Example/FT0011/Q.1.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">1.4.4.8.3.9<br />1.4.4.8.3.8<br />1.4.4.8.3.7<br />1.4.4.8.3.6<br />1.4.4.8.3.5<br />1.4.4.8.3.4<br />1.4.4.8.3.3<br />1.4.4.8.3.2<br />1.4.4.8.3.12<br />1.4.4.8.3.11<br />1.4.4.8.3.1001<br />1.4.4.8.3.10<br />1.4.4.8.3.1</td>"
+					"<td class=\"Has-text smwtype&#95;txt\">1.4.4.8.3.9<br />1.4.4.8.3.8<br />1.4.4.8.3.7<br />1.4.4.8.3.6<br />1.4.4.8.3.5<br />1.4.4.8.3.4<br />1.4.4.8.3.3<br />1.4.4.8.3.2<br />1.4.4.8.3.12<br />1.4.4.8.3.11<br />1.4.4.8.3.1001<br />1.4.4.8.3.10<br />1.4.4.8.3.1</td>"
 				]
 			}
 		},
@@ -79,7 +79,7 @@
 			"subject": "Example/FT0011/Q.1.3",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">1.4.4.8.3.1<br />1.4.4.8.3.2<br />1.4.4.8.3.3<br />1.4.4.8.3.4<br />1.4.4.8.3.5<br />1.4.4.8.3.6<br />1.4.4.8.3.7<br />1.4.4.8.3.8<br />1.4.4.8.3.9<br />1.4.4.8.3.10<br />1.4.4.8.3.11<br />1.4.4.8.3.12<br />1.4.4.8.3.1001</td>"
+					"<td class=\"Has-text smwtype&#95;txt\">1.4.4.8.3.1<br />1.4.4.8.3.2<br />1.4.4.8.3.3<br />1.4.4.8.3.4<br />1.4.4.8.3.5<br />1.4.4.8.3.6<br />1.4.4.8.3.7<br />1.4.4.8.3.8<br />1.4.4.8.3.9<br />1.4.4.8.3.10<br />1.4.4.8.3.11<br />1.4.4.8.3.12<br />1.4.4.8.3.1001</td>"
 				]
 			}
 		},
@@ -89,7 +89,7 @@
 			"subject": "Example/FT0011/Q.1.4",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">1.4.4.8.3.1001<br />1.4.4.8.3.12<br />1.4.4.8.3.11<br />1.4.4.8.3.10<br />1.4.4.8.3.9<br />1.4.4.8.3.8<br />1.4.4.8.3.7<br />1.4.4.8.3.6<br />1.4.4.8.3.5<br />1.4.4.8.3.4<br />1.4.4.8.3.3<br />1.4.4.8.3.2<br />1.4.4.8.3.1</td>"
+					"<td class=\"Has-text smwtype&#95;txt\">1.4.4.8.3.1001<br />1.4.4.8.3.12<br />1.4.4.8.3.11<br />1.4.4.8.3.10<br />1.4.4.8.3.9<br />1.4.4.8.3.8<br />1.4.4.8.3.7<br />1.4.4.8.3.6<br />1.4.4.8.3.5<br />1.4.4.8.3.4<br />1.4.4.8.3.3<br />1.4.4.8.3.2<br />1.4.4.8.3.1</td>"
 				]
 			}
 		},
@@ -99,7 +99,7 @@
 			"subject": "Example/FT0011/Q.2.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1\">1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12<br />1,001</td>"
+					"<td class=\"Has-number smwtype&#95;num\" data-sort-value=\"1\">1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12<br />1,001</td>"
 				]
 			}
 		},
@@ -109,7 +109,7 @@
 			"subject": "Example/FT0011/Q.2.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1,001<br />12<br />11<br />10<br />9<br />8<br />7<br />6<br />5<br />4<br />3<br />2<br />1</td>"
+					"<td class=\"Has-number smwtype&#95;num\" data-sort-value=\"1001\">1,001<br />12<br />11<br />10<br />9<br />8<br />7<br />6<br />5<br />4<br />3<br />2<br />1</td>"
 				]
 			}
 		},
@@ -119,7 +119,7 @@
 			"subject": "Example/FT0011/Q.2.3",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1\">1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12<br />1,001</td>"
+					"<td class=\"Has-number smwtype&#95;num\" data-sort-value=\"1\">1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12<br />1,001</td>"
 				]
 			}
 		},
@@ -129,7 +129,7 @@
 			"subject": "Example/FT0011/Q.2.4",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1,001<br />12<br />11<br />10<br />9<br />8<br />7<br />6<br />5<br />4<br />3<br />2<br />1</td>"
+					"<td class=\"Has-number smwtype&#95;num\" data-sort-value=\"1001\">1,001<br />12<br />11<br />10<br />9<br />8<br />7<br />6<br />5<br />4<br />3<br />2<br />1</td>"
 				]
 			}
 		}

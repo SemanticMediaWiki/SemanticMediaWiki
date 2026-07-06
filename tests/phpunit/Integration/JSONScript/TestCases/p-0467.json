@@ -39,11 +39,11 @@
 			"subject": "P0467/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\">P0467/1</td><td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123</td>",
-					"<td class=\"smwtype_wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123</td>"
+					"<td class=\"smwtype&#95;wpg\">P0467/1</td><td class=\"Has-number smwtype&#95;num\" data-sort-value=\"123\">123</td>",
+					"<td class=\"smwtype&#95;wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype&#95;num\" data-sort-value=\"123\">123</td>"
 				],
 				"not-contain": [
-					"<td class=\"smwtype_wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype_num\"></td>"
+					"<td class=\"smwtype&#95;wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype&#95;num\"></td>"
 				]
 			}
 		},
@@ -53,11 +53,11 @@
 			"subject": "P0467/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\">P0467/1</td><td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1001</td>",
-					"<td class=\"smwtype_wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1001</td>"
+					"<td class=\"smwtype&#95;wpg\">P0467/1</td><td class=\"Has-number smwtype&#95;num\" data-sort-value=\"1001\">1001</td>",
+					"<td class=\"smwtype&#95;wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype&#95;num\" data-sort-value=\"1001\">1001</td>"
 				],
 				"not-contain": [
-					"<td class=\"smwtype_wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype_num\"></td>"
+					"<td class=\"smwtype&#95;wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype&#95;num\"></td>"
 				]
 			}
 		}

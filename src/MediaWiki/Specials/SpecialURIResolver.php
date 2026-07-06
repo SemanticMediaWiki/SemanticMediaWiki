@@ -2,9 +2,10 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Exporter\Escaper;
-use SpecialPage;
-use Title;
 
 /**
  * Resolve (redirect) pretty URIs (or "short URIs") to the equivalent full MediaWiki
@@ -21,7 +22,16 @@ class SpecialURIResolver extends SpecialPage {
 	 * @see SpecialPage::__construct
 	 */
 	public function __construct() {
-		parent::__construct( 'URIResolver', '', false );
+		// MediaWiki 1.46 deprecated the SpecialPage constructor flags; the
+		// page stays unlisted via the isListed() override below.
+		parent::__construct( 'URIResolver' );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isListed(): bool {
+		return false;
 	}
 
 	/**
@@ -29,7 +39,7 @@ class SpecialURIResolver extends SpecialPage {
 	 *
 	 * @param string $query string
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$out = $this->getOutput();
 
 		// #2344, It is believed that when no HTTP_ACCEPT is available then a
@@ -54,14 +64,14 @@ class SpecialURIResolver extends SpecialPage {
 			$query = Escaper::decodeUri( $query );
 			$query = str_replace( '_', '%20', $query );
 			$query = urldecode( $query );
-			$title = Title::newFromText( $query );
+			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $query );
 
 			// In case the title doesn't exist throw an error page
 			if ( $title === null ) {
 				$out->showErrorPage( 'badtitle', 'badtitletext' );
 			} elseif ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
 				$out->redirect(
-					SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( [ 'xmlmime' => 'rdf' ] )
+					SkinComponentUtils::makeSpecialUrl( 'ExportRDF', [ 'xmlmime' => 'rdf' ] )
 				);
 			} else {
 				$out->redirect( $title->getFullURL(), '303' );
@@ -72,7 +82,7 @@ class SpecialURIResolver extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group';
 	}
 

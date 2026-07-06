@@ -3,8 +3,8 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\DataValues\DataValue;
 use SMW\Property\SpecificationLookup;
-use SMWDataValue as DataValue;
 
 /**
  * @private
@@ -23,30 +23,15 @@ use SMWDataValue as DataValue;
  */
 class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
-	/**
-	 * @var UniqueValueConstraint
-	 */
-	private $uniqueValueConstraint;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
-	 * @var bool
-	 */
-	private $hasConstraintViolation = false;
+	private bool $hasConstraintViolation = false;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param UniqueValueConstraint $uniqueValueConstraint
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( UniqueValueConstraint $uniqueValueConstraint, SpecificationLookup $propertySpecificationLookup ) {
-		$this->uniqueValueConstraint = $uniqueValueConstraint;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly UniqueValueConstraint $uniqueValueConstraint,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**
@@ -54,17 +39,8 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasConstraintViolation() {
+	public function hasConstraintViolation(): bool {
 		return $this->hasConstraintViolation;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function clear() {
-		self::$annotations = [];
 	}
 
 	/**
@@ -89,8 +65,8 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = $this->uniqueValueConstraint->hasViolation();
 	}
 
-	private function canValidate( $dataValue ) {
-		if ( !$dataValue->isEnabledFeature( SMW_DV_PVUC ) || !$dataValue instanceof DataValue ) {
+	private function canValidate( $dataValue ): bool {
+		if ( !$dataValue->hasFeature( SMW_DV_PVUC ) || !$dataValue instanceof DataValue ) {
 			return false;
 		}
 

@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,17 +16,9 @@ use SMWQueryProcessor as QueryProcessor;
 class CheckQueryTask extends Task {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -36,12 +28,12 @@ class CheckQueryTask extends Task {
 	 *
 	 * @return array
 	 */
-	public function process( array $parameters ) {
+	public function process( array $parameters ): array {
 		if ( $parameters['subject'] === '' || $parameters['query'] === '' ) {
 			return [ 'done' => false ];
 		}
 
-		$subject = DIWikiPage::doUnserialize(
+		$subject = WikiPage::doUnserialize(
 			$parameters['subject']
 		);
 

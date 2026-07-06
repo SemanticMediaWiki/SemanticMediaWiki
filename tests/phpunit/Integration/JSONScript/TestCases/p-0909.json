@@ -246,7 +246,7 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgQueryProfiler": true,
+		"smwgQueryProfiler": [],
 		"smwgQFilterDuplicates": true,
 		"smwgQueryResultCacheType": "hash",
 		"smwgPageSpecialProperties": [

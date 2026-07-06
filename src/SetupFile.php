@@ -2,10 +2,11 @@
 
 namespace SMW;
 
-use FileFetcher\FileFetcher;
 use FileFetcher\SimpleFileFetcher;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Elastic\ElasticStore;
+use SMW\Setup\LegacyConstantNormalizer;
 use SMW\SQLStore\Installer;
 use SMW\Utils\File;
 
@@ -64,11 +65,10 @@ class SetupFile {
 
 	private /* SmwJsonRepo */ $repo;
 
-	public function __construct( ?File $file = null, ?FileFetcher $fileFetcher = null ) {
+	public function __construct() {
 		$this->repo = $GLOBALS['smwgSmwJsonRepo'] ??
-			new FileSystemSmwJsonRepo(
-				$fileFetcher ?? new SimpleFileFetcher(),
-				$file ?? new File()
+			new DatabaseMetaRepo(
+				MediaWikiServices::getInstance()->getDBLoadBalancer()
 			);
 	}
 
@@ -83,6 +83,37 @@ class SetupFile {
 
 		$smwJson = $this->repo->loadSmwJson( $vars['smwgConfigFileDir'] );
 
+		// Pre-7.0 legacy-file fallback. When the primary repo is empty
+		// (typically `smw_meta` on a wiki that hasn't been migrated yet),
+		// hydrate `$vars` from `.smw.json` if it is still present. The
+		// install/upgrade run then preserves the user's keys via
+		// `SetupFile::write`'s merge-then-save semantics, and
+		// {@see \SMW\Setup\MigrateSmwJsonToDb} consumes the current wiki's
+		// slice from the file at the end of the install. Once the slice
+		// is consumed (or the file was never present), this branch never
+		// fires again.
+		if ( $smwJson === null ) {
+			$legacyPath = rtrim( $vars['smwgConfigFileDir'], '/' ) . '/' . self::FILE_NAME;
+			if ( is_file( $legacyPath ) ) {
+				$legacy = ( new FileSystemSmwJsonRepo( new SimpleFileFetcher(), new File() ) )
+					->loadSmwJson( $vars['smwgConfigFileDir'] );
+				if ( $legacy === null ) {
+					// The file exists but `FileSystemSmwJsonRepo` could not
+					// decode it. Aborting here is the only way to surface
+					// the failure before the installer writes fresh rows to
+					// `smw_meta` and permanently blocks the retry path: on
+					// the next run `smw_meta` would be non-empty, this
+					// fallback would not fire, and the legacy file (even
+					// after the admin repairs it) would be silently ignored.
+					throw new RuntimeException(
+						"SMW: legacy {$legacyPath} exists but cannot be decoded as JSON."
+						. " Fix or remove the file before retrying setup."
+					);
+				}
+				$smwJson = $legacy;
+			}
+		}
+
 		if ( $smwJson !== null ) {
 			$vars[self::SMW_JSON] = $smwJson;
 		}
@@ -95,7 +126,7 @@ class SetupFile {
 			return true;
 		}
 
-		if ( $isCli === false && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
+		if ( !$isCli && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return true;
 		}
 
@@ -106,15 +137,13 @@ class SetupFile {
 			return false;
 		}
 
-		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS[self::SMW_JSON][$id]['upgrade_key'];
-
 		if (
 			isset( $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) &&
 			$GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] !== false ) {
-			$isGoodSchema = false;
+			return false;
 		}
 
-		return $isGoodSchema;
+		return self::makeUpgradeKey( $GLOBALS ) === $GLOBALS[self::SMW_JSON][$id]['upgrade_key'];
 	}
 
 	public static function makeUpgradeKey( array $vars ): string {
@@ -259,7 +288,7 @@ class SetupFile {
 	/**
 	 * FIXME: a bunch of callers are calling with a single array argument. These are likely broken.
 	 */
-	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ) {
+	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -429,8 +458,17 @@ class SetupFile {
 			$components += [ 'smwgEntityCollation' => $vars['smwgEntityCollation'] ];
 		}
 
-		if ( $vars['smwgFieldTypeFeatures'] !== false ) {
-			$components += [ 'smwgFieldTypeFeatures' => $vars['smwgFieldTypeFeatures'] ];
+		// Normalize before hashing so the upgrade key is stable across the
+		// PR-C migration: an admin switching from the legacy SMW_FIELDT_*
+		// bitmask form to the new ["char-nocase", "char-long"] array form
+		// must not trigger a forced maintenance-mode upgrade for what is
+		// semantically the same configuration (#6586).
+		$fieldTypeFeatures = LegacyConstantNormalizer::normalize(
+			'smwgFieldTypeFeatures',
+			$vars['smwgFieldTypeFeatures']
+		);
+		if ( $fieldTypeFeatures !== false ) {
+			$components += [ 'smwgFieldTypeFeatures' => $fieldTypeFeatures ];
 		}
 
 		// Recognize when the version requirements change and force

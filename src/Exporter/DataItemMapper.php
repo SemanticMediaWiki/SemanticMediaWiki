@@ -2,7 +2,7 @@
 
 namespace SMW\Exporter;
 
-use SMWDataItem as DataItem;
+use SMW\DataItems\DataItem;
 
 /**
  * @private

@@ -2,16 +2,16 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
 
 /**
  * @group SMW
@@ -53,8 +53,6 @@ class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
-
-		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 	}
 
 	protected function tearDown(): void {
@@ -78,8 +76,8 @@ class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData();
 
 		$semanticDataOfNeverland->addPropertyObjectValue(
-			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
-			new DIWikiPage( 'BananaWonderland', NS_MAIN )
+			Property::newFromUserLabel( 'LocatedIn' )->setPropertyValueType( '_wpg' ),
+			new WikiPage( 'BananaWonderland', NS_MAIN )
 		);
 
 		$this->getStore()->updateData( $semanticDataOfNeverland );
@@ -92,13 +90,13 @@ class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData();
 
 		$semanticDataOfDreamland->addPropertyObjectValue(
-			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
-			new DIWikiPage( 'BananaWonderland', NS_MAIN )
+			Property::newFromUserLabel( 'LocatedIn' )->setPropertyValueType( '_wpg' ),
+			new WikiPage( 'BananaWonderland', NS_MAIN )
 		);
 
 		$semanticDataOfDreamland->addPropertyObjectValue(
-			new DIProperty( '_INST' ),
-			new DIWikiPage( 'HappyPlaces', NS_CATEGORY )
+			new Property( '_INST' ),
+			new WikiPage( 'HappyPlaces', NS_CATEGORY )
 		);
 
 		$this->getStore()->updateData( $semanticDataOfDreamland );
@@ -111,25 +109,25 @@ class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			->newEmptySemanticData();
 
 		$semanticDataOfWonderland->addPropertyObjectValue(
-			DIProperty::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ),
-			new DIWikiPage( 'Wonderland', NS_MAIN )
+			Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ),
+			new WikiPage( 'Wonderland', NS_MAIN )
 		);
 
 		$this->getStore()->updateData( $semanticDataOfWonderland );
 
 		$someProperty = new SomeProperty(
-			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'LocatedIn' )->setPropertyValueType( '_wpg' ),
 			new SomeProperty(
-				DIProperty::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ),
+				Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ),
 				new ValueDescription(
-					new DIWikiPage( 'Wonderland', NS_MAIN, '' ),
-					DIProperty::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
+					new WikiPage( 'Wonderland', NS_MAIN, '' ),
+					Property::newFromUserLabel( 'MemberOf' )->setPropertyValueType( '_wpg' ), SMW_CMP_EQ
 				)
 			)
 		);
 
 		$classDescription = new ClassDescription(
-			new DIWikiPage( 'HappyPlaces', NS_CATEGORY, '' )
+			new WikiPage( 'HappyPlaces', NS_CATEGORY, '' )
 		);
 
 		$description = new Conjunction();
@@ -181,14 +179,14 @@ class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		/**
 		 * Page annotated with [[Born in::Paris]]
 		 */
-		$property = DIProperty::newFromUserLabel( 'Born in' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property = Property::newFromUserLabel( 'Born in' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ . 'PageOughtToBeSelected' );
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( 'Paris', NS_MAIN )
+			new WikiPage( 'Paris', NS_MAIN )
 		);
 
 		$expectedSubjects = $semanticData->getSubject();

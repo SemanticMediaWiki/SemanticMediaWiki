@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use RuntimeException;
+use SMW\DataItems\Uri;
 use SMW\Query\Language\ValueDescription;
-use SMWDIUri as DIUri;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,7 +23,7 @@ class ComparatorMapper {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function mapComparator( ValueDescription $description, &$value ) {
+	public function mapComparator( ValueDescription $description, &$value ): string {
 		$comparatorMap = [
 			SMW_CMP_EQ   => '=',
 			SMW_CMP_LESS => '<',
@@ -39,13 +39,13 @@ class ComparatorMapper {
 
 		$comparator = $description->getComparator();
 
-		if ( !isset( $comparatorMap[$comparator] ) ) {
+		if ( !isset( $comparatorMap[$comparator ?? ''] ) ) {
 			throw new RuntimeException( "Unsupported comparator $comparator in value description." );
 		}
 
 		if ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE || $comparator === SMW_CMP_PRIM_LIKE || $comparator === SMW_CMP_PRIM_NLKE ) {
 
-			if ( $description->getDataItem() instanceof DIUri ) {
+			if ( $description->getDataItem() instanceof Uri ) {
 				$value = str_replace( [ 'http://', 'https://', '%2A' ], [ '*', '*', '*' ], $value );
 			}
 

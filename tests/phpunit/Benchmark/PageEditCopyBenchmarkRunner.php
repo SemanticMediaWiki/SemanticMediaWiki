@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Benchmark;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageReader;
-use Title;
 
 /**
  * @group semantic-mediawiki-benchmark
@@ -18,54 +18,28 @@ use Title;
 class PageEditCopyBenchmarkRunner {
 
 	/**
-	 * @var PageImportBenchmarkRunner
-	 */
-	private $pageImportBenchmarkRunner;
-
-	/**
-	 * @var Benchmarker
-	 */
-	private $benchmarker;
-
-	/**
-	 * @var PageCreator
-	 */
-	private $pageCreator;
-
-	/**
-	 * @var PageReader
-	 */
-	private $pageReader;
-
-	/**
 	 * @var array
 	 */
 	private $benchmarkReport = [];
 
 	/**
-	 * @var int|count
+	 * @var int|null
 	 */
 	private $editRepetitionCount = null;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param PageImportBenchmarkRunner $pageImportBenchmarkRunner
-	 * @param Benchmarker $benchmarker
-	 * @param PageCreator $pageCreator
-	 * @param PageReader $pageReader
 	 */
-	public function __construct( PageImportBenchmarkRunner $pageImportBenchmarkRunner, Benchmarker $benchmarker, PageCreator $pageCreator, PageReader $pageReader ) {
-		$this->pageImportBenchmarkRunner = $pageImportBenchmarkRunner;
-		$this->benchmarker = $benchmarker;
-		$this->pageCreator = $pageCreator;
-		$this->pageReader = $pageReader;
+	public function __construct(
+		private readonly PageImportBenchmarkRunner $pageImportBenchmarkRunner,
+		private readonly Benchmarker $benchmarker,
+		private readonly PageCreator $pageCreator,
+		private readonly PageReader $pageReader,
+	) {
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array
 	 */
 	public function getBenchmarkReport() {
 		return $this->benchmarkReport;
@@ -82,8 +56,6 @@ class PageEditCopyBenchmarkRunner {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $case
 	 */
 	public function run( array $case ) {
 		$this->benchmarkReport = [];
@@ -107,10 +79,11 @@ class PageEditCopyBenchmarkRunner {
 		}
 
 		$editReports = [];
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		foreach ( $case['edit'] as $title ) {
 
-			$editTitle = Title::newFromText( $title );
+			$editTitle = $titleFactory->newFromText( $title );
 
 			if ( !$editTitle->exists() ) {
 				throw new RuntimeException( $title . ' is not available or readable for the edit process.' );

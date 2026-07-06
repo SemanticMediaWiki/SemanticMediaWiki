@@ -2,11 +2,12 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,31 +18,13 @@ use SMW\Store;
 class IdEntityFinder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @since 2.1
-	 *
-	 * @param Store $store
-	 * @param IteratorFactory $iteratorFactory
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory, IdCacheManager $idCacheManager ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly IteratorFactory $iteratorFactory,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**
@@ -50,9 +33,9 @@ class IdEntityFinder {
 	 * @param array $idList
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DIWikiPage[]
+	 * @return MappingIterator|array
 	 */
-	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ): array|MappingIterator {
 		if ( $idList === [] ) {
 			return [];
 		}
@@ -86,10 +69,10 @@ class IdEntityFinder {
 	 *
 	 * @param stdClass $row
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function newFromRow( $row ) {
-		$dataItem = new DIWikiPage(
+	public function newFromRow( $row ): WikiPage {
+		$dataItem = new WikiPage(
 			$row->smw_title,
 			$row->smw_namespace,
 			$row->smw_iw,
@@ -127,20 +110,22 @@ class IdEntityFinder {
 	 *
 	 * @param int $id
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public function getDataItemById( $id ) {
-		if ( ( $dataItem = $this->get( (int)$id ) ) !== false ) {
+		$dataItem = $this->get( (int)$id );
+		if ( $dataItem !== false ) {
 			return $dataItem;
 		}
 
 		return null;
 	}
 
-	private function get( $id ) {
+	private function get( int $id ): WikiPage|false {
 		$cache = $this->idCacheManager->get( 'entity.lookup' );
 
-		if ( ( $dataItem = $cache->fetch( $id ) ) !== false ) {
+		$dataItem = $cache->fetch( (string)$id );
+		if ( $dataItem !== false ) {
 			return $dataItem;
 		}
 
@@ -154,12 +139,12 @@ class IdEntityFinder {
 		}
 
 		$dataItem = $this->newFromRow( $row );
-		$cache->save( $id, $dataItem );
+		$cache->save( (string)$id, $dataItem );
 
 		return $dataItem;
 	}
 
-	private function fetchFromTable( $conditions, $selectRow = false ) {
+	private function fetchFromTable( array $conditions, bool $selectRow = false ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$fields = [
@@ -173,11 +158,17 @@ class IdEntityFinder {
 			'smw_hash'
 		];
 
+		$queryBuilder = $connection->newSelectQueryBuilder()
+			->select( $fields )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->caller( __METHOD__ );
+
 		if ( $selectRow ) {
-			return $connection->selectRow( SQLStore::ID_TABLE, $fields, $conditions, __METHOD__ );
+			return $queryBuilder->fetchRow();
 		}
 
-		return $connection->select( SQLStore::ID_TABLE, $fields, $conditions, __METHOD__ );
+		return $queryBuilder->fetchResultSet();
 	}
 
 }

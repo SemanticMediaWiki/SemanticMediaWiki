@@ -7,9 +7,9 @@
 ```php
 use MediaWiki\MediaWikiServices;
 use SMW\Store;
-use SMW\DIWikiPage;
+use SMW\WikiPage;
 
-MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::EntityReferenceCleanUpComplete', function( Store $store, $id, DIWikiPage $subject, $isRedirect ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::EntityReferenceCleanUpComplete', function( Store $store, $id, WikiPage $subject, $isRedirect ) {
 
 	return true;
 } );

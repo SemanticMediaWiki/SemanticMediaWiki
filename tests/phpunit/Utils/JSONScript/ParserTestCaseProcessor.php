@@ -2,19 +2,17 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use Article;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SerializerFactory;
-use SMW\Services\ServicesFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\Tests\Utils\PageReader;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Validators\IncomingSemanticDataValidator;
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use SMW\Tests\Utils\Validators\StringValidator;
-use User;
 
 /**
  * @group semantic-mediawiki
@@ -27,26 +25,6 @@ use User;
  * @author mwjames
  */
 class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SemanticDataValidator
-	 */
-	private $semanticDataValidator;
-
-	/**
-	 * @var IncomingSemanticDataValidator
-	 */
-	private $incomingSemanticDataValidator;
-
-	/**
-	 * @var StringValidator
-	 */
-	private $stringValidator;
 
 	/**
 	 * @var PageReader
@@ -68,17 +46,12 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	 */
 	private $debug = false;
 
-	/**
-	 * @param Store
-	 * @param SemanticDataValidator
-	 * @param IncomingSemanticDataValidator
-	 * @param StringValidator
-	 */
-	public function __construct( $store, $semanticDataValidator, $incomingSemanticDataValidator, $stringValidator ) {
-		$this->store = $store;
-		$this->semanticDataValidator = $semanticDataValidator;
-		$this->incomingSemanticDataValidator = $incomingSemanticDataValidator;
-		$this->stringValidator = $stringValidator;
+	public function __construct(
+		private $store,
+		private $semanticDataValidator,
+		private $incomingSemanticDataValidator,
+		private $stringValidator,
+	) {
 		$this->pageReader = UtilityFactory::getInstance()->newPageReader();
 		$this->superUser = UtilityFactory::getInstance()->newMockSuperUser();
 		$this->serializerFactory = ApplicationFactory::getInstance()->newSerializerFactory();
@@ -171,14 +144,14 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		);
 
 		if ( isset( $case['assert-output']['onOutputPage'] ) && $case['assert-output']['onOutputPage'] ) {
-			$context = new \RequestContext();
+			$context = new RequestContext();
 			$context->setTitle( $title );
 			// Ensures the OutputPageBeforeHTML hook is run
 			$context->getOutput()->addParserOutput( $parserOutput );
 			$output = $context->getOutput()->getHtml();
 		} elseif ( isset( $case['assert-output']['onPageView'] ) ) {
 			$parameters = isset( $case['assert-output']['onPageView']['parameters'] ) ? $case['assert-output']['onPageView']['parameters'] : [];
-			$context = \RequestContext::newExtraneousContext(
+			$context = RequestContext::newExtraneousContext(
 				$title,
 				$parameters
 			);
@@ -187,10 +160,10 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			// limited to users in the group ..."
 			$context->setUser( $this->superUser );
 
-			\Article::newFromTitle( $title, $context )->view();
+			Article::newFromTitle( $title, $context )->view();
 			$output = $context->getOutput()->getHtml();
 		} else {
-			$output = $parserOutput->getText();
+			$output = $parserOutput->runOutputPipeline( ParserOptions::newFromAnon() )->getContentHolderText();
 		}
 
 		if ( isset( $case['assert-output']['include-head-items'] ) && $case['assert-output']['include-head-items'] ) {
@@ -231,7 +204,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			return;
 		}
 
-		$mediaWikiNsContentReader = ServicesFactory::getInstance()->create( 'MediaWikiNsContentReader' );
+		$mediaWikiNsContentReader = ApplicationFactory::getInstance()->create( 'MediaWikiNsContentReader' );
 		$mediaWikiNsContentReader->skipMessageCache();
 
 		$text = $mediaWikiNsContentReader->read( $case['subject'] );
@@ -255,7 +228,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	}
 
 	private function getSubjectFrom( $case, $checkExists = true ) {
-		$subject = DIWikiPage::newFromText(
+		$subject = WikiPage::newFromText(
 			$case['subject'],
 			isset( $case['namespace'] ) ? constant( $case['namespace'] ) : NS_MAIN
 		);

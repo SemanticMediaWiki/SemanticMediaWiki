@@ -3,14 +3,19 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use Psr\Log\LoggerInterface;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
+use SMW\MediaWiki\PageCreator;
+use SMW\SerializerFactory;
+use SMW\Settings;
+use SMW\Store;
 
 /**
  * UpdateJob is responsible for the asynchronous update of semantic data
@@ -40,6 +45,13 @@ class UpdateJob extends Job {
 	const FORCED_UPDATE = 'forcedUpdate';
 
 	/**
+	 * Bypasses a full content parse and only purges the parser cache if the
+	 * stored last-modified timestamp still matches the page's current revision
+	 * timestamp.
+	 */
+	const SHALLOW_UPDATE = 'shallowUpdate';
+
+	/**
 	 * Indicates the use of the _CHGPRO property as base for the SemanticData
 	 */
 	const CHANGE_PROP = 'changeProp';
@@ -49,31 +61,50 @@ class UpdateJob extends Job {
 	 */
 	const SEMANTIC_DATA = 'semanticData';
 
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
+	private readonly Settings $settings;
+
+	private readonly PageCreator $pageCreator;
+
+	private readonly PageUpdaterFactory $pageUpdaterFactory;
+
+	private readonly SerializerFactory $serializerFactory;
+
+	private readonly ContentParserFactory $contentParserFactory;
+
+	private readonly ParserDataFactory $parserDataFactory;
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Title $title
-	 * @param array $params
 	 */
-	function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store,
+		Settings $settings,
+		PageCreator $pageCreator,
+		PageUpdaterFactory $pageUpdaterFactory,
+		SerializerFactory $serializerFactory,
+		ContentParserFactory $contentParserFactory,
+		ParserDataFactory $parserDataFactory,
+		LoggerInterface $logger
+	) {
 		parent::__construct( 'smw.update', $title, $params );
+		$this->setStore( $store );
 		$this->title = $title;
 		$this->removeDuplicates = true;
+		$this->settings = $settings;
+		$this->pageCreator = $pageCreator;
+		$this->pageUpdaterFactory = $pageUpdaterFactory;
+		$this->serializerFactory = $serializerFactory;
+		$this->contentParserFactory = $contentParserFactory;
+		$this->parserDataFactory = $parserDataFactory;
+		$this->setLogger( $logger );
 
-		$this->isEnabledJobQueue(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' )
-		);
+		$this->isEnabledJobQueue( $settings->get( 'smwgEnableUpdateJobs' ) );
 	}
 
 	/**
 	 * @see Job::run
-	 *
-	 * @return bool
 	 */
 	public function run() {
 		// #2199 ("Invalid or virtual namespace -1 given")
@@ -83,8 +114,6 @@ class UpdateJob extends Job {
 
 		MediaWikiServices::getInstance()->getLinkCache()->clear();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
 		if ( !$this->hasParameter( self::FORCED_UPDATE ) && $this->matchesLastModified( $this->getTitle() ) ) {
 			return true;
 		}
@@ -93,29 +122,29 @@ class UpdateJob extends Job {
 			return $this->doUpdate();
 		}
 
-		$this->applicationFactory->getStore()->clearData(
-			DIWikiPage::newFromTitle( $this->getTitle() )
+		$this->store->clearData(
+			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
 		return true;
 	}
 
-	private function matchesLastModified( $title ) {
-		if ( !$this->getParameter( 'shallowUpdate' ) ) {
+	private function matchesLastModified( ?Title $title ): bool {
+		if ( !$this->getParameter( self::SHALLOW_UPDATE ) ) {
 			return false;
 		}
 
 		$lastModified = $this->getLastModifiedTimestamp(
-			DIWikiPage::newFromTitle( $title )
+			WikiPage::newFromTitle( $title )
 		);
 
-		$wikiPage = $this->applicationFactory->newPageCreator()->createPage( $title );
+		$wikiPage = $this->pageCreator->createPage( $title );
 
 		if ( $lastModified !== $wikiPage->getTimestamp() ) {
 			return false;
 		}
 
-		$pageUpdater = $this->applicationFactory->newPageUpdater();
+		$pageUpdater = $this->pageUpdaterFactory->newPageUpdater();
 		$pageUpdater->addPage( $title );
 		$pageUpdater->waitOnTransactionIdle();
 		$pageUpdater->doPurgeParserCache();
@@ -136,15 +165,15 @@ class UpdateJob extends Job {
 		return $this->parse_content();
 	}
 
-	private function change_propagation( $dataItem ) {
+	private function change_propagation( $dataItem ): void {
 		$this->setParameter( 'updateType', 'ChangePropagation' );
-		$subject = DIWikiPage::doUnserialize( $dataItem );
+		$subject = WikiPage::doUnserialize( $dataItem );
 
 		// Read the _CHGPRO property and fetch the serialized
 		// SemanticData object
-		$pv = $this->applicationFactory->getStore()->getPropertyValues(
+		$pv = $this->store->getPropertyValues(
 			$subject,
-			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
+			new Property( Property::TYPE_CHANGE_PROP )
 		);
 
 		if ( $pv === [] ) {
@@ -160,18 +189,18 @@ class UpdateJob extends Job {
 		);
 	}
 
-	private function set_data( $semanticData ) {
+	private function set_data( $semanticData ): bool {
 		$this->setParameter( 'updateType', 'SemanticData' );
 
-		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
+		$semanticData = $this->serializerFactory->newSemanticDataDeserializer()->deserialize(
 			$semanticData
 		);
 
 		$semanticData->removeProperty(
-			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
+			new Property( Property::TYPE_CHANGE_PROP )
 		);
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $this->parserDataFactory->newParserData(
 			$this->getTitle(),
 			new ParserOutput()
 		);
@@ -186,18 +215,18 @@ class UpdateJob extends Job {
 		return $this->updateStore( $parserData );
 	}
 
-	private function parse_content() {
+	private function parse_content(): bool {
 		$this->setParameter( 'updateType', 'ContentParse' );
 
-		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
+		$contentParser = $this->contentParserFactory->newContentParser( $this->getTitle() );
 		$contentParser->parse();
 
 		if ( !( $contentParser->getOutput() instanceof ParserOutput ) ) {
-			$this->setLastError( $contentParser->getErrors() );
+			$this->setLastError( implode( ' ', $contentParser->getErrors() ) );
 			return false;
 		}
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $this->parserDataFactory->newParserData(
 			$this->getTitle(),
 			$contentParser->getOutput()
 		);
@@ -212,16 +241,10 @@ class UpdateJob extends Job {
 		return $this->updateStore( $parserData );
 	}
 
-	private function updateStore( $parserData ) {
-		$this->applicationFactory->getMediaWikiLogger()->info(
-			[
-				'Job',
-				'UpdateJob',
-				'{title}',
-				'Type: {updateType}',
-				'Origin: {origin}',
-				'isForcedUpdate: {forcedUpdate}'
-			],
+	private function updateStore( $parserData ): bool {
+		$this->logger->info(
+			'Job UpdateJob {title} Type: {updateType} Origin: {origin} '
+				. 'isForcedUpdate: {forcedUpdate}',
 			[
 				'method' => __METHOD__,
 				'role' => 'user',
@@ -246,6 +269,7 @@ class UpdateJob extends Job {
 		// TODO
 		// Rebuild the factbox
 
+		$origin = [];
 		$origin[] = 'UpdateJob';
 
 		if ( $this->hasParameter( 'origin' ) ) {
@@ -281,7 +305,7 @@ class UpdateJob extends Job {
 		);
 
 		$parserData->getSemanticData()->setOption(
-			\SMW\SemanticData::OPT_LAST_MODIFIED,
+			SemanticData::OPT_LAST_MODIFIED,
 			wfTimestamp( TS_UNIX )
 		);
 
@@ -304,10 +328,10 @@ class UpdateJob extends Job {
 	 * Convenience method to find last modified MW timestamp for a subject that
 	 * has been added using the storage-engine.
 	 */
-	private function getLastModifiedTimestamp( DIWikiPage $wikiPage ) {
-		$dataItems = $this->applicationFactory->getStore()->getPropertyValues(
+	private function getLastModifiedTimestamp( WikiPage $wikiPage ) {
+		$dataItems = $this->store->getPropertyValues(
 			$wikiPage,
-			new DIProperty( '_MDAT' )
+			new Property( '_MDAT' )
 		);
 
 		if ( $dataItems !== [] ) {

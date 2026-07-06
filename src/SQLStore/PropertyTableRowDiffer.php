@@ -3,14 +3,14 @@
 namespace SMW\SQLStore;
 
 use InvalidArgumentException;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Exception\DataItemException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,35 +22,17 @@ use SMWDataItem as DataItem;
  */
 class PropertyTableRowDiffer {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private ?ChangeOp $changeOp = null;
 
-	/**
-	 * @var PropertyTableRowMapper
-	 */
-	private $propertyTableRowMapper;
-
-	/**
-	 * @var ChangeOp
-	 */
-	private $changeOp;
-
-	/**
-	 * @var bool
-	 */
-	private $checkRemnantEntities = false;
+	private bool $checkRemnantEntities = false;
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param Store $store
-	 * @param PropertyTableRowMapper $propertyTableRowMapper
 	 */
-	public function __construct( Store $store, PropertyTableRowMapper $propertyTableRowMapper ) {
-		$this->store = $store;
-		$this->propertyTableRowMapper = $propertyTableRowMapper;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyTableRowMapper $propertyTableRowMapper,
+	) {
 	}
 
 	/**
@@ -58,7 +40,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param ChangeOp|null $changeOp
 	 */
-	public function setChangeOp( ?ChangeOp $changeOp = null ) {
+	public function setChangeOp( ?ChangeOp $changeOp = null ): void {
 		$this->changeOp = $changeOp;
 	}
 
@@ -67,16 +49,16 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param bool $checkRemnantEntities
 	 */
-	public function checkRemnantEntities( $checkRemnantEntities ) {
+	public function checkRemnantEntities( $checkRemnantEntities ): void {
 		$this->checkRemnantEntities = (bool)$checkRemnantEntities;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return ChangeOp
+	 * @return ChangeOp|null
 	 */
-	public function getChangeOp() {
+	public function getChangeOp(): ?ChangeOp {
 		return $this->changeOp;
 	}
 
@@ -104,7 +86,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	public function computeTableRowDiff( $sid, SemanticData $semanticData ) {
+	public function computeTableRowDiff( $sid, SemanticData $semanticData ): array {
 		$tablesDeleteRows = [];
 		$tablesInsertRows = [];
 
@@ -140,8 +122,8 @@ class PropertyTableRowDiffer {
 			}
 
 			try {
-				$fixedProperties[] = new DIProperty( $propertyTable->getFixedProperty() );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+				$fixedProperties[] = new Property( $propertyTable->getFixedProperty() );
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				// Do nothing!
 			}
 		}
@@ -156,7 +138,7 @@ class PropertyTableRowDiffer {
 				continue;
 			}
 
-			$tableName = $propertyTable->getName();
+			$tableName = $propertyTable->getName() ?? '';
 			$fixedProperty = [];
 
 			// Fixed property tables have no p_id declared, the auxiliary
@@ -167,11 +149,11 @@ class PropertyTableRowDiffer {
 
 				// Isn't registered therefore leave it alone (property was removed etc.)
 				try {
-					$property = new DIProperty( $fixedProperty['key'] );
+					$property = new Property( $fixedProperty['key'] );
 					$fixedProperty['p_id'] = $this->store->getObjectIds()->getSMWPropertyID(
 						$property
 					);
-				} catch ( DataItemException $e ) {
+				} catch ( DataItemException ) {
 					$fixedProperty = [];
 				}
 			}
@@ -211,14 +193,12 @@ class PropertyTableRowDiffer {
 
 				// #3849
 				// Check the table that wasn't part of the old and new hash
-				$row = $connection->selectRow(
-					$propertyTable->getName(),
-					's_id',
-					[
-						's_id' => $sid
-					],
-					__METHOD__
-				);
+				$row = $connection->newSelectQueryBuilder()
+					->select( 's_id' )
+					->from( $propertyTable->getName() )
+					->where( [ 's_id' => $sid ] )
+					->caller( __METHOD__ )
+					->fetchRow();
 
 				// Find and remove any remnants (ghosts) from possible failed
 				// updates that weren't rollback correctly
@@ -263,7 +243,7 @@ class PropertyTableRowDiffer {
 	 * The phenomenon has been observed in connection with a page turned from
 	 * a redirect to a normal page or for undeleted pages.
 	 */
-	private function createHash( $tableName, $newData, $hashMutator = '' ) {
+	private function createHash( $tableName, array $newData, string $hashMutator = '' ): string {
 		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashMutator );
 	}
 
@@ -282,7 +262,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	private function fetchCurrentContentsForPropertyTable( $sid, PropertyTableDefinition $propertyTable ) {
+	private function fetchCurrentContentsForPropertyTable( $sid, PropertyTableDefinition $propertyTable ): array {
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
 			throw new InvalidArgumentException( 'Operation not supported for tables without subject IDs.' );
 		}
@@ -290,12 +270,12 @@ class PropertyTableRowDiffer {
 		$contents = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$result = $connection->select(
-			$connection->tablename( $propertyTable->getName() ),
-			'*',
-			[ 's_id' => $sid ],
-			__METHOD__
-		);
+		$result = $connection->newSelectQueryBuilder()
+			->select( '*' )
+			->from( $propertyTable->getName() )
+			->where( [ 's_id' => $sid ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $result as $row ) {
 			if ( is_object( $row ) ) {
@@ -335,7 +315,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	private function arrayDeleteMatchingValues( $oldValues, $newValues, $propertyTable ) {
+	private function arrayDeleteMatchingValues( array $oldValues, array $newValues, $propertyTable ): array {
 		$isString = $propertyTable->getDIType() === DataItem::TYPE_BLOB;
 
 		// Cycle through old values

@@ -3,9 +3,11 @@
 namespace SMW\MediaWiki\Deferred;
 
 use Closure;
-use DeferrableUpdate;
-use DeferredUpdates;
+use Exception;
+use MediaWiki\Deferred\DeferrableUpdate;
+use MediaWiki\Deferred\DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
+use Throwable;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -19,69 +21,24 @@ class CallableUpdate implements DeferrableUpdate {
 	use LoggerAwareTrait;
 
 	/**
-	 * Updates that should run before flushing output buffer
-	 */
-	const STAGE_PRESEND = 'pre';
-
-	/**
-	 * Updates that should run after flushing output buffer
-	 */
-	const STAGE_POSTSEND = 'post';
-
-	/**
 	 * @var Closure|callable
 	 */
 	protected $callback;
 
-	/**
-	 * @var bool
-	 */
-	protected $isDeferrableUpdate = true;
+	protected bool $isDeferrableUpdate = true;
 
-	/**
-	 * @var bool
-	 */
-	protected $isCommandLineMode = false;
+	protected bool $isCommandLineMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isPending = false;
+	private bool $isPending = false;
 
-	/**
-	 * @var string
-	 */
-	private $origin = '';
+	private string|array $origin = '';
 
-	/**
-	 * @var array
-	 */
-	private static $pendingUpdates = [];
+	private static array $pendingUpdates = [];
 
-	/**
-	 * @var string|null
-	 */
-	private $fingerprint = null;
-
-	/**
-	 * @var array
-	 */
-	private static $queueList = [];
-
-	/**
-	 * @var string
-	 */
-	private $stage;
-
-	/**
-	 * @var bool
-	 */
-	private $catchExceptionAndRethrow = false;
+	private bool $catchExceptionAndRethrow = false;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param callable|null $callback
 	 */
 	public function __construct( ?callable $callback = null ) {
 		if ( $callback === null ) {
@@ -89,7 +46,6 @@ class CallableUpdate implements DeferrableUpdate {
 		}
 
 		$this->callback = $callback;
-		$this->stage = self::STAGE_POSTSEND;
 	}
 
 	/**
@@ -97,44 +53,16 @@ class CallableUpdate implements DeferrableUpdate {
 	 * Indicates whether MW is running in command-line mode.
 	 *
 	 * @since 2.5
-	 *
-	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( bool $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function asPresend() {
-		$this->stage = self::STAGE_PRESEND;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return string
-	 */
-	public function getStage() {
-		return $this->stage;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param callable $callback
-	 */
-	public function setCallback( callable $callback ) {
+	public function setCallback( callable $callback ): void {
 		$this->callback = $callback;
-	}
-
-	/**
-	 * @deprecated since 3.0, use DeferredCallableUpdate::isDeferrableUpdate
-	 * @since 2.4
-	 */
-	public function enabledDeferredUpdate( $enabledDeferredUpdate = true ) {
-		$this->isDeferrableUpdate( $enabledDeferredUpdate );
 	}
 
 	/**
@@ -144,8 +72,8 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function isDeferrableUpdate( $isDeferrableUpdate ) {
-		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
+	public function isDeferrableUpdate( bool $isDeferrableUpdate ): void {
+		$this->isDeferrableUpdate = $isDeferrableUpdate;
 	}
 
 	/**
@@ -154,11 +82,9 @@ class CallableUpdate implements DeferrableUpdate {
 	 * a possible rollback without a chance to investigate missing data updates.
 	 *
 	 * @since 3.1
-	 *
-	 * @param bool $catchExceptionAndRethrow
 	 */
-	public function catchExceptionAndRethrow( $catchExceptionAndRethrow ) {
-		$this->catchExceptionAndRethrow = (bool)$catchExceptionAndRethrow;
+	public function catchExceptionAndRethrow( bool $catchExceptionAndRethrow ): void {
+		$this->catchExceptionAndRethrow = $catchExceptionAndRethrow;
 	}
 
 	/**
@@ -168,40 +94,15 @@ class CallableUpdate implements DeferrableUpdate {
 	 * by using an internal waitableUpdate list and release them at convenience.
 	 *
 	 * @since 2.4
-	 *
-	 * @param booloan $isPending
 	 */
-	public function markAsPending( $isPending = false ) {
-		$this->isPending = (bool)$isPending;
-	}
-
-	/**
-	 * @note Set a fingerprint allowing it to track and detect duplicate update
-	 * requests while being unprocessed.
-	 *
-	 * @since 2.5
-	 *
-	 * @param string|null $fingerprint
-	 */
-	public function setFingerprint( $fingerprint = null ) {
-		$this->fingerprint = md5( $fingerprint ?? '' );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string|null $queue
-	 */
-	public function getFingerprint() {
-		return $this->fingerprint;
+	public function markAsPending( bool $isPending = false ): void {
+		$this->isPending = $isPending;
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( string|array $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -209,10 +110,8 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @see DeferrableCallback::getOrigin
 	 *
 	 * @since 2.5
-	 *
-	 * @return string
 	 */
-	public function getOrigin() {
+	public function getOrigin(): string|false {
 		if ( is_string( $this->origin ) ) {
 			$this->origin = [ $this->origin ];
 		}
@@ -224,7 +123,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 * Release all pending updates into MediaWiki's DeferredUpdates stack.
 	 * @since 2.4
 	 */
-	public static function releasePendingUpdates() {
+	public static function releasePendingUpdates(): void {
 		foreach ( self::$pendingUpdates as $update ) {
 			DeferredUpdates::addUpdate( $update );
 		}
@@ -236,7 +135,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 * Clear all pending updates without executing them. Useful for tests.
 	 * @since 4.2
 	 */
-	public static function clearPendingUpdates() {
+	public static function clearPendingUpdates(): void {
 		Assert::precondition( defined( 'MW_PHPUNIT_TEST' ), 'This method should only be called in tests' );
 		self::$pendingUpdates = [];
 	}
@@ -246,7 +145,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @since 2.4
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		if ( $this->catchExceptionAndRethrow ) {
 			$this->attemptUpdate();
 		} else {
@@ -254,79 +153,77 @@ class CallableUpdate implements DeferrableUpdate {
 		}
 
 		$this->logger->info(
-			[ 'DeferrableUpdate', 'Update completed: {origin} (fingerprint:{fingerprint})' ],
-			[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fingerprint' => $this->fingerprint ]
+			'DeferrableUpdate Update completed: {origin}',
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'origin' => $this->getOrigin(),
+			]
 		);
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function pushUpdate() {
-		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
+	public function pushUpdate(): void {
+		if ( $this->isPending && $this->isDeferrableUpdate ) {
 			$this->logger->info(
-				[ 'DeferrableUpdate', 'Push: {origin} (fingerprint: {fingerprint} is already listed, skip)' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fingerprint' => $this->fingerprint ]
+				'DeferrableUpdate Push: {origin} (as pending DeferredCallableUpdate)',
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin(),
+				]
 			);
+
+			self::$pendingUpdates[] = $this;
 			return;
 		}
 
-		self::$queueList[$this->fingerprint] = true;
-
-		if ( $this->isPending && $this->isDeferrableUpdate ) {
-
-			$this->logger->info(
-				[ 'DeferrableUpdate', 'Push: {origin} (as pending DeferredCallableUpdate)' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fingerprint' => $this->fingerprint ]
-			);
-
-			return self::$pendingUpdates[] = $this;
-		}
-
 		if ( !$this->isCommandLineMode && $this->isDeferrableUpdate ) {
-			return $this->registerUpdate( $this );
+			$this->registerUpdate( $this );
+			return;
 		}
 
 		$this->doUpdate();
 	}
 
-	protected function registerUpdate( $update ) {
+	protected function registerUpdate( $update ): void {
 		$this->logger->info(
-			[ 'DeferrableUpdate', 'Added: {ctx}' ],
-			[ 'method' => __METHOD__, 'role' => 'developer', 'ctx' => $this->loggableContext() ]
+			'DeferrableUpdate Added: {ctx}',
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'ctx' => $this->loggableContext()
+			]
 		);
 
-		$stage = null;
-
-		if ( $update->getStage() === self::STAGE_POSTSEND && defined( 'DeferredUpdates::POSTSEND' ) ) {
-			$stage = DeferredUpdates::POSTSEND;
-		}
-
-		if ( $update->getStage() === self::STAGE_PRESEND && defined( 'DeferredUpdates::PRESEND' ) ) {
-			$stage = DeferredUpdates::PRESEND;
-		}
-
-		DeferredUpdates::addUpdate( $update, $stage );
+		DeferredUpdates::addUpdate( $update );
 	}
 
-	protected function loggableContext() {
-		return [ 'origin' => $this->origin, 'fingerprint' => $this->fingerprint, 'stage' => $this->stage ];
+	protected function loggableContext(): array {
+		return [ 'origin' => $this->origin ];
 	}
 
-	protected function emptyCallback() {
+	protected function emptyCallback(): void {
 		$this->logger->info(
-			[ 'DeferrableUpdate', 'Empty callback!' ],
-			[ 'role' => 'developer', 'method' => __METHOD__ ]
+			'DeferrableUpdate Empty callback!',
+			[
+				'role' => 'developer',
+				'method' => __METHOD__
+			]
 		);
 	}
 
-	private function attemptUpdate() {
+	/**
+	 * @throws Exception|Throwable
+	 */
+	private function attemptUpdate(): void {
 		$e = null;
 
 		try {
 			$this->runUpdate();
-		} catch ( \Exception $e ) {
-		} catch ( \Throwable $e ) {
+		} catch ( Exception | Throwable $e ) {
 		}
 
 		if ( $e === null ) {
@@ -341,16 +238,15 @@ class CallableUpdate implements DeferrableUpdate {
 
 		// Log and re-throw
 		$this->logger->error(
-			[ "Deferred update {type} failed: {message}\n{trace}" ],
+			"Deferred update {type} failed: {message}\n{trace}",
 			[ 'role' => 'production' ] + $error
 		);
 
 		throw $e;
 	}
 
-	private function runUpdate() {
+	private function runUpdate(): void {
 		( $this->callback )();
-		unset( self::$queueList[$this->fingerprint] );
 	}
 
 }

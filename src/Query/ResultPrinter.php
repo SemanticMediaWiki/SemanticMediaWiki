@@ -41,7 +41,7 @@ interface ResultPrinter {
 	 * caller parses this (which is likely) then this will again call us in parse-context and all recursion
 	 * checks catch. Only the first level of parsing is done outside and thus not counted. Thus you
 	 * effectively can get down to level 3. The basic maximal depth of 2 can be changed by setting the
-	 * variable SMWResultPrinter::$maxRecursionDepth (in LocalSettings.php, after enableSemantics()).
+	 * variable SMWResultPrinter::$maxRecursionDepth (in LocalSettings.php, after wfLoadExtension).
 	 * Do this at your own risk.
 	 *
 	 * @param $results QueryResult
@@ -55,13 +55,13 @@ interface ResultPrinter {
 	/**
 	 * This function determines the query mode that is to be used for this printer in
 	 * various contexts. The query mode influences how queries to that printer should
-	 * be processed to obtain a result. Possible values are SMWQuery::MODE_INSTANCES
-	 * (retrieve instances), SMWQuery::MODE_NONE (do nothing), SMWQuery::MODE_COUNT
-	 * (get number of results), SMWQuery::MODE_DEBUG (return debugging text).
-	 * Possible values for context are SMWQueryProcessor::SPECIAL_PAGE,
-	 * SMWQueryProcessor::INLINE_QUERY, SMWQueryProcessor::CONCEPT_DESC.
+	 * be processed to obtain a result. Possible values are Query::MODE_INSTANCES
+	 * (retrieve instances), Query::MODE_NONE (do nothing), Query::MODE_COUNT
+	 * (get number of results), Query::MODE_DEBUG (return debugging text).
+	 * Possible values for context are QueryProcessor::SPECIAL_PAGE,
+	 * QueryProcessor::INLINE_QUERY, QueryProcessor::CONCEPT_DESC.
 	 *
-	 * The default implementation always returns SMWQuery::MODE_INSTANCES. File exports
+	 * The default implementation always returns Query::MODE_INSTANCES. File exports
 	 * like RSS will use MODE_INSTANCES on special pages (so that instances are
 	 * retrieved for the export) and MODE_NONE otherwise (displaying just a download link).
 	 *

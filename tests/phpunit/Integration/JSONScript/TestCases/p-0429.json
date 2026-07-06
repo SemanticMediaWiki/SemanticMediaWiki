@@ -62,7 +62,7 @@
 						"Has_date"
 					],
 					"propertyValues": [
-						"1971-01-01T16:15:23"
+						"1971-01-01T17:15:23"
 					]
 				}
 			}
@@ -73,7 +73,7 @@
 			"subject": "Example/P0429/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"1 January 1971 16:15:23"
+					"1 January 1971 17:15:23"
 				]
 			}
 		},

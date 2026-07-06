@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\Utils\UrlArgs;
-use SMWInfolink as Infolink;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,7 +19,7 @@ class LinksWidget {
 	/**
 	 * @return array
 	 */
-	public static function getModules() {
+	public static function getModules(): array {
 		return [ 'onoi.clipboard' ];
 	}
 
@@ -39,7 +39,7 @@ class LinksWidget {
 			Html::rawElement(
 				'legend',
 				[],
-				Message::get( 'smw-ask-search', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( 'smw-ask-search', Message::ESCAPED, Message::USER_LANGUAGE )
 			) . $html
 		);
 	}
@@ -108,7 +108,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function editLink( $href ) {
+	public static function editLink( string $href ) {
 		return Html::rawElement(
 				'a',
 				[
@@ -198,7 +198,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function resultSubmitLink( $isEmpty = false ) {
+	public static function resultSubmitLink( $isEmpty = false ): string {
 		if ( !$isEmpty ) {
 			return '';
 		}
@@ -219,7 +219,7 @@ class LinksWidget {
 					[
 						'id' => 'search-action',
 						'type'  => 'submit',
-						'value' => wfMessage( 'smw_ask_submit' )->escaped()
+						'value' => wfMessage( 'smw_ask_submit' )->text()
 					]
 				) .
 				Html::element(
@@ -256,7 +256,7 @@ class LinksWidget {
 			], Html::element(
 				'a',
 				[
-					'href'  => $title->getLocalURL( $urlArgs ),
+					'href'  => $title->getLocalURL( (string)$urlArgs ),
 					'rel'   => 'nofollow'
 				],
 				wfMessage( ( $hideForm ? 'smw_ask_hidequery' : 'smw_ask_editquery' ) )->text()
@@ -287,7 +287,7 @@ class LinksWidget {
 			'a',
 			[
 				'class' => '',
-				'href'  => $title->getLocalURL( $urlArgs ),
+				'href'  => $title->getLocalURL( (string)$urlArgs ),
 				'rel'   => 'nofollow',
 				'title' => Message::get( 'smw-ask-debug-desc', Message::TEXT, Message::USER_LANGUAGE )
 			],
@@ -339,7 +339,7 @@ class LinksWidget {
 				'a',
 				[
 					'class' => '',
-					'href'  => $title->getLocalURL( $urlArgs ),
+					'href'  => $title->getLocalURL( (string)$urlArgs ),
 					'rel'   => 'nofollow'
 				],
 				Message::get( 'smw-ask-no-cache', Message::TEXT, Message::USER_LANGUAGE )

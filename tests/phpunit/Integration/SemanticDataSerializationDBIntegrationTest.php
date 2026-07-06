@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
 use SMW\SerializerFactory;
-use SMW\Subobject;
 use SMW\Tests\SMWIntegrationTestCase;
-use Title;
 
 /**
  * @group semantic-mediawiki-integration
@@ -23,7 +23,7 @@ use Title;
 class SemanticDataSerializationDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testRoundtripOfSerializedSemanticDataAfterStoreUpdate() {
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$semanticDataBeforeUpdate = new SemanticData( $subject );
 
 		$subobject = new Subobject( $subject->getTitle() );
@@ -39,7 +39,7 @@ class SemanticDataSerializationDBIntegrationTest extends SMWIntegrationTestCase 
 
 		$semanticDataAfterUpdate = $this->getStore()->getSemanticData( $subject );
 
-		$serializerFactory = new SerializerFactory();
+		$serializerFactory = new SerializerFactory( $this->getStore() );
 
 		$serialization = $serializerFactory->getSerializerFor( $semanticDataAfterUpdate )->serialize( $semanticDataAfterUpdate );
 

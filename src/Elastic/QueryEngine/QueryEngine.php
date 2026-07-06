@@ -2,18 +2,18 @@
 
 namespace SMW\Elastic\QueryEngine;
 
+use MediaWiki\Html\Html;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Options;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\QueryResult;
+use SMW\Query\Query;
 use SMW\Query\ScoreSet;
 use SMW\QueryEngine as IQueryEngine;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\QueryFactory;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,66 +25,29 @@ class QueryEngine implements IQueryEngine {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private FieldMapper $fieldMapper;
 
-	/**
-	 * @var QueryFactory
-	 */
-	private $queryFactory;
+	private SortBuilder $sortBuilder;
 
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
+	private array $errors = [];
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
-
-	/**
-	 * @var SortBuilder
-	 */
-	private $sortBuilder;
-
-	/**
-	 * @var array
-	 */
-	private $options = [];
-
-	/**
-	 * @var array
-	 */
-	private $errors = [];
-
-	/**
-	 * @var array
-	 */
-	private $queryInfo = [];
+	private array $queryInfo = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param Options|null $options
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder, ?Options $options = null ) {
-		$this->store = $store;
-		$this->options = $options;
-
-		if ( $options === null ) {
+	public function __construct(
+		private Store $store,
+		private ConditionBuilder $conditionBuilder,
+		private readonly QueryFactory $queryFactory,
+		private ?Options $options = null,
+	) {
+		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
 
-		$this->queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$this->fieldMapper = new FieldMapper();
-
-		$this->conditionBuilder = $conditionBuilder;
-		$this->sortBuilder = new SortBuilder( $store );
+		$this->sortBuilder = new SortBuilder( $this->store );
 
 		$this->sortBuilder->setScoreField(
 			$this->options->dotGet( 'query.score.sortfield' )
@@ -93,22 +56,18 @@ class QueryEngine implements IQueryEngine {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param []
 	 */
-	public function getQueryInfo() {
+	public function getQueryInfo(): array {
 		return $this->queryInfo;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param Query $query
-	 *
-	 * @return QueryResult
+	 * @return mixed depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
-// if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
+		// if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 
 		if ( ( $query->getDescription() instanceof ThingDescription ) &&
 				$query->querymode != Query::MODE_DEBUG &&
@@ -213,13 +172,14 @@ class QueryEngine implements IQueryEngine {
 		return $result;
 	}
 
-	private function newDebugQueryResult( $params ) {
+	private function newDebugQueryResult( array $params ) {
 		$params['explain'] = $this->options->dotGet( 'query.debug.explain', false );
 
 		$connection = $this->store->getConnection( 'elastic' );
 		$this->queryInfo['elastic'][] = $connection->validate( $params );
 
-		if ( ( $log = $this->conditionBuilder->getDescriptionLog() ) !== [] ) {
+		$log = $this->conditionBuilder->getDescriptionLog();
+		if ( $log !== [] ) {
 			$this->queryInfo['smw']['description_log'] = $log;
 		}
 
@@ -233,12 +193,12 @@ class QueryEngine implements IQueryEngine {
 			json_encode( $this->queryInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
 		);
 
-		$html = \Html::rawElement(
+		$html = Html::rawElement(
 			'pre',
 			[
 				'class' => 'smwpre smwpre-no-margin smw-debug-box'
 			],
-			\Html::rawElement(
+			Html::rawElement(
 				'div',
 				[
 					'class' => 'smw-debug-box-header'
@@ -250,7 +210,7 @@ class QueryEngine implements IQueryEngine {
 		return $html;
 	}
 
-	private function newCountQueryResult( $query, $params ) {
+	private function newCountQueryResult( Query $query, array $params ) {
 		$connection = $this->store->getConnection( 'elastic' );
 		$result = $connection->count( $params );
 
@@ -261,7 +221,7 @@ class QueryEngine implements IQueryEngine {
 			false
 		);
 
-		$count = isset( $result['count'] ) ? $result['count'] : 0;
+		$count = $result['count'] ?? 0;
 		$queryResult->setCountValue( $count );
 
 		$this->queryInfo['info'] = $result;
@@ -269,7 +229,7 @@ class QueryEngine implements IQueryEngine {
 		return $queryResult;
 	}
 
-	private function newInstanceQueryResult( $query, array $params ) {
+	private function newInstanceQueryResult( Query $query, array $params ) {
 		$connection = $this->store->getConnection( 'elastic' );
 		$scoreSet = new ScoreSet();
 		$excerpts = new Excerpts();
@@ -285,7 +245,7 @@ class QueryEngine implements IQueryEngine {
 		$query->addErrors( $errors );
 
 		if ( $query->getOption( 'native_result' ) ) {
-			$query->native_result = json_encode( $res, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+			$query->native_result = json_encode( $res, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) ?: '';
 		}
 
 		$scores = $searchResult->get( 'scores' );
@@ -297,7 +257,7 @@ class QueryEngine implements IQueryEngine {
 		);
 
 		// `... WHERE IN ...` doesn't guarantee to return the same order
-		$listPos = array_flip( $results );
+		$listPos = array_flip( $results ?? [] );
 		$results = [];
 
 		// Relocate to the original position that returned from Elastic
@@ -315,16 +275,15 @@ class QueryEngine implements IQueryEngine {
 			$property = null;
 
 			// Handle predefined properties
-			if (
-				$dataItem->getNamespace() === SMW_NS_PROPERTY &&
-				( $dbKey = $dataItem->getDBKey() ) &&
-				$dbKey[0] === '_' ) {
-
-				try {
-					$property = DIProperty::newFromUserLabel( $dbKey );
-				} catch ( PredefinedPropertyLabelMismatchException $e ) {
-					// Keep the dataItem as-is, this may hint to an outdated
-					// predefined property
+			if ( $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
+				$dbKey = $dataItem->getDBKey();
+				if ( $dbKey && $dbKey[0] === '_' ) {
+					try {
+						$property = Property::newFromUserLabel( $dbKey );
+					} catch ( PredefinedPropertyLabelMismatchException ) {
+						// Keep the dataItem as-is, this may hint to an outdated
+						// predefined property
+					}
 				}
 			}
 
@@ -358,8 +317,9 @@ class QueryEngine implements IQueryEngine {
 		return $queryResult;
 	}
 
-	private function addHighlight( &$body ) {
-		if ( ( $type = $this->options->dotGet( 'query.highlight.fragment.type', false ) ) === false ) {
+	private function addHighlight( array &$body ): void {
+		$type = $this->options->dotGet( 'query.highlight.fragment.type', false );
+		if ( $type === false ) {
 			return;
 		}
 

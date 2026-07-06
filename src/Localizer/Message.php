@@ -3,8 +3,10 @@
 namespace SMW\Localizer;
 
 use Closure;
-use Language;
+use MediaWiki\Language\Language;
+use SMW\Cache\InMemoryLruCache;
 use SMW\InMemoryPoolCache;
+use Wikimedia\Message\MessageSpecifier;
 
 /**
  * @private
@@ -20,10 +22,7 @@ use SMW\InMemoryPoolCache;
  */
 class Message {
 
-	/**
-	 * @var array
-	 */
-	private static $messageCache = null;
+	private static ?InMemoryLruCache $messageCache = null;
 
 	/**
 	 * PoolCache ID
@@ -43,43 +42,33 @@ class Message {
 	const CONTENT_LANGUAGE = 0x32;
 	const USER_LANGUAGE = 0x64;
 
-	/**
-	 * @var array
-	 */
-	private static $messageHandler = [];
+	private static array $messageHandler = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param $type
-	 * @param Closure $handler
 	 */
-	public static function registerCallbackHandler( $type, Closure $handler ) {
+	public static function registerCallbackHandler( string|int $type, Closure $handler ): void {
 		self::$messageHandler[$type] = $handler;
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param $type
 	 */
-	public static function deregisterHandlerFor( $type ) {
+	public static function deregisterHandlerFor( string|int $type ): void {
 		unset( self::$messageHandler[$type] );
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$messageCache = null;
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return FixedInMemoryLruCache
 	 */
-	public static function getCache() {
+	public static function getCache(): InMemoryLruCache {
 		if ( self::$messageCache === null ) {
 			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID, 1000 );
 		}
@@ -95,50 +84,53 @@ class Message {
 	 * '[2,"Foo", "Bar"]' => Preferred output type, Message ID, Argument $1 ... $
 	 *
 	 * @since 2.5
-	 *
-	 * @param string|array $message
-	 * @param int|null $type
-	 *
-	 * @return string
 	 */
-	public static function encode( $message, $type = null ) {
-		if ( is_string( $message ) && json_decode( $message ) && json_last_error() === JSON_ERROR_NONE ) {
+	public static function encode( string|array $message, ?int $type = null ): string {
+		if ( is_string( $message ) &&
+			json_decode( $message ) &&
+			json_last_error() === JSON_ERROR_NONE
+		) {
 			return $message;
 		}
 
-		if ( $type === null ) {
-			$type = self::TEXT;
-		}
+		$type ??= self::TEXT;
 
 		if ( $message === [] ) {
 			return '';
 		}
 
 		$message = (array)$message;
-		$encode = [];
-		$encode[] = $type;
+		$encode = [ $type ];
 
 		foreach ( $message as $value ) {
-			// Ensure $value is a string before using substr()
-			$value = $value ?? '';
+			$value ??= '';
 
 			// Check if the value is already encoded, and if decode to keep the
 			// structure intact
-			if ( substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {
-				$encode += $dc;
-			} else {
-				// Normalize arguments like "<strong>Expression error:
-				// Unrecognized word "yyyy".</strong>"
-				$value = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+			if ( is_string( $value ) && $value !== '' && $value[0] === '[' ) {
+				$decoded = json_decode( $value, true );
 
-				// - Internally encoded to circumvent the strip_tags which would
-				//   remove <, > from values that represent a range
-				// - Encode `::` to prevent the annotation parser to pick the
-				//   message value
-				$value = str_replace( [ '%3C', '%3E', "::" ], [ '>', '<', "&#58;&#58;" ], $value );
-
-				$encode[] = $value;
+				if ( is_array( $decoded ) && json_last_error() === JSON_ERROR_NONE ) {
+					$encode += $decoded;
+					continue;
+				}
 			}
+
+			// Normalize arguments like "<strong>Expression error:
+			// Unrecognized word "yyyy".</strong>"
+			$value = strip_tags( htmlspecialchars_decode( (string)$value, ENT_QUOTES ) );
+
+			// - Internally encoded to circumvent the strip_tags which would
+			//   remove <, > from values that represent a range
+			// - Encode `::` to prevent the annotation parser to pick the
+			//   message value
+			$value = str_replace(
+				[ '%3C', '%3E', "::" ],
+				[ '>', '<', "&#58;&#58;" ],
+				$value
+			);
+
+			$encode[] = $value;
 		}
 
 		return json_encode( $encode );
@@ -148,23 +140,15 @@ class Message {
 	 * @fixme Needs to be MW agnostic !
 	 *
 	 * @since 2.5
-	 *
-	 * @param string $message
 	 */
-	public static function exists( $message ): bool {
+	public static function exists( string|array|MessageSpecifier $message ): bool {
 		return wfMessage( $message )->exists();
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string|array $message
-	 * @param int|null $type
-	 * @param mixed|null $language
-	 *
-	 * @return string|bool
 	 */
-	public static function decode( $message, $type = null, $language = null ) {
+	public static function decode( string $message, ?int $type = null, mixed $language = null ): string|bool {
 		$message = json_decode( $message );
 		$asType = null;
 
@@ -192,14 +176,13 @@ class Message {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string|array $parameters
-	 * @param int|null $type
-	 * @param int|null $language
-	 *
-	 * @return string
 	 */
-	public static function get( $parameters, $type = null, $language = null ): string {
+	public static function get(
+		string|array $parameters,
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
+		int|string|null $type = null,
+		mixed $language = null
+	): string {
 		$handler = null;
 		$parameters = (array)$parameters;
 
@@ -213,7 +196,8 @@ class Message {
 
 		$hash = self::getHash( $parameters, $type, $language );
 
-		if ( $content = self::getCache()->fetch( $hash ) ) {
+		$content = self::getCache()->fetch( $hash );
+		if ( $content ) {
 			return $content;
 		}
 
@@ -237,17 +221,18 @@ class Message {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array $parameters
-	 * @param int|null $type
-	 * @param int|string|Language|null $language
 	 */
-	public static function getHash( $parameters, $type = null, $language = null ): string {
+	public static function getHash(
+		array|string $parameters,
+		// phpcs:ignore MediaWiki.Usage.NullableType.ExplicitNullableTypes -- false positive
+		int|string|null $type = null,
+		mixed $language = null
+	): string {
 		if ( $language instanceof Language ) {
 			$language = $language->getCode();
 		}
 
-		return md5( json_encode( $parameters ) . '#' . $type . '#' . $language );
+		return md5( json_encode( $parameters ) . '#' . (string)$type . '#' . $language );
 	}
 
 }

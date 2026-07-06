@@ -2,14 +2,16 @@
 
 namespace SMW\Maintenance;
 
+use Iterator;
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
-use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\SQLStore;
@@ -33,7 +35,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class rebuildElasticMissingDocuments extends \Maintenance {
+class rebuildElasticMissingDocuments extends Maintenance {
 
 	/**
 	 * @var Store
@@ -60,10 +62,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	 */
 	private $lastId = 0;
 
-	/**
-	 * @var
-	 */
-	private $missingDocuments = [];
+	private array $missingDocuments = [];
 
 	/**
 	 * @since 3.1
@@ -82,8 +81,6 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -236,12 +233,11 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	private function fetchRows() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$this->lastId = (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			'',
-			__METHOD__
-		);
+		$this->lastId = (int)$connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		if ( $this->hasOption( 'id' ) ) {
 			$conditions = [
@@ -262,23 +258,23 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 			];
 		}
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
+		return $connection->newSelectQueryBuilder()
+			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject',
 				'smw_rev'
-			],
-			$conditions,
-			__METHOD__,
-			[ 'ORDER BY' => 'smw_id' ]
-		);
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( $conditions )
+			->orderBy( 'smw_id' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
-	private function checkAndRebuild( \Iterator $rows ) {
+	private function checkAndRebuild( Iterator $rows ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -371,7 +367,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 			$errorCount[$result->getType()]++;
 
 			if ( $result->getType() === ReplicationError::TYPE_FILE_ATTACHMENT_MISSING ) {
-				$job = new FileIngestJob( $title );
+				$job = $this->jobFactory->newFileIngestJob( $title );
 			} else {
 				$job = $this->jobFactory->newUpdateJob( $title );
 			}
@@ -388,16 +384,14 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 
 		if ( $namespace === SMW_NS_PROPERTY ) {
 			try {
-				$property = DIProperty::newFromUserLabel( $row->smw_title );
+				$property = Property::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
-			} catch ( PropertyLabelNotResolvedException $e ) {
-				return;
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PropertyLabelNotResolvedException | PredefinedPropertyLabelMismatchException ) {
 				return;
 			}
 		}
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$title,
 			$namespace,
 			$row->smw_iw,

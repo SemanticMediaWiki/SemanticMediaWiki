@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
-use Html;
-use WebRequest;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 
 /**
  * @private
@@ -15,60 +15,37 @@ use WebRequest;
  */
 class OpenForm {
 
-	/**
-	 * @var WebRequest
-	 */
-	private $request;
+	private Field $field;
 
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private bool $isActiveForm = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isActiveForm = false;
-
-	/**
-	 * @var
-	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
 	 */
-	public function __construct( WebRequest $request ) {
-		$this->request = $request;
+	public function __construct( private readonly WebRequest $request ) {
 		$this->field = new Field();
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ) {
-		$this->isActiveForm = (bool)$isActiveForm;
+	public function isActiveForm( bool $isActiveForm ): void {
+		$this->isActiveForm = $isActiveForm;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $definition
 	 */
-	public function makeFields( $definition = [] ) {
+	public function makeFields(): string {
 		$this->parameters = [];
 
 		$group = '';
@@ -77,9 +54,9 @@ class OpenForm {
 		$op = [];
 
 		if ( $this->isActiveForm ) {
-			$properties = $this->request->getArray( 'property', [] );
-			$values = $this->request->getArray( 'pvalue', [] );
-			$op = $this->request->getArray( 'op', [] );
+			$properties = (array)$this->request->getArray( 'property', [] );
+			$values = (array)$this->request->getArray( 'pvalue', [] );
+			$op = (array)$this->request->getArray( 'op', [] );
 		}
 
 		$this->parameters = [
@@ -107,7 +84,7 @@ class OpenForm {
 		return $group;
 	}
 
-	private function makeFieldGroup( $property, $value, $op ) {
+	private function makeFieldGroup( $property, $value, $op ): string {
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 
 		$attributes = [

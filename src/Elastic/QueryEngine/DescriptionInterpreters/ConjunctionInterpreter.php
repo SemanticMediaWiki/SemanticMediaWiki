@@ -15,31 +15,20 @@ use SMW\Query\Language\Conjunction;
 class ConjunctionInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Conjunction $description
-	 *
-	 * @return Condition
 	 */
-	public function interpretDescription( Conjunction $description ) {
+	public function interpretDescription( Conjunction $description ): array|Condition {
 		$params = [];
 
 		foreach ( $description->getDescriptions() as $desc ) {
-			if ( ( $cond = $this->conditionBuilder->interpretDescription( $desc, true ) ) instanceof Condition ) {
+			$cond = $this->conditionBuilder->interpretDescription( $desc, true );
+			if ( $cond instanceof Condition ) {
 				$params[] = $cond;
 			}
 		}

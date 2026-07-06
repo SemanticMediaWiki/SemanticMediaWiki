@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\HookListener;
+use MediaWiki\Title\TitleFactory;
+use MediaWiki\User\User;
 use SMW\NamespaceExaminer;
-use Title;
-use User;
 
 /**
  * @see https://github.com/wikimedia/mediawiki-extensions-UserMerge/blob/master/includes/MergeUser.php#L654
@@ -15,35 +14,22 @@ use User;
  *
  * @author mwjames
  */
-class DeleteAccount implements HookListener {
+class DeleteAccount {
 
 	/**
-	 * @var NamespaceExaminer
+	 * @since 7.0.0
 	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var ArticleDelete
-	 */
-	private $articleDelete;
-
-	/**
-	 * @since 3.2
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param ArticleDelete $articleDelete
-	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, ArticleDelete $articleDelete ) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->articleDelete = $articleDelete;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly ArticleDelete $articleDelete,
+		private readonly TitleFactory $titleFactory,
+	) {
 	}
 
 	/**
-	 * @since 3.2
-	 *
-	 * @param User|string $user
+	 * @since 7.0.0
 	 */
-	public function process( $user ) {
+	public function onDeleteAccount( $user ): bool {
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
 		}
@@ -54,8 +40,8 @@ class DeleteAccount implements HookListener {
 
 		$this->articleDelete->setOrigin( 'DeleteAccount' );
 
-		$this->articleDelete->process(
-			Title::newFromText( $user, NS_USER )
+		$this->articleDelete->scheduleDeleteFor(
+			$this->titleFactory->newFromText( $user, NS_USER )
 		);
 
 		return true;

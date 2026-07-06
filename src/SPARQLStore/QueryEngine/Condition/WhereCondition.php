@@ -15,23 +15,11 @@ namespace SMW\SPARQLStore\QueryEngine\Condition;
  */
 class WhereCondition extends Condition {
 
-	/**
-	 * The pattern string. Anything that can be used as a WHERE condition
-	 * when put between "{" and "}".
-	 * @var string
-	 */
-	public $condition;
-
-	/**
-	 * Whether this condition is safe.
-	 * @see SMWSparqlCondition::isSafe().
-	 * @var bool
-	 */
-	public $isSafe;
-
-	public function __construct( $condition, $isSafe, $namespaces = [] ) {
-		$this->condition  = $condition;
-		$this->isSafe     = $isSafe;
+	public function __construct(
+		public $condition,
+		public $isSafe,
+		$namespaces = [],
+	) {
 		$this->namespaces = $namespaces;
 	}
 

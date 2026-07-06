@@ -2,16 +2,16 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Html;
-use Page;
-use SMW\DependencyValidator;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\Html\Html;
+use MediaWiki\Page\Hook\ArticleViewHeaderHook;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage as DIWikiPage;
+use SMW\DependencyValidatorFactory;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\NamespaceExaminer;
-use SMW\OptionsAwareTrait;
+use SMW\Settings;
 use SMW\Store;
 
 /**
@@ -25,49 +25,24 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class ArticleViewHeader implements HookListener {
-
-	use OptionsAwareTrait;
+class ArticleViewHeader implements ArticleViewHeaderHook {
 
 	/**
-	 * @var Store
+	 * @since 7.0.0
 	 */
-	private $store;
-
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var DependencyValidator
-	 */
-	private $dependencyValidator;
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param DependencyValidator $dependencyValidator
-	 */
-	public function __construct( Store $store, NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator ) {
-		$this->store = $store;
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->dependencyValidator = $dependencyValidator;
+	public function __construct(
+		private readonly Store $store,
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly Settings $settings,
+		private readonly DependencyValidatorFactory $dependencyValidatorFactory,
+	) {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param Page $page
-	 * @param bool &$outputDone
-	 * @param bool &$useParserCache
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( Page $page, &$outputDone, &$useParserCache ) {
-		$title = $page->getTitle();
+	public function onArticleViewHeader( $article, &$outputDone, &$pcache ) {
+		$title = $article->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return true;
@@ -76,24 +51,29 @@ class ArticleViewHeader implements HookListener {
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$changePropagationWatchlist = array_flip(
-			$this->getOption( 'smwgChangePropagationWatchlist', [] )
+			$this->settings->get( 'smwgChangePropagationWatchlist' ) ?: []
 		);
 
 		// Only act when `_SUBC` is maintained as watchable property
 		if ( isset( $changePropagationWatchlist['_SUBC'] ) && $title->getNamespace() === NS_CATEGORY ) {
-			$useParserCache = $this->updateCategoryTop( $title, $page->getContext()->getOutput() );
+			$pcache = $this->updateCategoryTop( $title, $article->getContext()->getOutput() );
 		}
 
-		if ( $this->dependencyValidator->hasArchaicDependencies( $subject ) ) {
-			$this->dependencyValidator->markTitle( $title );
-			// Disable the parser cache even before `RejectParserCacheValue` comes into play
-			$useParserCache = false;
+		$wikiPage = $article->getPage();
+
+		$dependencyValidator = $this->dependencyValidatorFactory->newFor(
+			$wikiPage,
+			$wikiPage->makeParserOptions( 'canonical' )
+		);
+
+		if ( $dependencyValidator->hasArchaicDependencies( $subject ) ) {
+			$dependencyValidator->markTitle( $title );
 		}
 
 		return true;
 	}
 
-	private function updateCategoryTop( $title, $output ) {
+	private function updateCategoryTop( Title $title, $output ): bool {
 		$message = '';
 
 		$subject = DIWikiPage::newFromTitle(
@@ -104,8 +84,8 @@ class ArticleViewHeader implements HookListener {
 			$subject
 		);
 
-		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
-			$severity = $this->getOption( 'smwgChangePropagationProtection', true ) ? 'error' : 'warning';
+		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
+			$severity = $this->settings->get( 'smwgChangePropagationProtection' ) ? 'error' : 'warning';
 
 			$message .= $this->message(
 				$severity,
@@ -134,7 +114,7 @@ class ArticleViewHeader implements HookListener {
 		return $message === '';
 	}
 
-	private function message( $type, array $message ) {
+	private function message( string $type, array $message ) {
 		$content = Message::get( $message, Message::PARSE, Message::USER_LANGUAGE );
 		switch ( $type ) {
 			case 'error':

@@ -6,7 +6,6 @@ use ALItem;
 use ALRow;
 use ALSection;
 use ALTree;
-use SMW\MediaWiki\HookListener;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,17 +13,15 @@ use SMW\MediaWiki\HookListener;
  *
  * @author mwjames
  */
-class AdminLinks implements HookListener {
+class AdminLinks {
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param ALTree $admin_links_tree
-	 *
-	 * @return true
+	 * @since 7.0.0
 	 */
-	public function process( ALTree $admin_links_tree ) {
-		// @codeCoverageIgnoreStart
+	public function onAdminLinks(
+		// @phan-suppress-next-line PhanUndeclaredTypeParameter
+		ALTree $admin_links_tree
+	): bool {
 		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 
 		$smw_row = new ALRow( 'smw' );
@@ -62,7 +59,6 @@ class AdminLinks implements HookListener {
 		$browse_search_section->addRow( $smw_row );
 
 		return true;
-		// @codeCoverageIgnoreEnd
 	}
 
 }

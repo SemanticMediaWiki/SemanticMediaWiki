@@ -8,8 +8,6 @@ use SMW\Query\ResultPrinters\ResultPrinter;
  * @group SMW
  * @group SMWExtension
  *
- * @codeCoverageIgnore
- *
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */

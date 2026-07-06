@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\HmacSerializer;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\HmacSerializer;
  *
  * @author mwjames
  */
-class HmacSerializerTest extends \PHPUnit\Framework\TestCase {
+class HmacSerializerTest extends TestCase {
 
 	public function testEncodeWithDifferentKey() {
 		$instance = new HmacSerializer();

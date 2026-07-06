@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\FileNotWritableException;
 use SMW\Utils\File;
 
 /**
@@ -14,9 +15,7 @@ use SMW\Utils\File;
  *
  * @author mwjames
  */
-class FileTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
+class FileTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new File();
@@ -30,7 +29,7 @@ class FileTest extends \PHPUnit\Framework\TestCase {
 	public function testWrite_ThrowsException() {
 		$instance = new File();
 
-		$this->expectException( '\SMW\Exception\FileNotWritableException' );
+		$this->expectException( FileNotWritableException::class );
 		$instance->write( 'abc/Foo', '' );
 	}
 

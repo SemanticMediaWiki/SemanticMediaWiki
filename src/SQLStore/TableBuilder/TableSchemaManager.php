@@ -2,8 +2,10 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use Exception;
+use Onoi\MessageReporter\MessageReporter;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * @private
@@ -18,11 +20,6 @@ use SMWDataItem as DataItem;
 class TableSchemaManager {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
@@ -30,25 +27,22 @@ class TableSchemaManager {
 	/**
 	 * @var Table[]
 	 */
-	private $tables = [];
+	private array $tables = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
-	private $options = [];
+	private array $options = [];
 
 	/**
-	 * @var int
+	 * @var int|false
 	 */
 	private $featureFlags = false;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -56,11 +50,11 @@ class TableSchemaManager {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		$hash = [];
 
 		foreach ( $this->getTables() as $table ) {
-			$hash[$table->getName()] = $table->getHash();
+			$hash[$table->getName() ?? ''] = $table->getHash();
 		}
 
 		// Avoid by-chance sorting with an eventual differing hash
@@ -74,7 +68,7 @@ class TableSchemaManager {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -97,9 +91,9 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param int $featureFlags
+	 * @param int|false $featureFlags
 	 */
-	public function setFeatureFlags( $featureFlags ) {
+	public function setFeatureFlags( $featureFlags ): void {
 		$this->featureFlags = $featureFlags;
 	}
 
@@ -110,7 +104,7 @@ class TableSchemaManager {
 	 *
 	 * @return bool
 	 */
-	public function hasFeatureFlag( $feature ) {
+	public function hasFeatureFlag( $feature ): bool {
 		return ( (int)$this->featureFlags & $feature ) != 0;
 	}
 
@@ -136,7 +130,7 @@ class TableSchemaManager {
 	 *
 	 * @return Table[]
 	 */
-	public function getTables() {
+	public function getTables(): array {
 		if ( $this->tables !== [] ) {
 			return $this->tables;
 		}
@@ -149,6 +143,7 @@ class TableSchemaManager {
 		$this->addTable( $this->newFulltextSearchTable() );
 
 		$this->addTable( $this->newPropertyStatisticsTable() );
+		$this->addTable( $this->newMetaTable() );
 
 		foreach ( $this->store->getPropertyTables() as $propertyTable ) {
 
@@ -157,7 +152,7 @@ class TableSchemaManager {
 			// are correctly initialized otherwise SMW can't recover
 			try {
 				$diHandler = $this->store->getDataItemHandlerForDIType( $propertyTable->getDiType() );
-			} catch ( \Exception $e ) {
+			} catch ( Exception ) {
 				continue;
 			}
 
@@ -167,7 +162,7 @@ class TableSchemaManager {
 		return $this->tables;
 	}
 
-	private function newEntityIdTable() {
+	private function newEntityIdTable(): Table {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// ID_TABLE
@@ -227,7 +222,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newEntityAuxiliaryTable() {
+	private function newEntityAuxiliaryTable(): Table {
 		// ID_AUXILIARY_TABLE
 		$table = new Table( SQLStore::ID_AUXILIARY_TABLE );
 
@@ -242,7 +237,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newConceptCacheTable() {
+	private function newConceptCacheTable(): Table {
 		// CONCEPT_CACHE_TABLE (member elements (s)->concepts (o) )
 		$table = new Table( SQLStore::CONCEPT_CACHE_TABLE );
 
@@ -254,7 +249,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newQueryLinksTable() {
+	private function newQueryLinksTable(): Table {
 		// QUERY_LINKS_TABLE
 		$table = new Table( SQLStore::QUERY_LINKS_TABLE );
 
@@ -268,7 +263,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newFulltextSearchTable() {
+	private function newFulltextSearchTable(): ?Table {
 		// Avoid the creation unless it is enabled hereby avoids issues in
 		// regards to the default `MyISAM` storage engine (especially when mixed with
 		// InnoDB, transactional mode).Those who enable the full-text need to
@@ -300,7 +295,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newPropertyStatisticsTable() {
+	private function newPropertyStatisticsTable(): Table {
 		// PROPERTY_STATISTICS_TABLE
 		$table = new Table( SQLStore::PROPERTY_STATISTICS_TABLE );
 
@@ -318,7 +313,22 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newPropertyTable( $propertyTable, $diHandler ) {
+	private function newMetaTable(): Table {
+		// META_TABLE: per-key install-state metadata previously stored in
+		// `.smw.json`. `meta_key` is a length-bounded binary string so it
+		// can serve as the primary key on MySQL/SQLite (where a MEDIUMBLOB
+		// would need a key length); `meta_value` holds arbitrary JSON.
+		$table = new Table( SQLStore::META_TABLE );
+
+		$table->addColumn( 'meta_key', [ FieldType::TYPE_CHAR_LONG, 'NOT NULL' ] );
+		$table->addColumn( 'meta_value', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+
+		$table->setPrimaryKey( 'meta_key' );
+
+		return $table;
+	}
+
+	private function newPropertyTable( $propertyTable, $diHandler ): Table {
 		// Prepare indexes. By default, property-value tables
 		// have the following indexes:
 		//
@@ -346,7 +356,7 @@ class TableSchemaManager {
 
 		if ( !$propertyTable->isFixedPropertyTable() ) {
 			$fieldarray['p_id'] = [ FieldType::FIELD_ID, 'NOT NULL' ];
-			$indexes['sp'] = $indexes['sp'] . ',p_id';
+			$indexes['sp'] .= ',p_id';
 		}
 
 		// TODO Special handling; concepts should be handled differently
@@ -383,6 +393,26 @@ class TableSchemaManager {
 			$indexes = array_merge( $indexes, [ $value ] );
 		}
 
+		// Drop the auto-generated single-column object index ("po") when a
+		// declared composite index already begins with that same column. In
+		// that case the standalone index is a redundant left-prefix: the
+		// optimizer satisfies every lookup from the composite, which also
+		// covers the trailing column, so keeping it only adds write and storage
+		// overhead. This affects the wikipage data-item tables, whose handler
+		// declares (o_id,s_id) and (o_id,p_id). See issue #6559.
+		if ( isset( $indexes['po'] ) ) {
+			$objectFieldPrefix = $indexes['po'] . ',';
+
+			foreach ( $indexes as $key => $index ) {
+				$columns = is_array( $index ) ? $index[0] : $index;
+
+				if ( $key !== 'po' && str_starts_with( $columns, $objectFieldPrefix ) ) {
+					unset( $indexes['po'] );
+					break;
+				}
+			}
+		}
+
 		foreach ( $diHandler->getTableFields() as $fieldname => $fieldType ) {
 			$fieldarray[$fieldname] = $fieldType;
 		}
@@ -403,12 +433,12 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( ?Table $table = null ) {
+	private function addTable( ?Table $table = null ): void {
 		if ( $table === null ) {
 			return;
 		}
 
-		$this->tables[$table->getName()] = $table;
+		$this->tables[$table->getName() ?? ''] = $table;
 	}
 
 }

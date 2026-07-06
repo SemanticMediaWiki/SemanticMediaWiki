@@ -3,8 +3,8 @@
 namespace SMW\Query\ProfileAnnotators;
 
 use RuntimeException;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\ProfileAnnotator;
 
 /**
@@ -16,25 +16,19 @@ use SMW\Query\ProfileAnnotator;
 class SchemaLinkProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var string
-	 */
-	private $schemaLink = '';
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param string $schemaLink
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, $schemaLink ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private $schemaLink,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->schemaLink = $schemaLink;
 	}
 
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->schemaLink === '' ) {
 			return;
 		}
@@ -46,10 +40,10 @@ class SchemaLinkProfileAnnotator extends ProfileAnnotatorDecorator {
 		$this->addSchemaLinkAnnotation( $this->schemaLink );
 	}
 
-	private function addSchemaLinkAnnotation( $schemaLink ) {
+	private function addSchemaLinkAnnotation( string $schemaLink ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_SCHEMA_LINK' ),
-			new DIWikiPage( $schemaLink, SMW_NS_SCHEMA )
+			new Property( '_SCHEMA_LINK' ),
+			new WikiPage( $schemaLink, SMW_NS_SCHEMA )
 		);
 	}
 

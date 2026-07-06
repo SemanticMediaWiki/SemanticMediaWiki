@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
-use SMW\DIProperty;
+use MediaWiki\Request\WebRequest;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
-use WebRequest;
 
 /**
  * @private
@@ -16,35 +16,15 @@ use WebRequest;
  */
 class CustomForm {
 
-	/**
-	 * @var WebRequest
-	 */
-	private $request;
+	private Field $field;
 
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private bool $isActiveForm = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isActiveForm = false;
+	private array $parameters = [];
 
-	/**
-	 * @var
-	 */
-	private $parameters = [];
+	private array $fieldCounter = [];
 
-	/**
-	 * @var
-	 */
-	private $fieldCounter = [];
-
-	/**
-	 * @var
-	 */
-	private $html5TypeMap = [
+	private array $html5TypeMap = [
 		'_txt' => 'text',
 		'_uri' => 'url',
 		'_dat' => 'date',
@@ -55,11 +35,8 @@ class CustomForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
 	 */
-	public function __construct( WebRequest $request ) {
-		$this->request = $request;
+	public function __construct( private readonly WebRequest $request ) {
 		$this->field = new Field();
 	}
 
@@ -72,19 +49,15 @@ class CustomForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ) {
-		$this->isActiveForm = (bool)$isActiveForm;
+	public function isActiveForm( bool $isActiveForm ): void {
+		$this->isActiveForm = $isActiveForm;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $definition
 	 */
-	public function makeFields( $definition ) {
+	public function makeFields( array $definition ): string {
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];
@@ -134,7 +107,7 @@ class CustomForm {
 		return implode( '', $fields );
 	}
 
-	private function makeField( $name, $property, $value, $options ) {
+	private function makeField( string $name, string $property, $value, $options ): string {
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 		$options = !is_array( $options ) ? [] : $options;
 
@@ -153,7 +126,7 @@ class CustomForm {
 		if ( isset( $options['type'] ) ) {
 			$type = $options['type'];
 		} else {
-			$typeID = DIProperty::newFromUserLabel( $property )->findPropertyTypeID();
+			$typeID = Property::newFromUserLabel( $property )->findPropertyValueType();
 			$type = 'text';
 
 			if ( isset( $this->html5TypeMap[$typeID] ) ) {

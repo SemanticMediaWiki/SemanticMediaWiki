@@ -12,23 +12,12 @@ use RuntimeException;
  */
 class ConnRef {
 
-	/**
-	 * @var array
-	 */
-	private $connectionProviders = [];
-
-	/**
-	 * @var array
-	 */
-	private $connections = [];
+	private array $connections = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $connectionProviders
 	 */
-	public function __construct( array $connectionProviders ) {
-		$this->connectionProviders = $connectionProviders;
+	public function __construct( private array $connectionProviders ) {
 	}
 
 	/**
@@ -38,7 +27,7 @@ class ConnRef {
 	 *
 	 * @return bool
 	 */
-	public function hasConnection( $key ) {
+	public function hasConnection( $key ): bool {
 		return isset( $this->connectionProviders[$key] );
 	}
 
@@ -56,7 +45,8 @@ class ConnRef {
 		}
 
 		if ( isset( $this->connectionProviders[$key] ) && $this->connectionProviders[$key] instanceof ConnectionProvider ) {
-			return $this->connections[$key] = $this->connectionProviders[$key]->getConnection();
+			$this->connections[$key] = $this->connectionProviders[$key]->getConnection();
+			return $this->connections[$key];
 		}
 
 		throw new RuntimeException( "$key is unknown" );
@@ -65,7 +55,7 @@ class ConnRef {
 	/**
 	 * @since 3.0
 	 */
-	public function releaseConnections() {
+	public function releaseConnections(): void {
 		$this->connections = [];
 
 		foreach ( $this->connectionProviders as $connectionProvider ) {

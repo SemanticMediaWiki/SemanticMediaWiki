@@ -32,7 +32,7 @@ class CallableChangeListener implements ChangeListener {
 	 * @param string $key
 	 * @param callable $callback
 	 */
-	public function addListenerCallback( string $key, callable $callback ) {
+	public function addListenerCallback( string $key, callable $callback ): void {
 		if ( !isset( $this->changeListeners[$key] ) ) {
 			$this->changeListeners[$key] = [];
 		}

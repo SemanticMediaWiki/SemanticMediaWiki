@@ -3,9 +3,9 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
-use SMW\Highlighter;
-use SMWDataValue as DataValue;
-use SMWNumberValue as NumberValue;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\NumberValue;
+use SMW\Formatters\Highlighter;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,7 +20,7 @@ class NumberValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof NumberValue;
 	}
 
@@ -43,7 +43,7 @@ class NumberValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::WIKI_LONG || $type === self::HTML_LONG ) {
-			return $this->longFormat( $linker );
+			return $this->longFormat();
 		}
 
 		return 'UNKNOWN';
@@ -99,6 +99,11 @@ class NumberValueFormatter extends DataValueFormatter {
 			return $this->dataValue->getCaption();
 		}
 
+		// The tooltip title and converted-unit numbers are rendered in the
+		// viewer's interface language, so the rendered output is not
+		// cache-stable across languages.
+		$this->dataValue->recordUserLanguageOutput();
+
 		$highlighter = Highlighter::factory(
 			Highlighter::TYPE_QUANTITY,
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
@@ -114,7 +119,7 @@ class NumberValueFormatter extends DataValueFormatter {
 		return $highlighter->getHtml();
 	}
 
-	private function longFormat( $linker = null ) {
+	private function longFormat() {
 		if ( !$this->dataValue->isValid() ) {
 			return $this->dataValue->getErrorText();
 		}

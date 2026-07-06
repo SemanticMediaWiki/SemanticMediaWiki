@@ -13,18 +13,10 @@ use InvalidArgumentException;
 class ParameterNotFoundException extends InvalidArgumentException {
 
 	/**
-	 * @var string
-	 */
-	private $name;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param string $name
 	 */
-	public function __construct( $name ) {
-		$this->name = $name;
-		parent::__construct( " $name is missing as argument!" );
+	public function __construct( private $name ) {
+		parent::__construct( " {$this->name} is missing as argument!" );
 	}
 
 	/**

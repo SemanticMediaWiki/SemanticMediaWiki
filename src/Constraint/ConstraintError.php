@@ -16,24 +16,12 @@ class ConstraintError implements ProcessingError {
 	const ERROR_TYPE = 'constraint';
 
 	/**
-	 * @var
-	 */
-	private $parameters = [];
-
-	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param string|[] $parameters
-	 * @param int|string|null $type
 	 */
-	public function __construct( $parameters, $type = null ) {
-		$this->parameters = $parameters;
-		$this->type = $type;
+	public function __construct(
+		private $parameters,
+		private $type = null,
+	) {
 	}
 
 	/**
@@ -41,7 +29,7 @@ class ConstraintError implements ProcessingError {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return Message::getHash( $this->parameters, $this->type );
 	}
 
@@ -50,7 +38,7 @@ class ConstraintError implements ProcessingError {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		return self::ERROR_TYPE;
 	}
 
@@ -68,7 +56,7 @@ class ConstraintError implements ProcessingError {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->encode();
 	}
 

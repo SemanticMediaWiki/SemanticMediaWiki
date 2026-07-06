@@ -2,8 +2,6 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
-
 /**
  * @license GPL-2.0-or-later
  * @since 2.5
@@ -19,7 +17,7 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function rawUrlEncode( Query $query ) {
+	public static function rawUrlEncode( Query $query ): string {
 		return rawurlencode( self::toString( $query ) );
 	}
 
@@ -29,9 +27,9 @@ class QueryStringifier {
 	 * @param Query $query
 	 * @param bool $printParameters
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public static function toArray( Query $query, $printParameters = false ) {
+	public static function toArray( Query $query, $printParameters = false ): array {
 		$serialized = [];
 		$serialized['conditions'] = $query->getQueryString();
 
@@ -75,7 +73,7 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function toJson( Query $query, $printParameters = false ) {
+	public static function toJson( Query $query, $printParameters = false ): string|false {
 		return json_encode( self::toArray( $query, $printParameters ) );
 	}
 
@@ -102,15 +100,15 @@ class QueryStringifier {
 		return $string;
 	}
 
-	private static function printouts( $query, $showParams = false ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function printouts( Query $query, $showParams = false ): array {
 		$printouts = [];
 
-		if ( $query->getExtraPrintouts() === null ) {
-			return $printouts;
-		}
-
 		foreach ( $query->getExtraPrintouts() as $printout ) {
-			if ( ( $serialisation = $printout->getSerialisation( $showParams ) ) !== '' ) {
+			$serialisation = $printout->getSerialisation( $showParams );
+			if ( $serialisation !== '' ) {
 				$printouts[] = $serialisation;
 			}
 		}
@@ -118,13 +116,18 @@ class QueryStringifier {
 		return $printouts;
 	}
 
-	private static function sortKeys( $query ) {
+	/**
+	 * @return mixed[][][]|string[][]
+	 */
+	private static function sortKeys( Query $query ): array {
+		// `order=none` carries no sort keys; re-emit the directive explicitly
+		// so a re-serialised query stays unsorted.
+		if ( $query->getOption( Query::SORT_DISABLED ) ) {
+			return [ [], [ 'none' ] ];
+		}
+
 		$sort = [];
 		$order = [];
-
-		if ( $query->getSortKeys() === null ) {
-			return [ $sort, $order ];
-		}
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
 

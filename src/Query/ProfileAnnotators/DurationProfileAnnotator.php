@@ -2,9 +2,9 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
 use SMW\Query\ProfileAnnotator;
-use SMWDINumber as DINumber;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,34 +15,28 @@ use SMWDINumber as DINumber;
 class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var int
-	 */
-	private $duration;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param int $duration
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, $duration ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private $duration,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->duration = $duration;
 	}
 
 	/**
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->duration > 0 ) {
 			$this->addGreaterThanZeroQueryDuration( $this->duration );
 		}
 	}
 
-	private function addGreaterThanZeroQueryDuration( $duration ) {
+	private function addGreaterThanZeroQueryDuration( $duration ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKDU' ),
-			new DINumber( $duration )
+			new Property( '_ASKDU' ),
+			new Number( $duration )
 		);
 	}
 

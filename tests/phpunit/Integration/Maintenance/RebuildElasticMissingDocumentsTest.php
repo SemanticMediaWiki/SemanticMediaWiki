@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
+use SMW\Elastic\ElasticStore;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 
@@ -19,8 +19,6 @@ use SMW\Tests\TestEnvironment;
  */
 class RebuildElasticMissingDocumentsTest extends SMWIntegrationTestCase {
 
-	use PHPUnitCompat;
-
 	private $runnerFactory;
 	private $spyMessageReporter;
 
@@ -29,7 +27,7 @@ class RebuildElasticMissingDocumentsTest extends SMWIntegrationTestCase {
 
 		$store = ApplicationFactory::getInstance()->getStore();
 
-		if ( !$store instanceof \SMW\Elastic\ElasticStore ) {
+		if ( !$store instanceof ElasticStore ) {
 			$this->markTestSkipped( "Skipping test because a ElasticStore instance is required." );
 		}
 
@@ -55,7 +53,7 @@ class RebuildElasticMissingDocumentsTest extends SMWIntegrationTestCase {
 			$maintenanceRunner->run()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'removed replication trail',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

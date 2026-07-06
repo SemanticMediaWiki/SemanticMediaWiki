@@ -1,0 +1,78 @@
+<?php
+
+namespace SMW\Tests\Unit\Exporter\ResourceBuilders;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItemFactory;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\ResourceBuilders\ConceptPropertyValueResourceBuilder;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\Exporter\ResourceBuilders\ConceptPropertyValueResourceBuilder
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class ConceptPropertyValueResourceBuilderTest extends TestCase {
+
+	private $dataItemFactory;
+	private $testEnvironment;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->dataItemFactory = new DataItemFactory();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->testEnvironment->resetPoolCacheById( Exporter::POOLCACHE_ID );
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceof(
+			ConceptPropertyValueResourceBuilder::class,
+			new ConceptPropertyValueResourceBuilder()
+		);
+	}
+
+	public function testIsNotResourceBuilderForNonConcProperty() {
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$instance = new ConceptPropertyValueResourceBuilder();
+
+		$this->assertFalse(
+			$instance->isResourceBuilderFor( $property )
+		);
+	}
+
+	public function testAddResourceValueForConcProperty() {
+		$property = $this->dataItemFactory->newDIProperty( '_CONC' );
+		$dataItem = $this->dataItemFactory->newDIConcept( 'Foo' );
+
+		$expData = new ExpData(
+			new ExpNsResource( 'Foobar', 'Bar', 'Mo', null )
+		);
+
+		$instance = new ConceptPropertyValueResourceBuilder();
+
+		$instance->addResourceValue(
+			$expData,
+			$property,
+			$dataItem
+		);
+
+		$this->assertTrue(
+			$instance->isResourceBuilderFor( $property )
+		);
+	}
+
+}

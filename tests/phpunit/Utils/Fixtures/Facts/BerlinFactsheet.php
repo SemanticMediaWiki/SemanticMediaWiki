@@ -3,10 +3,10 @@
 namespace SMW\Tests\Utils\Fixtures\Facts;
 
 use RuntimeException;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
-use SMW\Subobject;
 use SMW\Tests\Utils\Fixtures\Properties\AreaProperty;
 use SMW\Tests\Utils\Fixtures\Properties\CityCategory;
 use SMW\Tests\Utils\Fixtures\Properties\FoundedProperty;
@@ -26,23 +26,14 @@ use SMW\Tests\Utils\UtilityFactory;
 class BerlinFactsheet {
 
 	/**
-	 * @var DIWikiPage
-	 */
-	private $targetSubject = null;
-
-	/**
 	 * @var DataValueFactory
 	 */
 	private $dataValueFactory;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param DIWikiPage|null $targetSubject
 	 */
-	public function __construct( ?DIWikiPage $targetSubject = null ) {
-		$this->targetSubject = $targetSubject;
-
+	public function __construct( private ?WikiPage $targetSubject = null ) {
 		if ( $this->targetSubject === null ) {
 			$this->targetSubject = $this->asSubject();
 		}
@@ -53,19 +44,19 @@ class BerlinFactsheet {
 	/**
 	 * @since 2.1
 	 *
-	 * @param DIWikiPage $targetSubject
+	 * @param WikiPage $targetSubject
 	 */
-	public function setTargetSubject( DIWikiPage $targetSubject ) {
+	public function setTargetSubject( WikiPage $targetSubject ) {
 		$this->targetSubject = $targetSubject;
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function asSubject() {
-		return new DIWikiPage( 'Berlin', NS_MAIN );
+		return new WikiPage( 'Berlin', NS_MAIN );
 	}
 
 	/**
@@ -99,7 +90,7 @@ class BerlinFactsheet {
 		$locatedInProperty = new LocatedInProperty();
 
 		return $this->dataValueFactory->newDataValueByItem(
-			new DIWikiPage( 'Germany', NS_MAIN ),
+			new WikiPage( 'Germany', NS_MAIN ),
 			$locatedInProperty->getProperty()
 		);
 	}
@@ -255,7 +246,7 @@ class BerlinFactsheet {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 
 		foreach ( $subjects as $subject ) {
-			if ( $subject instanceof DIWikiPage ) {
+			if ( $subject instanceof WikiPage ) {
 				$pageDeleter->deletePage( $subject->getTitle() );
 			}
 		}

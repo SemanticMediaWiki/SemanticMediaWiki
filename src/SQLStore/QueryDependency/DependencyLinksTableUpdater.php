@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -17,23 +17,12 @@ class DependencyLinksTableUpdater {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var array
-	 */
-	private static $updateList = [];
-
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private static array $updateList = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**
@@ -41,14 +30,14 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->store;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$updateList = [];
 	}
 
@@ -64,7 +53,8 @@ class DependencyLinksTableUpdater {
 		}
 
 		if ( !isset( self::$updateList[$sid] ) ) {
-			return self::$updateList[$sid] = $dependencyList;
+			self::$updateList[$sid] = $dependencyList;
+			return self::$updateList[$sid];
 		}
 
 		self::$updateList[$sid] = array_merge( self::$updateList[$sid], $dependencyList );
@@ -73,7 +63,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		foreach ( self::$updateList as $sid => $dependencyList ) {
 
 			if ( $dependencyList === [] ) {
@@ -90,22 +80,24 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @param array $deleteIdList
 	 */
-	public function deleteDependenciesFromList( array $deleteIdList ) {
+	public function deleteDependenciesFromList( array $deleteIdList ): void {
 		$this->logger->info(
-			[ 'QueryDependency', 'Delete dependencies: {list}' ],
-			[ 'method' => __METHOD__, 'role' => 'developer', 'list' => json_encode( $deleteIdList ) ]
+			'QueryDependency Delete dependencies: {list}',
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'list' => json_encode( $deleteIdList )
+			]
 		);
 
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
-		$connection->delete(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				's_id' => $deleteIdList
-			],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $deleteIdList ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$connection->endAtomicTransaction( __METHOD__ );
 	}
@@ -118,41 +110,36 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @return void
 	 */
-	private function updateDependencyList( $sid, array $dependencyList ) {
+	private function updateDependencyList( int|string $sid, array $dependencyList ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
-		$connection->update(
-			SQLStore::ID_TABLE,
-			[
-				'smw_touched' => $connection->timestamp()
-			],
-			[
-				'smw_id' => $sid
-			],
-			__METHOD__
-		);
+		$connection->newUpdateQueryBuilder()
+			->update( SQLStore::ID_TABLE )
+			->set( [ 'smw_touched' => $connection->timestamp() ] )
+			->where( [ 'smw_id' => $sid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		// Before an insert, delete all entries that for the criteria which is
 		// cheaper then doing an individual upsert or selectRow, this also ensures
 		// that entries are self-corrected for dependencies matched
-		$connection->delete(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				's_id' => $sid
-			],
-			__METHOD__
-		);
+		$connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $sid ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		if ( $sid == 0 ) {
-			return $connection->endAtomicTransaction( __METHOD__ );
+			$connection->endAtomicTransaction( __METHOD__ );
+			return;
 		}
 
 		$inserts = [];
 
 		foreach ( $dependencyList as $dependency ) {
 
-			if ( !$dependency instanceof DIWikiPage ) {
+			if ( !$dependency instanceof WikiPage ) {
 				continue;
 			}
 
@@ -163,8 +150,12 @@ class DependencyLinksTableUpdater {
 			// This can happen when a query is added with object reference that have not
 			// yet been referenced as annotation and therefore do not recognized as
 			// value annotation
-			if ( $oid < 1 && ( ( $oid = $this->createId( $dependency ) ) < 1 ) ) {
-				continue;
+			if ( $oid < 1 ) {
+				$oid = $this->createId( $dependency );
+
+				if ( $oid < 1 ) {
+					continue;
+				}
 			}
 
 			$inserts[$sid . $oid] = [
@@ -174,7 +165,8 @@ class DependencyLinksTableUpdater {
 		}
 
 		if ( $inserts === [] ) {
-			return $connection->endAtomicTransaction( __METHOD__ );
+			$connection->endAtomicTransaction( __METHOD__ );
+			return;
 		}
 
 		// MW's multi-array insert needs a numeric dimensional array but the key
@@ -182,15 +174,19 @@ class DependencyLinksTableUpdater {
 		$inserts = array_values( $inserts );
 
 		$this->logger->info(
-			[ 'QueryDependency', 'Table insert: {id} ID' ],
-			[ 'method' => __METHOD__, 'role' => 'developer', 'id' => $sid ]
+			'QueryDependency Table insert: {id} ID',
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'id' => $sid
+			]
 		);
 
-		$connection->insert(
-			SQLStore::QUERY_LINKS_TABLE,
-			$inserts,
-			__METHOD__
-		);
+		$connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::QUERY_LINKS_TABLE )
+			->rows( $inserts )
+			->caller( __METHOD__ )
+			->execute();
 
 		$connection->endAtomicTransaction( __METHOD__ );
 	}
@@ -198,14 +194,14 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string $subobjectName
 	 *
 	 * @return int
 	 */
-	public function getId( DIWikiPage $subject, $subobjectName = '' ) {
+	public function getId( WikiPage $subject, $subobjectName = '' ) {
 		if ( $subobjectName !== '' ) {
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$subject->getDBkey(),
 				$subject->getNamespace(),
 				$subject->getInterwiki(),
@@ -223,10 +219,10 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string $subobjectName
 	 */
-	public function createId( DIWikiPage $subject, $subobjectName = '' ) {
+	public function createId( WikiPage $subject, string $subobjectName = '' ) {
 		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
@@ -236,8 +232,13 @@ class DependencyLinksTableUpdater {
 		);
 
 		$this->logger->info(
-			[ 'QueryDependency', 'Table update: new {id} ID; {origin}' ],
-			[ 'method' => __METHOD__, 'role' => 'developer', 'id' => $id, 'origin' => $subject->getHash() . $subobjectName ]
+			'QueryDependency Table update: new {id} ID; {origin}',
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'id' => $id,
+				'origin' => $subject->getHash() . $subobjectName
+			]
 		);
 
 		return $id;

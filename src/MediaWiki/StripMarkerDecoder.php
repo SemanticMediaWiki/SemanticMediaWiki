@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use Parser;
-use StripState;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\StripState;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,22 +14,14 @@ use StripState;
 class StripMarkerDecoder {
 
 	/**
-	 * @var StripState
-	 */
-	private $stripState;
-
-	/**
 	 * @var bool
 	 */
 	private $isSupported = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param StripState $stripState
 	 */
-	public function __construct( StripState $stripState ) {
-		$this->stripState = $stripState;
+	public function __construct( private readonly StripState $stripState ) {
 	}
 
 	/**
@@ -37,7 +29,7 @@ class StripMarkerDecoder {
 	 *
 	 * @param bool $isSupported
 	 */
-	public function isSupported( $isSupported ) {
+	public function isSupported( $isSupported ): void {
 		$this->isSupported = $isSupported;
 	}
 
@@ -46,29 +38,21 @@ class StripMarkerDecoder {
 	 *
 	 * @return bool
 	 */
-	public function canUse() {
+	public function canUse(): bool {
 		return $this->isSupported;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $text
-	 *
-	 * @return bool
 	 */
-	public function hasStripMarker( $text ) {
+	public function hasStripMarker( ?string $text ): int|false {
 		return strpos( $text ?? '', Parser::MARKER_SUFFIX );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $value
-	 *
-	 * @return bool
 	 */
-	public function decode( $value ) {
+	public function decode( string $value ): string|array {
 		$hasStripMarker = false;
 
 		if ( $this->canUse() ) {
@@ -84,10 +68,8 @@ class StripMarkerDecoder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return text
 	 */
-	public function unstrip( $text ) {
+	public function unstrip( string $text ): string|array {
 		// Escape the text case to avoid any HTML elements
 		// cause an issue during parsing
 		return str_replace(
@@ -97,19 +79,21 @@ class StripMarkerDecoder {
 		);
 	}
 
-	public function doUnstrip( $text ) {
-		if ( ( $value = $this->stripState->unstripNoWiki( $text ) ) !== '' && !$this->hasStripMarker( $value ) ) {
+	public function doUnstrip( ?string $text ): ?string {
+		$value = $this->stripState->unstripNoWiki( $text );
+		if ( $value !== '' && !$this->hasStripMarker( $value ) ) {
 			return $this->addNoWikiToUnstripValue( $value );
 		}
 
-		if ( ( $value = $this->stripState->unstripGeneral( $text ) ) !== '' && !$this->hasStripMarker( $value ) ) {
+		$value = $this->stripState->unstripGeneral( $text );
+		if ( $value !== '' && !$this->hasStripMarker( $value ) ) {
 			return $value;
 		}
 
 		return $this->doUnstrip( $value );
 	}
 
-	private function addNoWikiToUnstripValue( $text ) {
+	private function addNoWikiToUnstripValue( string $text ): string {
 		return '<nowiki>' . $text . '</nowiki>';
 	}
 

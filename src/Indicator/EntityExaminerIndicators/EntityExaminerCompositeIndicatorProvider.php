@@ -2,7 +2,7 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
@@ -16,67 +16,40 @@ use SMW\MediaWiki\Permission\PermissionExaminerAware;
  */
 class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProvider, PermissionExaminerAware {
 
-	/**
-	 * @var CompositeIndicatorHtmlBuilder
-	 */
-	private $compositeIndicatorHtmlBuilder;
+	private ?PermissionExaminer $permissionExaminer = null;
 
-	/**
-	 * @var
-	 */
-	private $indicatorProviders = [];
+	private array $indicators = [];
 
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
-
-	/**
-	 * @var
-	 */
-	private $indicators = [];
-
-	/**
-	 * @var
-	 */
-	protected $modules = [ 'smw.entityexaminer' ];
+	protected array $modules = [ 'smw.entityexaminer' ];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param CompositeIndicatorHtmlBuilder $compositeIndicatorHtmlBuilder
-	 * @param array $indicatorProviders
 	 */
-	public function __construct( CompositeIndicatorHtmlBuilder $compositeIndicatorHtmlBuilder, array $indicatorProviders ) {
-		$this->compositeIndicatorHtmlBuilder = $compositeIndicatorHtmlBuilder;
-		$this->indicatorProviders = $indicatorProviders;
+	public function __construct(
+		private readonly CompositeIndicatorHtmlBuilder $compositeIndicatorHtmlBuilder,
+		private readonly array $indicatorProviders,
+	) {
 	}
 
 	/**
 	 * @see PermissionExaminerAware::setPermissionExaminer
 	 * @since 3.2
-	 *
-	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ): void {
 		$this->permissionExaminer = $permissionExaminer;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return $this->modules;
 	}
 
@@ -94,7 +67,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
 		// component) therefore disabled it when indicators are present
 		return '#mw-indicator-mw-helplink {display:none;}';
@@ -103,12 +76,12 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( isset( $options['action'] ) && ( $options['action'] === 'edit' || $options['action'] === 'history' ) ) {
 			return false;
 		}
@@ -120,7 +93,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 		return $this->checkIndicators( $subject, $options );
 	}
 
-	private function checkIndicators( DIWikiPage $subject, array $options ): bool {
+	private function checkIndicators( WikiPage $subject, array $options ): bool {
 		$indicatorProviders = [];
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 		$options['options_raw'] = json_encode( $options );

@@ -2,8 +2,9 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\GroupPermissions;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
@@ -13,7 +14,6 @@ use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Store;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -26,49 +26,23 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	use MessageLocalizerTrait;
 	use RevisionGuardAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private array $indicators = [];
 
-	/**
-	 * @var
-	 */
-	private $indicators = [];
+	private string $severityType = '';
 
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
+	private mixed $languageCode = '';
 
-	/**
-	 * @var string
-	 */
-	private $languageCode = '';
-
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
-
-	private TemplateEngine $templateEngine;
+	private bool $isDeferredMode = false;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store, private TemplateParser $templateParser ) {
 	}
 
 	/**
 	 * @see PermissionAware::hasPermission
 	 * @since 3.2
-	 *
-	 * @param PermissionExaminer $permissionExaminer
-	 *
-	 * @return bool
 	 */
 	public function hasPermission( PermissionExaminer $permissionExaminer ): bool {
 		return $permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH );
@@ -76,17 +50,13 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
@@ -94,10 +64,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $severityType
-	 *
-	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -105,8 +71,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return 'smw-entity-examiner-associated-revision-mismatch';
@@ -114,13 +78,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param DIWikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}
@@ -132,32 +91,26 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 
-	private function runCheck( $subject, $options ) {
+	private function runCheck( WikiPage $subject, array $options ): bool {
 		$this->indicators = [];
 
 		$latestRevID = $this->revisionGuard->getLatestRevID(
@@ -167,10 +120,10 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		// Make sure to match the correct internal predefined property key
 		// when it is not a user-defined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$property = Property::newFromUserLabel( $subject->getDBKey() );
 
 			if ( !$property->isUserDefined() ) {
-				$subject = new DIWikiPage( $property->getKey(), SMW_NS_PROPERTY );
+				$subject = new WikiPage( $property->getKey(), SMW_NS_PROPERTY );
 			}
 		}
 
@@ -186,40 +139,20 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		return $this->indicators !== [];
 	}
 
-	private function buildHTML( $latestRevID, $associatedRev, $options ) {
-		$content = '';
+	private function buildHTML( $latestRevID, int $associatedRev, array $options ): void {
 		$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_ERROR;
-
-		$this->templateEngine = new TemplateEngine();
-		$this->templateEngine->bulkLoad(
-			[
-				'/indicator/composite.line.ms' => 'line_template',
-				'/indicator/comment.ms' => 'comment_template',
-				'/indicator/bottom.comment.ms' => 'bottom_comment_template',
-				'/indicator/text.ms' => 'text_template',
-				'/indicator/compare.list.ms' => 'compare_list_template',
-				'/indicator/bottom.sticky.ms' => 'bottom_sticky_template'
-			]
-		);
 
 		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
 
-		$this->templateEngine->compile(
-			'line_template',
+		$content = $this->templateParser->processTemplate(
+			'Text',
 			[
-				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left'
+				'html-text' => $this->msg( [ 'smw-indicator-revision-mismatch-error' ], Message::PARSE, $this->languageCode )
 			]
 		);
 
-		$this->templateEngine->compile(
-			'text_template',
-			[
-				'text' => $this->msg( [ 'smw-indicator-revision-mismatch-error' ], Message::PARSE, $this->languageCode )
-			]
-		);
-
-		$this->templateEngine->compile(
-			'compare_list_template',
+		$content .= $this->templateParser->processTemplate(
+			'CompareList',
 			[
 				'explain' => '',
 				'first_key' => 'MediaWiki:',
@@ -229,23 +162,17 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 			]
 		);
 
-		$this->templateEngine->compile(
-			'bottom_comment_template',
+		$content .= $this->templateParser->processTemplate(
+			'Line',
 			[
-				'comment' => $this->msg( 'smw-indicator-revision-mismatch-comment', Message::TEXT, $this->languageCode )
+				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left'
 			]
 		);
 
-		$content .= $this->templateEngine->code( 'text_template' );
-	// $content .= $this->templateEngine->code( 'line_template' );
-		$content .= $this->templateEngine->code( 'compare_list_template' );
-		$content .= $this->templateEngine->code( 'line_template' );
-		$content .= $this->templateEngine->code( 'bottom_comment_template' );
-
-		$this->templateEngine->compile(
-			'bottom_sticky_template',
+		$content .= $this->templateParser->processTemplate(
+			'BottomComment',
 			[
-				'content' => $content
+				'html-comment' => $this->msg( 'smw-indicator-revision-mismatch-comment', Message::TEXT, $this->languageCode )
 			]
 		);
 

@@ -2,7 +2,11 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\Html\TemplateParser;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
@@ -13,10 +17,9 @@ use SMW\MediaWiki\Specials\FacetedSearch\ParametersProcessor;
 use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
-use SMW\Services\ServicesFactory;
-use SMW\Utils\TemplateEngine;
+use SMW\Schema\SchemaFactory;
+use SMW\Store;
 use SMW\Utils\UrlArgs;
-use SpecialPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,10 +30,22 @@ use SpecialPage;
 class SpecialFacetedSearch extends SpecialPage {
 
 	/**
-	 * @codeCoverageIgnore
+	 * @since 7.0.0
 	 */
-	public function __construct() {
-		parent::__construct( 'FacetedSearch', '', true, false, 'default', true );
+	public function __construct(
+		private readonly Store $store,
+		private readonly SchemaFactory $schemaFactory
+	) {
+		// MediaWiki 1.46 deprecated the SpecialPage constructor flags; the
+		// page stays transcludable via the isIncludable() override below.
+		parent::__construct( 'FacetedSearch' );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isIncludable(): bool {
+		return true;
 	}
 
 	/**
@@ -41,7 +56,7 @@ class SpecialFacetedSearch extends SpecialPage {
 		$output = $this->getOutput();
 		$request = $this->getRequest();
 
-		$this->addHelpLink( $this->msg( 'smw-specials-facetedsearch-helplink' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-specials-facetedsearch-helplink' )->text(), true );
 
 		$output->addModuleStyles(
 			[
@@ -69,88 +84,54 @@ class SpecialFacetedSearch extends SpecialPage {
 
 		$title = $this->getPageTitle();
 
-		$servicesFactory = ServicesFactory::getInstance();
-		$store = $servicesFactory->getStore();
-		$userOptionsLookup = $servicesFactory->singleton( 'UserOptionsLookup' );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 
 		/**
 		 * Profile information
 		 */
-		$schemaFactory = $servicesFactory->singleton( 'SchemaFactory' );
 		$default_profile = $userOptionsLookup->getOption(
 			$this->getUser(),
 			GetPreferences::FACETEDSEARCH_PROFILE_PREFERENCE, ''
 		);
 
-		if ( ( $profileName = $request->getVal( 'profile', $default_profile ) ) === '' ) {
+		$profileName = $request->getVal( 'profile', $default_profile );
+		if ( $profileName === '' ) {
 			$profileName = $default_profile;
 		}
 
 		$profile = new Profile(
-			$schemaFactory,
+			$this->schemaFactory,
 			$profileName
 		);
 
 		/**
-		 * @var TemplateEngine
+		 * @var TemplateParser
 		 */
-		$templateEngine = new TemplateEngine();
-		$templateEngine->bulkLoad(
-			[
-				'/facetedsearch/container.ms' => 'facetedsearch-container',
-				'/facetedsearch/container.empty.ms' => 'facetedsearch-container-empty',
-				'/facetedsearch/intro.ms' => 'intro',
-
-				// Search
-				'/facetedsearch/search.ms' => 'search-form',
-				'/facetedsearch/search.extrafields.ms' => 'search-extra-fields',
-				'/facetedsearch/search.extrafield.input.ms' => 'search-extra-field-input',
-
-				// Content, result
-				'/facetedsearch/options.ms' => 'search-options',
-				'/facetedsearch/content.ms' => 'facetedsearch-content',
-
-				// Sidebar, facets, filters
-				'/facetedsearch/sidebar.ms' => 'facetedsearch-sidebar',
-				'/facetedsearch/filter/facet.ms' => 'filter-facet',
-				'/facetedsearch/filter/cards.ms' => 'filter-cards',
-				'/facetedsearch/filter/item.linked.ms' => 'filter-item-linked',
-				'/facetedsearch/filter/item.linked.button.ms' => 'filter-item-linked-button',
-				'/facetedsearch/filter/item.unlink.ms' => 'filter-item-unlink',
-				'/facetedsearch/filter/item.unlink.button.ms' => 'filter-item-unlink-button',
-				'/facetedsearch/filter/item.checkbox.ms' => 'filter-item-checkbox',
-				'/facetedsearch/filter/items.input.ms' => 'filter-items-input',
-				'/facetedsearch/filter/items.clear.ms' => 'filter-items-clear',
-				'/facetedsearch/filter/items.clear.button.ms' => 'filter-items-clear-button',
-				'/facetedsearch/filter/items.condition.ms' => 'filter-items-condition',
-				'/facetedsearch/filter/items.option.ms' => 'filter-items-option',
-				'/facetedsearch/filter/items.ms' => 'filter-items'
-			]
-		);
+		$templateParser = new TemplateParser( __DIR__ . '/../../../templates/FacetedSearch' );
 
 		/**
 		 * Result fetcher
 		 */
 		$resultFetcher = new ResultFetcher(
-			$store
+			$this->store
 		);
 
 		/**
 		 * Facet/Filter card builder
 		 */
 		$treeBuilder = new TreeBuilder(
-			$store
+			$this->store
 		);
 
 		$filterFactory = new FilterFactory(
-			$templateEngine,
+			$templateParser,
 			$treeBuilder,
-			$schemaFactory
+			$this->schemaFactory
 		);
 
 		$facetBuilder = new FacetBuilder(
 			$profile,
-			$templateEngine,
+			$templateParser,
 			$filterFactory,
 			$resultFetcher,
 		);
@@ -160,9 +141,9 @@ class SpecialFacetedSearch extends SpecialPage {
 		 */
 		$htmlBuilder = new HtmlBuilder(
 			$profile,
-			$templateEngine,
+			$templateParser,
 			new OptionsBuilder( $profile ),
-			new ExtraFieldBuilder( $profile, $templateEngine ),
+			new ExtraFieldBuilder( $profile, $templateParser ),
 			$facetBuilder,
 			$resultFetcher,
 			new ExploreListBuilder( $profile )
@@ -200,7 +181,7 @@ class SpecialFacetedSearch extends SpecialPage {
 
 		// Add any resources that were registered by a specific result
 		// printer
-		\SMWOutputs::commitToOutputPage( $output );
+		Outputs::commitToOutputPage( $output );
 
 		$output->addHTML( $html );
 	}
@@ -208,7 +189,7 @@ class SpecialFacetedSearch extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 

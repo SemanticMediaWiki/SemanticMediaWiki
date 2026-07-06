@@ -2,11 +2,11 @@
 
 namespace SMW\Elastic\Admin;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Message;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,7 +21,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSupplementTask() {
+	public function getSupplementTask(): string {
 		return 'indices';
 	}
 
@@ -53,7 +53,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch indices' );
 
 		$this->outputFormatter->addParentLink(
@@ -64,7 +64,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 		$this->outputInfo();
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$html = Html::rawElement(

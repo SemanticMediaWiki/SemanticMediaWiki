@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDITime as DITime;
-use Title;
 
 /**
  * @group SMW
@@ -28,17 +28,10 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 	private $semanticDataValidator;
 	private $applicationFactory;
 	private $dataValueFactory;
-	private $mwHooksHandler;
 	private $pageCreator;
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
-
-		$this->mwHooksHandler
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
@@ -49,7 +42,6 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 
 	protected function tearDown(): void {
 		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}
@@ -57,14 +49,14 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 	public function testPredefinedModificationDatePropertyAndChangedDefaultsortForNewPage() {
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
-		$title   = Title::newFromText( __METHOD__ );
-		$subject = DIWikiPage::newFromTitle( $title );
+		$title   = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$this->pageCreator
 			->createPage( $title, '{{DEFAULTSORT:SortForFoo}}' );
 
 		$dvPageModificationTime = $this->dataValueFactory->newDataValueByItem(
-			DITime::newFromTimestamp( $this->pageCreator->getPage()->getTimestamp() )
+			Time::newFromTimestamp( $this->pageCreator->getPage()->getTimestamp() )
 		);
 
 		$expected = [
@@ -82,8 +74,8 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
 
-		$title   = Title::newFromText( __METHOD__ );
-		$subject = DIWikiPage::newFromTitle( $title );
+		$title   = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$this->pageCreator
 			->createPage( $title )

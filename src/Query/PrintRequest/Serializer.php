@@ -23,7 +23,7 @@ class Serializer {
 	 *
 	 * @return string
 	 */
-	public static function serialize( PrintRequest $printRequest, $showparams = false ) {
+	public static function serialize( PrintRequest $printRequest, $showparams = false ): string {
 		$parameters = '';
 
 		if ( $showparams ) {
@@ -54,7 +54,7 @@ class Serializer {
 		return ''; // no current serialisation
 	}
 
-	private static function doSerializeCat( $printRequest, $parameters ) {
+	private static function doSerializeCat( PrintRequest $printRequest, string $parameters ): string {
 		$catlabel = Localizer::getInstance()->getNsText( NS_CATEGORY );
 		$result = '?' . $catlabel;
 
@@ -65,7 +65,7 @@ class Serializer {
 		return $result . $parameters;
 	}
 
-	private static function doSerializeCcat( $printRequest, $parameters ) {
+	private static function doSerializeCcat( PrintRequest $printRequest, string $parameters ): string {
 		$printname = $printRequest->getData()->getPrefixedText();
 		$result = '?' . $printname;
 
@@ -80,7 +80,7 @@ class Serializer {
 		return $result . $parameters;
 	}
 
-	private static function doSerializeProp( $printRequest, $parameters ) {
+	private static function doSerializeProp( PrintRequest $printRequest, string $parameters ): string {
 		$printname = '';
 
 		$label = $printRequest->getLabel();
@@ -128,7 +128,7 @@ class Serializer {
 		return $result . $parameters;
 	}
 
-	private static function doSerializeThis( $printRequest, $parameters ) {
+	private static function doSerializeThis( PrintRequest $printRequest, string $parameters ): string {
 		$result = '?';
 
 		// Has leading ?#

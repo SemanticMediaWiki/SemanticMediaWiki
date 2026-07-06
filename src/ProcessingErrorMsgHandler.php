@@ -2,12 +2,15 @@
 
 namespace SMW;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\Property\RestrictionExaminer;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
-use SMWDIContainer as DIContainer;
 
 /**
  * The handler encodes errors into a representation that can be retrieved from
@@ -20,17 +23,14 @@ use SMWDIContainer as DIContainer;
  */
 class ProcessingErrorMsgHandler {
 
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
+	private WikiPage $subject;
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function __construct( DIWikiPage $subject ) {
+	public function __construct( WikiPage $subject ) {
 		$this->subject = $subject;
 	}
 
@@ -39,9 +39,9 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @param string $message
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
-	public static function grepPropertyFromRestrictionErrorMsg( $message ) {
+	public static function grepPropertyFromRestrictionErrorMsg( $message ): ?Property {
 		return RestrictionExaminer::grepPropertyFromRestrictionErrorMsg( $message );
 	}
 
@@ -57,7 +57,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return array
 	 */
-	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ) {
+	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ): array {
 		$normalizedMessages = [];
 
 		if ( $type === null ) {
@@ -83,9 +83,12 @@ class ProcessingErrorMsgHandler {
 
 			$exists = false;
 
-			if ( is_string( $message ) && ( $decodedMessage = Message::decode( $message, $type, $language ) ) !== false ) {
-				$message = $decodedMessage;
-				$exists = true;
+			if ( is_string( $message ) ) {
+				$decodedMessage = Message::decode( $message, $type, $language );
+				if ( $decodedMessage !== false ) {
+					$message = $decodedMessage;
+					$exists = true;
+				}
 			}
 
 			if ( !$exists && is_string( $message ) && wfMessage( $message )->exists() ) {
@@ -111,7 +114,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return string
 	 */
-	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
+	public static function getMessagesAsString( array $messages, $type = null, $language = null ): string {
 		$normalizedMessages = self::normalizeAndDecodeMessages( $messages, $type, $language );
 		$msg = [];
 
@@ -131,15 +134,15 @@ class ProcessingErrorMsgHandler {
 	 * @since 2.5
 	 *
 	 * @param SemanticData $semanticData
-	 * @param DIContainer|null $container
+	 * @param Container|null $container
 	 */
-	public function addToSemanticData( SemanticData $semanticData, ?DIContainer $container = null ) {
+	public function addToSemanticData( SemanticData $semanticData, ?Container $container = null ): void {
 		if ( $container === null ) {
 			return;
 		}
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_ERRC' ),
+			new Property( '_ERRC' ),
 			$container
 		);
 	}
@@ -148,13 +151,13 @@ class ProcessingErrorMsgHandler {
 	 * @since 2.5
 	 *
 	 * @param array|string $error
-	 * @param DIProperty|null $property
+	 * @param Property|null $property
 	 *
-	 * @return DIContainer
+	 * @return Container
 	 */
-	public function newErrorContainerFromMsg( $error, ?DIProperty $property = null ) {
+	public function newErrorContainerFromMsg( $error, ?Property $property = null ): Container {
 		if ( $property !== null && $property->isInverse() ) {
-			$property = new DIProperty( $property->getKey() );
+			$property = new Property( $property->getKey() );
 		}
 
 		if ( $error instanceof ProcessingError ) {
@@ -177,7 +180,7 @@ class ProcessingErrorMsgHandler {
 
 		$this->publishError( $containerSemanticData, $property, $error, $type );
 
-		return new DIContainer( $containerSemanticData );
+		return new Container( $containerSemanticData );
 	}
 
 	/**
@@ -185,9 +188,9 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @param DataValue $dataValue
 	 *
-	 * @return DIContainer|null
+	 * @return Container|null
 	 */
-	public function newErrorContainerFromDataValue( DataValue $dataValue ) {
+	public function newErrorContainerFromDataValue( DataValue $dataValue ): ?Container {
 		if ( $dataValue->getErrors() === [] ) {
 			return null;
 		}
@@ -217,48 +220,43 @@ class ProcessingErrorMsgHandler {
 			$this->publishError( $containerSemanticData, $property, Message::encode( $error ), $type );
 		}
 
-		return new DIContainer( $containerSemanticData );
+		return new Container( $containerSemanticData );
 	}
 
-	private function publishError( $containerSemanticData, $property, $error, $type ) {
+	private function publishError( $containerSemanticData, $property, $error, $type ): void {
 		// `_INST` is not a real (visible) property to create a reference from
 		// and link to
 		if ( $property !== null && $property->getKey() !== '_INST' ) {
 			$containerSemanticData->addPropertyObjectValue(
-				new DIProperty( '_ERRP' ),
-				new DIWikiPage( $property->getKey(), SMW_NS_PROPERTY )
+				new Property( '_ERRP' ),
+				new WikiPage( $property->getKey(), SMW_NS_PROPERTY )
 			);
 		}
 
 		$containerSemanticData->addPropertyObjectValue(
-			new DIProperty( '_ERRT' ),
-			new DIBlob( $error )
+			new Property( '_ERRT' ),
+			new Blob( $error )
 		);
 
 		if ( $type !== '' ) {
 			$containerSemanticData->addPropertyObjectValue(
-				new DIProperty( '_ERR_TYPE' ),
-				new DIBlob( $type )
+				new Property( '_ERR_TYPE' ),
+				new Blob( $type )
 			);
 		}
 	}
 
-	private function newContainerSemanticData( $hash ) {
-		if ( $this->subject === null ) {
-			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
-			$containerSemanticData->skipAnonymousCheck();
-		} else {
-			$subobjectName = '_ERR' . md5( $hash );
+	private function newContainerSemanticData( string $hash ): ContainerSemanticData {
+		$subobjectName = '_ERR' . md5( $hash );
 
-			$subject = new DIWikiPage(
-				$this->subject->getDBkey(),
-				$this->subject->getNamespace(),
-				$this->subject->getInterwiki(),
-				$subobjectName
-			);
+		$subject = new WikiPage(
+			$this->subject->getDBkey(),
+			$this->subject->getNamespace(),
+			$this->subject->getInterwiki(),
+			$subobjectName
+		);
 
-			$containerSemanticData = new ContainerSemanticData( $subject );
-		}
+		$containerSemanticData = new ContainerSemanticData( $subject );
 
 		return $containerSemanticData;
 	}
@@ -266,8 +264,9 @@ class ProcessingErrorMsgHandler {
 	/**
 	 * Flip [ '_type_1' => [ 'a', 'b'], '_type_2' => 'c', 'd' ] ]
 	 * to  [ 'a' => '_type_1', 'b' => '_type_1', 'c' => '_type_2', 'd' => '_type_2' ]
+	 * @return mixed[]
 	 */
-	private function flip( $array ) {
+	private function flip( $array ): array {
 		$flipped = [];
 
 		foreach ( $array as $key => $value ) {

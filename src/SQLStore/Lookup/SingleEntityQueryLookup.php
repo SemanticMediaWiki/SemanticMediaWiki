@@ -4,10 +4,10 @@ namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\MediaWikiServices;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * `#show` will only make a request to one particular entity therefore instead of
@@ -23,17 +23,9 @@ use SMWQuery as Query;
 class SingleEntityQueryLookup implements QueryEngine {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -43,7 +35,7 @@ class SingleEntityQueryLookup implements QueryEngine {
 	 *
 	 * @return QueryResult
 	 */
-	public function getQueryResult( Query $query ) {
+	public function getQueryResult( Query $query ): QueryResult {
 		$description = $query->getDescription();
 		$results = [];
 		$furtherResults = false;
@@ -51,28 +43,26 @@ class SingleEntityQueryLookup implements QueryEngine {
 		// #4349 We only expect a `ValueDescription` instance while other uses such
 		// as `{{ #show: [[someX]][[SomeX]] ...}}` that would produce a non
 		// `ValueDescription` description aren't supported!
-		if ( !$description instanceof ValueDescription ) {
-			$results = [];
-			$furtherResults = false;
-		} elseif ( $query->getLimit() == 0 ) {
-			$results = [];
-			$furtherResults = true;
-		} else {
-			$dataItem = $description->getDataItem();
+		if ( $description instanceof ValueDescription ) {
+			if ( $query->getLimit() == 0 ) {
+				$furtherResults = true;
+			} else {
+				$dataItem = $description->getDataItem();
 
-			// #4370
-			$dataItem = $this->store->getRedirectTarget( $dataItem );
+				// #4370
+				$dataItem = $this->store->getRedirectTarget( $dataItem );
 
-			// Instead of relying on Title::exists, find an associated revision
-			// ID to see whether it is a known page in MW or not
-			$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
-				$dataItem->asBase()
-			);
+				// Instead of relying on Title::exists, find an associated revision
+				// ID to see whether it is a known page in MW or not
+				$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
+					$dataItem->asBase()
+				);
 
-			// #3588
-			// Does the entity exists or not?
-			if ( $associatedRev > 0 ) {
-				$results = [ $dataItem ];
+				// #3588
+				// Does the entity exists or not?
+				if ( $associatedRev > 0 ) {
+					$results = [ $dataItem ];
+				}
 			}
 		}
 

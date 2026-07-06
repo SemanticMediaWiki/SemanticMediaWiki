@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Normalizer;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\Normalizer;
  *
  * @author mwjames
  */
-class NormalizerTest extends \PHPUnit\Framework\TestCase {
+class NormalizerTest extends TestCase {
 
 	public function testReduceLengthTo() {
 		$this->assertEquals(

@@ -26,94 +26,49 @@ abstract class TaskHandler {
 	const SECTION_SUPPORT = 'section/support';
 	const ACTIONABLE = 'actionable';
 
-	/**
-	 * @var int
-	 */
-	protected $featureSet = 0;
+	protected int $featureSet = 0;
+
+	private ?Store $store = null;
+
+	protected bool $isApiTask = false;
 
 	/**
-	 * @var Store
+	 * @since 3.1
 	 */
-	private $store;
-
-	/**
-	 * @var bool
-	 */
-	protected $isApiTask = false;
-
-	/**
-	 * @deprecated since 3.1, use TaskHandler::hasFeature
-	 * @since 2.5
-	 *
-	 * @param integer $feature
-	 *
-	 * @return boolean
-	 */
-	public function isEnabledFeature( $feature ) {
-		return $this->hasFeature( $feature );
+	public function hasFeature( int $feature ): bool {
+		return ( ( $this->featureSet & $feature ) == $feature );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param int $feature
-	 *
-	 * @return bool
 	 */
-	public function hasFeature( $feature ) {
-		return ( ( (int)$this->featureSet & $feature ) == $feature );
-	}
-
-	/**
-	 * @deprecated since 3.1, use TaskHandler::setFeatureSet
-	 * @since 2.5
-	 *
-	 * @param integer $enabledFeatures
-	 */
-	public function setEnabledFeatures( $enabledFeatures ) {
-		$this->setFeatureSet( $enabledFeatures );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param int $featureSet
-	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): ?Store {
 		return $this->store;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return '';
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return '';
@@ -121,10 +76,8 @@ abstract class TaskHandler {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return bool
 	 */
-	public function isApiTask() {
+	public function isApiTask(): bool {
 		return false;
 	}
 

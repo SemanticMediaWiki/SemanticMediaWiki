@@ -1,0 +1,341 @@
+<?php
+
+namespace SMW\Tests\Unit\SQLStore;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Number;
+use SMW\MediaWiki\Connection\Database;
+use SMW\RequestOptions;
+use SMW\SQLStore\RequestOptionsProcessor;
+use SMW\SQLStore\SQLStore;
+use SMW\StringCondition;
+
+/**
+ * @covers \SMW\SQLStore\RequestOptionsProcessor
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since   2.3
+ *
+ * @author mwjames
+ */
+class RequestOptionsProcessorTest extends TestCase {
+
+	private $store;
+
+	protected function setUp(): void {
+		$this->store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testGetSQLOptions() {
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 1;
+		$requestOptions->offset = 2;
+		$requestOptions->sort = true;
+
+		$expected = [
+			'LIMIT'    => 1,
+			'OFFSET'   => 2
+		];
+
+		$this->assertEquals(
+			$expected,
+			RequestOptionsProcessor::getSQLOptions( $requestOptions, 'Foo' )
+		);
+	}
+
+	public function testGetSQLOptionsWithOrderBy() {
+		$instance = new RequestOptionsProcessor( $this->store );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 2;
+		$requestOptions->offset = 2;
+		$requestOptions->sort = true;
+
+		$expected = [
+			'LIMIT'    => 2,
+			'OFFSET'   => 2,
+			'ORDER BY' => 'Foo'
+		];
+
+		$this->assertEquals(
+			$expected,
+			RequestOptionsProcessor::getSQLOptions( $requestOptions, 'Foo' )
+		);
+	}
+
+	/**
+	 * @dataProvider requestOptionsToSqlConditionsProvider
+	 */
+	public function testGetSQLConditions( $requestOptions, $valueCol, $labelCol, $expected ) {
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnArgument( 0 );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$this->assertEquals(
+			$expected,
+			RequestOptionsProcessor::getSQLConditions( $this->store, $requestOptions, $valueCol, $labelCol )
+		);
+	}
+
+	/**
+	 * @dataProvider requestOptionsToApplyProvider
+	 */
+	public function testApplyRequestOptions( $data, $requestOptions, $expected ) {
+		$this->assertEquals(
+			$expected,
+			RequestOptionsProcessor::applyRequestOptions( $this->store, $data, $requestOptions )
+		);
+	}
+
+	public function requestOptionsToSqlConditionsProvider() {
+		$provider = [];
+
+		# 0
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'',
+			' AND Foo >= 1'
+		];
+
+		# 1
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foobar', StringCondition::STRCOND_PRE );
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' AND Foo >= 1 AND Bar LIKE foobar%'
+		];
+
+		# 2
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foobar', StringCondition::STRCOND_PRE, true );
+		$requestOptions->addStringCondition( 'foobaz', StringCondition::STRCOND_POST, true );
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' AND Foo >= 1 OR Bar LIKE foobar% OR Bar LIKE %foobaz'
+		];
+
+		# 3
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ );
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' AND Foo >= 1 AND Bar = foo_bar'
+		];
+
+		# 4
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ );
+		$requestOptions->addExtraCondition( 'abd = 123' );
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' AND Foo >= 1 AND Bar = foo_bar AND abd = 123'
+		];
+
+		# 5
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ );
+		$requestOptions->addExtraCondition( [ 'OR' => 'abd = 123' ] );
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' AND Foo >= 1 AND Bar = foo_bar OR abd = 123'
+		];
+
+		# 6
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ, true, true );
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' ( AND Foo >= 1) AND (Bar NOT = foo_bar) '
+		];
+
+		# 7
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ, true );
+		$requestOptions->addStringCondition( 'foobar', StringCondition::COND_POST, true, true );
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' ( AND Foo >= 1 OR Bar = foo_bar) AND (Bar NOT LIKE %foobar) '
+		];
+
+		# 8
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ, true );
+		$requestOptions->addStringCondition( 'foobar', StringCondition::COND_POST, false, true );
+		$requestOptions->addStringCondition( 'foobar_ex', StringCondition::COND_EQ, false, true );
+
+		$provider[] = [
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' ( ( AND Foo >= 1 OR Bar = foo_bar) AND (Bar NOT LIKE %foobar) ) AND (Bar NOT = foobar_ex) '
+		];
+
+		return $provider;
+	}
+
+	public function requestOptionsToApplyProvider() {
+		$provider = [];
+
+		# 0
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$provider[] = [
+			[
+				new Blob( 'Foo' )
+			],
+			$requestOptions,
+			[
+				new Blob( 'Foo' )
+			]
+		];
+
+		# 1
+		$requestOptions = new RequestOptions();
+		$requestOptions->addStringCondition( 'Foo', StringCondition::STRCOND_PRE );
+
+		$provider[] = [
+			[
+				new Blob( 'Foo' )
+			],
+			$requestOptions,
+			[
+				new Blob( 'Foo' )
+			]
+		];
+
+		# 2 String not match
+		$requestOptions = new RequestOptions();
+		$requestOptions->addStringCondition( 'Bar', StringCondition::STRCOND_POST );
+
+		$provider[] = [
+			[
+				new Blob( 'Foo' )
+			],
+			$requestOptions,
+			[]
+		];
+
+		# 3 Limit
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 1;
+
+		$provider[] = [
+			[
+				new Blob( 'Foo' ),
+				new Blob( 'Bar' )
+			],
+			$requestOptions,
+			[
+				new Blob( 'Foo' )
+			]
+		];
+
+		# 4 ascending
+		$requestOptions = new RequestOptions();
+		$requestOptions->sort = true;
+		$requestOptions->ascending = true;
+
+		$provider[] = [
+			[
+				new Blob( 'Foo' ),
+				new Blob( 'Bar' )
+			],
+			$requestOptions,
+			[
+				new Blob( 'Bar' ),
+				new Blob( 'Foo' )
+			]
+		];
+
+		# 5 descending
+		$requestOptions = new RequestOptions();
+		$requestOptions->sort = true;
+		$requestOptions->ascending = false;
+
+		$provider[] = [
+			[
+				new Blob( 'Foo' ),
+				new Blob( 'Bar' )
+			],
+			$requestOptions,
+			[
+				new Blob( 'Foo' ),
+				new Blob( 'Bar' )
+			]
+		];
+
+		# 6 descending
+		$requestOptions = new RequestOptions();
+		$requestOptions->sort = true;
+		$requestOptions->ascending = false;
+
+		$provider[] = [
+			[
+				new Number( 10 ),
+				new Number( 200 )
+			],
+			$requestOptions,
+			[
+				new Number( 200 ),
+				new Number( 10 )
+			]
+		];
+
+		return $provider;
+	}
+
+}

@@ -18,17 +18,14 @@ use SMW\Exception\StoreNotFoundException;
  */
 class StoreFactory {
 
-	/**
-	 * @var array
-	 */
-	private static $instance = [];
+	private static array $instance = [];
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param string|null $class
-	 *
-	 * @return Store
+	 * @template T of Store
+	 * @param class-string<T>|null $class
+	 * @return T
 	 * @throws RuntimeException
 	 * @throws StoreNotFoundException
 	 */
@@ -47,7 +44,7 @@ class StoreFactory {
 	/**
 	 * @since 1.9
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = [];
 	}
 

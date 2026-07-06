@@ -2,11 +2,11 @@
 
 namespace SMW\Exporter\Serializer;
 
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * Class for serializing exported data (encoded as ExpData object) in
@@ -24,7 +24,7 @@ class RDFXMLSerializer extends Serializer {
 	 * declaration block to which further declarations for the current
 	 * context can be appended.
 	 */
-	protected $namespace_block_started;
+	protected ?bool $namespace_block_started = null;
 
 	/**
 	 * True if the namespaces that are added at the current serialization stage
@@ -34,12 +34,12 @@ class RDFXMLSerializer extends Serializer {
 	 * can only be added locally to individual elements, thus requiring them to
 	 * be re-added multiple times if used in many elements.
 	 */
-	protected $namespaces_are_global;
+	protected ?bool $namespaces_are_global = null;
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->namespaces_are_global = false;
 		$this->namespace_block_started = false;
@@ -48,7 +48,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeHeader() {
+	protected function serializeHeader(): void {
 		$exporter = Exporter::getInstance();
 
 		$this->namespaces_are_global = true;
@@ -95,7 +95,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeFooter() {
+	protected function serializeFooter(): void {
 		$this->post_ns_buffer .= "\t<!-- Created by Semantic MediaWiki, https://www.semantic-mediawiki.org/ -->\n";
 		$this->post_ns_buffer .= '</rdf:RDF>';
 	}
@@ -103,14 +103,14 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeDeclaration( $uri, $typename ) {
+	public function serializeDeclaration( $uri, $typename ): void {
 		$this->post_ns_buffer .= "\t<$typename rdf:about=\"$uri\" />\n";
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeExpData( ExpData $expData ) {
+	public function serializeExpData( ExpData $expData ): void {
 		$this->serializeNestedExpData( $expData, '' );
 		$this->serializeNamespaces();
 
@@ -138,7 +138,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function serializeNamespace( $shortname, $uri ) {
+	protected function serializeNamespace( $shortname, $uri ): void {
 		if ( $this->namespaces_are_global ) {
 			$this->global_namespaces[$shortname] = true;
 			$this->pre_ns_buffer .= "\n\t";
@@ -152,11 +152,8 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * Serialize the given ExpData object, possibly recursively with
 	 * increased indentation.
-	 *
-	 * @param $expData ExpData containing the data to be serialised.
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeNestedExpData( ExpData $expData, $indent ) {
+	protected function serializeNestedExpData( ExpData $expData, string $indent ) {
 		$this->recordDeclarationTypes( $expData );
 
 		$type = $expData->extractMainType()->getQName();
@@ -169,15 +166,14 @@ class RDFXMLSerializer extends Serializer {
 		}
 
 		// else: blank node, no "rdf:about"
-		if (
-			$expData->getSubject() instanceof ExpResource &&
-			!$expData->getSubject()->isBlankNode() ) {
+		if ( !$expData->getSubject()->isBlankNode() ) {
 			$this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
 		}
 
 		// nothing else to export
 		if ( count( $expData->getProperties() ) == 0 ) {
-			return $this->post_ns_buffer .= " />\n";
+			$this->post_ns_buffer .= " />\n";
+			return $this->post_ns_buffer;
 		}
 
 		$this->post_ns_buffer .= ">\n";
@@ -189,6 +185,7 @@ class RDFXMLSerializer extends Serializer {
 			foreach ( $expData->getValues( $property ) as $valueElement ) {
 				$this->requireNamespace( $property->getNamespaceID(), $property->getNamespace() );
 
+				$prop_decl_type = 0;
 				if ( $valueElement instanceof ExpLiteral ) {
 					$prop_decl_type = SMW_SERIALIZER_DECL_APROP;
 					$this->serializeExpLiteral( $property, $valueElement, "\t\t$indent" );
@@ -224,12 +221,12 @@ class RDFXMLSerializer extends Serializer {
 	 * Add to the output a serialization of a property assignment where an
 	 * ExpLiteral is the object. It is assumed that a suitable subject
 	 * block has already been openend.
-	 *
-	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $expLiteral ExpLiteral the data value to use
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeExpLiteral( ExpNsResource $expResourceProperty, ExpLiteral $expLiteral, $indent ) {
+	protected function serializeExpLiteral(
+		ExpNsResource $expResourceProperty,
+		ExpLiteral $expLiteral,
+		string $indent
+	): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		// https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-languages
@@ -251,13 +248,13 @@ class RDFXMLSerializer extends Serializer {
 	 * Add to the output a serialization of a property assignment where an
 	 * ExpResource is the object. It is assumed that a suitable subject
 	 * block has already been openend.
-	 *
-	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $expResource ExpResource the data value to use
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
-	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
 	 */
-	protected function serializeExpResource( ExpNsResource $expResourceProperty, ExpResource $expResource, $indent, $isClassTypeProp ) {
+	protected function serializeExpResource(
+		ExpNsResource $expResourceProperty,
+		ExpResource $expResource,
+		string $indent,
+		bool $isClassTypeProp
+	): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		if ( !$expResource->isBlankNode() ) {
@@ -281,15 +278,15 @@ class RDFXMLSerializer extends Serializer {
 	 * Add a serialization of the given ExpResource to the output,
 	 * assuming that an opening property tag is alerady there.
 	 *
-	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $collection array of (ExpResource or ExpData)
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
-	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
-	 *
 	 * @bug The $isClassTypeProp parameter is not properly taken into account.
 	 * @bug Individual resources are not serialised properly.
 	 */
-	protected function serializeExpCollection( ExpNsResource $expResourceProperty, array $collection, $indent, $isClassTypeProp ) {
+	protected function serializeExpCollection(
+		ExpNsResource $expResourceProperty,
+		array $collection,
+		string $indent,
+		bool $isClassTypeProp
+	): void {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
 
 		foreach ( $collection as $expElement ) {
@@ -312,23 +309,15 @@ class RDFXMLSerializer extends Serializer {
 	 * Escape a string in the special form that is required for values in
 	 * DTD entity declarations in XML. Namely, this require the percent sign
 	 * to be replaced.
-	 *
-	 * @param $string string to be escaped
-	 *
-	 * @return string
 	 */
-	protected function makeValueEntityString( $string ) {
+	protected function makeValueEntityString( string $string ): string {
 		return "'" . str_replace( '%', '&#37;', $string ) . "'";
 	}
 
 	/**
 	 * Escape a string as required for using it in XML attribute values.
-	 *
-	 * @param $string string to be escaped
-	 *
-	 * @return string
 	 */
-	protected function makeAttributeValueString( $string ) {
+	protected function makeAttributeValueString( string $string ): string {
 		return str_replace( [ '&', '>', '<' ], [ '&amp;', '&gt;', '&lt;' ], $string );
 	}
 

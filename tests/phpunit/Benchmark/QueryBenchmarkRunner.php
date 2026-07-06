@@ -3,12 +3,12 @@
 namespace SMW\Tests\Benchmark;
 
 use RuntimeException;
+use SMW\DataItems\Property;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
 use SMW\Query\Parser as QueryParser;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * @group semantic-mediawiki-benchmark
@@ -21,42 +21,22 @@ use SMWQuery as Query;
 class QueryBenchmarkRunner implements BenchmarkReporter {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var QueryParser
-	 */
-	private $queryParser;
-
-	/**
-	 * @var Benchmarker
-	 */
-	private $benchmarker;
-
-	/**
 	 * @var array
 	 */
 	private $benchmarkReport = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param QueryParser $queryParser
-	 * @param Benchmarker $benchmarker
 	 */
-	public function __construct( Store $store, QueryParser $queryParser, Benchmarker $benchmarker ) {
-		$this->store = $store;
-		$this->queryParser = $queryParser;
-		$this->benchmarker = $benchmarker;
+	public function __construct(
+		private readonly Store $store,
+		private readonly QueryParser $queryParser,
+		private readonly Benchmarker $benchmarker,
+	) {
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array
 	 */
 	public function getBenchmarkReport() {
 		return $this->benchmarkReport;
@@ -64,8 +44,6 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $case
 	 */
 	public function run( array $case ) {
 		$this->benchmarkReport = [];
@@ -135,7 +113,7 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 		);
 
 		foreach ( $case['query']['printouts'] as $printout ) {
-			$property = DIProperty::newFromUserLabel( $printout );
+			$property = Property::newFromUserLabel( $printout );
 
 			$propertyValue = new PropertyValue( '__pro' );
 			$propertyValue->setDataItem( $property );

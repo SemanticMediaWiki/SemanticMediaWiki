@@ -2,12 +2,12 @@
 
 namespace SMW\Query\Language;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\DataValues\NumberValue;
+use SMW\DataValues\URIValue;
 use SMW\Query\QueryComparator;
-use SMWDataItem as DataItem;
-use SMWNumberValue as NumberValue;
-use SMWURIValue as UriValue;
 
 /**
  * Description of one data value, or of a range of data values.
@@ -25,30 +25,11 @@ use SMWURIValue as UriValue;
  */
 class ValueDescription extends Description {
 
-	/**
-	 * @var DataItem
-	 */
-	private $dataItem;
-
-	/**
-	 * @var int element in the SMW_CMP_ enum
-	 */
-	private $comparator;
-
-	/**
-	 * @var null|DIProperty
-	 */
-	private $property = null;
-
-	/**
-	 * @param DataItem $dataItem
-	 * @param null|DIProperty $property
-	 * @param int $comparator
-	 */
-	public function __construct( DataItem $dataItem, ?DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
-		$this->dataItem = $dataItem;
-		$this->comparator = $comparator;
-		$this->property = $property;
+	public function __construct(
+		private readonly DataItem $dataItem,
+		private readonly ?Property $property = null,
+		private $comparator = SMW_CMP_EQ,
+	) {
 	}
 
 	/**
@@ -57,7 +38,7 @@ class ValueDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		$property = null;
 
 		if ( $this->property !== null ) {
@@ -70,27 +51,18 @@ class ValueDescription extends Description {
 	}
 
 	/**
-	 * @deprecated Use getDataItem() and \SMW\DataValueFactory::getInstance()->newDataValueByItem() if needed. Vanishes before SMW 1.7
 	 * @return DataItem
 	 */
-	public function getDataValue() {
-		// FIXME: remove
-		return $this->dataItem;
-	}
-
-	/**
-	 * @return DataItem
-	 */
-	public function getDataItem() {
+	public function getDataItem(): DataItem {
 		return $this->dataItem;
 	}
 
 	/**
 	 * @since  2.1
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
-	public function getProperty() {
+	public function getProperty(): ?Property {
 		return $this->property;
 	}
 
@@ -106,7 +78,7 @@ class ValueDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$comparator = QueryComparator::getInstance()->getStringForComparator(
 			$this->comparator
 		);
@@ -118,7 +90,7 @@ class ValueDescription extends Description {
 
 		// Set option to ensure that the output doesn't alter the display
 		// characteristics of a value
-		$dataValue->setOption( UriValue::VALUE_RAW, true );
+		$dataValue->setOption( URIValue::VALUE_RAW, true );
 		$dataValue->setOption( NumberValue::NO_DISP_PRECISION_LIMIT, true );
 
 		if ( $asValue ) {
@@ -133,11 +105,11 @@ class ValueDescription extends Description {
 		return '[[' . $comparator . $dataValue->getWikiValue() . ']]';
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return $this->comparator == SMW_CMP_EQ;
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		return 1;
 	}
 

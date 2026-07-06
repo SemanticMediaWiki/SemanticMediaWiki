@@ -2,8 +2,8 @@
 
 namespace SMW\Utils;
 
-use Onoi\Cache\Cache;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Collect statistics in a provisional schema-free storage that depends on the
@@ -35,64 +35,36 @@ class Stats {
 	 */
 	const CACHE_NAMESPACE = 'smw:stats';
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var string|int
-	 */
-	private $id;
-
-	/**
-	 * @var bool
-	 */
-	private $shouldRecord = true;
+	private bool $shouldRecord = true;
 
 	/**
 	 * @var array
 	 */
 	private $stats = [];
 
-	/**
-	 * Identifies an update fingerprint to compare invoked deferred updates
-	 * against each other and filter those with the same print to avoid recording
-	 * duplicate stats.
-	 *
-	 * @var string
-	 */
-	private $fingerprint = null;
-
-	/**
-	 * @var array
-	 */
-	private $operations = [];
+	private array $operations = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Cache $cache
-	 * @param string $id
 	 */
-	public function __construct( Cache $cache, $id ) {
-		$this->cache = $cache;
-		$this->id = $id;
+	public function __construct(
+		private readonly BagOStuff $cache,
+		private $id,
+	) {
 		$this->initRecord();
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function makeCacheKey( $id ) {
-		return smwfCacheKey( self::CACHE_NAMESPACE, $id, self::VERSION );
+	public function makeCacheKey( $id ): string {
+		return smwfCacheKey( self::CACHE_NAMESPACE, [ $id, self::VERSION ] );
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function initRecord() {
-		$this->fingerprint = $this->id . uniqid();
+	public function initRecord(): void {
 	}
 
 	/**
@@ -100,7 +72,7 @@ class Stats {
 	 *
 	 * @param bool $shouldRecord
 	 */
-	public function shouldRecord( $shouldRecord ) {
+	public function shouldRecord( $shouldRecord ): void {
 		$this->shouldRecord = (bool)$shouldRecord;
 	}
 
@@ -109,8 +81,9 @@ class Stats {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
-		if ( ( $stats = $this->cache->fetch( $this->makeCacheKey( $this->id ) ) ) === false ) {
+	public function getStats(): array {
+		$stats = $this->cache->get( $this->makeCacheKey( $this->id ) );
+		if ( $stats === false ) {
 			return [];
 		}
 
@@ -120,9 +93,9 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|array $key
+	 * @param string $key
 	 */
-	public function incr( $key ) {
+	public function incr( string $key ): void {
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = 0;
 		}
@@ -134,10 +107,10 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|array $key
-	 * @param string|int $default
+	 * @param string $key
+	 * @param string|int|array $default
 	 */
-	public function init( $key, $default ) {
+	public function init( $key, $default ): void {
 		$this->stats[$key] = $default;
 		$this->operations[$key] = self::STATS_INIT;
 	}
@@ -145,10 +118,10 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|array $key
-	 * @param string|int $value
+	 * @param string $key
+	 * @param string|int|array $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->stats[$key] = $value;
 		$this->operations[$key] = self::STATS_SET;
 	}
@@ -156,10 +129,10 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|array $key
+	 * @param string $key
 	 * @param int $value
 	 */
-	public function calcMedian( $key, $value ) {
+	public function calcMedian( $key, $value ): void {
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = $value;
 		} else {
@@ -172,12 +145,12 @@ class Stats {
 	/**
 	 * @since 2.5
 	 */
-	public function saveStats() {
+	public function saveStats(): void {
 		if ( $this->stats === [] ) {
 			return;
 		}
 
-		$container = $this->cache->fetch( $this->makeCacheKey( $this->id ) );
+		$container = $this->cache->get( $this->makeCacheKey( $this->id ) );
 
 		if ( $container === false || $container === null ) {
 			$container = [];
@@ -209,7 +182,7 @@ class Stats {
 			$container[$key] = $value;
 		}
 
-		$this->cache->save( $this->makeCacheKey( $this->id ), $container );
+		$this->cache->set( $this->makeCacheKey( $this->id ), $container );
 		$this->stats = [];
 	}
 
@@ -219,8 +192,9 @@ class Stats {
 	 * @param bool $asPending
 	 */
 	public function recordStats( $asPending = false ) {
-		if ( $this->shouldRecord === false ) {
-			return $this->stats = [];
+		if ( !$this->shouldRecord ) {
+			$this->stats = [];
+			return $this->stats;
 		}
 
 		// #2046
@@ -237,10 +211,6 @@ class Stats {
 
 		$deferredUpdate->setOrigin( $fname );
 		$deferredUpdate->waitOnTransactionIdle();
-
-		$deferredUpdate->setFingerprint(
-			$fname . $this->fingerprint
-		);
 
 		$deferredUpdate->markAsPending( $asPending );
 		$deferredUpdate->pushUpdate();

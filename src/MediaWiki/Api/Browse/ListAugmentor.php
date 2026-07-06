@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -16,30 +16,17 @@ use SMW\Store;
 class ListAugmentor {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array &$res
-	 * @param array $parameters
-	 *
-	 * @return array
 	 */
-	public function augment( array &$res, array $parameters ) {
+	public function augment( array &$res, array $parameters ): ?array {
 		if ( !isset( $res['query'] ) && $res['query'] === [] ) {
-			return;
+			return null;
 		}
 
 		$type = null;
@@ -77,21 +64,19 @@ class ListAugmentor {
 		return $res;
 	}
 
-	private function addUsageCount( &$res ) {
+	private function addUsageCount( array &$res ): void {
 		$list = $res['query'];
 
 		$db = $this->store->getConnection( 'mw.db' );
 
 		foreach ( $list as $key => $value ) {
 
-			$row = $db->selectRow(
-				SQLStore::PROPERTY_STATISTICS_TABLE,
-				[ 'usage_count' ],
-				[
-					'p_id' => $value['id']
-				],
-				__METHOD__
-			);
+			$row = $db->newSelectQueryBuilder()
+				->select( [ 'usage_count' ] )
+				->from( SQLStore::PROPERTY_STATISTICS_TABLE )
+				->where( [ 'p_id' => $value['id'] ] )
+				->caller( __METHOD__ )
+				->fetchRow();
 
 			$list[$key] = $value + [
 				'usageCount' => $row->usage_count
@@ -101,11 +86,11 @@ class ListAugmentor {
 		$res['query'] = $list;
 	}
 
-	private function addPreferredPropertyLabel( &$res, array $languageCodes ) {
+	private function addPreferredPropertyLabel( array &$res, array $languageCodes ): void {
 		$list = $res['query'];
 
 		foreach ( $list as $key => $value ) {
-			$property = new DIProperty( $key );
+			$property = new Property( $key );
 			$prefLabel = [];
 
 			foreach ( $languageCodes as $code ) {
@@ -120,12 +105,12 @@ class ListAugmentor {
 		$res['query'] = $list;
 	}
 
-	private function addPropertyDescription( &$res, array $languageCodes ) {
+	private function addPropertyDescription( array &$res, array $languageCodes ): void {
 		$list = $res['query'];
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
 		foreach ( $list as $key => $value ) {
-			$property = new DIProperty( $key );
+			$property = new Property( $key );
 			$description = [];
 
 			foreach ( $languageCodes as $code ) {

@@ -2,11 +2,11 @@
 
 namespace SMW\DataValues;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWInfolink as Infolink;
 
 /**
  * @private
@@ -40,7 +40,7 @@ class KeywordValue extends StringValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		// For the normal blob field setup multi-byte requires more space and
 		// since we use the o_hash field to store the normalized content and
 		// as match field, ensure to have enough space to actually store
@@ -53,7 +53,7 @@ class KeywordValue extends StringValue {
 		}
 
 		if ( $this->getOption( self::OPT_QUERY_COMP_CONTEXT ) || $this->getOption( self::OPT_QUERY_CONTEXT ) ) {
-			$value = DIBlob::normalize( $value );
+			$value = Blob::normalize( $value );
 		}
 
 		if ( $this->m_caption === false ) {
@@ -70,7 +70,7 @@ class KeywordValue extends StringValue {
 	 */
 	public function getDataItem() {
 		if ( $this->isValid() && $this->getOption( 'is.search' ) ) {
-			return new DIBlob( DIBlob::normalize( $this->m_dataitem->getString() ) );
+			return new Blob( Blob::normalize( $this->m_dataitem->getString() ) );
 		}
 
 		return parent::getDataItem();
@@ -96,8 +96,7 @@ class KeywordValue extends StringValue {
 
 		$uri = $this->makeUri(
 			$this->m_dataitem->getString(),
-			SMW_OUTPUT_WIKI,
-			$linker
+			SMW_OUTPUT_WIKI
 		);
 
 		if ( $uri === '' ) {
@@ -125,8 +124,7 @@ class KeywordValue extends StringValue {
 
 		$uri = $this->makeUri(
 			$this->m_dataitem->getString(),
-			SMW_OUTPUT_HTML,
-			$linker
+			SMW_OUTPUT_HTML
 		);
 
 		if ( $uri === '' ) {
@@ -153,7 +151,7 @@ class KeywordValue extends StringValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DataItem
+	 * @return DataItem|string
 	 */
 	public function getUri() {
 		if ( !$this->isValid() ) {
@@ -177,7 +175,7 @@ class KeywordValue extends StringValue {
 		return $dataValue->getDataItem();
 	}
 
-	private function makeUri( $value, $outputformat, $linker = null ) {
+	private function makeUri( $value, $outputformat ): ?string {
 		if ( $this->uri !== null ) {
 			return $this->uri;
 		}
@@ -187,7 +185,7 @@ class KeywordValue extends StringValue {
 		// Formatter schema?
 		$dataItems = $propertySpecificationLookup->getSpecification(
 			$this->getProperty(),
-			new DIProperty( '_FORMAT_SCHEMA' )
+			new Property( '_FORMAT_SCHEMA' )
 		);
 
 		if ( $dataItems === [] ) {
@@ -198,7 +196,7 @@ class KeywordValue extends StringValue {
 
 		$dataItems = $propertySpecificationLookup->getSpecification(
 			$dataItem,
-			new DIProperty( '_SCHEMA_DEF' )
+			new Property( '_SCHEMA_DEF' )
 		);
 
 		if ( $dataItems === [] ) {
@@ -223,13 +221,17 @@ class KeywordValue extends StringValue {
 		return $this->uri;
 	}
 
-	private function getFormatLink( $dataItem, $value ) {
+	private function getFormatLink( $dataItem, $value ): string|Infolink {
 		$infolink = '';
 
 		$data = json_decode(
 			$dataItem->getString(),
 			true
 		);
+
+		if ( !is_array( $data ) ) {
+			return '';
+		}
 
 		// Schema enforced
 		if ( $data['type'] !== 'LINK_FORMAT_SCHEMA' ) {

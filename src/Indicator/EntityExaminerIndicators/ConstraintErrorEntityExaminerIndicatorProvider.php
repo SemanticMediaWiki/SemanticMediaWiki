@@ -2,15 +2,15 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\Constraint\ConstraintError;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,57 +24,28 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	const LOOKUP_LIMIT = 20;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private bool $checkConstraintErrors = true;
 
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
+	protected array $indicators = [];
 
-	/**
-	 * @var bool
-	 */
-	private $checkConstraintErrors = true;
+	private string $severityType = '';
 
-	/**
-	 * @var
-	 */
-	protected $indicators = [];
-
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
-
-	/**
-	 * @var string
-	 */
-	private $languageCode = '';
+	private mixed $languageCode = '';
 
 	private string $errorTitle;
 
-	private TemplateEngine $templateEngine;
-
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store, EntityCache $entityCache ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
+	public function __construct(
+		private Store $store,
+		private EntityCache $entityCache,
+		private TemplateParser $templateParser,
+	) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $severityType
-	 *
-	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -82,8 +53,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string {
 		return 'smw-entity-examiner-deferred-constraint-error';
@@ -91,22 +60,15 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param bool $checkConstraintErrors
 	 */
-	public function setConstraintErrorCheck( $checkConstraintErrors ) {
-		$this->checkConstraintErrors = $checkConstraintErrors;
+	public function setConstraintErrorCheck( mixed $checkConstraintErrors ): void {
+		$this->checkConstraintErrors = (bool)$checkConstraintErrors;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param DIWikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkConstraintErrors ) {
 			$this->checkConstraintErrors( $subject, $options );
 		}
@@ -116,122 +78,102 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
 		// component) therefore disabled it when indicators are present
 		return '#mw-indicator-mw-helplink {display:none;}';
 	}
 
-	protected function checkConstraintErrors( $subject, $options ) {
+	protected function checkConstraintErrors( $subject, array $options ): void {
 		$this->runCheck( $subject, $options );
 	}
 
-	protected function runCheck( $subject, $options ) {
+	protected function runCheck( $subject, array $options ) {
 		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
 
 		$errors = $this->findErrors( $subject );
 		$top = '';
 
 		if ( $errors === [] ) {
-			return $this->indicators = [
+			$this->indicators = [
 				'id'      => $this->getName(),
 				'content' => '',
 			];
+			return $this->indicators;
 		}
 
 		$this->errorTitle = 'smw-constraint-error';
 		$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_WARNING;
 
-		$this->templateEngine = new TemplateEngine();
-
-		$this->templateEngine->bulkLoad(
-			[
-				'/indicator/composite.line.ms' => 'line_template',
-				'/indicator/bottom.marker.ms' => 'bottom_marker',
-				'/indicator/bottom.sticky.ms' => 'bottom_sticky_template',
-				'/indicator/comment.ms' => 'comment_template',
-				'/constraint/constraint.error.top.line.ms' => 'top_line_template',
-				'/constraint/constraint.sticky.top.ms' => 'sticky_top_template'
-			]
-		);
-
-		$this->templateEngine->compile(
-			'top_line_template',
-			[
-				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left'
-			]
-		);
-
-		$this->templateEngine->compile(
-			'line_template',
-			[
-				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left'
-			]
-		);
-
-		$this->templateEngine->compile(
-			'comment_template',
-			[
-				'comment' => $this->msg( 'smw-constraint-error-suggestions', Message::TEXT, $this->languageCode )
-			]
-		);
-
-		$this->templateEngine->compile(
-			'bottom_marker',
-			[
-				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left',
-				'label' => 'constraint',
-				'background-color' => '#00BCD4',
-				'color' => '#ffffff'
-			]
-		);
+		$margin = isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left';
 
 		if ( count( $errors ) >= self::LOOKUP_LIMIT ) {
 			$top = $this->msg( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ], Message::TEXT, $this->languageCode );
-			$top .= $this->templateEngine->code( 'top_line_template' );
+			$top .= $this->templateParser->processTemplate(
+				'ConstraintTopLine',
+				[
+					'margin' => $margin
+				]
+			);
 
-			$this->templateEngine->compile( 'sticky_top_template', [ 'content' => $top ] );
-			$top = $this->templateEngine->code( 'sticky_top_template' );
+			$top = $this->templateParser->processTemplate(
+				'ConstraintStickyTop',
+				[
+					'html-content' => $top
+				]
+			);
 			$content = '<div><ul><li>' . implode( '</li><li>', $errors ) . '</li></ul></div>';
 		} else {
 			$content = '<div style="padding-top:10px;"><ul><li>' . implode( '</li><li>', $errors ) . '</li></ul></div>';
 		}
 
-		$bottom = $this->templateEngine->code( 'line_template' );
-		$bottom .= $this->templateEngine->code( 'comment_template' );
+		$bottom = $this->templateParser->processTemplate(
+			'Line',
+			[
+				'margin' => $margin
+			]
+		);
+		$bottom .= $this->templateParser->processTemplate(
+			'Comment',
+			[
+				'html-comment' => $this->msg( 'smw-constraint-error-suggestions', Message::TEXT, $this->languageCode )
+			]
+		);
+
+		$bottomMarker = $this->templateParser->processTemplate(
+			'BottomMarker',
+			[
+				'margin' => $margin,
+				'label' => 'constraint',
+				'data-background-color' => '#00BCD4',
+				'color' => '#ffffff'
+			]
+		);
 
 		if ( count( $errors ) >= 3 ) {
-			$this->templateEngine->compile(
-				'bottom_sticky_template',
+			$bottom .= $this->templateParser->processTemplate(
+				'BottomSticky',
 				[
-					'content' => $this->templateEngine->code( 'bottom_marker' )
+					'html-content' => $bottomMarker
 				]
 			);
-
-			$bottom .= $this->templateEngine->code( 'bottom_sticky_template' );
 		} else {
-			$bottom .= $this->templateEngine->code( 'bottom_marker' );
+			$bottom .= $bottomMarker;
 		}
 
 		$title = $this->msg(
@@ -247,10 +189,11 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		];
 	}
 
-	private function findErrors( $subject ) {
+	private function findErrors( $subject ): array {
 		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
 
-		if ( ( $errors = $this->entityCache->fetch( $key ) ) !== false ) {
+		$errors = $this->entityCache->fetch( $key );
+		if ( $errors !== false ) {
 			return $this->decodeErrors( $errors );
 		}
 
@@ -284,14 +227,14 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		return $this->decodeErrors( $errors );
 	}
 
-	private function decodeErrors( $errors ) {
+	private function decodeErrors( $errors ): array {
 		if ( $errors === 'null' ) {
 			return [];
 		}
 
 		$messages = [];
 
-		foreach ( $errors as $error ) {
+		foreach ( (array)$errors as $error ) {
 			$messages[] = Message::decode( $error, Message::PARSE, $this->languageCode );
 		}
 

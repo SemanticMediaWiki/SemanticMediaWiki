@@ -22,7 +22,7 @@ abstract class DeferrableConstraint implements Constraint {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 

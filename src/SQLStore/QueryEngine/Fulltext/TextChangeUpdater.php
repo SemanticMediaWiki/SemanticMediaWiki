@@ -2,15 +2,15 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\Utils\Timer;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -22,30 +22,9 @@ class TextChangeUpdater {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Database
-	 */
-	private $connection;
+	private bool $asDeferredUpdate = true;
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var SearchTableUpdater
-	 */
-	private $searchTableUpdater;
-
-	/**
-	 * @var bool
-	 */
-	private $asDeferredUpdate = true;
-
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
+	private bool $isCommandLineMode = false;
 
 	/**
 	 * @var bool
@@ -54,26 +33,24 @@ class TextChangeUpdater {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Database $connection
-	 * @param Cache $cache
-	 * @param SearchTableUpdater $searchTableUpdater
-	 * @param TextSanitizer $textSanitizer
 	 */
-	public function __construct( Database $connection, Cache $cache, SearchTableUpdater $searchTableUpdater ) {
-		$this->connection = $connection;
-		$this->cache = $cache;
-		$this->searchTableUpdater = $searchTableUpdater;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly BagOStuff $cache,
+		private readonly SearchTableUpdater $searchTableUpdater,
+		private readonly JobFactory $jobFactory,
+	) {
 	}
 
 	/**
-	 * @note See comments in the includes/DefaultSettings.php on the smwgFulltextDeferredUpdate setting
+	 * @note See `docs/config.md` and the `description` field for the
+	 *  `smwgFulltextDeferredUpdate` setting in `extension.json`.
 	 *
 	 * @since 2.5
 	 *
 	 * @param bool $asDeferredUpdate
 	 */
-	public function asDeferredUpdate( $asDeferredUpdate ) {
+	public function asDeferredUpdate( $asDeferredUpdate ): void {
 		$this->asDeferredUpdate = (bool)$asDeferredUpdate;
 	}
 
@@ -86,7 +63,7 @@ class TextChangeUpdater {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
@@ -95,7 +72,7 @@ class TextChangeUpdater {
 	 *
 	 * @param bool $isPrimary
 	 */
-	public function isPrimary( $isPrimary ) {
+	public function isPrimary( $isPrimary ): void {
 		$this->isPrimary = $isPrimary;
 	}
 
@@ -106,7 +83,7 @@ class TextChangeUpdater {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pushUpdates( ChangeOp $changeOp ) {
+	public function pushUpdates( ChangeOp $changeOp ): void {
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
 		}
@@ -115,15 +92,22 @@ class TextChangeUpdater {
 
 		// Update within the same transaction as started by SMW::SQLStore::AfterDataUpdateComplete
 		if ( !$this->asDeferredUpdate || $this->isCommandLineMode || $this->isPrimary ) {
-			return $this->doUpdateFromChangeDiff( $changeOp->newChangeDiff() );
+			$this->doUpdateFromChangeDiff( $changeOp->newChangeDiff() );
+			return;
 		}
 
 		if ( !$this->canPostUpdate( $changeOp ) ) {
 			return;
 		}
 
-		$fulltextSearchTableUpdateJob = ApplicationFactory::getInstance()->newJobFactory()->newFulltextSearchTableUpdateJob(
-			$changeOp->getSubject()->getTitle(),
+		$title = $changeOp->getSubject()->getTitle();
+
+		if ( $title === null ) {
+			return;
+		}
+
+		$fulltextSearchTableUpdateJob = $this->jobFactory->newFulltextSearchTableUpdateJob(
+			$title,
 			[
 				'slot:id' => $changeOp->getSubject()->getHash()
 			]
@@ -132,12 +116,8 @@ class TextChangeUpdater {
 		$fulltextSearchTableUpdateJob->lazyPush();
 
 		$this->logger->info(
-			[
-				'Fulltext',
-				'TextChangeUpdater',
-				'Table update (as job) scheduled',
-				'procTime in sec: {procTime}'
-			],
+			'Fulltext TextChangeUpdater Table update (as job) scheduled procTime '
+				. 'in sec: {procTime}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',
@@ -151,26 +131,23 @@ class TextChangeUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @param array|boolan $parameters
+	 * @param array|bool $parameters
 	 */
-	public function pushUpdatesFromJobParameters( $parameters ) {
+	public function pushUpdatesFromJobParameters( $parameters ): void {
 		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === false ) {
 			return;
 		}
 
-		$subject = DIWikiPage::doUnserialize( $parameters['slot:id'] );
+		$subject = WikiPage::doUnserialize( $parameters['slot:id'] );
 		$changeDiff = ChangeDiff::fetch( $this->cache, $subject );
 
 		if ( $changeDiff !== false ) {
-			return $this->doUpdateFromChangeDiff( $changeDiff );
+			$this->doUpdateFromChangeDiff( $changeDiff );
+			return;
 		}
 
 		$this->logger->info(
-			[
-				'Fulltext',
-				'TextChangeUpdater',
-				'Failed update (ChangeDiff) on {id}'
-			],
+			'Fulltext TextChangeUpdater Failed update (ChangeDiff) on {id}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',
@@ -184,7 +161,7 @@ class TextChangeUpdater {
 	 *
 	 * @param ChangeDiff|null $changeDiff
 	 */
-	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ) {
+	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ): void {
 		if ( !$this->searchTableUpdater->isEnabled() || $changeDiff === null ) {
 			return;
 		}
@@ -211,13 +188,13 @@ class TextChangeUpdater {
 				continue;
 			}
 
-			$this->collectUpdates( $sid, $textItem, $changeList, $updates );
+			$this->collectUpdates( $sid, $textItem, $updates );
 		}
 
 		foreach ( $updates as $key => $value ) {
 			[ $sid, $pid ] = explode( ':', $key, 2 );
 
-			if ( $this->searchTableUpdater->exists( $sid, $pid ) === false ) {
+			if ( !$this->searchTableUpdater->exists( $sid, $pid ) ) {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}
 
@@ -229,12 +206,8 @@ class TextChangeUpdater {
 		}
 
 		$this->logger->info(
-			[
-				'Fulltext',
-				'TextChangeUpdater',
-				'Table update completed',
-				'procTime in sec: {procTime}'
-			],
+			'Fulltext TextChangeUpdater Table update completed '
+				. 'procTime in sec: {procTime}',
 			[
 				'method' => __METHOD__,
 				'role' => 'developer',
@@ -243,7 +216,7 @@ class TextChangeUpdater {
 		);
 	}
 
-	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ) {
+	private function collectUpdates( int|string $sid, array $textItem, array &$updates ): void {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 
 		foreach ( $textItem as $pid => $text ) {
@@ -260,19 +233,19 @@ class TextChangeUpdater {
 		}
 	}
 
-	private function doDeleteFromTableChangeOps( array $tableChangeOps ) {
+	private function doDeleteFromTableChangeOps( array $tableChangeOps ): void {
 		foreach ( $tableChangeOps as $tableChangeOp ) {
 			$this->doDeleteFromTableChangeOp( $tableChangeOp );
 		}
 	}
 
-	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ) {
+	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ): void {
 		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
 
 			// Replace s_id for subobjects etc. with the o_id
 			if ( $tableChangeOp->isFixedPropertyOp() ) {
 				$fieldChangeOp->set( 's_id', $fieldChangeOp->has( 'o_id' ) ? $fieldChangeOp->get( 'o_id' ) : $fieldChangeOp->get( 's_id' ) );
-				$fieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
+				$fieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValByField( 'p_id' ) );
 			}
 
 			if ( !$fieldChangeOp->has( 'p_id' ) ) {
@@ -286,13 +259,14 @@ class TextChangeUpdater {
 		}
 	}
 
-	private function canPostUpdate( $changeOp ) {
+	private function canPostUpdate( ChangeOp $changeOp ): bool {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 		$canPostUpdate = false;
 
 		// Find out whether we should actual initiate an update
 		foreach ( $changeOp->getChangedEntityIdSummaryList() as $id ) {
-			if ( ( $dataItem = $searchTable->getDataItemById( $id ) ) instanceof DIWikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
+			$dataItem = $searchTable->getDataItemById( $id );
+			if ( $dataItem instanceof WikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
 				if ( !$searchTable->isExemptedPropertyById( $id ) ) {
 					$canPostUpdate = true;
 					break;

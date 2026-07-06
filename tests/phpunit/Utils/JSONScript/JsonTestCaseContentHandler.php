@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Message;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,21 +17,6 @@ use Title;
  * @author mwjames
  */
 class JsonTestCaseContentHandler {
-
-	/**
-	 * @var PageCreator
-	 */
-	private $pageCreator;
-
-	/**
-	 * @var PageDeleter
-	 */
-	private $pageDeleter;
-
-	/**
-	 * @var LocalFileUpload
-	 */
-	private $LocalFileUpload;
 
 	/**
 	 * @var array
@@ -48,19 +33,14 @@ class JsonTestCaseContentHandler {
 	 */
 	private $testCaseLocation = '';
 
-	private LocalFileUpload $localFileUpload;
-
 	/**
 	 * @since 2.5
-	 *
-	 * @param PageCreator $pageCreator
-	 * @param PageDeleter $pageDeleter
-	 * @param LocalFileUpload $localFileUpload
 	 */
-	public function __construct( PageCreator $pageCreator, PageDeleter $pageDeleter, LocalFileUpload $localFileUpload ) {
-		$this->pageCreator = $pageCreator;
-		$this->pageDeleter = $pageDeleter;
-		$this->localFileUpload = $localFileUpload;
+	public function __construct(
+		private readonly PageCreator $pageCreator,
+		private readonly PageDeleter $pageDeleter,
+		private readonly LocalFileUpload $localFileUpload,
+	) {
 	}
 
 	/**
@@ -130,7 +110,7 @@ class JsonTestCaseContentHandler {
 
 		$name = ( isset( $page['name'] ) ? $page['name'] : $page['page'] );
 
-		$title = Title::newFromText(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
 			$name,
 			$namespace
 		);
@@ -165,7 +145,7 @@ class JsonTestCaseContentHandler {
 	}
 
 	private function doMovePage( $page, $namespace ) {
-		$target = Title::newFromText(
+		$target = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
 			$page['move-to']['target'],
 			$namespace
 		);

@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Cache\LinkBatch as MwLinkBatch;
 use MediaWiki\MediaWikiServices;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 
 /**
  * Isolate access to the LinkBatch class which allows to bulk load a list
@@ -16,61 +18,20 @@ use SMW\DIWikiPage;
  */
 class LinkBatch {
 
-	/**
-	 * @var LinkBatch
-	 */
-	private static $instance;
+	private array $log = [];
 
-	/**
-	 * @var
-	 */
-	private $log = [];
-
-	/**
-	 * @var
-	 */
-	private $batch = [];
-
-	/**
-	 * @var \LinkBatch|null
-	 */
-	private $linkBatch;
+	private array $batch = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param \LinkBatch|null $linkBatch
 	 */
-	public function __construct( ?\LinkBatch $linkBatch = null ) {
-		$this->linkBatch = $linkBatch;
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @return LinkBatch
-	 */
-	public static function singleton() {
-		if ( self::$instance === null ) {
-			self::$instance = new self( MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch() );
-		}
-
-		return self::$instance;
+	public function __construct( private ?MwLinkBatch $linkBatch = null ) {
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public static function reset() {
-		self::$instance = null;
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $caller
-	 */
-	public function setCaller( $caller ) {
+	public function setCaller( string $caller ): void {
 		if ( $this->linkBatch === null ) {
 			$this->linkBatch = MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch();
 		}
@@ -80,10 +41,8 @@ class LinkBatch {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem[] $dataItems
 	 */
-	public function addFromList( array $dataItems ) {
+	public function addFromList( array $dataItems ): void {
 		foreach ( $dataItems as $dataItem ) {
 			$this->add( $dataItem );
 		}
@@ -91,11 +50,9 @@ class LinkBatch {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param $dataItem
 	 */
-	public function add( $dataItem ) {
-		if ( !$dataItem instanceof DIWikiPage || isset( $this->log[$dataItem->getSha1()] ) ) {
+	public function add( DataItem|null $dataItem ): void {
+		if ( !$dataItem instanceof WikiPage || isset( $this->log[$dataItem->getSha1()] ) ) {
 			return;
 		}
 
@@ -108,31 +65,16 @@ class LinkBatch {
 			return;
 		}
 
-		// Track which have already been registered because \LinkBatch doesn't
-		// check for it
+		// Track which have already been registered because
+		// MediaWiki\Cache\LinkBatch doesn't check for it
 		$this->log[$dataItem->getSha1()] = true;
 		$this->batch[] = $dataItem;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem|null|false $dataItem
-	 *
-	 * @return bool
 	 */
-	public function has( $dataItem ) {
-		if ( $dataItem instanceof DIWikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * @since 3.1
-	 */
-	public function execute() {
+	public function execute(): void {
 		if ( $this->linkBatch === null ) {
 			$this->linkBatch = MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch();
 		}

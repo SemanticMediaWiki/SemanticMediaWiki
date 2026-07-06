@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Logo;
 
 /**
@@ -14,24 +14,18 @@ use SMW\Utils\Logo;
  *
  * @author mwjames
  */
-class LogoTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
+class LogoTest extends TestCase {
 
 	public function testGet_Small() {
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'assets/logo_small.svg',
 			Logo::get( 'small' )
 		);
 	}
 
 	public function testGet_Footer() {
-		$fileName = version_compare( MW_VERSION, '1.43', '>=' )
-			? 'logo_footer.svg'
-			: 'logo_footer_legacy.svg';
-
-		$this->assertContains(
-			"assets/$fileName",
+		$this->assertStringContainsString(
+			'assets/logo_footer.svg',
 			Logo::get( 'footer' )
 		);
 	}

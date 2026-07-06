@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Csv;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\Csv;
  *
  * @author mwjames
  */
-class CsvTest extends \PHPUnit\Framework\TestCase {
+class CsvTest extends TestCase {
 
 	/**
 	 * @dataProvider rowsProvider

@@ -11,27 +11,16 @@ namespace SMW\Utils;
 class Lru {
 
 	/**
-	 * @var int
-	 */
-	private $size;
-
-	/**
 	 * @var array
 	 */
 	private $cache = [];
 
-	/**
-	 * @var array
-	 */
-	private $count = 0;
+	private int $count = 0;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param integer size
 	 */
-	public function __construct( $size = 1000 ) {
-		$this->size = $size;
+	public function __construct( private $size = 1000 ) {
 	}
 
 	/**
@@ -40,7 +29,7 @@ class Lru {
 	 * @param string|int $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->count++;
 
 		if ( isset( $this->cache[$key] ) ) {
@@ -60,6 +49,7 @@ class Lru {
 	 * @since 3.0
 	 *
 	 * @param string|int $key
+	 * @param mixed|null $default
 	 *
 	 * @return mixed
 	 */
@@ -82,7 +72,7 @@ class Lru {
 	 */
 	public function delete( $key ) {
 		if ( !isset( $this->cache[$key] ) ) {
-			return $default;
+			return;
 		}
 
 		$this->count--;
@@ -91,8 +81,10 @@ class Lru {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return $this->cache;
 	}
 

@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\TemplateParser;
+use MediaWiki\Title\Title;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,47 +18,18 @@ class FacetBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var FilterFactory
-	 */
-	private $filterFactory;
-
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
-
-	/**
-	 * @var ResultFetcher
-	 */
-	private $resultFetcher;
-
-	/**
-	 * @var Profile
-	 */
-	private $profile;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
-	 * @param TemplateEngine $templateEngine
-	 * @param FilterFactory $filterFactory
-	 * @param ResultFetcher $resultFetcher
 	 */
-	public function __construct( Profile $profile, TemplateEngine $templateEngine, FilterFactory $filterFactory, ResultFetcher $resultFetcher ) {
-		$this->profile = $profile;
-		$this->templateEngine = $templateEngine;
-		$this->filterFactory = $filterFactory;
-		$this->resultFetcher = $resultFetcher;
+	public function __construct(
+		private Profile $profile,
+		private TemplateParser $templateParser,
+		private FilterFactory $filterFactory,
+		private ResultFetcher $resultFetcher,
+	) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param UrlArgs $urlArgs
-	 *
-	 * @return string
 	 */
 	public function getPropertyFilterFacet( Title $title, UrlArgs $urlArgs ): string {
 		$params = [
@@ -80,8 +51,6 @@ class FacetBuilder {
 
 		if ( $collapsed ) {
 			$cssClass = 'mw-collapsed property-filter';
-		} elseif ( $urlArgs->getArray( 'pv' ) !== [] && $collapsed ) {
-			$cssClass = 'mw-collapsed property-filter';
 		} else {
 			$cssClass = 'property-filter';
 		}
@@ -89,12 +58,12 @@ class FacetBuilder {
 		$pv = $urlArgs->getArray( 'pv' );
 		$clear = '';
 
-		if ( is_array( $pv ) && $pv !== [] ) {
+		if ( $pv !== [] ) {
 			$clear = $this->createClearFilter( 'clear[p.all]', count( $pv ) );
 		}
 
-		$this->templateEngine->compile(
-			'filter-facet',
+		return $this->templateParser->processTemplate(
+			'facet',
 			[
 				'id' => 'card-prop',
 				'label' => $this->msg( 'properties' ),
@@ -103,17 +72,10 @@ class FacetBuilder {
 				'clear' => $clear
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-facet' );
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param UrlArgs $urlArgs
-	 *
-	 * @return string
 	 */
 	public function getCategoryFilterFacet( Title $title, UrlArgs $urlArgs ): string {
 		$params = [
@@ -135,8 +97,6 @@ class FacetBuilder {
 
 		if ( $collapsed ) {
 			$cssClass = 'mw-collapsed category-filter';
-		} elseif ( $urlArgs->getArray( 'pv' ) !== [] && $collapsed ) {
-			$cssClass = 'mw-collapsed category-filter';
 		} else {
 			$cssClass = 'category-filter';
 		}
@@ -145,12 +105,12 @@ class FacetBuilder {
 		$c = $args->getArray( 'c' );
 		$clear = '';
 
-		if ( is_array( $c ) && $c !== [] ) {
+		if ( $c !== [] ) {
 			$clear = $this->createClearFilter( 'clear[c.all]', count( $c ) );
 		}
 
-		$this->templateEngine->compile(
-			'filter-facet',
+		return $this->templateParser->processTemplate(
+			'facet',
 			[
 				'id' => 'card-cat',
 				'label' => $this->msg( 'smw-categories' ),
@@ -159,17 +119,10 @@ class FacetBuilder {
 				'clear' => $clear
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-facet' );
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param UrlArgs $urlArgs
-	 *
-	 * @return string
 	 */
 	public function getValueFilterFacets( Title $title, UrlArgs $urlArgs ): string {
 		$params = [
@@ -223,8 +176,8 @@ class FacetBuilder {
 				$cssClass = 'value-filter';
 			}
 
-			$this->templateEngine->compile(
-				'filter-facet',
+			$html .= $this->templateParser->processTemplate(
+				'facet',
 				[
 					'id' => "card-$id",
 					'label' => $property,
@@ -233,24 +186,20 @@ class FacetBuilder {
 					'clear' => $clear
 				]
 			);
-
-			$html .= $this->templateEngine->publish( 'filter-facet' );
 		}
 
 		return $html;
 	}
 
-	private function createClearFilter( $name, $count = 1 ) {
-		$this->templateEngine->compile(
-			'filter-items-clear-button',
+	private function createClearFilter( string $name, int $count = 1 ) {
+		return $this->templateParser->processTemplate(
+			'items.clear.button',
 			[
 				'name' => $name,
 				'value' => '',
 				'title' => $this->msg( [ 'smw-facetedsearch-clear-filters', $count ] )
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-clear-button' );
 	}
 
 }

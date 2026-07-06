@@ -2,10 +2,12 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use RuntimeException;
 use SMW\Localizer\Message;
-use WebRequest;
+use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
 
 /**
  * @private
@@ -17,109 +19,61 @@ use WebRequest;
  */
 class FormsBuilder {
 
-	/**
-	 * @var WebRequest
-	 */
-	private $request;
+	private ?OpenForm $openForm = null;
 
-	/**
-	 * @var FormsFactory
-	 */
-	private $formsFactory;
+	private ?CustomForm $customForm = null;
 
-	/**
-	 * @var OpenForm
-	 */
-	private $openForm;
+	private string $defaultForm = '';
 
-	/**
-	 * @var CustomForm
-	 */
-	private $customForm;
+	private array $formList = [];
 
-	/**
-	 * @var string
-	 */
-	private $defaultForm = '';
+	private array $preselectNsList = [];
 
-	/**
-	 * @var
-	 */
-	private $formList = [];
+	private array $hiddenNsList = [];
 
-	/**
-	 * @var
-	 */
-	private $preselectNsList = [];
+	private array $parameters = [];
 
-	/**
-	 * @var
-	 */
-	private $hiddenNsList = [];
-
-	/**
-	 * @var
-	 */
-	private $parameters = [];
-
-	/**
-	 * @var
-	 */
-	private $termPrefixes = [];
+	private array $termPrefixes = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
-	 * @param FormsFactory $formsFactory
 	 */
-	public function __construct( WebRequest $request, FormsFactory $formsFactory ) {
-		$this->request = $request;
-		$this->formsFactory = $formsFactory;
+	public function __construct(
+		private readonly WebRequest $request,
+		private readonly FormsFactory $formsFactory,
+	) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $key
-	 *
-	 * @return string
 	 */
-	public static function toLowerCase( $key ) {
+	public static function toLowerCase( string $key ): string {
 		return strtolower( str_replace( [ ' ' ], [ '' ], $key ) );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getTermPrefixes() {
+	public function getTermPrefixes(): array {
 		return $this->termPrefixes;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getHiddenNsList() {
+	public function getHiddenNsList(): array {
 		return $this->hiddenNsList;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
 	public function getPreselectNsList() {
 		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );
@@ -139,10 +93,8 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function buildFormList() {
+	public function buildFormList(): string {
 		$list = [];
 		$name = '';
 		$value = '';
@@ -186,12 +138,8 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $data
-	 *
-	 * @return string
 	 */
-	public function buildForm( array $data ) {
+	public function buildForm( array $data ): string {
 		if ( !isset( $data['forms'] ) ) {
 			throw new RuntimeException( "Missing forms definition" );
 		}
@@ -242,10 +190,12 @@ class FormsBuilder {
 			$this->preselect_namespaces( $data['namespaces']['preselect'] );
 		}
 
+		// @phan-suppress-next-line PhanTypeInvalidDimOffset
 		if ( isset( $data['namespaces']['hidden'] ) && is_array( $data['namespaces']['hidden'] ) ) {
 			$this->hidden_namespaces( $data['namespaces']['hidden'] );
 		}
 
+		// @phan-suppress-next-line PhanTypeInvalidDimOffset
 		if ( isset( $data['namespaces']['hide'] ) && is_array( $data['namespaces']['hide'] ) ) {
 			$this->hidden_namespaces( $data['namespaces']['hide'] );
 		}
@@ -260,7 +210,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function form_fields( $data, $activeForm, $name, $definition ) {
+	private function form_fields( array $data, $activeForm, int|string $name, $definition ) {
 		// Short form, URL query conform
 		$s = self::toLowerCase( $name );
 		$this->formList[$s] = [ 'name' => $name, 'selected' => $activeForm === $s ];
@@ -296,7 +246,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function preselect_namespaces( $preselect ) {
+	private function preselect_namespaces( array $preselect ): void {
 		foreach ( $preselect as $k => $values ) {
 			$k = self::toLowerCase( $k );
 			$this->preselectNsList[$k] = [];
@@ -313,7 +263,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function hidden_namespaces( $hidden ) {
+	private function hidden_namespaces( array $hidden ): void {
 		foreach ( $hidden as $ns ) {
 			if ( is_string( $ns ) && defined( $ns ) ) {
 				$this->hiddenNsList[] = constant( $ns );
@@ -325,7 +275,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function findDescription( $descriptions, $name, $isActiveForm ) {
+	private function findDescription( array $descriptions, int|string $name, bool $isActiveForm ) {
 		if ( !isset( $descriptions[$name] ) ) {
 			return '';
 		}

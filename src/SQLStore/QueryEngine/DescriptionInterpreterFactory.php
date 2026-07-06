@@ -23,23 +23,12 @@ use SMW\Utils\CircularReferenceGuard;
 class DescriptionInterpreterFactory {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var CircularReferenceGuard
-	 */
-	private $circularReferenceGuard;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( Store $store, CircularReferenceGuard $circularReferenceGuard ) {
-		$this->store = $store;
-		$this->circularReferenceGuard = $circularReferenceGuard;
+	public function __construct(
+		private readonly Store $store,
+		private readonly CircularReferenceGuard $circularReferenceGuard,
+	) {
 	}
 
 	/**
@@ -49,7 +38,7 @@ class DescriptionInterpreterFactory {
 	 *
 	 * @return DispatchingDescriptionInterpreter
 	 */
-	public function newDispatchingDescriptionInterpreter( ConditionBuilder $conditionBuilder ) {
+	public function newDispatchingDescriptionInterpreter( ConditionBuilder $conditionBuilder ): DispatchingDescriptionInterpreter {
 		$pplicationFactory = ApplicationFactory::getInstance();
 		$dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
 

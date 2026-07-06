@@ -5,8 +5,9 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\Indexer;
@@ -25,54 +26,29 @@ class FileAttachment {
 	use MessageReporterAwareTrait;
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Indexer
-	 */
-	private $indexer;
-
-	/**
-	 * @var Bulk
-	 */
-	private $bulk;
-
-	/**
-	 * @var string
-	 */
-	private $origin = '';
+	private string $origin = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param Indexer $indexer
-	 * @param Bulk $bulk
 	 */
-	public function __construct( Store $store, Indexer $indexer, Bulk $bulk ) {
-		$this->store = $store;
-		$this->indexer = $indexer;
-		$this->bulk = $bulk;
+	public function __construct(
+		private Store $store,
+		private Indexer $indexer,
+		private Bulk $bulk,
+	) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( string $origin ): void {
 		$this->origin = $origin;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param DIWikiPage $dataItem
 	 */
-	public function createAttachment( DIWikiPage $dataItem ) {
+	public function createAttachment( WikiPage $dataItem ) {
 		$time = -microtime( true );
 
 		if ( $dataItem->getId() == 0 ) {
@@ -100,18 +76,15 @@ class FileAttachment {
 
 		if ( !$connection->exists( $params ) ) {
 
-			$msg = [
-				'File indexer',
-				'Abort annotation update',
-				'Missing {id} document!'
-			];
+			$msg = 'File indexer Abort annotation update ' .
+				'Missing {id} document!';
 
 			return $this->logger->info( $msg, $context + [ 'id' => $dataItem->getId() ] );
 		}
 
 		// Available properties
 		// @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/using-ingest-attachment.html
-		$params = $params + [
+		$params += [
 			'_source_includes' => [
 				'file_sha1',
 				'attachment.date',
@@ -129,11 +102,8 @@ class FileAttachment {
 
 		if ( !isset( $doc['_source']['file_sha1'] ) ) {
 
-			$msg = [
-				'File indexer',
-				'No annotation update',
-				'Missing file_sha1!'
-			];
+			$msg = 'File indexer No annotation update ' .
+				'Missing file_sha1!';
 
 			return $this->logger->info( $msg, $context );
 		}
@@ -162,7 +132,7 @@ class FileAttachment {
 			$attachmentAnnotator->getContainer()
 		);
 
-		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () use( $semanticData, $attachmentAnnotator ) {
+		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () use( $semanticData, $attachmentAnnotator ): void {
 			// Update the SQLStore with the annotated information which will NOT
 			// trigger another ES index update BUT ...
 			$this->store->updateData( $semanticData );
@@ -178,11 +148,8 @@ class FileAttachment {
 
 		$context['procTime'] = microtime( true ) + $time;
 
-		$msg = [
-			'File indexer',
-			'Attachment annotation update completed ({subject})',
-			'procTime (in sec): {procTime}'
-		];
+		$msg = 'File indexer Attachment annotation update completed ({subject}) ' .
+			'procTime (in sec): {procTime}';
 
 		$this->logger->info( $msg, $context );
 	}
@@ -193,10 +160,8 @@ class FileAttachment {
 	 * as expected.
 	 *
 	 * @since 3.2
-	 *
-	 * @param AttachmentAnnotator $attachmentAnnotator
 	 */
-	public function indexAttachmentInfo( AttachmentAnnotator $attachmentAnnotator ) {
+	public function indexAttachmentInfo( AttachmentAnnotator $attachmentAnnotator ): void {
 		$data = [];
 		$time = -microtime( true );
 
@@ -243,26 +208,24 @@ class FileAttachment {
 		$this->indexer->create( $subject, $data );
 
 		// Attach the subobject to the base subject
-		$response = $this->upsertDoc(
+		$this->upsertDoc(
 			$baseDocId,
 			$subject,
 			$attachmentAnnotator->getProperty()
 		);
 
+		$response = $this->bulk->getResponse();
+
 		$context['time'] = microtime( true ) + $time;
 		$context['response'] = $response;
 
-		$msg = [
-			'File indexer',
-			'Pushed attachment information to ES ({subject})',
-			'procTime (in sec): {procTime}',
-			'Response: {response}'
-		];
+		$msg = 'File indexer Pushed attachment information to ES ({subject}) ' .
+			'procTime (in sec): {procTime} Response: {response}';
 
 		$this->logger->info( $msg, $context );
 	}
 
-	private function upsertDoc( $baseDocId, $subject, $property ) {
+	private function upsertDoc( int $baseDocId, WikiPage $subject, Property $property ): void {
 		$params = [
 			'_index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA )
 		];
@@ -289,13 +252,13 @@ class FileAttachment {
 		// to work
 		$this->bulk->upsert( [ '_id' => $baseDocId ], $data );
 
-		return $this->bulk->execute();
+		$this->bulk->execute();
 	}
 
-	private function newContainerSemanticData( $dataItem, $doc ) {
+	private function newContainerSemanticData( WikiPage $dataItem, array $doc ): ContainerSemanticData {
 		$subobjectName = '_FILE' . $doc['_source']['file_sha1'];
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
 			$dataItem->getInterwiki(),

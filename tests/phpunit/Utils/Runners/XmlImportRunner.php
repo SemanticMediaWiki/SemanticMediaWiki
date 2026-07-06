@@ -2,10 +2,12 @@
 
 namespace SMW\Tests\Utils\Runners;
 
+use Exception;
 use ImportReporter;
 use ImportStreamSource;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use RequestContext;
+use MediaWiki\User\User;
 use RuntimeException;
 use SMW\Tests\TestEnvironment;
 
@@ -20,7 +22,6 @@ use SMW\Tests\TestEnvironment;
  */
 class XmlImportRunner {
 
-	protected $file = null;
 	protected $requestContext = null;
 	protected $exception = false;
 	protected $result = null;
@@ -32,8 +33,7 @@ class XmlImportRunner {
 	 */
 	private $testEnvironment;
 
-	public function __construct( $file = null ) {
-		$this->file = $file;
+	public function __construct( protected $file = null ) {
 		$this->testEnvironment = new TestEnvironment();
 	}
 
@@ -79,35 +79,27 @@ class XmlImportRunner {
 
 		$services = MediaWikiServices::getInstance();
 
+		$authority = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+
 		$importer = $services->getWikiImporterFactory()->getWikiImporter(
 			$source->value,
-			RequestContext::getMain()->getAuthority()
+			$authority
 		);
 		$importer->setDebug( $this->verbose );
 
-		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
-			$reporter = new ImportReporter(
-				$importer,
-				false,
-				'',
-				false,
-				$this->acquireRequestContext()
-			);
-		} else {
-			$reporter = new ImportReporter(
-				$importer,
-				false,
-				'',
-				false
-			);
-			$reporter->setContext( $this->acquireRequestContext() );
-		}
+		$reporter = new ImportReporter(
+			$importer,
+			false,
+			'',
+			false,
+			$this->acquireRequestContext()
+		);
 		$reporter->open();
 		$this->exception = false;
 
 		try {
 			$importer->doImport();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->exception = $e;
 		}
 
@@ -146,6 +138,7 @@ class XmlImportRunner {
 	protected function acquireRequestContext() {
 		if ( $this->requestContext === null ) {
 			$this->requestContext = new RequestContext();
+			$this->requestContext->setUser( User::newSystemUser( 'Maintenance script', [ 'steal' => true ] ) );
 		}
 
 		return $this->requestContext;

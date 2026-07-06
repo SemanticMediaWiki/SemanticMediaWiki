@@ -15,45 +15,27 @@ class Condition {
 	const TYPE_MUST_NOT = 'must_not';
 	const TYPE_FILTER = 'filter';
 
-	/**
-	 * @var array
-	 */
-	private $parameters = [];
+	private array $logs = [];
 
-	/**
-	 * @var array
-	 */
-	private $logs = [];
-
-	/**
-	 * @var string
-	 */
-	private $type = 'must';
+	private ?string $type = 'must';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Condition|array $parameters
 	 */
-	public function __construct( $parameters = [] ) {
-		$this->parameters = $parameters;
+	public function __construct( private $parameters = [] ) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
 	 */
-	public function type( $type ) {
+	public function type( ?string $type ): void {
 		$this->type = $type;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getType() {
+	public function getType(): ?string {
 		return $this->type;
 	}
 
@@ -62,16 +44,14 @@ class Condition {
 	 *
 	 * @param mixed $log
 	 */
-	public function log( $log ) {
+	public function log( $log ): void {
 		$this->logs[] = $log;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
-	public function getLogs() {
+	public function getLogs(): array {
 		return $this->logs;
 	}
 
@@ -96,7 +76,8 @@ class Condition {
 		if ( $condition instanceof Condition ) {
 			$params = $condition->toArray();
 
-			if ( ( $rlogs = $condition->getLogs() ) !== [] ) {
+			$rlogs = $condition->getLogs();
+			if ( $rlogs !== [] ) {
 				$logs[] = $rlogs;
 			}
 		}
@@ -114,10 +95,8 @@ class Condition {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function __toString() {
+	public function __toString(): string {
 		return json_encode( $this->toArray(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 	}
 

@@ -2,11 +2,13 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\Request\WebRequest;
+use ReflectionClass;
 use SMW\Localizer\Message;
 use SMW\Utils\FileFetcher;
 use SMW\Utils\HtmlTabs;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,31 +19,13 @@ use WebRequest;
 class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var FileFetcher
-	 */
-	private $fileFetcher;
-
-	/**
-	 * @var TaskHandler[]
-	 */
-	private $taskHandlers = [];
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param FileFetcher $fileFetcher
-	 * @param TaskHandler[] $taskHandlers
 	 */
-	public function __construct( OutputFormatter $outputFormatter, FileFetcher $fileFetcher, array $taskHandlers = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->fileFetcher = $fileFetcher;
-		$this->taskHandlers = $taskHandlers;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly FileFetcher $fileFetcher,
+		private readonly array $taskHandlers = [],
+	) {
 	}
 
 	/**
@@ -49,7 +33,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_MAINTENANCE;
 	}
 
@@ -82,7 +66,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$tasks = '';
 		$html = '';
 
@@ -123,7 +107,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$action = $webRequest->getText( 'action' );
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
@@ -136,7 +120,8 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 				$taskHandler->setStore( $this->getStore() );
 			}
 
-			return $taskHandler->handleRequest( $webRequest );
+			$taskHandler->handleRequest( $webRequest );
+			return;
 		}
 	}
 
@@ -151,7 +136,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 		);
 	}
 
-	private function buildHTML() {
+	private function buildHTML(): string {
 		$html = Html::rawElement(
 			'p',
 			[
@@ -174,11 +159,9 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 			$classes = get_declared_classes();
 			$class = end( $classes );
 
-			$reflectionClass = new \ReflectionClass( $class );
+			$reflectionClass = new ReflectionClass( $class );
 
-			if (
-				!$reflectionClass->getParentClass() ||
-				$reflectionClass->getParentClass()->getName() !== 'Maintenance' ) {
+			if ( !$reflectionClass->isSubclassOf( Maintenance::class ) ) {
 				continue;
 			}
 

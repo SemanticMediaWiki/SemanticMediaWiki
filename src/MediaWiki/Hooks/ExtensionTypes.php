@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\HookListener;
+use MediaWiki\Hook\ExtensionTypesHook;
 
 /**
  * Called when generating the extensions credits, use this to change the tables headers
@@ -14,23 +14,15 @@ use SMW\MediaWiki\HookListener;
  *
  * @author mwjames
  */
-class ExtensionTypes implements HookListener {
+class ExtensionTypes implements ExtensionTypesHook {
 
 	/**
-	 * @since 2.0
-	 *
-	 * @param array &$extensionTypes
-	 *
-	 * @return bool
+	 * @since 7.0.0
 	 */
-	public function process( array &$extensionTypes ) {
-		if ( !is_array( $extensionTypes ) ) {
-			$extensionTypes = [];
-		}
-
-		$extensionTypes = array_merge(
+	public function onExtensionTypes( &$extTypes ) {
+		$extTypes = array_merge(
 			[ 'semantic' => wfMessage( 'version-semantic' )->text() ],
-			$extensionTypes
+			$extTypes
 		);
 
 		return true;

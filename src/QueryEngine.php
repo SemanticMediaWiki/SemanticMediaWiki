@@ -2,8 +2,8 @@
 
 namespace SMW;
 
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
-use SMWQuery as Query;
 
 /**
  * Interface for query answering that depend on concrete implementations to

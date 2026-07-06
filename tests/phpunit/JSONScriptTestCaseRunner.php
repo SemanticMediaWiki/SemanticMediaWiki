@@ -2,11 +2,17 @@
 
 namespace SMW\Tests;
 
+use Closure;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use SMW\Elastic\ElasticStore;
 use SMW\Localizer\Localizer;
+use SMW\NamespaceManager;
 use SMW\SPARQLStore\SPARQLStore;
+use SMW\Tests\Utils\File\JsonFileReader;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
+use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -29,47 +35,22 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
-	/**
-	 * @var FileReader
-	 */
-	private $fileReader;
-
-	/**
-	 * @var JsonTestCaseContentHandler
-	 */
-	private $jsonTestCaseContentHandler;
-
-	/**
-	 * @var array
-	 */
-	private $itemsMarkedForDeletion = [];
-
-	/**
-	 * @var array
-	 */
-	private $configValueCallback = [];
-
-	/**
-	 * @var bool
-	 */
-	protected $deletePagesOnTearDown = true;
-
-	/**
-	 * @var string
-	 */
-	protected $searchByFileExtension = 'json';
-
-	/**
-	 * @var string
-	 */
-	protected $connectorId = '';
+	private JsonFileReader $fileReader;
+	private JsonTestCaseContentHandler $jsonTestCaseContentHandler;
+	private array $itemsMarkedForDeletion = [];
+	private array $configValueCallback = [];
+	protected bool $deletePagesOnTearDown = true;
+	protected string $searchByFileExtension = 'json';
+	protected string $connectorId = '';
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
-		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
-		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
+
+		( new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
+		) )->reseatDeclarativeHandlers();
 
 		$this->fileReader = $utilityFactory->newJsonFileReader();
 
@@ -80,59 +61,50 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		);
 
 		if ( $this->getStore() instanceof SPARQLStore ) {
-			if ( isset( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
-				$connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
-			} else {
-				$connectorId = $GLOBALS['smwgSparqlRepositoryConnector'];
-			}
-
-			$this->connectorId = strtolower( $connectorId );
-		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
+			$this->connectorId = strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] );
+		} elseif ( $this->getStore() instanceof ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
-			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
+			$this->connectorId = strtolower( $this->getDb()->getType() );
 		}
 	}
 
 	protected function tearDown(): void {
-		if ( $this->deletePagesOnTearDown ) {
-			$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
-		}
+		try {
+			if ( $this->deletePagesOnTearDown ) {
+				// The MW HookContainer caches the declarative SMW hook handlers
+				// across the test body, so by tearDown time their captured
+				// services (notably ArticleDelete's Store) can be stale relative
+				// to the Store the JSON-script test reconfigured. Reseat just
+				// before flushPages so PageDeleter fires hooks against handlers
+				// built from the current MediaWikiServices state.
+				( new SMWDeclarativeHookReseater(
+					MediaWikiServices::getInstance()->getHookContainer()
+				) )->reseatDeclarativeHandlers();
 
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+				$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
+			}
+		} finally {
+			parent::tearDown();
+		}
 	}
 
-	/**
-	 * @return string
-	 */
-	abstract protected function getTestCaseLocation();
+	abstract protected function getTestCaseLocation(): string;
 
-	/**
-	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
-	 */
-	abstract protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler );
+	abstract protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ): void;
 
-	/**
-	 * @return string
-	 */
-	protected function getRequiredJsonTestCaseMinVersion() {
+	protected function getRequiredJsonTestCaseMinVersion(): string {
 		return '0.1';
 	}
 
-	/**
-	 * @return array
-	 */
-	protected function getAllowedTestCaseFiles() {
+	protected function getAllowedTestCaseFiles(): array {
 		return [];
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	protected function getDependencyDefinitions() {
+	protected function getDependencyDefinitions(): array {
 		return [];
 	}
 
@@ -143,17 +115,15 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	 * For a configuration that requires special treatment (i.e. where a simple
 	 * assignment isn't sufficient), a callback can be assigned to a settings
 	 * key in order to sort out required manipulation (constants etc.).
-	 *
-	 * @return array
 	 */
-	protected function getPermittedSettings() {
+	protected function getPermittedSettings(): array {
 		// Ensure that the context is set for a selected language
 		// and dependent objects are reset
 		$this->registerConfigValueCallback( 'wgContLang', function ( $val ) {
-			\RequestContext::getMain()->setLanguage( $val );
+			RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			// #4682, Avoid any surprises when the `wgLanguageCode` is changed during a test
-			\SMW\NamespaceManager::clear();
+			NamespaceManager::clear();
 
 			// Reset title-related services to prevent stale language objects. See #5951.
 			$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
@@ -171,9 +141,9 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		} );
 
 		$this->registerConfigValueCallback( 'wgLang', static function ( $val ) {
-			\RequestContext::getMain()->setLanguage( $val );
+			RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
-			\SMW\NamespaceManager::clear();
+			NamespaceManager::clear();
 			$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 			$lang = $languageFactory->getLanguage( $val );
 			return $lang;
@@ -182,19 +152,12 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		return [];
 	}
 
-	/**
-	 * @param string $key
-	 * @param Closure $callback
-	 */
-	protected function registerConfigValueCallback( $key, \Closure $callback ) {
+	protected function registerConfigValueCallback( string $key, Closure $callback ): void {
 		$this->configValueCallback[$key] = $callback;
 	}
 
-	/**
-	 * @return callable|null
-	 */
-	protected function getConfigValueCallback( $key ) {
-		return isset( $this->configValueCallback[$key] ) ? $this->configValueCallback[$key] : null;
+	protected function getConfigValueCallback( string $key ): ?callable {
+		return $this->configValueCallback[$key] ?? null;
 	}
 
 	/**
@@ -202,12 +165,8 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	 * JsonTestCaseScriptRunner::getAllowedTestCaseFiles (or hereof) to filter
 	 * selected files and help fine tune a setup or debug a potential issue
 	 * without having to run all test files at once.
-	 *
-	 * @param string $file
-	 *
-	 * @return bool
 	 */
-	protected function canTestCaseFile( $file ) {
+	protected function canTestCaseFile( string $file ): bool {
 		// Filter specific files on-the-fly
 		$allowedTestCaseFiles = $this->getAllowedTestCaseFiles();
 
@@ -228,7 +187,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	/**
 	 * @dataProvider jsonFileProvider
 	 */
-	public function testCaseFile( $file ) {
+	public function testCaseFile( string $file ): void {
 		if ( !$this->canTestCaseFile( $file ) ) {
 			$this->markTestSkipped( $file . ' excluded from the test run' );
 		}
@@ -237,10 +196,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		$this->runTestCaseFile( new JsonTestCaseFileHandler( $this->fileReader ) );
 	}
 
-	/**
-	 * @return array
-	 */
-	public function jsonFileProvider() {
+	public function jsonFileProvider(): array {
 		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider(
@@ -258,20 +214,15 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param mixed $key
-	 * @param mixed $value
 	 */
-	protected function changeGlobalSettingTo( $key, $value ) {
+	protected function changeGlobalSettingTo( string $key, $value ): void {
 		$this->testEnvironment->addConfiguration( $key, $value );
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
-	protected function checkEnvironmentToSkipCurrentTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+	protected function checkEnvironmentToSkipCurrentTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ): void {
 		if ( $jsonTestCaseFileHandler->isIncomplete() ) {
 			$this->markTestIncomplete( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
@@ -292,22 +243,15 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
-			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
-		}
-
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->getDb()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $pages
-	 * @param int $defaultNamespace
 	 */
-	protected function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
+	protected function createPagesFrom( array $pages, int $defaultNamespace = NS_MAIN ): void {
 		$this->jsonTestCaseContentHandler->skipOn(
 			$this->connectorId
 		);
@@ -324,13 +268,6 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->itemsMarkedForDeletion = $this->jsonTestCaseContentHandler->getPages();
-	}
-
-	/**
-	 * @deprecated 2.5
-	 */
-	protected function createPagesFor( array $pages, $defaultNamespace ) {
-		$this->createPagesFrom( $pages, $defaultNamespace );
 	}
 
 }

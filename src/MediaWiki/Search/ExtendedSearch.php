@@ -3,9 +3,11 @@
 namespace SMW\MediaWiki\Search;
 
 use SearchEngine;
+use SearchSuggestionSet;
+use SMW\Formatters\InfoLink;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Store;
-use SMWQuery;
 
 /**
  * Search engine that will try to find wiki pages by interpreting the search
@@ -26,88 +28,41 @@ class ExtendedSearch {
 	 */
 	const COMPLETION_SEARCH_EXTRA_SEARCH_SIZE = 10;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private array $errors = [];
 
-	/**
-	 * @var SearchEngine
-	 */
-	private $fallbackSearchEngine;
+	private ?QueryBuilder $queryBuilder = null;
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private ?string $queryString = '';
 
-	/**
-	 * @var QueryBuilder
-	 */
-	private $queryBuilder;
+	private ?InfoLink $queryLink = null;
 
-	/**
-	 * @var string
-	 */
-	private $queryString = '';
+	private string $prefix = '';
 
-	/**
-	 * @var InfoLink
-	 */
-	private $queryLink;
-
-	/**
-	 * @var
-	 */
-	private $prefix;
-
-	/**
-	 * @var
-	 */
 	private $extraPrefixMap = [];
 
-	/**
-	 * @var
-	 */
-	private $namespaces = [];
+	private array $namespaces = [];
 
-	/**
-	 * @var
-	 */
-	private $searchableNamespaces = [];
+	private array $searchableNamespaces = [];
 
-	/**
-	 * @var int
-	 */
-	private $limit = 10;
+	private int $limit = 10;
 
-	/**
-	 * @var int
-	 */
-	private $offset = 0;
+	private int $offset = 0;
 
-	/**
-	 * @var string
-	 */
-	private $completionSearchTerm = '';
+	private string $completionSearchTerm = '';
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param SearchEngine $fallbackSearchEngine
 	 */
-	public function __construct( Store $store, SearchEngine $fallbackSearchEngine ) {
-		$this->store = $store;
-		$this->fallbackSearchEngine = $fallbackSearchEngine;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SearchEngine $fallbackSearchEngine,
+	) {
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $extraPrefixMap
 	 */
-	public function setExtraPrefixMap( array $extraPrefixMap ) {
+	public function setExtraPrefixMap( array $extraPrefixMap ): void {
 		foreach ( $extraPrefixMap as $key => $value ) {
 			if ( is_string( $key ) ) {
 				$this->extraPrefixMap[] = $key;
@@ -119,37 +74,29 @@ class ExtendedSearch {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param QueryBuilder $queryBuilder
 	 */
-	public function setQueryBuilder( QueryBuilder $queryBuilder ) {
+	public function setQueryBuilder( QueryBuilder $queryBuilder ): void {
 		$this->queryBuilder = $queryBuilder;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $prefix
 	 */
-	public function setPrefix( $prefix ) {
+	public function setPrefix( string $prefix ): void {
 		$this->prefix = $prefix;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $namespaces
 	 */
-	public function setNamespaces( array $namespaces ) {
+	public function setNamespaces( array $namespaces ): void {
 		$this->namespaces = $namespaces;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $searchableNamespaces
 	 */
-	public function setSearchableNamespaces( array $searchableNamespaces ) {
+	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
 	}
 
@@ -159,71 +106,57 @@ class ExtendedSearch {
 	 * @param int $limit
 	 * @param int $offset
 	 */
-	public function setLimitOffset( $limit, $offset = 0 ) {
+	public function setLimitOffset( $limit, $offset = 0 ): void {
 		$this->limit = intval( $limit );
 		$this->offset = intval( $offset );
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $completionSearchTerm
 	 */
-	public function setCompletionSearchTerm( $completionSearchTerm ) {
+	public function setCompletionSearchTerm( string $completionSearchTerm ): void {
 		$this->completionSearchTerm = $completionSearchTerm;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return int
 	 */
-	public function getLimit() {
+	public function getLimit(): int {
 		return $this->limit;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return int
 	 */
-	public function getOffset() {
+	public function getOffset(): int {
 		return $this->offset;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getQueryString() {
+	public function getQueryString(): ?string {
 		return $this->queryString;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function getQueryLink() {
+	public function getQueryLink(): ?InfoLink {
 		return $this->queryLink;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
-	public function getValidSorts() {
+	public function getValidSorts(): array {
 		return [
 
 			// SemanticMediaWiki supported
@@ -279,17 +212,16 @@ class ExtendedSearch {
 	 */
 	public function completionSearch( $search ) {
 		$searchResultSet = null;
-		$minLen = 3;
 
 		// Avoid MW's auto formatting of title entities
 		if ( $search !== '' ) {
 			$search[0] = strtolower( $search[0] );
 		}
 
-		if ( $this->hasPrefixAndMinLenForCompletionSearch( $search, $minLen ) ) {
+		if ( $this->hasPrefixAndMinLenForCompletionSearch( $search ) ) {
 			if ( $this->getSearchQuery( $search ) !== null ) {
 				// Lets widen the search in case we fetch subobjects
-				$this->limit = $this->limit + self::COMPLETION_SEARCH_EXTRA_SEARCH_SIZE;
+				$this->limit += self::COMPLETION_SEARCH_EXTRA_SEARCH_SIZE;
 				$searchResultSet = $this->newSearchResultSet( $search, false, false );
 			}
 
@@ -308,7 +240,7 @@ class ExtendedSearch {
 		return $this->fallbackSearchEngine->completionSearch( $search );
 	}
 
-	private function hasPrefixAndMinLenForCompletionSearch( $search, $minLen ) {
+	private function hasPrefixAndMinLenForCompletionSearch( $search ): bool {
 		// Only act on when `in:foo`, `has:SomeProperty`, or `phrase:some text`
 		// is actively used as prefix
 		$defaultPrefixMap = [ 'in', 'has', 'phrase', 'not' ];
@@ -316,7 +248,8 @@ class ExtendedSearch {
 		foreach ( $defaultPrefixMap as $key ) {
 			$prefix = "$key:";
 
-			if ( ( $pos = stripos( $search, $prefix ) ) !== false && $pos == 0 ) {
+			$pos = stripos( $search, $prefix );
+			if ( $pos !== false && $pos == 0 ) {
 				return true;
 			}
 		}
@@ -324,7 +257,8 @@ class ExtendedSearch {
 		foreach ( $this->extraPrefixMap as $key ) {
 			$prefix = "$key:";
 
-			if ( ( $pos = stripos( $search, $prefix ) ) !== false && $pos == 0 ) {
+			$pos = stripos( $search, $prefix );
+			if ( $pos !== false && $pos == 0 ) {
 				return true;
 			}
 		}
@@ -332,7 +266,7 @@ class ExtendedSearch {
 		return false;
 	}
 
-	private function newSearchResultSet( $term, $count = true, $highlight = true ) {
+	private function newSearchResultSet( $term, bool $count = true, bool $highlight = true ): ?SearchResultSet {
 		$query = $this->getSearchQuery( $term );
 
 		if ( $query === null ) {
@@ -345,7 +279,7 @@ class ExtendedSearch {
 
 		$query->clearErrors();
 		$query->setOption( 'highlight.fragment', $highlight );
-		$query->setOption( SMWQuery::PROC_CONTEXT, 'SpecialSearch' );
+		$query->setOption( Query::PROC_CONTEXT, 'SpecialSearch' );
 
 		$result = $this->store->getQueryResult( $query );
 		$this->errors = $query->getErrors();
@@ -355,7 +289,7 @@ class ExtendedSearch {
 		$this->queryLink->setParameter( $this->limit, 'limit' );
 
 		if ( $count ) {
-			$query->querymode = SMWQuery::MODE_COUNT;
+			$query->querymode = Query::MODE_COUNT;
 			$query->setOffset( 0 );
 
 			$queryResult = $this->store->getQueryResult( $query );
@@ -367,12 +301,7 @@ class ExtendedSearch {
 		return new SearchResultSet( $result, $count );
 	}
 
-	/**
-	 * @param string $term
-	 *
-	 * @return SMWQuery | null
-	 */
-	private function getSearchQuery( $term ) {
+	private function getSearchQuery( string $term ): ?Query {
 		if ( $this->queryBuilder === null ) {
 			$this->queryBuilder = new QueryBuilder();
 		}
@@ -396,13 +325,9 @@ class ExtendedSearch {
 		return $query;
 	}
 
-	private function searchFallbackSearchEngine( $term, $fulltext ) {
+	private function searchFallbackSearchEngine( $term, bool $fulltext ) {
 		$this->fallbackSearchEngine->prefix = $this->prefix;
 		$this->fallbackSearchEngine->namespaces = $this->namespaces;
-
-		$term = $this->fallbackSearchEngine->replacePrefixes(
-			$term
-		);
 
 		if ( $fulltext ) {
 			return $this->fallbackSearchEngine->searchText( $term );

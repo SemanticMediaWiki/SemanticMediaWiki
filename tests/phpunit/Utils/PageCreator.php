@@ -2,17 +2,18 @@
 
 namespace SMW\Tests\Utils;
 
-use CommentStoreComment;
+use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Content\ContentHandler;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\RevisionSlotsUpdate;
-use RequestContext;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\EditInfo;
 use SMW\Services\ServicesFactory;
 use SMW\Tests\TestEnvironment;
-use Title;
 use UnexpectedValueException;
-use User;
+use WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -30,20 +31,20 @@ class PageCreator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return \WikiPage
+	 * @return WikiPage
 	 */
-	public function setPage( \WikiPage $page ) {
+	public function setPage( WikiPage $page ) {
 		$this->page = $page;
 	}
 
 	/**
 	 * @since 1.9.1
 	 *
-	 * @return \WikiPage
+	 * @return WikiPage
 	 * @throws UnexpectedValueException
 	 */
 	public function getPage() {
-		if ( $this->page instanceof \WikiPage ) {
+		if ( $this->page instanceof WikiPage ) {
 			return $this->page;
 		}
 
@@ -74,7 +75,7 @@ class PageCreator {
 			} );
 		}
 
-		$this->page = new \WikiPage( $title );
+		$this->page = new WikiPage( $title );
 
 		if ( $editContent === '' ) {
 			$editContent = 'Content of ' . $title->getFullText();
@@ -94,13 +95,12 @@ class PageCreator {
 	 * @return PageCreator
 	 */
 	public function doEdit( $pageContent = '', $editMessage = '' ) {
-		$content = \ContentHandler::makeContent(
+		$content = ContentHandler::makeContent(
 			$pageContent,
 			$this->getPage()->getTitle()
 		);
 
-		// Simplified implementation of WikiPage::doUserEditContent() from MW 1.36
-		$performer = RequestContext::getMain()->getUser();
+		$performer = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		$summary = CommentStoreComment::newUnsavedComment( trim( $editMessage ) );
 
 		$slotsUpdate = new RevisionSlotsUpdate();

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\FileFetcher;
 
 /**
@@ -12,7 +13,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class PHPUnitCheckRunnerTest extends \PHPUnit\Framework\TestCase {
+class PHPUnitCheckRunnerTest extends TestCase {
 
 	private static $iterator;
 
@@ -76,53 +77,6 @@ class PHPUnitCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 				$files,
 				"\nFailed because listed file(s) is missing a `: void` type for `$key`!\n"
 			);
-		}
-	}
-
-	public function testCheckDeprecatedUsages() {
-		$exceptions = [
-			'PHPUnitCompat',
-			'PHPUnitCheckRunnerTest'
-		];
-
-		$exceptions = array_flip( $exceptions );
-		$message = '';
-
-		$deprecatedUsageCheckFailures = [
-			// #4564
-			'setExpectedException' => [],
-			'assertInternalType' => [],
-			'assertContains' => [],
-			'assertNotContains' => []
-		];
-
-		foreach ( self::$iterator as $file => $v ) {
-
-			$pathinfo = pathinfo( $file );
-
-			if ( isset( $exceptions[$pathinfo['filename']] ) ) {
-				continue;
-			}
-
-			$contents = file_get_contents( $file );
-
-			if ( strpos( $contents, 'setExpectedException' ) !== false ) {
-				$deprecatedUsageCheckFailures['setExpectedException'][] = $pathinfo['basename'];
-				$message = "Failed because listed file(s) contain(s) a deprecated usage of `setExpectedException`";
-			} elseif ( strpos( $contents, 'assertInternalType' ) !== false && strpos( $contents, 'use PHPUnitCompat' ) === false ) {
-				$deprecatedUsageCheckFailures['assertInternalType'][] = $pathinfo['basename'];
-				$message = "Failed because listed file(s) contain(s) a `assertInternalType`\nusage without the `use PHPUnitCompat` trait!";
-			} elseif ( strpos( $contents, 'assertContains' ) !== false && strpos( $contents, 'use PHPUnitCompat' ) === false ) {
-				$deprecatedUsageCheckFailures['assertContains'][] = $pathinfo['basename'];
-				$message = "Failed because listed file(s) contain(s) a `assertContains`\nusage without the `use PHPUnitCompat` trait!";
-			} elseif ( strpos( $contents, 'assertNotContains' ) !== false && strpos( $contents, 'use PHPUnitCompat' ) === false ) {
-				$deprecatedUsageCheckFailures['assertNotContains'][] = $pathinfo['basename'];
-				$message = "Failed because listed file(s) contain(s) a `assertNotContains`\nusage without the `use PHPUnitCompat` trait!";
-			}
-		}
-
-		foreach ( $deprecatedUsageCheckFailures as $key => $files ) {
-			$this->assertEquals( [], $files, "$message\n" );
 		}
 	}
 

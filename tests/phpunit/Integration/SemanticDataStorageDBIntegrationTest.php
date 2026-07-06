@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Subobject;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
-use SMWDITime as DITime;
-use Title;
 
 /**
  * @group SMW
@@ -32,7 +32,6 @@ use Title;
 class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $applicationFactory;
-	private $mwHooksHandler;
 
 	private $semanticDataValidator;
 	private $subjects = [];
@@ -44,12 +43,6 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
-
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
-
-		$this->mwHooksHandler
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
 
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = $utilityFactory->newPageDeleter();
@@ -63,20 +56,19 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 			->doDeletePoolOfPages( $this->subjects );
 
 		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}
 
 	public function testUserDefined_PageProperty_ToSemanticDataForStorage() {
-		$property = new DIProperty( 'SomePageProperty' );
+		$property = new Property( 'SomePageProperty' );
 
-		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( 'SomePropertyPageValue', NS_MAIN, '' )
+			new WikiPage( 'SomePropertyPageValue', NS_MAIN, '' )
 		);
 
 		$this->getStore()->updateData( $semanticData );
@@ -92,14 +84,14 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testFixedProperty_MDAT_ToSemanticDataForStorage() {
-		$property = new DIProperty( '_MDAT' );
+		$property = new Property( '_MDAT' );
 
-		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DITime( 1, '1970', '1', '1' )
+			new Time( 1, '1970', '1', '1' )
 		);
 
 		$this->getStore()->updateData( $semanticData );
@@ -115,9 +107,9 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testFixedProperty_ASK_NotForStorage() {
-		$property = new DIProperty( '_ASK' );
+		$property = new Property( '_ASK' );
 
-		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$this->getStore()->updateData( $semanticData );
@@ -128,15 +120,15 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testAddUserDefinedBlobPropertyAsObjectToSemanticDataForStorage() {
-		$property = new DIProperty( 'SomeBlobProperty' );
-		$property->setPropertyTypeId( '_txt' );
+		$property = new Property( 'SomeBlobProperty' );
+		$property->setPropertyValueType( '_txt' );
 
-		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIBlob( 'SomePropertyBlobValue' )
+			new Blob( 'SomePropertyBlobValue' )
 		);
 
 		$this->getStore()->updateData( $semanticData );
@@ -150,7 +142,7 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	public function testAddUserDefinedPropertyAsDataValueToSemanticDataForStorage() {
 		$propertyAsString = 'SomePropertyAsString';
 
-		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByText(
@@ -171,7 +163,7 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testAddSubobjectToSemanticDataForStorage() {
-		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$subobject = new Subobject( $subject->getTitle() );
@@ -191,8 +183,8 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 		$expected = [
 			'propertyCount'  => 2,
 			'properties' => [
-				new DIProperty( 'Foo' ),
-				new DIProperty( '_SKEY' )
+				new Property( 'Foo' ),
+				new Property( '_SKEY' )
 			],
 			'propertyValues' => [ 'Bar', __METHOD__ . '#SomeSubobject' ]
 		];
@@ -206,11 +198,13 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	public function testFetchSemanticDataForPreExistingSimpleRedirect() {
 		$this->applicationFactory->clear();
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-B' ) )
+			->createPage( $titleFactory->newFromText( 'Foo-B' ) )
 			->doEdit( '#REDIRECT [[Foo-A]]' );
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+		$subject = WikiPage::newFromTitle( $titleFactory->newFromText( 'Foo-A' ) );
 
 		$this->pageCreator
 			->createPage( $subject->getTitle() )
@@ -228,27 +222,29 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->subjects = [
 			$subject,
-			Title::newFromText( 'Foo-B' )
+			$titleFactory->newFromText( 'Foo-B' )
 		];
 	}
 
 	public function testFetchSemanticDataForPreExistingDoubleRedirect() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-B' ) )
+			->createPage( $titleFactory->newFromText( 'Foo-B' ) )
 			->doEdit( '#REDIRECT [[Foo-C]]' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-C' ) )
+			->createPage( $titleFactory->newFromText( 'Foo-C' ) )
 			->doEdit( '#REDIRECT [[Foo-A]]' );
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+		$subject = WikiPage::newFromTitle( $titleFactory->newFromText( 'Foo-A' ) );
 
 		$this->pageCreator
 			->createPage( $subject->getTitle() )
 			->doEdit( '[[HasNoDisplayRedirectInconsistencyFor::Foo-B]]' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-C' ) )
+			->createPage( $titleFactory->newFromText( 'Foo-C' ) )
 			->doEdit( '[[Has page::{{PAGENAME}}' );
 
 		$expected = [
@@ -263,8 +259,8 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->subjects = [
 			$subject,
-			Title::newFromText( 'Foo-B' ),
-			Title::newFromText( 'Foo-C' )
+			$titleFactory->newFromText( 'Foo-B' ),
+			$titleFactory->newFromText( 'Foo-C' )
 		];
 	}
 
@@ -272,13 +268,15 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	 * Issue 622/619
 	 */
 	public function testPrepareToFetchCorrectSemanticDataFromInternalCache() {
-		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$redirect = WikiPage::newFromTitle( $titleFactory->newFromText( 'Foo-A' ) );
 
 		$this->pageCreator
 			->createPage( $redirect->getTitle() )
 			->doEdit( '#REDIRECT [[Foo-C]]' );
 
-		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
+		$target = WikiPage::newFromTitle( $titleFactory->newFromText( 'Foo-C' ) );
 
 		$this->pageCreator
 			->createPage( $target->getTitle() )
@@ -293,12 +291,19 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 		);
 	}
 
-	/**
-	 * @depends testPrepareToFetchCorrectSemanticDataFromInternalCache
-	 */
 	public function testVerifyToFetchCorrectSemanticDataFromInternalCache() {
-		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
-		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$this->pageCreator
+			->createPage( $titleFactory->newFromText( 'Foo-A' ) )
+			->doEdit( '#REDIRECT [[Foo-C]]' );
+
+		$this->pageCreator
+			->createPage( $titleFactory->newFromText( 'Foo-C' ) )
+			->doEdit( '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
+
+		$redirect = WikiPage::newFromTitle( $titleFactory->newFromText( 'Foo-A' ) );
+		$target = WikiPage::newFromTitle( $titleFactory->newFromText( 'Foo-C' ) );
 
 		$this->assertEmpty(
 			$this->getStore()->getSemanticData( $redirect )->findSubSemanticData( 'test' )

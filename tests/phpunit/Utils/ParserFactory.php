@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use ParserOptions;
-use SMW\DIWikiPage;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use Title;
 use User;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -20,10 +20,10 @@ class ParserFactory {
 
 	public static function create( $title, ?User $user = null ) {
 		if ( is_string( $title ) ) {
-			$title = Title::newFromText( $title );
+			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $title );
 		}
 
-		if ( $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage ) {
 			$title = $title->getTitle();
 		}
 
@@ -35,7 +35,7 @@ class ParserFactory {
 			$user = new MockSuperUser();
 		}
 
-		$parser = \MediaWiki\MediaWikiServices::getInstance()->getParserFactory()->create();
+		$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 		$parser->setTitle( $title );
 		$parser->setUser( $user );
 		$parser->setOptions( new ParserOptions( $user ) );

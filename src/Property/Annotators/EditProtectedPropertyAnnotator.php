@@ -2,13 +2,13 @@
 
 namespace SMW\Property\Annotators;
 
-use Html;
+use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotator;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,24 +25,18 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	const SYSTEM_ANNOTATION = 'editprotectedpropertyannotator.system.annotation';
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
-	 * @var bool
+	 * @var string|bool
 	 */
 	private $editProtectionRight = false;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param Title $title
 	 */
-	public function __construct( Annotator $propertyAnnotator, Title $title ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private readonly Title $title,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->title = $title;
 	}
 
 	/**
@@ -50,18 +44,18 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param string|bool $editProtectionRight
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
+	public function setEditProtectionRight( $editProtectionRight ): void {
 		$this->editProtectionRight = $editProtectionRight;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param ParserOutput
+	 * @param ParserOutput $parserOutput
 	 */
-	public function addTopIndicatorTo( ParserOutput $parserOutput ) {
+	public function addTopIndicatorTo( ParserOutput $parserOutput ): void {
 		if ( $this->editProtectionRight === false ) {
-			return false;
+			return;
 		}
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
@@ -87,9 +81,9 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
-	protected function addPropertyValues() {
+	protected function addPropertyValues(): void {
 		if ( $this->editProtectionRight === false ) {
-			return false;
+			return;
 		}
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
@@ -112,14 +106,15 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 	}
 
-	private function hasEditProtection() {
+	private function hasEditProtection(): bool {
 		// $this->title->flushRestrictions();
 
-		if ( !PageInfoProvider::isProtected( $this->title, 'edit' ) ) {
+		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
+
+		if ( !$restrictionStore->isProtected( $this->title, 'edit' ) ) {
 			return false;
 		}
 
-		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
 		$restrictions = array_flip( $restrictionStore->getRestrictions( $this->title, 'edit' ) );
 
 		// There could by any edit protections but the `Is edit protected` is
@@ -127,7 +122,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		return isset( $restrictions[$this->editProtectionRight] );
 	}
 
-	private function isEnabledProtection( $property ) {
+	private function isEnabledProtection( Property $property ): bool {
 		if ( !$this->getSemanticData()->hasProperty( $property ) ) {
 			return false;
 		}

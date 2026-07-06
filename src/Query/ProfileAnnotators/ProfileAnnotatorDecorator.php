@@ -2,8 +2,10 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\Query\ProfileAnnotator;
-use SMW\SemanticData;
 
 /**
  * Decorator implementing the ProfileAnnotator interface
@@ -15,10 +17,7 @@ use SMW\SemanticData;
  */
 abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 
-	/**
-	 * @var ProfileAnnotator
-	 */
-	protected $profileAnnotator;
+	protected ProfileAnnotator $profileAnnotator;
 
 	/**
 	 * @since 1.9
@@ -34,7 +33,7 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getProperty() {
 		return $this->profileAnnotator->getProperty();
@@ -45,7 +44,7 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIContainer
+	 * @return Container
 	 */
 	public function getContainer() {
 		return $this->profileAnnotator->getContainer();
@@ -67,9 +66,9 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return ProfileAnnotator
+	 * @return void
 	 */
-	public function addAnnotation() {
+	public function addAnnotation(): void {
 		$this->profileAnnotator->addAnnotation();
 		$this->addPropertyValues();
 	}
@@ -79,7 +78,7 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function pushAnnotationsTo( SemanticData $semanticData ) {
+	public function pushAnnotationsTo( SemanticData $semanticData ): void {
 		$this->addAnnotation();
 
 		$semanticData->addPropertyObjectValue(
@@ -91,6 +90,6 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	/**
 	 * @since 1.9
 	 */
-	abstract protected function addPropertyValues();
+	abstract protected function addPropertyValues(): void;
 
 }

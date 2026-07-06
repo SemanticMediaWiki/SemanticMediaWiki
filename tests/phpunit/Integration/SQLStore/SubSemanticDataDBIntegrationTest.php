@@ -2,17 +2,16 @@
 
 namespace SMW\Tests\Integration\SQLStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\MediaWikiServices;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use Title;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
@@ -31,11 +30,6 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$utilityFactory = UtilityFactory::getInstance();
-		$utilityFactory->newMwHooksHandler()
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
 	}
 
 	protected function tearDown(): void {
@@ -45,7 +39,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testCreatePageWithSubobject() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -55,19 +49,19 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 				'{{#subobject:namedSubobject|AA=Test1|@sortkey=Z}}' .
 				'{{#subobject:|BB=Test2|@sortkey=Z}}' );
 
-		$semanticData = $this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) );
+		$semanticData = $this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) );
 
 		$this->assertInstanceOf(
-			'SMW\SemanticData',
+			SemanticData::class,
 			$semanticData->findSubSemanticData( 'namedSubobject' )
 		);
 
 		$expected = [
 			'propertyCount'  => 2,
 			'properties' => [
-				new DIProperty( 'AA' ),
-				new DIProperty( 'BB' ),
-				new DIProperty( '_SKEY' )
+				new Property( 'AA' ),
+				new Property( 'BB' ),
+				new Property( '_SKEY' )
 			],
 			'propertyValues' => [
 				'Test1',
@@ -87,7 +81,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPredefinedProperty_Canonical_MonolingualText() {
-		$this->title = Title::newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
 
 		$pageCreator = new PageCreator();
 
@@ -98,15 +92,15 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 			);
 
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromTitle( $this->title )
+			WikiPage::newFromTitle( $this->title )
 		);
 
 		$expected = [
 			'propertyCount'  => 3,
 			'properties' => [
-				new DIProperty( '_TEXT' ),
-				new DIProperty( '_LCODE' ),
-				new DIProperty( '_SKEY' )
+				new Property( '_TEXT' ),
+				new Property( '_LCODE' ),
+				new Property( '_SKEY' )
 			],
 			'propertyValues' => [
 				'en',
@@ -127,7 +121,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPredefinedProperty_Key_MonolingualText() {
-		$this->title = Title::newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
 
 		$pageCreator = new PageCreator();
 
@@ -137,27 +131,16 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 				'[[Property description::Simple monolingual test@en]]'
 			);
 
-		// 1) SMW\Tests\Integration\SQLStore\SubSemanticDataDBIntegrationTest::testPredefinedProperty_Key_MonolingualText
-		// SMW\Exception\SubSemanticDataException: Data for a subobject of Display_precision_of cannot be added to _PREC.
-		//
-		// ...\SemanticMediaWiki\src\DataModel\SubSemanticData.php:206
-		// ...\SemanticMediaWiki\includes\SemanticData.php:814
-		// ...\SemanticMediaWiki\src\SQLStore\EntityStore\StubSemanticData.php:417
-		// ...\SemanticMediaWiki\src\SQLStore\EntityStore\StubSemanticData.php:202
-		// ...\SemanticMediaWiki\tests\phpunit\Integration\SQLStore\SubSemanticDataDBIntegrationTest.php:153
-		// ...\SemanticMediaWiki\tests\phpunit\DatabaseTestCase.php:155
-		// ...\doMaintenance.php:94
-
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromText( '_PREC', SMW_NS_PROPERTY )
+			WikiPage::newFromText( '_PREC', SMW_NS_PROPERTY )
 		);
 
 		$expected = [
 			'propertyCount'  => 3,
 			'properties' => [
-				new DIProperty( '_TEXT' ),
-				new DIProperty( '_LCODE' ),
-				new DIProperty( '_SKEY' )
+				new Property( '_TEXT' ),
+				new Property( '_LCODE' ),
+				new Property( '_SKEY' )
 			],
 			'propertyValues' => [
 				'en',

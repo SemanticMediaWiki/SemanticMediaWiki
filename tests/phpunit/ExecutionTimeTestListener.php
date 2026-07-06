@@ -14,18 +14,15 @@ class ExecutionTimeTestListener implements TestListener {
 
 	/**
 	 * Internal tracking for test suites
+	 *
+	 * @var int
 	 */
 	protected $suites = 0;
 
 	/**
-	 * Threshold that defines "slow" in terms of seconds
-	 *
-	 * @var int
+	 * @var array
 	 */
-	protected $slowThreshold = 10;
-
 	protected $slowTests = [];
-	protected $isEnabledToListen = true;
 
 	/**
 	 * Map of test suites to execution time reports.
@@ -33,9 +30,10 @@ class ExecutionTimeTestListener implements TestListener {
 	 */
 	private static $slowTestsReport;
 
-	public function __construct( $isEnabledToListen, $slowThreshold ) {
-		$this->isEnabledToListen = $isEnabledToListen;
-		$this->slowThreshold = $slowThreshold;
+	public function __construct(
+		protected $isEnabledToListen,
+		protected $slowThreshold,
+	) {
 		self::$slowTestsReport = class_exists( WeakMap::class ) ? new WeakMap() : null;
 	}
 

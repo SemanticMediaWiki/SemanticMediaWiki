@@ -15,23 +15,12 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  */
 class ImportValueParser implements ValueParser {
 
-	/**
-	 * @var MediaWikiNsContentReader
-	 */
-	private $mediaWikiNsContentReader;
-
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param MediaWikiNsContentReader $mediaWikiNsContentReader
 	 */
-	public function __construct( MediaWikiNsContentReader $mediaWikiNsContentReader ) {
-		$this->mediaWikiNsContentReader = $mediaWikiNsContentReader;
+	public function __construct( private readonly MediaWikiNsContentReader $mediaWikiNsContentReader ) {
 	}
 
 	/**
@@ -39,7 +28,7 @@ class ImportValueParser implements ValueParser {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
@@ -48,7 +37,7 @@ class ImportValueParser implements ValueParser {
 	 *
 	 * @return array|null
 	 */
-	public function parse( $value ) {
+	public function parse( $value ): ?array {
 		[ $namespace, $section, $controlledVocabulary ] = $this->splitByNamespaceSection(
 			$value
 		);
@@ -84,7 +73,7 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function splitByNamespaceSection( $value ) {
+	private function splitByNamespaceSection( $value ): ?array {
 		if ( strpos( $value, ':' ) === false ) {
 
 			$this->errors[] = [
@@ -123,7 +112,7 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function checkForValidType( $namespace, $section, $uri, $typelist ) {
+	private function checkForValidType( $namespace, $section, $uri, ?array $typelist ) {
 		if ( $uri === '' ) {
 
 			$this->errors[] = [
@@ -151,7 +140,7 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function doParse( $controlledVocabulary ) {
+	private function doParse( $controlledVocabulary ): ?array {
 		$list = [];
 		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
 
@@ -159,7 +148,7 @@ class ImportValueParser implements ValueParser {
 		$fristLine = array_shift( $importDefintions );
 
 		if ( strpos( $fristLine, '|' ) === false ) {
-			return;
+			return null;
 		}
 
 		[ $uri, $name ] = explode( '|', $fristLine, 2 );

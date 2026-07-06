@@ -7,7 +7,6 @@ namespace SMW;
 use RuntimeException;
 
 /**
- * @public
  * @since 4.0
  */
 interface SmwJsonRepo {

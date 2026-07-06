@@ -1,10 +1,13 @@
 <?php
 
-namespace SMW\Tests\Integration;
+namespace SMW\Tests\Unit;
 
 use DOMDocument;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialAsk;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\RepositoryConnectionProvider;
+use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author Stephan Gambke
  */
-class SpecialAskTest extends \PHPUnit\Framework\TestCase {
+class SpecialAskTest extends TestCase {
 
 	private $oldRequestValues;
 	private $oldBodyText;
@@ -44,7 +47,7 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 	public function testProducesWellformedHtml( $params, $skipFUSEKI ) {
 		$instance = new RepositoryConnectionProvider( 'fuSEKi' );
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector',
+			FusekiRepositoryConnector::class,
 			$instance->getConnection()
 		);
 		$hasFUSEKI = ( $instance->getConnection()->getVersion() !== "n/a" );
@@ -55,7 +58,11 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->setupGlobals( $params );
 
-		$special = new SpecialAsk();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$special = new SpecialAsk(
+			$applicationFactory->getQuerySourceFactory(),
+			$applicationFactory->getSettings()
+		);
 		$special->execute( null );
 
 		$html = $GLOBALS['wgOut']->getHtml();

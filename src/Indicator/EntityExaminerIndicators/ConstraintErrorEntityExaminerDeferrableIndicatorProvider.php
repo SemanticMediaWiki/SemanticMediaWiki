@@ -12,17 +12,14 @@ use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
  */
 class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends ConstraintErrorEntityExaminerIndicatorProvider implements DeferrableIndicatorProvider {
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
 	/**
 	 * @since 3.2
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
@@ -38,9 +35,10 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends Constrain
 	/**
 	 * @see ConstraintErrorEntityExaminerIndicatorProvider::checkConstraintErrors
 	 */
-	protected function checkConstraintErrors( $subject, $options ) {
+	protected function checkConstraintErrors( $subject, $options ): void {
 		if ( $this->isDeferredMode ) {
-			return $this->runCheck( $subject, $options );
+			$this->runCheck( $subject, $options );
+			return;
 		}
 
 		$this->indicators = [ 'id' => $this->getName() ];

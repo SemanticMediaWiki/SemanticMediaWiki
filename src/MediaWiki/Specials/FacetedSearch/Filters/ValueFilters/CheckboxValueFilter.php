@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
+use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -19,30 +19,15 @@ class CheckboxValueFilter {
 
 	use MessageLocalizerTrait;
 
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
-
-	/**
-	 * @var UrlArgs
-	 */
-	private $urlArgs;
-
-	/**
-	 * @var
-	 */
-	private $params;
+	private ?UrlArgs $urlArgs = null;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateEngine $templateEngine
-	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, array $params ) {
-		$this->templateEngine = $templateEngine;
-		$this->params = $params;
+	public function __construct(
+		private TemplateParser $templateParser,
+		private array $params,
+	) {
 	}
 
 	/**
@@ -72,10 +57,10 @@ class CheckboxValueFilter {
 		$valueFilters = $this->getValueFilters( $property );
 		$isClear = $this->urlArgs->find( "clear.$property", false );
 
-		$prop = DIProperty::newFromUserLabel( $property );
+		$prop = Property::newFromUserLabel( $property );
 
 		$isRecordType = DataTypeRegistry::getInstance()->isRecordType(
-			$prop->findPropertyTypeID()
+			$prop->findPropertyValueType()
 		);
 
 		foreach ( $values as $key => $count ) {
@@ -115,20 +100,18 @@ class CheckboxValueFilter {
 			$option = '';
 		} else {
 
-			$this->templateEngine->compile(
-				'filter-items-option',
+			$option = $this->templateParser->processTemplate(
+				'items.option',
 				[
 					'input' => $this->createInputField( $property, $values ),
 					'condition' => $this->createConditionField( $property )
 				]
 			);
-
-			$option = $this->templateEngine->publish( 'filter-items-option' );
 			$cssClass = '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items',
+		return $this->templateParser->processTemplate(
+			'items',
 			[
 				'option' => $option,
 				'unlinked' => implode( '', $list['unlinked'] ),
@@ -136,11 +119,9 @@ class CheckboxValueFilter {
 				'css-class' => $cssClass
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items' );
 	}
 
-	private function matchFilter( $property, $key, $label, $count, $valueFilters, &$list, $isClear ) {
+	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, array &$list, $isClear ): void {
 		// Make sure characters like `"` are encoded otherwise those will be removed
 		// from the value representation
 		$key = htmlspecialchars( $key );
@@ -160,38 +141,34 @@ class CheckboxValueFilter {
 				return;
 			}
 
-			$this->templateEngine->compile(
-				'filter-item-checkbox',
+			$list['unlinked'][$key] = $this->templateParser->processTemplate(
+				'item.checkbox',
 				$attr
 			);
-
-			$list['unlinked'][$key] = $this->templateEngine->publish( 'filter-item-checkbox' );
 		} else {
-			$this->templateEngine->compile(
-				'filter-item-checkbox',
+			$list['linked'][$key] = $this->templateParser->processTemplate(
+				'item.checkbox',
 				$attr
 			);
-
-			$list['linked'][$key] = $this->templateEngine->publish( 'filter-item-checkbox' );
 		}
 	}
 
-	private function getValueFilters( $property ) {
+	private function getValueFilters( string $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	private function createConditionField( $property ) {
+	private function createConditionField( string $property ) {
 		if ( $this->params['condition_field'] === false ) {
 			return '';
 		}
 
 		$condition = $this->urlArgs->find( "vc.$property", 'or' );
 
-		$this->templateEngine->compile(
-			'filter-items-condition',
+		return $this->templateParser->processTemplate(
+			'items.condition',
 			[
 				'property' => $property,
 				'or-selected' => $condition === 'or' ? 'selected' : '',
@@ -199,23 +176,19 @@ class CheckboxValueFilter {
 				'not-selected' => $condition === 'not' ? 'selected' : ''
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-condition' );
 	}
 
-	private function createInputField( $property, array $values ) {
+	private function createInputField( string $property, array $values ) {
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-input',
+		return $this->templateParser->processTemplate(
+			'items.input',
 			[
 				'placeholder' => $this->msg( [ 'smw-facetedsearch-input-filter-placeholder', $property ] ),
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-input' );
 	}
 
 }

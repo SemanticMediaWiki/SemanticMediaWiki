@@ -2,11 +2,12 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\Export\Exporter;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,23 +18,12 @@ use SMWExporter as Exporter;
  */
 class ThingDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var Exporter
-	 */
-	private $exporter;
+	private Exporter $exporter;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ?ConditionBuilder $conditionBuilder = null ) {
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -42,7 +32,7 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ThingDescription;
 	}
 
@@ -50,6 +40,8 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 * @since 2.2
 	 *
 	 * {@inheritDoc}
+	 *
+	 * @return Condition
 	 */
 	public function interpretDescription( Description $description ) {
 		return $this->conditionBuilder->newTrueCondition(

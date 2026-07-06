@@ -2,15 +2,17 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\SMWDeclarativeHookReseater;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -24,12 +26,12 @@ use Title;
  */
 class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 
-	private $mwHooksHandler;
 	private $queryResultValidator;
 	private $applicationFactory;
 	private $toBeDeleted = [];
 	private $pageCreator;
 	private $revisionGuard;
+	private SMWDeclarativeHookReseater $reseater;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -38,12 +40,20 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
 
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
-
-		$this->mwHooksHandler->register(
+		// Disable every SMW declarative hook, then re-register only the
+		// PageMoveComplete handler this test exercises. Individual tests
+		// re-enable further hooks they need (see testPageMoveWithRemovalOfOldPage
+		// and testPredefinedPropertyPageIsNotMovable below). Other SMW
+		// handlers must stay off so they cannot interfere with the assertions.
+		$this->reseater = new SMWDeclarativeHookReseater(
+			MediaWikiServices::getInstance()->getHookContainer()
+		);
+		foreach ( $this->reseater->getDeclarativeHookNames() as $hook ) {
+			$this->clearHook( $hook );
+		}
+		$this->setTemporaryHook(
 			'PageMoveComplete',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'PageMoveComplete' )
+			$this->reseater->buildSmwHandlerFor( 'PageMoveComplete' )
 		);
 
 		$this->pageCreator = $utilityFactory->newPageCreator();
@@ -57,7 +67,6 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
@@ -95,15 +104,10 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testPageMoveWithRemovalOfOldPage() {
 		// Further hooks required to ensure in-text annotations can be used for queries
-		$this->mwHooksHandler->register(
-			'InternalParseBeforeLinks',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'InternalParseBeforeLinks' )
-		);
-
-		$this->mwHooksHandler->register(
-			'LinksUpdateComplete',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateComplete' )
-		);
+		foreach ( [ 'InternalParseBeforeLinks', 'LinksUpdateComplete' ] as $hook ) {
+			$this->clearHook( $hook );
+			$this->setTemporaryHook( $hook, $this->reseater->buildSmwHandlerFor( $hook ) );
+		}
 
 		$title = Title::newFromText( __METHOD__ . '-old' );
 		$expectedNewTitle = Title::newFromText( __METHOD__ . '-new' );
@@ -132,8 +136,8 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 		 * @query {{#ask: [[Has function hook test::PageCompleteMove]] }}
 		 */
 		$description = new SomeProperty(
-			DIProperty::newFromUserLabel( 'Has function hook test' ),
-			new ValueDescription( new DIWikiPage( 'PageCompleteMove', 0 ), null, SMW_CMP_EQ )
+			Property::newFromUserLabel( 'Has function hook test' ),
+			new ValueDescription( new WikiPage( 'PageCompleteMove', 0 ), null, SMW_CMP_EQ )
 		);
 
 		$query = new Query(
@@ -153,7 +157,7 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			[ DIWikiPage::newFromTitle( $expectedNewTitle ) ],
+			[ WikiPage::newFromTitle( $expectedNewTitle ) ],
 			$queryResult
 		);
 
@@ -164,9 +168,10 @@ class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPredefinedPropertyPageIsNotMovable() {
-		$this->mwHooksHandler->register(
+		$this->clearHook( 'TitleIsMovable' );
+		$this->setTemporaryHook(
 			'TitleIsMovable',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'TitleIsMovable' )
+			$this->reseater->buildSmwHandlerFor( 'TitleIsMovable' )
 		);
 
 		$title = Title::newFromText( 'Modification date', SMW_NS_PROPERTY );

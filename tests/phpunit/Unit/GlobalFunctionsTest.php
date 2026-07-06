@@ -1,0 +1,136 @@
+<?php
+
+namespace SMW\Tests\Unit;
+
+use MediaWiki\Linker\Linker;
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
+
+/**
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 1.9
+ *
+ * @author mwjames
+ */
+class GlobalFunctionsTest extends TestCase {
+
+	/**
+	 * @covers ::smwfGetLinker
+	 *
+	 * @since 1.9
+	 */
+	public function testSmwfGetLinker() {
+		$instance = smwfGetLinker();
+
+		$this->assertInstanceOf( Linker::class, $instance );
+	}
+
+	/**
+	 * @covers ::smwfNormalTitleDBKey
+	 *
+	 * @since 1.9
+	 */
+	public function testSmwfNormalTitleDBKey() {
+		$result = smwfNormalTitleDBKey( ' foo bar ' );
+
+		// Globals are ... but it can't be invoke ... well make my day
+		$expected = $GLOBALS['wgCapitalLinks'] ? 'Foo_bar' : 'foo_bar';
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers ::smwfHTMLtoUTF8
+	 *
+	 * @since 1.9
+	 */
+	public function testSmwfHTMLtoUTF8() {
+		$result = smwfHTMLtoUTF8( "\xc4\x88io bonas dans l'\xc3\xa9cole, &#x108;io bonas dans l'&eacute;cole!" );
+
+		$expected = "Ĉio bonas dans l'école, Ĉio bonas dans l'école!";
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @dataProvider getGlobalFunctionsProvider
+	 *
+	 * @param $function
+	 */
+	public function testGlobalFunctionsAccessibility( $function ) {
+		$this->assertTrue( function_exists( $function ) );
+	}
+
+	/**
+	 * @covers ::smwfEncodeMessages
+	 * @dataProvider getEncodeMessagesDataProvider
+	 *
+	 * @param $message
+	 * @param $type
+	 * @param $separator
+	 * @param $escape
+	 */
+	public function testSmwfEncodeMessages( $message, $type, $separator, $escape ) {
+		$results = smwfEncodeMessages( $message );
+		$this->assertFalse( $results === null );
+		$this->assertTrue( is_string( $results ) );
+
+		$results = smwfEncodeMessages( $message, $type );
+		$this->assertFalse( $results === null );
+		$this->assertTrue( is_string( $results ) );
+
+		$results = smwfEncodeMessages( $message, $type, $separator );
+		$this->assertFalse( $results === null );
+		$this->assertTrue( is_string( $results ) );
+
+		$results = smwfEncodeMessages( $message, $type, $separator, $escape );
+		$this->assertFalse( $results === null );
+		$this->assertTrue( is_string( $results ) );
+	}
+
+	public function testSmwfCacheKeyOnPrefixedNamespace() {
+		$this->assertEquals(
+			smwfCacheKey( 'foo', 'bar' ),
+			smwfCacheKey( ':foo', 'bar' )
+		);
+	}
+
+	public function testSmwfContLang() {
+		$this->assertInstanceOf(
+			LocalLanguage::class,
+			smwfContLang()
+		);
+	}
+
+	/**
+	 * Provides available global functions
+	 *
+	 * @return array
+	 */
+	public function getGlobalFunctionsProvider() {
+		return [
+			[ 'smwfNormalTitleDBKey' ],
+			[ 'smwfXMLContentEncode' ],
+			[ 'smwfHTMLtoUTF8' ],
+			[ 'smwfEncodeMessages' ],
+			[ 'smwfGetStore' ],
+			[ 'smwfGetLinker' ],
+		];
+	}
+
+	/**
+	 * Provides messages
+	 *
+	 * @return array
+	 */
+	public function getEncodeMessagesDataProvider() {
+		return [
+			[ [ '', '', '' ], '', '', true ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], '', '', true ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], 'warning', '', true ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], 'info', ',', false ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], null, ',', false ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], '<span>Test</span>', ',', true ],
+		];
+	}
+}

@@ -2,14 +2,15 @@
 
 namespace SMW\Tests\Integration\Parser;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use ParserOptions;
-use ParserOutput;
-use RequestContext;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\DataModel\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -19,9 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
+class InTextAnnotationParserTemplateTransclusionTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;
@@ -32,12 +31,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
@@ -96,7 +89,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 
 		$instance->parse( $outputText );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$expected['resultText'],
 			$outputText
 		);
@@ -107,13 +100,102 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$parserData->getSemanticData()
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$parserData->getSemanticData()
+		);
+	}
+
+	public function testPropertyLinkWithTooltipVariesByUserLanguage() {
+		$this->testEnvironment->withConfiguration( [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+			'smwgParserFeatures' => [ 'inline-errors' ],
+			'smwgMainCacheType' => 'hash'
+		] );
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$parserData = $this->applicationFactory->newParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$instance = $this->applicationFactory->newInTextAnnotationParser(
+			$parserData
+		);
+
+		// The `@@@` syntax renders a property link. `Modification date` is a
+		// predefined property whose link carries a tooltip with a localized
+		// title and description, so the rendered output (returned directly by
+		// makePropertyLink) varies by the viewer's interface language.
+		$text = 'Foo [[Modification date::@@@]] baz';
+		$instance->parse( $text );
+
+		$this->assertTrue(
+			$parserData->variesByUserLanguage(),
+			'A `@@@` property link that renders a localized tooltip must record userlang'
+		);
+	}
+
+	public function testPlainPropertyLinkWithoutTooltipDoesNotVaryByUserLanguage() {
+		$this->testEnvironment->withConfiguration( [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+			'smwgParserFeatures' => [ 'inline-errors' ],
+			'smwgMainCacheType' => 'hash'
+		] );
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$parserData = $this->applicationFactory->newParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$instance = $this->applicationFactory->newInTextAnnotationParser(
+			$parserData
+		);
+
+		// A user-defined property without a description carries no tooltip, so
+		// the property link is content-stable across languages.
+		$text = 'Foo [[Has unknown property::@@@]] baz';
+		$instance->parse( $text );
+
+		$this->assertFalse(
+			$parserData->variesByUserLanguage(),
+			'A `@@@` property link without a tooltip must not record userlang'
+		);
+	}
+
+	public function testPropertyLinkWithAnnotatedLanguageDoesNotVaryByUserLanguage() {
+		$this->testEnvironment->withConfiguration( [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+			'smwgParserFeatures' => [ 'inline-errors' ],
+			'smwgMainCacheType' => 'hash'
+		] );
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$parserData = $this->applicationFactory->newParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$instance = $this->applicationFactory->newInTextAnnotationParser(
+			$parserData
+		);
+
+		// `@@@en` pins the tooltip to a fixed language, so the rendered output
+		// is content-stable across languages and must not record userlang.
+		$text = 'Foo [[Modification date::@@@en]] baz';
+		$instance->parse( $text );
+
+		$this->assertFalse(
+			$parserData->variesByUserLanguage(),
+			'A `@@@<lang>` property link with an annotated language must not record userlang'
 		);
 	}
 
@@ -125,8 +207,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 			NS_MAIN,
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-				'smwgLinksInValues'  => false,
-				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
+				'smwgParserFeatures' => [ 'inline-errors' ],
 				'smwgMainCacheType'      => 'hash'
 			],
 			'[[Foo::{{Bam}}]]',

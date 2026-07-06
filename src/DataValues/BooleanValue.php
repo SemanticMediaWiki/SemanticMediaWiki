@@ -2,12 +2,11 @@
 
 namespace SMW\DataValues;
 
-use Sanitizer;
+use MediaWiki\Parser\Sanitizer;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * This datavalue implements the handling of Boolean datavalues.
@@ -23,14 +22,14 @@ class BooleanValue extends DataValue {
 	/**
 	 * The text to write for "true" if a custom output format was set.
 	 *
-	 * @var string
+	 * @var string|int
 	 */
 	protected $trueCaption;
 
 	/**
 	 * The text to write for "false" if a custom output format was set.
 	 *
-	 * @var string
+	 * @var string|int
 	 */
 	protected $falseCaption;
 
@@ -44,14 +43,14 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		$value = trim( $value );
 
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
 
-		$this->m_dataitem = new DIBoolean(
+		$this->m_dataitem = new Boolean(
 			$this->doParseBoolValue( $value )
 		);
 	}
@@ -63,7 +62,7 @@ class BooleanValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_BOOLEAN ) {
 			return false;
 		}
@@ -77,12 +76,14 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::setOutputFormat
 	 */
-	public function setOutputFormat( $formatstring ) {
+	public function setOutputFormat( $formatstring ): void {
 		if ( $formatstring == $this->m_outformat ) {
 			return;
 		}
 
+		// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 		unset( $this->trueCaption );
+		// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 		unset( $this->falseCaption );
 
 		if ( $formatstring === '' ) { // no format
@@ -148,7 +149,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::getWikiValue
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): mixed {
 		return $this->getFirstBooleanCaptionFrom(
 			$this->isValid() && $this->m_dataitem->getBoolean() ? 'smw_true_words' : 'smw_false_words',
 			Message::CONTENT_LANGUAGE
@@ -160,7 +161,7 @@ class BooleanValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	public function getBoolean() {
+	public function getBoolean(): bool {
 		return !$this->isValid() ? false : $this->m_dataitem->getBoolean();
 	}
 
@@ -170,13 +171,14 @@ class BooleanValue extends DataValue {
 	 *
 	 * @param $useformat bool, true if the output format should be used, false if the returned text should be parsable
 	 *
-	 * @return string
+	 * @return string|int|false
 	 */
 	protected function getStandardCaption( $useformat ) {
 		if ( !$this->isValid() ) {
 			return false;
 		}
 
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( $useformat && ( isset( $this->trueCaption ) ) ) {
 			return $this->m_dataitem->getBoolean() ? $this->trueCaption : $this->falseCaption;
 		}
@@ -187,34 +189,66 @@ class BooleanValue extends DataValue {
 		);
 	}
 
-	private function doParseBoolValue( $value ) {
+	private function doParseBoolValue( string $value ): bool {
 		// Use either the global or page related content language
 		$contentLanguage = $this->getOption( 'content.language' );
 
 		$lcv = mb_strtolower( $value );
-		$boolvalue = false;
 
 		if ( $lcv === '1' ) {
-			$boolvalue = true;
-		} elseif ( $lcv === '0' ) {
-			$boolvalue = false;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_true_words', $contentLanguage, 'true' ), true ) ) {
-			$boolvalue = true;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_false_words', $contentLanguage, 'false' ), true ) ) {
-			$boolvalue = false;
-		} else {
-			$this->addErrorMsg(
-				[ 'smw_noboolean', $value ],
-				Message::TEXT
-			);
+			return true;
 		}
 
-		return $boolvalue;
+		if ( $lcv === '0' ) {
+			return false;
+		}
+
+		if (
+			in_array(
+				$lcv,
+				$this->getBooleanWordsFrom(
+					'smw_true_words',
+					$contentLanguage,
+					'true'
+				),
+				true
+			)
+		) {
+			return true;
+		}
+
+		if (
+			in_array(
+				$lcv,
+				$this->getBooleanWordsFrom(
+					'smw_false_words',
+					$contentLanguage,
+					'false'
+				),
+				true
+			)
+		) {
+			return false;
+		}
+
+		$this->addErrorMsg(
+			[ 'smw_noboolean', $value ],
+			Message::TEXT
+		);
+
+		return false;
 	}
 
-	private function setLocalizedCaptions( &$formatstring ) {
-		if ( !( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) ) {
+	private function setLocalizedCaptions( string &$formatstring ): void {
+		$languageCode = Localizer::getAnnotatedLanguageCodeFrom( $formatstring );
+		if ( !$languageCode ) {
 			$languageCode = $this->getOption( 'user.language' );
+
+			// Without an annotated language code the caption is rendered in the
+			// viewer's interface language (e.g. a `LOCL` output format applied
+			// via $smwgDefaultOutputFormatters), so the output is not
+			// cache-stable across languages.
+			$this->recordUserLanguageOutput();
 		}
 
 		$this->trueCaption = $this->getFirstBooleanCaptionFrom(
@@ -228,7 +262,7 @@ class BooleanValue extends DataValue {
 		);
 	}
 
-	private function getFirstBooleanCaptionFrom( $msgKey, $languageCode = null ) {
+	private function getFirstBooleanCaptionFrom( string $msgKey, $languageCode = null ): mixed {
 		$vals = $this->getBooleanWordsFrom(
 			$msgKey,
 			$languageCode
@@ -237,7 +271,10 @@ class BooleanValue extends DataValue {
 		return reset( $vals );
 	}
 
-	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getBooleanWordsFrom( string $msgKey, $languageCode = null, $canonicalForm = null ): array {
 		$vals = explode(
 			',',
 			Message::get( $msgKey, Message::TEXT, $languageCode )

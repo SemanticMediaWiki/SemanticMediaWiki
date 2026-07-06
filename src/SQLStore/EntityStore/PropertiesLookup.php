@@ -2,13 +2,15 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Connection\LegacyOptionsApplier;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -16,17 +18,9 @@ use SMW\SQLStore\SQLStore;
 class PropertiesLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -34,7 +28,7 @@ class PropertiesLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( ?RequestOptions $requestOptions = null ) {
+	public function newRequestOptions( ?RequestOptions $requestOptions = null ): ?RequestOptions {
 		if ( $requestOptions !== null ) {
 			$clone = clone $requestOptions;
 			$clone->limit = $requestOptions->limit + $requestOptions->offset;
@@ -53,59 +47,58 @@ class PropertiesLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchFromTable( DIWikiPage $subject, TableDefinition $propertyTable, ?RequestOptions $requestOptions = null ) {
+	public function fetchFromTable( WikiPage $subject, TableDefinition $propertyTable, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
 
-		$query->type( 'SELECT' );
-		$query->table( $propertyTable->getName() );
+		$qb = $connection->newSelectQueryBuilder()
+			->from( $propertyTable->getName() );
 
 		if ( $propertyTable->usesIdSubject() ) {
-			$query->condition( $query->eq( 's_id', $subject->getId() ) );
+			$qb->where( [ 's_id' => $subject->getId() ] );
 		} elseif ( $subject->getInterwiki() === '' ) {
-			$query->condition( $query->eq( 's_title', $subject->getDBkey() ) );
-			$query->condition( $query->eq( 's_namespace', $subject->getNamespace() ) );
+			$qb->where( [
+				's_title' => $subject->getDBkey(),
+				's_namespace' => $subject->getNamespace(),
+			] );
 		} else {
 			// subjects with non-empty interwiki cannot have properties
 			return [];
 		}
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
-			return $this->fetchFromFixedTable( $query, $propertyTable->getFixedProperty() );
+			return $this->fetchFromFixedTable( $qb, $propertyTable->getFixedProperty() );
 		}
 
-		$query->join(
-			'INNER JOIN',
-			[ SQLStore::ID_TABLE => "ON smw_id=p_id" ]
-		);
-
-		$query->fields( [ 'smw_title', 'smw_sortkey' ] );
+		$qb->join( SQLStore::ID_TABLE, null, 'smw_id=p_id' )
+			->select( [ 'smw_title', 'smw_sortkey' ] );
 
 		// (select sortkey since it might be used in ordering (needed by Postgres))
-		$query->condition( $this->store->getSQLConditions(
+		$sqlConds = $this->store->getSQLConditions(
 			$requestOptions,
 			'smw_sortkey',
 			'smw_sortkey'
-		) );
-
-		$opt = $this->store->getSQLOptions(
-			$requestOptions,
-			'smw_sortkey'
 		);
 
-		$query->options( $opt + [ 'DISTINCT' => true ] );
+		if ( $sqlConds !== '' ) {
+			$qb->andWhere( $sqlConds );
+		}
 
-		return $query->execute( __METHOD__ );
+		$qb->distinct();
+
+		LegacyOptionsApplier::applyTo(
+			$qb,
+			$this->store->getSQLOptions( $requestOptions, 'smw_sortkey' )
+		);
+
+		return $qb->caller( __METHOD__ )->fetchResultSet();
 	}
 
-	private function fetchFromFixedTable( $query, $title ) {
+	private function fetchFromFixedTable( SelectQueryBuilder $qb, string $title ): array {
 		// just check if subject occurs in table
-		$query->options(
-			[ 'LIMIT' => 1 ]
-		);
-
-		$query->field( '*' );
-		$res = $query->execute( __METHOD__ );
+		$res = $qb->select( '*' )
+			->limit( 1 )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		if ( $res->numRows() > 0 ) {
 			return [ $title ];

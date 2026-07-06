@@ -2,15 +2,13 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use RuntimeException;
-use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 use WikiPage;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -27,7 +25,7 @@ class PageRefresher {
 	 * @return PageRefresher
 	 */
 	public function doRefresh( $title ) {
-		if ( $title instanceof WikiPage || $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage || $title instanceof \SMW\DataItems\WikiPage ) {
 			$title = $title->getTitle();
 		}
 
@@ -72,19 +70,19 @@ class PageRefresher {
 	 * @return PageRefresher
 	 */
 	public function doRefreshByUpdateJob( $title ) {
-		if ( $title instanceof WikiPage || $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage || $title instanceof \SMW\DataItems\WikiPage ) {
 			$title = $title->getTitle();
 		}
 
 		if ( is_string( $title ) ) {
-			$title = Title::newFromText( $title );
+			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $title );
 		}
 
 		if ( !$title instanceof Title ) {
 			throw new RuntimeException( 'Expected a title instance' );
 		}
 
-		$job = new UpdateJob( $title );
+		$job = ApplicationFactory::getInstance()->getJobFactory()->newUpdateJob( $title );
 		$job->run();
 
 		return $this;

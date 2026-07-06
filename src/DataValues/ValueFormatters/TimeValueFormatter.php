@@ -2,12 +2,15 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use Exception;
+use MediaWiki\Html\Html;
 use RuntimeException;
+use SMW\DataItems\Time;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\Time\IntlTimeFormatter;
+use SMW\DataValues\TimeValue;
 use SMW\Localizer\Localizer;
-use SMWDataValue as DataValue;
-use SMWDITime as DITime;
-use SMWTimeValue as TimeValue;
+use SMW\MediaWiki\Outputs;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,7 +28,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof TimeValue;
 	}
 
@@ -42,17 +45,45 @@ class TimeValueFormatter extends DataValueFormatter {
 		if (
 			$this->dataValue->isValid() &&
 			( $type === self::WIKI_SHORT || $type === self::HTML_SHORT ) ) {
-			return ( $this->dataValue->getCaption() !== false ) ? $this->dataValue->getCaption() : $this->getPreferredCaption();
+			$caption = ( $this->dataValue->getCaption() !== false ) ? $this->dataValue->getCaption() : $this->getPreferredCaption();
+			return $type === self::HTML_SHORT ? $this->wrapInTimeElement( $caption ) : $caption;
 		}
 
 		if (
 			$this->dataValue->isValid() &&
 			( $type === self::WIKI_LONG || $type === self::HTML_LONG ) ) {
-			return $this->getPreferredCaption();
+			$caption = $this->getPreferredCaption();
+			return $type === self::HTML_LONG ? $this->wrapInTimeElement( $caption ) : $caption;
 		}
 
 		// #1074
 		return $this->dataValue->getCaption() !== false ? $this->dataValue->getCaption() : '';
+	}
+
+	/**
+	 * Wrap a rendered date caption in a semantic <time> element carrying a
+	 * machine-readable ISO 8601 datetime, so HTML output exposes the date to
+	 * assistive technology and other consumers. Wiki output is left plain.
+	 *
+	 * BCE dates are returned unwrapped: the HTML <time> datetime attribute has
+	 * no representation for year 0 or negative years, which the partial ISO
+	 * string signals with a leading "-".
+	 */
+	private function wrapInTimeElement( string $caption ): string {
+		// The caption may already carry a <time> element (for example the
+		// deferred local-time conversion in getLocalizedFormat); don't nest a
+		// second one.
+		if ( str_contains( $caption, '<time' ) ) {
+			return $caption;
+		}
+
+		$datetime = $this->getPartialISO8601Date();
+
+		if ( $datetime === '' || $datetime[0] === '-' ) {
+			return $caption;
+		}
+
+		return Html::rawElement( 'time', [ 'datetime' => $datetime ], $caption );
 	}
 
 	/**
@@ -72,11 +103,9 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @param bool $mindefault determining whether values below the
 	 * precision of our input should be completed with minimal or maximal
 	 * conceivable values
-	 *
-	 * @return string
 	 */
-	public function getISO8601Date( $mindefault = true ) {
-		return $this->_getISO8601Date( $mindefault ? 'minimize' : 'maximize' );
+	public function getISO8601Date( $mindefault = true ): string {
+		return $this->getISO8601DateInternal( $mindefault ? 'minimize' : 'maximize' );
 	}
 
 	/**
@@ -84,11 +113,9 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * Compute a string representation as getISO8601Date but also cut off month and day
 	 * if missing
-	 *
-	 * @return string
 	 */
-	public function getPartialISO8601Date() {
-		return $this->_getISO8601Date( 'cut' );
+	public function getPartialISO8601Date(): string {
+		return $this->getISO8601DateInternal( 'cut' );
 	}
 
 	/**
@@ -104,46 +131,39 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * as "0000", year 2 BC(E) as "-0001" and so on.
 	 *
 	 * @since 2.4
-	 *
-	 * @param string $belowPrecisionHandling determining how to handle values below the
-	 * precision of our input:
-	 * * 'cut': omit the remaining part (allowing '2022' and '2022-11' as result)
-	 * * 'minimize': complete the value with minimal conceivable value
-	 * * 'maximize': complete the value with maximal conceivable value
-	 * @return string
 	 */
-	private function _getISO8601Date( $belowPrecisionHandling ) {
+	private function getISO8601DateInternal( string $belowPrecisionHandling ): string {
 		$cut = $belowPrecisionHandling === 'cut';
 		$minimize = $belowPrecisionHandling === 'minimize';
 
 		/**
-		 * @var DITime $dataItem
+		 * @var Time $dataItem
 		 */
-		$dataItem = $this->dataValue->getDataItemForCalendarModel( DITime::CM_GREGORIAN );
+		$dataItem = $this->dataValue->getDataItemForCalendarModel( Time::CM_GREGORIAN );
 		$precision = $dataItem->getPrecision();
 
 		$result = $dataItem->getYear() > 0 ? '' : '-';
 		$result .= str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
 
 		$monthnum = $dataItem->getMonth();
-		if ( $precision < DITime::PREC_YM ) {
+		if ( $precision < Time::PREC_YM ) {
 			if ( $cut ) {
 				return $result;
 			}
 			$monthnum = $minimize ? 1 : 12;
 		}
-		$result .= '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );
+		$result .= '-' . str_pad( (string)$monthnum, 2, "0", STR_PAD_LEFT );
 
 		$day = $dataItem->getDay();
-		if ( $precision < DITime::PREC_YMD ) {
+		if ( $precision < Time::PREC_YMD ) {
 			if ( $cut ) {
 				return $result;
 			}
-			$day = $minimize ? 1 : DITime::getDayNumberForMonth( $monthnum, $dataItem->getYear(), DITime::CM_GREGORIAN );
+			$day = $minimize ? 1 : Time::getDayNumberForMonth( $monthnum, $dataItem->getYear(), Time::CM_GREGORIAN );
 		}
-		$result .= '-' . str_pad( $day, 2, "0", STR_PAD_LEFT );
+		$result .= '-' . str_pad( (string)$day, 2, "0", STR_PAD_LEFT );
 
-		if ( $precision === DITime::PREC_YMDT ) {
+		if ( $precision === Time::PREC_YMDT ) {
 			$result .= 'T' . $this->getTimeString();
 		}
 
@@ -162,14 +182,18 @@ class TimeValueFormatter extends DataValueFormatter {
 	 */
 	public function getMediaWikiDate() {
 		/**
-		 * @var DITime $dataItem
+		 * @var Time $dataItem
 		 */
-		$dataItem = $this->dataValue->getDataItemForCalendarModel( DITime::CM_GREGORIAN );
+		$dataItem = $this->dataValue->getDataItemForCalendarModel( Time::CM_GREGORIAN );
 		$precision = $dataItem->getPrecision();
 
 		$language = Localizer::getInstance()->getLanguage(
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
 		);
+
+		// The MEDIAWIKI output format renders the date in the viewer's interface
+		// language, so the output is not cache-stable across languages.
+		$this->dataValue->recordUserLanguageOutput();
 
 		$year = $dataItem->getYear();
 
@@ -179,7 +203,7 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		$year = str_pad( $year, 4, "0", STR_PAD_LEFT );
 
-		if ( $precision <= DITime::PREC_Y ) {
+		if ( $precision <= Time::PREC_Y ) {
 			return $language->formatNumNoSeparators( $year );
 		}
 
@@ -193,7 +217,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		// 3. timecorrection, the time offset as returned from
 		// Special:Preferences
 
-		if ( $precision <= DITime::PREC_YMD ) {
+		if ( $precision <= Time::PREC_YMD ) {
 			return $language->date( "$year$month$day" . '000000', false, true, false );
 		}
 
@@ -213,12 +237,8 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * historic dates we support.
 	 *
 	 * @since 2.4
-	 *
-	 * @param DITime $dataItem
-	 *
-	 * @return string
 	 */
-	public function getCaptionFromDataItem( DITime $dataItem ) {
+	public function getCaptionFromDataItem( Time $dataItem ): string {
 		// If the language code is empty then the content language code is used
 		$lang = Localizer::getInstance()->getLang(
 			Localizer::getInstance()->getContentLanguage()
@@ -233,19 +253,18 @@ class TimeValueFormatter extends DataValueFormatter {
 			$cestring = $dataItem->getEra() > 0 ? 'AD' : '';
 			$result = ( $cestring ? ( $cestring . ' ' ) : '' ) . number_format( $dataItem->getYear(), 0, '.', '' );
 		} else {
-			$bcestring = 'BC';
-			$result = number_format( -( $dataItem->getYear() ), 0, '.', '' ) . ( $bcestring ? ( ' ' . $bcestring ) : '' );
+			$result = number_format( -( $dataItem->getYear() ), 0, '.', '' ) . ' BC';
 		}
 
-		if ( $dataItem->getPrecision() >= DITime::PREC_YM ) {
-			$result = $lang->getMonthLabel( $dataItem->getMonth() ) . " " . $result;
+		if ( $dataItem->getPrecision() >= Time::PREC_YM ) {
+			$result = $lang->getMonthLabelByNumber( $dataItem->getMonth() ) . " " . $result;
 		}
 
-		if ( $dataItem->getPrecision() >= DITime::PREC_YMD ) {
+		if ( $dataItem->getPrecision() >= Time::PREC_YMD ) {
 			$result = $dataItem->getDay() . " " . $result;
 		}
 
-		if ( $dataItem->getPrecision() >= DITime::PREC_YMDT ) {
+		if ( $dataItem->getPrecision() >= Time::PREC_YMDT ) {
 			$result .= " " . $this->getTimeString();
 		}
 
@@ -272,11 +291,11 @@ class TimeValueFormatter extends DataValueFormatter {
 	 */
 	public function getTimeString( $default = '00:00:00' ) {
 		/**
-		 * @var DITime $dataItem
+		 * @var Time $dataItem
 		 */
-		$dataItem = $this->dataValue->getDataItemForCalendarModel( DITime::CM_GREGORIAN );
+		$dataItem = $this->dataValue->getDataItemForCalendarModel( Time::CM_GREGORIAN );
 
-		if ( $dataItem->getPrecision() < DITime::PREC_YMDT ) {
+		if ( $dataItem->getPrecision() < Time::PREC_YMDT ) {
 			return $default;
 		}
 
@@ -288,11 +307,9 @@ class TimeValueFormatter extends DataValueFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DITime|null $dataItem
-	 *
 	 * @return string
 	 */
-	public function getCaptionFromFreeFormat( ?DITime $dataItem = null ) {
+	public function getCaptionFromFreeFormat( ?Time $dataItem = null ): string {
 		$language = Localizer::getInstance()->getLanguage(
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
 		);
@@ -301,18 +318,22 @@ class TimeValueFormatter extends DataValueFormatter {
 		// Only match options encapsulated by [ ... ]
 		if (
 			$dataItem !== null &&
-			$dataItem->getYear() > DITime::PREHISTORY &&
-			preg_match( "/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches ) ) {
+			$dataItem->getYear() > Time::PREHISTORY &&
+			preg_match( "/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches )
+		) {
+			// The free format renders month and day names in the viewer's
+			// interface language, so the output is not cache-stable across
+			// languages.
+			$this->dataValue->recordUserLanguageOutput();
+
 			$intlTimeFormatter = new IntlTimeFormatter( $dataItem, $language );
 
-			if ( ( $caption = $intlTimeFormatter->format( $matches[1] ) ) !== false ) {
-
-				if ( $intlTimeFormatter->containsValidDateFormatRule( $matches[1] ) ) {
-					$caption .= $this->hintCalendarModel( $dataItem );
-				}
-
-				return $caption;
+			$caption = $intlTimeFormatter->format( $matches[1] );
+			if ( $intlTimeFormatter->containsValidDateFormatRule( $matches[1] ) ) {
+				$caption .= $this->hintCalendarModel( $dataItem );
 			}
+
+			return $caption;
 		}
 
 		return $this->getISO8601Date();
@@ -322,23 +343,18 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @private
 	 *
 	 * @since 2.4
-	 *
-	 * @param DITime|null $dataItem
-	 *
-	 * @return string
 	 */
-	public function getLocalizedFormat( ?DITime $dataItem = null ) {
+	public function getLocalizedFormat( ?Time $dataItem = null ): string {
 		if ( $dataItem === null ) {
 			return '';
 		}
 
-		if ( $dataItem->getYear() < DITime::PREHISTORY ) {
+		if ( $dataItem->getYear() < Time::PREHISTORY ) {
 			return $this->getISO8601Date();
 		}
 
 		$outputFormat = $this->dataValue->getOutputFormat();
 		$formatFlag = IntlTimeFormatter::LOCL_DEFAULT;
-		$hasTimeCorrection = false;
 
 		if ( strpos( $outputFormat, 'TO' ) !== false ) {
 			$formatFlag = IntlTimeFormatter::LOCL_TIMEOFFSET;
@@ -346,12 +362,33 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		if ( strpos( $outputFormat, 'TZ' ) !== false ) {
-			$formatFlag = $formatFlag | IntlTimeFormatter::LOCL_TIMEZONE;
+			$formatFlag |= IntlTimeFormatter::LOCL_TIMEZONE;
 			$outputFormat = str_replace( '#TZ', '', $outputFormat );
 		}
 
-		if ( ( $language = Localizer::getInstance()->getLanguageCodeFrom( $outputFormat ) ) === false ) {
+		// #6820: for embedded (parser-cached) output, defer the viewing-user
+		// offset to the client. Render a wiki-local baseline and wrap it in a
+		// <time> element carrying the absolute UTC instant; only for a pure #TO value
+		// (no stored timezone) that actually has a time component.
+		$deferLocalTime =
+			$this->dataValue->getOption( DataValue::OPT_DEFER_LOCAL_TIME ) === true &&
+			( IntlTimeFormatter::LOCL_TIMEOFFSET & $formatFlag ) !== 0 &&
+			( IntlTimeFormatter::LOCL_TIMEZONE & $formatFlag ) === 0 &&
+			$dataItem->getPrecision() === Time::PREC_YMDT;
+
+		if ( $deferLocalTime ) {
+			$formatFlag = ( $formatFlag & ~IntlTimeFormatter::LOCL_TIMEOFFSET )
+				| IntlTimeFormatter::LOCL_WIKI_TIMEOFFSET;
+		}
+
+		$language = Localizer::getInstance()->getAnnotatedLanguageCodeFrom( $outputFormat );
+		if ( $language === false ) {
 			$language = $this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE );
+
+			// Without an annotated language code the LOCL format renders the
+			// date in the viewer's interface language, so the output is not
+			// cache-stable across languages.
+			$this->dataValue->recordUserLanguageOutput();
 		}
 
 		$language = Localizer::getInstance()->getLanguage( $language );
@@ -365,10 +402,24 @@ class TimeValueFormatter extends DataValueFormatter {
 		// string (2147483647-01-01 00:00:0.0000000) at position 17 (0): Double
 		// time specification" for an annotation like [[Date::Jan 10000000000]]
 		try {
-			$localizedFormat = $intlTimeFormatter->getLocalizedFormat( $formatFlag ) .
+			$timeText = $intlTimeFormatter->getLocalizedFormat( $formatFlag );
+
+			if ( $deferLocalTime ) {
+				Outputs::requireResource( 'ext.smw.localtime' );
+				$timeText = Html::rawElement(
+					'time',
+					[
+						'datetime' => $this->getISO8601Date() . 'Z',
+						'class' => 'smw-localtime',
+					],
+					$timeText
+				);
+			}
+
+			$localizedFormat = $timeText .
 				$this->hintTimeCorrection( $intlTimeFormatter->hasLocalTimeCorrection() ) .
 				$this->hintCalendarModel( $dataItem );
-		} catch ( \Exception $e ) {
+		} catch ( Exception ) {
 			$localizedFormat = $this->getISO8601Date();
 		}
 
@@ -386,7 +437,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 */
 	protected function getPreferredCaption() {
 		/**
-		 * @var DITime $dataItem
+		 * @var Time $dataItem
 		 */
 		$dataItem = $this->dataValue->getDataItem();
 		$format = strtoupper( $this->dataValue->getOutputFormat() );
@@ -409,16 +460,16 @@ class TimeValueFormatter extends DataValueFormatter {
 		if (
 			( strpos( $format, 'JL' ) !== false ) ||
 			( $dataItem->getJD() < TimeValue::J1582 && strpos( $format, 'GR' ) === false ) ) {
-			$model = DITime::CM_JULIAN;
+			$model = Time::CM_JULIAN;
 		} elseif ( strpos( $format, 'GR' ) !== false ) {
-			$model = DITime::CM_GREGORIAN;
+			$model = Time::CM_GREGORIAN;
 		}
 
 		if ( strpos( $format, '-F[' ) !== false ) {
 			return $this->getCaptionFromFreeFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
 		} elseif ( strpos( $format, 'LOCL' ) !== false ) {
 			return $this->getLocalizedFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
-		} elseif ( $dataItem->getYear() > TimeValue::PREHISTORY && $dataItem->getPrecision() >= DITime::PREC_YM ) {
+		} elseif ( $dataItem->getYear() > TimeValue::PREHISTORY && $dataItem->getPrecision() >= Time::PREC_YM ) {
 			// Do not convert between Gregorian and Julian if only
 			// year is given (years largely overlap in history, but
 			// assuming 1 Jan as the default date, the year number
@@ -431,17 +482,17 @@ class TimeValueFormatter extends DataValueFormatter {
 		return $this->getCaptionFromDataItem( $dataItem );
 	}
 
-	private function hintTimeCorrection( $hasTimeCorrection ) {
+	private function hintTimeCorrection( $hasTimeCorrection ): string {
 		if ( $hasTimeCorrection ) {
-			return '&nbsp;' . \Html::rawElement( 'sup', [ 'title' => 'ISO: ' . $this->getISO8601Date() ], 'ᴸ' );
+			return '&nbsp;' . Html::rawElement( 'sup', [ 'title' => 'ISO: ' . $this->getISO8601Date() ], 'ᴸ' );
 		}
 
 		return '';
 	}
 
-	private function hintCalendarModel( DITime $dataItem ) {
-		if ( $this->dataValue->isEnabledFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== DITime::CM_GREGORIAN ) {
-			return ' ' . \Html::rawElement( 'sup', [], $dataItem->getCalendarModelLiteral() );
+	private function hintCalendarModel( Time $dataItem ): string {
+		if ( $this->dataValue->hasFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== Time::CM_GREGORIAN ) {
+			return ' ' . Html::rawElement( 'sup', [], $dataItem->getCalendarModelLiteral() );
 		}
 
 		return '';

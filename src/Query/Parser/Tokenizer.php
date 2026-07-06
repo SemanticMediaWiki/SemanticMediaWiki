@@ -10,17 +10,14 @@ namespace SMW\Query\Parser;
  */
 class Tokenizer {
 
-	/**
-	 * @var string
-	 */
-	private $defaultPattern = '';
+	private string $defaultPattern = '';
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param array $prefixes
 	 */
-	public function setDefaultPattern( array $prefixes ) {
+	public function setDefaultPattern( array $prefixes ): void {
 		$pattern = '';
 
 		foreach ( $prefixes as $pref ) {
@@ -52,9 +49,9 @@ class Tokenizer {
 	 * @param bool $consume
 	 * @param bool $trim
 	 *
-	 * @return string
+	 * @return string|array|false
 	 */
-	public function getToken( &$currentString, $stoppattern = '', $consume = true, $trim = true ) {
+	public function getToken( &$currentString, $stoppattern = '', $consume = true, $trim = true ): string|array|false {
 		if ( $stoppattern === '' ) {
 			$stoppattern = $this->defaultPattern;
 		}

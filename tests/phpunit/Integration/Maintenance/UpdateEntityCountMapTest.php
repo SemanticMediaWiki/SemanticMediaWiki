@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author mwjames
  */
 class UpdateEntityCountMapTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $runnerFactory;
 	private $spyMessageReporter;
@@ -45,7 +42,7 @@ class UpdateEntityCountMapTest extends SMWIntegrationTestCase {
 		$maintenanceRunner->setQuiet();
 		$maintenanceRunner->run();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'update on the `smw_countmap` field',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

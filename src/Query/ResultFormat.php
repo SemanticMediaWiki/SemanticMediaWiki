@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use ParamProcessor\Definition\StringParam;
 use ParamProcessor\IParam;
 use ParamProcessor\IParamDefinition;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Definition for the format parameter.
@@ -42,7 +41,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return string
 	 */
-	protected function getValidFormatName( $value ) {
+	protected function getValidFormatName( $value ): string {
 		global $smwgResultFormats;
 
 		$value = strtolower( trim( $value ) );
@@ -68,7 +67,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return bool Indicates if the passed format was an alias, and thus was changed.
 	 */
-	public static function resolveFormatAliases( &$format ) {
+	public static function resolveFormatAliases( &$format ): bool {
 		global $smwgResultAliases;
 
 		$isAlias = false;
@@ -92,8 +91,8 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return string Array key in $smwgResultFormats
 	 */
-	protected function getDefaultFormat() {
-		if ( empty( $this->printRequests ) ) {
+	protected function getDefaultFormat(): string|bool {
+		if ( $this->printRequests === [] ) {
 			return 'table';
 		}
 
@@ -111,6 +110,7 @@ class ResultFormat extends StringParam {
 		 */
 		$hookContainer->run( 'SMW::ResultFormat::OverrideDefaultFormat', [ &$format, $this->printRequests, [] ] );
 
+		// @phan-suppress-next-line PhanImpossibleValueComparison False positive about $format always being false
 		if ( $format !== false ) {
 			return $format;
 		}
@@ -131,17 +131,16 @@ class ResultFormat extends StringParam {
 	 *
 	 * @param PrintRequest[] $printRequests
 	 */
-	public function setPrintRequests( array $printRequests ) {
+	public function setPrintRequests( array $printRequests ): void {
 		$this->printRequests = $printRequests;
 	}
 
 	/**
-	 *
 	 * @since 3.0
 	 *
 	 * @param bool $showMode
 	 */
-	public function setShowMode( $showMode ) {
+	public function setShowMode( $showMode ): void {
 		$this->showMode = $showMode;
 	}
 
@@ -157,7 +156,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return mixed
 	 */
-	protected function formatValue( $value, IParam $param, array &$definitions, array $params ) {
+	protected function formatValue( $value, IParam $param, array &$definitions, array $params ): mixed {
 		$value = parent::formatValue( $value, $param, $definitions, $params );
 
 		// Make sure the format value is valid.

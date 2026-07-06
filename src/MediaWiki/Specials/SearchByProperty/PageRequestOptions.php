@@ -3,10 +3,11 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\TelephoneUriValue;
 use SMW\Encoder;
-use SMWNumberValue as NumberValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -16,20 +17,7 @@ use SMWNumberValue as NumberValue;
  */
 class PageRequestOptions {
 
-	/**
-	 * @var string
-	 */
-	private $queryString;
-
-	/**
-	 * @var array
-	 */
-	private $requestOptions;
-
-	/**
-	 * @var Encoder
-	 */
-	private $urlEncoder;
+	private Encoder $urlEncoder;
 
 	/**
 	 * @var PropertyValue
@@ -47,7 +35,7 @@ class PageRequestOptions {
 	public $valueString;
 
 	/**
-	 * @var \SMWDataValue
+	 * @var DataValue|null
 	 */
 	public $value;
 
@@ -68,20 +56,18 @@ class PageRequestOptions {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $queryString
-	 * @param array $requestOptions
 	 */
-	public function __construct( $queryString, array $requestOptions ) {
-		$this->queryString = $queryString;
-		$this->requestOptions = $requestOptions;
+	public function __construct(
+		private $queryString,
+		private array $requestOptions,
+	) {
 		$this->urlEncoder = new Encoder();
 	}
 
 	/**
 	 * @since 2.1
 	 */
-	public function initialize() {
+	public function initialize(): void {
 		$params = explode( '/', $this->queryString );
 		reset( $params );
 		$escaped = false;
@@ -89,8 +75,8 @@ class PageRequestOptions {
 		// Remove empty elements
 		$params = array_filter( $params, 'strlen' );
 
-		$property = isset( $this->requestOptions['property'] ) ? $this->requestOptions['property'] : current( $params );
-		$value = isset( $this->requestOptions['value'] ) ? $this->requestOptions['value'] : next( $params );
+		$property = $this->requestOptions['property'] ?? current( $params );
+		$value = $this->requestOptions['value'] ?? next( $params );
 
 		// Auto-generated link is marked with a leading :
 		if ( is_string( $property ) && $property !== '' && $property[0] === ':' ) {
@@ -98,6 +84,7 @@ class PageRequestOptions {
 			$property = $this->urlEncoder->unescape( ltrim( $property, ':' ) );
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$this->property = DataValueFactory::getInstance()->newPropertyValueByLabel(
 			str_replace( [ '_' ], [ ' ' ], $property )
 		);
@@ -116,7 +103,7 @@ class PageRequestOptions {
 		$this->setNearbySearch();
 	}
 
-	private function getValue( $value, $escaped ) {
+	private function getValue( string $value, bool $escaped ): string {
 		$this->value = DataValueFactory::getInstance()->newDataValueByProperty(
 			$this->property->getDataItem()
 		);
@@ -127,7 +114,7 @@ class PageRequestOptions {
 		return $this->value->isValid() ? $this->value->getWikiValue() : $value;
 	}
 
-	private function unescape( $value, $escaped ) {
+	private function unescape( string $value, bool $escaped ): string {
 		if ( $this->value instanceof NumberValue ) {
 			$value = $escaped ? str_replace( [ '-20', '-2D' ], [ ' ', '-' ], $value ) : $value;
 			// Do not try to decode things like 1.2e-13
@@ -144,21 +131,21 @@ class PageRequestOptions {
 		return $value;
 	}
 
-	private function setLimit() {
+	private function setLimit(): void {
 		if ( isset( $this->requestOptions['limit'] ) ) {
 			$this->limit = intval( $this->requestOptions['limit'] );
 		}
 	}
 
-	private function setOffset() {
+	private function setOffset(): void {
 		if ( isset( $this->requestOptions['offset'] ) ) {
 			$this->offset = intval( $this->requestOptions['offset'] );
 		}
 	}
 
-	private function setNearbySearch() {
+	private function setNearbySearch(): void {
 		if ( $this->value === null ) {
-			return null;
+			return;
 		}
 
 		if ( isset( $this->requestOptions['nearbySearchForType'] ) && is_array( $this->requestOptions['nearbySearchForType'] ) ) {

@@ -4,8 +4,8 @@ namespace SMW\Serializers;
 
 use OutOfBoundsException;
 use Serializers\Serializer;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpElement;
-use SMWExpData as ExpData;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,7 +20,7 @@ class ExpDataSerializer implements Serializer {
 	 *
 	 * @since 2.2
 	 */
-	public function serialize( $expData ) {
+	public function serialize( $expData ): array {
 		if ( !$expData instanceof ExpData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
@@ -28,7 +28,7 @@ class ExpDataSerializer implements Serializer {
 		return $this->doSerialize( $expData ) + [ 'serializer' => __CLASS__, 'version' => 0.1 ];
 	}
 
-	private function doSerialize( $expData ) {
+	private function doSerialize( $expData ): array {
 		$serialization = [
 			'subject' => $expData->getSubject()->getSerialization()
 		];
@@ -45,7 +45,10 @@ class ExpDataSerializer implements Serializer {
 		return $serialization + [ 'data' => $properties ];
 	}
 
-	private function doSerializeChildren( array $elements ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function doSerializeChildren( array $elements ): array {
 		$children = [];
 
 		if ( $elements === [] ) {

@@ -3,15 +3,14 @@
 namespace SMW\Exporter;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpResource;
 use SMW\InMemoryPoolCache;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,40 +26,21 @@ class ExpResourceMapper {
 	 */
 	const AUX_MARKER = 'aux';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private DataValueFactory $dataValueFactory;
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
-
-	/**
-	 * @var InMemoryPoolCache
-	 */
-	private $inMemoryPoolCache;
+	private InMemoryPoolCache $inMemoryPoolCache;
 
 	/**
 	 * @note Legacy setting expected to vanish with 3.0
-	 *
-	 * @var bool
 	 */
-	private $bcAuxiliaryUse = true;
+	private bool $bcAuxiliaryUse = true;
 
-	/**
-	 * @var bool
-	 */
-	private $seekImportVocabulary = true;
+	private bool $seekImportVocabulary = true;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
 	}
@@ -68,7 +48,7 @@ class ExpResourceMapper {
 	/**
 	 * @since 2.3
 	 */
-	public function reset() {
+	public function reset(): void {
 		$this->inMemoryPoolCache->resetPoolCacheById( 'exporter.expresource.mapper' );
 	}
 
@@ -77,23 +57,23 @@ class ExpResourceMapper {
 	 *
 	 * @param bool $bcAuxiliaryUse
 	 */
-	public function setBCAuxiliaryUse( $bcAuxiliaryUse ) {
+	public function setBCAuxiliaryUse( $bcAuxiliaryUse ): void {
 		$this->bcAuxiliaryUse = (bool)$bcAuxiliaryUse;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function invalidateCache( DIWikiPage $subject ) {
+	public function invalidateCache( WikiPage $subject ): void {
 		$hash = $subject->getHash();
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById(
 			'exporter.expresource.mapper'
 		);
 
-		foreach ( [ $hash, $hash . self::AUX_MARKER . $this->seekImportVocabulary ] as $key ) {
+		foreach ( [ $hash, $hash . self::AUX_MARKER . (string)$this->seekImportVocabulary ] as $key ) {
 			$poolCache->delete( $key );
 		}
 	}
@@ -111,14 +91,13 @@ class ExpResourceMapper {
 	 * property resource is to store a helper value
 	 * (see Exporter::newAuxiliaryExpElement) should be generated
 	 *
-	 * @param DIProperty $property
-	 * @param bool $useAuxiliaryModifier
-	 * @param bool $seekImportVocabulary
-	 *
-	 * @return ExpResource
 	 * @throws RuntimeException
 	 */
-	public function mapPropertyToResourceElement( DIProperty $property, $useAuxiliaryModifier = false, $seekImportVocabulary = true ) {
+	public function mapPropertyToResourceElement(
+		Property $property,
+		bool $useAuxiliaryModifier = false,
+		bool $seekImportVocabulary = true
+	): ExpNsResource {
 		// We want the a canonical representation to ensure that resources
 		// are language independent
 		$this->seekImportVocabulary = $seekImportVocabulary;
@@ -129,7 +108,7 @@ class ExpResourceMapper {
 		}
 
 		// No need for any aux properties besides those listed here
-		if ( !$this->bcAuxiliaryUse && $property->findPropertyTypeID() !== '_dat' && $property->findPropertyTypeID() !== '_geo' ) {
+		if ( !$this->bcAuxiliaryUse && $property->findPropertyValueType() !== '_dat' && $property->findPropertyValueType() !== '_geo' ) {
 			$useAuxiliaryModifier = false;
 		}
 
@@ -147,16 +126,14 @@ class ExpResourceMapper {
 	 * auxiliary properties. In this case, the URI is modiied by appending
 	 * "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
 	 * occurring in MW titles).
-	 *
-	 * @param DIWikiPage $diWikiPage
-	 * @param bool $useAuxiliaryModifier
-	 *
-	 * @return ExpResource
 	 */
-	public function mapWikiPageToResourceElement( DIWikiPage $diWikiPage, $useAuxiliaryModifier = false ) {
+	public function mapWikiPageToResourceElement(
+		WikiPage $diWikiPage,
+		bool $useAuxiliaryModifier = false
+	): ExpNsResource {
 		$modifier = $useAuxiliaryModifier ? self::AUX_MARKER : '';
 
-		$hash = $diWikiPage->getHash() . $modifier . $this->seekImportVocabulary;
+		$hash = $diWikiPage->getHash() . $modifier . (string)$this->seekImportVocabulary;
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.expresource.mapper' );
 
@@ -181,8 +158,8 @@ class ExpResourceMapper {
 		return $resource;
 	}
 
-	private function newExpNsResource( $diWikiPage, $modifier ) {
-		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
+	private function newExpNsResource( WikiPage $diWikiPage, $modifier ): ExpNsResource {
+		$importDataItem = $this->findImportDataItem( $diWikiPage );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
 			[ $localName, $namespace, $namespaceId ] = $this->defineElementsForImportDataItem( $importDataItem );
@@ -201,16 +178,16 @@ class ExpResourceMapper {
 		$dbKey = (string)$diWikiPage->getDBkey();
 
 		if ( $diWikiPage->getNamespace() === SMW_NS_PROPERTY && $dbKey !== '' && $dbKey[0] !== '-' ) {
-			$resource->isUserDefined = DIProperty::newFromUserLabel( $diWikiPage->getDBkey() )->isUserDefined();
+			$resource->isUserDefined = Property::newFromUserLabel( $diWikiPage->getDBkey() )->isUserDefined();
 		}
 
 		return $resource;
 	}
 
-	private function defineElementsForImportDataItem( DataItem $dataItem ) {
+	private function defineElementsForImportDataItem( DataItem $dataItem ): array {
 		$importValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
-			new DIProperty( '_IMPO' )
+			new Property( '_IMPO' )
 		);
 
 		return [
@@ -220,7 +197,9 @@ class ExpResourceMapper {
 		];
 	}
 
-	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ) {
+	private function defineElementsForDiWikiPage( WikiPage $diWikiPage, $modifier ): array {
+		$namespace = '';
+		$namespaceId = '';
 		$localName = '';
 		$hasFixedNamespace = false;
 
@@ -266,14 +245,14 @@ class ExpResourceMapper {
 		];
 	}
 
-	private function findImportDataItem( DIWikiPage $diWikiPage, $modifier ) {
+	private function findImportDataItem( WikiPage $diWikiPage ) {
 		$importDataItems = null;
 
 		// Only try to find an import vocab for a matchable entity
 		if ( ( $this->seekImportVocabulary && $diWikiPage->getNamespace() === NS_CATEGORY ) || $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$importDataItems = $this->store->getPropertyValues(
 				$diWikiPage,
-				new DIProperty( '_IMPO' )
+				new Property( '_IMPO' )
 			);
 		}
 

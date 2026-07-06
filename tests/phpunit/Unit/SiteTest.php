@@ -1,0 +1,123 @@
+<?php
+
+namespace SMW\Tests\Unit;
+
+use PHPUnit\Framework\TestCase;
+use SMW\Site;
+
+/**
+ * @covers \SMW\Site
+ * @group semantic-mediawiki
+ * @group Database
+ *
+ * @license GPL-2.0-or-later
+ * @since   3.0
+ *
+ * @author mwjames
+ */
+class SiteTest extends TestCase {
+
+	private ?array $originalJobClasses = null;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		// Mocking global job classes. The original value must be restored in
+		// tearDown so the contamination does not bleed into integration tests
+		// running later in the same process, which rely on the real
+		// $wgJobClasses (populated from extension.json) to resolve job
+		// commands like smw.changePropagationDispatch through MW's JobFactory.
+		$this->originalJobClasses = $GLOBALS['wgJobClasses'] ?? null;
+
+		$GLOBALS['wgJobClasses'] = [
+			'smw.indexer' => 'SMWIndexerJob',
+			'smw.updater' => 'SMWUpdaterJob',
+			// Add more mock job classes as necessary for your tests
+		];
+	}
+
+	protected function tearDown(): void {
+		if ( $this->originalJobClasses === null ) {
+			unset( $GLOBALS['wgJobClasses'] );
+		} else {
+			$GLOBALS['wgJobClasses'] = $this->originalJobClasses;
+		}
+
+		parent::tearDown();
+	}
+
+	public function testIsReadOnly() {
+		$this->assertIsBool(
+
+			Site::isReadOnly()
+		);
+	}
+
+	public function testIsReady() {
+		$this->assertIsBool(
+
+			Site::isReady()
+		);
+	}
+
+	public function testName() {
+		$this->assertIsString(
+
+			Site::name()
+		);
+	}
+
+	public function testWikiurl() {
+		$this->assertIsString(
+
+			Site::wikiurl()
+		);
+	}
+
+	public function testLanguageCode() {
+		$this->assertIsString(
+
+			Site::languageCode()
+		);
+	}
+
+	public function testIsCommandLineMode() {
+		$this->assertIsBool(
+
+			Site::isCommandLineMode()
+		);
+	}
+
+	public function testIsCapitalLinks() {
+		$this->assertIsBool(
+
+			Site::isCapitalLinks()
+		);
+	}
+
+	public function testGetCacheExpireTime() {
+		$this->assertIsInt(
+
+			Site::getCacheExpireTime( 'parser' )
+		);
+	}
+
+	public function testStats() {
+		$this->assertIsArray(
+
+			Site::stats()
+		);
+	}
+
+	public function testGetJobClasses() {
+		$this->assertIsArray(
+
+			Site::getJobClasses()
+		);
+
+		$this->assertNotEmpty(
+			Site::getJobClasses( 'SMW' )
+		);
+	}
+
+}

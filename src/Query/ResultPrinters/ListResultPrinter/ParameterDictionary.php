@@ -12,13 +12,13 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
  */
 class ParameterDictionary {
 
-	private $configuration = [];
+	private array $configuration = [];
 
 	/**
-	 * @param string|string[] $setting
+	 * @param string|array<string,mixed> $setting
 	 * @param mixed $value
 	 */
-	public function set( $setting, $value = null ) {
+	public function set( $setting, $value = null ): void {
 		if ( !is_array( $setting ) ) {
 			$setting = [ $setting => $value ];
 		}
@@ -33,14 +33,14 @@ class ParameterDictionary {
 	 * @return mixed
 	 */
 	public function get( $setting, $default = '' ) {
-		return isset( $this->configuration[$setting] ) ? $this->configuration[$setting] : $default;
+		return $this->configuration[$setting] ?? $default;
 	}
 
 	/**
 	 * @param string|string[] $setting
 	 * @param mixed $value
 	 */
-	public function setDefault( $setting, $value = null ) {
+	public function setDefault( $setting, $value = null ): void {
 		if ( !is_array( $setting ) ) {
 			$setting = [ $setting => $value ];
 		}

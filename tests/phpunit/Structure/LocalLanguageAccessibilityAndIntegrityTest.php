@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-system
@@ -13,28 +13,26 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
+class LocalLanguageAccessibilityAndIntegrityTest extends TestCase {
 
 	/**
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testCommonInterfaceMethods( $langcode ) {
 		$methods = [
-			'getDateFormats' => 'array',
-			'getNamespaces'  => 'array',
-			'getNamespaceAliases' => 'array',
-			'getDatatypeLabels'   => 'array',
-			'getDatatypeAliases'  => 'array',
-			'getPropertyLabels'   => 'array',
-			'getPropertyAliases'  => 'array',
+			'getDateFormats',
+			'getNamespaces',
+			'getNamespaceAliases',
+			'getDatatypeLabels',
+			'getDatatypeAliases',
+			'getPropertyLabels',
+			'getPropertyAliases',
 		];
 
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
-		foreach ( $methods as $method => $type ) {
-			$this->assertInternalType( $type, call_user_func( [ $class, $method ] ) );
+		foreach ( $methods as $method ) {
+			$this->assertIsArray( call_user_func( [ $class, $method ] ) );
 		}
 	}
 
@@ -67,8 +65,8 @@ class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit\Framework\Test
 
 		for ( $i = 1; $i <= 12; $i++ ) {
 
-			$label = call_user_func( [ $class, 'getMonthLabel' ], $i );
-			$month = call_user_func( [ $class, 'findMonth' ], $label );
+			$label = call_user_func( [ $class, 'getMonthLabelByNumber' ], $i );
+			$month = call_user_func( [ $class, 'findMonthNumberByLabel' ], $label );
 
 			$this->assertIsString( $label );
 			$this->assertEquals( $i, $month );

@@ -45,10 +45,10 @@
 			"assert-output": {
 				"to-contain": [
 					"Example/P0431/1",
-					"<td class=\"Has-record smwtype_txt\">Foo</td>"
+					"<td class=\"Has-record smwtype&#95;txt\">Foo</td>"
 				],
 				"not-contain": [
-					"<td class=\"Has-record smwtype_num\" data-sort-value=\"123\">123</td>"
+					"<td class=\"Has-record smwtype&#95;num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},
@@ -59,8 +59,8 @@
 			"assert-output": {
 				"to-contain": [
 					"Example/P0431/1",
-					"<td class=\"Has-record smwtype_txt\">Foo</td>",
-					"<td class=\"Has-record smwtype_num\" data-sort-value=\"123\">123</td>"
+					"<td class=\"Has-record smwtype&#95;txt\">Foo</td>",
+					"<td class=\"Has-record smwtype&#95;num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},
@@ -71,7 +71,7 @@
 			"assert-output": {
 				"to-contain": [
 					"Property:Has record",
-					"<td class=\"Property-description smwtype&#95;_lcode\">en</td>"
+					"<td class=\"Property-description smwtype&#95;&#95;lcode\">en</td>"
 				]
 			}
 		},
@@ -94,9 +94,6 @@
 		"wgLang": "en"
 	},
 	"meta": {
-		"skip-on": {
-			"mysql": "Failed assertions, check implementation of MediaWikiIntegrationTestCase."
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

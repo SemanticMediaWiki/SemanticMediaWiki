@@ -2,7 +2,7 @@
 
 namespace SMW\Indicator;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -14,39 +14,26 @@ interface IndicatorProvider {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DIWikiPage $subject
-	 * @param array $options
-	 *
-	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options );
+	public function hasIndicator( WikiPage $subject, array $options ): bool;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return
 	 */
-	public function getIndicators();
+	public function getIndicators(): array;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return
 	 */
-	public function getModules();
+	public function getModules(): array;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return string
 	 */
-	public function getInlineStyle();
+	public function getInlineStyle(): string;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return string
 	 */
 	public function getName(): string;
 

@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\DataItems\DataItem;
 use SMW\Query\QueryResult;
-use SMWDataItem as DataItem;
 
 /**
  * Abstract class that supports the aggregation and distributive calculation
@@ -35,7 +35,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$definitions = parent::getParamDefinitions( $definitions );
 
 		$definitions['distribution'] = [
@@ -88,7 +88,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 */
-	protected function addResources() {
+	protected function addResources(): void {
 	}
 
 	/**
@@ -117,7 +117,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @param array &$data
 	 */
-	protected function applyDistributionParams( array &$data ) {
+	protected function applyDistributionParams( array &$data ): void {
 		if ( $this->params['distributionsort'] == 'asc' ) {
 			asort( $data, SORT_NUMERIC );
 		} elseif ( $this->params['distributionsort'] == 'desc' ) {
@@ -141,7 +141,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getResults( QueryResult $queryResult, $outputMode ) {
+	protected function getResults( QueryResult $queryResult, $outputMode ): array {
 		if ( $this->params['distribution'] ) {
 			return $this->getDistributionResults( $queryResult, $outputMode );
 		}
@@ -160,12 +160,17 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getDistributionResults( QueryResult $queryResult, $outputMode ) {
+	protected function getDistributionResults( QueryResult $queryResult, $outputMode ): array {
 		$values = [];
 
-		while ( /* array of ResultArray */ $row = $queryResult->getNext() ) { // Objects (pages)
-			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) { // ResultArray for a sinlge property
-				while ( ( /* SMWDataValue */ $dataValue = $row[$i]->getNextDataValue() ) !== false ) { // Data values
+		$row = $queryResult->getNext();
+		// Objects (pages)
+		while ( $row ) {
+			// ResultArray for a sinlge property
+			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) {
+				$dataValue = $row[$i]->getNextDataValue();
+				// Data values
+				while ( $dataValue !== false ) {
 
 					// Get the HTML for the tag content. Pages are linked, other stuff is just plaintext.
 					if ( $dataValue->getTypeID() == '_wpg' ) {
@@ -179,8 +184,10 @@ abstract class AggregatablePrinter extends ResultPrinter {
 					}
 
 					$values[$value]++;
+					$dataValue = $row[$i]->getNextDataValue();
 				}
 			}
+			$row = $queryResult->getNext();
 		}
 
 		return $values;
@@ -196,11 +203,12 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array label => value
 	 */
-	protected function getNumericResults( QueryResult $queryResult, $outputMode ) {
+	protected function getNumericResults( QueryResult $queryResult, $outputMode ): array {
 		$values = [];
 
 		// print all result rows
-		while ( $subject = $queryResult->getNext() ) {
+		$subject = $queryResult->getNext();
+		while ( $subject ) {
 			$dataValue = $subject[0]->getNextDataValue();
 
 			if ( $dataValue !== false ) {
@@ -228,11 +236,14 @@ abstract class AggregatablePrinter extends ResultPrinter {
 						}
 					}
 
-					while ( ( /* DataItem */ $dataItem = $field->getNextDataItem() ) !== false ) {
+					$dataItem = $field->getNextDataItem();
+					while ( $dataItem !== false ) {
 						$this->addNumbersForDataItem( $dataItem, $values, $name );
+						$dataItem = $field->getNextDataItem();
 					}
 				}
 			}
+			$subject = $queryResult->getNext();
 		}
 
 		return $values;
@@ -247,7 +258,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @param array &$values
 	 * @param string $name
 	 */
-	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ) {
+	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ): void {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_NUMBER:
 				// Collect and aggregate values for the same array key

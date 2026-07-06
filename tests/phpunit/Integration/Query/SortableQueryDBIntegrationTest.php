@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWQuery as Query;
 
 /**
  * @group SMW
@@ -51,13 +51,13 @@ class SortableQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testDefaultSortedQueryResult() {
 		$expectedSubjects = [
-			new DIWikiPage( 'AA', NS_MAIN ),
-			new DIWikiPage( 'AB', NS_MAIN ),
-			new DIWikiPage( 'AC', NS_MAIN )
+			new WikiPage( 'AA', NS_MAIN ),
+			new WikiPage( 'AB', NS_MAIN ),
+			new WikiPage( 'AC', NS_MAIN )
 		];
 
-		$property = new DIProperty( 'SomePageProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property = new Property( 'SomePageProperty' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$query = $this->createQueryForSamplePagesThatContain( $property, $expectedSubjects );
 
@@ -77,13 +77,13 @@ class SortableQueryDBIntegrationTest extends SMWIntegrationTestCase {
 	 */
 	public function testAscendingOrderedQueryResult() {
 		$expectedSubjects = [
-			new DIWikiPage( 'AA', NS_MAIN ),
-			new DIWikiPage( 'AB', NS_MAIN ),
-			new DIWikiPage( 'AC', NS_MAIN )
+			new WikiPage( 'AA', NS_MAIN ),
+			new WikiPage( 'AB', NS_MAIN ),
+			new WikiPage( 'AC', NS_MAIN )
 		];
 
-		$property = new DIProperty( 'SomeAscendingPageProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property = new Property( 'SomeAscendingPageProperty' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$query = $this->createQueryForSamplePagesThatContain( $property, $expectedSubjects );
 
@@ -99,13 +99,13 @@ class SortableQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testDescendingOrderedQueryResult() {
 		$expectedSubjects = [
-			new DIWikiPage( 'AA', NS_MAIN ),
-			new DIWikiPage( 'AB', NS_MAIN ),
-			new DIWikiPage( 'AC', NS_MAIN )
+			new WikiPage( 'AA', NS_MAIN ),
+			new WikiPage( 'AB', NS_MAIN ),
+			new WikiPage( 'AC', NS_MAIN )
 		];
 
-		$property = new DIProperty( 'SomeDescendingPageProperty' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property = new Property( 'SomeDescendingPageProperty' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$query = $this->createQueryForSamplePagesThatContain( $property, $expectedSubjects );
 

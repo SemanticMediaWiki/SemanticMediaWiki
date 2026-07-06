@@ -45,7 +45,7 @@
 			"subject": "P1120/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-authors smwtype_txt\">Zoe K.<br />Charlotte B.<br />Yui B.</td>"
+					"<td class=\"Has-authors smwtype&#95;txt\">Zoe K.<br />Charlotte B.<br />Yui B.</td>"
 				]
 			}
 		},
@@ -55,7 +55,7 @@
 			"subject": "P1120/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-authors smwtype_txt\">Zoe K.<br />Charlotte B.<br />Yui B.</td>"
+					"<td class=\"Has-authors smwtype&#95;txt\">Zoe K.<br />Charlotte B.<br />Yui B.</td>"
 				]
 			}
 		},
@@ -65,7 +65,7 @@
 			"subject": "P1120/Q.3",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-authors smwtype_txt\">Charlotte B.<br />Zoe K.<br />Yui B.</td>"
+					"<td class=\"Has-authors smwtype&#95;txt\">Charlotte B.<br />Zoe K.<br />Yui B.</td>"
 				]
 			}
 		}

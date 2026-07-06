@@ -4,7 +4,7 @@ namespace SMW\DataValues\ValueValidators;
 
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMWDataValue as DataValue;
+use SMW\DataValues\DataValue;
 
 /**
  * @private
@@ -23,24 +23,20 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 */
 	private $hasConstraintViolation = false;
 
-	/**
-	 * @var int
-	 */
-	private $time = 0;
-	private $count = 0;
+	private float $time = 0;
+	private int $count = 0;
 	private $contextPage = '';
 
-	/**
-	 * @var array
-	 */
-	private $constraintValueValidators = [];
+	private array $constraintValueValidators = [];
 
 	/**
 	 * @since 2.4
 	 *
 	 * @param ConstraintValueValidator $constraintValueValidator
 	 */
-	public function registerConstraintValueValidator( ConstraintValueValidator $constraintValueValidator ) {
+	public function registerConstraintValueValidator(
+		ConstraintValueValidator $constraintValueValidator
+	): void {
 		$this->constraintValueValidators[] = $constraintValueValidator;
 	}
 
@@ -49,7 +45,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasConstraintViolation() {
+	public function hasConstraintViolation(): bool {
 		return $this->hasConstraintViolation;
 	}
 
@@ -58,7 +54,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function validate( $dataValue ) {
+	public function validate( $dataValue ): void {
 		$this->hasConstraintViolation = false;
 		$time = -microtime( true );
 
@@ -82,15 +78,24 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 		$this->count++;
 		$this->time += microtime( true ) + $time;
 
-		if ( $dataValue instanceof DataValue && ( $contextPage = $dataValue->getContextPage() ) !== null ) {
-			$this->contextPage = $contextPage->asBase()->getSerialization();
+		if ( $dataValue instanceof DataValue ) {
+			$contextPage = $dataValue->getContextPage();
+			if ( $contextPage !== null ) {
+				$this->contextPage = $contextPage->asBase()->getSerialization();
+			}
 		}
 	}
 
-	function __destruct() {
+	public function __destruct() {
 		$this->logger->info(
-			[ 'CompoundConstraintValueValidator', 'Page: {contextPage}', 'Validation count: {count}', 'procTime (total in sec.): {procTime}' ],
-			[ 'role' => 'developer', 'count' => $this->count, 'procTime' => $this->time, 'contextPage' => $this->contextPage ]
+			'CompoundConstraintValueValidator Page: {contextPage} '
+				. 'Validation count: {count} procTime (total in sec.): {procTime}',
+			[
+				'role' => 'developer',
+				'count' => $this->count,
+				'procTime' => $this->time,
+				'contextPage' => $this->contextPage
+			]
 		);
 	}
 

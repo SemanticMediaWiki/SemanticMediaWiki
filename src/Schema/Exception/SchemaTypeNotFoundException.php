@@ -24,7 +24,7 @@ class SchemaTypeNotFoundException extends RuntimeException {
 	 */
 	public function __construct( $type ) {
 		parent::__construct( "$type is an unrecognized schema type." );
-		$this->type = $type;
+		$this->type = (string)$type;
 	}
 
 	/**
@@ -32,7 +32,7 @@ class SchemaTypeNotFoundException extends RuntimeException {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		return $this->type;
 	}
 

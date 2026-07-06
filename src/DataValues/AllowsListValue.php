@@ -2,7 +2,9 @@
 
 namespace SMW\DataValues;
 
-use Linker;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
+use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
 
 /**
@@ -37,7 +39,7 @@ class AllowsListValue extends StringValue {
 	 *
 	 * @param string $value
 	 */
-	protected function parseUserValue( $value ) {
+	protected function parseUserValue( $value ): void {
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
@@ -62,7 +64,7 @@ class AllowsListValue extends StringValue {
 	 *
 	 * @return string
 	 */
-	public function getShortWikiText( $linker = null ) {
+	public function getShortWikiText( $linker = null ): string {
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -96,9 +98,9 @@ class AllowsListValue extends StringValue {
 		}
 
 		$id = $this->getDataItem()->getString();
-		$title = \Title::newFromText( self::LIST_PREFIX . $id, NS_MEDIAWIKI );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( self::LIST_PREFIX . $id, NS_MEDIAWIKI );
 
-		return \Html::rawElement(
+		return Html::rawElement(
 			'a',
 			[
 				'href'   => $title->getLocalUrl(),

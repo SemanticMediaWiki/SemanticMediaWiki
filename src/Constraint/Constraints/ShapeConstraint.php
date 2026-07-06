@@ -5,12 +5,12 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\SemanticData;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,10 +25,7 @@ class ShapeConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'shape_constraint';
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @var SemanticData
@@ -40,7 +37,7 @@ class ShapeConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 
@@ -49,7 +46,7 @@ class ShapeConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -58,7 +55,7 @@ class ShapeConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraints, $dataValue ) {
+	public function checkConstraint( array $constraints, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -69,23 +66,21 @@ class ShapeConstraint implements Constraint {
 			return;
 		}
 
-		// PHP 7.0+ $this->semanticData = $dataValue->getCallable( SemanticData::class )();
-		$semanticData = $dataValue->getCallable( SemanticData::class );
-		$this->semanticData = $semanticData();
+		$this->semanticData = $dataValue->getCallable( SemanticData::class )();
 
 		foreach ( $constraints[self::CONSTRAINT_KEY] as $constraint ) {
 			$this->check( $constraint, $dataValue );
 		}
 	}
 
-	private function check( $constraint, $dataValue ) {
+	private function check( array $constraint, DataValue $dataValue ): void {
 		$errors = [];
 
 		if ( !isset( $constraint['property'] ) ) {
 			return;
 		}
 
-		$property = DIProperty::newFromUserLabel(
+		$property = Property::newFromUserLabel(
 			$constraint['property']
 		);
 
@@ -127,9 +122,9 @@ class ShapeConstraint implements Constraint {
 		$this->reportError( $dataValue, $errors );
 	}
 
-	private function isType( $type, $property ) {
+	private function isType( $type, Property $property ): bool {
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
-			$property->findPropertyTypeId()
+			$property->findPropertyValueType()
 		);
 
 		switch ( $type ) {
@@ -155,14 +150,14 @@ class ShapeConstraint implements Constraint {
 				$type = DataItem::TYPE_URI;
 				break;
 			default:
-				$type = DataItem::TYPE_NONE;
+				$type = DataItem::TYPE_NOTYPE;
 				break;
 		}
 
 		return $diType === $type;
 	}
 
-	private function hasMinLength( $minLength, $property ) {
+	private function hasMinLength( $minLength, Property $property ): bool {
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -173,7 +168,7 @@ class ShapeConstraint implements Constraint {
 
 		foreach ( $dataItems as $dataItem ) {
 
-			if ( !$dataItem instanceof DIBlob ) {
+			if ( !$dataItem instanceof Blob ) {
 				continue;
 			}
 
@@ -185,7 +180,7 @@ class ShapeConstraint implements Constraint {
 		return true;
 	}
 
-	private function hasMaxCardinality( $maxCardinality, $property ) {
+	private function hasMaxCardinality( $maxCardinality, Property $property ): bool {
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -197,7 +192,7 @@ class ShapeConstraint implements Constraint {
 		return true;
 	}
 
-	private function reportError( $dataValue, array $errors ) {
+	private function reportError( DataValue $dataValue, array $errors ): void {
 		if ( $errors === [] ) {
 			return;
 		}

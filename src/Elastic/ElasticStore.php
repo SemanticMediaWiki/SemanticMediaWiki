@@ -3,16 +3,18 @@
 namespace SMW\Elastic;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Options;
-use SMW\SemanticData;
+use SMW\Query\Query;
+use SMW\Query\QueryResult;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
-use SMWQuery as Query;
-use Title;
 
 /**
  * @private
@@ -41,18 +43,12 @@ class ElasticStore extends SQLStore {
 	const REBUILD_INDEX_RUN_COMPLETE = 'elastic.rebuild_index_run_complete';
 	const REBUILD_INDEX_RUN_INCOMPLETE = 'smw-elastic-rebuildelasticindex-run-incomplete';
 
-	/**
-	 * @var ElasticFactory
-	 */
-	private $elasticFactory;
+	private ElasticFactory $elasticFactory;
+
+	private ?Indexer $indexer = null;
 
 	/**
-	 * @var Indexer
-	 */
-	private $indexer;
-
-	/**
-	 * @var QueryEngine
+	 * @var ?QueryEngine
 	 */
 	private $queryEngine;
 
@@ -66,17 +62,12 @@ class ElasticStore extends SQLStore {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ElasticFactory $elasticFactory
 	 */
-	public function setElasticFactory( ElasticFactory $elasticFactory ) {
+	public function setElasticFactory( ElasticFactory $elasticFactory ): void {
 		$this->elasticFactory = $elasticFactory;
 	}
 
-	/**
-	 * @return ElasticFactory
-	 */
-	public function getElasticFactory() {
+	public function getElasticFactory(): ElasticFactory {
 		return $this->elasticFactory;
 	}
 
@@ -104,8 +95,6 @@ class ElasticStore extends SQLStore {
 	/**
 	 * @see SQLStore::deleteSubject
 	 * @since 3.0
-	 *
-	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
 		$status = parent::deleteSubject( $title );
@@ -154,7 +143,7 @@ class ElasticStore extends SQLStore {
 		$idList = [ $id ];
 
 		if ( $status->has( 'delete_list' ) ) {
-			$idList = array_merge( $idList, $status->get( 'delete_list' ) );
+			$idList = array_merge( $idList, (array)$status->get( 'delete_list' ) );
 		}
 
 		$this->indexer->delete( $idList );
@@ -162,7 +151,7 @@ class ElasticStore extends SQLStore {
 		// Use case [[Foo]] redirects to #REDIRECT [[Bar]] with Bar not yet being
 		// materialized and with the update not having created any reference,
 		// fulfill T:Q0604 by allowing to create a minimized document body
-		if ( $newTitle->exists() === false ) {
+		if ( !$newTitle->exists() ) {
 			$id = $this->getObjectIds()->getSMWPageID(
 				$newTitle->getDBkey(),
 				$newTitle->getNamespace(),
@@ -171,7 +160,7 @@ class ElasticStore extends SQLStore {
 				false
 			);
 
-			$dataItem = DIWikiPage::newFromTitle( $newTitle );
+			$dataItem = WikiPage::newFromTitle( $newTitle );
 			$dataItem->setId( $id );
 
 			$this->indexer->create( $dataItem );
@@ -183,8 +172,6 @@ class ElasticStore extends SQLStore {
 	/**
 	 * @see SQLStore::fetchQueryResult
 	 * @since 3.0
-	 *
-	 * @param Query $query
 	 *
 	 * @return QueryResult
 	 */
@@ -230,8 +217,6 @@ class ElasticStore extends SQLStore {
 	/**
 	 * @see SQLStore::doDataUpdate
 	 * @since 3.0
-	 *
-	 * @param SemanticData $semanticData
 	 */
 	protected function doDataUpdate( SemanticData $semanticData ) {
 		$status = parent::doDataUpdate( $semanticData );
@@ -271,11 +256,7 @@ class ElasticStore extends SQLStore {
 		$this->indexer->indexDocument( $document, Indexer::REQUIRE_SAFE_REPLICATION );
 
 		$this->logger->info(
-			[
-				'ElasticStore',
-				'Data update completed',
-				'procTime in sec: {procTime}',
-			],
+			'ElasticStore Data update completed procTime in sec: {procTime}',
 			[
 				'method' => __METHOD__,
 				'role' => 'production',
@@ -314,7 +295,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setup( $options = true ) {
+	public function setup( $options = true ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -347,7 +328,7 @@ class ElasticStore extends SQLStore {
 				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
 				$setupFile->addIncompleteTask( self::REBUILD_INDEX_RUN_INCOMPLETE );
 			} else {
-				$data = $setupFile->get( 'elasticsearch' );
+				$data = (array)$setupFile->get( 'elasticsearch' );
 
 				if ( $data['latest_version'] !== $version ) {
 					$setupFile->set(
@@ -380,7 +361,7 @@ class ElasticStore extends SQLStore {
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		parent::setup( $options );
+		return parent::setup( $options );
 	}
 
 	/**
@@ -389,7 +370,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -429,14 +410,14 @@ class ElasticStore extends SQLStore {
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		parent::drop( $verbose );
+		return parent::drop( $verbose );
 	}
 
 	/**
 	 * @see SQLStore::clear
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->indexer = null;
 		$this->queryEngine = null;
@@ -447,10 +428,8 @@ class ElasticStore extends SQLStore {
 	 * @since 3.0
 	 *
 	 * @param string|null $type
-	 *
-	 * @return array
 	 */
-	public function getInfo( $type = null ) {
+	public function getInfo( $type = null ): string|array {
 		if ( $type === 'store' ) {
 			return 'SMWElasticStore';
 		}
@@ -473,4 +452,7 @@ class ElasticStore extends SQLStore {
 
 }
 
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( ElasticStore::class, 'SMWElasticStore' );

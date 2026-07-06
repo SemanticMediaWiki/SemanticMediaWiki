@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
@@ -16,24 +16,12 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 class DeprecationNoticeTaskHandler extends TaskHandler {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var array
-	 */
-	private $deprecationNoticeList = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param array $deprecationNoticeList
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $deprecationNoticeList = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->deprecationNoticeList = $deprecationNoticeList;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private array $deprecationNoticeList = [],
+	) {
 	}
 
 	/**
@@ -50,12 +38,12 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '';
 
 		// Push `smw` to the top
-		uksort( $this->deprecationNoticeList, static function ( $a, $b ) {
-			return $b === 'smw';
+		uksort( $this->deprecationNoticeList, static function ( $a, $b ): int {
+			return (int)( $b === 'smw' );
 		} );
 
 		foreach ( $this->deprecationNoticeList as $section => $deprecationNoticeList ) {
@@ -105,7 +93,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		);
 	}
 
-	private function buildSection( $section, $deprecationNoticeList ) {
+	private function buildSection( int|string $section, array $deprecationNoticeList ): string {
 		$noticeConfigList = [];
 		$replacementConfigList = [];
 		$removedConfigList = [];
@@ -151,7 +139,10 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		);
 	}
 
-	private function buildList( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ) {
+	/**
+	 * @return list<mixed>
+	 */
+	private function buildList( int|string $section, $noticeConfigList, $replacementConfigList, $removedConfigList ): array {
 		$noticeList = [];
 		$list = [];
 
@@ -166,7 +157,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-replacement", $section, $list ) ) !== null ) {
+		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-replacement", $list );
+		if ( $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -179,7 +171,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-notice", $section, $list ) ) !== null ) {
+		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-notice", $list );
+		if ( $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
@@ -190,16 +183,18 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-removal", $section, $list ) ) !== null ) {
+		$mList = $this->mergeList( "$section-admin-deprecation-notice-title-removal", $list );
+		if ( $mList !== null ) {
 			$noticeList[] = $mList;
 		}
 
 		return $noticeList;
 	}
 
-	private function mergeList( $title, $section, &$list ) {
-		if ( $list === [] || ( $items = implode( '', $list ) ) === '' ) {
-			return;
+	private function mergeList( string $title, array &$list ): ?string {
+		$items = implode( '', $list );
+		if ( $list === [] || $items === '' ) {
+			return null;
 		}
 
 		$html = Html::rawElement(
@@ -219,7 +214,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return $html;
 	}
 
-	private function createItems( $message, $values ) {
+	private function createItems( string $message, $values ): string {
 		$list = [];
 
 		if ( !is_array( $values ) ) {
@@ -260,11 +255,11 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return implode( '', $list );
 	}
 
-	private function hasOption( $setting, $option ) {
+	private function hasOption( int|string $setting, int|string $option ): bool {
 		return isset( $GLOBALS[$setting][$option] ) || ( is_array( $GLOBALS[$setting] ) && array_search( $option, $GLOBALS[$setting] ) );
 	}
 
-	private function createItem( $message ) {
+	private function createItem( array $message ): string {
 		return Html::rawElement( 'li', [], $this->msg( $message, Message::PARSE ) );
 	}
 

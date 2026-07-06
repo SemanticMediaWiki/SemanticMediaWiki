@@ -2,8 +2,9 @@
 
 namespace SMW\Query;
 
+use SMW\DataItems\Container;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator;
 use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
 use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
@@ -12,8 +13,6 @@ use SMW\Query\ProfileAnnotators\ParametersProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
-use SMWDIContainer as DIContainer;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -31,7 +30,7 @@ class ProfileAnnotatorFactory {
 	 *
 	 * @return ProfileAnnotator
 	 */
-	public function newProfileAnnotator( Query $query, $format ) {
+	public function newProfileAnnotator( Query $query, $format ): ProfileAnnotator {
 		$profileAnnotator = $this->newDescriptionProfileAnnotator(
 			$query
 		);
@@ -76,7 +75,7 @@ class ProfileAnnotatorFactory {
 	 *
 	 * @return DescriptionProfileAnnotator
 	 */
-	public function newDescriptionProfileAnnotator( Query $query ) {
+	public function newDescriptionProfileAnnotator( Query $query ): DescriptionProfileAnnotator {
 		$profileAnnotator = new NullProfileAnnotator(
 			$this->newDIContainer( $query )
 		);
@@ -89,11 +88,11 @@ class ProfileAnnotatorFactory {
 		return $profileAnnotator;
 	}
 
-	private function newFormatProfileAnnotator( $profileAnnotator, $format ) {
+	private function newFormatProfileAnnotator( DescriptionProfileAnnotator $profileAnnotator, $format ): FormatProfileAnnotator {
 		return new FormatProfileAnnotator( $profileAnnotator, $format );
 	}
 
-	private function newParametersProfileAnnotator( $profileAnnotator, $query ) {
+	private function newParametersProfileAnnotator( ProfileAnnotator $profileAnnotator, Query $query ): ProfileAnnotator {
 		if ( $query->getOption( Query::OPT_PARAMETERS ) === false ) {
 			return $profileAnnotator;
 		}
@@ -101,7 +100,7 @@ class ProfileAnnotatorFactory {
 		return new ParametersProfileAnnotator( $profileAnnotator, $query );
 	}
 
-	private function newDurationProfileAnnotator( $profileAnnotator, $duration ) {
+	private function newDurationProfileAnnotator( ProfileAnnotator $profileAnnotator, $duration ): ProfileAnnotator {
 		if ( $duration == 0 ) {
 			return $profileAnnotator;
 		}
@@ -109,7 +108,7 @@ class ProfileAnnotatorFactory {
 		return new DurationProfileAnnotator( $profileAnnotator, $duration );
 	}
 
-	private function newSourceProfileAnnotator( $profileAnnotator, $querySource ) {
+	private function newSourceProfileAnnotator( ProfileAnnotator $profileAnnotator, $querySource ): ProfileAnnotator {
 		if ( $querySource === '' || $querySource === null ) {
 			return $profileAnnotator;
 		}
@@ -117,7 +116,7 @@ class ProfileAnnotatorFactory {
 		return new SourceProfileAnnotator( $profileAnnotator, $querySource );
 	}
 
-	private function newStatusCodeProfileAnnotator( $profileAnnotator, $statusCodes ) {
+	private function newStatusCodeProfileAnnotator( ProfileAnnotator $profileAnnotator, $statusCodes ): ProfileAnnotator {
 		if ( $statusCodes === false || $statusCodes === null || $statusCodes === [] ) {
 			return $profileAnnotator;
 		}
@@ -125,7 +124,7 @@ class ProfileAnnotatorFactory {
 		return new StatusCodeProfileAnnotator( $profileAnnotator, $statusCodes );
 	}
 
-	private function newSchemaLinkProfileAnnotator( $profileAnnotator, $schemaLink ) {
+	private function newSchemaLinkProfileAnnotator( ProfileAnnotator $profileAnnotator, $schemaLink ): ProfileAnnotator {
 		if ( $schemaLink === false || $schemaLink === null ) {
 			return $profileAnnotator;
 		}
@@ -137,13 +136,13 @@ class ProfileAnnotatorFactory {
 	 * #1416 create container manually to avoid any issues that may arise from
 	 * a failed Title::makeTitleSafe.
 	 */
-	private function newDIContainer( Query $query ) {
+	private function newDIContainer( Query $query ): Container {
 		$subject = $query->getContextPage();
 
 		if ( $subject === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 		} else {
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$subject->getDBkey(),
 				$subject->getNamespace(),
 				$subject->getInterwiki(),
@@ -153,7 +152,7 @@ class ProfileAnnotatorFactory {
 			$containerSemanticData = new ContainerSemanticData( $subject );
 		}
 
-		return new DIContainer(
+		return new Container(
 			$containerSemanticData
 		);
 	}

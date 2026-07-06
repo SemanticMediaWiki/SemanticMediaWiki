@@ -2,12 +2,13 @@
 
 namespace SMW;
 
+use MediaWiki\Html\TemplateParser;
 use RuntimeException;
 use SMW\Exception\FileNotReadableException;
 use SMW\Exception\JSONFileParseException;
 use SMW\Localizer\LocalMessageProvider;
 use SMW\Utils\Logo;
-use SMW\Utils\TemplateEngine;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @private
@@ -31,8 +32,9 @@ class SetupCheck {
 
 	/**
 	 * A user tried to use `wfLoadExtension( 'SemanticMediaWiki' )` and
-	 * `enableSemantics` at the same causing the ExtensionRegistry to throw an
-	 * "Uncaught Exception: It was attempted to load SemanticMediaWiki twice ..."
+	 * the deprecated `enableSemantics` at the same time, causing the
+	 * ExtensionRegistry to throw an "Uncaught Exception: It was attempted
+	 * to load SemanticMediaWiki twice ..."
 	 */
 	const ERROR_EXTENSION_REGISTRY = 'ERROR_EXTENSION_REGISTRY';
 
@@ -72,54 +74,39 @@ class SetupCheck {
 	const MAINTENANCE_MODE = 'MAINTENANCE_MODE';
 
 	/**
-	 * @var
+	 * Maps the `type` string used in `setupcheck.json` to the PascalCase
+	 * name of the corresponding Mustache template.
 	 */
-	private $options = [];
+	private const TEMPLATE_MAP = [
+		'section' => 'Section',
+		'version' => 'Version',
+		'paragraph' => 'Paragraph',
+		'errorbox' => 'Errorbox',
+		'db-requirement' => 'DbRequirement',
+	];
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private array $options;
 
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
+	private ?SetupFile $setupFile;
 
-	/**
-	 * @var LocalMessageProvider
-	 */
-	private $localMessageProvider;
+	private TemplateParser $templateParser;
 
-	/**
-	 * @var
-	 */
-	private $definitions = [];
+	private LocalMessageProvider $localMessageProvider;
+
+	private array $definitions = [];
 
 	/**
 	 * @var string
 	 */
 	private $languageCode = 'en';
 
-	/**
-	 * @var string
-	 */
-	private $fallbackLanguageCode = 'en';
+	private string $fallbackLanguageCode = 'en';
 
-	/**
-	 * @var bool
-	 */
-	private $sentHeader = true;
+	private bool $sentHeader = true;
 
-	/**
-	 * @var string
-	 */
-	private $errorType = '';
+	private string $errorType = '';
 
-	/**
-	 * @var string
-	 */
-	private $errorMessage = '';
+	private string $errorMessage = '';
 
 	/**
 	 * @var string
@@ -135,7 +122,18 @@ class SetupCheck {
 	public function __construct( array $options, ?SetupFile $setupFile = null ) {
 		$this->options = $options;
 		$this->setupFile = $setupFile;
-		$this->templateEngine = new TemplateEngine();
+
+		// `SetupCheck` can run very early, before MediaWiki's service container
+		// is bootstrapped. `TemplateParser` would call `MediaWikiServices::getInstance()`
+		// to obtain a cache when none is passed, which throws in that early-boot
+		// window. An in-process `HashBagOStuff` removes that service dependency;
+		// the setup-check page is shown rarely so the compiled-template cache is
+		// not performance-critical here.
+		$this->templateParser = new TemplateParser(
+			__DIR__ . '/../templates/SetupCheck',
+			new HashBagOStuff()
+		);
+
 		$this->localMessageProvider = new LocalMessageProvider( '/local/setupcheck.i18n.json' );
 
 		if ( $this->setupFile === null ) {
@@ -175,7 +173,7 @@ class SetupCheck {
 	 *
 	 * @return SetupCheck
 	 */
-	public static function newFromDefaults( ?SetupFile $setupFile = null ) {
+	public static function newFromDefaults( ?SetupFile $setupFile = null ): SetupCheck {
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$version = self::readFromFile( $GLOBALS['smwgIP'] . 'extension.json' )['version'];
 		} else {
@@ -197,7 +195,7 @@ class SetupCheck {
 	/**
 	 * @since 3.2
 	 */
-	public function disableHeader() {
+	public function disableHeader(): void {
 		$this->sentHeader = false;
 	}
 
@@ -206,7 +204,7 @@ class SetupCheck {
 	 *
 	 * @return bool
 	 */
-	public function isCli() {
+	public function isCli(): bool {
 		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
 	}
 
@@ -215,7 +213,7 @@ class SetupCheck {
 	 *
 	 * @param string $traceString
 	 */
-	public function setTraceString( $traceString ) {
+	public function setTraceString( $traceString ): void {
 		$this->traceString = $traceString;
 	}
 
@@ -224,7 +222,7 @@ class SetupCheck {
 	 *
 	 * @param string $errorMessage
 	 */
-	public function setErrorMessage( string $errorMessage ) {
+	public function setErrorMessage( string $errorMessage ): void {
 		$this->errorMessage = $errorMessage;
 	}
 
@@ -233,7 +231,7 @@ class SetupCheck {
 	 *
 	 * @param string $errorType
 	 */
-	public function setErrorType( string $errorType ) {
+	public function setErrorType( string $errorType ): void {
 		$this->errorType = $errorType;
 	}
 
@@ -251,14 +249,14 @@ class SetupCheck {
 	 *
 	 * @return bool
 	 */
-	public function hasError() {
+	public function hasError(): bool {
 		$this->errorType = '';
 
 		if ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = self::MAINTENANCE_MODE;
 		} elseif ( !$this->isCli() && !$this->setupFile->hasDatabaseMinRequirement() ) {
 			$this->errorType = self::ERROR_DB_REQUIREMENT_INCOMPATIBLE;
-		} elseif ( $this->setupFile->isGoodSchema() === false ) {
+		} elseif ( !$this->setupFile->isGoodSchema() ) {
 			$this->errorType = self::ERROR_SCHEMA_INVALID_KEY;
 		}
 
@@ -272,18 +270,18 @@ class SetupCheck {
 	 * - Extend the `setupcheck.json` to add a definition for the new type and
 	 *   specify which information should be displayed
 	 * - In case the existing HTML elements aren't sufficient, create a new
-	 *   zxy.ms file and define the HTML code
+	 *   Mustache template and define the HTML code
 	 *
-	 * The `TemplateEngine` will replace arguments defined in the HTML hereby
+	 * The `TemplateParser` will replace arguments defined in the HTML hereby
 	 * absolving this class from any direct HTML manipulation.
 	 *
 	 * @since 3.1
 	 *
 	 * @param bool $isCli
 	 *
-	 * @return string
+	 * @return string|array|null
 	 */
-	public function getError( $isCli = false ) {
+	public function getError( $isCli = false ): string|array|null {
 		$error = [
 			'title' => '',
 			'content' => ''
@@ -293,7 +291,7 @@ class SetupCheck {
 
 		// Output forms for different error types are registered with a JSON file.
 		$this->definitions = $this->readFromFile(
-			$GLOBALS['smwgDir'] . '/data/template/setupcheck/setupcheck.json'
+			$GLOBALS['smwgDir'] . '/data/setupcheck/setupcheck.json'
 		);
 
 		// Error messages are specified in a special i18n JSON file to avoid relying
@@ -305,22 +303,6 @@ class SetupCheck {
 		);
 
 		$this->localMessageProvider->loadMessages();
-
-		// HTML specific formatting is contained in the following files where
-		// a defined group of targets correspond to types used in the JSON
-		$this->templateEngine->bulkLoad(
-			[
-				'/setupcheck/setupcheck.ms' => 'setupcheck-html',
-				'/setupcheck/setupcheck.progress.ms' => 'setupcheck-progress',
-
-				// Target specific elements
-				'/setupcheck/setupcheck.section.ms'   => 'section',
-				'/setupcheck/setupcheck.version.ms'   => 'version',
-				'/setupcheck/setupcheck.paragraph.ms' => 'paragraph',
-				'/setupcheck/setupcheck.errorbox.ms'  => 'errorbox',
-				'/setupcheck/setupcheck.db.requirement.ms' => 'db-requirement',
-			]
-		);
 
 		if ( !isset( $this->definitions['error_types'][$this->errorType] ) ) {
 			throw new RuntimeException( "The `{$this->errorType}` type is not defined in the `setupcheck.json`!" );
@@ -354,8 +336,10 @@ class SetupCheck {
 	 * @since 3.1
 	 *
 	 * @param bool $isCli
+	 *
+	 * @return never
 	 */
-	public function showErrorAndAbort( $isCli = false ) {
+	public function showErrorAndAbort( $isCli = false ): void {
 		echo $this->getError( $isCli );
 
 		if ( ob_get_level() ) {
@@ -367,13 +351,13 @@ class SetupCheck {
 		die();
 	}
 
-	private function header( $text ) {
+	private function header( string $text ): void {
 		if ( $this->sentHeader ) {
 			header( $text );
 		}
 	}
 
-	private function createErrorContent( $type ) {
+	private function createErrorContent( string $type ): array {
 		$indicator_title = 'Error';
 		$template = $this->definitions['error_types'][$type];
 		$content = '';
@@ -396,17 +380,7 @@ class SetupCheck {
 					$content .= $this->createProgressIndicator( $value );
 				}
 
-				$args = [
-					'text' => $text,
-					'template' => $value['type']
-				];
-
-				$this->templateEngine->compile(
-					$value['type'],
-					$args
-				);
-
-				$content .= $this->templateEngine->publish( $value['type'] );
+				$content .= $this->renderElement( $value['type'], $text );
 			}
 		}
 
@@ -433,7 +407,7 @@ class SetupCheck {
 		return $error;
 	}
 
-	private function createContent( $value, $type ) {
+	private function createContent( array $value, string $type ): string {
 		if ( $value['text'] === 'ERROR_TEXT' ) {
 			$text = str_replace( "\n", '<br>', $this->errorMessage );
 		} elseif ( $value['text'] === 'ERROR_TEXT_MULTIPLE' ) {
@@ -445,64 +419,80 @@ class SetupCheck {
 			$text = $this->createCopy( $value['text'] );
 		}
 
-		$args = [
-			'text' => $text,
-			'template' => $value['type']
-		];
-
-		if ( $value['type'] === 'version' ) {
-			$args['version-title'] = $text;
-			$args['smw-title'] = 'Semantic MediaWiki';
-			$args['smw-version'] = $this->options['SMW_VERSION'] ?? 'n/a';
-			$args['smw-upgradekey'] = $this->options['smwgUpgradeKey'] ?? 'n/a';
-			$args['mw-title'] = 'MediaWiki';
-			$args['mw-version'] = $this->options['MW_VERSION'] ?? 'n/a';
-			$args['code-title'] = $this->createCopy( 'smw-setupcheck-code' );
-			$args['code-type'] = $type;
-		}
-
-		if ( $value['type'] === 'db-requirement' ) {
-			$requirements = $this->setupFile->get( SetupFile::DB_REQUIREMENTS );
-			$args['version-title'] = $text;
-			$args['db-title'] = $this->createCopy( 'smw-setupcheck-db-title' );
-			$args['db-type'] = $requirements['type'] ?? 'N/A';
-			$args['db-current-title'] = $this->createCopy( 'smw-setupcheck-db-current-title' );
-			$args['db-minimum-title'] = $this->createCopy( 'smw-setupcheck-db-minimum-title' );
-			$args['db-current-version'] = $requirements['latest_version'] ?? 'N/A';
-			$args['db-minimum-version'] = $requirements['minimum_version'] ?? 'N/A';
-		}
-
-		// The type is expected to match a defined target and in an event
-		// that those don't match an exception will be raised.
-		$this->templateEngine->compile(
-			$value['type'],
-			$args
-		);
-
-		return $this->templateEngine->publish( $value['type'] );
+		return $this->renderElement( $value['type'], $text, $type );
 	}
 
-	private function createProgressIndicator( $value ) {
+	/**
+	 * Renders one of the element templates (`section`, `version`, `paragraph`,
+	 * `errorbox`, `db-requirement`) for the given JSON `type`.
+	 */
+	private function renderElement( string $elementType, string $text, string $codeType = '' ): string {
+		// The type is expected to match a defined template and in an event
+		// that those don't match an exception will be raised.
+		if ( !isset( self::TEMPLATE_MAP[$elementType] ) ) {
+			throw new RuntimeException( "The `$elementType` type does not match a known template!" );
+		}
+
+		$viewModel = [
+			'data-template' => $elementType,
+		];
+
+		// `paragraph` and `errorbox` carry pre-rendered markup (raw); `section`
+		// shows a plain escaped heading.
+		if ( $elementType === 'paragraph' || $elementType === 'errorbox' ) {
+			$viewModel['html-text'] = $text;
+		} else {
+			$viewModel['text'] = $text;
+		}
+
+		if ( $elementType === 'version' ) {
+			$viewModel['version-title'] = $text;
+			$viewModel['smw-title'] = 'Semantic MediaWiki';
+			$viewModel['smw-version'] = $this->options['SMW_VERSION'] ?? 'n/a';
+			$viewModel['smw-upgradekey'] = $this->options['smwgUpgradeKey'] ?? 'n/a';
+			$viewModel['mw-title'] = 'MediaWiki';
+			$viewModel['mw-version'] = $this->options['MW_VERSION'] ?? 'n/a';
+			$viewModel['code-title'] = $this->createCopy( 'smw-setupcheck-code' );
+			$viewModel['code-type'] = $codeType;
+		}
+
+		if ( $elementType === 'db-requirement' ) {
+			$requirements = $this->setupFile->get( SetupFile::DB_REQUIREMENTS );
+			$viewModel['version-title'] = $text;
+			$viewModel['db-title'] = $this->createCopy( 'smw-setupcheck-db-title' );
+			$viewModel['db-type'] = $requirements['type'] ?? 'N/A';
+			$viewModel['db-current-title'] = $this->createCopy( 'smw-setupcheck-db-current-title' );
+			$viewModel['db-minimum-title'] = $this->createCopy( 'smw-setupcheck-db-minimum-title' );
+			$viewModel['db-current-version'] = $requirements['latest_version'] ?? 'N/A';
+			$viewModel['db-minimum-version'] = $requirements['minimum_version'] ?? 'N/A';
+		}
+
+		return $this->templateParser->processTemplate(
+			self::TEMPLATE_MAP[$elementType],
+			$viewModel
+		);
+	}
+
+	private function createProgressIndicator( array $value ): string {
 		$maintenanceMode = (array)$this->setupFile->getMaintenanceMode();
 		$content = '';
 
 		foreach ( $maintenanceMode as $key => $v ) {
 
-			$args = [
-				'label' => $key,
-				'value' => $v
-			];
+			$label = $key;
 
 			if ( isset( $value['progress_keys'][$key] ) ) {
-				$args['label'] = $this->createCopy( $value['progress_keys'][$key] );
+				$label = $this->createCopy( $value['progress_keys'][$key] );
 			}
 
-			$this->templateEngine->compile(
-				'setupcheck-progress',
-				$args
+			$content .= $this->templateParser->processTemplate(
+				'Progress',
+				[
+					'data-template' => 'setupcheck-progress',
+					'label' => $label,
+					'value' => $v,
+				]
 			);
-
-			$content .= $this->templateEngine->publish( 'setupcheck-progress' );
 		}
 
 		return $content;
@@ -516,27 +506,23 @@ class SetupCheck {
 		return $default;
 	}
 
-	private function buildHTML( array $error ) {
-		$args = [
-			'logo' => Logo::get( 'small' ),
-			'title' => $error['title'] ?? '',
-			'indicator' => $error['indicator_title'] ?? '',
-			'content' => $error['content'] ?? '',
-			'borderColor' => $error['borderColor'] ?? '#fff',
-			'refresh' => $error['refresh'] ?? '30',
-		];
-
-		$this->templateEngine->compile(
-			'setupcheck-html',
-			$args
+	private function buildHTML( array $error ): string {
+		$html = $this->templateParser->processTemplate(
+			'SetupCheck',
+			[
+				'logo' => Logo::get( 'small' ),
+				'title' => $error['title'] ?? '',
+				'indicator' => $error['indicator_title'] ?? '',
+				'html-content' => $error['content'] ?? '',
+				'borderColor' => $error['borderColor'] ?? '#fff',
+				'refresh' => $error['refresh'] ?? '30',
+			]
 		);
-
-		$html = $this->templateEngine->publish( 'setupcheck-html' );
 
 		// Minify CSS rules, we keep them readable in the template to allow for
 		// better adaption
 		// @see http://manas.tungare.name/software/css-compression-in-php/
-		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( $matches ) {
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( array $matches ): string {
 				// Remove space after colons
 				$style = str_replace( ': ', ':', $matches[0] );
 

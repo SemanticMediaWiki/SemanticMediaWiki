@@ -2,8 +2,9 @@
 
 namespace SMW;
 
-use Onoi\Cache\Cache;
-use Title;
+use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Class provides a simple interface the link independent cache entries as
@@ -37,27 +38,17 @@ class EntityCache {
 	const TTL_YEAR = 31536000; // 365 * 24 * 3600
 
 	/**
-	 * @var Cache
-	 */
-	private $cache = null;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Cache $cache
 	 */
-	public function __construct( Cache $cache ) {
-		$this->cache = $cache;
+	public function __construct( private readonly BagOStuff $cache ) {
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param array ...$params
-	 *
-	 * @return string
+	 * @param string|Title|WikiPage ...$params
 	 */
-	public static function makeCacheKey( ...$params ) {
+	public static function makeCacheKey( ...$params ): string {
 		$namespace = self::CACHE_NAMESPACE;
 
 		if ( is_string( $params[0] ) && $params[0][0] === ':' ) {
@@ -65,10 +56,10 @@ class EntityCache {
 		}
 
 		if ( $params[0] instanceof Title ) {
-			$params[0] = DIWikiPage::newFromTitle( $params[0] );
+			$params[0] = WikiPage::newFromTitle( $params[0] );
 		}
 
-		if ( $params[0] instanceof DIWikiPage ) {
+		if ( $params[0] instanceof WikiPage ) {
 			$params[0] = $params[0]->getHash();
 		}
 
@@ -78,21 +69,10 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array ...$params
-	 *
-	 * @return string
+	 * @param string|Title|WikiPage ...$params
 	 */
-	public function makeKey( ...$params ) {
+	public function makeKey( ...$params ): string {
 		return self::makeCacheKey( ...$params );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @return
-	 */
-	public function getStats() {
-		return $this->cache->getStats();
 	}
 
 	/**
@@ -103,17 +83,16 @@ class EntityCache {
 	 * @return bool
 	 */
 	public function contains( $key ) {
-		return $this->cache->contains( $key );
+		return $this->cache->get( $key ) !== false;
 	}
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param string $key
-	 * @param mixed $value
 	 */
 	public function fetch( $key ) {
-		return $this->cache->fetch( $key );
+		return $this->cache->get( $key );
 	}
 
 	/**
@@ -122,8 +101,8 @@ class EntityCache {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function save( $key, $value = null, $ttl = 0 ) {
-		$this->cache->save( $key, $value, $ttl );
+	public function save( $key, $value = null, $ttl = 0 ): void {
+		$this->cache->set( $key, $value, $ttl );
 	}
 
 	/**
@@ -131,7 +110,7 @@ class EntityCache {
 	 *
 	 * @param string $key
 	 */
-	public function delete( $key ) {
+	public function delete( $key ): void {
 		$this->cache->delete( $key );
 	}
 
@@ -142,14 +121,14 @@ class EntityCache {
 	 * @param mixed $sub
 	 */
 	public function fetchSub( $key, $sub ) {
-		$res = $this->cache->fetch( $key );
+		$res = $this->cache->get( $key );
 		$sub = md5( $sub );
 
 		if ( !is_array( $res ) ) {
 			return false;
 		}
 
-		return isset( $res[$sub] ) ? $res[$sub] : false;
+		return $res[$sub] ?? false;
 	}
 
 	/**
@@ -160,8 +139,8 @@ class EntityCache {
 	 * @param mixed $value
 	 * @param int $ttl
 	 */
-	public function saveSub( $key, $sub, $value = null, $ttl = 0 ) {
-		$res = $this->cache->fetch( $key );
+	public function saveSub( $key, $sub, $value = null, $ttl = 0 ): void {
+		$res = $this->cache->get( $key );
 		$sub = md5( $sub );
 
 		if ( !is_array( $res ) ) {
@@ -170,7 +149,7 @@ class EntityCache {
 
 		$res[$sub] = $value;
 
-		$this->cache->save( $key, $res, $ttl );
+		$this->cache->set( $key, $res, $ttl );
 	}
 
 	/**
@@ -181,12 +160,12 @@ class EntityCache {
 	 * @param mixed $value
 	 * @param int $ttl
 	 */
-	public function overrideSub( $key, $sub, $value = null, $ttl = 0 ) {
+	public function overrideSub( $key, $sub, $value = null, $ttl = 0 ): void {
 		$res = [
 			md5( $sub ) => $value
 		];
 
-		$this->cache->save( $key, $res, $ttl );
+		$this->cache->set( $key, $res, $ttl );
 	}
 
 	/**
@@ -196,8 +175,8 @@ class EntityCache {
 	 * @param string $sub
 	 * @param int $ttl
 	 */
-	public function deleteSub( $key, $sub, $ttl = 0 ) {
-		$res = $this->cache->fetch( $key );
+	public function deleteSub( $key, $sub, $ttl = 0 ): void {
+		$res = $this->cache->get( $key );
 		$sub = md5( $sub );
 
 		if ( !is_array( $res ) ) {
@@ -206,7 +185,7 @@ class EntityCache {
 
 		unset( $res[$sub] );
 
-		$this->cache->save( $key, $res, $ttl );
+		$this->cache->set( $key, $res, $ttl );
 	}
 
 	/**
@@ -215,18 +194,18 @@ class EntityCache {
 	 *
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title $subject
+	 * @param WikiPage|Title $subject
 	 */
-	public function associate( $subject, $key ) {
+	public function associate( $subject, $key ): void {
 		if ( $subject === null ) {
 			return;
 		}
 
 		if ( $subject instanceof Title ) {
-			$subject = DIWikiPage::newFromTitle( $subject );
+			$subject = WikiPage::newFromTitle( $subject );
 		}
 
-		if ( !$subject instanceof DIWikiPage ) {
+		if ( !$subject instanceof WikiPage ) {
 			return;
 		}
 
@@ -234,7 +213,7 @@ class EntityCache {
 		$subject = $subject->asBase();
 
 		$k = $this->makeCacheKey( $subject );
-		$res = $this->cache->fetch( $k );
+		$res = $this->cache->get( $k );
 		$res = $res === false ? [] : $res;
 
 		// Initialize the record that binds the "page" entity to all associated
@@ -250,31 +229,31 @@ class EntityCache {
 		$res['__assoc'][$key] = true;
 
 		// Store without expiry
-		$this->cache->save( $k, $res );
+		$this->cache->set( $k, $res );
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title|null $subject
+	 * @param WikiPage|Title|null $subject
 	 */
-	public function invalidate( $subject = null ) {
+	public function invalidate( $subject = null ): void {
 		if ( $subject === null ) {
 			return;
 		}
 
 		if ( $subject instanceof Title ) {
-			$subject = DIWikiPage::newFromTitle( $subject );
+			$subject = WikiPage::newFromTitle( $subject );
 		}
 
-		if ( !$subject instanceof DIWikiPage ) {
+		if ( !$subject instanceof WikiPage ) {
 			return;
 		}
 
 		$subject = $subject->asBase();
 
 		$k = $this->makeCacheKey( $subject );
-		$res = $this->cache->fetch( $k );
+		$res = $this->cache->get( $k );
 
 		if ( isset( $res['__assoc'] ) ) {
 			foreach ( $res['__assoc'] as $key => $bool ) {

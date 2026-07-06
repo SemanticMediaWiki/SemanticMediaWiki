@@ -71,7 +71,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\">Help:Example/P0904/1</td><td class=\"Has-page smwtype_wpg\">P0904</td>"
+					"<td class=\"smwtype&#95;wpg\">Help:Example/P0904/1</td><td class=\"Has-page smwtype&#95;wpg\">P0904</td>"
 				]
 			}
 		},
@@ -81,10 +81,10 @@
 			"subject": "Example/P0904/3",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\">Help:Example/P0904/1</td><td class=\"Has-page smwtype_wpg\">P0904</td>"
+					"<td class=\"smwtype&#95;wpg\">Help:Example/P0904/1</td><td class=\"Has-page smwtype&#95;wpg\">P0904</td>"
 				],
 				"not-contain": [
-					"<td class=\"smwtype_wpg\">Example/P0904/1</td><td class=\"Has-page smwtype_wpg\">P0904</td>"
+					"<td class=\"smwtype&#95;wpg\">Example/P0904/1</td><td class=\"Has-page smwtype&#95;wpg\">P0904</td>"
 				]
 			}
 		},
@@ -111,7 +111,7 @@
 			"subject": "Example/P0904/4",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\">P0904</td>"
+					"<td class=\"smwtype&#95;wpg\">P0904</td>"
 				]
 			}
 		}

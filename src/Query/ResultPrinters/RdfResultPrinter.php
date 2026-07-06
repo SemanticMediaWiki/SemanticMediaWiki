@@ -2,7 +2,9 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
@@ -27,13 +29,22 @@ class RdfResultPrinter extends FileExportPrinter {
 	}
 
 	/**
+	 * @see ResultPrinter::dependsOnUserLanguage
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return false;
+	}
+
+	/**
 	 * @see FileExportPrinter::getMimeType
 	 *
 	 * @since 1.8
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		if ( ( $this->params['syntax'] ?? '' ) === 'turtle' ) {
 			return 'application/x-turtle';
 		}
@@ -48,7 +59,7 @@ class RdfResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		return $this->params['syntax'] === 'turtle' ? 'result.ttl' : 'result.rdf';
 	}
 
@@ -59,7 +70,7 @@ class RdfResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$definitions = parent::getParamDefinitions( $definitions );
 
 		$definitions['limit']->setDefault( 100 );
@@ -86,7 +97,7 @@ class RdfResultPrinter extends FileExportPrinter {
 			return $this->getRdfLink( $res, $outputMode );
 		}
 
-		return $this->makeExport( $res, $outputMode );
+		return $this->makeExport( $res );
 	}
 
 	private function getRdfLink( QueryResult $res, $outputMode ) {
@@ -101,7 +112,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function makeExport( QueryResult $res, $outputMode ) {
+	private function makeExport( QueryResult $res ): string {
 		$exporterFactory = new ExporterFactory();
 		$exporter = $exporterFactory->getExporter();
 
@@ -119,8 +130,10 @@ class RdfResultPrinter extends FileExportPrinter {
 			$expDataFactory->newOntologyExpData( '' )
 		);
 
-		while ( $row = $res->getNext() ) {
+		$row = $res->getNext();
+		while ( $row ) {
 			$serializer->serializeExpData( $this->makeExportData( $exporter, $row ) );
+			$row = $res->getNext();
 		}
 
 		$serializer->finishSerialization();
@@ -128,7 +141,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $serializer->flushContent();
 	}
 
-	private function makeExportData( $exporter, $row ) {
+	private function makeExportData( Exporter $exporter, array $row ): ExpData {
 		$subject = reset( $row )->getResultSubject();
 		$expData = $exporter->makeExportDataForSubject( $subject );
 
@@ -141,7 +154,7 @@ class RdfResultPrinter extends FileExportPrinter {
 					$property = $printRequest->getData()->getDataItem();
 					break;
 				case PrintRequest::PRINT_CATS:
-					$property = new DIProperty( '_TYPE' );
+					$property = new Property( '_TYPE' );
 					break;
 				case PrintRequest::PRINT_CCAT:
 					// not serialised right now

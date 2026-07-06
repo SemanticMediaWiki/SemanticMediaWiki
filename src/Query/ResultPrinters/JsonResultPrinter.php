@@ -9,7 +9,7 @@ use SMW\Query\QueryResult;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:JSON_format
  *
- * @license GNU GPL v2 or later
+ * @license GPL-2.0-or-later
  * @since 1.5.3
  *
  * @author mwjames
@@ -30,13 +30,22 @@ class JsonResultPrinter extends FileExportPrinter {
 	}
 
 	/**
+	 * @see ResultPrinter::dependsOnUserLanguage
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dependsOnUserLanguage(): bool {
+		return false;
+	}
+
+	/**
 	 * @see FileExportPrinter::getMimeType
 	 *
 	 * @since 1.8
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return 'application/json';
 	}
 
@@ -47,7 +56,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		if ( $this->params['filename'] === '' ) {
 			return 'result.json';
 		}
@@ -66,7 +75,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['searchlabel']->setDefault( $this->msg( 'smw_json_link' )->inContentLanguage()->text() );
@@ -115,7 +124,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			return $this->params['default'] !== '' ? $this->params['default'] : '';
 		}
 
-		return $this->buildJSON( $res, $outputMode );
+		return $this->buildJSON( $res );
 	}
 
 	private function getJsonLink( QueryResult $res, $outputMode ) {
@@ -130,9 +139,13 @@ class JsonResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function buildJSON( QueryResult $res, $outputMode ) {
-		$flags = isset( $this->params['prettyprint'] ) && $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
-		$flags = $flags | ( isset( $this->params['unescape'] ) && $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
+	private function buildJSON( QueryResult $res ): string|false {
+		$flags = isset( $this->params['prettyprint'] ) && $this->params['prettyprint']
+			? JSON_PRETTY_PRINT
+			: 0;
+		$flags |= isset( $this->params['unescape'] ) && $this->params['unescape']
+			? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+			: 0;
 
 		if ( isset( $this->params['type'] ) && $this->params['type'] === 'simple' ) {
 			$result = $this->buildSimpleList( $res );
@@ -143,14 +156,18 @@ class JsonResultPrinter extends FileExportPrinter {
 		return json_encode( $result, $flags );
 	}
 
-	private function buildSimpleList( $res ) {
+	/**
+	 * @return list[][]
+	 */
+	private function buildSimpleList( QueryResult $res ): array {
 		$result = [];
 
-		while ( $row = $res->getNext() ) {
+		$row = $res->getNext();
+		while ( $row ) {
 			$item = [];
 			$subject = '';
 
-			foreach ( $row as /* ResultArray */ $field ) {
+			foreach ( $row as $field ) {
 				$label = $field->getPrintRequest()->getLabel();
 
 				if ( $label === '' ) {
@@ -160,8 +177,10 @@ class JsonResultPrinter extends FileExportPrinter {
 				$values = [];
 				$subject = $field->getResultSubject()->getHash();
 
-				while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
+				$dataValue = $field->getNextDataValue();
+				while ( $dataValue !== false ) {
 					$values[] = $dataValue->getWikiValue();
+					$dataValue = $field->getNextDataValue();
 				}
 
 				$item[$label] = $values;
@@ -172,6 +191,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			} else {
 				$result[$subject] = $item;
 			}
+			$row = $res->getNext();
 		}
 
 		return $result;

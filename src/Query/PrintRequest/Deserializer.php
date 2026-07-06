@@ -3,12 +3,12 @@
 namespace SMW\Query\PrintRequest;
 
 use InvalidArgumentException;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,7 +34,7 @@ class Deserializer {
 	 *
 	 * @return PrintRequest|null
 	 */
-	public static function deserialize( $text, array $options = [] ) {
+	public static function deserialize( $text, array $options = [] ): ?PrintRequest {
 		$showMode = false;
 		$useCanonicalLabel = false;
 
@@ -126,10 +126,11 @@ class Deserializer {
 
 		// label found, use this instead of default
 		if ( count( $parts ) > 1 ) {
-				$label = trim( $parts[1] );
+			$label = trim( $parts[1] );
 		}
 
 		if ( $printmode === PrintRequest::PRINT_THIS ) {
+
 			// Cover the case of `?#Test=#-`
 			if ( strrpos( $label, '#' ) !== false ) {
 				[ $label, $outputFormat ] = explode( '#', $label );
@@ -144,7 +145,7 @@ class Deserializer {
 		try {
 			$printRequest = new PrintRequest( $printmode, $label, $data, trim( $outputFormat ?? '' ) );
 			$printRequest->markThisLabel( $text );
-		} catch ( InvalidArgumentException $e ) {
+		} catch ( InvalidArgumentException ) {
 			// something still went wrong; give up
 			$printRequest = null;
 		}
@@ -152,7 +153,7 @@ class Deserializer {
 		return $printRequest;
 	}
 
-	private static function isCategory( $text ) {
+	private static function isCategory( $text ): bool {
 		$text = mb_convert_case( $text, MB_CASE_TITLE );
 
 		// Check for the canonical form (singular, plural)
@@ -163,7 +164,7 @@ class Deserializer {
 		return Localizer::getInstance()->getNsText( NS_CATEGORY ) == $text;
 	}
 
-	private static function getPartsFromText( $text ) {
+	private static function getPartsFromText( $text ): array {
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
 		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", static function ( $matches ) {
@@ -187,4 +188,5 @@ class Deserializer {
 
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
 	}
+
 }

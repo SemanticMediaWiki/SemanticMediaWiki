@@ -14,20 +14,7 @@ use SMW\Utils\CliMsgFormatter;
  */
 class Importer implements MessageReporterAware {
 
-	/**
-	 * @var ContentIterator
-	 */
-	private $contentIterator;
-
-	/**
-	 * @var ContentCreator
-	 */
-	private $contentCreator;
-
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private ?MessageReporter $messageReporter = null;
 
 	/**
 	 * @var bool
@@ -39,20 +26,15 @@ class Importer implements MessageReporterAware {
 	 */
 	private $reqVersion = false;
 
-	/**
-	 * @var ?string
-	 */
-	private $importer;
+	private ?string $importer = null;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param ContentIterator $contentIterator
-	 * @param ContentCreator $contentCreator
 	 */
-	public function __construct( ContentIterator $contentIterator, ContentCreator $contentCreator ) {
-		$this->contentIterator = $contentIterator;
-		$this->contentCreator = $contentCreator;
+	public function __construct(
+		private readonly ContentIterator $contentIterator,
+		private readonly ContentCreator $contentCreator,
+	) {
 	}
 
 	/**
@@ -62,7 +44,7 @@ class Importer implements MessageReporterAware {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -71,7 +53,7 @@ class Importer implements MessageReporterAware {
 	 *
 	 * @param bool $isEnabled
 	 */
-	public function isEnabled( $isEnabled ) {
+	public function isEnabled( $isEnabled ): void {
 		$this->isEnabled = $isEnabled;
 	}
 
@@ -80,14 +62,14 @@ class Importer implements MessageReporterAware {
 	 *
 	 * @param int|bool $reqVersion
 	 */
-	public function setReqVersion( $reqVersion ) {
+	public function setReqVersion( $reqVersion ): void {
 		$this->reqVersion = $reqVersion;
 	}
 
 	/**
 	 * @since 4.0
 	 */
-	public function setImporter( string $importer ) {
+	public function setImporter( string $importer ): void {
 		$this->importer = $importer;
 	}
 
@@ -132,7 +114,7 @@ class Importer implements MessageReporterAware {
 		}
 	}
 
-	private function doImport( ImportContents $importContents ) {
+	private function doImport( ImportContents $importContents ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $importContents->getErrors() === [] ) {

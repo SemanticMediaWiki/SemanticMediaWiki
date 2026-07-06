@@ -3,8 +3,11 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use SMW\IteratorFactory;
+use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use stdClass;
 
 /**
  * @private
@@ -17,53 +20,35 @@ use SMW\Store;
 class QueryLinksTableDisposer {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
-	/**
-	 * @var bool
-	 */
-	private $waitForReplication = false;
+	private bool $waitForReplication = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IteratorFactory $iteratorFactory,
+	) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = true;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function waitForReplication() {
+	public function waitForReplication(): void {
 		$this->waitForReplication = true;
 	}
 
@@ -72,19 +57,14 @@ class QueryLinksTableDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedQueryLinksResultIterator() {
-		$res = $this->connection->select(
-			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
-			's_id as id',
-			[
-				"smw_subobject=''"
-			],
-			__METHOD__,
-			[],
-			[
-				SQLStore::QUERY_LINKS_TABLE => [ 'INNER JOIN', "s_id=smw_id" ]
-			]
-		);
+	public function newOutdatedQueryLinksResultIterator(): ResultIterator {
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( [ 'id' => 's_id' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->join( SQLStore::ID_TABLE, null, [ 's_id=smw_id' ] )
+			->where( [ "smw_subobject=''" ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->iteratorFactory->newResultIterator( $res );
 	}
@@ -97,19 +77,14 @@ class QueryLinksTableDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newUnassignedQueryLinksResultIterator() {
-		$res = $this->connection->select(
-			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
-			's_id as id',
-			[
-				"smw_id IS NULL"
-			],
-			__METHOD__,
-			[],
-			[
-				SQLStore::ID_TABLE => [ 'LEFT JOIN', "smw_id=s_id" ]
-			]
-		);
+	public function newUnassignedQueryLinksResultIterator(): ResultIterator {
+		$res = $this->connection->newSelectQueryBuilder()
+			->select( [ 'id' => 's_id' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->leftJoin( SQLStore::ID_TABLE, null, [ 'smw_id=s_id' ] )
+			->where( [ 'smw_id IS NULL' ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		return $this->iteratorFactory->newResultIterator( $res );
 	}
@@ -127,24 +102,20 @@ class QueryLinksTableDisposer {
 		}
 
 		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ) {
-				$this->connection->delete(
-					SQLStore::QUERY_LINKS_TABLE,
-					[
-						's_id' => $id
-					],
-					$fname
-				);
+			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ): void {
+				$this->connection->newDeleteQueryBuilder()
+					->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+					->where( [ 's_id' => $id ] )
+					->caller( $fname )
+					->execute();
 			} );
 		}
 
-		$this->connection->delete(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				's_id' => $id
-			],
-			$fname
-		);
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $id ] )
+			->caller( $fname )
+			->execute();
 	}
 
 }

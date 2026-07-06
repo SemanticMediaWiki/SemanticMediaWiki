@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\JobQueue;
 
 /**
@@ -14,17 +14,9 @@ use SMW\MediaWiki\JobQueue;
 class JobListTask extends Task {
 
 	/**
-	 * @var JobQueue
-	 */
-	private $jobQueue;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param JobQueue $jobQueue
 	 */
-	public function __construct( JobQueue $jobQueue ) {
-		$this->jobQueue = $jobQueue;
+	public function __construct( private readonly JobQueue $jobQueue ) {
 	}
 
 	/**
@@ -34,12 +26,12 @@ class JobListTask extends Task {
 	 *
 	 * @return array
 	 */
-	public function process( array $parameters ) {
+	public function process( array $parameters ): array {
 		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}
 
-		$subject = DIWikiPage::doUnserialize( $parameters['subject'] );
+		$subject = WikiPage::doUnserialize( $parameters['subject'] );
 		$title = $subject->getTitle();
 
 		if ( $title === null ) {

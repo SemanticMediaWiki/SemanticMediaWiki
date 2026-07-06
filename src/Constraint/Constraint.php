@@ -55,6 +55,6 @@ interface Constraint {
 	 * @param array $constraint
 	 * @param mixed $value
 	 */
-	public function checkConstraint( array $constraint, $value );
+	public function checkConstraint( array $constraint, $value ): void;
 
 }

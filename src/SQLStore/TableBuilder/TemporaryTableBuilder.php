@@ -14,23 +14,12 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class TemporaryTableBuilder {
 
-	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var bool
-	 */
-	private $autoCommitFlag = false;
+	private bool $autoCommitFlag = false;
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly Database $connection ) {
 	}
 
 	/**
@@ -39,7 +28,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @param bool $autoCommitFlag
 	 */
-	public function setAutoCommitFlag( $autoCommitFlag ) {
+	public function setAutoCommitFlag( $autoCommitFlag ): void {
 		$this->autoCommitFlag = (bool)$autoCommitFlag;
 	}
 
@@ -48,13 +37,18 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function create( $tableName ) {
+	public function create( $tableName ): void {
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
 
+		// Resolve the bare logical name through tableName() so the temp table
+		// lives at the prefix-applied physical name, matching what MW core's
+		// QueryBuilder produces when consumers reference it later.
+		$resolvedName = $this->connection->tableName( $tableName );
+
 		$this->connection->query(
-			$this->getSQLCodeFor( $tableName ),
+			$this->getSQLCodeFor( $resolvedName ),
 			__METHOD__,
 			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
@@ -65,13 +59,28 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function drop( $tableName ) {
+	public function drop( string $tableName ): void {
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
 
+		// Resolve the bare logical name through tableName() so we drop the
+		// prefix-applied physical name. See create() for the rationale.
+		$resolvedName = $this->connection->tableName( $tableName );
+
+		// Platform-specific DDL: MySQL has DROP TEMPORARY TABLE; Postgres
+		// uses plain DROP TABLE IF EXISTS (the temp-table scope handles
+		// teardown); SQLite uses plain DROP TABLE.
+		if ( $this->connection->isType( 'postgres' ) ) {
+			$sql = 'DROP TABLE IF EXISTS ' . $resolvedName;
+		} elseif ( $this->connection->isType( 'sqlite' ) ) {
+			$sql = 'DROP TABLE ' . $resolvedName;
+		} else {
+			$sql = 'DROP TEMPORARY TABLE ' . $resolvedName;
+		}
+
 		$this->connection->query(
-			"DROP TEMPORARY TABLE " . $tableName,
+			$sql,
 			__METHOD__,
 			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
@@ -91,7 +100,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @return string
 	 */
-	private function getSQLCodeFor( $tableName ) {
+	private function getSQLCodeFor( $tableName ): string {
 		// PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
 		if ( $this->connection->isType( 'postgres' ) ) {
 
@@ -109,8 +118,21 @@ class TemporaryTableBuilder {
 				. "END\$\$";
 		}
 
-		// MySQL_ just a temporary table, use INSERT IGNORE later
-		return "CREATE TEMPORARY TABLE IF NOT EXISTS " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
+		// SQLite: use TEMPORARY rather than the TEMP synonym SQLite also
+		// accepts, and no engine clause. MediaWiki's rdbms Query verb parser
+		// only recognises `CREATE TEMPORARY` as temporary-table creation; with
+		// `CREATE TEMP` the table is never registered as temporary, so later
+		// INSERT/DELETE into it are accounted as permanent primary writes.
+		// `INTEGER PRIMARY KEY` is a SQLite-specific rowid alias: the column
+		// accepts explicit values supplied via INSERT (HierarchyTempTableBuilder
+		// supplies them) and rejects duplicates, so dedup later via
+		// INSERT OR IGNORE works without an extra constraint clause.
+		if ( $this->connection->isType( 'sqlite' ) ) {
+			return 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tableName . ' ( id INTEGER PRIMARY KEY )';
+		}
+
+		// MySQL: temporary memory table; dedup via INSERT IGNORE later.
+		return 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tableName . '( id INT UNSIGNED KEY ) ENGINE=MEMORY';
 	}
 
 }

@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Localizer\CopyLocalMessages;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -24,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class runLocalMessageCopy extends \Maintenance {
+class runLocalMessageCopy extends Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -49,8 +50,6 @@ class runLocalMessageCopy extends \Maintenance {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param MessageReporter $messageReporter
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ) {
 		$this->messageReporter = $messageReporter;
@@ -73,7 +72,8 @@ class runLocalMessageCopy extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+		$maintenanceCheck = new MaintenanceCheck();
+		if ( !$maintenanceCheck->canExecute() ) {
 			exit( $maintenanceCheck->getMessage() );
 		}
 
@@ -125,17 +125,17 @@ class runLocalMessageCopy extends \Maintenance {
 		$this->reportMessage( "Reading files ...\n" );
 
 		if ( $this->hasOption( 'copy-canonicalmessages' ) ) {
-			$this->copyCanonicalMessages();
+			$this->copyCanonicalMessages( $cliMsgFormatter, $file );
 		}
 
 		if ( $this->hasOption( 'copy-translatedmessages' ) ) {
-			$this->copyTranslatedMessages();
+			$this->copyTranslatedMessages( $cliMsgFormatter, $file );
 		}
 
 		$this->reportMessage( "   ... done.\n" );
 	}
 
-	private function copyCanonicalMessages() {
+	private function copyCanonicalMessages( $cliMsgFormatter, $file ) {
 		$this->reportMessage(
 			$cliMsgFormatter->firstCol( "... copy `$file` messages to canonical `en.json` ...", 3 )
 		);
@@ -151,7 +151,7 @@ class runLocalMessageCopy extends \Maintenance {
 		);
 	}
 
-	private function copyTranslatedMessages() {
+	private function copyTranslatedMessages( $cliMsgFormatter, $file ) {
 		$this->reportMessage(
 			$cliMsgFormatter->firstCol( "... copy i18n messages to the `$file`", 3 )
 		);

@@ -2,17 +2,19 @@
 
 namespace SMW\MediaWiki\Renderer;
 
-use Html;
-use SMW\MediaWiki\MessageBuilder;
-use Title;
-use Xml;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Navigation\PagerNavigationBuilder;
+use MediaWiki\Title\Title;
+use MediaWiki\Xml\Xml;
 
 /**
  * Convenience class to build a html form by using a fluid interface
  *
  * @par Example:
  * @code
- * $htmlFormRenderer = new HtmlFormRenderer( $this->title, new MessageBuilder() );
+ * $htmlFormRenderer = new HtmlFormRenderer( $this->title, $this->getLanguage() );
  * $htmlFormRenderer
  * 	->setName( 'Foo' )
  * 	->setParameter( 'foo', 'someValue' )
@@ -30,68 +32,33 @@ use Xml;
  */
 class HtmlFormRenderer {
 
-	/**
-	 * @var Title
-	 */
-	private $title = null;
+	private array $queryParameters = [];
 
-	/**
-	 * @var MessageBuilder
-	 */
-	private $messageBuilder = null;
+	private string $name = '';
 
-	/**
-	 * @var array
-	 */
-	private $queryParameters = [];
+	private string|bool $method = false;
 
-	/**
-	 * @var string
-	 */
-	private $name = '';
+	private bool $useFieldset = false;
 
-	/**
-	 * @var string|bool
-	 */
-	private $method = false;
+	private string|bool $actionUrl = false;
 
-	/**
-	 * @var string|bool
-	 */
-	private $useFieldset = false;
+	private array $content = [];
 
-	/**
-	 * @var string|bool
-	 */
-	private $actionUrl = false;
-
-	/**
-	 * @var string[]
-	 */
-	private $content = [];
-
-	/**
-	 * @var string
-	 */
-	private $defaultPrefix = 'smw-form';
+	private string $defaultPrefix = 'smw-form';
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Title $title
-	 * @param MessageBuilder $messageBuilder
 	 */
-	public function __construct( Title $title, MessageBuilder $messageBuilder ) {
-		$this->title = $title;
-		$this->messageBuilder = $messageBuilder;
+	public function __construct(
+		private readonly Title $title,
+		private readonly Language $language,
+	) {
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function clear() {
+	public function clear(): static {
 		$this->queryParameters = [];
 		$this->content = [];
 		$this->name = '';
@@ -103,91 +70,63 @@ class HtmlFormRenderer {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @return MessageBuilder
+	 * @since 7.0.0
 	 */
-	public function getMessageBuilder() {
-		return $this->messageBuilder;
+	public function getLanguage(): Language {
+		return $this->language;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $name
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function setName( $name ) {
+	public function setName( string $name ): static {
 		$this->name = $name;
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $actionUrl
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function setActionUrl( $actionUrl ) {
+	public function setActionUrl( string $actionUrl ): static {
 		$this->actionUrl = $actionUrl;
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function withFieldset() {
+	public function withFieldset(): static {
 		$this->useFieldset = true;
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $method
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function setMethod( $method ) {
+	public function setMethod( string $method ): static {
 		$this->method = strtolower( $method );
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $key
-	 * @param string $value
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addQueryParameter( $key, $value ) {
+	public function addQueryParameter( string $key, mixed $value ): static {
 		$this->queryParameters[$key] = $value;
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return array
 	 */
-	public function getQueryParameter() {
+	public function getQueryParameter(): array {
 		return $this->queryParameters;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $text
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addParagraph( $text, $attributes = [] ) {
+	public function addParagraph( string $text, array $attributes = [] ): static {
 		if ( $attributes === [] ) {
 			$attributes = [ 'class' => $this->defaultPrefix . '-paragraph' ];
 		}
@@ -198,12 +137,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addHorizontalRule( $attributes = [] ) {
+	public function addHorizontalRule( array $attributes = [] ): static {
 		if ( $attributes === [] ) {
 			$attributes = [ 'class' => $this->defaultPrefix . '-horizontalrule' ];
 		}
@@ -214,13 +149,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param $level
-	 * @param $text
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addHeader( $level, $text, $attributes = [] ) {
+	public function addHeader( string $level, string $text, array $attributes = [] ): static {
 		$level = strtolower( $level );
 		$level = in_array( $level, [ 'h2', 'h3', 'h4' ] ) ? $level : 'h2';
 
@@ -230,75 +160,55 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addLineBreak() {
+	public function addLineBreak(): static {
 		$this->content[] = Html::element( 'br', [], '' );
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addNonBreakingSpace() {
+	public function addNonBreakingSpace(): static {
 		$this->content[] = '&nbsp;';
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string|null $text
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addSubmitButton( $text, $attributes = [] ) {
-		$this->content[] = Xml::submitButton( $text, $attributes );
+	public function addSubmitButton( ?string $text = null, array $attributes = [] ): static {
+		$this->content[] = Html::submitButton( $text ?? '', $attributes );
 		return $this;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $element
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function openElement( $element = 'div', array $attributes = [] ) {
+	public function openElement( string $element = 'div', array $attributes = [] ): static {
 		$this->content[] = Html::openElement( $element, $attributes );
 		return $this;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $element
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function closeElement( $element = 'div', array $attributes = [] ) {
+	public function closeElement( string $element = 'div' ): static {
 		$this->content[] = Html::closeElement( $element );
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $label
-	 * @param string $name
-	 * @param string $value
-	 * @param string|null $id
-	 * @param int $size
-	 * @param array $attributes
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addInputField( $label, $name, $value, $id = null, $size = 20, array $attributes = [] ) {
+	public function addInputField(
+		?string $label,
+		string $name,
+		mixed $value,
+		?string $id = null,
+		int $size = 20,
+		array $attributes = []
+	): static {
 		if ( $id === null ) {
 			$id = $name;
 		}
@@ -309,8 +219,8 @@ class HtmlFormRenderer {
 			$attributes['class'] = $this->defaultPrefix . '-input';
 		}
 
-		$label = Xml::label( $label, $id, [] );
-		$input = Xml::input( $name, $size, $value, [ 'id' => $id ] + $attributes );
+		$label = Html::label( $label, $id, [] );
+		$input = Html::input( $name, $value, 'text', [ 'size' => $size, 'id' => $id ] + $attributes );
 
 		$this->content[] = $label . '&#160;' . $input;
 
@@ -319,13 +229,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $inputName
-	 * @param string $inputValue
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addHiddenField( $inputName, $inputValue ) {
+	public function addHiddenField( string $inputName, string $inputValue ): static {
 		$this->addQueryParameter( $inputName, $inputValue );
 
 		$this->content[] = Html::hidden( $inputName, $inputValue );
@@ -334,16 +239,14 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $label
-	 * @param string $inputName
-	 * @param string $inputValue
-	 * @param array $options
-	 * @param string|null $id
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addOptionSelectList( $label, $inputName, $inputValue, $options, $id = null ) {
+	public function addOptionSelectList(
+		string $label,
+		string $inputName,
+		string $inputValue,
+		array $options,
+		?string $id = null
+	): static {
 		if ( $id === null ) {
 			$id = $inputName;
 		}
@@ -382,23 +285,22 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $label
-	 * @param string $inputName
-	 * @param string $inputValue
-	 * @param bool $isChecked
-	 * @param string|null $id
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null, $attributes = [] ) {
+	public function addCheckbox(
+		string $label,
+		string $inputName,
+		string $inputValue,
+		bool $isChecked = false,
+		?string $id = null,
+		array $attributes = []
+	): static {
 		if ( $id === null ) {
 			$id = $inputName;
 		}
 
 		$this->addQueryParameter( $inputName, $inputValue );
 
-		$html = Xml::checkLabel(
+		$html = HtmlUtil::checkLabel(
 			$label,
 			$inputName,
 			$id,
@@ -407,7 +309,7 @@ class HtmlFormRenderer {
 				'id' => $id,
 				'class' => $this->defaultPrefix . '-checkbox',
 				'value' => $inputValue
-			] + ( $isChecked ? [ 'checked' => 'checked' ] : [] )
+			]
 		);
 
 		$this->content[] = Html::rawElement( 'span', $attributes, $html );
@@ -419,36 +321,44 @@ class HtmlFormRenderer {
 	 *
 	 * @note Encapsulate as closure to ensure that the build contains all query
 	 * parameters that are necessary to build the paging links
-	 *
-	 * @param int $limit
-	 * @param int $offset
-	 * @param int $count
-	 * @param int|null $messageCount
-	 *
-	 * @return HtmlFormRenderer
 	 */
-	public function addPaging( $limit, $offset, $count, $messageCount = null ) {
+	public function addPaging(
+		int $limit,
+		int $offset,
+		int $count,
+		?int $messageCount = null
+	): static {
 		$title = $this->title;
 
-		$this->content[] = static function ( $instance ) use ( $title, $limit, $offset, $count, $messageCount ) {
+		$this->content[] = static function ( $instance ) use ( $title, $limit, $offset, $count, $messageCount ): string {
 			if ( $messageCount === null ) {
 				$messageCount = ( $count > $limit ? $count - 1 : $count );
 			}
 
-			$resultCount = $instance->getMessageBuilder()
-				->getMessage( 'showingresults' )
-				->numParams( $messageCount, (int)$offset + 1 )
+			$resultCount = wfMessage( 'smw-showingresults' )
+				->inLanguage( $instance->getLanguage() )
+				->numParams( $messageCount, $offset + 1 )
 				->parse();
 
-			$paging = $instance->getMessageBuilder()->prevNextToText(
-				$title,
-				$limit,
-				$offset,
-				$instance->getQueryParameter(),
-				$count < $limit
-			);
+			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+			$navBuilder
+				->setPage( $title )
+				->setLinkQuery( [ 'limit' => $limit, 'offset' => $offset ] + $instance->getQueryParameter() )
+				->setLimitLinkQueryParam( 'limit' )
+				->setCurrentLimit( $limit )
+				->setPrevTooltipMsg( 'prevn-title' )
+				->setNextTooltipMsg( 'nextn-title' )
+				->setLimitTooltipMsg( 'shown-title' );
 
-			return Xml::tags( 'p', [], $resultCount ) . Xml::tags( 'p', [], $paging );
+			if ( $offset > 0 ) {
+				$navBuilder->setPrevLinkQuery( [ 'offset' => (string)max( $offset - $limit, 0 ) ] );
+			}
+
+			if ( $count >= $limit ) {
+				$navBuilder->setNextLinkQuery( [ 'offset' => (string)( $offset + $limit ) ] );
+			}
+
+			return Xml::tags( 'p', [], $resultCount ) . Xml::tags( 'p', [], $navBuilder->getHtml() );
 		};
 
 		return $this;
@@ -456,10 +366,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return string
 	 */
-	public function getForm() {
+	public function getForm(): string {
 		$content = '';
 
 		foreach ( $this->content as $value ) {
@@ -467,8 +375,8 @@ class HtmlFormRenderer {
 		}
 
 		if ( $this->useFieldset ) {
-			$content = Xml::fieldset(
-				$this->messageBuilder->getMessage( $this->name )->text(),
+			$content = HtmlUtil::fieldset(
+				wfMessage( $this->name )->inLanguage( $this->language )->text(),
 				$content,
 				[
 					'id' => $this->defaultPrefix . "-fieldset-{$this->name}"
@@ -480,7 +388,7 @@ class HtmlFormRenderer {
 			'id'     => $this->defaultPrefix . "-{$this->name}",
 			'name'   => $this->name,
 			'method' => in_array( $this->method, [ 'get', 'post' ] ) ? $this->method : 'get',
-			'action' => htmlspecialchars( $this->actionUrl ? $this->actionUrl : $GLOBALS['wgScript'] )
+			'action' => $this->actionUrl ?: $GLOBALS['wgScript']
 		], Html::hidden(
 			'title',
 			strtok( $this->title->getPrefixedText() ?? '', '/' )
@@ -493,10 +401,8 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return string
 	 */
-	public function renderForm() {
+	public function renderForm(): string {
 		return $this->getForm();
 	}
 

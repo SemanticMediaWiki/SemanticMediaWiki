@@ -24,8 +24,8 @@ class UniquenessConstraintValue extends BooleanValue {
 	 *
 	 * @param string $userValue
 	 */
-	protected function parseUserValue( $userValue ) {
-		if ( !$this->isEnabledFeature( SMW_DV_PVUC ) ) {
+	protected function parseUserValue( $userValue ): void {
+		if ( !$this->hasFeature( SMW_DV_PVUC ) ) {
 			$this->addErrorMsg(
 				[
 					'smw-datavalue-feature-not-supported',

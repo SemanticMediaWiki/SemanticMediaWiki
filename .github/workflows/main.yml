@@ -7,82 +7,147 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  PHP_EXTENSIONS: pcntl
+
 jobs:
-  build:
-
+  # Static analysis. phpcs, phan and minus-x are version-independent: phan
+  # targets PHP 8.1 via .phan/config.php and the phpcs ruleset has no
+  # PHPCompatibility/testVersion, so the full set (composer analyze:ci) runs
+  # once on the primary version. parallel-lint parses with the host PHP, so it
+  # IS version-dependent and runs on every supported PHP version (lint only on
+  # the non-primary legs).
+  static-analysis:
+    name: Static analysis (MW ${{ matrix.mw }}, PHP ${{ matrix.php }}, ${{ matrix.db }})
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
-
     strategy:
+      fail-fast: false
       matrix:
         include:
-          - mediawiki_version: '1.39'
-            php_version: 8.1
-            database_type: mysql
-            database_image: "mariadb:11.2"
-            coverage: false
-            experimental: false
-          - mediawiki_version: '1.39'
-            php_version: 8.1
-            database_type: mysql
-            database_image: "mysql:8"
-            coverage: false
-            experimental: false
-          - mediawiki_version: '1.40'
-            php_version: 8.1
-            database_type: mysql
-            database_image: "mariadb:11.2"
-            coverage: false
-            experimental: false
-          - mediawiki_version: '1.41'
-            php_version: 8.1
-            database_type: mysql
-            database_image: "mariadb:11.2"
-            coverage: true
-            experimental: false
-          - mediawiki_version: '1.42'
-            php_version: 8.2
-            database_type: mysql
-            database_image: "mariadb:11.2"
-            coverage: false
-            experimental: true
-          - mediawiki_version: '1.43'
-            php_version: 8.2
-            database_type: mysql
-            database_image: "mariadb:11.2"
-            coverage: false
-            experimental: true
-            
+          - { mw: '1.43', php: 8.2, db: "mariadb:10.11", full: true }
+          - { mw: '1.44', php: 8.3, db: "mariadb:11.8", full: false }
+          - { mw: '1.45', php: 8.4, db: "mariadb:12.3", full: false }
+          - { mw: '1.46-dev-26e9b33', php: 8.5, db: "mariadb:12.3", full: false }
     env:
-      MW_VERSION: ${{ matrix.mediawiki_version }}
-      PHP_VERSION: ${{ matrix.php_version }}
-      DB_TYPE: ${{ matrix.database_type }}
-      DB_IMAGE: ${{ matrix.database_image }}
-
+      MW_VERSION: ${{ matrix.mw }}
+      PHP_VERSION: ${{ matrix.php }}
+      DB_TYPE: mysql
+      DB_IMAGE: ${{ matrix.db }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
-                   
+
       - name: Update submodules
         run: git submodule update --init --remote
 
-      - name: Run tests
-        run: make ci
-        if: matrix.coverage == false
+      - name: Build image and install MediaWiki
+        run: make install
 
-      - name: Run unit tests with coverage
-        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite=semantic-mediawiki-unit"
-        if: matrix.coverage == true
+      - name: Run static analysis
+        run: |
+          set -e
+          CID=$(docker ps -q \
+            --filter "label=com.docker.compose.project=semanticmediawiki-mysql" \
+            --filter "label=com.docker.compose.service=wiki")
+          if [ -z "$CID" ]; then echo "wiki container not found"; exit 1; fi
+          if [ "${{ matrix.full }}" = "true" ]; then
+            docker exec -w /var/www/html/extensions/SemanticMediaWiki "$CID" composer analyze:ci
+          else
+            docker exec -w /var/www/html/extensions/SemanticMediaWiki "$CID" composer lint
+          fi
+
+  # Unit and integration tests per PHP/MediaWiki version. Unit and integration
+  # run as SEPARATE phpunit invocations: MediaWikiUnitTestCase does not restore
+  # globals, so sharing a process leaves config drift that fails integration
+  # assertions (e.g. ConfigDefaultsParityTest). The integration suite runs as
+  # one unit; it has inter-test ordering dependencies (fulltext index state,
+  # query-result cache) that make splitting it by directory unsafe.
+  tests:
+    name: Test (MW ${{ matrix.mw }}, PHP ${{ matrix.php }}, ${{ matrix.db }})
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental == true }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { mw: '1.43', php: 8.2, db: "mariadb:10.11" }
+          - { mw: '1.43', php: 8.2, db: "mysql:8" }
+          - { mw: '1.44', php: 8.3, db: "mariadb:11.8" }
+          - { mw: '1.45', php: 8.4, db: "mariadb:12.3" }
+          - { mw: '1.46-dev-26e9b33', php: 8.5, db: "mariadb:12.3" }
+    env:
+      MW_VERSION: ${{ matrix.mw }}
+      PHP_VERSION: ${{ matrix.php }}
+      DB_TYPE: mysql
+      DB_IMAGE: ${{ matrix.db }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Update submodules
+        run: git submodule update --init --remote
+
+      - name: Build image and install MediaWiki
+        run: make install
+
+      - name: Run unit tests
+        run: make composer-phpunit COMPOSER_PARAMS='-- --testsuite semantic-mediawiki-unit --fail-on-empty-test-suite'
+
+      - name: Run integration tests
+        run: make composer-phpunit COMPOSER_PARAMS='-- --testsuite semantic-mediawiki-check,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure --fail-on-empty-test-suite'
+
+  # Coverage is unchanged: same suite, same Xdebug instrumentation, codecov
+  # upload. It is not on the fast-feedback path (the test jobs report pass/fail
+  # well before coverage finishes).
+  coverage:
+    name: Coverage (MW 1.43, PHP 8.2, mariadb:11.4)
+    runs-on: ubuntu-latest
+    env:
+      MW_VERSION: '1.43'
+      PHP_VERSION: 8.2
+      DB_TYPE: mysql
+      DB_IMAGE: "mariadb:11.4"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Update submodules
+        run: git submodule update --init --remote
 
       - name: Run tests with coverage
-        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure"
-        if: matrix.coverage == true
+        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-unit,semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure"
 
       - name: Upload code coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/php/coverage.xml
-        if: matrix.coverage == true
+
+  # Single fixed-name gate so branch protection does not have to list every
+  # matrix leg (which would need updating on each version change). Require only
+  # "CI success" as a status check on master. Drop `coverage` from `needs` if
+  # merges should gate on the fast feedback path only.
+  ci-success:
+    name: CI success
+    runs-on: ubuntu-latest
+    needs: [ static-analysis, tests, coverage ]
+    if: ${{ always() }}
+    steps:
+      - name: Verify all jobs succeeded
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped') }}
+        run: |
+          echo "One or more CI jobs did not succeed:"
+          echo "  static-analysis: ${{ needs.static-analysis.result }}"
+          echo "  tests:           ${{ needs.tests.result }}"
+          echo "  coverage:        ${{ needs.coverage.result }}"
+          exit 1

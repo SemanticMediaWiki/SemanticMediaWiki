@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Fixtures\MediaWiki\Search;
 
+use SearchDatabase;
+
 /**
  * @group semantic-mediawiki
  *
@@ -10,7 +12,7 @@ namespace SMW\Tests\Fixtures\MediaWiki\Search;
  *
  * @author mwjames
  */
-class DummySearchDatabase extends \SearchDatabase {
+class DummySearchDatabase extends SearchDatabase {
 
 	/**
 	 * @see SearchDatabase::doSearchTextInDB

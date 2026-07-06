@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\PropertyLabelSimilarity;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\RequestOptions;
@@ -17,24 +17,12 @@ use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 class ContentsBuilder {
 
 	/**
-	 * @var PropertyLabelSimilarityLookup
-	 */
-	private $propertyLabelSimilarityLookup;
-
-	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param PropertyLabelSimilarityLookup $propertyLabelSimilarityLookup
-	 * @param HtmlFormRenderer $htmlFormRenderer
 	 */
-	public function __construct( PropertyLabelSimilarityLookup $propertyLabelSimilarityLookup, HtmlFormRenderer $htmlFormRenderer ) {
-		$this->propertyLabelSimilarityLookup = $propertyLabelSimilarityLookup;
-		$this->htmlFormRenderer = $htmlFormRenderer;
+	public function __construct(
+		private readonly PropertyLabelSimilarityLookup $propertyLabelSimilarityLookup,
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+	) {
 	}
 
 	/**
@@ -42,7 +30,7 @@ class ContentsBuilder {
 	 *
 	 * @param RequestOptions $requestOptions
 	 */
-	public function getHtml( RequestOptions $requestOptions ) {
+	public function getHtml( RequestOptions $requestOptions ): string {
 		$threshold = 90;
 		$type = '';
 
@@ -64,12 +52,10 @@ class ContentsBuilder {
 			$requestOptions
 		);
 
-		$resultCount = is_array( $result ) ? count( $result ) : 0;
-
 		$html = $this->getForm(
 			$requestOptions->getLimit(),
 			$requestOptions->getOffset(),
-			$resultCount,
+			count( $result ),
 			$threshold,
 			$type
 		);
@@ -77,13 +63,13 @@ class ContentsBuilder {
 		if ( $result !== [] ) {
 			$html .= '<pre>' . json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</pre>';
 		} else {
-			$html .= $this->msg( 'smw-property-label-similarity-noresult' );
+			$html .= $this->msg( 'smw-property-label-similarity-noresult', Message::ESCAPED );
 		}
 
 		return $html;
 	}
 
-	private function getForm( $limit, $offset, $resultCount, $threshold, $type ) {
+	private function getForm( int $limit, int $offset, int $resultCount, $threshold, $type ): string {
 		$exemptionProperty = $this->propertyLabelSimilarityLookup->getExemptionProperty();
 		$lookupCount = $this->propertyLabelSimilarityLookup->getLookupCount();
 
@@ -134,7 +120,7 @@ class ContentsBuilder {
 		return Html::rawElement( 'div', [ 'class' => 'plainlinks' ], $html ) . Html::element( 'p', [], '' );
 	}
 
-	private function msg( $parameters, $type = Message::TEXT ) {
+	private function msg( string|array $parameters, int $type = Message::TEXT ): string {
 		return Message::get( $parameters, $type, Message::USER_LANGUAGE );
 	}
 

@@ -2,14 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use PSr\Log\LoggerAwareTrait;
+use MediaWiki\Page\Hook\ArticleProtectCompleteHook;
+use Psr\Log\LoggerInterface;
+use SMW\DataItemFactory;
 use SMW\Localizer\Message;
-use SMW\MediaWiki\EditInfo;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
+use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\ParserData;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
+use SMW\Settings;
 
 /**
  * Occurs after the protect article request has been processed
@@ -21,10 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class ArticleProtectComplete implements HookListener {
-
-	use LoggerAwareTrait;
-	use OptionsAwareTrait;
+class ArticleProtectComplete implements ArticleProtectCompleteHook {
 
 	/**
 	 * Whether the update should be restricted or not. Which means that when
@@ -34,64 +32,59 @@ class ArticleProtectComplete implements HookListener {
 	const RESTRICTED_UPDATE = 'articleprotectcomplete.restricted.update';
 
 	/**
-	 * @var Title
+	 * @since 7.0.0
 	 */
-	private $title;
-
-	/**
-	 * @var EditInfo
-	 */
-	private $editInfo;
-
-	/**
-	 * @since  2.5
-	 *
-	 * @param Title $title
-	 * @param EditInfo $editInfo
-	 */
-	public function __construct( Title $title, EditInfo $editInfo ) {
-		$this->title = $title;
-		$this->editInfo = $editInfo;
+	public function __construct(
+		private readonly Settings $settings,
+		private readonly LoggerInterface $logger,
+		private readonly MwCollaboratorFactory $mwCollaboratorFactory,
+		private readonly RevisionGuard $revisionGuard,
+		private readonly DataItemFactory $dataItemFactory,
+	) {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param array $protections
-	 * @param string $reason
+	 * @since 7.0.0
 	 */
-	public function process( $protections, $reason ) {
+	public function onArticleProtectComplete( $wikiPage, $user, $protect, $reason ) {
 		if ( Message::get( 'smw-edit-protection-auto-update' ) === $reason ) {
-			return $this->logger->info( __METHOD__ . ' No changes required, invoked by own process!' );
+			$this->logger->info( __METHOD__ . ' No changes required, invoked by own process!' );
+			return true;
 		}
 
-		$this->editInfo->fetchEditInfo();
-
-		$output = $this->editInfo->getOutput();
-
-		if ( $output === null ) {
-			return $this->logger->info( __METHOD__ . ' Missing ParserOutput!' );
-		}
-
-		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->title,
-			$output
+		$editInfo = $this->mwCollaboratorFactory->newEditInfo(
+			$wikiPage,
+			$this->revisionGuard->newRevisionFromPage( $wikiPage ),
+			$user
 		);
 
-		$this->doPrepareData( $protections, $parserData );
+		$editInfo->fetchEditInfo();
+
+		$output = $editInfo->getOutput();
+
+		if ( $output === null ) {
+			$this->logger->info( __METHOD__ . ' Missing ParserOutput!' );
+			return true;
+		}
+
+		$parserData = new ParserData( $wikiPage->getTitle(), $output );
+		$parserData->setLogger( $this->logger );
+
+		$this->doPrepareData( $protect, $parserData );
 		$parserData->setOrigin( 'ArticleProtectComplete' );
 
 		$parserData->updateStore(
 			true
 		);
+
+		return true;
 	}
 
-	private function doPrepareData( $protections, $parserData ) {
+	private function doPrepareData( array $protections, $parserData ): void {
 		$isRestrictedUpdate = true;
 		$isAnnotationBySystem = false;
 
-		$dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
-		$property = $dataItemFactory->newDIProperty( '_EDIP' );
+		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
 		$dataItems = $parserData->getSemanticData()->getPropertyValues( $property );
 		$dataItem = end( $dataItems );
@@ -100,7 +93,7 @@ class ArticleProtectComplete implements HookListener {
 			$isAnnotationBySystem = $dataItem->getOption( EditProtectedPropertyAnnotator::SYSTEM_ANNOTATION );
 		}
 
-		$editProtectionRight = $this->getOption( 'smwgEditProtectionRight', false );
+		$editProtectionRight = $this->settings->get( 'smwgEditProtectionRight' );
 
 		// No _EDIP annotation but a selected protection matches the
 		// `EditProtectionRight` setting
@@ -110,7 +103,7 @@ class ArticleProtectComplete implements HookListener {
 			$isRestrictedUpdate = false;
 			$parserData->getSemanticData()->addPropertyObjectValue(
 				$property,
-				$dataItemFactory->newDIBoolean( true )
+				$this->dataItemFactory->newDIBoolean( true )
 			);
 		}
 
@@ -124,7 +117,7 @@ class ArticleProtectComplete implements HookListener {
 			$isRestrictedUpdate = false;
 			$parserData->getSemanticData()->removePropertyObjectValue(
 				$property,
-				$dataItemFactory->newDIBoolean( true )
+				$this->dataItemFactory->newDIBoolean( true )
 			);
 		}
 

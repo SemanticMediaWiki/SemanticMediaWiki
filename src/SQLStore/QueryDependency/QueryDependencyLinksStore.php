@@ -2,17 +2,19 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use MediaWiki\Deferred\DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\NamespaceExaminer;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\Timer;
-use SMWQuery as Query;
+use Throwable;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,57 +26,55 @@ class QueryDependencyLinksStore {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
+
+	private bool $isEnabled = true;
 
 	/**
-	 * @var DependencyLinksTableUpdater
+	 * Per-request buffer of dependency-update work registered by
+	 * `updateDependencies()`. The first registration in a request queues a
+	 * single deferred drain (see `runPendingDependencyUpdates()`) that
+	 * processes the buffer and flushes the accumulated `$updateList` in
+	 * `DependencyLinksTableUpdater` once. Buffering lets two `#ask` queries
+	 * that share a query-id hash (same conditions, different printouts) both
+	 * contribute their printout-derived dependencies to `smw_query_links`
+	 * rather than have the second `DELETE`-then-`INSERT` overwrite the first.
+	 *
+	 * Caveat: in CLI/maintenance scripts where `tryOpportunisticExecute()`
+	 * may fire the drain synchronously between successive registrations
+	 * (no active DB transaction), the buffer can be drained before the
+	 * second registration appends. Within `runJobs.php` and inside any
+	 * `Store::updateData` section transaction this is moot; bare maintenance
+	 * loops calling the resolver outside a transaction may still observe
+	 * per-call flushes.
 	 */
-	private $dependencyLinksTableUpdater;
+	private static array $pendingDependencyUpdates = [];
 
 	/**
-	 * @var QueryResultDependencyListResolver
+	 * Set to true once a drain is queued for the current request and
+	 * cleared from the drain's `finally` so the next registration after a
+	 * successful (or thrown) drain can queue a fresh one. Guards against
+	 * scheduling N redundant drains in a single request.
 	 */
-	private $queryResultDependencyListResolver;
-
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var bool
-	 */
-	private $isEnabled = true;
-
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
+	private static bool $flushScheduled = false;
 
 	/**
 	 * Time factor to be used to determine whether an update should actually occur
 	 * or not. The comparison is made against the page_touched timestamp to a
 	 * previous update to avoid unnecessary DB transactions if it takes place
 	 * within the computed time frame.
-	 *
-	 * @var int
 	 */
-	private $skewFactorForDependencyUpdateInSeconds = 10;
+	private int $skewFactorForDependencyUpdateInSeconds = 10;
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param QueryResultDependencyListResolver $queryResultDependencyListResolver
-	 * @param DependencyLinksTableUpdater $dependencyLinksTableUpdater
 	 */
-	public function __construct( QueryResultDependencyListResolver $queryResultDependencyListResolver, DependencyLinksTableUpdater $dependencyLinksTableUpdater ) {
-		$this->queryResultDependencyListResolver = $queryResultDependencyListResolver;
-		$this->dependencyLinksTableUpdater = $dependencyLinksTableUpdater;
+	public function __construct(
+		private QueryResultDependencyListResolver $queryResultDependencyListResolver,
+		private DependencyLinksTableUpdater $dependencyLinksTableUpdater,
+		private readonly NamespaceExaminer $namespaceExaminer,
+	) {
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
-		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
 	/**
@@ -82,20 +82,8 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-	 * Indicates whether MW is running in command-line mode.
-	 *
-	 * @since 2.5
-	 *
-	 * @param bool $isCommandLineMode
-	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
-		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
@@ -103,7 +91,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->isEnabled;
 	}
 
@@ -112,7 +100,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param bool $isEnabled
 	 */
-	public function setEnabled( $isEnabled ) {
+	public function setEnabled( $isEnabled ): void {
 		$this->isEnabled = (bool)$isEnabled;
 	}
 
@@ -125,7 +113,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ) {
+	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ): ?bool {
 		if ( !$this->isEnabled() ) {
 			return null;
 		}
@@ -134,7 +122,7 @@ class QueryDependencyLinksStore {
 		$hash = null;
 
 		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
-			new DIProperty( '_ASK' )
+			new Property( '_ASK' )
 		);
 
 		$tableChangeOps = $changeOp->getTableChangeOps( $tableName );
@@ -155,7 +143,8 @@ class QueryDependencyLinksStore {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
-		if ( ( $subject = $changeOp->getSubject() ) !== null ) {
+		$subject = $changeOp->getSubject();
+		if ( $subject !== null ) {
 			$hash = $subject->getHash();
 		}
 
@@ -177,17 +166,17 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
+	public function findEmbeddedQueryIdListBySubject( WikiPage $subject, ?RequestOptions $requestOptions = null ): array {
 		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
-			new DIProperty( '_ASK' ),
+			new Property( '_ASK' ),
 			$requestOptions
 		);
 
@@ -201,12 +190,12 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findDependencyTargetLinksForSubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
+	public function findDependencyTargetLinksForSubject( WikiPage $subject, RequestOptions $requestOptions ) {
 		return $this->findDependencyTargetLinks(
 			[ $this->dependencyLinksTableUpdater->getId( $subject ) ],
 			$requestOptions
@@ -220,7 +209,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return int
 	 */
-	public function countDependencies( $id ) {
+	public function countDependencies( $id ): int {
 		$count = 0;
 		$ids = !is_array( $id ) ? (array)$id : $id;
 
@@ -230,16 +219,12 @@ class QueryDependencyLinksStore {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				'COUNT(s_id) AS count'
-			],
-			[
-				'o_id' => $ids
-			],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 'COUNT(s_id) AS count' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 'o_id' => $ids ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		$count = $row ? $row->count : $count;
 
@@ -274,11 +259,6 @@ class QueryDependencyLinksStore {
 			return [];
 		}
 
-		$options = [
-			'LIMIT'     => $requestOptions->getLimit(),
-			'OFFSET'    => $requestOptions->getOffset(),
-		] + [ 'DISTINCT' ];
-
 		$conditions = [
 			'o_id' => $idlist
 		];
@@ -289,13 +269,15 @@ class QueryDependencyLinksStore {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$rows = $connection->select(
-			SQLStore::QUERY_LINKS_TABLE,
-			[ 's_id' ],
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$rows = $connection->newSelectQueryBuilder()
+			->select( [ 's_id' ] )
+			->distinct()
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->where( $conditions )
+			->limit( $requestOptions->getLimit() )
+			->offset( $requestOptions->getOffset() )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$targetLinksIdList = [];
 
@@ -317,7 +299,7 @@ class QueryDependencyLinksStore {
 			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
 		);
 
-		return $this->store->getObjectIds()->getDataItemPoolHashListFor(
+		return $this->store->getObjectIds()->getDataItemsFromList(
 			$targetLinksIdList,
 			$poolRequestOptions
 		);
@@ -342,6 +324,10 @@ class QueryDependencyLinksStore {
 		$subject = $queryResult->getQuery()->getContextPage();
 		$hash = $queryResult->getQuery()->getQueryId();
 
+		if ( $subject === null ) {
+			return null;
+		}
+
 		$sid = $this->dependencyLinksTableUpdater->getId(
 			$subject,
 			$hash
@@ -360,25 +346,31 @@ class QueryDependencyLinksStore {
 			);
 		}
 
-		// Executed as DeferredTransactionalUpdate
-		$callback = function () use( $queryResult, $subject, $sid, $hash ) {
-			$this->doUpdate( $queryResult, $subject, $sid, $hash );
-		};
-
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
-			$callback
-		);
-
 		$origin = $subject->getHash();
 
-		$deferredTransactionalUpdate->setOrigin( [ __METHOD__, $origin ] );
-		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
-		$deferredTransactionalUpdate->setFingerprint( $hash );
+		// Buffer this work and schedule a batch drain. Same-`$sid` registrations
+		// from sibling `#ask` queries (same conditions, different printouts ->
+		// same query-id hash -> same `$sid`) all land in the buffer; the drain
+		// calls `doUpdate()` for each, then flushes the accumulated
+		// `DependencyLinksTableUpdater::$updateList` once. A per-callback flush
+		// would have the second callback's `DELETE`-then-`INSERT` overwrite
+		// the first callback's deps.
+		//
+		// `$flushScheduled` keeps a single drain queued per request; the
+		// drain's `finally` resets it so a thrown drain does not deadlock
+		// subsequent registrations (self-healing on leaked schedules).
+		self::$pendingDependencyUpdates[] = [ $queryResult, $subject, $sid, $hash ];
 
-		$deferredTransactionalUpdate->enabledDeferredUpdate( true );
-		$deferredTransactionalUpdate->waitOnTransactionIdle();
-
-		$deferredTransactionalUpdate->pushUpdate();
+		if ( !self::$flushScheduled ) {
+			self::$flushScheduled = true;
+			DeferredUpdates::addCallableUpdate( function (): void {
+				try {
+					$this->runPendingDependencyUpdates();
+				} finally {
+					self::$flushScheduled = false;
+				}
+			} );
+		}
 
 		$context = [
 			'method' => __METHOD__,
@@ -393,6 +385,45 @@ class QueryDependencyLinksStore {
 		);
 
 		return true;
+	}
+
+	/**
+	 * Drain the per-request `$pendingDependencyUpdates` buffer.
+	 *
+	 * Ordering is drain-then-clear-then-iterate so a recursive
+	 * `updateDependencies()` triggered from inside `doUpdate()` (e.g. via
+	 * lazy resolution of `getDependencyListFrom`) sees an empty buffer and
+	 * queues its own fresh drain rather than re-entering this one. After
+	 * every buffered item's deps are merged into
+	 * `DependencyLinksTableUpdater::$updateList`, a single flush writes the
+	 * union to `smw_query_links`. Per-item exceptions are caught and logged
+	 * so one failing query does not silently drop the rest of the batch.
+	 */
+	private function runPendingDependencyUpdates(): void {
+		if ( self::$pendingDependencyUpdates === [] ) {
+			return;
+		}
+
+		$batch = self::$pendingDependencyUpdates;
+		self::$pendingDependencyUpdates = [];
+
+		foreach ( $batch as [ $queryResult, $subject, $sid, $hash ] ) {
+			try {
+				$this->doUpdate( $queryResult, $subject, $sid, $hash );
+			} catch ( Throwable $e ) {
+				$this->logger->error(
+					'[QueryDependency] doUpdate failed for {origin}: {message}',
+					[
+						'method' => __METHOD__,
+						'role' => 'production',
+						'origin' => $hash,
+						'message' => $e->getMessage(),
+					]
+				);
+			}
+		}
+
+		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
 	private function doUpdate( $queryResult, $subject, $sid, $hash ) {
@@ -421,9 +452,17 @@ class QueryDependencyLinksStore {
 			);
 		}
 
+		if ( !$subject instanceof WikiPage ) {
+			return;
+		}
+
 		// SID < 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered)
-		if ( $sid < 1 || ( $sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash ) ) < 1 ) {
+		if ( $sid >= 1 ) {
+			$sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash );
+		}
+
+		if ( $sid < 1 ) {
 			$sid = $this->dependencyLinksTableUpdater->createId( $subject, $hash );
 		}
 
@@ -436,11 +475,9 @@ class QueryDependencyLinksStore {
 			$sid,
 			$dependencyListByLateRetrieval
 		);
-
-		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
-	private function canUpdateDependencies( $queryResult ) {
+	private function canUpdateDependencies( $queryResult ): bool {
 		if ( !$this->isEnabled() || !$queryResult instanceof QueryResult ) {
 			return false;
 		}
@@ -462,7 +499,8 @@ class QueryDependencyLinksStore {
 			return false;
 		}
 
-		if ( $query === null || ( $subject = $query->getContextPage() ) === null ) {
+		$subject = $query->getContextPage();
+		if ( $subject === null ) {
 			return false;
 		}
 
@@ -479,7 +517,7 @@ class QueryDependencyLinksStore {
 		return $query->getLimit() > 0 && $query->getOption( Query::NO_DEPENDENCY_TRACE ) !== true;
 	}
 
-	private function isRegistered( $sid, $subject ) {
+	private function isRegistered( $sid, $subject ): bool {
 		static $suppressUpdateCache = [];
 		$hash = $subject->getHash();
 
@@ -489,20 +527,18 @@ class QueryDependencyLinksStore {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			SQLStore::QUERY_LINKS_TABLE,
-			[
-				's_id'
-			],
-			[ 's_id' => $sid ],
-			__METHOD__
-		);
+		$row = $connection->newSelectQueryBuilder()
+			->select( [ 's_id' ] )
+			->from( SQLStore::QUERY_LINKS_TABLE )
+			->where( [ 's_id' => $sid ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		$title = $subject->getTitle();
 
 		// https://phabricator.wikimedia.org/T167943
 		if ( !isset( $suppressUpdateCache[$hash] ) && $title !== null ) {
-			$suppressUpdateCache[$hash] = wfTimestamp( TS_MW, $title->getTouched() ) + $this->skewFactorForDependencyUpdateInSeconds;
+			$suppressUpdateCache[$hash] = (string)( (int)wfTimestamp( TS_MW, $title->getTouched() ) + $this->skewFactorForDependencyUpdateInSeconds );
 		}
 
 		// Check whether the query has already been registered and only then

@@ -60,7 +60,7 @@
 			"subject": "Example/P0417/1a",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/P0417/1\">Example/P0417/1</a></td><td class=\"Has-whitelist smwtype_txt\">FooOnWhitelist</td>"
+					"title=\"Example/P0417/1\">Example/P0417/1</a></td><td class=\"Has-whitelist smwtype&#95;txt\">FooOnWhitelist</td>"
 				]
 			}
 		},
@@ -70,7 +70,7 @@
 			"subject": "Example/P0417/2a",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/P0417/2\">Example/P0417/2</a></td><td class=\"IPv4 smwtype_txt\">192.168.0.100</td>"
+					"title=\"Example/P0417/2\">Example/P0417/2</a></td><td class=\"IPv4 smwtype&#95;txt\">192.168.0.100</td>"
 				]
 			}
 		}

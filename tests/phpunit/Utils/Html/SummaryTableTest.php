@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\Html;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\Utils\Html\SummaryTable;
 
@@ -14,7 +15,7 @@ use SMW\Utils\Html\SummaryTable;
  *
  * @author mwjames
  */
-class SummaryTableTest extends \PHPUnit\Framework\TestCase {
+class SummaryTableTest extends TestCase {
 
 	private $stringValidator;
 

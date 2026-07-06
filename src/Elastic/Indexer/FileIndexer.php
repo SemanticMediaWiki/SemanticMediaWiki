@@ -3,16 +3,16 @@
 namespace SMW\Elastic\Indexer;
 
 use File;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\EntityCache;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Store;
-use Title;
 
 /**
  * File indexer to use the Elasticsearch ingest pipeline to index and retrieve
@@ -33,82 +33,41 @@ class FileIndexer {
 
 	const INGEST_RESPONSE = 'es.ingest.response';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private string $origin = '';
 
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
+	private bool $sha1Check = true;
 
-	/**
-	 * @var FileHandler
-	 */
-	private $fileHandler;
-
-	/**
-	 * @var FileAttachment
-	 */
-	private $fileAttachment;
-
-	/**
-	 * @var string
-	 */
-	private $origin = '';
-
-	/**
-	 * @var bool
-	 */
-	private $sha1Check = true;
-
-	/**
-	 * @var
-	 */
-	private $versions = [];
+	private array $versions = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
-	 * @param FileHandler $fileHandler
-	 * @param FileAttachment $fileAttachment
 	 */
-	public function __construct( Store $store, EntityCache $entityCache, FileHandler $fileHandler, FileAttachment $fileAttachment ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
-		$this->fileHandler = $fileHandler;
-		$this->fileAttachment = $fileAttachment;
+	public function __construct(
+		private Store $store,
+		private EntityCache $entityCache,
+		private FileHandler $fileHandler,
+		private FileAttachment $fileAttachment,
+	) {
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( string $origin ): void {
 		$this->origin = $origin;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param $versions
 	 */
-	public function setVersions( array $versions ) {
+	public function setVersions( array $versions ): void {
 		$this->versions = $versions;
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $type
-	 *
-	 * @return string
 	 */
-	public function getIndexName( $type ) {
+	public function getIndexName( string $type ): string {
 		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
@@ -123,18 +82,14 @@ class FileIndexer {
 	/**
 	 * @since 3.0
 	 */
-	public function noSha1Check() {
+	public function noSha1Check(): void {
 		$this->sha1Check = false;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title $title
-	 *
-	 * @return File
 	 */
-	public function findFile( Title $title ) {
+	public function findFile( Title $title ): File|false|null {
 		return $this->fileHandler->findFileByTitle( $title );
 	}
 
@@ -156,12 +111,13 @@ class FileIndexer {
 	 * will be invisible the any SMW user
 	 *
 	 * @since 3.0
-	 *
-	 * @param DIWikiPage $dataItem
-	 * @param File|null $file
 	 */
-	public function index( DIWikiPage $dataItem, ?File $file = null ) {
+	public function index( WikiPage $dataItem, ?File $file = null ): void {
 		$title = $dataItem->getTitle();
+
+		if ( $title === null ) {
+			return;
+		}
 
 		// Allow any third-party extension to modify the file used as base for
 		// the index process
@@ -169,8 +125,10 @@ class FileIndexer {
 
 		if ( $file !== null && isset( $file->file_sha1 ) ) {
 			$this->logger->info(
-				[ 'File indexer', 'Forced file_sha1 change: {file_sha1}' ],
-				[ 'file_sha1' => $file->file_sha1 ]
+				'File indexer Forced file_sha1 change: {file_sha1}',
+				[
+					'file_sha1' => $file->file_sha1
+				]
 			);
 		}
 
@@ -240,6 +198,7 @@ class FileIndexer {
 
 		// Is the sha1 the same? Don't do anything since the content is expected
 		// to be the same!
+		// @phan-suppress-next-line PhanTypeInvalidDimOffset
 		if ( $this->sha1Check && isset( $doc['_source']['file_sha1'] ) && $doc['_source']['file_sha1'] === $sha1 ) {
 			$ingest = false;
 		}
@@ -251,9 +210,9 @@ class FileIndexer {
 			'subject' => $dataItem->getHash()
 		];
 
-		if ( $ingest === false ) {
+		if ( !$ingest ) {
 			$this->logger->info(
-				[ 'File indexer', 'Skipping the ingest process', 'Found identical file_sha1 ({subject})' ],
+				'File indexer Skipping the ingest process Found identical file_sha1 ({subject})',
 				$context
 			);
 
@@ -264,7 +223,7 @@ class FileIndexer {
 		// "... The source field must be a base64 encoded binary or ... the
 		// CBOR format ..."
 		$content = $this->fileHandler->format(
-			$this->fileHandler->fetchContentFromURL( $url ),
+			$this->fileHandler->fetchContentFromFile( $file ),
 			FileHandler::FORMAT_BASE64
 		);
 
@@ -281,13 +240,9 @@ class FileIndexer {
 		$context['procTime'] = microtime( true ) + $time;
 		$context['file_sha1'] = $sha1;
 
-		$msg = [
-			'File indexer',
-			'Ingest process completed ({subject})',
-			'procTime (in sec): {procTime}',
-			'Response: {response}',
-			'file_sha1:{file_sha1}'
-		];
+		$msg = 'File indexer Ingest process completed ({subject}) ' .
+			'procTime (in sec): {procTime} Response: {response} ' .
+			'file_sha1:{file_sha1}';
 
 		$this->logger->info( $msg, $context );
 

@@ -18,17 +18,9 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var int
-	 */
-	private $namespace;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param int|null $namespace
 	 */
-	public function __construct( ?int $namespace ) {
-		$this->namespace = $namespace;
+	public function __construct( private ?int $namespace ) {
 	}
 
 	/**
@@ -40,33 +32,35 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 		return 'namespace';
 	}
 
-	private function match( Compartment $compartment ) {
+	private function match( Compartment $compartment ): void {
 		$namespaces = $compartment->get( 'if.namespace' );
 
 		// In case the filter was marked as elective allows sets to remain in
 		// the match pool.
 		if ( $namespaces === null && $this->getOption( self::FILTER_CONDITION_NOT_REQUIRED ) === true ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		// No restriction and no `namespace` filter was defined hence allow the
 		// rule to remain in the pool of matches.
 		if ( $namespaces === null && $this->namespace === null ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		$matchedCondition = $this->matchOneOf( (array)$namespaces );
 
-		if ( $matchedCondition === true && $compartment instanceof Rule ) {
+		if ( $matchedCondition && $compartment instanceof Rule ) {
 			$compartment->incrFilterScore();
 		}
 
-		if ( $matchedCondition === true ) {
+		if ( $matchedCondition ) {
 			$this->matches[] = $compartment;
 		}
 	}
 
-	private function matchOneOf( array $namespaces ) {
+	private function matchOneOf( array $namespaces ): bool {
 		if ( $this->namespace === null ) {
 			return false;
 		}

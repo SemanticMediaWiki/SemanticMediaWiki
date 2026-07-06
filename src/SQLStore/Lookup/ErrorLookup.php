@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
 use Traversable;
 
 /**
@@ -19,17 +19,9 @@ use Traversable;
 class ErrorLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -39,7 +31,7 @@ class ErrorLookup {
 	 *
 	 * @return array
 	 */
-	public function buildArray( /* iterable */ $res ) {
+	public function buildArray( /* iterable */ $res ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$messages = [];
 
@@ -61,11 +53,12 @@ class ErrorLookup {
 	 * @since 3.1
 	 *
 	 * @param string $errorType
-	 * @param DIWikiPage|null $subject = null
+	 * @param WikiPage|null $subject = null
+	 * @param ?RequestOptions $requestOptions
 	 *
-	 * @return Iterator/array
+	 * @return iterable
 	 */
-	public function findErrorsByType( $errorType, ?DIWikiPage $subject = null, ?RequestOptions $requestOptions = null ) {
+	public function findErrorsByType( $errorType, ?WikiPage $subject = null, ?RequestOptions $requestOptions = null ) {
 		if ( $requestOptions === null ) {
 			$requestOptions = new RequestOptions();
 		}
@@ -73,7 +66,14 @@ class ErrorLookup {
 		return $this->fetchFromTable( $errorType, $subject, $requestOptions );
 	}
 
-	private function fetchFromTable( $errorType, $subject, $requestOptions ) {
+	/**
+	 * @param string $errorType
+	 * @param WikiPage|null $subject
+	 * @param RequestOptions $requestOptions
+	 *
+	 * @return iterable
+	 */
+	private function fetchFromTable( $errorType, ?WikiPage $subject, RequestOptions $requestOptions ) {
 		$checkConstraintErrors = $requestOptions->getOption( 'checkConstraintErrors' );
 
 		/**
@@ -97,38 +97,32 @@ class ErrorLookup {
 		$idTable->warmUpCache(
 			[
 				$subject,
-				new DIProperty( '_ERR_TYPE' ),
-				new DIProperty( '_ERRT' ),
-				new DIProperty( '_ERRC' ),
-				new DIProperty( '_SOBJ' )
+				new Property( '_ERR_TYPE' ),
+				new Property( '_ERRT' ),
+				new Property( '_ERRC' ),
+				new Property( '_SOBJ' )
 			]
 		);
 
 		$pid = $idTable->getSMWPropertyID(
-			new DIProperty( '_ERRC' )
+			new Property( '_ERRC' )
 		);
 
 		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
 
 		$wpg_table = $this->store->findDiTypeTableId(
 			DataItem::TYPE_WIKIPAGE
 		);
 
 		$sobj_type_table = $this->store->findPropertyTableID(
-			new DIProperty( '_SOBJ' )
+			new Property( '_SOBJ' )
 		);
 
-		$query->type( 'SELECT' );
-
-		$query->table( SQLStore::ID_TABLE, 't0' );
-		$query->condition( $query->neq( "t0.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
-		$query->condition( $query->neq( "t0.smw_iw", SMW_SQL3_SMWDELETEIW ) );
-
-		$query->join(
-			'INNER JOIN',
-			[ $wpg_table => 't1 ON t0.smw_id=t1.s_id' ]
-		);
+		$qb = $connection->newSelectQueryBuilder()
+			->from( SQLStore::ID_TABLE, 't0' )
+			->where( $connection->expr( 't0.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ) )
+			->andWhere( $connection->expr( 't0.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ) )
+			->join( $wpg_table, 't1', 't0.smw_id=t1.s_id' );
 
 		if ( $subject !== null ) {
 
@@ -137,20 +131,20 @@ class ErrorLookup {
 			);
 
 			if ( $checkConstraintErrors === SMW_CONSTRAINT_ERR_CHECK_ALL ) {
-				$query->join(
-					'LEFT JOIN',
-					[ $sobj_type_table => 's1 ON s1.o_id=t1.s_id' ]
-				);
+				$qb->leftJoin( $sobj_type_table, 's1', 's1.o_id=t1.s_id' );
 
-				$query->condition( '(' . $query->eq( "s1.s_id", $sid ) . ' OR ' . $query->eq( "t1.s_id", $sid ) . ')' );
+				$qb->andWhere(
+					'(s1.s_id=' . $connection->addQuotes( $sid ) .
+					' OR t1.s_id=' . $connection->addQuotes( $sid ) . ')'
+				);
 			} else {
-				$query->condition( $query->eq( "t1.s_id", $sid ) );
+				$qb->andWhere( [ 't1.s_id' => $sid ] );
 			}
 		}
 
-		$query->condition( $query->eq( "t1.p_id", $pid ) );
+		$qb->andWhere( [ 't1.p_id' => $pid ] );
 
-		$property = new DIProperty( '_ERR_TYPE' );
+		$property = new Property( '_ERR_TYPE' );
 
 		$pid = $idTable->getSMWPropertyID(
 			$property
@@ -160,18 +154,15 @@ class ErrorLookup {
 			$property
 		);
 
-		$query->join(
-			'INNER JOIN',
-			[ $err_type_table => 't2 ON t1.o_id=t2.s_id' ]
-		);
+		$qb->join( $err_type_table, 't2', 't1.o_id=t2.s_id' );
 
-		$query->condition( $query->eq( "t2.p_id", $pid ) );
+		$qb->andWhere( [ 't2.p_id' => $pid ] );
 
 		if ( $errorType !== null ) {
-			$query->condition( $query->eq( "t2.o_hash", $errorType ) );
+			$qb->andWhere( [ 't2.o_hash' => $errorType ] );
 		}
 
-		$property = new DIProperty( '_ERRT' );
+		$property = new Property( '_ERRT' );
 
 		$pid = $idTable->getSMWPropertyID(
 			$property
@@ -181,19 +172,14 @@ class ErrorLookup {
 			$property
 		);
 
-		$query->join(
-			'INNER JOIN',
-			[ $errt_table => 't3 ON t3.s_id=t2.s_id' ]
-		);
+		$qb->join( $errt_table, 't3', 't3.s_id=t2.s_id' );
 
-		$query->condition( $query->eq( "t3.p_id", $pid ) );
+		$qb->andWhere( [ 't3.p_id' => $pid ] );
 
-		$query->field( 't2.s_id', 's_id' );
-		$query->field( 't3.o_hash', 'o_hash' );
-		$query->field( 't3.o_blob', 'o_blob' );
+		$qb->select( [ 's_id' => 't2.s_id', 'o_hash' => 't3.o_hash', 'o_blob' => 't3.o_blob' ] );
 
 		if ( $requestOptions->getLimit() > 0 ) {
-			$query->option( 'LIMIT', $requestOptions->getLimit() );
+			$qb->limit( $requestOptions->getLimit() );
 		}
 
 		$caller = __METHOD__;
@@ -202,7 +188,7 @@ class ErrorLookup {
 			$caller .= " (for " . $requestOptions->getCaller() . ")";
 		}
 
-		return $query->execute( $caller );
+		return $qb->caller( $caller )->fetchResultSet();
 	}
 
 }

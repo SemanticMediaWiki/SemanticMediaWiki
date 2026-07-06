@@ -49,17 +49,9 @@ class Components {
 	];
 
 	/**
-	 * @var
-	 */
-	private $components = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param array $components
 	 */
-	public function __construct( array $components = [] ) {
-		$this->components = $components;
+	public function __construct( private array $components = [] ) {
 	}
 
 	/**

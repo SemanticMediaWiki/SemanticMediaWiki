@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use Job;
 use JobQueueGroup;
 
 /**
@@ -16,23 +17,12 @@ use JobQueueGroup;
  */
 class JobQueue {
 
-	/**
-	 * @var JobQueueGroup
-	 */
-	private $jobQueueGroup;
-
-	/**
-	 * @var bool
-	 */
-	private $disableCache = false;
+	private bool $disableCache = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param JobQueueGroup $jobQueueGroup
 	 */
-	public function __construct( JobQueueGroup $jobQueueGroup ) {
-		$this->jobQueueGroup = $jobQueueGroup;
+	public function __construct( private readonly JobQueueGroup $jobQueueGroup ) {
 	}
 
 	/**
@@ -40,7 +30,7 @@ class JobQueue {
 	 *
 	 * @param bool $disableCache
 	 */
-	public function disableCache( $disableCache = true ) {
+	public function disableCache( $disableCache = true ): void {
 		$this->disableCache = (bool)$disableCache;
 	}
 
@@ -52,7 +42,7 @@ class JobQueue {
 	 * @return bool
 	 */
 	public function isDelayedJobsEnabled( $type ) {
-		return $this->jobQueueGroup->get( $this->mapLegacyType( $type ) )->delayedJobsEnabled();
+		return $this->jobQueueGroup->get( $type )->delayedJobsEnabled();
 	}
 
 	/**
@@ -60,9 +50,9 @@ class JobQueue {
 	 *
 	 * @param array $list
 	 *
-	 * @return
+	 * @return list[]
 	 */
-	public function runFromQueue( array $list ) {
+	public function runFromQueue( array $list ): array {
 		$log = [];
 
 		foreach ( $list as $type => $amount ) {
@@ -99,7 +89,7 @@ class JobQueue {
 	 * @return Job|bool
 	 */
 	public function pop( $type ) {
-		return $this->jobQueueGroup->get( $this->mapLegacyType( $type ) )->pop();
+		return $this->jobQueueGroup->get( $type )->pop();
 	}
 
 	/**
@@ -109,7 +99,7 @@ class JobQueue {
 	 *
 	 * @param Job $job
 	 */
-	public function ack( \Job $job ) {
+	public function ack( Job $job ): void {
 		$this->jobQueueGroup->get( $job->getType() )->ack( $job );
 	}
 
@@ -118,8 +108,8 @@ class JobQueue {
 	 *
 	 * @param string $type
 	 */
-	public function delete( $type ) {
-		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );
+	public function delete( $type ): void {
+		$jobQueue = $this->jobQueueGroup->get( $type );
 		$jobQueue->delete();
 
 		if ( $this->disableCache ) {
@@ -133,7 +123,7 @@ class JobQueue {
 	 *
 	 * @param Job|Job[] $jobs
 	 */
-	public function push( $jobs ) {
+	public function push( $jobs ): void {
 		$this->jobQueueGroup->push( $jobs );
 	}
 
@@ -142,7 +132,7 @@ class JobQueue {
 	 *
 	 * @param Job|Job[] $jobs
 	 */
-	public function lazyPush( $jobs ) {
+	public function lazyPush( $jobs ): void {
 		$this->jobQueueGroup->lazyPush( $jobs );
 	}
 
@@ -163,7 +153,7 @@ class JobQueue {
 	 * @return int
 	 */
 	public function getQueueSize( $type ) {
-		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );
+		$jobQueue = $this->jobQueueGroup->get( $type );
 
 		if ( $this->disableCache ) {
 			$jobQueue->flushCaches();
@@ -180,25 +170,8 @@ class JobQueue {
 	 *
 	 * @return bool
 	 */
-	public function hasPendingJob( $type ) {
+	public function hasPendingJob( $type ): bool {
 		return $this->getQueueSize( $type ) > 0;
-	}
-
-	/**
-	 * @note FIXME Remove with 3.1
-	 * @since 3.0
-	 *
-	 * @param string $type
-	 *
-	 * @return string
-	 */
-	public static function mapLegacyType( $type ) {
-		// Legacy names
-		if ( strpos( $type, 'SMW\\' ) !== false ) {
-			$type = 'smw.' . lcfirst( str_replace( [ 'SMW\\', 'Job' ], '', $type ) );
-		}
-
-		return $type;
 	}
 
 }

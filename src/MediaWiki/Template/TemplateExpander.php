@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Template;
 
-use Parser;
-use ParserOptions;
-use RequestContext;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\StubObject\StubObject;
 use RuntimeException;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -23,31 +23,9 @@ class TemplateExpander {
 	const MAX_INCLUDE_SIZE = 50000000;
 
 	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Parser $parser
 	 */
-	public function __construct( $parser ) {
-		$this->parser = $parser;
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param Title $title
-	 */
-	public function setTitle( Title $title ) {
-		$this->title = $title;
+	public function __construct( private $parser ) {
 	}
 
 	/**
@@ -55,11 +33,9 @@ class TemplateExpander {
 	 * @since 3.1
 	 *
 	 * @param Template|TemplateSet|string $template
-	 *
-	 * @return string
 	 */
-	public function expand( $template ) {
-		if ( !$this->parser instanceof Parser && !$this->parser instanceof \StubObject ) {
+	public function expand( $template ): string|array {
+		if ( !$this->parser instanceof Parser && !$this->parser instanceof StubObject ) {
 			throw new RuntimeException( 'Missing a parser instance!' );
 		}
 
@@ -77,19 +53,6 @@ class TemplateExpander {
 		}
 
 		$title = $this->parser->getTitle();
-
-		if ( !$title instanceof Title ) {
-
-			if ( $this->title !== null ) {
-				$title = $this->title;
-			} else {
-				$title = $GLOBALS['wgTitle'];
-			}
-
-			if ( !$title instanceof Title ) {
-				$title = Title::newFromText( 'UNKNOWN_TITLE' );
-			}
-		}
 
 		$text = $this->parser->preprocess( $template, $title, $options );
 

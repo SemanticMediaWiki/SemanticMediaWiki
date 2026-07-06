@@ -20,12 +20,13 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function canHaveMatchCondition( ValueDescription $description ) {
+	public function canHaveMatchCondition( ValueDescription $description ): bool {
 		if ( !$this->isEnabled() ) {
 			return false;
 		}
 
-		if ( $description->getProperty() !== null && $this->isExemptedProperty( $description->getProperty() ) ) {
+		$property = $description->getProperty();
+		if ( $property !== null && $this->isExemptedProperty( $property ) ) {
 			return false;
 		}
 
@@ -62,27 +63,27 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ) {
+	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ): string {
 		$affix = '';
-		$matchableText = $this->getMatchableTextFromDescription(
-			$description
-		);
+		$matchableText = $this->getMatchableTextFromDescription( $description );
 
-		// Any query modifier? Take care of it before any tokenizer or ngrams
-		// distort the marker
-		if (
-			( $pos = strrpos( $matchableText, '&BOL' ) ) !== false ||
-			( $pos = strrpos( $matchableText, '&INL' ) ) !== false ||
-			( $pos = strrpos( $matchableText, '&QEX' ) ) !== false ) {
+		// Any query modifier? Take care of it before any tokenizer or ngrams distort the marker
+		$pos = strrpos( $matchableText, '&BOL' );
+
+		if ( $pos === false ) {
+			$pos = strrpos( $matchableText, '&INL' );
+		}
+
+		if ( $pos === false ) {
+			$pos = strrpos( $matchableText, '&QEX' );
+		}
+
+		if ( $pos !== false ) {
 			$affix = mb_strcut( $matchableText, $pos );
 			$matchableText = str_replace( $affix, '', $matchableText );
 		}
 
-		$value = $this->textSanitizer->sanitize(
-			$matchableText,
-			true
-		);
-
+		$value = $this->textSanitizer->sanitize( $matchableText, true );
 		$value .= $affix;
 
 		// A leading or trailing minus sign indicates that this word must not
@@ -104,11 +105,11 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 			$propertyCondition = 'AND ' . $temporaryTable . 'p_id=' . $this->searchTable->getIdByProperty( $property );
 		}
 
-		$querySearchModifier = $this->getQuerySearchModifier(
-			$value
-		);
+		$querySearchModifier = $this->getQuerySearchModifier( $value );
 
-		return "MATCH($column) AGAINST (" . $this->searchTable->addQuotes( $value ) . " $querySearchModifier) $propertyCondition";
+		return "MATCH($column) AGAINST (" .
+			$this->searchTable->addQuotes( $value ) .
+			" $querySearchModifier) $propertyCondition";
 	}
 
 	/**
@@ -118,7 +119,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getQuerySearchModifier( &$value ) {
+	public function getQuerySearchModifier( &$value ): string {
 		// @see http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
 		// "MySQL can perform boolean full-text searches using the IN BOOLEAN
 		// MODE modifier. With this modifier, certain characters have special

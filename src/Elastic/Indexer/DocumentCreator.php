@@ -2,13 +2,13 @@
 
 namespace SMW\Elastic\Indexer;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Collator;
-use SMW\SemanticData;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @private
@@ -46,46 +46,27 @@ use SMWDataItem as DataItem;
  */
 class DocumentCreator {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private bool $compatibilityMode = true;
 
-	/**
-	 * @var bool
-	 */
-	private $compatibilityMode = true;
+	private int $documentCreationDuration = 0;
 
-	/**
-	 * @var int
-	 */
-	private $documentCreationDuration = 0;
-
-	/**
-	 * @var array
-	 */
-	private $subEntities = [];
+	private array $subEntities = [];
 
 	/**
 	 * @since 3.2
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param bool $compatibilityMode
 	 */
-	public function setCompatibilityMode( $compatibilityMode ) {
-		$this->compatibilityMode = $compatibilityMode;
+	public function setCompatibilityMode( mixed $compatibilityMode ): void {
+		$this->compatibilityMode = (bool)$compatibilityMode;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int
 	 */
 	public function getDocumentCreationDuration(): int {
 		return $this->documentCreationDuration;
@@ -93,10 +74,6 @@ class DocumentCreator {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SemanticData $semanticData
-	 *
-	 * @return Document
 	 */
 	public function newFromSemanticData( SemanticData $semanticData ): Document {
 		$time = microtime( true );
@@ -113,6 +90,7 @@ class DocumentCreator {
 		// have been processed because pending entities don't follow any order
 		// in `SemanticData::SubSemanticData` and have therefore to be resolved
 		// first.
+		// @phan-suppress-next-line PhanEmptyForeach
 		foreach ( $this->subEntities as $oid => $value ) {
 
 			if ( !$document->hasSubDocumentById( $oid ) ) {
@@ -128,12 +106,12 @@ class DocumentCreator {
 			$document->getSubDocumentById( $oid )->setField( "P:$pid", $value );
 		}
 
-		$this->documentCreationDuration = ( microtime( true ) - $time );
+		$this->documentCreationDuration = (int)( microtime( true ) - $time );
 
 		return $document;
 	}
 
-	private function newFromData( SemanticData $semanticData, $parent_id = null ) {
+	private function newFromData( SemanticData $semanticData, $parent_id = null ): Document {
 		$subject = $semanticData->getSubject();
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
@@ -149,7 +127,8 @@ class DocumentCreator {
 			'subject' => $this->makeSubject( $subject )
 		];
 
-		if ( ( $rev_id = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
+		$rev_id = $semanticData->getExtensionData( 'revision_id' );
+		if ( $rev_id !== null ) {
 			$data['subject']['rev_id'] = (int)$rev_id;
 		}
 
@@ -162,7 +141,7 @@ class DocumentCreator {
 		// Remove any document that has been identified as redirect to avoid
 		// having Elasticsearch to match those documents and create a subject
 		// match similar to `[[::smw-redi:Issue/1286|Issue/1286]]` (#P0904)
-		if ( $semanticData->hasProperty( new DIProperty( '_REDI' ) ) ) {
+		if ( $semanticData->hasProperty( new Property( '_REDI' ) ) ) {
 			$type = Document::TYPE_DELETE;
 		}
 
@@ -257,8 +236,12 @@ class DocumentCreator {
 					// match the object.
 					//
 					// @see also T:Q0105#8
-					if ( !$document->hasSubDocumentById( $oid ) ) {
-						$document->addSubDocument( $this->newHead( $oid, $dataItem, Document::TYPE_UPSERT ) );
+					if ( !$document->hasSubDocumentById( $oid ) &&
+						$dataItem instanceof WikiPage
+					) {
+						$document->addSubDocument(
+							$this->newHead( $oid, $dataItem, Document::TYPE_UPSERT )
+						);
 					}
 				} elseif ( $type === DataItem::TYPE_BLOB ) {
 
@@ -273,7 +256,9 @@ class DocumentCreator {
 					// Remove control chars and avoid Elasticsearch to throw a
 					// "SmartSerializer.php: Failed to JSON encode: 5" since JSON requires
 					// valid UTF-8
-					$values["$fieldType"][] = TextSanitizer::removeLinks( mb_convert_encoding( $val, 'UTF-8', 'UTF-8' ) );
+					$values["$fieldType"][] = TextSanitizer::removeLinks(
+						mb_convert_encoding( $val, 'UTF-8', 'UTF-8' )
+					);
 				} elseif ( $type === DataItem::TYPE_URI ) {
 
 					// Used for `compatibilityMode`
@@ -293,11 +278,11 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newHead( $id, DIWikiPage $subject, $type ) {
+	private function newHead( int $id, WikiPage $subject, string $type ): Document {
 		return new Document( $id, [ 'subject' => $this->makeSubject( $subject ) ], $type );
 	}
 
-	private function makeSubject( DIWikiPage $subject ) {
+	private function makeSubject( WikiPage $subject ): array {
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || !str_starts_with( $title ?? '', '_' ) ) {
@@ -327,7 +312,7 @@ class DocumentCreator {
 			'interwiki' => $subject->getInterwiki(),
 			'sortkey'   => $sort,
 			'serialization' => $subject->getSerialization(),
-			'sha1' => $subject->getSha1()
+			'sha1' => bin2hex( $subject->getSha1() )
 		];
 	}
 

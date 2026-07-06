@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SpecialPage;
+use MediaWiki\SpecialPage\SpecialPage;
+use SMW\Settings;
 
 /**
  * Convenience special page that just redirects to Special:Ask with a preset
@@ -17,18 +17,19 @@ use SpecialPage;
 class SpecialConstraintErrorList extends SpecialPage {
 
 	/**
-	 * @codeCoverageIgnore
+	 * @since 7.0.0
 	 */
-	public function __construct() {
+	public function __construct(
+		private readonly Settings $settings
+	) {
 		parent::__construct( 'ConstraintErrorList' );
 	}
 
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
-		$settings = ApplicationFactory::getInstance()->getSettings();
-		$limit = $settings->dotGet( 'smwgPagingLimit.errorlist' );
+	public function execute( $query ): bool {
+		$limit = $this->settings->dotGet( 'smwgPagingLimit.errorlist' );
 
 		$this->getOutput()->redirect(
 			$this->findRedirectURL( $limit )
@@ -62,7 +63,7 @@ class SpecialConstraintErrorList extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/maintenance';
 	}
 

@@ -2,17 +2,26 @@
 
 namespace SMW\Elastic\Jobs;
 
-use SMW\DIWikiPage;
+use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Utils\HmacSerializer;
-use Title;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
+ * Partial DI: Store and Cache are injected via the JobClasses ObjectFactory
+ * spec. The PSR-3 logger is still resolved lazily via
+ * `LoggerFactory::getInstance( 'smw-elastic' )` rather than constructor
+ * injection.
+ *
  * @license GPL-2.0-or-later
  * @since 3.0
  *
@@ -37,25 +46,25 @@ class IndexerRecoveryJob extends Job {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
-	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = [] ) {
+	public function __construct(
+		Title $title,
+		array $params,
+		Store $store,
+		private readonly BagOStuff $cache,
+		private readonly JobFactory $jobFactory
+	) {
 		parent::__construct( self::JOB_COMMAND, $title, $params );
+		$this->setStore( $store );
 		$this->removeDuplicates = true;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param $subject
-	 *
-	 * @return string
 	 */
-	public static function makeCacheKey( $subject ) {
+	public static function makeCacheKey( $subject ): string {
 		if ( $subject instanceof Title ) {
-			$subject = DIWikiPage::newFromTitle( $subject );
+			$subject = WikiPage::newFromTitle( $subject );
 		}
 
 		return smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() );
@@ -63,20 +72,18 @@ class IndexerRecoveryJob extends Job {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Document $document
 	 */
-	public static function pushFromDocument( Document $document ) {
-		$cache = ApplicationFactory::getInstance()->getCache();
+	public static function pushFromDocument( Document $document ): void {
+		$cache = ApplicationFactory::getInstance()->getObjectCache();
 		$subject = $document->getSubject();
 
-		$cache->save(
+		$cache->set(
 			self::makeCacheKey( $subject ),
 			HmacSerializer::compress( $document ),
 			self::TTL_WEEK
 		);
 
-		$indexerRecoveryJob = new IndexerRecoveryJob(
+		$indexerRecoveryJob = ApplicationFactory::getInstance()->getJobFactory()->newIndexerRecoveryJob(
 			$subject->getTitle(),
 			[ 'index' => $subject->getHash() ]
 		);
@@ -86,12 +93,9 @@ class IndexerRecoveryJob extends Job {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Title $title
-	 * @param array $params
 	 */
-	public static function pushFromParams( Title $title, array $params ) {
-		$indexerRecoveryJob = new IndexerRecoveryJob(
+	public static function pushFromParams( Title $title, array $params ): void {
+		$indexerRecoveryJob = ApplicationFactory::getInstance()->getJobFactory()->newIndexerRecoveryJob(
 			$title,
 			$params
 		);
@@ -104,7 +108,7 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @since  3.0
 	 */
-	public function allowRetries() {
+	public function allowRetries(): bool {
 		return false;
 	}
 
@@ -113,10 +117,12 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @since  3.0
 	 */
-	public function run() {
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$store = $applicationFactory->getStore( ElasticStore::class );
+	public function run(): bool {
+		// The Elastic-specific store accessor falls back to ElasticStore if
+		// the wired Store is not already one (e.g. via test override).
+		$store = $this->store instanceof ElasticStore
+			? $this->store
+			: ApplicationFactory::getInstance()->getStore( ElasticStore::class );
 
 		$connection = $store->getConnection( 'elastic' );
 
@@ -139,7 +145,7 @@ class IndexerRecoveryJob extends Job {
 		$this->indexer->setOrigin( __METHOD__ );
 
 		$this->indexer->setLogger(
-			$applicationFactory->getMediaWikiLogger( 'smw-elastic' )
+			LoggerFactory::getInstance( 'smw-elastic' )
 		);
 
 		if ( $this->hasParameter( 'delete' ) ) {
@@ -152,7 +158,7 @@ class IndexerRecoveryJob extends Job {
 
 		if ( $this->hasParameter( 'index' ) ) {
 			$this->index(
-				$applicationFactory->getCache(),
+				$this->cache,
 				$this->getParameter( 'index' )
 			);
 		}
@@ -160,7 +166,7 @@ class IndexerRecoveryJob extends Job {
 		return true;
 	}
 
-	private function requeueRetry( $config ) {
+	private function requeueRetry( $config ): bool {
 		// Give up!
 		if ( $this->getParameter( 'retryCount' ) >= $config->dotGet( 'indexer.job.recovery.retries' ) ) {
 			return true;
@@ -176,28 +182,34 @@ class IndexerRecoveryJob extends Job {
 			$this->params['createdAt'] = time();
 		}
 
-		$job = new self( $this->title, $this->params );
+		$job = $this->jobFactory->newIndexerRecoveryJob(
+			$this->title,
+			$this->params
+		);
 		$job->setDelay( 60 * 10 );
 
 		$job->insert();
+
+		return true;
 	}
 
-	private function delete( array $idList ) {
+	private function delete( array $idList ): void {
 		$this->indexer->delete( $idList );
 	}
 
-	private function create( $hash ) {
-		$this->indexer->create( DIWikiPage::doUnserialize( $hash ) );
+	private function create( $hash ): void {
+		$this->indexer->create( WikiPage::doUnserialize( $hash ) );
 	}
 
-	private function index( $cache, $hash ) {
+	private function index( $cache, $hash ): void {
 		$key = self::makeCacheKey(
-			DIWikiPage::doUnserialize( $hash )
+			WikiPage::doUnserialize( $hash )
 		);
 
 		$document = null;
 
-		if ( ( $data = $cache->fetch( $key ) ) !== false ) {
+		$data = $cache->get( $key );
+		if ( $data !== false ) {
 			$document = HmacSerializer::uncompress( $data );
 		}
 
