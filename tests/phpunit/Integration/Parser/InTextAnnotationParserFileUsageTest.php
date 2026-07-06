@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration\Parser;
 
 use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Parser\ParserOutputLinkTypes;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -55,7 +56,9 @@ class InTextAnnotationParserFileUsageTest extends TestCase {
 
 		$this->applicationFactory->newInTextAnnotationParser( $parserData )->parse( $text );
 
-		return [ $text, array_keys( $parserOutput->getImages() ) ];
+		$media = $parserOutput->getLinkList( ParserOutputLinkTypes::MEDIA );
+
+		return [ $text, array_map( static fn ( array $item ): string => $item['link']->getDBkey(), $media ) ];
 	}
 
 	public function testNonImageFileValueIsTrackedWithoutChangingItsRendering() {
