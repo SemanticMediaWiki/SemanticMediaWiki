@@ -142,8 +142,14 @@ class Outputs {
 
 	/**
 	 * Similar to Outputs::commitToParser() but acting on a ParserOutput object.
+	 *
+	 * By default the internal buffers are preserved so that the same items can
+	 * be committed again to another ParserOutput later. This is necessary when
+	 * a nested Parser::parse() call (e.g. from DynamicPageList) triggers this
+	 * method via hooks; clearing the buffers at that point would lose modules
+	 * that still need to reach the top-level ParserOutput.
 	 */
-	public static function commitToParserOutput( ParserOutput $parserOutput ): void {
+	public static function commitToParserOutput( ParserOutput $parserOutput, bool $clear = false ): void {
 		foreach ( self::$scripts as $key => $script ) {
 			$parserOutput->addHeadItem( $script . "\n", $key );
 		}
@@ -155,9 +161,11 @@ class Outputs {
 		$parserOutput->addModuleStyles( array_values( self::$resourceStyles ) );
 		$parserOutput->addModules( array_values( self::$resourceModules ) );
 
-		self::$resourceStyles = [];
-		self::$resourceModules = [];
-		self::$headItems = [];
+		if ( $clear ) {
+			self::$resourceStyles = [];
+			self::$resourceModules = [];
+			self::$headItems = [];
+		}
 	}
 
 	/**
