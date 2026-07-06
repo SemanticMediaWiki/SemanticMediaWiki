@@ -29,4 +29,18 @@ class PagerTest extends TestCase {
 		);
 	}
 
+	public function testFilterPreservesTitleWithSlash() {
+		$title = $this->createMock( Title::class );
+		$title->method( 'getPrefixedText' )
+			->willReturn( 'Property:Task/Desc' );
+
+		$html = Pager::filter( $title );
+
+		// The hidden 'title' field must carry the full prefixed title so the
+		// filter form reloads the correct page, not a title truncated at the
+		// first slash (#6142).
+		$this->assertStringContainsString( 'value="Property:Task/Desc"', $html );
+		$this->assertStringNotContainsString( 'value="Property:Task"', $html );
+	}
+
 }
