@@ -43,6 +43,15 @@ class OptimizeStoreMaintenanceTest extends SMWIntegrationTestCase {
 	}
 
 	public function testOptimizeStoreWithMaintenanceLog() {
+		$db = $this->getDb();
+
+		$logCountBefore = (int)$db->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
+			->from( 'logging' )
+			->where( [ 'log_type' => 'smw', 'log_action' => 'maintenance' ] )
+			->caller( __METHOD__ )
+			->fetchField();
+
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\optimizeStore' );
 
 		$maintenanceRunner->setMessageReporter(
@@ -61,6 +70,19 @@ class OptimizeStoreMaintenanceTest extends SMWIntegrationTestCase {
 		$this->assertStringContainsString(
 			'Core table(s)',
 			$this->spyMessageReporter->getMessagesAsString()
+		);
+
+		$logCountAfter = (int)$db->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
+			->from( 'logging' )
+			->where( [ 'log_type' => 'smw', 'log_action' => 'maintenance' ] )
+			->caller( __METHOD__ )
+			->fetchField();
+
+		$this->assertGreaterThan(
+			$logCountBefore,
+			$logCountAfter,
+			'Expected --with-maintenance-log to record an smw/maintenance log entry'
 		);
 	}
 
