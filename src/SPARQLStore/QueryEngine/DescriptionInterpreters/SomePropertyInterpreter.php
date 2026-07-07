@@ -10,6 +10,7 @@ use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
@@ -56,10 +57,20 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
 		$property = $description->getProperty();
+		$innerDescription = $description->getDescription();
+
+		if ( $this->isNegatedPropertyExistenceDescription( $innerDescription ) ) {
+			return $this->createConditionForNegatedPropertyExistence(
+				$description,
+				$property,
+				$joinVariable,
+				$orderByProperty
+			);
+		}
 
 		[ $innerOrderByProperty, $innerCondition, $innerJoinVariable ] = $this->doResolveInnerConditionRecursively(
 			$property,
-			$description->getDescription()
+			$innerDescription
 		);
 
 		if ( $innerCondition instanceof FalseCondition ) {
@@ -117,6 +128,100 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		);
 
 		return $result;
+	}
+
+	private function isNegatedPropertyExistenceDescription( Description $description ): bool {
+		return $description instanceof ThingDescription && $description->isNegation === true;
+	}
+
+	private function createConditionForNegatedPropertyExistence(
+		SomeProperty $description,
+		Property $property,
+		string $joinVariable,
+		$orderByProperty
+	): WhereCondition {
+		$namespaces = [];
+		$objectName = '?' . $this->conditionBuilder->getNextVariable();
+
+		[ $subjectName, $objectName, $nonInverseProperty ] = $this->doExchangeForWhenInversePropertyIsUsed(
+			$property,
+			$objectName,
+			$joinVariable
+		);
+
+		$propertyName = $this->findMostSuitablePropertyRepresentation(
+			$property,
+			$nonInverseProperty,
+			$namespaces
+		);
+
+		$condition = 'FILTER NOT EXISTS {' . "\n" .
+			$this->createPropertyAbsencePattern(
+				$nonInverseProperty,
+				$subjectName,
+				$propertyName,
+				$objectName,
+				$description->getHierarchyDepth(),
+				$namespaces
+			) .
+			'}' . "\n";
+
+		$result = new WhereCondition( $condition, false, $namespaces );
+
+		$this->conditionBuilder->addOrderByDataForProperty(
+			$result,
+			$joinVariable,
+			$orderByProperty,
+			DataItem::TYPE_WIKIPAGE
+		);
+
+		return $result;
+	}
+
+	private function createPropertyAbsencePattern(
+		Property $property,
+		string $subjectName,
+		string $propertyName,
+		string $objectName,
+		$depth,
+		array &$namespaces
+	): string {
+		if ( !$this->canUsePropertyHierarchyInAbsencePattern( $property, $depth ) ) {
+			return "$subjectName $propertyName $objectName .\n";
+		}
+
+		$subPropExpElement = $this->exporter->getSpecialPropertyResource( '_SUBP', SMW_NS_PROPERTY );
+		$namespaces[$subPropExpElement->getNamespaceId()] = $subPropExpElement->getNamespace();
+
+		$pathOp = $depth > 1 || $depth === null ? '*' : '?';
+		$propertyByVariable = '?' . $this->conditionBuilder->getNextVariable( 'sp' );
+
+		return "$propertyByVariable " . $subPropExpElement->getQName() . "$pathOp $propertyName .\n" .
+			"$subjectName $propertyByVariable $objectName .\n";
+	}
+
+	private function canUsePropertyHierarchyInAbsencePattern( Property $property, $depth ): bool {
+		if ( !$this->canUsePropertyHierarchy( $property, $depth ) ) {
+			return false;
+		}
+
+		if ( $this->conditionBuilder->getHierarchyLookup() == null || !$this->conditionBuilder->getHierarchyLookup()->hasSubproperty( $property ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private function canUsePropertyHierarchy( Property $property, $depth ): bool {
+		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBP ) ) {
+			return false;
+		}
+
+		if ( !$property->isUserDefined() ) {
+			return false;
+		}
+
+		return $depth === null || $depth >= 1;
 	}
 
 	private function doResolveInnerConditionRecursively( Property $property, Description $description ): array {
@@ -234,7 +339,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @see http://www.w3.org/TR/sparql11-query/#propertypath-arbitrary-length
 	 */
 	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, Property $property, &$propertyName, $depth ): void {
-		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() || ( $depth !== null && $depth < 1 ) ) {
+		if ( !$this->canUsePropertyHierarchy( $property, $depth ) ) {
 			return;
 		}
 

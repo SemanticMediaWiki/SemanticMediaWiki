@@ -144,6 +144,54 @@ class SomePropertyInterpreterTest extends TestCase {
 		);
 	}
 
+	public function testNegatedThingDescriptionKeepsHierarchyPatternInsideNotExists() {
+		$engineOptions = new EngineOptions();
+		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBP );
+
+		$property = new Property( 'Foo' );
+
+		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyLookup->expects( $this->once() )
+			->method( 'hasSubproperty' )
+			->with( $property )
+			->willReturn( true );
+
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
+		$conditionBuilder->setHierarchyLookup( $hierarchyLookup );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$thingDescription = new ThingDescription();
+		$thingDescription->isNegation = true;
+
+		$description = new SomeProperty(
+			$property,
+			$thingDescription
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER NOT EXISTS {' )->addNewLine()
+			->addString( '?sp2 rdfs:subPropertyOf* property:Foo .' )->addNewLine()
+			->addString( '?result ?sp2 ?v1 .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expected,
+			$conditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
 	public function descriptionProvider() {
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
@@ -537,6 +585,61 @@ class SomePropertyInterpreterTest extends TestCase {
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->addString( '?result property:Modification_date-23aux "2440587.5423611"^^xsd:double .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 15
+		$conditionType = WhereCondition::class;
+
+		$thingDescription = new ThingDescription();
+		$thingDescription->isNegation = true;
+
+		$description = new SomeProperty(
+			new Property( 'Foo' ),
+			$thingDescription
+		);
+
+		$orderByProperty = null;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER NOT EXISTS {' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 16 Inverse
+		$conditionType = WhereCondition::class;
+
+		$thingDescription = new ThingDescription();
+		$thingDescription->isNegation = true;
+
+		$description = new SomeProperty(
+			new Property( 'Foo', true ),
+			$thingDescription
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER NOT EXISTS {' )->addNewLine()
+			->addString( '?v1 property:Foo ?result .' )->addNewLine()
+			->addString( '}' )->addNewLine()
 			->getString();
 
 		$provider[] = [
