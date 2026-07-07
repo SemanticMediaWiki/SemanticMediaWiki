@@ -58,6 +58,20 @@ class Outputs {
 	protected static array $resourceStyles = [];
 
 	/**
+	 * Number of `Parser::parse()` calls currently on the call stack.
+	 * Incremented by `onParseStart()` (via `ParserClearState` hook) and
+	 * decremented by `onParseEnd()` (via `ParserAfterTidy` hook).
+	 *
+	 * When depth > 0, `commitToParserOutput()` preserves the static
+	 * buffers so that modules registered in an outer parse survive a
+	 * nested parse that also commits (e.g. DynamicPageList). When the
+	 * outermost parse ends, `onParseEnd()` clears the buffers so that
+	 * modules do not leak into subsequent, unrelated page parses in
+	 * batch processes (job queue, maintenance scripts).
+	 */
+	private static int $parseDepth = 0;
+
+	/**
 	 * Adds a resource module to the parser output.
 	 *
 	 * @since 1.5.3
@@ -71,6 +85,44 @@ class Outputs {
 	 */
 	public static function requireStyle( string $stylesName ): void {
 		self::$resourceStyles[$stylesName] = $stylesName;
+	}
+
+	/**
+	 * Called from the `ParserClearState` hook at the start of every
+	 * `Parser::parse()` invocation (including nested ones).
+	 */
+	public static function onParseStart(): void {
+		self::$parseDepth++;
+	}
+
+	/**
+	 * Called from the `ParserAfterTidy` hook at the end of every
+	 * `Parser::parse()` invocation. When the outermost parse finishes,
+	 * clears the static buffers so that modules do not leak into the
+	 * next page parsed in the same process.
+	 */
+	public static function onParseEnd(): void {
+		if ( self::$parseDepth > 0 ) {
+			self::$parseDepth--;
+		}
+
+		if ( self::$parseDepth === 0 ) {
+			self::$resourceStyles = [];
+			self::$resourceModules = [];
+			self::$headItems = [];
+			self::$scripts = [];
+		}
+	}
+
+	/**
+	 * Reset the parse-depth counter and buffers. Intended for tests.
+	 */
+	public static function resetParseDepth(): void {
+		self::$parseDepth = 0;
+		self::$resourceStyles = [];
+		self::$resourceModules = [];
+		self::$headItems = [];
+		self::$scripts = [];
 	}
 
 	/**
@@ -143,13 +195,14 @@ class Outputs {
 	/**
 	 * Similar to Outputs::commitToParser() but acting on a ParserOutput object.
 	 *
-	 * By default the internal buffers are preserved so that the same items can
-	 * be committed again to another ParserOutput later. This is necessary when
-	 * a nested Parser::parse() call (e.g. from DynamicPageList) triggers this
-	 * method via hooks; clearing the buffers at that point would lose modules
-	 * that still need to reach the top-level ParserOutput.
+	 * The internal buffers are cleared only when no `Parser::parse()` call is
+	 * on the stack (i.e. outside of parsing) or when the caller is the
+	 * outermost parse. During a nested parse (e.g. triggered by
+	 * DynamicPageList) the buffers are preserved so that modules registered
+	 * by the outer parse survive. The outermost-parse cleanup is handled by
+	 * `onParseEnd()`, called from `ParserAfterTidy`.
 	 */
-	public static function commitToParserOutput( ParserOutput $parserOutput, bool $clear = false ): void {
+	public static function commitToParserOutput( ParserOutput $parserOutput ): void {
 		foreach ( self::$scripts as $key => $script ) {
 			$parserOutput->addHeadItem( $script . "\n", $key );
 		}
@@ -161,7 +214,12 @@ class Outputs {
 		$parserOutput->addModuleStyles( array_values( self::$resourceStyles ) );
 		$parserOutput->addModules( array_values( self::$resourceModules ) );
 
-		if ( $clear ) {
+		// Clear only when we are not inside a nested parse. During nested
+		// parses the buffers must survive so the outermost ParserOutput
+		// receives all modules. When parseDepth is 0 we are outside of
+		// any Parser::parse() call (e.g. special pages calling
+		// commitToParser directly) and must clear to avoid stale data.
+		if ( self::$parseDepth <= 1 ) {
 			self::$resourceStyles = [];
 			self::$resourceModules = [];
 			self::$headItems = [];

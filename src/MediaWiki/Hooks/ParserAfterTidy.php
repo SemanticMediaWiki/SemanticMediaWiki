@@ -9,6 +9,7 @@ use MediaWiki\Parser\ParserOutputLinkTypes;
 use MediaWiki\Permissions\RestrictionStore;
 use Psr\Log\LoggerInterface;
 use SMW\DataModel\SemanticData;
+use SMW\MediaWiki\Outputs;
 use SMW\NamespaceExaminer;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -132,6 +133,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 	 */
 	public function onParserAfterTidy( $parser, &$text ) {
 		if ( !Site::isReady() ) {
+			Outputs::onParseEnd();
 			$this->doAbort();
 			return true;
 		}
@@ -162,6 +164,8 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 			if ( self::$inFlightParses !== null ) {
 				unset( self::$inFlightParses[$parser] );
 			}
+
+			Outputs::onParseEnd();
 		}
 
 		return true;
