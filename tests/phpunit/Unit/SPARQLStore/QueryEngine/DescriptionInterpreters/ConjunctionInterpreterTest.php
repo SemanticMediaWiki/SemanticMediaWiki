@@ -367,6 +367,80 @@ class ConjunctionInterpreterTest extends TestCase {
 			$expected
 		];
 
+		# 9 fixed page plus bare not-like page comparison: [[A]][[!~B]]
+		$conditionType = SingletonCondition::class;
+
+		$description = new Conjunction( [
+			new ValueDescription( new WikiPage( 'SomePageValue', NS_MAIN ) ),
+			new ValueDescription( new WikiPage( 'SomeOtherPage*', NS_MAIN ), null, SMW_CMP_NLKE )
+		] );
+
+		$orderByProperty = null;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( 'FILTER( !regex( ?v1, "^SomeOtherPage.*$", "s") )' )->addNewLine()
+			->addString( 'wiki:SomePageValue swivt:wikiPageSortKey ?v1 .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 10 same as #9, with the conjunction order reversed
+		$conditionType = SingletonCondition::class;
+
+		$description = new Conjunction( [
+			new ValueDescription( new WikiPage( 'SomeOtherPage*', NS_MAIN ), null, SMW_CMP_NLKE ),
+			new ValueDescription( new WikiPage( 'SomePageValue', NS_MAIN ) )
+		] );
+
+		$orderByProperty = null;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( 'FILTER( !regex( ?v1, "^SomeOtherPage.*$", "s") )' )->addNewLine()
+			->addString( 'wiki:SomePageValue swivt:wikiPageSortKey ?v1 .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 11 same fixed singleton plus another condition remains mergeable
+		$conditionType = SingletonCondition::class;
+
+		$description = new Conjunction( [
+			new ValueDescription( new WikiPage( 'SomePageValue', NS_MAIN ) ),
+			new Conjunction( [
+				new NamespaceDescription( NS_MAIN ),
+				new ValueDescription( new WikiPage( 'SomePageValue', NS_MAIN ) )
+			] )
+		] );
+
+		$orderByProperty = null;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '{ wiki:SomePageValue swivt:wikiNamespace "0"^^xsd:integer . }' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
 		return $provider;
 	}
 
