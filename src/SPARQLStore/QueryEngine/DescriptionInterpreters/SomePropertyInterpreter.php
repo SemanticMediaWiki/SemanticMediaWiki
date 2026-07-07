@@ -53,6 +53,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ): Condition {
+		if ( !$description instanceof SomeProperty ) {
+			throw new UnexpectedValueException(
+				'Expected SomeProperty description'
+			);
+		}
+
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
