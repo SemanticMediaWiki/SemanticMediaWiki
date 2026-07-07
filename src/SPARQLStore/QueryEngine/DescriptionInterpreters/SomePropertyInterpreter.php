@@ -196,14 +196,33 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			return "$subjectName $propertyName $objectName .\n";
 		}
 
-		$subPropExpElement = $this->exporter->getSpecialPropertyResource( '_SUBP', SMW_NS_PROPERTY );
-		$namespaces[$subPropExpElement->getNamespaceId()] = $subPropExpElement->getNamespace();
+		[ $propertyByVariable, $subpropertyPathCondition, $subpropertyPathNamespaces ] = $this->createSubpropertyPathPattern(
+			$propertyName,
+			$depth
+		);
+		$namespaces = array_merge( $namespaces, $subpropertyPathNamespaces );
 
+		return $subpropertyPathCondition .
+			"$subjectName $propertyByVariable $objectName .\n";
+	}
+
+	private function createSubpropertyPathPattern( string $propertyName, $depth ): array {
+		$subPropExpElement = $this->exporter->getSpecialPropertyResource( '_SUBP', SMW_NS_PROPERTY );
+
+		// A discret depth other than 0 or 1 is difficult to achieve
+		// @see https://stackoverflow.com/questions/18126949/limit-the-sparql-query-result-to-first-level-in-hierarchy
+		// Path operator is defined as:
+		// - elt* ZeroOrMorePath
+		// - elt? ZeroOrOnePath
 		$pathOp = $depth > 1 || $depth === null ? '*' : '?';
+
 		$propertyByVariable = '?' . $this->conditionBuilder->getNextVariable( 'sp' );
 
-		return "$propertyByVariable " . $subPropExpElement->getQName() . "$pathOp $propertyName .\n" .
-			"$subjectName $propertyByVariable $objectName .\n";
+		return [
+			$propertyByVariable,
+			"$propertyByVariable " . $subPropExpElement->getQName() . "$pathOp $propertyName .\n",
+			[ $subPropExpElement->getNamespaceId() => $subPropExpElement->getNamespace() ]
+		];
 	}
 
 	private function canUsePropertyHierarchyInAbsencePattern( Property $property, $depth ): bool {
@@ -353,17 +372,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			return;
 		}
 
-		$subPropExpElement = $this->exporter->getSpecialPropertyResource( '_SUBP', SMW_NS_PROPERTY );
-
-		// A discret depth other than 0 or 1 is difficult to achieve
-		// @see https://stackoverflow.com/questions/18126949/limit-the-sparql-query-result-to-first-level-in-hierarchy
-		// Path operator is defined as:
-		// - elt* ZeroOrMorePath
-		// - elt? ZeroOrOnePath
-		$pathOp = $depth > 1 || $depth === null ? '*' : '?';
-
-		$propertyByVariable = '?' . $this->conditionBuilder->getNextVariable( 'sp' );
-		$condition->weakConditions[$propertyName] = "\n" . "$propertyByVariable " . $subPropExpElement->getQName() . "$pathOp $propertyName .\n" . "";
+		[ $propertyByVariable, $subpropertyPathCondition, $subpropertyPathNamespaces ] = $this->createSubpropertyPathPattern(
+			$propertyName,
+			$depth
+		);
+		$condition->namespaces = array_merge( $condition->namespaces, $subpropertyPathNamespaces );
+		$condition->weakConditions[$propertyName] = "\n" . $subpropertyPathCondition;
 		$propertyName = $propertyByVariable;
 	}
 
