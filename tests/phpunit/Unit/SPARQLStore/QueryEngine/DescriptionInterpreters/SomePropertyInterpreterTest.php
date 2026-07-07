@@ -68,6 +68,18 @@ class SomePropertyInterpreterTest extends TestCase {
 		);
 	}
 
+	public function testThrowsExceptionForNonSomePropertyDescription() {
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$this->expectException( \UnexpectedValueException::class );
+
+		$instance->interpretDescription( new ThingDescription() );
+	}
+
 	/**
 	 * @dataProvider descriptionProvider
 	 */
@@ -96,6 +108,96 @@ class SomePropertyInterpreterTest extends TestCase {
 
 		$this->assertEquals(
 			$expectedConditionString,
+			$conditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
+	public function testNegatedThingDescriptionDoesNotUseHierarchyPatternWithoutSubproperty() {
+		$engineOptions = new EngineOptions();
+		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBP );
+
+		$property = new Property( 'Foo' );
+
+		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyLookup->expects( $this->once() )
+			->method( 'hasSubproperty' )
+			->with( $property )
+			->willReturn( false );
+
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
+		$conditionBuilder->setHierarchyLookup( $hierarchyLookup );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$thingDescription = new ThingDescription();
+		$thingDescription->isNegation = true;
+
+		$description = new SomeProperty(
+			$property,
+			$thingDescription
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER NOT EXISTS {' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expected,
+			$conditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
+	public function testNegatedThingDescriptionDoesNotUseHierarchyPatternForPredefinedProperty() {
+		$engineOptions = new EngineOptions();
+		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBP );
+
+		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyLookup->expects( $this->never() )
+			->method( 'hasSubproperty' );
+
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
+		$conditionBuilder->setHierarchyLookup( $hierarchyLookup );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$thingDescription = new ThingDescription();
+		$thingDescription->isNegation = true;
+
+		$description = new SomeProperty(
+			new Property( Property::TYPE_SORTKEY ),
+			$thingDescription
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER NOT EXISTS {' )->addNewLine()
+			->addString( '?result swivt:wikiPageSortKey ?v1 .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expected,
 			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
