@@ -895,7 +895,7 @@
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" cannot be used as preferred label because the language \"$2\" is already assigned to the \"$3\" label.",
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Copy link to clipboard",
-	"smw-property-userdefined-fixedtable": "\"$1\" is configured as a [https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties fixed property]. Whenever its [https://www.semantic-mediawiki.org/wiki/Type_declaration type declaration] is changed, be sure to either run <code>setupStore.php</code> or run the \"Database setup\" task on [[Special:SemanticMediaWiki]]."
+	"smw-property-userdefined-fixedtable": "\"$1\" is configured as a [https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties fixed property]. Whenever its [https://www.semantic-mediawiki.org/wiki/Type_declaration type declaration] is changed, be sure to either run <code>setupStore.php</code> or run the \"Database setup\" task on [[Special:SemanticMediaWiki]].",
 	"smw-data-lookup": "Fetching data...",
 	"smw-data-lookup-with-wait": "The request is being processed and may take a moment.",
 	"smw-no-data-available": "No data available.",
