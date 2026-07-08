@@ -10,6 +10,7 @@ use SMW\DataItems\WikiPage;
 use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\HierarchyLookup;
+use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -291,6 +292,137 @@ class SomePropertyInterpreterTest extends TestCase {
 		$this->assertEquals(
 			$expected,
 			$conditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
+	public function testNegatedThingDescriptionProducesSelfContainedSafeCondition() {
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$thingDescription = new ThingDescription();
+		$thingDescription->isNegation = true;
+
+		$description = new SomeProperty(
+			new Property( 'Foo' ),
+			$thingDescription
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		// The condition must bind the result variable in its own graph pattern so
+		// it can stand alone inside a UNION branch (disjunction), where the base
+		// pattern injected by convertConditionToString is not in scope.
+		$this->assertTrue(
+			$condition->isSafe(),
+			'A negated property existence condition must be self-safe'
+		);
+
+		$this->assertStringContainsString(
+			'?result swivt:page ?url .',
+			$condition->getCondition()
+		);
+	}
+
+	public function testNegatedThingDescriptionBindsResultInsideEachDisjunctionBranch() {
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setResultVariable( $resultVariable );
+
+		$fooDescription = new ThingDescription();
+		$fooDescription->isNegation = true;
+
+		$barDescription = new ThingDescription();
+		$barDescription->isNegation = true;
+
+		$description = new Disjunction( [
+			new SomeProperty( new Property( 'Foo' ), $fooDescription ),
+			new SomeProperty( new Property( 'Bar' ), $barDescription )
+		] );
+
+		$condition = $conditionBuilder->getConditionFrom( $description );
+		$conditionString = $conditionBuilder->convertConditionToString( $condition );
+
+		// Both UNION branches must bind ?result before their FILTER NOT EXISTS.
+		// Without a binding the filter would be evaluated with ?result free,
+		// testing whether the store holds the property at all rather than
+		// whether the individual page lacks it.
+		$this->assertStringContainsString( 'UNION', $conditionString );
+
+		$this->assertSame(
+			2,
+			substr_count( $conditionString, "?result swivt:page ?url .\nFILTER NOT EXISTS {" )
+		);
+	}
+
+	public function testNegatedThingDescriptionBindsResultWhenNonBindingWeakConditionPresent() {
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$thingDescription = new ThingDescription();
+		$thingDescription->isNegation = true;
+
+		$description = new SomeProperty(
+			new Property( 'Foo' ),
+			$thingDescription
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		// Mirror the weak condition that getConditionFrom() adds for a property
+		// whose page is a redirect (SMW_SPARQL_QF_REDI): it binds the redirect
+		// variable, not ?result. Such a weak condition previously suppressed the
+		// injected base pattern, leaving ?result unbound inside the NOT EXISTS.
+		$condition->weakConditions['redirect'] = "?r1 ^property:redirects_to property:Foo .\n";
+
+		$conditionString = $conditionBuilder->convertConditionToString( $condition );
+
+		$this->assertStringContainsString(
+			'?result swivt:page ?url .',
+			$conditionString
+		);
+	}
+
+	public function testNegatedThingDescriptionInPropertyChainDoesNotBindResultVariable() {
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setResultVariable( $resultVariable );
+
+		// [[Chain.A::!+]] [[Chain.B::!+]] — two chained negations whose
+		// intermediate join variables are already bound by the enclosing
+		// property triple. Neither must add its own binding: a shared binding
+		// variable (?url) across both would wrongly force the two intermediates
+		// to be the same subject and silently drop valid results.
+		$negatedA = new ThingDescription();
+		$negatedA->isNegation = true;
+
+		$negatedB = new ThingDescription();
+		$negatedB->isNegation = true;
+
+		$description = new Conjunction( [
+			new SomeProperty( new Property( 'Chain' ), new SomeProperty( new Property( 'A' ), $negatedA ) ),
+			new SomeProperty( new Property( 'Chain' ), new SomeProperty( new Property( 'B' ), $negatedB ) )
+		] );
+
+		$condition = $conditionBuilder->getConditionFrom( $description );
+		$conditionString = $conditionBuilder->convertConditionToString( $condition );
+
+		// The chain intermediates are bound by their '?result property:Chain ?vN'
+		// triples, so no swivt:page binding is emitted on them.
+		$this->assertSame(
+			0,
+			substr_count( $conditionString, 'swivt:page' )
 		);
 	}
 

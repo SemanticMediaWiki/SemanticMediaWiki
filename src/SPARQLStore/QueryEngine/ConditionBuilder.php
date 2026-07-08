@@ -105,6 +105,15 @@ class ConditionBuilder {
 	}
 
 	/**
+	 * @since 7.1.0
+	 *
+	 * @return string
+	 */
+	public function getResultVariable(): string {
+		return $this->resultVariable;
+	}
+
+	/**
 	 * Get a fresh unused variable name for building SPARQL conditions.
 	 *
 	 * @return string
