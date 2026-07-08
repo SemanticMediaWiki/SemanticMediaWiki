@@ -5,6 +5,7 @@ namespace SMW\MediaWiki;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutput;
+use WeakMap;
 
 /**
  * This class attempts to provide safe yet simple means for managing data that is relevant
@@ -58,6 +59,27 @@ class Outputs {
 	protected static array $resourceStyles = [];
 
 	/**
+	 * Top-level content parses (`Parser::parse()` with output type HTML that
+	 * are not interface-message parses) currently in progress, keyed by the
+	 * `Parser` instance running them. Populated by `onParseStart()` (via the
+	 * `ParserClearState` hook) and drained by `onParseEnd()` (via the
+	 * `ParserAfterTidy` hook).
+	 *
+	 * It exists so that `commitToParserOutput()` can tell whether it is running
+	 * inside a nested parse: when an extension such as DynamicPageList starts a
+	 * second `Parser::parse()` while an outer `{{#ask}}` has already registered
+	 * modules, the inner commit must not drain the buffer, or those modules are
+	 * lost when the inner `ParserOutput` is discarded (see #7009).
+	 *
+	 * A `WeakMap` keyed by `Parser` is used so that entries are reclaimed by GC
+	 * and, crucially, so membership can be validated against `Parser::isLocked()`:
+	 * a parser that has left `parse()` (normally or via an exception, which has
+	 * no `ParserAfterTidy`) reports `isLocked() === false` and is never counted,
+	 * making the nesting check self-healing rather than a drift-prone counter.
+	 */
+	private static ?WeakMap $activeParses = null;
+
+	/**
 	 * Adds a resource module to the parser output.
 	 *
 	 * @since 1.5.3
@@ -71,6 +93,84 @@ class Outputs {
 	 */
 	public static function requireStyle( string $stylesName ): void {
 		self::$resourceStyles[$stylesName] = $stylesName;
+	}
+
+	/**
+	 * Called from the `ParserClearState` hook at the start of every
+	 * `Parser::parse()` invocation. Registers the parser as an in-progress
+	 * top-level content parse so that a later, nested parse can be recognised
+	 * by `commitToParserOutput()`.
+	 *
+	 * Only genuine top-level content parses are tracked. The `isLocked()` check
+	 * comes first: `Parser::clearState()` also fires outside a real parse (test
+	 * helpers, manual state resets), and such a parser is neither locked nor has
+	 * it initialised its output type yet, so the output type must not be read
+	 * for it. `preprocess()` and `getPreloadText()` are locked but run with a
+	 * non-HTML output type and never reach `ParserAfterTidy`, and interface-
+	 * message parses (`Message::parse()`) must not influence the buffer
+	 * lifecycle of a surrounding special-page render; both are excluded.
+	 *
+	 * @since 7.1.0
+	 */
+	public static function onParseStart( Parser $parser ): void {
+		if ( !$parser->isLocked()
+			|| $parser->getOutputType() !== Parser::OT_HTML
+			|| $parser->getOptions()->getInterfaceMessage() ) {
+			return;
+		}
+
+		self::$activeParses ??= new WeakMap();
+		self::$activeParses[$parser] = true;
+	}
+
+	/**
+	 * Called from the `ParserAfterTidy` hook at the end of every
+	 * `Parser::parse()` invocation. Unregisters the parser from the
+	 * in-progress set. No buffer clearing happens here; the buffers are
+	 * cleared by the outermost `commitToParserOutput()` (see there).
+	 *
+	 * @since 7.1.0
+	 */
+	public static function onParseEnd( Parser $parser ): void {
+		if ( self::$activeParses !== null ) {
+			unset( self::$activeParses[$parser] );
+		}
+	}
+
+	/**
+	 * Whether a `commitToParserOutput()` call is happening inside a nested
+	 * parse, i.e. an enclosing top-level content parse is still locked while
+	 * an inner parse commits. Stale entries whose parser is no longer locked
+	 * (e.g. left `parse()` via an exception) are ignored, so the check cannot
+	 * drift out of balance.
+	 */
+	private static function isNestedParse(): bool {
+		if ( self::$activeParses === null ) {
+			return false;
+		}
+
+		$locked = 0;
+		foreach ( self::$activeParses as $parser => $unused ) {
+			if ( $parser->isLocked() && ++$locked > 1 ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Reset the in-progress parse registry and all output buffers.
+	 * Intended for tests.
+	 *
+	 * @since 7.1.0
+	 */
+	public static function reset(): void {
+		self::$activeParses = null;
+		self::$resourceStyles = [];
+		self::$resourceModules = [];
+		self::$headItems = [];
+		self::$scripts = [];
 	}
 
 	/**
@@ -142,6 +242,15 @@ class Outputs {
 
 	/**
 	 * Similar to Outputs::commitToParser() but acting on a ParserOutput object.
+	 *
+	 * The buffers are cleared after committing, except while an enclosing
+	 * parse is still in progress. During a nested parse (e.g. one started by
+	 * DynamicPageList while an outer `{{#ask}}` has already registered modules)
+	 * the inner commit preserves the buffer so that the outermost ParserOutput
+	 * still receives those modules instead of losing them to the discarded
+	 * inner ParserOutput (see #7009). A commit made outside of any parse (a
+	 * special page calling commitToParser directly) counts as outermost and
+	 * clears normally.
 	 */
 	public static function commitToParserOutput( ParserOutput $parserOutput ): void {
 		foreach ( self::$scripts as $key => $script ) {
@@ -155,9 +264,12 @@ class Outputs {
 		$parserOutput->addModuleStyles( array_values( self::$resourceStyles ) );
 		$parserOutput->addModules( array_values( self::$resourceModules ) );
 
-		self::$resourceStyles = [];
-		self::$resourceModules = [];
-		self::$headItems = [];
+		if ( !self::isNestedParse() ) {
+			self::$resourceStyles = [];
+			self::$resourceModules = [];
+			self::$headItems = [];
+			self::$scripts = [];
+		}
 	}
 
 	/**
@@ -182,6 +294,7 @@ class Outputs {
 		self::$resourceStyles = [];
 		self::$resourceModules = [];
 		self::$headItems = [];
+		self::$scripts = [];
 	}
 
 }

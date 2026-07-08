@@ -16,6 +16,7 @@ use ReflectionProperty;
 use RuntimeException;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
@@ -105,6 +106,7 @@ class ParserAfterTidyTest extends TestCase {
 
 	protected function tearDown(): void {
 		ParserAfterTidy::resetInFlightParses();
+		Outputs::reset();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
