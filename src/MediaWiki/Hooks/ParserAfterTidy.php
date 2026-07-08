@@ -133,7 +133,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 	 */
 	public function onParserAfterTidy( $parser, &$text ) {
 		if ( !Site::isReady() ) {
-			Outputs::onParseEnd();
+			Outputs::onParseEnd( $parser );
 			$this->doAbort();
 			return true;
 		}
@@ -165,7 +165,7 @@ class ParserAfterTidy implements ParserAfterTidyHook {
 				unset( self::$inFlightParses[$parser] );
 			}
 
-			Outputs::onParseEnd();
+			Outputs::onParseEnd( $parser );
 		}
 
 		return true;

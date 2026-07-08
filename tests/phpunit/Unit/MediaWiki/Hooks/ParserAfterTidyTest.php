@@ -106,7 +106,7 @@ class ParserAfterTidyTest extends TestCase {
 
 	protected function tearDown(): void {
 		ParserAfterTidy::resetInFlightParses();
-		Outputs::resetParseDepth();
+		Outputs::reset();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

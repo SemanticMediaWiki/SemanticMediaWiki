@@ -11,8 +11,8 @@ use SMW\MediaWiki\Outputs;
  * can distinguish the outermost fire from inner (nested) fires triggered
  * by extensions that clone the parser, see #5923.
  *
- * Also increments the global parse-depth counter in `Outputs` so that
- * nested parses do not drain the resource-module buffer prematurely.
+ * Also registers the parse with `Outputs` so that a nested parse does not
+ * drain the resource-module buffer of an enclosing parse, see #7009.
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserClearState
  *
@@ -25,11 +25,9 @@ class ParserClearState implements ParserClearStateHook {
 	 * @since 7.0.0
 	 */
 	public function onParserClearState( $parser ) {
-		// Depth counter must be incremented unconditionally because
-		// ParserAfterTidy (where it is decremented) fires for every
-		// Parser::parse() call. The in-flight-parse tracker has its
-		// own guards and can safely be called for all parsers too.
-		Outputs::onParseStart();
+		// `Outputs` and the in-flight-parse tracker both apply their own
+		// filtering, so it is safe to notify them for every parser here.
+		Outputs::onParseStart( $parser );
 		ParserAfterTidy::onParserClearState( $parser );
 
 		return true;
