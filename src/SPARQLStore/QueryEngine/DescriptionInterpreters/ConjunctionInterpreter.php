@@ -144,28 +144,26 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 			} elseif ( $subCondition instanceof WhereCondition ) {
 				$subConditionElements->condition .= $subCondition->condition;
 			} elseif ( $subCondition instanceof FilterCondition ) {
-				$subConditionElements->filter .= ( $subConditionElements->filter ? ' && ' : '' ) . $subCondition->filter;
+				$this->addFilter( $subConditionElements, $subCondition->filter );
 			} elseif ( $subCondition instanceof SingletonCondition ) {
 				$matchElement = $subCondition->matchElement;
-
-				if ( $matchElement instanceof ExpElement ) {
-					$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
-				} else {
-					$matchElementName = $matchElement;
-				}
 
 				if ( $matchElement instanceof ExpNsResource ) {
 					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 				}
 
-				if ( ( $subConditionElements->singletonMatchElement !== null ) &&
-					 ( $singletonMatchElementName !== $matchElementName ) ) {
-					return new FalseCondition();
+				if ( $matchElement instanceof ExpElement ) {
+					$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+
+					if ( $subConditionElements->singletonMatchElement === null ) {
+						$subConditionElements->singletonMatchElement = $subCondition->matchElement;
+						$singletonMatchElementName = $matchElementName;
+					} elseif ( $singletonMatchElementName !== $matchElementName ) {
+						return new FalseCondition();
+					}
 				}
 
 				$subConditionElements->condition .= $subCondition->condition;
-				$subConditionElements->singletonMatchElement = $subCondition->matchElement;
-				$singletonMatchElementName = $matchElementName;
 			}
 
 			$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
@@ -180,6 +178,10 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		$subConditionElements->orderVariables = $orderVariables;
 
 		return $subConditionElements;
+	}
+
+	private function addFilter( stdClass $subConditionElements, string $filter ): void {
+		$subConditionElements->filter .= ( $subConditionElements->filter ? ' && ' : '' ) . $filter;
 	}
 
 	private function createConditionFromSubConditionElements( stdClass $subConditionElements ): Condition {
