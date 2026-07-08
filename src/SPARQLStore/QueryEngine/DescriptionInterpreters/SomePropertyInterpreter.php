@@ -161,7 +161,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$namespaces
 		);
 
-		$condition = 'FILTER NOT EXISTS {' . "\n" .
+		$absencePattern = 'FILTER NOT EXISTS {' . "\n" .
 			$this->createPropertyAbsencePattern(
 				$nonInverseProperty,
 				$subjectName,
@@ -172,7 +172,25 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			) .
 			'}' . "\n";
 
-		$result = new WhereCondition( $condition, false, $namespaces );
+		// A bare FILTER NOT EXISTS does not bind its variable. When this
+		// condition binds the result variable, bind it to a graph pattern so the
+		// condition is self-contained (safe); otherwise it breaks inside a UNION
+		// branch (disjunction), or when a weak condition suppresses the base
+		// pattern that convertConditionToString() would otherwise inject.
+		// When nested inside a property chain the join variable is a fresh
+		// intermediate already bound by the enclosing property triple, so no
+		// binding is added: it would be redundant, and a shared binding variable
+		// would wrongly couple sibling chain conditions.
+		if ( $joinVariable === $this->conditionBuilder->getResultVariable() ) {
+			$swivtPageResource = $this->exporter->newExpNsResourceById( 'swivt', 'page' );
+			$condition = '?' . $joinVariable . ' ' . $swivtPageResource->getQName() . " ?url .\n" . $absencePattern;
+			$isSafe = true;
+		} else {
+			$condition = $absencePattern;
+			$isSafe = false;
+		}
+
+		$result = new WhereCondition( $condition, $isSafe, $namespaces );
 
 		$this->conditionBuilder->addOrderByDataForProperty(
 			$result,
