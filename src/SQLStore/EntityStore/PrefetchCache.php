@@ -82,6 +82,10 @@ class PrefetchCache {
 
 	private static function makeRequestOptionsHash( RequestOptions $requestOptions ): string {
 		$requestOptions = clone $requestOptions;
+
+		// The prefetch fingerprint is added below for lower-level caches to
+		// identify the subject set. It must not make this lookup cache key
+		// change when the same RequestOptions instance is prefetched again.
 		$requestOptions->deleteOption( RequestOptions::PREFETCH_FINGERPRINT );
 
 		return (string)$requestOptions->getHash();
@@ -110,7 +114,10 @@ class PrefetchCache {
 		$key = $this->makeCacheKey( $property, $requestOptions );
 
 		// Use an aggressive cache strategy to avoid repetitive queries especially
-		// when called as part of a printrequest chain
+		// when called as part of a printrequest chain. Request options belong to
+		// the lookup identity because printout-local options such as +order or
+		// +limit can produce a different value list for the same property and
+		// subject set.
 		$lookupKey = md5( $key . '#' . $fingerprint . '#' . $requestOptionsHash );
 
 		if ( isset( $this->lookupCache[$lookupKey] ) ) {
