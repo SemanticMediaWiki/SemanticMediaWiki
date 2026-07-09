@@ -35,15 +35,62 @@ class PrefetchCacheTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->requestOptions = new RequestOptions();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PrefetchCache::class,
 			new PrefetchCache( $this->store, $this->prefetchItemLookup )
+		);
+	}
+
+	public function testCacheKeySeparatesDirectAndInverseProperty() {
+		$requestOptions = new RequestOptions();
+		$requestOptions->isChain = false;
+		$requestOptions->isFirstChain = false;
+
+		$this->assertNotSame(
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $requestOptions ),
+			PrefetchCache::makeCacheKey( new Property( 'Foo', true ), $requestOptions )
+		);
+	}
+
+	public function testIsCachedUsesRequestOptionsCacheKey() {
+		$property = new Property( 'Foo' );
+		$subject = WikiPage::newFromText( __METHOD__ );
+
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$this->prefetchItemLookup->method( 'getPropertyValues' )
+			->willReturn( [] );
+
+		$chainOptions = new RequestOptions();
+		$chainOptions->isChain = true;
+		$chainOptions->isFirstChain = true;
+
+		$directOptions = new RequestOptions();
+		$directOptions->isChain = false;
+		$directOptions->isFirstChain = false;
+
+		$instance = new PrefetchCache(
+			$this->store,
+			$this->prefetchItemLookup
+		);
+
+		$instance->prefetch( [ $subject ], $property, $chainOptions );
+
+		$this->assertTrue(
+			$instance->isCached( $property, $chainOptions )
+		);
+
+		$this->assertFalse(
+			$instance->isCached( $property, $directOptions )
 		);
 	}
 
@@ -123,6 +170,81 @@ class PrefetchCacheTest extends TestCase {
 			[ WikiPage::newFromText( 'Result2' ) ],
 			$instance->getPropertyValues( $subject2, $property, $this->requestOptions )
 		);
+	}
+
+	public function testLookupCacheSeparatesRequestOptions() {
+		$property = new Property( 'Po' );
+		$subject = WikiPage::newFromText( 'Subject' );
+
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idTable->method( 'getSMWPageID' )
+			->willReturn( 103 );
+
+		$this->store->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$this->prefetchItemLookup->expects( $this->exactly( 2 ) )
+			->method( 'getPropertyValues' )
+			->willReturnOnConsecutiveCalls(
+				[ 103 => [ WikiPage::newFromText( 'Ascending' ) ] ],
+				[ 103 => [ WikiPage::newFromText( 'Descending' ) ] ]
+			);
+
+		$ascendingOptions = new RequestOptions();
+		$ascendingOptions->isChain = false;
+		$ascendingOptions->isFirstChain = false;
+		$ascendingOptions->sort = true;
+		$ascendingOptions->ascending = true;
+
+		$descendingOptions = new RequestOptions();
+		$descendingOptions->isChain = false;
+		$descendingOptions->isFirstChain = false;
+		$descendingOptions->sort = true;
+		$descendingOptions->ascending = false;
+
+		$instance = new PrefetchCache(
+			$this->store,
+			$this->prefetchItemLookup
+		);
+
+		$instance->prefetch( [ $subject ], $property, $ascendingOptions );
+		$instance->prefetch( [ $subject ], $property, $descendingOptions );
+
+		$this->assertEquals(
+			[ WikiPage::newFromText( 'Descending' ) ],
+			$instance->getPropertyValues( $subject, $property, $descendingOptions )
+		);
+	}
+
+	public function testLookupCacheIgnoresPrefetchFingerprintOption() {
+		$property = new Property( 'Pf' );
+		$subject = WikiPage::newFromText( 'Subject' );
+
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$this->prefetchItemLookup->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->willReturn( [] );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->isChain = false;
+		$requestOptions->isFirstChain = false;
+
+		$instance = new PrefetchCache(
+			$this->store,
+			$this->prefetchItemLookup
+		);
+
+		$instance->prefetch( [ $subject ], $property, $requestOptions );
+		$instance->prefetch( [ $subject ], $property, $requestOptions );
 	}
 
 }

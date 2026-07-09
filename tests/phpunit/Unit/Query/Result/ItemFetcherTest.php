@@ -141,6 +141,13 @@ class ItemFetcherTest extends TestCase {
 			->getMock();
 
 		$prefetchCache->expects( $this->once() )
+			->method( 'isCached' )
+			->with(
+				$property,
+				$this->requestOptions )
+			->willReturn( false );
+
+		$prefetchCache->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
 				$dataItem,

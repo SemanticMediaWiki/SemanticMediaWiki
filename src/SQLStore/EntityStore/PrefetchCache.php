@@ -38,11 +38,12 @@ class PrefetchCache {
 	 * @since 3.1
 	 *
 	 * @param Property $property
+	 * @param RequestOptions $requestOptions
 	 *
 	 * @return bool
 	 */
-	public function isCached( Property $property ): bool {
-		return isset( $this->cache[$property->getKey()] );
+	public function isCached( Property $property, RequestOptions $requestOptions ): bool {
+		return isset( $this->cache[self::makeCacheKey( $property, $requestOptions )] );
 	}
 
 	/**
@@ -62,13 +63,12 @@ class PrefetchCache {
 	 * @return string
 	 */
 	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ): string {
-		$key = $property->getKey();
+		$key = $property->getKey() . '#' . (string)(int)$property->isInverse();
 
-		// Use the .dot notation to distingish it from other prrintouts that
-		// use the same property
+		// Use the chain state to distinguish it from other printouts that use
+		// the same property.
 		if ( $requestOptions->isChain ) {
-			$key .= '#' . (string)$requestOptions->isChain;
-			$key .= '#' . (string)$property->isInverse();
+			$key .= '#' . (string)(int)$requestOptions->isChain;
 		}
 
 		// T:P0467, requires an extra identification to ensure the test passes
@@ -78,6 +78,13 @@ class PrefetchCache {
 		}
 
 		return $key;
+	}
+
+	private static function makeRequestOptionsHash( RequestOptions $requestOptions ): string {
+		$requestOptions = clone $requestOptions;
+		$requestOptions->deleteOption( RequestOptions::PREFETCH_FINGERPRINT );
+
+		return (string)$requestOptions->getHash();
 	}
 
 	/**
@@ -98,12 +105,13 @@ class PrefetchCache {
 			$fingerprint .= $subject->getHash();
 		}
 
+		$requestOptionsHash = self::makeRequestOptionsHash( $requestOptions );
 		$requestOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, md5( $fingerprint ) );
 		$key = $this->makeCacheKey( $property, $requestOptions );
 
 		// Use an aggressive cache strategy to avoid repetitive queries especially
 		// when called as part of a printrequest chain
-		$lookupKey = md5( $key . '#' . $fingerprint );
+		$lookupKey = md5( $key . '#' . $fingerprint . '#' . $requestOptionsHash );
 
 		if ( isset( $this->lookupCache[$lookupKey] ) ) {
 			return;

@@ -139,7 +139,7 @@ class ItemFetcher {
 
 		// If its a chain we need to reload since the DataItem's use are traversed
 		// from each chain element
-		if ( !$this->prefetchCache->isCached( $property ) || $requestOptions->isChain ) {
+		if ( !$this->prefetchCache->isCached( $property, $requestOptions ) || $requestOptions->isChain ) {
 			$list = $this->dataItems;
 
 			if ( $requestOptions->isChain ) {
