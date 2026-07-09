@@ -10,7 +10,7 @@ use WeakMap;
 /**
  * This class attempts to provide safe yet simple means for managing data that is relevant
  * for the final HTML output of MediaWiki. In particular, this concerns additions to the HTML
- * header in the form of scripts of stylesheets.
+ * header in the form of scripts or stylesheets.
  *
  * The problem is that many components in SMW create hypertext that should eventually be displayed.
  * The normal way of accessing such text are functions of the form getText() which return a
@@ -59,6 +59,11 @@ class Outputs {
 	protected static array $resourceStyles = [];
 
 	/**
+	 * Protected member for temporarily storing JavaScript Configuration Variables
+	 */
+	protected static array $jsConfigVars = [];
+
+	/**
 	 * Top-level content parses (`Parser::parse()` with output type HTML that
 	 * are not interface-message parses) currently in progress, keyed by the
 	 * `Parser` instance running them. Populated by `onParseStart()` (via the
@@ -93,6 +98,17 @@ class Outputs {
 	 */
 	public static function requireStyle( string $stylesName ): void {
 		self::$resourceStyles[$stylesName] = $stylesName;
+	}
+
+	/**
+	 * Require a JS config var so it will be added via
+	 * ParserOutput::setJsConfigVar or OutputPage::addJsConfigVars
+	 *
+	 * @param string $key Key to use under mw.config
+	 * @param mixed|null $value
+	 */
+	public static function requireJsConfigVar( string $key, $value ): void {
+		self::$jsConfigVars[$key] = $value;
 	}
 
 	/**
@@ -171,6 +187,7 @@ class Outputs {
 		self::$resourceModules = [];
 		self::$headItems = [];
 		self::$scripts = [];
+		self::$jsConfigVars = [];
 	}
 
 	/**
@@ -223,6 +240,8 @@ class Outputs {
 				self::$resourceModules[$module] = $module;
 			}
 		}
+
+		self::$jsConfigVars = $parserOutput->getJsConfigVars();
 	}
 
 	/**
@@ -236,7 +255,6 @@ class Outputs {
 	 */
 	public static function commitToParser( Parser $parser ): void {
 		$po = $parser->getOutput();
-
 		self::commitToParserOutput( $po );
 	}
 
@@ -264,11 +282,16 @@ class Outputs {
 		$parserOutput->addModuleStyles( array_values( self::$resourceStyles ) );
 		$parserOutput->addModules( array_values( self::$resourceModules ) );
 
+		foreach ( self::$jsConfigVars as $key => $value ) {
+			$parserOutput->setJsConfigVar( $key, $value );
+		}
+
 		if ( !self::isNestedParse() ) {
 			self::$resourceStyles = [];
 			self::$resourceModules = [];
 			self::$headItems = [];
 			self::$scripts = [];
+			self::$jsConfigVars = [];
 		}
 	}
 
@@ -291,10 +314,13 @@ class Outputs {
 		$output->addModuleStyles( array_values( self::$resourceStyles ) );
 		$output->addModules( array_values( self::$resourceModules ) );
 
+		$output->addJsConfigVars( self::$jsConfigVars );
+
 		self::$resourceStyles = [];
 		self::$resourceModules = [];
 		self::$headItems = [];
 		self::$scripts = [];
+		self::$jsConfigVars = [];
 	}
 
 }
