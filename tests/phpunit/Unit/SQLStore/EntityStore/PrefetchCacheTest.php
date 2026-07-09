@@ -46,6 +46,8 @@ class PrefetchCacheTest extends TestCase {
 	}
 
 	public function testCacheKeySeparatesDirectAndInverseProperty() {
+		// Wikitext equivalent:
+		// {{#ask: [[Category:Example]] |?Foo |?-Foo }}
 		$requestOptions = new RequestOptions();
 		$requestOptions->isChain = false;
 		$requestOptions->isFirstChain = false;
@@ -57,6 +59,8 @@ class PrefetchCacheTest extends TestCase {
 	}
 
 	public function testIsCachedUsesRequestOptionsCacheKey() {
+		// Wikitext equivalent:
+		// {{#ask: [[Category:Example]] |?Foo |?Bar.Foo }}
 		$property = new Property( 'Foo' );
 		$subject = WikiPage::newFromText( __METHOD__ );
 
@@ -173,6 +177,8 @@ class PrefetchCacheTest extends TestCase {
 	}
 
 	public function testLookupCacheSeparatesRequestOptions() {
+		// Wikitext equivalent:
+		// {{#ask: [[Category:Example]] |?Po|+order=asc |?Po|+order=desc }}
 		$property = new Property( 'Po' );
 		$subject = WikiPage::newFromText( 'Subject' );
 
@@ -220,6 +226,8 @@ class PrefetchCacheTest extends TestCase {
 	}
 
 	public function testLookupCacheIgnoresPrefetchFingerprintOption() {
+		// Wikitext equivalent when evaluated twice:
+		// {{#ask: [[Category:Example]] |?Pf }}
 		$property = new Property( 'Pf' );
 		$subject = WikiPage::newFromText( 'Subject' );
 
