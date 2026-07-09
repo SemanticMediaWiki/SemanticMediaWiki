@@ -63,12 +63,21 @@ class PrefetchCache {
 	 * @return string
 	 */
 	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ): string {
-		$key = $property->getKey() . '#' . (string)(int)$property->isInverse();
+		$key = $property->getKey();
 
-		// Use the chain state to distinguish it from other printouts that use
-		// the same property.
+		// Cache key format:
+		// <property-key>[#isChain][#isInverse][#isFirstChain]
+		//
+		// Missing markers represent the default request context. Markers are
+		// appended in a fixed order and each marker is self-identifying, so
+		// chain and inverse lookups for the same property key cannot contaminate
+		// each other by changing the meaning of another key segment.
 		if ( $requestOptions->isChain ) {
-			$key .= '#' . (string)(int)$requestOptions->isChain;
+			$key .= '#' . 'isChain';
+		}
+
+		if ( $property->isInverse() ) {
+			$key .= '#' . 'isInverse';
 		}
 
 		// T:P0467, requires an extra identification to ensure the test passes

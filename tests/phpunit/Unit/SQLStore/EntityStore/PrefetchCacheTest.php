@@ -58,6 +58,36 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
+	public function testCacheKeyUsesSelfIdentifyingContextMarkers() {
+		$requestOptions = new RequestOptions();
+		$requestOptions->isChain = false;
+		$requestOptions->isFirstChain = false;
+
+		$this->assertSame(
+			'Foo',
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $requestOptions )
+		);
+
+		$this->assertSame(
+			'Foo#isInverse',
+			PrefetchCache::makeCacheKey( new Property( 'Foo', true ), $requestOptions )
+		);
+
+		$requestOptions->isChain = true;
+
+		$this->assertSame(
+			'Foo#isChain',
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $requestOptions )
+		);
+
+		$requestOptions->isFirstChain = true;
+
+		$this->assertSame(
+			'Foo#isChain#isInverse#isFirstChain',
+			PrefetchCache::makeCacheKey( new Property( 'Foo', true ), $requestOptions )
+		);
+	}
+
 	public function testIsCachedUsesRequestOptionsCacheKey() {
 		// Wikitext equivalent:
 		// {{#ask: [[Category:Example]] |?Foo |?Bar.Foo }}
