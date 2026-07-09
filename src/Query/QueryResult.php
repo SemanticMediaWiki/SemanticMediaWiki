@@ -2,16 +2,21 @@
 
 namespace SMW\Query;
 
-use SMW\DataItems\WikiPage;
-use SMW\Formatters\Infolink;
-use SMW\Query\Result\FieldItemFinder;
-use SMW\Query\Result\FilterMap;
-use SMW\Query\Result\ItemFetcher;
+use SMW\DIWikiPage;
+use SMW\Query\Excerpts;
+use SMW\Query\PrintRequest;
+use SMW\Query\QueryLinker;
 use SMW\Query\Result\ItemJournal;
+use SMW\Query\Result\FieldItemFinder;
+use SMW\Query\Result\ItemFetcher;
 use SMW\Query\Result\ResultArray;
+use SMW\Query\Result\FilterMap;
+use SMW\Query\ScoreSet;
 use SMW\SerializerFactory;
-use SMW\Services\ServicesFactory;
 use SMW\Store;
+use SMWInfolink;
+use SMWQuery as Query;
+use SMWQueryProcessor;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -24,7 +29,7 @@ use SMW\Store;
  * getResults(). This is useful for printers that disregard printouts and
  * only are interested in the actual list of pages.
  *
- * @license GPL-2.0-or-later
+ * @license GNU GPL v2+
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -39,75 +44,97 @@ class QueryResult {
 	const QUICK_HASH = 'quick';
 
 	/**
-	 * Array of WikiPage objects that are the basis for this result
+	 * Array of DIWikiPage objects that are the basis for this result
 	 *
-	 * @var WikiPage[]
+	 * @var DIWikiPage[]
 	 */
-	protected array $mResults;
+	protected $mResults;
 
 	/**
-	 * Array of \SMW\Query\PrintRequest objects, indexed by their natural hash keys
+	 * Array of SMWPrintRequest objects, indexed by their natural hash keys
 	 *
 	 * @var PrintRequest[]
 	 */
-	protected array $mPrintRequests;
+	protected $mPrintRequests;
+
+	/**
+	 * Are there more results than the ones given?
+	 *
+	 * @var boolean
+	 */
+	protected $mFurtherResults;
 
 	/**
 	 * The query object for which this is a result, must be set on create and is the source of
 	 * data needed to create further result links.
+	 *
+	 * @var Query
 	 */
-	protected Query $mQuery;
+	protected $mQuery;
 
 	/**
 	 * The Store object used to retrieve further data on demand.
+	 *
+	 * @var Store
 	 */
-	protected Store $mStore;
+	protected $mStore;
 
 	/**
 	 * Holds a value that belongs to a count query result
+	 *
+	 * @var integer|null
 	 */
-	private ?int $countValue = null;
+	private $countValue;
 
 	/**
 	 * Indicates whether results have been retrieved from cache or not
+	 *
+	 * @var boolean
 	 */
-	private bool $isFromCache = false;
-
-	private ItemJournal $itemJournal;
-
-	private FieldItemFinder $fieldItemFinder;
+	private $isFromCache = false;
 
 	/**
-	 * @var int
+	 * @var ItemJournal
+	 */
+	private $itemJournal;
+
+	/**
+	 * @var FieldItemFinder
+	 */
+	private $fieldItemFinder;
+
+	/**
+	 * @var integer
 	 */
 	private $serializer_version = 2;
 
-	private ?ScoreSet $scoreSet = null;
-
-	private ?Excerpts $excerpts = null;
-
-	private FilterMap $filterMap;
+	/**
+	 * @var ScoreSet
+	 */
+	private $scoreSet;
 
 	/**
-	 * Opaque next-page cursor token, set by `QueryEngine` when the query
-	 * was run in keyset cursor mode and there are further results. Stays
-	 * `null` for legacy offset-mode queries and for cursor-mode queries
-	 * on the final page.
-	 *
-	 * @since 7.0.0
+	 * @var Excerpts
 	 */
-	private ?string $nextCursor = null;
+	private $excerpts;
 
-	public function __construct(
-		array $printRequests,
-		Query $query,
-		array $results,
-		Store $store,
-		protected $mFurtherResults = false,
-	) {
+	/**
+	 * @var FilterMap
+	 */
+	private $filterMap;
+
+	/**
+	 * @param PrintRequest[] $printRequests
+	 * @param Query $query
+	 * @param DIWikiPage[] $results
+	 * @param Store $store
+	 * @param boolean $furtherRes
+	 */
+	public function __construct( array $printRequests, Query $query, array $results, Store $store, $furtherRes = false ) {
 		$this->mResults = $results;
 		reset( $this->mResults );
 		$this->mPrintRequests = $printRequests;
+		$this->mFurtherResults = $furtherRes;
 		$this->mQuery = $query;
 		$this->mStore = $store;
 		$this->itemJournal = new ItemJournal();
@@ -115,11 +142,7 @@ class QueryResult {
 		$itemFetcher = new ItemFetcher( $store, $this->mResults );
 
 		// Used temporarily to allow switching back while testing
-		// Read via Settings (not $GLOBALS directly) so the value goes through
-		// LegacyConstantNormalizer's array-of-strings normalization (#6586).
-		$itemFetcher->setPrefetchFlag(
-			ServicesFactory::getInstance()->getSettings()->get( 'smwgExperimentalFeatures' )
-		);
+		$itemFetcher->setPrefetchFlag( $GLOBALS['smwgExperimentalFeatures'] );
 
 		// Init the instance here so the value cache is shared and hereby avoids
 		// a static declaration
@@ -136,7 +159,7 @@ class QueryResult {
 	 *
 	 * @return FilterMap
 	 */
-	public function getFilterMap(): FilterMap {
+	public function getFilterMap() {
 		return $this->filterMap;
 	}
 
@@ -145,7 +168,7 @@ class QueryResult {
 	 *
 	 * @return FieldItemFinder
 	 */
-	public function getFieldItemFinder(): FieldItemFinder {
+	public function getFieldItemFinder() {
 		return $this->fieldItemFinder;
 	}
 
@@ -154,7 +177,7 @@ class QueryResult {
 	 *
 	 * @param ItemJournal $itemJournal
 	 */
-	public function setItemJournal( ItemJournal $itemJournal ): void {
+	public function setItemJournal( ItemJournal $itemJournal ) {
 		$this->itemJournal = $itemJournal;
 	}
 
@@ -163,16 +186,16 @@ class QueryResult {
 	 *
 	 * @return ItemJournal
 	 */
-	public function getItemJournal(): ItemJournal {
+	public function getItemJournal() {
 		return $this->itemJournal;
 	}
 
 	/**
 	 * @since  2.4
 	 *
-	 * @param bool $isFromCache
+	 * @param boolean $isFromCache
 	 */
-	public function setFromCache( $isFromCache ): void {
+	public function setFromCache( $isFromCache ) {
 		$this->isFromCache = (bool)$isFromCache;
 	}
 
@@ -183,7 +206,7 @@ class QueryResult {
 	 *
 	 * @param ScoreSet $scoreSet
 	 */
-	public function setScoreSet( ScoreSet $scoreSet ): void {
+	public function setScoreSet( ScoreSet $scoreSet ) {
 		$this->scoreSet = $scoreSet;
 	}
 
@@ -192,7 +215,7 @@ class QueryResult {
 	 *
 	 * @return ScoreSet|null
 	 */
-	public function getScoreSet(): ?ScoreSet {
+	public function getScoreSet() {
 		return $this->scoreSet;
 	}
 
@@ -203,7 +226,7 @@ class QueryResult {
 	 *
 	 * @param Excerpts $excerpts
 	 */
-	public function setExcerpts( Excerpts $excerpts ): void {
+	public function setExcerpts( Excerpts $excerpts ) {
 		$this->excerpts = $excerpts;
 	}
 
@@ -212,16 +235,16 @@ class QueryResult {
 	 *
 	 * @return Excerpts|null
 	 */
-	public function getExcerpts(): ?Excerpts {
+	public function getExcerpts() {
 		return $this->excerpts;
 	}
 
 	/**
 	 * @since  2.4
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
-	public function isFromCache(): bool {
+	public function isFromCache() {
 		return $this->isFromCache;
 	}
 
@@ -230,7 +253,7 @@ class QueryResult {
 	 *
 	 * @return Store
 	 */
-	public function getStore(): Store {
+	public function getStore() {
 		return $this->mStore;
 	}
 
@@ -240,7 +263,7 @@ class QueryResult {
 	 *
 	 * @return ResultArray[]|false
 	 */
-	public function getNext(): false|array {
+	public function getNext() {
 		$page = current( $this->mResults );
 		next( $this->mResults );
 
@@ -257,7 +280,7 @@ class QueryResult {
 		return $row;
 	}
 
-	private function newResultArray( WikiPage $page, PrintRequest $pr ): ResultArray {
+	private function newResultArray( DIWikiPage $page, PrintRequest $pr ) {
 		$resultArray = ResultArray::factory( $page, $pr, $this );
 		$resultArray->setItemJournal( $this->itemJournal );
 		return $resultArray;
@@ -266,26 +289,26 @@ class QueryResult {
 	/**
 	 * Return number of available results.
 	 *
-	 * @return int
+	 * @return integer
 	 */
-	public function getCount(): int {
+	public function getCount() {
 		return count( $this->mResults );
 	}
 
 	/**
-	 * Return an array of WikiPage objects that make up the
+	 * Return an array of SMWDIWikiPage objects that make up the
 	 * results stored in this object.
 	 *
-	 * @return WikiPage[]
+	 * @return DIWikiPage[]
 	 */
-	public function getResults(): array {
+	public function getResults() {
 		return $this->mResults;
 	}
 
 	/**
 	 * @since 2.3
 	 */
-	public function reset(): WikiPage|false {
+	public function reset() {
 		return reset( $this->mResults );
 	}
 
@@ -296,7 +319,7 @@ class QueryResult {
 	 *
 	 * @return Query
 	 */
-	public function getQuery(): Query {
+	public function getQuery() {
 		return $this->mQuery;
 	}
 
@@ -304,9 +327,9 @@ class QueryResult {
 	 * Return the number of columns of result values that each row
 	 * in this result set contains.
 	 *
-	 * @return int
+	 * @return integer
 	 */
-	public function getColumnCount(): int {
+	public function getColumnCount() {
 		return count( $this->mPrintRequests );
 	}
 
@@ -316,7 +339,7 @@ class QueryResult {
 	 *
 	 * @return PrintRequest[]
 	 */
-	public function getPrintRequests(): array {
+	public function getPrintRequests() {
 		return $this->mPrintRequests;
 	}
 
@@ -333,50 +356,27 @@ class QueryResult {
 	/**
 	 * Would there be more query results that were not shown due to a limit?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
-	public function hasFurtherResults(): bool {
+	public function hasFurtherResults() {
 		return $this->mFurtherResults;
-	}
-
-	/**
-	 * Set the opaque next-page cursor token. Called by `QueryEngine`
-	 * when the query was run in keyset cursor mode and there are
-	 * further results to fetch.
-	 *
-	 * @since 7.0.0
-	 */
-	public function setNextCursor( string $token ): void {
-		$this->nextCursor = $token;
-	}
-
-	/**
-	 * The opaque next-page cursor token, or `null` when not applicable
-	 * (legacy offset-mode, or cursor mode but on the final page).
-	 * Consumers (the Ask API renderer) surface this as
-	 * `query-continue-cursor` in the response.
-	 *
-	 * @since 7.0.0
-	 */
-	public function getNextCursor(): ?string {
-		return $this->nextCursor;
 	}
 
 	/**
 	 * @since  2.0
 	 *
-	 * @param int|string $countValue
+	 * @param integer $countValue
 	 */
-	public function setCountValue( $countValue ): void {
+	public function setCountValue( $countValue ) {
 		$this->countValue = (int)$countValue;
 	}
 
 	/**
 	 * @since  2.0
 	 *
-	 * @return int|null
+	 * @return integer|null
 	 */
-	public function getCountValue(): ?int {
+	public function getCountValue() {
 		return $this->countValue;
 	}
 
@@ -385,7 +385,7 @@ class QueryResult {
 	 *
 	 * @return array
 	 */
-	public function getErrors(): array {
+	public function getErrors() {
 		// Just use query errors, as no errors generated in this class at the moment.
 		return $this->mQuery->getErrors();
 	}
@@ -395,22 +395,23 @@ class QueryResult {
 	 *
 	 * @param array $errors
 	 */
-	public function addErrors( array $errors ): void {
+	public function addErrors( array $errors ) {
 		$this->mQuery->addErrors( $errors );
 	}
 
 	/**
-	 * Create an Infolink object representing a link to further query results.
+	 * Create an SMWInfolink object representing a link to further query results.
 	 * This link can then be serialised or extended by further params first.
 	 * The optional $caption can be used to set the caption of the link (though this
-	 * can also be changed afterwards with Infolink::setCaption()). If empty, the
+	 * can also be changed afterwards with SMWInfolink::setCaption()). If empty, the
 	 * message 'smw_iq_moreresults' is used as a caption.
 	 *
 	 * @param string|false $caption
 	 *
-	 * @return Infolink
+	 * @return SMWInfolink
 	 */
-	public function getQueryLink( $caption = false ): Infolink {
+	public function getQueryLink( $caption = false ) {
+
 		$link = QueryLinker::get( $this->mQuery );
 
 		$link->setCaption( $caption );
@@ -420,21 +421,35 @@ class QueryResult {
 	}
 
 	/**
+	 * @deprecated since 2.5, use QueryResult::getQueryLink
+	 *
+	 * Returns an SMWInfolink object with the QueryResults print requests as parameters.
+	 *
+	 * @since 1.8
+	 *
+	 * @return SMWInfolink
+	 */
+	public function getLink() {
+		return $this->getQueryLink();
+	}
+
+	/**
 	 * @private
 	 *
 	 * @since 3.0
 	 */
-	public function setSerializerVersion( $version ): void {
+	public function setSerializerVersion( $version ) {
 		$this->serializer_version = $version;
 	}
 
 	/**
-	 * @see DISerializer::getSerializedQueryResult
+	 * @see SMW\Serializers\QueryResultSerializer::getSerializedQueryResult
 	 * @since 1.7
 	 * @return array
 	 */
-	public function serializeToArray(): array {
-		$serializerFactory = new SerializerFactory( $this->mStore );
+	public function serializeToArray() {
+
+		$serializerFactory = new SerializerFactory();
 		$serializer = $serializerFactory->newQueryResultSerializer();
 		$serializer->version( $this->serializer_version );
 
@@ -457,7 +472,8 @@ class QueryResult {
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
+	public function toArray() {
+
 		$time = microtime( true );
 
 		// @note micro optimization: We call getSerializedQueryResult()
@@ -467,15 +483,31 @@ class QueryResult {
 		$serializeArray = $this->serializeToArray();
 
 		return array_merge( $serializeArray, [
-			'meta' => [
+			'meta'=> [
 				'hash'   => md5( json_encode( $serializeArray ) ),
 				'count'  => $this->getCount(),
+				'total'  => $this->getTotalCount(),
 				'offset' => $this->mQuery->getOffset(),
 				'source' => $this->mQuery->getQuerySource(),
 				'time'   => number_format( ( microtime( true ) - $time ), 6, '.', '' )
 				]
 			]
 		);
+	}
+	
+	/**
+	 * Returns the total number of query results regardless of maximum to retrieval
+	 *
+	 * @return integer
+	 */
+	public function getTotalCount(): int {
+		$store = $this->mStore;
+		$queryStr = self::getQueryString();
+		$processedParams = \SMWQueryProcessor::getProcessedParams( [] );
+		$countQuery = \SMWQueryProcessor::createQuery( $queryStr, $processedParams, \SMWQueryProcessor::INLINE_QUERY, 'count' );
+		$queryRes = $store->getQueryResult( $countQuery );
+		$total = $queryRes instanceof \SMWQueryResult ? $queryRes->getCountValue() : 0;
+		return $total ?? 0;
 	}
 
 	/**
@@ -485,7 +517,8 @@ class QueryResult {
 	 *
 	 * @return string
 	 */
-	public function getHash( $type = null ): string {
+	public function getHash( $type = null ) {
+
 		// Just iterate over available subjects to create a "quick" hash given
 		// that resolving the entire object tree is costly due to recursive
 		// processing of all data items including its printouts
