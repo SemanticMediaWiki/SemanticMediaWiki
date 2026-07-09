@@ -1,6 +1,6 @@
 # Semantic MediaWiki 7.1.0
 
-Released on TBD.
+Released on July 9, 2026.
 
 ## Summary
 
@@ -38,6 +38,7 @@ This is only for those who have installed SMW via Git.
 * Fixed read-only requests on SQLite being recorded as having made primary database writes, caused by SMW's query temporary tables not being recognised as temporary by MediaWiki ([#6984](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6984))
 * Fixed queries combining subqueries with `OR` (for example `[[Has color::Brown]] OR [[Has color::Black]]`) failing on SQLite and PostgreSQL with an `INSERT IGNORE` syntax error ([#6987](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6987))
 * Fixed `#ask` queries with an `offset` being capped to a small number of results; deeper result pages now return correctly ([#6983](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6983))
+* Fixed the `action=ask` API with `format=count` returning an empty result with `count: 0` instead of the actual result count ([#7006](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7006))
 * Fixed `rebuildData` with `--ignore-exceptions` aborting the rest of the run and failing at shutdown with a database transaction error after the first page that errors during its update; the failing page is now rolled back and skipped so the run continues ([#6975](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6975))
 * Fixed `Property` page subject lists appearing in an arbitrary order on MySQL 8, where the lookup relied on implicit `GROUP BY` ordering that MySQL 8 no longer provides ([#7002](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7002))
 * Fixed non-image files (such as videos, audio, or PDFs) referenced through a property value not being recorded in the file's usage tracking, unlike images ([#6141](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6141))
@@ -47,4 +48,4 @@ This is only for those who have installed SMW via Git.
 * Fixed the filter form on property pages whose title contains a slash (for example `Property:Task/Desc`) reloading the wrong page, because the form's hidden title field was truncated at the first slash ([#6142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6142))
 * Fixed SPARQLStore queries that combine a fixed page with a bare not-like page comparison (for example `[[A]][[!~B]]`) wrongly returning no results ([#7017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7017))
 * Fixed DataTables-based `#ask` results loading indefinitely when a DynamicPageList query on the same page triggers a nested parse ([#7009](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7009))
-* Fixed `[[Property::!+]]` queries (pages that have no value for a given property) being ignored on the SPARQLStore, which silently required the property to be present instead; such pages are now matched, including inside `OR` subqueries ([#7018](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7018))
+* Fixed `[[Property::!+]]` queries (pages that have no value for a given property) being ignored on the SPARQLStore, which silently required the property to be present instead; such pages are now matched, including inside `OR` subqueries ([#7018](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7018), [#7021](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7021))
