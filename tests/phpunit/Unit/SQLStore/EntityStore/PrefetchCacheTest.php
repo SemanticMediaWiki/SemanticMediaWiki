@@ -10,6 +10,7 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\SQLStore\SQLStore;
+use SMW\StringCondition;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\PrefetchCache
@@ -109,6 +110,20 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
+	public function testCacheKeySeparatesStringConditions() {
+		$requestOptions = new RequestOptions();
+		$requestOptions->isChain = false;
+		$requestOptions->isFirstChain = false;
+
+		$stringConditionOptions = clone $requestOptions;
+		$stringConditionOptions->addStringCondition( 'Value', StringCondition::COND_PRE );
+
+		$this->assertNotSame(
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $requestOptions ),
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $stringConditionOptions )
+		);
+	}
+
 	public function testCacheKeyIgnoresInternalLookupOptions() {
 		$requestOptions = new RequestOptions();
 		$requestOptions->isChain = false;
@@ -205,6 +220,41 @@ class PrefetchCacheTest extends TestCase {
 			$expected,
 			$instance->getPropertyValues( $subject, $property, $this->requestOptions )
 		);
+	}
+
+	public function testClearResetsCachedValuesAndExecutedLookups() {
+		$property = new Property( 'Pc' );
+		$subject = WikiPage::newFromText( 'Subject' );
+
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->method( 'getObjectIds' )
+			->willReturn( $idTable );
+
+		$this->prefetchItemLookup->expects( $this->exactly( 2 ) )
+			->method( 'getPropertyValues' )
+			->willReturn( [] );
+
+		$instance = new PrefetchCache(
+			$this->store,
+			$this->prefetchItemLookup
+		);
+
+		$instance->prefetch( [ $subject ], $property, $this->requestOptions );
+
+		$this->assertTrue(
+			$instance->isCached( $property, $this->requestOptions )
+		);
+
+		$instance->clear();
+
+		$this->assertFalse(
+			$instance->isCached( $property, $this->requestOptions )
+		);
+
+		$instance->prefetch( [ $subject ], $property, $this->requestOptions );
 	}
 
 	public function testCacheMergeWithDifferentSubjectSets() {
