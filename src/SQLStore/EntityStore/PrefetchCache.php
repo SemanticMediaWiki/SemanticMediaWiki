@@ -78,7 +78,7 @@ class PrefetchCache {
 		// caches.
 		//
 		// Format:
-		// <property-key>[#isChain][#isInverse][#isFirstChain][#printoutOptions:<discriminator>]
+		// <property-key>[#isChain][#isInverse][#isFirstChain][#valueOptions:<discriminator>]
 		//
 		// Missing markers represent the default request context. Markers are
 		// appended in a fixed order and each marker is self-identifying, so
@@ -100,41 +100,52 @@ class PrefetchCache {
 			$key .= '#' . 'isFirstChain';
 		}
 
-		$printoutOptionsDiscriminator = self::makePrintoutOptionsDiscriminator( $requestOptions );
+		$valueOptionsDiscriminator = self::makeValueRequestOptionsDiscriminator( $requestOptions );
 
-		if ( $printoutOptionsDiscriminator !== '' ) {
-			$key .= '#printoutOptions:' . $printoutOptionsDiscriminator;
+		if ( $valueOptionsDiscriminator !== '' ) {
+			$key .= '#valueOptions:' . $valueOptionsDiscriminator;
 		}
 
 		return $key;
 	}
 
-	private static function makePrintoutOptionsDiscriminator( RequestOptions $requestOptions ): string {
-		$printoutOptions = clone $requestOptions;
-
-		// RequestOptions::getHash() mixes caller-visible value options with
-		// temporary execution hints added by prefetch and lower-level SQL
-		// lookups. The value cache must include the former, for example
-		// printout-local sort order, and ignore the latter.
-		$printoutOptions->exclude_limit = false;
-		$printoutOptions->deleteOption( RequestOptions::PREFETCH_FINGERPRINT );
-		$printoutOptions->deleteOption( 'NO_GROUPBY' );
-		$printoutOptions->deleteOption( 'NO_DISTINCT' );
-		$printoutOptions->deleteOption( 'ORDER BY' );
-		$printoutOptions->deleteOption( 'GROUP BY' );
-		$printoutOptions->deleteOption( 'DISTINCT' );
-
-		// getHash() does not include "natural", but natural sorting changes
-		// the requested value order, so it is part of this discriminator.
-		$discriminatorSource = (string)$printoutOptions->getHash() . '#' . (string)$printoutOptions->natural;
-		$defaultOptions = new RequestOptions();
-		$defaultDiscriminatorSource = (string)$defaultOptions->getHash() . '#' . (string)$defaultOptions->natural;
+	private static function makeValueRequestOptionsDiscriminator( RequestOptions $requestOptions ): string {
+		$discriminatorSource = self::makeValueRequestOptionsDiscriminatorSource( $requestOptions );
+		$defaultDiscriminatorSource = self::makeValueRequestOptionsDiscriminatorSource( new RequestOptions() );
 
 		if ( $discriminatorSource === $defaultDiscriminatorSource ) {
 			return '';
 		}
 
 		return md5( $discriminatorSource );
+	}
+
+	private static function makeValueRequestOptionsDiscriminatorSource( RequestOptions $requestOptions ): string {
+		$stringConditions = [];
+
+		foreach ( $requestOptions->getStringConditions() as $stringCondition ) {
+			$stringConditions[] = $stringCondition->getHash();
+		}
+
+		// Use the request fields that can change the values, order, or slice
+		// returned to the caller. Do not use RequestOptions::getHash() here:
+		// lower-level lookup caches also need execution options in their request
+		// identity, but this value cache must not depend on those internal hints.
+		return (string)json_encode( [
+			$requestOptions->limit,
+			$requestOptions->offset,
+			$requestOptions->lookahead,
+			$requestOptions->sort,
+			$requestOptions->ascending,
+			$requestOptions->boundary,
+			$requestOptions->include_boundary,
+			$stringConditions,
+			$requestOptions->getExtraConditions(),
+			$requestOptions->conditionConstraint,
+			$requestOptions->natural,
+			$requestOptions->getCursorAfter(),
+			$requestOptions->getCursorBefore(),
+		] );
 	}
 
 	private static function makeSubjectSetFingerprint( array $subjects ): string {

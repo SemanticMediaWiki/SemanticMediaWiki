@@ -109,6 +109,26 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
+	public function testCacheKeyIgnoresInternalLookupOptions() {
+		$requestOptions = new RequestOptions();
+		$requestOptions->isChain = false;
+		$requestOptions->isFirstChain = false;
+
+		$lookupOptions = clone $requestOptions;
+		$lookupOptions->exclude_limit = true;
+		$lookupOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, 'subject-set' );
+		$lookupOptions->setOption( 'NO_GROUPBY', true );
+		$lookupOptions->setOption( 'NO_DISTINCT', true );
+		$lookupOptions->setOption( 'ORDER BY', 'smw_sort' );
+		$lookupOptions->setOption( 'GROUP BY', 'smw_id' );
+		$lookupOptions->setOption( 'DISTINCT', true );
+
+		$this->assertSame(
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $requestOptions ),
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $lookupOptions )
+		);
+	}
+
 	public function testIsCachedUsesRequestOptionsCacheKey() {
 		// Wikitext equivalent:
 		// {{#ask: [[Category:Example]] |?Foo |?Bar.Foo }}
