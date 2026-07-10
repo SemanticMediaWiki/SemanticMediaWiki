@@ -23,7 +23,8 @@ class PrefetchCache {
 	private array $valuesByCacheKey = [];
 
 	/**
-	 * Set of bulk prefetch lookups that have already been executed.
+	 * Set of bulk prefetch lookups that have already been executed, grouped
+	 * by value cache key and subject set fingerprint.
 	 *
 	 * This does not store values. It only prevents running the same bulk lookup
 	 * twice while values remain stored in $valuesByCacheKey.
@@ -72,8 +73,12 @@ class PrefetchCache {
 	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ): string {
 		$key = $property->getKey();
 
-		// Value cache key format:
-		// <property-key>[#isChain][#isInverse][#isFirstChain][#requestOptions:<hash>]
+		// This value cache key is the contract between prefetch(), isCached(),
+		// and getPropertyValues(). It is not shared with lower-level lookup
+		// caches.
+		//
+		// Format:
+		// <property-key>[#isChain][#isInverse][#isFirstChain][#printoutOptions:<discriminator>]
 		//
 		// Missing markers represent the default request context. Markers are
 		// appended in a fixed order and each marker is self-identifying, so
@@ -95,43 +100,44 @@ class PrefetchCache {
 			$key .= '#' . 'isFirstChain';
 		}
 
-		$requestOptionsKey = self::makeRequestOptionsCacheKeyPart( $requestOptions );
+		$printoutOptionsDiscriminator = self::makePrintoutOptionsDiscriminator( $requestOptions );
 
-		if ( $requestOptionsKey !== '' ) {
-			$key .= '#requestOptions:' . $requestOptionsKey;
+		if ( $printoutOptionsDiscriminator !== '' ) {
+			$key .= '#printoutOptions:' . $printoutOptionsDiscriminator;
 		}
 
 		return $key;
 	}
 
-	private static function makeRequestOptionsCacheKeyPart( RequestOptions $requestOptions ): string {
-		$hash = self::makeNormalizedRequestOptionsHash( $requestOptions );
+	private static function makePrintoutOptionsDiscriminator( RequestOptions $requestOptions ): string {
+		$printoutOptions = clone $requestOptions;
 
-		if ( $hash === self::makeNormalizedRequestOptionsHash( new RequestOptions() ) ) {
+		// RequestOptions::getHash() mixes caller-visible value options with
+		// temporary execution hints added by prefetch and lower-level SQL
+		// lookups. The value cache must include the former, for example
+		// printout-local sort order, and ignore the latter.
+		$printoutOptions->exclude_limit = false;
+		$printoutOptions->deleteOption( RequestOptions::PREFETCH_FINGERPRINT );
+		$printoutOptions->deleteOption( 'NO_GROUPBY' );
+		$printoutOptions->deleteOption( 'NO_DISTINCT' );
+		$printoutOptions->deleteOption( 'ORDER BY' );
+		$printoutOptions->deleteOption( 'GROUP BY' );
+		$printoutOptions->deleteOption( 'DISTINCT' );
+
+		// getHash() does not include "natural", but natural sorting changes
+		// the requested value order, so it is part of this discriminator.
+		$discriminatorSource = (string)$printoutOptions->getHash() . '#' . (string)$printoutOptions->natural;
+		$defaultOptions = new RequestOptions();
+		$defaultDiscriminatorSource = (string)$defaultOptions->getHash() . '#' . (string)$defaultOptions->natural;
+
+		if ( $discriminatorSource === $defaultDiscriminatorSource ) {
 			return '';
 		}
 
-		return md5( $hash );
+		return md5( $discriminatorSource );
 	}
 
-	private static function makeNormalizedRequestOptionsHash( RequestOptions $requestOptions ): string {
-		$requestOptions = clone $requestOptions;
-
-		// Prefetch mode and lower-level SQL lookups mutate these internal flags
-		// while executing a lookup. They must not change the identity of the
-		// caller's requested values.
-		$requestOptions->exclude_limit = false;
-		$requestOptions->deleteOption( RequestOptions::PREFETCH_FINGERPRINT );
-		$requestOptions->deleteOption( 'NO_GROUPBY' );
-		$requestOptions->deleteOption( 'NO_DISTINCT' );
-		$requestOptions->deleteOption( 'ORDER BY' );
-		$requestOptions->deleteOption( 'GROUP BY' );
-		$requestOptions->deleteOption( 'DISTINCT' );
-
-		return (string)$requestOptions->getHash() . '#' . (string)$requestOptions->natural;
-	}
-
-	private static function makeSubjectSetKey( array $subjects ): string {
+	private static function makeSubjectSetFingerprint( array $subjects ): string {
 		$subjectHashes = [];
 
 		foreach ( $subjects as $subject ) {
@@ -154,13 +160,10 @@ class PrefetchCache {
 	public function prefetch( array $subjects, Property $property, RequestOptions $requestOptions ): void {
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 
-		$key = $this->makeCacheKey( $property, $requestOptions );
-		$subjectSetKey = self::makeSubjectSetKey( $subjects );
+		$valueCacheKey = $this->makeCacheKey( $property, $requestOptions );
+		$subjectSetFingerprint = self::makeSubjectSetFingerprint( $subjects );
 
-		// Track executed bulk lookups by requested value identity and subject set.
-		$executedLookupKey = md5( $key . '#' . $subjectSetKey );
-
-		if ( isset( $this->executedPrefetchLookups[$executedLookupKey] ) ) {
+		if ( isset( $this->executedPrefetchLookups[$valueCacheKey][$subjectSetFingerprint] ) ) {
 			return;
 		}
 
@@ -169,7 +172,7 @@ class PrefetchCache {
 		// clone so it cannot leak into this value cache key or the caller's
 		// RequestOptions instance.
 		$lookupRequestOptions = clone $requestOptions;
-		$lookupRequestOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, $subjectSetKey );
+		$lookupRequestOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, $subjectSetFingerprint );
 
 		$result = $this->prefetchItemLookup->getPropertyValues(
 			$subjects,
@@ -177,8 +180,8 @@ class PrefetchCache {
 			$lookupRequestOptions
 		);
 
-		$this->valuesByCacheKey[$key] = $result + ( $this->valuesByCacheKey[$key] ?? [] );
-		$this->executedPrefetchLookups[$executedLookupKey] = true;
+		$this->valuesByCacheKey[$valueCacheKey] = $result + ( $this->valuesByCacheKey[$valueCacheKey] ?? [] );
+		$this->executedPrefetchLookups[$valueCacheKey][$subjectSetFingerprint] = true;
 	}
 
 	/**
@@ -191,7 +194,7 @@ class PrefetchCache {
 	 * @return array
 	 */
 	public function getPropertyValues( WikiPage $subject, Property $property, RequestOptions $requestOptions ): array {
-		$key = $this->makeCacheKey( $property, $requestOptions );
+		$valueCacheKey = $this->makeCacheKey( $property, $requestOptions );
 
 		// 0 is the default ID of the subject, if it already has an ID,
 		// there is no need to do a DB query for the ID.
@@ -205,11 +208,11 @@ class PrefetchCache {
 				true
 			);
 
-		if ( !isset( $this->valuesByCacheKey[$key][$sid] ) ) {
+		if ( !isset( $this->valuesByCacheKey[$valueCacheKey][$sid] ) ) {
 			return [];
 		}
 
-		return array_values( $this->valuesByCacheKey[$key][$sid] );
+		return array_values( $this->valuesByCacheKey[$valueCacheKey][$sid] );
 	}
 
 }
