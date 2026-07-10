@@ -132,16 +132,6 @@ class PrefetchCache {
 		] ) );
 	}
 
-	private static function makeSubjectSetFingerprint( array $subjects ): string {
-		$fingerprint = '';
-
-		foreach ( $subjects as $subject ) {
-			$fingerprint .= $subject->getHash();
-		}
-
-		return md5( $fingerprint );
-	}
-
 	/**
 	 * Prefetch related data so getPropertyValues() can return individual
 	 * subject values without issuing one lookup per subject.
@@ -155,8 +145,14 @@ class PrefetchCache {
 	public function prefetch( array $subjects, Property $property, RequestOptions $requestOptions ): void {
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 
+		$fingerprint = '';
+
+		foreach ( $subjects as $subject ) {
+			$fingerprint .= $subject->getHash();
+		}
+
 		$valueCacheKey = $this->makeCacheKey( $property, $requestOptions );
-		$subjectSetFingerprint = self::makeSubjectSetFingerprint( $subjects );
+		$subjectSetFingerprint = md5( $fingerprint );
 
 		if ( isset( $this->executedPrefetchLookups[$valueCacheKey][$subjectSetFingerprint] ) ) {
 			return;
