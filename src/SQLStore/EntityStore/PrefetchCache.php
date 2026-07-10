@@ -115,7 +115,8 @@ class PrefetchCache {
 		// returned to the caller. Do not use RequestOptions::getHash() here:
 		// lower-level lookup caches also need execution options in their request
 		// identity, but this value cache must not depend on those internal hints.
-		return md5( (string)json_encode( [
+		// This is a PHP-internal identity, not a JSON data model.
+		return md5( serialize( [
 			$requestOptions->limit,
 			$requestOptions->offset,
 			$requestOptions->lookahead,
