@@ -9,6 +9,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## New features and enhancements
 
+* Added `SMW\MediaWiki\Outputs::requireJsConfigVar()` so extensions can register JavaScript configuration variables through the SMW output mechanism, alongside modules, styles and head items, instead of emitting inline scripts ([#7028](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7028))
+
 ## Bug fixes
 
 ## Upgrading
