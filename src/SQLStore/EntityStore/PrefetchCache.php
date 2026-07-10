@@ -171,7 +171,10 @@ class PrefetchCache {
 			$lookupRequestOptions
 		);
 
-		$this->valuesByCacheKey[$valueCacheKey] = $result + ( $this->valuesByCacheKey[$valueCacheKey] ?? [] );
+		// Merge in newly fetched subjects without replacing values that are
+		// already cached for this value identity.
+		$this->valuesByCacheKey[$valueCacheKey] =
+			( $this->valuesByCacheKey[$valueCacheKey] ?? [] ) + $result;
 		$this->executedPrefetchLookups[$valueCacheKey][$subjectSetFingerprint] = true;
 	}
 
