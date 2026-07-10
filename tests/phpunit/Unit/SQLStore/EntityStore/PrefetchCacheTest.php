@@ -245,9 +245,12 @@ class PrefetchCacheTest extends TestCase {
 
 		$this->prefetchItemLookup->expects( $this->exactly( 2 ) )
 			->method( 'getPropertyValues' )
-			->willReturnOnConsecutiveCalls(
-				[ 103 => [ WikiPage::newFromText( 'Ascending' ) ] ],
-				[ 103 => [ WikiPage::newFromText( 'Descending' ) ] ]
+			->willReturnCallback(
+				static function ( array $subjects, Property $property, RequestOptions $requestOptions ): array {
+					$value = $requestOptions->ascending ? 'Ascending' : 'Descending';
+
+					return [ 103 => [ WikiPage::newFromText( $value ) ] ];
+				}
 			);
 
 		$ascendingOptions = new RequestOptions();
