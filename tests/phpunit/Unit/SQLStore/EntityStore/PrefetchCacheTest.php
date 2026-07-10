@@ -63,27 +63,27 @@ class PrefetchCacheTest extends TestCase {
 		$requestOptions->isChain = false;
 		$requestOptions->isFirstChain = false;
 
-		$this->assertSame(
-			'Foo',
+		$this->assertMatchesRegularExpression(
+			'/^Foo#valueOptions:[a-f0-9]{32}$/',
 			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $requestOptions )
 		);
 
-		$this->assertSame(
-			'Foo#isInverse',
+		$this->assertMatchesRegularExpression(
+			'/^Foo#isInverse#valueOptions:[a-f0-9]{32}$/',
 			PrefetchCache::makeCacheKey( new Property( 'Foo', true ), $requestOptions )
 		);
 
 		$requestOptions->isChain = true;
 
-		$this->assertSame(
-			'Foo#isChain',
+		$this->assertMatchesRegularExpression(
+			'/^Foo#isChain#valueOptions:[a-f0-9]{32}$/',
 			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $requestOptions )
 		);
 
 		$requestOptions->isFirstChain = true;
 
-		$this->assertSame(
-			'Foo#isChain#isInverse#isFirstChain',
+		$this->assertMatchesRegularExpression(
+			'/^Foo#isChain#isInverse#isFirstChain#valueOptions:[a-f0-9]{32}$/',
 			PrefetchCache::makeCacheKey( new Property( 'Foo', true ), $requestOptions )
 		);
 	}

@@ -78,14 +78,13 @@ class PrefetchCache {
 		// caches.
 		//
 		// Format:
-		// <property-key>[#isChain][#isInverse][#isFirstChain][#valueOptions:<discriminator>]
+		// <property-key>[#isChain][#isInverse][#isFirstChain]#valueOptions:<discriminator>
 		//
-		// Missing markers represent the default request context. Markers are
-		// appended in a fixed order and each marker is self-identifying, so
-		// chain, inverse, and printout-local request options cannot contaminate
-		// values cached for the same property key. This is a normalized value
-		// identity, not a reversible serialization of RequestOptions; null and
-		// false default states are represented by the absence of a marker.
+		// Context markers are appended in a fixed order and each marker is
+		// self-identifying, so chain, inverse, and value-affecting request
+		// options cannot contaminate values cached for the same property key.
+		// This is a normalized value identity, not a reversible serialization
+		// of RequestOptions.
 		if ( $requestOptions->isChain ) {
 			$key .= '#' . 'isChain';
 		}
@@ -100,24 +99,13 @@ class PrefetchCache {
 			$key .= '#' . 'isFirstChain';
 		}
 
-		$valueOptionsDiscriminator = self::makeValueRequestOptionsDiscriminator( $requestOptions );
-
-		if ( $valueOptionsDiscriminator !== '' ) {
-			$key .= '#valueOptions:' . $valueOptionsDiscriminator;
-		}
+		$key .= '#valueOptions:' . self::makeValueRequestOptionsDiscriminator( $requestOptions );
 
 		return $key;
 	}
 
 	private static function makeValueRequestOptionsDiscriminator( RequestOptions $requestOptions ): string {
-		$discriminatorSource = self::makeValueRequestOptionsDiscriminatorSource( $requestOptions );
-		$defaultDiscriminatorSource = self::makeValueRequestOptionsDiscriminatorSource( new RequestOptions() );
-
-		if ( $discriminatorSource === $defaultDiscriminatorSource ) {
-			return '';
-		}
-
-		return md5( $discriminatorSource );
+		return md5( self::makeValueRequestOptionsDiscriminatorSource( $requestOptions ) );
 	}
 
 	private static function makeValueRequestOptionsDiscriminatorSource( RequestOptions $requestOptions ): string {
