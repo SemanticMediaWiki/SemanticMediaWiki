@@ -241,7 +241,7 @@ class Outputs {
 			}
 		}
 
-		self::$jsConfigVars = $parserOutput->getJsConfigVars();
+		self::$jsConfigVars = array_merge( self::$jsConfigVars, $parserOutput->getJsConfigVars() ?? [] );
 	}
 
 	/**
