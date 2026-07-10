@@ -141,10 +141,6 @@ class PrefetchCache {
 		return md5( json_encode( $subjectHashes ) );
 	}
 
-	private static function makeExecutedPrefetchLookupKey( string $valueCacheKey, string $subjectSetKey ): string {
-		return md5( $valueCacheKey . '#' . $subjectSetKey );
-	}
-
 	/**
 	 * Prefetch related data so getPropertyValues() can return individual
 	 * subject values without issuing one lookup per subject.
@@ -160,7 +156,9 @@ class PrefetchCache {
 
 		$key = $this->makeCacheKey( $property, $requestOptions );
 		$subjectSetKey = self::makeSubjectSetKey( $subjects );
-		$executedLookupKey = self::makeExecutedPrefetchLookupKey( $key, $subjectSetKey );
+
+		// Track executed bulk lookups by requested value identity and subject set.
+		$executedLookupKey = md5( $key . '#' . $subjectSetKey );
 
 		if ( isset( $this->executedPrefetchLookups[$executedLookupKey] ) ) {
 			return;
