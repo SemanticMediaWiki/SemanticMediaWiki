@@ -16,14 +16,21 @@ use SMW\SQLStore\SQLStore;
 class PrefetchCache {
 
 	/**
+	 * Fetched values grouped by value cache key, then subject ID.
+	 *
 	 * @var array
 	 */
-	private $cache = [];
+	private array $valuesByCacheKey = [];
 
 	/**
+	 * Set of bulk prefetch lookups that have already been executed.
+	 *
+	 * This does not store values. It only prevents running the same bulk lookup
+	 * twice while values remain stored in $valuesByCacheKey.
+	 *
 	 * @var array
 	 */
-	private array $lookupCache = [];
+	private array $executedPrefetchLookups = [];
 
 	/**
 	 * @since 3.1
@@ -43,15 +50,15 @@ class PrefetchCache {
 	 * @return bool
 	 */
 	public function isCached( Property $property, RequestOptions $requestOptions ): bool {
-		return isset( $this->cache[self::makeCacheKey( $property, $requestOptions )] );
+		return isset( $this->valuesByCacheKey[self::makeCacheKey( $property, $requestOptions )] );
 	}
 
 	/**
 	 * @since 3.1
 	 */
 	public function clear(): void {
-		$this->cache = [];
-		$this->lookupCache = [];
+		$this->valuesByCacheKey = [];
+		$this->executedPrefetchLookups = [];
 	}
 
 	/**
@@ -65,13 +72,13 @@ class PrefetchCache {
 	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ): string {
 		$key = $property->getKey();
 
-		// Cache key format:
-		// <property-key>[#isChain][#isInverse][#isFirstChain]
+		// Value cache key format:
+		// <property-key>[#isChain][#isInverse][#isFirstChain][#requestOptions:<hash>]
 		//
 		// Missing markers represent the default request context. Markers are
 		// appended in a fixed order and each marker is self-identifying, so
-		// chain and inverse lookups for the same property key cannot contaminate
-		// each other by changing the meaning of another key segment.
+		// chain, inverse, and printout-local request options cannot contaminate
+		// values cached for the same property key.
 		if ( $requestOptions->isChain ) {
 			$key .= '#' . 'isChain';
 		}
@@ -86,23 +93,59 @@ class PrefetchCache {
 			$key .= '#' . 'isFirstChain';
 		}
 
+		$requestOptionsKey = self::makeRequestOptionsCacheKeyPart( $requestOptions );
+
+		if ( $requestOptionsKey !== '' ) {
+			$key .= '#requestOptions:' . $requestOptionsKey;
+		}
+
 		return $key;
 	}
 
-	private static function makeRequestOptionsHash( RequestOptions $requestOptions ): string {
+	private static function makeRequestOptionsCacheKeyPart( RequestOptions $requestOptions ): string {
+		$hash = self::makeNormalizedRequestOptionsHash( $requestOptions );
+
+		if ( $hash === self::makeNormalizedRequestOptionsHash( new RequestOptions() ) ) {
+			return '';
+		}
+
+		return md5( $hash );
+	}
+
+	private static function makeNormalizedRequestOptionsHash( RequestOptions $requestOptions ): string {
 		$requestOptions = clone $requestOptions;
 
-		// The prefetch fingerprint is added below for lower-level caches to
-		// identify the subject set. It must not make this lookup cache key
-		// change when the same RequestOptions instance is prefetched again.
+		// Prefetch mode and lower-level SQL lookups mutate these internal flags
+		// while executing a lookup. They must not change the identity of the
+		// caller's requested values.
+		$requestOptions->exclude_limit = false;
 		$requestOptions->deleteOption( RequestOptions::PREFETCH_FINGERPRINT );
+		$requestOptions->deleteOption( 'NO_GROUPBY' );
+		$requestOptions->deleteOption( 'NO_DISTINCT' );
+		$requestOptions->deleteOption( 'ORDER BY' );
+		$requestOptions->deleteOption( 'GROUP BY' );
+		$requestOptions->deleteOption( 'DISTINCT' );
 
-		return (string)$requestOptions->getHash();
+		return (string)$requestOptions->getHash() . '#' . (string)$requestOptions->natural;
+	}
+
+	private static function makeSubjectSetKey( array $subjects ): string {
+		$subjectHashes = [];
+
+		foreach ( $subjects as $subject ) {
+			$subjectHashes[] = $subject->getHash();
+		}
+
+		return md5( json_encode( $subjectHashes ) );
+	}
+
+	private static function makeExecutedPrefetchLookupKey( string $valueCacheKey, array $subjects ): string {
+		return md5( $valueCacheKey . '#' . self::makeSubjectSetKey( $subjects ) );
 	}
 
 	/**
-	 * Prefetch related data into the cache in order for the `LookupCache::get`
-	 * to return the individual data.
+	 * Prefetch related data so getPropertyValues() can return individual
+	 * subject values without issuing one lookup per subject.
 	 *
 	 * @since 3.1
 	 *
@@ -111,36 +154,27 @@ class PrefetchCache {
 	 * @param RequestOptions $requestOptions
 	 */
 	public function prefetch( array $subjects, Property $property, RequestOptions $requestOptions ): void {
-		$fingerprint = '';
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 
-		foreach ( $subjects as $subject ) {
-			$fingerprint .= $subject->getHash();
-		}
-
-		$requestOptionsHash = self::makeRequestOptionsHash( $requestOptions );
-		$requestOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, md5( $fingerprint ) );
 		$key = $this->makeCacheKey( $property, $requestOptions );
+		$executedLookupKey = self::makeExecutedPrefetchLookupKey( $key, $subjects );
 
-		// Use an aggressive cache strategy to avoid repetitive queries especially
-		// when called as part of a printrequest chain. Request options belong to
-		// the lookup identity because printout-local options such as +order or
-		// +limit can produce a different value list for the same property and
-		// subject set.
-		$lookupKey = md5( $key . '#' . $fingerprint . '#' . $requestOptionsHash );
-
-		if ( isset( $this->lookupCache[$lookupKey] ) ) {
+		if ( isset( $this->executedPrefetchLookups[$executedLookupKey] ) ) {
 			return;
 		}
+
+		// Lower-level lookups add temporary SQL/cache hints to RequestOptions.
+		// Keep those mutations out of the value cache key used by this class.
+		$lookupRequestOptions = clone $requestOptions;
 
 		$result = $this->prefetchItemLookup->getPropertyValues(
 			$subjects,
 			$property,
-			$requestOptions
+			$lookupRequestOptions
 		);
 
-		$this->cache[$key] = $result + ( $this->cache[$key] ?? [] );
-		$this->lookupCache[$lookupKey] = true;
+		$this->valuesByCacheKey[$key] = $result + ( $this->valuesByCacheKey[$key] ?? [] );
+		$this->executedPrefetchLookups[$executedLookupKey] = true;
 	}
 
 	/**
@@ -167,11 +201,11 @@ class PrefetchCache {
 				true
 			);
 
-		if ( !isset( $this->cache[$key][$sid] ) ) {
+		if ( !isset( $this->valuesByCacheKey[$key][$sid] ) ) {
 			return [];
 		}
 
-		return array_values( $this->cache[$key][$sid] );
+		return array_values( $this->valuesByCacheKey[$key][$sid] );
 	}
 
 }

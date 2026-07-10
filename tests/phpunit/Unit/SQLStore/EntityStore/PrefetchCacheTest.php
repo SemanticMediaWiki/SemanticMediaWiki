@@ -88,6 +88,27 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
+	public function testCacheKeySeparatesRequestOptions() {
+		// Wikitext equivalent:
+		// {{#ask: [[Category:Example]] |?Foo|+order=asc |?Foo|+order=desc }}
+		$ascendingOptions = new RequestOptions();
+		$ascendingOptions->isChain = false;
+		$ascendingOptions->isFirstChain = false;
+		$ascendingOptions->sort = true;
+		$ascendingOptions->ascending = true;
+
+		$descendingOptions = new RequestOptions();
+		$descendingOptions->isChain = false;
+		$descendingOptions->isFirstChain = false;
+		$descendingOptions->sort = true;
+		$descendingOptions->ascending = false;
+
+		$this->assertNotSame(
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $ascendingOptions ),
+			PrefetchCache::makeCacheKey( new Property( 'Foo' ), $descendingOptions )
+		);
+	}
+
 	public function testIsCachedUsesRequestOptionsCacheKey() {
 		// Wikitext equivalent:
 		// {{#ask: [[Category:Example]] |?Foo |?Bar.Foo }}
@@ -166,7 +187,7 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
-	public function testCacheMergeWithDifferentFingerprints() {
+	public function testCacheMergeWithDifferentSubjectSets() {
 		$property = new Property( 'Pm' );
 		$subject1 = WikiPage::newFromText( 'Subject1' );
 		$subject2 = WikiPage::newFromText( 'Subject2' );
@@ -206,7 +227,7 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
-	public function testLookupCacheSeparatesRequestOptions() {
+	public function testCacheAndExecutedLookupSetSeparateRequestOptions() {
 		// Wikitext equivalent:
 		// {{#ask: [[Category:Example]] |?Po|+order=asc |?Po|+order=desc }}
 		$property = new Property( 'Po' );
@@ -247,7 +268,18 @@ class PrefetchCacheTest extends TestCase {
 		);
 
 		$instance->prefetch( [ $subject ], $property, $ascendingOptions );
+
+		$this->assertEquals(
+			[ WikiPage::newFromText( 'Ascending' ) ],
+			$instance->getPropertyValues( $subject, $property, $ascendingOptions )
+		);
+
 		$instance->prefetch( [ $subject ], $property, $descendingOptions );
+
+		$this->assertEquals(
+			[ WikiPage::newFromText( 'Ascending' ) ],
+			$instance->getPropertyValues( $subject, $property, $ascendingOptions )
+		);
 
 		$this->assertEquals(
 			[ WikiPage::newFromText( 'Descending' ) ],
@@ -255,7 +287,7 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
-	public function testLookupCacheIgnoresPrefetchFingerprintOption() {
+	public function testPrefetchDoesNotMutateRequestOptionsWithPrefetchFingerprint() {
 		// Wikitext equivalent when evaluated twice:
 		// {{#ask: [[Category:Example]] |?Pf }}
 		$property = new Property( 'Pf' );
@@ -283,6 +315,10 @@ class PrefetchCacheTest extends TestCase {
 
 		$instance->prefetch( [ $subject ], $property, $requestOptions );
 		$instance->prefetch( [ $subject ], $property, $requestOptions );
+
+		$this->assertNull(
+			$requestOptions->getOption( RequestOptions::PREFETCH_FINGERPRINT )
+		);
 	}
 
 }
