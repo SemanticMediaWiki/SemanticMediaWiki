@@ -78,7 +78,9 @@ class PrefetchCache {
 		// Missing markers represent the default request context. Markers are
 		// appended in a fixed order and each marker is self-identifying, so
 		// chain, inverse, and printout-local request options cannot contaminate
-		// values cached for the same property key.
+		// values cached for the same property key. This is a normalized value
+		// identity, not a reversible serialization of RequestOptions; null and
+		// false default states are represented by the absence of a marker.
 		if ( $requestOptions->isChain ) {
 			$key .= '#' . 'isChain';
 		}
@@ -139,8 +141,8 @@ class PrefetchCache {
 		return md5( json_encode( $subjectHashes ) );
 	}
 
-	private static function makeExecutedPrefetchLookupKey( string $valueCacheKey, array $subjects ): string {
-		return md5( $valueCacheKey . '#' . self::makeSubjectSetKey( $subjects ) );
+	private static function makeExecutedPrefetchLookupKey( string $valueCacheKey, string $subjectSetKey ): string {
+		return md5( $valueCacheKey . '#' . $subjectSetKey );
 	}
 
 	/**
@@ -157,15 +159,19 @@ class PrefetchCache {
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 
 		$key = $this->makeCacheKey( $property, $requestOptions );
-		$executedLookupKey = self::makeExecutedPrefetchLookupKey( $key, $subjects );
+		$subjectSetKey = self::makeSubjectSetKey( $subjects );
+		$executedLookupKey = self::makeExecutedPrefetchLookupKey( $key, $subjectSetKey );
 
 		if ( isset( $this->executedPrefetchLookups[$executedLookupKey] ) ) {
 			return;
 		}
 
-		// Lower-level lookups add temporary SQL/cache hints to RequestOptions.
-		// Keep those mutations out of the value cache key used by this class.
+		// Lower-level lookup caches use PREFETCH_FINGERPRINT as the subject-set
+		// part of their bulk request identity. Keep that request identity on a
+		// clone so it cannot leak into this value cache key or the caller's
+		// RequestOptions instance.
 		$lookupRequestOptions = clone $requestOptions;
+		$lookupRequestOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, $subjectSetKey );
 
 		$result = $this->prefetchItemLookup->getPropertyValues(
 			$subjects,

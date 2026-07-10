@@ -290,11 +290,14 @@ class PrefetchCacheTest extends TestCase {
 		);
 	}
 
-	public function testPrefetchDoesNotMutateRequestOptionsWithPrefetchFingerprint() {
+	public function testPrefetchPassesFingerprintToLookupRequestOptionsWithoutMutatingOriginal() {
 		// Wikitext equivalent when evaluated twice:
 		// {{#ask: [[Category:Example]] |?Pf }}
 		$property = new Property( 'Pf' );
 		$subject = WikiPage::newFromText( 'Subject' );
+		$requestOptions = new RequestOptions();
+		$requestOptions->isChain = false;
+		$requestOptions->isFirstChain = false;
 
 		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
@@ -305,11 +308,16 @@ class PrefetchCacheTest extends TestCase {
 
 		$this->prefetchItemLookup->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->willReturn( [] );
+			->willReturnCallback(
+				function ( array $subjects, Property $property, RequestOptions $lookupRequestOptions ) use ( $requestOptions ): array {
+					$this->assertNotSame( $requestOptions, $lookupRequestOptions );
+					$this->assertNotNull(
+						$lookupRequestOptions->getOption( RequestOptions::PREFETCH_FINGERPRINT )
+					);
 
-		$requestOptions = new RequestOptions();
-		$requestOptions->isChain = false;
-		$requestOptions->isFirstChain = false;
+					return [];
+				}
+			);
 
 		$instance = new PrefetchCache(
 			$this->store,
