@@ -133,13 +133,13 @@ class PrefetchCache {
 	}
 
 	private static function makeSubjectSetFingerprint( array $subjects ): string {
-		$subjectHashes = [];
+		$fingerprint = '';
 
 		foreach ( $subjects as $subject ) {
-			$subjectHashes[] = $subject->getHash();
+			$fingerprint .= $subject->getHash();
 		}
 
-		return md5( json_encode( $subjectHashes ) );
+		return md5( $fingerprint );
 	}
 
 	/**
