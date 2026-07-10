@@ -13,6 +13,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Bug fixes
 
+* Fixed a query showing incorrect printout values when the same property is requested through different printout contexts, such as a direct and an inverse printout or the same property with different sort options ([#7026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7026))
+
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.
