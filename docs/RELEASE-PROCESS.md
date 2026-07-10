@@ -45,7 +45,7 @@ Passing `--target` creates the `X.Y.Z` tag at that commit; no separate `git tag`
 
 ## 3. Publish the semantic-mediawiki.org pages
 
-Mirror the previous release's two pages, but **without** `<!--T:N-->` translation markers; a admin marks them for translation afterwards through `Special:PageTranslation`.
+Mirror the previous release's two pages, but **without** `<!--T:N-->` translation markers; an admin marks them for translation afterwards through `Special:PageTranslation`.
 
 * **`Semantic MediaWiki X.Y.Z`**: the `{{SMW release}}` version page. Set `date=` (ISO), `release_prev=SMW <previous>`, the compatibility parameters, a short `<translate>` intro based on the release notes summary, and `{{#github:docs/releasenotes/RELEASE-NOTES-X.Y.Z.md}}`, which transcludes the notes live from `master`. Then edit the **previous** version page's `release_next=` to point at this release.
 * **`Semantic MediaWiki X.Y.Z released`**: the `{{News item}}` announcement.
