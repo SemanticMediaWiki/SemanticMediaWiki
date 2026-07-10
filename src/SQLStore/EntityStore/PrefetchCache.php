@@ -99,38 +99,11 @@ class PrefetchCache {
 			$key .= '#' . 'isFirstChain';
 		}
 
-		$key .= '#valueOptions:' . self::makeValueRequestOptionsDiscriminator( $requestOptions );
+		// RequestOptions::getValueHash() is the single source of truth for which
+		// request options change the selected values; see its guard test.
+		$key .= '#valueOptions:' . $requestOptions->getValueHash();
 
 		return $key;
-	}
-
-	private static function makeValueRequestOptionsDiscriminator( RequestOptions $requestOptions ): string {
-		$stringConditions = [];
-
-		foreach ( $requestOptions->getStringConditions() as $stringCondition ) {
-			$stringConditions[] = $stringCondition->getHash();
-		}
-
-		// Use the request fields that can change the values, order, or slice
-		// returned to the caller. Do not use RequestOptions::getHash() here:
-		// lower-level lookup caches also need execution options in their request
-		// identity, but this value cache must not depend on those internal hints.
-		// This is a PHP-internal identity, not a JSON data model.
-		return md5( serialize( [
-			$requestOptions->limit,
-			$requestOptions->offset,
-			$requestOptions->lookahead,
-			$requestOptions->sort,
-			$requestOptions->ascending,
-			$requestOptions->boundary,
-			$requestOptions->include_boundary,
-			$stringConditions,
-			$requestOptions->getExtraConditions(),
-			$requestOptions->conditionConstraint,
-			$requestOptions->natural,
-			$requestOptions->getCursorAfter(),
-			$requestOptions->getCursorBefore(),
-		] ) );
 	}
 
 	/**

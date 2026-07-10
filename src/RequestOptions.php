@@ -401,4 +401,70 @@ class RequestOptions {
 		] );
 	}
 
+	/**
+	 * Option-bag keys that only steer query execution or prime a lower-level
+	 * cache; they never change which values, or in what order, are selected and
+	 * are therefore excluded from getValueHash(). Every option NOT listed here
+	 * is treated as value-affecting and included, so a newly added
+	 * value-affecting option participates in the value identity by default.
+	 */
+	private const NON_VALUE_OPTIONS = [
+		self::PREFETCH_FINGERPRINT,
+		'ORDER BY',
+		'GROUP BY',
+		'DISTINCT',
+		'NO_GROUPBY',
+		'NO_DISTINCT',
+		'hash.index',
+	];
+
+	/**
+	 * Value identity of this request: two RequestOptions with the same value
+	 * hash select the same set of values in the same order.
+	 *
+	 * Unlike getHash(), which is a whole-object identity relied on by
+	 * lower-level lookup caches that must key on execution hints (for example
+	 * PREFETCH_FINGERPRINT), this deliberately excludes those hints so it is
+	 * safe as a value cache key, such as the one built by PrefetchCache. The
+	 * typed value fields are listed explicitly; the option bag is included in
+	 * full minus NON_VALUE_OPTIONS, so a new value-affecting option is covered
+	 * by default.
+	 *
+	 * lookahead and exclude_limit are omitted on purpose: both are normalized
+	 * to a fixed value by the prefetch machinery, so they are constants in the
+	 * path that consumes this hash and are not part of the caller's value
+	 * identity. RequestOptionsTest guards that every declared property stays
+	 * classified.
+	 *
+	 * @since 7.2.0
+	 */
+	public function getValueHash(): string {
+		$stringConditions = '';
+
+		foreach ( $this->stringConditions as $stringCondition ) {
+			$stringConditions .= $stringCondition->getHash();
+		}
+
+		$options = array_diff_key( $this->options, array_flip( self::NON_VALUE_OPTIONS ) );
+
+		// The insertion order of options must not change the identity.
+		ksort( $options );
+
+		return md5( json_encode( [
+			$this->limit,
+			$this->offset,
+			$this->sort,
+			$this->ascending,
+			$this->boundary,
+			$this->include_boundary,
+			$this->conditionConstraint,
+			$this->natural,
+			$this->cursorAfter,
+			$this->cursorBefore,
+			$stringConditions,
+			$this->extraConditions,
+			$options,
+		] ) );
+	}
+
 }

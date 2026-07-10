@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SMW\RequestOptions;
 use SMW\StringCondition;
 
@@ -162,6 +163,109 @@ class RequestOptionsTest extends TestCase {
 		$b->setCursorAfter( 1 );
 
 		$this->assertNotSame( $a->getHash(), $b->getHash() );
+	}
+
+	/**
+	 * Guards against silent value-cache collisions: any newly added property
+	 * must be consciously classified as value-affecting (folded into
+	 * getValueHash) or explicitly excluded with a reason.
+	 */
+	public function testEveryDeclaredPropertyIsClassifiedForValueHash() {
+		// Folded into getValueHash() as value identity.
+		$valueAffecting = [
+			'limit', 'offset', 'sort', 'ascending', 'boundary', 'include_boundary',
+			'conditionConstraint', 'natural', 'cursorAfter', 'cursorBefore',
+			'stringConditions', 'extraConditions',
+		];
+
+		// Deliberately excluded, each for a documented reason.
+		$excluded = [
+			'options', // included via the NON_VALUE_OPTIONS denylist, not by name
+			'exclude_limit', // forced true across the prefetch path (a constant there)
+			'lookahead', // normalized to a fixed value by the prefetch machinery
+			'isChain', // encoded by PrefetchCache::makeCacheKey() markers
+			'isFirstChain', // encoded by PrefetchCache::makeCacheKey() markers
+			'caller', // SQL-comment telemetry only
+			'firstCursor', // output metadata written back by the lookup
+			'lastCursor', // output metadata written back by the lookup
+			'cursorHasMore', // output metadata written back by the lookup
+		];
+
+		$classified = array_merge( $valueAffecting, $excluded );
+
+		foreach ( ( new ReflectionClass( RequestOptions::class ) )->getProperties() as $property ) {
+			if ( $property->isStatic() ) {
+				continue;
+			}
+
+			$this->assertContains(
+				$property->getName(),
+				$classified,
+				"New RequestOptions property '{$property->getName()}' must be classified in " .
+				'getValueHash(): add it to the value tuple or to the documented excluded list.'
+			);
+		}
+	}
+
+	public function testGetValueHashIgnoresExecutionHintsAndNormalizedFields() {
+		$base = new RequestOptions();
+
+		$withHints = new RequestOptions();
+		$withHints->exclude_limit = true;
+		$withHints->lookahead = 5;
+		$withHints->setOption( RequestOptions::PREFETCH_FINGERPRINT, 'subject-set' );
+		$withHints->setOption( 'NO_GROUPBY', true );
+		$withHints->setOption( 'NO_DISTINCT', true );
+		$withHints->setOption( 'ORDER BY', 'smw_sort' );
+		$withHints->setOption( 'GROUP BY', 'smw_id' );
+		$withHints->setOption( 'DISTINCT', true );
+
+		$this->assertSame(
+			$base->getValueHash(),
+			$withHints->getValueHash()
+		);
+	}
+
+	public function testGetValueHashDistinguishesValueAffectingOption() {
+		$base = new RequestOptions();
+
+		$withOption = new RequestOptions();
+		$withOption->setOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, true );
+
+		$this->assertNotSame(
+			$base->getValueHash(),
+			$withOption->getValueHash()
+		);
+	}
+
+	public function testGetValueHashDistinguishesSortDirection() {
+		$ascending = new RequestOptions();
+		$ascending->sort = true;
+		$ascending->ascending = true;
+
+		$descending = new RequestOptions();
+		$descending->sort = true;
+		$descending->ascending = false;
+
+		$this->assertNotSame(
+			$ascending->getValueHash(),
+			$descending->getValueHash()
+		);
+	}
+
+	public function testGetValueHashIsOptionOrderIndependent() {
+		$a = new RequestOptions();
+		$a->setOption( 'alpha', 1 );
+		$a->setOption( 'beta', 2 );
+
+		$b = new RequestOptions();
+		$b->setOption( 'beta', 2 );
+		$b->setOption( 'alpha', 1 );
+
+		$this->assertSame(
+			$a->getValueHash(),
+			$b->getValueHash()
+		);
 	}
 
 }
