@@ -105,10 +105,6 @@ class PrefetchCache {
 	}
 
 	private static function makeValueRequestOptionsDiscriminator( RequestOptions $requestOptions ): string {
-		return md5( self::makeValueRequestOptionsDiscriminatorSource( $requestOptions ) );
-	}
-
-	private static function makeValueRequestOptionsDiscriminatorSource( RequestOptions $requestOptions ): string {
 		$stringConditions = [];
 
 		foreach ( $requestOptions->getStringConditions() as $stringCondition ) {
@@ -119,7 +115,7 @@ class PrefetchCache {
 		// returned to the caller. Do not use RequestOptions::getHash() here:
 		// lower-level lookup caches also need execution options in their request
 		// identity, but this value cache must not depend on those internal hints.
-		return (string)json_encode( [
+		return md5( (string)json_encode( [
 			$requestOptions->limit,
 			$requestOptions->offset,
 			$requestOptions->lookahead,
@@ -133,7 +129,7 @@ class PrefetchCache {
 			$requestOptions->natural,
 			$requestOptions->getCursorAfter(),
 			$requestOptions->getCursorBefore(),
-		] );
+		] ) );
 	}
 
 	private static function makeSubjectSetFingerprint( array $subjects ): string {
