@@ -151,7 +151,8 @@ class ItemFetcherTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->with(
 				$dataItem,
-				$property )
+				$property,
+				$this->requestOptions )
 			->willReturn( $expected );
 
 		$this->store->expects( $this->atLeastOnce() )
