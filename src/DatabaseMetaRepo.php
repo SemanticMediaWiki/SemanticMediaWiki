@@ -4,10 +4,13 @@ declare( strict_types = 1 );
 
 namespace SMW;
 
+use InvalidArgumentException;
 use SMW\SQLStore\SQLStore;
 use Throwable;
 use Wikimedia\Rdbms\DBQueryError;
+use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\LikeValue;
 
 /**
  * `SmwJsonRepo` implementation backed by the `smw_meta` table.
@@ -19,12 +22,28 @@ use Wikimedia\Rdbms\ILoadBalancer;
  * (e.g. before `update.php`/`setupStore.php` has run), `loadSmwJson` returns
  * `null` rather than throwing.
  *
+ * Rows whose key starts with {@see self::RESERVED_PREFIX} are treated as
+ * out-of-band: they are neither returned by `loadSmwJson` (they are not
+ * install state) nor removed by `saveSmwJson`'s full-slice sync-delete. They
+ * are read and written one row at a time through {@see self::readValue} /
+ * {@see self::writeValue}. The maintenance-script auto-recovery checkpoint
+ * (#7030) stores one such row per script identifier, so frequent per-entity
+ * writes neither trigger a whole-slice rewrite, clobber install-state keys
+ * through a stale snapshot, nor overwrite a concurrent script's checkpoint.
+ *
  * @license GPL-2.0-or-later
  * @since 7.0.0
  *
  * @private
  */
 class DatabaseMetaRepo implements SmwJsonRepo {
+
+	/**
+	 * Key prefix for rows that live in `smw_meta` but are not part of the
+	 * install-state slice managed by `SetupFile`. Kept in sync with
+	 * {@see \SMW\Maintenance\AutoRecovery::TOPIC_IDENTIFIER}.
+	 */
+	private const RESERVED_PREFIX = 'maintenance_script.auto_recovery';
 
 	/**
 	 * @since 7.0.0
@@ -63,6 +82,11 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 
 		$entries = [];
 		foreach ( $rows as $row ) {
+			// Reserved rows are out-of-band and must not surface as install
+			// state; they are read via `readValue` instead.
+			if ( str_starts_with( (string)$row->meta_key, self::RESERVED_PREFIX ) ) {
+				continue;
+			}
 			$entries[ $row->meta_key ] = $this->decode( $row->meta_value );
 		}
 
@@ -111,9 +135,23 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 				->deleteFrom( SQLStore::META_TABLE )
 				->caller( __METHOD__ );
 
-			if ( $inputKeys === [] ) {
-				$deleteBuilder->where( '1=1' );
-			} else {
+			// Never delete reserved rows: they are managed one row at a time
+			// via readValue/writeValue, not as part of the install-state slice,
+			// so a full or partial slice save must leave them untouched.
+			// `LikeValue` escapes the prefix (including its `_`), so this
+			// matches only the reserved namespace.
+			$deleteBuilder->where(
+				$db->expr(
+					'meta_key',
+					IExpression::NOT_LIKE,
+					new LikeValue( self::RESERVED_PREFIX, $db->anyString() )
+				)
+			);
+
+			// Among the remaining (install-state) rows, delete those the slice
+			// no longer carries. When the slice is empty this clause is omitted
+			// and every non-reserved row is removed.
+			if ( $inputKeys !== [] ) {
 				$deleteBuilder->where( $db->expr( 'meta_key', '!=', $inputKeys ) );
 			}
 
@@ -144,6 +182,86 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 		} catch ( Throwable $e ) {
 			$db->cancelAtomic( __METHOD__ );
 			throw $e;
+		}
+	}
+
+	/**
+	 * Reads a single out-of-band {@see self::RESERVED_PREFIX} row, bypassing
+	 * the install-state slice. Returns `null` when the row (or the table) is
+	 * absent, mirroring `loadSmwJson`'s missing-table semantics.
+	 *
+	 * Reads from the primary (unlike `loadSmwJson`) so a resuming maintenance
+	 * run sees the checkpoint its previous run wrote: the row is written to the
+	 * primary and read exactly once per run, so replication lag must not hide
+	 * it and there is no replica-offload benefit to gain.
+	 *
+	 * @since 7.2.0
+	 *
+	 * @return mixed
+	 */
+	public function readValue( string $key ) {
+		$this->assertReserved( $key );
+
+		$db = $this->loadBalancer->getConnection( DB_PRIMARY );
+
+		try {
+			$value = $db->newSelectQueryBuilder()
+				->select( 'meta_value' )
+				->from( SQLStore::META_TABLE )
+				->where( [ 'meta_key' => $key ] )
+				->caller( __METHOD__ )
+				->fetchField();
+		} catch ( DBQueryError $e ) {
+			if ( !$db->tableExists( SQLStore::META_TABLE, __METHOD__ ) ) {
+				return null;
+			}
+			throw $e;
+		}
+
+		if ( $value === false ) {
+			return null;
+		}
+
+		return $this->decode( $value );
+	}
+
+	/**
+	 * Upserts a single out-of-band {@see self::RESERVED_PREFIX} row. Unlike
+	 * `saveSmwJson` this touches only the one row (no full-slice sync-delete),
+	 * so it cannot remove install-state keys or a concurrent script's row.
+	 * Silently no-ops when the table does not exist yet, mirroring
+	 * `saveSmwJson`.
+	 *
+	 * @since 7.2.0
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function writeValue( string $key, $value ): void {
+		$this->assertReserved( $key );
+
+		$db = $this->loadBalancer->getConnection( DB_PRIMARY );
+
+		if ( !$db->tableExists( SQLStore::META_TABLE, __METHOD__ ) ) {
+			return;
+		}
+
+		$db->newReplaceQueryBuilder()
+			->replaceInto( SQLStore::META_TABLE )
+			->uniqueIndexFields( [ 'meta_key' ] )
+			->row( [
+				'meta_key' => $key,
+				'meta_value' => $this->encode( $value ),
+			] )
+			->caller( __METHOD__ )
+			->execute();
+	}
+
+	private function assertReserved( string $key ): void {
+		if ( !str_starts_with( $key, self::RESERVED_PREFIX ) ) {
+			throw new InvalidArgumentException(
+				"'$key' is not a reserved meta key; use loadSmwJson/saveSmwJson for install-state keys."
+			);
 		}
 	}
 

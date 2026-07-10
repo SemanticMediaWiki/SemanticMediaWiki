@@ -14,6 +14,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 ## Bug fixes
 
 * Fixed a query showing incorrect printout values when the same property is requested through different printout contexts, such as a direct and an inverse printout or the same property with different sort options ([#7026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7026))
+* Fixed maintenance scripts run with `--auto-recovery` (such as `rebuildData` and `rebuildElasticIndex`) aborting with a `FileNotWritableException` on deployments where the extension directory is not writable; the recovery checkpoint is now stored in the database instead of a `.smw.json` file, so it no longer depends on a writable `$smwgConfigFileDir` ([#7030](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7030))
 
 ## Upgrading
 
