@@ -3,10 +3,8 @@
 namespace SMW\Tests\Unit\Maintenance;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DatabaseMetaRepo;
 use SMW\Maintenance\AutoRecovery;
-use SMW\Site;
-use SMW\Tests\TestEnvironment;
-use SMW\Utils\File;
 
 /**
  * @covers \SMW\Maintenance\AutoRecovery
@@ -19,47 +17,38 @@ use SMW\Utils\File;
  */
 class AutoRecoveryTest extends TestCase {
 
-	private $testEnvironment;
-	private $file;
-	private $site;
+	/**
+	 * Per-identifier `smw_meta` row key for the 'foo' identifier used below.
+	 */
+	private const META_KEY = AutoRecovery::TOPIC_IDENTIFIER . '.foo';
+
+	private $repo;
 
 	protected function setUp(): void {
-		$this->testEnvironment = new TestEnvironment();
-		$this->site = Site::id();
+		parent::setUp();
 
-		$this->file = $this->getMockBuilder( File::class )
-			->disableOriginalConstructor()
-			->getMock();
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+		$this->repo = $this->createMock( DatabaseMetaRepo::class );
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			AutoRecovery::class,
-			new AutoRecovery( 'Foo' )
+			new AutoRecovery( 'Foo', $this->repo )
 		);
 	}
 
-	public function testCheckForID() {
-		$contents = [
-			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
-		];
+	public function testHasReadsWithoutWriting() {
+		// #7030 regression guard: the read path (has) must never persist.
+		// Previously `has()` created a `.smw.json` file and threw on a
+		// non-writable `$smwgConfigFileDir`.
+		$this->repo->method( 'readValue' )
+			->with( self::META_KEY )
+			->willReturn( null );
 
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'write' )
-			->with(
-				$this->anything(),
-				json_encode( $contents, JSON_PRETTY_PRINT ) );
+		$this->repo->expects( $this->never() )
+			->method( 'writeValue' );
 
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( false );
-
-		$instance = new AutoRecovery( 'foo', $this->file );
+		$instance = new AutoRecovery( 'foo', $this->repo );
 		$instance->enable( true );
 
 		$this->assertFalse(
@@ -68,29 +57,15 @@ class AutoRecoveryTest extends TestCase {
 	}
 
 	public function testGetSet() {
-		$init = [
-			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
-		];
+		$this->repo->method( 'readValue' )
+			->with( self::META_KEY )
+			->willReturn( [ 'ar_id' => false ] );
 
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'read' )
-			->willReturn( json_encode( $init ) );
+		$this->repo->expects( $this->once() )
+			->method( 'writeValue' )
+			->with( self::META_KEY, [ 'ar_id' => 1001 ] );
 
-		$contents = [
-			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 1001 ] ] ]
-		];
-
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'write' )
-			->with(
-				$this->anything(),
-				json_encode( $contents, JSON_PRETTY_PRINT ) );
-
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$instance = new AutoRecovery( 'foo', $this->file );
+		$instance = new AutoRecovery( 'foo', $this->repo );
 		$instance->enable( true );
 		$instance->safeMargin( 101 );
 
@@ -108,29 +83,15 @@ class AutoRecoveryTest extends TestCase {
 	}
 
 	public function testSetClosed() {
-		$init = [
-			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
-		];
+		$this->repo->method( 'readValue' )
+			->with( self::META_KEY )
+			->willReturn( [ 'ar_id' => 42 ] );
 
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'read' )
-			->willReturn( json_encode( $init ) );
+		$this->repo->expects( $this->once() )
+			->method( 'writeValue' )
+			->with( self::META_KEY, [ 'ar_id' => false ] );
 
-		$contents = [
-			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
-		];
-
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'write' )
-			->with(
-				$this->anything(),
-				json_encode( $contents, JSON_PRETTY_PRINT ) );
-
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$instance = new AutoRecovery( 'foo', $this->file );
+		$instance = new AutoRecovery( 'foo', $this->repo );
 		$instance->enable( true );
 
 		$this->assertEquals(
@@ -141,24 +102,16 @@ class AutoRecoveryTest extends TestCase {
 		$instance->set( 'ar_id', false );
 
 		$this->assertFalse(
-						$instance->get( 'ar_id' )
+			$instance->get( 'ar_id' )
 		);
 	}
 
 	public function testGetSafeMargin() {
-		$init = [
-			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
-		];
+		$this->repo->method( 'readValue' )
+			->with( self::META_KEY )
+			->willReturn( [ 'ar_id' => 42 ] );
 
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'read' )
-			->willReturn( json_encode( $init, JSON_PRETTY_PRINT ) );
-
-		$this->file->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$instance = new AutoRecovery( 'foo', $this->file );
+		$instance = new AutoRecovery( 'foo', $this->repo );
 		$instance->enable( true );
 		$instance->safeMargin( 9999 );
 
@@ -166,6 +119,18 @@ class AutoRecoveryTest extends TestCase {
 			0,
 			$instance->get( 'ar_id' )
 		);
+	}
+
+	public function testDisabledShortCircuitsWithoutTouchingStore() {
+		$this->repo->expects( $this->never() )->method( 'readValue' );
+		$this->repo->expects( $this->never() )->method( 'writeValue' );
+
+		$instance = new AutoRecovery( 'foo', $this->repo );
+		// Not enabled.
+
+		$this->assertFalse( $instance->has( 'ar_id' ) );
+		$this->assertFalse( $instance->get( 'ar_id' ) );
+		$this->assertFalse( $instance->set( 'ar_id', 1001 ) );
 	}
 
 }
