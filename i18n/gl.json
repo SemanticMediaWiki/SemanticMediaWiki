@@ -881,7 +881,7 @@
 	"smw-parser-invalid-json-format": "O analizador de JSON devolveu «$1».",
 	"smw-property-preferred-label-language-combination-exists": "Non se pode usar «$1» como etiqueta preferida porque a lingua «$2» xa ten asignada a etiqueta «$3».",
 	"smw-clipboard-copy-link": "Copiar a ligazón no portapapeis",
-	"smw-property-userdefined-fixedtable": "«$1» configurouse como [https://www.semantic-mediawiki.org/wiki/Fixed_properties propiedade fixa] e calquera modificación da [https://www.semantic-mediawiki.org/wiki/Type_declaration declaración do seu tipo] necesita executar <code>setupStore.php</code> ou completar a tarefa especial «[[Special:SemanticMediaWiki|Instalación e actualización da base de datos]]».",
+	"smw-property-userdefined-fixedtable": "«$1» configurouse como unha [https://www.semantic-mediawiki.org/wiki/Fixed_properties propiedade fixa]. Cando se modifica a [https://www.semantic-mediawiki.org/wiki/Type_declaration declaración do seu tipo], asegúrate de executares <code>setupStore.php</code> ou a tarefa «Configuración da base de datos» en «[[Special:SemanticMediaWiki]]».",
 	"smw-data-lookup": "A recuperar os datos...",
 	"smw-data-lookup-with-wait": "A solicitude está a procesarse e pode tardar un anaco.",
 	"smw-no-data-available": "Non hai datos dispoñibles.",
