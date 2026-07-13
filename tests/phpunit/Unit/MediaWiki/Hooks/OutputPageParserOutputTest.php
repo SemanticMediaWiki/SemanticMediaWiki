@@ -230,6 +230,87 @@ class OutputPageParserOutputTest extends TestCase {
 		$this->newInstance()->onOutputPageParserOutput( $outputPage, $parserOutput );
 	}
 
+	/**
+	 * `OutputPage::addParserOutputMetadata` runs this hook and makes no promise
+	 * that the `ParserOutput` carries any rendered text. An extension that hands
+	 * over a metadata-only `ParserOutput` (`hasText` returns false) must not make
+	 * SMW trip over `getContentHolderText`.
+	 *
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7033
+	 */
+	public function testProcessReturnsEarlyForParserOutputWithoutText() {
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		$language = $languageFactory->getLanguage( 'en' );
+
+		$title = MockTitle::buildMock( __METHOD__ . 'title-no-text' );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		// The `oldid` branch is the one that reaches for the text.
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest( [ 'oldid' => 9001 ], true ) );
+		$outputPage = $this->makeOutputPageWithContext( $title, $language, $context );
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->willReturn( true );
+
+		// No `never()` expectation on the Factbox factory here, it would fail
+		// ahead of `getContentHolderText` and hide the `LogicException` this
+		// test pins. The skipped Factbox is asserted in the test below.
+		$this->inTextAnnotationParserFactory->expects( $this->never() )
+			->method( 'newFor' );
+
+		// A metadata-only `ParserOutput`, it holds no text to work with.
+		$parserOutput = new ParserOutput();
+		$this->assertFalse( $parserOutput->hasText() );
+
+		$this->newInstance()->onOutputPageParserOutput( $outputPage, $parserOutput );
+
+		$this->assertFalse( $this->factboxText->hasText() );
+	}
+
+	/**
+	 * The `oldid` branch is only where it becomes fatal. A metadata-only
+	 * `ParserOutput` is not the rendered content of the page in the first place,
+	 * so the handler is skipped as a whole and neither a Factbox, an indicator
+	 * nor a post-processing element is derived from it.
+	 *
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7033
+	 */
+	public function testProcessBuildsNothingForParserOutputWithoutText() {
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		$language = $languageFactory->getLanguage( 'en' );
+
+		$title = MockTitle::buildMock( __METHOD__ . 'title-no-text-no-oldid' );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		$outputPage = $this->makeOutputPageWithContext( $title, $language, new RequestContext() );
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->willReturn( true );
+
+		$this->indicatorRegistryFactory->expects( $this->never() )
+			->method( 'newFor' );
+
+		$this->factboxFactory->expects( $this->never() )
+			->method( 'newCachedFactbox' );
+
+		$this->postProcHandlerFactory->expects( $this->never() )
+			->method( 'newFor' );
+
+		$parserOutput = new ParserOutput();
+		$this->assertFalse( $parserOutput->hasText() );
+
+		$this->newInstance()->onOutputPageParserOutput( $outputPage, $parserOutput );
+
+		$this->assertFalse( $this->factboxText->hasText() );
+	}
+
 	private function makeTitleForFactboxBuild( string $name, $language ) {
 		$title = MockTitle::buildMock( $name );
 		$title->expects( $this->atLeastOnce() )->method( 'exists' )->willReturn( true );

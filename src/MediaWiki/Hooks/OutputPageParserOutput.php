@@ -67,6 +67,20 @@ class OutputPageParserOutput implements OutputPageParserOutputHook {
 			return;
 		}
 
+		// #7033
+		//
+		// `OutputPage::addParserOutputMetadata` runs this hook and is free to pass a
+		// metadata-only `ParserOutput`, an object that holds no rendered text and
+		// therefore nothing to derive a Factbox from. Reading its text raises a
+		// `LogicException`.
+		//
+		// The page's own `ParserOutput` is unaffected, `addParserOutput` reads its
+		// text before running this hook, so it always carries text by the time the
+		// handler is reached.
+		if ( !$parserOutput->hasText() ) {
+			return;
+		}
+
 		$context = $outputPage->getContext();
 		$request = $context->getRequest();
 		$user = $outputPage->getUser();
