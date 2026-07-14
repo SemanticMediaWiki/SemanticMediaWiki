@@ -20,6 +20,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed a cross-site scripting (XSS) vulnerability in `Special:SearchByProperty` where crafted `property` or `value` parameters were reflected unescaped into validation error messages and the result heading ([GHSA-59xw-qv23-j3rc](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-59xw-qv23-j3rc))
 * Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where crafted query values were reflected unescaped into the `format=debug` query debug output ([GHSA-q5fm-9mx6-44f4](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-q5fm-9mx6-44f4))
 * Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where a crafted `mainlabel` or property label was reflected unescaped into plain table headers (`headers=plain`) ([GHSA-3jp5-3h47-28qf](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-3jp5-3h47-28qf))
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where a crafted `cursor` pagination token was reflected unescaped into query error messages ([GHSA-cx86-7xwp-w9wf](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-cx86-7xwp-w9wf))
 
 ## Bug fixes
 

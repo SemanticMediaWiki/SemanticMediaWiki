@@ -221,6 +221,28 @@ class QueryCreatorTest extends TestCase {
 		);
 	}
 
+	public function testCursorSortPropMismatchErrorEscapesMarkup(): void {
+		$instance = new QueryCreator(
+			ApplicationFactory::getInstance()->getQueryFactory()
+		);
+
+		// base64url of {"v":1,"sort":"value","sort_prop":"<script>alert(1)</script>","id":42}
+		$token = 'eyJ2IjogMSwgInNvcnQiOiAidmFsdWUiLCAic29ydF9wcm9wIjogIjxzY3JpcHQ-YWxlcnQoMSk8L3NjcmlwdD4iLCAiaWQiOiA0Mn0';
+
+		$query = $instance->create(
+			'[[Foo::Bar]]',
+			[
+				'sort'   => [ 'DifferentProperty' ],
+				'cursor' => $token,
+			]
+		);
+
+		$errors = implode( ' ', $query->getErrors() );
+
+		$this->assertStringNotContainsString( '<script>', $errors );
+		$this->assertStringContainsString( '&lt;script&gt;', $errors );
+	}
+
 	public function testCursorParamWithEmptyPayloadIsAcceptedForAnySingleSort(): void {
 		// Bootstrap case: a cursor with no `sort_prop` (the
 		// `{"v":1}` empty-payload bootstrap from Phase 3 spike)

@@ -246,10 +246,10 @@ class QueryCreator implements QueryContext {
 		if ( $payloadSortProp !== null ) {
 			$payloadProps = is_array( $payloadSortProp ) ? $payloadSortProp : [ $payloadSortProp ];
 			if ( $payloadProps !== $customSortKeys ) {
-				$payloadDesc = is_array( $payloadSortProp )
+				$payloadDesc = htmlspecialchars( (string)( is_array( $payloadSortProp )
 					? implode( ',', $payloadSortProp )
-					: $payloadSortProp;
-				$requestDesc = implode( ',', $customSortKeys );
+					: $payloadSortProp ), ENT_QUOTES );
+				$requestDesc = htmlspecialchars( implode( ',', $customSortKeys ), ENT_QUOTES );
 				$query->addErrors( [
 					"Cursor was minted for `sort=$payloadDesc` but the request specifies `sort=$requestDesc`. The cursor anchor has no meaning under a different sort; re-issue without `cursor=` or align the `sort=` parameter."
 				] );
@@ -278,8 +278,8 @@ class QueryCreator implements QueryContext {
 				count( $requestSortOrders )
 			);
 			if ( $payloadSortOrders !== $requestSortOrders ) {
-				$payloadDesc = implode( ',', $payloadSortOrders );
-				$requestDesc = implode( ',', $requestSortOrders );
+				$payloadDesc = htmlspecialchars( implode( ',', $payloadSortOrders ), ENT_QUOTES );
+				$requestDesc = htmlspecialchars( implode( ',', $requestSortOrders ), ENT_QUOTES );
 				$query->addErrors( [
 					"Cursor was minted for `order=$payloadDesc` but the request specifies `order=$requestDesc`. The cursor anchor seeks in the wrong direction under the new order; re-issue without `cursor=` or align the `order=` parameter."
 				] );
