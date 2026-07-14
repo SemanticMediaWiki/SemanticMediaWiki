@@ -144,6 +144,20 @@ class TableResultPrinter extends ResultPrinter {
 				// #2702 Use a fixed output on a requested plain printout
 				$mode = $this->isHTML && $isPlain ? SMW_OUTPUT_WIKI : $outputMode;
 				$text = $pr->getText( $mode, ( $isPlain ? null : $this->mLinker ) );
+
+				// getText( SMW_OUTPUT_WIKI ) returns the label unescaped and HtmlTable
+				// emits header content verbatim into <th>, so a user-controlled plain
+				// header (e.g. mainlabel) is escaped here. Non-plain HTML is escaped by
+				// the formatter; inline wikitext output is sanitised by the parser.
+				//
+				// In this branch $mode is SMW_OUTPUT_WIKI with a null linker, so getText()
+				// returns the raw label; Phan cannot narrow the mode and over-taints it as
+				// already escaped via the HTML formatter path, hence the suppression.
+				if ( $this->isHTML && $isPlain ) {
+					// @phan-suppress-next-line SecurityCheck-DoubleEscaped
+					$text = htmlspecialchars( (string)$text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
+				}
+
 				$headerList[] = $pr->getCanonicalLabel();
 				// $attributes['class'] is a CSS class built from the (stripped) column
 				// label; HtmlTable escapes attributes once. Phan over-taints it via the
