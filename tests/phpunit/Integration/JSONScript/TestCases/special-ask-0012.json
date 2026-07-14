@@ -221,6 +221,61 @@
 					"<x id=X tabindex=1 onfocus=a=0||alert,a(0||document.domain)>"
 				]
 			}
+		},
+		{
+			"type": "special",
+			"about": "#9 (headers=plain, XSS payload in mainlabel is escaped)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"headers": "plain",
+						"mainlabel": "<img src=x onerror=alert() >",
+						"format": "table"
+					},
+					"q": "[[Category:SA0012]]",
+					"po": "?Has page extra"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"<th.*>&lt;img src=x onerror=alert() &gt;</th>",
+					"<th class=\"Has-page-extra\">Has page extra</th>"
+				],
+				"not-contain": [
+					"<img src=x onerror=alert() >"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#10 (headers=plain, XSS payload in a property label is escaped)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"headers": "plain",
+						"mainlabel": "-",
+						"format": "table"
+					},
+					"q": "[[Category:SA0012]]",
+					"po": "?Has page extra=<img src=x onerror=alert() >"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"<th.*>&lt;img src=x onerror=alert() &gt;</th>"
+				],
+				"not-contain": [
+					"<img src=x onerror=alert() >"
+				]
+			}
 		}
 	],
 	"settings": {

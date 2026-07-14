@@ -58,7 +58,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<thead><th>&nbsp;</th><th class=\"Modified-label-for-text\">Modified <i>label</i> for text</th></thead>",
+					"<thead><th>&nbsp;</th><th class=\"Modified-label-for-text\">Modified &lt;i&gt;label&lt;/i&gt; for text</th></thead>",
 					"<a href=.* title=\"Example/SA0008/1\">Example/SA0008/1</a>",
 					"<a href=.* title=\"Example/SA0008/2\">Example/SA0008/2</a>"
 				]
