@@ -57,6 +57,17 @@ class PageBuilder {
 	}
 
 	/**
+	 * Encode attacker-influenced text (reflected property/value input and the
+	 * error messages derived from it) before it is placed into the HTML output.
+	 * The result flows into `Xml::tags()`/`addParagraph()`, which do not escape,
+	 * and validation error text can carry unescaped user input (e.g. via the
+	 * `Message::encode()` range roundtrip), so it must be treated as untrusted.
+	 */
+	private function escapeMessage( string $text ): string {
+		return htmlspecialchars( $text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
+	}
+
+	/**
 	 * @since 2.1
 	 */
 	public function getHtml(): string {
@@ -133,11 +144,13 @@ class PageBuilder {
 
 		// #1728
 		if ( !$this->pageRequestOptions->property->isValid() ) {
-			return [ ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->property->getErrors() ), '', 0 ];
+			$errors = ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->property->getErrors() );
+			return [ $this->escapeMessage( $errors ), '', 0 ];
 		}
 
 		if ( $this->pageRequestOptions->valueString !== '' && !$this->pageRequestOptions->value->isValid() ) {
-			return [ ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->value->getErrors() ), '', 0 ];
+			$errors = ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->value->getErrors() );
+			return [ $this->escapeMessage( $errors ), '', 0 ];
 		}
 
 		// Find out where the subject is used in connection with a query
@@ -164,7 +177,7 @@ class PageBuilder {
 		$resultMessage = $this->msg(
 			$resultMessageKey,
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
-			$this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )->text();
+			$this->escapeMessage( (string)$this->pageRequestOptions->value->getWikiValue() ) )->text();
 
 		if ( $exactCount > 0 ) {
 			$resultList = $this->makeResultList( $exactResults, $this->pageRequestOptions->limit, true );

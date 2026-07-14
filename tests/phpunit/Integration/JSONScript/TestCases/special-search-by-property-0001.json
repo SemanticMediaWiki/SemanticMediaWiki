@@ -22,6 +22,16 @@
 			"contents": "[[Has type::Telephone number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has boolean",
+			"contents": "[[Has type::Boolean]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has eid",
+			"contents": "[[Has type::External identifier]] [[External formatter uri::http://example.org/$1]]"
+		},
+		{
 			"page": "Example/S0001/1",
 			"contents": "[[Has text::S0001]]"
 		},
@@ -565,6 +575,66 @@
 					"<small>(-25)</small>",
 					"value=\"P-20-25\"",
 					"value=\"-25\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#23 reflected value error is html-escaped (invalid Boolean value, `%3C`/`%3E` strip_tags bypass, GHSA-59xw-qv23-j3rc)",
+			"special-page": {
+				"page": "SearchByProperty",
+				"query-parameters": "",
+				"request-parameters": {
+					"property": "Has boolean",
+					"value": "%3Escript%3Calert(1)%3E/script%3C"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&lt;script&gt;alert(1)&lt;/script&gt;"
+				],
+				"not-contain": [
+					"<script>alert(1)"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#24 reflected property error is html-escaped (invalid property, `%3C`/`%3E` strip_tags bypass, GHSA-59xw-qv23-j3rc)",
+			"special-page": {
+				"page": "SearchByProperty",
+				"query-parameters": "",
+				"request-parameters": {
+					"property": "%3Escript%3Calert(2)%3E/script%3C",
+					"value": ""
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&lt;script&gt;alert(2)&lt;/script&gt;"
+				],
+				"not-contain": [
+					"<script>alert(2)"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#25 reflected valid value is html-escaped in the result message (External identifier, GHSA-59xw-qv23-j3rc)",
+			"special-page": {
+				"page": "SearchByProperty",
+				"query-parameters": "",
+				"request-parameters": {
+					"property": "Has eid",
+					"value": "<h1>zzz</h1>"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&lt;h1&gt;zzz&lt;/h1&gt;"
+				],
+				"not-contain": [
+					"<h1>zzz</h1>"
 				]
 			}
 		}

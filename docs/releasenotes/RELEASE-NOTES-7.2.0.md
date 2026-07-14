@@ -17,6 +17,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where a crafted `sep` parameter was inserted unescaped into table output ([GHSA-7xv3-gf2g-498h](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-7xv3-gf2g-498h))
 * Fixed an open redirect in `Special:URIResolver` where a crafted pretty URI could redirect visitors to an external host ([GHSA-hw3m-8j5x-94ff](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-hw3m-8j5x-94ff))
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:SearchByProperty` where crafted `property` or `value` parameters were reflected unescaped into validation error messages and the result heading ([GHSA-59xw-qv23-j3rc](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-59xw-qv23-j3rc))
 
 ## Bug fixes
 
