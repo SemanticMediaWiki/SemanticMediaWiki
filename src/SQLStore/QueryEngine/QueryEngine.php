@@ -234,9 +234,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$auxtables = '';
 
 		foreach ( $this->querySegmentListProcessor->getExecutedQueries() as $table => $log ) {
-			$auxtables .= "<li>Temporary table $table";
+			$auxtables .= '<li>Temporary table ' . htmlspecialchars( (string)$table, ENT_QUOTES );
 			foreach ( $log as $q ) {
-				$auxtables .= "<br />&#160;&#160;<tt>$q</tt>";
+				$auxtables .= '<br />&#160;&#160;<tt>' . htmlspecialchars( (string)$q, ENT_QUOTES ) . '</tt>';
 			}
 			$auxtables .= '</li>';
 		}
