@@ -101,6 +101,111 @@ class DebugFormatterTest extends TestCase {
 		);
 	}
 
+	public function testBuildHTMLEscapesQueryStringMarkup() {
+		$description = $this->getMockBuilder( Description::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$description->expects( $this->any() )
+			->method( 'getQueryString' )
+			->willReturn( '[[Has text::<script>alert(1)</script>]]' );
+
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getDescription' )
+			->willReturn( $description );
+
+		$query->expects( $this->any() )
+			->method( 'getErrors' )
+			->willReturn( [] );
+
+		$instance = new DebugFormatter();
+		$html = $instance->buildHTML( [], $query );
+
+		$this->assertStringNotContainsString( '<script>', $html );
+		$this->assertStringContainsString( '&lt;script&gt;', $html );
+	}
+
+	public function testBuildHTMLEscapesRawErrorMarkup() {
+		$description = $this->getMockBuilder( Description::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getDescription' )
+			->willReturn( $description );
+
+		$query->expects( $this->any() )
+			->method( 'getErrors' )
+			->willReturn( [ '<script>alert(1)</script>' ] );
+
+		$instance = new DebugFormatter();
+		$html = $instance->buildHTML( [], $query );
+
+		$this->assertStringNotContainsString( '<script>', $html );
+		$this->assertStringContainsString( '&lt;script&gt;', $html );
+	}
+
+	public function testPrettifySQLEscapesMarkup() {
+		$instance = new DebugFormatter();
+
+		$sql = "SELECT * FROM t0 WHERE t0.smw_title = '<script>alert(1)</script>'";
+		$html = $instance->prettifySQL( $sql, 't0' );
+
+		$this->assertStringNotContainsString( '<script>', $html );
+		$this->assertStringContainsString( '&lt;script&gt;', $html );
+	}
+
+	public function testPrettifyExplainEscapesPostgresValueMarkup() {
+		$instance = new DebugFormatter( 'postgres' );
+
+		$res = [ [ 'QUERY PLAN' => "Filter: (smw_title = '<script>alert(1)</script>'::text)" ] ];
+		$html = $instance->prettifyExplain( $res );
+
+		$this->assertStringNotContainsString( '<script', $html );
+		$this->assertStringContainsString( '&lt;script', $html );
+	}
+
+	public function testPrettifyExplainEscapesMysqlColumnMarkup() {
+		$instance = new DebugFormatter( 'mysql' );
+
+		$row = [
+			'id' => '1', 'select_type' => 'SIMPLE', 'table' => 't0', 'type' => 'ref',
+			'possible_keys' => '', 'key' => '', 'key_len' => '', 'ref' => '',
+			'rows' => '1', 'filtered' => '100', 'Extra' => '<script>alert(1)</script>'
+		];
+
+		$html = $instance->prettifyExplain( [ (object)$row ] );
+
+		$this->assertStringNotContainsString( '<script>', $html );
+		$this->assertStringContainsString( '&lt;script&gt;', $html );
+	}
+
+	public function testPrettifyExplainEscapesMysqlExplainColumnMarkup() {
+		$instance = new DebugFormatter( 'mysql' );
+
+		$html = $instance->prettifyExplain( [ (object)[ 'EXPLAIN' => '<script>alert(1)</script>' ] ] );
+
+		$this->assertStringNotContainsString( '<script>', $html );
+		$this->assertStringContainsString( '&lt;script&gt;', $html );
+	}
+
+	public function testPrettifyExplainEscapesSqliteDetailMarkup() {
+		$instance = new DebugFormatter( 'sqlite' );
+
+		$html = $instance->prettifyExplain( [ (object)[ 'id' => 0, 'detail' => '<script>alert(1)</script>' ] ] );
+
+		$this->assertStringNotContainsString( '<script>', $html );
+		$this->assertStringContainsString( '&lt;script&gt;', $html );
+	}
+
 	public function sqlExplainFormatProvider() {
 		$row = [
 			'id' => '',

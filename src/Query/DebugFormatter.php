@@ -68,7 +68,7 @@ class DebugFormatter {
 		if ( $query instanceof Query ) {
 			$preEntries = [];
 			$description = $query->getDescription();
-			$queryString = str_replace( '[', '&#91;', $description->getQueryString() ?? '' );
+			$queryString = str_replace( '[', '&#91;', htmlspecialchars( $description->getQueryString() ?? '', ENT_QUOTES ) );
 
 			$preEntries['ASK Query'] = '<div class="smwpre">' . $queryString . '</div>';
 			$entries = array_merge( $preEntries, $entries );
@@ -81,7 +81,7 @@ class DebugFormatter {
 			);
 
 			foreach ( $queryErrors as $error ) {
-				$errors .= $error . '<br />';
+				$errors .= $this->escape( (string)$error ) . '<br />';
 			}
 
 			if ( $errors === '' ) {
@@ -137,7 +137,7 @@ class DebugFormatter {
 			foreach ( $res as $row ) {
 
 				if ( isset( $row->EXPLAIN ) ) {
-					return '<div class="smwpre">' . $row->EXPLAIN . '</div>';
+					return '<div class="smwpre">' . $this->escape( $row->EXPLAIN ) . '</div>';
 				}
 
 				$possible_keys = $row->possible_keys;
@@ -151,17 +151,17 @@ class DebugFormatter {
 					$ref = implode( ', ', explode( ',', $ref ) );
 				}
 
-				$output .= "<tr style='vertical-align: top;'><td>" . $row->id .
-				"</td><td>" . $row->select_type .
-				"</td><td>" . $row->table .
-				"</td><td>" . $row->type .
-				"</td><td>" . $possible_keys .
-				"</td><td>" . $row->key .
-				"</td><td>" . $row->key_len .
-				"</td><td>" . $ref .
-				"</td><td>" . $row->rows .
-				"</td><td>" . ( $row->filtered ?? '' ) .
-				"</td><td>" . $row->Extra . "</td></tr>";
+				$output .= "<tr style='vertical-align: top;'><td>" . $this->escape( $row->id ) .
+				"</td><td>" . $this->escape( $row->select_type ) .
+				"</td><td>" . $this->escape( $row->table ) .
+				"</td><td>" . $this->escape( $row->type ) .
+				"</td><td>" . $this->escape( $possible_keys ) .
+				"</td><td>" . $this->escape( $row->key ) .
+				"</td><td>" . $this->escape( $row->key_len ) .
+				"</td><td>" . $this->escape( $ref ) .
+				"</td><td>" . $this->escape( $row->rows ) .
+				"</td><td>" . $this->escape( $row->filtered ?? '' ) .
+				"</td><td>" . $this->escape( $row->Extra ) . "</td></tr>";
 			}
 
 			$output .= '</table></div>';
@@ -172,7 +172,10 @@ class DebugFormatter {
 
 			foreach ( $res as $row ) {
 				foreach ( $row as $key => $value ) {
-					$output .= str_replace( [ ' ', '->' ], [ '&nbsp;', '└── ' ], $value ) . '<br>';
+					// Escape < and & (leaving > intact) so the -> tree-branch
+					// substitution below still matches while markup is neutralised.
+					$safeValue = str_replace( [ '&', '<' ], [ '&amp;', '&lt;' ], $value ?? '' );
+					$output .= str_replace( [ ' ', '->' ], [ '&nbsp;', '└── ' ], $safeValue ) . '<br>';
 				}
 			}
 
@@ -194,7 +197,7 @@ class DebugFormatter {
 				}
 
 				$marker = $k === $last ? '└──' : '├──';
-				$plan .= "<div style='margin-left:15px;'>$marker [" . $row->id . '] `' . $row->detail . "`</div>";
+				$plan .= "<div style='margin-left:15px;'>$marker [" . $this->escape( $row->id ) . '] `' . $this->escape( $row->detail ) . "`</div>";
 			}
 
 			if ( $plan === '' ) {
@@ -245,6 +248,7 @@ class DebugFormatter {
 	 * @return string
 	 */
 	public function prettifySQL( $sql, $alias ): string {
+		$sql = $this->escape( $sql );
 		$matches = [];
 		$i = 0;
 
@@ -302,6 +306,13 @@ class DebugFormatter {
 		}
 
 		return '<div class="smwpre">' . $sql . '</div>';
+	}
+
+	/**
+	 * Escape a value for output in an HTML element-content context.
+	 */
+	private function escape( string|int|float|null $value ): string {
+		return htmlspecialchars( (string)( $value ?? '' ), ENT_QUOTES );
 	}
 
 }
