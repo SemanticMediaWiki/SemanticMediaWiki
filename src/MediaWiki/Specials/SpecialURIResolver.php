@@ -74,9 +74,41 @@ class SpecialURIResolver extends SpecialPage {
 					SkinComponentUtils::makeSpecialUrl( 'ExportRDF', [ 'xmlmime' => 'rdf' ] )
 				);
 			} else {
-				$out->redirect( $title->getFullURL(), '303' );
+				$targetUrl = $title->getFullURL();
+
+				// Validate the resolved target before redirecting: a malformed
+				// authority-like title can make getFullURL() point off-host,
+				// which would turn the resolver into an open redirect.
+				if ( $this->isLocalRedirectTarget( $targetUrl ) ) {
+					$out->redirect( $targetUrl, '303' );
+				} else {
+					$out->showErrorPage( 'badtitle', 'badtitletext' );
+				}
 			}
 		}
+	}
+
+	/**
+	 * Whether a resolved redirect target is safe to hand to the browser: it must
+	 * resolve to the current host and must not carry userinfo. The final URL is
+	 * validated at the sink rather than the input path, so authority-like paths
+	 * cannot smuggle a foreign host past normalisation.
+	 */
+	private function isLocalRedirectTarget( string $url ): bool {
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+
+		$targetBits = $urlUtils->parse( (string)$urlUtils->expand( $url, PROTO_CURRENT ) );
+		$serverBits = $urlUtils->parse( (string)$urlUtils->expand( '/', PROTO_CURRENT ) );
+
+		if ( $targetBits === null || $serverBits === null ) {
+			return false;
+		}
+
+		$targetHost = $targetBits['host'] ?? '';
+		$serverHost = $serverBits['host'] ?? '';
+
+		// Host comparison only; port is intentionally out of scope.
+		return $targetHost !== '' && $serverHost !== '' && strcasecmp( $targetHost, $serverHost ) === 0;
 	}
 
 	/**
