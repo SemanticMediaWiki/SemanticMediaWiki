@@ -13,6 +13,10 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Added `SMW\MediaWiki\Outputs::requireJsConfigVar()` so extensions can register JavaScript configuration variables through the SMW output mechanism, alongside modules, styles and head items, instead of emitting inline scripts ([#7028](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7028))
 * Added the `{{#property_link:}}` parser function for linking to a property page from running text: `{{#property_link:Foo}}` and `{{#property_link:Foo|custom label}}` render the same output as the `[[Foo::@@@]]` and `[[Foo::@@@|custom label]]` annotation syntax, providing a dedicated syntax that does not rely on intercepting `[[…]]` links ([#5624](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5624), [#1855](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1855))
 
+## Security fixes
+
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where a crafted `sep` parameter was inserted unescaped into table output ([GHSA-7xv3-gf2g-498h](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-7xv3-gf2g-498h))
+
 ## Bug fixes
 
 * Fixed a query showing incorrect printout values when the same property is requested through different printout contexts, such as a direct and an inverse printout or the same property with different sort options ([#7026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7026))

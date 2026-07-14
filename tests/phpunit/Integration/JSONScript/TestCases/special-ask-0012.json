@@ -9,6 +9,10 @@
 		{
 			"page": "Example/SA0012/1",
 			"contents": "[[Has page extra::123]] [[Category:SA0012]]"
+		},
+		{
+			"page": "Example/SA0012/XSS",
+			"contents": "[[Has page extra::Alpha]] [[Has page extra::Beta]] [[Category:SA0012XSS]]"
 		}
 	],
 	"tests": [
@@ -162,6 +166,59 @@
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th class=\"Foo\">Foo</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
 					"<td class=\"Foo smwtype_wpg\">Example/SA0012/1</td>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#7 (XSS payload in the sep parameter is escaped in HTML output)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "table",
+						"sep": "\"><x id=X tabindex=1 onfocus=a=0||alert,a(0||document.domain)>"
+					},
+					"q": "[[Category:SA0012XSS]]",
+					"po": "?Has page extra"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&quot;&gt;&lt;x id=X tabindex=1 onfocus=a=0||alert,a(0||document.domain)&gt;"
+				],
+				"not-contain": [
+					"<x id=X tabindex=1 onfocus=a=0||alert,a(0||document.domain)>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#8 (XSS payload in the sep parameter is escaped for request_type=raw output)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "table",
+						"sep": "\"><x id=X tabindex=1 onfocus=a=0||alert,a(0||document.domain)>"
+					},
+					"q": "[[Category:SA0012XSS]]",
+					"po": "?Has page extra",
+					"request_type": "raw"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&quot;&gt;&lt;x id=X tabindex=1 onfocus=a=0||alert,a(0||document.domain)&gt;"
+				],
+				"not-contain": [
+					"<x id=X tabindex=1 onfocus=a=0||alert,a(0||document.domain)>"
 				]
 			}
 		}
