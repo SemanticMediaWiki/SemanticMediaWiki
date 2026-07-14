@@ -16,11 +16,11 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 ## Security fixes
 
 * Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where a crafted `sep` parameter was inserted unescaped into table output ([GHSA-7xv3-gf2g-498h](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-7xv3-gf2g-498h))
-* Fixed an open redirect in `Special:URIResolver` where a crafted pretty URI could redirect visitors to an external host ([GHSA-hw3m-8j5x-94ff](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-hw3m-8j5x-94ff))
-* Fixed a cross-site scripting (XSS) vulnerability in `Special:SearchByProperty` where crafted `property` or `value` parameters were reflected unescaped into validation error messages and the result heading ([GHSA-59xw-qv23-j3rc](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-59xw-qv23-j3rc))
 * Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where crafted query values were reflected unescaped into the `format=debug` query debug output ([GHSA-q5fm-9mx6-44f4](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-q5fm-9mx6-44f4))
 * Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where a crafted `mainlabel` or property label was reflected unescaped into plain table headers (`headers=plain`) ([GHSA-3jp5-3h47-28qf](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-3jp5-3h47-28qf))
 * Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where a crafted `cursor` pagination token was reflected unescaped into query error messages ([GHSA-cx86-7xwp-w9wf](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-cx86-7xwp-w9wf))
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:SearchByProperty` where crafted `property` or `value` parameters were reflected unescaped into validation error messages and the result heading ([GHSA-59xw-qv23-j3rc](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-59xw-qv23-j3rc))
+* Fixed an open redirect in `Special:URIResolver` where a crafted pretty URI could redirect visitors to an external host ([GHSA-hw3m-8j5x-94ff](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-hw3m-8j5x-94ff))
 
 ## Bug fixes
 
