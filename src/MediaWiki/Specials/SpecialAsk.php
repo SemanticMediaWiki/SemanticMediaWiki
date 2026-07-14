@@ -491,7 +491,9 @@ class SpecialAsk extends SpecialPage {
 			}
 		}
 
-		$scoreSet = $res->getScoreSet();
+		// A debug query (format=debug) returns the debug output as a string rather
+		// than a QueryResult, so only query results expose a score set.
+		$scoreSet = $res instanceof QueryResult ? $res->getScoreSet() : null;
 		if ( $this->getRequest()->getVal( 'score_set', false ) && $scoreSet !== null ) {
 			$table = $scoreSet->asTable( 'sortable wikitable smwtable-striped broadtable' );
 

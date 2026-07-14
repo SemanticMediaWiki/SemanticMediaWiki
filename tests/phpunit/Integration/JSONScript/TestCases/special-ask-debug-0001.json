@@ -1,0 +1,51 @@
+{
+	"description": "Test `Special:Ask` `format=debug` output (regression: a debug query returns a string result, not a QueryResult, so the score set must not be accessed on it)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has debug property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/AskDebug/1",
+			"contents": "[[Has debug property::123]] [[Category:AskDebug]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (format=debug renders the debug output without a fatal error)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"format": "debug"
+					},
+					"q": "[[Category:AskDebug]]",
+					"po": "?Has debug property"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Debug output",
+					"ASK Query"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
