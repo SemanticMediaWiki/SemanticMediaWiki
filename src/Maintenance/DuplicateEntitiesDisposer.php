@@ -23,6 +23,8 @@ class DuplicateEntitiesDisposer {
 
 	use MessageReporterAwareTrait;
 
+	private ?PeriodicStatsFlusher $statsFlusher = null;
+
 	/**
 	 * @since 3.0
 	 */
@@ -30,6 +32,13 @@ class DuplicateEntitiesDisposer {
 		private Store $store,
 		private ?BagOStuff $cache = null,
 	) {
+	}
+
+	/**
+	 * @since 7.2.0
+	 */
+	public function setStatsFlusher( PeriodicStatsFlusher $statsFlusher ): void {
+		$this->statsFlusher = $statsFlusher;
 	}
 
 	/**
@@ -145,6 +154,10 @@ class DuplicateEntitiesDisposer {
 
 		foreach ( $duplicates as $duplicate ) {
 
+			if ( $this->statsFlusher !== null ) {
+				$this->statsFlusher->tick();
+			}
+
 			if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
 				$this->messageReporter->reportMessage( "\n       " );
 			} elseif ( $i == 0 ) {
@@ -191,6 +204,10 @@ class DuplicateEntitiesDisposer {
 			->caller( __METHOD__ );
 
 		foreach ( $duplicates as $duplicate ) {
+
+			if ( $this->statsFlusher !== null ) {
+				$this->statsFlusher->tick();
+			}
 
 			if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
 				$this->messageReporter->reportMessage( "\n       " );
@@ -239,6 +256,10 @@ class DuplicateEntitiesDisposer {
 		$i = 0;
 
 		foreach ( $duplicates as $duplicate ) {
+
+			if ( $this->statsFlusher !== null ) {
+				$this->statsFlusher->tick();
+			}
 
 			if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
 				$this->messageReporter->reportMessage( "\n       " );

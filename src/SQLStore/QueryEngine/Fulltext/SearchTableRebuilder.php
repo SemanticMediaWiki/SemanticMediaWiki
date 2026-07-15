@@ -6,6 +6,7 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
+use SMW\Maintenance\PeriodicStatsFlusher;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Utils\CliMsgFormatter;
 
@@ -27,6 +28,8 @@ class SearchTableRebuilder {
 	private bool $optimization = false;
 
 	private array $skippedTables = [];
+
+	private ?PeriodicStatsFlusher $statsFlusher = null;
 
 	/**
 	 * @since 2.5
@@ -54,6 +57,13 @@ class SearchTableRebuilder {
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
+	}
+
+	/**
+	 * @since 7.2.0
+	 */
+	public function setStatsFlusher( PeriodicStatsFlusher $statsFlusher ): void {
+		$this->statsFlusher = $statsFlusher;
 	}
 
 	/**
@@ -307,6 +317,10 @@ class SearchTableRebuilder {
 		}
 
 		foreach ( $rows as $row ) {
+
+			if ( $this->statsFlusher !== null ) {
+				$this->statsFlusher->tick();
+			}
 
 			$sid = $row->s_id;
 			$pid = !isset( $row->p_id ) ? $pid : $row->p_id;

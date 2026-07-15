@@ -22,6 +22,8 @@ class PropertyStatisticsRebuilder {
 
 	private MessageReporter $messageReporter;
 
+	private ?PeriodicStatsFlusher $statsFlusher = null;
+
 	/**
 	 * @since 1.9
 	 */
@@ -37,6 +39,13 @@ class PropertyStatisticsRebuilder {
 	 */
 	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
+	}
+
+	/**
+	 * @since 7.2.0
+	 */
+	public function setStatsFlusher( PeriodicStatsFlusher $statsFlusher ): void {
+		$this->statsFlusher = $statsFlusher;
 	}
 
 	/**
@@ -105,6 +114,10 @@ class PropertyStatisticsRebuilder {
 		$i = 0;
 
 		foreach ( $res as $row ) {
+
+			if ( $this->statsFlusher !== null ) {
+				$this->statsFlusher->tick();
+			}
 
 			$i++;
 

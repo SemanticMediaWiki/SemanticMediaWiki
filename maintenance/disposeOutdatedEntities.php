@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
@@ -121,6 +122,10 @@ class disposeOutdatedEntities extends Maintenance {
 		);
 
 		$outdatedDisposer->setShard( $shard, $of );
+
+		$outdatedDisposer->setStatsFlusher(
+			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
+		);
 
 		if ( $this->messageReporter === null ) {
 			$this->messageReporter = new CallbackMessageReporter( [ $this, 'reportMessage' ] );

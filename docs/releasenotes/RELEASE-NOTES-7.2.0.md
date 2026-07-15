@@ -17,6 +17,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed maintenance scripts run with `--auto-recovery` (such as `rebuildData` and `rebuildElasticIndex`) aborting with a `FileNotWritableException` on deployments where the extension directory is not writable; the recovery checkpoint is now stored in the database instead of a `.smw.json` file, so it no longer depends on a writable `$smwgConfigFileDir` ([#7030](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7030))
 * Fixed viewing an old revision failing with a "This ParserOutput contains no text!" error on wikis running an extension that adds parser output metadata to the page, such as PageNotice ([#7033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7033))
 * Fixed `Special:Ask` returning an internal error when a query is run with `format=debug` ([#7035](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7035))
+* Fixed long-running maintenance scripts (such as `rebuildData`, `rebuildFulltextSearchTable` and `dumpRDF`) exhausting memory on large wikis; MediaWiki's buffered stats samples, which accumulate in process memory for every processed entity and have no flush point on the command line, are now flushed periodically during the rebuild loops ([#7036](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7036))
 
 ## Upgrading
 

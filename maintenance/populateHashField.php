@@ -4,6 +4,7 @@ namespace SMW\Maintenance;
 
 use Iterator;
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
@@ -60,6 +61,8 @@ class populateHashField extends Maintenance {
 	 */
 	private $last = 0;
 
+	private ?PeriodicStatsFlusher $statsFlusher = null;
+
 	/**
 	 * @since 3.1
 	 */
@@ -112,6 +115,17 @@ class populateHashField extends Maintenance {
 	}
 
 	/**
+	 * Injected only by execute(). populate() also runs via the HashField
+	 * examiner (update.php), which leaves the flusher unset on purpose so
+	 * that path never flushes stats.
+	 *
+	 * @since 7.2.0
+	 */
+	public function setStatsFlusher( PeriodicStatsFlusher $statsFlusher ): void {
+		$this->statsFlusher = $statsFlusher;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param string $message
@@ -138,6 +152,10 @@ class populateHashField extends Maintenance {
 
 		$this->store = $applicationFactory->getStore(
 			SQLStore::class
+		);
+
+		$this->setStatsFlusher(
+			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
 		);
 
 		$localMessageProvider = $maintenanceFactory->newLocalMessageProvider(
@@ -250,6 +268,10 @@ class populateHashField extends Maintenance {
 		);
 
 		foreach ( $rows as $row ) {
+
+			if ( $this->statsFlusher !== null ) {
+				$this->statsFlusher->tick();
+			}
 
 			$hash = $idTable->computeSha1(
 				[

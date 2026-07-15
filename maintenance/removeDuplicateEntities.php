@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\SQLStore;
@@ -80,6 +81,10 @@ class removeDuplicateEntities extends Maintenance {
 		$duplicateEntitiesDisposer = $maintenanceFactory->newDuplicateEntitiesDisposer(
 			$applicationFactory->getStore( SQLStore::class ),
 			[ $this, 'reportMessage' ]
+		);
+
+		$duplicateEntitiesDisposer->setStatsFlusher(
+			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
 		);
 
 		$this->reportMessage(

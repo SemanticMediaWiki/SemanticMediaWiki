@@ -42,6 +42,8 @@ class DataRebuilder {
 
 	private ?AutoRecovery $autoRecovery = null;
 
+	private ?PeriodicStatsFlusher $statsFlusher = null;
+
 	private DistinctEntityDataRebuilder $distinctEntityDataRebuilder;
 
 	private ExceptionFileLogger $exceptionFileLogger;
@@ -98,6 +100,14 @@ class DataRebuilder {
 	 */
 	public function setAutoRecovery( AutoRecovery $autoRecovery ): void {
 		$this->autoRecovery = $autoRecovery;
+	}
+
+	/**
+	 * @since 7.2.0
+	 */
+	public function setStatsFlusher( PeriodicStatsFlusher $statsFlusher ): void {
+		$this->statsFlusher = $statsFlusher;
+		$this->distinctEntityDataRebuilder->setStatsFlusher( $statsFlusher );
 	}
 
 	/**
@@ -511,6 +521,10 @@ class DataRebuilder {
 			MediaWikiServices::getInstance()->getLinkCache()->clear(); // avoid memory leaks
 		}
 
+		if ( $this->statsFlusher !== null ) {
+			$this->statsFlusher->tick();
+		}
+
 		$this->rebuildCount++;
 	}
 
@@ -625,6 +639,11 @@ class DataRebuilder {
 		);
 
 		$outdatedDisposer->setMessageReporter( $this->reporter );
+
+		if ( $this->statsFlusher !== null ) {
+			$outdatedDisposer->setStatsFlusher( $this->statsFlusher );
+		}
+
 		$outdatedDisposer->run();
 	}
 

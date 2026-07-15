@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
 use SMW\MediaWiki\JobQueue;
@@ -414,7 +415,12 @@ class rebuildElasticIndex extends Maintenance {
 			);
 		}
 
+		$statsFlusher = new PeriodicStatsFlusher(
+			MediaWikiServices::getInstance()->getStatsFactory()
+		);
+
 		foreach ( $res as $row ) {
+			$statsFlusher->tick();
 			$this->rebuildFromRow( ++$i, $count, $row, $last );
 		}
 

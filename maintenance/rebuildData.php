@@ -5,6 +5,7 @@ namespace SMW\Maintenance;
 use DateTimeZone;
 use InvalidArgumentException;
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\ExtendedDateTime;
 use SMW\Options;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -172,6 +173,10 @@ class rebuildData extends Maintenance {
 		$dataRebuilder = $maintenanceFactory->newDataRebuilder(
 			$store,
 			[ $this, 'reportMessage' ]
+		);
+
+		$dataRebuilder->setStatsFlusher(
+			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
 		);
 
 		if ( $this->hasOption( 'f' ) ) {

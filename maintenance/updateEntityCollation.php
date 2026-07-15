@@ -248,7 +248,13 @@ class updateEntityCollation extends Maintenance {
 		$property = new Property( '_SKEY' );
 		$i = 0;
 
+		$statsFlusher = new PeriodicStatsFlusher(
+			MediaWikiServices::getInstance()->getStatsFactory()
+		);
+
 		foreach ( $rows as $row ) {
+
+			$statsFlusher->tick();
 
 			if ( $row->smw_title === '' ) {
 				continue;
