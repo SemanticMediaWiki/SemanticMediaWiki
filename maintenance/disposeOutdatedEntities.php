@@ -3,13 +3,13 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -124,7 +124,7 @@ class disposeOutdatedEntities extends Maintenance {
 		$outdatedDisposer->setShard( $shard, $of );
 
 		$outdatedDisposer->setStatsFlusher(
-			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
+			PeriodicStatsFlusher::newFromGlobalState()
 		);
 
 		if ( $this->messageReporter === null ) {

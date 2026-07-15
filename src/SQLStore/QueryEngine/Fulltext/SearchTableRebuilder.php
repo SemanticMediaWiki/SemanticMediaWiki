@@ -6,9 +6,9 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
-use SMW\Maintenance\PeriodicStatsFlusher;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * @license GPL-2.0-or-later

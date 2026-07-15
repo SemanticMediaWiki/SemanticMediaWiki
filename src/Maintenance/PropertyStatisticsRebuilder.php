@@ -8,6 +8,7 @@ use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Simple class for rebuilding property usage statistics.

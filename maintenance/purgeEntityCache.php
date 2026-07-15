@@ -4,7 +4,6 @@ namespace SMW\Maintenance;
 
 use Iterator;
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -15,6 +14,7 @@ use SMW\Setup;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -213,9 +213,7 @@ class purgeEntityCache extends Maintenance {
 			$cliMsgFormatter->twoCols( "... entities matched ...", "(rows) $count", 3 )
 		);
 
-		$statsFlusher = new PeriodicStatsFlusher(
-			MediaWikiServices::getInstance()->getStatsFactory()
-		);
+		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
 
 		foreach ( $rows as $row ) {
 			$statsFlusher->tick();

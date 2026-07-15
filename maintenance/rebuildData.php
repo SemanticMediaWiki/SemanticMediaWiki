@@ -5,7 +5,6 @@ namespace SMW\Maintenance;
 use DateTimeZone;
 use InvalidArgumentException;
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\ExtendedDateTime;
 use SMW\Options;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -13,6 +12,7 @@ use SMW\Setup;
 use SMW\Store;
 use SMW\StoreFactory;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -176,7 +176,7 @@ class rebuildData extends Maintenance {
 		);
 
 		$dataRebuilder->setStatsFlusher(
-			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
+			PeriodicStatsFlusher::newFromGlobalState()
 		);
 
 		if ( $this->hasOption( 'f' ) ) {

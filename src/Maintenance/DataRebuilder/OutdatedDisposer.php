@@ -4,11 +4,11 @@ namespace SMW\Maintenance\DataRebuilder;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\IteratorFactory;
-use SMW\Maintenance\PeriodicStatsFlusher;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * @private

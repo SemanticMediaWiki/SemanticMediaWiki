@@ -1,16 +1,16 @@
 <?php
 
-namespace SMW\Tests\Unit\Maintenance;
+namespace SMW\Tests\Unit\Utils;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use SMW\Maintenance\PeriodicStatsFlusher;
+use SMW\Utils\PeriodicStatsFlusher;
 use Wikimedia\Stats\Emitters\NullEmitter;
 use Wikimedia\Stats\StatsCache;
 use Wikimedia\Stats\StatsFactory;
 
 /**
- * @covers \SMW\Maintenance\PeriodicStatsFlusher
+ * @covers \SMW\Utils\PeriodicStatsFlusher
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

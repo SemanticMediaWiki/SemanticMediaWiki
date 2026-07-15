@@ -11,6 +11,7 @@ use SMW\MediaWiki\TitleLookup;
 use SMW\Settings;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Is part of the `rebuildConceptCache.php` maintenance script to rebuild

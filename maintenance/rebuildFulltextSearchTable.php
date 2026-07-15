@@ -3,7 +3,6 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\DataItem;
@@ -12,6 +11,7 @@ use SMW\Setup;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -164,7 +164,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 		$searchTableRebuilder->setMessageReporter( $this->messageReporter );
 
 		$searchTableRebuilder->setStatsFlusher(
-			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
+			PeriodicStatsFlusher::newFromGlobalState()
 		);
 
 		$result = $searchTableRebuilder->rebuild();
