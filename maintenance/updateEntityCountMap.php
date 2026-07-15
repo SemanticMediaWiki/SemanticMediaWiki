@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\WikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -182,7 +183,13 @@ class updateEntityCountMap extends Maintenance {
 	private function runUpdate() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
+		$statsFlusher = new PeriodicStatsFlusher(
+			MediaWikiServices::getInstance()->getStatsFactory()
+		);
+
 		for ( $i = 0; $i <= $this->last; $i++ ) {
+
+			$statsFlusher->tick();
 
 			$row = $connection->newSelectQueryBuilder()
 				->select( [

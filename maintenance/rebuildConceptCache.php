@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
@@ -151,6 +152,10 @@ class rebuildConceptCache extends Maintenance {
 		);
 
 		$conceptCacheRebuilder->setParameters( $this->mOptions );
+
+		$conceptCacheRebuilder->setStatsFlusher(
+			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
+		);
 
 		$result = $this->checkForRebuildState(
 			$conceptCacheRebuilder->rebuild()

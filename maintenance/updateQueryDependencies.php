@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\Property;
 use SMW\MediaWiki\JobFactory;
@@ -170,8 +171,13 @@ class updateQueryDependencies extends Maintenance {
 		$this->reportMessage( "\n   ... found $expected entities ..." );
 		$this->reportMessage( "\n" );
 
+		$statsFlusher = new PeriodicStatsFlusher(
+			MediaWikiServices::getInstance()->getStatsFactory()
+		);
+
 		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 		foreach ( $res as $row ) {
+			$statsFlusher->tick();
 			$i++;
 
 			$this->reportMessage(

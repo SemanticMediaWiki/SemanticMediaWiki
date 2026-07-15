@@ -4,6 +4,7 @@ namespace SMW\Maintenance\DataRebuilder;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\IteratorFactory;
+use SMW\Maintenance\PeriodicStatsFlusher;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
@@ -24,6 +25,7 @@ class OutdatedDisposer {
 	private CliMsgFormatter $cliMsgFormatter;
 	private int $shard = 0;
 	private int $of = 1;
+	private ?PeriodicStatsFlusher $statsFlusher = null;
 
 	/**
 	 * @since 3.1
@@ -41,6 +43,13 @@ class OutdatedDisposer {
 	public function setShard( int $shard, int $of ): void {
 		$this->shard = $shard;
 		$this->of = $of;
+	}
+
+	/**
+	 * @since 7.2.0
+	 */
+	public function setStatsFlusher( PeriodicStatsFlusher $statsFlusher ): void {
+		$this->statsFlusher = $statsFlusher;
 	}
 
 	/**
@@ -144,6 +153,9 @@ class OutdatedDisposer {
 			$rows = [];
 
 			foreach ( $chunk as $row ) {
+				if ( $this->statsFlusher !== null ) {
+					$this->statsFlusher->tick();
+				}
 				$counter++;
 				$rows[] = $row;
 				$msg = sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $count * 100 ) );
@@ -168,6 +180,9 @@ class OutdatedDisposer {
 		$counter = 0;
 
 		foreach ( $resultIterator as $row ) {
+			if ( $this->statsFlusher !== null ) {
+				$this->statsFlusher->tick();
+			}
 			$counter++;
 			$msg = sprintf( "%s (%1.0f%%)", $row->id, round( $counter / $count * 100 ) );
 
