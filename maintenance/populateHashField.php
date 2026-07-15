@@ -4,7 +4,6 @@ namespace SMW\Maintenance;
 
 use Iterator;
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
@@ -12,6 +11,7 @@ use SMW\SQLStore\Installer;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -116,8 +116,11 @@ class populateHashField extends Maintenance {
 
 	/**
 	 * Injected only by execute(). populate() also runs via the HashField
-	 * examiner (update.php), which leaves the flusher unset on purpose so
-	 * that path never flushes stats.
+	 * examiner (update.php), which reaches it without execute() and so has
+	 * no injection seam; that path is left unflushed deliberately. It is
+	 * safe without a flusher because populate() only computes a hash and
+	 * updates one row per entity (no parse), so it buffers few samples and
+	 * runs once as a one-time migration.
 	 *
 	 * @since 7.2.0
 	 */
@@ -155,7 +158,7 @@ class populateHashField extends Maintenance {
 		);
 
 		$this->setStatsFlusher(
-			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
+			PeriodicStatsFlusher::newFromGlobalState()
 		);
 
 		$localMessageProvider = $maintenanceFactory->newLocalMessageProvider(

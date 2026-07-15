@@ -10,6 +10,7 @@ use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 use Traversable;
 use Wikimedia\ObjectCache\BagOStuff;
 

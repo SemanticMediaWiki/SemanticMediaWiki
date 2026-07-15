@@ -15,6 +15,7 @@ use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 use Throwable;
 
 /**

@@ -15,7 +15,6 @@ use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\Serializer\Serializer;
-use SMW\Maintenance\PeriodicStatsFlusher;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\NamespaceExaminer;
 use SMW\Query\Language\ConceptDescription;
@@ -24,6 +23,7 @@ use SMW\Query\Query;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\StoreFactory;
+use SMW\Utils\PeriodicStatsFlusher;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IReadableDatabase;
 

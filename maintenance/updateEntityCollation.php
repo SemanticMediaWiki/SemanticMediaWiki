@@ -13,6 +13,7 @@ use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -248,9 +249,7 @@ class updateEntityCollation extends Maintenance {
 		$property = new Property( '_SKEY' );
 		$i = 0;
 
-		$statsFlusher = new PeriodicStatsFlusher(
-			MediaWikiServices::getInstance()->getStatsFactory()
-		);
+		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
 
 		foreach ( $rows as $row ) {
 

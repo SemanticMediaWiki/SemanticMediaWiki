@@ -3,10 +3,10 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\SQLStore;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -55,7 +55,7 @@ class rebuildPropertyStatistics extends Maintenance {
 		);
 
 		$statisticsRebuilder->setStatsFlusher(
-			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
+			PeriodicStatsFlusher::newFromGlobalState()
 		);
 
 		$statisticsRebuilder->rebuild();

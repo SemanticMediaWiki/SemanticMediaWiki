@@ -3,7 +3,6 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
 use SMW\MediaWiki\JobQueue;
@@ -13,6 +12,7 @@ use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -415,9 +415,7 @@ class rebuildElasticIndex extends Maintenance {
 			);
 		}
 
-		$statsFlusher = new PeriodicStatsFlusher(
-			MediaWikiServices::getInstance()->getStatsFactory()
-		);
+		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
 
 		foreach ( $res as $row ) {
 			$statsFlusher->tick();

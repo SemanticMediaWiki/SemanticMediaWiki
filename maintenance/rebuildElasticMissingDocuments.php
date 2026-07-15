@@ -4,7 +4,6 @@ namespace SMW\Maintenance;
 
 use Iterator;
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -18,6 +17,7 @@ use SMW\Setup;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -298,9 +298,7 @@ class rebuildElasticMissingDocuments extends Maintenance {
 		$this->reportMessage( "\nInspecting documents ...\n" );
 		$cliMsgFormatter->setStartTime( (int)microtime( true ) );
 
-		$statsFlusher = new PeriodicStatsFlusher(
-			MediaWikiServices::getInstance()->getStatsFactory()
-		);
+		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
 
 		foreach ( $rows as $row ) {
 

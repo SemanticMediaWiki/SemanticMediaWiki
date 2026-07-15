@@ -3,10 +3,10 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 
 /**
  * Load the required class
@@ -196,7 +196,7 @@ class dumpRDF extends Maintenance {
 		);
 
 		$exportController->setStatsFlusher(
-			new PeriodicStatsFlusher( MediaWikiServices::getInstance()->getStatsFactory() )
+			PeriodicStatsFlusher::newFromGlobalState()
 		);
 
 		if ( $pages !== [] ) {

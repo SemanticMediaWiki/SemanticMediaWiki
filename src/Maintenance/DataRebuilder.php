@@ -15,6 +15,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\PeriodicStatsFlusher;
 use Throwable;
 
 /**

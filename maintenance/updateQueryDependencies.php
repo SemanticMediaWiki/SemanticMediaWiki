@@ -3,7 +3,6 @@
 namespace SMW\Maintenance;
 
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\Property;
 use SMW\MediaWiki\JobFactory;
@@ -11,6 +10,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\Utils\PeriodicStatsFlusher;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -171,9 +171,7 @@ class updateQueryDependencies extends Maintenance {
 		$this->reportMessage( "\n   ... found $expected entities ..." );
 		$this->reportMessage( "\n" );
 
-		$statsFlusher = new PeriodicStatsFlusher(
-			MediaWikiServices::getInstance()->getStatsFactory()
-		);
+		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
 
 		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 		foreach ( $res as $row ) {
