@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\Navigation\PagerNavigationBuilder;
 use MediaWiki\SpecialPage\SpecialPage;
@@ -212,7 +211,7 @@ class SpecialConcepts extends SpecialPage {
 
 		if ( $cursorOptions !== null ) {
 			$isFirstPage = !$cursorOptions->hasCursor();
-			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+			$navBuilder = new PagerNavigationBuilder( $this->getContext() );
 			$navBuilder
 				->setPage( $this->getPageTitle() )
 				->setLinkQuery( [ 'limit' => $limit ] )

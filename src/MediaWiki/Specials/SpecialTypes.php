@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Specials;
 
 use Iterator;
-use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Navigation\PagerNavigationBuilder;
@@ -388,7 +387,7 @@ class SpecialTypes extends SpecialPage {
 	): string {
 		$isFirstPage = !$cursorOptions->hasCursor();
 
-		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+		$navBuilder = new PagerNavigationBuilder( $this->getContext() );
 		$navBuilder
 			->setPage( $this->getTitleFor( 'Types', $typeLabel ) )
 			->setLinkQuery( [ 'limit' => $limit ] )
