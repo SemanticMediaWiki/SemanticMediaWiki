@@ -6,6 +6,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\ParserData;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -66,15 +67,85 @@ class PropertyLinkParserFunctionParityTest extends TestCase {
 		];
 	}
 
+	/**
+	 * A caption is display text and must not annotate. The annotation syntax
+	 * hands its caption to InTextAnnotationParser, which never rescans it, but
+	 * a parser function returns wikitext that InTextAnnotationParser scans
+	 * afterwards, so annotation syntax in a caption reaches that scan unless it
+	 * is neutralized first.
+	 *
+	 * @dataProvider captionWithAnnotationSyntaxProvider
+	 */
+	public function testCaptionDoesNotAnnotate( string $wikitext ) {
+		$this->assertNotContains(
+			'Bar',
+			$this->propertyKeys( $wikitext ),
+			'a caption must not store an annotation of its own'
+		);
+	}
+
+	/**
+	 * @return array<string,array{string}>
+	 */
+	public function captionWithAnnotationSyntaxProvider(): array {
+		return [
+			'annotation' => [ '{{#property_link:Foo|[[Bar::Baz]]}}' ],
+			'annotation with caption' => [ '{{#property_link:Foo|[[Bar::Baz|label]]}}' ],
+			'annotation within text' => [ '{{#property_link:Foo|see [[Bar::Baz]] here}}' ],
+			'nested annotation' => [ '{{#property_link:Foo|[[Foo::[[Bar::Baz]]]]}}' ],
+		];
+	}
+
+	/**
+	 * `[[SMW::off]]` disables annotation processing for the remainder of the
+	 * text, so a caption carrying it would silently discard the annotations of
+	 * an entire page.
+	 */
+	public function testCaptionCannotDisableSubsequentAnnotations() {
+		$this->assertContains(
+			'Baz',
+			$this->propertyKeys( '{{#property_link:Foo|[[SMW::off]]}} [[Baz::Quux]]' ),
+			'a caption must not disable annotation processing for what follows it'
+		);
+	}
+
 	private function parse( string $wikitext ): string {
-		$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 		$parserOptions = ParserOptions::newFromAnon();
 
-		return $parser->parse(
+		return $this->parserOutput( $wikitext, $parserOptions )
+			->runOutputPipeline( $parserOptions )
+			->getContentHolderText();
+	}
+
+	/**
+	 * @return string[] the keys of the properties annotated by `$wikitext`
+	 */
+	private function propertyKeys( string $wikitext ): array {
+		$title = $this->newTitle();
+		$parserData = new ParserData(
+			$title,
+			$this->parserOutput( $wikitext, ParserOptions::newFromAnon(), $title )
+		);
+
+		$keys = [];
+
+		foreach ( $parserData->getSemanticData()->getProperties() as $property ) {
+			$keys[] = $property->getKey();
+		}
+
+		return $keys;
+	}
+
+	private function parserOutput( string $wikitext, ParserOptions $parserOptions, ?Title $title = null ) {
+		return MediaWikiServices::getInstance()->getParserFactory()->create()->parse(
 			$wikitext,
-			Title::newFromText( 'PropertyLinkParserFunctionParityTest', NS_MAIN ),
+			$title ?? $this->newTitle(),
 			$parserOptions
-		)->runOutputPipeline( $parserOptions )->getContentHolderText();
+		);
+	}
+
+	private function newTitle(): Title {
+		return Title::newFromText( 'PropertyLinkParserFunctionParityTest', NS_MAIN );
 	}
 
 }

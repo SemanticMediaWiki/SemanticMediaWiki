@@ -4,6 +4,7 @@ namespace SMW\ParserFunctions;
 
 use MediaWiki\Parser\Parser;
 use SMW\MediaWiki\Outputs;
+use SMW\Parser\LinksEncoder;
 use SMW\Parser\PropertyLinkRenderer;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -38,6 +39,10 @@ class PropertyLinkParserFunction {
 		$property = array_shift( $rawParams ) ?? '';
 		$caption = array_shift( $rawParams ) ?? false;
 
+		if ( $caption !== false ) {
+			$caption = $this->neutralizeAnnotations( $caption );
+		}
+
 		$result = $this->propertyLinkRenderer->render( [ $property ], '@@@', $caption );
 
 		// Mirrors InTextAnnotationParser::parse() where the `userlang`
@@ -52,6 +57,25 @@ class PropertyLinkParserFunction {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * A caption is display text and must not annotate. `[[Foo::@@@|caption]]`
+	 * hands its caption to InTextAnnotationParser, which never rescans it, but
+	 * this function returns wikitext before InTextAnnotationParser runs, so an
+	 * unhandled caption would reach that scan: `[[Bar::Baz]]` would store an
+	 * annotation of its own and `[[SMW::off]]` would discard the annotations of
+	 * everything that follows it on the page.
+	 *
+	 * removeAnnotation() reduces an annotation to the text it displays, leaving
+	 * ordinary links alone; obfuscateAnnotation() then encodes the brackets of
+	 * whatever remains, since removeAnnotation() unwraps only the outermost
+	 * annotation and would otherwise expose a nested one.
+	 */
+	private function neutralizeAnnotations( string $caption ): string {
+		return (string)LinksEncoder::obfuscateAnnotation(
+			LinksEncoder::removeAnnotation( $caption )
+		);
 	}
 
 	/**
