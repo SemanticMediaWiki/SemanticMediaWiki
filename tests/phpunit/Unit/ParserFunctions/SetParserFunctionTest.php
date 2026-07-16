@@ -208,7 +208,7 @@ class SetParserFunctionTest extends TestCase {
 		);
 
 		$this->assertSame(
-			[ 0 => '[[:Bar|bar]]', 'noparse' => false, 'isHTML' => false ],
+			[ 0 => '[[:Bar|bar]]', 'noparse' => true, 'isHTML' => false ],
 			$result
 		);
 	}
@@ -221,8 +221,32 @@ class SetParserFunctionTest extends TestCase {
 		);
 
 		$this->assertSame(
-			[ 0 => 'bar', 'noparse' => false, 'isHTML' => false ],
+			[ 0 => 'bar', 'noparse' => true, 'isHTML' => false ],
 			$result
+		);
+	}
+
+	/**
+	 * `noparse` must not depend on whether a value is displayed. Returning
+	 * `noparse => false` makes the Parser preprocess the result in a child
+	 * frame built from the `#set` call's own arguments, which expands any
+	 * `{{{n}}}` left in a stored value against those arguments (#7040).
+	 * Link markup renders either way, so the flag can stay at its legacy value.
+	 */
+	public function testDisplayDoesNotFlipNoParse() {
+		$instance = $this->newSetParserFunctionWithHtmlOutput( '' );
+
+		$result = $instance->parse(
+			ParameterProcessorFactory::newFromArray( [ 'Foo=bar', '+display' ], true )
+		);
+
+		// A value has to reach the output for the flag to be under test at all
+		$this->assertNotSame(
+			'',
+			$result[0]
+		);
+		$this->assertTrue(
+			$result['noparse']
 		);
 	}
 
@@ -261,6 +285,72 @@ class SetParserFunctionTest extends TestCase {
 
 		$this->assertSame(
 			'b',
+			$result[0]
+		);
+	}
+
+	/**
+	 * The option is scoped to the property of the assignment it follows, not to
+	 * that assignment alone, because the parameter processor merges repeated
+	 * assignments of one property into a single value list before `#set` sees
+	 * them. Pinned so the scope is a documented choice rather than an accident.
+	 */
+	public function testDisplayAppliesToEveryValueOfARepeatedProperty() {
+		$instance = $this->newSetParserFunctionWithHtmlOutput( '' );
+
+		$result = $instance->parse(
+			ParameterProcessorFactory::newFromArray( [ 'Foo=a', 'Foo=b', '+display=text' ], true )
+		);
+
+		$this->assertSame(
+			'a, b',
+			$result[0]
+		);
+	}
+
+	public function testLastDisplayModeWinsForARepeatedProperty() {
+		$instance = $this->newSetParserFunctionWithHtmlOutput( '' );
+
+		$result = $instance->parse(
+			ParameterProcessorFactory::newFromArray(
+				[ 'Foo=a', '+display=link', 'Foo=b', '+display=text' ],
+				true
+			)
+		);
+
+		$this->assertSame(
+			'a, b',
+			$result[0]
+		);
+	}
+
+	public function testDisplayModeIsCaseInsensitive() {
+		$instance = $this->newSetParserFunctionWithHtmlOutput( '' );
+
+		$result = $instance->parse(
+			ParameterProcessorFactory::newFromArray( [ 'Foo=bar', '+display=TEXT' ], true )
+		);
+
+		$this->assertSame(
+			'bar',
+			$result[0]
+		);
+	}
+
+	/**
+	 * `@json` assignments are expanded into their property names only after the
+	 * display option has been keyed to the literal `@json` parameter, so the
+	 * option matches no property and is silently ignored.
+	 */
+	public function testDisplayIsIgnoredForJsonAssignments() {
+		$instance = $this->newSetParserFunctionWithHtmlOutput( '' );
+
+		$result = $instance->parse(
+			ParameterProcessorFactory::newFromArray( [ '@json={"Foo":"bar"}', '+display' ], true )
+		);
+
+		$this->assertSame(
+			'',
 			$result[0]
 		);
 	}
@@ -348,7 +438,11 @@ class SetParserFunctionTest extends TestCase {
 			'RAW',
 			$result[0]
 		);
-		$this->assertFalse(
+		// `noparse` only controls whether the Parser preprocesses the result in
+		// a child frame, so it has no bearing on how a strip marker in the
+		// output is handled; the legacy value stands here as it does for every
+		// other displayed value (#7040)
+		$this->assertTrue(
 			$result['noparse']
 		);
 	}

@@ -157,7 +157,7 @@ class SetParserFunction {
 
 		$html = $this->templateRenderer->render() . $displayText . $errorHtml;
 
-		return [ $html, 'noparse' => $template === '' && $displayText === '', 'isHTML' => false ];
+		return [ $html, 'noparse' => $template === '', 'isHTML' => false ];
 	}
 
 	/**
