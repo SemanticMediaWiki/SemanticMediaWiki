@@ -8,9 +8,6 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
-use SMW\DataValues\PropertyValue;
-use SMW\Formatters\Highlighter;
-use SMW\Localizer\Localizer;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\RedirectTargetFinder;
@@ -344,7 +341,8 @@ class InTextAnnotationParser {
 
 		// #1855
 		if ( substr( $value, 0, 3 ) === '@@@' ) {
-			return $this->makePropertyLink( $subject, $properties, $value, $valueCaption );
+			$propertyLinkRenderer = new PropertyLinkRenderer( $this->parserData );
+			return $propertyLinkRenderer->render( $properties, $value, $valueCaption );
 		}
 
 		return $this->addPropertyValue( $subject, $properties, $value, $valueCaption );
@@ -469,58 +467,6 @@ class InTextAnnotationParser {
 
 	private function isSemanticEnabledForNamespace( Title $title ) {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
-	}
-
-	private function makePropertyLink( WikiPage $subject, $properties, $value, $caption ) {
-		$property = end( $properties );
-		$linker = smwfGetLinker();
-		$class = 'smw-property';
-
-		// #4037
-		// [[Foo::@@@|#] where `|#` indicates a noLink request
-		if ( $caption === '#' ) {
-			$linker = false;
-			$caption = false;
-			$class = 'smw-property nolink';
-		}
-
-		$dataValue = DataValueFactory::getInstance()->newPropertyValueByLabel(
-			$property,
-			$caption,
-			$subject
-		);
-
-		$dataValue->setLinkAttributes( [ 'class' => $class ] );
-
-		$lang = Localizer::getAnnotatedLanguageCodeFrom( $value );
-		if ( $lang !== false ) {
-			$dataValue->setOption( $dataValue::OPT_USER_LANGUAGE, $lang );
-			$dataValue->setCaption(
-				$caption === false ? $dataValue->getWikiValue() : $caption
-			);
-		}
-
-		if ( $dataValue instanceof PropertyValue ) {
-			$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
-		}
-
-		$result = $dataValue->getShortWikitext( $linker );
-
-		// The `@@@` property-link path returns its output directly rather than
-		// going through addPropertyValue(), so the user-language signal must be
-		// recorded here. A property link renders a tooltip (title and, for
-		// predefined properties, a localized description) in the viewer's
-		// interface language, unless an explicit language was annotated
-		// (`@@@<lang>`), in which case the output is content-stable. An invalid
-		// property renders a localized error. Record this so the `userlang`
-		// parser-cache key is added (see InTextAnnotationParser::parse()).
-		if ( !$dataValue->isValid() ||
-			( $lang === false && Highlighter::hasHighlighterClass( $result ) )
-		) {
-			$this->parserData->markVariesByUserLanguage();
-		}
-
-		return $result;
 	}
 
 }
