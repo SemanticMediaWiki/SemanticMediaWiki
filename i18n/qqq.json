@@ -906,6 +906,8 @@
 	"smw-format-list-other-fields-close": "{{Optional}}\n\nSeparator closing the group of other values, e.g. the ) in 'MAIN VALUE (OTHER VALUES)'",
 	"smw-category-invalid-redirect-target": "This is an error message.\n\nParamters:\n* $1 - holds the name of the category",
 	"smw-parser-function-expensive-execution-limit": "This is an explanatory message.",
+	"smw-parser-function-set-display-invalid-mode": "Warning shown when the \"+display\" option of the #set parser function is used with an unsupported mode. The annotation is still stored, only the display of the value is skipped.\n\nParameter:\n* $1 - the unsupported mode value as given by the user",
+	"smw-parser-function-set-display-template-conflict": "Error shown when a single #set parser function call combines the \"+display\" option with the \"template\" parameter, which are mutually exclusive. The template output is still rendered and the annotations are stored; only \"+display\" is ignored.",
 	"smw-postproc-queryref": "This is an informatory message.",
 	"apihelp-smwinfo-summary": "This is an informatory message describing and API module.",
 	"apihelp-ask-summary": "This is an informatory message describing and API module.",

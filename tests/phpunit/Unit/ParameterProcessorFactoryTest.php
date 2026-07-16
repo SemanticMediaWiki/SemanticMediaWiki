@@ -42,6 +42,15 @@ class ParameterProcessorFactoryTest extends TestCase {
 		);
 	}
 
+	public function testObjectFirstParameterIsShiftedButRemainingParametersAreKept() {
+		$instance = ParameterProcessorFactory::newFromArray( [ new stdClass, 'Foo=1' ] );
+
+		$this->assertSame(
+			[ 'Foo=1' ],
+			$instance->getRaw()
+		);
+	}
+
 	public function testNewFromArray() {
 		$parameter = [
 			'La' => 'Lu'
