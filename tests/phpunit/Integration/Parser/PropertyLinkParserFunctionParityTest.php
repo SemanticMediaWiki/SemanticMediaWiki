@@ -68,12 +68,13 @@ class PropertyLinkParserFunctionParityTest extends TestCase {
 
 	private function parse( string $wikitext ): string {
 		$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
+		$parserOptions = ParserOptions::newFromAnon();
 
 		return $parser->parse(
 			$wikitext,
 			Title::newFromText( 'PropertyLinkParserFunctionParityTest', NS_MAIN ),
-			ParserOptions::newFromAnon()
-		)->getText();
+			$parserOptions
+		)->runOutputPipeline( $parserOptions )->getContentHolderText();
 	}
 
 }
