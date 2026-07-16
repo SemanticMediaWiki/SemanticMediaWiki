@@ -64,6 +64,34 @@ class LinksEncoder {
 	}
 
 	/**
+	 * Strips the annotation syntax from text that re-enters the wikitext
+	 * stream ahead of InTextAnnotationParser, so that it cannot annotate.
+	 *
+	 * A parser function returns its result while the Parser expands templates,
+	 * which is before InTextAnnotationParser scans the page, so text a parser
+	 * function passes through reaches that scan: `[[Bar::Baz]]` would store an
+	 * annotation of its own and `[[SMW::off]]` would discard the annotations of
+	 * everything that follows it. The `[[Foo::Bar]]` syntax needs none of this,
+	 * as InTextAnnotationParser consumes its text itself and never rescans it.
+	 *
+	 * @since 7.2.0
+	 */
+	public static function neutralizeAnnotation( string $text ): string {
+		// removeAnnotation() reduces an annotation to the text it displays and
+		// leaves ordinary links alone, but unwraps one level at a time, so
+		// repeat it to reduce a value that is an annotation in its own right.
+		// It never lengthens the text, hence this settles.
+		do {
+			$previous = $text;
+			$text = self::removeAnnotation( $text );
+		} while ( $text !== $previous );
+
+		// Some shapes are deliberately left intact by removeAnnotation (#1747),
+		// so encode the brackets of whatever it did not reduce.
+		return (string)self::obfuscateAnnotation( $text );
+	}
+
+	/**
 	 * @since 2.5
 	 */
 	public static function obfuscateAnnotation( string $text ): ?string {
