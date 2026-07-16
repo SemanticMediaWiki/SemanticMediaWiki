@@ -22,6 +22,7 @@ $magicWords['en'] = [
 	'set' => [ 0, 'set' ],
 	'set_recurring_event' => [ 0, 'set_recurring_event' ],
 	'declare' => [ 0, 'declare' ],
+	'property_link' => [ 0, 'property_link' ],
 	'SMW_NOFACTBOX' => [ 0, '__NOFACTBOX__' ],
 	'SMW_SHOWFACTBOX' => [ 0, '__SHOWFACTBOX__' ],
 ];

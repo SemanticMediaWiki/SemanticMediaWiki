@@ -8,6 +8,7 @@ use MediaWiki\Parser\PPFrame;
 use ParamProcessor\Processor;
 use SMW\DataModel\Subobject;
 use SMW\Formatters\MessageFormatter;
+use SMW\Parser\PropertyLinkRenderer;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;
@@ -15,6 +16,7 @@ use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
 use SMW\ParserFunctions\InfoParserFunction;
+use SMW\ParserFunctions\PropertyLinkParserFunction;
 use SMW\ParserFunctions\RecurringEventsParserFunction as RecurringEventsParserFunc;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
@@ -74,6 +76,9 @@ class ParserFunctionFactory {
 		$parser->setFunctionHook( $name, $definition, $flag );
 
 		[ $name, $definition, $flag ] = $this->getDeclareParserFunctionDefinition();
+		$parser->setFunctionHook( $name, $definition, $flag );
+
+		[ $name, $definition, $flag ] = $this->getPropertyLinkParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 	}
 
@@ -323,6 +328,21 @@ class ParserFunctionFactory {
 	}
 
 	/**
+	 * @since 7.2.0
+	 */
+	public function newPropertyLinkParserFunction( Parser $parser ): PropertyLinkParserFunction {
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			$parser->getTitle(),
+			$parser->getOutput()
+		);
+
+		return new PropertyLinkParserFunction(
+			$parserData,
+			new PropertyLinkRenderer( $parserData )
+		);
+	}
+
+	/**
 	 * @since 2.3
 	 */
 	public function getAskParserFunctionDefinition(): array {
@@ -497,6 +517,21 @@ class ParserFunctionFactory {
 		};
 
 		return [ 'info', $infoDefinition, Parser::SFH_OBJECT_ARGS ];
+	}
+
+	/**
+	 * @since 7.2.0
+	 */
+	public function getPropertyLinkParserFunctionDefinition(): array {
+		$propertyLinkParserFunctionDefinition = function ( Parser $parser ): string {
+			$propertyLinkParserFunction = $this->newPropertyLinkParserFunction(
+				$parser
+			);
+
+			return $propertyLinkParserFunction->parse( func_get_args() );
+		};
+
+		return [ 'property_link', $propertyLinkParserFunctionDefinition, 0 ];
 	}
 
 }

@@ -131,7 +131,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends TestCase {
 		// The `@@@` syntax renders a property link. `Modification date` is a
 		// predefined property whose link carries a tooltip with a localized
 		// title and description, so the rendered output (returned directly by
-		// makePropertyLink) varies by the viewer's interface language.
+		// the PropertyLinkRenderer) varies by the viewer's interface language.
 		$text = 'Foo [[Modification date::@@@]] baz';
 		$instance->parse( $text );
 

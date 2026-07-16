@@ -1,0 +1,109 @@
+{
+	"description": "Test `@@@` and `{{#property_link:}}` property links under a non-English content language (#1855, #5624, `wgContLang=de`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Testeigenschaft",
+			"contents": "Property page."
+		},
+		{
+			"page": "Example/P0466/1",
+			"contents": "[[Testeigenschaft::@@@]]"
+		},
+		{
+			"page": "Example/P0466/2",
+			"contents": "[[Testeigenschaft::@@@|Eigenes Etikett]]"
+		},
+		{
+			"page": "Example/P0466/3",
+			"contents": "[[Fehlende Eigenschaft::@@@]]"
+		},
+		{
+			"page": "Example/P0466/4",
+			"contents": "{{#property_link:Testeigenschaft}}"
+		},
+		{
+			"page": "Example/P0466/5",
+			"contents": "{{#property_link:Testeigenschaft|Eigenes Etikett}}"
+		},
+		{
+			"page": "Example/P0466/6",
+			"contents": "{{#property_link:Fehlende Eigenschaft}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 property link under a non-English content language",
+			"subject": "Example/P0466/1",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-property\">",
+					"title=\"Property:Testeigenschaft\">Testeigenschaft</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 custom caption",
+			"subject": "Example/P0466/2",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:Testeigenschaft\">Eigenes Etikett</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 nonexistent property renders a red link",
+			"subject": "Example/P0466/3",
+			"assert-output": {
+				"to-contain": [
+					"class=\"new\"",
+					"title=\"Property:Fehlende Eigenschaft (Seite nicht vorhanden)\">Fehlende Eigenschaft</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 same output as `[[Testeigenschaft::@@@]]` (#0)",
+			"subject": "Example/P0466/4",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-property\">",
+					"title=\"Property:Testeigenschaft\">Testeigenschaft</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 same output as `[[Testeigenschaft::@@@|Eigenes Etikett]]` (#1)",
+			"subject": "Example/P0466/5",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:Testeigenschaft\">Eigenes Etikett</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 same output as `[[Fehlende Eigenschaft::@@@]]` (#2)",
+			"subject": "Example/P0466/6",
+			"assert-output": {
+				"to-contain": [
+					"class=\"new\"",
+					"title=\"Property:Fehlende Eigenschaft (Seite nicht vorhanden)\">Fehlende Eigenschaft</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "de",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
