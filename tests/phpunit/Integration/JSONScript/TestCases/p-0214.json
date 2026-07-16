@@ -121,6 +121,10 @@
 		{
 			"page": "Example/P0214/17",
 			"contents": "{{#subobject: |Has text=x |+display }}"
+		},
+		{
+			"page": "Example/P0214/18",
+			"contents": "{{#set: |Has text={{{1}}} |+display }}"
 		}
 	],
 	"tests": [
@@ -536,6 +540,33 @@
 				],
 				"not-contain": [
 					"title=\"Display target page\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#17 an unresolved template argument in a displayed value is shown as stored, not expanded against the #set arguments",
+			"subject": "Example/P0214/18",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_text",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"{{{1}}}"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"{{{1}}}"
+				],
+				"not-contain": [
+					"+display"
 				]
 			}
 		}
