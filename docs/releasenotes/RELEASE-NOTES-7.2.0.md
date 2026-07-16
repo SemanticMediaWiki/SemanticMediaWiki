@@ -9,6 +9,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## New features and enhancements
 
+* Added the `+display` option to the `#set` parser function, so a value can be stored and shown in one call without inline annotation syntax. The option attaches to the immediately preceding property assignment like `+sep` does and renders the value the way the corresponding inline annotation would: `+display` or `+display=link` produce the linked, formatted value, `+display=text` the formatted value without a link ([#5624](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5624))
 * Added `SMW\MediaWiki\Outputs::requireJsConfigVar()` so extensions can register JavaScript configuration variables through the SMW output mechanism, alongside modules, styles and head items, instead of emitting inline scripts ([#7028](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7028))
 
 ## Bug fixes

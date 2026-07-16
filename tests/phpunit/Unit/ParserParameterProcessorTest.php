@@ -151,6 +151,292 @@ class ParserParameterProcessorTest extends TestCase {
 		);
 	}
 
+	public function testBareTokensContinuePrecedingProperty() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1', '2', '3' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1', '2', '3' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testFirstBareTokenBecomesFirstParameterWithSpacesConvertedToUnderscores() {
+		$instance = new ParserParameterProcessor( [ 'Bar baz', 'Foo=1' ] );
+
+		$this->assertSame(
+			'Bar_baz',
+			$instance->getFirstParameter()
+		);
+	}
+
+	public function testBareSepUsesDefaultCommaSeparator() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1,2', '+sep' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1', '2' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testSepWithExplicitValueUsesThatSeparator() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1;2', '+sep=;' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1', '2' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testSepWithEmptyValueFallsBackToDefaultComma() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1,2', '+sep=' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1', '2' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testTrailingSepIsConsumedWithoutAffectingOtherAssignments() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1', 'Bar=2', '+sep' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1' ], 'Bar' => [ '2' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testBarePipeTokenIsConsumed() {
+		$instance = new ParserParameterProcessor( [ 'Foo=a', '+pipe' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ 'a' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testPipeTokenWithWhitespaceIsNotConsumedAndBecomesValue() {
+		// +pipe is compared against the raw, untrimmed look-ahead token, so a
+		// padded ' +pipe ' does not match and falls through to the bare-token rule.
+		$instance = new ParserParameterProcessor( [ 'Foo=a', ' +pipe ' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ 'a', '+pipe' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testSepFollowedByPipeAreBothConsumedAndValuesPipeJoined() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1;2', '+sep=;', '+pipe' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1|2' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testPipeFollowedBySepLeavesSepAsLiteralJunkKey() {
+		// +sep is only ever inspected before +pipe, so once +pipe is consumed the
+		// trailing +sep=; is not recognized and lands as its own literal key.
+		$instance = new ParserParameterProcessor( [ 'Foo=a', '+pipe', '+sep=;' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ 'a' ], '+sep' => [ ';' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testValidJsonObjectMergesKeysWrappingScalarsAndEmptyStrings() {
+		$instance = new ParserParameterProcessor(
+			[ '@json={"Has one":"1","Has empty":"","Has many":["a","b"]}' ]
+		);
+
+		$this->assertSame(
+			[
+				'Has one' => [ '1' ],
+				'Has empty' => [],
+				'Has many' => [ 'a', 'b' ],
+			],
+			$instance->toArray()
+		);
+	}
+
+	public function testMalformedJsonIsKeptVerbatimAndReportsError() {
+		$instance = new ParserParameterProcessor( [ '@json={ Foo }' ] );
+
+		$this->assertSame(
+			[ '@json' => [ '{ Foo }' ] ],
+			$instance->toArray()
+		);
+		$this->assertNotEmpty(
+			$instance->getErrors()
+		);
+	}
+
+	public function testNonStringParameterIsSkipped() {
+		$instance = new ParserParameterProcessor( [ 42, 'Foo=1' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testDisplayOptionWithValueBecomesOwnJunkKey() {
+		// Default construction does not capture +display: with a value it is parsed
+		// as an ordinary (junk) property assignment.
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display=link' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ 'x' ], '+display' => [ 'link' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testBareDisplayTokenIsSwallowedAsValueOfPrecedingProperty() {
+		// Default construction does not capture +display: a bare token continues
+		// the preceding property just like any other bare token.
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display' ] );
+
+		$this->assertSame(
+			[ 'Foo' => [ 'x', '+display' ] ],
+			$instance->toArray()
+		);
+	}
+
+	public function testDisplayOptionsAreEmptyByDefault() {
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display' ] );
+
+		$this->assertSame(
+			[],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testDisplayOptionIsCapturedForPrecedingPropertyWhenEnabled() {
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display=link' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => [ 'x' ] ],
+			$instance->toArray()
+		);
+		$this->assertSame(
+			[ 'Foo' => 'link' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testBareDisplayOptionIsCapturedAsEmptyMode() {
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => [ 'x' ] ],
+			$instance->toArray()
+		);
+		$this->assertSame(
+			[ 'Foo' => '' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testDisplayOptionWithEmptyValueIsCapturedAsEmptyMode() {
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display=' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => '' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testDisplayOptionModeValueIsTrimmed() {
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display= link ' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => 'link' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testUnknownDisplayModeIsCapturedVerbatim() {
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display=foo' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => 'foo' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testRepeatedDisplayOptionOnOneAssignmentLastOneWins() {
+		$instance = new ParserParameterProcessor( [ 'Foo=x', '+display=link', '+display=text' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => 'text' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testDisplayOptionBeforeSepAppliesToSameAssignment() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1;2', '+display=link', '+sep=;' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1', '2' ] ],
+			$instance->toArray()
+		);
+		$this->assertSame(
+			[ 'Foo' => 'link' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testDisplayOptionAfterSepAppliesToSameAssignment() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1;2', '+sep=;', '+display=link' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1', '2' ] ],
+			$instance->toArray()
+		);
+		$this->assertSame(
+			[ 'Foo' => 'link' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testDisplayOptionAppliesOnlyToPrecedingAssignment() {
+		$instance = new ParserParameterProcessor( [ 'Foo=a', 'Bar=b', '+display=link' ], true );
+
+		$this->assertSame(
+			[ 'Bar' => 'link' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testDisplayOptionForMultiElementAssignmentAttachesToProperty() {
+		$instance = new ParserParameterProcessor( [ 'Foo=1', '2', '+display=text' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => [ '1', '2' ] ],
+			$instance->toArray()
+		);
+		$this->assertSame(
+			[ 'Foo' => 'text' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
+	public function testDisplayOptionDoesNotUnlockSepAfterPipe() {
+		// The legacy rule that +sep is never consumed after +pipe still applies
+		// when a +display option sits between them.
+		$instance = new ParserParameterProcessor( [ 'Foo=a', '+pipe', '+display', '+sep=;' ], true );
+
+		$this->assertSame(
+			[ 'Foo' => [ 'a' ], '+sep' => [ ';' ] ],
+			$instance->toArray()
+		);
+		$this->assertSame(
+			[ 'Foo' => '' ],
+			$instance->getDisplayOptions()
+		);
+	}
+
 	public function parametersDataProvider() {
 		// {{#...:
 		// |Has test 1=One

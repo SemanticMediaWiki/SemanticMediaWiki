@@ -1,0 +1,555 @@
+{
+	"description": "Test `#set` parser with `+display` option to store and show values in one call (#5624, en, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has ext id",
+			"contents": "[[Has type::External identifier]] [[External formatter uri::https://example.org/$1]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has area",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::1000 m²]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has mltext",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Display target page",
+			"contents": "Just a target page."
+		},
+		{
+			"page": "Shown page",
+			"contents": "Just a target page."
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "P0214 Echo",
+			"contents": "TPLSTART-{{{property}}}=={{{value}}}-TPLEND"
+		},
+		{
+			"page": "Example/P0214/1",
+			"contents": "{{#set: Has page=Display target page |+display=link }}"
+		},
+		{
+			"page": "Example/P0214/2",
+			"contents": "{{#set: Has page=File:Example.jpg |+display=link }}"
+		},
+		{
+			"page": "Example/P0214/3",
+			"contents": "{{#set: Has url=http://example.org |+display=link }}"
+		},
+		{
+			"page": "Example/P0214/4",
+			"contents": "{{#set: Has ext id=ABC123 |+display=link }}"
+		},
+		{
+			"page": "Example/P0214/6",
+			"contents": "{{#set: Has area=1000 m² |+display=link }}"
+		},
+		{
+			"page": "Example/P0214/7",
+			"contents": "{{#set: Has date=2020-01-15 |+display=link }}"
+		},
+		{
+			"page": "Example/P0214/8",
+			"contents": "{{#set: Has mltext=Foo@de |+display }}"
+		},
+		{
+			"page": "Example/P0214/9",
+			"contents": "{{#set: Has number=12abc |+display }}"
+		},
+		{
+			"page": "Example/P0214/10",
+			"contents": "{{#set: Has number=1;2;3 |+sep=; |+display }}"
+		},
+		{
+			"page": "Example/P0214/11",
+			"contents": "{{#set: Has text=Silent value | Has page=Shown page |+display=link }}"
+		},
+		{
+			"page": "Example/P0214/12",
+			"contents": "{{#set: Has number=1;2;3 |+display |+sep=; }}"
+		},
+		{
+			"page": "Example/P0214/13",
+			"contents": "{{#set: Has page=Display target page |+display }}"
+		},
+		{
+			"page": "Example/P0214/13b",
+			"contents": "{{#set: Has page=Display target page |+display= }}"
+		},
+		{
+			"page": "Example/P0214/14",
+			"contents": "{{#set: Has page=Display target page |+display=foo }}"
+		},
+		{
+			"page": "Example/P0214/15",
+			"contents": "{{#set: Has page=Shown page |template=P0214 Echo |+display=link }}"
+		},
+		{
+			"page": "Example/P0214/16",
+			"contents": "{{#set: Has page=Display target page |+display=text }}"
+		},
+		{
+			"page": "Example/P0214/17",
+			"contents": "{{#subobject: |Has text=x |+display }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 WikiPage value, +display=link renders the page link and stores the value",
+			"subject": "Example/P0214/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_page",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Display target page"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Display target page\">Display target page</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 WikiPage value on a File target, +display=link renders the file link markup and stores the value",
+			"subject": "Example/P0214/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_page",
+						"_INST",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"File:Example.jpg"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"typeof=\"mw:Error mw:File\"",
+					"<span class=\"mw-file-element mw-broken-media\">File:Example.jpg</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 URL value, +display=link renders an external link and stores the value",
+			"subject": "Example/P0214/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_url",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"http://example.org"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a rel=\"nofollow\" class=\"external text\" href=\"http://example.org\">http://example.org</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 External identifier value with formatter uri, +display=link renders the formatted link",
+			"subject": "Example/P0214/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_ext_id",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"ABC123"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/ABC123\">ABC123</a></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 Quantity value with unit conversion, +display=link renders the converted value",
+			"subject": "Example/P0214/6",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_area",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"1&#160;km²"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 Date value, +display=link renders the formatted date",
+			"subject": "Example/P0214/7",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"2020-01-15"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 MonolingualText value, bare +display renders the text with language marker",
+			"subject": "Example/P0214/8",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_mltext",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Foo (de)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 Invalid value with +display, error output present, value not shown, store keeps _ERRC",
+			"subject": "Example/P0214/9",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&quot;abc&quot; can not be assigned to a declared number type with value 12."
+				],
+				"not-contain": [
+					"12abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 Multi-value with +sep and +display, all values shown joined and stored",
+			"subject": "Example/P0214/10",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_number",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						1,
+						2,
+						3
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"1, 2, 3"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 Per-assignment selectivity, only the assignment carrying +display is shown, both stored",
+			"subject": "Example/P0214/11",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_text",
+						"Has_page",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Silent value",
+						"Shown page"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Shown page\">Shown page</a>"
+				],
+				"not-contain": [
+					"Silent value"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10 Order robustness, +display before +sep yields the same result",
+			"subject": "Example/P0214/12",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_number",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						1,
+						2,
+						3
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"1, 2, 3"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#11 Bare +display uses link mode",
+			"subject": "Example/P0214/13",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_page",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Display target page"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Display target page\">Display target page</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#12 Empty +display= uses link mode",
+			"subject": "Example/P0214/13b",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_page",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Display target page"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Display target page\">Display target page</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#13 Unknown mode emits a warning, value not shown, annotation stored",
+			"subject": "Example/P0214/14",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_page",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Display target page"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&quot;foo&quot; is not a supported &quot;+display&quot; mode (supported modes are &quot;link&quot; and &quot;text&quot;). The value was annotated but is not shown."
+				],
+				"not-contain": [
+					"title=\"Display target page\">Display target page</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#14 template conflict emits an error, template output still present, display suppressed, store intact",
+			"subject": "Example/P0214/15",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_page",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Shown page"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"The &quot;+display&quot; option cannot be combined with the &quot;template&quot; parameter. The values were annotated but &quot;+display&quot; was ignored.",
+					"TPLSTART-Has page==Shown page-TPLEND"
+				],
+				"not-contain": [
+					"title=\"Shown page\">Shown page</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#15 #subobject ignores the +display token and swallows it as a literal value",
+			"subject": "Example/P0214/17#_8e85294faaf5f3634cfe3f67f35926b1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"Has_text",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"x",
+						"+display"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#16 +display=text renders the value without a link",
+			"subject": "Example/P0214/16",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_page",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Display target page"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Display target page"
+				],
+				"not-contain": [
+					"title=\"Display target page\""
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -953,6 +953,8 @@
 	"smw-format-list-other-fields-close": ")",
 	"smw-category-invalid-redirect-target": "Category \"$1\" contains an invalid redirect target to a non-category namespace.",
 	"smw-parser-function-expensive-execution-limit": "The parser function has reached the limit for expensive executions (see configuration parameter [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit <code>$smwgQExpensiveExecutionLimit</code>]).",
+	"smw-parser-function-set-display-invalid-mode": "\"$1\" is not a supported \"+display\" mode (supported modes are \"link\" and \"text\"). The value was annotated but is not shown.",
+	"smw-parser-function-set-display-template-conflict": "The \"+display\" option cannot be combined with the \"template\" parameter. The values were annotated but \"+display\" was ignored.",
 	"smw-postproc-queryref": "Semantic MediaWiki is refreshing the current page on the condition of some required query post processing.",
 	"apihelp-smwinfo-summary": "API module to retrieve information about Semantic MediaWiki statistics and other meta information.",
 	"apihelp-ask-summary": "API module to query Semantic MediaWiki using the ask language.",

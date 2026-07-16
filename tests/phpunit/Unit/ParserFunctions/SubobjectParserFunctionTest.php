@@ -137,6 +137,20 @@ class SubobjectParserFunctionTest extends TestCase {
 		);
 	}
 
+	public function testDisplayTokensAreStoredAsUnchangedJunkParameters() {
+		// #subobject never opts in to +display capture, so with default construction
+		// the tokens are ordinary junk: bare '+display' continues the preceding
+		// property as a value, while '+display=link' is an invalid property name
+		// (contains '+') and is recorded as an _ERRC error container.
+		$this->setupInstanceAndAssertSemanticData(
+			[ '', 'Foo=bar', '+display', '+display=link' ],
+			[
+				'propertyCount' => 2,
+				'propertyKeys' => [ 'Foo', '_ERRC' ],
+			]
+		);
+	}
+
 	public function testSubobjectIdStabilityForFixedSetOfParameters() {
 		$parameters = [
 			'Foo=Bar'

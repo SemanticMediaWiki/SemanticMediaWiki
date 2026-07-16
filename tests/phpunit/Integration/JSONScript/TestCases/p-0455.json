@@ -133,6 +133,11 @@
 						"&lt;nowiki&gt;Contains nowiki tag&lt;/nowiki&gt;"
 					]
 				}
+			},
+			"assert-output": {
+				"not-contain": [
+					"Contains nowiki tag"
+				]
 			}
 		},
 		{
@@ -152,6 +157,11 @@
 						"&lt;pre&gt;Contains pre tag&lt;/pre&gt;"
 					]
 				}
+			},
+			"assert-output": {
+				"not-contain": [
+					"Contains pre tag"
+				]
 			}
 		},
 		{
@@ -171,6 +181,11 @@
 						"&lt;nowiki&gt;&lt;code&gt;&#x007B;&#x007B;#ask&#58; &#x005B;&#x005B;Has strip&#58;&#58;Markers]] }}&lt;/code&gt;&lt;/nowiki&gt;"
 					]
 				}
+			},
+			"assert-output": {
+				"not-contain": [
+					"Has strip::Markers"
+				]
 			}
 		},
 		{

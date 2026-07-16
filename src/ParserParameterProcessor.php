@@ -26,10 +26,15 @@ class ParserParameterProcessor {
 
 	private array $errors = [];
 
+	private bool $captureDisplayOptions;
+
+	private array $displayOptions = [];
+
 	/**
 	 * @since 1.9
 	 */
-	public function __construct( array $rawParameters = [] ) {
+	public function __construct( array $rawParameters = [], bool $captureDisplayOptions = false ) {
+		$this->captureDisplayOptions = $captureDisplayOptions;
 		$this->rawParameters = $rawParameters;
 		$this->parameters = $this->doMap( $rawParameters );
 	}
@@ -59,6 +64,19 @@ class ParserParameterProcessor {
 	 */
 	public function getFirstParameter(): ?string {
 		return $this->first;
+	}
+
+	/**
+	 * Display modes captured from `+display` options, keyed by the property
+	 * name they attach to, verbatim and unvalidated. Only populated when the
+	 * processor was constructed with display option capture enabled.
+	 *
+	 * @since 7.2.0
+	 *
+	 * @return array<string, string>
+	 */
+	public function getDisplayOptions(): array {
+		return $this->displayOptions;
 	}
 
 	/**
@@ -178,6 +196,7 @@ class ParserParameterProcessor {
 		while ( key( $params ) !== null ) {
 
 			$pipe = false;
+			$display = null;
 			$values = [];
 
 			// Only strings are allowed for processing
@@ -189,7 +208,7 @@ class ParserParameterProcessor {
 			$currentElement = explode( '=', trim( current( $params ) ), 2 );
 
 			// Looking to the next element for comparison
-			$separator = $this->lookAheadOnNextElement( $params, $pipe );
+			$separator = $this->lookAheadOnNextElement( $params, $pipe, $display );
 
 			// First named parameter
 			if ( count( $currentElement ) == 1 && $previousProperty === null ) {
@@ -224,30 +243,52 @@ class ParserParameterProcessor {
 			if ( $pipe ) {
 				$results[$currentElement[0]] = [ implode( '|', $results[$currentElement[0]] ) ];
 			}
+
+			if ( $display !== null ) {
+				$this->displayOptions[$currentElement[0]] = $display;
+			}
 		}
 
 		return $this->parseFromJson( $results );
 	}
 
-	private function lookAheadOnNextElement( &$params, bool &$pipe ): string {
+	private function lookAheadOnNextElement( &$params, bool &$pipe, ?string &$display ): string {
 		$separator = '';
 
 		if ( !next( $params ) ) {
 			return $separator;
 		}
 
-		$nextElement = explode( '=', trim( current( $params ) ), 2 );
+		$sepConsumed = false;
 
-		// This allows assignments of type |Has property=Test1,Test2|+sep=,
-		// as a means to support multiple value declaration
-		if ( substr( $nextElement[0], -5 ) === '+sep' ) {
-			$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
-			next( $params );
-		}
+		while ( key( $params ) !== null ) {
+			$current = current( $params );
+			$option = is_string( $current ) ? explode( '=', trim( $current ), 2 ) : [ '' ];
 
-		if ( current( $params ) === '+pipe' ) {
-			$pipe = true;
-			next( $params );
+			if ( $this->captureDisplayOptions && $option[0] === '+display' ) {
+				$display = trim( $option[1] ?? '' );
+				next( $params );
+				continue;
+			}
+
+			// This allows assignments of type |Has property=Test1,Test2|+sep=,
+			// as a means to support multiple value declaration; +sep is never
+			// consumed after +pipe, and at most once per assignment
+			if ( !$sepConsumed && !$pipe && substr( $option[0], -5 ) === '+sep' ) {
+				$separator = isset( $option[1] ) ? ( $option[1] !== '' ? $option[1] : $this->defaultSeparator ) : $this->defaultSeparator;
+				$sepConsumed = true;
+				next( $params );
+				continue;
+			}
+
+			// +pipe is matched against the raw, untrimmed element
+			if ( !$pipe && $current === '+pipe' ) {
+				$pipe = true;
+				next( $params );
+				continue;
+			}
+
+			break;
 		}
 
 		return $separator;

@@ -410,7 +410,7 @@ class ParserFunctionFactory {
 			);
 
 			return $setParserFunction->parse(
-				ParameterProcessorFactory::newFromArray( func_get_args() )
+				ParameterProcessorFactory::newFromArray( func_get_args(), true )
 			);
 		};
 

@@ -1,0 +1,102 @@
+{
+	"description": "Test `#set` parser with `+display` option on a keyword formatter schema and on strip-marker values (#5624, `smwgCompactLinkSupport`, `SMW_PARSER_UNSTRIP`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Keyword link formatter schema",
+			"contents": {
+				"import-from": "/../Fixtures/p-0459-keyword-formatter-schema.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has keyword",
+			"contents": "[[Has type::Keyword]] [[Formatter schema::Keyword link formatter schema]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has description",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/P0215/1",
+			"contents": "{{#set: Has keyword=KW1 |+display=link }}"
+		},
+		{
+			"page": "Example/P0215/2",
+			"contents": "{{#set: Has description=<nowiki>Contains nowiki tag</nowiki> |+display }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 Keyword value with a link-formatter schema, +display=link renders the compact formatter link",
+			"subject": "Example/P0215/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_keyword",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"KW1"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6S1cxLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6S1cxLTVELTVEL2Zvcm1hdD1saXN0\">KW1</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 Strip-marker value with +display, the value is shown (unlike plain #set) and stored escaped",
+			"subject": "Example/P0215/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_description",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"&lt;nowiki&gt;Contains nowiki tag&lt;/nowiki&gt;"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Contains nowiki tag"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgParserFeatures": [
+			"unstrip",
+			"strict"
+		],
+		"smwgCompactLinkSupport": true,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_SCHEMA": true
+		},
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
