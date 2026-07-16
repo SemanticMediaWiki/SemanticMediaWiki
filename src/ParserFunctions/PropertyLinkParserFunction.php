@@ -40,7 +40,8 @@ class PropertyLinkParserFunction {
 		$caption = array_shift( $rawParams ) ?? false;
 
 		if ( $caption !== false ) {
-			$caption = $this->neutralizeAnnotations( $caption );
+			// A caption is display text and must not annotate
+			$caption = LinksEncoder::neutralizeAnnotation( $caption );
 		}
 
 		$result = $this->propertyLinkRenderer->render( [ $property ], '@@@', $caption );
@@ -57,25 +58,6 @@ class PropertyLinkParserFunction {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * A caption is display text and must not annotate. `[[Foo::@@@|caption]]`
-	 * hands its caption to InTextAnnotationParser, which never rescans it, but
-	 * this function returns wikitext before InTextAnnotationParser runs, so an
-	 * unhandled caption would reach that scan: `[[Bar::Baz]]` would store an
-	 * annotation of its own and `[[SMW::off]]` would discard the annotations of
-	 * everything that follows it on the page.
-	 *
-	 * removeAnnotation() reduces an annotation to the text it displays, leaving
-	 * ordinary links alone; obfuscateAnnotation() then encodes the brackets of
-	 * whatever remains, since removeAnnotation() unwraps only the outermost
-	 * annotation and would otherwise expose a nested one.
-	 */
-	private function neutralizeAnnotations( string $caption ): string {
-		return (string)LinksEncoder::obfuscateAnnotation(
-			LinksEncoder::removeAnnotation( $caption )
-		);
 	}
 
 	/**

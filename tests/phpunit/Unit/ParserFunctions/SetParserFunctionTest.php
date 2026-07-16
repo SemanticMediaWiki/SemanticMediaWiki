@@ -370,6 +370,58 @@ class SetParserFunctionTest extends TestCase {
 		);
 	}
 
+	/**
+	 * A displayed value re-enters the wikitext stream, where
+	 * InTextAnnotationParser scans it. Annotation syntax carried by a value
+	 * must not survive into the output: `[[Bar::Baz]]` would store an
+	 * annotation the `#set` never declared, and `[[SMW::off]]` would discard
+	 * the annotations of everything that follows it on the page. `Text` is a
+	 * predefined property of type Text, whose values render as given.
+	 *
+	 * @dataProvider displayedValueWithAnnotationSyntaxProvider
+	 */
+	public function testDisplayedValueDoesNotCarryAnnotationSyntax( string $value, string $expected ) {
+		$instance = $this->newSetParserFunctionWithHtmlOutput( '' );
+
+		$result = $instance->parse(
+			ParameterProcessorFactory::newFromArray( [ "Text=$value", '+display=text' ], true )
+		);
+
+		$this->assertSame( $expected, $result[0] );
+	}
+
+	/**
+	 * @return array<string,array{string,string}>
+	 */
+	public function displayedValueWithAnnotationSyntaxProvider(): array {
+		return [
+			'annotation' => [ '[[Bar::Baz]]', 'Baz' ],
+			'annotation with caption' => [ '[[Bar::Baz|label]]', 'label' ],
+			'annotation within text' => [ 'see [[Age::42]] here', 'see 42 here' ],
+			'nested annotation' => [ '[[Foo::[[Bar::Baz]]]]', 'Baz' ],
+			'annotation off switch' => [ '[[SMW::off]]', '' ],
+			'link is left alone' => [ '[[Some page]]', '[[Some page]]' ],
+			'text is left alone' => [ 'plain text', 'plain text' ],
+		];
+	}
+
+	/**
+	 * The warning names the mode it rejected, so an unknown mode reaches the
+	 * output as given and has to be neutralized like a displayed value.
+	 */
+	public function testUnknownDisplayModeDoesNotCarryAnnotationSyntaxIntoTheWarning() {
+		$instance = $this->newSetParserFunctionWithHtmlOutput( '<span>[[Bar::Baz]] [[SMW::off]]</span>' );
+
+		$result = $instance->parse(
+			ParameterProcessorFactory::newFromArray( [ 'Foo=bar', '+display=[[Bar::Baz]]' ], true )
+		);
+
+		$this->assertSame(
+			'<span>Baz </span>',
+			$result[0]
+		);
+	}
+
 	public function testUnknownDisplayModeAddsWarningAndDisplaysNothing() {
 		$messageFormatter = $this->newMessageFormatterExpectingKey(
 			'smw-parser-function-set-display-invalid-mode',
@@ -505,30 +557,34 @@ class SetParserFunctionTest extends TestCase {
 		);
 	}
 
-	public function testErrorHtmlColonsAreEncodedWhenDisplayValuesAreShown() {
-		$instance = $this->newSetParserFunctionWithHtmlOutput( 'Warn:ing' );
+	/**
+	 * The error output names the input it rejected, so it carries user input
+	 * into the stream whether or not a value is displayed and is neutralized in
+	 * both cases. A colon that cannot form an annotation is left alone, so a
+	 * URL in an error survives.
+	 *
+	 * @dataProvider errorHtmlProvider
+	 *
+	 * @param string[] $parameters
+	 */
+	public function testErrorHtmlIsNeutralized( array $parameters, string $expected ) {
+		$instance = $this->newSetParserFunctionWithHtmlOutput( 'Warn:ing [[Bar::Baz]]' );
 
 		$result = $instance->parse(
-			ParameterProcessorFactory::newFromArray( [ 'Foo=bar', '+display=text' ], true )
+			ParameterProcessorFactory::newFromArray( $parameters, true )
 		);
 
-		$this->assertSame(
-			'barWarn&#58;ing',
-			$result[0]
-		);
+		$this->assertSame( $expected, $result[0] );
 	}
 
-	public function testErrorHtmlIsNotEncodedWithoutDisplayOutput() {
-		$instance = $this->newSetParserFunctionWithHtmlOutput( 'Warn:ing' );
-
-		$result = $instance->parse(
-			ParameterProcessorFactory::newFromArray( [ 'Foo=bar' ], true )
-		);
-
-		$this->assertSame(
-			[ 0 => 'Warn:ing', 'noparse' => true, 'isHTML' => false ],
-			$result
-		);
+	/**
+	 * @return array<string,array{string[],string}>
+	 */
+	public function errorHtmlProvider(): array {
+		return [
+			'with a displayed value' => [ [ 'Foo=bar', '+display=text' ], 'barWarn:ing Baz' ],
+			'without a displayed value' => [ [ 'Foo=bar' ], 'Warn:ing Baz' ],
+		];
 	}
 
 	private function newSetParserFunctionWithHtmlOutput( string $html ): SetParserFunction {

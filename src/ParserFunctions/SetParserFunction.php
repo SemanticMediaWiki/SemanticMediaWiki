@@ -10,6 +10,7 @@ use SMW\Formatters\MessageFormatter;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\Parser\AnnotationProcessor;
+use SMW\Parser\LinksEncoder;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
 
@@ -117,7 +118,7 @@ class SetParserFunction {
 					$displayPart = $this->renderDisplayValue( $displayModes[$property], $dataValue, $origValue, $value );
 
 					if ( $displayPart !== null ) {
-						$displayParts[] = $displayPart;
+						$displayParts[] = LinksEncoder::neutralizeAnnotation( $displayPart );
 					}
 				}
 
@@ -145,15 +146,15 @@ class SetParserFunction {
 
 		$displayText = implode( ', ', $displayParts );
 
-		$errorHtml = $this->messageFormatter
-			->addFromArray( $parameters->getErrors() )
-			->getHtml();
-
-		if ( $displayText !== '' ) {
-			// Encode `:` so the error output cannot form annotations or comment
-			// blocks when the result is parsed, as the inline annotation path does
-			$errorHtml = str_replace( ':', '&#58;', $errorHtml );
-		}
+		// A warning names the input it rejected, so the error output carries
+		// user input into the stream just as a displayed value does and has to
+		// be neutralized unconditionally: gating this on a displayed value
+		// leaves the warning for an unknown `+display` mode able to annotate.
+		$errorHtml = LinksEncoder::neutralizeAnnotation(
+			$this->messageFormatter
+				->addFromArray( $parameters->getErrors() )
+				->getHtml()
+		);
 
 		$html = $this->templateRenderer->render() . $displayText . $errorHtml;
 
