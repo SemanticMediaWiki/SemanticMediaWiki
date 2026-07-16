@@ -900,7 +900,7 @@
 	"smw-parser-invalid-json-format": "In de JSON-parser is een fout opgetreden: “$1”.",
 	"smw-property-preferred-label-language-combination-exists": "“$1” kan niet als voorkeurslabel worden gebruikt omdat de taal “$2” al is toegewezen aan het label “$3”.",
 	"smw-clipboard-copy-link": "Verwijzing naar het klembord kopiëren",
-	"smw-property-userdefined-fixedtable": "“$1” is ingesteld als [https://www.semantic-mediawiki.org/wiki/Fixed_properties vaste eigenschap] en elke wijziging aan de [https://www.semantic-mediawiki.org/wiki/Type_declaration typedeclaratie] ervan vereist het uitvoeren van <code>setupStore.php</code> of het voltooien van de speciale taak [[Special:SemanticMediaWiki|“Database installeren en bijwerken”]].",
+	"smw-property-userdefined-fixedtable": "\"$1\" is geconfigureerd als een [https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties vaste eigenschap]. Wanneer de [https://www.semantic-mediawiki.org/wiki/Type_declaration type-declaratie] ervan wordt gewijzigd, moet u <code>setupStore.php</code> uitvoeren of de taak \"Database instellen\" uitvoeren op [[Special:SemanticMediaWiki]].",
 	"smw-data-lookup": "Gegevens ophalen…",
 	"smw-data-lookup-with-wait": "Het verzoek wordt verwerkt en kan even duren.",
 	"smw-no-data-available": "Geen gegevens beschikbaar",
