@@ -258,6 +258,7 @@
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|Vorkommen}})",
 	"smw_purge": "Neu laden",
 	"smw-purge-update-dependencies": "Diese Seite wird automatisch neu geladen, um sicherzustellen, dass alle Informationen aktuell sind. Das kann einen Moment dauern und mehr als einmal passieren.",
+	"smw-purge-update-dependencies-timeout": "Semantic MediaWiki verarbeitet für diese Seite noch immer Aktualisierungen. Dies dauert länger als erwartet; die angezeigten Informationen sind möglicherweise noch nicht vollständig aktuell. Ein manuelles Neuladen zu einem späteren Zeitpunkt kann helfen.",
 	"smw-purge-failed": "Die aktuelle Seite konnte von Semantic MediaWiki nicht neu geladen werden.",
 	"types": "Datentypen",
 	"smw_types_docu": "Dies ist eine [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes Liste aller Datentypen], die Attributen zugewiesen werden können. Jeder [https://www.semantic-mediawiki.org/wiki/Help:Datatype Datentyp] beschreibt eindeutige Merkmale zur Datenspeicherung und -anzeige eines Datenwerts für ein Attribut, dem der entsprechende Datentyp zugeordnet wurde.",
