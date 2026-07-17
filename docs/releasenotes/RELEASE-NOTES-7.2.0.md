@@ -23,6 +23,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed maintenance scripts and Elasticsearch index rebuilds aborting with a `TypeError`, and faceted search returning incorrect counts, when an entity's stored sort-sequence or value-count map could not be deserialized (for example after the wiki's `$wgSecretKey` was changed); such a map is now treated as empty instead of crashing or miscounting ([#7043](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7043))
 * Fixed a JavaScript error when rendering a property as a link on the client side; the code called `mw.util.wikiGetlink`, which has been removed from MediaWiki core, and now uses `mw.util.getUrl` ([#7047](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7047))
 * Fixed Semantic MediaWiki being unusable on PostgreSQL since 7.0.0, where `update.php`, saving pages and running queries aborted with a `pg_escape_string()` error ([#7049](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7049))
+* Fixed an incorrect `smw_hash` being stored when moving an entity in a non-zero namespace (such as a category or property), which could break hash-based lookups for the moved entity ([#7051](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7051))
 
 ## Upgrading
 
