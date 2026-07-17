@@ -583,35 +583,34 @@
 		}
 	},
 	"QUnitTestModule": {
-		"ext.smw.tests": {
-			"scripts": [
-				"tests/qunit/smw/ext.smw.test.js",
-				"tests/qunit/smw/data/ext.smw.dataItem.wikiPage.test.js",
-				"tests/qunit/smw/data/ext.smw.dataItem.uri.test.js",
-				"tests/qunit/smw/data/ext.smw.dataItem.time.test.js",
-				"tests/qunit/smw/data/ext.smw.dataItem.property.test.js",
-				"tests/qunit/smw/data/ext.smw.dataItem.unknown.test.js",
-				"tests/qunit/smw/data/ext.smw.dataItem.number.test.js",
-				"tests/qunit/smw/data/ext.smw.dataItem.text.test.js",
-				"tests/qunit/smw/data/ext.smw.dataValue.quantity.test.js",
-				"tests/qunit/smw/data/ext.smw.data.test.js",
-				"tests/qunit/smw/api/ext.smw.api.test.js",
-				"tests/qunit/smw/query/ext.smw.query.test.js",
-				"tests/qunit/smw/util/ext.smw.localtime.test.js"
-			],
-			"dependencies": [
-				"mediawiki.language.months",
-				"ext.smw",
-				"ext.smw.tooltip",
-				"ext.smw.query",
-				"ext.smw.data",
-				"ext.smw.api",
-				"ext.smw.localtime"
-			],
-			"position": "top",
-			"localBasePath": "",
-			"remoteExtPath": "SemanticMediaWiki"
-		}
+		"scripts": [
+			"tests/qunit/smw/ext.smw.test.js",
+			"tests/qunit/smw/data/ext.smw.dataItem.wikiPage.test.js",
+			"tests/qunit/smw/data/ext.smw.dataItem.uri.test.js",
+			"tests/qunit/smw/data/ext.smw.dataItem.time.test.js",
+			"tests/qunit/smw/data/ext.smw.dataItem.property.test.js",
+			"tests/qunit/smw/data/ext.smw.dataItem.unknown.test.js",
+			"tests/qunit/smw/data/ext.smw.dataItem.number.test.js",
+			"tests/qunit/smw/data/ext.smw.dataItem.text.test.js",
+			"tests/qunit/smw/data/ext.smw.dataValue.quantity.test.js",
+			"tests/qunit/smw/data/ext.smw.data.test.js",
+			"tests/qunit/smw/api/ext.smw.api.test.js",
+			"tests/qunit/smw/query/ext.smw.query.test.js",
+			"tests/qunit/smw/util/ext.smw.localtime.test.js",
+			"tests/qunit/smw/util/ext.smw.util.purge.test.js"
+		],
+		"dependencies": [
+			"mediawiki.language.months",
+			"ext.smw",
+			"ext.smw.purge",
+			"ext.smw.tooltip",
+			"ext.smw.query",
+			"ext.smw.api",
+			"ext.smw.localtime"
+		],
+		"position": "top",
+		"localBasePath": "",
+		"remoteExtPath": "SemanticMediaWiki"
 	},
 	"SpecialPages": {
 		"ExportRDF": "SMW\\MediaWiki\\Specials\\SpecialOWLExport",
@@ -894,10 +893,12 @@
 			"scripts": "smw/util/ext.smw.util.purge.js",
 			"messages": [
 				"smw-purge-failed",
-				"smw-purge-update-dependencies"
+				"smw-purge-update-dependencies",
+				"smw-purge-update-dependencies-timeout"
 			],
 			"dependencies": [
-				"mediawiki.api"
+				"mediawiki.api",
+				"mediawiki.storage"
 			]
 		},
 		"ext.smw.vtabs.styles": {

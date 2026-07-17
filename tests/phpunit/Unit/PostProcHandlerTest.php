@@ -282,6 +282,73 @@ class PostProcHandlerTest extends TestCase {
 	}
 
 	/**
+	 * Reproduces the server-side condition behind #7044: as long as
+	 * `hasLikelyOutdatedDependencies` remains true for a title (e.g. the
+	 * update job backlog has not caught up yet), every subsequent view of
+	 * that title keeps emitting the `.page-purge` div, one per request/reload.
+	 * The client is therefore solely responsible for bounding how many
+	 * reloads it performs (see ext.smw.util.purge.js).
+	 */
+	public function testPurgePageOnQueryDependency_RepeatedOnSuccessiveViews() {
+		$this->parserOutput->expects( $this->any() )
+			->method( 'getExtensionData' )
+			->with( PostProcHandler::POST_EDIT_UPDATE )
+			->willReturn( [ 'Bar' ] );
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$instance->setOptions(
+			[
+				'purge-page' => [ 'on-outdated-query-dependency' => true ]
+			]
+		);
+
+		$title = $this->createMock( Title::class );
+
+		$dependencyLinksValidator = $this->createMock( DependencyLinksValidator::class );
+		$namespaceExaminer = $this->createMock( NamespaceExaminer::class );
+		$entityCache = $this->createMock( EntityCache::class );
+		$eventDispatcher = $this->createMock( EventDispatcher::class );
+		$dependencyValidator = new DependencyValidator(
+			$namespaceExaminer,
+			$dependencyLinksValidator,
+			$entityCache,
+			'',
+			3600,
+			$eventDispatcher
+		);
+		// Simulates the dependency remaining outdated across several distinct
+		// requests (e.g. the update job has not run yet by the time of the
+		// next reload).
+		$dependencyValidator->markTitle( $title );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getPrefixedDBKey' )
+			->willReturn( 'Foo' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		$webRequest = $this->createMock( WebRequest::class );
+
+		// First view: emits the purge div (this is the same behaviour already
+		// covered by testPurgePageOnQueryDependency).
+		$firstHtml = $instance->getHtml( $title, $webRequest );
+
+		// A second, independent view of the same title (simulating the reload
+		// the client just performed) still finds the dependency outdated and
+		// therefore emits the purge div again, unbounded on the server side.
+		$secondHtml = $instance->getHtml( $title, $webRequest );
+
+		$this->assertStringContainsString( 'page-purge', $firstHtml );
+		$this->assertStringContainsString( 'page-purge', $secondHtml );
+	}
+
+	/**
 	 * @dataProvider validPropertyKeyProvider
 	 */
 	public function testGetHtmlOnCookieAndValidChangeDiff( $key ) {

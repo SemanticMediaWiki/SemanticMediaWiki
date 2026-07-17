@@ -251,6 +251,7 @@
 	"smw-special-wantedproperties-template": "This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned data type and how often it is used in the wiki.\n\nParameters:\n* $1 holds the name of the wanted property.\n* $2 holds the number of values annotated with the wanted property.",
 	"smw_purge": "{{doc-actionlink}}\nThis is the label of a tab of an action item for the content area.\n{{Identical|Refresh}}",
 	"smw-purge-update-dependencies": "This is an informatory message in a balloon informing about the automatic purge of the page triggered by the annotation query marker.",
+	"smw-purge-update-dependencies-timeout": "This is an informatory message in a balloon shown when the automatic reload triggered by the annotation query marker (see [[mediawiki:Smw-purge-update-dependencies/en|smw-purge-update-dependencies]]) has been retried for a while without the underlying data becoming up to date, so the client stops auto-reloading.",
 	"smw-purge-failed": "This is an error/warning message. Please translate consistent to {{msg-mw|smw_purge}}.",
 	"types": "{{doc-special|Types}}\n{{Identical|Type}}",
 	"smw_types_docu": "This is the introductory message at the top of [[Special:Types]].",
