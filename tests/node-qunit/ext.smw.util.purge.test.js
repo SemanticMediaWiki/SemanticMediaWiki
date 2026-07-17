@@ -209,9 +209,24 @@
 
 		var $context = $( '<div>' ).addClass( 'page-purge' ).data( 'title', 'Foo' );
 
+		// Checking reloadCalled alone after 0ms would still pass if a future
+		// (e.g. 3000ms) reload timer had been queued -- it just wouldn't have
+		// fired yet. Stub window.setTimeout to assert none was scheduled with
+		// a delay at all, using the saved native timer for both jQuery's own
+		// internal (parameterless) scheduling and the test's async wait.
+		var originalSetTimeout = window.setTimeout;
+		var scheduledDelay = null;
+		window.setTimeout = function ( callback, delay ) {
+			if ( delay !== undefined ) {
+				scheduledDelay = delay;
+			}
+			return originalSetTimeout( callback, delay );
+		};
+
 		mw.smw.purge.run( $context, true );
 
-		setTimeout( function () {
+		originalSetTimeout( function () {
+			assert.strictEqual( scheduledDelay, null, 'no reload timer was scheduled' );
 			assert.strictEqual( reloadCalled, false, 'no reload scheduled past the ceiling' );
 			assert.strictEqual( notifyCalled, true, 'a low-key notice is shown instead' );
 
@@ -221,8 +236,9 @@
 			mw.smw.purge.reload = originalReload;
 			mw.notify = originalNotify;
 			mw.Api = originalApi;
+			window.setTimeout = originalSetTimeout;
 			done();
-		}, 0 );
+		}, 10 );
 	} );
 
 	QUnit.test( 'run() auto-triggered stops reloading once the retry budget is exceeded', function ( assert ) {
