@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\Cache\InMemoryLruCache;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
@@ -118,6 +119,105 @@ class SequenceMapFinderTest extends TestCase {
 		$this->assertSame( [ 'Foo' ], $this->cache->fetch( '1001' ) );
 	}
 
+	public function testFindMapByIdWithCorruptBlobReturnsEmptyMap() {
+		// A stored blob that cannot be gzuncompressed/deserialized (e.g. a
+		// truncated write) must degrade to an empty map rather than violate the
+		// array return type (T7043).
+		$row = [
+			'smw_id' => 1001,
+			'smw_seqmap' => 'not-a-deserializable-blob'
+		];
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$this->connection->expects( $this->once() )
+			->method( 'unescape_bytea' )
+			->willReturnArgument( 0 );
+
+		$instance = new SequenceMapFinder(
+			$this->connection,
+			$this->idCacheManager
+		);
+
+		$this->assertSame(
+			[],
+			$instance->findMapById( 1001 )
+		);
+
+		// The empty fallback is cached so repeated lookups avoid the SELECT.
+		$this->assertSame( [], $this->cache->fetch( '1001' ) );
+	}
+
+	public function testFindMapByIdWithBlobFromDifferentSecretKeyReturnsEmptyMap() {
+		// A valid, compressed blob whose HMAC was computed under a different
+		// secret key than uncompress() verifies against. This is the real-world
+		// trigger for T7043: the wiki's $wgSecretKey changed after the sequence
+		// map was stored, so verification fails and uncompress() returns false.
+		$map = HmacSerializer::compress( [ 'Foo' ], 'a-previous-secret-key' );
+
+		$row = [
+			'smw_id' => 1001,
+			'smw_seqmap' => $map
+		];
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$this->connection->expects( $this->once() )
+			->method( 'unescape_bytea' )
+			->willReturnArgument( 0 );
+
+		$instance = new SequenceMapFinder(
+			$this->connection,
+			$this->idCacheManager
+		);
+
+		$this->assertSame(
+			[],
+			$instance->findMapById( 1001 )
+		);
+	}
+
+	public function testFindMapByIdLogsWarningOnCorruptBlob() {
+		$row = [
+			'smw_id' => 1001,
+			'smw_seqmap' => 'not-a-deserializable-blob'
+		];
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$this->connection->expects( $this->once() )
+			->method( 'unescape_bytea' )
+			->willReturnArgument( 0 );
+
+		$logger = $this->createMock( LoggerInterface::class );
+		$logger->expects( $this->once() )
+			->method( 'warning' )
+			->with(
+				$this->stringContains( 'could not be deserialized' ),
+				$this->callback( static fn ( $context ) => ( $context['id'] ?? null ) === 1001 )
+			);
+
+		$instance = new SequenceMapFinder(
+			$this->connection,
+			$this->idCacheManager
+		);
+		$instance->setLogger( $logger );
+
+		$instance->findMapById( 1001 );
+	}
+
 	public function testPrefetchSequenceMap() {
 		$map = HmacSerializer::compress( [ 'Foo' ] );
 
@@ -152,6 +252,35 @@ class SequenceMapFinderTest extends TestCase {
 		// matching row) is cached as an empty map to avoid individual SELECTs.
 		$this->assertSame( [ 'Foo' ], $this->cache->fetch( '1001' ) );
 		$this->assertSame( [], $this->cache->fetch( '42' ) );
+	}
+
+	public function testPrefetchSequenceMapWithCorruptBlobCachesEmptyMap() {
+		$row = [
+			'smw_id' => 1001,
+			'smw_seqmap' => 'not-a-deserializable-blob'
+		];
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$this->connection->expects( $this->once() )
+			->method( 'unescape_bytea' )
+			->willReturnArgument( 0 );
+
+		$instance = new SequenceMapFinder(
+			$this->connection,
+			$this->idCacheManager
+		);
+
+		$instance->prefetchSequenceMap( [ 1001 ] );
+
+		// A corrupt blob is cached as an empty map (not false), so a later
+		// findMapById() hits the cache instead of re-running the SELECT and
+		// tripping the array return type.
+		$this->assertSame( [], $this->cache->fetch( '1001' ) );
 	}
 
 }
