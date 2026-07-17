@@ -100,6 +100,9 @@
 				assert.ok( true, 'the query returned with a positive server response' );
 				assert.ok( results instanceof Object, 'the query returned with a result object' );
 			} )
+			.fail( function () {
+				assert.ok( false, 'fetch() unexpectedly rejected' );
+			} )
 			.always( function () {
 				ajaxStub.restore();
 				done();

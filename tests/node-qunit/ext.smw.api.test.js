@@ -47,6 +47,9 @@
 				assert.ok( true, 'of a positive server response' );
 				assert.ok( results instanceof Object, 'an object was returned' );
 			} )
+			.fail( function () {
+				assert.ok( false, 'fetch() unexpectedly rejected' );
+			} )
 			.always( function () {
 				ajaxStub.restore();
 				done();
