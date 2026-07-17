@@ -731,6 +731,10 @@ class SQLStoreFactory {
 			$idCacheManager
 		);
 
+		$sequenceMapFinder->setLogger(
+			$this->getLogger()
+		);
+
 		return $sequenceMapFinder;
 	}
 
@@ -745,6 +749,10 @@ class SQLStoreFactory {
 		$auxiliaryFields = new AuxiliaryFields(
 			$this->store->getConnection( 'mw.db' ),
 			$idCacheManager
+		);
+
+		$auxiliaryFields->setLogger(
+			$this->getLogger()
 		);
 
 		return $auxiliaryFields;

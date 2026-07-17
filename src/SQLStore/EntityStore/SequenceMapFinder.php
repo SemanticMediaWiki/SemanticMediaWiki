@@ -2,6 +2,8 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HmacSerializer;
@@ -16,6 +18,14 @@ use SMW\Utils\HmacSerializer;
  */
 class SequenceMapFinder {
 
+	use LoggerAwareTrait;
+
+	/**
+	 * Logged when a persisted sequence map cannot be deserialized, for example
+	 * after $wgSecretKey changed.
+	 */
+	private const CORRUPT_MAP_WARNING = 'Sequence map for entity {id} could not be deserialized and was treated as empty; this can happen after $wgSecretKey changed.';
+
 	/**
 	 * @var array
 	 */
@@ -28,6 +38,7 @@ class SequenceMapFinder {
 		private readonly Database $connection,
 		private readonly IdCacheManager $idCacheManager,
 	) {
+		$this->logger = new NullLogger();
 	}
 
 	/**
@@ -99,6 +110,18 @@ class SequenceMapFinder {
 			$map = [];
 		} else {
 			$map = HmacSerializer::uncompress( $omap );
+
+			// uncompress() returns false when the stored blob cannot be
+			// deserialized (for example when it was written under a different
+			// $wgSecretKey); fall back to an empty map so the array return type
+			// always holds.
+			if ( !is_array( $map ) ) {
+				$this->logger->warning(
+					self::CORRUPT_MAP_WARNING,
+					[ 'id' => $sid ]
+				);
+				$map = [];
+			}
 		}
 
 		$cache->save( (string)$sid, $map );
@@ -141,6 +164,17 @@ class SequenceMapFinder {
 			if ( $omap !== null && $omap !== false ) {
 				$map = HmacSerializer::uncompress( $omap );
 			} else {
+				$map = [];
+			}
+
+			// A blob that fails to deserialize yields false; cache an empty map
+			// instead so a later findMapById() gets a cache hit rather than
+			// re-running the SELECT.
+			if ( !is_array( $map ) ) {
+				$this->logger->warning(
+					self::CORRUPT_MAP_WARNING,
+					[ 'id' => $id ]
+				);
 				$map = [];
 			}
 

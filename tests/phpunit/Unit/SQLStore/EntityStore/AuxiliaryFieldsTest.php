@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\Cache\InMemoryLruCache;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
@@ -85,6 +86,130 @@ class AuxiliaryFieldsTest extends TestCase {
 			[ 't.smw_hash' => [ sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ) ] ],
 			$whereConditions
 		);
+	}
+
+	public function testPrefetchFieldListWithCorruptBlobCachesEmptyMap() {
+		$this->idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
+			->willReturn( $this->cache );
+
+		$this->connection->expects( $this->any() )
+			->method( 'unescape_bytea' )
+			->willReturnArgument( 0 );
+
+		$subjects = [ WikiPage::newFromText( 'Foo' ) ];
+
+		// A stored count map that cannot be deserialized (e.g. written under a
+		// different $wgSecretKey) must degrade to an empty map, not a false that
+		// FieldList then iterates with `foreach` (T7043, count map sibling).
+		$row = [
+			'smw_id' => 42,
+			'smw_hash' => sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ),
+			'smw_countmap' => 'not-a-deserializable-blob'
+		];
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$instance = new AuxiliaryFields(
+			$this->connection,
+			$this->idCacheManager
+		);
+
+		$fieldList = $instance->prefetchFieldList( $subjects );
+
+		// The corrupt blob is cached as an empty map (not false) ...
+		$this->assertSame( [], $this->cache->fetch( '42' ) );
+
+		// ... so the FieldList can be iterated without a `foreach` over a bool.
+		$this->assertSame( [], $fieldList->getCountListByType( 'foo' ) );
+	}
+
+	public function testPrefetchFieldListTreatsEmptyByteaAsEmptyMapWithoutWarning() {
+		// PostgreSQL's unescape_bytea() returns '' (not null) for a NULL column,
+		// so an empty count map must be recognised as empty rather than run
+		// through uncompress() and reported as a deserialization failure.
+		$this->idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
+			->willReturn( $this->cache );
+
+		$this->connection->expects( $this->any() )
+			->method( 'unescape_bytea' )
+			->willReturn( '' );
+
+		$subjects = [ WikiPage::newFromText( 'Foo' ) ];
+
+		$row = [
+			'smw_id' => 42,
+			'smw_hash' => sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ),
+			'smw_countmap' => null
+		];
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$logger = $this->createMock( LoggerInterface::class );
+		$logger->expects( $this->never() )
+			->method( 'warning' );
+
+		$instance = new AuxiliaryFields(
+			$this->connection,
+			$this->idCacheManager
+		);
+		$instance->setLogger( $logger );
+
+		$instance->prefetchFieldList( $subjects );
+
+		$this->assertSame( [], $this->cache->fetch( '42' ) );
+	}
+
+	public function testPrefetchFieldListLogsWarningOnCorruptBlob() {
+		$this->idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
+			->willReturn( $this->cache );
+
+		$this->connection->expects( $this->any() )
+			->method( 'unescape_bytea' )
+			->willReturnArgument( 0 );
+
+		$subjects = [ WikiPage::newFromText( 'Foo' ) ];
+
+		$row = [
+			'smw_id' => 42,
+			'smw_hash' => sha1( json_encode( [ 'Foo', 0, '', '' ] ), true ),
+			'smw_countmap' => 'not-a-deserializable-blob'
+		];
+
+		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$logger = $this->createMock( LoggerInterface::class );
+		$logger->expects( $this->once() )
+			->method( 'warning' )
+			->with(
+				$this->stringContains( 'could not be deserialized' ),
+				$this->callback( static fn ( $context ) => ( $context['id'] ?? null ) === 42 )
+			);
+
+		$instance = new AuxiliaryFields(
+			$this->connection,
+			$this->idCacheManager
+		);
+		$instance->setLogger( $logger );
+
+		$instance->prefetchFieldList( $subjects );
 	}
 
 	public function testSetFieldMaps_Empty() {
