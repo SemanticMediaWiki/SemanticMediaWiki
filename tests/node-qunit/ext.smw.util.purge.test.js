@@ -1,5 +1,5 @@
 /**
- * QUnit coverage for ext.smw.util.purge.js (#7044).
+ * Ported from tests/qunit/smw/util/ext.smw.util.purge.test.js (#7044/#7045).
  *
  * @licence GNU GPL v2 or later
  */

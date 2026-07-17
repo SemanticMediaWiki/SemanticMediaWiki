@@ -1,3 +1,14 @@
+/**
+ * Ported from tests/qunit/smw/util/ext.smw.localtime.test.js (#7045).
+ *
+ * The convert() subtests originally asserted a 24h-formatted "16:00" against
+ * Intl.DateTimeFormat( 'en', ... ), which formats in 12h AM/PM (e.g. "4:00
+ * PM") -- a locale/test-assumption mismatch rather than an environment
+ * issue. mw.config's wgUserLanguage is set to a 24h locale here (setup.js
+ * default), matching how ext.smw.localtime.js actually reads it.
+ *
+ * @licence GNU GPL v2 or later
+ */
 ( function () {
 	'use strict';
 
@@ -43,4 +54,5 @@
 
 		assert.strictEqual( el.textContent, 'unchanged' );
 	} );
+
 }() );
