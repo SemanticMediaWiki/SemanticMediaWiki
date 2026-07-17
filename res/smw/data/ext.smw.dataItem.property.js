@@ -106,7 +106,7 @@
 		 */
 		getHtml: function( linker ) {
 			if( linker ){
-				return html.element( 'a', { href: mw.util.wikiGetlink( 'Property:' + this.property ) }, this.property );
+				return html.element( 'a', { href: mw.util.getUrl( 'Property:' + this.property ) }, this.property );
 			}
 			return this.property;
 		}

@@ -37,6 +37,9 @@ jobs:
       PHP_VERSION: ${{ matrix.php }}
       DB_TYPE: mysql
       DB_IMAGE: ${{ matrix.db }}
+      # JS tests only run on the coverage leg; keep this leg's image build
+      # from paying the npm install cost for nothing.
+      NODE_JS: ''
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -86,6 +89,9 @@ jobs:
       PHP_VERSION: ${{ matrix.php }}
       DB_TYPE: mysql
       DB_IMAGE: ${{ matrix.db }}
+      # JS tests only run on the coverage leg; keep this leg's image build
+      # from paying the npm install cost for nothing.
+      NODE_JS: ''
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -104,8 +110,11 @@ jobs:
       - name: Run integration tests
         run: make composer-phpunit COMPOSER_PARAMS='-- --testsuite semantic-mediawiki-check,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure --fail-on-empty-test-suite'
 
-  # Coverage is unchanged: same suite, same Xdebug instrumentation, codecov
-  # upload. It is not on the fast-feedback path (the test jobs report pass/fail
+  # Coverage: same PHP suite/Xdebug instrumentation/codecov upload as before,
+  # plus JS (QUnit) coverage. JS tests run only on this leg (matching how PHP
+  # coverage itself is scoped to one leg) rather than on every matrix leg in
+  # `tests`/`static-analysis`, so the JS toolchain install cost isn't paid
+  # repeatedly. Not on the fast-feedback path (the test jobs report pass/fail
   # well before coverage finishes).
   coverage:
     name: Coverage (MW 1.43, PHP 8.2, mariadb:11.4)
@@ -115,6 +124,7 @@ jobs:
       PHP_VERSION: 8.2
       DB_TYPE: mysql
       DB_IMAGE: "mariadb:11.4"
+      NODE_JS: 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -131,7 +141,7 @@ jobs:
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/php/coverage.xml
+          files: coverage/php/coverage.xml,coverage/js/clover.xml
 
   # Single fixed-name gate so branch protection does not have to list every
   # matrix leg (which would need updating on each version change). Require only

@@ -1,0 +1,21 @@
+{
+	"private": true,
+	"scripts": {
+		"test": "npm run node-qunit",
+		"test-coverage": "npm run node-qunit-coverage",
+		"node-qunit": "qunit --require ./tests/node-qunit/setup.js 'tests/node-qunit/**/*.test.js'",
+		"node-qunit-coverage": "nyc --reporter=text --reporter=html --reporter=clover --report-dir=coverage/js --all npm run node-qunit"
+	},
+	"devDependencies": {
+		"jquery": "^3.7.1",
+		"jsdom": "^25.0.1",
+		"nyc": "^18.0.0",
+		"qunit": "^2.22.0",
+		"sinon": "^19.0.2"
+	},
+	"nyc": {
+		"include": [
+			"res/smw/**"
+		]
+	}
+}
