@@ -46,7 +46,8 @@
 			.done( function ( results ) {
 				assert.ok( true, 'of a positive server response' );
 				assert.ok( results instanceof Object, 'an object was returned' );
-
+			} )
+			.always( function () {
 				ajaxStub.restore();
 				done();
 			} );

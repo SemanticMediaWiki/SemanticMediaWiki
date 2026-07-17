@@ -26,7 +26,7 @@
 	QUnit.test( 'getUri', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.uri( testCase.test[ 0 ] );
 			assert.equal( result.getUri(), testCase.expected[ 0 ], 'returned ' + testCase.expected[ 0 ] );
 		} );
@@ -35,12 +35,12 @@
 	QUnit.test( 'getHtml', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.uri( testCase.test[ 0 ] );
 			assert.equal( result.getHtml(), testCase.expected[ 0 ], 'returned ' + testCase.expected[ 0 ] );
 		} );
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.uri( testCase.test[ 0 ] );
 			assert.equal( result.getHtml( true ), testCase.expected[ 1 ], 'returned ' + testCase.expected[ 1 ] );
 		} );

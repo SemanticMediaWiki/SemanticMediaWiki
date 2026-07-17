@@ -26,7 +26,7 @@
 	QUnit.test( 'getValue', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.unknown( testCase.test[ 0 ], testCase.test[ 1 ] );
 			assert.equal( result.getValue(), testCase.expected[ 0 ], 'returned ' + testCase.expected[ 0 ] );
 		} );

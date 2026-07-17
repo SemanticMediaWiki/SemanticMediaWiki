@@ -64,7 +64,7 @@
 	QUnit.test( 'getPrefixedText', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[ 0 ], testCase.test[ 1 ], testCase.test[ 2 ] );
 			assert.equal( result.getPrefixedText(), testCase.expected.name, 'returned ' + testCase.expected.name );
 		} );
@@ -73,7 +73,7 @@
 	QUnit.test( 'getText', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[ 0 ], testCase.test[ 1 ], testCase.test[ 2 ] );
 			assert.equal( result.getText(), testCase.expected.text, 'returned ' + testCase.expected.text );
 		} );
@@ -82,7 +82,7 @@
 	QUnit.test( 'getUri', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[ 0 ], testCase.test[ 1 ], testCase.test[ 2 ] );
 			assert.equal( result.getUri(), testCase.expected.uri, 'returned ' + testCase.expected.uri );
 		} );
@@ -91,7 +91,7 @@
 	QUnit.test( 'getNamespaceId', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[ 0 ], testCase.test[ 1 ], testCase.test[ 2 ] );
 			assert.equal( result.getNamespaceId(), testCase.expected.ns, 'returned ' + testCase.expected.ns );
 		} );
@@ -108,7 +108,7 @@
 	QUnit.test( 'isKnown', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[ 0 ], testCase.test[ 1 ], testCase.test[ 2 ], testCase.test[ 3 ] );
 			assert.equal( result.isKnown(), testCase.expected.known, 'returned ' + testCase.expected.known );
 		} );
@@ -117,7 +117,7 @@
 	QUnit.test( 'getHtml( false )', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[ 0 ], testCase.test[ 1 ], testCase.test[ 2 ] );
 			assert.equal( result.getHtml( false ), testCase.expected.text, 'returned ' + testCase.expected.text );
 		} );
@@ -126,7 +126,7 @@
 	QUnit.test( 'getHtml( true )', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[ 0 ], testCase.test[ 1 ], testCase.test[ 2 ], testCase.test[ 3 ] );
 			assert.equal( result.getHtml( true ), testCase.expected.html, 'returned ' + testCase.expected.html );
 		} );

@@ -99,7 +99,8 @@
 			.done( function ( results ) {
 				assert.ok( true, 'the query returned with a positive server response' );
 				assert.ok( results instanceof Object, 'the query returned with a result object' );
-
+			} )
+			.always( function () {
 				ajaxStub.restore();
 				done();
 			} );

@@ -31,7 +31,7 @@
 	QUnit.test( 'getNumber', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataItem.number( testCase.test[ 0 ] );
 			assert.equal( result.getNumber(), testCase.expected[ 0 ], 'returned ' + testCase.expected[ 0 ] );
 		} );

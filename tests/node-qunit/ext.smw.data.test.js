@@ -20,11 +20,11 @@
 		assert.ok( result instanceof Object, 'the smw.dataItem instance was accessible' );
 	} );
 
-	QUnit.test( 'comparison $.parseJSON() vs. smw.Api.parse()', function ( assert ) {
+	QUnit.test( 'comparison JSON.parse() vs. smw.Api.parse()', function ( assert ) {
 		var result;
 		var smwApi = new smw.Api();
 
-		result = $.parseJSON( testString );
+		result = JSON.parse( testString );
 		assert.ok( result, 'using parseJSON' );
 
 		result = smwApi.parse( testString );
@@ -35,7 +35,9 @@
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( testString );
 
-		$.map( result.query.result.results[ 'DataitemFactory/1' ].printouts, function ( value, key ) {
+		Object.keys( result.query.result.results[ 'DataitemFactory/1' ].printouts ).forEach( function ( key ) {
+			var value = result.query.result.results[ 'DataitemFactory/1' ].printouts[ key ];
+
 			if ( value instanceof smw.dataItem.property ) {
 				assert.equal( value.getLabel(), key, 'the parser returned ' + key );
 			}

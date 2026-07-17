@@ -6,11 +6,20 @@
 ( function () {
 	'use strict';
 
+	var originalReload = mw.smw.purge.reload;
+	var originalNotify = mw.notify;
+	var originalApi = mw.Api;
+	var originalSetTimeout = window.setTimeout;
+
 	QUnit.module( 'ext.smw.util.purge', QUnit.newMwEnvironment( {
 		config: {
 			wgPageName: 'Foo'
 		},
 		afterEach: function () {
+			mw.smw.purge.reload = originalReload;
+			mw.notify = originalNotify;
+			mw.Api = originalApi;
+			window.setTimeout = originalSetTimeout;
 			mw.smw.purge.clearRetryState( 'Foo' );
 		}
 	} ) );
@@ -85,8 +94,6 @@
 	QUnit.test( 'run() on a click-triggered purge reloads immediately on success', function ( assert ) {
 		var done = assert.async();
 		var reloadCalled = false;
-		var originalReload = mw.smw.purge.reload;
-		var originalApi = mw.Api;
 
 		mw.smw.purge.reload = function () {
 			reloadCalled = true;
@@ -103,9 +110,6 @@
 
 		setTimeout( function () {
 			assert.strictEqual( reloadCalled, true, 'reload was called without delay' );
-
-			mw.smw.purge.reload = originalReload;
-			mw.Api = originalApi;
 			done();
 		}, 0 );
 	} );
@@ -113,11 +117,16 @@
 	QUnit.test( 'run() on a click-triggered purge notifies on failure and does not reload', function ( assert ) {
 		var done = assert.async();
 		var reloadCalled = false;
-		var originalReload = mw.smw.purge.reload;
-		var originalApi = mw.Api;
+		var notifyCalled = false;
 
 		mw.smw.purge.reload = function () {
 			reloadCalled = true;
+		};
+
+		mw.notify = function ( msg, opt ) {
+			if ( opt && opt.type === 'error' ) {
+				notifyCalled = true;
+			}
 		};
 
 		mw.Api = function () {};
@@ -131,9 +140,7 @@
 
 		setTimeout( function () {
 			assert.strictEqual( reloadCalled, false, 'no reload on a failed purge request' );
-
-			mw.smw.purge.reload = originalReload;
-			mw.Api = originalApi;
+			assert.strictEqual( notifyCalled, true, 'an error notification is shown' );
 			done();
 		}, 0 );
 	} );

@@ -31,7 +31,7 @@
 	QUnit.test( 'getValue', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataValue.quantity( testCase.test.value, testCase.test.unit );
 			assert.equal( result.getValue(), testCase.expected.value, 'returned ' + testCase.expected.value );
 		} );
@@ -40,7 +40,7 @@
 	QUnit.test( 'getUnit', function ( assert ) {
 		var result;
 
-		$.map( testCases, function ( testCase ) {
+		testCases.forEach( function ( testCase ) {
 			result = new smw.dataValue.quantity( testCase.test.value, testCase.test.unit );
 			assert.equal( result.getUnit(), testCase.expected.unit, 'returned ' + testCase.expected.unit );
 		} );
