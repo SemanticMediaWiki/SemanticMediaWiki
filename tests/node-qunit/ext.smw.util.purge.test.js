@@ -25,6 +25,7 @@
 	} ) );
 
 	QUnit.test( 'storageKey builds a title-scoped key', function ( assert ) {
+		assert.expect( 1 );
 		assert.strictEqual(
 			mw.smw.purge.storageKey( 'Foo' ),
 			'mw-smw-purge-retry-Foo'
@@ -32,6 +33,7 @@
 	} );
 
 	QUnit.test( 'getRetryState returns a fresh state when nothing is stored', function ( assert ) {
+		assert.expect( 2 );
 		var state = mw.smw.purge.getRetryState( 'Foo' );
 
 		assert.strictEqual( state.attempts, 0, 'no attempts recorded yet' );
@@ -39,6 +41,7 @@
 	} );
 
 	QUnit.test( 'getRetryState returns a fresh state on corrupt storage', function ( assert ) {
+		assert.expect( 1 );
 		mw.storage.session.set( mw.smw.purge.storageKey( 'Foo' ), 'not-json' );
 
 		var state = mw.smw.purge.getRetryState( 'Foo' );
@@ -47,6 +50,7 @@
 	} );
 
 	QUnit.test( 'setRetryState persists attempts and startTime', function ( assert ) {
+		assert.expect( 2 );
 		mw.smw.purge.setRetryState( 'Foo', { attempts: 2, startTime: 12345 } );
 
 		var state = mw.smw.purge.getRetryState( 'Foo' );
@@ -56,6 +60,7 @@
 	} );
 
 	QUnit.test( 'clearRetryState removes the stored state', function ( assert ) {
+		assert.expect( 1 );
 		mw.smw.purge.setRetryState( 'Foo', { attempts: 2, startTime: 12345 } );
 		mw.smw.purge.clearRetryState( 'Foo' );
 
@@ -65,6 +70,7 @@
 	} );
 
 	QUnit.test( 'computeBackoff increases with attempts and then plateaus', function ( assert ) {
+		assert.expect( 4 );
 		assert.strictEqual( mw.smw.purge.computeBackoff( 0 ), 1000 );
 		assert.strictEqual( mw.smw.purge.computeBackoff( 1 ), 3000 );
 		assert.strictEqual( mw.smw.purge.computeBackoff( 2 ), 7000 );
@@ -74,6 +80,7 @@
 	} );
 
 	QUnit.test( 'nextAttempt allows a reload within the retry budget', function ( assert ) {
+		assert.expect( 2 );
 		mw.smw.purge.setRetryState( 'Foo', { attempts: 1, startTime: Date.now() } );
 
 		var attempt = mw.smw.purge.nextAttempt( 'Foo' );
@@ -83,6 +90,7 @@
 	} );
 
 	QUnit.test( 'nextAttempt denies a reload once the retry budget is exceeded', function ( assert ) {
+		assert.expect( 1 );
 		// startTime far enough in the past to exceed the fixed retry ceiling.
 		mw.smw.purge.setRetryState( 'Foo', { attempts: 5, startTime: Date.now() - 121000 } );
 
@@ -92,6 +100,7 @@
 	} );
 
 	QUnit.test( 'run() on a click-triggered purge reloads immediately on success', function ( assert ) {
+		assert.expect( 1 );
 		var done = assert.async();
 		var reloadCalled = false;
 
@@ -115,6 +124,7 @@
 	} );
 
 	QUnit.test( 'run() on a click-triggered purge notifies on failure and does not reload', function ( assert ) {
+		assert.expect( 2 );
 		var done = assert.async();
 		var reloadCalled = false;
 		var notifyCalled = false;
@@ -146,6 +156,7 @@
 	} );
 
 	QUnit.test( 'run() auto-triggered (.page-purge) delays the reload using the backoff', function ( assert ) {
+		assert.expect( 3 );
 		var done = assert.async();
 		var reloadCalled = false;
 		var originalReload = mw.smw.purge.reload;
@@ -186,6 +197,7 @@
 	} );
 
 	QUnit.test( 'run() auto-triggered stops reloading when the scheduled delay would exceed the ceiling', function ( assert ) {
+		assert.expect( 4 );
 		var done = assert.async();
 		var reloadCalled = false;
 		var notifyCalled = false;
@@ -249,6 +261,7 @@
 	} );
 
 	QUnit.test( 'run() auto-triggered stops reloading once the retry budget is exceeded', function ( assert ) {
+		assert.expect( 3 );
 		var reloadCalled = false;
 		var notifyCalled = false;
 		var originalReload = mw.smw.purge.reload;
@@ -281,6 +294,7 @@
 	} );
 
 	QUnit.test( 'init() clears stale retry state once the page-purge marker is gone', function ( assert ) {
+		assert.expect( 1 );
 		mw.smw.purge.setRetryState( 'Foo', { attempts: 3, startTime: Date.now() - 90000 } );
 
 		var $content = $( '<div>' );
@@ -292,6 +306,7 @@
 	} );
 
 	QUnit.test( 'init() leaves retry state untouched while a page-purge marker is present', function ( assert ) {
+		assert.expect( 1 );
 		var originalReload = mw.smw.purge.reload;
 		var originalApi = mw.Api;
 

@@ -14,6 +14,8 @@
 	QUnit.module( 'ext.smw', QUnit.newMwEnvironment() );
 
 	QUnit.test( 'init', function ( assert ) {
+		assert.expect( 17 );
+
 		assert.ok( smw instanceof Object, 'the smw instance was accessible' );
 
 		assert.equal( $.type( smw.log ), 'function', '.log() was accessible' );
@@ -39,6 +41,8 @@
 	} );
 
 	QUnit.test( 'settings', function ( assert ) {
+		assert.expect( 4 );
+
 		assert.equal( $.type( smw.settings.getList() ), 'object', '.getList() returned a list of settings object' );
 		assert.equal( $.type( smw.settings.get( 'smwgQMaxLimit' ) ), 'number', '.get( "smwgQMaxLimit" ) returned a value for the key' );
 		assert.equal( smw.settings.get( 'lula' ), undefined, '.get( "lula" ) returned undefined for an unknown key' );
@@ -46,12 +50,16 @@
 	} );
 
 	QUnit.test( 'util', function ( assert ) {
+		assert.expect( 3 );
+
 		assert.equal( smw.util.clean( ' Foo | ; : - < >_= () {} bar ' ), 'Foo_;_:_-__=_()_bar', '.clean() returned a cleaned string' );
 		assert.equal( smw.util.clean( 'Foo | ; : - < >_= () {} bar' ), 'Foo_;_:_-__=_()_bar', '.clean() returned a cleaned string' );
 		assert.equal( smw.util.ucFirst( 'foo Foo bar' ), 'Foo Foo bar', '.ucFirst() returned a capitalized string' );
 	} );
 
 	QUnit.test( 'util.namespace', function ( assert ) {
+		assert.expect( 7 );
+
 		assert.equal( $.type( smw.util.namespace.getList() ), 'object', '.getList() returned a list of namespaces' );
 
 		assert.equal( $.type( smw.util.namespace.getId( 'property' ) ), 'number', '.getId( "property" ) returned a number' );
@@ -69,6 +77,8 @@
 		// takes its synchronous each() branch. The original in-browser test's
 		// async-mode assertions required the plugin and are omitted; the
 		// callback guard and the synchronous dispatch are covered here.
+		assert.expect( 4 );
+
 		assert.strictEqual( smw.async.isEnabled(), false, '.isEnabled() is false without the eachAsync plugin' );
 
 		assert.throws( function () {
@@ -89,6 +99,8 @@
 	} );
 
 	QUnit.test( 'formats', function ( assert ) {
+		assert.expect( 7 );
+
 		assert.equal( $.type( smw.formats.getList() ), 'object', '.getList() returned an object' );
 		assert.equal( $.type( smw.formats.getName( 'table' ) ), 'string', '.getName( "table" ) returned a string' );
 		assert.equal( $.type( smw.formats.getName( ' table ' ) ), 'string', '.getName( " table " ) returned a string' );
@@ -100,6 +112,8 @@
 	} );
 
 	QUnit.test( 'version', function ( assert ) {
+		assert.expect( 1 );
+
 		assert.equal( $.type( smw.version() ), 'string', '.version() returned a string' );
 	} );
 

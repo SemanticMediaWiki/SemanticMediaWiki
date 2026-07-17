@@ -15,6 +15,8 @@
 	];
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 2 );
+
 		var result = new smw.dataValue.quantity( 3 );
 		assert.ok( result instanceof Object, 'the smw.dataValue.quantity instance was accessible' );
 
@@ -24,11 +26,15 @@
 	} );
 
 	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataValue.quantity( 3 );
 		assert.equal( result.getDIType(), '_qty', 'returned _qty' );
 	} );
 
 	QUnit.test( 'getValue', function ( assert ) {
+		assert.expect( 3 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {
@@ -38,6 +44,8 @@
 	} );
 
 	QUnit.test( 'getUnit', function ( assert ) {
+		assert.expect( 3 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {

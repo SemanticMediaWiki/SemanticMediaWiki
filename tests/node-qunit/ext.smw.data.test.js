@@ -16,11 +16,15 @@
 	var quantityType = '{"query":{"result":{"printrequests":[{"label":"","typeid":"_wpg","mode":2},{"label":"Area","typeid":"_qty","mode":1}],"results":{"Berlin":{"printouts":{"Area":[{"value":891.85,"unit":"km\\u00b2"}]},"fulltext":"Berlin","fullurl":"http:\\/\\/localhost\\/mw\\/index.php\\/Berlin","namespace":0,"exists":true}},"meta":{"hash":"f0f072f414c3e814c847aff1ba87dfb3","count":1,"offset":0}},"ask":{"conditions":"[[Area::+]]","parameters":{"limit":50,"offset":0,"format":"datatables","link":"all","headers":"show","mainlabel":"","intro":"","outro":"","searchlabel":"\\u2026 further results","default":"","class":"","theme":"bootstrap"},"printouts":["?Area"]}},"version":"0.2.5"}';
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.Data();
 		assert.ok( result instanceof Object, 'the smw.dataItem instance was accessible' );
 	} );
 
 	QUnit.test( 'comparison JSON.parse() vs. smw.Api.parse()', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 		var smwApi = new smw.Api();
 
@@ -32,6 +36,8 @@
 	} );
 
 	QUnit.test( 'smw.dataItem.property factory test', function ( assert ) {
+		assert.expect( 5 );
+
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( testString );
 
@@ -45,6 +51,8 @@
 	} );
 
 	QUnit.test( 'smw.dataItem.property subject less factory test', function ( assert ) {
+		assert.expect( 3 );
+
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( subjectLessResult );
 
@@ -60,6 +68,8 @@
 	} );
 
 	QUnit.test( 'smw.dataItem.wikiPage subject factory test', function ( assert ) {
+		assert.expect( 3 );
+
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( testString );
 
@@ -69,6 +79,8 @@
 	} );
 
 	QUnit.test( 'smw.dataItem.wikiPage multiValue factory test', function ( assert ) {
+		assert.expect( 4 );
+
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( testString );
 		var expectedMultiValue = [ 'File:FooBarfoo.png', 'Foo page' ];
@@ -86,6 +98,8 @@
 	} );
 
 	QUnit.test( 'smw.dataItem.time factory', function ( assert ) {
+		assert.expect( 4 );
+
 		var monthNames = mw.language.months.names;
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( testString );
@@ -114,6 +128,8 @@
 	} );
 
 	QUnit.test( 'smw.dataItem.uri factory', function ( assert ) {
+		assert.expect( 4 );
+
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( testString );
 
@@ -132,6 +148,8 @@
 	} );
 
 	QUnit.test( 'smw.dataItem.number factory', function ( assert ) {
+		assert.expect( 3 );
+
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( numberType );
 		var expectedNumber = [ 1220, 1320, 99 ];
@@ -152,6 +170,8 @@
 	} );
 
 	QUnit.test( 'smw.dataValue.quantity factory', function ( assert ) {
+		assert.expect( 2 );
+
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( quantityType );
 		var expected = { value: 891.85, unit: 'km²' };
@@ -171,6 +191,8 @@
 	} );
 
 	QUnit.test( 'smw.dataItem.unknown factory', function ( assert ) {
+		assert.expect( 4 );
+
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( unknownType );
 

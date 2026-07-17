@@ -14,6 +14,8 @@
 	var sampleResponseJson = '{"query":{"result":{"printrequests":[],"results":{},"meta":{"hash":"abc","count":0,"offset":0}},"ask":{"conditions":"[[Modification date::+]]","parameters":{},"printouts":[]}},"version":"0.1"}';
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		result = new smw.api();
@@ -24,6 +26,8 @@
 	} );
 
 	QUnit.test( 'toString sanity test', function ( assert ) {
+		assert.expect( 11 );
+
 		var result;
 
 		assert.throws( function () {
@@ -79,6 +83,8 @@
 	} );
 
 	QUnit.test( 'toString Ajax response test', function ( assert ) {
+		assert.expect( 4 );
+
 		var done = assert.async();
 
 		var ajaxStub = sinon.stub( $, 'ajax' ).callsFake( function ( options ) {
@@ -110,6 +116,8 @@
 	} );
 
 	QUnit.test( 'getLimit', function ( assert ) {
+		assert.expect( 1 );
+
 		var smwApi = new smw.api();
 		var queryObject = smwApi.parse( jsonString );
 
@@ -118,6 +126,8 @@
 	} );
 
 	QUnit.test( 'getLink', function ( assert ) {
+		assert.expect( 5 );
+
 		var result, context;
 
 		var smwApi = new smw.api();

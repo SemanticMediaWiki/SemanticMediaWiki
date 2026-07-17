@@ -15,6 +15,8 @@
 	];
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 2 );
+
 		var result = new smw.dataItem.number( 3 );
 		assert.ok( result instanceof Object, 'the smw.dataItem.number instance was accessible' );
 
@@ -24,11 +26,15 @@
 	} );
 
 	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.number( 3 );
 		assert.equal( result.getDIType(), '_num', 'returned _num' );
 	} );
 
 	QUnit.test( 'getNumber', function ( assert ) {
+		assert.expect( 3 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {

@@ -14,16 +14,22 @@
 	];
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.uri( 'http://foo.com/test/' );
 		assert.ok( result instanceof Object, 'the smw.dataItem.uri instance was accessible' );
 	} );
 
 	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.uri( 'http://foo.com/test/' );
 		assert.equal( result.getDIType(), '_uri', 'returned _uri' );
 	} );
 
 	QUnit.test( 'getUri', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {
@@ -33,6 +39,8 @@
 	} );
 
 	QUnit.test( 'getHtml', function ( assert ) {
+		assert.expect( 4 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {

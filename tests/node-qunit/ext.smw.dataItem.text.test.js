@@ -9,6 +9,8 @@
 	QUnit.module( 'ext.smw.dataItem.text', QUnit.newMwEnvironment() );
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 4 );
+
 		var result = new smw.dataItem.text( 'foo' );
 		assert.ok( result instanceof Object, 'the smw.dataItem.text instance was accessible' );
 
@@ -26,6 +28,8 @@
 	} );
 
 	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		result = new smw.dataItem.text( 'foo' );
@@ -36,6 +40,8 @@
 	} );
 
 	QUnit.test( 'getText', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 		var testString = 'Lorem ipsum dolor sit ...';
 

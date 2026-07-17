@@ -52,16 +52,22 @@
 	];
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.wikiPage( 'foo', 'bar' );
 		assert.ok( result instanceof Object, 'the smw.dataItem.wikiPage instance was accessible' );
 	} );
 
 	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.wikiPage( 'foo', 'bar' );
 		assert.equal( result.getDIType(), '_wpg', 'returned _wpg' );
 	} );
 
 	QUnit.test( 'getPrefixedText', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {
@@ -71,6 +77,8 @@
 	} );
 
 	QUnit.test( 'getText', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {
@@ -80,6 +88,8 @@
 	} );
 
 	QUnit.test( 'getUri', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {
@@ -89,6 +99,8 @@
 	} );
 
 	QUnit.test( 'getNamespaceId', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {
@@ -98,6 +110,8 @@
 	} );
 
 	QUnit.test( 'getTitle', function ( assert ) {
+		assert.expect( 2 );
+
 		var wikiPage = new smw.dataItem.wikiPage( 'File:foo', 'bar' );
 		var title = new mw.Title( 'File:foo' );
 
@@ -106,6 +120,8 @@
 	} );
 
 	QUnit.test( 'isKnown', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {
@@ -115,6 +131,8 @@
 	} );
 
 	QUnit.test( 'getHtml( false )', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {
@@ -124,6 +142,8 @@
 	} );
 
 	QUnit.test( 'getHtml( true )', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {

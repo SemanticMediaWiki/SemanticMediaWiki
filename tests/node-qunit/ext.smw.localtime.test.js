@@ -15,6 +15,8 @@
 	QUnit.module( 'ext.smw.localtime' );
 
 	QUnit.test( 'parseTimeCorrection variants', function ( assert ) {
+		assert.expect( 4 );
+
 		var lt = mw.smw.localtime;
 
 		assert.deepEqual( lt.parseTimeCorrection( 'Offset|120' ), { minutes: 120 } );
@@ -24,6 +26,8 @@
 	} );
 
 	QUnit.test( 'convert applies a fixed offset', function ( assert ) {
+		assert.expect( 1 );
+
 		var el = document.createElement( 'time' );
 		el.setAttribute( 'datetime', '2024-06-01T14:00:00Z' );
 		el.textContent = '1 June 2024 14:00';
@@ -35,6 +39,8 @@
 	} );
 
 	QUnit.test( 'convert applies a named zone', function ( assert ) {
+		assert.expect( 1 );
+
 		var el = document.createElement( 'time' );
 		el.setAttribute( 'datetime', '2024-06-01T14:00:00Z' );
 		el.textContent = '1 June 2024 14:00';
@@ -46,6 +52,8 @@
 	} );
 
 	QUnit.test( 'convert leaves an invalid anchor untouched', function ( assert ) {
+		assert.expect( 1 );
+
 		var el = document.createElement( 'time' );
 		el.setAttribute( 'datetime', 'not-a-date' );
 		el.textContent = 'unchanged';

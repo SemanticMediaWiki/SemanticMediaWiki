@@ -18,11 +18,15 @@
 	var sampleResponseJson = '{"query":{"result":{"printrequests":[],"results":{},"meta":{"hash":"abc","count":0,"offset":0}},"ask":{"conditions":"[[Modification date::+]]","parameters":{},"printouts":[]}},"version":"0.1"}';
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.api();
 		assert.ok( result instanceof Object, 'the api instance was accessible' );
 	} );
 
 	QUnit.test( 'fetch()', function ( assert ) {
+		assert.expect( 4 );
+
 		var done = assert.async();
 		var smwApi = new smw.api();
 
@@ -57,6 +61,8 @@
 	} );
 
 	QUnit.test( 'fetch() cache test', function ( assert ) {
+		assert.expect( 4 );
+
 		var smwApi = new smw.api();
 		var queryString = '[[Modification date::+]]|?Modification date|?Modification date|?Modification date|limit=100';
 

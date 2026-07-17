@@ -14,16 +14,22 @@
 	];
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.unknown( 'foo', '_bar' );
 		assert.ok( result instanceof Object, 'the smw.dataItem.unknown instance was accessible' );
 	} );
 
 	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.unknown( 'foo', '_bar' );
 		assert.equal( result.getDIType(), '_bar', 'returned "_bar"' );
 	} );
 
 	QUnit.test( 'getValue', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		testCases.forEach( function ( testCase ) {

@@ -13,16 +13,22 @@
 	QUnit.module( 'ext.smw.dataItem.property', QUnit.newMwEnvironment() );
 
 	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.property( 'Has test' );
 		assert.ok( result instanceof Object, 'the smw.dataItem.property instance was accessible' );
 	} );
 
 	QUnit.test( 'getLabel', function ( assert ) {
+		assert.expect( 1 );
+
 		var result = new smw.dataItem.property( 'Has test' );
 		assert.equal( result.getLabel(), 'Has test', 'a label was returned' );
 	} );
 
 	QUnit.test( 'getHtml', function ( assert ) {
+		assert.expect( 2 );
+
 		var result = new smw.dataItem.property( 'Has type' );
 		var href = mw.util.getUrl( 'Property:' + result.getLabel() );
 
