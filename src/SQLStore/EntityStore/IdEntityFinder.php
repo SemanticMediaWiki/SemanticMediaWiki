@@ -89,7 +89,7 @@ class IdEntityFinder {
 			$dataItem->setOption( 'sort', $row->smw_sort );
 		}
 
-		if ( !$this->idCacheManager->hasCache( $row->smw_hash ) ) {
+		if ( !$this->idCacheManager->hasCache( $this->store->getConnection( 'mw.db' )->unescape_bytea( $row->smw_hash ) ) ) {
 			$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
 
 			$this->idCacheManager->setCache(

@@ -49,6 +49,8 @@ class IdChangerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->connection->method( 'escape_bytea' )->willReturnArgument( 0 );
+
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'getPropertyTables' ] )

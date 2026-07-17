@@ -182,6 +182,10 @@ class ByGroupPropertyValuesLookup {
 			$pid = $entityIdManager->getSMWPropertyID( $property );
 		}
 
+		// smw_hash is stored as raw binary; escape each value so it is a valid
+		// bytea literal on Postgres (no-op on other backends).
+		$subjects = array_map( [ $connection, 'escape_bytea' ], $subjects );
+
 		if ( $isIdField ) {
 			$res = $connection->newSelectQueryBuilder()
 				->select( $fields )

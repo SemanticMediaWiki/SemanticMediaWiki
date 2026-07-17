@@ -56,13 +56,13 @@ class DisplayTitleLookup {
 				] )
 				->from( SQLStore::ID_TABLE )
 				->where( [
-					'smw_hash' => array_keys( $chunk )
+					'smw_hash' => array_map( [ $connection, 'escape_bytea' ], array_keys( $chunk ) )
 				] )
 				->caller( __METHOD__ )
 				->fetchResultSet();
 
 			foreach ( $rows as $row ) {
-				$hashes[$row->smw_hash] = $row->smw_id;
+				$hashes[$connection->unescape_bytea( $row->smw_hash )] = $row->smw_id;
 			}
 
 			foreach ( $chunk as $sha1 => $dataItem ) {

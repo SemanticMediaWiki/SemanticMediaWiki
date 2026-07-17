@@ -142,7 +142,7 @@ class HashField {
 		foreach ( $rows as $row ) {
 			$connection->newUpdateQueryBuilder()
 				->update( SQLStore::ID_TABLE )
-				->set( [ 'smw_hash' => hex2bin( $row->smw_hash ) ] )
+				->set( [ 'smw_hash' => hex2bin( (string)$row->smw_hash ) ] )
 				->where( [ 'smw_id' => $row->smw_id ] )
 				->caller( __METHOD__ )
 				->execute();

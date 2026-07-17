@@ -82,7 +82,7 @@ class AuxiliaryFields {
 			}
 
 			$cache->save( (string)$row->smw_id, $map );
-			$countMaps[$hashMap[$row->smw_hash]] = [ $row->smw_id => $map ];
+			$countMaps[$hashMap[(string)$this->connection->unescape_bytea( $row->smw_hash )]] = [ $row->smw_id => $map ];
 		}
 
 		return new FieldList( $countMaps );
@@ -138,7 +138,7 @@ class AuxiliaryFields {
 			->select( [ 't.smw_id', 't.smw_hash', 'p.smw_countmap' ] )
 			->from( SQLStore::ID_TABLE, 't' )
 			->join( SQLStore::ID_AUXILIARY_TABLE, 'p', 'p.smw_id=t.smw_id' )
-			->where( [ 't.smw_hash' => $hashes ] )
+			->where( [ 't.smw_hash' => array_map( [ $this->connection, 'escape_bytea' ], $hashes ) ] )
 			->caller( __METHOD__ )
 			->fetchResultSet();
 	}

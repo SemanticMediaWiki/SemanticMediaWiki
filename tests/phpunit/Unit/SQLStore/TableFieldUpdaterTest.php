@@ -41,7 +41,7 @@ class TableFieldUpdaterTest extends TestCase {
 			->getMock();
 
 		$collator->expects( $this->once() )
-			->method( 'getSortKey' )
+			->method( 'armoredSortKey' )
 			->willReturn( 'Foo' );
 
 		$capturedTables = [];
@@ -191,6 +191,7 @@ class TableFieldUpdaterTest extends TestCase {
 			->getMock();
 
 		$connection->method( 'newUpdateQueryBuilder' )->willReturn( $updateBuilder );
+		$connection->method( 'escape_bytea' )->willReturnArgument( 0 );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

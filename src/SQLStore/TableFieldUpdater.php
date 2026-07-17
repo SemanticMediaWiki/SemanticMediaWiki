@@ -65,7 +65,7 @@ class TableFieldUpdater {
 			->update( SQLStore::ID_TABLE )
 			->set( [
 				'smw_sortkey' => mb_strcut( $searchKey, 0, 255 ),
-				'smw_sort'    => substr( $this->collator->getSortKey( $searchKey ), 0, 255 ),
+				'smw_sort'    => substr( $this->collator->armoredSortKey( $searchKey ), 0, 255 ),
 				'smw_touched' => $connection->timestamp()
 			] )
 			->where( [ 'smw_id' => $id ] )
@@ -115,7 +115,7 @@ class TableFieldUpdater {
 			->update( SQLStore::ID_TABLE )
 			->set( [
 				'smw_iw' => $iw,
-				'smw_hash' => $hash
+				'smw_hash' => $connection->escape_bytea( $hash )
 			] )
 			->where( [
 				'smw_id' => $sid

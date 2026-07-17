@@ -81,6 +81,8 @@ class CacheWarmerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$connection->method( 'escape_bytea' )->willReturnArgument( 0 );
+
 		$whereConditions = [];
 		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ], $whereConditions );
 
@@ -159,6 +161,8 @@ class CacheWarmerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$connection->method( 'escape_bytea' )->willReturnArgument( 0 );
+
 		$whereConditions = [];
 		$qb = $this->createMockSelectQueryBuilder( [ (object)$row ], $whereConditions );
 
@@ -200,6 +204,8 @@ class CacheWarmerTest extends TestCase {
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$connection->method( 'escape_bytea' )->willReturnArgument( 0 );
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
