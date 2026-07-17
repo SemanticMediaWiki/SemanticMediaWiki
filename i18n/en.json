@@ -228,6 +228,7 @@
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|use|uses}})",
 	"smw_purge": "Refresh",
 	"smw-purge-update-dependencies": "This page is being reloaded to ensure all information is up to date. This may take a moment and may happen more than once.",
+	"smw-purge-update-dependencies-timeout": "Semantic MediaWiki is still processing updates for this page. This is taking longer than expected; the information shown may not be fully up to date yet. Performing a manual refresh later may help.",
 	"smw-purge-failed": "Semantic MediaWiki tried to purge the page but failed",
 	"types": "Types",
 	"smw_types_docu": "List of [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes available datatypes] with each [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] representing a unique set of attributes to describe a value in terms of storage and display characteristics that are hereditary to an assigned property.",

@@ -44,6 +44,44 @@ class LinksEncoderTest extends TestCase {
 	}
 
 	/**
+	 * @dataProvider neutralizeAnnotationProvider
+	 */
+	public function testNeutralizeAnnotation( string $text, string $expected ) {
+		$this->assertSame(
+			$expected,
+			LinksEncoder::neutralizeAnnotation( $text )
+		);
+	}
+
+	/**
+	 * @return array<string,array{string,string}>
+	 */
+	public function neutralizeAnnotationProvider(): array {
+		return [
+			'annotation reduces to its value' => [ '[[Bar::Baz]]', 'Baz' ],
+			'annotation reduces to its caption' => [ '[[Bar::Baz|label]]', 'label' ],
+			'annotation within text' => [ 'see [[Age::42]] here', 'see 42 here' ],
+			'subobject annotation' => [ '[[Bar:=Baz]]', 'Baz' ],
+			'annotation off switch is dropped' => [ '[[SMW::off]]', '' ],
+			'annotation on switch is dropped' => [ '[[SMW::on]]', '' ],
+			// a value that is an annotation in its own right is reduced too
+			'nested annotation' => [ '[[Foo::[[Bar::Baz]]]]', 'Baz' ],
+			'deeply nested annotation' => [ '[[A::[[B::[[C::D]]]]]]', 'D' ],
+			// removeAnnotation() leaves this shape intact (#1747), so the
+			// brackets are encoded instead of reduced
+			'annotation that is not reduced is obfuscated' => [ '[[Bar|x::Baz]]', '&#91;&#91;Bar|x::Baz]]' ],
+			// an annotation cannot be smuggled past the match by encoding it
+			'encoded annotation' => [ '%5B%5BBar::Baz%5D%5D', 'Baz' ],
+			'link is left alone' => [ '[[Some page]]', '[[Some page]]' ],
+			'piped link is left alone' => [ '[[Some page|label]]', '[[Some page|label]]' ],
+			'namespaced link is left alone' => [ '[[Category:Foo]]', '[[Category:Foo]]' ],
+			'external link is left alone' => [ '[http://example.org e]', '[http://example.org e]' ],
+			'text is left alone' => [ 'plain text', 'plain text' ],
+			'empty text' => [ '', '' ],
+		];
+	}
+
+	/**
 	 * @dataProvider stripTextWithAnnotationProvider
 	 */
 	public function testStrip( $text, $expectedRemoval, $expectedObscuration ) {
