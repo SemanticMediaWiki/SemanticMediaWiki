@@ -82,7 +82,7 @@ class IdChanger {
 				'smw_subobject' => $row->smw_subobject,
 				'smw_sortkey' => $row->smw_sortkey,
 				'smw_sort' => $row->smw_sort,
-				'smw_hash' => IdCacheManager::computeSha1( $hash )
+				'smw_hash' => $connection->escape_bytea( IdCacheManager::computeSha1( $hash ) )
 			] )
 			->caller( __METHOD__ )
 			->execute();

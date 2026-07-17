@@ -76,6 +76,13 @@ class PredefinedProperties {
 	private function doUpdate( Property $property, $id ): void {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
+		// `escape_bytea`/`unescape_bytea` live on SMW's connection wrapper, not
+		// on the raw `DB_PRIMARY` handle used for the queries here. They are
+		// connection-independent (a pure `\x`+hex transform on Postgres, a
+		// no-op elsewhere), so a separate wrapper handle can safely encode the
+		// binary `smw_hash` value.
+		$byteaConnection = $this->store->getConnection( 'mw.db' );
+
 		// Try to find the ID for a non-fixed predefined property
 		if ( $id === null ) {
 			$row = $connection->newSelectQueryBuilder()
@@ -123,6 +130,11 @@ class PredefinedProperties {
 				'smw_rev' => null,
 				'smw_touched' => $connection->timestamp( '1970-01-01 00:00:00' )
 			];
+		} else {
+			// smw_hash is stored as raw binary; on Postgres a read returns an
+			// escaped bytea literal, so normalise it back to raw binary before
+			// it is re-escaped on write below.
+			$row->smw_hash = $byteaConnection->unescape_bytea( $row->smw_hash );
 		}
 
 		$connection->newReplaceQueryBuilder()
@@ -135,9 +147,9 @@ class PredefinedProperties {
 				'smw_iw' => $iw,
 				'smw_subobject' => '',
 				'smw_sortkey' => $label,
-				'smw_sort' => Collator::singleton()->getSortKey( $label ?? '' ),
+				'smw_sort' => Collator::singleton()->armoredSortKey( $label ?? '' ),
 				'smw_proptable_hash' => $row->smw_proptable_hash,
-				'smw_hash' => $row->smw_hash,
+				'smw_hash' => $byteaConnection->escape_bytea( $row->smw_hash ),
 				'smw_rev' => $row->smw_rev,
 				'smw_touched' => $row->smw_touched
 			] )

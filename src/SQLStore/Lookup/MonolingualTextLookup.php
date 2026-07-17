@@ -247,11 +247,11 @@ class MonolingualTextLookup {
 
 		// Is it a Monolingual representation?
 		if ( $subject->isSubEntityOf( SMW_SUBENTITY_MONOLINGUAL ) ) {
-			$qb->where( [ 'o0.smw_hash' => $subject->getSha1() ] );
+			$qb->where( [ 'o0.smw_hash' => $connection->escape_bytea( $subject->getSha1() ) ] );
 		} else {
 			// We don't have a _ML entity reference hence we add a JOIN to find
 			// such entity
-			$qb->where( [ 'o1.smw_hash' => $subject->getSha1() ] );
+			$qb->where( [ 'o1.smw_hash' => $connection->escape_bytea( $subject->getSha1() ) ] );
 
 			$qb->join( SQLStore::ID_TABLE, 'o1', 't0.s_id=o1.smw_id' );
 		}

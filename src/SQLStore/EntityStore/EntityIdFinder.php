@@ -134,7 +134,7 @@ class EntityIdFinder {
 			}
 
 			// Prevent any irregularities caused by a delayed, or redirect update
-			if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
+			if ( $this->connection->unescape_bytea( $row->smw_hash ) !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
 				$this->deferHashUpdate( $id, $sha1 );
 			}
 		} else { // inconsistent DB; just recover somehow
@@ -214,7 +214,7 @@ class EntityIdFinder {
 			}
 
 			// Prevent any irregularities caused by a delayed, or redirect update
-			if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
+			if ( $this->connection->unescape_bytea( $row->smw_hash ) !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
 				$this->deferHashUpdate( $id, $sha1 );
 			}
 		} else {
@@ -285,7 +285,7 @@ class EntityIdFinder {
 		$update = static function () use ( $connection, $id, $sha1, $caller ): void {
 			$connection->newUpdateQueryBuilder()
 				->update( SQLStore::ID_TABLE )
-				->set( [ 'smw_hash' => $sha1 ] )
+				->set( [ 'smw_hash' => $connection->escape_bytea( $sha1 ) ] )
 				->where( [ 'smw_id' => $id ] )
 				->caller( $caller )
 				->execute();

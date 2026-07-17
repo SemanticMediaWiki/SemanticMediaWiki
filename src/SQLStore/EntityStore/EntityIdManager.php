@@ -631,8 +631,8 @@ class EntityIdManager {
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey,
-					'smw_sort' => $collator->getSortKey( $sortkey ),
-					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] ),
+					'smw_sort' => $collator->armoredSortKey( $sortkey ),
+					'smw_hash' => $db->escape_bytea( $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] ) ),
 					'smw_touched' => $db->timestamp(),
 				] )
 				->caller( __METHOD__ )
@@ -734,7 +734,7 @@ class EntityIdManager {
 
 		if ( $title instanceof WikiPage ) {
 			$cond = [
-				'smw_hash' => $title->getSha1(),
+				'smw_hash' => $connection->escape_bytea( $title->getSha1() ),
 			];
 		} elseif ( is_int( $title ) ) {
 			$cond = [

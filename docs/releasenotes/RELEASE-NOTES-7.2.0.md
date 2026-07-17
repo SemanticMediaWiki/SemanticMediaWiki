@@ -22,10 +22,13 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed long-running maintenance scripts (such as `rebuildData`, `rebuildFulltextSearchTable` and `dumpRDF`) exhausting memory on large wikis; MediaWiki's buffered stats samples, which accumulate in process memory for every processed entity and have no flush point on the command line, are now flushed periodically during the rebuild loops ([#7036](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7036))
 * Fixed maintenance scripts and Elasticsearch index rebuilds aborting with a `TypeError`, and faceted search returning incorrect counts, when an entity's stored sort-sequence or value-count map could not be deserialized (for example after the wiki's `$wgSecretKey` was changed); such a map is now treated as empty instead of crashing or miscounting ([#7043](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7043))
 * Fixed a JavaScript error when rendering a property as a link on the client side; the code called `mw.util.wikiGetlink`, which has been removed from MediaWiki core, and now uses `mw.util.getUrl` ([#7047](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7047))
+* Fixed Semantic MediaWiki being unusable on PostgreSQL since 7.0.0, where `update.php`, saving pages and running queries aborted with a `pg_escape_string()` error ([#7049](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7049))
 
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.
+
+Wikis that set `$smwgEntityCollation` to a `uca-*` value should run `php extensions/SemanticMediaWiki/maintenance/updateEntityCollation.php` once after upgrading so that previously stored sort keys use the new, consistent encoding. Wikis using the default `identity` collation need no migration.
 
 **Get the new version via Composer:**
 

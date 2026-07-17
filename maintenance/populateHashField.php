@@ -294,7 +294,7 @@ class populateHashField extends Maintenance {
 			$connection->newUpdateQueryBuilder()
 				->update( SQLStore::ID_TABLE )
 				->set( [
-					'smw_hash' => $hash
+					'smw_hash' => $connection->escape_bytea( $hash )
 				] )
 				->where( [
 					'smw_id' => $row->smw_id

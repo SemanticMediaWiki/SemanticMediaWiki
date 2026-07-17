@@ -78,6 +78,20 @@ class Collator {
 	}
 
 	/**
+	 * Storage-safe sort key: the collation sort key of `$text`, armored so the
+	 * result is always valid UTF-8 (see `armor`).
+	 *
+	 * For `uca-*` collations the raw sort key is a binary blob that cannot be
+	 * stored in a text column such as Postgres `TEXT` (#7049); for the other
+	 * collations `armor` is a no-op and the value is returned unchanged.
+	 *
+	 * @since 7.2.0
+	 */
+	public function armoredSortKey( string $text ): string {
+		return $this->armor( $this->getSortKey( $text ) );
+	}
+
+	/**
 	 * @since 3.0
 	 */
 	public function getFirstLetter( string $text ): string {

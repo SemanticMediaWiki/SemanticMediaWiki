@@ -111,7 +111,7 @@ class DependencyLinksValidator {
 			->join( SQLStore::ID_TABLE, 'p', [ 's_id=p.smw_id' ] )
 			->join( SQLStore::ID_TABLE, 'v', [ 'o_id=v.smw_id' ] )
 			->where( [
-				'p.smw_hash' => $subject->getSha1(),
+				'p.smw_hash' => $connection->escape_bytea( $subject->getSha1() ),
 				$connection->expr( 'p.smw_iw', '!=', SMW_SQL3_SMWIW_OUTDATED ),
 				$connection->expr( 'p.smw_iw', '!=', SMW_SQL3_SMWDELETEIW ),
 			] )

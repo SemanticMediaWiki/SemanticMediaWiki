@@ -57,6 +57,9 @@ class AuxiliaryFieldsTest extends TestCase {
 			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
 			->willReturn( $this->cache );
 
+		$this->connection->method( 'escape_bytea' )->willReturnArgument( 0 );
+		$this->connection->method( 'unescape_bytea' )->willReturnArgument( 0 );
+
 		$subjects = [ WikiPage::newFromText( 'Foo' ) ];
 
 		$row = [
@@ -132,7 +135,8 @@ class AuxiliaryFieldsTest extends TestCase {
 	public function testPrefetchFieldListTreatsEmptyByteaAsEmptyMapWithoutWarning() {
 		// PostgreSQL's unescape_bytea() returns '' (not null) for a NULL column,
 		// so an empty count map must be recognised as empty rather than run
-		// through uncompress() and reported as a deserialization failure.
+		// through uncompress() and reported as a deserialization failure. The
+		// non-null smw_hash in the same row still decodes to its own value.
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
 			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
@@ -140,7 +144,7 @@ class AuxiliaryFieldsTest extends TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'unescape_bytea' )
-			->willReturn( '' );
+			->willReturnCallback( static fn ( $value ) => $value === null ? '' : $value );
 
 		$subjects = [ WikiPage::newFromText( 'Foo' ) ];
 

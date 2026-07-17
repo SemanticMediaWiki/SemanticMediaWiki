@@ -150,7 +150,7 @@ class CacheWarmer {
 				'smw_sort'
 			] )
 			->from( SQLStore::ID_TABLE )
-			->where( [ 'smw_hash' => $hashList ] )
+			->where( [ 'smw_hash' => array_map( [ $connection, 'escape_bytea' ], $hashList ) ] )
 			->caller( __METHOD__ )
 			->fetchResultSet();
 		foreach ( $rows as $row ) {
