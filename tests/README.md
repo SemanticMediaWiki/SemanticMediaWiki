@@ -76,7 +76,7 @@ For a short introduction on "How to write a test for Semantic MediaWiki", have a
 │	│	└─ ...           # Subdirectories mirror the source tree
 │	└─ Utils             # Shared test utilities and validators
 │
-└─ /qunit                # JavaScript (QUnit) tests
+└─ /node-qunit           # JavaScript (QUnit) tests, run under Node.js
 ```
 
 ### Unit tests
@@ -122,8 +122,15 @@ For details, please have a look at the [benchmark guide](https://github.com/Sema
 
 # JavaScript (QUnit)
 
-Running qunit tests in connection with MediaWiki requires to execute
-[Special:JavaScriptTest][mw-qunit-testing].
+JavaScript tests live in `tests/node-qunit/` and run under Node.js with
+[QUnit](https://qunitjs.com/) in a jsdom + jQuery environment (see
+`tests/node-qunit/setup.js`), so they execute in CI without a MediaWiki or
+browser stack. Run them with:
+
+    npm install
+    npm test
+
+Coverage (nyc, clover format) is produced by `npm run test-coverage`.
 
 # Miscellaneous
 * [Writing testable code](https://semantic-mediawiki.org/wiki/Help:Writing_testable_code)
@@ -133,6 +140,5 @@ Running qunit tests in connection with MediaWiki requires to execute
 [phpunit]: https://docs.phpunit.de/en/9.6/
 [smw]: https://www.semantic-mediawiki.org/wiki/PHPUnit_tests
 [mw-phpunit-testing]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing
-[mw-qunit-testing]: https://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing
 [aaa]: http://c2.com/cgi/wiki?ArrangeActAssert
 [JSONScript]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/README.md

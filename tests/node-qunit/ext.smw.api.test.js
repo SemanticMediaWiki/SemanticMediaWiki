@@ -6,7 +6,7 @@
  * (one of the pre-existing failures surfaced by #7045). $.ajax is stubbed
  * here so fetch()'s caching/converter logic is exercised without a network
  * dependency; the "vs. $.ajax" comparison test (a 2013-era timing curiosity,
- * not a behavioural assertion) is dropped, see tests/qunit/README.md.
+ * not a behavioural assertion) is dropped.
  *
  * @licence GNU GPL v2 or later
  */
