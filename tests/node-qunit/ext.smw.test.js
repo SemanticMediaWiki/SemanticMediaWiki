@@ -1,6 +1,10 @@
 /**
- * Ported from tests/qunit/smw/ext.smw.test.js (#7045); the async/eachAsync
- * subtest is dropped here, see tests/qunit/README.md.
+ * Ported from tests/qunit/smw/ext.smw.test.js (#7045).
+ *
+ * The original 'async' subtest's async-mode assertions require the
+ * browser-only ext.jquery.async ($.fn.eachAsync) plugin, which is not
+ * available under node+jsdom; those are omitted. The callback guard and the
+ * synchronous ($.fn.each) dispatch path are ported below.
  *
  * @licence GNU GPL v2 or later
  */
@@ -57,6 +61,31 @@
 
 		assert.equal( $.type( smw.util.namespace.getName( 'property' ) ), 'string', '.getName( "property" ) returned a string' );
 		assert.equal( smw.util.namespace.getName( 'lula' ), undefined, '.getName( "lula" ) returned undefined for an unknown key' );
+	} );
+
+	QUnit.test( 'async', function ( assert ) {
+		// $.fn.eachAsync (the browser-only ext.jquery.async module) is not
+		// available under node+jsdom, so isEnabled() is false and load()
+		// takes its synchronous each() branch. The original in-browser test's
+		// async-mode assertions required the plugin and are omitted; the
+		// callback guard and the synchronous dispatch are covered here.
+		assert.strictEqual( smw.async.isEnabled(), false, '.isEnabled() is false without the eachAsync plugin' );
+
+		assert.throws( function () {
+			smw.async.load( $( '<div></div>' ) );
+		}, '.load() throws when no callback is provided' );
+
+		var $noArg = $( '<div></div>' );
+		smw.async.load( $noArg, function () {
+			$( this ).append( '<span class="async-marker"></span>' );
+		} );
+		assert.strictEqual( $noArg.find( '.async-marker' ).length, 1, '.load() executed the callback over the context' );
+
+		var $withArg = $( '<div></div>' );
+		smw.async.load( $withArg, function ( id ) {
+			$( this ).append( '<span id="' + id + '"></span>' );
+		}, 'async-arg' );
+		assert.strictEqual( $withArg.find( '#async-arg' ).length, 1, '.load() forwarded the extra argument to the callback' );
 	} );
 
 	QUnit.test( 'formats', function ( assert ) {
