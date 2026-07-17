@@ -7,6 +7,9 @@
 	'use strict';
 
 	QUnit.module( 'ext.smw.util.purge', QUnit.newMwEnvironment( {
+		config: {
+			wgPageName: 'Foo'
+		},
 		afterEach: function () {
 			mw.smw.purge.clearRetryState( 'Foo' );
 		}
@@ -161,7 +164,7 @@
 
 		mw.smw.purge.run( $context, true );
 
-		setTimeout( function () {
+		originalSetTimeout( function () {
 			assert.strictEqual( capturedDelay, 1000, 'first auto-retry uses the initial backoff delay' );
 			assert.strictEqual( reloadCalled, true, 'reload still happens after the delay' );
 
@@ -173,6 +176,53 @@
 			window.setTimeout = originalSetTimeout;
 			done();
 		}, 10 );
+	} );
+
+	QUnit.test( 'run() auto-triggered stops reloading when the scheduled delay would exceed the ceiling', function ( assert ) {
+		var done = assert.async();
+		var reloadCalled = false;
+		var notifyCalled = false;
+		var originalReload = mw.smw.purge.reload;
+		var originalNotify = mw.notify;
+		var originalApi = mw.Api;
+
+		mw.smw.purge.reload = function () {
+			reloadCalled = true;
+		};
+
+		mw.notify = function ( msg, opt ) {
+			if ( opt && opt.type === 'info' ) {
+				notifyCalled = true;
+			}
+		};
+
+		mw.Api = function () {};
+		mw.Api.prototype.post = function () {
+			return $.Deferred().resolve( {} ).promise();
+		};
+
+		// 1 attempt so far => next backoff is computeBackoff( 1 ) = 3000ms.
+		// startTime far enough in the past that only ~1000ms of budget is
+		// left, less than the scheduled 3000ms delay: eligible at request
+		// time, but the reload itself would land past the ceiling.
+		mw.smw.purge.setRetryState( 'Foo', { attempts: 1, startTime: Date.now() - 119000 } );
+
+		var $context = $( '<div>' ).addClass( 'page-purge' ).data( 'title', 'Foo' );
+
+		mw.smw.purge.run( $context, true );
+
+		setTimeout( function () {
+			assert.strictEqual( reloadCalled, false, 'no reload scheduled past the ceiling' );
+			assert.strictEqual( notifyCalled, true, 'a low-key notice is shown instead' );
+
+			var state = mw.smw.purge.getRetryState( 'Foo' );
+			assert.strictEqual( state.attempts, 0, 'retry state was reset' );
+
+			mw.smw.purge.reload = originalReload;
+			mw.notify = originalNotify;
+			mw.Api = originalApi;
+			done();
+		}, 0 );
 	} );
 
 	QUnit.test( 'run() auto-triggered stops reloading once the retry budget is exceeded', function ( assert ) {
@@ -205,6 +255,43 @@
 
 		mw.smw.purge.reload = originalReload;
 		mw.notify = originalNotify;
+	} );
+
+	QUnit.test( 'init() clears stale retry state once the page-purge marker is gone', function ( assert ) {
+		mw.smw.purge.setRetryState( 'Foo', { attempts: 3, startTime: Date.now() - 90000 } );
+
+		var $content = $( '<div>' );
+
+		mw.smw.purge.init( $content );
+
+		var state = mw.smw.purge.getRetryState( 'Foo' );
+		assert.strictEqual( state.attempts, 0, 'stale attempts were dropped' );
+	} );
+
+	QUnit.test( 'init() leaves retry state untouched while a page-purge marker is present', function ( assert ) {
+		var originalReload = mw.smw.purge.reload;
+		var originalApi = mw.Api;
+
+		mw.smw.purge.reload = function () {};
+		mw.Api = function () {};
+		mw.Api.prototype.post = function () {
+			// Never resolves; only init()'s synchronous effects are under test.
+			return $.Deferred().promise();
+		};
+
+		mw.smw.purge.setRetryState( 'Foo', { attempts: 3, startTime: Date.now() - 90000 } );
+
+		var $content = $( '<div>' ).append(
+			$( '<div>' ).addClass( 'page-purge' ).data( 'title', 'Foo' )
+		);
+
+		mw.smw.purge.init( $content );
+
+		var state = mw.smw.purge.getRetryState( 'Foo' );
+		assert.strictEqual( state.attempts, 3, 'existing retry state is preserved, not cleared' );
+
+		mw.smw.purge.reload = originalReload;
+		mw.Api = originalApi;
 	} );
 
 }() );

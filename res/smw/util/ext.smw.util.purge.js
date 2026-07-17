@@ -142,6 +142,15 @@
 
 			new mw.Api().post( postArgs ).then( function () {
 				if ( isAutoTriggered ) {
+					var elapsed = Date.now() - attempt.state.startTime;
+					var remaining = MAX_RETRY_MS - elapsed;
+
+					if ( remaining <= attempt.delay ) {
+						purge.clearRetryState( title );
+						mw.notify( mw.msg( 'smw-purge-update-dependencies-timeout' ), { type: 'info', autoHide: false } );
+						return;
+					}
+
 					purge.setRetryState( title, {
 						attempts: attempt.state.attempts + 1,
 						startTime: attempt.state.startTime
@@ -156,24 +165,41 @@
 			}, function () {
 				mw.notify( mw.msg( 'smw-purge-failed' ), { type: 'error' } );
 			} );
+		},
+
+		/**
+		 * @param {jQuery} $content
+		 */
+		init: function ( $content ) {
+			// JS is loaded, now remove the "soft" disabled functionality
+			$content.find( '#ca-purge' ).removeClass( 'is-disabled' );
+
+			// Observed on the chameleon skin
+			$content.find( '#ca-purge a' ).removeClass( 'is-disabled' );
+
+			$content.find( '#ca-purge a, .purge' ).on( 'click', function ( e ) {
+				purge.run( $( this ), false );
+				e.preventDefault();
+			} );
+
+			var $pagePurge = $content.find( '.page-purge' );
+
+			if ( !$pagePurge.length ) {
+				// Dependencies are current again; drop any stale retry state so
+				// a later, unrelated outdated-dependency event for this title
+				// starts with a fresh retry window instead of inheriting an old
+				// startTime.
+				purge.clearRetryState( mw.config.get( 'wgPageName' ) );
+			}
+
+			$pagePurge.each( function () {
+				purge.run( $( this ), true );
+			} );
 		}
 	};
 
 	mw.smw.purge = purge;
 
-	// JS is loaded, now remove the "soft" disabled functionality
-	$( '#ca-purge' ).removeClass( 'is-disabled' );
-
-	// Observed on the chameleon skin
-	$( '#ca-purge a' ).removeClass( 'is-disabled' );
-
-	$( '#ca-purge a, .purge' ).on( 'click', function ( e ) {
-		purge.run( $( this ), false );
-		e.preventDefault();
-	} );
-
-	$( '.page-purge' ).each( function () {
-		purge.run( $( this ), true );
-	} );
+	purge.init( $( document ) );
 
 }( jQuery, mediaWiki ) );
