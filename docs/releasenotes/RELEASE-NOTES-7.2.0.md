@@ -33,6 +33,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed a JavaScript error when rendering a property as a link on the client side; the code called `mw.util.wikiGetlink`, which has been removed from MediaWiki core, and now uses `mw.util.getUrl` ([#7047](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7047))
 * Fixed Semantic MediaWiki being unusable on PostgreSQL since 7.0.0, where `update.php`, saving pages and running queries aborted with a `pg_escape_string()` error ([#7049](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7049))
 * Fixed an incorrect `smw_hash` being stored when moving an entity in a non-zero namespace (such as a category or property), which could break hash-based lookups for the moved entity ([#7051](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7051))
+* Fixed `Special:Ask` remote and raw requests (those using the `request_type` parameter) aborting with a fatal error on PHP 8.5 ([#7052](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7052))
 
 ## Upgrading
 
