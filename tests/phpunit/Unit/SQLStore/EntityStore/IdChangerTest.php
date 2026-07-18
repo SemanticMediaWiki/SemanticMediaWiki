@@ -168,6 +168,78 @@ class IdChangerTest extends TestCase {
 		);
 	}
 
+	public function testMove_UsesNamespaceForHash() {
+		// smw_hash must be recomputed from the entity's namespace. Using
+		// (int)$row->smw_title (which is 0 for any non-numeric title) instead
+		// would store a wrong hash for entities in a non-zero namespace and
+		// break hash-based lookups after a move.
+		$namespace = NS_CATEGORY;
+		$row = [
+			'smw_id' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => $namespace,
+			'smw_iw' => '',
+			'smw_subobject' => '',
+			'smw_sortkey' => 'FOO',
+			'smw_sort' => 'FOO',
+			'smw_hash' => sha1( json_encode( [ 'Foo', $namespace, '', '' ] ), true )
+		];
+
+		$selectBuilder = $this->createMockSelectQueryBuilder( [ (object)$row ] );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $selectBuilder );
+
+		$this->connection->expects( $this->once() )
+			->method( 'nextSequenceValue' )
+			->willReturn( 1 );
+
+		$insertTables = $insertRows = [];
+		$insertBuilder = $this->createMockInsertQueryBuilder( $insertTables, $insertRows );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $insertBuilder );
+
+		$this->connection->expects( $this->once() )
+			->method( 'insertId' )
+			->willReturn( 9999 );
+
+		$deleteTables = $deleteWheres = [];
+		$deleteBuilder = $this->createMockDeleteQueryBuilder( $deleteTables, $deleteWheres );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $deleteBuilder );
+
+		$updateBuilder = $this->createMockUpdateQueryBuilder();
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $updateBuilder );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->willReturnOnConsecutiveCalls( [] );
+
+		$this->jobFactory->expects( $this->once() )
+			->method( 'newUpdateJob' )
+			->willReturn( $this->updateJob );
+
+		$instance = new IdChanger(
+			$this->store,
+			$this->jobFactory
+		);
+
+		$instance->move( 42, 0 );
+
+		$this->assertSame(
+			[ [ 'smw_id' => 1 ] + $row ],
+			$insertRows
+		);
+	}
+
 	public function testMove_Target() {
 		$row = [
 			'smw_id' => 42,

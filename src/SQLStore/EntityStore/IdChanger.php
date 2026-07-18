@@ -67,7 +67,7 @@ class IdChanger {
 
 		$hash = [
 			$row->smw_title,
-			(int)$row->smw_title,
+			(int)$row->smw_namespace,
 			$row->smw_iw,
 			$row->smw_subobject
 		];
