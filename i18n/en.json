@@ -75,6 +75,7 @@
 	"validator-type-class-SMWParamSource": "text",
 	"smw-paramdesc-limit": "The maximum number of results to return",
 	"smw-paramdesc-offset": "The offset of the first result",
+	"smw-paramdesc-cursor": "The cursor token as provided by a previous page of results, used instead of \"offset\" to continue the pagination",
 	"smw-paramdesc-headers": "Display the headers/property names",
 	"smw-paramdesc-mainlabel": "The label to give to the main page name",
 	"smw-paramdesc-link": "Show values as links",

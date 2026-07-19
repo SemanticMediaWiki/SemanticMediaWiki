@@ -98,6 +98,7 @@
 	"validator-type-class-SMWParamSource": "This is the description of the \"source\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].\n{{Identical|Text}}",
 	"smw-paramdesc-limit": "This is the description of the \"limit\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].",
 	"smw-paramdesc-offset": "This is the description of the \"offset\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].",
+	"smw-paramdesc-cursor": "This is the description of the \"cursor\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].",
 	"smw-paramdesc-headers": "This is the description of the \"headers\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].",
 	"smw-paramdesc-mainlabel": "This is the description of the \"mainlabel\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].",
 	"smw-paramdesc-link": "This is the description of the \"link\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].",
