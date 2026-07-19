@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.0
 
+Released on December 31, 2007.
+
 ## Changes in SMW1.0 as compared to SMW0.7
 
 * Simplified semantic annotations: just one kind of annotation ("Property").

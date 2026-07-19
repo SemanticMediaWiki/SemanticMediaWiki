@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.5.5
 
+Released on January 12, 2011.
+
 * Support for Turtle syntax (e.g. use "syntax=turtle" as a parameter to 
   when calling Special:ExportRDF.
 * New query format "rdf" to export query results to RDF; the "syntax" 

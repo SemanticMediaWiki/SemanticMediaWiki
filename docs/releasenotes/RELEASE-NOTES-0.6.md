@@ -1,5 +1,7 @@
 # Semantic MediaWiki 0.6
 
+Released on November 18, 2006.
+
 * New Special:Ask for directly browsing query results and for testing queries.
 * New output format "timeline" for inline queries that deal with dates. Available
   parameters are: timelinestart (name of start date attribute), timelineend (name

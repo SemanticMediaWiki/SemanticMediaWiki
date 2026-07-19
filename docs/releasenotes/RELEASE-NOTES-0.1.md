@@ -1,5 +1,7 @@
 # Semantic MediaWiki 0.1
 
+Released on September 30, 2005.
+
 Changes by mak (0.1b, 1 Dec 2005):
 * Reworked internal data representation. All information now is
   properly encoded in URIs and decoded for display. This is an

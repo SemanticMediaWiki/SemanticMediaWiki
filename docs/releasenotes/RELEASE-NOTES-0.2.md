@@ -1,5 +1,7 @@
 # Semantic MediaWiki 0.2
 
+Released on December 4, 2005.
+
 Changes by mak (0.2c, 9 Mar 2006):
 
 * added basic language support functionality

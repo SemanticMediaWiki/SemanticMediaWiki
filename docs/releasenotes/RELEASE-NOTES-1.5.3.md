@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.5.3
 
+Released on November 4, 2010.
+
 * Compatibility with MediaWiki 1.17
 * Added << and >> comparators for strict comparisons. Also added ≤ and ≥ for
   non-strict comparisons. And introduced $smwStrictComparators setting that

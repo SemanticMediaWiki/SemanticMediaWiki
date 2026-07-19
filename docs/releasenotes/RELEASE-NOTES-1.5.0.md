@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.5.0
 
+Released on March 7, 2010.
+
 * The former multi-valued/n-ary properties are now supported by a dedicated
   datatype Record. Wikis that use the old style of these properties need to
   update affected property pages as described at

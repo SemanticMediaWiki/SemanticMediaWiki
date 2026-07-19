@@ -1,5 +1,7 @@
 # Semantic MediaWiki 0.7
 
+Released on April 28, 2007.
+
 * New browsing interface for semantic data: Special:Browse
 * Improved simple searching interfaces, making the old Special:Searchtriple
   obsolete by various new interlinked special pages.

@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.3
 
+Released on September 7, 2008.
+
 See http://semantic-mediawiki.org/wiki/SMW_1.3
 
 * New design of Special:Browse: more concise and less cluttered

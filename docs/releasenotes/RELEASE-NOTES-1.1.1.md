@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.1.1
 
+Released on April 24, 2008.
+
 * Improved iCalendar support: more efficient processing, better heuristic
   for giving dates, formatting bugfixes
 * Bugfix for Special:SearchByProperty (form-based search failed)

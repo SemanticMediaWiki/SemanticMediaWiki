@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.2.1
 
+Released on August 8, 2008.
+
 See http://semantic-mediawiki.org/wiki/SMW_1.2.1
 
 * New sub-property display for property pages

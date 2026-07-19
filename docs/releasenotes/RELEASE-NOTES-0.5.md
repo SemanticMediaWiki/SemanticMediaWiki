@@ -1,5 +1,7 @@
 # Semantic MediaWiki 0.5
 
+Released on August 14, 2006.
+
 * Customised datatypes for unit conversion: it is now possible to create customised
   linear unit conversions by appropriate statements on type articles. This also
   enables full localisation of all units of measurement.

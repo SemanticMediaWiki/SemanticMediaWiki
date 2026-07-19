@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.4.0
 
+Released on November 21, 2008.
+
 See http://semantic-mediawiki.org/wiki/SMW_1.4.0
 
 * Easier installation, upgrade, repair:

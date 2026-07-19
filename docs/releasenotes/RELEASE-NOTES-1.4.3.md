@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.4.3
 
+Released on August 15, 2009.
+
 See http://semantic-mediawiki.org/wiki/SMW_1.4.3
 
 * A new query format, 'category', that displays values in the style of a

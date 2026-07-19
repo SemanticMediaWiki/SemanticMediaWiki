@@ -1,5 +1,7 @@
 # Semantic MediaWiki 0.4
 
+Released on May 12, 2006.
+
 Semantic MediaWiki 0.4 includes the following new features:
 
 * Support for inline queries: it is now possible to <ask> queries in

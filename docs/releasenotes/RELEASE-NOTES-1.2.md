@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.2
 
+Released on July 10, 2008.
+
 See http://semantic-mediawiki.org/wiki/SMW_1.2
 
 * New SMW storage backend (SMWSQLStore2)

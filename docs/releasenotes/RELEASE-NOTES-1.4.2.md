@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.4.2
 
+Released on February 15, 2009.
+
 See http://semantic-mediawiki.org/wiki/SMW_1.4.2
 
 * Improved performance. Significantly improved memory usage on common

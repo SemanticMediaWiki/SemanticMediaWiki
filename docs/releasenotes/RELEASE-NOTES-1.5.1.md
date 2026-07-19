@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.5.1
 
+Released on May 31, 2010.
+
 * Added query comparator "!~" that works like the negation of "~", i.e. that
   retrieves exactly those values to which the provided pattern (with * and ?)
   does not match.

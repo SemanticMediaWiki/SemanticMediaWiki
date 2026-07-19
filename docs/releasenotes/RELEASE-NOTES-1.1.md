@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.1
 
+Released on April 21, 2008.
+
 * Support for formatted results on Special:Ask. "Further results" links
   from inline queries now preserve format.
 * New iCalendar export for inline queries (format=icalendar)

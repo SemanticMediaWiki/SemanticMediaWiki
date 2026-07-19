@@ -1,5 +1,7 @@
 # Semantic MediaWiki 0.3
 
+Released on April 7, 2006.
+
 Changes by mak (0.3, 06 Apr 2006):
 
 * Compatibility updates for MediaWiki 1.6
