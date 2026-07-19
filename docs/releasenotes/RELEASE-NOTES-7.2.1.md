@@ -9,8 +9,6 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
-* Fixed pages with an outdated query dependency (tracked via `$smwgEnabledQueryDependencyLinksStore`) auto-reloading immediately and repeatedly, causing a visible "flicker" loop while the underlying data had not yet caught up; the page-purge auto-reload now backs off with an increasing delay and stops after a fixed retry period, showing a low-key notice instead of reloading indefinitely ([#7046](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7046))
-
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.
