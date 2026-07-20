@@ -255,6 +255,7 @@
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
 	"smw_purge": "Atualizar",
 	"smw-purge-update-dependencies": "Esta página está sendo recarregada para assegurar que todas as informações estejam atualizadas. Isso pode levar alguns minutos e pode acontecer mais de uma vez.",
+	"smw-purge-update-dependencies-timeout": "O Semantic MediaWiki ainda está processando atualizações para essa página. Isso está demorando mais do que o esperado; a informação exibida pode não estar totalmente atualizada. Realizar uma atualização manual depois pode ajudar.",
 	"smw-purge-failed": "O Semantic MediaWiki tentou limpar a página, mas falhou",
 	"types": "Tipos",
 	"smw_types_docu": "Lista de [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tipos de dados disponíveis] com cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo] representando um conjunto único de atributos para descrever um valor em termos de características de armazenamento e exibição que são hereditários a uma propriedade atribuída.",
@@ -959,6 +960,8 @@
 	"smw-format-datatable-toolbar-export": "Exportar",
 	"smw-category-invalid-redirect-target": "A categoria “$1” contém um alvo de redirecionamento inválido para um espaço nominal que não é de categoria.",
 	"smw-parser-function-expensive-execution-limit": "A função do analisador sintático atingiu o limite para execuções de funções exigentes (consulte o parâmetro de configuração [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit <code>$smwgQExpensiveExecutionLimit</code>]).",
+	"smw-parser-function-set-display-invalid-mode": "\"$1\" não é um modo \"+display\" suportado (os modos suportados são \"link\" e \"text\"). O valor foi registrado, mas não exibido.",
+	"smw-parser-function-set-display-template-conflict": "A opção \"+display\" não pode ser combinada com o parâmetro \"template\". Os valores foram registrados, mas \"+display\" foi ignorado.",
 	"smw-postproc-queryref": "O Semantic MediaWiki está atualizando a página atual com base na condição de algum processamento pós-consulta necessário.",
 	"apihelp-smwinfo-summary": "Módulo da API para obter informação sobre estatísticas e outra meta informação do Semantic MediaWiki.",
 	"apihelp-ask-summary": "Módulo da API para consultar o Semantic MediaWiki usando a linguagem \"ask\".",
@@ -1137,5 +1140,6 @@
 	"smw-facetedsearch-clear-filters": "Remover {{PLURAL:$1|filtro|filtros}}",
 	"smw-search-placeholder": "Pesquisar...",
 	"smw-listingcontinuesabbrev": "cont.",
-	"smw-showingresults": "A seguir {{PLURAL:$1|é mostrado '''um''' resultado|são mostrados até '''$1''' resultados}}, iniciando no '''$2'''º."
+	"smw-showingresults": "A seguir {{PLURAL:$1|é mostrado '''um''' resultado|são mostrados até '''$1''' resultados}}, iniciando no '''$2'''º.",
+	"smw-showingresults-cursor": "Exibindo abaixo até {{PLURAL:$1|<strong>1</strong> resultado|<strong>$1</strong> resultados}}."
 }

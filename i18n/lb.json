@@ -326,7 +326,7 @@
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|Sekonn|Sekonnen}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|Sekonn|Sekonnen}}",
 	"smw-datavalue-time-invalid-date-components-common": "\"$1\" huet eng Informatioun déi net kann interpretéiert ginn.",
-	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" huet e puer eidel Komponenten",
+	"smw-datavalue-time-invalid-date-components-empty": "„$1“ huet e puer eidel Komponenten",
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" huet méi wéi dräi Komponenten, déi fir d'Interpretatioun vun engem Datum obligatoresch sinn.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\" huet \"$2\" als Stonnenelement, dat ass fir eng 12-Stonne-Konventioun awer net valabel.",
 	"smw-datavalue-external-formatter-invalid-uri": "„$1“ ass eng ongülteg URL.",

@@ -888,7 +888,7 @@
 	"smw-parser-invalid-json-format": "JSON-парсер вивів помилку «$1».",
 	"smw-property-preferred-label-language-combination-exists": "«$1» не можна використати як бажану назву, оскільки мова «$2» вже закріплена за назвою «$3».",
 	"smw-clipboard-copy-link": "Скопіювати посилання в буфер обміну",
-	"smw-property-userdefined-fixedtable": "«$1» було налаштовано як [https://www.semantic-mediawiki.org/wiki/Fixed_properties фіксовану властивість] і будь-яка модифікація її [https://www.semantic-mediawiki.org/wiki/Type_declaration декларації типу] вимагає, щоб або було запущено <code>setupStore.php</code>, або завершено спеціальне завдання [[Special:SemanticMediaWiki|«Інсталяція та оновлення бази даних»]].",
+	"smw-property-userdefined-fixedtable": "«$1» налаштовано як [https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties фіксована властивість]. Щоразу, коли його [https://www.semantic-mediawiki.org/wiki/Type_declaration оголошення типу] змінюється, обов'язково запустіть <code>setupStore.php</code> або завдання \"Налаштування бази даних\" на [[Special:SemanticMediaWiki]].",
 	"smw-data-lookup": "Отримання даних…",
 	"smw-data-lookup-with-wait": "Запит обробляється, і це може зайняти трохи часу.",
 	"smw-no-data-available": "Немає доступних даних.",
