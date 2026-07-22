@@ -34,6 +34,7 @@ class ProtectionValidatorTest extends TestCase {
 	private $entityCache;
 	private $permissionManager;
 	private $pageCreator;
+	private $jobQueue;
 	private $testEnvironment;
 
 	protected function setUp(): void {
@@ -58,7 +59,12 @@ class ProtectionValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
 	protected function tearDown(): void {
@@ -227,6 +233,72 @@ class ProtectionValidatorTest extends TestCase {
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
 			->willReturn( 'yes' );
+
+		$this->jobQueue->expects( $this->any() )
+			->method( 'hasPendingJob' )
+			->willReturn( true );
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$this->entityCache,
+			$this->permissionManager,
+			$this->pageCreator
+		);
+
+		$this->assertTrue(
+			$instance->hasChangePropagationProtection( $subject->getTitle() )
+		);
+	}
+
+	public function testStaleChangePropagationMarkerDoesNotProtectWhenJobQueueEmpty() {
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_PROPERTY );
+
+		// The `_CHGPRO` marker is (still) present ...
+		$this->entityCache->expects( $this->any() )
+			->method( 'contains' )
+			->willReturn( true );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->willReturn( 'yes' );
+
+		// ... but no change propagation job is actually pending (#4344: an orphaned
+		// marker left behind by a failed/lost dispatch job must not lock the page
+		// indefinitely).
+		$this->jobQueue->expects( $this->any() )
+			->method( 'hasPendingJob' )
+			->willReturn( false );
+
+		$this->jobQueue->expects( $this->any() )
+			->method( 'getQueueSize' )
+			->willReturn( 0 );
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$this->entityCache,
+			$this->permissionManager,
+			$this->pageCreator
+		);
+
+		$this->assertFalse(
+			$instance->hasChangePropagationProtection( $subject->getTitle() )
+		);
+	}
+
+	public function testChangePropagationProtectionAppliesWhileJobPending() {
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_PROPERTY );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'contains' )
+			->willReturn( true );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->willReturn( 'yes' );
+
+		$this->jobQueue->expects( $this->any() )
+			->method( 'hasPendingJob' )
+			->willReturn( true );
 
 		$instance = new ProtectionValidator(
 			$this->store,

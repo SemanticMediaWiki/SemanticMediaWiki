@@ -75,7 +75,14 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 			$this->semanticData = $semanticData;
 		}
 
-		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
+		// The `_CHGPRO` marker only reflects an active lock while a change
+		// propagation is genuinely pending. A dispatch job that failed or was
+		// lost can leave the marker behind with no pending job, which used to
+		// lock the page indefinitely (#4344), so cross-check the job queue.
+		if (
+			$semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) &&
+			ChangePropagationDispatchJob::hasPendingJobs( $subject )
+		) {
 			$this->isChangePropagation( $property );
 		} else {
 			$this->checkForPendingChangePropagationDispatchJob( $property );

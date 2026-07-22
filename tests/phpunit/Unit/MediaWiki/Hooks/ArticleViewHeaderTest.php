@@ -17,6 +17,7 @@ use SMW\NamespaceExaminer;
 use SMW\Settings;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
+use SMW\Tests\TestEnvironment;
 use WikiPage as MwWikiPage;
 
 /**
@@ -35,6 +36,8 @@ class ArticleViewHeaderTest extends TestCase {
 	private $settings;
 	private $dependencyValidator;
 	private $dependencyValidatorFactory;
+	private $jobQueue;
+	private $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -56,6 +59,18 @@ class ArticleViewHeaderTest extends TestCase {
 
 		$this->dependencyValidatorFactory = $this->createMock( DependencyValidatorFactory::class );
 		$this->dependencyValidatorFactory->method( 'newFor' )->willReturn( $this->dependencyValidator );
+
+		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	private function newInstance(): ArticleViewHeader {
@@ -107,6 +122,8 @@ class ArticleViewHeaderTest extends TestCase {
 
 		$this->store->method( 'getSemanticData' )->willReturn( $semanticData );
 
+		$this->jobQueue->method( 'hasPendingJob' )->willReturn( true );
+
 		$output = $this->createMock( OutputPage::class );
 		$output->expects( $this->once() )->method( 'addHTML' );
 
@@ -127,6 +144,54 @@ class ArticleViewHeaderTest extends TestCase {
 		$this->newInstance()->onArticleViewHeader( $page, $outputDone, $useParserCache );
 
 		$this->assertFalse( $useParserCache );
+	}
+
+	public function testStaleChangePropagationMarkerUsesParserCacheOnCategory() {
+		$subject = WikiPage::newFromText( __METHOD__, NS_CATEGORY );
+		$property = new Property( Property::TYPE_CHANGE_PROP );
+
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( true );
+
+		$this->settings->method( 'get' )
+			->willReturnMap( [
+				[ 'smwgChangePropagationWatchlist', [ '_SUBC' ] ],
+				[ 'smwgChangePropagationProtection', false ],
+			] );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$semanticData->method( 'hasProperty' )
+			->with( $property )
+			->willReturn( true );
+
+		$this->store->method( 'getSemanticData' )->willReturn( $semanticData );
+
+		// #4344: the `_CHGPRO` marker lingers but no dispatch job is pending, so
+		// no lock banner is shown and the parser cache remains usable.
+		$this->jobQueue->method( 'hasPendingJob' )->willReturn( false );
+		$this->jobQueue->method( 'getQueueSize' )->willReturn( 0 );
+
+		$output = $this->createMock( OutputPage::class );
+
+		$context = $this->createMock( RequestContext::class );
+		$context->method( 'getOutput' )->willReturn( $output );
+
+		$wikiPage = $this->createMock( MwWikiPage::class );
+		$wikiPage->method( 'makeParserOptions' )->willReturn( $this->createMock( ParserOptions::class ) );
+
+		$page = $this->createMock( Article::class );
+		$page->method( 'getTitle' )->willReturn( $subject->getTitle() );
+		$page->method( 'getContext' )->willReturn( $context );
+		$page->method( 'getPage' )->willReturn( $wikiPage );
+
+		$outputDone = '';
+		$useParserCache = '';
+
+		$this->newInstance()->onArticleViewHeader( $page, $outputDone, $useParserCache );
+
+		$this->assertTrue( $useParserCache );
 	}
 
 	public function testProcessOnNoCategory() {
