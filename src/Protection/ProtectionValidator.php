@@ -81,7 +81,9 @@ class ProtectionValidator {
 				$record->get( 'row.s_id' )
 			);
 
-			$key = $this->entityCache->makeCacheKey( 'protection', $subject->getHash() );
+			// Target the `_CHGPRO`-specific slot written by checkProtection() (this
+			// listener only ever handles the `_CHGPRO` property).
+			$key = $this->entityCache->makeCacheKey( 'protection', $subject->getHash(), '_CHGPRO' );
 
 			// If the change is an insert type then the `Change propagation` property
 			// was added hence use this as a short cut to store the state avoiding
@@ -300,7 +302,10 @@ class ProtectionValidator {
 			$property = new Property( '_EDIP' );
 		}
 
-		$key = $this->entityCache->makeCacheKey( 'protection', $subject->getHash() );
+		// The property must be part of the key: `checkProtection()` is called for
+		// both `_CHGPRO` (change-propagation lock) and `_EDIP` (edit protection),
+		// and a shared slot let one concern's cached result be read for the other.
+		$key = $this->entityCache->makeCacheKey( 'protection', $subject->getHash(), $property->getKey() );
 		$hasProtection = false;
 
 		if ( $this->entityCache->contains( $key ) ) {

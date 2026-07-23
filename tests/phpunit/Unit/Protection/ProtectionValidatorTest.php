@@ -16,6 +16,7 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\HashBagOStuff;
 use WikiPage;
 
 /**
@@ -262,6 +263,70 @@ class ProtectionValidatorTest extends TestCase {
 		);
 	}
 
+	public function testEditProtectionCacheIsNotPoisonedByChangePropagationCheck() {
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_PROPERTY );
+
+		// The page carries no `_CHGPRO` (no change propagation) but is edit
+		// protected (`_EDIP` = true).
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturnCallback( function ( $subj, $property ) {
+				return $property->getKey() === '_EDIP'
+					? [ $this->dataItemFactory->newDIBoolean( true ) ]
+					: [];
+			} );
+
+		// Use a real cache so the two protection checks share (or, once fixed, do
+		// not share) the same slot.
+		$realEntityCache = new EntityCache( new HashBagOStuff() );
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$realEntityCache,
+			$this->permissionManager,
+			$this->pageCreator
+		);
+
+		// A change-propagation check runs first and caches its own (`_CHGPRO`)
+		// result; it must not poison the unrelated edit-protection (`_EDIP`)
+		// lookup for the same page.
+		$instance->hasChangePropagationProtection( $subject->getTitle() );
+
+		$this->assertTrue(
+			$instance->hasProtection( $subject->getTitle() )
+		);
+	}
+
+	public function testChangePropagationCacheIsNotPoisonedByEditProtectionCheck() {
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_PROPERTY );
+
+		// The page is edit protected (`_EDIP` = true) but has no `_CHGPRO`.
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturnCallback( function ( $subj, $property ) {
+				return $property->getKey() === '_EDIP'
+					? [ $this->dataItemFactory->newDIBoolean( true ) ]
+					: [];
+			} );
+
+		$realEntityCache = new EntityCache( new HashBagOStuff() );
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$realEntityCache,
+			$this->permissionManager,
+			$this->pageCreator
+		);
+
+		// An edit-protection check runs first and caches its (`_EDIP`) result; it
+		// must not make the unrelated change-propagation check report a lock.
+		$instance->hasProtection( $subject->getTitle() );
+
+		$this->assertFalse(
+			$instance->hasChangePropagationProtection( $subject->getTitle() )
+		);
+	}
+
 	public function testSetGetCreateProtectionRight() {
 		$instance = new ProtectionValidator(
 			$this->store,
@@ -498,7 +563,7 @@ class ProtectionValidatorTest extends TestCase {
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'delete' )
-			->with( $this->stringContains( 'smw:entity:d5c5aca7d29a32ea16a0331dac164ac4' ) );
+			->with( $this->stringContains( 'smw:entity:ea54787292d320f8940f3447754fae22' ) );
 
 		$changeRecord = new ChangeRecord(
 			[
@@ -537,7 +602,7 @@ class ProtectionValidatorTest extends TestCase {
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' )
-			->with( $this->stringContains( 'smw:entity:d5c5aca7d29a32ea16a0331dac164ac4' ) );
+			->with( $this->stringContains( 'smw:entity:ea54787292d320f8940f3447754fae22' ) );
 
 		$changeRecord = new ChangeRecord(
 			[
