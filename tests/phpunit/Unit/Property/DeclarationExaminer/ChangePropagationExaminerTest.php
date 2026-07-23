@@ -85,6 +85,10 @@ class ChangePropagationExaminerTest extends TestCase {
 			->method( 'getSemanticData' )
 			->willReturn( $semanticData );
 
+		$this->jobQueue->expects( $this->any() )
+			->method( 'hasPendingJob' )
+			->willReturn( true );
+
 		$instance = new ChangePropagationExaminer(
 			$this->declarationExaminer,
 			$this->store,
@@ -102,6 +106,53 @@ class ChangePropagationExaminerTest extends TestCase {
 
 		$this->assertTrue(
 			$instance->isLocked()
+		);
+	}
+
+	public function testStaleChangePropagationMarkerIsNotLocked() {
+		$dataItemFactory = new DataItemFactory();
+		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
+
+		$semanticData = new SemanticData(
+			$subject
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$dataItemFactory->newDIProperty( '_CHGPRO' ),
+			$dataItemFactory->newDIBlob( '...' )
+		);
+
+		$this->store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->willReturn( $semanticData );
+
+		// #4344: the `_CHGPRO` marker lingers but no dispatch job is pending, so
+		// the page must not be reported as locked.
+		$this->jobQueue->expects( $this->any() )
+			->method( 'hasPendingJob' )
+			->willReturn( false );
+
+		$this->jobQueue->expects( $this->any() )
+			->method( 'getQueueSize' )
+			->willReturn( 0 );
+
+		$instance = new ChangePropagationExaminer(
+			$this->declarationExaminer,
+			$this->store,
+			$this->semanticData
+		);
+
+		$instance->check(
+			$dataItemFactory->newDIProperty( 'Bar' )
+		);
+
+		$this->assertFalse(
+			$instance->isLocked()
+		);
+
+		$this->assertStringNotContainsString(
+			'change-propagation-locked',
+			$instance->getMessagesAsString()
 		);
 	}
 

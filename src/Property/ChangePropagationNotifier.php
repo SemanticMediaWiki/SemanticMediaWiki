@@ -218,6 +218,15 @@ class ChangePropagationNotifier {
 			return;
 		}
 
+		// Hierarchy/display-only changes (e.g. `_SUBC`, `_SUBP`) are resolved at
+		// query time and do not affect dependents' stored data, so there is
+		// nothing to protect against while propagation runs. Dispatch the
+		// reprocessing job (done above) but skip the `_CHGPRO` marker so the page
+		// is never locked for such a diff (#4344).
+		if ( $this->isShallowOnlyDiff() ) {
+			return;
+		}
+
 		$previous = $this->store->getSemanticData(
 			$semanticData->getSubject()
 		);
@@ -237,6 +246,25 @@ class ChangePropagationNotifier {
 		);
 
 		$semanticData = $previous;
+	}
+
+	/**
+	 * Whether every diffing key only affects data that is resolved at query time
+	 * (see ChangePropagationDispatchJob::SHALLOW_SET), in which case no `_CHGPRO`
+	 * lock is required.
+	 */
+	private function isShallowOnlyDiff(): bool {
+		if ( $this->diffKeys === [] ) {
+			return false;
+		}
+
+		foreach ( $this->diffKeys as $key ) {
+			if ( !in_array( $key, ChangePropagationDispatchJob::SHALLOW_SET, true ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

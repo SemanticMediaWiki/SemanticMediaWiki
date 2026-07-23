@@ -7,7 +7,9 @@ This is a [patch release](../RELEASE-POLICY.md). Thus, it contains only bug fixe
 Like SMW 7.2.0, this version is compatible with MediaWiki 1.43 up to 1.46 and PHP 8.1 up to 8.5.
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
-## Changes
+## Bug fixes
+
+* Fixed property and category pages sometimes remaining permanently locked for a change propagation update even when no such update was pending, leaving them uneditable; affected pages are editable again, and routine category changes such as setting a parent category no longer trigger the lock ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
 
 ## Upgrading
 

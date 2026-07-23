@@ -79,8 +79,11 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * Excluded as constraint-adjacent (stored _ERRT may depend):
 	 * _PVAL/_PVUC/_PVALI/_PVAP/_PREC.
+	 *
+	 * Public so `ChangePropagationNotifier` can share the same classification when
+	 * deciding whether a diff needs the `_CHGPRO` lock at all (#4344).
 	 */
-	private const SHALLOW_SET = [ '_SUBC', '_SUBP', '_PDESC', '_PPLB' ];
+	public const SHALLOW_SET = [ '_SUBC', '_SUBP', '_PDESC', '_PPLB' ];
 
 	/**
 	 * @since 3.0
