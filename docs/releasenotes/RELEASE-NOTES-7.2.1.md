@@ -11,6 +11,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * Fixed property and category pages sometimes reporting the wrong Semantic MediaWiki protection status, where a page's change-propagation lock and its "Is edit protected" status could be confused for one another ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
 * Fixed property and category pages sometimes remaining permanently locked for a change propagation update even when no such update was pending, leaving them uneditable; affected pages are editable again, and routine category changes such as setting a parent category no longer trigger the lock ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
+* Fixed change propagation failing to complete for a property or category connected to a very large number of pages, where selecting the affected pages could exhaust the available memory ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
 
 ## Upgrading
 

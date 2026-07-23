@@ -5,8 +5,10 @@ namespace SMW\SQLStore\Lookup;
 use RuntimeException;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\Enum;
 use SMW\IteratorFactory;
 use SMW\Iterators\AppendIterator;
+use SMW\RequestOptions;
 use SMW\Store;
 
 /**
@@ -70,9 +72,11 @@ class ChangePropagationEntityLookup {
 	public function findByProperty( Property $property ) {
 		$dataItems = [];
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
+		$requestOptions = $this->newSuspendedCacheWarmupOptions();
 
 		$res = $this->store->getAllPropertySubjects(
-			$property
+			$property,
+			$requestOptions
 		);
 
 		$appendIterator->add(
@@ -87,7 +91,8 @@ class ChangePropagationEntityLookup {
 
 		$dataItems = $this->store->getPropertySubjects(
 			new Property( Property::TYPE_ERROR ),
-			$property->getCanonicalDiWikiPage()
+			$property->getCanonicalDiWikiPage(),
+			$requestOptions
 		);
 
 		$appendIterator->add(
@@ -106,11 +111,12 @@ class ChangePropagationEntityLookup {
 	 */
 	public function findByCategory( WikiPage $category ) {
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
+		$requestOptions = $this->newSuspendedCacheWarmupOptions();
 
 		$property = new Property( '_INST' );
 
 		$appendIterator->add(
-			$this->store->getPropertySubjects( $property, $category )
+			$this->store->getPropertySubjects( $property, $category, $requestOptions )
 		);
 
 		// Only direct antecedents
@@ -121,11 +127,24 @@ class ChangePropagationEntityLookup {
 
 		foreach ( $dataItems as $dataItem ) {
 			$appendIterator->add(
-				$this->store->getPropertySubjects( $property, $dataItem )
+				$this->store->getPropertySubjects( $property, $dataItem, $requestOptions )
 			);
 		}
 
 		return $appendIterator;
+	}
+
+	/**
+	 * The dispatch only serialises subject hashes into chunked job params and
+	 * never resolves per-item id/sortkey caches, so keep the result set lazy and
+	 * skip warmUpCache, which would otherwise materialise the entire subject set
+	 * at once for a heavily used property or category (#4344).
+	 */
+	private function newSuspendedCacheWarmupOptions(): RequestOptions {
+		$requestOptions = new RequestOptions();
+		$requestOptions->setOption( Enum::SUSPEND_CACHE_WARMUP, true );
+
+		return $requestOptions;
 	}
 
 	private function fetchOtherReferencesOnTypePropagation( Property $property ) {

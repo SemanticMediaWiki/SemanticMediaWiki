@@ -5,8 +5,10 @@ namespace SMW\Tests\Unit\SQLStore\Lookup;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\Enum;
 use SMW\IteratorFactory;
 use SMW\Iterators\AppendIterator;
+use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
@@ -67,6 +69,79 @@ class ChangePropagationEntityLookupTest extends TestCase {
 			'Iterator',
 			$instance->findByProperty( $property )
 		);
+	}
+
+	public function testFindByPropertySuspendsCacheWarmup(): void {
+		$property = new Property( 'Foo' );
+
+		$this->iteratorFactory->expects( $this->any() )
+			->method( 'newAppendIterator' )
+			->willReturn( $this->appendIterator );
+
+		// The dispatch discovery must keep the subject iterator lazy (suspend
+		// warmUpCache), otherwise a property attached to a very large number of
+		// subjects materialises the whole set at once (#4344).
+		$captured = null;
+		$this->store->expects( $this->once() )
+			->method( 'getAllPropertySubjects' )
+			->willReturnCallback( static function ( $p, $opts = null ) use ( &$captured ) {
+				$captured = $opts;
+				return [];
+			} );
+
+		// The error-reference lookup on the same discovery must be suspended too.
+		$capturedForError = null;
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->willReturnCallback( static function ( $p, $s = null, $opts = null ) use ( &$capturedForError ) {
+				$capturedForError = $opts;
+				return [];
+			} );
+
+		$instance = new ChangePropagationEntityLookup(
+			$this->store,
+			$this->iteratorFactory
+		);
+
+		$instance->findByProperty( $property );
+
+		foreach ( [ $captured, $capturedForError ] as $opts ) {
+			$this->assertInstanceOf( RequestOptions::class, $opts );
+			$this->assertTrue( $opts->getOption( Enum::SUSPEND_CACHE_WARMUP ) );
+		}
+	}
+
+	public function testFindByCategorySuspendsCacheWarmup(): void {
+		$category = new WikiPage( 'Foo', NS_CATEGORY );
+
+		$this->iteratorFactory->expects( $this->any() )
+			->method( 'newAppendIterator' )
+			->willReturn( $this->appendIterator );
+
+		$captured = [];
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->willReturnCallback( static function ( $p, $s = null, $opts = null ) use ( &$captured ) {
+				$captured[] = $opts;
+				return [];
+			} );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ WikiPage::newFromText( 'Bar' ) ] );
+
+		$instance = new ChangePropagationEntityLookup(
+			$this->store,
+			$this->iteratorFactory
+		);
+
+		$instance->findByCategory( $category );
+
+		$this->assertNotEmpty( $captured );
+		foreach ( $captured as $opts ) {
+			$this->assertInstanceOf( RequestOptions::class, $opts );
+			$this->assertTrue( $opts->getOption( Enum::SUSPEND_CACHE_WARMUP ) );
+		}
 	}
 
 	public function testFindByProperty_TypePropagation() {
