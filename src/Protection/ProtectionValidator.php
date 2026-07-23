@@ -10,6 +10,7 @@ use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PermissionManager;
 use SMW\Store;
@@ -236,7 +237,13 @@ class ProtectionValidator {
 			return false;
 		}
 
-		return $this->checkProtection( $subject, new Property( '_CHGPRO' ) );
+		// The `_CHGPRO` marker only reflects an active lock while a change
+		// propagation is genuinely pending. A dispatch job that failed or was
+		// lost can leave the marker behind with no pending job, which used to
+		// lock the page indefinitely (#4344). Cross-check the job queue and
+		// treat a marker without any pending job as stale.
+		return $this->checkProtection( $subject, new Property( '_CHGPRO' ) )
+			&& ChangePropagationDispatchJob::hasPendingJobs( $subject );
 	}
 
 	/**

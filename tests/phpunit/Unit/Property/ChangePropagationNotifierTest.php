@@ -355,6 +355,67 @@ class ChangePropagationNotifierTest extends TestCase {
 		$this->assertTrue( $capturedJob->getParameter( 'isTypePropagation' ) );
 	}
 
+	public function testShallowOnlyDiffDispatchesJobWithoutPlantingChangePropagationMarker() {
+		// #4344: a hierarchy-only change (e.g. _SUBC) is resolved at query time
+		// and does not affect dependents' stored data. The reprocessing job is
+		// still dispatched, but no `_CHGPRO` marker is planted, so the page is
+		// never locked for it.
+		$matchingBlob = new Blob( 'same-value' );
+		$this->mockedStoreValues = [ $matchingBlob ];
+
+		$subject = new WikiPage( __METHOD__, NS_CATEGORY );
+
+		$capturedJob = null;
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'lazyPush' ] )
+			->getMock();
+		$jobQueueGroup->expects( $this->atLeastOnce() )
+			->method( 'lazyPush' )
+			->willReturnCallback( static function ( $job ) use ( &$capturedJob ) {
+				$capturedJob = $job;
+			} );
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'getPropertyValues', 'getSemanticData' ] )
+			->getMockForAbstractClass();
+
+		$innerSemanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		// No `_CHGPRO` marker (or any postponed data) must be planted onto the
+		// stored data for a shallow-only diff.
+		$innerSemanticData->expects( $this->never() )
+			->method( 'addPropertyObjectValue' );
+
+		$store->method( 'getSemanticData' )->willReturn( $innerSemanticData );
+		$store->method( 'getPropertyValues' )
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+		$semanticData->method( 'getSubject' )->willReturn( $subject );
+		// New values: only _SUBC differs; all other watched keys match.
+		$semanticData->method( 'getPropertyValues' )
+			->willReturnCallback( static function ( Property $property ) use ( $matchingBlob ) {
+				return $property->getKey() === '_SUBC'
+					? [ new Blob( 'different-subc' ) ]
+					: [ $matchingBlob ];
+			} );
+
+		$instance = new ChangePropagationNotifier( $store, $this->serializerFactory );
+		$instance->setPropertyList( [ '_SUBC' ] );
+		$instance->checkAndNotify( $semanticData );
+
+		$this->assertNotNull( $capturedJob );
+		$this->assertSame( [ '_SUBC' ], $capturedJob->getParameter( 'diffKeys' ) );
+	}
+
 	/**
 	 * Returns an array of DataItem and simulates an alternating
 	 * existencance of return values ('_LIST')

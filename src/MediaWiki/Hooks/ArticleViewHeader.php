@@ -84,7 +84,14 @@ class ArticleViewHeader implements ArticleViewHeaderHook {
 			$subject
 		);
 
-		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
+		// The `_CHGPRO` marker only reflects an active lock while a change
+		// propagation is genuinely pending. A dispatch job that failed or was
+		// lost can leave the marker behind with no pending job, which used to
+		// show the lock banner indefinitely (#4344), so cross-check the job queue.
+		if (
+			$semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) &&
+			ChangePropagationDispatchJob::hasPendingJobs( $subject )
+		) {
 			$severity = $this->settings->get( 'smwgChangePropagationProtection' ) ? 'error' : 'warning';
 
 			$message .= $this->message(
