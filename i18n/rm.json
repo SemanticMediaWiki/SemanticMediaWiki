@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Albinfo",
 			"Kazu89"
 		]
 	},
 	"smw-categories": "Categorias",
+	"browse": "Navigar en il wiki",
 	"smw-ui-tooltip-title-legend": "Legenda",
 	"smw-livepreview-loading": "Chargiar…",
 	"smw-listingcontinuesabbrev": "cuntinuaziun",

@@ -65,6 +65,7 @@
 	"smw-paramdesc-csv-sep": "Spezifizéiert d'Trennsymbol fir Kolonnen",
 	"smw-paramdesc-dsv-separator": "D'Trennsymbol dat benotzt gi muss",
 	"smw-paramdesc-dsv-filename": "Den Numm fir den DSV-Fichier",
+	"smw-paramdesc-filename": "Den Numm fir den Outputfichier",
 	"smw-paramdesc-searchlabel": "Den Text fir mam Siche virunzefueren",
 	"smw-paramdesc-export": "Export-Optiounen",
 	"smw-paramdesc-jsonsyntax": "JSON Syntax muss benotzt ginn",
