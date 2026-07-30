@@ -935,7 +935,7 @@
 	"smw-property-preferred-title-format": "$1（$2）",
 	"smw-property-preferred-label-language-combination-exists": "“$1”不能用作首选标签，因为语言“$2”已分配给“$3”标签。",
 	"smw-clipboard-copy-link": "复制链接到剪贴板",
-	"smw-property-userdefined-fixedtable": "“$1”被配置为[https://www.semantic-mediawiki.org/wiki/Fixed_properties 固定属性]，对其[https://www.semantic-mediawiki.org/wiki/Type_declaration 类型声明]的任何修改都需要运行<code>setupStore.php</code>或完成特殊的[[Special:SemanticMediaWiki|“数据库安装与升级”]]任务。",
+	"smw-property-userdefined-fixedtable": "“$1”被配置为[https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties 固定属性]。每当其[https://www.semantic-mediawiki.org/wiki/Type_declaration 类型声明]发生更改，请务必运行<code>setupStore.php</code>或在[[Special:SemanticMediaWiki]]上运行“数据库设置”任务。",
 	"smw-data-lookup": "正在获取数据...",
 	"smw-data-lookup-with-wait": "正在处理该请求，可能需要一些时间。",
 	"smw-no-data-available": "没有可用数据。",
