@@ -212,7 +212,7 @@
 	"smw-admin-deprecation-notice-config-replacement-option-list": "<code>$1</code> gouf schonn duerch <code>$2</code> ersat",
 	"smw-admin-deprecation-notice-title-notice": "Vereelzt Astellungen",
 	"smw-admin-deprecation-notice-title-replacement": "Ersat oder ëmbenannt Astellungen",
-	"smw-admin-deprecation-notice-title-removal": "Astellungen déi ewechgeholl goufen",
+	"smw-admin-deprecation-notice-title-removal": "Astellungen, déi ewechgeholl goufen",
 	"smw-admin-deprecation-notice-section-legend": "Erklärung",
 	"smw_smwadmin_datarefresh": "Donnéeë goufe restauréiert",
 	"smw_smwadmin_datarefreshprogress": "<strong>Eng Aktualiséierung ass schonn am Gaang.</strong>\nEt ass normal datt d'Aktualiséierung nëmme lues virugeet well Donnéeë nëmmen a klenge Päck aktualiséiert ginn an zwar ëmmer da wann ee Benotzer op dës Wiki zougräift.\nFir dës Aktualiséierung méi séier fäerdeg ze maache, kann de MediaWiki-Skript <code>runJobs.php</code> (benotzt d'Optioun <code>--maxjobs 1000</code> fir d'Zuel vun den Aktualiséierungen déi beienee gemaach ginn ze limitéieren).\nGeschate Fortschrëtt vun der aktueller Aktualiséierung:",
