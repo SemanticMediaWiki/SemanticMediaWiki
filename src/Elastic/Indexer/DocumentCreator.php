@@ -124,7 +124,7 @@ class DocumentCreator {
 		);
 
 		$data = [
-			'subject' => $this->makeSubject( $subject )
+			'subject' => $this->makeSubject( $subject, $subject->getSortKey() )
 		];
 
 		$rev_id = $semanticData->getExtensionData( 'revision_id' );
@@ -202,16 +202,22 @@ class DocumentCreator {
 					$values["dat_raw"][] = $dataItem->getSerialization();
 				} elseif ( $type === DataItem::TYPE_WIKIPAGE ) {
 
+					[ $oid, $valueSortKey ] = $this->store->getObjectIds()->findIdAndSortKey( $dataItem );
+
 					// T:P0434 (reference, record chain sorting)
 					// Used for `compatibilityMode`
-					$values["$fieldType"][] = mb_convert_encoding( $dataItem->getSortKey(), 'UTF-8', 'UTF-8' );
-
-					$oid = (int)$this->store->getObjectIds()->getSMWPageID(
-						$dataItem->getDBKey(),
-						$dataItem->getNamespace(),
-						$dataItem->getInterwiki(),
-						$dataItem->getSubobjectName(),
-						true
+					//
+					// #7079 The readable title rather than `getSortKey()`. The
+					// parse path leaves the sort key of a value unset so it
+					// falls back to the DB key, while the SQLStore read path
+					// substitutes the collated `smw_sort` value. This field is
+					// copied to `text_copy` and backs `sort=<Page property>`, so
+					// it has to hold text, and it has to hold the same text no
+					// matter which path produced the data.
+					$values["$fieldType"][] = mb_convert_encoding(
+						str_replace( '_', ' ', $dataItem->getDBKey() ),
+						'UTF-8',
+						'UTF-8'
 					);
 
 					if ( !isset( $values["wpgID"] ) ) {
@@ -239,9 +245,18 @@ class DocumentCreator {
 					if ( !$document->hasSubDocumentById( $oid ) &&
 						$dataItem instanceof WikiPage
 					) {
-						$document->addSubDocument(
-							$this->newHead( $oid, $dataItem, Document::TYPE_UPSERT )
-						);
+						// #7079 This stub is merged into the referenced page's own
+						// document, so its sort key has to be the one the store
+						// recorded for that page. Where the store has none, fall
+						// back to the page name rather than to the referencing
+						// item, whose sort key depends on the path that produced
+						// the data.
+						$document->addSubDocument( $this->newHead(
+							$oid,
+							$dataItem,
+							$valueSortKey !== '' ? $valueSortKey : str_replace( '_', ' ', $dataItem->getDBKey() ),
+							Document::TYPE_UPSERT
+						) );
 					}
 				} elseif ( $type === DataItem::TYPE_BLOB ) {
 
@@ -278,31 +293,31 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newHead( int $id, WikiPage $subject, string $type ): Document {
-		return new Document( $id, [ 'subject' => $this->makeSubject( $subject ) ], $type );
+	private function newHead( int $id, WikiPage $subject, string $sortKey, string $type ): Document {
+		return new Document( $id, [ 'subject' => $this->makeSubject( $subject, $sortKey ) ], $type );
 	}
 
-	private function makeSubject( WikiPage $subject ): array {
+	private function makeSubject( WikiPage $subject, string $sortKey ): array {
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || !str_starts_with( $title ?? '', '_' ) ) {
 			$title = str_replace( '_', ' ', $title );
 		}
 
-		$sort = $subject->getSortKey();
-		$sort = Collator::singleton()->getSortKey( $sort );
+		// #7079 Armoring keeps the collated key valid UTF-8 while preserving its
+		// order. It replaces a raw sort key whose non-UTF-8 bytes the conversion
+		// below turned into `?`, collapsing distinct `uca-*` keys onto each other
+		// and dropping their numeric component from the ordering. The `sort`
+		// option is no longer consulted: only the SQLStore read path sets it, and
+		// it already holds a collated value.
+		//
+		// `str_replace` mirrors `WikiPage::setSortKey` and is idempotent, so a
+		// sort key taken straight from `smw_sortkey` is normalised the same way
+		// as one that passed through the data item.
+		$sort = Collator::singleton()->armoredSortKey( str_replace( '_', ' ', $sortKey ) );
 
-		// Use collated sort field if available
-		if ( $subject->getOption( 'sort', '' ) !== '' ) {
-			$sort = $subject->getOption( 'sort' );
-		}
-
-		// This may loose some non valif UTF-8 characters as it is required by ES
-		// to be strict UTF-8 otherwise the ES indexer will fail with a serialization
-		// error because ES only allows UTF-8 but when the collator applies something
-		// like `uca-default-u-kn` it can produce characters not valid for/by
-		// ES hence the sorting compared to the SQLStore will be different (given
-		// the DB stores the byte representation)
+		// Elasticsearch rejects a document that is not strict UTF-8, and a
+		// collation is free to emit anything
 		$sort = mb_convert_encoding( $sort, 'UTF-8', 'UTF-8' );
 
 		return [

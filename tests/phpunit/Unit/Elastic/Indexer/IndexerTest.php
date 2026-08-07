@@ -35,6 +35,7 @@ class IndexerTest extends TestCase {
 	private $testEnvironment;
 	private TitleFactory $titleFactory;
 	private RevisionLookup $revisionLookup;
+	private string $entityCollation;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
@@ -80,9 +81,15 @@ class IndexerTest extends TestCase {
 		$this->revisionLookup = $this->getMockBuilder( RevisionLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		// The indexed sort key depends on the collation, so pin it instead of
+		// inheriting whatever the wiki running the suite happens to configure
+		$this->entityCollation = $GLOBALS['smwgEntityCollation'];
+		$GLOBALS['smwgEntityCollation'] = 'identity';
 	}
 
 	protected function tearDown(): void {
+		$GLOBALS['smwgEntityCollation'] = $this->entityCollation;
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -122,6 +129,43 @@ class IndexerTest extends TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'index' )
 			->with( $expected )
+			->willReturn( true );
+
+		$instance = new Indexer(
+			$this->store,
+			$this->bulk,
+			$this->titleFactory,
+			$this->revisionLookup
+		);
+
+		$instance->setLogger( $this->logger );
+		$instance->create( $subject, [] );
+	}
+
+	/**
+	 * `create` replaces the whole document, so it has to derive the sort key the
+	 * same way `DocumentCreator` does. Preferring the already collated `sort`
+	 * option set by the SQLStore read path made the two disagree. See #7079.
+	 */
+	public function testCreateIgnoresTheCollatedSortOptionSetByTheSqlReadPath() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$subject->setId( 42 );
+		$subject->setOption( 'sort', 'CKT5Aq4n135JBpy445EK11040HC1tC3S2m' );
+
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->willReturn( true );
+
+		$this->connection->expects( $this->any() )
+			->method( 'getIndexName' )
+			->with( 'data' )
+			->willReturn( '_index_abc' );
+
+		$this->connection->expects( $this->once() )
+			->method( 'index' )
+			->with( $this->callback(
+				static fn ( array $params ) => $params['body']['subject']['sortkey'] === 'Foo'
+			) )
 			->willReturn( true );
 
 		$instance = new Indexer(
