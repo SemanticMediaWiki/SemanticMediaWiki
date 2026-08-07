@@ -220,13 +220,11 @@
 				},
 				"text_copy": {
 					"type": "text",
-					"analyzer": "nfkc_cf_normalized",
-					"doc_values": false
+					"analyzer": "nfkc_cf_normalized"
 				},
 				"text_raw": {
 					"type": "text",
-					"analyzer": "nfkc_cf_normalized",
-					"doc_values": false
+					"analyzer": "nfkc_cf_normalized"
 				},
 				"subject.title": {
 					"type": "text",
