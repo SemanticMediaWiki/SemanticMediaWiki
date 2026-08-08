@@ -4,7 +4,6 @@ namespace SMW\Tests\Unit\Parser;
 
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutput;
-use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserData;
@@ -23,7 +22,6 @@ class RecursiveTextProcessorTest extends TestCase {
 	private $parser;
 	private $parserOptions;
 	private $parserOutput;
-	private $title;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -43,10 +41,6 @@ class RecursiveTextProcessorTest extends TestCase {
 		$this->parserOutput->expects( $this->any() )
 			->method( 'getHeadItems' )
 			->willReturn( [] );
-
-		$this->title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
 	}
 
 	public function testCanConstruct() {
@@ -57,10 +51,6 @@ class RecursiveTextProcessorTest extends TestCase {
 	}
 
 	public function testRecursivePreprocess_NO_RecursiveAnnotation() {
-		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getPage' )
-			->willReturn( $this->title );
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
 			->willReturn( $this->parserOptions );
@@ -91,10 +81,6 @@ class RecursiveTextProcessorTest extends TestCase {
 			->willReturn( $this->parserOutput );
 
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getPage' )
-			->willReturn( $this->title );
-
-		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
 			->willReturn( $this->parserOptions );
 
@@ -121,10 +107,6 @@ class RecursiveTextProcessorTest extends TestCase {
 			->willReturn( $this->parserOutput );
 
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getPage' )
-			->willReturn( $this->title );
-
-		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
 			->willReturn( $this->parserOptions );
 
@@ -146,10 +128,6 @@ class RecursiveTextProcessorTest extends TestCase {
 	}
 
 	public function testRecursivePreprocess_WITH_RecursiveAnnotation() {
-		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getPage' )
-			->willReturn( $this->title );
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
 			->willReturn( $this->parserOptions );
@@ -191,11 +169,27 @@ class RecursiveTextProcessorTest extends TestCase {
 		);
 	}
 
-	public function testRecursiveTagParse() {
+	public function testRecursivePreprocessExpandsTemplatesWhenParserHasNoPageContext() {
 		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getPage' )
-			->willReturn( $this->title );
+			->method( 'getOptions' )
+			->willReturn( $this->parserOptions );
 
+		$this->parser->expects( $this->once() )
+			->method( 'replaceVariables' )
+			->with( '{{Foo}}' )
+			->willReturn( 'Expanded' );
+
+		$instance = new RecursiveTextProcessor(
+			$this->parser
+		);
+
+		$this->assertSame(
+			'[[SMW::off]]Expanded[[SMW::on]]',
+			$instance->recursivePreprocess( '{{Foo}}' )
+		);
+	}
+
+	public function testRecursiveTagParse() {
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
 			->willReturn( $this->parserOptions );
@@ -228,6 +222,29 @@ class RecursiveTextProcessorTest extends TestCase {
 		$instance->recursiveTagParse( 'Foo' );
 	}
 
+	public function testRecursiveTagParseUsesTheParserWhenParserHasNoPageContext() {
+		$this->parser->expects( $this->atLeastOnce() )
+			->method( 'getOptions' )
+			->willReturn( $this->parserOptions );
+
+		$this->parser->expects( $this->once() )
+			->method( 'recursiveTagParse' )
+			->with( '{{Foo}}' )
+			->willReturn( 'Expanded' );
+
+		$this->parser->expects( $this->never() )
+			->method( 'parse' );
+
+		$instance = new RecursiveTextProcessor(
+			$this->parser
+		);
+
+		$this->assertSame(
+			'Expanded',
+			$instance->recursiveTagParse( '{{Foo}}' )
+		);
+	}
+
 	public function testExpandTemplate() {
 		$this->parser->expects( $this->once() )
 			->method( 'preprocess' )
@@ -241,10 +258,6 @@ class RecursiveTextProcessorTest extends TestCase {
 	}
 
 	public function testRecursivePreprocess_ExceededRecursion() {
-		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getPage' )
-			->willReturn( $this->title );
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
 			->willReturn( $this->parserOptions );
