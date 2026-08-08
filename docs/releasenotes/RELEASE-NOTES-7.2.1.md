@@ -13,6 +13,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed property and category pages sometimes remaining permanently locked for a change propagation update even when no such update was pending, leaving them uneditable; affected pages are editable again, and routine category changes such as setting a parent category no longer trigger the lock ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
 * Fixed change propagation failing to complete for a property or category connected to a very large number of pages, where selecting the affected pages could exhaust the available memory ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
 * Fixed the `templatefile` result format leaving templates unexpanded in the downloaded file, and the PHP deprecation notice that corrupted it ([#7055](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7055))
+* Fixed pages with a very large tooltip failing to render with a `pcre.backtrack_limit exhausted` error; the tooltip's `title` attribute is now capped at 1024 characters, so readers without JavaScript see a truncated native tooltip ([#7076](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7076))
 
 ## Upgrading
 

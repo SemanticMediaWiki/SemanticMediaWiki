@@ -71,6 +71,14 @@ class Highlighter {
 	 */
 	const TYPE_REFERENCE = 10;
 
+	/**
+	 * Upper bound for the `title` attribute. A browser truncates the native
+	 * tooltip well before this, while an attribute that grows with the content
+	 * makes MediaWiki's HTML tidy step exhaust `pcre.backtrack_limit` and abort
+	 * the whole page (#7076).
+	 */
+	private const MAX_TITLE_LENGTH = 1024;
+
 	private ?array $options = null;
 
 	/**
@@ -343,11 +351,17 @@ class Highlighter {
 			$content = Message::get( [ 'smw-parse', $content ], Message::PARSE, $language );
 		}
 
-		return strip_tags(
+		$title = strip_tags(
 			htmlspecialchars_decode(
 				str_replace( [ "[", '&#160;', "&#10;", "\n", "&#39;", "'" ], [ "&#91;", ' ', '', '', '' ], $content ),
 			)
 		);
+
+		if ( mb_strlen( $title ) > self::MAX_TITLE_LENGTH ) {
+			$title = mb_substr( $title, 0, self::MAX_TITLE_LENGTH - 2 ) . ' …';
+		}
+
+		return $title;
 	}
 
 }
