@@ -545,6 +545,31 @@ class EntityIdManager {
 	}
 
 	/**
+	 * The ID of an entity together with the `smw_sortkey` recorded for it,
+	 * without creating an ID for an entity that has none. Callers that need
+	 * both get them from the single lookup `getSMWPageID` already performs.
+	 *
+	 * @since 7.2.1
+	 *
+	 * @return array{0:int,1:string} ID (0 when unknown) and sort key
+	 */
+	public function findIdAndSortKey( WikiPage $dataItem, bool $canonical = true ): array {
+		$sortKey = '';
+
+		$id = $this->getSMWPageIDandSort(
+			$dataItem->getDBKey(),
+			$dataItem->getNamespace(),
+			$dataItem->getInterwiki(),
+			$dataItem->getSubobjectName(),
+			$sortKey,
+			$canonical
+		);
+
+		// A cache miss leaves the by-reference sort key as `false`
+		return [ $id, is_string( $sortKey ) ? $sortKey : '' ];
+	}
+
+	/**
 	 * Find the numeric ID used for the page of the given title, namespace,
 	 * interwiki, and subobjectName. If $canonical is set to true,
 	 * redirects are taken into account to find the canonical alias ID for

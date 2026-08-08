@@ -320,6 +320,43 @@ class EntityIdManagerTest extends TestCase {
 	}
 
 	/**
+	 * The Elasticsearch indexer needs an entity's recorded sort key alongside
+	 * its ID, and must not mint an ID for an entity that has none. See #7079.
+	 */
+	public function testFindIdAndSortKeyReturnsTheRecordedSortKey() {
+		$selectRow = new stdClass;
+		$selectRow->smw_id = 9999;
+		$selectRow->smw_sort = '';
+		$selectRow->smw_sortkey = 'Duck, Donald';
+		$selectRow->smw_proptable_hash = serialize( 'Foo' );
+		$selectRow->smw_hash = '___hash___';
+
+		$qb = $this->createMockSelectQueryBuilder( [ $selectRow ] );
+		$this->connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $qb );
+
+		$instance = $this->newEntityIdManager();
+
+		$this->assertSame(
+			[ 9999, 'Duck, Donald' ],
+			$instance->findIdAndSortKey( new WikiPage( 'Foo', NS_MAIN ) )
+		);
+	}
+
+	private function newEntityIdManager(): EntityIdManager {
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $this->connection );
+
+		return new EntityIdManager( $store, $this->factory, $this->settings );
+	}
+
+	/**
 	 * @dataProvider pageIdandSortProvider
 	 */
 	public function testMakeSMWPageID( $parameters ) {

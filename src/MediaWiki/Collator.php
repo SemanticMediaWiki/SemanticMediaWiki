@@ -71,10 +71,21 @@ class Collator {
 	/**
 	 * @since 3.0
 	 *
-	 * The output could be a binary string, it can be armored with the method `armor`.
+	 * The output could be a binary string, it can be armored with the method
+	 * `armor`. Input the collation cannot process is returned unchanged.
 	 */
 	public function getSortKey( string $text ): string {
-		return $this->collation->getSortKey( $text );
+		$sortKey = $this->collation->getSortKey( $text );
+
+		// `IcuCollation` delegates to intl, which returns `false` for input it
+		// cannot convert to UTF-16 — most notably a sort key it produced itself.
+		// Without weak mode coercing that to an empty string, every affected
+		// entity would compare equal to every other one.
+		if ( $sortKey === false ) {
+			return $text;
+		}
+
+		return $sortKey;
 	}
 
 	/**
@@ -108,7 +119,9 @@ class Collator {
 	 * @since 3.0
 	 */
 	public function isIdentical( string $old, string $new ): bool {
-		return $this->collation->getSortKey( $old ) === $this->collation->getSortKey( $new );
+		// Through `getSortKey` so that input the collation rejects compares on
+		// its own text instead of every such value comparing equal
+		return $this->getSortKey( $old ) === $this->getSortKey( $new );
 	}
 
 }

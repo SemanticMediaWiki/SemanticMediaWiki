@@ -148,6 +148,28 @@ class CollatorTest extends TestCase {
 	}
 
 	/**
+	 * ICU rejects input it cannot convert to UTF-16, notably a sort key it
+	 * produced itself. Returning the untouched input keeps such a value
+	 * comparable instead of collapsing every affected entity onto the empty
+	 * string.
+	 *
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7079
+	 */
+	public function testSortKeyFallsBackToTheInputWhenTheCollationRejectsIt() {
+		if ( !extension_loaded( 'intl' ) ) {
+			$this->markTestSkipped( 'Skipping because intl (ICU) is not available.' );
+		}
+
+		$instance = Collator::singleton( 'uca-default' );
+		$sortKey = $instance->getSortKey( 'Has type' );
+
+		$this->assertSame(
+			$sortKey,
+			$instance->getSortKey( $sortKey )
+		);
+	}
+
+	/**
 	 * For non-binary collations (identity/uppercase/numeric) the sort key is
 	 * already valid text, so armoring is a no-op and the value is unchanged.
 	 */

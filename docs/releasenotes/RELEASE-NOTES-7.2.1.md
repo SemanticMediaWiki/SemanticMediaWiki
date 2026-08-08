@@ -12,11 +12,17 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed property and category pages sometimes reporting the wrong Semantic MediaWiki protection status, where a page's change-propagation lock and its "Is edit protected" status could be confused for one another ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
 * Fixed property and category pages sometimes remaining permanently locked for a change propagation update even when no such update was pending, leaving them uneditable; affected pages are editable again, and routine category changes such as setting a parent category no longer trigger the lock ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
 * Fixed change propagation failing to complete for a property or category connected to a very large number of pages, where selecting the affected pages could exhaust the available memory ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
+* Fixed Elasticsearch and OpenSearch queries sorted by a Page-datatype property returning results in several independently sorted blocks ([#7079](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7079))
+* Fixed Elasticsearch and OpenSearch sort keys losing characters on wikis that set `$smwgEntityCollation` to a `uca-*` value, which made entries that differ only in a number sort as if that number were absent ([#7079](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7079))
 * Fixed the `templatefile` result format leaving templates unexpanded in the downloaded file, and the PHP deprecation notice that corrupted it ([#7055](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7055))
 
 ## Upgrading
 
-No need to run "update.php" or any other migration scripts.
+No need to run "update.php".
+
+Wikis using Elasticsearch or OpenSearch should run `php maintenance/run.php SemanticMediaWiki:rebuildElasticIndex --only-update` once after upgrading, so that documents indexed before the upgrade are rewritten with the corrected sort keys. It re-indexes in place, without creating new indices or a rollover. Until it has run, the sorting problems listed above persist for every page that is not edited in the meantime.
+
+Note that sorting by a Page-datatype property now orders by the value page's name on Elasticsearch and OpenSearch. Where a value page sets `{{DEFAULTSORT:}}`, results that were last indexed by `rebuildElasticIndex` ordered by that sort key instead, and will change position. The storage back-end continues to order by the sort key.
 
 **Get the new version via Composer:**
 
