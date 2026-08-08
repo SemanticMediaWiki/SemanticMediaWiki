@@ -14,6 +14,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed change propagation failing to complete for a property or category connected to a very large number of pages, where selecting the affected pages could exhaust the available memory ([#4344](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4344))
 * Fixed Elasticsearch and OpenSearch queries sorted by a Page-datatype property returning results in several independently sorted blocks ([#7079](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7079))
 * Fixed Elasticsearch and OpenSearch sort keys losing characters on wikis that set `$smwgEntityCollation` to a `uca-*` value, which made entries that differ only in a number sort as if that number were absent ([#7079](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7079))
+* Fixed the `templatefile` result format leaving templates unexpanded in the downloaded file, and the PHP deprecation notice that corrupted it ([#7055](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7055))
 
 ## Upgrading
 
