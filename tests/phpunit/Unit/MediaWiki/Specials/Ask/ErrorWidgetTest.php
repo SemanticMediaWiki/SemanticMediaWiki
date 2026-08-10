@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\MediaWiki\Specials\Ask;
 
 use MediaWiki\Html\Html;
 use PHPUnit\Framework\TestCase;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\Query\Query;
 
@@ -37,6 +38,24 @@ class ErrorWidgetTest extends TestCase {
 
 			ErrorWidget::noResult()
 		);
+	}
+
+	public function testQueryErrorEscapesReflectedMarkup() {
+		$query = $this->getMockBuilder( Query::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// `Message::encode` un-swaps %3C/%3E into < > after strip_tags, so a
+		// crafted query chunk can smuggle live markup into the error stream.
+		$error = Message::encode( [ '%3Eimg src=x onerror=alert(1)%3C' ] );
+
+		$query->method( 'getErrors' )
+			->willReturn( [ $error ] );
+
+		$html = ErrorWidget::queryError( $query );
+
+		$this->assertStringNotContainsString( '<img src=x onerror=alert(1)>', $html );
+		$this->assertStringContainsString( '&lt;img src=x onerror=alert(1)&gt;', $html );
 	}
 
 	/**

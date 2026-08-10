@@ -89,7 +89,10 @@ class ErrorWidget {
 				$value = implode( " ", $value );
 			}
 
-			$errors[] = $value;
+			// Query errors carry request-controlled text (e.g. an unparsed
+			// query chunk) and `Message::encode` can re-introduce angle
+			// brackets past its `strip_tags`, so escape before the raw box.
+			$errors[] = htmlspecialchars( (string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
 		}
 
 		if ( count( $errors ) > 1 ) {
