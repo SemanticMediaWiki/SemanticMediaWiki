@@ -123,7 +123,10 @@ class ResultFetcher {
 				$msg .= Message::decode( $error );
 			}
 
-			return Html::errorBox( $msg );
+			// Query errors carry request-controlled text (e.g. an unparsed
+			// query chunk) and `Message::encode` can re-introduce angle
+			// brackets past its `strip_tags`, so escape before the raw box.
+			return Html::errorBox( htmlspecialchars( $msg, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
 		}
 
 		if ( $this->queryResult === null ) {
