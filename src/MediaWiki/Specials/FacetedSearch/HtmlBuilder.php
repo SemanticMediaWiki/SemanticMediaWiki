@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\Html;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
@@ -129,7 +130,9 @@ class HtmlBuilder {
 		// Remember the "cstate" (aka card state) over the period of one
 		// request by adding hidden elements to the form
 		foreach ( $urlArgs->getArray( 'cstate' ) as $key => $value ) {
-			$hidden .= '<input name="' . "cstate[$key]" . '" type="hidden" value="' . $value . '">';
+			if ( is_scalar( $value ) ) {
+				$hidden .= Html::hidden( "cstate[$key]", $value );
+			}
 		}
 
 		$searchForm = $this->templateParser->processTemplate(
