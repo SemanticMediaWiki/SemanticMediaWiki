@@ -36,6 +36,9 @@ class WikitextTemplateRenderer {
 		$this->template .= '{{' . $templateName;
 
 		foreach ( $this->fields as $key => $value ) {
+			if ( $value === null ) {
+				continue;
+			}
 			$this->template .= "\n|$key=" . str_replace( '|', '{{!}}', $value );
 		}
 
