@@ -1,4 +1,4 @@
-* [[Imported from::foaf:name]]
-* [[Property description::A name for some thing or agent.@en]]
+* {{#set: Imported from=foaf:name|+display}}
+* {{#set: Has property description=A name for some thing or agent.@en|+display}}
 
 [[Category:Imported vocabulary]] {{DISPLAYTITLE:foaf:name}}
