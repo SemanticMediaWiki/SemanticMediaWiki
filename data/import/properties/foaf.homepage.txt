@@ -1,4 +1,4 @@
 * {{#set: Imported from=foaf:homepage|+display}}
-* {{#set: Has property description=URL of the homepage of something, which is a general web resource.@en|+display}}
+* {{#set: Property description=URL of the homepage of something, which is a general web resource.@en|+display}}
 
 [[Category:Imported vocabulary]] {{DISPLAYTITLE:foaf:homepage}}
