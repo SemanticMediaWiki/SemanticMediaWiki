@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\SQLStore\EntityStore;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\Iterators\MappingIterator;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
@@ -225,6 +226,44 @@ class EntityLookupTest extends TestCase {
 		);
 
 		$instance->getPropertyValues( $subject, $property );
+	}
+
+	public function testGetPropertyValues_Property_Inverse_ReturnsArray_WhenLookupReturnsMappingIterator() {
+		// PropertySubjectsLookup::fetchFromTable() always wraps its result in a
+		// MappingIterator (see PropertySubjectsLookup::fetchFromTable), never a
+		// plain array. getPropertyValues() is typed `: array` and must convert
+		// the inverse-property branch's result before returning it.
+		$property = new Property( 'Bar', true );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
+
+		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPropertyID' )
+			->willReturn( 42 );
+
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->willReturn( '_foo' );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->willReturn( [ '_foo' => $propTable ] );
+
+		$this->propertySubjectsLookup->expects( $this->once() )
+			->method( 'fetchFromTable' )
+			->willReturn( new MappingIterator( [], static fn ( $x ) => $x ) );
+
+		$instance = new EntityLookup(
+			$this->store,
+			$this->factory
+		);
+
+		$result = $instance->getPropertyValues( $subject, $property );
+
+		$this->assertIsArray( $result );
 	}
 
 	public function testGetPropertyValues_Subject_Null() {
