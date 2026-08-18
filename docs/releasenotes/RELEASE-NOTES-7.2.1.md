@@ -16,6 +16,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed Elasticsearch and OpenSearch sort keys losing characters on wikis that set `$smwgEntityCollation` to a `uca-*` value, which made entries that differ only in a number sort as if that number were absent ([#7079](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7079))
 * Fixed the `templatefile` result format leaving templates unexpanded in the downloaded file, and the PHP deprecation notice that corrupted it ([#7055](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7055))
 * Fixed pages with a very large tooltip failing to render with a `pcre.backtrack_limit exhausted` error; the tooltip's `title` attribute is now capped at 1024 characters, so readers without JavaScript see a truncated native tooltip ([#7076](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7076))
+* Fixed a fatal error when a query asked for an inverse property, such as the `?-Has subobject` printout, which stopped the page from being saved or rendered ([#7092](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7092))
 
 ## Upgrading
 
