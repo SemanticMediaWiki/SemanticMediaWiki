@@ -229,6 +229,14 @@ class EntityLookup implements IEntityLookup {
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = new Property( $property->getKey(), false );
 			$result = $this->getPropertySubjects( $noninverse, $subject, $requestOptions );
+
+			// getPropertySubjects() may return a MappingIterator (e.g. when
+			// PropertySubjectsLookup::fetchFromTable() wraps its result, or
+			// SUSPEND_CACHE_WARMUP short-circuits before an array cast), but
+			// this method is typed to always return an array.
+			if ( !is_array( $result ) ) {
+				$result = iterator_to_array( $result );
+			}
 		} elseif ( $subject !== null ) { // subject given, use semantic data cache
 			$sortKey = '';
 			$sid = $idTable->getSMWPageIDandSort(

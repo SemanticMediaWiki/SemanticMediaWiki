@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\SQLStore\EntityStore;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\Iterators\MappingIterator;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
@@ -195,7 +196,33 @@ class EntityLookupTest extends TestCase {
 		$instance->getPropertyValues( $subject, $property );
 	}
 
-	public function testGetPropertyValues_Property_Inverse() {
+	public function testGetPropertyValues_Property_Inverse_UnregisteredProperty() {
+		// The lookup is never reached for a property without an ID, so this is
+		// the one inverse path that genuinely yields a plain array.
+		$property = new Property( 'Bar', true );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
+
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPropertyID' )
+			->willReturn( 0 );
+
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->willReturn( '_foo' );
+
+		$instance = new EntityLookup(
+			$this->store,
+			$this->factory
+		);
+
+		$this->assertSame( [], $instance->getPropertyValues( $subject, $property ) );
+	}
+
+	public function testGetPropertyValues_Property_Inverse_ConvertsLookupIteratorToArray() {
+		// PropertySubjectsLookup::fetchFromTable() always wraps its result in a
+		// MappingIterator, never a plain array, while getPropertyValues() is
+		// typed `: array`. The inverse-property branch has to materialise the
+		// iterator, keeping the mapped items and their order intact.
 		$property = new Property( 'Bar', true );
 		$subject = new WikiPage( 'Foo', NS_MAIN );
 
@@ -217,14 +244,26 @@ class EntityLookupTest extends TestCase {
 
 		$this->propertySubjectsLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->willReturn( [] );
+			->willReturn( new MappingIterator(
+				[ 'One', 'Two', 'Three' ],
+				static fn ( string $title ) => new WikiPage( $title, NS_MAIN )
+			) );
 
 		$instance = new EntityLookup(
 			$this->store,
 			$this->factory
 		);
 
-		$instance->getPropertyValues( $subject, $property );
+		$result = $instance->getPropertyValues( $subject, $property );
+
+		$this->assertEquals(
+			[
+				new WikiPage( 'One', NS_MAIN ),
+				new WikiPage( 'Two', NS_MAIN ),
+				new WikiPage( 'Three', NS_MAIN )
+			],
+			$result
+		);
 	}
 
 	public function testGetPropertyValues_Subject_Null() {
@@ -279,16 +318,18 @@ class EntityLookupTest extends TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [ '_foo' => $propTable ] );
 
+		$subjects = new MappingIterator( [ 'One', 'Two' ], static fn ( string $title ) => new WikiPage( $title, NS_MAIN ) );
+
 		$this->propertySubjectsLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->willReturn( [] );
+			->willReturn( $subjects );
 
 		$instance = new EntityLookup(
 			$this->store,
 			$this->factory
 		);
 
-		$instance->getPropertySubjects( $property, $subject );
+		$this->assertSame( $subjects, $instance->getPropertySubjects( $property, $subject ) );
 	}
 
 	public function testGetAllPropertySubjects() {
@@ -310,16 +351,18 @@ class EntityLookupTest extends TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [ '_foo' => $propTable ] );
 
+		$subjects = new MappingIterator( [ 'One', 'Two' ], static fn ( string $title ) => new WikiPage( $title, NS_MAIN ) );
+
 		$this->propertySubjectsLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->willReturn( [] );
+			->willReturn( $subjects );
 
 		$instance = new EntityLookup(
 			$this->store,
 			$this->factory
 		);
 
-		$instance->getAllPropertySubjects( $property );
+		$this->assertSame( $subjects, $instance->getAllPropertySubjects( $property ) );
 	}
 
 	public function testGetInProperties() {
