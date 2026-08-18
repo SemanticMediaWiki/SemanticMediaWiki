@@ -228,11 +228,11 @@ class EntityLookupTest extends TestCase {
 		$instance->getPropertyValues( $subject, $property );
 	}
 
-	public function testGetPropertyValues_Property_Inverse_ReturnsArray_WhenLookupReturnsMappingIterator() {
+	public function testGetPropertyValues_Property_Inverse_ConvertsLookupIteratorToArray() {
 		// PropertySubjectsLookup::fetchFromTable() always wraps its result in a
-		// MappingIterator (see PropertySubjectsLookup::fetchFromTable), never a
-		// plain array. getPropertyValues() is typed `: array` and must convert
-		// the inverse-property branch's result before returning it.
+		// MappingIterator, never a plain array, while getPropertyValues() is
+		// typed `: array`. The inverse-property branch has to materialise the
+		// iterator, keeping the mapped items and their order intact.
 		$property = new Property( 'Bar', true );
 		$subject = new WikiPage( 'Foo', NS_MAIN );
 
@@ -254,7 +254,10 @@ class EntityLookupTest extends TestCase {
 
 		$this->propertySubjectsLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->willReturn( new MappingIterator( [], static fn ( $x ) => $x ) );
+			->willReturn( new MappingIterator(
+				[ 'One', 'Two', 'Three' ],
+				static fn ( string $title ) => new WikiPage( $title, NS_MAIN )
+			) );
 
 		$instance = new EntityLookup(
 			$this->store,
@@ -263,7 +266,14 @@ class EntityLookupTest extends TestCase {
 
 		$result = $instance->getPropertyValues( $subject, $property );
 
-		$this->assertIsArray( $result );
+		$this->assertEquals(
+			[
+				new WikiPage( 'One', NS_MAIN ),
+				new WikiPage( 'Two', NS_MAIN ),
+				new WikiPage( 'Three', NS_MAIN )
+			],
+			$result
+		);
 	}
 
 	public function testGetPropertyValues_Subject_Null() {
