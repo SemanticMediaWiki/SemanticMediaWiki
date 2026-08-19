@@ -1,11 +1,17 @@
 # Semantic MediaWiki 7.2.1
 
-Released on TBD.
+Released on August 18, 2026.
 
-This is a [patch release](../RELEASE-POLICY.md). Thus, it contains only bug fixes, no new features, and no breaking changes.
+This is a [patch release](../RELEASE-POLICY.md). Thus, it contains only security fixes and bug fixes, no new features, and no breaking changes.
 
 Like SMW 7.2.0, this version is compatible with MediaWiki 1.43 up to 1.46 and PHP 8.1 up to 8.5.
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
+
+## Security fixes
+
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:FacetedSearch` where crafted card-state (`cstate`) parameters were reflected unescaped into the search form's hidden inputs ([GHSA-9rcc-pmj8-ffhr](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-9rcc-pmj8-ffhr))
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:FacetedSearch` and `Special:Ask` where a crafted query was reflected unescaped into query error messages
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:Browse` where a crafted subject was reflected unescaped into the invalid-subject error message
 
 ## Bug fixes
 
