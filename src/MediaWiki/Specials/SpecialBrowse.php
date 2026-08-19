@@ -118,8 +118,15 @@ class SpecialBrowse extends SpecialPage {
 			foreach ( $dataValue->getErrors() as $err ) {
 				$error .= Message::decode( $err, Message::TEXT, Message::USER_LANGUAGE );
 			}
+			// The decoded error carries request-controlled text (the invalid
+			// subject) and `Message::encode` can re-introduce angle brackets
+			// past its `strip_tags`, so escape before it enters the raw box.
 			$data['html-output'] = Html::errorBox(
-				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE ),
+				Message::get(
+					[ 'smw-browse-invalid-subject', htmlspecialchars( $error, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) ],
+					Message::TEXT,
+					Message::USER_LANGUAGE
+				),
 				'',
 				'smw-error-browse'
 			);

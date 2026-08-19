@@ -78,6 +78,27 @@ class SpecialBrowseTest extends TestCase {
 		);
 	}
 
+	public function testInvalidSubjectErrorEscapesReflectedMarkup() {
+		$instance = new SpecialBrowse( $this->store, $this->settings, $this->serializerFactory );
+		$services = MediaWikiServices::getInstance();
+
+		$instance->getContext()->setTitle(
+			$services->getTitleFactory()->newFromText( 'SpecialBrowse' )
+		);
+		$instance->getContext()->setLanguage(
+			$services->getLanguageFactory()->getLanguage( 'en' )
+		);
+
+		// `Message::encode` un-swaps %3C/%3E into < > after strip_tags, so a
+		// crafted invalid subject can smuggle live markup into the error box.
+		$instance->execute( '{{%3Eimg src=x onerror=alert(1)%3C' );
+
+		$html = $instance->getOutput()->getHtml();
+
+		$this->assertStringNotContainsString( '<img src=x onerror=alert(1)>', $html );
+		$this->assertStringContainsString( '&lt;img src=x onerror=alert(1)&gt;', $html );
+	}
+
 	public function queryParameterProvider() {
 		# 0
 		$provider[] = [
