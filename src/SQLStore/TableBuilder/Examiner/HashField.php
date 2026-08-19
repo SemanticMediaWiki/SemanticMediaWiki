@@ -57,16 +57,16 @@ class HashField {
 	}
 
 	/**
-	 * Convert hex-encoded smw_hash values to raw binary.
+	 * Convert hex-encoded `smw_hash` values to raw binary.
 	 *
-	 * Must run BEFORE the column type changes from VARBINARY(40) to
-	 * BINARY(20), because the ALTER would truncate 40-byte hex strings.
-	 * The LENGTH check distinguishes hex (40) from already-converted
-	 * binary (20) and empty values.
+	 * Must run before the installer narrows the column from `VARBINARY(40)`
+	 * to `BINARY(20)`. A row still holding hex at that point loses its hash;
+	 * {@see self::assertNoHexRowsRemain()} says how. The LENGTH check
+	 * distinguishes hex (40) from already-converted binary (20) and empty
+	 * values.
 	 *
-	 * Always runs to completion regardless of row count: skipping it would
-	 * leave 40-byte hex values that the subsequent ALTER TABLE cannot
-	 * narrow to BINARY(20) without truncation.
+	 * Unlike `check()`, this is never skipped on the grounds of row count.
+	 * There is no threshold above which leaving the values in hex is safe.
 	 *
 	 * @since 7.0
 	 */
@@ -132,12 +132,17 @@ class HashField {
 	}
 
 	/**
-	 * Before batching, "every hex row was converted" held by construction:
-	 * one unbounded statement could not miss a row. It now depends on the
-	 * `smw_id` walk having covered them all. The caller narrows the column
-	 * to `BINARY(20)` immediately afterwards, which truncates whatever is
-	 * left, so confirm the conversion really is complete and stop the
-	 * upgrade with an explanation if it is not.
+	 * The walk converts the `smw_id` range that held hex hashes when
+	 * `hexRowBounds()` measured it. Another process still running an older
+	 * Semantic MediaWiki can write a hex row after that, outside the range,
+	 * so completeness has to be measured rather than assumed.
+	 *
+	 * On MySQL and MariaDB no SQL mode gets a leftover hex value through the
+	 * `BINARY(20)` change the installer makes later in the same run. A strict
+	 * mode fails that change with error 1406 and alters nothing. MediaWiki's
+	 * default empty `sql_mode` lets it succeed, leaving the first 20 bytes of
+	 * the hex text in place of the hash and reporting only a warning. The
+	 * silent case is the one this check exists for.
 	 */
 	private function assertNoHexRowsRemain( Database $connection, CliMsgFormatter $cliMsgFormatter ): void {
 		$remaining = $this->hexRowBounds( $connection )['count'];
@@ -150,11 +155,13 @@ class HashField {
 			$cliMsgFormatter->red(
 				"... $remaining row(s) still hold a hex `smw_hash` after the conversion."
 			),
-			"The schema change that follows would truncate them, so the upgrade " .
-			"stops here. This happens when rows are written to `smw_object_ids` " .
-			"by an older Semantic MediaWiki while `update.php` runs. Make sure no " .
-			"other process is writing to the wiki and re-run `update.php`: rows " .
-			"converted so far are already committed and are skipped.",
+			"They would not survive the schema change that follows, so the " .
+			"upgrade stops here. This happens when the wiki keeps serving " .
+			"traffic during an upgrade: web requests and job runners that " .
+			"started earlier go on writing hashes in the previous format. Put " .
+			"the wiki into read-only mode, stop any job runners, then re-run " .
+			"`update.php`. The rows already converted stay converted, and the " .
+			"next run skips them.",
 		];
 
 		$this->messageReporter->reportMessage(
