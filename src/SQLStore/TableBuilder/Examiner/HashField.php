@@ -137,12 +137,12 @@ class HashField {
 	 * Semantic MediaWiki can write a hex row after that, outside the range,
 	 * so completeness has to be measured rather than assumed.
 	 *
-	 * On MySQL and MariaDB no SQL mode gets a leftover hex value through the
-	 * `BINARY(20)` change the installer makes later in the same run. A strict
-	 * mode fails that change with error 1406 and alters nothing. MediaWiki's
-	 * default empty `sql_mode` lets it succeed, leaving the first 20 bytes of
-	 * the hex text in place of the hash and reporting only a warning. The
-	 * silent case is the one this check exists for.
+	 * The `BINARY(20)` change the installer makes later in the same run cannot
+	 * be relied on to catch a row that is still hex. Under `$wgSQLMode`'s
+	 * default of an empty mode, MySQL and MariaDB let that change succeed,
+	 * keeping the first 20 bytes of the hex text in place of the hash and
+	 * reporting only a warning. A strict mode fails it with error 1406
+	 * instead. The silent default is why this check exists.
 	 */
 	private function assertNoHexRowsRemain( Database $connection, CliMsgFormatter $cliMsgFormatter ): void {
 		$remaining = $this->hexRowBounds( $connection )['count'];
