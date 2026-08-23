@@ -311,8 +311,9 @@ class HashFieldTest extends TestCase {
 	}
 
 	public function testMigrateHexHashes_StopsBeforeSchemaChangeWhenHexRowsSurvive() {
-		// The caller narrows smw_hash to BINARY(20) right after this runs,
-		// which would truncate anything the walk missed.
+		// A non-zero count after the conversion must abort the run. Reporting
+		// and carrying on would hand a hex row to the schema change, which the
+		// hash does not come through.
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
