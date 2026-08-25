@@ -95,9 +95,11 @@ class TextSanitizer {
 		$exemptionList = '';
 
 		// Those have special meaning when running a match search against
-		// the fulltext index (wildcard, phrase matching markers etc.)
+		// the fulltext index (wildcard, phrase matching markers, etc.).
+		// Excludes '@', which InnoDB reserves for @distance queries 
+		// and which holds no special meaning in MyISAM.
 		if ( $isSearchTerm ) {
-			$exemptionList = [ '*', '"', '+', '-', '&', ',', '@', '~' ];
+			$exemptionList = [ '*', '"', '+', '-', '&', ',', '~' ];
 		}
 
 		$text = mb_strtolower( $text );
@@ -112,20 +114,34 @@ class TextSanitizer {
 			$text
 		);
 
+		if ( $isSearchTerm ) {
+			// Trim any leading asterisks and trailing +/-/~ signs
+			// now that we can still determine their position.
+			// @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
+			$trimmed = [];
+			foreach( explode( " ", $text ) as $t ) {
+				$trimmed[] = rtrim( ltrim( $t, "*" ), "-+~" );
+			}
+			$text = implode( " ", $trimmed );
+		}
+
 		$tokens = $this->tokenize( $text, $language, $exemptionList );
 
 		$filtered = $this->filterTokens( $tokens, $language, $exemptionList );
 
-		$text = implode( ' ', $filtered );
-
-		// Remove possible spaces added by the tokenizer
-		$text = str_replace(
+		// Remove possible spaces added by the tokenizer.
+		// Reunites tokens with leading operators ('+', '-', etc.),
+		// trailing operators ('*') and operators expected in
+		// both positions ('"')
+		$filteredText = str_replace(
 			[ ' *', '* ', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ],
 			[ '*', '*', '"', '"', '+', '-', '@', '~', '* +', '* -', '* ~' ],
-			$text
+			implode( ' ', $filtered )
 		);
 
-		return $text;
+		return $isSearchTerm
+			? $this->sanitizeFilteredText( $filteredText )
+			: $filteredText;
 	}
 
 	/**
@@ -154,10 +170,8 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenize( string|array $text, int|string|null $language, array|string $exemptionList ): array {
-		$hasCjk = (bool)preg_match( '/[\x{4e00}-\x{9fa5}]/u', $text );
+	private function tokenize( string $text, int|string|null $language, array|string $exemptionList ): array {
 		$hasIcu = class_exists( IntlRuleBasedBreakIterator::class );
-
 		if ( $hasIcu ) {
 			$tokens = $this->tokenizeWithIcu( $text, $language );
 			$joined = implode( ' ', $tokens );
@@ -165,6 +179,7 @@ class TextSanitizer {
 			return $this->tokenizeWithGenericRegex( $joined, $exemptionList );
 		}
 
+		$hasCjk = (bool)preg_match( '/[\x{4e00}-\x{9fa5}]/u', $text );
 		if ( $hasCjk ) {
 			$hasJapanese = (bool)preg_match( '/[\x{3040}-\x{309F}\x{30A0}-\x{30FF}]/u', $text );
 
@@ -298,6 +313,9 @@ class TextSanitizer {
 	}
 
 	/**
+	 * Filters out stopwords, tokens below the required
+	 * minimum length (1 for CJK), and adjacent duplicates.
+	 * 
 	 * @param array $tokens
 	 * @param string|null $language
 	 * @param string|array $exemptionList
@@ -389,6 +407,37 @@ class TextSanitizer {
 	 */
 	private function isStopWord( Reader $reader, $word ): bool {
 		return $reader->get( $word ) !== false;
+	}
+
+	/**
+	 * Removes illegal sequences and isolated operators that may
+	 * have been left behind after tokenizer() and filterTokens()
+	 * and lead to malformed syntax that can cause database query
+	 * errors (compared to MyISAM, InnoDB is less forgiving).
+	 * 
+	 * @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
+	 * 
+	 * @param string $text
+	 * @return string
+	 */
+	private function sanitizeFilteredText( string $text ): string {
+		// Remove troublesome sequences
+		$cleaned = str_replace(
+			[ "+*", "-*", "~*", "+-", "-+" ], "", $text
+		);
+
+		// Remove isolated operators
+		// May occur eg when trailing operators become detached or
+		// a stopword or other token is filtered out.
+		$tokens = [];
+		foreach( explode( " ", $cleaned ) as $token ) {
+			if ( in_array( $token, [ "*", "+", "-", "~" ] ) ) {
+				continue;
+			}
+			$tokens[] = $token;
+		}
+
+		return implode( " ", $tokens );
 	}
 
 	/**
