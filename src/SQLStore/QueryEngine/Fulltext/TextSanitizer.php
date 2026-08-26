@@ -250,7 +250,7 @@ class TextSanitizer {
 		$pattern = str_replace(
 			$exemptionList,
 			'',
-			'([\s\-_,:;?!%\'\|\/\(\)\[\]{}<>\r\n"]|(?<!\d)\.(?!\d)|(?<=\p{L})(?=\p{N}))'
+			'([\s\-_,:;?!%@\'\|\/\(\)\[\]{}<>\r\n"]|(?<!\d)\.(?!\d)|(?<=\p{L})(?=\p{N}))'
 		);
 
 		$result = preg_split( '/' . $pattern . '/u', $text, -1, PREG_SPLIT_NO_EMPTY );
@@ -349,12 +349,12 @@ class TextSanitizer {
 		$index = [];
 		$pos = 0;
 
-		foreach ( $tokens as $word ) {
+		foreach ( $tokens as $k => $word ) {
 			// Check if the next 'word' is a truncation operator.
 			// If so, it shouldn't be "stripped from a boolean query,
 			// even if it is too short or a stopword" (MySQL docs)
 			$hasTruncator = false;
-			if ( isset( $index[$pos + 1] ) && $index[$pos + 1] === "*" ) {
+			if ( isset( $tokens[$k + 1] ) && $tokens[$k + 1] === "*" ) {
 				$hasTruncator = true;
 			}
 
