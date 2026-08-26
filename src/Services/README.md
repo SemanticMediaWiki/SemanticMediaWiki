@@ -6,13 +6,13 @@ Services contain object definitions that handle the object build process and pro
 
 Object instances are generally accessed using the `ServicesFactory` locator and its public methods.
 
-`ServicesFactory` owns a private `Wikimedia\Services\ServiceContainer` populated from the `ServiceWiring.php` wiring file. That container holds the no-argument, stateless services (Bucket A). Services that take runtime arguments or are constructed fresh per use (Bucket B and C) are exposed as factory methods on `ServicesFactory` instead.
+`ServicesFactory` resolves services from MediaWiki's global `ServiceContainer`, populated from the `ServiceWiring.php` wiring file under `SMW.` keys. That container holds the no-argument services, including ones that carry request-scoped state such as `SMW.ResultCache`. Services that take runtime arguments or are constructed fresh per use are exposed as factory methods on `ServicesFactory` instead.
 
 ## Service files and containers
 
 ### Files
 
-* `ServiceWiring.php` wiring file for the private `ServiceContainer`; defines the Bucket-A services
+* `ServiceWiring.php` wiring file for MediaWiki's global `ServiceContainer`; defines the `SMW.` services
 * `importer.php` provides services for the [Importer](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/src/Importer), consumed by `ImporterServiceFactory`
 * `datavalues.php` provides services for `DataValue` objects, consumed by `DataValueServiceFactory`
 

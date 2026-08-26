@@ -14,6 +14,7 @@ use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
 use SMW\Property\RestrictionExaminer;
 use SMW\Protection\ProtectionValidator;
+use SMW\Query\Cache\ResultCache;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Services\ImporterServiceFactory;
 use SMW\Services\ServicesFactory;
@@ -255,6 +256,29 @@ class BehaviourSensitiveServiceCharacterizationTest extends MediaWikiIntegration
 		// service, so each call returns a fresh instance and the setUser() mutation
 		// is isolated per caller.
 		$this->assertNotSame( $first, $second, 'PropertyRestrictionExaminer: Bucket-C service constructed fresh per call' );
+	}
+
+	// -------------------------------------------------------------------------
+	// ResultCache: request-scoped state depends on a shared instance
+	// -------------------------------------------------------------------------
+
+	/**
+	 * ResultCache carries two pieces of request-scoped state that only work when
+	 * every call site in a request holds the same instance: the `MapCacheLRU`
+	 * fast tier inside its `QueryResultStore`, and the `CacheStats` counters that
+	 * `AfterQueryResultLookupComplete` flushes for the lookup performed by
+	 * `BeforeQueryResultLookupComplete`.
+	 *
+	 * When each call built its own instance, every lookup re-read the cache
+	 * back-end for a key the request had already fetched, and every cache hit was
+	 * counted on an instance nothing ever recorded. See #7102.
+	 */
+	public function testResultCacheIsSharedWithinARequest(): void {
+		$first = $this->factory->singleton( 'ResultCache' );
+		$second = $this->factory->singleton( 'ResultCache' );
+
+		$this->assertInstanceOf( ResultCache::class, $first );
+		$this->assertSame( $first, $second, 'ResultCache: shared instance resolved via the global ServiceContainer' );
 	}
 
 }

@@ -51,6 +51,7 @@ use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\Protection\ProtectionValidator;
+use SMW\Query\Cache\ResultCache;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
@@ -614,6 +615,16 @@ return [
 			$lang->getCanonicalPropertyLabels(),
 			$lang->getCanonicalDatatypeLabels()
 		);
+	},
+
+	'SMW.ResultCache' => static function ( MediaWikiServices $services ): ResultCache {
+		$servicesFactory = ServicesFactory::getInstance();
+
+		if ( $servicesFactory->hasTestOverride( 'ResultCache' ) ) {
+			return $servicesFactory->getResultCache();
+		}
+
+		return $servicesFactory->newResultCache();
 	},
 
 	'SMW.InvalidateResultCacheEventListener' => static function ( MediaWikiServices $services ): InvalidateResultCacheEventListener {
