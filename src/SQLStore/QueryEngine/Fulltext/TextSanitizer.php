@@ -117,10 +117,14 @@ class TextSanitizer {
 		if ( $isSearchTerm ) {
 			// Trim any leading asterisks and trailing +/-/~ signs
 			// now that we can still determine their position.
+			// Exempt free-standing operators, which may be
+			// joined to tokens later on.
 			// @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
 			$trimmed = [];
 			foreach ( explode( " ", $text ) as $t ) {
-				$trimmed[] = rtrim( ltrim( $t, "*" ), "-+~" );
+				if ( !in_array( $t, [ "*", "-", "+", "~" ] ) ) {
+					$trimmed[] = rtrim( ltrim( $t, "*" ), "-+~" );
+				}
 			}
 			$text = implode( " ", $trimmed );
 		}
@@ -129,8 +133,9 @@ class TextSanitizer {
 
 		$filtered = $this->filterTokens( $tokens, $language, $exemptionList );
 
-		// Remove possible spaces added by the tokenizer.
-		// e.g. reunites tokens with leading operators ('+', '-', etc.),
+		// Remove possible spaces added by the tokenizer
+		// or originating from the input.
+		// Reunites tokens with leading operators ('+', '-', etc.),
 		// trailing operators ('*') and operators expected in
 		// both positions ('"')
 		$filteredText = str_replace(
