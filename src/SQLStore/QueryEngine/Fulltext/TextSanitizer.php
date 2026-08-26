@@ -130,12 +130,12 @@ class TextSanitizer {
 		$filtered = $this->filterTokens( $tokens, $language, $exemptionList );
 
 		// Remove possible spaces added by the tokenizer.
-		// Reunites tokens with leading operators ('+', '-', etc.),
+		// e.g. reunites tokens with leading operators ('+', '-', etc.),
 		// trailing operators ('*') and operators expected in
 		// both positions ('"')
 		$filteredText = str_replace(
-			[ ' *', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ],
-			[ '*', '"', '"', '+', '-', '@', '~', '* +', '* -', '* ~' ],
+			[ ' *', ' "', '" ', '+ ', '- ', '~ ', '*+', '*-', '*~' ],
+			[ '*', '"', '"', '+', '-', '~', '* +', '* -', '* ~' ],
 			implode( ' ', $filtered )
 		);
 
@@ -419,6 +419,35 @@ class TextSanitizer {
 	}
 
 	/**
+	 * @param string $text
+	 *
+	 * @return string|null
+	 */
+	private function predictLanguage( string $text ): null|int|string {
+		if ( $this->languageDetection === [] ) {
+			return null;
+		}
+
+		if ( !isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
+			return null;
+		}
+
+		$textCat = new TextCat();
+		$candidates = $this->languageDetection['TextCatLanguageDetector'];
+
+		$result = $textCat->classify(
+			Normalizer::reduceLengthTo( $text, 200 ),
+			$candidates
+		);
+
+		if ( is_array( $result ) && $result !== [] ) {
+			return key( $result );
+		}
+
+		return null;
+	}
+
+	/**
 	 * Removes illegal sequences and isolated operators that may
 	 * have been left behind after tokenizer() and filterTokens()
 	 * and lead to malformed syntax that can cause database query
@@ -447,35 +476,6 @@ class TextSanitizer {
 		}
 
 		return implode( " ", $tokens );
-	}
-
-	/**
-	 * @param string $text
-	 *
-	 * @return string|null
-	 */
-	private function predictLanguage( string $text ): null|int|string {
-		if ( $this->languageDetection === [] ) {
-			return null;
-		}
-
-		if ( !isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
-			return null;
-		}
-
-		$textCat = new TextCat();
-		$candidates = $this->languageDetection['TextCatLanguageDetector'];
-
-		$result = $textCat->classify(
-			Normalizer::reduceLengthTo( $text, 200 ),
-			$candidates
-		);
-
-		if ( is_array( $result ) && $result !== [] ) {
-			return key( $result );
-		}
-
-		return null;
 	}
 
 }
