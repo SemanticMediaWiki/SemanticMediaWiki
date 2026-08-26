@@ -99,7 +99,7 @@ class TextSanitizer {
 		// Excludes '@', which InnoDB reserves for @distance queries
 		// and which holds no special meaning in MyISAM.
 		if ( $isSearchTerm ) {
-			$exemptionList = [ '*', '"', '+', '-', '&', ',', '~' ];
+			$exemptionList = [ '*', '"', '+', '-', '&', '~' ];
 		}
 
 		$text = mb_strtolower( $text );

@@ -142,7 +142,7 @@ class TextSanitizerTest extends TestCase {
 
 		yield 'surrounding wildcards' => [
 			'* foo *',
-			'*foo*'
+			'foo*'
 		];
 
 		yield 'plus and wildcard combo' => [
@@ -157,13 +157,44 @@ class TextSanitizerTest extends TestCase {
 
 		yield 'adjacent wildcards' => [
 			'*foo* bar',
-			'*foo*bar'
+			'foo* bar'
 		];
 
 		yield 'plus wildcard combo' => [
 			'+foo*, *bar',
-			'+foo*,*bar'
+			'+foo* bar'
 		];
+
+		yield 'two letters with wildcard' => [
+			'be*',
+			'be*'
+		];
+
+		yield 'single asterisk wildcard' => [
+			'*',
+			''
+		];
+
+		yield 'duplicate operators' => [
+			'++appl* ~~doctor --away',
+			'+appl* ~doctor -away'
+		];
+
+		yield 'operators in wrong positions' => [
+			'*appl+ *doctor- *away~',
+			'appl doctor away'
+		];
+
+		yield 'illegal operator sequences' => [
+			'-+peach+* decidu*+-',
+			'peach decidu*'
+		];
+
+		yield 'at sign as delimiter' => [
+			'name@email',
+			'name email'
+		];
+
 	}
 
 }
