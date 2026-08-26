@@ -56,6 +56,16 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends TestCase {
 		ApplicationFactory::getInstance()->singleton( 'ResultCache' )->disableCache();
 	}
 
+	protected function tearDown(): void {
+		// `disableCache()` above mutates the request-shared `SMW.ResultCache`,
+		// so drop it rather than leave the cache disabled for the rest of the
+		// process. Runs even when `setUp()` skipped before that line, where it
+		// is a no-op.
+		ApplicationFactory::clear();
+
+		parent::tearDown();
+	}
+
 	public function testQuerySubjects_afterUpdatingSemanticData() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 

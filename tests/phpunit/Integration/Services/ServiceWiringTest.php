@@ -78,6 +78,7 @@ use SMW\Property\AnnotatorFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\Protection\ProtectionValidator;
+use SMW\Query\Cache\ResultCache;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\Processor\QueryCreator;
 use SMW\Query\QuerySourceFactory;
@@ -160,6 +161,7 @@ class ServiceWiringTest extends MediaWikiIntegrationTestCase {
 			[ 'SMW.ImporterServiceFactory', ImporterServiceFactory::class ],
 			[ 'SMW.HierarchyLookup', HierarchyLookup::class ],
 			[ 'SMW.DisplayTitleFinder', DisplayTitleFinder::class ],
+			[ 'SMW.ResultCache', ResultCache::class ],
 		];
 	}
 

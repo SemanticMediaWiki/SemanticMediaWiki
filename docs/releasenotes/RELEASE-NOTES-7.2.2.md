@@ -9,6 +9,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
+* Fixed wikis with the query result cache enabled (`$smwgQueryResultCacheType`) reading the object cache once per identical query on a page instead of once per page, and reporting no cache hits at all in the query cache statistics on `Special:SemanticMediaWiki` ([#7102](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7102))
+
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.

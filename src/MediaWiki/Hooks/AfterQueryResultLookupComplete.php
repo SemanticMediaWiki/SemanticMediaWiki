@@ -34,10 +34,9 @@ class AfterQueryResultLookupComplete {
 
 		$queryDependencyLinksStore->updateDependencies( $result );
 
-		// `ResultCache` is resolved lazily rather than via the `services:`
-		// array because its query-result store is built from `smwgQueryResultCacheType`
-		// at construction and `MediaWikiServices` caches the resolved instance.
-		// See `BeforeQueryResultLookupComplete` for the full rationale.
+		// Records the statistics accumulated by the shared `SMW.ResultCache`
+		// during `BeforeQueryResultLookupComplete`. Resolved lazily rather than
+		// via the `services:` array; see that hook for the rationale.
 		ApplicationFactory::getInstance()->singleton( 'ResultCache' )->recordStats();
 
 		$store->getObjectIds()->warmUpCache( $result );

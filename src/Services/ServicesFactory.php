@@ -333,6 +333,7 @@ class ServicesFactory {
 			'ImporterServiceFactory' => fn () => $this->getImporterServiceFactory(),
 			'HierarchyLookup' => fn () => $this->newHierarchyLookup( ...$args ),
 			'DisplayTitleFinder' => fn () => $this->newDisplayTitleFinder( ...$args ),
+			'ResultCache' => fn () => $this->getResultCache( ...$args ),
 
 			// Bucket-B/C SMW services constructed fresh per call.
 			'IndicatorRegistry' => fn () => $this->newIndicatorRegistry( ...$args ),
@@ -351,7 +352,6 @@ class ServicesFactory {
 			'PostProcHandler' => fn () => $this->newPostProcHandler( ...$args ),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'QueryResultStore' => fn () => $this->newQueryResultStore( ...$args ),
-			'ResultCache' => fn () => $this->getResultCache( ...$args ),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			'Stats' => fn () => $this->newStats( ...$args ),
 			// @phan-suppress-next-line PhanParamTooFewUnpack
@@ -1147,9 +1147,46 @@ class ServicesFactory {
 	}
 
 	/**
+	 * Returns the request-shared `ResultCache`; passing `$cacheType` builds a
+	 * separate, unshared instance against that cache back-end.
+	 *
+	 * The shared instance reads `smwgQueryResultCacheType` and the other cache
+	 * settings once, when it is first resolved. Code that changes those
+	 * settings for the rest of a process, such as
+	 * `MaintenanceHelper::setGlobalToValue()` in `rebuildData.php`, has to do so
+	 * before anything resolves the cache.
+	 *
 	 * @since 7.0.0
 	 */
 	public function getResultCache( $cacheType = null ): ResultCache {
+		if ( array_key_exists( 'ResultCache', $this->testOverrides ) ) {
+			return $this->testOverrides['ResultCache'];
+		}
+
+		// `SMW.ResultCache` on the global container is built from
+		// `smwgQueryResultCacheType`; when the caller asks for a different cache
+		// back-end, build the instance inline.
+		if ( $cacheType === null ) {
+			return MediaWikiServices::getInstance()->getService( 'SMW.ResultCache' );
+		}
+
+		return $this->newResultCache( $cacheType );
+	}
+
+	/**
+	 * Constructs a `ResultCache` and its query-result store. Use
+	 * `getResultCache()` instead: the request-scoped fast tier inside
+	 * `QueryResultStore` and the `CacheStats` counters that
+	 * `AfterQueryResultLookupComplete` flushes are only meaningful while one
+	 * instance serves the whole request (#7102). This method is public so
+	 * `ServiceWiring.php` can build the shared `SMW.ResultCache`.
+	 *
+	 * @since 7.2.2
+	 *
+	 * @param int|string|bool|null $cacheType Cache back-end to build against;
+	 *  `null` resolves `smwgQueryResultCacheType`.
+	 */
+	public function newResultCache( $cacheType = null ): ResultCache {
 		if ( array_key_exists( 'ResultCache', $this->testOverrides ) ) {
 			return $this->testOverrides['ResultCache'];
 		}
