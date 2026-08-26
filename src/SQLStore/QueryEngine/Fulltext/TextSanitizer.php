@@ -466,7 +466,7 @@ class TextSanitizer {
 	private function sanitizeFilteredText( string $text ): string {
 		// Remove troublesome sequences
 		$cleaned = str_replace(
-			[ "+*", "-*", "~*", "+-", "-+" ], "", $text
+			[ "**", "*+", "*-", "*~", "+*", "++", "+-", "+~", "-*", "-+", "--", "-~", "~*", "~+", "~-", "~~" ], "", $text
 		);
 
 		// Remove isolated operators
