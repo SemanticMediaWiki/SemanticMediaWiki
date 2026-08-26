@@ -122,9 +122,9 @@ class TextSanitizer {
 			// @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
 			$trimmed = [];
 			foreach ( explode( " ", $text ) as $t ) {
-				if ( !in_array( $t, [ "*", "-", "+", "~" ] ) ) {
-					$trimmed[] = rtrim( ltrim( $t, "*" ), "-+~" );
-				}
+				$trimmed[] = ( !in_array( $t, [ "*", "-", "+", "~" ] ) )
+					? rtrim( ltrim( $t, "*" ), "-+~" )
+					: $t;
 			}
 			$text = implode( " ", $trimmed );
 		}
