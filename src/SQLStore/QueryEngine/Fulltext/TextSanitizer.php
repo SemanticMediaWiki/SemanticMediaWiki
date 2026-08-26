@@ -96,7 +96,7 @@ class TextSanitizer {
 
 		// Those have special meaning when running a match search against
 		// the fulltext index (wildcard, phrase matching markers, etc.).
-		// Excludes '@', which InnoDB reserves for @distance queries 
+		// Excludes '@', which InnoDB reserves for @distance queries
 		// and which holds no special meaning in MyISAM.
 		if ( $isSearchTerm ) {
 			$exemptionList = [ '*', '"', '+', '-', '&', ',', '~' ];
@@ -119,7 +119,7 @@ class TextSanitizer {
 			// now that we can still determine their position.
 			// @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
 			$trimmed = [];
-			foreach( explode( " ", $text ) as $t ) {
+			foreach ( explode( " ", $text ) as $t ) {
 				$trimmed[] = rtrim( ltrim( $t, "*" ), "-+~" );
 			}
 			$text = implode( " ", $trimmed );
@@ -316,7 +316,7 @@ class TextSanitizer {
 	 * Filters out stopwords, tokens below the required
 	 * minimum length (1 for CJK), and adjacent duplicates,
 	 * unless exceptions apply.
-	 * 
+	 *
 	 * @param array $tokens
 	 * @param string|null $language
 	 * @param string|array $exemptionList
@@ -358,7 +358,7 @@ class TextSanitizer {
 				$hasTruncator = true;
 			}
 
-			// Remove token if it is not an exemption, shorter than 
+			// Remove token if it is not an exemption, shorter than
 			// the required minimum length or identified as stop word,
 			// and has no truncation operator
 			if ( !isset( $whiteList[$word] ) && (
@@ -452,9 +452,9 @@ class TextSanitizer {
 	 * have been left behind after tokenizer() and filterTokens()
 	 * and lead to malformed syntax that can cause database query
 	 * errors (compared to MyISAM, InnoDB is less forgiving).
-	 * 
+	 *
 	 * @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
-	 * 
+	 *
 	 * @param string $text
 	 * @return string
 	 */
@@ -468,7 +468,7 @@ class TextSanitizer {
 		// May occur eg when trailing operators become detached or
 		// a stopword or other token is filtered out.
 		$tokens = [];
-		foreach( explode( " ", $cleaned ) as $token ) {
+		foreach ( explode( " ", $cleaned ) as $token ) {
 			if ( in_array( $token, [ "*", "+", "-", "~" ] ) ) {
 				continue;
 			}
