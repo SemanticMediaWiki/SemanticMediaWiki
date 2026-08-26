@@ -134,8 +134,8 @@ class TextSanitizer {
 		// trailing operators ('*') and operators expected in
 		// both positions ('"')
 		$filteredText = str_replace(
-			[ ' *', '* ', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ],
-			[ '*', '*', '"', '"', '+', '-', '@', '~', '* +', '* -', '* ~' ],
+			[ ' *', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ],
+			[ '*', '"', '"', '+', '-', '@', '~', '* +', '* -', '* ~' ],
 			implode( ' ', $filtered )
 		);
 
@@ -314,7 +314,8 @@ class TextSanitizer {
 
 	/**
 	 * Filters out stopwords, tokens below the required
-	 * minimum length (1 for CJK), and adjacent duplicates.
+	 * minimum length (1 for CJK), and adjacent duplicates,
+	 * unless exceptions apply.
 	 * 
 	 * @param array $tokens
 	 * @param string|null $language
@@ -328,14 +329,12 @@ class TextSanitizer {
 		}
 
 		$whiteList = [];
-
 		if ( is_array( $exemptionList ) && $exemptionList !== [] ) {
 			$whiteList = array_fill_keys( $exemptionList, true );
 		}
 
 		// Determine if we should use word-based min length or character-based
 		$hasCjk = false;
-
 		foreach ( $tokens as $token ) {
 			if ( preg_match( '/[\x{4e00}-\x{9fa5}]/u', $token ) ) {
 				$hasCjk = true;
@@ -351,16 +350,26 @@ class TextSanitizer {
 		$pos = 0;
 
 		foreach ( $tokens as $word ) {
-			// If it is not an exemption and less than the required minimum length
-			// or identified as stop word it is removed
+			// Check if the next 'word' is a truncation operator.
+			// If so, it shouldn't be "stripped from a boolean query,
+			// even if it is too short or a stopword" (MySQL docs)
+			$hasTruncator = false;
+			if ( isset( $index[$pos + 1] ) && $index[$pos + 1] === "*" ) {
+				$hasTruncator = true;
+			}
+
+			// Remove token if it is not an exemption, shorter than 
+			// the required minimum length or identified as stop word,
+			// and has no truncation operator
 			if ( !isset( $whiteList[$word] ) && (
 				mb_strlen( $word ) < $minLength ||
 				( $stopwordReader !== null && $this->isStopWord( $stopwordReader, $word ) )
-			) ) {
+			) && !$hasTruncator ) {
 				continue;
 			}
 
-			// Simple proximity, check for same words appearing next to each other
+			// Simple proximity, check for same words or operators
+			// appearing next to each other
 			if ( isset( $index[$pos - 1] ) && $index[$pos - 1] === $word ) {
 				continue;
 			}
