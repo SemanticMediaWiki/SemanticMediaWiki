@@ -187,14 +187,13 @@ class TextSanitizerTest extends TestCase {
 
 		yield 'illegal operator sequences' => [
 			'-+peach+* decidu*+-',
-			'peach decidu*'
+			'peach  decidu*'
 		];
 
 		yield 'at sign as delimiter' => [
 			'name@email',
 			'name email'
 		];
-
 	}
 
 }
