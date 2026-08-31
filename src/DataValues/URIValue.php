@@ -87,79 +87,11 @@ class URIValue extends DataValue {
 					$this->showUrlContextInRawFormat = false;
 				}
 
-				// If somehow the slash was encoded bring into one format
-				$value = str_replace( "%2F", "/", $value );
-
-				$parts = explode( ':', $value, 2 ); // try to split "schema:rest"
-				if ( count( $parts ) == 1 ) { // possibly add "http" as default
-					$value = 'http://' . $value;
-					$parts[1] = $parts[0];
-					$parts[0] = 'http';
-				}
-				// check against blacklist
-				$uri_blacklist = explode(
-					"\n",
-					Message::get( 'smw_uri_blacklist', Message::TEXT, Message::CONTENT_LANGUAGE )
-				);
-				foreach ( $uri_blacklist as $uri ) {
-					$uri = trim( $uri );
-					if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) {
-						// disallowed URI!
-						$this->addErrorMsg( [ 'smw_baduri', $value ] );
-						return;
-					}
-				}
-				// decompose general URI components
-				$scheme = $parts[0];
-
-				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !isset( $this->schemeList[$scheme] ) ) {
-					$this->addErrorMsg( [ 'smw-datavalue-uri-invalid-scheme', $scheme ] );
+				$uriParts = $this->splitAndEncodeUri( $value );
+				if ( $uriParts == false ) {
 					return;
 				}
-
-				$parts = explode( '?', $parts[1], 2 ); // try to split "hier-part?queryfrag"
-				if ( count( $parts ) == 2 ) {
-					$hierpart = $parts[0];
-					$parts = explode( '#', $parts[1], 2 ); // try to split "query#frag"
-					$query = $parts[0];
-					$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
-				} else {
-					$parts = explode( '#', $parts[0], 2 ); // try to split "hier-part#frag"
-					$hierpart = $parts[0];
-					$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
-				}
-				// We do not validate the URI characters (the data item will do this) but we do some escaping:
-				// encode most characters, but leave special symbols as given by user:
-				$hierpart = str_replace(
-					[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ],
-					[ ':', '/', '#', '@', '?', '=', '&', '%' ],
-					rawurlencode( $hierpart )
-				);
-				$query = str_replace(
-					[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ],
-					[ ':', '/', '#', '@', '?', '=', '&', '%' ],
-					rawurlencode( $query )
-				);
-				$fragment = str_replace(
-					[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ],
-					[ ':', '/', '#', '@', '?', '=', '&', '%' ],
-					rawurlencode( $fragment )
-				);
-				/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
-				/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
-				///       this prevents tel: from working directly, but we have a datatype for this anyway.
-
-				if ( substr( $hierpart, 0, 2 ) === '//' ) {
-					$hierpart = substr( $hierpart, 2 );
-				}
-
-				// #3540
-				if ( $hierpart !== '' && $hierpart[0] === '/' ) {
-					$this->addErrorMsg(
-						[ 'smw-datavalue-uri-invalid-authority-path-component', $value, $hierpart ]
-					);
-					return;
-				}
+				[ $scheme, $hierpart, $query, $fragment ] = $uriParts;
 
 				break;
 			case SMW_URI_MODE_TEL:
@@ -196,11 +128,7 @@ class URIValue extends DataValue {
 					$this->addErrorMsg( [ 'smw_baduri', $value ] );
 					return;
 				}
-				$hierpart = str_replace(
-					[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ],
-					[ ':', '/', '#', '@', '?', '=', '&', '%' ],
-					rawurlencode( $value )
-				);
+				$hierpart = $this->encodeUriPart( $value );
 		}
 
 		// Now create the URI data item:
@@ -382,6 +310,108 @@ class URIValue extends DataValue {
 		// during the outout by the browser without breaking the URL itself
 		// as it contains the `_` for spaces
 		return [ $this->getURL(), $context ];
+	}
+
+	/**
+	 * Attempts to split URI into its constituent parts
+	 * (scheme, hierarchical part, query string and fragment),
+	 * and does some encoding.
+	 *
+	 * @param mixed $value
+	 * @return string[]|bool false if it does not pass checks
+	 */
+	private function splitAndEncodeUri( $value ): array|bool {
+		// try to split "scheme:rest"
+		$parts = explode( ':', $value, 2 );
+		if ( count( $parts ) == 1 ) {
+			// possibly add "http" as default
+			$value = 'http://' . $value;
+			$parts[1] = $parts[0];
+			$parts[0] = 'http';
+		}
+
+		// Check against blacklist
+		if ( !$this->checksOutAgainstUriBlacklist( $value ) ) {
+			return false;
+		}
+
+		// decompose general URI components
+		$scheme = $parts[0];
+
+		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !isset( $this->schemeList[$scheme] ) ) {
+			$this->addErrorMsg( [ 'smw-datavalue-uri-invalid-scheme', $scheme ] );
+			return false;
+		}
+
+		// try to split "hier-part?query#frag"
+		$parts = explode( '?', $parts[1], 2 );
+		if ( count( $parts ) == 2 ) {
+			$hierpart = $parts[0];
+			// try to split "query#frag"
+			$parts = explode( '#', $parts[1], 2 );
+			$query = $parts[0];
+			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
+		} else {
+			// try to split "hier-part#frag"
+			$parts = explode( '#', $parts[0], 2 );
+			$hierpart = $parts[0];
+			$query = "";
+			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
+		}
+
+		// We do not validate the URI characters (the data item will do this) but we do some escaping:
+		// encode most characters, but leave special symbols as given by user:
+		$hierpart = $this->encodeUriPart( $hierpart );
+		$query = $this->encodeUriPart( $query );
+		$fragment = $this->encodeUriPart( $fragment );
+		/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
+		/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
+		///       this prevents tel: from working directly, but we have a datatype for this anyway.
+
+		// Remove '//' if hierarchical part starts with it
+		if ( substr( $hierpart, 0, 2 ) === '//' ) {
+			$hierpart = substr( $hierpart, 2 );
+		}
+
+		// #3540
+		if ( $hierpart !== '' && $hierpart[0] === '/' ) {
+			$this->addErrorMsg( [ 'smw-datavalue-uri-invalid-authority-path-component', $value, $hierpart ] );
+			return false;
+		}
+
+		return [ $scheme, $hierpart, $query, $fragment ];
+	}
+
+	/**
+	 * Encodes URL part while preserving the eleven
+	 * sub-delimiters defined by RFC 3986
+	 *
+	 * @param string $str
+	 * @return string
+	 */
+	private function encodeUriPart( string $str ): string {
+		return str_replace(
+			[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25', '%2C', '%3B', '%21' ],
+			[ ':', '/', '#', '@', '?', '=', '&', '%', ',', ';', '!' ],
+			rawurlencode( $str )
+		);
+	}
+
+	private function checksOutAgainstUriBlacklist( string $value ): bool {
+		$uri_blacklist = explode(
+			"\n",
+			Message::get( 'smw_uri_blacklist', Message::TEXT, Message::CONTENT_LANGUAGE )
+		);
+		foreach ( $uri_blacklist as $uri ) {
+			$uri = trim( $uri );
+			if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) {
+				// disallowed URI!
+				$this->addErrorMsg( [ 'smw_baduri', $value ] );
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }
