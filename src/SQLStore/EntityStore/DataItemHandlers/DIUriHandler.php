@@ -90,7 +90,7 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ): array {
-		$serialization = rawurldecode( $dataItem->getSerialization() );
+		$serialization = $dataItem->getSerialization();
 		return [ 'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ) ];
 	}
 
@@ -100,7 +100,7 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ): array {
-		$serialization = rawurldecode( $dataItem->getSerialization() );
+		$serialization = $dataItem->getSerialization();
 		$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
 
 		// bytea type handling

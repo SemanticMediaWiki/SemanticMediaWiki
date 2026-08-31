@@ -277,7 +277,7 @@ class DocumentCreator {
 				} elseif ( $type === DataItem::TYPE_URI ) {
 
 					// Used for `compatibilityMode`
-					$values["$fieldType"][] = rawurldecode( $dataItem->getSerialization() );
+					$values["$fieldType"][] = $dataItem->getSerialization();
 
 					if ( $property->getKey() === '_TYPE' ) {
 						$values["typeField"] = [ $dataItem->getFragment() ];

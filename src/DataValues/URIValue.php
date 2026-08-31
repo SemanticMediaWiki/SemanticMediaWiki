@@ -25,11 +25,6 @@ define( 'SMW_URI_MODE_TEL', 5 );
 class URIValue extends DataValue {
 
 	/**
-	 * Raw value without encoding
-	 */
-	const VALUE_RAW = 'uri.value.raw';
-
-	/**
 	 * The value as returned by getWikitext() and getLongText().
 	 */
 	protected ?string $m_wikitext = null;
@@ -233,10 +228,6 @@ class URIValue extends DataValue {
 	}
 
 	public function getWikiValue() {
-		if ( $this->getOption( self::VALUE_RAW ) ) {
-			return rawurldecode( $this->m_wikitext );
-		}
-
 		return $this->m_wikitext;
 	}
 
@@ -296,9 +287,12 @@ class URIValue extends DataValue {
 	}
 
 	private function decodeUriContext( $context, $linker ): array {
-		// Prior to decoding turn any `-` into an internal representation to avoid
-		// potential breakage
-		if ( !$this->showUrlContextInRawFormat ) {
+		$url = $this->getURL();
+
+		// Prior to decoding, turn any `-` into an internal
+		// representation to avoid potential breakage. Skip if
+		// the context is just the URI, not a distinct caption.
+		if ( $context !== $url && !$this->showUrlContextInRawFormat ) {
 			$context = Encoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
@@ -309,7 +303,7 @@ class URIValue extends DataValue {
 		// Allow the display without `_` so that URIs can be split
 		// during the outout by the browser without breaking the URL itself
 		// as it contains the `_` for spaces
-		return [ $this->getURL(), $context ];
+		return [ $url, $context ];
 	}
 
 	/**
