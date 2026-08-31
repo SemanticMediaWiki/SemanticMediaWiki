@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\SQLStore;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LogLevel;
 use RuntimeException;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -26,6 +27,9 @@ use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\SQLStoreUpdater;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
+use SMW\Tests\Utils\SpyLogger;
+use Throwable;
+use Wikimedia\Rdbms\DBUnexpectedError;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreUpdater
@@ -243,21 +247,11 @@ class SQLStoreUpdaterTest extends TestCase {
 	}
 
 	public function testDoDataUpdateCancelsSectionTransactionWhenUpdateThrows() {
-		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
-
 		// A failing entity: the property lookup inside the section throws, mirroring
 		// e.g. a charset error while writing a 4-byte UTF-8 title to a non-utf8mb4 DB.
-		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ WikiPage::newFromTitle( $title ) ] )
-			->setMethods( [ 'getPropertyValues' ] )
-			->getMock();
+		$semanticData = $this->newSemanticDataFailingWith( __METHOD__, new RuntimeException( 'charset failure' ) );
 
-		$semanticData->method( 'getPropertyValues' )
-			->willThrowException( new RuntimeException( 'charset failure' ) );
-
-		$database = $this->getMockBuilder( Database::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$database = $this->newConnection();
 
 		$database->expects( $this->once() )
 			->method( 'beginSectionTransaction' )
@@ -272,18 +266,95 @@ class SQLStoreUpdaterTest extends TestCase {
 		$database->expects( $this->never() )
 			->method( 'endSectionTransaction' );
 
-		$parentStore = $this->getMockBuilder( SQLStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$parentStore->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->willReturn( $database );
-
-		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
+		$instance = new SQLStoreUpdater( $this->newStoreUsing( $database ), $this->factory );
 
 		$this->expectException( RuntimeException::class );
 		$instance->doDataUpdate( $semanticData );
+	}
+
+	public function testDoDataUpdatePropagatesUpdateErrorWhenSectionRollbackAlsoFails() {
+		$updateError = new RuntimeException( 'charset failure' );
+		$semanticData = $this->newSemanticDataFailingWith( __METHOD__, $updateError );
+
+		$database = $this->newConnection();
+		$database->method( 'cancelSectionTransaction' )
+			->willThrowException( $this->newRollbackFailure() );
+
+		$instance = new SQLStoreUpdater( $this->newStoreUsing( $database ), $this->factory );
+
+		// The update error says why the update failed, so it is the one the
+		// caller has to see; the rollback error must not take its place.
+		$this->expectExceptionObject( $updateError );
+		$instance->doDataUpdate( $semanticData );
+	}
+
+	public function testDoDataUpdateReportsSectionRollbackFailure() {
+		$semanticData = $this->newSemanticDataFailingWith( __METHOD__, new RuntimeException( 'charset failure' ) );
+
+		$database = $this->newConnection();
+		$database->method( 'cancelSectionTransaction' )
+			->willThrowException( $this->newRollbackFailure() );
+
+		$logger = new SpyLogger();
+
+		$this->factory->expects( $this->any() )
+			->method( 'getLogger' )
+			->willReturn( $logger );
+
+		$instance = new SQLStoreUpdater( $this->newStoreUsing( $database ), $this->factory );
+
+		try {
+			$instance->doDataUpdate( $semanticData );
+		} catch ( RuntimeException $updateError ) {
+			// Propagation is asserted by the sibling test.
+		}
+
+		$logs = $logger->getLogs();
+
+		$this->assertCount( 1, $logs );
+		$this->assertSame( LogLevel::ERROR, $logs[0][0] );
+		$this->assertSame( 'rollback failure', $logs[0][2]['rollback_error'] );
+		$this->assertSame( 'charset failure', $logs[0][2]['update_error'] );
+	}
+
+	private function newSemanticDataFailingWith( string $method, Throwable $updateError ): SemanticData {
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $method, NS_MAIN );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromTitle( $title ) ] )
+			->onlyMethods( [ 'getPropertyValues' ] )
+			->getMock();
+
+		$semanticData->method( 'getPropertyValues' )
+			->willThrowException( $updateError );
+
+		return $semanticData;
+	}
+
+	private function newConnection(): Database {
+		return $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	private function newStoreUsing( Database $connection ): SQLStore {
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		return $store;
+	}
+
+	/**
+	 * A rollback can fail on its own, e.g. MariaDB 1305 when the savepoint is
+	 * already gone.
+	 */
+	private function newRollbackFailure(): DBUnexpectedError {
+		return new DBUnexpectedError( null, 'rollback failure' );
 	}
 
 	public function testDoDataUpdateForConceptNamespaceWithoutSubobject() {
