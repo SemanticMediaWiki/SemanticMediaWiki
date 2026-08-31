@@ -5,6 +5,7 @@ namespace SMW\Query\ResultPrinters;
 use MediaWiki\Parser\Sanitizer;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
+use SMW\DataValues\URIValue;
 
 /**
  * Result printer to print results in UNIX-style DSV (deliminter separated value)
@@ -149,7 +150,11 @@ class DsvResultPrinter extends FileExportPrinter {
 				// Loop over all values for the property.
 				$object = $field->getNextDataValue();
 				while ( $object !== false ) {
-					$itemSegments[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
+					$wikiValue = $object->getWikiValue();
+					// Decode char references except for URIs
+					$itemSegments[] = ( !$object instanceof URIValue )
+						? Sanitizer::decodeCharReferences( $wikiValue )
+						: $wikiValue;
 					$object = $field->getNextDataValue();
 				}
 
