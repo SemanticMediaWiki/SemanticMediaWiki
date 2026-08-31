@@ -33,7 +33,7 @@
 			"아라"
 		]
 	},
-	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
+	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów, jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
 	"smw-error": "Błąd",
 	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] zostało zainstalowane i włączone, ale brakuje odpowiedniego [https://www.semantic-mediawiki.org/wiki/Help:Upgrade klucza aktualizacji].",
 	"smw-upgrade-release": "Wydanie",
