@@ -3,12 +3,12 @@
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Parser\Sanitizer;
+use SMW\DataValues\URIValue;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
-use SMW\DataValues\URIValue;
 
 /**
- * Result printer to print results in UNIX-style DSV (deliminter separated value)
+ * Result printer to print results in UNIX-style DSV (delimiter separated value)
  * format.
  *
  * @license GPL-2.0-or-later
