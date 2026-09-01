@@ -334,10 +334,10 @@ class URIValueTest extends TestCase {
 			$linker,
 			[
 				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar', // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@%2A_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
-				'longWikiText'  => '[http://example.org/api?query=!_:;@%2A_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]', // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@%2A_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
-				'shortWikiText' => '[http://example.org/api?query=!_:;@%2A_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]'
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
+				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]', // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
+				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]'
 			]
 		];
 
@@ -348,10 +348,10 @@ class URIValueTest extends TestCase {
 			$linker,
 			[
 				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar', // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@%2A_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
-				'longWikiText'  => '[http://example.org/api?query=!_:;@%2A_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@%2A_#Foo&amp;=_-3DBar">&amp;! :;@* #Foo</a>',
-				'shortWikiText' => '[http://example.org/api?query=!_:;@%2A_#Foo&=_-3DBar &! :;@* #Foo]'
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
+				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_-3DBar">&amp;! :;@* #Foo</a>',
+				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_-3DBar &! :;@* #Foo]'
 			]
 		];
 
@@ -362,7 +362,8 @@ class URIValueTest extends TestCase {
 			$linker,
 			[
 				'wikiValue'     => 'https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg',
-				'longWikiText'  => 'https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg',
+				'longHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg">https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg</a>',
+				'longWikiText'  => '[https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg]',
 				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg">https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg</a>',
 				'shortWikiText' => '[https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg]'
 			]
