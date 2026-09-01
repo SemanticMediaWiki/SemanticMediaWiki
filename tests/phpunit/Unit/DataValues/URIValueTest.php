@@ -313,6 +313,7 @@ class URIValueTest extends TestCase {
 			]
 		];
 
+		# 14
 		$provider[] = [
 			'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
 			'&!_:;@*#Foo',
@@ -351,6 +352,19 @@ class URIValueTest extends TestCase {
 				'longWikiText'  => '[http://example.org/api?query=!_:;@%2A_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]',
 				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@%2A_#Foo&amp;=_-3DBar">&amp;! :;@* #Foo</a>',
 				'shortWikiText' => '[http://example.org/api?query=!_:;@%2A_#Foo&=_-3DBar &! :;@* #Foo]'
+			]
+		];
+
+		# 17 - Issue #5212
+		$provider[] = [
+			'https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg',
+			false,
+			$linker,
+			[
+				'wikiValue'     => 'https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg',
+				'longWikiText'  => 'https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg">https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg</a>',
+				'shortWikiText' => '[https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg https://example.com/iiif/2/bg257f52v%2Ffiles%2F97de85e3-1efc-4be0-9921-aafe78634209%2Ffcr:versions%2Fversion1/pct:21.68724,66.12698,73.82716,17.71429/pct:100/0/default.jpg]'
 			]
 		];
 
