@@ -17,6 +17,27 @@ use Wikimedia\ObjectCache\BagOStuff;
  */
 class JsonContentsFileReaderTest extends TestCase {
 
+	private string $languageFileDir = '';
+
+	protected function setUp(): void {
+		$this->languageFileDir = sys_get_temp_dir() . '/' . uniqid( 'smw-lang-', true );
+
+		mkdir( $this->languageFileDir );
+
+		// `getLanguageFile` requires the file to exist before it can be written.
+		file_put_contents( $this->languageFileDir . '/zxx.json', '{}' );
+	}
+
+	protected function tearDown(): void {
+		foreach ( glob( $this->languageFileDir . '/*.json' ) as $file ) {
+			unlink( $file );
+		}
+
+		rmdir( $this->languageFileDir );
+
+		JsonContentsFileReader::clear();
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			JsonContentsFileReader::class,
@@ -100,36 +121,21 @@ class JsonContentsFileReaderTest extends TestCase {
 		$instance->readByLanguageCode( 'foo', true );
 	}
 
-	/**
-	 * This method is just for convenience so that one can quickly add contents to files
-	 * without requiring an extra class when extending the language content. Normally the
-	 * test in active
-	 *
-	 * @dataProvider dataExtensionProvider
-	 */
-	public function testWriteToFile( $topic, $extension ) {
-		$instance = new JsonContentsFileReader();
-		$list = 'ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
+	public function testWriteByLanguageCodeRoundTripsContents() {
+		$instance = new JsonContentsFileReader( null, $this->languageFileDir );
 
-		$didWrite = false;
+		// A slash and a non-ASCII label: both survive a round trip regardless
+		// of how json_encode escapes them on disk.
+		$contents = [
+			'namespace' => [ 'SMW_NS_SCHEMA' => 'SMW/Schema' ],
+			'datatype' => [ 'labels' => [ '_ref_rec' => 'Verknüpfung' ] ],
+		];
 
-		foreach ( explode( ',', $list ) as $lang ) {
-			$contents = $instance->readByLanguageCode( $lang, true );
+		$instance->writeByLanguageCode( 'zxx', $contents );
 
-			if ( $contents === '' ) {
-				continue;
-			}
-
-			$contents[$topic] = ( $contents[$topic] ?? [] ) + $extension;
-
-			$instance->writeByLanguageCode( $lang, $contents );
-
-			$didWrite = true;
-		}
-
-		$this->assertTrue(
-			$didWrite,
-			'Expected at least one language file to be written'
+		$this->assertSame(
+			$contents,
+			$instance->readByLanguageCode( 'zxx', true )
 		);
 	}
 
@@ -148,17 +154,6 @@ class JsonContentsFileReaderTest extends TestCase {
 	public function languageCodeProvider() {
 		$provider[] = [
 			'en'
-		];
-
-		return $provider;
-	}
-
-	public function dataExtensionProvider() {
-		$provider[] = [
-			'dataTypeLabels',
-			[
-				"_ref_rec" => "Reference"
-			]
 		];
 
 		return $provider;
