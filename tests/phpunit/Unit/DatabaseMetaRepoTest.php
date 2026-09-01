@@ -6,11 +6,13 @@ namespace SMW\Tests\Unit;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\DatabaseMetaRepo;
 use SMW\Maintenance\AutoRecovery;
 use SMW\Site;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use Wikimedia\Rdbms\DBQueryError;
+use Wikimedia\Rdbms\DBUnexpectedError;
 use Wikimedia\Rdbms\Expression;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
@@ -132,6 +134,25 @@ class DatabaseMetaRepoTest extends TestCase {
 		$this->assertCount( 2, $capturedDeleteWheres );
 		$this->assertInstanceOf( IExpression::class, $capturedDeleteWheres[0] );
 		$this->assertInstanceOf( IExpression::class, $capturedDeleteWheres[1] );
+	}
+
+	public function testSaveSmwJsonPropagatesSaveErrorWhenAtomicRollbackAlsoFails(): void {
+		$db = $this->makeExprDatabase();
+
+		$saveError = new RuntimeException( 'write failure' );
+		$db->method( 'newDeleteQueryBuilder' )->willThrowException( $saveError );
+
+		// A rollback can fail on its own, e.g. MariaDB 1305 when the savepoint
+		// is already gone.
+		$db->method( 'cancelAtomic' )
+			->willThrowException( new DBUnexpectedError( null, 'rollback failure' ) );
+
+		$repo = new DatabaseMetaRepo( $this->makeLoadBalancer( $db ) );
+
+		// The save error says why the save failed, so it is the one the caller
+		// has to see; the rollback error must not take its place.
+		$this->expectExceptionObject( $saveError );
+		$repo->saveSmwJson( '/tmp', [ Site::id() => [ 'upgrade_key' => 'abc123' ] ] );
 	}
 
 	public function testSaveSmwJsonDeletesNullValues(): void {

@@ -5,9 +5,11 @@ declare( strict_types = 1 );
 namespace SMW;
 
 use InvalidArgumentException;
+use MediaWiki\Logger\LoggerFactory;
 use SMW\SQLStore\SQLStore;
 use Throwable;
 use Wikimedia\Rdbms\DBQueryError;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\ILoadBalancer;
 use Wikimedia\Rdbms\LikeValue;
@@ -180,8 +182,33 @@ class DatabaseMetaRepo implements SmwJsonRepo {
 
 			$db->endAtomic( __METHOD__ );
 		} catch ( Throwable $e ) {
-			$db->cancelAtomic( __METHOD__ );
+			$this->cancelAtomicSection( $db, __METHOD__, $e );
+
 			throw $e;
+		}
+	}
+
+	/**
+	 * The rollback can fail on its own, e.g. MariaDB 1305 when the savepoint is
+	 * already gone. Report that failure but let $saveError remain the exception
+	 * that propagates: it is the one that says why the save failed.
+	 *
+	 * `$fname` has to be the name the section was opened with: `cancelAtomic`
+	 * rejects a mismatch.
+	 */
+	private function cancelAtomicSection( IDatabase $db, string $fname, Throwable $saveError ): void {
+		try {
+			$db->cancelAtomic( $fname );
+		} catch ( Throwable $rollbackError ) {
+			LoggerFactory::getInstance( 'smw' )->error(
+				'Atomic section rollback in {fname} failed with "{rollback_error}" while handling "{save_error}"',
+				[
+					'fname' => $fname,
+					'rollback_error' => $rollbackError->getMessage(),
+					'save_error' => $saveError->getMessage(),
+					'exception' => $rollbackError
+				]
+			);
 		}
 	}
 
