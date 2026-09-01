@@ -12,7 +12,7 @@
 		},
 		{
 			"page": "Example/Q0704/Q.1",
-			"contents": "{{#ask: [[Has url::~*Than255]] |?Has url}}"
+			"contents": "{{#ask: [[Has url::~*Than255*]] |?Has url}}"
 		}
 	],
 	"tests": [

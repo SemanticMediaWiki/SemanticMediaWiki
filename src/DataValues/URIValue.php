@@ -400,7 +400,7 @@ class URIValue extends DataValue {
 		// (application/x-www-form-urlencoded). This would prevent tel:
 		// from working directly, but we have a datatype for this anyway.
 		// '$': used in system message vars (e.g. '$1')
-		$subdelimSearch = [ '%21', '%24', '%26', '%27', '%28', '%29', '%2A', '%2B', '%2C', '%3B', '%3D', '%25' ];
+		$subdelimSearch = [ '%21', '%24', '%26', '%27', '%28', '%29', '%2A', '%2B', '%2C', '%3B', '%3D' ];
 		$subdelimReplace = [ '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=' ];
 
 		return str_replace(
