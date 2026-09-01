@@ -289,14 +289,15 @@ class URIValue extends DataValue {
 	private function decodeUriContext( $context, $linker ): array {
 		$url = $this->getURL();
 
-		// Prior to decoding, turn any `-` into an internal
-		// representation to avoid potential breakage. Skip if
-		// the context is just the URI, not a distinct caption.
+		// Decode but skip if context is just the URI
+		// rather than a distinct caption.
 		if ( $context !== $url && !$this->showUrlContextInRawFormat ) {
+			// Prior to decoding, turn any `-` into an internal
+			// representation to avoid potential breakage.
 			$context = Encoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
-		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
+		if ( $context !== $url && $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
 			$context = str_replace( '_', ' ', $context ?? '' );
 		}
 
@@ -377,21 +378,43 @@ class URIValue extends DataValue {
 	}
 
 	/**
-	 * Encodes URL part while preserving the eleven
-	 * sub-delimiters defined by RFC 3986
+	 * Encodes URI string by rawlencoding it and restoring
+	 * most of RFC 3986's gen-delimiters and sub-delimiters.
+	 *
+	 * Does not check for '?' or '#' in hierpart,
+	 * assuming splitting string has taken care of that.
 	 *
 	 * @param string $str
 	 * @return string
 	 */
 	private function encodeUriPart( string $str ): string {
+		// 5/7 gen-delims: ':', '/', '?', '#', '@'
+		// We do not support raw [ (%5D) and ] (%5E), although they
+		// are needed for ldap:// if rarely in a wiki
+		$gendelimSearch = [ '%3A', '%2F', '%3F', '%23', '%40' ];
+		$gendelimReplace = [ ':', '/', '?', '#', '@' ];
+
+		// 11/11 sub-delimiters: ! $ & ' ( ) * + , ; =
+		// Take care of following encodings:
+		// '+': interpreted as space by most browsers when part of a URL
+		// (application/x-www-form-urlencoded). This would prevent tel:
+		// from working directly, but we have a datatype for this anyway.
+		// '$': used in system message vars (e.g. '$1')
+		$subdelimSearch = [ '%21', '%24', '%26', '%27', '%28', '%29', '%2A', '%2B', '%2C', '%3B', '%3D', '%25' ];
+		$subdelimReplace = [ '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=' ];
+
 		return str_replace(
-			[ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25', '%2C', '%3B', '%21' ],
-			[ ':', '/', '#', '@', '?', '=', '&', '%', ',', ';', '!' ],
+			// '%' MUST come last
+			array_merge( $gendelimSearch, $subdelimSearch, [ '%25' ] ),
+			array_merge( $gendelimReplace, $subdelimReplace, [ '%' ] ),
 			rawurlencode( $str )
 		);
 	}
 
 	private function checksOutAgainstUriBlacklist( string $value ): bool {
+		// Don't let percent-encoding evade detection
+		$value = str_replace( '%2F', '/', $value );
+
 		$uri_blacklist = explode(
 			"\n",
 			Message::get( 'smw_uri_blacklist', Message::TEXT, Message::CONTENT_LANGUAGE )
