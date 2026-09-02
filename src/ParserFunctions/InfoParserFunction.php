@@ -71,7 +71,12 @@ class InfoParserFunction {
 		if ( $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			Outputs::commitToOutputPage( $wgOut );
-		} else {
+		} elseif ( $parser->getOutputType() === Parser::OT_HTML ) {
+			// Only a pass that renders HTML may receive the commit: any other
+			// pass discards its ParserOutput, so an eager commit there would
+			// both lose the modules and drain the buffers. In such a pass the
+			// requirements stay buffered for the rendering parse that follows
+			// (#7109)
 			Outputs::commitToParser( $parser );
 		}
 

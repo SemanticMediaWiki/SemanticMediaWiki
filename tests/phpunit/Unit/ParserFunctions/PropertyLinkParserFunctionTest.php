@@ -7,6 +7,7 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Outputs;
 use SMW\Parser\PropertyLinkRenderer;
 use SMW\ParserData;
 use SMW\ParserFunctions\PropertyLinkParserFunction;
@@ -27,9 +28,11 @@ class PropertyLinkParserFunctionTest extends TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		Outputs::reset();
 	}
 
 	protected function tearDown(): void {
+		Outputs::reset();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -84,7 +87,55 @@ class PropertyLinkParserFunctionTest extends TestCase {
 
 		$this->assertSame(
 			$this->propertyLink( '[[:Property:Foo|Foo]]' ),
-			$instance->parse( [ $this->newParser(), 'Foo' ] )
+			$instance->parse( [ $this->newParser( Parser::OT_HTML ), 'Foo' ] )
+		);
+	}
+
+	public function testHtmlPassCommitsTooltipResourcesToTheParser() {
+		$parser = $this->newParser( Parser::OT_HTML );
+
+		$result = $this->newInstance( $this->newParserData( NS_MAIN ) )->parse(
+			[ $parser, 'Modification date' ]
+		);
+
+		$this->assertStringContainsString(
+			'smw-highlighter',
+			$result,
+			'guard: a predefined property is expected to render a highlighter'
+		);
+
+		$this->assertContains(
+			'ext.smw.tooltip',
+			$parser->getOutput()->getModules()
+		);
+	}
+
+	public function testNonHtmlPassLeavesTooltipResourcesBufferedForTheRenderingParse() {
+		$parser = $this->newParser( Parser::OT_PREPROCESS );
+
+		$result = $this->newInstance( $this->newParserData( NS_MAIN ) )->parse(
+			[ $parser, 'Modification date' ]
+		);
+
+		$this->assertStringContainsString(
+			'smw-highlighter',
+			$result,
+			'guard: a predefined property is expected to render a highlighter'
+		);
+
+		$this->assertNotContains(
+			'ext.smw.tooltip',
+			$parser->getOutput()->getModules(),
+			'the ParserOutput of a non-rendering pass is discarded and must not receive the modules'
+		);
+
+		$renderingParseOutput = new ParserOutput();
+		Outputs::commitToParserOutput( $renderingParseOutput );
+
+		$this->assertContains(
+			'ext.smw.tooltip',
+			$renderingParseOutput->getModules(),
+			'the requirements must stay buffered for the rendering parse that follows'
 		);
 	}
 
@@ -141,7 +192,7 @@ class PropertyLinkParserFunctionTest extends TestCase {
 		return MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __CLASS__, $namespace );
 	}
 
-	private function newParser(): Parser {
+	private function newParser( int $outputType ): Parser {
 		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -151,6 +202,9 @@ class PropertyLinkParserFunctionTest extends TestCase {
 
 		$parser->method( 'getOutput' )
 			->willReturn( new ParserOutput() );
+
+		$parser->method( 'getOutputType' )
+			->willReturn( $outputType );
 
 		return $parser;
 	}
