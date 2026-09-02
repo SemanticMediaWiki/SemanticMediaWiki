@@ -359,9 +359,6 @@ class URIValue extends DataValue {
 		$hierpart = $this->encodeUriPart( $hierpart );
 		$query = $this->encodeUriPart( $query );
 		$fragment = $this->encodeUriPart( $fragment );
-		/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
-		/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
-		///       this prevents tel: from working directly, but we have a datatype for this anyway.
 
 		// Remove '//' if hierarchical part starts with it
 		if ( substr( $hierpart, 0, 2 ) === '//' ) {
@@ -378,8 +375,7 @@ class URIValue extends DataValue {
 	}
 
 	/**
-	 * Encodes URI string by rawlencoding it and restoring
-	 * most of RFC 3986's gen-delimiters and sub-delimiters.
+	 * Normalises URI part to clean, IRI-friendly string.
 	 *
 	 * Does not check for '?' or '#' in hierpart,
 	 * assuming splitting string has taken care of that.
@@ -391,14 +387,20 @@ class URIValue extends DataValue {
 		// Remove NULL
 		$str = str_replace( '%00', '', $str );
 
+		// Encode unreserved ASCII characters while retaining
+		// percent-encoded reserved chars as data. We do this
+		// by rawlencoding the string and restoring most of
+	 	// RFC 3986's gen-delimiters and sub-delimiters.
+		// #5212
+
 		// 5/7 gen-delims: ':', '/', '?', '#', '@'
 		// We do not support raw [ (%5D) and ] (%5E), although they
-		// are needed for ldap:// if rarely in a wiki
+		// are needed for ldap:// if rarely in a wiki.
 		$gendelimSearch = [ '%3A', '%2F', '%3F', '%23', '%40' ];
 		$gendelimReplace = [ ':', '/', '?', '#', '@' ];
 
 		// 11/11 sub-delimiters: ! $ & ' ( ) * + , ; =
-		// Take care of following encodings:
+		// NOTE:
 		// '+': interpreted as space by most browsers when part of a URL
 		// (application/x-www-form-urlencoded). This would prevent tel:
 		// from working directly, but we have a datatype for this anyway.
@@ -411,6 +413,8 @@ class URIValue extends DataValue {
 			array_merge( $gendelimReplace, $subdelimReplace, [ '%' ] ),
 			rawurlencode( $str )
 		);
+
+		// rawurldecode percent-encoded non-ASCII UTF8
 		return $this->decodeNonAsciiUtf8( $encoded );
 	}
 
