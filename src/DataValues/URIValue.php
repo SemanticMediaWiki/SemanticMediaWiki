@@ -388,6 +388,9 @@ class URIValue extends DataValue {
 	 * @return string
 	 */
 	private function encodeUriPart( string $str ): string {
+		// Remove NULL
+		$str = str_replace( '%00', '', $str );
+
 		// 5/7 gen-delims: ':', '/', '?', '#', '@'
 		// We do not support raw [ (%5D) and ] (%5E), although they
 		// are needed for ldap:// if rarely in a wiki
@@ -399,15 +402,37 @@ class URIValue extends DataValue {
 		// '+': interpreted as space by most browsers when part of a URL
 		// (application/x-www-form-urlencoded). This would prevent tel:
 		// from working directly, but we have a datatype for this anyway.
-		// '$': used in system message vars (e.g. '$1')
 		$subdelimSearch = [ '%21', '%24', '%26', '%27', '%28', '%29', '%2A', '%2B', '%2C', '%3B', '%3D' ];
 		$subdelimReplace = [ '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=' ];
 
-		return str_replace(
+		$encoded = str_replace(
 			// '%' MUST come last
 			array_merge( $gendelimSearch, $subdelimSearch, [ '%25' ] ),
 			array_merge( $gendelimReplace, $subdelimReplace, [ '%' ] ),
 			rawurlencode( $str )
+		);
+		return $this->decodeNonAsciiUtf8( $encoded );
+	}
+
+	/**
+	 * Replaces each percent-encoded UTF8 string for a
+	 * non-ASCII character with a decoded version.
+	 *
+	 * @param string $str
+	 * @return string
+	 */
+	private function decodeNonAsciiUtf8( string $str ): string {
+		$pattern = '/%(?:[C-F][0-9A-Fa-f])' . '(?:%[89AB][0-9A-Fa-f])+/';
+		return preg_replace_callback(
+			$pattern,
+			static function ( array $match ): string {
+				$encoded = $match[0];
+				$decoded = rawurldecode( $encoded );
+				return mb_check_encoding( $decoded, 'UTF-8' )
+					? $decoded
+					: $encoded;
+			},
+			$str
 		);
 	}
 
