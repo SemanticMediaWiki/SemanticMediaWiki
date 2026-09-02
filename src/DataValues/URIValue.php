@@ -426,7 +426,8 @@ class URIValue extends DataValue {
 	 * @return string
 	 */
 	private function decodeNonAsciiUtf8( string $str ): string {
-		$pattern = '/%(?:[C-F][0-9A-Fa-f])' . '(?:%[89AB][0-9A-Fa-f])+/';
+		// Use i modifier to make the pattern case-insensitive
+		$pattern = '/%(?:[C-F][0-9A-Fa-f])' . '(?:%[89AB][0-9A-Fa-f])+/i';
 		return preg_replace_callback(
 			$pattern,
 			static function ( array $match ): string {
@@ -442,15 +443,15 @@ class URIValue extends DataValue {
 
 	private function checksOutAgainstUriBlacklist( string $value ): bool {
 		// Don't let percent-encoding evade detection
-		$value = str_replace( '%2F', '/', $value );
+		$valueChecked = rawurldecode( strtolower( $value ) );
 
 		$uri_blacklist = explode(
 			"\n",
 			Message::get( 'smw_uri_blacklist', Message::TEXT, Message::CONTENT_LANGUAGE )
 		);
 		foreach ( $uri_blacklist as $uri ) {
-			$uri = trim( $uri );
-			if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) {
+			$uri = rawurldecode( strtolower( trim( $uri ) ) );
+			if ( $uri !== '' && $uri == mb_substr( $valueChecked, 0, mb_strlen( $uri ) ) ) {
 				// disallowed URI!
 				$this->addErrorMsg( [ 'smw_baduri', $value ] );
 				return false;
