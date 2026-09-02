@@ -390,7 +390,7 @@ class URIValue extends DataValue {
 		// Encode unreserved ASCII characters while retaining
 		// percent-encoded reserved chars as data. We do this
 		// by rawlencoding the string and restoring most of
-	 	// RFC 3986's gen-delimiters and sub-delimiters.
+		// RFC 3986's gen-delimiters and sub-delimiters.
 		// #5212
 
 		// 5/7 gen-delims: ':', '/', '?', '#', '@'
