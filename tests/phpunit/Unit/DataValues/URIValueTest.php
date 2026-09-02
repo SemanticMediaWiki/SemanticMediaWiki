@@ -279,23 +279,24 @@ class URIValueTest extends TestCase {
 			$linker,
 			[
 				'wikiValue'     => 'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D">http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D</a>',
-				'longWikiText'  => '[http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D">http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D</a>',
-				'shortWikiText' => '[http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D]'
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ-23-7B-7D">http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D</a>',
+				'longWikiText'  => '[http://example.org/ようこそ-23-7B-7D http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ-23-7B-7D">http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D</a>',
+				'shortWikiText' => '[http://example.org/ようこそ-23-7B-7D http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D]'
 			]
 		];
 
+		# 12
 		$provider[] = [
 			'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
 			'一二三',
 			$linker,
 			[
 				'wikiValue'     => 'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D">http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D</a>',
-				'longWikiText'  => '[http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D">一二三</a>',
-				'shortWikiText' => '[http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D 一二三]',
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ-23-7B-7D">http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D</a>',
+				'longWikiText'  => '[http://example.org/ようこそ-23-7B-7D http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ-23-7B-7D">一二三</a>',
+				'shortWikiText' => '[http://example.org/ようこそ-23-7B-7D 一二三]',
 			]
 		];
 
