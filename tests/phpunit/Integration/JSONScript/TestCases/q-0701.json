@@ -16,7 +16,7 @@
 		},
 		{
 			"page": "Page-with-url-3",
-			"contents": "[[Has url::http://example.org/ようこそ#-]]"
+			"contents": "[[Has url::http://example.org/ようこそ#-`]]"
 		}
 	],
 	"tests": [
@@ -139,7 +139,7 @@
 		{
 			"type": "query",
 			"about": "#6",
-			"condition": "[[Has url::http://example.org/ようこそ#-{}]]",
+			"condition": "[[Has url::http://example.org/ようこそ#-`]]",
 			"printouts": [
 				"Has url"
 			],
@@ -154,7 +154,7 @@
 				"datavalues": [
 					{
 						"property": "Has url",
-						"value": "http://example.org/ようこそ#-"
+						"value": "http://example.org/ようこそ#-%60"
 					}
 				]
 			}
@@ -162,7 +162,7 @@
 		{
 			"type": "query",
 			"about": "#7",
-			"condition": "[[Has url::http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D#-]]",
+			"condition": "[[Has url::http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D#-%60]]",
 			"printouts": [
 				"Has url"
 			],
