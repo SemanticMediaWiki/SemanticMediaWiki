@@ -288,7 +288,18 @@ class TextSanitizerTest extends TestCase {
 			'test*'
 		];
 
+		// The apostrophe splits the term into two parts that are both
+		// below the minimum length. Discarding them used to leave the
+		// truncation operator on its own. See issue 6129.
+		yield 'apostrophe with wildcard' => [
+			"O'Se*",
+			'se*'
+		];
 
+		yield 'apostrophe with wildcard after a longer term' => [
+			"+Col* +O'Se*",
+			'+col* +se*'
+		];
 	}
 
 }
