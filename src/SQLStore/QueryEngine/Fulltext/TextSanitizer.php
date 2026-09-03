@@ -464,9 +464,11 @@ class TextSanitizer {
 	 * @return string
 	 */
 	private function sanitizeFilteredText( string $text ): string {
-		// Remove troublesome sequences
+		// Trim multiples like "++", "--", "~~", and
+		// fully remove troublesome sequences
+		$cleaned = preg_replace( '/([+~-])\1+/', '$1', $text ) ?? $text;
 		$cleaned = str_replace(
-			[ "**", "*+", "*-", "*~", "+*", "++", "+-", "+~", "-*", "-+", "--", "-~", "~*", "~+", "~-", "~~" ], "", $text
+			[ "**", "*+", "*-", "*~", "+*", "+-", "+~", "-*", "-+", "-~", "~*", "~+", "~-" ], "", $cleaned
 		);
 
 		// Remove isolated operators
