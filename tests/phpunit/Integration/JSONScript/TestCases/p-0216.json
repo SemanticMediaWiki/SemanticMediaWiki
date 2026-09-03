@@ -52,7 +52,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\" data-content=\"",
-					"data-content=\"Some text with a link to &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http://example.org/&quot;&gt;foo&lt;/a&gt;", "<span class=\"smwttcontent\"></span>",
+					"data-content=\"Some text with a link to &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http&#58;//example.org/&quot;&gt;foo&lt;/a&gt;", "<span class=\"smwttcontent\"></span>",
 					"title=\"Property:Has date\">Has date</a>"
 				]
 			}
@@ -64,7 +64,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\" data-content=\"",
-					"data-content=\"Some text with a link to &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http://example.org/&quot;&gt;foo&lt;/a&gt;", "<span class=\"smwttcontent\"></span>",
+					"data-content=\"Some text with a link to &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http&#58;//example.org/&quot;&gt;foo&lt;/a&gt;", "<span class=\"smwttcontent\"></span>",
 					"title=\"Property:Has date\">With extra caption</a>"
 				]
 			}

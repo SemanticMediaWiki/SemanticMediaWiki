@@ -50,9 +50,19 @@ class PropertyLinkParserFunctionParityTest extends TestCase {
 		);
 
 		$this->assertSame(
-			$annotationOutput,
-			$this->parse( $parserFunction )
+			$this->normalizeLinkArmoring( $annotationOutput ),
+			$this->normalizeLinkArmoring( $this->parse( $parserFunction ) )
 		);
+	}
+
+	/**
+	 * The parser function's output passes through the sanitizer, which armors
+	 * `://` inside attribute values as `&#58;//`; annotation output is inserted
+	 * after sanitization and keeps the plain form. Both serializations decode
+	 * to the same attribute value, so the comparison treats them as equal.
+	 */
+	private function normalizeLinkArmoring( string $html ): string {
+		return str_replace( '&#58;//', '://', $html );
 	}
 
 	/**

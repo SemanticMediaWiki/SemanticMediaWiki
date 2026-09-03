@@ -294,11 +294,13 @@ class PropertyValueFormatter extends DataValueFormatter {
 			return $description;
 		}
 
-		return Message::get(
+		// trim: the full parse can leave a trailing newline, which the
+		// attribute encoder would turn into a visible character reference
+		return trim( Message::get(
 			[ 'smw-parse', $description ],
 			Message::PARSE,
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
-		);
+		) );
 	}
 
 	private function canHighlight( string &$propertyDescription, $linker ): bool {
