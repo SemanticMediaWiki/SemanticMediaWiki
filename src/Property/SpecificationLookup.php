@@ -364,6 +364,22 @@ class SpecificationLookup {
 	 * @return string
 	 */
 	public function getPropertyDescriptionByLanguageCode( Property $property, string $languageCode = '', $linker = null ): string {
+		return $this->findPropertyDescription( $property, $languageCode, $linker !== null );
+	}
+
+	/**
+	 * The description as HTML, whichever of the two sources it comes from: a
+	 * description defined on the property page is stored as wikitext and is
+	 * parsed here, a predefined description comes from a system message and is
+	 * requested in its parsed form.
+	 *
+	 * @since 7.2.2
+	 */
+	public function getPropertyDescriptionAsHtml( Property $property, string $languageCode = '' ): string {
+		return $this->findPropertyDescription( $property, $languageCode, true );
+	}
+
+	private function findPropertyDescription( Property $property, string $languageCode, bool $parsed ): string {
 		$subject = $property->getCanonicalDiWikiPage();
 		if ( $subject === null ) {
 			return '';
@@ -371,26 +387,30 @@ class SpecificationLookup {
 
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
 
-		$sub_key = $languageCode . ':' . ( $linker === null ? '0' : '1' );
+		$sub_key = $languageCode . ':' . ( $parsed ? '1' : '0' );
 
 		$text = $this->entityCache->fetchSub( $key, $sub_key );
 		if ( $text !== false ) {
 			return (string)$text;
 		}
 
-		$text = $this->getTextByLanguageCode(
+		$text = trim( $this->getTextByLanguageCode(
 			$subject,
 			new Property( '_PDESC' ),
 			$languageCode
-		);
+		) ?? '' );
 
-		// If a local property description wasn't available for a predefined property
-		// the try to find a system translation
-		if ( trim( $text ?? '' ) === '' && !$property->isUserDefined() ) {
-			$text = $this->getPredefinedPropertyDescription( $property, $languageCode, $linker );
+		if ( $text !== '' ) {
+			// A description defined on the property page is stored as wikitext,
+			// so a caller that displays it as HTML has to have it parsed (#5494)
+			$text = $parsed ? $this->parse( $text, $languageCode ) : $text;
+		} elseif ( !$property->isUserDefined() ) {
+			// If a local property description wasn't available for a predefined property
+			// the try to find a system translation
+			$text = $this->getPredefinedPropertyDescription( $property, $languageCode, $parsed );
 		}
 
-		$text = trim( $text ?? '' );
+		$text = trim( $text );
 
 		$this->entityCache->saveSub( $key, $sub_key, $text );
 		$this->entityCache->associate( $subject, $key );
@@ -398,7 +418,13 @@ class SpecificationLookup {
 		return $text;
 	}
 
-	private function getPredefinedPropertyDescription( Property $property, string $languageCode, $linker ): string {
+	private function parse( string $text, string $languageCode ): string {
+		// trim: the parse can leave a trailing newline, which an attribute
+		// encoder would turn into a visible character reference
+		return trim( Message::get( [ 'smw-parse', $text ], Message::PARSE, $languageCode ) );
+	}
+
+	private function getPredefinedPropertyDescription( Property $property, string $languageCode, bool $parsed ): string {
 		$description = '';
 		$key = $property->getKey();
 
@@ -419,7 +445,7 @@ class SpecificationLookup {
 
 		$message = Message::get(
 			[ $msgKey, $label ],
-			$linker === null ? Message::ESCAPED : Message::PARSE,
+			$parsed ? Message::PARSE : Message::ESCAPED,
 			$languageCode
 		);
 

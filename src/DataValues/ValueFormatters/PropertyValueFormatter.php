@@ -81,14 +81,11 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::WIKI_SHORT ) {
-			$text = $this->doHighlightText(
-				$wikiPageValue->getShortWikiText( $linker ),
-				$this->dataValue->getOption( PropertyValue::OPT_HIGHLIGHT_LINKER ) ? $linker : null
-			);
+			$text = $this->doHighlightText( $wikiPageValue->getShortWikiText( $linker ) );
 		}
 
 		if ( $type === self::HTML_SHORT ) {
-			$text = $this->doHighlightText( $wikiPageValue->getShortHTMLText( $linker ), $linker );
+			$text = $this->doHighlightText( $wikiPageValue->getShortHTMLText( $linker ) );
 		}
 
 		if ( $type === self::WIKI_LONG ) {
@@ -96,7 +93,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::HTML_LONG ) {
-			$text = $this->doHighlightText( $wikiPageValue->getLongHTMLText( $linker ), $linker );
+			$text = $this->doHighlightText( $wikiPageValue->getLongHTMLText( $linker ) );
 		}
 
 		return $text . $this->hintPreferredLabelUse();
@@ -251,10 +248,10 @@ class PropertyValueFormatter extends DataValueFormatter {
 		return $wikiPageValue;
 	}
 
-	private function doHighlightText( $text, $linker = null ) {
+	private function doHighlightText( string $text ): string {
 		$content = '';
 
-		if ( !$this->canHighlight( $content, $linker ) ) {
+		if ( !$this->canHighlight( $content ) ) {
 			return $text;
 		}
 
@@ -273,51 +270,27 @@ class PropertyValueFormatter extends DataValueFormatter {
 				'userDefined' => $this->dataValue->getDataItem()->isUserDefined(),
 				'caption' => $text,
 				'content' => $content !== '' ? $content : Message::get( 'smw_isspecprop' ),
-				'data-content' => $content !== '' ? $this->renderedDescription( $content ) : null
+				'data-content' => $content !== '' ? $content : null
 			]
 		);
 
 		return $highlighter->getHtml();
 	}
 
-	/**
-	 * The popup shows the description as HTML (#5494): a user-defined
-	 * description is stored as wikitext and parsed here, while a predefined
-	 * description already arrives parsed (see canHighlight()). Carrying the
-	 * rendered HTML in the `data-content` attribute keeps the surrounding page
-	 * parse from re-processing it; content placed in the tooltip text node is
-	 * re-parsed as wikitext, which linkifies bare URLs inside pre-rendered
-	 * markup and turns them into nested, broken links.
-	 */
-	private function renderedDescription( string $description ): string {
-		if ( !$this->dataValue->getDataItem()->isUserDefined() ) {
-			return $description;
-		}
-
-		// trim: the full parse can leave a trailing newline, which the
-		// attribute encoder would turn into a visible character reference
-		return trim( Message::get(
-			[ 'smw-parse', $description ],
-			Message::PARSE,
-			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
-		) );
-	}
-
-	private function canHighlight( string &$propertyDescription, $linker ): bool {
+	private function canHighlight( string &$propertyDescription ): bool {
 		if ( $this->dataValue->getOption( PropertyValue::OPT_NO_HIGHLIGHT ) === true ) {
 			return false;
 		}
 
 		$dataItem = $this->dataValue->getDataItem();
 
-		// A linker is always handed to the lookup so that the description of a
-		// predefined property comes back parsed instead of as escaped markup;
-		// the popup renders HTML regardless of how the property link itself is
-		// rendered (#5494)
-		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
+		// The popup renders the description as HTML on every surface, so the
+		// rendered form is requested here rather than left to the surrounding
+		// page parse, which would re-process it and turn bare URLs inside
+		// pre-rendered markup into nested, broken links (#5494)
+		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionAsHtml(
 			$dataItem,
-			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE ),
-			$linker ?? smwfGetLinker()
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);
 
 		return !$dataItem->isUserDefined() || $propertyDescription !== '';

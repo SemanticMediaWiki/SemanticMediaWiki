@@ -48,7 +48,7 @@ class PropertyValueFormatterTest extends TestCase {
 			->getMock();
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getPropertyDescriptionByLanguageCode' )
+			->method( 'getPropertyDescriptionAsHtml' )
 			->willReturn( 'Some description' );
 
 		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
@@ -169,14 +169,39 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 	}
 
-	public function testDescriptionMarkupIsRenderedIntoTheDataContentAttribute() {
+	public function testRenderedDescriptionTravelsInTheDataContentAttribute() {
+		$html = $this->formatWithDescription( '<a href="http://example.org/">foo</a>' );
+
+		$this->assertStringContainsString(
+			'data-content="&lt;a href=&quot;http://example.org/&quot;&gt;foo&lt;/a&gt;"',
+			$html,
+			'the rendered description must reach the popup through the attribute'
+		);
+
+		$this->assertStringContainsString(
+			'<span class="smwttcontent"></span>',
+			$html,
+			'the text node stays empty so the page parse cannot re-process the description'
+		);
+	}
+
+	public function testDescriptionIsNotPlacedInTheTooltipTextNode() {
+		$html = $this->formatWithDescription( 'A plain description' );
+
+		$this->assertStringNotContainsString(
+			'<span class="smwttcontent">A plain description</span>',
+			$html
+		);
+	}
+
+	private function formatWithDescription( string $description ): string {
 		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertySpecificationLookup->expects( $this->any() )
-			->method( 'getPropertyDescriptionByLanguageCode' )
-			->willReturn( 'A link to [http://example.org/ foo] in the description' );
+			->method( 'getPropertyDescriptionAsHtml' )
+			->willReturn( $description );
 
 		$propertyValue = new PropertyValue();
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, false );
@@ -194,24 +219,7 @@ class PropertyValueFormatterTest extends TestCase {
 			$this->propertyLabelFinder
 		);
 
-		$html = $instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] );
-
-		$this->assertStringContainsString(
-			'href=&quot;http://example.org/&quot;',
-			$html,
-			'the description markup must arrive rendered inside the data-content attribute'
-		);
-
-		$this->assertStringNotContainsString(
-			'[http://example.org/',
-			$html,
-			'raw link markup must not reach the tooltip or the title attribute'
-		);
-
-		$this->assertStringContainsString(
-			'<span class="smwttcontent"></span>',
-			$html
-		);
+		return $instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] );
 	}
 
 	public function testHighlightedShortFormatRecordsUserLanguageOutput() {
