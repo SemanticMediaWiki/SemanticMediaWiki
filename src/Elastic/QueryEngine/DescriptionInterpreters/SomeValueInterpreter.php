@@ -334,7 +334,9 @@ class SomeValueInterpreter {
 		$field = $options['field'];
 		$type = $options['type'];
 
-		$value = str_replace( [ '%2A' ], [ '*' ], rawurldecode( $dataItem->getUri() ) );
+		// No rawurldecode() here: DocumentCreator indexes the serialization
+		// as-is, so decoding on the query side would never match.
+		$value = str_replace( [ '%2A' ], [ '*' ], $dataItem->getUri() );
 
 		if ( $this->isRange( $comparator ) ) {
 			$match = $this->fieldMapper->range( "$pid.$field", $value, $comparator );

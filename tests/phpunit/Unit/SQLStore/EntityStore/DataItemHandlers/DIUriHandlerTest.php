@@ -81,6 +81,61 @@ class DIUriHandlerTest extends TestCase {
 		);
 	}
 
+	public function testPercentEncodingSurvivesGetInsertValues() {
+		$uri = new Uri( 'http', 'example.org/a%2Fb', '', '' );
+
+		$instance = new DIUriHandler( $this->store );
+
+		$this->assertSame(
+			'http://example.org/a%2Fb',
+			$instance->getInsertValues( $uri )['o_serialized']
+		);
+	}
+
+	public function testPercentEncodingSurvivesGetWhereConds() {
+		$uri = new Uri( 'http', 'example.org/a%2Fb', '', '' );
+
+		$instance = new DIUriHandler( $this->store );
+
+		$this->assertSame(
+			'http://example.org/a%2Fb',
+			$instance->getWhereConds( $uri )['o_serialized']
+		);
+	}
+
+	public function testLegacyWhereCondsMatchThePreRebuildStorageForm(): void {
+		$uri = new Uri( 'http', 'example.org/a%7Bb%7D', '', '' );
+
+		$instance = new DIUriHandler( $this->store );
+
+		$this->assertSame(
+			'http://example.org/a{b}',
+			$instance->getLegacyWhereConds( $uri )['o_serialized']
+		);
+	}
+
+	/**
+	 * @dataProvider uriWithoutLegacyFormProvider
+	 */
+	public function testReturnsNoLegacyWhereConds( string $hierpart ): void {
+		$uri = new Uri( 'http', $hierpart, '', '' );
+
+		$instance = new DIUriHandler( $this->store );
+
+		$this->assertSame(
+			[],
+			$instance->getLegacyWhereConds( $uri )
+		);
+	}
+
+	public static function uriWithoutLegacyFormProvider(): iterable {
+		yield 'storage form unchanged' => [ 'example.org/a/b' ];
+		yield 'old form is also the current form of a different URI' => [ 'example.org/a%2Fb' ];
+		yield 'old form contains NUL' => [ 'example.org/a%00b%7B' ];
+		yield 'old form is not valid UTF-8' => [ 'example.org/a%C3%28%7B' ];
+		yield 'difference lies beyond the indexed length' => [ 'example.org/' . str_repeat( 'a', 300 ) . '%7B' ];
+	}
+
 	public function testMutableMethodAccess() {
 		$uri = new Uri( 'http', 'example.org', '', '' );
 

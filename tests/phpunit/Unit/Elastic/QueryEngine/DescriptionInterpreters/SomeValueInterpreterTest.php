@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Elastic\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\Uri;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\Options;
@@ -150,6 +151,35 @@ class SomeValueInterpreterTest extends TestCase {
 
 		$this->assertEquals(
 			$expected,
+			(string)$condition
+		);
+	}
+
+	public function testUriIsQueriedInTheFormItIsIndexed(): void {
+		$instance = new SomeValueInterpreter(
+			$this->conditionBuilder
+		);
+
+		$description = $this->descriptionFactory->newValueDescription(
+			new Uri( 'http', 'example.org/a%2Fb', '', '' ),
+			null,
+			SMW_CMP_EQ
+		);
+
+		$options = [
+			'property' => $this->dataItemFactory->newDIProperty( 'Bar' ),
+			'pid' => 'P:42',
+			'field' => 'uriField',
+			'type' => 'must'
+		];
+
+		$condition = $instance->interpretDescription(
+			$description,
+			$options
+		);
+
+		$this->assertSame(
+			'{"bool":{"must":{"term":{"P:42.uriField.keyword":"http://example.org/a%2Fb"}}}}',
 			(string)$condition
 		);
 	}
