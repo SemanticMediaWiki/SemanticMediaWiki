@@ -498,6 +498,14 @@ class TextSanitizer {
 
 			$cleaned = preg_replace( '/([+~-])\1+/', '$1', $cleaned ) ?? $cleaned;
 			$cleaned = preg_replace( '/\*{2,}/', '*', $cleaned ) ?? $cleaned;
+			// A stray quote is harmless on its own, but not next to an
+			// operator, where it leaves the operator without a term.
+			// Only an unpaired quote can be stray, so a balanced phrase
+			// keeps the operator that introduces it.
+			if ( substr_count( $cleaned, '"' ) % 2 === 1 ) {
+				$cleaned = preg_replace( '/(?<=[*+~-])"+|"+(?=[*+~-])/', '', $cleaned ) ?? $cleaned;
+			}
+
 			$cleaned = str_replace(
 				[ "*+", "*-", "*~", "+-", "+~", "-+", "-~", "~+", "~-" ], "", $cleaned
 			);
@@ -514,7 +522,8 @@ class TextSanitizer {
 			$tokens[] = $token;
 		}
 
-		return implode( " ", $tokens );
+		// A trailing operator has nothing left to qualify.
+		return rtrim( implode( " ", $tokens ), "+-~" );
 	}
 
 }

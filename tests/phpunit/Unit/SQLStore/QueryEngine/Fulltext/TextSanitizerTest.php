@@ -248,11 +248,35 @@ class TextSanitizerTest extends TestCase {
 			'apple ~pear'
 		];
 
+		yield 'trailing operator after a quoted phrase' => [
+			'"apple" -',
+			'"apple"'
+		];
 
+		yield 'trailing operator after an embedded quote' => [
+			'find "this" +',
+			'find"this"'
+		];
 
+		yield 'quote left behind by a filtered short token' => [
+			'+ab" +pear',
+			'+pear'
+		];
 
+		yield 'required phrase' => [
+			'+"apple pear"',
+			'+"apple pear"'
+		];
 
+		yield 'excluded phrase' => [
+			'-"apple pear"',
+			'-"apple pear"'
+		];
 
+		yield 'phrase followed by a required term' => [
+			'"apple pear" +kiwi',
+			'"apple pear"+kiwi'
+		];
 
 		yield 'wildcard after a delimiter that is dropped' => [
 			'apple.*',
