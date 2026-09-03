@@ -126,7 +126,15 @@ class TextSanitizerTest extends TestCase {
 		// The truncation operator only has meaning in a search term.
 		// When indexing, an asterisk is punctuation and must not keep
 		// a token that is below the minimum length.
+		yield 'asterisk does not retain a short token when indexing' => [
+			'a * b',
+			''
+		];
 
+		yield 'multiplication signs do not retain digits when indexing' => [
+			'2 * pi * r',
+			''
+		];
 	}
 
 	public static function operatorSpacingProvider() {

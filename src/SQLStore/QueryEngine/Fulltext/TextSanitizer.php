@@ -120,7 +120,7 @@ class TextSanitizer {
 
 		$tokens = $this->tokenize( $text, $language, $exemptionList );
 
-		$filtered = $this->filterTokens( $tokens, $language, $exemptionList );
+		$filtered = $this->filterTokens( $tokens, $language, $exemptionList, $isSearchTerm );
 
 		// Remove possible spaces added by the tokenizer
 		// or originating from the input.
@@ -344,13 +344,11 @@ class TextSanitizer {
 	 * minimum length (1 for CJK), and adjacent duplicates,
 	 * unless exceptions apply.
 	 *
-	 * @param array $tokens
-	 * @param string|null $language
-	 * @param string|array $exemptionList
+	 * @param string[] $tokens
 	 *
-	 * @return array
+	 * @return string[]
 	 */
-	private function filterTokens( $tokens, int|string|null $language, array|string $exemptionList ): array {
+	private function filterTokens( $tokens, int|string|null $language, array|string $exemptionList, bool $isSearchTerm ): array {
 		if ( !$tokens || !is_array( $tokens ) ) {
 			return [];
 		}
@@ -379,11 +377,12 @@ class TextSanitizer {
 		foreach ( $tokens as $k => $word ) {
 			// Check if the next 'word' is a truncation operator.
 			// If so, it shouldn't be "stripped from a boolean query,
-			// even if it is too short or a stopword" (MySQL docs)
-			$hasTruncator = false;
-			if ( isset( $tokens[$k + 1] ) && $tokens[$k + 1] === "*" ) {
-				$hasTruncator = true;
-			}
+			// even if it is too short or a stopword" (MySQL docs).
+			// Only a search term has boolean operators; when indexing,
+			// an asterisk is just punctuation.
+			$hasTruncator = $isSearchTerm
+				&& isset( $tokens[$k + 1] )
+				&& $tokens[$k + 1] === "*";
 
 			// Remove token if it is not an exemption, shorter than
 			// the required minimum length or identified as stop word,
