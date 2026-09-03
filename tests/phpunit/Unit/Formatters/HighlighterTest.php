@@ -125,15 +125,7 @@ class HighlighterTest extends TestCase {
 	}
 
 	public function testDataContentKeepsTheTooltipTextNodeEmpty() {
-		$instance = Highlighter::factory( Highlighter::TYPE_PROPERTY );
-
-		$instance->setContent( [
-			'caption' => 'Foo',
-			'content' => 'Plain fallback text',
-			'data-content' => '<a href="http://example.org/">foo</a>'
-		] );
-
-		$html = $instance->getHtml();
+		$html = $this->htmlWithDataContent( 'Plain fallback text', '<a href="http://example.org/">foo</a>' );
 
 		$this->assertStringContainsString(
 			'data-content="&lt;a href=&quot;http://example.org/&quot;&gt;foo&lt;/a&gt;"',
@@ -144,6 +136,35 @@ class HighlighterTest extends TestCase {
 			'<span class="smwttcontent"></span>',
 			$html
 		);
+	}
+
+	public function testOversizedDataContentFallsBackToTheTooltipTextNode() {
+		$content = str_repeat( 'lorem ipsum ', 50000 );
+
+		$html = $this->htmlWithDataContent( 'Plain fallback text', $content );
+
+		$this->assertStringNotContainsString(
+			'data-content=',
+			$html,
+			'an attribute that grows with the content revives the tidy blowup of #7076'
+		);
+
+		$this->assertStringContainsString(
+			'<span class="smwttcontent">Plain fallback text</span>',
+			$html
+		);
+	}
+
+	private function htmlWithDataContent( string $content, string $dataContent ): string {
+		$instance = Highlighter::factory( Highlighter::TYPE_PROPERTY );
+
+		$instance->setContent( [
+			'caption' => 'Foo',
+			'content' => $content,
+			'data-content' => $dataContent
+		] );
+
+		return $instance->getHtml();
 	}
 
 	private function htmlForContent( string $content ): string {
