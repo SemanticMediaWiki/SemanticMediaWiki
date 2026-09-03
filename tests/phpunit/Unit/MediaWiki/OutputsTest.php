@@ -339,6 +339,48 @@ class OutputsTest extends TestCase {
 	}
 
 	/**
+	 * #7109: only a pass that renders HTML produces the ParserOutput that
+	 * reaches OutputPage or the parser cache, so a commit during any other
+	 * pass would drain the buffers into an output that is never read.
+	 */
+	public function testCommitToParserSkipsANonRenderingPass(): void {
+		$locked = true;
+		$preprocess = $this->newPreprocessParser( $locked );
+		$parserOutput = $this->newMockParserOutput();
+		$preprocess->method( 'getOutput' )->willReturn( $parserOutput );
+
+		Outputs::requireResource( 'ext.smw.tooltip' );
+		Outputs::commitToParser( $preprocess );
+
+		$this->assertNotContains(
+			'ext.smw.tooltip',
+			$parserOutput->getModules(),
+			'the ParserOutput of a non-rendering pass must not receive the requirements'
+		);
+	}
+
+	public function testRequirementsOfANonRenderingPassReachTheRenderingPass(): void {
+		$preprocessLocked = true;
+		$preprocess = $this->newPreprocessParser( $preprocessLocked );
+		$preprocess->method( 'getOutput' )->willReturn( $this->newMockParserOutput() );
+
+		$renderingLocked = true;
+		$rendering = $this->newContentParser( $renderingLocked );
+		$renderingParserOutput = $this->newMockParserOutput();
+		$rendering->method( 'getOutput' )->willReturn( $renderingParserOutput );
+
+		Outputs::requireResource( 'ext.smw.tooltip' );
+		Outputs::commitToParser( $preprocess );
+		Outputs::commitToParser( $rendering );
+
+		$this->assertContains(
+			'ext.smw.tooltip',
+			$renderingParserOutput->getModules(),
+			'the requirements must stay buffered for the rendering parse that follows'
+		);
+	}
+
+	/**
 	 * commitToParserOutput outside of any parse (special pages calling
 	 * commitToParser directly) must still clear the buffers.
 	 */

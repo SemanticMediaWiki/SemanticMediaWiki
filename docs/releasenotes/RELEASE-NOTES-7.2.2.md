@@ -11,6 +11,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * Fixed wikis with the query result cache enabled (`$smwgQueryResultCacheType`) reading the object cache once per identical query on a page instead of once per page, and reporting no cache hits at all in the query cache statistics on `Special:SemanticMediaWiki` ([#7102](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7102))
 * Fixed a failed data update or setup state write hiding its real cause when rolling the transaction back also failed ([#7107](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7107))
+* Fixed the tooltip of `{{#info:}}` and `{{#property_link:}}` not working on `Special:ExpandTemplates` when a context title is given ([#7109](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7109))
 
 ## Upgrading
 

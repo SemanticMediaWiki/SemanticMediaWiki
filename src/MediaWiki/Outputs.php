@@ -253,8 +253,20 @@ class Outputs {
 	 * If the parser creates output for a normal wiki page, then the committed items will
 	 * also become part of the page cache so that they will correctly be added to all page
 	 * outputs built from this cache later on.
+	 *
+	 * Only a pass that renders HTML produces the ParserOutput that reaches
+	 * OutputPage or the parser cache. A commit during any other pass would
+	 * drain the buffers into an output that is never read, so nothing is
+	 * committed there and the requirements stay buffered for the rendering
+	 * parse that follows, e.g. the preview parse of Special:ExpandTemplates
+	 * rendering what the preprocess pass expanded under a content-page
+	 * context title (#7109).
 	 */
 	public static function commitToParser( Parser $parser ): void {
+		if ( $parser->getOutputType() !== Parser::OT_HTML ) {
+			return;
+		}
+
 		$po = $parser->getOutput();
 		self::commitToParserOutput( $po );
 	}
