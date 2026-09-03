@@ -154,13 +154,63 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 
 		$this->assertStringContainsString(
-			'<span class="smwtext">ABC[<>]</span><span class="smwttcontent">Some description</span>',
+			'<span class="smwtext">ABC[<>]</span><span class="smwttcontent"></span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] )
 		);
 
 		$this->assertStringContainsString(
-			'<span class="smwtext">ABC[&lt;&gt;]</span><span class="smwttcontent">Some description</span>',
+			'data-content="Some description',
+			$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] )
+		);
+
+		$this->assertStringContainsString(
+			'<span class="smwtext">ABC[&lt;&gt;]</span><span class="smwttcontent"></span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::HTML_SHORT ] )
+		);
+	}
+
+	public function testDescriptionMarkupIsRenderedIntoTheDataContentAttribute() {
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertySpecificationLookup->expects( $this->any() )
+			->method( 'getPropertyDescriptionByLanguageCode' )
+			->willReturn( 'A link to [http://example.org/ foo] in the description' );
+
+		$propertyValue = new PropertyValue();
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, false );
+		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+
+		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+		$propertyValue->setCaption( 'Foo' );
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance = new PropertyValueFormatter(
+			$propertySpecificationLookup,
+			$this->propertyLabelFinder
+		);
+
+		$html = $instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] );
+
+		$this->assertStringContainsString(
+			'href=&quot;http://example.org/&quot;',
+			$html,
+			'the description markup must arrive rendered inside the data-content attribute'
+		);
+
+		$this->assertStringNotContainsString(
+			'[http://example.org/',
+			$html,
+			'raw link markup must not reach the tooltip or the title attribute'
+		);
+
+		$this->assertStringContainsString(
+			'<span class="smwttcontent"></span>',
+			$html
 		);
 	}
 

@@ -272,11 +272,33 @@ class PropertyValueFormatter extends DataValueFormatter {
 			[
 				'userDefined' => $this->dataValue->getDataItem()->isUserDefined(),
 				'caption' => $text,
-				'content' => $content !== '' ? $content : Message::get( 'smw_isspecprop' )
+				'content' => $content !== '' ? $content : Message::get( 'smw_isspecprop' ),
+				'data-content' => $content !== '' ? $this->renderedDescription( $content ) : null
 			]
 		);
 
 		return $highlighter->getHtml();
+	}
+
+	/**
+	 * The popup shows the description as HTML (#5494): a user-defined
+	 * description is stored as wikitext and parsed here, while a predefined
+	 * description already arrives parsed (see canHighlight()). Carrying the
+	 * rendered HTML in the `data-content` attribute keeps the surrounding page
+	 * parse from re-processing it; content placed in the tooltip text node is
+	 * re-parsed as wikitext, which linkifies bare URLs inside pre-rendered
+	 * markup and turns them into nested, broken links.
+	 */
+	private function renderedDescription( string $description ): string {
+		if ( !$this->dataValue->getDataItem()->isUserDefined() ) {
+			return $description;
+		}
+
+		return Message::get(
+			[ 'smw-parse', $description ],
+			Message::PARSE,
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
+		);
 	}
 
 	private function canHighlight( string &$propertyDescription, $linker ): bool {
@@ -286,10 +308,14 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		$dataItem = $this->dataValue->getDataItem();
 
+		// A linker is always handed to the lookup so that the description of a
+		// predefined property comes back parsed instead of as escaped markup;
+		// the popup renders HTML regardless of how the property link itself is
+		// rendered (#5494)
 		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$dataItem,
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE ),
-			$linker
+			$linker ?? smwfGetLinker()
 		);
 
 		return !$dataItem->isUserDefined() || $propertyDescription !== '';

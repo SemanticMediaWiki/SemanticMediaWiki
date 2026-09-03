@@ -31,7 +31,7 @@
 			"subject": "Example/FT0006/1a",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwttcontent\">A number to display ....</span>",
+					"<span class=\"smwttcontent\"></span>", "data-content=\"A number to display ....\"",
 					"<td class=\"Has-number smwtype&#95;num\" data-sort-value=\"1001\">1,001</td>"
 				]
 			}

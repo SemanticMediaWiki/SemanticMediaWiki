@@ -245,10 +245,10 @@ class Highlighter {
 			[
 				'class'        => 'smw-highlighter',
 				'data-type'    => $this->options['type'],
-				'data-content' => $this->options['data-content'] ?? null,
 				'data-state'   => $this->options['state'],
 				'data-title'   => Message::get( $this->options['title'], Message::TEXT, $language ),
-				'title'        => $title
+				'title'        => $title,
+				'data-content' => $this->options['data-content'] ?? null
 			] + $attribs,
 			Html::rawElement(
 				'span',
@@ -261,11 +261,14 @@ class Highlighter {
 				[
 					'class' => 'smwttcontent'
 				],
-				// Embedded wiki content that has other elements like (e.g. <ul>/<ol>)
-				// will make the parser go berserk (injecting <p> elements etc.)
-				// hence encode the identifying </> and decode it within the
-				// tooltip
-				str_replace( [ "\n", '<', '>' ], [ '</br>', '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ?? '' ) )
+				// When the content travels in the `data-content` attribute the
+				// text node stays empty: an attribute is never re-processed by
+				// the surrounding page parse, while text placed here is (#5494).
+				// Otherwise embedded wiki content that has other elements like
+				// (e.g. <ul>/<ol>) will make the parser go berserk (injecting
+				// <p> elements etc.) hence encode the identifying </> and
+				// decode it within the tooltip
+				isset( $this->options['data-content'] ) ? '' : str_replace( [ "\n", '<', '>' ], [ '</br>', '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ?? '' ) )
 			)
 		);
 

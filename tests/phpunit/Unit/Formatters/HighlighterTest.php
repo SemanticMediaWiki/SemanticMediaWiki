@@ -124,6 +124,28 @@ class HighlighterTest extends TestCase {
 		);
 	}
 
+	public function testDataContentKeepsTheTooltipTextNodeEmpty() {
+		$instance = Highlighter::factory( Highlighter::TYPE_PROPERTY );
+
+		$instance->setContent( [
+			'caption' => 'Foo',
+			'content' => 'Plain fallback text',
+			'data-content' => '<a href="http://example.org/">foo</a>'
+		] );
+
+		$html = $instance->getHtml();
+
+		$this->assertStringContainsString(
+			'data-content="&lt;a href=&quot;http://example.org/&quot;&gt;foo&lt;/a&gt;"',
+			$html
+		);
+
+		$this->assertStringContainsString(
+			'<span class="smwttcontent"></span>',
+			$html
+		);
+	}
+
 	private function htmlForContent( string $content ): string {
 		$instance = Highlighter::factory( Highlighter::TYPE_TEXT );
 
