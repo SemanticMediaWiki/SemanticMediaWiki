@@ -25,6 +25,15 @@ define( 'SMW_URI_MODE_TEL', 5 );
 class URIValue extends DataValue {
 
 	/**
+	 * Raw value without encoding.
+	 *
+	 * @deprecated since 7.3.0, has no effect. Values are no longer decoded on
+	 *  output, so there is nothing left to opt out of. Kept so that setting it
+	 *  does not fatal.
+	 */
+	public const VALUE_RAW = 'uri.value.raw';
+
+	/**
 	 * The value as returned by getWikitext() and getLongText().
 	 */
 	protected ?string $m_wikitext = null;
@@ -297,7 +306,7 @@ class URIValue extends DataValue {
 			$context = Encoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
-		if ( $context !== $url && $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
+		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
 			$context = str_replace( '_', ' ', $context ?? '' );
 		}
 
@@ -384,9 +393,6 @@ class URIValue extends DataValue {
 	 * @return string
 	 */
 	private function encodeUriPart( string $str ): string {
-		// Remove NULL
-		$str = str_replace( '%00', '', $str );
-
 		// Encode unreserved ASCII characters while retaining
 		// percent-encoded reserved chars as data. We do this
 		// by rawlencoding the string and restoring most of
@@ -399,13 +405,13 @@ class URIValue extends DataValue {
 		$gendelimSearch = [ '%3A', '%2F', '%3F', '%23', '%40' ];
 		$gendelimReplace = [ ':', '/', '?', '#', '@' ];
 
-		// 11/11 sub-delimiters: ! $ & ' ( ) * + , ; =
-		// NOTE:
-		// '+': interpreted as space by most browsers when part of a URL
-		// (application/x-www-form-urlencoded). This would prevent tel:
-		// from working directly, but we have a datatype for this anyway.
-		$subdelimSearch = [ '%21', '%24', '%26', '%27', '%28', '%29', '%2A', '%2B', '%2C', '%3B', '%3D' ];
-		$subdelimReplace = [ '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=' ];
+		// 10/11 sub-delimiters: ! $ & ( ) * + , ; =
+		// `'` is deliberately left encoded: a raw `''` in the URL would be
+		// consumed as italic markup by the parser, because getLongWikiText()
+		// emits `[$url $caption]` and handleAllQuotes() runs before
+		// handleExternalLinks().
+		$subdelimSearch = [ '%21', '%24', '%26', '%28', '%29', '%2A', '%2B', '%2C', '%3B', '%3D' ];
+		$subdelimReplace = [ '!', '$', '&', '(', ')', '*', '+', ',', ';', '=' ];
 
 		$encoded = str_replace(
 			// '%' MUST come last

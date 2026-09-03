@@ -95,6 +95,48 @@ class DIUriHandler extends DataItemHandler {
 	}
 
 	/**
+	 * Values written before 7.3.0 went through rawurldecode() on the way in, so
+	 * a URI carrying percent-encoded octets can sit on disk in a different form
+	 * than getWhereConds() now produces.
+	 *
+	 * The old form is only returned when no value stored in the current form can
+	 * equal it, so the extra condition matches nothing once the data has been
+	 * rebuilt. It is not returned when, as with `%2F` decoding to `/`, it could be
+	 * the stored form of a different URI.
+	 *
+	 * @since 7.3.0
+	 */
+	public function getLegacyWhereConds( DataItem $dataItem ): array {
+		$serialization = $dataItem->getSerialization();
+		$maxLength = $this->getMaxLength();
+
+		$current = substr( $serialization, 0, $maxLength );
+		$legacy = substr( rawurldecode( $serialization ), 0, $maxLength );
+
+		if ( $legacy !== $current && $this->isQueryable( $legacy ) && $this->canOnlyMatchOldRows( $legacy ) ) {
+			return [ 'o_serialized' => $legacy ];
+		}
+
+		return [];
+	}
+
+	/**
+	 * A NUL byte or invalid UTF-8 in a string literal breaks the query on some
+	 * database backends.
+	 */
+	private function isQueryable( string $value ): bool {
+		return !str_contains( $value, "\0" ) && mb_check_encoding( $value, 'UTF-8' );
+	}
+
+	/**
+	 * The current format always stores these characters percent-encoded, so only
+	 * a row written by an earlier version can contain one of them raw.
+	 */
+	private function canOnlyMatchOldRows( string $legacy ): bool {
+		return preg_match( '/[\x01-\x20"\'<>\[\\\\\]^`{|}\x7F]/', $legacy ) === 1;
+	}
+
+	/**
 	 * @since 1.8
 	 *
 	 * {@inheritDoc}

@@ -152,6 +152,21 @@ abstract class DataItemHandler {
 	abstract public function getWhereConds( DataItem $dataItem );
 
 	/**
+	 * Representations of the same DataItem that may still be present in the
+	 * store from before a storage format change, keyed as in getWhereConds().
+	 * Queries match these alongside the current form so that data written by an
+	 * earlier version keeps matching until it is rebuilt.
+	 *
+	 * Returns an empty array when there is no such form to match.
+	 *
+	 * @since 7.3.0
+	 * @internal
+	 */
+	public function getLegacyWhereConds( DataItem $dataItem ): array {
+		return [];
+	}
+
+	/**
 	 * Return an array of fields=>values that is to be inserted when
 	 * writing the given DataItem to the database. Values should be set
 	 * for all columns, even if NULL. This array is used to perform all

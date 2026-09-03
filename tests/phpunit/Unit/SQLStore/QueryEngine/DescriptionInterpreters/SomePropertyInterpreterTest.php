@@ -5,10 +5,13 @@ namespace SMW\Tests\Unit\SQLStore\QueryEngine\DescriptionInterpreters;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\Property;
+use SMW\DataItems\Uri;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Query\DescriptionFactory;
+use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
@@ -223,6 +226,62 @@ class SomePropertyInterpreterTest extends TestCase {
 			->method( 'getWhereConds' )
 			->willReturn( [ $indexField => 'fixedFooWhereCond' ] );
 
+		$this->assertInterpretedContainer( $description, $isFixedPropertyTable, $sortKeys, $dataItemHandler, $expected );
+	}
+
+	/**
+	 * @dataProvider legacyUriConditionProvider
+	 */
+	public function testValuesStoredBeforeTheUriFormatChangeAreMatchedByEqualityOnly( int $comparator, string $where ): void {
+		$descriptionFactory = new DescriptionFactory();
+		$dataItemFactory = new DataItemFactory();
+
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
+		$property->setPropertyValueType( '_uri' );
+
+		$description = $descriptionFactory->newSomeProperty(
+			$property,
+			$descriptionFactory->newValueDescription(
+				new Uri( 'http', 'example.org/a%7Bb%7D', '', '' ), null, $comparator
+			)
+		);
+
+		$expected = new stdClass;
+		$expected->where = $where;
+
+		$this->assertInterpretedContainer(
+			$description,
+			false,
+			[],
+			new DIUriHandler( $this->store ),
+			$expected
+		);
+	}
+
+	public static function legacyUriConditionProvider(): iterable {
+		yield 'equal matches either form' => [
+			SMW_CMP_EQ,
+			'(t0.o_serialized=http://example.org/a%7Bb%7D OR t0.o_serialized=http://example.org/a{b})'
+		];
+
+		yield 'not equal excludes both forms' => [
+			SMW_CMP_NEQ,
+			'(t0.o_serialized!=http://example.org/a%7Bb%7D AND t0.o_serialized!=http://example.org/a{b})'
+		];
+
+		yield 'like pattern matches the current form only' => [
+			SMW_CMP_LIKE,
+			'(t0.o_serialized LIKE %example.org/a\\%7Bb\\%7D)'
+		];
+	}
+
+	private function assertInterpretedContainer(
+		Description $description,
+		bool $isFixedPropertyTable,
+		array $sortKeys,
+		DataItemHandler $dataItemHandler,
+		stdClass $expected
+	): void {
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getSMWPropertyID', 'getSMWPageID' ] )
 			->getMock();

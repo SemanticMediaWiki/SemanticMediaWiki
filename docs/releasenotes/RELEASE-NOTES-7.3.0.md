@@ -20,10 +20,13 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed links and other markup in a property description not being rendered in the property tooltip ([#5494](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5494))
 * Fixed full-text search queries failing with a database error when the search term left a boolean operator without a term, such as `[[Has text::~O'Se*]]`, where both parts of the term are too short to be indexed and only the wildcard remained ([#6129](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6129))
 * Fixed full-text search queries failing with a database error when the search term contained an at sign, as in `[[Has text::~name@example.org]]`
+* Fixed percent-encoded characters in URL values, such as `%2F` in `https://example.org/a%2Fb`, being decoded when stored, which turned the URL into a different, broken one ([#5212](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5212))
 
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts, unless you enable the `db-primary-keys`, `elastic-fileingest` or `media` profile with `$smwgConfigProfiles`.
+
+However, if your wiki uses properties of type URL, Annotation URI or Email, run `php maintenance/run.php SemanticMediaWiki:rebuildData` after upgrading. Until then, queries may miss some values stored by an earlier version, such as values containing `%2F`, `'` or `{`, and on SPARQLStore also values containing parentheses or non-ASCII letters.
 
 **Get the new version via Composer:**
 
