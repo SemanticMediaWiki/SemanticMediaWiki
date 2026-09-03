@@ -93,7 +93,7 @@
 				"to-contain": [
 					"<th class=\"with-a-different-Label\">",
 					"title=\"Property:P106\">with a different Label</a>",
-					"<span class=\"smwttcontent\"></span></span>"
+					"<span class=\"smwttcontent\"></span></span>", "data-content=\"occupation of a person; see also field of work (Property:P101)\""
 				],
 				"not-contain": [
 					"<th class=\"occupation\">occupation</th>",
