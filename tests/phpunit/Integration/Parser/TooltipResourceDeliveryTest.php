@@ -17,6 +17,9 @@ use SMW\Tests\TestEnvironment;
  * ParserOutput of the rendering parse, which is the one that is displayed;
  * the ParserOutput of the preprocess pass is discarded (#7109).
  *
+ * @covers \SMW\MediaWiki\Outputs
+ * @covers \SMW\ParserFunctions\InfoParserFunction
+ * @covers \SMW\ParserFunctions\PropertyLinkParserFunction
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
