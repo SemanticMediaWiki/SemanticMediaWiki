@@ -488,11 +488,21 @@ class TextSanitizer {
 		// Sequences such as "+*" are absent here because they are valid
 		// when bound to a term ("+*foo"); trimUnsupportedOperators() has
 		// already removed the unbound ones.
-		$cleaned = preg_replace( '/([+~-])\1+/', '$1', $text ) ?? $text;
-		$cleaned = preg_replace( '/\*{2,}/', '*', $cleaned ) ?? $cleaned;
-		$cleaned = str_replace(
-			[ "*+", "*-", "*~", "+-", "+~", "-+", "-~", "~+", "~-" ], "", $cleaned
-		);
+		//
+		// Removing a sequence can bring its neighbours together into
+		// another illegal one ("-+~-" leaves "--"), so repeat until the
+		// text stops changing. Each pass can only shorten it.
+		$cleaned = $text;
+
+		do {
+			$previous = $cleaned;
+
+			$cleaned = preg_replace( '/([+~-])\1+/', '$1', $cleaned ) ?? $cleaned;
+			$cleaned = preg_replace( '/\*{2,}/', '*', $cleaned ) ?? $cleaned;
+			$cleaned = str_replace(
+				[ "*+", "*-", "*~", "+-", "+~", "-+", "-~", "~+", "~-" ], "", $cleaned
+			);
+		} while ( $cleaned !== $previous );
 
 		// Remove operators that carry no term.
 		// May occur eg when trailing operators become detached or

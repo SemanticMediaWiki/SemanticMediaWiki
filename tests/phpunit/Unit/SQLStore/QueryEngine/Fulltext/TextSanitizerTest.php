@@ -230,7 +230,15 @@ class TextSanitizerTest extends TestCase {
 			'foo bar'
 		];
 
+		yield 'operator run reducible only in several passes' => [
+			'-+~-apple',
+			'-apple'
+		];
 
+		yield 'operator run reducible only in several passes, trailing' => [
+			'apple ~+-~pear',
+			'apple ~pear'
+		];
 
 
 
