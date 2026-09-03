@@ -2,15 +2,19 @@
 
 namespace SMW\Tests\Unit\ParserFunctions;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Parser\StripState;
+use MediaWiki\Title\Title;
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingResult;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Outputs;
 use SMW\ParserFunctions\InfoParserFunction;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\ParserFunctions\InfoParserFunction
@@ -23,13 +27,18 @@ use SMW\ParserFunctions\InfoParserFunction;
  */
 class InfoParserFunctionTest extends TestCase {
 
+	private TestEnvironment $testEnvironment;
+
 	protected function setUp(): void {
 		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
 		Outputs::reset();
 	}
 
 	protected function tearDown(): void {
 		Outputs::reset();
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -70,7 +79,7 @@ class InfoParserFunctionTest extends TestCase {
 	}
 
 	public function testHtmlPassCommitsTooltipResourcesToTheParser() {
-		$parser = $this->newParser( Parser::OT_HTML );
+		$parser = $this->newParser( Parser::OT_HTML, NS_MAIN );
 
 		$result = $this->handleInfo( $parser, 'Some tooltip text' );
 
@@ -87,7 +96,7 @@ class InfoParserFunctionTest extends TestCase {
 	}
 
 	public function testNonHtmlPassLeavesTooltipResourcesBufferedForTheRenderingParse() {
-		$parser = $this->newParser( Parser::OT_PREPROCESS );
+		$parser = $this->newParser( Parser::OT_PREPROCESS, NS_MAIN );
 
 		$result = $this->handleInfo( $parser, 'Some tooltip text' );
 
@@ -110,6 +119,19 @@ class InfoParserFunctionTest extends TestCase {
 			'ext.smw.tooltip',
 			$renderingParseOutput->getModules(),
 			'the requirements must stay buffered for the rendering parse that follows'
+		);
+	}
+
+	public function testSpecialPageCommitsTooltipResourcesToTheOutputPage() {
+		$parser = $this->newParser( Parser::OT_PREPROCESS, NS_SPECIAL );
+		$output = $this->newOutputPage();
+
+		$this->handleInfo( $parser, 'Some tooltip text' );
+
+		$this->assertContains(
+			'ext.smw.tooltip',
+			$output->getModules(),
+			'a special page carries the requirements on its OutputPage, whatever the pass'
 		);
 	}
 
@@ -146,13 +168,27 @@ class InfoParserFunctionTest extends TestCase {
 		return $processingResult;
 	}
 
-	private function newParser( int $outputType ): Parser {
+	private function newOutputPage(): OutputPage {
+		$context = new RequestContext();
+		$context->setTitle( $this->newTitle( NS_SPECIAL ) );
+
+		$output = $context->getOutput();
+		$this->testEnvironment->withConfiguration( [ 'wgOut' => $output ] );
+
+		return $output;
+	}
+
+	private function newTitle( int $namespace ): Title {
+		return MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __CLASS__, $namespace );
+	}
+
+	private function newParser( int $outputType, int $namespace ): Parser {
 		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$parser->method( 'getTitle' )
-			->willReturn( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __CLASS__, NS_MAIN ) );
+			->willReturn( $this->newTitle( $namespace ) );
 
 		$parser->method( 'getOutput' )
 			->willReturn( new ParserOutput() );
