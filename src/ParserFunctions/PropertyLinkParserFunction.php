@@ -63,20 +63,13 @@ class PropertyLinkParserFunction {
 	/**
 	 * Resources requested during rendering (tooltip styles and scripts) must
 	 * be committed here because the result bypasses the commit performed by
-	 * InTextAnnotationParser::parse().
-	 *
-	 * Only a pass that renders HTML may receive the commit: any other pass
-	 * discards its ParserOutput, so an eager commit there would both lose the
-	 * modules and drain the buffers. In such a pass the requirements stay
-	 * buffered for the rendering parse that follows, e.g. the preview parse
-	 * of Special:ExpandTemplates rendering what the preprocess pass expanded
-	 * under a content-page context title (#7109).
+	 * InTextAnnotationParser::parse()
 	 */
 	private function commitRequestedResources( Parser $parser ): void {
 		if ( $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			Outputs::commitToOutputPage( $wgOut );
-		} elseif ( $parser->getOutputType() === Parser::OT_HTML ) {
+		} else {
 			Outputs::commitToParser( $parser );
 		}
 	}
