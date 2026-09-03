@@ -54,6 +54,69 @@ class URIValueTest extends TestCase {
 	}
 
 	/**
+	 * @dataProvider serializationProvider
+	 */
+	public function testStoredSerialization( $uri, $expected ) {
+		$instance = new URIValue( '_uri' );
+		$instance->setUserValue( $uri );
+
+		$this->assertSame(
+			$expected,
+			$instance->getDataItem()->getSerialization()
+		);
+	}
+
+	public function testEmailKeepsPercentEncodingItWasGiven() {
+		$instance = new URIValue( '_ema' );
+		$instance->setUserValue( 'a%00b@example.org' );
+
+		$this->assertSame(
+			'mailto:a%00b@example.org',
+			$instance->getDataItem()->getSerialization()
+		);
+	}
+
+	public function serializationProvider() {
+		# 0 - Issue #5212, an encoded slash is data and must stay encoded
+		$provider[] = [
+			'http://example.org/a%2Fb',
+			'http://example.org/a%2Fb'
+		];
+
+		# 1 - a raw slash is a delimiter and must stay raw
+		$provider[] = [
+			'http://example.org/a/b',
+			'http://example.org/a/b'
+		];
+
+		# 2 - `'` stays encoded, otherwise `''` reaches the parser as italic markup
+		$provider[] = [
+			"http://example.org/it''s",
+			'http://example.org/it%27%27s'
+		];
+
+		# 3 - an encoded NUL is data like any other octet
+		$provider[] = [
+			'http://example.org/a%00b',
+			'http://example.org/a%00b'
+		];
+
+		# 4 - encoded non-ASCII is decoded, so both spellings match one value
+		$provider[] = [
+			'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D',
+			'http://example.org/ようこそ'
+		];
+
+		# 5 - a malformed UTF-8 sequence is left alone
+		$provider[] = [
+			'http://example.org/%C3%28',
+			'http://example.org/%C3%28'
+		];
+
+		return $provider;
+	}
+
+	/**
 	 * @dataProvider telProvider
 	 */
 	public function testTelOutputFormatting( $uri, $caption, $linker, $expected ) {

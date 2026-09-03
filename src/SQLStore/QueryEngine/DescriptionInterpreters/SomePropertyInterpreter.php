@@ -307,6 +307,16 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			);
 
 			$where = "$query->alias.{$indexField}{$comparator}" . $connection->addQuotes( $value );
+
+			// Data written before a storage format change is still on disk in
+			// the old form; match that too so queries keep working until the
+			// data has been rebuilt.
+			$legacyConds = $diHandler->getLegacyWhereConds( $dataItem );
+
+			if ( isset( $legacyConds[$indexField] ) && ( $comparator === '=' || $comparator === '!=' ) ) {
+				$legacyWhere = "$query->alias.{$indexField}{$comparator}" . $connection->addQuotes( $legacyConds[$indexField] );
+				$where .= ( $comparator === '=' ? ' OR ' : ' AND ' ) . $legacyWhere;
+			}
 		}
 
 		if ( $where !== '' ) {
