@@ -81,14 +81,11 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::WIKI_SHORT ) {
-			$text = $this->doHighlightText(
-				$wikiPageValue->getShortWikiText( $linker ),
-				$this->dataValue->getOption( PropertyValue::OPT_HIGHLIGHT_LINKER ) ? $linker : null
-			);
+			$text = $this->doHighlightText( $wikiPageValue->getShortWikiText( $linker ) );
 		}
 
 		if ( $type === self::HTML_SHORT ) {
-			$text = $this->doHighlightText( $wikiPageValue->getShortHTMLText( $linker ), $linker );
+			$text = $this->doHighlightText( $wikiPageValue->getShortHTMLText( $linker ) );
 		}
 
 		if ( $type === self::WIKI_LONG ) {
@@ -96,7 +93,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::HTML_LONG ) {
-			$text = $this->doHighlightText( $wikiPageValue->getLongHTMLText( $linker ), $linker );
+			$text = $this->doHighlightText( $wikiPageValue->getLongHTMLText( $linker ) );
 		}
 
 		return $text . $this->hintPreferredLabelUse();
@@ -251,10 +248,10 @@ class PropertyValueFormatter extends DataValueFormatter {
 		return $wikiPageValue;
 	}
 
-	private function doHighlightText( $text, $linker = null ) {
+	private function doHighlightText( string $text ): string {
 		$content = '';
 
-		if ( !$this->canHighlight( $content, $linker ) ) {
+		if ( !$this->canHighlight( $content ) ) {
 			return $text;
 		}
 
@@ -272,24 +269,28 @@ class PropertyValueFormatter extends DataValueFormatter {
 			[
 				'userDefined' => $this->dataValue->getDataItem()->isUserDefined(),
 				'caption' => $text,
-				'content' => $content !== '' ? $content : Message::get( 'smw_isspecprop' )
+				'content' => $content !== '' ? $content : Message::get( 'smw_isspecprop' ),
+				'data-content' => $content !== '' ? $content : null
 			]
 		);
 
 		return $highlighter->getHtml();
 	}
 
-	private function canHighlight( string &$propertyDescription, $linker ): bool {
+	private function canHighlight( string &$propertyDescription ): bool {
 		if ( $this->dataValue->getOption( PropertyValue::OPT_NO_HIGHLIGHT ) === true ) {
 			return false;
 		}
 
 		$dataItem = $this->dataValue->getDataItem();
 
-		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
+		// The popup renders the description as HTML on every surface, so the
+		// rendered form is requested here rather than left to the surrounding
+		// page parse, which would re-process it and turn bare URLs inside
+		// pre-rendered markup into nested, broken links (#5494)
+		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionAsHtml(
 			$dataItem,
-			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE ),
-			$linker
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);
 
 		return !$dataItem->isUserDefined() || $propertyDescription !== '';

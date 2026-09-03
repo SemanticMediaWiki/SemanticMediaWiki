@@ -51,8 +51,8 @@
 			"subject": "Example/P0216/1",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\">",
-					"<span class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and &lt;li&gt;stripped `li` in title element&lt;/li&gt;</span>",
+					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\" data-content=\"",
+					"data-content=\"&lt;p&gt;Some text with a link to &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http&#58;//example.org/&quot;&gt;foo&lt;/a&gt;", "<span class=\"smwttcontent\"></span>",
 					"title=\"Property:Has date\">Has date</a>"
 				]
 			}
@@ -63,8 +63,8 @@
 			"subject": "Example/P0216/2",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\">",
-					"<span class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and &lt;li&gt;stripped `li` in title element&lt;/li&gt;</span>",
+					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\" data-content=\"",
+					"data-content=\"&lt;p&gt;Some text with a link to &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http&#58;//example.org/&quot;&gt;foo&lt;/a&gt;", "<span class=\"smwttcontent\"></span>",
 					"title=\"Property:Has date\">With extra caption</a>"
 				]
 			}
@@ -97,7 +97,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-property nolink\">Has date</span>",
-					"<span class=\"smwttcontent\">Some text with a link to"
+					"data-content=\"&lt;p&gt;Some text with a link to"
 				]
 			}
 		},

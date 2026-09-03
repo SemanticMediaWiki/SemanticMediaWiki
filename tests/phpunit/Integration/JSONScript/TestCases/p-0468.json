@@ -1,0 +1,60 @@
+{
+	"description": "Test a property description defined on the property page is rendered in the tooltip (#5494)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Modification date",
+			"contents": "[[Property description::Predefined text with ''emphasis'' here@en]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P0468",
+			"contents": "[[Has type::Text]] [[Property description::Userdefined text with ''emphasis'' here@en]]"
+		},
+		{
+			"page": "Example/P0468/1",
+			"contents": "[[Modification date::@@@]]"
+		},
+		{
+			"page": "Example/P0468/2",
+			"contents": "[[P0468::@@@]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 predefined property, description defined on the property page",
+			"subject": "Example/P0468/1",
+			"assert-output": {
+				"to-contain": [
+					"data-content=\"Predefined text with &lt;i&gt;emphasis&lt;/i&gt; here\"",
+					"<span class=\"smwttcontent\"></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 user-defined property, description defined on the property page",
+			"subject": "Example/P0468/2",
+			"assert-output": {
+				"to-contain": [
+					"data-content=\"Userdefined text with &lt;i&gt;emphasis&lt;/i&gt; here\"",
+					"<span class=\"smwttcontent\"></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -48,7 +48,7 @@ class PropertyValueFormatterTest extends TestCase {
 			->getMock();
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getPropertyDescriptionByLanguageCode' )
+			->method( 'getPropertyDescriptionAsHtml' )
 			->willReturn( 'Some description' );
 
 		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
@@ -154,14 +154,72 @@ class PropertyValueFormatterTest extends TestCase {
 		);
 
 		$this->assertStringContainsString(
-			'<span class="smwtext">ABC[<>]</span><span class="smwttcontent">Some description</span>',
+			'<span class="smwtext">ABC[<>]</span><span class="smwttcontent"></span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] )
 		);
 
 		$this->assertStringContainsString(
-			'<span class="smwtext">ABC[&lt;&gt;]</span><span class="smwttcontent">Some description</span>',
+			'data-content="Some description',
+			$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] )
+		);
+
+		$this->assertStringContainsString(
+			'<span class="smwtext">ABC[&lt;&gt;]</span><span class="smwttcontent"></span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::HTML_SHORT ] )
 		);
+	}
+
+	public function testRenderedDescriptionTravelsInTheDataContentAttribute() {
+		$html = $this->formatWithDescription( '<a href="http://example.org/">foo</a>' );
+
+		$this->assertStringContainsString(
+			'data-content="&lt;a href=&quot;http://example.org/&quot;&gt;foo&lt;/a&gt;"',
+			$html,
+			'the rendered description must reach the popup through the attribute'
+		);
+
+		$this->assertStringContainsString(
+			'<span class="smwttcontent"></span>',
+			$html,
+			'the text node stays empty so the page parse cannot re-process the description'
+		);
+	}
+
+	public function testDescriptionIsNotPlacedInTheTooltipTextNode() {
+		$html = $this->formatWithDescription( 'A plain description' );
+
+		$this->assertStringNotContainsString(
+			'<span class="smwttcontent">A plain description</span>',
+			$html
+		);
+	}
+
+	private function formatWithDescription( string $description ): string {
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertySpecificationLookup->expects( $this->any() )
+			->method( 'getPropertyDescriptionAsHtml' )
+			->willReturn( $description );
+
+		$propertyValue = new PropertyValue();
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, false );
+		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+
+		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+		$propertyValue->setCaption( 'Foo' );
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance = new PropertyValueFormatter(
+			$propertySpecificationLookup,
+			$this->propertyLabelFinder
+		);
+
+		return $instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] );
 	}
 
 	public function testHighlightedShortFormatRecordsUserLanguageOutput() {

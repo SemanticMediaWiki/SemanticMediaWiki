@@ -36,13 +36,13 @@
 			"subject": "Example/P0438/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:Modification date\">prefLabel-123</a></span><span class=\"smwttcontent\">„prefLabel-123&#160;&lt;span style=\"font-size:small;\"&gt;(Modification date)&lt;/span&gt;“",
-					"title=\"Property:Modification date\">ModificationSomeLabel</a></span><span class=\"smwttcontent\">„prefLabel-123&#160;&lt;span style=\"font-size:small;\"&gt;(Modification date)&lt;/span&gt;“",
+					"title=\"Property:Modification date\">prefLabel-123</a></span><span class=\"smwttcontent\"></span>", "data-content=\"„prefLabel-123&amp;#160;&lt;span style=&quot;font-size:small;&quot;&gt;(Modification date)&lt;/span&gt;“ ist ein softwareseitig fest definiertes Attribut, das das Datum der letzten Änderung einer Seite speichert. Es wird von &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;https&#58;//www.semantic-mediawiki.org/wiki/Help:Special&#95;properties&quot;&gt;Semantic MediaWiki&lt;/a&gt; zur Verfügung gestellt.\"",
+					"title=\"Property:Modification date\">ModificationSomeLabel</a></span><span class=\"smwttcontent\"></span>",
 					"&#160;<span title=\"Modification date\"><sup>ᵖ</sup></span>",
 					"title=\"Property:Has keyword\">prefLabel-456</a>&#160;<span title=\"Has keyword\"><sup>ᵖ</sup>",
 					"title=\"Property:Has keyword\">KeywordCaption</a>",
-					"title=\"Property:Has query\">query-displaytitle</a></span><span class=\"smwttcontent\">„query-displaytitle&#160;&lt;span style=\"font-size:small;\"&gt;(Has query)&lt;/span&gt;“",
-					"title=\"Property:Has query\">QueryCaption</a></span><span class=\"smwttcontent\">„query-displaytitle&#160;&lt;span style=\"font-size:small;\"&gt;(Has query)&lt;/span&gt;“",
+					"title=\"Property:Has query\">query-displaytitle</a></span><span class=\"smwttcontent\"></span>", "data-content=\"„query-displaytitle&amp;#160;&lt;span style=&quot;font-size:small;&quot;&gt;(Has query)&lt;/span&gt;“ ist ein softwareseitig fest definiertes Attribut, das die Metainformationen einer Abfrage als &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;https&#58;//www.semantic-mediawiki.org/wiki/Subobject&quot;&gt;Subobjekt&lt;/a&gt; speichert. Es wird von &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;https&#58;//www.semantic-mediawiki.org/wiki/Help:Special&#95;properties&quot;&gt;Semantic MediaWiki&lt;/a&gt; zur Verfügung gestellt.\"",
+					"title=\"Property:Has query\">QueryCaption</a></span><span class=\"smwttcontent\"></span>",
 					":Ask/-5B-5BCategoría:P0438-5D-5D/-3FModification-20date/-3FModification-20date=ModificationSomeLabel/-3FHas-20keyword/-3FHas-20keyword=KeywordCaption/-3FHas-20query/-3FHas-20query=QueryCaption/mainlabel=/limit=1/offset=1/format=table\">"
 				]
 			}

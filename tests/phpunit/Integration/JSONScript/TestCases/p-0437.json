@@ -24,7 +24,7 @@
 			"subject": "Example/P0437/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"data-title=\"プロパティ\" title=\"人物の職業。「専門分野」(Property:P101) も参照\">",
+					"data-title=\"プロパティ\" title=\"人物の職業。「専門分野」(Property:P101) も参照\" data-content=\"人物の職業。「専門分野」(Property:P101) も参照\">",
 					"title=\"Property:P106\">職業</a>"
 				]
 			}

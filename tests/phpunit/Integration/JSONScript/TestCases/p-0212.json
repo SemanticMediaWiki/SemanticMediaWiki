@@ -59,8 +59,8 @@
 			"subject": "Example/P0212/1",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\">",
-					"<span class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and &lt;li&gt;stripped `li` in title element&lt;/li&gt;</span>",
+					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\" data-content=\"",
+					"data-content=\"&lt;p&gt;Some text with a link to &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http://example.org/&quot;&gt;foo&lt;/a&gt;", "<span class=\"smwttcontent\"></span>",
 					"title=\"Property:Has date\">Has date</a>"
 				]
 			}
@@ -71,8 +71,8 @@
 			"subject": "Example/P0212/2",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\">",
-					"<span class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and &lt;li&gt;stripped `li` in title element&lt;/li&gt;</span>",
+					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element\" data-content=\"",
+					"data-content=\"&lt;p&gt;Some text with a link to &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http://example.org/&quot;&gt;foo&lt;/a&gt;", "<span class=\"smwttcontent\"></span>",
 					"title=\"Property:Has date\">With extra caption</a>"
 				]
 			}
@@ -83,7 +83,7 @@
 			"subject": "Example/P0212/3",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-property\">.*title=\"Property:P106\">職業</a></span></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+					"<span class=\"smw-property\">.*title=\"Property:P106\">職業</a></span></span><span class=\"smwttcontent\"></span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>", "data-content=\"人物の職業。「専門分野」\""
 				]
 			}
 		},
@@ -93,7 +93,7 @@
 			"subject": "Example/P0212/4",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-property\">.*title=\"Property:P106\">WithCaption</a></span></span><span class=\"smwttcontent\">대상 인물의 직업</span></span>"
+					"<span class=\"smw-property\">.*title=\"Property:P106\">WithCaption</a></span></span><span class=\"smwttcontent\"></span></span>", "data-content=\"대상 인물의 직업\""
 				]
 			}
 		},
@@ -103,7 +103,7 @@
 			"subject": "Example/P0212/5",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" .* title=\"대상 인물의 직업\"><span class=\"smwtext\"><span class=\"smw-property nolink\">직업</span></span><span class=\"smwttcontent\">대상 인물의 직업</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
+					"<span class=\"smw-highlighter\" .* title=\"대상 인물의 직업\" data-content=\"대상 인물의 직업\"><span class=\"smwtext\"><span class=\"smw-property nolink\">직업</span></span><span class=\"smwttcontent\"></span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
 				]
 			}
 		},
@@ -135,7 +135,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-property nolink\">Has date</span>",
-					"<span class=\"smwttcontent\">Some text with a link to"
+					"data-content=\"&lt;p&gt;Some text with a link to"
 				]
 			}
 		},
