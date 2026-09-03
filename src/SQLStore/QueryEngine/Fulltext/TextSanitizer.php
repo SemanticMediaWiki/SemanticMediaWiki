@@ -115,18 +115,7 @@ class TextSanitizer {
 		);
 
 		if ( $isSearchTerm ) {
-			// Trim any leading asterisks and trailing +/-/~ signs
-			// now that we can still determine their position.
-			// Exempt free-standing operators, which may be
-			// joined to tokens later on.
-			// @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
-			$trimmed = [];
-			foreach ( explode( " ", $text ) as $t ) {
-				$trimmed[] = ( !in_array( $t, [ "*", "-", "+", "~" ] ) )
-					? rtrim( ltrim( $t, "*" ), "-+~" )
-					: $t;
-			}
-			$text = implode( " ", $trimmed );
+			$text = $this->trimUnsupportedOperators( $text );
 		}
 
 		$tokens = $this->tokenize( $text, $language, $exemptionList );
@@ -147,6 +136,39 @@ class TextSanitizer {
 		return $isSearchTerm
 			? $this->sanitizeFilteredText( $filteredText )
 			: $filteredText;
+	}
+
+	/**
+	 * Removes an asterisk that no term precedes and a trailing +/-/~ sign,
+	 * which MySQL rejects in those positions, while their position in the
+	 * input is still known.
+	 *
+	 * A leading operator is retained: "+*foo" is a required "foo", not an
+	 * unbound wildcard. Free-standing operators are exempt because they may
+	 * be joined to a neighbouring token further down.
+	 *
+	 * @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
+	 */
+	private function trimUnsupportedOperators( string $text ): string {
+		$trimmed = [];
+
+		foreach ( explode( " ", $text ) as $t ) {
+			if ( in_array( $t, [ "*", "-", "+", "~" ], true ) ) {
+				$trimmed[] = $t;
+				continue;
+			}
+
+			// An asterisk that a term precedes truncates it; one that a
+			// term only follows is a leading wildcard, which is not
+			// supported. One with a term on neither side is left alone:
+			// the delimiter between them is about to be removed, as in
+			// "apple.*".
+			$stripped = preg_replace( '/(?<![\p{L}\p{N}])\*+(?=[\p{L}\p{N}])/u', '', $t ) ?? $t;
+
+			$trimmed[] = rtrim( $stripped, "-+~" );
+		}
+
+		return implode( " ", $trimmed );
 	}
 
 	/**
@@ -459,24 +481,25 @@ class TextSanitizer {
 	 * errors (compared to MyISAM, InnoDB is less forgiving).
 	 *
 	 * @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
-	 *
-	 * @param string $text
-	 * @return string
 	 */
 	private function sanitizeFilteredText( string $text ): string {
-		// Trim multiples like "++", "--", "~~", and
-		// fully remove troublesome sequences
+		// Trim multiples like "++", "--", "~~" and runs of asterisks, and
+		// fully remove sequences the parser rejects in any position.
+		// Sequences such as "+*" are absent here because they are valid
+		// when bound to a term ("+*foo"); trimUnsupportedOperators() has
+		// already removed the unbound ones.
 		$cleaned = preg_replace( '/([+~-])\1+/', '$1', $text ) ?? $text;
+		$cleaned = preg_replace( '/\*{2,}/', '*', $cleaned ) ?? $cleaned;
 		$cleaned = str_replace(
-			[ "**", "*+", "*-", "*~", "+*", "+-", "+~", "-*", "-+", "-~", "~*", "~+", "~-" ], "", $cleaned
+			[ "*+", "*-", "*~", "+-", "+~", "-+", "-~", "~+", "~-" ], "", $cleaned
 		);
 
-		// Remove isolated operators
+		// Remove operators that carry no term.
 		// May occur eg when trailing operators become detached or
 		// a stopword or other token is filtered out.
 		$tokens = [];
 		foreach ( explode( " ", $cleaned ) as $token ) {
-			if ( in_array( $token, [ "*", "+", "-", "~" ] ) ) {
+			if ( $token === '' || preg_match( '/^[*+~-]+$/', $token ) === 1 ) {
 				continue;
 			}
 			$tokens[] = $token;

@@ -122,6 +122,11 @@ class TextSanitizerTest extends TestCase {
 			'I am a test',
 			'test'
 		];
+
+		// The truncation operator only has meaning in a search term.
+		// When indexing, an asterisk is punctuation and must not keep
+		// a token that is below the minimum length.
+
 	}
 
 	public static function operatorSpacingProvider() {
@@ -187,13 +192,63 @@ class TextSanitizerTest extends TestCase {
 
 		yield 'illegal operator sequences' => [
 			'-+peach+* decidu*+-',
-			'peach  decidu*'
+			'peach decidu*'
 		];
 
 		yield 'at sign as delimiter' => [
 			'name@email',
 			'name email'
 		];
+
+		yield 'required term with leading wildcard' => [
+			'+*apple* banana',
+			'+apple* banana'
+		];
+
+		yield 'excluded term with leading wildcard' => [
+			'-*apple* pear',
+			'-apple* pear'
+		];
+
+		yield 'relevance operator with leading wildcard' => [
+			'~*apple* pear',
+			'~apple* pear'
+		];
+
+		yield 'doubled leading wildcard' => [
+			'**apple',
+			'apple'
+		];
+
+		yield 'doubled trailing wildcard' => [
+			'apple**',
+			'apple*'
+		];
+
+		yield 'comma directly before wildcard' => [
+			'foo,*bar',
+			'foo bar'
+		];
+
+
+
+
+
+
+
+
+
+		yield 'wildcard after a delimiter that is dropped' => [
+			'apple.*',
+			'apple*'
+		];
+
+		yield 'wildcard after a bracket that is dropped' => [
+			'(test)*',
+			'test*'
+		];
+
+
 	}
 
 }
