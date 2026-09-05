@@ -6,7 +6,6 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\NumberValue;
-use SMW\DataValues\URIValue;
 use SMW\Query\QueryComparator;
 
 /**
@@ -90,7 +89,6 @@ class ValueDescription extends Description {
 
 		// Set option to ensure that the output doesn't alter the display
 		// characteristics of a value
-		$dataValue->setOption( URIValue::VALUE_RAW, true );
 		$dataValue->setOption( NumberValue::NO_DISP_PRECISION_LIMIT, true );
 
 		if ( $asValue ) {
