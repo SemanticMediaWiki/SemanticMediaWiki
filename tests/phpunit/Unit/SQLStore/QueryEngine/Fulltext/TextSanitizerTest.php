@@ -122,6 +122,19 @@ class TextSanitizerTest extends TestCase {
 			'I am a test',
 			'test'
 		];
+
+		// The truncation operator only has meaning in a search term.
+		// When indexing, an asterisk is punctuation and must not keep
+		// a token that is below the minimum length.
+		yield 'asterisk does not retain a short token when indexing' => [
+			'a * b',
+			''
+		];
+
+		yield 'multiplication signs do not retain digits when indexing' => [
+			'2 * pi * r',
+			''
+		];
 	}
 
 	public static function operatorSpacingProvider() {
@@ -142,7 +155,7 @@ class TextSanitizerTest extends TestCase {
 
 		yield 'surrounding wildcards' => [
 			'* foo *',
-			'*foo*'
+			'foo*'
 		];
 
 		yield 'plus and wildcard combo' => [
@@ -157,12 +170,135 @@ class TextSanitizerTest extends TestCase {
 
 		yield 'adjacent wildcards' => [
 			'*foo* bar',
-			'*foo*bar'
+			'foo* bar'
 		];
 
 		yield 'plus wildcard combo' => [
 			'+foo*, *bar',
-			'+foo*,*bar'
+			'+foo* bar'
+		];
+
+		yield 'two letters with wildcard' => [
+			'be*',
+			'be*'
+		];
+
+		yield 'single asterisk wildcard' => [
+			'*',
+			''
+		];
+
+		yield 'duplicate operators' => [
+			'++appl* ~~doctor --away',
+			'+appl* ~doctor -away'
+		];
+
+		yield 'operators in wrong positions' => [
+			'*appl+ *doctor- *away~',
+			'appl doctor away'
+		];
+
+		yield 'illegal operator sequences' => [
+			'-+peach+* decidu*+-',
+			'peach decidu*'
+		];
+
+		yield 'at sign as delimiter' => [
+			'name@email',
+			'name email'
+		];
+
+		yield 'required term with leading wildcard' => [
+			'+*apple* banana',
+			'+apple* banana'
+		];
+
+		yield 'excluded term with leading wildcard' => [
+			'-*apple* pear',
+			'-apple* pear'
+		];
+
+		yield 'relevance operator with leading wildcard' => [
+			'~*apple* pear',
+			'~apple* pear'
+		];
+
+		yield 'doubled leading wildcard' => [
+			'**apple',
+			'apple'
+		];
+
+		yield 'doubled trailing wildcard' => [
+			'apple**',
+			'apple*'
+		];
+
+		yield 'comma directly before wildcard' => [
+			'foo,*bar',
+			'foo bar'
+		];
+
+		yield 'operator run reducible only in several passes' => [
+			'-+~-apple',
+			'-apple'
+		];
+
+		yield 'operator run reducible only in several passes, trailing' => [
+			'apple ~+-~pear',
+			'apple ~pear'
+		];
+
+		yield 'trailing operator after a quoted phrase' => [
+			'"apple" -',
+			'"apple"'
+		];
+
+		yield 'trailing operator after an embedded quote' => [
+			'find "this" +',
+			'find"this"'
+		];
+
+		yield 'quote left behind by a filtered short token' => [
+			'+ab" +pear',
+			'+pear'
+		];
+
+		yield 'required phrase' => [
+			'+"apple pear"',
+			'+"apple pear"'
+		];
+
+		yield 'excluded phrase' => [
+			'-"apple pear"',
+			'-"apple pear"'
+		];
+
+		yield 'phrase followed by a required term' => [
+			'"apple pear" +kiwi',
+			'"apple pear"+kiwi'
+		];
+
+		yield 'wildcard after a delimiter that is dropped' => [
+			'apple.*',
+			'apple*'
+		];
+
+		yield 'wildcard after a bracket that is dropped' => [
+			'(test)*',
+			'test*'
+		];
+
+		// The apostrophe splits the term into two parts that are both
+		// below the minimum length. Discarding them used to leave the
+		// truncation operator on its own. See issue 6129.
+		yield 'apostrophe with wildcard' => [
+			"O'Se*",
+			'se*'
+		];
+
+		yield 'apostrophe with wildcard after a longer term' => [
+			"+Col* +O'Se*",
+			'+col* +se*'
 		];
 	}
 

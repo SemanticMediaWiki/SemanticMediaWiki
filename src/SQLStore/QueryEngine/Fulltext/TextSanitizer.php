@@ -95,9 +95,11 @@ class TextSanitizer {
 		$exemptionList = '';
 
 		// Those have special meaning when running a match search against
-		// the fulltext index (wildcard, phrase matching markers etc.)
+		// the fulltext index (wildcard, phrase matching markers, etc.).
+		// Excludes '@', which InnoDB reserves for @distance queries
+		// and which holds no special meaning in MyISAM.
 		if ( $isSearchTerm ) {
-			$exemptionList = [ '*', '"', '+', '-', '&', ',', '@', '~' ];
+			$exemptionList = [ '*', '"', '+', '-', '&', '~' ];
 		}
 
 		$text = mb_strtolower( $text );
@@ -112,20 +114,61 @@ class TextSanitizer {
 			$text
 		);
 
+		if ( $isSearchTerm ) {
+			$text = $this->trimUnsupportedOperators( $text );
+		}
+
 		$tokens = $this->tokenize( $text, $language, $exemptionList );
 
-		$filtered = $this->filterTokens( $tokens, $language, $exemptionList );
-
-		$text = implode( ' ', $filtered );
+		$filtered = $this->filterTokens( $tokens, $language, $exemptionList, $isSearchTerm );
 
 		// Remove possible spaces added by the tokenizer
-		$text = str_replace(
-			[ ' *', '* ', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ],
-			[ '*', '*', '"', '"', '+', '-', '@', '~', '* +', '* -', '* ~' ],
-			$text
+		// or originating from the input.
+		// Reunites tokens with leading operators ('+', '-', etc.),
+		// trailing operators ('*') and operators expected in
+		// both positions ('"')
+		$filteredText = str_replace(
+			[ ' *', ' "', '" ', '+ ', '- ', '~ ', '*+', '*-', '*~' ],
+			[ '*', '"', '"', '+', '-', '~', '* +', '* -', '* ~' ],
+			implode( ' ', $filtered )
 		);
 
-		return $text;
+		return $isSearchTerm
+			? $this->sanitizeFilteredText( $filteredText )
+			: $filteredText;
+	}
+
+	/**
+	 * Removes an asterisk that no term precedes and a trailing +/-/~ sign,
+	 * which MySQL rejects in those positions, while their position in the
+	 * input is still known.
+	 *
+	 * A leading operator is retained: "+*foo" is a required "foo", not an
+	 * unbound wildcard. Free-standing operators are exempt because they may
+	 * be joined to a neighbouring token further down.
+	 *
+	 * @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
+	 */
+	private function trimUnsupportedOperators( string $text ): string {
+		$trimmed = [];
+
+		foreach ( explode( " ", $text ) as $t ) {
+			if ( in_array( $t, [ "*", "-", "+", "~" ], true ) ) {
+				$trimmed[] = $t;
+				continue;
+			}
+
+			// An asterisk that a term precedes truncates it; one that a
+			// term only follows is a leading wildcard, which is not
+			// supported. One with a term on neither side is left alone:
+			// the delimiter between them is about to be removed, as in
+			// "apple.*".
+			$stripped = preg_replace( '/(?<![\p{L}\p{N}])\*+(?=[\p{L}\p{N}])/u', '', $t ) ?? $t;
+
+			$trimmed[] = rtrim( $stripped, "-+~" );
+		}
+
+		return implode( " ", $trimmed );
 	}
 
 	/**
@@ -154,10 +197,8 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenize( string|array $text, int|string|null $language, array|string $exemptionList ): array {
-		$hasCjk = (bool)preg_match( '/[\x{4e00}-\x{9fa5}]/u', $text );
+	private function tokenize( string $text, int|string|null $language, array|string $exemptionList ): array {
 		$hasIcu = class_exists( IntlRuleBasedBreakIterator::class );
-
 		if ( $hasIcu ) {
 			$tokens = $this->tokenizeWithIcu( $text, $language );
 			$joined = implode( ' ', $tokens );
@@ -165,6 +206,7 @@ class TextSanitizer {
 			return $this->tokenizeWithGenericRegex( $joined, $exemptionList );
 		}
 
+		$hasCjk = (bool)preg_match( '/[\x{4e00}-\x{9fa5}]/u', $text );
 		if ( $hasCjk ) {
 			$hasJapanese = (bool)preg_match( '/[\x{3040}-\x{309F}\x{30A0}-\x{30FF}]/u', $text );
 
@@ -235,7 +277,7 @@ class TextSanitizer {
 		$pattern = str_replace(
 			$exemptionList,
 			'',
-			'([\s\-_,:;?!%\'\|\/\(\)\[\]{}<>\r\n"]|(?<!\d)\.(?!\d)|(?<=\p{L})(?=\p{N}))'
+			'([\s\-_,:;?!%@\'\|\/\(\)\[\]{}<>\r\n"]|(?<!\d)\.(?!\d)|(?<=\p{L})(?=\p{N}))'
 		);
 
 		$result = preg_split( '/' . $pattern . '/u', $text, -1, PREG_SPLIT_NO_EMPTY );
@@ -298,26 +340,26 @@ class TextSanitizer {
 	}
 
 	/**
-	 * @param array $tokens
-	 * @param string|null $language
-	 * @param string|array $exemptionList
+	 * Filters out stopwords, tokens below the required
+	 * minimum length (1 for CJK), and adjacent duplicates,
+	 * unless exceptions apply.
 	 *
-	 * @return array
+	 * @param string[] $tokens
+	 *
+	 * @return string[]
 	 */
-	private function filterTokens( $tokens, int|string|null $language, array|string $exemptionList ): array {
+	private function filterTokens( $tokens, int|string|null $language, array|string $exemptionList, bool $isSearchTerm ): array {
 		if ( !$tokens || !is_array( $tokens ) ) {
 			return [];
 		}
 
 		$whiteList = [];
-
 		if ( is_array( $exemptionList ) && $exemptionList !== [] ) {
 			$whiteList = array_fill_keys( $exemptionList, true );
 		}
 
 		// Determine if we should use word-based min length or character-based
 		$hasCjk = false;
-
 		foreach ( $tokens as $token ) {
 			if ( preg_match( '/[\x{4e00}-\x{9fa5}]/u', $token ) ) {
 				$hasCjk = true;
@@ -332,17 +374,28 @@ class TextSanitizer {
 		$index = [];
 		$pos = 0;
 
-		foreach ( $tokens as $word ) {
-			// If it is not an exemption and less than the required minimum length
-			// or identified as stop word it is removed
+		foreach ( $tokens as $k => $word ) {
+			// Check if the next 'word' is a truncation operator.
+			// If so, it shouldn't be "stripped from a boolean query,
+			// even if it is too short or a stopword" (MySQL docs).
+			// Only a search term has boolean operators; when indexing,
+			// an asterisk is just punctuation.
+			$hasTruncator = $isSearchTerm
+				&& isset( $tokens[$k + 1] )
+				&& $tokens[$k + 1] === "*";
+
+			// Remove token if it is not an exemption, shorter than
+			// the required minimum length or identified as stop word,
+			// and has no truncation operator
 			if ( !isset( $whiteList[$word] ) && (
 				mb_strlen( $word ) < $minLength ||
 				( $stopwordReader !== null && $this->isStopWord( $stopwordReader, $word ) )
-			) ) {
+			) && !$hasTruncator ) {
 				continue;
 			}
 
-			// Simple proximity, check for same words appearing next to each other
+			// Simple proximity, check for same words or operators
+			// appearing next to each other
 			if ( isset( $index[$pos - 1] ) && $index[$pos - 1] === $word ) {
 				continue;
 			}
@@ -418,6 +471,59 @@ class TextSanitizer {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Removes illegal sequences and isolated operators that may
+	 * have been left behind after tokenizer() and filterTokens()
+	 * and lead to malformed syntax that can cause database query
+	 * errors (compared to MyISAM, InnoDB is less forgiving).
+	 *
+	 * @link https://dev.mysql.com/doc/refman/9.7/en/fulltext-boolean.html
+	 */
+	private function sanitizeFilteredText( string $text ): string {
+		// Trim multiples like "++", "--", "~~" and runs of asterisks, and
+		// fully remove sequences the parser rejects in any position.
+		// Sequences such as "+*" are absent here because they are valid
+		// when bound to a term ("+*foo"); trimUnsupportedOperators() has
+		// already removed the unbound ones.
+		//
+		// Removing a sequence can bring its neighbours together into
+		// another illegal one ("-+~-" leaves "--"), so repeat until the
+		// text stops changing. Each pass can only shorten it.
+		$cleaned = $text;
+
+		do {
+			$previous = $cleaned;
+
+			$cleaned = preg_replace( '/([+~-])\1+/', '$1', $cleaned ) ?? $cleaned;
+			$cleaned = preg_replace( '/\*{2,}/', '*', $cleaned ) ?? $cleaned;
+			// A stray quote is harmless on its own, but not next to an
+			// operator, where it leaves the operator without a term.
+			// Only an unpaired quote can be stray, so a balanced phrase
+			// keeps the operator that introduces it.
+			if ( substr_count( $cleaned, '"' ) % 2 === 1 ) {
+				$cleaned = preg_replace( '/(?<=[*+~-])"+|"+(?=[*+~-])/', '', $cleaned ) ?? $cleaned;
+			}
+
+			$cleaned = str_replace(
+				[ "*+", "*-", "*~", "+-", "+~", "-+", "-~", "~+", "~-" ], "", $cleaned
+			);
+		} while ( $cleaned !== $previous );
+
+		// Remove operators that carry no term.
+		// May occur eg when trailing operators become detached or
+		// a stopword or other token is filtered out.
+		$tokens = [];
+		foreach ( explode( " ", $cleaned ) as $token ) {
+			if ( $token === '' || preg_match( '/^[*+~-]+$/', $token ) === 1 ) {
+				continue;
+			}
+			$tokens[] = $token;
+		}
+
+		// A trailing operator has nothing left to qualify.
+		return rtrim( implode( " ", $tokens ), "+-~" );
 	}
 
 }
