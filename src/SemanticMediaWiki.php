@@ -31,6 +31,7 @@ class SemanticMediaWiki {
 			self::setupDefines();
 			ConfigBootstrap::seedComputedDefaults();
 			require_once __DIR__ . "/GlobalFunctions.php";
+			self::applyConfigProfiles();
 		}
 
 		// enableSemantics is deprecated; SMW_EXTENSION_LOADED is set here.
@@ -65,6 +66,35 @@ class SemanticMediaWiki {
 		Globals::replace(
 			$setup->init( $GLOBALS, __DIR__ )
 		);
+	}
+
+	/**
+	 * Applies the config profiles named in `$smwgConfigProfiles`.
+	 *
+	 * Profiles live in `data/config` and return a `setting => value` map that is
+	 * assigned into `$GLOBALS`. Applied here, and not from LocalSettings.php,
+	 * because a profile may extend a default that is only seeded once the
+	 * extension is registered. An unknown name is ignored.
+	 *
+	 */
+	private static function applyConfigProfiles(): void {
+		foreach ( $GLOBALS['smwgConfigProfiles'] as $profile ) {
+			$file = __DIR__ . '/../data/config/' . $profile . '.php';
+
+			if ( !is_readable( $file ) ) {
+				continue;
+			}
+
+			$config = require $file;
+
+			if ( !is_array( $config ) ) {
+				continue;
+			}
+
+			foreach ( $config as $key => $value ) {
+				$GLOBALS[$key] = $value;
+			}
+		}
 	}
 
 	/**
