@@ -113,6 +113,18 @@ class URIValueTest extends TestCase {
 			'http://example.org/%C3%28'
 		];
 
+		# 6 - escape case is normalised, so both spellings are one value
+		$provider[] = [
+			'http://example.org/a%2fb',
+			'http://example.org/a%2Fb'
+		];
+
+		# 7 - a lowercase escaped asterisk is stored like an uppercase one
+		$provider[] = [
+			'http://example.org/a%2ab',
+			'http://example.org/a%2Ab'
+		];
+
 		return $provider;
 	}
 

@@ -420,6 +420,14 @@ class URIValue extends DataValue {
 			rawurlencode( $str )
 		);
 
+		// Escapes are case-insensitive (RFC 3986 section 6.2.2.1), so store them
+		// uppercase and give both spellings one value
+		$encoded = preg_replace_callback(
+			'/%[0-9a-f]{2}/i',
+			static fn ( array $match ): string => strtoupper( $match[0] ),
+			$encoded
+		);
+
 		// rawurldecode percent-encoded non-ASCII UTF8
 		return $this->decodeNonAsciiUtf8( $encoded );
 	}
