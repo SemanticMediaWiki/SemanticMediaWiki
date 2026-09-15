@@ -155,15 +155,18 @@ class SomeValueInterpreterTest extends TestCase {
 		);
 	}
 
-	public function testUriIsQueriedInTheFormItIsIndexed(): void {
+	/**
+	 * @dataProvider uriConditionProvider
+	 */
+	public function testUriIsQueriedInTheFormItIsIndexed( int $comparator, string $hierpart, string $expected ): void {
 		$instance = new SomeValueInterpreter(
 			$this->conditionBuilder
 		);
 
 		$description = $this->descriptionFactory->newValueDescription(
-			new Uri( 'http', 'example.org/a%2Fb', '', '' ),
+			new Uri( 'http', $hierpart, '', '' ),
 			null,
-			SMW_CMP_EQ
+			$comparator
 		);
 
 		$options = [
@@ -179,9 +182,29 @@ class SomeValueInterpreterTest extends TestCase {
 		);
 
 		$this->assertSame(
-			'{"bool":{"must":{"term":{"P:42.uriField.keyword":"http://example.org/a%2Fb"}}}}',
+			$expected,
 			(string)$condition
 		);
+	}
+
+	public static function uriConditionProvider(): iterable {
+		yield 'encoded slash in an equality condition' => [
+			SMW_CMP_EQ,
+			'example.org/a%2Fb',
+			'{"bool":{"must":{"term":{"P:42.uriField.keyword":"http://example.org/a%2Fb"}}}}'
+		];
+
+		yield 'encoded asterisk in an equality condition' => [
+			SMW_CMP_EQ,
+			'example.org/a%2Ab',
+			'{"bool":{"must":{"term":{"P:42.uriField.keyword":"http://example.org/a%2Ab"}}}}'
+		];
+
+		yield 'encoded asterisk in a pattern condition is a wildcard' => [
+			SMW_CMP_LIKE,
+			'example.org/a%2Ab',
+			'{"bool":{"must":{"query_string":{"fields":["P:42.uriField"],"query":"example.org +a*b"}}}}'
+		];
 	}
 
 	/**

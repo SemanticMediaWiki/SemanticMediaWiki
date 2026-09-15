@@ -336,7 +336,7 @@ class SomeValueInterpreter {
 
 		// No rawurldecode() here: DocumentCreator indexes the serialization
 		// as-is, so decoding on the query side would never match.
-		$value = str_replace( [ '%2A' ], [ '*' ], $dataItem->getUri() );
+		$value = $dataItem->getUri();
 
 		if ( $this->isRange( $comparator ) ) {
 			$match = $this->fieldMapper->range( "$pid.$field", $value, $comparator );
@@ -355,7 +355,8 @@ class SomeValueInterpreter {
 			}
 		} elseif ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE ) {
 
-			$value = str_replace( [ 'http://', 'https://', '=' ], [ '', '', '' ], $value );
+			// In a pattern, an escaped asterisk is a wildcard, as in SQLStore
+			$value = str_replace( [ 'http://', 'https://', '=', '%2A' ], [ '', '', '', '*' ], $value );
 
 			if ( strpos( $value, 'tel:' ) !== false || strpos( $value, 'mailto:' ) !== false ) {
 				$value = str_replace( [ 'tel:', 'mailto:' ], [ '', '' ], $value );
@@ -366,6 +367,7 @@ class SomeValueInterpreter {
 
 			$match = $this->fieldMapper->query_string( "$pid.$field", $value );
 		} else {
+			$value = str_replace( '%2A', '*', $value );
 			$match = $this->fieldMapper->match( "$pid.$field", $value, 'and' );
 		}
 
