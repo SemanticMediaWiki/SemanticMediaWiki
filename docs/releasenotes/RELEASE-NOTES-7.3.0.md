@@ -12,6 +12,10 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Full-text search now keeps a term that carries a wildcard even when it is shorter than `$smwgFulltextSearchMinTokenSize` or is a stop word, matching how MySQL and MariaDB treat the truncation operator. A term such as `[[Has text::~to* be]]` previously searched only for "be" and now also searches for everything starting with "to", so such queries can return more results than before.
 * Added the `$smwgConfigProfiles` setting for applying the configuration profiles in `data/config`, for example `$smwgConfigProfiles = [ 'db-primary-keys' ];`. The `require` in `LocalSettings.php` recommended by the 7.0.0 release notes did not apply these profiles. Replace it with the setting, since the wiki does not start when a profile is loaded both ways ([#7106](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7106))
 
+## Security fixes
+
+* Fixed a missing authorization check in the `smwtask` API module (`action=smwtask`), where an unauthenticated user could read internal database statistics and reach maintenance operations intended for administrators ([GHSA-jr78-w6w5-m8f8](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-jr78-w6w5-m8f8))
+
 ## Bug fixes
 
 * Fixed wikis with the query result cache enabled (`$smwgQueryResultCacheType`) reading the object cache once per identical query on a page instead of once per page, and reporting no cache hits at all in the query cache statistics on `Special:SemanticMediaWiki` ([#7102](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7102))

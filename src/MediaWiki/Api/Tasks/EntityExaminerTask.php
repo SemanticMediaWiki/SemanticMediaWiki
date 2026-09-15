@@ -28,6 +28,16 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	}
 
 	/**
+	 * Runs on page views for any reader; per-indicator visibility is enforced
+	 * separately via the injected PermissionExaminer.
+	 *
+	 * @since 7.3.0
+	 */
+	public function getRequiredPermission(): string {
+		return 'read';
+	}
+
+	/**
 	 * @see PermissionExaminerAware::setPermissionExaminer
 	 * @since 3.2
 	 *

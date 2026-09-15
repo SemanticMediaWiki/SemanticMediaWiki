@@ -58,6 +58,11 @@ class Task extends ApiBase {
 
 		$task = $this->taskFactory->newByType( $params['task'], $this->getUser() );
 
+		// Authorize before running: each task declares the right it needs.
+		// This module is not otherwise access-controlled. `needsToken( 'csrf' )`
+		// is satisfied by the public anonymous token and does not gate on rights.
+		$this->checkUserRightsAny( $task->getRequiredPermission() );
+
 		// If the `uselang` isn't set then inject the language from the
 		// logged-in user
 		if ( !isset( $parameters['uselang'] ) || $parameters['uselang'] === '' ) {

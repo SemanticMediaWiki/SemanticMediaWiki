@@ -24,6 +24,19 @@ abstract class Task {
 	}
 
 	/**
+	 * Right a user must hold to run this task through the `smwtask` API module.
+	 *
+	 * Defaults to `smw-admin`, so tasks are administrator-only unless they
+	 * explicitly opt into a lower privilege. Tasks invoked on behalf of
+	 * ordinary users (post-edit updates, page-view indicators) override this.
+	 *
+	 * @since 7.3.0
+	 */
+	public function getRequiredPermission(): string {
+		return 'smw-admin';
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $parameters
