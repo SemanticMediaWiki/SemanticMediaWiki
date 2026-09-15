@@ -99,10 +99,11 @@ class DIUriHandler extends DataItemHandler {
 	 * a URI carrying percent-encoded octets can sit on disk in a different form
 	 * than getWhereConds() now produces.
 	 *
-	 * The old form is only returned when no value stored in the current form can
-	 * equal it, so the extra condition matches nothing once the data has been
-	 * rebuilt. It is not returned when, as with `%2F` decoding to `/`, it could be
-	 * the stored form of a different URI.
+	 * The old form is only returned when it contains a character that URIValue
+	 * stores percent-encoded whether it was typed raw or encoded. A row holding
+	 * such a character raw, written by an earlier version or by code that creates
+	 * the Uri directly, is then the same value spelled differently. It is not
+	 * returned when, as with `%2F` decoding to `/`, it could be a different value.
 	 *
 	 * @since 7.3.0
 	 */
@@ -113,7 +114,7 @@ class DIUriHandler extends DataItemHandler {
 		$current = substr( $serialization, 0, $maxLength );
 		$legacy = substr( rawurldecode( $serialization ), 0, $maxLength );
 
-		if ( $legacy !== $current && $this->isQueryable( $legacy ) && $this->canOnlyMatchOldRows( $legacy ) ) {
+		if ( $legacy !== $current && $this->isQueryable( $legacy ) && $this->containsAlwaysEncodedCharacter( $legacy ) ) {
 			return [ 'o_serialized' => $legacy ];
 		}
 
@@ -129,10 +130,10 @@ class DIUriHandler extends DataItemHandler {
 	}
 
 	/**
-	 * The current format always stores these characters percent-encoded, so only
-	 * a row written by an earlier version can contain one of them raw.
+	 * URIValue stores these characters percent-encoded whether they were typed
+	 * raw or encoded.
 	 */
-	private function canOnlyMatchOldRows( string $legacy ): bool {
+	private function containsAlwaysEncodedCharacter( string $legacy ): bool {
 		return preg_match( '/[\x01-\x20"\'<>\[\\\\\]^`{|}\x7F]/', $legacy ) === 1;
 	}
 
