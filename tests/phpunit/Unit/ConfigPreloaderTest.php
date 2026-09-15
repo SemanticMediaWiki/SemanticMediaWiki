@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use SMW\ConfigPreloader;
+use SMW\Exception\ConfigPreloadFileAlreadyLoadedException;
 use SMW\Exception\ConfigPreloadFileNotReadableException;
 use SMW\Utils\FileFetcher;
 
@@ -18,6 +19,9 @@ use SMW\Utils\FileFetcher;
  */
 class ConfigPreloaderTest extends TestCase {
 
+	private const FIXTURE_DIR = __DIR__ . '/../Fixtures/ConfigPreloader';
+	private const FIXTURE_SETTING = 'configPreloaderFixtureValue';
+
 	private $gl = [];
 
 	protected function setUp(): void {
@@ -31,6 +35,8 @@ class ConfigPreloaderTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
+		unset( $GLOBALS[self::FIXTURE_SETTING] );
+
 		foreach ( $this->gl as $key => $value ) {
 			$GLOBALS[$key] = $value;
 		}
@@ -65,6 +71,39 @@ class ConfigPreloaderTest extends TestCase {
 
 		$this->expectException( ConfigPreloadFileNotReadableException::class );
 		$instance->loadConfigFrom( 'foo.php' );
+	}
+
+	public function testProfileNameWithoutExtensionIsApplied(): void {
+		$GLOBALS['smwgPageSpecialProperties'] = [ '_MDAT' ];
+
+		( new ConfigPreloader() )->loadDefaultConfigFrom( 'media' );
+
+		$this->assertContains( '_MIME', $GLOBALS['smwgPageSpecialProperties'] );
+	}
+
+	public function testUnknownProfileNameThrowsException(): void {
+		$instance = new ConfigPreloader();
+
+		$this->expectException( ConfigPreloadFileNotReadableException::class );
+		$instance->loadDefaultConfigFrom( 'no-such-profile' );
+	}
+
+	public function testProfileLoadedTwiceIsApplied(): void {
+		$instance = new ConfigPreloader();
+		$instance->loadConfigFrom( self::FIXTURE_DIR . '/profile.php' );
+		unset( $GLOBALS[self::FIXTURE_SETTING] );
+
+		$instance->loadConfigFrom( self::FIXTURE_DIR . '/profile.php' );
+
+		$this->assertSame( 'applied', $GLOBALS[self::FIXTURE_SETTING] );
+	}
+
+	public function testProfileAlreadyRequiredElsewhereThrowsException(): void {
+		require self::FIXTURE_DIR . '/required-elsewhere.php';
+		$instance = new ConfigPreloader();
+
+		$this->expectException( ConfigPreloadFileAlreadyLoadedException::class );
+		$instance->loadConfigFrom( self::FIXTURE_DIR . '/required-elsewhere.php' );
 	}
 
 	public function configFileProvider() {

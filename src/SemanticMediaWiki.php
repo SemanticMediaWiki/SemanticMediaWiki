@@ -74,27 +74,10 @@ class SemanticMediaWiki {
 	 * Profiles live in `data/config` and return a `setting => value` map that is
 	 * assigned into `$GLOBALS`. Applied here, and not from LocalSettings.php,
 	 * because a profile may extend a default that is only seeded once the
-	 * extension is registered. An unknown name is ignored.
-	 *
+	 * extension is registered.
 	 */
 	private static function applyConfigProfiles(): void {
-		foreach ( $GLOBALS['smwgConfigProfiles'] as $profile ) {
-			$file = __DIR__ . '/../data/config/' . $profile . '.php';
-
-			if ( !is_readable( $file ) ) {
-				continue;
-			}
-
-			$config = require $file;
-
-			if ( !is_array( $config ) ) {
-				continue;
-			}
-
-			foreach ( $config as $key => $value ) {
-				$GLOBALS[$key] = $value;
-			}
-		}
+		( new ConfigPreloader() )->loadDefaultConfigFrom( ...$GLOBALS['smwgConfigProfiles'] );
 	}
 
 	/**
