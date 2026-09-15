@@ -94,8 +94,8 @@ class ConfigPreloadPrimaryKeyTableMutator {
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md
  *
  * Deferred via `wgExtensionFunctions` because `MediaWikiServices` (and its
- * `HookContainer`) is not yet available when LocalSettings.php loads this
- * profile via `require_once`.
+ * `HookContainer`) is not yet available when `$smwgConfigProfiles` applies
+ * this profile.
  */
 $GLOBALS['wgExtensionFunctions'][] = static function () {
 	MediaWikiServices::getInstance()->getHookContainer()->register(

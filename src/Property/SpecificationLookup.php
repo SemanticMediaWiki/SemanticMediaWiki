@@ -373,7 +373,7 @@ class SpecificationLookup {
 	 * parsed here, a predefined description comes from a system message and is
 	 * requested in its parsed form.
 	 *
-	 * @since 7.2.2
+	 * @since 7.3.0
 	 */
 	public function getPropertyDescriptionAsHtml( Property $property, string $languageCode = '' ): string {
 		return $this->findPropertyDescription( $property, $languageCode, true );

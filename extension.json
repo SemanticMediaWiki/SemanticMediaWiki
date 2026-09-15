@@ -1,6 +1,6 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "7.2.2-alpha",
+	"version": "7.3.0-alpha",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
 		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
@@ -1315,6 +1315,11 @@
 			"value": "",
 			"description": "Deprecated since 7.0.0; will be removed in 8.0.0. Install-state metadata is now stored in the `smw_meta` database table. This setting is kept only so that the one-shot migration of any pre-existing `.smw.json` file can find its source location. Historical default: the extension root; sites that overrode it (for example to `$wgUploadDirectory`) must keep the override in place until `update.php` has run once and migrated the file to `.smw.json.migrated`.",
 			"path": true
+		},
+		"ConfigProfiles": {
+			"value": [],
+			"description": "Configuration profiles from `data/config` to apply, by name (`db-primary-keys`, `developer`, `elastic-fileingest`, `media`). An unknown name, or a profile that is also loaded from `LocalSettings.php`, throws an exception.",
+			"merge_strategy": "provide_default"
 		},
 		"CreateProtectionRight": {
 			"value": false,

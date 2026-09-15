@@ -25,7 +25,7 @@ use SMW\Tests\Utils\UtilityFactory;
  * @group medium
  *
  * @license GPL-2.0-or-later
- * @since 7.2.2
+ * @since 7.3.0
  */
 class QueryResultCacheStatsDBIntegrationTest extends SMWIntegrationTestCase {
 

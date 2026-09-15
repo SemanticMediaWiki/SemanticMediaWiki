@@ -23,7 +23,7 @@ use SMW\Tests\TestEnvironment;
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
- * @since 7.2.2
+ * @since 7.3.0
  */
 class TooltipResourceDeliveryTest extends TestCase {
 

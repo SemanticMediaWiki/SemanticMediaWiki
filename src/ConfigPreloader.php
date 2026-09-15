@@ -2,13 +2,14 @@
 
 namespace SMW;
 
+use SMW\Exception\ConfigPreloadFileAlreadyLoadedException;
 use SMW\Exception\ConfigPreloadFileNotReadableException;
 
 /**
  * @private
  *
- * Convenience class to allow users to inject some default settings from
- * individual files directly from `enableSemantics`.
+ * Applies settings profiles, such as the ones listed in `$smwgConfigProfiles`,
+ * by assigning the settings a profile file returns to `$GLOBALS`.
  *
  * @license GPL-2.0-or-later
  * @since 3.2
@@ -21,23 +22,22 @@ class ConfigPreloader {
 
 	/**
 	 * Loading files from the internal `config` directory that provides some
-	 * predeployed default settings.
+	 * predeployed default settings. A name without the `.php` extension is
+	 * completed with it.
 	 *
 	 * ```
-	 * enableSemantics( 'example.org' )->loadDefaultConfigFrom( 'media.php', 'xxx.php' );
+	 * ( new ConfigPreloader() )->loadDefaultConfigFrom( 'media', 'db-primary-keys.php' );
 	 * ```
 	 *
 	 * @since 3.2
 	 *
-	 * @param array ...$files
-	 *
 	 * @return self
 	 */
-	public function loadDefaultConfigFrom( ...$files ): ConfigPreloader {
+	public function loadDefaultConfigFrom( string ...$files ): ConfigPreloader {
 		$dir = $GLOBALS['smwgDir'] . '/data/config/';
 
 		foreach ( $files as $file ) {
-			// @phan-suppress-next-line PhanTypeConversionFromArray
+			$file = str_ends_with( $file, '.php' ) ? $file : "$file.php";
 			$this->load( "$dir/$file" );
 		}
 
@@ -66,21 +66,30 @@ class ConfigPreloader {
 		return $this;
 	}
 
-	private function load( $file ): void {
+	private function load( string $file ): void {
 		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {
 			throw new ConfigPreloadFileNotReadableException( $file );
 		}
 
-		$config = require_once $file;
-		if ( $config !== true ) {
-			self::$config[$file] = $config;
-		}
+		self::$config[$file] ??= $this->requireProfile( $file );
 
 		foreach ( self::$config[$file] as $key => $value ) {
 			$GLOBALS[$key] = $value;
 		}
+	}
+
+	private function requireProfile( string $file ): array {
+		$config = require_once $file;
+
+		// `require_once` returns `true` for a file that was included without this
+		// class, such as by a `require` in LocalSettings.php
+		if ( $config === true ) {
+			throw new ConfigPreloadFileAlreadyLoadedException( $file );
+		}
+
+		return $config;
 	}
 
 }

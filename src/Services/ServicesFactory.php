@@ -1181,7 +1181,7 @@ class ServicesFactory {
 	 * instance serves the whole request (#7102). This method is public so
 	 * `ServiceWiring.php` can build the shared `SMW.ResultCache`.
 	 *
-	 * @since 7.2.2
+	 * @since 7.3.0
 	 *
 	 * @param int|string|bool|null $cacheType Cache back-end to build against;
 	 *  `null` resolves `smwgQueryResultCacheType`.
