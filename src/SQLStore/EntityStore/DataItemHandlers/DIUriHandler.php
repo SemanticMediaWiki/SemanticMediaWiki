@@ -90,8 +90,51 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ): array {
-		$serialization = rawurldecode( $dataItem->getSerialization() );
+		$serialization = $dataItem->getSerialization();
 		return [ 'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ) ];
+	}
+
+	/**
+	 * Values written before 7.3.0 went through rawurldecode() on the way in, so
+	 * a URI carrying percent-encoded octets can sit on disk in a different form
+	 * than getWhereConds() now produces.
+	 *
+	 * The old form is only returned when it contains a character that URIValue
+	 * stores percent-encoded whether it was typed raw or encoded. A row holding
+	 * such a character raw, written by an earlier version or by code that creates
+	 * the Uri directly, is then the same value spelled differently. It is not
+	 * returned when, as with `%2F` decoding to `/`, it could be a different value.
+	 *
+	 * @since 7.3.0
+	 */
+	public function getLegacyWhereConds( DataItem $dataItem ): array {
+		$serialization = $dataItem->getSerialization();
+		$maxLength = $this->getMaxLength();
+
+		$current = substr( $serialization, 0, $maxLength );
+		$legacy = substr( rawurldecode( $serialization ), 0, $maxLength );
+
+		if ( $legacy !== $current && $this->isQueryable( $legacy ) && $this->containsAlwaysEncodedCharacter( $legacy ) ) {
+			return [ 'o_serialized' => $legacy ];
+		}
+
+		return [];
+	}
+
+	/**
+	 * A NUL byte or invalid UTF-8 in a string literal breaks the query on some
+	 * database backends.
+	 */
+	private function isQueryable( string $value ): bool {
+		return !str_contains( $value, "\0" ) && mb_check_encoding( $value, 'UTF-8' );
+	}
+
+	/**
+	 * URIValue stores these characters percent-encoded whether they were typed
+	 * raw or encoded.
+	 */
+	private function containsAlwaysEncodedCharacter( string $legacy ): bool {
+		return preg_match( '/[\x01-\x20"\'<>\[\\\\\]^`{|}\x7F]/', $legacy ) === 1;
 	}
 
 	/**
@@ -100,7 +143,7 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ): array {
-		$serialization = rawurldecode( $dataItem->getSerialization() );
+		$serialization = $dataItem->getSerialization();
 		$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
 
 		// bytea type handling

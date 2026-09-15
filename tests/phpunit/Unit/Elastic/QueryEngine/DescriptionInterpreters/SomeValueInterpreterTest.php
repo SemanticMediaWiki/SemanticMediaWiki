@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Elastic\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\Uri;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\Options;
@@ -152,6 +153,58 @@ class SomeValueInterpreterTest extends TestCase {
 			$expected,
 			(string)$condition
 		);
+	}
+
+	/**
+	 * @dataProvider uriConditionProvider
+	 */
+	public function testUriIsQueriedInTheFormItIsIndexed( int $comparator, string $hierpart, string $expected ): void {
+		$instance = new SomeValueInterpreter(
+			$this->conditionBuilder
+		);
+
+		$description = $this->descriptionFactory->newValueDescription(
+			new Uri( 'http', $hierpart, '', '' ),
+			null,
+			$comparator
+		);
+
+		$options = [
+			'property' => $this->dataItemFactory->newDIProperty( 'Bar' ),
+			'pid' => 'P:42',
+			'field' => 'uriField',
+			'type' => 'must'
+		];
+
+		$condition = $instance->interpretDescription(
+			$description,
+			$options
+		);
+
+		$this->assertSame(
+			$expected,
+			(string)$condition
+		);
+	}
+
+	public static function uriConditionProvider(): iterable {
+		yield 'encoded slash in an equality condition' => [
+			SMW_CMP_EQ,
+			'example.org/a%2Fb',
+			'{"bool":{"must":{"term":{"P:42.uriField.keyword":"http://example.org/a%2Fb"}}}}'
+		];
+
+		yield 'encoded asterisk in an equality condition' => [
+			SMW_CMP_EQ,
+			'example.org/a%2Ab',
+			'{"bool":{"must":{"term":{"P:42.uriField.keyword":"http://example.org/a%2Ab"}}}}'
+		];
+
+		yield 'encoded asterisk in a pattern condition is a wildcard' => [
+			SMW_CMP_LIKE,
+			'example.org/a%2Ab',
+			'{"bool":{"must":{"query_string":{"fields":["P:42.uriField"],"query":"example.org +a*b"}}}}'
+		];
 	}
 
 	/**

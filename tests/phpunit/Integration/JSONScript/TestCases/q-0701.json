@@ -154,7 +154,7 @@
 				"datavalues": [
 					{
 						"property": "Has url",
-						"value": "http://example.org/ようこそ#-{}"
+						"value": "http://example.org/ようこそ#-%7B%7D"
 					}
 				]
 			}

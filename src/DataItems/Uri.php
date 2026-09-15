@@ -109,7 +109,9 @@ class Uri extends DataItem {
 	 * @return string
 	 */
 	public function getSortKey(): string {
-		return urldecode( $this->getURI() );
+		// rawurldecode(), not urldecode(): a `+` in a URI is a literal plus,
+		// not an encoded space.
+		return rawurldecode( $this->getURI() );
 	}
 
 	public function getSerialization(): string {
