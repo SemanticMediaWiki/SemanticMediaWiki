@@ -10,7 +10,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 ## New features and enhancements
 
 * Full-text search now keeps a term that carries a wildcard even when it is shorter than `$smwgFulltextSearchMinTokenSize` or is a stop word, matching how MySQL and MariaDB treat the truncation operator. A term such as `[[Has text::~to* be]]` previously searched only for "be" and now also searches for everything starting with "to", so such queries can return more results than before.
-* Added the `$smwgConfigProfiles` setting for applying the configuration profiles in `data/config`, for example `$smwgConfigProfiles = [ 'db-primary-keys' ];`. The `require` in `LocalSettings.php` recommended by the 7.0.0 release notes did not apply these profiles. Replace it with the setting in one edit, since the wiki does not start when a profile is loaded both ways, and then run `update.php` ([#7106](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7106))
+* Added the `$smwgConfigProfiles` setting for applying the configuration profiles in `data/config`, for example `$smwgConfigProfiles = [ 'db-primary-keys' ];`. The `require` in `LocalSettings.php` recommended by the 7.0.0 release notes did not apply these profiles. Replace it with the setting, since the wiki does not start when a profile is loaded both ways ([#7106](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7106))
 
 ## Bug fixes
 
@@ -23,7 +23,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Upgrading
 
-No need to run "update.php" or any other migration scripts.
+No need to run "update.php" or any other migration scripts, unless you enable the `db-primary-keys`, `elastic-fileingest` or `media` profile with `$smwgConfigProfiles`.
 
 **Get the new version via Composer:**
 
