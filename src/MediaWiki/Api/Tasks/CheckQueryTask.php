@@ -22,6 +22,15 @@ class CheckQueryTask extends Task {
 	}
 
 	/**
+	 * Triggered by post-edit processing for the user who just saved the page.
+	 *
+	 * @since 7.3.0
+	 */
+	public function getRequiredPermission(): string {
+		return 'edit';
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $parameters

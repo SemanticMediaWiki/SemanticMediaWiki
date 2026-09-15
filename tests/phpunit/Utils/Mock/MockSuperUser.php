@@ -38,4 +38,12 @@ class MockSuperUser extends User {
 	public function isAllowed( string $permission, ?PermissionStatus $status = null ): bool {
 		return true;
 	}
+
+	public function isAllowedAny( ...$permissions ): bool {
+		return true;
+	}
+
+	public function isAllowedAll( ...$permissions ): bool {
+		return true;
+	}
 }

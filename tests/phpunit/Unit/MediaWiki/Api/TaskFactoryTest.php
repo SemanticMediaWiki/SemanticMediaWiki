@@ -69,6 +69,28 @@ class TaskFactoryTest extends TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider requiredPermissionProvider
+	 */
+	public function testNewByTypeDeclaresRequiredPermission( string $type, string $expectedPermission ) {
+		$instance = $this->newTaskFactory();
+
+		$this->assertSame(
+			$expectedPermission,
+			$instance->newByType( $type )->getRequiredPermission()
+		);
+	}
+
+	public function requiredPermissionProvider() {
+		yield 'update' => [ 'update', 'edit' ];
+		yield 'check-query' => [ 'check-query', 'edit' ];
+		yield 'run-joblist' => [ 'run-joblist', 'edit' ];
+		yield 'run-entity-examiner' => [ 'run-entity-examiner', 'read' ];
+		yield 'table-statistics' => [ 'table-statistics', 'smw-admin' ];
+		yield 'duplicate-lookup' => [ 'duplicate-lookup', 'smw-admin' ];
+		yield 'insert-job' => [ 'insert-job', 'smw-admin' ];
+	}
+
 	public function testNewByTypeOnUnknownTypeThrowsException() {
 		$instance = $this->newTaskFactory();
 
@@ -98,6 +120,9 @@ class TaskFactoryTest extends TestCase {
 		$settings = $this->getMockBuilder( Settings::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$settings->method( 'get' )
+			->willReturnCallback( static fn ( string $key ) => $key === 'smwgCacheUsage' ? [] : null );
 
 		$hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()

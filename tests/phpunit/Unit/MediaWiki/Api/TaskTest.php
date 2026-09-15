@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\Unit\MediaWiki\Api;
 
+use MediaWiki\Api\ApiMain;
+use MediaWiki\Api\ApiUsageException;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\Permissions\SimpleAuthority;
+use MediaWiki\Request\FauxRequest;
 use MediaWiki\Title\Title;
+use MediaWiki\User\UserIdentityValue;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Task;
 use SMW\MediaWiki\Api\TaskFactory;
@@ -254,6 +260,45 @@ class TaskTest extends TestCase {
 		);
 
 		$instance->execute();
+	}
+
+	public function testUnauthorizedUserCannotRunAdminTask() {
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// The task's side effect must never run for a user lacking the right.
+		$jobFactory->expects( $this->never() )
+			->method( 'newByType' );
+
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest(
+			[
+				'action' => 'smwtask',
+				'task'   => 'insert-job',
+				'params' => json_encode( [ 'subject' => 'Foo#0##', 'job' => 'Foobar' ] ),
+				'token'  => 'foo'
+			],
+			true
+		) );
+
+		// A logged-in editor (not an anonymous user) still lacks `smw-admin`.
+		$context->setAuthority(
+			new SimpleAuthority( new UserIdentityValue( 42, 'Editor' ), [ 'read', 'edit' ] )
+		);
+
+		$instance = new Task(
+			new ApiMain( $context, true ),
+			'smwtask',
+			$this->newRealTaskFactory( null, null, null, $jobFactory )
+		);
+
+		try {
+			$instance->execute();
+			$this->fail( 'Expected ApiUsageException for the missing permission' );
+		} catch ( ApiUsageException $e ) {
+			$this->assertSame( 'permissiondenied', $e->getMessageObject()->getApiCode() );
+		}
 	}
 
 	private function newRealTaskFactory(
