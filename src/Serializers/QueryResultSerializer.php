@@ -80,8 +80,16 @@ class QueryResultSerializer implements DispatchableSerializer {
 				if ( $printRequest !== null && strpos( $printRequest->getTypeID(), '_rec' ) !== false ) {
 					$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 						$dataItem,
-						$printRequest->getData()->getDataItem()
+						$printRequest->getProperty()
 					);
+
+					// A record that cannot be resolved (e.g. a monolingual text value
+					// without a container reference) carries an error item instead of
+					// the semantic data the loop below relies on.
+					if ( $recordValue->getDataItem()->getDIType() === DataItem::TYPE_ERROR ) {
+						$result = [];
+						break;
+					}
 
 					$recordDiValues = [];
 
@@ -134,13 +142,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 				// we will not be able to determine the unit
 				// (unit is part of the datavalue object)
 				if ( $printRequest !== null && $printRequest->getTypeID() === '_qty' ) {
-					$diProperty = $printRequest->getData()->getDataItem();
-
-					if ( $printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-						$diProperty = $printRequest->getData()->getLastPropertyChainValue()->getDataItem();
-					}
-
-					$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $diProperty );
+					$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $printRequest->getProperty() );
 
 					$result = [
 						'value' => $dataValue->getNumber(),
@@ -263,7 +265,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 
 		if ( $printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
 			$serialized['chain'] = $data->getDataItem()->getString();
-			$serialized['key'] = $data->getLastPropertyChainValue()->getDataItem()->getKey();
+			$serialized['key'] = $printRequest->getProperty()->getKey();
 		}
 
 		if ( !$printRequest->isMode( PrintRequest::PRINT_PROP ) ) {
@@ -282,7 +284,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 		}
 
 		// To match internal properties like _MDAT
-		$serialized['key'] = $data->getDataItem()->getKey();
+		$serialized['key'] = $printRequest->getProperty()->getKey();
 
 		return $serialized;
 	}

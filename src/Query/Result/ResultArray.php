@@ -206,38 +206,33 @@ class ResultArray {
 			$contextPage = $this->result;
 		}
 
-		$diProperty = null;
-		if ( $this->printRequest->getMode() == PrintRequest::PRINT_PROP &&
+		$diProperty = $this->printRequest->getProperty();
+
+		// A record field selected by `+index` (or by `+lang`, which resolves to
+		// an index) is addressed by the field's own property, not by the record
+		// property itself. This applies to a property chain as much as to a
+		// plain property, since both end on the record property.
+		if ( $diProperty !== null &&
 			DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
 			$this->printRequest->getParameter( 'index' ) !== false ) {
 
-			$property = $this->printRequest->getData()->getDataItem();
-			if ( $property instanceof Property ) {
-				/**
-				 * @var RecordValue $recordValue
-				 */
-				$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
-					$dataItem,
-					$property,
-					false,
-					$contextPage
-				);
+			/**
+			 * @var RecordValue $recordValue
+			 */
+			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
+				$dataItem,
+				$diProperty,
+				false,
+				$contextPage
+			);
 
-				$diProperty = $recordValue->getPropertyDataItemByIndex(
-					$this->printRequest->getParameter( 'index' )
-				);
-			}
-		} elseif ( $this->printRequest->isMode( PrintRequest::PRINT_PROP ) ) {
-			$property = $this->printRequest->getData()->getDataItem();
-			if ( $property instanceof Property ) {
-				$diProperty = $property;
-			}
-		} elseif ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-			$diProperty = $this->printRequest->getData()->getLastPropertyChainValue()->getDataItem();
-		}
+			$diProperty = $recordValue->getPropertyDataItemByIndex(
+				$this->printRequest->getParameter( 'index' )
+			);
 
-		if ( !( $diProperty instanceof Property ) ) {
-			$diProperty = null;
+			if ( !( $diProperty instanceof Property ) ) {
+				$diProperty = null;
+			}
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
