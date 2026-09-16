@@ -1,0 +1,57 @@
+{
+	"description": "Test `action=ask` for a printout chained to a monolingual text property (#5713)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Api ask 0002 page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Api ask 0002 name",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"page": "Example/Api-ask-0002/Target",
+			"contents": "[[Api ask 0002 name::Test text@en]]"
+		},
+		{
+			"page": "Example/Api-ask-0002/Source",
+			"contents": "[[Api ask 0002 page::Example/Api-ask-0002/Target]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "api",
+			"about": "#0 chained printout resolves the last link of the chain",
+			"api": {
+				"parameters": {
+					"action": "ask",
+					"format": "json",
+					"query": "[[Api ask 0002 page::Example/Api-ask-0002/Target]]|?Api ask 0002 page.Api ask 0002 name",
+					"api_version": "2"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"_mlt_rec",
+					"Test text",
+					"Api ask 0002 page.Api ask 0002 name"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

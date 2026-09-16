@@ -4,6 +4,7 @@ namespace SMW\Query;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
@@ -220,23 +221,35 @@ class PrintRequest {
 	/**
 	 * If this print request refers to some property, return the type id of this property.
 	 * Otherwise return '_wpg' since all other types of print request return wiki pages.
-	 *
-	 * @return string
 	 */
 	public function getTypeID(): string {
 		if ( $this->m_typeid !== false ) {
 			return $this->m_typeid;
 		}
 
-		if ( $this->m_mode == self::PRINT_PROP ) {
-			$this->m_typeid = $this->m_data->getDataItem()->findPropertyValueType();
-		} elseif ( $this->m_mode == self::PRINT_CHAIN ) {
-			$this->m_typeid = $this->m_data->getLastPropertyChainValue()->getDataItem()->findPropertyValueType();
-		} else {
-			$this->m_typeid = '_wpg';
-		}
+		$property = $this->getProperty();
+
+		$this->m_typeid = $property !== null ? $property->findPropertyValueType() : '_wpg';
 
 		return $this->m_typeid;
+	}
+
+	/**
+	 * The property this print request refers to, resolving a property chain to
+	 * its last link. Null for a print request that refers to no property.
+	 *
+	 * @since 7.3.0
+	 */
+	public function getProperty(): ?Property {
+		$property = null;
+
+		if ( $this->isMode( self::PRINT_PROP ) ) {
+			$property = $this->m_data->getDataItem();
+		} elseif ( $this->isMode( self::PRINT_CHAIN ) ) {
+			$property = $this->m_data->getLastPropertyChainValue()->getDataItem();
+		}
+
+		return $property instanceof Property ? $property : null;
 	}
 
 	/**
