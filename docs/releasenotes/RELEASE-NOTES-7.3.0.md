@@ -22,6 +22,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed full-text search queries failing with a database error when the search term contained an at sign, as in `[[Has text::~name@example.org]]`
 * Fixed percent-encoded characters in URL values, such as `%2F` in `https://example.org/a%2Fb`, being decoded when stored, which turned the URL into a different, broken one ([#5212](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5212))
 * Fixed the ask API and result formats such as `datatables` failing with a fatal error on a printout that chains to a record or monolingual text property, such as `|?Page.Name` ([#5713](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5713))
+* Fixed `|+lang` and `|+index` having no effect on a printout that chains to a record or monolingual text property, such as `|?Page.Name|+lang=de`, which rendered an empty column ([#5477](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5477))
 
 ## Upgrading
 
