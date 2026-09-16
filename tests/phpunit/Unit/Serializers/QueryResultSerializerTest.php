@@ -13,9 +13,11 @@ use SMW\DataModel\SemanticData;
 use SMW\DataValues\NumberValue;
 use SMW\Formatters\Infolink;
 use SMW\Property\SpecificationLookup;
+use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\Query;
 use SMW\Serializers\QueryResultSerializer;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
@@ -141,6 +143,103 @@ class QueryResultSerializerTest extends TestCase {
 			$expected,
 			$serialization
 		);
+	}
+
+	public function testQueryResultSerializerForPropertyChainEndingInRecordType() {
+		$this->registerStoreWithRecordFields();
+
+		$printRequest = $this->newRecordPrintRequestForChain( 'Page.Foo' );
+
+		$serialization = QueryResultSerializer::getSerialization(
+			WikiPage::newFromText( 'ABC' ),
+			$printRequest
+		);
+
+		$expected = [
+			'BarList1' => [
+				'label'  => 'BarList1',
+				'typeid' => '_wpg',
+				'item'   => [],
+				'key'    => 'BarList1'
+			],
+			'BarList2' => [
+				'label'  => 'BarList2',
+				'typeid' => '_wpg',
+				'item'   => [],
+				'key'    => 'BarList2'
+			]
+		];
+
+		$this->assertEquals(
+			$expected,
+			$serialization
+		);
+	}
+
+	public function testQueryResultSerializerForUnresolvableMonolingualTextValue() {
+		$monolingualTextLookup = $this->getMockBuilder( MonolingualTextLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$monolingualTextLookup->expects( $this->once() )
+			->method( 'newDIContainer' )
+			->willReturn( null );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->onlyMethods( [ 'service' ] )
+			->getMockForAbstractClass();
+
+		$store->method( 'service' )
+			->with( 'MonolingualTextLookup' )
+			->willReturn( $monolingualTextLookup );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$property = Property::newFromUserLabel( 'Foo' );
+		$property->setPropertyValueType( '_mlt_rec' );
+
+		$serialization = QueryResultSerializer::getSerialization(
+			WikiPage::newFromText( 'ABC' ),
+			( new PrintRequestFactory() )->newFromProperty( $property )
+		);
+
+		$this->assertSame(
+			[],
+			$serialization
+		);
+	}
+
+	private function registerStoreWithRecordFields() {
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$semanticData->method( 'getProperties' )
+			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
+
+		$semanticData->method( 'getPropertyValues' )
+			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->method( 'getSemanticData' )
+			->willReturn( $semanticData );
+
+		$this->propertySpecificationLookup->method( 'getFieldListBy' )
+			->willReturn( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+	}
+
+	private function newRecordPrintRequestForChain( string $chain ): PrintRequest {
+		$printRequest = ( new PrintRequestFactory() )->newFromText( $chain );
+
+		$printRequest->getData()->getLastPropertyChainValue()->getDataItem()->setPropertyValueType( '_rec' );
+
+		return $printRequest;
 	}
 
 	public function testSerializeFormatForTimeValue() {

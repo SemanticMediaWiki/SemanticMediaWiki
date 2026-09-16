@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Query;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValues\PropertyValue;
 use SMW\Query\PrintRequest;
 
@@ -84,6 +85,64 @@ class PrintRequestTest extends TestCase {
 		$this->assertEquals(
 			$expectedLabel,
 			$instance->getLabel()
+		);
+	}
+
+	public function testGetPropertyForPropertyPrintRequest() {
+		$propertyValue = new PropertyValue( '__pro' );
+		$propertyValue->setDataItem( new Property( 'Foo' ) );
+
+		$instance = new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue );
+
+		$this->assertEquals(
+			new Property( 'Foo' ),
+			$instance->getProperty()
+		);
+	}
+
+	public function testGetPropertyForChainReturnsLastLinkOfTheChain() {
+		$instance = PrintRequest::newFromText( 'Foo.Bar.Baz' );
+
+		$this->assertSame(
+			'Baz',
+			$instance->getProperty()->getKey()
+		);
+	}
+
+	/**
+	 * @dataProvider printRequestWithoutPropertyProvider
+	 */
+	public function testGetPropertyForPrintRequestWithoutProperty( PrintRequest $instance ) {
+		$this->assertNull(
+			$instance->getProperty()
+		);
+	}
+
+	/**
+	 * @dataProvider printRequestWithoutPropertyProvider
+	 */
+	public function testGetTypeIDForPrintRequestWithoutProperty( PrintRequest $instance ) {
+		$this->assertSame(
+			'_wpg',
+			$instance->getTypeID()
+		);
+	}
+
+	public function printRequestWithoutPropertyProvider() {
+		yield 'this' => [ new PrintRequest( PrintRequest::PRINT_THIS, 'Foo' ) ];
+		yield 'categories' => [ new PrintRequest( PrintRequest::PRINT_CATS, 'Foo' ) ];
+		yield 'category check' => [
+			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', WikiPage::newFromText( 'Bar' )->getTitle() )
+		];
+	}
+
+	public function testGetTypeIDForChainUsesLastLinkOfTheChain() {
+		$instance = PrintRequest::newFromText( 'Foo.Bar.Baz' );
+		$instance->getProperty()->setPropertyValueType( '_num' );
+
+		$this->assertSame(
+			'_num',
+			$instance->getTypeID()
 		);
 	}
 
