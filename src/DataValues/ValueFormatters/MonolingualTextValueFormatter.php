@@ -74,6 +74,8 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 		$text = '';
 		$languagecode = '';
 
+		$semanticData = $this->dataValue->getDataItem()->getSemanticData();
+
 		foreach ( $this->dataValue->getPropertyDataItems() as $property ) {
 
 			// If we wanted to omit the language code display for some outputs then
@@ -82,9 +84,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 				// continue;
 			}
 
-			$dataItems = $this->dataValue->getDataItem()->getSemanticData()->getPropertyValues(
-				$property
-			);
+			$dataItems = $semanticData->getPropertyValues( $property );
 
 			// Should not happen but just in case
 			if ( $dataItems === [] ) {
