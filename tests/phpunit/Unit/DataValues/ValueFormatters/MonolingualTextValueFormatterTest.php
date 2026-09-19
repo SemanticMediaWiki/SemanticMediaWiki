@@ -146,6 +146,13 @@ class MonolingualTextValueFormatterTest extends TestCase {
 			'foo (en)'
 		];
 
+		$provider[] = [
+			'@en',
+			MonolingualTextValueFormatter::WIKI_SHORT,
+			null,
+			' (en)'
+		];
+
 		return $provider;
 	}
 
