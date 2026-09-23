@@ -6,6 +6,8 @@ use MediaWiki\Request\WebRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -72,6 +74,41 @@ class ConfigurationListTaskHandlerTest extends TestCase {
 			->getMock();
 
 		$instance->handleRequest( $webRequest );
+	}
+
+	public function testHandleRequestKeepsElasticsearchCredentialsOutOfTheOutput() {
+		$settings = ApplicationFactory::getInstance()->getSettings()->toArray();
+		$settings['smwgElasticsearchCredentials'] = [ 'user' => 'elastic', 'pass' => 'wLcJ4jPjKk6MsQ2r' ];
+
+		$this->testEnvironment->registerObject( 'Settings', Settings::newFromArray( $settings ) );
+
+		$rendered = '';
+
+		$outputFormatter = $this->getMockBuilder( OutputFormatter::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputFormatter->expects( $this->any() )
+			->method( 'encodeAsJson' )
+			->willReturnCallback( static function ( $value ) use ( &$rendered ) {
+				$rendered .= json_encode( $value );
+				return '';
+			} );
+
+		$webRequest = $this->getMockBuilder( WebRequest::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ConfigurationListTaskHandler(
+			$outputFormatter
+		);
+
+		$instance->handleRequest( $webRequest );
+
+		$this->assertStringNotContainsString(
+			'wLcJ4jPjKk6MsQ2r',
+			$rendered
+		);
 	}
 
 }

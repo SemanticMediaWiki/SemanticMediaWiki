@@ -106,6 +106,9 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 		$applicationFactory = ApplicationFactory::getInstance();
 		$options = $applicationFactory->getSettings()->toArray();
 
+		// Do not show credentials through special page
+		unset( $options['smwgElasticsearchCredentials'] );
+
 		$settings = ( new JsonView() )->create(
 			'settings',
 			$this->outputFormatter->encodeAsJson( $this->cleanPath( $options ) ),
