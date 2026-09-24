@@ -310,7 +310,7 @@
 	"smw-ask-condition-input-assistance-property": "<code>p:</code> כדי לאחזר הצעות מאפיינים (למשל <code>[[p:Has ...</code>)",
 	"smw-ask-condition-input-assistance-category": "<code>c:</code> כדי לאחזר הצעות קטגוריות",
 	"smw-ask-condition-input-assistance-concept": "<code>con:</code> כדי לאחזר הצעות רעיונות",
-	"smw-ask-format-change-info": "התסדיר השתנה ויש להריץ את השאילתה שוב כדי להתאים פרמטרים חדשים ואפשרויות המחזה חדשות.",
+	"smw-ask-format-change-info": "התסדיר השתנה ויש להריץ את השאילתה שוב כדי להתאים פרמטרים חדשים ואפשרויות המחשה חדשות.",
 	"smw-ask-format-export-info": "התסדיר שנבחר הוא תסדיר יצוא שאין לו ייצוג חזותי ולכן התוצאות מסופקות כהורדה בלבד.",
 	"smw-ask-query-search-info": "השאילתה <code><nowiki>$1</nowiki></code> נענתה על־ידי {{PLURAL:$3|1=<code>$2</code> (ממטמון)|<code>$2</code> (ממטמון)|<code>$2</code>}} {{PLURAL:$4|בשנייה אחת|ב־$4 שניות}}.",
 	"smw-ask-extra-query-log": "יומן השאילתה",
