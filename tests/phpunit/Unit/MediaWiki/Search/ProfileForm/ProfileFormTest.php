@@ -7,6 +7,7 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Store;
@@ -196,6 +197,81 @@ class ProfileFormTest extends TestCase {
 			'Foo',
 			$map
 		);
+	}
+
+	public function testScriptBearingQueryStringIsEscapedInExtendedProfileSheet() {
+		$form = $this->buildExtendedProfileFormForQueryString( '[[~~*Has text <script>alert(1)</script>*]]' );
+
+		$this->assertStringNotContainsString(
+			'<script',
+			$form
+		);
+
+		$this->assertStringContainsString(
+			'&lt;script',
+			$form
+		);
+	}
+
+	public function testBenignQueryStringIsPreservedInExtendedProfileSheet() {
+		$form = $this->buildExtendedProfileFormForQueryString( '[[~~*Has text foo*]]' );
+
+		$this->assertStringContainsString(
+			'<pre>[[~~*Has text foo*]]</pre>',
+			$form
+		);
+	}
+
+	private function buildExtendedProfileFormForQueryString( string $queryString ): string {
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->willReturn( [] );
+
+		$queryLink = $this->getMockBuilder( Infolink::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryLink->expects( $this->any() )
+			->method( 'getHTML' )
+			->willReturn( '<a href="#">query</a>' );
+
+		$searchEngine = $this->getMockBuilder( ExtendedSearchEngine::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchEngine->expects( $this->any() )
+			->method( 'getErrors' )
+			->willReturn( [] );
+
+		$searchEngine->expects( $this->any() )
+			->method( 'getQueryString' )
+			->willReturn( $queryString );
+
+		$searchEngine->expects( $this->any() )
+			->method( 'getQueryLink' )
+			->willReturn( $queryLink );
+
+		$this->specialSearch->expects( $this->any() )
+			->method( 'getSearchEngine' )
+			->willReturn( $searchEngine );
+
+		$this->specialSearch->expects( $this->any() )
+			->method( 'getNamespaces' )
+			->willReturn( [] );
+
+		$this->specialSearch->expects( $this->any() )
+			->method( 'getUser' )
+			->willReturn( $this->user );
+
+		$this->specialSearch->expects( $this->any() )
+			->method( 'getContext' )
+			->willReturn( $this->requestContext );
+
+		$form = '';
+
+		( new ProfileForm( $this->store, $this->specialSearch ) )->buildForm( $form );
+
+		return $form;
 	}
 
 }
