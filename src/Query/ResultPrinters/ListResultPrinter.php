@@ -69,7 +69,7 @@ class ListResultPrinter extends ResultPrinter {
 
 		$this->hasTemplates = $this->hasTemplates();
 
-		$result = $builder->getResultText() . $this->getFurtherResultsText( $queryResult, $outputMode );
+		$result = $builder->getResultText( $outputMode ) . $this->getFurtherResultsText( $queryResult, $outputMode );
 
 		if ( $result == '' ) {
 			return $this->params['default'];

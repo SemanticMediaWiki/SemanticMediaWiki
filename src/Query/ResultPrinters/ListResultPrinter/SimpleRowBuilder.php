@@ -4,6 +4,7 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use MediaWiki\Linker\Linker;
 use SMW\Query\Result\ResultArray;
+use SMW\Query\ResultPrinters\SeparatorEscaper;
 
 /**
  * Class SimpleRowBuilder
@@ -37,7 +38,10 @@ class SimpleRowBuilder extends RowBuilder {
 
 			$otherFieldsText =
 				$this->get( 'other-fields-open' ) .
-				implode( $this->get( 'propsep' ), $fieldTexts ) .
+				implode(
+					SeparatorEscaper::escape( $this->get( 'propsep' ), $this->get( 'output-mode', SMW_OUTPUT_HTML ) ),
+					$fieldTexts
+				) .
 				$this->get( 'other-fields-close' );
 
 		} else {

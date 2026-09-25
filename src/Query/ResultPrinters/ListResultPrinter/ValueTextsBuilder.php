@@ -7,6 +7,7 @@ use MediaWiki\Parser\Sanitizer;
 use SMW\DataValues\DataValue;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
+use SMW\Query\ResultPrinters\SeparatorEscaper;
 
 /**
  * Class ValueTextsBuilder
@@ -34,7 +35,10 @@ class ValueTextsBuilder {
 	public function getValuesText( ResultArray $field, $column = 0 ): string {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return implode( $this->get( 'valuesep' ), $valueTexts );
+		return implode(
+			SeparatorEscaper::escape( $this->get( 'valuesep' ), $this->get( 'output-mode', SMW_OUTPUT_HTML ) ),
+			$valueTexts
+		);
 	}
 
 	/**

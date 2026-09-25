@@ -235,7 +235,7 @@ class CategoryResultPrinter extends ResultPrinter {
 					$this->templateRenderer->addField( 'userparam', $this->userParam );
 				}
 
-				$this->row_to_template( $row, $first_col );
+				$this->row_to_template( $row, $first_col, $outputMode );
 
 				$this->templateRenderer->addField( '#', $rowindex );
 				$this->templateRenderer->packFieldsForTemplate( $this->template );
@@ -245,7 +245,7 @@ class CategoryResultPrinter extends ResultPrinter {
 				$contents[$first_letter][] = $this->templateRenderer->render();
 			} else {  // build simple list
 				$first_col = true;
-				$contents[$first_letter][] = $this->row_to_contents( $row, $first_col );
+				$contents[$first_letter][] = $this->row_to_contents( $row, $first_col, $outputMode );
 			}
 
 			$row = $nextrow;
@@ -271,7 +271,7 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $this->collator->getFirstLetter( $sortKey );
 	}
 
-	private function row_to_contents( array $row, bool &$first_col ): string {
+	private function row_to_contents( array $row, bool &$first_col, int $outputMode ): string {
 		// has anything but the first column been printed?
 		$found_values = false;
 		$result = '';
@@ -310,7 +310,10 @@ class CategoryResultPrinter extends ResultPrinter {
 
 			// Always sort the column value list in the same order
 			natsort( $fieldValues );
-			$result .= implode( ( $this->delim ?: ',' ) . ' ', $fieldValues ) . ' ';
+			$result .= implode(
+				SeparatorEscaper::escape( ( $this->delim ?: ',' ) . ' ', $outputMode ),
+				$fieldValues
+			) . ' ';
 		}
 
 		if ( $found_values ) {
@@ -320,7 +323,7 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $result;
 	}
 
-	private function row_to_template( array $row, bool &$first_col ): void {
+	private function row_to_template( array $row, bool &$first_col, int $outputMode ): void {
 		// explicitly number parameters for more robust parsing (values may contain "=")
 		$i = 0;
 
@@ -347,7 +350,10 @@ class CategoryResultPrinter extends ResultPrinter {
 
 			natsort( $fieldValues );
 
-			$this->templateRenderer->addField( $fieldName, implode( $this->delim . ' ', $fieldValues ) );
+			$this->templateRenderer->addField(
+				$fieldName,
+				implode( SeparatorEscaper::escape( $this->delim . ' ', $outputMode ), $fieldValues )
+			);
 			$first_col = false;
 		}
 	}

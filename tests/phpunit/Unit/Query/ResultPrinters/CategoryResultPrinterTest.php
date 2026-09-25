@@ -3,8 +3,10 @@
 namespace SMW\Tests\Unit\Query\ResultPrinters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Query\PrintRequest;
 use SMW\Query\QueryContext;
 use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\CategoryResultPrinter;
 
 /**
@@ -75,6 +77,52 @@ class CategoryResultPrinterTest extends TestCase {
 			'smw-localized-message',
 			$instance->getContinueAbbrev()
 		);
+	}
+
+	public function testMarkupDelimiterIsEscapedInHtmlOutput() {
+		$result = $this->buildRowContents(
+			'"><img src=x onerror=alert(1)>', SMW_OUTPUT_HTML
+		);
+
+		$this->assertStringContainsString( '&quot;&gt;&lt;img src=x onerror=alert(1)&gt;', $result );
+		$this->assertStringNotContainsString( '"><img src=x onerror=alert(1)>', $result );
+	}
+
+	public function testMarkupDelimiterIsPreservedForWikiOutput() {
+		$result = $this->buildRowContents(
+			'"><img src=x onerror=alert(1)>', SMW_OUTPUT_WIKI
+		);
+
+		// Inline #ask output is sanitised downstream by the parser.
+		$this->assertStringContainsString( '"><img src=x onerror=alert(1)>', $result );
+	}
+
+	private function buildRowContents( string $delim, int $outputMode ): string {
+		$instance = new CategoryResultPrinter( 'category' );
+
+		$delimProperty = new \ReflectionProperty( CategoryResultPrinter::class, 'delim' );
+		$delimProperty->setAccessible( true );
+		$delimProperty->setValue( $instance, $delim );
+
+		$method = new \ReflectionMethod( CategoryResultPrinter::class, 'row_to_contents' );
+		$method->setAccessible( true );
+
+		$firstCol = true;
+
+		return $method->invokeArgs(
+			$instance, [ [ $this->newField( 'ValA', 'ValB' ) ], &$firstCol, $outputMode ]
+		);
+	}
+
+	private function newField( string ...$values ): ResultArray {
+		$printRequest = $this->createMock( PrintRequest::class );
+		$printRequest->method( 'getLabel' )->willReturn( '' );
+
+		$field = $this->createMock( ResultArray::class );
+		$field->method( 'getPrintRequest' )->willReturn( $printRequest );
+		$field->method( 'getNextText' )->willReturnOnConsecutiveCalls( ...[ ...$values, false ] );
+
+		return $field;
 	}
 
 	/**

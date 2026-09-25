@@ -6,6 +6,7 @@ use MediaWiki\Linker\Linker;
 use SMW\Localizer\Message;
 use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
+use SMW\Query\ResultPrinters\SeparatorEscaper;
 
 /**
  * Class ListResultBuilder
@@ -74,16 +75,14 @@ class ListResultBuilder {
 		$this->listPlainByDefault = $listPlainByDefault ?? $GLOBALS['smwgPlainList'];
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getResultText(): string {
+	public function getResultText( int $outputMode ): string {
 		$this->prepareBuilt();
+		$this->set( 'output-mode', $outputMode );
 
 		return $this->getTemplateCall( 'introtemplate' ) .
 			$this->get( 'result-open-tag' ) .
 
-			implode( $this->get( 'sep' ), $this->getRowTexts() ) .
+			implode( SeparatorEscaper::escape( $this->get( 'sep' ), $outputMode ), $this->getRowTexts() ) .
 
 			$this->get( 'result-close-tag' ) .
 			$this->getTemplateCall( 'outrotemplate' );
