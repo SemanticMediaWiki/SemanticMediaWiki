@@ -77,12 +77,6 @@ class SpecialAdmin extends SpecialPage {
 			throw new PermissionsError( 'smw-admin', [ 'smw-admin-permission-missing' ] );
 		}
 
-		// https://phabricator.wikimedia.org/T109652#1562641
-		$this->getRequest()->setVal(
-			'wpEditToken',
-			$this->getUser()->getEditToken()
-		);
-
 		$this->setHeaders();
 		$output = $this->getOutput();
 
@@ -104,6 +98,13 @@ class SpecialAdmin extends SpecialPage {
 		$htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
+		);
+
+		// Emit the current user's edit token into every maintenance form so a
+		// state-changing action can be verified against a token the request
+		// actually submitted (see the dispatch guard below).
+		$htmlFormRenderer->setEditToken(
+			$this->getUser()->getEditToken()
 		);
 
 		// Some functions require methods only provided by the SQLStore (or any
@@ -150,9 +151,22 @@ class SpecialAdmin extends SpecialPage {
 		$action = $this->getRequest()->getText( 'action' );
 
 		foreach ( $taskHandlerRegistry->get( TaskHandler::ACTIONABLE ) as $taskHandler ) {
-			if ( $taskHandler->isTaskFor( $action ) ) {
-				return $taskHandler->handleRequest( $this->getRequest() );
+			if ( !$taskHandler->isTaskFor( $action ) ) {
+				continue;
 			}
+
+			// A state-changing action must carry a CSRF token the request
+			// actually submitted; otherwise a cross-site request in an
+			// authenticated smw-admin browser could trigger it.
+			if (
+				$taskHandler->changesState() &&
+				!$this->getUser()->matchEditToken( $this->getRequest()->getVal( 'wpEditToken' ) )
+			) {
+				$output->addHTML( $this->msg_text( 'sessionfailure' ) );
+				return;
+			}
+
+			return $taskHandler->handleRequest( $this->getRequest() );
 		}
 
 		$output->addHTML(

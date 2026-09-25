@@ -47,6 +47,15 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	/**
+	 * @since 7.3.1
+	 *
+	 * {@inheritDoc}
+	 */
+	public function changesState(): bool {
+		return true;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * {@inheritDoc}

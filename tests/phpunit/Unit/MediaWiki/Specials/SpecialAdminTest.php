@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\MediaWiki\Specials;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\FauxRequest;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\JobFactory;
@@ -12,6 +13,7 @@ use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Specials\SpecialAdmin;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
@@ -98,6 +100,63 @@ class SpecialAdminTest extends TestCase {
 
 		// Context is static avoid any succeeding tests to fail
 		$instance->getContext()->setOutput( $oldOutput );
+	}
+
+	public function testActionableMaintenanceRequestWithoutValidTokenDoesNotExecuteTheTask() {
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->never() )
+			->method( 'setup' );
+
+		$instance = $this->newSpecialAdminForMaintenanceRequest(
+			$store,
+			new FauxRequest( [ 'prep' => 'done' ] )
+		);
+
+		$instance->execute( 'updatetables' );
+	}
+
+	public function testActionableMaintenanceRequestWithValidPostedTokenStillExecutesTheTask() {
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'setup' );
+
+		$instance = $this->newSpecialAdminForMaintenanceRequest(
+			$store,
+			new FauxRequest( [ 'prep' => 'done', 'wpEditToken' => 'valid-token' ], true )
+		);
+
+		$instance->execute( 'updatetables' );
+	}
+
+	private function newSpecialAdminForMaintenanceRequest( $store, FauxRequest $request ): SpecialAdmin {
+		$user = new class() extends MockSuperUser {
+
+			public function getEditToken( $salt = '', $request = null ) {
+				return 'valid-token';
+			}
+
+			public function matchEditToken( $val, $salt = '', $request = null, $maxage = null ) {
+				return $val === 'valid-token';
+			}
+		};
+
+		$this->testEnvironment->overrideUserPermissions( $user, [ 'smw-admin' ] );
+
+		$instance = new SpecialAdmin( $store, $this->settings, $this->hookContainer, $this->jobFactory, $this->jobQueue );
+
+		$instance->getContext()->setTitle(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMediaWiki' )
+		);
+		$instance->getContext()->setUser( $user );
+		$instance->getContext()->setRequest( $request );
+
+		return $instance;
 	}
 
 	public function testExecuteWithInvalidPermissionThrowsException() {

@@ -110,15 +110,16 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
 
-		// https://phabricator.wikimedia.org/T109652#1562641
-		if ( !$this->user->matchEditToken( $webRequest->getVal( 'wpEditToken' ) ) ) {
-			$this->outputFormatter->addHtml( $this->msg( 'sessionfailure' ) );
-			return;
-		}
-
 		$id = $webRequest->getText( 'id' );
 
 		if ( $this->hasFeature( SMW_ADM_DISPOSAL ) && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
+			// Disposing an entity changes state, so require a CSRF token that
+			// the request actually submitted (see T109652#1562641).
+			if ( !$this->user->matchEditToken( $webRequest->getVal( 'wpEditToken' ) ) ) {
+				$this->outputFormatter->addHtml( $this->msg( 'sessionfailure' ) );
+				return;
+			}
+
 			$this->doDispose( $id );
 		}
 

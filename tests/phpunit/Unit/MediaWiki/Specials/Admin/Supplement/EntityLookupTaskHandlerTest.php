@@ -76,7 +76,7 @@ class EntityLookupTaskHandlerTest extends TestCase {
 		);
 	}
 
-	public function testPerformAction() {
+	public function testReadOnlyLookupRendersWithoutRequiringAToken() {
 		$methods = [
 			'setName',
 			'setMethod',
@@ -108,9 +108,8 @@ class EntityLookupTaskHandlerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user->expects( $this->atLeastOnce() )
-			->method( 'matchEditToken' )
-			->willReturn( true );
+		$user->expects( $this->never() )
+			->method( 'matchEditToken' );
 
 		$instance->setUser(
 			$user
@@ -119,6 +118,39 @@ class EntityLookupTaskHandlerTest extends TestCase {
 		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$instance->handleRequest( $webRequest );
+	}
+
+	public function testDisposeWithoutValidTokenIsRefused() {
+		$this->htmlFormRenderer->expects( $this->never() )
+			->method( 'getForm' );
+
+		$instance = new EntityLookupTaskHandler(
+			$this->store,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+
+		$instance->setFeatureSet( SMW_ADM_DISPOSAL );
+
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->method( 'matchEditToken' )
+			->willReturn( false );
+
+		$instance->setUser(
+			$user
+		);
+
+		$webRequest = $this->getMockBuilder( WebRequest::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$webRequest->method( 'getText' )
+			->willReturnCallback( static fn ( $key, $default = '' ) => [ 'id' => '42', 'dispose' => 'yes' ][$key] ?? $default );
 
 		$instance->handleRequest( $webRequest );
 	}

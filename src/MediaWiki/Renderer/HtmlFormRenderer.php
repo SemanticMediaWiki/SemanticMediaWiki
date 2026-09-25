@@ -46,6 +46,8 @@ class HtmlFormRenderer {
 
 	private string $defaultPrefix = 'smw-form';
 
+	private ?string $editToken = null;
+
 	/**
 	 * @since 2.1
 	 */
@@ -105,6 +107,18 @@ class HtmlFormRenderer {
 	 */
 	public function setMethod( string $method ): static {
 		$this->method = strtolower( $method );
+		return $this;
+	}
+
+	/**
+	 * Add a CSRF edit token as a hidden field to every form produced by this
+	 * renderer. The token is intentionally kept across `clear()` so a single
+	 * renderer reused for several forms emits it in all of them.
+	 *
+	 * @since 7.3.1
+	 */
+	public function setEditToken( string $editToken ): static {
+		$this->editToken = $editToken;
 		return $this;
 	}
 
@@ -384,15 +398,21 @@ class HtmlFormRenderer {
 			);
 		}
 
+		$hiddenFields = Html::hidden(
+			'title',
+			strtok( $this->title->getPrefixedText() ?? '', '/' )
+		);
+
+		if ( $this->editToken !== null ) {
+			$hiddenFields .= Html::hidden( 'wpEditToken', $this->editToken );
+		}
+
 		$form = Xml::tags( 'form', [
 			'id'     => $this->defaultPrefix . "-{$this->name}",
 			'name'   => $this->name,
 			'method' => in_array( $this->method, [ 'get', 'post' ] ) ? $this->method : 'get',
 			'action' => $this->actionUrl ?: $GLOBALS['wgScript']
-		], Html::hidden(
-			'title',
-			strtok( $this->title->getPrefixedText() ?? '', '/' )
-		) . $content );
+		], $hiddenFields . $content );
 
 		$this->clear();
 

@@ -82,6 +82,16 @@ abstract class TaskHandler {
 	}
 
 	/**
+	 * Whether handling this task's request changes state, and therefore
+	 * requires a valid CSRF token at the dispatch boundary.
+	 *
+	 * @since 7.3.1
+	 */
+	public function changesState(): bool {
+		return false;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return string
