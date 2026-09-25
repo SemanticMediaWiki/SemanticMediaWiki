@@ -119,7 +119,7 @@ class KeywordValue extends StringValue {
 		}
 
 		if ( $linker === null ) {
-			return $this->m_caption;
+			return smwfXMLContentEncode( $this->m_caption );
 		}
 
 		$uri = $this->makeUri(
@@ -128,7 +128,7 @@ class KeywordValue extends StringValue {
 		);
 
 		if ( $uri === '' ) {
-			return $this->m_caption;
+			return smwfXMLContentEncode( $this->m_caption );
 		}
 
 		return $uri;

@@ -160,6 +160,36 @@ class ExternalIdentifierValueTest extends TestCase {
 		);
 	}
 
+	public function testMarkupValueIsEscapedInShortHtmlText() {
+		$instance = new ExternalIdentifierValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
+
+		$instance->setUserValue( '<img src=x onerror=alert(1)>' );
+		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
+
+		$this->assertSame(
+			'&lt;img src=x onerror=alert(1)&gt;',
+			$instance->getShortHTMLText()
+		);
+	}
+
+	public function testMarkupValueIsEscapedInLinkedShortHtmlText() {
+		$this->propertySpecificationLookup->expects( $this->once() )
+			->method( 'getExternalFormatterUri' )
+			->willReturn( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) );
+
+		$instance = new ExternalIdentifierValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
+
+		$instance->setUserValue( '<img src=x onerror=alert(1)>' );
+		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
+
+		$output = $instance->getShortHTMLText( 'linker' );
+
+		$this->assertStringNotContainsString( '<img', $output );
+		$this->assertStringContainsString( '&lt;img src=x onerror=alert(1)&gt;', $output );
+	}
+
 	public function identifierProvider() {
 		$dataItemFactory = new DataItemFactory();
 

@@ -148,4 +148,28 @@ class CodeStringValueFormatterTest extends TestCase {
 		return $provider;
 	}
 
+	public function testJsonValueContainingMarkupIsEscapedInHtmlOutput() {
+		$codeStringValue = DataValueFactory::getInstance()->newDataValueByType( '_cod' );
+		$codeStringValue->setUserValue( '{"x":"<img src=x onerror=alert(1)>"}' );
+
+		$instance = new CodeStringValueFormatter();
+
+		$output = $instance->format( $codeStringValue, [ CodeStringValueFormatter::HTML_SHORT, null ] );
+
+		$this->assertStringNotContainsString( '<img', $output );
+		$this->assertStringContainsString( '&lt;img src=x onerror=alert(1)&gt;', $output );
+	}
+
+	public function testBenignJsonValueIsNotAlteredInHtmlOutput() {
+		$codeStringValue = DataValueFactory::getInstance()->newDataValueByType( '_cod' );
+		$codeStringValue->setUserValue( '{"limit": 50,"mode": 1}' );
+
+		$instance = new CodeStringValueFormatter();
+
+		$output = $instance->format( $codeStringValue, [ CodeStringValueFormatter::HTML_SHORT, null ] );
+
+		$this->assertStringContainsString( '"limit": 50', $output );
+		$this->assertStringNotContainsString( '&amp;', $output );
+	}
+
 }

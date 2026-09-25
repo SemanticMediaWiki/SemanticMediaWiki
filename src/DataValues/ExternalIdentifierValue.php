@@ -100,7 +100,7 @@ class ExternalIdentifierValue extends StringValue {
 		$this->m_caption = str_replace( '\,', ',', $this->m_caption );
 
 		if ( $linker === null ) {
-			return $this->m_caption;
+			return smwfXMLContentEncode( $this->m_caption );
 		}
 
 		$uri = $this->makeUri(
@@ -108,7 +108,7 @@ class ExternalIdentifierValue extends StringValue {
 		);
 
 		if ( !$this->isValid() ) {
-			return $this->m_caption;
+			return smwfXMLContentEncode( $this->m_caption );
 		}
 
 		return Html::rawElement(
@@ -117,7 +117,7 @@ class ExternalIdentifierValue extends StringValue {
 				'href'   => $uri,
 				'target' => '_blank'
 			],
-			$this->m_caption
+			smwfXMLContentEncode( $this->m_caption )
 		);
 	}
 

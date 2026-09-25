@@ -197,4 +197,38 @@ class KeywordValueTest extends TestCase {
 			$instance->getShortWikiText( 'linker' )
 		);
 	}
+
+	public function testMarkupValueIsEscapedInShortHtmlText() {
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getSpecification' )
+			->willReturn( [] );
+
+		$instance = new KeywordValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
+
+		$instance->setUserValue( '<img src=x onerror=alert(1)>' );
+		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
+
+		$this->assertSame(
+			'&lt;img src=x onerror=alert(1)&gt;',
+			$instance->getShortHTMLText()
+		);
+	}
+
+	public function testBenignValueRoundTripsInShortHtmlText() {
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getSpecification' )
+			->willReturn( [] );
+
+		$instance = new KeywordValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
+
+		$instance->setUserValue( 'foo' );
+		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
+
+		$this->assertSame(
+			'foo',
+			$instance->getShortHTMLText()
+		);
+	}
 }

@@ -41,7 +41,10 @@ class CodeStringValueFormatter extends StringValueFormatter {
 		Outputs::requireResource( 'ext.smw.styles' );
 
 		if ( $this->isJson( $text ) ) {
-			$result = self::asJson( $text );
+			// The pretty-printed JSON is emitted verbatim into HTML, so escape
+			// any markup its string values may carry, matching the escaping the
+			// non-JSON branch below and the base StringValueFormatter apply.
+			$result = smwfXMLContentEncode( (string)self::asJson( $text ) );
 		} else {
 			// This disables all active wiki and HTML markup:
 			$result = str_replace(
