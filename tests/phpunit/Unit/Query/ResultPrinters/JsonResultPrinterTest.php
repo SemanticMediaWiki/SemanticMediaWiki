@@ -105,6 +105,47 @@ class JsonResultPrinterTest extends TestCase {
 		);
 	}
 
+	public function testScriptBearingDefaultIsEscapedInZeroResultFileOutput() {
+		$this->queryResult->method( 'getCount' )
+			->willReturn( 0 );
+
+		$instance = new JsonResultPrinter( 'json' );
+
+		$this->resultPrinterReflector->addParameters(
+			$instance,
+			[ 'default' => '<img src=x onerror="window.__xss=1">' ]
+		);
+
+		$result = $this->resultPrinterReflector->invoke(
+			$instance,
+			$this->queryResult,
+			SMW_OUTPUT_FILE
+		);
+
+		$this->assertStringNotContainsString( '<img', $result );
+		$this->assertStringContainsString( '&lt;img', $result );
+	}
+
+	public function testBenignDefaultIsReturnedUnchangedInZeroResultFileOutput() {
+		$this->queryResult->method( 'getCount' )
+			->willReturn( 0 );
+
+		$instance = new JsonResultPrinter( 'json' );
+
+		$this->resultPrinterReflector->addParameters(
+			$instance,
+			[ 'default' => 'No results found' ]
+		);
+
+		$result = $this->resultPrinterReflector->invoke(
+			$instance,
+			$this->queryResult,
+			SMW_OUTPUT_FILE
+		);
+
+		$this->assertSame( 'No results found', $result );
+	}
+
 	public function testDependsOnUserLanguage_ReturnsFalse() {
 		$instance = new JsonResultPrinter( 'json' );
 

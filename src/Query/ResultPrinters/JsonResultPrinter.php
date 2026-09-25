@@ -121,7 +121,7 @@ class JsonResultPrinter extends FileExportPrinter {
 
 		// No results, just bailout
 		if ( $res->getCount() == 0 ) {
-			return $this->params['default'] !== '' ? $this->params['default'] : '';
+			return $this->params['default'] !== '' ? htmlspecialchars( $this->params['default'] ) : '';
 		}
 
 		return $this->buildJSON( $res );
