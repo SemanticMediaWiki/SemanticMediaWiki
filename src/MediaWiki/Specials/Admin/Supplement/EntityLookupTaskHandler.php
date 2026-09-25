@@ -282,7 +282,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		} else {
 			$error .= Html::warningBox(
-				$this->msg( [ 'smw-admin-iddispose-no-references', $id ] )
+				$this->msg( [ 'smw-admin-iddispose-no-references', $id ], Message::ESCAPED )
 			);
 
 			$id = '';
