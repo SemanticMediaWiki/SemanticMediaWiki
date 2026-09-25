@@ -118,7 +118,7 @@ class GroupFormatter {
 	 */
 	public function getGroupLink( $group ) {
 		if ( !isset( $this->groupLinks[$group] ) || $this->groupLinks[$group] === '' ) {
-			return $group;
+			return htmlspecialchars( $group );
 		}
 
 		return Html::rawElement(
@@ -205,7 +205,7 @@ class GroupFormatter {
 		}
 
 		if ( $dataItem instanceof DataItem ) {
-			$link = Html::rawElement(
+			$link = Html::element(
 				'a',
 				[
 					'href' => $dataItem->getTitle()->getFullURL()

@@ -213,4 +213,65 @@ class GroupFormatterTest extends TestCase {
 		);
 	}
 
+	public function testScriptBearingGroupCanonicalNameIsEscapedInBrowseGroupHeading() {
+		$payload = '<img src=x onerror=alert(1)>';
+
+		$instance = $this->newInstanceForSchemaGroup(
+			[ 'property_keys' => [ 'Foo' ], 'canonical_name' => $payload ]
+		);
+
+		$properties = [ new Property( 'Foo' ) ];
+		$instance->findGroupMembership( $properties );
+
+		$heading = $instance->getGroupLink( $payload );
+
+		$this->assertStringNotContainsString( '<img src=x', $heading );
+		$this->assertStringContainsString( '&lt;img src=x', $heading );
+	}
+
+	public function testBenignGroupCanonicalNameIsPreservedInBrowseGroupHeading() {
+		$instance = $this->newInstanceForSchemaGroup(
+			[ 'property_keys' => [ 'Foo' ], 'canonical_name' => 'Custom benign group' ]
+		);
+
+		$properties = [ new Property( 'Foo' ) ];
+		$instance->findGroupMembership( $properties );
+
+		$heading = $instance->getGroupLink( 'Custom benign group' );
+
+		$this->assertStringContainsString( '<span class="group-link">', $heading );
+		$this->assertStringContainsString( '>Custom benign group</a>', $heading );
+	}
+
+	private function newInstanceForSchemaGroup( array $groupData ): GroupFormatter {
+		$schemaDefinition = $this->getMockBuilder( SchemaDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaDefinition->method( 'getName' )
+			->willReturn( 'Group schema' );
+
+		$schemaDefinition->method( 'get' )
+			->with( 'groups' )
+			->willReturn( [ $groupData ] );
+
+		$schemaList = $this->getMockBuilder( SchemaList::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaList->method( 'getList' )
+			->willReturn( [ $schemaDefinition ] );
+
+		$this->schemaFinder->method( 'getSchemaListByType' )
+			->willReturn( $schemaList );
+
+		$this->propertySpecificationLookup->method( 'getPropertyGroup' )
+			->willReturn( null );
+
+		return new GroupFormatter(
+			$this->propertySpecificationLookup,
+			$this->schemaFinder
+		);
+	}
+
 }
