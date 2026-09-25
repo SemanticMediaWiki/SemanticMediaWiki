@@ -141,6 +141,58 @@ class SchemaContentFormatterTest extends TestCase {
 		);
 	}
 
+	public function testMarkupSchemaTagRendersEscapedInSummaryTable() {
+		$schema = $this->newSchemaReturningTags( [ '<img src=x onerror=alert(1)>' ] );
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$html = $instance->getText( '...', $schema, [] );
+
+		$this->assertStringNotContainsString(
+			'<img src=x onerror=alert(1)>',
+			$html
+		);
+
+		$this->assertStringContainsString(
+			'&lt;img src=x onerror=alert(1)&gt;',
+			$html
+		);
+	}
+
+	public function testBenignSchemaTagRendersAsPropertySearchLink() {
+		$schema = $this->newSchemaReturningTags( [ 'Benign' ] );
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$html = $instance->getText( '...', $schema, [] );
+
+		$this->assertStringContainsString(
+			'SearchByProperty',
+			$html
+		);
+
+		$this->assertStringContainsString(
+			'>Benign</a>',
+			$html
+		);
+	}
+
+	private function newSchemaReturningTags( array $tags ) {
+		$schema = $this->getMockBuilder( Schema::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schema->expects( $this->any() )
+			->method( 'get' )
+			->willReturnCallback( static fn ( $key ) => $key === Schema::SCHEMA_TAG ? $tags : '' );
+
+		return $schema;
+	}
+
 	private function newSchemaReturningEmptyValues() {
 		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()

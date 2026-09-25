@@ -263,12 +263,12 @@ class SchemaContentFormatter {
 		$tags = $schema->get( Schema::SCHEMA_TAG, [] );
 		if ( $tags !== [] ) {
 			foreach ( $tags as $k => $tag ) {
-				$tags[$k] = Infolink::newPropertySearchLink( $tag, 'Schema tag', $tag, '' )->getHtml();
+				$tags[$k] = Infolink::newPropertySearchLink( htmlspecialchars( $tag ), 'Schema tag', $tag, '' )->getHtml();
 			}
 		}
 
 		$type = $schema->get( 'type', '' );
-		$link = Infolink::newPropertySearchLink( $type, 'Schema type', $type, '' );
+		$link = Infolink::newPropertySearchLink( htmlspecialchars( $type ), 'Schema type', $type, '' );
 
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
