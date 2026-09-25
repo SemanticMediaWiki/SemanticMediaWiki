@@ -56,7 +56,7 @@ class ExploreListBuilder {
 			$html .= Html::rawElement(
 				'li',
 				[],
-				Html::rawElement(
+				Html::element(
 					'a',
 					[
 						'href' => $title->getLocalUrl( (string)$urlArgs )
