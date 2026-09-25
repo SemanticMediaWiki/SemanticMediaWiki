@@ -134,9 +134,15 @@
     };
 
     function _formatResult(suggestion, currentValue) {
-        // Do not replace anything if the current value is empty
+        // With an empty query there is nothing to highlight, but the value is
+        // still inserted into the container via .html(), so it must be escaped
+        // here just like the highlighting branch below escapes it.
         if (!currentValue) {
-            return suggestion.value;
+            return suggestion.value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
         }
 
         var pattern = '(' + utils.escapeRegExChars(currentValue) + ')';
