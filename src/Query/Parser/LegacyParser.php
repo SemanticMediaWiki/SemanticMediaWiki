@@ -79,6 +79,19 @@ class LegacyParser implements Parser {
 	private $selfReference = false;
 
 	/**
+	 * Maximum query nesting depth for the current parse, mirrored from
+	 * $smwgQMaxDepth so recursion is bounded at the point of descent rather
+	 * than only when the finished description tree is pruned.
+	 */
+	private int $maxQueryDepth = 0;
+
+	/**
+	 * Set once the nesting exceeds $maxQueryDepth, so every open subquery frame
+	 * unwinds without descending or reading further input.
+	 */
+	private bool $queryDepthExceeded = false;
+
+	/**
 	 * @since 3.0
 	 */
 	public function __construct(
@@ -229,6 +242,8 @@ class LegacyParser implements Parser {
 		$this->separatorStack = [];
 
 		$this->selfReference = false;
+		$this->queryDepthExceeded = false;
+		$this->maxQueryDepth = (int)( $GLOBALS['smwgQMaxDepth'] ?? 4 );
 		$setNS = false;
 
 		$description = $this->getSubqueryDescription( $setNS );
@@ -272,7 +287,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return Description|null
 	 */
-	private function getSubqueryDescription( bool &$setNS ): ?Description {
+	private function getSubqueryDescription( bool &$setNS, int $depth = 0 ): ?Description {
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 
@@ -286,7 +301,7 @@ class LegacyParser implements Parser {
 
 			switch ( $chunk ) {
 				case '[[': // start new link block
-					$ld = $this->getLinkDescription( $setsubNS );
+					$ld = $this->getLinkDescription( $setsubNS, $depth );
 
 					if ( $ld !== null ) {
 						$conjunction = $this->descriptionProcessor->asAnd( $conjunction, $ld );
@@ -294,8 +309,13 @@ class LegacyParser implements Parser {
 					break;
 				case 'AND':
 				case '<q>': // enter new subquery, currently irrelevant but possible
+					if ( $depth >= $this->maxQueryDepth ) {
+						$this->descriptionProcessor->addErrorWithMsgKey( 'smw-query-nesting-level-exceeded', $this->maxQueryDepth );
+						$this->queryDepthExceeded = true;
+						break;
+					}
 					$this->pushDelimiter( '</q>' );
-					$conjunction = $this->descriptionProcessor->asAnd( $conjunction, $this->getSubqueryDescription( $setsubNS ) );
+					$conjunction = $this->descriptionProcessor->asAnd( $conjunction, $this->getSubqueryDescription( $setsubNS, $depth + 1 ) );
 					break;
 				case 'OR':
 				case '||':
@@ -342,6 +362,12 @@ class LegacyParser implements Parser {
 					// return null; // Try to go on, it can only get better ...
 			}
 
+			// Nesting exceeded the depth limit somewhere below: unwind at once
+			// instead of reading and recursing through the rest of the input.
+			if ( $this->queryDepthExceeded ) {
+				return null;
+			}
+
 			if ( $setsubNS ) { // namespace restrictions encountered in current conjunct
 				$hasNamespaces = true;
 			}
@@ -381,7 +407,7 @@ class LegacyParser implements Parser {
 	 *
 	 * Parameters $setNS has the same use as in getSubqueryDescription().
 	 */
-	private function getLinkDescription( bool &$setNS ) {
+	private function getLinkDescription( bool &$setNS, int $depth ) {
 		// This method is called when we encountered an opening '[['. The following
 		// block could be a Category-statement, fixed object, or property statement.
 
@@ -399,7 +425,7 @@ class LegacyParser implements Parser {
 
 		if ( ( $sep == '::' ) || ( $sep == ':=' ) ) {
 			if ( $chunk[0] != ':' ) { // property statement
-				return $this->getPropertyDescription( $chunk, $setNS );
+				return $this->getPropertyDescription( $chunk, $setNS, $depth );
 			} else { // escaped article description, read part after :: to get full contents
 				$chunk .= $this->readChunk( '\[\[|\]\]|\|\||\|' );
 				return $this->getArticleDescription( trim( $chunk ), $setNS );
@@ -485,7 +511,7 @@ class LegacyParser implements Parser {
 	 * suitable description. The "::" is the first chunk on the current
 	 * string.
 	 */
-	private function getPropertyDescription( string $propertyName, bool &$setNS ) {
+	private function getPropertyDescription( string $propertyName, bool &$setNS, int $depth ) {
 		// Consume separator ":=" or "::"
 		$this->readChunk();
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -563,9 +589,14 @@ class LegacyParser implements Parser {
 				 // subquery, set default namespaces
 				case '<q>':
 					if ( $this->isPagePropertyType( $typeid ) || $inverse ) {
-						$this->pushDelimiter( '</q>' );
-						$setsubNS = true;
-						$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $this->getSubqueryDescription( $setsubNS ) );
+						if ( $depth >= $this->maxQueryDepth ) {
+							$this->descriptionProcessor->addErrorWithMsgKey( 'smw-query-nesting-level-exceeded', $this->maxQueryDepth );
+							$this->queryDepthExceeded = true;
+						} else {
+							$this->pushDelimiter( '</q>' );
+							$setsubNS = true;
+							$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $this->getSubqueryDescription( $setsubNS, $depth + 1 ) );
+						}
 					} else { // no subqueries allowed for non-pages
 						$this->descriptionProcessor->addErrorWithMsgKey( 'smw_valuesubquery', end( $propertynames ) );
 						$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $this->descriptionFactory->newThingDescription() );
@@ -620,6 +651,12 @@ class LegacyParser implements Parser {
 
 			}
 			$continue = ( $chunk == '||' );
+
+			// A nested subquery blew the depth limit: stop reading this property
+			// so the parse unwinds instead of scanning the rest of the input.
+			if ( $this->queryDepthExceeded ) {
+				break;
+			}
 		}
 
 		// No description, make a wildcard search
