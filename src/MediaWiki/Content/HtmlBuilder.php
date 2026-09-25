@@ -151,7 +151,7 @@ class HtmlBuilder {
 					$params['attributes_extra']['msg_description']
 				);
 
-				$parameters[$key] = $value;
+				$parameters[$key] = htmlspecialchars( $value );
 			}
 
 			if ( $key === 'tag' ) {

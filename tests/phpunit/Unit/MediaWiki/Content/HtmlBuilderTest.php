@@ -35,6 +35,40 @@ class HtmlBuilderTest extends TestCase {
 		);
 	}
 
+	public function testScriptBearingSchemaDescriptionIsEscaped() {
+		$instance = new HtmlBuilder();
+
+		$html = $instance->build( 'schema_summary', $this->schemaSummaryParams( '<img src=x onerror=alert(1)>' ) );
+
+		$this->assertStringNotContainsString( '<img src=x onerror=', $html );
+		$this->assertStringContainsString( '&lt;img src=x onerror=', $html );
+	}
+
+	public function testBenignSchemaDescriptionRoundTrips() {
+		$instance = new HtmlBuilder();
+
+		$html = $instance->build( 'schema_summary', $this->schemaSummaryParams( 'Tom & Jerry description' ) );
+
+		$this->assertStringContainsString( 'Tom &amp; Jerry description', $html );
+		$this->assertStringNotContainsString( 'Tom &amp;amp; Jerry description', $html );
+	}
+
+	private function schemaSummaryParams( string $schemaDescription ): array {
+		return [
+			'attributes' => [
+				'schema_description' => $schemaDescription,
+				'type' => '',
+				'type_description' => '',
+				'tag' => ''
+			],
+			'attributes_extra' => [
+				'href_description' => '/index.php/Property:Schema_description',
+				'msg_description' => 'Schema description'
+			],
+			'error_params' => []
+		];
+	}
+
 	public function buildParamsProvider() {
 		yield [
 			'schema_head',
