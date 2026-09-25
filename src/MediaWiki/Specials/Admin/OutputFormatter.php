@@ -168,7 +168,7 @@ class OutputFormatter {
 	 */
 	public function encodeAsJson( array $input ) {
 		if ( defined( 'JSON_PRETTY_PRINT' ) ) {
-			return json_encode( $input, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+			return json_encode( $input, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT );
 		}
 
 		return FormatJson::encode( $input, true );

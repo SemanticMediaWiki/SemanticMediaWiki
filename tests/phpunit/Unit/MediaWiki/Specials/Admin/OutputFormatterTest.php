@@ -61,6 +61,22 @@ class OutputFormatterTest extends TestCase {
 		);
 	}
 
+	public function testEncodeAsJsonEscapesMarkupForHtmlEmbedding() {
+		$instance = new OutputFormatter( $this->outputPage );
+
+		$json = $instance->encodeAsJson( [ 'value' => '<img src=x onerror=alert(1)>' ] );
+
+		$this->assertStringNotContainsString(
+			'<img',
+			$json
+		);
+
+		$this->assertSame(
+			[ 'value' => '<img src=x onerror=alert(1)>' ],
+			json_decode( $json, true )
+		);
+	}
+
 	public function testAddParentLink() {
 		$this->outputPage->expects( $this->once() )
 			->method( 'prependHTML' );
